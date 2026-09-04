@@ -60,9 +60,16 @@ int main(int argc, char **argv) {
   const auto session = view.find("void RunConnectedSession(");
   const auto begin = view.find(
       "\"query-war-termination-options-\"", session);
-  const auto end = view.find(
+  const auto terms_end = view.find(
       "\"query-war-termination-terms-v1-\"",
       begin == std::string_view::npos ? 0 : begin + 1);
+  const auto actual_expiry_end = view.find(
+      "kRaiktorActualTruceExpiryV1StepPrefix",
+      begin == std::string_view::npos ? 0 : begin + 1);
+  const auto end = actual_expiry_end != std::string_view::npos &&
+                           actual_expiry_end < terms_end
+                       ? actual_expiry_end
+                       : terms_end;
   if (session == std::string_view::npos ||
       begin == std::string_view::npos || end == std::string_view::npos ||
       begin >= end) {

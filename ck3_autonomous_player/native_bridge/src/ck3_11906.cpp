@@ -793,6 +793,8 @@ constexpr std::uintptr_t kTraverseLoadedEffectRva = 0x3380170;
 constexpr std::uintptr_t kDestroyEffectContext118Rva = 0x081E900;
 constexpr std::uintptr_t kDestroyEffectContextArrayRowRva = 0x081E980;
 constexpr std::uintptr_t kEvaluateTruceDurationDaysRva = 0x3373000;
+constexpr std::uintptr_t kHasCharacterTruceRva = 0x26631E0;
+constexpr std::uintptr_t kGetCharacterTruceEndDateRva = 0x2663250;
 constexpr std::uintptr_t kGetCharacterPrimaryTitleRva = 0x25F3350;
 constexpr std::uintptr_t kReadMonthlyGoldIncomeRva = 0x28DBE90;
 constexpr std::uintptr_t kEvaluateCharacterInteractionAnswerRva = 0x2C43B40;
@@ -9742,6 +9744,11 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.evaluate_truce_duration_days =
       reinterpret_cast<EvaluateTruceDurationDays>(
           module + kEvaluateTruceDurationDaysRva);
+  result.has_character_truce = reinterpret_cast<HasCharacterTruce>(
+      module + kHasCharacterTruceRva);
+  result.get_character_truce_end_date =
+      reinterpret_cast<GetCharacterTruceEndDate>(
+          module + kGetCharacterTruceEndDateRva);
   result.get_character_primary_title =
       reinterpret_cast<GetCharacterPrimaryTitle>(
           module + kGetCharacterPrimaryTitleRva);
@@ -16703,6 +16710,25 @@ ReadWarTerminationTermsResult ReadWarTerminationTerms(
     output.raiktor_surrender = std::move(surrender);
   }
   return ReadWarTerminationTermsResult::available;
+}
+
+ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
+    const Bindings &bindings, std::int32_t toward_character_id,
+    RaiktorActualTruceExpirySnapshotV1 &output) noexcept {
+  RaiktorActualTruceExpiryAccessV1 access{};
+  access.exact_build_admitted = bindings.enabled;
+  access.context = const_cast<Bindings *>(&bindings);
+  access.read_snapshot = [](void *context, Snapshot &snapshot) noexcept {
+    return ReadSnapshot(*static_cast<const Bindings *>(context), snapshot);
+  };
+  access.resolve_character = [](void *context,
+                                std::int32_t character_id) noexcept {
+    return ResolveCharacter(*static_cast<const Bindings *>(context),
+                            character_id);
+  };
+  access.has_truce = bindings.has_character_truce;
+  access.get_truce_end_date = bindings.get_character_truce_end_date;
+  return ReadRaiktorActualTruceExpiryV1(access, toward_character_id, output);
 }
 
 ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(

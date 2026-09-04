@@ -1,0 +1,115 @@
+{
+  "schema": "xar.ck3.g2_actual_truce_expiry_abi.v1",
+  "schema_version": 1,
+  "status": "static-ready_live-pending",
+  "read_only": true,
+  "default_enabled": false,
+  "build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "image_base": "0x140000000",
+    "size_of_image": "0x5C2D000",
+    "pe_timestamp": "0x6A1EEE6D",
+    "architecture": "x86_64-msvc"
+  },
+  "native_ranges": {
+    "relation_lookup_read_only": {
+      "begin_rva": "0x2610840",
+      "end_rva_exclusive": "0x26108F0",
+      "size": 176,
+      "sha256": "F8775B263CF77288E58D1B97AFA4FB900327EC072D0AA4CFB0CB4EA94256A8B9"
+    },
+    "relation_get_or_create": {
+      "begin_rva": "0x26108F0",
+      "end_rva_exclusive": "0x2610A4C",
+      "size": 348,
+      "sha256": "F5344D8A6D2A5864B6A5A5B02C31AE52EFA918A5EB8A6ED634AC3340B109A3AB"
+    },
+    "has_truce": {
+      "begin_rva": "0x26631E0",
+      "end_rva_exclusive": "0x2663244",
+      "size": 100,
+      "sha256": "017CC5018D7F0E5DC1DF6ADCC912A90D235F39ADE1E2D6FD8B284C34DE0BDCD9"
+    },
+    "get_truce_end_date": {
+      "begin_rva": "0x2663250",
+      "end_rva_exclusive": "0x26632E6",
+      "size": 150,
+      "sha256": "4914D12A0E256891B3A73550F30DB05CB006E9969F417E464948BC5B7E46F103"
+    },
+    "script_has_truce_evaluator": {
+      "begin_rva": "0x28852E0",
+      "end_rva_exclusive": "0x2885426",
+      "size": 326,
+      "sha256": "64B70965E505B34B6EF18509E9FB589721B9CF29141BC20A1576170CF341A149"
+    },
+    "script_has_truce_registration": {
+      "begin_rva": "0x550520",
+      "end_rva_exclusive": "0x5505B8",
+      "size": 152,
+      "sha256": "D01CF38467B57C7D579765C202CF9FC95895F741A0D09FFCE0C398B742552F47"
+    },
+    "caddtruce_normal": {
+      "begin_rva": "0x2EDAD20",
+      "end_rva_exclusive": "0x2EDB27C",
+      "size": 1372,
+      "sha256": "0CC65B9CFAE1F080C333E4B219388B19AA231E11FDF69AA9470D6E6E5B9EF199"
+    },
+    "caddtruce_forced": {
+      "begin_rva": "0x2EDB3A0",
+      "end_rva_exclusive": "0x2EDB9A5",
+      "size": 1541,
+      "sha256": "DED15DD333E2B6D037B31BBA5DF1DD521885C8F3715C3CB5C040087B657F92E0"
+    }
+  },
+  "bindings": {
+    "read_only_relation_lookup_rva": "0x2610840",
+    "get_or_create_relation_rva": "0x26108F0",
+    "has_truce_rva": "0x26631E0",
+    "get_truce_end_date_rva": "0x2663250",
+    "script_has_truce_evaluator_rva": "0x28852E0",
+    "has_truce_key_rva": "0x43AC098",
+    "caddtruce_duration_evaluator_rva": "0x3373000",
+    "expired_slot_cleanup_rva": "0x2367C00",
+    "directional_slot_offsets": [
+      "0x28",
+      "0x58"
+    ]
+  },
+  "temporal_split": {
+    "before_application": "CAddTruce evaluates a duration and computes a target date; that is a prediction, not persisted-state observation.",
+    "after_application": "has_truce and get_truce_end_date lookup the existing pair relation and return the persisted owner-direction date."
+  },
+  "candidate": {
+    "capability": "game.command.query-raiktor-actual-truce-expiry-v1-N",
+    "owner_binding": "living current played character",
+    "toward_binding": "caller-supplied full-generation CharacterID",
+    "green_requires": [
+      "native_has_truce=true",
+      "two native getter reads agree",
+      "same paused Snapshot before/after",
+      "expiry_date_raw > current_date_raw"
+    ],
+    "ack_can_make_ready": false,
+    "arbitrary_variable_lookup": false,
+    "owner_arbitrary_selection": false,
+    "toward_is_explicit_generation_safe_identity": true
+  },
+  "source_sha256": {
+    "include/xar_bridge/raiktor_actual_truce_expiry_v1.hpp": "43B90EE1F4EBAAE83785C786E9C38D9A7396BAB07858F0CCD702165181572747",
+    "include/xar_bridge/ck3_11906.hpp": "3AD030BD34D6F6F0E5EE9B8D88299F70A0344AA082B2C8120837E4C1EC5EAFDC",
+    "include/xar_bridge/game_adapter.hpp": "4F8669F71A53CE795616738A498DAE82595179F89A73910A754B951524E12EFC",
+    "src/raiktor_actual_truce_expiry_v1.cpp": "9074C83277697F1F652FB7216BDA4647694AC1EF545BCD5F483055AFEC4C747C",
+    "src/ck3_11906.cpp": "37275B32832E0C9829898B78C33E28D93015899EF2F9EC33CFD7386E245ED21B",
+    "src/ck3_11906_adapter.cpp": "B869C52ACEAAF8AE2FCABB2D73F10FF74275B0F2350C61C6055DA9DD96A8C5F5",
+    "src/game_adapter.cpp": "745D239B0D0E50C4804FA4C8CF25E927828F762B4E8E7939FCFBC013BABC1518",
+    "src/bridge.cpp": "64D222DFA0A4887CD519EA21FF874BF3DCCF82CEE4D12C0863D1CC1D0F106F98",
+    "CMakeLists.txt": "EF253A6394860CBDE0CBC9D161D9E65DFB7DAABC1A268A6BE600D87A75C17D69"
+  },
+  "evidence_limits": [
+    "No CK3 process was started or attached.",
+    "The compiled provider is a default-off candidate, not production-live.",
+    "A retained paused post-result frame is still required before promotion."
+  ]
+}

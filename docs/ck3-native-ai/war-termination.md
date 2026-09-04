@@ -2396,3 +2396,28 @@ one typed termination submission and the first stable postwar query before any
 causal or public capability promotion.
 The no-launch build/test receipt is
 `artifacts/g2/2026-09-04/war-bound-loss-candidate-v1-static.json`.
+
+## 2026-09-04 persisted truce-expiry exact-build candidate
+
+[static-ready / compiled candidate / live-pending] The read-only ABI for the
+post-application one-way truce row is now identified on frozen CK3 `1.19.0.6`.
+`has_truce` (`0x26631E0`) and the actual end-date getter (`0x2663250`) both use
+the lookup-only relation path `0x2610840` and select the same owner-direction
+slots that `CAddTruceEffect<0>::execute` writes. The script `has_truce` trigger
+also reaches `0x26631E0`, independently cross-validating the predicate.
+
+The default-off query candidate is
+`query-raiktor-actual-truce-expiry-v1-<full-generation toward CharacterID>`.
+Owner identity is fixed to the living played character, two predicate/getter
+reads and before/after paused snapshots must agree, and only a native future
+date makes `actual_expiry_observable/readiness=true`. A successful transport
+ACK or pre-result `current_date + 24 * evaluated_days` calculation cannot do
+so. Full frozen spans, hashes, source bindings, tests, and the live checkpoint
+are recorded in
+`g2-actual-truce-expiry-candidate-2026-09-04.md` and
+`native_bridge/research/g2_actual_truce_expiry_v1_abi.json`.
+
+No CK3 run was performed for this package. Consequently the historical public
+terms wire remains `actual_expiry_observable=false / expiry_date_raw=null`,
+and decision/action/`GEN-034` remain false until two retained post-result
+paused frames prove the candidate.

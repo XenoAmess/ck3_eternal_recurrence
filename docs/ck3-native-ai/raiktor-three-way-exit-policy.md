@@ -373,6 +373,23 @@ same paused public query frame and prove two identical, session/cache-bound
 queries.  This is separate from the action-bound source/pre/loss capture and
 from persisted truce-expiry observation.
 
+## 2026-09-04 actual-expiry provider candidate
+
+The exact-build static chain for the persisted one-way truce expiry is now
+closed and compiled behind a default-off option. This differs from the earlier
+duration leaf: the new provider calls CK3's lookup-only `has_truce` predicate
+and native end-date getter after result application, with owner fixed to the
+living player and toward fixed to a full-generation CharacterID. It never
+derives expiry from `evaluated_days`.
+
+This is still `static-ready / live-pending`. An ACK is only transport success;
+`readiness=true` requires same-frame stable native predicate/getter results and
+a future persisted date. Therefore the policy's production recommendation,
+action readiness, automatic surrender, and `GEN-034` remain false. The next
+distinct checkpoint is two identical provider frames after surrender has
+applied and the old WarID is absent; see
+`g2-actual-truce-expiry-candidate-2026-09-04.md`.
+
 ## 2026-09-03 generic war-bound public query-frame producer
 
 [static/fixture-ready; no CK3 launch; no mutation] The exact-build production

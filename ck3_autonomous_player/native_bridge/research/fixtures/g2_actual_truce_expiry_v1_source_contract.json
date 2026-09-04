@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "status": "static-ready_live-pending",
+  "default_enabled": false,
+  "required_counts": [
+    {
+      "path": "include/xar_bridge/raiktor_actual_truce_expiry_v1.hpp",
+      "token": "query-raiktor-actual-truce-expiry-v1-",
+      "count": 2
+    },
+    {
+      "path": "src/raiktor_actual_truce_expiry_v1.cpp",
+      "token": "GuardedHasTruce",
+      "count": 3
+    },
+    {
+      "path": "src/raiktor_actual_truce_expiry_v1.cpp",
+      "token": "actual_expiry_observable",
+      "count": 4
+    },
+    {
+      "path": "src/ck3_11906.cpp",
+      "token": "kHasCharacterTruceRva",
+      "count": 2
+    },
+    {
+      "path": "src/ck3_11906.cpp",
+      "token": "kGetCharacterTruceEndDateRva",
+      "count": 2
+    },
+    {
+      "path": "src/bridge.cpp",
+      "token": "RaiktorActualTruceExpiryResultFrame",
+      "count": 2
+    },
+    {
+      "path": "src/game_adapter.cpp",
+      "token": "kRaiktorActualTruceExpiryV1Capability",
+      "count": 1
+    },
+    {
+      "path": "src/ck3_11906_adapter.cpp",
+      "token": "kRaiktorActualTruceExpiryV1Capability",
+      "count": 1
+    },
+    {
+      "path": "CMakeLists.txt",
+      "token": "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1",
+      "count": 5
+    }
+  ],
+  "forbidden_tokens": [
+    {
+      "path": "src/raiktor_actual_truce_expiry_v1.cpp",
+      "token": "add_truce"
+    },
+    {
+      "path": "src/raiktor_actual_truce_expiry_v1.cpp",
+      "token": "variable_identifier"
+    },
+    {
+      "path": "src/raiktor_actual_truce_expiry_v1.cpp",
+      "token": "expiry_date_raw = current_date_raw +"
+    }
+  ],
+  "green_contract": {
+    "provider_only": true,
+    "ack_sufficient": false,
+    "requires_native_has_truce": true,
+    "requires_same_frame_double_read": true,
+    "requires_persisted_future_expiry": true
+  }
+}

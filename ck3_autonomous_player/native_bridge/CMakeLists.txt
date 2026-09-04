@@ -90,6 +90,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1
+  "Advertise the exact-build read-only persisted truce-expiry candidate"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1
   "Install the private exact-build G2 truce evaluator callsite observer"
   OFF
@@ -251,6 +257,7 @@ add_library(xar_ck3_bridge SHARED
   src/route_contact_horizon_v1_mailbox.cpp
   src/raiktor_war_bound_regiment_v1.cpp
   src/raiktor_surrender_truce_v1.cpp
+  src/raiktor_actual_truce_expiry_v1.cpp
   src/startup_dx11_render_context_draw_guard_v1.cpp
   src/startup_localize_current_root_guard_v1.cpp
   src/startup_rbx_null_call_guard_v1.cpp
@@ -385,6 +392,13 @@ if(XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1 OR
    XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+  # Read-only post-application provider. It remains absent from the default
+  # capability list until a retained paused-live result is reviewed.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
@@ -545,6 +559,7 @@ if(BUILD_TESTING)
     src/g2_truce_preview_entry_observer_v1.cpp
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
+    src/raiktor_actual_truce_expiry_v1.cpp
     src/event_window_context_v1.cpp
     src/event_window_context_v1_mailbox.cpp
     src/event_window_context_v1_test.cpp
@@ -581,6 +596,7 @@ if(BUILD_TESTING)
     src/g2_truce_preview_entry_observer_v1.cpp
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
+    src/raiktor_actual_truce_expiry_v1.cpp
     src/ck3_11906_test.cpp
     src/route_contact_horizon_v1_mailbox.cpp
   )
@@ -622,6 +638,7 @@ if(BUILD_TESTING)
     src/g2_truce_preview_entry_observer_v1.cpp
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
+    src/raiktor_actual_truce_expiry_v1.cpp
     src/combat_v3.cpp
     src/route_contact_horizon_v1_mailbox.cpp
     src/tactical_daily_sentinel_v1.cpp
@@ -672,6 +689,10 @@ if(BUILD_TESTING)
     target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
       XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1=1)
   endif()
+  if(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=1)
+  endif()
   if(MSVC)
     target_compile_options(xar_ck3_adapter_registry_test PRIVATE
       /W4 /permissive- /EHsc)
@@ -679,6 +700,29 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_adapter_registry
     COMMAND xar_ck3_adapter_registry_test
+  )
+
+  add_executable(xar_ck3_raiktor_actual_truce_expiry_v1_test
+    src/raiktor_actual_truce_expiry_v1.cpp
+    src/raiktor_actual_truce_expiry_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_raiktor_actual_truce_expiry_v1
+    COMMAND xar_ck3_raiktor_actual_truce_expiry_v1_test
   )
 
   add_executable(xar_ck3_tactical_daily_sentinel_v1_test

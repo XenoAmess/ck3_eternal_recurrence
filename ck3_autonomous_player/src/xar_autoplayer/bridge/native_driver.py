@@ -282,6 +282,12 @@ from .pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
     normalize_pending_character_interaction_context_v1,
 )
+from .raiktor_actual_truce_expiry_contract import (
+    QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY,
+    QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
+    normalize_raiktor_actual_truce_expiry_v1,
+    parse_query_raiktor_actual_truce_expiry_v1_step,
+)
 from .active_combat_retreat_contract import (
     ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE,
     ORDER_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX,
@@ -3311,6 +3317,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo career-HC/workforce v1 query step"
             )
+        actual_truce_expiry_toward = (
+            parse_query_raiktor_actual_truce_expiry_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX
+            )
+            and actual_truce_expiry_toward is None
+        ):
+            raise UnsupportedStepError(
+                "malformed actual truce-expiry v1 query step"
+            )
         zhongguo_workforce_collective_query = (
             parse_query_zhongguo_workforce_collective_snapshot_v1_step(step)
         )
@@ -3786,6 +3805,20 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise UnsupportedStepError(
                     "native DLL cannot query the actual contact scope"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
+        if actual_truce_expiry_toward is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query persisted truce expiry"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -6131,9 +6164,13 @@ class NativeHeadlessGameplayDriver:
         termination_terms_query_war_id = (
             parse_query_war_termination_terms_step(step)
         )
+        actual_truce_expiry_toward = (
+            parse_query_raiktor_actual_truce_expiry_v1_step(step)
+        )
         internal_read_only_query = bool(
             termination_query_war_id is not None
             or termination_terms_query_war_id is not None
+            or actual_truce_expiry_toward is not None
             or parse_preview_move_army_step(step) is not None
             or parse_query_route_contact_horizon_step(step) is not None
         )
@@ -6148,6 +6185,35 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        if actual_truce_expiry_toward is not None:
+            native_revision = starting.get("native_revision")
+            if (
+                isinstance(native_revision, bool)
+                or not isinstance(native_revision, int)
+                or native_revision <= 0
+            ):
+                raise BridgeUnavailableError(
+                    "actual truce-expiry query lacks a native revision"
+                )
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=selected_revision,
+                required_capability=(
+                    QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY
+                ),
+                internal_semantic_snapshot=True,
+            )
+            try:
+                proof = normalize_raiktor_actual_truce_expiry_v1(
+                    raw,
+                    expected_step=step,
+                    expected_snapshot_revision=native_revision,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native actual truce-expiry result is malformed: {error}"
+                ) from error
+            return {**raw, "actual_truce_expiry_proof": proof}
         if step == QUERY_ARMY_STRENGTHS_STEP:
             return self._execute_army_strength_query(
                 starting=starting,
@@ -18780,6 +18846,11 @@ def _action_steps(
             expand_termination_queries = True
         elif capability == QUERY_WAR_TERMINATION_TERMS_CAPABILITY:
             expand_termination_terms_queries = True
+        elif capability == QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY:
+            # The post-result target may no longer appear in active wars.
+            # Callers must supply the generation-safe prior opponent identity;
+            # never leak the N template as an executable step.
+            continue
         elif (
             WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED
             and capability == QUERY_WAR_TERMINATION_EXIT_TERMS_CAPABILITY
@@ -18807,6 +18878,7 @@ def _action_steps(
                 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
                 "query-war-termination-options-",
                 "query-war-termination-terms-v1-",
+                QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
                 "surrender-war-",
                 "offer-white-peace-",

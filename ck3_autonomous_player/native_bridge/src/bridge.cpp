@@ -20,6 +20,7 @@
 #include "xar_bridge/phase2_wrapper_entry_observer_v1.hpp"
 #include "xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
+#include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp"
@@ -3483,6 +3484,29 @@ std::string ZhongguoCareerHcWorkforceResultFrame(
   return result;
 }
 
+std::string RaiktorActualTruceExpiryResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::RaiktorActualTruceExpirySnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeRaiktorActualTruceExpiryV1(snapshot);
+  if (payload.empty()) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"raiktor_actual_truce_expiry\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string ZhongguoIncidentSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoIncidentSnapshotV1 &snapshot) {
@@ -4306,6 +4330,14 @@ std::optional<std::int32_t> WarTerminationTermsQueryStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+std::optional<std::int32_t> RaiktorActualTruceExpiryQueryStep(
+    std::string_view step) noexcept {
+  const auto prefix =
+      xar::ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix;
+  if (!step.starts_with(prefix)) return std::nullopt;
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
 std::optional<std::int32_t> SurrenderWarStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix = "surrender-war-";
@@ -4591,6 +4623,7 @@ struct WorkerState {
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
+  std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
   std::uint64_t marriage_query_sequence = 0;
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
@@ -4704,6 +4737,10 @@ void RunConnectedSession(
       state.war_termination_query_sequence;
   auto &war_termination_terms_query_sequence =
       state.war_termination_terms_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+  auto &raiktor_actual_truce_expiry_query_sequence =
+      state.raiktor_actual_truce_expiry_query_sequence;
+#endif
   auto &marriage_query_sequence = state.marriage_query_sequence;
   auto &marriage_choices = state.marriage_choices;
 
@@ -8198,7 +8235,101 @@ void RunConnectedSession(
               }
             }
           }
-        } else if (step.starts_with(
+        }
+#if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+        else if (step.starts_with(
+                     xar::ck3_11906::
+                         kRaiktorActualTruceExpiryV1StepPrefix)) {
+          const auto toward_character_id =
+              RaiktorActualTruceExpiryQueryStep(step);
+          if (!toward_character_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-raiktor-actual-truce-expiry-v1-"
+                          "<toward_character_id> step"));
+          } else {
+            xar::game::Snapshot admission_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, admission_snapshot) ||
+                admission_snapshot != previous_snapshot.value()) {
+              connected = PublishSnapshot(
+                  pipe, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
+              if (connected) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "actual truce-expiry admission snapshot "
+                              "changed; retry after heartbeat"));
+              }
+            } else {
+              xar::game::RaiktorActualTruceExpirySnapshotV1 expiry{};
+              const auto query_result =
+                  xar::game::ReadRaiktorActualTruceExpiry(
+                      game, toward_character_id.value(), expiry);
+              xar::game::Snapshot completion_snapshot{};
+              if (!xar::game::ReadSnapshot(game, completion_snapshot) ||
+                  completion_snapshot != admission_snapshot) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "actual truce-expiry completion snapshot "
+                                "changed; retry after heartbeat"));
+                }
+              } else if (
+                  query_result == xar::game::
+                                      ReadRaiktorActualTruceExpiryResultV1::
+                                          available ||
+                  query_result == xar::game::
+                                      ReadRaiktorActualTruceExpiryResultV1::
+                                          no_truce) {
+                expiry.snapshot_revision = state_revision;
+                const auto next_sequence =
+                    raiktor_actual_truce_expiry_query_sequence + 1;
+                connected = xar::bridge::WriteFrame(
+                    pipe, RaiktorActualTruceExpiryResultFrame(
+                              request_id, step, next_sequence, expiry));
+                if (connected) {
+                  raiktor_actual_truce_expiry_query_sequence = next_sequence;
+                }
+              } else {
+                std::string_view error =
+                    "CK3 actual truce-expiry query is unavailable";
+                if (query_result == xar::game::
+                                        ReadRaiktorActualTruceExpiryResultV1::
+                                            requires_paused) {
+                  error = "CK3 actual truce-expiry query requires a paused "
+                          "map";
+                } else if (
+                    query_result == xar::game::
+                                        ReadRaiktorActualTruceExpiryResultV1::
+                                            no_played_character) {
+                  error = "no living played CK3 character";
+                } else if (
+                    query_result == xar::game::
+                                        ReadRaiktorActualTruceExpiryResultV1::
+                                            toward_character_not_found) {
+                  error = "toward CK3 character was not found";
+                } else if (
+                    query_result == xar::game::
+                                        ReadRaiktorActualTruceExpiryResultV1::
+                                            unstable_snapshot) {
+                  error = "CK3 actual truce state changed during query";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe,
+                    CommandResultFrame(request_id, step, false, error));
+              }
+            }
+          }
+        }
+#endif
+        else if (step.starts_with(
                        "query-war-termination-terms-v1-")) {
           const auto war_id = WarTerminationTermsQueryStep(step);
           if (!war_id.has_value()) {

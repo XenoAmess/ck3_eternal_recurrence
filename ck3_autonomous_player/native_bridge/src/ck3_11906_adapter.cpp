@@ -26,6 +26,9 @@ namespace {
 constexpr std::size_t kBaseCapabilityCount = 78;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
+#if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+    + 1
+#endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1)
     + 1
 #endif
@@ -113,6 +116,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-combat-simulation-inputs-v3-N",
     "game.command.query-war-termination-options-N",
     "game.command.query-war-termination-terms-v1-N",
+#if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
+    ck3_11906::kRaiktorActualTruceExpiryV1Capability,
+#endif
     "game.command.surrender-war-N",
     "game.command.offer-white-peace-N",
     "game.command.query-arrange-marriage-choices",
@@ -253,6 +259,13 @@ public:
       std::int32_t war_id,
       WarTerminationTermsSnapshot &output) const noexcept override {
     return ck3_11906::ReadWarTerminationTerms(bindings_, war_id, output);
+  }
+  ReadRaiktorActualTruceExpiryResultV1
+  read_raiktor_actual_truce_expiry(
+      std::int32_t toward_character_id,
+      RaiktorActualTruceExpirySnapshotV1 &output) const noexcept override {
+    return ck3_11906::ReadRaiktorActualTruceExpiry(
+        bindings_, toward_character_id, output);
   }
   ReadWarTerminationExitTermsResult read_war_termination_exit_terms(
       std::int32_t war_id,

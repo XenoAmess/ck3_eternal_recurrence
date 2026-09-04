@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/combat_v3.hpp"
+#include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 
 #include <cstdint>
 #include <memory>
@@ -106,6 +107,14 @@ public:
   virtual ReadWarTerminationTermsResult read_war_termination_terms(
       std::int32_t war_id,
       WarTerminationTermsSnapshot &output) const noexcept = 0;
+  virtual ReadRaiktorActualTruceExpiryResultV1
+  read_raiktor_actual_truce_expiry(
+      std::int32_t toward_character_id,
+      RaiktorActualTruceExpirySnapshotV1 &output) const noexcept {
+    (void)toward_character_id;
+    output = {};
+    return ReadRaiktorActualTruceExpiryResultV1::unavailable;
+  }
   virtual ReadWarTerminationExitTermsResult
   read_war_termination_exit_terms(
       std::int32_t war_id,
@@ -264,6 +273,11 @@ inline ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const GameAdapter &game, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept {
   return game.read_war_termination_terms(war_id, output);
+}
+inline ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
+    const GameAdapter &game, std::int32_t toward_character_id,
+    RaiktorActualTruceExpirySnapshotV1 &output) noexcept {
+  return game.read_raiktor_actual_truce_expiry(toward_character_id, output);
 }
 inline ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
     const GameAdapter &game, std::int32_t war_id,

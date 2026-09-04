@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #endif
@@ -190,6 +191,8 @@ using TraverseLoadedEffect = void (*)(void *loaded_effect,
 using DestroyEffectContextSubobject = void (*)(void *subobject);
 using EvaluateTruceDurationDays = std::int32_t (*)(
     void *script_value, void *effect_context, void *evaluation_context);
+using HasCharacterTruce = bool (*)(void *owner, void *toward);
+using GetCharacterTruceEndDate = const void *(*)(void *owner, void *toward);
 using GetCharacterPrimaryTitle = void *(*)(void *character);
 using ReadMonthlyGoldIncome = std::int64_t *(*)(
     std::int64_t *output, void *character, void *optional_breakdown,
@@ -437,6 +440,8 @@ struct Bindings {
   DestroyEffectContextSubobject destroy_effect_context_118 = nullptr;
   DestroyEffectContextSubobject destroy_effect_context_array_row = nullptr;
   EvaluateTruceDurationDays evaluate_truce_duration_days = nullptr;
+  HasCharacterTruce has_character_truce = nullptr;
+  GetCharacterTruceEndDate get_character_truce_end_date = nullptr;
   GetCharacterPrimaryTitle get_character_primary_title = nullptr;
   ReadMonthlyGoldIncome read_monthly_gold_income = nullptr;
   EvaluateCharacterInteractionAnswer evaluate_character_interaction_answer =
@@ -1023,6 +1028,16 @@ using game::ReadWarTerminationTermsResult;
 ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationTermsSnapshot &output) noexcept;
+
+using game::RaiktorActualTruceExpirySnapshotV1;
+using game::ReadRaiktorActualTruceExpiryResultV1;
+
+// Reads the persisted one-way relation state after the result effect has been
+// applied. The owner is always the living played character; only the exact
+// generation-safe toward CharacterID is supplied by the caller.
+ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiry(
+    const Bindings &bindings, std::int32_t toward_character_id,
+    RaiktorActualTruceExpirySnapshotV1 &output) noexcept;
 
 using game::ReadWarTerminationExitTermsResult;
 

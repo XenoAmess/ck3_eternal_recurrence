@@ -457,6 +457,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (capability.empty() && IsCanonicalPositiveIdStep(
              step, "query-war-termination-terms-v1-")) {
     capability = "game.command.query-war-termination-terms-v1-N";
+  } else if (capability.empty() && IsCanonicalPositiveIdStep(
+             step, ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix)) {
+    capability = ck3_11906::kRaiktorActualTruceExpiryV1Capability;
   } else if (capability.empty() && step.starts_with("surrender-war-")) {
     capability = "game.command.surrender-war-N";
   } else if (capability.empty() &&
