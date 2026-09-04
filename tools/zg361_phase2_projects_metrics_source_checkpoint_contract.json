@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "kind": "zg361_projects_metrics_source_checkpoint_capture_contract",
+  "span_id": "phase2_projects_metrics",
+  "handler": "capture_projects_metrics",
+  "source_event_definition_key": "zg361cp.26",
+  "readiness": "static-ready-live-pending",
+  "module": "tools/zg361_phase2_projects_metrics_source_checkpoint.py",
+  "entrypoints": {
+    "observe_ui": "observe_cp26_route_ui_live",
+    "capture_checkpoint": "capture_projects_metrics_source_checkpoint_live",
+    "validate_registry": "validate_projects_metrics_source_checkpoint_registry"
+  },
+  "explicit_live_mode": {
+    "value": "managed-real-ck3",
+    "cli_gate": "--live",
+    "attaches_to_existing_bridge_pipe": true,
+    "starts_ck3": false,
+    "creates_product_state": false
+  },
+  "required_checkpoint": {
+    "single_player": true,
+    "product_only_mount": true,
+    "played_character_role": "project_subject",
+    "owner_role": "distinct_ai_project_owner",
+    "paused": true,
+    "map_ready": true,
+    "active_player_event": false,
+    "cp26_route_allowlist": ["A", "B"],
+    "cp26_contribution_receipt_prepared": true,
+    "p3_initializer_run": false,
+    "cycle_serial": "provider-observed positive integer",
+    "case_serial": "provider-observed positive integer"
+  },
+  "registry": {
+    "schema_version": 2,
+    "registry_kind": "zg361_projects_metrics_source_checkpoint_registry",
+    "preserves": [
+      "checkpoint_path_bytes_sha256",
+      "date_raw",
+      "seed_and_capture_lineage",
+      "exact_product_only_mount_and_tree",
+      "cp26_ui_receipt_bytes_sha256_payload",
+      "provider_receipt_bytes_sha256_payload",
+      "native_save_receipt",
+      "owner_subject_cycle_case_and_contribution_receipt"
+    ],
+    "exclusive_write": true,
+    "canonical_schema2_compatibility": "the sole entry includes the exact source_receipt/checkpoint fields consumed by zhongguo_phase2_source_checkpoint_registry.py and can occupy capture_projects_metrics in the four-entry manifest"
+  },
+  "business_evidence": {
+    "ui_ack_is_business_postcondition": false,
+    "provider_observed_source_receipt_required": true,
+    "provider_result_identity_must_be_absent": true,
+    "fixture_used": false,
+    "console_used": false,
+    "test_decision_used": false,
+    "generic_character_rebind_used": false
+  },
+  "live_sequence": [
+    "owner-visible real zg361cp.26 UI observation and route A/B submission",
+    "caller reaches same-lineage played-subject event-free managed product state",
+    "provider proves CP26 contribution source-ready and P3 result-pending",
+    "native save materializes bytes at the same date and binding",
+    "checkpoint plus exact UI/provider receipts are archived and schema-2 registry is written"
+  ],
+  "no_launch_preflight": "tools/preflight_zg361_phase2_projects_metrics_source_checkpoint.py"
+}
