@@ -96,9 +96,16 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
             "frozen_files": frozen,
         },
         "build": {
-            "bridge": {"path": str(bridge), "sha256": _sha(bridge)},
-            "injector": {"path": str(injector), "sha256": _sha(injector)},
+            "bridge": {
+                "path": str(bridge), "sha256": _sha(bridge),
+                "bytes": bridge.stat().st_size,
+            },
+            "injector": {
+                "path": str(injector), "sha256": _sha(injector),
+                "bytes": injector.stat().st_size,
+            },
             "cmake_cache_path": str(cache),
+            "cmake_cache_sha256": _sha(cache),
         },
         "ck3_executable_path": str(exe),
         "event_binding": {

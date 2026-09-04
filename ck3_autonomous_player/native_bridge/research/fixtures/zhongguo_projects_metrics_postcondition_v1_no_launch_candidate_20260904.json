@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_projects_metrics_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "source": {
+    "base_commit": "13d78c6dedb3da866d075fa0ce70cb2c4307dcb5",
+    "candidate_commit": "bd0c4080d165d77a6dc22b2158072b3fabd5f231",
+    "native_source_fingerprint_sha256": "ABC802BB4A056E22FBCB6B0015CE5985336870FB40F2286195ACC97F3D604553",
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "131BE75CCB88C7D6FD5910872F172D3A645CB461968F017E89D12C6DAD3173CD",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_projects_metrics_postcondition_v1.hpp": "644D4AF483705FB124B7C9C8E5BDA76349794BFAACA274487291F89052A23A57",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1.cpp": "279B3C114BEBC564F47588DE226DB49F8CC7B2BF4F2EE797FEBDB685190A015E",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp": "BE3B9AB1D41C1FDA26A13E28B5256CE25957CE62493F8AC96B10B5CA4C1439F7",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp": "56D8C6920C5C119CD293CF161EE9F572B99646C381AB6C5AC08CB36ABA8BF032",
+      "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "7581794ABEC42DC3ADA09478DCE5B922876664C30E59721FEB3385F7684A57BD",
+      "ck3_autonomous_player/native_bridge/src/bridge.cpp": "785C430577395F287E1520A941E0ADACCE420519E275E64062B38590EE2C6DA5",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "5F3C3D32B57F6B76331CDCDF28992FA8D51115D6ECDCB3E2FCDEC9B729643E10",
+      "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json": "C65BD2C3A8EAAAE65524BF7CD86EB8F816D894BB7C969239D5210905C3A8A1C3",
+      "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json": "5BED6829A28E8EA3644C7B00B9D96DA36DBEB3FB90F818B8A241CDEEEEC2D943",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_projects_metrics_postcondition_contract.py": "B60727FF2CBB97A0976B3725D46A14402CC87BD6EAA433AFA8CEE46903AD730A",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": "5FCE86CDA55294BEE2944539F8464FE9C8BE876104D4EA4D429C5ED04BC25ED5",
+      "tools/zg361_phase2_projects_metrics_action_cell.py": "EE86E42F6C2B58AB98B50FA00C8DA8749DBCA9E737B70A762D3D5212F95ED993",
+      "tools/zg361_phase2_projects_metrics_action_contract.json": "67A0CC867FA1AABE19D8591296E0CAAFB13AC686A69CC2F1C18F300052575BCF",
+      "tools/preflight_zg361_phase2_projects_metrics_action_cell.py": "C0AF775AF4B5166F4B20331E8128A007B658EB8CC2DB02646141A8EBB9E9EEA4",
+      "tools/verify_zg361_projects_metrics_no_launch_candidate.py": "3E78CD9BAAAADB5B5CE16B6215ECAF4ADD063E8B5C22FF03F43A0BD2047F8BC7"
+    }
+  },
+  "build": {
+    "configuration": "Release",
+    "generator": "Ninja",
+    "compiler": "MSVC 19.51.36248.0",
+    "candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=ON",
+    "artifact_directory": "Z:/ck3_mod_rewrite_process_assets/zg361/projects-metrics-provider-private-candidate-bd0c408-20260904T054627Z-r2",
+    "bridge": {
+      "path": "Z:/ck3_mod_rewrite_process_assets/zg361/projects-metrics-provider-private-candidate-bd0c408-20260904T054627Z-r2/xar_ck3_bridge.dll",
+      "bytes": 2323456,
+      "sha256": "7F81BADB294B843BA59B4B09142361C38C9FFD806F3260DB35BBF7CFB95B1EA9"
+    },
+    "injector": {
+      "path": "Z:/ck3_mod_rewrite_process_assets/zg361/projects-metrics-provider-private-candidate-bd0c408-20260904T054627Z-r2/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "58DE92DAF24EBE3848D6F97EBA147113F26B25988B1D83EE1DF68C5A0C7B2B08"
+    },
+    "cmake_cache_path": "Z:/ck3_mod_rewrite_process_assets/zg361/projects-metrics-provider-private-candidate-bd0c408-20260904T054627Z-r2/CMakeCache.txt",
+    "cmake_cache_sha256": "9AE0ABA72F77CC8F3973D9C507D4842F0C4A9A38D541D10EB0D847104B7FD51D"
+  },
+  "tests": {
+    "focused_native": {
+      "result": "GREEN",
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "xar_ck3_native_bridge_adapter_registry",
+        "xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1",
+        "xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1_mailbox"
+      ]
+    },
+    "focused_python": {
+      "result": "GREEN",
+      "normal": "27 passed, 4 subtests passed",
+      "optimized": "27 passed, 4 subtests passed"
+    },
+    "full_native_baseline": {
+      "result": "RED_OUTSIDE_PROVIDER_SCOPE",
+      "passed": 75,
+      "failed": 15,
+      "build_path": "Z:/pmb5-13d-r1",
+      "reason": "canonical 13d78c6 full-suite source-contract fixtures were stale after shared integrations; both projects/metrics native tests passed in that run"
+    }
+  },
+  "ck3_executable_path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+  "ck3_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "mailbox": {
+    "slot": "permitted_executor_quattuorvigintary",
+    "new_slot_allocated": false,
+    "query_thread": "paused_application_main_mailbox"
+  },
+  "event_binding": {
+    "facade": "bind_projects_metrics_event_snapshots_v1",
+    "source_event": "zg361cp.26",
+    "result_event": "zg361p3.229",
+    "background_action_cell_same_visual_cell": false,
+    "reason": "visible events are owner-rooted while the provider is intentionally subject-rooted under a distinct AI owner"
+  },
+  "live_attempt": {
+    "attempt_id": "zg361-projects-metrics-bd0c408-20260904T054627Z",
+    "path": "Z:/ck3_mod_rewrite_process_assets/zg361/projects-metrics-provider-live-attempt-bd0c408-20260904T054627Z",
+    "status": "absent",
+    "started": false,
+    "consumed": false,
+    "checkpoint": "played subject; distinct bounded AI owner; paused; no active event; CP26 A/B receipt prepared; P3 initializer not run"
+  },
+  "static_preflight_command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/verify_zg361_projects_metrics_no_launch_candidate.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_no_launch_candidate_20260904.json --check",
+  "formal_runner_registry_modified": false,
+  "ck3_started": false,
+  "live_proof_claimed": false,
+  "action_ack_is_business_postcondition": false,
+  "production_advertisement_ready": false
+}

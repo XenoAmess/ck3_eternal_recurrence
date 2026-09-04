@@ -170,15 +170,22 @@ def verify_projects_metrics_no_launch_candidate(
         "candidate_cache_opted_in": (
             f"{PRIVATE_SWITCH}:BOOL=ON" in cache_text
         ),
+        "candidate_cache_hash_matches": (
+            cache_path.is_file()
+            and _sha256(cache_path)
+            == str(build.get("cmake_cache_sha256", "")).upper()
+        ),
         "paired_bridge_hash_matches": (
             bridge_path.is_file()
             and _sha256(bridge_path) == str(bridge.get("sha256", "")).upper()
+            and bridge_path.stat().st_size == bridge.get("bytes")
             and bridge_path.name == "xar_ck3_bridge.dll"
         ),
         "paired_injector_hash_matches": (
             injector_path.is_file()
             and _sha256(injector_path)
             == str(injector.get("sha256", "")).upper()
+            and injector_path.stat().st_size == injector.get("bytes")
             and injector_path.name == "xar_ck3_bridge_injector.exe"
         ),
         "exact_ck3_executable_matches": (
