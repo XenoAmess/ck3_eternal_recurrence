@@ -49,7 +49,7 @@ OPEN_KAISHEK_G2_CAPABILITY_ID: Final = (
 )
 OPEN_KAISHEK_G2_PROFILE_ID: Final = "ck3-1.19.0.6-g2-truce-evaluator-v1"
 OPEN_KAISHEK_G2_PROFILE_COMMIT: Final = (
-    "15ab978f879ed4562aacb74dacdaee702fbce54b"
+    "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b"
 )
 
 

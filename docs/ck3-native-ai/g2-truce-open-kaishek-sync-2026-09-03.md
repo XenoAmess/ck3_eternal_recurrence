@@ -8,7 +8,7 @@
 |---|---|
 | open_kaishek profile | `ck3-1.19.0.6-g2-truce-evaluator-v1` |
 | capability | `game.command.query-g2-truce-evaluated-days-v1` |
-| open_kaishek commit | `981c79388a07e447b18f8e4472a16fd65e28c083` |
+| open_kaishek commit | `135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b` |
 | 可回放 bundle | `artifacts/open-kaishek-sync/2026-09-03/open-kaishek-main-981c793.bundle` |
 | bundle SHA-256 | `30FCA309D8C9F4954DE1A7F101DD9CCE0FC0513D3C1080FDEBD02D5793115588` |
 | root public backend | `ck3-1.19.0.6-native-raiktor-surrender-truce-v1` |
@@ -61,3 +61,22 @@ receipts are recorded in `artifacts/open-kaishek-sync/2026-09-03/`:
 This receipt covers only the two compatibility commits and the read-only G2
 capability contract. No CK3 activity opcode or allow-list was guessed or changed;
 native/runtime certification remains false pending the exact-build paused artifact.
+
+## 2026-09-04 B3 companion-capability sync
+
+The canonical open_kaishek main advanced from `15ab978` to
+`135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b` to add the static, read-only B3
+manager-governance capability descriptor. The G2 capability ID, profile ID,
+required fields, invariants, and certification flags did not change. Root now
+pins the newer repository identity so the cross-repository verifier remains
+exact while `native_certified=false` and `runtime_certified=false` stay closed.
+
+The B3 addition is a `CapabilityDescriptor`, not a Paradox opcode or an
+open_kaishek runtime handler. Full Maven verification at the new commit passed
+129 tests with zero failures/errors/skips; the rebuilt CLI JAR is 343,043 bytes
+with SHA-256
+`538FA5728329EEC0A7134E0DCC70804EA3406A14FD04E5FA0F2DB3853466667B`.
+The current 295-file companion corpus remains parser GREEN (23,919,869 bytes,
+SHA-256 `E01B4AFDB5021D4BFF4E77D149F0A0E2270350B83573E4E60011A3336B103B03`).
+Its validator remains RED at the already documented bounded vocabulary-coverage
+boundary; no schema suppression or readiness promotion was made.

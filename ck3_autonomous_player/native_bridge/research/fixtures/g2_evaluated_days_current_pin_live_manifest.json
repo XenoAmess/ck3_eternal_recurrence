@@ -41,7 +41,7 @@
     "private_cmake_cache": "ABB199CED0B6AF183F10D092B2B216C831F9AFD20C8A1AE2F4F5A4C83C363713",
     "default_cmake_cache": "8D7D2C11B6B078AFCE6A197A2F0BA37D554CA96B8574D535053FA9029DEB95EE",
     "default_bridge_dll": "848F91B50766E7A3A6523DABA2D5AAA88FCD55233D5311CBB3801573714D6EA7",
-    "open_kaishek_jar": "FC85947E9976B80345C10A9789A6520C8ABCEF557365284570C18C4677D891CC"
+    "open_kaishek_jar": "538FA5728329EEC0A7134E0DCC70804EA3406A14FD04E5FA0F2DB3853466667B"
   },
   "source_sha256": {
     "ck3_autonomous_player/native_bridge/CMakeLists.txt": "A04B242EA3448DD37E254F79E4A45C6FBDE94497BCC10B586363CB9F1C151803",
@@ -50,10 +50,10 @@
     "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_surrender_truce_v1.hpp": "BE7D1859C4C55F17C13CD3A9BA781F8955520334876A05D33B854727B68678BA",
     "ck3_autonomous_player/native_bridge/src/raiktor_surrender_truce_v1_test.cpp": "D65698453A9385A9441F977A85BDDECF72ADAD572724D08D3A4C47FB46AC23ED",
     "ck3_autonomous_player/native_bridge/research/raiktor_truce_evaluator_callsite_v1_abi.json": "55E5203647D2D0D0F017E990CBB736F42E306EFEE1269D7918DF39735A812799",
-    "ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json": "02E84FD473339FCF6903FE3F14B4CBB6BC5E2B21DD96A0B63A56DCC907ABA83F"
+    "ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json": "0D239018214211C23CAAF633BB581D9C504B20888F68D814753BA884B3A3CC09"
   },
   "open_kaishek": {
-    "commit": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "commit": "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
     "native_certified": false,

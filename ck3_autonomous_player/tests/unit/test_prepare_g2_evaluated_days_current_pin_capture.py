@@ -154,8 +154,8 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
             "ok": True,
             "status": "GREEN_STATIC",
             "external": {
-                "head": "15ab978f879ed4562aacb74dacdaee702fbce54b",
-                "origin_main": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+                "head": "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
+                "origin_main": "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
                 "clean": True,
             },
         }
@@ -164,7 +164,7 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
         PREFLIGHT.validate_manifest_contract(self.manifest)
         self.assertEqual(
             self.manifest["open_kaishek"]["commit"],
-            "15ab978f879ed4562aacb74dacdaee702fbce54b",
+            "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
         )
         self.assertFalse(self.manifest["open_kaishek"]["native_certified"])
         self.assertFalse(self.manifest["open_kaishek"]["runtime_certified"])

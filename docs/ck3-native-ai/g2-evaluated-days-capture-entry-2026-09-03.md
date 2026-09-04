@@ -1,5 +1,12 @@
 # G2 `evaluated_days` capture-entry review (2026-09-03)
 
+> 2026-09-04 companion pin update: canonical open_kaishek main is now
+> `135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b`. The advance adds only the
+> static B3 manager-governance capability descriptor; the G2 truce capability,
+> fields, invariants, and false native/runtime certification are unchanged.
+> References below to `15ab978` remain the immutable identity of the already
+> executed current-pin r1 candidate and its archived evidence.
+
 ## 结论
 
 本次只做了 exact-build、root/open_kaishek pin 和现有 paused artifact 的只读复核，

@@ -1,5 +1,21 @@
 # G2/open_kaishek 伴随同步审计（2026-09-03 12:32，Asia/Shanghai）
 
+## 2026-09-04 伴随更新
+
+本记录后续已推进到 `open_kaishek`
+`135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b`。这次存在一个真实但有限的
+T0 同步缺口：B3 manager-governance 的 native mailbox、driver、service 和
+MCP capability 已形成固定公开合同，而 open_kaishek 尚无相应 capability
+描述。远端 main 已补入只读、hash-bound、未认证的
+`ZhongguoManagerGovernanceCapabilityProfile`；parser、opcode profile、IR、
+runtime 和 CLI 均未扩张。
+
+root 的 G2 capability/profile/字段/不变量没有变化，仅将 exact repository pin
+更新为上述提交。focused verifier 在 external
+`HEAD == origin/main == 135113d3...` 且 clean 时为 `GREEN_STATIC`；
+`native_certified=false`、`runtime_certified=false`、public readiness=false
+保持不变。以下 2026-09-03 段落保留当时 `15ab978` 审计的历史上下文。
+
 ## 结论
 
 本次只读审计判定 T0（天朝二期）和 T1（G2）近期没有改变
