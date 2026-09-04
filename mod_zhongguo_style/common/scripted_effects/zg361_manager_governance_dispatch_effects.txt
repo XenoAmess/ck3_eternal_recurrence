@@ -1,0 +1,326 @@
+﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
+# Manager/governance purpose shard: zg361_manager_governance_dispatch_effects.txt
+
+zg361_mg_refuse_jingcha_exact_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_jingcha_pending
+			has_variable = zg361_jingcha_mandate_superior
+			has_variable = zg361_jingcha_mandate_year
+		}
+		save_scope_as = zg361_mg_refusing_manager
+		set_variable = { name = zg361_mg_refusal_owner value = var:zg361_jingcha_mandate_superior }
+		set_variable = { name = zg361_mg_refusal_subject value = this }
+		set_variable = { name = zg361_mg_refusal_cycle value = var:zg361_jingcha_mandate_year }
+		set_variable = { name = zg361_mg_refusal_case value = { value = var:zg361_jingcha_mandate_year multiply = 1000 add = 32 } }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_refusal_cycle value = var:zg361_b1_cycle_serial } }
+		if = { limit = { has_variable = zg361_b1_case_serial } set_variable = { name = zg361_mg_refusal_case value = var:zg361_b1_case_serial } }
+		set_variable = { name = zg361_mg_refusal_state value = 1 }
+		set_variable = { name = zg361_mg_refusal_revision value = 1 }
+		set_variable = { name = zg361_mg_refusal_operation value = 32 }
+		set_variable = { name = zg361_mg_refusal_mandate_year value = var:zg361_jingcha_mandate_year }
+		set_variable = { name = zg361_mg_refusal_opinion_delta value = -25 }
+		set_variable = { name = zg361_mg_refusal_kpi_delta value = 0 }
+		set_variable = { name = zg361_mg_refusal_reviewer_eligible value = 0 }
+		var:zg361_jingcha_mandate_superior = {
+			# Replace the legacy default -20 instance instead of stacking a second
+			# modifier on it.  The resulting relation is exactly -25.
+			remove_opinion = { modifier = zg361_refused_jingcha target = scope:zg361_mg_refusing_manager }
+			add_opinion = {
+				modifier = zg361_refused_jingcha
+				target = scope:zg361_mg_refusing_manager
+				opinion = -25
+			}
+		}
+		set_variable = { name = zg361_mg_refusal_opinion_exact_superior value = var:zg361_jingcha_mandate_superior }
+		set_variable = { name = zg361_mg_refusal_opinion_exact_year value = var:zg361_jingcha_mandate_year }
+		if = {
+			limit = { has_variable = zg361_jingcha_mandate_reviewer }
+			set_variable = { name = zg361_skipped_jingcha_superior value = var:zg361_jingcha_mandate_reviewer }
+			set_variable = { name = zg361_skipped_jingcha_year value = var:zg361_jingcha_mandate_year }
+			set_variable = { name = zg361_mg_refusal_kpi_delta value = -50 }
+			set_variable = { name = zg361_mg_refusal_reviewer_eligible value = 1 }
+		}
+		set_variable = { name = zg361_mg_refusal_status value = 1 }
+		zg361_clear_jingcha_mandate_effect = yes
+		debug_log = "ZG361MG: exact Jingcha refusal recorded (-25 opinion, -50 next review)"
+	}
+	else = { zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 32 } }
+}
+
+zg361_mg_dispatch_subordinate_managers_effect = {
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+		}
+		every_vassal = {
+			limit = {
+				zg361_is_celestial_liege_trigger = yes
+				liege = root
+				has_variable = zg361_review_serial
+				var:zg361_review_serial < root.var:zg361_review_serial
+			}
+			zg361_mg_open_manager_governance_cases_effect = yes
+		}
+	}
+	else = { zg361_mg_set_red_effect = { CODE = 1 MECHANISM = 32 } }
+}
+
+zg361_mg_schedule_f_ticket_effect = {
+	save_scope_as = zg361_mg_f_ticket_subject
+	var:zg361_case_f_owner = { save_scope_as = zg361_mg_f_ticket_owner }
+	save_scope_value_as = { name = zg361_mg_f_ticket_cycle value = var:zg361_case_f_cycle_serial }
+	save_scope_value_as = { name = zg361_mg_f_ticket_case value = var:zg361_case_f_case_serial }
+	save_scope_value_as = { name = zg361_mg_f_ticket_state value = var:zg361_case_f_state }
+	trigger_event = { id = $EVENT$ days = $DAYS$ }
+}
+
+zg361_mg_schedule_ak_ticket_effect = {
+	save_scope_as = zg361_mg_ak_ticket_subject
+	var:zg361_case_ak_owner = { save_scope_as = zg361_mg_ak_ticket_owner }
+	save_scope_value_as = { name = zg361_mg_ak_ticket_cycle value = var:zg361_case_ak_cycle_serial }
+	save_scope_value_as = { name = zg361_mg_ak_ticket_case value = var:zg361_case_ak_case_serial }
+	save_scope_value_as = { name = zg361_mg_ak_ticket_state value = var:zg361_case_ak_state }
+	trigger_event = { id = $EVENT$ days = $DAYS$ }
+}
+
+zg361_mg_open_manager_governance_cases_effect = {
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			liege = root
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			has_variable = zg361_review_serial
+			var:zg361_review_serial < root.var:zg361_review_serial
+		}
+		zg361_mg_clear_red_effect = yes
+		zg361_mg_consume_due_policy_debts_effect = yes
+		zg361_mg_project_career_hc_q_receipts_effect = yes
+		zg361_case_f_open_effect = yes
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			zg361_mg_freeze_team_snapshot_effect = yes
+			zg361_mg_m035_freeze_distribution_effect = yes
+			zg361_mg_schedule_f_ticket_effect = { EVENT = zg361mg.100 DAYS = 1 }
+		}
+		zg361_case_ak_open_effect = yes
+		if = {
+			limit = { var:zg361_case_kernel_applied = 1 }
+			set_variable = { name = zg361_mg_admin_capacity_available value = 100 }
+			set_variable = { name = zg361_mg_admin_capacity_reserved value = 0 }
+			set_variable = { name = zg361_mg_admin_capacity_settled value = 0 }
+			set_variable = { name = zg361_mg_policy_source_serial value = var:zg361_review_serial }
+			zg361_mg_schedule_ak_ticket_effect = { EVENT = zg361mg.200 DAYS = 1 }
+		}
+	}
+	else = { zg361_mg_set_red_effect = { CODE = 1 MECHANISM = 32 } }
+}
+
+zg361_mg_freeze_team_snapshot_effect = {
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_mg_team_snapshot_status }
+				OR = {
+					NOT = { var:zg361_mg_team_snapshot_status = 1 }
+					NOT = { var:zg361_mg_team_snapshot_owner = var:zg361_case_f_owner }
+					NOT = { var:zg361_mg_team_snapshot_subject = this }
+					NOT = { var:zg361_mg_team_snapshot_cycle = var:zg361_case_f_cycle_serial }
+					NOT = { var:zg361_mg_team_snapshot_case = var:zg361_case_f_case_serial }
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_mg_build_team_snapshot_effect = yes
+	}
+}
+
+zg361_mg_build_team_snapshot_effect = {
+	if = { limit = { NOT = { has_variable = zg361_mg_team_snapshot_revision } } set_variable = { name = zg361_mg_team_snapshot_revision value = 0 } }
+	change_variable = { name = zg361_mg_team_snapshot_revision add = 1 }
+	set_variable = { name = zg361_mg_snapshot_source_serial value = var:zg361_review_serial }
+	set_variable = { name = zg361_mg_snapshot_current_serial value = root.var:zg361_review_serial }
+	# Freeze the exact published B1 cohort source that can later authorize a
+	# #360 manager-cost receipt.  A later B1 cycle cannot be substituted for
+	# the cohort that this manager review actually scored.
+	set_variable = { name = zg361_mg_team_snapshot_b1_available value = 0 }
+	remove_variable = zg361_mg_team_snapshot_b1_manager
+	remove_variable = zg361_mg_team_snapshot_b1_cycle
+	remove_variable = zg361_mg_team_snapshot_b1_case
+	remove_variable = zg361_mg_team_snapshot_b1_id
+	remove_variable = zg361_mg_team_snapshot_b1_hash
+	if = {
+		limit = {
+			has_variable = zg361_b1_m360_source_available
+			var:zg361_b1_m360_source_available = 1
+			has_variable = zg361_b1_m360_source_status
+			var:zg361_b1_m360_source_status = 1
+			has_variable = zg361_b1_m360_source_sealed
+			var:zg361_b1_m360_source_sealed = 1
+			has_variable = zg361_b1_m360_source_id
+			var:zg361_b1_m360_source_id > 0
+			has_variable = zg361_b1_m360_source_hash
+			var:zg361_b1_m360_source_hash > 0
+			has_variable = zg361_b1_m360_source_manager
+			var:zg361_b1_m360_source_manager = this
+			has_variable = zg361_b1_m360_source_cycle
+			has_variable = zg361_b1_m360_source_case
+			has_variable = zg361_b1_m360_source_state
+			var:zg361_b1_m360_source_state = 8
+		}
+		set_variable = { name = zg361_mg_team_snapshot_b1_available value = 1 }
+		set_variable = { name = zg361_mg_team_snapshot_b1_manager value = var:zg361_b1_m360_source_manager }
+		set_variable = { name = zg361_mg_team_snapshot_b1_cycle value = var:zg361_b1_m360_source_cycle }
+		set_variable = { name = zg361_mg_team_snapshot_b1_case value = var:zg361_b1_m360_source_case }
+		set_variable = { name = zg361_mg_team_snapshot_b1_id value = var:zg361_b1_m360_source_id }
+		set_variable = { name = zg361_mg_team_snapshot_b1_hash value = var:zg361_b1_m360_source_hash }
+	}
+	set_variable = { name = zg361_mg_team_n value = 0 }
+	set_variable = { name = zg361_mg_team_top_n value = 0 }
+	set_variable = { name = zg361_mg_team_middle_n value = 0 }
+	set_variable = { name = zg361_mg_team_bottom_n value = 0 }
+	if = { limit = { has_variable = zg361_scoreboard_managed_n } set_variable = { name = zg361_mg_team_n value = var:zg361_scoreboard_managed_n } }
+	if = { limit = { has_variable = zg361_scoreboard_managed_375_n } set_variable = { name = zg361_mg_team_top_n value = var:zg361_scoreboard_managed_375_n } }
+	if = { limit = { has_variable = zg361_scoreboard_managed_35_n } set_variable = { name = zg361_mg_team_middle_n value = var:zg361_scoreboard_managed_35_n } }
+	if = { limit = { has_variable = zg361_scoreboard_managed_325_n } set_variable = { name = zg361_mg_team_bottom_n value = var:zg361_scoreboard_managed_325_n } }
+	set_variable = {
+		name = zg361_mg_team_targets
+		value = {
+			value = var:zg361_mg_team_top_n multiply = 20
+			add = { value = var:zg361_mg_team_middle_n multiply = 5 }
+			subtract = { value = var:zg361_mg_team_bottom_n multiply = 25 }
+		}
+	}
+	set_variable = { name = zg361_mg_team_jingcha value = 10 }
+	set_variable = { name = zg361_mg_refusal_match value = 0 }
+	if = {
+		limit = {
+			has_variable = zg361_skipped_jingcha_superior
+			has_variable = zg361_skipped_jingcha_year
+			var:zg361_skipped_jingcha_superior = root
+		}
+		set_variable = { name = zg361_mg_team_jingcha value = -50 }
+		set_variable = { name = zg361_mg_snapshot_mandate_year value = var:zg361_skipped_jingcha_year }
+		set_variable = { name = zg361_mg_refusal_match value = 1 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_result_evidence_jingcha
+			var:zg361_result_evidence_jingcha = -50
+			has_variable = zg361_result_case_owner
+			var:zg361_result_case_owner = root
+		}
+		set_variable = { name = zg361_mg_team_jingcha value = -50 }
+		set_variable = { name = zg361_mg_snapshot_mandate_year value = current_year }
+		set_variable = { name = zg361_mg_refusal_match value = 1 }
+	}
+	set_variable = { name = zg361_mg_team_calibration value = 0 }
+	set_variable = { name = zg361_mg_team_pip_success value = 0 }
+	set_variable = { name = zg361_mg_team_appeal_overturn value = 0 }
+	set_variable = { name = zg361_mg_team_retention value = 0 }
+	set_variable = { name = zg361_mg_team_hc_efficiency value = 0 }
+	set_variable = { name = zg361_mg_team_delivered_n value = 0 }
+	set_variable = { name = zg361_mg_team_appeal_n value = 0 }
+	set_variable = { name = zg361_mg_team_overturn_n value = 0 }
+	set_variable = { name = zg361_mg_team_exit_n value = 0 }
+	set_variable = { name = zg361_mg_team_healthy_exit_n value = 0 }
+	save_scope_as = zg361_mg_snapshot_manager
+	every_vassal = {
+		limit = {
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			var:zg361_result_case_owner = scope:zg361_mg_snapshot_manager
+			var:zg361_result_cycle_serial = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+		}
+		scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_retention add = 2 } }
+		if = {
+			limit = { has_variable = zg361_result_delivery_method var:zg361_result_delivery_method > 0 }
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_delivered_n add = 1 } }
+		}
+		if = {
+			limit = { has_variable = zg361_result_grade_reason var:zg361_result_grade_reason >= 1 var:zg361_result_grade_reason <= 4 }
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_calibration add = -5 } }
+		}
+		if = {
+			limit = { has_variable = zg361_result_appeal_outcome var:zg361_result_appeal_outcome >= 1 var:zg361_result_appeal_outcome <= 2 }
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_appeal_n add = 1 } }
+			if = {
+				limit = { var:zg361_result_appeal_outcome = 1 }
+				scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_overturn_n add = 1 } change_variable = { name = zg361_mg_team_appeal_overturn add = -5 } }
+			}
+		}
+		if = {
+			limit = {
+				has_variable = zg361_b2_pip_owner
+				has_variable = zg361_b2_pip_cycle
+				has_variable = zg361_b2_pip_case
+				has_variable = zg361_b2_pip_state
+				has_variable = zg361_b2_pip_graduation_receipt
+				var:zg361_b2_pip_owner = scope:zg361_mg_snapshot_manager
+				var:zg361_b2_pip_cycle = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+				var:zg361_b2_pip_state = 3
+				var:zg361_b2_pip_graduation_receipt = var:zg361_b2_pip_case
+			}
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_pip_success add = 5 } }
+		}
+		if = {
+			limit = {
+				has_variable = zg361_b2_m075_owner
+				has_variable = zg361_b2_m075_cycle
+				has_variable = zg361_b2_m075_case
+				has_variable = zg361_b2_m075_state
+				has_variable = zg361_b2_m075_actual_exit
+				var:zg361_b2_m075_owner = scope:zg361_mg_snapshot_manager
+				var:zg361_b2_m075_cycle = scope:zg361_mg_snapshot_manager.var:zg361_review_serial
+				var:zg361_b2_m075_state = 3
+				var:zg361_b2_m075_actual_exit = 1
+			}
+			scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_exit_n add = 1 } change_variable = { name = zg361_mg_team_retention add = -2 } }
+			if = {
+				limit = { has_variable = zg361_b2_m075_neutral_record var:zg361_b2_m075_neutral_record = 1 }
+				scope:zg361_mg_snapshot_manager = { change_variable = { name = zg361_mg_team_healthy_exit_n add = 1 } }
+			}
+		}
+	}
+	set_variable = {
+		name = zg361_mg_team_hc_efficiency
+		value = { value = var:zg361_mg_team_top_n subtract = var:zg361_mg_team_bottom_n multiply = 3 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_manager_score_delta
+			has_variable = zg361_mg_manager_score_delta_due_cycle
+			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial
+		}
+		change_variable = { name = zg361_mg_team_hc_efficiency add = var:zg361_mg_manager_score_delta }
+		set_variable = { name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_review_serial }
+		remove_variable = zg361_mg_manager_score_delta
+		remove_variable = zg361_mg_manager_score_delta_due_cycle
+	}
+	set_variable = { name = zg361_mg_snapshot_grandchild_id_count value = 0 }
+	set_variable = { name = zg361_mg_team_snapshot_status value = 1 }
+	set_variable = { name = zg361_mg_team_snapshot_owner value = var:zg361_case_f_owner }
+	set_variable = { name = zg361_mg_team_snapshot_subject value = this }
+	set_variable = { name = zg361_mg_team_snapshot_cycle value = var:zg361_case_f_cycle_serial }
+	set_variable = { name = zg361_mg_team_snapshot_case value = var:zg361_case_f_case_serial }
+	set_variable = { name = zg361_mg_team_snapshot_source_cycle value = var:zg361_review_serial }
+	set_variable = { name = zg361_mg_fairness_input_status value = 1 }
+	set_variable = { name = zg361_mg_fairness_input_revision value = var:zg361_mg_team_snapshot_revision }
+	set_variable = { name = zg361_mg_fairness_input_source_owner value = root }
+	set_variable = { name = zg361_mg_fairness_input_source_subject value = this }
+	set_variable = { name = zg361_mg_fairness_input_source_cycle value = var:zg361_review_serial }
+	set_variable = { name = zg361_mg_fairness_input_source_case value = var:zg361_case_f_case_serial }
+	set_variable = { name = zg361_mg_fairness_input_delivered value = var:zg361_mg_team_delivered_n }
+	set_variable = { name = zg361_mg_fairness_input_appeals value = var:zg361_mg_team_appeal_n }
+	set_variable = { name = zg361_mg_fairness_input_overturns value = var:zg361_mg_team_overturn_n }
+	set_variable = { name = zg361_mg_fairness_input_exits value = var:zg361_mg_team_exit_n }
+	set_variable = { name = zg361_mg_fairness_input_healthy_exits value = var:zg361_mg_team_healthy_exit_n }
+	zg361_mg_produce_offcycle_signal_effect = yes
+	zg361_mg_produce_override_pair_effect = yes
+}

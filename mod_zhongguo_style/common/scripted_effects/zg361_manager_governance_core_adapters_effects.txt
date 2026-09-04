@@ -1,0 +1,1617 @@
+﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
+# Manager/governance purpose shard: zg361_manager_governance_core_adapters_effects.txt
+
+zg361_mg_set_red_effect = {
+	set_variable = { name = zg361_mg_last_red_code value = $CODE$ }
+	set_variable = { name = zg361_mg_last_red_mechanism value = $MECHANISM$ }
+	debug_log = "ZG361MG: typed RED $CODE$ on mechanism $MECHANISM$"
+}
+
+zg361_mg_clear_red_effect = {
+	remove_variable = zg361_mg_last_red_code
+	remove_variable = zg361_mg_last_red_mechanism
+}
+
+zg361_mg_consume_due_policy_debts_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_m032_debt_status
+			var:zg361_mg_m032_debt_status = 1
+			has_variable = zg361_mg_m032_debt_owner
+			has_variable = zg361_mg_m032_debt_subject
+			has_variable = zg361_mg_m032_debt_cycle
+			has_variable = zg361_mg_m032_debt_case
+			has_variable = zg361_mg_m032_debt_state
+			has_variable = zg361_mg_m032_debt_revision
+			has_variable = zg361_mg_m032_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m032_next_review_serial
+			var:zg361_mg_m032_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m032_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m032_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m032_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m032_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m032_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m033_debt_status
+			var:zg361_mg_m033_debt_status = 1
+			has_variable = zg361_mg_m033_debt_owner
+			has_variable = zg361_mg_m033_debt_subject
+			has_variable = zg361_mg_m033_debt_cycle
+			has_variable = zg361_mg_m033_debt_case
+			has_variable = zg361_mg_m033_debt_state
+			has_variable = zg361_mg_m033_debt_revision
+			has_variable = zg361_mg_m033_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m033_next_review_serial
+			var:zg361_mg_m033_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m033_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m033_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m033_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m033_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m033_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m034_debt_status
+			var:zg361_mg_m034_debt_status = 1
+			has_variable = zg361_mg_m034_debt_owner
+			has_variable = zg361_mg_m034_debt_subject
+			has_variable = zg361_mg_m034_debt_cycle
+			has_variable = zg361_mg_m034_debt_case
+			has_variable = zg361_mg_m034_debt_state
+			has_variable = zg361_mg_m034_debt_revision
+			has_variable = zg361_mg_m034_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m034_next_review_serial
+			var:zg361_mg_m034_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m034_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m034_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m034_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m034_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m034_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m035_debt_status
+			var:zg361_mg_m035_debt_status = 1
+			has_variable = zg361_mg_m035_debt_owner
+			has_variable = zg361_mg_m035_debt_subject
+			has_variable = zg361_mg_m035_debt_cycle
+			has_variable = zg361_mg_m035_debt_case
+			has_variable = zg361_mg_m035_debt_state
+			has_variable = zg361_mg_m035_debt_revision
+			has_variable = zg361_mg_m035_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m035_next_review_serial
+			var:zg361_mg_m035_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m035_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m035_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m035_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m035_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m035_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m036_debt_status
+			var:zg361_mg_m036_debt_status = 1
+			has_variable = zg361_mg_m036_debt_owner
+			has_variable = zg361_mg_m036_debt_subject
+			has_variable = zg361_mg_m036_debt_cycle
+			has_variable = zg361_mg_m036_debt_case
+			has_variable = zg361_mg_m036_debt_state
+			has_variable = zg361_mg_m036_debt_revision
+			has_variable = zg361_mg_m036_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m036_next_review_serial
+			var:zg361_mg_m036_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m036_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m036_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m036_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m036_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m036_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m345_debt_status
+			var:zg361_mg_m345_debt_status = 1
+			has_variable = zg361_mg_m345_debt_owner
+			has_variable = zg361_mg_m345_debt_subject
+			has_variable = zg361_mg_m345_debt_cycle
+			has_variable = zg361_mg_m345_debt_case
+			has_variable = zg361_mg_m345_debt_state
+			has_variable = zg361_mg_m345_debt_revision
+			has_variable = zg361_mg_m345_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m345_next_review_serial
+			var:zg361_mg_m345_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m345_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m345_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m345_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m345_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m345_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m346_debt_status
+			var:zg361_mg_m346_debt_status = 1
+			has_variable = zg361_mg_m346_debt_owner
+			has_variable = zg361_mg_m346_debt_subject
+			has_variable = zg361_mg_m346_debt_cycle
+			has_variable = zg361_mg_m346_debt_case
+			has_variable = zg361_mg_m346_debt_state
+			has_variable = zg361_mg_m346_debt_revision
+			has_variable = zg361_mg_m346_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m346_next_review_serial
+			var:zg361_mg_m346_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m346_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m346_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m346_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m346_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m346_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m347_debt_status
+			var:zg361_mg_m347_debt_status = 1
+			has_variable = zg361_mg_m347_debt_owner
+			has_variable = zg361_mg_m347_debt_subject
+			has_variable = zg361_mg_m347_debt_cycle
+			has_variable = zg361_mg_m347_debt_case
+			has_variable = zg361_mg_m347_debt_state
+			has_variable = zg361_mg_m347_debt_revision
+			has_variable = zg361_mg_m347_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m347_next_review_serial
+			var:zg361_mg_m347_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m347_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m347_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m347_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m347_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m347_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m348_debt_status
+			var:zg361_mg_m348_debt_status = 1
+			has_variable = zg361_mg_m348_debt_owner
+			has_variable = zg361_mg_m348_debt_subject
+			has_variable = zg361_mg_m348_debt_cycle
+			has_variable = zg361_mg_m348_debt_case
+			has_variable = zg361_mg_m348_debt_state
+			has_variable = zg361_mg_m348_debt_revision
+			has_variable = zg361_mg_m348_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m348_next_review_serial
+			var:zg361_mg_m348_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m348_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m348_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m348_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m348_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m348_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m349_debt_status
+			var:zg361_mg_m349_debt_status = 1
+			has_variable = zg361_mg_m349_debt_owner
+			has_variable = zg361_mg_m349_debt_subject
+			has_variable = zg361_mg_m349_debt_cycle
+			has_variable = zg361_mg_m349_debt_case
+			has_variable = zg361_mg_m349_debt_state
+			has_variable = zg361_mg_m349_debt_revision
+			has_variable = zg361_mg_m349_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m349_next_review_serial
+			var:zg361_mg_m349_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m349_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m349_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m349_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m349_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m349_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m350_debt_status
+			var:zg361_mg_m350_debt_status = 1
+			has_variable = zg361_mg_m350_debt_owner
+			has_variable = zg361_mg_m350_debt_subject
+			has_variable = zg361_mg_m350_debt_cycle
+			has_variable = zg361_mg_m350_debt_case
+			has_variable = zg361_mg_m350_debt_state
+			has_variable = zg361_mg_m350_debt_revision
+			has_variable = zg361_mg_m350_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m350_next_review_serial
+			var:zg361_mg_m350_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m350_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m350_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m350_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m350_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m350_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m351_debt_status
+			var:zg361_mg_m351_debt_status = 1
+			has_variable = zg361_mg_m351_debt_owner
+			has_variable = zg361_mg_m351_debt_subject
+			has_variable = zg361_mg_m351_debt_cycle
+			has_variable = zg361_mg_m351_debt_case
+			has_variable = zg361_mg_m351_debt_state
+			has_variable = zg361_mg_m351_debt_revision
+			has_variable = zg361_mg_m351_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m351_next_review_serial
+			var:zg361_mg_m351_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m351_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m351_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m351_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m351_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m351_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m352_debt_status
+			var:zg361_mg_m352_debt_status = 1
+			has_variable = zg361_mg_m352_debt_owner
+			has_variable = zg361_mg_m352_debt_subject
+			has_variable = zg361_mg_m352_debt_cycle
+			has_variable = zg361_mg_m352_debt_case
+			has_variable = zg361_mg_m352_debt_state
+			has_variable = zg361_mg_m352_debt_revision
+			has_variable = zg361_mg_m352_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m352_next_review_serial
+			var:zg361_mg_m352_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m352_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m352_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m352_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m352_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m352_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m353_debt_status
+			var:zg361_mg_m353_debt_status = 1
+			has_variable = zg361_mg_m353_debt_owner
+			has_variable = zg361_mg_m353_debt_subject
+			has_variable = zg361_mg_m353_debt_cycle
+			has_variable = zg361_mg_m353_debt_case
+			has_variable = zg361_mg_m353_debt_state
+			has_variable = zg361_mg_m353_debt_revision
+			has_variable = zg361_mg_m353_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m353_next_review_serial
+			var:zg361_mg_m353_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m353_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m353_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m353_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m353_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m353_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m354_debt_status
+			var:zg361_mg_m354_debt_status = 1
+			has_variable = zg361_mg_m354_debt_owner
+			has_variable = zg361_mg_m354_debt_subject
+			has_variable = zg361_mg_m354_debt_cycle
+			has_variable = zg361_mg_m354_debt_case
+			has_variable = zg361_mg_m354_debt_state
+			has_variable = zg361_mg_m354_debt_revision
+			has_variable = zg361_mg_m354_next_review_serial
+			root.var:zg361_review_serial >= var:zg361_mg_m354_next_review_serial
+			var:zg361_mg_m354_debt_subject = this
+		}
+		set_variable = { name = zg361_mg_m354_debt_status value = 2 }
+		set_variable = { name = zg361_mg_m354_debt_settled_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_m354_debt_settled_by_owner value = root }
+		set_variable = { name = zg361_mg_m354_debt_manager_score_delta value = -3 }
+		set_variable = { name = zg361_mg_m354_debt_remediation_code value = 1 }
+		change_variable = { name = zg361_mg_manager_score_delta add = -3 }
+		set_variable = { name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }
+	}
+}
+
+zg361_mg_project_career_hc_q_receipts_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_q121_projected
+			var:zg361_mg_q121_owner = var:zg361_ch_m121_receipt_owner
+			var:zg361_mg_q121_subject = this
+			var:zg361_mg_q121_cycle = var:zg361_ch_m121_receipt_cycle
+			var:zg361_mg_q121_case = var:zg361_ch_m121_receipt_case
+			var:zg361_mg_q121_state = var:zg361_ch_m121_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q121_route = var:zg361_ch_m121_receipt_route }
+				NOT = { var:zg361_mg_q121_value = var:zg361_ch_m121_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 121 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q121_projected
+			has_variable = zg361_ch_m121_receipt_owner
+			has_variable = zg361_ch_m121_receipt_cycle
+			has_variable = zg361_ch_m121_receipt_case
+			has_variable = zg361_ch_m121_receipt_state
+			OR = {
+				var:zg361_ch_m121_receipt_cycle < var:zg361_mg_q121_cycle
+				AND = {
+					var:zg361_ch_m121_receipt_cycle = var:zg361_mg_q121_cycle
+					var:zg361_ch_m121_receipt_case < var:zg361_mg_q121_case
+				}
+				AND = {
+					var:zg361_ch_m121_receipt_cycle = var:zg361_mg_q121_cycle
+					var:zg361_ch_m121_receipt_case = var:zg361_mg_q121_case
+					var:zg361_ch_m121_receipt_state < var:zg361_mg_q121_state
+				}
+				AND = {
+					var:zg361_ch_m121_receipt_cycle = var:zg361_mg_q121_cycle
+					var:zg361_ch_m121_receipt_case = var:zg361_mg_q121_case
+					var:zg361_ch_m121_receipt_state = var:zg361_mg_q121_state
+					NOT = { var:zg361_ch_m121_receipt_owner = var:zg361_mg_q121_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 121 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m121_consumed
+			var:zg361_ch_m121_consumed = 1
+			has_variable = zg361_ch_m121_business_consumed
+			var:zg361_ch_m121_business_consumed = 1
+			has_variable = zg361_ch_m121_receipt_owner
+			has_variable = zg361_ch_m121_receipt_subject
+			has_variable = zg361_ch_m121_receipt_cycle
+			has_variable = zg361_ch_m121_receipt_case
+			has_variable = zg361_ch_m121_receipt_state
+			has_variable = zg361_ch_m121_receipt_route
+			has_variable = zg361_ch_m121_value
+			var:zg361_ch_m121_receipt_subject = this
+			var:zg361_ch_m121_receipt_state = 1
+			OR = {
+				AND = { var:zg361_ch_m121_receipt_route = 1 var:zg361_ch_m121_value = 1 }
+				AND = { var:zg361_ch_m121_receipt_route = 2 var:zg361_ch_m121_value = -1 }
+				AND = { var:zg361_ch_m121_receipt_route = 3 var:zg361_ch_m121_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q121_projected }
+				OR = {
+					var:zg361_ch_m121_receipt_cycle > var:zg361_mg_q121_cycle
+					AND = {
+						var:zg361_ch_m121_receipt_cycle = var:zg361_mg_q121_cycle
+						var:zg361_ch_m121_receipt_case > var:zg361_mg_q121_case
+					}
+					AND = {
+						var:zg361_ch_m121_receipt_cycle = var:zg361_mg_q121_cycle
+						var:zg361_ch_m121_receipt_case = var:zg361_mg_q121_case
+						var:zg361_ch_m121_receipt_state > var:zg361_mg_q121_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q121_projected value = 1 }
+		set_variable = { name = zg361_mg_q121_source value = 1 }
+		set_variable = { name = zg361_mg_q121_owner value = var:zg361_ch_m121_receipt_owner }
+		set_variable = { name = zg361_mg_q121_subject value = this }
+		set_variable = { name = zg361_mg_q121_cycle value = var:zg361_ch_m121_receipt_cycle }
+		set_variable = { name = zg361_mg_q121_case value = var:zg361_ch_m121_receipt_case }
+		set_variable = { name = zg361_mg_q121_state value = var:zg361_ch_m121_receipt_state }
+		set_variable = { name = zg361_mg_q121_route value = var:zg361_ch_m121_receipt_route }
+		set_variable = { name = zg361_mg_q121_value value = var:zg361_ch_m121_value }
+		set_variable = { name = zg361_mg_q121_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m121_receipt_route = 1 var:zg361_ch_m121_receipt_route = 2 }
+				has_variable = zg361_ch_m121_manager_object_id
+				has_variable = zg361_ch_m121_manager_object_owner
+				has_variable = zg361_ch_m121_manager_object_subject
+				has_variable = zg361_ch_m121_manager_object_cycle
+				has_variable = zg361_ch_m121_manager_object_case
+				has_variable = zg361_ch_m121_manager_object_state
+				has_variable = zg361_ch_m121_manager_object_revision
+				var:zg361_ch_m121_manager_object_owner = var:zg361_ch_m121_receipt_owner
+				var:zg361_ch_m121_manager_object_subject = this
+				var:zg361_ch_m121_manager_object_cycle = var:zg361_ch_m121_receipt_cycle
+				var:zg361_ch_m121_manager_object_case = var:zg361_ch_m121_receipt_case
+				var:zg361_ch_m121_manager_object_state = var:zg361_ch_m121_receipt_state
+				var:zg361_ch_m121_manager_object_route = var:zg361_ch_m121_receipt_route
+			}
+			set_variable = { name = zg361_mg_q121_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q121_authoritative_object_id value = var:zg361_ch_m121_manager_object_id }
+			set_variable = { name = zg361_mg_q121_authoritative_object_owner value = var:zg361_ch_m121_manager_object_owner }
+			set_variable = { name = zg361_mg_q121_authoritative_object_subject value = var:zg361_ch_m121_manager_object_subject }
+			set_variable = { name = zg361_mg_q121_authoritative_object_cycle value = var:zg361_ch_m121_manager_object_cycle }
+			set_variable = { name = zg361_mg_q121_authoritative_object_case value = var:zg361_ch_m121_manager_object_case }
+			set_variable = { name = zg361_mg_q121_authoritative_object_state value = var:zg361_ch_m121_manager_object_state }
+			set_variable = { name = zg361_mg_q121_authoritative_object_revision value = var:zg361_ch_m121_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q122_projected
+			var:zg361_mg_q122_owner = var:zg361_ch_m122_receipt_owner
+			var:zg361_mg_q122_subject = this
+			var:zg361_mg_q122_cycle = var:zg361_ch_m122_receipt_cycle
+			var:zg361_mg_q122_case = var:zg361_ch_m122_receipt_case
+			var:zg361_mg_q122_state = var:zg361_ch_m122_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q122_route = var:zg361_ch_m122_receipt_route }
+				NOT = { var:zg361_mg_q122_value = var:zg361_ch_m122_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 122 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q122_projected
+			has_variable = zg361_ch_m122_receipt_owner
+			has_variable = zg361_ch_m122_receipt_cycle
+			has_variable = zg361_ch_m122_receipt_case
+			has_variable = zg361_ch_m122_receipt_state
+			OR = {
+				var:zg361_ch_m122_receipt_cycle < var:zg361_mg_q122_cycle
+				AND = {
+					var:zg361_ch_m122_receipt_cycle = var:zg361_mg_q122_cycle
+					var:zg361_ch_m122_receipt_case < var:zg361_mg_q122_case
+				}
+				AND = {
+					var:zg361_ch_m122_receipt_cycle = var:zg361_mg_q122_cycle
+					var:zg361_ch_m122_receipt_case = var:zg361_mg_q122_case
+					var:zg361_ch_m122_receipt_state < var:zg361_mg_q122_state
+				}
+				AND = {
+					var:zg361_ch_m122_receipt_cycle = var:zg361_mg_q122_cycle
+					var:zg361_ch_m122_receipt_case = var:zg361_mg_q122_case
+					var:zg361_ch_m122_receipt_state = var:zg361_mg_q122_state
+					NOT = { var:zg361_ch_m122_receipt_owner = var:zg361_mg_q122_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 122 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m122_consumed
+			var:zg361_ch_m122_consumed = 1
+			has_variable = zg361_ch_m122_business_consumed
+			var:zg361_ch_m122_business_consumed = 1
+			has_variable = zg361_ch_m122_receipt_owner
+			has_variable = zg361_ch_m122_receipt_subject
+			has_variable = zg361_ch_m122_receipt_cycle
+			has_variable = zg361_ch_m122_receipt_case
+			has_variable = zg361_ch_m122_receipt_state
+			has_variable = zg361_ch_m122_receipt_route
+			has_variable = zg361_ch_m122_value
+			var:zg361_ch_m122_receipt_subject = this
+			var:zg361_ch_m122_receipt_state = 1
+			OR = {
+				AND = { var:zg361_ch_m122_receipt_route = 1 var:zg361_ch_m122_value = 1 }
+				AND = { var:zg361_ch_m122_receipt_route = 2 var:zg361_ch_m122_value = -1 }
+				AND = { var:zg361_ch_m122_receipt_route = 3 var:zg361_ch_m122_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q122_projected }
+				OR = {
+					var:zg361_ch_m122_receipt_cycle > var:zg361_mg_q122_cycle
+					AND = {
+						var:zg361_ch_m122_receipt_cycle = var:zg361_mg_q122_cycle
+						var:zg361_ch_m122_receipt_case > var:zg361_mg_q122_case
+					}
+					AND = {
+						var:zg361_ch_m122_receipt_cycle = var:zg361_mg_q122_cycle
+						var:zg361_ch_m122_receipt_case = var:zg361_mg_q122_case
+						var:zg361_ch_m122_receipt_state > var:zg361_mg_q122_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q122_projected value = 1 }
+		set_variable = { name = zg361_mg_q122_source value = 1 }
+		set_variable = { name = zg361_mg_q122_owner value = var:zg361_ch_m122_receipt_owner }
+		set_variable = { name = zg361_mg_q122_subject value = this }
+		set_variable = { name = zg361_mg_q122_cycle value = var:zg361_ch_m122_receipt_cycle }
+		set_variable = { name = zg361_mg_q122_case value = var:zg361_ch_m122_receipt_case }
+		set_variable = { name = zg361_mg_q122_state value = var:zg361_ch_m122_receipt_state }
+		set_variable = { name = zg361_mg_q122_route value = var:zg361_ch_m122_receipt_route }
+		set_variable = { name = zg361_mg_q122_value value = var:zg361_ch_m122_value }
+		set_variable = { name = zg361_mg_q122_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m122_receipt_route = 1 var:zg361_ch_m122_receipt_route = 2 }
+				has_variable = zg361_ch_m122_manager_object_id
+				has_variable = zg361_ch_m122_manager_object_owner
+				has_variable = zg361_ch_m122_manager_object_subject
+				has_variable = zg361_ch_m122_manager_object_cycle
+				has_variable = zg361_ch_m122_manager_object_case
+				has_variable = zg361_ch_m122_manager_object_state
+				has_variable = zg361_ch_m122_manager_object_revision
+				var:zg361_ch_m122_manager_object_owner = var:zg361_ch_m122_receipt_owner
+				var:zg361_ch_m122_manager_object_subject = this
+				var:zg361_ch_m122_manager_object_cycle = var:zg361_ch_m122_receipt_cycle
+				var:zg361_ch_m122_manager_object_case = var:zg361_ch_m122_receipt_case
+				var:zg361_ch_m122_manager_object_state = var:zg361_ch_m122_receipt_state
+				var:zg361_ch_m122_manager_object_route = var:zg361_ch_m122_receipt_route
+			}
+			set_variable = { name = zg361_mg_q122_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q122_authoritative_object_id value = var:zg361_ch_m122_manager_object_id }
+			set_variable = { name = zg361_mg_q122_authoritative_object_owner value = var:zg361_ch_m122_manager_object_owner }
+			set_variable = { name = zg361_mg_q122_authoritative_object_subject value = var:zg361_ch_m122_manager_object_subject }
+			set_variable = { name = zg361_mg_q122_authoritative_object_cycle value = var:zg361_ch_m122_manager_object_cycle }
+			set_variable = { name = zg361_mg_q122_authoritative_object_case value = var:zg361_ch_m122_manager_object_case }
+			set_variable = { name = zg361_mg_q122_authoritative_object_state value = var:zg361_ch_m122_manager_object_state }
+			set_variable = { name = zg361_mg_q122_authoritative_object_revision value = var:zg361_ch_m122_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q123_projected
+			var:zg361_mg_q123_owner = var:zg361_ch_m123_receipt_owner
+			var:zg361_mg_q123_subject = this
+			var:zg361_mg_q123_cycle = var:zg361_ch_m123_receipt_cycle
+			var:zg361_mg_q123_case = var:zg361_ch_m123_receipt_case
+			var:zg361_mg_q123_state = var:zg361_ch_m123_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q123_route = var:zg361_ch_m123_receipt_route }
+				NOT = { var:zg361_mg_q123_value = var:zg361_ch_m123_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 123 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q123_projected
+			has_variable = zg361_ch_m123_receipt_owner
+			has_variable = zg361_ch_m123_receipt_cycle
+			has_variable = zg361_ch_m123_receipt_case
+			has_variable = zg361_ch_m123_receipt_state
+			OR = {
+				var:zg361_ch_m123_receipt_cycle < var:zg361_mg_q123_cycle
+				AND = {
+					var:zg361_ch_m123_receipt_cycle = var:zg361_mg_q123_cycle
+					var:zg361_ch_m123_receipt_case < var:zg361_mg_q123_case
+				}
+				AND = {
+					var:zg361_ch_m123_receipt_cycle = var:zg361_mg_q123_cycle
+					var:zg361_ch_m123_receipt_case = var:zg361_mg_q123_case
+					var:zg361_ch_m123_receipt_state < var:zg361_mg_q123_state
+				}
+				AND = {
+					var:zg361_ch_m123_receipt_cycle = var:zg361_mg_q123_cycle
+					var:zg361_ch_m123_receipt_case = var:zg361_mg_q123_case
+					var:zg361_ch_m123_receipt_state = var:zg361_mg_q123_state
+					NOT = { var:zg361_ch_m123_receipt_owner = var:zg361_mg_q123_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 123 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m123_consumed
+			var:zg361_ch_m123_consumed = 1
+			has_variable = zg361_ch_m123_business_consumed
+			var:zg361_ch_m123_business_consumed = 1
+			has_variable = zg361_ch_m123_receipt_owner
+			has_variable = zg361_ch_m123_receipt_subject
+			has_variable = zg361_ch_m123_receipt_cycle
+			has_variable = zg361_ch_m123_receipt_case
+			has_variable = zg361_ch_m123_receipt_state
+			has_variable = zg361_ch_m123_receipt_route
+			has_variable = zg361_ch_m123_value
+			var:zg361_ch_m123_receipt_subject = this
+			var:zg361_ch_m123_receipt_state = 2
+			OR = {
+				AND = { var:zg361_ch_m123_receipt_route = 1 var:zg361_ch_m123_value = 1 }
+				AND = { var:zg361_ch_m123_receipt_route = 2 var:zg361_ch_m123_value = -1 }
+				AND = { var:zg361_ch_m123_receipt_route = 3 var:zg361_ch_m123_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q123_projected }
+				OR = {
+					var:zg361_ch_m123_receipt_cycle > var:zg361_mg_q123_cycle
+					AND = {
+						var:zg361_ch_m123_receipt_cycle = var:zg361_mg_q123_cycle
+						var:zg361_ch_m123_receipt_case > var:zg361_mg_q123_case
+					}
+					AND = {
+						var:zg361_ch_m123_receipt_cycle = var:zg361_mg_q123_cycle
+						var:zg361_ch_m123_receipt_case = var:zg361_mg_q123_case
+						var:zg361_ch_m123_receipt_state > var:zg361_mg_q123_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q123_projected value = 1 }
+		set_variable = { name = zg361_mg_q123_source value = 1 }
+		set_variable = { name = zg361_mg_q123_owner value = var:zg361_ch_m123_receipt_owner }
+		set_variable = { name = zg361_mg_q123_subject value = this }
+		set_variable = { name = zg361_mg_q123_cycle value = var:zg361_ch_m123_receipt_cycle }
+		set_variable = { name = zg361_mg_q123_case value = var:zg361_ch_m123_receipt_case }
+		set_variable = { name = zg361_mg_q123_state value = var:zg361_ch_m123_receipt_state }
+		set_variable = { name = zg361_mg_q123_route value = var:zg361_ch_m123_receipt_route }
+		set_variable = { name = zg361_mg_q123_value value = var:zg361_ch_m123_value }
+		set_variable = { name = zg361_mg_q123_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m123_receipt_route = 1 var:zg361_ch_m123_receipt_route = 2 }
+				has_variable = zg361_ch_m123_manager_object_id
+				has_variable = zg361_ch_m123_manager_object_owner
+				has_variable = zg361_ch_m123_manager_object_subject
+				has_variable = zg361_ch_m123_manager_object_cycle
+				has_variable = zg361_ch_m123_manager_object_case
+				has_variable = zg361_ch_m123_manager_object_state
+				has_variable = zg361_ch_m123_manager_object_revision
+				var:zg361_ch_m123_manager_object_owner = var:zg361_ch_m123_receipt_owner
+				var:zg361_ch_m123_manager_object_subject = this
+				var:zg361_ch_m123_manager_object_cycle = var:zg361_ch_m123_receipt_cycle
+				var:zg361_ch_m123_manager_object_case = var:zg361_ch_m123_receipt_case
+				var:zg361_ch_m123_manager_object_state = var:zg361_ch_m123_receipt_state
+				var:zg361_ch_m123_manager_object_route = var:zg361_ch_m123_receipt_route
+			}
+			set_variable = { name = zg361_mg_q123_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q123_authoritative_object_id value = var:zg361_ch_m123_manager_object_id }
+			set_variable = { name = zg361_mg_q123_authoritative_object_owner value = var:zg361_ch_m123_manager_object_owner }
+			set_variable = { name = zg361_mg_q123_authoritative_object_subject value = var:zg361_ch_m123_manager_object_subject }
+			set_variable = { name = zg361_mg_q123_authoritative_object_cycle value = var:zg361_ch_m123_manager_object_cycle }
+			set_variable = { name = zg361_mg_q123_authoritative_object_case value = var:zg361_ch_m123_manager_object_case }
+			set_variable = { name = zg361_mg_q123_authoritative_object_state value = var:zg361_ch_m123_manager_object_state }
+			set_variable = { name = zg361_mg_q123_authoritative_object_revision value = var:zg361_ch_m123_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q124_projected
+			var:zg361_mg_q124_owner = var:zg361_ch_m124_receipt_owner
+			var:zg361_mg_q124_subject = this
+			var:zg361_mg_q124_cycle = var:zg361_ch_m124_receipt_cycle
+			var:zg361_mg_q124_case = var:zg361_ch_m124_receipt_case
+			var:zg361_mg_q124_state = var:zg361_ch_m124_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q124_route = var:zg361_ch_m124_receipt_route }
+				NOT = { var:zg361_mg_q124_value = var:zg361_ch_m124_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 124 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q124_projected
+			has_variable = zg361_ch_m124_receipt_owner
+			has_variable = zg361_ch_m124_receipt_cycle
+			has_variable = zg361_ch_m124_receipt_case
+			has_variable = zg361_ch_m124_receipt_state
+			OR = {
+				var:zg361_ch_m124_receipt_cycle < var:zg361_mg_q124_cycle
+				AND = {
+					var:zg361_ch_m124_receipt_cycle = var:zg361_mg_q124_cycle
+					var:zg361_ch_m124_receipt_case < var:zg361_mg_q124_case
+				}
+				AND = {
+					var:zg361_ch_m124_receipt_cycle = var:zg361_mg_q124_cycle
+					var:zg361_ch_m124_receipt_case = var:zg361_mg_q124_case
+					var:zg361_ch_m124_receipt_state < var:zg361_mg_q124_state
+				}
+				AND = {
+					var:zg361_ch_m124_receipt_cycle = var:zg361_mg_q124_cycle
+					var:zg361_ch_m124_receipt_case = var:zg361_mg_q124_case
+					var:zg361_ch_m124_receipt_state = var:zg361_mg_q124_state
+					NOT = { var:zg361_ch_m124_receipt_owner = var:zg361_mg_q124_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 124 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m124_consumed
+			var:zg361_ch_m124_consumed = 1
+			has_variable = zg361_ch_m124_business_consumed
+			var:zg361_ch_m124_business_consumed = 1
+			has_variable = zg361_ch_m124_receipt_owner
+			has_variable = zg361_ch_m124_receipt_subject
+			has_variable = zg361_ch_m124_receipt_cycle
+			has_variable = zg361_ch_m124_receipt_case
+			has_variable = zg361_ch_m124_receipt_state
+			has_variable = zg361_ch_m124_receipt_route
+			has_variable = zg361_ch_m124_value
+			var:zg361_ch_m124_receipt_subject = this
+			var:zg361_ch_m124_receipt_state = 2
+			OR = {
+				AND = { var:zg361_ch_m124_receipt_route = 1 var:zg361_ch_m124_value = 1 }
+				AND = { var:zg361_ch_m124_receipt_route = 2 var:zg361_ch_m124_value = -1 }
+				AND = { var:zg361_ch_m124_receipt_route = 3 var:zg361_ch_m124_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q124_projected }
+				OR = {
+					var:zg361_ch_m124_receipt_cycle > var:zg361_mg_q124_cycle
+					AND = {
+						var:zg361_ch_m124_receipt_cycle = var:zg361_mg_q124_cycle
+						var:zg361_ch_m124_receipt_case > var:zg361_mg_q124_case
+					}
+					AND = {
+						var:zg361_ch_m124_receipt_cycle = var:zg361_mg_q124_cycle
+						var:zg361_ch_m124_receipt_case = var:zg361_mg_q124_case
+						var:zg361_ch_m124_receipt_state > var:zg361_mg_q124_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q124_projected value = 1 }
+		set_variable = { name = zg361_mg_q124_source value = 1 }
+		set_variable = { name = zg361_mg_q124_owner value = var:zg361_ch_m124_receipt_owner }
+		set_variable = { name = zg361_mg_q124_subject value = this }
+		set_variable = { name = zg361_mg_q124_cycle value = var:zg361_ch_m124_receipt_cycle }
+		set_variable = { name = zg361_mg_q124_case value = var:zg361_ch_m124_receipt_case }
+		set_variable = { name = zg361_mg_q124_state value = var:zg361_ch_m124_receipt_state }
+		set_variable = { name = zg361_mg_q124_route value = var:zg361_ch_m124_receipt_route }
+		set_variable = { name = zg361_mg_q124_value value = var:zg361_ch_m124_value }
+		set_variable = { name = zg361_mg_q124_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m124_receipt_route = 1 var:zg361_ch_m124_receipt_route = 2 }
+				has_variable = zg361_ch_m124_manager_object_id
+				has_variable = zg361_ch_m124_manager_object_owner
+				has_variable = zg361_ch_m124_manager_object_subject
+				has_variable = zg361_ch_m124_manager_object_cycle
+				has_variable = zg361_ch_m124_manager_object_case
+				has_variable = zg361_ch_m124_manager_object_state
+				has_variable = zg361_ch_m124_manager_object_revision
+				var:zg361_ch_m124_manager_object_owner = var:zg361_ch_m124_receipt_owner
+				var:zg361_ch_m124_manager_object_subject = this
+				var:zg361_ch_m124_manager_object_cycle = var:zg361_ch_m124_receipt_cycle
+				var:zg361_ch_m124_manager_object_case = var:zg361_ch_m124_receipt_case
+				var:zg361_ch_m124_manager_object_state = var:zg361_ch_m124_receipt_state
+				var:zg361_ch_m124_manager_object_route = var:zg361_ch_m124_receipt_route
+			}
+			set_variable = { name = zg361_mg_q124_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q124_authoritative_object_id value = var:zg361_ch_m124_manager_object_id }
+			set_variable = { name = zg361_mg_q124_authoritative_object_owner value = var:zg361_ch_m124_manager_object_owner }
+			set_variable = { name = zg361_mg_q124_authoritative_object_subject value = var:zg361_ch_m124_manager_object_subject }
+			set_variable = { name = zg361_mg_q124_authoritative_object_cycle value = var:zg361_ch_m124_manager_object_cycle }
+			set_variable = { name = zg361_mg_q124_authoritative_object_case value = var:zg361_ch_m124_manager_object_case }
+			set_variable = { name = zg361_mg_q124_authoritative_object_state value = var:zg361_ch_m124_manager_object_state }
+			set_variable = { name = zg361_mg_q124_authoritative_object_revision value = var:zg361_ch_m124_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q125_projected
+			var:zg361_mg_q125_owner = var:zg361_ch_m125_receipt_owner
+			var:zg361_mg_q125_subject = this
+			var:zg361_mg_q125_cycle = var:zg361_ch_m125_receipt_cycle
+			var:zg361_mg_q125_case = var:zg361_ch_m125_receipt_case
+			var:zg361_mg_q125_state = var:zg361_ch_m125_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q125_route = var:zg361_ch_m125_receipt_route }
+				NOT = { var:zg361_mg_q125_value = var:zg361_ch_m125_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 125 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q125_projected
+			has_variable = zg361_ch_m125_receipt_owner
+			has_variable = zg361_ch_m125_receipt_cycle
+			has_variable = zg361_ch_m125_receipt_case
+			has_variable = zg361_ch_m125_receipt_state
+			OR = {
+				var:zg361_ch_m125_receipt_cycle < var:zg361_mg_q125_cycle
+				AND = {
+					var:zg361_ch_m125_receipt_cycle = var:zg361_mg_q125_cycle
+					var:zg361_ch_m125_receipt_case < var:zg361_mg_q125_case
+				}
+				AND = {
+					var:zg361_ch_m125_receipt_cycle = var:zg361_mg_q125_cycle
+					var:zg361_ch_m125_receipt_case = var:zg361_mg_q125_case
+					var:zg361_ch_m125_receipt_state < var:zg361_mg_q125_state
+				}
+				AND = {
+					var:zg361_ch_m125_receipt_cycle = var:zg361_mg_q125_cycle
+					var:zg361_ch_m125_receipt_case = var:zg361_mg_q125_case
+					var:zg361_ch_m125_receipt_state = var:zg361_mg_q125_state
+					NOT = { var:zg361_ch_m125_receipt_owner = var:zg361_mg_q125_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 125 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m125_consumed
+			var:zg361_ch_m125_consumed = 1
+			has_variable = zg361_ch_m125_business_consumed
+			var:zg361_ch_m125_business_consumed = 1
+			has_variable = zg361_ch_m125_receipt_owner
+			has_variable = zg361_ch_m125_receipt_subject
+			has_variable = zg361_ch_m125_receipt_cycle
+			has_variable = zg361_ch_m125_receipt_case
+			has_variable = zg361_ch_m125_receipt_state
+			has_variable = zg361_ch_m125_receipt_route
+			has_variable = zg361_ch_m125_value
+			var:zg361_ch_m125_receipt_subject = this
+			var:zg361_ch_m125_receipt_state = 3
+			OR = {
+				AND = { var:zg361_ch_m125_receipt_route = 1 var:zg361_ch_m125_value = 1 }
+				AND = { var:zg361_ch_m125_receipt_route = 2 var:zg361_ch_m125_value = -1 }
+				AND = { var:zg361_ch_m125_receipt_route = 3 var:zg361_ch_m125_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q125_projected }
+				OR = {
+					var:zg361_ch_m125_receipt_cycle > var:zg361_mg_q125_cycle
+					AND = {
+						var:zg361_ch_m125_receipt_cycle = var:zg361_mg_q125_cycle
+						var:zg361_ch_m125_receipt_case > var:zg361_mg_q125_case
+					}
+					AND = {
+						var:zg361_ch_m125_receipt_cycle = var:zg361_mg_q125_cycle
+						var:zg361_ch_m125_receipt_case = var:zg361_mg_q125_case
+						var:zg361_ch_m125_receipt_state > var:zg361_mg_q125_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q125_projected value = 1 }
+		set_variable = { name = zg361_mg_q125_source value = 1 }
+		set_variable = { name = zg361_mg_q125_owner value = var:zg361_ch_m125_receipt_owner }
+		set_variable = { name = zg361_mg_q125_subject value = this }
+		set_variable = { name = zg361_mg_q125_cycle value = var:zg361_ch_m125_receipt_cycle }
+		set_variable = { name = zg361_mg_q125_case value = var:zg361_ch_m125_receipt_case }
+		set_variable = { name = zg361_mg_q125_state value = var:zg361_ch_m125_receipt_state }
+		set_variable = { name = zg361_mg_q125_route value = var:zg361_ch_m125_receipt_route }
+		set_variable = { name = zg361_mg_q125_value value = var:zg361_ch_m125_value }
+		set_variable = { name = zg361_mg_q125_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m125_receipt_route = 1 var:zg361_ch_m125_receipt_route = 2 }
+				has_variable = zg361_ch_m125_manager_object_id
+				has_variable = zg361_ch_m125_manager_object_owner
+				has_variable = zg361_ch_m125_manager_object_subject
+				has_variable = zg361_ch_m125_manager_object_cycle
+				has_variable = zg361_ch_m125_manager_object_case
+				has_variable = zg361_ch_m125_manager_object_state
+				has_variable = zg361_ch_m125_manager_object_revision
+				var:zg361_ch_m125_manager_object_owner = var:zg361_ch_m125_receipt_owner
+				var:zg361_ch_m125_manager_object_subject = this
+				var:zg361_ch_m125_manager_object_cycle = var:zg361_ch_m125_receipt_cycle
+				var:zg361_ch_m125_manager_object_case = var:zg361_ch_m125_receipt_case
+				var:zg361_ch_m125_manager_object_state = var:zg361_ch_m125_receipt_state
+				var:zg361_ch_m125_manager_object_route = var:zg361_ch_m125_receipt_route
+			}
+			set_variable = { name = zg361_mg_q125_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q125_authoritative_object_id value = var:zg361_ch_m125_manager_object_id }
+			set_variable = { name = zg361_mg_q125_authoritative_object_owner value = var:zg361_ch_m125_manager_object_owner }
+			set_variable = { name = zg361_mg_q125_authoritative_object_subject value = var:zg361_ch_m125_manager_object_subject }
+			set_variable = { name = zg361_mg_q125_authoritative_object_cycle value = var:zg361_ch_m125_manager_object_cycle }
+			set_variable = { name = zg361_mg_q125_authoritative_object_case value = var:zg361_ch_m125_manager_object_case }
+			set_variable = { name = zg361_mg_q125_authoritative_object_state value = var:zg361_ch_m125_manager_object_state }
+			set_variable = { name = zg361_mg_q125_authoritative_object_revision value = var:zg361_ch_m125_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q126_projected
+			var:zg361_mg_q126_owner = var:zg361_ch_m126_receipt_owner
+			var:zg361_mg_q126_subject = this
+			var:zg361_mg_q126_cycle = var:zg361_ch_m126_receipt_cycle
+			var:zg361_mg_q126_case = var:zg361_ch_m126_receipt_case
+			var:zg361_mg_q126_state = var:zg361_ch_m126_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q126_route = var:zg361_ch_m126_receipt_route }
+				NOT = { var:zg361_mg_q126_value = var:zg361_ch_m126_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 126 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q126_projected
+			has_variable = zg361_ch_m126_receipt_owner
+			has_variable = zg361_ch_m126_receipt_cycle
+			has_variable = zg361_ch_m126_receipt_case
+			has_variable = zg361_ch_m126_receipt_state
+			OR = {
+				var:zg361_ch_m126_receipt_cycle < var:zg361_mg_q126_cycle
+				AND = {
+					var:zg361_ch_m126_receipt_cycle = var:zg361_mg_q126_cycle
+					var:zg361_ch_m126_receipt_case < var:zg361_mg_q126_case
+				}
+				AND = {
+					var:zg361_ch_m126_receipt_cycle = var:zg361_mg_q126_cycle
+					var:zg361_ch_m126_receipt_case = var:zg361_mg_q126_case
+					var:zg361_ch_m126_receipt_state < var:zg361_mg_q126_state
+				}
+				AND = {
+					var:zg361_ch_m126_receipt_cycle = var:zg361_mg_q126_cycle
+					var:zg361_ch_m126_receipt_case = var:zg361_mg_q126_case
+					var:zg361_ch_m126_receipt_state = var:zg361_mg_q126_state
+					NOT = { var:zg361_ch_m126_receipt_owner = var:zg361_mg_q126_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 126 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m126_consumed
+			var:zg361_ch_m126_consumed = 1
+			has_variable = zg361_ch_m126_business_consumed
+			var:zg361_ch_m126_business_consumed = 1
+			has_variable = zg361_ch_m126_receipt_owner
+			has_variable = zg361_ch_m126_receipt_subject
+			has_variable = zg361_ch_m126_receipt_cycle
+			has_variable = zg361_ch_m126_receipt_case
+			has_variable = zg361_ch_m126_receipt_state
+			has_variable = zg361_ch_m126_receipt_route
+			has_variable = zg361_ch_m126_value
+			var:zg361_ch_m126_receipt_subject = this
+			var:zg361_ch_m126_receipt_state = 3
+			OR = {
+				AND = { var:zg361_ch_m126_receipt_route = 1 var:zg361_ch_m126_value = 1 }
+				AND = { var:zg361_ch_m126_receipt_route = 2 var:zg361_ch_m126_value = -1 }
+				AND = { var:zg361_ch_m126_receipt_route = 3 var:zg361_ch_m126_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q126_projected }
+				OR = {
+					var:zg361_ch_m126_receipt_cycle > var:zg361_mg_q126_cycle
+					AND = {
+						var:zg361_ch_m126_receipt_cycle = var:zg361_mg_q126_cycle
+						var:zg361_ch_m126_receipt_case > var:zg361_mg_q126_case
+					}
+					AND = {
+						var:zg361_ch_m126_receipt_cycle = var:zg361_mg_q126_cycle
+						var:zg361_ch_m126_receipt_case = var:zg361_mg_q126_case
+						var:zg361_ch_m126_receipt_state > var:zg361_mg_q126_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q126_projected value = 1 }
+		set_variable = { name = zg361_mg_q126_source value = 1 }
+		set_variable = { name = zg361_mg_q126_owner value = var:zg361_ch_m126_receipt_owner }
+		set_variable = { name = zg361_mg_q126_subject value = this }
+		set_variable = { name = zg361_mg_q126_cycle value = var:zg361_ch_m126_receipt_cycle }
+		set_variable = { name = zg361_mg_q126_case value = var:zg361_ch_m126_receipt_case }
+		set_variable = { name = zg361_mg_q126_state value = var:zg361_ch_m126_receipt_state }
+		set_variable = { name = zg361_mg_q126_route value = var:zg361_ch_m126_receipt_route }
+		set_variable = { name = zg361_mg_q126_value value = var:zg361_ch_m126_value }
+		set_variable = { name = zg361_mg_q126_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m126_receipt_route = 1 var:zg361_ch_m126_receipt_route = 2 }
+				has_variable = zg361_ch_m126_manager_object_id
+				has_variable = zg361_ch_m126_manager_object_owner
+				has_variable = zg361_ch_m126_manager_object_subject
+				has_variable = zg361_ch_m126_manager_object_cycle
+				has_variable = zg361_ch_m126_manager_object_case
+				has_variable = zg361_ch_m126_manager_object_state
+				has_variable = zg361_ch_m126_manager_object_revision
+				var:zg361_ch_m126_manager_object_owner = var:zg361_ch_m126_receipt_owner
+				var:zg361_ch_m126_manager_object_subject = this
+				var:zg361_ch_m126_manager_object_cycle = var:zg361_ch_m126_receipt_cycle
+				var:zg361_ch_m126_manager_object_case = var:zg361_ch_m126_receipt_case
+				var:zg361_ch_m126_manager_object_state = var:zg361_ch_m126_receipt_state
+				var:zg361_ch_m126_manager_object_route = var:zg361_ch_m126_receipt_route
+			}
+			set_variable = { name = zg361_mg_q126_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q126_authoritative_object_id value = var:zg361_ch_m126_manager_object_id }
+			set_variable = { name = zg361_mg_q126_authoritative_object_owner value = var:zg361_ch_m126_manager_object_owner }
+			set_variable = { name = zg361_mg_q126_authoritative_object_subject value = var:zg361_ch_m126_manager_object_subject }
+			set_variable = { name = zg361_mg_q126_authoritative_object_cycle value = var:zg361_ch_m126_manager_object_cycle }
+			set_variable = { name = zg361_mg_q126_authoritative_object_case value = var:zg361_ch_m126_manager_object_case }
+			set_variable = { name = zg361_mg_q126_authoritative_object_state value = var:zg361_ch_m126_manager_object_state }
+			set_variable = { name = zg361_mg_q126_authoritative_object_revision value = var:zg361_ch_m126_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q127_projected
+			var:zg361_mg_q127_owner = var:zg361_ch_m127_receipt_owner
+			var:zg361_mg_q127_subject = this
+			var:zg361_mg_q127_cycle = var:zg361_ch_m127_receipt_cycle
+			var:zg361_mg_q127_case = var:zg361_ch_m127_receipt_case
+			var:zg361_mg_q127_state = var:zg361_ch_m127_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q127_route = var:zg361_ch_m127_receipt_route }
+				NOT = { var:zg361_mg_q127_value = var:zg361_ch_m127_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 127 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q127_projected
+			has_variable = zg361_ch_m127_receipt_owner
+			has_variable = zg361_ch_m127_receipt_cycle
+			has_variable = zg361_ch_m127_receipt_case
+			has_variable = zg361_ch_m127_receipt_state
+			OR = {
+				var:zg361_ch_m127_receipt_cycle < var:zg361_mg_q127_cycle
+				AND = {
+					var:zg361_ch_m127_receipt_cycle = var:zg361_mg_q127_cycle
+					var:zg361_ch_m127_receipt_case < var:zg361_mg_q127_case
+				}
+				AND = {
+					var:zg361_ch_m127_receipt_cycle = var:zg361_mg_q127_cycle
+					var:zg361_ch_m127_receipt_case = var:zg361_mg_q127_case
+					var:zg361_ch_m127_receipt_state < var:zg361_mg_q127_state
+				}
+				AND = {
+					var:zg361_ch_m127_receipt_cycle = var:zg361_mg_q127_cycle
+					var:zg361_ch_m127_receipt_case = var:zg361_mg_q127_case
+					var:zg361_ch_m127_receipt_state = var:zg361_mg_q127_state
+					NOT = { var:zg361_ch_m127_receipt_owner = var:zg361_mg_q127_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 127 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m127_consumed
+			var:zg361_ch_m127_consumed = 1
+			has_variable = zg361_ch_m127_business_consumed
+			var:zg361_ch_m127_business_consumed = 1
+			has_variable = zg361_ch_m127_receipt_owner
+			has_variable = zg361_ch_m127_receipt_subject
+			has_variable = zg361_ch_m127_receipt_cycle
+			has_variable = zg361_ch_m127_receipt_case
+			has_variable = zg361_ch_m127_receipt_state
+			has_variable = zg361_ch_m127_receipt_route
+			has_variable = zg361_ch_m127_value
+			var:zg361_ch_m127_receipt_subject = this
+			var:zg361_ch_m127_receipt_state = 4
+			OR = {
+				AND = { var:zg361_ch_m127_receipt_route = 1 var:zg361_ch_m127_value = 1 }
+				AND = { var:zg361_ch_m127_receipt_route = 2 var:zg361_ch_m127_value = -1 }
+				AND = { var:zg361_ch_m127_receipt_route = 3 var:zg361_ch_m127_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q127_projected }
+				OR = {
+					var:zg361_ch_m127_receipt_cycle > var:zg361_mg_q127_cycle
+					AND = {
+						var:zg361_ch_m127_receipt_cycle = var:zg361_mg_q127_cycle
+						var:zg361_ch_m127_receipt_case > var:zg361_mg_q127_case
+					}
+					AND = {
+						var:zg361_ch_m127_receipt_cycle = var:zg361_mg_q127_cycle
+						var:zg361_ch_m127_receipt_case = var:zg361_mg_q127_case
+						var:zg361_ch_m127_receipt_state > var:zg361_mg_q127_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q127_projected value = 1 }
+		set_variable = { name = zg361_mg_q127_source value = 1 }
+		set_variable = { name = zg361_mg_q127_owner value = var:zg361_ch_m127_receipt_owner }
+		set_variable = { name = zg361_mg_q127_subject value = this }
+		set_variable = { name = zg361_mg_q127_cycle value = var:zg361_ch_m127_receipt_cycle }
+		set_variable = { name = zg361_mg_q127_case value = var:zg361_ch_m127_receipt_case }
+		set_variable = { name = zg361_mg_q127_state value = var:zg361_ch_m127_receipt_state }
+		set_variable = { name = zg361_mg_q127_route value = var:zg361_ch_m127_receipt_route }
+		set_variable = { name = zg361_mg_q127_value value = var:zg361_ch_m127_value }
+		set_variable = { name = zg361_mg_q127_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m127_receipt_route = 1 var:zg361_ch_m127_receipt_route = 2 }
+				has_variable = zg361_ch_m127_manager_object_id
+				has_variable = zg361_ch_m127_manager_object_owner
+				has_variable = zg361_ch_m127_manager_object_subject
+				has_variable = zg361_ch_m127_manager_object_cycle
+				has_variable = zg361_ch_m127_manager_object_case
+				has_variable = zg361_ch_m127_manager_object_state
+				has_variable = zg361_ch_m127_manager_object_revision
+				var:zg361_ch_m127_manager_object_owner = var:zg361_ch_m127_receipt_owner
+				var:zg361_ch_m127_manager_object_subject = this
+				var:zg361_ch_m127_manager_object_cycle = var:zg361_ch_m127_receipt_cycle
+				var:zg361_ch_m127_manager_object_case = var:zg361_ch_m127_receipt_case
+				var:zg361_ch_m127_manager_object_state = var:zg361_ch_m127_receipt_state
+				var:zg361_ch_m127_manager_object_route = var:zg361_ch_m127_receipt_route
+			}
+			set_variable = { name = zg361_mg_q127_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q127_authoritative_object_id value = var:zg361_ch_m127_manager_object_id }
+			set_variable = { name = zg361_mg_q127_authoritative_object_owner value = var:zg361_ch_m127_manager_object_owner }
+			set_variable = { name = zg361_mg_q127_authoritative_object_subject value = var:zg361_ch_m127_manager_object_subject }
+			set_variable = { name = zg361_mg_q127_authoritative_object_cycle value = var:zg361_ch_m127_manager_object_cycle }
+			set_variable = { name = zg361_mg_q127_authoritative_object_case value = var:zg361_ch_m127_manager_object_case }
+			set_variable = { name = zg361_mg_q127_authoritative_object_state value = var:zg361_ch_m127_manager_object_state }
+			set_variable = { name = zg361_mg_q127_authoritative_object_revision value = var:zg361_ch_m127_manager_object_revision }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_q128_projected
+			var:zg361_mg_q128_owner = var:zg361_ch_m128_receipt_owner
+			var:zg361_mg_q128_subject = this
+			var:zg361_mg_q128_cycle = var:zg361_ch_m128_receipt_cycle
+			var:zg361_mg_q128_case = var:zg361_ch_m128_receipt_case
+			var:zg361_mg_q128_state = var:zg361_ch_m128_receipt_state
+			OR = {
+				NOT = { var:zg361_mg_q128_route = var:zg361_ch_m128_receipt_route }
+				NOT = { var:zg361_mg_q128_value = var:zg361_ch_m128_value }
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 128 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_q128_projected
+			has_variable = zg361_ch_m128_receipt_owner
+			has_variable = zg361_ch_m128_receipt_cycle
+			has_variable = zg361_ch_m128_receipt_case
+			has_variable = zg361_ch_m128_receipt_state
+			OR = {
+				var:zg361_ch_m128_receipt_cycle < var:zg361_mg_q128_cycle
+				AND = {
+					var:zg361_ch_m128_receipt_cycle = var:zg361_mg_q128_cycle
+					var:zg361_ch_m128_receipt_case < var:zg361_mg_q128_case
+				}
+				AND = {
+					var:zg361_ch_m128_receipt_cycle = var:zg361_mg_q128_cycle
+					var:zg361_ch_m128_receipt_case = var:zg361_mg_q128_case
+					var:zg361_ch_m128_receipt_state < var:zg361_mg_q128_state
+				}
+				AND = {
+					var:zg361_ch_m128_receipt_cycle = var:zg361_mg_q128_cycle
+					var:zg361_ch_m128_receipt_case = var:zg361_mg_q128_case
+					var:zg361_ch_m128_receipt_state = var:zg361_mg_q128_state
+					NOT = { var:zg361_ch_m128_receipt_owner = var:zg361_mg_q128_owner }
+				}
+			}
+		}
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 128 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ch_m128_consumed
+			var:zg361_ch_m128_consumed = 1
+			has_variable = zg361_ch_m128_business_consumed
+			var:zg361_ch_m128_business_consumed = 1
+			has_variable = zg361_ch_m128_receipt_owner
+			has_variable = zg361_ch_m128_receipt_subject
+			has_variable = zg361_ch_m128_receipt_cycle
+			has_variable = zg361_ch_m128_receipt_case
+			has_variable = zg361_ch_m128_receipt_state
+			has_variable = zg361_ch_m128_receipt_route
+			has_variable = zg361_ch_m128_value
+			var:zg361_ch_m128_receipt_subject = this
+			var:zg361_ch_m128_receipt_state = 4
+			OR = {
+				AND = { var:zg361_ch_m128_receipt_route = 1 var:zg361_ch_m128_value = 1 }
+				AND = { var:zg361_ch_m128_receipt_route = 2 var:zg361_ch_m128_value = -1 }
+				AND = { var:zg361_ch_m128_receipt_route = 3 var:zg361_ch_m128_value = 0 }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_mg_q128_projected }
+				OR = {
+					var:zg361_ch_m128_receipt_cycle > var:zg361_mg_q128_cycle
+					AND = {
+						var:zg361_ch_m128_receipt_cycle = var:zg361_mg_q128_cycle
+						var:zg361_ch_m128_receipt_case > var:zg361_mg_q128_case
+					}
+					AND = {
+						var:zg361_ch_m128_receipt_cycle = var:zg361_mg_q128_cycle
+						var:zg361_ch_m128_receipt_case = var:zg361_mg_q128_case
+						var:zg361_ch_m128_receipt_state > var:zg361_mg_q128_state
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_q128_projected value = 1 }
+		set_variable = { name = zg361_mg_q128_source value = 1 }
+		set_variable = { name = zg361_mg_q128_owner value = var:zg361_ch_m128_receipt_owner }
+		set_variable = { name = zg361_mg_q128_subject value = this }
+		set_variable = { name = zg361_mg_q128_cycle value = var:zg361_ch_m128_receipt_cycle }
+		set_variable = { name = zg361_mg_q128_case value = var:zg361_ch_m128_receipt_case }
+		set_variable = { name = zg361_mg_q128_state value = var:zg361_ch_m128_receipt_state }
+		set_variable = { name = zg361_mg_q128_route value = var:zg361_ch_m128_receipt_route }
+		set_variable = { name = zg361_mg_q128_value value = var:zg361_ch_m128_value }
+		set_variable = { name = zg361_mg_q128_authoritative_object_present value = 0 }
+		if = {
+			limit = {
+				OR = { var:zg361_ch_m128_receipt_route = 1 var:zg361_ch_m128_receipt_route = 2 }
+				has_variable = zg361_ch_m128_manager_object_id
+				has_variable = zg361_ch_m128_manager_object_owner
+				has_variable = zg361_ch_m128_manager_object_subject
+				has_variable = zg361_ch_m128_manager_object_cycle
+				has_variable = zg361_ch_m128_manager_object_case
+				has_variable = zg361_ch_m128_manager_object_state
+				has_variable = zg361_ch_m128_manager_object_revision
+				var:zg361_ch_m128_manager_object_owner = var:zg361_ch_m128_receipt_owner
+				var:zg361_ch_m128_manager_object_subject = this
+				var:zg361_ch_m128_manager_object_cycle = var:zg361_ch_m128_receipt_cycle
+				var:zg361_ch_m128_manager_object_case = var:zg361_ch_m128_receipt_case
+				var:zg361_ch_m128_manager_object_state = var:zg361_ch_m128_receipt_state
+				var:zg361_ch_m128_manager_object_route = var:zg361_ch_m128_receipt_route
+			}
+			set_variable = { name = zg361_mg_q128_authoritative_object_present value = 1 }
+			set_variable = { name = zg361_mg_q128_authoritative_object_id value = var:zg361_ch_m128_manager_object_id }
+			set_variable = { name = zg361_mg_q128_authoritative_object_owner value = var:zg361_ch_m128_manager_object_owner }
+			set_variable = { name = zg361_mg_q128_authoritative_object_subject value = var:zg361_ch_m128_manager_object_subject }
+			set_variable = { name = zg361_mg_q128_authoritative_object_cycle value = var:zg361_ch_m128_manager_object_cycle }
+			set_variable = { name = zg361_mg_q128_authoritative_object_case value = var:zg361_ch_m128_manager_object_case }
+			set_variable = { name = zg361_mg_q128_authoritative_object_state value = var:zg361_ch_m128_manager_object_state }
+			set_variable = { name = zg361_mg_q128_authoritative_object_revision value = var:zg361_ch_m128_manager_object_revision }
+		}
+	}
+}
+
+zg361_mg_settle_due_organization_kpi_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_organization_input_status
+			var:zg361_mg_organization_input_status = 1
+			has_variable = zg361_mg_organization_input_owner
+			has_variable = zg361_mg_organization_input_subject
+			has_variable = zg361_mg_organization_input_value
+			var:zg361_mg_organization_input_owner = liege
+			var:zg361_mg_organization_input_subject = this
+			has_variable = zg361_mg_organization_input_source_cycle
+			has_variable = zg361_mg_organization_input_due_cycle
+			AND = { var:zg361_mg_organization_input_due_cycle >= { value = var:zg361_mg_organization_input_source_cycle add = 1 } var:zg361_mg_organization_input_due_cycle <= { value = var:zg361_mg_organization_input_source_cycle add = 1 } }
+			OR = {
+				AND = {
+					has_variable = zg361_b1_cycle_serial
+					var:zg361_b1_cycle_serial >= var:zg361_mg_organization_input_due_cycle
+				}
+				AND = {
+					NOT = { has_variable = zg361_b1_cycle_serial }
+					has_variable = zg361_review_serial
+					var:zg361_review_serial >= var:zg361_mg_organization_input_source_cycle
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_organization_input_status value = 2 }
+		set_variable = { name = zg361_mg_organization_settled_by_owner value = liege }
+		set_variable = { name = zg361_mg_organization_settled_cycle value = var:zg361_mg_organization_input_due_cycle }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_organization_settled_cycle value = var:zg361_b1_cycle_serial } }
+		set_variable = { name = zg361_mg_organization_settled_value value = var:zg361_mg_organization_input_value }
+		set_variable = { name = zg361_mg_organization_settlement_receipt value = var:zg361_mg_organization_input_source_case }
+	}
+}
+
+zg361_mg_apply_due_distribution_policy_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_mg_distribution_policy_status
+			var:zg361_mg_distribution_policy_status = 1
+			has_variable = zg361_mg_distribution_policy_owner
+			var:zg361_mg_distribution_policy_owner = this
+			has_variable = zg361_mg_distribution_policy_source_cycle
+			has_variable = zg361_mg_distribution_policy_due_cycle
+			AND = { var:zg361_mg_distribution_policy_due_cycle >= { value = var:zg361_mg_distribution_policy_source_cycle add = 1 } var:zg361_mg_distribution_policy_due_cycle <= { value = var:zg361_mg_distribution_policy_source_cycle add = 1 } }
+			OR = {
+				AND = {
+					has_variable = zg361_b1_cycle_serial
+					var:zg361_b1_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
+				}
+				AND = {
+					NOT = { has_variable = zg361_b1_cycle_serial }
+					has_variable = zg361_review_serial
+					var:zg361_review_serial >= var:zg361_mg_distribution_policy_source_cycle
+				}
+			}
+			has_variable = zg361_mg_distribution_policy_mode
+			var:zg361_mg_distribution_policy_mode >= 1
+			var:zg361_mg_distribution_policy_mode <= 3
+		}
+		set_variable = { name = zg361_mg_distribution_effective_mode value = var:zg361_mg_distribution_policy_mode }
+		set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_mg_distribution_policy_due_cycle }
+		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_cycle_serial } }
+		set_variable = { name = zg361_mg_distribution_effective_source_cycle value = var:zg361_mg_distribution_policy_source_cycle }
+		set_variable = { name = zg361_mg_distribution_effective_source_case value = var:zg361_mg_distribution_policy_source_case }
+		set_variable = { name = zg361_mg_distribution_effective_input_revision value = var:zg361_mg_distribution_policy_input_revision }
+		set_variable = { name = zg361_mg_distribution_policy_applied_this_rank value = 1 }
+		set_variable = { name = zg361_mg_distribution_policy_status value = 2 }
+		set_variable = { name = zg361_mg_distribution_policy_settled_cycle value = var:zg361_mg_distribution_effective_cycle }
+		set_variable = { name = zg361_mg_distribution_policy_settlement_receipt value = var:zg361_mg_distribution_policy_source_case }
+	}
+}
+
+zg361_mg_set_bottom_slots_effect = {
+	set_variable = { name = zg361_mg_distribution_policy_applied_this_rank value = 0 }
+	zg361_mg_apply_due_distribution_policy_effect = yes
+	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
+	if = {
+		limit = { var:zg361_mg_distribution_policy_applied_this_rank = 1 }
+		set_variable = { name = zg361_bottom_slots value = zg361_mg_effective_bottom_slots_value }
+	}
+	remove_variable = zg361_mg_distribution_policy_applied_this_rank
+}
+
+zg361_mg_m360_apply_collective_cost_c1_effect = {
+	zg361_mg_clear_red_effect = yes
+	remove_variable = zg361_mg_m360_collective_cost_last_result
+	set_variable = { name = zg361_mg_m360_collective_cost_last_ordinal value = 1 }
+	if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c1_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+		}
+		# Route B has no approved exception and therefore no cost receipt.
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 3 }
+		debug_log = "ZG361MG: mechanism 360 cohort 1 manager cost is N/A on route B"
+	}
+	else_if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c1_can_apply_trigger = yes
+			zg361_mg_m360_collective_cost_c1_receipt_is_current_trigger = yes
+		}
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 2 }
+		debug_log = "ZG361MG: mechanism 360 cohort 1 exact manager-cost replay"
+	}
+	else_if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c1_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+		}
+		set_variable = { name = zg361_mg_m360_cost_receipt_owner value = scope:zg361_we_m360_cost_owner }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_subject value = scope:zg361_we_m360_cost_subject }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_settlement_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_settlement_hash value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash }
+		set_variable = { name = zg361_mg_m360_cost_receipt_cohort_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_ordinal value = 1 }
+		set_variable = { name = zg361_mg_m360_cost_receipt_manager value = this }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_snapshot_source_serial }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_revision value = var:zg361_mg_team_snapshot_revision }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_id value = var:zg361_b1_m360_source_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_hash value = var:zg361_b1_m360_source_hash }
+		set_variable = { name = zg361_mg_m360_cost_receipt_route value = 1 }
+		set_variable = { name = zg361_mg_m360_cost_receipt_quota value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_quota }
+		set_variable = { name = zg361_mg_m360_cost_receipt_exception_count value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_exception_count }
+		set_variable = { name = zg361_mg_m360_cost_receipt_cost value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost }
+		set_variable = { name = zg361_mg_m360_cost_receipt_id value = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_hash value = { value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = 10 add = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_before value = var:zg361_mg_manager_score }
+		change_variable = { name = zg361_mg_manager_score add = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_after value = var:zg361_mg_manager_score }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_delta value = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_status value = 1 }
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 1 }
+		debug_log = "ZG361MG: mechanism 360 cohort 1 real manager score cost applied"
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_m360_cost_receipt_status
+			var:zg361_mg_m360_cost_receipt_status = 1
+			OR = {
+				AND = {
+					has_variable = zg361_mg_m360_cost_receipt_id
+					AND = { var:zg361_mg_m360_cost_receipt_id >= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 } var:zg361_mg_m360_cost_receipt_id <= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 } }
+				}
+				AND = {
+					has_variable = zg361_mg_m360_cost_receipt_settlement_id
+					has_variable = zg361_mg_m360_cost_receipt_cohort_id
+					var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+					var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 4 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 360 }
+	}
+	else = {
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 4 }
+		zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 360 }
+	}
+}
+
+zg361_mg_m360_apply_collective_cost_c2_effect = {
+	zg361_mg_clear_red_effect = yes
+	remove_variable = zg361_mg_m360_collective_cost_last_result
+	set_variable = { name = zg361_mg_m360_collective_cost_last_ordinal value = 2 }
+	if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c2_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+		}
+		# Route B has no approved exception and therefore no cost receipt.
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 3 }
+		debug_log = "ZG361MG: mechanism 360 cohort 2 manager cost is N/A on route B"
+	}
+	else_if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c2_can_apply_trigger = yes
+			zg361_mg_m360_collective_cost_c2_receipt_is_current_trigger = yes
+		}
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 2 }
+		debug_log = "ZG361MG: mechanism 360 cohort 2 exact manager-cost replay"
+	}
+	else_if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c2_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+		}
+		set_variable = { name = zg361_mg_m360_cost_receipt_owner value = scope:zg361_we_m360_cost_owner }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_subject value = scope:zg361_we_m360_cost_subject }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_settlement_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_settlement_hash value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash }
+		set_variable = { name = zg361_mg_m360_cost_receipt_cohort_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_ordinal value = 2 }
+		set_variable = { name = zg361_mg_m360_cost_receipt_manager value = this }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_snapshot_source_serial }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_revision value = var:zg361_mg_team_snapshot_revision }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_id value = var:zg361_b1_m360_source_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_hash value = var:zg361_b1_m360_source_hash }
+		set_variable = { name = zg361_mg_m360_cost_receipt_route value = 1 }
+		set_variable = { name = zg361_mg_m360_cost_receipt_quota value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_quota }
+		set_variable = { name = zg361_mg_m360_cost_receipt_exception_count value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_exception_count }
+		set_variable = { name = zg361_mg_m360_cost_receipt_cost value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost }
+		set_variable = { name = zg361_mg_m360_cost_receipt_id value = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_hash value = { value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = 10 add = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_before value = var:zg361_mg_manager_score }
+		change_variable = { name = zg361_mg_manager_score add = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_after value = var:zg361_mg_manager_score }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_delta value = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_status value = 1 }
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 1 }
+		debug_log = "ZG361MG: mechanism 360 cohort 2 real manager score cost applied"
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_m360_cost_receipt_status
+			var:zg361_mg_m360_cost_receipt_status = 1
+			OR = {
+				AND = {
+					has_variable = zg361_mg_m360_cost_receipt_id
+					AND = { var:zg361_mg_m360_cost_receipt_id >= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 } var:zg361_mg_m360_cost_receipt_id <= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 } }
+				}
+				AND = {
+					has_variable = zg361_mg_m360_cost_receipt_settlement_id
+					has_variable = zg361_mg_m360_cost_receipt_cohort_id
+					var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+					var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 4 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 360 }
+	}
+	else = {
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 4 }
+		zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 360 }
+	}
+}
+
+zg361_mg_m360_apply_collective_cost_c3_effect = {
+	zg361_mg_clear_red_effect = yes
+	remove_variable = zg361_mg_m360_collective_cost_last_result
+	set_variable = { name = zg361_mg_m360_collective_cost_last_ordinal value = 3 }
+	if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c3_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+		}
+		# Route B has no approved exception and therefore no cost receipt.
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 3 }
+		debug_log = "ZG361MG: mechanism 360 cohort 3 manager cost is N/A on route B"
+	}
+	else_if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c3_can_apply_trigger = yes
+			zg361_mg_m360_collective_cost_c3_receipt_is_current_trigger = yes
+		}
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 2 }
+		debug_log = "ZG361MG: mechanism 360 cohort 3 exact manager-cost replay"
+	}
+	else_if = {
+		limit = {
+			zg361_mg_m360_collective_cost_c3_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+		}
+		set_variable = { name = zg361_mg_m360_cost_receipt_owner value = scope:zg361_we_m360_cost_owner }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_subject value = scope:zg361_we_m360_cost_subject }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_al_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_settlement_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_settlement_hash value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash }
+		set_variable = { name = zg361_mg_m360_cost_receipt_cohort_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_ordinal value = 3 }
+		set_variable = { name = zg361_mg_m360_cost_receipt_manager value = this }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_snapshot_source_serial }
+		set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_revision value = var:zg361_mg_team_snapshot_revision }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_cycle }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_case }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_id value = var:zg361_b1_m360_source_id }
+		set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_hash value = var:zg361_b1_m360_source_hash }
+		set_variable = { name = zg361_mg_m360_cost_receipt_route value = 1 }
+		set_variable = { name = zg361_mg_m360_cost_receipt_quota value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_quota }
+		set_variable = { name = zg361_mg_m360_cost_receipt_exception_count value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_exception_count }
+		set_variable = { name = zg361_mg_m360_cost_receipt_cost value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost }
+		set_variable = { name = zg361_mg_m360_cost_receipt_id value = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_hash value = { value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = 10 add = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_before value = var:zg361_mg_manager_score }
+		change_variable = { name = zg361_mg_manager_score add = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_after value = var:zg361_mg_manager_score }
+		set_variable = { name = zg361_mg_m360_cost_receipt_score_delta value = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost } }
+		set_variable = { name = zg361_mg_m360_cost_receipt_status value = 1 }
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 1 }
+		debug_log = "ZG361MG: mechanism 360 cohort 3 real manager score cost applied"
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_mg_m360_cost_receipt_status
+			var:zg361_mg_m360_cost_receipt_status = 1
+			OR = {
+				AND = {
+					has_variable = zg361_mg_m360_cost_receipt_id
+					AND = { var:zg361_mg_m360_cost_receipt_id >= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 } var:zg361_mg_m360_cost_receipt_id <= { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 } }
+				}
+				AND = {
+					has_variable = zg361_mg_m360_cost_receipt_settlement_id
+					has_variable = zg361_mg_m360_cost_receipt_cohort_id
+					var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+					var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 4 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 360 }
+	}
+	else = {
+		set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 4 }
+		zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 360 }
+	}
+}

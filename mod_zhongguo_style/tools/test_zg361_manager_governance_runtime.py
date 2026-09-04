@@ -7,6 +7,7 @@ must not be cited as MCP, fixture-live, or production-live CK3 evidence.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
 import sys
@@ -16,11 +17,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from gen_361_manager_governance_runtime import (
     BINDINGS,
+    BOM,
     COLLECTIVE_COST_ORDINALS,
+    EFFECT_GROUPS,
+    EFFECT_HARD_LIMIT_EXCEPTIONS,
+    EFFECT_HARD_MAX,
+    EFFECT_TARGET_MAX,
+    HEADER,
     INPUT_FINGERPRINT_GUARDS,
     INPUT_FINGERPRINT_OPAQUE_VARS,
     INPUT_FINGERPRINT_RAW_VALUES,
     INPUT_FINGERPRINT_VARS,
+    LEGACY_EFFECT_FILENAME,
     MOD_ROOT,
     DISTRIBUTION_DUE_GUARD,
     ORGANIZATION_DUE_GUARD,
@@ -29,6 +37,7 @@ from gen_361_manager_governance_runtime import (
     SHARED_HOOK_CONTRACT,
     TARGET_IDS,
     outputs,
+    render_effects,
 )
 
 
@@ -101,9 +110,11 @@ def localization_keys(text: str) -> tuple[str, ...]:
 class ManagerGovernanceRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(
-            "common/scripted_effects/zg361_manager_governance_runtime_effects.txt"
-        )
+        cls.effect_parts = {
+            filename: read(f"common/scripted_effects/{filename}")
+            for filename, _names in EFFECT_GROUPS
+        }
+        cls.effects = "\n\n".join(cls.effect_parts.values())
         cls.manager_triggers = read(
             "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt"
         )
@@ -151,13 +162,16 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
     def test_generated_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = outputs()
-        self.assertEqual(len(rendered), 13)
+        self.assertEqual(len(rendered), 12 + len(EFFECT_GROUPS))
+        effect_paths = {
+            f"common/scripted_effects/{filename}"
+            for filename, _names in EFFECT_GROUPS
+        }
         allowed_roots = {
-            "common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
             "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt",
             "common/script_values/zg361_manager_governance_runtime_values.txt",
             "events/zg361_manager_governance_runtime_events.txt",
-        }
+        } | effect_paths
         for path, payload in rendered.items():
             with self.subTest(path=path):
                 self.assertEqual(path.read_bytes(), payload)
@@ -168,6 +182,54 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                     or relative.startswith("localization/")
                     and "zg361_manager_governance_l_" in relative
                 )
+
+    def test_effects_are_complete_byte_identical_purpose_shards(self) -> None:
+        self.assertEqual(len(EFFECT_GROUPS), 7)
+        self.assertEqual(EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+        effects_dir = MOD_ROOT / "common" / "scripted_effects"
+        self.assertFalse((effects_dir / LEGACY_EFFECT_FILENAME).exists())
+
+        historical_bytes = render_effects()
+        self.assertEqual(len(historical_bytes), 386_750)
+        self.assertEqual(
+            hashlib.sha256(historical_bytes).hexdigest(),
+            "53120757ab63b1694a3c2b93ef4ac7a409a71300767ce93382720a246d0dab18",
+        )
+        historical = historical_bytes.decode("utf-8-sig")
+        historical_names = re.findall(
+            r"(?m)^(zg361_mg_[a-z0-9_]+_effect)\s*=\s*\{",
+            historical,
+        )
+        configured_names = [
+            name for _filename, names in EFFECT_GROUPS for name in names
+        ]
+        self.assertEqual(len(historical_names), 43)
+        self.assertEqual(len(set(historical_names)), 43)
+        self.assertEqual(len(configured_names), 43)
+        self.assertEqual(len(set(configured_names)), 43)
+        self.assertEqual(set(configured_names), set(historical_names))
+
+        for filename, expected_names in EFFECT_GROUPS:
+            with self.subTest(filename=filename):
+                self.assertGreaterEqual(len(expected_names), 1)
+                self.assertLessEqual(len(expected_names), EFFECT_TARGET_MAX)
+                self.assertLessEqual(len(expected_names), EFFECT_HARD_MAX)
+                self.assertTrue(
+                    (effects_dir / filename).read_bytes().startswith(
+                        BOM + HEADER.encode("utf-8")
+                    )
+                )
+                part = self.effect_parts[filename]
+                actual_names = re.findall(
+                    r"(?m)^(zg361_mg_[a-z0-9_]+_effect)\s*=\s*\{",
+                    part,
+                )
+                self.assertEqual(actual_names, list(expected_names))
+                for name in expected_names:
+                    self.assertEqual(
+                        top_level_block(part, name),
+                        top_level_block(historical, name),
+                    )
 
     def test_manager_sources_models_tests_and_spec_keep_utf8_bom(self) -> None:
         for relative in (

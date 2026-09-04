@@ -11,6 +11,7 @@ until the adapter is wired and exercised through the MCP-first CK3 fixture.
 from __future__ import annotations
 
 import argparse
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -19,6 +20,96 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py\n"
 READINESS = "static-ready"
+LEGACY_EFFECT_FILENAME = "zg361_manager_governance_runtime_effects.txt"
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# Any future hard-limit exception must carry both an engineering reason and a
+# concrete CK3 live artifact.  The current B3 layout has no exception.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+
+# B3 effects are emitted by business purpose and call chain.  This keeps each
+# independently loaded CK3 source small enough to preserve the Phase-2 file
+# boundary diagnostic, without changing any top-level effect block.
+EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "zg361_manager_governance_core_adapters_effects.txt",
+        (
+            "zg361_mg_set_red_effect",
+            "zg361_mg_clear_red_effect",
+            "zg361_mg_consume_due_policy_debts_effect",
+            "zg361_mg_project_career_hc_q_receipts_effect",
+            "zg361_mg_settle_due_organization_kpi_effect",
+            "zg361_mg_apply_due_distribution_policy_effect",
+            "zg361_mg_set_bottom_slots_effect",
+            "zg361_mg_m360_apply_collective_cost_c1_effect",
+            "zg361_mg_m360_apply_collective_cost_c2_effect",
+            "zg361_mg_m360_apply_collective_cost_c3_effect",
+        ),
+    ),
+    (
+        "zg361_manager_governance_dispatch_effects.txt",
+        (
+            "zg361_mg_refuse_jingcha_exact_effect",
+            "zg361_mg_dispatch_subordinate_managers_effect",
+            "zg361_mg_schedule_f_ticket_effect",
+            "zg361_mg_schedule_ak_ticket_effect",
+            "zg361_mg_open_manager_governance_cases_effect",
+            "zg361_mg_freeze_team_snapshot_effect",
+            "zg361_mg_build_team_snapshot_effect",
+        ),
+    ),
+    (
+        "zg361_manager_review_effects.txt",
+        (
+            "zg361_mg_m035_freeze_distribution_effect",
+            "zg361_mg_m032_score_manager_effect",
+            "zg361_mg_m033_reason_code_effect",
+            "zg361_mg_m034_freeze_nine_box_effect",
+            "zg361_mg_reset_decade_log_effect",
+            "zg361_mg_m036_append_decade_log_effect",
+        ),
+    ),
+    (
+        "zg361_policy_intake_effects.txt",
+        (
+            "zg361_mg_m345_freeze_calendar_effect",
+            "zg361_mg_produce_offcycle_signal_effect",
+            "zg361_mg_m346_consume_offcycle_signal_effect",
+            "zg361_mg_ak_stage_1_effect",
+            "zg361_mg_produce_override_pair_effect",
+            "zg361_mg_m347_consume_override_effect",
+            "zg361_mg_m348_bind_exception_effect",
+            "zg361_mg_ak_stage_2_effect",
+        ),
+    ),
+    (
+        "zg361_policy_audit_effects.txt",
+        (
+            "zg361_mg_m349_run_audit_effect",
+            "zg361_mg_refund_audit_capacity_effect",
+            "zg361_mg_m350_version_benchmark_effect",
+            "zg361_mg_ak_stage_3_effect",
+        ),
+    ),
+    (
+        "zg361_policy_history_effects.txt",
+        (
+            "zg361_mg_m351_measure_pilot_effect",
+            "zg361_mg_m352_map_history_effect",
+            "zg361_mg_ak_stage_4_effect",
+        ),
+    ),
+    (
+        "zg361_policy_fairness_effects.txt",
+        (
+            "zg361_mg_m353_charge_admin_capacity_effect",
+            "zg361_mg_refund_admin_capacity_effect",
+            "zg361_mg_m354_audit_fairness_effect",
+            "zg361_mg_ak_stage_5_effect",
+            "zg361_mg_resolve_exception_due_effect",
+        ),
+    ),
+)
 
 # These are insertion contracts, not generator-owned files.  The shared KPI
 # and rank effects are intentionally left to their current owners; tests pin
@@ -3038,6 +3129,127 @@ zg361_mg_resolve_exception_due_effect = {{
     return generated(body)
 
 
+def _top_level_effect_blocks(source: str) -> tuple[tuple[str, str], ...]:
+    """Return complete top-level MG effect blocks in source order."""
+
+    matches = tuple(
+        re.finditer(
+            r"(?m)^(zg361_mg_[a-z0-9_]+_effect)\s*=\s*\{",
+            source,
+        )
+    )
+    blocks: list[tuple[str, str]] = []
+    for match in matches:
+        opening = source.index("{", match.start(), match.end())
+        depth = 0
+        quoted = False
+        escaped = False
+        commented = False
+        for index in range(opening, len(source)):
+            char = source[index]
+            if commented:
+                if char == "\n":
+                    commented = False
+                continue
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    quoted = False
+                continue
+            if char == "#":
+                commented = True
+            elif char == '"':
+                quoted = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    blocks.append(
+                        (match.group(1), source[match.start() : index + 1])
+                    )
+                    break
+        else:
+            raise ValueError(
+                f"unterminated manager/governance effect block: {match.group(1)}"
+            )
+    return tuple(blocks)
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render seven purpose shards without changing any effect block bytes."""
+
+    historical = render_effects().decode("utf-8-sig")
+    historical_blocks = _top_level_effect_blocks(historical)
+    historical_names = tuple(name for name, _block in historical_blocks)
+    block_by_name = dict(historical_blocks)
+    configured_names = tuple(
+        name for _filename, names in EFFECT_GROUPS for name in names
+    )
+
+    if len(EFFECT_GROUPS) != 7:
+        raise ValueError(
+            "manager/governance runtime must remain split into seven purpose files"
+        )
+    if len(historical_names) != 43 or len(set(historical_names)) != 43:
+        raise ValueError(
+            "manager/governance historical render must contain 43 unique effects"
+        )
+    if len(configured_names) != 43 or len(set(configured_names)) != 43:
+        raise ValueError(
+            "manager/governance purpose map must contain 43 unique effects"
+        )
+    if set(configured_names) != set(historical_names):
+        missing = sorted(set(historical_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(historical_names))
+        raise ValueError(
+            "manager/governance purpose map mismatch: "
+            f"missing={missing}, extra={extra}"
+        )
+
+    rendered: dict[str, bytes] = {}
+    for filename, names in EFFECT_GROUPS:
+        if not names:
+            raise ValueError(
+                "manager/governance purpose file must contain at least one "
+                f"effect: {filename}"
+            )
+        if len(names) > EFFECT_HARD_MAX:
+            exception = EFFECT_HARD_LIMIT_EXCEPTIONS.get(filename)
+            if (
+                exception is None
+                or len(exception) != 2
+                or not exception[0].strip()
+                or not exception[1].strip()
+            ):
+                raise ValueError(
+                    "manager/governance purpose file exceeds "
+                    f"{EFFECT_HARD_MAX} effects without a reason and CK3 "
+                    f"live-evidence reference: {filename}"
+                )
+        body = "\n\n".join(block_by_name[name] for name in names)
+        rendered[filename] = generated(
+            f"# Manager/governance purpose shard: {filename}\n\n{body}"
+        )
+
+    exception_files = set(EFFECT_HARD_LIMIT_EXCEPTIONS)
+    oversized_files = {
+        filename
+        for filename, names in EFFECT_GROUPS
+        if len(names) > EFFECT_HARD_MAX
+    }
+    if exception_files != oversized_files:
+        raise ValueError(
+            "manager/governance hard-limit exceptions must exactly match "
+            f"oversized shards: exceptions={sorted(exception_files)}, "
+            f"oversized={sorted(oversized_files)}"
+        )
+    return rendered
+
+
 def render_events() -> bytes:
     return generated(r'''
 namespace = zg361mg
@@ -3241,14 +3453,20 @@ def render_english_placeholder_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_bindings()
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_manager_governance_runtime_effects.txt": render_effects(),
         MOD_ROOT / "common" / "scripted_triggers" / "zg361_manager_governance_runtime_triggers.txt": render_collective_cost_triggers(),
         MOD_ROOT / "common" / "script_values" / "zg361_manager_governance_runtime_values.txt": render_values(),
         MOD_ROOT / "events" / "zg361_manager_governance_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_manager_governance_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_manager_governance_l_simp_chinese.yml": render_simp_chinese_localization(),
     }
+    rendered.update(
+        {
+            effects_dir / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
     for language in ("french", "german", "japanese", "korean", "polish", "russian", "spanish"):
         rendered[
             MOD_ROOT / "localization" / language / f"zg361_manager_governance_l_{language}.yml"
@@ -3262,17 +3480,24 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    legacy_effect_path = (
+        MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
+    )
     if args.check:
-        if stale:
+        if stale or legacy_effect_path.exists():
             print("RED: stale manager/governance generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            if legacy_effect_path.exists():
+                print(f"{legacy_effect_path.relative_to(MOD_ROOT)} (legacy monolith)")
             return 1
         print("GREEN: manager/governance generated files are current")
         return 0
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+    if legacy_effect_path.exists():
+        legacy_effect_path.unlink()
     print(f"GREEN: generated {len(rendered)} manager/governance runtime files")
     return 0
 

@@ -1,0 +1,670 @@
+﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
+# Manager/governance purpose shard: zg361_policy_audit_effects.txt
+
+zg361_mg_m349_run_audit_effect = {
+	remove_variable = zg361_mg_m349_replay_route_conflict
+	set_variable = { name = zg361_mg_m349_requested_route value = 1 }
+	if = {
+		limit = { has_variable = zg361_mechanism_349_choice }
+		set_variable = { name = zg361_mg_m349_requested_route value = var:zg361_mechanism_349_choice }
+	}
+	if = {
+		limit = { OR = { var:zg361_mg_m349_requested_route < 1 var:zg361_mg_m349_requested_route > 3 } }
+		set_variable = { name = zg361_mg_m349_requested_route value = 1 }
+	}
+	set_variable = { name = zg361_mg_m349_requested_input_fingerprint value = 352141 }
+	if = {
+		limit = {
+		has_variable = zg361_mg_team_n
+	}
+		change_variable = { name = zg361_mg_m349_requested_input_fingerprint add = 1037 }
+		change_variable = { name = zg361_mg_m349_requested_input_fingerprint add = { value = var:zg361_mg_team_n multiply = 154 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_team_bottom_n
+	}
+		change_variable = { name = zg361_mg_m349_requested_input_fingerprint add = 1074 }
+		change_variable = { name = zg361_mg_m349_requested_input_fingerprint add = { value = var:zg361_mg_team_bottom_n multiply = 207 } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m349_route
+			has_variable = zg361_mg_m349_route_cycle
+			has_variable = zg361_mg_m349_route_case
+			OR = {
+				var:zg361_case_ak_cycle_serial < var:zg361_mg_m349_route_cycle
+				AND = {
+					var:zg361_case_ak_cycle_serial = var:zg361_mg_m349_route_cycle
+					var:zg361_case_ak_case_serial < var:zg361_mg_m349_route_case
+				}
+				AND = {
+					var:zg361_case_ak_cycle_serial = var:zg361_mg_m349_route_cycle
+					var:zg361_case_ak_case_serial = var:zg361_mg_m349_route_case
+					NOT = { var:zg361_case_ak_owner = var:zg361_mg_m349_route_owner }
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m349_replay_route_conflict value = 1 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 349 }
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_mg_m349_replay_route_conflict }
+			OR = {
+				NOT = { has_variable = zg361_mg_m349_route }
+				NOT = { var:zg361_mg_m349_route_owner = var:zg361_case_ak_owner }
+				NOT = { var:zg361_mg_m349_route_subject = this }
+				NOT = { var:zg361_mg_m349_route_cycle = var:zg361_case_ak_cycle_serial }
+				NOT = { var:zg361_mg_m349_route_case = var:zg361_case_ak_case_serial }
+			}
+		}
+		set_variable = { name = zg361_mg_m349_route value = var:zg361_mg_m349_requested_route }
+		set_variable = { name = zg361_mg_m349_route_owner value = var:zg361_case_ak_owner }
+		set_variable = { name = zg361_mg_m349_route_subject value = this }
+		set_variable = { name = zg361_mg_m349_route_cycle value = var:zg361_case_ak_cycle_serial }
+		set_variable = { name = zg361_mg_m349_route_case value = var:zg361_case_ak_case_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_mg_m349_route_owner = var:zg361_case_ak_owner
+			var:zg361_mg_m349_route_subject = this
+			var:zg361_mg_m349_route_cycle = var:zg361_case_ak_cycle_serial
+			var:zg361_mg_m349_route_case = var:zg361_case_ak_case_serial
+			NOT = { var:zg361_mg_m349_requested_route = var:zg361_mg_m349_route }
+		}
+		set_variable = { name = zg361_mg_m349_replay_route_conflict value = 1 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 349 }
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_mg_m349_replay_route_conflict }
+			var:zg361_mg_m349_route_owner = var:zg361_case_ak_owner
+			var:zg361_mg_m349_route_subject = this
+			var:zg361_mg_m349_route_cycle = var:zg361_case_ak_cycle_serial
+			var:zg361_mg_m349_route_case = var:zg361_case_ak_case_serial
+			OR = {
+				AND = {
+					var:zg361_mg_m349_route = 3
+					has_variable = zg361_mg_m349_debt_input_fingerprint
+					var:zg361_mg_m349_debt_owner = var:zg361_case_ak_owner
+					var:zg361_mg_m349_debt_subject = this
+					var:zg361_mg_m349_debt_cycle = var:zg361_case_ak_cycle_serial
+					var:zg361_mg_m349_debt_case = var:zg361_case_ak_case_serial
+					NOT = { var:zg361_mg_m349_requested_input_fingerprint = var:zg361_mg_m349_debt_input_fingerprint }
+				}
+				AND = {
+					NOT = { var:zg361_mg_m349_route = 3 }
+					has_variable = zg361_mg_m349_object_input_fingerprint
+					var:zg361_mg_m349_object_owner = var:zg361_case_ak_owner
+					var:zg361_mg_m349_object_subject = this
+					var:zg361_mg_m349_object_cycle = var:zg361_case_ak_cycle_serial
+					var:zg361_mg_m349_object_case = var:zg361_case_ak_case_serial
+					NOT = { var:zg361_mg_m349_requested_input_fingerprint = var:zg361_mg_m349_object_input_fingerprint }
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m349_replay_route_conflict value = 1 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 349 }
+	}
+	if = {
+		limit = {
+			var:zg361_mg_m349_route = 3
+			var:zg361_case_ak_state = 3
+			var:zg361_case_ak_active = 1
+			var:zg361_case_ak_subject = this
+			NOT = { has_variable = zg361_mg_m349_replay_route_conflict }
+		NOT = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_mg_m349_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_mg_m349_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_mg_m349_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_mg_m349_receipt_case
+						RECEIPT_STATE_VAR = zg361_mg_m349_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_mg_m349_receipt_choice
+						EXPECTED_OWNER = var:zg361_case_ak_owner
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+						EXPECTED_CASE = var:zg361_case_ak_case_serial
+						EXPECTED_STATE = 3
+						EXPECTED_CHOICE = var:zg361_mg_m349_route
+					}
+		}
+		}
+		set_variable = { name = zg361_mg_m349_policy_debt value = 1 }
+		set_variable = { name = zg361_mg_m349_debt_status value = 1 }
+		set_variable = { name = zg361_mg_m349_debt_owner value = var:zg361_case_ak_owner }
+		set_variable = { name = zg361_mg_m349_debt_subject value = this }
+		set_variable = { name = zg361_mg_m349_debt_cycle value = var:zg361_case_ak_cycle_serial }
+		set_variable = { name = zg361_mg_m349_debt_case value = var:zg361_case_ak_case_serial }
+		set_variable = { name = zg361_mg_m349_debt_state value = var:zg361_case_ak_state }
+		set_variable = { name = zg361_mg_m349_debt_revision value = var:zg361_case_ak_revision }
+		set_variable = { name = zg361_mg_m349_debt_input_fingerprint value = var:zg361_mg_m349_requested_input_fingerprint }
+		set_variable = { name = zg361_mg_m349_next_review_serial value = { value = var:zg361_case_ak_cycle_serial add = 1 } }
+		set_variable = { name = zg361_mg_m349_business_object_created value = 0 }
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ak_owner
+			SUBJECT_VAR = zg361_case_ak_subject
+			CYCLE_VAR = zg361_case_ak_cycle_serial
+			CASE_VAR = zg361_case_ak_case_serial
+			STATE_VAR = zg361_case_ak_state
+			REVISION_VAR = zg361_case_ak_revision
+			ACTIVE_VAR = zg361_case_ak_active
+			TIMELINE_VAR = zg361_case_ak_timeline_serial
+			FEEDBACK_VAR = zg361_case_ak_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ak_last_operation
+			LAST_CHOICE_VAR = zg361_case_ak_last_choice
+			RECEIPT_OWNER_VAR = zg361_mg_m349_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m349_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m349_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m349_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m349_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m349_receipt_choice
+			TICKET_OWNER = var:zg361_case_ak_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_ak_cycle_serial
+			TICKET_CASE = var:zg361_case_ak_case_serial
+			TICKET_STATE = 3
+			CHOICE = var:zg361_mg_m349_route
+			OPERATION_ID = 349
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_case_ak_state = 3
+			var:zg361_case_ak_active = 1
+			has_variable = zg361_mg_admin_capacity_available
+			NOT = { has_variable = zg361_mg_m349_replay_route_conflict }
+		NOT = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_mg_m349_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_mg_m349_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_mg_m349_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_mg_m349_receipt_case
+						RECEIPT_STATE_VAR = zg361_mg_m349_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_mg_m349_receipt_choice
+						EXPECTED_OWNER = var:zg361_case_ak_owner
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+						EXPECTED_CASE = var:zg361_case_ak_case_serial
+						EXPECTED_STATE = 3
+						EXPECTED_CHOICE = var:zg361_mg_m349_route
+					}
+		}
+		}
+		set_variable = { name = zg361_mg_m349_business_object_created value = 1 }
+		set_variable = { name = zg361_mg_m349_object_owner value = var:zg361_case_ak_owner }
+		set_variable = { name = zg361_mg_m349_object_subject value = this }
+		set_variable = { name = zg361_mg_m349_object_cycle value = var:zg361_case_ak_cycle_serial }
+		set_variable = { name = zg361_mg_m349_object_case value = var:zg361_case_ak_case_serial }
+		set_variable = { name = zg361_mg_m349_object_state value = var:zg361_case_ak_state }
+		set_variable = { name = zg361_mg_m349_object_revision value = var:zg361_case_ak_revision }
+		set_variable = { name = zg361_mg_m349_object_route value = var:zg361_mg_m349_route }
+		set_variable = { name = zg361_mg_m349_object_kind value = 34901 }
+		set_variable = { name = zg361_mg_m349_object_input_fingerprint value = var:zg361_mg_m349_requested_input_fingerprint }
+		set_variable = { name = zg361_mg_m349_object_id value = { value = var:zg361_case_ak_case_serial multiply = 1000 add = 349 } }
+		set_variable = { name = zg361_mg_audit_population value = { value = var:zg361_mg_team_n max = 1 } }
+		set_variable = { name = zg361_mg_audit_rate value = 20 }
+		if = { limit = { var:zg361_mg_m349_route = 2 } set_variable = { name = zg361_mg_audit_rate value = 5 } }
+		set_variable = { name = zg361_mg_audit_effective_rate value = { value = var:zg361_mg_audit_rate subtract = 5 max = 1 } }
+		set_variable = { name = zg361_mg_audit_sample_n value = { value = var:zg361_mg_audit_population multiply = var:zg361_mg_audit_effective_rate divide = 100 floor = yes max = 1 } }
+		set_variable = { name = zg361_mg_audit_seed value = { value = var:zg361_case_ak_cycle_serial multiply = 1000 add = var:zg361_case_ak_case_serial } }
+		set_variable = { name = zg361_mg_audit_high_risk_n value = { value = var:zg361_mg_team_bottom_n max = 1 min = var:zg361_mg_audit_sample_n } }
+		if = { limit = { var:zg361_mg_m349_route = 2 } set_variable = { name = zg361_mg_audit_high_risk_n value = 0 } }
+		set_variable = { name = zg361_mg_audit_selection_fingerprint value = { value = var:zg361_mg_audit_seed add = var:zg361_mg_audit_high_risk_n multiply = 31 add = var:zg361_mg_audit_sample_n } }
+		set_variable = { name = zg361_mg_m349_audit_hours value = { value = var:zg361_mg_audit_sample_n multiply = 2 } }
+		if = {
+			limit = { var:zg361_mg_admin_capacity_available >= var:zg361_mg_m349_audit_hours }
+			zg361_case_kernel_reserve_transaction_effect = {
+				OWNER_VAR = zg361_case_ak_owner SUBJECT_VAR = zg361_case_ak_subject CYCLE_VAR = zg361_case_ak_cycle_serial CASE_VAR = zg361_case_ak_case_serial STATE_VAR = zg361_case_ak_state ACTIVE_VAR = zg361_case_ak_active REVISION_VAR = zg361_case_ak_revision
+				AVAILABLE_VAR = zg361_mg_admin_capacity_available RESERVED_VAR = zg361_mg_admin_capacity_reserved
+				RECEIPT_AMOUNT_VAR = zg361_mg_m349_capacity_amount RECEIPT_STATUS_VAR = zg361_mg_m349_capacity_status RECEIPT_OWNER_VAR = zg361_mg_m349_capacity_owner RECEIPT_CYCLE_VAR = zg361_mg_m349_capacity_cycle RECEIPT_CASE_VAR = zg361_mg_m349_capacity_case
+				TICKET_OWNER = var:zg361_case_ak_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_ak_cycle_serial TICKET_CASE = var:zg361_case_ak_case_serial TICKET_STATE = 3 AMOUNT = var:zg361_mg_m349_audit_hours
+			}
+			if = {
+				limit = { var:zg361_case_kernel_applied = 1 }
+				zg361_case_kernel_settle_transaction_effect = {
+					OWNER_VAR = zg361_case_ak_owner SUBJECT_VAR = zg361_case_ak_subject CYCLE_VAR = zg361_case_ak_cycle_serial CASE_VAR = zg361_case_ak_case_serial STATE_VAR = zg361_case_ak_state ACTIVE_VAR = zg361_case_ak_active REVISION_VAR = zg361_case_ak_revision
+					RESERVED_VAR = zg361_mg_admin_capacity_reserved SETTLED_VAR = zg361_mg_admin_capacity_settled RECEIPT_AMOUNT_VAR = zg361_mg_m349_capacity_amount RECEIPT_STATUS_VAR = zg361_mg_m349_capacity_status
+					TICKET_OWNER = var:zg361_case_ak_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_ak_cycle_serial TICKET_CASE = var:zg361_case_ak_case_serial TICKET_STATE = 3
+				}
+				set_variable = { name = zg361_mg_audit_findings value = { value = var:zg361_mg_team_bottom_n min = var:zg361_mg_audit_sample_n } }
+				set_variable = { name = zg361_mg_audit_clean value = { value = var:zg361_mg_audit_sample_n subtract = var:zg361_mg_audit_findings } }
+				set_variable = { name = zg361_mg_audit_settled value = 1 }
+				set_variable = { name = zg361_mg_audit_closed value = 1 }
+				set_variable = { name = zg361_mg_audit_method value = 1 }
+				set_variable = { name = zg361_mg_audit_severe_penalty_risk value = 0 }
+				if = { limit = { var:zg361_mg_m349_route = 2 } set_variable = { name = zg361_mg_audit_method value = 2 } set_variable = { name = zg361_mg_audit_severe_penalty_risk value = 1 } }
+				if = { limit = { NOT = { has_variable = zg361_mg_policy_trust } } set_variable = { name = zg361_mg_policy_trust value = 0 } }
+				if = { limit = { var:zg361_mg_m349_route = 1 } change_variable = { name = zg361_mg_policy_trust add = var:zg361_mg_audit_clean } }
+				# A completed reproducible audit is the sole remediation producer.
+				if = {
+					limit = {
+						var:zg361_mg_m349_route = 1
+						has_variable = zg361_mg_fairness_remediation_status
+						var:zg361_mg_fairness_remediation_status = 1
+						has_variable = zg361_mg_fairness_remediation_owner
+						has_variable = zg361_mg_fairness_remediation_subject
+						var:zg361_mg_fairness_remediation_owner = var:zg361_case_ak_owner
+						var:zg361_mg_fairness_remediation_subject = this
+						has_variable = zg361_mg_fairness_remediation_due_cycle
+						var:zg361_mg_fairness_remediation_due_cycle <= var:zg361_case_ak_cycle_serial
+					}
+					set_variable = { name = zg361_mg_fairness_remediation_status value = 2 }
+					set_variable = { name = zg361_mg_fairness_remediation_completed_cycle value = var:zg361_case_ak_cycle_serial }
+					set_variable = { name = zg361_mg_fairness_remediation_completed_case value = var:zg361_case_ak_case_serial }
+					set_variable = { name = zg361_mg_fairness_remediation_completed_revision value = var:zg361_mg_fairness_remediation_revision }
+					set_variable = { name = zg361_mg_fairness_remediation_completion_receipt value = var:zg361_mg_fairness_remediation_plan_id }
+				}
+				zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ak_owner
+			SUBJECT_VAR = zg361_case_ak_subject
+			CYCLE_VAR = zg361_case_ak_cycle_serial
+			CASE_VAR = zg361_case_ak_case_serial
+			STATE_VAR = zg361_case_ak_state
+			REVISION_VAR = zg361_case_ak_revision
+			ACTIVE_VAR = zg361_case_ak_active
+			TIMELINE_VAR = zg361_case_ak_timeline_serial
+			FEEDBACK_VAR = zg361_case_ak_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ak_last_operation
+			LAST_CHOICE_VAR = zg361_case_ak_last_choice
+			RECEIPT_OWNER_VAR = zg361_mg_m349_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m349_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m349_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m349_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m349_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m349_receipt_choice
+			TICKET_OWNER = var:zg361_case_ak_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_ak_cycle_serial
+			TICKET_CASE = var:zg361_case_ak_case_serial
+			TICKET_STATE = 3
+			CHOICE = var:zg361_mg_m349_route
+			OPERATION_ID = 349
+		}
+			}
+		}
+		else = { zg361_mg_set_red_effect = { CODE = 5 MECHANISM = 349 } }
+	}
+	else_if = { limit = { NOT = { var:zg361_mg_m349_route = 3 } NOT = { has_variable = zg361_mg_m349_replay_route_conflict }
+		NOT = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_mg_m349_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_mg_m349_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_mg_m349_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_mg_m349_receipt_case
+						RECEIPT_STATE_VAR = zg361_mg_m349_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_mg_m349_receipt_choice
+						EXPECTED_OWNER = var:zg361_case_ak_owner
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+						EXPECTED_CASE = var:zg361_case_ak_case_serial
+						EXPECTED_STATE = 3
+						EXPECTED_CHOICE = var:zg361_mg_m349_route
+					}
+		} } zg361_mg_set_red_effect = { CODE = 3 MECHANISM = 349 } }
+}
+
+zg361_mg_refund_audit_capacity_effect = {
+	if = {
+		limit = { var:zg361_case_ak_state = 3 var:zg361_case_ak_active = 1 has_variable = zg361_mg_m349_capacity_status var:zg361_mg_m349_capacity_status = 2 }
+		zg361_case_kernel_refund_transaction_effect = {
+			OWNER_VAR = zg361_case_ak_owner SUBJECT_VAR = zg361_case_ak_subject CYCLE_VAR = zg361_case_ak_cycle_serial CASE_VAR = zg361_case_ak_case_serial STATE_VAR = zg361_case_ak_state ACTIVE_VAR = zg361_case_ak_active REVISION_VAR = zg361_case_ak_revision
+			AVAILABLE_VAR = zg361_mg_admin_capacity_available RESERVED_VAR = zg361_mg_admin_capacity_reserved SETTLED_VAR = zg361_mg_admin_capacity_settled RECEIPT_AMOUNT_VAR = zg361_mg_m349_capacity_amount RECEIPT_STATUS_VAR = zg361_mg_m349_capacity_status
+			TICKET_OWNER = var:zg361_case_ak_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_ak_cycle_serial TICKET_CASE = var:zg361_case_ak_case_serial TICKET_STATE = 3
+		}
+		set_variable = { name = zg361_mg_audit_refunded value = 1 }
+	}
+	else = { debug_log = "ZG361MG: stale or duplicate audit refund ignored" }
+}
+
+zg361_mg_m350_version_benchmark_effect = {
+	remove_variable = zg361_mg_m350_replay_route_conflict
+	set_variable = { name = zg361_mg_m350_requested_route value = 1 }
+	if = {
+		limit = { has_variable = zg361_mechanism_350_choice }
+		set_variable = { name = zg361_mg_m350_requested_route value = var:zg361_mechanism_350_choice }
+	}
+	if = {
+		limit = { OR = { var:zg361_mg_m350_requested_route < 1 var:zg361_mg_m350_requested_route > 3 } }
+		set_variable = { name = zg361_mg_m350_requested_route value = 1 }
+	}
+	set_variable = { name = zg361_mg_m350_requested_input_fingerprint value = 353150 }
+	if = {
+		limit = {
+		has_variable = zg361_mg_manager_score
+		has_variable = zg361_mg_m032_receipt_choice
+					NOT = { var:zg361_mg_m032_receipt_choice = 3 }
+	}
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = 1037 }
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = { value = var:zg361_mg_manager_score multiply = 154 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_team_top_n
+	}
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = 1074 }
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = { value = var:zg361_mg_team_top_n multiply = 207 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_team_n
+	}
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = 1111 }
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = { value = var:zg361_mg_team_n multiply = 260 } }
+	}
+	if = {
+		limit = {
+		has_variable = zg361_mg_calendar_effective_cycle
+		has_variable = zg361_mg_m345_receipt_choice
+					NOT = { var:zg361_mg_m345_receipt_choice = 3 }
+	}
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = 1148 }
+		change_variable = { name = zg361_mg_m350_requested_input_fingerprint add = { value = var:zg361_mg_calendar_effective_cycle multiply = 313 } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_mg_m350_route
+			has_variable = zg361_mg_m350_route_cycle
+			has_variable = zg361_mg_m350_route_case
+			OR = {
+				var:zg361_case_ak_cycle_serial < var:zg361_mg_m350_route_cycle
+				AND = {
+					var:zg361_case_ak_cycle_serial = var:zg361_mg_m350_route_cycle
+					var:zg361_case_ak_case_serial < var:zg361_mg_m350_route_case
+				}
+				AND = {
+					var:zg361_case_ak_cycle_serial = var:zg361_mg_m350_route_cycle
+					var:zg361_case_ak_case_serial = var:zg361_mg_m350_route_case
+					NOT = { var:zg361_case_ak_owner = var:zg361_mg_m350_route_owner }
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m350_replay_route_conflict value = 1 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 350 }
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_mg_m350_replay_route_conflict }
+			OR = {
+				NOT = { has_variable = zg361_mg_m350_route }
+				NOT = { var:zg361_mg_m350_route_owner = var:zg361_case_ak_owner }
+				NOT = { var:zg361_mg_m350_route_subject = this }
+				NOT = { var:zg361_mg_m350_route_cycle = var:zg361_case_ak_cycle_serial }
+				NOT = { var:zg361_mg_m350_route_case = var:zg361_case_ak_case_serial }
+			}
+		}
+		set_variable = { name = zg361_mg_m350_route value = var:zg361_mg_m350_requested_route }
+		set_variable = { name = zg361_mg_m350_route_owner value = var:zg361_case_ak_owner }
+		set_variable = { name = zg361_mg_m350_route_subject value = this }
+		set_variable = { name = zg361_mg_m350_route_cycle value = var:zg361_case_ak_cycle_serial }
+		set_variable = { name = zg361_mg_m350_route_case value = var:zg361_case_ak_case_serial }
+	}
+	if = {
+		limit = {
+			var:zg361_mg_m350_route_owner = var:zg361_case_ak_owner
+			var:zg361_mg_m350_route_subject = this
+			var:zg361_mg_m350_route_cycle = var:zg361_case_ak_cycle_serial
+			var:zg361_mg_m350_route_case = var:zg361_case_ak_case_serial
+			NOT = { var:zg361_mg_m350_requested_route = var:zg361_mg_m350_route }
+		}
+		set_variable = { name = zg361_mg_m350_replay_route_conflict value = 1 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 350 }
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_mg_m350_replay_route_conflict }
+			var:zg361_mg_m350_route_owner = var:zg361_case_ak_owner
+			var:zg361_mg_m350_route_subject = this
+			var:zg361_mg_m350_route_cycle = var:zg361_case_ak_cycle_serial
+			var:zg361_mg_m350_route_case = var:zg361_case_ak_case_serial
+			OR = {
+				AND = {
+					var:zg361_mg_m350_route = 3
+					has_variable = zg361_mg_m350_debt_input_fingerprint
+					var:zg361_mg_m350_debt_owner = var:zg361_case_ak_owner
+					var:zg361_mg_m350_debt_subject = this
+					var:zg361_mg_m350_debt_cycle = var:zg361_case_ak_cycle_serial
+					var:zg361_mg_m350_debt_case = var:zg361_case_ak_case_serial
+					NOT = { var:zg361_mg_m350_requested_input_fingerprint = var:zg361_mg_m350_debt_input_fingerprint }
+				}
+				AND = {
+					NOT = { var:zg361_mg_m350_route = 3 }
+					has_variable = zg361_mg_m350_object_input_fingerprint
+					var:zg361_mg_m350_object_owner = var:zg361_case_ak_owner
+					var:zg361_mg_m350_object_subject = this
+					var:zg361_mg_m350_object_cycle = var:zg361_case_ak_cycle_serial
+					var:zg361_mg_m350_object_case = var:zg361_case_ak_case_serial
+					NOT = { var:zg361_mg_m350_requested_input_fingerprint = var:zg361_mg_m350_object_input_fingerprint }
+				}
+			}
+		}
+		set_variable = { name = zg361_mg_m350_replay_route_conflict value = 1 }
+		zg361_mg_set_red_effect = { CODE = 2 MECHANISM = 350 }
+	}
+	if = {
+		limit = {
+			var:zg361_mg_m350_route = 3
+			var:zg361_case_ak_state = 3
+			var:zg361_case_ak_active = 1
+			var:zg361_case_ak_subject = this
+			NOT = { has_variable = zg361_mg_m350_replay_route_conflict }
+		NOT = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_mg_m350_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_mg_m350_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_mg_m350_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_mg_m350_receipt_case
+						RECEIPT_STATE_VAR = zg361_mg_m350_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_mg_m350_receipt_choice
+						EXPECTED_OWNER = var:zg361_case_ak_owner
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+						EXPECTED_CASE = var:zg361_case_ak_case_serial
+						EXPECTED_STATE = 3
+						EXPECTED_CHOICE = var:zg361_mg_m350_route
+					}
+		}
+		}
+		set_variable = { name = zg361_mg_m350_policy_debt value = 1 }
+		set_variable = { name = zg361_mg_m350_debt_status value = 1 }
+		set_variable = { name = zg361_mg_m350_debt_owner value = var:zg361_case_ak_owner }
+		set_variable = { name = zg361_mg_m350_debt_subject value = this }
+		set_variable = { name = zg361_mg_m350_debt_cycle value = var:zg361_case_ak_cycle_serial }
+		set_variable = { name = zg361_mg_m350_debt_case value = var:zg361_case_ak_case_serial }
+		set_variable = { name = zg361_mg_m350_debt_state value = var:zg361_case_ak_state }
+		set_variable = { name = zg361_mg_m350_debt_revision value = var:zg361_case_ak_revision }
+		set_variable = { name = zg361_mg_m350_debt_input_fingerprint value = var:zg361_mg_m350_requested_input_fingerprint }
+		set_variable = { name = zg361_mg_m350_next_review_serial value = { value = var:zg361_case_ak_cycle_serial add = 1 } }
+		set_variable = { name = zg361_mg_m350_business_object_created value = 0 }
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ak_owner
+			SUBJECT_VAR = zg361_case_ak_subject
+			CYCLE_VAR = zg361_case_ak_cycle_serial
+			CASE_VAR = zg361_case_ak_case_serial
+			STATE_VAR = zg361_case_ak_state
+			REVISION_VAR = zg361_case_ak_revision
+			ACTIVE_VAR = zg361_case_ak_active
+			TIMELINE_VAR = zg361_case_ak_timeline_serial
+			FEEDBACK_VAR = zg361_case_ak_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ak_last_operation
+			LAST_CHOICE_VAR = zg361_case_ak_last_choice
+			RECEIPT_OWNER_VAR = zg361_mg_m350_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m350_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m350_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m350_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m350_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m350_receipt_choice
+			TICKET_OWNER = var:zg361_case_ak_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_ak_cycle_serial
+			TICKET_CASE = var:zg361_case_ak_case_serial
+			TICKET_STATE = 3
+			CHOICE = var:zg361_mg_m350_route
+			OPERATION_ID = 350
+		}
+	}
+	if = {
+		limit = { var:zg361_case_ak_state = 3 var:zg361_case_ak_active = 1 NOT = { has_variable = zg361_mg_m350_replay_route_conflict }
+		NOT = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_mg_m350_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_mg_m350_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_mg_m350_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_mg_m350_receipt_case
+						RECEIPT_STATE_VAR = zg361_mg_m350_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_mg_m350_receipt_choice
+						EXPECTED_OWNER = var:zg361_case_ak_owner
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+						EXPECTED_CASE = var:zg361_case_ak_case_serial
+						EXPECTED_STATE = 3
+						EXPECTED_CHOICE = var:zg361_mg_m350_route
+					}
+		} }
+		set_variable = { name = zg361_mg_m350_business_object_created value = 1 }
+		set_variable = { name = zg361_mg_m350_object_owner value = var:zg361_case_ak_owner }
+		set_variable = { name = zg361_mg_m350_object_subject value = this }
+		set_variable = { name = zg361_mg_m350_object_cycle value = var:zg361_case_ak_cycle_serial }
+		set_variable = { name = zg361_mg_m350_object_case value = var:zg361_case_ak_case_serial }
+		set_variable = { name = zg361_mg_m350_object_state value = var:zg361_case_ak_state }
+		set_variable = { name = zg361_mg_m350_object_revision value = var:zg361_case_ak_revision }
+		set_variable = { name = zg361_mg_m350_object_route value = var:zg361_mg_m350_route }
+		set_variable = { name = zg361_mg_m350_object_kind value = 35001 }
+		set_variable = { name = zg361_mg_m350_object_input_fingerprint value = var:zg361_mg_m350_requested_input_fingerprint }
+		set_variable = { name = zg361_mg_m350_object_id value = { value = var:zg361_case_ak_case_serial multiply = 1000 add = 350 } }
+		set_variable = { name = zg361_mg_benchmark_score_basis value = 0 }
+		set_variable = { name = zg361_mg_benchmark_history_score_available value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_mg_m032_receipt_choice
+				NOT = { var:zg361_mg_m032_receipt_choice = 3 }
+				has_variable = zg361_mg_manager_score
+			}
+			set_variable = { name = zg361_mg_benchmark_score_basis value = var:zg361_mg_manager_score }
+			set_variable = { name = zg361_mg_benchmark_history_score_available value = 1 }
+		}
+		set_variable = { name = zg361_mg_benchmark_effective_cycle_basis value = { value = var:zg361_case_ak_cycle_serial add = 1 } }
+		set_variable = { name = zg361_mg_benchmark_calendar_source_available value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_mg_m345_receipt_choice
+				NOT = { var:zg361_mg_m345_receipt_choice = 3 }
+				has_variable = zg361_mg_calendar_effective_cycle
+			}
+			set_variable = { name = zg361_mg_benchmark_effective_cycle_basis value = var:zg361_mg_calendar_effective_cycle }
+			set_variable = { name = zg361_mg_benchmark_calendar_source_available value = 1 }
+		}
+		if = { limit = { NOT = { has_variable = zg361_mg_benchmark_old_version } } set_variable = { name = zg361_mg_benchmark_old_version value = 1 } }
+		set_variable = { name = zg361_mg_benchmark_history_value value = var:zg361_mg_benchmark_score_basis }
+		set_variable = { name = zg361_mg_benchmark_history_formula value = 1 }
+		set_variable = { name = zg361_mg_benchmark_history_version value = var:zg361_mg_benchmark_old_version }
+		set_variable = { name = zg361_mg_benchmark_new_version value = { value = var:zg361_mg_benchmark_old_version add = 1 } }
+		set_variable = { name = zg361_mg_benchmark_effective_cycle value = var:zg361_mg_benchmark_effective_cycle_basis }
+		set_variable = { name = zg361_mg_benchmark_top_threshold value = 75 }
+		set_variable = { name = zg361_mg_benchmark_middle_threshold value = 40 }
+		set_variable = { name = zg361_mg_benchmark_inflation_index value = { value = var:zg361_mg_team_top_n multiply = 100 divide = { value = var:zg361_mg_team_n max = 1 } } }
+		set_variable = { name = zg361_mg_benchmark_ratchet_risk value = 0 }
+		set_variable = { name = zg361_mg_benchmark_explanation_code value = 35001 }
+		if = {
+			limit = { var:zg361_mg_m350_route = 2 }
+			set_variable = { name = zg361_mg_benchmark_top_growth value = { value = var:zg361_mg_benchmark_inflation_index subtract = 30 max = 0 } }
+			change_variable = { name = zg361_mg_benchmark_top_threshold add = var:zg361_mg_benchmark_top_growth }
+			change_variable = { name = zg361_mg_benchmark_middle_threshold add = var:zg361_mg_benchmark_top_growth }
+			set_variable = { name = zg361_mg_benchmark_ratchet_risk value = var:zg361_mg_benchmark_top_growth }
+			set_variable = { name = zg361_mg_benchmark_explanation_code value = 35002 }
+		}
+		set_variable = { name = zg361_mg_benchmark_history_rewritten value = 0 }
+		zg361_case_kernel_record_operation_effect = {
+			OWNER_VAR = zg361_case_ak_owner
+			SUBJECT_VAR = zg361_case_ak_subject
+			CYCLE_VAR = zg361_case_ak_cycle_serial
+			CASE_VAR = zg361_case_ak_case_serial
+			STATE_VAR = zg361_case_ak_state
+			REVISION_VAR = zg361_case_ak_revision
+			ACTIVE_VAR = zg361_case_ak_active
+			TIMELINE_VAR = zg361_case_ak_timeline_serial
+			FEEDBACK_VAR = zg361_case_ak_feedback_revision
+			LAST_OPERATION_VAR = zg361_case_ak_last_operation
+			LAST_CHOICE_VAR = zg361_case_ak_last_choice
+			RECEIPT_OWNER_VAR = zg361_mg_m350_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m350_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m350_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m350_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m350_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m350_receipt_choice
+			TICKET_OWNER = var:zg361_case_ak_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_ak_cycle_serial
+			TICKET_CASE = var:zg361_case_ak_case_serial
+			TICKET_STATE = 3
+			CHOICE = var:zg361_mg_m350_route
+			OPERATION_ID = 350
+		}
+	}
+	else_if = { limit = { NOT = { var:zg361_mg_m350_route = 3 } NOT = { has_variable = zg361_mg_m350_replay_route_conflict }
+		NOT = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_mg_m350_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_mg_m350_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_mg_m350_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_mg_m350_receipt_case
+						RECEIPT_STATE_VAR = zg361_mg_m350_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_mg_m350_receipt_choice
+						EXPECTED_OWNER = var:zg361_case_ak_owner
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+						EXPECTED_CASE = var:zg361_case_ak_case_serial
+						EXPECTED_STATE = 3
+						EXPECTED_CHOICE = var:zg361_mg_m350_route
+					}
+		} } zg361_mg_set_red_effect = { CODE = 3 MECHANISM = 350 } }
+}
+
+zg361_mg_ak_stage_3_effect = {
+	zg361_mg_m349_run_audit_effect = yes
+	zg361_mg_m350_version_benchmark_effect = yes
+	if = {
+		limit = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+			RECEIPT_OWNER_VAR = zg361_mg_m349_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m349_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m349_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m349_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m349_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m349_receipt_choice
+			EXPECTED_OWNER = var:zg361_case_ak_owner
+			EXPECTED_SUBJECT = this
+			EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+			EXPECTED_CASE = var:zg361_case_ak_case_serial
+			EXPECTED_STATE = 3
+			EXPECTED_CHOICE = var:zg361_mg_m349_route
+		}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			RECEIPT_OWNER_VAR = zg361_mg_m350_receipt_owner
+			RECEIPT_SUBJECT_VAR = zg361_mg_m350_receipt_subject
+			RECEIPT_CYCLE_VAR = zg361_mg_m350_receipt_cycle
+			RECEIPT_CASE_VAR = zg361_mg_m350_receipt_case
+			RECEIPT_STATE_VAR = zg361_mg_m350_receipt_state
+			RECEIPT_CHOICE_VAR = zg361_mg_m350_receipt_choice
+			EXPECTED_OWNER = var:zg361_case_ak_owner
+			EXPECTED_SUBJECT = this
+			EXPECTED_CYCLE = var:zg361_case_ak_cycle_serial
+			EXPECTED_CASE = var:zg361_case_ak_case_serial
+			EXPECTED_STATE = 3
+			EXPECTED_CHOICE = var:zg361_mg_m350_route
+		}
+			OR = {
+				var:zg361_mg_m349_receipt_choice = 3
+				var:zg361_mg_audit_settled = 1
+			}
+		}
+		zg361_case_ak_advance_03_effect = {
+			TICKET_OWNER = var:zg361_case_ak_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_ak_cycle_serial
+			TICKET_CASE = var:zg361_case_ak_case_serial
+		}
+		if = { limit = { var:zg361_case_ak_state = 4 } zg361_mg_schedule_ak_ticket_effect = { EVENT = zg361mg.203 DAYS = 180 } }
+	}
+}

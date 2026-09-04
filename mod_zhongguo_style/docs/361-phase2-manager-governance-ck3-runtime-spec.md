@@ -13,11 +13,39 @@
 
 唯一生成器是 `tools/gen_361_manager_governance_runtime.py`，生成：
 
-- `common/scripted_effects/zg361_manager_governance_runtime_effects.txt`
+- 七个按用途拆分的 effect 文件：
+  - `common/scripted_effects/zg361_manager_governance_core_adapters_effects.txt`
+  - `common/scripted_effects/zg361_manager_governance_dispatch_effects.txt`
+  - `common/scripted_effects/zg361_manager_review_effects.txt`
+  - `common/scripted_effects/zg361_policy_intake_effects.txt`
+  - `common/scripted_effects/zg361_policy_audit_effects.txt`
+  - `common/scripted_effects/zg361_policy_history_effects.txt`
+  - `common/scripted_effects/zg361_policy_fairness_effects.txt`
 - `common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt`
 - `common/script_values/zg361_manager_governance_runtime_values.txt`
 - `events/zg361_manager_governance_runtime_events.txt`
 - 简中、英文及七份英文结构占位本地化，共九份 yml。
+
+### Effect 文件边界证据（2026-09-04，静态）
+
+历史生成单体为 `386,750 B / 43 effects`，SHA-256
+`53120757ab63b1694a3c2b93ef4ac7a409a71300767ce93382720a246d0dab18`。它仅保留为生成器内存中的
+语义基线，不再是产品文件。当前七片依次为：
+
+| 用途片 | bytes | effects |
+|---|---:|---:|
+| core adapters / shared hook / #360 | 85,371 | 10 |
+| dispatch / ticket / team snapshot | 16,244 | 7 |
+| F032–036 manager review | 98,971 | 6 |
+| AK345–348 intake / override / exception | 67,760 | 8 |
+| AK349–350 audit / benchmark | 34,390 | 4 |
+| AK351–352 pilot / history | 32,427 | 3 |
+| AK353–354 capacity / fairness / due resolver | 45,651 | 5 |
+
+总计 `380,814 B / 43 effects`，最大单片 `10`，`>10=0 / >20=0`，没有例外。L0 会把七片逐 effect
+映射回历史 aggregate 并验证每个 block 字节完全一致，同时拒绝缺失、重复、额外定义及旧单体残留。这里没有启动 CK3，
+所以这项证据只达到 `static-ready`；下一次 B3 product projection 实机应记录 loader 时长与首错。若出现加载性能 RED，按
+`docs/testing-workflow.md` 的同条件文件边界 A/B 规程继续细拆，不能把静态分片本身写成加载 GREEN 或根因证明。
 
 确定性语义 oracle 是 `tools/zg361_manager_governance_model.py`，其测试是
 `tools/test_zg361_manager_governance_model.py`；CK3 生成层测试是

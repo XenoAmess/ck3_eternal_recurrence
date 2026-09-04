@@ -83,15 +83,69 @@
     "production_live_artifact": null
   },
   "effect_file_boundary_evidence": {
-    "path": "mod_zhongguo_style/common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
     "generated": true,
-    "bytes": 386750,
-    "top_level_effects": 43,
+    "historical_monolith": {
+      "path": "mod_zhongguo_style/common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
+      "bytes": 386750,
+      "top_level_effects": 43,
+      "sha256": "53120757ab63b1694a3c2b93ef4ac7a409a71300767ce93382720a246d0dab18",
+      "product_status": "retired_generator_memory_baseline_only"
+    },
+    "shards": [
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_manager_governance_core_adapters_effects.txt",
+        "bytes": 85371,
+        "top_level_effects": 10,
+        "sha256": "ebeb93afda739a8febce14e9fdce5608a21c7d7ee7d0d58f34fe658934ab404f"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_manager_governance_dispatch_effects.txt",
+        "bytes": 16244,
+        "top_level_effects": 7,
+        "sha256": "21ee726ddb6b4efd9179e28eab44895edfdcd4835194a2ffb5264f5687a27dc9"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_manager_review_effects.txt",
+        "bytes": 98971,
+        "top_level_effects": 6,
+        "sha256": "8ce26edc9f8e8ce090997b20a5ee5988d151e3d951f45c2f2bc12506a38b649a"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_policy_intake_effects.txt",
+        "bytes": 67760,
+        "top_level_effects": 8,
+        "sha256": "97461f7a4b775e4a1f84ba5d8ec70eb9c43ea08726b96a1aac7771a2b6a6845b"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_policy_audit_effects.txt",
+        "bytes": 34390,
+        "top_level_effects": 4,
+        "sha256": "7b48e9f71892b53834342dbefc7d24925a0be966234c032a0a8e61bc8ae79993"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_policy_history_effects.txt",
+        "bytes": 32427,
+        "top_level_effects": 3,
+        "sha256": "04b7b6e7375a22ba77a47c30964d7dc5742bd5bebdcabae7eb335205f89ba6f7"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_policy_fairness_effects.txt",
+        "bytes": 45651,
+        "top_level_effects": 5,
+        "sha256": "48e9f78080363f6cc2a601b01d5720e96a6ca3009aaa435f975d60b0c34f4b84"
+      }
+    ],
+    "aggregate_bytes": 380814,
+    "aggregate_top_level_effects": 43,
+    "maximum_effects_per_file": 10,
+    "files_above_target": 0,
+    "files_above_hard_maximum": 0,
+    "effect_block_parity": "43_of_43_byte_identical_to_historical_monolith",
     "policy_target_effects_per_file": "1-10",
     "policy_hard_maximum_effects_per_file": 20,
-    "status": "inherited_oversize_candidate_not_changed_in_this_transport_package",
-    "reason_not_changed": "B2 generator and phase2 seed production closure were explicitly outside this work package",
-    "required_follow_up": "split the generator output by purpose before B3 product promotion, regenerate through the generator, update the reviewed production closure, then collect CK3 loader timing and RED/GREEN evidence",
+    "hard_limit_exceptions": [],
+    "status": "static_split_ready_ck3_not_run",
+    "required_follow_up": "promote all seven shards together into the B3 product projection and collect CK3 loader timing plus first-error evidence; if loading is RED, run a same-condition finer-boundary A/B",
     "live_loading_evidence": null
   },
   "unsupported_claims": [
