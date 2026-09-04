@@ -1,10 +1,11 @@
-# B3 explicit-AND seed refresh：首用变量 RED 取证（2026-09-04）
+# B3 seed refresh：两轮 product runtime RED 取证（2026-09-04）
 
-状态：**正式失败证据 / product runtime RED / seed 未生成 / T0 不加分。** 本文承接
+状态：**两轮正式失败证据 / product runtime RED / seed 未生成 / T0 不加分。** 本文承接
 [`b3-explicit-and-seed-refresh-no-launch-2026-09-04.md`](b3-explicit-and-seed-refresh-no-launch-2026-09-04.md)
-冻结的唯一实机命令，只记录该命令执行后的事实。本轮没有修改产品或启动第二轮 CK3。
+冻结的第一轮实机命令，并依次记录 `Z:\p2s10a` 与后续 `Z:\p2m\a` 的事实。本文只审计既有 artifact，没有修改产品或
+再次启动 CK3。
 
-## 结论
+## 第一轮结论
 
 本轮不是 Frontend、loader performance、长路径或 effect 单文件体量 RED。Frontend-first 预热已通过认证窗口回退门，
 最终进程也完成 `load_save`、native binding 和暂停地图 readiness。外层最终 RED 的直接原因是 seed fixture 首次结果链在
@@ -129,13 +130,146 @@ warm-up PID `60080` 和 final PID `9240` 都由 job 清理到 `tree_gone=true / 
 | `Z:\p2s10f\live.stdout.log` | 369,043 | `D78C33C02EDB6F9CC9E84BD2FE800C603BBCC92E979E406E3802EC7291BB3784` |
 | `Z:\p2s10f\live.stderr.log` | 0 | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` |
 
+## 第二轮 current-byte / old-inventory RED（`Z:\p2m\a`）
+
+第二轮把 clean source 固定到 `ae55180a1fd5933d1725a30d9b56083be0f77383`，并从该 checkout 重新复制旧 565 路径清单内的
+全部 product 字节。它给出了两个必须同时保留的结论：
+
+1. 第一轮的 93 条 B2 首用错误已经**完全清零**，说明真正的外层 lazy 改动已进入本轮 product 并解决了该故障；
+2. 本轮仍为 `RED`，唯一项目签名是 `zg361p2c.7` missing。原因是 materializer 沿用旧 565-file inventory，漏掉了 current
+   canonical 已有、B4 Route-B WAIT360411 新链路需要的 event shard。它是 inventory closure RED，**不是文件体量或加载性能 RED**。
+
+### 唯一 loader 签名与旧 93 条归零
+
+`02_loader_error_scan.json` 只有 1 个 match，category 为 scanner 的宽类 `parser_or_script`：
+
+```text
+[19:38:15][E][jomini_script_system.cpp:303]: Script system error!
+  Error: trigger_event effect [ Event [zg361p2c.7] not found ]
+  Script location: file: common/scripted_effects/zg361_phase2_central_009_stage11_workforce_endgame_effects.txt line: 45 (zg361_p2c_schedule_m360_resume_effect)
+```
+
+这是缺失 event provider，不是脚本 parse 失败。对完整 `02_loader_error.log` 复算，第一轮三种错误原文和代表变量的计数均为零：
+
+| pattern | 第二轮计数 |
+|---|---:|
+| `Failed to fetch variable` | 0 |
+| `Event target link 'var' returned an unset scope` | 0 |
+| `Invalid left side during comparison 'var'` | 0 |
+| `zg361_b2_m014_policy_debt_active` | 0 |
+| `zg361_b2_pip_state` | 0 |
+
+因此不能把第二轮的“1 条”与第一轮 93 条合并成同一种故障，也不能因总体仍 RED 而否认 B2 lazy 修复已被实机验证。
+
+### inventory 缺口的逐路径证明
+
+- `Z:\p2m\product-materialization.json` 明载 product 是 565 files / 28,210,018 bytes，其中 561 个路径从 current canonical
+  复制、4 个 core 路径走同一 clean checkout fallback；但它的 inventory basis 仍是旧 manifest
+  `241DB7B5E2DF451AADBFAEB4570B083C8563239BC0158530682B9A77DA2F4ACD`。
+- `Z:\p2m\p.json` 的 565 个 `files[].path` 不含
+  `events/zg361_phase2_central_003_m360_resume_events.txt`，`Z:\p2m\p` 内该文件也不存在。
+- 同一路径在 clean source `Z:\p2m\w\mod_zhongguo_style` 中存在：7,947 bytes，SHA-256
+  `A67714B8A0929BA910E8B7668811E022A2A9C7EF82EA49FA428B673F7E39822C`，并定义缺失的 `zg361p2c.7`。
+- product 同时包含调用者 `zg361_phase2_central_009_stage11_workforce_endgame_effects.txt`。debug log 也只加载 central
+  event shards `001` 与 `002`，没有 `003`，与逐路径差集一致。
+
+换言之，本轮实现的是“旧 inventory 中各路径换成 current bytes”，而不是“从 current canonical 重新计算完整 inventory”。
+**字节新鲜度和路径集合新鲜度是两个独立门**：前者 GREEN 不能推出后者 GREEN。下一轮不能只重抄旧 565 清单；必须由
+current seed/B4 reachable closure 重新生成 inventory，并对新增与删除路径做集合差分。
+
+### B2 三方字节门与实际 marker
+
+`critical-b2-product-byte-equivalence.json` 为 GREEN，`mismatches=[]`；下列四个文件在 clean source、external product source、
+实际 mounted product 三方逐字节一致：
+
+| path | bytes | SHA-256 |
+|---|---:|---|
+| `common/scripted_effects/zg361_b2_debt_consumers_effects.txt` | 17,369 | `48C6213F45D11B4FD7AD6B5B41FD5DF64205A81D324143B7F03BB39948D639BF` |
+| `common/scripted_effects/zg361_b2_069_delivery_effects.txt` | 15,514 | `05641DADB150E5083C7509AF9988CB9966C5048F4A80DAE5A66F66C8DE7ED4FA` |
+| `common/scripted_effects/zg361_b2_072_access_audit_effects.txt` | 6,860 | `4C6123E7921ADCFCFFB786E8D73A1DB59FE02F0F36F818C4566281C01BC1CF2A` |
+| `common/scripted_effects/zg361_b2_081_projection_access_effects.txt` | 5,598 | `6C477FE7467AB64D818A282DCA178BF2EB237D35BBB00BD74E69AB514CBE54D1` |
+
+实机随后写出 `ZGAP2SEED: load-safe bootstrap activation`、`ZG361B2: result-bound justice case prepared` 和
+`ZGAP2SEED: waiting for witnessed delivery before B2 checkpoint`。这与旧 93 条归零互证：B2 首用链已经越过上一轮失败点；
+但 loader scan 的唯一 missing-event 签名仍使 runner 正确拒绝产出 candidate。
+
+### Frontend、native、路径和 cleanup
+
+- Frontend-first warm-up PID `30752` 使用直接 `idler-marker` 模式；47.379 秒、934 polls 后命中
+  `Setting idler 'Frontend'`，`idler_marker=true / frontend_gui_complete=true / fallback_ready=false`。warm-up cleanup
+  `ok=true / tree_gone=true / job_active_processes_final=0`。
+- final PID `68700` 于 `2026-09-04T11:37:28.346822Z` 启动；loader stage 为
+  `GREEN / load_save / 303 database nodes / fatal_error_count=0`。missing event 出现在 `19:38:15`，而 Frontend idler 于
+  `19:38:17` 出现，故该缺口没有伪装成 Frontend 性能失败。
+- native readiness 为 GREEN；连续 3 个稳定样本均绑定 PID `68700`、`connection_generation=1`、
+  `date_raw=53146920`、`local_player_id=1`、`paused=true`、`map_ready=true`。
+- product 最长预期 mount path 为 154 字符，小于 250；完整 error log 中 `over 250`、`path too long` 与 `PhysFS` 均为 0。
+  本轮没有触发 effect 拆分 A/B，也没有产生“单文件过大导致 RED”的新证据。
+- cleanup artifact 为 GREEN，final PID 的 `tree_gone=true / job_active_processes_final=0`，watchdog 消失，control files 全部
+  absent，contract errors 为空；审计时 CK3 进程数为 0。
+- `Z:\p2m\r\candidate`、candidate seed contract 与新 `xar_checkpoint.ck3` 均不存在；原始只读输入
+  `phase2_seed.ck3` 仍存在。故本轮**没有生成 seed，不给 T0/B3/B4 readiness 加分**。
+
+### 来源、产品与不可变性
+
+- clean source：2,748 files，tree
+  `DBC79E041736D838ADC8E746612EB7E21794324F764DAEC3013468B977740141`；before/after manifest 均为 591,160 bytes、
+  SHA-256 `1290BE611E486107E2C49AA3324C0FCAB9EB48AF92450C63C28EFE3B7CC68665`，runner 的
+  `clean_source_unchanged=true`。
+- source ZIP：83,801,744 bytes，SHA-256
+  `5AE78C3138CFDA0F892046BB2AEB35F74102F268B7348FC73F57EBBEB1D0B5AD`；logical tree
+  `8C0FE4CD8DC7C29B00B42C9B1E66721950556CC579A8333ED765BA576B346FBC`，与 clean source 等价。
+- product：565 files / 28,210,018 bytes；source/mounted tree
+  `A140B7CA9BC8DFF1476A3430FF5F57F97C21272AD990B75C776D3738683D9955`，formal overlay
+  `0F928843F2976DEE81333CAC1041A9E6F29FDD4ED3F276589DF90D60298F4C1A`，file list
+  `B91532AAA73B3DED3B1302D9DD343581C7EE2723F0BEFE003B5D709F3ADBF04E`；`runtime_unchanged=true`。
+- source ZIP、旧 seed、CK3 EXE、原版 rules、bridge DLL、injector 与 product manifest 的 before/after SHA 全部一致，
+  `external_dependencies.unchanged=true`。
+- live 结束后的第一轮只读审计在 clean source 观察到 `__pycache__=0 / *.pyc=0`。随后另一个并发的非 live 工作在
+  `11:43:06Z`（晚于 runner `11:38:35Z` 收口）才写入 ignored bytecode；它不在 before/after artifact 窗口内，不能归因于本轮
+  外层命令。能力证据仍以 runner 的相同 before/after tree、external immutability gate 和该即时零计数为准。
+
+### 外层执行与冻结命令的两处偏差
+
+冻结的 `AUTHORIZED-LIVE-COMMAND.txt` SHA-256 为
+`D15E02A0B2133007283C99AEE2EA116D17AAE4DDE038330345FAC9BCF793F6CF`。实际外层执行并非逐字节复现它：
+
+1. wrapper interpreter 漏了 `-B`；
+2. outer result 从授权名 `Z:\p2m\f\relay-live.json` 改为
+   `Z:\p2m\f\default-desktop-live.json`，前者不存在，后者存在。
+
+这两处都必须记为 **execution/provenance conformance 偏差**。但实际 sidecar 记录的 child runner、工作目录和全部 child argv
+与授权内容一致；漏 `-B` 没有在 live artifact 窗口内写入 clean source bytecode，result 文件名也不改变 child CK3 run、product
+mount、loader/native/marker/cleanup 或其哈希。因此它们不推翻上述能力证据，但冻结命令不能声称被逐字节执行。下轮应直接复制
+冻结命令，恢复 `-B` 与授权 sidecar 名称，消除此类审计噪声。
+
+### 第二轮核心 artifact
+
+| artifact | bytes | SHA-256 |
+|---|---:|---|
+| `Z:\p2m\f\default-desktop-live.json` | 2,629 | `970E19218CB52E94334EF5EC3D93FD72E5256DCB3E39734225682000C461644F` |
+| `Z:\p2m\f\live.stdout.log` | 372,291 | `595A46FA07E4C86207550ACF715D75ADE753A2FC4168C4D31561E4B7AE5E6EA1` |
+| `Z:\p2m\f\live.stderr.log` | 0 | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` |
+| `Z:\p2m\a\runner-report.json` | 372,047 | `C7942D9E3C5992B17A0B1DB1A6CEA07A07CD731855135EF9FCA057306AA6E0B8` |
+| `Z:\p2m\a\01_loader_native_readiness.json` | 35,892 | `B6E2A834C6487CFB7822C66917D013FA456ED69F179A0BE22E87716642E29756` |
+| `Z:\p2m\a\01_phase2_loader_stage_progress.jsonl` | 291,923 | `73318A51A7611D2FE72EAB7A513DEEEE29EA072B9447FF1800F7A1AD5CC21ED4` |
+| `Z:\p2m\a\02_loader_error_scan.json` | 2,718 | `E780CA11F2BC062A8B42AB15C69EB12E8419717B65183AADFBFB6ADBE42178FA` |
+| `Z:\p2m\a\02_loader_error.log` | 3,630,670 | `06C6BDEE8FCE8EB894B62373290F6D2FB0C88D3DA39170C545BFFFCD8A50C673` |
+| `Z:\p2m\a\critical-b2-product-byte-equivalence.json` | 5,068 | `F817C62CC96892DAB04A5531683A21B67BFA09CDBB52B542DDE39854087BCDEB` |
+| `Z:\p2m\a\09_phase2_native_session_cleanup.json` | 25,757 | `88B1D22FCEDF898DDDB980D3799032C123595EE4D83AA9192540F33AF1D9AFB7` |
+| `Z:\p2m\a\ck3-logs\debug.log` | 354,604 | `5076D82D349BB09FCB42A6AC001ECB1C85D11DBBFCA6484DE54ABF41009719EB` |
+| `Z:\p2m\a\source-tree-manifest.before.json` | 591,160 | `1290BE611E486107E2C49AA3324C0FCAB9EB48AF92450C63C28EFE3B7CC68665` |
+| `Z:\p2m\a\source-tree-manifest.after.json` | 591,160 | `1290BE611E486107E2C49AA3324C0FCAB9EB48AF92450C63C28EFE3B7CC68665` |
+| `Z:\p2m\freeze-manifest.json` | 5,257 | `FD97A71FD54B59B13725EA2187F7B96140050A772B6600F4D6F4D41775CD65AF` |
+| `Z:\p2m\product-materialization.json` | 928 | `B9F437E1BBCAC92A8A401947C74AA3ACBE79AF5C354D25E2AF46C6AE030195CB` |
+| `Z:\p2m\p.json` | 120,372 | `7A456704A55E5326BFBCEE9DF58C1DD5C08B5155E461C1F57B3DE73D064BC590` |
+
 ## 下一轮准入
 
-1. 先在 `tools/gen_361_b2_runtime.py` 中把 20 个 B2 首用门改成真正的外层 lazy 分支，并运行生成器与对应 L0；不要手改
-   `GENERATED FILE`。
-2. 从该 current canonical 输出重新构造 cumulative B3 product；explicit-AND 只允许作为 trigger provider 的受控 delta，不能
-   再以旧 r5 整树作为未审计基底。
-3. no-launch freeze 除 tree/projection hash 外，至少核对 B2 20 个 first-use providers 与当前生成输出一致，并证明
-   31 个已知读取点不再存在无 lazy 外层门的 `var:` 访问。
-4. 上述门全部 GREEN 后，才分配下一次 CK3 串行 seed refresh；仍只刷新 seed，不外推 promotion source、B3 gameplay、
-   8/8 footage、双 MP4 或 T0 完成。
+1. 从 current canonical/B4 reachable closure **重新计算路径 inventory**，明确纳入
+   `events/zg361_phase2_central_003_m360_resume_events.txt`，不得复用旧 565 清单后只替换字节。
+2. no-launch freeze 同时验证两类新鲜度：完整路径集合与 current closure 一致；所有路径字节与同一 clean checkout 一致。
+   关键 B2 三方字节门继续保留，但不能替代全 inventory 集合门。
+3. 重新运行 seed preflight，确认 path max、source/product/fixture immutability 与 CK3=0；随后才允许下一次独占 CK3 seed refresh。
+4. 下一次仍只刷新 seed。没有 loader scan GREEN、candidate/checkpoint/contract 与 cleanup GREEN 前，不外推 B4 gameplay、
+   promotion source、8/8 footage、双 MP4 或 T0 完成。
