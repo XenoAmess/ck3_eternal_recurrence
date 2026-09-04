@@ -1,0 +1,92 @@
+{
+  "schema": "xar.ck3.open_kaishek_g2_production_leaf_compatibility_audit.v1",
+  "status": "GREEN_STATIC",
+  "audited_at": "2026-09-04T14:58:00+08:00",
+  "root": {
+    "canonical_commit": "0b0fbc047610a8ef25f47a59f7b42c83c176d69e",
+    "provider_commit": "a3c13246ef32b35e117b08dbb86f61986c1dabe3",
+    "source_contract_sha256": "df720cd33d3606634378a5cff20d77227b82a35265269789bde4a51cff988e0d",
+    "production_manifest_sha256": "6b5783bca00a1b082aa5fec834ee73a95860535549b7525a616c82f178265c58",
+    "provider_source_sha256": "5299c88f4cd7b27959e4518d5a48061ae0ef39ae629a2590c269a8fe912f397a",
+    "provider_header_sha256": "e49d31f35fbb3f5bc713ea94cb9ff3e83ec9fa713772968a0dcffefd20200b2a"
+  },
+  "open_kaishek": {
+    "previous_commit": "98c13d02ba1c772836a35f782716a0b3679b7ee8",
+    "commit": "320398b7f40ac049742ca78c095f24d1b8fce825",
+    "origin_main": "320398b7f40ac049742ca78c095f24d1b8fce825",
+    "clean": true,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 348970,
+    "jar_sha256": "5825a4a5c53359901385189fd697e9a107f44f934bfff4382c7ce6d0fc26e55f"
+  },
+  "public_contract": {
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "schema_changed": false,
+    "required_fields": [
+      "owner_character_id",
+      "toward_character_id",
+      "evaluated_days",
+      "evaluated_days_observable",
+      "current_date_raw",
+      "expiry_observable",
+      "expiry_date_raw",
+      "frame_identity"
+    ],
+    "invariants": [
+      "owner_and_toward_are_distinct_characters",
+      "evaluated_days_is_nonnegative_when_observable",
+      "two_evaluator_reads_match_on_one_paused_frame",
+      "expiry_is_not_inferred_from_evaluated_days",
+      "read_only_observer_never_submits_termination"
+    ]
+  },
+  "provider_transition": {
+    "private_leaf_reader_live_observed": true,
+    "default_production_leaf_reader_installed": true,
+    "default_production_binary_live_validated": false,
+    "native_certified": false,
+    "runtime_certified": false,
+    "production_live": false,
+    "expiry_observable": false
+  },
+  "decision": {
+    "open_kaishek_change_required": true,
+    "parser_change_required": false,
+    "validator_vocabulary_change_required": false,
+    "ir_change_required": false,
+    "runtime_handler_change_required": false,
+    "cli_command_change_required": false,
+    "reason": "Public identity and schema are unchanged; only exact provider/source pins and the private-live versus default-production readiness boundary changed."
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 136,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_domain_tests": 8,
+    "open_cli_smoke": "PASS",
+    "product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "root_compatibility_tests": 20,
+    "root_provider_and_preflight_tests": 38,
+    "root_static_compatibility_verifier": "GREEN_STATIC"
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "action_capability_advertised": false,
+    "readiness_promoted": false,
+    "expiry_promoted": false
+  }
+}

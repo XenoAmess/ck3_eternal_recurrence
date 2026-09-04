@@ -40,6 +40,10 @@ class OpenKaishekCe458afCompatibilityAuditTests(unittest.TestCase):
         )
         self.assertEqual(
             self.report["open_kaishek"]["commit"],
+            "98c13d02ba1c772836a35f782716a0b3679b7ee8",
+        )
+        self.assertNotEqual(
+            self.report["open_kaishek"]["commit"],
             self.g2["root_binding"]["open_kaishek_commit"],
         )
         self.assertEqual(

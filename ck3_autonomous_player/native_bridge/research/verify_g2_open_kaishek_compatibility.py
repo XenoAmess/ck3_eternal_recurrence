@@ -57,6 +57,29 @@ _JAVA_BUILD_CONSTANT_RE = re.compile(
     r"(?m)^\s*public\s+static\s+final\s+String\s+{name}\s*=\s*"
     r"\(?\s*\"([^\"]+)\""
 )
+_JAVA_BOOLEAN_CONSTANT_RE = re.compile(
+    r"(?m)^\s*public\s+static\s+final\s+boolean\s+{name}\s*=\s*"
+    r"(true|false)\s*;"
+)
+_PROVIDER_STRING_CONSTANTS = {
+    "root_provider_commit": "ROOT_PROVIDER_COMMIT",
+    "root_production_candidate_commit": "ROOT_PRODUCTION_CANDIDATE_COMMIT",
+    "root_source_contract_sha256": "ROOT_SOURCE_CONTRACT_SHA256",
+    "root_production_manifest_sha256": "ROOT_PRODUCTION_MANIFEST_SHA256",
+    "root_provider_source_sha256": "ROOT_PROVIDER_SOURCE_SHA256",
+    "root_provider_header_sha256": "ROOT_PROVIDER_HEADER_SHA256",
+}
+_PROVIDER_BOOLEAN_CONSTANTS = {
+    "public_schema_changed": "PUBLIC_SCHEMA_CHANGED",
+    "private_leaf_reader_live_observed": "PRIVATE_LEAF_READER_LIVE_OBSERVED",
+    "default_production_leaf_reader_installed": (
+        "DEFAULT_PRODUCTION_LEAF_READER_INSTALLED"
+    ),
+    "default_production_binary_live_validated": (
+        "DEFAULT_PRODUCTION_BINARY_LIVE_VALIDATED"
+    ),
+    "expiry_observable": "EXPIRY_OBSERVABLE",
+}
 
 
 def _quoted_values(fragment: str) -> list[str]:
@@ -94,6 +117,21 @@ def parse_capability_source(path: Path) -> dict[str, Any]:
     if capability_match is None:
         raise ValueError("open_kaishek capability descriptor is missing")
     groups = capability_match.groupdict()
+    provider_transition: dict[str, str | bool] = {}
+    for key, name in _PROVIDER_STRING_CONSTANTS.items():
+        match = re.search(
+            _JAVA_BUILD_CONSTANT_RE.pattern.format(name=re.escape(name)), source
+        )
+        if match is None:
+            raise ValueError(f"open_kaishek provider constant {name} is missing")
+        provider_transition[key] = match.group(1)
+    for key, name in _PROVIDER_BOOLEAN_CONSTANTS.items():
+        match = re.search(
+            _JAVA_BOOLEAN_CONSTANT_RE.pattern.format(name=re.escape(name)), source
+        )
+        if match is None:
+            raise ValueError(f"open_kaishek provider constant {name} is missing")
+        provider_transition[key] = match.group(1) == "true"
     return {
         "profile_id": profile_match.group(1),
         "capability_id": groups["id"],
@@ -103,6 +141,7 @@ def parse_capability_source(path: Path) -> dict[str, Any]:
         "deterministic": groups["deterministic"] == "true",
         "native_certified": groups["native_certified"] == "true",
         "runtime_certified": groups["runtime_certified"] == "true",
+        "provider_transition": provider_transition,
     }
 
 
@@ -233,6 +272,20 @@ def audit(
         expected_open.get("native_certified") is False
         and expected_open.get("runtime_certified") is False
     )
+    expected_provider = fixture.get("provider_transition", {})
+    checks["fixture_provider_transition_shape"] = set(expected_provider) == {
+        *_PROVIDER_STRING_CONSTANTS,
+        *_PROVIDER_BOOLEAN_CONSTANTS,
+    }
+    checks["fixture_provider_readiness_bounded"] = (
+        expected_provider.get("public_schema_changed") is False
+        and expected_provider.get("private_leaf_reader_live_observed") is True
+        and expected_provider.get("default_production_leaf_reader_installed")
+        is True
+        and expected_provider.get("default_production_binary_live_validated")
+        is False
+        and expected_provider.get("expiry_observable") is False
+    )
     checks["fixture_boundaries_closed"] = fixture.get("boundaries") == {
         "ck3_started": False,
         "process_attached": False,
@@ -272,6 +325,12 @@ def audit(
                 "runtime_certified",
             ):
                 _equal(checks, f"capability_{key}_matches", capability[key], expected_open[key])
+            _equal(
+                checks,
+                "capability_provider_transition_matches",
+                capability["provider_transition"],
+                expected_provider,
+            )
             external["capability"] = capability
         except (OSError, ValueError) as error:
             checks["capability_source_parse"] = False

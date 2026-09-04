@@ -124,6 +124,9 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             "runtime_certified",
         ):
             self.assertEqual(capability[key], open_data[key])
+        self.assertEqual(
+            capability["provider_transition"], fixture["provider_transition"]
+        )
         self.assertEqual(build["game_version"], open_data["game_version"])
         self.assertEqual(build["exe_sha256"], open_data["exe_sha256"])
 
