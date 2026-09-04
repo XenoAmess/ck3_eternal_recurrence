@@ -1,0 +1,3985 @@
+{
+  "action_cell_only_inputs": [
+    {
+      "bytes": 33987,
+      "classification": "action-cell-only-not-a-mod-product-file",
+      "included_in_product_projection": false,
+      "live_claim_changed_by_this_freeze": false,
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_incident_action_cell.py",
+      "sha256": "021CB2A7C27CE6E7134C6C282C0CAB1B8804C9807C1A132F94232E57C8AB594B"
+    },
+    {
+      "bytes": 27781,
+      "classification": "action-cell-only-not-a-mod-product-file",
+      "included_in_product_projection": false,
+      "live_claim_changed_by_this_freeze": false,
+      "path": "tools/zg361_phase2_promotion_compensation_action_cell.py",
+      "sha256": "9B327B8A87FD76AFABB12D2BC5D3712D0E34F8C5B4E7149682D5E9760F0D4478"
+    },
+    {
+      "bytes": 11993,
+      "classification": "action-cell-only-not-a-mod-product-file",
+      "included_in_product_projection": false,
+      "live_claim_changed_by_this_freeze": false,
+      "path": "tools/zg361_phase2_hc_workforce_b6_action_cell.py",
+      "sha256": "7F48C4D3B0081C934AD50FEDDD9EACF72D7108732E35522609D12838C151255A"
+    },
+    {
+      "bytes": 29865,
+      "classification": "action-cell-only-not-a-mod-product-file",
+      "included_in_product_projection": false,
+      "live_claim_changed_by_this_freeze": false,
+      "path": "tools/zg361_phase2_cross_cycle_endgame_action_cell.py",
+      "sha256": "F7C4D1284F2CB61B8E0D7119C504414EE9E16FCBC711F3608753AFCE924B1218"
+    },
+    {
+      "bytes": 31971,
+      "classification": "action-cell-only-not-a-mod-product-file",
+      "included_in_product_projection": false,
+      "live_claim_changed_by_this_freeze": false,
+      "path": "tools/zg361_phase2_projects_metrics_action_cell.py",
+      "sha256": "EE86E42F6C2B58AB98B50FA00C8DA8749DBCA9E737B70A762D3D5212F95ED993"
+    }
+  ],
+  "canonical_base_commit": "12b2f73a401b73c7385b2a1e52a2b85c65aa9f73",
+  "ck3_launched": false,
+  "claims": {
+    "action_cell_only_live_claims_unchanged": true,
+    "b3_live_complete": false,
+    "historical_r10_contract_mutated": false,
+    "provider_observed_live_artifact": null
+  },
+  "formal_no_launch_preflight": {
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "tools/run_zhongguo_acceptance.py",
+      "--preflight",
+      "--phase2-live-batch",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_5618f0331f524d2b905daf04703ec65f",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite\\_worktrees\\phase2-source-registry-builder\\tools\\zg361_phase2_seed_contract.json",
+      "--phase2-product-source",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\product-source",
+      "--phase2-product-projection",
+      "phase2-b3-manager-cumulative-48da012-r1",
+      "--phase2-product-projection-manifest",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\projection.json"
+    ],
+    "green": true,
+    "log": {
+      "bytes": 193,
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\formal-no-launch-preflight.txt",
+      "sha256": "20A9A4EBE90943DFA08622504C126BEE56D61B8D64226688DD51EB3E4D23B4FB"
+    }
+  },
+  "inputs": {
+    "b3_action_cell": {
+      "bytes": 11654,
+      "path": "tools/zg361_phase2_b3_manager_governance_action_cell.py",
+      "sha256": "3FF3B26CABCB24EEEDE3C38180EB65CEF767C3315447C7FEEC562E12EF97C330"
+    },
+    "ck3_executable": {
+      "bytes": 95206008,
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "formal_runner": {
+      "bytes": 744686,
+      "path": "tools/run_zhongguo_acceptance.py",
+      "sha256": "C93271A9CDC2F8251B7908E6741B4D9F40E9F3F3A1D1D47C1D2226932AEF26F9"
+    },
+    "historical_b2_r10_contract": {
+      "bytes": 13355,
+      "path": "tools/zg361_phase2_seed_production_closure.json",
+      "sha256": "EAB5E34BF325BEB6281B3F77BB9A102D3B9A97EE23C76C691C671FFD1311569D"
+    },
+    "native_build_sources": [
+      {
+        "bytes": 98325,
+        "path": "CMakeLists.txt",
+        "sha256": "92B8C08DA069B887C7F039FEBF47FC651D923636C892E26420379F26C66028ED"
+      },
+      {
+        "bytes": 2236,
+        "path": "include/xar_bridge/actual_contact_scope_v1_mailbox.hpp",
+        "sha256": "58BBC1C780E95B71222C82A1A6CD87A8F42F1092F3F7DCB23D4124429234AAAF"
+      },
+      {
+        "bytes": 3351,
+        "path": "include/xar_bridge/battle_control_snapshot_v1_mailbox.hpp",
+        "sha256": "586FE00F70F77ECDD108203D8366EEE50BA5C4CACE5DBEF7504FB3A7F527275B"
+      },
+      {
+        "bytes": 2939,
+        "path": "include/xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp",
+        "sha256": "9EC95C97BADC9C1B019CE334E739139A355D8B763037A9F19C6C2BBA434D76B2"
+      },
+      {
+        "bytes": 7337,
+        "path": "include/xar_bridge/battle_terminal_journal_v1.hpp",
+        "sha256": "52C8113662CC6783D5FCB406B82AF4C195FA823FE115D4E354EDF06B016E2E0C"
+      },
+      {
+        "bytes": 2779,
+        "path": "include/xar_bridge/battle_terminal_transition_v1_mailbox.hpp",
+        "sha256": "35F3D113E08E074BD3B9BB965DD41073954581EA29591CC76C030811FF0E21D1"
+      },
+      {
+        "bytes": 2843,
+        "path": "include/xar_bridge/battle_transition_v1_mailbox.hpp",
+        "sha256": "A46CF3916753326AA7CDF5D99C1DB2182B7E4A10AE12A40396FA098B9DA17B7B"
+      },
+      {
+        "bytes": 7574,
+        "path": "include/xar_bridge/campaign_root_context_v1.hpp",
+        "sha256": "E88A05EF492F8B6D571D347D4F8BF19106C91E910B62AD20BCBA651A7CBDF016"
+      },
+      {
+        "bytes": 2412,
+        "path": "include/xar_bridge/campaign_root_context_v1_mailbox.hpp",
+        "sha256": "D826A360F59FCA568F56C278B95956A6E363CC7F45D6FE6DCBDB17ABBF4E265C"
+      },
+      {
+        "bytes": 58669,
+        "path": "include/xar_bridge/ck3_11906.hpp",
+        "sha256": "384A957D1E139C448ADD90ACC0BAAD3E7563A2E518C92594D22D771897624529"
+      },
+      {
+        "bytes": 284,
+        "path": "include/xar_bridge/ck3_11906_adapter.hpp",
+        "sha256": "4192D1EC5F979DF42F50660A24A8ED3AA1A05D57A5167EC9782959977897E561"
+      },
+      {
+        "bytes": 6029,
+        "path": "include/xar_bridge/cold_map_vfs_observer_v1.hpp",
+        "sha256": "46CBE4877806C376A69B5A837B0477B9C3697A558C72D13E953CA0C637D29EFE"
+      },
+      {
+        "bytes": 4156,
+        "path": "include/xar_bridge/combat_phase_event_trace_detour_v1.hpp",
+        "sha256": "51FF71B842EF04B35F6D23E4F9193961A5FEDF760E00ADA9B9752FF8035DF7B2"
+      },
+      {
+        "bytes": 6035,
+        "path": "include/xar_bridge/combat_phase_event_trace_managed_v1.hpp",
+        "sha256": "1EB616FB1CB8146AAEDA1C9A0E5553D9498EBFD1569A973061AF13360DF7DF37"
+      },
+      {
+        "bytes": 15872,
+        "path": "include/xar_bridge/combat_phase_event_trace_ring_v1.hpp",
+        "sha256": "7DE2D41E606F7965DE3F3BE64A7E91B7F6B2EE7637F3DB4B81358F2B83E32591"
+      },
+      {
+        "bytes": 15275,
+        "path": "include/xar_bridge/combat_phase_event_trace_v1.hpp",
+        "sha256": "C02EBA11ED3834A8C27EEFBB6231247D907CC51CD3D7CBDE2281A2EE469153C1"
+      },
+      {
+        "bytes": 881,
+        "path": "include/xar_bridge/combat_phase_event_trace_wire_v1.hpp",
+        "sha256": "F9747388FD8F89D86C52F270DCB56D387F83D3472D895E737125F5A60510EFBE"
+      },
+      {
+        "bytes": 3603,
+        "path": "include/xar_bridge/combat_simulation_inputs_v3_mailbox.hpp",
+        "sha256": "23C27BFA50D55E5AA97203E2C36C4A57B835FB75E61B1413F05A4DC545F166E7"
+      },
+      {
+        "bytes": 6722,
+        "path": "include/xar_bridge/combat_v3.hpp",
+        "sha256": "44830E362DE3C5FCBF8D5E0A93D3C413EABD3B2076E6C9B3FBA33411580578FE"
+      },
+      {
+        "bytes": 5028,
+        "path": "include/xar_bridge/combat_v3_test_only.hpp",
+        "sha256": "41382EC82A9D5B1E083A5FDB47B52DA1F452C32E0861B6FF03A892FF61656450"
+      },
+      {
+        "bytes": 4002,
+        "path": "include/xar_bridge/event_window_context_v1.hpp",
+        "sha256": "2F625A81C981AA0A1D10D93B2AB873F8B9360B55E68F103B270B398F3FE56D6B"
+      },
+      {
+        "bytes": 1964,
+        "path": "include/xar_bridge/event_window_context_v1_mailbox.hpp",
+        "sha256": "319EDCF76E7F01FBD0D7E62FA9A50750B4914B57A344D991A49351278B15D0F6"
+      },
+      {
+        "bytes": 6891,
+        "path": "include/xar_bridge/g2_truce_native_callsite_observer_v1.hpp",
+        "sha256": "AB76F47A4221372ABD8934717F62D3B19144CE777CB774363D9F26F7077141D5"
+      },
+      {
+        "bytes": 5142,
+        "path": "include/xar_bridge/g2_truce_preview_entry_observer_v1.hpp",
+        "sha256": "FE139856D856D6A0A456C848A851D41F9A2717064FEA0B2C1C3574900EA91C03"
+      },
+      {
+        "bytes": 12873,
+        "path": "include/xar_bridge/game_adapter.hpp",
+        "sha256": "B06FB7432F873F571B1D8E11298AA9CCCEA9AE93B92F42283419EB64EA5A067B"
+      },
+      {
+        "bytes": 63501,
+        "path": "include/xar_bridge/game_contract.hpp",
+        "sha256": "364EE7CA6891441104D666D2C6AA96453CF06FE4B7EF0C7B211079193650C04B"
+      },
+      {
+        "bytes": 1834,
+        "path": "include/xar_bridge/injector.hpp",
+        "sha256": "1C7A5233DA4F0BEA8D87627D3FFE5C705DD044EFAB89CED14945E8916CF957E9"
+      },
+      {
+        "bytes": 5850,
+        "path": "include/xar_bridge/loaded_feature_manifest_v1.hpp",
+        "sha256": "7493F9380BCA985951DF067E600140E1157383014A5559F2362E70FD95040C2D"
+      },
+      {
+        "bytes": 2482,
+        "path": "include/xar_bridge/loaded_feature_manifest_v1_mailbox.hpp",
+        "sha256": "4FDD9032C14131E7D4769976867D877E233893C28C5E11B7F6E3D7EA8CBC4573"
+      },
+      {
+        "bytes": 18586,
+        "path": "include/xar_bridge/main_thread_query_mailbox_v1.hpp",
+        "sha256": "3B1B0AE084698424ABEF9ACE549552CC6BB9D07C105A6FCB1C490753D8F0606D"
+      },
+      {
+        "bytes": 8441,
+        "path": "include/xar_bridge/network_session_boundary_counter_v1.hpp",
+        "sha256": "C8B816B93CDEAC7EFE69407404B18CEB05EB3BF260797CE68599D84578252755"
+      },
+      {
+        "bytes": 21678,
+        "path": "include/xar_bridge/pending_character_interaction_context_v1.hpp",
+        "sha256": "9EBA56F7DA6479464BC781DD8E1935680813FC63438A7219A918498342E58067"
+      },
+      {
+        "bytes": 2900,
+        "path": "include/xar_bridge/pending_character_interaction_context_v1_mailbox.hpp",
+        "sha256": "5353D5FD3087F2ED5E7D3787DD427A13A32A902CD8BD65184474196C9E98B87C"
+      },
+      {
+        "bytes": 7263,
+        "path": "include/xar_bridge/phase2_completion_observer_v1.hpp",
+        "sha256": "0D1D03C0784429DC836EE6CFBBCB55058766492C2EAADE68189F13CEAC096885"
+      },
+      {
+        "bytes": 8207,
+        "path": "include/xar_bridge/phase2_post_call_list_identity_observer_v1.hpp",
+        "sha256": "234DAEDBCDA6E7D0550E181088A16ACB8E955C2D3916193D03ACAED46361D242"
+      },
+      {
+        "bytes": 6781,
+        "path": "include/xar_bridge/phase2_post_call_observer_v1.hpp",
+        "sha256": "E441D49D01DDB06A30ABBC1D354802EF40B75D26710C04A6524892F38DDD0531"
+      },
+      {
+        "bytes": 8615,
+        "path": "include/xar_bridge/phase2_producer_identity_observer_v1.hpp",
+        "sha256": "5FE3544E2329B3C685FC0172A435C601D1E6AAB240AA9F4083A498B99D95982F"
+      },
+      {
+        "bytes": 6094,
+        "path": "include/xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp",
+        "sha256": "B15528656AC2E13715E03CCA82A3904BA4C0F6116D10CEF8D84DD24158FCDB5C"
+      },
+      {
+        "bytes": 5410,
+        "path": "include/xar_bridge/phase2_wrapper_entry_observer_v1.hpp",
+        "sha256": "FA3F80D4C28EEABE3D86CA25086BB9A4A494A785F712D6D5C7D7714C4C55810A"
+      },
+      {
+        "bytes": 4328,
+        "path": "include/xar_bridge/prewar_scope_v1.hpp",
+        "sha256": "800C84036414B7DF1B41C4A876A1ACEC7771721D02502B52374AA4B7B9FC1687"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/xar_bridge/protocol.hpp",
+        "sha256": "6CA9C6F376D55561380AEF59F939E73F2BD47F8ECDB8964E037DC761D90D19A0"
+      },
+      {
+        "bytes": 6950,
+        "path": "include/xar_bridge/raiktor_surrender_six_domain_v1.hpp",
+        "sha256": "9A134D69B7E2221741D859BF301596C1559F02A685BB49E10F121A7F5C34A663"
+      },
+      {
+        "bytes": 12878,
+        "path": "include/xar_bridge/raiktor_surrender_truce_v1.hpp",
+        "sha256": "E43BB9AD46CB411879128172D1D66B7AC640AB8968402FA6850F2A3BD85C0015"
+      },
+      {
+        "bytes": 6422,
+        "path": "include/xar_bridge/raiktor_war_bound_regiment_v1.hpp",
+        "sha256": "8D364337C1099648BA587D4B88428A1F7930459935E1B2D227C1E53A7DC5209B"
+      },
+      {
+        "bytes": 4381,
+        "path": "include/xar_bridge/route_contact_horizon_v1_mailbox.hpp",
+        "sha256": "109532304CD98C883EFB683BF5E0F95408BC6EF890501823BD8B261F6010DEFC"
+      },
+      {
+        "bytes": 5433,
+        "path": "include/xar_bridge/startup_dx11_render_context_draw_guard_v1.hpp",
+        "sha256": "DFFEB09207AE8DBD2E78AB68968D1AEC99F1B7B7EE56A56FE53087AA0DFBEC17"
+      },
+      {
+        "bytes": 5874,
+        "path": "include/xar_bridge/startup_localize_current_root_guard_v1.hpp",
+        "sha256": "5B8E6AA2889CFDA6026FABCC5052C8660291D77AE18BC63951E6EA2BC76298A0"
+      },
+      {
+        "bytes": 5687,
+        "path": "include/xar_bridge/startup_particle2_consumer_null_guard_v1.hpp",
+        "sha256": "7E97AEECFAA795E392919C2B68CA9438CFF84B25860F48BFA57B6D7473820B6F"
+      },
+      {
+        "bytes": 5793,
+        "path": "include/xar_bridge/startup_particle2_null_guard_v1.hpp",
+        "sha256": "430D04AA52AB6DB6DFBCA0C85B9F02495AB78C632FBB514A760E3D55EEA63A7D"
+      },
+      {
+        "bytes": 7478,
+        "path": "include/xar_bridge/startup_particle2_stage_recorder_v1.hpp",
+        "sha256": "777896F98F32969BAA610943CC9DA34FECC033ADF86B8EB3F12AFD180C16737F"
+      },
+      {
+        "bytes": 5128,
+        "path": "include/xar_bridge/startup_rbx_null_call_guard_v1.hpp",
+        "sha256": "ED7E98D3A60F4BB71897478ED82FD66F27BFFC766D876E0CEB38671AB8976E78"
+      },
+      {
+        "bytes": 5440,
+        "path": "include/xar_bridge/startup_widget_null_flag_call_guard_v1.hpp",
+        "sha256": "17B4A6CF02EA0136F604763FC1E35777362DFB4ED4152BA9598FC920FA6BB2A8"
+      },
+      {
+        "bytes": 9140,
+        "path": "include/xar_bridge/tactical_daily_sentinel_v1.hpp",
+        "sha256": "45309A52CBDFB0173ADCFB4B685B6CABDD97220CA0711B6846A43A04CE8681B0"
+      },
+      {
+        "bytes": 5808,
+        "path": "include/xar_bridge/title_map_navigation_v1.hpp",
+        "sha256": "BA18CFA0E1EA80F853A7C7C5F8CD8F2026A3E22452714B05CB21532F6B7A6067"
+      },
+      {
+        "bytes": 8654,
+        "path": "include/xar_bridge/title_map_navigation_v1_camera.hpp",
+        "sha256": "ACC900341652DE956AF9607483920DFBB715452BADCAEFE6C1405AB3434A6691"
+      },
+      {
+        "bytes": 3172,
+        "path": "include/xar_bridge/title_map_navigation_v1_mailbox.hpp",
+        "sha256": "91A58FB6FE898A99EE02724F5E358AC3CE1577699644F00E7FC07C18A2D24B74"
+      },
+      {
+        "bytes": 456,
+        "path": "include/xar_bridge/title_map_navigation_v1_serializer.hpp",
+        "sha256": "1497EB9D40F5D8E25F13B936D7C36FE41271B511B6BC21929E5D513BC7ACB1F4"
+      },
+      {
+        "bytes": 11796,
+        "path": "include/xar_bridge/war_entry_assessments_v1.hpp",
+        "sha256": "765025F9F452BEAE43A0400F50B1E3B4F06822ECACA6F6C0D5B1067C38335ABB"
+      },
+      {
+        "bytes": 2710,
+        "path": "include/xar_bridge/war_entry_assessments_v1_mailbox.hpp",
+        "sha256": "17598BA66829D02ABF0D90AA5FB3E8C7A7D65ECA73DD1B0CE32330F12AAD0FD1"
+      },
+      {
+        "bytes": 3103,
+        "path": "include/xar_bridge/war_exit_terms_v2_test_only.hpp",
+        "sha256": "46889FD3B1A1C2D5B6B1F58B985CD09CF4A3F02BB26C8035D7ED98640A19887D"
+      },
+      {
+        "bytes": 453,
+        "path": "include/xar_bridge/war_exit_terms_wire.hpp",
+        "sha256": "663692974A92E27AD6B315574099CBE2AEB57810BA5FBF155884A546AA26A381"
+      },
+      {
+        "bytes": 7923,
+        "path": "include/xar_bridge/zhongguo_ai_owned_case_snapshot_v1.hpp",
+        "sha256": "94CB4720826D9E95E3658F41EF48A9297B6936A395AA70AE860D8A34D00FFC27"
+      },
+      {
+        "bytes": 2426,
+        "path": "include/xar_bridge/zhongguo_ai_owned_case_snapshot_v1_mailbox.hpp",
+        "sha256": "CF0D04E9AEBD7BC7116302E1275C269D038EB5AD4CD43D58A625D007605AFD26"
+      },
+      {
+        "bytes": 10895,
+        "path": "include/xar_bridge/zhongguo_b2_pip_snapshot_v1.hpp",
+        "sha256": "8372B128F08BE70D4381B92B4C4AB438A98ADAC91E5620CBF8EA3172B91E241F"
+      },
+      {
+        "bytes": 2265,
+        "path": "include/xar_bridge/zhongguo_b2_pip_snapshot_v1_mailbox.hpp",
+        "sha256": "E27BEF9B1A5E5F28A80E71C80ADC72AD745833E21C81251D1C8FDB8773486B4B"
+      },
+      {
+        "bytes": 10887,
+        "path": "include/xar_bridge/zhongguo_case_snapshot_v1.hpp",
+        "sha256": "56DD6B93E47DE18C075E203CC3312820E60CDC1C373AE23115EAF47CE1B235AD"
+      },
+      {
+        "bytes": 2445,
+        "path": "include/xar_bridge/zhongguo_case_snapshot_v1_mailbox.hpp",
+        "sha256": "910222305DFF39485B9C1A95EFA842FA064B2FA9D59D0157EBC0F0D0510584B2"
+      },
+      {
+        "bytes": 12992,
+        "path": "include/xar_bridge/zhongguo_incident_snapshot_v1.hpp",
+        "sha256": "85E8E74BA2CE66947398101F656C265CD3AFDE6ADD66F8C5BB96F5982335329E"
+      },
+      {
+        "bytes": 2565,
+        "path": "include/xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp",
+        "sha256": "65A6F21DD11F9289A7C8748A7750B8C83EAB3035E205D5DBF93907EA9D26E3B9"
+      },
+      {
+        "bytes": 14059,
+        "path": "include/xar_bridge/zhongguo_manager_governance_snapshot_v1.hpp",
+        "sha256": "9C03725AE09A24598525B02D49B9AAF980B992C462085B0E2633B2F16B38109F"
+      },
+      {
+        "bytes": 3890,
+        "path": "include/xar_bridge/zhongguo_manager_governance_snapshot_v1_mailbox.hpp",
+        "sha256": "9D3D377B1381EDFD89B668C04671BED7F27C5A606E68EB86CDAD0546FBC875B4"
+      },
+      {
+        "bytes": 5362,
+        "path": "include/xar_bridge/zhongguo_manager_subordinate_selector_v1.hpp",
+        "sha256": "9046ED9A824D493E17E453F410D8A54AB746D15A44E2B944E488CEF3DACBDAF3"
+      },
+      {
+        "bytes": 6319,
+        "path": "include/xar_bridge/zhongguo_projects_metrics_postcondition_v1.hpp",
+        "sha256": "644D4AF483705FB124B7C9C8E5BDA76349794BFAACA274487291F89052A23A57"
+      },
+      {
+        "bytes": 2543,
+        "path": "include/xar_bridge/zhongguo_projects_metrics_postcondition_v1_mailbox.hpp",
+        "sha256": "651AFBCED68147900FF36E078630315114D86E8E194BF5A07DC9E48E34AABCEE"
+      },
+      {
+        "bytes": 7253,
+        "path": "include/xar_bridge/zhongguo_promotion_compensation_postcondition_v1.hpp",
+        "sha256": "CF30DFD7C6FEF8510DF5222B4FBF113EE5399738E1F3E70DDB576EED94CD1866"
+      },
+      {
+        "bytes": 2641,
+        "path": "include/xar_bridge/zhongguo_promotion_compensation_postcondition_v1_mailbox.hpp",
+        "sha256": "E31CDB0C848D26A0B69EEA2CC6A65B6B62126B6ED58C73F438BF797D14F4AC44"
+      },
+      {
+        "bytes": 5361,
+        "path": "include/xar_bridge/zhongguo_result_case_snapshot_v1.hpp",
+        "sha256": "1CF248C9D04D3F126D3FB73356BE32889CC8680049F84E65F554D1DD431B6BAA"
+      },
+      {
+        "bytes": 2616,
+        "path": "include/xar_bridge/zhongguo_result_case_snapshot_v1_mailbox.hpp",
+        "sha256": "1433135A5CFBB15D392F59CF0107600946642B43A9B3F629260E286EA5B1DD34"
+      },
+      {
+        "bytes": 7415,
+        "path": "include/xar_bridge/zhongguo_scoreboard_action_v1.hpp",
+        "sha256": "46D4610CCE70B3FA343F40FD2932D5792154408312C35955C3CC26F6699018AB"
+      },
+      {
+        "bytes": 3351,
+        "path": "include/xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp",
+        "sha256": "762FEDFDA4681E607D2D99EB56557E1244FD76622F0570AA9A434F3BE3CE1465"
+      },
+      {
+        "bytes": 2038,
+        "path": "include/xar_bridge/zhongguo_scoreboard_production_v1.hpp",
+        "sha256": "F73F0220EE4C2D13F2B518B5F0E09C60E9690FE580D8E68CE7C8784EF9E3407C"
+      },
+      {
+        "bytes": 12035,
+        "path": "include/xar_bridge/zhongguo_scoreboard_state_v1.hpp",
+        "sha256": "A00C8BCB6692949076BE3D10D76AF46E1CAC9E71C73136C898060C8071E85961"
+      },
+      {
+        "bytes": 2538,
+        "path": "include/xar_bridge/zhongguo_scoreboard_state_v1_mailbox.hpp",
+        "sha256": "1E15A3067C7463210C273BE9DA18006A7AD52DEBC0B8290A0977D4A9B90CB4A8"
+      },
+      {
+        "bytes": 18051,
+        "path": "include/xar_bridge/zhongguo_workforce_collective_snapshot_v1.hpp",
+        "sha256": "29741F79F0BC8E3BAA92679355BBA9FD39AF4B857403DE756696CA28DF6B3069"
+      },
+      {
+        "bytes": 2621,
+        "path": "include/xar_bridge/zhongguo_workforce_collective_snapshot_v1_mailbox.hpp",
+        "sha256": "D8A4FF12FA4E9E61609279C423C3683D20F81C6884BF15E1D3A6688B13C73DCD"
+      },
+      {
+        "bytes": 14066,
+        "path": "include/xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1.hpp",
+        "sha256": "DBFB77F05CC09EAD536531871B96E46D30503E7DA4C576B86069BED40DB53C5B"
+      },
+      {
+        "bytes": 2634,
+        "path": "include/xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.hpp",
+        "sha256": "7E989ACE52799FF5EC8E75E7D6D76C00FDC8684605EE7D15589064EB51DBB82E"
+      },
+      {
+        "bytes": 8666,
+        "path": "src/actual_contact_scope_v1_mailbox.cpp",
+        "sha256": "C16EEECF17D1C4B05E3B34B8208B4018AB371E932296BBBB909E7558E1A71C8F"
+      },
+      {
+        "bytes": 10198,
+        "path": "src/attach_host.cpp",
+        "sha256": "547249CB46D1F9892F897C1008F8FE78910E810490DDF5BB2AF78266CFA833A9"
+      },
+      {
+        "bytes": 39507,
+        "path": "src/battle_control_snapshot_v1_mailbox.cpp",
+        "sha256": "CAE35D91061A67F51A315727C5FF68FE9A06813676F02B0CB1EF73D8DDEDE001"
+      },
+      {
+        "bytes": 19983,
+        "path": "src/battle_control_snapshot_v1_mailbox_test.cpp",
+        "sha256": "66FF141E19B77CFABE360075EDC9E36EF601F93C3B20988303167B11CD11AE1F"
+      },
+      {
+        "bytes": 25466,
+        "path": "src/battle_reinforcement_assignment_v1_mailbox.cpp",
+        "sha256": "31413EB2C9B7742C70A3834229DDA5A43A0F494EA9C2D91E33140E23DD0C9AB3"
+      },
+      {
+        "bytes": 8124,
+        "path": "src/battle_reinforcement_assignment_v1_mailbox_test.cpp",
+        "sha256": "CA7C96A08BEEFACCE304E15B37C8BB077DA39809D21B54C1539292829F8FB915"
+      },
+      {
+        "bytes": 35534,
+        "path": "src/battle_terminal_journal_v1.cpp",
+        "sha256": "C572C3B38C0090A2376C82EA10FC3A5736B32E60D2F1B5E38BEB7A88CC13F8B5"
+      },
+      {
+        "bytes": 30742,
+        "path": "src/battle_terminal_transition_v1_mailbox.cpp",
+        "sha256": "903BC3716BB992673EEF76EB284893F23804B8EEAB2D986A4511C3A116343454"
+      },
+      {
+        "bytes": 20547,
+        "path": "src/battle_terminal_transition_v1_mailbox_test.cpp",
+        "sha256": "4E4DC3755154044F7593C35D81981861DE659D94CE04CFBD2AAD26FF04313A25"
+      },
+      {
+        "bytes": 15827,
+        "path": "src/battle_transition_v1_mailbox.cpp",
+        "sha256": "9F9CDC07026CB90A19EE3D389768CBE1F34CC52C5C1A47B4E0DDA2A02283A8DC"
+      },
+      {
+        "bytes": 8542,
+        "path": "src/battle_transition_v1_mailbox_test.cpp",
+        "sha256": "1872F5270D6191F81F6877685F0507B99E9B4CD7E323B46C6D0ED2FFB537EA01"
+      },
+      {
+        "bytes": 439506,
+        "path": "src/bridge.cpp",
+        "sha256": "010EBF5665733F981A42CCF3962D51FD3938E72BE020073DC15DA80CD0B838DB"
+      },
+      {
+        "bytes": 32901,
+        "path": "src/campaign_root_context_v1.cpp",
+        "sha256": "D2BD0ABE75025BF80B599054B312A80C10AE5B2B2ECA81A4DAC6CFE4255ADF2F"
+      },
+      {
+        "bytes": 10159,
+        "path": "src/campaign_root_context_v1_mailbox.cpp",
+        "sha256": "484A7F6EFD6890313DE8A7750F56E23F33BD00D559A0B197384119F0F4B1C467"
+      },
+      {
+        "bytes": 6784,
+        "path": "src/campaign_root_context_v1_mailbox_test.cpp",
+        "sha256": "01805E4073702301FF7C906D5A39C07A0EF46C32577F06C5BDA9246BE99CD038"
+      },
+      {
+        "bytes": 11659,
+        "path": "src/campaign_root_context_v1_serializer.cpp",
+        "sha256": "91D180C51C095EF3ACCFD02DA8B9B10B4196E8D782CBBEDE7BBCE27574B6B518"
+      },
+      {
+        "bytes": 6231,
+        "path": "src/campaign_root_context_v1_source_contract_test.cpp",
+        "sha256": "B3C0BB2EB0E81C9B29944CB24A2B172C5B6EBA4C21682FE306D83814FD772FA2"
+      },
+      {
+        "bytes": 22019,
+        "path": "src/campaign_root_context_v1_test.cpp",
+        "sha256": "9785FE32BDC622044101D711D607B7984FBC017DD47050B45DF9564602E95E9E"
+      },
+      {
+        "bytes": 729473,
+        "path": "src/ck3_11906.cpp",
+        "sha256": "ECEF49E1379C2064D196B9E048076C2406ECA8E76B6305D9BFD5B769BB89FABD"
+      },
+      {
+        "bytes": 11380,
+        "path": "src/ck3_11906_adapter.cpp",
+        "sha256": "E2A7813E0884EB81C8F8234D3774F6E008503B7E1A4189B27F7D4FDC20105908"
+      },
+      {
+        "bytes": 545641,
+        "path": "src/ck3_11906_test.cpp",
+        "sha256": "F6C3C1E4375FF52B79A629B10FCABEE0091FDD0249F36BFEA04C52E76B02B538"
+      },
+      {
+        "bytes": 19301,
+        "path": "src/cold_map_vfs_observer_v1.cpp",
+        "sha256": "43525E14762FF49172B57B272DBED17EBB841505B9336F0F98845E9F998128C3"
+      },
+      {
+        "bytes": 4611,
+        "path": "src/cold_map_vfs_observer_v1_test.cpp",
+        "sha256": "3162B7753AD98FFEFC2007E995E4FDC56F43F911C2D3B307B36F9E3D036669A3"
+      },
+      {
+        "bytes": 18455,
+        "path": "src/combat_phase_event_trace_detour_v1.cpp",
+        "sha256": "4B29D42C8EA2FE4A4FEAF8D8B59F86E56E55768DCC204EF6FCDAD8911DC4EDC3"
+      },
+      {
+        "bytes": 10536,
+        "path": "src/combat_phase_event_trace_detour_v1_test.cpp",
+        "sha256": "56EEFCC1D0CC387B86EB88FEDF7E0BE67E964E2A329017FD194B950E3D4124F7"
+      },
+      {
+        "bytes": 31529,
+        "path": "src/combat_phase_event_trace_managed_v1.cpp",
+        "sha256": "CCA92ED5205DD794C8F5BCCC267A41567883C7E2C69F936E75C413944EDF4584"
+      },
+      {
+        "bytes": 22322,
+        "path": "src/combat_phase_event_trace_managed_v1_test.cpp",
+        "sha256": "C79DEA82260217B0F7B058136982CAC6830278707215B838717A0F9B6B929EC1"
+      },
+      {
+        "bytes": 44356,
+        "path": "src/combat_phase_event_trace_ring_v1.cpp",
+        "sha256": "0DFD619A4B4424C07CA25249F4CAC56D087D39875004DB9EBCDBB476082CB923"
+      },
+      {
+        "bytes": 21796,
+        "path": "src/combat_phase_event_trace_ring_v1_test.cpp",
+        "sha256": "24D0E6A922A0F68E9E0ACD86786E8A710EF3EECCD785C0E1482DB6982021790D"
+      },
+      {
+        "bytes": 53521,
+        "path": "src/combat_phase_event_trace_v1.cpp",
+        "sha256": "01279A4996C8EE281220F001B814E969DA63E56EACB0E63FB196DC59F0F9B7FA"
+      },
+      {
+        "bytes": 12351,
+        "path": "src/combat_phase_event_trace_v1_source_contract_test.cpp",
+        "sha256": "B2FC712D8BEBDE23C81F1820D24455A0E9405664E26645CA4B15DF3728CF3472"
+      },
+      {
+        "bytes": 14514,
+        "path": "src/combat_phase_event_trace_wire_v1.cpp",
+        "sha256": "1B39063209272DC65BB003C78CFD4E90D9F68BE5CF9254E0685F929572241D67"
+      },
+      {
+        "bytes": 6694,
+        "path": "src/combat_phase_event_trace_wire_v1_test.cpp",
+        "sha256": "A5254B31F1B90D0F720F4967288C07C0EE322B67288425900BA4FFE807CE1DEA"
+      },
+      {
+        "bytes": 15497,
+        "path": "src/combat_simulation_inputs_v3_mailbox.cpp",
+        "sha256": "C9539033AA1A4376BBB984C0CBC5F47A5715D0A8F3FA80626A747A75BF2DAD15"
+      },
+      {
+        "bytes": 164033,
+        "path": "src/combat_v3.cpp",
+        "sha256": "96CBE93DFFE5818C7B649387E733D4BA15B15CC2C28B83048C823B237F19EEBD"
+      },
+      {
+        "bytes": 23446,
+        "path": "src/combat_v3_serializer.cpp",
+        "sha256": "C28369384C36CE272CCC4F3D0C436D71A2D61C2895D9FAD3EB8C041BD959F205"
+      },
+      {
+        "bytes": 16403,
+        "path": "src/combat_v3_serializer_test.cpp",
+        "sha256": "DD1EE40481AD6B7451D6A465486E4D75802B990990DF604CCF3755DFE0F3B73D"
+      },
+      {
+        "bytes": 10586,
+        "path": "src/combat_v3_source_contract_test.cpp",
+        "sha256": "2BA10082FFC26D3D2E26DB1EF38EA75F85CA301D7AB975D9916CD019C0F33BCC"
+      },
+      {
+        "bytes": 18691,
+        "path": "src/combat_v3_test_only.cpp",
+        "sha256": "8182EB79854E04CBE32E0A198797BF93184448D1B55F5F314ED5971E26D19631"
+      },
+      {
+        "bytes": 6711,
+        "path": "src/combat_v3_test_only_test.cpp",
+        "sha256": "EF5017C797732B58F09C4D14B5FD90B3387B23B5B4F690D579B9090B1B4E90DD"
+      },
+      {
+        "bytes": 35107,
+        "path": "src/event_window_context_v1.cpp",
+        "sha256": "3A0562AA85FA883D695508B43D6B6A3E7F0A972D3CD88B79E8CF962D78DF473A"
+      },
+      {
+        "bytes": 7406,
+        "path": "src/event_window_context_v1_mailbox.cpp",
+        "sha256": "B0D061D95CE16F104E0E35348BE6C56BBC74C7F7ACC46B481A4E835639030DC8"
+      },
+      {
+        "bytes": 14386,
+        "path": "src/event_window_context_v1_serializer.cpp",
+        "sha256": "FC13CBF73E03F7817AD4626DA314112F96CDEC69544C1B68A4990E8F049BB2DE"
+      },
+      {
+        "bytes": 10747,
+        "path": "src/event_window_context_v1_serializer_test.cpp",
+        "sha256": "6C40B91FB91EE21809F80FF23F662D975F8ADAD837DB6239EEF389B9A2C29F0A"
+      },
+      {
+        "bytes": 41230,
+        "path": "src/event_window_context_v1_test.cpp",
+        "sha256": "B5A0F98C0D335B98AECC779262AD092EE27D96B9A94662C72816EC36AEF7CE30"
+      },
+      {
+        "bytes": 26092,
+        "path": "src/g2_truce_native_callsite_observer_v1.cpp",
+        "sha256": "94265AE2C1E825DACC53B89BB0BF2351A2C7FF9621B68ECE9722ECB4E64C38FC"
+      },
+      {
+        "bytes": 8368,
+        "path": "src/g2_truce_native_callsite_observer_v1_test.cpp",
+        "sha256": "63263FEF199B44248CB1D431CA8A9CF48EBB2F295B46EE7BF5308AAA2AF78926"
+      },
+      {
+        "bytes": 20557,
+        "path": "src/g2_truce_preview_entry_observer_v1.cpp",
+        "sha256": "0502FA16D75ACB5600EE4832A0B7E24864508A06D36CD6F31CB0ECAA077922C5"
+      },
+      {
+        "bytes": 5376,
+        "path": "src/g2_truce_preview_entry_observer_v1_test.cpp",
+        "sha256": "C6FA1B887A037B07C3EE9BB2021F573760C73D6ACEAB1C0A449826DFFBC447CA"
+      },
+      {
+        "bytes": 20045,
+        "path": "src/game_adapter.cpp",
+        "sha256": "B16330F9D452E535E459A49A956E16E1C3F3CA3EA3BEC0E7B1A0559EF4E8F3E8"
+      },
+      {
+        "bytes": 31637,
+        "path": "src/game_adapter_test.cpp",
+        "sha256": "6959B749C174B3B3B1892EDC58D82167167B9726B8708AC09B90D070C3C18D11"
+      },
+      {
+        "bytes": 13977,
+        "path": "src/host.cpp",
+        "sha256": "B7A178D02601F371236835C80E88C2FFE90B3D2A2590CC428C6B106946A8033F"
+      },
+      {
+        "bytes": 13522,
+        "path": "src/injector.cpp",
+        "sha256": "9C44BBCFA0605E5DE311E5A90232C07F747A3CA918C78B2ED49E2D4328EEFBCB"
+      },
+      {
+        "bytes": 3312,
+        "path": "src/injector_main.cpp",
+        "sha256": "E20F503B7A196C32B0DDE5C6C9871FB974A0D801E68788F86A9B10E5EECABFEB"
+      },
+      {
+        "bytes": 19334,
+        "path": "src/loaded_feature_manifest_v1.cpp",
+        "sha256": "FE4D39C1F8C61EC3A83933D5D5AB3DB1B343FF234F42F505A084975C5D779C04"
+      },
+      {
+        "bytes": 10223,
+        "path": "src/loaded_feature_manifest_v1_mailbox.cpp",
+        "sha256": "605A8ED8DB486534078AB0F3E0C0A0771F3E732BEDF0420806B0B5A3779A7493"
+      },
+      {
+        "bytes": 7184,
+        "path": "src/loaded_feature_manifest_v1_mailbox_test.cpp",
+        "sha256": "A5CC7F1742185E4B4EC16296AE9AD13D28BDC12F2DE6E2AB7DC09857A0FAA345"
+      },
+      {
+        "bytes": 8563,
+        "path": "src/loaded_feature_manifest_v1_serializer.cpp",
+        "sha256": "BA46BEBB93375BDABC45A76780311D7199415C6AFC9128FD96C99F3FCEA5FF1E"
+      },
+      {
+        "bytes": 6074,
+        "path": "src/loaded_feature_manifest_v1_source_contract_test.cpp",
+        "sha256": "4D31F61494898890216C7AA52168DA7B7D6B0604073FED6B2BD6417F67C3B9DA"
+      },
+      {
+        "bytes": 12527,
+        "path": "src/loaded_feature_manifest_v1_test.cpp",
+        "sha256": "910746752F355C9D9345525DADA686AE63D362D2918E51FAF22E9178E1A11AE2"
+      },
+      {
+        "bytes": 51447,
+        "path": "src/main_thread_query_mailbox_v1.cpp",
+        "sha256": "7581794ABEC42DC3ADA09478DCE5B922876664C30E59721FEB3385F7684A57BD"
+      },
+      {
+        "bytes": 67623,
+        "path": "src/main_thread_query_mailbox_v1_test.cpp",
+        "sha256": "904DB5AA852C0C8FC0C0389B2F54C743DC25FCA9DC38C5D48810A2543E066829"
+      },
+      {
+        "bytes": 26538,
+        "path": "src/network_session_boundary_counter_v1.cpp",
+        "sha256": "395C4C52ED3419420C61891D06DE4D193BD9B6ACA1E3B0B7C9A02A2E7C126692"
+      },
+      {
+        "bytes": 64872,
+        "path": "src/pending_character_interaction_context_v1.cpp",
+        "sha256": "268DA0A9D77771FFFCA4CCC9F3DB4D90DFCC3F182D96E547FA8EE8A7D1DB9B23"
+      },
+      {
+        "bytes": 20160,
+        "path": "src/pending_character_interaction_context_v1_mailbox.cpp",
+        "sha256": "096978A4217591BF1A334E87D43A9B7FE2EB5D5A72AF3C3F3FF47891437ACB23"
+      },
+      {
+        "bytes": 17988,
+        "path": "src/pending_character_interaction_context_v1_mailbox_test.cpp",
+        "sha256": "B2F9BB7C975A2C19BD66ADA9B70B240B6514C1EE45249269AC19E8199DC0157A"
+      },
+      {
+        "bytes": 32762,
+        "path": "src/pending_character_interaction_context_v1_serializer.cpp",
+        "sha256": "9129F1922F8EF5ED4037EF48614718543F840B52BF9B614C93D5ACAA6069875E"
+      },
+      {
+        "bytes": 17066,
+        "path": "src/pending_character_interaction_context_v1_source_contract_test.cpp",
+        "sha256": "755506BCADFB3F098FB1B94B51484219C1F6F6B5A76E2417907693ACBEC4FFC4"
+      },
+      {
+        "bytes": 47590,
+        "path": "src/pending_character_interaction_context_v1_test.cpp",
+        "sha256": "2E12A0BF40DE77E151907DAB4B065CCFF665C769C339918970A1CBD5F0289963"
+      },
+      {
+        "bytes": 27478,
+        "path": "src/phase2_completion_observer_v1.cpp",
+        "sha256": "1A67494432AEB200C432E085E37CEE02DB4C53176A418F7C21C6276058D77779"
+      },
+      {
+        "bytes": 10549,
+        "path": "src/phase2_completion_observer_v1_test.cpp",
+        "sha256": "210B735083D10BC2C7549A697DF788C6393B1B4B9E0102694676AFFAB5C780E0"
+      },
+      {
+        "bytes": 31282,
+        "path": "src/phase2_post_call_list_identity_observer_v1.cpp",
+        "sha256": "E662E08CC1D4DD856A591A254ACB25A1A16423176A2E82C02DF9682B9A45ACAE"
+      },
+      {
+        "bytes": 10143,
+        "path": "src/phase2_post_call_list_identity_observer_v1_test.cpp",
+        "sha256": "141AFAC79907D6715344847607A1F8BEC038A1233890FF2E2B649952E2ED49E6"
+      },
+      {
+        "bytes": 24839,
+        "path": "src/phase2_post_call_observer_v1.cpp",
+        "sha256": "8513DFAB35AB8229A90BEF545908B809E0816F292314F44133399560A6FA7333"
+      },
+      {
+        "bytes": 9223,
+        "path": "src/phase2_post_call_observer_v1_test.cpp",
+        "sha256": "2C62FFCAC9E33E03538DDAFD429C3463CCD1FE84D4BA39AD2825B1C0C78802A4"
+      },
+      {
+        "bytes": 31439,
+        "path": "src/phase2_producer_identity_observer_v1.cpp",
+        "sha256": "87410CFE4C2AECE7C4D340FFCDB0BA0AE22D49708BAFC2A63F49D58CB8FB9770"
+      },
+      {
+        "bytes": 10164,
+        "path": "src/phase2_producer_identity_observer_v1_test.cpp",
+        "sha256": "7244B654FE5983BC46DA5B2D631463210AB2DDB06747AAD0986B44A084DF59D6"
+      },
+      {
+        "bytes": 22041,
+        "path": "src/phase2_wrapper_consumer_edge_observer_v1.cpp",
+        "sha256": "9A9C32DAFB07D802FB86D6AA0A96F4A48EF4323D52123810285ED74CEE0156B7"
+      },
+      {
+        "bytes": 6957,
+        "path": "src/phase2_wrapper_consumer_edge_observer_v1_test.cpp",
+        "sha256": "CD77EB115C28D8DFFFC6D77FB33418FB01E0442A9284A4167F18D958EB805CA4"
+      },
+      {
+        "bytes": 21265,
+        "path": "src/phase2_wrapper_entry_observer_v1.cpp",
+        "sha256": "6E02BD7BF1AB99B9589E938CB16DB161064E8D7A361100B5C56DE2DAFDF51219"
+      },
+      {
+        "bytes": 7043,
+        "path": "src/phase2_wrapper_entry_observer_v1_test.cpp",
+        "sha256": "07C11B5B3669ABBB117A25B99B0199F512BCF6D5E52344CAB3100340BEFEE458"
+      },
+      {
+        "bytes": 10303,
+        "path": "src/prewar_scope_v1.cpp",
+        "sha256": "FE5EC4B388031614D83658139BA1E866C7BA48EDFB73F187D551E6BF66D13DE6"
+      },
+      {
+        "bytes": 10367,
+        "path": "src/prewar_scope_v1_test.cpp",
+        "sha256": "95CCD8816AC41AB17D866BD0A9B36829D9CD429CD34BE4F91297DB7C14BD806C"
+      },
+      {
+        "bytes": 4503,
+        "path": "src/protocol.cpp",
+        "sha256": "55F43069045AB25A9E8AAE08060042C1B206838DBF0CA98668AA36D3D366F24C"
+      },
+      {
+        "bytes": 2643,
+        "path": "src/protocol_test.cpp",
+        "sha256": "E2DDE85748751A10F79E4D679CD52397DE3B517A510B1DDB85A4112226B571D2"
+      },
+      {
+        "bytes": 25001,
+        "path": "src/raiktor_surrender_six_domain_v1.cpp",
+        "sha256": "F3AD174FD17C6EF337CF55A055FEB5697FF80987758A164B9CFBFCA7C2A0EEF1"
+      },
+      {
+        "bytes": 15165,
+        "path": "src/raiktor_surrender_six_domain_v1_test.cpp",
+        "sha256": "679936E491893ECF0E20142D805080EEE6856A22C002A8ABEF52182958320109"
+      },
+      {
+        "bytes": 63345,
+        "path": "src/raiktor_surrender_truce_v1.cpp",
+        "sha256": "FAB756C7A0702A896EBF3DFB5D01A217C582F933A7C4611C1562428AEB8270D5"
+      },
+      {
+        "bytes": 21954,
+        "path": "src/raiktor_surrender_truce_v1_test.cpp",
+        "sha256": "597203213007CDD73B833B0F33BF72B8102E28FFC07ED80B2092ED0837BB053C"
+      },
+      {
+        "bytes": 16315,
+        "path": "src/raiktor_war_bound_regiment_v1.cpp",
+        "sha256": "D4C310A2CF7BEABBBAF2160D8428786FFADE3F5C3654700E2B53A971CF06EF97"
+      },
+      {
+        "bytes": 10179,
+        "path": "src/raiktor_war_bound_regiment_v1_test.cpp",
+        "sha256": "2D53E997E66AF6FB144E679BC877DDC5E24207E1B339BE45070C636195395566"
+      },
+      {
+        "bytes": 17441,
+        "path": "src/route_contact_horizon_v1_mailbox.cpp",
+        "sha256": "A476CD54F2573F82E63DA678EA4AC80AE31E550CB2771C83B727D9AD2C5E384E"
+      },
+      {
+        "bytes": 20341,
+        "path": "src/startup_dx11_render_context_draw_guard_v1.cpp",
+        "sha256": "DC15C41B51EB4BC18459B90CC3420E3CA1DD723AF29EF0C9CEB4009F5AF41A49"
+      },
+      {
+        "bytes": 30389,
+        "path": "src/startup_dx11_render_context_draw_guard_v1_test.cpp",
+        "sha256": "225D2CBA2C8DB5DD6DADDD1EFDC9C69AC4E03700E240E81669FA5B1E416402C8"
+      },
+      {
+        "bytes": 20140,
+        "path": "src/startup_localize_current_root_guard_v1.cpp",
+        "sha256": "AF8A6DB3072AF6CC823F9E0A2AA4ECD180FA2D650028110BDE9418F1531B49B8"
+      },
+      {
+        "bytes": 35430,
+        "path": "src/startup_localize_current_root_guard_v1_test.cpp",
+        "sha256": "E85E0A5D81E19CA55E7021F4EB305768C4468B11F7825A99DDE3D3D979A5DDB1"
+      },
+      {
+        "bytes": 22596,
+        "path": "src/startup_particle2_consumer_null_guard_v1.cpp",
+        "sha256": "8BEB81C4058D8B3A32B3E926E7E12A68EFAAF32AA3D1B62BD4441CC7FE1B2C05"
+      },
+      {
+        "bytes": 28833,
+        "path": "src/startup_particle2_consumer_null_guard_v1_test.cpp",
+        "sha256": "C64845658572C2B44FACD006ADFD79F879FD77901F9E21AD12CFFA46032033E5"
+      },
+      {
+        "bytes": 24251,
+        "path": "src/startup_particle2_null_guard_v1.cpp",
+        "sha256": "BAB8B27CA215781119E397747203B90039ABF9127F53C2665562C0E94F1996C4"
+      },
+      {
+        "bytes": 28877,
+        "path": "src/startup_particle2_null_guard_v1_test.cpp",
+        "sha256": "639590C42041D6E50492729B09700E6E760A3DED379ABD2673626C5EDE69952B"
+      },
+      {
+        "bytes": 34216,
+        "path": "src/startup_particle2_stage_recorder_v1.cpp",
+        "sha256": "CDA6792D441F24D9FDB5442827B3F1F6D8CA4A72E260B4CB717096502AFDB2F5"
+      },
+      {
+        "bytes": 39134,
+        "path": "src/startup_particle2_stage_recorder_v1_test.cpp",
+        "sha256": "A2409C3A5E3734BDD1061887392FB74377047469D6DDCB3E1FDAD537B709C30F"
+      },
+      {
+        "bytes": 19925,
+        "path": "src/startup_rbx_null_call_guard_v1.cpp",
+        "sha256": "22377050919A160CC12B12910FA1EFAA314919B3A6C7C1A069B030DD93DB2D8F"
+      },
+      {
+        "bytes": 10467,
+        "path": "src/startup_rbx_null_call_guard_v1_test.cpp",
+        "sha256": "B5B69546BA87913DAD6F3F28000CB51B4E43CB3A064C17656136965252047234"
+      },
+      {
+        "bytes": 20125,
+        "path": "src/startup_widget_null_flag_call_guard_v1.cpp",
+        "sha256": "93865866C0A535F05DD9AB02ED52DDE07A7BFC6F84DBC5FF253DA9444641AB8F"
+      },
+      {
+        "bytes": 9979,
+        "path": "src/startup_widget_null_flag_call_guard_v1_test.cpp",
+        "sha256": "69925BCB17A7E080FC427E46ADFB487B68FB46465995FB28F5BFF43B82ACD365"
+      },
+      {
+        "bytes": 42656,
+        "path": "src/tactical_daily_sentinel_v1.cpp",
+        "sha256": "C035CA55246270E203942E446E0207A065BBBDA1810C92DF78741959E41F881A"
+      },
+      {
+        "bytes": 29564,
+        "path": "src/tactical_daily_sentinel_v1_test.cpp",
+        "sha256": "D4D7FC38002D6ECAAFD361B389F836A343A2693FC29A38B606C89512D7BC2508"
+      },
+      {
+        "bytes": 613,
+        "path": "src/target.cpp",
+        "sha256": "497EAC03447F3D9EF0B2DF2B6A6C6A9C1EB71C345F0923702A50CC57D49817C5"
+      },
+      {
+        "bytes": 17270,
+        "path": "src/title_map_navigation_v1.cpp",
+        "sha256": "073F4BA3B90427CAFFD543D3BFF9A3BA43A3D912CEF6EF2D1A5CE90874F1A5A2"
+      },
+      {
+        "bytes": 35121,
+        "path": "src/title_map_navigation_v1_camera.cpp",
+        "sha256": "97840CA122D64F05D85067A8BED5D775AABCAA3BBD06E075C03697765FFA0F19"
+      },
+      {
+        "bytes": 20532,
+        "path": "src/title_map_navigation_v1_camera_test.cpp",
+        "sha256": "E8A94898CB6207A2B3AFF281098E9571ECD18008FCED25239A84A2407BE19275"
+      },
+      {
+        "bytes": 18795,
+        "path": "src/title_map_navigation_v1_mailbox.cpp",
+        "sha256": "582C4BDA6774CAFAE442F79B3E70FF58EB0B269376D4830658C73AFB181107B6"
+      },
+      {
+        "bytes": 9890,
+        "path": "src/title_map_navigation_v1_mailbox_test.cpp",
+        "sha256": "ADA1639534FC0F55C8012447E1A4EACD2611864753AF012BDDC6E308659EFD83"
+      },
+      {
+        "bytes": 9888,
+        "path": "src/title_map_navigation_v1_serializer.cpp",
+        "sha256": "8C605805BE49728A74C094EB2B5E5E0B89C5DB40D18D151B8B82133B3D0D89AB"
+      },
+      {
+        "bytes": 4541,
+        "path": "src/title_map_navigation_v1_serializer_test.cpp",
+        "sha256": "C16167ACA0010797E8A57104D0BAB37F835A3B19B643529AF7ABB22ADF705728"
+      },
+      {
+        "bytes": 9221,
+        "path": "src/title_map_navigation_v1_test.cpp",
+        "sha256": "B6ED449DE84285BC6CBACE09C62916901D7C9336724E41F352F786BA9CBDB179"
+      },
+      {
+        "bytes": 35171,
+        "path": "src/war_entry_assessments_v1.cpp",
+        "sha256": "30A6DDF25D350E849BD424DB3DB93F1523DCB67A16CBDD397A89A53DF45EED8E"
+      },
+      {
+        "bytes": 5735,
+        "path": "src/war_entry_assessments_v1_mailbox.cpp",
+        "sha256": "09B7FC6F41D9CF245156B1CE4D9AE33FEF4ED1B524E7036EB3C134DCA76D5E15"
+      },
+      {
+        "bytes": 13430,
+        "path": "src/war_entry_assessments_v1_mailbox_test.cpp",
+        "sha256": "5A3718943901858C4C805831F04B343C982BE06C49BF4130AF9666189935EB10"
+      },
+      {
+        "bytes": 7566,
+        "path": "src/war_entry_assessments_v1_serializer.cpp",
+        "sha256": "51A5889134A7275DB41C54F2CFC4BC5CD262B8E36CDD708BF70B85F55C3FB26D"
+      },
+      {
+        "bytes": 22119,
+        "path": "src/war_entry_assessments_v1_source_contract_test.cpp",
+        "sha256": "D39088C8690E33D4836209CEC10C1D2668FC84862D4ED11616F240D88836F6D0"
+      },
+      {
+        "bytes": 33676,
+        "path": "src/war_entry_assessments_v1_test.cpp",
+        "sha256": "8F73D13751C5924B5D3B4BF3D3DBA13AD373183336BB6A14548F901D0564C902"
+      },
+      {
+        "bytes": 15744,
+        "path": "src/war_exit_terms_v2_test_only.cpp",
+        "sha256": "9557F2461390975473AF011DEE11098BBE92CE36BC85CD61AC4AAE6CA37D1E1A"
+      },
+      {
+        "bytes": 11182,
+        "path": "src/war_exit_terms_v2_test_only_test.cpp",
+        "sha256": "69455446F85D534796280A349B5A58CC85CAC55949D5983F67C09FF495C16E8D"
+      },
+      {
+        "bytes": 4286,
+        "path": "src/war_exit_terms_wire.cpp",
+        "sha256": "4111109ACFBAE540C2A2BBA087ED3B30BFB56502CD1D8E898427A36E27A00F99"
+      },
+      {
+        "bytes": 3173,
+        "path": "src/war_termination_same_frame_source_contract_test.cpp",
+        "sha256": "90C299531DDC83F1CD8250408F8B4D2E28ED6F87ED37A6992C89C738E4777420"
+      },
+      {
+        "bytes": 40875,
+        "path": "src/zhongguo_ai_owned_case_snapshot_v1.cpp",
+        "sha256": "9BD640DE7784C5448D69A64C96150F9C497CFC963438F277EE0A931458A59306"
+      },
+      {
+        "bytes": 17327,
+        "path": "src/zhongguo_ai_owned_case_snapshot_v1_mailbox.cpp",
+        "sha256": "84881B43D952BD1616AF61F45F3442B843B0EE7DEC213482E9392E07C7E33F5A"
+      },
+      {
+        "bytes": 9767,
+        "path": "src/zhongguo_ai_owned_case_snapshot_v1_mailbox_test.cpp",
+        "sha256": "EEC5C2D62A7D13DB1C29DA4FD65999DE80152795967F7F60A901A4D0FCD21BF6"
+      },
+      {
+        "bytes": 16143,
+        "path": "src/zhongguo_ai_owned_case_snapshot_v1_serializer.cpp",
+        "sha256": "2EBEB40AFF3C801787952B0341CFA5727679297E6FF1B7E7C5D1086DC5D510BD"
+      },
+      {
+        "bytes": 5429,
+        "path": "src/zhongguo_ai_owned_case_snapshot_v1_source_contract_test.cpp",
+        "sha256": "A0DA36AAB2A1C7F1EC2BC57E44484BF21FBB0F80BDB262AEBE50EC8E67107DA5"
+      },
+      {
+        "bytes": 11861,
+        "path": "src/zhongguo_ai_owned_case_snapshot_v1_test.cpp",
+        "sha256": "9D9ADBD11C91D523651ADAD0C42005C0806F3CA1D07402AFD336D1885720A12C"
+      },
+      {
+        "bytes": 44239,
+        "path": "src/zhongguo_b2_pip_snapshot_v1.cpp",
+        "sha256": "B5009B390353C7DB835B2A602659E15D1F85F30507A5820002BB3237DEA5E472"
+      },
+      {
+        "bytes": 16137,
+        "path": "src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp",
+        "sha256": "20C4481554E4136F466EB644E521DC8D6ACF5A735FF1C18A1F6EDAB9F2253273"
+      },
+      {
+        "bytes": 9529,
+        "path": "src/zhongguo_b2_pip_snapshot_v1_mailbox_test.cpp",
+        "sha256": "D2C7D04245DF0908D7DEABE83848B604E9D7CD7EBCF00FC985AA7685B7216C10"
+      },
+      {
+        "bytes": 19376,
+        "path": "src/zhongguo_b2_pip_snapshot_v1_serializer.cpp",
+        "sha256": "9B84F775BBF461547B6A75EEF7E7106C4176B6F0946351E799D084690D452A1B"
+      },
+      {
+        "bytes": 10084,
+        "path": "src/zhongguo_b2_pip_snapshot_v1_source_contract_test.cpp",
+        "sha256": "7645F25C3FCDD693CF35EC9D29133C03981C0C2402D67B479DE13AAB79057AB1"
+      },
+      {
+        "bytes": 16767,
+        "path": "src/zhongguo_b2_pip_snapshot_v1_test.cpp",
+        "sha256": "66DF21DFB418C376C644C8D4776946830FD01F37EECB437027504BFA1EA199F2"
+      },
+      {
+        "bytes": 36452,
+        "path": "src/zhongguo_case_snapshot_v1.cpp",
+        "sha256": "24FFC483071CC8D58F5832D84A7088556119E6F818FAC195E2C15D1B121C933C"
+      },
+      {
+        "bytes": 14802,
+        "path": "src/zhongguo_case_snapshot_v1_mailbox.cpp",
+        "sha256": "7BEB1235A892ECFA138C1E72D6182CD50CFB81441F2F93EB76064B872A60D317"
+      },
+      {
+        "bytes": 10189,
+        "path": "src/zhongguo_case_snapshot_v1_mailbox_test.cpp",
+        "sha256": "F40D5939974AC4098CDE8797E15F087B817DE13BBA93C5BF6CB07146473E94E6"
+      },
+      {
+        "bytes": 15655,
+        "path": "src/zhongguo_case_snapshot_v1_serializer.cpp",
+        "sha256": "41BB321977D37E6BEF2FBE34E2E0562300AD0721AFAA36BC74E31AE161F131D1"
+      },
+      {
+        "bytes": 5473,
+        "path": "src/zhongguo_case_snapshot_v1_source_contract_test.cpp",
+        "sha256": "799018966E5015125E91069F6053971346F0CA9A6CA9A8F3CB4E47F642DF05E2"
+      },
+      {
+        "bytes": 16518,
+        "path": "src/zhongguo_case_snapshot_v1_test.cpp",
+        "sha256": "30BA6F0E0BE77D17A88DEE6E22DA88F7055C25930EF10780208A058E48025C03"
+      },
+      {
+        "bytes": 36304,
+        "path": "src/zhongguo_incident_snapshot_v1.cpp",
+        "sha256": "8637AE0115FCF0C693A172ED78FAC27ED4AA533BD207154D249841186D414247"
+      },
+      {
+        "bytes": 18251,
+        "path": "src/zhongguo_incident_snapshot_v1_mailbox.cpp",
+        "sha256": "CF06621C2147FD90ECFEBBBC5EE136607C720658CD85BA686485E2FCA2F69F3D"
+      },
+      {
+        "bytes": 10093,
+        "path": "src/zhongguo_incident_snapshot_v1_mailbox_test.cpp",
+        "sha256": "8E841DF29CBCC316D265D50A698792899BC69A992899221CA275E75AA356BACC"
+      },
+      {
+        "bytes": 15515,
+        "path": "src/zhongguo_incident_snapshot_v1_serializer.cpp",
+        "sha256": "F99D4DC768F2F8338424CEB0EA5D4C68D915BD7B0AEADC9372288C85D6B15B9E"
+      },
+      {
+        "bytes": 8381,
+        "path": "src/zhongguo_incident_snapshot_v1_source_contract_test.cpp",
+        "sha256": "2A986E8321E975729F31CA212C91802CD0E4A1EF1690C30A03F700028BF2F87F"
+      },
+      {
+        "bytes": 10659,
+        "path": "src/zhongguo_incident_snapshot_v1_test.cpp",
+        "sha256": "31262E7127FAA31AFF0E571F18E4C7E42E17FF04D7851FAADA00236D9D39AAD0"
+      },
+      {
+        "bytes": 48400,
+        "path": "src/zhongguo_manager_governance_snapshot_v1.cpp",
+        "sha256": "81F44E7FF27D0D617B9F56BB9226B63CB096C54FD497C60C06E6274040DCA3B0"
+      },
+      {
+        "bytes": 22865,
+        "path": "src/zhongguo_manager_governance_snapshot_v1_mailbox.cpp",
+        "sha256": "673DE52C9FE369B7237D9A5B866A5720F936A776760B0D51B596100A07056469"
+      },
+      {
+        "bytes": 20383,
+        "path": "src/zhongguo_manager_governance_snapshot_v1_serializer.cpp",
+        "sha256": "F3DDACF1D887CDADDE5A6587B90D314166272FC01F54EAEBF34BCB182733264D"
+      },
+      {
+        "bytes": 10851,
+        "path": "src/zhongguo_manager_governance_snapshot_v1_test.cpp",
+        "sha256": "DCF25E3D01D9B17324D6E366D935528833016C427525668D33902EBFE41EB91E"
+      },
+      {
+        "bytes": 26336,
+        "path": "src/zhongguo_manager_subordinate_selector_v1.cpp",
+        "sha256": "A6E61DB9274D4DB6BF38BE2E8AE3CCB3520AB627E86C3071DEAB83A304C95DEF"
+      },
+      {
+        "bytes": 8017,
+        "path": "src/zhongguo_manager_subordinate_selector_v1_serializer.cpp",
+        "sha256": "F6A63F21E883FBC66BC034DCF72E7912D8EEFB350B8C8E80E21CD07443A9994B"
+      },
+      {
+        "bytes": 8674,
+        "path": "src/zhongguo_manager_subordinate_selector_v1_test.cpp",
+        "sha256": "C328A407668F7576A7DA0A3D8BEF37543647D4E678605B8E0635EA37BB6A2F35"
+      },
+      {
+        "bytes": 27690,
+        "path": "src/zhongguo_projects_metrics_postcondition_v1.cpp",
+        "sha256": "279B3C114BEBC564F47588DE226DB49F8CC7B2BF4F2EE797FEBDB685190A015E"
+      },
+      {
+        "bytes": 16328,
+        "path": "src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp",
+        "sha256": "56D8C6920C5C119CD293CF161EE9F572B99646C381AB6C5AC08CB36ABA8BF032"
+      },
+      {
+        "bytes": 2523,
+        "path": "src/zhongguo_projects_metrics_postcondition_v1_mailbox_test.cpp",
+        "sha256": "A9D369F1146FB54700AB58339027AB5C627D64C63039AF066F0A62CF3B8DC0A4"
+      },
+      {
+        "bytes": 8947,
+        "path": "src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp",
+        "sha256": "BE3B9AB1D41C1FDA26A13E28B5256CE25957CE62493F8AC96B10B5CA4C1439F7"
+      },
+      {
+        "bytes": 8803,
+        "path": "src/zhongguo_projects_metrics_postcondition_v1_test.cpp",
+        "sha256": "09CB48ECD87802615A68889433C7E70CD7785C972F9A8BE0364D7F78F2172C9C"
+      },
+      {
+        "bytes": 37035,
+        "path": "src/zhongguo_promotion_compensation_postcondition_v1.cpp",
+        "sha256": "B44028DD9A76367281032B7E28510A65C2571E9430BFCBBCC4645CC0E5AB47FC"
+      },
+      {
+        "bytes": 16423,
+        "path": "src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp",
+        "sha256": "06D3334EB4674CEFFE0931F11829A86E5D62F2CBB9E8E34440DD7B48BDD241F2"
+      },
+      {
+        "bytes": 2524,
+        "path": "src/zhongguo_promotion_compensation_postcondition_v1_mailbox_test.cpp",
+        "sha256": "5AC8846E7972AB1D113ABA4A3F9BB58A0227AE3F57E3C3B1511381E64D0A4729"
+      },
+      {
+        "bytes": 9060,
+        "path": "src/zhongguo_promotion_compensation_postcondition_v1_test.cpp",
+        "sha256": "DA4F8C7AA59A76BC72645DBBF943CA039CDB5A169EBD5E9AE272C3E0F87D2D37"
+      },
+      {
+        "bytes": 25147,
+        "path": "src/zhongguo_result_case_snapshot_v1.cpp",
+        "sha256": "CDF6BDB4C5451E9DEB2AB258619EB07122EE795DD977B1885D40186D49EE8470"
+      },
+      {
+        "bytes": 17428,
+        "path": "src/zhongguo_result_case_snapshot_v1_mailbox.cpp",
+        "sha256": "A27CAC8C653B33CE25491FEE9EAA66E671C2DF31FC05253DC19D764F767BD576"
+      },
+      {
+        "bytes": 10112,
+        "path": "src/zhongguo_result_case_snapshot_v1_mailbox_test.cpp",
+        "sha256": "1F470573447455C20FD87299E62CF1C7CB1F4ABF43A60E4D6E9A422C671C56F2"
+      },
+      {
+        "bytes": 10980,
+        "path": "src/zhongguo_result_case_snapshot_v1_serializer.cpp",
+        "sha256": "AB46C82C201F6EB00D6E42A8DD0528975E75991D9F0934E796BC7519645CAD4B"
+      },
+      {
+        "bytes": 5660,
+        "path": "src/zhongguo_result_case_snapshot_v1_source_contract_test.cpp",
+        "sha256": "906650F9731DBC417EC671E26AADDCD3CD5000D5A1DE13D40533B697B94FB4D0"
+      },
+      {
+        "bytes": 10114,
+        "path": "src/zhongguo_result_case_snapshot_v1_test.cpp",
+        "sha256": "F401B09388AD0BC01845C8E550FBBFC6F4891F45EC049A71963066A890E8E29F"
+      },
+      {
+        "bytes": 33160,
+        "path": "src/zhongguo_scoreboard_action_v1.cpp",
+        "sha256": "8DCF0F417FC128E276768522AD6049CEF79D44B33D0358E8950DE7BA63E4DFCA"
+      },
+      {
+        "bytes": 24531,
+        "path": "src/zhongguo_scoreboard_action_v1_mailbox.cpp",
+        "sha256": "A78D4C0BE90ED8AF0C43E76B42CF4811223B8A20EF304C2096477F4CFCA0EBD4"
+      },
+      {
+        "bytes": 11560,
+        "path": "src/zhongguo_scoreboard_action_v1_mailbox_test.cpp",
+        "sha256": "F4E12245F7AECBC3FB07EE8422A12D18245A074F5EABADBF3166E67EE461B857"
+      },
+      {
+        "bytes": 19615,
+        "path": "src/zhongguo_scoreboard_action_v1_test.cpp",
+        "sha256": "1BAABC82DEA09ABDF371BA48012E348AB83B98AC8181D765FB7CE4C105734706"
+      },
+      {
+        "bytes": 10134,
+        "path": "src/zhongguo_scoreboard_production_v1.cpp",
+        "sha256": "5E32554D409D21BAA9EA8A1E289B840EA6D52E21AC77B761470429905693080B"
+      },
+      {
+        "bytes": 5787,
+        "path": "src/zhongguo_scoreboard_production_v1_test.cpp",
+        "sha256": "FB38B77E9BF8E5421917B9FC6B2EC60816A2565A29E03A4E05B1D531E5FC5CBB"
+      },
+      {
+        "bytes": 60452,
+        "path": "src/zhongguo_scoreboard_state_v1.cpp",
+        "sha256": "57342F849B1AA8750E8C5A3636A456578AE583BC455BC576B44E6F53C3C7534D"
+      },
+      {
+        "bytes": 16744,
+        "path": "src/zhongguo_scoreboard_state_v1_mailbox.cpp",
+        "sha256": "CC9EAA89000782CCD96AC385733C98AF09D621ABB19DCCC7165A7C21A2A9A2B8"
+      },
+      {
+        "bytes": 16635,
+        "path": "src/zhongguo_scoreboard_state_v1_serializer.cpp",
+        "sha256": "4C7E5F1E2010DD55FD67BBB08643134434975BB150A9501C4A6C0A927DC9C3A1"
+      },
+      {
+        "bytes": 30192,
+        "path": "src/zhongguo_scoreboard_state_v1_test.cpp",
+        "sha256": "9871C334A9091FB075ADC654E78C93572728268583AD1501EF206EF8E2A0BD8B"
+      },
+      {
+        "bytes": 61838,
+        "path": "src/zhongguo_workforce_collective_snapshot_v1.cpp",
+        "sha256": "8728A81A05431318C9B7B28A3F848AD7C93E56EEC6107A704C078DA108F262F2"
+      },
+      {
+        "bytes": 16778,
+        "path": "src/zhongguo_workforce_collective_snapshot_v1_mailbox.cpp",
+        "sha256": "3986E93B523CEDA763A0429423E4E0160605217CD0E9509DE94CAD81EA448AF4"
+      },
+      {
+        "bytes": 10305,
+        "path": "src/zhongguo_workforce_collective_snapshot_v1_mailbox_test.cpp",
+        "sha256": "9A6F7EEEA3B800A34E45D2765AAF9A8EC8251A91A442832363DC19063B83E6F7"
+      },
+      {
+        "bytes": 21571,
+        "path": "src/zhongguo_workforce_collective_snapshot_v1_serializer.cpp",
+        "sha256": "241863CF8554B8196C978D5E7C4B0C0470C86C1FAD31970330972C697ED10A56"
+      },
+      {
+        "bytes": 8119,
+        "path": "src/zhongguo_workforce_collective_snapshot_v1_source_contract_test.cpp",
+        "sha256": "8BD7A10734BBE4E420DA79CE1B7573E823249362DC1132BDA0DB6C3B4C738400"
+      },
+      {
+        "bytes": 18503,
+        "path": "src/zhongguo_workforce_collective_snapshot_v1_test.cpp",
+        "sha256": "1CB5E3859D31AAB26E2EE69CDDE445345777FF86C757B3A3EA0D79C1BD2A33DD"
+      },
+      {
+        "bytes": 49237,
+        "path": "src/zhongguo_workforce_normal_exit_snapshot_v1.cpp",
+        "sha256": "83BC606AC71585ACFA52FDEDA379B68025C26A55BDBA1B476F1EBBF24FF5DD9F"
+      },
+      {
+        "bytes": 17597,
+        "path": "src/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.cpp",
+        "sha256": "06518B77480561A9CB2D5E606F481D3C09888FCA4E9305745A8D4B08A62167B2"
+      },
+      {
+        "bytes": 14468,
+        "path": "src/zhongguo_workforce_normal_exit_snapshot_v1_mailbox_test.cpp",
+        "sha256": "1BA02333B789C4032FA1674244A7DE8DB867E739C93F08FCCEA1F0064CF72035"
+      },
+      {
+        "bytes": 13800,
+        "path": "src/zhongguo_workforce_normal_exit_snapshot_v1_serializer.cpp",
+        "sha256": "AD1B40B073879A9554410A3E62DF25B1E6E0F1C3DC53302CF044CB341EC6003E"
+      },
+      {
+        "bytes": 12132,
+        "path": "src/zhongguo_workforce_normal_exit_snapshot_v1_source_contract_test.cpp",
+        "sha256": "BB09E9AA815CA216024A157311E5D9FCC4004A6B5C02187E9742BB764F031481"
+      },
+      {
+        "bytes": 18371,
+        "path": "src/zhongguo_workforce_normal_exit_snapshot_v1_test.cpp",
+        "sha256": "F90872B4E59B0C14EB16BC005AFC4EC8E16AB8DF70665F098C78DF6D683B5A58"
+      }
+    ],
+    "native_validation_inputs": [
+      {
+        "bytes": 118146,
+        "path": "ck3_autonomous_player/native_bridge/research/README.md",
+        "sha256": "DCB7CD6A109F0FF4F83174A05F4E2FF769C64AEAB677D94AB5350161B3FFF24D"
+      },
+      {
+        "bytes": 11979,
+        "path": "ck3_autonomous_player/native_bridge/research/active_combat_retreat_owner_subset_fixture_v1.json",
+        "sha256": "46CB301410C495E6B0D729A789B531A033966C022CF89003A4858B4486926ED9"
+      },
+      {
+        "bytes": 27763,
+        "path": "ck3_autonomous_player/native_bridge/research/active_combat_retreat_v1_abi.json",
+        "sha256": "95FEDC1784CFBC1A87A6B29EFD68D69A6A07B18D2EE8575B3B8BCC99AD9CF318"
+      },
+      {
+        "bytes": 22110,
+        "path": "ck3_autonomous_player/native_bridge/research/actual_contact_scope_v1_abi.json",
+        "sha256": "B01836977E15965DD1F22E75115F16D672E39EB7804F1536C7B4FBCBCD5D8371"
+      },
+      {
+        "bytes": 18179,
+        "path": "ck3_autonomous_player/native_bridge/research/analyze_g2_evaluated_days_private_capture.py",
+        "sha256": "0D01FE9FD4AE7D6BAFEB96EDE9E02E962C3BCF36BF2247D185F2AE526E6E5BEE"
+      },
+      {
+        "bytes": 19757,
+        "path": "ck3_autonomous_player/native_bridge/research/analyze_g2_truce_native_callsite_observer_live.py",
+        "sha256": "FEEE7E0037B0A9FEFFB6D4FA5160756930B0C8711CFD2701A69CC596D85CA424"
+      },
+      {
+        "bytes": 10356,
+        "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_post_call_list_identity_live.py",
+        "sha256": "45106FF0796D9C3F3A12CFDA46F7B877678746D76EACA6903DEAF986D05976B2"
+      },
+      {
+        "bytes": 15569,
+        "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_post_call_live.py",
+        "sha256": "69AFF8E41B7B8F91756F112C145ABACB0F5AB86335E704BE5881E365FE21E622"
+      },
+      {
+        "bytes": 20180,
+        "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_producer_histogram_live.py",
+        "sha256": "9B9B95170B1AABD30D14B31932C8143F4B42DE5BA89AE0165E57A2D10AF49D9E"
+      },
+      {
+        "bytes": 12569,
+        "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_wrapper_entry_live.py",
+        "sha256": "F463C5DD99AF29B35CE2B38FF6B8F5618F71DBEACD9D91A7AA6DBD2EA67AD690"
+      },
+      {
+        "bytes": 39716,
+        "path": "ck3_autonomous_player/native_bridge/research/battle_control_snapshot_v1_abi.json",
+        "sha256": "C601737C04CB668A40472793EF5BDB2A2BF81FCFF57AED543EF3D9446B6F78BE"
+      },
+      {
+        "bytes": 21236,
+        "path": "ck3_autonomous_player/native_bridge/research/battle_reinforcement_and_join_v1_abi.json",
+        "sha256": "46E6F01613F1ED84C1D9F63DA0AAAF5CF48EF91DFA7FA8E80FE3A6B1A6BD666C"
+      },
+      {
+        "bytes": 47408,
+        "path": "ck3_autonomous_player/native_bridge/research/battle_terminal_and_reentry_v1_abi.json",
+        "sha256": "E227BD1A9975A01DED83A5D0A297FE9945137E6BF4F7559112FFAF5B4FD98EA6"
+      },
+      {
+        "bytes": 1832,
+        "path": "ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json",
+        "sha256": "7E81C9269AA4D1304F924E037CFC5EF81CBCDFD011BF8F5CC4A26C45F9BF7723"
+      },
+      {
+        "bytes": 126285,
+        "path": "ck3_autonomous_player/native_bridge/research/ck3_1_19_0_6_anchors.json",
+        "sha256": "9D6001FA9E05C09E45696B3FCDB2C0E30C75EC9D6DB7F800D38096FE6FF7F8AB"
+      },
+      {
+        "bytes": 22506,
+        "path": "ck3_autonomous_player/native_bridge/research/combat_phase_event_trace_v1_abi.json",
+        "sha256": "08ACC831027E2311BD375CF3885D6E312C0F10AD12CAA50C8DF4EB735902C6AE"
+      },
+      {
+        "bytes": 1514,
+        "path": "ck3_autonomous_player/native_bridge/research/disasm_ck3.py",
+        "sha256": "82EC4C2F631B2BFC4040832D5571453E238C27BDAA8C43AF0494461EA4A71703"
+      },
+      {
+        "bytes": 27696,
+        "path": "ck3_autonomous_player/native_bridge/research/event_option_1_19_0_6_abi.json",
+        "sha256": "FB2027F3D4E1A3EE48256531D35789243D31A2F8F6E2665C1A17A4C948549ABF"
+      },
+      {
+        "bytes": 47884,
+        "path": "ck3_autonomous_player/native_bridge/research/event_window_context_1_19_0_6_abi.json",
+        "sha256": "C5431439059710502199D28ED9B3D38809D017B32892673A070D575F97E75517"
+      },
+      {
+        "bytes": 11106,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_callsite_activation.py",
+        "sha256": "4E524ECE005ADBD611634FC862DD23D503B399354179BD411B3ABB31BCD05073"
+      },
+      {
+        "bytes": 9187,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_context_lifetime_v2.py",
+        "sha256": "6A44E42581E8A1328EE73DCA7095990B2E6CB94090621D43622588477D8CFA60"
+      },
+      {
+        "bytes": 13865,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_evaluator_abi.py",
+        "sha256": "1E781A8D6E15495464387151A616E314CD9C058F147B9BED65F9BC724DB38DCA"
+      },
+      {
+        "bytes": 12357,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_next_layer_rtti.py",
+        "sha256": "DA615D4FF0E916178D44CF3C1411FDED4816DF7066A25543CD9324C28D3D8686"
+      },
+      {
+        "bytes": 10761,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_preview_entry_observer_seam.py",
+        "sha256": "FE33B68E8B662D6070217030CAFE65848E9CF41330732F30368950BE5A63919B"
+      },
+      {
+        "bytes": 15046,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_residual_rtti.py",
+        "sha256": "6BB45FBFC736572E1755DAD9F0242F695C4729D2D71BA38BB137CD711F3723FC"
+      },
+      {
+        "bytes": 8984,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_completion_consumer.py",
+        "sha256": "F4EF4572B56EBCB1B69927D66094BAC9DC350B99501093C019882F3BC9B5DB17"
+      },
+      {
+        "bytes": 15315,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_completion_wrapper_callers.py",
+        "sha256": "81E3771693F01E9933ABE9C21113B1F7362D9CF4E8EF7244BA092D20AFF54C7E"
+      },
+      {
+        "bytes": 10985,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_concrete_owner.py",
+        "sha256": "311CE24028AC6CCBCF38081C62A7F9F638D08DAFA43704450471E6DA91644A45"
+      },
+      {
+        "bytes": 9558,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_next_edge.py",
+        "sha256": "D18E793E9B9F54CB54D883D7A6A367E20E7E736034AC921C3A978E077BCED998"
+      },
+      {
+        "bytes": 8508,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_outer_callers.py",
+        "sha256": "CC5B1362AA442CA39DE3FC88892CF45113A96F4EA1EEF63D525D4666AA4C4788"
+      },
+      {
+        "bytes": 8757,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_runtime_owner.py",
+        "sha256": "C3FFF00252D40D1A750AF761FB706EC5A310636ACB22B3873139BDCD57DC3168"
+      },
+      {
+        "bytes": 28774,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_slice.py",
+        "sha256": "FFDEE0D7CFA006F9F5841932F06627BA9BC23116B052CA03E3EFCA8C67E70A2C"
+      },
+      {
+        "bytes": 6540,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_outer_completion_edge.py",
+        "sha256": "37A74EC8D556372A9A1DDCB6D7067F79E2629C706AB21F48C54B376663DBFA4F"
+      },
+      {
+        "bytes": 11004,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_runtime_caller_3407d9c.py",
+        "sha256": "0CF9AC76CCFFA0BFD3270415D2243F9D383C778B8E2D87EC4B71CCDC15C1DB57"
+      },
+      {
+        "bytes": 8633,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_selected_outer_callers.py",
+        "sha256": "E7CB892B91AC8F6FAEB4673A772952E1909C2C698F50606DAE0358342762D67F"
+      },
+      {
+        "bytes": 12938,
+        "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_slot2_817c20_identity.py",
+        "sha256": "A680E4FE144B6733C0A7636FAFEE00E592EA38A075308C160C45E7CD427E7153"
+      },
+      {
+        "bytes": 2088,
+        "path": "ck3_autonomous_player/native_bridge/research/find_member_refs.py",
+        "sha256": "A12BF95ED2F04F47AD056F4F78021AF6BBB6D4F2CD2A72C5E52194A1C4CEF2EF"
+      },
+      {
+        "bytes": 3791,
+        "path": "ck3_autonomous_player/native_bridge/research/find_rtti.py",
+        "sha256": "D3FF6FDB12A411382C78BB3C7F5E87F5BBBE090783A38010B7329B26A92DB51A"
+      },
+      {
+        "bytes": 2768,
+        "path": "ck3_autonomous_player/native_bridge/research/find_xrefs.py",
+        "sha256": "34630F8948E8FD1AD51F71B3C529C465B0B38F9A93709DFB379DDC9345D0C565"
+      },
+      {
+        "bytes": 11065,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/actual_contact_scope_v1_source_contract.json",
+        "sha256": "37AD9EA65FE6A0DA3F6D25813A0462BAF2468667150278591757C03DBD63533B"
+      },
+      {
+        "bytes": 1605,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/campaign_root_context_v1_source_contract.json",
+        "sha256": "4BC94057F6EB36CD1337F943ADD7B190EC1EDE716CF0AE844924737CCB7D763F"
+      },
+      {
+        "bytes": 2509,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/cold_map_vfs_observer_v1_source_contract.json",
+        "sha256": "AFF56B88C987A584607C59C1733F40175E734D1471D8B59F316ED8558CE65BF7"
+      },
+      {
+        "bytes": 4886,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/combat_phase_event_trace_ring_v1_source_contract.json",
+        "sha256": "103F7EEA91A03B4CA21A5127846CA5E9719CD94926B230C8B36ACD475AFBCF83"
+      },
+      {
+        "bytes": 6541,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/combat_phase_event_trace_v1_source_contract.json",
+        "sha256": "808975C9342DBA1E405FB1BF4120095C0B8E48C1232861B3AC2A894795A97E3E"
+      },
+      {
+        "bytes": 17744,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/combat_phase_inputs_v3_test_only_golden.json",
+        "sha256": "A728A2317B79498EB80A637F797F01D97E9918DDC0FA0EBAFAEB17E5B5090DE5"
+      },
+      {
+        "bytes": 12836,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/combat_simulation_inputs_v2_available.json",
+        "sha256": "F972FD53301821D30FE963C98E21DD368A43C9270D12C817A3331B6DE8BC6024"
+      },
+      {
+        "bytes": 68765,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/combat_simulation_inputs_v3_production_available.json",
+        "sha256": "ABB94ABB054B03BFBAE3BD53736F33BC3F5332E3CDACC9ADD36267232AD267E7"
+      },
+      {
+        "bytes": 8574,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/combat_simulation_inputs_v3_production_unavailable.json",
+        "sha256": "AF125A47975921125A67A284E2FF5FE3F88A9779CD077E7D917A34FA1F95DEE5"
+      },
+      {
+        "bytes": 2059,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_activity_type_schema_boundary_v1.json",
+        "sha256": "7CCB0E932C22A39BB3BF7B5CD2292D405AAD5F86B76942E2185792058108286C"
+      },
+      {
+        "bytes": 6220,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_current_pin_live_manifest.json",
+        "sha256": "5BD6988AC671E252C79A173BDC8E158A7FF7B2FB478F75185A1708445B532F9C"
+      },
+      {
+        "bytes": 7946,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_leaf_context_v2_live_manifest.json",
+        "sha256": "6EA809378CBB2B151816FA401CA0A4B51DDF29716C1475B1824C582EABC67567"
+      },
+      {
+        "bytes": 1332,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_index7_evaluator_mcp_envelope_red_v1.json",
+        "sha256": "8B5B9539FF332477090F59B4FC569648923B240B155D55C46407DD4CB92FF0E0"
+      },
+      {
+        "bytes": 3372,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_index7_targeted_readiness300_v1.json",
+        "sha256": "A4A295A378AF943F0EB7FB82DB8C552395169F50ED8CB50E7510960671A733DB"
+      },
+      {
+        "bytes": 2068,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json",
+        "sha256": "D6377A0CBE8D1EB6DFDD8E8125676ED33083E5611F776A9D79745E4E340DEC09"
+      },
+      {
+        "bytes": 12084,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_truce_native_callsite_observer_live_postprocess_v1.json",
+        "sha256": "7E500ABDD4BDA1BA09C67E3BDCCB241B63B4514336BBFEBC9BAAC06FEB048BE0"
+      },
+      {
+        "bytes": 1886,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_truce_native_callsite_observer_v1_source_contract.json",
+        "sha256": "C651823D9B5B3C50CBD32AA7037BAB72329AA076CC7B2F669573B30FB3237986"
+      },
+      {
+        "bytes": 2358,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_truce_next_layer_rtti_v1_contract.json",
+        "sha256": "38E2985F5D3705A396AB229CDAAEF86992E385E3027EDE468032858394297BB0"
+      },
+      {
+        "bytes": 2220,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_truce_preview_entry_observer_v1_source_contract.json",
+        "sha256": "A1AE74FAAD73F2237FB983F997639DC89605BF6C7D345DE8A2C3E2748A410474"
+      },
+      {
+        "bytes": 1185,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/g2_truce_residual_rtti_v1_contract.json",
+        "sha256": "AEF0BCC282EEF66E2CD0C454FF051905F3A9AF23264ACFD3B59E768F929BD3EE"
+      },
+      {
+        "bytes": 1262,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/loaded_feature_manifest_v1_source_contract.json",
+        "sha256": "E84822D7B14A946B7460F5DA2DC9D90CAAAEE6DDCD658166F8BE7F0952472760"
+      },
+      {
+        "bytes": 8247,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/main_thread_query_mailbox_v1_source_contract.json",
+        "sha256": "F2CBDA5EA487D3759E2272D9A60CCCB22A4BB37ACCA464977A972B987121E0C1"
+      },
+      {
+        "bytes": 30587,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/pending_character_interaction_context_v1_source_contract.json",
+        "sha256": "BD90F9176974A3F9E07043B4E8F778CCA6145CB356C9EBE2F9278CB7A5C5A46E"
+      },
+      {
+        "bytes": 1906,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_completion_observer_v1_source_contract.json",
+        "sha256": "8C16FA51702A0EA552D6F64C0E0F0259256C75A94FCBA526B73659981B658644"
+      },
+      {
+        "bytes": 1022,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_loader_callback_v1_source_contract.json",
+        "sha256": "5C70182102BA3BA16D606B8ACAB89F9F952DB9D38E785DF04067265F58A80DE9"
+      },
+      {
+        "bytes": 1284,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_post_call_list_identity_observer_v1_source_contract.json",
+        "sha256": "1458928326417DCE3E004F35DA2A3BF34753E8A10C3E8BD728D0BE28D1FC14A9"
+      },
+      {
+        "bytes": 1807,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_post_call_observer_v1_source_contract.json",
+        "sha256": "2DF17611299FEBA7DAD1034F39DEC8D491D79E9A8F337FBE21F1178F62A465D2"
+      },
+      {
+        "bytes": 2115,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_producer_consumer_correlation_observer_v1_source_contract.json",
+        "sha256": "D4A0885DDA5D8E1963846CEE1F832B42321239CF9D53302B5F1509306DC43089"
+      },
+      {
+        "bytes": 2076,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_producer_identity_observer_v1_source_contract.json",
+        "sha256": "384885108A6F58B56431987856D2556D4674E14559906B2D9956E5CD26E8CD8F"
+      },
+      {
+        "bytes": 1553,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_wrapper_consumer_edge_observer_v1_source_contract.json",
+        "sha256": "81B1178FF13D3A27A04020DC10A046FE956058DA06273FAD1D9A9D7921DF370C"
+      },
+      {
+        "bytes": 1515,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/phase2_wrapper_entry_observer_v1_source_contract.json",
+        "sha256": "665E15A8B55867663AE1A4A21F37BA354AB3FD182FD0473FD2CE356F4FC9648C"
+      },
+      {
+        "bytes": 14105,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/prewar_scope_v1_source_contract.json",
+        "sha256": "AD6C9865AC8F47EAF087AA030491F8776258E2F7893C617F639E092A59D63D14"
+      },
+      {
+        "bytes": 5915,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json",
+        "sha256": "021221E4A4A6A03C3BEE91002859CC9BB53AB7BBDB086E648CDA8D4F4FC173B8"
+      },
+      {
+        "bytes": 826,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_gen034_boundary_v1.json",
+        "sha256": "5297A0DE783A61E3EE2787A5B91CBBB700F57B6D7468882A571D82BE6AC399B7"
+      },
+      {
+        "bytes": 3812,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_generic_war_bound_guarded_current_live_manifest.json",
+        "sha256": "4EB5DA0D47B5268EA86746C1F729355259BEF8E7326D7ECEC6734DEE552303C0"
+      },
+      {
+        "bytes": 3476,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_generic_war_bound_guarded_retry_contract.json",
+        "sha256": "8148D960A068480151C1767A8F76E9CC6A9E2346226C196EE840B04BAB34060B"
+      },
+      {
+        "bytes": 4362,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_generic_war_bound_rbx_guarded_current_live_manifest.json",
+        "sha256": "F8898D8EAC0EA11DB02B8EBE39A6D35A6FED480F4EDCFA2B434FED3699EF3A6A"
+      },
+      {
+        "bytes": 2387,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_generic_war_bound_rbx_guarded_retry_contract.json",
+        "sha256": "192D4F139D4DC05C83774A914E9D21B85F8A9CEBDE5A2D0EB9D32C5F2A4C1312"
+      },
+      {
+        "bytes": 4255,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_generic_war_bound_widget_guarded_current_live_manifest.json",
+        "sha256": "1F0CD3799CAA4CCA0940EBDADDB7F432905D724E2A0303F0C35C583B6C7F1876"
+      },
+      {
+        "bytes": 2525,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_generic_war_bound_widget_guarded_retry_contract.json",
+        "sha256": "5AD44C809AA092100496C1B12C8BD751DBB98DA0E3AA28745CD30FF004E49054"
+      },
+      {
+        "bytes": 2135,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_execution_policy_v1_contract.json",
+        "sha256": "C9107EAB4D5F5F1F473536BF90A1A7E4CE09C45317D55C6A11D672BADB58B08D"
+      },
+      {
+        "bytes": 2217,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_session_binding_v1_contract.json",
+        "sha256": "D80024C0A6751A00E9C0F48AD837CEBE07BED5A5B0655757DF628CCA3041379D"
+      },
+      {
+        "bytes": 4067,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json",
+        "sha256": "05C3C40180FCFEC6E33C5DB627287C7FCF361C5B5228374D953BD5119DAD3C79"
+      },
+      {
+        "bytes": 2660,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json",
+        "sha256": "E168CA7B6382B2CCBD8D0619220ADF82A8AE79E525D9CE6E149CCFF9C0F86368"
+      },
+      {
+        "bytes": 4686,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_three_way_exit_policy_v1_contract.json",
+        "sha256": "E4994087C4A0E6233C025523F9CB62545D85279B4B2E5B141C039A939BE646D6"
+      },
+      {
+        "bytes": 3343,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json",
+        "sha256": "26652A0FCB9D0C185272E7C3B2721A9EC93BC5C5CDC5003D2B9D9EE16B105241"
+      },
+      {
+        "bytes": 3049,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_dx11_render_context_draw_guard_v1_source_contract.json",
+        "sha256": "C6DB0A8C8A3137CF9C8B2BB84C765AE11FDED7B257D752D0B4030A54ACA773FF"
+      },
+      {
+        "bytes": 3205,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_localize_current_root_guard_v1_source_contract.json",
+        "sha256": "629E16326838870808FE4205270B27F584ECFCDA672CB6E8477A0917E2917C8F"
+      },
+      {
+        "bytes": 2546,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_particle2_consumer_null_guard_v1_source_contract.json",
+        "sha256": "163AB4B2E17DE4790DD2307F44A6ABFDA88F4A70461EA8176D4A3C6EDFE7E8B2"
+      },
+      {
+        "bytes": 1975,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_particle2_null_guard_v1_source_contract.json",
+        "sha256": "1CBB24DCBEAA60A7A0B9E65F10E78CFC1C716757159B1C91F19EDC60DB2BBBCA"
+      },
+      {
+        "bytes": 4468,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_particle2_stage_recorder_v1_source_contract.json",
+        "sha256": "00AB8D06A1ED868D1279F72C46F6F3EE59666F8176D8E83E31AD32B89BCCCCAD"
+      },
+      {
+        "bytes": 2180,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_rbx_null_call_guard_v1_source_contract.json",
+        "sha256": "91C532F49C301F8575AEC2C7879C6C622F955B7DA60B1A7AA516F7A8FD425EF2"
+      },
+      {
+        "bytes": 1963,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/startup_widget_null_flag_call_guard_v1_source_contract.json",
+        "sha256": "E4DBAA0D64F9F523DDDB193540ADC0550F3D446B03486F3452E16D9C4E67A5A2"
+      },
+      {
+        "bytes": 1169,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/war_entry_assessments_v1_golden.json",
+        "sha256": "0961A6A58870C096240A962EEF84E77D6CE07BC46A7D7DCD962A4D8C76EF8463"
+      },
+      {
+        "bytes": 5663,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_ai_owned_case_snapshot_v1_source_contract.json",
+        "sha256": "64DD0DBD1CB90522FBCA524F288744FF00A08AE52C656B3176F8203C89F4BF36"
+      },
+      {
+        "bytes": 5054,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_b2_pip_snapshot_v1_source_contract.json",
+        "sha256": "6CD4BFDE2B776D56256853A9AEA1CB7B6B53BE6055C90DC7C3EFC5EBD03EF71D"
+      },
+      {
+        "bytes": 2646,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_career_hc_workforce_postcondition_v1_source_contract.json",
+        "sha256": "B195B041BA9D54ADEB38273AA2E79224DEDD58FC7E5D91AD990C4355FFE9CA83"
+      },
+      {
+        "bytes": 2196,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_case_snapshot_v1_source_contract.json",
+        "sha256": "CB29AE4F4D9C90BAD4F06E5B207D094253EC1E7DDEED7C2784931429B8E69133"
+      },
+      {
+        "bytes": 2756,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_incident_snapshot_v1_source_contract.json",
+        "sha256": "C32C8C7248DC76CA3CAF296EEA50A4ACFFBD77C4FBD3CB08F2503D755980F522"
+      },
+      {
+        "bytes": 1446,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_manager_governance_snapshot_v1_source_contract.json",
+        "sha256": "A54AFCBD837DC4946D9B1A0F51CAE0981AA96A4BE7B82604DEA57E932A173D95"
+      },
+      {
+        "bytes": 2908,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_manager_subordinate_selector_v1_source_contract.json",
+        "sha256": "B175EA8231E22614C144ABAD1B108B9F43ED60A9F9E36406CA00017700851057"
+      },
+      {
+        "bytes": 1456,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json",
+        "sha256": "CBACE7A927A81E2B8DC844BA97335B1AEF182F2D25A0B5CD57B74CB90964F74B"
+      },
+      {
+        "bytes": 1662,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_result_case_snapshot_v1_source_contract.json",
+        "sha256": "B3A4E69BBF304F81FC4450B1C381AAA65F850B5CFEDEF4F82905FFD110E76D0C"
+      },
+      {
+        "bytes": 2178,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_scoreboard_action_v1_source_contract.json",
+        "sha256": "E3F43AEF1F3D2B72AD0280869E5A68601C94E0070524BC3C3CFA93AEF8CD5F3F"
+      },
+      {
+        "bytes": 6149,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_scoreboard_production_v1_source_contract.json",
+        "sha256": "64AA345FB63DE6428ADEDE3EBDB43EF0892E13C375BFB1D1C04B21EC10D7C1F5"
+      },
+      {
+        "bytes": 4209,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_scoreboard_state_v1_source_contract.json",
+        "sha256": "F8C00A7A54083368C0FE34EE070EB845269823D055F4869BA04D40ADA57AB158"
+      },
+      {
+        "bytes": 11881,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_workforce_collective_snapshot_v1_source_contract.json",
+        "sha256": "C98382E2B720FFFFF107775CEE361F96AE780BE4B9540E276C0DA853515C9537"
+      },
+      {
+        "bytes": 2091,
+        "path": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_workforce_normal_exit_snapshot_v1_source_contract.json",
+        "sha256": "0BA635C99E55CBC4DE26589F3625360626FD2B152F71D7039611C5C9C5F96E58"
+      },
+      {
+        "bytes": 2983,
+        "path": "ck3_autonomous_player/native_bridge/research/g2_truce_callsite_activation_v1.json",
+        "sha256": "A179F700C46854BA42798BE04BBDF64584076844BF8466889F6D3AD1A747C50B"
+      },
+      {
+        "bytes": 6770,
+        "path": "ck3_autonomous_player/native_bridge/research/g2_truce_context_lifetime_v2.json",
+        "sha256": "6EE9111DFA4176693D5F104F93BC94E4A1F6046EB6F4E9865F117B92E63109EE"
+      },
+      {
+        "bytes": 3533,
+        "path": "ck3_autonomous_player/native_bridge/research/g2_truce_evaluator_abi_root_cause_v1.json",
+        "sha256": "5423B12F083425706A9D189449117A04744E1502916D6F2F7A4B034380BB1A5A"
+      },
+      {
+        "bytes": 2770,
+        "path": "ck3_autonomous_player/native_bridge/research/g2_truce_native_callsite_observer_v1_abi.json",
+        "sha256": "D2364C0192EA961C729EC042D75E937EFF2F5F5F5A93DBCD26AB3494CD6BF255"
+      },
+      {
+        "bytes": 3985,
+        "path": "ck3_autonomous_player/native_bridge/research/g2_truce_preview_entry_observer_seam_v1.json",
+        "sha256": "1178F46B21A307CCBB5497278951C7BB00F259B4C70B6FB2011D2D318E3CE7E9"
+      },
+      {
+        "bytes": 3712,
+        "path": "ck3_autonomous_player/native_bridge/research/g2_truce_preview_entry_observer_v1_wiring.diff",
+        "sha256": "C600AE817DDA306E8D5483DDB831FC7C21DC9CFFED82B11C5E97303D36499913"
+      },
+      {
+        "bytes": 1684,
+        "path": "ck3_autonomous_player/native_bridge/research/loaded_feature_manifest_v1_abi.json",
+        "sha256": "9DC64C4E3BAD60C2EB0F5A5841E3A9D1F72FF69D09DBA9FC9965B00D0C47BF04"
+      },
+      {
+        "bytes": 9676,
+        "path": "ck3_autonomous_player/native_bridge/research/main_thread_query_mailbox_v1_abi.json",
+        "sha256": "B326E2894C0E4FEC3DD4F168C43B58F1FC342D7472DE7D6C10D7E3C1C204AB0B"
+      },
+      {
+        "bytes": 4138,
+        "path": "ck3_autonomous_player/native_bridge/research/make_phase2_producer_identity_observer_manifest.py",
+        "sha256": "62C74DF20C56AE3B87BB31E827B0AD341F5E8C15BB352EA9CB269621183F2469"
+      },
+      {
+        "bytes": 48638,
+        "path": "ck3_autonomous_player/native_bridge/research/pending_character_interaction_context_v1_abi.json",
+        "sha256": "C5871CFE7B7387961E541A73E61A9FD78EC4ADF57777F2F1F55D064DDF1A937D"
+      },
+      {
+        "bytes": 3334,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_completion_consumer_v1_abi.json",
+        "sha256": "996C850A13735D3596121EAB30E890A4A6C4F355652A7011BD58A198E3ED3DC6"
+      },
+      {
+        "bytes": 3409,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_completion_observer_red_analysis_v1.json",
+        "sha256": "3646B065E7902F8803667130371029CFA3FCFEEA33519D2494AA472C9AF50D6A"
+      },
+      {
+        "bytes": 4422,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_completion_observer_v1_abi.json",
+        "sha256": "A846B82ABD95328C3633448AE809CC63FABFB9E04E15B8E134BBE8A74FD4D4A2"
+      },
+      {
+        "bytes": 5882,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_completion_wrapper_callers_v1_abi.json",
+        "sha256": "5FC8312F8A5DD57304CB65841FA66343E652DCE80970CF27CA9FF17220D28732"
+      },
+      {
+        "bytes": 5148,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_cfg_v1_abi.json",
+        "sha256": "8FF199DC9752C89D0989F66B0686B47696980A847FC5CC4D60A378D0FD94484B"
+      },
+      {
+        "bytes": 4187,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_concrete_owner_v1_abi.json",
+        "sha256": "0D214345F6811C02C5ACCB7C39BD4D36919F9DD39F850CCC8EC2857B21E2D330"
+      },
+      {
+        "bytes": 75556,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_debug_capture.cpp",
+        "sha256": "03B4D7CC233372A0550EFE04F1C79267E5DAB7DE71A6E2C863E6A9DA51A45E07"
+      },
+      {
+        "bytes": 4323,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_later_stall_v1_abi.json",
+        "sha256": "7B8B2EEEB5C98A703C1E7226856DAFDD15A304FEA453E77F4A0D3039C1080236"
+      },
+      {
+        "bytes": 4980,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_next_edge_v1_abi.json",
+        "sha256": "EEC3E1C00DCD61FCE02490A572ACD3054F0E900C57438EE24B3B433119641022"
+      },
+      {
+        "bytes": 4894,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_next_node_live_v1_abi.json",
+        "sha256": "FCF5267CFDECE8E4B80D94A7B707C7053B5B2E6A3C7FC3A5E306650E022CE551"
+      },
+      {
+        "bytes": 3273,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_outer_caller_v1_abi.json",
+        "sha256": "E91A2C1A73720211EBDA87664CC0495363A2919A9914FE942EBCB36B5CBC86A5"
+      },
+      {
+        "bytes": 5061,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_outer_return_live_v1_abi.json",
+        "sha256": "90701CB04D51A80B0BEBAE19DD6F1BD30F88797F4ED42FC3E7F7404460548FB9"
+      },
+      {
+        "bytes": 4964,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_runtime_owner_v1_abi.json",
+        "sha256": "8F979F85FF85E585E361BCE6E6C30F88D4C81D50B4C5A0EE1C43069C1B1382F2"
+      },
+      {
+        "bytes": 3937,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_runtime_vtable_v1_abi.json",
+        "sha256": "C226C18DAC6C012047BCF7BCB1D41BF749BD9D6CC3266FF8747CA63E395235BD"
+      },
+      {
+        "bytes": 9619,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_static_slice_v1_abi.json",
+        "sha256": "4E196FB245F7A93E056930B9DE91CA07AA26F12BA71EAED0BE081897F394C36C"
+      },
+      {
+        "bytes": 2119,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_loader_callback_v1_abi.json",
+        "sha256": "03541188365E206F7C205308247C33D49D6220F25DD57F0D9AA89EE35D50088E"
+      },
+      {
+        "bytes": 2773,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_outer_completion_edge_v1_abi.json",
+        "sha256": "88E39FE64BEC589B1B7E862907A010E1C6E6C4DE995943F30E41047532E859FC"
+      },
+      {
+        "bytes": 1967,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_post_call_list_identity_live_postprocess_v1_contract.json",
+        "sha256": "9DF9715FA4FC1E079C1F79BBE105FA41318596393E61F531A958DA44F5412730"
+      },
+      {
+        "bytes": 3192,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_post_call_list_identity_observer_v1_abi.json",
+        "sha256": "1028208C517D855107F4112C50DE84584E3077A2CAA6A2E1D4A9F491C7698D98"
+      },
+      {
+        "bytes": 3636,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_post_call_live_postprocess_v1_contract.json",
+        "sha256": "1C5CCA79C761B2AFEA1450ACA3C5FAC32B4C362CAB2BF30A99BCE4F1D0037BF5"
+      },
+      {
+        "bytes": 4595,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_post_call_observer_v1_abi.json",
+        "sha256": "2C219E26D73F6C718ECAD7B99F41B50BBFF5E0AFBD150E1779B78987F8A6D3FB"
+      },
+      {
+        "bytes": 4521,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_producer_consumer_correlation_observer_v1_abi.json",
+        "sha256": "A75E4D313C0D2EFB6A61FF97345C709B1ADD735C11339CDDFBDD9771F6D5B6B6"
+      },
+      {
+        "bytes": 1622,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_producer_consumer_correlation_observer_v1_report.schema.json",
+        "sha256": "E2267DF85C1C7DA127693A7AA0672AB416C892F8010BEF5F5F3AEF599069621D"
+      },
+      {
+        "bytes": 2260,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_producer_histogram_live_postprocess_v2_contract.json",
+        "sha256": "957A5EB268BD2B3A491AB20CAAC460BF1A05386F301F3756E3353A550B934711"
+      },
+      {
+        "bytes": 4031,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_producer_identity_observer_v1_abi.json",
+        "sha256": "C2BFC7DD947A4212CD0F688828042D96E9AE421CC4C68D5188E2F8F4A41F31F1"
+      },
+      {
+        "bytes": 2619,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_producer_identity_observer_v1_report.schema.json",
+        "sha256": "C00571337B2E8ECC1598875DB661F29F2AF6D737BAF6B33DFA0C97DD79D1C1B3"
+      },
+      {
+        "bytes": 4334,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_runtime_caller_3407d9c_v1_abi.json",
+        "sha256": "677D0F050485F9EFF5A7258CD0AD11B2C360F46BB622EECB1737D4FDC7C2FE73"
+      },
+      {
+        "bytes": 3279,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_selected_outer_callers_v1_abi.json",
+        "sha256": "0FAAC46ABD1812EEAFB0DA7069C248A1308753B9FE78C65E26ED38720BBF3571"
+      },
+      {
+        "bytes": 3429,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_selected_outer_return_live_v1_abi.json",
+        "sha256": "D743C6C984414D3FFB5B007495F3FC3BA42C0EB1445CB899831BAAA04F5D1E29"
+      },
+      {
+        "bytes": 3442,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_slot2_817c20_identity_v1_abi.json",
+        "sha256": "50A387E46F222F2D95F6CFC60844DA3F19D6BFB0D75780B3A8168840FDAEC1F3"
+      },
+      {
+        "bytes": 4704,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_wrapper_consumer_edge_observer_v1_abi.json",
+        "sha256": "9432FB11C79A1C95A9652274942E76AE4445BC2848516248D468B8567D022A68"
+      },
+      {
+        "bytes": 2183,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_wrapper_consumer_edge_observer_v1_report.schema.json",
+        "sha256": "04891D3FBAC7D244E303BECFD63A199F02B65B065CF6A6C73569DF57DB2E2AC2"
+      },
+      {
+        "bytes": 3755,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_wrapper_entry_live_postprocess_v1_contract.json",
+        "sha256": "7F68A66310A53F0AA1826B0FAA9C755532F48F75A46FA211E76871ABB4666BE1"
+      },
+      {
+        "bytes": 3672,
+        "path": "ck3_autonomous_player/native_bridge/research/phase2_wrapper_entry_observer_v1_abi.json",
+        "sha256": "0E0EAFCB8E9C3BBB39BD551E3157EE64D8C2FB92610C15F9DF31AC46EA44C5CB"
+      },
+      {
+        "bytes": 22234,
+        "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py",
+        "sha256": "7F17FC5B10A831C934059C9A6085FDCD91C7CCAACC432C945716A9BCF64FA00D"
+      },
+      {
+        "bytes": 9032,
+        "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_index7_targeted_readiness300.py",
+        "sha256": "88DA33064A7DB8A994F777F8AC4FA6A394B9496C271E816BA7790C572003D069"
+      },
+      {
+        "bytes": 24585,
+        "path": "ck3_autonomous_player/native_bridge/research/prewar_scope_v1_abi.json",
+        "sha256": "0BE6D5518E53C3E4AF373C527E7FCDFEFBB25E3430B93AA715823A6A968B975A"
+      },
+      {
+        "bytes": 5988,
+        "path": "ck3_autonomous_player/native_bridge/research/raiktor_spawn_army_execute_v1_abi.json",
+        "sha256": "C81963E32264CF2B0B09353A8EA25CA0A4035B43B13C9E5C36F050E1BA346AF0"
+      },
+      {
+        "bytes": 3342,
+        "path": "ck3_autonomous_player/native_bridge/research/raiktor_truce_evaluator_callsite_v1_abi.json",
+        "sha256": "55E5203647D2D0D0F017E990CBB736F42E306EFEE1269D7918DF39735A812799"
+      },
+      {
+        "bytes": 36466,
+        "path": "ck3_autonomous_player/native_bridge/research/raiktor_war_bound_private_capture_v1.cpp",
+        "sha256": "A84601C5BB6927DEF52DF6B27E8602B8C2CAC0C6475A9F1A75B30085433848D8"
+      },
+      {
+        "bytes": 8798,
+        "path": "ck3_autonomous_player/native_bridge/research/raiktor_war_bound_private_capture_v1_manifest.json",
+        "sha256": "0D7E4B948F6D6600A6D4412FADAA328728ED451B01330E652548995CF2B9BDAD"
+      },
+      {
+        "bytes": 23956,
+        "path": "ck3_autonomous_player/native_bridge/research/run_active_combat_retreat_live_acceptance.py",
+        "sha256": "1BAEB448B6731A55904E91ADB13AC74800F8125F1217DEC211E14349DF945FE8"
+      },
+      {
+        "bytes": 14599,
+        "path": "ck3_autonomous_player/native_bridge/research/run_battle_control_live_acceptance.py",
+        "sha256": "3B26583DAD9A8A5836D91344930ECEA26E76BB8190FF3C93346FBA6BE8AC14BB"
+      },
+      {
+        "bytes": 43201,
+        "path": "ck3_autonomous_player/native_bridge/research/run_battle_reinforcement_assignment_live_acceptance.py",
+        "sha256": "FC8D51350182230C5094DF1E181CEC738417F5A0843B9206DEA948F57F0A5375"
+      },
+      {
+        "bytes": 72295,
+        "path": "ck3_autonomous_player/native_bridge/research/run_battle_reinforcement_join_live_acceptance.py",
+        "sha256": "28579B9D8482DE4D43987D7E4F7CDE8CDF89B19F078D844CC0381BC2EE3291E3"
+      },
+      {
+        "bytes": 115314,
+        "path": "ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py",
+        "sha256": "22F30CB7B0A63B8C247A3E6945A0F534D9571FEDE688E2663BE7B1CE5CBF255E"
+      },
+      {
+        "bytes": 63540,
+        "path": "ck3_autonomous_player/native_bridge/research/run_battle_terminal_journal_live_acceptance.py",
+        "sha256": "639F1F082FA99CEE1C97EC806EDB44944A4BF0196D27EC11EFE550F656ED35C4"
+      },
+      {
+        "bytes": 48630,
+        "path": "ck3_autonomous_player/native_bridge/research/run_campaign_root_context_live_acceptance.py",
+        "sha256": "5FF3BEBE97DECE34F2DD1018D17586FF9852A79C2B6EB6D63CD71E30A76A8F34"
+      },
+      {
+        "bytes": 17299,
+        "path": "ck3_autonomous_player/native_bridge/research/run_current_event_nonempty_effect_indicators_live_acceptance.py",
+        "sha256": "05563518839C6D715AB93E936E73E252A2724EAC92D31418F9E7C695D9DC7638"
+      },
+      {
+        "bytes": 21476,
+        "path": "ck3_autonomous_player/native_bridge/research/run_current_event_scopes_live_acceptance.py",
+        "sha256": "37B38A653250D2E0BC0F0A50F6B7E3292051C8E35EA50676C595B479CC96B5B9"
+      },
+      {
+        "bytes": 88233,
+        "path": "ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py",
+        "sha256": "99C9C7673C51B0B144365D255F7164D221D5B8CA4CBE3B94A5F970886C31D13C"
+      },
+      {
+        "bytes": 26931,
+        "path": "ck3_autonomous_player/native_bridge/research/run_g2_truce_native_callsite_observer_live.py",
+        "sha256": "5C0F335A3F3E1EFC92DC4F1B867D3DB4F4DBD3B3EA20F2B6C04A434CD8F63B50"
+      },
+      {
+        "bytes": 44246,
+        "path": "ck3_autonomous_player/native_bridge/research/run_loaded_feature_manifest_live_acceptance.py",
+        "sha256": "99BF6085B508943D0FBB8ECE0E7423AE088E71ECFE8291293408500D58434CC9"
+      },
+      {
+        "bytes": 90363,
+        "path": "ck3_autonomous_player/native_bridge/research/run_owner_subset_ai_reassignment_rejoin_live_acceptance.py",
+        "sha256": "B79AC8284C6228065A10A59550408162BCB81B14FE81889B8B33A9970C491D8B"
+      },
+      {
+        "bytes": 73338,
+        "path": "ck3_autonomous_player/native_bridge/research/run_owner_subset_reinforcement_rejoin_live_acceptance.py",
+        "sha256": "BE96B0641DF28DC532586D0C1F2FDBC949B9ECC8958F30E9DE24A9E47FE12137"
+      },
+      {
+        "bytes": 56331,
+        "path": "ck3_autonomous_player/native_bridge/research/run_owner_subset_retreat_live_acceptance.py",
+        "sha256": "C68AD0EF8EBD9D91DA75BFC138D63197A1C5451264F7282C9CF5E5B4321D02EF"
+      },
+      {
+        "bytes": 83484,
+        "path": "ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_context_live_acceptance.py",
+        "sha256": "8E24B06992EE448C2D867BFE553661061A5C23F31F06C6CB445A50C236822069"
+      },
+      {
+        "bytes": 95167,
+        "path": "ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_notification_ack_live_acceptance.py",
+        "sha256": "33C5CB3AAFADE4D314D30CA6A02378C14E46535B18D9F5E1C441983150F6F360"
+      },
+      {
+        "bytes": 49130,
+        "path": "ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_special_war_binding_live_acceptance.py",
+        "sha256": "B6F95DF4D9BB806FDDA537D7BA58E06AEF02F0CD355FDA06AE1783F38252AE64"
+      },
+      {
+        "bytes": 42741,
+        "path": "ck3_autonomous_player/native_bridge/research/run_planner_battle_control_live_acceptance.py",
+        "sha256": "BF46CEE47DDB6D4EB26267D7386B01F3DC3FB6269379E53E1A7F7BD5C7839BB6"
+      },
+      {
+        "bytes": 18226,
+        "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_generic_war_bound_current_live_acceptance.py",
+        "sha256": "C046C8654C20505A39D220C044AE87E2ADE736C19449244C64EACFE8B5D6B202"
+      },
+      {
+        "bytes": 18234,
+        "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_generic_war_bound_rbx_guarded_live_acceptance.py",
+        "sha256": "8AF53384362443F8151905A9C34211F472477DDC8F0FB34713A3A8630077FBE1"
+      },
+      {
+        "bytes": 18240,
+        "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_generic_war_bound_widget_guarded_live_acceptance.py",
+        "sha256": "A1A155043249552AD488C42CBF6EA981452D0C15A213C06510E8A49154C77177"
+      },
+      {
+        "bytes": 16001,
+        "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_surrender_session_binding_live_acceptance.py",
+        "sha256": "F4C79953F3F27736FD19310599C1C6FFB92307B79ABC4805C09F25CEAEA4C891"
+      },
+      {
+        "bytes": 37404,
+        "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_war_bound_private_capture_v1.py",
+        "sha256": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56"
+      },
+      {
+        "bytes": 124101,
+        "path": "ck3_autonomous_player/native_bridge/research/run_three_cunit_owner_subset_reassignment_live_acceptance.py",
+        "sha256": "8805D9A8F6745569F5BCAE58E1B885B034F65A538CE71AD9A4EEDFA007C5E345"
+      },
+      {
+        "bytes": 54951,
+        "path": "ck3_autonomous_player/native_bridge/research/run_title_map_navigation_v1_live_acceptance.py",
+        "sha256": "313A5253027688C55508E7298CD057AEA5C5EE65416C1AEBDB43E95FA75DA087"
+      },
+      {
+        "bytes": 34930,
+        "path": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+        "sha256": "F33B6BE0045D882FF9A8877AC3CF5596BF05B53240062B67D0E06AD7E2D0E4BB"
+      },
+      {
+        "bytes": 6596,
+        "path": "ck3_autonomous_player/native_bridge/research/scan_anchors.py",
+        "sha256": "85548EF8E2D27A7AF070E9AAC6358571D9A71DD8BC7AAC9717E59EDAA182EC71"
+      },
+      {
+        "bytes": 3625,
+        "path": "ck3_autonomous_player/native_bridge/research/startup_dx11_render_context_draw_guard_v1_abi.json",
+        "sha256": "F06C2C32C2BE52B51C39DC0EB9CA6CD877D95E59F8CC7503460059554EEB7539"
+      },
+      {
+        "bytes": 3591,
+        "path": "ck3_autonomous_player/native_bridge/research/startup_localize_current_root_guard_v1_abi.json",
+        "sha256": "A2B5F798B183B3E39B92AFD86CA47E215436D9A1A0C38F35F888AE7DE04B0C01"
+      },
+      {
+        "bytes": 3713,
+        "path": "ck3_autonomous_player/native_bridge/research/startup_particle2_consumer_null_guard_v1_abi.json",
+        "sha256": "8A6E9237F15FBC8094DF48BFAFEFCBF1A50A2A4012D7F19A4A7A82A09C07EED3"
+      },
+      {
+        "bytes": 2007,
+        "path": "ck3_autonomous_player/native_bridge/research/startup_particle2_null_guard_v1_abi.json",
+        "sha256": "06B001AFE710A625F79D9A551A369A340BF740A7A2189A7B47E994158128AF1A"
+      },
+      {
+        "bytes": 5999,
+        "path": "ck3_autonomous_player/native_bridge/research/startup_particle2_stage_recorder_v1_abi.json",
+        "sha256": "3EF6FA94F22073277C2DD43F5E94DFFDAF993A2D688173494B8D42DBAF6FE3A3"
+      },
+      {
+        "bytes": 6015,
+        "path": "ck3_autonomous_player/native_bridge/research/tactical_daily_sentinel_v1_abi.json",
+        "sha256": "F9B95902724A3938C3AAD1C8DD9E26C78F57CB6306CD6466F528E366B0C69BDD"
+      },
+      {
+        "bytes": 17573,
+        "path": "ck3_autonomous_player/native_bridge/research/test_actual_contact_scope_v1_contract.py",
+        "sha256": "06C0B338D250C3600CB4B87708454B38BAE6279BE8B01EE2770426321DEE4522"
+      },
+      {
+        "bytes": 18069,
+        "path": "ck3_autonomous_player/native_bridge/research/test_prewar_scope_v1_contract.py",
+        "sha256": "5562ACFEF48137EEFC1D7572294CD6ED8F3108CF087CDEE7A360B378601CA990"
+      },
+      {
+        "bytes": 7501,
+        "path": "ck3_autonomous_player/native_bridge/research/title_map_navigation_v1_abi.json",
+        "sha256": "7726D67D9DF807C295C424AAD17B8E89166147A8AD233DAF601A3EEA2A7B04CA"
+      },
+      {
+        "bytes": 6762,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_event_option_abi.py",
+        "sha256": "803435DC78F269C1364D654A9A7BBFFCFBDD75D189C4076206466F2D12CD2200"
+      },
+      {
+        "bytes": 41519,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_event_window_context_abi.py",
+        "sha256": "CBA17F0FB3D1F4B9B35BAF8B55A93AC6D28CF9E45D5350215F6777548368F185"
+      },
+      {
+        "bytes": 13873,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_g2_open_kaishek_compatibility.py",
+        "sha256": "0750FF54BFAF89FFEEEC3F41CB4460561FDBABE06AB8B76719E99C3A57E0A9FE"
+      },
+      {
+        "bytes": 8556,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_g2_truce_native_callsite_observer_candidate.py",
+        "sha256": "8D63EB8398454FA6D7E3E5DE956CA91D502EF09C7AE5AB7208DC95AFE3AD15D0"
+      },
+      {
+        "bytes": 27753,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_pending_character_interaction_context_v1_abi.py",
+        "sha256": "9D9615EBB1F999361FCCCD22C49E61BB837666B33D5C67F8FADBB93A84EBC369"
+      },
+      {
+        "bytes": 12849,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_guarded_retry.py",
+        "sha256": "7CEFAEF0BDD05FBD5390B4356A16D2BACAC8ED0BACFC2F89D158A9F46AAC3762"
+      },
+      {
+        "bytes": 8793,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_normal_desktop.py",
+        "sha256": "2B9D54F8044DE4CA2934F630E2424A4310CB21EFAD9B286F0C7B368A1B7E38D7"
+      },
+      {
+        "bytes": 5155,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_rbx_guarded_retry.py",
+        "sha256": "751829B1223FEF162B350D886380BFC09D351DD1808A7E54AC7C201F4937604E"
+      },
+      {
+        "bytes": 5266,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_widget_guarded_retry.py",
+        "sha256": "C158475AE2BC0BCB8463B1D1A3A39F70F6564DAE9A8A940091FC000F055F91F5"
+      },
+      {
+        "bytes": 7326,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_spawn_army_execute_v1.py",
+        "sha256": "A6FEF375185074F5CAC107334DFCED17083FE75B873CF0A8EA27D3A4F5CCAC72"
+      },
+      {
+        "bytes": 5564,
+        "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_truce_evaluator_callsite_v1.py",
+        "sha256": "048BD4459D14994FB30658361037669CA9A969B56D50FCA84FA02DC7B7A40543"
+      },
+      {
+        "bytes": 8968,
+        "path": "ck3_autonomous_player/native_bridge/research/war_entry_assessments_v1_abi.json",
+        "sha256": "8B0000D4588A791C8B364210412D134CF0E981C004EA3445FD0DA14A5C141720"
+      },
+      {
+        "bytes": 3088,
+        "path": "ck3_autonomous_player/native_bridge/research/war_entry_assessments_v1_mailbox_abi.json",
+        "sha256": "46D03B069D0A165E87DC7C0D15AADE93927E7FBDD420C789C5F88B95BC6F7A8A"
+      },
+      {
+        "bytes": 7381,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_ai_owned_case_snapshot_v1_abi.json",
+        "sha256": "C9807A9CBAAFC9F4235E73369C2E0C88E36C25ADCF2CFF8E0ECB8E8204A23158"
+      },
+      {
+        "bytes": 6928,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_b2_pip_snapshot_v1_abi.json",
+        "sha256": "BABA90765735D6760165398BF37B73A2EDE846123DB0FDD564EF1F330B2B9FDA"
+      },
+      {
+        "bytes": 4121,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_case_snapshot_v1_abi.json",
+        "sha256": "1A215CCE33297B96C802414C6C685EC82932F759B3F8BBECC1534949B3070C8D"
+      },
+      {
+        "bytes": 6929,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_incident_snapshot_v1_abi.json",
+        "sha256": "7BB458CA32C156102EA05BC1AE91325EBDAB683C54D351E761DC00CF7BDA5368"
+      },
+      {
+        "bytes": 6951,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_manager_governance_snapshot_v1_abi.json",
+        "sha256": "6205DCAB4947F67F296B9147A9EF4CDD292AA863283C49CEA74A0370FA5A4684"
+      },
+      {
+        "bytes": 3319,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_manager_subordinate_selector_v1_abi.json",
+        "sha256": "B10D596BDC18842C4A582A932AFFD12FD035382C879477625A18F6A4417BF55A"
+      },
+      {
+        "bytes": 4508,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json",
+        "sha256": "2BB2AD580636AA645C9ECAC3BF112CF8F016668D5154960658F07BA0A564CE79"
+      },
+      {
+        "bytes": 5216,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_promotion_compensation_postcondition_v1_abi.json",
+        "sha256": "91A8B091E1AD366FEED638D09C7C9899BD2228CF4F889DB6C97BC76FD7876A32"
+      },
+      {
+        "bytes": 4373,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_result_case_snapshot_v1_abi.json",
+        "sha256": "EFC6864584F0A81F7B41888EA937E18B5F5C58D0341E5C7653094FC64024F3AB"
+      },
+      {
+        "bytes": 8247,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_scoreboard_action_v1_abi.json",
+        "sha256": "74FCCFF62E35864F3A237674C4978705329A43D06B296E688C61856F499D8A73"
+      },
+      {
+        "bytes": 18449,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_scoreboard_state_v1_abi.json",
+        "sha256": "4C5B269F07FBEC7667E0F6B1D57754CB4EF9270D5C401D858B3932C4A095827F"
+      },
+      {
+        "bytes": 14056,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_workforce_collective_snapshot_v1_abi.json",
+        "sha256": "F251A9D71064E54A8B07C03B688B6B4DFF5C6DD970C817D04C796078F2E2E421"
+      },
+      {
+        "bytes": 5046,
+        "path": "ck3_autonomous_player/native_bridge/research/zhongguo_workforce_normal_exit_snapshot_v1_abi.json",
+        "sha256": "D2637F27B338017B17AF71B17981DE651B3F25BD304AFC70723ED269D8BFB6AC"
+      },
+      {
+        "bytes": 9764,
+        "path": "ck3_autonomous_player/native_bridge/tools/build_fresh.ps1",
+        "sha256": "4CCE8293A6411F9DEC56415CB66ECB62B509979A5402C7BFE4314F7FBF1F6D14"
+      },
+      {
+        "bytes": 35163,
+        "path": "docs/ck3-native-ai/README.md",
+        "sha256": "0F36B815E85816D94724CACB09F00ED2E31F76C2D0158F6F4C83BD495360F60B"
+      },
+      {
+        "bytes": 18839,
+        "path": "docs/ck3-native-ai/active-combat-retreat-owner-subset-live-fixture.md",
+        "sha256": "BA8A6F188245F89A3F6E8A16480AF0FFE2CF9FB501B758CE40296E84CAF21ABF"
+      },
+      {
+        "bytes": 50442,
+        "path": "docs/ck3-native-ai/active-combat-retreat.md",
+        "sha256": "C3B9322F24327045CCB35821DD3C7177E25E28040240045C38DF2BB355825F63"
+      },
+      {
+        "bytes": 30424,
+        "path": "docs/ck3-native-ai/actual-contact-scope.md",
+        "sha256": "C914C756CDBCCE9D4F14D8BB0B6795D92A98A74A6A23383222C15A6593337458"
+      },
+      {
+        "bytes": 74219,
+        "path": "docs/ck3-native-ai/army-contact-resolution.md",
+        "sha256": "20743F93FF837CB4C076C73D3412F559E6C5EA0AC8AFB7C94A46D5583CDDCEFC"
+      },
+      {
+        "bytes": 51511,
+        "path": "docs/ck3-native-ai/army-controller.md",
+        "sha256": "BE8F5BDEFB551F6C103657939A0A721BA22059DE6F873AEA9C0E7FDA10201044"
+      },
+      {
+        "bytes": 53840,
+        "path": "docs/ck3-native-ai/autonomous-capability-roadmap.md",
+        "sha256": "56F5BF9887462E72FEA839934ACD6218EAF74801291B94F0629D89A818FCB111"
+      },
+      {
+        "bytes": 54128,
+        "path": "docs/ck3-native-ai/battle-controller.md",
+        "sha256": "76466D2142EC76758B83735E31599F761057480B1E5FC0A6F4296E8CB5DB1703"
+      },
+      {
+        "bytes": 43069,
+        "path": "docs/ck3-native-ai/battle-decision-epoch-cruise.md",
+        "sha256": "8A59543ED4FA70CA3137ED3DD204A7CCF8EFBD8D36C73E5F45106C262442F902"
+      },
+      {
+        "bytes": 49808,
+        "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+        "sha256": "E608929C3712854FC3B391C3D7861BFC7D3985AD0ECFA34B6FF4A584424CD601"
+      },
+      {
+        "bytes": 78572,
+        "path": "docs/ck3-native-ai/battle-simulation.md",
+        "sha256": "0E0075346DC1AA3B4E81BEA9E7712FFB53CE7F46F01FDC3C7CD4B4758510509C"
+      },
+      {
+        "bytes": 56658,
+        "path": "docs/ck3-native-ai/battle-speed-control.md",
+        "sha256": "946372912D360458CE24D831B6D6C2D89E71383CD22D1B1BB01D7D164A7790D2"
+      },
+      {
+        "bytes": 52987,
+        "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md",
+        "sha256": "612B27A7A3F75082C6FFF89F0A8209BAE3239AE8AC9EEA3B9DB0B5A830D55FC9"
+      },
+      {
+        "bytes": 23474,
+        "path": "docs/ck3-native-ai/campaign-root-context.md",
+        "sha256": "F86EE8EC285EEA19E017385725C632BD82F5DEDC6AD853E3A0A2183EAEE8E1FB"
+      },
+      {
+        "bytes": 29658,
+        "path": "docs/ck3-native-ai/combat-phase-event-trace.md",
+        "sha256": "A70D5D02A5145B2322F229B58C22301EF8766DAEE202160634C29A4650753EB6"
+      },
+      {
+        "bytes": 163081,
+        "path": "docs/ck3-native-ai/combat-phase-events.md",
+        "sha256": "64578D4FAE26F241D7C245BA9A2744051E03B1FAE43053630F157FB533F837F3"
+      },
+      {
+        "bytes": 42470,
+        "path": "docs/ck3-native-ai/combat-prediction.md",
+        "sha256": "E12EE2FB87042799AA61C1DC0D4325ACA76E81E90D3D6DA043C55A2AB363E29E"
+      },
+      {
+        "bytes": 130595,
+        "path": "docs/ck3-native-ai/combat-simulation-inputs.md",
+        "sha256": "F82CBE0AB8EFD4364428AF90E90DF5FC41DA989EC694E8403779E58092F3140F"
+      },
+      {
+        "bytes": 19750,
+        "path": "docs/ck3-native-ai/combat-simulator-core.md",
+        "sha256": "285D46D227B64D5C08BB4EF5CA2FA1E7D6E12AA845C8C9EEBDF6DC4ACC086C1C"
+      },
+      {
+        "bytes": 12743,
+        "path": "docs/ck3-native-ai/current-event-nonempty-effect-indicators-live-fixture.md",
+        "sha256": "03C8970B910088E0203861C238211E8D824C42A2A0B3AADA89AFFFD790DDBB6C"
+      },
+      {
+        "bytes": 14653,
+        "path": "docs/ck3-native-ai/current-event-scopes.md",
+        "sha256": "6DC2DD00CAAF2BD2420231C979E5F66DCC04FC7D8E0EC7022EEFE3B20211B19B"
+      },
+      {
+        "bytes": 21559,
+        "path": "docs/ck3-native-ai/current-event-window-context-live-fixture.md",
+        "sha256": "7CEFB2C59CEC9B36688207D0FD8D96EF553F1B69D3767B3996176A526C97359A"
+      },
+      {
+        "bytes": 28591,
+        "path": "docs/ck3-native-ai/event-effect-indicators.md",
+        "sha256": "8C8621479C22CD68BF0DD863AD253D13840A41A68D7890D29FE7F591CD929D0D"
+      },
+      {
+        "bytes": 28149,
+        "path": "docs/ck3-native-ai/event-window-context.md",
+        "sha256": "2B53A7322A87B34D62D4C843408ACAD7DDA0056F4DDEC6C09F3B2024A110D613"
+      },
+      {
+        "bytes": 72251,
+        "path": "docs/ck3-native-ai/events-and-interactions.md",
+        "sha256": "A5C2DE09187210B41278FB90315921832945A8AF3C2BD00AEA2F7EDD4BB7B6CB"
+      },
+      {
+        "bytes": 2084,
+        "path": "docs/ck3-native-ai/g2-activity-type-schema-boundary-2026-09-03.md",
+        "sha256": "D34F5A9C5B63C9E83029E19D5A155134D9E13A4606E852D07E259164BCFA1D67"
+      },
+      {
+        "bytes": 29594,
+        "path": "docs/ck3-native-ai/g2-evaluated-days-capture-entry-2026-09-03.md",
+        "sha256": "0AAFF7A0DF24DE7726442F31B2247FF991692943A8F81689F86DB475CFAFC8A4"
+      },
+      {
+        "bytes": 4603,
+        "path": "docs/ck3-native-ai/g2-evaluated-days-next-entry-2026-09-02.md",
+        "sha256": "F60B8AD630917DCA6EC04F08B67B5FEBB124C78FD0043EB828820E8699879451"
+      },
+      {
+        "bytes": 2190,
+        "path": "docs/ck3-native-ai/g2-focused-test-evidence-2026-09-03.md",
+        "sha256": "0E103FCFF08E1F333E162FE0789C1F1079E336A463D56E7DC475E57FA05FBA4B"
+      },
+      {
+        "bytes": 29957,
+        "path": "docs/ck3-native-ai/g2-generic-war-bound-current-live-2026-09-03.md",
+        "sha256": "9D879669418A71B29DB46E704E7831899FAEDD696100B6062273617BDC9E1EBB"
+      },
+      {
+        "bytes": 11151,
+        "path": "docs/ck3-native-ai/g2-next-run-preflight-2026-09-02.md",
+        "sha256": "02629E23546C53CE0BAB850E19610B56D941D6574DEEAD50AC807C21500CB5BA"
+      },
+      {
+        "bytes": 1811,
+        "path": "docs/ck3-native-ai/g2-open-kaishek-activity-schema-red-2026-09-03.md",
+        "sha256": "DBF023D20CF3F1FE0793C07137DF7DA90A8E08CBD9F6E6E1E06E756EEB3FBC7A"
+      },
+      {
+        "bytes": 2028,
+        "path": "docs/ck3-native-ai/g2-open-kaishek-cross-repo-audit-2026-09-03.md",
+        "sha256": "3DE4C44E2615147F4EBE650C341E913512C768B9A91C58A80B83670408EA34CE"
+      },
+      {
+        "bytes": 4108,
+        "path": "docs/ck3-native-ai/g2-open-kaishek-sync-audit-2026-09-03-1231.md",
+        "sha256": "328AF13C4CE195660C269DDBAA03D6786C9D196A36B4CFAA5653AE0C8B2EE77C"
+      },
+      {
+        "bytes": 1190,
+        "path": "docs/ck3-native-ai/g2-private-truce-diagnostic-seam-2026-09-02.md",
+        "sha256": "4F04304D6375F3D7256D50D50C25F4AD9C1B8D4CF828BF50FC6A03F817A27A97"
+      },
+      {
+        "bytes": 25439,
+        "path": "docs/ck3-native-ai/g2-readiness-audit-2026-09-02.md",
+        "sha256": "FB690A7783338DF55BF29C44F2A7EA1810989D1632BF8E1F6E4D1F331959FD34"
+      },
+      {
+        "bytes": 4949,
+        "path": "docs/ck3-native-ai/g2-truce-callsite-activation-2026-09-03.md",
+        "sha256": "BFE00B080DE24CAE5B7F5E750E36F224613DB36F1E5BB4AA1488A2AE6365A05A"
+      },
+      {
+        "bytes": 3757,
+        "path": "docs/ck3-native-ai/g2-truce-evaluator-abi-root-cause-2026-09-02.md",
+        "sha256": "2DCFBD5442CF7D35A8C18B22205DA373FABA64BAF2522409149AE3621B5419ED"
+      },
+      {
+        "bytes": 2593,
+        "path": "docs/ck3-native-ai/g2-truce-evaluator-callsite-contract-2026-09-02.md",
+        "sha256": "A110A95EFECFCAA2E204293593AA677B0B037E0FBA467FC78D7E9AF44A71F1E0"
+      },
+      {
+        "bytes": 5735,
+        "path": "docs/ck3-native-ai/g2-truce-index7-evaluator-capture-2026-09-02.md",
+        "sha256": "33698BCF8ED551EF81D3192F199C577A271C25DDA554D21708FE0F22AB88B3A8"
+      },
+      {
+        "bytes": 17285,
+        "path": "docs/ck3-native-ai/g2-truce-native-callsite-observer-2026-09-02.md",
+        "sha256": "85A4004D1286DA1B10789E5F2810AB946057CBFB512E9BEBA9670E3C61AB4845"
+      },
+      {
+        "bytes": 14368,
+        "path": "docs/ck3-native-ai/g2-truce-next-layer-rtti-2026-09-02.md",
+        "sha256": "C19574066B59BCEBD270EA3FD82CF6EA4ABC9AA05F473739F2944E836B6B79B1"
+      },
+      {
+        "bytes": 5565,
+        "path": "docs/ck3-native-ai/g2-truce-open-kaishek-sync-2026-09-03.md",
+        "sha256": "A3B94BB8071FF895732261670E9AE42F34017C6DA6A446889DD68D614E04BA49"
+      },
+      {
+        "bytes": 6685,
+        "path": "docs/ck3-native-ai/g2-truce-preview-entry-observer-seam-2026-09-03.md",
+        "sha256": "DD6535BC671DEA42F33B05E226D96E95DB2318C997EF309ABC2437494056D77D"
+      },
+      {
+        "bytes": 22301,
+        "path": "docs/ck3-native-ai/g2-truce-private-live-capture-2026-09-02.md",
+        "sha256": "FBED1B73F6F6A23790C48DAB21A94AF755441244D5044D63F3BF4731593448DB"
+      },
+      {
+        "bytes": 20691,
+        "path": "docs/ck3-native-ai/interaction-notification-ack-live-fixture.md",
+        "sha256": "CF3AD37797C647120C408307496D3217676B41F59BBDED25BA0CB72A08ABB5AB"
+      },
+      {
+        "bytes": 14120,
+        "path": "docs/ck3-native-ai/interaction-notification-ack.md",
+        "sha256": "59A98D7FCCE0E04D283826BCF4FFF77F43480E0095AFDE52F6FD5BE65BBEBD4E"
+      },
+      {
+        "bytes": 37587,
+        "path": "docs/ck3-native-ai/interaction-structured-terms.md",
+        "sha256": "6C4AE70D316E397835A21E6C4BF25848F06FFA0F88C38B521C6604997C22E17B"
+      },
+      {
+        "bytes": 28913,
+        "path": "docs/ck3-native-ai/loaded-feature-manifest.md",
+        "sha256": "63DD9DC5FFD2B8A12D591625F7AD0610CEC9E55B2672264BD33BECCEFF1CDA82"
+      },
+      {
+        "bytes": 66955,
+        "path": "docs/ck3-native-ai/main-thread-query-mailbox.md",
+        "sha256": "DBA9402E2EB436F73657B99B87D26557978F9845AD56E8E987E0E2B4BA8FE443"
+      },
+      {
+        "bytes": 46031,
+        "path": "docs/ck3-native-ai/marriage-and-alliance.md",
+        "sha256": "CEEA1E0A6DDFEE6DA2A50687699B2A35484C03C08E43944A86AF357A95ADDB2A"
+      },
+      {
+        "bytes": 35143,
+        "path": "docs/ck3-native-ai/ongoing-battle-frame.md",
+        "sha256": "4698F2A10A620E2ECC8BA5671C4A28DD832CAC065C9ED0965A9126412F1CC131"
+      },
+      {
+        "bytes": 18365,
+        "path": "docs/ck3-native-ai/open-kaishek-acceptance-coverage.md",
+        "sha256": "CB099F72ED710987560AAA2D5620CF7533F0B4C964A55DC0AB202D7D6D07CDE8"
+      },
+      {
+        "bytes": 4096,
+        "path": "docs/ck3-native-ai/open-kaishek-compatibility-audit-2026-09-03.md",
+        "sha256": "2114E5655D927119601E355AEA901DAC19FDFC4D24ADCC385923608A8A2A388E"
+      },
+      {
+        "bytes": 2011,
+        "path": "docs/ck3-native-ai/open-kaishek-origin-sync-preflight-2026-09-03.md",
+        "sha256": "FF1198741D751393E7A00EB7B6F9B37B87528D70BAC1C283F2FF72C0693EA97D"
+      },
+      {
+        "bytes": 22822,
+        "path": "docs/ck3-native-ai/pending-interaction-special-war-binding.md",
+        "sha256": "FED035F8122E667ED8FDA95BE292EAA885424761C17F801117265A008B33424D"
+      },
+      {
+        "bytes": 12793,
+        "path": "docs/ck3-native-ai/pending-special-war-binding-live-fixture.md",
+        "sha256": "DB5BD30BAD206DC27DB12F2264509516BACF30FB3672951C0B666C451A861CCC"
+      },
+      {
+        "bytes": 36794,
+        "path": "docs/ck3-native-ai/phase2-bounded-gate-2026-09-02.md",
+        "sha256": "9A6D382B03C641CF5BDCCFDB1E1DB65AA26BEAD4815339290A96F6AEDEABC2B0"
+      },
+      {
+        "bytes": 1756,
+        "path": "docs/ck3-native-ai/phase2-completion-consumer-2026-09-02.md",
+        "sha256": "6251F37DA07B156178C2E4362012C9B5E526E8D076DCC34E905E7659D22CB3A6"
+      },
+      {
+        "bytes": 1690,
+        "path": "docs/ck3-native-ai/phase2-completion-observer-ready-2026-09-02.md",
+        "sha256": "952E9758D2954675B2B1F71B0610F75D0281EA4FBAC67AB5D1DA7FE856798E23"
+      },
+      {
+        "bytes": 2218,
+        "path": "docs/ck3-native-ai/phase2-completion-observer-red-analysis-2026-09-02.md",
+        "sha256": "3D6FD9DD73D7A20C8E309CB53DEFC3F6886F2A6BFFAE0C6A02E060385062F5DC"
+      },
+      {
+        "bytes": 3930,
+        "path": "docs/ck3-native-ai/phase2-completion-wrapper-callers-2026-09-02.md",
+        "sha256": "47C77400B69D2FAB09C83D571953AE1174B0C4A229E18F5FCD335316C9461448"
+      },
+      {
+        "bytes": 2682,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-boundary-2026-09-02.md",
+        "sha256": "B727EC65FB2EBE2AF70DCC57B92E221C0535BE70D745083579E9610659793E7D"
+      },
+      {
+        "bytes": 2475,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-cfg-2026-09-02.md",
+        "sha256": "7B40EEF37CB7CDE59CA2B59D965B82BCF845AB2586EEADA0986763A9FDF0EC48"
+      },
+      {
+        "bytes": 3198,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-concrete-owner-2026-09-02.md",
+        "sha256": "86B0BDF82DCD316F2B57B4DC3F8BC883DB07768FF0B02CF1CDDF1CE13B2B8741"
+      },
+      {
+        "bytes": 3530,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-later-stall-2026-09-02.md",
+        "sha256": "EF3897ABABAC395B93C8825FFD4895887B8DF5A5B2FF4E9D42FA5EEEAA0DEE22"
+      },
+      {
+        "bytes": 3730,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-next-edge-2026-09-02.md",
+        "sha256": "BABC3D8A992FAC1371242DEDD895D3A0FE754BC2989030E156809DAD0FF1C017"
+      },
+      {
+        "bytes": 3397,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-next-node-live-2026-09-02.md",
+        "sha256": "E0D70E0339058A63046BC267B903602944F167A9BDE5F71360814AE95C194BEC"
+      },
+      {
+        "bytes": 1921,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-outer-caller-2026-09-02.md",
+        "sha256": "0CBECFB8F4381E321617148568FBB083DCBC1C0676BA083080D7C2629D03E7DD"
+      },
+      {
+        "bytes": 3137,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-outer-return-live-2026-09-02.md",
+        "sha256": "628ACA3AAD61CAE521AB4C5AC2ABA660D0816496FB9F7B376BA0430938FE9C3D"
+      },
+      {
+        "bytes": 5638,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-probe-no-go-2026-09-02.md",
+        "sha256": "84C93B9B85B56252579535D53B172D34E15B06921603816FD82D1860A5272654"
+      },
+      {
+        "bytes": 3528,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-runtime-owner-2026-09-02.md",
+        "sha256": "9BA66D723FC20FC95D2583604CDE8306F4E6BCC9C892C01CC763C136D28192B0"
+      },
+      {
+        "bytes": 3694,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-runtime-vtable-2026-09-02.md",
+        "sha256": "9B0AAB90EC1A3EE579AA8D2949CAC74300B2EEF1C2AEFD65830901963FFDD580"
+      },
+      {
+        "bytes": 2986,
+        "path": "docs/ck3-native-ai/phase2-loader-callback-static-slice-2026-09-02.md",
+        "sha256": "3D8E17265E0A41E25E47DFEEB533786E75BAA08EC738061FE08291652090FE56"
+      },
+      {
+        "bytes": 1659,
+        "path": "docs/ck3-native-ai/phase2-outer-completion-edge-2026-09-02.md",
+        "sha256": "DA3392A5FCA2454F84D65BA4042B1404C11F40A7358E90B703BED08B84C9A459"
+      },
+      {
+        "bytes": 3625,
+        "path": "docs/ck3-native-ai/phase2-post-call-list-identity-observer-2026-09-02.md",
+        "sha256": "801C91D5FE17BFB1A407A5D8C30DA0EBEBBC109CA6B0411628748E995487B768"
+      },
+      {
+        "bytes": 1704,
+        "path": "docs/ck3-native-ai/phase2-post-call-live-postprocess-2026-09-02.md",
+        "sha256": "849DF4CE5363E84BBB91F0721137A3AF2023B16E225A3B3B71407B01752A707F"
+      },
+      {
+        "bytes": 1922,
+        "path": "docs/ck3-native-ai/phase2-post-call-observer-2026-09-02.md",
+        "sha256": "C6EE96DA4B0A8849E70F8B330F4FCDB348C9FB9D47E42751932F96951EC6DD47"
+      },
+      {
+        "bytes": 3050,
+        "path": "docs/ck3-native-ai/phase2-producer-consumer-correlation-live-2026-09-03.md",
+        "sha256": "00522D0360A1E9206A84E344BF0FACE21C9DC21A3F0810DCA999A5BE460A1578"
+      },
+      {
+        "bytes": 3260,
+        "path": "docs/ck3-native-ai/phase2-producer-consumer-correlation-observer-2026-09-03.md",
+        "sha256": "A5959E5F992277D90B7A409E5C03702992B5F87F1F8F5634C0EE27852E63066D"
+      },
+      {
+        "bytes": 3281,
+        "path": "docs/ck3-native-ai/phase2-producer-histogram-live-postprocess-2026-09-03.md",
+        "sha256": "472B6A9352EB24F11C620F761600695AA07DDE9777BC0FBA32B83E7140344B7F"
+      },
+      {
+        "bytes": 4758,
+        "path": "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-02.md",
+        "sha256": "326B406FE774F07A772EB04F0A6E059D33A81FA5E0B46FC71A0CA90160BD8AFA"
+      },
+      {
+        "bytes": 3980,
+        "path": "docs/ck3-native-ai/phase2-producer-identity-live-2026-09-03.md",
+        "sha256": "5D01C54F4681B5E4498079537F1FE1F7D9B5A3DA2C1C2FF0232A11078A7235B1"
+      },
+      {
+        "bytes": 2519,
+        "path": "docs/ck3-native-ai/phase2-producer-identity-observer-2026-09-02.md",
+        "sha256": "E6D11C6987B932B15685AE6CD72B32E3A8777021EA00ECC2F4EFEA55ECDC0358"
+      },
+      {
+        "bytes": 3542,
+        "path": "docs/ck3-native-ai/phase2-producer-slot2-histogram-live-2026-09-03.md",
+        "sha256": "A3E0E616BE89EF64231E485671F0528D29E27E7EBA5D2AA475F7042457B547A8"
+      },
+      {
+        "bytes": 2886,
+        "path": "docs/ck3-native-ai/phase2-producer-slot2-histogram-observer-2026-09-03.md",
+        "sha256": "DA374DF12DA9E582CE644B3A4D2D9E242CA13D53FC179DFACA135CF86571410C"
+      },
+      {
+        "bytes": 2782,
+        "path": "docs/ck3-native-ai/phase2-runtime-caller-3407d9c-2026-09-02.md",
+        "sha256": "324E0035D6EF61A7EF3ED2884593FB7E6F4F61A7487BEBA79A1574C73BC4A6BC"
+      },
+      {
+        "bytes": 5890,
+        "path": "docs/ck3-native-ai/phase2-seed-live-82d6b77-2026-09-03.md",
+        "sha256": "76309EA1099025A5221AC3CD3FD0323435E699887B8C651457D189F6F00D2A06"
+      },
+      {
+        "bytes": 1557,
+        "path": "docs/ck3-native-ai/phase2-selected-outer-callers-2026-09-02.md",
+        "sha256": "BEF36D612ED23650DD62DFF0B49C189013D0CE74E34A258CB6265BB79499FE7A"
+      },
+      {
+        "bytes": 1776,
+        "path": "docs/ck3-native-ai/phase2-selected-outer-return-live-2026-09-02.md",
+        "sha256": "C59BFC15FD27F2555053F1C3F91AF49CA39A80625B52D11DF9A1239B5C961EF0"
+      },
+      {
+        "bytes": 4098,
+        "path": "docs/ck3-native-ai/phase2-slot2-817c20-identity-2026-09-02.md",
+        "sha256": "3CBAC9072D34CF9E8202E13AADE67D567F7196EFBEF992C60BCAC1CE5E267047"
+      },
+      {
+        "bytes": 19713,
+        "path": "docs/ck3-native-ai/phase2-wrapper-consumer-edge-observer-2026-09-03.md",
+        "sha256": "5E3593BBA9EA28CAAD4A44517A638C2951D7C9CA025668111E99476A51AE08AA"
+      },
+      {
+        "bytes": 2974,
+        "path": "docs/ck3-native-ai/phase2-wrapper-entry-live-postprocess-2026-09-02.md",
+        "sha256": "E9DBC67EF886DBBC5664814386EE83CAB030F92D97AA2D7A1993FB4444125A4D"
+      },
+      {
+        "bytes": 2135,
+        "path": "docs/ck3-native-ai/phase2-wrapper-entry-observer-2026-09-02.md",
+        "sha256": "F8BD5C1626743C9960BEE39442C41999BBB1126ACAE3B7AEA625B87438F647A6"
+      },
+      {
+        "bytes": 50775,
+        "path": "docs/ck3-native-ai/player-counterpolicy.md",
+        "sha256": "FED39687E899766DD2665C0D0B4369F6C60C453621B3A0DEE616DA92D3FB0CD8"
+      },
+      {
+        "bytes": 20451,
+        "path": "docs/ck3-native-ai/player-war-entry-policy.md",
+        "sha256": "2471AB3BD372A62ADCCE184E85B0728E45C6E356007F3A8B4A11F7CC7B008D0B"
+      },
+      {
+        "bytes": 48363,
+        "path": "docs/ck3-native-ai/player-war-exit-policy.md",
+        "sha256": "9B02C8AB70413954618E38A7E35A200D8954405A8440A3F7890DE014B91DC3BA"
+      },
+      {
+        "bytes": 43296,
+        "path": "docs/ck3-native-ai/prewar-encounter-inputs.md",
+        "sha256": "92CDA2871210466743A1F92F641B8497541BE0EAE64B93E4956117E7F5C9BCD4"
+      },
+      {
+        "bytes": 19626,
+        "path": "docs/ck3-native-ai/primary-defensive-war-response.md",
+        "sha256": "89711DD1AB09863FA2087101F20E68931BBA1E733E482113460397BB097D8D5C"
+      },
+      {
+        "bytes": 22855,
+        "path": "docs/ck3-native-ai/raiktor-three-way-exit-policy.md",
+        "sha256": "F42DC14689A9550942E083122B879354326A1E02563BE548F093C7AF330CE22A"
+      },
+      {
+        "bytes": 9262,
+        "path": "docs/ck3-native-ai/title-map-navigation.md",
+        "sha256": "653CC72389141FBA83C526B08A83C948EDD46A7A36DD8562413F165C90CA9E8D"
+      },
+      {
+        "bytes": 3337,
+        "path": "docs/ck3-native-ai/title-vassal-transfer.md",
+        "sha256": "B3168488656C59E91C96B39BC34D7959B0C07EA7186915886EAEC6BC28D19251"
+      },
+      {
+        "bytes": 33644,
+        "path": "docs/ck3-native-ai/war-declaration.md",
+        "sha256": "7A7911E03910E7AA70491DDD49097D9F1719878824F51B98A4A8EFBEA1F40527"
+      },
+      {
+        "bytes": 171878,
+        "path": "docs/ck3-native-ai/war-termination.md",
+        "sha256": "8CAB4EED5E62D63121E13323405B9B2A17B707F56DC8B563346957962F076764"
+      },
+      {
+        "bytes": 7569,
+        "path": "docs/ck3-native-ai/zhongguo-ai-owned-case-action-v1.md",
+        "sha256": "0200BF3736259C74350141D0C1A4B7BBE1CE63E42160D1D127B2D6A394F5BAAC"
+      },
+      {
+        "bytes": 9783,
+        "path": "docs/ck3-native-ai/zhongguo-ai-owned-case-snapshot-v1.md",
+        "sha256": "FCAAF91B527A70E9A9F80AEC4EBD6E5C1DFFD394DEE58289A064F050BCE44240"
+      },
+      {
+        "bytes": 5181,
+        "path": "docs/ck3-native-ai/zhongguo-b2-pip-snapshot-v1.md",
+        "sha256": "6EE747DADCF44CE5D361AA5C0A1AD37251D1CD52C00974A658EAECB97CB7BD66"
+      },
+      {
+        "bytes": 12112,
+        "path": "docs/ck3-native-ai/zhongguo-incident-snapshot-v1.md",
+        "sha256": "785D52F699D7C1860CA5548C140908621CBF4308B10747078EDCB635BE13C3C1"
+      },
+      {
+        "bytes": 7082,
+        "path": "docs/ck3-native-ai/zhongguo-manager-governance-snapshot-v1.md",
+        "sha256": "2E7B4B545A04CD58A21ECAF50F8E33542B151FCFB1A8385E2ABBD1E13225A4C2"
+      },
+      {
+        "bytes": 6026,
+        "path": "docs/ck3-native-ai/zhongguo-manager-subordinate-selector-v1.md",
+        "sha256": "846DF89B35B2A64146C760BC413F31B14B3FEE5102F7587ED18B326A18BD5F85"
+      },
+      {
+        "bytes": 5317,
+        "path": "docs/ck3-native-ai/zhongguo-projects-metrics-postcondition-v1.md",
+        "sha256": "3328F95BE13876F6853F7BFB71E0C8B8BB388A9B687B270E4F8458B01C62627D"
+      },
+      {
+        "bytes": 5951,
+        "path": "docs/ck3-native-ai/zhongguo-promotion-compensation-postcondition-v1.md",
+        "sha256": "8142AEED0DB44434E92B46462D8A7563D23D2F5F2E4BAAB99AD4D6BD48E14481"
+      },
+      {
+        "bytes": 10596,
+        "path": "docs/ck3-native-ai/zhongguo-scoreboard-production-promotion-v1.md",
+        "sha256": "0C50D5CB2BEA6DB9C1E81F32F35D90AD474A92AFD4D1D338453CC492740966E6"
+      },
+      {
+        "bytes": 15885,
+        "path": "docs/ck3-native-ai/zhongguo-scoreboard-state-v1.md",
+        "sha256": "A54B6E8C71E0EA9279ED4ACF85D918443C63B417A8E37B8477C6FA4041FE189B"
+      },
+      {
+        "bytes": 9559,
+        "path": "docs/ck3-native-ai/zhongguo-workforce-collective-snapshot-v1.md",
+        "sha256": "A42F38AC6B6AB65E588A43DAD81474A9BAC5D919533BA364317579D22AD8C0C7"
+      },
+      {
+        "bytes": 9257,
+        "path": "docs/ck3-native-ai/zhongguo-workforce-normal-exit-snapshot-v1.md",
+        "sha256": "1C6D783E0622A853479E35F2E13214F2E32B9314F16BC2A40F9BD614EBE01FE0"
+      }
+    ],
+    "projection_utility": {
+      "bytes": 27550,
+      "path": "tools/zg361_phase2_product_projection.py",
+      "sha256": "AA72B0EF8C32811CF0A0CC100AB2B546E755F18F5E2AB1E8210CE895C9B77DA0"
+    },
+    "seed_contract": {
+      "bytes": 2750,
+      "path": "tools/zg361_phase2_seed_contract.json",
+      "sha256": "19B3451514FA4ED87836D03B5DEEB2D4AEC569A4714325E5C2164415E96563CC"
+    }
+  },
+  "kind": "zg361_phase2_b3_no_launch_candidate",
+  "launch": {
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "tools/run_zhongguo_acceptance.py",
+      "--phase2-live-batch",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_5618f0331f524d2b905daf04703ec65f",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite\\_worktrees\\phase2-source-registry-builder\\tools\\zg361_phase2_seed_contract.json",
+      "--phase2-product-source",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\product-source",
+      "--phase2-product-projection",
+      "phase2-b3-manager-cumulative-48da012-r1",
+      "--phase2-product-projection-manifest",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\projection.json",
+      "--artifacts-dir",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\artifacts-live",
+      "--discard-userdir"
+    ],
+    "authorized_by_preflight": true,
+    "executed": false,
+    "pipe": "\\\\.\\pipe\\xar_ck3_bridge_zg361_5618f0331f524d2b905daf04703ec65f",
+    "windows_command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge.dll --bridge-injector Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge_injector.exe --bridge-pipe \\\\.\\pipe\\xar_ck3_bridge_zg361_5618f0331f524d2b905daf04703ec65f --phase2-seed-contract Z:\\ck3_mod_rewrite\\_worktrees\\phase2-source-registry-builder\\tools\\zg361_phase2_seed_contract.json --phase2-product-source Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\product-source --phase2-product-projection phase2-b3-manager-cumulative-48da012-r1 --phase2-product-projection-manifest Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\projection.json --artifacts-dir Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\artifacts-live --discard-userdir"
+  },
+  "native_build": {
+    "build_fresh_tests_ran": true,
+    "ctest": {
+      "green": true,
+      "log": {
+        "bytes": 17827,
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-ctest.txt",
+        "sha256": "8B0C446858B872A153E1C4684567B840FCE3B91A8A13AE25D294313B9FCCD442"
+      },
+      "total": 90
+    },
+    "dependency_gate": "ck3_11906.hpp-recorded",
+    "dll": {
+      "bytes": 2323456,
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge.dll",
+      "sha256": "29A5E4AE62D7F414B9CE3BC76A51F54A7D5E59AA2D80054508E31611ED7BAC0A"
+    },
+    "injector": {
+      "bytes": 39936,
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\native-build\\xar_ck3_bridge_injector.exe",
+      "sha256": "74ADC3DE8EF0890BEE9F82F8D20A5AEA8AA55555B51E3C763E5FDBEF4FEFF1D8"
+    },
+    "source_fingerprint_sha256": "F38A16E6184A6F38198E9D1BD909238C50A5ECC14CD1DDB490C9BC7F116CFE5B"
+  },
+  "product_projection": {
+    "bytes": 12568195,
+    "delta": [
+      {
+        "after": {
+          "bytes": 11254,
+          "sha256": "0A1725A8039656D36EF368D358B25CE55DA8BB8C2E26F3C5587A24C1F4CB0351"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_001_shared_helpers_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3692,
+          "sha256": "1AC49FE3B2F9EFAFA0EA554CCDD5E896FB481E2D863141F02C09E27399EDC011"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_002_domain_a_review_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3699,
+          "sha256": "2462664336DC73DD303C45D153057D38604F62B3C8D950C414529567D962D393"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_003_domain_b_calibration_round_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3691,
+          "sha256": "0735218B2147029A44E646669012A5F3610097A54C91D0449F51A0ECFB88BE92"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_004_domain_c_appeal_pip_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3730,
+          "sha256": "F0FDF10CC75C95F50533DCA9E218A2F84A71C53FEB76BEF822D840834E24E715"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_005_domain_d_career_allocation_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3722,
+          "sha256": "2D1DC6DA50AD1087919741AC287F8FC3EF22DDDCF9526FCB0B58A8A9B9D0AB92"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_006_domain_e_contribution_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3701,
+          "sha256": "91645A45FF58661694429411D2F069320EB48E0B753FF093721200BCC15B493E"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_007_domain_f_manager_review_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3690,
+          "sha256": "2311112A631EF8D583706EDFEB7DF87C9AD4C1099492CC7ACE67E5130ACED83B"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_008_domain_g_quota_book_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3685,
+          "sha256": "5398004C2773C08CA09E037AAACBEAF1E55E846694694CD2C801B987ED6CDD7B"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_009_domain_h_peer_feedback_round_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3684,
+          "sha256": "9EAD0EC3B99670244C222A0756B96045E55956BDAE6DC1B5795CBCE1979311ED"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_010_domain_i_report_packet_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3723,
+          "sha256": "3F1E344EF2C6C73622DEAC8900501FDAD11A84DE59CF777E120E240CACD16266"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_011_domain_j_matrix_handoff_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4428,
+          "sha256": "B6E89309DD5AFB342944F187D44CBD91486FEDC655D23AAF9CB591576F27F33F"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_012_domain_k_notice_justice_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3710,
+          "sha256": "B0D10240B23B25083B7DA8F0A52B216B500987A44916AC120314DFEB9F9579D0"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_013_domain_l_compensation_award_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3700,
+          "sha256": "909F53F4C2DDA2E1384EFCC5B8F64881A8AE312EE9A989EDD2A61666B11B05B5"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_014_domain_m_career_track_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3652,
+          "sha256": "330288EAA25DB6BD9E3F07DE1727D194BAACAC5F57506FB15D85073C01A0054F"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_015_domain_n_hc_slot_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4444,
+          "sha256": "B14F36367D483435DB6E57E68AFC2611F113469227D8E2F4C28C9275A9F8288D"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_016_domain_o_succession_plan_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4418,
+          "sha256": "C3AF711F92C18EA0D7449430886282D81B41A1CB6C3ED1E23866E6FAEA4F1956"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_017_domain_p_mobility_onboarding_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3702,
+          "sha256": "D630B1169996B36DA01661851C9557C1F1F0A9161497F2F69567215A1B2D730A"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_018_domain_q_manager_certification_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4401,
+          "sha256": "8E19BD0DF3D781CDED6CA2AACD8FD092744B195391509DD8CFDD08FFCBE7B6E7"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_019_domain_r_project_governance_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4451,
+          "sha256": "69D8B5EF1303098B034B9D04E404DA77DADE8356AEC2C8FA753C90BC0AEDCEF9"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_020_domain_s_shadow_calibration_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3729,
+          "sha256": "186161933E7A43EDD27845DDCD23E4082D2BBC6C22FDD334FCED98CA7B275DBA"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_021_domain_t_feedback_commitment_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 3700,
+          "sha256": "2FD4B5B7AC923CFEB2F8D6E7E8734233A6A23D3B16273A1F0A1C4876F825C561"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_022_domain_u_promotion_nomination_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4407,
+          "sha256": "BC945F13CC41E8F83B4C967261E1B26C50720AD3E1920CFB6F67E9BE4B3B1A8C"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_023_domain_v_promotion_panel_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4395,
+          "sha256": "95A5C3B5501BE7EBC3390804B2D87A501B8738D83AFE3D8205D508ADD1B6BC95"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_024_domain_w_pip_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5882,
+          "sha256": "C237ADE7AB5B82BEF3605949AF9DB616952FE8116563948C7491852311AD9460"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_025_domain_x_incident_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4365,
+          "sha256": "564792DEB938DC756B496D2120AF5CC6473C84E04DD9F032ED1367476688A492"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_026_domain_y_debt_item_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4409,
+          "sha256": "D230143AFBB8D675CAE4901ADB8AE6A4E3DFAE54964021A19123E0DC4DD895F8"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_027_domain_z_platform_service_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5234,
+          "sha256": "000003FE788E079A6F66249CDAB1D49185BBCC39FF95D38718680BC63B90D563"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_028_domain_aa_metric_experiment_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5223,
+          "sha256": "BF2702F03A8499C4344DAC49C9C00FDDF3F3A6A01FE3F899FC13A509FE2A5B6F"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_029_domain_ab_capacity_period_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5205,
+          "sha256": "FD5021B7B0BF3B4473CD2CF531380FB2C271CF2DF687F077B70D4EB8E50E4E9F"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_030_domain_ac_external_contract_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5218,
+          "sha256": "41E3B6A49DF34C854E83C099BDA9A0780500746F29CF2CDDB75CF94AEAA2F51B"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_031_domain_ad_recruitment_funnel_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4446,
+          "sha256": "AB934EAF22CD06A8114DB35E832CD06DEDBBC41AC1E5080FAF72452B8C777CDF"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_032_domain_ae_pay_statement_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4472,
+          "sha256": "5052509278579F49EA4B47649A33563ED0472A9172753602C2A0B82953045745"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_033_domain_af_lti_grant_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4472,
+          "sha256": "18B6D4B27E945EE5C83E18443EA6A37780EFC9A67FF3D63F0E45CA686C65C2A9"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_034_domain_ag_reorg_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5205,
+          "sha256": "650F7A20D26A57E85BD6E36EC0A9E9AEBB324CF8136052C708F60D87985AD282"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_035_domain_ah_internal_market_case_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4463,
+          "sha256": "99350B663BA51940D2074B00DDE3CB1B4450997FCC5F6B08EA23892596F3ED9A"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_036_domain_ai_learning_plan_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 5910,
+          "sha256": "84BE7DE7E780F7FAF31AD60D0861DCD8D1E7BC9F137BDBCD0E088A199B44F504"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_037_domain_aj_demand_item_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4491,
+          "sha256": "F7E60FF83233D58DBEC6CD0A064FD01100199B336DF2666912E14304A929DAC6"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_038_domain_ak_policy_version_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 4549,
+          "sha256": "374B5FBC7500F85DCEBFE571F4D71A948393522F1FDFBDEE813759BA049768B1"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_case_kernel_039_domain_al_constitution_case_effects.txt"
+      },
+      {
+        "after": null,
+        "before": {
+          "bytes": 172748,
+          "sha256": "8453D36BE33C4C17447A13B0312251EF276F0918FE0153DBEDE1509A5D7A9B20"
+        },
+        "operation": "removed",
+        "path": "common/scripted_effects/zg361_case_kernel_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 85371,
+          "sha256": "EBEB93AFDA739A8FEBCE14E9FDCE5608A21C7D7EE7D0D58F34FE658934AB404F"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_manager_governance_core_adapters_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 16244,
+          "sha256": "21EE726DDB6B4EFD9179E28EAB44895EDFDCD4835194A2FFB5264F5687A27DC9"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_manager_governance_dispatch_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 98971,
+          "sha256": "8CE26EDC9F8E8CE090997B20A5EE5988D151E3D951F45C2F2BC12506A38B649A"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_manager_review_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 9531,
+          "sha256": "142386B119063101621F4B4D90DA203EEABC9FEE864B703F3FDE496F5058D7F0"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_phase2_central_008_stage10_manager_governance_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 34390,
+          "sha256": "7B48E9F71892B53834342DBEFC7D24925A0BE966234C032A0A8E61BC8AE79993"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_policy_audit_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 45651,
+          "sha256": "48E9F78080363F6CC2A601B01D5720E96A6CA3009AAA435F975D60B0C34F4B84"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_policy_fairness_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 32427,
+          "sha256": "04B7B6E7375A22BA77A47C30964D7DC5742BD5BEBDCABAE7EB335205F89BA6F7"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_policy_history_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 67760,
+          "sha256": "97461F7A4B775E4A1F84BA5D8EC70EB9C43EA08726B96A1AAC7771A2B6A6845B"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_policy_intake_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 25007,
+          "sha256": "1CD343EEC857F9E61618EA06A7A30A4D877744BE0B03305A4F67CE972116C4D3"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_workforce_probation_fact_consumption_effects.txt"
+      },
+      {
+        "after": null,
+        "before": {
+          "bytes": 205410,
+          "sha256": "B0EA0B735C2AB7AE16EC22FD25ECDF8F37B0C0E7C2A44150EC2C0EB25E6A450E"
+        },
+        "operation": "removed",
+        "path": "common/scripted_effects/zg361_workforce_probation_fact_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 114723,
+          "sha256": "2102C7916608364AACBAB7DF07CA9E12C0479F40A776116894513423C2ADC582"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_workforce_probation_fact_ledger_arm_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 64160,
+          "sha256": "6BE694A6896002A71B9981B4CBF17FEA953C903E79657BD5E0527E19FEC59770"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_effects/zg361_workforce_probation_fact_outcome_publish_effects.txt"
+      },
+      {
+        "after": {
+          "bytes": 55260,
+          "sha256": "EB2A522D12E72FC83A4A1566EE35A74153CF6A8238E001BA7A94AAB78D56520C"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt"
+      },
+      {
+        "after": {
+          "bytes": 8303,
+          "sha256": "70CD4ED25F4BF9E480B6F2EB187CD498D315D5C1013D6401EE51786CEB0E7EDF"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "events/zg361_manager_governance_runtime_events.txt"
+      },
+      {
+        "after": {
+          "bytes": 1564,
+          "sha256": "71B36BAF84F33BA4BF5E31D097ED6487FDA1EFA772EE079A46E6D8D6845683DB"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/english/zg361_manager_governance_l_english.yml"
+      },
+      {
+        "after": {
+          "bytes": 1563,
+          "sha256": "942F60B9674F1F96177327D20912981110A87D083DFAB6D7572926DFDDF5F7B3"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/french/zg361_manager_governance_l_french.yml"
+      },
+      {
+        "after": {
+          "bytes": 1563,
+          "sha256": "6872BDE0763054C24E7D9E76B8515B964A01AA179299F7A5A24E53B09B0D180E"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/german/zg361_manager_governance_l_german.yml"
+      },
+      {
+        "after": {
+          "bytes": 1565,
+          "sha256": "7725CD4F54C1E4CDFB01B89CA8A10B0A0647D1A0EEA865BD32430A73C12B33BB"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/japanese/zg361_manager_governance_l_japanese.yml"
+      },
+      {
+        "after": {
+          "bytes": 1563,
+          "sha256": "6E37E3C3C85C429A5F96855D7F17A041A54C1A3E6576518E681BD8732BC75F6D"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/korean/zg361_manager_governance_l_korean.yml"
+      },
+      {
+        "after": {
+          "bytes": 1563,
+          "sha256": "C9C371FCF0B50B911877CE157C3DEB2A9E25FA5C7164BF2BCE24DFBF0659E67D"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/polish/zg361_manager_governance_l_polish.yml"
+      },
+      {
+        "after": {
+          "bytes": 1564,
+          "sha256": "0915BB767C297D45EB42DD154E391C8921C265517052701006BA15CAF29C97AC"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/russian/zg361_manager_governance_l_russian.yml"
+      },
+      {
+        "after": {
+          "bytes": 1647,
+          "sha256": "0D04A40F48AEADDBB5C9C9BC89E7870A95C5BD91E76E833A52FDB37B46CB2950"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/simp_chinese/zg361_manager_governance_l_simp_chinese.yml"
+      },
+      {
+        "after": {
+          "bytes": 1564,
+          "sha256": "5574D78A154410D9A9E5D4DE7516FC26494F19D4A1898AC8291EC2C60FEB2288"
+        },
+        "before": null,
+        "operation": "added",
+        "path": "localization/spanish/zg361_manager_governance_l_spanish.yml"
+      }
+    ],
+    "effect_boundaries": {
+      "all_product_over_hard_max": [
+        {
+          "definitions": 41,
+          "path": "common/scripted_effects/zg361_b1_runtime_effects.txt"
+        },
+        {
+          "definitions": 36,
+          "path": "common/scripted_effects/zg361_b1_runtime_effects_part2.txt"
+        },
+        {
+          "definitions": 1449,
+          "path": "common/scripted_effects/zg361_generated_mechanism_effects.txt"
+        }
+      ],
+      "b3_manager_max_effects_per_file": 10,
+      "b3_manager_shard_counts": {
+        "zg361_manager_governance_core_adapters_effects.txt": 10,
+        "zg361_manager_governance_dispatch_effects.txt": 7,
+        "zg361_manager_review_effects.txt": 6,
+        "zg361_policy_audit_effects.txt": 4,
+        "zg361_policy_fairness_effects.txt": 5,
+        "zg361_policy_history_effects.txt": 3,
+        "zg361_policy_intake_effects.txt": 8
+      },
+      "b3_manager_total_effects": 43,
+      "case_kernel_shard_count": 39,
+      "case_kernel_shards": [
+        "zg361_case_kernel_001_shared_helpers_effects.txt",
+        "zg361_case_kernel_002_domain_a_review_case_effects.txt",
+        "zg361_case_kernel_003_domain_b_calibration_round_effects.txt",
+        "zg361_case_kernel_004_domain_c_appeal_pip_case_effects.txt",
+        "zg361_case_kernel_005_domain_d_career_allocation_effects.txt",
+        "zg361_case_kernel_006_domain_e_contribution_case_effects.txt",
+        "zg361_case_kernel_007_domain_f_manager_review_effects.txt",
+        "zg361_case_kernel_008_domain_g_quota_book_effects.txt",
+        "zg361_case_kernel_009_domain_h_peer_feedback_round_effects.txt",
+        "zg361_case_kernel_010_domain_i_report_packet_effects.txt",
+        "zg361_case_kernel_011_domain_j_matrix_handoff_effects.txt",
+        "zg361_case_kernel_012_domain_k_notice_justice_case_effects.txt",
+        "zg361_case_kernel_013_domain_l_compensation_award_effects.txt",
+        "zg361_case_kernel_014_domain_m_career_track_effects.txt",
+        "zg361_case_kernel_015_domain_n_hc_slot_effects.txt",
+        "zg361_case_kernel_016_domain_o_succession_plan_effects.txt",
+        "zg361_case_kernel_017_domain_p_mobility_onboarding_effects.txt",
+        "zg361_case_kernel_018_domain_q_manager_certification_effects.txt",
+        "zg361_case_kernel_019_domain_r_project_governance_effects.txt",
+        "zg361_case_kernel_020_domain_s_shadow_calibration_effects.txt",
+        "zg361_case_kernel_021_domain_t_feedback_commitment_effects.txt",
+        "zg361_case_kernel_022_domain_u_promotion_nomination_effects.txt",
+        "zg361_case_kernel_023_domain_v_promotion_panel_effects.txt",
+        "zg361_case_kernel_024_domain_w_pip_case_effects.txt",
+        "zg361_case_kernel_025_domain_x_incident_case_effects.txt",
+        "zg361_case_kernel_026_domain_y_debt_item_effects.txt",
+        "zg361_case_kernel_027_domain_z_platform_service_effects.txt",
+        "zg361_case_kernel_028_domain_aa_metric_experiment_effects.txt",
+        "zg361_case_kernel_029_domain_ab_capacity_period_effects.txt",
+        "zg361_case_kernel_030_domain_ac_external_contract_effects.txt",
+        "zg361_case_kernel_031_domain_ad_recruitment_funnel_effects.txt",
+        "zg361_case_kernel_032_domain_ae_pay_statement_effects.txt",
+        "zg361_case_kernel_033_domain_af_lti_grant_effects.txt",
+        "zg361_case_kernel_034_domain_ag_reorg_case_effects.txt",
+        "zg361_case_kernel_035_domain_ah_internal_market_case_effects.txt",
+        "zg361_case_kernel_036_domain_ai_learning_plan_effects.txt",
+        "zg361_case_kernel_037_domain_aj_demand_item_effects.txt",
+        "zg361_case_kernel_038_domain_ak_policy_version_effects.txt",
+        "zg361_case_kernel_039_domain_al_constitution_case_effects.txt"
+      ],
+      "delta_effect_files": 50,
+      "delta_over_hard_max": [],
+      "forbidden_split_monoliths_present": [],
+      "green": true,
+      "hard_max_per_file": 20,
+      "inherited_oversize_reasons": {
+        "common/scripted_effects/zg361_b1_runtime_effects.txt": "historical B1 provider; not created or enlarged by the B3 projection",
+        "common/scripted_effects/zg361_b1_runtime_effects_part2.txt": "historical B1 provider; not created or enlarged by the B3 projection",
+        "common/scripted_effects/zg361_generated_mechanism_effects.txt": "pre-B2 generated 361-mechanism provider inherited byte-for-byte"
+      },
+      "required_probation_shards": [
+        "zg361_workforce_probation_fact_consumption_effects.txt",
+        "zg361_workforce_probation_fact_ledger_arm_effects.txt",
+        "zg361_workforce_probation_fact_outcome_publish_effects.txt"
+      ],
+      "target_per_file": 10,
+      "unexpected_inherited_oversize": []
+    },
+    "file_count": 311,
+    "file_list_sha256": "e28888eb7c31b770e5dfd71d10494e3156f2122a0286209d18e89ae764ab7da1",
+    "formal_overlay_tree_sha256": "e14552048b3d2d40f11fb1ed1c5785a49dcef0cb3dcb5760cf4ed3ba53930820",
+    "historical_b2_baseline": {
+      "mutated": false,
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b2-r10-20260904-102620\\product-closure-r7\\source",
+      "projection_manifest": {
+        "bytes": 52709,
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b2-r10-20260904-102620\\product-closure-r7\\projection.json",
+        "sha256": "CDB7815C09C61EE43B945982417ADF3F6FAE8DF1184A11E90A212214B4C5FE77"
+      }
+    },
+    "manifest": {
+      "bytes": 65448,
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\projection.json",
+      "sha256": "27D2282B6C2EDB03680B806CB3A90128F80A55F85F2C3E62588EA90F246A47EA"
+    },
+    "materialization": {
+      "bytes": 65946,
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\materialization.json",
+      "sha256": "8C89D17528E147BD708EFBBA384CE8267BE2C989383F1626BADF6A43BDCB94DF"
+    },
+    "name": "phase2-b3-manager-cumulative-48da012-r1",
+    "product": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\product",
+    "source": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-b3-48da012-20260904-054011Z\\product-source",
+    "source_tree_sha256": "91475d061d84f529228d4de07a9a7a13ef5b47dc16ad7ceb45fb0825228c6113"
+  },
+  "readiness": "static-ready-live-pending",
+  "schema_version": 1,
+  "source_commit": "2968db8d93f629cdb74ca8c0ff3d1a54dc5f1d77",
+  "static_checks": [
+    {
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "mod_zhongguo_style/tools/gen_361_manager_governance_runtime.py",
+        "--check"
+      ],
+      "green": true,
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"
+      ],
+      "green": true,
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "-O",
+        "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"
+      ],
+      "green": true,
+      "returncode": 0
+    }
+  ],
+  "status": "GREEN_NO_LAUNCH"
+}
