@@ -1,0 +1,93 @@
+{
+  "schema": "xar.ck3.open_kaishek_b7_promotion_transport_compatibility_audit.v1",
+  "status": "GREEN_STATIC",
+  "audited_at": "2026-09-04T16:25:00+08:00",
+  "root": {
+    "checkout_base_commit": "6eff1a6812eb7bfd33af6820a3b33eec043038b4",
+    "canonical_commit": "d53befaa4872662562f5db5d31757ca731e799e0",
+    "promotion_production_api_commit": "d53befaa4872662562f5db5d31757ca731e799e0",
+    "b3_localization_freezer_commit": "f730aeb677066e39aa7f19e53c66e2a84b842f88"
+  },
+  "open_kaishek": {
+    "previous_commit": "a54164625b3ebb7d738d16236ca3080686fa9984",
+    "commit": "270f8f52098191cff37f33cef24f441a36297b5b",
+    "origin_main": "270f8f52098191cff37f33cef24f441a36297b5b",
+    "default_checkout_head": "270f8f52098191cff37f33cef24f441a36297b5b",
+    "clean": true,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 353630,
+    "jar_sha256": "16f347b048d80f6079c8a5808e861ba4e659fcf86c346ceefdbec8ba8f1e6a90"
+  },
+  "promotion_source_transport": {
+    "open_kaishek_change_required": true,
+    "query_transport_capability": "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+    "action_transport_capability": "game.contract.zhongguo-review-now-action-v1-fail-closed",
+    "query_product_capability": "game.command.query-zhongguo-promotion-source-progress-v1",
+    "action_product_capability": "game.command.activate-zhongguo-review-now-v1",
+    "source_contract_sha256": "a167bfe43cb1b0254e124abebef954a5fb8b2164afee31b16be8badc5e8fa786",
+    "abi_sha256": "10fb508a960ee8819166d34dd2b303bfede43e3fff30ae64230913fdfe34fac6",
+    "python_contract_sha256": "5cfa9fdea255b180612cace27687e9b3c89fa884f2a9fa92ac2c268c19876aea",
+    "fixed_widget_count": 5,
+    "transport_capabilities_advertised": true,
+    "query_product_capability_advertised": false,
+    "action_product_capability_advertised": false,
+    "query_native_certified": false,
+    "query_runtime_certified": false,
+    "action_native_certified": false,
+    "action_runtime_certified": false,
+    "action_ack_is_state_evidence": false,
+    "production_live_ready": false
+  },
+  "b3_localization_freezer": {
+    "open_kaishek_change_required": false,
+    "changed_files_are_tools_only": true,
+    "public_capability_changed": false,
+    "public_schema_changed": false,
+    "abi_changed": false,
+    "parser_vocabulary_changed": false,
+    "ir_changed": false,
+    "runtime_handler_changed": false,
+    "action_changed": false
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 141,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_domain_tests": 8,
+    "open_cli_smoke": "PASS",
+    "main_product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "zhongguo_product_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23949962,
+      "sha256": "b495ff1e75bc622d2fc0b9af818de1c0ff01910ae35a795a4c3bde3262ab0cd7"
+    },
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 51,
+      "all_checks": true
+    }
+  },
+  "t2_execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "parser_vocabulary_changed": false,
+    "ir_changed": false,
+    "runtime_handler_changed": false,
+    "cli_command_changed": false,
+    "product_readiness_promoted": false
+  }
+}

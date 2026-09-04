@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "a54164625b3ebb7d738d16236ca3080686fa9984"
+    "open_kaishek_commit": "270f8f52098191cff37f33cef24f441a36297b5b"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -98,6 +98,93 @@
     "checkpoint_absent_invariant": "cp26_ready_p3_absent_exposes_no_p3_result",
     "default_candidate_enabled": false,
     "production_live": false
+  },
+  "promotion_source_transport": {
+    "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoPromotionSourceTransportCapabilityProfile.java",
+    "profile_id": "ck3-1.19.0.6-zg361-promotion-source-transport-v1",
+    "query_capability_id": "game.command.query-zhongguo-promotion-source-progress-v1",
+    "query_transport_capability_id": "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+    "query_step_id": "query-zhongguo-promotion-source-progress-v1",
+    "action_capability_id": "game.command.activate-zhongguo-review-now-v1",
+    "action_transport_capability_id": "game.contract.zhongguo-review-now-action-v1-fail-closed",
+    "action_step_id": "activate-zhongguo-review-now-v1",
+    "allowlist_id": "zg361-promotion-source-fixed-widget-progress-v1",
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "root_integration_commit": "d53befaa4872662562f5db5d31757ca731e799e0",
+    "root_source_contract_sha256": "a167bfe43cb1b0254e124abebef954a5fb8b2164afee31b16be8badc5e8fa786",
+    "root_abi_sha256": "10fb508a960ee8819166d34dd2b303bfede43e3fff30ae64230913fdfe34fac6",
+    "root_python_contract_sha256": "5cfa9fdea255b180612cace27687e9b3c89fa884f2a9fa92ac2c268c19876aea",
+    "query_production_capability_advertised": false,
+    "action_production_capability_advertised": false,
+    "production_live_ready": false,
+    "action_ack_is_state_evidence": false,
+    "fixed_widgets": [
+      "zg361_promotion_source_bridge_window",
+      "zg361_promotion_source_review_now_action",
+      "zg361_promotion_source_b1_active",
+      "zg361_promotion_source_central_active",
+      "zg361_promotion_source_pp_active"
+    ],
+    "query_transport": {
+      "required_fields": [
+        "request_nonce",
+        "snapshot_revision",
+        "date_raw",
+        "paused",
+        "player_character_id",
+        "widgets.stable_identity",
+        "widgets.runtime_name",
+        "widgets.exists",
+        "widgets.effective_visible",
+        "widgets.enabled",
+        "readiness.player_binding_ready",
+        "readiness.gui_root_ready",
+        "readiness.exact_widget_set_ready",
+        "readiness.same_frame_ready",
+        "readiness.query_ready",
+        "readiness.production_live_ready",
+        "unavailable_reason",
+        "binding.query_sequence",
+        "production_capability_advertised"
+      ],
+      "invariants": [
+        "public_request_is_nonce_plus_expected_revision_only",
+        "caller_cannot_select_character_widget_variable_or_decision",
+        "fixed_five_widget_allowlist_is_exact",
+        "query_runs_twice_on_one_paused_application_main_frame",
+        "missing_or_inconsistent_data_is_typed_unavailable",
+        "product_query_capability_remains_unadvertised_until_live"
+      ],
+      "read_only": true,
+      "deterministic": true,
+      "native_certified": false,
+      "runtime_certified": false
+    },
+    "action_transport": {
+      "required_fields": [
+        "request_nonce",
+        "action_sequence",
+        "snapshot_revision",
+        "accepted",
+        "status",
+        "rejection_reason",
+        "action_ack",
+        "production_capability_advertised"
+      ],
+      "invariants": [
+        "action_is_fixed_to_review_now_product_semantics",
+        "request_is_bound_to_prior_progress_query_and_paused_frame",
+        "caller_cannot_select_character_widget_variable_or_decision",
+        "accepted_ack_is_verification_pending_not_state_evidence",
+        "independent_later_progress_query_must_prove_b1_entry",
+        "product_action_capability_remains_unadvertised_until_live"
+      ],
+      "read_only": false,
+      "deterministic": false,
+      "native_certified": false,
+      "runtime_certified": false
+    }
   },
   "boundaries": {
     "ck3_started": false,

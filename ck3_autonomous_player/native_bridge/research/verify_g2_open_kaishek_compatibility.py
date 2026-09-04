@@ -2,10 +2,11 @@
 """Audit the current root/open_kaishek compatibility pin without CK3.
 
 The verifier is deliberately source-level.  It checks the root's descriptive
-G2 binding, default-OFF war-loss metadata, and projects-metrics schema delta
-against the companion Java profiles.  When the external checkout is available,
-it also checks source files and read-only Git refs.  It never starts or attaches
-to CK3 and never changes a Paradox opcode allow-list.
+G2 binding, default-OFF war-loss metadata, projects-metrics schema delta, and
+promotion-source fail-closed transports against the companion Java profiles.
+When the external checkout is available, it also checks source files and
+read-only Git refs.  It never starts or attaches to CK3 and never changes a
+Paradox opcode allow-list.
 """
 
 from __future__ import annotations
@@ -136,6 +137,32 @@ _PROJECTS_BOOLEAN_CONSTANTS = {
     "checkpoint_state_required": "PROJECTS_METRICS_CHECKPOINT_STATE_REQUIRED",
     "default_candidate_enabled": "PROJECTS_METRICS_DEFAULT_CANDIDATE_ENABLED",
     "production_live": "PROJECTS_METRICS_PRODUCTION_LIVE",
+}
+_PROMOTION_STRING_CONSTANTS = {
+    "profile_id": "ID",
+    "query_capability_id": "QUERY_CAPABILITY_ID",
+    "query_transport_capability_id": "QUERY_TRANSPORT_CAPABILITY_ID",
+    "query_step_id": "QUERY_STEP_ID",
+    "action_capability_id": "ACTION_CAPABILITY_ID",
+    "action_transport_capability_id": "ACTION_TRANSPORT_CAPABILITY_ID",
+    "action_step_id": "ACTION_STEP_ID",
+    "allowlist_id": "ALLOWLIST_ID",
+    "game_version": "GAME_VERSION",
+    "executable_sha256": "EXECUTABLE_SHA256",
+    "root_integration_commit": "ROOT_INTEGRATION_COMMIT",
+    "root_source_contract_sha256": "ROOT_SOURCE_CONTRACT_SHA256",
+    "root_abi_sha256": "ROOT_ABI_SHA256",
+    "root_python_contract_sha256": "ROOT_PYTHON_CONTRACT_SHA256",
+}
+_PROMOTION_BOOLEAN_CONSTANTS = {
+    "query_production_capability_advertised": (
+        "QUERY_PRODUCTION_CAPABILITY_ADVERTISED"
+    ),
+    "action_production_capability_advertised": (
+        "ACTION_PRODUCTION_CAPABILITY_ADVERTISED"
+    ),
+    "production_live_ready": "PRODUCTION_LIVE_READY",
+    "action_ack_is_state_evidence": "ACTION_ACK_IS_STATE_EVIDENCE",
 }
 
 
@@ -287,6 +314,60 @@ def parse_projects_metrics_source(path: Path) -> dict[str, str | bool]:
             "checkpoint_state_field": checkpoint_field,
             "checkpoint_absent_invariant": checkpoint_invariant,
         }
+    )
+    return values
+
+
+def _parse_named_capability(
+    source: str, name: str, capability_constant: str
+) -> dict[str, object]:
+    pattern = re.compile(
+        rf"{re.escape(name)}\s*=\s*new\s+CapabilityDescriptor\s*\(\s*"
+        rf"{re.escape(capability_constant)}\s*,\s*ID\s*,\s*"
+        r"List\.of\((?P<fields>.*?)\)\s*,\s*"
+        r"List\.of\((?P<invariants>.*?)\)\s*,\s*"
+        r"(?P<read_only>true|false)\s*,\s*"
+        r"(?P<deterministic>true|false)\s*,\s*"
+        r"(?P<native_certified>true|false)\s*,\s*"
+        r"(?P<runtime_certified>true|false)\s*\)\s*;",
+        re.DOTALL,
+    )
+    match = pattern.search(source)
+    if match is None:
+        raise ValueError(f"open_kaishek capability {name} is missing")
+    groups = match.groupdict()
+    return {
+        "required_fields": _quoted_values(groups["fields"]),
+        "invariants": _quoted_values(groups["invariants"]),
+        "read_only": groups["read_only"] == "true",
+        "deterministic": groups["deterministic"] == "true",
+        "native_certified": groups["native_certified"] == "true",
+        "runtime_certified": groups["runtime_certified"] == "true",
+    }
+
+
+def parse_promotion_source_transport(path: Path) -> dict[str, object]:
+    """Extract the two advertised transports and closed product flags."""
+
+    source = path.read_text(encoding="utf-8")
+    values: dict[str, object] = _parse_java_constants(
+        source,
+        strings=_PROMOTION_STRING_CONSTANTS,
+        booleans=_PROMOTION_BOOLEAN_CONSTANTS,
+    )
+    widgets_match = re.search(
+        r"FIXED_WIDGETS\s*=\s*List\.of\((?P<widgets>.*?)\)\s*;",
+        source,
+        re.DOTALL,
+    )
+    if widgets_match is None:
+        raise ValueError("open_kaishek fixed promotion widget list is missing")
+    values["fixed_widgets"] = _quoted_values(widgets_match.group("widgets"))
+    values["query_transport"] = _parse_named_capability(
+        source, "QUERY_TRANSPORT", "QUERY_TRANSPORT_CAPABILITY_ID"
+    )
+    values["action_transport"] = _parse_named_capability(
+        source, "ACTION_TRANSPORT", "ACTION_TRANSPORT_CAPABILITY_ID"
     )
     return values
 
@@ -456,6 +537,39 @@ def audit(
         and expected_projects.get("default_candidate_enabled") is False
         and expected_projects.get("production_live") is False
     )
+    expected_promotion = fixture.get("promotion_source_transport", {})
+    checks["fixture_promotion_transport_shape"] = set(expected_promotion) == {
+        "source",
+        "fixed_widgets",
+        "query_transport",
+        "action_transport",
+        *_PROMOTION_STRING_CONSTANTS,
+        *_PROMOTION_BOOLEAN_CONSTANTS,
+    }
+    checks["fixture_promotion_product_readiness_closed"] = all(
+        expected_promotion.get(key) is False
+        for key in _PROMOTION_BOOLEAN_CONSTANTS
+    )
+    checks["fixture_promotion_query_transport_bounded"] = (
+        expected_promotion.get("query_transport", {}).get("read_only") is True
+        and expected_promotion.get("query_transport", {}).get("deterministic")
+        is True
+        and expected_promotion.get("query_transport", {}).get(
+            "native_certified"
+        ) is False
+        and expected_promotion.get("query_transport", {}).get(
+            "runtime_certified"
+        ) is False
+    )
+    checks["fixture_promotion_action_transport_bounded"] = all(
+        expected_promotion.get("action_transport", {}).get(key) is False
+        for key in (
+            "read_only",
+            "deterministic",
+            "native_certified",
+            "runtime_certified",
+        )
+    )
     checks["fixture_boundaries_closed"] = fixture.get("boundaries") == {
         "ck3_started": False,
         "process_attached": False,
@@ -483,6 +597,7 @@ def audit(
         ck3_profile_path = resolved_checkout / expected_open["ck3_profile_source"]
         war_loss_path = resolved_checkout / expected_war_loss["source"]
         projects_path = resolved_checkout / expected_projects["source"]
+        promotion_path = resolved_checkout / expected_promotion["source"]
         try:
             capability = parse_capability_source(capability_path)
             checks["capability_source_parse"] = True
@@ -550,6 +665,25 @@ def audit(
         except (OSError, ValueError) as error:
             checks["projects_metrics_source_parse"] = False
             errors.append(f"projects-metrics-source: {type(error).__name__}: {error}")
+        try:
+            promotion = parse_promotion_source_transport(promotion_path)
+            checks["promotion_transport_source_parse"] = True
+            _equal(
+                checks,
+                "promotion_transport_contract_matches",
+                promotion,
+                {
+                    key: value
+                    for key, value in expected_promotion.items()
+                    if key != "source"
+                },
+            )
+            external["promotion_source_transport"] = promotion
+        except (OSError, ValueError) as error:
+            checks["promotion_transport_source_parse"] = False
+            errors.append(
+                f"promotion-transport-source: {type(error).__name__}: {error}"
+            )
 
         head, head_error = _git_ref(resolved_checkout, "HEAD")
         origin, origin_error = _git_ref(resolved_checkout, "origin/main")

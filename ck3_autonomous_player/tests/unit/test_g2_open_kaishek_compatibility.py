@@ -23,6 +23,7 @@ audit = MODULE.audit
 parse_capability_source = MODULE.parse_capability_source
 parse_ck3_profile_source = MODULE.parse_ck3_profile_source
 parse_projects_metrics_source = MODULE.parse_projects_metrics_source
+parse_promotion_source_transport = MODULE.parse_promotion_source_transport
 parse_war_bound_loss_source = MODULE.parse_war_bound_loss_source
 
 
@@ -125,6 +126,10 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
         projects = parse_projects_metrics_source(
             checkout / projects_expected["source"]
         )
+        promotion_expected = fixture["promotion_source_transport"]
+        promotion = parse_promotion_source_transport(
+            checkout / promotion_expected["source"]
+        )
         for key in (
             "profile_id",
             "capability_id",
@@ -154,6 +159,14 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
             {
                 key: value
                 for key, value in projects_expected.items()
+                if key != "source"
+            },
+        )
+        self.assertEqual(
+            promotion,
+            {
+                key: value
+                for key, value in promotion_expected.items()
                 if key != "source"
             },
         )
