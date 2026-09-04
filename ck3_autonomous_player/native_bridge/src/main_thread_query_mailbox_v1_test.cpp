@@ -321,6 +321,12 @@ bool ExecuteQuattuorvigintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteQuinquevigintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -1116,8 +1122,8 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
-  // Production exposes twenty-two exact typed identities, never a generic
-  // callback slot. Every admitted identity executes normally; a twenty-third
+  // Production exposes twenty-five exact typed identities, never a generic
+  // callback slot. Every admitted identity executes normally; a twenty-sixth
   // callback is rejected before it can enter the queue.
   auto typed_environment =
       runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
@@ -1147,6 +1153,8 @@ bool TestMailboxStateMachine() {
   typed_environment.permitted_executor_trivigintary = &ExecuteTrivigintary;
   typed_environment.permitted_executor_quattuorvigintary =
       &ExecuteQuattuorvigintary;
+  typed_environment.permitted_executor_quinquevigintary =
+      &ExecuteQuinquevigintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1164,7 +1172,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 24> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 25> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1172,7 +1180,7 @@ bool TestMailboxStateMachine() {
       &ExecuteQuindenary, &ExecuteSexdenary, &ExecuteSeptendenary,
       &ExecuteOctodenary, &ExecuteNovemdenary, &ExecuteVigintary,
       &ExecuteUnvigintary, &ExecuteDuovigintary, &ExecuteTrivigintary,
-      &ExecuteQuattuorvigintary};
+      &ExecuteQuattuorvigintary, &ExecuteQuinquevigintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1238,7 +1246,7 @@ bool TestSourceContract(int argc, char **argv) {
     std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 64> source_tokens{
+  constexpr std::array<std::string_view, 65> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1301,6 +1309,7 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_duovigintary",
       "mailbox.permitted_executor_trivigintary",
       "mailbox.permitted_executor_quattuorvigintary",
+      "mailbox.permitted_executor_quinquevigintary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };
@@ -1366,7 +1375,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 92> bridge_tokens{
+  constexpr std::array<std::string_view, 95> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1416,6 +1425,8 @@ bool TestSourceContract(int argc, char **argv) {
       "kZhongguoPromotionCompensationPostconditionV1Step",
       "ExecuteZhongguoProjectsMetricsMailboxQueryV1",
       "kZhongguoProjectsMetricsPostconditionV1Step",
+      "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
+      "kZhongguoManagerGovernanceSnapshotV1Step",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",
       "request.expected_snapshot_revision != state_revision",
@@ -1450,6 +1461,7 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_duovigintary",
       "permitted_executor_trivigintary",
       "permitted_executor_quattuorvigintary",
+      "permitted_executor_quinquevigintary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",

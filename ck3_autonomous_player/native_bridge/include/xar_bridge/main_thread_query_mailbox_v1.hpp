@@ -200,7 +200,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   bool executor_submission_enabled = false;
   // At least one slot is non-null in production.  These exact typed callback
   // identities prevent the infrastructure from becoming a generic native-call
-  // trampoline. V1 has twenty-two fixed slots for the bounded war-entry,
+  // trampoline. V1 has twenty-five fixed slots for the bounded war-entry,
   // route-contact, actual-contact, combat-v3, ongoing-battle, full-CombatID
   // lifecycle, campaign-root, loaded-feature, pending-interaction and
   // current-event-window read-only, explicit title-map presentation, B1
@@ -208,7 +208,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // received-self incident, fixed ZhongGuo scoreboard-state and fixed
   // Workforce collective/rolling-three-cycle, AI-owned B1 case and Workforce
   // normal-exit/HC lifecycle snapshot and fail-closed scoreboard-action
-  // transport executors, plus the two Phase-2 closed business postconditions.
+  // transport executors, the two Phase-2 closed business postconditions and
+  // the B3 manager-governance lifecycle snapshot.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_tertiary = nullptr;
@@ -233,6 +234,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_duovigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_trivigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_quattuorvigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quinquevigintary = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -328,6 +330,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_duovigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_trivigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_quattuorvigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quinquevigintary = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

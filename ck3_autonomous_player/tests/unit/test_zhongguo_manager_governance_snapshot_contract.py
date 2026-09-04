@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+import importlib.util
+import inspect
 import json
 from pathlib import Path
 import sys
@@ -14,6 +16,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from xar_autoplayer.bridge.zhongguo_manager_governance_snapshot_contract import (
+    QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_STEP,
     ZHONGGUO_BOUNDED_AI_MANAGER_DEPENDENCY_V1,
     ZHONGGUO_MANAGER_GOVERNANCE_CASE_KIND_V1,
     ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_ALLOWLIST_ID,
@@ -30,6 +34,12 @@ from xar_autoplayer.bridge.zhongguo_manager_governance_snapshot_contract import 
     parse_query_zhongguo_manager_governance_snapshot_v1_step,
     query_zhongguo_manager_governance_snapshot_v1_step,
 )
+from xar_autoplayer.bridge.mcp_server import (
+    _ck3_query_zhongguo_manager_governance_snapshot_v1,
+    create_server,
+)
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.service import GameplayBridgeService
 
 
 NATIVE_REVISION = 81
@@ -403,6 +413,312 @@ class ZhongguoManagerGovernanceSnapshotContractTests(unittest.TestCase):
         extra["variable_name"] = "zg361_mg_manager_score"
         with self.assertRaises(ValidationError):
             validator.validate(extra)
+
+    def test_production_transport_is_wired_but_not_claimed_live(self) -> None:
+        native_root = PROJECT_ROOT / "native_bridge"
+        sources = {
+            "cmake": (native_root / "CMakeLists.txt").read_text(
+                encoding="utf-8"
+            ),
+            "bridge": (native_root / "src" / "bridge.cpp").read_text(
+                encoding="utf-8"
+            ),
+            "game_adapter": (
+                native_root / "src" / "game_adapter.cpp"
+            ).read_text(encoding="utf-8"),
+            "adapter": (
+                native_root / "src" / "ck3_11906_adapter.cpp"
+            ).read_text(encoding="utf-8"),
+            "driver": (
+                PROJECT_ROOT / "src/xar_autoplayer/bridge/native_driver.py"
+            ).read_text(encoding="utf-8"),
+            "service": (
+                PROJECT_ROOT / "src/xar_autoplayer/bridge/service.py"
+            ).read_text(encoding="utf-8"),
+            "mcp": (
+                PROJECT_ROOT / "src/xar_autoplayer/bridge/mcp_server.py"
+            ).read_text(encoding="utf-8"),
+        }
+        tokens = {
+            "cmake": (
+                "src/zhongguo_manager_governance_snapshot_v1.cpp",
+                "src/zhongguo_manager_governance_snapshot_v1_mailbox.cpp",
+                "src/zhongguo_manager_governance_snapshot_v1_serializer.cpp",
+            ),
+            "bridge": (
+                "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
+                "ZhongguoManagerGovernanceSnapshotResultFrame",
+                "permitted_executor_quinquevigintary",
+            ),
+            "game_adapter": (
+                "ParseZhongguoManagerGovernanceSnapshotV1Step",
+            ),
+            "adapter": (
+                "kZhongguoManagerGovernanceSnapshotV1Capability",
+            ),
+            "driver": (
+                "_execute_zhongguo_manager_governance_snapshot_v1_query",
+            ),
+            "service": (
+                "query_zhongguo_manager_governance_snapshot_v1",
+            ),
+            "mcp": (
+                "ck3_query_zhongguo_manager_governance_snapshot_v1",
+            ),
+        }
+        for source, expected in tokens.items():
+            for token in expected:
+                with self.subTest(source=source, token=token):
+                    self.assertIn(token, sources[source])
+        abi = json.loads(
+            (
+                native_root
+                / "research/zhongguo_manager_governance_snapshot_v1_abi.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            abi["status"],
+            "production_transport_integrated_static_ready_not_live",
+        )
+        self.assertIsNone(
+            abi["integration_state"]["production_live_artifact"]
+        )
+        self.assertEqual(
+            abi["integration_state"]["bounded_ai_manager_native_selector"],
+            "not_yet_bound_in_production",
+        )
+
+
+class ManagerGovernanceServiceDriver:
+    def __init__(self, *, advertise: bool = True) -> None:
+        self.advertise = advertise
+        self.last_query: ZhongguoManagerGovernanceQueryV1 | None = None
+
+    def capabilities(self) -> dict[str, object]:
+        return {
+            "format_version": 1,
+            "backend_id": "native-headless",
+            "source": "named-pipe",
+            "snapshot": True,
+            "wait_for_change": False,
+            "action_steps": [],
+            "bridge_capabilities": (
+                [QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY]
+                if self.advertise
+                else []
+            ),
+        }
+
+    def take_snapshot(self) -> dict[str, object]:
+        return {
+            "format_version": 1,
+            "snapshot_id": SNAPSHOT_ID,
+            "revision": PUBLIC_REVISION,
+            "native_revision": NATIVE_REVISION,
+            "source": "named-pipe",
+            "backend_id": "native-headless",
+            "date_raw": DATE_RAW,
+            "paused": True,
+            "map_ready": True,
+            "episode_run_id": "manager-governance-fixture",
+            "played_character": {"character_id": PLAYER, "alive": True},
+            "diagnostics": {
+                "connection_generation": CONNECTION_GENERATION,
+                "bridge_version": (
+                    ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_BRIDGE_VERSION
+                ),
+                "hello": {
+                    "bridge_version": (
+                        ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_BRIDGE_VERSION
+                    ),
+                    "game_adapter_id": (
+                        ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_GAME_ADAPTER_ID
+                    ),
+                    "game_version": (
+                        ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_GAME_VERSION
+                    ),
+                    "expected_ck3_version": (
+                        ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_GAME_VERSION
+                    ),
+                    "expected_ck3_sha256": (
+                        ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_EXECUTABLE_SHA256
+                    ),
+                },
+            },
+        }
+
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        parsed = parse_query_zhongguo_manager_governance_snapshot_v1_step(step)
+        if parsed is None or expected_revision != PUBLIC_REVISION:
+            raise AssertionError("service changed the manager binding")
+        self.last_query = parsed
+        return {
+            "step": QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_STEP,
+            "accepted": True,
+            "status": "available",
+            "query_sequence": 1,
+            "snapshot_revision": NATIVE_REVISION,
+            "zhongguo_manager_governance_snapshot": _frame(),
+            "backend_id": ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_SOURCE_BACKEND_ID,
+            "queried_snapshot_id": SNAPSHOT_ID,
+            "queried_revision": PUBLIC_REVISION,
+            "queried_native_revision": NATIVE_REVISION,
+            "queried_connection_generation": CONNECTION_GENERATION,
+        }
+
+
+class ZhongguoManagerGovernanceServiceTests(unittest.TestCase):
+    def test_service_and_mcp_helper_expose_only_fixed_selectors(self) -> None:
+        self.assertEqual(
+            set(
+                inspect.signature(
+                    GameplayBridgeService.query_zhongguo_manager_governance_snapshot_v1
+                ).parameters
+            ),
+            {
+                "self",
+                "request_nonce",
+                "expected_revision",
+                "subject_character_id",
+                "owner_character_id",
+            },
+        )
+        self.assertEqual(
+            set(
+                inspect.signature(
+                    _ck3_query_zhongguo_manager_governance_snapshot_v1
+                ).parameters
+            ),
+            {
+                "service",
+                "request_nonce",
+                "expected_revision",
+                "subject_character_id",
+                "owner_character_id",
+            },
+        )
+
+    def test_service_returns_the_typed_bounded_ai_binding(self) -> None:
+        driver = ManagerGovernanceServiceDriver()
+        result = _ck3_query_zhongguo_manager_governance_snapshot_v1(
+            GameplayBridgeService(driver),
+            NONCE,
+            PUBLIC_REVISION,
+            SUBJECT,
+            OWNER,
+        )
+        self.assertTrue(result["readiness"]["ready"])
+        self.assertEqual(
+            result["binding"]["subject_binding_kind"],
+            "bounded_ai_direct_manager",
+        )
+        self.assertEqual(driver.last_query, _query())
+
+    def test_native_driver_sends_only_fixed_request_fields(self) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        snapshot = ManagerGovernanceServiceDriver().take_snapshot()
+        driver.take_snapshot = lambda: copy.deepcopy(snapshot)
+        calls: list[dict[str, object]] = []
+
+        def execute(
+            step: str,
+            *,
+            expected_revision: int,
+            required_capability: str,
+            request_fields: dict[str, object],
+        ) -> dict[str, object]:
+            calls.append(
+                {
+                    "step": step,
+                    "expected_revision": expected_revision,
+                    "required_capability": required_capability,
+                    "request_fields": dict(request_fields),
+                }
+            )
+            return {
+                "step": QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_STEP,
+                "accepted": True,
+                "status": "available",
+                "query_sequence": 1,
+                "snapshot_revision": NATIVE_REVISION,
+                "zhongguo_manager_governance_snapshot": _frame(),
+                "backend_id": (
+                    ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_SOURCE_BACKEND_ID
+                ),
+            }
+
+        driver._execute_primitive_step = execute
+        result = driver._execute_zhongguo_manager_governance_snapshot_v1_query(
+            _query(), expected_revision=PUBLIC_REVISION
+        )
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(
+            calls,
+            [
+                {
+                    "step": (
+                        QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_STEP
+                    ),
+                    "expected_revision": PUBLIC_REVISION,
+                    "required_capability": (
+                        QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY
+                    ),
+                    "request_fields": {
+                        "subject_character_id": SUBJECT,
+                        "owner_character_id": OWNER,
+                        "request_nonce": NONCE,
+                    },
+                }
+            ],
+        )
+
+
+@unittest.skipIf(
+    importlib.util.find_spec("mcp") is None,
+    "optional MCP SDK not installed",
+)
+class ZhongguoManagerGovernanceMcpTests(unittest.IsolatedAsyncioTestCase):
+    async def test_mcp_schema_is_fixed_and_rejects_variable_names(self) -> None:
+        from mcp import Client
+
+        async with Client(create_server(ManagerGovernanceServiceDriver())) as client:
+            listed = await client.list_tools()
+            tools = {tool.name: tool for tool in listed.tools}
+            tool = tools[
+                "ck3_query_zhongguo_manager_governance_snapshot_v1"
+            ]
+            self.assertEqual(
+                set(tool.input_schema["properties"]),
+                {
+                    "request_nonce",
+                    "expected_revision",
+                    "subject_character_id",
+                    "owner_character_id",
+                },
+            )
+            accepted = await client.call_tool(
+                "ck3_query_zhongguo_manager_governance_snapshot_v1",
+                {
+                    "request_nonce": NONCE,
+                    "expected_revision": PUBLIC_REVISION,
+                    "subject_character_id": SUBJECT,
+                    "owner_character_id": OWNER,
+                },
+            )
+            rejected = await client.call_tool(
+                "ck3_query_zhongguo_manager_governance_snapshot_v1",
+                {
+                    "request_nonce": NONCE,
+                    "expected_revision": PUBLIC_REVISION,
+                    "subject_character_id": SUBJECT,
+                    "owner_character_id": OWNER,
+                    "variable_name": "zg361_mg_manager_score",
+                },
+            )
+        self.assertFalse(accepted.is_error)
+        self.assertTrue(rejected.is_error)
 
 
 if __name__ == "__main__":

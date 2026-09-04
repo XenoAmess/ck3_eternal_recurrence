@@ -1,13 +1,13 @@
 {
   "contract": "zhongguo_manager_governance_snapshot_v1",
-  "status": "static_and_fixture_ready_not_integrated_not_live",
+  "status": "production_transport_integrated_static_ready_not_live",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.query-zhongguo-manager-governance-snapshot-v1",
   "step": "query-zhongguo-manager-governance-snapshot-v1",
   "case_kind": "zhongguo.manager-governance",
   "mailbox_executor": "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
-  "mailbox_fixed_slot": "requires_new_fixed_slot_after_permitted_executor_quindenary",
+  "mailbox_fixed_slot": "permitted_executor_quinquevigintary",
   "request": {
     "public_inputs": [
       "request_nonce",
@@ -74,11 +74,25 @@
   "integration_state": {
     "provider_specific_header_source_serializer_mailbox_fixture": "present",
     "python_contract_schema_tests": "present",
-    "shared_mailbox_slot": "not_yet_added",
-    "bridge_dispatch_and_capability": "not_yet_added",
-    "game_adapter_step_binding": "not_yet_added",
-    "native_driver_service_mcp": "not_yet_added",
+    "shared_mailbox_slot": "integrated_as_fixed_slot_25",
+    "bridge_dispatch_and_capability": "integrated_static_not_live",
+    "game_adapter_step_binding": "integrated_static_not_live",
+    "native_driver_service_mcp": "integrated_static_not_live",
+    "b3_joined_action_postcondition_cell": "present_static_fixture_not_live",
+    "bounded_ai_manager_native_selector": "not_yet_bound_in_production",
     "production_live_artifact": null
+  },
+  "effect_file_boundary_evidence": {
+    "path": "mod_zhongguo_style/common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
+    "generated": true,
+    "bytes": 386750,
+    "top_level_effects": 43,
+    "policy_target_effects_per_file": "1-10",
+    "policy_hard_maximum_effects_per_file": 20,
+    "status": "inherited_oversize_candidate_not_changed_in_this_transport_package",
+    "reason_not_changed": "B2 generator and phase2 seed production closure were explicitly outside this work package",
+    "required_follow_up": "split the generator output by purpose before B3 product promotion, regenerate through the generator, update the reviewed production closure, then collect CK3 loader timing and RED/GREEN evidence",
+    "live_loading_evidence": null
   },
   "unsupported_claims": [
     "arbitrary_character_variable_read",

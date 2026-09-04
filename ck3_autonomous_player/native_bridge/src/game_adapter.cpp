@@ -17,6 +17,7 @@
 #include "xar_bridge/zhongguo_case_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_manager_governance_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_projects_metrics_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_promotion_compensation_postcondition_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
@@ -326,6 +327,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kZhongguoB2PipSnapshotV1Capability;
   } else if (ck3_11906::ParseZhongguoIncidentSnapshotV1Step(step)) {
     capability = ck3_11906::kZhongguoIncidentSnapshotV1Capability;
+  } else if (
+      ck3_11906::ParseZhongguoManagerGovernanceSnapshotV1Step(step)) {
+    capability =
+        ck3_11906::kZhongguoManagerGovernanceSnapshotV1Capability;
   } else if (
       ck3_11906::ParseZhongguoPromotionCompensationPostconditionV1Step(step)) {
     capability = ck3_11906::kZhongguoPromotionCompensationPostconditionV1Capability;

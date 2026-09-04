@@ -11,7 +11,7 @@
     "owner_character_id"
   ],
   "mailbox_executor": "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
-  "mailbox_fixed_slot": "requires_new_fixed_slot_after_permitted_executor_quindenary",
+  "mailbox_fixed_slot": "permitted_executor_quinquevigintary",
   "result_payload_key": "zhongguo_manager_governance_snapshot",
   "required_source_properties": [
     "fixed_case_kind",
@@ -36,5 +36,5 @@
     "unknown_field"
   ],
   "typed_ai_dependency": "zg361-bounded-ai-direct-manager-selection-v1",
-  "readiness": "static_and_fixture_ready_not_integrated_not_live"
+  "readiness": "production_transport_integrated_static_and_fixture_ready_not_live"
 }

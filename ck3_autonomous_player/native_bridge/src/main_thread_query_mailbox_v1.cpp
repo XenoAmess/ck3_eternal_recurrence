@@ -457,7 +457,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_unvigintary == nullptr &&
       environment.permitted_executor_duovigintary == nullptr &&
       environment.permitted_executor_trivigintary == nullptr &&
-      environment.permitted_executor_quattuorvigintary == nullptr) {
+      environment.permitted_executor_quattuorvigintary == nullptr &&
+      environment.permitted_executor_quinquevigintary == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -622,6 +623,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_trivigintary;
   mailbox.permitted_executor_quattuorvigintary =
       environment.permitted_executor_quattuorvigintary;
+  mailbox.permitted_executor_quinquevigintary =
+      environment.permitted_executor_quinquevigintary;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -777,7 +780,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_unvigintary != nullptr ||
        mailbox.permitted_executor_duovigintary != nullptr ||
        mailbox.permitted_executor_trivigintary != nullptr ||
-       mailbox.permitted_executor_quattuorvigintary != nullptr) &&
+       mailbox.permitted_executor_quattuorvigintary != nullptr ||
+       mailbox.permitted_executor_quinquevigintary != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -801,7 +805,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_unvigintary &&
       executor != mailbox.permitted_executor_duovigintary &&
       executor != mailbox.permitted_executor_trivigintary &&
-      executor != mailbox.permitted_executor_quattuorvigintary) {
+      executor != mailbox.permitted_executor_quattuorvigintary &&
+      executor != mailbox.permitted_executor_quinquevigintary) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

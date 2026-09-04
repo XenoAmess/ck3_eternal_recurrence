@@ -330,6 +330,22 @@ def _ck3_query_zhongguo_incident_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_manager_governance_snapshot_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+    subject_character_id: int,
+    owner_character_id: int,
+) -> dict[str, object]:
+    """Observe one manager's frozen team/distribution/score lifecycle."""
+    return service.query_zhongguo_manager_governance_snapshot_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+        subject_character_id=subject_character_id,
+        owner_character_id=owner_character_id,
+    )
+
+
 def _ck3_query_zhongguo_scoreboard_state_v1(
     service: GameplayBridgeService,
     request_nonce: str,
@@ -928,6 +944,22 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_manager_governance_snapshot_v1(
+        request_nonce: str,
+        expected_revision: int,
+        subject_character_id: int,
+        owner_character_id: int,
+    ) -> dict[str, object]:
+        """Read the fixed-allowlist manager-governance lifecycle."""
+        return _ck3_query_zhongguo_manager_governance_snapshot_v1(
+            service,
+            request_nonce,
+            expected_revision,
+            subject_character_id,
+            owner_character_id,
+        )
+
+    @server.tool()
     def ck3_query_zhongguo_scoreboard_state_v1(
         request_nonce: str,
         expected_revision: int,
@@ -1214,6 +1246,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_incident_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_manager_governance_snapshot_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_scoreboard_state_v1"
