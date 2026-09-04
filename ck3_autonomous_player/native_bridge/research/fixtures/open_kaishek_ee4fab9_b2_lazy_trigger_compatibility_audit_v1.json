@@ -1,0 +1,86 @@
+{
+  "schema": "xar.ck3.open_kaishek_b2_lazy_trigger_compatibility_audit.v1",
+  "status": "GREEN_STATIC_NO_CODE_CHANGE",
+  "audited_at": "2026-09-04T19:30:00+08:00",
+  "root": {
+    "baseline_commit": "1f0518fc452cfc40522ed72d7d9666bc95ce4853",
+    "canonical_commit": "ee4fab944737685b21d7cc1f18ff572cf0238d90"
+  },
+  "open_kaishek": {
+    "code_commit": "6b9e9c239430c5f364465f5a027d90de14464129",
+    "audit_commit": "37cab82ec54a70fde79351af7240ed3d49c96adb",
+    "origin_main": "37cab82ec54a70fde79351af7240ed3d49c96adb",
+    "default_checkout_head": "37cab82ec54a70fde79351af7240ed3d49c96adb",
+    "clean": true,
+    "code_changed": false,
+    "documentation_only": true,
+    "parser_source": "kaishek-syntax/src/main/java/com/xenoamess/kaishek/syntax/Parser.java",
+    "parser_source_sha256": "0b5f2bc385a3c1009994254c76dc958f8f3e692d16cdffaee45e994c15287084"
+  },
+  "companion_delta": {
+    "product_corpus_paths_changed": 20,
+    "all_product_paths_are_scripted_effects": true,
+    "generator_changed": true,
+    "generator_regression_tests_changed": true,
+    "baseline_trigger_if_assignment_lines": 4326,
+    "current_trigger_if_assignment_lines": 4391,
+    "trigger_if_assignment_line_delta": 65,
+    "baseline_trigger_else_assignment_lines": 4350,
+    "current_trigger_else_assignment_lines": 4377,
+    "trigger_else_assignment_line_delta": 27,
+    "minimum_top_level_effects_per_changed_file": 3,
+    "maximum_top_level_effects_per_changed_file": 9,
+    "changed_file_exceeds_ten_effects": false,
+    "changed_file_exceeds_twenty_effects": false,
+    "lossless_entry_block_ast_already_supported": true,
+    "trigger_if_conditional_key_role_already_supported": true,
+    "trigger_else_lossless_generic_key_already_supported": true,
+    "new_parser_construct": false,
+    "parser_change_required": false,
+    "validator_change_required": false,
+    "ir_change_required": false,
+    "runtime_change_required": false,
+    "capability_change_required": false,
+    "public_api_change_required": false
+  },
+  "ck3_semantic_evidence_boundary": {
+    "pre_fix_live_error_signatures": 93,
+    "post_fix_live_retest_at_exact_commit": false,
+    "open_kaishek_certifies_lazy_evaluation_semantics": false,
+    "static_parse_green_is_ck3_semantic_proof": false
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_cli_smoke": "PASS",
+    "current_zhongguo_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23955762,
+      "sha256": "8c4d079c0f564442fd80e4abf3565fa998ed2da5c2106f88beeda7591aabe753"
+    },
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 63,
+      "all_checks": true
+    },
+    "root_focused_tests": 24
+  },
+  "execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "parser_vocabulary_changed": false,
+    "validator_profile_changed": false,
+    "ir_changed": false,
+    "runtime_changed": false,
+    "public_capability_changed": false,
+    "readiness_promoted": false
+  }
+}
