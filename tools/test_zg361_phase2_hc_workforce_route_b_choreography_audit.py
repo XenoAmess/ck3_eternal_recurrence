@@ -82,7 +82,7 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
         self.assertEqual(seed["source"]["bytes"], 57_377_787)
         self.assertEqual(
             seed["source"]["sha256"],
-            "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c",
+            "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9",
         )
         self.assertEqual(seed["saved_state"]["date_raw"], 53_147_016)
         self.assertEqual(seed["saved_state"]["played_character_id"], 29_037)

@@ -8,7 +8,7 @@
   "shared_runner_modified": false,
   "seed": {
     "contract": "tools/zg361_phase2_seed_contract.json",
-    "save_sha256": "233E70536D736C32EFB9BBD20EF4BAB9E0BE8F96EE13524707B9EE31E319DC9C",
+    "save_sha256": "8E6CEB97E97CD6B9185EBBCCE38B42FC087E0B800CD5E321037C9F29A79E45B9",
     "save_bytes": 57377787,
     "played_character_id": 29037,
     "candidate_owner_character_id": 32904,

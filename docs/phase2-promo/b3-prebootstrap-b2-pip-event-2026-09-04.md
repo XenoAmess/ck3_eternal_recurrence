@@ -1,7 +1,7 @@
 # B3 fresh-seed 前置 `zg361b2.40` 取证（2026-09-04）
 
-状态：**B2 PIP 一次性 drain 已实机 GREEN；其后的 exact 原版 no-secrets drain 为
-static-ready，尚待下一轮实机互证。**
+状态：**B2 PIP 与原版 no-secrets 两个一次性 drain 均已实机 GREEN；630-file fresh seed 已从
+原始 bootstrap 基线重采并晋升 canonical。**
 
 ## 本轮真实边界
 
@@ -103,3 +103,40 @@ target `27051`、存在且类型为 boolean 的 `no_secrets_here`、两个 autho
 最小修复在相同总期限内记录 `timeline_revision_changed_before_submission`，重新取得 snapshot/revision 后再提交原
 timeline step；不重放事件选择，也不放宽其他异常。新增确定性 resume-race 测试证明尝试 revision `4 → 5` 后抵达 seed，
 normal/`-O` 全套均 GREEN。该修复仍是 static-ready，须下一轮 clean run 实机互证。
+
+## 第四轮：两个 drain 均 GREEN，但 completed seed 不能二次 bootstrap
+
+提交 `218026a65d61db0a4c0d5248a2a68d3a4f42ce4e` 从 `233e...dc9c` seed 重跑时：
+
+- PIP accept drain GREEN，SHA-256 `5b0866fad644d68915a15ed984bfd48a6c3f1ec53bef09ad0cc83d3abc3a3e49`；
+- `.0399` option-2 drain GREEN，SHA-256
+  `d6917616168bf30ddc865207b46d9a91c69cacd808fffacbe2dce8ad2ed1e697`；
+- revision-race 没有再次终止；loader 51.876 秒 / GREEN；
+- 两个窗口关闭后时间线继续到 `date_raw=53150544`，300.098 秒内没有重新出现
+  `zga_phase2_seed.1`；
+- report / event wait SHA-256 为 `ca9bc08c...e23f4` / `171dc80a...e1e9`，cleanup GREEN。
+
+这不是新的产品 RED：`233e...dc9c` 本来就是一次 seed fixture 已完成后的输出，不能再次触发同一个 bootstrap。
+继续延长 timeout 或登记更多事件都不能修复这条错误输入路线。正确做法是从原始 `bfc73f...` bootstrap seed 直接在
+新产品上重采。
+
+## 第五轮：从原始基线重采 630-file seed GREEN
+
+同一 `218026a` clean source 改用冻结的原始 bfc seed 合同后，no-launch 预检与 CK3 串行 run 均 GREEN：
+
+- product：630 files / 28,906,930 B，tree
+  `9e75d8e55bbbf5170da3b40c8411dafc7387cf2a8b0f51c2f06c71b0856ee723`；
+- loader：46.583 秒，`loader_stage_ready / GREEN`；
+- exact `zga_phase2_seed.1`：`date_raw=53147016`，revision 12；
+- capture / checkpoint / provider baseline capture / cleanup / driver close / source invariant 全 GREEN；
+- report：`Z:\p2y\a2\runner-report.json`，SHA-256
+  `ee121aa2968159706006c3aa6694c7d3a1de811abe53c66b7ba7075f022f451a`；
+- candidate contract：`Z:\p2y\a2\candidate\zg361_phase2_seed_contract.candidate.json`，SHA-256
+  `c5d0b27e9d32eb28b134d316aa5b6a8d6872cd048aeef65b2d0ada0acbdce4d9`；
+- canonical save：`Z:\p2y\r2\native-state\profile\save games\xar_checkpoint.ck3`，
+  57,377,787 B，SHA-256
+  `8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9`。
+
+`tools/zg361_phase2_seed_contract.json` 及 promotion / incident / projects-metrics 三份 choreography 合同已更新到
+新 seed；HC-workforce 同步测试也更新。五份合同测试合计 27 项 GREEN，effect 边界 4 项 GREEN。新 seed 只证明
+可复用 paused 基线和 provider baseline capture，不证明 B3 promotion action/postcondition 或其余业务域已经完成。

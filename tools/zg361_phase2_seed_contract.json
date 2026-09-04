@@ -5,19 +5,19 @@
   "ready": true,
   "blocker": "",
   "source": {
-    "profile": "Z:\\p2s\\r\\native-state\\profile",
+    "profile": "Z:\\p2y\\r2\\native-state\\profile",
     "relative_save": "save games/xar_checkpoint.ck3",
-    "absolute_save": "Z:\\p2s\\r\\native-state\\profile\\save games\\xar_checkpoint.ck3",
+    "absolute_save": "Z:\\p2y\\r2\\native-state\\profile\\save games\\xar_checkpoint.ck3",
     "bytes": 57377787,
-    "sha256": "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c",
-    "last_write_time_utc": "2026-09-04T13:18:27.607529Z",
-    "last_write_time_ns": 1788527907607528600
+    "sha256": "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9",
+    "last_write_time_utc": "2026-09-04T14:42:39.677129Z",
+    "last_write_time_ns": 1788532959677128500
   },
   "provenance": {
-    "source_run": "Z:\\p2s\\a\\candidate",
-    "source_report_sha256": "a883e585901e731b0f99b331a256dafabd9bd9e0b7004f0da3a6757a4d5d0936",
-    "source_evidence_index_sha256": "25ac26603acbd77ca25ff40a4acc747ab5a02d4e8104ec59d6b878c275c661b7",
-    "source_git_commit": "ef0ece132d80bb5afc1e970a525a96f1b2921319",
+    "source_run": "Z:\\p2y\\a2\\candidate",
+    "source_report_sha256": "26adb7fd5a24278699bbf0af7580d77141deb32875b05280bf3887393641986a",
+    "source_evidence_index_sha256": "9bba1915938c2477da8d1fad4ac63e8a45cfd26d36f657613211719f42b3a905",
+    "source_git_commit": "218026a65d61db0a4c0d5248a2a68d3a4f42ce4e",
     "real_character_proof": "acceptance-only zga_phase2_seed.1 root binds historical han_6875 to native CharacterID 29037; five selector IDs came only from typed saved character scopes",
     "limitations": [
       "The bootstrap fixture is acceptance-only and must never be loaded by promo or release runtimes.",
@@ -32,7 +32,7 @@
       "mod/zg361_acceptance.mod",
       "mod/zga_acceptance_fixture.mod"
     ],
-    "source_product_tree_sha256": "b0cc410c31360e9a5884bfdffd5c0a384f936c1a8a6030f30935b88f14768d74",
+    "source_product_tree_sha256": "9e75d8e55bbbf5170da3b40c8411dafc7387cf2a8b0f51c2f06c71b0856ee723",
     "source_fixture_tree_sha256": "64b8c4b06a4be6f8832cf11bd4b59f5ef92db04d10fc6ae18fe53f42a3563d35"
   },
   "saved_state": {
