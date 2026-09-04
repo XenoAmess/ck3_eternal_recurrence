@@ -283,3 +283,34 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/nativ
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-20260904\live-leaf-context-dual-query-r1`，
 仍只做两次同帧只读 terms query。preflight GREEN 证明的是“新的实机候选及前置成立”，不是 evaluator 已 live
 成功；在新的 durable post-call 证据出现前，public wire/readiness、expiry、决策、自动投降与 `GEN-034` 均不提升。
+
+## 2026-09-04：集成态 V2 重冻
+
+[static-ready / no launch] 上述首版 frozen candidate 合入集成线后，canonical preflight 正确地因
+`CMakeLists.txt` source hash 漂移而 RED；集成线已经加入 B3 manager 的生产源和测试目标，不能以旧 source
+archive 冒充当前构建。本次没有放宽 preflight，而是从最新集成 pin
+`249e6fb1be4e434a3c8fd30f41d9ec4afd929427` 重新构建并冻结。与首版 candidate 比较，五个 G2 实现/头文件
+逐字不变，唯一相关源码差异仍是 `CMakeLists.txt` 中 26 行 B3 manager 并集，因此 leaf-context seam 与
+private-only 边界没有改写。
+
+新 private DLL / injector / source ZIP 的 SHA-256 分别为
+`69CA9175577C42C0644630D0D4B8838A4E0DBEA14EE37819996483031513765F`、
+`55A9612C6F5D254B6801604D9E2D1004C51F98B92A939BA039639B726749B21D`、
+`34BC988B43503A6F766A17958CDA61AE0F34729E7CCBD958A8EC133B9EAF549E`；default-OFF DLL 为
+`824646F19152F9CFCC14FFF550EEE74EF7E93369D80451673BE5837B74AC69D3`。private/default Release
+构建成功，Debug 断言版两个 G2 native fixture 通过；相关 Python 测试 normal/`-O` 各 53 项通过。
+
+新的 no-launch preflight 对全部输入与 source hash、候选/default build option、driver identity、exact evaluator
+bytes、exact leaf-context chain、open_kaishek pin、空独占槽和全新 attempt 均返回 true，状态为
+`ready-to-run`。报告位于
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\preflight-leaf-context-v2-r1.json`，
+SHA-256 为 `1C2FC5AB1D41885051AEE34311C62F445A7C7B57CDBBF85315E33E23C96A0DEE`。合入 canonical root
+后仍须用新的报告名再做一次 no-launch 路径绑定：
+
+```powershell
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_leaf_context_v2_live_manifest.json --report Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\preflight-leaf-context-v2-canonical-r1.json
+```
+
+只有该报告为 GREEN 时才可执行其 `unique_powershell_command`；对应 fresh attempt 是
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\live-leaf-context-dual-query-r1`。
+本次没有启动/附加 CK3，没有发送游戏命令；public/readiness 与 `GEN-034=unresolved` 继续不变。

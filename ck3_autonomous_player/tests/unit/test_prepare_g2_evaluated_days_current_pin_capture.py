@@ -194,6 +194,10 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
         PREFLIGHT.validate_manifest_contract(manifest)
         self.assertEqual(manifest["candidate_kind"], "leaf_context_v2")
         self.assertEqual(
+            manifest["candidate_source_commit"],
+            "249e6fb1be4e434a3c8fd30f41d9ec4afd929427",
+        )
+        self.assertEqual(
             manifest["open_kaishek"]["commit"],
             "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
         )
