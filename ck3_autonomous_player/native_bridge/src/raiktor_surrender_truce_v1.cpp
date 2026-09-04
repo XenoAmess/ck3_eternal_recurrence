@@ -677,7 +677,8 @@ void CaptureTargetedIndex7ForG2(
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
     const RaiktorSurrenderTruceAccessV1 &access,
     const RaiktorSurrenderTruceRequestV1 &request, void *root_children,
-    std::int32_t root_count) noexcept {
+    std::int32_t root_count,
+    void *expected_truce_effect = nullptr) noexcept {
   constexpr std::size_t kRootIndex = 7;
   constexpr std::size_t kHiddenIndex = 1;
   auto &capture = g_private_shape_capture;
@@ -849,6 +850,10 @@ void CaptureTargetedIndex7ForG2(
   }
   if (capture.truce_vtable != environment.truce_effect_vtable) {
     stop("truce_vtable_mismatch");
+    return;
+  }
+  if (expected_truce_effect != nullptr && truce != expected_truce_effect) {
+    stop("preview_entry_target_mismatch");
     return;
   }
   const void *duration = nullptr;
@@ -1346,6 +1351,90 @@ RaiktorSurrenderTruceFailureV1 ResolveUniqueTruceNode(
 const RaiktorTrucePrivateShapeCaptureV1 &
 LastRaiktorTrucePrivateShapeCaptureV1() noexcept {
   return g_private_shape_capture;
+}
+
+void ResetRaiktorTrucePrivateShapeCaptureV1() noexcept {
+  g_private_shape_capture = {};
+}
+
+RaiktorSurrenderTruceObservationV1
+ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    const RaiktorSurrenderTruceRequestV1 &request,
+    void *expected_truce_effect) noexcept {
+  RaiktorSurrenderTruceObservationV1 result;
+  const auto fail = [&result](RaiktorSurrenderTruceFailureV1 failure) {
+    result.status = RaiktorSurrenderTruceStatusV1::unavailable;
+    result.failure = failure;
+    return result;
+  };
+  if (!EnvironmentIsExact(environment)) {
+    return fail(RaiktorSurrenderTruceFailureV1::unsupported_build);
+  }
+  if (access.read_frame == nullptr || request.effect_context == nullptr ||
+      request.evaluation_context == nullptr ||
+      expected_truce_effect == nullptr) {
+    return fail(RaiktorSurrenderTruceFailureV1::invalid_request);
+  }
+
+  RaiktorSurrenderTruceFrameV1 first;
+  if (!access.read_frame(access.context, &first)) {
+    return fail(RaiktorSurrenderTruceFailureV1::first_frame_unavailable);
+  }
+  result.frame = first;
+  if (!first.paused) {
+    return fail(RaiktorSurrenderTruceFailureV1::frame_not_paused);
+  }
+  if (!first.exact_raiktor_claim_cb) {
+    return fail(RaiktorSurrenderTruceFailureV1::wrong_casus_belli);
+  }
+  if (!FrameIdentityIsValid(first)) {
+    return fail(RaiktorSurrenderTruceFailureV1::invalid_frame_identity);
+  }
+
+  std::uintptr_t root_vtable = 0;
+  void *root_children = nullptr;
+  std::int32_t root_count = -1;
+  if (!ReadValue(access, first.attacker_defeat_root, 0, root_vtable) ||
+      root_vtable != environment.jomini_effect_vtable ||
+      !ReadValue(access, first.attacker_defeat_root, kEffectChildrenOffset,
+                 root_children) ||
+      !ReadValue(access, first.attacker_defeat_root, kEffectCountOffset,
+                 root_count)) {
+    return fail(RaiktorSurrenderTruceFailureV1::root_shape_drift);
+  }
+  XAR_G2_SHAPE_RESET();
+  CaptureTargetedIndex7ForG2(environment, access, request, root_children,
+                            root_count, expected_truce_effect);
+  const auto &capture = LastRaiktorTrucePrivateShapeCaptureV1();
+  if (capture.targeted_index7_status != "complete" ||
+      capture.evaluator_capture_status != "complete" ||
+      capture.evaluator_call_count != 2 || !capture.evaluator_nonnegative ||
+      !capture.evaluator_stable) {
+    return fail(RaiktorSurrenderTruceFailureV1::root_shape_drift);
+  }
+
+  RaiktorSurrenderTruceFrameV1 second;
+  if (!access.read_frame(access.context, &second)) {
+    return fail(RaiktorSurrenderTruceFailureV1::second_frame_unavailable);
+  }
+  if (!second.paused) {
+    return fail(RaiktorSurrenderTruceFailureV1::frame_not_paused);
+  }
+  if (second != first) {
+    return fail(RaiktorSurrenderTruceFailureV1::frame_changed);
+  }
+
+  result.status = RaiktorSurrenderTruceStatusV1::available;
+  result.failure = RaiktorSurrenderTruceFailureV1::none;
+  result.owner_character_id = first.primary_attacker_character_id;
+  result.toward_character_id = first.primary_defender_character_id;
+  result.evaluated_days = capture.evaluator_first_days;
+  result.pointer_shape_verified = true;
+  result.evaluator_double_read_stable = true;
+  result.same_frame_stable = true;
+  return result;
 }
 #endif
 

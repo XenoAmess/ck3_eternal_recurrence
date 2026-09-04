@@ -275,6 +275,45 @@ int main() {
     fixture.root_children[7] = fixture.private_scripted.data();
     Store(fixture.root, 0x48, std::int32_t{13});
     Store(fixture.root, 0x4C, std::int32_t{12});
+    const auto value = ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+        fixture.Environment(), fixture.Access(), fixture.Request(),
+        fixture.truce.data());
+    if (value.status != RaiktorSurrenderTruceStatusV1::available ||
+        value.failure != RaiktorSurrenderTruceFailureV1::none ||
+        value.evaluated_days != 1825 || !value.pointer_shape_verified ||
+        !value.evaluator_double_read_stable || !value.same_frame_stable ||
+        fixture.evaluator_calls != 2 || fixture.frame_reads != 2 ||
+        fixture.evaluator_boundary_count != 3) {
+      std::cerr << "private leaf-context observer failed\n";
+      return 1;
+    }
+  }
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    fixture.root_children[7] = fixture.private_scripted.data();
+    Store(fixture.root, 0x48, std::int32_t{13});
+    Store(fixture.root, 0x4C, std::int32_t{12});
+    const auto value = ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+        fixture.Environment(), fixture.Access(), fixture.Request(),
+        fixture.unknown.data());
+    if (!ExpectFailure(value,
+                       RaiktorSurrenderTruceFailureV1::root_shape_drift,
+                       "private leaf target mismatch") ||
+        fixture.evaluator_calls != 0 || fixture.frame_reads != 1 ||
+        fixture.evaluator_boundary_count != 0 ||
+        LastRaiktorTrucePrivateShapeCaptureV1().targeted_index7_status !=
+            "preview_entry_target_mismatch") {
+      std::cerr << "private leaf target gate failed\n";
+      return 1;
+    }
+  }
+  {
+    Fixture fixture;
+    g_fixture = &fixture;
+    fixture.root_children[7] = fixture.private_scripted.data();
+    Store(fixture.root, 0x48, std::int32_t{13});
+    Store(fixture.root, 0x4C, std::int32_t{12});
     const auto value = ObserveRaiktorSurrenderTruceV1(
         fixture.Environment(), fixture.Access(), fixture.Request());
     const auto &capture = LastRaiktorTrucePrivateShapeCaptureV1();

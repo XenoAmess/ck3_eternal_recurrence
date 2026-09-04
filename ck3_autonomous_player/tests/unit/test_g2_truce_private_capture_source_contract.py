@@ -47,7 +47,7 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         runtime_call = resolver.index("CaptureTargetedIndex7ForG2(", resolve)
         stale_gate = resolver.index('XAR_G2_SHAPE_STAGE("root_capacity_mismatch")', runtime_call)
         self.assertLess(runtime_call, stale_gate)
-        self.assertEqual(resolver.count("CaptureTargetedIndex7ForG2("), 2)
+        self.assertEqual(resolver.count("CaptureTargetedIndex7ForG2("), 3)
         self.assertEqual(resolver.count("CaptureLoadedScriptedCandidatesForG2("), 1)
         self.assertEqual(resolver.count("CapturePrivateNestedContainerForG2("), 5)
         self.assertIn("constexpr std::size_t kRootIndex = 7", resolver)
@@ -171,6 +171,30 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
             "Execute",
         ):
             self.assertNotIn(forbidden, helper)
+
+    def test_v2_uses_only_the_transient_native_leaf_preview_context(self) -> None:
+        cmake = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8")
+        writer = WRITER.read_text(encoding="utf-8")
+        observer = (
+            NATIVE / "src" / "g2_truce_preview_entry_observer_v1.cpp"
+        ).read_text(encoding="utf-8")
+        option = re.search(
+            r"option\(\s*XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2\s+"
+            r'"[^"]+"\s+(ON|OFF)\s*\)',
+            cmake,
+        )
+        self.assertIsNotNone(option)
+        self.assertEqual(option.group(1), "OFF")
+        self.assertIn("XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2=1", cmake)
+        self.assertIn("bindings.traverse_loaded_effect(loaded_effect", writer)
+        self.assertIn("CaptureG2TruceLeafPreviewContextV2", writer)
+        self.assertIn("LoadAt<void *>(context, 0x28)", writer)
+        self.assertIn(
+            "ObserveRaiktorSurrenderTrucePrivateLeafContextV1", writer
+        )
+        self.assertIn("ArmG2TrucePreviewEntryCaptureV1", writer)
+        self.assertIn("DisarmG2TrucePreviewEntryCaptureV1", writer)
+        self.assertIn("armed_capture_callback", observer)
 
 
 if __name__ == "__main__":

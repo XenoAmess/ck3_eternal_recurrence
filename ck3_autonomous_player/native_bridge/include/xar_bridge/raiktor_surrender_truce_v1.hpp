@@ -303,6 +303,17 @@ struct RaiktorTrucePrivateShapeCaptureV1 {
 
 const RaiktorTrucePrivateShapeCaptureV1 &
 LastRaiktorTrucePrivateShapeCaptureV1() noexcept;
+void ResetRaiktorTrucePrivateShapeCaptureV1() noexcept;
+
+// Private candidate seam used only while an exact CAddTruce leaf-preview
+// context is alive.  expected_truce_effect binds the callback to the authored
+// index-7 target before either evaluator call is made.
+RaiktorSurrenderTruceObservationV1
+ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    const RaiktorSurrenderTruceRequestV1 &request,
+    void *expected_truce_effect) noexcept;
 #endif
 
 std::string_view RaiktorSurrenderTruceFailureReasonV1(

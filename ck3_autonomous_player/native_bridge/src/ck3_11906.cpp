@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -4275,6 +4276,84 @@ bool ReadRaiktorTruceProductionFrame(
   return true;
 }
 
+#if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
+struct G2TruceLeafContextCaptureV2 {
+  const RaiktorSurrenderTruceNativeEnvironmentV1 *environment = nullptr;
+  const RaiktorSurrenderTruceAccessV1 *access = nullptr;
+  RaiktorSurrenderTruceObservationV1 *output = nullptr;
+  bool completed = false;
+};
+
+void CaptureG2TruceLeafPreviewContextV2(
+    void *opaque, std::uintptr_t effect_this,
+    std::uintptr_t preview_context,
+    std::uintptr_t preview_collector) noexcept {
+  auto *const capture =
+      static_cast<G2TruceLeafContextCaptureV2 *>(opaque);
+  if (capture == nullptr || capture->completed ||
+      capture->environment == nullptr || capture->access == nullptr ||
+      capture->output == nullptr || effect_this == 0 ||
+      preview_context == 0 || preview_collector == 0) {
+    return;
+  }
+  void *const context = reinterpret_cast<void *>(preview_context);
+  void *const evaluation_context = LoadAt<void *>(context, 0x28);
+  if (evaluation_context == nullptr) return;
+  const RaiktorSurrenderTruceRequestV1 request{
+      context, evaluation_context};
+  const auto observation =
+      ObserveRaiktorSurrenderTrucePrivateLeafContextV1(
+          *capture->environment, *capture->access, request,
+          reinterpret_cast<void *>(effect_this));
+  if (observation.status == RaiktorSurrenderTruceStatusV1::available &&
+      observation.failure == RaiktorSurrenderTruceFailureV1::none) {
+    *capture->output = observation;
+    capture->completed = true;
+  }
+}
+
+bool CaptureG2TruceDurationViaNativeLeafPreviewV2(
+    const Bindings &bindings, void *loaded_effect, void *effect_context,
+    const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
+    const RaiktorSurrenderTruceAccessV1 &access,
+    RaiktorSurrenderTruceObservationV1 &output) noexcept {
+  if (loaded_effect == nullptr || effect_context == nullptr ||
+      bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0) {
+    return false;
+  }
+  EffectPreviewCollectorStorage collector_storage{};
+  void *const collector = collector_storage.bytes.data();
+  if (bindings.construct_effect_preview_collector(collector) != collector) {
+    return false;
+  }
+  const auto collector_vtable = LoadAt<std::uintptr_t>(collector, 0x00);
+  if (collector_vtable != bindings.effect_preview_collector_vtable) {
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+
+  G2TruceLeafContextCaptureV2 capture{
+      &environment, &access, &output, false};
+  ResetRaiktorTrucePrivateShapeCaptureV1();
+  if (!xar::bridge::ArmG2TrucePreviewEntryCaptureV1(
+          CaptureG2TruceLeafPreviewContextV2, &capture)) {
+    bindings.destroy_effect_preview_collector(collector);
+    return false;
+  }
+  // The exact 0x3380170 preview traversal constructs the root wrapper. Its
+  // 0x3380840 child dispatcher then constructs the transient leaf wrapper
+  // delivered to CAddTruce slot+B8. The hook evaluates synchronously before
+  // that leaf call returns; no wrapper address escapes this invocation.
+  bindings.traverse_loaded_effect(loaded_effect, effect_context, collector);
+  xar::bridge::DisarmG2TrucePreviewEntryCaptureV1();
+  bindings.destroy_effect_preview_collector(collector);
+  return capture.completed;
+}
+#endif
+
 bool ReadRaiktorSurrenderTruceDuration(
     const Bindings &bindings, void *game_state, void *jomini_state,
     void *war, void *casus_belli, std::int32_t war_id,
@@ -4301,7 +4380,14 @@ bool ReadRaiktorSurrenderTruceDuration(
       bindings.destroy_effect_context_array_row == nullptr ||
       bindings.evaluate_truce_duration_days == nullptr ||
       bindings.truce_effect_vtable == 0 ||
-      bindings.truce_effect_vtable < kTruceEffectVtableRva) {
+      bindings.truce_effect_vtable < kTruceEffectVtableRva
+#if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
+      || bindings.construct_effect_preview_collector == nullptr ||
+      bindings.destroy_effect_preview_collector == nullptr ||
+      bindings.traverse_loaded_effect == nullptr ||
+      bindings.effect_preview_collector_vtable == 0
+#endif
+      ) {
     return false;
   }
 
@@ -4313,7 +4399,10 @@ bool ReadRaiktorSurrenderTruceDuration(
   }
   bindings.populate_war_effect_context(effect_context, war, false);
 
-#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+#if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
+  void *evaluation_context = nullptr;
+  void *evaluator_effect_context = nullptr;
+#elif defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
   // Native CAddTruce callers load the pointer stored in the +0x28 field into
   // R8.  The private evaluator candidate must not pass the field's address.
   void *const evaluation_context =
@@ -4359,9 +4448,22 @@ bool ReadRaiktorSurrenderTruceDuration(
   };
   const RaiktorSurrenderTruceAccessV1 access{
       &frame_context, nullptr, ReadRaiktorTruceProductionFrame};
+#if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
+  (void)CaptureG2TruceDurationViaNativeLeafPreviewV2(
+      bindings,
+      static_cast<std::byte *>(casus_belli) +
+          kWarEffectAttackerDefeatOffset,
+      effect_context, environment, access, output);
+  const auto &private_shape = LastRaiktorTrucePrivateShapeCaptureV1();
+  evaluator_effect_context = reinterpret_cast<void *>(
+      private_shape.evaluator_effect_context);
+  evaluation_context = reinterpret_cast<void *>(
+      private_shape.evaluator_evaluation_context);
+#else
   const RaiktorSurrenderTruceRequestV1 request{
       effect_context, evaluation_context};
   output = ObserveRaiktorSurrenderTruceV1(environment, access, request);
+#endif
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
   g_last_raiktor_surrender_truce_failure = output.failure;
 #endif
@@ -4374,7 +4476,12 @@ bool ReadRaiktorSurrenderTruceDuration(
   AppendG2TrucePrivateCaptureV1(
       war_id, casus_belli_database_index,
       primary_attacker_character_id, primary_defender_character_id,
-      claimant_character_id, effect_context,
+      claimant_character_id,
+#if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
+      evaluator_effect_context,
+#else
+      effect_context,
+#endif
       evaluation_context, output, context_destroyed);
 #endif
   if (!context_destroyed ||

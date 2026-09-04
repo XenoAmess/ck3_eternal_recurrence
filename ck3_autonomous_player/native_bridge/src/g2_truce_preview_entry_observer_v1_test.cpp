@@ -22,6 +22,23 @@ bool ContainsU64(const std::array<std::uint8_t, N> &bytes,
                      encoded.end()) != bytes.end();
 }
 
+struct CaptureFixture {
+  std::size_t calls = 0;
+  std::uintptr_t effect = 0;
+  std::uintptr_t context = 0;
+  std::uintptr_t collector = 0;
+};
+
+void Capture(void *opaque, std::uintptr_t effect,
+             std::uintptr_t context,
+             std::uintptr_t collector) noexcept {
+  auto &fixture = *static_cast<CaptureFixture *>(opaque);
+  ++fixture.calls;
+  fixture.effect = effect;
+  fixture.context = context;
+  fixture.collector = collector;
+}
+
 } // namespace
 
 int main() {
@@ -93,6 +110,21 @@ int main() {
   assert(ContainsU64(stub, environment.continue_target_override));
   assert(std::search(stub.begin(), stub.end(), kAnchor.begin(), kAnchor.end()) !=
          stub.end());
+  CaptureFixture capture{};
+  assert(ArmG2TrucePreviewEntryCaptureV1(Capture, &capture));
+  assert(!ArmG2TrucePreviewEntryCaptureV1(Capture, &capture));
+  RecordG2TrucePreviewEntryV1(
+      installed, reinterpret_cast<std::uintptr_t>(&normal_object),
+      0x2300, 0x3300);
+  assert(capture.calls == 1);
+  assert(capture.effect == reinterpret_cast<std::uintptr_t>(&normal_object));
+  assert(capture.context == 0x2300);
+  assert(capture.collector == 0x3300);
+  DisarmG2TrucePreviewEntryCaptureV1();
+  RecordG2TrucePreviewEntryV1(
+      installed, reinterpret_cast<std::uintptr_t>(&normal_object),
+      0x2400, 0x3400);
+  assert(capture.calls == 1);
   assert(UninstallG2TrucePreviewEntryObserverV1(installed));
   assert(std::memcmp(target, kAnchor.data(), kAnchor.size()) == 0);
   assert(VirtualFree(target, 0, MEM_RELEASE) != FALSE);

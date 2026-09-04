@@ -306,6 +306,39 @@ void RecordG2TrucePreviewEntryV1(G2TrucePreviewEntryObserverV1State &state,
     state.forced_effect_count.fetch_add(1, std::memory_order_relaxed);
   }
   state.accepted_count.fetch_add(1, std::memory_order_release);
+  const auto callback_address =
+      state.armed_capture_callback.load(std::memory_order_acquire);
+  if (callback_address != 0) {
+    const auto context_address =
+        state.armed_capture_context.load(std::memory_order_relaxed);
+    reinterpret_cast<G2TrucePreviewEntryCaptureV1>(callback_address)(
+        reinterpret_cast<void *>(context_address), effect_this,
+        preview_context, preview_collector);
+  }
+}
+
+bool ArmG2TrucePreviewEntryCaptureV1(
+    G2TrucePreviewEntryCaptureV1 callback, void *context) noexcept {
+  auto *const state = g_active.load(std::memory_order_acquire);
+  if (state == nullptr || callback == nullptr || context == nullptr ||
+      state->installed.load(std::memory_order_acquire) == 0) {
+    return false;
+  }
+  if (state->armed_capture_callback.load(std::memory_order_acquire) != 0) {
+    return false;
+  }
+  state->armed_capture_context.store(
+      reinterpret_cast<std::uintptr_t>(context), std::memory_order_relaxed);
+  state->armed_capture_callback.store(
+      reinterpret_cast<std::uintptr_t>(callback), std::memory_order_release);
+  return true;
+}
+
+void DisarmG2TrucePreviewEntryCaptureV1() noexcept {
+  auto *const state = g_active.load(std::memory_order_acquire);
+  if (state == nullptr) return;
+  state->armed_capture_callback.store(0, std::memory_order_release);
+  state->armed_capture_context.store(0, std::memory_order_relaxed);
 }
 
 bool InstallG2TrucePreviewEntryObserverV1(
@@ -412,6 +445,8 @@ bool InstallG2TrucePreviewEntryObserverV1(
 
 bool UninstallG2TrucePreviewEntryObserverV1(
     G2TrucePreviewEntryObserverV1State &state) noexcept {
+  state.armed_capture_callback.store(0, std::memory_order_release);
+  state.armed_capture_context.store(0, std::memory_order_relaxed);
   if (state.installed.load(std::memory_order_acquire) == 0 ||
       g_active.load(std::memory_order_acquire) != &state) {
     AddFailure(state,

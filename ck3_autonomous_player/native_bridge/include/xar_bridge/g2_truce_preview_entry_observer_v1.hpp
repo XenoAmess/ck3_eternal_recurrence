@@ -39,6 +39,10 @@ using G2TrucePreviewEntryVirtualProtectV1 = bool (*) (
     void *, void *, std::size_t, DWORD, DWORD &) noexcept;
 using G2TrucePreviewEntryFlushInstructionCacheV1 = bool (*) (
     void *, const void *, std::size_t) noexcept;
+using G2TrucePreviewEntryCaptureV1 = void (*)(
+    void *context, std::uintptr_t effect_this,
+    std::uintptr_t preview_context,
+    std::uintptr_t preview_collector) noexcept;
 
 struct G2TrucePreviewEntryObserverEnvironmentV1 {
   bool exact_build_admitted = false;
@@ -66,6 +70,8 @@ struct G2TrucePreviewEntryObserverV1State {
   std::atomic<std::uint64_t> last_effect_vtable{0};
   std::atomic<std::uint64_t> last_preview_context{0};
   std::atomic<std::uint64_t> last_preview_collector{0};
+  std::atomic<std::uintptr_t> armed_capture_context{0};
+  std::atomic<std::uintptr_t> armed_capture_callback{0};
 
   std::uintptr_t module_base = 0;
   std::uintptr_t patch_target = 0;
@@ -103,5 +109,8 @@ void RecordG2TrucePreviewEntryV1(G2TrucePreviewEntryObserverV1State &,
                                  std::uintptr_t effect_this,
                                  std::uintptr_t preview_context,
                                  std::uintptr_t preview_collector) noexcept;
+bool ArmG2TrucePreviewEntryCaptureV1(
+    G2TrucePreviewEntryCaptureV1 callback, void *context) noexcept;
+void DisarmG2TrucePreviewEntryCaptureV1() noexcept;
 
 } // namespace xar::bridge

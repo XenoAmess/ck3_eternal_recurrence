@@ -207,3 +207,44 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/nativ
 RVA `0x334C668` 为什么从当前 RDX 读到 `0x12`；只有产生新的、静态证据支持的 private-only context candidate
 后才可申请下一次独占槽。当前没有 `evaluated_days` 返回；public wire/readiness、expiry、决策、自动投降和
 `GEN-034=unresolved` 全部保持不变。
+
+## 2026-09-04：R15/R12 与 `0x334C668` 静态闭环
+
+[static-ready / no launch] exact `1.19.0.6` EXE 的反向数据流已经闭合，且否定了把
+`TraverseLoadedEffect` 根 wrapper 直接交给 evaluator 的方案。两个 CAddTruce execute 实现分别在
+`0x2EDAD3C` 将入参 RDX 保存到 R15、在 `0x2EDB3BC` 保存到 R12；到 evaluator 调用点时，两者都使用
+`RCX=this+0x108`、`RDX=该保存值`、`R8=[同一保存值+0x28]`。真正的 RDX 来自 generic execute dispatcher
+`0x3380A00`：它在自己的栈上复制 parent context 的 `+0/+8/+0x10/+0x18/+0x20`，令 child
+`+0x28` 指向同栈帧的 8-byte evaluation state，再于 `0x3380CFB` 把 child 地址传给 vtable
+`+0xB0`。这个 0x30-byte leaf wrapper 只在同步虚调期间有效。
+
+r1 的 direct bridge 调用绕开了这段构造。`0x334C665` 执行 `mov r12,[rdi]`，紧接着
+`0x334C668` 执行 `movzx eax,word ptr [r12]`；r1 中 RDI 等于顶层 `WarEffectContext`，其首 qword
+恰为 `0x12`，所以第二条指令读取地址 `0x12` 并崩溃。这说明问题不只是 R8 的“字段地址/字段值”区别：
+RDX 本身也必须是原生 leaf effect-call context。根 preview dispatcher `0x3380170` 产生的只是 root
+wrapper；CAddTruce 下层实际接收的 preview leaf wrapper 由 `0x3380840` 重新复制，并令
+`[child+0x28]=&stack[RSP+0x70]`，随后在 `0x3380947` 调用 vtable `+0xB8`。因此 root slot+0x58
+proxy 在 forward 前尚无 leaf context，forward 返回后 leaf context 已失效，不能拿它替代。
+
+可复现的函数 PDATA、字节段与 SHA-256 冻结在
+[`g2_truce_context_lifetime_v2.json`](../../ck3_autonomous_player/native_bridge/research/g2_truce_context_lifetime_v2.json)，
+由只读 extractor
+[`extract_g2_truce_context_lifetime_v2.py`](../../ck3_autonomous_player/native_bridge/research/extract_g2_truce_context_lifetime_v2.py)
+对 exact EXE 和已提交的 r1 RED 摘要逐项重建。关键函数哈希包括
+`0x3380A00..0x3380EB1 = DE65DB5D…AA22`、
+`0x3380840..0x338097B = A2BE88DE…F8DFE`，故障双指令
+`4C8B27410FB70424 = 04E56C6B…88DD`。
+
+据此新增的 V2 只在显式
+`XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2=ON` 候选构建中存在，默认仍为 OFF。它让原生
+preview traversal 自己走到目标 CAddTruce，并只在 `0x2E87155` leaf preview entry 的同步 hook
+窗口内使用真实 RDX 及同一 wrapper 的 `[RDX+0x28]`。callback 会再次核对 exact index-7 目标对象后才做
+两次 evaluator 读取，并在前后读取 paused frame；wrapper 地址不缓存、不克隆、不带出该虚调。
+默认构建、public wire、readiness 与 action 路径不变。MSVC Release 全构建完成，相关 native fixture 的
+Debug 断言版与 Release 版均通过；这仍只是 `static-ready` 候选，尚未取得新的 CK3 返回值。
+
+下一次独占槽只能使用新 V2 构建和新的 manifest/preflight，仍只发送同一 paused frame 上两条
+`query-war-termination-terms-v1-50331699`。旧 V1 direct DLL 与 r1 命令不得复跑。只有两组 durable
+`pre_call -> post_call_1 -> post_call_2` 都出现、结果非负且相等、frame/identity/cleanup 全 GREEN，
+才可把 artifact 交给 readiness 审查；在此之前 `native_certified=false`、`runtime_certified=false`、
+`decision_ready=false`、`automatic_surrender_ready=false`，`GEN-034` 继续 unresolved。
