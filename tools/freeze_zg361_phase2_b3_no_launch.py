@@ -545,6 +545,40 @@ def predecessor_event_live_red_evidence(root: Path) -> dict[str, object]:
     }
 
 
+def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
+    expansion_path = attempt / "closure-expansion.json"
+    release_manifest_path = attempt / "canonical-release.manifest.json"
+    expansion = read_json(expansion_path)
+    added_files = expansion.get("added_files")
+    rounds = expansion.get("rounds")
+    green = (
+        expansion.get("kind")
+        == "zg361_phase2_b3_material_custom_call_closure_expansion"
+        and expansion.get("green") is True
+        and expansion.get("final_missing_effects") == []
+        and expansion.get("final_missing_events") == []
+        and isinstance(added_files, list)
+        and expansion.get("added_file_count") == len(added_files)
+        and isinstance(rounds, list)
+        and len(rounds) > 0
+    )
+    if not green:
+        raise FreezeError("material custom-call closure expansion evidence is RED")
+    return {
+        "green": True,
+        "round_count": len(rounds),
+        "added_file_count": len(added_files),
+        "final_effect_definition_count": expansion.get(
+            "final_effect_definition_count"
+        ),
+        "final_event_definition_count": expansion.get(
+            "final_event_definition_count"
+        ),
+        "expansion": record(expansion_path),
+        "canonical_release_manifest": record(release_manifest_path),
+    }
+
+
 def projection_delta(baseline: Path, candidate: Path) -> list[dict[str, object]]:
     before = tree_rows(baseline)
     after = tree_rows(candidate)
@@ -711,6 +745,7 @@ def main(argv: list[str] | None = None) -> int:
     predecessor_event_red = predecessor_event_live_red_evidence(
         args.predecessor_event_live_red.resolve()
     )
+    expansion_evidence = closure_expansion_evidence(attempt)
 
     python = str(args.python.resolve())
     ctest_result = run(
@@ -837,6 +872,7 @@ def main(argv: list[str] | None = None) -> int:
             "delta": delta,
             "effect_boundaries": boundaries,
             "central_effect_call_closure": central_closure,
+            "closure_expansion": expansion_evidence,
         },
         "predecessor_live_red": predecessor_red,
         "predecessor_event_live_red": predecessor_event_red,

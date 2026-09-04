@@ -240,6 +240,37 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             self.assertEqual(2, result["missing_event_line_count"])
             self.assertTrue(result["cleanup_green"])
 
+    def test_closure_expansion_evidence_is_hash_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "closure-expansion.json").write_text(
+                json.dumps(
+                    {
+                        "kind": (
+                            "zg361_phase2_b3_material_custom_call_"
+                            "closure_expansion"
+                        ),
+                        "green": True,
+                        "rounds": [{"round": 1}],
+                        "added_file_count": 1,
+                        "added_files": ["events/probe.txt"],
+                        "final_effect_definition_count": 2,
+                        "final_event_definition_count": 1,
+                        "final_missing_effects": [],
+                        "final_missing_events": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "canonical-release.manifest.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+            result = freeze.closure_expansion_evidence(root)
+            self.assertTrue(result["green"])
+            self.assertEqual(1, result["round_count"])
+            self.assertEqual(1, result["added_file_count"])
+            self.assertEqual(64, len(result["expansion"]["sha256"]))
+
 
 if __name__ == "__main__":
     unittest.main()
