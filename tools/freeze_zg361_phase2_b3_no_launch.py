@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import deque
 import hashlib
 import json
 import os
@@ -40,6 +41,11 @@ FORBIDDEN_SPLIT_MONOLITHS = frozenset(
         "zg361_workforce_probation_fact_effects.txt",
     }
 )
+CENTRAL_ROOT_EFFECTS = ("zg361_p2c_stage_10_manager_governance_effect",)
+REQUIRED_CENTRAL_PROVIDER_FILES = frozenset(
+    {"zg361_phase2_central_003_dispatch_control_effects.txt"}
+)
+CUSTOM_EFFECT_CALL_RE = re.compile(r"\b(zg361_[A-Za-z0-9_]+_effect)\s*=")
 
 B3_EFFECT_SHARDS = (
     "zg361_manager_governance_core_adapters_effects.txt",
@@ -191,6 +197,99 @@ def tree_rows(root: Path) -> dict[str, dict[str, object]]:
         }
         for path in sorted(root.rglob("*"), key=lambda value: value.as_posix())
         if path.is_file()
+    }
+
+
+def _mask_comments_and_strings(text: str) -> str:
+    output = list(text)
+    in_comment = False
+    in_quote = False
+    escaped = False
+    for index, char in enumerate(text):
+        if in_comment:
+            if char in "\r\n":
+                in_comment = False
+            else:
+                output[index] = " "
+            continue
+        if in_quote:
+            if char not in "\r\n":
+                output[index] = " "
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_quote = False
+            continue
+        if char == "#":
+            output[index] = " "
+            in_comment = True
+        elif char == '"':
+            output[index] = " "
+            in_quote = True
+    return "".join(output)
+
+
+def central_effect_call_closure(
+    product_source: Path,
+    *,
+    roots: tuple[str, ...] = CENTRAL_ROOT_EFFECTS,
+    required_provider_files: frozenset[str] = REQUIRED_CENTRAL_PROVIDER_FILES,
+) -> dict[str, object]:
+    """Resolve custom effect calls reachable from selected central roots."""
+
+    sys.path.insert(0, str(MOD_ROOT / "tools"))
+    from zg361_effect_sharding import top_level_effect_entries
+
+    directory = product_source / "common" / "scripted_effects"
+    providers: dict[str, tuple[str, str]] = {}
+    duplicates: set[str] = set()
+    for path in sorted(directory.glob("*.txt"), key=lambda value: value.name):
+        relative = path.relative_to(product_source).as_posix()
+        for entry in top_level_effect_entries(path.read_bytes()):
+            if entry.name in providers:
+                duplicates.add(entry.name)
+            else:
+                providers[entry.name] = (relative, entry.block)
+
+    queue = deque(roots)
+    reachable: set[str] = set()
+    missing: set[str] = set()
+    edges: set[tuple[str, str]] = set()
+    while queue:
+        name = queue.popleft()
+        if name in reachable or name in missing:
+            continue
+        provider = providers.get(name)
+        if provider is None:
+            missing.add(name)
+            continue
+        reachable.add(name)
+        references = set(CUSTOM_EFFECT_CALL_RE.findall(_mask_comments_and_strings(provider[1])))
+        references.discard(name)
+        for reference in sorted(references):
+            edges.add((name, reference))
+            if reference not in reachable:
+                queue.append(reference)
+
+    provider_files = sorted({providers[name][0] for name in reachable})
+    present_filenames = {Path(path).name for path in provider_files}
+    missing_provider_files = sorted(required_provider_files - present_filenames)
+    return {
+        "roots": list(roots),
+        "reachable_effect_count": len(reachable),
+        "reachable_effects": sorted(reachable),
+        "edges": [
+            {"caller": caller, "callee": callee}
+            for caller, callee in sorted(edges)
+        ],
+        "provider_files": provider_files,
+        "missing_effects": sorted(missing),
+        "duplicate_effect_providers": sorted(duplicates),
+        "required_provider_files": sorted(required_provider_files),
+        "missing_required_provider_files": missing_provider_files,
+        "green": not missing and not duplicates and not missing_provider_files,
     }
 
 
@@ -349,6 +448,9 @@ def main(argv: list[str] | None = None) -> int:
     boundaries = effect_boundaries(source, delta)
     if boundaries["green"] is not True:
         raise FreezeError(f"effect boundary gate is RED: {boundaries}")
+    central_closure = central_effect_call_closure(source)
+    if central_closure["green"] is not True:
+        raise FreezeError(f"central effect call closure is RED: {central_closure}")
 
     python = str(args.python.resolve())
     ctest_result = run(
@@ -365,6 +467,8 @@ def main(argv: list[str] | None = None) -> int:
         [python, "mod_zhongguo_style/tools/gen_361_manager_governance_runtime.py", "--check"],
         [python, "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"],
         [python, "-O", "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"],
+        [python, "tools/test_freeze_zg361_phase2_b3_no_launch.py"],
+        [python, "-O", "tools/test_freeze_zg361_phase2_b3_no_launch.py"],
     )
     static_results = [run(command) for command in static_commands]
     static_green = all(result["returncode"] == 0 for result in static_results)
@@ -418,7 +522,13 @@ def main(argv: list[str] | None = None) -> int:
         "ck3_executable": exe_row,
     }
 
-    all_green = native_green and static_green and formal_green and boundaries["green"] is True
+    all_green = (
+        native_green
+        and static_green
+        and formal_green
+        and boundaries["green"] is True
+        and central_closure["green"] is True
+    )
     live_artifacts = attempt / "artifacts-live"
     launch_argv = [value for value in preflight_argv if value != "--preflight"]
     launch_argv.extend(["--artifacts-dir", str(live_artifacts), "--discard-userdir"])
@@ -459,6 +569,7 @@ def main(argv: list[str] | None = None) -> int:
             },
             "delta": delta,
             "effect_boundaries": boundaries,
+            "central_effect_call_closure": central_closure,
         },
         "action_cell_only_inputs": action_cells,
         "static_checks": [
