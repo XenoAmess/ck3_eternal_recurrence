@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import shutil
 import subprocess
@@ -41,6 +42,12 @@ EXPECTED_BASE_MANIFEST_SHA256 = (
 EXPECTED_TRIGGER_SHA256 = (
     "ee8d962f5a9aa95ae68098b96ffe26e1b2da2435821617bd51e75fe0fec377d7"
 )
+EXPECTED_RUNNER_SHA256 = (
+    "2dd1067f7a0de9076cacc552bd2f786c00f1b04af9ef969eaa258ea2e7a747c6"
+)
+SUPERSEDED_ATTEMPT_SHA256 = (
+    "3d5a711f8c00cb0a1c7dd3ff3b8a64ca81e01486f2afc342cf3dbb7898094651"
+)
 DEFAULT_OPEN_KAISHEK_JAR = Path(
     r"Z:\workspace\open_kaishek_t2_g2_war_loss_20260904"
     r"\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar"
@@ -52,6 +59,50 @@ CANDIDATE_READY = "zg361_p2c_m360_candidate_ready_trigger"
 FROZEN_MANAGER_EXACT = "zg361_p2c_m360_frozen_manager_exact_trigger"
 TARGET_NAMES = (CANDIDATE_READY, FROZEN_MANAGER_EXACT)
 BOM = b"\xef\xbb\xbf"
+PARAMETER_PLACEHOLDER = re.compile(r"\$([A-Z][A-Z0-9_]*)\$")
+EXPECTED_ABI = {
+    CANDIDATE_READY: frozenset(
+        {"EXPECTED_OWNER", "EXPECTED_P2C_CYCLE", "EXPECTED_P2C_CASE"}
+    ),
+    FROZEN_MANAGER_EXACT: frozenset(
+        {
+            "EXPECTED_OWNER",
+            "EXPECTED_P2C_CYCLE",
+            "EXPECTED_P2C_CASE",
+            "EXPECTED_B1_CYCLE",
+            "EXPECTED_B1_CASE",
+            "EXPECTED_B1_SOURCE_ID",
+            "EXPECTED_B1_SOURCE_HASH",
+            "EXPECTED_QUOTA",
+            "EXPECTED_MG_CYCLE",
+            "EXPECTED_MG_CASE",
+            "EXPECTED_MG_SOURCE_SERIAL",
+            "EXPECTED_MG_REVISION",
+        }
+    ),
+}
+EXPECTED_PROVIDER_PLACEHOLDERS = frozenset().union(*EXPECTED_ABI.values())
+FALSE_STUB_TERMS = {
+    CANDIDATE_READY: (
+        "    liege = $EXPECTED_OWNER$",
+        "    var:zg361_p2c_mg_frozen_cycle = $EXPECTED_P2C_CYCLE$",
+        "    var:zg361_p2c_mg_frozen_case = $EXPECTED_P2C_CASE$",
+    ),
+    FROZEN_MANAGER_EXACT: (
+        "    var:zg361_p2c_mg_frozen_owner = $EXPECTED_OWNER$",
+        "    var:zg361_p2c_mg_frozen_cycle = $EXPECTED_P2C_CYCLE$",
+        "    var:zg361_p2c_mg_frozen_case = $EXPECTED_P2C_CASE$",
+        "    var:zg361_b1_m360_source_cycle = $EXPECTED_B1_CYCLE$",
+        "    var:zg361_b1_m360_source_case = $EXPECTED_B1_CASE$",
+        "    var:zg361_b1_m360_source_id = $EXPECTED_B1_SOURCE_ID$",
+        "    var:zg361_b1_m360_source_hash = $EXPECTED_B1_SOURCE_HASH$",
+        "    var:zg361_b1_m360_source_quota = $EXPECTED_QUOTA$",
+        "    var:zg361_case_f_cycle_serial = $EXPECTED_MG_CYCLE$",
+        "    var:zg361_case_f_case_serial = $EXPECTED_MG_CASE$",
+        "    var:zg361_mg_snapshot_source_serial = $EXPECTED_MG_SOURCE_SERIAL$",
+        "    var:zg361_mg_team_snapshot_revision = $EXPECTED_MG_REVISION$",
+    ),
+}
 
 VARIANTS = {
     "v1": {
@@ -136,8 +187,23 @@ def tree_delta(
     return delta
 
 
+def placeholder_set(value: str | bytes) -> frozenset[str]:
+    text = value.decode("utf-8-sig") if isinstance(value, bytes) else value
+    return frozenset(PARAMETER_PLACEHOLDER.findall(text))
+
+
 def false_stub(name: str) -> str:
-    return f"{name} = {{\n    always = no\n}}"
+    terms = FALSE_STUB_TERMS.get(name)
+    if terms is None:
+        raise BisectError(f"no ABI-consuming false stub contract for {name}")
+    result = "\n".join((f"{name} = {{", *terms, "    always = no", "}"))
+    observed = placeholder_set(result)
+    if observed != EXPECTED_ABI[name]:
+        raise BisectError(
+            f"false stub placeholder ABI drifted for {name}: "
+            f"{sorted(observed)} != {sorted(EXPECTED_ABI[name])}"
+        )
+    return result
 
 
 def parsed_blocks(payload: bytes) -> dict[str, str]:
@@ -160,6 +226,9 @@ def render_variant(base_payload: bytes, *, real: str, stub: str) -> bytes:
         raise BisectError("r5 A trigger provider lost its generated-file marker")
     base_text = base_payload.decode("utf-8-sig")
     blocks = parsed_blocks(base_payload)
+    for name, block in blocks.items():
+        if placeholder_set(block) != EXPECTED_ABI[name]:
+            raise BisectError(f"frozen r5 A placeholder ABI drifted for {name}")
     if {real, stub} != set(TARGET_NAMES) or real == stub:
         raise BisectError("variant must select exactly one real and one stub body")
     rendered = base_text.replace(blocks[stub], false_stub(stub), 1)
@@ -169,6 +238,13 @@ def render_variant(base_payload: bytes, *, real: str, stub: str) -> bytes:
         raise BisectError(f"real trigger body changed in variant: {real}")
     if result_blocks[stub] != false_stub(stub):
         raise BisectError(f"false stub is not minimal in variant: {stub}")
+    if any(
+        placeholder_set(result_blocks[name]) != EXPECTED_ABI[name]
+        for name in TARGET_NAMES
+    ):
+        raise BisectError("variant definition placeholder ABI is incomplete")
+    if placeholder_set(result) != EXPECTED_PROVIDER_PLACEHOLDERS:
+        raise BisectError("variant provider placeholder set is incomplete")
     return result
 
 
@@ -391,6 +467,85 @@ def live_command(
     }
 
 
+def git_head() -> str:
+    completed = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        capture_output=True,
+        check=False,
+    )
+    value = completed.stdout.strip().lower()
+    if completed.returncode != 0 or re.fullmatch(r"[0-9a-f]{40}", value) is None:
+        raise BisectError("cannot bind diagnostic materializer to Git HEAD")
+    return value
+
+
+def supersession_evidence(root: Path) -> dict[str, Any]:
+    root = root.resolve()
+    manifest = root / "attempt-manifest.json"
+    if sha256_file(manifest) != SUPERSEDED_ATTEMPT_SHA256:
+        raise BisectError("superseded 0835 attempt manifest SHA-256 drifted")
+    live_root = Path(
+        r"Z:\ck3_mod_rewrite_process_assets\zg361"
+        r"\b3h-fecd2f2-trigger-false-20260904-081911Z\artifacts-live"
+    )
+    game_log = live_root / "cell" / "final_game.log"
+    error_log = live_root / "cell" / "final_error.log"
+    text = game_log.read_text(encoding="utf-8-sig", errors="replace")
+    counts = {
+        name: text.count(
+            f"{name} trigger [ Scripted trigger should have no arguments ]"
+        )
+        for name in TARGET_NAMES
+    }
+    if counts != {CANDIDATE_READY: 3, FROZEN_MANAGER_EXACT: 3}:
+        raise BisectError(f"dual-stub live ABI evidence drifted: {counts}")
+    return {
+        "status": "superseded",
+        "classification": "material-abi-invalid",
+        "do_not_launch": True,
+        "reason": (
+            "The false bodies referenced no $PARAM$ placeholders, so CK3 inferred "
+            "zero-argument providers and rejected all six parameterized callsites."
+        ),
+        "old_attempt": str(root),
+        "old_attempt_manifest": file_record(manifest),
+        "observed_error": "Scripted trigger should have no arguments",
+        "observed_counts": counts,
+        "dual_stub_live": {
+            "root": str(live_root),
+            "outer_report": file_record(live_root / "report.json"),
+            "cell_report": file_record(live_root / "cell" / "report.json"),
+            "final_error_log": file_record(error_log),
+            "final_game_log": file_record(game_log),
+            "evidence_index": file_record(live_root / "evidence-index.json"),
+        },
+    }
+
+
+def write_supersession_marker(
+    root: Path, evidence: dict[str, Any], replacement: Path, replacement_sha: str
+) -> dict[str, Any]:
+    path = root.resolve() / "SUPERSEDED-MATERIAL-ABI-INVALID.json"
+    if path.exists():
+        raise BisectError(f"supersession marker already exists: {path}")
+    payload = {
+        "schema_version": 1,
+        "kind": "zg361_b3_trigger_body_bisect_supersession",
+        **evidence,
+        "replacement_attempt": str(replacement.resolve()),
+        "replacement_attempt_manifest_sha256": replacement_sha,
+    }
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return file_record(path)
+
+
 def prepare(args: argparse.Namespace) -> dict[str, Any]:
     source = args.source.resolve()
     base_manifest = args.base_manifest.resolve()
@@ -399,6 +554,13 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         raise BisectError(f"fresh output directory already exists: {output}")
     if not source.is_dir() or not base_manifest.is_file():
         raise BisectError("frozen r5 A source or projection manifest is missing")
+    runner_path = args.live_root.resolve() / "tools" / "run_zhongguo_acceptance.py"
+    if sha256_file(runner_path) != EXPECTED_RUNNER_SHA256:
+        raise BisectError(
+            "5c/A2 formal runner SHA-256 drifted: "
+            f"{sha256_file(runner_path)} != {EXPECTED_RUNNER_SHA256}"
+        )
+    superseded = supersession_evidence(args.superseded_root)
     if sha256_file(base_manifest) != EXPECTED_BASE_MANIFEST_SHA256:
         raise BisectError("frozen r5 A projection manifest SHA-256 drifted")
     base_rows = tree_rows(source)
@@ -451,6 +613,21 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         exact_calls_stub = CANDIDATE_READY in candidate_blocks[FROZEN_MANAGER_EXACT]
         if variant_name == "v2" and not exact_calls_stub:
             raise BisectError("V2 exact body no longer calls candidate_ready stub")
+        definition_placeholders = {
+            name: sorted(placeholder_set(block))
+            for name, block in candidate_blocks.items()
+        }
+        expected_definition_placeholders = {
+            name: sorted(EXPECTED_ABI[name]) for name in TARGET_NAMES
+        }
+        provider_placeholders = sorted(placeholder_set(replacement))
+        expected_provider_placeholders = sorted(EXPECTED_PROVIDER_PLACEHOLDERS)
+        if definition_placeholders != expected_definition_placeholders:
+            raise BisectError(
+                f"{variant_name} definition placeholder ABI is incomplete"
+            )
+        if provider_placeholders != expected_provider_placeholders:
+            raise BisectError(f"{variant_name} provider placeholder ABI is incomplete")
         manifest_path = variant_root / "projection.json"
         manifest_payload = projection.write_manifest(
             candidate, manifest_path, projection_name=projection_name
@@ -512,6 +689,15 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
                 "stub": stub,
                 "stub_body_sha256": sha256_bytes(candidate_blocks[stub].encode("utf-8")),
                 "stub_is_minimal_false": candidate_blocks[stub] == false_stub(stub),
+                "stub_is_unconditionally_false": candidate_blocks[stub].endswith(
+                    "    always = no\n}"
+                ),
+                "expected_placeholder_sets": expected_definition_placeholders,
+                "observed_placeholder_sets": definition_placeholders,
+                "definition_placeholder_sets_match_expected": True,
+                "expected_provider_placeholder_set": expected_provider_placeholders,
+                "observed_provider_placeholder_set": provider_placeholders,
+                "provider_placeholder_set_matches_expected": True,
                 "frozen_manager_exact_calls_candidate_ready": exact_calls_stub,
             },
             "parser_green": True,
@@ -531,6 +717,7 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         "diagnostic_only": True,
         "production_candidate": False,
         "generator_changed": False,
+        "source_commit_before_candidate_write": git_head(),
         "purpose": (
             "Mutually exclusive trigger-body diagnosis complementary to the "
             "dual-false-stub candidate; never merge either product tree."
@@ -548,16 +735,23 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
             "changed_paths": [TRIGGER_RELATIVE],
             "unchanged_files_per_candidate": EXPECTED_BASE_FILE_COUNT - 1,
             "variant_pipes_unique": True,
+            "expected_provider_placeholder_set": sorted(
+                EXPECTED_PROVIDER_PLACEHOLDERS
+            ),
+            "provider_placeholder_set_must_equal_expected": True,
         },
+        "supersedes": superseded,
         "inputs": {
             "python": file_record(args.python),
             "ck3_exe": file_record(args.ck3_exe),
             "bridge_dll": file_record(args.dll),
             "bridge_injector": file_record(args.injector),
             "open_kaishek_jar": file_record(args.open_kaishek_jar),
-            "runner": file_record(
-                args.live_root / "tools" / "run_zhongguo_acceptance.py",
-                relative_to=args.live_root,
+            "runner": file_record(runner_path, relative_to=args.live_root),
+            "expected_5c_a2_runner_sha256": EXPECTED_RUNNER_SHA256,
+            "materializer": file_record(
+                ROOT / "tools" / "prepare_zg361_b3_trigger_body_bisect.py",
+                relative_to=ROOT,
             ),
             "seed_contract": file_record(
                 args.live_root / "tools" / "zg361_phase2_seed_contract.json",
@@ -578,6 +772,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--injector", type=Path, required=True)
     parser.add_argument("--ck3-exe", type=Path, required=True)
     parser.add_argument("--live-root", type=Path, default=ROOT)
+    parser.add_argument("--superseded-root", type=Path, required=True)
     parser.add_argument(
         "--open-kaishek-jar", type=Path, default=DEFAULT_OPEN_KAISHEK_JAR
     )
@@ -596,6 +791,12 @@ def main(argv: list[str] | None = None) -> int:
         (args.output.resolve() / "attempt-manifest.sha256").write_text(
             f"{digest}  attempt-manifest.json\n", encoding="ascii", newline="\n"
         )
+        supersession_marker = write_supersession_marker(
+            args.superseded_root,
+            report["supersedes"],
+            args.output,
+            digest,
+        )
     except (BisectError, projection.ProductProjectionError, OSError) as error:
         print(f"B3 trigger-body bisect preparation failed: {error}")
         return 2
@@ -606,6 +807,7 @@ def main(argv: list[str] | None = None) -> int:
                 "ck3_launched": False,
                 "output": str(args.output.resolve()),
                 "manifest_sha256": digest,
+                "supersession_marker": supersession_marker,
                 "variants": {
                     name: {
                         "tree_sha256": row["source_tree_sha256"],

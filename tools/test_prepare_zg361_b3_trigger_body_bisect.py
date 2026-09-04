@@ -9,17 +9,29 @@ import prepare_zg361_b3_trigger_body_bisect as bisect
 
 
 BOM = b"\xef\xbb\xbf"
+CANDIDATE_REAL = "\n".join(
+    (
+        f"{bisect.CANDIDATE_READY} = {{",
+        *bisect.FALSE_STUB_TERMS[bisect.CANDIDATE_READY],
+        "    always = yes",
+        "}",
+    )
+)
+EXACT_REAL = "\n".join(
+    (
+        f"{bisect.FROZEN_MANAGER_EXACT} = {{",
+        f"    {bisect.CANDIDATE_READY} = {{",
+        "        EXPECTED_OWNER = $EXPECTED_OWNER$",
+        "        EXPECTED_P2C_CYCLE = $EXPECTED_P2C_CYCLE$",
+        "        EXPECTED_P2C_CASE = $EXPECTED_P2C_CASE$",
+        "    }",
+        *bisect.FALSE_STUB_TERMS[bisect.FROZEN_MANAGER_EXACT],
+        "    always = yes",
+        "}",
+    )
+)
 BASE = BOM + (
-    "# GENERATED FILE — test\n\n"
-    "zg361_p2c_m360_candidate_ready_trigger = {\n"
-    "    has_variable = real_candidate_fact\n"
-    "}\n\n"
-    "zg361_p2c_m360_frozen_manager_exact_trigger = {\n"
-    "    zg361_p2c_m360_candidate_ready_trigger = {\n"
-    "        EXPECTED_OWNER = $EXPECTED_OWNER$\n"
-    "    }\n"
-    "    has_variable = real_exact_fact\n"
-    "}\n"
+    "# GENERATED FILE — test\n\n" + CANDIDATE_REAL + "\n\n" + EXACT_REAL + "\n"
 ).encode("utf-8")
 
 
@@ -39,6 +51,14 @@ class TriggerBodyBisectTests(unittest.TestCase):
             bisect.false_stub(bisect.FROZEN_MANAGER_EXACT),
             parsed[bisect.FROZEN_MANAGER_EXACT],
         )
+        self.assertEqual(
+            bisect.EXPECTED_ABI[bisect.FROZEN_MANAGER_EXACT],
+            bisect.placeholder_set(parsed[bisect.FROZEN_MANAGER_EXACT]),
+        )
+        self.assertEqual(
+            bisect.EXPECTED_PROVIDER_PLACEHOLDERS,
+            bisect.placeholder_set(rendered),
+        )
 
     def test_v2_keeps_exact_call_pointing_to_candidate_stub(self) -> None:
         original = bisect.parsed_blocks(BASE)
@@ -56,6 +76,22 @@ class TriggerBodyBisectTests(unittest.TestCase):
         self.assertIn(
             "zg361_p2c_m360_candidate_ready_trigger = {",
             parsed[bisect.FROZEN_MANAGER_EXACT],
+        )
+        self.assertEqual(
+            bisect.EXPECTED_ABI[bisect.CANDIDATE_READY],
+            bisect.placeholder_set(parsed[bisect.CANDIDATE_READY]),
+        )
+        self.assertEqual(
+            bisect.EXPECTED_PROVIDER_PLACEHOLDERS,
+            bisect.placeholder_set(rendered),
+        )
+
+    def test_old_zero_placeholder_false_stub_is_materially_abi_invalid(self) -> None:
+        old = f"{bisect.CANDIDATE_READY} = {{\n    always = no\n}}"
+        self.assertEqual(frozenset(), bisect.placeholder_set(old))
+        self.assertNotEqual(
+            bisect.EXPECTED_ABI[bisect.CANDIDATE_READY],
+            bisect.placeholder_set(old),
         )
 
     def test_tree_delta_reports_only_changed_provider(self) -> None:
