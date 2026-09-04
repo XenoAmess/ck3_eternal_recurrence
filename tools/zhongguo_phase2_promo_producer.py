@@ -225,6 +225,7 @@ class Phase2PromoCaptureContext:
     source_checkpoint_registry: Mapping[str, object] | None = None
     isolated_userdir: Path | None = None
     runtime_bootstrap: Mapping[str, object] | None = None
+    endgame_product_switch_title_key: str | None = None
 
 
 class RuntimeProbe(Protocol):
@@ -412,6 +413,7 @@ class Phase2PromoProducerScaffold:
         source_checkpoint_registry: Mapping[str, object] | None = None,
         isolated_userdir: Path | None = None,
         runtime_bootstrap: Mapping[str, object] | None = None,
+        endgame_product_switch_title_key: str | None = None,
     ) -> Phase2PromoCaptureContext:
         if not isinstance(artifacts, Path):
             self._red(
@@ -516,6 +518,19 @@ class Phase2PromoProducerScaffold:
                 "runtime_bootstrap must be a mapping when supplied",
                 evidence={"actual_type": type(runtime_bootstrap).__name__},
             )
+        if endgame_product_switch_title_key is not None and (
+            not isinstance(endgame_product_switch_title_key, str)
+            or not endgame_product_switch_title_key
+        ):
+            self._red(
+                "endgame_product_switch_title_key_invalid",
+                "the product Switch Character title key must be non-empty",
+                evidence={
+                    "actual_type": type(
+                        endgame_product_switch_title_key
+                    ).__name__
+                },
+            )
         return Phase2PromoCaptureContext(
             stream=stream,
             artifacts=artifacts,
@@ -541,6 +556,9 @@ class Phase2PromoProducerScaffold:
                 deepcopy(dict(runtime_bootstrap))
                 if isinstance(runtime_bootstrap, Mapping)
                 else None
+            ),
+            endgame_product_switch_title_key=(
+                endgame_product_switch_title_key
             ),
         )
 
@@ -680,6 +698,7 @@ class Phase2PromoProducerScaffold:
         source_checkpoint_registry: Mapping[str, object] | None = None,
         isolated_userdir: Path | None = None,
         runtime_bootstrap: Mapping[str, object] | None = None,
+        endgame_product_switch_title_key: str | None = None,
     ) -> dict[str, object]:
         """Perform only dependency validation and evidence hand-off.
 
@@ -702,6 +721,9 @@ class Phase2PromoProducerScaffold:
             source_checkpoint_registry=source_checkpoint_registry,
             isolated_userdir=isolated_userdir,
             runtime_bootstrap=runtime_bootstrap,
+            endgame_product_switch_title_key=(
+                endgame_product_switch_title_key
+            ),
         )
         runtime = self._validate_runtime(context)
         if self.choreography is None:

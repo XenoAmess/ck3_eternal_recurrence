@@ -232,7 +232,7 @@ def build_preflight() -> dict[str, object]:
                 and "run_exact_build_cross_cycle_endgame_seam(" in runner_source
                 and "composite = CompositePhase2SpanDriver(" in runner_source
                 and "_Phase2CrossCycleEndgameSpanDriver(" in runner_source
-                and "service, source_choreography=real_events" in runner_source
+                and "source_choreography=real_events" in runner_source
                 and "source_checkpoint_origin\": \"registered_real_ck3_read_only"
                 in runner_source
             ),

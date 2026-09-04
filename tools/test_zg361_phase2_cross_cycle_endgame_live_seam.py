@@ -420,6 +420,22 @@ class CrossCycleEndgameLiveSeamTests(unittest.TestCase):
         self.assertEqual(caught.exception.reason_code, "exact_build_mismatch")
         self.assertEqual(service.selections, [])
 
+    def test_fixture_and_product_transition_factories_are_mutually_exclusive(self) -> None:
+        service = FakeExactEndgameService(self.checkpoint)
+        with self.assertRaisesRegex(
+            ValueError, "exactly one result-session transition factory"
+        ):
+            run_exact_build_cross_cycle_endgame_seam(
+                service,
+                source_checkpoint_restore=source_restore(),
+                build_identity=build_identity(),
+                activate_result_session=self._activation(service),
+                production_subject_session_factory=lambda *_args: None,
+                timeout_s=1,
+                poll_interval_s=0,
+            )
+        self.assertEqual(service.selections, [])
+
     def test_unexpected_progress_event_is_typed_red(self) -> None:
         service = FakeExactEndgameService(
             self.checkpoint, unexpected_progress_event=True

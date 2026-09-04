@@ -147,6 +147,14 @@ from zg361_phase2_cross_cycle_endgame_live_seam import (
     TRANSITION_FIXTURE_ID as PHASE2_ENDGAME_REBIND_FIXTURE_ID,
     run_exact_build_cross_cycle_endgame_seam,
 )
+from zg361_phase2_cross_cycle_endgame_switch_ui import (
+    ProductSwitchCharacterError,
+    preflight_switch_character_ui_source,
+    produce_product_subject_checkpoint_session,
+)
+from zg361_phase2_cross_cycle_endgame_switch_ui_desktop import (
+    DesktopSwitchCharacterUiDriver,
+)
 from zg361_phase2_cross_cycle_endgame_source_capture import (
     EndgameSourceCaptureError,
     capture_cross_cycle_endgame_source_checkpoint_v1,
@@ -197,6 +205,9 @@ from xar_autoplayer.bridge.zhongguo_promotion_compensation_postcondition_contrac
 from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import (
     ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
     QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
+)
+from xar_autoplayer.bridge.title_map_navigation_contract import (
+    validate_landed_title_key,
 )
 from xar_autoplayer.environment import (
     EnvironmentSpec,
@@ -1875,9 +1886,13 @@ class _Phase2CrossCycleEndgameSpanDriver:
         service: GameplayBridgeService,
         *,
         source_choreography: _Phase2RealEventChoreographyService,
+        product_subject_title_key: str | None = None,
+        product_switch_ui: object | None = None,
     ) -> None:
         self.service = service
         self.source_choreography = source_choreography
+        self.product_subject_title_key = product_subject_title_key
+        self.product_switch_ui = product_switch_ui
 
     def available_handlers(self) -> tuple[str, ...]:
         return self._HANDLERS
@@ -1947,6 +1962,22 @@ class _Phase2CrossCycleEndgameSpanDriver:
         fixture_install: dict[str, object] | None = None
         activation_restore: dict[str, object] | None = None
         activation_result: object | None = None
+        production_session_receipt: dict[str, object] | None = None
+        if self.product_subject_title_key is not None:
+            enabled = context.runtime_bootstrap.get("enabled_mods")
+            targets = context.runtime_bootstrap.get("targets")
+            if (
+                not isinstance(enabled, list)
+                or any("fixture" in str(value).lower() for value in enabled)
+                or (
+                    isinstance(targets, Mapping)
+                    and "fixture" in targets
+                )
+            ):
+                raise Phase2VisualHandlerError(
+                    "endgame_product_switch_requires_product_only_runtime",
+                    {"runtime_bootstrap": dict(context.runtime_bootstrap)},
+                )
 
         def activate(result: object) -> ActivatedResultSession:
             nonlocal fixture_install, activation_restore, activation_result
@@ -1994,17 +2025,57 @@ class _Phase2CrossCycleEndgameSpanDriver:
                 },
             )
 
+        def activate_product(
+            result: object, owner_checkpoint: Mapping[str, object]
+        ) -> object:
+            nonlocal activation_result, production_session_receipt
+            activation_result = result
+            if not (
+                isinstance(self.product_subject_title_key, str)
+                and self.product_subject_title_key
+                and self.product_switch_ui is not None
+            ):
+                raise Phase2VisualHandlerError(
+                    "endgame_product_switch_ui_unconfigured"
+                )
+            try:
+                session = produce_product_subject_checkpoint_session(
+                    self.service,
+                    result=result,
+                    owner_result_checkpoint=owner_checkpoint,
+                    subject_title_key=self.product_subject_title_key,
+                    ui=self.product_switch_ui,
+                    evidence_directory=(
+                        context.artifacts
+                        / "phase2_cross_cycle_endgame_product_switch"
+                    ),
+                    expected_ck3_pid=context.tracked_ck3_pid,
+                )
+            except ProductSwitchCharacterError as error:
+                raise Phase2VisualHandlerError(
+                    error.reason_code, error.evidence
+                ) from error
+            production_session_receipt = dict(session.transition_receipt)
+            return session
+
         evidence_directory = (
             context.artifacts / "phase2_cross_cycle_endgame_action_cell"
         )
         evidence_directory.mkdir(parents=True, exist_ok=True)
         try:
+            seam_kwargs: dict[str, object] = {
+                "source_checkpoint_restore": source_restore,
+                "build_identity": build_identity,
+                "evidence_directory": evidence_directory,
+            }
+            if self.product_subject_title_key is not None:
+                seam_kwargs["production_subject_session_factory"] = (
+                    activate_product
+                )
+            else:
+                seam_kwargs["activate_result_session"] = activate
             action_cell = run_exact_build_cross_cycle_endgame_seam(
-                self.service,
-                source_checkpoint_restore=source_restore,
-                build_identity=build_identity,
-                activate_result_session=activate,
-                evidence_directory=evidence_directory,
+                self.service, **seam_kwargs
             )
         except BaseException:
             if fixture_install is not None:
@@ -2032,7 +2103,10 @@ class _Phase2CrossCycleEndgameSpanDriver:
                     )
                 },
             )
-        if fixture_install is None or activation_result is None:
+        production_switch = self.product_subject_title_key is not None
+        if activation_result is None or (
+            not production_switch and fixture_install is None
+        ):
             if fixture_install is not None:
                 disable_phase2_endgame_rebind_fixture(
                     context.isolated_userdir, fixture_install, context.artifacts
@@ -2040,24 +2114,57 @@ class _Phase2CrossCycleEndgameSpanDriver:
             raise Phase2VisualHandlerError(
                 "endgame_result_session_was_not_activated"
             )
-        fixture_disable = disable_phase2_endgame_rebind_fixture(
-            context.isolated_userdir, fixture_install, context.artifacts
-        )
-        final_restore = _restore_phase2_endgame_result_checkpoint(
-            self.service,
-            result_binding=activation_result,
-            expected_fixture_enabled=False,
-            label="cross-cycle endgame product-only result presentation",
-        )
+        fixture_disable = None
+        final_restore = None
+        if not production_switch:
+            assert fixture_install is not None
+            fixture_disable = disable_phase2_endgame_rebind_fixture(
+                context.isolated_userdir, fixture_install, context.artifacts
+            )
+            final_restore = _restore_phase2_endgame_result_checkpoint(
+                self.service,
+                result_binding=activation_result,
+                expected_fixture_enabled=False,
+                label="cross-cycle endgame product-only result presentation",
+            )
         final_snapshot = self.service.snapshot()
         if not isinstance(final_snapshot, dict):
             raise acceptance.RunnerError(
                 "cross-cycle endgame final snapshot is not an object"
             )
         end_binding = _phase2_paused_binding(
-            final_snapshot, label="cross-cycle endgame final owner binding"
+            final_snapshot,
+            label=(
+                "cross-cycle endgame final subject binding"
+                if production_switch
+                else "cross-cycle endgame final owner binding"
+            ),
         )
-        visible = _phase2_promo_visible_scenario_surface(self.service, scenario)
+        if production_switch and not (
+            isinstance(production_session_receipt, Mapping)
+            and end_binding["player_character_id"]
+            == getattr(activation_result, "subject_character_id")
+            and end_binding["bridge_pid"] == start_binding["bridge_pid"]
+            and end_binding["connection_generation"]
+            == start_binding["connection_generation"]
+        ):
+            raise Phase2VisualHandlerError(
+                "endgame_product_switch_session_lineage_drifted",
+                {
+                    "start_binding": start_binding,
+                    "end_binding": end_binding,
+                    "production_session_receipt": production_session_receipt,
+                },
+            )
+        visible = (
+            {
+                "event_definition_key": None,
+                "surface": "played_subject_provider_postcondition",
+                "player_character_id": end_binding["player_character_id"],
+            }
+            if production_switch
+            else _phase2_promo_visible_scenario_surface(self.service, scenario)
+        )
         save_lineage_id = getattr(activation_result, "save_lineage_id")
         result_checkpoint_sha256 = getattr(
             activation_result, "result_checkpoint_sha256"
@@ -2069,7 +2176,7 @@ class _Phase2CrossCycleEndgameSpanDriver:
                 "cross_cycle_endgame_exact_result_checkpoint"
             ),
             "handler": ENDGAME_HANDLER,
-            "restore_count": 2,
+            "restore_count": 0 if production_switch else 2,
             "source": {
                 "bridge_pid": start_binding["bridge_pid"],
                 "connection_generation": start_binding[
@@ -2086,10 +2193,19 @@ class _Phase2CrossCycleEndgameSpanDriver:
             "save_lineage_id": save_lineage_id,
             "provider_observed": True,
             "action_ack_only": False,
-            "typed_event_fixture_used": True,
+            "typed_event_fixture_used": not production_switch,
             "business_state_fixture_used": False,
             "console_used": False,
             "generic_character_rebind_used": False,
+            "production_subject_checkpoint_used": production_switch,
+            "official_ui_switch_observed": (
+                production_switch
+                and isinstance(production_session_receipt, Mapping)
+                and production_session_receipt.get(
+                    "official_ui_switch_observed"
+                )
+                is True
+            ),
         }
         evidence = {
             "schema_version": 1,
@@ -2105,6 +2221,7 @@ class _Phase2CrossCycleEndgameSpanDriver:
             "fixture_disable": fixture_disable,
             "activation_restore": activation_restore,
             "final_product_only_restore": final_restore,
+            "production_subject_session": production_session_receipt,
             "visible_surface": visible,
             "managed_session_transition": session_transition,
         }
@@ -2226,6 +2343,9 @@ def _make_default_phase2_promo_span_driver(
     context: Phase2PromoCaptureContext,
 ) -> SequencedPhase2SpanDriver:
     service = context.title_navigation_service
+    endgame_product_switch_title_key = getattr(
+        context, "endgame_product_switch_title_key", None
+    )
     real_events = _Phase2RealEventChoreographyService(service)
     event_choreographer = Phase2EventChoreographer(
         real_events
@@ -2247,7 +2367,16 @@ def _make_default_phase2_promo_span_driver(
             service, event_choreographer=event_choreographer
         ),
         _Phase2CrossCycleEndgameSpanDriver(
-            service, source_choreography=real_events
+            service,
+            source_choreography=real_events,
+            product_subject_title_key=(
+                endgame_product_switch_title_key
+            ),
+            product_switch_ui=(
+                DesktopSwitchCharacterUiDriver(acceptance)
+                if endgame_product_switch_title_key is not None
+                else None
+            ),
         ),
         visual,
     )
@@ -2395,6 +2524,7 @@ def run_phase2_promo_capture_scenario(
     capture_receipt_context: Mapping[str, object] | None = None,
     isolated_userdir: Path | None = None,
     runtime_bootstrap: Mapping[str, object] | None = None,
+    endgame_product_switch_title_key: str | None = None,
 ) -> dict[str, object]:
     """Invoke only the explicitly registered sequel visual producer.
 
@@ -2471,6 +2601,10 @@ def run_phase2_promo_capture_scenario(
         ("source_checkpoint_registry", source_checkpoint_registry),
         ("isolated_userdir", isolated_userdir),
         ("runtime_bootstrap", runtime_bootstrap),
+        (
+            "endgame_product_switch_title_key",
+            endgame_product_switch_title_key,
+        ),
     ):
         if value is not None:
             producer_kwargs[name] = value
@@ -18611,6 +18745,7 @@ def run_cell(
     phase2_scoreboard_surface_checkpoint_registry: (
         Mapping[str, object] | None
     ) = None,
+    phase2_endgame_product_switch_title_key: str | None = None,
 ) -> dict[str, object]:
     phase2_runtime_mode = (
         phase2_live_batch
@@ -19109,6 +19244,9 @@ def run_cell(
                     },
                     isolated_userdir=userdir,
                     runtime_bootstrap=bootstrap,
+                    endgame_product_switch_title_key=(
+                        phase2_endgame_product_switch_title_key
+                    ),
                 )
             except BaseException as error:
                 # Keep a producer's typed RED envelope in the durable report
@@ -20027,6 +20165,7 @@ def main(
     phase2_product_source: str | None = None,
     phase2_product_projection: str = "broad",
     phase2_product_projection_manifest: str | None = None,
+    phase2_endgame_product_switch_title_key: str | None = None,
 ) -> int:
     selected_runtime_modes = sum(
         bool(value)
@@ -20101,6 +20240,25 @@ def main(
     ):
         raise acceptance.RunnerError(
             "scoreboard surface checkpoint registry requires Phase2 live or promo mode"
+        )
+    if phase2_endgame_product_switch_title_key is not None:
+        if not phase2_promo_capture:
+            raise acceptance.RunnerError(
+                "the endgame product Switch Character title key requires "
+                "--phase2-promo-capture"
+            )
+        try:
+            phase2_endgame_product_switch_title_key = (
+                validate_landed_title_key(
+                    phase2_endgame_product_switch_title_key
+                )
+            )
+        except ValueError as error:
+            raise acceptance.RunnerError(
+                f"invalid endgame product subject title key: {error}"
+            ) from error
+        preflight_switch_character_ui_source(
+            acceptance.CK3_EXE.parent.parent
         )
     if bool(phase2_hc_workforce_route_b_checkpoint_registry) != bool(
         phase2_hc_workforce_route_b_live
@@ -20517,6 +20675,9 @@ def main(
         ),
         phase2_scoreboard_surface_checkpoint_registry=(
             scoreboard_surface_checkpoint_registry_value
+        ),
+        phase2_endgame_product_switch_title_key=(
+            phase2_endgame_product_switch_title_key
         ),
     )
     result = report["result"]
@@ -21086,6 +21247,14 @@ if __name__ == "__main__":
         help="expected exact date_raw for the real zg361we.356 frame",
     )
     parser.add_argument(
+        "--phase2-endgame-product-switch-title-key",
+        help=(
+            "landed-title navigation hint for the #361 subject; only the "
+            "formal Phase2 promo endgame may consume it, and native "
+            "CharacterID readback remains the success predicate"
+        ),
+    )
+    parser.add_argument(
         "--phase2-hc-workforce-route-b-checkpoint-output",
         help="new external .ck3 archive written only by the explicit capture mode",
     )
@@ -21255,6 +21424,9 @@ if __name__ == "__main__":
                 ),
                 phase2_product_projection_manifest=(
                     arguments.phase2_product_projection_manifest
+                ),
+                phase2_endgame_product_switch_title_key=(
+                    arguments.phase2_endgame_product_switch_title_key
                 ),
             )
         )

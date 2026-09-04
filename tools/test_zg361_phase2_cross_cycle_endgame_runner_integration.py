@@ -55,6 +55,27 @@ from zhongguo_phase2_promo_producer import (  # noqa: E402
 
 
 class CrossCycleEndgameRunnerIntegrationTests(unittest.TestCase):
+    def test_product_switch_title_key_is_scoped_to_formal_promo_mode(self) -> None:
+        with self.assertRaisesRegex(
+            runner.acceptance.RunnerError,
+            "requires --phase2-promo-capture",
+        ):
+            runner.main(
+                preflight_only=True,
+                phase2_endgame_product_switch_title_key="k_hedong",
+            )
+
+    def test_product_switch_rejects_non_landed_title_key_before_preflight(self) -> None:
+        with self.assertRaisesRegex(
+            runner.acceptance.RunnerError,
+            "invalid endgame product subject title key",
+        ):
+            runner.main(
+                preflight_only=True,
+                phase2_promo_capture=True,
+                phase2_endgame_product_switch_title_key="character/29037",
+            )
+
     def test_formal_registry_assigns_endgame_to_exact_cell_driver(self) -> None:
         context = Phase2PromoCaptureContext(
             stream=object(),
@@ -261,6 +282,161 @@ class CrossCycleEndgameRunnerIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(
             evidence["managed_session_transition"]["restore_count"], 2
+        )
+
+    def test_formal_handler_can_use_product_switch_without_fixture_restore(self) -> None:
+        source_restore = {
+            "result": "GREEN",
+            "handler": runner.ENDGAME_HANDLER,
+            "checkpoint": {"save_lineage_id": "seed-lineage"},
+        }
+
+        class SourceChoreography:
+            def take_registered_source_restore(self, _handler):
+                return source_restore
+
+        class Service:
+            def __init__(self):
+                self.snapshots = iter(
+                    (
+                        {
+                            "snapshot_id": "source",
+                            "revision": 1,
+                            "native_revision": 11,
+                            "date_raw": 100,
+                            "paused": True,
+                            "map_ready": True,
+                            "played_character": {"character_id": 10},
+                            "active_event": {"instance_id": 1},
+                            "diagnostics": {
+                                "bridge_pid": 5001,
+                                "connection_generation": 7,
+                            },
+                        },
+                        {
+                            "snapshot_id": "subject",
+                            "revision": 20,
+                            "native_revision": 30,
+                            "date_raw": 200,
+                            "paused": True,
+                            "map_ready": True,
+                            "played_character": {"character_id": 20},
+                            "active_event": None,
+                            "diagnostics": {
+                                "bridge_pid": 5001,
+                                "connection_generation": 7,
+                            },
+                        },
+                    )
+                )
+
+            def snapshot(self):
+                return next(self.snapshots)
+
+        result_binding = SimpleNamespace(
+            owner_character_id=10,
+            subject_character_id=20,
+            result_date_raw=200,
+            result_checkpoint_sha256="A" * 64,
+            save_lineage_id="seed-lineage",
+        )
+        product_receipt = {
+            "result": "GREEN",
+            "official_ui_switch_observed": True,
+            "typed_event_fixture_used": False,
+            "fixture_used": False,
+        }
+
+        def seam(_service, **kwargs):
+            self.assertNotIn("activate_result_session", kwargs)
+            factory = kwargs["production_subject_session_factory"]
+            session = factory(
+                result_binding,
+                {
+                    "path": "owner.ck3",
+                    "bytes": 12,
+                    "sha256": "A" * 64,
+                },
+            )
+            self.assertEqual(session.transition_receipt, product_receipt)
+            return {
+                "result": "GREEN",
+                "provider_observed_postcondition": True,
+                "action_ack_is_business_postcondition": False,
+            }
+
+        service = Service()
+        driver = runner._Phase2CrossCycleEndgameSpanDriver(
+            service,
+            source_choreography=SourceChoreography(),
+            product_subject_title_key="k_hedong",
+            product_switch_ui=object(),
+        )
+        scenario = next(
+            item
+            for item in runner.PHASE2_CAPTURE_SCENARIOS
+            if item.handler == runner.ENDGAME_HANDLER
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            context = Phase2PromoCaptureContext(
+                stream=object(),
+                artifacts=root,
+                recorder=object(),
+                title_navigation_service=service,
+                tracked_ck3_pid=5001,
+                native_bridge=object(),
+                preflight_bridge_identity={},
+                contract=canonical_phase2_capture_contract(),
+                seed_contract={
+                    "runtime": {
+                        "game_version": runner.ENDGAME_EXACT_GAME_VERSION,
+                        "executable_sha256": runner.ENDGAME_EXACT_EXE_SHA256,
+                    }
+                },
+                isolated_userdir=root / "userdir",
+                runtime_bootstrap={
+                    "enabled_mods": ["mod/product.mod"],
+                    "targets": {"product": {}},
+                },
+                endgame_product_switch_title_key="k_hedong",
+            )
+            with (
+                mock.patch.object(
+                    runner,
+                    "run_exact_build_cross_cycle_endgame_seam",
+                    side_effect=seam,
+                ),
+                mock.patch.object(
+                    runner,
+                    "produce_product_subject_checkpoint_session",
+                    return_value=SimpleNamespace(
+                        transition_receipt=product_receipt
+                    ),
+                ) as producer,
+                mock.patch.object(
+                    runner, "install_phase2_endgame_rebind_fixture"
+                ) as install,
+                mock.patch.object(
+                    runner, "disable_phase2_endgame_rebind_fixture"
+                ) as disable,
+                mock.patch.object(
+                    runner, "_restore_phase2_endgame_result_checkpoint"
+                ) as restore,
+            ):
+                evidence = driver.run_span(scenario, context, {})
+
+        producer.assert_called_once()
+        install.assert_not_called()
+        disable.assert_not_called()
+        restore.assert_not_called()
+        transition = evidence["managed_session_transition"]
+        self.assertEqual(transition["restore_count"], 0)
+        self.assertTrue(transition["production_subject_checkpoint_used"])
+        self.assertTrue(transition["official_ui_switch_observed"])
+        self.assertFalse(transition["typed_event_fixture_used"])
+        self.assertEqual(
+            evidence["visible_surface"]["player_character_id"], 20
         )
 
 

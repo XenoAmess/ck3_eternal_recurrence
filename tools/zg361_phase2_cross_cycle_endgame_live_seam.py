@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Exact-build live seam for the cross-cycle endgame action cell.
 
-This module supplies the two deliberately missing callbacks of
+This module supplies the deliberately narrow callbacks of
 ``zg361_phase2_cross_cycle_endgame_action_cell``.  It advances only the real
 owner-facing product path (356 option A, bounded M357-M359 time, 360 route C,
-then 361), saves the visible 361 frame, reloads that exact save with one
-acceptance-only typed event fixture, and changes to the product-bound subject.
+then 361) and saves the visible 361 frame.  The caller must then select exactly
+one transition: the legacy acceptance-only typed fixture, or the product-only
+official Switch Character UI/child-checkpoint producer.
 
 There is no public arbitrary character-rebind or variable-query operation.
 The target is derived by the fixture from ``zg361_p2c_m360_source_subject``;
@@ -110,6 +111,9 @@ class ActivatedResultSession:
 
 ResultSessionActivator = Callable[
     [EndgameResultBinding], ActivatedResultSession
+]
+ProductionSubjectSessionFactory = Callable[
+    [EndgameResultBinding, Mapping[str, object]], EndgameSubjectProofSession
 ]
 
 
@@ -450,7 +454,10 @@ def run_exact_build_cross_cycle_endgame_seam(
     *,
     source_checkpoint_restore: Mapping[str, object],
     build_identity: Mapping[str, object],
-    activate_result_session: ResultSessionActivator,
+    activate_result_session: ResultSessionActivator | None = None,
+    production_subject_session_factory: (
+        ProductionSubjectSessionFactory | None
+    ) = None,
     request_nonce: str = "zg361.phase2.endgame.exact",
     progression_max_days: int = DEFAULT_PROGRESS_MAX_DAYS,
     timeout_s: float = 60.0,
@@ -459,16 +466,22 @@ def run_exact_build_cross_cycle_endgame_seam(
 ) -> dict[str, object]:
     """Run the fixed 356 -> 360C -> 361 -> subject-provider seam.
 
-    ``activate_result_session`` is lifecycle plumbing only: it installs the
-    named fixture and reloads the exact result save.  This function then
-    re-queries 361, selects its first product option, queries the sole typed
-    fixture event, performs the fixed transition, and lets the action cell
-    query the Workforce provider.  A callback ACK can never make the cell
-    GREEN.
+    Exactly one subject transition seam is allowed.  The legacy
+    ``activate_result_session`` path reloads the result with the named typed
+    fixture.  ``production_subject_session_factory`` instead receives the
+    materialized owner-result checkpoint and must perform CK3's official UI
+    switch plus child-checkpoint binding.  Neither callback ACK can make the
+    action cell GREEN.
     """
 
-    if not callable(activate_result_session):
-        raise ValueError("activate_result_session must be callable")
+    transitions = (
+        callable(activate_result_session),
+        callable(production_subject_session_factory),
+    )
+    if sum(transitions) != 1:
+        raise ValueError(
+            "exactly one result-session transition factory must be callable"
+        )
     _validate_exact_build(build_identity)
     if not isinstance(source_checkpoint_restore, Mapping):
         _fail(
@@ -481,9 +494,12 @@ def run_exact_build_cross_cycle_endgame_seam(
     if not isinstance(lineage, str) or not lineage:
         _fail("source_save_lineage_missing", checkpoint=checkpoint)
 
+    result_checkpoint: dict[str, object] | None = None
+
     def complete(
         service: EndgameLiveService, binding: EndgameVisibleBinding
     ) -> Mapping[str, object]:
+        nonlocal result_checkpoint
         m360 = _wait_for_exact_owner_event(
             service,
             expected_definition=M360_EVENT_DEFINITION_KEY,
@@ -534,6 +550,7 @@ def run_exact_build_cross_cycle_endgame_seam(
             subject=binding.subject_character_id,
             save_lineage_id=lineage,
         )
+        result_checkpoint = saved
         return {
             "result": "GREEN",
             "m360_route": "C",
@@ -547,6 +564,14 @@ def run_exact_build_cross_cycle_endgame_seam(
         }
 
     def subject_session(result: EndgameResultBinding) -> EndgameSubjectProofSession:
+        if production_subject_session_factory is not None:
+            if result_checkpoint is None:
+                _fail(
+                    "production_result_checkpoint_missing",
+                    result_binding=asdict(result),
+                )
+            return production_subject_session_factory(result, result_checkpoint)
+        assert activate_result_session is not None
         service = _validated_activation(
             activate_result_session(result), result=result
         )
@@ -660,6 +685,7 @@ __all__ = [
     "EXACT_EXE_SHA256",
     "EXACT_GAME_VERSION",
     "EndgameLiveService",
+    "ProductionSubjectSessionFactory",
     "ResultSessionActivator",
     "TRANSITION_EVENT",
     "TRANSITION_FIXTURE_ID",
