@@ -165,8 +165,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
     def test_readiness_is_honest(self) -> None:
         self.assertEqual(READINESS, "static-ready")
         self.assertIn("Readiness: `static-ready`", self.spec)
-        self.assertIn("MCP evidence: `none`", self.spec)
-        self.assertIn("CK3 live evidence: `none`", self.spec)
+        self.assertIn("MCP evidence: 首次启动只取得 loader/material RED 与 cleanup GREEN", self.spec)
+        self.assertIn("CK3 live evidence: `RED only`", self.spec)
+        self.assertIn("B3 readiness 仍为 `static-ready-live-pending`", self.spec)
+        self.assertIn("未进入 paused gameplay", self.spec)
+        self.assertIn("不触发\nsize A/B", self.spec)
         self.assertNotIn("fixture-live", self.spec.split("## Readiness boundary", 1)[0])
 
     def test_generated_outputs_are_current_bom_and_isolated(self) -> None:

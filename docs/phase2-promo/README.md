@@ -23,6 +23,12 @@ seed-entry 的加载根因也已纠正：仅做用途拆分的 r2/r3 仍 RED；�
 因此“文件过大”不是本次已证明根因；B2+ 仍严格执行用途分片（目标 1–10、原则不超过 20），用于闭包选择、维护与后续
 加载性能 A/B。r9 新增层为 72 个 effect 文件 / 314 definitions，单片最大 10，无超限例外。
 
+B3 manager 首次真实启动已执行，但在 `310.617 s` 因累计投影漏选 central dispatch provider 而 RED；CK3 实际报告
+`record_stage` / `record_red` Unknown effect，递归静态 closure 还闭合到同 provider 的 `mark_lane_busy` / `schedule_pump`。
+cleanup GREEN。这是 material/call-graph closure RED，不是文件大小因果证据，所以当前不触发 size A/B。`ce458af` 的全产品
+边界审计仍为 427 files / 3,718 effects / max non-legacy 10 / 0 target miss / 0 violations。证据哈希与后续判定规则见
+[`b3-manager-first-live-startup-red-2026-09-04.md`](b3-manager-first-live-startup-red-2026-09-04.md)。
+
 ## 两条正式路线
 
 | 版本 | 权威导演稿 | 叙事主角 | 目标时长 |

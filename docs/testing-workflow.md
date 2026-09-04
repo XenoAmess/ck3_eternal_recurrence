@@ -1065,6 +1065,21 @@ isolated userdir 建立发生在 CK3 启动前，只计作 preparation；CK3 loa
 7 个用途 effect 分片 / 43 effects / 单片最大 10，没有超过 20 的例外。完整回执与 focused B2 分层状态见
 [`phase2-promo/b2-first-use-loader-and-seed-evidence-2026-09-04.md`](phase2-promo/b2-first-use-loader-and-seed-evidence-2026-09-04.md)。
 
+### B3 首次 live 的反例：先闭合 material/call graph，再判断性能
+
+`ce458af` 的首次 B3 manager 实机在 `310.617 s` 后 RED；outer/cell/final-error SHA-256 分别为
+`B319F853623FF9443F3941F4078559D6E24CDBF0EF5D75BDCEBE269A5D961923`、
+`8CCD24257185BB39529BCEC0FAE9F03ACAABCF281455CE55BC49D6C159E4AC56`、
+`C52DC7DAA975A6EA8EB60CCEF5429E35B0299CCD4A090EEFBEE995EE491956CF`，且 native cleanup GREEN。真实 loader log 已明确报告
+`zg361_p2c_record_stage_effect` / `zg361_p2c_record_red_effect` 为 Unknown effect；随后递归静态 closure 还发现同一漏选
+provider 承载 `zg361_p2c_mark_lane_busy_effect` / `zg361_p2c_schedule_pump_effect`。因此这轮必须分类为
+**material/call-graph closure RED**，不能因为 wall time 长就改写成文件大小问题；当前不做 size A/B。
+
+同一 `ce458af` 的边界审计仍为 GREEN：427 个 effect 文件、3,718 个定义、非 legacy 单片最大 10、target miss 0、`>20`
+违规 0。以后只有在同一候选已经排除更早 parser/material/call-graph 首错，且剩余症状是纯 loader-performance RED 时，才执行
+只改变顶层定义文件边界的同条件 A/B。B3 完整证据见
+[`phase2-promo/b3-manager-first-live-startup-red-2026-09-04.md`](phase2-promo/b3-manager-first-live-startup-red-2026-09-04.md)。
+
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑

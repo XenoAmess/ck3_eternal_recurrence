@@ -3,8 +3,8 @@
 ## Readiness boundary
 
 - Readiness: `static-ready`
-- MCP evidence: `none`
-- CK3 live evidence: `none`
+- MCP evidence: 首次启动只取得 loader/material RED 与 cleanup GREEN；没有业务 snapshot
+- CK3 live evidence: `RED only`，未进入 paused gameplay
 - 目标编号：`032–036` 与 `345–354`，共 15 项。
 - 明确不含：`312–333`；该段属于职业/学习子包，不得由本运行时抢占。
 - 本规格证明的是确定生成、产品脚本、状态/收据/期限/资源合同与 L0 静态测试。它不是 fixture-live、production-live 或发版签核。
@@ -46,6 +46,21 @@
 映射回历史 aggregate 并验证每个 block 字节完全一致，同时拒绝缺失、重复、额外定义及旧单体残留。这里没有启动 CK3，
 所以这项证据只达到 `static-ready`；下一次 B3 product projection 实机应记录 loader 时长与首错。若出现加载性能 RED，按
 `docs/testing-workflow.md` 的同条件文件边界 A/B 规程继续细拆，不能把静态分片本身写成加载 GREEN 或根因证明。
+
+### 首次 B3 live：material/call-graph closure RED
+
+这份失败证据不提升能力状态，B3 readiness 仍为 `static-ready-live-pending`。
+`ce458af` 的首次真实启动在 `310.617 s` 后 RED，outer/cell/final-error SHA-256 分别为
+`B319F853623FF9443F3941F4078559D6E24CDBF0EF5D75BDCEBE269A5D961923`、
+`8CCD24257185BB39529BCEC0FAE9F03ACAABCF281455CE55BC49D6C159E4AC56`、
+`C52DC7DAA975A6EA8EB60CCEF5429E35B0299CCD4A090EEFBEE995EE491956CF`；native cleanup GREEN。CK3 真实打印的首错是
+stage-10 调用未物化的 `zg361_p2c_record_stage_effect` / `zg361_p2c_record_red_effect`。递归静态 closure 又证明同一
+provider 文件还供应 `zg361_p2c_mark_lane_busy_effect` / `zg361_p2c_schedule_pump_effect`；后两项不是冒充的 live log。
+
+故这轮是候选投影漏选 central dispatch provider 的 material/call-graph closure RED，不是单文件大小的因果证据，不触发
+size A/B。`ce458af` 全产品边界审计为 427 files / 3,718 effects / max non-legacy 10 / target misses 0 / `>20` violations 0。
+只有闭合更早 parser/material/call-graph 错误后仍出现纯 loader-performance RED，才按同条件规程继续拆分 A/B。完整证据见
+[`docs/phase2-promo/b3-manager-first-live-startup-red-2026-09-04.md`](../../docs/phase2-promo/b3-manager-first-live-startup-red-2026-09-04.md)。
 
 确定性语义 oracle 是 `tools/zg361_manager_governance_model.py`，其测试是
 `tools/test_zg361_manager_governance_model.py`；CK3 生成层测试是
