@@ -84,8 +84,8 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertTrue(inherited_exceptions[0]["reason"])
         self.assertTrue(inherited_exceptions[0]["live_evidence"])
         self.assertEqual(64, len(inherited_exceptions[0]["live_evidence_sha256"]))
-        self.assertEqual(12_104_708, candidate["expected_bytes"])
-        self.assertEqual(3_469_806, self.contract["overlay"]["bytes"])
+        self.assertEqual(12_105_211, candidate["expected_bytes"])
+        self.assertEqual(3_470_309, self.contract["overlay"]["bytes"])
 
     def test_phase_core_is_pinned_and_purpose_split(self) -> None:
         rows, check = closure.phase_core_overlay_rows(self.contract)
@@ -466,7 +466,7 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
             self.assertEqual(252, result["candidate"]["expected_file_count"])
-            self.assertEqual(12_104_708, result["candidate"]["expected_bytes"])
+            self.assertEqual(12_105_211, result["candidate"]["expected_bytes"])
             self.assertEqual(139, result["overlay"]["file_count"])
             selection = result["checks"]["selection"]
             self.assertEqual(397, selection["full"]["effects"])

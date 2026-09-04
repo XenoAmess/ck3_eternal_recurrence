@@ -156,7 +156,7 @@
     ]
   },
   "candidate": {
-    "projection": "phase2-seed-entry-production-closure-20260904-r8",
+    "projection": "phase2-seed-entry-production-closure-20260904-r9",
     "expected_file_count": 252,
     "expected_overlay_file_count": 139,
     "expected_effect_files": 76,
@@ -214,11 +214,11 @@
       "zg361_is_current_liege_review_record_trigger",
       "zg361_is_elimination_candidate_trigger"
     ],
-    "expected_bytes": 12104708,
-    "source_tree_sha256": "c2e3deec48dc31294414fbf140eaf2d0603f3f4b6a5f34af9c3ec9bbcebb42cd",
-    "formal_overlay_tree_sha256": "5195a306c13fa74fcc815ebeb047887f7bba8b956d00fb7102e752135fe9ea62",
+    "expected_bytes": 12105211,
+    "source_tree_sha256": "de7533ad89af2fe6d76b83ddab4b4197948aef388d01c0e0ab6904b70956d78f",
+    "formal_overlay_tree_sha256": "a3c7f17f515edcb243d97d5c421928ac29b037e278aa0adc740a2c4dc4e914a6",
     "file_list_sha256": "4103f444fa14403b5df8821e1a4a2d84f4ec44d583e68ee7fb0b775fb5d311de",
-    "projection_manifest_sha256": "36454eef4ea867dd6bf05defcbcce0e8c10ffb03a2d125a29930cef1daea8227",
+    "projection_manifest_sha256": "51bc473295d049a14d832f819d1c5490387a5b145436c3415497ece4dca30c00",
     "ck3_launch": "PENDING_EXTERNAL_B2_SEED_RECAPTURE",
     "live_status": "pending_b2_seed_recapture",
     "prior_live_evidence": {
@@ -233,8 +233,8 @@
     }
   },
   "overlay": {
-    "bytes": 3469806,
-    "inventory_sha256": "81af2dd17b2dfe6bbe47350bf66189261310ce0d71c8213435e0e00f19ec77f4",
+    "bytes": 3470309,
+    "inventory_sha256": "32492b98d3e452fe87a93532779db22ad334a47a8b18a683f491bd4baae0bd14",
     "files": []
   },
   "forbidden_paths": [
