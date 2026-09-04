@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_projects_metrics_production_choreography_audit",
+  "span_id": "phase2_projects_metrics",
+  "audited_commit": "1341251dd028b68adf5a4adeb497c94acf3a9471",
+  "readiness": "offline-trace-complete-production-choreography-blocked",
+  "ck3_started": false,
+  "shared_runner_modified": false,
+  "seed": {
+    "contract": "tools/zg361_phase2_seed_contract.json",
+    "save_sha256": "BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733",
+    "save_bytes": 53517622,
+    "played_character_id": 29037,
+    "candidate_owner_character_id": 32904,
+    "paused_on_load": true,
+    "state_limit": "the seed contract proves the save binding and character IDs, but does not prove any central-stage, CP26, or P3 variable"
+  },
+  "target_checkpoint": {
+    "owner_visible_source_event": "zg361cp.26",
+    "source_route_allowlist": [
+      "A",
+      "B"
+    ],
+    "played_character_role_at_save": "project_subject",
+    "owner_role_at_save": "distinct_ai_project_owner",
+    "paused": true,
+    "active_player_event": false,
+    "cp26_contribution_receipt_ready": true,
+    "p3_initializer_run": false,
+    "p3_result_committed": false,
+    "same_cycle_required": true
+  },
+  "audited_product_edges": {
+    "central_dispatch": {
+      "dispatcher": "zg361_p2c_pump_effect",
+      "stage_order": [
+        {
+          "stage": 7,
+          "effect": "zg361_p2c_stage_07_metrics_delivery_effect",
+          "public_adapter": "zg361_p3_open_portfolio_effect"
+        },
+        {
+          "stage": 8,
+          "effect": "zg361_p2c_stage_08_credit_project_effect",
+          "public_adapter": "zg361_cp_open_portfolio_effect"
+        }
+      ],
+      "normal_stage_poll_days": 2,
+      "consequence": "P3 initialization is attempted before the only production caller of the CP portfolio in the same central cycle"
+    },
+    "credit_project": {
+      "launch_effect": "zg361_cp_e_launch_effect",
+      "ai_owner_path": "zg361_cp_e_run_authorized_ai_effect",
+      "player_owner_first_event": "zg361cp.30",
+      "cp30_a_or_b_to_cp26_delay_days": 1,
+      "cp26_a_or_b_to_cp27_delay_days": 1,
+      "cp26_owner_gate": [
+        "is_ai = no",
+        "this = scope:zg361_cp_e_owner"
+      ],
+      "cp26_receipt_variables": [
+        "zg361_cp_m26_receipt_owner",
+        "zg361_cp_m26_receipt_subject",
+        "zg361_cp_m26_receipt_cycle",
+        "zg361_cp_m26_receipt_case",
+        "zg361_cp_m26_receipt_state",
+        "zg361_cp_m26_receipt_choice",
+        "zg361_cp_m26_contribution_receipt_id",
+        "zg361_cp_m26_contribution_receipt_revision",
+        "zg361_cp_m26_visible_value"
+      ],
+      "route_a": {
+        "choice": 1,
+        "minimum_capacity": 23,
+        "visible_value": 1
+      },
+      "route_b": {
+        "choice": 2,
+        "minimum_capacity": 22,
+        "visible_value": 2
+      }
+    },
+    "phase3": {
+      "launch_effect": "zg361_p3_aa_launch_effect",
+      "initializer": "zg361_p3_initialize_portfolio_effect",
+      "initializer_sets_source_ready_zero_first": true,
+      "initializer_only_copies_cp26_when_owner_subject_cycle_match": true,
+      "initializer_and_ai_m229_run_in_one_effect_call": true,
+      "provider_allowlist_prefix": "zg361_p3_",
+      "provider_reads_cp26_variables_directly": false
+    }
+  },
+  "current_production_trace": [
+    {
+      "ordinal": 1,
+      "state": "phase2 seed restored",
+      "static_result": "seed binding only; central/CP/P3 state unknown"
+    },
+    {
+      "ordinal": 2,
+      "state": "a valid B1 publication starts the central tuple at stage 1",
+      "static_result": "stages 1 through 6 must finish or be classified before projects/metrics is reached"
+    },
+    {
+      "ordinal": 3,
+      "state": "stage 7 opens Phase3",
+      "static_result": "zg361_p3_initialize_portfolio_effect runs before stage 8 can create CP26"
+    },
+    {
+      "ordinal": 4,
+      "state": "stage 8 opens the credit/project portfolio",
+      "static_result": "a player owner receives zg361cp.30; A/B schedules zg361cp.26 at D+1"
+    },
+    {
+      "ordinal": 5,
+      "state": "player owner selects CP26 A or B",
+      "static_result": "the CP26 receipt is ready, but p3_initializer_run=false is already impossible on the healthy path"
+    },
+    {
+      "ordinal": 6,
+      "state": "later central cycle",
+      "static_result": "the Phase3 initializer requires CP26 receipt_cycle equal to the new review_serial, so the prior-cycle receipt cannot repair the lineage"
+    }
+  ],
+  "near_misses": [
+    {
+      "id": "player-owner-ui-path",
+      "cp26_ui_receipt": true,
+      "cp26_business_receipt": true,
+      "p3_initializer_absent": false,
+      "provider_source_ready_before_initializer": false,
+      "terminal_postcondition_reachable": false,
+      "reason": "stage 7 already initialized P3 before stage 8 exposes CP26"
+    },
+    {
+      "id": "ai-owner-background-path",
+      "cp26_ui_receipt": false,
+      "cp26_business_receipt": true,
+      "p3_initializer_absent": false,
+      "provider_source_ready_before_initializer": false,
+      "terminal_postcondition_reachable": false,
+      "reason": "both Phase3 and CP use authorized background AI routes; no real CP26 UI exists"
+    },
+    {
+      "id": "stage7-red-then-stage8",
+      "cp26_ui_receipt": "conditional",
+      "cp26_business_receipt": "conditional",
+      "p3_initializer_absent": true,
+      "provider_source_ready_before_initializer": false,
+      "terminal_postcondition_reachable": false,
+      "reason": "a failed stage 7 may leave P3 absent, but the central pump records RED and advances past the only P3 stage; this is not a valid source-to-result production path"
+    }
+  ],
+  "reachability_verdict": {
+    "target_reachable_from_seed_on_current_healthy_production_graph": false,
+    "reason_code": "cp_producer_runs_after_p3_consumer",
+    "first_blocking_edge": "zg361_p2c_stage_07_metrics_delivery_effect precedes zg361_p2c_stage_08_credit_project_effect",
+    "time_advance_alone_can_fix": false,
+    "player_switch_alone_can_fix": false,
+    "source_checkpoint_capture_contract_satisfiable": false,
+    "capture_contract_contradiction": "capture currently requires provider source_ready/result_pending and p3_initializer_not_run, but the provider reads only zg361_p3_* projection variables and source_ready=1 is written only by zg361_p3_initialize_portfolio_effect"
+  },
+  "allowed_and_forbidden_operations": {
+    "statically_authorized_product_actions": [
+      "select a visible production event option through the managed event API",
+      "advance game life in bounded increments",
+      "pause without advancing date",
+      "save and hash the managed native checkpoint"
+    ],
+    "live_only_candidate_not_yet_proven": [
+      "use CK3's ordinary single-player Switch Character UI to move owner to subject without advancing the date"
+    ],
+    "forbidden": [
+      "acceptance fixture",
+      "console command",
+      "test decision",
+      "manual variable mutation",
+      "generic character rebind",
+      "ACK used as business evidence"
+    ]
+  },
+  "minimum_product_repair_candidate": {
+    "implemented_by_this_audit": false,
+    "change": "run the CP portfolio stage before the Phase3 metrics stage in the same immutable central cycle",
+    "post_repair_checkpoint_window": "after the complete CP portfolio closes and before the first Phase3 launch, while paused and event-free",
+    "owner_subject_transition_requirement": "the owner must remain player for the real CP UI chain, then a production UI transition to the subject must be live-proven before Phase3; the owner must be distinct AI at checkpoint save",
+    "provider_gap": "the current P3-only provider cannot directly prove CP26 before the initializer; either archive the checkpoint first and prove it by a later same-save P3 result on a clone, or add a narrow read-only CP26 source query",
+    "runner_integration": "not implemented; the shared runner remains untouched"
+  },
+  "cannot_close_statically": [
+    "whether the historical seed still satisfies every current-product B1 and central launch guard",
+    "whether current CK3 exposes a stable ordinary Switch Character UI for this exact owner/subject pair without date advancement",
+    "the exact delivered frame and pause window after each days=1 or days=2 scheduled event",
+    "a real CP26 A/B UI receipt",
+    "the CP26 variable values in native state before P3 because the current provider does not read them",
+    "checkpoint bytes, SHA-256, game date, mount lineage, UI receipt, and provider receipt",
+    "a provider-observed P3M229 business postcondition"
+  ],
+  "next_live_gate_after_product_repair": {
+    "readiness": "not-ready-to-launch-current-product",
+    "steps": [
+      "freeze a product build containing the repaired stage order",
+      "restore the byte-identical Phase2 seed and prove all launch guards",
+      "reach CP26 as owner and select A or B through real UI",
+      "finish the CP portfolio without fixture or console mutation",
+      "pause before Phase3, switch to subject through a production UI path, and prove owner is now distinct AI",
+      "save and hash the event-free CP26-ready/P3-absent checkpoint",
+      "run the existing query-action-postcondition cell on a disposable restore and retain the provider result"
+    ]
+  }
+}
