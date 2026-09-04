@@ -1,0 +1,208 @@
+{
+  "schema_version": 2,
+  "kind": "zg361_projects_metrics_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "source": {
+    "base_commit": "13d78c6dedb3da866d075fa0ce70cb2c4307dcb5",
+    "candidate_commit": "5c54014c7317bd2446bd342d7205cf00fe024dc9",
+    "canonical_refreeze_commit": "5c54014c7317bd2446bd342d7205cf00fe024dc9",
+    "contains_integrated_fix_commit": "953634265ebf298cec3f2cf3065060e577dc8d17",
+    "native_source_fingerprint_sha256": "AAE0588178B082B7A10391792BE889C3D5976E51906485B380C22DCBBBC0A388",
+    "native_source_file_count": 292,
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "1EFBA340F25B6B5C744B8C1DF4211B8CD65EC5B18AECD9F22276E0E507463BDC",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_projects_metrics_postcondition_v1.hpp": "29E5225DB8E2D9B7B19854AF472351B51E50B6A66129DE90AA9C5AFFDBC27035",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1.cpp": "753A47ADE4B7BACB1919CE5982EB7C467209CF5F755B0DE1390F0586DFC64461",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp": "5CF7B4A451542D5A190D63650C99732B4B27A16DB283E63A0E878A1063EFC3AC",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp": "56D8C6920C5C119CD293CF161EE9F572B99646C381AB6C5AC08CB36ABA8BF032",
+      "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp": "2934D2F730650564F5E4DB28F6B1AAF6B5495FF7163F5362B339DDB57D2A737F",
+      "ck3_autonomous_player/native_bridge/src/bridge.cpp": "C07201DD49DAFF5AC54C59F4CFC6EC3D0D3A67F1FDD8B9F1A7B030C2847C8E87",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "2662AABD13C07A14AEA1AEEE59DB7A8289BDEDB87EB3E5361F3E3BB4F2F78B91",
+      "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json": "C0135B790089DE3807AE2139431C3CD1DF3867D61408E36CD64DF17B5DC4FADD",
+      "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json": "362E9E88FF0A2AC8A7EC5CD396959A7200ED9F4F6D8519C953FE1798B903F0F2",
+      "ck3_autonomous_player/schemas/zhongguo-projects-metrics-postcondition-v1.schema.json": "3763B17F937D4C36C5643A41D54CCD449CD23A8F5F94CDDB4A4EDBED7BBDBFD4",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_projects_metrics_postcondition_contract.py": "468D4CE43A28606148290B00B715F04DC33BA7F5BF95299949AFE37B66B37195",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": "799146D8ADCDB416071F261A9721858868D57A6302A8F9CD43878351975F1C84",
+      "tools/zg361_phase2_projects_metrics_action_cell.py": "A439A99090E248D201298E11528BBA2D8FF6ADE9144874D3F2C828BE21766D52",
+      "tools/zg361_phase2_projects_metrics_action_contract.json": "C243B12DFBC1D6A95A39EB8507EE141978A55FEE30BA845D40967D3E4B51D999",
+      "tools/preflight_zg361_phase2_projects_metrics_action_cell.py": "C12F6796BEC62BB79CEBC4786F9B74A75E6D31E0EE425E81C004385985DBD8F7",
+      "tools/zg361_phase2_projects_metrics_source_checkpoint.py": "4879798875C870D769F6A9D31429F1117A32FE84E3BA6F82AFAD633C21313A92",
+      "tools/zg361_phase2_projects_metrics_source_checkpoint_contract.json": "3CB88949D93DFBD0721391C16A747E062E6094DAAE6E976776DBF0174E564D4F",
+      "tools/preflight_zg361_phase2_projects_metrics_source_checkpoint.py": "B9FCA0B9A2894C0C86526EB6E65EC7A3EDE8E7D2D770CEB5A38EAD6CFAC1486B",
+      "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py": "73DE7770720AA67C6E571BD78EC3575EDAA0A0BE6123BEB731E6F736BDC4B0C1",
+      "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_007_stage07_09_effects.txt": "891B3BC94736092E07D92A195AE996F2079E9895978E0DB5D69E275D65C6F046",
+      "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_010_serial_pump_effects.txt": "4FD3407166020F89FEDAD1F21077573BF32A70816104EC6013781426C94B0134",
+      "mod_zhongguo_style/common/scripted_effects/zg361_credit_project_m026_effort_ledger_effects.txt": "8E04A9AE0A2A9E5CD4BBBE39DA42AF058AF52F682479908666F22088B0B09000",
+      "mod_zhongguo_style/common/scripted_effects/zg361_phase3_portfolio_lifecycle_effects.txt": "3A7DC2626C7071E9B52DE0AA57A807D229A8106DE3643C13DABFBA1C7AC7559E",
+      "tools/verify_zg361_projects_metrics_no_launch_candidate.py": "0F6D31E811336A4D2FD85DF03BE511CB6340421F88323D760456744757CFF88D",
+      "tools/test_verify_zg361_projects_metrics_no_launch_candidate.py": "42ABCA3EA937641297532C5D547A18B761B8B640C5D914178AA25975B6B462F0"
+    }
+  },
+  "production_contract": {
+    "integrated_fix_commit": "953634265ebf298cec3f2cf3065060e577dc8d17",
+    "stage_order": [
+      {
+        "stage": 7,
+        "purpose": "credit_project",
+        "effect": "zg361_p2c_stage_07_credit_project_effect",
+        "adapter": "zg361_cp_open_portfolio_effect"
+      },
+      {
+        "stage": 8,
+        "purpose": "metrics_delivery",
+        "effect": "zg361_p2c_stage_08_metrics_delivery_effect",
+        "adapter": "zg361_p3_open_portfolio_effect"
+      }
+    ],
+    "checkpoint_state_v2": {
+      "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
+      "available_states": [
+        "cp26_ready_p3_absent",
+        "p3_initialized_source_not_ready",
+        "p3_source_ready_result_pending",
+        "p3_result_committed"
+      ],
+      "source_capture_state": "cp26_ready_p3_absent",
+      "registry_schema_version": 2,
+      "direct_cp26_fields": 15,
+      "p3_cycle_fields": 1,
+      "p3_source_result_fields": 24,
+      "total_allowlist_fields": 40,
+      "ack_is_business_evidence": false
+    },
+    "effect_boundary": {
+      "target_max_per_file": 10,
+      "hard_max_per_file": 20,
+      "shard_count": 10,
+      "max_effects_per_file": 9,
+      "hard_limit_exceptions": [],
+      "purpose_shards": {
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_001_m360_source_effects.txt": 3,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_002_m275_requisition_effects.txt": 2,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_003_dispatch_control_effects.txt": 9,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_004_lifecycle_hooks_effects.txt": 2,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_005_stage01_03_effects.txt": 6,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_006_incident_stages_effects.txt": 3,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_007_stage07_09_effects.txt": 3,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_008_stage10_manager_governance_effects.txt": 1,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_009_stage11_workforce_endgame_effects.txt": 3,
+        "mod_zhongguo_style/common/scripted_effects/zg361_phase2_central_010_serial_pump_effects.txt": 1
+      }
+    }
+  },
+  "build": {
+    "configuration": "Release",
+    "generator": "Ninja",
+    "compiler": "MSVC 19.51.36248.0",
+    "candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=ON",
+    "default_source_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=OFF",
+    "career_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1=OFF",
+    "artifact_directory": "Z:/ck3_mod_rewrite_process_assets/zg361/projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z/candidate-build",
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge.dll",
+      "bytes": 2361856,
+      "sha256": "61F307CFFB9999B9D740732449FB4A8517B8454EA942E0FFC746054347A08601"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "86F0099C0AAC14066DA391D0FBAC398D08229FC5E7CEF377A958505E155AF5AE"
+    },
+    "cmake_cache_path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\CMakeCache.txt",
+    "cmake_cache_sha256": "E379EE5DEBA16E28D91B9B10305756D594E1E890C57ADAB9ADFD1FF73051BC75",
+    "dependency_gate": {
+      "ck3_11906_cpp": "6 dependencies including ck3_11906.hpp",
+      "ck3_11906_adapter_cpp": "22 dependencies including ck3_11906.hpp"
+    }
+  },
+  "tests": {
+    "focused_native": {
+      "result": "GREEN",
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "xar_ck3_native_bridge_adapter_registry",
+        "xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1",
+        "xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1_mailbox"
+      ]
+    },
+    "candidate_verifier_unit": {
+      "result": "GREEN",
+      "normal": "5 passed",
+      "optimized": "5 passed, 1 expected pytest -O warning"
+    },
+    "focused_python": {
+      "result": "GREEN",
+      "normal": "70 passed, 3 subtests passed",
+      "optimized": "70 passed, 4 expected pytest -O warnings, 3 subtests passed",
+      "suites": {
+        "central_runtime": 38,
+        "production_choreography": 6,
+        "source_checkpoint": 7,
+        "action_cell": 6,
+        "provider_and_contract": 13
+      }
+    },
+    "static_preflights": {
+      "result": "GREEN",
+      "source_checkpoint_checks": 12,
+      "action_cell_checks": 14,
+      "frozen_candidate_checks": 21
+    }
+  },
+  "ck3_executable_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "ck3_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "mailbox": {
+    "slot": "permitted_executor_quattuorvigintary",
+    "new_slot_allocated": false,
+    "query_thread": "paused_application_main_mailbox"
+  },
+  "event_binding": {
+    "facade": "bind_projects_metrics_event_snapshots_v1",
+    "source_event": "zg361cp.26",
+    "result_event": "zg361p3.229",
+    "background_action_cell_same_visual_cell": false,
+    "reason": "visible events are owner-rooted while the provider is intentionally subject-rooted under a distinct AI owner"
+  },
+  "checkpoint_audit": {
+    "status": "not_captured",
+    "source_checkpoint_registry_entry_count": 0,
+    "cp26_route_a_or_b_ui_receipt_count": 0,
+    "cp26_ready_p3_absent_provider_receipt_count": 0,
+    "schema2_registry_written": false,
+    "fixture_or_console_state_fabricated": false,
+    "static_limit": "stage order and capture contract are proven; real product state, UI receipt, paused provider response, native save bytes/date/SHA and lineage remain live-only"
+  },
+  "live_attempt": {
+    "attempt_id": "projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z",
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt",
+    "status": "absent",
+    "started": false,
+    "consumed": false,
+    "checkpoint": "played subject; distinct AI owner; paused; no active event; real CP26 A/B receipt; checkpoint_state=cp26_ready_p3_absent"
+  },
+  "commands": {
+    "ck3_launch": {
+      "starts_ck3": true,
+      "executed": false,
+      "powershell": "& 'Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe' 'Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\ck3_autonomous_player\\agent.py' --state-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state' --game-dir 'Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III' --bridge-mode native-headless --bridge-pipe '\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922' --bridge-dll 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge.dll' --bridge-injector 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge_injector.exe' native-session --timeout 21600 --cold-start-checkpoint",
+      "precondition": "the attempt state profile must first be materialized product-only with hash-bound xar_checkpoint.ck3; this candidate does not fabricate that save"
+    },
+    "observe_route_a": {
+      "executed": false,
+      "powershell": "& 'Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe' 'Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_projects_metrics_source_checkpoint.py' --live --bridge-pipe '\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922' --state-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state' --save-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state\\profile\\save games' observe-ui --route A --capture-lineage 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\capture-lineage.json' --output 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\cp26-route-a-ui-receipt.json'"
+    },
+    "capture_checkpoint": {
+      "executed": false,
+      "powershell": "& 'Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe' 'Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_projects_metrics_source_checkpoint.py' --live --bridge-pipe '\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922' --state-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state' --save-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state\\profile\\save games' capture-checkpoint --owner-character-id 32904 --capture-lineage 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\capture-lineage.json' --ui-receipt 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\cp26-route-a-ui-receipt.json' --checkpoint-root 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\checkpoint' --registry 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\projects-metrics-source-checkpoint-registry.json'"
+    }
+  },
+  "static_preflight_command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/verify_zg361_projects_metrics_no_launch_candidate.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_source_capture_no_launch_candidate_5c54014_20260904.json --check",
+  "formal_runner_registry_modified": false,
+  "production_files_modified_by_freeze": false,
+  "ck3_started": false,
+  "gameplay_action_executed": false,
+  "live_proof_claimed": false,
+  "action_ack_is_business_postcondition": false,
+  "production_advertisement_ready": false
+}

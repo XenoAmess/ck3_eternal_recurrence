@@ -50,6 +50,11 @@ provider 在 application main thread、paused snapshot 上做两次完整 allowl
 
 当前已有权威生成器输出、生成器单测、独立 C++ fixture reader/serializer 测试、JSON schema、ABI/source contract 与 Python source-contract 测试。fixture 只证明闭合投影和负例逻辑，不证明 CK3 内存可读或事件可见。
 
+当前 canonical `5c54014` 的 fresh private build、schema-2 source-capture manifest、
+stage 7→8 与 effect 文件边界取证、精确但未执行的 CK3 命令，集中冻结在
+[projects/metrics source-capture no-launch freeze](zhongguo-projects-metrics-source-capture-no-launch-5c54014-2026-09-04.md)。
+该候选仍只到 `static-ready-live-pending`，不会改变本页的 live/readiness 边界。
+
 中央 production choreography 已把同一不可变 cycle 的 Credit/Project producer 固定为 stage 7、Metrics/Delivery consumer 固定为 stage 8；P3 opener 只能在 CP portfolio 同周期闭合后运行。生成器分片仍为 10 个 whole-file purpose shards、每文件最多 9 个 effect，无 `>20` 例外。
 
 共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。默认 CK3 adapter 仍不广告该 capability，因此没有 paused live 时会 fail-closed。下一步仍须在 exact build 上取得真实 `cp26_ready_p3_absent` paused response，再从该保存点执行有界时间推进并核对同一 receipt 的 `p3_result_committed`；在此之前不得写 `fixture-live`、`production-live primitive` 或生产 GREEN。

@@ -26,11 +26,21 @@ ROOT = Path(__file__).resolve().parents[1]
 CAPABILITY = "game.command.query-zhongguo-projects-metrics-postcondition-v1"
 PRIVATE_SWITCH = "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1"
 EXPECTED_BASE_COMMIT = "13d78c6dedb3da866d075fa0ce70cb2c4307dcb5"
+EXPECTED_PRODUCTION_FIX_COMMIT = (
+    "953634265ebf298cec3f2cf3065060e577dc8d17"
+)
 EXPECTED_EXE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 SOURCE_EVENT = "zg361cp.26"
 RESULT_EVENT = "zg361p3.229"
+CHECKPOINT_ALLOWLIST_ID = "zg361-cp26-direct-p3m229-lineage-v2"
+CHECKPOINT_STATES = [
+    "cp26_ready_p3_absent",
+    "p3_initialized_source_not_ready",
+    "p3_source_ready_result_pending",
+    "p3_result_committed",
+]
 
 
 def _sha256(path: Path) -> str:
@@ -43,6 +53,37 @@ def _sha256(path: Path) -> str:
 
 def _mapping(value: object) -> Mapping[str, object]:
     return value if isinstance(value, Mapping) else {}
+
+
+def _top_level_definition_count(payload: str) -> int:
+    """Count Clausewitz definitions without treating unindented body rows as roots."""
+
+    depth = 0
+    count = 0
+    for raw_line in payload.splitlines():
+        line = raw_line.split("#", 1)[0]
+        if depth == 0 and re.match(r"^[A-Za-z0-9_]+\s*=\s*\{", line):
+            count += 1
+        depth += line.count("{") - line.count("}")
+        if depth < 0:
+            return -1
+    return count if depth == 0 else -1
+
+
+def _native_source_fingerprint(native_root: Path) -> tuple[str, int]:
+    files = [native_root / "CMakeLists.txt"]
+    for tree in ("include", "src"):
+        files.extend(
+            path
+            for path in (native_root / tree).rglob("*")
+            if path.is_file() and path.suffix in {".cpp", ".hpp", ".h", ".c"}
+        )
+    files.sort(key=lambda path: str(path))
+    lines = [
+        f"{path.relative_to(native_root)}\0{_sha256(path)}" for path in files
+    ]
+    payload = "\n".join(lines).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest().upper(), len(files)
 
 
 def _running_process_names() -> list[str]:
@@ -74,10 +115,18 @@ def verify_projects_metrics_no_launch_candidate(
     """Return a deterministic no-launch report for one frozen candidate."""
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_schema = manifest.get("schema_version")
+    v2_manifest = manifest_schema == 2
     source = _mapping(manifest.get("source"))
     build = _mapping(manifest.get("build"))
     attempt = _mapping(manifest.get("live_attempt"))
     boundary = _mapping(manifest.get("event_binding"))
+    production = _mapping(manifest.get("production_contract"))
+    stage_order = production.get("stage_order")
+    checkpoint_v2 = _mapping(production.get("checkpoint_state_v2"))
+    effect_boundary = _mapping(production.get("effect_boundary"))
+    commands = _mapping(manifest.get("commands"))
+    ck3_launch = _mapping(commands.get("ck3_launch"))
     bridge = _mapping(build.get("bridge"))
     injector = _mapping(build.get("injector"))
     frozen_files = _mapping(source.get("frozen_files"))
@@ -105,13 +154,39 @@ def verify_projects_metrics_no_launch_candidate(
         / "ck3_autonomous_player/src/xar_autoplayer/bridge/"
         "zhongguo_projects_metrics_postcondition_contract.py"
     )
+    capture_contract_path = (
+        source_root
+        / "tools/zg361_phase2_projects_metrics_source_checkpoint_contract.json"
+    )
+    pump_path = (
+        source_root
+        / "mod_zhongguo_style/common/scripted_effects/"
+        "zg361_phase2_central_010_serial_pump_effects.txt"
+    )
+    stage_path = (
+        source_root
+        / "mod_zhongguo_style/common/scripted_effects/"
+        "zg361_phase2_central_007_stage07_09_effects.txt"
+    )
+    generator_path = (
+        source_root
+        / "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
+    )
 
     cmake = cmake_path.read_text(encoding="utf-8")
     adapter = adapter_path.read_text(encoding="utf-8")
     abi = json.loads(abi_path.read_text(encoding="utf-8"))
     source_contract = json.loads(source_contract_path.read_text(encoding="utf-8"))
     action_contract = json.loads(action_contract_path.read_text(encoding="utf-8"))
+    capture_contract = (
+        json.loads(capture_contract_path.read_text(encoding="utf-8"))
+        if v2_manifest
+        else {}
+    )
     facade = facade_path.read_text(encoding="utf-8")
+    pump = pump_path.read_text(encoding="utf-8-sig") if v2_manifest else ""
+    stages = stage_path.read_text(encoding="utf-8-sig") if v2_manifest else ""
+    generator = generator_path.read_text(encoding="utf-8") if v2_manifest else ""
 
     bridge_path = Path(str(bridge.get("path", "")))
     injector_path = Path(str(injector.get("path", "")))
@@ -152,9 +227,53 @@ def verify_projects_metrics_no_launch_candidate(
         )
 
     visual = _mapping(action_contract.get("visual_checkpoint_boundary"))
+    expected_stage_order = [
+        {
+            "stage": 7,
+            "purpose": "credit_project",
+            "effect": "zg361_p2c_stage_07_credit_project_effect",
+            "adapter": "zg361_cp_open_portfolio_effect",
+        },
+        {
+            "stage": 8,
+            "purpose": "metrics_delivery",
+            "effect": "zg361_p2c_stage_08_metrics_delivery_effect",
+            "adapter": "zg361_p3_open_portfolio_effect",
+        },
+    ]
+    stage7_dispatch = (
+        "var:zg361_p2c_stage = 7 } "
+        "zg361_p2c_stage_07_credit_project_effect = yes"
+    )
+    stage8_dispatch = (
+        "var:zg361_p2c_stage = 8 } "
+        "zg361_p2c_stage_08_metrics_delivery_effect = yes"
+    )
+    purpose_shards = effect_boundary.get("purpose_shards")
+    shard_checks: dict[str, bool] = {}
+    shard_counts: list[int] = []
+    if isinstance(purpose_shards, Mapping):
+        for relative, recorded_count in purpose_shards.items():
+            shard_path = source_root / str(relative)
+            if shard_path.is_file():
+                payload = shard_path.read_text(encoding="utf-8-sig")
+                observed_count = _top_level_definition_count(payload)
+            else:
+                observed_count = -1
+            shard_checks[str(relative)] = (
+                isinstance(recorded_count, int)
+                and recorded_count == observed_count
+                and 1 <= observed_count <= 10
+                and observed_count <= 20
+            )
+            shard_counts.append(observed_count)
+    launch_command = str(ck3_launch.get("powershell", ""))
+    native_fingerprint, native_file_count = _native_source_fingerprint(
+        source_root / "ck3_autonomous_player/native_bridge"
+    )
     checks = {
         "manifest_identity": (
-            manifest.get("schema_version") == 1
+            manifest_schema in (1, 2)
             and manifest.get("kind")
             == "zg361_projects_metrics_no_launch_candidate"
             and manifest.get("readiness") == "static-ready-live-pending"
@@ -165,6 +284,14 @@ def verify_projects_metrics_no_launch_candidate(
         ),
         "frozen_source_files_match": bool(frozen_file_checks)
         and all(frozen_file_checks.values()),
+        "native_source_fingerprint_matches": (
+            not v2_manifest
+            or (
+                source.get("native_source_fingerprint_sha256")
+                == native_fingerprint
+                and source.get("native_source_file_count") == native_file_count
+            )
+        ),
         "private_switch_default_off": option_match is not None,
         "private_capability_guarded": guarded_capability is not None,
         "candidate_cache_opted_in": (
@@ -216,6 +343,79 @@ def verify_projects_metrics_no_launch_candidate(
             and visual.get("result_event") == RESULT_EVENT
             and visual.get("same_cell_as_background_provider") is False
         ),
+        "production_stage7_precedes_stage8": (
+            not v2_manifest
+            or (
+                stage_order == expected_stage_order
+                and stage7_dispatch in pump
+                and stage8_dispatch in pump
+                and pump.index(stage7_dispatch) < pump.index(stage8_dispatch)
+                and "zg361_cp_open_portfolio_effect" in stages
+                and "zg361_p3_open_portfolio_effect" in stages
+                and '(7, "credit_project", "zg361_cp_open_portfolio_effect")'
+                in generator
+                and '(8, "metrics_delivery", "zg361_p3_open_portfolio_effect")'
+                in generator
+            )
+        ),
+        "checkpoint_state_v2_bound": (
+            not v2_manifest
+            or (
+                production.get("integrated_fix_commit")
+                == EXPECTED_PRODUCTION_FIX_COMMIT
+                and checkpoint_v2.get("allowlist_id")
+                == CHECKPOINT_ALLOWLIST_ID
+                and checkpoint_v2.get("available_states")
+                == CHECKPOINT_STATES
+                and checkpoint_v2.get("source_capture_state")
+                == "cp26_ready_p3_absent"
+                and checkpoint_v2.get("registry_schema_version") == 2
+                and abi.get("allowlist_id") == CHECKPOINT_ALLOWLIST_ID
+                and _mapping(abi.get("readiness")).get("checkpoint_state")
+                == " | ".join(CHECKPOINT_STATES)
+                and capture_contract.get("schema_version") == 2
+                and _mapping(capture_contract.get("required_checkpoint")).get(
+                    "provider_checkpoint_state"
+                )
+                == "cp26_ready_p3_absent"
+                and _mapping(capture_contract.get("registry")).get(
+                    "schema_version"
+                )
+                == 2
+            )
+        ),
+        "purpose_effect_shards_within_limit": (
+            not v2_manifest
+            or (
+                effect_boundary.get("target_max_per_file") == 10
+                and effect_boundary.get("hard_max_per_file") == 20
+                and effect_boundary.get("hard_limit_exceptions") == []
+                and effect_boundary.get("shard_count") == 10
+                and isinstance(purpose_shards, Mapping)
+                and len(purpose_shards) == 10
+                and bool(shard_checks)
+                and all(shard_checks.values())
+                and max(shard_counts, default=-1)
+                == effect_boundary.get("max_effects_per_file")
+                and max(shard_counts, default=21) <= 10
+            )
+        ),
+        "exact_ck3_command_frozen_not_executed": (
+            not v2_manifest
+            or (
+                ck3_launch.get("executed") is False
+                and ck3_launch.get("starts_ck3") is True
+                and "native-session" in launch_command
+                and "--cold-start-checkpoint" in launch_command
+                and str(bridge_path) in launch_command
+                and str(injector_path) in launch_command
+                and str(manifest.get("ck3_executable_path", ""))
+                .replace("/binaries/ck3.exe", "")
+                .replace("\\binaries\\ck3.exe", "")
+                in launch_command
+                and str(attempt.get("attempt_id", "")) in launch_command
+            )
+        ),
         "formal_registry_not_modified": (
             manifest.get("formal_runner_registry_modified") is False
             and not any("run_zhongguo_acceptance.py" in key for key in frozen_files)
@@ -248,6 +448,7 @@ def verify_projects_metrics_no_launch_candidate(
         "readiness": "static-ready-live-pending" if not failed else "research",
         "checks": checks,
         "frozen_file_checks": frozen_file_checks,
+        "purpose_shard_checks": shard_checks,
         "failed_checks": failed,
         "bridge_sha256": (
             _sha256(bridge_path) if bridge_path.is_file() else None
