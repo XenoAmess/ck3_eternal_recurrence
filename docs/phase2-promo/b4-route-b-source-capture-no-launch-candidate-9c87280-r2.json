@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_b4_wait360411_route_b_source_capture_no_launch_candidate",
+  "candidate_id": "b4-route-b-source-capture-9c87280-20260904-r2",
+  "observed_at": "2026-09-04T16:17:12+08:00",
+  "result": "RED_NO_LAUNCH",
+  "readiness": "static-ready-live-blocked-by-seed-product-tree",
+  "ck3_launched": false,
+  "claims": {
+    "live_checkpoint_created": false,
+    "live_registry_created": false,
+    "provider_live_result_observed": false,
+    "action_ack_is_business_postcondition": false,
+    "fixture_output_is_business_postcondition": false
+  },
+  "source": {
+    "base_commit": "9c87280187250077afd99deb48e4126d5d19f87a",
+    "base_subject": "Replay workforce Route B wait boundary",
+    "branch": "task/hc-workforce-route-b-source-capture-candidate-20260904",
+    "worktree": "Z:\\ck3_mod_rewrite\\_hc-workforce-route-b-source-capture-candidate-20260904",
+    "production_code_changed_by_candidate": false,
+    "runner_changed_by_candidate": false,
+    "effect_shards_changed_by_candidate": false
+  },
+  "candidate_root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2",
+  "product_projection": {
+    "name": "b4-route-b-wait360411-9c87280-r2",
+    "source": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\product-source",
+    "manifest": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\product-projection.json",
+      "bytes": 154312,
+      "sha256": "92e392c5ed98e899ee7662dcbdb1209d793eeeeb6a05ec2ae274644251e3cf54"
+    },
+    "file_count": 735,
+    "bytes": 29378142,
+    "source_tree_sha256": "aeaa96e2cf44c6154f8a61a5aa859b27cbe423e40d48703485cd0a301aea865d",
+    "formal_overlay_tree_sha256": "639f3a9265894bbe757d5aeb008f972d3f9704f77e26fbaf65510b7ee84ecec7",
+    "file_list_sha256": "1d25977b0936d1b8545dac878e88b8758d05e3306c12b2b887b58e03202b383e",
+    "tracked_checkout_bytes_only": true,
+    "generator_check": "GREEN"
+  },
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "ck3_executable": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+    },
+    "bridge_dll": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\native\\xar_ck3_bridge.dll",
+      "bytes": 2356736,
+      "sha256": "f3b7a6592f0ee75d2188844dd6fca21bd9d7434513941eb6407c12acb0b3aba8"
+    },
+    "bridge_injector": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\native\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "3100800d06a99153cfcab2ac8e183903c9b5246dad0b8717b2772db934ec13a2"
+    },
+    "native_source_diff_from_build_to_base": [],
+    "native_test_provenance": {
+      "source_commit": "3d4dcb47dda4f61568842535eaed71bf6cf2e569",
+      "source_fingerprint_sha256": "590fae6de49b44f992de48c4c4e16cfa2d1e3af05e4a0c3ef1294b4f802fcc51",
+      "ctest_total": 92,
+      "ctest_result": "GREEN",
+      "ctest_log": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3g-fecd2f2-20260904-073033Z\\native-ctest.txt",
+        "bytes": 18241,
+        "sha256": "6c07e4c761c1c4897f801d9fd5b0f7fc62344f3c6568976ad2562855fea4a396"
+      },
+      "attempt_manifest": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3g-fecd2f2-20260904-073033Z\\attempt-manifest.json",
+        "bytes": 1877880,
+        "sha256": "dc2656a1238d0c67af1a5755ee604a646649f65eaa9016400658d46e8a391967"
+      }
+    }
+  },
+  "route_b_contract": {
+    "event_definition_key": "zg361we.360",
+    "native_option_index": 1,
+    "option_must_be_shown": true,
+    "option_must_be_enabled": true,
+    "owner_and_subject_must_differ": true,
+    "current_cycle_workforce_fact_count": 8,
+    "current_cycle_workforce_facts": [
+      "exact_owner_subject_cycle_case",
+      "m360_receipt_state_4_choice_2",
+      "route_b_collective_sealed_consumed_settled",
+      "three_distinct_cohorts",
+      "each_cohort_forced_equals_quota",
+      "each_cohort_exception_zero",
+      "each_cohort_manager_cost_zero",
+      "collective_totals_conserved"
+    ],
+    "m361_charter_required_for_capture": false,
+    "generic_three_cycle_m361_verifier_remains_strict": true,
+    "provider_seal_precedes_registry_writer": true,
+    "career_hc_provider_default_off": true,
+    "choreography": [
+      "stage11_prepare_real_m360_source",
+      "bind_owner_subject_p2c_cycle_case_al_cycle_case_ticket",
+      "set_typed_wait_reason_360411",
+      "schedule_zg361p2c.7_at_d_plus_1",
+      "event_7_revalidates_ticket_and_current_al_state_4",
+      "resume_real_product_m360_in_ticket_subject_scope",
+      "observe_real_owner_facing_zg361we.360_option_b",
+      "freeze_before_action",
+      "execute_route_b_and_collect_workforce_provider",
+      "seal_8_current_cycle_facts",
+      "restore_pre_b_checkpoint",
+      "write_strict_registry"
+    ],
+    "static_checks": {
+      "transition_fixture_requires_production_ticket": true,
+      "production_ready_has_typed_d1_wait_boundary": true,
+      "d1_ticket_resumes_real_product_in_subject_scope": true,
+      "b4_seals_current_m360_without_claiming_m361": true,
+      "ack_and_fixture_output_rejected_as_postcondition": true
+    }
+  },
+  "effect_boundary": {
+    "scope": "B2-and-later scripted-effect files",
+    "result": "GREEN",
+    "file_count": 427,
+    "effect_count": 3719,
+    "target_range_per_file": "1-10",
+    "target_miss_count": 0,
+    "principle_max_effects_per_file": 20,
+    "violation_count": 0,
+    "maximum_non_legacy_effect_count": 10,
+    "live_loading_performance_observed_this_attempt": false
+  },
+  "focused_static_verification": [
+    {
+      "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py",
+      "result": "GREEN",
+      "checks": 11
+    },
+    {
+      "command": "focused B4 Route-B unittest files",
+      "result": "GREEN",
+      "tests": 34
+    },
+    {
+      "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/test_zg361_phase2_workforce_action_fixture.py",
+      "result": "GREEN"
+    },
+    {
+      "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py --check",
+      "result": "GREEN"
+    },
+    {
+      "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe mod_zhongguo_style/tools/test_zg361_phase2_central_runtime.py",
+      "result": "GREEN",
+      "tests": 38
+    },
+    {
+      "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe mod_zhongguo_style/tools/effect_file_boundaries.py",
+      "result": "GREEN"
+    },
+    {
+      "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/validate_static.py",
+      "result": "GREEN"
+    }
+  ],
+  "formal_no_launch_preflight": {
+    "executed": true,
+    "exit_code": 1,
+    "runner_identity_preflight": "GREEN",
+    "failure_gate": "current_product_tree_matches_seed_source",
+    "failure_message": "phase-two seed install RED: current_product_tree_matches_seed_source",
+    "current_product_tree_sha256": "aeaa96e2cf44c6154f8a61a5aa859b27cbe423e40d48703485cd0a301aea865d",
+    "supplied_seed_product_tree_sha256": "cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd",
+    "ck3_process_count_before": 0,
+    "ck3_process_count_after": 0,
+    "checkpoint_output_exists_after": false,
+    "registry_output_exists_after": false,
+    "live_artifacts_directory_exists_after": false,
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "tools/run_zhongguo_acceptance.py",
+      "--preflight",
+      "--phase2-hc-workforce-route-b-capture-live",
+      "--phase2-hc-workforce-route-b-checkpoint-output",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\future-live-output\\hc-workforce-route-b-pre-option-b-9c87280-r2.ck3",
+      "--phase2-hc-workforce-route-b-registry-output",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\future-live-output\\hc-workforce-route-b-registry-9c87280-r2.json",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\native\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\native\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_9c87280187250077afd99deb48e4126d",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\zg361_phase2_seed_contract.json",
+      "--phase2-product-source",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\product-source",
+      "--phase2-product-projection",
+      "b4-route-b-wait360411-9c87280-r2",
+      "--phase2-product-projection-manifest",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\product-projection.json",
+      "--artifacts-dir",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\live-artifacts-r2"
+    ]
+  },
+  "ready_seed_search": {
+    "current_product_tree_match_count": 0,
+    "observed_ready_product_trees": [
+      {
+        "source_commit": "e332c3bdfe3d5bedf0f3d1a3d028c7c3a6ee4560",
+        "date_raw": 53146920,
+        "source_product_tree_sha256": "cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd"
+      },
+      {
+        "source_commit": "1ae57f5609c9d2373646fb167dbceb571054919d",
+        "date_raw": 53147016,
+        "source_product_tree_sha256": "c2e3deec48dc31294414fbf140eaf2d0603f3f4b6a5f34af9c3ec9bbcebb42cd"
+      },
+      {
+        "source_commit": "29c4962cdbdd7e2c43368bc4b5cbe3ad24592b92",
+        "date_raw": 53147016,
+        "source_product_tree_sha256": "de7533ad89af2fe6d76b83ddab4b4197948aef388d01c0e0ab6904b70956d78f"
+      },
+      {
+        "source_commit": "cfad890b47fbe72459eb553fa23e8e9bcc7bb478",
+        "date_raw": 53147016,
+        "source_product_tree_sha256": "fc4218469ce72ea1bca4e5bc0e5fa668e644ec05dea537e38ebda607ae72dc8f"
+      }
+    ]
+  },
+  "live_command": {
+    "executed": false,
+    "authorized": false,
+    "authorization_blocker": "No genuine ready seed contract is bound to product tree aeaa96e2cf44c6154f8a61a5aa859b27cbe423e40d48703485cd0a301aea865d. Refresh the canonical paused seed under this exact projection, then rerun the identical argv with --preflight and require exit 0 before removing --preflight.",
+    "argv_after_green_preflight": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "tools/run_zhongguo_acceptance.py",
+      "--phase2-hc-workforce-route-b-capture-live",
+      "--phase2-hc-workforce-route-b-checkpoint-output",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\future-live-output\\hc-workforce-route-b-pre-option-b-9c87280-r2.ck3",
+      "--phase2-hc-workforce-route-b-registry-output",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\future-live-output\\hc-workforce-route-b-registry-9c87280-r2.json",
+      "--bridge-dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\native\\xar_ck3_bridge.dll",
+      "--bridge-injector",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\native\\xar_ck3_bridge_injector.exe",
+      "--bridge-pipe",
+      "\\\\.\\pipe\\xar_ck3_bridge_zg361_9c87280187250077afd99deb48e4126d",
+      "--phase2-seed-contract",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\future-live-output\\zg361_phase2_seed_contract.current-product.json",
+      "--phase2-product-source",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\product-source",
+      "--phase2-product-projection",
+      "b4-route-b-wait360411-9c87280-r2",
+      "--phase2-product-projection-manifest",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\product-projection.json",
+      "--artifacts-dir",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b4-route-b-source-capture-9c87280-20260904-r2\\live-artifacts-r2"
+    ]
+  },
+  "rejected_attempts": [
+    {
+      "candidate_id": "b4-route-b-source-capture-9c87280-20260904-r1",
+      "rejected": true,
+      "reason": "git archive preserved LF blobs while the Windows generator reproduces checkout CRLF/BOM bytes; frozen gen_361_phase2_central_runtime.py --check reported stale outputs. r1 must not be used for live capture."
+    }
+  ],
+  "remaining_live_checkpoint": "Produce a genuine canonical paused seed under the exact r2 product tree, obtain a GREEN formal no-launch preflight, then exclusively launch CK3 once to observe ticket -> WAIT360411 -> D+1 zg361p2c.7 -> real owner-facing zg361we.360, freeze before option B, seal the 8 Workforce facts after action, restore, and publish the strict registry."
+}
