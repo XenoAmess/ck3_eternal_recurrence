@@ -31,6 +31,13 @@ LEAF_CONTEXT_MANIFEST = (
     / "fixtures"
     / "g2_evaluated_days_leaf_context_v2_live_manifest.json"
 )
+PRODUCTION_MANIFEST = (
+    ROOT
+    / "native_bridge"
+    / "research"
+    / "fixtures"
+    / "g2_evaluated_days_production_live_manifest.json"
+)
 SPEC = importlib.util.spec_from_file_location(
     "prepare_g2_evaluated_days_current_pin_capture", SCRIPT
 )
@@ -356,6 +363,28 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
         )
         self.assertFalse(manifest["open_kaishek"]["native_certified"])
         self.assertFalse(manifest["open_kaishek"]["runtime_certified"])
+
+    def test_committed_production_manifest_is_default_off_and_not_live(self) -> None:
+        manifest = json.loads(PRODUCTION_MANIFEST.read_text(encoding="utf-8"))
+        PREFLIGHT.validate_manifest_contract(manifest)
+        self.assertEqual(
+            manifest["candidate_kind"], "production_leaf_context_v1"
+        )
+        self.assertEqual(
+            manifest["candidate_source_commit"],
+            "1941c56aba1e0eae31b5319575425d21123b2b86",
+        )
+        self.assertEqual(
+            manifest["open_kaishek"]["commit"],
+            "98c13d02ba1c772836a35f782716a0b3679b7ee8",
+        )
+        self.assertTrue(
+            all(value == "OFF" for key, value in manifest["build_contract"].items()
+                if key.endswith("_option"))
+        )
+        self.assertFalse(manifest["boundaries"]["production_live_validated"])
+        self.assertFalse(manifest["boundaries"]["actual_expiry_observable"])
+        self.assertFalse(manifest["boundaries"]["gen034_closed"])
 
     def test_leaf_context_v2_contract_and_preflight(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -415,3 +415,53 @@ r2 使用显式 private leaf-context 构建；虽然该候选的两次 terms pay
 保持 exact-build fail-closed 和纯只读边界，冻结 default binary 后再申请一次 fresh paused 同帧双查询，验证不启用
 private capture 时 public terms 仍稳定返回 1825。expiry、generic war-bound、campaign/budget、white-peace、action 与
 postcondition 继续作为后续独立门，不因本次 private GREEN 合并提升。
+
+## 2026-09-04 default-production leaf reader candidate
+
+[static-ready / production-live pending] Candidate source commit
+`1941c56aba1e0eae31b5319575425d21123b2b86`, replayed on canonical
+`27b66b3ea34c3ad03bdc72a4fb14345628a7a606`, moves only the r2-proven
+synchronous leaf-context read into the default production path. The installed
+exact-build preview-entry hook supplies the transient leaf wrapper; the reader
+requires its `+0x28` evaluation-context pointer, binds the callback's
+`effect_this` to the unique resolved
+`root[7].default.children[1].children[0].children[0]` CAddTruce node, and
+performs the same two equal nonnegative evaluator calls before the wrapper
+returns. It does not execute the effect and does not derive persisted expiry.
+
+The fresh Release build at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\frozen`
+has all four G2 private/diagnostic options OFF. Frozen SHA-256 identities are:
+
+- default `xar_ck3_bridge.dll`:
+  `1ACC24DB476A7B1ECB4F0A98EF2E9A74D0E932CB74F5884622530D77246E3244`;
+- injector:
+  `03ED1EE07AC58E1E6F7ADDE31518C732C1D60CDBFFC3B50938D7E1CF84C877C5`;
+- `CMakeCache.txt`:
+  `D031DCBD98E05CBABE675B04FA9DD408BB067F65438EEB5AEAC387CF6F0EF9A6`;
+- source ZIP:
+  `84951CE78C3E075B609A1534005E82F246AACE102AD7BFE80106C1364C78DBC2`.
+
+The clean native build completed all 483 steps. CTest reached an equivalent
+`92/92` GREEN: 85 tests passed initially, while seven source-contract tests
+reported only the isolated worktree's missing ignored game-EXE path; after a
+read-only junction restored that exact input, those seven passed without
+rerunning the other 85. G2/Raiktor Python regression is `212 passed` plus 85
+subtests; the production preflight's normal and optimized tests are both
+`12 passed`.
+
+The immutable manifest is
+`g2_evaluated_days_production_live_manifest.json`, SHA-256
+`6B5783BCA00A1B082AA5FEC834EE73A95860535549B7525A616C82F178265C58`.
+No-launch preflight
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\preflight-production-leaf-r1.json`
+is `ready-to-run`, SHA-256
+`1FAF531BFD7B185550E82388275A470994694852BD9FC42F93A14F6789714421`;
+the fresh attempt directory remains absent. Its sole emitted command runs the
+existing public termination-terms runner twice and contains no private JSONL
+environment, analyzer, mutation command, or time advance.
+
+This is not production-live evidence yet. Public readiness is unchanged,
+`expiry_observable=false`, decision and automatic surrender remain false, and
+`GEN-034` remains unresolved. The next legal gate is exactly the manifest's
+fresh default-binary dual-query attempt; do not repeat the r2 private build.
