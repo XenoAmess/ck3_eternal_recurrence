@@ -107,3 +107,51 @@ accepted as result evidence.
 No receipt or action artifact was produced while implementing this plumbing,
 so readiness remains **static-ready-live-pending** until a real capture and
 live action run are retained.
+
+## Explicit capture entry and no-launch preflight
+
+The formal runner now exposes a dedicated product-only capture mode:
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py" `
+  --phase2-incident-source-checkpoint-capture `
+  --phase2-frontend-first-load-save-name <REAL_PRODUCT_SAVE> `
+  --phase2-seed-contract <MATCHING_REAL_SEED_CONTRACT> `
+  --phase2-product-source <EXACT_PRODUCT_TREE> `
+  --bridge-dll <EXACT_BUILD_BRIDGE_DLL> `
+  --bridge-injector <EXACT_BUILD_INJECTOR>
+```
+
+After the managed product save reaches a paused map, this mode only polls
+native snapshots. It does not resume the timeline, select an event option, use
+the console, or install a fixture. When a real event window is present, the
+strict seam must prove exact `zg361.50`, player=root=subject, a distinct saved
+notice owner, shown/enabled option 1, and unchanged provider/UI/save frame
+bindings. A different blocking event is a typed RED; the runner does not
+dismiss it to manufacture the target state.
+
+A successful capture writes:
+
+- `cell/05_phase2_incident_source_checkpoint_capture.json`;
+- `cell/incident-source-checkpoint/strict-receipt.json`;
+- `cell/incident-source-checkpoint/schema2-registry-entry.json`; and
+- the content-addressed `.ck3` bytes under
+  `cell/incident-source-checkpoint/checkpoints/`.
+
+The schema-2 entry is a deterministic projection of the validated strict
+receipt and can be inserted as the Incident row of the four-span capture
+manifest. It carries the checkpoint bytes/SHA/date/save lineage binding and
+the full strict receipt; it does not turn an ACK into source evidence.
+
+The implementation can be checked without creating a service or starting CK3:
+
+```powershell
+& "tools\.venv\Scripts\python.exe" `
+  "tools\preflight_zg361_phase2_incident_source_capture.py"
+```
+
+With no retained live paths this returns static GREEN while the separate live
+gate remains `strict_incident_source_checkpoint_pending`. Supplying
+`--capture-report` and `--registry-entry` makes the preflight re-open and hash
+the strict receipt, entry, and checkpoint bindings. No live artifact was
+created during this no-launch implementation pass.

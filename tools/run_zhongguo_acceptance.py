@@ -36,6 +36,11 @@ from zg361_phase2_product_projection import (
     ProductProjectionError,
     materialize_projection,
 )
+from zg361_phase2_incident_source_capture_entry import (
+    LIVE_CAPTURE_KIND as INCIDENT_SOURCE_LIVE_CAPTURE_KIND,
+    IncidentSourceCaptureEntryError,
+    wait_for_and_capture_incident_source_checkpoint,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -645,6 +650,7 @@ WINDOWS_ENGLISH_US_KLID = "00000409"
 WINDOWS_ENGLISH_US_LANGID = 0x0409
 WINDOWS_ENGLISH_US_HKL = 0x04090409
 WM_INPUTLANGCHANGEREQUEST = 0x0050
+PHASE2_INCIDENT_SOURCE_CAPTURE_TIMEOUT_S = 300.0
 
 # Full phase-two acceptance is deliberately fail-closed.  Existing providers
 # may be exercised by focused fixture-live work, but --phase2-live-batch is the
@@ -782,6 +788,23 @@ PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS = (
 )
 PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
     "save_checkpoint",
+)
+PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
+    "paused_snapshot",
+    "map_ready_state",
+    "played_character_state",
+    "active_event_state",
+    "save_checkpoint",
+    "current_event_context",
+    "loaded_feature_manifest",
+)
+PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS = (
+    "current_event_context",
+    "loaded_feature_manifest",
+)
+PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
+    "save_checkpoint",
+    "loaded_feature_manifest",
 )
 # Provider readiness and gameplay completion are separate gates.  Every frozen
 # read-only provider belongs to the capability preflight below; the missing
@@ -7257,46 +7280,59 @@ def phase2_runtime_capability_preflight(
     focused_b2_same_checkpoint: bool = False,
     focused_hc_workforce_route_b: bool = False,
     focused_endgame_source_capture: bool = False,
+    focused_incident_source_capture: bool = False,
 ) -> dict[str, object]:
     """Fail before navigation unless the selected Phase2 MCP surface exists."""
 
     evidence_path = artifacts / "02_phase2_mcp_capabilities.json"
     bridge_labels = (
-        PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
-        if focused_endgame_source_capture
+        PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        if focused_incident_source_capture
         else (
-            PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS
-            if focused_hc_workforce_route_b
+            PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
+            if focused_endgame_source_capture
             else (
-                PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
-                if focused_b2_same_checkpoint
-                else tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
+                PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS
+                if focused_hc_workforce_route_b
+                else (
+                    PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
+                    if focused_b2_same_checkpoint
+                    else tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
+                )
             )
         )
     )
     query_labels = (
-        PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
-        if focused_endgame_source_capture
+        PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
+        if focused_incident_source_capture
         else (
-            PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS
-            if focused_hc_workforce_route_b
+            PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS
+            if focused_endgame_source_capture
             else (
-                PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
-                if focused_b2_same_checkpoint
-                else tuple(PHASE2_REQUIRED_QUERY_FLAGS)
+                PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS
+                if focused_hc_workforce_route_b
+                else (
+                    PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
+                    if focused_b2_same_checkpoint
+                    else tuple(PHASE2_REQUIRED_QUERY_FLAGS)
+                )
             )
         )
     )
     action_labels = (
-        PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
-        if focused_endgame_source_capture
+        PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
+        if focused_incident_source_capture
         else (
-            PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_ACTION_STEP_LABELS
-            if focused_hc_workforce_route_b
+            PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS
+            if focused_endgame_source_capture
             else (
-                PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
-                if focused_b2_same_checkpoint
-                else tuple(PHASE2_REQUIRED_ACTION_STEPS)
+                PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_ACTION_STEP_LABELS
+                if focused_hc_workforce_route_b
+                else (
+                    PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
+                    if focused_b2_same_checkpoint
+                    else tuple(PHASE2_REQUIRED_ACTION_STEPS)
+                )
             )
         )
     )
@@ -7314,21 +7350,26 @@ def phase2_runtime_capability_preflight(
         "schema_version": 1,
         "result": "RED",
         "scope": (
-            "focused_endgame_source_capture_mcp_capability_profile"
-            if focused_endgame_source_capture
+            "focused_incident_source_capture_mcp_capability_profile"
+            if focused_incident_source_capture
             else (
-                "focused_hc_workforce_route_b_mcp_capability_profile"
-                if focused_hc_workforce_route_b
+                "focused_endgame_source_capture_mcp_capability_profile"
+                if focused_endgame_source_capture
                 else (
-                    "complete_phase2_mcp_capability_profile"
-                    if not focused_b2_same_checkpoint
-                    else "focused_b2_same_checkpoint_mcp_capability_profile"
+                    "focused_hc_workforce_route_b_mcp_capability_profile"
+                    if focused_hc_workforce_route_b
+                    else (
+                        "complete_phase2_mcp_capability_profile"
+                        if not focused_b2_same_checkpoint
+                        else "focused_b2_same_checkpoint_mcp_capability_profile"
+                    )
                 )
             )
         ),
         "focused_b2_same_checkpoint": focused_b2_same_checkpoint,
         "focused_hc_workforce_route_b": focused_hc_workforce_route_b,
         "focused_endgame_source_capture": focused_endgame_source_capture,
+        "focused_incident_source_capture": focused_incident_source_capture,
         "tracked_ck3_pid": tracked_ck3_pid,
         "managed_restore_supervisor": managed_restore_supervisor,
         "mcp_only": True,
@@ -12481,6 +12522,7 @@ def run_loader_gate(
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
     phase2_endgame_source_capture_live: bool = False,
+    phase2_incident_source_checkpoint_capture: bool = False,
 ) -> dict[str, object]:
     """Run the native/log/mount loader gate and persist every RED boundary."""
 
@@ -12491,6 +12533,7 @@ def run_loader_gate(
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
+        or phase2_incident_source_checkpoint_capture
     )
     evidence_path = artifacts / "03_loader_gate.json"
     evidence: dict[str, object] = {
@@ -12498,24 +12541,28 @@ def run_loader_gate(
         "result": "RED",
         "scope": "exact_build_loader_gate_before_gameplay",
         "mode": (
-            "phase2_endgame_source_capture_live"
-            if phase2_endgame_source_capture_live
+            "phase2_incident_source_checkpoint_capture"
+            if phase2_incident_source_checkpoint_capture
             else (
-                "phase2_hc_workforce_route_b_capture_live"
-                if phase2_hc_workforce_route_b_capture_live
+                "phase2_endgame_source_capture_live"
+                if phase2_endgame_source_capture_live
                 else (
-                    "phase2_hc_workforce_route_b_live"
-                    if phase2_hc_workforce_route_b_live
+                    "phase2_hc_workforce_route_b_capture_live"
+                    if phase2_hc_workforce_route_b_capture_live
                     else (
-                        "phase2_promo_capture"
-                        if phase2_promo_capture
+                        "phase2_hc_workforce_route_b_live"
+                        if phase2_hc_workforce_route_b_live
                         else (
-                            "phase2_b2_same_checkpoint"
-                            if phase2_b2_same_checkpoint
+                            "phase2_promo_capture"
+                            if phase2_promo_capture
                             else (
-                                "phase2_live_batch"
-                                if phase2_live_batch
-                                else "loader_smoke_only"
+                                "phase2_b2_same_checkpoint"
+                                if phase2_b2_same_checkpoint
+                                else (
+                                    "phase2_live_batch"
+                                    if phase2_live_batch
+                                    else "loader_smoke_only"
+                                )
                             )
                         )
                     )
@@ -12583,6 +12630,9 @@ def run_loader_gate(
                 ),
                 focused_endgame_source_capture=(
                     phase2_endgame_source_capture_live
+                ),
+                focused_incident_source_capture=(
+                    phase2_incident_source_checkpoint_capture
                 ),
             )
             evidence["phase2_capability_preflight"] = phase2_capabilities
@@ -18527,6 +18577,7 @@ def run_cell(
     phase2_endgame_source_capture_prefix: Mapping[str, object] | None = None,
     phase2_endgame_source_owner_character_id: int | None = None,
     phase2_endgame_source_date_raw: int | None = None,
+    phase2_incident_source_checkpoint_capture: bool = False,
     phase2_hc_workforce_route_b_checkpoint_registry: (
         Mapping[str, object] | None
     ) = None,
@@ -18556,6 +18607,7 @@ def run_cell(
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
+        or phase2_incident_source_checkpoint_capture
     )
     _validate_phase2_frontend_first_options(
         phase2_frontend_first_load_save_name,
@@ -18599,6 +18651,7 @@ def run_cell(
             or phase2_hc_workforce_route_b_live
             or phase2_hc_workforce_route_b_capture_live
             or phase2_endgame_source_capture_live
+            or phase2_incident_source_checkpoint_capture
         ),
         product_projection=phase2_product_projection,
         product_projection_manifest=phase2_product_projection_manifest,
@@ -18661,6 +18714,7 @@ def run_cell(
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
+        or phase2_incident_source_checkpoint_capture
     )
     loader_gate_evidence: dict[str, object] | None = None
     gameplay_acceptance_executed = False
@@ -18697,6 +18751,7 @@ def run_cell(
                         or phase2_hc_workforce_route_b_live
                         or phase2_hc_workforce_route_b_capture_live
                         or phase2_endgame_source_capture_live
+                        or phase2_incident_source_checkpoint_capture
                     ),
                     **install_kwargs,
                 )
@@ -18793,6 +18848,9 @@ def run_cell(
                 ),
                 phase2_endgame_source_capture_live=(
                     phase2_endgame_source_capture_live
+                ),
+                phase2_incident_source_checkpoint_capture=(
+                    phase2_incident_source_checkpoint_capture
                 ),
             )
             native_readiness = loader_gate_evidence["native_readiness"]
@@ -18973,6 +19031,67 @@ def run_cell(
             if evidence.get("result") != "GREEN":
                 raise acceptance.RunnerError(
                     "focused HC-workforce Route-B capture returned RED"
+                )
+        elif phase2_incident_source_checkpoint_capture:
+            if not (
+                isinstance(phase2_seed_install_evidence, dict)
+                and isinstance(
+                    phase2_seed_install_evidence.get("contract"), dict
+                )
+                and phase2_supervisor is not None
+                and isinstance(tracked_ck3_pid, int)
+            ):
+                raise acceptance.RunnerError(
+                    "focused Incident source capture lacks its managed "
+                    "product seed/session binding"
+                )
+            capture_lineage, _span_receipts, _seed_chain = (
+                _phase2_promo_receipt_sources(
+                    title_navigation_service,
+                    artifacts,
+                    seed_install=phase2_seed_install_evidence,
+                    bootstrap=bootstrap,
+                    runtime_identity=runtime_identity,
+                    game_version=game_version,
+                    executable_sha256=executable_before,
+                )
+            )
+            capture_lineage.update(
+                {
+                    "ocr_used": False,
+                    "coordinates_used": False,
+                    "console_used": False,
+                    "generic_character_rebind_used": False,
+                }
+            )
+            source_output = artifacts / "incident-source-checkpoint"
+            try:
+                evidence = wait_for_and_capture_incident_source_checkpoint(
+                    title_navigation_service,
+                    evidence_path=(
+                        artifacts
+                        / "05_phase2_incident_source_checkpoint_capture.json"
+                    ),
+                    checkpoint_root=source_output / "checkpoints",
+                    receipt_path=source_output / "strict-receipt.json",
+                    registry_entry_path=(
+                        source_output / "schema2-registry-entry.json"
+                    ),
+                    seed_lineage_id=_phase2_seed_lineage_id(
+                        phase2_seed_install_evidence["contract"]
+                    ),
+                    capture_lineage=capture_lineage,
+                    tracked_ck3_pid=tracked_ck3_pid,
+                    timeout_seconds=PHASE2_INCIDENT_SOURCE_CAPTURE_TIMEOUT_S,
+                )
+            except IncidentSourceCaptureEntryError as error:
+                raise acceptance.RunnerError(
+                    "focused Incident source checkpoint capture RED "
+                    f"[{error.reason_code}]"
+                ) from error
+            if evidence.get("result") != "GREEN":
+                raise acceptance.RunnerError(
+                    "focused Incident source checkpoint capture returned RED"
                 )
         elif phase2_hc_workforce_route_b_live:
             gameplay_acceptance_executed = True
@@ -19161,18 +19280,22 @@ def run_cell(
         if phase2_supervisor is not None:
             try:
                 scenario_path = artifacts / (
-                    "05_endgame_source_capture.json"
-                    if phase2_endgame_source_capture_live
+                    "05_phase2_incident_source_checkpoint_capture.json"
+                    if phase2_incident_source_checkpoint_capture
                     else (
-                        "08_hc_workforce_route_b_capture_live.json"
-                        if phase2_hc_workforce_route_b_capture_live
+                        "05_endgame_source_capture.json"
+                        if phase2_endgame_source_capture_live
                         else (
-                            "08_hc_workforce_route_b_registry_live.json"
-                            if phase2_hc_workforce_route_b_live
+                            "08_hc_workforce_route_b_capture_live.json"
+                            if phase2_hc_workforce_route_b_capture_live
                             else (
-                                "05_phase2_b2_same_checkpoint_scenario.json"
-                                if phase2_b2_same_checkpoint
-                                else "05_phase2_live_scenario.json"
+                                "08_hc_workforce_route_b_registry_live.json"
+                                if phase2_hc_workforce_route_b_live
+                                else (
+                                    "05_phase2_b2_same_checkpoint_scenario.json"
+                                    if phase2_b2_same_checkpoint
+                                    else "05_phase2_live_scenario.json"
+                                )
                             )
                         )
                     )
@@ -19298,6 +19421,7 @@ def run_cell(
                 and not phase2_promo_capture
                 and not phase2_b2_same_checkpoint
                 and not phase2_endgame_source_capture_live
+                and not phase2_incident_source_checkpoint_capture
             ):
                 stream.validate(final=True)
             else:
@@ -19455,6 +19579,33 @@ def run_cell(
         and evidence.get("fixture_used") is False
         and evidence.get("console_used") is False
     )
+    phase2_incident_source_checkpoint_capture_complete = (
+        phase2_incident_source_checkpoint_capture
+        and result == "GREEN"
+        and evidence.get("result") == "GREEN"
+        and evidence.get("kind") == INCIDENT_SOURCE_LIVE_CAPTURE_KIND
+        and evidence.get("readiness") == "captured-real-checkpoint"
+        and evidence.get("provider_observed") is True
+        and evidence.get("ui_state_verified") is True
+        and evidence.get("player_character_id")
+        == evidence.get("subject_character_id")
+        == evidence.get("event_root_character_id")
+        and evidence.get("owner_character_id")
+        == evidence.get("notice_owner_character_id")
+        and evidence.get("owner_character_id")
+        != evidence.get("player_character_id")
+        and evidence.get("option_number") == 1
+        and evidence.get("option_shown") is True
+        and evidence.get("option_enabled") is True
+        and evidence.get("provider_ui_same_frame") is True
+        and evidence.get("gameplay_action_executed") is False
+        and evidence.get("action_ack_used_as_state_evidence") is False
+        and isinstance(
+            evidence.get("schema2_registry_capture_entry"), Mapping
+        )
+        and evidence["schema2_registry_capture_entry"].get("schema_version")
+        == 2
+    )
     gameplay_green_claimed = (
         result == "GREEN"
         and gameplay_acceptance_executed
@@ -19526,6 +19677,9 @@ def run_cell(
         "phase2_endgame_source_capture_live": (
             phase2_endgame_source_capture_live
         ),
+        "phase2_incident_source_checkpoint_capture": (
+            phase2_incident_source_checkpoint_capture
+        ),
         "phase2_hc_workforce_enable_career_provider": (
             phase2_hc_workforce_enable_career_provider
         ),
@@ -19550,6 +19704,9 @@ def run_cell(
         ),
         "phase2_endgame_source_capture_complete": (
             phase2_endgame_source_capture_complete
+        ),
+        "phase2_incident_source_checkpoint_capture_complete": (
+            phase2_incident_source_checkpoint_capture_complete
         ),
         "promo_capture_mode": (
             recorder.contract.mode
@@ -19580,9 +19737,13 @@ def run_cell(
                             "route_b_scenario_owns_registry_restore_and_replay"
                             if phase2_hc_workforce_route_b_live
                             else (
-                                "capture_only_no_restore_liveness_claim"
-                                if phase2_endgame_source_capture_live
-                                else None
+                                "incident_capture_owns_read_only_wait_and_native_save"
+                                if phase2_incident_source_checkpoint_capture
+                                else (
+                                    "capture_only_no_restore_liveness_claim"
+                                    if phase2_endgame_source_capture_live
+                                    else None
+                                )
                             )
                         )
                     )
@@ -19596,7 +19757,10 @@ def run_cell(
             if phase2_b2_same_checkpoint
             else (
                 False
-                if loader_smoke or phase2_live_batch or phase2_promo_capture
+                if loader_smoke
+                or phase2_live_batch
+                or phase2_promo_capture
+                or phase2_incident_source_checkpoint_capture
                 else None
             )
         ),
@@ -19713,6 +19877,7 @@ def main(
     phase2_endgame_source_capture_prefix: str | None = None,
     phase2_endgame_source_owner_character_id: int | None = None,
     phase2_endgame_source_date_raw: int | None = None,
+    phase2_incident_source_checkpoint_capture: bool = False,
     phase2_hc_workforce_route_b_checkpoint_registry: str | None = None,
     phase2_hc_workforce_route_b_checkpoint_output: str | None = None,
     phase2_hc_workforce_route_b_registry_output: str | None = None,
@@ -19745,6 +19910,7 @@ def main(
             phase2_hc_workforce_route_b_live,
             phase2_hc_workforce_route_b_capture_live,
             phase2_endgame_source_capture_live,
+            phase2_incident_source_checkpoint_capture,
         )
     )
     if selected_runtime_modes > 1:
@@ -19754,7 +19920,8 @@ def main(
             "--phase2-b2-same-checkpoint, and "
             "--phase2-hc-workforce-route-b-live, and "
             "--phase2-hc-workforce-route-b-capture-live, and "
-            "--phase2-endgame-source-capture-live are mutually exclusive"
+            "--phase2-endgame-source-capture-live, and "
+            "--phase2-incident-source-checkpoint-capture are mutually exclusive"
         )
     phase2_runtime_mode = (
         phase2_live_batch
@@ -19763,6 +19930,7 @@ def main(
         or phase2_hc_workforce_route_b_live
         or phase2_hc_workforce_route_b_capture_live
         or phase2_endgame_source_capture_live
+        or phase2_incident_source_checkpoint_capture
     )
     if not isinstance(phase2_product_projection, str):
         raise acceptance.RunnerError(
@@ -20079,6 +20247,7 @@ def main(
             or phase2_b2_same_checkpoint
             or phase2_hc_workforce_route_b_capture_live
             or phase2_endgame_source_capture_live
+            or phase2_incident_source_checkpoint_capture
         ):
             preflight_phase2_seed_contract(
                 contract_path=(
@@ -20093,6 +20262,7 @@ def main(
                     or phase2_hc_workforce_route_b_live
                     or phase2_hc_workforce_route_b_capture_live
                     or phase2_endgame_source_capture_live
+                    or phase2_incident_source_checkpoint_capture
                 ),
                 product_source=phase2_product_source_path,
                 product_projection=phase2_product_projection,
@@ -20169,6 +20339,9 @@ def main(
         ),
         phase2_endgame_source_date_raw=(
             phase2_endgame_source_date_raw
+        ),
+        phase2_incident_source_checkpoint_capture=(
+            phase2_incident_source_checkpoint_capture
         ),
         phase2_hc_workforce_route_b_checkpoint_registry=(
             route_b_checkpoint_registry_value
@@ -20356,6 +20529,47 @@ def main(
             "schema-2 registry proof"
         )
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    phase2_incident_source_checkpoint_capture_complete_claim = (
+        phase2_incident_source_checkpoint_capture
+        and report.get("result") == "GREEN"
+        and report.get("phase2_incident_source_checkpoint_capture") is True
+        and report.get(
+            "phase2_incident_source_checkpoint_capture_complete"
+        )
+        is True
+        and report.get("gameplay_acceptance_executed") is False
+        and report.get("gameplay_green_claimed") is False
+        and phase2_scenario.get("result") == "GREEN"
+        and phase2_scenario.get("kind") == INCIDENT_SOURCE_LIVE_CAPTURE_KIND
+        and phase2_scenario.get("readiness") == "captured-real-checkpoint"
+        and phase2_scenario.get("provider_observed") is True
+        and phase2_scenario.get("ui_state_verified") is True
+        and phase2_scenario.get("player_character_id")
+        == phase2_scenario.get("subject_character_id")
+        == phase2_scenario.get("event_root_character_id")
+        and phase2_scenario.get("owner_character_id")
+        == phase2_scenario.get("notice_owner_character_id")
+        and phase2_scenario.get("owner_character_id")
+        != phase2_scenario.get("player_character_id")
+        and phase2_scenario.get("option_number") == 1
+        and phase2_scenario.get("option_shown") is True
+        and phase2_scenario.get("option_enabled") is True
+        and phase2_scenario.get("provider_ui_same_frame") is True
+        and phase2_scenario.get("fixture_used") is False
+        and phase2_scenario.get("console_used") is False
+        and phase2_scenario.get("gameplay_action_executed") is False
+        and phase2_scenario.get("action_ack_used_as_state_evidence") is False
+    )
+    if (
+        phase2_incident_source_checkpoint_capture
+        and phase2_incident_source_checkpoint_capture_complete_claim is not True
+    ):
+        result = "RED"
+        reason = (
+            "focused Incident source capture lacks its strict real-checkpoint "
+            "and schema-2 registry-entry proof"
+        )
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
     protected_unchanged = False
     try:
         isolated.verify_protected_storage(
@@ -20376,6 +20590,7 @@ def main(
         phase2_hc_workforce_route_b_complete_claim = False
         phase2_hc_workforce_route_b_capture_complete_claim = False
         phase2_endgame_source_capture_complete_claim = False
+        phase2_incident_source_checkpoint_capture_complete_claim = False
     matrix = {
         "schema_version": 1,
         "result": result,
@@ -20393,6 +20608,9 @@ def main(
         "phase2_endgame_source_capture_live": (
             phase2_endgame_source_capture_live
         ),
+        "phase2_incident_source_checkpoint_capture": (
+            phase2_incident_source_checkpoint_capture
+        ),
         "phase2_promo_capture_complete": phase2_promo_capture_complete_claim,
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete_claim
@@ -20406,6 +20624,9 @@ def main(
         "phase2_endgame_source_capture_complete": (
             phase2_endgame_source_capture_complete_claim
         ),
+        "phase2_incident_source_checkpoint_capture_complete": (
+            phase2_incident_source_checkpoint_capture_complete_claim
+        ),
         "loader_gate_executed": (
             loader_smoke
             or phase2_live_batch or phase2_promo_capture
@@ -20413,6 +20634,7 @@ def main(
             or phase2_hc_workforce_route_b_live
             or phase2_hc_workforce_route_b_capture_live
             or phase2_endgame_source_capture_live
+            or phase2_incident_source_checkpoint_capture
         ),
         "native_session_liveness": report.get("native_session_liveness"),
         "native_session_liveness_scope": report.get(
@@ -20444,8 +20666,12 @@ def main(
                                     if phase2_hc_workforce_route_b_capture_live
                                     else (
                                         False
-                                        if phase2_endgame_source_capture_live
-                                        else report.get("gameplay_green_claimed") is True
+                                        if (
+                                            phase2_endgame_source_capture_live
+                                            or phase2_incident_source_checkpoint_capture
+                                        )
+                                        else report.get("gameplay_green_claimed")
+                                        is True
                                     )
                                 )
                             )
@@ -20462,35 +20688,24 @@ def main(
     }
     write_json(artifacts / "report.json", matrix)
     write_evidence_index(artifacts, matrix)
-    heading = (
-        "ZHONGGUO 361 MCP-ASSISTED LOADER SMOKE"
-        if loader_smoke
-        else (
-            "ZHONGGUO 361 PHASE-TWO LIVE BATCH"
-            if phase2_live_batch
-            else (
-                "ZHONGGUO 361 PHASE-TWO PROMO CAPTURE"
-                if phase2_promo_capture
-                else (
-                    "ZHONGGUO 361 PHASE-TWO ENDGAME SOURCE CAPTURE"
-                    if phase2_endgame_source_capture_live
-                    else (
-                        "ZHONGGUO 361 PHASE-TWO HC-WORKFORCE ROUTE-B CAPTURE"
-                        if phase2_hc_workforce_route_b_capture_live
-                        else (
-                            "ZHONGGUO 361 PHASE-TWO HC-WORKFORCE ROUTE-B"
-                            if phase2_hc_workforce_route_b_live
-                            else (
-                                "ZHONGGUO 361 PHASE-TWO B2 SAME-CHECKPOINT"
-                                if phase2_b2_same_checkpoint
-                                else "ZHONGGUO 361 ACCEPTANCE"
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
+    if loader_smoke:
+        heading = "ZHONGGUO 361 MCP-ASSISTED LOADER SMOKE"
+    elif phase2_live_batch:
+        heading = "ZHONGGUO 361 PHASE-TWO LIVE BATCH"
+    elif phase2_promo_capture:
+        heading = "ZHONGGUO 361 PHASE-TWO PROMO CAPTURE"
+    elif phase2_endgame_source_capture_live:
+        heading = "ZHONGGUO 361 PHASE-TWO ENDGAME SOURCE CAPTURE"
+    elif phase2_incident_source_checkpoint_capture:
+        heading = "ZHONGGUO 361 PHASE-TWO INCIDENT SOURCE CAPTURE"
+    elif phase2_hc_workforce_route_b_capture_live:
+        heading = "ZHONGGUO 361 PHASE-TWO HC-WORKFORCE ROUTE-B CAPTURE"
+    elif phase2_hc_workforce_route_b_live:
+        heading = "ZHONGGUO 361 PHASE-TWO HC-WORKFORCE ROUTE-B"
+    elif phase2_b2_same_checkpoint:
+        heading = "ZHONGGUO 361 PHASE-TWO B2 SAME-CHECKPOINT"
+    else:
+        heading = "ZHONGGUO 361 ACCEPTANCE"
     print(f"\n===== {heading} =====")
     print(f"cell                    {report['result']}")
     print(
@@ -20537,6 +20752,19 @@ def main(
             )
         )
         print("full phase-two claim    NONE")
+    elif phase2_incident_source_checkpoint_capture:
+        print(
+            "strict source capture   "
+            + (
+                "GREEN"
+                if matrix[
+                    "phase2_incident_source_checkpoint_capture_complete"
+                ]
+                is True
+                else "INCOMPLETE / RED"
+            )
+        )
+        print("gameplay GREEN claim    NONE")
     elif phase2_endgame_source_capture_live:
         print(
             "#356 source registry     "
@@ -20611,6 +20839,15 @@ if __name__ == "__main__":
             "consume one strict real-checkpoint registry, replay M360 Route B "
             "twice around a hash-identical restore, and require provider "
             "postconditions; does not claim full Phase2"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-incident-source-checkpoint-capture",
+        action="store_true",
+        help=(
+            "wait read-only in a managed product session for exact zg361.50, "
+            "then freeze its strict receipt and schema-2 registry entry; "
+            "does not execute gameplay or claim full Phase2"
         ),
     )
     parser.add_argument(
@@ -20779,6 +21016,9 @@ if __name__ == "__main__":
                 ),
                 phase2_endgame_source_date_raw=(
                     arguments.phase2_endgame_source_date_raw
+                ),
+                phase2_incident_source_checkpoint_capture=(
+                    arguments.phase2_incident_source_checkpoint_capture
                 ),
                 phase2_hc_workforce_route_b_checkpoint_registry=(
                     arguments.phase2_hc_workforce_route_b_checkpoint_registry
