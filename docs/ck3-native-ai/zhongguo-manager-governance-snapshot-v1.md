@@ -2,7 +2,7 @@
 
 ## Readiness
 
-- Contract: `static_and_fixture_ready_not_integrated_not_live`
+- Contract: `production_transport_integrated_static_and_fixture_ready_not_live`
 - Fixed kind: `zhongguo.manager-governance`
 - Capability: `game.command.query-zhongguo-manager-governance-snapshot-v1`
 - OCR: not used and not accepted as truth
@@ -85,37 +85,33 @@ frozen character store before they become typed IDs.
 
 ## Exact shared integration contract
 
-The provider-specific files are intentionally prepared without editing shared
-bridge files.  Integration is one bounded follow-up and must perform every
-item below together:
+The provider and its exact-build B3 manager/subordinate selector are now wired
+through the shared mailbox, bridge, native driver, service, MCP server, and
+formal Phase2 runner.  The completed static integration contains:
 
-1. Add the reader, serializer and mailbox sources plus the native fixture to
+1. The reader, serializer and mailbox sources plus the native fixture are in
    `native_bridge/CMakeLists.txt`; compile and register the fixture as CTest.
-2. Extend `main_thread_query_mailbox_v1.hpp/.cpp` by exactly one new fixed
-   executor slot after `permitted_executor_quindenary`, and update its native
-   test plus ABI/source-contract counts.  Do not reuse a slot owned by another
-   concurrently integrated phase-two provider.
-3. In `bridge.cpp`, include the provider mailbox header, publish exactly one
-   additional capability, bind the new slot, parse the closed eight-field
-   execute-step object, execute on application-main, serialize under payload
-   key `zhongguo_manager_governance_snapshot`, and preserve completion-frame
+2. The provider and selector share the already assigned fixed
+   `permitted_executor_quinquevigintary` application-main mailbox slot; the
+   operation tag prevents one request shape from being parsed as the other.
+3. `bridge.cpp` publishes the two capabilities, binds the fixed slot, parses
+   each closed request object, executes on application-main, serializes under
+   key `zhongguo_manager_governance_snapshot`, and preserves completion-frame
    equality.
-4. The bridge adapter must implement the typed AI selector from native
-   relationship/control/government/landed/rank observations.  Until all five
-   predicates are observable on the exact build it must return
-   `dependency_unavailable`, not infer them from caller data or write zeros.
-5. Add the fixed step/capability mapping to `game_adapter.cpp` and its tests.
-   Update capability-count contracts by `+1` from the then-current master;
-   never restore an older hard-coded absolute count.
-6. Add native-driver, service and MCP-server plumbing using
+4. The bridge adapter implements the typed AI selector from native
+   relationship/control/government/landed/rank observations.  Any structural
+   read failure returns `dependency_unavailable`; caller data and zero-filled
+   identities cannot authorize a manager.
+5. `game_adapter.cpp` and its tests contain the fixed step/capability mapping.
+6. Native-driver, service and MCP-server plumbing use
    `ZhongguoManagerGovernanceQueryV1` and
    `normalize_zhongguo_manager_governance_snapshot_v1_response`.  The public
    binding must mirror subject-binding kind and the dependency string returned
    by native code.
-7. Register
+7. The response schema is registered as
    `schemas/zhongguo-manager-governance-snapshot-v1.schema.json` in repository
    contracts, again deriving list/count changes from then-current master.
-8. Add a bridge/service test matrix for player subject, authorized bounded AI
+8. The bridge/service test matrix covers player subject, authorized bounded AI
    manager, missing dependency, rejected candidate, pending F035/F032, settled
    F035/F032, C routes, same-frame drift and malformed/extra request fields.
 

@@ -80,6 +80,10 @@ from xar_autoplayer.bridge.zhongguo_ai_owned_case_action import (
 from xar_autoplayer.bridge.zhongguo_manager_governance_snapshot_contract import (
     QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY,
 )
+from xar_autoplayer.bridge.zhongguo_manager_subordinate_selector_contract import (
+    QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY,
+    ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_KIND_V1,
+)
 from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_INCIDENT_KIND_V1,
@@ -227,7 +231,7 @@ LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
 LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
 PHASE2_B3_MANAGER_SELECTOR_KIND = (
-    "zg361-bounded-ai-direct-manager-selection-v1"
+    ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_KIND_V1
 )
 EXPECTED_PLAYER_HISTORY_ID = real_characters.MANAGER_HISTORY_ID
 # The phase-two bootstrap resumes the real historical official selected by the
@@ -616,6 +620,9 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "manager_governance_snapshot": (
         QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY
     ),
+    "manager_subordinate_selector": (
+        QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY
+    ),
     "scoreboard_state_acl": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
     "scoreboard_action_transport": (
         ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
@@ -633,6 +640,9 @@ PHASE2_REQUIRED_QUERY_FLAGS = {
     ),
     "manager_governance_snapshot": (
         "zhongguo_manager_governance_snapshot_v1_query_supported"
+    ),
+    "manager_subordinate_selector": (
+        "zhongguo_manager_subordinate_selector_v1_query_supported"
     ),
     "scoreboard_state_acl": (
         "zhongguo_scoreboard_state_v1_query_supported"
@@ -743,9 +753,9 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
         "gameplay_action_complete": True,
     },
     "manager_governance_gameplay_action_and_postcondition_matrix": {
-        "implementation": "provider_pending",
+        "implementation": "wired",
         "handler_implementation": "wired",
-        "readiness": "static-ready",
+        "readiness": "static-ready-live-pending",
         "required_capability": (
             QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY
         ),
@@ -753,6 +763,10 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
             "zhongguo_manager_governance_snapshot_v1_query_supported"
         ),
         "required_typed_selector": PHASE2_B3_MANAGER_SELECTOR_KIND,
+        "required_typed_selector_capability": (
+            QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY
+        ),
+        "provider_status": "native-provider-wired-live-pending",
         "observation_only": False,
         "gameplay_action_complete": False,
     },
@@ -8278,11 +8292,11 @@ def run_phase2_manager_governance_gameplay_action_cell(
 ) -> dict[str, object]:
     """Run B3 only after a typed AI-manager/subordinate selector is bound.
 
-    The read-only manager provider and joined action/postcondition cell are
-    already production-wired.  The native selector that chooses one bounded
-    AI direct manager and one of that manager's direct subordinates is not.
-    Preserve that boundary as provider-pending evidence; never substitute a
-    timeline ACK, seed guess, or player identity for the missing selector.
+    The read-only manager provider, exact-build typed selector, and joined
+    action/postcondition cell are production-wired.  Tests may omit the
+    provider to exercise the fail-closed boundary; the formal live scenario
+    binds the native provider below.  Never substitute a timeline ACK, seed
+    guess, or player identity for a missing selector result.
     """
 
     evidence_path = artifacts / (
@@ -8527,6 +8541,27 @@ def run_phase2_manager_governance_gameplay_action_cell(
     }
     write_json(evidence_path, evidence)
     return evidence
+
+
+def query_phase2_b3_manager_subordinate_selector(
+    service: GameplayBridgeService,
+) -> Mapping[str, object]:
+    """Bind the formal B3 runner to the exact-build native selector."""
+    snapshot = service.snapshot()
+    revision = snapshot.get("revision") if isinstance(snapshot, Mapping) else None
+    if isinstance(revision, bool) or not isinstance(revision, int):
+        raise acceptance.RunnerError(
+            "phase-two B3 selector lacks a public snapshot revision"
+        )
+    selected = service.query_zhongguo_manager_subordinate_selector_v1(
+        "zg361.b3.manager.selector",
+        expected_revision=revision,
+    )
+    if not isinstance(selected, Mapping):
+        raise acceptance.RunnerError(
+            "phase-two B3 selector provider returned a non-object"
+        )
+    return selected
 
 
 def preflight_phase2_workforce_m360_gameplay_action_cell(
@@ -16253,10 +16288,24 @@ def run_phase2_live_scenario(
         )
         write_json(evidence_path, evidence)
 
+        manager_selector_provider = (
+            b3_manager_typed_selector_provider
+            or (
+                query_phase2_b3_manager_subordinate_selector
+                if callable(
+                    getattr(
+                        service,
+                        "query_zhongguo_manager_subordinate_selector_v1",
+                        None,
+                    )
+                )
+                else None
+            )
+        )
         manager_action = run_phase2_manager_governance_gameplay_action_cell(
             service,
             artifacts,
-            typed_selector_provider=b3_manager_typed_selector_provider,
+            typed_selector_provider=manager_selector_provider,
         )
         evidence["manager_governance_gameplay_action_cell"] = manager_action
         if manager_action.get("result") == "GREEN":
@@ -18237,8 +18286,8 @@ if __name__ == "__main__":
         action="store_true",
         help=(
             "run the strict MCP-only phase-two capability gate and independent "
-            "scenario; four frozen read-only domain providers run before the "
-            "still-missing named-widget/gameplay actions force RED"
+            "scenario; the exact-build B3 selector is wired, while remaining "
+            "live product checkpoints still force RED until observed"
         ),
     )
     parser.add_argument(

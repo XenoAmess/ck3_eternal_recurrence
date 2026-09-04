@@ -332,6 +332,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability =
         ck3_11906::kZhongguoManagerGovernanceSnapshotV1Capability;
   } else if (
+      ck3_11906::ParseZhongguoManagerSubordinateSelectorV1Step(step)) {
+    capability =
+        ck3_11906::kZhongguoManagerSubordinateSelectorV1Capability;
+  } else if (
       ck3_11906::ParseZhongguoPromotionCompensationPostconditionV1Step(step)) {
     capability = ck3_11906::kZhongguoPromotionCompensationPostconditionV1Capability;
   } else if (

@@ -1,0 +1,73 @@
+{
+  "fixture": "zhongguo_manager_subordinate_selector_v1_source_contract",
+  "readiness": "production_transport_integrated_static_and_fixture_ready_not_live",
+  "capability": "game.command.query-zhongguo-manager-subordinate-selector-v1",
+  "step": "query-zhongguo-manager-subordinate-selector-v1",
+  "selector_kind": "zg361-bounded-ai-direct-manager-selection-v1",
+  "request_fields": [
+    "request_nonce",
+    "expected_revision"
+  ],
+  "forbidden_request_fields": [
+    "manager_character_id",
+    "subordinate_character_id",
+    "manager_is_ai",
+    "manager_is_celestial",
+    "manager_rank",
+    "manager_is_direct_vassal",
+    "variable_name",
+    "unknown_field"
+  ],
+  "required_source_properties": [
+    "exact_ck3_1_19_0_6_executable_hash",
+    "paused_application_main_only",
+    "player_contract_ids_native_order",
+    "manager_contract_ids_native_order",
+    "contract_and_character_full_generation_resolution",
+    "contract_liege_pointer_matches_source_owner",
+    "candidate_immediate_liege_matches_source_owner",
+    "manager_living_ai_celestial_landed_duke_plus",
+    "two_complete_selection_reads",
+    "before_after_frame_equality",
+    "selection_equality",
+    "no_caller_character_or_eligibility_assertion",
+    "no_action_and_no_OCR_truth"
+  ],
+  "selection_fixture": {
+    "player_character_id": 100,
+    "player_contract_native_order": [150994945, 150994946, 150994947],
+    "manager_candidates": [
+      {"contract_id": 150994945, "character_id": 200, "direct": true, "alive": true, "ai": false, "government": "celestial_government", "tier": 4},
+      {"contract_id": 150994946, "character_id": 201, "direct": true, "alive": true, "ai": true, "government": "celestial_government", "tier": 3}
+    ],
+    "selected_manager_character_id": 201,
+    "selected_manager_contract_id": 150994946,
+    "manager_contract_native_order": [150994948, 150994949],
+    "subordinate_candidates": [
+      {"contract_id": 150994948, "character_id": 300, "direct": false},
+      {"contract_id": 150994949, "character_id": 301, "direct": true}
+    ],
+    "selected_subordinate_character_id": 301,
+    "selected_subordinate_contract_id": 150994949,
+    "two_samples_equal": true
+  },
+  "negative_matrix": [
+    "unsupported_build",
+    "not_application_main",
+    "not_paused",
+    "invalid_contract_count_or_data",
+    "contract_generation_mismatch",
+    "character_generation_mismatch",
+    "contract_liege_pointer_mismatch",
+    "no_bounded_ai_direct_manager",
+    "bounded_ai_manager_has_no_direct_subordinate",
+    "selection_double_read_drift",
+    "frame_drift",
+    "forbidden_request_field"
+  ],
+  "mailbox_executor": "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "shared_permitted_executor_quinquevigintary",
+  "native_driver_service_mcp": "integrated_static_not_live",
+  "formal_phase2_runner_provider": "wired_static_not_live",
+  "live_artifact": null
+}

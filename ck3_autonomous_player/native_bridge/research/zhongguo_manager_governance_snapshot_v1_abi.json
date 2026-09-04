@@ -79,9 +79,9 @@
     "game_adapter_step_binding": "integrated_static_not_live",
     "native_driver_service_mcp": "integrated_static_not_live",
     "b3_joined_action_postcondition_cell": "present_static_fixture_not_live",
-    "formal_phase2_runner_handler": "wired_provider_pending_static_ready",
-    "phase2_batch_registry": "registered_provider_pending_static_ready",
-    "bounded_ai_manager_native_selector": "not_yet_bound_in_production",
+    "formal_phase2_runner_handler": "wired_native_provider_static_not_live",
+    "phase2_batch_registry": "registered_wired_static_live_pending",
+    "bounded_ai_manager_native_selector": "exact_build_native_bound_static_not_live",
     "production_live_artifact": null
   },
   "effect_file_boundary_evidence": {

@@ -3439,6 +3439,58 @@ std::string ZhongguoManagerGovernanceSnapshotResultFrame(
   return result;
 }
 
+std::string ZhongguoManagerSubordinateSelectorResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::ZhongguoManagerSubordinateSelectorSnapshotV1 &snapshot) {
+  const auto payload =
+      xar::ck3_11906::SerializeZhongguoManagerSubordinateSelectorV1(snapshot);
+  if (payload.empty()) return {};
+  const std::string_view status =
+      snapshot.status ==
+              xar::game::ZhongguoManagerSubordinateSelectorStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{"
+      "\"step\":\"query-zhongguo-manager-subordinate-selector-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(snapshot.snapshot_revision);
+  result += ",\"zhongguo_manager_subordinate_selector\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
+struct ZhongguoManagerAuthorizationContextV1 {
+  xar::ck3_11906::ZhongguoManagerSubordinateSelectorNativeEnvironmentV1
+      environment{};
+  xar::ck3_11906::ZhongguoManagerSubordinateSelectorAccessV1 access{};
+};
+
+xar::ck3_11906::ZhongguoBoundedAiManagerAuthorizationV1
+AuthorizeZhongguoManagerFromNativeSelector(
+    void *opaque, std::int32_t player_character_id,
+    std::int32_t manager_character_id,
+    std::int32_t owner_character_id) noexcept {
+  const auto *context =
+      static_cast<const ZhongguoManagerAuthorizationContextV1 *>(opaque);
+  if (context == nullptr) {
+    return xar::ck3_11906::ZhongguoBoundedAiManagerAuthorizationV1::
+        dependency_unavailable;
+  }
+  return xar::ck3_11906::AuthorizeZhongguoBoundedAiDirectManagerV1(
+      context->environment, context->access, player_character_id,
+      manager_character_id, owner_character_id);
+}
+
 std::string ZhongguoScoreboardStateResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoScoreboardStateV1 &snapshot) {
@@ -4410,6 +4462,7 @@ struct WorkerState {
   std::uint64_t zhongguo_b2_pip_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_incident_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_manager_governance_snapshot_query_sequence = 0;
+  std::uint64_t zhongguo_manager_subordinate_selector_query_sequence = 0;
   std::uint64_t zhongguo_scoreboard_state_query_sequence = 0;
   std::uint64_t zhongguo_scoreboard_action_sequence = 0;
   std::string zhongguo_scoreboard_provider_session_id;
@@ -4500,6 +4553,8 @@ void RunConnectedSession(
       state.zhongguo_incident_snapshot_query_sequence;
   auto &zhongguo_manager_governance_snapshot_query_sequence =
       state.zhongguo_manager_governance_snapshot_query_sequence;
+  auto &zhongguo_manager_subordinate_selector_query_sequence =
+      state.zhongguo_manager_subordinate_selector_query_sequence;
   auto &zhongguo_scoreboard_state_query_sequence =
       state.zhongguo_scoreboard_state_query_sequence;
   auto &zhongguo_scoreboard_action_sequence =
@@ -5834,6 +5889,132 @@ void RunConnectedSession(
           }
         } else if (
             step == xar::ck3_11906::
+                        kZhongguoManagerSubordinateSelectorV1Step) {
+          xar::ck3_11906::ZhongguoManagerSubordinateSelectorRequestV1 request{};
+          if (!xar::ck3_11906::
+                  ParseZhongguoManagerSubordinateSelectorRequestV1(
+                      incoming.payload, request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo manager/subordinate selector request is "
+                          "malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ZhongGuo manager/subordinate selector revision is "
+                          "stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ZhongGuo manager/subordinate selector snapshot "
+                            "changed or is not ready"));
+            } else {
+              xar::ck3_11906::
+                  ZhongguoManagerGovernanceSnapshotMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.operation = xar::ck3_11906::
+                  ZhongguoManagerGovernanceMailboxOperationV1::
+                      manager_subordinate_selector;
+              query.selector_environment = xar::ck3_11906::
+                  BindZhongguoManagerSubordinateSelectorNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.selector_request = std::move(request);
+              query.expected_snapshot = current_snapshot;
+
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main ZhongGuo manager/subordinate selector "
+                    "executor is unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main ZhongGuo manager/subordinate selector "
+                      "executor is busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kZhongguoManagerGovernanceSnapshotV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kZhongguoManagerGovernanceSnapshotV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion ==
+                        xar::ck3_11906::
+                            ZhongguoManagerGovernanceSnapshotMailboxCompletionV1::
+                                completed &&
+                    completion_snapshot_stable) {
+                  response = ZhongguoManagerSubordinateSelectorResultFrame(
+                      request_id,
+                      zhongguo_manager_subordinate_selector_query_sequence + 1,
+                      query.selector_result);
+                  if (!response.empty()) {
+                    ++zhongguo_manager_subordinate_selector_query_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main ZhongGuo manager/subordinate selector "
+                      "failed or crossed its paused snapshot");
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main ZhongGuo manager/subordinate selector "
+                      "result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (
+            step == xar::ck3_11906::
                         kZhongguoManagerGovernanceSnapshotV1Step) {
           xar::ck3_11906::ZhongguoManagerGovernanceSnapshotRequestV1 request{};
           if (!xar::ck3_11906::
@@ -5873,6 +6054,15 @@ void RunConnectedSession(
                       reinterpret_cast<std::uintptr_t>(
                           GetModuleHandleW(nullptr)),
                       true);
+              ZhongguoManagerAuthorizationContextV1 authorization{};
+              authorization.environment = xar::ck3_11906::
+                  BindZhongguoManagerSubordinateSelectorNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.access.context = &authorization;
+              query.access.authorize_bounded_ai_manager =
+                  &AuthorizeZhongguoManagerFromNativeSelector;
               query.request = std::move(request);
               query.expected_snapshot = current_snapshot;
 

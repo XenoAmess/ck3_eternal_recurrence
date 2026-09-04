@@ -3604,9 +3604,7 @@ def main() -> int:
             "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
         ]
-        assert capture._phase2_unimplemented_domain_cells() == [
-            "manager_governance_gameplay_action_and_postcondition_matrix",
-        ]
+        assert capture._phase2_unimplemented_domain_cells() == []
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
             "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
@@ -3614,13 +3612,41 @@ def main() -> int:
         manager_registration = capture.PHASE2_DOMAIN_CELL_REGISTRY[
             "manager_governance_gameplay_action_and_postcondition_matrix"
         ]
-        assert manager_registration["implementation"] == "provider_pending"
+        assert manager_registration["implementation"] == "wired"
         assert manager_registration["handler_implementation"] == "wired"
-        assert manager_registration["readiness"] == "static-ready"
+        assert manager_registration["readiness"] == "static-ready-live-pending"
+        assert manager_registration["provider_status"] == (
+            "native-provider-wired-live-pending"
+        )
         assert manager_registration["observation_only"] is False
         assert manager_registration["gameplay_action_complete"] is False
         assert manager_registration["required_typed_selector"] == (
             capture.PHASE2_B3_MANAGER_SELECTOR_KIND
+        )
+        assert manager_registration["required_typed_selector_capability"] == (
+            capture.QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY
+        )
+        native_selector_service = mock.Mock()
+        native_selector_service.snapshot.return_value = {"revision": 17}
+        native_selector_response = {
+            "status": "available",
+            "selector_kind": capture.PHASE2_B3_MANAGER_SELECTOR_KIND,
+            "provider_observed": True,
+            "manager_character_id": 201,
+            "subordinate_character_id": 301,
+        }
+        native_selector_service.query_zhongguo_manager_subordinate_selector_v1.return_value = (
+            native_selector_response
+        )
+        observed_selector_response = (
+            capture.query_phase2_b3_manager_subordinate_selector(
+                native_selector_service
+            )
+        )
+        assert observed_selector_response == native_selector_response
+        native_selector_service.query_zhongguo_manager_subordinate_selector_v1.assert_called_once_with(
+            "zg361.b3.manager.selector",
+            expected_revision=17,
         )
         scoreboard_registration = capture.PHASE2_DOMAIN_CELL_REGISTRY[
             "scoreboard_named_widget_action_and_postcondition_matrix"
@@ -4876,9 +4902,7 @@ def main() -> int:
             "workforce_collective_and_three_cycle_matrix",
             "ai_owned_case_matrix",
         ]
-        assert wired_scenario["unimplemented_domain_cells"] == [
-            "manager_governance_gameplay_action_and_postcondition_matrix",
-        ]
+        assert wired_scenario["unimplemented_domain_cells"] == []
         assert wired_scenario["missing_gameplay_action_cells"] == list(
             capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
         )

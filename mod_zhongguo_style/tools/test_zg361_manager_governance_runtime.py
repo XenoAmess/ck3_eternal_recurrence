@@ -45,6 +45,13 @@ def read(relative: str) -> str:
     return (MOD_ROOT / relative).read_text(encoding="utf-8-sig")
 
 
+def read_effect_shards(pattern: str) -> str:
+    paths = sorted((MOD_ROOT / "common/scripted_effects").glob(pattern))
+    if not paths:
+        raise AssertionError(f"missing effect shards: {pattern}")
+    return "\n\n".join(path.read_text(encoding="utf-8-sig") for path in paths)
+
+
 def top_level_block(text: str, key: str) -> str:
     match = re.search(rf"(?m)^{re.escape(key)}\s*=\s*\{{", text)
     if match is None:
@@ -119,10 +126,12 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt"
         )
         cls.events = read("events/zg361_manager_governance_runtime_events.txt")
-        cls.case_effects = read("common/scripted_effects/zg361_case_kernel_effects.txt")
+        cls.case_effects = read_effect_shards(
+            "zg361_case_kernel_[0-9][0-9][0-9]_*_effects.txt"
+        )
         cls.case_triggers = read("common/scripted_triggers/zg361_case_kernel_triggers.txt")
-        cls.career_hc_effects = read(
-            "common/scripted_effects/zg361_career_hc_runtime_effects.txt"
+        cls.career_hc_effects = read_effect_shards(
+            "zg361_career_hc_[0-9][0-9][0-9]_*_effects.txt"
         )
         cls.triggers = read("common/scripted_triggers/zg361_triggers.txt")
         cls.activity = read("common/activities/activity_types/zg361_jingcha.txt")
@@ -188,6 +197,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertEqual(EFFECT_HARD_LIMIT_EXCEPTIONS, {})
         effects_dir = MOD_ROOT / "common" / "scripted_effects"
         self.assertFalse((effects_dir / LEGACY_EFFECT_FILENAME).exists())
+        self.assertFalse((effects_dir / "zg361_case_kernel_effects.txt").exists())
+        self.assertFalse(
+            (effects_dir / "zg361_career_hc_runtime_effects.txt").exists()
+        )
 
         historical_bytes = render_effects()
         self.assertEqual(len(historical_bytes), 386_750)
@@ -1310,6 +1323,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             "common/scripted_effects/zg361_b1_runtime_effects.txt",
             "common/scripted_effects/zg361_b1_runtime_effects_part2.txt",
             "common/scripted_effects/zg361_case_kernel_effects.txt",
+            "common/scripted_effects/zg361_career_hc_runtime_effects.txt",
         }
         self.assertFalse(rendered_paths & forbidden)
         self.assertFalse(

@@ -22,8 +22,13 @@ struct MailboxAccessProxyV1 {
 bool IsExecutingExactMailboxSlot(
     const ZhongguoManagerGovernanceSnapshotMailboxContextV1 &query,
     const MainThreadExecutionStampV1 &stamp) noexcept {
+  const auto expected_revision =
+      query.operation == ZhongguoManagerGovernanceMailboxOperationV1::
+                             manager_subordinate_selector
+          ? query.selector_request.expected_snapshot_revision
+          : query.request.expected_snapshot_revision;
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
-      query.request.expected_snapshot_revision == 0 || stamp.pump_epoch == 0 ||
+      expected_revision == 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
       stamp.tls_context == 0 || stamp.tls_main_thread_marker != 1 ||
@@ -70,7 +75,11 @@ bool ProxyCaptureFrame(void *opaque,
     return false;
   }
   output.snapshot_revision =
-      proxy->query->request.expected_snapshot_revision;
+      proxy->query->operation ==
+              ZhongguoManagerGovernanceMailboxOperationV1::
+                  manager_subordinate_selector
+          ? proxy->query->selector_request.expected_snapshot_revision
+          : proxy->query->request.expected_snapshot_revision;
   output.date_raw = snapshot.date_raw;
   output.paused = snapshot.paused;
   output.map_ready = snapshot.map_ready;
@@ -172,6 +181,39 @@ bool HasExactControlFields(std::string_view json) noexcept {
       "type",          "protocol_version",   "request_id", "step",
       "expected_revision", "subject_character_id", "owner_character_id",
       "request_nonce"};
+  std::uint32_t seen = 0;
+  std::size_t cursor = 0;
+  SkipWhitespace(json, cursor);
+  if (cursor >= json.size() || json[cursor++] != '{') return false;
+  SkipWhitespace(json, cursor);
+  while (cursor < json.size() && json[cursor] != '}') {
+    std::string_view key;
+    if (!ParseJsonStringSpan(json, cursor, key)) return false;
+    const auto match = std::find(fields.begin(), fields.end(), key);
+    if (match == fields.end()) return false;
+    const auto bit = 1U << static_cast<std::uint32_t>(match - fields.begin());
+    if ((seen & bit) != 0) return false;
+    seen |= bit;
+    SkipWhitespace(json, cursor);
+    if (cursor >= json.size() || json[cursor++] != ':') return false;
+    if (!SkipJsonValue(json, cursor)) return false;
+    SkipWhitespace(json, cursor);
+    if (cursor < json.size() && json[cursor] == ',') {
+      ++cursor;
+      SkipWhitespace(json, cursor);
+      continue;
+    }
+    break;
+  }
+  if (cursor >= json.size() || json[cursor++] != '}') return false;
+  SkipWhitespace(json, cursor);
+  return cursor == json.size() && seen == ((1U << fields.size()) - 1U);
+}
+
+bool HasExactSelectorControlFields(std::string_view json) noexcept {
+  constexpr std::array<std::string_view, 6> fields{
+      "type", "protocol_version", "request_id", "step",
+      "expected_revision", "request_nonce"};
   std::uint32_t seen = 0;
   std::size_t cursor = 0;
   SkipWhitespace(json, cursor);
@@ -327,6 +369,39 @@ bool ParseZhongguoManagerGovernanceSnapshotRequestV1(
   return true;
 }
 
+bool ParseZhongguoManagerSubordinateSelectorV1Step(
+    std::string_view step) noexcept {
+  return step == kZhongguoManagerSubordinateSelectorV1Step;
+}
+
+bool ParseZhongguoManagerSubordinateSelectorRequestV1(
+    std::string_view json,
+    ZhongguoManagerSubordinateSelectorRequestV1 &output) noexcept {
+  output = {};
+  std::uint64_t protocol = 0;
+  std::uint64_t revision = 0;
+  std::string type;
+  std::string request_id;
+  std::string step;
+  std::string request_nonce;
+  if (!HasExactSelectorControlFields(json) ||
+      !ParseStringField(json, "type", type) ||
+      !ParseUnsignedField(json, "protocol_version", protocol) ||
+      !ParseStringField(json, "request_id", request_id) ||
+      !ParseStringField(json, "step", step) ||
+      !ParseUnsignedField(json, "expected_revision", revision) ||
+      !ParseStringField(json, "request_nonce", request_nonce) ||
+      type != "execute_step" || protocol != 1 || request_id.empty() ||
+      request_id.size() > 256 ||
+      step != kZhongguoManagerSubordinateSelectorV1Step || revision == 0 ||
+      !ValidNonce(request_nonce)) {
+    return false;
+  }
+  output.expected_snapshot_revision = revision;
+  output.request_nonce = std::move(request_nonce);
+  return true;
+}
+
 bool ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1(
     void *opaque_context,
     const MainThreadExecutionStampV1 &stamp) noexcept {
@@ -347,6 +422,45 @@ bool ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1(
     ++query->executor_invocations;
     query->execution_stamp = stamp;
     MailboxAccessProxyV1 proxy{query, &stamp};
+    if (query->operation ==
+        ZhongguoManagerGovernanceMailboxOperationV1::
+            manager_subordinate_selector) {
+      ZhongguoManagerSubordinateSelectorAccessV1 access{};
+      access.context = &proxy;
+      access.capture_frame = &ProxyCaptureFrame;
+      access.is_main_thread = &ProxyIsMainThread;
+      query->selector_read_result = ReadZhongguoManagerSubordinateSelectorV1(
+          query->selector_environment, access, query->selector_request,
+          query->selector_result);
+      const bool typed_available =
+          query->selector_read_result ==
+              game::ReadZhongguoManagerSubordinateSelectorResultV1::available &&
+          query->selector_result.status ==
+              game::ZhongguoManagerSubordinateSelectorStatusV1::available &&
+          query->selector_result.readiness.ready;
+      const bool typed_unavailable =
+          query->selector_read_result ==
+              game::ReadZhongguoManagerSubordinateSelectorResultV1::
+                  unavailable &&
+          query->selector_result.status ==
+              game::ZhongguoManagerSubordinateSelectorStatusV1::unavailable &&
+          !query->selector_result.unavailable_reason.empty() &&
+          !query->selector_result.readiness.ready;
+      if ((typed_available || typed_unavailable) &&
+          query->selector_result.snapshot_revision ==
+              query->selector_request.expected_snapshot_revision &&
+          query->selector_result.selector_kind ==
+              kZhongguoManagerSubordinateSelectorV1Kind &&
+          query->selector_result.request_nonce ==
+              query->selector_request.request_nonce) {
+        query->completion =
+            ZhongguoManagerGovernanceSnapshotMailboxCompletionV1::completed;
+        return true;
+      }
+      query->completion = ZhongguoManagerGovernanceSnapshotMailboxCompletionV1::
+          infrastructure_rejected;
+      return false;
+    }
     ZhongguoManagerGovernanceAccessV1 access{};
     access.context = &proxy;
     access.capture_frame = &ProxyCaptureFrame;

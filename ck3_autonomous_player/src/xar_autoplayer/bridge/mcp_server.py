@@ -346,6 +346,18 @@ def _ck3_query_zhongguo_manager_governance_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_manager_subordinate_selector_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Select one provider-observed bounded AI manager/subordinate pair."""
+    return service.query_zhongguo_manager_subordinate_selector_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_zhongguo_scoreboard_state_v1(
     service: GameplayBridgeService,
     request_nonce: str,
@@ -960,6 +972,18 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_manager_subordinate_selector_v1(
+        request_nonce: str,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Select an observed AI direct manager and direct subordinate."""
+        return _ck3_query_zhongguo_manager_subordinate_selector_v1(
+            service,
+            request_nonce,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_zhongguo_scoreboard_state_v1(
         request_nonce: str,
         expected_revision: int,
@@ -1249,6 +1273,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_manager_governance_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_manager_subordinate_selector_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_scoreboard_state_v1"

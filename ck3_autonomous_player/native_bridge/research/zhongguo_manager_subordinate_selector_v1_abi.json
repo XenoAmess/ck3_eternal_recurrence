@@ -1,0 +1,87 @@
+{
+  "contract": "zhongguo_manager_subordinate_selector_v1",
+  "status": "production_transport_integrated_static_and_fixture_ready_not_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-zhongguo-manager-subordinate-selector-v1",
+  "step": "query-zhongguo-manager-subordinate-selector-v1",
+  "selector_kind": "zg361-bounded-ai-direct-manager-selection-v1",
+  "public_request_fields": [
+    "request_nonce",
+    "expected_revision"
+  ],
+  "forbidden_request_fields": [
+    "manager_character_id",
+    "subordinate_character_id",
+    "manager_is_ai",
+    "manager_is_celestial",
+    "manager_rank",
+    "manager_is_direct_vassal",
+    "variable_name"
+  ],
+  "native_anchors": {
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "subject_contract_storage_slot_rva": "0x570CCA0",
+    "subject_contract_fallback_slot_rva": "0x570CC50",
+    "primary_title_rva": "0x25F3350",
+    "immediate_liege_rva": "0x2613480",
+    "effective_government_rva": "0x26165B0",
+    "is_human_player_rva": "0x28BCEB0"
+  },
+  "native_layout": {
+    "character_identity": "+0x18 int32 full CharacterID",
+    "character_death_marker": "+0x1C8 pointer",
+    "character_extension": "+0x1B8 pointer",
+    "liege_contract_ids": "extension+0x248 data pointer; +0x254 signed count; 4-byte full IDs",
+    "subject_contract_identity": "+0x08 int32 full CSubjectContractID",
+    "subject_contract_subject": "+0x20 Character*",
+    "subject_contract_liege": "+0x28 Character*",
+    "title_identity": "+0x10 int32 full TitleID",
+    "title_template": "+0x160 pointer",
+    "title_tier": "template+0x5C int32",
+    "government_key": "+0x18 MSVC string"
+  },
+  "selection": {
+    "order": "first complete manager/subordinate pair in nested player-contract then manager-contract native order",
+    "manager_predicates": [
+      "contract_liege_pointer_is_player",
+      "candidate_immediate_liege_is_player",
+      "candidate_alive",
+      "candidate_not_human",
+      "candidate_effective_government_key_is_celestial_government",
+      "candidate_primary_title_tier_is_3_to_6"
+    ],
+    "subordinate_predicates": [
+      "contract_liege_pointer_is_manager",
+      "candidate_immediate_liege_is_manager"
+    ],
+    "caller_character_ids_accepted": false
+  },
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox",
+    "two_complete_selection_reads": true,
+    "frame_before_after_equal": true,
+    "selection_reads_equal": true,
+    "engine_pointers_retained": false
+  },
+  "typed_unavailable": [
+    "unsupported_build",
+    "requires_application_main",
+    "requires_paused",
+    "map_not_ready",
+    "native_relationship_enumeration_unavailable",
+    "no_bounded_ai_direct_manager",
+    "bounded_ai_manager_has_no_direct_subordinate",
+    "state_changed",
+    "internal_error"
+  ],
+  "integration": {
+    "mailbox_executor": "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
+    "mailbox_fixed_slot": "shared_permitted_executor_quinquevigintary",
+    "manager_authorizer": "same_exact_selector_eligibility_helper",
+    "native_driver_service_mcp": "integrated_static_not_live",
+    "formal_phase2_runner_provider": "wired_static_not_live",
+    "live_artifact": null
+  }
+}

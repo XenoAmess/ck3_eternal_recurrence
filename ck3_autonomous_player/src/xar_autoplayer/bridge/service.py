@@ -164,6 +164,13 @@ from .zhongguo_manager_governance_snapshot_contract import (
     parse_query_zhongguo_manager_governance_snapshot_v1_step,
     query_zhongguo_manager_governance_snapshot_v1_step,
 )
+from .zhongguo_manager_subordinate_selector_contract import (
+    QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY,
+    QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_STEP,
+    normalize_native_zhongguo_manager_subordinate_selector_v1,
+    parse_query_zhongguo_manager_subordinate_selector_v1_step,
+    query_zhongguo_manager_subordinate_selector_v1_step,
+)
 from .zhongguo_scoreboard_state_contract import (
     QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
     QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_STEP,
@@ -4064,6 +4071,137 @@ class GameplayBridgeService:
                 "ZhongGuo incident response projection is malformed: "
                 f"{error}"
             ) from error
+
+    def query_zhongguo_manager_subordinate_selector_v1(
+        self,
+        request_nonce: str,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Select one observed bounded AI manager and direct subordinate."""
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        snapshot = self.snapshot()
+        revision = snapshot.get("revision")
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        played = snapshot.get("played_character")
+        player_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        if not (
+            snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and revision == expected_revision
+            and not isinstance(native_revision, bool)
+            and isinstance(native_revision, int)
+            and 1 <= native_revision <= 2**64 - 1
+            and not isinstance(date_raw, bool)
+            and isinstance(date_raw, int)
+            and -(2**31) <= date_raw <= 2**31 - 1
+            and isinstance(snapshot_id, str)
+            and bool(snapshot_id)
+            and not isinstance(player_character_id, bool)
+            and isinstance(player_character_id, int)
+            and 1 <= player_character_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo manager/subordinate selector lacks its paused "
+                "snapshot binding"
+            )
+        step = query_zhongguo_manager_subordinate_selector_v1_step(
+            request_nonce
+        )
+        query = parse_query_zhongguo_manager_subordinate_selector_v1_step(step)
+        if query is None:  # pragma: no cover - builder/parser invariant
+            raise AssertionError("manager/subordinate selector builder violated v1")
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query the ZhongGuo "
+                "manager/subordinate selector"
+            )
+        result = self.execute_step(step, expected_revision=expected_revision)
+        selector = (
+            result.get("zhongguo_manager_subordinate_selector")
+            if isinstance(result, dict)
+            else None
+        )
+        try:
+            normalized = normalize_native_zhongguo_manager_subordinate_selector_v1(
+                selector,
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "ZhongGuo manager/subordinate selector is malformed: "
+                f"{error}"
+            ) from error
+        if not (
+            isinstance(result, dict)
+            and result.get("step")
+            == QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_STEP
+            and result.get("accepted") is True
+            and result.get("status") == normalized["status"]
+            and result.get("snapshot_revision") == native_revision
+            and result.get("queried_snapshot_id") == snapshot_id
+            and result.get("queried_revision") == revision
+            and result.get("queried_native_revision") == native_revision
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo manager/subordinate selector envelope crossed its "
+                "snapshot binding"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("played_character") == played
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo manager/subordinate selector crossed its paused "
+                "snapshot binding"
+            )
+        selection = normalized.get("selection")
+        return {
+            **normalized,
+            "manager_character_id": (
+                selection.get("manager_character_id")
+                if isinstance(selection, dict)
+                else None
+            ),
+            "subordinate_character_id": (
+                selection.get("subordinate_character_id")
+                if isinstance(selection, dict)
+                else None
+            ),
+            "binding": {
+                "request_nonce": query.request_nonce,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_character_id,
+            },
+            "query_sequence": result.get("query_sequence"),
+            "backend_id": result.get("backend_id"),
+        }
 
     def query_zhongguo_manager_governance_snapshot_v1(
         self,
