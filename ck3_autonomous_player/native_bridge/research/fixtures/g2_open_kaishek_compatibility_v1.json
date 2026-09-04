@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "270f8f52098191cff37f33cef24f441a36297b5b"
+    "open_kaishek_commit": "1394dca6976c79913da740367898c0fd35e102e7"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -185,6 +185,42 @@
       "native_certified": false,
       "runtime_certified": false
     }
+  },
+  "actual_truce_expiry_candidate": {
+    "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/G2ActualTruceExpiryCandidateMetadata.java",
+    "id": "ck3-1.19.0.6-g2-actual-truce-expiry-candidate-v1",
+    "capability_id": "game.command.query-raiktor-actual-truce-expiry-v1-N",
+    "step_prefix": "query-raiktor-actual-truce-expiry-v1-",
+    "backend_id": "ck3-1.19.0.6-native-raiktor-actual-truce-expiry-v1",
+    "cmake_option": "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1",
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "root_integration_commit": "04c1a00f0599378dfa8810be14ce535b2ed17f21",
+    "root_retention_commit": "f16cdf0d63df06f4e6b0bbde08f6324e25c3d885",
+    "root_source_contract_sha256": "9b71a5001453970df851e7b0d908929f5b598a0efceafc9ed7438a4d3bb214a3",
+    "root_abi_sha256": "422352b9989259f6f9060d47b5763c5e81b355cc36130124652d5a60cd78b6a7",
+    "root_python_contract_sha256": "55fe165e5c001cd6858c4c47345fc8343dc270c9d77b7db9678e2d5596cf405c",
+    "root_header_sha256": "43b90ee1f4ebaae83785c786e9c38d9a7396bab07858f0ccd702165181572747",
+    "root_source_sha256": "9074c83277697f1f652fb7216bda4647694ac1ef545bcd5f483055afec4c747c",
+    "retention_manifest_sha256": "21d5e530df76d80ec5919f536276bcb0340a607d0c83dbbd73e6451b724d5e91",
+    "retention_runner_sha256": "ea4b81a037c59b20f64e3e6800e9bec7e4de8ec856c1d0029639edf620498e04",
+    "retention_ticket_id": "E0A93DDC584BB2313BC03CE076779BAFD261ABBABB69E9DE3BEF284DFE14823A",
+    "frozen_generation_sha256": "6BD3E54354B267F9E785DE6FB2C2B3CB16AB72ADEF53204D2DB67299A857313F",
+    "retained_pre_termination_soldiers": 598,
+    "retained_evaluated_days": 1825,
+    "default_enabled": false,
+    "capability_advertised_by_default": false,
+    "read_only": true,
+    "ack_sufficient": false,
+    "native_certified": false,
+    "runtime_certified": false,
+    "production_live": false,
+    "retention_live_authorized": false,
+    "termination_action_bound": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen_034_resolved": false
   },
   "boundaries": {
     "ck3_started": false,

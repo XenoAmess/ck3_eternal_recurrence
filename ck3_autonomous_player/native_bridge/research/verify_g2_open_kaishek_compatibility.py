@@ -2,11 +2,11 @@
 """Audit the current root/open_kaishek compatibility pin without CK3.
 
 The verifier is deliberately source-level.  It checks the root's descriptive
-G2 binding, default-OFF war-loss metadata, projects-metrics schema delta, and
-promotion-source fail-closed transports against the companion Java profiles.
-When the external checkout is available, it also checks source files and
-read-only Git refs.  It never starts or attaches to CK3 and never changes a
-Paradox opcode allow-list.
+G2 binding, default-OFF war-loss/actual-expiry metadata, projects-metrics
+schema delta, and promotion-source fail-closed transports against the
+companion Java profiles.  When the external checkout is available, it also
+checks source files and read-only Git refs.  It never starts or attaches to
+CK3 and never changes a Paradox opcode allow-list.
 """
 
 from __future__ import annotations
@@ -163,6 +163,47 @@ _PROMOTION_BOOLEAN_CONSTANTS = {
     ),
     "production_live_ready": "PRODUCTION_LIVE_READY",
     "action_ack_is_state_evidence": "ACTION_ACK_IS_STATE_EVIDENCE",
+}
+_ACTUAL_EXPIRY_STRING_CONSTANTS = {
+    "id": "ID",
+    "capability_id": "CAPABILITY_ID",
+    "step_prefix": "STEP_PREFIX",
+    "backend_id": "BACKEND_ID",
+    "cmake_option": "CMAKE_OPTION",
+    "game_version": "GAME_VERSION",
+    "executable_sha256": "EXECUTABLE_SHA256",
+    "root_integration_commit": "ROOT_INTEGRATION_COMMIT",
+    "root_retention_commit": "ROOT_RETENTION_COMMIT",
+    "root_source_contract_sha256": "ROOT_SOURCE_CONTRACT_SHA256",
+    "root_abi_sha256": "ROOT_ABI_SHA256",
+    "root_python_contract_sha256": "ROOT_PYTHON_CONTRACT_SHA256",
+    "root_header_sha256": "ROOT_HEADER_SHA256",
+    "root_source_sha256": "ROOT_SOURCE_SHA256",
+    "retention_manifest_sha256": "RETENTION_MANIFEST_SHA256",
+    "retention_runner_sha256": "RETENTION_RUNNER_SHA256",
+    "retention_ticket_id": "RETENTION_TICKET_ID",
+    "frozen_generation_sha256": "FROZEN_GENERATION_SHA256",
+}
+_ACTUAL_EXPIRY_INT_CONSTANTS = {
+    "retained_pre_termination_soldiers": (
+        "RETAINED_PRE_TERMINATION_SOLDIERS"
+    ),
+    "retained_evaluated_days": "RETAINED_EVALUATED_DAYS",
+}
+_ACTUAL_EXPIRY_BOOLEAN_CONSTANTS = {
+    "default_enabled": "DEFAULT_ENABLED",
+    "capability_advertised_by_default": "CAPABILITY_ADVERTISED_BY_DEFAULT",
+    "read_only": "READ_ONLY",
+    "ack_sufficient": "ACK_SUFFICIENT",
+    "native_certified": "NATIVE_CERTIFIED",
+    "runtime_certified": "RUNTIME_CERTIFIED",
+    "production_live": "PRODUCTION_LIVE",
+    "retention_live_authorized": "RETENTION_LIVE_AUTHORIZED",
+    "termination_action_bound": "TERMINATION_ACTION_BOUND",
+    "actual_expiry_observable": "ACTUAL_EXPIRY_OBSERVABLE",
+    "decision_ready": "DECISION_READY",
+    "automatic_surrender_ready": "AUTOMATIC_SURRENDER_READY",
+    "gen_034_resolved": "GEN_034_RESOLVED",
 }
 
 
@@ -372,6 +413,20 @@ def parse_promotion_source_transport(path: Path) -> dict[str, object]:
     return values
 
 
+def parse_actual_truce_expiry_source(
+    path: Path,
+) -> dict[str, str | int | bool]:
+    """Extract the default-OFF persisted-expiry metadata and ticket pins."""
+
+    source = path.read_text(encoding="utf-8")
+    return _parse_java_constants(
+        source,
+        strings=_ACTUAL_EXPIRY_STRING_CONSTANTS,
+        integers=_ACTUAL_EXPIRY_INT_CONSTANTS,
+        booleans=_ACTUAL_EXPIRY_BOOLEAN_CONSTANTS,
+    )
+
+
 def _git_ref(checkout: Path, ref: str) -> tuple[str | None, str | None]:
     """Return a read-only Git ref and an error string, if any."""
 
@@ -570,6 +625,23 @@ def audit(
             "runtime_certified",
         )
     )
+    expected_expiry = fixture.get("actual_truce_expiry_candidate", {})
+    checks["fixture_actual_expiry_shape"] = set(expected_expiry) == {
+        "source",
+        *_ACTUAL_EXPIRY_STRING_CONSTANTS,
+        *_ACTUAL_EXPIRY_INT_CONSTANTS,
+        *_ACTUAL_EXPIRY_BOOLEAN_CONSTANTS,
+    }
+    checks["fixture_actual_expiry_readiness_closed"] = (
+        expected_expiry.get("retained_pre_termination_soldiers") == 598
+        and expected_expiry.get("retained_evaluated_days") == 1825
+        and expected_expiry.get("read_only") is True
+        and all(
+            expected_expiry.get(key) is False
+            for key in _ACTUAL_EXPIRY_BOOLEAN_CONSTANTS
+            if key != "read_only"
+        )
+    )
     checks["fixture_boundaries_closed"] = fixture.get("boundaries") == {
         "ck3_started": False,
         "process_attached": False,
@@ -598,6 +670,7 @@ def audit(
         war_loss_path = resolved_checkout / expected_war_loss["source"]
         projects_path = resolved_checkout / expected_projects["source"]
         promotion_path = resolved_checkout / expected_promotion["source"]
+        expiry_path = resolved_checkout / expected_expiry["source"]
         try:
             capability = parse_capability_source(capability_path)
             checks["capability_source_parse"] = True
@@ -683,6 +756,25 @@ def audit(
             checks["promotion_transport_source_parse"] = False
             errors.append(
                 f"promotion-transport-source: {type(error).__name__}: {error}"
+            )
+        try:
+            expiry = parse_actual_truce_expiry_source(expiry_path)
+            checks["actual_expiry_source_parse"] = True
+            _equal(
+                checks,
+                "actual_expiry_metadata_matches",
+                expiry,
+                {
+                    key: value
+                    for key, value in expected_expiry.items()
+                    if key != "source"
+                },
+            )
+            external["actual_truce_expiry_candidate"] = expiry
+        except (OSError, ValueError) as error:
+            checks["actual_expiry_source_parse"] = False
+            errors.append(
+                f"actual-expiry-source: {type(error).__name__}: {error}"
             )
 
         head, head_error = _git_ref(resolved_checkout, "HEAD")

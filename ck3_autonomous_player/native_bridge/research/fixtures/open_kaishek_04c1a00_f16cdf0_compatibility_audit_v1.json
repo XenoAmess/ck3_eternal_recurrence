@@ -1,0 +1,98 @@
+{
+  "schema": "xar.ck3.open_kaishek_g2_actual_expiry_compatibility_audit.v1",
+  "status": "GREEN_STATIC",
+  "audited_at": "2026-09-04T16:40:00+08:00",
+  "root": {
+    "canonical_commit": "04c1a00f0599378dfa8810be14ce535b2ed17f21",
+    "checkout_base_commit": "a77b2d5b4db5039f461ef5c3656f53679eab75c3",
+    "actual_expiry_candidate_commit": "04c1a00f0599378dfa8810be14ce535b2ed17f21",
+    "retention_ticket_commit": "f16cdf0d63df06f4e6b0bbde08f6324e25c3d885"
+  },
+  "open_kaishek": {
+    "previous_commit": "270f8f52098191cff37f33cef24f441a36297b5b",
+    "commit": "1394dca6976c79913da740367898c0fd35e102e7",
+    "origin_main": "1394dca6976c79913da740367898c0fd35e102e7",
+    "default_checkout_head": "1394dca6976c79913da740367898c0fd35e102e7",
+    "clean": true,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 355407,
+    "jar_sha256": "9dbb7d996d535e0bb950f45752432c2b4f0229b8aefbcb734fb29d5da1fa63c5"
+  },
+  "actual_truce_expiry_candidate": {
+    "open_kaishek_change_required": true,
+    "metadata_only": true,
+    "capability_descriptor_added": false,
+    "capability_id": "game.command.query-raiktor-actual-truce-expiry-v1-N",
+    "cmake_option": "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1",
+    "cmake_default": "OFF",
+    "source_contract_sha256": "9b71a5001453970df851e7b0d908929f5b598a0efceafc9ed7438a4d3bb214a3",
+    "abi_sha256": "422352b9989259f6f9060d47b5763c5e81b355cc36130124652d5a60cd78b6a7",
+    "python_contract_sha256": "55fe165e5c001cd6858c4c47345fc8343dc270c9d77b7db9678e2d5596cf405c",
+    "header_sha256": "43b90ee1f4ebaae83785c786e9c38d9a7396bab07858f0ccd702165181572747",
+    "source_sha256": "9074c83277697f1f652fb7216bda4647694ac1ef545bcd5f483055afec4c747c",
+    "read_only": true,
+    "capability_advertised_by_default": false,
+    "ack_sufficient": false,
+    "native_certified": false,
+    "runtime_certified": false,
+    "production_live": false,
+    "actual_expiry_observable": false
+  },
+  "retention_ticket": {
+    "open_kaishek_change_required": true,
+    "metadata_only": true,
+    "manifest_sha256": "21d5e530df76d80ec5919f536276bcb0340a607d0c83dbbd73e6451b724d5e91",
+    "runner_sha256": "ea4b81a037c59b20f64e3e6800e9bec7e4de8ec856c1d0029639edf620498e04",
+    "ticket_id": "E0A93DDC584BB2313BC03CE076779BAFD261ABBABB69E9DE3BEF284DFE14823A",
+    "frozen_generation_sha256": "6BD3E54354B267F9E785DE6FB2C2B3CB16AB72ADEF53204D2DB67299A857313F",
+    "retained_pre_termination_soldiers": 598,
+    "retained_evaluated_days": 1825,
+    "live_authorized": false,
+    "termination_action_bound": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen_034_resolved": false
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 144,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_domain_tests": 8,
+    "open_cli_smoke": "PASS",
+    "main_product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "zhongguo_product_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23949962,
+      "sha256": "b495ff1e75bc622d2fc0b9af818de1c0ff01910ae35a795a4c3bde3262ab0cd7"
+    },
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 55,
+      "all_checks": true
+    }
+  },
+  "t2_execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "parser_vocabulary_changed": false,
+    "ir_changed": false,
+    "runtime_handler_changed": false,
+    "cli_command_changed": false,
+    "capability_promoted": false,
+    "readiness_promoted": false
+  }
+}
