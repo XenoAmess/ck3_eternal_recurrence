@@ -23,14 +23,30 @@ constexpr std::size_t kStorageObjectOffset = 0x08;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
 
 enum VariableIndex : std::size_t {
-  source_ready = 0,
-  source_owner,
-  source_subject,
-  source_cycle,
-  source_case,
-  contribution_receipt_id,
-  contribution_receipt_revision,
-  contribution_value,
+  cp_receipt_owner = 0,
+  cp_receipt_subject,
+  cp_receipt_cycle,
+  cp_receipt_case,
+  cp_receipt_state,
+  cp_receipt_choice,
+  cp_contribution_receipt_id,
+  cp_contribution_receipt_revision,
+  cp_visible_value,
+  cp_consumed_owner,
+  cp_consumed_subject,
+  cp_consumed_cycle,
+  cp_consumed_case,
+  cp_consumed_state,
+  cp_visible_provenance_case,
+  p3_portfolio_cycle,
+  p3_source_ready,
+  p3_source_owner,
+  p3_source_subject,
+  p3_source_cycle,
+  p3_source_case,
+  p3_contribution_receipt_id,
+  p3_contribution_receipt_revision,
+  p3_contribution_value,
   result_owner,
   result_subject,
   result_cycle,
@@ -39,14 +55,14 @@ enum VariableIndex : std::size_t {
   metrics_source_receipt_revision,
   metrics_revision,
   dictionary_key_code,
-  consumed_owner,
-  consumed_subject,
-  consumed_cycle,
-  consumed_case,
-  consumed_state,
-  receipt_choice,
-  visible_value,
-  visible_provenance_case,
+  p3_consumed_owner,
+  p3_consumed_subject,
+  p3_consumed_cycle,
+  p3_consumed_case,
+  p3_consumed_state,
+  p3_receipt_choice,
+  p3_visible_value,
+  p3_visible_provenance_case,
 };
 
 using RawRows = std::array<
@@ -348,6 +364,7 @@ void InitializeEnvelope(
   output.request_nonce = request.request_nonce;
   output.snapshot_revision = request.expected_snapshot_revision;
   output.requested_owner_character_id = request.owner_character_id;
+  output.checkpoint_state = "unavailable";
   if (frame != nullptr) {
     output.date_raw = frame->date_raw;
     output.paused = frame->paused;
@@ -364,6 +381,7 @@ void SetTopUnavailable(
   MarkAllUnavailable(output, "postcondition_unavailable");
   output.readiness = {};
   output.readiness.same_frame_ready = same_frame_ready;
+  output.checkpoint_state = "unavailable";
   output.unavailable_reason.assign(reason);
 }
 
@@ -516,25 +534,98 @@ ReadZhongguoProjectsMetricsPostconditionV1(
     }
     output.readiness.same_frame_ready = true;
 
-    if (!first[source_ready].present) {
+    if (!first[cp_receipt_owner].present) {
       SetTopUnavailable(output, "project_source_not_found", true);
       return game::ReadZhongguoProjectsMetricsPostconditionResultV1::
           unavailable;
     }
-    game::ZhongguoTypedIntegerV1 source_ready_value;
-    DecodeInteger(first[source_ready], source_ready_value);
-    if (!IntegerEquals(source_ready_value, 1)) {
+
+    DecodeCharacter(environment, access, first[cp_receipt_owner],
+                    output.source_identity.owner_character_id);
+    DecodeCharacter(environment, access, first[cp_receipt_subject],
+                    output.source_identity.subject_character_id);
+    DecodeInteger(first[cp_receipt_cycle], output.source_identity.cycle_serial);
+    DecodeInteger(first[cp_receipt_case], output.source_identity.case_serial);
+    CopyIdentity(output.source_identity, output.contribution.identity);
+    DecodeInteger(first[cp_contribution_receipt_id],
+                  output.contribution.receipt_id);
+    DecodeInteger(first[cp_contribution_receipt_revision],
+                  output.contribution.receipt_revision);
+    DecodeInteger(first[cp_visible_value], output.contribution.value);
+
+    game::ZhongguoTypedIntegerV1 cp_state;
+    game::ZhongguoTypedIntegerV1 cp_choice;
+    game::ZhongguoTypedIntegerV1 cp_committed_owner;
+    game::ZhongguoTypedIntegerV1 cp_committed_subject;
+    game::ZhongguoTypedIntegerV1 cp_committed_cycle;
+    game::ZhongguoTypedIntegerV1 cp_committed_case;
+    game::ZhongguoTypedIntegerV1 cp_committed_state;
+    game::ZhongguoTypedIntegerV1 cp_visible_case;
+    DecodeInteger(first[cp_receipt_state], cp_state);
+    DecodeInteger(first[cp_receipt_choice], cp_choice);
+    DecodeCharacter(environment, access, first[cp_consumed_owner],
+                    cp_committed_owner);
+    DecodeCharacter(environment, access, first[cp_consumed_subject],
+                    cp_committed_subject);
+    DecodeInteger(first[cp_consumed_cycle], cp_committed_cycle);
+    DecodeInteger(first[cp_consumed_case], cp_committed_case);
+    DecodeInteger(first[cp_consumed_state], cp_committed_state);
+    DecodeInteger(first[cp_visible_provenance_case], cp_visible_case);
+
+    const auto owner = request.owner_character_id;
+    const auto subject = before.played_character_id;
+    const bool cp_source_ready =
+        IdentityReady(output.source_identity, owner, subject) &&
+        IntegerEquals(cp_state, 1) &&
+        (IntegerEquals(cp_choice, 1) || IntegerEquals(cp_choice, 2)) &&
+        IntegerInRange(output.contribution.receipt_id, 1,
+                       std::numeric_limits<std::int64_t>::max()) &&
+        IntegerInRange(output.contribution.receipt_revision, 1,
+                       std::numeric_limits<std::int64_t>::max()) &&
+        ((IntegerEquals(cp_choice, 1) &&
+          IntegerEquals(output.contribution.value, 1)) ||
+         (IntegerEquals(cp_choice, 2) &&
+          IntegerEquals(output.contribution.value, 2))) &&
+        IntegerEquals(cp_committed_owner, owner) &&
+        IntegerEquals(cp_committed_subject, subject) &&
+        cp_committed_cycle.value == output.source_identity.cycle_serial.value &&
+        cp_committed_case.value == output.source_identity.case_serial.value &&
+        IntegerEquals(cp_committed_state, 1) &&
+        cp_visible_case.value == output.source_identity.case_serial.value;
+    if (!cp_source_ready) {
       SetTopUnavailable(output, "project_source_not_ready", true);
       return game::ReadZhongguoProjectsMetricsPostconditionResultV1::
           unavailable;
     }
 
-    DecodeCharacter(environment, access, first[source_owner],
-                    output.source_identity.owner_character_id);
-    DecodeCharacter(environment, access, first[source_subject],
-                    output.source_identity.subject_character_id);
-    DecodeInteger(first[source_cycle], output.source_identity.cycle_serial);
-    DecodeInteger(first[source_case], output.source_identity.case_serial);
+    game::ZhongguoTypedIntegerV1 p3_cycle;
+    game::ZhongguoTypedIntegerV1 p3_ready;
+    game::ZhongguoProjectsMetricsIdentityV1 p3_source_identity;
+    DecodeInteger(first[p3_portfolio_cycle], p3_cycle);
+    DecodeInteger(first[p3_source_ready], p3_ready);
+    DecodeCharacter(environment, access, first[p3_source_owner],
+                    p3_source_identity.owner_character_id);
+    DecodeCharacter(environment, access, first[p3_source_subject],
+                    p3_source_identity.subject_character_id);
+    DecodeInteger(first[p3_source_cycle], p3_source_identity.cycle_serial);
+    DecodeInteger(first[p3_source_case], p3_source_identity.case_serial);
+    game::ZhongguoTypedIntegerV1 p3_contribution_id;
+    game::ZhongguoTypedIntegerV1 p3_contribution_revision;
+    game::ZhongguoTypedIntegerV1 p3_contribution_value_field;
+    DecodeInteger(first[p3_contribution_receipt_id], p3_contribution_id);
+    DecodeInteger(first[p3_contribution_receipt_revision],
+                  p3_contribution_revision);
+    DecodeInteger(first[p3_contribution_value], p3_contribution_value_field);
+    const bool p3_initializer_current =
+        p3_cycle.available && output.source_identity.cycle_serial.available &&
+        p3_cycle.value == output.source_identity.cycle_serial.value;
+    const bool p3_source_matches =
+        p3_initializer_current && IntegerEquals(p3_ready, 1) &&
+        SameIdentity(p3_source_identity, output.source_identity) &&
+        p3_contribution_id.value == output.contribution.receipt_id.value &&
+        p3_contribution_revision.value ==
+            output.contribution.receipt_revision.value &&
+        p3_contribution_value_field.value == output.contribution.value.value;
 
     DecodeCharacter(environment, access, first[result_owner],
                     output.result_identity.owner_character_id);
@@ -542,13 +633,6 @@ ReadZhongguoProjectsMetricsPostconditionV1(
                     output.result_identity.subject_character_id);
     DecodeInteger(first[result_cycle], output.result_identity.cycle_serial);
     DecodeInteger(first[result_case], output.result_identity.case_serial);
-
-    CopyIdentity(output.source_identity, output.contribution.identity);
-    DecodeInteger(first[contribution_receipt_id],
-                  output.contribution.receipt_id);
-    DecodeInteger(first[contribution_receipt_revision],
-                  output.contribution.receipt_revision);
-    DecodeInteger(first[contribution_value], output.contribution.value);
 
     CopyIdentity(output.result_identity, output.metrics_result.identity);
     DecodeInteger(first[metrics_source_receipt_id],
@@ -570,15 +654,11 @@ ReadZhongguoProjectsMetricsPostconditionV1(
                      "value_out_of_range");
     }
 
-    const auto owner = request.owner_character_id;
-    const auto subject = before.played_character_id;
     output.readiness.player_subject_binding_ready =
-        IntegerEquals(output.source_identity.subject_character_id, subject) &&
-        IntegerEquals(output.result_identity.subject_character_id, subject);
+        IntegerEquals(output.source_identity.subject_character_id, subject);
     output.readiness.owner_binding_ready =
         owner != subject &&
-        IntegerEquals(output.source_identity.owner_character_id, owner) &&
-        IntegerEquals(output.result_identity.owner_character_id, owner);
+        IntegerEquals(output.source_identity.owner_character_id, owner);
     output.readiness.source_identity_ready =
         IdentityReady(output.source_identity, owner, subject);
     output.readiness.result_identity_ready =
@@ -599,6 +679,7 @@ ReadZhongguoProjectsMetricsPostconditionV1(
                        std::numeric_limits<std::int64_t>::max()) &&
         output.metrics_result.dictionary_key.available;
     output.readiness.same_project_case_identity =
+        p3_source_matches &&
         SameIdentity(output.source_identity, output.result_identity) &&
         SameIdentity(output.source_identity, output.contribution.identity) &&
         SameIdentity(output.source_identity, output.metrics_result.identity);
@@ -620,15 +701,16 @@ ReadZhongguoProjectsMetricsPostconditionV1(
     game::ZhongguoTypedIntegerV1 committed_choice;
     game::ZhongguoTypedIntegerV1 committed_visible_value;
     game::ZhongguoTypedIntegerV1 committed_visible_case;
-    DecodeCharacter(environment, access, first[consumed_owner], committed_owner);
-    DecodeCharacter(environment, access, first[consumed_subject],
+    DecodeCharacter(environment, access, first[p3_consumed_owner],
+                    committed_owner);
+    DecodeCharacter(environment, access, first[p3_consumed_subject],
                     committed_subject);
-    DecodeInteger(first[consumed_cycle], committed_cycle);
-    DecodeInteger(first[consumed_case], committed_case);
-    DecodeInteger(first[consumed_state], committed_state);
-    DecodeInteger(first[receipt_choice], committed_choice);
-    DecodeInteger(first[visible_value], committed_visible_value);
-    DecodeInteger(first[visible_provenance_case], committed_visible_case);
+    DecodeInteger(first[p3_consumed_cycle], committed_cycle);
+    DecodeInteger(first[p3_consumed_case], committed_case);
+    DecodeInteger(first[p3_consumed_state], committed_state);
+    DecodeInteger(first[p3_receipt_choice], committed_choice);
+    DecodeInteger(first[p3_visible_value], committed_visible_value);
+    DecodeInteger(first[p3_visible_provenance_case], committed_visible_case);
     output.readiness.result_operation_committed =
         IntegerEquals(committed_owner, owner) &&
         IntegerEquals(committed_subject, subject) &&
@@ -646,7 +728,17 @@ ReadZhongguoProjectsMetricsPostconditionV1(
     output.status =
         game::ZhongguoProjectsMetricsPostconditionStatusV1::available;
     output.unavailable_reason.clear();
-    output.readiness.ready = ComponentGate(output.readiness);
+    output.readiness.ready =
+        p3_source_matches && ComponentGate(output.readiness);
+    if (!p3_initializer_current) {
+      output.checkpoint_state = "cp26_ready_p3_absent";
+    } else if (!p3_source_matches) {
+      output.checkpoint_state = "p3_initialized_source_not_ready";
+    } else if (output.readiness.ready) {
+      output.checkpoint_state = "p3_result_committed";
+    } else {
+      output.checkpoint_state = "p3_source_ready_result_pending";
+    }
     return game::ReadZhongguoProjectsMetricsPostconditionResultV1::available;
   } catch (...) {
     InitializeEnvelope(request, nullptr, output);

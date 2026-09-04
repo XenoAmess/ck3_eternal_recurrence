@@ -29,7 +29,7 @@
     "contract": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_projects_metrics_postcondition_contract.py",
     "schema": "ck3_autonomous_player/schemas/zhongguo-projects-metrics-postcondition-v1.schema.json",
     "abi": "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json",
-    "source_contract": "ck3_autonomous_player/native_bridge/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json",
+    "source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json",
     "current_status": "static_and_fixture_ready_not_live",
     "currently_advertised_by_default_adapter": false
   },
@@ -39,10 +39,10 @@
     "map_paused": true,
     "active_player_event": false,
     "product_source_state": "zg361cp.26 route A or B contribution receipt prepared for the same subject and cycle",
-    "provider_pre_state": "unavailable with project_source_not_found before the P3 initializer copies the CP receipt",
+    "provider_pre_state": "available with checkpoint_state cp26_ready_p3_absent from the direct CP26 receipt projection",
     "result_state": "zg361p3.229 has not yet committed its metrics result",
-    "atomicity_note": "P3 initialization and authorized AI #229 routing run in one effect call, so source-ready/result-pending is not required to be a separately observable paused frame",
-    "also_supported_pre_state": "an observable source-ready/result-pending provider frame, if one is supplied by a future production path"
+    "atomicity_note": "the provider observes CP26 directly before P3 initialization, then verifies the copied receipt and committed P3M229 result after bounded timeline advance",
+    "also_supported_pre_state": "none; the action cell requires the exact CP26-ready/P3-absent source checkpoint"
   },
   "postcondition": {
     "later_paused_frame_required": true,
@@ -77,11 +77,6 @@
       "id": "cp26-prepared-p3-not-started-seed-missing",
       "blocking": true,
       "evidence": "no frozen save or fixture currently establishes an AI-owner/player-subject CP26 receipt before the P3 initializer copies it and performs P3M229"
-    },
-    {
-      "id": "central-stage-order",
-      "blocking": true,
-      "evidence": "central runtime dispatches metrics stage 7 before credit/project stage 8, so a first central cycle cannot itself create CP26 before opening P3 for that same cycle"
     },
     {
       "id": "no-live-postcondition-artifact",

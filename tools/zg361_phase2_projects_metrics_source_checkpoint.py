@@ -514,10 +514,11 @@ def capture_projects_metrics_source_checkpoint_live(
     valid_preflight = (
         preflight.get("result") == "READY"
         and preflight.get("ready_to_run") is True
-        and preflight.get("checkpoint_mode") == "source_ready_result_pending"
+        and preflight.get("checkpoint_mode") == "cp26_ready_p3_absent"
         and isinstance(preflight_binding, Mapping)
         and isinstance(source, Mapping)
         and isinstance(provider, Mapping)
+        and provider.get("checkpoint_state") == "cp26_ready_p3_absent"
         and source.get("owner_character_id") == owner
         and source.get("subject_character_id") == subject
         and isinstance(source.get("cycle_serial"), int)
@@ -662,6 +663,7 @@ def capture_projects_metrics_source_checkpoint_live(
             "bytes": len(provider_bytes),
             "sha256": provider_sha,
         },
+        "provider_checkpoint_state": "cp26_ready_p3_absent",
         "p3_initializer_not_run": True,
         "action_ack_is_business_postcondition": False,
     }
@@ -713,6 +715,7 @@ def capture_projects_metrics_source_checkpoint_live(
             "cp26_route_is_a_or_b": True,
             "cp26_contribution_receipt_provider_observed": True,
             "p3_initializer_not_run": True,
+            "provider_state_is_cp26_ready_p3_absent": True,
             "checkpoint_bytes_sha256_verified": True,
             "ui_provider_lineage_joined": True,
             "action_ack_used_as_business_state": False,
@@ -863,6 +866,8 @@ def validate_projects_metrics_source_checkpoint_registry(
         == entry.get("subject_character_id")
         and isinstance(provider_payload, Mapping)
         and provider_payload.get("status") == "available"
+        and provider_payload.get("checkpoint_state")
+        == "cp26_ready_p3_absent"
         and source_receipt.get("result") == "GREEN"
         and source_receipt.get("evidence_class") == "real_ck3"
         and source_receipt.get("provider_observed") is True
@@ -888,6 +893,8 @@ def validate_projects_metrics_source_checkpoint_registry(
             key: provider.get(key) for key in ("path", "bytes", "sha256")
         }
         and source_receipt.get("p3_initializer_not_run") is True
+        and source_receipt.get("provider_checkpoint_state")
+        == "cp26_ready_p3_absent"
         and source_receipt.get("action_ack_is_business_postcondition") is False
         and checks_valid
     )

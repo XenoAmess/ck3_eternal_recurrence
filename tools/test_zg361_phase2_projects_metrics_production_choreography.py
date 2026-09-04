@@ -88,16 +88,24 @@ class ProjectsMetricsProductionChoreographyTests(unittest.TestCase):
         self.assertEqual(verdict["reason_code"], "cp_producer_runs_after_p3_consumer")
         self.assertFalse(verdict["source_checkpoint_capture_contract_satisfiable"])
 
-    def test_central_dispatches_p3_stage_before_cp_stage(self) -> None:
-        stage7_dispatch = "var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_metrics_delivery_effect"
-        stage8_dispatch = "var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_credit_project_effect"
+    def test_central_dispatches_cp_stage_before_p3_stage(self) -> None:
+        stage7_dispatch = "var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_credit_project_effect"
+        stage8_dispatch = "var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_metrics_delivery_effect"
         self.assertIn(stage7_dispatch, self.pump)
         self.assertIn(stage8_dispatch, self.pump)
         self.assertLess(self.pump.index(stage7_dispatch), self.pump.index(stage8_dispatch))
-        stage7 = block(self.stages, "zg361_p2c_stage_07_metrics_delivery_effect")
-        stage8 = block(self.stages, "zg361_p2c_stage_08_credit_project_effect")
-        self.assertIn("zg361_p3_open_portfolio_effect", stage7)
-        self.assertIn("zg361_cp_open_portfolio_effect", stage8)
+        stage7 = block(self.stages, "zg361_p2c_stage_07_credit_project_effect")
+        stage8 = block(self.stages, "zg361_p2c_stage_08_metrics_delivery_effect")
+        self.assertIn("zg361_cp_open_portfolio_effect", stage7)
+        self.assertIn("zg361_p3_open_portfolio_effect", stage8)
+        self.assertIn(
+            "var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle",
+            stage7,
+        )
+        self.assertIn(
+            "var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle",
+            stage8,
+        )
         self.assertIn("change_variable = { name = zg361_p2c_stage add = 1 }", self.dispatch)
         self.assertIn("zg361_p2c_schedule_pump_effect = { DAYS = 2 }", self.dispatch)
 
@@ -170,13 +178,16 @@ class ProjectsMetricsProductionChoreographyTests(unittest.TestCase):
             launch.index("zg361_p3_aa_run_authorized_ai_effect"),
         )
 
-    def test_existing_provider_cannot_observe_pre_initializer_cp26(self) -> None:
+    def test_provider_observes_direct_cp26_before_current_cycle_p3(self) -> None:
         allowlist = self.provider_abi["allowlist"]
         self.assertTrue(allowlist)
-        self.assertTrue(all(name.startswith("zg361_p3_") for name in allowlist))
-        self.assertFalse(any(name.startswith("zg361_cp_") for name in allowlist))
-        self.assertIn('"source_ready_result_pending"', self.capture)
+        self.assertTrue(any(name.startswith("zg361_p3_") for name in allowlist))
+        self.assertTrue(any(name.startswith("zg361_cp_") for name in allowlist))
+        self.assertIn("zg361_p3_portfolio_cycle", allowlist)
+        self.assertIn('"cp26_ready_p3_absent"', self.capture)
         self.assertIn('"p3_initializer_not_run": True', self.capture)
+        # The prior audit remains immutable evidence of the contradiction that
+        # this production/provider change resolves.
         contradiction = self.contract["reachability_verdict"]["capture_contract_contradiction"]
         self.assertIn("source_ready=1", contradiction)
         self.assertIn("zg361_p3_initialize_portfolio_effect", contradiction)

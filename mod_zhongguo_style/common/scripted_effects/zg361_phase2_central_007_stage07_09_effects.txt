@@ -1,8 +1,8 @@
 ﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
-# PURPOSE: metrics delivery, credit project and career learning stages.
+# PURPOSE: credit project, metrics delivery and career learning stages.
 # READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
 
-zg361_p2c_stage_07_metrics_delivery_effect = {
+zg361_p2c_stage_08_metrics_delivery_effect = {
     if = {
         limit = {
             var:zg361_p2c_subject = {
@@ -12,7 +12,7 @@ zg361_p2c_stage_07_metrics_delivery_effect = {
                 OR = { var:zg361_result_case_state = 1 var:zg361_result_case_state = 2 }
             }
         }
-        zg361_p2c_mark_external_wait_effect = { REASON = 325 STAGE_VAR = zg361_p2c_stage_07_status }
+        zg361_p2c_mark_external_wait_effect = { REASON = 325 STAGE_VAR = zg361_p2c_stage_08_status }
     }
     else_if = {
         limit = {
@@ -30,7 +30,7 @@ zg361_p2c_stage_07_metrics_delivery_effect = {
                 var:zg361_p3_final_conservation_ok = 1
             }
         }
-        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_07_status }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_08_status }
     }
     else_if = {
         limit = {
@@ -84,12 +84,12 @@ zg361_p2c_stage_07_metrics_delivery_effect = {
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
         }
-        else = { zg361_p2c_record_red_effect = { CODE = 707 STAGE_VAR = zg361_p2c_stage_07_status } }
+        else = { zg361_p2c_record_red_effect = { CODE = 808 STAGE_VAR = zg361_p2c_stage_08_status } }
     }
-    else = { zg361_p2c_record_red_effect = { CODE = 757 STAGE_VAR = zg361_p2c_stage_07_status } }
+    else = { zg361_p2c_record_red_effect = { CODE = 858 STAGE_VAR = zg361_p2c_stage_08_status } }
 }
 
-zg361_p2c_stage_08_credit_project_effect = {
+zg361_p2c_stage_07_credit_project_effect = {
     if = {
         limit = {
             var:zg361_p2c_subject = {
@@ -101,7 +101,7 @@ zg361_p2c_stage_08_credit_project_effect = {
                 var:zg361_cp_final_conservation_ok = 1
             }
         }
-        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_08_status }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_07_status }
     }
     else_if = {
         limit = {
@@ -111,7 +111,7 @@ zg361_p2c_stage_08_credit_project_effect = {
                 liege = { zg361_is_celestial_liege_trigger = yes }
             }
         }
-        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_08_status }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_07_status }
     }
     else_if = {
         limit = {
@@ -152,9 +152,9 @@ zg361_p2c_stage_08_credit_project_effect = {
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
         }
-        else = { zg361_p2c_record_red_effect = { CODE = 808 STAGE_VAR = zg361_p2c_stage_08_status } }
+        else = { zg361_p2c_record_red_effect = { CODE = 707 STAGE_VAR = zg361_p2c_stage_07_status } }
     }
-    else = { zg361_p2c_record_red_effect = { CODE = 858 STAGE_VAR = zg361_p2c_stage_08_status } }
+    else = { zg361_p2c_record_red_effect = { CODE = 757 STAGE_VAR = zg361_p2c_stage_07_status } }
 }
 
 zg361_p2c_stage_09_career_learning_effect = {

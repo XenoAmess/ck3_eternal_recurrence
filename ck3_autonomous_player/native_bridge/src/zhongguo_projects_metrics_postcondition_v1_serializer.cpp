@@ -175,7 +175,8 @@ std::string SerializeZhongguoProjectsMetricsPostconditionV1(
     const game::ZhongguoProjectsMetricsPostconditionV1 &snapshot) {
   if (snapshot.case_kind != kZhongguoProjectsMetricsPostconditionV1CaseKind ||
       snapshot.request_nonce.empty() || snapshot.snapshot_revision == 0 ||
-      snapshot.requested_owner_character_id <= 0) {
+      snapshot.requested_owner_character_id <= 0 ||
+      snapshot.checkpoint_state.empty()) {
     return {};
   }
   std::string output;
@@ -201,6 +202,8 @@ std::string SerializeZhongguoProjectsMetricsPostconditionV1(
   if (!AppendNumber(output, snapshot.player_character_id)) return {};
   output += ",\"requested_owner_character_id\":";
   if (!AppendNumber(output, snapshot.requested_owner_character_id)) return {};
+  output += ",\"checkpoint_state\":";
+  AppendJsonString(output, snapshot.checkpoint_state);
   output += ",\"source_identity\":";
   if (!AppendIdentity(output, snapshot.source_identity)) return {};
   output += ",\"result_identity\":";

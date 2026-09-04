@@ -7,7 +7,7 @@
   "required": [
     "schema_version", "status", "capability", "case_kind", "request_nonce",
     "snapshot_revision", "date_raw", "paused", "player_character_id",
-    "requested_owner_character_id", "source_identity", "result_identity",
+    "requested_owner_character_id", "checkpoint_state", "source_identity", "result_identity",
     "projects_metrics", "readiness", "source_backend_id", "provenance",
     "unavailable_reason"
   ],
@@ -90,6 +90,13 @@
     "paused": {"const": true},
     "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
     "requested_owner_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "checkpoint_state": {
+      "enum": [
+        "unavailable", "cp26_ready_p3_absent",
+        "p3_initialized_source_not_ready",
+        "p3_source_ready_result_pending", "p3_result_committed"
+      ]
+    },
     "source_identity": {"$ref": "#/$defs/identity"},
     "result_identity": {"$ref": "#/$defs/identity"},
     "projects_metrics": {
@@ -160,7 +167,7 @@
         "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
         "backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-projects-metrics-postcondition-v1"},
         "consumer_id": {"const": "xar-autoplayer-zhongguo-projects-metrics-postcondition-v1"},
-        "allowlist_id": {"const": "zg361-cp26-p3m229-lineage-v1"},
+        "allowlist_id": {"const": "zg361-cp26-direct-p3m229-lineage-v2"},
         "variable_context_for_scope_rva": {"const": "0x3329A40"},
         "variable_identifier_table_rva": {"const": "0x3B971A0"},
         "variable_identifier_lookup_rva": {"const": "0x3B97020"},
@@ -176,8 +183,44 @@
   "allOf": [
     {
       "if": {"properties": {"status": {"const": "available"}}},
-      "then": {"properties": {"unavailable_reason": {"type": "null"}}},
-      "else": {"properties": {"unavailable_reason": {"$ref": "#/$defs/topLevelUnavailableReason"}}}
+      "then": {
+        "properties": {
+          "checkpoint_state": {"not": {"const": "unavailable"}},
+          "unavailable_reason": {"type": "null"}
+        }
+      },
+      "else": {
+        "properties": {
+          "checkpoint_state": {"const": "unavailable"},
+          "unavailable_reason": {"$ref": "#/$defs/topLevelUnavailableReason"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"checkpoint_state": {"const": "cp26_ready_p3_absent"}}},
+      "then": {
+        "properties": {
+          "readiness": {
+            "properties": {
+              "player_subject_binding_ready": {"const": true},
+              "owner_binding_ready": {"const": true},
+              "source_identity_ready": {"const": true},
+              "result_identity_ready": {"const": false},
+              "contribution_ready": {"const": true},
+              "metrics_ready": {"const": false},
+              "same_project_case_identity": {"const": false},
+              "receipt_lineage_ready": {"const": false},
+              "result_operation_committed": {"const": false},
+              "same_frame_ready": {"const": true},
+              "ready": {"const": false}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"checkpoint_state": {"const": "p3_result_committed"}}},
+      "then": {"properties": {"readiness": {"properties": {"ready": {"const": true}}}}}
     }
   ]
 }

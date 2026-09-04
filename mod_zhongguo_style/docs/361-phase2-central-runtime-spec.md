@@ -33,8 +33,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 | 2 | Compensation/LTI | `zg361_comp_portfolio_open_next_effect` | exact result snapshot + completed cycle；每域 ACK 后重复 pump |
 | 3 | Feedback/Promotion/PIP | `zg361_pp_manager_portfolio_adapter_effect` | T→U→V→W→complete，五次单 adapter pump |
 | 4–6 | Incident X/Y/Z | 三个 public domain opener | 严格 X→Y→Z；正案必须携带真实事故与后果、next-KPI staged receipt；无事故只认 exact probe/N/A tuple 并记 status 3；禁止 all-domain opener |
-| 7 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、closed、conservation OK |
-| 8 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
+| 7 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
+| 8 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、同周期 CP source、closed、conservation OK |
 | 9 | Career/Learning | `zg361_cl_dispatch_direct_reports_effect` | expected/completed 全齐；玩家 digest 已 ACK |
 | 10 | Manager/Governance | `zg361_mg_dispatch_subordinate_managers_effect` | 冻结带 owner/cycle/case/order 的 strict-lag manager cohort，全部 F/AK terminal；空集 N/A |
 | 11 | Workforce/Endgame | 初始 `zg361_we_open_portfolio_effect`；#360 `zg361_we_resume_m360_from_central_source_effect` | status 6 success；status 8 为真实 history-accruing terminal；status 7 为 count/baron 或 manager structural N/A；status 5 是外部等待 |
@@ -90,8 +90,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
   `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1`，最大为 9。32 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 126,811 bytes，SHA-256
-  `94D893631FCF1C6FDF25F19D536C99664112E6C16AC39BFC2D4EDC36C13B3CEB`。
+  顺序和定义集合一致；冻结聚合为 126,981 bytes，SHA-256
+  `1E39A1DDBECC8C68BEF95B11B13AE287016746D5ABC1B3EBA6C1BB5EA9BB2D39`。
 - Central event 已拆为两个各含 3 个定义的用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
   `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`。6 个 event block

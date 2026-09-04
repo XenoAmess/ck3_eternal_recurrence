@@ -2,7 +2,8 @@
   "contract": "zhongguo_projects_metrics_postcondition_v1_source_contract",
   "readiness": "static_and_fixture_ready_not_live",
   "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
-  "allowlist_count": 24,
+  "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
+  "allowlist_count": 40,
   "source_event": "zg361cp.26",
   "result_event": "zg361p3.229",
   "generated_sources": [
@@ -17,6 +18,8 @@
   "required_invariants": [
     "cp26_a_b_only_mint_positive_monotonic_receipt_id",
     "cp26_receipt_revision_is_post_operation_case_e_revision",
+    "provider_reads_cp26_receipt_and_consumed_provenance_directly_before_p3_initialization",
+    "current_cycle_p3_initializer_absence_is_distinguished_by_p3_portfolio_cycle",
     "phase3_initializer_requires_current_owner_subject_cycle",
     "m229_a_b_only_copy_same_receipt_id_and_revision",
     "route_c_never_mints_business_lineage",

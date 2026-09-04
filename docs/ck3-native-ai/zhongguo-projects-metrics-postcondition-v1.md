@@ -34,11 +34,13 @@ flowchart LR
 
 该 reader 复用已经冻结的 CK3 `1.19.0.6` 变量 ABI：EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，scope-variable context RVA `0x3329A40`、identifier table/lookup/name RVA `0x3B971A0/0x3B97020/0x3B97090`、character storage/fallback slot RVA `0x570C130/0x570C138`。完整机器可读合同位于 `ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json`。
 
-查询只读 played character scope，subject 永远来自同帧 `played_character_id`；caller 只能提供 request nonce、expected snapshot revision 与 owner filter。caller 不能选择 subject、变量名、receipt 或 dictionary key，也不能读取 owner/第三方角色 scope。固定 allowlist 恰好 24 个 P3 投影字段。
+查询只读 played character scope，subject 永远来自同帧 `played_character_id`；caller 只能提供 request nonce、expected snapshot revision 与 owner filter。caller 不能选择 subject、变量名、receipt 或 dictionary key，也不能读取 owner/第三方角色 scope。固定 allowlist 恰好 40 个字段：15 个 CP #026 直接 receipt/consume/provenance 字段、1 个 P3 portfolio cycle 字段，以及原有 24 个 P3 source/result 投影字段。
 
-provider 在 application main thread、paused snapshot 上做两次完整 allowlist 读取；前后 frame 或原始行任一变化即返回 `state_changed`。它不保留引擎指针。source marker 缺失/未 ready 分别返回 `project_source_not_found` / `project_source_not_ready`；单个业务字段缺失保持 typed unavailable。身份或 receipt 漂移不会伪造 unavailable 数据，而是保留可诊断 payload 并令 readiness 为 false。
+provider 在 application main thread、paused snapshot 上做两次完整 allowlist 读取；前后 frame 或原始行任一变化即返回 `state_changed`。它不保留引擎指针。CP #026 receipt owner 缺失返回 `project_source_not_found`；直接 CP 身份、A/B choice、receipt、consumed tuple 或 visible provenance 不闭合返回 `project_source_not_ready`。只有直接 CP source 闭合后才发布 available payload；后续 P3 字段缺失保持 typed unavailable，并由显式 checkpoint state 区分。
 
 ## Readiness 合同
+
+`checkpoint_state` 有四个 available 状态：`cp26_ready_p3_absent` 表示直接 CP #026 A/B receipt 已闭合且同周期 P3 initializer 尚未运行；`p3_initialized_source_not_ready` 表示同周期 initializer 已出现但 copy 尚未闭合；`p3_source_ready_result_pending` 表示 copy 闭合而 #229 result 未提交；`p3_result_committed` 才允许最终 `ready=true`。顶层 unavailable 必须使用 `checkpoint_state=unavailable`。这使 source-checkpoint capture 不再依赖尚未运行的 P3 source 投影，也不使用 ACK、fixture 或 clone 冒充业务状态。
 
 最终 `ready=true` 同时要求：played subject 和 owner filter 正确；source/result/contribution/metrics 四组项目关联身份完整且逐项相等；contribution ID/revision/value 与 metrics revision/dictionary key 完整、范围合法；metrics 的 source receipt ID **及 revision** 都等于 contribution；#229 自身 consumed owner/subject/cycle/state/choice 与 visible value/provenance case 一致；双读同帧。
 
@@ -48,4 +50,6 @@ provider 在 application main thread、paused snapshot 上做两次完整 allowl
 
 当前已有权威生成器输出、生成器单测、独立 C++ fixture reader/serializer 测试、JSON schema、ABI/source contract 与 Python source-contract 测试。fixture 只证明闭合投影和负例逻辑，不证明 CK3 内存可读或事件可见。
 
-共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。默认 CK3 adapter 仍不广告该 capability，因此没有 paused live 时会 fail-closed。下一步仍须在 exact build 上取得 paused live response，并核对真实 #026→#229 A/B 路径及 source/result current-event snapshot binding；在此之前不得写 `fixture-live`、`production-live primitive` 或生产 GREEN。
+中央 production choreography 已把同一不可变 cycle 的 Credit/Project producer 固定为 stage 7、Metrics/Delivery consumer 固定为 stage 8；P3 opener 只能在 CP portfolio 同周期闭合后运行。生成器分片仍为 10 个 whole-file purpose shards、每文件最多 9 个 effect，无 `>20` 例外。
+
+共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。默认 CK3 adapter 仍不广告该 capability，因此没有 paused live 时会 fail-closed。下一步仍须在 exact build 上取得真实 `cp26_ready_p3_absent` paused response，再从该保存点执行有界时间推进并核对同一 receipt 的 `p3_result_committed`；在此之前不得写 `fixture-live`、`production-live primitive` 或生产 GREEN。

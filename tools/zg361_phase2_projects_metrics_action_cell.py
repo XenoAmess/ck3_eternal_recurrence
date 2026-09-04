@@ -4,10 +4,9 @@
 The live checkpoint for this cell is deliberately narrower than the visual
 promo capture: the played character is the project subject, a distinct AI
 character is the owner, and the CP #026 contribution has been prepared before
-P3 copies it into its provider projection.  The pre-query therefore reports
-``project_source_not_found``.  (P3 initialization and its authorized AI #229
-route run in one effect call, so a source-ready/result-pending paused frame is
-not generally observable.)  The only mutation is a bounded ``life-advance``.
+P3 copies it into its provider projection.  The direct CP receipt projection
+must therefore report ``cp26_ready_p3_absent`` before the action.  The only
+mutation is a bounded ``life-advance``.
 Its acknowledgement is retained as transport evidence but can never satisfy
 the business gate.  GREEN is emitted only after the existing native provider
 observes a complete CP #026 receipt consumed by a committed P3 #229 result on
@@ -382,33 +381,6 @@ def _pre_result_is_absent(response: Mapping[str, object]) -> bool:
     )
 
 
-def _provider_source_is_absent(
-    response: object,
-    *,
-    binding: Mapping[str, object],
-    owner_character_id: int,
-) -> bool:
-    if not isinstance(response, Mapping):
-        return False
-    if not (
-        response.get("schema_version") == 1
-        and response.get("status") == "unavailable"
-        and response.get("capability")
-        == QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
-        and response.get("case_kind") == CASE_KIND
-        and response.get("source_backend_id") == "native-headless"
-        and response.get("unavailable_reason") == "project_source_not_found"
-    ):
-        return False
-    try:
-        _require_provider_binding(
-            response, binding, owner_character_id=owner_character_id
-        )
-    except ValueError:
-        return False
-    return True
-
-
 def _require_committed_postcondition(
     response: object,
     *,
@@ -425,6 +397,8 @@ def _require_committed_postcondition(
         raise ValueError("source contribution identity or receipt drifted")
     if not isinstance(response, Mapping):  # narrowed by _source_checkpoint
         raise ValueError("provider response is not an object")
+    if response.get("checkpoint_state") != "p3_result_committed":
+        raise ValueError("provider has not reached the committed checkpoint state")
     readiness = response.get("readiness")
     required_readiness = (
         "player_subject_binding_ready",
@@ -572,25 +546,24 @@ def preflight_projects_metrics_gameplay_action_cell(
         report["query_error_type"] = type(error).__name__
         report["query_error"] = str(error)
         return red("source_checkpoint_unavailable")
-    if _provider_source_is_absent(
-        response, binding=binding, owner_character_id=owner
+    try:
+        source = _source_checkpoint(
+            response,
+            binding=binding,
+            owner_character_id=owner,
+        )
+    except ValueError as error:
+        report["query_error_type"] = type(error).__name__
+        report["query_error"] = str(error)
+        return red("source_checkpoint_unavailable")
+    report["source_checkpoint"] = asdict(source)
+    if not (
+        isinstance(response, Mapping)
+        and response.get("checkpoint_state") == "cp26_ready_p3_absent"
+        and _pre_result_is_absent(response)
     ):
-        report["checkpoint_mode"] = "provider_source_absent"
-    else:
-        try:
-            source = _source_checkpoint(
-                response,
-                binding=binding,
-                owner_character_id=owner,
-            )
-        except ValueError as error:
-            report["query_error_type"] = type(error).__name__
-            report["query_error"] = str(error)
-            return red("source_checkpoint_unavailable")
-        report["source_checkpoint"] = asdict(source)
-        if not isinstance(response, Mapping) or not _pre_result_is_absent(response):
-            return red("checkpoint_is_not_pre_result")
-        report["checkpoint_mode"] = "source_ready_result_pending"
+        return red("checkpoint_is_not_cp26_ready_p3_absent")
+    report["checkpoint_mode"] = "cp26_ready_p3_absent"
     report["result"] = "READY"
     report["ready_to_run"] = True
     report["reason_code"] = None
@@ -651,36 +624,46 @@ def run_projects_metrics_gameplay_action_cell(
     source_raw = preflight.get("source_checkpoint")
     if not isinstance(binding, Mapping):
         raise ProjectsMetricsActionCellError("preflight_projection_missing", report)
-    baseline: ProjectsMetricsSourceCheckpoint | None = None
-    if isinstance(source_raw, Mapping):
-        baseline = ProjectsMetricsSourceCheckpoint(
-            owner_character_id=_positive_character_id(
-                source_raw.get("owner_character_id"), "source.owner"
-            ),
-            subject_character_id=_positive_character_id(
-                source_raw.get("subject_character_id"), "source.subject"
-            ),
-            cycle_serial=_integer(
-                source_raw.get("cycle_serial"), "source.cycle", minimum=1,
-                maximum=2**63 - 1,
-            ),
-            case_serial=_integer(
-                source_raw.get("case_serial"), "source.case", minimum=1,
-                maximum=2**63 - 1,
-            ),
-            contribution_receipt_id=_integer(
-                source_raw.get("contribution_receipt_id"), "source.receipt_id",
-                minimum=1, maximum=2**63 - 1,
-            ),
-            contribution_receipt_revision=_integer(
-                source_raw.get("contribution_receipt_revision"),
-                "source.receipt_revision", minimum=1, maximum=2**63 - 1,
-            ),
-            contribution_value=_integer(
-                source_raw.get("contribution_value"), "source.value",
-                minimum=-(2**63), maximum=2**63 - 1,
-            ),
-        )
+    if not isinstance(source_raw, Mapping):
+        raise ProjectsMetricsActionCellError("preflight_source_missing", report)
+    baseline = ProjectsMetricsSourceCheckpoint(
+        owner_character_id=_positive_character_id(
+            source_raw.get("owner_character_id"), "source.owner"
+        ),
+        subject_character_id=_positive_character_id(
+            source_raw.get("subject_character_id"), "source.subject"
+        ),
+        cycle_serial=_integer(
+            source_raw.get("cycle_serial"),
+            "source.cycle",
+            minimum=1,
+            maximum=2**63 - 1,
+        ),
+        case_serial=_integer(
+            source_raw.get("case_serial"),
+            "source.case",
+            minimum=1,
+            maximum=2**63 - 1,
+        ),
+        contribution_receipt_id=_integer(
+            source_raw.get("contribution_receipt_id"),
+            "source.receipt_id",
+            minimum=1,
+            maximum=2**63 - 1,
+        ),
+        contribution_receipt_revision=_integer(
+            source_raw.get("contribution_receipt_revision"),
+            "source.receipt_revision",
+            minimum=1,
+            maximum=2**63 - 1,
+        ),
+        contribution_value=_integer(
+            source_raw.get("contribution_value"),
+            "source.value",
+            minimum=-(2**63),
+            maximum=2**63 - 1,
+        ),
+    )
     initial_date = int(binding["date_raw"])
     current_binding = dict(binding)
 
@@ -770,13 +753,6 @@ def run_projects_metrics_gameplay_action_cell(
         observations = report["provider_observations"]
         if isinstance(observations, list):
             observations.append(observation)
-        if _provider_source_is_absent(
-            response, binding=post_binding, owner_character_id=owner
-        ):
-            current_binding = post_binding
-            if elapsed_hours >= days_bound * RAW_HOURS_PER_DAY:
-                break
-            continue
         try:
             current_source = _source_checkpoint(
                 response,
@@ -789,15 +765,12 @@ def run_projects_metrics_gameplay_action_cell(
             raise ProjectsMetricsActionCellError(
                 "source_checkpoint_regressed", report
             ) from error
-        if baseline is not None and current_source != baseline:
+        if current_source != baseline:
             observation["classification"] = "blocked"
             observation["reason"] = "source contribution identity or receipt drifted"
             raise ProjectsMetricsActionCellError(
                 "source_checkpoint_drifted", report
             )
-        if baseline is None:
-            baseline = current_source
-            observation["source_checkpoint_first_observed"] = asdict(baseline)
         readiness = response.get("readiness") if isinstance(response, Mapping) else None
         if isinstance(readiness, Mapping) and readiness.get("ready") is True:
             try:

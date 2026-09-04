@@ -91,13 +91,32 @@ xar::ck3_11906::ZhongguoProjectsMetricsPostconditionRequestV1 Request(
   return {91, owner, "projects-metrics:91"};
 }
 
-void Populate(Fixture &fixture) {
+void PopulateCpSource(Fixture &fixture) {
+  fixture.variables["zg361_cp_m26_receipt_owner"] = Character(200);
+  fixture.variables["zg361_cp_m26_receipt_subject"] = Character(100);
+  fixture.variables["zg361_cp_m26_receipt_cycle"] = Number(15);
+  fixture.variables["zg361_cp_m26_receipt_case"] = Number(1'526);
+  fixture.variables["zg361_cp_m26_receipt_state"] = Number(1);
+  fixture.variables["zg361_cp_m26_receipt_choice"] = Number(1);
+  fixture.variables["zg361_cp_m26_contribution_receipt_id"] = Number(26'001);
+  fixture.variables["zg361_cp_m26_contribution_receipt_revision"] = Number(9);
+  fixture.variables["zg361_cp_m26_visible_value"] = Number(1);
+  fixture.variables["zg361_cp_m26_consumed_owner"] = Character(200);
+  fixture.variables["zg361_cp_m26_consumed_subject"] = Character(100);
+  fixture.variables["zg361_cp_m26_consumed_cycle"] = Number(15);
+  fixture.variables["zg361_cp_m26_consumed_case"] = Number(1'526);
+  fixture.variables["zg361_cp_m26_consumed_state"] = Number(1);
+  fixture.variables["zg361_cp_m26_visible_provenance_case"] = Number(1'526);
+}
+
+void PopulateP3Source(Fixture &fixture) {
   const auto set_identity = [&fixture](std::string_view prefix) {
     fixture.variables[std::string(prefix) + "owner"] = Character(200);
     fixture.variables[std::string(prefix) + "subject"] = Character(100);
     fixture.variables[std::string(prefix) + "cycle"] = Number(15);
     fixture.variables[std::string(prefix) + "case"] = Number(1'526);
   };
+  fixture.variables["zg361_p3_portfolio_cycle"] = Number(15);
   fixture.variables["zg361_p3_project_source_ready"] = Number(1);
   set_identity("zg361_p3_project_source_");
   fixture.variables[
@@ -105,7 +124,16 @@ void Populate(Fixture &fixture) {
   fixture.variables[
       "zg361_p3_project_source_contribution_receipt_revision"] = Number(9);
   fixture.variables["zg361_p3_project_source_contribution_value"] =
-      Number(-3);
+      Number(1);
+}
+
+void PopulateP3Result(Fixture &fixture) {
+  const auto set_identity = [&fixture](std::string_view prefix) {
+    fixture.variables[std::string(prefix) + "owner"] = Character(200);
+    fixture.variables[std::string(prefix) + "subject"] = Character(100);
+    fixture.variables[std::string(prefix) + "cycle"] = Number(15);
+    fixture.variables[std::string(prefix) + "case"] = Number(1'526);
+  };
   set_identity("zg361_p3_m229_result_");
   fixture.variables["zg361_p3_m229_source_contribution_receipt_id"] =
       Number(26'001);
@@ -123,6 +151,12 @@ void Populate(Fixture &fixture) {
   fixture.variables["zg361_p3_m229_visible_provenance_case"] = Number(2'901);
 }
 
+void Populate(Fixture &fixture) {
+  PopulateCpSource(fixture);
+  PopulateP3Source(fixture);
+  PopulateP3Result(fixture);
+}
+
 bool Read(Fixture &fixture,
           xar::game::ZhongguoProjectsMetricsPostconditionV1 &output,
           xar::ck3_11906::ZhongguoProjectsMetricsPostconditionRequestV1
@@ -138,6 +172,7 @@ bool TestGreenAndAllowlist() {
   Populate(fixture);
   xar::game::ZhongguoProjectsMetricsPostconditionV1 output{};
   if (!Read(fixture, output) || !output.readiness.ready ||
+      output.checkpoint_state != "p3_result_committed" ||
       !output.readiness.same_project_case_identity ||
       !output.readiness.receipt_lineage_ready ||
       *output.contribution.receipt_id.value != 26'001 ||
@@ -161,12 +196,47 @@ bool TestGreenAndAllowlist() {
          serialized.find(
              "\"source_contribution_receipt_revision\":{\"status\":\"available\",\"value\":9") !=
              std::string::npos &&
-         std::all_of(
-      fixture.requested_keys.begin(), fixture.requested_keys.end(),
-      [](const std::string &key) {
-        return key.starts_with("zg361_p3_") &&
-               key.find("zg361_cp_") == std::string::npos;
-      });
+         serialized.find("\"checkpoint_state\":\"p3_result_committed\"") !=
+             std::string::npos &&
+         std::any_of(fixture.requested_keys.begin(), fixture.requested_keys.end(),
+                     [](const std::string &key) {
+                       return key.starts_with("zg361_cp_");
+                     }) &&
+         std::any_of(fixture.requested_keys.begin(), fixture.requested_keys.end(),
+                     [](const std::string &key) {
+                       return key.starts_with("zg361_p3_");
+                     });
+}
+
+bool TestCheckpointStates() {
+  xar::game::ZhongguoProjectsMetricsPostconditionV1 output{};
+  Fixture cp_only;
+  PopulateCpSource(cp_only);
+  if (!Read(cp_only, output) ||
+      output.checkpoint_state != "cp26_ready_p3_absent" ||
+      !output.readiness.source_identity_ready ||
+      !output.readiness.contribution_ready || output.readiness.result_identity_ready ||
+      output.readiness.metrics_ready || output.readiness.ready) {
+    return false;
+  }
+
+  Fixture p3_source;
+  PopulateCpSource(p3_source);
+  PopulateP3Source(p3_source);
+  if (!Read(p3_source, output) ||
+      output.checkpoint_state != "p3_source_ready_result_pending" ||
+      output.readiness.ready) {
+    return false;
+  }
+
+  Fixture mismatched_p3_source;
+  Populate(mismatched_p3_source);
+  mismatched_p3_source.variables[
+      "zg361_p3_project_source_contribution_receipt_id"] = Number(26'002);
+  return Read(mismatched_p3_source, output) &&
+         output.checkpoint_state == "p3_initialized_source_not_ready" &&
+         !output.readiness.same_project_case_identity &&
+         !output.readiness.ready;
 }
 
 bool TestLineageAndIdentityFailClosed() {
@@ -200,7 +270,7 @@ bool TestTypedUnavailableAndDrift() {
   xar::game::ZhongguoProjectsMetricsPostconditionV1 output{};
   Fixture no_source;
   Populate(no_source);
-  no_source.variables.erase("zg361_p3_project_source_ready");
+  no_source.variables.erase("zg361_cp_m26_receipt_owner");
   if (Read(no_source, output) ||
       output.unavailable_reason != "project_source_not_found") {
     return false;
@@ -208,8 +278,8 @@ bool TestTypedUnavailableAndDrift() {
 
   Fixture wrong_owner;
   Populate(wrong_owner);
-  if (!Read(wrong_owner, output, Request(201)) || output.readiness.ready ||
-      output.readiness.owner_binding_ready) {
+  if (Read(wrong_owner, output, Request(201)) ||
+      output.unavailable_reason != "project_source_not_ready") {
     return false;
   }
 
@@ -231,6 +301,7 @@ bool TestTypedUnavailableAndDrift() {
 
 int main() {
   const bool ok = TestGreenAndAllowlist() &&
+                  TestCheckpointStates() &&
                   TestLineageAndIdentityFailClosed() &&
                   TestTypedUnavailableAndDrift();
   if (!ok) {

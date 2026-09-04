@@ -73,6 +73,7 @@ struct ZhongguoProjectsMetricsPostconditionV1 {
   bool paused = false;
   std::int32_t player_character_id = -1;
   std::int32_t requested_owner_character_id = -1;
+  std::string checkpoint_state;
   ZhongguoProjectsMetricsIdentityV1 source_identity;
   ZhongguoProjectsMetricsIdentityV1 result_identity;
   ZhongguoProjectsContributionV1 contribution;
@@ -110,10 +111,26 @@ inline constexpr std::string_view
         "xar-autoplayer-zhongguo-projects-metrics-postcondition-v1";
 inline constexpr std::string_view
     kZhongguoProjectsMetricsPostconditionV1AllowlistId =
-        "zg361-cp26-p3m229-lineage-v1";
+        "zg361-cp26-direct-p3m229-lineage-v2";
 
-inline constexpr std::array<std::string_view, 24>
+inline constexpr std::array<std::string_view, 40>
     kZhongguoProjectsMetricsPostconditionV1VariableAllowlist{
+        "zg361_cp_m26_receipt_owner",
+        "zg361_cp_m26_receipt_subject",
+        "zg361_cp_m26_receipt_cycle",
+        "zg361_cp_m26_receipt_case",
+        "zg361_cp_m26_receipt_state",
+        "zg361_cp_m26_receipt_choice",
+        "zg361_cp_m26_contribution_receipt_id",
+        "zg361_cp_m26_contribution_receipt_revision",
+        "zg361_cp_m26_visible_value",
+        "zg361_cp_m26_consumed_owner",
+        "zg361_cp_m26_consumed_subject",
+        "zg361_cp_m26_consumed_cycle",
+        "zg361_cp_m26_consumed_case",
+        "zg361_cp_m26_consumed_state",
+        "zg361_cp_m26_visible_provenance_case",
+        "zg361_p3_portfolio_cycle",
         "zg361_p3_project_source_ready",
         "zg361_p3_project_source_owner",
         "zg361_p3_project_source_subject",

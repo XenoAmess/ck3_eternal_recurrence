@@ -115,6 +115,11 @@ def provider_response(*, result_ready: bool = False) -> dict[str, object]:
         "paused": True,
         "player_character_id": SUBJECT,
         "requested_owner_character_id": OWNER,
+        "checkpoint_state": (
+            "p3_result_committed"
+            if result_ready
+            else "cp26_ready_p3_absent"
+        ),
         "source_identity": copy.deepcopy(source),
         "result_identity": copy.deepcopy(result),
         "projects_metrics": {
@@ -124,7 +129,7 @@ def provider_response(*, result_ready: bool = False) -> dict[str, object]:
                 "identity": copy.deepcopy(source),
                 "receipt_id": available(RECEIPT_ID),
                 "receipt_revision": available(RECEIPT_REVISION),
-                "value": available(20),
+                "value": available(1),
                 "provider_observed": True,
             },
             "metrics_result": {
@@ -283,6 +288,7 @@ class CheckpointService:
         value["binding"]["request_nonce"] = request_nonce
         if self.source_absent:
             value["status"] = "unavailable"
+            value["checkpoint_state"] = "unavailable"
             value["unavailable_reason"] = "project_source_not_found"
         return value
 
@@ -379,6 +385,10 @@ class ProjectsMetricsSourceCheckpointTests(unittest.TestCase):
                 entry["source_receipt"]["event_definition_key"], "zg361cp.26"
             )
             self.assertTrue(entry["source_receipt"]["provider_observed"])
+            self.assertEqual(
+                entry["source_receipt"]["provider_checkpoint_state"],
+                "cp26_ready_p3_absent",
+            )
             self.assertFalse(
                 entry["source_receipt"]["action_ack_is_business_postcondition"]
             )

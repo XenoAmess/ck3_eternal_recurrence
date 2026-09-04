@@ -186,7 +186,7 @@ zg361_p2c_on_result_delivered_effect = {
                     var:zg361_p2c_subject = scope:zg361_p2c_delivered_subject
                     var:zg361_p2c_cycle = scope:zg361_p2c_delivered_subject.var:zg361_result_cycle_serial
                     var:zg361_p2c_result_case = scope:zg361_p2c_delivered_subject.var:zg361_result_case_serial
-                    OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 7 }
+                    OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 8 }
                     var:zg361_p2c_wait_reason = 325
                 }
                 set_variable = { name = zg361_p2c_stage_status value = 0 }

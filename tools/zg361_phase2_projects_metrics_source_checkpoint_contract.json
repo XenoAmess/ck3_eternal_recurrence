@@ -28,6 +28,7 @@
     "active_player_event": false,
     "cp26_route_allowlist": ["A", "B"],
     "cp26_contribution_receipt_prepared": true,
+    "provider_checkpoint_state": "cp26_ready_p3_absent",
     "p3_initializer_run": false,
     "cycle_serial": "provider-observed positive integer",
     "case_serial": "provider-observed positive integer"
@@ -60,7 +61,7 @@
   "live_sequence": [
     "owner-visible real zg361cp.26 UI observation and route A/B submission",
     "caller reaches same-lineage played-subject event-free managed product state",
-    "provider proves CP26 contribution source-ready and P3 result-pending",
+    "provider proves direct CP26 contribution source-ready and current-cycle P3 initializer absent",
     "native save materializes bytes at the same date and binding",
     "checkpoint plus exact UI/provider receipts are archived and schema-2 registry is written"
   ],

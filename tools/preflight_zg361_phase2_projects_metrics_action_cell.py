@@ -72,8 +72,8 @@ def audit_projects_metrics_action_cell_contract(
     phase3_generator = (
         root / "mod_zhongguo_style/tools/gen_361_phase3_metrics_delivery_runtime.py"
     ).read_text(encoding="utf-8")
-    stage_7 = central.find('(7, "metrics_delivery", "zg361_p3_open_portfolio_effect")')
-    stage_8 = central.find('(8, "credit_project", "zg361_cp_open_portfolio_effect")')
+    stage_7 = central.find('(7, "credit_project", "zg361_cp_open_portfolio_effect")')
+    stage_8 = central.find('(8, "metrics_delivery", "zg361_p3_open_portfolio_effect")')
     guarded_capability = (
         f"#if defined({PRIVATE_SWITCH})" in adapter
         and "ck3_11906::kZhongguoProjectsMetricsPostconditionV1Capability"
@@ -101,6 +101,20 @@ def audit_projects_metrics_action_cell_contract(
         "provider_abi_static_not_live": abi.get("status")
         == "static_and_fixture_ready_not_live"
         and abi.get("readiness", {}).get("production_live_ready") is False,
+        "provider_direct_cp_prestate_is_fixed_allowlist": (
+            abi.get("allowlist_id")
+            == "zg361-cp26-direct-p3m229-lineage-v2"
+            and len(abi.get("allowlist", [])) == 40
+            and len(
+                [
+                    name
+                    for name in abi.get("allowlist", [])
+                    if isinstance(name, str) and name.startswith("zg361_cp_")
+                ]
+            )
+            == 15
+            and "zg361_p3_portfolio_cycle" in abi.get("allowlist", [])
+        ),
         "service_reuses_existing_provider": (
             "def query_zhongguo_projects_metrics_postcondition_v1(" in service
         ),
@@ -120,7 +134,7 @@ def audit_projects_metrics_action_cell_contract(
             "is_ai = no" in p3_event
             and "this = scope:zg361_p3_aa_owner" in p3_event
         ),
-        "central_metrics_precedes_credit": (
+        "central_credit_precedes_metrics": (
             stage_7 >= 0 and stage_8 > stage_7
         ),
         "ai_initialization_and_m229_route_are_atomic": (

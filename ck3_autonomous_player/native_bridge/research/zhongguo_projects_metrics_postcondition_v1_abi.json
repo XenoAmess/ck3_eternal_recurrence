@@ -6,6 +6,7 @@
   "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
   "step": "query-zhongguo-projects-metrics-postcondition-v1",
   "case_kind": "zhongguo.projects-metrics.project-correlation",
+  "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
   "request": {
     "public_inputs": [
       "request_nonce",
@@ -24,7 +25,7 @@
   "subject_acl": {
     "scope": "paused_played_character_only",
     "subject_source": "same_frame_snapshot.played_character_id",
-    "owner_source": "zg361_p3_project_source_owner",
+    "owner_source": "zg361_cp_m26_receipt_owner",
     "owner_filter": "actual_owner_equals_required_owner_and_differs_from_player",
     "owner_scope_read": false,
     "third_party_subject_read": false
@@ -41,6 +42,22 @@
     "fixed_scale": 100000
   },
   "allowlist": [
+    "zg361_cp_m26_receipt_owner",
+    "zg361_cp_m26_receipt_subject",
+    "zg361_cp_m26_receipt_cycle",
+    "zg361_cp_m26_receipt_case",
+    "zg361_cp_m26_receipt_state",
+    "zg361_cp_m26_receipt_choice",
+    "zg361_cp_m26_contribution_receipt_id",
+    "zg361_cp_m26_contribution_receipt_revision",
+    "zg361_cp_m26_visible_value",
+    "zg361_cp_m26_consumed_owner",
+    "zg361_cp_m26_consumed_subject",
+    "zg361_cp_m26_consumed_cycle",
+    "zg361_cp_m26_consumed_case",
+    "zg361_cp_m26_consumed_state",
+    "zg361_cp_m26_visible_provenance_case",
+    "zg361_p3_portfolio_cycle",
     "zg361_p3_project_source_ready",
     "zg361_p3_project_source_owner",
     "zg361_p3_project_source_subject",
@@ -89,6 +106,8 @@
     "2": "metric_dictionary_manager_v1"
   },
   "readiness": {
+    "checkpoint_state": "cp26_ready_p3_absent | p3_initialized_source_not_ready | p3_source_ready_result_pending | p3_result_committed",
+    "cp26_ready_p3_absent": "direct_cp26_a_or_b_receipt_is_committed_and_p3_portfolio_cycle_does_not_equal_the_cp_cycle",
     "same_project_case_identity": "source_result_contribution_metrics_four_tuple_bytewise_equal",
     "receipt_lineage_ready": "metrics_source_receipt_id_and_revision_equal_contribution_receipt_id_and_revision",
     "result_operation_committed": "m229_consumed_tuple_choice_and_visible_projection_consistent",
@@ -102,8 +121,8 @@
     "paused_live_artifact": "absent"
   },
   "typed_negatives": {
-    "source_marker_absent": "project_source_not_found",
-    "source_marker_not_one": "project_source_not_ready",
+    "source_marker_absent": "cp26_receipt_owner_absent_yields_project_source_not_found",
+    "source_marker_not_one": "incomplete_or_inconsistent_direct_cp26_receipt_yields_project_source_not_ready",
     "double_read_or_frame_drift": "state_changed",
     "identity_or_receipt_drift": "available_with_readiness_false",
     "missing_business_field": "available_with_component_readiness_false"

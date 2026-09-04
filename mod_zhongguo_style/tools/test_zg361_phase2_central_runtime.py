@@ -458,7 +458,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_result_case_state = 3", wake)
         self.assertIn("var:zg361_p2c_subject = scope:zg361_p2c_delivered_subject", wake)
         self.assertIn("var:zg361_p2c_result_case = scope:zg361_p2c_delivered_subject.var:zg361_result_case_serial", wake)
-        self.assertIn("OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 7 }", wake)
+        self.assertIn("OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 8 }", wake)
         self.assertIn("var:zg361_p2c_wait_reason = 325", wake)
         for _, _, opener in generator.STAGES:
             self.assertNotIn(opener, wake)
@@ -479,8 +479,8 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             "zg361_p2c_stage_04_x_effect",
             "zg361_p2c_stage_05_y_effect",
             "zg361_p2c_stage_06_z_effect",
-            "zg361_p2c_stage_07_metrics_delivery_effect",
-            "zg361_p2c_stage_08_credit_project_effect",
+            "zg361_p2c_stage_07_credit_project_effect",
+            "zg361_p2c_stage_08_metrics_delivery_effect",
             "zg361_p2c_stage_09_career_learning_effect",
             "zg361_p2c_stage_10_manager_governance_effect",
             "zg361_p2c_stage_11_workforce_endgame_effect",
@@ -578,7 +578,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
     def test_p3_and_compensation_wait_for_delivered_result(self) -> None:
         for key in (
             "zg361_p2c_stage_02_compensation_effect",
-            "zg361_p2c_stage_07_metrics_delivery_effect",
+            "zg361_p2c_stage_08_metrics_delivery_effect",
         ):
             body = block(self.effects, key)
             self.assertIn("OR = { var:zg361_result_case_state = 1 var:zg361_result_case_state = 2 }", body)
@@ -586,7 +586,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             self.assertIn("var:zg361_result_case_state >= 3", body)
 
     def test_cp_na_cl_digest_and_mg_strict_lag(self) -> None:
-        cp = block(self.effects, "zg361_p2c_stage_08_credit_project_effect")
+        cp = block(self.effects, "zg361_p2c_stage_07_credit_project_effect")
         self.assertIn("NOR =", cp)
         self.assertIn("NOT = { this = root.var:zg361_p2c_subject }", cp)
         self.assertIn("liege = { zg361_is_celestial_liege_trigger = yes }", cp)
@@ -770,11 +770,11 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         )
 
     def test_d1_transition_gaps_poll_same_tuple_instead_of_red(self) -> None:
-        p3 = block(self.effects, "zg361_p2c_stage_07_metrics_delivery_effect")
+        p3 = block(self.effects, "zg361_p2c_stage_08_metrics_delivery_effect")
         self.assertIn("var:zg361_p2c_stage_status = 1", p3)
         self.assertIn("var:zg361_p3_portfolio_closed = 0", p3)
         self.assertIn("var:zg361_p3_portfolio_result_case = root.var:zg361_p2c_result_case", p3)
-        cp = block(self.effects, "zg361_p2c_stage_08_credit_project_effect")
+        cp = block(self.effects, "zg361_p2c_stage_07_credit_project_effect")
         self.assertIn("var:zg361_p2c_stage_status = 1", cp)
         self.assertIn("var:zg361_cp_portfolio_closed = 0", cp)
         workforce = block(self.effects, "zg361_p2c_stage_11_workforce_endgame_effect")

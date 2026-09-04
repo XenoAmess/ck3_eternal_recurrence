@@ -23,8 +23,8 @@ READINESS = "static-ready"
 LEGACY_EFFECT_FILENAME = "zg361_phase2_central_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
-HISTORICAL_EFFECT_BYTES = 126_811
-HISTORICAL_EFFECT_SHA256 = "94D893631FCF1C6FDF25F19D536C99664112E6C16AC39BFC2D4EDC36C13B3CEB"
+HISTORICAL_EFFECT_BYTES = 126_981
+HISTORICAL_EFFECT_SHA256 = "1E39A1DDBECC8C68BEF95B11B13AE287016746D5ABC1B3EBA6C1BB5EA9BB2D39"
 HISTORICAL_EFFECT_COUNT = 32
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -73,8 +73,8 @@ STAGES = (
     (4, "incident_x", "zg361_ip_open_x_case_effect"),
     (5, "incident_y", "zg361_ip_open_y_case_effect"),
     (6, "incident_z", "zg361_ip_open_z_case_effect"),
-    (7, "metrics_delivery", "zg361_p3_open_portfolio_effect"),
-    (8, "credit_project", "zg361_cp_open_portfolio_effect"),
+    (7, "credit_project", "zg361_cp_open_portfolio_effect"),
+    (8, "metrics_delivery", "zg361_p3_open_portfolio_effect"),
     (9, "career_learning", "zg361_cl_dispatch_direct_reports_effect"),
     (10, "manager_governance", "zg361_mg_dispatch_subordinate_managers_effect"),
     (11, "workforce_endgame", "zg361_we_open_portfolio_effect"),
@@ -149,10 +149,10 @@ EFFECT_GROUPS = (
     ),
     EffectGroup(
         "zg361_phase2_central_007_stage07_09_effects.txt",
-        "metrics delivery, credit project and career learning stages",
+        "credit project, metrics delivery and career learning stages",
         (
-            "zg361_p2c_stage_07_metrics_delivery_effect",
-            "zg361_p2c_stage_08_credit_project_effect",
+            "zg361_p2c_stage_08_metrics_delivery_effect",
+            "zg361_p2c_stage_07_credit_project_effect",
             "zg361_p2c_stage_09_career_learning_effect",
         ),
     ),
@@ -1366,7 +1366,7 @@ zg361_p2c_on_result_delivered_effect = {
                     var:zg361_p2c_subject = scope:zg361_p2c_delivered_subject
                     var:zg361_p2c_cycle = scope:zg361_p2c_delivered_subject.var:zg361_result_cycle_serial
                     var:zg361_p2c_result_case = scope:zg361_p2c_delivered_subject.var:zg361_result_case_serial
-                    OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 7 }
+                    OR = { var:zg361_p2c_stage = 2 var:zg361_p2c_stage = 8 }
                     var:zg361_p2c_wait_reason = 325
                 }
                 set_variable = { name = zg361_p2c_stage_status value = 0 }
@@ -1648,8 +1648,9 @@ zg361_p2c_stage_03_feedback_promotion_pip_effect = {
     }
 }
 ''' + incidents + r'''
-# Stage 7: P3 is gated by the same exact delivered result as compensation.
-zg361_p2c_stage_07_metrics_delivery_effect = {
+# Stage 8: P3 is gated by the same exact delivered result as compensation and
+# runs only after the same-cycle credit/project producer has closed.
+zg361_p2c_stage_08_metrics_delivery_effect = {
     if = {
         limit = {
             var:zg361_p2c_subject = {
@@ -1659,7 +1660,7 @@ zg361_p2c_stage_07_metrics_delivery_effect = {
                 OR = { var:zg361_result_case_state = 1 var:zg361_result_case_state = 2 }
             }
         }
-        zg361_p2c_mark_external_wait_effect = { REASON = 325 STAGE_VAR = zg361_p2c_stage_07_status }
+        zg361_p2c_mark_external_wait_effect = { REASON = 325 STAGE_VAR = zg361_p2c_stage_08_status }
     }
     else_if = {
         limit = {
@@ -1677,7 +1678,7 @@ zg361_p2c_stage_07_metrics_delivery_effect = {
                 var:zg361_p3_final_conservation_ok = 1
             }
         }
-        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_07_status }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_08_status }
     }
     else_if = {
         limit = {
@@ -1731,14 +1732,15 @@ zg361_p2c_stage_07_metrics_delivery_effect = {
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
         }
-        else = { zg361_p2c_record_red_effect = { CODE = 707 STAGE_VAR = zg361_p2c_stage_07_status } }
+        else = { zg361_p2c_record_red_effect = { CODE = 808 STAGE_VAR = zg361_p2c_stage_08_status } }
     }
-    else = { zg361_p2c_record_red_effect = { CODE = 757 STAGE_VAR = zg361_p2c_stage_07_status } }
+    else = { zg361_p2c_record_red_effect = { CODE = 858 STAGE_VAR = zg361_p2c_stage_08_status } }
 }
 
-# Stage 8: a distinct cross reviewer is mandatory.  A one-subject realm whose
+# Stage 7: the CP26 contribution producer runs before the P3 consumer in the
+# same immutable central cycle.  A distinct cross reviewer is mandatory. A one-subject realm whose
 # manager has no eligible celestial superior is honestly N/A, never bypassed.
-zg361_p2c_stage_08_credit_project_effect = {
+zg361_p2c_stage_07_credit_project_effect = {
     if = {
         limit = {
             var:zg361_p2c_subject = {
@@ -1750,7 +1752,7 @@ zg361_p2c_stage_08_credit_project_effect = {
                 var:zg361_cp_final_conservation_ok = 1
             }
         }
-        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_08_status }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_07_status }
     }
     else_if = {
         limit = {
@@ -1760,7 +1762,7 @@ zg361_p2c_stage_08_credit_project_effect = {
                 liege = { zg361_is_celestial_liege_trigger = yes }
             }
         }
-        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_08_status }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_07_status }
     }
     else_if = {
         limit = {
@@ -1801,9 +1803,9 @@ zg361_p2c_stage_08_credit_project_effect = {
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
         }
-        else = { zg361_p2c_record_red_effect = { CODE = 808 STAGE_VAR = zg361_p2c_stage_08_status } }
+        else = { zg361_p2c_record_red_effect = { CODE = 707 STAGE_VAR = zg361_p2c_stage_07_status } }
     }
-    else = { zg361_p2c_record_red_effect = { CODE = 858 STAGE_VAR = zg361_p2c_stage_08_status } }
+    else = { zg361_p2c_record_red_effect = { CODE = 757 STAGE_VAR = zg361_p2c_stage_07_status } }
 }
 
 # Stage 9: dispatches all current direct reports once, then waits for exact
@@ -2319,8 +2321,8 @@ zg361_p2c_pump_effect = {
         else_if = { limit = { var:zg361_p2c_stage = 4 } zg361_p2c_stage_04_x_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 5 } zg361_p2c_stage_05_y_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 6 } zg361_p2c_stage_06_z_effect = yes }
-        else_if = { limit = { var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_metrics_delivery_effect = yes }
-        else_if = { limit = { var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_credit_project_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_credit_project_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_metrics_delivery_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 9 } zg361_p2c_stage_09_career_learning_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 10 } zg361_p2c_stage_10_manager_governance_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 11 } zg361_p2c_stage_11_workforce_endgame_effect = yes }
@@ -2884,8 +2886,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 | 2 | Compensation/LTI | `zg361_comp_portfolio_open_next_effect` | exact result snapshot + completed cycle；每域 ACK 后重复 pump |
 | 3 | Feedback/Promotion/PIP | `zg361_pp_manager_portfolio_adapter_effect` | T→U→V→W→complete，五次单 adapter pump |
 | 4–6 | Incident X/Y/Z | 三个 public domain opener | 严格 X→Y→Z；正案必须携带真实事故与后果、next-KPI staged receipt；无事故只认 exact probe/N/A tuple 并记 status 3；禁止 all-domain opener |
-| 7 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、closed、conservation OK |
-| 8 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
+| 7 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
+| 8 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、同周期 CP source、closed、conservation OK |
 | 9 | Career/Learning | `zg361_cl_dispatch_direct_reports_effect` | expected/completed 全齐；玩家 digest 已 ACK |
 | 10 | Manager/Governance | `zg361_mg_dispatch_subordinate_managers_effect` | 冻结带 owner/cycle/case/order 的 strict-lag manager cohort，全部 F/AK terminal；空集 N/A |
 | 11 | Workforce/Endgame | 初始 `zg361_we_open_portfolio_effect`；#360 `zg361_we_resume_m360_from_central_source_effect` | status 6 success；status 8 为真实 history-accruing terminal；status 7 为 count/baron 或 manager structural N/A；status 5 是外部等待 |
@@ -2941,8 +2943,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
   `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 2 / 1`，最大为 9。32 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 126,811 bytes，SHA-256
-  `94D893631FCF1C6FDF25F19D536C99664112E6C16AC39BFC2D4EDC36C13B3CEB`。
+  顺序和定义集合一致；冻结聚合为 126,981 bytes，SHA-256
+  `1E39A1DDBECC8C68BEF95B11B13AE287016746D5ABC1B3EBA6C1BB5EA9BB2D39`。
 - Central event 已拆为两个各含 3 个定义的用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
   `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`。6 个 event block

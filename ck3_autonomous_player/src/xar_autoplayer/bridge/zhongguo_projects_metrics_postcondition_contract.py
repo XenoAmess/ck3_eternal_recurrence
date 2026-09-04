@@ -27,6 +27,13 @@ _READINESS_KEYS = {
     "metrics_ready", "same_project_case_identity", "receipt_lineage_ready",
     "result_operation_committed", "same_frame_ready", "ready",
 }
+_CHECKPOINT_STATES = {
+    "unavailable",
+    "cp26_ready_p3_absent",
+    "p3_initialized_source_not_ready",
+    "p3_source_ready_result_pending",
+    "p3_result_committed",
+}
 
 
 @dataclass(frozen=True)
@@ -121,7 +128,7 @@ def normalize_native_zhongguo_projects_metrics_v1(
     keys = {
         "schema_version", "status", "capability", "case_kind",
         "request_nonce", "snapshot_revision", "date_raw", "paused",
-        "player_character_id", "requested_owner_character_id",
+        "player_character_id", "requested_owner_character_id", "checkpoint_state",
         "source_identity", "result_identity", "projects_metrics",
         "readiness", "source_backend_id", "provenance", "unavailable_reason",
     }
@@ -204,11 +211,49 @@ def normalize_native_zhongguo_projects_metrics_v1(
         raise ValueError("readiness aggregate disagrees")
     if frame["status"] not in {"available", "unavailable"}:
         raise ValueError("invalid provider status")
+    checkpoint_state = frame["checkpoint_state"]
+    if (
+        not isinstance(checkpoint_state, str)
+        or checkpoint_state not in _CHECKPOINT_STATES
+    ):
+        raise ValueError("invalid projects/metrics checkpoint state")
     if frame["status"] == "available":
-        if frame["unavailable_reason"] is not None:
+        if (
+            frame["unavailable_reason"] is not None
+            or checkpoint_state == "unavailable"
+        ):
             raise ValueError("available provider has an unavailable reason")
-    elif not isinstance(frame["unavailable_reason"], str):
-        raise ValueError("unavailable provider lacks reason")
+        source_keys = (
+            "player_subject_binding_ready",
+            "owner_binding_ready",
+            "source_identity_ready",
+            "contribution_ready",
+            "same_frame_ready",
+        )
+        if not all(readiness_raw[key] is True for key in source_keys):
+            raise ValueError("available provider lacks its direct CP26 source")
+        if checkpoint_state == "cp26_ready_p3_absent" and any(
+            readiness_raw[key] is True
+            for key in (
+                "result_identity_ready",
+                "metrics_ready",
+                "same_project_case_identity",
+                "receipt_lineage_ready",
+                "result_operation_committed",
+                "ready",
+            )
+        ):
+            raise ValueError("CP26/P3-absent state exposes a P3 result")
+        if (
+            checkpoint_state == "p3_result_committed"
+            and readiness_raw["ready"] is not True
+        ):
+            raise ValueError("committed checkpoint is not ready")
+    elif (
+        not isinstance(frame["unavailable_reason"], str)
+        or checkpoint_state != "unavailable"
+    ):
+        raise ValueError("unavailable provider lacks reason/state")
     return {
         **frame,
         "source_identity": source,

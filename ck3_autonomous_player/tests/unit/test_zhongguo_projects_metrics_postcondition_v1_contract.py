@@ -56,7 +56,10 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
             "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
         )
         self.assertIn(contract["capability"], header)
-        self.assertEqual(len(contract["allowlist"]), 24)
+        self.assertEqual(len(contract["allowlist"]), 40)
+        self.assertIn("zg361_cp_m26_receipt_owner", contract["allowlist"])
+        self.assertIn("zg361_cp_m26_consumed_case", contract["allowlist"])
+        self.assertIn("zg361_p3_portfolio_cycle", contract["allowlist"])
         for variable in contract["allowlist"]:
             self.assertIn(f'"{variable}"', header)
         request_block = re.search(
@@ -85,6 +88,24 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
         self.assertEqual(product.count(receipt_id_write), 2)
         self.assertEqual(product.count(receipt_revision_write), 2)
         self.assertEqual(product.count("change_variable = { name = zg361_cp_contribution_receipt_cursor add = 1 }"), 2)
+
+    def test_direct_cp_provider_fields_have_generated_product_write_provenance(self) -> None:
+        abi = json.loads(ABI.read_text(encoding="utf-8"))
+        source_contract = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
+        product = CP_PRODUCT.read_text(encoding="utf-8-sig")
+        direct_cp_fields = [
+            name for name in abi["allowlist"] if name.startswith("zg361_cp_")
+        ]
+        self.assertEqual(len(direct_cp_fields), 15)
+        self.assertEqual(source_contract["allowlist_count"], 40)
+        self.assertEqual(
+            source_contract["allowlist_id"],
+            "zg361-cp26-direct-p3m229-lineage-v2",
+        )
+        self.assertIn("# GENERATED FILE", product)
+        for variable in direct_cp_fields:
+            self.assertIn(variable, product)
+        self.assertNotIn("set_variable =", SOURCE.read_text(encoding="utf-8"))
 
     def test_p3_freezes_and_m229_backlinks_exact_cp_receipt(self) -> None:
         generator = P3_GENERATOR.read_text(encoding="utf-8")
@@ -134,6 +155,7 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         serializer = SERIALIZER.read_text(encoding="utf-8")
         source_contract = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
+        self.assertIn("checkpoint_state", schema["required"])
         self.assertEqual(schema["properties"]["capability"]["const"], source_contract["capability"])
         self.assertEqual(source_contract["readiness"], "static_and_fixture_ready_not_live")
         self.assertEqual(

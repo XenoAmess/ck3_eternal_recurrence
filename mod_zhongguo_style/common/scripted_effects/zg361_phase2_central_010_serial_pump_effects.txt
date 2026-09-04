@@ -43,8 +43,8 @@ zg361_p2c_pump_effect = {
         else_if = { limit = { var:zg361_p2c_stage = 4 } zg361_p2c_stage_04_x_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 5 } zg361_p2c_stage_05_y_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 6 } zg361_p2c_stage_06_z_effect = yes }
-        else_if = { limit = { var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_metrics_delivery_effect = yes }
-        else_if = { limit = { var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_credit_project_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 7 } zg361_p2c_stage_07_credit_project_effect = yes }
+        else_if = { limit = { var:zg361_p2c_stage = 8 } zg361_p2c_stage_08_metrics_delivery_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 9 } zg361_p2c_stage_09_career_learning_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 10 } zg361_p2c_stage_10_manager_governance_effect = yes }
         else_if = { limit = { var:zg361_p2c_stage = 11 } zg361_p2c_stage_11_workforce_endgame_effect = yes }

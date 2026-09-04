@@ -36,6 +36,20 @@ P3_EVENT_PATH = (
     / "zg361_phase3_metrics_delivery_runtime_events.txt"
 )
 ACTION_CELL_PATH = ROOT / "tools" / "zg361_phase2_projects_metrics_action_cell.py"
+PROVIDER_ABI_PATH = (
+    ROOT
+    / "ck3_autonomous_player"
+    / "native_bridge"
+    / "research"
+    / "zhongguo_projects_metrics_postcondition_v1_abi.json"
+)
+CP26_EFFECT_PATH = (
+    ROOT
+    / "mod_zhongguo_style"
+    / "common"
+    / "scripted_effects"
+    / "zg361_credit_project_m026_effort_ledger_effects.txt"
+)
 
 
 class ProjectsMetricsSourceCheckpointPreflightError(RuntimeError):
@@ -86,6 +100,8 @@ def _contract_ready(value: Mapping[str, object]) -> bool:
         and required.get("active_player_event") is False
         and required.get("cp26_route_allowlist") == ["A", "B"]
         and required.get("cp26_contribution_receipt_prepared") is True
+        and required.get("provider_checkpoint_state")
+        == "cp26_ready_p3_absent"
         and required.get("p3_initializer_run") is False
         and isinstance(registry, Mapping)
         and registry.get("schema_version") == capture.REGISTRY_SCHEMA_VERSION
@@ -175,8 +191,33 @@ def _product_sources_ready() -> bool:
         and "zg361_cp_m26_route_c_effect" in cp_block
         and "zg361_p3_m229_route_a_effect" in p3_block
         and "zg361_p3_m229_route_b_effect" in p3_block
-        and "source_ready_result_pending" in action
+        and "cp26_ready_p3_absent" in action
         and "result_operation_committed" in action
+    )
+
+
+def _provider_write_provenance_ready() -> bool:
+    try:
+        abi = _load(PROVIDER_ABI_PATH)
+        product = CP26_EFFECT_PATH.read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeError, ProjectsMetricsSourceCheckpointPreflightError):
+        return False
+    allowlist = abi.get("allowlist")
+    if not isinstance(allowlist, list):
+        return False
+    direct = [
+        name
+        for name in allowlist
+        if isinstance(name, str) and name.startswith("zg361_cp_")
+    ]
+    return bool(
+        abi.get("allowlist_id")
+        == "zg361-cp26-direct-p3m229-lineage-v2"
+        and len(allowlist) == 40
+        and len(direct) == 15
+        and "zg361_p3_portfolio_cycle" in allowlist
+        and "# GENERATED FILE" in product
+        and all(name in product for name in direct)
     )
 
 
@@ -216,9 +257,12 @@ def audit_projects_metrics_source_checkpoint_capture(
         "schema2_contract_is_strict": _contract_ready(contract),
         "concrete_service_surfaces_match": _service_surface_ready(),
         "real_cp26_and_p3_product_sources_present": _product_sources_ready(),
+        "provider_fields_have_generated_product_write_provenance": (
+            _provider_write_provenance_ready()
+        ),
         "explicit_live_cli_only_attaches_to_existing_pipe": _no_launcher_surface(),
-        "capture_requires_source_ready_result_pending": (
-            '"source_ready_result_pending"' in module_source
+        "capture_requires_cp26_ready_p3_absent": (
+            '"cp26_ready_p3_absent"' in module_source
             and '"cp26_provider_source_not_ready"' in module_source
         ),
         "capture_requires_played_subject_distinct_owner_event_free": all(
@@ -285,7 +329,7 @@ def audit_projects_metrics_source_checkpoint_capture(
         "next_live_entry": (
             "observe-ui on real owner-visible zg361cp.26 route A/B, then "
             "capture-checkpoint on the same-lineage played-subject, "
-            "event-free, CP26-source-ready/P3-result-pending paused frame"
+            "event-free, direct-CP26-ready/current-cycle-P3-absent paused frame"
         ),
     }
 

@@ -107,6 +107,9 @@ def response(
         "paused": True,
         "player_character_id": SUBJECT,
         "requested_owner_character_id": OWNER,
+        "checkpoint_state": (
+            "p3_result_committed" if ready else "cp26_ready_p3_absent"
+        ),
         "source_identity": source,
         "result_identity": result,
         "projects_metrics": {
@@ -116,7 +119,7 @@ def response(
                 "identity": contribution_identity,
                 "receipt_id": available(receipt_id),
                 "receipt_revision": available(RECEIPT_REVISION),
-                "value": available(20),
+                "value": available(1),
                 "provider_observed": True,
             },
             "metrics_result": {
@@ -153,6 +156,7 @@ def response(
 def source_absent_response(index: int) -> dict[str, object]:
     result = response(index, ready=False)
     result["status"] = "unavailable"
+    result["checkpoint_state"] = "unavailable"
     result["unavailable_reason"] = "project_source_not_found"
     return result
 
@@ -166,7 +170,7 @@ class FakeService:
         malformed_ack: bool = False,
         drift_receipt: bool = False,
         active_event: bool = False,
-        initial_source_absent: bool = True,
+        initial_source_absent: bool = False,
     ) -> None:
         self.advertise = advertise
         self.green_after = green_after
@@ -230,7 +234,13 @@ class FakeService:
 
 
 class ProjectsMetricsActionCellTests(unittest.TestCase):
-    def test_preflight_accepts_exact_provider_absent_checkpoint(self) -> None:
+    def test_preflight_requires_exact_cp26_ready_p3_absent_checkpoint(self) -> None:
+        absent = preflight_projects_metrics_gameplay_action_cell(
+            FakeService(initial_source_absent=True), owner_character_id=OWNER
+        )
+        self.assertEqual(absent["result"], "RED")
+        self.assertEqual(absent["reason_code"], "source_checkpoint_unavailable")
+
         service = FakeService(green_after=1)
         report = preflight_projects_metrics_gameplay_action_cell(
             service, owner_character_id=OWNER
@@ -239,15 +249,9 @@ class ProjectsMetricsActionCellTests(unittest.TestCase):
         self.assertTrue(report["ready_to_run"])
         self.assertFalse(report["gameplay_action_executed"])
         self.assertFalse(report["action_ack_is_business_postcondition"])
-        self.assertEqual(report["checkpoint_mode"], "provider_source_absent")
-        self.assertIsNone(report["source_checkpoint"])
-
-        source_only = preflight_projects_metrics_gameplay_action_cell(
-            FakeService(initial_source_absent=False), owner_character_id=OWNER
-        )
-        self.assertEqual(source_only["checkpoint_mode"], "source_ready_result_pending")
+        self.assertEqual(report["checkpoint_mode"], "cp26_ready_p3_absent")
         self.assertEqual(
-            source_only["source_checkpoint"]["contribution_receipt_id"], RECEIPT
+            report["source_checkpoint"]["contribution_receipt_id"], RECEIPT
         )
 
     def test_green_requires_later_provider_observed_same_receipt(self) -> None:
@@ -349,7 +353,7 @@ class ProjectsMetricsActionCellTests(unittest.TestCase):
         self.assertTrue(all(report["checks"].values()))
         gap_ids = {row["id"] for row in report["known_live_gaps"]}
         self.assertIn("provider-capability-withheld", gap_ids)
-        self.assertIn("central-stage-order", gap_ids)
+        self.assertNotIn("central-stage-order", gap_ids)
 
 
 if __name__ == "__main__":
