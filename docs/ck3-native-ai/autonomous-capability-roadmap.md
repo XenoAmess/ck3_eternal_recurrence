@@ -516,6 +516,25 @@ cannot promote `evaluated_days`. See
 Neither line may introduce an action or mutation before its exact ABI and
 paused evidence are complete.
 
+### 2026-09-04 G2 evaluated-days private-live checkpoint
+
+The leaf-context V2 r2 run supersedes the earlier preview-entry-only next
+gate for this one field. On one paused exact-build frame, two read-only terms
+queries produced two complete private capture groups (eight rows total); every
+group returned `evaluated_days=1825` twice with stable index-7 provenance and
+successful context teardown. The runner also proved no mutation, no time
+advance, managed process-tree cleanup, and unchanged source checkpoint/driver
+hashes. The compact receipt is
+[`evaluated-days-leaf-context-v2-live-r2-private-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-leaf-context-v2-live-r2-private-green.json).
+
+This is a private-live observation primitive, not a production public-readiness
+promotion. The default-OFF binary still needs the proven leaf-context read
+moved into its production reader and independently validated on a fresh paused
+double query. Persisted expiry is still unobserved; decision readiness,
+automatic surrender, and `GEN-034` therefore remain false/unresolved. The r2
+private run must not be replayed unchanged, and open_kaishek certification is
+unchanged by this evidence package.
+
 ## 施工节奏与提交门
 
 每个工作包按以下小循环持续推进，不等待“大版本”统一收尾：

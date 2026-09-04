@@ -1,0 +1,134 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_leaf_context_v2_private_live.v1",
+  "status": "GREEN_PRIVATE_EVALUATED_DAYS_PUBLIC_UNCHANGED",
+  "attempt": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-hbfix-b71b73c\\live-leaf-context-dual-query-r2",
+    "started_at": "2026-09-04T05:48:16.781305+00:00",
+    "finished_at": "2026-09-04T05:50:44.989866+00:00",
+    "elapsed_seconds": 148.209,
+    "runner_status": "green",
+    "runner_ok": true,
+    "analysis_status": "green_private_evaluated_days",
+    "analysis_ok": true
+  },
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "adapter_id": "ck3-1.19.0.6-msvc-x64",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "candidate_source_commit": "b71b73c9a01604a5d1025d87e6f458f23103c707",
+    "private_bridge_sha256": "22BD3A5A22FFCD4B573C36514B56F63CB8B079DC3495ABC3851B77BD547117DE",
+    "bridge_injector_sha256": "BF8917AE886404D8471642EF5BD8DC0A3D3774EAB820807B4C6F9D5BEC5CD368",
+    "default_off_bridge_sha256": "5F7C2F655EAD3B685F9C28E31F33A44E7314B7F399064414AB8DA99A6C91F5D2",
+    "source_zip_sha256": "E09E3C620A5BB424E0393255FFA97DB6884581E13D565381B11B26D85E872821",
+    "preflight_sha256": "DB970CBC7B4A54E9AF1FB11AEC10FC8225C68C09C6648FCFDC4792C74308A1FE",
+    "manifest_sha256": "6EA809378CBB2B151816FA401CA0A4B51DDF29716C1475B1824C582EABC67567"
+  },
+  "source_artifacts": {
+    "runner_report": {
+      "path": "report.json",
+      "size": 120515507,
+      "sha256": "00343F7E1186DF65A13A7F85806BB048A8D28C67DF8F451BF559D21B800427D9"
+    },
+    "private_analysis": {
+      "path": "evaluated-days-private-analysis.json",
+      "size": 3326,
+      "sha256": "D2A6DC1260FD32ECEE2B48B224F5461BA8EC4A52E9C5C81BF533913C51068A2D"
+    },
+    "private_jsonl": {
+      "path": "g2-evaluated-days-private-v3.jsonl",
+      "size": 21134,
+      "sha256": "9F0EF7D9E045AE071B05C6F7DDE4166AE21BA12D98B3CA7DA19A8FE16A35B677"
+    }
+  },
+  "paused_binding": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "date_raw": 53223936,
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "connection_generation": 1,
+    "episode_run_id": "native-29829-809d91e48a8d",
+    "paused_before_between_after": true,
+    "same_snapshot_before_between_after": true
+  },
+  "read_only_queries": [
+    {
+      "step": "query-war-termination-terms-v1-50331699",
+      "query_sequence": 1,
+      "status": "available",
+      "accepted": true
+    },
+    {
+      "step": "query-war-termination-terms-v1-50331699",
+      "query_sequence": 2,
+      "status": "available",
+      "accepted": true
+    }
+  ],
+  "private_capture": {
+    "row_count": 8,
+    "group_count": 2,
+    "evaluated_days": 1825,
+    "exact_path": "root[7].default.children[1].children[0].children[0]",
+    "truce_vtable_rva": "0x4461CA8",
+    "duration_offset_from_truce": 264,
+    "evaluator_function_rva": "0x3373000",
+    "groups": [
+      {
+        "row_indexes": [0, 1, 2, 3],
+        "stages": ["pre_call", "post_call_1", "post_call_2", "summary"],
+        "completed_call_counts": [0, 1, 2],
+        "evaluator_returns": [1825, 1825],
+        "effect_context": "0x000000DD8F1C6680",
+        "evaluation_context": "0x000000DD8F1C66D0",
+        "pointer_shape_verified": true,
+        "evaluator_double_read_stable": true,
+        "same_frame_stable": true,
+        "context_destroyed": true
+      },
+      {
+        "row_indexes": [4, 5, 6, 7],
+        "stages": ["pre_call", "post_call_1", "post_call_2", "summary"],
+        "completed_call_counts": [0, 1, 2],
+        "evaluator_returns": [1825, 1825],
+        "effect_context": "0x000000DD8F1C6680",
+        "evaluation_context": "0x000000DD8F1C66D0",
+        "pointer_shape_verified": true,
+        "evaluator_double_read_stable": true,
+        "same_frame_stable": true,
+        "context_destroyed": true
+      }
+    ]
+  },
+  "cleanup": {
+    "session_pid": 55012,
+    "session_exit_reason": "stop",
+    "session_report_ok": true,
+    "shutdown_ok": true,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "driver_closed": true,
+    "ok": true
+  },
+  "source_invariant": {
+    "checkpoint_sha256_before": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "checkpoint_sha256_after": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state_sha256_before": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "driver_state_sha256_after": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "unchanged": true
+  },
+  "boundaries": {
+    "mutation_commands_sent": false,
+    "time_advanced": false,
+    "private_evaluated_days_evidence": true,
+    "public_wire_promoted": false,
+    "public_readiness_promoted": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false,
+    "open_kaishek_capability_changed": false
+  },
+  "next_gate": "Move only the live-proven leaf-context read into the default production reader, freeze a default binary, and obtain a fresh paused same-frame double-query artifact without the private capture option. Do not infer actual expiry from evaluated_days."
+}

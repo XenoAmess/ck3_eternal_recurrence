@@ -379,3 +379,39 @@ preflight 给出的唯一 live 命令只允许 fresh attempt
 frame 的两次只读 terms query。该 GREEN 是修复后 harness 的静态前置，不是 live evaluator 结果；本步没有创建
 profile、启动或附加 CK3，也没有发送游戏命令。旧 r1 heartbeat artifact 保持 harness RED；public
 wire/readiness、expiry、决策、自动投降和 `GEN-034=unresolved` 均未提升。
+
+## 2026-09-04：leaf-context V2 live r2 private evaluator GREEN
+
+[private-live evidence / public production unchanged] heartbeat 修复后的唯一 r2 独占槽已经完成，完整外部目录为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-hbfix-b71b73c\live-leaf-context-dual-query-r2`。exact
+`1.19.0.6` EXE、CharacterID `29829`、WarID `50331699`、`date_raw=53223936` 在同一 paused
+`native:3 / revision=4 / native_revision=3 / connection_generation=1` 上执行了两次且仅两次
+`query-war-termination-terms-v1-50331699`。query sequence 为 `1 -> 2`，before/between/after 的日期、暂停态、
+snapshot 和 revision 均不变；`mutation_commands=[]`、`time_advanced=false`。
+
+private JSONL 共 8 行，严格形成两个 4 行组：每组均为
+`pre_call -> post_call_1 -> post_call_2 -> summary`，完成计数为 `0 -> 1 -> 2`。两组都命中
+`root[7].default.children[1].children[0].children[0]`，Truce vtable RVA 为 `0x4461CA8`，duration 为
+`truce+0x108`，evaluator RVA 为 `0x3373000`；每组的两次同步返回均为 `1825`。两组都满足
+`pointer_shape_verified=true`、`evaluator_double_read_stable=true`、`same_frame_stable=true`、
+`context_destroyed=true`。这关闭的是 leaf-context 下 `evaluated_days` 的私有实机取值缺口，而不是 expiry 或完整退出决策。
+
+runner、analysis、private JSONL 的 SHA-256 分别为
+`00343F7E1186DF65A13A7F85806BB048A8D28C67DF8F451BF559D21B800427D9`、
+`D2A6DC1260FD32ECEE2B48B224F5461BA8EC4A52E9C5C81BF533913C51068A2D`、
+`9F0EF7D9E045AE071B05C6F7DDE4166AE21BA12D98B3CA7DA19A8FE16A35B677`；紧凑、可提交的摘要见
+[`evaluated-days-leaf-context-v2-live-r2-private-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-leaf-context-v2-live-r2-private-green.json)。
+session PID `55012` 由受管 `stop` 收口，`shutdown_ok/tree_gone/cleanup_proven/driver_closed` 均为 true。
+原 checkpoint 与 driver-state 的前后 SHA-256 分别恒为 `60108A5D…F164` 与 `4FB901C7…F57E`，因此 source
+immutable；没有 surrender、white-peace、enforce 或其它 mutation，也没有时间推进。
+
+r2 使用显式 private leaf-context 构建；虽然该候选的两次 terms payload 已能带回
+`evaluated_days_observable=true / evaluated_days=1825`，默认 OFF 的 production binary 尚未取得等价 live 证据，
+因此 `public_wire_promoted=false`、`public_readiness_promoted=false`。`actual_expiry_observable=false`，不得以
+`current_date + 1825` 推导 persisted expiry；`decision_ready=false`、`automatic_surrender_ready=false`，
+`GEN-034` 继续 unresolved。open_kaishek capability/certification 也不在本次文档包内变更。
+
+下一项不再重复 r2 private capture：先把这条已实证的同步 leaf-context 读取最小化接入默认 production reader，
+保持 exact-build fail-closed 和纯只读边界，冻结 default binary 后再申请一次 fresh paused 同帧双查询，验证不启用
+private capture 时 public terms 仍稳定返回 1825。expiry、generic war-bound、campaign/budget、white-peace、action 与
+postcondition 继续作为后续独立门，不因本次 private GREEN 合并提升。

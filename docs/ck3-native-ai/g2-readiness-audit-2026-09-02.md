@@ -448,3 +448,33 @@ paths and the full boundary are recorded in
 No mutation was sent and cleanup was GREEN. `GEN-034` therefore remains
 unresolved; the next admissible live entry is a staged private loaded-tree
 shape capture, not another identical duration replay.
+
+## 2026-09-04 leaf-context V2 private-live evaluator result
+
+The heartbeat-corrected, OFF-by-default leaf-context candidate completed its
+single bounded r2 run at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-hbfix-b71b73c\live-leaf-context-dual-query-r2`.
+Two read-only termination-terms queries stayed on paused `native:3`, revision
+`4`, native revision `3`, and `date_raw=53223936`. The private output contains
+exactly eight rows in two complete groups. Each group records
+`pre_call -> post_call_1 -> post_call_2 -> summary`; both evaluator calls in
+each group returned `1825`, and both groups report exact index-7 provenance,
+stable pointer shape, stable same-frame double reads, and destroyed contexts.
+
+The runner/analysis/private-JSONL SHA-256 values are
+`00343F7E1186DF65A13A7F85806BB048A8D28C67DF8F451BF559D21B800427D9`,
+`D2A6DC1260FD32ECEE2B48B224F5461BA8EC4A52E9C5C81BF533913C51068A2D`, and
+`9F0EF7D9E045AE071B05C6F7DDE4166AE21BA12D98B3CA7DA19A8FE16A35B677`.
+The compact receipt is
+[evaluated-days-leaf-context-v2-live-r2-private-green.json](../../artifacts/g2/2026-09-04/evaluated-days-leaf-context-v2-live-r2-private-green.json).
+No mutation command or time advance occurred; managed cleanup is proven and
+the source checkpoint/driver hashes are unchanged.
+
+This advances only the missing duration observation to honest private-live
+evidence. The run used a private-instrumented binary, so the default production
+reader and public readiness are not promoted. Actual expiry remains
+unobserved, decision and automatic-surrender readiness remain false, and
+`GEN-034` remains unresolved. The next admissible gate is a default production
+reader built from the proven synchronous leaf-context seam, followed by one
+fresh paused double-query validation without the private option; r2 itself must
+not be repeated unchanged.
