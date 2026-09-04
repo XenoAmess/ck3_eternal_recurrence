@@ -53,15 +53,21 @@ class G2EvaluatedDaysCaptureEntryGapTests(unittest.TestCase):
             self.assertFalse(scope[key])
         self.assertFalse(self.artifact["assessment"]["paused_evaluator_entry_available_now"])
 
-    def test_current_pins_and_abi_are_cross_bound(self) -> None:
+    def test_historical_pins_and_current_abi_are_cross_bound(self) -> None:
         pins = self.artifact["current_pins"]
         root_binding = self.compatibility["root_binding"]
         self.assertEqual(pins["root"]["capability_id"], root_binding["capability_id"])
         self.assertEqual(pins["root"]["profile_id"], root_binding["profile_id"])
         self.assertEqual(
+            pins["root"]["open_kaishek_commit"],
+            "15ab978f879ed4562aacb74dacdaee702fbce54b",
+        )
+        self.assertNotEqual(
             pins["root"]["open_kaishek_commit"], root_binding["open_kaishek_commit"]
         )
-        self.assertEqual(pins["open_kaishek"]["head"], root_binding["open_kaishek_commit"])
+        self.assertEqual(
+            pins["open_kaishek"]["head"], pins["root"]["open_kaishek_commit"]
+        )
         self.assertEqual(pins["open_kaishek"]["origin_main"], pins["open_kaishek"]["head"])
         self.assertTrue(pins["open_kaishek"]["clean"])
 
