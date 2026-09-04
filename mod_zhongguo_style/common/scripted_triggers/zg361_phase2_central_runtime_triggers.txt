@@ -271,18 +271,20 @@ trigger_if = {
 }
 
 zg361_p2c_m360_frozen_manager_exact_trigger = {
-    zg361_p2c_m360_candidate_ready_trigger = {
-        EXPECTED_OWNER = $EXPECTED_OWNER$
-        EXPECTED_P2C_CYCLE = $EXPECTED_P2C_CYCLE$
-        EXPECTED_P2C_CASE = $EXPECTED_P2C_CASE$
+    AND = {
+        zg361_p2c_m360_candidate_ready_trigger = {
+            EXPECTED_OWNER = $EXPECTED_OWNER$
+            EXPECTED_P2C_CYCLE = $EXPECTED_P2C_CYCLE$
+            EXPECTED_P2C_CASE = $EXPECTED_P2C_CASE$
+        }
+        var:zg361_b1_m360_source_cycle = $EXPECTED_B1_CYCLE$
+        var:zg361_b1_m360_source_case = $EXPECTED_B1_CASE$
+        var:zg361_b1_m360_source_id = $EXPECTED_B1_SOURCE_ID$
+        var:zg361_b1_m360_source_hash = $EXPECTED_B1_SOURCE_HASH$
+        var:zg361_b1_m360_source_quota = $EXPECTED_QUOTA$
+        var:zg361_case_f_cycle_serial = $EXPECTED_MG_CYCLE$
+        var:zg361_case_f_case_serial = $EXPECTED_MG_CASE$
+        var:zg361_mg_snapshot_source_serial = $EXPECTED_MG_SOURCE_SERIAL$
+        var:zg361_mg_team_snapshot_revision = $EXPECTED_MG_REVISION$
     }
-    var:zg361_b1_m360_source_cycle = $EXPECTED_B1_CYCLE$
-    var:zg361_b1_m360_source_case = $EXPECTED_B1_CASE$
-    var:zg361_b1_m360_source_id = $EXPECTED_B1_SOURCE_ID$
-    var:zg361_b1_m360_source_hash = $EXPECTED_B1_SOURCE_HASH$
-    var:zg361_b1_m360_source_quota = $EXPECTED_QUOTA$
-    var:zg361_case_f_cycle_serial = $EXPECTED_MG_CYCLE$
-    var:zg361_case_f_case_serial = $EXPECTED_MG_CASE$
-    var:zg361_mg_snapshot_source_serial = $EXPECTED_MG_SOURCE_SERIAL$
-    var:zg361_mg_team_snapshot_revision = $EXPECTED_MG_REVISION$
 }

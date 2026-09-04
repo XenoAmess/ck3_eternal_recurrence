@@ -649,6 +649,28 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             self.assertIn(f"zg361_b1_m360_source_forced_{slot}_m357_receipt_id > 0", ready)
             self.assertIn(f"zg361_b1_m360_source_forced_{slot}_m357_receipt_hash > 0", ready)
 
+    def test_m360_frozen_manager_exact_uses_one_explicit_and_wrapper(self) -> None:
+        exact = block(self.triggers, "zg361_p2c_m360_frozen_manager_exact_trigger")
+        self.assertEqual(exact.count("AND = {"), 1)
+        self.assertIn("\n    AND = {\n", exact)
+        self.assertIn("zg361_p2c_m360_candidate_ready_trigger = {", exact)
+        for parameter in (
+            "EXPECTED_OWNER",
+            "EXPECTED_P2C_CYCLE",
+            "EXPECTED_P2C_CASE",
+            "EXPECTED_B1_CYCLE",
+            "EXPECTED_B1_CASE",
+            "EXPECTED_B1_SOURCE_ID",
+            "EXPECTED_B1_SOURCE_HASH",
+            "EXPECTED_QUOTA",
+            "EXPECTED_MG_CYCLE",
+            "EXPECTED_MG_CASE",
+            "EXPECTED_MG_SOURCE_SERIAL",
+            "EXPECTED_MG_REVISION",
+        ):
+            self.assertIn(f"${parameter}$", exact)
+        self.assertNotIn("always = no", exact)
+
     def test_m360_source_diagnostics_are_wait_na_red_not_interchangeable(self) -> None:
         prepare = block(self.effects, "zg361_p2c_prepare_m360_source_effect")
         self.assertIn("var:zg361_b1_m360_source_status = 3", prepare)
