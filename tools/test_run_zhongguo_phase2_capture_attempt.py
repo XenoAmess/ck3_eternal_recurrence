@@ -68,7 +68,7 @@ def _source_registry(root: Path) -> Path:
     specs = (
         ("phase2_promotion_compensation", "capture_promotion_compensation", "zg361pp.147", 2, 1),
         ("phase2_projects_metrics", "capture_projects_metrics", "zg361cp.26", 2, 1),
-        ("phase2_incidents_operations", "capture_incidents_operations", "zg361.50", 1, 1),
+        ("phase2_incidents_operations", "capture_incidents_operations", "zg361.50", 2, 1),
         ("phase2_cross_cycle_endgame", "capture_cross_cycle_endgame", "zg361we.356", 2, 1),
     )
     entries = []

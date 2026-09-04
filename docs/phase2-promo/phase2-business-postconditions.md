@@ -48,18 +48,19 @@ return proof
 | handler | adapter 状态 | 当前真实输入 | 结论 |
 |---|---|---|---|
 | scoreboard/calibration | 已实现 | verified scoreboard source/action/later artifact + `zg361.1` current-event query | action 必须为 `open`、production capability advertised、independent postcondition verified；event 与 later query 的 snapshot/public/native binding 及 played root 必须一致 |
-| promotion/compensation | fail-closed adapter 已实现 | source/result current-event query；业务 query 尚不存在 | 明确返回缺少 `game.command.query-zhongguo-promotion-compensation-postcondition-v1` |
+| promotion/compensation | adapter、固定 native provider、serializer/schema、mailbox、driver/service/MCP 与独立 action cell 已实现；默认不广告 | source/result current-event query + default-off 业务 query；没有 paused live 响应 | `game.command.query-zhongguo-promotion-compensation-postcondition-v1` 已完成 shared wiring，但 `production_live_ready=false`，仍须真实 `.147` checkpoint 与 `.comp.1` 结果帧验收 |
 | projects/metrics | adapter 已实现；独立 native provider 与共享接线 static/fixture-ready | source/result current-event query；业务 query 的 reader/serializer/schema、mailbox 第 24 槽、bridge、driver/service/MCP 已实现，默认 adapter 不广告且没有 live 响应 | `game.command.query-zhongguo-projects-metrics-postcondition-v1` 已有 fixed allowlist 与 default-off 共享接线；在 paused live 验收前仍明确 fail-closed |
 | cross-cycle endgame | 已实现 | source/result current-event query + action 前后 `query-zhongguo-workforce-collective-snapshot-v1` | 从已验证 `al_case`、`route_c_debt.due_cycle_serial` 与 `charter_gate.prepared_charter_id/adopted_cycle_serial/effective_cycle_serial` 构造，不增加任意变量读取 |
 
 scoreboard 和 endgame 的“已实现”仅表示 adapter 能消费现有 provider；在取得真实输入并通过一次 live 前仍是 static/fixture-ready。
-promotion/projects 的 future-query adapter 还会检查 `source_backend_id=native-headless`、readiness、source/result snapshot binding、connection
+promotion/projects 的 query adapter 还会检查 `source_backend_id=native-headless`、readiness、source/result snapshot binding、connection
 generation 与 player identity；缺字段或伪装成 fixture backend 都 fail-closed。
 
-### 最小 bridge/query 增量
+### 剩余 paused-live 闭合入口
 
-1. `query-zhongguo-promotion-compensation-postcondition-v1`：固定读取一个 allowlisted promotion case，返回 source/result identity、frozen
-   case identity、m147 choice receipt、posted compensation receipt；四者都必须含 owner/subject/cycle/case，并绑定两帧与同一 connection。
+1. `query-zhongguo-promotion-compensation-postcondition-v1` 的固定 provider/shared wiring 已实现；下一步从真实 paused
+   `zg361pp.147` checkpoint 提交 option 1，等待 `zg361comp.1`，并保留 source/result identity、frozen case、m147 choice
+   receipt 与 posted compensation receipt 的同 connection live 响应。四者必须含相同 owner/subject/cycle/case。
 2. `query-zhongguo-projects-metrics-postcondition-v1`：独立 reader/serializer/schema 已实现，固定读取一个 allowlisted project case，返回 source/result identity、contribution
    receipt ID/revision/value、metrics 对同一 receipt ID/revision 的回链、metrics revision/dictionary key；所有业务组绑定同一个 owner/subject/cycle/case。共享 mailbox 第 24 槽、bridge handler/result frame/query counter、driver/service/MCP 已按 default-off 接线；source/result event snapshot wrapper 与 paused live artifact 仍是缺口，故当前仍不得产出生产 GREEN。
 
