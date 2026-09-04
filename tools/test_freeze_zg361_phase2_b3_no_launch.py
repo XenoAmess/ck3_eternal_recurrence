@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -75,6 +76,38 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             self.assertEqual(
                 ["zg361_probe_missing_effect"], result["missing_effects"]
             )
+
+    def test_predecessor_material_red_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "cell").mkdir()
+            (root / "report.json").write_text(
+                json.dumps({"result": "RED"}), encoding="utf-8"
+            )
+            (root / "cell" / "report.json").write_text(
+                json.dumps(
+                    {
+                        "result": "RED",
+                        "native_cleanup": {
+                            "result": "GREEN",
+                            "failed_checks": [],
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            caller = freeze.PREDECESSOR_CALLER_FILE
+            (root / "cell" / "final_error.log").write_text(
+                "Unknown effect: zg361_p2c_record_stage_effect " + caller + "\n"
+                "Unknown effect: zg361_p2c_record_red_effect " + caller + "\n",
+                encoding="utf-8",
+            )
+            (root / "evidence-index.json").write_text("{}\n", encoding="utf-8")
+            result = freeze.predecessor_live_red_evidence(root)
+            self.assertEqual("material-projection-closure-red", result["classification"])
+            self.assertFalse(result["loader_performance_claimed"])
+            self.assertEqual(2, result["unknown_effect_line_count"])
+            self.assertTrue(result["cleanup_green"])
 
 
 if __name__ == "__main__":

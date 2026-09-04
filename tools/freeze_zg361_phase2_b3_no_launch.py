@@ -47,6 +47,13 @@ REQUIRED_CENTRAL_PROVIDER_FILES = frozenset(
     {"zg361_phase2_central_003_dispatch_control_effects.txt"}
 )
 CUSTOM_EFFECT_CALL_RE = re.compile(r"\b(zg361_[A-Za-z0-9_]+_effect)\s*=")
+EXPECTED_PREDECESSOR_UNKNOWN_EFFECTS = frozenset(
+    {"zg361_p2c_record_red_effect", "zg361_p2c_record_stage_effect"}
+)
+PREDECESSOR_CALLER_FILE = (
+    "common/scripted_effects/"
+    "zg361_phase2_central_008_stage10_manager_governance_effects.txt"
+)
 
 B3_EFFECT_SHARDS = (
     "zg361_manager_governance_core_adapters_effects.txt",
@@ -294,6 +301,57 @@ def central_effect_call_closure(
     }
 
 
+def predecessor_live_red_evidence(root: Path) -> dict[str, object]:
+    outer_report_path = root / "report.json"
+    cell_report_path = root / "cell" / "report.json"
+    error_log_path = root / "cell" / "final_error.log"
+    evidence_index_path = root / "evidence-index.json"
+    outer_report = read_json(outer_report_path)
+    cell_report = read_json(cell_report_path)
+    error_log = error_log_path.read_text(encoding="utf-8-sig", errors="replace")
+    unknown_effects = re.findall(
+        r"Unknown effect: (zg361_[A-Za-z0-9_]+_effect)", error_log
+    )
+    cleanup = cell_report.get("native_cleanup")
+    cleanup_green = (
+        isinstance(cleanup, dict)
+        and cleanup.get("result") == "GREEN"
+        and not cleanup.get("failed_checks")
+    )
+    green = (
+        outer_report.get("result") == "RED"
+        and cell_report.get("result") == "RED"
+        and len(unknown_effects) == 2
+        and set(unknown_effects) == EXPECTED_PREDECESSOR_UNKNOWN_EFFECTS
+        and PREDECESSOR_CALLER_FILE in error_log.replace("\\", "/")
+        and cleanup_green
+    )
+    if not green:
+        raise FreezeError(
+            "predecessor B3 RED evidence no longer matches its material-closure root cause"
+        )
+    return {
+        "classification": "material-projection-closure-red",
+        "loader_performance_claimed": False,
+        "artifact_root": str(root),
+        "unknown_effect_line_count": len(unknown_effects),
+        "unknown_effects": sorted(set(unknown_effects)),
+        "caller_file": PREDECESSOR_CALLER_FILE,
+        "missing_provider_file": (
+            "common/scripted_effects/"
+            "zg361_phase2_central_003_dispatch_control_effects.txt"
+        ),
+        "cleanup_green": cleanup_green,
+        "files": {
+            "outer_report": record(outer_report_path),
+            "cell_report": record(cell_report_path),
+            "final_error_log": record(error_log_path),
+            "evidence_index": record(evidence_index_path),
+        },
+        "preserved": True,
+    }
+
+
 def projection_delta(baseline: Path, candidate: Path) -> list[dict[str, object]]:
     before = tree_rows(baseline)
     after = tree_rows(candidate)
@@ -397,6 +455,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     parser.add_argument("--pipe", required=True)
     parser.add_argument("--repository-manifest", type=Path, required=True)
+    parser.add_argument("--predecessor-live-red", type=Path, required=True)
     args = parser.parse_args(argv)
 
     attempt = args.attempt_dir.resolve()
@@ -452,6 +511,9 @@ def main(argv: list[str] | None = None) -> int:
     central_closure = central_effect_call_closure(source)
     if central_closure["green"] is not True:
         raise FreezeError(f"central effect call closure is RED: {central_closure}")
+    predecessor_red = predecessor_live_red_evidence(
+        args.predecessor_live_red.resolve()
+    )
 
     python = str(args.python.resolve())
     ctest_result = run(
@@ -579,6 +641,7 @@ def main(argv: list[str] | None = None) -> int:
             "effect_boundaries": boundaries,
             "central_effect_call_closure": central_closure,
         },
+        "predecessor_live_red": predecessor_red,
         "action_cell_only_inputs": action_cells,
         "static_checks": [
             {
