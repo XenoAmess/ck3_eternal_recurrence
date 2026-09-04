@@ -1033,7 +1033,26 @@ release 全部通过，matrix SHA-256 为 `22F8C8D07DA573457F1EBD67E70EF4CED1ACE
 `6C03CFFE91EB4BCC829F3C6B74D22B1312886161F184100DA7B395C1250ED237` 为 RED，因为 generic project diagnostics 把初始 loader
 日志中已有的 5,607 条静态 liveness 行当成 blocking；同轮 loader scan 已 GREEN，这些行不是业务执行中新出现的 runtime 错误或
 loader performance RED。遇到这种分层不一致时，必须记录为 harness classification inconsistency，并以最小分类修复后的外层重跑为
-最终 gate；不得只凭内部 scenario/matrix GREEN 宣称整个 focused runner GREEN。r22 回执仍待完成。
+最终 gate；不得只凭内部 scenario/matrix GREEN 宣称整个 focused runner GREEN。
+
+r22 已关闭该外层门。artifact 位于
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-b2-r22-20260904-123400\focused-live`，冻结
+`e1c020ad7ad1a8ad4cb9f2ef9676e6517fa9b906`，source ZIP 为 2,241 files / SHA-256
+`7F5DD7977B6FC7F264275D8C440847F509B8C432473E49D6D74A09FE1E115D93`。outer/cell/scenario/matrix 全 GREEN，focused
+`complete=true`，readiness 为 `production-live primitive`，但 `full Phase2 claim=false`。495.356 秒内完成 three arms、four exact
+restores、final baseline、4 restarts / 5 unique PIDs；所有 PID 已退出，cleanup/driver/locks 与 source/product/runtime immutability
+均通过。outer/cell/scenario/matrix/cleanup SHA-256 为
+`6FC744BA4C5D6BA905A41A0E91EF870452A378DA3431DCBFB537C31AA3533F47` /
+`78BD148ED20BA1BF0D3AF9866BB9D02E7BA4F6060B4D764C658C298D55EE641E` /
+`BD8EBE01C3E228801301FCD3A77B95549A8AC214A6C90EDBB1EA7FE4ADFF9278` /
+`83BB9741E3EBAB28D90787A4FB6F94937ADE5A1D950D2601E18EC9AC4F64E6EC` /
+`875A897E651A49B7A4DC2A42EEFB7DDCAC1E98D05CDBB8BDD0426046F0BD5745`。
+
+r22 `project_diagnostics=[]`，但没有通过删除日志来变绿：原有 5,607 条静态 liveness 行仍保留为 nonblocking evidence
+（5,264 / 338 / 4 / 1 四类）。loader scan GREEN、0 matches、quiet `16.226 s`；完整日志为 `1,376,819 bytes` / SHA-256
+`5C55B0C0C188CBE15AB28EF9C7AD88929EEBA34B0C3497BBD93C22D82710C803`，scan SHA-256
+`E6B59CEC859572B9B925FE5759A4F6460190EBAC9369F6172FB091BFF3B7B87D`。因此 B2 focused gate 可记 COMPLETE；本轮没有
+loader performance RED，不触发额外拆分，也不得把 focused gate 外推为全 Phase2/T0 完成。
 
 同一 source save SHA-256 `BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733` 在两个新进程中，对同一
 `zg361.4` 分别报告 `calculated_event_id=3030004` 与 `2990004`，而 event key、instance、date、root/superior 与 options 均稳定。

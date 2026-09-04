@@ -1,6 +1,6 @@
-# B2 首用状态、加载边界与 r20/r21 实机证据（2026-09-04）
+# B2 首用状态、加载边界与 r20–r22 实机证据（2026-09-04）
 
-状态：**r20 seed fixture-live GREEN；r21 focused scenario/matrix GREEN、outer harness RED；r22 待复验**
+状态：**r20 seed fixture-live GREEN；r22 focused gate COMPLETE / `production-live primitive`；full Phase2 claim=false**
 
 本页只固化 B2 用途分片进入完整 seed 业务链后的新证据。它不把 seed GREEN 写成 B2 四路业务 GREEN，也不把文件拆分写成这次启动问题的唯一原因。
 
@@ -110,10 +110,40 @@ r21 artifact 位于：
   list used-never-set，以及 1 条 orphaned event `zg361we.361`；
 - 这些行在初始 loader log 中已经存在，而同轮 loader scan 为 GREEN；它们不是 focused 场景中新出现的 runtime 错误，也没有给出 loader 性能 RED。故外层 RED 分类为 **harness classification inconsistency**，不是 B2 scenario/product RED。
 
-最小分类修复已由 `e1c020ad7ad1a8ad4cb9f2ef9676e6517fa9b906` 落盘；仍须以 r22 外层 runner 回执复验。因此本页当前只声明
-“r21 scenario/matrix GREEN + outer harness RED”，**不声明 focused B2 最终 GREEN**。
+最小分类修复已由 `e1c020ad7ad1a8ad4cb9f2ef9676e6517fa9b906` 落盘；该分类修复的 r22 外层复验见下节。r21 本身仍按
+“scenario/matrix GREEN + outer harness RED”保留，不回写或删除失败证据。
+
+## r22 focused B2 最终回执：COMPLETE
+
+r22 artifact 位于：
+
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-b2-r22-20260904-123400\focused-live`
+
+本轮冻结 commit `e1c020ad7ad1a8ad4cb9f2ef9676e6517fa9b906`；source ZIP 包含 2,241 files，SHA-256
+`7F5DD7977B6FC7F264275D8C440847F509B8C432473E49D6D74A09FE1E115D93`。结果如下：
+
+- outer report、cell report、scenario 与 matrix 全部 **GREEN**；focused `complete=true`；readiness 为
+  **`production-live primitive`**，`full Phase2 claim=false`；
+- 总时长 `495.356 s`；three arms、four exact restores 与 final baseline 均通过；4 次 restart 使用 5 个 unique PID，最终全部退出；
+- cleanup、driver close、runtime locks release，以及 source/product/runtime immutability 全部为 true；
+- `project_diagnostics=[]`。r21 中的 5,607 条静态 liveness 行没有删除，仍作为 nonblocking evidence 保留：5,264 条
+  `jomini_effect.cpp:1145` set-never-used、338 条 `jomini_effect.cpp:1161` variable used-never-set、4 条同位置 list
+  used-never-set、1 条 orphaned event；
+- loader scan GREEN / 0 matches / quiet `16.226 s`；完整日志 `1,376,819 bytes`，SHA-256
+  `5C55B0C0C188CBE15AB28EF9C7AD88929EEBA34B0C3497BBD93C22D82710C803`；scan SHA-256
+  `E6B59CEC859572B9B925FE5759A4F6460190EBAC9369F6172FB091BFF3B7B87D`；
+- outer / cell / scenario / matrix / cleanup SHA-256 依次为
+  `6FC744BA4C5D6BA905A41A0E91EF870452A378DA3431DCBFB537C31AA3533F47`、
+  `78BD148ED20BA1BF0D3AF9866BB9D02E7BA4F6060B4D764C658C298D55EE641E`、
+  `BD8EBE01C3E228801301FCD3A77B95549A8AC214A6C90EDBB1EA7FE4ADFF9278`、
+  `83BB9741E3EBAB28D90787A4FB6F94937ADE5A1D950D2601E18EC9AC4F64E6EC`、
+  `875A897E651A49B7A4DC2A42EEFB7DDCAC1E98D05CDBB8BDD0426046F0BD5745`。
+
+结论：**B2 focused gate 已 COMPLETE**。本轮没有 loader performance RED，不触发额外文件拆分；它也不等于全 Phase2、8/8
+footage、两条宣传片或 T0 已完成。下一业务门是 B3 typed selector/provider。
 
 ## B3 文件边界延续
 
 B3 manager 新增层已由 `4890b17998df1c5586beb36011d283c1a111f388` 按用途拆为 **7 个 effect 分片 / 43 effects**；单片最大
-`10`，没有超过 `20` 的例外。该静态文件边界事实不改变 r21/r22 的 B2 实机状态，也不得用作 focused GREEN 的替代证据。
+`10`，没有超过 `20` 的例外。r22 没有 loader performance RED，因此不需要再拆；下一项是在这份冻结边界上推进 B3 typed
+selector/provider。
