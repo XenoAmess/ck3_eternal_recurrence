@@ -189,10 +189,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 259_181)
+        self.assertEqual(len(historical_bytes), 259_686)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "8b23580b3d43b9d58fcc71e3701d0d0ef885ad59bacbf807da7c761f442758df",
+            "d5b8c561ef44f19d2c990979f21af733078c8579dcc00541bb054ed6dd405e80",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1224,6 +1224,51 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "zg361_b2_consume_pip_performance_evidence_effect = yes",
             top_level_block(self.core, "zg361_compute_kpi_effect"),
         )
+
+    def test_016_tooltip_first_use_reads_are_nested_behind_presence_gates(self) -> None:
+        opened = top_level_block(
+            self.effects, "zg361_b2_m016_open_business_object_effect"
+        )
+        self.assertIn(
+            "\tzg361_b2_m016_resolve_policy_effect = yes\n"
+            "\tif = {\n"
+            "\t\tlimit = { has_variable = zg361_b2_m016_route }\n"
+            "\t\tif = {\n"
+            "\t\t\tlimit = { var:zg361_b2_m016_route = 3 }",
+            opened,
+        )
+
+        committed = top_level_block(
+            self.effects, "zg361_b2_m016_commit_support_effect"
+        )
+        self.assertIn(
+            "\tif = {\n"
+            "\t\tlimit = { has_variable = zg361_b2_m016_object_active }\n"
+            "\t\tif = {\n"
+            "\t\t\tlimit = { has_variable = zg361_b2_m016_route }\n"
+            "\t\t\tif = {\n"
+            "\t\t\t\tlimit = {\n"
+            "\t\t\t\t\tvar:zg361_b2_m016_object_active = 1",
+            committed,
+        )
+
+        published = top_level_block(
+            self.effects, "zg361_b2_publish_pip_performance_evidence_effect"
+        )
+        self.assertIn(
+            "\tif = {\n"
+            "\t\tlimit = { has_variable = zg361_b2_pip_performance_evidence_delta }\n"
+            "\t\tif = {\n"
+            "\t\t\tlimit = {",
+            published,
+        )
+
+        # The live fault was isolated to #016.  Preserve the unchanged generic
+        # policy kernel for mechanisms that have no matching CK3 evidence.
+        m015_opened = top_level_block(
+            self.effects, "zg361_b2_m015_open_business_object_effect"
+        )
+        self.assertNotIn("has_variable = zg361_b2_m015_route", m015_opened)
 
     def test_016_midpoint_progress_has_a_real_kpi_producer_and_exact_provenance(self) -> None:
         pip = top_level_block(self.effects, "zg361_b2_m015_open_pip_effect")

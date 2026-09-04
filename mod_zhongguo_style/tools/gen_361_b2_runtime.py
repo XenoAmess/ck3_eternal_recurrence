@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import textwrap
 from pathlib import Path
 
 from zg361_b2_runtime_data import B2_BINDINGS, validate_b2_bindings
@@ -459,6 +460,46 @@ zg361_b2_consume_due_policy_debts_effect = {
             if mechanism_id in (358, 359)
             else ""
         )
+        open_business_object_body = f'''\tif = {{
+\t\tlimit = {{ var:zg361_b2_m{key}_route = 3 }}
+\t\tzg361_b2_m{key}_post_policy_debt_effect = yes
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tOR = {{
+\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = {object_case} }}
+\t\t\t}}
+\t\t\tOR = {{
+\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_active }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
+\t\t\t}}
+\t\t}}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = {object_owner} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_subject value = this }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_cycle value = {object_cycle} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_receipt_case value = {object_case} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_state value = {object_state} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_route value = var:zg361_b2_m{key}_route }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_active value = 1 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_consumed value = 0 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_visible_revision value = var:zg361_b2_case_feedback_revision }}
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_b2_m{key}_route = 2 }}
+\t\t\tset_variable = {{ name = zg361_b2_m{key}_procedural_risk value = 1 }}
+\t\t}}
+\t}}
+'''
+        if mechanism_id == 16:
+            # CK3 tooltip expansion does not simulate the preceding resolver.
+            # Keep the observed #016 first-use route read behind a real nested
+            # gate; OR/AND siblings do not short-circuit variable evaluation.
+            open_business_object_body = (
+                "\tif = {\n"
+                "\t\tlimit = { has_variable = zg361_b2_m016_route }\n"
+                + textwrap.indent(open_business_object_body, "\t")
+                + "\t}\n"
+            )
         sections.append(f'''
 zg361_b2_m{key}_resolve_policy_effect = {{
 \tset_variable = {{ name = zg361_b2_m{key}_route value = 1 }}
@@ -496,36 +537,7 @@ zg361_b2_m{key}_post_policy_debt_effect = {{
 
 zg361_b2_m{key}_open_business_object_effect = {{
 \tzg361_b2_m{key}_resolve_policy_effect = yes
-\tif = {{
-\t\tlimit = {{ var:zg361_b2_m{key}_route = 3 }}
-\t\tzg361_b2_m{key}_post_policy_debt_effect = yes
-\t}}
-\telse_if = {{
-\t\tlimit = {{
-\t\t\tOR = {{
-\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
-\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = {object_case} }}
-\t\t\t}}
-\t\t\tOR = {{
-\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_active }}
-\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
-\t\t\t}}
-\t\t}}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = {object_owner} }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_subject value = this }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_cycle value = {object_cycle} }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_receipt_case value = {object_case} }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_state value = {object_state} }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_route value = var:zg361_b2_m{key}_route }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_active value = 1 }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_object_consumed value = 0 }}
-\t\tset_variable = {{ name = zg361_b2_m{key}_visible_revision value = var:zg361_b2_case_feedback_revision }}
-\t\tif = {{
-\t\t\tlimit = {{ var:zg361_b2_m{key}_route = 2 }}
-\t\t\tset_variable = {{ name = zg361_b2_m{key}_procedural_risk value = 1 }}
-\t\t}}
-\t}}
-}}
+{open_business_object_body}}}
 
 zg361_b2_m{key}_consume_business_object_effect = {{
 \tif = {{
@@ -1445,72 +1457,78 @@ zg361_b2_m016_commit_support_effect = {
 	# A support package is atomic: one real mentor, one capacity slot and the
 	# exact public budget must all exist before any of them is consumed.
 	if = {
-		limit = {
-			var:zg361_b2_m016_object_active = 1
-			var:zg361_b2_m016_route = 1
-		}
-		scope:zg361_b2_support_owner = {
-			ordered_vassal = {
+		limit = { has_variable = zg361_b2_m016_object_active }
+		if = {
+			limit = { has_variable = zg361_b2_m016_route }
+			if = {
 				limit = {
-					is_alive = yes
-					NOT = { this = scope:zg361_b2_support_owner }
-					NOT = { this = scope:zg361_b2_support_subject }
+					var:zg361_b2_m016_object_active = 1
+					var:zg361_b2_m016_route = 1
 				}
-				order_by = learning
-				position = 0
-				save_scope_as = zg361_b2_support_mentor
-			}
-		}
-		if = {
-			limit = {
-				exists = scope:zg361_b2_support_mentor
 				scope:zg361_b2_support_owner = {
-					government_has_flag = government_has_treasury
-					treasury >= 25
+					ordered_vassal = {
+						limit = {
+							is_alive = yes
+							NOT = { this = scope:zg361_b2_support_owner }
+							NOT = { this = scope:zg361_b2_support_subject }
+						}
+						order_by = learning
+						position = 0
+						save_scope_as = zg361_b2_support_mentor
+					}
+				}
+				if = {
+					limit = {
+						exists = scope:zg361_b2_support_mentor
+						scope:zg361_b2_support_owner = {
+							government_has_flag = government_has_treasury
+							treasury >= 25
+						}
+					}
+					scope:zg361_b2_support_owner = {
+						if = {
+							limit = { NOT = { has_variable = zg361_b2_pip_capacity_used } }
+							set_variable = { name = zg361_b2_pip_capacity_used value = 0 }
+						}
+						if = {
+							limit = { var:zg361_b2_pip_capacity_used < 2 }
+							change_variable = { name = zg361_b2_pip_capacity_used add = 1 }
+							remove_treasury = 25
+							scope:zg361_b2_support_subject = {
+								set_variable = { name = zg361_b2_pip_support_reserved value = 1 }
+								set_variable = { name = zg361_b2_pip_support_hours value = 12 }
+								set_variable = { name = zg361_b2_pip_support_attention value = 1 }
+								set_variable = { name = zg361_b2_pip_support_mentor value = scope:zg361_b2_support_mentor }
+								set_variable = { name = zg361_b2_pip_support_budget_owner value = scope:zg361_b2_support_owner }
+								set_variable = { name = zg361_b2_pip_support_budget_allocated value = 25 }
+								set_variable = { name = zg361_b2_pip_support_budget_spent value = 25 }
+								set_variable = { name = zg361_b2_pip_support_absent value = 0 }
+								set_variable = { name = zg361_b2_m016_state value = 2 }
+								set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
+							}
+						}
+					}
 				}
 			}
-			scope:zg361_b2_support_owner = {
-		if = {
-			limit = { NOT = { has_variable = zg361_b2_pip_capacity_used } }
-			set_variable = { name = zg361_b2_pip_capacity_used value = 0 }
-		}
-		if = {
-			limit = { var:zg361_b2_pip_capacity_used < 2 }
-			change_variable = { name = zg361_b2_pip_capacity_used add = 1 }
-			remove_treasury = 25
-			scope:zg361_b2_support_subject = {
-				set_variable = { name = zg361_b2_pip_support_reserved value = 1 }
-				set_variable = { name = zg361_b2_pip_support_hours value = 12 }
-				set_variable = { name = zg361_b2_pip_support_attention value = 1 }
-				set_variable = { name = zg361_b2_pip_support_mentor value = scope:zg361_b2_support_mentor }
-				set_variable = { name = zg361_b2_pip_support_budget_owner value = scope:zg361_b2_support_owner }
-				set_variable = { name = zg361_b2_pip_support_budget_allocated value = 25 }
-				set_variable = { name = zg361_b2_pip_support_budget_spent value = 25 }
-				set_variable = { name = zg361_b2_pip_support_absent value = 0 }
-				set_variable = { name = zg361_b2_m016_state value = 2 }
+			if = {
+				limit = {
+					var:zg361_b2_m016_object_active = 1
+					var:zg361_b2_pip_support_reserved = 0
+				}
+				set_variable = { name = zg361_b2_pip_support_hours value = 0 }
+				set_variable = { name = zg361_b2_pip_support_attention value = 0 }
+				set_variable = { name = zg361_b2_pip_support_absent value = 1 }
+				set_variable = { name = zg361_b2_m016_state value = 1 }
 				set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
+				if = {
+					limit = { var:zg361_b2_m016_route = 2 }
+					set_variable = { name = zg361_b2_pip_support_withheld value = 1 }
+					set_variable = { name = zg361_b2_pip_support_budget_unchanged value = 1 }
+				}
+				else = {
+					set_variable = { name = zg361_b2_pip_support_atomic_shortfall value = 1 }
+				}
 			}
-		}
-			}
-		}
-	}
-	if = {
-		limit = {
-			var:zg361_b2_m016_object_active = 1
-			var:zg361_b2_pip_support_reserved = 0
-		}
-		set_variable = { name = zg361_b2_pip_support_hours value = 0 }
-		set_variable = { name = zg361_b2_pip_support_attention value = 0 }
-		set_variable = { name = zg361_b2_pip_support_absent value = 1 }
-		set_variable = { name = zg361_b2_m016_state value = 1 }
-		set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
-		if = {
-			limit = { var:zg361_b2_m016_route = 2 }
-			set_variable = { name = zg361_b2_pip_support_withheld value = 1 }
-			set_variable = { name = zg361_b2_pip_support_budget_unchanged value = 1 }
-		}
-		else = {
-			set_variable = { name = zg361_b2_pip_support_atomic_shortfall value = 1 }
 		}
 	}
 }
@@ -1534,26 +1552,30 @@ zg361_b2_release_pip_support_effect = {
 
 zg361_b2_publish_pip_performance_evidence_effect = {
 	if = {
-		limit = {
-			OR = {
-				NOT = { has_variable = zg361_b2_pip_performance_evidence_status }
-				NOT = { var:zg361_b2_pip_performance_evidence_status = 1 }
+		limit = { has_variable = zg361_b2_pip_performance_evidence_delta }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = zg361_b2_pip_performance_evidence_status }
+					NOT = { var:zg361_b2_pip_performance_evidence_status = 1 }
+				}
+				OR = {
+					var:zg361_b2_pip_performance_evidence_delta = 10
+					var:zg361_b2_pip_performance_evidence_delta = -10
+					var:zg361_b2_pip_performance_evidence_delta = -15
+				}
 			}
-			OR = {
-				var:zg361_b2_pip_performance_evidence_delta = 10
-				var:zg361_b2_pip_performance_evidence_delta = -10
-				var:zg361_b2_pip_performance_evidence_delta = -15
-			}
+			set_variable = { name = zg361_b2_pip_performance_evidence_owner value = var:zg361_b2_pip_owner }
+			set_variable = { name = zg361_b2_pip_performance_evidence_subject value = this }
+			set_variable = { name = zg361_b2_pip_performance_evidence_source_cycle value = var:zg361_b2_pip_cycle }
+			set_variable = { name = zg361_b2_pip_performance_evidence_source_case value = var:zg361_b2_pip_case }
+			set_variable = { name = zg361_b2_pip_performance_evidence_due_cycle value = var:zg361_b2_pip_cycle }
+			change_variable = { name = zg361_b2_pip_performance_evidence_due_cycle add = 1 }
+			set_variable = { name = zg361_b2_pip_performance_evidence_status value = 1 }
 		}
-		set_variable = { name = zg361_b2_pip_performance_evidence_owner value = var:zg361_b2_pip_owner }
-		set_variable = { name = zg361_b2_pip_performance_evidence_subject value = this }
-		set_variable = { name = zg361_b2_pip_performance_evidence_source_cycle value = var:zg361_b2_pip_cycle }
-		set_variable = { name = zg361_b2_pip_performance_evidence_source_case value = var:zg361_b2_pip_case }
-		set_variable = { name = zg361_b2_pip_performance_evidence_due_cycle value = var:zg361_b2_pip_cycle }
-		change_variable = { name = zg361_b2_pip_performance_evidence_due_cycle add = 1 }
-		set_variable = { name = zg361_b2_pip_performance_evidence_status value = 1 }
+		else = { debug_log = "ZG361B2: pending PIP performance evidence conserved; duplicate publish ignored" }
+		}
 	}
-	else = { debug_log = "ZG361B2: pending PIP performance evidence conserved; duplicate publish ignored" }
 }
 
 zg361_b2_record_pip_midpoint_effect = {
