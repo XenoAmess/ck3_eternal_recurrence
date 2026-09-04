@@ -1,8 +1,8 @@
 {
   "schema": "xar.ck3.g2_postwar_cleanup_expiry_current_pin_live_manifest.v1",
   "state": "static-ready-live-pending",
-  "created_at": "2026-09-04T19:59:51+08:00",
-  "candidate_source_commit": "4da52808301ba16e92f5097c69ab541f4938d587",
+  "created_at": "2026-09-04T21:35:09+08:00",
+  "candidate_source_commit": "e72f9fa302811a823479635648eb008a6f5d8418",
   "identity": {
     "war_id": 50331699,
     "character_id": 29829,
@@ -21,20 +21,20 @@
     "source_checkpoint": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\profile\\save games\\xar_checkpoint.ck3",
     "source_driver_state": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\native-session\\driver-state.json",
     "game_executable": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\binaries\\ck3.exe",
-    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\xar_ck3_bridge.dll",
-    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\xar_ck3_bridge_injector.exe",
-    "cmake_cache": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\CMakeCache.txt",
-    "native_ctest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\native-ctest.txt",
-    "source_zip": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\source-4da52808301ba16e92f5097c69ab541f4938d587.zip",
-    "product_staging": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\product",
-    "product_manifest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\product.manifest.json",
-    "product_zip": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\product.zip",
-    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\live-r2"
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
+    "cmake_cache": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\CMakeCache.txt",
+    "native_ctest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\native-ctest.txt",
+    "source_zip": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\source-e72f9fa302811a823479635648eb008a6f5d8418.zip",
+    "product_staging": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\product",
+    "product_manifest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\product.manifest.json",
+    "product_zip": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\product.zip",
+    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\live-r3"
   },
   "sha256": {
     "python": "D70FCED7F461F38F9F224D8673FB74E96E4FACB4283FF4E8697543B457FEA8A0",
     "preflight": "42B597173580C808872D3B284BF06B372B31C24FBCFCE56F948469A8127FB554",
-    "runner": "67BD636F10F7CEE7773C91A5BDFD1035C49BEC4D74E83A538985249045A22264",
+    "runner": "40730E38605F2552A06A3521364214AB69EE7BED86D22E91DB7AC120A7622F5E",
     "base_runner": "BA06A5A8B781912FB02D6F083C905B5D808782E5C7B7F46F654DB603AC018E61",
     "adapter": "40696417F3BBD841E79116612697654C48868C90534BDFC0FDF43E161FDB47C8",
     "retention_manifest": "21D5E530DF76D80EC5919F536276BCB0340A607D0C83DBBD73E6451B724D5E91",
@@ -47,8 +47,8 @@
     "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
     "cmake_cache": "2647ADE26116BB5E27017361B7F3981F3CF0FFA12D53B7D73E820C8DD14C4A3F",
     "native_ctest": "EF7001A319FC4661C6A3113283CB505F729E088CAD87884140203CE421CB192E",
-    "source_zip": "C124711B719DD4D9967584CC9C9EE33EFD7C50460DFF48CA4D8B726479EBA273",
-    "product_manifest": "284E162CEFB7A15A77CC11FD7DB4D7B429C4F40A8EEF2FCA453BC2C6B614BFF5",
+    "source_zip": "DAAFC38FF30B5B5518BB9B5E4607D860768B6C6BEC43C5611B6264225A8E38B6",
+    "product_manifest": "83F442CC27DC144AAA4E1F0E996B7D7E00B43BC0CE91226AEA17798200ABB219",
     "product_zip": "DC43D4376C42DB4FB5DBA41EA36BD4BE5529A3F77CE98D337A5C2A1DE4133E3A"
   },
   "source_sha256": {
@@ -66,7 +66,7 @@
     "ck3_autonomous_player/native_bridge/research/g2_actual_truce_expiry_v1_abi.json": "422352B9989259F6F9060D47B5763C5E81B355CC36130124652D5A60CD78B6A7",
     "ck3_autonomous_player/native_bridge/research/fixtures/g2_war_bound_cleanup_dispatch_v1_source_contract.json": "D68B561202070F0D670B39DC74D5D4D789F1ED6958E556475540D022D10567A3",
     "ck3_autonomous_player/native_bridge/research/fixtures/g2_actual_truce_expiry_v1_source_contract.json": "9B71A5001453970DF851E7B0D908929F5B598A0EFCEAFC9ED7438A4D3BB214A3",
-    "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py": "67BD636F10F7CEE7773C91A5BDFD1035C49BEC4D74E83A538985249045A22264",
+    "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py": "40730E38605F2552A06A3521364214AB69EE7BED86D22E91DB7AC120A7622F5E",
     "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py": "BA06A5A8B781912FB02D6F083C905B5D808782E5C7B7F46F654DB603AC018E61",
     "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_receipt.py": "40696417F3BBD841E79116612697654C48868C90534BDFC0FDF43E161FDB47C8",
     "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py": "EA4B81A037C59B20F64E3E6800E9BEC7E4DE8EC856C1D0029639EDF620498E04",
@@ -102,7 +102,7 @@
   },
   "product_contract": {
     "format_version": 2,
-    "git_sha": "4da52808301ba16e92f5097c69ab541f4938d587",
+    "git_sha": "e72f9fa302811a823479635648eb008a6f5d8418",
     "file_count": 86,
     "production_tree_sha256": "F4E63FFFA6CF9332BA41EB5985D1CB72F280F4BF375A15473F4638F43CF944BE"
   },
@@ -112,7 +112,7 @@
     "required_as_g2_runtime_input": false,
     "new_freeze_required": false,
     "reason": "G2 cleanup/expiry consumes the war checkpoint, native bridge and retention ticket; no B7 promotion observation is a query or receipt input.",
-    "invalidation": "Any native, product or G2 runtime dependency change after 4da52808301ba16e92f5097c69ab541f4938d587 requires a new candidate source/product freeze; a native change also requires a new DLL."
+    "invalidation": "Any native, product or G2 runtime dependency change after e72f9fa302811a823479635648eb008a6f5d8418 requires a new candidate source/product freeze; a native change also requires a new DLL."
   },
   "boundaries": {
     "live_executed": false,
@@ -132,7 +132,7 @@
       "-B",
       "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\ck3_autonomous_player\\native_bridge\\research\\run_g2_postwar_cleanup_expiry_live_acceptance.py",
       "--attempt-dir",
-      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\live-r2",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\live-r3",
       "--source-checkpoint",
       "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\profile\\save games\\xar_checkpoint.ck3",
       "--source-driver-state",
@@ -144,9 +144,9 @@
       "--game-dir",
       "Z:\\ck3_mod_rewrite\\Crusader Kings III",
       "--bridge-dll",
-      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\xar_ck3_bridge.dll",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
       "--bridge-injector",
-      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-4da5280-r2-20260904\\xar_ck3_bridge_injector.exe",
+      "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
       "--war-id",
       "50331699",
       "--expected-character-id",

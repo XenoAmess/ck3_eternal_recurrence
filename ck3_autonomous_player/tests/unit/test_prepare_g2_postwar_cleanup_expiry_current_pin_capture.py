@@ -180,7 +180,7 @@ class G2PostwarCleanupExpiryCurrentPinPreflightTests(unittest.TestCase):
         PREFLIGHT.validate_manifest_contract(manifest)
         self.assertEqual(
             manifest["candidate_source_commit"],
-            "4da52808301ba16e92f5097c69ab541f4938d587",
+            "e72f9fa302811a823479635648eb008a6f5d8418",
         )
         self.assertFalse(manifest["b7_dependency"]["new_freeze_required"])
         self.assertTrue(all(value is False for value in manifest["boundaries"].values()))
