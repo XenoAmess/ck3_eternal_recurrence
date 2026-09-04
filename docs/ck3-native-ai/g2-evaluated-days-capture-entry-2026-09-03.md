@@ -163,3 +163,40 @@ private/default build contract、driver anchor、exact evaluator、Open Kaishek 
 该 GREEN 只证明下一次独占槽输入已经就绪；本次仍未启动 CK3、未创建 profile、未附加进程，也没有 live
 evaluator result。`native_certified=false`、`runtime_certified=false`、public wire/readiness、expiry、决策、
 自动投降与 `GEN-034=unresolved` 均保持不变。
+
+## 2026-09-04：current-pin live r1 RED 取证
+
+[production-live primitive / capability RED] 独占槽 r1 已经到达 exact-build paused readiness：
+`native:3 / rev4 / native_rev3`、CharacterID `29829`、WarID `50331699`、
+`date_raw=53223936` 均吻合，runner 也进入了第一条
+`query-war-termination-terms-v1-50331699`。因此启动、冷 checkpoint 投影、身份绑定和进入查询的
+harness 链已经工作；这次失败不是 harness RED。
+
+private JSONL 确实产生，但只有一行 durable `pre_call`（SHA-256
+`FC7BB45C…8FA9F`）：exact index-7 路径、Truce vtable `0x4461CA8`、duration
+`truce+0x108`、evaluator `0x3373000` 与非空 context 均已写盘，
+`completed_call_count=0`，没有任何 `post_call_1`。随后 CK3 以 code 1 退出；crash artifact 是
+`C0000005`，地址 `0x7FF7EDBCC668`，由 minidump 的 CK3 module base
+`0x7FF7EA880000` 归一化为 RVA `0x334C668`。该处指令为
+`movzx eax, word ptr [r12]`，异常读取地址与异常上下文 `R12` 都是 `0x12`；同时
+`RDX=RDI=0xAD2BBCC470`，等于 private row 的 effect-context，dump 中该 context 的首 qword 也为
+`0x12`。这直接证明当前 direct evaluator context 仍不可用；先前把 R8 改成
+`*(effect_context+0x28)` 的修复虽满足 callsite 表面 ABI，却没有补齐 evaluator 下游所需的正确 context root
+或原生调用现场。现有证据尚不足以指定正确替代指针，不能靠猜 offset 修复，也不应原样重跑同一 candidate。
+
+runner report 的顶层 `ExceptionGroup` 丢失了上述首错细节，但 session、durable boundary 和 crash dump 能形成
+连续时间线。runner 最终 `shutdown_ok=true`、`tree_gone=true`、`cleanup_proven=true`、
+`driver_closed=true`，原 checkpoint/driver 哈希不变；“session 没有正常 stop”与“进程树已可靠回收”是两件事。
+analyzer 已据本次实证做最小修复：分别报告这两个事实，保留不完整组的 `pre_call` stage，并把该精确模式归类为
+`capability_red_process_exit_during_first_evaluator_call`。修复后只读重分析为预期 RED：
+
+```powershell
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/analyze_g2_evaluated_days_private_capture.py --runner-report Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1\report.json --private-jsonl Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1\g2-evaluated-days-private-v3.jsonl --output Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1\evaluated-days-private-analysis-r3.json --expected-war-id 50331699 --expected-character-id 29829 --expected-date-raw 53223936
+```
+
+重分析 SHA-256 为 `666324E9…8A4D`。完整路径、哈希、寄存器、cleanup 和边界见
+[`evaluated-days-current-pin-live-r1-red.json`](../../artifacts/g2/2026-09-04/evaluated-days-current-pin-live-r1-red.json)。
+下一步不是再次启动 CK3，而是先沿两个原生 CAddTruce callsite 反向闭合 R15/R12 的 context 来源，并解释
+RVA `0x334C668` 为什么从当前 RDX 读到 `0x12`；只有产生新的、静态证据支持的 private-only context candidate
+后才可申请下一次独占槽。当前没有 `evaluated_days` 返回；public wire/readiness、expiry、决策、自动投降和
+`GEN-034=unresolved` 全部保持不变。

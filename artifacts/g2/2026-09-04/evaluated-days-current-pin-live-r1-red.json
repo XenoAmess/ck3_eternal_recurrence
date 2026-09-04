@@ -1,0 +1,108 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_current_pin_live_red.v1",
+  "status": "CAPABILITY_RED_FIRST_EVALUATOR_CALL",
+  "attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\live-current-pin-dual-query-r1",
+  "identity": {
+    "game_version": "1.19.0.6",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "98F9F82E2D3F3A5B0EA2649E92C2148EDBF3859BF46C0126378E854BCA1E754C",
+    "war_id": 50331699,
+    "character_id": 29829,
+    "date_raw": 53223936,
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3
+  },
+  "artifacts": {
+    "runner_report": {
+      "path": "report.json",
+      "sha256": "8BCDC5ADF7C46A625959B1CC18C6465CD20C32D32F20C3EF6D4ECE8812585E36"
+    },
+    "private_jsonl": {
+      "path": "g2-evaluated-days-private-v3.jsonl",
+      "sha256": "FC7BB45CDD772FB16A0767A6F1FBD964C3CD0FB15A4C53913E58EBCB8B28FA9F"
+    },
+    "analysis_r3": {
+      "path": "evaluated-days-private-analysis-r3.json",
+      "sha256": "666324E916DC367D1430A577DF17E68AB1C22F1A9C449D916A43695D563F8A4D"
+    },
+    "exception": {
+      "path": "state/profile/crashes/ck3_20260904_121037/exception.txt",
+      "sha256": "6E6C64C2440FB69DF4FBD1E5265A3084672FB34BE0C11AB50DDD18BB89D54524"
+    },
+    "minidump": {
+      "path": "state/profile/crashes/ck3_20260904_121037/minidump.dmp",
+      "sha256": "424F2832CC3DBE7179147414F6294E45E1C4999E9DB8A5386A6630F61126513C"
+    }
+  },
+  "runner": {
+    "readiness_reached": true,
+    "paused": true,
+    "exact_build_proof": true,
+    "observed_action_steps": [
+      "query-war-termination-terms-v1-50331699"
+    ],
+    "mcp_sequence_completed": false,
+    "session_exit_reason": "process_exit",
+    "process_exit_code": 1,
+    "top_level_error": "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+    "source_checkpoint_and_driver_unchanged": true
+  },
+  "private_prefix": {
+    "row_count": 1,
+    "stage": "pre_call",
+    "completed_call_count": 0,
+    "planned_call_count": 2,
+    "exact_path": "root[7].default.children[1].children[0].children[0]",
+    "truce_vtable_rva": "0x4461CA8",
+    "truce_effect": "0x26F3EE25090",
+    "duration_script_value": "0x26F3EE25198",
+    "duration_offset": "0x108",
+    "effect_context": "0xAD2BBCC470",
+    "evaluation_context": "0xAD2BBCC4A0",
+    "evaluator_rva": "0x3373000"
+  },
+  "crash": {
+    "exception": "C0000005 (EXCEPTION_ACCESS_VIOLATION)",
+    "ck3_module_base": "0x7FF7EA880000",
+    "exception_address": "0x7FF7EDBCC668",
+    "exception_rva": "0x334C668",
+    "instruction_bytes": "41 0F B7 04 24",
+    "instruction": "movzx eax, word ptr [r12]",
+    "access_kind": "read",
+    "access_address": "0x12",
+    "exception_context": {
+      "RDX": "0xAD2BBCC470",
+      "RDI": "0xAD2BBCC470",
+      "R12": "0x12",
+      "RIP": "0x7FF7EDBCC668"
+    },
+    "effect_context_first_qword": "0x12"
+  },
+  "classification": {
+    "harness_red": false,
+    "capability_red": true,
+    "reason": "The runner reached the exact paused build and entered the private evaluator boundary. CK3 exited inside the first evaluator call before any post_call row or MCP result; the harness then reaped the process tree.",
+    "root_cause_limit": "The live evidence proves that the current direct evaluator context is unusable. It does not yet prove the correct replacement context root or surrounding native call state."
+  },
+  "cleanup": {
+    "shutdown_ok": true,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "driver_closed": true,
+    "managed_session_stopped_normally": false
+  },
+  "next_gate": {
+    "repeat_same_candidate": false,
+    "required": "Reverse the exact native CAddTruce context origin and the 0x334C668 dereference chain, then build a new private-only candidate with a statically evidenced context root before requesting another exclusive CK3 slot.",
+    "blocker": "No live evaluated_days return exists; the current candidate process-exits with R12=0x12 during the first evaluator call."
+  },
+  "boundaries": {
+    "public_wire_promoted": false,
+    "public_readiness_promoted": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  }
+}

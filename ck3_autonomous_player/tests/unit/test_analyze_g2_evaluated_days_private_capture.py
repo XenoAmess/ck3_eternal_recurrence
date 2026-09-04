@@ -22,6 +22,13 @@ ARTIFACT = (
     / "2026-09-04"
     / "evaluated-days-current-pin-static-ready.json"
 )
+LIVE_RED_ARTIFACT = (
+    ROOT.parents[0]
+    / "artifacts"
+    / "g2"
+    / "2026-09-04"
+    / "evaluated-days-current-pin-live-r1-red.json"
+)
 SPEC = importlib.util.spec_from_file_location(
     "analyze_g2_evaluated_days_private_capture", SCRIPT
 )
@@ -75,7 +82,13 @@ def _runner_report() -> dict[str, object]:
             },
             "ok": False,
         },
-        "cleanup": {"ok": True},
+        "cleanup": {
+            "ok": True,
+            "shutdown_ok": True,
+            "tree_gone": True,
+            "cleanup_proven": True,
+            "driver_closed": True,
+        },
         "source_invariant": {"unchanged": True},
     }
 
@@ -168,6 +181,7 @@ class G2EvaluatedDaysPrivateCaptureAnalyzerTests(unittest.TestCase):
         self.assertTrue(result["ok"])
         self.assertEqual(result["status"], "green_private_evaluated_days")
         self.assertEqual(result["evaluated_days"], 1_825)
+        self.assertIsNone(result["failure"])
         self.assertFalse(result["runner_report_ok"])
         self.assertTrue(
             result["readiness_boundary"]["private_evaluated_days_evidence"]
@@ -177,8 +191,17 @@ class G2EvaluatedDaysPrivateCaptureAnalyzerTests(unittest.TestCase):
 
     def test_rejects_process_exit_after_durable_pre_call(self) -> None:
         rows = _capture_group(base=0x100000)[:1]
+        report = _runner_report()
+        report["session"] = {
+            "exit_reason": "process_exit",
+            "process_exit_code": 1,
+        }
+        report["cleanup"]["ok"] = False
+        report["error"] = (
+            "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+        )
         result = ANALYZER.analyze(
-            _runner_report(),
+            report,
             rows,
             war_id=WAR_ID,
             character_id=CHARACTER_ID,
@@ -186,7 +209,21 @@ class G2EvaluatedDaysPrivateCaptureAnalyzerTests(unittest.TestCase):
         )
         self.assertFalse(result["ok"])
         self.assertEqual(result["private_row_count"], 1)
+        self.assertEqual(result["capture_groups"][0]["stages"], ["pre_call"])
         self.assertFalse(result["checks"]["both_capture_groups_complete"])
+        self.assertTrue(result["runner_checks"]["process_tree_cleanup_proven"])
+        self.assertFalse(
+            result["runner_checks"]["managed_session_stopped_normally"]
+        )
+        self.assertEqual(
+            result["failure"]["classification"],
+            "capability_red_process_exit_during_first_evaluator_call",
+        )
+        self.assertFalse(result["failure"]["harness_red"])
+        self.assertTrue(result["failure"]["capability_red"])
+        self.assertEqual(result["failure"]["first_durable_stage"], "pre_call")
+        self.assertEqual(result["failure"]["completed_call_count"], 0)
+        self.assertTrue(result["failure"]["process_tree_cleanup_proven"])
 
     def test_rejects_unequal_return_and_cross_query_drift(self) -> None:
         first = _capture_group(base=0x100000)
@@ -308,6 +345,23 @@ class G2EvaluatedDaysPrivateCaptureAnalyzerTests(unittest.TestCase):
         self.assertFalse(evidence["default_control"]["private_capture_v3_marker_present"])
         self.assertEqual(evidence["private_candidate"]["native_fixture"], "GREEN")
         self.assertEqual(evidence["private_candidate"]["game_access_fixture"], "PASS")
+        self.assertTrue(all(value is False for value in evidence["boundaries"].values()))
+
+    def test_live_r1_capability_red_evidence_stays_fail_closed(self) -> None:
+        evidence = json.loads(LIVE_RED_ARTIFACT.read_text(encoding="utf-8"))
+        self.assertEqual(
+            evidence["status"], "CAPABILITY_RED_FIRST_EVALUATOR_CALL"
+        )
+        self.assertTrue(evidence["runner"]["readiness_reached"])
+        self.assertTrue(evidence["runner"]["exact_build_proof"])
+        self.assertEqual(evidence["private_prefix"]["stage"], "pre_call")
+        self.assertEqual(evidence["private_prefix"]["completed_call_count"], 0)
+        self.assertEqual(evidence["crash"]["exception_rva"], "0x334C668")
+        self.assertEqual(evidence["crash"]["access_address"], "0x12")
+        self.assertFalse(evidence["classification"]["harness_red"])
+        self.assertTrue(evidence["classification"]["capability_red"])
+        self.assertTrue(evidence["cleanup"]["cleanup_proven"])
+        self.assertFalse(evidence["next_gate"]["repeat_same_candidate"])
         self.assertTrue(all(value is False for value in evidence["boundaries"].values()))
 
 

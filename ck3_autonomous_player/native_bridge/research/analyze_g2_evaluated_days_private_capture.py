@@ -131,6 +131,15 @@ def _runner_checks(
         "normalized_payloads_equal",
         "binding_matches_revision",
     )
+    process_tree_cleanup_proven = all(
+        cleanup.get(name) is True
+        for name in (
+            "shutdown_ok",
+            "tree_gone",
+            "cleanup_proven",
+            "driver_closed",
+        )
+    )
     return {
         "requested_identity": requested
         == {"war_id": war_id, "character_id": character_id, "date_raw": date_raw},
@@ -143,8 +152,70 @@ def _runner_checks(
         "no_mutation_commands": sequence.get("mutation_commands") == []
         and policy.get("mutation_commands") == [],
         "time_not_advanced": policy.get("time_advanced") is False,
-        "cleanup_proven": cleanup.get("ok") is True,
+        # cleanup.ok also requires a normally stopped game session.  Keep that
+        # acceptance gate, but do not report a fully reaped crash as an
+        # unproven process cleanup.
+        "process_tree_cleanup_proven": process_tree_cleanup_proven,
+        "managed_session_stopped_normally": cleanup.get("ok") is True,
         "source_unchanged": source.get("unchanged") is True,
+    }
+
+
+def _failure_classification(
+    report: dict[str, Any], private_rows: list[dict[str, Any]]
+) -> dict[str, object]:
+    session = _mapping(report.get("session"))
+    exact_build = _mapping(report.get("exact_build_proof"))
+    cleanup = _mapping(report.get("cleanup"))
+    row = private_rows[0] if len(private_rows) == 1 else {}
+    duration = _address(row.get("duration_script_value"))
+    truce = _address(row.get("truce_effect"))
+    exact_first_pre_call = (
+        row.get("schema") == BOUNDARY_SCHEMA
+        and row.get("stage") == "pre_call"
+        and row.get("exact_path") == EXACT_PATH
+        and row.get("exact_path_verified") is True
+        and _address(row.get("truce_vtable_rva")) == TRUCE_VTABLE_RVA
+        and _address(row.get("expected_truce_vtable_rva"))
+        == TRUCE_VTABLE_RVA
+        and truce is not None
+        and duration == truce + DURATION_OFFSET
+        and _address(row.get("evaluator_function_rva")) == EVALUATOR_RVA
+        and _address(row.get("expected_evaluator_function_rva"))
+        == EVALUATOR_RVA
+        and row.get("planned_call_count") == 2
+        and row.get("completed_call_count") == 0
+    )
+    capability_process_exit = (
+        exact_build.get("ok") is True
+        and session.get("exit_reason") == "process_exit"
+        and exact_first_pre_call
+    )
+    cleanup_proven = all(
+        cleanup.get(name) is True
+        for name in (
+            "shutdown_ok",
+            "tree_gone",
+            "cleanup_proven",
+            "driver_closed",
+        )
+    )
+    return {
+        "classification": (
+            "capability_red_process_exit_during_first_evaluator_call"
+            if capability_process_exit
+            else "unclassified_red"
+        ),
+        "harness_red": False if capability_process_exit else None,
+        "capability_red": True if capability_process_exit else None,
+        "first_durable_stage": row.get("stage") if len(private_rows) == 1 else None,
+        "completed_call_count": (
+            row.get("completed_call_count") if len(private_rows) == 1 else None
+        ),
+        "session_exit_reason": session.get("exit_reason"),
+        "process_exit_code": session.get("process_exit_code"),
+        "process_tree_cleanup_proven": cleanup_proven,
+        "runner_error": report.get("error"),
     }
 
 
@@ -179,8 +250,9 @@ def _capture_group(
     war_id: int,
     character_id: int,
 ) -> dict[str, Any]:
-    boundaries = rows[:-1] if rows else []
-    summary = rows[-1] if rows else {}
+    has_summary = bool(rows) and rows[-1].get("schema") == CAPTURE_SCHEMA
+    boundaries = rows[:-1] if has_summary else rows
+    summary = rows[-1] if has_summary else {}
     shape = _mapping(summary.get("loaded_tree_shape"))
     stages = [row.get("stage") for row in boundaries]
     identities = [_boundary_identity(row) for row in boundaries]
@@ -336,6 +408,7 @@ def analyze(
         "runner_checks": runner_checks,
         "private_row_count": len(private_rows),
         "capture_groups": group_results,
+        "failure": None if ok else _failure_classification(runner_report, private_rows),
         "checks": checks,
         "readiness_boundary": {
             "private_evaluated_days_evidence": ok,
