@@ -84,3 +84,22 @@ target `27051`、存在且类型为 boolean 的 `no_secrets_here`、两个 autho
 旧测试里用 `spymaster_task.0399` 代表“未登记事件”的假设已被真实证据推翻，反例改为仍未登记的 `.0398`；
 这不是放宽 namespace。新增 exact GREEN 与 identity-drift-before-action RED 用例，normal/`-O` 均 GREEN。
 截至本节 `.0399` drain 仍为 static-ready，不能把它或完整 seed 写成 live GREEN。
+
+## 第三轮：无窗口 `resume-map` revision race
+
+提交 `8d0c408be452bd13c185f4653ea80649705e1600` 的下一轮 run 在 loader GREEN（43.253 秒）后，
+第一份无活动事件 snapshot 为 revision 4；提交 `resume-map` 前 native revision 已变为 5。原 waiter 只在活动事件的
+`pause-map` 路径处理 `PreSubmissionRevisionMismatchError`，无窗口的 `set-speed-1` / `resume-map` 会把同一种正常
+乐观并发竞态放大成 terminal RED。它发生在任何事件选择前，不否定上轮 PIP drain，也没有执行 `.0399`：
+
+- report：`Z:\p2x\a\runner-report.json`，SHA-256
+  `250b3f28b237838541609f7d554868fcf49e327891623f62672daddae3cf19bc`；
+- event wait：`Z:\p2x\a\bootstrap-event-wait.jsonl`，SHA-256
+  `65b7f1df848bed6f25485d7d323d8b766a220b53ac08fccdc9036faa7efab6a5`；
+- driver state：`Z:\p2x\r\native-state\native-session\driver-state.json`，SHA-256
+  `7cb2b6b09be3ddde776ea9642e810ced5265d2e7c654ef8b87c95b3050d44240`；
+- cleanup、tree gone、driver closed、clean source unchanged 均 GREEN。
+
+最小修复在相同总期限内记录 `timeline_revision_changed_before_submission`，重新取得 snapshot/revision 后再提交原
+timeline step；不重放事件选择，也不放宽其他异常。新增确定性 resume-race 测试证明尝试 revision `4 → 5` 后抵达 seed，
+normal/`-O` 全套均 GREEN。该修复仍是 static-ready，须下一轮 clean run 实机互证。

@@ -2674,11 +2674,46 @@ def wait_for_bootstrap_event(
             return snapshot
         if snapshot.get("map_ready") is True:
             revision = _positive_revision(snapshot)
+            timeline_step = None
             if snapshot.get("speed") != 1:
-                service.execute_step("set-speed-1", expected_revision=revision)
+                timeline_step = "set-speed-1"
             elif snapshot.get("paused") is True:
-                service.execute_step("resume-map", expected_revision=revision)
-                resumed = True
+                timeline_step = "resume-map"
+            if timeline_step is not None:
+                try:
+                    service.execute_step(
+                        timeline_step, expected_revision=revision
+                    )
+                except BaseException as error:
+                    if (
+                        pre_submission_revision_mismatch_error is None
+                        or not isinstance(
+                            error, pre_submission_revision_mismatch_error
+                        )
+                    ):
+                        raise
+                    sequence += 1
+                    append_jsonl(
+                        evidence_path,
+                        {
+                            "schema_version": 1,
+                            "sequence": sequence,
+                            "elapsed_seconds": round(
+                                max(0.0, clock() - started), 3
+                            ),
+                            "state": (
+                                "timeline_revision_changed_before_submission"
+                            ),
+                            "step": timeline_step,
+                            "expected_revision": revision,
+                            "error_type": type(error).__name__,
+                            "error": str(error),
+                        },
+                    )
+                    sleeper(0.1)
+                    continue
+                if timeline_step == "resume-map":
+                    resumed = True
         sleeper(0.1)
     evidence = {
         "schema_version": 1,

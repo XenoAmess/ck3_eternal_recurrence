@@ -2511,6 +2511,89 @@ def test_pause_revision_race_reloads_snapshot_and_retries() -> None:
         )
 
 
+def test_resume_revision_race_reloads_snapshot_and_retries() -> None:
+    class RacingResumeService:
+        def __init__(self) -> None:
+            self.revision = 4
+            self.seed_ready = False
+            self.resume_attempts: list[int] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": self.revision,
+                "date_raw": 777,
+                "paused": True,
+                "map_ready": True,
+                "speed": 1,
+                "active_event": (
+                    {"source": "native", "instance_id": 51, "option_count": 1}
+                    if self.seed_ready
+                    else None
+                ),
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            require(step == "resume-map", "race exercised an unexpected step")
+            self.resume_attempts.append(expected_revision)
+            if len(self.resume_attempts) == 1:
+                self.revision += 1
+                raise FakePreSubmissionRevisionMismatchError(
+                    "native gameplay revision mismatch: expected 4, current 5"
+                )
+            require(
+                expected_revision == self.revision,
+                "resume retry did not use the refreshed revision",
+            )
+            self.seed_ready = True
+            self.revision += 1
+            return {"accepted": True}
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, **_kwargs: object
+        ) -> dict[str, object]:
+            require(event_instance_id == 51, "wrong seed instance queried")
+            return {
+                "current_event_window_context": {
+                    "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+                }
+            }
+
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = RacingResumeService()
+        fake_time = FakeTime()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            pre_submission_revision_mismatch_error=(
+                FakePreSubmissionRevisionMismatchError
+            ),
+            timeout_seconds=10.0,
+            clock=fake_time.clock,
+            sleeper=fake_time.sleep,
+        )
+        require(
+            snapshot["active_event"]["instance_id"] == 51,
+            "resume race did not converge on the seed event",
+        )
+        require(
+            service.resume_attempts == [4, 5],
+            "resume race did not retry with a fresh revision",
+        )
+        require(
+            any(
+                row["state"]
+                == "timeline_revision_changed_before_submission"
+                and row["step"] == "resume-map"
+                for row in rows(artifacts / "bootstrap-event-wait.jsonl")
+            ),
+            "resume race retry lacks typed evidence",
+        )
+
+
 def test_known_predecessor_identity_drift_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as raw:
         artifacts = Path(raw)
@@ -3473,6 +3556,7 @@ def main() -> int:
     test_vanilla_drain_keeps_original_deadline_and_resumes_timeline()
     test_vanilla_selection_ack_must_confirm_native_option_two()
     test_pause_revision_race_reloads_snapshot_and_retries()
+    test_resume_revision_race_reloads_snapshot_and_retries()
     test_known_predecessor_identity_drift_fails_closed()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()
