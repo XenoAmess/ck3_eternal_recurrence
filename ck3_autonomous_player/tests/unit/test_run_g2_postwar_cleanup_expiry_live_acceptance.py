@@ -6,6 +6,9 @@ from contextlib import redirect_stderr
 import importlib.util
 import io
 from pathlib import Path
+import asyncio
+import sys
+from types import SimpleNamespace
 import unittest
 from unittest import mock
 
@@ -42,6 +45,121 @@ def _binding(*, war_present: bool) -> dict[str, object]:
 
 
 class G2PostwarCleanupExpiryLiveAcceptanceTests(unittest.TestCase):
+    def test_private_surrender_uses_advertised_capability_without_public_action(self) -> None:
+        capabilities = {
+            RUNNER.QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
+            RUNNER.QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
+            RUNNER.QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY,
+            RUNNER.SURRENDER_CAPABILITY,
+        }
+        pre_sequence = {
+            "ok": True,
+            "before_snapshot": {
+                "is_error": False,
+                "structured_content": {"snapshot_id": "native:3"},
+            },
+            "second_query": {
+                "is_error": False,
+                "structured_content": {"war_termination_terms": {}},
+            },
+            "capabilities": {
+                "is_error": False,
+                "structured_content": {
+                    "bridge_capabilities": sorted(capabilities),
+                    "action_steps": [],
+                },
+            },
+            "public_revision": 4,
+        }
+        calls: list[tuple[str, int | None, str | None]] = []
+
+        class Driver:
+            def _execute_primitive_step(
+                self,
+                step: str,
+                *,
+                expected_revision: int | None = None,
+                required_capability: str | None = None,
+            ) -> dict[str, object]:
+                calls.append((step, expected_revision, required_capability))
+                return {
+                    "step": step,
+                    "accepted": True,
+                    "status": "submitted",
+                    "backend_id": "native-headless",
+                }
+
+        class Client:
+            def __init__(self, _server: object) -> None:
+                pass
+
+            async def __aenter__(self) -> "Client":
+                return self
+
+            async def __aexit__(self, *_args: object) -> None:
+                return None
+
+        receipt = {
+            "ticket_validation": {"ok": True},
+            "boundaries": {
+                "source_specific_attribution_ready": False,
+                "public_readiness_promoted": False,
+                "action_readiness_promoted": False,
+                "decision_ready": False,
+                "automatic_surrender_ready": False,
+                "gen034_closed": False,
+            },
+        }
+
+        async def run() -> dict[str, object]:
+            with (
+                mock.patch.object(
+                    RUNNER.base,
+                    "_run_mcp_sequence",
+                    mock.AsyncMock(return_value=pre_sequence),
+                ),
+                mock.patch.object(
+                    RUNNER.base, "create_server", return_value=object()
+                ),
+                mock.patch.object(
+                    RUNNER.adapter,
+                    "_normalize_pre",
+                    return_value=({"revision": 4}, {}, {}),
+                ),
+                mock.patch.object(
+                    RUNNER,
+                    "_wait_for_stable_postwar",
+                    mock.AsyncMock(return_value=({"snapshot_id": "native:5"}, [])),
+                ),
+                mock.patch.object(
+                    RUNNER.adapter,
+                    "collect_after_surrender",
+                    mock.AsyncMock(return_value=receipt),
+                ),
+                mock.patch.dict(sys.modules, {"mcp": SimpleNamespace(Client=Client)}),
+            ):
+                return await RUNNER._run_private_sequence(
+                    Driver(),
+                    war_id=50_331_699,
+                    expected_character_id=29_829,
+                    expected_date_raw=53_223_936,
+                    ticket={"opponent_character_id": 36_769},
+                    postwar_timeout=1.0,
+                )
+
+        result = asyncio.run(run())
+        self.assertTrue(result["ok"])
+        self.assertEqual(
+            calls,
+            [
+                (
+                    "surrender-war-50331699",
+                    4,
+                    RUNNER.SURRENDER_CAPABILITY,
+                )
+            ],
+        )
+
     def test_private_live_is_default_off_before_process_inventory(self) -> None:
         arguments = [
             "--attempt-dir", "future",

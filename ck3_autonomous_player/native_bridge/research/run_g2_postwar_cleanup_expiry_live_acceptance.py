@@ -230,7 +230,11 @@ async def _run_private_sequence(
 
     server = base.create_server(driver)
     async with Client(server) as client:
-        termination = submit(action_step, expected_revision=revision)
+        termination = submit(
+            action_step,
+            expected_revision=revision,
+            required_capability=SURRENDER_CAPABILITY,
+        )
         if termination != {
             "step": action_step,
             "accepted": True,
