@@ -20,12 +20,15 @@ PROMOTION_CAPABILITY = (
     "game.command.query-zhongguo-promotion-compensation-postcondition-v1"
 )
 RESULT_CASE_CAPABILITY = "game.command.query-zhongguo-result-case-snapshot-v1"
-PROJECTION_NAME = "b3-r5-exact-trigger-explicit-and-4d3c284"
+PROJECTION_NAME = "b3-current-reachable-schema3-ef0ece1"
 EXPECTED_PRODUCT_TREE = (
-    "d94c2d5d23e9ad254f4b20988fbf3c8e08408baa61070bd85f42b2d2fcbea35d"
+    "b0cc410c31360e9a5884bfdffd5c0a384f936c1a8a6030f30935b88f14768d74"
 )
 EXPECTED_PROJECTION_SHA256 = (
-    "241db7b5e2df451aadbfaeb4570b083c8563239bc0158530682b9a77da2f4acd"
+    "81e8726a1e73b835f7ebfd0acca0c0772e9017bed44015e8da11baa809f078c9"
+)
+EXPECTED_CLOSURE_SHA256 = (
+    "62c9f79311e74a3a7b2cd22465e723e9376038f72eb05a2f0f5bd285313bf50f"
 )
 PIPE_TOKEN = re.compile(r"[0-9a-f]{32}\Z")
 MOUNT_PATH_LIMIT = 250
@@ -109,7 +112,11 @@ def verify_hashed_file(path: Path, row: dict[str, Any], label: str) -> dict[str,
     return observed
 
 
-def verify_product(source: Path, projection_path: Path) -> dict[str, object]:
+def verify_product(
+    source: Path,
+    projection_path: Path,
+    closure_path: Path,
+) -> dict[str, object]:
     if sha256(projection_path) != EXPECTED_PROJECTION_SHA256:
         raise FreezeError("explicit-AND projection manifest SHA-256 drifted")
     projection = load_json(projection_path)
@@ -120,7 +127,7 @@ def verify_product(source: Path, projection_path: Path) -> dict[str, object]:
     ):
         raise FreezeError("explicit-AND projection identity drifted")
     rows = projection.get("files")
-    if not isinstance(rows, list) or len(rows) != 565:
+    if not isinstance(rows, list) or len(rows) != 629:
         raise FreezeError("explicit-AND projection file inventory drifted")
     relative_paths: list[str] = []
     for row in rows:
@@ -135,6 +142,35 @@ def verify_product(source: Path, projection_path: Path) -> dict[str, object]:
         ):
             raise FreezeError(f"explicit-AND product file drifted: {relative}")
         relative_paths.append(relative)
+    if sha256(closure_path) != EXPECTED_CLOSURE_SHA256:
+        raise FreezeError("schema-3 closure evidence SHA-256 drifted")
+    closure = load_json(closure_path)
+    localization = closure.get("localization_closure")
+    closure_checks = {
+        "kind": closure.get("kind")
+        == "zg361_phase2_b3_material_custom_call_closure_expansion",
+        "schema_v3": closure.get("schema_version") == 3,
+        "green": closure.get("green") is True,
+        "candidate_source": Path(
+            str(closure.get("candidate_source", ""))
+        ).resolve()
+        == source.resolve(),
+        "effect_count": closure.get("final_effect_definition_count") == 3703,
+        "event_count": closure.get("final_event_definition_count") == 986,
+        "trigger_count": closure.get("final_trigger_definition_count") == 24,
+        "no_missing_effects": closure.get("final_missing_effects") == [],
+        "no_missing_events": closure.get("final_missing_events") == [],
+        "no_missing_triggers": closure.get("final_missing_triggers") == [],
+        "localization_green": isinstance(localization, dict)
+        and localization.get("green") is True,
+        "localization_keys": isinstance(localization, dict)
+        and localization.get("required_key_count") == 936,
+        "localization_files": isinstance(localization, dict)
+        and localization.get("provider_file_count") == 63,
+    }
+    if not all(closure_checks.values()):
+        failed = [name for name, value in closure_checks.items() if not value]
+        raise FreezeError("schema-3 closure evidence RED: " + ", ".join(failed))
     return {
         "source": str(source),
         "file_count": len(rows),
@@ -144,6 +180,8 @@ def verify_product(source: Path, projection_path: Path) -> dict[str, object]:
         ),
         "file_list_sha256": projection.get("file_list_sha256"),
         "projection_manifest": record(projection_path),
+        "closure_evidence": record(closure_path),
+        "closure_checks": closure_checks,
         "relative_paths": relative_paths,
     }
 
@@ -411,6 +449,7 @@ def freeze(args: argparse.Namespace) -> dict[str, object]:
     artifacts = args.artifacts.resolve()
     source = args.product_source.resolve()
     projection_path = args.projection_manifest.resolve()
+    closure_path = args.closure_evidence.resolve()
     manifest_path = args.bridge_manifest.resolve()
     python = args.python.resolve()
     ck3_exe = args.ck3_exe.resolve()
@@ -422,7 +461,7 @@ def freeze(args: argparse.Namespace) -> dict[str, object]:
         raise FreezeError("pipe token must be exactly 32 lowercase hex characters")
 
     canonical = verify_canonical_contract(root)
-    product = verify_product(source, projection_path)
+    product = verify_product(source, projection_path, closure_path)
     relative_paths = product.pop("relative_paths")
     assert isinstance(relative_paths, list)
     path_gate = verify_paths(artifacts, relative_paths)
@@ -550,6 +589,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--bridge-manifest", type=Path, required=True)
     parser.add_argument("--product-source", type=Path, required=True)
     parser.add_argument("--projection-manifest", type=Path, required=True)
+    parser.add_argument("--closure-evidence", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path, required=True)
     parser.add_argument("--pipe-token", required=True)
     parser.add_argument("--python", type=Path, required=True)

@@ -79,12 +79,12 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
     def test_registered_seed_is_selector_seed_not_workforce_checkpoint(self) -> None:
         seed = json.loads(SEED.read_text(encoding="utf-8-sig"))
         self.assertEqual(seed["status"], "ready")
-        self.assertEqual(seed["source"]["bytes"], 53_517_622)
+        self.assertEqual(seed["source"]["bytes"], 57_377_787)
         self.assertEqual(
             seed["source"]["sha256"],
-            "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733",
+            "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c",
         )
-        self.assertEqual(seed["saved_state"]["date_raw"], 53_146_920)
+        self.assertEqual(seed["saved_state"]["date_raw"], 53_147_016)
         self.assertEqual(seed["saved_state"]["played_character_id"], 29_037)
         self.assertEqual(
             seed["domain_query_matrix"]["workforce_owner_character_id"], 32_904

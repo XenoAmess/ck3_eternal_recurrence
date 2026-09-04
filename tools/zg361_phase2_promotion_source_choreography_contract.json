@@ -14,9 +14,9 @@
   "canonical_seed": {
     "contract": "tools/zg361_phase2_seed_contract.json",
     "status": "ready",
-    "bytes": 53517622,
-    "sha256": "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733",
-    "date_raw": 53146920,
+    "bytes": 57377787,
+    "sha256": "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c",
+    "date_raw": 53147016,
     "played_character_id": 29037,
     "player_history_id": "han_6875",
     "seed_event_closed_before_save": true,
