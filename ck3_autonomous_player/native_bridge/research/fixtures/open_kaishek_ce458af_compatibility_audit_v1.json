@@ -1,0 +1,104 @@
+{
+  "schema": "xar.ck3.open_kaishek_incremental_compatibility_audit.v1",
+  "status": "GREEN_STATIC",
+  "audited_at": "2026-09-04T14:18:00+08:00",
+  "root": {
+    "canonical_commit": "ce458af71a2a44decc085766720082a8b724edb8",
+    "comparison_base": "fefb408e13c4ea2aa4c512d3e3900991f9c13f7b",
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "open_kaishek": {
+    "previous_commit": "f4ce25a1e0ea259b1fc58ca33a4caf2180e7d234",
+    "commit": "98c13d02ba1c772836a35f782716a0b3679b7ee8",
+    "origin_main": "98c13d02ba1c772836a35f782716a0b3679b7ee8",
+    "clean": true,
+    "jar_path": "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "jar_bytes": 348438,
+    "jar_sha256": "10dfab8aa729d3b696c518bd532fde7535dc1605150045828b650546864bd9cf"
+  },
+  "decisions": {
+    "career_hc_workforce": {
+      "public_delta": true,
+      "open_kaishek_change_required": true,
+      "capability": "game.command.query-zhongguo-career-hc-workforce-postcondition-v1",
+      "profile_source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoCareerHcWorkforceCapabilityProfile.java",
+      "profile_source_sha256": "a204ef45e27dabf711919e6d76fec907659c56f5b3f0b7894bae82d67e81328f",
+      "root_provider_commit": "5e6fc9a0073ea7bbf9542bb3d95dfcd812c3a1f6",
+      "root_abi_sha256": "8e91879901316bb165983f577887cdf7cb37c30ab7c98cf63d97f3fee77c0928",
+      "root_source_contract_sha256": "26b1f859cb6194d1d9295443be370862926dc81dabaa57d1f447f62c09a4062e",
+      "root_schema_sha256": "453b9a93fde9d472aa82c687bb2fd3db4fbef06d315ab91dcc4e167fa2f5b6c5",
+      "root_python_contract_sha256": "398210553c74fdefa800b77f1287570598e4c2c4c73be35f243bec889bc14c76",
+      "default_adapter_advertised": false,
+      "downstream_action_advertised": false,
+      "native_certified": false,
+      "runtime_certified": false
+    },
+    "promotion_compensation": {
+      "public_delta": "compatible_schema_constraint_tightening",
+      "open_kaishek_change_required": false,
+      "capability": "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
+      "reason": "capability, request fields, successful projection fields, and business invariants remain compatible with the existing descriptor; typed available/unavailable JSON alternatives are now made mutually consistent",
+      "root_provider_commit": "8ea0d787a9e1943596cc81d3ce4387a22786e7d8",
+      "root_abi_sha256": "da13f8b22425f39faa5dae13aeaaa3c290950861859ddf662188b0f1fa05343d",
+      "root_source_contract_sha256": "6572796906f2431ff7a4d345a697c7d8ed794992c9d0e4cf5c112d102e2b2ebd",
+      "root_schema_sha256": "bdbcca2253995e452bff2467b11ebad28bed37f2a723a97b8d6c9d194fcca112",
+      "production_live_ready": false
+    },
+    "projects_metrics": {
+      "public_delta": false,
+      "open_kaishek_change_required": false,
+      "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+      "reason": "the only ABI increment is a default-off private candidate switch; public request/projection contracts are unchanged and production advertisement remains false",
+      "root_abi_sha256": "c65bd2c3a8eaaae65524bf7cd86eb8f816d894bb7c969239d5210905c3a8a1c3",
+      "root_source_contract_sha256": "5bed6829a28e8ea3644c7b00b9d96da36dbeb3fb90f818b8a241cdeeeec2d943",
+      "production_advertisement_promoted": false
+    },
+    "incident_and_endgame_seams": {
+      "public_delta": false,
+      "open_kaishek_change_required": false,
+      "reason": "the increments are acceptance-tool source-checkpoint and owner/subject seams; they add no bridge capability, service/MCP method, native public ABI, or product parser opcode",
+      "test_fixture_only_script_files": true
+    },
+    "g2_leaf_context": {
+      "public_delta": false,
+      "open_kaishek_change_required": false,
+      "capability": "game.command.query-g2-truce-evaluated-days-v1",
+      "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+      "reason": "the delta repairs private heartbeat framing and refreshes a private leaf-context candidate; public capability fields, invariants, and certification flags are unchanged",
+      "native_certified": false,
+      "runtime_certified": false,
+      "production_live": false
+    }
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "tests": 135,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_domain_tests": 8,
+    "open_cli_smoke": "PASS",
+    "product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "root_contract_tests": 35,
+    "root_seam_tests": 32,
+    "root_seam_subtests": 5
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "paradox_opcode_added": false,
+    "validator_coverage_promoted": false,
+    "action_capability_advertised": false,
+    "readiness_promoted": false
+  }
+}
