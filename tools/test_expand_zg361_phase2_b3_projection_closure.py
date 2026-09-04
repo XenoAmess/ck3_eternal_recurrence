@@ -20,6 +20,62 @@ def write(root: Path, relative: str, body: str) -> None:
 
 
 class ProjectionClosureExpansionTests(unittest.TestCase):
+    def test_terminal_event_copies_generated_localization_fanout(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            write(
+                candidate,
+                "events/zg361_feedback_promotion_pip_runtime_events.txt",
+                "namespace = zg361pp\n\n"
+                "zg361pp.9004 = {\n"
+                "    title = zg361pp.9004.t\n"
+                "    desc = zg361pp.9004.desc\n"
+                "    option = { name = zg361pp.9004.a }\n"
+                "}\n",
+            )
+            english = {
+                "zg361pp.9004.t": "361 Case Closed",
+                "zg361pp.9004.desc": "The ledger is closed.",
+                "zg361pp.9004.a": "File it.",
+            }
+            chinese = {
+                "zg361pp.9004.t": "三六一案卷已结",
+                "zg361pp.9004.desc": "账本已经收口。",
+                "zg361pp.9004.a": "归档。",
+            }
+            for language in expand.LOCALIZATION_LANGUAGES:
+                values = chinese if language == "simp_chinese" else english
+                body = f"l_{language}:\n" + "".join(
+                    f' {key}:0 "{value}"\n' for key, value in values.items()
+                )
+                write(
+                    canonical,
+                    expand._promotion_localization_relative(language),
+                    body,
+                )
+
+            result = expand.synchronize_b3_terminal_localization(
+                candidate, canonical
+            )
+
+            self.assertTrue(result["green"])
+            self.assertTrue(result["applicable"])
+            self.assertEqual(9, len(result["updated_files"]))
+            self.assertEqual({}, result["final_missing_by_language"])
+            self.assertTrue(result["placeholder_values_match_english"])
+            for language in expand.LOCALIZATION_LANGUAGES:
+                target = candidate / expand._promotion_localization_relative(language)
+                self.assertTrue(target.read_bytes().startswith(BOM))
+                values = expand._localization_values(target)
+                self.assertEqual(
+                    chinese if language == "simp_chinese" else english,
+                    values,
+                )
+
     def test_parameterized_event_and_recursive_effect_are_added(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -93,6 +149,7 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
             self.assertEqual([], persisted["final_missing_events"])
             self.assertEqual([], persisted["final_missing_effects"])
             self.assertEqual([], persisted["final_missing_triggers"])
+            self.assertFalse(persisted["localization_closure"]["applicable"])
 
 
 if __name__ == "__main__":

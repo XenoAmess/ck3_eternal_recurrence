@@ -486,6 +486,15 @@ class CentralEffectCallClosureTests(unittest.TestCase):
                         "final_missing_effects": [],
                         "final_missing_events": [],
                         "final_missing_triggers": [],
+                        "localization_closure": {
+                            "green": True,
+                            "applicable": True,
+                            "updated_files": [
+                                "localization/english/probe_l_english.yml"
+                            ],
+                            "final_missing_by_language": {},
+                            "placeholder_values_match_english": True,
+                        },
                     }
                 ),
                 encoding="utf-8",

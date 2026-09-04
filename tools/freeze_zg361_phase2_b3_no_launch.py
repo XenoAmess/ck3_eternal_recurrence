@@ -801,6 +801,14 @@ def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
     expansion = read_json(expansion_path)
     added_files = expansion.get("added_files")
     rounds = expansion.get("rounds")
+    localization = expansion.get("localization_closure")
+    localization_green = (
+        isinstance(localization, dict)
+        and localization.get("green") is True
+        and localization.get("final_missing_by_language") == {}
+        and localization.get("placeholder_values_match_english") is True
+        and isinstance(localization.get("updated_files"), list)
+    )
     green = (
         expansion.get("kind")
         == "zg361_phase2_b3_material_custom_call_closure_expansion"
@@ -811,7 +819,8 @@ def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
         and isinstance(added_files, list)
         and expansion.get("added_file_count") == len(added_files)
         and isinstance(rounds, list)
-        and len(rounds) > 0
+        and localization_green
+        and (len(rounds) > 0 or len(localization.get("updated_files", [])) > 0)
     )
     if not green:
         raise FreezeError("material custom-call closure expansion evidence is RED")
@@ -819,6 +828,7 @@ def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
         "green": True,
         "round_count": len(rounds),
         "added_file_count": len(added_files),
+        "localization": localization,
         "final_effect_definition_count": expansion.get(
             "final_effect_definition_count"
         ),
