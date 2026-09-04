@@ -186,8 +186,31 @@ def enter_promotion_source_checkpoint_v1(
     )
     progress = before.get("zhongguo_promotion_source_progress")
     if before.get("status") != "available" or not isinstance(progress, dict):
+        unavailable_reason = (
+            progress.get("unavailable_reason")
+            if isinstance(progress, Mapping)
+            else "payload_missing"
+        )
+        widgets = progress.get("widgets") if isinstance(progress, Mapping) else None
+        unavailable_widgets = []
+        if isinstance(widgets, list):
+            for widget in widgets:
+                if not isinstance(widget, Mapping):
+                    continue
+                exists = widget.get("exists")
+                if not (
+                    isinstance(exists, Mapping)
+                    and exists.get("status") == "available"
+                    and exists.get("value") is True
+                ):
+                    runtime_name = widget.get("runtime_name")
+                    unavailable_widgets.append(
+                        runtime_name if isinstance(runtime_name, str) else "<unnamed>"
+                    )
         raise PromotionProductionEntryError(
-            "fixed promotion progress observer is unavailable"
+            "fixed promotion progress observer is unavailable: "
+            f"reason={unavailable_reason!r}; "
+            f"unavailable_widgets={unavailable_widgets!r}"
         )
     if not any(widget_visible(progress, index) for index in (2, 3, 4)):
         if not widget_visible(progress, 1):

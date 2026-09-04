@@ -57,3 +57,30 @@ Likewise, the later `.147` option ACK does not prove promotion or compensation. 
 - Treat elapsed time beyond the proven delayed edges as unknown until the player-owned B1 and stages 1–2 are observed live; do not hard-code D+330 as the `.147` date.
 
 No CK3 process was started for this forensic package, and no shared runner code was modified.
+
+## 22:53 live R8 evidence update
+
+The first compensation-ON run from the refreshed 630-file seed reached a stable
+paused map and passed the loader gate, but the first fixed promotion-progress
+query returned typed-unavailable. The run therefore ended before review-now or
+any event option was submitted. Its retained artifacts are `Z:\b3r8` and
+`Z:\b3r8_native_state`; the outer report SHA-256 is
+`F7ED52BEA4C314F4520B638172FA16DDEA6AF3D484484CF46C94F133C70CC29F`,
+the evidence index SHA-256 is
+`0A15C6039ED6D5901C66C72C20728B3EF7A9F58C8A9720CDCCB218C9DCB4D067`,
+and cleanup SHA-256 is
+`41707CB5433551F98EC14E309E711D9121B35C45840922EDA0AD8D2CBA1B0284`.
+
+This is a provider/runtime RED, not a loader or file-boundary RED. CK3 loaded
+`gui/zg361_promotion_source_bridge.gui`, completed 303 database callbacks, and
+the loader gate was GREEN in 68.947 seconds. The scripted-effect database took
+596 ms init / 764 ms inclusive, consistent with prior GREEN runs. No missing
+effect/event/trigger/GUI loader signature was found. The existing purpose shard
+policy therefore remains in force without an additional size-driven split.
+
+The production entry now preserves the native `unavailable_reason` and the
+names of widgets whose `exists` field is not positively available in the fatal
+report. This diagnostic is covered in both normal and `-O` focused tests and
+does not relax the fail-closed gate. The next serial attempt is diagnostic: it
+must identify the exact missing runtime widget before any product/provider fix
+is selected.

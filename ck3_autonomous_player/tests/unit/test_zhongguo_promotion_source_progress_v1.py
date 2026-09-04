@@ -3,6 +3,8 @@
 from pathlib import Path
 import sys
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
@@ -16,6 +18,7 @@ from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import ( 
     query_promotion_source_progress_v1_step,
 )
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
+    PromotionProductionEntryError,
     enter_promotion_source_checkpoint_v1,
 )
 
@@ -138,6 +141,38 @@ def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
     assert result["review_action_postcondition"]["after_query_sequence"] == 2
     assert result["m146_date_raw"] + 24 == result["target_binding"]["date_raw"]
     assert service.selected == [1]
+
+
+def test_unavailable_progress_reports_native_reason_and_widgets() -> None:
+    class _UnavailableService(_Service):
+        def query_zhongguo_promotion_source_progress_v1(
+            self, request_nonce: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            del request_nonce, expected_revision
+            return {
+                "status": "unavailable",
+                "zhongguo_promotion_source_progress": {
+                    "unavailable_reason": "widget_not_instantiated",
+                    "widgets": [
+                        {
+                            "runtime_name": name,
+                            "exists": _typed(index == 0),
+                        }
+                        for index, name in enumerate(PROGRESS_WIDGETS)
+                    ],
+                },
+            }
+
+    with pytest.raises(
+        PromotionProductionEntryError,
+        match=(
+            "reason='widget_not_instantiated'.*"
+            "zg361_promotion_source_review_now_action"
+        ),
+    ):
+        enter_promotion_source_checkpoint_v1(
+            _UnavailableService(), poll_interval_seconds=0
+        )
 
 
 def test_source_contract_and_product_share_exact_entry() -> None:
