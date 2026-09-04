@@ -362,6 +362,10 @@ class FakeBridgeUnavailableError(RuntimeError):
     pass
 
 
+class FakePreSubmissionRevisionMismatchError(FakeBridgeUnavailableError):
+    pass
+
+
 class FakeLoaderStageError(RuntimeError):
     def __init__(self, message: str, evidence: dict[str, object]) -> None:
         super().__init__(message)
@@ -552,6 +556,9 @@ class Fixture:
             driver_factory=driver_factory,
             service_factory=lambda _driver: service,
             bridge_unavailable_error=FakeBridgeUnavailableError,
+            pre_submission_revision_mismatch_error=(
+                FakePreSubmissionRevisionMismatchError
+            ),
             loader_stage_error=FakeLoaderStageError,
             wait_for_loader_stage=loader_stage,
             keyboard_layout_attestor=keyboard_layout_attestor,
@@ -1461,6 +1468,80 @@ def test_exact_known_predecessor_is_drained_once() -> None:
         )
 
 
+def test_pause_revision_race_reloads_snapshot_and_retries() -> None:
+    class RacingPauseService:
+        def __init__(self) -> None:
+            self.revision = 5
+            self.paused = False
+            self.pause_attempts: list[int] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": self.revision,
+                "date_raw": 777,
+                "paused": self.paused,
+                "map_ready": True,
+                "speed": 1,
+                "active_event": {"instance_id": 11, "option_count": 1},
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            require(step == "pause-map", "race exercised an unexpected step")
+            self.pause_attempts.append(expected_revision)
+            if len(self.pause_attempts) == 1:
+                self.revision += 1
+                raise FakePreSubmissionRevisionMismatchError(
+                    "native gameplay revision mismatch: expected 5, current 6"
+                )
+            require(
+                expected_revision == self.revision,
+                "pause retry did not use a fresh revision",
+            )
+            self.paused = True
+            self.revision += 1
+            return {"accepted": True}
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, **_kwargs: object
+        ) -> dict[str, object]:
+            require(event_instance_id == 11, "wrong seed instance queried")
+            return {
+                "current_event_window_context": {
+                    "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+                }
+            }
+
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = RacingPauseService()
+        fake_time = FakeTime()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            pre_submission_revision_mismatch_error=(
+                FakePreSubmissionRevisionMismatchError
+            ),
+            timeout_seconds=10.0,
+            clock=fake_time.clock,
+            sleeper=fake_time.sleep,
+        )
+        require(snapshot["paused"] is True, "pause race did not converge")
+        require(
+            service.pause_attempts == [5, 6],
+            "pause retry did not bind to the refreshed revision exactly once",
+        )
+        require(
+            any(
+                row["state"] == "pause_revision_changed_before_submission"
+                for row in rows(artifacts / "bootstrap-event-wait.jsonl")
+            ),
+            "pause race retry lacks typed evidence",
+        )
+
+
 def test_known_predecessor_identity_drift_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as raw:
         artifacts = Path(raw)
@@ -2318,6 +2399,7 @@ def main() -> int:
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()
     test_exact_known_predecessor_is_drained_once()
+    test_pause_revision_race_reloads_snapshot_and_retries()
     test_known_predecessor_identity_drift_fails_closed()
     test_total_event_deadline()
     test_cli_validation_and_artifact_preservation()

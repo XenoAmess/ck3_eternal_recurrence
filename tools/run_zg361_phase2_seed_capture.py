@@ -419,6 +419,7 @@ class RuntimeBindings:
     driver_factory: Callable[..., Any]
     service_factory: Callable[[Any], Any]
     bridge_unavailable_error: type[BaseException]
+    pre_submission_revision_mismatch_error: type[BaseException]
     loader_stage_error: type[BaseException]
     wait_for_loader_stage: Callable[..., dict[str, Any]]
     keyboard_layout_attestor: Callable[[int, Path, str], dict[str, Any]]
@@ -1811,6 +1812,9 @@ def load_runtime(config: CaptureConfig) -> RuntimeBindings:
         driver_factory=driver_module.NativeHeadlessGameplayDriver,
         service_factory=service_module.GameplayBridgeService,
         bridge_unavailable_error=bridge_driver.BridgeUnavailableError,
+        pre_submission_revision_mismatch_error=(
+            bridge_driver.PreSubmissionRevisionMismatchError
+        ),
         loader_stage_error=loader.LoaderStageError,
         wait_for_loader_stage=loader.wait_for_phase2_seed_loader_stage,
         keyboard_layout_attestor=attest_ck3_us_english_hkl,
@@ -1941,6 +1945,7 @@ def wait_for_bootstrap_event(
     artifacts: Path,
     *,
     bridge_unavailable_error: type[BaseException],
+    pre_submission_revision_mismatch_error: type[BaseException] | None = None,
     timeout_seconds: float,
     source_save_sha256: str | None = None,
     clock: Callable[[], float] = time.monotonic,
@@ -2006,7 +2011,31 @@ def wait_for_bootstrap_event(
         if isinstance(active, dict):
             revision = _positive_revision(snapshot)
             if snapshot.get("paused") is not True:
-                service.execute_step("pause-map", expected_revision=revision)
+                try:
+                    service.execute_step("pause-map", expected_revision=revision)
+                except BaseException as error:
+                    if (
+                        pre_submission_revision_mismatch_error is None
+                        or not isinstance(
+                            error, pre_submission_revision_mismatch_error
+                        )
+                    ):
+                        raise
+                    sequence += 1
+                    append_jsonl(
+                        evidence_path,
+                        {
+                            "schema_version": 1,
+                            "sequence": sequence,
+                            "elapsed_seconds": round(
+                                max(0.0, clock() - started), 3
+                            ),
+                            "state": "pause_revision_changed_before_submission",
+                            "expected_revision": revision,
+                            "error_type": type(error).__name__,
+                            "error": str(error),
+                        },
+                    )
                 sleeper(0.1)
                 continue
             event_id = active.get("instance_id")
@@ -3734,6 +3763,9 @@ def run_capture(
             service,
             artifacts,
             bridge_unavailable_error=active_runtime.bridge_unavailable_error,
+            pre_submission_revision_mismatch_error=(
+                active_runtime.pre_submission_revision_mismatch_error
+            ),
             timeout_seconds=config.event_timeout_seconds,
             source_save_sha256=observed_save_sha,
             clock=active_runtime.clock,
