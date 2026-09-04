@@ -11313,6 +11313,68 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "Phase2 source restore forbids generic rebind, fixture, and console"
             )
+        return self._restore_phase2_registered_checkpoint_v1(
+            checkpoint_path=checkpoint_path,
+            expected_checkpoint_bytes=expected_checkpoint_bytes,
+            expected_checkpoint_sha256=expected_checkpoint_sha256,
+            expected_save_lineage_id=expected_save_lineage_id,
+            expected_event_definition_key=expected_event_definition_key,
+            expected_owner_character_id=expected_owner_character_id,
+            expected_player_character_id=expected_player_character_id,
+            expected_date_raw=expected_date_raw,
+            fixture_used=False,
+            strategy="phase2-canonical-source-registry-v1",
+        )
+
+    def restore_hc_workforce_route_b_checkpoint_v1(
+        self,
+        *,
+        checkpoint_path: str,
+        expected_checkpoint_bytes: int,
+        expected_checkpoint_sha256: str,
+        expected_save_lineage_id: str,
+        expected_event_definition_key: str,
+        expected_owner_character_id: int,
+        expected_player_character_id: int,
+        expected_date_raw: int,
+    ) -> dict[str, object]:
+        """Restore the fixture-bound, registry-sealed M360 Route-B source."""
+
+        if expected_event_definition_key != "zg361we.360":
+            raise BridgeUnavailableError(
+                "HC-workforce Route-B restore requires zg361we.360"
+            )
+        if expected_owner_character_id != expected_player_character_id:
+            raise BridgeUnavailableError(
+                "HC-workforce Route-B checkpoint must restore its exact owner"
+            )
+        return self._restore_phase2_registered_checkpoint_v1(
+            checkpoint_path=checkpoint_path,
+            expected_checkpoint_bytes=expected_checkpoint_bytes,
+            expected_checkpoint_sha256=expected_checkpoint_sha256,
+            expected_save_lineage_id=expected_save_lineage_id,
+            expected_event_definition_key=expected_event_definition_key,
+            expected_owner_character_id=expected_owner_character_id,
+            expected_player_character_id=expected_player_character_id,
+            expected_date_raw=expected_date_raw,
+            fixture_used=True,
+            strategy="phase2-hc-workforce-route-b-registry-v1",
+        )
+
+    def _restore_phase2_registered_checkpoint_v1(
+        self,
+        *,
+        checkpoint_path: str,
+        expected_checkpoint_bytes: int,
+        expected_checkpoint_sha256: str,
+        expected_save_lineage_id: str,
+        expected_event_definition_key: str,
+        expected_owner_character_id: int,
+        expected_player_character_id: int,
+        expected_date_raw: int,
+        fixture_used: bool,
+        strategy: str,
+    ) -> dict[str, object]:
         if not isinstance(checkpoint_path, str) or not checkpoint_path:
             raise ValueError("checkpoint_path must be a nonempty absolute path")
         source_path = Path(checkpoint_path)
@@ -11455,14 +11517,14 @@ class NativeHeadlessGameplayDriver:
                     "event_definition_key": expected_event_definition_key,
                     "owner_character_id": expected_owner_character_id,
                     "player_character_id": expected_player_character_id,
-                    "strategy": "phase2-canonical-source-registry-v1",
+                    "strategy": strategy,
                 }
                 stage_result = {
                     "step": _PHASE2_SOURCE_CHECKPOINT_STAGE_STEP,
                     "accepted": True,
                     "status": "registered_source",
                     "checkpoint": copy.deepcopy(checkpoint),
-                    "fixture_used": False,
+                    "fixture_used": fixture_used,
                     "console_used": False,
                     "generic_character_rebind_used": False,
                 }
@@ -11550,7 +11612,7 @@ class NativeHeadlessGameplayDriver:
                 "snapshot_id": ending.get("snapshot_id"),
                 "revision": ending.get("revision"),
                 "native_revision": ending.get("native_revision"),
-                "fixture_used": False,
+                "fixture_used": fixture_used,
                 "console_used": False,
                 "generic_character_rebind_used": False,
             }

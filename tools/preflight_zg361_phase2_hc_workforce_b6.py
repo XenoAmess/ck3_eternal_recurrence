@@ -49,6 +49,7 @@ SHARED_BRIDGE = NATIVE_BRIDGE / "src" / "bridge.cpp"
 CMAKE = NATIVE_BRIDGE / "CMakeLists.txt"
 SERVICE = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "service.py"
 MCP_SERVER = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "mcp_server.py"
+FORMAL_RUNNER = ROOT / "tools" / "run_zhongguo_acceptance.py"
 ROUTE_B_EFFECT = (
     ROOT
     / "mod_zhongguo_style"
@@ -84,6 +85,7 @@ def run_preflight() -> dict[str, object]:
     cmake = CMAKE.read_text(encoding="utf-8")
     service = SERVICE.read_text(encoding="utf-8")
     mcp_server = MCP_SERVER.read_text(encoding="utf-8")
+    formal_runner = FORMAL_RUNNER.read_text(encoding="utf-8")
     career_shards = sorted(CAREER_EFFECTS.glob("zg361_career_hc_[0-9][0-9][0-9]_*.txt"))
     counts = {
         path.name: len(top_level_effect_entries(path.read_bytes()))
@@ -117,10 +119,16 @@ def run_preflight() -> dict[str, object]:
                 "both_private_candidates": 78,
             }
         ),
-        "runner_registry_untouched_by_contract": contract.get("integration", {}).get(
+        "focused_runner_registry_wired_default_off": contract.get("integration", {}).get(
             "formal_runner_registry_modified"
         )
-        is False,
+        is True
+        and contract.get("integration", {}).get("formal_runner_mode")
+        == "--phase2-hc-workforce-route-b-live"
+        and contract.get("integration", {}).get("formal_runner_provider_gate")
+        == "default_off_explicit_enable_required"
+        and '"--phase2-hc-workforce-route-b-live"' in formal_runner
+        and "career_hc_live_gate_default_off" in formal_runner,
         "native_provider_wiring_complete_default_off": contract.get("integration", {}).get(
             "native_provider_wiring"
         )
@@ -206,7 +214,8 @@ def run_preflight() -> dict[str, object]:
         "ck3_started": False,
         "gameplay_action_executed": False,
         "provider_live_result_claimed": False,
-        "formal_runner_registry_modified": False,
+        "formal_runner_registry_modified": True,
+        "formal_runner_provider_gate": "default_off_explicit_enable_required",
         "checks": checks,
         "failed_checks": failed,
         "career_hc_effect_shards": {

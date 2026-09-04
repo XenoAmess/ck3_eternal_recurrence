@@ -135,6 +135,19 @@ from zg361_phase2_cross_cycle_endgame_live_seam import (
     TRANSITION_FIXTURE_ID as PHASE2_ENDGAME_REBIND_FIXTURE_ID,
     run_exact_build_cross_cycle_endgame_seam,
 )
+from zg361_phase2_hc_workforce_route_b_checkpoint import (
+    CAREER_CAPABILITY,
+    RouteBCheckpointError,
+    RouteBSubjectSession,
+    bind_current_cumulative_projection,
+    query_career_hc_if_available,
+    restore_route_b_pre_action_checkpoint,
+    run_route_b_and_collect_postconditions,
+)
+from zg361_phase2_hc_workforce_route_b_checkpoint_registry import (
+    RouteBCheckpointRegistryError,
+    RouteBCheckpointRegistryProvider,
+)
 from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_WORKFORCE_COLLECTIVE_CASE_KIND_V1,
@@ -728,6 +741,24 @@ PHASE2_B2_REQUIRED_ACTION_STEP_LABELS = (
     "bounded_timeline_speed",
     "bounded_life_advance",
     "save_checkpoint",
+    "loaded_feature_manifest",
+)
+PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
+    "paused_snapshot",
+    "map_ready_state",
+    "played_character_state",
+    "active_event_state",
+    "event_option_action_ack",
+    "current_event_context",
+    "loaded_feature_manifest",
+    "workforce_collective_snapshot",
+)
+PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS = (
+    "current_event_context",
+    "loaded_feature_manifest",
+    "workforce_collective_snapshot",
+)
+PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_ACTION_STEP_LABELS = (
     "loaded_feature_manifest",
 )
 # Provider readiness and gameplay completion are separate gates.  Every frozen
@@ -7202,43 +7233,60 @@ def phase2_runtime_capability_preflight(
     tracked_ck3_pid: int,
     managed_restore_supervisor: bool = False,
     focused_b2_same_checkpoint: bool = False,
+    focused_hc_workforce_route_b: bool = False,
 ) -> dict[str, object]:
     """Fail before navigation unless the selected Phase2 MCP surface exists."""
 
     evidence_path = artifacts / "02_phase2_mcp_capabilities.json"
-    required_bridge_capabilities = (
-        {
-            label: PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
-            for label in PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
-        }
-        if focused_b2_same_checkpoint
-        else dict(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
+    bridge_labels = (
+        PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        if focused_hc_workforce_route_b
+        else (
+            PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
+            if focused_b2_same_checkpoint
+            else tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
+        )
     )
-    required_query_flags = (
-        {
-            label: PHASE2_REQUIRED_QUERY_FLAGS[label]
-            for label in PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
-        }
-        if focused_b2_same_checkpoint
-        else dict(PHASE2_REQUIRED_QUERY_FLAGS)
+    query_labels = (
+        PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_QUERY_FLAG_LABELS
+        if focused_hc_workforce_route_b
+        else (
+            PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
+            if focused_b2_same_checkpoint
+            else tuple(PHASE2_REQUIRED_QUERY_FLAGS)
+        )
     )
-    required_action_steps = (
-        {
-            label: PHASE2_REQUIRED_ACTION_STEPS[label]
-            for label in PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
-        }
-        if focused_b2_same_checkpoint
-        else dict(PHASE2_REQUIRED_ACTION_STEPS)
+    action_labels = (
+        PHASE2_HC_WORKFORCE_ROUTE_B_REQUIRED_ACTION_STEP_LABELS
+        if focused_hc_workforce_route_b
+        else (
+            PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
+            if focused_b2_same_checkpoint
+            else tuple(PHASE2_REQUIRED_ACTION_STEPS)
+        )
     )
+    required_bridge_capabilities = {
+        label: PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
+        for label in bridge_labels
+    }
+    required_query_flags = {
+        label: PHASE2_REQUIRED_QUERY_FLAGS[label] for label in query_labels
+    }
+    required_action_steps = {
+        label: PHASE2_REQUIRED_ACTION_STEPS[label] for label in action_labels
+    }
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
         "scope": (
-            "focused_b2_same_checkpoint_mcp_capability_profile"
-            if focused_b2_same_checkpoint
+            "focused_hc_workforce_route_b_mcp_capability_profile"
+            if focused_hc_workforce_route_b
             else "complete_phase2_mcp_capability_profile"
+            if not focused_b2_same_checkpoint
+            else "focused_b2_same_checkpoint_mcp_capability_profile"
         ),
         "focused_b2_same_checkpoint": focused_b2_same_checkpoint,
+        "focused_hc_workforce_route_b": focused_hc_workforce_route_b,
         "tracked_ck3_pid": tracked_ck3_pid,
         "managed_restore_supervisor": managed_restore_supervisor,
         "mcp_only": True,
@@ -10754,6 +10802,300 @@ def run_phase2_workforce_m360_gameplay_action_cell(
         ) from error
 
 
+def _route_b_career_hc_default_off_hook(
+    _service: object,
+    *,
+    expected_revision: int,
+    expected_date_raw: int,
+    identity: object,
+) -> Mapping[str, object]:
+    """Keep the B6 semantic provider disabled until explicitly live-gated."""
+
+    return {
+        "status": "not_available",
+        "reason": "career_hc_live_gate_default_off",
+        "provider_observed": False,
+        "response": None,
+        "expected_revision": expected_revision,
+        "expected_date_raw": expected_date_raw,
+        "case_identity_bound": identity is not None,
+    }
+
+
+def run_phase2_hc_workforce_route_b_registry_scenario(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    userdir: Path,
+    bootstrap: dict[str, object],
+    seed_contract: Mapping[str, object],
+    registry: Mapping[str, object],
+    source_git_commit: str,
+    enable_career_hc_provider: bool = False,
+) -> dict[str, object]:
+    """Replay one registry-sealed real M360 Route-B checkpoint twice.
+
+    The first replay proves that the external checkpoint is consumable by the
+    formal managed lifecycle.  The second begins only after an exact restore
+    and must reproduce the registry's provider-sealed owner/subject/cycle/case
+    identity.  Option ACKs are retained but never satisfy either result.
+    """
+
+    artifacts = Path(artifacts).resolve()
+    artifacts.mkdir(parents=True, exist_ok=True)
+    evidence_path = artifacts / "08_hc_workforce_route_b_registry_live.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "kind": "zg361_hc_workforce_route_b_registry_live",
+        "result": "RED",
+        "readiness": "static-ready-live-pending",
+        "route": "B",
+        "registry_preflight": None,
+        "fixture_install": None,
+        "projection_binding": None,
+        "registered_restore": None,
+        "first_postconditions": None,
+        "checkpoint_restore": None,
+        "replay_postconditions": None,
+        "career_hc_live_gate_enabled": enable_career_hc_provider,
+        "career_hc_provider_default_off": not enable_career_hc_provider,
+        "career_hc_capability_preflight": None,
+        "action_ack_is_business_postcondition": False,
+        "provider_observed_postcondition_required": True,
+        "fixture_used": True,
+        "console_used": False,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        if not isinstance(enable_career_hc_provider, bool):
+            raise ValueError("enable_career_hc_provider must be a boolean")
+        fixture_install = install_phase2_workforce_action_fixture(
+            userdir, bootstrap, artifacts
+        )
+        evidence["fixture_install"] = fixture_install
+        projection = bind_current_cumulative_projection(
+            bootstrap,
+            fixture_install,
+            source_git_commit=source_git_commit,
+        )
+        evidence["projection_binding"] = projection
+        provider = RouteBCheckpointRegistryProvider(
+            registry,
+            expected_seed_lineage_id=_phase2_seed_lineage_id(seed_contract),
+            expected_source_git_commit=source_git_commit,
+        )
+        registry_preflight = provider.preflight(
+            current_projection_binding=projection
+        )
+        evidence["registry_preflight"] = registry_preflight
+        entry = provider.checkpoint(current_projection_binding=projection)
+        restore = getattr(
+            service, "restore_hc_workforce_route_b_checkpoint_v1", None
+        )
+        available = getattr(
+            service,
+            "hc_workforce_route_b_checkpoint_restore_available_v1",
+            None,
+        )
+        if not callable(restore) or (
+            callable(available) and available() is not True
+        ):
+            raise acceptance.RunnerError(
+                "managed HC-workforce Route-B registry restore is unavailable"
+            )
+        registered_restore = restore(
+            checkpoint_path=str(entry.checkpoint_path),
+            expected_checkpoint_bytes=entry.checkpoint_bytes,
+            expected_checkpoint_sha256=entry.checkpoint_sha256,
+            expected_save_lineage_id=entry.seed_lineage_id,
+            expected_event_definition_key=M360_EVENT_DEFINITION_KEY,
+            expected_owner_character_id=entry.owner_character_id,
+            expected_player_character_id=entry.owner_character_id,
+            expected_date_raw=entry.date_raw,
+        )
+        evidence["registered_restore"] = registered_restore
+        restored_event = wait_for_phase2_exact_event(
+            service,
+            expected_definition_key=M360_EVENT_DEFINITION_KEY,
+            expected_player_character_id=entry.owner_character_id,
+        )
+        evidence["registered_restore_event"] = restored_event
+        if enable_career_hc_provider:
+            capabilities = service.capabilities()
+            advertised = (
+                capabilities.get("bridge_capabilities")
+                if isinstance(capabilities, Mapping)
+                else None
+            )
+            capability_ready = (
+                isinstance(advertised, list)
+                and CAREER_CAPABILITY in advertised
+            )
+            evidence["career_hc_capability_preflight"] = {
+                "result": "GREEN" if capability_ready else "RED",
+                "capability": CAREER_CAPABILITY,
+                "advertised": capability_ready,
+            }
+            if not capability_ready:
+                raise acceptance.RunnerError(
+                    "explicit B6 career-HC live gate is not advertised"
+                )
+        else:
+            evidence["career_hc_capability_preflight"] = {
+                "result": "NOT_RUN_DEFAULT_OFF",
+                "capability": CAREER_CAPABILITY,
+                "advertisement_queried": False,
+            }
+
+        run_ordinal = 0
+
+        def subject_session_factory(binding: object) -> RouteBSubjectSession:
+            nonlocal run_ordinal
+            run_ordinal += 1
+            binding_owner = getattr(binding, "owner_character_id", None)
+            binding_subject = getattr(binding, "subject_character_id", None)
+            if (
+                binding_owner != entry.owner_character_id
+                or binding_subject != entry.subject_character_id
+            ):
+                raise acceptance.RunnerError(
+                    "Route-B action binding disagrees with registry identity"
+                )
+            transition_path = (
+                artifacts
+                / "workforce_route_b_registry"
+                / f"run-{run_ordinal}"
+                / "owner_to_subject_transition.json"
+            )
+            transition_path.parent.mkdir(parents=True, exist_ok=True)
+            transition = select_typed_fixture_player_transition(
+                service,
+                expected_event_definition_key=(
+                    PHASE2_WORKFORCE_SWITCH_BACK_EVENT
+                ),
+                expected_player_before=entry.owner_character_id,
+                expected_player_after=entry.subject_character_id,
+                owner_character_id=entry.owner_character_id,
+                subject_character_id=entry.subject_character_id,
+                owner_scope_name=PHASE2_WORKFORCE_OWNER_SCOPE,
+                subject_scope_name=PHASE2_WORKFORCE_SUBJECT_SCOPE,
+                evidence_path=transition_path,
+            )
+            return RouteBSubjectSession(
+                service=service,
+                transition_receipt=transition,
+            )
+
+        career_hook = (
+            query_career_hc_if_available
+            if enable_career_hc_provider
+            else _route_b_career_hc_default_off_hook
+        )
+        first = run_route_b_and_collect_postconditions(
+            service,
+            checkpoint_capture=entry.checkpoint_capture,
+            subject_session_factory=subject_session_factory,
+            evidence_directory=(
+                artifacts / "workforce_route_b_registry" / "first"
+            ),
+            expected_case_identity=entry.case_identity,
+            career_hc_hook=career_hook,
+        )
+        evidence["first_postconditions"] = first
+        restored = restore_route_b_pre_action_checkpoint(
+            service,
+            checkpoint_capture=entry.checkpoint_capture,
+            case_identity=entry.case_identity,
+            evidence_path=(
+                artifacts
+                / "workforce_route_b_registry"
+                / "restore_before_replay.json"
+            ),
+        )
+        evidence["checkpoint_restore"] = restored
+        replay = run_route_b_and_collect_postconditions(
+            service,
+            checkpoint_capture=entry.checkpoint_capture,
+            subject_session_factory=subject_session_factory,
+            evidence_directory=(
+                artifacts / "workforce_route_b_registry" / "replay"
+            ),
+            expected_case_identity=entry.case_identity,
+            career_hc_hook=career_hook,
+        )
+        evidence["replay_postconditions"] = replay
+        first_career = first.get("career_hc_provider")
+        replay_career = replay.get("career_hc_provider")
+        checks = {
+            "registry_real_checkpoint_consumed": (
+                registered_restore.get("result") == "GREEN"
+                and registered_restore.get("provider_observed") is True
+                and registered_restore.get("fixture_used") is True
+                and registered_restore.get("checkpoint_sha256")
+                == entry.checkpoint_sha256.upper()
+            ),
+            "first_provider_postcondition_green": first.get("result")
+            == "GREEN",
+            "hash_identical_checkpoint_restored": restored.get("result")
+            == "GREEN"
+            and restored.get("checkpoint_sha256") == entry.checkpoint_sha256,
+            "case_identical_provider_replay_green": replay.get("result")
+            == "GREEN",
+            "ack_not_used_as_business_postcondition": (
+                first.get("action_ack_is_business_postcondition") is False
+                and replay.get("action_ack_is_business_postcondition") is False
+            ),
+            "career_hc_live_gate_honored": (
+                isinstance(first_career, Mapping)
+                and isinstance(replay_career, Mapping)
+                and (
+                    first_career.get("status") == "observed"
+                    and first_career.get("provider_observed") is True
+                    and replay_career.get("status") == "observed"
+                    and replay_career.get("provider_observed") is True
+                    if enable_career_hc_provider
+                    else first_career.get("status") == "not_available"
+                    and first_career.get("reason")
+                    == "career_hc_live_gate_default_off"
+                    and first_career.get("provider_observed") is False
+                    and replay_career.get("status") == "not_available"
+                    and replay_career.get("reason")
+                    == "career_hc_live_gate_default_off"
+                    and replay_career.get("provider_observed") is False
+                )
+            ),
+        }
+        evidence["checks"] = checks
+        failed = [name for name, passed in checks.items() if passed is not True]
+        if failed:
+            raise acceptance.RunnerError(
+                "HC-workforce Route-B registry live RED: " + ", ".join(failed)
+            )
+        evidence["result"] = "GREEN"
+        evidence["readiness"] = "fixture-live"
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(
+            error,
+            (
+                acceptance.RunnerError,
+                RouteBCheckpointError,
+                RouteBCheckpointRegistryError,
+                ValueError,
+            ),
+        ):
+            raise
+        raise acceptance.RunnerError(
+            f"HC-workforce Route-B registry scenario failed: {error}"
+        ) from error
+
+
 def wait_for_phase2_paused_snapshot(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -11683,6 +12025,7 @@ def run_loader_gate(
     managed_restore_supervisor: bool = False,
     phase2_promo_capture: bool = False,
     phase2_b2_same_checkpoint: bool = False,
+    phase2_hc_workforce_route_b_live: bool = False,
 ) -> dict[str, object]:
     """Run the native/log/mount loader gate and persist every RED boundary."""
 
@@ -11690,6 +12033,7 @@ def run_loader_gate(
         phase2_live_batch
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_hc_workforce_route_b_live
     )
     evidence_path = artifacts / "03_loader_gate.json"
     evidence: dict[str, object] = {
@@ -11697,15 +12041,19 @@ def run_loader_gate(
         "result": "RED",
         "scope": "exact_build_loader_gate_before_gameplay",
         "mode": (
-            "phase2_promo_capture"
-            if phase2_promo_capture
+            "phase2_hc_workforce_route_b_live"
+            if phase2_hc_workforce_route_b_live
             else (
-                "phase2_b2_same_checkpoint"
-                if phase2_b2_same_checkpoint
+                "phase2_promo_capture"
+                if phase2_promo_capture
                 else (
-                    "phase2_live_batch"
-                    if phase2_live_batch
-                    else "loader_smoke_only"
+                    "phase2_b2_same_checkpoint"
+                    if phase2_b2_same_checkpoint
+                    else (
+                        "phase2_live_batch"
+                        if phase2_live_batch
+                        else "loader_smoke_only"
+                    )
                 )
             )
         ),
@@ -11764,6 +12112,9 @@ def run_loader_gate(
                 tracked_ck3_pid=tracked_ck3_pid,
                 managed_restore_supervisor=managed_restore_supervisor,
                 focused_b2_same_checkpoint=phase2_b2_same_checkpoint,
+                focused_hc_workforce_route_b=(
+                    phase2_hc_workforce_route_b_live
+                ),
             )
             evidence["phase2_capability_preflight"] = phase2_capabilities
             write_json(evidence_path, evidence)
@@ -17701,6 +18052,11 @@ def run_cell(
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
     phase2_b2_same_checkpoint: bool = False,
+    phase2_hc_workforce_route_b_live: bool = False,
+    phase2_hc_workforce_route_b_checkpoint_registry: (
+        Mapping[str, object] | None
+    ) = None,
+    phase2_hc_workforce_enable_career_provider: bool = False,
     phase2_frontend_first_load_save_name: str | None = None,
     phase2_frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
@@ -17721,6 +18077,7 @@ def run_cell(
         phase2_live_batch
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_hc_workforce_route_b_live
     )
     _validate_phase2_frontend_first_options(
         phase2_frontend_first_load_save_name,
@@ -17759,7 +18116,9 @@ def run_cell(
             else None
         ),
         include_acceptance_fixture=not (
-            phase2_promo_capture or phase2_b2_same_checkpoint
+            phase2_promo_capture
+            or phase2_b2_same_checkpoint
+            or phase2_hc_workforce_route_b_live
         ),
         product_projection=phase2_product_projection,
         product_projection_manifest=phase2_product_projection_manifest,
@@ -17819,6 +18178,7 @@ def run_cell(
         loader_smoke
         or phase2_live_batch or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_hc_workforce_route_b_live
     )
     loader_gate_evidence: dict[str, object] | None = None
     gameplay_acceptance_executed = False
@@ -17850,7 +18210,9 @@ def run_cell(
                     bootstrap,
                     artifacts,
                     product_only_runtime=(
-                        phase2_promo_capture or phase2_b2_same_checkpoint
+                        phase2_promo_capture
+                        or phase2_b2_same_checkpoint
+                        or phase2_hc_workforce_route_b_live
                     ),
                     **install_kwargs,
                 )
@@ -17939,6 +18301,9 @@ def run_cell(
                 managed_restore_supervisor=phase2_supervisor is not None,
                 phase2_promo_capture=phase2_promo_capture,
                 phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
+                phase2_hc_workforce_route_b_live=(
+                    phase2_hc_workforce_route_b_live
+                ),
             )
             native_readiness = loader_gate_evidence["native_readiness"]
             error_scan = loader_gate_evidence["loader_error_log_scan"]
@@ -18042,6 +18407,42 @@ def run_cell(
                     phase2_promo_producer_typed_error_payload(error)
                 )
                 raise
+        elif phase2_hc_workforce_route_b_live:
+            gameplay_acceptance_executed = True
+            if not (
+                isinstance(phase2_seed_install_evidence, dict)
+                and isinstance(
+                    phase2_seed_install_evidence.get("contract"), dict
+                )
+                and isinstance(
+                    phase2_hc_workforce_route_b_checkpoint_registry,
+                    Mapping,
+                )
+            ):
+                raise acceptance.RunnerError(
+                    "focused HC-workforce Route-B runtime lacks its seed "
+                    "contract or strict checkpoint registry"
+                )
+            evidence = run_phase2_hc_workforce_route_b_registry_scenario(
+                title_navigation_service,
+                artifacts,
+                userdir=userdir,
+                bootstrap=bootstrap,
+                seed_contract=dict(
+                    phase2_seed_install_evidence["contract"]
+                ),
+                registry=(
+                    phase2_hc_workforce_route_b_checkpoint_registry
+                ),
+                source_git_commit=git_text("rev-parse", "HEAD"),
+                enable_career_hc_provider=(
+                    phase2_hc_workforce_enable_career_provider
+                ),
+            )
+            if evidence.get("result") != "GREEN":
+                raise acceptance.RunnerError(
+                    "focused HC-workforce Route-B registry scenario returned RED"
+                )
         elif phase2_b2_same_checkpoint:
             if not (
                 isinstance(phase2_seed_install_evidence, dict)
@@ -18193,9 +18594,13 @@ def run_cell(
         if phase2_supervisor is not None:
             try:
                 scenario_path = artifacts / (
-                    "05_phase2_b2_same_checkpoint_scenario.json"
-                    if phase2_b2_same_checkpoint
-                    else "05_phase2_live_scenario.json"
+                    "08_hc_workforce_route_b_registry_live.json"
+                    if phase2_hc_workforce_route_b_live
+                    else (
+                        "05_phase2_b2_same_checkpoint_scenario.json"
+                        if phase2_b2_same_checkpoint
+                        else "05_phase2_live_scenario.json"
+                    )
                 )
                 if scenario_path.is_file():
                     scenario_value = json.loads(
@@ -18444,6 +18849,15 @@ def run_cell(
         and evidence.get("phase2_acceptance_complete") is False
         and evidence.get("full_phase2_acceptance_claimed") is False
     )
+    phase2_hc_workforce_route_b_complete = (
+        phase2_hc_workforce_route_b_live
+        and result == "GREEN"
+        and evidence.get("result") == "GREEN"
+        and evidence.get("kind")
+        == "zg361_hc_workforce_route_b_registry_live"
+        and evidence.get("action_ack_is_business_postcondition") is False
+        and evidence.get("provider_observed_postcondition_required") is True
+    )
     gameplay_green_claimed = (
         result == "GREEN"
         and gameplay_acceptance_executed
@@ -18452,6 +18866,10 @@ def run_cell(
             or (
                 phase2_b2_same_checkpoint
                 and phase2_b2_same_checkpoint_complete
+            )
+            or (
+                phase2_hc_workforce_route_b_live
+                and phase2_hc_workforce_route_b_complete
             )
             or (
                 phase2_live_batch
@@ -18498,6 +18916,12 @@ def run_cell(
         "phase2_live_batch": phase2_live_batch,
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
+        "phase2_hc_workforce_route_b_live": (
+            phase2_hc_workforce_route_b_live
+        ),
+        "phase2_hc_workforce_enable_career_provider": (
+            phase2_hc_workforce_enable_career_provider
+        ),
         "phase2_frontend_first": {
             "enabled": phase2_frontend_first_load_save_name is not None,
             "load_save_name": phase2_frontend_first_load_save_name,
@@ -18510,6 +18934,9 @@ def run_cell(
         "phase2_promo_capture_complete": phase2_promo_capture_complete,
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete
+        ),
+        "phase2_hc_workforce_route_b_complete": (
+            phase2_hc_workforce_route_b_complete
         ),
         "promo_capture_mode": (
             recorder.contract.mode
@@ -18533,7 +18960,11 @@ def run_cell(
                 else (
                     "matrix_owns_final_shutdown_no_post_stop_liveness_gate"
                     if phase2_b2_same_checkpoint
-                    else None
+                    else (
+                        "route_b_scenario_owns_registry_restore_and_replay"
+                        if phase2_hc_workforce_route_b_live
+                        else None
+                    )
                 )
             )
         ),
@@ -18624,7 +19055,10 @@ def run_cell(
             "python": sys.version.split()[0],
             "desktop": (
                 "not_queried_mcp_only"
-                if loader_smoke or phase2_live_batch or phase2_b2_same_checkpoint
+                if loader_smoke
+                or phase2_live_batch
+                or phase2_b2_same_checkpoint
+                or phase2_hc_workforce_route_b_live
                 else (
                     "producer_owned_visual_capture"
                     if phase2_promo_capture
@@ -18650,6 +19084,9 @@ def main(
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
     phase2_b2_same_checkpoint: bool = False,
+    phase2_hc_workforce_route_b_live: bool = False,
+    phase2_hc_workforce_route_b_checkpoint_registry: str | None = None,
+    phase2_hc_workforce_enable_career_provider: bool = False,
     phase2_frontend_first_load_save_name: str | None = None,
     phase2_frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
@@ -18675,18 +19112,21 @@ def main(
             loader_smoke,
             phase2_live_batch,
             phase2_b2_same_checkpoint,
+            phase2_hc_workforce_route_b_live,
         )
     )
     if selected_runtime_modes > 1:
         raise acceptance.RunnerError(
             "--promo-capture, --phase2-promo-capture, --promo-camera-probe, "
             "--loader-smoke, --phase2-live-batch and "
-            "--phase2-b2-same-checkpoint are mutually exclusive"
+            "--phase2-b2-same-checkpoint, and "
+            "--phase2-hc-workforce-route-b-live are mutually exclusive"
         )
     phase2_runtime_mode = (
         phase2_live_batch
         or phase2_promo_capture
         or phase2_b2_same_checkpoint
+        or phase2_hc_workforce_route_b_live
     )
     if not isinstance(phase2_product_projection, str):
         raise acceptance.RunnerError(
@@ -18724,6 +19164,21 @@ def main(
     ):
         raise acceptance.RunnerError(
             "scoreboard surface checkpoint registry requires Phase2 live or promo mode"
+        )
+    if bool(phase2_hc_workforce_route_b_checkpoint_registry) != bool(
+        phase2_hc_workforce_route_b_live
+    ):
+        raise acceptance.RunnerError(
+            "--phase2-hc-workforce-route-b-live requires exactly one strict "
+            "--phase2-hc-workforce-route-b-checkpoint-registry"
+        )
+    if (
+        phase2_hc_workforce_enable_career_provider
+        and not phase2_hc_workforce_route_b_live
+    ):
+        raise acceptance.RunnerError(
+            "--phase2-hc-workforce-enable-career-provider requires the "
+            "focused Route-B live mode"
         )
     if phase2_product_source is not None and workshop_cache_source is not None:
         raise acceptance.RunnerError(
@@ -18785,6 +19240,45 @@ def main(
                 "phase-two source checkpoint registry must be a JSON object"
             )
         source_checkpoint_registry_value = loaded_registry
+    route_b_checkpoint_registry_value: Mapping[str, object] | None = None
+    if phase2_hc_workforce_route_b_checkpoint_registry:
+        route_b_registry_path = Path(
+            phase2_hc_workforce_route_b_checkpoint_registry
+        ).expanduser().resolve()
+        try:
+            loaded_route_b_registry = json.loads(
+                route_b_registry_path.read_text(encoding="utf-8-sig")
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise acceptance.RunnerError(
+                "cannot load HC-workforce Route-B checkpoint registry: "
+                f"{type(error).__name__}: {error}"
+            ) from error
+        if not isinstance(loaded_route_b_registry, dict):
+            raise acceptance.RunnerError(
+                "HC-workforce Route-B checkpoint registry must be a JSON object"
+            )
+        route_b_seed_contract = load_phase2_seed_contract(
+            (
+                phase2_seed_contract_path
+                if phase2_seed_contract_path is not None
+                else PHASE2_SEED_CONTRACT_PATH
+            )
+        )
+        try:
+            RouteBCheckpointRegistryProvider(
+                loaded_route_b_registry,
+                expected_seed_lineage_id=_phase2_seed_lineage_id(
+                    route_b_seed_contract
+                ),
+                expected_source_git_commit=git_text("rev-parse", "HEAD"),
+            ).preflight()
+        except RouteBCheckpointRegistryError as error:
+            raise acceptance.RunnerError(
+                "HC-workforce Route-B checkpoint registry RED "
+                f"[{error.reason_code}]"
+            ) from error
+        route_b_checkpoint_registry_value = loaded_route_b_registry
     scoreboard_surface_checkpoint_registry_value: (
         Mapping[str, object] | None
     ) = None
@@ -18857,6 +19351,7 @@ def main(
                 workshop_manifest=manifest_path,
                 product_only_runtime=(
                     phase2_promo_capture or phase2_b2_same_checkpoint
+                    or phase2_hc_workforce_route_b_live
                 ),
                 product_source=phase2_product_source_path,
                 product_projection=phase2_product_projection,
@@ -18916,6 +19411,15 @@ def main(
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
         phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
+        phase2_hc_workforce_route_b_live=(
+            phase2_hc_workforce_route_b_live
+        ),
+        phase2_hc_workforce_route_b_checkpoint_registry=(
+            route_b_checkpoint_registry_value
+        ),
+        phase2_hc_workforce_enable_career_provider=(
+            phase2_hc_workforce_enable_career_provider
+        ),
         phase2_frontend_first_load_save_name=(
             phase2_frontend_first_load_save_name
         ),
@@ -19011,6 +19515,34 @@ def main(
             "A/B/C proof"
         )
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    route_b_checks = phase2_scenario.get("checks")
+    route_b_checks = route_b_checks if isinstance(route_b_checks, dict) else {}
+    phase2_hc_workforce_route_b_complete_claim = (
+        phase2_hc_workforce_route_b_live
+        and report.get("result") == "GREEN"
+        and report.get("phase2_hc_workforce_route_b_live") is True
+        and report.get("phase2_hc_workforce_route_b_complete") is True
+        and report.get("gameplay_acceptance_executed") is True
+        and report.get("gameplay_green_claimed") is True
+        and phase2_scenario.get("result") == "GREEN"
+        and phase2_scenario.get("kind")
+        == "zg361_hc_workforce_route_b_registry_live"
+        and phase2_scenario.get("action_ack_is_business_postcondition") is False
+        and phase2_scenario.get("provider_observed_postcondition_required")
+        is True
+        and route_b_checks
+        and all(value is True for value in route_b_checks.values())
+    )
+    if (
+        phase2_hc_workforce_route_b_live
+        and phase2_hc_workforce_route_b_complete_claim is not True
+    ):
+        result = "RED"
+        reason = (
+            "focused HC-workforce Route-B report lacks a registry-bound "
+            "provider result and case-identical replay"
+        )
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
     protected_unchanged = False
     try:
         isolated.verify_protected_storage(
@@ -19028,6 +19560,7 @@ def main(
         # Never retain or print a focused completion claim after that gate
         # turns the overall attempt RED.
         phase2_b2_same_checkpoint_complete_claim = False
+        phase2_hc_workforce_route_b_complete_claim = False
     matrix = {
         "schema_version": 1,
         "result": result,
@@ -19036,14 +19569,21 @@ def main(
         "phase2_live_batch": phase2_live_batch,
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
+        "phase2_hc_workforce_route_b_live": (
+            phase2_hc_workforce_route_b_live
+        ),
         "phase2_promo_capture_complete": phase2_promo_capture_complete_claim,
         "phase2_b2_same_checkpoint_complete": (
             phase2_b2_same_checkpoint_complete_claim
+        ),
+        "phase2_hc_workforce_route_b_complete": (
+            phase2_hc_workforce_route_b_complete_claim
         ),
         "loader_gate_executed": (
             loader_smoke
             or phase2_live_batch or phase2_promo_capture
             or phase2_b2_same_checkpoint
+            or phase2_hc_workforce_route_b_live
         ),
         "native_session_liveness": report.get("native_session_liveness"),
         "native_session_liveness_scope": report.get(
@@ -19067,7 +19607,11 @@ def main(
                         else (
                             phase2_b2_same_checkpoint_complete_claim
                             if phase2_b2_same_checkpoint
-                            else report.get("gameplay_green_claimed") is True
+                            else (
+                                phase2_hc_workforce_route_b_complete_claim
+                                if phase2_hc_workforce_route_b_live
+                                else report.get("gameplay_green_claimed") is True
+                            )
                         )
                     )
                 )
@@ -19091,9 +19635,13 @@ def main(
                 "ZHONGGUO 361 PHASE-TWO PROMO CAPTURE"
                 if phase2_promo_capture
                 else (
-                    "ZHONGGUO 361 PHASE-TWO B2 SAME-CHECKPOINT"
-                    if phase2_b2_same_checkpoint
-                    else "ZHONGGUO 361 ACCEPTANCE"
+                    "ZHONGGUO 361 PHASE-TWO HC-WORKFORCE ROUTE-B"
+                    if phase2_hc_workforce_route_b_live
+                    else (
+                        "ZHONGGUO 361 PHASE-TWO B2 SAME-CHECKPOINT"
+                        if phase2_b2_same_checkpoint
+                        else "ZHONGGUO 361 ACCEPTANCE"
+                    )
                 )
             )
         )
@@ -19117,6 +19665,16 @@ def main(
             + (
                 "GREEN"
                 if matrix["phase2_b2_same_checkpoint_complete"] is True
+                else "INCOMPLETE / RED"
+            )
+        )
+        print("full phase-two claim    NONE")
+    elif phase2_hc_workforce_route_b_live:
+        print(
+            "HC-workforce Route B    "
+            + (
+                "GREEN"
+                if matrix["phase2_hc_workforce_route_b_complete"] is True
                 else "INCOMPLETE / RED"
             )
         )
@@ -19176,6 +19734,30 @@ if __name__ == "__main__":
             "run the product-only focused B2 route: real Incident prelude, "
             "one frozen PIP checkpoint, accept/negotiate/refuse, four "
             "restores and five-PID cleanup; does not claim full Phase2"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-hc-workforce-route-b-live",
+        action="store_true",
+        help=(
+            "consume one strict real-checkpoint registry, replay M360 Route B "
+            "twice around a hash-identical restore, and require provider "
+            "postconditions; does not claim full Phase2"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-hc-workforce-route-b-checkpoint-registry",
+        help=(
+            "required real-CK3 HC-workforce Route-B registry; invalid or "
+            "missing bytes block before CK3 launch"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-hc-workforce-enable-career-provider",
+        action="store_true",
+        help=(
+            "explicitly require the B6 career-HC provider in focused Route-B "
+            "live mode; default is off until real provider evidence exists"
         ),
     )
     parser.add_argument(
@@ -19268,6 +19850,15 @@ if __name__ == "__main__":
                 phase2_live_batch=arguments.phase2_live_batch,
                 phase2_b2_same_checkpoint=(
                     arguments.phase2_b2_same_checkpoint
+                ),
+                phase2_hc_workforce_route_b_live=(
+                    arguments.phase2_hc_workforce_route_b_live
+                ),
+                phase2_hc_workforce_route_b_checkpoint_registry=(
+                    arguments.phase2_hc_workforce_route_b_checkpoint_registry
+                ),
+                phase2_hc_workforce_enable_career_provider=(
+                    arguments.phase2_hc_workforce_enable_career_provider
                 ),
                 phase2_frontend_first_load_save_name=(
                     arguments.phase2_frontend_first_load_save_name

@@ -83,6 +83,7 @@ def _contract_ready(contract: Mapping[str, Any]) -> bool:
     postcondition = _mapping(
         contract.get("postcondition_contract"), "postcondition_contract"
     )
+    runner = _mapping(contract.get("existing_runner_seam"), "runner seam")
     boundary = _mapping(contract.get("no_launch_boundary"), "no_launch_boundary")
     return (
         contract.get("schema_version") == 1
@@ -118,6 +119,12 @@ def _contract_ready(contract: Mapping[str, Any]) -> bool:
         and postcondition.get("career_hc_capability")
         == route_b.CAREER_CAPABILITY
         and postcondition.get("same_paused_revision_join_required") is True
+        and runner.get("formal_registry_modified") is True
+        and runner.get("focused_runtime_mode")
+        == "--phase2-hc-workforce-route-b-live"
+        and runner.get("strict_registry")
+        == "zg361_hc_workforce_route_b_checkpoint_registry"
+        and runner.get("career_hc_provider_default_off") is True
         and all(value is False for value in boundary.values())
     )
 

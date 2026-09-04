@@ -45,6 +45,91 @@ def _snapshot(
 
 
 class Phase2SpanSourceCheckpointBridgeTests(unittest.TestCase):
+    def test_native_driver_route_b_restore_keeps_fixture_provenance_explicit(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = (root / "registry" / "route-b.ck3").resolve()
+            source.parent.mkdir()
+            source.write_bytes(b"real-route-b-checkpoint")
+            sha256 = hashlib.sha256(source.read_bytes()).hexdigest().upper()
+            save_dir = root / "profile" / "save games"
+            save_dir.mkdir(parents=True)
+            driver = object.__new__(NativeHeadlessGameplayDriver)
+            driver.state_dir = root / "state"
+            driver.save_dir = save_dir
+            driver._driver_state_lock = threading.RLock()
+            driver._phase2_source_restore_lock = threading.Lock()
+            driver._command_history = []
+            driver._last_checkpoint = None
+            driver._rollback_war_failures = []
+            driver._rollback_war_failures_migration_required = False
+            driver._episode_character_id = 7001
+            driver._episode_run_id = "native-live-run"
+            driver._session_bridge_pid = 3100
+            driver._driver_state_dirty = False
+            driver._persist_driver_state = types.MethodType(
+                lambda self: None, driver
+            )
+            state = {"restored": False}
+
+            def take_snapshot(
+                self: NativeHeadlessGameplayDriver,
+            ) -> dict[str, object]:
+                return _snapshot(
+                    pid=3200 if state["restored"] else 3100,
+                    generation=8 if state["restored"] else 7,
+                    player=8801 if state["restored"] else 7001,
+                    date_raw=777 if state["restored"] else 700,
+                )
+
+            def execute_step(
+                self: NativeHeadlessGameplayDriver,
+                step: str,
+                *,
+                expected_revision: int | None = None,
+            ) -> dict[str, object]:
+                if step != "restore-checkpoint" or expected_revision != 70:
+                    raise AssertionError("Route-B restore escaped managed restore")
+                state["restored"] = True
+                return {
+                    "checkpoint": {
+                        "status": "restored",
+                        "size": source.stat().st_size,
+                        "sha256": sha256.lower(),
+                    },
+                    "restored_date_raw": 777,
+                    "lifecycle": {
+                        "lifecycle_intent": "restore",
+                        "previous_pid": 3100,
+                        "pid": 3200,
+                        "previous_connection_generation": 7,
+                        "connection_generation": 8,
+                    },
+                }
+
+            driver.take_snapshot = types.MethodType(take_snapshot, driver)
+            driver.execute_step = types.MethodType(execute_step, driver)
+            receipt = driver.restore_hc_workforce_route_b_checkpoint_v1(
+                checkpoint_path=str(source),
+                expected_checkpoint_bytes=source.stat().st_size,
+                expected_checkpoint_sha256=sha256,
+                expected_save_lineage_id="zg361-phase2-seed-test",
+                expected_event_definition_key="zg361we.360",
+                expected_owner_character_id=8801,
+                expected_player_character_id=8801,
+                expected_date_raw=777,
+            )
+
+            self.assertEqual("GREEN", receipt["result"])
+            self.assertTrue(receipt["fixture_used"])
+            self.assertFalse(receipt["console_used"])
+            self.assertEqual(
+                "phase2-hc-workforce-route-b-registry-v1",
+                driver._last_checkpoint["strategy"],
+            )
+
     def test_native_driver_stages_registry_bytes_then_reuses_restore_lifecycle(
         self,
     ) -> None:
@@ -266,6 +351,68 @@ class Phase2SpanSourceCheckpointBridgeTests(unittest.TestCase):
         self.assertFalse(
             unavailable.phase2_span_source_checkpoint_restore_available_v1()
         )
+
+    def test_service_route_b_restore_requires_fixture_typed_receipt(self) -> None:
+        class Driver:
+            def restore_hc_workforce_route_b_checkpoint_v1(
+                self, **kwargs: object
+            ) -> dict[str, object]:
+                return {
+                    "result": "GREEN",
+                    "provider_observed": True,
+                    "restore_materialized": True,
+                    "checkpoint_sha256": str(
+                        kwargs["expected_checkpoint_sha256"]
+                    ).upper(),
+                    "checkpoint_bytes": kwargs["expected_checkpoint_bytes"],
+                    "save_lineage_id": kwargs["expected_save_lineage_id"],
+                    "event_definition_key": "zg361we.360",
+                    "owner_character_id": kwargs[
+                        "expected_owner_character_id"
+                    ],
+                    "player_character_id": kwargs[
+                        "expected_player_character_id"
+                    ],
+                    "date_raw": kwargs["expected_date_raw"],
+                    "fixture_used": True,
+                    "console_used": False,
+                    "generic_character_rebind_used": False,
+                    "lifecycle": {
+                        "lifecycle_intent": "restore",
+                        "previous_pid": 10,
+                        "pid": 11,
+                        "previous_connection_generation": 4,
+                        "connection_generation": 5,
+                    },
+                }
+
+        service = GameplayBridgeService(Driver())
+        self.assertTrue(
+            service.hc_workforce_route_b_checkpoint_restore_available_v1()
+        )
+        receipt = service.restore_hc_workforce_route_b_checkpoint_v1(
+            checkpoint_path="C:/registry/route-b.ck3",
+            expected_checkpoint_bytes=123,
+            expected_checkpoint_sha256="A" * 64,
+            expected_save_lineage_id="seed",
+            expected_event_definition_key="zg361we.360",
+            expected_owner_character_id=1,
+            expected_player_character_id=1,
+            expected_date_raw=3,
+        )
+        self.assertTrue(receipt["fixture_used"])
+
+        with self.assertRaises(BridgeUnavailableError):
+            service.restore_hc_workforce_route_b_checkpoint_v1(
+                checkpoint_path="C:/registry/route-b.ck3",
+                expected_checkpoint_bytes=123,
+                expected_checkpoint_sha256="A" * 64,
+                expected_save_lineage_id="seed",
+                expected_event_definition_key="zg361we.359",
+                expected_owner_character_id=1,
+                expected_player_character_id=1,
+                expected_date_raw=3,
+            )
 
 
 if __name__ == "__main__":

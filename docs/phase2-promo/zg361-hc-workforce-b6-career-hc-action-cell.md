@@ -49,9 +49,13 @@ the reader, so the claim remains `live-pending`.
 - No-launch preflight:
   `py tools/preflight_zg361_phase2_hc_workforce_b6.py`
 
-The formal runner registry is intentionally unchanged. The provider remains
-unadvertised until the live checkpoint below proves a complete provider frame;
-an ACK cannot enable or satisfy it.
+The focused formal runner entry is now
+`--phase2-hc-workforce-route-b-live`. Its B6 gate remains default-off: without
+`--phase2-hc-workforce-enable-career-provider`, the registry replay records a
+typed `career_hc_live_gate_default_off` result and never calls the provider.
+The explicit enable flag makes a provider-observed result mandatory on both
+the first execution and the case-identical replay. An advertised capability or
+option ACK alone cannot enable or satisfy that result.
 
 ## Required live checkpoint
 

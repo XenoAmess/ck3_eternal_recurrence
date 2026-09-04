@@ -918,6 +918,103 @@ class GameplayBridgeService:
             )
         )
 
+    def restore_hc_workforce_route_b_checkpoint_v1(
+        self,
+        *,
+        checkpoint_path: str,
+        expected_checkpoint_bytes: int,
+        expected_checkpoint_sha256: str,
+        expected_save_lineage_id: str,
+        expected_event_definition_key: str,
+        expected_owner_character_id: int,
+        expected_player_character_id: int,
+        expected_date_raw: int,
+    ) -> dict[str, object]:
+        """Restore one sealed M360 Route-B source with its transition fixture."""
+
+        if (
+            expected_event_definition_key != "zg361we.360"
+            or expected_owner_character_id != expected_player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "HC-workforce Route-B restore identity is invalid"
+            )
+        restore = getattr(
+            self.driver, "restore_hc_workforce_route_b_checkpoint_v1", None
+        )
+        if not callable(restore):
+            raise UnsupportedStepError(
+                "selected backend does not implement the HC-workforce "
+                "Route-B checkpoint restore"
+            )
+        result = restore(
+            checkpoint_path=checkpoint_path,
+            expected_checkpoint_bytes=expected_checkpoint_bytes,
+            expected_checkpoint_sha256=expected_checkpoint_sha256,
+            expected_save_lineage_id=expected_save_lineage_id,
+            expected_event_definition_key=expected_event_definition_key,
+            expected_owner_character_id=expected_owner_character_id,
+            expected_player_character_id=expected_player_character_id,
+            expected_date_raw=expected_date_raw,
+        )
+        expected_sha256 = (
+            expected_checkpoint_sha256.upper()
+            if isinstance(expected_checkpoint_sha256, str)
+            else None
+        )
+        lifecycle = result.get("lifecycle") if isinstance(result, dict) else None
+        if not (
+            isinstance(result, dict)
+            and result.get("result") == "GREEN"
+            and result.get("provider_observed") is True
+            and result.get("restore_materialized") is True
+            and result.get("checkpoint_sha256") == expected_sha256
+            and result.get("checkpoint_bytes") == expected_checkpoint_bytes
+            and result.get("save_lineage_id") == expected_save_lineage_id
+            and result.get("event_definition_key") == "zg361we.360"
+            and result.get("owner_character_id")
+            == expected_owner_character_id
+            and result.get("player_character_id")
+            == expected_player_character_id
+            and result.get("date_raw") == expected_date_raw
+            and result.get("fixture_used") is True
+            and result.get("console_used") is False
+            and result.get("generic_character_rebind_used") is False
+            and isinstance(lifecycle, dict)
+            and lifecycle.get("lifecycle_intent") == "restore"
+            and isinstance(lifecycle.get("previous_pid"), int)
+            and not isinstance(lifecycle.get("previous_pid"), bool)
+            and lifecycle.get("previous_pid") > 0
+            and isinstance(lifecycle.get("pid"), int)
+            and not isinstance(lifecycle.get("pid"), bool)
+            and lifecycle.get("pid") > 0
+            and lifecycle.get("pid") != lifecycle.get("previous_pid")
+            and isinstance(
+                lifecycle.get("previous_connection_generation"), int
+            )
+            and not isinstance(
+                lifecycle.get("previous_connection_generation"), bool
+            )
+            and lifecycle.get("previous_connection_generation") > 0
+            and lifecycle.get("connection_generation")
+            == lifecycle.get("previous_connection_generation") + 1
+        ):
+            raise BridgeUnavailableError(
+                "HC-workforce Route-B restore returned an incomplete typed ACK"
+            )
+        return result
+
+    def hc_workforce_route_b_checkpoint_restore_available_v1(self) -> bool:
+        """Report whether the managed backend owns the fixture-bound restore."""
+
+        return callable(
+            getattr(
+                self.driver,
+                "restore_hc_workforce_route_b_checkpoint_v1",
+                None,
+            )
+        )
+
     def start_next_episode(
         self, *, expected_revision: int | None = None
     ) -> dict[str, object]:

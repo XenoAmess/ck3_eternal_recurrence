@@ -57,7 +57,10 @@
     "fixture_install": "install_phase2_workforce_action_fixture",
     "subject_to_owner_transition": "select_typed_fixture_player_transition",
     "real_event_wait": "wait_for_phase2_exact_event",
-    "formal_registry_modified": false
+    "formal_registry_modified": true,
+    "focused_runtime_mode": "--phase2-hc-workforce-route-b-live",
+    "strict_registry": "zg361_hc_workforce_route_b_checkpoint_registry",
+    "career_hc_provider_default_off": true
   },
   "no_launch_boundary": {
     "preflight_starts_ck3": false,

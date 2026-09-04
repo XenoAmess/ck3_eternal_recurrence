@@ -79,7 +79,9 @@
   "integration": {
     "cell": "tools/zg361_phase2_hc_workforce_b6_action_cell.py",
     "service_method": "query_zhongguo_career_hc_workforce_postcondition_v1",
-    "formal_runner_registry_modified": false,
+    "formal_runner_registry_modified": true,
+    "formal_runner_mode": "--phase2-hc-workforce-route-b-live",
+    "formal_runner_provider_gate": "default_off_explicit_enable_required",
     "native_provider_wiring": "complete_default_off_until_live",
     "live_checkpoint": "after workforce transition fixture activation and before selecting zg361we.360 route B"
   }
