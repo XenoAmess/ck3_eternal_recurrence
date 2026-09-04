@@ -87,7 +87,23 @@
         "status": {"enum": ["available", "unavailable"]},
         "value": {"type": ["integer", "null"]},
         "unavailable_reason": {"type": ["string", "null"]}
-      }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "integer"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
     },
     "typed_boolean": {
       "type": "object", "additionalProperties": false,
@@ -96,7 +112,23 @@
         "status": {"enum": ["available", "unavailable"]},
         "value": {"type": ["boolean", "null"]},
         "unavailable_reason": {"type": ["string", "null"]}
-      }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "boolean"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
     },
     "identity": {
       "type": "object", "additionalProperties": false,

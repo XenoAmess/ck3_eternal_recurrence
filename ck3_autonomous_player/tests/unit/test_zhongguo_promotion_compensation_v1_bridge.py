@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 import unittest
 
@@ -22,6 +23,16 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def _typed(value: int | bool) -> dict[str, object]:
     return {"status": "available", "value": value, "unavailable_reason": None}
+
+
+def _schema() -> dict[str, object]:
+    return json.loads(
+        (
+            ROOT
+            / "ck3_autonomous_player/schemas/zhongguo-promotion-"
+            "compensation-postcondition-v1.schema.json"
+        ).read_text(encoding="utf-8")
+    )
 
 
 def _identity() -> dict[str, object]:
@@ -112,14 +123,39 @@ def test_native_frame_normalizes_and_satisfies_json_schema() -> None:
         expected_date_raw=800,
         expected_player_character_id=147,
     )
-    schema = json.loads(
-        (
-            ROOT
-            / "ck3_autonomous_player/schemas/zhongguo-promotion-"
-            "compensation-postcondition-v1.schema.json"
-        ).read_text(encoding="utf-8")
+    jsonschema.Draft202012Validator(_schema()).validate(normalized)
+
+
+def test_typed_unavailable_field_is_strict_and_not_business_ready() -> None:
+    frame = _native_frame()
+    frame["promotion_compensation"]["promotion_choice"]["option_number"] = {
+        "status": "unavailable",
+        "value": None,
+        "unavailable_reason": "variable_absent",
+    }
+    frame["readiness"]["promotion_choice_receipt_ready"] = False
+    frame["readiness"]["ready"] = False
+    frame["unavailable_reason"] = "business_postcondition_not_fully_observable"
+    normalized = normalize_native_zhongguo_promotion_compensation_v1(
+        frame,
+        expected_query=ZhongguoPromotionCompensationQueryV1(147, "promo.14"),
+        expected_snapshot_revision=51,
+        expected_date_raw=800,
+        expected_player_character_id=147,
     )
-    jsonschema.Draft202012Validator(schema).validate(normalized)
+    jsonschema.Draft202012Validator(_schema()).validate(normalized)
+    assert normalized["readiness"]["ready"] is False
+
+    malformed = deepcopy(normalized)
+    malformed["promotion_compensation"]["promotion_choice"][
+        "option_number"
+    ] = {
+        "status": "available",
+        "value": None,
+        "unavailable_reason": None,
+    }
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.Draft202012Validator(_schema()).validate(malformed)
 
 
 def test_facade_binds_source_result_and_connection_generation() -> None:
@@ -191,14 +227,7 @@ class OptimizedContractTests(unittest.TestCase):
             expected_date_raw=800,
             expected_player_character_id=147,
         )
-        schema = json.loads(
-            (
-                ROOT
-                / "ck3_autonomous_player/schemas/zhongguo-promotion-"
-                "compensation-postcondition-v1.schema.json"
-            ).read_text(encoding="utf-8")
-        )
-        jsonschema.Draft202012Validator(schema).validate(normalized)
+        jsonschema.Draft202012Validator(_schema()).validate(normalized)
 
     def test_facade_generation_and_default_off(self) -> None:
         business = {

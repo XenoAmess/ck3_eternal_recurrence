@@ -10,6 +10,8 @@
 - [static-confirmed] 晋升 #147 真实 consumer 写入 `zg361_pp_m147_receipt_serial` 与 `zg361_pp_m147_receipt_revision`；serial 等于 immutable delivered-result case。
 - [static-confirmed] 33 个 L/AE/AF compensation consumer 在真实 consumed 路径发布统一的 `zg361_comp_promotion_receipt_*`。只有 #147 已 active/consumed、owner/subject/cycle/case 一致且 serial 相关时才发布。
 - [static-confirmed] provider 只从 played owner 的固定 portfolio 解析唯一 subject，只读固定变量 allowlist；调用者不能指定 subject、mechanism 或变量名。
+- [static-confirmed] public MCP 只接受 `request_nonce / expected_revision`。内部 wire 的 owner 字段由同帧 played character 派生，并在 mailbox 再次等值校验，不是调用者可选角色入口。
+- [static-confirmed] 业务字段缺失、类型不符、非整数 fixed-point 或非法布尔值时，对应字段输出 `status=unavailable / value=null / unavailable_reason=<具体原因>`；identity、revision 或 serial 关系不一致时相应 readiness 为 `false`，不得形成业务 GREEN。
 - [static-confirmed] 独占 mailbox 使用 `permitted_executor_trivigintary`（第 23 槽）；共享 bridge 已有 reader、serializer、result frame、handler 和独立 query counter。
 - [static-confirmed] Python driver、service 与 MCP 已注册同名能力，响应绑定 `snapshot_id / revision / native_revision / connection_generation`；事件 facade 再绑定 source/result snapshot。
 - [static-confirmed] 默认 CK3 adapter descriptor 没有宣告该 capability。因此没有 paused live artifact 时，调用会 fail closed，不会把静态或 fixture 证据冒充 production-live。
@@ -54,6 +56,8 @@ provider 必须在 application-main paused frame 中执行：
 
 以下任一情况都会 fail closed：未暂停、revision 漂移、非 application-main、owner 不是 played character、subject 无效、operation 不在 allowlist、numbered receipt 跨 case、业务 identity 漂移、serial 非正或不相等、choice revision 未绑定、posted revision 不晚于 choice revision、二次读取变化、connection generation 变化。
 
+业务结果只来自上述 provider 读取的 #147 choice 与 posted compensation receipt。事件选项提交的 ACK 仅证明请求已被 bridge 接受，不能替代 receipt、identity、serial、revision 或 readiness。
+
 ## 产物与验证
 
 - 权威生成器：`mod_zhongguo_style/tools/gen_361_feedback_promotion_pip_runtime.py`、`gen_361_compensation_runtime.py`；生成文件不得手改。
@@ -62,9 +66,13 @@ provider 必须在 application-main paused frame 中执行：
 - Python：`zhongguo_promotion_compensation_postcondition_contract.py`、`native_driver.py`、`service.py`、`mcp_server.py`。
 - schema：`schemas/zhongguo-promotion-compensation-postcondition-v1.schema.json`。
 - ABI：`native_bridge/research/zhongguo_promotion_compensation_postcondition_v1_abi.json`。
-- 测试覆盖：完整 GREEN、身份/serial/revision 漂移、未知 operation、same-frame 漂移、严格 mailbox 输入、JSON schema、source/result snapshot 与 connection generation facade 绑定、默认不 advertise。
+- source contract：`native_bridge/research/fixtures/zhongguo_promotion_compensation_postcondition_v1_source_contract.json`。
+- no-launch preflight：`py tools/preflight_zg361_phase2_promotion_compensation_action_cell.py`；它同时核对 reader/serializer、严格 typed schema、mailbox、shared bridge、native driver、service、MCP 与 default-off descriptor，且固定输出 `ck3_started=false / provider_live_result_claimed=false`。
+- 测试覆盖：完整 GREEN、字段缺失/类型不符的 typed unavailable、身份/serial/revision 漂移、未知 operation、same-frame 漂移、严格 mailbox 输入、JSON schema、source/result snapshot 与 connection generation facade 绑定、默认不 advertise。
 
 MSVC 静态接线验证包含共享 DLL、provider fixture、mailbox 与主 mailbox source contract；不启动 CK3。只有后续 exact-build paused capture 通过后，才允许把 adapter descriptor 打开并升级为 production-live。
+
+所需 source checkpoint 固定为：同一 connection generation 上 paused、map-ready 的 `zg361pp.147`，played character 同时是 event root 与 owner，保存的 `zg361_pp_prompt_owner / zg361_pp_prompt_subject / zg361_pp_prompt_case / zg361_pp_prompt_cycle / zg361_pp_prompt_mechanism / zg361_pp_prompt_state` 完整，且恰有 3 个选项。随后提交 option 1，等待 `zg361comp.1` paused result event，再以推进后的 native revision 查询一次 provider；只有 provider `readiness.ready=true` 且 option number、owner/subject 与 action request 同源，才可形成 live GREEN。
 
 ## open_kaishek 同步输入
 

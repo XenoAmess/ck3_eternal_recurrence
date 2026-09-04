@@ -1,0 +1,115 @@
+{
+  "contract": "zhongguo_promotion_compensation_postcondition_v1_source_contract",
+  "readiness": "static_and_fixture_ready_live_pending",
+  "capability": "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
+  "step": "query-zhongguo-promotion-compensation-postcondition-v1",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "public_inputs": [
+    "request_nonce",
+    "expected_revision"
+  ],
+  "caller_selected_variable_names": false,
+  "caller_selected_characters": false,
+  "owner_source": "same_frame_snapshot.played_character_id",
+  "subject_source": "played_owner.zg361_comp_portfolio_subject",
+  "source_event": "zg361pp.147",
+  "result_event": "zg361comp.1",
+  "source_choice": {
+    "mechanism_id": 147,
+    "source": "zg361_pp_m147_receipt_*",
+    "business_case": "zg361_pp_m147_receipt_serial",
+    "revision": "zg361_pp_m147_receipt_revision"
+  },
+  "posted_compensation": {
+    "source": "zg361_comp_promotion_receipt_*",
+    "business_case": "zg361_comp_promotion_receipt_case",
+    "choice_serial": "zg361_comp_promotion_receipt_choice_serial",
+    "receipt_serial": "zg361_comp_promotion_receipt_serial",
+    "choice_revision": "zg361_comp_promotion_receipt_choice_revision",
+    "revision": "zg361_comp_promotion_receipt_revision"
+  },
+  "allowlists": {
+    "owner_variable_count": 7,
+    "subject_base_variable_count": 46,
+    "mechanism_ids": [
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289,
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      300
+    ],
+    "numbered_receipt_suffixes": [
+      "receipt_active",
+      "consumed",
+      "receipt_owner",
+      "receipt_subject",
+      "receipt_cycle",
+      "receipt_case",
+      "receipt_route",
+      "visible_revision"
+    ]
+  },
+  "generated_sources": [
+    "mod_zhongguo_style/tools/gen_361_feedback_promotion_pip_runtime.py",
+    "mod_zhongguo_style/tools/gen_361_compensation_runtime.py"
+  ],
+  "required_invariants": [
+    "public_request_has_no_character_or_variable_selector",
+    "played_owner_derives_exactly_one_portfolio_subject",
+    "m147_choice_is_active_consumed_and_bound_to_its_consumer_revision",
+    "posted_compensation_matches_the_selected_numbered_receipt",
+    "source_result_frozen_choice_and_compensation_share_business_identity",
+    "promotion_and_compensation_serials_are_positive_and_equal",
+    "posted_revision_is_later_than_choice_revision",
+    "absent_or_wrong_kind_business_fields_are_typed_unavailable",
+    "two_complete_projection_reads_and_frame_identity_are_equal",
+    "action_ack_is_never_business_postcondition",
+    "fixture_is_not_production_live"
+  ],
+  "mailbox_fixed_slot": "permitted_executor_trivigintary",
+  "wired_layers": [
+    "reader",
+    "serializer",
+    "schema",
+    "mailbox",
+    "bridge",
+    "native_driver",
+    "service",
+    "mcp"
+  ],
+  "shared_wiring": "default_off_complete_not_advertised",
+  "default_adapter_advertised": false,
+  "production_live_ready": false,
+  "next_live_checkpoint": "paused zg361pp.147 option-1 request followed by zg361comp.1 and one provider-ready result on the same connection generation"
+}

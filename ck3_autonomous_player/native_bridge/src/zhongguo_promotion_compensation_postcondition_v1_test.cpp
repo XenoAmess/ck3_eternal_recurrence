@@ -186,6 +186,42 @@ bool TestUncorrelatedReceiptSerialDoesNotBecomeReady() {
          !output.readiness.receipt_serials_ready && !output.readiness.ready;
 }
 
+bool TestAbsentChoiceFieldIsTypedUnavailable() {
+  Fixture fixture;
+  Populate(fixture);
+  fixture.variables.erase({100, "zg361_pp_m147_receipt_route"});
+  xar::game::ZhongguoPromotionCompensationPostconditionV1 output{};
+  if (!Read(fixture, output) ||
+      output.promotion_choice.option_number.available ||
+      output.promotion_choice.option_number.value.has_value() ||
+      output.promotion_choice.option_number.unavailable_reason !=
+          "variable_absent" ||
+      output.readiness.promotion_choice_receipt_ready ||
+      output.readiness.ready) {
+    return false;
+  }
+  const auto json =
+      xar::ck3_11906::SerializeZhongguoPromotionCompensationPostconditionV1(
+          output);
+  return json.find(
+             "\"option_number\":{\"status\":\"unavailable\",\"value\":null,"
+             "\"unavailable_reason\":\"variable_absent\"}") !=
+         std::string::npos;
+}
+
+bool TestWrongKindReceiptFieldIsTypedUnavailable() {
+  Fixture fixture;
+  Populate(fixture);
+  Set(fixture, 100, "zg361_comp_promotion_receipt_serial", Character(904));
+  xar::game::ZhongguoPromotionCompensationPostconditionV1 output{};
+  return Read(fixture, output) &&
+         !output.compensation_receipt.receipt_serial.available &&
+         !output.compensation_receipt.receipt_serial.value.has_value() &&
+         output.compensation_receipt.receipt_serial.unavailable_reason ==
+             "variable_kind_mismatch" &&
+         !output.readiness.receipt_serials_ready && !output.readiness.ready;
+}
+
 bool TestUnknownOperationFailsClosed() {
   Fixture fixture;
   Populate(fixture);
@@ -209,6 +245,8 @@ int main() {
   if (!TestClosedProjection() ||
       !TestCrossCaseDoesNotBecomeReady() ||
       !TestUncorrelatedReceiptSerialDoesNotBecomeReady() ||
+      !TestAbsentChoiceFieldIsTypedUnavailable() ||
+      !TestWrongKindReceiptFieldIsTypedUnavailable() ||
       !TestUnknownOperationFailsClosed() || !TestFrameDriftFailsClosed()) {
     std::cerr << "zhongguo promotion/compensation provider fixture failed\n";
     return 1;

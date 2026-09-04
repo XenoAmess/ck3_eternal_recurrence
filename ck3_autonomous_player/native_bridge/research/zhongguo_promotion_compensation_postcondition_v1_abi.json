@@ -4,7 +4,9 @@
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.query-zhongguo-promotion-compensation-postcondition-v1",
+  "step": "query-zhongguo-promotion-compensation-postcondition-v1",
   "backend_id": "ck3-1.19.0.6-native-zhongguo-promotion-compensation-postcondition-v1",
+  "source_contract": "fixtures/zhongguo_promotion_compensation_postcondition_v1_source_contract.json",
   "request": {
     "public_inputs": [
       "request_nonce",
@@ -140,6 +142,13 @@
     "compensation_serial": "zg361_comp_promotion_receipt_serial",
     "required_relation": "all three positive serials are equal and equal the portfolio result case",
     "internal_case_policy": "do not replace the independent T or L/AE/AF case-kernel receipt identities"
+  },
+  "typed_negatives": {
+    "absent_business_field": "field_status_unavailable_with_variable_absent_reason",
+    "wrong_kind_or_non_integral_number": "field_status_unavailable_with_variable_kind_or_fixed_point_reason",
+    "invalid_boolean": "field_status_unavailable_with_boolean_value_invalid_reason",
+    "identity_revision_or_serial_mismatch": "available_projection_with_specific_readiness_false",
+    "selector_or_double_read_failure": "top_level_unavailable"
   },
   "readiness": {
     "identity_revision_and_serial_projection": "static_ready",
