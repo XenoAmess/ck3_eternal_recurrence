@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -22,8 +24,10 @@ from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
     Phase2SourceCheckpointProvider,
 )
 from zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
+    SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND,
     Phase2SourceCheckpointRegistryBuildError,
     Phase2SourceCheckpointRegistryBuilder,
+    build_registry_from_capture_manifest,
 )
 
 
@@ -32,6 +36,13 @@ PLANS = {
     plan.handler: plan
     for plan in PHASE2_EVENT_SEQUENCE_PLANS
     if plan.handler in CHECKPOINT_REQUIRED_HANDLERS
+}
+REPOSITORY_ROOT = TOOLS.parent
+EXPECTED_SOURCE_EVENTS = {
+    "capture_promotion_compensation": "zg361pp.147",
+    "capture_projects_metrics": "zg361cp.26",
+    "capture_incidents_operations": "zg361.50",
+    "capture_cross_cycle_endgame": "zg361we.356",
 }
 
 
@@ -89,6 +100,64 @@ def record_all(
             )
         )
     return entries
+
+
+def capture_manifest(root: Path) -> Path:
+    entries = []
+    for ordinal, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
+        plan = PLANS[handler]
+        checkpoint = root / f"observed-{ordinal}.ck3"
+        checkpoint.write_bytes(f"observed-checkpoint-{ordinal}".encode("ascii"))
+        sha256 = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
+        owner = 9200 + ordinal
+        player = owner if handler == "capture_incidents_operations" else 9001
+        date_raw = 820 + ordinal
+        entries.append(
+            {
+                "span_id": plan.span_id,
+                "handler": handler,
+                "source_event_definition_key": plan.source_event,
+                "owner_character_id": owner,
+                "player_character_id": player,
+                "date_raw": date_raw,
+                "checkpoint": {
+                    "path": str(checkpoint.resolve()),
+                    "bytes": checkpoint.stat().st_size,
+                    "sha256": sha256,
+                    "save_lineage_id": SEED_LINEAGE_ID,
+                },
+                "source_receipt": source_receipt(
+                    plan=plan,
+                    owner_character_id=owner,
+                    player_character_id=player,
+                    date_raw=date_raw,
+                    checkpoint_sha256=sha256,
+                ),
+            }
+        )
+    path = root / "capture-manifest.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "kind": SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND,
+                "result": "GREEN",
+                "evidence_class": "real_ck3",
+                "fixture_used": False,
+                "console_used": False,
+                "seed_lineage_id": SEED_LINEAGE_ID,
+                "capture_lineage": {
+                    "seed_lineage_id": SEED_LINEAGE_ID,
+                    "source": "bound-live-capture-receipts",
+                },
+                "entries": entries,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return path
 
 
 class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
@@ -292,6 +361,96 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
             self.assertEqual(
                 raised.exception.reason_code,
                 "source_checkpoint_registry_lineage_invalid",
+            )
+
+    def test_sharded_product_contains_each_required_source_event_once(self) -> None:
+        events_root = REPOSITORY_ROOT / "mod_zhongguo_style" / "events"
+        corpus = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(events_root.glob("*.txt"))
+        )
+        self.assertEqual(
+            {
+                handler: PLANS[handler].source_event
+                for handler in CHECKPOINT_REQUIRED_HANDLERS
+            },
+            EXPECTED_SOURCE_EVENTS,
+        )
+        for event in EXPECTED_SOURCE_EVENTS.values():
+            matches = re.findall(
+                rf"(?m)^\s*({re.escape(event)})\s*=\s*\{{", corpus
+            )
+            self.assertEqual(matches, [event], event)
+
+    def test_capture_manifest_is_archived_and_consumable_by_runner_provider(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root)
+            registry_path = root / "registry.json"
+            registry = build_registry_from_capture_manifest(
+                manifest,
+                checkpoint_root=root / "frozen",
+                registry_path=registry_path,
+            )
+            provider = Phase2SourceCheckpointProvider(
+                registry,
+                restore_registered_checkpoint=lambda _entry: {},
+                expected_seed_lineage_id=SEED_LINEAGE_ID,
+            )
+            self.assertEqual(provider.preflight()["entry_count"], 4)
+            for handler in CHECKPOINT_REQUIRED_HANDLERS:
+                entry = provider.checkpoint_for_plan(PLANS[handler])
+                self.assertEqual(
+                    entry.source_event_definition_key,
+                    EXPECTED_SOURCE_EVENTS[handler],
+                )
+                self.assertTrue(entry.path.is_file())
+
+    def test_cli_builds_registry_from_existing_checkpoint_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root)
+            registry = root / "registry.json"
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-B",
+                    str(TOOLS / "zhongguo_phase2_source_checkpoint_registry.py"),
+                    "--capture-manifest",
+                    str(manifest),
+                    "--checkpoint-root",
+                    str(root / "frozen"),
+                    "--output",
+                    str(registry),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertEqual(
+                json.loads(registry.read_text(encoding="utf-8"))["result"],
+                "GREEN",
+            )
+
+    def test_capture_manifest_cannot_claim_fixture_input(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root)
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            payload["fixture_used"] = True
+            manifest.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(
+                Phase2SourceCheckpointRegistryBuildError
+            ) as raised:
+                build_registry_from_capture_manifest(
+                    manifest,
+                    checkpoint_root=root / "frozen",
+                    registry_path=root / "registry.json",
+                )
+            self.assertEqual(
+                raised.exception.reason_code,
+                "source_checkpoint_capture_manifest_header_invalid",
             )
 
 

@@ -91,3 +91,18 @@ Runner 只识别窄接口 `restore_phase2_span_source_checkpoint_v1`。它接收
 这个实现仍然只是 `runner-ready`：它不生成 registry，不把单元测试或 typed ACK 写成 production-live，也不提供公共 action step、任意存档加载或通用角色切换。没有真实 registry 时 preflight 继续显式 RED。
 
 真实 registry 由 runner 参数 `--phase2-source-checkpoint-registry <json>` 输入，作为独立 capture context 传递；它不会被塞进或改写 canonical seed contract。默认 driver 在 recorder 启动前执行 registry/restore-interface preflight，因此缺失输入不会先录一段无效视频再失败。
+
+四个真实 checkpoint 与 source receipt 已由各自实机轮次产生后，使用宣传专用 assembler 冻结并生成 registry：
+
+```powershell
+py tools/zhongguo_phase2_source_checkpoint_registry.py `
+  --capture-manifest <GREEN_REAL_CK3_SOURCE_CHECKPOINT_CAPTURE_MANIFEST.json> `
+  --checkpoint-root <NEW_OR_CONTENT_IDENTICAL_CHECKPOINT_ARCHIVE_DIR> `
+  --output <NEW_SOURCE_CHECKPOINT_REGISTRY.json>
+```
+
+capture manifest 必须是 `zg361_phase2_source_checkpoint_capture_manifest` schema 1，按 Promotion、Projects、Incident、
+Endgame 固定顺序包含四项。每项必须直接携带既有 checkpoint 的绝对路径、字节数、SHA-256、save lineage，以及同一次实机观察产生的
+provider/UI GREEN source receipt；assembler 不补默认值、不生成事件、不启动 CK3，也不把 fixture、console 或占位数据提升为真实证据。
+生成后的 registry 仍须作为 `run_zhongguo_acceptance.py --phase2-promo-capture` 的
+`--phase2-source-checkpoint-registry` 输入，由正式 runner 在录制前再次核对字节、lineage、恢复接口和恢复后的 exact event identity。
