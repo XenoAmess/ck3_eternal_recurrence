@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_b3_explicit_and_seed_refresh_no_launch_freeze",
+  "status": "READY_TO_RUN",
+  "ck3_started": false,
+  "authorized_live_command_count": 1,
+  "canonical": {
+    "commit": "9cd921674e192a118ea27c376fd41dfbb4bab327",
+    "clean_source": "Z:\\p2s10s",
+    "clean_source_file_count": 2735,
+    "clean_source_tree_sha256": "c5b2708fcf6a12c9c8bac71f6f5998069d17c61931e64668d8eb3cd2018f3477",
+    "source_zip": "Z:\\p2s10.zip",
+    "source_zip_bytes": 83535513,
+    "source_zip_sha256": "2f36812a335bf403f85ff98b37406cb890039ddda0129b4be6d2ba4e380ad6e3",
+    "archive_checkout_byte_equivalent": true
+  },
+  "product": {
+    "projection": "b3-r5-exact-trigger-explicit-and-4d3c284",
+    "source": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\\product-source",
+    "file_count": 565,
+    "bytes": 21607199,
+    "tree_sha256": "d94c2d5d23e9ad254f4b20988fbf3c8e08408baa61070bd85f42b2d2fcbea35d",
+    "projection_manifest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\\projection.json",
+    "projection_manifest_sha256": "241db7b5e2df451aadbfaeb4570b083c8563239bc0158530682b9a77da2f4acd",
+    "longest_mounted_path_characters": 154,
+    "required_strictly_below": 250
+  },
+  "bridge": {
+    "candidate_switches": "default-off",
+    "native_tests": "94/94 GREEN",
+    "dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge.dll",
+    "dll_sha256": "bb10e12e0a166b9e405fe6e712f352d178377909ef5b672d3108e68a4001f4d7",
+    "injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promotion-source-product-native-default-candidate-cac1e85-20260904T104203Z\\xar_ck3_bridge_injector.exe",
+    "injector_sha256": "fbcd994cde7934ac9b34d08551397cdbbb0677c038b098eadd9e183e3b7ac1c5"
+  },
+  "preflight": {
+    "seed_runner": {
+      "result": "GREEN",
+      "status": "preflight-ready",
+      "path": "Z:\\p2s10e\\preflight.json",
+      "sha256": "b9e555d0578381520f08d1fff6fac7dd70e730ca1438b0bdafb5aa1e21f31cc2"
+    },
+    "default_desktop_relay": {
+      "result": "READY_TO_RUN",
+      "path": "Z:\\p2s10f\\relay-no-launch.json",
+      "sha256": "a2709cbbcc58b1cb1d8d5712aa9baead100022ca063e403dd1ab397a5f25c59",
+      "child_process_started": false,
+      "ck3_launch_attempted": false
+    },
+    "ck3_process_count_before": 0,
+    "ck3_process_count_after": 0
+  },
+  "live": {
+    "attempt": "Z:\\p2s10",
+    "artifacts": "Z:\\p2s10a",
+    "result": "Z:\\p2s10f\\default-desktop-live.json",
+    "stdout": "Z:\\p2s10f\\live.stdout.log",
+    "stderr": "Z:\\p2s10f\\live.stderr.log",
+    "all_fresh_at_freeze": true,
+    "pipe": "\\\\.\\pipe\\xar_ck3_bridge_zg361_e6d07a19c5b84f32a17906d3be428c51",
+    "command_document": "docs/phase2-promo/b3-explicit-and-seed-refresh-no-launch-2026-09-04.md"
+  },
+  "superseded_promotion_capture": {
+    "status": "HOLD_NO_LAUNCH",
+    "reason": "current_product_tree_matches_seed_source",
+    "old_seed_product_tree_sha256": "cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd",
+    "required_product_tree_sha256": "d94c2d5d23e9ad254f4b20988fbf3c8e08408baa61070bd85f42b2d2fcbea35d",
+    "gate_weakened": false
+  },
+  "claim_boundary": "A GREEN run refreshes only the canonical paused seed and typed selectors for the exact product tree; promotion source capture, B3, full Phase2, T0, and footage remain unclaimed."
+}
