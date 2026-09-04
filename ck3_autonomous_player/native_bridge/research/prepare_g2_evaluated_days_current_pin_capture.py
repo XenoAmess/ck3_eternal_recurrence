@@ -31,7 +31,10 @@ DEFAULT_MANIFEST = (
     / "fixtures"
     / "g2_evaluated_days_current_pin_live_manifest.json"
 )
-EXPECTED_SCHEMA = "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v1"
+EXPECTED_SCHEMAS = {
+    "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v1",
+    "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v2",
+}
 PRIVATE_CAPTURE_SCHEMA = "xar.ck3.g2_truce_private_capture.v3"
 PRIVATE_BOUNDARY_SCHEMA = "xar.ck3.g2_truce_private_evaluator_boundary.v1"
 PRIVATE_CAPTURE_ENVIRONMENT = "XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH"
@@ -41,6 +44,7 @@ if str(RESEARCH_ROOT) not in sys.path:
 
 import verify_g2_open_kaishek_compatibility as compatibility  # noqa: E402
 import verify_raiktor_truce_evaluator_callsite_v1 as evaluator  # noqa: E402
+import extract_g2_truce_context_lifetime_v2 as context_lifetime  # noqa: E402
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -85,7 +89,7 @@ def _load_manifest(path: Path) -> dict[str, Any]:
 
 
 def validate_manifest_contract(manifest: dict[str, Any]) -> None:
-    if manifest.get("schema") != EXPECTED_SCHEMA:
+    if manifest.get("schema") not in EXPECTED_SCHEMAS:
         raise ValueError("unexpected capture manifest schema")
     if manifest.get("state") != "static-ready-waiting-for-exclusive-ck3-slot":
         raise ValueError("manifest is not waiting for the exclusive CK3 slot")
@@ -100,14 +104,29 @@ def validate_manifest_contract(manifest: dict[str, Any]) -> None:
     if timeouts != {"readiness_seconds": 300, "session_seconds": 420}:
         raise ValueError("frozen timeouts changed")
     build = _mapping(manifest.get("build_contract"), "build_contract")
-    if build != {
+    candidate_kind = str(manifest.get("candidate_kind", "direct_v1"))
+    expected_build = {
         "private_capture_option": "ON",
         "native_callsite_observer_option": "OFF",
         "preview_entry_observer_option": "OFF",
         "default_capture_option": "OFF",
         "private_capture_schema": PRIVATE_CAPTURE_SCHEMA,
         "boundary_schema": PRIVATE_BOUNDARY_SCHEMA,
-    }:
+    }
+    if candidate_kind == "leaf_context_v2":
+        expected_build = {
+            "private_capture_option": "OFF",
+            "leaf_context_capture_option": "ON",
+            "native_callsite_observer_option": "OFF",
+            "preview_entry_observer_option": "OFF",
+            "default_capture_option": "OFF",
+            "default_leaf_context_capture_option": "OFF",
+            "private_capture_schema": PRIVATE_CAPTURE_SCHEMA,
+            "boundary_schema": PRIVATE_BOUNDARY_SCHEMA,
+        }
+    elif candidate_kind != "direct_v1":
+        raise ValueError("unknown private candidate kind")
+    if build != expected_build:
         raise ValueError("private/default build contract changed")
     query = _mapping(manifest.get("query_contract"), "query_contract")
     expected_step = f"query-war-termination-terms-v1-{identity['war_id']}"
@@ -308,6 +327,7 @@ def run_preflight(
         raise FileExistsError(f"preflight report already exists: {report_path}")
     manifest = _load_manifest(manifest_path)
     validate_manifest_contract(manifest)
+    candidate_kind = str(manifest.get("candidate_kind", "direct_v1"))
     paths = _mapping(manifest["paths"], "paths")
     expected = _mapping(manifest["sha256"], "sha256")
     identity = _mapping(manifest["identity"], "identity")
@@ -332,6 +352,10 @@ def run_preflight(
         "default_bridge_dll": Path(str(paths["default_bridge_dll"])).resolve(),
         "open_kaishek_jar": Path(str(paths["open_kaishek_jar"])).resolve(),
     }
+    if candidate_kind == "leaf_context_v2":
+        resolved["context_lifetime_live_red"] = _resolve_repo_path(
+            paths["context_lifetime_live_red"], repo_root
+        )
     actual_hashes: dict[str, str | None] = {}
     for name, path in resolved.items():
         actual_hashes[name] = _sha256(path) if path.is_file() else None
@@ -400,6 +424,27 @@ def run_preflight(
         / "research"
         / "raiktor_truce_evaluator_callsite_v1_abi.json",
     )
+    context_lifetime_report: dict[str, Any] | None = None
+    context_lifetime_error: str | None = None
+    if candidate_kind == "leaf_context_v2":
+        try:
+            context_lifetime_report = context_lifetime.extract(
+                resolved["game_executable"],
+                resolved["context_lifetime_live_red"],
+            )
+            frozen_context = json.loads(
+                (
+                    repo_root
+                    / "ck3_autonomous_player"
+                    / "native_bridge"
+                    / "research"
+                    / "g2_truce_context_lifetime_v2.json"
+                ).read_text(encoding="utf-8")
+            )
+            if context_lifetime_report != frozen_context:
+                context_lifetime_error = "generated context-lifetime evidence drifted"
+        except BaseException as error:
+            context_lifetime_error = f"{type(error).__name__}: {error}"
     open_external = _mapping(open_report.get("external"), "open report external")
     last_checkpoint = _mapping(anchor.get("last_checkpoint"), "driver checkpoint")
     checks = {
@@ -408,7 +453,15 @@ def run_preflight(
         "private_option_on": _cache_value(
             private_cache, "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1"
         )
-        == "ON",
+        == ("OFF" if candidate_kind == "leaf_context_v2" else "ON"),
+        "private_leaf_context_option_on": (
+            candidate_kind != "leaf_context_v2"
+            or _cache_value(
+                private_cache,
+                "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2",
+            )
+            == "ON"
+        ),
         "private_passive_observer_off": _cache_value(
             private_cache,
             "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1",
@@ -423,6 +476,10 @@ def run_preflight(
             default_cache, "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1"
         )
         == "OFF",
+        "default_leaf_context_capture_off": _cache_value(
+            default_cache, "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2"
+        )
+        in (None, "OFF"),
         "private_markers_present": PRIVATE_CAPTURE_SCHEMA.encode("ascii")
         in private_bytes
         and PRIVATE_BOUNDARY_SCHEMA.encode("ascii") in private_bytes
@@ -436,6 +493,13 @@ def run_preflight(
         and last_checkpoint.get("date_raw") == identity["date_raw"]
         and last_checkpoint.get("sha256") == expected["checkpoint"],
         "exact_evaluator_bytes": not evaluator_failures,
+        "exact_leaf_context_chain": (
+            candidate_kind != "leaf_context_v2"
+            or (
+                context_lifetime_report is not None
+                and context_lifetime_error is None
+            )
+        ),
         "open_kaishek_static_compatibility": open_report.get("ok") is True
         and open_report.get("status") == "GREEN_STATIC"
         and open_external.get("head") == manifest["open_kaishek"]["commit"]
@@ -468,6 +532,8 @@ def run_preflight(
         "process_inventory_error": inventory_error,
         "open_kaishek_audit": open_report,
         "evaluator_failures": evaluator_failures,
+        "context_lifetime_evidence": context_lifetime_report,
+        "context_lifetime_error": context_lifetime_error,
         "checks": checks,
         "query_contract": manifest["query_contract"],
         "capture_contract": manifest["capture_contract"],

@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,6 +23,13 @@ MANIFEST = (
     / "research"
     / "fixtures"
     / "g2_evaluated_days_current_pin_live_manifest.json"
+)
+LEAF_CONTEXT_MANIFEST = (
+    ROOT
+    / "native_bridge"
+    / "research"
+    / "fixtures"
+    / "g2_evaluated_days_leaf_context_v2_live_manifest.json"
 )
 SPEC = importlib.util.spec_from_file_location(
     "prepare_g2_evaluated_days_current_pin_capture", SCRIPT
@@ -160,7 +168,19 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
             },
         }
 
-    def test_committed_manifest_is_bounded_and_current_pin(self) -> None:
+    @staticmethod
+    def _open_audit_current(**_: object) -> dict[str, object]:
+        return {
+            "ok": True,
+            "status": "GREEN_STATIC",
+            "external": {
+                "head": "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
+                "origin_main": "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
+                "clean": True,
+            },
+        }
+
+    def test_committed_direct_manifest_remains_bounded(self) -> None:
         PREFLIGHT.validate_manifest_contract(self.manifest)
         self.assertEqual(
             self.manifest["open_kaishek"]["commit"],
@@ -168,6 +188,102 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
         )
         self.assertFalse(self.manifest["open_kaishek"]["native_certified"])
         self.assertFalse(self.manifest["open_kaishek"]["runtime_certified"])
+
+    def test_committed_leaf_context_manifest_is_bounded_and_current_pin(self) -> None:
+        manifest = json.loads(LEAF_CONTEXT_MANIFEST.read_text(encoding="utf-8"))
+        PREFLIGHT.validate_manifest_contract(manifest)
+        self.assertEqual(manifest["candidate_kind"], "leaf_context_v2")
+        self.assertEqual(
+            manifest["open_kaishek"]["commit"],
+            "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b",
+        )
+        self.assertFalse(manifest["open_kaishek"]["native_certified"])
+        self.assertFalse(manifest["open_kaishek"]["runtime_certified"])
+
+    def test_leaf_context_v2_contract_and_preflight(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            manifest, repo = self._fixture(root)
+            private_cache = Path(manifest["paths"]["private_cmake_cache"])
+            default_cache = Path(manifest["paths"]["default_cmake_cache"])
+            private_cache.write_text(
+                "\n".join(
+                    (
+                        "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1:BOOL=OFF",
+                        "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2:BOOL=ON",
+                        "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1:BOOL=OFF",
+                        "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1:BOOL=OFF",
+                    )
+                ),
+                encoding="utf-8",
+            )
+            default_cache.write_text(
+                "\n".join(
+                    (
+                        "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1:BOOL=OFF",
+                        "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2:BOOL=OFF",
+                    )
+                ),
+                encoding="utf-8",
+            )
+            live_red = repo / "live-red.json"
+            live_red.write_text("{}", encoding="utf-8")
+            frozen_context = {"schema": "fixture-context-lifetime"}
+            frozen_context_path = (
+                repo
+                / "ck3_autonomous_player"
+                / "native_bridge"
+                / "research"
+                / "g2_truce_context_lifetime_v2.json"
+            )
+            frozen_context_path.parent.mkdir(parents=True)
+            frozen_context_path.write_text(
+                json.dumps(frozen_context), encoding="utf-8"
+            )
+            manifest["schema"] = (
+                "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v2"
+            )
+            manifest["candidate_kind"] = "leaf_context_v2"
+            manifest["open_kaishek"]["commit"] = (
+                "135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b"
+            )
+            manifest["build_contract"] = {
+                "private_capture_option": "OFF",
+                "leaf_context_capture_option": "ON",
+                "native_callsite_observer_option": "OFF",
+                "preview_entry_observer_option": "OFF",
+                "default_capture_option": "OFF",
+                "default_leaf_context_capture_option": "OFF",
+                "private_capture_schema": PREFLIGHT.PRIVATE_CAPTURE_SCHEMA,
+                "boundary_schema": PREFLIGHT.PRIVATE_BOUNDARY_SCHEMA,
+            }
+            manifest["paths"]["context_lifetime_live_red"] = "live-red.json"
+            manifest["sha256"]["private_cmake_cache"] = _sha256(private_cache)
+            manifest["sha256"]["default_cmake_cache"] = _sha256(default_cache)
+            manifest["sha256"]["context_lifetime_live_red"] = _sha256(live_red)
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            PREFLIGHT.validate_manifest_contract(manifest)
+            with mock.patch.object(
+                PREFLIGHT.context_lifetime, "extract", return_value=frozen_context
+            ):
+                report = PREFLIGHT.run_preflight(
+                    manifest_path,
+                    root / "preflight.json",
+                    repo_root=repo,
+                    process_inventory=lambda: {
+                        "counts": {
+                            "ck3.exe": 0,
+                            "xar_ck3_bridge_injector.exe": 0,
+                        },
+                        "all_zero": True,
+                    },
+                    open_audit=self._open_audit_current,
+                    evaluator_verify=lambda _exe, _contract: [],
+                )
+            self.assertTrue(report["ok"])
+            self.assertTrue(report["checks"]["exact_leaf_context_chain"])
+            self.assertTrue(report["checks"]["private_leaf_context_option_on"])
 
     def test_unique_command_runs_runner_then_analyzer(self) -> None:
         commands = PREFLIGHT.build_commands(self.manifest, repo_root=ROOT.parents[0])

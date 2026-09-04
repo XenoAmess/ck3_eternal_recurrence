@@ -248,3 +248,38 @@ Debug 断言版与 Release 版均通过；这仍只是 `static-ready` 候选，�
 `pre_call -> post_call_1 -> post_call_2` 都出现、结果非负且相等、frame/identity/cleanup 全 GREEN，
 才可把 artifact 交给 readiness 审查；在此之前 `native_certified=false`、`runtime_certified=false`、
 `decision_ready=false`、`automatic_surrender_ready=false`，`GEN-034` 继续 unresolved。
+
+## 2026-09-04：leaf-context V2 单槽前置已成立
+
+[static-ready / no launch] 新增
+[`g2_evaluated_days_leaf_context_v2_live_manifest.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_leaf_context_v2_live_manifest.json)，
+并扩充 no-launch preflight，使它能显式区分已失败的 `direct_v1` 与新的
+`leaf_context_v2`。V2 合同要求 direct capture 为 OFF、leaf-context capture 为 ON，默认构建两者均为
+OFF；preflight 还会从 exact EXE 与已提交的 r1 RED 摘要重新生成 context-lifetime 证据，并逐字比较冻结
+JSON。因此这不是把旧 raw context 换名重跑，而是只允许由静态数据流证明的同步 leaf wrapper candidate。
+
+V2 frozen candidate 来自 commit `39697ff157f3c3b1f8790f4395dc0bb62f908bfc`：private DLL、injector、
+source ZIP 的 SHA-256 分别为 `E905197B…F5ED`、`9D3E1FEB…09B2`、`B5990115…300C`；default-OFF
+DLL 为 `AB08A3AF…4EA`。open_kaishek 兼容 pin 已同步到干净主线
+`135113d3c1426a9d8f0c8c7d8368e3d525ab0d3b`，其静态审计为 `GREEN_STATIC`，但 capability 中的
+`native_certified=false` 与 `runtime_certified=false` 未改变。
+
+在没有 CK3/injector 进程的前提下，V2 preflight 首次运行得到 `ready-to-run`；全部 input/source hash、
+private/default build option、driver identity、exact evaluator bytes、exact leaf-context chain、open_kaishek pin、
+fresh attempt 与独占槽检查均为 true。外部报告路径为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-20260904\preflight-leaf-context-v2-r1.json`，
+SHA-256 为 `BBF2673B3258D1A0CA95943BF58C360161EBF68098FEED7FD7DB20046F82BCEF`。相关 Python 契约、
+preflight、analyzer 与 preview integration 测试在 normal/`-O` 下各 48 项通过；本步未创建 profile、未启动或
+附加 CK3，也未发送游戏命令。
+
+合入 canonical root 后，下一次独占槽应先重新运行以下 no-launch preflight（报告名必须保持新鲜），再只执行
+其 `unique_powershell_command`：
+
+```powershell
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_leaf_context_v2_live_manifest.json --report Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-20260904\preflight-leaf-context-v2-canonical-r1.json
+```
+
+该命令只允许新的 attempt
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-20260904\live-leaf-context-dual-query-r1`，
+仍只做两次同帧只读 terms query。preflight GREEN 证明的是“新的实机候选及前置成立”，不是 evaluator 已 live
+成功；在新的 durable post-call 证据出现前，public wire/readiness、expiry、决策、自动投降与 `GEN-034` 均不提升。
