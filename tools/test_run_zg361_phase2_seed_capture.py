@@ -1597,6 +1597,141 @@ class KnownVanillaPrebootstrapService:
         return {"accepted": True}
 
 
+def _known_b2_pip_context(
+    *, prompt_owner_character_id: int = 32904
+) -> dict[str, object]:
+    expected = capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT
+
+    def character_scope(name: str, character_id: int) -> dict[str, object]:
+        return {
+            "name": name,
+            "scope": {
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            },
+        }
+
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 7,
+        "date_raw": expected["date_raw"],
+        "current_event_instance_id": 30,
+        "window_match_count": 1,
+        "event_definition_key": expected["event_definition_key"],
+        "calculated_event_id": 4430040,
+        "root_scope": {
+            "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": expected["root_character_id"],
+            }
+        },
+        "saved_scopes": [
+            character_scope(
+                "zg361_reviewing_superior",
+                expected["reviewing_superior_character_id"],
+            ),
+            character_scope(
+                "zg361_b2_pip_prompt_owner", prompt_owner_character_id
+            ),
+            character_scope(
+                "zg361_b2_pip_prompt_subject",
+                expected["prompt_subject_character_id"],
+            ),
+            character_scope(
+                "zga_personal_result_target",
+                expected["personal_result_target_character_id"],
+            ),
+        ],
+        "options": [
+            {
+                "rendered_index": index,
+                "native_option_index": index,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+            for index in range(expected["option_count"])
+        ],
+    }
+
+
+class KnownB2PipPrebootstrapService:
+    def __init__(self, *, prompt_owner_character_id: int = 32904) -> None:
+        self.state = "pip"
+        self.revision = 7
+        self.prompt_owner_character_id = prompt_owner_character_id
+        self.selections: list[tuple[int, int, int]] = []
+
+    def snapshot(self) -> dict[str, object]:
+        expected = capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT
+        active_event = (
+            {"source": "native", "instance_id": 30, "option_count": 3}
+            if self.state == "pip"
+            else {"source": "native", "instance_id": 31, "option_count": 1}
+        )
+        return {
+            "revision": self.revision,
+            "date_raw": expected["date_raw"],
+            "paused": True,
+            "map_ready": True,
+            "speed": 1,
+            "active_event": active_event,
+        }
+
+    def query_current_event_window_context_v1(
+        self, event_instance_id: int, **_kwargs: object
+    ) -> dict[str, object]:
+        if self.state == "pip":
+            require(event_instance_id == 30, "wrong PIP instance queried")
+            return {
+                "current_event_window_context": _known_b2_pip_context(
+                    prompt_owner_character_id=self.prompt_owner_character_id
+                )
+            }
+        require(event_instance_id == 31, "wrong seed instance queried")
+        return {
+            "current_event_window_context": {
+                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+            }
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        self.selections.append(
+            (option_number, event_instance_id, expected_revision)
+        )
+        require(self.state == "pip", "PIP event selected twice")
+        require(option_number == 1, "PIP accept option drifted")
+        self.state = "seed"
+        self.revision += 1
+        return {
+            "step": "select-event-option-1",
+            "accepted": True,
+            "status": "submitted",
+            "option_number": 1,
+            "option_index": 0,
+            "event_selection": {
+                "postcondition_verified": True,
+                "old_event_instance_id": 30,
+                "new_event_instance_id": 31,
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+        }
+
+
 class RegisteredPrebootstrapSequenceService:
     """Expose the product card, exact vanilla interruption, then the seed."""
 
@@ -1801,6 +1936,84 @@ def test_exact_vanilla_prebootstrap_event_uses_option_two() -> None:
         require(
             drain["wait_policy"] == "continue_under_original_total_deadline",
             "vanilla drain silently introduced a short secondary deadline",
+        )
+
+
+def test_exact_b2_pip_prebootstrap_event_uses_accept_option() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownB2PipPrebootstrapService()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                "source_save_sha256"
+            ],
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        require(
+            snapshot["active_event"]
+            == {"source": "native", "instance_id": 31, "option_count": 1},
+            "waiter did not reach the seed after the exact B2 PIP drain",
+        )
+        require(
+            service.selections == [(1, 30, 7)],
+            "exact B2 PIP was not accepted once with native option zero",
+        )
+        drain = json.loads(
+            (
+                artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
+            ).read_text(encoding="utf-8")
+        )
+        require(
+            drain["state"] == "known_pre_bootstrap_b2_pip_event_drained"
+            and drain["result"] == "GREEN",
+            "exact B2 PIP drain lacks typed GREEN evidence",
+        )
+        require(
+            all(drain["identity_checks"].values())
+            and all(drain["selection_checks"].values()),
+            "B2 PIP drain did not retain every identity and ACK gate",
+        )
+
+
+def test_b2_pip_prebootstrap_identity_drift_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        service = KnownB2PipPrebootstrapService(
+            prompt_owner_character_id=99999
+        )
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                Path(raw),
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=10.0,
+                source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                    "source_save_sha256"
+                ],
+                clock=FakeTime().clock,
+                sleeper=lambda _seconds: None,
+            )
+            raise AssertionError("identity-drifted B2 PIP was selected")
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence["state"]
+                == "known_pre_bootstrap_b2_pip_event_identity_mismatch",
+                "B2 PIP identity mismatch lacks its typed RED state",
+            )
+            require(
+                error.evidence["identity_checks"][
+                    "prompt_owner_character_id"
+                ]
+                is False,
+                "B2 PIP owner drift was not exposed",
+            )
+        require(
+            not service.selections,
+            "identity-drifted B2 PIP crossed the action boundary",
         )
 
 
@@ -3022,6 +3235,8 @@ def main() -> int:
     test_exact_known_predecessor_is_drained_once()
     test_calculated_event_id_is_observed_but_not_an_identity_gate()
     test_exact_vanilla_prebootstrap_event_uses_option_two()
+    test_exact_b2_pip_prebootstrap_event_uses_accept_option()
+    test_b2_pip_prebootstrap_identity_drift_fails_closed()
     test_multiple_registered_prebootstrap_events_are_supported()
     test_vanilla_prebootstrap_identity_and_option_shape_fail_closed()
     test_unregistered_vanilla_event_remains_unexpected_red()

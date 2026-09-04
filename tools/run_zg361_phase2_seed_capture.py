@@ -90,6 +90,25 @@ KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT = {
     "selected_option_number": 2,
     "selected_native_option_index": 1,
 }
+KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT = {
+    # The fresh schema-3 seed captured under the 629-file product reaches its
+    # already-scheduled player PIP response one day after load.  Bind that one
+    # exact interruption before selecting the authored accept path; this is
+    # not a wildcard for B2 or mod events.
+    "source_save_sha256": (
+        "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c"
+    ),
+    "event_definition_key": "zg361b2.40",
+    "date_raw": 53147040,
+    "root_character_id": 29037,
+    "reviewing_superior_character_id": 32904,
+    "prompt_owner_character_id": 32904,
+    "prompt_subject_character_id": 29037,
+    "personal_result_target_character_id": 29037,
+    "option_count": 3,
+    "selected_option_number": 1,
+    "selected_native_option_index": 0,
+}
 LOADER_FATAL_STALL_SECONDS = 45.0
 DEFAULT_LOADER_TIMEOUT_SECONDS = 300.0
 DEFAULT_NATIVE_READINESS_TIMEOUT_SECONDS = 300.0
@@ -2110,6 +2129,86 @@ def _known_pre_bootstrap_vanilla_event_checks(
     }
 
 
+def _known_pre_bootstrap_b2_pip_event_checks(
+    *,
+    source_save_sha256: str | None,
+    snapshot: dict[str, Any],
+    context: dict[str, Any],
+    event_instance_id: int,
+) -> dict[str, bool]:
+    """Bind the one B2 PIP interruption observed from the fresh seed."""
+
+    expected = KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT
+    active = snapshot.get("active_event")
+    active_event = active if isinstance(active, dict) else {}
+    options = context.get("options")
+    option_rows = options if isinstance(options, list) else []
+    authored_options_exact = len(option_rows) == expected["option_count"]
+    if authored_options_exact:
+        for index, row in enumerate(option_rows):
+            if not isinstance(row, dict) or not (
+                row.get("rendered_index") == index
+                and row.get("native_option_index") == index
+                and row.get("shown") is True
+                and row.get("enabled") is True
+                and row.get("fallback") is False
+                and row.get("cancel") is False
+            ):
+                authored_options_exact = False
+                break
+
+    saved_scopes = context.get("saved_scopes")
+    saved_scope_rows = saved_scopes if isinstance(saved_scopes, list) else []
+
+    def character_ids(scope_name: str) -> set[int]:
+        return {
+            character_id
+            for row in saved_scope_rows
+            if isinstance(row, dict)
+            and row.get("name") == scope_name
+            and (character_id := _typed_character_id(row.get("scope")))
+            is not None
+        }
+
+    return {
+        "source_save_sha256": source_save_sha256
+        == expected["source_save_sha256"],
+        "context_schema": context.get("schema")
+        == "current-event-window-context-v1",
+        "context_schema_version": context.get("schema_version") == 1,
+        "context_available": context.get("status") == "available",
+        "unique_window": context.get("window_match_count") == 1,
+        "native_active_event": active_event.get("source") == "native",
+        "event_definition_key": context.get("event_definition_key")
+        == expected["event_definition_key"],
+        "event_instance_id": context.get("current_event_instance_id")
+        == event_instance_id,
+        "snapshot_date_raw": snapshot.get("date_raw") == expected["date_raw"],
+        "context_date_raw": context.get("date_raw") == expected["date_raw"],
+        "root_character_id": _typed_character_id(context.get("root_scope"))
+        == expected["root_character_id"],
+        "reviewing_superior_character_id": character_ids(
+            "zg361_reviewing_superior"
+        )
+        == {expected["reviewing_superior_character_id"]},
+        "prompt_owner_character_id": character_ids(
+            "zg361_b2_pip_prompt_owner"
+        )
+        == {expected["prompt_owner_character_id"]},
+        "prompt_subject_character_id": character_ids(
+            "zg361_b2_pip_prompt_subject"
+        )
+        == {expected["prompt_subject_character_id"]},
+        "personal_result_target_character_id": character_ids(
+            "zga_personal_result_target"
+        )
+        == {expected["personal_result_target_character_id"]},
+        "snapshot_option_count": active_event.get("option_count")
+        == expected["option_count"],
+        "authored_options_exact": authored_options_exact,
+    }
+
+
 def _known_pre_bootstrap_selection_checks(
     selection: object,
     *,
@@ -2396,6 +2495,22 @@ def wait_for_bootstrap_event(
                             "known-pre-bootstrap-vanilla-event-drain.json"
                         )
                         state_prefix = "known_pre_bootstrap_vanilla_event"
+                    elif key == KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                        "event_definition_key"
+                    ]:
+                        expected = KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT
+                        identity_checks = (
+                            _known_pre_bootstrap_b2_pip_event_checks(
+                                source_save_sha256=source_save_sha256,
+                                snapshot=snapshot,
+                                context=context,
+                                event_instance_id=event_id,
+                            )
+                        )
+                        artifact_name = (
+                            "known-pre-bootstrap-b2-pip-event-drain.json"
+                        )
+                        state_prefix = "known_pre_bootstrap_b2_pip_event"
                     else:
                         expected = None
                     if expected is not None:
@@ -2464,6 +2579,10 @@ def wait_for_bootstrap_event(
         ),
         "known_pre_bootstrap_vanilla_event_drained": (
             KNOWN_PRE_BOOTSTRAP_VANILLA_EVENT["event_definition_key"]
+            in drained_pre_bootstrap_events
+        ),
+        "known_pre_bootstrap_b2_pip_event_drained": (
+            KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["event_definition_key"]
             in drained_pre_bootstrap_events
         ),
         "drained_pre_bootstrap_events": drained_pre_bootstrap_events,
