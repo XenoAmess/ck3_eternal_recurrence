@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "zg361_phase2_seed_entry_production_closure",
   "description": "Callback-closed production product for the checked-in five-root Phase-2 seed fixture, layered over Incident-X r3.",
-  "readiness": "static-ready-not-live",
+  "readiness": "paused-seed-live-green",
   "baseline": {
     "root": "_runtime/phase2-incident-x-production-closure-20260904-r3",
     "source": "source",
@@ -100,8 +100,18 @@
     "formal_overlay_tree_sha256": "8f905d02762fb5b2e422dfa389b8231e97b3745441827e270ed7fe30cb69cfd9",
     "file_list_sha256": "7b2e5178c9327e1236806243ebb044c543c5e2a6ff7dc03917391a736a58cbe3",
     "projection_manifest_sha256": "d16c1911cc0a76cb4d8df63d9a6e6d1e2c3f9ec57ea1bdd40ef75900a0c9bb30",
-    "ck3_launch": "NOT_RUN_BY_BUILDER",
-    "live_status": "pending"
+    "ck3_launch": "RUN_BY_EXTERNAL_SEED_CAPTURE_R9",
+    "live_status": "paused_seed_ready",
+    "live_evidence": {
+      "path": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-seed-r9-20260904-074005/artifacts-live/runner-report.json",
+      "sha256": "32186480aaaefb2f3f10d8606bd6d44e4fff6db8a82a7c34d8121b9594d43ba5",
+      "result": "GREEN",
+      "game_version": "1.19.0.6",
+      "executable_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "loader_stage_seconds": 48.19,
+      "runner_seconds": 161.686,
+      "provider_baseline_verdict": "blocked_provider_matrix_captured"
+    }
   },
   "overlay": {
     "bytes": 3195132,

@@ -237,6 +237,19 @@ rect/scroll/action 仍为 typed unavailable。runner 不把该最小 static prim
 `MCP capability RED`，且总报告强制 `gameplay_green_claimed=false`。即使测试替身伪造 cell `result=GREEN`，只要缺少完整的
 MCP-only scenario proof，总结果也会降为 RED。
 
+#### Focused B2 same-checkpoint 路由边界（2026-09-04）
+
+r9 已提供 ready canonical paused seed，但初始 B2 provider 为 `case_not_found`。下一项 runner 接线必须是与
+`--phase2-live-batch` 互斥的 product-only focused route：从 immutable seed 先有界处理真实 `zg361.50` option 1，等待旧
+event instance 消失和真实 `zg361b2.40`/B2 provider 出现，再调用
+`zg361_phase2_b2_checkpoint_matrix.run_b2_same_checkpoint_matrix()`。该矩阵自己管理四次 restore、五个不同 PID/连续 generation
+及最终全量 cleanup，不能再嵌入现有的一次 save/restore helper；否则会产生双 checkpoint owner 和后续场景断链。
+
+focused route 只验证 B2 同检查点 accept/negotiate/refuse 三臂，不要求尚未闭合的 scoreboard、Incident mixed、Workforce
+三周期或 8-span，因此不得传播为完整 `--phase2-live-batch` GREEN。反过来，完整 batch 当前会在已知 scoreboard gate
+fail-closed，也不应用于首次 B2 matrix 实机。该 route 在取得真实 CK3 artifact 前保持
+`static-ready / production-live pending`，并继续禁止 OCR、坐标和 acceptance-only 测试决议。
+
 二期 map-entry runner 已改为固定存档的 MCP-only native frontend start，不再保留 `runner_not_wired`。权威 seed 合同固定 save
 hash/size/mtime/header、exact game/EXE、相同 mod IDs、source report/index 与真实角色绑定；`native_session` 只走
 `continue_last_save`，不进入主菜单、lobby、OCR、坐标或测试决议。来源 product/fixture tree 只作 provenance，不要求与每次开发后的

@@ -1,28 +1,28 @@
 {
   "schema_version": 1,
   "kind": "zg361_phase2_paused_seed",
-  "status": "blocked_seed_generation_required",
-  "ready": false,
-  "blocker": "The preserved save predates B1/B2/Incident/Workforce state and has no captured domain selectors. Generate a new MCP-only seed from the acceptance-only phase-two bootstrap fixture; do not guess CharacterIDs. Incident mixed N/A+positive and Workforce three-cycle charter readiness remain separate product/acceptance blockers.",
+  "status": "ready",
+  "ready": true,
+  "blocker": "",
   "source": {
-    "profile": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061_native_state/profile",
-    "relative_save": "save games/autosave.ck3",
-    "absolute_save": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061_native_state/profile/save games/autosave.ck3",
-    "bytes": 52902730,
-    "sha256": "98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3",
-    "last_write_time_utc": "2026-08-30T11:19:41.0037741Z",
-    "last_write_time_ns": 1788088781003774100
+    "profile": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-seed-r9-20260904-074005\\attempt-live\\native-state\\profile",
+    "relative_save": "save games/xar_checkpoint.ck3",
+    "absolute_save": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-seed-r9-20260904-074005\\attempt-live\\native-state\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 53517622,
+    "sha256": "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733",
+    "last_write_time_utc": "2026-09-03T23:46:20.332095Z",
+    "last_write_time_ns": 1788479180332094700
   },
   "provenance": {
-    "source_run": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-worktrees/v0.4-main_process_assets/zg361/runs/zga_20260830_191131_7e82d061",
-    "source_report_sha256": "409cf4366a7a96801cfe56c91792d11c7b779a6deecb1d2dddf4876c87d8dd6b",
-    "source_evidence_index_sha256": "140e5ff79f37717b25d1233e02427ade7f2031fac6b7944b2accda6af979b450",
-    "source_git_commit": "fa5c78dd4b524037d8b113d0498328437085825c",
-    "real_character_proof": "source report witnessed-result event zg361.4 has root_scope CharacterID 29037 for historical han_6875 and saved scope zga_reviewing_superior CharacterID 32904; the earlier contract incorrectly treated the superior as the played root",
+    "source_run": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\phase2-seed-r9-20260904-074005\\artifacts-live\\candidate",
+    "source_report_sha256": "1d493ffbcaf61695e98993619258f9b1fde1b6f133e7311aa89eba3302a96c0e",
+    "source_evidence_index_sha256": "740af84b9e996064634a546b95ea27090c75aee41c6193dffbce474eada10fed",
+    "source_git_commit": "e332c3bdfe3d5bedf0f3d1a3d028c7c3a6ee4560",
+    "real_character_proof": "acceptance-only zga_phase2_seed.1 root binds historical han_6875 to native CharacterID 29037; five selector IDs came only from typed saved character scopes",
     "limitations": [
-      "The preserved autosave predates typed save-checkpoint ACK materialization, so its declared saved date is a load-time hypothesis rather than source-ACK proof.",
-      "The preserved autosave predates the current B1/B2/Incident/Workforce product state and cannot be promoted to a ready phase-two seed merely by adding selector IDs.",
-      "The source product and fixture tree hashes are provenance only; a replacement seed must bind the current runtime by MCP event context plus typed save-checkpoint evidence."
+      "The bootstrap fixture is acceptance-only and must never be loaded by promo or release runtimes.",
+      "Selector capture and typed checkpoint materialization do not prove the four domain providers ready.",
+      "The captured provider matrix is not yet wholly ready; inspect provider-probes.json."
     ]
   },
   "runtime": {
@@ -32,11 +32,11 @@
       "mod/zg361_acceptance.mod",
       "mod/zga_acceptance_fixture.mod"
     ],
-    "source_product_tree_sha256": "ddac4703d99b7e498e276c37c685af28b2006ad73f4124f9cd77e745aa14a693",
-    "source_fixture_tree_sha256": "e2c092a464b53aa3b6161f4f3559ae74e817fe2ecf0327011979c41573eaf5de"
+    "source_product_tree_sha256": "cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd",
+    "source_fixture_tree_sha256": "a61d9715071ab1c4c6e3a181437af2dc6aa23b21f2a91ee455696911e5bb7730"
   },
   "saved_state": {
-    "date_raw": 53147016,
+    "date_raw": 53146920,
     "played_character_id": 29037,
     "player_history_id": "han_6875",
     "played_character_alive": true,
@@ -50,10 +50,10 @@
   },
   "domain_query_matrix": {
     "schema_version": 1,
-    "b2_pip_owner_character_id": null,
-    "incident_owner_character_id": null,
-    "workforce_owner_character_id": null,
-    "ai_owned_case_owner_character_id": null,
-    "ai_owned_case_subject_character_id": null
+    "b2_pip_owner_character_id": 32904,
+    "incident_owner_character_id": 32904,
+    "workforce_owner_character_id": 32904,
+    "ai_owned_case_owner_character_id": 32904,
+    "ai_owned_case_subject_character_id": 29037
   }
 }

@@ -51,6 +51,7 @@
 | `ordered_in_list` 明明有多项，却只执行一次 | `ordered_*` 没写 `max` 时默认只取排名第一项，不等价于 `every_in_list` | 需要全量排序迭代时显式写 `max = list_size:<list>`。2026-08-28 CK3 1.19.0.6 三人以上官员榜实测只产生 1 行定位 |
 | 拆分 generated effect 时，行首正则多算出“重复顶层定义” | 生成器插值出的嵌套 scripted-effect 调用可能没有缩进、同样顶格；行首形状不代表 brace depth 为 0 | 顶层 block 扫描必须忽略注释/字符串并跟踪花括号深度，只在 depth 0 接受定义。2026-09-04 Workforce 4.64 MB 单体静态取证：行首正则误报 326，brace-depth 结果为 324 |
 | 静态可达扫描显示 effect/event 闭包齐全，投影仍缺 deadline 事件 | 事件 ID 不只会出现在 `trigger_event = { id = ... }`；通用 helper 还可用 `EVENT = zg361we.<id>` 作为 scripted-effect 参数传递 | 闭包扫描同时识别 literal `id =` 与已冻结的 event-ID 参数 ABI，并继续展开目标事件。2026-09-04 B2/Workforce 静态取证：旧扫描漏 4 个事件与 3 个后继 effect，`68/24` 更正为 `71/28`；尚待该候选 CK3 实机互证 |
+| 用途分片后的大候选仍在主菜单前长期停滞，`error.log` 没有对应 material/parser 首错 | scripted effect 调用图中存在直接同名自递归；本例是 `zg361_workforce_appointment_fact_seal_and_publish_effect` 调用自身。仅拆分文件的 r2/r3 仍在 `302.912s / 303.181s` RED；只移除该自调用后，同一 245-file 框架在 `180.349s` GREEN，generator 修复后的 r4/r5 又连续 GREEN | 先扫描并拒绝 `effect_name = { ... effect_name = { ... } ... }` 的直接自调用；将 intended continuation 内联或改为明确的无环 helper，再用 exact-tree full-entry 实机复验。不要把这类结果归因成“文件过大”：本次证据证明直接自递归是已定位原因，文件体量既非必要条件也非充分条件。CK3 1.19.0.6，2026-09-04 实测 |
 
 ## 变量
 
@@ -60,6 +61,7 @@
 | 事件 desc 里显示 0 | 保存用了 `save_temporary_scope_value_as`（生命周期不够）或上一条 | `save_scope_value_as` + `[TopScope.GetValue('名')]` |
 | `Data error in loc string`，hidden event 的 `debug_log = <loc_key>` 中 `ROOT.Var` / `ROOT.Char.MakeScope.Var` 全部渲染为空 | 原版可行样例是在可见 character event 的 option 中求值；hidden event `immediate` 的 debug-log 本地化没有等价数据上下文，多跨一层事件也无效 | 不用动态 localization 传遥测。用 script value 对生产 global 做 `abs/floor/divide/modulo 2`，再以静态 bit marker 在 BEGIN/END 间编码，外部 runner 还原。2026-08-19 长期平衡摇测实测 |
 | `Failed to fetch variable ... not being set` | 读了从未设置的变量 | 先 `if NOT has_global_variable` 兜底设默认 |
+| 同一个 `AND` 中先写 `has_variable = x`，后写 `var:x = ...`，仍报 `Variable 'x' is used but is never set` | CK3 trigger block 的同级 `AND` 不能当作保证后续表达式不求值的短路门。Phase2 r8 对 23 个 B1 subject 的三个旧存档可选字段各报一次，共 `23 × 3 = 69` 条；入口 marker 均只出现一次，排除了 GUI 重复执行 | 用外层 `trigger_if = { limit = { has_variable = ... } ... }`（或等价 lazy 分支）先确认整组字段都存在，再在内层比较 `var:`；缺字段走兼容默认值。r9 实机中这 69 条未再出现。CK3 1.19.0.6，2026-09-04 实测 |
 | `change_variable effect [ Variable not of the 'value' scope type. Type: empty ]` | `change_variable` 不会为当前 scope 自动创建从未设置的数值变量 | 先 `has_variable`；已有时 `change_variable`，否则 `set_variable = { value = <本次增量> }`。2026-08-28 CK3 1.19.0.6 首次写入原版任命 candidate-score 变量实测 |
 | 参数化 scripted effect 想校验 `$AMOUNT$ > 0`，展开后可能变成无效的 `10 > 0` | `$PARAM$` 是文本替换；比较式左侧应是可求值的 script value/scope value，不能假定调用方传入的数字字面量可直接充当左值 | 先在 scripted trigger 中 `save_temporary_scope_value_as = { name = amount value = $AMOUNT$ }`，再写 `scope:amount > 0`；动态变量名可用原版已采用的 `has_variable = $VARIABLE$`、`var:$VARIABLE$`、`name = $VARIABLE$`。原版源码证据：CK3 1.19.0.6 `00_military_triggers.txt` 的 ratio 临时值与 `00_achievement_effects.txt` 的变量名参数；本项目共享案卷内核已做 L0 source contract，尚待 CK3 加载期互证 |
 | GUI 明明在 `MakeScope.Var(...)` 读镜像表头，加载仍报 `Variable '<name>' is set but is never used` | CK3 的游戏脚本变量用途分析不把 GUI/本地化读取算作脚本消费 | 变量确实只用于 UI 时，仍在实际可达的 effect/trigger 中做有意义的一次校验或组合；无用遥测则直接删掉。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |

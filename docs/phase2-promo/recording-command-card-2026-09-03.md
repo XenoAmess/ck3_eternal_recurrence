@@ -8,7 +8,8 @@
 - 已核对 `HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净。
 - 在该 checkout 下复跑完整工具测试：`263` 项通过、`2` 项跳过。
 - 双版交付队列报告：`Z:\ck3_mod_rewrite\_root-promo-split-20260902\_runtime\promo-inventory-20260903\delivery-queue-20260903-1236.json`，SHA-256 `4C7369DFBA31BF407EB42C8B3D46963E42153691D1BBCC4615F17B60FC129723`。
-- 队列当前为 `RED / BLOCKED`，共享真实素材 `0/8`；下一步是 `capture_eight_clean_spans`。
+- 队列当前为 `RED / BLOCKED`，共享真实素材 `0/8`。r9 canonical paused seed 已 ready；下一步先完成
+  product-only provider/B2 same-checkpoint 与必要业务门，再进入 `capture_eight_clean_spans`，不能直接跳到录制。
 - 当前执行权威 runbook 是 `_runtime/phase2-dual-runbooks-20260903-0800/character-runbook.json`
   （SHA-256 `55E2751FBC8408682B04251C3706928A2C78B9B70F61D11D3D6C829DC572E408`）和
   `_runtime/phase2-dual-runbooks-20260903-0800/institution-runbook.json`
@@ -43,7 +44,8 @@
 | 门 | 当前证据 | 关闭条件 |
 |---|---|---|
 | `footage_pending` | 队列 `0/8`；fixture 缺少 timeline/loaded-seed-v2 | 在真实 CK3 会话取得八段 clean span，并产生 `report.json`、`cell/promo/capture-timeline.json`、`evidence-index.json`、`cell/04_phase2_seed_loaded.json`，四者均由同一 intake 索引且哈希一致 |
-| canonical seed | 已发现的 phase2 seed contract 都是 `blocked_seed_generation_required`，且仍指向被禁止的旧 save SHA | 新建 `status=ready`、`ready=true` 的非旧版 seed contract，并绑定 exact game/EXE/source/mount lineage |
+| canonical seed | **已关闭**：r9 合同为 `status=ready / ready=true`，checkpoint SHA `BFC73FD9…E6733`，绑定 exact game/EXE/source/product/fixture 与五 typed selectors | 复用该 immutable seed；不得用一次新 preflight 覆盖或冒充它 |
+| provider/B2 business gate | r9 初始 B2 为 `case_not_found`；Incident mixed 与 Workforce provider 也未全 ready | product-only focused runner 先推进真实产品 notice 到 `zg361b2.40`，再完成 same-checkpoint A/B/C、Incident mixed 与必要 Workforce 状态 |
 | completion observer | 目前只有研究/诊断或失败运行记录，没有可供 capture plan 接受的非 fixture `GREEN` observer artifact | 生成真实、非 fixture、结果为 `GREEN` 的 completion observer receipt |
 | source checkpoint registry | 代码要求 `zg361_phase2_canonical_source_checkpoint_registry`，当前没有真实 registry | 在同一次真实 seed/capture lineage 中为需要恢复的 span 生成完整 registry，并以 `--phase2-source-checkpoint-registry` 传入 |
 | bridge pair | 观察到的候选文件位于 `Z:\ck3_mod_rewrite\_runtime\bridge-fresh-release-freeze165b-20260903`，但仍需和冻结的游戏/源树绑定 | 由当前 exact build 的 `xar_ck3_bridge.dll` 与 `xar_ck3_bridge_injector.exe` 组成一对，并通过实际 preflight 验证 |
@@ -275,7 +277,7 @@ $ZgInstMediaSha = (Get-FileHash -Algorithm SHA256 $ZgInstMedia).Hash
 - 工具版本门：已完成；如果主线有新提交，需重新核对并绑定 receipt。
 - 八段真实 capture + intake：在稳定、可用的 CK3 正式桌面会话已经准备好的前提下，当前队列估计 `20–40` 分钟；这不是从当前故障状态起算的固定 ETA。
 - 素材 GREEN 后，两条 cut 的候选制作可并行，队列估计每条 `45–90` 分钟；另需 source review、claims audit、两轮人工审片和导出时间。
-- 当前 `0/8` 素材、seed、observer、source registry 和发布授权均未闭合，因此不能给出“今天几点看到成片”的承诺。
+- 当前 `0/8` 素材、provider/业务门、observer、source registry 和发布授权尚未闭合；canonical seed 已 ready，但仍不能给出“今天几点看到成片”的承诺。
 
 ## 本次静态核验
 

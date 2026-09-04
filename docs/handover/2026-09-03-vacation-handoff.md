@@ -2,23 +2,47 @@
 
 **原交接时间：** 2026-09-03 20:45（Asia/Shanghai）
 
-**接班执行更新：** 2026-09-04 03:03（Asia/Shanghai）
+**接班执行更新：** 2026-09-04 08:10（Asia/Shanghai）
 
 **工作树：** `Z:\ck3_mod_rewrite\_root-promo-split-20260902`
 
 **分支：** `integration/progress-20260902`
 
-这份文档接续 [`2026-09-02-shift-handoff.md`](2026-09-02-shift-handoff.md)。原交接时的 B1 实机轮次已自然结束并完成清理；接班后又严格串行完成 B1 诊断/正式 split、B2 r2 与 Incident/X r3 full-entry，所有真正启动 CK3 的轮次均已自然退出，当前无 CK3 残留。工作区有大量既有的并行代理改动和 disposable `_runtime` 产物，**不要**用 `git reset --hard`、全仓清理或 `git clean -fd` 收拾现场。
+这份文档接续 [`2026-09-02-shift-handoff.md`](2026-09-02-shift-handoff.md)。原交接时的 B1 实机轮次已自然结束并完成清理；接班后又严格串行完成 B1 诊断/正式 split、B2 r2、Incident/X r3、seed-entry r2–r9。所有真正启动 CK3 的轮次均已结束并清理，当前无 CK3 残留。工作区有大量既有的并行代理改动和 disposable `_runtime` 产物，**不要**用 `git reset --hard`、全仓清理或 `git clean -fd` 收拾现场。
+
+## 2026-09-04 07:46 当前覆盖结论
+
+本节覆盖下方仍按时间保留的“seed 尚未进入实机”“下一步闭合 Workforce”等历史状态：Workforce seed closure、正式
+full-entry 与 canonical seed capture 均已完成。r9 已在 CK3 `1.19.0.6` 生成 exact paused seed，runner 为
+`GREEN / live_verdict=paused_seed_ready`；report SHA-256
+`32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`。checkpoint 为 `53,517,622 B`，SHA-256
+`BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733`，五个 typed selector、paused/map-ready、
+source/product/fixture immutability 与 cleanup 全部通过。
+
+加载根因也已收敛：seed-entry 仅做用途拆分的 r2/r3 仍在约 303 秒 RED；删除
+`zg361_workforce_appointment_fact_seal_and_publish_effect` 对自身的直接调用后，同框架诊断候选和 production r4/r5
+连续 GREEN。故本次已定位原因为直接 scripted-effect 自递归，**不是文件过大本身**。B2+ 的用途分片规则继续保留；r9
+新增层是 72 个 effect 文件 / 314 definitions，单片最大 10，`>10=0 / >20=0`。旧 B1 41-effect hotfix 是 inherited
+例外，已单独绑定 r8 实机证据。
+
+r8 暴露的 69 条 optional previous-band unset 错误来自同级 `AND` 不短路（23 subjects × 3 fields）；generator 改为 lazy
+`trigger_if.limit` 后，r9 未再出现。r9 的已知 loader fatal catalog 为 0，但不得写成整份 `error.log` 干净：仍有历史变量
+用途诊断以及 selector close 后一条未分类 hash-collision assert，均未阻断 checkpoint/cleanup。
+
+当前真正阻点已经移到 provider/业务态，而不是启动或 seed：`provider_baseline_verdict=blocked_provider_matrix_captured`。
+AI-owned case ready；Incident X ready 但为 N/A；B2 PIP 为 `case_not_found`，Incident Y/Z 缺 identifier，Workforce 缺 context。
+下一步先提交/推送 canonical seed 契约与本轮证据，再运行 **product-only loaded-seed managed provider + 首个可见 OODA**；
+不重复已通过的 startup/seed。真实宣传素材仍为 `0/8`，两部 MP4 尚未生成，G2 继续 paused。
 
 ## 一句话结论
 
-天朝二期还没有到全量可交付或可制作成片的阶段，但 B1、B2 与 Incident/X 的启动 checkpoint 已解除。B1 正式 59-file 生成树 r3 在 245.770 秒 full-entry GREEN；fresh B2 r2 以 119 files / 8,891,635 B 在 164.781 秒 GREEN；Incident/X r3 又以 135 files / 9,158,442 B 在 188.303 秒通过 8 个入口门、3 条 marker、exact mount、material-error 0 与 cleanup。三者当前均只能写为 **startup/full-entry production-candidate GREEN**。fixed seed 的 no-launch preflight 已证明 fixture 还要求 Workforce 的 `zg361_we_open_portfolio_effect`；下一步必须按用途物化该入口所需 owners 及 appointment/exit court-position native callbacks，再跑 seed-capable exact candidate 的 full-entry，GREEN 后才进入 seed/paused-native。Manager 43-effect owner 不在该闭包内，不应拉入。未改写的 58 文件单体 B1 的 1205.343 秒 RED 继续保留，不能把文件尺寸写成唯一根因；B2 与 Incident/X 均没有加载性能 RED，所以未触发追加文件边界 A/B。CK3 已退出；footage 仍为 0/8，G2 继续 paused。
+天朝二期仍未到全量可交付或可制作成片的阶段，但启动与 canonical paused-seed 门已解除。当前最高价值缺口是让 B2、Incident mixed 与 Workforce provider 在同一 loaded-seed 会话产生真实可消费状态，并完成首个可见业务 OODA；完成后才进入 8-span 取材。已定位的启动根因是 direct effect self-recursion，文件体量不是必要或充分原因；用途拆分仍按 owner 规则执行。CK3 已退出；footage 仍为 0/8，G2 继续 paused。
 
 ## 当前工作清单
 
 | 工作包 | 当前状态 | 下一项 | 预计交付窗口（接班人重新开始后） |
 |---|---|---|---|
-| 天朝二期代码/内容 | B1 59-file r3、B2 119-file r2 与 Incident/X 135-file r3 均为 startup/full-entry GREEN；Incident/X 用时 188.303 秒，8 gates / 3 markers / exact mount / material 0 / cleanup GREEN | 闭合 Workforce `zg361_we_open_portfolio_effect` 与 appointment/exit native callbacks 的用途分片及 exact full-entry，再进入 seed/paused-native | delayed-path/seed/OODA 尚未验证，不给全量 ETA |
+| 天朝二期代码/内容 | startup 与 canonical paused seed 已 GREEN；r9 为 249 files / 12,098,441 B，五 selector 与 checkpoint 已冻结；provider matrix 尚未全 ready | product-only loaded-seed managed provider，优先解除 B2 PIP / Incident mixed / Workforce 的真实状态缺口，并完成首个可见 OODA | seed 已完成；provider/OODA/8-span 尚未完成，不给全量 ETA |
 | 两版最终宣传视频 | `footage_pending`，真实二期素材仍为 `0/8`，两份目标 MP4 均未生成 | 先取得 8 个 clean CK3 spans；随后再 fetch/pull 宣传工具主线、TTS、渲染、字幕审片、分别导出两版 | 素材齐后制作约 45–90 分钟，另需两轮人工审片；当前不能承诺日期 |
 | 宣传工具 | 已满足“制作前更新”前置条件：`Z:\workspace\xar_promo_toolchain` clean，`HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`（v0.2.1） | 正式 TTS/渲染前再次执行 `git fetch origin main --prune`，把 checkout SHA 写入两份 builder receipt | 工具本身已完成；等待素材 |
 | G2 | **按用户要求暂缓**，不再扩展当前迭代 | 只有用户解除暂停后才恢复；恢复前先读 G2 专题和最新 schema boundary | 暂无 |
@@ -133,6 +157,10 @@ production loop 均未晋级。
 
 ## 下一轮操作建议
 
+**当前只执行顶部 07:46 覆盖结论：提交 r9 canonical seed 后，接入 product-only focused B2 route，先从真实产品前奏取得
+`zg361b2.40`，再跑 same-checkpoint A/B/C。** 下列 1–6 是接班过程中的历史路线与已完成证据；其中“继续闭合 Workforce / 再进
+seed”的语句均已由 r9 supersede，不得照旧执行。
+
 1. 先读 [`docs/phase2-promo/phase2-incremental-startup-batch-plan-2026-09-03.md`](../phase2-promo/phase2-incremental-startup-batch-plan-2026-09-03.md)、[`docs/phase2-promo/README.md`](../phase2-promo/README.md) 和 [`phase2-safe-core-next-domain-closure-2026-09-03.md`](../phase2-promo/phase2-safe-core-next-domain-closure-2026-09-03.md)。确认没有 CK3 后再做静态检查；不要重跑已证明的 53/55 基线或七个 stub 子集。
 2. balanced-files 的 41/36 边界已下沉到 `tools/gen_361_b1_runtime.py`，正式 r3 已 full-entry GREEN；不要再重跑旧单文件或七个 stub 子集，也不要手改 `GENERATED FILE` 产品。
 3. CK3 槽位严格串行：固定 `1.19.0.6` EXE、已验证 profile/cache 和 probe 脚本；一次只跑一个候选，timeout 先用 1200 s。每 30–60 s 只读记录进程、debug.log、memory 和 marker；若自然结束，保存 report/screenshot/log hash，确认 `ck3_running_after=false` 后再开下一轮。
@@ -142,7 +170,7 @@ production loop 均未晋级。
 5. Incident/X 已由下面记录的 r3 exact candidate 完成静态闭包与 full-entry，关闭第一个 fixture root；旧 Manager 简中候选
    不在 fixed seed 的当前闭包内。下一步必须按用途物化 `zg361_we_open_portfolio_effect` 所需 Workforce owners、
    appointment/exit court-position owners 与 native callbacks，并完成 exact full-entry，之后才启动 seed/paused-native。
-6. 项目所有者在 2026-09-04 明确要求：进入 B2 前先按用途/调用链拆分 effect，目标每文件 `1–10` 个，原则上不超过 `20` 个；超过 `20` 必须记录理由和实机证据。若后续出现没有明确 material/parser 首错的加载性能 RED，优先按 `docs/testing-workflow.md` 做同条件文件边界 A/B，并把结论限制为“文件边界/单文件体量很可能参与”。
+6. 项目所有者在 2026-09-04 明确要求：进入 B2 前先按用途/调用链拆分 effect，目标每文件 `1–10` 个，原则上不超过 `20` 个；超过 `20` 必须记录理由和实机证据。若后续出现没有明确 material/parser/call-graph 首错的加载性能 RED，优先按 `docs/testing-workflow.md` 做同条件文件边界 A/B。seed-entry 后续证据已把本次故障定位为 direct effect self-recursion；不得继续把文件体量写成根因。
    B2 自身现已完成 25 个用途分片：152/152 unique、每片 `1–9`、清单 SHA `06274A5E…7FAB`，静态/投影/release GREEN；该分片
    工作包独立交付时尚无 CK3 live，后续组合 r2 live 见下文。正式提交 `e1297f83738fd61d53812406b26e23637201d2c5` 已推送。其 Workforce effect owner 现也已拆为 76 个用途片：
    324/324 parity、每片 `1–10`、无超限例外；B2 40-effect 闭包精确落在 16 个完整片内。Workforce event owner 也已从
@@ -227,8 +255,11 @@ production loop 均未晋级。
   提交 `0865589cb7ef37160e50247f0fdeb1f27a03fe54` 已推送；后续已纳入 exact r2 full-entry。
 - [x] fresh r2 无 stub B2 closure 已以 119 files / 8,891,635 B 在 164.781 秒通过 exact full-entry；report、地图截图与 cleanup 证据已保存。no-launch preflight 随后证明它不能单独满足 fixed seed fixture。
 - [x] Incident 已拆为 27 effect + 12 event 用途分片，每片最多 7；exact X r3 候选以 135 files / 9,158,442 B 在 188.303 秒通过 full-entry。实现提交 `df77ed636c51c51f99f534d8efbb559b94c639d2` 已推送，r1 harness RED 与 r2 GREEN artifact 均保留。
-- [ ] seed 前仍须闭合 Workforce `zg361_we_open_portfolio_effect` 所需 owners、appointment/exit court-position native callbacks
-  的按用途分片、exact closure 与同树 full-entry。
+- [x] Workforce seed closure 已按用途物化；249-file exact product 已完成 generator 修复后的 full-entry r4/r5 GREEN。
+- [x] r9 canonical paused seed 已完成：五 typed selectors、exact checkpoint、paused map、immutability 与 cleanup GREEN。
+- [ ] product-only loaded-seed provider/B2 same-checkpoint matrix、Incident mixed、Workforce 三周期与首个可见 OODA 尚待实机。
 - [ ] 下一位接班人重新开始前，先确认工作区 dirty/untracked 清单，不要覆盖或清理上述 disposable artifact。
 
-这就是当前可以安全交出的边界：正式 B1、fresh B2 r2 与 Incident/X r3 的 startup/full-entry checkpoint 均已 GREEN，失败、修复与 cleanup 证据齐全；但 Workforce seed 入口闭包、delayed-path、seed、native/production loop、8/8 素材与两部最终宣传视频仍未完成。
+这就是当前可以安全交出的边界：正式 B1、fresh B2 r2、Incident/X r3、Workforce seed closure 与 canonical paused seed 均已
+GREEN，失败、修复与 cleanup 证据齐全；但 provider/B2 same-checkpoint、Incident mixed、Workforce 三周期、production OODA、
+8/8 素材与两部最终宣传视频仍未完成。

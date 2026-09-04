@@ -1586,26 +1586,25 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as temporary:
         temporary_root = Path(temporary)
         canonical_seed_contract = capture.load_phase2_seed_contract()
-        assert canonical_seed_contract["status"] == (
-            "blocked_seed_generation_required"
-        )
-        assert canonical_seed_contract["ready"] is False
-        assert canonical_seed_contract["blocker"]
+        assert canonical_seed_contract["status"] == "ready"
+        assert canonical_seed_contract["ready"] is True
+        assert canonical_seed_contract["blocker"] == ""
         assert canonical_seed_contract["provenance"]["limitations"]
         assert canonical_seed_contract["saved_state"]["played_character_id"] == 29037
         assert canonical_seed_contract["saved_state"]["player_history_id"] == (
             capture.PHASE2_SEED_PLAYER_HISTORY_ID
         )
-        assert set(canonical_seed_contract["domain_query_matrix"].values()) == {
-            1,
-            None,
+        assert canonical_seed_contract["source"]["sha256"] != (
+            "98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3"
+        )
+        assert canonical_seed_contract["domain_query_matrix"] == {
+            "schema_version": 1,
+            "b2_pip_owner_character_id": 32904,
+            "incident_owner_character_id": 32904,
+            "workforce_owner_character_id": 32904,
+            "ai_owned_case_owner_character_id": 32904,
+            "ai_owned_case_subject_character_id": 29037,
         }
-        try:
-            capture.preflight_phase2_seed_contract()
-        except capture.acceptance.RunnerError as error:
-            assert "phase-two seed preflight RED" in str(error)
-        else:
-            raise AssertionError("blocked canonical phase-two seed passed preflight")
 
         blocked_seed_contract = copy.deepcopy(canonical_seed_contract)
         blocked_seed_contract["status"] = "blocked_runtime_tree_mismatch"

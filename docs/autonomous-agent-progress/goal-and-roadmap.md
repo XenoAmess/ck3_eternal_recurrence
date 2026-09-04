@@ -48,11 +48,12 @@ source query → ACK → independent later query。独立只读后置验证器�
 单次启动批量覆盖 managed-capable、received-only、open、三种 switch、close 与两阶段 reopen；证据不齐时 capability、
 `production_live_ready` 和二期首段 footage gate 全部继续保持 false。
 
-2026-09-04 的启动恢复没有改变上述动作门：B1 effect 已在 generator 中按 41/36 个完整定义拆为两份，全部 77 个正文重组后与旧
+2026-09-04 的早期启动恢复没有改变上述动作门：B1 effect 已在 generator 中按 41/36 个完整定义拆为两份，全部 77 个正文重组后与旧
 495,777 B 单文件逐字节一致；正式 59-file 候选在 exact CK3 1.19.0.6 上以 245.770 秒通过主菜单、选角、开始、HUD、地图、暂停、
 exact mount 与 game-state-ready 全部入口门。该结果只把 B1 提升为 `startup/full-entry production-candidate GREEN`；delayed-path、
-seed、paused native snapshot、scoreboard action postcondition 与 8/8 footage 仍未完成。原单文件一次 1205.343 秒 RED 继续保留，现有
-证据支持拆文件作为实证修复，但不把“文件过大”写成唯一根因。详情见
+scoreboard action postcondition 与 8/8 footage 当时仍未完成。原单文件一次 1205.343 秒 RED 继续保留；后续 seed-entry
+split-only r2/r3 仍 RED、定点移除 direct self-call 后连续 GREEN，已把本次更大候选的启动原因收敛到 scripted-effect 直接自递归，
+并否定“文件过大”是必要或充分原因。详情见
 [`2026-09-03-vacation-handoff.md`](../handover/2026-09-03-vacation-handoff.md) 与
 [`phase2-promo/README.md`](../phase2-promo/README.md)。
 
@@ -109,6 +110,20 @@ Incident/X r3 provider 的交集为 `83 effects / 22 events / 6 triggers`，故�
 Manager 43-effect owner 增量仍为 0。最终 overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成。
 下一施工项是只继续按用途物化 `zg361_we_open_portfolio_effect` 所需 Workforce owners、appointment/exit court-position owners
 与 native callbacks；seed-capable exact candidate 通过 full-entry 后才运行 seed/paused-native。
+
+上述最后两句是 03:03 的施工账本，已由 07:46 的 r9 supersede：Workforce closure 已物化为完整 249-file product，B2+ 新增层
+为 72 个用途 effect 文件 / 314 definitions，单片最大 10，`>10=0 / >20=0`；旧 B1 41-effect hotfix 作为 inherited 例外单列。
+split-only r2/r3 分别在 `302.912s / 303.181s` RED；移除
+`zg361_workforce_appointment_fact_seal_and_publish_effect` 的直接 self-call 后，诊断候选与 production r4/r5 连续 GREEN。
+r8 暴露的 69 条旧存档 optional-field 错误也已用 lazy `trigger_if.limit` 修复并由 r9 归零。
+
+r9 已在 exact CK3 `1.19.0.6` 生成 canonical paused seed：product `249 files / 12,098,441 B`，loader `48.19s`，runner
+`161.686s`，五 typed selectors、checkpoint、paused map 与 cleanup GREEN。runner report SHA-256 为
+`32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`，checkpoint SHA-256 为
+`BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733`。readiness 现为 canonical seed ready，但 provider
+matrix 仍 blocked：AI-owned case ready；Incident X ready 但 N/A；B2 PIP、Incident Y/Z 与 Workforce 尚缺真实业务状态。
+当前下一施工项是 product-only loaded-seed managed provider 与首个可见 OODA；不得重复 seed，也不得把 seed GREEN 写成
+8/8 footage 或完整 Phase2 loop。
 
 ## 2026-W35 最高优先级：先完整游玩一代人
 

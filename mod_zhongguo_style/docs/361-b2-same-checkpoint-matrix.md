@@ -131,7 +131,7 @@ result = run_b2_same_checkpoint_matrix(
 )
 ```
 
-本轮按协调要求不修改 `tools/run_zhongguo_acceptance.py`。离线测试：
+初始实现轮按协调要求未修改 `tools/run_zhongguo_acceptance.py`。离线测试：
 
 ```powershell
 py tools/test_zg361_phase2_b2_checkpoint_matrix.py
@@ -140,5 +140,9 @@ py -O tools/test_zg361_phase2_b2_checkpoint_matrix.py
 
 测试覆盖完整三路/四次恢复、write-once artifacts、checkpoint hash 漂移、case 漂移、typed option disabled、
 ACK 后 provider 不变、stale event instance、重复提交与 PID cleanup leak。它们只证明编排合同，不冒充 CK3 实机证据。
-下一步是在共享 runner 接线稳定后，用真实暂停的 `zg361b2.40` seed 跑一次 MCP-only 批次；实机 RED 必须优先修 MCP/provider
-或产品语义，不得回退到 OCR、坐标或测试决议。
+
+2026-09-04 r9 已把 canonical paused seed 提升为 ready，但其初始 B2 provider 精确为 `case_not_found`，不是可直接交给矩阵的
+`zg361b2.40`。下一步是在共享 runner 增加 product-only focused route：从 r9 seed 有界推进真实 `zg361.50` option 1，证明旧
+event instance 消失并等待新的 `zg361b2.40`/provider 出现，然后才调用上述矩阵。矩阵自行完成四次 restore 与第五个最终 session
+清理，不能嵌入现有单次 save/restore lineage，也不能直接用全量 `--phase2-live-batch` 撞已知 scoreboard RED。首次实机前状态仍是
+`static-ready / production-live pending`；实机 RED 必须优先修 MCP/provider 或产品语义，不得回退到 OCR、坐标或测试决议。

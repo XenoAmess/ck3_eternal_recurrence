@@ -2,6 +2,21 @@
 
 这里是天朝二期两条正式宣传片路线的权威导演文档入口。用户已明确要求：**两个版本都保留、都制作、都分别交付成片。**二者不存在“主方案/废案”或“长版/短版”的从属关系。
 
+## 当前实机门（2026-09-04 07:46）
+
+canonical Phase2 paused seed 已在 CK3 `1.19.0.6` 的 r9 实机提升为 `ready`：249-file product 完成 loader、暂停地图、
+五个 typed selector、checkpoint 与 cleanup，runner report SHA-256 为
+`32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`。这解除的是 seed 生成门，不是 8/8 素材门。
+
+当前 provider 基线仍为 `blocked_provider_matrix_captured`：AI-owned case 可用；Incident X 可用但为 N/A；B2 PIP、
+Incident Y/Z 与 Workforce 尚缺真实业务状态。所以下一轮实机是 product-only loaded-seed managed provider/首个可见 OODA，
+不是重复启动测试。当前真实 footage 仍为 `0/8`，两条 MP4 均未生成。
+
+seed-entry 的加载根因也已纠正：仅做用途拆分的 r2/r3 仍 RED；移除
+`zg361_workforce_appointment_fact_seal_and_publish_effect` 的直接自递归后，诊断候选及 production r4/r5 连续 GREEN。
+因此“文件过大”不是本次已证明根因；B2+ 仍严格执行用途分片（目标 1–10、原则不超过 20），用于闭包选择、维护与后续
+加载性能 A/B。r9 新增层为 72 个 effect 文件 / 314 definitions，单片最大 10，无超限例外。
+
 ## 两条正式路线
 
 | 版本 | 权威导演稿 | 叙事主角 | 目标时长 |
@@ -24,7 +39,7 @@
 
 两套配置、authoring claims、审片计划和独立输出路径均已落盘。宣传工具已在可写 fresh clone
 固定到 `origin/main` 的 `57c42fca13ea459432c1caf76e069a1fbccf602c`，并通过二期 builder 的 26 项测试；
-正式 TTS/渲染仍必须等待 8/8 段真实 CK3 clean spans。当前两份 MP4 尚未生成，启动阻塞和可核验日志见
+正式 TTS/渲染仍必须等待 8/8 段真实 CK3 clean spans。当前两份 MP4 尚未生成，历史启动阻塞和可核验日志见
 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
 
 最新一次双版本前置复核见
@@ -38,7 +53,7 @@
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | B1、fresh B2 r2 与 Incident/X r3 候选均已 full-entry GREEN；Incident/X 为 135 files / 9,158,442 B，用时 188.303 秒，8 gates / 3 markers / exact mount / material 0 / cleanup GREEN | 物化并实测 Workforce `zg361_we_open_portfolio_effect` 及 appointment/exit native callbacks 的用途分片；随后才进 seed/paused-native | 后续门通过后再估；不沿用旧 2–5 分钟线性启动估算 |
+| 二期产品代码与发布树 | Workforce closure 与 r9 canonical paused seed 已 GREEN；249 files / 12,098,441 B，五 typed selectors、checkpoint 与 cleanup 已冻结；provider matrix 尚未全 ready | product-only focused B2/provider：真实前奏到 `zg361b2.40` 后跑 same-checkpoint A/B/C，再闭合 Incident mixed / Workforce 必要业务态 | 不预写全量 ETA；以 focused event/restore/cleanup 阶段为准 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
@@ -52,7 +67,7 @@
 `Z:\\ck3_mod_rewrite\\_runtime\\phase2-seed-20260903\\`，这些运行均没有产生满足合同的可入片游戏素材，当前 footage 仍是 `0/8`；详细分层见
 [`manual-vs-automated-launch-diagnosis-2026-09-03.md`](manual-vs-automated-launch-diagnosis-2026-09-03.md)。
 
-宣传工具已在可写 fresh clone `Z:\\ck3_mod_rewrite\\_runtime\\promo-tool-fresh-20260903` 更新并核对到 `origin/main`（`57c42fca13ea459432c1caf76e069a1fbccf602c`）。等 CK3 启动/seed 边界修复并取得八段素材后，仍会分别完成两版 TTS、字幕、候选、人工审阅、导出和独立哈希记录。
+宣传工具已在可写 fresh clone `Z:\\ck3_mod_rewrite\\_runtime\\promo-tool-fresh-20260903` 更新并核对到 `origin/main`（`57c42fca13ea459432c1caf76e069a1fbccf602c`）。等 provider/业务门闭合并取得八段素材后，仍会分别完成两版 TTS、字幕、候选、人工审阅、导出和独立哈希记录。
 
 实机启动复现、解锁条件和诚实 ETA 见 [`live-startup-blocker-2026-09-03.md`](live-startup-blocker-2026-09-03.md)。
 
@@ -84,11 +99,11 @@
 
 项目配置、authoring claim matrix、capture contract、媒体构建和 readiness 状态仍由各自原有文件负责。导演稿只定义叙事与拍摄方案，不会自行把 `planned`、`static-ready` 或候选素材提升为 live、complete、exported 或 published。
 
-## 最新 seed preflight 回执（2026-09-03 06:51）
+## 历史 seed preflight 回执（2026-09-03 06:51；已被 r9 supersede）
 
 以 clean freeze `165b47742fd05ff3713b8be4452711002328d57d`、source ZIP SHA-256
 `77aa3e30f1c20763576dbeea71b1c7451cfd63a15fb53a46fc58a373d72338e8`、guard-on bridge 和同步
-open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--preflight-only`：结果 `GREEN / preflight-ready`，source/archive、依赖、projection、bridge 和静态测试均 GREEN，`ck3_launch_attempted=false`；seed 合同仍为 `blocked_seed_generation_required`，因为尚未取得新真实 seed。回执位于
+open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--preflight-only`：结果 `GREEN / preflight-ready`，source/archive、依赖、projection、bridge 和静态测试均 GREEN，`ck3_launch_attempted=false`；该历史时点的 seed 合同仍为 `blocked_seed_generation_required`。回执位于
 `_runtime/phase2-seed-20260903/artifacts-preflight-current-03/preflight.json`，SHA-256
 `9057F967CFE97036AD4E3918C2640892371EBB006BBADDE18EE36DA7A4CABE2E`。这确认后续实机采集入口可直接复用，但不等同于 live 或视频完成。
 
@@ -102,7 +117,7 @@ open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--prefligh
 
 未改写的 58-file、单 effect full B1 仍只有一次 `1205.343 s` pre-menu RED。随后 all-stub（255.113 s）、left-real（180.403 s）、right-real（178.968 s）、event-root closure（181.360 s）、excluded-A（193.588 s）、excluded-B（184.817 s）以及 all-but-76（保留 77 个真 block 中的 76 个，171.228 s）均取得 full-entry GREEN。
 
-进一步的 `balanced-files` 候选没有 stub，保留全部 77 个定义且逐 block 正文字节与原始 effect 一致，只把单文件拆成两份；它为 59 files / 7,858,264 B，两份 effect 分别为 255,134 B 与 240,709 B，并在 180.396 s 取得 full-entry GREEN。因此拆文件已是可实施候选，但现有样本不能唯一证明根因，也不能把原始未改写 full B1 改写为 GREEN。产品全量、seed 与素材门仍未通过，真实 footage 保持 `0/8`，两条 MP4 仍不存在。
+进一步的 `balanced-files` 候选没有 stub，保留全部 77 个定义且逐 block 正文字节与原始 effect 一致，只把单文件拆成两份；它为 59 files / 7,858,264 B，两份 effect 分别为 255,134 B 与 240,709 B，并在 180.396 s 取得 full-entry GREEN。在该诊断时点，拆文件已是可实施候选但尚不能唯一证明根因，也不能把原始未改写 full B1 改写为 GREEN。后续 seed-entry r2/r3 与 no-self-call 对照已将更大候选的实际故障定位为 direct effect recursion；canonical seed 也已由 r9 提升为 ready。素材门仍未通过，真实 footage 保持 `0/8`，两条 MP4 仍不存在。
 
 本轮 open_kaishek 只覆盖单个 effect 文件的离线 parser smoke；含真实正文的候选 validator 仍报 `UNKNOWN_OPCODE`，IR/runtime 均跳过。该结果不构成 B1 语义、CK3 native/runtime 或 G2 readiness 证据；G2 继续保持用户要求的暂停状态。
 
@@ -112,7 +127,9 @@ open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--prefligh
 
 r1/r2 均在约 0.3 秒因 probe game-path 配置错误结束，`ck3_started=false`，只保留为 harness/config RED，不计作内容失败。修正后的 r3 用时 **245.770 s**，8/8 entry gates、3 个 game-state markers、material error 0 与 cleanup 全部 GREEN。B1 checkpoint 因而晋级为 **startup/full-entry production-candidate GREEN**。
 
-该晋级不覆盖 delayed-path、seed、生产 OODA 或 footage；真实素材仍为 `0/8`，两条 MP4 仍未生成。原始未拆分单文件 full B1 的唯一 1205.343 秒 RED 继续保留；拆分是已验证的实施候选，但根因仍未唯一证明。G2 保持 paused。
+该 B1 晋级本身不覆盖 delayed-path、seed、生产 OODA 或 footage；后续 r9 已独立关闭 canonical seed 门，但 provider/OODA
+与素材仍未完成。真实素材为 `0/8`，两条 MP4 未生成。原始未拆分单文件 full B1 的唯一 1205.343 秒 RED 继续保留；
+B1 拆分仍是有效布局，而 seed-entry 对照已把本次更大候选的已定位根因收敛为 direct self-recursion。G2 保持 paused。
 
 ### B2 generator 用途分片（2026-09-04）
 
@@ -193,7 +210,7 @@ entry gates、3/3 markers、exact mount、`material_error_lines=[]` 与 cleanup 
 `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。没有加载性能 RED，因此未做追加 A/B。
 
 用途分片与 closure 工具已由 `df77ed636c51c51f99f534d8efbb559b94c639d2` 提交并推送。该 GREEN 只覆盖 Incident/X
-入口层；fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。此前 callable/event-only 扫描的五-root
+入口层；在该历史时点，fixed seed fixture 仍要求 Workforce 的 `zg361_we_open_portfolio_effect`。此前 callable/event-only 扫描的五-root
 `2034 effects / 578 events` 与 Workforce root `385 effects / 161 events` 漏掉 court-position definition 的
 `on_court_position_*` native callbacks，现已被 supersede。callbacks 对五-root union 净增 `8 effects / 2 events`；单独遍历
 Workforce root 时还会从 role-failure 继续进入 probation publish，另拉入 `4 effects` 与 `zg361wpf.1`。
@@ -202,7 +219,6 @@ Workforce root 时还会从 role-failure 继续进入 probation publish，另拉
 materialized closure 为 `2042 effects / 580 events / 6 triggers / 0 values / 2 court-position definitions`。Workforce root 与
 Incident/X r3 provider 的交集为 `83 effects / 22 events / 6 triggers`，故相对 r3 的增量仍为
 `314 effects / 142 events / 0 triggers / 0 values / 2 court-position definitions`，新增 loc 为 `28 keys / 5 files`。最终
-overlay/candidate 文件数待 renderer 与 mixed-owner 分片稳定后由 builder 生成，不在当前阶段冻结。Manager 43-effect owner
-增量仍为 0，不在闭包内。下一项是按用途物化这份
-native-callback-aware Workforce closure 并跑同树 full-entry；GREEN 后才进入 seed/paused-native。footage 仍为 `0/8`，
-两份 MP4 均未生成。
+overlay/candidate 文件数在该阶段尚待 renderer；后续已冻结为 249-file product。Manager 43-effect owner 增量仍为 0，
+不在闭包内。原定“物化 Workforce → full-entry → seed”路线已由 r9 完成；当前下一项是 product-only focused
+B2/provider。footage 仍为 `0/8`，两份 MP4 均未生成。

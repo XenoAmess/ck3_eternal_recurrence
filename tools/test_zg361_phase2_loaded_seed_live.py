@@ -61,18 +61,6 @@ def _ready_contract(root: Path) -> Path:
     contract = json.loads(
         phase2.PHASE2_SEED_CONTRACT_PATH.read_text(encoding="utf-8")
     )
-    contract["status"] = "ready"
-    contract["ready"] = True
-    contract["blocker"] = ""
-    contract["domain_query_matrix"].update(
-        {
-            "b2_pip_owner_character_id": 31001,
-            "incident_owner_character_id": 31002,
-            "workforce_owner_character_id": 31003,
-            "ai_owned_case_owner_character_id": 31004,
-            "ai_owned_case_subject_character_id": 31005,
-        }
-    )
     path = root / "canonical-seed.json"
     path.write_text(
         json.dumps(contract, ensure_ascii=False, indent=2) + "\n",
@@ -82,12 +70,35 @@ def _ready_contract(root: Path) -> Path:
     return path
 
 
+def _blocked_contract(root: Path) -> Path:
+    contract = json.loads(
+        phase2.PHASE2_SEED_CONTRACT_PATH.read_text(encoding="utf-8")
+    )
+    contract["status"] = "blocked_seed_generation_required"
+    contract["ready"] = False
+    contract["blocker"] = "explicit unit-test blocked seed"
+    path = root / "blocked-seed.json"
+    path.write_text(
+        json.dumps(contract, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return path
+
+
+def _canonical_seed_date_raw() -> int:
+    contract = json.loads(
+        phase2.PHASE2_SEED_CONTRACT_PATH.read_text(encoding="utf-8")
+    )
+    return int(contract["saved_state"]["date_raw"])
+
+
 def _snapshot(*, revision: int = 10) -> dict[str, object]:
     return {
         "snapshot_id": f"phase2-live:{revision}",
         "revision": revision,
         "native_revision": 110,
-        "date_raw": 53147016,
+        "date_raw": _canonical_seed_date_raw(),
         "paused": True,
         "map_ready": True,
         "played_character": {"character_id": 29037, "alive": True},
@@ -141,7 +152,7 @@ class _ExistingService:
 
 
 class LoadedSeedLiveWrapperTests(unittest.TestCase):
-    def test_plan_only_is_ready_but_waits_for_current_canonical_seed(self) -> None:
+    def test_plan_only_accepts_current_ready_canonical_seed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             output = root / "plan.json"
@@ -158,8 +169,9 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertEqual(plan["result"], "GREEN")
         self.assertTrue(plan["ready_to_run"])
-        self.assertFalse(plan["current_seed_ready"])
-        self.assertEqual(plan["execution_state"], "WAITING_CANONICAL_SEED")
+        self.assertTrue(plan["current_seed_ready"])
+        self.assertEqual(plan["execution_state"], "READY_FOR_EXISTING_SESSION")
+        self.assertIsNone(plan["current_seed_blocker"])
         self.assertTrue(plan["same_session_continuation"])
         self.assertFalse(plan["live_executed"])
         self.assertFalse(plan["provider_live_proof_claimed"])
@@ -242,12 +254,13 @@ class LoadedSeedLiveWrapperTests(unittest.TestCase):
 
     def test_blocked_seed_never_touches_existing_service(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
             service = _ExistingService()
             with self.assertRaises(live.LoadedSeedLiveError) as raised:
                 live.run_existing_session_loaded_seed_v2(
                     service,
-                    seed_contract_path=phase2.PHASE2_SEED_CONTRACT_PATH,
-                    artifacts=Path(temporary),
+                    seed_contract_path=_blocked_contract(root),
+                    artifacts=root,
                     tracked_ck3_pid=4321,
                     expected_connection_generation=4,
                 )

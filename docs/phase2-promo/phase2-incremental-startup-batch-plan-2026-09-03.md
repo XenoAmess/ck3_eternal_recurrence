@@ -217,10 +217,37 @@ exact mount、material errors 0 与 `cleanup.ck3_running_after=false`。`report.
   native-callback-aware Workforce closure 按用途物化、构造 exact production candidate 并完成同树 full-entry，之后才进入
   seed/paused-native。
 
+### seed-entry 根因收敛与 r9 canonical seed（2026-09-04 07:46）
+
+- seed-entry 用途拆分 r2/r3 仍分别在 `302.912s / 303.181s` 主菜单前 RED；对应 report SHA-256 为
+  `A603DC2783D398FEBC73B82F739BF1A701EEFD5438A96A9A8FE9AF2842925972` /
+  `D5C6B38A43874BE70A3A299A5AC725BBFC7685F1F7437E7F1D6A9EF18D0BD94F`。这两轮否定了“只要拆文件即可修复”以及
+  “单文件体量是充分原因”。
+- 调用图审计定位到 `zg361_workforce_appointment_fact_seal_and_publish_effect` 对自身的唯一直接调用。只去掉该自递归、
+  保持同一 245-file 用途分片框架的诊断候选在 `180.349s` full-entry GREEN；report SHA-256
+  `7260921ED8757AE4242E2CF68C32CAA52887F3AE1CDC297723A911567529A4FF`。generator 修复后的完整 production r4/r5
+  又分别在 `167.277s / 174.305s` GREEN。因此本次启动故障的已定位原因是直接同 effect 自递归；引擎内部为何在
+  pre-menu 阶段停滞仍未查明。用途拆分规则继续保留，用于可维护性、精确闭包与后续性能 A/B，不冒充本次唯一修复。
+- r8 首次进入 seed 业务后为 capability RED：23 个 B1 subject 各读取三个旧存档未设置的 previous-band 字段，共 69 条。
+  原因是同级 `AND` 不提供 lazy 短路。generator 已改为外层 `trigger_if.limit` 完整存在性门；r9 未再出现这 69 条。
+- r9 在 exact CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 上完成真实 seed capture：
+  `249 files / 12,098,441 B`，loader `48.19s`，runner `161.686s`，最终
+  `GREEN / live_verdict=paused_seed_ready`。report SHA-256 为
+  `32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`；checkpoint 为
+  `53,517,622 B`、SHA-256 `BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733`。
+- B2+ 新增层为 72 个用途 effect 文件 / 314 definitions，单片最大 10，`>10=0 / >20=0`；旧 B1 hotfix 的
+  41-effect 文件作为 inherited 例外单列，不计入新分片门。本轮加载性能 GREEN，未触发新的文件边界 A/B。
+- canonical paused seed 已 ready，但 provider 基线仍为 `blocked_provider_matrix_captured`：AI-owned case ready；Incident X
+  ready 但为 N/A；B2 PIP 是 `case_not_found`，Incident Y/Z 缺 identifier，Workforce 缺 context。因此下一轮 CK3 不重复
+  startup/seed，而是用 product-only loaded-seed managed runner 推进 provider 状态，并验收首个可见业务闭环。
+
 ## 预计时间
 
-离线物化/预检通常数分钟。fresh r2 与 Incident/X r3 full-entry 分别实测为 164.781 / 188.303 秒；历史 full-entry/startup attempt 仍有约 171–1205 秒波动，后续 Workforce distinct 候选使用 1200 秒初始观察窗，
-以阶段 marker、引擎时间和 probe wall time为准，不再沿用早期 2–5 分钟线性估算。出现无明确 material/parser 首错的加载性能 RED 时，
-保留原 attempt 后立即按用途/完整顶层定义边界继续拆分并做同条件 A/B。
+离线物化/预检通常数分钟。fresh r2、Incident/X r3 与 r9 seed runner 分别实测为 164.781 / 188.303 / 161.686 秒；
+Workforce distinct closure 与 seed 已完成，不再为它安排重复 1200 秒启动窗。下一轮是 product-only loaded-seed focused
+B2/provider 会话，耗时以事件前奏、四次 restore、阶段 marker 和 cleanup 为准，不预写固定 ETA。若该新轮出现无明确
+material/parser/call-graph 首错的加载性能 RED，保留原 attempt 后按用途/完整顶层定义边界继续拆分并做同条件 A/B。
 
-本计划只负责定位二期加载边界；seed、8 段 clean footage、两版宣传片仍须在闭包通过后另行验收。宣传工具在开始视频制作前必须再次确认 `origin/main` 最新版本。
+本计划已经完成本轮二期加载边界与 canonical seed 入口取证；尚未完成的是 provider/B2 same-checkpoint、Incident mixed、
+Workforce 三周期、8 段 clean footage 与两版宣传片。宣传工具在开始视频制作前必须再次确认 `origin/main` 最新版本。

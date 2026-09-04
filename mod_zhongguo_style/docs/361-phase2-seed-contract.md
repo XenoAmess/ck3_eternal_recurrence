@@ -1,9 +1,54 @@
 # 361 二期 MCP-only 存档种子合同
 
-状态（2026-09-01）：仓库中的固定种子合同是
-`blocked_seed_generation_required`，不是 ready，也不是 production-live 证据。它可以作为
-旧存档来源账本，但不得启动二期正式批量验收。权威机器合同是仓库根的
-`tools/zg361_phase2_seed_contract.json`。
+状态（2026-09-04 07:46，Asia/Shanghai）：仓库中的权威机器合同
+`tools/zg361_phase2_seed_contract.json` 已由 r9 实机候选提升为 `status=ready / ready=true`。
+这只证明 canonical paused seed、五个 typed selector 与 exact checkpoint 已生成；四域 provider
+基线仍未全 ready，不能写成 Phase2 生产闭环或宣传素材完成。
+
+## r9 canonical seed 实机提升
+
+- 冻结源码 commit：`e332c3bdfe3d5bedf0f3d1a3d028c7c3a6ee4560`；CK3
+  `1.19.0.6`，EXE SHA-256
+  `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。
+- artifact：
+  `Z:\ck3_mod_rewrite_process_assets\zg361\phase2-seed-r9-20260904-074005\artifacts-live`；
+  `runner-report.json` 为 `GREEN / live_verdict=paused_seed_ready`，SHA-256
+  `32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`。
+- exact runtime：product `249 files / 12,098,441 B`，tree
+  `cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd`；fixture tree
+  `a61d9715071ab1c4c6e3a181437af2dc6aa23b21f2a91ee455696911e5bb7730`。两树及冻结源码在
+  cleanup 后不变。
+- checkpoint：`xar_checkpoint.ck3` 与受管 session 的 `xar_episode_seed.ck3` 均为
+  `53,517,622 B`，SHA-256
+  `bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733`，
+  `date_raw=53146920`，玩家 `han_6875 / CharacterID 29037`，paused/map-ready。
+- 五个 typed saved scopes：B2、Incident、Workforce、AI-owned owner 均为 `32904`；
+  AI-owned subject 为玩家 `29037`。bootstrap activation、B1 season opened、selector ready、selector
+  closed 四个 marker 均恰好一次；event close postcondition 与 typed save ACK 均通过。
+- candidate report/evidence index/candidate contract SHA-256 分别为
+  `1d493ffbcaf61695e98993619258f9b1fde1b6f133e7311aa89eba3302a96c0e`、
+  `740af84b9e996064634a546b95ea27090c75aee41c6193dffbce474eada10fed`、
+  `adc750ad921e7e36a5f66a477d0f06357064a6e335db909d27378a50ba2eea78`。
+
+下游 provider 基线必须分开写：`provider_baseline_verdict=blocked_provider_matrix_captured`。
+AI-owned case 与 Incident X 已 `available/ready`，但 X 是 N/A；B2 PIP 为 `case_not_found`，Incident
+Y/Z 为 `variable_identifier_unavailable`，Workforce 为 `variable_context_unavailable`，所以 mixed
+Incident 与三周期 Workforce 仍待产品 managed runner 推进。provider probes SHA-256 为
+`5e3f60ffc49d945b30805f6b2af6e33cad52a2d9a5c801886aaac35eef583058`。
+
+本轮 loader stage 为 `GREEN / 48.19s / 303 database nodes / catalogued fatal=0`，warmup Frontend
+为 `48.283s`，native session `135.774s`，runner 总计 `161.686s`；没有触发加载性能 RED，故不做
+额外文件边界 A/B。B2+ 新增 effect 保持 72 个用途片、314 个定义、单片最大 10，`>10=0 / >20=0`。
+覆盖旧 B1 的 hotfix 文件仍有 41 个定义，是明确区分于 B2+ 新片的 inherited 例外；其理由与 r8
+实机 RED 已冻结在 production-closure 合同中。
+
+`02_loader_error_scan.json` 的已知 fatal signature 匹配为 0，但不能写成 `error.log` 全干净：扫描冻结日志
+仍含 5,622 条变量用途/旧事件注册诊断，selector close 后最终日志另有一条尚未分类的
+`GetOriginalIDHash collision` assert。它没有阻断 close、checkpoint 或 cleanup，本工作包不因无实际失败的
+理论风险扩张修复。游戏内控制与 typed capture 为 MCP-only；顶层 `ocr_used/image_used=true` 仅用于非 gameplay
+的键盘布局/可选法律协议平台门，不能笼统写成整场零 OCR。
+
+以下旧存档与 attempt 07 段落保留为历史故障账本，不再代表当前 canonical seed 状态。
 
 ## 已纠正的旧存档身份
 
@@ -27,12 +72,13 @@
 
 ## 为什么旧存档不能继续冒充 ready
 
-该存档早于现有 B1、B2、Incident、Workforce 产品状态。当前 runner 又需要五个真实
+该旧存档早于现有 B1、B2、Incident、Workforce 产品状态。runner 又需要五个真实
 selector：B2、Incident、Workforce 三个 received-self owner，以及 AI-owned B1 case
 的 owner/direct-subject。旧 MCP 没有枚举这些关系的通用查询，旧 artifact 也没有捕获
-这些五项。故机器合同的 `domain_query_matrix` 目前精确保留五个 `null`；blocked 合同
-允许 `null`，ready 合同必须五项都是正 int32 CharacterID，且 owner 不能是玩家、
-AI owner 不能等于 subject。禁止填假 ID 只为让 loader 通过。
+这些五项。故当时的 blocked 机器合同在 `domain_query_matrix` 精确保留五个 `null`；
+2026-09-04 r9 已通过 typed saved scopes 捕获五个正 int32 CharacterID，并把当前 canonical
+合同提升为 ready。合同不变式仍是 owner 不能是玩家、AI owner 不能等于 subject；禁止填假 ID
+只为让 loader 通过。
 
 旧 save、报告与索引仍保留如下来源信息：
 
@@ -183,7 +229,7 @@ production detour。
 确认 product/fixture 各挂载一次 → append-only loader gate → exact event query → 五 selector 与 paused checkpoint 捕获 →
 受管 cleanup。若 loader gate 再次 RED，保留新日志后停止，不增加超时、不启动第二局；只有该门 GREEN 才继续 seed 业务验收。
 
-## 可复用 seed capture runner（static-ready，尚未运行 attempt 08）
+## 可复用 seed capture runner（历史 static-ready 状态；已由 r9 supersede）
 
 attempt 07 的 `run_seed_capture.py` 是冻结现场中的一次性脚本，路径、HEAD、DLL、injector 与 pipe 全部硬编码，且 bridge
 transport 连接后直接进入 `900s` event wait。它只属于失败现场，**不得重跑或改写**。仓库内的新入口是
@@ -218,7 +264,8 @@ source/ZIP 逐文件等价、旧 save/CK3/rules/bridge/injector 哈希、exact-b
 `artifacts/preflight.json` 写入 machine-readable 结果：`result/status/ok=GREEN/preflight-ready/true` 且
 `ck3_launch_attempted=false` 时退出码为 `0`；这里的 `status=preflight-ready` 只表示冻结输入与投影门通过，报告固定
 `readiness_scope=frozen_inputs_and_projection_only`、`seed_ready=false`，并原样记录当前
-`seed_contract_status`（通常仍为 `blocked_seed_generation_required`），不能解读为 seed 或 live capability 已就绪。
+`seed_contract_status`（历史 attempt 通常为 `blocked_seed_generation_required`；r9 提升后为 `ready`）。该字段只回显输入合同，
+单独一次 no-launch preflight 不能解读为新 seed 或 live capability 已就绪。
 任何 blocker 都保留 RED artifact（`status=preflight-blocked/ok=false`）并退出码为 `2`。
 每次实机 capture 仍必须使用新的空 attempt/artifact 目录，不能把 preflight 目录直接复用为 attempt 08。
 这里的静态门是 seed 专用离线检查（`_run_seed_static_preflight`）；不会调用面向完整 acceptance fixture 的通用
@@ -256,8 +303,9 @@ py -O tools/test_run_zg361_phase2_seed_capture.py
 ```
 
 fake tests 覆盖显式 CLI 校验、no-launch GREEN/RED 与 launch boundary、ZIP/tree exact hashes、单挂载及顺序、45 秒 parser fail-fast 原样证据、单一 event deadline、
-GREEN cleanup/driver/log/immutability、parser RED 后仍 cleanup，以及拒绝重跑时不覆写原失败 artifact。截至本段记录时仅为
-`static-ready / fake-tested / not-live`；不构成 attempt 08，也不授权在 parser/theme 静态项清零前启动 CK3。
+GREEN cleanup/driver/log/immutability、parser RED 后仍 cleanup，以及拒绝重跑时不覆写原失败 artifact。本段末尾的原始状态曾为
+`static-ready / fake-tested / not-live`；2026-09-04 的 r9 已按同一硬顺序得到本页开头记录的
+`paused_seed_ready`，故不得继续把这段历史状态当成当前 blocker。
 
 ## seed 加载后仍须由 managed runner 消除的两项产品阻塞
 

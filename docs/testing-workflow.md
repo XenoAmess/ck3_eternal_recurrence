@@ -944,15 +944,25 @@ CK3 build label 上移，版本 OCR ROI 必须覆盖多行 footer。反过来，
 
 ### 加载性能 RED：先验证文件边界与单文件体量
 
-2026-09-03/04 的 Phase2 B1 给出了一次可复现但仍有边界的实证：旧生成单文件含 `77` 个顶层 effect、正文
-`495,777 B`，唯一一次未拆分 full-entry attempt 在 `1205.343 s` 时仍停在主菜单前；把完全相同的定义按完整顶层块
-拆为 `41 + 36` 后，诊断候选与 generator 正式候选都进入游戏。正式 `59-file` 候选在 `245.770 s` 通过 8/8
-full-entry gates、三条 game-state marker、material-error 0 与 cleanup。两个分片去掉各自 BOM/generated header 后按原顺序
-重组，与旧正文逐字节一致，SHA-256 为
+2026-09-03 的 Phase2 B1 曾给出一个早期相关性：旧生成单文件含 `77` 个顶层 effect、正文 `495,777 B`，唯一一次
+未拆分 full-entry attempt 在 `1205.343 s` 时仍停在主菜单前；按完整顶层块拆为 `41 + 36` 后，诊断候选与 generator
+正式候选都进入游戏。正式 `59-file` 候选在 `245.770 s` 通过 8/8 full-entry gates、三条 game-state marker、
+material-error 0 与 cleanup。去掉各自 BOM/generated header 后的重组正文仍为
 `CDB388005FFEAC6D332380E910FBBF929F49871047E118D047C63B8751C001B4`。
 
-这组证据支持“**文件边界/单文件体量很可能参与了本次启动问题**”，但由于旧单文件 RED 只有一次，尚未证明固定阈值，也不能
-声称它是唯一根因。今后遇到没有对应 material/parser error 的加载耗时 RED，按以下最小 A/B 取证：
+2026-09-04 的 seed-entry 扩展实验已经纠正了“文件体量就是根因”的推断。包含完整 Workforce closure 的用途拆分
+r2/r3 仍分别在 `302.912s / 303.181s` 主菜单前 RED；两者 report SHA-256 为
+`A603DC2783D398FEBC73B82F739BF1A701EEFD5438A96A9A8FE9AF2842925972` / `D5C6B38A43874BE70A3A299A5AC725BBFC7685F1F7437E7F1D6A9EF18D0BD94F`。
+随后只删除
+`zg361_workforce_appointment_fact_seal_and_publish_effect` 内对自身的唯一递归调用，保留同一用途分片框架的
+245-file 候选即在 `180.349s` full-entry GREEN；report SHA-256
+`7260921ED8757AE4242E2CF68C32CAA52887F3AE1CDC297723A911567529A4FF`。把该修复下沉到 generator 后，完整
+249-file production closure 的 r4/r5 又分别在 `167.277s / 174.305s` GREEN。因而目前证据支持：
+**本次 seed-entry 启动故障的已定位原因是同一 scripted effect 的直接自递归；单文件体量不是必要或充分原因。**
+引擎为何在主菜单前被这条递归拖住仍不外推为已知内部机制。
+
+用途拆分仍作为 B2+ 的可维护性、闭包选择与性能取证规范保留，而不是作为这次故障的虚假唯一修复。今后遇到没有对应
+material/parser 首错、也没有已定位递归/调用图错误的加载耗时 RED，按以下最小 A/B 取证：
 
 1. 保留原始 RED artifact，不覆盖失败 attempt；固定 CK3 exact build/EXE SHA、profile、候选树、探针和 timeout。
 2. 只在完整顶层定义边界拆分，保持定义名、顺序和正文不变；各文件继续满足 UTF-8 BOM 与生成头合同。
@@ -984,6 +994,13 @@ worktree 推导出的游戏目录不存在而 harness RED，CK3 没有启动；r
 `F75097D9C20B610F81CA60837DF879865E26866F65AC76E7D40C1DF300C34B2A`。本轮没有加载性能 RED，不需要追加 A/B；它证明
 用途分片后的 exact tree 可进入暂停地图，不证明 Incident delayed-path 或 seed 业务语义。这也是正常 GREEN 候选，不是
 “同一正文单体 vs 分片”的因果 A/B，不能据此进一步把 B1 的唯一根因写成文件体量。
+
+同日 r9 又把修复后的完整 seed closure 带入真实 CK3：`249 files / 12,098,441 B`，product tree
+`CDBCF82EABDC0ACFB94A61C90959777485672C99F197B8573C35E7A1084A98BD`；loader stage 在 `48.19s`
+完成 303 个 database nodes，runner 总时长 `161.686s`，最终为 `paused_seed_ready`。report SHA-256
+`32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`。B2+ 新增层为 72 个用途
+effect 文件 / 314 definitions，单片最大 10，`>10=0 / >20=0`；旧 B1 41-effect hotfix 作为 inherited 例外单列，
+不计入新分片门。本轮未出现加载性能 RED，因此没有触发额外 A/B，也不能拿一次 GREEN 反推“拆分必然更快”。
 
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
