@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_b3_exact_helper_split_selection_receipt",
+  "status": "NOT_SELECTED_FALLBACK",
+  "selected_for_live": false,
+  "do_not_launch": true,
+  "canonical_changed": false,
+  "branch": "codex/b3-exact-helper-split-20260904",
+  "source_commits": [
+    "325284f1e15a96159ab348ff99a5f89d05630def",
+    "6758e83314b2c56d956441da12b18421eb8a719a"
+  ],
+  "activation_condition": "explicit-AND-wrapper live fails after material/parser errors are excluded",
+  "activation_condition_observed": false,
+  "selection_reason": "The serial coordinator reported that the explicit-AND minimal candidate reached Frontend (first 303 callbacks 123.801s; Frontend 125.965s) with zero material errors. Running this broader four-file helper split would not resolve an active blocker or add decision-changing evidence.",
+  "wrapper_live_evidence": {
+    "root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\\artifacts-live",
+    "first_303_callbacks_seconds": 123.801,
+    "frontend_seconds": 125.965,
+    "material_error_count": 0,
+    "outer_report_sha256": "f0abc5f24505019061b986db8992ca0ddd95c0d584c6c9f24b5d4bf6bb9b9b70",
+    "evidence_index_sha256": "a6049d099759571921a5e81a0634517e25c91e5a0452aaba0d583041f6bfce5f",
+    "cell_report_sha256": "9a9ae5c6f52aab6fc99f6d44d918c9556a8c43bcef25c430583097d8846b9e17",
+    "final_error_log_sha256": "5acd90c8c74a82014abe065b33cb51d6bdef2df6298c0e83d9e296333b818a9d",
+    "ownership": "serial CK3 coordinator canonical artifact"
+  },
+  "fallback_freeze": {
+    "root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-exact-helper-split-6758e83-20260904T100659Z",
+    "attempt_manifest_sha256": "f8bdc1adbce25eb05a3645667303ab08b4e18ab696c14087e2b771114ce76d29",
+    "projection_tree_sha256": "2564a8a824068cf500e106af0026c4269c6e4844d17ed8dc841fb0abd95ea91f",
+    "formal_no_launch_preflight_green": true,
+    "ck3_launched": false,
+    "live_artifacts_exist": false
+  },
+  "concurrent_preflight_red": {
+    "root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-exact-helper-split-325284f-20260904T100320Z",
+    "log_sha256": "493c864365cbf98dfda51dca6698e2cb7e32631d0d46195af94726011b928278",
+    "classification": "harness_concurrency_prelaunch_red",
+    "message": "ck3.exe is already running",
+    "candidate_or_capability_red": false,
+    "ck3_launched_by_this_work_package": false
+  },
+  "claims": {
+    "candidate_is_a_necessary_fix": false,
+    "candidate_has_ck3_live_evidence": false,
+    "candidate_has_gameplay_or_footage_evidence": false,
+    "static_semantic_preservation_proven": true,
+    "parser_and_formal_preflight_green": true
+  }
+}

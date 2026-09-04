@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_b3_exact_helper_split_repository_summary",
+  "status": "NOT_SELECTED_FALLBACK",
+  "selected_for_live": false,
+  "ck3_launched": false,
+  "source_commit": "6758e83314b2c56d956441da12b18421eb8a719a",
+  "external_freeze": {
+    "root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-exact-helper-split-6758e83-20260904T100659Z",
+    "attempt_manifest": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-exact-helper-split-6758e83-20260904T100659Z\\attempt-manifest.json",
+    "attempt_manifest_sha256": "f8bdc1adbce25eb05a3645667303ab08b4e18ab696c14087e2b771114ce76d29",
+    "projection_manifest_sha256": "acb8c409cc6e4de4e50a06450de8b10562f77a6203687cafe77a679470a5fda2",
+    "open_kaishek_parser_report_sha256": "d9dbecb1ea658d87298f9c085ceb05d7505c333b6da2a074c465cb4ad2339670",
+    "formal_no_launch_preflight_log_sha256": "3feb528733a1aaa0026ac7f44c57068f2b3ab1fdd82bbb4142779c53b7110723",
+    "selection_sidecar_sha256": "4cfb40eacedb6202b6254392a3376e41c377197d53848e63e03366ba831722bf",
+    "live_artifacts_exist": false
+  },
+  "candidate": {
+    "file_count": 568,
+    "bytes": 21608480,
+    "unchanged_file_count": 564,
+    "source_tree_sha256": "2564a8a824068cf500e106af0026c4269c6e4844d17ed8dc841fb0abd95ea91f",
+    "trigger_file_count": 4,
+    "trigger_definition_count": 4,
+    "max_trigger_definitions_per_file": 1,
+    "semantic_comparison_count": 9,
+    "b1_comparison_count": 5,
+    "mg_comparison_count": 4,
+    "candidate_body_byte_identical": true,
+    "exact_parameter_count": 12,
+    "closure": {
+      "green": true,
+      "reachable_effect_count": 1868,
+      "reachable_event_count": 560,
+      "reachable_trigger_count": 18,
+      "missing_effects": [],
+      "missing_events": [],
+      "missing_triggers": []
+    }
+  },
+  "selection": {
+    "activation_condition": "explicit-AND-wrapper live fails after material/parser errors are excluded",
+    "activation_condition_observed": false,
+    "reason": "The explicit-AND minimal candidate reached Frontend with zero material errors; this broader helper split would not add decision-changing evidence.",
+    "wrapper_artifact_root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\\artifacts-live",
+    "wrapper_outer_report_sha256": "f0abc5f24505019061b986db8992ca0ddd95c0d584c6c9f24b5d4bf6bb9b9b70",
+    "wrapper_evidence_index_sha256": "a6049d099759571921a5e81a0634517e25c91e5a0452aaba0d583041f6bfce5f"
+  },
+  "concurrent_preflight_red": {
+    "classification": "harness_concurrency_prelaunch_red",
+    "message": "ck3.exe is already running",
+    "log_sha256": "493c864365cbf98dfda51dca6698e2cb7e32631d0d46195af94726011b928278",
+    "candidate_or_capability_red": false
+  },
+  "claims": {
+    "static_semantic_preservation_proven": true,
+    "parser_and_formal_preflight_green": true,
+    "candidate_has_ck3_live_evidence": false,
+    "candidate_is_a_necessary_fix": false,
+    "canonical_changed": false
+  }
+}
