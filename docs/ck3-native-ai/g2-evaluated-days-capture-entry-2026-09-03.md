@@ -135,3 +135,31 @@ readiness 边界见
 [`evaluated-days-current-pin-static-ready.json`](../../artifacts/g2/2026-09-04/evaluated-days-current-pin-static-ready.json)。
 该 candidate 目前仅为 `STATIC_READY_NO_LAUNCH`：没有 CK3、profile、attach 或 mutation；下一动作仍是独占
 CK3 槽内的一次双 query capture，再用上述收口器判定，不能仅凭本静态构建提升 runtime certification。
+
+## 2026-09-04：current-pin 单槽 preflight
+
+[static-ready / no launch] 新增机器可读 manifest
+`native_bridge/research/fixtures/g2_evaluated_days_current_pin_live_manifest.json` 与 no-launch preflight
+`native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py`。manifest 冻结 candidate source、
+checkpoint/driver、CK3 EXE、private/default build、Open Kaishek jar、两次只读 query、private capture
+shape 及其 SHA-256；preflight 在创建 profile 或启动/附加进程前复核这些输入、exact-build evaluator bytes、
+build option、private/default marker、driver identity、Open Kaishek current pin、fresh attempt 以及 CK3 独占槽。
+
+第一次 preflight 只因当时已有一个 `ck3.exe` 占用独占槽而 RED；没有停止、附加或干预该进程。槽释放后使用
+新报告名复跑得到 `ready-to-run`：
+
+```powershell
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py --report Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\preflight-current-pin-r2.json
+```
+
+报告 SHA-256 为
+`E364750DF68022062238BD7BB3568645D223ADD3E2711997DC5E4E5E0A7751EC`；其中全部 input/source hash、
+private/default build contract、driver anchor、exact evaluator、Open Kaishek 静态兼容、空独占槽与 fresh attempt
+检查均为 true。报告给出唯一 PowerShell 命令：按 manifest 指向的同一 frozen checkpoint 启动 shared runner，
+只发两次 `query-war-termination-terms-v1-50331699`，随后无论 public runner 是否 RED 都执行 private analyzer。
+未来 attempt 固定为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1`。
+
+该 GREEN 只证明下一次独占槽输入已经就绪；本次仍未启动 CK3、未创建 profile、未附加进程，也没有 live
+evaluator result。`native_certified=false`、`runtime_certified=false`、public wire/readiness、expiry、决策、
+自动投降与 `GEN-034=unresolved` 均保持不变。

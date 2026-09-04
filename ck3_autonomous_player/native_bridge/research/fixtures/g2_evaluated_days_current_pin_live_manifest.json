@@ -1,0 +1,107 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_current_pin_live_manifest.v1",
+  "state": "static-ready-waiting-for-exclusive-ck3-slot",
+  "candidate_source_commit": "6145be50a1666c2392dd23edef7779507c3043d4",
+  "identity": {
+    "war_id": 50331699,
+    "character_id": 29829,
+    "date_raw": 53223936
+  },
+  "timeouts": {
+    "readiness_seconds": 300,
+    "session_seconds": 420
+  },
+  "paths": {
+    "python": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "runner": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+    "analyzer": "ck3_autonomous_player/native_bridge/research/analyze_g2_evaluated_days_private_capture.py",
+    "source_checkpoint": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\profile\\save games\\xar_checkpoint.ck3",
+    "source_driver_state": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-g2-altseed-after-embarked-fix-20260831-0937\\native-session\\driver-state.json",
+    "game_dir": "Z:\\ck3_mod_rewrite\\Crusader Kings III",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\frozen\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\frozen\\xar_ck3_bridge_injector.exe",
+    "source_zip": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\frozen\\source-6145be50a1666c2392dd23edef7779507c3043d4.zip",
+    "private_cmake_cache": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\build-private\\CMakeCache.txt",
+    "default_cmake_cache": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\build-default\\CMakeCache.txt",
+    "default_bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\build-default\\xar_ck3_bridge.dll",
+    "open_kaishek_checkout": "Z:\\workspace\\open_kaishek",
+    "open_kaishek_jar": "Z:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\live-current-pin-dual-query-r1"
+  },
+  "sha256": {
+    "python": "D70FCED7F461F38F9F224D8673FB74E96E4FACB4283FF4E8697543B457FEA8A0",
+    "runner": "F33B6BE0045D882FF9A8877AC3CF5596BF05B53240062B67D0E06AD7E2D0E4BB",
+    "analyzer": "F40DB8088BFD45B369A0DB38CF1CFDC1AD74F9C4957D9FC0A397836D40025413",
+    "checkpoint": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "98F9F82E2D3F3A5B0EA2649E92C2148EDBF3859BF46C0126378E854BCA1E754C",
+    "bridge_injector": "42452C6C43CCB88AD44FB05D25E225DDA68FEC38538E88B3F295685AE6A5B627",
+    "source_zip": "A436EF402BF191E2CA3ED57501246776F2ED330B4C3BCB2283EEA2B196D8F715",
+    "private_cmake_cache": "ABB199CED0B6AF183F10D092B2B216C831F9AFD20C8A1AE2F4F5A4C83C363713",
+    "default_cmake_cache": "8D7D2C11B6B078AFCE6A197A2F0BA37D554CA96B8574D535053FA9029DEB95EE",
+    "default_bridge_dll": "848F91B50766E7A3A6523DABA2D5AAA88FCD55233D5311CBB3801573714D6EA7",
+    "open_kaishek_jar": "FC85947E9976B80345C10A9789A6520C8ABCEF557365284570C18C4677D891CC"
+  },
+  "source_sha256": {
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt": "A04B242EA3448DD37E254F79E4A45C6FBDE94497BCC10B586363CB9F1C151803",
+    "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp": "0E2A6E897D6F7607A8DD7E00E39C6ED7DFCD74FC0EB54832649C202F02CD7023",
+    "ck3_autonomous_player/native_bridge/src/raiktor_surrender_truce_v1.cpp": "96A959BEEF0D10E4973DE2EF468923A7ECA2B7FC93FFE1995398F522F83EC472",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_surrender_truce_v1.hpp": "BE7D1859C4C55F17C13CD3A9BA781F8955520334876A05D33B854727B68678BA",
+    "ck3_autonomous_player/native_bridge/src/raiktor_surrender_truce_v1_test.cpp": "D65698453A9385A9441F977A85BDDECF72ADAD572724D08D3A4C47FB46AC23ED",
+    "ck3_autonomous_player/native_bridge/research/raiktor_truce_evaluator_callsite_v1_abi.json": "55E5203647D2D0D0F017E990CBB736F42E306EFEE1269D7918DF39735A812799",
+    "ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json": "02E84FD473339FCF6903FE3F14B4CBB6BC5E2B21DD96A0B63A56DCC907ABA83F"
+  },
+  "open_kaishek": {
+    "commit": "15ab978f879ed4562aacb74dacdaee702fbce54b",
+    "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
+    "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
+    "native_certified": false,
+    "runtime_certified": false
+  },
+  "build_contract": {
+    "private_capture_option": "ON",
+    "native_callsite_observer_option": "OFF",
+    "preview_entry_observer_option": "OFF",
+    "default_capture_option": "OFF",
+    "private_capture_schema": "xar.ck3.g2_truce_private_capture.v3",
+    "boundary_schema": "xar.ck3.g2_truce_private_evaluator_boundary.v1"
+  },
+  "query_contract": {
+    "terms_query_count": 2,
+    "allowed_gameplay_commands": [
+      "query-war-termination-terms-v1-50331699",
+      "query-war-termination-terms-v1-50331699"
+    ],
+    "mutation_commands": [],
+    "time_advanced": false,
+    "same_paused_frame": true
+  },
+  "capture_contract": {
+    "group_count": 2,
+    "rows_per_group": [
+      "pre_call",
+      "post_call_1",
+      "post_call_2",
+      "xar.ck3.g2_truce_private_capture.v3"
+    ],
+    "exact_path": "root[7].default.children[1].children[0].children[0]",
+    "truce_vtable_rva": "0x4461CA8",
+    "duration_offset": "0x108",
+    "evaluator_rva": "0x3373000",
+    "requires_equal_nonnegative_results": true
+  },
+  "boundaries": {
+    "preflight_launches_ck3": false,
+    "preflight_attaches_process": false,
+    "live_authorized_by_manifest": false,
+    "context_effect_executed": false,
+    "mutation_enabled": false,
+    "public_wire_promoted": false,
+    "public_readiness_promoted": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  }
+}
