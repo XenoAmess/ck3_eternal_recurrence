@@ -28,6 +28,8 @@ Its external, append-only copy and native binaries are under:
 | `xar_ck3_bridge_injector.exe` | 39,936 | `5809144E895DE6FE6BEBF29C2310BBC2313E3B8E2262CEBB175478EFDA79E9E3` |
 | `CMakeCache.txt` | 19,723 | `B92173960B12E9370B401C5FC842D4C795B0CE8DF77224EE4A330CDC770BD511` |
 | `frozen-candidate-manifest.json` | 12,329 | `4268B6D147D234536A03A98EC1F7A5E08DAAA7246DFF340B51FD42E2E94A8F98` |
+| `no-launch-preflight.json` | 6,992 | `1A4900AABE5D3FD0BA582F8AE9199919A27F27EDCCD9319F1A1D52B9B483EE88` |
+| `no-launch-preflight-red-existing-ck3-pid13740.json` | 7,000 | `66C5FD65A617EAD248FAE2578DFE9AD1F2F4CE0C8C382E92EF85769BF86DBBBB` |
 
 This was a fresh MSVC/Ninja `Release` default build. Its cache records both
 unrelated private candidate toggles as `OFF`. The build completed 489 compile
@@ -36,6 +38,13 @@ run exposed six older source-contract tests still frozen at the pre-B7 adapter
 count 76; only those test literals were updated to 78, after which a second
 empty build directory reproduced 93/93 GREEN. That failure and repair remain in
 the manifest rather than being hidden.
+
+The first machine preflight also correctly returned RED while another serial
+work package owned CK3 PID 13740. That failed report is retained above. After
+that process exited normally, the same immutable candidate returned
+`READY_TO_SERIAL_LIVE` with zero CK3 and injector processes; the future live
+attempt directory remained absent. This package did not start or terminate the
+other process.
 
 ## Capability and player gates
 
