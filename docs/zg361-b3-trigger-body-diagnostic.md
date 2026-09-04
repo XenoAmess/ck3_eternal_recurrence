@@ -181,3 +181,43 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trig
 当前试验同时替换两个正文，无法区分 candidate 与 exact，更不能指定具体表达式；下一步必须做单 trigger 复原的正交 live。
 
 `always = no` 不能合回源码，也不能用于 Phase2 gameplay、readiness 或宣传素材。
+
+## V1/V2 正交二分：收敛到 exact body / 调用结构
+
+冻结根：`Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z`。
+`attempt-manifest.json` SHA-256 为 `1f1ae161d4a0731cce937399e654b828ba61482e951a59b0207428249c13b119`。
+两候选都来自同一 frozen r5 A，只修改同一个 trigger owner，其余 564 文件逐字节不变；provider placeholder ABI 均与原 3/12 参数精确相同。
+
+| 变体 | 真实正文 | ABI-consuming 恒 false stub | first 303 | Frontend | terminal |
+|---|---|---|---:|---:|---|
+| V1 | `zg361_p2c_m360_candidate_ready_trigger` | `zg361_p2c_m360_frozen_manager_exact_trigger` | 113.542s | 114.894s | 299.975s，`frontend_without_load_save` |
+| V2 | `zg361_p2c_m360_frozen_manager_exact_trigger`，保留其对 candidate stub 的调用 | `zg361_p2c_m360_candidate_ready_trigger` | 120.403s | 未出现 | 299.912s，`loader_terminal_missing_after_database_callbacks`，quiet 177.338s |
+
+两轮全部冻结日志副本的 material 四类门禁均为 0：`Scripted trigger should have no arguments`、`Unknown trigger`、
+`Unknown effect`、`Parser Error`。V1 已知噪声为 loc 952 / set-never-used 13,990 / used-never-set 90；V2 为
+952 / 13,992 / 90。两轮 cleanup 均 GREEN、最终 CK3 process count 0、protected storage unchanged。
+
+V1 hash：
+
+- projection：`6a0cb0d2e89b9a02d35a042ebe75b9e67a11c4cbc72499828da2a1c3881da7e6`；
+- outer report：`76af1a504e2a3a04522647d58b51e4b73fb7626f7874cdbaa7d09259f2ee13f1`；
+- cell report：`08931e1ef33fc45f38723146f81b2cc4553dabd9db0db605e2e0b22a11bd587d`；
+- evidence index：`b2ae2b089eb27cc8ae26ecfd42b1f6a04e999d983098ceda311c9dc84bc8980c`；
+- `final_error.log`：`b767b2c6cd70746e466e436aba5aa42847eb158292b00a7421ede402a1be1179`。
+
+V2 hash：
+
+- projection：`9967aed85411cf66d2056d53f99a52cbfc184c09c18a0404c90acb7d1c427762`；
+- outer report：`5d0c5767a434a4d290a03a96eedf191e0dd4a3a5bc2807eb67e25b3ed17fec7c`；
+- cell report：`40f797ceeeed7e587ccf62f4caf81ebf3864ae11258363ebe3f205668ae111e6`；
+- evidence index：`8c6bb7da730eb10a38e831439ca1410c66483e49a1f2cb51416612711e3540d1`；
+- `final_error.log`：`be589d73fa88a36edc9c31c8eaa4f145d028e1b32a42bdf0babf0e73a24aefb5`。
+
+fail-closed postprocessor 逐项验证 manifest/variant composition、hash、时序、terminal reason、ABI、material 错误、噪声计数与 cleanup。
+外置 `bisect-live-verdict.json` 为 `GREEN_EVIDENCE`，SHA-256
+`029b3916ab7af5735ccac19eef472cfe7fb5840270b80b387f403a5c10addf1d`。
+
+结论：V1 在 candidate 真实正文存在时恢复 Frontend，排除 candidate 真实正文作为本次 terminal loader RED 的具体原因；V2 只恢复
+exact 真实正文及其对 candidate stub 的调用结构就重现同类 terminal loader RED，因此高置信把因果范围收敛到
+`zg361_p2c_m360_frozen_manager_exact_trigger` 的真实正文/调用结构。尚未隔离 exact 内的具体表达式，不能把某一比较、参数转发或求值
+路径单独定罪。两轮完整 acceptance 都仍为 RED，二分证据不等于 Phase2 gameplay GREEN。
