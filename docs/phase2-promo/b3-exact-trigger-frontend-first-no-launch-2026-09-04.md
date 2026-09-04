@@ -88,3 +88,51 @@ short-root outer/cell 最终仍为 RED，但已经发生在更晚的 MCP capabil
 ## 结论
 
 这是一组 harness path-length 单变量对照：相同 565-file immutable product 在 long mount 的 `max=264` 时由 PhysFS 报错并崩溃，在 short mount 的 `max=197` 时进入 Frontend、加载 autosave 并到达 paused map。它证明本次 long-root RED 来自 runner 实现出的物理路径超过 250，**不是 effect 单文件体量回归，也不需要通过拆分 effect 文件修复**。此前“显式 `AND` 恢复 Frontend”仍是独立的 AST-shape 语义证据；两类故障与结论必须分账。
+
+## Current canonical capability 审计与最小 runner 修复
+
+2026-09-04 18:41（Asia/Shanghai）对 current canonical
+`Z:\ck3_mod_rewrite\_root-promo-split-20260902` / `cac1e85b616827a9ae11d755dd71f119325e6f3f` 做了只读静态审计；
+runner SHA-256 为 `8B526960AFA57C01361C1CFE30526A1AF5B808538F208C7EF855BB1900486581`。
+完整 Phase2 capability preflight 的 mandatory 集合为 21 个 bridge capabilities、12 个 derived query/support flags，以及修复前
+7 个 materialized action steps。short-root live descriptor 的 79 个 bridge capabilities / 18 个 action steps 与该集合比较后，
+只有三条缺失：
+
+| 层 | 缺失 | 证据与分类 |
+|---|---|---|
+| bridge advertisement | `game.command.query-zhongguo-promotion-compensation-postcondition-v1` | promotion provider 已布线，但所用 bridge 没有广告；21 项中通过 20 项 |
+| managed derived flag | `zhongguo_promotion_compensation_v1_query_supported` | `native_driver` 从上述 bridge capability 成员关系派生；12 项中通过 11 项，不是第二个独立 provider 缺陷 |
+| runner materialized action step | `query-zhongguo-result-case-snapshot-v1` | bridge capability 与 derived flag 都已为 true；缺的是 runner 错误要求的零参 action-step 形态，7 项中通过 6 项 |
+
+live preflight artifact 为
+`Z:\ck3_mod_rewrite_process_assets\zg361\b3j-ff-1817\cell\02_phase2_mcp_capabilities.json`，SHA-256
+`FFD160C0F6643FF6BC20B5B140BC5C7912F1127F2CE7135F464C39BC1F7F1865`。其中 promotion 两行和 result-case
+action-step 一行是完整的 `missing_requirements`，其余 mandatory capability/query/action 项均通过。
+
+三层结论必须分开：
+
+1. **Python runner / MCP tool 层**：`mcp_server.py` 已注册
+   `ck3_query_zhongguo_result_case_snapshot_v1` 与
+   `ck3_query_zhongguo_promotion_compensation_postcondition_v1`；`service.py` 和 `native_driver.py` 也都有对应 typed query
+   调用链。result-case 需要 `owner_character_id`、`request_nonce` 与 revision；`native_driver._action_steps` 因此按设计显式
+   不把它投影成无参数 planner action。旧第三条 RED 不是 MCP tool 缺失。
+2. **bridge advertised capability 层**：canonical `cac1e85` 已加入默认 `OFF` 的
+   `XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1`；只有 private candidate 以 `ON` 重建时才把 promotion
+   capability 加进 exact adapter。derived flag 会随之自动变为 true。当前最新已构建 DLL 仍是修复前
+   `971d1f9` 的
+   `Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-product-native-candidate-971d1f9-20260904T102926Z\xar_ck3_bridge.dll`
+   （`2,425,856 B`，SHA-256 `EE1A55085D2321409D7F201B0EFB5575F7FF2D5A1214BEB64147F93C0F00C72E`）；其
+   CMake cache 没有新 flag，虽 94/94 native tests GREEN，也不能通过完整 Phase2 promotion capability 门。默认-OFF
+   重建同样不会广告，必须明确构建 private flag-ON candidate。
+3. **provider business readiness 层**：广告 capability 只允许调用，不证明业务结果。promotion registry 仍是
+   `live-pending / native-provider-wired-default-off-live-pending / gameplay_action_complete=false`，必须取得真实 paused
+   `zg361pp.147 → zg361comp.1` 同 generation provider result；manager governance 仍为
+   `static-ready-live-pending`，scoreboard 仍为 `product-surface-checkpoints-pending`。三者仍列在
+   `PHASE2_MISSING_GAMEPLAY_ACTION_CELLS`，不得因 preflight GREEN 宣称完整 Phase2 GREEN。
+
+本提交同时闭合第三条 runner 缺口：从 `PHASE2_REQUIRED_ACTION_STEPS` 删除 `result_case_snapshot`，保留它原有的 bridge
+capability 与 derived query flag 两道 mandatory 门。完整 preflight 因此改为 21 bridge / 12 flags / **6 action steps**；没有
+把 typed query 降级成零参 action，也没有削弱真实可调用性检查。精确 regression test 证明：descriptor 不提供 result-case
+action step 时 preflight 可 GREEN；删除其 bridge capability 或把 query flag 置 false 时仍分别 fail closed。no-launch 验证为
+`Phase2FullCapabilityPreflightTests` 1/1 GREEN、`test_run_zhongguo_focused_b2.py` 16/16 GREEN，以及
+`test_run_zhongguo_promo_capture.py` GREEN；没有启动 CK3。

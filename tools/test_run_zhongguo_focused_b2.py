@@ -774,6 +774,107 @@ class FocusedB2MainTests(unittest.TestCase):
             self.assertIn("focused B2 report lacks", rejected["error_reason"])
 
 
+class Phase2FullCapabilityPreflightTests(unittest.TestCase):
+    @staticmethod
+    def complete_capabilities(pid: int) -> dict[str, object]:
+        return {
+            "mode": capture.NATIVE_BRIDGE_MODE,
+            "backend_id": capture.NATIVE_BRIDGE_MODE,
+            "visual_fallback": False,
+            "snapshot": True,
+            "wait_for_change": True,
+            "bridge_capabilities": sorted(
+                set(capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES.values())
+            ),
+            "action_steps": sorted(
+                set(capture.PHASE2_REQUIRED_ACTION_STEPS.values())
+            ),
+            **{
+                flag: True
+                for flag in capture.PHASE2_REQUIRED_QUERY_FLAGS.values()
+            },
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": pid,
+                "connection_generation": 1,
+            },
+            "checkpoint_materialization": {"configured": True},
+            "native_session_control": {"configured": True},
+        }
+
+    def test_result_case_typed_query_is_not_a_zero_argument_action_step(
+        self,
+    ) -> None:
+        pid = 9137
+        capability = "game.command.query-zhongguo-result-case-snapshot-v1"
+        flag = "zhongguo_result_case_snapshot_v1_query_supported"
+        step = "query-zhongguo-result-case-snapshot-v1"
+
+        self.assertEqual(
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+                "result_case_snapshot"
+            ],
+            capability,
+        )
+        self.assertEqual(
+            capture.PHASE2_REQUIRED_QUERY_FLAGS["result_case_snapshot"],
+            flag,
+        )
+        self.assertNotIn(
+            "result_case_snapshot", capture.PHASE2_REQUIRED_ACTION_STEPS
+        )
+
+        capabilities = self.complete_capabilities(pid)
+        self.assertNotIn(step, capabilities["action_steps"])
+        service = SimpleNamespace(capabilities=lambda: capabilities)
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            green = capture.phase2_runtime_capability_preflight(
+                service,
+                artifacts,
+                tracked_ck3_pid=pid,
+                managed_restore_supervisor=True,
+            )
+        self.assertEqual(green["result"], "GREEN")
+        self.assertEqual(green["missing_requirements"], [])
+
+        for kind in ("bridge_capability", "query_support_flag"):
+            missing = copy.deepcopy(capabilities)
+            if kind == "bridge_capability":
+                missing["bridge_capabilities"].remove(capability)
+            else:
+                missing[flag] = False
+            service = SimpleNamespace(capabilities=lambda value=missing: value)
+            with (
+                self.subTest(kind=kind),
+                tempfile.TemporaryDirectory() as temporary,
+            ):
+                artifacts = Path(temporary)
+                with self.assertRaisesRegex(
+                    capture.acceptance.RunnerError, "MCP capability RED"
+                ):
+                    capture.phase2_runtime_capability_preflight(
+                        service,
+                        artifacts,
+                        tracked_ck3_pid=pid,
+                        managed_restore_supervisor=True,
+                    )
+                persisted = json.loads(
+                    (
+                        artifacts / "02_phase2_mcp_capabilities.json"
+                    ).read_text(encoding="utf-8")
+                )
+            self.assertTrue(
+                any(
+                    row["kind"] == kind
+                    and row["label"] == "result_case_snapshot"
+                    and row["value"]
+                    == (capability if kind == "bridge_capability" else flag)
+                    for row in persisted["missing_requirements"]
+                )
+            )
+
+
 class FocusedB2LifecycleTests(unittest.TestCase):
     def test_successful_matrix_stop_is_not_repeated_by_outer_cleanup(self) -> None:
         pid = 5004

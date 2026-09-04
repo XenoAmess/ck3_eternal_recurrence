@@ -752,7 +752,9 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "bounded_life_advance": "life-advance",
     "save_checkpoint": "save-checkpoint",
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
-    "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
+    # Result-case is a typed MCP query with owner/nonce/revision inputs.  Its
+    # bridge capability and derived query flag are mandatory above, but it is
+    # deliberately not a zero-argument materialized planner action.
 }
 PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",
