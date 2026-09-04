@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_hc_workforce_b4_action_cell",
+  "span_id": "phase2_hc_workforce",
+  "producer_key": "hc-workforce",
+  "readiness": "static-ready-live-pending",
+  "selected_action": {
+    "event_definition_key": "zg361we.360",
+    "route": "B",
+    "native_option_index": 1,
+    "option_number": 2,
+    "product_option_key": "zg361we.360.b",
+    "product_effect": "zg361_we_m360_route_b_effect",
+    "visible_result": "three cohorts receive forced quota while manager cost remains zero",
+    "selection_reason": "route B is a visible real-product choice with deterministic conservation and no manager-capacity debit"
+  },
+  "action_cell": {
+    "module": "zhongguo_phase2_workforce_action",
+    "submit": "submit_m360_route_action",
+    "prove": "prove_m360_postcondition",
+    "run": "run_m360_action_and_postcondition",
+    "action_ack_is_business_receipt": false,
+    "provider_observed_postcondition_required": true
+  },
+  "service_contract": {
+    "protocol": "WorkforceService",
+    "implementation": "xar_autoplayer.bridge.service.GameplayBridgeService",
+    "required_methods": [
+      "snapshot",
+      "query_current_event_window_context_v1",
+      "select_event_option",
+      "query_zhongguo_workforce_collective_snapshot_v1",
+      "execute_step"
+    ],
+    "query_capability": "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+    "event_query_capability": "game.command.query-current-event-window-context-v1",
+    "event_action_capability": "game.command.select-event-option-N"
+  },
+  "postcondition": {
+    "provider": "query_zhongguo_workforce_collective_snapshot_v1",
+    "required_facts": [
+      "exact_owner_subject_cycle_case",
+      "m360_receipt_state_4_choice_2",
+      "route_b_collective_sealed_consumed_settled",
+      "three_distinct_cohorts",
+      "each_cohort_forced_equals_quota",
+      "each_cohort_exception_zero",
+      "each_cohort_manager_cost_zero",
+      "collective_totals_conserved",
+      "three_cycle_history_strictly_ordered",
+      "m357_m358_m359_receipts_distinct_per_cycle",
+      "m361_charter_gate_ready",
+      "m361_evidence_count_3",
+      "m361_effective_cycle_is_next_cycle"
+    ]
+  },
+  "seed_and_runner": {
+    "default_seed_contract": "tools/zg361_phase2_seed_contract.json",
+    "runner": "tools/run_zhongguo_acceptance.py",
+    "runner_preflight": "preflight_phase2_workforce_m360_gameplay_action_cell",
+    "runner_cell": "run_phase2_workforce_m360_gameplay_action_cell",
+    "transition_fixture": "tools/fixtures/zg361_phase2_workforce_action",
+    "requires_distinct_owner_and_subject": true,
+    "requires_current_source_projection": true
+  },
+  "live_checkpoint": {
+    "stage": "after workforce transition fixture activation and before selecting zg361we.360 route B",
+    "required_observations": [
+      "current cumulative product projection is hash-bound",
+      "seed save hash size and date are unchanged before restore",
+      "played character is the received-self workforce subject",
+      "typed transition event binds exact workforce owner and subject",
+      "played character switches to the exact owner without date advance",
+      "real zg361we.360 is active with three shown enabled options",
+      "AL case is state 4 and the central M360 source is ready",
+      "checkpoint is saved before any route option is selected"
+    ],
+    "post_action_observations": [
+      "route B option command is revision-bound and ACKED",
+      "ACK does not claim a business receipt",
+      "played character returns to the exact subject without date advance",
+      "provider-observed postcondition contains every required fact"
+    ]
+  },
+  "no_launch_boundary": {
+    "ck3_started": false,
+    "gameplay_action_executed": false,
+    "business_postcondition_claimed": false,
+    "live_proof_claimed": false,
+    "registry_modified": false
+  }
+}
