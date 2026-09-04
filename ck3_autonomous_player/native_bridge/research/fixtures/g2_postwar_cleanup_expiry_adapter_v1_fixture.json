@@ -1,0 +1,142 @@
+{
+  "schema": "xar.ck3.g2_postwar_cleanup_expiry_adapter_fixture.v1",
+  "synthetic": true,
+  "live": false,
+  "retention_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_retention_expiry_no_launch_manifest.json",
+  "source_report": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-production-leaf-1941c56-20260904\\live-production-leaf-dual-query-r1\\report.json",
+  "pre_snapshot": {
+    "paused": true,
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53223936,
+    "episode_run_id": "native-29829-fixture-adapter",
+    "diagnostics": {
+      "bridge_pid": 9001,
+      "connection_generation": 2
+    },
+    "played_character": {
+      "character_id": 29829
+    },
+    "active_wars": [
+      {
+        "war_id": 50331699,
+        "primary_opponent_character_id": 36769
+      }
+    ]
+  },
+  "termination_result": {
+    "step": "surrender-war-50331699",
+    "accepted": true,
+    "status": "submitted",
+    "backend_id": "native-headless"
+  },
+  "post_snapshots": [
+    {
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4,
+      "date_raw": 53223936,
+      "episode_run_id": "native-29829-fixture-adapter",
+      "diagnostics": {
+        "bridge_pid": 9001,
+        "connection_generation": 2
+      },
+      "played_character": {
+        "character_id": 29829
+      },
+      "active_wars": []
+    },
+    {
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4,
+      "date_raw": 53223936,
+      "episode_run_id": "native-29829-fixture-adapter",
+      "diagnostics": {
+        "bridge_pid": 9001,
+        "connection_generation": 2
+      },
+      "played_character": {
+        "character_id": 29829
+      },
+      "active_wars": []
+    },
+    {
+      "paused": true,
+      "snapshot_id": "native:4",
+      "revision": 5,
+      "native_revision": 4,
+      "date_raw": 53223936,
+      "episode_run_id": "native-29829-fixture-adapter",
+      "diagnostics": {
+        "bridge_pid": 9001,
+        "connection_generation": 2
+      },
+      "played_character": {
+        "character_id": 29829
+      },
+      "active_wars": []
+    }
+  ],
+  "expiry_reads": [
+    {
+      "step": "query-raiktor-actual-truce-expiry-v1-36769",
+      "accepted": true,
+      "query_sequence": 3,
+      "snapshot_revision": 4,
+      "raiktor_actual_truce_expiry": {
+        "schema_version": 1,
+        "backend_id": "ck3-1.19.0.6-native-raiktor-actual-truce-expiry-v1",
+        "status": "available",
+        "snapshot_revision": 4,
+        "current_date_raw": 53223936,
+        "owner_character_id": 29829,
+        "toward_character_id": 36769,
+        "native_has_truce": true,
+        "actual_expiry_observable": true,
+        "expiry_date_raw": 53270000,
+        "same_frame_stable": true,
+        "readiness": true,
+        "temporal_semantics": "post_application_persisted_relation_state",
+        "unavailable_reason": null
+      },
+      "backend_id": "native-headless"
+    },
+    {
+      "step": "query-raiktor-actual-truce-expiry-v1-36769",
+      "accepted": true,
+      "query_sequence": 4,
+      "snapshot_revision": 4,
+      "raiktor_actual_truce_expiry": {
+        "schema_version": 1,
+        "backend_id": "ck3-1.19.0.6-native-raiktor-actual-truce-expiry-v1",
+        "status": "available",
+        "snapshot_revision": 4,
+        "current_date_raw": 53223936,
+        "owner_character_id": 29829,
+        "toward_character_id": 36769,
+        "native_has_truce": true,
+        "actual_expiry_observable": true,
+        "expiry_date_raw": 53270000,
+        "same_frame_stable": true,
+        "readiness": true,
+        "temporal_semantics": "post_application_persisted_relation_state",
+        "unavailable_reason": null
+      },
+      "backend_id": "native-headless"
+    }
+  ],
+  "expected": {
+    "retention_ticket_id": "E0A93DDC584BB2313BC03CE076779BAFD261ABBABB69E9DE3BEF284DFE14823A",
+    "query_step": "query-raiktor-actual-truce-expiry-v1-36769",
+    "post_termination_soldiers": 0,
+    "proven_boundary_soldiers_lost": 598,
+    "expiry_date_raw": 53270000,
+    "public_readiness_promoted": false,
+    "action_readiness_promoted": false,
+    "gen034_closed": false
+  }
+}

@@ -108,11 +108,16 @@ path remained absent.
 
 ## Readiness boundary and next seam
 
-`native_expiry_reader_available=false`, `live_authorized=false`,
+This paragraph records the original ticket freeze. It is superseded for the
+provider inventory by commit `04c1a00`: the private default-OFF actual-expiry
+query now exists and its Python receipt adapter is documented in
+[g2-postwar-cleanup-expiry-adapter-2026-09-04.md](g2-postwar-cleanup-expiry-adapter-2026-09-04.md).
+The runtime cleanup dispatch is still absent, so no live receipt exists.
+
+At the original freeze, `native_expiry_reader_available=false`; throughout,
+`live_authorized=false`,
 `termination_action_bound=false`, `actual_expiry_observable=false`, public
 readiness/decision/automatic surrender remain false, and `GEN-034` remains
-unresolved. The next non-duplicative implementation seam is a private,
-default-OFF persisted-truce-row query plus a postwar cleanup receipt adapter
-that consumes this ticket. Only after those readers exist may an exclusive
-CK3 slot execute the single action-bound run and pass the same receipt through
-`--validate-receipt`.
+unresolved. Only after the existing cleanup reader receives a private runtime
+dispatch may an exclusive CK3 slot execute the single action-bound run and
+pass the same receipt through `--validate-receipt`.

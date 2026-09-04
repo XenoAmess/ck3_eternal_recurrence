@@ -1,0 +1,73 @@
+{
+  "schema": "xar.ck3.g2_postwar_cleanup_expiry_adapter_manifest.v1",
+  "created_at": "2026-09-04T17:10:00+08:00",
+  "candidate_source_commit": "04c1a00f0599378dfa8810be14ce535b2ed17f21",
+  "default_off": true,
+  "live_authorized": false,
+  "public_readiness_promoted": false,
+  "action_readiness_promoted": false,
+  "gen034_closed": false,
+  "identity": {
+    "game_version": "1.19.0.6",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "war_id": 50331699,
+    "character_id": 29829,
+    "primary_defender_character_id": 36769,
+    "retention_ticket_id": "E0A93DDC584BB2313BC03CE076779BAFD261ABBABB69E9DE3BEF284DFE14823A",
+    "frozen_generation_sha256": "6BD3E54354B267F9E785DE6FB2C2B3CB16AB72ADEF53204D2DB67299A857313F",
+    "pre_termination_soldiers": 598,
+    "expected_destroyed_post_soldiers": 0,
+    "expected_boundary_loss": 598
+  },
+  "paths": {
+    "runner": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_receipt.py",
+    "fixture": "ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_cleanup_expiry_adapter_v1_fixture.json",
+    "retention_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_retention_expiry_no_launch_manifest.json",
+    "retention_runner": "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py",
+    "actual_expiry_contract": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_actual_truce_expiry_contract.py",
+    "actual_expiry_source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/g2_actual_truce_expiry_v1_source_contract.json",
+    "fresh_attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-postwar-cleanup-expiry-adapter-04c1a00-20260904\\live-r1"
+  },
+  "sha256": {
+    "runner": "7D8A0E3CE8560B7153EC5E4A89407AA019D0EA20671254D1286351880AD5D80D",
+    "fixture": "5CE4B1D261B3C96123A7065947CE55F832E46D33CD69624A150C17D1F4A3E8CE",
+    "retention_manifest": "21D5E530DF76D80EC5919F536276BCB0340A607D0C83DBBD73E6451B724D5E91",
+    "retention_runner": "EA4B81A037C59B20F64E3E6800E9BEC7E4DE8EC856C1D0029639EDF620498E04",
+    "actual_expiry_contract": "55FE165E5C001CD6858C4C47345FC8343DC270C9D77B7DB9678E2D5596CF405C",
+    "actual_expiry_source_contract": "9B71A5001453970DF851E7B0D908929F5B598A0EFCEAFC9ED7438A4D3BB214A3"
+  },
+  "query_contract": {
+    "step": "query-raiktor-actual-truce-expiry-v1-36769",
+    "target_source": "retained_primary_defender_full_generation_id",
+    "query_count": 2,
+    "same_paused_frame_required": true,
+    "same_process_required": true,
+    "same_connection_generation_required": true,
+    "same_episode_required": true,
+    "native_persisted_state_required": true,
+    "formula_derived_expiry_forbidden": true
+  },
+  "runtime_seam": {
+    "actual_expiry_query_dispatch_present": true,
+    "war_bound_cleanup_candidate_library_present": true,
+    "war_bound_cleanup_query_dispatch_present": false,
+    "same_lifecycle_native_cleanup_observation_required": true,
+    "old_war_absence_alone_proves_destroyed_cleanup": false,
+    "python_adapter_may_infer_cleanup": false,
+    "exclusive_ck3_slot_required_for_live": true
+  },
+  "receipt_boundaries": {
+    "one_native_surrender_ack_required": true,
+    "old_full_generation_war_id_absent_required": true,
+    "destroyed_cleanup_required": true,
+    "post_termination_soldiers": 0,
+    "proven_boundary_soldiers_lost": 598,
+    "persisted_native_truce_row_required": true,
+    "source_specific_attribution_ready": false,
+    "public_readiness_promoted": false,
+    "action_readiness_promoted": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  }
+}
