@@ -440,6 +440,24 @@ def _validate_subject_transition(
     result: EndgameResultBinding,
 ) -> dict[str, object]:
     receipt = dict(value) if isinstance(value, Mapping) else {}
+    if receipt.get("generic_character_rebind_used") is not False:
+        _fail(
+            "generic_character_rebind_forbidden",
+            transition_receipt=receipt,
+            result_binding=asdict(result),
+        )
+    if receipt.get("from_player_character_id") != result.owner_character_id:
+        _fail(
+            "subject_transition_owner_mismatch",
+            transition_receipt=receipt,
+            result_binding=asdict(result),
+        )
+    if receipt.get("to_player_character_id") != result.subject_character_id:
+        _fail(
+            "subject_transition_subject_mismatch",
+            transition_receipt=receipt,
+            result_binding=asdict(result),
+        )
     valid = (
         receipt.get("result") == "GREEN"
         and receipt.get("provider_observed") is True
@@ -450,7 +468,8 @@ def _validate_subject_transition(
         and str(receipt.get("restored_checkpoint_sha256", "")).upper()
         == result.result_checkpoint_sha256
         and receipt.get("save_lineage_id") == result.save_lineage_id
-        and receipt.get("fixture_used") is False
+        and receipt.get("typed_event_fixture_used") is True
+        and receipt.get("business_state_fixture_used") is False
         and receipt.get("console_used") is False
         and receipt.get("generic_character_rebind_used") is False
     )

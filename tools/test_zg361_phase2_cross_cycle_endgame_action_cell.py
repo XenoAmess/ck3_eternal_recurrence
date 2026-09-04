@@ -308,7 +308,8 @@ def subject_session(
             "date_raw": RESULT_DATE,
             "restored_checkpoint_sha256": CHECKPOINT_SHA,
             "save_lineage_id": LINEAGE,
-            "fixture_used": False,
+            "typed_event_fixture_used": True,
+            "business_state_fixture_used": False,
             "console_used": False,
             "generic_character_rebind_used": False,
         },
@@ -399,6 +400,46 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
             )
         self.assertEqual(
             caught.exception.reason_code, "subject_proof_transition_not_green"
+        )
+
+    def test_wrong_owner_transition_is_typed_red(self) -> None:
+        service = FakeOwnerService()
+
+        def wrong_owner(result: object) -> EndgameSubjectProofSession:
+            session = subject_session(result)
+            receipt = dict(session.transition_receipt)
+            receipt["from_player_character_id"] = OWNER + 99
+            return EndgameSubjectProofSession(session.service, receipt)
+
+        with self.assertRaises(CrossCycleEndgameCellError) as caught:
+            run_cross_cycle_endgame_action_cell(
+                service,
+                source_checkpoint_restore=source_restore(),
+                completion_executor=completion,
+                subject_session_factory=wrong_owner,
+            )
+        self.assertEqual(
+            caught.exception.reason_code, "subject_transition_owner_mismatch"
+        )
+
+    def test_generic_character_rebind_is_typed_red(self) -> None:
+        service = FakeOwnerService()
+
+        def generic_rebind(result: object) -> EndgameSubjectProofSession:
+            session = subject_session(result)
+            receipt = dict(session.transition_receipt)
+            receipt["generic_character_rebind_used"] = True
+            return EndgameSubjectProofSession(session.service, receipt)
+
+        with self.assertRaises(CrossCycleEndgameCellError) as caught:
+            run_cross_cycle_endgame_action_cell(
+                service,
+                source_checkpoint_restore=source_restore(),
+                completion_executor=completion,
+                subject_session_factory=generic_rebind,
+            )
+        self.assertEqual(
+            caught.exception.reason_code, "generic_character_rebind_forbidden"
         )
 
     def test_wrong_next_cycle_debt_is_provider_red(self) -> None:

@@ -22,6 +22,28 @@
     "action_ack_is_business_postcondition": false,
     "provider_observed_postcondition_required": true
   },
+  "exact_build_typed_rebind_seam": {
+    "module": "zg361_phase2_cross_cycle_endgame_live_seam",
+    "run": "run_exact_build_cross_cycle_endgame_seam",
+    "game_version": "1.19.0.6",
+    "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "transition_fixture_id": "zg361_phase2_cross_cycle_endgame_rebind",
+    "transition_event": "zga_phase2_endgame_rebind.1",
+    "target_source": "owner variable zg361_p2c_m360_source_subject cross-checked against the AL case and M360 receipt",
+    "bounded_product_path": [
+      "zg361we.356 option 1",
+      "real M357-M359 timeline progression",
+      "zg361we.360 option 3 (route C)",
+      "owner-visible zg361we.361 result checkpoint",
+      "zg361we.361 option 1",
+      "typed fixed owner-to-subject event",
+      "received-self Workforce provider"
+    ],
+    "arbitrary_rebind_exposed": false,
+    "arbitrary_variable_query_exposed": false,
+    "business_state_fixture_used": false,
+    "ack_or_visibility_can_green": false
+  },
   "service_contract": {
     "owner_event_query": "game.command.query-current-event-window-context-v1",
     "source_action": "game.command.select-event-option-N",
@@ -83,8 +105,8 @@
     "replacement_integration_point": "ENDGAME_HANDLER entries in _make_default_phase2_promo_span_driver advance_to_result and postcondition_verifiers",
     "why_live_pending": [
       "canonical real zg361we.356 source checkpoint is not yet registered",
-      "bounded zg361we.356 through M360 route C to zg361we.361 executor is not wired",
-      "hash-identical zg361we.361 owner-to-subject proof-session transition is not wired",
+      "exact-build seam is implemented but not wired into the formal runner registry",
+      "real owner-visible zg361we.361 checkpoint has not passed the typed fixture restore",
       "no real paused provider artifact has passed this cell"
     ]
   },

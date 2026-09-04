@@ -1,0 +1,42 @@
+﻿namespace = zga_phase2_endgame_rebind
+
+# The only fixture event. MCP must prove the root and both saved CharacterIDs
+# before selecting its sole option; the target cannot be supplied by a caller.
+zga_phase2_endgame_rebind.1 = {
+	type = character_event
+	title = zga_phase2_endgame_rebind.1.t
+	desc = zga_phase2_endgame_rebind.1.desc
+	left_portrait = root
+	trigger = {
+		is_ai = no
+		this = scope:zga_phase2_endgame_owner
+		has_character_flag = zga_phase2_endgame_rebind_pending
+		exists = scope:zga_phase2_endgame_subject
+		has_variable = zg361_p2c_m360_source_status
+		has_variable = zg361_p2c_m360_source_subject
+		var:zg361_p2c_m360_source_status = 2
+		var:zg361_p2c_m360_source_subject = scope:zga_phase2_endgame_subject
+		scope:zga_phase2_endgame_subject = {
+			is_ai = yes
+			is_alive = yes
+			has_variable = zg361_case_al_owner
+			has_variable = zg361_case_al_subject
+			has_variable = zg361_we_m360_receipt_choice
+			var:zg361_case_al_owner = root
+			var:zg361_case_al_subject = this
+			var:zg361_we_m360_receipt_choice = 3
+		}
+	}
+	immediate = {
+		save_scope_as = zga_phase2_endgame_owner
+		scope:zga_phase2_endgame_subject = {
+			save_scope_as = zga_phase2_endgame_subject
+		}
+	}
+	option = {
+		name = zga_phase2_endgame_rebind.1.a
+		remove_character_flag = zga_phase2_endgame_rebind_pending
+		add_character_flag = zga_phase2_endgame_rebind_complete
+		set_player_character = scope:zga_phase2_endgame_subject
+	}
+}

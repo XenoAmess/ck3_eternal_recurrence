@@ -1,0 +1,1 @@
+﻿gui/zga_phase2_endgame_rebind_bridge.gui = zga_phase2_endgame_rebind_bridge_window

@@ -1,0 +1,64 @@
+﻿# Acceptance-only, fixed product-bound owner -> subject transition summon.
+# The target is not caller supplied: it is the product's frozen M360 subject.
+zga_phase2_endgame_rebind_summon_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		NOT = { has_character_flag = zga_phase2_endgame_rebind_pending }
+		NOT = { has_character_flag = zga_phase2_endgame_rebind_complete }
+		has_variable = zg361_p2c_m360_source_status
+		has_variable = zg361_p2c_m360_source_owner
+		has_variable = zg361_p2c_m360_source_subject
+		has_variable = zg361_p2c_m360_source_al_cycle
+		has_variable = zg361_p2c_m360_source_al_case
+		var:zg361_p2c_m360_source_status = 2
+		var:zg361_p2c_m360_source_owner = this
+		var:zg361_p2c_m360_source_subject = {
+			is_ai = yes
+			is_alive = yes
+			has_variable = zg361_case_al_owner
+			has_variable = zg361_case_al_subject
+			has_variable = zg361_case_al_cycle_serial
+			has_variable = zg361_case_al_case_serial
+			has_variable = zg361_case_al_state
+			has_variable = zg361_case_al_active
+			var:zg361_case_al_owner = root
+			var:zg361_case_al_subject = this
+			var:zg361_case_al_cycle_serial = root.var:zg361_p2c_m360_source_al_cycle
+			var:zg361_case_al_case_serial = root.var:zg361_p2c_m360_source_al_case
+			var:zg361_case_al_state = 5
+			var:zg361_case_al_active = 1
+			has_variable = zg361_we_m360_receipt_choice
+			has_variable = zg361_we_m360_receipt_owner
+			has_variable = zg361_we_m360_receipt_subject
+			has_variable = zg361_we_m360_receipt_cycle
+			has_variable = zg361_we_m360_receipt_case
+			var:zg361_we_m360_receipt_choice = 3
+			var:zg361_we_m360_receipt_owner = root
+			var:zg361_we_m360_receipt_subject = this
+			var:zg361_we_m360_receipt_cycle = var:zg361_case_al_cycle_serial
+			var:zg361_we_m360_receipt_case = var:zg361_case_al_case_serial
+			has_variable = zg361_we_m360_debt_open
+			has_variable = zg361_we_m360_debt_consumed
+			has_variable = zg361_we_m360_debt_due_cycle
+			var:zg361_we_m360_debt_open = 1
+			var:zg361_we_m360_debt_consumed = 0
+			has_variable = zg361_we_m361_evidence_count
+			has_variable = zg361_we_m361_evidence_ready
+			has_variable = zg361_we_m361_evidence_consumed
+			has_variable = zg361_we_m361_prepared_charter_id
+			var:zg361_we_m361_evidence_count = 3
+			var:zg361_we_m361_evidence_ready = 1
+			var:zg361_we_m361_evidence_consumed = 0
+		}
+	}
+	effect = {
+		save_scope_as = zga_phase2_endgame_owner
+		add_character_flag = zga_phase2_endgame_rebind_pending
+		var:zg361_p2c_m360_source_subject = {
+			save_scope_as = zga_phase2_endgame_subject
+		}
+		trigger_event = zga_phase2_endgame_rebind.1
+	}
+}
