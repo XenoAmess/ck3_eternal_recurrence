@@ -6,11 +6,13 @@
 
 生成结果：
 
-- `common/scripted_effects/zg361_career_hc_runtime_effects.txt`
+- `common/scripted_effects/zg361_career_hc_NNN_<purpose>_effects.txt`（41 个用途分片；每片 1–10 个顶层 effect）
 - `events/zg361_career_hc_runtime_events.txt`
 - `localization/*/zg361_career_hc_l_*.yml`（简中、英文原创；其余七语为日常开发期英文结构占位）
 
 L0 合同：`tools/test_zg361_career_hc_runtime.py`
+
+旧单体 `zg361_career_hc_runtime_effects.txt` 已删除，生成器 `--check` 会把它或未知旧分片视为 RED。分片顺序沿用原聚合渲染顺序，测试逐 effect 比较名称与完整块文本；当前 267 个顶层 effect 的块内容与顺序不因拆分改变。这个结果是静态文件边界证据，不是 CK3 加载性能或故障根因的实机结论。
 
 本层是 `tools/zg361_phase2_career_model.py` 的 CK3 产品投影，不修改旧考核主循环、B1/B2、考核榜 GUI 或共享案卷内核。当前没有真实 CK3 启动证据，因此不得写成 fixture-live、production-live 或“44 项已验收”。
 

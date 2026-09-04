@@ -1,0 +1,119 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: portfolio dispatch.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+# The only manager-scope Career/HC ABI for central wiring.  It selects one
+# eligible direct official and opens D only; later domains are hidden D+1 edges.
+zg361_career_hc_open_portfolio_effect = {
+    remove_variable = zg361_ch_portfolio_applied
+    if = {
+        limit = {
+            has_game_rule = zg361_on
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_review_serial
+            trigger_if = {
+                limit = { has_variable = zg361_ch_manager_portfolio_cycle }
+                NOT = { var:zg361_ch_manager_portfolio_cycle = var:zg361_review_serial }
+            }
+            trigger_else = { always = yes }
+            any_vassal = {
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                trigger_if = {
+                    limit = { has_variable = zg361_ch_portfolio_cycle }
+                    NOT = { var:zg361_ch_portfolio_cycle = root.var:zg361_review_serial }
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_d_active }
+                    var:zg361_case_d_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_m_active }
+                    var:zg361_case_m_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_n_active }
+                    var:zg361_case_n_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_o_active }
+                    var:zg361_case_o_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_p_active }
+                    var:zg361_case_p_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_q_active }
+                    var:zg361_case_q_active = 0
+                }
+                trigger_else = { always = yes }
+            }
+        }
+        ordered_vassal = {
+            limit = {
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                trigger_if = {
+                    limit = { has_variable = zg361_ch_portfolio_cycle }
+                    NOT = { var:zg361_ch_portfolio_cycle = root.var:zg361_review_serial }
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_d_active }
+                    var:zg361_case_d_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_m_active }
+                    var:zg361_case_m_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_n_active }
+                    var:zg361_case_n_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_o_active }
+                    var:zg361_case_o_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_p_active }
+                    var:zg361_case_p_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_q_active }
+                    var:zg361_case_q_active = 0
+                }
+                trigger_else = { always = yes }
+            }
+            order_by = stewardship
+            position = 0
+            zg361_career_hc_open_d_case_effect = yes
+            if = {
+                limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+                set_variable = { name = zg361_ch_portfolio_cycle value = root.var:zg361_review_serial }
+                set_variable = { name = zg361_ch_portfolio_closed value = 0 }
+                set_variable = { name = zg361_ch_portfolio_owner value = root }
+                set_variable = { name = zg361_ch_portfolio_subject value = this }
+                set_variable = { name = zg361_ch_portfolio_open_case value = var:zg361_case_d_case_serial }
+                root = {
+                    set_variable = { name = zg361_ch_manager_portfolio_cycle value = var:zg361_review_serial }
+                    set_variable = { name = zg361_ch_manager_portfolio_active value = 1 }
+                    set_variable = { name = zg361_ch_portfolio_applied value = 1 }
+                }
+            }
+        }
+    }
+}

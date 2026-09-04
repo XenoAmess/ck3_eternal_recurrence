@@ -1,0 +1,135 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: ai deadlines.
+# Boundary contract: 1-10 top-level effects; this file has 5.
+
+
+
+zg361_cl_schedule_ai_stage_01_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ai_owner
+        SUBJECT_VAR = zg361_case_ai_subject
+        CYCLE_VAR = zg361_case_ai_cycle_serial
+        CASE_VAR = zg361_case_ai_case_serial
+        STATE_VAR = zg361_case_ai_state
+        ACTIVE_VAR = zg361_case_ai_active
+        DEADLINE_OWNER_VAR = zg361_cl_ai_s01_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ai_s01_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ai_s01_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ai_s01_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ai_s01_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ai_s01_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ai_s01_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ai_s01_deadline_expired
+        TICKET_OWNER = var:zg361_case_ai_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ai_cycle_serial
+        TICKET_CASE = var:zg361_case_ai_case_serial
+        TICKET_STATE = 1
+        EVENT = zg361cl.200
+        DAYS = 1
+    }
+}
+
+zg361_cl_schedule_ai_stage_02_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ai_owner
+        SUBJECT_VAR = zg361_case_ai_subject
+        CYCLE_VAR = zg361_case_ai_cycle_serial
+        CASE_VAR = zg361_case_ai_case_serial
+        STATE_VAR = zg361_case_ai_state
+        ACTIVE_VAR = zg361_case_ai_active
+        DEADLINE_OWNER_VAR = zg361_cl_ai_s02_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ai_s02_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ai_s02_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ai_s02_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ai_s02_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ai_s02_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ai_s02_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ai_s02_deadline_expired
+        TICKET_OWNER = var:zg361_case_ai_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ai_cycle_serial
+        TICKET_CASE = var:zg361_case_ai_case_serial
+        TICKET_STATE = 2
+        EVENT = zg361cl.201
+        DAYS = 30
+    }
+}
+
+zg361_cl_schedule_ai_stage_03_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ai_owner
+        SUBJECT_VAR = zg361_case_ai_subject
+        CYCLE_VAR = zg361_case_ai_cycle_serial
+        CASE_VAR = zg361_case_ai_case_serial
+        STATE_VAR = zg361_case_ai_state
+        ACTIVE_VAR = zg361_case_ai_active
+        DEADLINE_OWNER_VAR = zg361_cl_ai_s03_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ai_s03_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ai_s03_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ai_s03_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ai_s03_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ai_s03_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ai_s03_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ai_s03_deadline_expired
+        TICKET_OWNER = var:zg361_case_ai_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ai_cycle_serial
+        TICKET_CASE = var:zg361_case_ai_case_serial
+        TICKET_STATE = 3
+        EVENT = zg361cl.202
+        DAYS = 60
+    }
+}
+
+zg361_cl_schedule_ai_stage_04_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ai_owner
+        SUBJECT_VAR = zg361_case_ai_subject
+        CYCLE_VAR = zg361_case_ai_cycle_serial
+        CASE_VAR = zg361_case_ai_case_serial
+        STATE_VAR = zg361_case_ai_state
+        ACTIVE_VAR = zg361_case_ai_active
+        DEADLINE_OWNER_VAR = zg361_cl_ai_s04_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ai_s04_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ai_s04_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ai_s04_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ai_s04_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ai_s04_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ai_s04_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ai_s04_deadline_expired
+        TICKET_OWNER = var:zg361_case_ai_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ai_cycle_serial
+        TICKET_CASE = var:zg361_case_ai_case_serial
+        TICKET_STATE = 4
+        EVENT = zg361cl.203
+        DAYS = 90
+    }
+}
+
+zg361_cl_schedule_ai_stage_05_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ai_owner
+        SUBJECT_VAR = zg361_case_ai_subject
+        CYCLE_VAR = zg361_case_ai_cycle_serial
+        CASE_VAR = zg361_case_ai_case_serial
+        STATE_VAR = zg361_case_ai_state
+        ACTIVE_VAR = zg361_case_ai_active
+        DEADLINE_OWNER_VAR = zg361_cl_ai_s05_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ai_s05_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ai_s05_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ai_s05_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ai_s05_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ai_s05_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ai_s05_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ai_s05_deadline_expired
+        TICKET_OWNER = var:zg361_case_ai_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ai_cycle_serial
+        TICKET_CASE = var:zg361_case_ai_case_serial
+        TICKET_STATE = 5
+        EVENT = zg361cl.204
+        DAYS = 90
+    }
+}

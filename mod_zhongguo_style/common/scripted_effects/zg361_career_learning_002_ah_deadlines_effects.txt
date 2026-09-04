@@ -1,0 +1,161 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: ah deadlines.
+# Boundary contract: 1-10 top-level effects; this file has 6.
+
+
+
+zg361_cl_schedule_ah_stage_01_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ah_owner
+        SUBJECT_VAR = zg361_case_ah_subject
+        CYCLE_VAR = zg361_case_ah_cycle_serial
+        CASE_VAR = zg361_case_ah_case_serial
+        STATE_VAR = zg361_case_ah_state
+        ACTIVE_VAR = zg361_case_ah_active
+        DEADLINE_OWNER_VAR = zg361_cl_ah_s01_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ah_s01_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ah_s01_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ah_s01_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ah_s01_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ah_s01_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ah_s01_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ah_s01_deadline_expired
+        TICKET_OWNER = var:zg361_case_ah_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ah_cycle_serial
+        TICKET_CASE = var:zg361_case_ah_case_serial
+        TICKET_STATE = 1
+        EVENT = zg361cl.100
+        DAYS = 1
+    }
+}
+
+zg361_cl_schedule_ah_stage_02_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ah_owner
+        SUBJECT_VAR = zg361_case_ah_subject
+        CYCLE_VAR = zg361_case_ah_cycle_serial
+        CASE_VAR = zg361_case_ah_case_serial
+        STATE_VAR = zg361_case_ah_state
+        ACTIVE_VAR = zg361_case_ah_active
+        DEADLINE_OWNER_VAR = zg361_cl_ah_s02_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ah_s02_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ah_s02_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ah_s02_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ah_s02_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ah_s02_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ah_s02_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ah_s02_deadline_expired
+        TICKET_OWNER = var:zg361_case_ah_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ah_cycle_serial
+        TICKET_CASE = var:zg361_case_ah_case_serial
+        TICKET_STATE = 2
+        EVENT = zg361cl.101
+        DAYS = 90
+    }
+}
+
+zg361_cl_schedule_ah_stage_03_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ah_owner
+        SUBJECT_VAR = zg361_case_ah_subject
+        CYCLE_VAR = zg361_case_ah_cycle_serial
+        CASE_VAR = zg361_case_ah_case_serial
+        STATE_VAR = zg361_case_ah_state
+        ACTIVE_VAR = zg361_case_ah_active
+        DEADLINE_OWNER_VAR = zg361_cl_ah_s03_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ah_s03_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ah_s03_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ah_s03_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ah_s03_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ah_s03_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ah_s03_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ah_s03_deadline_expired
+        TICKET_OWNER = var:zg361_case_ah_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ah_cycle_serial
+        TICKET_CASE = var:zg361_case_ah_case_serial
+        TICKET_STATE = 3
+        EVENT = zg361cl.102
+        DAYS = 1
+    }
+}
+
+zg361_cl_schedule_ah_stage_04_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ah_owner
+        SUBJECT_VAR = zg361_case_ah_subject
+        CYCLE_VAR = zg361_case_ah_cycle_serial
+        CASE_VAR = zg361_case_ah_case_serial
+        STATE_VAR = zg361_case_ah_state
+        ACTIVE_VAR = zg361_case_ah_active
+        DEADLINE_OWNER_VAR = zg361_cl_ah_s04_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ah_s04_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ah_s04_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ah_s04_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ah_s04_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ah_s04_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ah_s04_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ah_s04_deadline_expired
+        TICKET_OWNER = var:zg361_case_ah_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ah_cycle_serial
+        TICKET_CASE = var:zg361_case_ah_case_serial
+        TICKET_STATE = 4
+        EVENT = zg361cl.103
+        DAYS = 30
+    }
+}
+
+zg361_cl_schedule_ah_stage_05_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ah_owner
+        SUBJECT_VAR = zg361_case_ah_subject
+        CYCLE_VAR = zg361_case_ah_cycle_serial
+        CASE_VAR = zg361_case_ah_case_serial
+        STATE_VAR = zg361_case_ah_state
+        ACTIVE_VAR = zg361_case_ah_active
+        DEADLINE_OWNER_VAR = zg361_cl_ah_s05_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ah_s05_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ah_s05_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ah_s05_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ah_s05_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ah_s05_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ah_s05_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ah_s05_deadline_expired
+        TICKET_OWNER = var:zg361_case_ah_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ah_cycle_serial
+        TICKET_CASE = var:zg361_case_ah_case_serial
+        TICKET_STATE = 5
+        EVENT = zg361cl.104
+        DAYS = 30
+    }
+}
+
+zg361_cl_schedule_ah_stage_06_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+        OWNER_VAR = zg361_case_ah_owner
+        SUBJECT_VAR = zg361_case_ah_subject
+        CYCLE_VAR = zg361_case_ah_cycle_serial
+        CASE_VAR = zg361_case_ah_case_serial
+        STATE_VAR = zg361_case_ah_state
+        ACTIVE_VAR = zg361_case_ah_active
+        DEADLINE_OWNER_VAR = zg361_cl_ah_s06_deadline_owner
+        DEADLINE_SUBJECT_VAR = zg361_cl_ah_s06_deadline_subject
+        DEADLINE_CYCLE_VAR = zg361_cl_ah_s06_deadline_cycle
+        DEADLINE_CASE_VAR = zg361_cl_ah_s06_deadline_case
+        DEADLINE_STATE_VAR = zg361_cl_ah_s06_deadline_state
+        DEADLINE_DAYS_VAR = zg361_cl_ah_s06_deadline_days
+        DEADLINE_PENDING_VAR = zg361_cl_ah_s06_deadline_pending
+        DEADLINE_EXPIRED_VAR = zg361_cl_ah_s06_deadline_expired
+        TICKET_OWNER = var:zg361_case_ah_owner
+        TICKET_SUBJECT = this
+        TICKET_CYCLE = var:zg361_case_ah_cycle_serial
+        TICKET_CASE = var:zg361_case_ah_case_serial
+        TICKET_STATE = 6
+        EVENT = zg361cl.105
+        DAYS = 90
+    }
+}

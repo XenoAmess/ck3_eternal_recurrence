@@ -1,0 +1,827 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: ai stage runners.
+# Boundary contract: 1-10 top-level effects; this file has 5.
+
+
+
+zg361_cl_run_ai_stage_01_effect = {
+    # Revalidate the frozen case and live authority even when every mechanism
+    # receipt was written early and the core calls below will all be skipped.
+    if = {
+        limit = { NOT = { zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ai_owner
+                SUBJECT_VAR = zg361_case_ai_subject
+                CYCLE_VAR = zg361_case_ai_cycle_serial
+                CASE_VAR = zg361_case_ai_case_serial
+                STATE_VAR = zg361_case_ai_state
+                ACTIVE_VAR = zg361_case_ai_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = $TICKET_STATE$
+            } } }
+        zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 323 }
+    }
+    else_if = {
+        limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
+            zg361_is_reviewable_vassal_trigger = yes
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
+        zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 323 }
+        zg361_cl_schedule_ai_stage_01_effect = yes
+    }
+    else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m323_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m323_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m323_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m323_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m323_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m323_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m323_receipt_choice
+    } } }
+            zg361_cl_m323_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m324_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m324_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m324_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m324_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m324_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m324_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m324_receipt_choice
+    } } }
+            zg361_cl_m324_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m325_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m325_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m325_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m325_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m325_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m325_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m325_receipt_choice
+    } } }
+            zg361_cl_m325_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+
+    if = {
+        limit = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m323_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m323_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m323_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m323_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m323_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m323_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m323_receipt_choice
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m324_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m324_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m324_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m324_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m324_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m324_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m324_receipt_choice
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m325_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m325_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m325_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m325_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m325_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m325_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m325_receipt_choice
+			}
+
+        }
+        zg361_case_ai_advance_01_effect = {
+            TICKET_OWNER = $TICKET_OWNER$
+            TICKET_SUBJECT = $TICKET_SUBJECT$
+            TICKET_CYCLE = $TICKET_CYCLE$
+            TICKET_CASE = $TICKET_CASE$
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_cl_schedule_ai_stage_02_effect = yes
+        }
+        else = {
+            # A failed transition leaves the frozen stage retryable.
+            zg361_cl_schedule_ai_stage_01_effect = yes
+        }
+    }
+    else = {
+        # A resource RED leaves the bounded case open and retries the same
+        # frozen stage; it never skips the unpaid mechanism or mints a receipt.
+        zg361_cl_schedule_ai_stage_01_effect = yes
+    }
+    }
+}
+
+zg361_cl_run_ai_stage_02_effect = {
+    # Revalidate the frozen case and live authority even when every mechanism
+    # receipt was written early and the core calls below will all be skipped.
+    if = {
+        limit = { NOT = { zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ai_owner
+                SUBJECT_VAR = zg361_case_ai_subject
+                CYCLE_VAR = zg361_case_ai_cycle_serial
+                CASE_VAR = zg361_case_ai_case_serial
+                STATE_VAR = zg361_case_ai_state
+                ACTIVE_VAR = zg361_case_ai_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = $TICKET_STATE$
+            } } }
+        zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 326 }
+    }
+    else_if = {
+        limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
+            zg361_is_reviewable_vassal_trigger = yes
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
+        zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 326 }
+        zg361_cl_schedule_ai_stage_02_effect = yes
+    }
+    else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m326_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m326_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m326_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m326_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m326_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m326_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m326_receipt_choice
+    } } }
+            zg361_cl_m326_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m327_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m327_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m327_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m327_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m327_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m327_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m327_receipt_choice
+    } } }
+            zg361_cl_m327_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+
+    if = {
+        limit = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m326_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m326_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m326_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m326_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m326_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m326_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m326_receipt_choice
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m327_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m327_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m327_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m327_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m327_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m327_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m327_receipt_choice
+			}
+
+        }
+        zg361_case_ai_advance_02_effect = {
+            TICKET_OWNER = $TICKET_OWNER$
+            TICKET_SUBJECT = $TICKET_SUBJECT$
+            TICKET_CYCLE = $TICKET_CYCLE$
+            TICKET_CASE = $TICKET_CASE$
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_cl_schedule_ai_stage_03_effect = yes
+        }
+        else = {
+            # A failed transition leaves the frozen stage retryable.
+            zg361_cl_schedule_ai_stage_02_effect = yes
+        }
+    }
+    else = {
+        # A resource RED leaves the bounded case open and retries the same
+        # frozen stage; it never skips the unpaid mechanism or mints a receipt.
+        zg361_cl_schedule_ai_stage_02_effect = yes
+    }
+    }
+}
+
+zg361_cl_run_ai_stage_03_effect = {
+    # Revalidate the frozen case and live authority even when every mechanism
+    # receipt was written early and the core calls below will all be skipped.
+    if = {
+        limit = { NOT = { zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ai_owner
+                SUBJECT_VAR = zg361_case_ai_subject
+                CYCLE_VAR = zg361_case_ai_cycle_serial
+                CASE_VAR = zg361_case_ai_case_serial
+                STATE_VAR = zg361_case_ai_state
+                ACTIVE_VAR = zg361_case_ai_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = $TICKET_STATE$
+            } } }
+        zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 328 }
+    }
+    else_if = {
+        limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
+            zg361_is_reviewable_vassal_trigger = yes
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
+        zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 328 }
+        zg361_cl_schedule_ai_stage_03_effect = yes
+    }
+    else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m328_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m328_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m328_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m328_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m328_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m328_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m328_receipt_choice
+    } } }
+            zg361_cl_m328_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m329_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m329_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m329_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m329_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m329_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m329_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m329_receipt_choice
+    } } }
+            zg361_cl_m329_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+
+    if = {
+        limit = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m328_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m328_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m328_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m328_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m328_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m328_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m328_receipt_choice
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m329_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m329_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m329_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m329_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m329_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m329_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m329_receipt_choice
+			}
+
+        }
+        zg361_case_ai_advance_03_effect = {
+            TICKET_OWNER = $TICKET_OWNER$
+            TICKET_SUBJECT = $TICKET_SUBJECT$
+            TICKET_CYCLE = $TICKET_CYCLE$
+            TICKET_CASE = $TICKET_CASE$
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_cl_schedule_ai_stage_04_effect = yes
+        }
+        else = {
+            # A failed transition leaves the frozen stage retryable.
+            zg361_cl_schedule_ai_stage_03_effect = yes
+        }
+    }
+    else = {
+        # A resource RED leaves the bounded case open and retries the same
+        # frozen stage; it never skips the unpaid mechanism or mints a receipt.
+        zg361_cl_schedule_ai_stage_03_effect = yes
+    }
+    }
+}
+
+zg361_cl_run_ai_stage_04_effect = {
+    # Revalidate the frozen case and live authority even when every mechanism
+    # receipt was written early and the core calls below will all be skipped.
+    if = {
+        limit = { NOT = { zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ai_owner
+                SUBJECT_VAR = zg361_case_ai_subject
+                CYCLE_VAR = zg361_case_ai_cycle_serial
+                CASE_VAR = zg361_case_ai_case_serial
+                STATE_VAR = zg361_case_ai_state
+                ACTIVE_VAR = zg361_case_ai_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = $TICKET_STATE$
+            } } }
+        zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 330 }
+    }
+    else_if = {
+        limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
+            zg361_is_reviewable_vassal_trigger = yes
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
+        zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 330 }
+        zg361_cl_schedule_ai_stage_04_effect = yes
+    }
+    else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m330_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m330_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m330_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m330_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m330_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m330_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m330_receipt_choice
+    } } }
+            zg361_cl_m330_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m331_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m331_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m331_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m331_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m331_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m331_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m331_receipt_choice
+    } } }
+            if = {
+                    limit = {
+                        OR = {
+                            is_at_war = yes
+                            var:zg361_case_ai_owner = { is_at_war = yes }
+                        }
+                    }
+                    zg361_cl_m331_core_effect = {
+                        ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                    }
+                }
+                else = {
+                    # No CK3 war fact means there is no real crisis to borrow for.
+                    # Freeze route C as制度债 instead of fabricating a crisis receipt.
+                    zg361_cl_m331_core_effect = {
+                        ROUTE = 3
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                    }
+                }
+        }
+
+    if = {
+        limit = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m330_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m330_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m330_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m330_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m330_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m330_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m330_receipt_choice
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m331_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m331_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m331_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m331_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m331_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m331_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m331_receipt_choice
+			}
+
+        }
+        zg361_case_ai_advance_04_effect = {
+            TICKET_OWNER = $TICKET_OWNER$
+            TICKET_SUBJECT = $TICKET_SUBJECT$
+            TICKET_CYCLE = $TICKET_CYCLE$
+            TICKET_CASE = $TICKET_CASE$
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_cl_schedule_ai_stage_05_effect = yes
+        }
+        else = {
+            # A failed transition leaves the frozen stage retryable.
+            zg361_cl_schedule_ai_stage_04_effect = yes
+        }
+    }
+    else = {
+        # A resource RED leaves the bounded case open and retries the same
+        # frozen stage; it never skips the unpaid mechanism or mints a receipt.
+        zg361_cl_schedule_ai_stage_04_effect = yes
+    }
+    }
+}
+
+zg361_cl_run_ai_stage_05_effect = {
+    # Revalidate the frozen case and live authority even when every mechanism
+    # receipt was written early and the core calls below will all be skipped.
+    if = {
+        limit = { NOT = { zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ai_owner
+                SUBJECT_VAR = zg361_case_ai_subject
+                CYCLE_VAR = zg361_case_ai_cycle_serial
+                CASE_VAR = zg361_case_ai_case_serial
+                STATE_VAR = zg361_case_ai_state
+                ACTIVE_VAR = zg361_case_ai_active
+                EXPECTED_OWNER = $TICKET_OWNER$
+                EXPECTED_SUBJECT = $TICKET_SUBJECT$
+                EXPECTED_CYCLE = $TICKET_CYCLE$
+                EXPECTED_CASE = $TICKET_CASE$
+                EXPECTED_STATE = $TICKET_STATE$
+            } } }
+        zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 332 }
+    }
+    else_if = {
+        limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
+            zg361_is_reviewable_vassal_trigger = yes
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
+        zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 332 }
+        zg361_cl_schedule_ai_stage_05_effect = yes
+    }
+    else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m332_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m332_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m332_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m332_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m332_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m332_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m332_receipt_choice
+    } } }
+            zg361_cl_m332_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+        }
+    if = {
+            limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
+        RECEIPT_OWNER_VAR = zg361_cl_m333_receipt_owner
+        RECEIPT_SUBJECT_VAR = zg361_cl_m333_receipt_subject
+        RECEIPT_CYCLE_VAR = zg361_cl_m333_receipt_cycle
+        RECEIPT_CASE_VAR = zg361_cl_m333_receipt_case
+        RECEIPT_STATE_VAR = zg361_cl_m333_receipt_state
+        RECEIPT_CHOICE_VAR = zg361_cl_m333_receipt_choice
+        EXPECTED_OWNER = $TICKET_OWNER$
+        EXPECTED_SUBJECT = $TICKET_SUBJECT$
+        EXPECTED_CYCLE = $TICKET_CYCLE$
+        EXPECTED_CASE = $TICKET_CASE$
+        EXPECTED_STATE = $TICKET_STATE$
+        EXPECTED_CHOICE = var:zg361_cl_m333_receipt_choice
+    } } }
+            if = {
+                limit = { has_variable = zg361_cl_m333_subject_response }
+                zg361_cl_m333_core_effect = {
+                    ROUTE = var:zg361_cl_m333_subject_response
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+            }
+            else_if = {
+                limit = { is_ai = yes }
+                zg361_cl_m333_core_effect = {
+                    ROUTE = 1
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                    TICKET_STATE = $TICKET_STATE$
+                }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m333_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m333_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m333_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m333_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m333_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m333_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m333_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.333 days = 1 }
+            }
+        }
+
+    if = {
+        limit = {
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m332_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m332_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m332_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m332_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m332_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m332_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m332_receipt_choice
+			}
+			zg361_case_kernel_receipt_is_current_trigger = {
+			    RECEIPT_OWNER_VAR = zg361_cl_m333_receipt_owner
+			    RECEIPT_SUBJECT_VAR = zg361_cl_m333_receipt_subject
+			    RECEIPT_CYCLE_VAR = zg361_cl_m333_receipt_cycle
+			    RECEIPT_CASE_VAR = zg361_cl_m333_receipt_case
+			    RECEIPT_STATE_VAR = zg361_cl_m333_receipt_state
+			    RECEIPT_CHOICE_VAR = zg361_cl_m333_receipt_choice
+			    EXPECTED_OWNER = $TICKET_OWNER$
+			    EXPECTED_SUBJECT = $TICKET_SUBJECT$
+			    EXPECTED_CYCLE = $TICKET_CYCLE$
+			    EXPECTED_CASE = $TICKET_CASE$
+			    EXPECTED_STATE = $TICKET_STATE$
+			    EXPECTED_CHOICE = var:zg361_cl_m333_receipt_choice
+			}
+
+        }
+        zg361_case_ai_advance_05_effect = {
+            TICKET_OWNER = $TICKET_OWNER$
+            TICKET_SUBJECT = $TICKET_SUBJECT$
+            TICKET_CYCLE = $TICKET_CYCLE$
+            TICKET_CASE = $TICKET_CASE$
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_cl_queue_owner_digest_effect = { OWNER_VAR = zg361_case_ai_owner COUNTER = zg361_cl_portfolio_ai_completed CASE_CYCLE = $TICKET_CYCLE$ }
+        }
+        else = {
+            # A failed transition leaves the frozen stage retryable.
+            zg361_cl_schedule_ai_stage_05_effect = yes
+        }
+    }
+    else = {
+        # A resource RED leaves the bounded case open and retries the same
+        # frozen stage; it never skips the unpaid mechanism or mints a receipt.
+        zg361_cl_schedule_ai_stage_05_effect = yes
+    }
+    }
+}

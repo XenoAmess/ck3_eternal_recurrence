@@ -21,11 +21,15 @@ from zg361_career_hc_semantic_model import (
     EXPECTED_IDS as SEMANTIC_EXPECTED_IDS,
     SEMANTIC_SPECS,
 )
+from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py\n"
+EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
+LEGACY_EFFECTS_PATH = EFFECTS_DIR / "zg361_career_hc_runtime_effects.txt"
+EFFECT_SHARD_GLOB = "zg361_career_hc_*_effects.txt"
 
 
 @dataclass(frozen=True)
@@ -2176,6 +2180,65 @@ def render_effects() -> bytes:
     return generated("\n\n".join(sections))
 
 
+def effect_purpose(name: str) -> str:
+    """Map every generated definition to one contiguous business purpose."""
+
+    if "transfer" in name and not name.endswith("portfolio_effect"):
+        return "transfer_adapters"
+    if name == "zg361_career_hc_open_portfolio_effect":
+        return "portfolio_dispatch"
+    if name.startswith("zg361_career_hc_finalize_"):
+        return "portfolio_finalizers"
+    mechanism_prefix = "zg361_career_hc_m"
+    mechanism_token = name[len(mechanism_prefix) : len(mechanism_prefix) + 3]
+    if name.startswith(mechanism_prefix) and mechanism_token.isdigit():
+        mechanism_id = int(mechanism_token)
+        domain = DOMAIN_BY_ID[mechanism_id].key
+        state = STAGE_BY_ID[mechanism_id]
+        return f"{domain}_stage_{state:02d}_mechanisms"
+    for domain in DOMAIN_ORDER:
+        if any(
+            marker in name
+            for marker in (
+                f"_open_{domain}_case_",
+                f"_{domain}_run_authorized_ai_",
+                f"_schedule_{domain}_stage_",
+                f"_{domain}_try_advance_",
+                f"_{domain}_timeout_stage_",
+                f"_resolve_{domain}_outcome_",
+            )
+        ):
+            return f"{domain}_lifecycle"
+    raise ValueError(f"unclassified career/HC scripted effect: {name}")
+
+
+def effect_shard_outputs() -> dict[Path, bytes]:
+    shards = plan_effect_shards(
+        render_effects(),
+        generated_header=HEADER,
+        classify=effect_purpose,
+    )
+    rendered: dict[Path, bytes] = {}
+    for index, shard in enumerate(shards, start=1):
+        if not 1 <= len(shard.names) <= MAX_EFFECTS_PER_SHARD:
+            raise ValueError(f"career/HC shard {index} violates the 1-10 effect boundary")
+        part = f"_part_{shard.part:02d}" if shard.part > 1 else ""
+        path = EFFECTS_DIR / (
+            f"zg361_career_hc_{index:03d}_{shard.purpose}{part}_effects.txt"
+        )
+        rendered[path] = generated(
+            f'''# Purpose shard: {shard.purpose.replace("_", " ")}.
+# Boundary contract: 1-10 top-level effects; this file has {len(shard.names)}.
+
+{shard.body}'''
+        )
+    return rendered
+
+
+def generated_effect_residue(expected: set[Path]) -> tuple[Path, ...]:
+    return tuple(sorted(path for path in EFFECTS_DIR.glob(EFFECT_SHARD_GLOB) if path not in expected))
+
+
 def render_events() -> bytes:
     sections = ["namespace = zg361ch"]
     for domain in DOMAINS:
@@ -2255,10 +2318,8 @@ def render_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_specs()
-    rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_career_hc_runtime_effects.txt": render_effects(),
-        MOD_ROOT / "events" / "zg361_career_hc_runtime_events.txt": render_events(),
-    }
+    rendered = effect_shard_outputs()
+    rendered[MOD_ROOT / "events" / "zg361_career_hc_runtime_events.txt"] = render_events()
     for language in (
         "english",
         "simp_chinese",
@@ -2282,14 +2343,26 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    expected_effects = {path for path in rendered if path.parent == EFFECTS_DIR}
+    residue = generated_effect_residue(expected_effects)
     if args.check:
-        if stale:
+        if stale or residue:
             print("RED: stale career/HC generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in residue:
+                print(f"LEGACY_OR_UNEXPECTED {path.relative_to(MOD_ROOT)}")
             return 1
-        print("GREEN: career/HC generated files are current")
+        print(
+            "GREEN: career/HC generated files are current "
+            f"({len(expected_effects)} purpose shards, max {MAX_EFFECTS_PER_SHARD} effects each)"
+        )
         return 0
+    for path in residue:
+        payload = path.read_bytes()
+        if path != LEGACY_EFFECTS_PATH and not payload.startswith(BOM + HEADER.encode("utf-8")):
+            raise RuntimeError(f"refusing to remove unowned effect file: {path}")
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)

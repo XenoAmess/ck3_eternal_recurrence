@@ -1,0 +1,110 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: n lifecycle.
+# Boundary contract: 1-10 top-level effects; this file has 5.
+
+
+
+zg361_career_hc_n_timeout_stage_03_effect = {
+    zg361_career_hc_m102_core_effect = { ROUTE = 3 }
+    zg361_career_hc_m103_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact N stage 3 deadline consumed"
+}
+
+zg361_career_hc_schedule_n_stage_04_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                DEADLINE_OWNER_VAR = zg361_ch_n_s4_x_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_n_s4_x_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_n_s4_x_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_n_s4_x_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_n_s4_x_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_n_s4_x_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_n_s4_x_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_n_s4_x_deadline_expired
+                TICKET_OWNER = var:zg361_case_n_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_n_cycle_serial
+                TICKET_CASE = var:zg361_case_n_case_serial
+                TICKET_STATE = 4
+                DAYS = 90
+                EVENT = zg361ch.1408
+            }
+}
+
+zg361_career_hc_n_try_advance_04_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = var:zg361_case_n_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_n_cycle_serial
+                EXPECTED_CASE = var:zg361_case_n_case_serial
+                EXPECTED_STATE = 4
+            }
+            var:zg361_ch_m104_consumed = 1
+            var:zg361_ch_m105_consumed = 1
+        }
+        zg361_case_n_advance_04_effect = {
+            TICKET_OWNER = var:zg361_case_n_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_n_cycle_serial
+            TICKET_CASE = var:zg361_case_n_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_resolve_n_outcome_effect = yes
+        }
+    }
+}
+
+zg361_career_hc_n_timeout_stage_04_effect = {
+    zg361_career_hc_m104_core_effect = { ROUTE = 3 }
+    zg361_career_hc_m105_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact N stage 4 deadline consumed"
+}
+
+zg361_career_hc_resolve_n_outcome_effect = {
+    if = {
+        limit = {
+            var:zg361_ch_n_completed = var:zg361_ch_n_authorized
+            var:zg361_ch_n_conserved = 1
+        }
+        if = {
+            limit = { var:zg361_ch_n_favorable > var:zg361_ch_n_extractive }
+            set_variable = { name = zg361_ch_n_outcome value = 1 }
+            add_prestige = 50
+            var:zg361_case_n_owner = { add_prestige = 25 }
+        }
+        else_if = {
+            limit = { var:zg361_ch_n_extractive > var:zg361_ch_n_favorable }
+            set_variable = { name = zg361_ch_n_outcome value = -1 }
+            add_stress = minor_stress_gain
+            var:zg361_case_n_owner = { add_prestige = { value = 0 subtract = 25 } }
+        }
+        else = {
+            set_variable = { name = zg361_ch_n_outcome value = 0 }
+            add_prestige = 10
+        }
+        set_variable = { name = zg361_ch_n_visible_receipt_revision value = var:zg361_case_n_revision }
+        if = {
+            limit = { var:zg361_case_n_owner = { is_ai = no } }
+            var:zg361_case_n_owner = { trigger_event = { id = zg361ch.903 days = 1 } }
+        }
+        if = {
+            limit = { is_ai = no }
+            trigger_event = { id = zg361ch.903 days = 1 }
+        }
+        debug_log = "ZG361CH: completed N career/HC case"
+    }
+}

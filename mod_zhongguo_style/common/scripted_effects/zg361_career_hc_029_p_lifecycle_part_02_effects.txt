@@ -1,0 +1,170 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: p lifecycle.
+# Boundary contract: 1-10 top-level effects; this file has 8.
+
+
+
+zg361_career_hc_p_timeout_stage_03_effect = {
+    zg361_career_hc_m117_core_effect = { ROUTE = 3 }
+    zg361_career_hc_m118_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact P stage 3 deadline consumed"
+}
+
+zg361_career_hc_schedule_p_stage_04_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                DEADLINE_OWNER_VAR = zg361_ch_p_s4_x_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_p_s4_x_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_p_s4_x_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_p_s4_x_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_p_s4_x_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_p_s4_x_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_p_s4_x_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_p_s4_x_deadline_expired
+                TICKET_OWNER = var:zg361_case_p_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_p_cycle_serial
+                TICKET_CASE = var:zg361_case_p_case_serial
+                TICKET_STATE = 4
+                DAYS = 90
+                EVENT = zg361ch.1608
+            }
+}
+
+zg361_career_hc_p_try_advance_04_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = var:zg361_case_p_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_p_cycle_serial
+                EXPECTED_CASE = var:zg361_case_p_case_serial
+                EXPECTED_STATE = 4
+            }
+            var:zg361_ch_m119_consumed = 1
+        }
+        zg361_case_p_advance_04_effect = {
+            TICKET_OWNER = var:zg361_case_p_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_p_cycle_serial
+            TICKET_CASE = var:zg361_case_p_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_schedule_p_stage_05_effect = yes
+        }
+    }
+}
+
+zg361_career_hc_p_timeout_stage_04_effect = {
+    zg361_career_hc_m119_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact P stage 4 deadline consumed"
+}
+
+zg361_career_hc_schedule_p_stage_05_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                DEADLINE_OWNER_VAR = zg361_ch_p_s5_x_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_p_s5_x_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_p_s5_x_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_p_s5_x_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_p_s5_x_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_p_s5_x_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_p_s5_x_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_p_s5_x_deadline_expired
+                TICKET_OWNER = var:zg361_case_p_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_p_cycle_serial
+                TICKET_CASE = var:zg361_case_p_case_serial
+                TICKET_STATE = 5
+                DAYS = 180
+                EVENT = zg361ch.1610
+            }
+}
+
+zg361_career_hc_p_try_advance_05_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = var:zg361_case_p_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_p_cycle_serial
+                EXPECTED_CASE = var:zg361_case_p_case_serial
+                EXPECTED_STATE = 5
+            }
+            var:zg361_ch_m120_consumed = 1
+        }
+        zg361_case_p_advance_05_effect = {
+            TICKET_OWNER = var:zg361_case_p_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_p_cycle_serial
+            TICKET_CASE = var:zg361_case_p_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_resolve_p_outcome_effect = yes
+        }
+    }
+}
+
+zg361_career_hc_p_timeout_stage_05_effect = {
+    zg361_career_hc_m120_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact P stage 5 deadline consumed"
+}
+
+zg361_career_hc_resolve_p_outcome_effect = {
+    if = {
+        limit = {
+            var:zg361_ch_p_completed = var:zg361_ch_p_authorized
+            var:zg361_ch_p_conserved = 1
+        }
+        if = {
+            limit = { var:zg361_ch_p_favorable > var:zg361_ch_p_extractive }
+            set_variable = { name = zg361_ch_p_outcome value = 1 }
+            add_prestige = 50
+            var:zg361_case_p_owner = { add_prestige = 25 }
+        }
+        else_if = {
+            limit = { var:zg361_ch_p_extractive > var:zg361_ch_p_favorable }
+            set_variable = { name = zg361_ch_p_outcome value = -1 }
+            add_stress = minor_stress_gain
+            var:zg361_case_p_owner = { add_prestige = { value = 0 subtract = 25 } }
+        }
+        else = {
+            set_variable = { name = zg361_ch_p_outcome value = 0 }
+            add_prestige = 10
+        }
+        set_variable = { name = zg361_ch_p_visible_receipt_revision value = var:zg361_case_p_revision }
+        if = {
+            limit = { var:zg361_case_p_owner = { is_ai = no } }
+            var:zg361_case_p_owner = { trigger_event = { id = zg361ch.905 days = 1 } }
+        }
+        if = {
+            limit = { is_ai = no }
+            trigger_event = { id = zg361ch.905 days = 1 }
+        }
+        debug_log = "ZG361CH: completed P career/HC case"
+    }
+}

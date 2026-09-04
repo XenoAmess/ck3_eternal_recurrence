@@ -12,11 +12,13 @@
 
 生成器 `tools/gen_361_career_learning_runtime.py` 只生成：
 
-- `common/scripted_effects/zg361_career_learning_runtime_effects.txt`
+- `common/scripted_effects/zg361_career_learning_NNN_<purpose>_effects.txt`（20 个用途分片；每片 1–10 个顶层 effect）
 - `events/zg361_career_learning_runtime_events.txt`
 - 简中、英文和七份 English structural placeholders，共九份本地化。
 
 测试为 `tools/test_zg361_career_learning_runtime.py`。本包不写 B1、B2、manager/governance、scoreboard、shared case kernel、中央 effects/events/interactions，也保持 no top-level GUI、没有新增 GUI 按钮。中央结算 hook 已调用的唯一 manager-scope portfolio adapter 是：
+
+旧单体 `zg361_career_learning_runtime_effects.txt` 已删除，生成器 `--check` 会拒绝旧单体或未知旧分片。L0 边界测试逐 effect 对照原聚合渲染，证明 125 个顶层 effect 的名称、块文本和顺序保持一致；这只是静态取证，不主张文件体量已经被实机证明为加载故障根因。
 
 ```text
 zg361_cl_dispatch_direct_reports_effect

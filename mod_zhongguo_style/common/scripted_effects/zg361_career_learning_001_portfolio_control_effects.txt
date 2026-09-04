@@ -1,0 +1,202 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: portfolio control.
+# Boundary contract: 1-10 top-level effects; this file has 5.
+
+# Zhongguo 361 career/learning runtime: AH312-322 + AI323-333 only.
+# Static-ready callable seam: zg361_cl_dispatch_direct_reports_effect.
+# No scoreboard, GUI, central hook, B1/B2 or manager-governance file is owned.
+# 312 market.publish_real_vacancy state=1 -> zg361_cl_m312_consumer_value
+# 313 market.freeze_structured_reference state=1 -> zg361_cl_m313_consumer_value
+# 314 market.offer_relocation_package state=2 -> zg361_cl_m314_consumer_value
+# 315 market.run_bilateral_trial state=2 -> zg361_cl_m315_consumer_value
+# 316 market.freeze_pay_mapping state=3 -> zg361_cl_m316_consumer_value
+# 317 market.project_stage_acl state=3 -> zg361_cl_m317_consumer_value
+# 318 market.consume_application_slot state=2 -> zg361_cl_m318_consumer_value
+# 319 market.counteroffer_then_release state=4 -> zg361_cl_m319_consumer_value
+# 320 market.aggregate_exit_voice state=5 -> zg361_cl_m320_consumer_value
+# 321 market.maintain_alumni_relationship state=5 -> zg361_cl_m321_consumer_value
+# 322 market.open_returnee_case state=6 -> zg361_cl_m322_consumer_value
+# 323 learning.allocate_dual_budget state=1 -> zg361_cl_m323_consumer_value
+# 324 learning.advance_three_stages state=1 -> zg361_cl_m324_consumer_value
+# 325 learning.assess_practical_competence state=1 -> zg361_cl_m325_consumer_value
+# 326 learning.settle_conference_adoption state=2 -> zg361_cl_m326_consumer_value
+# 327 learning.attribute_teaching_impact state=2 -> zg361_cl_m327_consumer_value
+# 328 learning.settle_community_adoption state=3 -> zg361_cl_m328_consumer_value
+# 329 learning.match_cross_team_mentor state=3 -> zg361_cl_m329_consumer_value
+# 330 learning.settle_reskill_route state=4 -> zg361_cl_m330_consumer_value
+# 331 learning.borrow_protected_time state=4 -> zg361_cl_m331_consumer_value
+# 332 learning.run_safe_succession_drill state=5 -> zg361_cl_m332_consumer_value
+# 333 learning.settle_training_commitment state=5 -> zg361_cl_m333_consumer_value
+
+# Typed RED: 1 permission, 2 stale five-field identity/state, 3 duplicate
+# receipt, 4 invariant/route, 5 atomic resource precheck.
+zg361_cl_set_red_effect = {
+    set_variable = { name = zg361_cl_last_red_code value = $CODE$ }
+    set_variable = { name = zg361_cl_last_red_mechanism value = $MECHANISM$ }
+    debug_log = "ZG361CL: typed RED $CODE$ on $MECHANISM$"
+}
+
+zg361_cl_clear_red_effect = {
+    remove_variable = zg361_cl_last_red_code
+    remove_variable = zg361_cl_last_red_mechanism
+}
+
+# Owner-facing callable.  It intentionally has no is_ai=no gate: authorized
+# celestial AI dukes+ are the project owner's second AI exception and use the
+# same bounded cases through background events.  Only the digest is player-only.
+zg361_cl_dispatch_direct_reports_effect = {
+    if = {
+        limit = {
+            has_game_rule = zg361_on
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_review_serial
+        }
+        if = {
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_cl_portfolio_cycle }
+                    NOT = { var:zg361_cl_portfolio_cycle = var:zg361_review_serial }
+                }
+                trigger_else = { always = yes }
+            }
+            set_variable = { name = zg361_cl_portfolio_cycle value = var:zg361_review_serial }
+            set_variable = { name = zg361_cl_portfolio_ah_expected value = 0 }
+            set_variable = { name = zg361_cl_portfolio_ai_expected value = 0 }
+            set_variable = { name = zg361_cl_portfolio_ah_completed value = 0 }
+            set_variable = { name = zg361_cl_portfolio_ai_completed value = 0 }
+            set_variable = { name = zg361_cl_portfolio_digest_shown value = 0 }
+            remove_variable = zg361_cl_digest_pending
+            every_vassal = {
+                limit = {
+                    zg361_is_reviewable_vassal_trigger = yes
+                    liege = root
+                }
+                zg361_cl_open_ah_case_effect = yes
+                if = {
+                    limit = { var:zg361_cl_open_ah_applied = 1 }
+                    root = { change_variable = { name = zg361_cl_portfolio_ah_expected add = 1 } }
+                }
+                zg361_cl_open_ai_case_effect = yes
+                if = {
+                    limit = { var:zg361_cl_open_ai_applied = 1 }
+                    root = { change_variable = { name = zg361_cl_portfolio_ai_expected add = 1 } }
+                }
+            }
+        }
+    }
+    else = { zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 312 } }
+}
+
+zg361_cl_open_ah_case_effect = {
+    set_variable = { name = zg361_cl_open_ah_applied value = 0 }
+    if = {
+        limit = {
+            root = {
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_review_serial
+            }
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+        }
+        zg361_case_ah_open_effect = yes
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            set_variable = { name = zg361_cl_ah_s01_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ah_s01_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ah_s02_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ah_s02_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ah_s03_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ah_s03_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ah_s04_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ah_s04_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ah_s05_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ah_s05_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ah_s06_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ah_s06_deadline_expired value = 0 }
+            remove_variable = zg361_cl_m314_subject_response
+            remove_variable = zg361_cl_m314_prompt_pending
+            remove_variable = zg361_cl_m314_prompt_owner
+            remove_variable = zg361_cl_m314_prompt_subject
+            remove_variable = zg361_cl_m314_prompt_cycle
+            remove_variable = zg361_cl_m314_prompt_case
+            remove_variable = zg361_cl_m314_prompt_state
+            remove_variable = zg361_cl_m315_subject_response
+            remove_variable = zg361_cl_m315_prompt_pending
+            remove_variable = zg361_cl_m315_prompt_owner
+            remove_variable = zg361_cl_m315_prompt_subject
+            remove_variable = zg361_cl_m315_prompt_cycle
+            remove_variable = zg361_cl_m315_prompt_case
+            remove_variable = zg361_cl_m315_prompt_state
+            remove_variable = zg361_cl_m318_subject_response
+            remove_variable = zg361_cl_m318_prompt_pending
+            remove_variable = zg361_cl_m318_prompt_owner
+            remove_variable = zg361_cl_m318_prompt_subject
+            remove_variable = zg361_cl_m318_prompt_cycle
+            remove_variable = zg361_cl_m318_prompt_case
+            remove_variable = zg361_cl_m318_prompt_state
+            remove_variable = zg361_cl_m319_subject_response
+            remove_variable = zg361_cl_m319_prompt_pending
+            remove_variable = zg361_cl_m319_prompt_owner
+            remove_variable = zg361_cl_m319_prompt_subject
+            remove_variable = zg361_cl_m319_prompt_cycle
+            remove_variable = zg361_cl_m319_prompt_case
+            remove_variable = zg361_cl_m319_prompt_state
+            remove_variable = zg361_cl_m321_subject_response
+            remove_variable = zg361_cl_m321_prompt_pending
+            remove_variable = zg361_cl_m321_prompt_owner
+            remove_variable = zg361_cl_m321_prompt_subject
+            remove_variable = zg361_cl_m321_prompt_cycle
+            remove_variable = zg361_cl_m321_prompt_case
+            remove_variable = zg361_cl_m321_prompt_state
+            zg361_cl_schedule_ah_stage_01_effect = yes
+            if = {
+                limit = { var:zg361_case_kernel_applied = 1 }
+                set_variable = { name = zg361_cl_open_ah_applied value = 1 }
+                debug_log = "ZG361CL: opened AH bounded case"
+            }
+        }
+    }
+    else = { zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 312 } }
+}
+
+zg361_cl_open_ai_case_effect = {
+    set_variable = { name = zg361_cl_open_ai_applied value = 0 }
+    if = {
+        limit = {
+            root = {
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_review_serial
+            }
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+        }
+        zg361_case_ai_open_effect = yes
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            set_variable = { name = zg361_cl_ai_s01_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ai_s01_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ai_s02_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ai_s02_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ai_s03_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ai_s03_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ai_s04_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ai_s04_deadline_expired value = 0 }
+            set_variable = { name = zg361_cl_ai_s05_deadline_pending value = 0 }
+            set_variable = { name = zg361_cl_ai_s05_deadline_expired value = 0 }
+            remove_variable = zg361_cl_m333_subject_response
+            remove_variable = zg361_cl_m333_prompt_pending
+            remove_variable = zg361_cl_m333_prompt_owner
+            remove_variable = zg361_cl_m333_prompt_subject
+            remove_variable = zg361_cl_m333_prompt_cycle
+            remove_variable = zg361_cl_m333_prompt_case
+            remove_variable = zg361_cl_m333_prompt_state
+            zg361_cl_schedule_ai_stage_01_effect = yes
+            if = {
+                limit = { var:zg361_case_kernel_applied = 1 }
+                set_variable = { name = zg361_cl_open_ai_applied value = 1 }
+                debug_log = "ZG361CL: opened AI bounded case"
+            }
+        }
+    }
+    else = { zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 323 } }
+}

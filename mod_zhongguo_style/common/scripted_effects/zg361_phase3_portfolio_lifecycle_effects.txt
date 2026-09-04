@@ -1,0 +1,237 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py
+# Phase-3 purpose shard: zg361_phase3_portfolio_lifecycle_effects.txt
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser/paused/live evidence is claimed.
+
+zg361_p3_initialize_portfolio_effect = {
+	save_temporary_scope_as = zg361_p3_portfolio_subject_scope
+	# Remove only the prior Phase3 projection.  The authoritative CP receipt
+	# remains owned by the subject and is copied below only through a complete,
+	# current owner/subject/cycle guard.
+	remove_variable = zg361_p3_project_source_owner
+	remove_variable = zg361_p3_project_source_subject
+	remove_variable = zg361_p3_project_source_cycle
+	remove_variable = zg361_p3_project_source_case
+	remove_variable = zg361_p3_project_source_contribution_receipt_id
+	remove_variable = zg361_p3_project_source_contribution_receipt_revision
+	remove_variable = zg361_p3_project_source_contribution_value
+	set_variable = { name = zg361_p3_project_source_ready value = 0 }
+	set_variable = { name = zg361_p3_portfolio_subject value = this }
+	set_variable = { name = zg361_p3_portfolio_cycle value = root.var:zg361_review_serial }
+	root = { set_variable = { name = zg361_p3_manager_portfolio_cycle value = var:zg361_review_serial } }
+	set_variable = { name = zg361_p3_portfolio_owner value = root }
+	set_variable = { name = zg361_p3_portfolio_result_owner value = var:zg361_result_case_owner }
+	set_variable = { name = zg361_p3_portfolio_result_subject value = this }
+	set_variable = { name = zg361_p3_portfolio_result_cycle value = var:zg361_result_cycle_serial }
+	set_variable = { name = zg361_p3_portfolio_result_case value = var:zg361_result_case_serial }
+	set_variable = { name = zg361_p3_portfolio_result_state value = var:zg361_result_case_state }
+	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
+	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
+	set_variable = { name = zg361_p3_portfolio_deferred value = 0 }
+	if = {
+		limit = {
+			has_variable = zg361_cp_m26_receipt_owner
+			has_variable = zg361_cp_m26_receipt_subject
+			has_variable = zg361_cp_m26_receipt_cycle
+			has_variable = zg361_cp_m26_receipt_case
+			has_variable = zg361_cp_m26_contribution_receipt_id
+			has_variable = zg361_cp_m26_contribution_receipt_revision
+			has_variable = zg361_cp_m26_visible_value
+			var:zg361_cp_m26_receipt_owner = root
+			var:zg361_cp_m26_receipt_subject = this
+			var:zg361_cp_m26_receipt_cycle = root.var:zg361_review_serial
+			var:zg361_cp_m26_contribution_receipt_id > 0
+			var:zg361_cp_m26_contribution_receipt_revision > 0
+		}
+		set_variable = { name = zg361_p3_project_source_owner value = var:zg361_cp_m26_receipt_owner }
+		set_variable = { name = zg361_p3_project_source_subject value = var:zg361_cp_m26_receipt_subject }
+		set_variable = { name = zg361_p3_project_source_cycle value = var:zg361_cp_m26_receipt_cycle }
+		set_variable = { name = zg361_p3_project_source_case value = var:zg361_cp_m26_receipt_case }
+		set_variable = { name = zg361_p3_project_source_contribution_receipt_id value = var:zg361_cp_m26_contribution_receipt_id }
+		set_variable = { name = zg361_p3_project_source_contribution_receipt_revision value = var:zg361_cp_m26_contribution_receipt_revision }
+		set_variable = { name = zg361_p3_project_source_contribution_value value = var:zg361_cp_m26_visible_value }
+		set_variable = { name = zg361_p3_project_source_ready value = 1 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_open_n } }
+		set_variable = { name = zg361_p3_policy_debt_open_n value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_settled_n } }
+		set_variable = { name = zg361_p3_policy_debt_settled_n value = 0 }
+	}
+	set_variable = { name = zg361_p3_cross_reviewer value = root }
+	set_variable = { name = zg361_p3_cross_reviewer_valid value = 0 }
+	root = {
+		if = {
+			limit = { exists = liege liege = { zg361_is_celestial_liege_trigger = yes } }
+			liege = { save_temporary_scope_as = zg361_p3_cross_candidate }
+			scope:zg361_p3_portfolio_subject_scope = {
+				set_variable = { name = zg361_p3_cross_reviewer value = scope:zg361_p3_cross_candidate }
+				set_variable = { name = zg361_p3_cross_reviewer_valid value = 1 }
+			}
+		}
+		ordered_vassal = {
+			limit = {
+				zg361_is_reviewable_vassal_trigger = yes
+				NOT = { this = scope:zg361_p3_portfolio_subject_scope }
+			}
+			order_by = stewardship
+			position = 0
+			save_temporary_scope_as = zg361_p3_cross_candidate
+			scope:zg361_p3_portfolio_subject_scope = {
+				set_variable = { name = zg361_p3_cross_reviewer value = scope:zg361_p3_cross_candidate }
+				set_variable = { name = zg361_p3_cross_reviewer_valid value = 1 }
+			}
+		}
+	}
+}
+
+zg361_p3_open_portfolio_effect = {
+	# The package-owned due pass always runs before any new portfolio state can
+	# overwrite debt receipts.  A blocked or nonzero-open result forbids launch.
+	$SUBJECT$ = { zg361_p3_consume_due_policy_debts_effect = yes }
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			OR = {
+				any_vassal = {
+					zg361_is_reviewable_vassal_trigger = yes
+					NOT = { this = $SUBJECT$ }
+				}
+				liege = { zg361_is_celestial_liege_trigger = yes }
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_p3_manager_portfolio_cycle }
+				NOT = { var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+			$SUBJECT$ = {
+				NOT = { has_variable = zg361_p3_policy_debt_consumer_blocked }
+				has_variable = zg361_p3_policy_debt_open_n
+				var:zg361_p3_policy_debt_open_n = 0
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = root
+				trigger_if = {
+					limit = {
+						has_variable = zg361_result_case_owner
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_case_state
+						root = { has_variable = zg361_review_serial }
+					}
+					var:zg361_result_case_owner = root
+					var:zg361_result_cycle_serial = root.var:zg361_review_serial
+					var:zg361_result_case_state >= 3
+				}
+				trigger_else = { always = no }
+				trigger_if = {
+					limit = { has_variable = zg361_p3_portfolio_cycle }
+					NOT = { var:zg361_p3_portfolio_cycle = root.var:zg361_review_serial }
+				}
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_aa_active } var:zg361_case_aa_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_ag_active } var:zg361_case_ag_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_aj_active } var:zg361_case_aj_active = 0 }
+				trigger_else = { always = yes }
+			}
+		}
+		# The adapter opens only AA.  AG and AJ are reachable solely through the
+		# frozen D+1 queue edges emitted after their predecessor closes.
+		$SUBJECT$ = {
+			zg361_p3_aa_launch_effect = yes
+		}
+	}
+}
+
+zg361_p3_finalize_portfolio_effect = {
+	set_variable = { name = zg361_p3_portfolio_closed value = 1 }
+	set_variable = { name = zg361_p3_portfolio_opened_domain value = 3 }
+	set_variable = { name = zg361_p3_final_owner value = var:zg361_case_aj_owner }
+	set_variable = { name = zg361_p3_final_subject value = var:zg361_case_aj_subject }
+	set_variable = { name = zg361_p3_final_cycle value = var:zg361_case_aj_cycle_serial }
+	set_variable = { name = zg361_p3_final_case value = var:zg361_case_aj_case_serial }
+	set_variable = { name = zg361_p3_final_state value = var:zg361_case_aj_state }
+	set_variable = { name = zg361_p3_final_current_capacity_check value = { value = var:zg361_p3_aj_capacity_remaining add = var:zg361_p3_aj_capacity_reserved } }
+	set_variable = { name = zg361_p3_final_wip_outstanding value = var:zg361_p3_aj_wip_used }
+	set_variable = { name = zg361_p3_final_wip_limit_check value = { value = var:zg361_p3_aj_wip_limit add = var:zg361_p3_aj_wip_exception_count } }
+	set_variable = { name = zg361_p3_final_conservation_ok value = 0 }
+	set_variable = { name = zg361_p3_final_deferred value = 0 }
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_p3_aa_operation_used
+					has_variable = zg361_p3_ag_operation_used
+					has_variable = zg361_p3_aj_operation_used
+					has_variable = zg361_case_aa_active
+					has_variable = zg361_case_ag_active
+					has_variable = zg361_case_aj_active
+					has_variable = zg361_p3_aa_sample_used
+					has_variable = zg361_p3_aa_sample_total
+					has_variable = zg361_p3_ag_hc_total
+					has_variable = zg361_p3_ag_management_capacity_used
+					has_variable = zg361_p3_ag_management_capacity_total
+					has_variable = zg361_p3_portfolio_deferred
+					has_variable = zg361_p3_policy_debt_open_n
+					has_variable = zg361_p3_aj_capacity_total
+					has_variable = zg361_p3_aj_capacity_remaining
+					has_variable = zg361_p3_aj_capacity_reserved
+					has_variable = zg361_p3_aj_wip_used
+					has_variable = zg361_p3_aj_wip_limit
+					has_variable = zg361_p3_aj_wip_exception_count
+					has_variable = zg361_p3_m344_receipt_choice
+				}
+				var:zg361_p3_aa_operation_used = 13
+				var:zg361_p3_ag_operation_used = 11
+				var:zg361_p3_aj_operation_used = 11
+				var:zg361_case_aa_active = 0
+				var:zg361_case_ag_active = 0
+				var:zg361_case_aj_active = 0
+				var:zg361_p3_aa_sample_used <= var:zg361_p3_aa_sample_total
+				var:zg361_p3_ag_hc_total = 100
+				var:zg361_p3_ag_management_capacity_used <= var:zg361_p3_ag_management_capacity_total
+				trigger_if = {
+					limit = { var:zg361_p3_portfolio_deferred = 1 }
+					has_variable = zg361_p3_deferred_cleanup_status
+					var:zg361_p3_deferred_cleanup_status = 1
+					var:zg361_p3_policy_debt_open_n >= 1
+					var:zg361_p3_final_current_capacity_check = var:zg361_p3_aj_capacity_total
+					var:zg361_p3_aj_wip_used <= var:zg361_p3_final_wip_limit_check
+					var:zg361_p3_m344_receipt_choice = 3
+					OR = {
+						AND = {
+							var:zg361_p3_aj_capacity_reserved = 0
+							var:zg361_p3_aj_wip_used = 0
+						}
+						AND = {
+							var:zg361_p3_aj_capacity_reserved > 0
+							var:zg361_p3_aj_wip_used > 0
+						}
+					}
+				}
+				trigger_else = {
+					var:zg361_p3_portfolio_deferred = 0
+					var:zg361_p3_policy_debt_open_n = 0
+					var:zg361_p3_aj_capacity_reserved = 0
+					var:zg361_p3_aj_wip_used = 0
+					trigger_if = {
+						limit = { has_variable = zg361_p3_m344_ledger_total }
+						var:zg361_p3_m344_ledger_total = 10000
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_else = { always = no }
+		}
+		if = {
+			limit = { var:zg361_p3_portfolio_deferred = 1 }
+			set_variable = { name = zg361_p3_final_deferred value = 1 }
+		}
+		set_variable = { name = zg361_p3_final_conservation_ok value = 1 }
+	}
+	debug_log = "ZG361P3: metrics/delivery portfolio closed static runtime"
+}

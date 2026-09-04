@@ -1,0 +1,80 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: ai stage 01 mechanisms.
+# Boundary contract: 1-10 top-level effects; this file has 2.
+
+
+
+# 325 post-receipt business/debt deadline consumer.
+zg361_cl_m325_resolve_obligation_effect = {
+    zg361_cl_clear_red_effect = yes
+    if = {
+        limit = { NOT = { var:zg361_cl_m325_obligation_pending = 1 } }
+        zg361_cl_set_red_effect = { CODE = 3 MECHANISM = 325 }
+    }
+    else_if = {
+        limit = {
+            NOT = {
+                AND = {
+                    has_variable = zg361_cl_m325_object_owner
+                    has_variable = zg361_cl_m325_object_subject
+                    has_variable = zg361_cl_m325_object_cycle
+                    has_variable = zg361_cl_m325_object_case
+                    has_variable = zg361_cl_m325_receipt_owner
+                    has_variable = zg361_cl_m325_receipt_subject
+                    has_variable = zg361_cl_m325_receipt_cycle
+                    has_variable = zg361_cl_m325_receipt_case
+                    var:zg361_cl_m325_object_subject = this
+                    var:zg361_cl_m325_object_owner = var:zg361_cl_m325_receipt_owner
+                    var:zg361_cl_m325_object_subject = var:zg361_cl_m325_receipt_subject
+                    var:zg361_cl_m325_object_cycle = var:zg361_cl_m325_receipt_cycle
+                    var:zg361_cl_m325_object_case = var:zg361_cl_m325_receipt_case
+                    var:zg361_cl_m325_object_revision = 1
+                }
+            }
+        }
+        zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 325 }
+    }
+    else_if = {
+        limit = { NOT = { var:zg361_cl_m325_object_owner = { zg361_is_celestial_liege_trigger = yes } } }
+        zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 325 }
+        # A former owner cannot execute the obligation, but the orphan is
+        # terminally audited so it cannot deadlock every later review cycle.
+        set_variable = { name = zg361_cl_m325_obligation_pending value = 0 }
+        set_variable = { name = zg361_cl_m325_obligation_orphaned value = 1 }
+        set_variable = { name = zg361_cl_m325_object_resolved value = 1 }
+        set_variable = { name = zg361_cl_m325_object_state value = 4 }
+    }
+    else = {
+        set_variable = { name = zg361_cl_m325_obligation_pending value = 0 }
+            set_variable = { name = zg361_cl_m325_obligation_resolved value = 1 }
+            set_variable = { name = zg361_cl_m325_object_resolved value = 1 }
+            set_variable = { name = zg361_cl_m325_object_state value = 3 }
+            set_variable = { name = zg361_cl_m325_practical_assessment_closed value = 1 }
+            if = {
+                limit = { var:zg361_cl_m325_object_route = 3 }
+                set_variable = { name = zg361_cl_m325_debt_overdue value = 1 }
+
+            }
+            else_if = {
+                limit = { var:zg361_cl_m325_object_route = 2 }
+                set_variable = { name = zg361_cl_m325_obligation_negative_outcome value = 1 }
+
+            }
+            else = {
+                set_variable = { name = zg361_cl_m325_obligation_positive_outcome value = 1 }
+
+            }
+        debug_log = "ZG361CL: resolved 325 competence_assessment obligation"
+    }
+}
+
+zg361_cl_m325_manager_apply_effect = {
+    zg361_cl_m325_core_effect = {
+        ROUTE = $ROUTE$
+        TICKET_OWNER = $TICKET_OWNER$
+        TICKET_SUBJECT = $TICKET_SUBJECT$
+        TICKET_CYCLE = $TICKET_CYCLE$
+        TICKET_CASE = $TICKET_CASE$
+        TICKET_STATE = $TICKET_STATE$
+    }
+}

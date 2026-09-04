@@ -1,0 +1,63 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: portfolio finalizers.
+# Boundary contract: 1-10 top-level effects; this file has 2.
+
+
+
+# Close the manager portfolio only against the last domain's frozen identity.
+zg361_career_hc_finalize_p_portfolio_effect = {
+    if = {
+        limit = {
+            exists = scope:zg361_ch_p_event_owner
+            exists = scope:zg361_ch_p_event_subject
+            exists = scope:zg361_ch_p_event_cycle
+            exists = scope:zg361_ch_p_event_case
+            var:zg361_case_p_owner = scope:zg361_ch_p_event_owner
+            var:zg361_case_p_subject = scope:zg361_ch_p_event_subject
+            var:zg361_case_p_cycle_serial = scope:zg361_ch_p_event_cycle
+            var:zg361_case_p_case_serial = scope:zg361_ch_p_event_case
+            var:zg361_case_p_state = 6
+            var:zg361_case_p_active = 0
+        }
+        set_variable = { name = zg361_ch_portfolio_closed value = 1 }
+        set_variable = { name = zg361_ch_portfolio_final_owner value = var:zg361_case_p_owner }
+        set_variable = { name = zg361_ch_portfolio_final_subject value = var:zg361_case_p_subject }
+        set_variable = { name = zg361_ch_portfolio_final_cycle value = var:zg361_case_p_cycle_serial }
+        set_variable = { name = zg361_ch_portfolio_final_case value = var:zg361_case_p_case_serial }
+        set_variable = { name = zg361_ch_portfolio_final_state value = var:zg361_case_p_state }
+        var:zg361_case_p_owner = {
+            set_variable = { name = zg361_ch_manager_portfolio_active value = 0 }
+            set_variable = { name = zg361_ch_manager_portfolio_completed_cycle value = var:zg361_review_serial }
+        }
+        debug_log = "ZG361CH: manager career/HC portfolio closed after P"
+    }
+}
+
+# Close the manager portfolio only against the last domain's frozen identity.
+zg361_career_hc_finalize_q_portfolio_effect = {
+    if = {
+        limit = {
+            exists = scope:zg361_ch_q_event_owner
+            exists = scope:zg361_ch_q_event_subject
+            exists = scope:zg361_ch_q_event_cycle
+            exists = scope:zg361_ch_q_event_case
+            var:zg361_case_q_owner = scope:zg361_ch_q_event_owner
+            var:zg361_case_q_subject = scope:zg361_ch_q_event_subject
+            var:zg361_case_q_cycle_serial = scope:zg361_ch_q_event_cycle
+            var:zg361_case_q_case_serial = scope:zg361_ch_q_event_case
+            var:zg361_case_q_state = 5
+            var:zg361_case_q_active = 0
+        }
+        set_variable = { name = zg361_ch_portfolio_closed value = 1 }
+        set_variable = { name = zg361_ch_portfolio_final_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_portfolio_final_subject value = var:zg361_case_q_subject }
+        set_variable = { name = zg361_ch_portfolio_final_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_portfolio_final_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_portfolio_final_state value = var:zg361_case_q_state }
+        var:zg361_case_q_owner = {
+            set_variable = { name = zg361_ch_manager_portfolio_active value = 0 }
+            set_variable = { name = zg361_ch_manager_portfolio_completed_cycle value = var:zg361_review_serial }
+        }
+        debug_log = "ZG361CH: manager career/HC portfolio closed after Q"
+    }
+}

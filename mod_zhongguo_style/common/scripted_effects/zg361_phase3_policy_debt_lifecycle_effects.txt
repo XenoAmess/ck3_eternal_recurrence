@@ -1,0 +1,170 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py
+# Phase-3 purpose shard: zg361_phase3_policy_debt_lifecycle_effects.txt
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser/paused/live evidence is claimed.
+
+zg361_p3_consume_due_policy_debts_effect = {
+	remove_variable = zg361_p3_deferred_cleanup_due_cycle
+	if = {
+		limit = { has_variable = zg361_p3_portfolio_cycle }
+		set_variable = { name = zg361_p3_deferred_cleanup_due_cycle value = var:zg361_p3_portfolio_cycle }
+		change_variable = { name = zg361_p3_deferred_cleanup_due_cycle add = 1 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_open_n } }
+		set_variable = { name = zg361_p3_policy_debt_open_n value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_settled_n } }
+		set_variable = { name = zg361_p3_policy_debt_settled_n value = 0 }
+	}
+	remove_variable = zg361_p3_policy_debt_consumer_blocked
+	zg361_p3_m229_consume_due_debt_effect = yes
+	zg361_p3_m230_consume_due_debt_effect = yes
+	zg361_p3_m231_consume_due_debt_effect = yes
+	zg361_p3_m232_consume_due_debt_effect = yes
+	zg361_p3_m233_consume_due_debt_effect = yes
+	zg361_p3_m234_consume_due_debt_effect = yes
+	zg361_p3_m235_consume_due_debt_effect = yes
+	zg361_p3_m236_consume_due_debt_effect = yes
+	zg361_p3_m237_consume_due_debt_effect = yes
+	zg361_p3_m240_consume_due_debt_effect = yes
+	zg361_p3_m238_consume_due_debt_effect = yes
+	zg361_p3_m239_consume_due_debt_effect = yes
+	zg361_p3_m241_consume_due_debt_effect = yes
+	zg361_p3_m301_consume_due_debt_effect = yes
+	zg361_p3_m302_consume_due_debt_effect = yes
+	zg361_p3_m303_consume_due_debt_effect = yes
+	zg361_p3_m304_consume_due_debt_effect = yes
+	zg361_p3_m305_consume_due_debt_effect = yes
+	zg361_p3_m306_consume_due_debt_effect = yes
+	zg361_p3_m307_consume_due_debt_effect = yes
+	zg361_p3_m308_consume_due_debt_effect = yes
+	zg361_p3_m309_consume_due_debt_effect = yes
+	zg361_p3_m310_consume_due_debt_effect = yes
+	zg361_p3_m311_consume_due_debt_effect = yes
+	zg361_p3_m334_consume_due_debt_effect = yes
+	zg361_p3_m335_consume_due_debt_effect = yes
+	zg361_p3_m336_consume_due_debt_effect = yes
+	zg361_p3_m338_consume_due_debt_effect = yes
+	zg361_p3_m339_consume_due_debt_effect = yes
+	zg361_p3_m340_consume_due_debt_effect = yes
+	zg361_p3_m342_consume_due_debt_effect = yes
+	zg361_p3_m337_consume_due_debt_effect = yes
+	zg361_p3_m341_consume_due_debt_effect = yes
+	zg361_p3_m343_consume_due_debt_effect = yes
+	zg361_p3_m344_consume_due_debt_effect = yes
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_consumer_blocked } }
+		zg361_p3_settle_deferred_portfolio_effect = yes
+	}
+}
+
+zg361_p3_settle_deferred_portfolio_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_p3_portfolio_deferred
+			has_variable = zg361_p3_deferred_cleanup_status
+			has_variable = zg361_p3_policy_debt_open_n
+			has_variable = zg361_p3_policy_debt_settled_n
+			has_variable = zg361_p3_portfolio_closed
+			has_variable = zg361_p3_portfolio_owner
+			has_variable = zg361_p3_portfolio_subject
+			has_variable = zg361_p3_portfolio_cycle
+			has_variable = zg361_p3_deferred_cleanup_due_cycle
+			has_variable = zg361_p3_final_owner
+			has_variable = zg361_p3_final_subject
+			has_variable = zg361_p3_final_cycle
+			has_variable = zg361_p3_final_case
+			has_variable = zg361_p3_final_deferred
+			has_variable = zg361_p3_final_conservation_ok
+			has_variable = zg361_p3_final_current_capacity_check
+			has_variable = zg361_p3_aj_capacity_total
+			has_variable = zg361_p3_aj_capacity_remaining
+			has_variable = zg361_p3_aj_capacity_reserved
+			has_variable = zg361_p3_aj_wip_used
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_p3_portfolio_deferred = 1
+			var:zg361_p3_deferred_cleanup_status = 1
+			var:zg361_p3_policy_debt_open_n = 0
+			var:zg361_p3_policy_debt_settled_n >= 1
+			var:zg361_p3_portfolio_closed = 1
+			var:zg361_p3_portfolio_owner = root
+			var:zg361_p3_portfolio_subject = this
+			var:zg361_p3_final_owner = root
+			var:zg361_p3_final_subject = this
+			var:zg361_p3_final_cycle = var:zg361_p3_portfolio_cycle
+			var:zg361_p3_final_deferred = 1
+			var:zg361_p3_final_conservation_ok = 1
+			var:zg361_p3_final_current_capacity_check = var:zg361_p3_aj_capacity_total
+			root.var:zg361_review_serial = var:zg361_p3_deferred_cleanup_due_cycle
+			trigger_if = {
+				limit = {
+					OR = {
+						var:zg361_p3_aj_capacity_reserved > 0
+						var:zg361_p3_aj_wip_used > 0
+					}
+				}
+				has_variable = zg361_p3_demand_object_owner
+				has_variable = zg361_p3_demand_object_subject
+				has_variable = zg361_p3_demand_object_cycle
+				has_variable = zg361_p3_demand_object_case
+				has_variable = zg361_p3_delivery_object_owner
+				has_variable = zg361_p3_delivery_object_subject
+				has_variable = zg361_p3_delivery_object_cycle
+				has_variable = zg361_p3_delivery_object_case
+				has_variable = zg361_p3_demand_active
+				has_variable = zg361_p3_demand_reserved_hours
+				has_variable = zg361_p3_delivery_reserved_hours
+				has_variable = zg361_p3_delivery_wip_slots
+				var:zg361_p3_demand_object_owner = root
+				var:zg361_p3_demand_object_subject = this
+				var:zg361_p3_demand_object_cycle = var:zg361_p3_portfolio_cycle
+				var:zg361_p3_demand_object_case = var:zg361_p3_final_case
+				var:zg361_p3_delivery_object_owner = root
+				var:zg361_p3_delivery_object_subject = this
+				var:zg361_p3_delivery_object_cycle = var:zg361_p3_portfolio_cycle
+				var:zg361_p3_delivery_object_case = var:zg361_p3_final_case
+				var:zg361_p3_demand_active = 1
+				var:zg361_p3_aj_capacity_reserved > 0
+				var:zg361_p3_aj_wip_used > 0
+				var:zg361_p3_demand_reserved_hours = var:zg361_p3_aj_capacity_reserved
+				var:zg361_p3_delivery_wip_slots = var:zg361_p3_aj_wip_used
+			}
+			trigger_else = {
+				var:zg361_p3_aj_capacity_reserved = 0
+				var:zg361_p3_aj_wip_used = 0
+			}
+		}
+		set_variable = { name = zg361_p3_deferred_cleanup_released_capacity value = var:zg361_p3_aj_capacity_reserved }
+		set_variable = { name = zg361_p3_deferred_cleanup_released_wip value = var:zg361_p3_aj_wip_used }
+		if = {
+			limit = {
+				var:zg361_p3_aj_capacity_reserved > 0
+				var:zg361_p3_aj_wip_used > 0
+			}
+			change_variable = { name = zg361_p3_aj_capacity_remaining add = var:zg361_p3_aj_capacity_reserved }
+			set_variable = { name = zg361_p3_aj_capacity_reserved value = 0 }
+			set_variable = { name = zg361_p3_aj_wip_used value = 0 }
+			set_variable = { name = zg361_p3_demand_reserved_hours value = 0 }
+			set_variable = { name = zg361_p3_delivery_reserved_hours value = 0 }
+			set_variable = { name = zg361_p3_delivery_wip_slots value = 0 }
+			set_variable = { name = zg361_p3_demand_active value = 0 }
+		}
+		set_variable = { name = zg361_p3_deferred_cleanup_status value = 2 }
+		set_variable = { name = zg361_p3_deferred_cleanup_settled_by value = root }
+		set_variable = { name = zg361_p3_deferred_cleanup_settled_cycle value = root.var:zg361_review_serial }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_p3_deferred_cleanup_status
+			var:zg361_p3_deferred_cleanup_status = 1
+		}
+		set_variable = { name = zg361_p3_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_p3_last_red_code value = 60999 }
+	}
+}

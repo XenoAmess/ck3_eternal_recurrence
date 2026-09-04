@@ -14,10 +14,15 @@ import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
+from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
+
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py\n"
+EFFECTS_DIR = MOD_ROOT / "common/scripted_effects"
+LEGACY_EFFECTS_PATH = EFFECTS_DIR / "zg361_career_learning_runtime_effects.txt"
+EFFECT_SHARD_GLOB = "zg361_career_learning_*_effects.txt"
 READINESS = "static-ready"
 
 
@@ -1882,6 +1887,65 @@ zg361_cl_m333_recover_outstanding_effect = {{
     return generated(body)
 
 
+def effect_purpose(name: str) -> str:
+    """Map every generated definition to its contiguous runtime purpose."""
+
+    if name in {
+        "zg361_cl_m312_hire_once_effect",
+        "zg361_cl_m333_layoff_exemption_effect",
+        "zg361_cl_m333_recover_outstanding_effect",
+    }:
+        return "cross_domain_settlement"
+    if name in {
+        "zg361_cl_set_red_effect",
+        "zg361_cl_clear_red_effect",
+        "zg361_cl_dispatch_direct_reports_effect",
+        "zg361_cl_open_ah_case_effect",
+        "zg361_cl_open_ai_case_effect",
+    }:
+        return "portfolio_control"
+    for domain in ("ah", "ai"):
+        if name.startswith(f"zg361_cl_schedule_{domain}_stage_"):
+            return f"{domain}_deadlines"
+        if name.startswith(f"zg361_cl_run_{domain}_stage_"):
+            return f"{domain}_stage_runners"
+    mechanism_prefix = "zg361_cl_m"
+    if name.startswith(mechanism_prefix):
+        mechanism_id = int(name[len(mechanism_prefix) : len(mechanism_prefix) + 3])
+        row = next(item for item in MECHANISMS if item.mechanism_id == mechanism_id)
+        return f"{row.domain}_stage_{row.state:02d}_mechanisms"
+    if name == "zg361_cl_queue_owner_digest_effect":
+        return "portfolio_digest"
+    raise ValueError(f"unclassified career/learning scripted effect: {name}")
+
+
+def effect_shard_outputs() -> dict[Path, bytes]:
+    shards = plan_effect_shards(
+        render_effects(),
+        generated_header=HEADER,
+        classify=effect_purpose,
+    )
+    rendered: dict[Path, bytes] = {}
+    for index, shard in enumerate(shards, start=1):
+        if not 1 <= len(shard.names) <= MAX_EFFECTS_PER_SHARD:
+            raise ValueError(f"career/learning shard {index} violates the 1-10 effect boundary")
+        part = f"_part_{shard.part:02d}" if shard.part > 1 else ""
+        path = EFFECTS_DIR / (
+            f"zg361_career_learning_{index:03d}_{shard.purpose}{part}_effects.txt"
+        )
+        rendered[path] = generated(
+            f'''# Purpose shard: {shard.purpose.replace("_", " ")}.
+# Boundary contract: 1-10 top-level effects; this file has {len(shard.names)}.
+
+{shard.body}'''
+        )
+    return rendered
+
+
+def generated_effect_residue(expected: set[Path]) -> tuple[Path, ...]:
+    return tuple(sorted(path for path in EFFECTS_DIR.glob(EFFECT_SHARD_GLOB) if path not in expected))
+
+
 def render_hidden_event(domain: str, state: int) -> str:
     event = 100 + state - 1 if domain == "ah" else 200 + state - 1
     p = f"zg361_cl_{domain}_s{state:02d}"
@@ -2064,10 +2128,8 @@ def render_localization(header: str, *, chinese: bool) -> bytes:
 
 
 def outputs() -> dict[Path, bytes]:
-    rendered: dict[Path, bytes] = {
-        MOD_ROOT / "common/scripted_effects/zg361_career_learning_runtime_effects.txt": render_effects(),
-        MOD_ROOT / "events/zg361_career_learning_runtime_events.txt": render_events(),
-    }
+    rendered = effect_shard_outputs()
+    rendered[MOD_ROOT / "events/zg361_career_learning_runtime_events.txt"] = render_events()
     for folder, header in LANGUAGES:
         rendered[MOD_ROOT / f"localization/{folder}/zg361_career_learning_l_{folder}.yml"] = render_localization(
             header,
@@ -2082,14 +2144,26 @@ def main() -> int:
     args = parser.parse_args()
     validate_data()
     rendered = outputs()
+    expected_effects = {path for path in rendered if path.parent == EFFECTS_DIR}
+    residue = generated_effect_residue(expected_effects)
     if args.check:
         stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
-        if stale:
+        if stale or residue:
             for path in stale:
                 print(f"STALE {path.relative_to(MOD_ROOT)}")
+            for path in residue:
+                print(f"LEGACY_OR_UNEXPECTED {path.relative_to(MOD_ROOT)}")
             return 1
-        print(f"career-learning runtime current: {len(MECHANISMS)} mechanisms, {len(rendered)} outputs")
+        print(
+            f"career-learning runtime current: {len(MECHANISMS)} mechanisms, "
+            f"{len(expected_effects)} purpose shards, max {MAX_EFFECTS_PER_SHARD} effects each"
+        )
         return 0
+    for path in residue:
+        payload = path.read_bytes()
+        if path != LEGACY_EFFECTS_PATH and not payload.startswith(BOM + HEADER.encode("utf-8")):
+            raise RuntimeError(f"refusing to remove unowned effect file: {path}")
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)

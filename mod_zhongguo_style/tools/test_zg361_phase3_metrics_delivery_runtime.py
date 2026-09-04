@@ -8,6 +8,7 @@ CK3 parser result, paused snapshot, MCP result, or live gameplay evidence.
 
 from __future__ import annotations
 
+import hashlib
 import re
 import subprocess
 import sys
@@ -21,7 +22,10 @@ sys.path.insert(0, str(TOOLS))
 import gen_361_phase3_metrics_delivery_runtime as gen
 
 
-EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_phase3_metrics_delivery_runtime_effects.txt"
+EFFECTS_PATHS = tuple(
+    MOD_ROOT / "common" / "scripted_effects" / filename
+    for filename, _names in gen.EFFECT_GROUPS
+)
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_phase3_metrics_delivery_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-phase3-metrics-delivery-runtime-spec.md"
 EXPECTED_IDS = set(range(229, 242)) | set(range(301, 312)) | set(range(334, 345))
@@ -65,7 +69,12 @@ def loc_rows(path: Path) -> dict[str, str]:
 class GeneratorContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(EFFECTS_PATH)
+        cls.effect_parts = {
+            filename: read(MOD_ROOT / "common" / "scripted_effects" / filename)
+            for filename, _names in gen.EFFECT_GROUPS
+        }
+        cls.effects = "\n\n".join(cls.effect_parts.values())
+        cls.historical_effects = gen.render_effects().decode("utf-8-sig")
         cls.events = read(EVENTS_PATH)
         cls.spec = read(SPEC_PATH)
         cls.specs = gen.by_id()
@@ -89,9 +98,9 @@ class GeneratorContractTests(unittest.TestCase):
 
     def test_outputs_are_exactly_independent_package(self) -> None:
         outputs = gen.outputs()
-        self.assertEqual(len(outputs), 11)
+        self.assertEqual(len(outputs), 10 + len(gen.EFFECT_GROUPS))
         self.assertEqual({path.name for path in outputs}, {
-            "zg361_phase3_metrics_delivery_runtime_effects.txt",
+            *(filename for filename, _names in gen.EFFECT_GROUPS),
             "zg361_phase3_metrics_delivery_runtime_events.txt",
             *(f"zg361_phase3_metrics_delivery_l_{language}.yml" for language in gen.LANGUAGES),
         })
@@ -114,10 +123,91 @@ class GeneratorContractTests(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(gen.BOM))
 
     def test_generated_script_braces_balance(self) -> None:
-        for path in (EFFECTS_PATH, EVENTS_PATH):
+        for path in (*EFFECTS_PATHS, EVENTS_PATH):
             with self.subTest(path=path):
                 payload = read(path)
                 self.assertEqual(payload.count("{"), payload.count("}"))
+
+    def test_effects_are_complete_byte_identical_purpose_shards(self) -> None:
+        self.assertEqual(len(gen.EFFECT_GROUPS), 40)
+        self.assertEqual(gen.EFFECT_HARD_LIMIT_EXCEPTIONS, {})
+        effects_dir = MOD_ROOT / "common" / "scripted_effects"
+        self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
+
+        historical_bytes = gen.render_effects()
+        self.assertEqual(len(historical_bytes), 1_862_640)
+        self.assertEqual(
+            hashlib.sha256(historical_bytes).hexdigest(),
+            "1da7c60db49b238edd4098136240b430eaa0e12aafe2c54d31165cc90eca1084",
+        )
+        historical = historical_bytes.decode("utf-8-sig")
+        historical_names = re.findall(
+            r"(?m)^(zg361_p3_[a-z0-9_]+_effect)\s*=\s*\{",
+            historical,
+        )
+        configured_names = [
+            name for _filename, names in gen.EFFECT_GROUPS for name in names
+        ]
+        self.assertEqual(len(historical_names), 192)
+        self.assertEqual(len(set(historical_names)), 192)
+        self.assertEqual(len(configured_names), 192)
+        self.assertEqual(len(set(configured_names)), 192)
+        self.assertEqual(set(configured_names), set(historical_names))
+
+        for filename, expected_names in gen.EFFECT_GROUPS:
+            with self.subTest(filename=filename):
+                self.assertGreaterEqual(len(expected_names), 1)
+                self.assertLessEqual(len(expected_names), gen.EFFECT_TARGET_MAX)
+                self.assertLessEqual(len(expected_names), gen.EFFECT_HARD_MAX)
+                self.assertNotIn("acceptance", filename)
+                path = effects_dir / filename
+                self.assertTrue(
+                    path.read_bytes().startswith(
+                        gen.BOM + gen.HEADER.encode("utf-8")
+                    )
+                )
+                part = self.effect_parts[filename]
+                actual_names = re.findall(
+                    r"(?m)^(zg361_p3_[a-z0-9_]+_effect)\s*=\s*\{",
+                    part,
+                )
+                self.assertEqual(actual_names, list(expected_names))
+                for name in expected_names:
+                    self.assertEqual(block(part, name), block(historical, name))
+
+    def test_check_mode_rejects_generated_effect_residue(self) -> None:
+        effects_dir = MOD_ROOT / "common" / "scripted_effects"
+        cases = (
+            (gen.LEGACY_EFFECT_FILENAME, "legacy monolith"),
+            (
+                "zg361_phase3_retired_purpose_effects.txt",
+                "unexpected generated effect residue",
+            ),
+        )
+        for filename, expected_label in cases:
+            residue = effects_dir / filename
+            with self.subTest(filename=filename):
+                self.assertFalse(residue.exists())
+                try:
+                    residue.write_bytes(gen.render_effects())
+                    result = subprocess.run(
+                        [
+                            sys.executable,
+                            str(
+                                TOOLS
+                                / "gen_361_phase3_metrics_delivery_runtime.py"
+                            ),
+                            "--check",
+                        ],
+                        cwd=MOD_ROOT,
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn(expected_label, result.stdout)
+                finally:
+                    residue.unlink(missing_ok=True)
 
     def test_generated_triggers_never_use_inline_arithmetic_rhs(self) -> None:
         # CK3 1.19.0.6 reports this shape as wildcard value plus unknown
@@ -301,7 +391,7 @@ class GeneratorContractTests(unittest.TestCase):
             with self.subTest(mid=spec.mid):
                 self.assertIn(
                     f"# #{spec.mid:03d} route C: pure defer; no business object or resource write.",
-                    self.effects,
+                    self.historical_effects,
                 )
                 values = {
                     "owner": "$TICKET_OWNER$",

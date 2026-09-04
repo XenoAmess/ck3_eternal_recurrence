@@ -15,7 +15,7 @@
 
 后文机制表的 A/B 与“consumer 必须发布”列描述该机制面向案卷/考核榜/MCP 的丰富查询合同；C 列只保留玩家为何选择延期的业务语境，不授权执行该格描述的任何业务写入。当前静态包完成的是 A/B 的 write→consumer 主链、C 的 debt→next-cycle sink 主链及上述专门字段，查询键、GUI 和 live 证据仍在 readiness 边界之外。
 
-Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 51 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
+Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 56 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
 
 ## 权威来源与产物边界
 
@@ -34,12 +34,28 @@ Python 参考模型同步冻结需求与交付对象的 identity/version/deadlin
 本包应由独立生成器维护，不得手改带 `GENERATED FILE` 标识的结果：
 
 - `tools/gen_361_phase3_metrics_delivery_runtime.py`
-- `common/scripted_effects/zg361_phase3_metrics_delivery_runtime_effects.txt`
+- `common/scripted_effects/zg361_phase3_*_effects.txt`（40 个按用途生成的 shard；旧单体为非法残留）
 - `events/zg361_phase3_metrics_delivery_runtime_events.txt`
 - `localization/*/zg361_phase3_metrics_delivery_l_*.yml`
 - `tools/test_zg361_phase3_metrics_delivery_runtime.py`
 
 本包可调用共享 case-kernel 的公开 effect / trigger，但不得修改共享内核，也不得修改 B1、B2、scoreboard、shared case kernel、中央 on_action 或既有 GUI 文件。
+
+### Effect 文件边界与体量证据
+
+2026-09-04 的 B5 静态审计确认：旧生成产物
+`zg361_phase3_metrics_delivery_runtime_effects.txt` 为 1,862,640 B、192 个顶层 effect，SHA-256
+`1DA7C60DB49B238EDD4098136240B430EAA0E12AAFE2C54D31165CC90ECA1084`。它违反二期从 B2 起采用的
+“每文件目标 1–10 个、原则上不超过 20 个 effect”边界。生成器现在把同一份历史 render 按业务用途投影为 40 个文件：
+
+- portfolio 生命周期 1 文件 / 3 effects；
+- policy-debt 生命周期 1 文件 / 2 effects；
+- AA、AG、AJ 域编排各 1 文件 / 4 effects；
+- 35 个编号机制各 1 文件 / 5 effects，同一文件内保留 due-debt consumer、业务 consumer 与 A/B/C 三路线。
+
+因此当前分布为 2–5 effects/file，最大值 5，没有超过 10 或 20 的例外。专测冻结旧 render 的字节数与 SHA，并逐一比较
+192 个顶层 effect block，证明拆分没有改写 effect 本体；`--check` 还会拒绝旧单体残留。这里记录的是加载边界的静态治理与后续
+性能取证入口，不把“大文件就是此前启动故障唯一根因”写成已证事实，也不把本次 L0 结果冒充 CK3 加载性能或实机 GREEN。
 
 ## 角色权限与作用域
 

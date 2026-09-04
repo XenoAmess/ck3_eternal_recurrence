@@ -1,0 +1,114 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: cross domain settlement.
+# Boundary contract: 1-10 top-level effects; this file has 3.
+
+
+
+# A single legal hire consumes the vacancy.  A second call is a typed duplicate.
+zg361_cl_m312_hire_once_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_receipt_is_current_trigger = {
+    RECEIPT_OWNER_VAR = zg361_cl_m312_receipt_owner
+    RECEIPT_SUBJECT_VAR = zg361_cl_m312_receipt_subject
+    RECEIPT_CYCLE_VAR = zg361_cl_m312_receipt_cycle
+    RECEIPT_CASE_VAR = zg361_cl_m312_receipt_case
+    RECEIPT_STATE_VAR = zg361_cl_m312_receipt_state
+    RECEIPT_CHOICE_VAR = zg361_cl_m312_receipt_choice
+    EXPECTED_OWNER = var:zg361_cl_m312_object_owner
+    EXPECTED_SUBJECT = var:zg361_cl_m312_object_subject
+    EXPECTED_CYCLE = var:zg361_cl_m312_object_cycle
+    EXPECTED_CASE = var:zg361_cl_m312_object_case
+    EXPECTED_STATE = 1
+    EXPECTED_CHOICE = var:zg361_cl_m312_object_route
+}
+            var:zg361_cl_m312_legal_hc = 1
+            var:zg361_cl_m312_vacancy_filled_n = 0
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_status = 3
+            var:zg361_transfer_cl_phase = 6
+        }
+        set_variable = { name = zg361_cl_m312_vacancy_filled_n value = 1 }
+        set_variable = { name = zg361_cl_m312_hired_subject value = this }
+    }
+    else = { zg361_cl_set_red_effect = { CODE = 3 MECHANISM = 312 } }
+}
+
+# Organization layoff cancels only the outstanding recovery; it cannot erase
+# the original training receipt or manufacture performance credit.
+zg361_cl_m333_layoff_exemption_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_receipt_is_current_trigger = {
+    RECEIPT_OWNER_VAR = zg361_cl_m333_receipt_owner
+    RECEIPT_SUBJECT_VAR = zg361_cl_m333_receipt_subject
+    RECEIPT_CYCLE_VAR = zg361_cl_m333_receipt_cycle
+    RECEIPT_CASE_VAR = zg361_cl_m333_receipt_case
+    RECEIPT_STATE_VAR = zg361_cl_m333_receipt_state
+    RECEIPT_CHOICE_VAR = zg361_cl_m333_receipt_choice
+    EXPECTED_OWNER = var:zg361_cl_m333_object_owner
+    EXPECTED_SUBJECT = var:zg361_cl_m333_object_subject
+    EXPECTED_CYCLE = var:zg361_cl_m333_object_cycle
+    EXPECTED_CASE = var:zg361_cl_m333_object_case
+    EXPECTED_STATE = 5
+    EXPECTED_CHOICE = var:zg361_cl_m333_object_route
+}
+            var:zg361_cl_m333_recovery_settled = 0
+            has_variable = zg361_b2_m074_actual_exit
+            has_variable = zg361_b2_m074_reason
+            has_variable = zg361_b2_m074_subject
+            has_variable = zg361_b2_m074_treasury_paid
+            has_variable = zg361_b2_m074_personal_received
+            has_variable = zg361_b2_m074_hc_released
+            has_variable = zg361_b2_m074_state
+            var:zg361_b2_m074_actual_exit = 1
+            var:zg361_b2_m074_reason = 1
+            var:zg361_b2_m074_subject = this
+            var:zg361_b2_m074_treasury_paid = 50
+            var:zg361_b2_m074_personal_received = 50
+            var:zg361_b2_m074_hc_released = 1
+            OR = {
+                var:zg361_b2_m074_state = 3
+                var:zg361_b2_m074_state = 4
+            }
+        }
+        set_variable = { name = zg361_cl_m333_organization_layoff_exempt value = 1 }
+        set_variable = { name = zg361_cl_m333_outstanding value = 0 }
+        set_variable = { name = zg361_cl_m333_recovery_settled value = 1 }
+    }
+}
+
+# Voluntary early exit returns the D+90 outstanding amount to the original
+# treasury/personal split.  18 <= original 24; the latch makes recovery once-only.
+zg361_cl_m333_recover_outstanding_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_receipt_is_current_trigger = {
+    RECEIPT_OWNER_VAR = zg361_cl_m333_receipt_owner
+    RECEIPT_SUBJECT_VAR = zg361_cl_m333_receipt_subject
+    RECEIPT_CYCLE_VAR = zg361_cl_m333_receipt_cycle
+    RECEIPT_CASE_VAR = zg361_cl_m333_receipt_case
+    RECEIPT_STATE_VAR = zg361_cl_m333_receipt_state
+    RECEIPT_CHOICE_VAR = zg361_cl_m333_receipt_choice
+    EXPECTED_OWNER = var:zg361_cl_m333_object_owner
+    EXPECTED_SUBJECT = var:zg361_cl_m333_object_subject
+    EXPECTED_CYCLE = var:zg361_cl_m333_object_cycle
+    EXPECTED_CASE = var:zg361_cl_m333_object_case
+    EXPECTED_STATE = 5
+    EXPECTED_CHOICE = var:zg361_cl_m333_object_route
+}
+            var:zg361_cl_m333_organization_layoff_exempt = 0
+            var:zg361_cl_m333_recovery_settled = 0
+            var:zg361_cl_m333_outstanding = 18
+            gold >= 18
+        }
+        add_gold = { value = 0 subtract = 18 }
+        var:zg361_cl_m333_object_owner = {
+            add_treasury = 13
+            add_gold = 5
+        }
+        set_variable = { name = zg361_cl_m333_recovered value = 18 }
+        set_variable = { name = zg361_cl_m333_recovery_settled value = 1 }
+    }
+    else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 333 } }
+}

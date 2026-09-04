@@ -14,11 +14,22 @@ import unittest
 
 import gen_361_career_hc_runtime as generator
 import zg361_phase2_career_model as model
+from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, top_level_effect_blocks
 
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
-EFFECTS_PATH = MOD_ROOT / "common/scripted_effects/zg361_career_hc_runtime_effects.txt"
 EVENTS_PATH = MOD_ROOT / "events/zg361_career_hc_runtime_events.txt"
+
+
+def effect_paths() -> tuple[Path, ...]:
+    return tuple(sorted((MOD_ROOT / "common/scripted_effects").glob("zg361_career_hc_[0-9][0-9][0-9]_*_effects.txt")))
+
+
+def read_effects() -> str:
+    paths = effect_paths()
+    if not paths:
+        raise AssertionError("missing career/HC purpose shards")
+    return "\n\n".join(path.read_text(encoding="utf-8-sig") for path in paths)
 
 
 def block(text: str, name: str) -> str:
@@ -80,7 +91,7 @@ def brace_balance(text: str) -> int:
 class CareerHcRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = EFFECTS_PATH.read_text(encoding="utf-8-sig")
+        cls.effects = read_effects()
         cls.events = EVENTS_PATH.read_text(encoding="utf-8-sig")
 
     def test_exact_forty_four_numbered_mechanisms(self) -> None:
@@ -112,7 +123,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
 
     def test_generated_outputs_are_current_bom_and_complete(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 11)
+        self.assertEqual(len(rendered), len(generator.effect_shard_outputs()) + 10)
         self.assertEqual(
             {path.parent.name for path in rendered if path.suffix == ".yml"},
             {
@@ -132,6 +143,20 @@ class CareerHcRuntimeTests(unittest.TestCase):
                 self.assertTrue(payload.startswith(generator.BOM))
                 self.assertTrue(path.is_file())
                 self.assertEqual(path.read_bytes(), payload)
+
+    def test_effects_are_purpose_sharded_with_exact_ordered_bodies(self) -> None:
+        paths = effect_paths()
+        self.assertEqual(paths, tuple(generator.effect_shard_outputs()))
+        self.assertFalse(generator.LEGACY_EFFECTS_PATH.exists())
+        actual: list[tuple[str, str]] = []
+        for path in paths:
+            blocks = top_level_effect_blocks(path.read_bytes(), generated_header=generator.HEADER)
+            with self.subTest(path=path.name):
+                self.assertGreaterEqual(len(blocks), 1)
+                self.assertLessEqual(len(blocks), MAX_EFFECTS_PER_SHARD)
+            actual.extend(blocks)
+        expected = top_level_effect_blocks(generator.render_effects(), generated_header=generator.HEADER)
+        self.assertEqual(tuple(actual), expected)
 
     def test_generated_ck3_files_have_balanced_braces(self) -> None:
         self.assertEqual(brace_balance(self.effects), 0)

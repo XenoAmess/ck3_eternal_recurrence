@@ -10,6 +10,7 @@ scoreboard, B1/B2, on_actions, decisions, or release plumbing.
 from __future__ import annotations
 
 import argparse
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -265,6 +266,62 @@ STAGE_LAST = {
 NEXT_DOMAIN = {"aa": "ag", "ag": "aj", "aj": None}
 QUEUE_EVENTS = {"aa": 9001, "ag": 9002}
 DOMAIN_TOTALS = {domain: len(order) for domain, order in DOMAIN_ORDER.items()}
+LEGACY_EFFECT_FILENAME = "zg361_phase3_metrics_delivery_runtime_effects.txt"
+EFFECT_TARGET_MAX = 10
+EFFECT_HARD_MAX = 20
+# A future hard-limit exception is valid only with both an engineering reason
+# and a concrete CK3 live-artifact reference.  The current B5 layout needs no
+# exception: every purpose shard contains two to five effects.
+EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+
+# Keep public portfolio lifecycle, debt lifecycle, and each domain's internal
+# orchestration independently loadable.  Every numbered mechanism then owns a
+# five-effect unit: due-debt consumer, business consumer, and A/B/C routes.
+# This is a purpose boundary, not an arbitrary line-count split.
+EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "zg361_phase3_portfolio_lifecycle_effects.txt",
+        (
+            "zg361_p3_initialize_portfolio_effect",
+            "zg361_p3_open_portfolio_effect",
+            "zg361_p3_finalize_portfolio_effect",
+        ),
+    ),
+    (
+        "zg361_phase3_policy_debt_lifecycle_effects.txt",
+        (
+            "zg361_p3_consume_due_policy_debts_effect",
+            "zg361_p3_settle_deferred_portfolio_effect",
+        ),
+    ),
+    *(
+        (
+            f"zg361_phase3_{domain}_orchestration_effects.txt",
+            (
+                f"zg361_p3_{domain}_initialize_effect",
+                f"zg361_p3_{domain}_subject_read_effect",
+                f"zg361_p3_{domain}_run_authorized_ai_effect",
+                f"zg361_p3_{domain}_launch_effect",
+            ),
+        )
+        for domain in ("aa", "ag", "aj")
+    ),
+    *(
+        (
+            "zg361_phase3_aj_m343_three_party_signoff_effects.txt"
+            if spec.mid == 343
+            else f"zg361_phase3_{spec.domain}_m{spec.mid}_{spec.field}_effects.txt",
+            (
+                f"zg361_p3_m{spec.mid}_consume_due_debt_effect",
+                f"zg361_p3_m{spec.mid}_consume_effect",
+                f"zg361_p3_m{spec.mid}_route_a_effect",
+                f"zg361_p3_m{spec.mid}_route_b_effect",
+                f"zg361_p3_m{spec.mid}_route_c_effect",
+            ),
+        )
+        for spec in MECHANISMS
+    ),
+)
 
 
 def generated(text: str) -> bytes:
@@ -2013,6 +2070,8 @@ zg361_p3_{domain}_launch_effect = {{
 
 
 def render_effects() -> bytes:
+    """Render the frozen pre-shard monolith for semantic comparison only."""
+
     validate_specs()
     sections = [
         "# ZhongGuo 361 phase 3 — AA metrics, AG reorg, AJ demand delivery.\n"
@@ -2031,6 +2090,115 @@ def render_effects() -> bytes:
         for choice in (1, 2, 3):
             sections.append(render_route_effect(spec, choice))
     return generated("\n\n".join(sections))
+
+
+def _top_level_effect_blocks(source: str) -> tuple[tuple[str, str], ...]:
+    """Return top-level effect blocks in source order, preserving their bytes."""
+
+    blocks: list[tuple[str, str]] = []
+    pattern = re.compile(r"(?m)^([a-z0-9_]+_effect)\s*=\s*\{")
+    for match in pattern.finditer(source):
+        depth = 0
+        quoted = False
+        escaped = False
+        commented = False
+        for index in range(match.end() - 1, len(source)):
+            char = source[index]
+            if char == "\n":
+                commented = False
+                continue
+            if commented:
+                continue
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    quoted = False
+                continue
+            if char == "#":
+                commented = True
+            elif char == '"':
+                quoted = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    blocks.append(
+                        (match.group(1), source[match.start() : index + 1])
+                    )
+                    break
+        else:
+            raise ValueError(f"unterminated phase-3 effect block: {match.group(1)}")
+    return tuple(blocks)
+
+
+def render_effect_parts() -> dict[str, bytes]:
+    """Render purpose shards without changing any top-level effect block."""
+
+    historical = render_effects().decode("utf-8-sig")
+    historical_blocks = _top_level_effect_blocks(historical)
+    historical_names = tuple(name for name, _block in historical_blocks)
+    block_by_name = dict(historical_blocks)
+    configured_names = tuple(
+        name for _filename, names in EFFECT_GROUPS for name in names
+    )
+
+    if len(EFFECT_GROUPS) != 40:
+        raise ValueError("phase-3 runtime must remain split into 40 purpose files")
+    if len(historical_names) != 192 or len(set(historical_names)) != 192:
+        raise ValueError("phase-3 historical render must contain 192 unique effects")
+    if len(configured_names) != 192 or len(set(configured_names)) != 192:
+        raise ValueError("phase-3 purpose map must contain 192 unique effects")
+    if set(configured_names) != set(historical_names):
+        missing = sorted(set(historical_names) - set(configured_names))
+        extra = sorted(set(configured_names) - set(historical_names))
+        raise ValueError(
+            "phase-3 purpose map mismatch: "
+            f"missing={missing}, extra={extra}"
+        )
+
+    rendered: dict[str, bytes] = {}
+    for filename, names in EFFECT_GROUPS:
+        if not names:
+            raise ValueError(
+                f"phase-3 purpose file must contain at least one effect: {filename}"
+            )
+        if len(names) > EFFECT_HARD_MAX:
+            exception = EFFECT_HARD_LIMIT_EXCEPTIONS.get(filename)
+            if (
+                exception is None
+                or len(exception) != 2
+                or not exception[0].strip()
+                or not exception[1].strip()
+            ):
+                raise ValueError(
+                    "phase-3 purpose file exceeds "
+                    f"{EFFECT_HARD_MAX} effects without a reason and CK3 "
+                    f"live-evidence reference: {filename}"
+                )
+        body = "\n\n".join(block_by_name[name] for name in names)
+        rendered[filename] = generated(
+            f"# Phase-3 purpose shard: {filename}\n"
+            f"# READINESS: {READINESS}. No CK3 parser/paused/live evidence is claimed.\n\n"
+            f"{body}"
+        )
+
+    exception_files = set(EFFECT_HARD_LIMIT_EXCEPTIONS)
+    oversized_files = {
+        filename
+        for filename, names in EFFECT_GROUPS
+        if len(names) > EFFECT_HARD_MAX
+    }
+    if exception_files != oversized_files:
+        raise ValueError(
+            "phase-3 hard-limit exceptions must exactly match oversized shards: "
+            f"exceptions={sorted(exception_files)}, "
+            f"oversized={sorted(oversized_files)}"
+        )
+    return rendered
 
 
 def event_guard(spec: Mechanism) -> str:
@@ -2214,10 +2382,16 @@ def render_localization(language: str) -> bytes:
 
 def outputs() -> dict[Path, bytes]:
     validate_specs()
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_phase3_metrics_delivery_runtime_effects.txt": render_effects(),
         MOD_ROOT / "events" / "zg361_phase3_metrics_delivery_runtime_events.txt": render_events(),
     }
+    rendered.update(
+        {
+            effects_dir / filename: payload
+            for filename, payload in render_effect_parts().items()
+        }
+    )
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / f"zg361_phase3_metrics_delivery_l_{language}.yml"
@@ -2231,17 +2405,35 @@ def main() -> int:
     args = parser.parse_args()
     rendered = outputs()
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
+    effects_dir = MOD_ROOT / "common" / "scripted_effects"
+    expected_effect_paths = {
+        path for path in rendered if path.parent == effects_dir
+    }
+    effect_residue = sorted(
+        path
+        for path in effects_dir.glob("zg361_phase3_*_effects.txt")
+        if path not in expected_effect_paths
+    )
     if args.check:
-        if stale:
+        if stale or effect_residue:
             print("RED: stale phase-3 metrics/delivery generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in effect_residue:
+                label = (
+                    "legacy monolith"
+                    if path.name == LEGACY_EFFECT_FILENAME
+                    else "unexpected generated effect residue"
+                )
+                print(f"{path.relative_to(MOD_ROOT)} ({label})")
             return 1
         print(f"GREEN: {len(rendered)} generated files are current ({READINESS})")
         return 0
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+    for path in effect_residue:
+        path.unlink()
     print(f"GREEN: generated {len(rendered)} phase-3 metrics/delivery runtime files")
     return 0
 

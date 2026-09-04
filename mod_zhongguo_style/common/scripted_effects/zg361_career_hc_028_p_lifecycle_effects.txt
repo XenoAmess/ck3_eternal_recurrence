@@ -1,0 +1,362 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: p lifecycle.
+# Boundary contract: 1-10 top-level effects; this file has 10.
+
+
+
+# Open domain P on one assessed direct vassal.
+zg361_career_hc_open_p_case_effect = {
+    remove_variable = zg361_ch_runtime_applied
+    if = {
+        limit = {
+            root = {
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_review_serial
+            }
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+        }
+        zg361_case_p_open_effect = yes
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            set_variable = { name = zg361_ch_p_authorized value = 7 }
+            set_variable = { name = zg361_ch_p_available value = 7 }
+            set_variable = { name = zg361_ch_p_used value = 0 }
+            set_variable = { name = zg361_ch_p_debt value = 0 }
+            set_variable = { name = zg361_ch_p_completed value = 0 }
+            set_variable = { name = zg361_ch_p_favorable value = 0 }
+            set_variable = { name = zg361_ch_p_extractive value = 0 }
+            set_variable = { name = zg361_ch_p_outcome value = 0 }
+            set_variable = { name = zg361_ch_p_conserved value = 1 }
+            set_variable = { name = zg361_ch_application_identity_visible value = 0 }
+        set_variable = { name = zg361_ch_release_extension_used value = 0 }
+            set_variable = { name = zg361_ch_m114_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m114_consumed value = 0 }
+        set_variable = { name = zg361_ch_m114_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m114_deferred value = 0 }
+        set_variable = { name = zg361_ch_m115_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m115_consumed value = 0 }
+        set_variable = { name = zg361_ch_m115_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m115_deferred value = 0 }
+        set_variable = { name = zg361_ch_m116_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m116_consumed value = 0 }
+        set_variable = { name = zg361_ch_m116_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m116_deferred value = 0 }
+        set_variable = { name = zg361_ch_m117_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m117_consumed value = 0 }
+        set_variable = { name = zg361_ch_m117_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m117_deferred value = 0 }
+        set_variable = { name = zg361_ch_m118_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m118_consumed value = 0 }
+        set_variable = { name = zg361_ch_m118_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m118_deferred value = 0 }
+        set_variable = { name = zg361_ch_m119_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m119_consumed value = 0 }
+        set_variable = { name = zg361_ch_m119_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m119_deferred value = 0 }
+        set_variable = { name = zg361_ch_m120_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m120_consumed value = 0 }
+        set_variable = { name = zg361_ch_m120_subject_ack value = 0 }
+        set_variable = { name = zg361_ch_m120_deferred value = 0 }
+        set_variable = { name = zg361_ch_m114_treasury_available value = 5 }
+        set_variable = { name = zg361_ch_m114_treasury_reserved value = 0 }
+        set_variable = { name = zg361_ch_m114_treasury_settled value = 0 }
+        set_variable = { name = zg361_ch_m114_treasury_status value = 0 }
+        set_variable = { name = zg361_ch_m114_gold_available value = 5 }
+        set_variable = { name = zg361_ch_m114_gold_reserved value = 0 }
+        set_variable = { name = zg361_ch_m114_gold_settled value = 0 }
+        set_variable = { name = zg361_ch_m114_gold_status value = 0 }
+        set_variable = { name = zg361_ch_m119_treasury_available value = 5 }
+        set_variable = { name = zg361_ch_m119_treasury_reserved value = 0 }
+        set_variable = { name = zg361_ch_m119_treasury_settled value = 0 }
+        set_variable = { name = zg361_ch_m119_treasury_status value = 0 }
+        set_variable = { name = zg361_ch_m119_gold_available value = 5 }
+        set_variable = { name = zg361_ch_m119_gold_reserved value = 0 }
+        set_variable = { name = zg361_ch_m119_gold_settled value = 0 }
+        set_variable = { name = zg361_ch_m119_gold_status value = 0 }
+        set_variable = { name = zg361_ch_p_s1_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s1_x_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s2_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s2_x_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s3_a_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s3_a_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s3_b_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s3_b_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s4_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s4_x_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s5_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s5_x_deadline_expired value = 0 }
+
+            var:zg361_case_p_owner = { save_scope_as = zg361_ch_p_event_owner }
+            save_scope_as = zg361_ch_p_event_subject
+            save_scope_value_as = { name = zg361_ch_p_event_cycle value = var:zg361_case_p_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_p_event_case value = var:zg361_case_p_case_serial }
+            zg361_career_hc_schedule_p_stage_01_effect = yes
+            set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_p_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.114 days = 1 } }
+            }
+            debug_log = "ZG361CH: opened P career/HC case"
+        }
+    }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_p_run_authorized_ai_effect = {
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m114_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m114_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m115_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m116_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m117_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m118_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m119_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m119_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m120_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            root = { trigger_event = { id = zg361ch.955 days = 1 } }
+        }
+}
+
+zg361_career_hc_schedule_p_stage_01_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                DEADLINE_OWNER_VAR = zg361_ch_p_s1_x_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_p_s1_x_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_p_s1_x_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_p_s1_x_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_p_s1_x_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_p_s1_x_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_p_s1_x_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_p_s1_x_deadline_expired
+                TICKET_OWNER = var:zg361_case_p_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_p_cycle_serial
+                TICKET_CASE = var:zg361_case_p_case_serial
+                TICKET_STATE = 1
+                DAYS = 90
+                EVENT = zg361ch.1602
+            }
+}
+
+zg361_career_hc_p_try_advance_01_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = var:zg361_case_p_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_p_cycle_serial
+                EXPECTED_CASE = var:zg361_case_p_case_serial
+                EXPECTED_STATE = 1
+            }
+            var:zg361_ch_m114_consumed = 1
+            var:zg361_ch_m115_consumed = 1
+        }
+        zg361_case_p_advance_01_effect = {
+            TICKET_OWNER = var:zg361_case_p_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_p_cycle_serial
+            TICKET_CASE = var:zg361_case_p_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_schedule_p_stage_02_effect = yes
+        }
+    }
+}
+
+zg361_career_hc_p_timeout_stage_01_effect = {
+    zg361_career_hc_m114_core_effect = { ROUTE = 3 }
+    zg361_career_hc_m115_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact P stage 1 deadline consumed"
+}
+
+zg361_career_hc_schedule_p_stage_02_effect = {
+    zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                DEADLINE_OWNER_VAR = zg361_ch_p_s2_x_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_p_s2_x_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_p_s2_x_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_p_s2_x_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_p_s2_x_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_p_s2_x_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_p_s2_x_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_p_s2_x_deadline_expired
+                TICKET_OWNER = var:zg361_case_p_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_p_cycle_serial
+                TICKET_CASE = var:zg361_case_p_case_serial
+                TICKET_STATE = 2
+                DAYS = 90
+                EVENT = zg361ch.1604
+            }
+}
+
+zg361_career_hc_p_try_advance_02_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = var:zg361_case_p_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_p_cycle_serial
+                EXPECTED_CASE = var:zg361_case_p_case_serial
+                EXPECTED_STATE = 2
+            }
+            var:zg361_ch_m116_consumed = 1
+        }
+        zg361_case_p_advance_02_effect = {
+            TICKET_OWNER = var:zg361_case_p_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_p_cycle_serial
+            TICKET_CASE = var:zg361_case_p_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_schedule_p_stage_03_effect = yes
+        }
+    }
+}
+
+zg361_career_hc_p_timeout_stage_02_effect = {
+    zg361_career_hc_m116_core_effect = { ROUTE = 3 }
+    debug_log = "ZG361CH: exact P stage 2 deadline consumed"
+}
+
+zg361_career_hc_schedule_p_stage_03_effect = {
+    if = {
+            limit = { var:zg361_ch_release_days = 90 }
+            zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                DEADLINE_OWNER_VAR = zg361_ch_p_s3_a_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_p_s3_a_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_p_s3_a_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_p_s3_a_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_p_s3_a_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_p_s3_a_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_p_s3_a_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_p_s3_a_deadline_expired
+                TICKET_OWNER = var:zg361_case_p_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_p_cycle_serial
+                TICKET_CASE = var:zg361_case_p_case_serial
+                TICKET_STATE = 3
+                DAYS = 90
+                EVENT = zg361ch.1606
+            }
+        }
+if = {
+            limit = { var:zg361_ch_release_days = 150 }
+            zg361_case_kernel_schedule_deadline_effect = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                DEADLINE_OWNER_VAR = zg361_ch_p_s3_b_deadline_owner
+                DEADLINE_SUBJECT_VAR = zg361_ch_p_s3_b_deadline_subject
+                DEADLINE_CYCLE_VAR = zg361_ch_p_s3_b_deadline_cycle
+                DEADLINE_CASE_VAR = zg361_ch_p_s3_b_deadline_case
+                DEADLINE_STATE_VAR = zg361_ch_p_s3_b_deadline_state
+                DEADLINE_DAYS_VAR = zg361_ch_p_s3_b_deadline_days
+                DEADLINE_PENDING_VAR = zg361_ch_p_s3_b_deadline_pending
+                DEADLINE_EXPIRED_VAR = zg361_ch_p_s3_b_deadline_expired
+                TICKET_OWNER = var:zg361_case_p_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_p_cycle_serial
+                TICKET_CASE = var:zg361_case_p_case_serial
+                TICKET_STATE = 3
+                DAYS = 150
+                EVENT = zg361ch.1607
+            }
+        }
+}
+
+zg361_career_hc_p_try_advance_03_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = var:zg361_case_p_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_p_cycle_serial
+                EXPECTED_CASE = var:zg361_case_p_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_ch_m117_consumed = 1
+            var:zg361_ch_m118_consumed = 1
+        }
+        zg361_case_p_advance_03_effect = {
+            TICKET_OWNER = var:zg361_case_p_owner
+            TICKET_SUBJECT = this
+            TICKET_CYCLE = var:zg361_case_p_cycle_serial
+            TICKET_CASE = var:zg361_case_p_case_serial
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_schedule_p_stage_04_effect = yes
+        }
+    }
+}

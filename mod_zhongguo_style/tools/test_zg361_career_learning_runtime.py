@@ -15,6 +15,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import gen_361_career_learning_runtime as generator
+from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, top_level_effect_blocks
 
 
 MOD_ROOT = generator.MOD_ROOT
@@ -22,6 +23,13 @@ MOD_ROOT = generator.MOD_ROOT
 
 def read(relative: str) -> str:
     return (MOD_ROOT / relative).read_text(encoding="utf-8-sig")
+
+
+def read_effect_family(pattern: str) -> str:
+    paths = tuple(sorted((MOD_ROOT / "common/scripted_effects").glob(pattern)))
+    if not paths:
+        raise AssertionError(f"missing effect family: {pattern}")
+    return "\n\n".join(path.read_text(encoding="utf-8-sig") for path in paths)
 
 
 def block(text: str, key: str) -> str:
@@ -89,14 +97,16 @@ def loc_keys(text: str) -> tuple[str, ...]:
 class CareerLearningRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.effects = read(
-            "common/scripted_effects/zg361_career_learning_runtime_effects.txt"
+        cls.effects = read_effect_family(
+            "zg361_career_learning_[0-9][0-9][0-9]_*_effects.txt"
         )
         cls.events = read("events/zg361_career_learning_runtime_events.txt")
-        cls.career_effects = read(
-            "common/scripted_effects/zg361_career_hc_runtime_effects.txt"
+        cls.career_effects = read_effect_family(
+            "zg361_career_hc_[0-9][0-9][0-9]_*_effects.txt"
         )
-        cls.case_effects = read("common/scripted_effects/zg361_case_kernel_effects.txt")
+        cls.case_effects = read_effect_family(
+            "zg361_case_kernel_[0-9][0-9][0-9]_*_effects.txt"
+        )
         cls.case_triggers = read("common/scripted_triggers/zg361_case_kernel_triggers.txt")
         cls.triggers = read("common/scripted_triggers/zg361_triggers.txt")
         cls.loc_en = read("localization/english/zg361_career_learning_l_english.yml")
@@ -129,18 +139,16 @@ class CareerLearningRuntimeTests(unittest.TestCase):
 
     def test_outputs_are_current_bom_and_strictly_isolated(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 11)
-        allowed = {
-            "common/scripted_effects/zg361_career_learning_runtime_effects.txt",
-            "events/zg361_career_learning_runtime_events.txt",
-        }
+        self.assertEqual(len(rendered), len(generator.effect_shard_outputs()) + 10)
         for path, payload in rendered.items():
             with self.subTest(path=path):
                 self.assertEqual(path.read_bytes(), payload)
                 self.assertTrue(payload.startswith(b"\xef\xbb\xbf"))
                 relative = path.relative_to(MOD_ROOT).as_posix()
                 self.assertTrue(
-                    relative in allowed
+                    relative == "events/zg361_career_learning_runtime_events.txt"
+                    or relative.startswith("common/scripted_effects/zg361_career_learning_")
+                    and relative.endswith("_effects.txt")
                     or relative.startswith("localization/")
                     and "zg361_career_learning_l_" in relative
                 )
@@ -152,6 +160,19 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             "docs/361-phase2-career-learning-ck3-runtime-spec.md",
         ):
             self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(b"\xef\xbb\xbf"))
+
+    def test_effects_are_purpose_sharded_with_exact_ordered_bodies(self) -> None:
+        paths = tuple(generator.effect_shard_outputs())
+        self.assertFalse(generator.LEGACY_EFFECTS_PATH.exists())
+        actual: list[tuple[str, str]] = []
+        for path in paths:
+            blocks = top_level_effect_blocks(path.read_bytes(), generated_header=generator.HEADER)
+            with self.subTest(path=path.name):
+                self.assertGreaterEqual(len(blocks), 1)
+                self.assertLessEqual(len(blocks), MAX_EFFECTS_PER_SHARD)
+            actual.extend(blocks)
+        expected = top_level_effect_blocks(generator.render_effects(), generated_header=generator.HEADER)
+        self.assertEqual(tuple(actual), expected)
 
     def test_ck3_blocks_are_balanced_and_top_level_unique(self) -> None:
         for text, label in ((self.effects, "effects"), (self.events, "events")):

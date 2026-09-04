@@ -1,0 +1,47 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_learning_runtime.py
+# Purpose shard: portfolio digest.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+# Exactly one portfolio digest can be queued per review serial.  It waits for
+# both domains across all frozen direct reports, so late deadlines cannot turn
+# one portfolio into a second popup.
+zg361_cl_queue_owner_digest_effect = {
+    # Freeze the source case cycle before changing into the owner scope; effect
+    # parameters are textual and must not be re-read against the owner character.
+    save_temporary_scope_value_as = {
+        name = zg361_cl_completion_cycle
+        value = $CASE_CYCLE$
+    }
+    var:$OWNER_VAR$ = {
+        if = {
+            limit = {
+                has_variable = zg361_cl_portfolio_cycle
+                var:zg361_cl_portfolio_cycle = scope:zg361_cl_completion_cycle
+            }
+            change_variable = { name = $COUNTER$ add = 1 }
+            if = {
+                limit = {
+                    is_ai = no
+                    OR = {
+                        var:zg361_cl_portfolio_ah_expected > 0
+                        var:zg361_cl_portfolio_ai_expected > 0
+                    }
+                    var:zg361_cl_portfolio_ah_completed >= var:zg361_cl_portfolio_ah_expected
+                    var:zg361_cl_portfolio_ai_completed >= var:zg361_cl_portfolio_ai_expected
+                    var:zg361_cl_portfolio_digest_shown = 0
+                    NOT = { has_variable = zg361_cl_digest_pending }
+                }
+                set_variable = { name = zg361_cl_digest_pending value = 1 }
+                set_variable = { name = zg361_cl_portfolio_digest_shown value = 1 }
+                trigger_event = { id = zg361cl.390 days = 1 }
+            }
+            else_if = {
+                limit = { is_ai = yes }
+                debug_log = "ZG361CL: eligible AI career/learning portfolio advanced silently"
+            }
+        }
+        else = { debug_log = "ZG361CL: stale portfolio completion ignored" }
+    }
+}
