@@ -230,8 +230,9 @@ def build_preflight() -> dict[str, object]:
             "formal_runner_owns_exact_endgame_cell": (
                 "class _Phase2CrossCycleEndgameSpanDriver:" in runner_source
                 and "run_exact_build_cross_cycle_endgame_seam(" in runner_source
-                and "for handler in (PROMOTION_HANDLER, PROJECTS_HANDLER)"
-                in runner_source
+                and "composite = CompositePhase2SpanDriver(" in runner_source
+                and "_Phase2CrossCycleEndgameSpanDriver(" in runner_source
+                and "service, source_choreography=real_events" in runner_source
                 and "source_checkpoint_origin\": \"registered_real_ck3_read_only"
                 in runner_source
             ),
