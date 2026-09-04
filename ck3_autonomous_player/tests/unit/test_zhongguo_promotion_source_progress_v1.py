@@ -286,7 +286,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
     class _InterruptedService(_Service):
         def snapshot(self) -> dict[str, object]:
             if self.stage not in {
-                "pip", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
+                "pip", "flood_relief", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
                 "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha",
                 "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding",
                 "governor_bargain", "succession"
@@ -294,6 +294,8 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 return super().snapshot()
             if self.stage == "pip":
                 instance_id, option_count, date, revision = 400, 3, 53147040, 30
+            elif self.stage == "flood_relief":
+                instance_id, option_count, date, revision = 8120, 3, 53147520, 31
             elif self.stage == "new_governorship":
                 instance_id, option_count, date, revision = 2, 3, 53147280, 31
             elif self.stage == "forced_retirement":
@@ -388,7 +390,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             self, event_instance_id: int, *, expected_revision: int
         ) -> dict[str, object]:
             if self.stage not in {
-                "pip", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
+                "pip", "flood_relief", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
                 "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha",
                 "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding",
                 "governor_bargain", "succession"
@@ -405,6 +407,10 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                     _character_scope("zg361_b2_pip_prompt_subject", 29037),
                     _character_scope("zga_personal_result_target", 29037),
                 ]
+                option_count = 3
+            elif self.stage == "flood_relief":
+                key = "ep3_governor_yearly.8120"
+                scopes = [_opaque_scope("disaster_county", "landed_title")]
                 option_count = 3
             elif self.stage == "new_governorship":
                 key = "ep3_admin_events.0002"
@@ -692,6 +698,9 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             )
             if self.stage == "pip":
                 assert option_number == 1
+                self.stage = "flood_relief"
+            elif self.stage == "flood_relief":
+                assert option_number == 3
                 self.stage = "new_governorship"
             elif self.stage == "new_governorship":
                 assert option_number == 3
@@ -801,6 +810,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         for row in result["timeline_interrupt_drains"]
     ] == [
         "zg361b2.40",
+        "ep3_governor_yearly.8120",
         "ep3_admin_events.0002",
         "ep3_interactions_events.0630",
         "bp1_yearly.9007",
@@ -829,7 +839,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         "sway_outcome.2001",
         "ep3_governor_yearly.3060",
     ]
-    assert service.selected == [1, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 2, 1, 1, 1, 1, 4, 1]
+    assert service.selected == [1, 3, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 2, 1, 1, 1, 1, 4, 1]
 
 
 def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:

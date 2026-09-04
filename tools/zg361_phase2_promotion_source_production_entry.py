@@ -46,6 +46,24 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "ep3_governor_yearly.8120": {
+        # Independent vanilla flood/storm event.  The disaster county loses
+        # control/development in immediate regardless of the choice.  Option
+        # 1 adds a random stewardship duel and governance/modifier outcome;
+        # option 2 spends treasury/gold and adds a county modifier.  Option 3
+        # avoids both and is confined to minor piety, a fixed character
+        # modifier and trait-dependent stress, so it is the least disruptive
+        # route for the promotion-source lineage.
+        "date_raw": 53147520,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "scope_types": {"disaster_county": "landed_title"},
+        "boolean_scopes": (),
+        "saved_scope_count": 1,
+        "option_count": 3,
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+    },
     "bp1_yearly.9007": {
         # Independent vanilla doppelganger encounter.  Visible option 1 adds
         # the generated character to court and creates a follow-up story;

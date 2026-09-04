@@ -367,3 +367,29 @@ expander proves 630 selected same-path files byte-exact before fixed point.
 R54 report/evidence-index SHA-256 are
 `A7C59C3E99BA6AD1EDF8293E612FDE3F1D6C37C8E4B13C6FF13216E1F327959B`
 and `4F8E907D54721071DD174AE60A8ED299D5AF43F7AF9BF6DBF50A197BE5105E80`.
+
+## R55: B2 lazy fix live and exact flood interrupt
+
+R55 ran from pushed commit `8aff92a` with the refreshed 634-file product. The
+frontend-first pass and final loader were GREEN (`303` database nodes,
+`fatal=0`); the run then stopped before mutation on vanilla
+`ep3_governor_yearly.8120`. The exact frame is `date_raw=53147520`, event
+instance 14, played root 29037, one opaque `landed_title` scope named
+`disaster_county`, and three shown/enabled authored options at native indices
+0, 1 and 2.
+
+The vanilla event's `immediate` has already reduced the selected county's
+control and development. Option 1 adds a random stewardship duel and possible
+governance/character-modifier result; option 2 spends treasury/gold and adds a
+county modifier. Option 3 avoids those promotion-lineage inputs and only adds
+minor piety, a deterministic character modifier and trait-dependent stress,
+so the exact contract chooses authored option 3.
+
+Most importantly, all three final R55 logs contain zero instances of the R54
+`zg361_b2_pip_performance_evidence_status` unset read. This is real same-product
+confirmation that the whole-tuple lazy boundary fixed the concrete B2 runtime
+error. It does not change the file-size finding: the product loader was GREEN,
+so no additional effect split is triggered. R55 report/evidence SHA-256 are
+`ED9C501EE6A94BD676E3CFEDEB64D006E2C7F53D939D1357F85F71EF25661FBE`
+and `50355C965BE8E8F67C60F4DC835D3653A985FF39B39F7187DFBF36F0E385EAC1`;
+native cleanup was GREEN and no CK3 process remained.
