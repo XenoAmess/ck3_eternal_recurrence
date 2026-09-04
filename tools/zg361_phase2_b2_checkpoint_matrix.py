@@ -19,6 +19,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import time
 from typing import Callable, Mapping, Protocol
 
 from zg361_phase2_b2_action_cell import (
@@ -38,6 +39,11 @@ from zg361_phase2_b2_action_cell import (
 MATRIX_ACTIONS = ("accept", "negotiate", "refuse")
 _OPTION_NUMBER = {"accept": 1, "negotiate": 2, "refuse": 3}
 _SHA256_RE = re.compile(r"[0-9A-Fa-f]{64}\Z")
+_APPLICATION_MAIN_NOT_READY = (
+    "native gameplay step failed: paused application-main boundary is not ready"
+)
+_APPLICATION_MAIN_READY_TIMEOUT_S = 5.0
+_APPLICATION_MAIN_READY_POLL_INTERVAL_S = 0.1
 
 
 class B2CheckpointMatrixService(B2PipActionService, Protocol):
@@ -170,6 +176,12 @@ def inspect_b2_pip_prechoice(
     *,
     owner_character_id: int,
     request_nonce: str,
+    application_main_timeout_s: float = _APPLICATION_MAIN_READY_TIMEOUT_S,
+    application_main_poll_interval_s: float = (
+        _APPLICATION_MAIN_READY_POLL_INTERVAL_S
+    ),
+    clock: Callable[[], float] = time.monotonic,
+    sleeper: Callable[[float], None] = time.sleep,
 ) -> dict[str, object]:
     """Read and validate one real pending ``zg361b2.40`` prompt.
 
@@ -182,6 +194,10 @@ def inspect_b2_pip_prechoice(
     )
     if not isinstance(request_nonce, str) or not request_nonce:
         raise ValueError("request_nonce must be a non-empty string")
+    if application_main_timeout_s < 0 or application_main_poll_interval_s <= 0:
+        raise ValueError(
+            "application-main timeout must be non-negative and poll interval positive"
+        )
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
@@ -192,6 +208,7 @@ def inspect_b2_pip_prechoice(
         "test_decisions_used": False,
         "raw_snapshot": None,
         "binding": None,
+        "event_context_attempts": [],
         "raw_event_context": None,
         "raw_b2_snapshot": None,
         "event_definition_key": None,
@@ -205,11 +222,69 @@ def inspect_b2_pip_prechoice(
         evidence["raw_snapshot"] = snapshot
         binding = _process_binding(snapshot, require_event=True)
         evidence["binding"] = binding
-        event_instance_id = int(binding["event_instance_id"])
-        event_response = service.query_current_event_window_context_v1(
-            event_instance_id,
-            expected_revision=int(binding["revision"]),
+        stable_keys = (
+            "date_raw",
+            "paused",
+            "player_character_id",
+            "connection_generation",
+            "event_instance_id",
+            "event_option_count",
+            "bridge_pid",
+            "episode_run_id",
         )
+        initial_binding = dict(binding)
+        deadline = clock() + application_main_timeout_s
+        attempt_number = 0
+        attempts = evidence["event_context_attempts"]
+        assert isinstance(attempts, list)
+        while True:
+            attempt_number += 1
+            event_instance_id = int(binding["event_instance_id"])
+            try:
+                event_response = service.query_current_event_window_context_v1(
+                    event_instance_id,
+                    expected_revision=int(binding["revision"]),
+                )
+                attempts.append(
+                    {
+                        "attempt": attempt_number,
+                        "binding": _binding_projection(binding),
+                        "result": "GREEN",
+                        "error": None,
+                    }
+                )
+                break
+            except Exception as error:
+                retryable = str(error) == _APPLICATION_MAIN_NOT_READY
+                attempts.append(
+                    {
+                        "attempt": attempt_number,
+                        "binding": _binding_projection(binding),
+                        "result": "RETRY" if retryable else "RED",
+                        "error": f"{type(error).__name__}: {error}",
+                    }
+                )
+                if not retryable or clock() >= deadline:
+                    raise
+                sleeper(application_main_poll_interval_s)
+                refreshed_snapshot = service.snapshot()
+                refreshed_binding = _process_binding(
+                    refreshed_snapshot, require_event=True
+                )
+                drifted = [
+                    key
+                    for key in stable_keys
+                    if refreshed_binding.get(key) != initial_binding.get(key)
+                ]
+                if drifted:
+                    raise ValueError(
+                        "B2 pre-choice frame changed while waiting for "
+                        "application-main readiness: " + ", ".join(drifted)
+                    )
+                snapshot = refreshed_snapshot
+                binding = refreshed_binding
+                evidence["raw_snapshot"] = snapshot
+                evidence["binding"] = binding
         evidence["raw_event_context"] = event_response
         options = _validate_event_context(
             event_response,

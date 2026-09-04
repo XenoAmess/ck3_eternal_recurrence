@@ -11,7 +11,9 @@ import unittest
 
 from zg361_phase2_b2_action_cell import run_b2_pip_gameplay_action_cell
 from zg361_phase2_b2_checkpoint_matrix import (
+    B2PrechoiceInspectionError,
     B2SameCheckpointMatrixError,
+    inspect_b2_pip_prechoice,
     run_b2_same_checkpoint_matrix,
 )
 
@@ -163,6 +165,8 @@ class _FakeMatrixService:
         self.apply_effect = True
         self.current_case = CASE
         self.disabled_option: int | None = None
+        self.event_context_not_ready_count = 0
+        self.event_context_query_count = 0
         self.lifecycle.alive[self.pid] = True
 
     @property
@@ -219,6 +223,13 @@ class _FakeMatrixService:
     def query_current_event_window_context_v1(
         self, event_instance_id: int, *, expected_revision: int
     ) -> dict[str, object]:
+        self.event_context_query_count += 1
+        if self.event_context_not_ready_count > 0:
+            self.event_context_not_ready_count -= 1
+            raise RuntimeError(
+                "native gameplay step failed: paused application-main boundary "
+                "is not ready"
+            )
         snapshot = self.snapshot()
         saved_scopes = [
             {
@@ -546,6 +557,54 @@ class B2CheckpointMatrixTests(unittest.TestCase):
                 self.assertEqual(payload["result"], "GREEN")
                 self.assertEqual(payload["submit_count"], 1)
                 self.assertTrue(payload["checks"]["independent_postcondition"])
+
+    def test_prechoice_retries_transient_application_main_boundary(self) -> None:
+        _, service = self._fresh()
+        service.event_context_not_ready_count = 2
+        clock = _FakeClock()
+
+        result = inspect_b2_pip_prechoice(
+            service,
+            owner_character_id=OWNER,
+            request_nonce="zg361.phase2.b2.retry-control",
+            application_main_timeout_s=0.2,
+            application_main_poll_interval_s=0.05,
+            clock=clock.monotonic,
+            sleeper=clock.sleep,
+        )
+
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(service.event_context_query_count, 3)
+        self.assertEqual(
+            [row["result"] for row in result["event_context_attempts"]],
+            ["RETRY", "RETRY", "GREEN"],
+        )
+
+    def test_prechoice_bounds_persistent_application_main_boundary(self) -> None:
+        _, service = self._fresh()
+        service.event_context_not_ready_count = 20
+        clock = _FakeClock()
+
+        with self.assertRaises(B2PrechoiceInspectionError) as caught:
+            inspect_b2_pip_prechoice(
+                service,
+                owner_character_id=OWNER,
+                request_nonce="zg361.phase2.b2.retry-timeout",
+                application_main_timeout_s=0.1,
+                application_main_poll_interval_s=0.05,
+                clock=clock.monotonic,
+                sleeper=clock.sleep,
+            )
+
+        evidence = caught.exception.evidence
+        self.assertEqual(evidence["result"], "RED")
+        self.assertGreaterEqual(len(evidence["event_context_attempts"]), 2)
+        self.assertTrue(
+            all(
+                row["result"] == "RETRY"
+                for row in evidence["event_context_attempts"]
+            )
+        )
 
     def test_checkpoint_hash_drift_fails_before_second_arm_submission(self) -> None:
         lifecycle, service = self._fresh()
