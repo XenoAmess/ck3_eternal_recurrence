@@ -112,12 +112,15 @@ This paragraph records the original ticket freeze. It is superseded for the
 provider inventory by commit `04c1a00`: the private default-OFF actual-expiry
 query now exists and its Python receipt adapter is documented in
 [g2-postwar-cleanup-expiry-adapter-2026-09-04.md](g2-postwar-cleanup-expiry-adapter-2026-09-04.md).
-The runtime cleanup dispatch is still absent, so no live receipt exists.
+The runtime cleanup dispatch was subsequently integrated by `ff89dcd`; the
+current `549076f` binary/product freeze and executable serial command are in
+[g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md](g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md).
+No live receipt exists yet.
 
 At the original freeze, `native_expiry_reader_available=false`; throughout,
 `live_authorized=false`,
 `termination_action_bound=false`, `actual_expiry_observable=false`, public
 readiness/decision/automatic surrender remain false, and `GEN-034` remains
-unresolved. Only after the existing cleanup reader receives a private runtime
-dispatch may an exclusive CK3 slot execute the single action-bound run and
-pass the same receipt through `--validate-receipt`.
+unresolved. The private dispatch is now present, so the next gate is the one
+exclusive action-bound CK3 run frozen by the current-pin manifest; its receipt
+must still pass the same retention validator.

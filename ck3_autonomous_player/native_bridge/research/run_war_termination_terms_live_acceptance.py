@@ -106,6 +106,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-date-raw", type=int, required=True)
     parser.add_argument("--timeout", type=float, default=900.0)
     parser.add_argument("--readiness-timeout", type=float, default=300.0)
+    parser.add_argument("--expected-production-tree-sha256")
     return parser
 
 
@@ -588,6 +589,7 @@ def _run(
     *,
     sequence_runner: Any = _run_mcp_sequence,
     report_kind: str = "ck3_war_termination_terms_four_domain_live_acceptance",
+    policy_override: dict[str, object] | None = None,
 ) -> tuple[dict[str, object], int]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -688,6 +690,19 @@ def _run(
             "checkpoint_path": str(state_checkpoint),
             "driver_state_path": str(state_driver),
         }
+        expected_product_tree = getattr(
+            args, "expected_production_tree_sha256", None
+        )
+        if expected_product_tree is not None:
+            expected_product_tree = _expected_sha256(
+                expected_product_tree,
+                "expected production-tree SHA-256",
+            )
+            if preparation["production_tree_sha256"] != expected_product_tree:
+                raise AgentError(
+                    "prepared production tree differs from the frozen "
+                    "short-path product"
+                )
         pipe_name = str(anchor["pipe_name"])
         cold_validation = validate_cold_start_checkpoint_for_pipe(spec, pipe_name)
         config = NativeBridgeLaunchConfig(
@@ -818,7 +833,9 @@ def _run(
         "ok": ok,
         "attempt_dir": str(attempt),
         "report_path": str(report_path),
-        "policy": {
+        "policy": copy.deepcopy(policy_override)
+        if policy_override is not None
+        else {
             "mcp_first": True,
             "production_non_debug": True,
             "cold_checkpoint": True,

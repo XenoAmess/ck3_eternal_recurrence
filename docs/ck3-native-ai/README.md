@@ -223,9 +223,10 @@
   [g2-postwar-cleanup-expiry-adapter-2026-09-04.md](g2-postwar-cleanup-expiry-adapter-2026-09-04.md)；cleanup runtime dispatch
   已作为 exact-build、default-OFF private candidate 接入同 connection 的
   terms baseline → surrender ACK → exact-store cleanup 生命周期；candidate
-  DLL 与 source/ABI 已冻结，fixture/静态已 GREEN，尚未执行 CK3 live，故
-  public/action/automatic-surrender/GEN-034 仍全 false
-  仍未接出，public/action readiness 与 `GEN-034` 不变。
+  DLL 与 source/ABI 已冻结，fixture/静态已 GREEN；当前 canonical `549076f`
+  的 fresh binary/product/唯一 short-path command 另见
+  [g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md](g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md)。
+  尚未执行 CK3 live，故 public/action/automatic-surrender/GEN-034 仍全 false。
 - [production-live read-only primitives + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
   冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；exact-build
   paused probes 已把 gold/prestige/prisoner/favor 四个窄域和 truce `evaluated_days` 提升为 read-only

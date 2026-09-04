@@ -111,3 +111,13 @@ Current boundaries remain
 `live_authorized=false`, `public_readiness_promoted=false`,
 `action_readiness_promoted=false`, `decision_ready=false`,
 `automatic_surrender_ready=false`, and `GEN-034=false`.
+
+## Current canonical live package
+
+The `a01f8cb` build above remains the implementation milestone, but it is no
+longer the current-canonical live candidate. Canonical native source later
+advanced through `549076f`; the resulting fresh DLL, exact product projection,
+short-path runner and formal `READY_TO_SERIAL_LIVE` no-launch artifact are
+frozen in
+[g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md](g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md).
+No CK3 run was performed while producing that replacement package.

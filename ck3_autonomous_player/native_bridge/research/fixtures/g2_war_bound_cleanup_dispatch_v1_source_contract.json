@@ -4,6 +4,7 @@
   "game_version": "1.19.0.6",
   "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "candidate_base_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
+  "current_canonical_source_commit": "549076fe4bd99ce401cac27411cebd7f004c5425",
   "default_enabled": false,
   "cmake_options": {
     "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": true,
@@ -14,7 +15,7 @@
   "source_files": [
     {
       "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
-      "sha256": "388CBCAC538E0C8AAE15D181B2B166A8B1F990AE6107DC7FFEFA5079404FAB2F"
+      "sha256": "0F871589014C9FE3F0D93AA8072AD830A2AB10D9BCAD64FE5F9138AD5FA6063E"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_adapter.hpp",
@@ -30,7 +31,7 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp",
-      "sha256": "E3C382FC17B988AC05EEE4392DF8613DCB625C9DC3485DB6A91D12E9216A5EA1"
+      "sha256": "62B157E11777A41C4C7A7272643948187BC2F09194D9649069AAFCB0ED0673B9"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
