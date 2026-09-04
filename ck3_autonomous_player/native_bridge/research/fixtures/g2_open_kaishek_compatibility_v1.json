@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "3c4e6982b5d821f1fcdb9c3ced2a581497c9a6eb"
+    "open_kaishek_commit": "b10b762eefaaf13eb53ded19b88a553d940aed24"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",

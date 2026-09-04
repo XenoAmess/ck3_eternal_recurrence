@@ -1,0 +1,87 @@
+{
+  "schema": "xar.ck3.open_kaishek_b3_explicit_and_frontend_compatibility_audit.v1",
+  "status": "GREEN_STATIC_NO_CODE_CHANGE",
+  "audited_at": "2026-09-04T18:23:00+08:00",
+  "root": {
+    "baseline_commit": "3ebbb6d0fb5bc8067387a239119d3ac6786844c7",
+    "canonical_commit": "971d1f9cdf0220e964e0064879ed301df4b3fb99"
+  },
+  "open_kaishek": {
+    "code_commit": "3c4e6982b5d821f1fcdb9c3ced2a581497c9a6eb",
+    "audit_commit": "b10b762eefaaf13eb53ded19b88a553d940aed24",
+    "origin_main": "b10b762eefaaf13eb53ded19b88a553d940aed24",
+    "default_checkout_head": "b10b762eefaaf13eb53ded19b88a553d940aed24",
+    "clean": true,
+    "code_changed": false,
+    "jar_bytes": 348438,
+    "jar_sha256": "10dfab8aa729d3b696c518bd532fde7535dc1605150045828b650546864bd9cf"
+  },
+  "companion_delta": {
+    "product_corpus_paths_changed": 1,
+    "path": "mod_zhongguo_style/common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt",
+    "baseline_bytes": 16712,
+    "current_bytes": 16786,
+    "byte_delta": 74,
+    "baseline_sha256": "ee8d962f5a9aa95ae68098b96ffe26e1b2da2435821617bd51e75fe0fec377d7",
+    "current_sha256": "bb771a488fecc9fc131a20c562ab621d432414fa864e838c35d7e28520d7e411",
+    "baseline_explicit_and_count": 473,
+    "current_explicit_and_count": 474,
+    "explicit_and_count_delta": 1,
+    "new_parser_construct": false,
+    "new_validator_schema": false,
+    "metadata_contract_changed": false,
+    "frontend_first_enters_product_corpus": false,
+    "path_length_workaround_enters_product_corpus": false,
+    "parser_change_required": false,
+    "validator_change_required": false,
+    "ir_change_required": false,
+    "runtime_change_required": false,
+    "capability_change_required": false
+  },
+  "verification": {
+    "open_maven_reactor_reused_for_unchanged_code": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "baseline_zhongguo_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23949962,
+      "sha256": "b495ff1e75bc622d2fc0b9af818de1c0ff01910ae35a795a4c3bde3262ab0cd7"
+    },
+    "current_zhongguo_corpus": {
+      "files": 533,
+      "parsed": 533,
+      "errors": 0,
+      "bytes": 23950036,
+      "sha256": "07b5f10093fd7c33415515fb7ddafe03b55dc9ba752620a0746b3a182f21db93"
+    },
+    "current_main_product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "root_static_compatibility_verifier": {
+      "status": "GREEN_STATIC",
+      "checks": 59,
+      "all_checks": true
+    }
+  },
+  "execution_boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "parser_vocabulary_changed": false,
+    "validator_profile_changed": false,
+    "ir_changed": false,
+    "runtime_changed": false,
+    "public_capability_changed": false,
+    "readiness_promoted": false
+  }
+}
