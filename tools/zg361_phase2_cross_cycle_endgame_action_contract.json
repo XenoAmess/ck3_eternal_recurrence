@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "kind": "zg361_phase2_cross_cycle_endgame_action_cell",
+  "span_id": "phase2_cross_cycle_endgame",
+  "handler": "capture_cross_cycle_endgame",
+  "producer_key": "cross-cycle-endgame",
+  "readiness": "static-ready-live-pending",
+  "visible_business_path": {
+    "source_event_definition_key": "zg361we.356",
+    "source_option_number": 1,
+    "source_native_option_index": 0,
+    "intermediate_required_route": "zg361we.360 route C",
+    "result_event_definition_key": "zg361we.361",
+    "visible_postcondition": "owner-facing institutional charter event is identity-ready while the same case exposes route-C debt and next-cycle charter/default state"
+  },
+  "action_cell": {
+    "module": "zg361_phase2_cross_cycle_endgame_action_cell",
+    "inspect": "inspect_cross_cycle_endgame_source",
+    "run": "run_cross_cycle_endgame_action_cell",
+    "preflight_module": "zg361_phase2_cross_cycle_endgame_preflight",
+    "preflight": "preflight_cross_cycle_endgame_action_cell",
+    "action_ack_is_business_postcondition": false,
+    "provider_observed_postcondition_required": true
+  },
+  "service_contract": {
+    "owner_event_query": "game.command.query-current-event-window-context-v1",
+    "source_action": "game.command.select-event-option-N",
+    "subject_business_query": "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+    "workforce_subject_acl": "paused_played_character_received_self",
+    "owner_event_surface": "paused_played_owner",
+    "same_player_same_frame_join_supported": false
+  },
+  "provider_postcondition": {
+    "required_facts": [
+      "zg361we.361_visible_and_identity_ready_on_owner",
+      "same_owner_and_subject_on_source_and_result_event_scopes",
+      "same_owner_subject_cycle_case_on_al_case_m360_receipt_debt_and_charter",
+      "m360_receipt_choice_3",
+      "route_c_debt_open_xor_consumed",
+      "route_c_debt_due_cycle_equals_terminal_cycle_plus_1",
+      "charter_status_ready_or_consumed",
+      "charter_evidence_count_3",
+      "charter_adopted_cycle_equals_terminal_cycle",
+      "charter_effective_cycle_equals_terminal_cycle_plus_1",
+      "prepared_charter_id_positive"
+    ],
+    "forbidden_substitutes": [
+      "source_option_ack",
+      "m360_route_ack",
+      "timeline_revision_only",
+      "result_event_visibility_without_workforce_query",
+      "runner_reported_identity_without_provider_fields"
+    ]
+  },
+  "checkpoint_contract": {
+    "source": {
+      "registry": "zg361_phase2_canonical_source_checkpoint_registry",
+      "stage": "real CK3 paused owner-facing zg361we.356 before option selection",
+      "required": [
+        "real_ck3_source_receipt",
+        "checkpoint_bytes_and_sha256",
+        "seed_save_lineage_id",
+        "owner_equals_played_character",
+        "exact_event_definition_and_date"
+      ]
+    },
+    "result": {
+      "stage": "real CK3 paused owner-facing zg361we.361 before proof-session rebind",
+      "required": [
+        "checkpoint_bytes_and_sha256",
+        "save_lineage_id",
+        "exact_owner_subject_and_date",
+        "same_sha256_restored_for_subject_proof",
+        "provider_observed_owner_to_subject_transition",
+        "generic_character_rebind_used_false"
+      ]
+    }
+  },
+  "current_audit": {
+    "formal_runner_integration_modified": false,
+    "existing_generic_event_postcondition": "revision_and_same_player_only_not_business_complete",
+    "existing_endgame_packet_adapter": "assumes event and received-self workforce query share owner player/frame, which conflicts with distinct owner/subject ACL",
+    "replacement_integration_point": "ENDGAME_HANDLER entries in _make_default_phase2_promo_span_driver advance_to_result and postcondition_verifiers",
+    "why_live_pending": [
+      "canonical real zg361we.356 source checkpoint is not yet registered",
+      "bounded zg361we.356 through M360 route C to zg361we.361 executor is not wired",
+      "hash-identical zg361we.361 owner-to-subject proof-session transition is not wired",
+      "no real paused provider artifact has passed this cell"
+    ]
+  },
+  "no_launch_boundary": {
+    "ck3_started": false,
+    "gameplay_action_executed": false,
+    "live_proof_claimed": false,
+    "runner_registry_modified": false
+  }
+}
