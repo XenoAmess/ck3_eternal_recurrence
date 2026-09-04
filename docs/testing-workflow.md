@@ -1002,6 +1002,33 @@ worktree 推导出的游戏目录不存在而 harness RED，CK3 没有启动；r
 effect 文件 / 314 definitions，单片最大 10，`>10=0 / >20=0`；旧 B1 41-effect hotfix 作为 inherited 例外单列，
 不计入新分片门。本轮未出现加载性能 RED，因此没有触发额外 A/B，也不能拿一次 GREEN 反推“拆分必然更快”。
 
+### B2 首用错误、cache 准备与事件身份分账（2026-09-04）
+
+后续 B2 seed r10 提供了一个必须与 loader stall 分开的反例。该轮已经完成 loader readiness、绑定 bridge 并加载 history，随后在
+第一次结果业务链中由 `02_loader_error_scan.json` 捕获 93 条 `parser_or_script` 签名。57 条来自读取首次尚未建立的
+`*_policy_debt_active`，其余来自 result freeze/business-object 路径读取尚不存在的 remand、metric defect、PIP state 与
+`object_active` 等可选变量。故该轮是 **first-use runtime RED**，不是“文件过大导致 loader 停滞”。错误 scan artifact 位于
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-b2-r10-20260904-102620\artifacts-seed-live\02_loader_error_scan.json`，
+SHA-256 为 `0887BD8249AE5A54108EB557B5371160BD33C13DA37EED4264DB5DA7A7C07A3E`。
+
+提交 `05e1410bf21b6efdab1492a5919c76a047f2934f` 在 generator 内加入 first-use `has_variable` 门，并让缺失 active 字段按 inactive
+处理；B2 仍保持 25 个用途 effect 文件 / 152 effects / 每文件不超过 10。修复后的 r8 product 为
+**252 files / 12,104,708 bytes**，tree SHA-256
+`C2E3DEEC48DC31294414FBF140EAF2D0603F3F4B6A5F34AF9C3EC9BBCEBB42CD`。r14 seed 随后完成 GREEN，且项目错误扫描
+`matches=[]`、quiet window `16.247 s`；scan SHA-256
+`EB517B003D216EB17D2C272F4E623E00ACE27CA1D3CE4CA7A2A7598AA5C449F1`。这证明 first-use 修复后的 r8 tree 可完整加载并进入
+seed，不证明 focused B2 四路业务已 GREEN。
+
+同一 source save SHA-256 `BFC73FD9E7E80145CDF39AABC66BC2D731881122ADAB0CC0BA675FA07D1E6733` 在两个新进程中，对同一
+`zg361.4` 分别报告 `calculated_event_id=3030004` 与 `2990004`，而 event key、instance、date、root/superior 与 options 均稳定。
+因此 calculated ID 是进程内派生观测值，禁止冻结为跨进程存档身份；跨进程 gate 应绑定稳定语义字段。
+
+profile/cache 准备也必须与 loader 用时分账。当前复用的 lightweight DX11 cache 位于
+`_runtime/formal-ab-current-buildoff-20260903/profile/shadercache`，为 **4,960 files / 216,650,070 bytes**。cache 复制、哈希与
+isolated userdir 建立发生在 CK3 启动前，只计作 preparation；CK3 loader 时间从进程启动/loader-stage 开始。若 preparation 慢，
+先缩小或复用已冻结 cache，不得误判为 mod loader RED，也不得因此盲拆 effect。完整回执与 focused B2 待填边界见
+[`phase2-promo/b2-first-use-loader-and-seed-evidence-2026-09-04.md`](phase2-promo/b2-first-use-loader-and-seed-evidence-2026-09-04.md)。
+
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑

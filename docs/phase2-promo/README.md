@@ -2,15 +2,16 @@
 
 这里是天朝二期两条正式宣传片路线的权威导演文档入口。用户已明确要求：**两个版本都保留、都制作、都分别交付成片。**二者不存在“主方案/废案”或“长版/短版”的从属关系。
 
-## 当前实机门（2026-09-04 07:46）
+## 当前实机门（2026-09-04 11:14）
 
-canonical Phase2 paused seed 已在 CK3 `1.19.0.6` 的 r9 实机提升为 `ready`：249-file product 完成 loader、暂停地图、
-五个 typed selector、checkpoint 与 cleanup，runner report SHA-256 为
-`32186480AAAEFB2F3F10D8606BD6D44E4FFF6DB8A82A7C34D8121B9594D43BA5`。这解除的是 seed 生成门，不是 8/8 素材门。
+最新 canonical candidate 已在 CK3 `1.19.0.6` 的 r14 实机保持 seed `ready`：252-file / 12,104,708-byte r8 product
+完成 loader、暂停地图、五个 typed selector、checkpoint 与 cleanup；candidate report SHA-256 为
+`60D9E94CE08B6EBCF1C60DCA420D7C1AFF13A8B498E1C61F4AC2A4795F150F19`，checkpoint SHA-256 为
+`B019F9D50958D9566961E4A5EF7A414FF8A5F491F198AD9C0AE993D56532D1C2`。这解除的是修复后 seed 生成门，不是 B2 focused 或 8/8 素材门。
 
-当前 provider 基线仍为 `blocked_provider_matrix_captured`：AI-owned case 可用；Incident X 可用但为 N/A；B2 PIP、
-Incident Y/Z 与 Workforce 尚缺真实业务状态。所以下一轮实机是 product-only loaded-seed managed provider/首个可见 OODA，
-不是重复启动测试。当前真实 footage 仍为 `0/8`，两条 MP4 均未生成。
+当前下一门是 product-only focused B2 same-checkpoint。它的最终结果仍待 runner 回执，不能由 r14 seed GREEN 代替；当前真实 footage
+仍为 `0/8`，两条 MP4 均未生成。B2 首用 RED、修复、跨进程事件身份与 r14 证据见
+[`b2-first-use-loader-and-seed-evidence-2026-09-04.md`](b2-first-use-loader-and-seed-evidence-2026-09-04.md)。
 
 seed-entry 的加载根因也已纠正：仅做用途拆分的 r2/r3 仍 RED；移除
 `zg361_workforce_appointment_fact_seal_and_publish_effect` 的直接自递归后，诊断候选及 production r4/r5 连续 GREEN。
@@ -53,7 +54,7 @@ seed-entry 的加载根因也已纠正：仅做用途拆分的 r2/r3 仍 RED；�
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | Workforce closure 与 r9 canonical paused seed 已 GREEN；249 files / 12,098,441 B，五 typed selectors、checkpoint 与 cleanup 已冻结；provider matrix 尚未全 ready | product-only focused B2/provider：真实前奏到 `zg361b2.40` 后跑 same-checkpoint A/B/C，再闭合 Incident mixed / Workforce 必要业务态 | 不预写全量 ETA；以 focused event/restore/cleanup 阶段为准 |
+| 二期产品代码与发布树 | first-use guards 后的 r8 product 与 r14 seed 已 GREEN；252 files / 12,104,708 B，五 typed selectors、checkpoint、error scan 与 cleanup 已冻结；focused B2 尚未出最终回执 | product-only focused B2：真实前奏到 `zg361b2.40` 后跑 same-checkpoint A/B/C，再闭合 Incident mixed / Workforce 必要业务态 | 不预写全量 ETA；以 focused event/restore/cleanup 阶段为准 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
