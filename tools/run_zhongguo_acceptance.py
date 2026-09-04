@@ -77,6 +77,9 @@ from xar_autoplayer.bridge.zhongguo_ai_owned_case_snapshot_contract import (
 from xar_autoplayer.bridge.zhongguo_ai_owned_case_action import (
     run_zhongguo_ai_owned_case_background_action,
 )
+from xar_autoplayer.bridge.zhongguo_manager_governance_snapshot_contract import (
+    QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY,
+)
 from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_INCIDENT_KIND_V1,
@@ -97,6 +100,10 @@ from zg361_phase2_b2_checkpoint_matrix import (
     B2SameCheckpointMatrixError,
     inspect_b2_pip_prechoice,
     run_b2_same_checkpoint_matrix,
+)
+from zg361_phase2_b3_manager_governance_action_cell import (
+    B3ManagerGovernanceActionCellError,
+    run_b3_manager_governance_gameplay_action_cell,
 )
 from zg361_phase2_loader_stage import (
     LoaderStageError,
@@ -216,6 +223,9 @@ PHASE2_LEGAL_CONSENT_SCREEN_RETRY_INTERVAL_S = 0.25
 LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
 LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
+PHASE2_B3_MANAGER_SELECTOR_KIND = (
+    "zg361-bounded-ai-direct-manager-selection-v1"
+)
 EXPECTED_PLAYER_HISTORY_ID = real_characters.MANAGER_HISTORY_ID
 # The phase-two bootstrap resumes the real historical official selected by the
 # phase-one personal-result flow, not the Song emperor used by the clean promo.
@@ -600,6 +610,9 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "ai_owned_case_snapshot": (
         QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
     ),
+    "manager_governance_snapshot": (
+        QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY
+    ),
     "scoreboard_state_acl": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
     "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
 }
@@ -611,6 +624,9 @@ PHASE2_REQUIRED_QUERY_FLAGS = {
     ),
     "ai_owned_case_snapshot": (
         "zhongguo_ai_owned_case_snapshot_v1_query_supported"
+    ),
+    "manager_governance_snapshot": (
+        "zhongguo_manager_governance_snapshot_v1_query_supported"
     ),
     "scoreboard_state_acl": (
         "zhongguo_scoreboard_state_v1_query_supported"
@@ -669,11 +685,11 @@ PHASE2_UNFROZEN_REQUIREMENTS: dict[str, str] = {}
 # failure; the new runtime is verified by mount/manifest/snapshot after load.
 PHASE2_PENDING_RUNNER_REQUIREMENTS: dict[str, str] = {}
 
-# The registry is deliberately data-only.  A future provider becomes runnable
-# by changing exactly one row to ``wired`` and registering its handler in
-# ``run_phase2_domain_query_stage``; the batch report can therefore distinguish
-# a missing provider cell from the two observation cells that are already
-# implemented.  Read-only observation is never treated as a gameplay action.
+# The registry is deliberately data-only.  Read-only cells marked ``wired``
+# run in ``run_phase2_domain_query_stage``.  Action cells may have a wired
+# handler while remaining ``provider_pending`` on a missing typed selector;
+# the batch report therefore distinguishes runner wiring from true gameplay
+# readiness.  Read-only observation is never treated as a gameplay action.
 PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
     "b2_pip_snapshot_query_matrix": {
         "implementation": "wired",
@@ -715,6 +731,20 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
         "observation_only": True,
         "gameplay_action_complete": True,
     },
+    "manager_governance_gameplay_action_and_postcondition_matrix": {
+        "implementation": "provider_pending",
+        "handler_implementation": "wired",
+        "readiness": "static-ready",
+        "required_capability": (
+            QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY
+        ),
+        "required_query_flag": (
+            "zhongguo_manager_governance_snapshot_v1_query_supported"
+        ),
+        "required_typed_selector": PHASE2_B3_MANAGER_SELECTOR_KIND,
+        "observation_only": False,
+        "gameplay_action_complete": False,
+    },
     "scoreboard_named_widget_and_acl_matrix": {
         "implementation": "provider_pending",
         "required_capability": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
@@ -726,6 +756,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
     },
 }
 PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
+    "manager_governance_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
 )
 
@@ -8112,6 +8143,267 @@ def run_phase2_ai_owned_case_gameplay_action_cell(
             + f"; terminal={evidence.get('terminal_condition')!r}; "
             f"reason={evidence.get('failure_reason')!r}"
         )
+    return evidence
+
+
+def run_phase2_manager_governance_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    typed_selector_provider: (
+        Callable[[GameplayBridgeService], Mapping[str, object]] | None
+    ) = None,
+) -> dict[str, object]:
+    """Run B3 only after a typed AI-manager/subordinate selector is bound.
+
+    The read-only manager provider and joined action/postcondition cell are
+    already production-wired.  The native selector that chooses one bounded
+    AI direct manager and one of that manager's direct subordinates is not.
+    Preserve that boundary as provider-pending evidence; never substitute a
+    timeline ACK, seed guess, or player identity for the missing selector.
+    """
+
+    evidence_path = artifacts / (
+        "07e_phase2_manager_governance_gameplay_action_cell.json"
+    )
+    cell_id = "manager_governance_gameplay_action_and_postcondition_matrix"
+    if typed_selector_provider is None:
+        pending = {
+            "schema_version": 1,
+            "kind": "zg361_b3_manager_governance_runner_handler",
+            "cell_id": cell_id,
+            "result": "RED",
+            "readiness": "static-ready",
+            "implementation": "provider_pending",
+            "provider_status": "provider_pending",
+            "mcp_only": True,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "test_ui_used": False,
+            "gameplay_action_executed": False,
+            "gameplay_action_complete": False,
+            "action_cell_invoked": False,
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "provider_observed_postcondition": None,
+            "required_typed_selector": PHASE2_B3_MANAGER_SELECTOR_KIND,
+            "typed_selector": None,
+            "missing_requirements": [
+                {
+                    "id": "bounded_ai_manager_native_typed_selector",
+                    "status": "provider_pending",
+                    "readiness": "static-ready",
+                    "reason": (
+                        "the native typed selector for one bounded AI direct "
+                        "manager and its direct subordinate is not yet bound "
+                        "to the formal Phase2 runner"
+                    ),
+                }
+            ],
+            "failure_reason": (
+                "provider_pending: bounded AI manager typed selector is not "
+                "bound; no gameplay action was attempted"
+            ),
+        }
+        write_json(evidence_path, pending)
+        return pending
+
+    try:
+        selected = typed_selector_provider(service)
+    except BaseException as error:
+        failure = {
+            "schema_version": 1,
+            "kind": "zg361_b3_manager_governance_runner_handler",
+            "cell_id": cell_id,
+            "result": "RED",
+            "readiness": "static-ready",
+            "implementation": "selector_provider_error",
+            "provider_status": "RED",
+            "mcp_only": True,
+            "gameplay_action_executed": False,
+            "gameplay_action_complete": False,
+            "action_cell_invoked": False,
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "provider_observed_postcondition": None,
+            "required_typed_selector": PHASE2_B3_MANAGER_SELECTOR_KIND,
+            "typed_selector": None,
+            "failure_reason": f"{type(error).__name__}: {error}",
+        }
+        write_json(evidence_path, failure)
+        raise acceptance.RunnerError(
+            "phase-two B3 manager typed selector provider failed: "
+            f"{error}"
+        ) from error
+
+    manager_character_id = (
+        selected.get("manager_character_id")
+        if isinstance(selected, Mapping)
+        else None
+    )
+    subordinate_character_id = (
+        selected.get("subordinate_character_id")
+        if isinstance(selected, Mapping)
+        else None
+    )
+    selector_checks = {
+        "selector_is_object": isinstance(selected, Mapping),
+        "selector_status_available": isinstance(selected, Mapping)
+        and selected.get("status") == "available",
+        "selector_kind_exact": isinstance(selected, Mapping)
+        and selected.get("selector_kind") == PHASE2_B3_MANAGER_SELECTOR_KIND,
+        "selector_provider_observed": isinstance(selected, Mapping)
+        and selected.get("provider_observed") is True,
+        "manager_character_id_positive": not isinstance(
+            manager_character_id, bool
+        )
+        and isinstance(manager_character_id, int)
+        and manager_character_id > 0,
+        "subordinate_character_id_positive": not isinstance(
+            subordinate_character_id, bool
+        )
+        and isinstance(subordinate_character_id, int)
+        and subordinate_character_id > 0,
+        "characters_distinct": isinstance(manager_character_id, int)
+        and not isinstance(manager_character_id, bool)
+        and isinstance(subordinate_character_id, int)
+        and not isinstance(subordinate_character_id, bool)
+        and manager_character_id != subordinate_character_id,
+    }
+    failed_selector_checks = [
+        label for label, passed in selector_checks.items() if passed is not True
+    ]
+    if failed_selector_checks:
+        failure = {
+            "schema_version": 1,
+            "kind": "zg361_b3_manager_governance_runner_handler",
+            "cell_id": cell_id,
+            "result": "RED",
+            "readiness": "static-ready",
+            "implementation": "selector_provider_invalid",
+            "provider_status": "RED",
+            "mcp_only": True,
+            "gameplay_action_executed": False,
+            "gameplay_action_complete": False,
+            "action_cell_invoked": False,
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "provider_observed_postcondition": None,
+            "required_typed_selector": PHASE2_B3_MANAGER_SELECTOR_KIND,
+            "typed_selector": (
+                dict(selected) if isinstance(selected, Mapping) else selected
+            ),
+            "selector_checks": selector_checks,
+            "failed_selector_checks": failed_selector_checks,
+            "failure_reason": (
+                "typed selector returned a partial, unobserved, or invalid "
+                "manager/subordinate binding"
+            ),
+        }
+        write_json(evidence_path, failure)
+        raise acceptance.RunnerError(
+            "phase-two B3 manager typed selector RED: "
+            + ", ".join(failed_selector_checks)
+        )
+
+    manager_id = int(manager_character_id)
+    subordinate_id = int(subordinate_character_id)
+    try:
+        action = run_b3_manager_governance_gameplay_action_cell(
+            service,
+            manager_character_id=manager_id,
+            subordinate_character_id=subordinate_id,
+        )
+    except B3ManagerGovernanceActionCellError as error:
+        failure = {
+            **error.evidence,
+            "kind": "zg361_b3_manager_governance_runner_handler",
+            "cell_id": cell_id,
+            "readiness": "static-ready",
+            "implementation": "wired",
+            "provider_status": "RED",
+            "typed_selector": dict(selected),
+            "provider_observed_postcondition_required": True,
+            "action_ack_is_business_postcondition": False,
+        }
+        write_json(evidence_path, failure)
+        raise acceptance.RunnerError(
+            "phase-two B3 manager-governance gameplay action cell RED: "
+            f"{error.reason_code}"
+        ) from error
+
+    transition = action.get("transition") if isinstance(action, dict) else None
+    checks = action.get("checks") if isinstance(action, dict) else None
+    postcondition = (
+        action.get("postcondition") if isinstance(action, dict) else None
+    )
+    action_checks = {
+        "result_green": isinstance(action, dict)
+        and action.get("result") == "GREEN",
+        "transition_business_complete": isinstance(transition, Mapping)
+        and transition.get("gameplay_action_executed") is True
+        and transition.get("gameplay_action_complete") is True
+        and transition.get("background_business_complete") is True,
+        "ack_not_business_postcondition": isinstance(action, dict)
+        and action.get("action_ack_is_business_postcondition") is False,
+        "provider_postcondition_present": isinstance(postcondition, Mapping),
+        "transition_ack_not_business_postcondition": isinstance(
+            transition, Mapping
+        )
+        and transition.get("action_ack_is_business_postcondition") is False,
+        "provider_checks_green": isinstance(checks, Mapping)
+        and bool(checks)
+        and all(value is True for value in checks.values()),
+    }
+    failed_action_checks = [
+        label for label, passed in action_checks.items() if passed is not True
+    ]
+    if failed_action_checks:
+        failure = {
+            "schema_version": 1,
+            "kind": "zg361_b3_manager_governance_runner_handler",
+            "cell_id": cell_id,
+            "result": "RED",
+            "readiness": "static-ready",
+            "implementation": "wired",
+            "provider_status": "RED",
+            "mcp_only": True,
+            "gameplay_action_executed": isinstance(transition, Mapping)
+            and transition.get("gameplay_action_executed") is True,
+            "gameplay_action_complete": False,
+            "action_cell_invoked": True,
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "provider_observed_postcondition": postcondition,
+            "typed_selector": dict(selected),
+            "action": action,
+            "checks": action_checks,
+            "failed_checks": failed_action_checks,
+            "failure_reason": (
+                "joined B3 action did not provide its provider-observed "
+                "business postcondition"
+            ),
+        }
+        write_json(evidence_path, failure)
+        raise acceptance.RunnerError(
+            "phase-two B3 manager-governance action handler RED: "
+            + ", ".join(failed_action_checks)
+        )
+
+    evidence = {
+        **action,
+        "cell_id": cell_id,
+        "implementation": "wired",
+        "provider_status": "available",
+        "gameplay_action_executed": True,
+        "gameplay_action_complete": True,
+        "action_cell_invoked": True,
+        "provider_observed_postcondition_required": True,
+        "provider_observed_postcondition": postcondition,
+        "typed_selector": dict(selected),
+        "runner_checks": action_checks,
+    }
+    write_json(evidence_path, evidence)
     return evidence
 
 
@@ -15596,6 +15888,9 @@ def run_phase2_live_scenario(
     seed_contract: dict[str, object],
     userdir: Path | None = None,
     bootstrap: dict[str, object] | None = None,
+    b3_manager_typed_selector_provider: (
+        Callable[[GameplayBridgeService], Mapping[str, object]] | None
+    ) = None,
 ) -> dict[str, object]:
     """Run only MCP phase-two primitives; never fall back to phase-one UI."""
 
@@ -15621,6 +15916,7 @@ def run_phase2_live_scenario(
         "incident_gameplay_action_cell": None,
         "b2_pip_gameplay_action_cell": None,
         "ai_owned_case_gameplay_action_cell": None,
+        "manager_governance_gameplay_action_cell": None,
         "workforce_collective_gameplay_action_cell": None,
         "scoreboard_gameplay_action_cell": None,
         "post_incident_paused_binding": None,
@@ -15835,6 +16131,24 @@ def run_phase2_live_scenario(
         )
         write_json(evidence_path, evidence)
 
+        manager_action = run_phase2_manager_governance_gameplay_action_cell(
+            service,
+            artifacts,
+            typed_selector_provider=b3_manager_typed_selector_provider,
+        )
+        evidence["manager_governance_gameplay_action_cell"] = manager_action
+        if manager_action.get("result") == "GREEN":
+            evidence["completed_gameplay_action_cells"].append(
+                "manager_governance_gameplay_action_and_postcondition_matrix"
+            )
+            evidence["missing_gameplay_action_cells"] = [
+                value
+                for value in evidence["missing_gameplay_action_cells"]
+                if value
+                != "manager_governance_gameplay_action_and_postcondition_matrix"
+            ]
+        write_json(evidence_path, evidence)
+
         scoreboard_action = run_phase2_scoreboard_gameplay_action_cell(
             service,
             artifacts,
@@ -15956,8 +16270,9 @@ def run_phase2_live_scenario(
         raise acceptance.RunnerError(
             "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
             "actions and B2/Incident/Workforce/AI-owned observations passed, "
-            "but the scoreboard named-widget action/postcondition cell "
-            "remains fail-closed"
+            "but B3 manager governance remains provider-pending until its "
+            "typed AI manager selector is bound, and the scoreboard "
+            "named-widget action/postcondition cell remains fail-closed"
         )
     except BaseException as error:
         incident_path = artifacts / (
@@ -16028,6 +16343,43 @@ def run_phase2_live_scenario(
                         completed.append(
                             "ai_owned_case_gameplay_action_and_postcondition_matrix"
                         )
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
+        manager_path = artifacts / (
+            "07e_phase2_manager_governance_gameplay_action_cell.json"
+        )
+        if manager_path.is_file():
+            try:
+                manager_value = json.loads(
+                    manager_path.read_text(encoding="utf-8")
+                )
+                if isinstance(manager_value, dict):
+                    evidence["manager_governance_gameplay_action_cell"] = (
+                        manager_value
+                    )
+                    evidence["gameplay_acceptance_executed"] = bool(
+                        evidence["gameplay_acceptance_executed"]
+                        or manager_value.get("gameplay_action_executed") is True
+                    )
+                    completed = evidence["completed_gameplay_action_cells"]
+                    if (
+                        manager_value.get("result") == "GREEN"
+                        and manager_value.get("gameplay_action_complete") is True
+                        and isinstance(completed, list)
+                        and (
+                            "manager_governance_gameplay_action_and_postcondition_matrix"
+                            not in completed
+                        )
+                    ):
+                        completed.append(
+                            "manager_governance_gameplay_action_and_postcondition_matrix"
+                        )
+                        evidence["missing_gameplay_action_cells"] = [
+                            value
+                            for value in evidence["missing_gameplay_action_cells"]
+                            if value
+                            != "manager_governance_gameplay_action_and_postcondition_matrix"
+                        ]
             except (OSError, ValueError, json.JSONDecodeError):
                 pass
         workforce_path = artifacts / (

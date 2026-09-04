@@ -2438,6 +2438,18 @@ def main() -> int:
             capture.PHASE2_REQUIRED_QUERY_FLAGS["ai_owned_case_snapshot"]
             == "zhongguo_ai_owned_case_snapshot_v1_query_supported"
         )
+        assert (
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+                "manager_governance_snapshot"
+            ]
+            == "game.command.query-zhongguo-manager-governance-snapshot-v1"
+        )
+        assert (
+            capture.PHASE2_REQUIRED_QUERY_FLAGS[
+                "manager_governance_snapshot"
+            ]
+            == "zhongguo_manager_governance_snapshot_v1_query_supported"
+        )
         assert "workforce_collective_snapshot_and_three_cycle" not in (
             capture.PHASE2_UNFROZEN_REQUIREMENTS
         )
@@ -3583,14 +3595,138 @@ def main() -> int:
             "incident_xyz_snapshot_query_matrix",
             "workforce_collective_and_three_cycle_matrix",
             "ai_owned_case_matrix",
+            "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_and_acl_matrix",
         ]
         assert capture._phase2_unimplemented_domain_cells() == [
+            "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_and_acl_matrix",
         ]
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
+            "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
         )
+        manager_registration = capture.PHASE2_DOMAIN_CELL_REGISTRY[
+            "manager_governance_gameplay_action_and_postcondition_matrix"
+        ]
+        assert manager_registration["implementation"] == "provider_pending"
+        assert manager_registration["handler_implementation"] == "wired"
+        assert manager_registration["readiness"] == "static-ready"
+        assert manager_registration["observation_only"] is False
+        assert manager_registration["gameplay_action_complete"] is False
+        assert manager_registration["required_typed_selector"] == (
+            capture.PHASE2_B3_MANAGER_SELECTOR_KIND
+        )
+        manager_handler_artifacts = temporary_root / "b3-manager-handler"
+        manager_handler_artifacts.mkdir()
+        manager_handler_service = object()
+        with mock.patch.object(
+            capture, "run_b3_manager_governance_gameplay_action_cell"
+        ) as unbound_action_cell:
+            manager_pending = (
+                capture.run_phase2_manager_governance_gameplay_action_cell(
+                    manager_handler_service,
+                    manager_handler_artifacts,
+                )
+            )
+        unbound_action_cell.assert_not_called()
+        assert manager_pending["result"] == "RED"
+        assert manager_pending["readiness"] == "static-ready"
+        assert manager_pending["implementation"] == "provider_pending"
+        assert manager_pending["provider_status"] == "provider_pending"
+        assert manager_pending["gameplay_action_executed"] is False
+        assert manager_pending["gameplay_action_complete"] is False
+        assert manager_pending["action_cell_invoked"] is False
+        assert manager_pending["action_ack_is_business_postcondition"] is False
+        assert manager_pending["provider_observed_postcondition"] is None
+        assert manager_pending["missing_requirements"] == [
+            {
+                "id": "bounded_ai_manager_native_typed_selector",
+                "status": "provider_pending",
+                "readiness": "static-ready",
+                "reason": (
+                    "the native typed selector for one bounded AI direct "
+                    "manager and its direct subordinate is not yet bound "
+                    "to the formal Phase2 runner"
+                ),
+            }
+        ]
+        assert json.loads(
+            (
+                manager_handler_artifacts
+                / "07e_phase2_manager_governance_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        ) == manager_pending
+
+        typed_manager_selection = {
+            "status": "available",
+            "selector_kind": capture.PHASE2_B3_MANAGER_SELECTOR_KIND,
+            "provider_observed": True,
+            "manager_character_id": 8200,
+            "subordinate_character_id": 8300,
+        }
+        manager_cell_green = {
+            "schema_version": 1,
+            "kind": "zg361_b3_manager_governance_gameplay_action_cell",
+            "result": "GREEN",
+            "evidence_class": (
+                "provider-observed-live-when-run-against-ck3"
+            ),
+            "fixture_evidence_is_live": False,
+            "mcp_only": True,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "test_ui_used": False,
+            "action_ack_is_business_postcondition": False,
+            "manager_character_id": 8200,
+            "subordinate_character_id": 8300,
+            "superior_character_id": 8100,
+            "source_b1_cycle": 7,
+            "transition": {
+                "result": "GREEN",
+                "gameplay_action_executed": True,
+                "gameplay_action_complete": True,
+                "background_business_complete": True,
+                "action_ack_is_business_postcondition": False,
+            },
+            "postcondition": {
+                "status": "available",
+                "readiness": {"ready": True},
+            },
+            "checks": {
+                "provider_status_available": True,
+                "provider_readiness_green": True,
+            },
+        }
+        with mock.patch.object(
+            capture,
+            "run_b3_manager_governance_gameplay_action_cell",
+            return_value=copy.deepcopy(manager_cell_green),
+        ) as bound_action_cell:
+            manager_green = (
+                capture.run_phase2_manager_governance_gameplay_action_cell(
+                    manager_handler_service,
+                    manager_handler_artifacts,
+                    typed_selector_provider=lambda service: (
+                        copy.deepcopy(typed_manager_selection)
+                        if service is manager_handler_service
+                        else None
+                    ),
+                )
+            )
+        bound_action_cell.assert_called_once_with(
+            manager_handler_service,
+            manager_character_id=8200,
+            subordinate_character_id=8300,
+        )
+        assert manager_green["result"] == "GREEN"
+        assert manager_green["gameplay_action_complete"] is True
+        assert manager_green["action_ack_is_business_postcondition"] is False
+        assert manager_green["provider_observed_postcondition"] == (
+            manager_cell_green["postcondition"]
+        )
+        assert manager_green["typed_selector"] == typed_manager_selection
+        assert manager_green["fixture_evidence_is_live"] is False
         scoreboard_runner_red = {
             "schema_version": 2,
             "cell_id": (
@@ -4564,6 +4700,17 @@ def main() -> int:
         assert wired_scenario["ai_owned_case_gameplay_action_cell"] == (
             ai_owned_action_evidence
         )
+        manager_scenario_gate = wired_scenario[
+            "manager_governance_gameplay_action_cell"
+        ]
+        assert manager_scenario_gate["result"] == "RED"
+        assert manager_scenario_gate["readiness"] == "static-ready"
+        assert manager_scenario_gate["implementation"] == "provider_pending"
+        assert manager_scenario_gate["provider_status"] == "provider_pending"
+        assert manager_scenario_gate["gameplay_action_executed"] is False
+        assert manager_scenario_gate[
+            "action_ack_is_business_postcondition"
+        ] is False
         assert wired_scenario["scoreboard_gameplay_action_cell"] == (
             scoreboard_runner_red
         )
@@ -4591,6 +4738,7 @@ def main() -> int:
             "ai_owned_case_matrix",
         ]
         assert wired_scenario["unimplemented_domain_cells"] == [
+            "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_and_acl_matrix",
         ]
         assert wired_scenario["missing_gameplay_action_cells"] == list(
@@ -4629,6 +4777,13 @@ def main() -> int:
             ).read_text(encoding="utf-8")
         )
         assert preserved_ai_owned_action == ai_owned_action_evidence
+        preserved_manager_gate = json.loads(
+            (
+                wired_scenario_artifacts
+                / "07e_phase2_manager_governance_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert preserved_manager_gate == manager_scenario_gate
         preserved_workforce_gate = json.loads(
             (
                 wired_scenario_artifacts

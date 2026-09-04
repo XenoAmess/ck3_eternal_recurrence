@@ -569,6 +569,14 @@ class FocusedB2MainTests(unittest.TestCase):
 
     def test_focused_capability_gate_requires_only_used_b2_surface(self) -> None:
         pid = 8123
+        self.assertNotIn(
+            "manager_governance_snapshot",
+            capture.PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS,
+        )
+        self.assertNotIn(
+            "manager_governance_snapshot",
+            capture.PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS,
+        )
         required_bridge = {
             capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
             for label in capture.PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS

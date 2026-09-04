@@ -296,9 +296,21 @@ py tools/test_zg361_manager_governance_model.py
 py -O tools/test_zg361_manager_governance_model.py
 py tools/test_zg361_manager_governance_runtime.py
 py -O tools/test_zg361_manager_governance_runtime.py
+py ../tools/test_zg361_phase2_b3_manager_governance_action_cell.py
+py -O ../tools/test_zg361_phase2_b3_manager_governance_action_cell.py
+py ../tools/test_run_zhongguo_promo_capture.py
+py -O ../tools/test_run_zhongguo_promo_capture.py
 ```
 
 L0 批量覆盖 15 项的 A/B/C、每项一个原子 negative、exact duplicate、归一化 route 冲突、输入 fingerprint 冲突、successor/stale、owner drift、route-C 债创建/到期/一次消费，以及 Q 八项三路线只读投影；同时锁住 F 与 AK 的上游 C / 下游 A-B 混合组合，不允许旧值穿透。京察回归另断言 `zg361.40.b -> zg361_mg_refuse_jingcha_exact_effect` 的正式直连、清理前冻结四元业务身份、直属上司 -25 与合格考核上司下轮 -50。CK3 静态层另锁住 351 的两个
 `ordered_vassal position = 0/1` 和显式 manager scope，防止再次把第 0 位经理漏掉或在 vassal scope 误读 `root.var`。这些仍只是 L0，不替代下一段的 MCP-first 实机矩阵。
+
+正式 `run_zhongguo_acceptance.py` 已注册
+`manager_governance_gameplay_action_and_postcondition_matrix` 并接入 B3 action-cell handler；manager snapshot capability/query flag
+也属于 full Phase2 capability profile。当前 native typed selector 尚未绑定，registry 与 handler 因而固定输出
+`provider_pending / static-ready`：`gameplay_action_executed=false`、`action_cell_invoked=false`、
+`action_ack_is_business_postcondition=false`，且没有 provider postcondition 时绝不进入 GREEN。focused B2 capability profile
+仍只要求原来的 B2 子集，不会被 B3 缺口阻断。未来 selector 必须提供 provider-observed 的“AI 直属经理 + 该经理直属下属”
+身份，随后 handler 才调用 action cell；action cell 又必须观察 B1 新 receipt 与 B3 F035/F032 joined postcondition，ACK 不能替代查询结果。
 
 下一步通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、F032 下一轮 component-8 一次结算、F035 下一轮真实 bottom slots、346/347/354 pending→settled/discarded、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。没有这批 paused snapshot 与日志之前，状态保持 `static-ready`。
