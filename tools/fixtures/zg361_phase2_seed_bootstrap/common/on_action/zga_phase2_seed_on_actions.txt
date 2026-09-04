@@ -14,9 +14,9 @@ zga_phase2_seed_on_game_start = {
 				is_alive = yes
 				is_landed = yes
 				zg361_is_reviewable_vassal_trigger = yes
-				NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }
+				NOT = { has_character_flag = zga_phase2_b2_seed_bootstrap_started }
 			}
-			add_character_flag = zga_phase2_seed_bootstrap_started
+			add_character_flag = zga_phase2_b2_seed_bootstrap_started
 			trigger_event = zga_phase2_seed.100
 		}
 	}

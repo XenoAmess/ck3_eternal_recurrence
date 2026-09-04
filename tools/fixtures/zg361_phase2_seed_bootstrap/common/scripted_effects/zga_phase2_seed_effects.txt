@@ -9,9 +9,9 @@ zga_phase2_seed_maybe_begin_effect = {
 			is_alive = yes
 			is_landed = yes
 			zg361_is_reviewable_vassal_trigger = yes
-			NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }
+			NOT = { has_character_flag = zga_phase2_b2_seed_bootstrap_started }
 		}
-		add_character_flag = zga_phase2_seed_bootstrap_started
+		add_character_flag = zga_phase2_b2_seed_bootstrap_started
 		debug_log = "ZGAP2SEED: load-safe bootstrap activation"
 		trigger_event = zga_phase2_seed.100
 	}

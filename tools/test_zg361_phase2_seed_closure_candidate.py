@@ -39,9 +39,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertTrue(Path(closure.__file__).read_bytes().startswith(closure.BOM))
         self.assertTrue(Path(__file__).read_bytes().startswith(closure.BOM))
         fixture = closure.validate_fixture(self.contract)
-        self.assertEqual(4503, fixture["bytes"])
+        self.assertEqual(6878, fixture["bytes"])
         self.assertEqual(
-            "b35cf0c0e32932ea136da71f8d91bef4dbdcddf681f230ac6822cee0c30fa853",
+            "a0d31bf3cee077e431fe4ac05d3351643d8a3395bad42e2881a58f24b06d6492",
             fixture["sha256"],
         )
         self.assertEqual(
@@ -50,14 +50,13 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
                 "zg361_ip_open_x_case_effect",
                 "zg361_we_open_portfolio_effect",
                 "zg361_b2_on_result_frozen_effect",
-                "zg361_b2_on_notice_delivered_effect",
             ],
             fixture["ordered_root_effects"],
         )
         candidate = self.contract["candidate"]
-        self.assertEqual(249, candidate["expected_file_count"])
-        self.assertEqual(115, candidate["expected_overlay_file_count"])
-        self.assertEqual(72, candidate["expected_effect_files"])
+        self.assertEqual(252, candidate["expected_file_count"])
+        self.assertEqual(119, candidate["expected_overlay_file_count"])
+        self.assertEqual(76, candidate["expected_effect_files"])
         self.assertEqual(1, candidate["expected_inherited_hotfix_files"])
         self.assertEqual(35, candidate["expected_event_files"])
         self.assertEqual(2, candidate["expected_court_position_files"])
@@ -80,8 +79,22 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertTrue(inherited_exceptions[0]["reason"])
         self.assertTrue(inherited_exceptions[0]["live_evidence"])
         self.assertEqual(64, len(inherited_exceptions[0]["live_evidence_sha256"]))
-        self.assertEqual(12_098_441, candidate["expected_bytes"])
-        self.assertEqual(3_195_132, self.contract["overlay"]["bytes"])
+        self.assertEqual(12_099_447, candidate["expected_bytes"])
+        self.assertEqual(3_246_357, self.contract["overlay"]["bytes"])
+
+    def test_phase_core_is_pinned_and_purpose_split(self) -> None:
+        rows, check = closure.phase_core_overlay_rows(self.contract)
+        self.assertEqual("193887eb0e1673d85215b68d87d07d4ab1136d4e", check["source_commit"])
+        self.assertEqual("1bacce6d27ea242e19bbacb8866ddf7d280c6933", check["source_blob"])
+        self.assertEqual(
+            "8d424d125fc04e37cccc4c1828bc29080b5ed5e8ee78b412055d5ccbacc3a914",
+            check["source_sha256"],
+        )
+        self.assertEqual(4, check["shards"])
+        self.assertEqual(26, check["definitions"])
+        self.assertEqual(9, check["max_definitions_per_shard"])
+        self.assertEqual([3, 6, 8, 9], sorted(row["definitions"] for row in rows))
+        self.assertTrue(all(row["definitions"] <= 10 for row in rows))
 
     def test_fixture_root_order_drift_is_rejected(self) -> None:
         altered = copy.deepcopy(self.contract)
@@ -176,16 +189,16 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual([], selection["manager_triggers"])
         self.assertEqual([], selection["workforce_m360_effects"])
         self.assertEqual([], selection["workforce_m360_events"])
-        self.assertEqual(115, len(rows))
+        self.assertEqual(119, len(rows))
         by_kind = {
             kind: [row for row in rows if row["kind"] == kind]
             for kind in ("effect", "event", "court_position", "localization")
         }
-        self.assertEqual(73, len(by_kind["effect"]))
+        self.assertEqual(77, len(by_kind["effect"]))
         self.assertEqual(35, len(by_kind["event"]))
         self.assertEqual(2, len(by_kind["court_position"]))
         self.assertEqual(5, len(by_kind["localization"]))
-        self.assertEqual(355, sum(row["definitions"] for row in by_kind["effect"]))
+        self.assertEqual(381, sum(row["definitions"] for row in by_kind["effect"]))
         self.assertEqual(142, sum(row["definitions"] for row in by_kind["event"]))
         self.assertEqual(28, sum(row["definitions"] for row in by_kind["localization"]))
         purpose_effects = [
@@ -193,8 +206,8 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             for row in by_kind["effect"]
             if row.get("inherited_baseline_hotfix") is not True
         ]
-        self.assertEqual(72, len(purpose_effects))
-        self.assertEqual(314, sum(row["definitions"] for row in purpose_effects))
+        self.assertEqual(76, len(purpose_effects))
+        self.assertEqual(340, sum(row["definitions"] for row in purpose_effects))
         self.assertEqual(10, max(row["definitions"] for row in purpose_effects))
         by_path = {row["path"]: row for row in rows}
         inherited_hotfix = by_path[
@@ -446,9 +459,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             )
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
-            self.assertEqual(249, result["candidate"]["expected_file_count"])
-            self.assertEqual(12_098_441, result["candidate"]["expected_bytes"])
-            self.assertEqual(115, result["overlay"]["file_count"])
+            self.assertEqual(252, result["candidate"]["expected_file_count"])
+            self.assertEqual(12_099_447, result["candidate"]["expected_bytes"])
+            self.assertEqual(119, result["overlay"]["file_count"])
             selection = result["checks"]["selection"]
             self.assertEqual(397, selection["full"]["effects"])
             self.assertEqual(164, selection["full"]["events"])
@@ -456,8 +469,8 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             self.assertEqual(142, selection["delta"]["events"])
             self.assertEqual(2, selection["delta"]["court_positions"])
             roots = result["checks"]["five_root_closure"]
-            self.assertEqual(2042, roots["effects"])
-            self.assertEqual(580, roots["events"])
+            self.assertEqual(2112, roots["effects"])
+            self.assertEqual(589, roots["events"])
             self.assertEqual(6, roots["triggers"])
             self.assertEqual(2, roots["court_positions"])
             self.assertEqual(9, len(roots["all_reachable_triggers"]))

@@ -9,6 +9,7 @@ from xar_autoplayer.bridge.event_window_context_contract import (
 from xar_autoplayer.bridge.zhongguo_incident_action_cell import (
     INCIDENT_ACTION_CELL_ID,
     INCIDENT_PROFILES,
+    SELECT_EVENT_OPTION_CAPABILITY,
     IncidentActionCellError,
     run_incident_xyz_gameplay_action_cell,
 )
@@ -259,12 +260,12 @@ class FakeIncidentService:
         bridge = [
             QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
             QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+            SELECT_EVENT_OPTION_CAPABILITY,
         ]
         steps = [
             "pause-map",
             "resume-map",
             "set-speed-1",
-            "select-event-option-1",
         ]
         if self.remove_capability in bridge:
             bridge.remove(self.remove_capability)
@@ -509,6 +510,15 @@ class IncidentActionCellTests(unittest.TestCase):
         self.assertIn("unexpected event definition", caught.exception.reason)
         self.assertEqual(service.selections, [])
         self.assertEqual(caught.exception.evidence["result"], "RED")
+
+    def test_valid_route_event_identity_is_preserved_before_entry_order_red(self) -> None:
+        service = FakeIncidentService(initial_event="zg361.4")
+        with self.assertRaises(IncidentActionCellError) as caught:
+            run_cell(service)
+        self.assertIn("did not start", caught.exception.reason)
+        self.assertEqual(service.selections, [])
+        observations = caught.exception.evidence["event_observations"]
+        self.assertEqual(observations[-1]["event_definition_key"], "zg361.4")
 
     def test_wrong_notice_owner_fails_before_selection(self) -> None:
         service = FakeIncidentService()

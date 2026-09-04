@@ -56,8 +56,9 @@ zga_phase2_seed.101 = {
 }
 
 # Root returns to the real played subject. If the preserved save contains a
-# genuine delivered 3.25 result, adapt that existing product fact into B2 and
-# let the shipped PIP gate decide. Missing upstream facts remain missing.
+# genuine 3.25 result, adapt its frozen identity into B2 before a pending
+# refusal carrier settles it. An already delivered result also publishes the
+# delivery edge. Missing upstream facts remain missing.
 zga_phase2_seed.102 = {
 	type = character_event
 	hidden = yes
@@ -87,9 +88,12 @@ zga_phase2_seed.102 = {
 				has_variable = zg361_result_evidence_jingcha
 				has_variable = zg361_result_evidence_organization
 				var:zg361_result_case_owner = liege
-				var:zg361_result_case_state = 3
+				OR = {
+					var:zg361_result_case_state = 1
+					var:zg361_result_case_state = 2
+					var:zg361_result_case_state = 3
+				}
 				var:zg361_result_grade = 1
-				var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
 			}
 			if = {
 				limit = {
@@ -111,9 +115,79 @@ zga_phase2_seed.102 = {
 				}
 				zg361_b2_on_result_frozen_effect = yes
 			}
-			zg361_b2_on_notice_delivered_effect = yes
+			if = {
+				limit = {
+					var:zg361_result_case_state = 3
+					var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+				}
+				trigger_event = zga_phase2_seed.103
+			}
+			else_if = {
+				limit = { var:zg361_result_case_state = 2 }
+				debug_log = "ZGAP2SEED: waiting for witnessed delivery before B2 checkpoint"
+				trigger_event = { id = zga_phase2_seed.103 days = 1 }
+			}
+			else = {
+				debug_log = "ZGAP2SEED: RED 3.25 result is prepared but has no autonomous delivery carrier"
+			}
 		}
-		trigger_event = zga_phase2_seed.1
+		else = {
+			debug_log = "ZGAP2SEED: RED reusable 3.25 result identity unavailable"
+		}
+	}
+}
+
+# Poll only the real witnessed-delivery carrier already present in the source
+# save. The product's phase-specific core publishes the B2 delivery edge; the
+# fixture merely waits until that product state is observable.
+zga_phase2_seed.103 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				this = character:han_6875
+				is_ai = no
+				exists = liege
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_case_state
+				has_variable = zg361_result_settlement_posted_serial
+				has_variable = zg361_result_grade
+				var:zg361_result_case_owner = liege
+				var:zg361_result_case_state = 3
+				var:zg361_result_grade = 1
+				var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+				has_variable = zg361_b2_case_owner
+				has_variable = zg361_b2_case_subject
+				has_variable = zg361_b2_case_cycle
+				has_variable = zg361_b2_case_serial
+				var:zg361_b2_case_owner = var:zg361_result_case_owner
+				var:zg361_b2_case_subject = this
+				var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+				var:zg361_b2_case_serial = var:zg361_result_case_serial
+				has_variable = zg361_b2_notice_state
+				var:zg361_b2_notice_state = 3
+			}
+			debug_log = "ZGAP2SEED: product-published B2 delivery observed"
+			trigger_event = zga_phase2_seed.1
+		}
+		else_if = {
+			limit = {
+				this = character:han_6875
+				is_ai = no
+				has_variable = zg361_result_case_state
+				var:zg361_result_case_state = 2
+				has_variable = zg361_b2_case_subject
+				var:zg361_b2_case_subject = this
+			}
+			trigger_event = { id = zga_phase2_seed.103 days = 1 }
+		}
+		else = {
+			debug_log = "ZGAP2SEED: RED witnessed delivery/B2 identity diverged"
+		}
 	}
 }
 

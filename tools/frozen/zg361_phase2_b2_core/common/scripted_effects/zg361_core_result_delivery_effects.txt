@@ -1,0 +1,435 @@
+﻿# GENERATED PHASE-SPECIFIC PROJECTION SOURCE - DO NOT EDIT
+# Derived by purpose from CK3 script blob 1bacce6d27ea242e19bbacb8866ddf7d280c6933
+# Source commit: 193887eb0e1673d85215b68d87d07d4ab1136d4e
+
+zg361_freeze_result_case_effect = {
+	if = {
+		limit = {
+			root = { zg361_is_celestial_liege_trigger = yes }
+			zg361_is_current_liege_review_record_trigger = yes
+			has_variable = zg361_pending_grade
+		}
+		root = {
+			if = {
+				limit = { NOT = { has_variable = zg361_result_case_serial_cursor } }
+				set_variable = { name = zg361_result_case_serial_cursor value = 0 }
+			}
+			if = {
+				limit = { var:zg361_result_case_serial_cursor >= 999999 }
+				set_variable = { name = zg361_result_case_serial_cursor value = 0 }
+			}
+			change_variable = { name = zg361_result_case_serial_cursor add = 1 }
+		}
+
+		set_variable = { name = zg361_result_case_owner value = root }
+		set_variable = { name = zg361_result_cycle_serial value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_result_case_serial value = root.var:zg361_result_case_serial_cursor }
+		set_variable = { name = zg361_result_grade value = var:zg361_pending_grade }
+		set_variable = { name = zg361_result_absolute_grade value = var:zg361_absolute_grade }
+		set_variable = { name = zg361_result_kpi_frozen value = var:zg361_kpi }
+		set_variable = { name = zg361_result_rank_frozen value = var:zg361_rank }
+		set_variable = { name = zg361_result_cohort_n_frozen value = root.var:zg361_cohort_n }
+		set_variable = { name = zg361_result_values_frozen value = var:zg361_values }
+		set_variable = { name = zg361_result_evidence_governance value = var:zg361_evidence_governance }
+		set_variable = { name = zg361_result_evidence_capability value = var:zg361_evidence_capability }
+		set_variable = { name = zg361_result_evidence_growth value = var:zg361_evidence_growth }
+		set_variable = { name = zg361_result_evidence_superior value = var:zg361_evidence_superior }
+		set_variable = { name = zg361_result_evidence_values value = var:zg361_evidence_values }
+		set_variable = { name = zg361_result_evidence_collaboration value = var:zg361_evidence_collaboration }
+		set_variable = { name = zg361_result_evidence_jingcha value = var:zg361_evidence_jingcha }
+		set_variable = { name = zg361_result_evidence_organization value = var:zg361_evidence_organization }
+
+		# reason: 0=事实与终档一致；1–4=四类校准交换；5=强制分布下调；
+		# 6=新人保护抬升；7=横向配额抬升；8=小队列中性化。事实档永不被 reason 反写。
+		set_variable = { name = zg361_result_grade_reason value = 0 }
+		if = {
+			limit = { has_variable = zg361_calibration_reason }
+			set_variable = { name = zg361_result_grade_reason value = var:zg361_calibration_reason }
+		}
+		else_if = {
+			limit = { has_variable = zg361_grade_reason_override }
+			set_variable = { name = zg361_result_grade_reason value = var:zg361_grade_reason_override }
+		}
+		else_if = {
+			limit = {
+				var:zg361_pending_grade < var:zg361_absolute_grade
+			}
+			set_variable = { name = zg361_result_grade_reason value = 5 }
+		}
+		else_if = {
+			limit = {
+				has_character_flag = zg361_newcomer_this_cycle
+				var:zg361_pending_grade > var:zg361_absolute_grade
+			}
+			set_variable = { name = zg361_result_grade_reason value = 6 }
+		}
+		else_if = {
+			limit = { var:zg361_pending_grade > var:zg361_absolute_grade }
+			set_variable = { name = zg361_result_grade_reason value = 7 }
+		}
+		remove_variable = zg361_grade_reason_override
+
+		# 新案卷先清空旧收据/送达状态。3.75/3.5 继续沿用 0.3 的自动公示结算；
+		# 3.25 才进入本纵切的“准备送达 → 签收/见证 → 一次清算”。
+		set_variable = { name = zg361_result_treasury_paid value = 0 }
+		set_variable = { name = zg361_result_gold_paid value = 0 }
+		set_variable = { name = zg361_result_merit_paid value = 0 }
+		set_variable = { name = zg361_result_salary_cut_active value = 0 }
+		set_variable = { name = zg361_result_appeal_open value = 0 }
+		set_variable = { name = zg361_result_delivery_method value = 0 }
+		# 0 is an explicit "not posted" sentinel. Event-option tooltip
+		# evaluation speculatively walks the delivery/refund effects and does not
+		# short-circuit a has_variable guard before comparing the serial. Keeping
+		# both receipts initialized avoids unset-scope errors without posting or
+		# weakening either idempotence gate; real case serials are always 1..999999.
+		set_variable = { name = zg361_result_settlement_posted_serial value = 0 }
+		set_variable = { name = zg361_result_refund_posted_serial value = 0 }
+		set_variable = { name = zg361_result_treasury_refunded value = 0 }
+		set_variable = { name = zg361_result_gold_refunded value = 0 }
+		set_variable = { name = zg361_result_merit_refunded value = 0 }
+		set_variable = { name = zg361_result_delivered_year value = 0 }
+		remove_variable = zg361_result_objection_recorded
+		remove_variable = zg361_result_delivery_witness
+		remove_variable = zg361_result_delivery_witness_receipt
+		remove_variable = zg361_result_appeal_outcome
+		if = {
+			limit = { var:zg361_pending_grade = 1 }
+			set_variable = { name = zg361_result_case_state value = 1 } # prepared
+		}
+		else = {
+			set_variable = { name = zg361_result_case_state value = 3 } # delivered/settled
+			set_variable = { name = zg361_result_delivery_method value = 4 } # automatic publication
+			set_variable = { name = zg361_result_delivered_year value = current_year }
+			set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
+		}
+		zg361_b2_on_result_frozen_effect = yes
+		debug_log = "ZG361P2: result case frozen"
+	}
+	else = {
+		debug_log = "ZG361P2: result case freeze rejected by owner/subject/serial guard"
+	}
+}
+zg361_apply_grade_effect = {
+	# 清理上一周期结果
+	remove_character_modifier = zg361_grade_375
+	remove_character_modifier = zg361_grade_35
+	remove_character_modifier = zg361_grade_325
+	remove_character_modifier = zg361_pip
+	zg361_freeze_result_case_effect = yes
+
+	if = {
+		limit = { var:zg361_pending_grade = 3 }
+		zg361_grade_375_apply_effect = yes
+	}
+	else_if = {
+		limit = { var:zg361_pending_grade = 1 }
+		zg361_grade_325_apply_effect = yes
+	}
+	else = {
+		zg361_grade_35_apply_effect = yes
+	}
+	remove_variable = zg361_pending_grade
+
+	# 价值观分类计数（领主变量）
+	if = {
+		limit = {
+			has_variable = zg361_class
+			var:zg361_class = 1
+		}
+		liege = { change_variable = { name = zg361_wild_dog_n add = 1 } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_class
+			var:zg361_class = 2
+		}
+		liege = { change_variable = { name = zg361_rabbit_n add = 1 } }
+	}
+}
+
+zg361_snapshot_player_result_effect = {
+	save_scope_value_as = { name = zg361_result_kpi value = var:zg361_result_kpi_frozen }
+	save_scope_value_as = { name = zg361_result_rank value = var:zg361_result_rank_frozen }
+	save_scope_value_as = { name = zg361_result_cohort_n value = var:zg361_result_cohort_n_frozen }
+	if = {
+		limit = { has_variable = zg361_result_case_owner }
+		var:zg361_result_case_owner = { save_scope_as = zg361_reviewing_superior }
+	}
+}
+
+zg361_grade_375_apply_effect = {
+	set_variable = { name = zg361_last_grade value = 3 }
+	add_character_modifier = { modifier = zg361_grade_375 years = 1 }
+	if = {
+		limit = { government_has_flag = government_has_merit }
+		change_merit = major_merit_gain
+	}
+	if = {
+		limit = { government_has_flag = government_has_treasury }
+		add_treasury = zg361_perf_bonus_scaled_value
+	}
+	# 晋升提名：文官/武将分开写入原版任命 candidate_score 变量
+	if = {
+		limit = { is_governor = yes }
+		if = {
+			limit = { vassal_contract_has_flag = celestial_military_appointment }
+			if = {
+				limit = { has_variable = merit_military_career_score_bonus }
+				change_variable = { name = merit_military_career_score_bonus add = zg361_nomination_score_bonus_value }
+			}
+			else = {
+				set_variable = { name = merit_military_career_score_bonus value = zg361_nomination_score_bonus_value }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = merit_civilian_career_score_bonus }
+				change_variable = { name = merit_civilian_career_score_bonus add = zg361_nomination_score_bonus_value }
+			}
+			else = {
+				set_variable = { name = merit_civilian_career_score_bonus value = zg361_nomination_score_bonus_value }
+			}
+		}
+	}
+	liege = {
+		add_opinion = { modifier = zg361_favored target = prev }
+		change_variable = { name = zg361_last_375_n add = 1 }
+	}
+	set_variable = { name = zg361_streak_bottom value = 0 }
+	change_variable = { name = zg361_streak_top add = 1 }
+	# 连续两次 3.75 → 晋升通道
+	if = {
+		limit = { var:zg361_streak_top >= 2 }
+		add_character_modifier = { modifier = zg361_promotion_track years = 2 }
+		if = {
+			limit = { is_governor = yes }
+			if = {
+				limit = { vassal_contract_has_flag = celestial_military_appointment }
+				if = {
+					limit = { has_variable = merit_military_career_score_bonus }
+					change_variable = { name = merit_military_career_score_bonus add = zg361_promotion_score_bonus_value }
+				}
+				else = {
+					set_variable = { name = merit_military_career_score_bonus value = zg361_promotion_score_bonus_value }
+				}
+			}
+			else = {
+				if = {
+					limit = { has_variable = merit_civilian_career_score_bonus }
+					change_variable = { name = merit_civilian_career_score_bonus add = zg361_promotion_score_bonus_value }
+				}
+				else = {
+					set_variable = { name = merit_civilian_career_score_bonus value = zg361_promotion_score_bonus_value }
+				}
+			}
+		}
+		set_variable = { name = zg361_streak_top value = 0 }
+		debug_log = "ZG361: promotion track opened"
+	}
+	if = {
+		limit = { is_ai = no }
+		zg361_snapshot_player_result_effect = yes
+		trigger_event = { id = zg361.2 days = 1 }
+	}
+}
+
+zg361_grade_35_apply_effect = {
+	set_variable = { name = zg361_last_grade value = 2 }
+	add_character_modifier = { modifier = zg361_grade_35 years = 1 }
+	if = {
+		limit = { government_has_flag = government_has_merit }
+		change_merit = minor_merit_gain
+	}
+	if = {
+		limit = {
+			has_variable = zg361_appeal_regrade_in_progress
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			var:zg361_result_case_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial = prev.var:zg361_result_cycle_serial
+			}
+		}
+		var:zg361_result_case_owner = {
+			change_variable = { name = zg361_last_35_n add = 1 }
+		}
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_appeal_regrade_in_progress } }
+		liege = {
+			change_variable = { name = zg361_last_35_n add = 1 }
+		}
+	}
+	set_variable = { name = zg361_streak_top value = 0 }
+	set_variable = { name = zg361_streak_bottom value = 0 }
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_variable = zg361_appeal_regrade_in_progress }
+		}
+		zg361_snapshot_player_result_effect = yes
+		trigger_event = { id = zg361.3 days = 1 }
+	}
+}
+
+zg361_grade_325_apply_effect = {
+	set_variable = { name = zg361_last_grade value = 1 }
+	# 档位统计和公示事实可以先冻结；四重处分、PIP 与连击必须等送达。
+	root = { change_variable = { name = zg361_last_325_n add = 1 } }
+	if = {
+		limit = { is_ai = yes }
+		# AI 受评者不打开玩家事件；授权 AI 管理链后台自动正式送达。
+		set_variable = { name = zg361_result_delivery_method value = 4 }
+		zg361_deliver_325_notice_effect = yes
+	}
+	else = {
+		var:zg361_result_case_owner = { save_scope_as = zg361_notice_prompt_owner }
+		save_scope_as = zg361_notice_prompt_subject
+		save_scope_value_as = { name = zg361_notice_prompt_cycle value = var:zg361_result_cycle_serial }
+		save_scope_value_as = { name = zg361_notice_prompt_case value = var:zg361_result_case_serial }
+		save_scope_value_as = { name = zg361_notice_prompt_state value = var:zg361_result_case_state }
+		trigger_event = { id = zg361.50 days = 1 }
+	}
+}
+
+zg361_deliver_325_notice_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_grade
+			var:zg361_result_grade = 1
+			OR = {
+				var:zg361_result_case_state = 1
+				var:zg361_result_case_state = 2
+			}
+			var:zg361_result_settlement_posted_serial = 0
+		}
+		set_variable = { name = zg361_result_case_state value = 3 }
+		set_variable = { name = zg361_result_delivered_year value = current_year }
+		zg361_settle_delivered_325_effect = yes
+		debug_log = "ZG361P2: 3.25 notice delivered"
+	}
+	else = {
+		debug_log = "ZG361P2: duplicate or stale 3.25 delivery ignored"
+	}
+}
+
+zg361_settle_delivered_325_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			var:zg361_result_case_state = 3
+			var:zg361_result_grade = 1
+			var:zg361_result_settlement_posted_serial = 0
+		}
+
+		add_character_modifier = { modifier = zg361_grade_325 years = 1 }
+		add_character_modifier = { modifier = zg361_pip years = 1 }
+		set_variable = { name = zg361_result_salary_cut_active value = 1 }
+
+		# 地方国库 receipt：冻结扣前/扣后差额，不再把应扣常量冒充实扣金额。
+		if = {
+			limit = { government_has_flag = government_has_treasury }
+			set_variable = { name = zg361_result_treasury_before value = treasury }
+			remove_treasury = zg361_perf_treasury_penalty_value
+			set_variable = {
+				name = zg361_result_treasury_paid
+				value = {
+					value = var:zg361_result_treasury_before
+					subtract = treasury
+				}
+			}
+			remove_variable = zg361_result_treasury_before
+		}
+		else = { set_variable = { name = zg361_result_treasury_paid value = 0 } }
+
+		set_variable = { name = zg361_result_gold_before value = gold }
+		remove_short_term_gold = zg361_perf_gold_penalty_value
+		set_variable = {
+			name = zg361_result_gold_paid
+			value = {
+				value = var:zg361_result_gold_before
+				subtract = gold
+			}
+		}
+		remove_variable = zg361_result_gold_before
+
+		if = {
+			limit = { government_has_flag = government_has_merit }
+			set_variable = { name = zg361_result_merit_before value = merit }
+			change_merit = medium_merit_loss
+			set_variable = {
+				name = zg361_result_merit_paid
+				value = {
+					value = var:zg361_result_merit_before
+					subtract = merit
+				}
+			}
+			remove_variable = zg361_result_merit_before
+		}
+		else = { set_variable = { name = zg361_result_merit_paid value = 0 } }
+
+		# 保留 0.3 申诉入口所读字段，但金额来自实际 receipt。
+		set_variable = { name = zg361_last_treasury_penalty_paid value = var:zg361_result_treasury_paid }
+		set_variable = { name = zg361_last_gold_penalty_paid value = var:zg361_result_gold_paid }
+		set_variable = { name = zg361_last_merit_penalty_paid value = var:zg361_result_merit_paid }
+		set_variable = { name = zg361_last_penalty_reviewer value = var:zg361_result_case_owner }
+		set_variable = { name = zg361_last_penalty_serial value = var:zg361_result_cycle_serial }
+
+		var:zg361_result_case_owner = {
+			if = {
+				limit = { is_alive = yes }
+				add_opinion = { modifier = zg361_poor_review target = prev }
+			}
+		}
+		set_variable = { name = zg361_streak_top value = 0 }
+		change_variable = { name = zg361_streak_bottom add = 1 }
+		if = {
+			limit = { var:zg361_streak_bottom >= 2 }
+			var:zg361_result_case_owner = {
+				if = {
+					limit = { is_alive = yes }
+					change_variable = { name = zg361_eliminate_n add = 1 }
+				}
+			}
+		}
+
+		set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
+		set_variable = { name = zg361_result_appeal_open value = 1 }
+		zg361_update_settled_325_scoreboard_slots_effect = yes
+		zg361_b2_on_notice_delivered_effect = yes
+
+		# 90 日申诉时钟携带 immutable token；新轮案卷或已改判会令到期事件 stale no-op。
+		var:zg361_result_case_owner = { save_scope_as = zg361_notice_deadline_owner }
+		save_scope_as = zg361_notice_deadline_subject
+		save_scope_value_as = { name = zg361_notice_deadline_cycle value = var:zg361_result_cycle_serial }
+		save_scope_value_as = { name = zg361_notice_deadline_case value = var:zg361_result_case_serial }
+		save_scope_value_as = { name = zg361_notice_deadline_state value = var:zg361_result_case_state }
+		trigger_event = { id = zg361.52 days = 90 }
+
+		if = {
+			limit = { is_ai = no }
+			zg361_snapshot_player_result_effect = yes
+			trigger_event = { id = zg361.4 days = 1 }
+			# 延迟送达的玩家若已连续两次末位，原 AI 上司仍给最后机会；
+			# 调任或原 owner 死亡时不让旧案卷越权淘汰。
+			if = {
+				limit = {
+					var:zg361_streak_bottom >= 2
+					var:zg361_result_appeal_open = 0
+					var:zg361_result_case_owner = liege
+					var:zg361_result_case_owner = { is_ai = yes is_alive = yes }
+				}
+				trigger_event = { id = zg361.6 days = 2 }
+			}
+		}
+		debug_log = "ZG361P2: delivered 3.25 settlement posted once"
+	}
+	else = {
+		debug_log = "ZG361P2: duplicate or stale 3.25 settlement ignored"
+	}
+}

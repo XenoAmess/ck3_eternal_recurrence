@@ -92,6 +92,12 @@ from zg361_phase2_b2_action_cell import (
     B2PipActionCellError,
     run_b2_pip_gameplay_action_cell,
 )
+from zg361_phase2_b2_checkpoint_matrix import (
+    B2PrechoiceInspectionError,
+    B2SameCheckpointMatrixError,
+    inspect_b2_pip_prechoice,
+    run_b2_same_checkpoint_matrix,
+)
 from zg361_phase2_loader_stage import (
     LoaderStageError,
     wait_for_phase2_seed_loader_stage,
@@ -121,7 +127,11 @@ from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
     ZHONGGUO_RESULT_CASE_KIND_V1,
 )
-from xar_autoplayer.environment import EnvironmentSpec, make_spec
+from xar_autoplayer.environment import (
+    EnvironmentSpec,
+    ck3_process_inventory,
+    make_spec,
+)
 from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
 from xar_autoplayer.native_session import (
     NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
@@ -614,6 +624,35 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
     "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_STEP,
 }
+PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
+    "paused_snapshot",
+    "map_ready_state",
+    "played_character_state",
+    "active_event_state",
+    "pause_timeline",
+    "resume_timeline",
+    "bounded_timeline_speed",
+    "event_option_action_ack",
+    "save_checkpoint",
+    "current_event_context",
+    "loaded_feature_manifest",
+    "b2_pip_snapshot",
+    "incident_snapshot",
+)
+PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS = (
+    "b2_pip_snapshot",
+    "incident_snapshot",
+    "loaded_feature_manifest",
+    "current_event_context",
+)
+PHASE2_B2_REQUIRED_ACTION_STEP_LABELS = (
+    "pause_timeline",
+    "resume_timeline",
+    "bounded_timeline_speed",
+    "bounded_life_advance",
+    "save_checkpoint",
+    "loaded_feature_manifest",
+)
 # Provider readiness and gameplay completion are separate gates.  Every frozen
 # read-only provider belongs to the capability preflight below; the missing
 # named-widget action and product mutations stay explicit in
@@ -4278,6 +4317,10 @@ def preflight_phase2_seed_contract(
     *,
     runtime_source: Path | None = None,
     workshop_manifest: Path | None = None,
+    product_only_runtime: bool = False,
+    product_source: Path | None = None,
+    product_projection: str = "broad",
+    product_projection_manifest: Path | None = None,
 ) -> dict[str, object]:
     """Validate the contract and optionally dry-install it without CK3."""
 
@@ -4288,6 +4331,11 @@ def preflight_phase2_seed_contract(
             "phase-two seed preflight RED: " + blocker
         )
     if runtime_source is not None:
+        selected_product_source = (
+            Path(product_source)
+            if product_source is not None
+            else Path(runtime_source)
+        )
         with tempfile.TemporaryDirectory(
             prefix="zg361-phase2-seed-preflight-"
         ) as temporary:
@@ -4297,8 +4345,11 @@ def preflight_phase2_seed_contract(
             artifacts.mkdir()
             bootstrap = bootstrap_userdir(
                 userdir,
-                Path(runtime_source),
+                selected_product_source,
                 workshop_manifest=workshop_manifest,
+                include_acceptance_fixture=not product_only_runtime,
+                product_projection=product_projection,
+                product_projection_manifest=product_projection_manifest,
             )
             install_phase2_seed(
                 userdir,
@@ -4309,6 +4360,7 @@ def preflight_phase2_seed_contract(
                     acceptance.CK3_EXE
                 ),
                 contract_path=contract_path,
+                product_only_runtime=product_only_runtime,
             )
     return contract
 
@@ -4519,7 +4571,14 @@ def verify_runtime_load_order(
         path = Path(raw.strip()).resolve()
         if isolated.is_relative_to(path, content_root):
             mounted.append(path)
-    expected = [Path(bootstrap["targets"][key]).resolve() for key in ("product", "fixture")]
+    targets_value = bootstrap.get("targets")
+    targets = targets_value if isinstance(targets_value, dict) else {}
+    target_keys = list(targets)
+    if target_keys not in (["product"], ["product", "fixture"]):
+        raise acceptance.RunnerError(
+            f"isolated runtime target inventory is malformed: {target_keys}"
+        )
+    expected = [Path(targets[key]).resolve() for key in target_keys]
     if mounted != expected:
         raise acceptance.RunnerError(
             "isolated mount order drifted: "
@@ -5438,6 +5497,309 @@ def wait_for_phase2_native_session_binding(
         ) from error
 
 
+class Phase2B2MatrixLifecycle:
+    """Transfer one managed Phase2 session to the focused B2 matrix.
+
+    Restore requests remain owned by ``native_session``.  This adapter only
+    supplies the matrix with an independent process-inventory observation and
+    one final supervisor stop.  The full four-restart shutdown receipts stay
+    available for the focused outer cleanup verifier below.
+    """
+
+    def __init__(
+        self,
+        service: GameplayBridgeService,
+        supervisor: dict[str, object],
+    ) -> None:
+        self.service = service
+        self.supervisor = supervisor
+        self.session_stopped = False
+        self.stop_requested_pid: int | None = None
+        self.pre_stop_capabilities: dict[str, object] | None = None
+        self.session_report: dict[str, object] | None = None
+        self.death_proofs: list[dict[str, object]] = []
+
+    def _components(
+        self,
+    ) -> tuple[
+        threading.Event,
+        threading.Event,
+        dict[str, object],
+        threading.Thread,
+    ]:
+        stop_event = self.supervisor.get("stop_event")
+        session_done = self.supervisor.get("session_done")
+        session_state = self.supervisor.get("session_state")
+        session_thread = self.supervisor.get("session_thread")
+        if not (
+            isinstance(stop_event, threading.Event)
+            and isinstance(session_done, threading.Event)
+            and isinstance(session_state, dict)
+            and isinstance(session_thread, threading.Thread)
+        ):
+            raise ValueError("phase-two B2 supervisor handle is malformed")
+        return stop_event, session_done, session_state, session_thread
+
+    def prove_pid_dead(
+        self,
+        pid: int,
+        *,
+        reason: str,
+        timeout_s: float = 30.0,
+        poll_interval_s: float = 0.10,
+    ) -> dict[str, object]:
+        if isinstance(pid, bool) or not isinstance(pid, int) or pid <= 0:
+            raise ValueError("phase-two B2 cleanup PID must be positive")
+        if timeout_s <= 0 or poll_interval_s <= 0:
+            raise ValueError("phase-two B2 process-proof timing is invalid")
+        started = time.monotonic()
+        deadline = started + timeout_s
+        observations: list[dict[str, object]] = []
+        while True:
+            if self.session_stopped and isinstance(self.session_report, dict):
+                restart_value = self.session_report.get("restart_shutdowns")
+                restarts = restart_value if isinstance(restart_value, list) else []
+                receipts = [
+                    row for row in restarts if isinstance(row, dict)
+                ]
+                final_shutdown = self.session_report.get("shutdown")
+                if isinstance(final_shutdown, dict):
+                    receipts.append(final_shutdown)
+                matching = [row for row in receipts if row.get("ck3_pid") == pid]
+                receipt = matching[0] if len(matching) == 1 else None
+                checks = _phase2_shutdown_checks(
+                    receipt,
+                    expected_pid=pid,
+                    prefix="retired_pid",
+                )
+                dead = len(matching) == 1 and all(checks.values())
+                proof = {
+                    "schema_version": 1,
+                    "pid": pid,
+                    "dead": dead,
+                    "reason": reason,
+                    "observation_source": "native_stop_tracked_tree_receipt",
+                    "shutdown_receipt": receipt,
+                    "checks": checks,
+                    "duration_seconds": round(time.monotonic() - started, 3),
+                }
+                self.death_proofs.append(proof)
+                return proof
+
+            capabilities = self.service.capabilities()
+            diagnostics = (
+                capabilities.get("diagnostics")
+                if isinstance(capabilities, dict)
+                else None
+            )
+            current_pid = (
+                diagnostics.get("bridge_pid")
+                if isinstance(diagnostics, dict)
+                and diagnostics.get("connected") is True
+                else None
+            )
+            inventory = ck3_process_inventory()
+            raw_pids = inventory.get("wmi_pids")
+            observed_pids = (
+                [
+                    value
+                    for value in raw_pids
+                    if isinstance(value, int) and not isinstance(value, bool)
+                ]
+                if isinstance(raw_pids, list)
+                else []
+            )
+            tasklist_pids = inventory.get("tasklist_pids")
+            inventories_agree = (
+                isinstance(tasklist_pids, list)
+                and sorted(tasklist_pids) == sorted(observed_pids)
+            )
+            exact_managed_replacement = (
+                isinstance(current_pid, int)
+                and not isinstance(current_pid, bool)
+                and current_pid > 0
+                and observed_pids == [current_pid]
+                and current_pid != pid
+            )
+            dead = inventories_agree and exact_managed_replacement
+            observation = {
+                "elapsed_seconds": round(time.monotonic() - started, 3),
+                "observed_ck3_pids": observed_pids,
+                "current_bridge_pid": current_pid,
+                "inventories_agree": inventories_agree,
+                "target_absent": pid not in observed_pids,
+                "exact_managed_replacement": exact_managed_replacement,
+            }
+            observations.append(observation)
+            if dead or time.monotonic() >= deadline:
+                proof = {
+                    "schema_version": 1,
+                    "pid": pid,
+                    "dead": dead,
+                    "reason": reason,
+                    "observation_source": (
+                        "retired_pid_absent_with_exact_managed_replacement"
+                    ),
+                    "observations": observations,
+                    "final_inventory": inventory,
+                    "duration_seconds": round(time.monotonic() - started, 3),
+                }
+                self.death_proofs.append(proof)
+                return proof
+            time.sleep(poll_interval_s)
+
+    def stop_session(
+        self,
+        pid: int,
+        *,
+        reason: str,
+    ) -> dict[str, object]:
+        if isinstance(pid, bool) or not isinstance(pid, int) or pid <= 0:
+            raise ValueError("phase-two B2 final PID must be positive")
+        if self.session_stopped:
+            if self.stop_requested_pid != pid or self.session_report is None:
+                raise acceptance.RunnerError(
+                    "phase-two B2 matrix attempted a second mismatched stop"
+                )
+            shutdown = self.session_report.get("shutdown")
+            if not isinstance(shutdown, dict):
+                raise acceptance.RunnerError(
+                    "phase-two B2 stopped session lacks its shutdown receipt"
+                )
+            return shutdown
+
+        capabilities = self.service.capabilities()
+        diagnostics = (
+            capabilities.get("diagnostics")
+            if isinstance(capabilities, dict)
+            else None
+        )
+        if not (
+            isinstance(capabilities, dict)
+            and isinstance(diagnostics, dict)
+            and diagnostics.get("connected") is True
+            and diagnostics.get("bridge_pid") == pid
+        ):
+            raise acceptance.RunnerError(
+                "phase-two B2 final stop is not bound to the requested PID"
+            )
+        self.pre_stop_capabilities = capabilities
+        self.stop_requested_pid = pid
+        stop_event, session_done, session_state, session_thread = (
+            self._components()
+        )
+        stop_event.set()
+        session_thread.join()
+        if session_thread.is_alive() or not session_done.is_set():
+            raise acceptance.RunnerError(
+                "phase-two B2 native_session did not finish its final stop"
+            )
+        if session_state.get("error") is not None:
+            raise acceptance.RunnerError(
+                "phase-two B2 native_session final stop failed: "
+                + str(session_state["error"])
+            )
+        report = session_state.get("report")
+        if not isinstance(report, dict):
+            raise acceptance.RunnerError(
+                "phase-two B2 native_session final stop lacks a report"
+            )
+        self.session_report = report
+        self.session_stopped = True
+        shutdown = report.get("shutdown")
+        if not isinstance(shutdown, dict):
+            raise acceptance.RunnerError(
+                "phase-two B2 native_session final stop lacks shutdown proof"
+            )
+        return shutdown
+
+    def ensure_stopped(self, *, reason: str) -> dict[str, object]:
+        """Finish exactly one supervisor stop, including an early RED path."""
+
+        if self.session_stopped:
+            if self.session_report is None:
+                raise acceptance.RunnerError(
+                    "phase-two B2 stopped session lost its report"
+                )
+            return self.session_report
+        stop_event, session_done, session_state, session_thread = (
+            self._components()
+        )
+        if session_done.is_set() and not session_thread.is_alive():
+            if session_state.get("error") is not None:
+                raise acceptance.RunnerError(
+                    "phase-two B2 native_session exited with an error: "
+                    + str(session_state["error"])
+                )
+            report = session_state.get("report")
+            if not isinstance(report, dict):
+                raise acceptance.RunnerError(
+                    "phase-two B2 completed supervisor lacks its report"
+                )
+            self.session_report = report
+            self.stop_requested_pid = (
+                int(report["pid"])
+                if isinstance(report.get("pid"), int)
+                and not isinstance(report.get("pid"), bool)
+                else None
+            )
+            self.session_stopped = True
+            return report
+
+        try:
+            capabilities = self.service.capabilities()
+            diagnostics = (
+                capabilities.get("diagnostics")
+                if isinstance(capabilities, dict)
+                else None
+            )
+            current_pid = (
+                diagnostics.get("bridge_pid")
+                if isinstance(diagnostics, dict)
+                and diagnostics.get("connected") is True
+                else None
+            )
+            if (
+                isinstance(current_pid, int)
+                and not isinstance(current_pid, bool)
+                and current_pid > 0
+            ):
+                self.stop_session(current_pid, reason=reason)
+                assert self.session_report is not None
+                return self.session_report
+        except BaseException:
+            # The bridge may disappear immediately after a typed RED.  The
+            # supervisor remains the process owner and can still produce its
+            # canonical stop_tracked report below.
+            pass
+
+        stop_event.set()
+        session_thread.join()
+        if session_thread.is_alive() or not session_done.is_set():
+            raise acceptance.RunnerError(
+                "phase-two B2 fallback supervisor stop did not finish"
+            )
+        if session_state.get("error") is not None:
+            raise acceptance.RunnerError(
+                "phase-two B2 fallback supervisor stop failed: "
+                + str(session_state["error"])
+            )
+        report = session_state.get("report")
+        if not isinstance(report, dict):
+            raise acceptance.RunnerError(
+                "phase-two B2 fallback supervisor stop lacks its report"
+            )
+        self.session_report = report
+        self.stop_requested_pid = (
+            int(report["pid"])
+            if isinstance(report.get("pid"), int)
+            and not isinstance(report.get("pid"), bool)
+            else None
+        )
+        self.session_stopped = True
+        return report
+
+
 def _phase2_shutdown_checks(
     value: object,
     *,
@@ -5992,6 +6354,199 @@ def stop_phase2_native_session_supervisor(
     )
 
 
+def prove_phase2_b2_matrix_native_session_cleanup(
+    lifecycle: Phase2B2MatrixLifecycle,
+    artifacts: Path,
+    *,
+    initial_pid: int | None,
+    initial_generation: int | None,
+    expected_pipe: str,
+    scenario_evidence: object,
+) -> dict[str, object]:
+    """Close the focused matrix's five-PID lifecycle without legacy gates."""
+
+    evidence_path = artifacts / "09_phase2_native_session_cleanup.json"
+    report = lifecycle.ensure_stopped(
+        reason="focused B2 same-checkpoint outer cleanup"
+    )
+    scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
+    matrix_value = scenario.get("b2_same_checkpoint_matrix")
+    matrix = matrix_value if isinstance(matrix_value, dict) else {}
+    matrix_pids_value = matrix.get("pid_lineage")
+    matrix_pids = (
+        list(matrix_pids_value)
+        if isinstance(matrix_pids_value, list)
+        else []
+    )
+    matrix_generations_value = matrix.get("connection_generation_lineage")
+    matrix_generations = (
+        list(matrix_generations_value)
+        if isinstance(matrix_generations_value, list)
+        else []
+    )
+    restart_value = report.get("restart_shutdowns")
+    restart_shutdowns = restart_value if isinstance(restart_value, list) else []
+    final_shutdown = report.get("shutdown")
+    shutdown_rows = [
+        row for row in restart_shutdowns if isinstance(row, dict)
+    ]
+    if isinstance(final_shutdown, dict):
+        shutdown_rows.append(final_shutdown)
+    native_pid_lineage = [row.get("ck3_pid") for row in shutdown_rows]
+    valid_native_pids = bool(native_pid_lineage) and all(
+        isinstance(pid, int) and not isinstance(pid, bool) and pid > 0
+        for pid in native_pid_lineage
+    )
+    receipt_checks: dict[str, dict[str, bool]] = {}
+    for index, row in enumerate(shutdown_rows):
+        label = (
+            f"restart_{index + 1:02d}"
+            if index < len(restart_shutdowns)
+            else "final"
+        )
+        expected_pid = (
+            int(row["ck3_pid"])
+            if isinstance(row.get("ck3_pid"), int)
+            and not isinstance(row.get("ck3_pid"), bool)
+            else None
+        )
+        receipt_checks[label] = _phase2_shutdown_checks(
+            row,
+            expected_pid=expected_pid,
+            prefix=label,
+        )
+    all_receipts_green = bool(receipt_checks) and all(
+        all(checks.values()) for checks in receipt_checks.values()
+    )
+    pid_proofs = (
+        [
+            lifecycle.prove_pid_dead(
+                int(pid), reason="focused B2 final native lineage audit"
+            )
+            for pid in native_pid_lineage
+        ]
+        if valid_native_pids
+        else []
+    )
+    all_pid_proofs_green = (
+        valid_native_pids
+        and len(pid_proofs) == len(native_pid_lineage)
+        and all(
+            proof.get("pid") == pid and proof.get("dead") is True
+            for pid, proof in zip(native_pid_lineage, pid_proofs)
+        )
+    )
+    focused_green = (
+        scenario.get("result") == "GREEN"
+        and scenario.get("phase2_b2_same_checkpoint_complete") is True
+        and matrix.get("result") == "GREEN"
+    )
+    final_capabilities = lifecycle.pre_stop_capabilities
+    final_diagnostics = (
+        final_capabilities.get("diagnostics")
+        if isinstance(final_capabilities, dict)
+        else None
+    )
+    checks: dict[str, bool] = {
+        "session_report_object": isinstance(report, dict),
+        "session_kind": report.get("kind") == "ck3_native_headless_session",
+        "session_mode": report.get("mode") == NATIVE_BRIDGE_MODE,
+        "session_pipe": report.get("pipe") == expected_pipe,
+        "session_report_ok": report.get("ok") is True,
+        "session_exit_reason_stop": report.get("exit_reason") == "stop",
+        "session_process_exit_code_clean": report.get("process_exit_code")
+        in (None, 0),
+        "restart_count_matches_receipts": report.get("restart_count")
+        == len(restart_shutdowns),
+        "all_shutdown_receipts_present": len(shutdown_rows)
+        == len(restart_shutdowns) + 1,
+        "native_pid_lineage_positive": valid_native_pids,
+        "native_pid_lineage_unique": valid_native_pids
+        and len(set(native_pid_lineage)) == len(native_pid_lineage),
+        "native_pid_lineage_starts_initial": bool(native_pid_lineage)
+        and native_pid_lineage[0] == initial_pid,
+        "session_report_pid_matches_final": bool(native_pid_lineage)
+        and report.get("pid") == native_pid_lineage[-1],
+        "all_native_shutdown_receipts_green": all_receipts_green,
+        "all_native_pids_dead": all_pid_proofs_green,
+        "matrix_pid_lineage_matches_native": not matrix_pids
+        or matrix_pids == native_pid_lineage,
+        "final_capabilities_bound_final_pid": isinstance(final_diagnostics, dict)
+        and final_diagnostics.get("connected") is True
+        and bool(native_pid_lineage)
+        and final_diagnostics.get("bridge_pid") == native_pid_lineage[-1],
+    }
+    if focused_green:
+        expected_generations = (
+            list(
+                range(
+                    int(initial_generation),
+                    int(initial_generation) + 5,
+                )
+            )
+            if isinstance(initial_generation, int)
+            and not isinstance(initial_generation, bool)
+            and initial_generation > 0
+            else []
+        )
+        checks.update(
+            {
+                "focused_matrix_result_green": True,
+                "four_native_restores": report.get("restart_count") == 4
+                and len(restart_shutdowns) == 4,
+                "five_native_pids": len(native_pid_lineage) == 5,
+                "five_matrix_pids": len(matrix_pids) == 5,
+                "five_matrix_generations": len(matrix_generations) == 5,
+                "matrix_generations_consecutive": matrix_generations
+                == expected_generations,
+                "final_capabilities_bound_final_generation": isinstance(
+                    final_diagnostics, dict
+                )
+                and bool(matrix_generations)
+                and final_diagnostics.get("connection_generation")
+                == matrix_generations[-1],
+                "matrix_cleanup_green": isinstance(matrix.get("cleanup"), dict)
+                and matrix["cleanup"].get("result") == "GREEN",
+                "matrix_all_managed_pids_dead": isinstance(
+                    matrix.get("checks"), dict
+                )
+                and matrix["checks"].get("all_managed_pids_dead") is True,
+            }
+        )
+    failed = [label for label, passed in checks.items() if passed is not True]
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed else "RED",
+        "scope": "phase2_focused_b2_same_checkpoint_native_session_cleanup",
+        "mcp_only": True,
+        "initial_pid": initial_pid,
+        "initial_generation": initial_generation,
+        "expected_pipe": expected_pipe,
+        "focused_matrix_green": focused_green,
+        "pid_lineage": native_pid_lineage,
+        "connection_generation_lineage": matrix_generations,
+        "matrix_pid_lineage": matrix_pids,
+        "restart_shutdowns": restart_shutdowns,
+        "final_shutdown": final_shutdown,
+        "receipt_checks": receipt_checks,
+        "pid_proofs": pid_proofs,
+        "final_capabilities": final_capabilities,
+        "checks": checks,
+        "failed_checks": failed,
+        "session_report": report,
+        "failure_reason": (
+            None
+            if not failed
+            else "focused B2 native_session cleanup RED: "
+            + ", ".join(failed)
+        ),
+    }
+    write_json(evidence_path, evidence)
+    if failed:
+        raise acceptance.RunnerError(str(evidence["failure_reason"]))
+    return evidence
+
+
 def finalize_phase2_promo_span_session_receipts(
     scenario_evidence: object,
     native_cleanup: object,
@@ -6081,14 +6636,44 @@ def phase2_runtime_capability_preflight(
     *,
     tracked_ck3_pid: int,
     managed_restore_supervisor: bool = False,
+    focused_b2_same_checkpoint: bool = False,
 ) -> dict[str, object]:
-    """Fail before navigation unless the complete phase-two MCP surface exists."""
+    """Fail before navigation unless the selected Phase2 MCP surface exists."""
 
     evidence_path = artifacts / "02_phase2_mcp_capabilities.json"
+    required_bridge_capabilities = (
+        {
+            label: PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
+            for label in PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        }
+        if focused_b2_same_checkpoint
+        else dict(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
+    )
+    required_query_flags = (
+        {
+            label: PHASE2_REQUIRED_QUERY_FLAGS[label]
+            for label in PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
+        }
+        if focused_b2_same_checkpoint
+        else dict(PHASE2_REQUIRED_QUERY_FLAGS)
+    )
+    required_action_steps = (
+        {
+            label: PHASE2_REQUIRED_ACTION_STEPS[label]
+            for label in PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
+        }
+        if focused_b2_same_checkpoint
+        else dict(PHASE2_REQUIRED_ACTION_STEPS)
+    )
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
-        "scope": "complete_phase2_mcp_capability_profile",
+        "scope": (
+            "focused_b2_same_checkpoint_mcp_capability_profile"
+            if focused_b2_same_checkpoint
+            else "complete_phase2_mcp_capability_profile"
+        ),
+        "focused_b2_same_checkpoint": focused_b2_same_checkpoint,
         "tracked_ck3_pid": tracked_ck3_pid,
         "managed_restore_supervisor": managed_restore_supervisor,
         "mcp_only": True,
@@ -6096,11 +6681,9 @@ def phase2_runtime_capability_preflight(
         "image_used": False,
         "coordinates_used": False,
         "legacy_scenario_used": False,
-        "required_bridge_capabilities": dict(
-            PHASE2_REQUIRED_BRIDGE_CAPABILITIES
-        ),
-        "required_query_flags": dict(PHASE2_REQUIRED_QUERY_FLAGS),
-        "required_action_steps": dict(PHASE2_REQUIRED_ACTION_STEPS),
+        "required_bridge_capabilities": required_bridge_capabilities,
+        "required_query_flags": required_query_flags,
+        "required_action_steps": required_action_steps,
         "unfrozen_requirements": dict(PHASE2_UNFROZEN_REQUIREMENTS),
         "pending_runner_requirements": dict(
             PHASE2_PENDING_RUNNER_REQUIREMENTS
@@ -6156,7 +6739,7 @@ def phase2_runtime_capability_preflight(
         )
 
         missing: list[dict[str, str]] = []
-        for label, capability in PHASE2_REQUIRED_BRIDGE_CAPABILITIES.items():
+        for label, capability in required_bridge_capabilities.items():
             if capability not in bridge_capabilities:
                 missing.append(
                     {
@@ -6165,7 +6748,7 @@ def phase2_runtime_capability_preflight(
                         "value": capability,
                     }
                 )
-        for label, flag in PHASE2_REQUIRED_QUERY_FLAGS.items():
+        for label, flag in required_query_flags.items():
             if capabilities.get(flag) is not True:
                 missing.append(
                     {
@@ -6175,7 +6758,7 @@ def phase2_runtime_capability_preflight(
                     }
                 )
 
-        for label, step in PHASE2_REQUIRED_ACTION_STEPS.items():
+        for label, step in required_action_steps.items():
             if step not in action_steps:
                 missing.append(
                     {
@@ -9794,10 +10377,15 @@ def run_loader_gate(
     phase2_live_batch: bool,
     managed_restore_supervisor: bool = False,
     phase2_promo_capture: bool = False,
+    phase2_b2_same_checkpoint: bool = False,
 ) -> dict[str, object]:
     """Run the native/log/mount loader gate and persist every RED boundary."""
 
-    managed_phase2 = phase2_live_batch or phase2_promo_capture
+    managed_phase2 = (
+        phase2_live_batch
+        or phase2_promo_capture
+        or phase2_b2_same_checkpoint
+    )
     evidence_path = artifacts / "03_loader_gate.json"
     evidence: dict[str, object] = {
         "schema_version": 1,
@@ -9807,9 +10395,13 @@ def run_loader_gate(
             "phase2_promo_capture"
             if phase2_promo_capture
             else (
-                "phase2_live_batch"
-                if phase2_live_batch
-                else "loader_smoke_only"
+                "phase2_b2_same_checkpoint"
+                if phase2_b2_same_checkpoint
+                else (
+                    "phase2_live_batch"
+                    if phase2_live_batch
+                    else "loader_smoke_only"
+                )
             )
         ),
         "tracked_ck3_pid": tracked_ck3_pid,
@@ -9866,6 +10458,7 @@ def run_loader_gate(
                 artifacts,
                 tracked_ck3_pid=tracked_ck3_pid,
                 managed_restore_supervisor=managed_restore_supervisor,
+                focused_b2_same_checkpoint=phase2_b2_same_checkpoint,
             )
             evidence["phase2_capability_preflight"] = phase2_capabilities
             write_json(evidence_path, evidence)
@@ -14469,6 +15062,453 @@ def capture_policy_cards(
     return captured
 
 
+def run_phase2_b2_result_continuation_prelude(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    baseline_binding: dict[str, int | str],
+    timeout_s: float = 45.0,
+    poll_interval_s: float = 0.1,
+) -> dict[str, object]:
+    """Select the real pending ``zg361.4`` result before the B2 PIP card."""
+
+    evidence_path = artifacts / "05_phase2_b2_result_continuation_prelude.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "product_only_pending_witnessed_result_continuation",
+        "expected_event_definition_key": "zg361.4",
+        "selected_option_number": 1,
+        "baseline_binding": baseline_binding,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "observations": [],
+        "submissions": [],
+        "event_identity": None,
+        "selection_submission": None,
+        "selection_materialization": None,
+        "post_binding": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    if timeout_s <= 0 or poll_interval_s < 0:
+        raise ValueError("phase-two B2 result-continuation timing is invalid")
+
+    expected_pid = int(baseline_binding["bridge_pid"])
+    expected_generation = int(baseline_binding["connection_generation"])
+    expected_player = int(baseline_binding["player_character_id"])
+    starting_date = int(baseline_binding["date_raw"])
+    deadline = time.monotonic() + timeout_s
+
+    def fail(reason: str) -> None:
+        raise acceptance.RunnerError(reason)
+
+    def accepted_submission(value: object, step: str) -> None:
+        if not (
+            isinstance(value, dict)
+            and value.get("accepted") is True
+            and value.get("status") == "submitted"
+        ):
+            fail(f"phase-two B2 result-continuation {step} ACK was not accepted")
+
+    def observe(snapshot: dict[str, object]) -> tuple[int, int | None]:
+        revision = snapshot.get("revision")
+        date_raw = snapshot.get("date_raw")
+        played_character = snapshot.get("played_character")
+        player = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        diagnostics = snapshot.get("diagnostics")
+        pid = (
+            diagnostics.get("bridge_pid")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        active_event = snapshot.get("active_event")
+        event_instance_id = (
+            active_event.get("instance_id")
+            if isinstance(active_event, dict)
+            else None
+        )
+        observation = {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": revision,
+            "native_revision": snapshot.get("native_revision"),
+            "date_raw": date_raw,
+            "paused": snapshot.get("paused"),
+            "speed": snapshot.get("speed"),
+            "player_character_id": player,
+            "bridge_pid": pid,
+            "connection_generation": generation,
+            "active_event_instance_id": event_instance_id,
+            "active_event_option_count": (
+                active_event.get("option_count")
+                if isinstance(active_event, dict)
+                else None
+            ),
+        }
+        observations = evidence["observations"]
+        assert isinstance(observations, list)
+        if not observations or observations[-1] != observation:
+            observations.append(observation)
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or date_raw < starting_date
+            or date_raw > starting_date + 7
+            or player != expected_player
+            or pid != expected_pid
+            or generation != expected_generation
+            or snapshot.get("map_ready") is not True
+        ):
+            fail(
+                "phase-two B2 result-continuation escaped its "
+                "date/player/PID binding"
+            )
+        return revision, event_instance_id
+
+    try:
+        while time.monotonic() < deadline:
+            snapshot = service.snapshot()
+            if not isinstance(snapshot, dict):
+                fail("phase-two B2 result-continuation snapshot is not an object")
+            revision, event_instance_id = observe(snapshot)
+            active_event = snapshot.get("active_event")
+            if isinstance(active_event, dict):
+                if snapshot.get("paused") is not True:
+                    submission = service.execute_step(
+                        "pause-map", expected_revision=revision
+                    )
+                    accepted_submission(submission, "pause-map")
+                    submissions = evidence["submissions"]
+                    assert isinstance(submissions, list)
+                    submissions.append(submission)
+                    if poll_interval_s:
+                        time.sleep(poll_interval_s)
+                    continue
+
+                identity = query_event_definition_identity(service, snapshot)
+                evidence["event_identity"] = identity
+                observed_key = identity.get("event_definition_key")
+                if observed_key != "zg361.4":
+                    fail(
+                        "phase-two B2 result-continuation encountered an "
+                        f"unexpected visible event: {observed_key!r}"
+                    )
+                query = identity.get("query")
+                context = (
+                    query.get("current_event_window_context")
+                    if isinstance(query, dict)
+                    else None
+                )
+                options = context.get("options") if isinstance(context, dict) else None
+                matches = [
+                    row
+                    for row in options or []
+                    if isinstance(row, dict)
+                    and row.get("native_option_index") == 0
+                    and row.get("shown") is True
+                    and row.get("enabled") is True
+                ]
+                if len(matches) != 1 or active_event.get("option_count") != 4:
+                    fail(
+                        "phase-two B2 result-continuation option 1 is not "
+                        "uniquely available on the exact four-option card"
+                    )
+                if isinstance(event_instance_id, bool) or not isinstance(
+                    event_instance_id, int
+                ):
+                    fail("phase-two B2 result-continuation lacks an event instance")
+                selection = service.select_event_option(
+                    1,
+                    event_instance_id=event_instance_id,
+                    expected_revision=revision,
+                )
+                accepted_submission(selection, "select-event-option-1")
+                evidence["selection_submission"] = selection
+
+                transition_deadline = min(deadline, time.monotonic() + 5.0)
+                while time.monotonic() < transition_deadline:
+                    after = service.snapshot()
+                    if not isinstance(after, dict):
+                        fail(
+                            "phase-two B2 result-continuation transition snapshot "
+                            "is not an object"
+                        )
+                    after_revision, after_event_instance = observe(after)
+                    if after_event_instance != event_instance_id:
+                        if after.get("paused") is not True:
+                            pause = service.execute_step(
+                                "pause-map", expected_revision=after_revision
+                            )
+                            accepted_submission(pause, "post-selection pause-map")
+                            submissions = evidence["submissions"]
+                            assert isinstance(submissions, list)
+                            submissions.append(pause)
+                            if poll_interval_s:
+                                time.sleep(poll_interval_s)
+                            continue
+                        post_binding = _phase2_paused_binding(
+                            after,
+                            label="phase-two B2 result-continuation post-selection",
+                        )
+                        evidence["selection_materialization"] = {
+                            "old_event_instance_id": event_instance_id,
+                            "new_event_instance_id": after_event_instance,
+                            "revision_before": revision,
+                            "revision_after": after_revision,
+                            "date_raw_after": after.get("date_raw"),
+                        }
+                        evidence["post_binding"] = post_binding
+                        evidence["result"] = "GREEN"
+                        evidence["failure_reason"] = None
+                        write_json(evidence_path, evidence)
+                        return evidence
+                    if poll_interval_s:
+                        time.sleep(poll_interval_s)
+                fail("zg361.4 option 1 ACK did not materialize as an event transition")
+
+            if snapshot.get("speed") != 1:
+                submission = service.execute_step(
+                    "set-speed-1", expected_revision=revision
+                )
+                accepted_submission(submission, "set-speed-1")
+                submissions = evidence["submissions"]
+                assert isinstance(submissions, list)
+                submissions.append(submission)
+            elif snapshot.get("paused") is True:
+                submission = service.execute_step(
+                    "resume-map", expected_revision=revision
+                )
+                accepted_submission(submission, "resume-map")
+                submissions = evidence["submissions"]
+                assert isinstance(submissions, list)
+                submissions.append(submission)
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+        fail("phase-two MCP timed out before the exact zg361.4 continuation")
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two B2 result-continuation failed: {error}"
+        ) from error
+    raise AssertionError("unreachable")
+
+
+def run_phase2_b2_same_checkpoint_scenario(
+    service: GameplayBridgeService,
+    lifecycle: Phase2B2MatrixLifecycle,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+    seed_contract: dict[str, object],
+) -> dict[str, object]:
+    """Prove the real B2 PIP A/B/C routes from one product-only checkpoint."""
+
+    evidence_path = artifacts / "05_phase2_b2_same_checkpoint_scenario.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_focused_b2_same_checkpoint_product_only",
+        "live_readiness": "not_proven",
+        "phase2_b2_same_checkpoint_complete": False,
+        "phase2_acceptance_complete": False,
+        "full_phase2_acceptance_claimed": False,
+        "gameplay_acceptance_executed": False,
+        "focused_gameplay_green_claimed": False,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "legacy_run_scenario_used": False,
+        "platform_legal_consent_gate_outside_gameplay_scenario": True,
+        "paused_readiness": None,
+        "seed_load_proof": None,
+        "loaded_feature_manifest": None,
+        "domain_owner_contract": None,
+        "incident_gameplay_action_cell": None,
+        "b2_result_continuation_prelude": None,
+        "post_prelude_paused_binding": None,
+        "b2_pip_prompt_readiness": None,
+        "b2_pip_provider_prechoice": None,
+        "b2_same_checkpoint_matrix": None,
+        "forbidden_full_batch_cells_executed": [],
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        paused_snapshot = wait_for_phase2_paused_snapshot(
+            service,
+            artifacts,
+            tracked_ck3_pid=tracked_ck3_pid,
+        )
+        paused_binding = _phase2_paused_binding(
+            paused_snapshot,
+            label="focused phase-two B2 seed baseline",
+        )
+        evidence["paused_readiness"] = {
+            "result": "GREEN",
+            "artifact": "04_phase2_paused_readiness.json",
+            "binding": paused_binding,
+        }
+        manifest = service.query_loaded_feature_manifest_v1(
+            expected_revision=int(paused_binding["revision"])
+        )
+        evidence["loaded_feature_manifest"] = manifest
+        if not (
+            isinstance(manifest, dict)
+            and manifest.get("loaded_feature_manifest_ready") is True
+        ):
+            raise acceptance.RunnerError(
+                "focused B2 loaded-feature manifest is not actionable"
+            )
+        evidence["seed_load_proof"] = prove_phase2_loaded_seed(
+            paused_snapshot,
+            seed_contract,
+            artifacts,
+            loaded_feature_manifest=manifest,
+        )
+        owner_contract = _phase2_domain_query_contract(
+            seed_contract,
+            player_character_id=int(paused_binding["player_character_id"]),
+        )
+        evidence["domain_owner_contract"] = owner_contract
+
+        # The B2-specific seed is captured after the genuine witnessed-delivery
+        # receipt has been adapted into B2. Product-only continuation therefore
+        # owns exactly one remaining result card: zg361.4 option 1. No unrelated
+        # visible event is guessed or auto-cleared.
+        result_continuation = run_phase2_b2_result_continuation_prelude(
+            service,
+            artifacts,
+            baseline_binding=paused_binding,
+        )
+        evidence["b2_result_continuation_prelude"] = result_continuation
+        evidence["gameplay_acceptance_executed"] = True
+        write_json(evidence_path, evidence)
+
+        post_prelude_snapshot = service.snapshot()
+        if not isinstance(post_prelude_snapshot, dict):
+            raise acceptance.RunnerError(
+                "focused B2 post-prelude baseline is not a snapshot"
+            )
+        post_prelude_binding = _phase2_paused_binding(
+            post_prelude_snapshot,
+            label="focused B2 post-prelude baseline",
+        )
+        if (
+            post_prelude_binding["bridge_pid"] != tracked_ck3_pid
+            or post_prelude_binding["connection_generation"]
+            != paused_binding["connection_generation"]
+            or post_prelude_binding["player_character_id"]
+            != paused_binding["player_character_id"]
+        ):
+            raise acceptance.RunnerError(
+                "focused B2 prelude escaped its initial PID/generation/player"
+            )
+        evidence["post_prelude_paused_binding"] = post_prelude_binding
+
+        b2_prompt_snapshot = wait_for_phase2_b2_pip_prompt(
+            service,
+            artifacts,
+            baseline_binding=post_prelude_binding,
+        )
+        b2_prompt_binding = _phase2_paused_binding(
+            b2_prompt_snapshot,
+            label="focused B2 prompt baseline",
+        )
+        evidence["b2_pip_prompt_readiness"] = {
+            "result": "GREEN",
+            "artifact": "05_phase2_b2_pip_prompt_readiness.json",
+            "binding": b2_prompt_binding,
+        }
+        try:
+            prechoice = inspect_b2_pip_prechoice(
+                service,
+                owner_character_id=owner_contract[
+                    "b2_pip_owner_character_id"
+                ],
+                request_nonce="zg361.phase2.b2.focused.pre-matrix",
+            )
+        except B2PrechoiceInspectionError as error:
+            evidence["b2_pip_provider_prechoice"] = error.evidence
+            write_json(
+                artifacts / "06_phase2_b2_pip_prechoice.json",
+                error.evidence,
+            )
+            raise
+        evidence["b2_pip_provider_prechoice"] = prechoice
+        write_json(
+            artifacts / "06_phase2_b2_pip_prechoice.json",
+            prechoice,
+        )
+        write_json(evidence_path, evidence)
+
+        matrix_artifacts = artifacts / "07_phase2_b2_same_checkpoint_matrix"
+        try:
+            matrix = run_b2_same_checkpoint_matrix(
+                service,
+                lifecycle,
+                owner_character_id=owner_contract[
+                    "b2_pip_owner_character_id"
+                ],
+                artifacts_directory=matrix_artifacts,
+            )
+        except B2SameCheckpointMatrixError as error:
+            evidence["b2_same_checkpoint_matrix"] = error.evidence
+            raise
+        evidence["b2_same_checkpoint_matrix"] = matrix
+        if not (
+            matrix.get("result") == "GREEN"
+            and isinstance(matrix.get("checks"), dict)
+            and matrix["checks"].get("four_exact_restores") is True
+            and matrix["checks"].get("all_managed_pids_dead") is True
+        ):
+            raise acceptance.RunnerError(
+                "focused B2 same-checkpoint matrix returned without full A/B/C proof"
+            )
+        evidence.update(
+            {
+                "result": "GREEN",
+                "live_readiness": "production-live primitive",
+                "phase2_b2_same_checkpoint_complete": True,
+                "focused_gameplay_green_claimed": True,
+                "failure_reason": None,
+            }
+        )
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["phase2_b2_same_checkpoint_complete"] = False
+        evidence["focused_gameplay_green_claimed"] = False
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"focused B2 same-checkpoint scenario failed: {error}"
+        ) from error
+
+
 def run_phase2_live_scenario(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -15242,17 +16282,25 @@ def run_cell(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_b2_same_checkpoint: bool = False,
     phase2_frontend_first_load_save_name: str | None = None,
     phase2_frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
     runtime_source: Path = SOURCE,
+    phase2_product_source: Path | None = None,
+    phase2_product_projection: str = "broad",
+    phase2_product_projection_manifest: Path | None = None,
     runtime_identity: dict[str, object] | None = None,
     phase2_seed_install: dict[str, object] | None = None,
     phase2_seed_contract_path: Path | None = None,
     phase2_source_checkpoint_registry: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
-    phase2_runtime_mode = phase2_live_batch or phase2_promo_capture
+    phase2_runtime_mode = (
+        phase2_live_batch
+        or phase2_promo_capture
+        or phase2_b2_same_checkpoint
+    )
     _validate_phase2_frontend_first_options(
         phase2_frontend_first_load_save_name,
         phase2_frontend_first_timeout_seconds,
@@ -15264,24 +16312,36 @@ def run_cell(
     state_dir.mkdir(parents=True)
     userdir.mkdir(parents=True)
     runtime_source = Path(runtime_source).resolve()
+    selected_product_source = (
+        Path(phase2_product_source).resolve()
+        if phase2_product_source is not None
+        else runtime_source
+    )
     state_dir = Path(state_dir).resolve()
     userdir = Path(userdir).resolve()
     runtime_identity = dict(runtime_identity or {})
     bridge_identity = runtime_identity.get("native_bridge_runtime")
     source_before = isolated.tree_snapshot(SOURCE)
     runtime_source_before = isolated.tree_snapshot(runtime_source)
+    selected_product_source_before = isolated.tree_snapshot(
+        selected_product_source
+    )
     acceptance.configure_runtime_userdir(userdir)
     verified_manifest_path = runtime_identity.get("workshop_manifest_path")
     bootstrap = bootstrap_userdir(
         userdir,
-        runtime_source,
+        selected_product_source,
         workshop_manifest=(
             Path(str(verified_manifest_path))
             if runtime_identity.get("verified_workshop_cache") is True
             and verified_manifest_path
             else None
         ),
-        include_acceptance_fixture=not phase2_promo_capture,
+        include_acceptance_fixture=not (
+            phase2_promo_capture or phase2_b2_same_checkpoint
+        ),
+        product_projection=phase2_product_projection,
+        product_projection_manifest=phase2_product_projection_manifest,
     )
     spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)
     if spec.profile_dir.resolve() != userdir:
@@ -15310,6 +16370,7 @@ def run_cell(
     runtime_unchanged = False
     source_unchanged = False
     runtime_source_unchanged = False
+    selected_product_source_unchanged = False
     stream = MarkerStream(userdir / "logs" / "debug.log")
     watchdog_pid = None
     tracked_ck3_pid = None
@@ -15334,7 +16395,9 @@ def run_cell(
     # boundary as the phase-two MCP batch.  Keep the legacy promo path on its
     # suspended/inject/resume lifecycle.
     loader_gate_enabled = (
-        loader_smoke or phase2_live_batch or phase2_promo_capture
+        loader_smoke
+        or phase2_live_batch or phase2_promo_capture
+        or phase2_b2_same_checkpoint
     )
     loader_gate_evidence: dict[str, object] | None = None
     gameplay_acceptance_executed = False
@@ -15345,6 +16408,7 @@ def run_cell(
     phase2_legal_consent: dict[str, object] | None = None
     phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
     phase2_promo_producer_error: dict[str, object] | None = None
+    phase2_b2_lifecycle: Phase2B2MatrixLifecycle | None = None
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
@@ -15364,7 +16428,9 @@ def run_cell(
                     userdir,
                     bootstrap,
                     artifacts,
-                    product_only_runtime=phase2_promo_capture,
+                    product_only_runtime=(
+                        phase2_promo_capture or phase2_b2_same_checkpoint
+                    ),
                     **install_kwargs,
                 )
             else:
@@ -15448,9 +16514,10 @@ def run_cell(
                 userdir,
                 bootstrap,
                 tracked_ck3_pid=tracked_ck3_pid,
-                phase2_live_batch=phase2_runtime_mode,
+                phase2_live_batch=phase2_live_batch,
                 managed_restore_supervisor=phase2_supervisor is not None,
                 phase2_promo_capture=phase2_promo_capture,
+                phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
             )
             native_readiness = loader_gate_evidence["native_readiness"]
             error_scan = loader_gate_evidence["loader_error_log_scan"]
@@ -15549,6 +16616,40 @@ def run_cell(
                     phase2_promo_producer_typed_error_payload(error)
                 )
                 raise
+        elif phase2_b2_same_checkpoint:
+            if not (
+                isinstance(phase2_seed_install_evidence, dict)
+                and isinstance(
+                    phase2_seed_install_evidence.get("contract"), dict
+                )
+                and phase2_supervisor is not None
+            ):
+                raise acceptance.RunnerError(
+                    "focused B2 runtime lacks its seed contract or supervisor"
+                )
+            phase2_b2_lifecycle = Phase2B2MatrixLifecycle(
+                title_navigation_service,
+                phase2_supervisor,
+            )
+            evidence = run_phase2_b2_same_checkpoint_scenario(
+                title_navigation_service,
+                phase2_b2_lifecycle,
+                artifacts,
+                tracked_ck3_pid=tracked_ck3_pid,
+                seed_contract=dict(
+                    phase2_seed_install_evidence["contract"]
+                ),
+            )
+            gameplay_acceptance_executed = (
+                evidence.get("gameplay_acceptance_executed") is True
+            )
+            phase2_final_capabilities = (
+                phase2_b2_lifecycle.pre_stop_capabilities
+            )
+            if evidence.get("phase2_b2_same_checkpoint_complete") is not True:
+                raise acceptance.RunnerError(
+                    "focused B2 scenario returned without complete A/B/C proof"
+                )
         elif phase2_live_batch:
             evidence = run_phase2_live_scenario(
                 title_navigation_service,
@@ -15659,14 +16760,40 @@ def run_cell(
                 )
         if phase2_supervisor is not None:
             try:
-                scenario_path = artifacts / "05_phase2_live_scenario.json"
+                scenario_path = artifacts / (
+                    "05_phase2_b2_same_checkpoint_scenario.json"
+                    if phase2_b2_same_checkpoint
+                    else "05_phase2_live_scenario.json"
+                )
                 if scenario_path.is_file():
                     scenario_value = json.loads(
                         scenario_path.read_text(encoding="utf-8")
                     )
                     if isinstance(scenario_value, dict):
                         evidence = scenario_value
-                if phase2_final_capabilities is None:
+                if phase2_b2_lifecycle is not None:
+                    native_cleanup = (
+                        prove_phase2_b2_matrix_native_session_cleanup(
+                            phase2_b2_lifecycle,
+                            artifacts,
+                            initial_pid=tracked_ck3_pid,
+                            initial_generation=(
+                                int(
+                                    phase2_initial_binding[
+                                        "connection_generation"
+                                    ]
+                                )
+                                if isinstance(phase2_initial_binding, dict)
+                                else None
+                            ),
+                            expected_pipe=native_bridge.pipe_name,
+                            scenario_evidence=evidence,
+                        )
+                    )
+                    phase2_final_capabilities = (
+                        phase2_b2_lifecycle.pre_stop_capabilities
+                    )
+                elif phase2_final_capabilities is None:
                     try:
                         final_capabilities_value = (
                             title_navigation_service.capabilities()
@@ -15675,19 +16802,24 @@ def run_cell(
                             phase2_final_capabilities = final_capabilities_value
                     except Exception:
                         phase2_final_capabilities = None
-                native_cleanup = stop_phase2_native_session_supervisor(
-                    phase2_supervisor,
-                    artifacts,
-                    initial_pid=tracked_ck3_pid,
-                    initial_generation=(
-                        int(phase2_initial_binding["connection_generation"])
-                        if isinstance(phase2_initial_binding, dict)
-                        else None
-                    ),
-                    expected_pipe=native_bridge.pipe_name,
-                    scenario_evidence=evidence,
-                    final_capabilities=phase2_final_capabilities,
-                )
+                if phase2_b2_lifecycle is None:
+                    native_cleanup = stop_phase2_native_session_supervisor(
+                        phase2_supervisor,
+                        artifacts,
+                        initial_pid=tracked_ck3_pid,
+                        initial_generation=(
+                            int(
+                                phase2_initial_binding[
+                                    "connection_generation"
+                                ]
+                            )
+                            if isinstance(phase2_initial_binding, dict)
+                            else None
+                        ),
+                        expected_pipe=native_bridge.pipe_name,
+                        scenario_evidence=evidence,
+                        final_capabilities=phase2_final_capabilities,
+                    )
             except Exception as error:
                 cleanup_path = (
                     artifacts / "09_phase2_native_session_cleanup.json"
@@ -15752,6 +16884,7 @@ def run_cell(
                 and not loader_smoke
                 and not phase2_live_batch
                 and not phase2_promo_capture
+                and not phase2_b2_same_checkpoint
             ):
                 stream.validate(final=True)
             else:
@@ -15806,10 +16939,15 @@ def run_cell(
             runtime_source_unchanged = (
                 isolated.tree_snapshot(runtime_source) == runtime_source_before
             )
+            selected_product_source_unchanged = (
+                isolated.tree_snapshot(selected_product_source)
+                == selected_product_source_before
+            )
             if (
                 not runtime_unchanged
                 or not source_unchanged
                 or not runtime_source_unchanged
+                or not selected_product_source_unchanged
             ):
                 raise acceptance.RunnerError("CK3 rewrote a runtime or source tree")
         except BaseException as error:
@@ -15863,11 +17001,23 @@ def run_cell(
             and recorder_evidence.get("missing_clean_spans") == []
         )
     )
+    phase2_b2_same_checkpoint_complete = (
+        phase2_b2_same_checkpoint
+        and result == "GREEN"
+        and evidence.get("result") == "GREEN"
+        and evidence.get("phase2_b2_same_checkpoint_complete") is True
+        and evidence.get("phase2_acceptance_complete") is False
+        and evidence.get("full_phase2_acceptance_claimed") is False
+    )
     gameplay_green_claimed = (
         result == "GREEN"
         and gameplay_acceptance_executed
         and (
             (phase2_promo_capture and phase2_promo_capture_complete)
+            or (
+                phase2_b2_same_checkpoint
+                and phase2_b2_same_checkpoint_complete
+            )
             or (
                 phase2_live_batch
                 and evidence.get("phase2_acceptance_complete") is True
@@ -15912,6 +17062,7 @@ def run_cell(
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
         "phase2_promo_capture": phase2_promo_capture,
+        "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
         "phase2_frontend_first": {
             "enabled": phase2_frontend_first_load_save_name is not None,
             "load_save_name": phase2_frontend_first_load_save_name,
@@ -15922,6 +17073,9 @@ def run_cell(
             ),
         },
         "phase2_promo_capture_complete": phase2_promo_capture_complete,
+        "phase2_b2_same_checkpoint_complete": (
+            phase2_b2_same_checkpoint_complete
+        ),
         "promo_capture_mode": (
             recorder.contract.mode
             if recorder is not None
@@ -15941,13 +17095,23 @@ def run_cell(
             else (
                 "not_applicable_phase2_promo_capture"
                 if phase2_promo_capture
-                else None
+                else (
+                    "matrix_owns_final_shutdown_no_post_stop_liveness_gate"
+                    if phase2_b2_same_checkpoint
+                    else None
+                )
             )
         ),
         "zg361_50_case_cell_executed": (
-            False
-            if loader_smoke or phase2_live_batch or phase2_promo_capture
-            else None
+            isinstance(evidence.get("incident_gameplay_action_cell"), dict)
+            and evidence["incident_gameplay_action_cell"].get("result")
+            == "GREEN"
+            if phase2_b2_same_checkpoint
+            else (
+                False
+                if loader_smoke or phase2_live_batch or phase2_promo_capture
+                else None
+            )
         ),
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
@@ -15957,6 +17121,16 @@ def run_cell(
         "runtime_trees_unchanged": runtime_unchanged,
         "source_tree_unchanged": source_unchanged,
         "runtime_source_tree_unchanged": runtime_source_unchanged,
+        "phase2_product_source_path": str(selected_product_source),
+        "phase2_product_projection": phase2_product_projection,
+        "phase2_product_projection_manifest": (
+            str(Path(phase2_product_projection_manifest).resolve())
+            if phase2_product_projection_manifest is not None
+            else None
+        ),
+        "phase2_product_source_tree_unchanged": (
+            selected_product_source_unchanged
+        ),
         **runtime_identity,
         "fixture_markers": stream.lines,
         "project_diagnostics": list(dict.fromkeys(diagnostics)),
@@ -16015,7 +17189,7 @@ def run_cell(
             "python": sys.version.split()[0],
             "desktop": (
                 "not_queried_mcp_only"
-                if loader_smoke or phase2_live_batch
+                if loader_smoke or phase2_live_batch or phase2_b2_same_checkpoint
                 else (
                     "producer_owned_visual_capture"
                     if phase2_promo_capture
@@ -16040,6 +17214,7 @@ def main(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_b2_same_checkpoint: bool = False,
     phase2_frontend_first_load_save_name: str | None = None,
     phase2_frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
@@ -16051,6 +17226,9 @@ def main(
     bridge_pipe: str | None = None,
     phase2_seed_contract: str | None = None,
     phase2_source_checkpoint_registry: str | None = None,
+    phase2_product_source: str | None = None,
+    phase2_product_projection: str = "broad",
+    phase2_product_projection_manifest: str | None = None,
 ) -> int:
     selected_runtime_modes = sum(
         bool(value)
@@ -16060,17 +17238,60 @@ def main(
             promo_camera_probe,
             loader_smoke,
             phase2_live_batch,
+            phase2_b2_same_checkpoint,
         )
     )
     if selected_runtime_modes > 1:
         raise acceptance.RunnerError(
             "--promo-capture, --phase2-promo-capture, --promo-camera-probe, "
-            "--loader-smoke and --phase2-live-batch are mutually exclusive"
+            "--loader-smoke, --phase2-live-batch and "
+            "--phase2-b2-same-checkpoint are mutually exclusive"
+        )
+    phase2_runtime_mode = (
+        phase2_live_batch
+        or phase2_promo_capture
+        or phase2_b2_same_checkpoint
+    )
+    if not isinstance(phase2_product_projection, str):
+        raise acceptance.RunnerError(
+            "phase-two product projection must be a string"
+        )
+    phase2_product_projection = phase2_product_projection.strip()
+    if (
+        not phase2_product_projection
+        or any(
+            character in phase2_product_projection
+            for character in ("/", "\\", "\x00")
+        )
+    ):
+        raise acceptance.RunnerError(
+            "phase-two product projection must be a path-free identifier"
+        )
+    if (
+        phase2_product_projection != "broad"
+        and phase2_product_projection_manifest is None
+    ):
+        raise acceptance.RunnerError(
+            "a named phase-two product projection requires its manifest"
+        )
+    if (
+        phase2_product_source is not None
+        or phase2_product_projection != "broad"
+        or phase2_product_projection_manifest is not None
+    ) and not phase2_runtime_mode:
+        raise acceptance.RunnerError(
+            "phase-two product projection options require a Phase2 runtime mode"
+        )
+    if phase2_product_source is not None and workshop_cache_source is not None:
+        raise acceptance.RunnerError(
+            "--phase2-product-source and --workshop-cache-source are mutually exclusive"
         )
     _validate_phase2_frontend_first_options(
         phase2_frontend_first_load_save_name,
         phase2_frontend_first_timeout_seconds,
-        phase2_runtime_mode=phase2_live_batch or phase2_promo_capture,
+        phase2_runtime_mode=(
+            phase2_runtime_mode
+        ),
     )
     # Do not let the sequel mode fall through to the legacy visual scenario.
     # A real phase-two choreography must be registered explicitly before any
@@ -16090,6 +17311,16 @@ def main(
     phase2_seed_contract_path = (
         Path(phase2_seed_contract).expanduser().resolve()
         if phase2_seed_contract
+        else None
+    )
+    phase2_product_source_path = (
+        Path(phase2_product_source).expanduser().resolve()
+        if phase2_product_source
+        else None
+    )
+    phase2_product_projection_manifest_path = (
+        Path(phase2_product_projection_manifest).expanduser().resolve()
+        if phase2_product_projection_manifest
         else None
     )
     source_checkpoint_registry_value: Mapping[str, object] | None = None
@@ -16126,7 +17357,11 @@ def main(
         require_visual_tools=require_visual_tools,
     )
     if preflight_only:
-        if phase2_live_batch or phase2_promo_capture:
+        if (
+            phase2_live_batch
+            or phase2_promo_capture
+            or phase2_b2_same_checkpoint
+        ):
             preflight_phase2_seed_contract(
                 contract_path=(
                     phase2_seed_contract_path
@@ -16135,6 +17370,14 @@ def main(
                 ),
                 runtime_source=runtime_source,
                 workshop_manifest=manifest_path,
+                product_only_runtime=(
+                    phase2_promo_capture or phase2_b2_same_checkpoint
+                ),
+                product_source=phase2_product_source_path,
+                product_projection=phase2_product_projection,
+                product_projection_manifest=(
+                    phase2_product_projection_manifest_path
+                ),
             )
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
         return 0
@@ -16187,6 +17430,7 @@ def main(
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
+        phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
         phase2_frontend_first_load_save_name=(
             phase2_frontend_first_load_save_name
         ),
@@ -16194,6 +17438,11 @@ def main(
             phase2_frontend_first_timeout_seconds
         ),
         runtime_source=runtime_source,
+        phase2_product_source=phase2_product_source_path,
+        phase2_product_projection=phase2_product_projection,
+        phase2_product_projection_manifest=(
+            phase2_product_projection_manifest_path
+        ),
         runtime_identity=runtime_identity,
         phase2_seed_contract_path=phase2_seed_contract_path,
         phase2_source_checkpoint_registry=(
@@ -16240,6 +17489,40 @@ def main(
         result = "RED"
         reason = "phase-two promo capture lacks a complete canonical eight-span proof"
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    b2_matrix_value = phase2_scenario.get("b2_same_checkpoint_matrix")
+    b2_matrix = b2_matrix_value if isinstance(b2_matrix_value, dict) else {}
+    phase2_b2_same_checkpoint_complete_claim = (
+        phase2_b2_same_checkpoint
+        and report.get("result") == "GREEN"
+        and report.get("phase2_b2_same_checkpoint") is True
+        and report.get("phase2_b2_same_checkpoint_complete") is True
+        and report.get("gameplay_acceptance_executed") is True
+        and report.get("gameplay_green_claimed") is True
+        and phase2_scenario.get("result") == "GREEN"
+        and phase2_scenario.get("phase2_b2_same_checkpoint_complete") is True
+        and phase2_scenario.get("phase2_acceptance_complete") is False
+        and phase2_scenario.get("full_phase2_acceptance_claimed") is False
+        and phase2_scenario.get("mcp_only") is True
+        and phase2_scenario.get("ocr_used") is False
+        and phase2_scenario.get("image_used") is False
+        and phase2_scenario.get("coordinates_used") is False
+        and phase2_scenario.get("test_decision_used") is False
+        and phase2_scenario.get("legacy_run_scenario_used") is False
+        and b2_matrix.get("result") == "GREEN"
+        and isinstance(b2_matrix.get("checks"), dict)
+        and b2_matrix["checks"].get("four_exact_restores") is True
+        and b2_matrix["checks"].get("all_managed_pids_dead") is True
+    )
+    if (
+        phase2_b2_same_checkpoint
+        and phase2_b2_same_checkpoint_complete_claim is not True
+    ):
+        result = "RED"
+        reason = (
+            "focused B2 report lacks a complete product-only same-checkpoint "
+            "A/B/C proof"
+        )
+        error_reason = f"{error_reason}; {reason}" if error_reason else reason
     protected_unchanged = False
     try:
         isolated.verify_protected_storage(
@@ -16252,6 +17535,11 @@ def main(
         result = "RED"
         reason = str(error) or type(error).__name__
         error_reason = f"{error_reason}; {reason}" if error_reason else reason
+    if result != "GREEN":
+        # The outer protected-storage postflight is part of the run result.
+        # Never retain or print a focused completion claim after that gate
+        # turns the overall attempt RED.
+        phase2_b2_same_checkpoint_complete_claim = False
     matrix = {
         "schema_version": 1,
         "result": result,
@@ -16259,9 +17547,15 @@ def main(
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
         "phase2_promo_capture": phase2_promo_capture,
+        "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
         "phase2_promo_capture_complete": phase2_promo_capture_complete_claim,
+        "phase2_b2_same_checkpoint_complete": (
+            phase2_b2_same_checkpoint_complete_claim
+        ),
         "loader_gate_executed": (
-            loader_smoke or phase2_live_batch or phase2_promo_capture
+            loader_smoke
+            or phase2_live_batch or phase2_promo_capture
+            or phase2_b2_same_checkpoint
         ),
         "native_session_liveness": report.get("native_session_liveness"),
         "native_session_liveness_scope": report.get(
@@ -16282,7 +17576,11 @@ def main(
                     else (
                         phase2_promo_capture_complete_claim
                         if phase2_promo_capture
-                        else report.get("gameplay_green_claimed") is True
+                        else (
+                            phase2_b2_same_checkpoint_complete_claim
+                            if phase2_b2_same_checkpoint
+                            else report.get("gameplay_green_claimed") is True
+                        )
                     )
                 )
             )
@@ -16304,7 +17602,11 @@ def main(
             else (
                 "ZHONGGUO 361 PHASE-TWO PROMO CAPTURE"
                 if phase2_promo_capture
-                else "ZHONGGUO 361 ACCEPTANCE"
+                else (
+                    "ZHONGGUO 361 PHASE-TWO B2 SAME-CHECKPOINT"
+                    if phase2_b2_same_checkpoint
+                    else "ZHONGGUO 361 ACCEPTANCE"
+                )
             )
         )
     )
@@ -16321,6 +17623,16 @@ def main(
     elif phase2_live_batch and matrix["gameplay_green_claimed"] is not True:
         print("phase-two acceptance    INCOMPLETE / RED")
         print("gameplay GREEN claim    NONE")
+    elif phase2_b2_same_checkpoint:
+        print(
+            "focused B2 A/B/C        "
+            + (
+                "GREEN"
+                if matrix["phase2_b2_same_checkpoint_complete"] is True
+                else "INCOMPLETE / RED"
+            )
+        )
+        print("full phase-two claim    NONE")
     print(f"RESULT: {result}")
     return 0 if result == "GREEN" else 1
 
@@ -16367,6 +17679,15 @@ if __name__ == "__main__":
             "run the strict MCP-only phase-two capability gate and independent "
             "scenario; four frozen read-only domain providers run before the "
             "still-missing named-widget/gameplay actions force RED"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-b2-same-checkpoint",
+        action="store_true",
+        help=(
+            "run the product-only focused B2 route: real Incident prelude, "
+            "one frozen PIP checkpoint, accept/negotiate/refuse, four "
+            "restores and five-PID cleanup; does not claim full Phase2"
         ),
     )
     parser.add_argument(
@@ -16419,6 +17740,25 @@ if __name__ == "__main__":
             "required by the Phase2 promo source preflight"
         ),
     )
+    parser.add_argument(
+        "--phase2-product-source",
+        help=(
+            "optional exact historical Phase2 product tree; it is mounted "
+            "independently from the canonical development/preflight source"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-product-projection",
+        default="broad",
+        help=(
+            "named hash-bound product projection (default: broad); non-broad "
+            "names require --phase2-product-projection-manifest"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-product-projection-manifest",
+        help="manifest for --phase2-product-projection",
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -16431,6 +17771,9 @@ if __name__ == "__main__":
                 promo_camera_probe=arguments.promo_camera_probe,
                 loader_smoke=arguments.loader_smoke,
                 phase2_live_batch=arguments.phase2_live_batch,
+                phase2_b2_same_checkpoint=(
+                    arguments.phase2_b2_same_checkpoint
+                ),
                 phase2_frontend_first_load_save_name=(
                     arguments.phase2_frontend_first_load_save_name
                 ),
@@ -16445,6 +17788,13 @@ if __name__ == "__main__":
                 phase2_seed_contract=arguments.phase2_seed_contract,
                 phase2_source_checkpoint_registry=(
                     arguments.phase2_source_checkpoint_registry
+                ),
+                phase2_product_source=arguments.phase2_product_source,
+                phase2_product_projection=(
+                    arguments.phase2_product_projection
+                ),
+                phase2_product_projection_manifest=(
+                    arguments.phase2_product_projection_manifest
                 ),
             )
         )

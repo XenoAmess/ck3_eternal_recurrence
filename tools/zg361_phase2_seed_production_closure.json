@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "zg361_phase2_seed_entry_production_closure",
   "description": "Callback-closed production product for the checked-in five-root Phase-2 seed fixture, layered over Incident-X r3.",
-  "readiness": "paused-seed-live-green",
+  "readiness": "static-ready-b2-seed-recapture-required",
   "baseline": {
     "root": "_runtime/phase2-incident-x-production-closure-20260904-r3",
     "source": "source",
@@ -21,14 +21,113 @@
   },
   "fixture": {
     "event_file": "tools/fixtures/zg361_phase2_seed_bootstrap/events/zga_phase2_seed_events.txt",
-    "bytes": 4503,
-    "sha256": "b35cf0c0e32932ea136da71f8d91bef4dbdcddf681f230ac6822cee0c30fa853",
+    "bytes": 6878,
+    "sha256": "a0d31bf3cee077e431fe4ac05d3351643d8a3395bad42e2881a58f24b06d6492",
     "ordered_root_effects": [
       "zg361_b1_open_cycle_effect",
       "zg361_ip_open_x_case_effect",
       "zg361_we_open_portfolio_effect",
-      "zg361_b2_on_result_frozen_effect",
-      "zg361_b2_on_notice_delivered_effect"
+      "zg361_b2_on_result_frozen_effect"
+    ]
+  },
+  "phase_core_overlay": {
+    "source_commit": "193887eb0e1673d85215b68d87d07d4ab1136d4e",
+    "source_blob": "1bacce6d27ea242e19bbacb8866ddf7d280c6933",
+    "source_sha256": "8d424d125fc04e37cccc4c1828bc29080b5ed5e8ee78b412055d5ccbacc3a914",
+    "replaces": "common/scripted_effects/zg361_effects.txt",
+    "replaced_bytes": 50219,
+    "replaced_sha256": "5cb03f9c75d9a31c889d246516a21e20b89cbd33fe8666fdea7ff634d7092342",
+    "replaced_definition_names": [
+      "zg361_annual_review_effect",
+      "zg361_run_review_effect",
+      "zg361_compute_kpi_effect",
+      "zg361_rank_cohort_effect",
+      "zg361_assign_pending_grades_effect",
+      "zg361_calibrate_promote_effect",
+      "zg361_calibrate_demote_effect",
+      "zg361_calibrate_exposure_effect",
+      "zg361_apply_pending_grades_effect",
+      "zg361_freeze_result_case_effect",
+      "zg361_apply_grade_effect",
+      "zg361_snapshot_player_result_effect",
+      "zg361_grade_375_apply_effect",
+      "zg361_grade_35_apply_effect",
+      "zg361_grade_325_apply_effect",
+      "zg361_deliver_325_notice_effect",
+      "zg361_settle_delivered_325_effect",
+      "zg361_appeal_regrade_to_35_effect",
+      "zg361_apply_receipted_appeal_regrade_effect",
+      "zg361_publish_scoreboard_effect",
+      "zg361_process_elimination_effect",
+      "zg361_ai_elimination_effect",
+      "zg361_eliminate_purge_effect",
+      "zg361_eliminate_stepdown_effect",
+      "zg361_eliminate_demote_effect",
+      "zg361_eliminate_extend_effect"
+    ],
+    "files": [
+      {
+        "source": "tools/frozen/zg361_phase2_b2_core/common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt",
+        "path": "common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt",
+        "definitions": 3,
+        "definition_names": [
+          "zg361_appeal_regrade_to_35_effect",
+          "zg361_apply_receipted_appeal_regrade_effect",
+          "zg361_publish_scoreboard_effect"
+        ],
+        "bytes": 9380,
+        "sha256": "181e722cd087877be18155b7dd029e4a11ea644d43966d4cc0d0170578dab45a"
+      },
+      {
+        "source": "tools/frozen/zg361_phase2_b2_core/common/scripted_effects/zg361_core_elimination_effects.txt",
+        "path": "common/scripted_effects/zg361_core_elimination_effects.txt",
+        "definitions": 6,
+        "definition_names": [
+          "zg361_process_elimination_effect",
+          "zg361_ai_elimination_effect",
+          "zg361_eliminate_purge_effect",
+          "zg361_eliminate_stepdown_effect",
+          "zg361_eliminate_demote_effect",
+          "zg361_eliminate_extend_effect"
+        ],
+        "bytes": 5120,
+        "sha256": "387c6290d83a9e4d921698afe32192f0cda9efacf58b64b49075edb4ca026d0b"
+      },
+      {
+        "source": "tools/frozen/zg361_phase2_b2_core/common/scripted_effects/zg361_core_result_delivery_effects.txt",
+        "path": "common/scripted_effects/zg361_core_result_delivery_effects.txt",
+        "definitions": 8,
+        "definition_names": [
+          "zg361_freeze_result_case_effect",
+          "zg361_apply_grade_effect",
+          "zg361_snapshot_player_result_effect",
+          "zg361_grade_375_apply_effect",
+          "zg361_grade_35_apply_effect",
+          "zg361_grade_325_apply_effect",
+          "zg361_deliver_325_notice_effect",
+          "zg361_settle_delivered_325_effect"
+        ],
+        "bytes": 16885,
+        "sha256": "a1c287e080309ecd763c278620fba95fff1aa7ac31524e53b7382a94663e06c7"
+      },
+      {
+        "source": "tools/frozen/zg361_phase2_b2_core/common/scripted_effects/zg361_core_review_cycle_effects.txt",
+        "path": "common/scripted_effects/zg361_core_review_cycle_effects.txt",
+        "definitions": 9,
+        "definition_names": [
+          "zg361_annual_review_effect",
+          "zg361_run_review_effect",
+          "zg361_compute_kpi_effect",
+          "zg361_rank_cohort_effect",
+          "zg361_assign_pending_grades_effect",
+          "zg361_calibrate_promote_effect",
+          "zg361_calibrate_demote_effect",
+          "zg361_calibrate_exposure_effect",
+          "zg361_apply_pending_grades_effect"
+        ],
+        "bytes": 19840,
+        "sha256": "9c2ee4cbf01e712ea8cb124c54eb03f7c31dd6921d458a4b932697e7a89756d6"
+      }
     ]
   },
   "expansion": {
@@ -57,18 +156,18 @@
     ]
   },
   "candidate": {
-    "projection": "phase2-seed-entry-production-closure-20260904-r6",
-    "expected_file_count": 249,
-    "expected_overlay_file_count": 115,
-    "expected_effect_files": 72,
+    "projection": "phase2-seed-entry-production-closure-20260904-r7",
+    "expected_file_count": 252,
+    "expected_overlay_file_count": 119,
+    "expected_effect_files": 76,
     "expected_inherited_hotfix_files": 1,
     "expected_event_files": 35,
     "expected_court_position_files": 2,
     "expected_localization_files": 5,
     "expected_new_localization_keys": 28,
     "expected_five_root_closure": {
-      "effects": 2042,
-      "events": 580,
+      "effects": 2112,
+      "events": 589,
       "triggers": 6,
       "values": 0,
       "court_positions": 2
@@ -95,14 +194,14 @@
       "zg361_is_current_liege_review_record_trigger",
       "zg361_is_elimination_candidate_trigger"
     ],
-    "expected_bytes": 12098441,
-    "source_tree_sha256": "cdbcf82eabdc0acfb94a61c90959777485672c99f197b8573c35e7a1084a98bd",
-    "formal_overlay_tree_sha256": "8f905d02762fb5b2e422dfa389b8231e97b3745441827e270ed7fe30cb69cfd9",
-    "file_list_sha256": "7b2e5178c9327e1236806243ebb044c543c5e2a6ff7dc03917391a736a58cbe3",
-    "projection_manifest_sha256": "d16c1911cc0a76cb4d8df63d9a6e6d1e2c3f9ec57ea1bdd40ef75900a0c9bb30",
-    "ck3_launch": "RUN_BY_EXTERNAL_SEED_CAPTURE_R9",
-    "live_status": "paused_seed_ready",
-    "live_evidence": {
+    "expected_bytes": 12099447,
+    "source_tree_sha256": "5c570b0a2d044f33bfa1b83579e0b64c26bffb94cb52af1fca521afd73b65021",
+    "formal_overlay_tree_sha256": "b3b2eb2289491570f69f0ae2b699cb5a195441ab3af9d4d3ce9a015593901c15",
+    "file_list_sha256": "4103f444fa14403b5df8821e1a4a2d84f4ec44d583e68ee7fb0b775fb5d311de",
+    "projection_manifest_sha256": "cdb7815c09c61ee43b945982417adf3f6fae8df1184a11e90a212214b4c5fe77",
+    "ck3_launch": "PENDING_EXTERNAL_B2_SEED_RECAPTURE",
+    "live_status": "pending_b2_seed_recapture",
+    "prior_live_evidence": {
       "path": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-seed-r9-20260904-074005/artifacts-live/runner-report.json",
       "sha256": "32186480aaaefb2f3f10d8606bd6d44e4fff6db8a82a7c34d8121b9594d43ba5",
       "result": "GREEN",
@@ -114,8 +213,8 @@
     }
   },
   "overlay": {
-    "bytes": 3195132,
-    "inventory_sha256": "00cc8d9ef5f21025cca60390692de8c9b0438c34eee8d2ba25530eeafc8e2d44",
+    "bytes": 3246357,
+    "inventory_sha256": "cfd07f9c7d39a6806c5417c9f8197408e82819ae864535493fe8d9881fe2e09d",
     "files": []
   },
   "forbidden_paths": [

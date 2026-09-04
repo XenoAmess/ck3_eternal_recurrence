@@ -109,13 +109,13 @@ def main() -> int:
     maybe_begin = top_level_block(effects, "zga_phase2_seed_maybe_begin_effect")
     assert "this = character:han_6875" in maybe_begin
     assert "is_ai = no" in maybe_begin
-    assert "NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }" in maybe_begin
-    assert "add_character_flag = zga_phase2_seed_bootstrap_started" in maybe_begin
+    assert "NOT = { has_character_flag = zga_phase2_b2_seed_bootstrap_started }" in maybe_begin
+    assert "add_character_flag = zga_phase2_b2_seed_bootstrap_started" in maybe_begin
     assert "trigger_event = zga_phase2_seed.100" in maybe_begin
     assert maybe_begin.index(
-        "add_character_flag = zga_phase2_seed_bootstrap_started"
+        "add_character_flag = zga_phase2_b2_seed_bootstrap_started"
     ) < maybe_begin.index("trigger_event = zga_phase2_seed.100")
-    assert "remove_character_flag = zga_phase2_seed_bootstrap_started" not in fixture_text
+    assert "remove_character_flag = zga_phase2_b2_seed_bootstrap_started" not in fixture_text
     assert "save_scope_as = zga_phase2_seed_player" in effects
     assert "liege = {" in effects
     assert "trigger_event = zga_phase2_seed.101" in effects
@@ -127,7 +127,27 @@ def main() -> int:
     assert "zg361_we_open_portfolio_effect = {" in manager
     subject = top_level_block(events, "zga_phase2_seed.102")
     assert "zg361_b2_on_result_frozen_effect = yes" in subject
-    assert "zg361_b2_on_notice_delivered_effect = yes" in subject
+    assert "var:zg361_result_case_state = 2" in subject
+    delivered_gate = subject[
+        subject.index("var:zg361_result_case_state = 3", subject.index("zg361_b2_on_result_frozen_effect = yes")) :
+    ]
+    assert (
+        "var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial"
+        in delivered_gate
+    )
+    assert "trigger_event = { id = zga_phase2_seed.103 days = 1 }" in subject
+    assert "trigger_event = zga_phase2_seed.103" in subject
+    assert not re.search(
+        r"(?m)^\s*trigger_event\s*=\s*zga_phase2_seed\.1\s*$", subject
+    )
+    witness_poll = top_level_block(events, "zga_phase2_seed.103")
+    assert "hidden = yes" in witness_poll
+    assert "var:zg361_result_case_state = 2" in witness_poll
+    assert "var:zg361_result_case_state = 3" in witness_poll
+    assert "zg361_b2_on_notice_delivered_effect = yes" not in witness_poll
+    assert "var:zg361_b2_notice_state = 3" in witness_poll
+    assert "trigger_event = { id = zga_phase2_seed.103 days = 1 }" in witness_poll
+    assert "trigger_event = zga_phase2_seed.1" in witness_poll
 
     final_event = top_level_block(events, "zga_phase2_seed.1")
     assert "hidden = yes" not in final_event
@@ -135,7 +155,7 @@ def main() -> int:
     assert len(re.findall(r"(?m)^\s*option\s*=\s*\{", final_event)) == 1
     for scope_name in REQUIRED_SCOPES:
         assert final_event.count(f"save_scope_as = {scope_name}") == 1
-    assert "trigger_event = zga_phase2_seed.1" in subject
+    assert "trigger_event = zga_phase2_seed.1" in witness_poll
 
     load_safe_bridge = top_level_block(
         scripted_guis, "zga_phase2_seed_bootstrap_bridge_gui"
@@ -143,7 +163,7 @@ def main() -> int:
     assert "scope = character" in load_safe_bridge
     assert "this = character:han_6875" in load_safe_bridge
     assert "is_ai = no" in load_safe_bridge
-    assert "NOT = { has_character_flag = zga_phase2_seed_bootstrap_started }" in load_safe_bridge
+    assert "NOT = { has_character_flag = zga_phase2_b2_seed_bootstrap_started }" in load_safe_bridge
     assert "zga_phase2_seed_maybe_begin_effect = yes" in load_safe_bridge
     assert 'name = "zga_phase2_seed_bridge_window"' in bridge_gui
     assert "size = { 1 1 }" in bridge_gui

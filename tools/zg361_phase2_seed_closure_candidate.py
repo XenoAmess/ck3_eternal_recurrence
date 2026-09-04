@@ -560,6 +560,113 @@ def inherited_hotfix_rows(
     return rows
 
 
+def phase_core_overlay_rows(
+    contract: Mapping[str, Any],
+) -> tuple[list[dict[str, object]], dict[str, object]]:
+    """Load the hash-bound B2-era core as purpose shards.
+
+    The current canonical core already contains later Manager/P2C callbacks and
+    therefore cannot be copied into this earlier closure.  These four reviewed
+    shards preserve the exact B2-stage provider bodies while keeping every
+    loaded effect owner below the B2 ten-definition target.
+    """
+
+    phase_core = _mapping(contract.get("phase_core_overlay"), "phase_core_overlay")
+    source_commit = _string(
+        phase_core.get("source_commit"), "phase_core_overlay.source_commit"
+    )
+    source_blob = _string(
+        phase_core.get("source_blob"), "phase_core_overlay.source_blob"
+    )
+    source_sha256 = _digest(
+        phase_core.get("source_sha256"), "phase_core_overlay.source_sha256"
+    )
+    replaced_path = _relative(
+        phase_core.get("replaces"), "phase_core_overlay.replaces"
+    )
+    replaced_bytes = _integer(
+        phase_core.get("replaced_bytes"), "phase_core_overlay.replaced_bytes"
+    )
+    replaced_sha256 = _digest(
+        phase_core.get("replaced_sha256"),
+        "phase_core_overlay.replaced_sha256",
+    )
+    replaced_definitions = _strings(
+        phase_core.get("replaced_definition_names"),
+        "phase_core_overlay.replaced_definition_names",
+    )
+    raw_files = phase_core.get("files")
+    if not isinstance(raw_files, list) or not raw_files or not all(
+        isinstance(row, dict) for row in raw_files
+    ):
+        raise SeedClosureError("phase_core_overlay.files must be a non-empty list")
+    rows: list[dict[str, object]] = []
+    all_names: list[str] = []
+    for index, raw_row in enumerate(raw_files):
+        row = _mapping(raw_row, f"phase_core_overlay.files[{index}]")
+        source = _relative(row.get("source"), f"phase core file {index}.source")
+        relative = _relative(row.get("path"), f"phase core file {index}.path")
+        if not source.startswith("tools/frozen/zg361_phase2_b2_core/"):
+            raise SeedClosureError(f"phase core source escaped frozen authority: {source}")
+        if not relative.startswith("common/scripted_effects/"):
+            raise SeedClosureError(f"phase core destination is not an effect owner: {relative}")
+        source_path = ROOT / PurePosixPath(source)
+        if not source_path.is_file() or source_path.is_symlink():
+            raise SeedClosureError(f"phase core source is missing or symlinked: {source_path}")
+        data, blocks = closure_utils._blocks(source_path, source)
+        names = tuple(block.name for block in blocks)
+        expected_names = _strings(
+            row.get("definition_names"),
+            f"phase core file {index}.definition_names",
+        )
+        expected_definitions = _integer(
+            row.get("definitions"), f"phase core file {index}.definitions"
+        )
+        expected_bytes = _integer(
+            row.get("bytes"), f"phase core file {index}.bytes"
+        )
+        expected_sha = _digest(
+            row.get("sha256"), f"phase core file {index}.sha256"
+        )
+        if (
+            names != expected_names
+            or len(names) != expected_definitions
+            or len(data) != expected_bytes
+            or sha256_bytes(data) != expected_sha
+        ):
+            raise SeedClosureError(f"phase core shard identity drifted: {source}")
+        all_names.extend(names)
+        rows.append(
+            {
+                "path": relative,
+                "source_path": source,
+                "kind": "effect",
+                "definitions": len(names),
+                "definition_names": list(names),
+                "bytes": len(data),
+                "sha256": sha256_bytes(data),
+                "phase_core_overlay": True,
+            }
+        )
+    if len(all_names) != len(set(all_names)) or set(all_names) != set(replaced_definitions):
+        raise SeedClosureError(
+            "phase core shard provider union differs from the replaced owner"
+        )
+    return rows, {
+        "status": "GREEN",
+        "source_commit": source_commit,
+        "source_blob": source_blob,
+        "source_sha256": source_sha256,
+        "replaces": replaced_path,
+        "replaced_bytes": replaced_bytes,
+        "replaced_sha256": replaced_sha256,
+        "replaced_definition_names": list(replaced_definitions),
+        "shards": len(rows),
+        "definitions": len(all_names),
+        "max_definitions_per_shard": max(int(row["definitions"]) for row in rows),
+    }
+
+
 def _localization_provider_map(root: Path) -> tuple[dict[str, str], dict[str, list[str]]]:
     providers: dict[str, str] = {}
     duplicates: dict[str, list[str]] = {}
@@ -744,6 +851,7 @@ def select_overlay(
     hotfix_rows = inherited_hotfix_rows(
         canonical_source, baseline_source, contract
     )
+    phase_core_rows, phase_core_check = phase_core_overlay_rows(contract)
     selected_paths = {str(row["path"]) for row in rows}
     hotfix_collisions = sorted(
         str(row["path"]) for row in hotfix_rows if row["path"] in selected_paths
@@ -752,6 +860,17 @@ def select_overlay(
         raise SeedClosureError(
             f"inherited hotfix duplicated a new closure owner: {hotfix_collisions}"
         )
+    phase_core_collisions = sorted(
+        str(row["path"])
+        for row in phase_core_rows
+        if row["path"] in selected_paths
+        or any(row["path"] == hotfix["path"] for hotfix in hotfix_rows)
+    )
+    if phase_core_collisions:
+        raise SeedClosureError(
+            f"phase core shard duplicated another overlay owner: {phase_core_collisions}"
+        )
+    rows.extend(phase_core_rows)
     rows.extend(hotfix_rows)
     delta_loc_keys, loc_rows = localization_requirements(
         canonical_source,
@@ -822,6 +941,7 @@ def select_overlay(
         "event_ids": sorted(delta_events),
         "court_position_names": sorted(delta_positions),
         "inherited_hotfix_files": [dict(row) for row in hotfix_rows],
+        "phase_core_overlay": phase_core_check,
         "reachable_triggers": sorted(closure.triggers),
     }
 
@@ -1289,7 +1409,36 @@ def copy_overlay(
     canonical_source: Path,
     candidate_source: Path,
     rows: Sequence[Mapping[str, object]],
+    contract: Mapping[str, Any],
 ) -> None:
+    phase_core = _mapping(contract.get("phase_core_overlay"), "phase_core_overlay")
+    replaced_relative = _relative(
+        phase_core.get("replaces"), "phase_core_overlay.replaces"
+    )
+    replaced_path = candidate_source / PurePosixPath(replaced_relative)
+    if not replaced_path.is_file() or replaced_path.is_symlink():
+        raise SeedClosureError(
+            f"phase core replaced owner is missing or symlinked: {replaced_path}"
+        )
+    replaced_data, replaced_blocks = closure_utils._blocks(
+        replaced_path, replaced_relative
+    )
+    expected_replaced_names = _strings(
+        phase_core.get("replaced_definition_names"),
+        "phase_core_overlay.replaced_definition_names",
+    )
+    if (
+        len(replaced_data)
+        != _integer(phase_core.get("replaced_bytes"), "phase_core_overlay.replaced_bytes")
+        or sha256_bytes(replaced_data)
+        != _digest(
+            phase_core.get("replaced_sha256"),
+            "phase_core_overlay.replaced_sha256",
+        )
+        or tuple(block.name for block in replaced_blocks) != expected_replaced_names
+    ):
+        raise SeedClosureError("phase core replaced owner identity drifted")
+    replaced_path.unlink()
     baseline_paths = {
         path.relative_to(candidate_source).as_posix()
         for path in candidate_source.rglob("*")
@@ -1307,7 +1456,11 @@ def copy_overlay(
         )
     for row in rows:
         relative = str(row["path"])
-        source = canonical_source / PurePosixPath(relative)
+        source = (
+            ROOT / PurePosixPath(str(row["source_path"]))
+            if row.get("phase_core_overlay") is True
+            else canonical_source / PurePosixPath(relative)
+        )
         if not source.is_file() or source.is_symlink():
             raise SeedClosureError(f"canonical purpose shard is missing or symlinked: {source}")
         data = source.read_bytes()
@@ -1429,7 +1582,7 @@ def materialize(
     except ProductProjectionError as error:
         raise SeedClosureError(str(error)) from error
     write_json(output / "baseline-materialization.json", baseline_receipt)
-    copy_overlay(canonical_source, candidate_source, overlay_rows)
+    copy_overlay(canonical_source, candidate_source, overlay_rows, contract)
 
     expected_file_count = _integer(
         candidate_contract.get("expected_file_count"), "candidate.expected_file_count"
@@ -1557,7 +1710,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--projection-name",
-        default="phase2-seed-entry-production-closure-20260904-r6",
+        default="phase2-seed-entry-production-closure-20260904-r7",
     )
     parser.add_argument("--contract", type=Path, default=CONTRACT_PATH)
     parser.add_argument("--baseline-root", type=Path)

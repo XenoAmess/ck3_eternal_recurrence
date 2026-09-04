@@ -40,6 +40,7 @@ INCIDENT_TRIGGER_OPTION_NUMBER: Final = 1
 INCIDENT_RESULT_EVENT_DEFINITION_KEY: Final = "zg361.4"
 INCIDENT_RESULT_OPTION_NUMBER: Final = 1
 NOTICE_OWNER_SCOPE_NAME: Final = "zg361_notice_prompt_owner"
+SELECT_EVENT_OPTION_CAPABILITY: Final = "game.command.select-event-option-N"
 _EVENT_ROUTE: Final = {
     INCIDENT_TRIGGER_EVENT_DEFINITION_KEY: INCIDENT_TRIGGER_OPTION_NUMBER,
     INCIDENT_RESULT_EVENT_DEFINITION_KEY: INCIDENT_RESULT_OPTION_NUMBER,
@@ -527,12 +528,12 @@ def run_incident_xyz_gameplay_action_cell(
         required_capabilities = {
             QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
             QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+            SELECT_EVENT_OPTION_CAPABILITY,
         }
         required_steps = {
             "pause-map",
             "resume-map",
             "set-speed-1",
-            "select-event-option-1",
         }
         if not (
             isinstance(bridge_capabilities, list)
@@ -597,6 +598,9 @@ def run_incident_xyz_gameplay_action_cell(
                 except ValueError as error:
                     fail(str(error))
                 event_key = str(identity["event_definition_key"])
+                observations = evidence["event_observations"]
+                assert isinstance(observations, list)
+                observations.append(identity)
                 if not entry_selected and event_key != INCIDENT_TRIGGER_EVENT_DEFINITION_KEY:
                     fail("Incident action cell did not start on the exact zg361.50 event")
                 if entry_selected and event_key == INCIDENT_TRIGGER_EVENT_DEFINITION_KEY:
@@ -604,9 +608,6 @@ def run_incident_xyz_gameplay_action_cell(
                 if result_selected and event_key == INCIDENT_RESULT_EVENT_DEFINITION_KEY:
                     fail("zg361.4 reappeared after its bound selection")
 
-                observations = evidence["event_observations"]
-                assert isinstance(observations, list)
-                observations.append(identity)
                 option_number = int(identity["option_number"])
                 selected_revision = int(
                     identity["snapshot_binding"]["revision"]  # type: ignore[index]
