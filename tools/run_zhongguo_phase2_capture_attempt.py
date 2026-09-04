@@ -3,9 +3,10 @@
 
 The default mode is no-launch: it creates only an append-only attempt manifest.
 Passing ``--execute`` is the sole launch boundary and is refused until the
-observer, canonical ready seed, media receipt, bridge pair, and eight-handler
-contract are all bound.  The delegated acceptance runner owns CK3, recorder,
-timeouts, and cleanup; this wrapper never invokes FFmpeg.
+observer, canonical ready seed, source-checkpoint registry, exact product
+projection, media receipt, bridge pair, and eight-handler contract are all
+bound.  The delegated acceptance runner owns CK3, recorder, timeouts, and
+cleanup; this wrapper never invokes FFmpeg.
 """
 
 from __future__ import annotations
@@ -28,6 +29,10 @@ from zhongguo_phase2_promo_producer import (
     PHASE2_PROMO_CAPTURE_MODE,
     PHASE2_PROMO_CAPTURE_SPAN_MAP,
 )
+from zhongguo_phase2_source_checkpoint_provider import (
+    Phase2SourceCheckpointError,
+    Phase2SourceCheckpointProvider,
+)
 
 
 KIND = "zg361_phase2_capture_attempt_plan"
@@ -36,9 +41,9 @@ LEGACY_SEED_SHA256 = (
     "98687d21fe816a4a42d1d6bef85cea9d8a0ed9e74d53cdeadf653b0d3a57ecb3"
 )
 LOADED_SEED_ARTIFACT = "cell/04_phase2_seed_loaded.json"
-CAPTURE_TIMELINE_ARTIFACT = "cell/promo/timeline.json"
-CAPTURE_REPORT_ARTIFACT = "cell/report.json"
-EVIDENCE_INDEX_ARTIFACT = "cell/evidence-index.json"
+CAPTURE_TIMELINE_ARTIFACT = "cell/promo/capture-timeline.json"
+CAPTURE_REPORT_ARTIFACT = "report.json"
+EVIDENCE_INDEX_ARTIFACT = "evidence-index.json"
 _GIT_SHA = re.compile(r"^[0-9a-fA-F]{40}$")
 
 
@@ -124,6 +129,67 @@ def _seed_gate(path: Path | None) -> tuple[dict[str, object], list[str]]:
     return row, blockers
 
 
+def _source_checkpoint_gate(
+    path: Path | None,
+    *,
+    seed_contract: Path | None,
+) -> tuple[dict[str, object], list[str]]:
+    row: dict[str, object] = {"required": True, "record": None, "checks": {}}
+    if path is None or not path.is_file():
+        return row, ["source_checkpoint_registry_pending"]
+    if seed_contract is None or not seed_contract.is_file():
+        return row, ["source_checkpoint_registry_seed_pending"]
+    seed = _json(seed_contract)
+    source = seed.get("source") if isinstance(seed.get("source"), Mapping) else {}
+    seed_sha = str(source.get("sha256", "")).lower()
+    expected_lineage = (
+        f"zg361-phase2-seed-{seed_sha}"
+        if re.fullmatch(r"[0-9a-f]{64}", seed_sha)
+        else None
+    )
+    checks = {
+        "registry_preflight_green": False,
+        "seed_lineage_bound": expected_lineage is not None,
+    }
+    error: dict[str, object] | None = None
+    try:
+        preflight = Phase2SourceCheckpointProvider(
+            _json(path),
+            restore_registered_checkpoint=lambda _checkpoint: {},
+            expected_seed_lineage_id=expected_lineage,
+        ).preflight()
+        checks["registry_preflight_green"] = preflight.get("result") == "GREEN"
+    except Phase2SourceCheckpointError as caught:
+        error = caught.evidence
+    row.update(record=_record(path), checks=checks, error=error)
+    return row, ([] if all(checks.values()) else ["source_checkpoint_registry_not_green"])
+
+
+def _product_projection_gate(
+    source: Path | None,
+    *,
+    projection: str | None,
+    manifest: Path | None,
+) -> tuple[dict[str, object], list[str]]:
+    resolved = None if source is None else source.expanduser().resolve()
+    projection_name = projection.strip() if isinstance(projection, str) else ""
+    named_manifest_required = bool(projection_name and projection_name != "broad")
+    manifest_present = manifest is not None and manifest.expanduser().resolve().is_file()
+    checks = {
+        "product_source_directory": resolved is not None and resolved.is_dir(),
+        "projection_named": bool(projection_name),
+        "projection_manifest_present": not named_manifest_required or manifest_present,
+    }
+    row: dict[str, object] = {
+        "required": True,
+        "source": None if resolved is None else str(resolved),
+        "projection": projection_name or None,
+        "manifest": None if not manifest_present else _record(manifest.expanduser().resolve()),
+        "checks": checks,
+    }
+    return row, ([] if all(checks.values()) else ["product_projection_not_bound"])
+
+
 def _observer_gate(path: Path | None) -> tuple[dict[str, object], list[str]]:
     row: dict[str, object] = {"required": True, "record": None, "checks": {}}
     if path is None or not path.is_file():
@@ -170,7 +236,8 @@ def _media_gate(
         "kind": payload.get("kind") == MEDIA_KIND,
         "result_green": payload.get("result") == "GREEN",
         "unexpired": expires is not None and now < expires,
-        "toolchain_v021": promo.get("version") == "0.2.1",
+        "toolchain_version_bound": isinstance(promo.get("version"), str)
+        and bool(str(promo["version"]).strip()),
         "toolchain_clean": promo.get("clean") is True,
         "toolchain_at_origin_main": isinstance(promo.get("head"), str)
         and promo.get("head") == promo.get("origin_main"),
@@ -204,6 +271,11 @@ def prepare_plan(
     expected_media_preflight_sha256: str | None,
     bridge_dll: Path | None,
     bridge_injector: Path | None,
+    source_checkpoint_registry: Path | None = None,
+    product_source: Path | None = None,
+    product_projection: str | None = None,
+    product_projection_manifest: Path | None = None,
+    frontend_first_load_save_name: str | None = None,
     now: dt.datetime | None = None,
 ) -> tuple[dict[str, object], Path]:
     attempt = attempt_dir.expanduser().resolve()
@@ -222,6 +294,17 @@ def prepare_plan(
     observer, new = _observer_gate(observer_artifact)
     blockers.extend(new)
     seed, new = _seed_gate(seed_contract)
+    blockers.extend(new)
+    source_checkpoints, new = _source_checkpoint_gate(
+        source_checkpoint_registry,
+        seed_contract=seed_contract,
+    )
+    blockers.extend(new)
+    product, new = _product_projection_gate(
+        product_source,
+        projection=product_projection,
+        manifest=product_projection_manifest,
+    )
     blockers.extend(new)
     media, new = _media_gate(
         media_preflight_report,
@@ -277,7 +360,28 @@ def prepare_plan(
         "<PENDING>" if bridge_injector is None else str(bridge_injector.expanduser().resolve()),
         "--bridge-pipe",
         pipe,
+        "--phase2-source-checkpoint-registry",
+        (
+            "<PENDING>"
+            if source_checkpoint_registry is None
+            else str(source_checkpoint_registry.expanduser().resolve())
+        ),
+        "--phase2-product-source",
+        "<PENDING>" if product_source is None else str(product_source.expanduser().resolve()),
+        "--phase2-product-projection",
+        product_projection or "<PENDING>",
     ]
+    if product_projection_manifest is not None:
+        command.extend(
+            [
+                "--phase2-product-projection-manifest",
+                str(product_projection_manifest.expanduser().resolve()),
+            ]
+        )
+    if frontend_first_load_save_name:
+        command.extend(
+            ["--phase2-frontend-first-load-save-name", frontend_first_load_save_name]
+        )
     status = "ready-to-run" if not blockers else "waiting-for-bound-inputs"
     result = "GREEN" if not blockers else "RED"
     manifest: dict[str, object] = {
@@ -308,6 +412,8 @@ def prepare_plan(
         "inputs": {
             "completion_observer": observer,
             "seed_contract": seed,
+            "source_checkpoint_registry": source_checkpoints,
+            "product_projection": product,
             "media_preflight": media,
             "runtime_dependencies": dependencies,
         },
@@ -393,6 +499,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--expected-media-preflight-sha256")
     parser.add_argument("--bridge-dll", type=Path)
     parser.add_argument("--bridge-injector", type=Path)
+    parser.add_argument("--source-checkpoint-registry", type=Path)
+    parser.add_argument("--product-source", type=Path)
+    parser.add_argument("--product-projection")
+    parser.add_argument("--product-projection-manifest", type=Path)
+    parser.add_argument("--frontend-first-load-save-name")
     parser.add_argument("--execute", action="store_true")
     return parser
 
@@ -411,6 +522,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             expected_media_preflight_sha256=args.expected_media_preflight_sha256,
             bridge_dll=args.bridge_dll,
             bridge_injector=args.bridge_injector,
+            source_checkpoint_registry=args.source_checkpoint_registry,
+            product_source=args.product_source,
+            product_projection=args.product_projection,
+            product_projection_manifest=args.product_projection_manifest,
+            frontend_first_load_save_name=args.frontend_first_load_save_name,
         )
     except PlanError as error:
         print(f"PHASE2 CAPTURE PLAN ERROR: {error}", file=sys.stderr)
