@@ -109,6 +109,24 @@ KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT = {
     "selected_option_number": 1,
     "selected_native_option_index": 0,
 }
+KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT = {
+    # After the exact B2 PIP accept, the same immutable seed reaches this one
+    # observed Find Secrets result.  Option 2 leaves the councillor on the
+    # current task; option 1 changes them to their default task.
+    "source_save_sha256": (
+        "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c"
+    ),
+    "event_definition_key": "spymaster_task.0399",
+    "date_raw": 53148768,
+    "root_character_id": 29037,
+    "councillor_character_id": 27963,
+    "councillor_liege_character_id": 29037,
+    "target_character_id": 27051,
+    "required_boolean_scope": "no_secrets_here",
+    "option_count": 2,
+    "selected_option_number": 2,
+    "selected_native_option_index": 1,
+}
 LOADER_FATAL_STALL_SECONDS = 45.0
 DEFAULT_LOADER_TIMEOUT_SECONDS = 300.0
 DEFAULT_NATIVE_READINESS_TIMEOUT_SECONDS = 300.0
@@ -2209,6 +2227,89 @@ def _known_pre_bootstrap_b2_pip_event_checks(
     }
 
 
+def _known_pre_bootstrap_vanilla_no_secrets_event_checks(
+    *,
+    source_save_sha256: str | None,
+    snapshot: dict[str, Any],
+    context: dict[str, Any],
+    event_instance_id: int,
+) -> dict[str, bool]:
+    """Bind the one observed Find Secrets result; never match its namespace."""
+
+    expected = KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT
+    active = snapshot.get("active_event")
+    active_event = active if isinstance(active, dict) else {}
+    options = context.get("options")
+    option_rows = options if isinstance(options, list) else []
+    authored_options_exact = len(option_rows) == expected["option_count"]
+    if authored_options_exact:
+        for index, row in enumerate(option_rows):
+            if not isinstance(row, dict) or not (
+                row.get("rendered_index") == index
+                and row.get("native_option_index") == index
+                and row.get("shown") is True
+                and row.get("enabled") is True
+                and row.get("fallback") is False
+                and row.get("cancel") is False
+            ):
+                authored_options_exact = False
+                break
+
+    saved_scopes = context.get("saved_scopes")
+    saved_scope_rows = saved_scopes if isinstance(saved_scopes, list) else []
+
+    def character_ids(scope_name: str) -> set[int]:
+        return {
+            character_id
+            for row in saved_scope_rows
+            if isinstance(row, dict)
+            and row.get("name") == scope_name
+            and (character_id := _typed_character_id(row.get("scope")))
+            is not None
+        }
+
+    boolean_scope_rows = [
+        row
+        for row in saved_scope_rows
+        if isinstance(row, dict)
+        and row.get("name") == expected["required_boolean_scope"]
+    ]
+    boolean_scope_exact = (
+        len(boolean_scope_rows) == 1
+        and isinstance(boolean_scope_rows[0].get("scope"), dict)
+        and boolean_scope_rows[0]["scope"].get("status") == "available"
+        and boolean_scope_rows[0]["scope"].get("type_key") == "boolean"
+    )
+    return {
+        "source_save_sha256": source_save_sha256
+        == expected["source_save_sha256"],
+        "context_schema": context.get("schema")
+        == "current-event-window-context-v1",
+        "context_schema_version": context.get("schema_version") == 1,
+        "context_available": context.get("status") == "available",
+        "unique_window": context.get("window_match_count") == 1,
+        "native_active_event": active_event.get("source") == "native",
+        "event_definition_key": context.get("event_definition_key")
+        == expected["event_definition_key"],
+        "event_instance_id": context.get("current_event_instance_id")
+        == event_instance_id,
+        "snapshot_date_raw": snapshot.get("date_raw") == expected["date_raw"],
+        "context_date_raw": context.get("date_raw") == expected["date_raw"],
+        "root_character_id": _typed_character_id(context.get("root_scope"))
+        == expected["root_character_id"],
+        "councillor_character_id": character_ids("councillor")
+        == {expected["councillor_character_id"]},
+        "councillor_liege_character_id": character_ids("councillor_liege")
+        == {expected["councillor_liege_character_id"]},
+        "target_character_id": character_ids("target_character")
+        == {expected["target_character_id"]},
+        "required_boolean_scope": boolean_scope_exact,
+        "snapshot_option_count": active_event.get("option_count")
+        == expected["option_count"],
+        "authored_options_exact": authored_options_exact,
+    }
+
+
 def _known_pre_bootstrap_selection_checks(
     selection: object,
     *,
@@ -2511,6 +2612,24 @@ def wait_for_bootstrap_event(
                             "known-pre-bootstrap-b2-pip-event-drain.json"
                         )
                         state_prefix = "known_pre_bootstrap_b2_pip_event"
+                    elif key == KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT[
+                        "event_definition_key"
+                    ]:
+                        expected = KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT
+                        identity_checks = (
+                            _known_pre_bootstrap_vanilla_no_secrets_event_checks(
+                                source_save_sha256=source_save_sha256,
+                                snapshot=snapshot,
+                                context=context,
+                                event_instance_id=event_id,
+                            )
+                        )
+                        artifact_name = (
+                            "known-pre-bootstrap-vanilla-no-secrets-event-drain.json"
+                        )
+                        state_prefix = (
+                            "known_pre_bootstrap_vanilla_no_secrets_event"
+                        )
                     else:
                         expected = None
                     if expected is not None:
@@ -2583,6 +2702,12 @@ def wait_for_bootstrap_event(
         ),
         "known_pre_bootstrap_b2_pip_event_drained": (
             KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["event_definition_key"]
+            in drained_pre_bootstrap_events
+        ),
+        "known_pre_bootstrap_vanilla_no_secrets_event_drained": (
+            KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT[
+                "event_definition_key"
+            ]
             in drained_pre_bootstrap_events
         ),
         "drained_pre_bootstrap_events": drained_pre_bootstrap_events,

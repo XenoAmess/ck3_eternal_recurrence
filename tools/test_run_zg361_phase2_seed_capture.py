@@ -1732,6 +1732,149 @@ class KnownB2PipPrebootstrapService:
         }
 
 
+def _known_vanilla_no_secrets_context(
+    *, councillor_character_id: int = 27963
+) -> dict[str, object]:
+    expected = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT
+
+    def character_scope(name: str, character_id: int) -> dict[str, object]:
+        return {
+            "name": name,
+            "scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                },
+            },
+        }
+
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 82,
+        "date_raw": expected["date_raw"],
+        "current_event_instance_id": 40,
+        "window_match_count": 1,
+        "event_definition_key": expected["event_definition_key"],
+        "calculated_event_id": 5080399,
+        "root_scope": {
+            "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": expected["root_character_id"],
+            }
+        },
+        "saved_scopes": [
+            character_scope("councillor", councillor_character_id),
+            character_scope(
+                "councillor_liege",
+                expected["councillor_liege_character_id"],
+            ),
+            character_scope(
+                "target_character", expected["target_character_id"]
+            ),
+            {
+                "name": expected["required_boolean_scope"],
+                "scope": {
+                    "status": "available",
+                    "type_key": "boolean",
+                    "typed_identity": {
+                        "status": "unavailable",
+                        "reason": "generic_scope_payload_identity_not_closed",
+                    },
+                },
+            },
+        ],
+        "options": [
+            {
+                "rendered_index": index,
+                "native_option_index": index,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+            for index in range(expected["option_count"])
+        ],
+    }
+
+
+class KnownVanillaNoSecretsPrebootstrapService:
+    def __init__(self, *, councillor_character_id: int = 27963) -> None:
+        self.state = "no_secrets"
+        self.revision = 82
+        self.councillor_character_id = councillor_character_id
+        self.selections: list[tuple[int, int, int]] = []
+
+    def snapshot(self) -> dict[str, object]:
+        expected = capture.KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT
+        active_event = (
+            {"source": "native", "instance_id": 40, "option_count": 2}
+            if self.state == "no_secrets"
+            else {"source": "native", "instance_id": 41, "option_count": 1}
+        )
+        return {
+            "revision": self.revision,
+            "date_raw": expected["date_raw"],
+            "paused": True,
+            "map_ready": True,
+            "speed": 1,
+            "active_event": active_event,
+        }
+
+    def query_current_event_window_context_v1(
+        self, event_instance_id: int, **_kwargs: object
+    ) -> dict[str, object]:
+        if self.state == "no_secrets":
+            require(event_instance_id == 40, "wrong no-secrets instance queried")
+            return {
+                "current_event_window_context": (
+                    _known_vanilla_no_secrets_context(
+                        councillor_character_id=self.councillor_character_id
+                    )
+                )
+            }
+        require(event_instance_id == 41, "wrong seed instance queried")
+        return {
+            "current_event_window_context": {
+                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+            }
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        self.selections.append(
+            (option_number, event_instance_id, expected_revision)
+        )
+        require(self.state == "no_secrets", "no-secrets event selected twice")
+        require(option_number == 2, "no-secrets keep-task option drifted")
+        self.state = "seed"
+        self.revision += 1
+        return {
+            "step": "select-event-option-2",
+            "accepted": True,
+            "status": "submitted",
+            "option_number": 2,
+            "option_index": 1,
+            "event_selection": {
+                "postcondition_verified": True,
+                "old_event_instance_id": 40,
+                "new_event_instance_id": 41,
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+            },
+        }
+
+
 class RegisteredPrebootstrapSequenceService:
     """Expose the product card, exact vanilla interruption, then the seed."""
 
@@ -2017,6 +2160,91 @@ def test_b2_pip_prebootstrap_identity_drift_fails_closed() -> None:
         )
 
 
+def test_exact_vanilla_no_secrets_event_keeps_current_task() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownVanillaNoSecretsPrebootstrapService()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            source_save_sha256=(
+                capture.KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT[
+                    "source_save_sha256"
+                ]
+            ),
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        require(
+            snapshot["active_event"]
+            == {"source": "native", "instance_id": 41, "option_count": 1},
+            "waiter did not reach seed after the no-secrets event drain",
+        )
+        require(
+            service.selections == [(2, 40, 82)],
+            "no-secrets event did not keep the current task with option two",
+        )
+        drain = json.loads(
+            (
+                artifacts
+                / "known-pre-bootstrap-vanilla-no-secrets-event-drain.json"
+            ).read_text(encoding="utf-8")
+        )
+        require(
+            drain["state"]
+            == "known_pre_bootstrap_vanilla_no_secrets_event_drained"
+            and drain["result"] == "GREEN",
+            "no-secrets event drain lacks typed GREEN evidence",
+        )
+        require(
+            all(drain["identity_checks"].values())
+            and all(drain["selection_checks"].values()),
+            "no-secrets drain lost an identity or ACK gate",
+        )
+
+
+def test_vanilla_no_secrets_identity_drift_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        service = KnownVanillaNoSecretsPrebootstrapService(
+            councillor_character_id=99999
+        )
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                Path(raw),
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=10.0,
+                source_save_sha256=(
+                    capture.KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT[
+                        "source_save_sha256"
+                    ]
+                ),
+                clock=FakeTime().clock,
+                sleeper=lambda _seconds: None,
+            )
+            raise AssertionError("identity-drifted no-secrets event was selected")
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence["state"]
+                == (
+                    "known_pre_bootstrap_vanilla_no_secrets_event_"
+                    "identity_mismatch"
+                ),
+                "no-secrets identity mismatch lacks its typed RED state",
+            )
+            require(
+                error.evidence["identity_checks"]["councillor_character_id"]
+                is False,
+                "no-secrets councillor drift was not exposed",
+            )
+        require(
+            not service.selections,
+            "identity-drifted no-secrets event crossed the action boundary",
+        )
+
+
 def test_multiple_registered_prebootstrap_events_are_supported() -> None:
     with tempfile.TemporaryDirectory() as raw:
         artifacts = Path(raw)
@@ -2108,7 +2336,7 @@ def test_vanilla_prebootstrap_identity_and_option_shape_fail_closed() -> None:
 
 def test_unregistered_vanilla_event_remains_unexpected_red() -> None:
     with tempfile.TemporaryDirectory() as raw:
-        service = KnownVanillaPrebootstrapService(event_key="spymaster_task.0399")
+        service = KnownVanillaPrebootstrapService(event_key="spymaster_task.0398")
         try:
             capture.wait_for_bootstrap_event(
                 service,
@@ -2126,7 +2354,7 @@ def test_unregistered_vanilla_event_remains_unexpected_red() -> None:
             require(
                 error.evidence["state"] == "unexpected_visible_event"
                 and error.evidence["observed_event_definition_key"]
-                == "spymaster_task.0399",
+                == "spymaster_task.0398",
                 "unregistered vanilla event did not retain explicit RED evidence",
             )
         require(not service.selections, "unregistered vanilla event was selected")
@@ -3237,6 +3465,8 @@ def main() -> int:
     test_exact_vanilla_prebootstrap_event_uses_option_two()
     test_exact_b2_pip_prebootstrap_event_uses_accept_option()
     test_b2_pip_prebootstrap_identity_drift_fails_closed()
+    test_exact_vanilla_no_secrets_event_keeps_current_task()
+    test_vanilla_no_secrets_identity_drift_fails_closed()
     test_multiple_registered_prebootstrap_events_are_supported()
     test_vanilla_prebootstrap_identity_and_option_shape_fail_closed()
     test_unregistered_vanilla_event_remains_unexpected_red()

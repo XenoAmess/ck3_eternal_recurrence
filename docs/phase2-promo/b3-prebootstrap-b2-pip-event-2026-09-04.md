@@ -1,6 +1,7 @@
 # B3 fresh-seed 前置 `zg361b2.40` 取证（2026-09-04）
 
-状态：**实机事件身份已冻结；一次性 drain 为 static-ready，尚待下一轮实机互证。**
+状态：**B2 PIP 一次性 drain 已实机 GREEN；其后的 exact 原版 no-secrets drain 为
+static-ready，尚待下一轮实机互证。**
 
 ## 本轮真实边界
 
@@ -56,3 +57,30 @@ seed runner 原先只登记了旧 `bfc73f...` checkpoint 的 `zg361.4` 与
 普通与 `-O` 两轮 `tools/test_run_zg361_phase2_seed_capture.py` 均 GREEN。当前能力等级仍为
 `static-ready`；只有下一份 immutable clean checkout 的 seed capture 实机 GREEN 后，才能推广为
 已验证的前置 drain，并更新 canonical seed 合同。
+
+## 第二轮：PIP drain GREEN，`spymaster_task.0399` fail-closed
+
+提交 `945f7d470647761ff3b5f238ec6d145a25bd572f` 的 clean checkout 重跑后，PIP drain 的所有
+identity、pre-selection 与 option-1 ACK 检查均为 GREEN：
+
+- drain artifact：`Z:\p2w\a2\known-pre-bootstrap-b2-pip-event-drain.json`，SHA-256
+  `a8fe8d70efd71d3193eecc33958b04b4131a999f8e0ca9069bb7955d4f99c166`；
+- runner report：`Z:\p2w\a2\runner-report.json`，SHA-256
+  `466b4c33118610188f8335cac9a2860737a2d3e78eb00c33ecad09ed074b2732`；
+- event wait：`Z:\p2w\a2\bootstrap-event-wait.jsonl`，SHA-256
+  `51f1359cc9358adee3eaa6db182b0ae1edfe6c0895479b81f4951ad11c60558a`；
+- driver state：`Z:\p2w\r2\native-state\native-session\driver-state.json`，SHA-256
+  `adb9fb2f3e74d5ba79f32153dbec75e88c226c51e6fad69be1138ac2050eb97f`；
+- loader 再次为 GREEN（51.955 秒），cleanup/tree gone/driver closed 均 GREEN。
+
+PIP 关闭后时间线继续到 `date_raw=53148768`，出现 exact `spymaster_task.0399`，runner 因它尚未登记而在
+动作前 RED。1.19.0.6 原版定义位于
+`game/events/councillor_task_events/spymaster_task_events.txt`，文件 SHA-256
+`2d7f0237d9888812a55c14b7a8a3bba551ff64d8ae72ae28088456af93fcff57`。该事件表示密探没有发现秘密：
+option 1 会令密探改回 default task，option 2 不改当前任务。故新合同只为 source seed `233e...dc9c`
+的这一实例登记 option 2，并绑定：root `29037`、councillor `27963`、councillor liege `29037`、
+target `27051`、存在且类型为 boolean 的 `no_secrets_here`、两个 authored enabled options。
+
+旧测试里用 `spymaster_task.0399` 代表“未登记事件”的假设已被真实证据推翻，反例改为仍未登记的 `.0398`；
+这不是放宽 namespace。新增 exact GREEN 与 identity-drift-before-action RED 用例，normal/`-O` 均 GREEN。
+截至本节 `.0399` drain 仍为 static-ready，不能把它或完整 seed 写成 live GREEN。

@@ -3,6 +3,14 @@
 Status: **static-ready only; seed remains RED/pending**.  This change did not
 launch CK3 and does not upgrade B3 gameplay readiness.
 
+> Superseding evidence: a later run from source seed SHA-256 `233e7053...dc9c`
+> reached exact `spymaster_task.0399` only after the newly registered B2 PIP
+> response was accepted.  The earlier statement below that `.0399` remained
+> unregistered therefore applies only to the older `bfc73f...` contract.  The
+> new exact-save contract and live artifact are recorded in
+> `b3-prebootstrap-b2-pip-event-2026-09-04.md`; there is still no namespace
+> wildcard.
+
 ## Why this handler exists
 
 The frozen short-root attempt `Z:\p2o\a` loaded the exact checkpoint and
