@@ -99,3 +99,24 @@ offset”，也不是可以把 readiness 打开的理由。
   `decision_ready=false`、`GEN-034=unresolved` 保持不变。
 - 运行结果和逐步清单的固定副本：
   [`evaluated-days-capture-entry-gap-20260903T1325.json`](../../artifacts/g2-open-kaishek-compatibility/2026-09-03/evaluated-days-capture-entry-gap-20260903T1325.json)。
+
+## 2026-09-04：private result 的确定性收口器
+
+[static-ready / no launch] 新增
+`native_bridge/research/analyze_g2_evaluated_days_private_capture.py`，用于在下一次独占实机槽结束后，
+把 shared terms runner 的报告与 private JSONL 合并判定。这样不会再要求人工从 runner 的公开 RED 中猜测 private
+evaluator 是否已经返回：private reader 会在公开结果序列化前有意 reset，因此“公开 runner RED、private evaluator
+GREEN”是合法且必须被显式识别的组合。
+
+收口器只接受两次同一 paused frame 的公开查询，以及每次严格连续的四行 private 证据：
+`pre_call → post_call_1 → post_call_2 → capture.v3 summary`。每组都必须保持 exact index-7 路径、
+Truce vtable `0x4461CA8`、对象 `+0x108` duration、evaluator `0x3373000`、非空 context、
+`0→1→2` completed-call progression、两次相等非负返回及完成态 summary；两组的最终天数还必须相等。
+runner 侧仍要求 exact-build、两条只读 query、身份/同帧/normalized payload equality、零 mutation、零 time advance、
+cleanup 与 source invariant 全部成立。
+
+输出只把 `private_evaluated_days_evidence` 标为 true；`public_wire_promoted`、
+`actual_expiry_observable`、`decision_ready`、`automatic_surrender_ready` 与 `gen034_closed` 固定保持 false。
+因此它是下一次 current-pin candidate 的验收消费者，不是 public readiness 提升。合成 GREEN、首次调用前退出、
+返回不等、跨 query 漂移、指针偏移错误、mutation/frame drift、malformed JSONL 与 no-launch source boundary 共
+8 个定向测试已通过；本包没有启动 CK3、附加进程或修改游戏状态。
