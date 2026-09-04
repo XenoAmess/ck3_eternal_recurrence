@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
                    "typed_available", "typed_unavailable"}) &&
       ContainsAll(adapter,
                   {"kZhongguoCaseSnapshotV1Capability",
-                   "std::array<std::string_view, 72>"}) &&
+                   "std::array<std::string_view, 76>"}) &&
       ContainsAll(game_adapter,
                   {"ParseZhongguoCaseSnapshotV1Step",
                    "kZhongguoCaseSnapshotV1Capability"}) &&
