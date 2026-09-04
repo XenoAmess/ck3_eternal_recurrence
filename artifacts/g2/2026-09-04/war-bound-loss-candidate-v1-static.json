@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "artifact_id": "g2-war-bound-loss-candidate-v1-static-20260904",
+  "generated_at": "2026-09-04T15:41:57+08:00",
+  "result": "GREEN_STATIC",
+  "live": false,
+  "ck3_started_or_attached": false,
+  "base_git_commit": "4d1130acc5ba3215eb601a889c39b84061a41022",
+  "branch": "agent/g2-war-bound-loss-static-20260904",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "spawn_army_verifier": "PASS: exact_build=1 spawn_army_execute=1 observation_window=1 production_abi=0"
+  },
+  "source_hashes": {
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt": "1EFBA340F25B6B5C744B8C1DF4211B8CD65EC5B18AECD9F22276E0E507463BDC",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp": "2DA1310487FCF5DFE175ED491FA82EB8B46195BEC3919D1B8021F32C4CDC5E7F",
+    "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_loss_candidate_v1.cpp": "4A1FB99B5D668A0B9FCBADBC2D1A37876B27CA6EE542DCDC62FB03AE361DF7FC",
+    "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_loss_candidate_v1_test.cpp": "6675927157E972C24809BCC69DF92D10AE17A148A616ABFEAE77A4108DC8DD4B",
+    "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_war_bound_loss_candidate_v1_source_contract.json": "D97B47FACA7D161983F960EACE025BC1B8EF948AC198C3AACA12D71C3375DA15",
+    "ck3_autonomous_player/tests/unit/test_raiktor_war_bound_loss_candidate_v1_contract.py": "ACA2DAD1EECE388E530483B5524073170AB6FED93DE60734549D8CD29A00031E"
+  },
+  "builds": {
+    "default_off": {
+      "directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-war-bound-loss-static-4d1130a-default",
+      "xar_ck3_bridge_sha256": "2107CBBD37A83AFD9F7E34C7E503008FD3A2A477736C9C6DEDA99D475B7BAE13",
+      "candidate_source_in_bridge": false
+    },
+    "candidate_on": {
+      "directory": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-war-bound-loss-static-4d1130a-candidate",
+      "xar_ck3_bridge_sha256": "95912FA3EA7EE439CDD57910EB5C706B5A40248B08C12536206FE827E38F4B09",
+      "candidate_test_exe_sha256": "A2F81A0A600175CE6584BC65EB7B9D18A9A51BF8ECD145F39D0C2B96AD25475B",
+      "candidate_source_in_bridge": true
+    }
+  },
+  "tests": {
+    "native_default_off": "2 passed: existing regiment v1 plus loss candidate v1",
+    "native_candidate_on": "1 passed: loss candidate v1",
+    "python_normal": "war-bound regiment 6 passed; loss candidate contract 3 passed; continue-vs-surrender policy 14 passed",
+    "python_optimized": "war-bound regiment 6 passed; loss candidate contract 3 passed; continue-vs-surrender policy 14 passed"
+  },
+  "proved": {
+    "pre_termination_checkpoint_from_measured_current": true,
+    "exact_generation_cleanup_pairing": true,
+    "destroyed_post_equals_zero": true,
+    "destroyed_boundary_loss_equals_measured_pre": true,
+    "still_alive_post_and_loss_remain_unavailable": true
+  },
+  "not_proved": {
+    "event_source_attribution": true,
+    "authored_3000_as_runtime_pre": true,
+    "initial_spawn_total": true,
+    "termination_action_binding": true,
+    "surrender_causality": true,
+    "public_terms_readiness": true,
+    "automatic_surrender": true,
+    "gen_034": true,
+    "production_live": true
+  }
+}

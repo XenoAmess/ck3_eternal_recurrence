@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-war-bound-loss-candidate-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "path_base": "repository_root",
+  "frozen_inputs": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ck3_1_19_0_6_anchors.json",
+      "sha256": "9D6001FA9E05C09E45696B3FCDB2C0E30C75EC9D6DB7F800D38096FE6FF7F8AB",
+      "semantic_contract": "persistent CRegiment, current CArmyRegiment, current CArmy stores, full-generation identities, seven-row composition and postwar cleanup semantics"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/raiktor_spawn_army_execute_v1_abi.json",
+      "sha256": "C81963E32264CF2B0B09353A8EA25CA0A4035B43B13C9E5C36F050E1BA346AF0",
+      "semantic_contract": "spawn_army creates persistent CRegiment, writes exact bound WarID at +0x13C and keep flag at +0x142, then creates and finalizes CArmy/current regiments"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_war_bound_regiment_v1_source_contract.json",
+      "sha256": "26652A0FCB9D0C185272E7C3B2721A9EC93BC5C5CDC5003D2B9D9EE16B105241",
+      "semantic_contract": "production generic current reader and independent exact-generation cleanup reader; source attribution remains unavailable"
+    }
+  ],
+  "exact_native_chain": {
+    "persistent_regiment": {
+      "store": "module+0x570CC88",
+      "identity": "CRegiment+0x10 full-generation ID",
+      "bound_war": "CRegiment+0x13C full WarID",
+      "keep_on_attacker_victory": "CRegiment+0x142 byte",
+      "composition": "seven 0x24 rows from +0x18; owner ID row+0x08, ordinal row+0x0C, current CArmyRegimentID row+0x10"
+    },
+    "current_regiment": {
+      "store": "module+0x57BF4C8",
+      "identity": "CArmyRegiment+0x10 full-generation ID",
+      "current_soldiers": "signed int32 CArmyRegiment+0x38",
+      "maximum_soldiers": "signed int32 CArmyRegiment+0x3C",
+      "current_army": "CArmyRegiment+0x140 full CArmyID"
+    },
+    "current_army": {
+      "store": "module+0x570C730",
+      "identity": "CArmy+0x10 full-generation ID",
+      "roster": "CArmy+0x38 data / +0x44 count contains exact current CArmyRegimentID"
+    },
+    "cleanup": "after exact WarID disappears, the independent reader double-samples the same three stable stores; destroyed requires every frozen persistent/current generation absent and no stale CArmy roster attachment"
+  },
+  "paired_boundary_contract": {
+    "pre": "the nonnegative observed_current_soldiers from one strict paused active-war observation, frozen immediately before a future termination action",
+    "current": "identical to pre at the frozen checkpoint; it is not the authored or initial-spawn total",
+    "post": "zero only when every frozen persistent and current full-generation ID is destroyed and no frozen CArmy has a stale attachment",
+    "loss": "pre minus zero only for complete destroyed cleanup",
+    "still_alive": "typed cleanup_still_alive; post and proven loss remain unavailable because survivor soldiers are not sampled by v1 cleanup",
+    "identity": "same owner full CharacterID, WarID and ordered persistent/current/CArmy generation set across the frozen baseline and cleanup"
+  },
+  "fixture_vector": {
+    "war_id": 50331699,
+    "owner_character_id": 29829,
+    "measured_pre_termination_soldiers": 598,
+    "destroyed_post_termination_soldiers": 0,
+    "destroyed_proven_boundary_soldiers_lost": 598
+  },
+  "implementation": {
+    "cmake_option": "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1",
+    "default_enabled": false,
+    "read_only": true,
+    "queues_command": false,
+    "advances_time": false,
+    "public_wire_changed": false,
+    "production_readiness_changed": false
+  },
+  "hard_boundaries": {
+    "source_specific_attribution_ready": false,
+    "authored_3000_is_measured_pre": false,
+    "initial_spawn_soldiers_observed": false,
+    "termination_action_bound": false,
+    "surrender_causality_proven": false,
+    "post_for_survivors_observed": false,
+    "public_terms_ready": false,
+    "automatic_surrender_ready": false,
+    "gen_034_resolved": false,
+    "production_live": false
+  },
+  "next_live_entry": "a future exclusive runner must freeze the production current observation, retain its exact generations, record one typed termination submission, then query cleanup on the first stable paused postwar frame; only that action-bound artifact may promote causality or a public loss field"
+}

@@ -2331,3 +2331,68 @@ on native/public revisions, connection/episode/PID identity, WarID, CB index
 and current soldier rows. That live gate may promote only the generic current-
 soldier domain; source attribution, pre soldiers, proven loss, persisted truce
 expiry, termination mutation, and automatic surrender remain separate work.
+
+### Paired war-bound termination-loss candidate (2026-09-04)
+
+[static-confirmed / private default-OFF / live pending] The production terms
+run has since live-confirmed the generic current checkpoint at `598` soldiers
+(receipt `artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json`;
+report SHA-256
+`AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`),
+but it did not execute a war exit and therefore did not observe postwar cleanup
+or a loss. The exact-build native evidence is nevertheless sufficient for one
+narrower candidate that does not need event provenance or an initial-spawn
+count: freeze the strict current observation immediately before a future
+termination action, retain every full-generation persistent CRegiment,
+current CArmyRegiment and CArmy identity, then read those exact generations
+again after the WarID has disappeared.
+
+The identity chain remains the already frozen CK3 `1.19.0.6` chain. The
+persistent object resolves through `module+0x570CC88`, re-reads its full ID at
+`CRegiment+0x10`, binds to the exact full WarID at `+0x13C`, and requires
+`keep=false` at `+0x142`. Its seven `0x24` composition rows begin at `+0x18`.
+Each present current ID resolves through `module+0x57BF4C8`, re-reads the full
+generation at `CArmyRegiment+0x10`, reads current soldiers at `+0x38`, and
+reaches the current full CArmyID at `+0x140`. That army resolves through
+`module+0x570C730`, re-reads `CArmy+0x10`, and must contain the exact current
+regiment in its `+0x38/+0x44` roster. The independent cleanup reader already
+double-samples these three stores after the War object is gone; WarID absence
+alone is never accepted as destruction.
+
+The new lifecycle core deliberately defines `pre_termination_soldiers` as the
+measured current total at that last active paused checkpoint. It is not the
+authored `3000`, not the initial `spawn_army` total, and not proof that the
+generic rows came from `bookmark.1071.a`. If every frozen persistent and
+current generation is destroyed with no stale army attachment, the pair proves
+`post_termination_soldiers=0` and a boundary delta equal to the measured pre
+checkpoint. If any frozen generation remains alive, v1 returns typed
+`cleanup_still_alive` and leaves post/loss unavailable because the cleanup
+reader does not sample survivor soldier counts.
+
+```mermaid
+flowchart TD
+    C["[production-live] paused generic current = 598"] --> F["[static-ready] freeze WarID + exact regiment/army generations"]
+    F --> A["future typed termination submission"]
+    A --> P["first stable paused postwar frame"]
+    P --> R["[static-confirmed] double-read exact component stores"]
+    R --> D{"all frozen persistent/current generations destroyed?"}
+    D -->|yes| L["post=0; boundary loss=measured pre"]
+    D -->|no| I["cleanup_still_alive; post/loss unavailable"]
+    F -. "[unknown] no persisted event origin" .-> S["Raiktor source attribution"]
+    A -. "[pending-live] action not part of this package" .-> B["surrender causality"]
+    L -. "not public without action-bound live" .-> G["GEN-034 readiness"]
+```
+
+The candidate source and native fixture are
+`raiktor_war_bound_loss_candidate_v1.{hpp,cpp}`. The exact evidence and
+boundary fixture is
+`native_bridge/research/fixtures/raiktor_war_bound_loss_candidate_v1_source_contract.json`.
+`XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1` defaults OFF; the enabled
+native helper only invokes the existing read-only cleanup reader, retains no
+global state, submits no command, and advances no time. The default production
+wire, source-specific readiness, automatic surrender and `GEN-034` remain
+unchanged. A future exclusive runner must bind the retained pre checkpoint to
+one typed termination submission and the first stable postwar query before any
+causal or public capability promotion.
+The no-launch build/test receipt is
+`artifacts/g2/2026-09-04/war-bound-loss-candidate-v1-static.json`.

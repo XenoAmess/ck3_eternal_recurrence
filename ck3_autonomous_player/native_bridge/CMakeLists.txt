@@ -130,6 +130,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1
+  "Build the private read-only paired war-bound loss candidate"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1
   "Install the private exact-build phase-two completion observer"
   OFF
@@ -301,6 +307,14 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_result_case_snapshot_v1_mailbox.cpp
   src/zhongguo_result_case_snapshot_v1_serializer.cpp
 )
+if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/raiktor_war_bound_loss_candidate_v1.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=1
+  )
+endif()
 target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
 target_compile_definitions(xar_ck3_bridge PRIVATE
   XAR_BRIDGE_VERSION="${PROJECT_VERSION}"
@@ -2297,6 +2311,30 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_raiktor_war_bound_regiment_v1
     COMMAND xar_ck3_raiktor_war_bound_regiment_v1_test
+  )
+
+  add_executable(xar_ck3_raiktor_war_bound_loss_candidate_v1_test
+    src/raiktor_war_bound_regiment_v1.cpp
+    src/raiktor_war_bound_loss_candidate_v1.cpp
+    src/raiktor_war_bound_loss_candidate_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_raiktor_war_bound_loss_candidate_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_raiktor_war_bound_loss_candidate_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_raiktor_war_bound_loss_candidate_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_raiktor_war_bound_loss_candidate_v1
+    COMMAND xar_ck3_raiktor_war_bound_loss_candidate_v1_test
   )
 
   add_executable(xar_ck3_war_entry_assessments_v1_mailbox_test

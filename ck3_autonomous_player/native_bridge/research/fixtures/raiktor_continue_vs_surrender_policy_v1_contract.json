@@ -9,7 +9,7 @@
   "frozen_inputs": [
     {
       "path": "docs/ck3-native-ai/war-termination.md",
-      "sha256": "015524A7B0A0AA288B27222AD4ED1F50D68EE5A4FE6D2FE3B498D09D9CFC6D7F",
+      "sha256": "1D2499B3DF114ECD2B8F4BB5C3693FFF4439E7D0214B0E238F31ECC0B9D2EEE5",
       "semantic_contract": "exact-build options, original AI termination tree, Raiktor terms and six-domain readiness boundaries"
     },
     {
