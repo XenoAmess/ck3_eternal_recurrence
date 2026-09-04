@@ -215,8 +215,8 @@ def main() -> int:
         "normal/promo scenario installs the acceptance-only fixture",
     )
     require(
-        runner_source.count("install_phase2_workforce_action_fixture(") == 3,
-        "Workforce fixture install must have one definition and two call sites",
+        runner_source.count("install_phase2_workforce_action_fixture(") == 4,
+        "Workforce fixture install must have one definition and three call sites",
     )
     print("GREEN: Workforce action fixture is isolated, typed and non-release")
     return 0
