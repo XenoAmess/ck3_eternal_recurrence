@@ -126,6 +126,9 @@ from xar_autoplayer.bridge.zhongguo_scoreboard_state_contract import (
 from xar_autoplayer.bridge.zhongguo_scoreboard_action_batch import (
     run_zhongguo_scoreboard_action_batch,
 )
+from xar_autoplayer.bridge.zhongguo_scoreboard_action_contract import (
+    ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY,
+)
 from xar_autoplayer.bridge.zhongguo_scoreboard_action_cell import (
     run_zhongguo_scoreboard_action_cell,
 )
@@ -614,6 +617,9 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
         QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY
     ),
     "scoreboard_state_acl": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+    "scoreboard_action_transport": (
+        ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+    ),
     "result_case_snapshot": QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
 }
 PHASE2_REQUIRED_QUERY_FLAGS = {
@@ -630,6 +636,9 @@ PHASE2_REQUIRED_QUERY_FLAGS = {
     ),
     "scoreboard_state_acl": (
         "zhongguo_scoreboard_state_v1_query_supported"
+    ),
+    "scoreboard_action_transport": (
+        "zhongguo_scoreboard_action_v1_transport_wired"
     ),
     "loaded_feature_manifest": "loaded_feature_manifest_v1_query_supported",
     "current_event_context": "current_event_window_context_v1_query_supported",
@@ -687,9 +696,11 @@ PHASE2_PENDING_RUNNER_REQUIREMENTS: dict[str, str] = {}
 
 # The registry is deliberately data-only.  Read-only cells marked ``wired``
 # run in ``run_phase2_domain_query_stage``.  Action cells may have a wired
-# handler while remaining ``provider_pending`` on a missing typed selector;
-# the batch report therefore distinguishes runner wiring from true gameplay
-# readiness.  Read-only observation is never treated as a gameplay action.
+# handler while remaining ``provider_pending`` on a missing typed selector.
+# A fully wired handler may instead remain ``static-ready-live-pending`` on
+# missing real product-state inputs; the batch report therefore distinguishes
+# runner wiring from true gameplay readiness.  Read-only observation is never
+# treated as a gameplay action.
 PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
     "b2_pip_snapshot_query_matrix": {
         "implementation": "wired",
@@ -745,12 +756,26 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
         "observation_only": False,
         "gameplay_action_complete": False,
     },
-    "scoreboard_named_widget_and_acl_matrix": {
-        "implementation": "provider_pending",
+    "scoreboard_named_widget_action_and_postcondition_matrix": {
+        "implementation": "wired",
+        "handler_implementation": "wired",
+        "readiness": "static-ready-live-pending",
         "required_capability": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
         "required_query_flag": (
             "zhongguo_scoreboard_state_v1_query_supported"
         ),
+        "required_action_transport_capability": (
+            ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY
+        ),
+        "required_action_transport_flag": (
+            "zhongguo_scoreboard_action_v1_transport_wired"
+        ),
+        "required_surface_provider": (
+            "prepare_zhongguo_scoreboard_surface_v1"
+        ),
+        "provider_status": "product-surface-checkpoints-pending",
+        "action_ack_is_business_postcondition": False,
+        "provider_observed_postcondition_required": True,
         "observation_only": False,
         "gameplay_action_complete": False,
     },
@@ -7756,6 +7781,7 @@ def run_phase2_domain_query_stage(
             cell_id
             for cell_id, registration in PHASE2_DOMAIN_CELL_REGISTRY.items()
             if registration.get("implementation") == "wired"
+            and registration.get("observation_only") is True
         ]
         for cell_id in implemented:
             registration = PHASE2_DOMAIN_CELL_REGISTRY[cell_id]
@@ -7963,21 +7989,117 @@ def run_phase2_scoreboard_gameplay_action_cell(
         raise acceptance.RunnerError(
             "phase-two scoreboard action cell returned a non-object"
         )
+    surface_matrix = evidence.get("surface_matrix")
+    action_matrix = evidence.get("action_matrix")
+    action_rows = (
+        [
+            row
+            for rows in action_matrix.values()
+            if isinstance(rows, list)
+            for row in rows
+            if isinstance(row, dict)
+        ]
+        if isinstance(action_matrix, dict)
+        else []
+    )
+    accepted_action_rows = [
+        row
+        for row in action_rows
+        if isinstance(row.get("action_result"), dict)
+        and row["action_result"].get("accepted") is True
+    ]
+    accepted_postconditions_observed = bool(accepted_action_rows) and all(
+        row.get("verified_pass") is True
+        and isinstance(row.get("source_query"), dict)
+        and isinstance(row.get("later_query"), dict)
+        and isinstance(row.get("verified_postcondition"), dict)
+        for row in accepted_action_rows
+    )
+    acl_denial_rows = [
+        row
+        for row in action_rows
+        if row.get("expected_outcome") == "managed_acl_denied"
+    ]
+    acl_denial_observed = bool(acl_denial_rows) and all(
+        isinstance(row.get("action_result"), dict)
+        and row["action_result"].get("accepted") is False
+        and row["action_result"].get("rejection_reason")
+        == "managed_acl_denied"
+        and row.get("expected_outcome_verified") is True
+        for row in acl_denial_rows
+    )
+    required_surfaces_ready = bool(
+        isinstance(surface_matrix, dict)
+        and set(surface_matrix) == {"managed-capable", "received-only"}
+        and all(
+            isinstance(row, dict)
+            and row.get("preparation_ready") is True
+            for row in surface_matrix.values()
+        )
+    )
+    provider_observed_postcondition = (
+        {
+            "kind": "independent-scoreboard-state-query-and-acl",
+            "provider_observed": bool(
+                evidence.get("all_postconditions_verified") is True
+                and evidence.get("all_expected_acl_denials_verified") is True
+                and accepted_postconditions_observed
+                and acl_denial_observed
+            ),
+            "modal_and_page_postconditions_verified": bool(
+                evidence.get("all_postconditions_verified") is True
+                and accepted_postconditions_observed
+            ),
+            "managed_acl_denial_verified": bool(
+                evidence.get("all_expected_acl_denials_verified") is True
+                and acl_denial_observed
+            ),
+            "action_ack_counted_as_postcondition": False,
+        }
+        if action_rows
+        else None
+    )
+    full_proof_green = bool(
+        evidence.get("result") == "GREEN"
+        and evidence.get("candidate_batch_complete") is True
+        and evidence.get("all_postconditions_verified") is True
+        and evidence.get("all_expected_acl_denials_verified") is True
+        and evidence.get("per_surface_single_session_binding_verified") is True
+        and evidence.get("cross_surface_clean_restart_verified") is True
+        and evidence.get("production_capability_advertised") is True
+        and evidence.get("promotion_eligible") is True
+        and isinstance(provider_observed_postcondition, dict)
+        and provider_observed_postcondition.get("provider_observed") is True
+    )
+    evidence.update(
+        {
+            "implementation": "wired",
+            "handler_implementation": "wired",
+            "readiness": (
+                "production-live"
+                if full_proof_green
+                else "static-ready-live-pending"
+            ),
+            "provider_status": (
+                "ready"
+                if required_surfaces_ready
+                else "product-surface-checkpoints-pending"
+            ),
+            "action_cell_invoked": bool(action_rows),
+            "gameplay_action_executed": bool(accepted_action_rows),
+            "gameplay_action_complete": full_proof_green,
+            "action_ack_is_business_postcondition": False,
+            "provider_observed_postcondition_required": True,
+            "provider_observed_postcondition": (
+                provider_observed_postcondition
+            ),
+            "live_status": "green" if full_proof_green else "pending",
+        }
+    )
     write_json(evidence_path, evidence)
     result = evidence.get("result")
     if result == "GREEN":
-        if not (
-            evidence.get("candidate_batch_complete") is True
-            and evidence.get("all_postconditions_verified") is True
-            and evidence.get("all_expected_acl_denials_verified") is True
-            and evidence.get(
-                "per_surface_single_session_binding_verified"
-            )
-            is True
-            and evidence.get("cross_surface_clean_restart_verified") is True
-            and evidence.get("production_capability_advertised") is True
-            and evidence.get("promotion_eligible") is True
-        ):
+        if not full_proof_green:
             raise acceptance.RunnerError(
                 "phase-two scoreboard batch forged GREEN without its full "
                 "two-surface proof and advertised production capability"
@@ -16262,17 +16384,18 @@ def run_phase2_live_scenario(
             ]
             write_json(evidence_path, evidence)
 
-        # The scoreboard runner ledger is wired too.  The exact dispatcher and
-        # provider-observed revision are static-ready, but no paused-game
-        # source/ACK/later-query artifact has promoted the production
-        # capability yet.  Preserve the typed RED evidence instead of
-        # manufacturing a gameplay PASS from static or fixture proof.
+        # The scoreboard action handler and independent provider-observed
+        # modal/page/ACL postconditions are wired.  The remaining RED is the
+        # missing pair of real product-surface checkpoints/preparer plus the
+        # intentionally unadvertised production capability; an ACK is never
+        # counted as the business postcondition.
         raise acceptance.RunnerError(
             "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
             "actions and B2/Incident/Workforce/AI-owned observations passed, "
             "but B3 manager governance remains provider-pending until its "
-            "typed AI manager selector is bound, and the scoreboard "
-            "named-widget action/postcondition cell remains fail-closed"
+            "typed AI manager selector is bound, while the scoreboard "
+            "named-widget action/postcondition handler is static-wired but "
+            "live-pending on its product-surface checkpoints/preparer"
         )
     except BaseException as error:
         incident_path = artifacts / (

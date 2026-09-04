@@ -90,9 +90,18 @@
     "native_driver_service_and_mcp_typed_transport",
     "exact_shortcut_manager_semantic_activation_dispatcher",
     "provider_observation_publish_and_action_validate_without_advancing",
-    "phase2_runner_source_ack_later_red_gate"
+    "phase2_runner_source_ack_later_red_gate",
+    "phase2_formal_registry_and_transport_preflight"
   ],
   "unwired_shared_layers": [],
+  "formal_runner_registry": {
+    "cell_id": "scoreboard_named_widget_action_and_postcondition_matrix",
+    "implementation": "wired",
+    "readiness": "static-ready-live-pending",
+    "provider_status": "product-surface-checkpoints-pending",
+    "provider_observed_postcondition_required": true,
+    "action_ack_is_business_postcondition": false
+  },
   "exact_build_blockers": [
     "paused_identity_action_and_later_observation_artifacts_for_current_gui_sha",
     "production_capability_promotion_after_live_postcondition_evidence"

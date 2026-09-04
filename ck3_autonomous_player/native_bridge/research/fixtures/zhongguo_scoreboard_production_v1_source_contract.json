@@ -79,7 +79,20 @@
     },
     "false_advertisement_result": "RED",
     "false_advertisement_promotion_eligible": false,
-    "shared_runner_integration": "wired_fail_closed_product_surface_checkpoints_pending"
+    "shared_runner_integration": "formal_registry_static_wired_live_product_surface_checkpoints_pending"
+  },
+  "formal_runner_registry": {
+    "cell_id": "scoreboard_named_widget_action_and_postcondition_matrix",
+    "implementation": "wired",
+    "handler_implementation": "wired",
+    "readiness": "static-ready-live-pending",
+    "required_query_capability": "game.command.query-zhongguo-scoreboard-state-v1",
+    "required_transport_capability": "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+    "required_surface_provider": "prepare_zhongguo_scoreboard_surface_v1",
+    "provider_status": "product-surface-checkpoints-pending",
+    "provider_observed_modal_and_acl_postcondition_required": true,
+    "action_ack_is_business_postcondition": false,
+    "gameplay_action_complete": false
   },
   "required_product_surface_inputs": {
     "current_status": "not_captured",

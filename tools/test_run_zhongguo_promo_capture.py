@@ -2462,6 +2462,12 @@ def main() -> int:
         assert capture.PHASE2_REQUIRED_QUERY_FLAGS[
             "scoreboard_state_acl"
         ] == "zhongguo_scoreboard_state_v1_query_supported"
+        assert capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+            "scoreboard_action_transport"
+        ] == "game.contract.zhongguo-scoreboard-action-v1-fail-closed"
+        assert capture.PHASE2_REQUIRED_QUERY_FLAGS[
+            "scoreboard_action_transport"
+        ] == "zhongguo_scoreboard_action_v1_transport_wired"
         assert {
             row["label"]
             for row in phase2_persisted_green["missing_requirements"]
@@ -3596,11 +3602,10 @@ def main() -> int:
             "workforce_collective_and_three_cycle_matrix",
             "ai_owned_case_matrix",
             "manager_governance_gameplay_action_and_postcondition_matrix",
-            "scoreboard_named_widget_and_acl_matrix",
+            "scoreboard_named_widget_action_and_postcondition_matrix",
         ]
         assert capture._phase2_unimplemented_domain_cells() == [
             "manager_governance_gameplay_action_and_postcondition_matrix",
-            "scoreboard_named_widget_and_acl_matrix",
         ]
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
             "manager_governance_gameplay_action_and_postcondition_matrix",
@@ -3617,6 +3622,34 @@ def main() -> int:
         assert manager_registration["required_typed_selector"] == (
             capture.PHASE2_B3_MANAGER_SELECTOR_KIND
         )
+        scoreboard_registration = capture.PHASE2_DOMAIN_CELL_REGISTRY[
+            "scoreboard_named_widget_action_and_postcondition_matrix"
+        ]
+        assert scoreboard_registration["implementation"] == "wired"
+        assert scoreboard_registration["handler_implementation"] == "wired"
+        assert scoreboard_registration["readiness"] == (
+            "static-ready-live-pending"
+        )
+        assert scoreboard_registration["provider_status"] == (
+            "product-surface-checkpoints-pending"
+        )
+        assert scoreboard_registration["required_surface_provider"] == (
+            "prepare_zhongguo_scoreboard_surface_v1"
+        )
+        assert scoreboard_registration[
+            "required_action_transport_capability"
+        ] == "game.contract.zhongguo-scoreboard-action-v1-fail-closed"
+        assert scoreboard_registration[
+            "required_action_transport_flag"
+        ] == "zhongguo_scoreboard_action_v1_transport_wired"
+        assert scoreboard_registration[
+            "action_ack_is_business_postcondition"
+        ] is False
+        assert scoreboard_registration[
+            "provider_observed_postcondition_required"
+        ] is True
+        assert scoreboard_registration["observation_only"] is False
+        assert scoreboard_registration["gameplay_action_complete"] is False
         manager_handler_artifacts = temporary_root / "b3-manager-handler"
         manager_handler_artifacts.mkdir()
         manager_handler_service = object()
@@ -3728,19 +3761,47 @@ def main() -> int:
         assert manager_green["typed_selector"] == typed_manager_selection
         assert manager_green["fixture_evidence_is_live"] is False
         scoreboard_runner_red = {
-            "schema_version": 2,
+            "schema_version": 3,
             "cell_id": (
                 "scoreboard_named_widget_action_and_postcondition_matrix"
             ),
             "result": "RED",
             "mcp_only": True,
             "surface_matrix": {
-                "managed-capable": {"surface_complete": True},
-                "received-only": {"surface_complete": True},
+                "managed-capable": {
+                    "preparation_ready": True,
+                    "surface_complete": True,
+                },
+                "received-only": {
+                    "preparation_ready": True,
+                    "surface_complete": True,
+                },
             },
             "action_matrix": {
-                "managed-capable": [],
-                "received-only": [],
+                "managed-capable": [
+                    {
+                        "action_result": {"accepted": True},
+                        "verified_pass": True,
+                        "source_query": {"modal_visible": False},
+                        "later_query": {"modal_visible": True},
+                        "verified_postcondition": {
+                            "modal_visible": True,
+                            "page": "managed",
+                        },
+                    }
+                ],
+                "received-only": [
+                    {
+                        "action_result": {
+                            "accepted": False,
+                            "rejection_reason": "managed_acl_denied",
+                        },
+                        "expected_outcome": "managed_acl_denied",
+                        "expected_outcome_verified": True,
+                        "verified_pass": False,
+                        "verified_postcondition": None,
+                    }
+                ],
             },
             "candidate_batch_complete": True,
             "all_postconditions_verified": True,
@@ -3766,6 +3827,24 @@ def main() -> int:
         assert missing_surface_provider["action_matrix"] == {
             "managed-capable": []
         }
+        assert missing_surface_provider["implementation"] == "wired"
+        assert missing_surface_provider["handler_implementation"] == "wired"
+        assert missing_surface_provider["readiness"] == (
+            "static-ready-live-pending"
+        )
+        assert missing_surface_provider["provider_status"] == (
+            "product-surface-checkpoints-pending"
+        )
+        assert missing_surface_provider["action_cell_invoked"] is False
+        assert missing_surface_provider["gameplay_action_executed"] is False
+        assert missing_surface_provider["gameplay_action_complete"] is False
+        assert missing_surface_provider[
+            "action_ack_is_business_postcondition"
+        ] is False
+        assert missing_surface_provider[
+            "provider_observed_postcondition"
+        ] is None
+        assert missing_surface_provider["live_status"] == "pending"
         with mock.patch.object(
             capture,
             "run_zhongguo_scoreboard_action_batch",
@@ -3776,13 +3855,35 @@ def main() -> int:
                     object(), scoreboard_runner_artifacts
                 )
             )
-        assert scoreboard_runner_result == scoreboard_runner_red
+        assert scoreboard_runner_result["result"] == "RED"
+        assert scoreboard_runner_result["implementation"] == "wired"
+        assert scoreboard_runner_result["handler_implementation"] == "wired"
+        assert scoreboard_runner_result["readiness"] == (
+            "static-ready-live-pending"
+        )
+        assert scoreboard_runner_result["provider_status"] == "ready"
+        assert scoreboard_runner_result["action_cell_invoked"] is True
+        assert scoreboard_runner_result["gameplay_action_executed"] is True
+        assert scoreboard_runner_result["gameplay_action_complete"] is False
+        assert scoreboard_runner_result[
+            "action_ack_is_business_postcondition"
+        ] is False
+        assert scoreboard_runner_result[
+            "provider_observed_postcondition"
+        ] == {
+            "kind": "independent-scoreboard-state-query-and-acl",
+            "provider_observed": True,
+            "modal_and_page_postconditions_verified": True,
+            "managed_acl_denial_verified": True,
+            "action_ack_counted_as_postcondition": False,
+        }
+        assert scoreboard_runner_result["live_status"] == "pending"
         assert json.loads(
             (
                 scoreboard_runner_artifacts
                 / "07c_phase2_scoreboard_named_widget_action_cell.json"
             ).read_text(encoding="utf-8")
-        ) == scoreboard_runner_red
+        ) == scoreboard_runner_result
         forged_scoreboard_green = copy.deepcopy(scoreboard_runner_red)
         forged_scoreboard_green["result"] = "GREEN"
         forged_scoreboard_green["production_capability_advertised"] = True
@@ -3801,6 +3902,44 @@ def main() -> int:
                 raise AssertionError(
                     "scoreboard runner accepted GREEN without promotion eligibility"
                 )
+        ack_only_scoreboard_green = copy.deepcopy(forged_scoreboard_green)
+        ack_only_scoreboard_green["promotion_eligible"] = True
+        ack_only_scoreboard_green["action_matrix"]["managed-capable"] = [
+            {"action_result": {"accepted": True}}
+        ]
+        with mock.patch.object(
+            capture,
+            "run_zhongguo_scoreboard_action_batch",
+            return_value=ack_only_scoreboard_green,
+        ):
+            try:
+                capture.run_phase2_scoreboard_gameplay_action_cell(
+                    object(), scoreboard_runner_artifacts
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "forged GREEN" in str(error)
+            else:
+                raise AssertionError(
+                    "scoreboard runner counted an ACK as its postcondition"
+                )
+        scoreboard_runner_green = copy.deepcopy(forged_scoreboard_green)
+        scoreboard_runner_green["promotion_eligible"] = True
+        with mock.patch.object(
+            capture,
+            "run_zhongguo_scoreboard_action_batch",
+            return_value=scoreboard_runner_green,
+        ):
+            full_scoreboard_green = (
+                capture.run_phase2_scoreboard_gameplay_action_cell(
+                    object(), scoreboard_runner_artifacts
+                )
+            )
+        assert full_scoreboard_green["gameplay_action_complete"] is True
+        assert full_scoreboard_green["readiness"] == "production-live"
+        assert full_scoreboard_green["live_status"] == "green"
+        assert full_scoreboard_green["provider_observed_postcondition"][
+            "provider_observed"
+        ] is True
         for cell_id in (
             "b2_pip_snapshot_query_matrix",
             "incident_xyz_snapshot_query_matrix",
@@ -4739,7 +4878,6 @@ def main() -> int:
         ]
         assert wired_scenario["unimplemented_domain_cells"] == [
             "manager_governance_gameplay_action_and_postcondition_matrix",
-            "scoreboard_named_widget_and_acl_matrix",
         ]
         assert wired_scenario["missing_gameplay_action_cells"] == list(
             capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
