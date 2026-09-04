@@ -1113,6 +1113,23 @@ def check_generated_contracts() -> None:
         err(f"cannot reproduce generated projections: {error}")
 
 
+def check_effect_file_boundaries() -> None:
+    """Enforce the B2+ <=20 boundary across the complete product tree."""
+
+    try:
+        from effect_file_boundaries import audit_report
+
+        report = audit_report()
+    except (OSError, UnicodeError, ValueError) as error:
+        err(f"cannot audit scripted-effect file boundaries: {error}")
+        return
+    for row in report["violations"]:
+        err(
+            "B2+ scripted-effect file exceeds the 20-effect principle: "
+            f"{row['file']} ({row['effects']} effects)"
+        )
+
+
 def check_referenced_keys(key_sets: dict[str, set[str]]) -> None:
     refs = collect_referenced_keys()
     all_refs = refs["events"] | refs["event_options"] | refs["plain"]
@@ -1134,6 +1151,7 @@ def main() -> int:
     check_referenced_keys(key_sets)
     check_runtime_invariants()
     check_generated_contracts()
+    check_effect_file_boundaries()
     if errors:
         print(f"RED: {len(errors)} problem(s) in mod_zhongguo_style")
         for e in errors:

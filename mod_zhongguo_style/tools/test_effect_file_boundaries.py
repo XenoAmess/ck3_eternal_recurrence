@@ -20,7 +20,7 @@ def effect_source(count: int, *, indent_nested: bool = False) -> str:
 class EffectFileBoundaryTests(unittest.TestCase):
     def test_parser_counts_only_unindented_assignments(self) -> None:
         names = boundary.top_level_effect_names(
-            "# ignored = {\nalpha = {\n\tnested = {\n\t}\n}\nbeta = { }\n"
+            '# ignored = {\nalpha = {\nnested = {\n}\nlabel = "{ not structure }"\n}\nbeta = { }\n'
         )
         self.assertEqual(("alpha", "beta"), names)
 

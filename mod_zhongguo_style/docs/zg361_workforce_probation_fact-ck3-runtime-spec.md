@@ -9,7 +9,12 @@
 
 - `tools/gen_zg361_workforce_probation_fact.py`；
 - `tools/test_zg361_workforce_probation_fact.py`；
-- `common/scripted_effects/zg361_workforce_probation_fact_effects.txt`；
+- `common/scripted_effects/zg361_workforce_probation_fact_ledger_arm_effects.txt`；
+- `common/scripted_effects/zg361_workforce_probation_fact_outcome_publish_effects.txt`；
+- `common/scripted_effects/zg361_workforce_probation_fact_consumption_effects.txt`。
+
+旧聚合文件 `zg361_workforce_probation_fact_effects.txt` 只保留在既有 B2 冻结投影/证据中，不再是当前产品源文件；
+当前生成器会拒绝其残留。15 个顶层 effect 按用途拆为 `6 / 5 / 4`，没有超过 10 或 20 的例外。
 - `events/zg361_workforce_probation_fact_events.txt`；
 - `localization/*/zg361_workforce_probation_fact_l_*.yml`；
 - 本规格。

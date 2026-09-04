@@ -47,13 +47,34 @@ class EffectFileBoundary:
 
 
 def top_level_effect_names(text: str) -> tuple[str, ...]:
-    """Return unindented top-level effect assignment names in file order."""
+    """Return brace-depth-zero effect assignment names in file order."""
 
     names: list[str] = []
+    depth = 0
     for line in text.splitlines():
-        match = TOP_LEVEL_EFFECT_RE.match(line)
-        if match is not None:
+        code: list[str] = []
+        quoted = False
+        escaped = False
+        for character in line:
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif character == "\\":
+                    escaped = True
+                elif character == '"':
+                    quoted = False
+                continue
+            if character == '"':
+                quoted = True
+                continue
+            if character == "#":
+                break
+            code.append(character)
+        code_line = "".join(code)
+        match = TOP_LEVEL_EFFECT_RE.match(code_line)
+        if depth == 0 and match is not None:
             names.append(match.group("name"))
+        depth += code_line.count("{") - code_line.count("}")
     return tuple(names)
 
 
