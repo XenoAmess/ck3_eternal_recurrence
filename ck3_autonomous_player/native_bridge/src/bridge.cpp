@@ -865,7 +865,6 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(g2_truce_preview_entry_observer.last_preview_context);
   result += ",\"last_preview_collector\":";
   result += Number(g2_truce_preview_entry_observer.last_preview_collector);
-  result += '}';
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1)
   result += "},\"phase2_producer_slot2_histogram_observer_v2\":{";

@@ -1,0 +1,107 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_leaf_context_v2_live_red.v1",
+  "status": "HARNESS_RED_MALFORMED_PRIVATE_HEARTBEAT",
+  "attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-leaf-context-v2-integration-249e6fb-20260904\\live-leaf-context-dual-query-r1",
+  "identity": {
+    "game_version": "1.19.0.6",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "candidate_source_commit": "249e6fb1be4e434a3c8fd30f41d9ec4afd929427",
+    "bridge_dll_sha256": "69CA9175577C42C0644630D0D4B8838A4E0DBEA14EE37819996483031513765F",
+    "bridge_injector_sha256": "55A9612C6F5D254B6801604D9E2D1004C51F98B92A939BA039639B726749B21D",
+    "war_id": 50331699,
+    "character_id": 29829,
+    "date_raw": 53223936
+  },
+  "artifacts": {
+    "runner_report": {
+      "path": "report.json",
+      "sha256": "50E36D75CA765D5FA2FD90055F23350298A130646392DD048CC3288EF42FB542"
+    },
+    "private_jsonl": {
+      "path": "g2-evaluated-days-private-v3.jsonl",
+      "exists": false
+    }
+  },
+  "runner": {
+    "readiness_reached": false,
+    "timeout_seconds": 300,
+    "bridge_pid": 22512,
+    "connection_generation": 1,
+    "heartbeat_sequence": null,
+    "last_native_snapshot": {
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "date_raw": 53223936,
+      "map_ready": true,
+      "paused": true,
+      "played_character_id": 29829,
+      "played_character_alive": true,
+      "war_ids": [50331699]
+    },
+    "mailbox_diagnostics": null,
+    "mcp_query_submitted": false,
+    "mutation_submitted": false,
+    "time_advanced": false,
+    "error": "NativeReadinessTimeoutError: native readiness timed out: heartbeat is unavailable"
+  },
+  "comparison_to_last_ready_candidate": {
+    "attempt": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-evaluated-days-current-pin-20260904T1200\\live-current-pin-dual-query-r1",
+    "runner_report_sha256": "8BCDC5ADF7C46A625959B1CC18C6465CD20C32D32F20C3EF6D4ECE8812585E36",
+    "bridge_dll_sha256": "98F9F82E2D3F3A5B0EA2649E92C2148EDBF3859BF46C0126378E854BCA1E754C",
+    "same_inputs": [
+      "game executable",
+      "checkpoint",
+      "driver state",
+      "production mod tree",
+      "war/character/date identity"
+    ],
+    "ready_observation": {
+      "heartbeat_sequence": 789,
+      "mailbox_installed": true,
+      "mailbox_failure": 0,
+      "mailbox_ready": true,
+      "executor_submission_enabled": true,
+      "executed_requests": 0
+    },
+    "relevant_build_difference": {
+      "ready_direct_v1": {
+        "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "ON",
+        "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF"
+      },
+      "red_leaf_context_v2": {
+        "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+        "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "ON",
+        "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+        "effective_preview_entry_observer_compile_definition": "ON through leaf-context dependency"
+      }
+    },
+    "game_logs": "Both runs contain the same normal mod/GUI load landmarks and no injector, bridge, pipe, fatal, exception, or crash diagnostic. The leaf run stops earlier only because the harness reaches its readiness timeout."
+  },
+  "root_cause": {
+    "classification": "harness_red",
+    "capability_exercised": false,
+    "static_reproduction": "The leaf-context CMake option defines XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1. In that HeartbeatFrame branch, the preview child object was closed explicitly and the common function terminator then appended two more closing braces, yielding one surplus brace.",
+    "transport_behavior": "NativePipeTransport catches JSONDecodeError per frame and continues. Malformed heartbeat frames are discarded while subsequent valid state_snapshot frames remain observable.",
+    "fit_to_live_symptom": "One live pipe connection delivered native:3 but never a heartbeat. This is the exact selective-loss pattern produced by the serializer and transport behavior.",
+    "minimal_fix": "Leave the optional preview child object open for HeartbeatFrame's common two-brace terminator, matching the other optional diagnostic blocks."
+  },
+  "cleanup": {
+    "session_exit_reason": "stop",
+    "session_report_ok": true,
+    "shutdown_ok": true,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "driver_closed": true,
+    "post_analysis_ck3_or_injector_pids": []
+  },
+  "boundaries": {
+    "red_artifact_preserved": true,
+    "public_wire_promoted": false,
+    "public_readiness_promoted": false,
+    "actual_expiry_observable": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  }
+}

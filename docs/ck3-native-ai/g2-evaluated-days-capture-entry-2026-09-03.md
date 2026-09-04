@@ -314,3 +314,37 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/nativ
 只有该报告为 GREEN 时才可执行其 `unique_powershell_command`；对应 fresh attempt 是
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\live-leaf-context-dual-query-r1`。
 本次没有启动/附加 CK3，没有发送游戏命令；public/readiness 与 `GEN-034=unresolved` 继续不变。
+
+## 2026-09-04：leaf-context V2 live r1 heartbeat harness RED
+
+[harness RED / capability not exercised] 集成态 V2 独占槽保留在
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\live-leaf-context-dual-query-r1`。
+runner 在同一个 pipe connection 上收到了 `native:3 / revision=4 / native_revision=3`；地图已就绪且暂停，
+CharacterID `29829`、WarID `50331699`、`date_raw=53223936` 均正确，但 300 秒内
+`heartbeat_sequence` 始终为 `null`，mailbox 字段因此均不可用。runner 没有提交 MCP query、没有执行动作或推进时间，
+private JSONL 也没有产生。这不是 leaf evaluator 的 capability 结果，因为该能力根本没有进入执行边界。
+
+进程回收是 GREEN：session PID `22512` 以受管 `stop` 收口，`shutdown_ok=true`、`tree_gone=true`、
+`cleanup_proven=true`、`driver_closed=true`；事后进程清单没有 `ck3.exe` 或 injector。原 checkpoint 与 driver
+hash 保持不变。runner report SHA-256 为
+`50E36D75CA765D5FA2FD90055F23350298A130646392DD048CC3288EF42FB542`；完整摘要见
+[`evaluated-days-leaf-context-v2-live-r1-harness-red.json`](../../artifacts/g2/2026-09-04/evaluated-days-leaf-context-v2-live-r1-harness-red.json)。
+
+与最后一次成功进入 mailbox readiness 的 direct V1 r1 对比，EXE、checkpoint、driver、production mod tree
+及游戏身份相同；旧桥收到 heartbeat `789`，mailbox `installed/ready/executor_submission_enabled=true` 且
+`failure=0`。两次 CK3 日志都只有正常 mod/GUI 加载标记，没有 injector/bridge/pipe/fatal/crash 差异。有效差异
+位于私有构建组合：旧构建只启用 direct capture；V2 启用 leaf-context capture。后者即使把独立 preview
+observer option 留为 OFF，CMake 依赖仍会定义
+`XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1`。
+
+该编译分支的 `HeartbeatFrame` 在写完 `g2_truce_preview_entry_observer_v1` 后曾先追加一个 `}`，随后函数公共
+terminator 又固定追加 `}}`，使 leaf-context-only heartbeat 多出一个结束括号。Python pipe reader 对每帧
+`JSONDecodeError` 采取跳过并继续读取的策略，所以非法 heartbeat 全部被丢弃，而紧随其后的合法 snapshot
+仍能到达；这与实机的选择性缺帧逐项吻合。最小修复是删去该分支的提前闭合，让公共 terminator 统一关闭
+observer 子对象和根对象，并增加 leaf 依赖组合的源码回归断言。此修复只恢复既有私有诊断传输，不改变
+leaf-context evaluator、public wire/readiness 或 action。
+
+旧 r1 保持 RED 且不得原样重跑。修复候选完成 default-OFF/private 构建、测试、冻结及 fresh preflight 前，
+不得申请下一次独占槽；即使这些 no-launch 前置全部 GREEN，也仍只代表 harness 候选可运行。
+`native_certified=false`、`runtime_certified=false`、`decision_ready=false`、
+`automatic_surrender_ready=false`，`GEN-034` 继续 unresolved。

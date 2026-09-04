@@ -109,6 +109,34 @@ class G2TrucePreviewEntryObserverIntegrationTest(unittest.TestCase):
                 for line in capability_lines)
         )
 
+    def test_private_preview_heartbeat_leaves_child_open_for_common_terminator(self) -> None:
+        bridge = BRIDGE_CPP.read_text(encoding="utf-8")
+        cmake = CMAKE.read_text(encoding="utf-8")
+        heartbeat = bridge.split(
+            "std::string HeartbeatFrame(std::uint64_t sequence) {", 1
+        )[1].split("\n}\n\nvoid AppendInt32Array", 1)[0]
+        preview = heartbeat.split(
+            "#if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)"
+        )[2].split("#endif", 1)[0]
+
+        # Every optional heartbeat object is closed by the next optional
+        # prefix or by HeartbeatFrame's common `}}` terminator. Closing the
+        # preview object here adds a third `}` in the leaf-context-only build;
+        # NativePipeTransport then rejects every heartbeat while continuing
+        # to accept the following state snapshots.
+        self.assertIn(
+            'result += "},\\\"g2_truce_preview_entry_observer_v1\\\":{";',
+            preview,
+        )
+        self.assertNotIn("result += '}'", preview)
+        self.assertTrue(heartbeat.rstrip().endswith('result += "}}";\n  return result;'))
+        self.assertRegex(
+            cmake,
+            r"(?s)if\(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR\s+"
+            r"XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2\).*?"
+            r"XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1=1",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
