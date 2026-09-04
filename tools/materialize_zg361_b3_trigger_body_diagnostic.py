@@ -61,6 +61,7 @@ EXPECTED_ABI = {
     ),
 }
 EXPECTED_EXTERNAL_CALLS = {TARGETS[0]: 3, TARGETS[1]: 3}
+CK3_ARGUMENT_ERROR = "Scripted trigger should have no arguments"
 EXPECTED_SOURCE = {
     "file_count": 565,
     "bytes": 21_607_125,
@@ -89,6 +90,14 @@ EXPECTED_A2_RUNNER_SHA256 = (
 DEFAULT_SEED_CONTRACT = Path(
     r"Z:\ck3_mod_rewrite\_worktrees\b3-trigger-closure-r5"
     r"\tools\zg361_phase2_seed_contract.json"
+)
+DEFAULT_PRIOR_ABI_RED_GAME_LOG = Path(
+    r"Z:\ck3_mod_rewrite_process_assets\zg361"
+    r"\b3h-fecd2f2-trigger-false-20260904-081911Z"
+    r"\artifacts-live\cell\final_game.log"
+)
+EXPECTED_PRIOR_ABI_RED_GAME_LOG_SHA256 = (
+    "2e0e450b9ccbfd632ecc87ed74e339a25f393e3dfa1ec4c87110d3604b5d9c26"
 )
 
 
@@ -176,17 +185,47 @@ def _external_call_surface(
     return rows
 
 
+def _render_abi_consumers(name: str, newline: str) -> tuple[str, ...]:
+    if name == TARGETS[0]:
+        return (
+            "        liege = $EXPECTED_OWNER$",
+            "        var:zg361_p2c_mg_frozen_cycle = $EXPECTED_P2C_CYCLE$",
+            "        var:zg361_p2c_mg_frozen_case = $EXPECTED_P2C_CASE$",
+        )
+    if name == TARGETS[1]:
+        return (
+            "        zg361_p2c_m360_candidate_ready_trigger = {",
+            "            EXPECTED_OWNER = $EXPECTED_OWNER$",
+            "            EXPECTED_P2C_CYCLE = $EXPECTED_P2C_CYCLE$",
+            "            EXPECTED_P2C_CASE = $EXPECTED_P2C_CASE$",
+            "        }",
+            "        var:zg361_b1_m360_source_cycle = $EXPECTED_B1_CYCLE$",
+            "        var:zg361_b1_m360_source_case = $EXPECTED_B1_CASE$",
+            "        var:zg361_b1_m360_source_id = $EXPECTED_B1_SOURCE_ID$",
+            "        var:zg361_b1_m360_source_hash = $EXPECTED_B1_SOURCE_HASH$",
+            "        var:zg361_b1_m360_source_quota = $EXPECTED_QUOTA$",
+            "        var:zg361_case_f_cycle_serial = $EXPECTED_MG_CYCLE$",
+            "        var:zg361_case_f_case_serial = $EXPECTED_MG_CASE$",
+            "        var:zg361_mg_snapshot_source_serial = $EXPECTED_MG_SOURCE_SERIAL$",
+            "        var:zg361_mg_team_snapshot_revision = $EXPECTED_MG_REVISION$",
+        )
+    raise TriggerDiagnosticError(f"unsupported diagnostic trigger: {name}")
+
+
 def _render_false_body(name: str, abi: Sequence[str], newline: str) -> str:
     joined = ", ".join(abi)
-    return newline.join(
-        (
-            f"{name} = {{",
-            "    # DIAGNOSTIC ONLY; never copy this body into generated/production source.",
-            f"    # Caller ABI remains unchanged and is intentionally unused here: {joined}",
-            "    always = no",
-            "}",
-        )
+    lines = (
+        f"{name} = {{",
+        "    # DIAGNOSTIC ONLY; never copy this body into generated/production source.",
+        f"    # Provider parameter inference must retain this caller ABI: {joined}",
+        "    AND = {",
+        "        # This first term makes the trigger false and short-circuits the ABI terms.",
+        "        always = no",
+        *_render_abi_consumers(name, newline),
+        "    }",
+        "}",
     )
+    return newline.join(lines)
 
 
 def _replace_target_bodies(source_payload: bytes) -> tuple[bytes, list[dict[str, object]]]:
@@ -245,6 +284,36 @@ def _validate_call_surface(
                     f"{name} call ABI changed at {call.get('path')}:{call.get('line')}: "
                     f"{parameters!r} != {EXPECTED_ABI[name]!r}"
                 )
+
+
+def _bind_prior_material_abi_red(game_log: Path) -> dict[str, object]:
+    if not game_log.is_file():
+        raise TriggerDiagnosticError(f"prior material ABI RED game log is missing: {game_log}")
+    sha256 = _sha256(game_log)
+    if sha256 != EXPECTED_PRIOR_ABI_RED_GAME_LOG_SHA256:
+        raise TriggerDiagnosticError(
+            "prior material ABI RED game log identity changed: "
+            f"{sha256} != {EXPECTED_PRIOR_ABI_RED_GAME_LOG_SHA256}"
+        )
+    text = game_log.read_text(encoding="utf-8-sig")
+    counts = {
+        name: text.count(f"{name} trigger [ {CK3_ARGUMENT_ERROR} ]")
+        for name in TARGETS
+    }
+    if counts != {name: 3 for name in TARGETS}:
+        raise TriggerDiagnosticError(
+            f"prior material ABI RED error surface changed: {counts!r}"
+        )
+    return {
+        "path": str(game_log.resolve()),
+        "bytes": game_log.stat().st_size,
+        "sha256": sha256,
+        "error_pattern": CK3_ARGUMENT_ERROR,
+        "counts": counts,
+        "total_count": sum(counts.values()),
+        "classification": "material_provider_parameter_inference_red",
+        "ck3_started_for_prior_attempt": True,
+    }
 
 
 def _run_open_kaishek(
@@ -424,6 +493,7 @@ def materialize_candidate(
     seed_contract: Path,
     bridge_pipe: str,
     expected_runner_sha256: str | None = None,
+    prior_material_red_game_log: Path | None = None,
     expected_source: Mapping[str, object] | None = EXPECTED_SOURCE,
     expected_calls: Mapping[str, int] = EXPECTED_EXTERNAL_CALLS,
     parser_runner: Callable[..., dict[str, object]] = _run_open_kaishek,
@@ -435,6 +505,11 @@ def materialize_candidate(
     projection_manifest = projection_manifest.resolve()
     parser_report_path = parser_report_path.resolve()
     artifacts_dir = artifacts_dir.resolve()
+    prior_material_red = (
+        _bind_prior_material_abi_red(prior_material_red_game_log.resolve())
+        if prior_material_red_game_log is not None
+        else None
+    )
     if not source_root.is_dir():
         raise TriggerDiagnosticError(f"frozen r5 A source is missing: {source_root}")
     for path, label in (
@@ -552,12 +627,22 @@ def materialize_candidate(
             all(tuple(call["parameters"]) == EXPECTED_ABI[name] for call in calls)
             for name, calls in candidate_calls.items()
         ),
-        "replacement_bodies_are_minimal_false": all(
+        "replacement_bodies_are_false_and_abi_consuming": all(
             "always = no" in entry.block
             and "always = yes" not in entry.block
-            and PARAM_TOKEN_RE.search(entry.block) is None
+            and tuple(sorted(set(PARAM_TOKEN_RE.findall(entry.block))))
+            == EXPECTED_ABI[entry.name]
             for entry in candidate_entries
         ),
+        "provider_parameter_inference_abi_preserved": all(
+            tuple(sorted(set(PARAM_TOKEN_RE.findall(entry.block))))
+            == EXPECTED_ABI[entry.name]
+            for entry in candidate_entries
+        ),
+        "prior_material_abi_red_bound": prior_material_red is None
+        or prior_material_red["total_count"] == 6,
+        "ck3_argument_error_pattern_registered": CK3_ARGUMENT_ERROR
+        == "Scripted trigger should have no arguments",
         "closure_green": closure_green,
         "closure_missing_empty": all(not values for values in closure_missing.values()),
         "open_kaishek_parser_green": parser_report.get("result") == "GREEN",
@@ -574,7 +659,7 @@ def materialize_candidate(
     }
     receipt = {
         "schema_version": 1,
-        "kind": "zg361_b3_trigger_body_always_false_diagnostic",
+        "kind": "zg361_b3_trigger_body_abi_consuming_false_diagnostic",
         "result": "GREEN" if all(checks.values()) else "RED",
         "diagnostic_only": True,
         "production_ready": False,
@@ -604,6 +689,15 @@ def materialize_candidate(
         },
         "triggers": trigger_rows,
         "external_call_surface": source_calls,
+        "prior_material_abi_red": prior_material_red,
+        "live_log_gate": {
+            "forbidden_pattern": CK3_ARGUMENT_ERROR,
+            "expected_candidate_count": 0,
+            "reason": (
+                "Any occurrence means CK3 inferred a zero-argument provider and "
+                "the diagnostic is material/ABI RED before body attribution."
+            ),
+        },
         "closure": {
             "green": closure_green,
             "missing": closure_missing,
@@ -657,7 +751,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--parser-report", type=Path, required=True)
     parser.add_argument(
         "--projection-name",
-        default="b3-trigger-body-always-false-diagnostic-fecd2f2",
+        default="b3-trigger-body-abi-consuming-false-diagnostic-fecd2f2",
     )
     parser.add_argument("--artifacts-dir", type=Path, required=True)
     parser.add_argument("--open-kaishek-jar", type=Path, default=DEFAULT_OPEN_KAISHEK_JAR)
@@ -681,6 +775,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=DEFAULT_R5_ROOT / "native-build" / "xar_ck3_bridge_injector.exe",
     )
     parser.add_argument("--seed-contract", type=Path, default=DEFAULT_SEED_CONTRACT)
+    parser.add_argument(
+        "--prior-material-red-game-log",
+        type=Path,
+        default=DEFAULT_PRIOR_ABI_RED_GAME_LOG,
+        help="bind the six-error zero-argument provider RED that this candidate fixes",
+    )
     parser.add_argument("--bridge-pipe", required=True)
     args = parser.parse_args(argv)
     try:
@@ -702,6 +802,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             seed_contract=args.seed_contract,
             bridge_pipe=args.bridge_pipe,
             expected_runner_sha256=args.expected_runner_sha256,
+            prior_material_red_game_log=args.prior_material_red_game_log,
         )
     except (TriggerDiagnosticError, OSError, UnicodeError, subprocess.SubprocessError) as error:
         print(f"RED: {type(error).__name__}: {error}", file=sys.stderr)

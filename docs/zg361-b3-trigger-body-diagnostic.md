@@ -1,5 +1,14 @@
 # B3 两个 trigger body 的一次性诊断候选
 
+## 当前结论
+
+第一版 `b3h-fecd2f2-trigger-false-20260904-081911Z` 已实机证明为 **material/provider ABI RED**，不能用于归因 trigger body：
+正文删除所有 `$PARAM$` 后，CK3 把两个 provider 推断为零参数，六个原 caller 分别触发共 6 条
+`Scripted trigger should have no arguments`。因此下文第一版的 terminal 结果只能保存为失败候选证据，不能与 r4/r5 比较。
+
+替代候选 `b3i-fecd2f2-trigger-abi-false-20260904-084813Z` 仍由首项 `always = no` 恒假，但在同一 `AND` 内用原合法表达式
+显式引用全部 3/12 个 `$PARAM$`；exact provider 继续把 owner/P2C cycle/case 三参数转发给 candidate provider。它是当前唯一可运行候选。
+
 ## 目的与边界
 
 文件边界 ABBA 已证明 A1 是首轮离群值，不能把单文件体量写成本次启动问题根因。下一项最小变量来自 r4 与 r5 的真实差异：
@@ -30,7 +39,7 @@ A2 协调器现场观察已经越过 `End loading of history`，但没有 `Setti
 literal，因此这里只把它记录为现场进度观察，不把它提升为独立 hash-bound marker。A2 hash-bound loader gate 仍是 303 callbacks、
 最后节点 `CJominiInGameMusicDatabase`、post-init 0、completion publish absent 和 `loader_terminal_missing_after_database_callbacks`。
 
-## 外置候选
+## 外置候选 v1（已 material/ABI RED）
 
 - 根目录：`Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z`
 - 输入：r5 A `product/`，565 files / 21,607,125 bytes，tree SHA-256
@@ -49,10 +58,10 @@ literal，因此这里只把它记录为现场进度观察，不把它提升为�
 | `zg361_p2c_m360_candidate_ready_trigger` | 3 | `EXPECTED_OWNER`, `EXPECTED_P2C_CASE`, `EXPECTED_P2C_CYCLE` | 15,678 bytes / `5bfe697f…c12c92` | active code 仅 `always = no`；261 bytes / `13d1a193…555a1` |
 | `zg361_p2c_m360_frozen_manager_exact_trigger` | 3 | `EXPECTED_B1_CASE`, `EXPECTED_B1_CYCLE`, `EXPECTED_B1_SOURCE_HASH`, `EXPECTED_B1_SOURCE_ID`, `EXPECTED_MG_CASE`, `EXPECTED_MG_CYCLE`, `EXPECTED_MG_REVISION`, `EXPECTED_MG_SOURCE_SERIAL`, `EXPECTED_OWNER`, `EXPECTED_P2C_CASE`, `EXPECTED_P2C_CYCLE`, `EXPECTED_QUOTA` | 773 bytes / `34ef4677…76b` | active code 仅 `always = no`；453 bytes / `504d1fe9…dd7c2` |
 
-定义里的参数占位符因 body 被诊断性移除而不再求值；ABI 保持指六个外部 call block 本身逐字节不变、参数键集合与 r5 完全相同。
-新 body 的注释也列出 accepted caller ABI，但不含 `$PARAM$`，不会额外触发替换或求值。
+第一版曾错误地把“六个外部 call block 逐字节不变”当作 ABI 保持；实机证明 CK3 从 provider 正文的 `$PARAM$` 推断参数集合，
+注释中列出参数名不能保留 ABI。正文不含 `$PARAM$` 时，caller 仍传参反而稳定触发零参数 provider 错误。
 
-## no-launch 验收
+## v1 no-launch 验收（静态门禁未覆盖 provider 参数推断）
 
 - 物化器单测：5/5 GREEN。
 - `open_kaishek`：commit `a54164625b3ebb7d738d16236ca3080686fa9984` 对应 JAR 351,165 bytes / SHA-256
@@ -104,20 +113,53 @@ py tools/materialize_zg361_b3_trigger_body_diagnostic.py `
 
 该命令只能对不存在的输出执行一次；当前候选已经物化，禁止在同一路径重跑。
 
-## 唯一 CK3 命令与判定
+## v1 实机结果（禁止重跑）
 
-以下命令由 diagnostic manifest 生成，当前未执行。CK3 启动槽只能执行这一条：
+以下历史命令已经执行；对应 artifact 必须保留，不得重跑或再当作 body 归因：
 
 ```powershell
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_b3f15e0819114a8c9d0276e3415a6c2d --phase2-seed-contract Z:\ck3_mod_rewrite\_worktrees\b3-trigger-closure-r5\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\product --phase2-product-projection b3-trigger-body-always-false-diagnostic-fecd2f2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\artifacts-live --discard-userdir
 ```
 
-判定规则：
+结果为 material/provider ABI RED：duration 319.506s，303 callbacks 首次完成于约 196.479s，最后节点仍为
+`CJominiInGameMusicDatabase`；`End loading of history` 已出现但 Frontend 未出现，cleanup GREEN。决定性差异是
+`cell/final_game.log` 对两个 provider 各报 3 次 `Scripted trigger should have no arguments`：
 
-- 若到达 Frontend，支持“两个真实 trigger body 的联合存在与 terminal 差异相关”；仍不能判定是哪一个 trigger 或哪条表达式，下一步只能做
-  单 trigger 复原的正交诊断。
-- 若仍在同一 post-history/post-callback 点缺 Frontend，则这两个真实 body 不是该 terminal RED 的充分解释；停止沿 trigger-body 猜测，调查
-  history→idler/completion-publish 的共同引擎/runner 边界。
-- 若出现仅候选有的 parser、invalid trigger 或 unknown parameter，则候选产品 RED，本轮归因无效。
+- outer report SHA-256：`a24f6b6105d06333fd8ff42c81a91145c302f523822ddb000cf787d5e80db59e`；
+- cell report SHA-256：`c81c07bcfe11bbc44950ce9d2d3fbf856cd4e7e2fefc85568d1dcbca5da06195`；
+- evidence index SHA-256：`e6e404cb2740a713ab17a75a5beed53aebe7929ef80bf7cf4b50e451d2a6fb7a`；
+- `final_game.log` SHA-256：`2e0e450b9ccbfd632ecc87ed74e339a25f393e3dfa1ec4c87110d3604b5d9c26`。
 
-无论结果如何，`always = no` 都不能合回源码，也不能用于 Phase2 gameplay、readiness 或宣传素材。
+这组结果不能支持或反对“真实 trigger body 导致 terminal RED”；它只证明 v1 不是 ABI 等价候选。
+
+## v2：ABI-consuming、恒 false 候选
+
+- 根目录：`Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z`；
+- 输出：565 files / 21,592,523 bytes；tree SHA-256
+  `d4f061f11cacf0c47d7b1407ff5aace33a91b7578ee151f7e43d82a079977ff9`；
+- diff：modified 1、added 0、removed 0，其余 564 文件逐字节相同；唯一 owner 为 2,110 bytes / SHA-256
+  `b6cc81d6c3a0aef20aa49072f08cdb59e0d33a9e70884f1a4b92484430d66d56`；
+- candidate body：515 bytes / SHA-256 `21473950c9e4ce5f68f9a6a6694e9494dcb068e35d73675db12031a354276356`，
+  provider 正文推断 token 精确等于原 3 参数；
+- exact body：1,334 bytes / SHA-256 `176867517db26dffab7042a02fbef2b314beffe06656483ecc750bc79dea195e`，
+  provider 正文推断 token 精确等于原 12 参数，并保留对 candidate 的 3 参数转发；
+- 两个 body 都以 `AND = { always = no ... }` 开头；后续只使用原 body 中已有的合法比较/转发来消费 ABI，不增加业务状态读取；
+- caller surface 与 r5 A 逐字节相同，3 + 3 callsites 参数键集合不变；
+- 旧 material RED `final_game.log` 的 SHA 和六条错误已写入 manifest；新 live 日志只要再次出现
+  `Scripted trigger should have no arguments`，就必须在 terminal 归因前直接判为 material/ABI RED；
+- closure/parser、projection 反向校验、runner SHA 与正式 argv `--preflight` 均 GREEN；CK3 未由物化工作包启动。
+
+sidecar：
+
+- `diagnostic-manifest.json` SHA-256：`26f2a6bac8b245ec6ba5cb64fbcb2bbba1b9192f18c5a5a0ab3c975081da3bbd`；
+- `projection.json` SHA-256：`2f4c17be61ad69d3ddf2742557f4ab982602c3b5abdbcca57eac3f30b89227b6`；
+- `open-kaishek-preflight.json` SHA-256：`cfcd12b94618143c71c96f60cbfc9058f46d292d7b332e5b2680ef7829e43ab8`。
+
+唯一 v2 live 命令：
+
+```powershell
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_927e9842f6a54496abf29588dd4b93bd --phase2-seed-contract Z:\ck3_mod_rewrite\_worktrees\b3-trigger-closure-r5\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\product --phase2-product-projection b3-trigger-body-abi-consuming-false-diagnostic-fecd2f2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\artifacts-live --discard-userdir
+```
+
+v2 只有在六条 provider 参数错误为 0 时，Frontend/terminal 结果才可进入 body 归因。无论结果如何，`always = no` 都不能合回源码，
+也不能用于 Phase2 gameplay、readiness 或宣传素材。

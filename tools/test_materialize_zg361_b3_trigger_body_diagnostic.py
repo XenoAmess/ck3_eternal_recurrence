@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 import materialize_zg361_b3_trigger_body_diagnostic as diagnostic
 
@@ -121,15 +122,27 @@ class TriggerDiagnosticTests(unittest.TestCase):
             receipt["launch"]["runner"]["path"],
         )
 
-    def test_candidate_keeps_names_calls_bom_and_minimal_false_bodies(self) -> None:
+    def test_candidate_keeps_names_calls_bom_and_abi_consuming_false_bodies(self) -> None:
         receipt = self._materialize()
         target = self.root / "candidate" / diagnostic.TARGET_RELATIVE
         self.assertTrue(target.read_bytes().startswith(diagnostic.BOM))
         entries = diagnostic.top_level_effect_entries(target.read_bytes())
         self.assertEqual(diagnostic.TARGETS, tuple(entry.name for entry in entries))
         self.assertTrue(all("always = no" in entry.block for entry in entries))
+        for entry in entries:
+            self.assertEqual(
+                diagnostic.EXPECTED_ABI[entry.name],
+                tuple(sorted(set(diagnostic.PARAM_TOKEN_RE.findall(entry.block)))),
+            )
+        self.assertIn(
+            "zg361_p2c_m360_candidate_ready_trigger = {",
+            entries[1].block,
+        )
         self.assertTrue(receipt["checks"]["caller_surface_byte_identical"])
         self.assertTrue(receipt["checks"]["caller_parameter_abi_preserved"])
+        self.assertTrue(
+            receipt["checks"]["provider_parameter_inference_abi_preserved"]
+        )
 
     def test_manifest_and_projection_are_external_and_hash_bound(self) -> None:
         receipt = self._materialize()
@@ -237,6 +250,28 @@ class TriggerDiagnosticTests(unittest.TestCase):
                 parser_runner=self._parser_runner,
                 closure_builder=self._closure,
             )
+
+    def test_prior_zero_argument_provider_error_is_bound_as_material_red(self) -> None:
+        game_log = self.root / "final_game.log"
+        game_log.write_text(
+            "\n".join(
+                f"Error: {name} trigger [ {diagnostic.CK3_ARGUMENT_ERROR} ]"
+                for name in diagnostic.TARGETS
+                for _ in range(3)
+            ),
+            encoding="utf-8",
+        )
+        with mock.patch.object(
+            diagnostic,
+            "EXPECTED_PRIOR_ABI_RED_GAME_LOG_SHA256",
+            diagnostic._sha256(game_log),
+        ):
+            row = diagnostic._bind_prior_material_abi_red(game_log)
+        self.assertEqual(6, row["total_count"])
+        self.assertEqual(
+            "material_provider_parameter_inference_red",
+            row["classification"],
+        )
 
 
 if __name__ == "__main__":
