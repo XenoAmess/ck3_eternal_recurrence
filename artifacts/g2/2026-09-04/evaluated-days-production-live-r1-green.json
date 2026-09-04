@@ -1,0 +1,116 @@
+{
+  "schema": "xar.ck3.g2_evaluated_days_production_live.v1",
+  "status": "GREEN_PRODUCTION_LIVE_EVALUATED_DAYS_PRIMITIVE",
+  "attempt": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-production-leaf-1941c56-20260904\\live-production-leaf-dual-query-r1",
+    "started_at": "2026-09-04T07:01:29.105084+00:00",
+    "finished_at": "2026-09-04T07:04:00.870804+00:00",
+    "elapsed_seconds": 151.766,
+    "runner_status": "green",
+    "runner_ok": true
+  },
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "adapter_id": "ck3-1.19.0.6-msvc-x64",
+    "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "candidate_source_commit": "1941c56aba1e0eae31b5319575425d21123b2b86",
+    "production_tree_sha256": "F4E63FFFA6CF9332BA41EB5985D1CB72F280F4BF375A15473F4638F43CF944BE",
+    "bridge_sha256": "1ACC24DB476A7B1ECB4F0A98EF2E9A74D0E932CB74F5884622530D77246E3244",
+    "bridge_injector_sha256": "03ED1EE07AC58E1E6F7ADDE31518C732C1D60CDBFFC3B50938D7E1CF84C877C5",
+    "cmake_cache_sha256": "D031DCBD98E05CBABE675B04FA9DD408BB067F65438EEB5AEAC387CF6F0EF9A6",
+    "source_zip_sha256": "84951CE78C3E075B609A1534005E82F246AACE102AD7BFE80106C1364C78DBC2",
+    "manifest_sha256": "6B5783BCA00A1B082AA5FEC834EE73A95860535549B7525A616C82F178265C58"
+  },
+  "source_artifact": {
+    "runner_report": {
+      "path": "report.json",
+      "size": 120508263,
+      "sha256": "AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2"
+    }
+  },
+  "paused_binding": {
+    "character_id": 29829,
+    "war_id": 50331699,
+    "active_casus_belli_database_index": 27,
+    "date_raw": 53223936,
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "connection_generation": 1,
+    "episode_run_id": "native-29829-809d91e48a8d",
+    "paused_before_between_after": true,
+    "same_snapshot_before_between_after": true
+  },
+  "read_only_queries": [
+    {
+      "step": "query-war-termination-terms-v1-50331699",
+      "query_sequence": 1,
+      "status": "available",
+      "accepted": true,
+      "evaluated_days_observable": true,
+      "evaluated_days": 1825,
+      "actual_expiry_observable": false,
+      "expiry_date_raw": null
+    },
+    {
+      "step": "query-war-termination-terms-v1-50331699",
+      "query_sequence": 2,
+      "status": "available",
+      "accepted": true,
+      "evaluated_days_observable": true,
+      "evaluated_days": 1825,
+      "actual_expiry_observable": false,
+      "expiry_date_raw": null
+    }
+  ],
+  "same_frame_proof": {
+    "pointer_shape_verified": true,
+    "evaluator_double_read_stable": true,
+    "query_sequence_successor": true,
+    "normalized_queries_equal": true,
+    "probe_ok": true
+  },
+  "war_bound_observation": {
+    "generic_current_soldiers_observable": true,
+    "observed_current_soldiers": 598,
+    "source_specific_attribution_ready": false,
+    "pre_soldiers_observable": false,
+    "proven_soldier_loss_observable": false,
+    "war_bound_armies_ready": false
+  },
+  "cleanup": {
+    "session_pid": 36460,
+    "session_exit_reason": "stop",
+    "session_report_ok": true,
+    "shutdown_ok": true,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "driver_closed": true,
+    "post_cleanup_process_count": 0,
+    "ok": true
+  },
+  "source_invariant": {
+    "checkpoint_sha256_before": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "checkpoint_sha256_after": "60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164",
+    "driver_state_sha256_before": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "driver_state_sha256_after": "4FB901C77AF6D95A05EAB2B0E900AE2E07A652B4C14729835DECB69FC8CFF57E",
+    "unchanged": true
+  },
+  "boundaries": {
+    "private_build": false,
+    "private_sidecar": false,
+    "mutation_commands_sent": false,
+    "time_advanced": false,
+    "evaluated_days_production_live": true,
+    "public_read_only_terms_wire_live": true,
+    "public_wire_scope": "evaluated_days_only; expiry_observable=false; expiry_date_raw=null",
+    "actual_expiry_observable": false,
+    "generic_war_bound_current_observable": true,
+    "war_bound_loss_ready": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false,
+    "open_kaishek_certification_changed": false
+  },
+  "next_gate": "Close actual persisted truce expiry and proven war-bound loss as separate read-only observations before reconsidering decision or action readiness; do not derive expiry from evaluated_days."
+}

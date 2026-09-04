@@ -535,6 +535,18 @@ automatic surrender, and `GEN-034` therefore remain false/unresolved. The r2
 private run must not be replayed unchanged, and open_kaishek certification is
 unchanged by this evidence package.
 
+That gate is now superseded by the default-production r1 GREEN at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\live-production-leaf-dual-query-r1`.
+Two public terms queries on the same paused frame returned equal
+`evaluated_days=1825`; report SHA-256 is
+`AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`
+and the compact receipt is
+[`evaluated-days-production-live-r1-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json).
+The G2 truce-duration field is therefore a **production-live read-only
+primitive**. Actual expiry and proven war-bound loss remain unavailable, so
+the full terms decision, automatic surrender and `GEN-034` remain
+false/unresolved; no action or time advance occurred.
+
 ## 施工节奏与提交门
 
 每个工作包按以下小循环持续推进，不等待“大版本”统一收尾：

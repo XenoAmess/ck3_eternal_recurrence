@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import unittest
@@ -137,15 +138,15 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
         contract = json.loads(fixture_path.read_text(encoding="utf-8"))
         self.assertEqual(
             contract["readiness"]["stage"],
-            "private-live/default-production-static-ready",
+            "production-live-read-only-primitive",
         )
-        self.assertTrue(contract["readiness"]["live_shape_probe_required"])
+        self.assertFalse(contract["readiness"]["live_shape_probe_required"])
         self.assertTrue(contract["readiness"]["public_wire_complete"])
         self.assertEqual(
             contract["readiness"]["public_wire_scope"],
             "evaluated_days_only; expiry_observable=false; expiry_date_raw=null",
         )
-        self.assertFalse(contract["readiness"]["production_live"])
+        self.assertTrue(contract["readiness"]["production_live"])
         self.assertTrue(contract["read_contract"]["evaluated_days_public_wire"])
         self.assertFalse(contract["read_contract"]["expiry_observable"])
         self.assertTrue(
@@ -166,6 +167,27 @@ class RaiktorSurrenderTruceContractTests(unittest.TestCase):
         self.assertFalse(
             contract["private_live_evidence"]["default_production_binary_validated"]
         )
+        production = contract["production_live_evidence"]
+        self.assertEqual(production["query_sequences"], [1, 2])
+        self.assertEqual(production["evaluated_days"], 1_825)
+        self.assertTrue(production["same_paused_frame"])
+        self.assertTrue(production["default_production_binary_validated"])
+        receipt = ROOT.parent / production["receipt"]
+        self.assertEqual(
+            hashlib.sha256(receipt.read_bytes()).hexdigest().upper(),
+            production["receipt_sha256"],
+        )
+        live = json.loads(receipt.read_text(encoding="utf-8"))
+        self.assertEqual(
+            live["source_artifact"]["runner_report"]["sha256"],
+            production["runner_report_sha256"],
+        )
+        self.assertTrue(live["boundaries"]["evaluated_days_production_live"])
+        self.assertFalse(live["boundaries"]["actual_expiry_observable"])
+        self.assertFalse(live["boundaries"]["war_bound_loss_ready"])
+        self.assertFalse(live["boundaries"]["decision_ready"])
+        self.assertFalse(live["boundaries"]["automatic_surrender_ready"])
+        self.assertFalse(live["boundaries"]["gen034_closed"])
         source = (
             ROOT
             / "native_bridge"

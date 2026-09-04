@@ -465,3 +465,39 @@ This is not production-live evidence yet. Public readiness is unchanged,
 `expiry_observable=false`, decision and automatic surrender remain false, and
 `GEN-034` remains unresolved. The next legal gate is exactly the manifest's
 fresh default-binary dual-query attempt; do not repeat the r2 private build.
+
+## 2026-09-04 default-production leaf reader live GREEN
+
+[production-live read-only primitive] The manifest's one fresh default-binary
+attempt completed at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\live-production-leaf-dual-query-r1`.
+The 120,508,263-byte report is
+`AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`
+and records `GREEN` after 151.766 seconds. The loaded production tree was
+`F4E63FFF...944BE`; the default DLL and injector were the frozen
+`1ACC24DB...E3244` and `03ED1EE0...77C5` binaries. No private capture option
+or private JSONL was present.
+
+Both and only both public
+`query-war-termination-terms-v1-50331699` calls succeeded as sequences `1`
+and `2` on paused `native:3 / revision=4 / native_revision=3 /
+date_raw=53223936`. Each returned
+`evaluated_days_observable=true / evaluated_days=1825`, with the same exact
+Raiktor pointer provenance. The runner proved normalized equality, stable
+same-frame bindings and a successful pointer-only probe. This closes the
+default production reader's live gate for the evaluated-duration field.
+
+The same payload exposes generic war-bound current soldiers `598`, but it does
+not expose a source-specific pre-value or proven loss. Consequently
+`war_bound_armies_ready=false`; actual expiry is still
+`false/null`, and the ten-item unobserved list still contains
+`actual_truce_expiry` and `war_bound_army_losses`. No gameplay mutation was
+sent, time did not advance, source checkpoint and driver-state hashes remained
+unchanged, and managed cleanup ended with zero CK3/injector processes.
+
+The compact receipt is
+[`evaluated-days-production-live-r1-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json).
+This promotes only the public `evaluated_days` observation to a
+`production-live primitive`: decision readiness, automatic surrender and
+`GEN-034` remain false/unresolved. Persisted expiry must not be derived from
+`date_raw + 1825`.

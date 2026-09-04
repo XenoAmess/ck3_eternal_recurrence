@@ -69,7 +69,7 @@ cleanup GREEN。这是 material/call-graph closure RED，不是文件大小因�
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
-| G2 / open_kaishek | G2 已按用户要求暂停；本轮 open_kaishek 仅对单个 B1 effect 做离线 parser smoke，真实正文 validator 仍有 `UNKNOWN_OPCODE`，IR/runtime `SKIPPED` | 仅在用户解除 G2 暂停后恢复 paused exact-build evaluator 双读；不得用 parser smoke 提升认证 | 暂无；当前不进入 native/runtime live |
+| G2 / open_kaishek | 历史暂停已解除；default-production truce duration 已完成 paused same-frame 双查询并晋级 `production-live read-only primitive`，但 expiry/loss/decision/action 与 `GEN-034` 仍未就绪 | 继续补 actual expiry 与 proven war-bound loss 的只读观测；不得由 1825 天推导 expiry | 已完成本次 live 槽；后续仍需新的冻结候选与独占槽 |
 
 这里的“尚无 MP4”是刻意保留的事实状态，不是漏写路径：没有真实八段 CK3 素材、具名审阅和 fresh tool receipt 时，制作器会 fail-closed，不生成占位宣传片。
 
@@ -131,7 +131,7 @@ open_kaishek `981c79388a07e447b18f8e4472a16fd65e28c083` 重新执行 `--prefligh
 
 进一步的 `balanced-files` 候选没有 stub，保留全部 77 个定义且逐 block 正文字节与原始 effect 一致，只把单文件拆成两份；它为 59 files / 7,858,264 B，两份 effect 分别为 255,134 B 与 240,709 B，并在 180.396 s 取得 full-entry GREEN。在该诊断时点，拆文件已是可实施候选但尚不能唯一证明根因，也不能把原始未改写 full B1 改写为 GREEN。后续 seed-entry r2/r3 与 no-self-call 对照已将更大候选的实际故障定位为 direct effect recursion；canonical seed 也已由 r9 提升为 ready。素材门仍未通过，真实 footage 保持 `0/8`，两条 MP4 仍不存在。
 
-本轮 open_kaishek 只覆盖单个 effect 文件的离线 parser smoke；含真实正文的候选 validator 仍报 `UNKNOWN_OPCODE`，IR/runtime 均跳过。该结果不构成 B1 语义、CK3 native/runtime 或 G2 readiness 证据；G2 继续保持用户要求的暂停状态。
+本段记录的 open_kaishek 单文件 parser smoke 仍只属于当时的离线结果，不能作为 B1 语义或 CK3 native/runtime 证据。其“G2 暂停”状态已被 2026-09-04 的 default-production live GREEN supersede；最新边界见下方 G2 增量。
 
 ### 正式 B1 generator split 与 r3 验收
 
@@ -141,7 +141,18 @@ r1/r2 均在约 0.3 秒因 probe game-path 配置错误结束，`ck3_started=fal
 
 该 B1 晋级本身不覆盖 delayed-path、seed、生产 OODA 或 footage；后续 r9 已独立关闭 canonical seed 门，但 provider/OODA
 与素材仍未完成。真实素材为 `0/8`，两条 MP4 未生成。原始未拆分单文件 full B1 的唯一 1205.343 秒 RED 继续保留；
-B1 拆分仍是有效布局，而 seed-entry 对照已把本次更大候选的已定位根因收敛为 direct self-recursion。G2 保持 paused。
+B1 拆分仍是有效布局，而 seed-entry 对照已把本次更大候选的已定位根因收敛为 direct self-recursion。这里的 `G2 paused` 是当时调度状态，已被下方 2026-09-04 live 增量 supersede。
+
+### G2 default-production truce duration live 增量（2026-09-04）
+
+唯一 fresh default-production 双查询已在 exact CK3 `1.19.0.6` 上 GREEN：artifact 为
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\live-production-leaf-dual-query-r1`，
+report SHA-256 为
+`AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`，耗时
+151.766 秒。两次 public terms query 在同一 paused frame 上均返回 `evaluated_days=1825`，无 mutation、无时间推进，cleanup 后 CK3/injector 进程数为 0。该结果只把 truce duration 晋级为
+`production-live read-only primitive`；actual expiry、proven war-bound loss、decision/action、automatic surrender 与
+`GEN-034` 均保持 false/unresolved。紧凑证据见
+[`evaluated-days-production-live-r1-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json)。
 
 ### B2 generator 用途分片（2026-09-04）
 

@@ -462,6 +462,10 @@ class RaiktorSurrenderSixDomainContractTests(unittest.TestCase):
         self.assertFalse(
             contract["war_bound_boundary"]["proven_soldier_loss_ready"]
         )
+        self.assertFalse(
+            contract["readiness"]["truce_leaf_paused_live_probe_required"]
+        )
+        self.assertTrue(contract["readiness"]["truce_leaf_production_live"])
         self.assertFalse(contract["readiness"]["production_live"])
         for frozen in contract["frozen_component_contracts"]:
             component = ROOT / frozen["path"]

@@ -214,14 +214,18 @@
   fail-closed schema 草案。
 - [static-confirmed] [war-termination.md](war-termination.md) 记录原版 AI 的执行要求、白和、投降三棵主动提出与
   接受树，包括战分、时长、债务、其它战争、人格、人质与 auto-accept 边界。
-- [production-live read-only primitive + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
-  冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；一次 exact-build
-  paused probe 已把 gold/prestige/prisoner/favor 四个窄域提升为 read-only primitive，但仍不发布
-  surrender/white-peace action 或关闭 `GEN-034`。additive public session wrapper 已在同一 paused
+- [production-live read-only primitives + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
+  冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；exact-build
+  paused probes 已把 gold/prestige/prisoner/favor 四个窄域和 truce `evaluated_days` 提升为 read-only
+  primitives，但仍不发布 surrender/white-peace action 或关闭 `GEN-034`。additive public session wrapper 已在同一 paused
   frame 完成 connection/episode/PID/revision/cache 双查询验收，GREEN report SHA-256 为
   `DD46F69ABB6B1DFA2C35B5FA72D394EC99291CA6F4421C37B8179343432B135D`；这只把 session binding
-  提升为 production-live evidence，truce 与 generic/source-specific war-bound 仍为 typed unavailable，
-  aggregate 仍 incomplete，action/automatic surrender 仍为 false。四域 terms wire/runner 入口见
+  提升为 production-live evidence；随后 default-production r1 在同一 paused frame 双查询稳定返回
+  `evaluated_days=1825`，report SHA-256 为
+  `AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`。generic current soldiers
+  虽可见，但 source-specific pre/loss、actual expiry 仍不可观测，aggregate/decision/action/automatic surrender
+  仍未就绪。receipt 见
+  [evaluated-days-production-live-r1-green.json](../../artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json)，terms wire/runner 入口见
   [run_war_termination_terms_live_acceptance.py](../../ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py)，
   四域状态与策略边界见
   [raiktor_continue_vs_surrender_policy_v1_contract.json](../../ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json)

@@ -11,7 +11,7 @@
     },
     {
       "path": "native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json",
-      "sha256": "DF720CD33D3606634378A5CFF20D77227B82A35265269789BDE4A51CFF988E0D",
+      "sha256": "67F0F929CA95AEEAA2E1442EEBB8B9A74D8DC7F4A5D4450479CB1C99D2ECFAEF",
       "semantic_contract": "truce publishes stable nonnegative evaluated_days on the public terms wire; persisted expiry remains explicitly unavailable"
     },
     {
@@ -91,7 +91,8 @@
     "automatic_surrender_ready": false,
     "public_wire_complete": false,
     "truce_leaf_public_wire_complete": true,
-    "truce_leaf_paused_live_probe_required": true,
+    "truce_leaf_paused_live_probe_required": false,
+    "truce_leaf_production_live": true,
     "production_live": false
   }
 }

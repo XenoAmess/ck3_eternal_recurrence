@@ -442,6 +442,13 @@ class RaiktorContinueVsSurrenderPolicyTests(unittest.TestCase):
         self.assertFalse(current["white_peace_evaluated"])
         self.assertIsNone(current["suggested_action"])
         self.assertFalse(current["automatic_surrender_ready"])
+        self.assertIn(
+            "truce_evaluated_days", current["production_live_terms_domains"]
+        )
+        self.assertNotIn(
+            "truce_evaluated_days",
+            current["paused_live_probe_pending_terms_domains"],
+        )
         boundaries = contract["hard_boundaries"]
         self.assertTrue(boundaries["pairwise_preference_only"])
         self.assertFalse(boundaries["recommendation_ready"])
@@ -452,6 +459,7 @@ class RaiktorContinueVsSurrenderPolicyTests(unittest.TestCase):
         self.assertFalse(boundaries["native_ai_equivalent"])
         self.assertFalse(boundaries["semantic_optimal"])
         self.assertFalse(contract["readiness"]["gen_034_resolved"])
+        self.assertTrue(contract["readiness"]["truce_duration_production_live"])
         repository_root = ROOT.parent
         for entry in contract["frozen_inputs"]:
             with self.subTest(path=entry["path"]):

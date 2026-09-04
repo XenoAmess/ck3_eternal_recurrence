@@ -2068,6 +2068,27 @@ native observation point remains RVA `0x2E7F951`, gated by the exact
 measured initial soldiers, proven loss, the public ABI, and
 `war_bound_armies_ready` all remain unchanged/false.
 
+### 2026-09-04：Raiktor truce duration default-production live GREEN
+
+The single authorized default-production attempt completed GREEN at
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\live-production-leaf-dual-query-r1`.
+Its report SHA-256 is
+`AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`
+and elapsed time is 151.766 seconds. On one paused `native:3 / revision=4 /
+native_revision=3 / date_raw=53223936` frame, public query sequences `1` and
+`2` both returned `evaluated_days_observable=true / evaluated_days=1825` and
+the normalized payloads matched. The exact pointer-only probe also passed.
+
+This validates the default production truce-duration reader, with no private
+capture output, mutation command or time advance. It does not validate an
+expiry: both rows retain `actual_expiry_observable=false /
+expiry_date_raw=null`. Generic current soldiers `598` are visible, but no
+source-specific pre-soldier or proven-loss value exists, so
+`war_bound_armies_ready=false`. `decision_ready`, automatic surrender and
+`GEN-034` remain false/unresolved. Cleanup is proven, process count is zero,
+and the checkpoint and driver-state hashes are unchanged. Compact evidence:
+[`evaluated-days-production-live-r1-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json).
+
 #### Distinct staged loader-readiness contract (2026-09-02)
 
 [static-ready / no new CK3 run] The loader-stage RED above is not a reason to

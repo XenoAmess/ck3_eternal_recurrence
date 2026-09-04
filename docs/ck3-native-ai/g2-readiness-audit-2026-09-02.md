@@ -478,3 +478,25 @@ unobserved, decision and automatic-surrender readiness remain false, and
 reader built from the proven synchronous leaf-context seam, followed by one
 fresh paused double-query validation without the private option; r2 itself must
 not be repeated unchanged.
+
+## 2026-09-04 default-production evaluated-days primitive
+
+The frozen default-production reader has now passed its one fresh exact-build
+live attempt. Report
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-production-leaf-1941c56-20260904\live-production-leaf-dual-query-r1\report.json`
+is 120,508,263 bytes, SHA-256
+`AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2`,
+and completed GREEN in 151.766 seconds. Public query sequences `1 -> 2`
+returned equal `evaluated_days=1825` on the same paused `native:3` frame. The
+default DLL was `1ACC24DB...E3244`, not a private-instrumented build; no private
+JSONL was produced.
+
+This advances the truce duration observation from private-live/default-static
+to a production-live read-only primitive. It does not advance the other
+readiness gates. Persisted expiry remains `false/null`; the visible generic
+current soldier total `598` is not a source-specific pre-value or proven loss;
+`war_bound_armies_ready`, `decision_ready` and `automatic_surrender_ready`
+remain false; `GEN-034` remains unresolved. The run sent no mutation and did
+not advance time. Cleanup is proven with process count zero, and checkpoint
+and driver-state SHA-256 values are unchanged. The committed receipt is
+[`evaluated-days-production-live-r1-green.json`](../../artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json).

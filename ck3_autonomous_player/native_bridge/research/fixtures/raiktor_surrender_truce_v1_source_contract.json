@@ -68,12 +68,23 @@
     "evaluated_days": 1825,
     "default_production_binary_validated": false
   },
+  "production_live_evidence": {
+    "receipt": "artifacts/g2/2026-09-04/evaluated-days-production-live-r1-green.json",
+    "receipt_sha256": "2A37EB36DD63C7D7D583ADB5800966E84D1EDF52AEF7E92B2ABA6BB74EDDE8B8",
+    "runner_report_sha256": "AD6EEF83DCCA07C3AE280F01CADE6BBD0C1912FF0E086D797604D5F06C99F7C2",
+    "manifest_sha256": "6B5783BCA00A1B082AA5FEC834EE73A95860535549B7525A616C82F178265C58",
+    "bridge_sha256": "1ACC24DB476A7B1ECB4F0A98EF2E9A74D0E932CB74F5884622530D77246E3244",
+    "query_sequences": [1, 2],
+    "evaluated_days": 1825,
+    "same_paused_frame": true,
+    "default_production_binary_validated": true
+  },
   "readiness": {
-    "stage": "private-live/default-production-static-ready",
-    "live_shape_probe_required": true,
+    "stage": "production-live-read-only-primitive",
+    "live_shape_probe_required": false,
     "public_wire_complete": true,
     "public_wire_scope": "evaluated_days_only; expiry_observable=false; expiry_date_raw=null",
-    "production_live": false,
+    "production_live": true,
     "expiry_semantics_claimed": false
   }
 }
