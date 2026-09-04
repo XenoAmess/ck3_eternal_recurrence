@@ -20,15 +20,15 @@ PROMOTION_CAPABILITY = (
     "game.command.query-zhongguo-promotion-compensation-postcondition-v1"
 )
 RESULT_CASE_CAPABILITY = "game.command.query-zhongguo-result-case-snapshot-v1"
-PROJECTION_NAME = "b3-current-reachable-schema3-ef0ece1"
+PROJECTION_NAME = "b3-current-reachable-schema3-gui-f6068a9"
 EXPECTED_PRODUCT_TREE = (
-    "b0cc410c31360e9a5884bfdffd5c0a384f936c1a8a6030f30935b88f14768d74"
+    "9e75d8e55bbbf5170da3b40c8411dafc7387cf2a8b0f51c2f06c71b0856ee723"
 )
 EXPECTED_PROJECTION_SHA256 = (
-    "81e8726a1e73b835f7ebfd0acca0c0772e9017bed44015e8da11baa809f078c9"
+    "bfb837884b95803a2ee4c41d72fd90acf364c508188d27582fb937738005681a"
 )
 EXPECTED_CLOSURE_SHA256 = (
-    "62c9f79311e74a3a7b2cd22465e723e9376038f72eb05a2f0f5bd285313bf50f"
+    "f68d29e9558c0df44c18ffad6ac9b4db3f1003205cb76cea0c17eb0485c7af8b"
 )
 PIPE_TOKEN = re.compile(r"[0-9a-f]{32}\Z")
 MOUNT_PATH_LIMIT = 250
@@ -127,7 +127,7 @@ def verify_product(
     ):
         raise FreezeError("explicit-AND projection identity drifted")
     rows = projection.get("files")
-    if not isinstance(rows, list) or len(rows) != 629:
+    if not isinstance(rows, list) or len(rows) != 630:
         raise FreezeError("explicit-AND projection file inventory drifted")
     relative_paths: list[str] = []
     for row in rows:
@@ -146,6 +146,7 @@ def verify_product(
         raise FreezeError("schema-3 closure evidence SHA-256 drifted")
     closure = load_json(closure_path)
     localization = closure.get("localization_closure")
+    widget_gui = closure.get("scripted_widget_gui_closure")
     closure_checks = {
         "kind": closure.get("kind")
         == "zg361_phase2_b3_material_custom_call_closure_expansion",
@@ -167,6 +168,12 @@ def verify_product(
         and localization.get("required_key_count") == 936,
         "localization_files": isinstance(localization, dict)
         and localization.get("provider_file_count") == 63,
+        "scripted_widget_gui_green": isinstance(widget_gui, dict)
+        and widget_gui.get("green") is True,
+        "scripted_widget_gui_files": isinstance(widget_gui, dict)
+        and widget_gui.get("required_file_count") == 4
+        and "gui/zg361_promotion_source_bridge.gui"
+        in widget_gui.get("required_files", []),
     }
     if not all(closure_checks.values()):
         failed = [name for name, value in closure_checks.items() if not value]
