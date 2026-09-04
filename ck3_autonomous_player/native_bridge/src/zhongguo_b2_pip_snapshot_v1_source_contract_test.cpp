@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
           "mailbox") ||
       !require_tokens(
           adapter,
-          {"std::array<std::string_view, 76>",
+          {"constexpr std::size_t kCapabilityCount = 76",
            "kZhongguoB2PipSnapshotV1Capability"},
           "adapter") ||
       !require_tokens(
