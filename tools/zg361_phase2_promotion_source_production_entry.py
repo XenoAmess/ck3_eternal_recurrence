@@ -267,13 +267,22 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # absent) while disposing of the temporary child.
         "date_raw": 53147520,
         "root_character_id": 29037,
-        "character_scopes": {
-            "grieving_child": 16780023,
-            "orphan_mother": 16780148,
-            "orphan_father": 16780149,
-            "parent": 16780149,
-            "guardian": 31647,
-            "messenger": 31647,
+        "character_scopes": {},
+        # Vanilla creates/selects every role in immediate, so their numeric
+        # identities can legitimately change when the seed is reinstalled.
+        # R50 and R56 retained the exact role/type/count/option shape with
+        # different IDs.  Bind the source-defined relationships instead of
+        # treating allocator output as product drift.
+        "unique_character_scope_excludes": {
+            "grieving_child": (29037,),
+            "orphan_mother": (29037,),
+            "orphan_father": (29037,),
+            "parent": (29037,),
+            "guardian": (29037,),
+            "messenger": (29037,),
+        },
+        "character_scope_matches_any": {
+            "parent": ("orphan_mother", "orphan_father"),
         },
         "boolean_scopes": (),
         "saved_scope_count": 6,
@@ -956,6 +965,21 @@ def _known_interrupt_checks(
         )
         checks[f"scope:{name}:unique_third_party"] = (
             len(ids) == 1 and ids.isdisjoint(excluded_character_ids)
+        )
+    matches_any_value = contract.get("character_scope_matches_any", {})
+    matches_any = (
+        matches_any_value if isinstance(matches_any_value, Mapping) else {}
+    )
+    for name, candidate_names_value in matches_any.items():
+        candidate_names = (
+            candidate_names_value
+            if isinstance(candidate_names_value, tuple)
+            else ()
+        )
+        ids = character_ids(str(name))
+        checks[f"scope:{name}:matches_any"] = len(ids) == 1 and any(
+            ids == character_ids(str(candidate_name))
+            for candidate_name in candidate_names
         )
     for name in boolean_scopes:
         matches = [

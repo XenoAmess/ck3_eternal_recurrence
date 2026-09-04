@@ -19,9 +19,11 @@ from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import ( 
 )
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     B1_AUTHORED_ADVANCE_DAYS,
+    KNOWN_TIMELINE_INTERRUPTS,
     MAX_ADVANCE_DAYS,
     POST_PUBLICATION_OBSERVATION_DAYS,
     PromotionProductionEntryError,
+    _known_interrupt_checks,
     enter_promotion_source_checkpoint_v1,
 )
 
@@ -451,12 +453,14 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             elif self.stage == "grieving_child":
                 key = "tgp_china_yearly.0005"
                 scopes = [
-                    _character_scope("grieving_child", 16780023),
-                    _character_scope("orphan_mother", 16780148),
-                    _character_scope("orphan_father", 16780149),
-                    _character_scope("parent", 16780149),
+                    # R56 allocator identities differ from R50 while the
+                    # source-defined parent alias and complete shape remain.
+                    _character_scope("grieving_child", 16780191),
+                    _character_scope("orphan_mother", 16780218),
+                    _character_scope("orphan_father", 16780221),
+                    _character_scope("parent", 16780221),
                     _character_scope("guardian", 31647),
-                    _character_scope("messenger", 31647),
+                    _character_scope("messenger", 31003),
                 ]
                 option_count = 3
             elif self.stage == "merchant_dispute":
@@ -908,6 +912,53 @@ def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:
             service, poll_interval_seconds=0
         )
     assert service.selected == []
+
+
+def test_grieving_child_contract_binds_dynamic_parent_relationship() -> None:
+    scopes = [
+        _character_scope("grieving_child", 16780191),
+        _character_scope("orphan_mother", 16780218),
+        _character_scope("orphan_father", 16780221),
+        _character_scope("parent", 16780221),
+        _character_scope("guardian", 31647),
+        _character_scope("messenger", 31003),
+    ]
+    snapshot = {
+        "date_raw": 53147520,
+        "active_event": {"option_count": 4},
+    }
+    event = {"event_instance_id": 5}
+    context = {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "tgp_china_yearly.0005",
+        "current_event_instance_id": 5,
+        "date_raw": 53147520,
+        "root_scope": _character_scope("root", 29037)["scope"],
+        "saved_scopes": scopes,
+        "options": _options(3, native_indices=(0, 1, 2)),
+    }
+    contract = KNOWN_TIMELINE_INTERRUPTS["tgp_china_yearly.0005"]
+    checks = _known_interrupt_checks(
+        snapshot=snapshot,
+        event=event,
+        context=context,
+        event_key="tgp_china_yearly.0005",
+        contract=contract,
+    )
+    assert all(checks.values())
+
+    scopes[3] = _character_scope("parent", 16780299)
+    checks = _known_interrupt_checks(
+        snapshot=snapshot,
+        event=event,
+        context=context,
+        event_key="tgp_china_yearly.0005",
+        contract=contract,
+    )
+    assert checks["scope:parent:matches_any"] is False
 
 
 def test_unavailable_progress_reports_native_reason_and_widgets() -> None:

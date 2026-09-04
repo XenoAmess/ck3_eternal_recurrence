@@ -393,3 +393,29 @@ so no additional effect split is triggered. R55 report/evidence SHA-256 are
 `ED9C501EE6A94BD676E3CFEDEB64D006E2C7F53D939D1357F85F71EF25661FBE`
 and `50355C965BE8E8F67C60F4DC835D3653A985FF39B39F7187DFBF36F0E385EAC1`;
 native cleanup was GREEN and no CK3 process remained.
+
+## R56: dynamic vanilla Character identities are not a stable contract
+
+R56 ran from pushed commit `cdc3923` and passed frontend-first plus the final
+634-file loader (`303` database nodes, `fatal=0`). Before any new mutation it
+failed closed on the previously registered `tgp_china_yearly.0005` because
+five saved Character IDs differed from the older observed frame. The outer
+report and evidence-index SHA-256 values are
+`3672107D691C2E215349EF7C3B896E559424591B98EF054E8F6D45C3633CEE05`
+and `57604513E3835553F4BC7C6CDBC2EC24E045B7EBE045EE8DF072E817A757E070`;
+cleanup was GREEN and CK3 count returned to zero.
+
+The exact 1.19.0.6 source creates or selects the grieving child, both parents,
+guardian, and messenger inside the event `immediate`. R46 and R56 therefore
+legitimately observed different allocator identities while retaining the same
+six canonical role names, Character types, root/date, saved-scope count,
+parent-to-mother-or-father relationship, and complete rendered/native option
+shape. The corrected contract binds those stable source semantics: every role
+must be one unique non-player Character and `parent` must equal either
+`orphan_mother` or `orphan_father`. It still selects authored option 3/native
+index 2, avoiding the merit mutation in option 2.
+
+Promotion and choreography/preflight tests pass normal and optimized at 10/10
+and 6/6 respectively; the no-launch preflight is GREEN. This was another
+post-loader contract RED, not a file-size or loader-performance signal, so it
+does not authorize another effect-file split.
