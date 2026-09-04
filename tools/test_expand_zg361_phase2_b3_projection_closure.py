@@ -45,7 +45,12 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
                 canonical,
                 "events/zg361_phase2_central_001_serial_dispatch_events.txt",
                 "namespace = zg361probe\n\n"
-                "zg361probe.7 = { immediate = { zg361_probe_leaf_effect = yes } }\n",
+                "zg361probe.7 = {\n"
+                "    immediate = {\n"
+                "        zg361_probe_leaf_effect = yes\n"
+                "        if = { limit = { zg361_probe_root_trigger = yes } }\n"
+                "    }\n"
+                "}\n",
             )
             write(
                 canonical,
@@ -54,13 +59,23 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
                 "    set_variable = { name = probe value = 1 }\n"
                 "}\n",
             )
+            write(
+                canonical,
+                "common/scripted_triggers/probe_triggers.txt",
+                "zg361_probe_root_trigger = {\n"
+                "    zg361_probe_leaf_trigger = yes\n"
+                "}\n\n"
+                "zg361_probe_leaf_trigger = {\n"
+                "    always = yes\n"
+                "}\n",
+            )
             evidence_path = root / "evidence.json"
             result = expand.expand_projection_closure(
                 candidate, canonical, evidence_path
             )
             self.assertTrue(result["green"])
             self.assertEqual(["zg361probe.7"], result["initial_missing_events"])
-            self.assertEqual(2, result["added_file_count"])
+            self.assertEqual(3, result["added_file_count"])
             self.assertEqual(2, len(result["rounds"]))
             self.assertTrue(
                 (
@@ -71,9 +86,13 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
             self.assertTrue(
                 (candidate / "common/scripted_effects/leaf_effects.txt").is_file()
             )
+            self.assertTrue(
+                (candidate / "common/scripted_triggers/probe_triggers.txt").is_file()
+            )
             persisted = json.loads(evidence_path.read_text(encoding="utf-8"))
             self.assertEqual([], persisted["final_missing_events"])
             self.assertEqual([], persisted["final_missing_effects"])
+            self.assertEqual([], persisted["final_missing_triggers"])
 
 
 if __name__ == "__main__":

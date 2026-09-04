@@ -26,6 +26,12 @@ def write_events(root: Path, name: str, body: str) -> None:
     (directory / name).write_bytes(BOM + body.encode("utf-8"))
 
 
+def write_triggers(root: Path, name: str, body: str) -> None:
+    directory = root / "common" / "scripted_triggers"
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / name).write_bytes(BOM + body.encode("utf-8"))
+
+
 class CentralEffectCallClosureTests(unittest.TestCase):
     def test_recursive_custom_effect_calls_are_resolved(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -229,6 +235,71 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             )
             self.assertFalse(result["material_projection"]["green"])
 
+    def test_recursive_and_parameterized_custom_triggers_are_resolved(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_effects(
+                root,
+                "root_effects.txt",
+                "zg361_probe_root_effect = {\n"
+                "    if = {\n"
+                "        limit = {\n"
+                "            zg361_probe_root_trigger = {\n"
+                "                CHILD_TRIGGER = zg361_probe_leaf_trigger\n"
+                "            }\n"
+                "        }\n"
+                "    }\n"
+                "}\n",
+            )
+            write_triggers(
+                root,
+                "probe_triggers.txt",
+                "zg361_probe_root_trigger = {\n"
+                "    zg361_probe_middle_trigger = yes\n"
+                "}\n\n"
+                "zg361_probe_middle_trigger = {\n"
+                "    zg361_probe_leaf_trigger = yes\n"
+                "}\n\n"
+                "zg361_probe_leaf_trigger = {\n"
+                "    always = yes\n"
+                "}\n",
+            )
+            result = freeze.central_effect_call_closure(
+                root,
+                roots=("zg361_probe_root_effect",),
+                required_effect_provider_files=frozenset(),
+                required_event_provider_files=frozenset(),
+            )
+            self.assertTrue(result["green"])
+            self.assertEqual(3, result["reachable_trigger_count"])
+            self.assertEqual([], result["missing_triggers"])
+            self.assertEqual([], result["material_projection"]["missing_triggers"])
+
+    def test_material_projection_rejects_missing_trigger(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_effects(
+                root,
+                "root_effects.txt",
+                "zg361_probe_root_effect = {\n"
+                "    if = { limit = { zg361_probe_missing_trigger = yes } }\n"
+                "}\n",
+            )
+            result = freeze.central_effect_call_closure(
+                root,
+                roots=("zg361_probe_root_effect",),
+                required_effect_provider_files=frozenset(),
+                required_event_provider_files=frozenset(),
+            )
+            self.assertEqual(
+                ["zg361_probe_missing_trigger"], result["missing_triggers"]
+            )
+            self.assertEqual(
+                ["zg361_probe_missing_trigger"],
+                result["material_projection"]["missing_triggers"],
+            )
+            self.assertFalse(result["green"])
+
     def test_predecessor_material_red_is_preserved(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -350,6 +421,51 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             self.assertFalse(result["size_ab_triggered"])
             self.assertTrue(result["cleanup_green"])
 
+    def test_predecessor_trigger_red_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "cell").mkdir()
+            (root / "report.json").write_text(
+                json.dumps({"result": "RED"}), encoding="utf-8"
+            )
+            (root / "cell" / "report.json").write_text(
+                json.dumps(
+                    {
+                        "result": "RED",
+                        "error_reason": (
+                            "CK3 reached frontend but did not enter "
+                            "Load Save/In Game"
+                        ),
+                        "duration_seconds": 317.408,
+                        "loader_gate_executed": False,
+                        "gameplay_acceptance_executed": False,
+                        "native_cleanup": {
+                            "result": "GREEN",
+                            "failed_checks": [],
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            lines = []
+            for trigger, count in freeze.EXPECTED_TRIGGER_PREDECESSOR_COUNTS.items():
+                lines.extend([f"Unknown trigger: {trigger}"] * count)
+            lines.append(freeze.TRIGGER_PREDECESSOR_CALLER_FILE)
+            (root / "cell" / "final_error.log").write_text(
+                "\n".join(lines) + "\n", encoding="utf-8"
+            )
+            (root / "cell" / "final_game.log").write_text("", encoding="utf-8")
+            (root / "evidence-index.json").write_text("{}\n", encoding="utf-8")
+            result = freeze.predecessor_trigger_live_red_evidence(root)
+            self.assertEqual(
+                "material-projection-trigger-closure-red",
+                result["classification"],
+            )
+            self.assertEqual(6, result["unknown_trigger_line_count"])
+            self.assertFalse(result["loader_performance_claimed"])
+            self.assertFalse(result["size_ab_triggered"])
+            self.assertTrue(result["cleanup_green"])
+
     def test_closure_expansion_evidence_is_hash_bound(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -366,8 +482,10 @@ class CentralEffectCallClosureTests(unittest.TestCase):
                         "added_files": ["events/probe.txt"],
                         "final_effect_definition_count": 2,
                         "final_event_definition_count": 1,
+                        "final_trigger_definition_count": 1,
                         "final_missing_effects": [],
                         "final_missing_events": [],
+                        "final_missing_triggers": [],
                     }
                 ),
                 encoding="utf-8",

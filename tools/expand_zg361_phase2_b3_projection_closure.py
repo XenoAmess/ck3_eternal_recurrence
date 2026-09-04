@@ -12,14 +12,18 @@ import sys
 import freeze_zg361_phase2_b3_no_launch as freeze
 
 
-def _provider_files(source: Path) -> tuple[dict[str, str], dict[str, str]]:
+def _provider_files(
+    source: Path,
+) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
     sys.path.insert(0, str(freeze.MOD_ROOT / "tools"))
     from zg361_effect_sharding import top_level_effect_entries
 
     effects: dict[str, str] = {}
     events: dict[str, str] = {}
+    triggers: dict[str, str] = {}
     duplicate_effects: set[str] = set()
     duplicate_events: set[str] = set()
+    duplicate_triggers: set[str] = set()
     effect_root = source / "common" / "scripted_effects"
     for path in sorted(effect_root.glob("*.txt"), key=lambda value: value.name):
         relative = path.relative_to(source).as_posix()
@@ -34,12 +38,20 @@ def _provider_files(source: Path) -> tuple[dict[str, str], dict[str, str]]:
             if name in events:
                 duplicate_events.add(name)
             events[name] = relative
-    if duplicate_effects or duplicate_events:
+    trigger_root = source / "common" / "scripted_triggers"
+    for path in sorted(trigger_root.glob("*.txt"), key=lambda value: value.name):
+        relative = path.relative_to(source).as_posix()
+        for entry in top_level_effect_entries(path.read_bytes()):
+            if entry.name in triggers:
+                duplicate_triggers.add(entry.name)
+            triggers[entry.name] = relative
+    if duplicate_effects or duplicate_events or duplicate_triggers:
         raise freeze.FreezeError(
             "canonical release has duplicate custom providers: "
-            f"effects={sorted(duplicate_effects)}, events={sorted(duplicate_events)}"
+            f"effects={sorted(duplicate_effects)}, events={sorted(duplicate_events)}, "
+            f"triggers={sorted(duplicate_triggers)}"
         )
-    return effects, events
+    return effects, events, triggers
 
 
 def expand_projection_closure(
@@ -51,11 +63,12 @@ def expand_projection_closure(
     canonical = canonical.resolve()
     if not candidate.is_dir() or not canonical.is_dir():
         raise freeze.FreezeError("candidate and canonical roots must exist")
-    effect_providers, event_providers = _provider_files(canonical)
+    effect_providers, event_providers, trigger_providers = _provider_files(canonical)
     added_files: set[str] = set()
     rounds: list[dict[str, object]] = []
     initial_missing_effects: list[str] | None = None
     initial_missing_events: list[str] | None = None
+    initial_missing_triggers: list[str] | None = None
 
     while True:
         closure = freeze.central_effect_call_closure(candidate)
@@ -67,10 +80,15 @@ def expand_projection_closure(
             set(closure["missing_events"])
             | set(closure["material_projection"]["missing_events"])
         )
+        missing_triggers = sorted(
+            set(closure["missing_triggers"])
+            | set(closure["material_projection"]["missing_triggers"])
+        )
         if initial_missing_effects is None:
             initial_missing_effects = missing_effects
             initial_missing_events = missing_events
-        if not missing_effects and not missing_events:
+            initial_missing_triggers = missing_triggers
+        if not missing_effects and not missing_events and not missing_triggers:
             break
         unresolved_effects = sorted(
             name for name in missing_effects if name not in effect_providers
@@ -78,14 +96,19 @@ def expand_projection_closure(
         unresolved_events = sorted(
             name for name in missing_events if name not in event_providers
         )
-        if unresolved_effects or unresolved_events:
+        unresolved_triggers = sorted(
+            name for name in missing_triggers if name not in trigger_providers
+        )
+        if unresolved_effects or unresolved_events or unresolved_triggers:
             raise freeze.FreezeError(
                 "canonical release cannot satisfy projection closure: "
-                f"effects={unresolved_effects}, events={unresolved_events}"
+                f"effects={unresolved_effects}, events={unresolved_events}, "
+                f"triggers={unresolved_triggers}"
             )
         provider_files = sorted(
             {effect_providers[name] for name in missing_effects}
             | {event_providers[name] for name in missing_events}
+            | {trigger_providers[name] for name in missing_triggers}
         )
         new_files = [relative for relative in provider_files if relative not in added_files]
         if not new_files:
@@ -105,6 +128,7 @@ def expand_projection_closure(
                 "round": len(rounds) + 1,
                 "missing_effects": missing_effects,
                 "missing_events": missing_events,
+                "missing_triggers": missing_triggers,
                 "provider_files_added": new_files,
             }
         )
@@ -118,6 +142,10 @@ def expand_projection_closure(
         set(final_closure["missing_events"])
         | set(final_closure["material_projection"]["missing_events"])
     )
+    final_missing_triggers = sorted(
+        set(final_closure["missing_triggers"])
+        | set(final_closure["material_projection"]["missing_triggers"])
+    )
     green = final_closure["green"] is True
     evidence: dict[str, object] = {
         "schema_version": 1,
@@ -127,6 +155,7 @@ def expand_projection_closure(
         "canonical_source": str(canonical),
         "initial_missing_effects": initial_missing_effects or [],
         "initial_missing_events": initial_missing_events or [],
+        "initial_missing_triggers": initial_missing_triggers or [],
         "rounds": rounds,
         "added_file_count": len(added_files),
         "added_files": [
@@ -139,8 +168,12 @@ def expand_projection_closure(
         "final_event_definition_count": final_closure["material_projection"][
             "event_definition_count"
         ],
+        "final_trigger_definition_count": final_closure["material_projection"][
+            "trigger_definition_count"
+        ],
         "final_missing_effects": final_missing_effects,
         "final_missing_events": final_missing_events,
+        "final_missing_triggers": final_missing_triggers,
     }
     freeze.write_json(evidence_path.resolve(), evidence)
     if not green:

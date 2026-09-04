@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import argparse
-from collections import deque
+from collections import Counter, deque
 import hashlib
 import json
 import os
@@ -50,6 +50,11 @@ REQUIRED_CENTRAL_EVENT_PROVIDER_FILES = frozenset(
     {"zg361_phase2_central_001_serial_dispatch_events.txt"}
 )
 CUSTOM_EFFECT_CALL_RE = re.compile(r"\b(zg361_[A-Za-z0-9_]+_effect)\s*=")
+CUSTOM_TRIGGER_CALL_RE = re.compile(r"\b(zg361_[A-Za-z0-9_]+_trigger)\s*=")
+CUSTOM_TRIGGER_ARGUMENT_RE = re.compile(
+    r"\b(?:TRIGGER|[A-Z][A-Z0-9_]*_TRIGGER)\s*=\s*"
+    r"(zg361_[A-Za-z0-9_]+_trigger)\b"
+)
 CUSTOM_EVENT_ID_RE = re.compile(
     r"\b(?:id|EVENT)\s*=\s*(zg361[A-Za-z0-9_]*\.[0-9]+)\b"
 )
@@ -92,6 +97,20 @@ EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS = frozenset(
 PARAMETERIZED_EVENT_PREDECESSOR_CALLER_FILE = (
     "common/scripted_effects/"
     "zg361_case_kernel_001_shared_helpers_effects.txt"
+)
+EXPECTED_TRIGGER_PREDECESSOR_MISSING_TRIGGERS = frozenset(
+    {
+        "zg361_p2c_m360_candidate_ready_trigger",
+        "zg361_p2c_m360_frozen_manager_exact_trigger",
+    }
+)
+EXPECTED_TRIGGER_PREDECESSOR_COUNTS = {
+    "zg361_p2c_m360_candidate_ready_trigger": 3,
+    "zg361_p2c_m360_frozen_manager_exact_trigger": 3,
+}
+TRIGGER_PREDECESSOR_CALLER_FILE = (
+    "common/scripted_effects/"
+    "zg361_phase2_central_001_m360_source_effects.txt"
 )
 
 B3_EFFECT_SHARDS = (
@@ -305,6 +324,16 @@ def _top_level_event_entries(path: Path) -> list[tuple[str, str]]:
     return entries
 
 
+def _block_references(block: str) -> tuple[set[str], set[str], set[str]]:
+    masked = _mask_comments_and_strings(block)
+    effects = set(CUSTOM_EFFECT_CALL_RE.findall(masked))
+    events = set(CUSTOM_EVENT_ID_RE.findall(masked))
+    events.update(CUSTOM_EVENT_DIRECT_CALL_RE.findall(masked))
+    triggers = set(CUSTOM_TRIGGER_CALL_RE.findall(masked))
+    triggers.update(CUSTOM_TRIGGER_ARGUMENT_RE.findall(masked))
+    return effects, events, triggers
+
+
 def central_effect_call_closure(
     product_source: Path,
     *,
@@ -343,23 +372,38 @@ def central_effect_call_closure(
             else:
                 event_providers[name] = (relative, block)
 
+    trigger_providers: dict[str, tuple[str, str]] = {}
+    duplicate_triggers: set[str] = set()
+    trigger_directory = product_source / "common" / "scripted_triggers"
+    for path in sorted(trigger_directory.glob("*.txt"), key=lambda value: value.name):
+        relative = path.relative_to(product_source).as_posix()
+        for entry in top_level_effect_entries(path.read_bytes()):
+            if entry.name in trigger_providers:
+                duplicate_triggers.add(entry.name)
+            else:
+                trigger_providers[entry.name] = (relative, entry.block)
+
     material_effect_edges: set[tuple[str, str, str]] = set()
     material_event_edges: set[tuple[str, str, str]] = set()
+    material_trigger_edges: set[tuple[str, str, str]] = set()
     material_missing_effects: set[str] = set()
     material_missing_events: set[str] = set()
+    material_missing_triggers: set[str] = set()
     for caller_kind, provider_map in (
         ("effect", effect_providers),
         ("event", event_providers),
+        ("trigger", trigger_providers),
     ):
         for caller, (_, block) in provider_map.items():
-            masked = _mask_comments_and_strings(block)
-            effect_references = set(CUSTOM_EFFECT_CALL_RE.findall(masked))
-            event_references = set(CUSTOM_EVENT_ID_RE.findall(masked))
-            event_references.update(CUSTOM_EVENT_DIRECT_CALL_RE.findall(masked))
+            effect_references, event_references, trigger_references = (
+                _block_references(block)
+            )
             if caller_kind == "effect":
                 effect_references.discard(caller)
-            else:
+            elif caller_kind == "event":
                 event_references.discard(caller)
+            else:
+                trigger_references.discard(caller)
             for reference in effect_references:
                 material_effect_edges.add((caller_kind, caller, reference))
                 if reference not in effect_providers:
@@ -368,18 +412,36 @@ def central_effect_call_closure(
                 material_event_edges.add((caller_kind, caller, reference))
                 if reference not in event_providers:
                     material_missing_events.add(reference)
+            for reference in trigger_references:
+                material_trigger_edges.add((caller_kind, caller, reference))
+                if reference not in trigger_providers:
+                    material_missing_triggers.add(reference)
 
     queue = deque(("effect", name) for name in roots)
     reachable_effects: set[str] = set()
     reachable_events: set[str] = set()
+    reachable_triggers: set[str] = set()
     missing_effects: set[str] = set()
     missing_events: set[str] = set()
+    missing_triggers: set[str] = set()
     edges: set[tuple[str, str, str, str]] = set()
     while queue:
         kind, name = queue.popleft()
-        reachable = reachable_effects if kind == "effect" else reachable_events
-        missing = missing_effects if kind == "effect" else missing_events
-        providers = effect_providers if kind == "effect" else event_providers
+        reachable = {
+            "effect": reachable_effects,
+            "event": reachable_events,
+            "trigger": reachable_triggers,
+        }[kind]
+        missing = {
+            "effect": missing_effects,
+            "event": missing_events,
+            "trigger": missing_triggers,
+        }[kind]
+        providers = {
+            "effect": effect_providers,
+            "event": event_providers,
+            "trigger": trigger_providers,
+        }[kind]
         if name in reachable or name in missing:
             continue
         provider = providers.get(name)
@@ -387,14 +449,15 @@ def central_effect_call_closure(
             missing.add(name)
             continue
         reachable.add(name)
-        masked = _mask_comments_and_strings(provider[1])
-        effect_references = set(CUSTOM_EFFECT_CALL_RE.findall(masked))
-        event_references = set(CUSTOM_EVENT_ID_RE.findall(masked))
-        event_references.update(CUSTOM_EVENT_DIRECT_CALL_RE.findall(masked))
+        effect_references, event_references, trigger_references = (
+            _block_references(provider[1])
+        )
         if kind == "effect":
             effect_references.discard(name)
-        else:
+        elif kind == "event":
             event_references.discard(name)
+        else:
+            trigger_references.discard(name)
         for reference in sorted(effect_references):
             edges.add((kind, name, "effect", reference))
             if reference not in reachable_effects:
@@ -403,12 +466,19 @@ def central_effect_call_closure(
             edges.add((kind, name, "event", reference))
             if reference not in reachable_events:
                 queue.append(("event", reference))
+        for reference in sorted(trigger_references):
+            edges.add((kind, name, "trigger", reference))
+            if reference not in reachable_triggers:
+                queue.append(("trigger", reference))
 
     effect_provider_files = sorted(
         {effect_providers[name][0] for name in reachable_effects}
     )
     event_provider_files = sorted(
         {event_providers[name][0] for name in reachable_events}
+    )
+    trigger_provider_files = sorted(
+        {trigger_providers[name][0] for name in reachable_triggers}
     )
     effect_filenames = {Path(path).name for path in effect_provider_files}
     event_filenames = {Path(path).name for path in event_provider_files}
@@ -424,6 +494,8 @@ def central_effect_call_closure(
         "reachable_effects": sorted(reachable_effects),
         "reachable_event_count": len(reachable_events),
         "reachable_events": sorted(reachable_events),
+        "reachable_trigger_count": len(reachable_triggers),
+        "reachable_triggers": sorted(reachable_triggers),
         "edges": [
             {
                 "caller_kind": caller_kind,
@@ -435,11 +507,16 @@ def central_effect_call_closure(
         ],
         "effect_provider_files": effect_provider_files,
         "event_provider_files": event_provider_files,
-        "provider_files": sorted(effect_provider_files + event_provider_files),
+        "trigger_provider_files": trigger_provider_files,
+        "provider_files": sorted(
+            effect_provider_files + event_provider_files + trigger_provider_files
+        ),
         "missing_effects": sorted(missing_effects),
         "missing_events": sorted(missing_events),
+        "missing_triggers": sorted(missing_triggers),
         "duplicate_effect_providers": sorted(duplicate_effects),
         "duplicate_event_providers": sorted(duplicate_events),
+        "duplicate_trigger_providers": sorted(duplicate_triggers),
         "required_effect_provider_files": sorted(required_effect_provider_files),
         "required_event_provider_files": sorted(required_event_provider_files),
         "missing_required_effect_provider_files": missing_effect_provider_files,
@@ -447,21 +524,31 @@ def central_effect_call_closure(
         "material_projection": {
             "effect_definition_count": len(effect_providers),
             "event_definition_count": len(event_providers),
+            "trigger_definition_count": len(trigger_providers),
             "effect_reference_count": len(material_effect_edges),
             "event_reference_count": len(material_event_edges),
+            "trigger_reference_count": len(material_trigger_edges),
             "missing_effects": sorted(material_missing_effects),
             "missing_events": sorted(material_missing_events),
-            "green": not material_missing_effects and not material_missing_events,
+            "missing_triggers": sorted(material_missing_triggers),
+            "green": not (
+                material_missing_effects
+                or material_missing_events
+                or material_missing_triggers
+            ),
         },
         "green": not (
             missing_effects
             or missing_events
+            or missing_triggers
             or duplicate_effects
             or duplicate_events
+            or duplicate_triggers
             or missing_effect_provider_files
             or missing_event_provider_files
             or material_missing_effects
             or material_missing_events
+            or material_missing_triggers
         ),
     }
 
@@ -644,6 +731,70 @@ def predecessor_parameterized_event_live_red_evidence(
     }
 
 
+def predecessor_trigger_live_red_evidence(root: Path) -> dict[str, object]:
+    outer_report_path = root / "report.json"
+    cell_report_path = root / "cell" / "report.json"
+    error_log_path = root / "cell" / "final_error.log"
+    game_log_path = root / "cell" / "final_game.log"
+    evidence_index_path = root / "evidence-index.json"
+    outer_report = read_json(outer_report_path)
+    cell_report = read_json(cell_report_path)
+    error_log = error_log_path.read_text(encoding="utf-8-sig", errors="replace")
+    game_log = game_log_path.read_text(encoding="utf-8-sig", errors="replace")
+    missing_triggers = re.findall(
+        r"Unknown trigger:?\s+(zg361_[A-Za-z0-9_]+_trigger)", error_log
+    )
+    counts = Counter(missing_triggers)
+    cleanup = cell_report.get("native_cleanup")
+    cleanup_green = (
+        isinstance(cleanup, dict)
+        and cleanup.get("result") == "GREEN"
+        and not cleanup.get("failed_checks")
+    )
+    error_reason = str(cell_report.get("error_reason", ""))
+    green = (
+        outer_report.get("result") == "RED"
+        and cell_report.get("result") == "RED"
+        and cell_report.get("duration_seconds") == 317.408
+        and cell_report.get("loader_gate_executed") is False
+        and cell_report.get("gameplay_acceptance_executed") is False
+        and "reached frontend but did not enter Load Save/In Game" in error_reason
+        and len(missing_triggers) == 6
+        and set(missing_triggers) == EXPECTED_TRIGGER_PREDECESSOR_MISSING_TRIGGERS
+        and dict(counts) == EXPECTED_TRIGGER_PREDECESSOR_COUNTS
+        and TRIGGER_PREDECESSOR_CALLER_FILE in error_log.replace("\\", "/")
+        and not game_log
+        and cleanup_green
+    )
+    if not green:
+        raise FreezeError(
+            "predecessor B3 trigger RED evidence no longer matches its "
+            "material-closure root cause"
+        )
+    return {
+        "classification": "material-projection-trigger-closure-red",
+        "loader_performance_claimed": False,
+        "size_ab_triggered": False,
+        "artifact_root": str(root),
+        "duration_seconds": cell_report.get("duration_seconds"),
+        "frontend_reached": True,
+        "load_save_or_in_game_reached": False,
+        "unknown_trigger_line_count": len(missing_triggers),
+        "unknown_trigger_counts": dict(sorted(counts.items())),
+        "unknown_triggers": sorted(set(missing_triggers)),
+        "caller_file": TRIGGER_PREDECESSOR_CALLER_FILE,
+        "cleanup_green": cleanup_green,
+        "files": {
+            "outer_report": record(outer_report_path),
+            "cell_report": record(cell_report_path),
+            "final_error_log": record(error_log_path),
+            "final_game_log": record(game_log_path),
+            "evidence_index": record(evidence_index_path),
+        },
+        "preserved": True,
+    }
+
+
 def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
     expansion_path = attempt / "closure-expansion.json"
     release_manifest_path = attempt / "canonical-release.manifest.json"
@@ -656,6 +807,7 @@ def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
         and expansion.get("green") is True
         and expansion.get("final_missing_effects") == []
         and expansion.get("final_missing_events") == []
+        and expansion.get("final_missing_triggers") == []
         and isinstance(added_files, list)
         and expansion.get("added_file_count") == len(added_files)
         and isinstance(rounds, list)
@@ -672,6 +824,9 @@ def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
         ),
         "final_event_definition_count": expansion.get(
             "final_event_definition_count"
+        ),
+        "final_trigger_definition_count": expansion.get(
+            "final_trigger_definition_count"
         ),
         "expansion": record(expansion_path),
         "canonical_release_manifest": record(release_manifest_path),
@@ -786,6 +941,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--predecessor-parameterized-event-live-red", type=Path, required=True
     )
+    parser.add_argument("--predecessor-trigger-live-red", type=Path, required=True)
     args = parser.parse_args(argv)
 
     attempt = args.attempt_dir.resolve()
@@ -851,6 +1007,9 @@ def main(argv: list[str] | None = None) -> int:
         predecessor_parameterized_event_live_red_evidence(
             args.predecessor_parameterized_event_live_red.resolve()
         )
+    )
+    predecessor_trigger_red = predecessor_trigger_live_red_evidence(
+        args.predecessor_trigger_live_red.resolve()
     )
     expansion_evidence = closure_expansion_evidence(attempt)
 
@@ -992,6 +1151,7 @@ def main(argv: list[str] | None = None) -> int:
         "predecessor_parameterized_event_live_red": (
             predecessor_parameterized_event_red
         ),
+        "predecessor_trigger_live_red": predecessor_trigger_red,
         "action_cell_only_inputs": action_cells,
         "static_checks": [
             {
