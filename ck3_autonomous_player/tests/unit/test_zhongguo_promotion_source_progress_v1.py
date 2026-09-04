@@ -18,6 +18,9 @@ from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import ( 
     query_promotion_source_progress_v1_step,
 )
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
+    B1_AUTHORED_ADVANCE_DAYS,
+    MAX_ADVANCE_DAYS,
+    POST_PUBLICATION_OBSERVATION_DAYS,
     PromotionProductionEntryError,
     enter_promotion_source_checkpoint_v1,
 )
@@ -200,6 +203,12 @@ def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
     assert result["action_ack_used_as_state_evidence"] is False
     assert result["review_action_postcondition"]["after_query_sequence"] == 2
     assert result["m146_date_raw"] + 24 == result["target_binding"]["date_raw"]
+    assert result["advance_bound"] == {
+        "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
+        "post_publication_observation_days": POST_PUBLICATION_OBSERVATION_DAYS,
+        "total_days": MAX_ADVANCE_DAYS,
+    }
+    assert MAX_ADVANCE_DAYS == 550
     assert service.selected == [1]
 
 

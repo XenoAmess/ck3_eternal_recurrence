@@ -22,13 +22,13 @@ PROMOTION_CAPABILITY = (
 RESULT_CASE_CAPABILITY = "game.command.query-zhongguo-result-case-snapshot-v1"
 PROJECTION_NAME = "b3-current-reachable-schema3-current-core"
 EXPECTED_PRODUCT_TREE = (
-    "6ab2b8e159abeadaee88ab44698ff859263906f3e807990436fb6dd6f1fb7824"
+    "a6c70f0648e7a8142d6e34d2a41affd214ed8fe993b4153bf4c93b073194576d"
 )
 EXPECTED_PROJECTION_SHA256 = (
-    "d99a74e9288d9c6d7655e7b54024047bf229b194d2f07e991fcaa31f1d4006b1"
+    "0a405fd653c1be44b7d8d7917be5fba9dab190d3dc30bbf87719b3c94cb55f23"
 )
 EXPECTED_CLOSURE_SHA256 = (
-    "69d7cd0ab51ea0257d4225c60bd027c741e2f6812c9ba3969fc60ef06352150c"
+    "40bdbce78107d42063710a88eb103c0a7d43c6aecc691f6b23eaad4f2bd02833"
 )
 PIPE_TOKEN = re.compile(r"[0-9a-f]{32}\Z")
 MOUNT_PATH_LIMIT = 250
@@ -147,6 +147,7 @@ def verify_product(
     closure = load_json(closure_path)
     localization = closure.get("localization_closure")
     widget_gui = closure.get("scripted_widget_gui_closure")
+    selected_canonical = closure.get("selected_canonical_files")
     current_core = closure.get("current_core_effect_shards")
     current_core_files = (
         current_core.get("updated_files", [])
@@ -168,6 +169,12 @@ def verify_product(
         "no_missing_effects": closure.get("final_missing_effects") == [],
         "no_missing_events": closure.get("final_missing_events") == [],
         "no_missing_triggers": closure.get("final_missing_triggers") == [],
+        "selected_canonical_files_green": isinstance(
+            selected_canonical, dict
+        )
+        and selected_canonical.get("green") is True
+        and selected_canonical.get("provider_files_exact") is True
+        and selected_canonical.get("selected_file_count") == 630,
         "localization_green": isinstance(localization, dict)
         and localization.get("green") is True,
         "localization_keys": isinstance(localization, dict)
@@ -499,7 +506,7 @@ def freeze(args: argparse.Namespace) -> dict[str, object]:
         str(runner),
         "--phase2-promotion-source-checkpoint-live",
         "--phase2-promotion-source-checkpoint-timeout-seconds",
-        "1200",
+        "1800",
         "--bridge-dll",
         str(bridge_dll),
         "--bridge-injector",

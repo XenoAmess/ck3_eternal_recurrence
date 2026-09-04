@@ -39,6 +39,35 @@ def write_localization_family(
 
 
 class ProjectionClosureExpansionTests(unittest.TestCase):
+    def test_selected_same_path_files_are_refreshed_from_canonical(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            relative = "common/scripted_effects/purpose_shard.txt"
+            write(candidate, relative, "old_effect = { old = yes }\n")
+            write(canonical, relative, "current_effect = { current = yes }\n")
+            write(candidate, "candidate_only.txt", "keep = yes\n")
+
+            result = expand.synchronize_selected_canonical_files(
+                candidate, canonical
+            )
+
+            self.assertTrue(result["green"])
+            self.assertTrue(result["provider_files_exact"])
+            self.assertEqual(1, result["selected_file_count"])
+            self.assertEqual(1, len(result["updated_files"]))
+            self.assertEqual(
+                (canonical / relative).read_bytes(),
+                (candidate / relative).read_bytes(),
+            )
+            self.assertEqual(
+                BOM + b"keep = yes\n",
+                (candidate / "candidate_only.txt").read_bytes(),
+            )
+
     def test_current_core_shards_are_regenerated_before_closure(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -191,10 +191,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 267_063)
+        self.assertEqual(len(historical_bytes), 267_419)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "dfd410b1a38c4fad6b89f022c9f0d560c5bc353ea0719af948914f6bfdc7d018",
+            "ae563e2e2484b846d4be97f0fb5c9c095f055278cb76d7f537eb8c388e9569fd",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1601,6 +1601,25 @@ class B2CK3RuntimeTests(unittest.TestCase):
         consumer = top_level_block(
             self.effects, "zg361_b2_consume_pip_performance_evidence_effect"
         )
+        self.assertIn(
+            "\t\t\ttrigger_if = {\n"
+            "\t\t\t\tlimit = {\n"
+            "\t\t\t\t\thas_variable = zg361_b2_pip_performance_evidence_status",
+            consumer,
+        )
+        for field in (
+            "status",
+            "subject",
+            "source_cycle",
+            "due_cycle",
+            "delta",
+            "source_case",
+        ):
+            self.assertIn(
+                f"has_variable = zg361_b2_pip_performance_evidence_{field}",
+                consumer,
+            )
+        self.assertIn("trigger_else = { always = no }", consumer)
         self.assertIn(
             "zg361_b2_pip_performance_evidence_source_cycle value = var:zg361_b2_pip_cycle",
             producer,

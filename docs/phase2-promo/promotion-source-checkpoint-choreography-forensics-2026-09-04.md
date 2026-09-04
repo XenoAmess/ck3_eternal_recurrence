@@ -331,3 +331,39 @@ outer report and evidence-index SHA-256 values are
 and `CDCE31833582F7A042B6CA9E25F30D32FAA175C87EDF8E632C91E0029524AEAC`.
 Cleanup was GREEN. The run stopped before review publication, so it does not
 yet provide live evidence for the restored current-core P2C hook.
+
+## R54: current-core hook live, bounded after publication
+
+R54 used the same exact seed and 634-file current-core product. Both loader
+stages were GREEN. The run advanced from `date_raw=53147016` to `53156640`,
+then stopped at the former 400-day gate on day 401. Before cleanup it emitted
+seven `ZG361P2C` business rows: three real post-publication tuple freezes, two
+unauthorized/incomplete publication ignores, one AI silent completion, and
+one typed stale-tuple abort. This closes the R51 uncertainty: current canonical
+publication hooks are now present and executing in the projected product.
+
+The run did not reach paused `.146`. This does not prove a loader or file-size
+failure. It proves that the old 400-day bound covered B1 but did not leave a
+separate observation window for the D+2 central pumps after a publication that
+can occur at that boundary. The next run keeps the 400-day authored B1 budget
+and adds a finite 150-day post-publication observation budget; its wall-clock
+timeout is correspondingly raised from 1200 to 1800 seconds.
+
+R54 also recorded 34 runtime reads of unset
+`zg361_b2_pip_performance_evidence_status`, all from the top-level PIP evidence
+consumer. That consumer had retained six presence/read comparisons in one
+same-level `limit`, so the earlier nested lazy-guard repair was incomplete.
+The generator now encloses the entire tuple in one `trigger_if` / `trigger_else`
+lazy boundary. Normal and `-O` B2 tests are 39/39 GREEN. The refreshed purpose
+shard remains within the 1–10 effect target; no `>20` exception exists.
+
+The refreshed 634-file product is tree
+`A6C70F0648E7A8142D6E34D2A41AFFD214ED8FE993B4153BF4C93B073194576D`.
+Projection and schema-3 closure evidence SHA-256 are
+`0A405FD653C1BE44B7D8D7917BE5FBA9DAB190D3DC30BBF87719B3C94CB55F23`
+and `40BDBCE78107D42063710A88EB103C0A7D43C6AECC691F6B23EAAD4F2BD02833`;
+closure remains 3,706 effects / 988 events / 24 triggers / missing 0, and the
+expander proves 630 selected same-path files byte-exact before fixed point.
+R54 report/evidence-index SHA-256 are
+`A7C59C3E99BA6AD1EDF8293E612FDE3F1D6C37C8E4B13C6FF13216E1F327959B`
+and `4F8E907D54721071DD174AE60A8ED299D5AF43F7AF9BF6DBF50A197BE5105E80`.

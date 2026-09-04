@@ -17,7 +17,14 @@ from zg361_phase2_promotion_compensation_action_cell import _snapshot_binding
 
 M146 = "zg361pp.146"
 M147 = "zg361pp.147"
-MAX_ADVANCE_DAYS = 400
+B1_AUTHORED_ADVANCE_DAYS = 400
+# R54 first proved that a real player publication can occur at the end of the
+# authored B1 window.  Preserve that bound and add a separate, finite window
+# for the D+2 central pumps and player-visible stage-3 source event.
+POST_PUBLICATION_OBSERVATION_DAYS = 150
+MAX_ADVANCE_DAYS = (
+    B1_AUTHORED_ADVANCE_DAYS + POST_PUBLICATION_OBSERVATION_DAYS
+)
 HOURS_PER_DAY = 24
 
 # These are not namespace-wide allowlists.  They are exact pending events
@@ -1088,6 +1095,13 @@ def enter_promotion_source_checkpoint_v1(
         "player_character_id": player,
         "connection_generation": generation,
         "starting_date_raw": starting_date,
+        "advance_bound": {
+            "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
+            "post_publication_observation_days": (
+                POST_PUBLICATION_OBSERVATION_DAYS
+            ),
+            "total_days": MAX_ADVANCE_DAYS,
+        },
         "review_action": None,
         "review_action_postcondition": None,
         "m146_option1_submission": None,
@@ -1190,7 +1204,9 @@ def enter_promotion_source_checkpoint_v1(
         date_raw = int(snapshot["date_raw"])
         if date_raw > starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY:
             raise PromotionProductionEntryError(
-                "promotion path exceeded its 400-day product bound"
+                "promotion path exceeded its 550-day product observation "
+                "bound (400-day authored B1 window plus 150-day "
+                "post-publication window)"
             )
         observations = evidence["observations"]
         assert isinstance(observations, list)
@@ -1306,10 +1322,12 @@ def enter_promotion_source_checkpoint_v1(
 
 
 __all__ = [
+    "B1_AUTHORED_ADVANCE_DAYS",
     "MAX_ADVANCE_DAYS",
     "M146",
     "M147",
     "KNOWN_TIMELINE_INTERRUPTS",
+    "POST_PUBLICATION_OBSERVATION_DAYS",
     "PromotionProductionEntryError",
     "PromotionProductionEntryService",
     "enter_promotion_source_checkpoint_v1",

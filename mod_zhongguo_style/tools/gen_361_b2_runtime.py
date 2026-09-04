@@ -3983,34 +3983,43 @@ zg361_b2_apply_due_quota_debt_effect = {
 zg361_b2_consume_pip_performance_evidence_effect = {
 	if = {
 		limit = {
-			var:zg361_b2_pip_performance_evidence_status = 1
-			var:zg361_b2_pip_performance_evidence_subject = this
-			has_variable = zg361_b2_pip_performance_evidence_source_cycle
-			has_variable = zg361_b2_pip_performance_evidence_due_cycle
-			# The KPI hook runs before either cycle path publishes its new serial.
-			# Active B1 therefore consumes against its prospective frozen serial;
-			# legacy/no-B1 consumes when the previous serial reaches source_cycle.
-			OR = {
-				AND = {
-					root = {
-						has_character_flag = zg361_b1_cycle_active
-						has_variable = zg361_b1_cycle_serial
-					}
-					root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b2_pip_performance_evidence_status
+					has_variable = zg361_b2_pip_performance_evidence_subject
+					has_variable = zg361_b2_pip_performance_evidence_source_cycle
+					has_variable = zg361_b2_pip_performance_evidence_due_cycle
+					has_variable = zg361_b2_pip_performance_evidence_delta
+					has_variable = zg361_b2_pip_performance_evidence_source_case
 				}
-				AND = {
-					root = {
-						NOT = { has_character_flag = zg361_b1_cycle_active }
-						has_variable = zg361_review_serial
+				var:zg361_b2_pip_performance_evidence_status = 1
+				var:zg361_b2_pip_performance_evidence_subject = this
+				# The KPI hook runs before either cycle path publishes its new serial.
+				# Active B1 therefore consumes against its prospective frozen serial;
+				# legacy/no-B1 consumes when the previous serial reaches source_cycle.
+				OR = {
+					AND = {
+						root = {
+							has_character_flag = zg361_b1_cycle_active
+							has_variable = zg361_b1_cycle_serial
+						}
+						root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
 					}
-					root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_source_cycle
+					AND = {
+						root = {
+							NOT = { has_character_flag = zg361_b1_cycle_active }
+							has_variable = zg361_review_serial
+						}
+						root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_source_cycle
+					}
+				}
+				OR = {
+					var:zg361_b2_pip_performance_evidence_delta = 10
+					var:zg361_b2_pip_performance_evidence_delta = -10
+					var:zg361_b2_pip_performance_evidence_delta = -15
 				}
 			}
-			OR = {
-				var:zg361_b2_pip_performance_evidence_delta = 10
-				var:zg361_b2_pip_performance_evidence_delta = -10
-				var:zg361_b2_pip_performance_evidence_delta = -15
-			}
+			trigger_else = { always = no }
 		}
 		change_variable = { name = zg361_evidence_growth add = var:zg361_b2_pip_performance_evidence_delta }
 		change_variable = { name = zg361_kpi add = var:zg361_b2_pip_performance_evidence_delta }

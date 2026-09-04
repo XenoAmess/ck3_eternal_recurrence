@@ -24,7 +24,7 @@ flowchart LR
     K -. "ACK 不能证明 B1" .-> U["[unknown] action callback outcome"]
     K --> Q["[counter-policy] separately nonced paused progress query"]
     Q --> B["[counter-policy] played-owner B1 visible; action hidden; query revision advanced"]
-    B --> T["[static-confirmed] authored <=400-day B1 bound; live product topology required"]
+    B --> T["[live-observed] 400-day B1 + separate 150-day post-publication observation bound"]
     T --> E146["[counter-policy] independently queried paused zg361pp.146"]
     E146 --> O1["[counter-policy] select option 1 ACK / pending"]
     O1 -. "ACK 不能证明 delayed event" .-> U2["[unknown] m146 callback outcome"]

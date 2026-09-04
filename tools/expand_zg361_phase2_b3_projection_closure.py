@@ -434,6 +434,50 @@ def synchronize_current_core_effect_shards(
     }
 
 
+def synchronize_selected_canonical_files(
+    candidate: Path, canonical: Path
+) -> dict[str, object]:
+    """Refresh every selected same-path file from the current source tree.
+
+    A fixed-point provider scan detects missing names, but cannot detect body
+    drift in an already selected purpose shard.  The B3 projection is a
+    current-source product, so same-path files must be byte-identical before
+    resolving newly exposed dependencies.  The four core shards remain a
+    separate monolith-to-shard projection because they have no canonical
+    same-path owners.
+    """
+
+    selected: list[str] = []
+    updated: list[str] = []
+    for target in sorted(
+        (path for path in candidate.rglob("*") if path.is_file()),
+        key=lambda path: path.relative_to(candidate).as_posix(),
+    ):
+        relative_path = target.relative_to(candidate)
+        source = canonical / relative_path
+        if not source.is_file() or source.is_symlink():
+            continue
+        relative = relative_path.as_posix()
+        selected.append(relative)
+        if target.read_bytes() != source.read_bytes():
+            shutil.copy2(source, target)
+            updated.append(relative)
+    exact = all(
+        (candidate / Path(*relative.split("/"))).read_bytes()
+        == (canonical / Path(*relative.split("/"))).read_bytes()
+        for relative in selected
+    )
+    return {
+        "green": exact,
+        "selected_file_count": len(selected),
+        "updated_files": [
+            freeze.record(candidate / relative, relative_to=candidate)
+            for relative in updated
+        ],
+        "provider_files_exact": exact,
+    }
+
+
 def _provider_files(
     source: Path,
 ) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
@@ -485,6 +529,9 @@ def expand_projection_closure(
     canonical = canonical.resolve()
     if not candidate.is_dir() or not canonical.is_dir():
         raise freeze.FreezeError("candidate and canonical roots must exist")
+    selected_canonical_files = synchronize_selected_canonical_files(
+        candidate, canonical
+    )
     current_core_effect_shards = synchronize_current_core_effect_shards(
         candidate, canonical
     )
@@ -579,6 +626,7 @@ def expand_projection_closure(
     )
     green = (
         final_closure["green"] is True
+        and selected_canonical_files["green"] is True
         and current_core_effect_shards["green"] is True
         and localization_closure["green"] is True
         and scripted_widget_gui_closure["green"] is True
@@ -610,6 +658,7 @@ def expand_projection_closure(
         "final_missing_effects": final_missing_effects,
         "final_missing_events": final_missing_events,
         "final_missing_triggers": final_missing_triggers,
+        "selected_canonical_files": selected_canonical_files,
         "current_core_effect_shards": current_core_effect_shards,
         "localization_closure": localization_closure,
         "scripted_widget_gui_closure": scripted_widget_gui_closure,
