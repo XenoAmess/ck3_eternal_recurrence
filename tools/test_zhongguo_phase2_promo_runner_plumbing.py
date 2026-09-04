@@ -143,8 +143,16 @@ def _enter_common_run_cell_patches(
         *,
         workshop_manifest: Path | None = None,
         include_acceptance_fixture: bool = True,
+        product_source: Path | None = None,
+        product_projection: str = "broad",
+        product_projection_manifest: Path | None = None,
     ) -> dict[str, object]:
-        del workshop_manifest
+        del (
+            workshop_manifest,
+            product_source,
+            product_projection,
+            product_projection_manifest,
+        )
         logs = userdir / "logs"
         logs.mkdir(parents=True, exist_ok=True)
         (logs / "debug.log").write_text("", encoding="utf-8")
@@ -735,7 +743,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
 
         def run_gate(*_args: object, **kwargs: object) -> dict[str, object]:
             lifecycle.append("loader")
-            self.assertTrue(kwargs["phase2_live_batch"])
+            self.assertFalse(kwargs["phase2_live_batch"])
             self.assertTrue(kwargs["phase2_promo_capture"])
             self.assertTrue(kwargs["managed_restore_supervisor"])
             return copy.deepcopy(loader_gate)
