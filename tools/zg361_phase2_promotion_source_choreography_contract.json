@@ -1,0 +1,117 @@
+﻿{
+  "schema_version": 1,
+  "kind": "zg361_phase2_promotion_source_choreography_forensics",
+  "forensics_base_commit": "1341251dd028b68adf5a4adeb497c94acf3a9471",
+  "readiness": "static-ready-live-pending",
+  "span_id": "phase2_promotion_compensation",
+  "handler": "capture_promotion_compensation",
+  "target_source": {
+    "event_definition_key": "zg361pp.147",
+    "option_number": 1,
+    "played_role": "promotion_manager_owner",
+    "checkpoint_position": "paused before option submission"
+  },
+  "canonical_seed": {
+    "contract": "tools/zg361_phase2_seed_contract.json",
+    "status": "ready",
+    "bytes": 53517622,
+    "sha256": "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733",
+    "date_raw": 53146920,
+    "played_character_id": 29037,
+    "player_history_id": "han_6875",
+    "seed_event_closed_before_save": true,
+    "fixture_opened_b1_owner_character_id": 32904,
+    "fixture_opened_b1_owner_is_ai": true,
+    "played_character_promotion_prefix_observed": false
+  },
+  "shortest_proven_executable_suffix": {
+    "starts_at": "paused visible zg361pp.146 owned by the played character",
+    "steps": [
+      {
+        "order": 1,
+        "action": "select-event-option-1",
+        "event_definition_key": "zg361pp.146",
+        "preconditions": [
+          "root is the played non-AI celestial owner",
+          "saved owner/subject/cycle/case/state match the live T case",
+          "T case state is 1 and m146 receipt is inactive",
+          "fresh T case operation capacity and capacity hours are each at least 1"
+        ],
+        "effect": "m146 route A consumes the receipt and schedules zg361pp.147 for D+1"
+      },
+      {
+        "order": 2,
+        "action": "set-speed-1 then resume-map, or bounded life-advance",
+        "minimum_timeline_advance_days": 1,
+        "effect": "materialize the delayed zg361pp.147 ticket"
+      },
+      {
+        "order": 3,
+        "action": "pause-map and query-current-event-window-context-v1",
+        "effect": "independently observe exact zg361pp.147, played root, six saved scopes, and option 1 shown/enabled"
+      },
+      {
+        "order": 4,
+        "action": "save-checkpoint",
+        "effect": "archive the still-unselected zg361pp.147 source bytes and lineage"
+      }
+    ],
+    "fallback": {
+      "action": "select-event-option-3 on zg361pp.146",
+      "resource_independent": true,
+      "business_cost": "records 90-day policy debt",
+      "canonical_preference": false
+    }
+  },
+  "fresh_product_prefix": [
+    "restore the canonical seed into a managed product-only session",
+    "prove the played character is a celestial liege with at least one direct reviewable vassal and zg361_review_now_decision is valid",
+    "activate the real zg361_review_now_decision; its GUI bridge consumes zg361_review_now_pending and calls zg361_b1_open_cycle_effect",
+    "advance the real B1 timeline through D+180, D+240, D+300 and the quota/calibration/publication path while resolving only exact visible product events",
+    "observe publication close and the player-owned central tuple; central stages 1 and 2 must reach success or typed N/A before stage 3",
+    "advance D+2 serial pumps until stage 3 calls the PP adapter and opens the T case",
+    "advance one day to the player-visible zg361pp.146, then execute the proven suffix"
+  ],
+  "currently_authorized_reusable_actions": [
+    "pause-map",
+    "resume-map",
+    "set-speed-1",
+    "life-advance",
+    "select-event-option-N",
+    "save-checkpoint",
+    "query-current-event-window-context-v1"
+  ],
+  "unavailable_required_entry": {
+    "action": "activate zg361_review_now_decision by exact stable identity",
+    "phase2_runner_capability_present": false,
+    "scoreboard_action_is_substitute": false,
+    "reason": "the scoreboard allowlist only opens, switches, closes, or reopens zg361_scoreboard_modal"
+  },
+  "remaining_unknowns": [
+    "the seed has no same-frame native proof that played character 29037 satisfies the celestial-liege trigger",
+    "the seed has no same-frame native proof of a direct reviewable-vassal roster or decision validity/cost availability for the played character",
+    "the seed has no player-owned B1/central/PP stage provider proving an already-progressed shortcut",
+    "the AI-owned B1 opened by the bootstrap fixture resolves PP manager prompts silently and therefore cannot produce a played-owner zg361pp.147 source",
+    "the exact elapsed time from a fresh player B1 to stage 3 depends on common-superior synchronization, visible B1 decisions, and completion of central stages 1 and 2"
+  ],
+  "ack_boundary": {
+    "action_ack_is_source_checkpoint": false,
+    "action_ack_is_business_postcondition": false,
+    "why": "an ACK proves only revision-bound command submission; it does not prove m146 consumption, delayed-event materialization, saved-scope identity, m147 option presentation, or the later promotion/compensation receipt"
+  },
+  "capture_acceptance": {
+    "product_only_mount": true,
+    "fixture_used": false,
+    "console_used": false,
+    "generic_character_rebind_used": false,
+    "provider_observed": true,
+    "ui_state_verified": true,
+    "source_option_must_remain_unselected": true,
+    "checkpoint_bytes_sha256_date_seed_and_capture_lineage_required": true
+  },
+  "no_launch": {
+    "ck3_started": false,
+    "runner_modified": false,
+    "claim": "source path derived from committed event/effect graph, runner capability declarations, and existing seed artifacts only"
+  }
+}
