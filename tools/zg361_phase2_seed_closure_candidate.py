@@ -502,10 +502,10 @@ def inherited_hotfix_rows(
 ) -> list[dict[str, object]]:
     """Return reviewed whole-file fixes for providers inherited from baseline.
 
-    These rows are not new B2 purpose shards.  They replace an existing B1
-    owner file byte-for-byte while requiring its provider boundary to remain
-    unchanged.  The boundary exception contract records the live reason for
-    carrying a grandfathered file with more than the B2 hard maximum.
+    These rows replace existing baseline owner files byte-for-byte while
+    requiring their provider boundaries to remain unchanged.  Small B2
+    purpose shards remain subject to the ordinary 10/20 boundary; the
+    exception contract is reserved for grandfathered owners above 20.
     """
 
     candidate = _mapping(contract.get("candidate"), "candidate")
@@ -1053,15 +1053,19 @@ def validate_boundaries(
     all_effect_rows = [
         dict(row) for row in overlay_rows if row["kind"] == "effect"
     ]
-    effect_rows = [
-        row
-        for row in all_effect_rows
-        if row.get("inherited_baseline_hotfix") is not True
-    ]
     inherited_hotfix_rows = [
         row
         for row in all_effect_rows
         if row.get("inherited_baseline_hotfix") is True
+    ]
+    inherited_over_hard_rows = [
+        row for row in inherited_hotfix_rows if int(row["definitions"]) > hard_max
+    ]
+    effect_rows = [
+        row
+        for row in all_effect_rows
+        if row.get("inherited_baseline_hotfix") is not True
+        or int(row["definitions"]) <= hard_max
     ]
     over_target = [row for row in effect_rows if int(row["definitions"]) > target]
     over_hard = [row for row in effect_rows if int(row["definitions"]) > hard_max]
@@ -1128,7 +1132,7 @@ def validate_boundaries(
         }
     inherited_observed = {
         str(row["path"]): int(row["definitions"])
-        for row in inherited_hotfix_rows
+        for row in inherited_over_hard_rows
     }
     inherited_expected = {
         path: int(row["definitions"])
@@ -1137,10 +1141,6 @@ def validate_boundaries(
     if (
         len(inherited_hotfix_rows) != expected_hotfixes
         or inherited_observed != inherited_expected
-        or any(
-            definitions <= hard_max
-            for definitions in inherited_observed.values()
-        )
     ):
         raise SeedClosureError(
             "inherited effect boundary exception failed: "

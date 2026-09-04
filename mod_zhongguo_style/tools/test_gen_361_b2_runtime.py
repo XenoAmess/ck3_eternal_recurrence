@@ -14,6 +14,7 @@ import re
 import unittest
 
 from gen_361_b2_runtime import (
+    CORE_IDS,
     DELEGATED_IDS,
     EFFECT_GROUPS,
     EFFECT_HARD_MAX,
@@ -188,10 +189,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 253_920)
+        self.assertEqual(len(historical_bytes), 259_181)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "70b38fa3ec0ca276c09dcf092a8291b030405dec3b43b0e7b4582f2b2733c4f2",
+            "8b23580b3d43b9d58fcc71e3701d0d0ef885ad59bacbf807da7c761f442758df",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1619,9 +1620,16 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
     def test_active_pip_identity_survives_later_result_freezes(self) -> None:
         frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
-        self.assertIn("NOT = { var:zg361_b2_m015_object_active = 1 }", frozen)
-        self.assertIn("NOT = { var:zg361_b2_m016_object_active = 1 }", frozen)
-        self.assertIn("NOT = { var:zg361_b2_m017_object_active = 1 }", frozen)
+        for mechanism_id in (15, 16, 17):
+            self.assertIn(
+                f"NOT = {{ has_variable = zg361_b2_m{mechanism_id:03d}_object_active }}",
+                frozen,
+            )
+            self.assertIn(
+                f"NOT = {{ var:zg361_b2_m{mechanism_id:03d}_object_active = 1 }}",
+                frozen,
+            )
+        self.assertIn("NOT = { has_variable = zg361_b2_pip_state }", frozen)
         for mechanism_id in (15, 16, 17):
             opened = top_level_block(
                 self.effects,
@@ -1648,6 +1656,26 @@ class B2CK3RuntimeTests(unittest.TestCase):
                 f"zg361_b2_m{mechanism_id:03d}_object_receipt_case = var:zg361_b2_pip_case",
                 consumed,
             )
+
+    def test_first_result_optional_state_reads_are_guarded(self) -> None:
+        debts = top_level_block(
+            self.effects, "zg361_b2_consume_due_policy_debts_effect"
+        )
+        frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
+        for mechanism_id in CORE_IDS:
+            key = f"{mechanism_id:03d}"
+            self.assertIn(
+                f"has_variable = zg361_b2_m{key}_policy_debt_active", debts
+            )
+            opened = top_level_block(
+                self.effects, f"zg361_b2_m{key}_open_business_object_effect"
+            )
+            self.assertIn(
+                f"NOT = {{ has_variable = zg361_b2_m{key}_object_active }}",
+                opened,
+            )
+        self.assertIn("has_variable = zg361_b2_m079_remand_active", frozen)
+        self.assertIn("has_variable = zg361_b2_m080_state", frozen)
 
     def test_358_route_b_aggravates_with_an_actual_bounded_receipt(self) -> None:
         aggravate = top_level_block(

@@ -430,6 +430,7 @@ zg361_b2_consume_due_policy_debts_effect = {
         key = f"{mechanism_id:03d}"
         sections.append(f'''\tif = {{
 \t\tlimit = {{
+\t\t\thas_variable = zg361_b2_m{key}_policy_debt_active
 \t\t\tvar:zg361_b2_m{key}_policy_debt_active = 1
 \t\t\thas_variable = zg361_b2_m{key}_policy_debt_due_cycle
 \t\t\tvar:zg361_result_cycle_serial >= var:zg361_b2_m{key}_policy_debt_due_cycle
@@ -476,7 +477,10 @@ zg361_b2_m{key}_post_policy_debt_effect = {{
 \t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_policy_debt_receipt_case }}
 \t\t\t\tNOT = {{ var:zg361_b2_m{key}_policy_debt_receipt_case = var:zg361_b2_case_serial }}
 \t\t\t}}
-\t\t\tNOT = {{ var:zg361_b2_m{key}_policy_debt_active = 1 }}
+\t\t\tOR = {{
+\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_policy_debt_active }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_policy_debt_active = 1 }}
+\t\t\t}}
 \t\t}}
 \t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_owner value = var:zg361_b2_case_owner }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_subject value = this }}
@@ -502,7 +506,10 @@ zg361_b2_m{key}_open_business_object_effect = {{
 \t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
 \t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = {object_case} }}
 \t\t\t}}
-\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
+\t\t\tOR = {{
+\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_active }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
+\t\t\t}}
 \t\t}}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = {object_owner} }}
 \t\tset_variable = {{ name = zg361_b2_m{key}_object_subject value = this }}
@@ -523,6 +530,7 @@ zg361_b2_m{key}_open_business_object_effect = {{
 zg361_b2_m{key}_consume_business_object_effect = {{
 \tif = {{
 \t\tlimit = {{
+\t\t\thas_variable = zg361_b2_m{key}_object_active
 \t\t\tvar:zg361_b2_m{key}_object_active = 1
 \t\t\tvar:zg361_b2_m{key}_object_consumed = 0
 \t\t\tvar:zg361_b2_m{key}_object_owner = {object_owner}
@@ -771,6 +779,7 @@ zg361_b2_on_result_frozen_effect = {
 		# reviewer never writes a grade in the old case.
 		if = {
 			limit = {
+				has_variable = zg361_b2_m079_remand_active
 				var:zg361_b2_m079_remand_active = 1
 				var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
 				var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
@@ -784,6 +793,7 @@ zg361_b2_on_result_frozen_effect = {
 		# frozen suppressor and does not rewrite the old evidence.
 		if = {
 			limit = {
+				has_variable = zg361_b2_m080_state
 				OR = {
 					var:zg361_b2_m080_state = 3
 					var:zg361_b2_m080_state = 4
@@ -840,14 +850,26 @@ zg361_b2_on_result_frozen_effect = {
 		set_variable = { name = zg361_b2_m014_state value = 0 }
 		if = {
 			limit = {
-				NOT = { var:zg361_b2_m015_object_active = 1 }
-				NOT = { var:zg361_b2_m016_object_active = 1 }
-				NOT = { var:zg361_b2_m017_object_active = 1 }
-				NOT = {
-					OR = {
-						var:zg361_b2_pip_state = 1
-						var:zg361_b2_pip_state = 2
-						var:zg361_b2_pip_state = 4
+				OR = {
+					NOT = { has_variable = zg361_b2_m015_object_active }
+					NOT = { var:zg361_b2_m015_object_active = 1 }
+				}
+				OR = {
+					NOT = { has_variable = zg361_b2_m016_object_active }
+					NOT = { var:zg361_b2_m016_object_active = 1 }
+				}
+				OR = {
+					NOT = { has_variable = zg361_b2_m017_object_active }
+					NOT = { var:zg361_b2_m017_object_active = 1 }
+				}
+				OR = {
+					NOT = { has_variable = zg361_b2_pip_state }
+					NOT = {
+						OR = {
+							var:zg361_b2_pip_state = 1
+							var:zg361_b2_pip_state = 2
+							var:zg361_b2_pip_state = 4
+						}
 					}
 				}
 			}
@@ -873,15 +895,24 @@ zg361_b2_on_result_frozen_effect = {
 		zg361_b2_m072_open_business_object_effect = yes
 		zg361_b2_m081_open_business_object_effect = yes
 		if = {
-			limit = { var:zg361_b2_m069_object_active = 1 }
+			limit = {
+				has_variable = zg361_b2_m069_object_active
+				var:zg361_b2_m069_object_active = 1
+			}
 			set_variable = { name = zg361_b2_m069_state value = 1 }
 		}
 		if = {
-			limit = { var:zg361_b2_m072_object_active = 1 }
+			limit = {
+				has_variable = zg361_b2_m072_object_active
+				var:zg361_b2_m072_object_active = 1
+			}
 			zg361_b2_m072_lock_pre_delivery_access_effect = yes
 		}
 		if = {
-			limit = { var:zg361_b2_m081_object_active = 1 }
+			limit = {
+				has_variable = zg361_b2_m081_object_active
+				var:zg361_b2_m081_object_active = 1
+			}
 			zg361_b2_m081_project_case_access_effect = yes
 		}
 		zg361_b2_m078_record_cohort_sample_effect = yes

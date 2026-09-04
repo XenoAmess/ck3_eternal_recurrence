@@ -68,6 +68,7 @@ zg361_b2_consume_management_debt_effect = {
 zg361_b2_consume_due_policy_debts_effect = {
 	if = {
 		limit = {
+			has_variable = zg361_b2_m014_policy_debt_active
 			var:zg361_b2_m014_policy_debt_active = 1
 			has_variable = zg361_b2_m014_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m014_policy_debt_due_cycle
@@ -82,6 +83,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m015_policy_debt_active
 			var:zg361_b2_m015_policy_debt_active = 1
 			has_variable = zg361_b2_m015_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m015_policy_debt_due_cycle
@@ -96,6 +98,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m016_policy_debt_active
 			var:zg361_b2_m016_policy_debt_active = 1
 			has_variable = zg361_b2_m016_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m016_policy_debt_due_cycle
@@ -110,6 +113,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m017_policy_debt_active
 			var:zg361_b2_m017_policy_debt_active = 1
 			has_variable = zg361_b2_m017_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m017_policy_debt_due_cycle
@@ -124,6 +128,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m069_policy_debt_active
 			var:zg361_b2_m069_policy_debt_active = 1
 			has_variable = zg361_b2_m069_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m069_policy_debt_due_cycle
@@ -138,6 +143,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m070_policy_debt_active
 			var:zg361_b2_m070_policy_debt_active = 1
 			has_variable = zg361_b2_m070_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m070_policy_debt_due_cycle
@@ -152,6 +158,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m071_policy_debt_active
 			var:zg361_b2_m071_policy_debt_active = 1
 			has_variable = zg361_b2_m071_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m071_policy_debt_due_cycle
@@ -166,6 +173,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m072_policy_debt_active
 			var:zg361_b2_m072_policy_debt_active = 1
 			has_variable = zg361_b2_m072_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m072_policy_debt_due_cycle
@@ -180,6 +188,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m073_policy_debt_active
 			var:zg361_b2_m073_policy_debt_active = 1
 			has_variable = zg361_b2_m073_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m073_policy_debt_due_cycle
@@ -194,6 +203,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m074_policy_debt_active
 			var:zg361_b2_m074_policy_debt_active = 1
 			has_variable = zg361_b2_m074_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m074_policy_debt_due_cycle
@@ -208,6 +218,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m075_policy_debt_active
 			var:zg361_b2_m075_policy_debt_active = 1
 			has_variable = zg361_b2_m075_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m075_policy_debt_due_cycle
@@ -222,6 +233,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m076_policy_debt_active
 			var:zg361_b2_m076_policy_debt_active = 1
 			has_variable = zg361_b2_m076_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m076_policy_debt_due_cycle
@@ -236,6 +248,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m077_policy_debt_active
 			var:zg361_b2_m077_policy_debt_active = 1
 			has_variable = zg361_b2_m077_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m077_policy_debt_due_cycle
@@ -250,6 +263,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m078_policy_debt_active
 			var:zg361_b2_m078_policy_debt_active = 1
 			has_variable = zg361_b2_m078_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m078_policy_debt_due_cycle
@@ -264,6 +278,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m079_policy_debt_active
 			var:zg361_b2_m079_policy_debt_active = 1
 			has_variable = zg361_b2_m079_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m079_policy_debt_due_cycle
@@ -278,6 +293,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m080_policy_debt_active
 			var:zg361_b2_m080_policy_debt_active = 1
 			has_variable = zg361_b2_m080_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m080_policy_debt_due_cycle
@@ -292,6 +308,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m081_policy_debt_active
 			var:zg361_b2_m081_policy_debt_active = 1
 			has_variable = zg361_b2_m081_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m081_policy_debt_due_cycle
@@ -306,6 +323,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m358_policy_debt_active
 			var:zg361_b2_m358_policy_debt_active = 1
 			has_variable = zg361_b2_m358_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m358_policy_debt_due_cycle
@@ -320,6 +338,7 @@ zg361_b2_consume_due_policy_debts_effect = {
 	}
 	if = {
 		limit = {
+			has_variable = zg361_b2_m359_policy_debt_active
 			var:zg361_b2_m359_policy_debt_active = 1
 			has_variable = zg361_b2_m359_policy_debt_due_cycle
 			var:zg361_result_cycle_serial >= var:zg361_b2_m359_policy_debt_due_cycle

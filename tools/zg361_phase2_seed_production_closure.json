@@ -156,11 +156,11 @@
     ]
   },
   "candidate": {
-    "projection": "phase2-seed-entry-production-closure-20260904-r7",
+    "projection": "phase2-seed-entry-production-closure-20260904-r8",
     "expected_file_count": 252,
-    "expected_overlay_file_count": 119,
+    "expected_overlay_file_count": 139,
     "expected_effect_files": 76,
-    "expected_inherited_hotfix_files": 1,
+    "expected_inherited_hotfix_files": 21,
     "expected_event_files": 35,
     "expected_court_position_files": 2,
     "expected_localization_files": 5,
@@ -187,18 +187,38 @@
       }
     ],
     "inherited_hotfix_files": [
-      "common/scripted_effects/zg361_b1_runtime_effects.txt"
+      "common/scripted_effects/zg361_b1_runtime_effects.txt",
+      "common/scripted_effects/zg361_b2_014_appeal_lifecycle_effects.txt",
+      "common/scripted_effects/zg361_b2_015_pip_open_effects.txt",
+      "common/scripted_effects/zg361_b2_016_pip_support_effects.txt",
+      "common/scripted_effects/zg361_b2_017_pip_settlement_effects.txt",
+      "common/scripted_effects/zg361_b2_069_delivery_effects.txt",
+      "common/scripted_effects/zg361_b2_070_observation_effects.txt",
+      "common/scripted_effects/zg361_b2_071_escalation_effects.txt",
+      "common/scripted_effects/zg361_b2_072_access_audit_effects.txt",
+      "common/scripted_effects/zg361_b2_073_reporting_effects.txt",
+      "common/scripted_effects/zg361_b2_074_redundancy_effects.txt",
+      "common/scripted_effects/zg361_b2_075_exit_offer_effects.txt",
+      "common/scripted_effects/zg361_b2_076_liability_effects.txt",
+      "common/scripted_effects/zg361_b2_077_reviewer_effects.txt",
+      "common/scripted_effects/zg361_b2_078_fairness_effects.txt",
+      "common/scripted_effects/zg361_b2_079_skip_level_effects.txt",
+      "common/scripted_effects/zg361_b2_080_metric_defect_effects.txt",
+      "common/scripted_effects/zg361_b2_081_projection_access_effects.txt",
+      "common/scripted_effects/zg361_b2_358_non_aggravation_effects.txt",
+      "common/scripted_effects/zg361_b2_359_quota_return_effects.txt",
+      "common/scripted_effects/zg361_b2_debt_consumers_effects.txt"
     ],
     "expected_inherited_additional_triggers": [
       "zg361_can_calibrate_demote_trigger",
       "zg361_is_current_liege_review_record_trigger",
       "zg361_is_elimination_candidate_trigger"
     ],
-    "expected_bytes": 12099447,
-    "source_tree_sha256": "5c570b0a2d044f33bfa1b83579e0b64c26bffb94cb52af1fca521afd73b65021",
-    "formal_overlay_tree_sha256": "b3b2eb2289491570f69f0ae2b699cb5a195441ab3af9d4d3ce9a015593901c15",
+    "expected_bytes": 12104708,
+    "source_tree_sha256": "c2e3deec48dc31294414fbf140eaf2d0603f3f4b6a5f34af9c3ec9bbcebb42cd",
+    "formal_overlay_tree_sha256": "5195a306c13fa74fcc815ebeb047887f7bba8b956d00fb7102e752135fe9ea62",
     "file_list_sha256": "4103f444fa14403b5df8821e1a4a2d84f4ec44d583e68ee7fb0b775fb5d311de",
-    "projection_manifest_sha256": "cdb7815c09c61ee43b945982417adf3f6fae8df1184a11e90a212214b4c5fe77",
+    "projection_manifest_sha256": "36454eef4ea867dd6bf05defcbcce0e8c10ffb03a2d125a29930cef1daea8227",
     "ck3_launch": "PENDING_EXTERNAL_B2_SEED_RECAPTURE",
     "live_status": "pending_b2_seed_recapture",
     "prior_live_evidence": {
@@ -213,8 +233,8 @@
     }
   },
   "overlay": {
-    "bytes": 3246357,
-    "inventory_sha256": "cfd07f9c7d39a6806c5417c9f8197408e82819ae864535493fe8d9881fe2e09d",
+    "bytes": 3469806,
+    "inventory_sha256": "81af2dd17b2dfe6bbe47350bf66189261310ce0d71c8213435e0e00f19ec77f4",
     "files": []
   },
   "forbidden_paths": [

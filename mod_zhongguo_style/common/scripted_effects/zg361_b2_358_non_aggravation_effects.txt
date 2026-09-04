@@ -18,7 +18,10 @@ zg361_b2_m358_post_policy_debt_effect = {
 				NOT = { has_variable = zg361_b2_m358_policy_debt_receipt_case }
 				NOT = { var:zg361_b2_m358_policy_debt_receipt_case = var:zg361_b2_case_serial }
 			}
-			NOT = { var:zg361_b2_m358_policy_debt_active = 1 }
+			OR = {
+				NOT = { has_variable = zg361_b2_m358_policy_debt_active }
+				NOT = { var:zg361_b2_m358_policy_debt_active = 1 }
+			}
 		}
 		set_variable = { name = zg361_b2_m358_policy_debt_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_m358_policy_debt_subject value = this }
@@ -44,7 +47,10 @@ zg361_b2_m358_open_business_object_effect = {
 				NOT = { has_variable = zg361_b2_m358_object_receipt_case }
 				NOT = { var:zg361_b2_m358_object_receipt_case = var:zg361_b2_case_serial }
 			}
-			NOT = { var:zg361_b2_m358_object_active = 1 }
+			OR = {
+				NOT = { has_variable = zg361_b2_m358_object_active }
+				NOT = { var:zg361_b2_m358_object_active = 1 }
+			}
 		}
 		set_variable = { name = zg361_b2_m358_object_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_m358_object_subject value = this }
@@ -65,6 +71,7 @@ zg361_b2_m358_open_business_object_effect = {
 zg361_b2_m358_consume_business_object_effect = {
 	if = {
 		limit = {
+			has_variable = zg361_b2_m358_object_active
 			var:zg361_b2_m358_object_active = 1
 			var:zg361_b2_m358_object_consumed = 0
 			var:zg361_b2_m358_object_owner = var:zg361_b2_case_owner
