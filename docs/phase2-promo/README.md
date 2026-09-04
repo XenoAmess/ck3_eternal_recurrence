@@ -22,6 +22,8 @@ seed-entry 的加载根因也已纠正：仅做用途拆分的 r2/r3 仍 RED；�
 `zg361_workforce_appointment_fact_seal_and_publish_effect` 的直接自递归后，诊断候选及 production r4/r5 连续 GREEN。
 因此“文件过大”不是本次已证明根因；B2+ 仍严格执行用途分片（目标 1–10、原则不超过 20），用于闭包选择、维护与后续
 加载性能 A/B。r9 新增层为 72 个 effect 文件 / 314 definitions，单片最大 10，无超限例外。
+当前 canonical 全树与 live product 的逐文件分类、四个 pre-B2 owner 的理由、精确哈希和实机覆盖边界见
+[`phase2-effect-file-boundary-audit-2026-09-04.md`](phase2-effect-file-boundary-audit-2026-09-04.md)。
 
 B3 manager 首次真实启动已执行，但在 `310.617 s` 因累计投影漏选 central dispatch provider 而 RED；CK3 实际报告
 `record_stage` / `record_red` Unknown effect，递归静态 closure 还闭合到同 provider 的 `mark_lane_busy` / `schedule_pump`。
