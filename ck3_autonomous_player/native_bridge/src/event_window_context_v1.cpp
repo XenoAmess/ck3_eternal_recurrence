@@ -85,6 +85,8 @@ constexpr std::uint16_t kCharacterScopeTypeIndex = 4;
 constexpr std::string_view kCharacterScopeTypeKey = "character";
 constexpr std::string_view kGenericScopeIdentityUnavailableReason =
     "generic_scope_payload_identity_not_closed";
+constexpr std::string_view kCharacterScopeIdentityUnavailableReason =
+    "character_scope_identity_unavailable";
 
 template <typename T>
 T LoadAt(const void *base, std::size_t offset) noexcept {
@@ -283,7 +285,8 @@ bool ResolveCharacterScopeIdentity(const Bindings &bindings,
 }
 
 bool ReadEventScopeToken(const Bindings &bindings, void *registry,
-                         const void *token, game::EventScopeV1 &output) {
+                         const void *token, game::EventScopeV1 &output,
+                         bool allow_unresolved_character_identity = false) {
   output = {};
   if (token == nullptr) {
     return false;
@@ -302,7 +305,14 @@ bool ReadEventScopeToken(const Bindings &bindings, void *registry,
     }
     std::int32_t character_id = -1;
     if (!ResolveCharacterScopeIdentity(bindings, token, character_id)) {
-      return false;
+      if (!allow_unresolved_character_identity) {
+        return false;
+      }
+      output.typed_identity.available = false;
+      output.typed_identity.character_id.reset();
+      output.typed_identity.unavailable_reason.assign(
+          kCharacterScopeIdentityUnavailableReason);
+      return true;
     }
     output.typed_identity.available = true;
     output.typed_identity.character_id = character_id;
@@ -427,7 +437,7 @@ bool ReadEventScopeInventory(const Bindings &bindings,
     }
     if (!ReadEventScopeToken(
             bindings, registry,
-            row + kEventScopeNamedRowTokenOffset, saved.scope)) {
+            row + kEventScopeNamedRowTokenOffset, saved.scope, true)) {
       failure_reason = "event_saved_scope_invalid";
       return false;
     }

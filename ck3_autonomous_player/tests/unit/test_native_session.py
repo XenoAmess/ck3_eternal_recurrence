@@ -21,9 +21,11 @@ from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.environment import write_json_atomic  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.native_session import (  # noqa: E402
+    NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_RETRY_SECONDS,
     NATIVE_SESSION_FRONTEND_MARKER,
     NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
     _frontend_log_signals,
+    _write_frontend_first_evidence,
     _wait_for_frontend_marker,
     _native_session_locked,
     native_session,
@@ -165,6 +167,44 @@ class NativeSessionLifecycleTests(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_frontend_evidence_retries_windows_reader_share_violation(
+        self,
+    ) -> None:
+        access_denied = PermissionError(13, "sharing violation")
+        access_denied.winerror = 5
+        sleeper = mock.Mock()
+        with mock.patch(
+            "xar_autoplayer.native_session.write_json_atomic",
+            side_effect=(access_denied, None),
+        ) as write_mock:
+            _write_frontend_first_evidence(
+                self.spec,
+                {"status": "frontend_marker_seen"},
+                sleeper=sleeper,
+            )
+        self.assertEqual(write_mock.call_count, 2)
+        sleeper.assert_called_once_with(
+            NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_RETRY_SECONDS
+        )
+
+    def test_frontend_evidence_does_not_retry_unrelated_permission_error(
+        self,
+    ) -> None:
+        denied = PermissionError(13, "ordinary access denial")
+        denied.winerror = 65
+        sleeper = mock.Mock()
+        with mock.patch(
+            "xar_autoplayer.native_session.write_json_atomic",
+            side_effect=denied,
+        ) as write_mock, self.assertRaises(PermissionError):
+            _write_frontend_first_evidence(
+                self.spec,
+                {"status": "starting"},
+                sleeper=sleeper,
+            )
+        write_mock.assert_called_once()
+        sleeper.assert_not_called()
 
     def test_frontend_log_signals_accept_bytes_and_require_both_fallback_lines(
         self,

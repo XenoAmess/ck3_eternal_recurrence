@@ -63,6 +63,8 @@ NATIVE_SESSION_FRONTEND_WINDOW_TITLE = "Crusader Kings III"
 NATIVE_SESSION_FRONTEND_WM_NULL_TIMEOUT_MILLISECONDS = 100
 NATIVE_SESSION_FRONTEND_FIRST_EVIDENCE_FILENAME = "frontend-first-warmup.json"
 NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS = 180.0
+NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_ATTEMPTS = 41
+NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_RETRY_SECONDS = 0.05
 _BRIDGE_ENVIRONMENT_KEYS = (
     NATIVE_BRIDGE_MODE_ENV,
     NATIVE_BRIDGE_PIPE_ENV,
@@ -511,11 +513,33 @@ def _frontend_first_evidence_path(spec: EnvironmentSpec) -> Path:
 
 
 def _write_frontend_first_evidence(
-    spec: EnvironmentSpec, evidence: dict[str, object]
+    spec: EnvironmentSpec,
+    evidence: dict[str, object],
+    *,
+    sleeper=time.sleep,
 ) -> None:
-    """Persist warm-up state so a Phase2 binding can wait for the final PID."""
+    """Persist warm-up state despite a short-lived Windows reader lease.
 
-    write_json_atomic(_frontend_first_evidence_path(spec), evidence)
+    The Phase2 binding polls this file while the supervisor atomically replaces
+    it.  Real R10/R16 runs observed WinError 5 when that read briefly denied
+    delete/replace sharing.  Retry only the two Windows sharing/access errors;
+    every other write failure remains immediate and the final write is still
+    the same atomic ``os.replace`` performed by ``write_json_atomic``.
+    """
+
+    path = _frontend_first_evidence_path(spec)
+    for attempt in range(NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_ATTEMPTS):
+        try:
+            write_json_atomic(path, evidence)
+            return
+        except PermissionError as error:
+            if (
+                getattr(error, "winerror", None) not in {5, 32}
+                or attempt + 1
+                >= NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_ATTEMPTS
+            ):
+                raise
+            sleeper(NATIVE_SESSION_FRONTEND_EVIDENCE_REPLACE_RETRY_SECONDS)
 
 
 @contextmanager

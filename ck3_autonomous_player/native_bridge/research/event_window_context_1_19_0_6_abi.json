@@ -527,6 +527,13 @@
       "read_rule": "Generation-resolve through Character storage and require CCharacter+0x18 to repeat the complete ID. Do not require the character resolver's later gameplay-liveness tail when only stable identity is requested.",
       "boundary": "This proves how to decode a type-4 token if one is observed; no paused current-event artifact has yet shown a root or named type-4 token."
     },
+    "saved_character_stale_identity_policy": {
+      "evidence": "Phase2 product R31/R33 repeatedly held active event instance 14 at date_raw 53147256 while one named Character token no longer generation-resolved; CK3 error.log independently reported a dead scope character during intrigue_dread.1501:after.",
+      "root_rule": "Root Character identity remains strict: it must generation-resolve and round-trip the complete positive CharacterID or the whole frame is unavailable.",
+      "saved_scope_rule": "For a named type-4 Character token only, preserve the canonical scope name, raw_type_index=4, subtype and type_key=character when the token no longer generation-resolves; publish typed_identity={status:unavailable,reason:character_scope_identity_unavailable} without a character_id. Other structural/name/type failures still invalidate the whole frame.",
+      "reason": "character_scope_identity_unavailable",
+      "boundary": "This does not claim the stale character is alive, does not fabricate or reuse an ID, and does not weaken root identity. It keeps the still-visible event definition and materialized options observable so an exact source contract may bind the scope name/type and choose fail-closed."
+    },
     "noncharacter_payload_identity": "Production wire publishes raw_type_index, subtype and stable type_key, then typed_identity={status:unavailable,reason:generic_scope_payload_identity_not_closed}; it never reads or publishes the +0x08 payload until that exact type receives its own decoder",
     "atomic_read_rule": "Only after matching the complete current ActiveEvent instance ID, copy root and bounded named rows in the existing application-main owning-thread callback; repeat the owned root/named inventory plus ActiveEvent/EventData/instance identity around the window copy and retain no engine pointer or raw payload in the DTO/mailbox result.",
     "production_wire": {
@@ -561,7 +568,12 @@
         "status",
         "reason"
       ],
-      "noncharacter_reason": "generic_scope_payload_identity_not_closed",
+    "noncharacter_reason": "generic_scope_payload_identity_not_closed",
+    "unresolved_saved_character_reason": "character_scope_identity_unavailable",
+    "unresolved_saved_character_fields": [
+      "status",
+      "reason"
+    ],
       "readiness": {
         "root_scope_ready": true,
         "saved_scopes_ready": true,
@@ -844,7 +856,7 @@
       "each OptionEffectItem vector has bounded count/capacity and 0x18 stride; only its active kind payload is interpreted",
       "trait payload round-trips through unique loaded Trait DB pointer/native-ID/key identity; scheme payload round-trips through the already-loaded scheme DB hash lookup, exact vtable and non-fallback identity",
       "generic target type getter must return exact module+0x4FFE290; each nonzero type index is bounded through its 0x50-stride registry and copied through the distinct 0x3B58970 stable-name domain",
-      "root and every named target are copied twice around the window observation; type 4 requires a zero-extended positive CharacterID and full-generation Character storage round-trip, while every other payload remains unread and typed unavailable",
+      "root and every named target are copied twice around the window observation; the root type 4 token strictly requires a zero-extended positive CharacterID and full-generation Character storage round-trip. A named type 4 token publishes that identity when live, or only the exact character_scope_identity_unavailable status when its canonical name/type remain valid but the character no longer generation-resolves; every non-character payload remains unread and typed unavailable",
       "named vector count/capacity is bounded; each canonical name rejects the 0x585F218 fallback and round-trips its full int32 script identifier through the separate 0x3B97090/0x3B97020 script-name domain"
     ],
     "published_option_fields": [

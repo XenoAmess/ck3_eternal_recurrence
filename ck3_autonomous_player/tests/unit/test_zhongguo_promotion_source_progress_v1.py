@@ -45,6 +45,66 @@ def _progress(action: bool, b1: bool, sequence: int) -> dict[str, object]:
     }
 
 
+def _character_scope(name: str, character_id: int) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {
+            "status": "available",
+            "type_key": "character",
+            "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": character_id,
+            },
+        },
+    }
+
+
+def _boolean_scope(name: str) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {"status": "available", "type_key": "boolean"},
+    }
+
+
+def _unavailable_character_scope(name: str) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {
+            "status": "available",
+            "type_key": "character",
+            "typed_identity": {
+                "status": "unavailable",
+                "reason": "character_scope_identity_unavailable",
+            },
+        },
+    }
+
+
+def _opaque_scope(name: str, type_key: str) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {"status": "available", "type_key": type_key},
+    }
+
+
+def _options(
+    count: int, *, native_indices: tuple[int, ...] | None = None
+) -> list[dict[str, object]]:
+    indices = native_indices or tuple(range(count))
+    return [
+        {
+            "rendered_index": index,
+            "native_option_index": indices[index],
+            "shown": True,
+            "enabled": True,
+            "fallback": False,
+            "cancel": False,
+        }
+        for index in range(count)
+    ]
+
+
 class _Service:
     def __init__(self) -> None:
         self.stage = "seed"
@@ -141,6 +201,622 @@ def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
     assert result["review_action_postcondition"]["after_query_sequence"] == 2
     assert result["m146_date_raw"] + 24 == result["target_binding"]["date_raw"]
     assert service.selected == [1]
+
+
+def test_product_path_accepts_idempotent_already_running_ack() -> None:
+    class _AlreadyRunningService(_Service):
+        def __init__(self) -> None:
+            super().__init__()
+            self.resume_count = 0
+
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            del expected_revision
+            if step == "resume-map" and self.stage == "b1":
+                self.resume_count += 1
+                if self.resume_count == 2:
+                    self.stage = "m146"
+                    return {"accepted": True, "status": "already_running"}
+            return {"accepted": True, "status": "submitted"}
+
+    service = _AlreadyRunningService()
+    result = enter_promotion_source_checkpoint_v1(
+        service, poll_interval_seconds=0
+    )
+    assert result["result"] == "GREEN"
+    assert service.resume_count == 2
+    assert service.selected == [1]
+
+
+def test_product_path_retries_same_native_frame_while_saved_scopes_build() -> None:
+    class _TransientSavedScopeService(_Service):
+        def __init__(self) -> None:
+            super().__init__()
+            self.query_calls = 0
+            self.query_revision = 3
+
+        def snapshot(self) -> dict[str, object]:
+            value = super().snapshot()
+            if self.stage == "m146":
+                value["revision"] = self.query_revision
+            return value
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            self.query_calls += 1
+            if self.stage == "m146" and self.query_calls == 1:
+                assert expected_revision == 3
+                self.query_revision = 4
+                return {
+                    "status": "unavailable",
+                    "queried_snapshot_id": "snapshot-m146",
+                    "queried_revision": 4,
+                    "queried_native_revision": 13,
+                    "current_event_window_context": {
+                        "status": "unavailable",
+                        "current_event_instance_id": event_instance_id,
+                        "unavailable_reason": "event_saved_scope_invalid",
+                    },
+                }
+            return super().query_current_event_window_context_v1(
+                event_instance_id, expected_revision=expected_revision
+            )
+
+    service = _TransientSavedScopeService()
+    result = enter_promotion_source_checkpoint_v1(
+        service, poll_interval_seconds=0, sleeper=lambda _: None
+    )
+    assert result["result"] == "GREEN"
+    assert service.query_calls == 3
+    assert service.selected == [1]
+
+
+def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None:
+    class _InterruptedService(_Service):
+        def snapshot(self) -> dict[str, object]:
+            if self.stage not in {
+                "pip", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
+                "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha",
+                "self_review", "succession"
+            }:
+                return super().snapshot()
+            if self.stage == "pip":
+                instance_id, option_count, date, revision = 400, 3, 53147040, 30
+            elif self.stage == "new_governorship":
+                instance_id, option_count, date, revision = 2, 3, 53147280, 31
+            elif self.stage == "forced_retirement":
+                instance_id, option_count, date, revision = 630, 1, 53151600, 31
+            elif self.stage == "doppelganger":
+                instance_id, option_count, date, revision = 9007, 2, 53147520, 31
+            elif self.stage == "china_yearly":
+                instance_id, option_count, date, revision = 10, 3, 53147520, 31
+            elif self.stage == "grieving_child":
+                instance_id, option_count, date, revision = 5, 3, 53147520, 31
+            elif self.stage == "merchant_dispute":
+                instance_id, option_count, date, revision = 15, 3, 53147520, 32
+            elif self.stage == "unpaid_taxes":
+                instance_id, option_count, date, revision = 20, 2, 53147520, 32
+            elif self.stage == "emperor_assistance":
+                instance_id, option_count, date, revision = 2200, 2, 53147520, 32
+            elif self.stage == "scholar":
+                instance_id, option_count, date, revision = 2240, 3, 53147520, 32
+            elif self.stage == "learned_eunuch":
+                instance_id, option_count, date, revision = 1200, 4, 53147520, 32
+            elif self.stage == "equitable":
+                instance_id, option_count, date, revision = 8160, 3, 53147520, 32
+            elif self.stage == "local_defense":
+                instance_id, option_count, date, revision = 8170, 4, 53147520, 32
+            elif self.stage == "governor_yearly":
+                instance_id, option_count, date, revision = 8060, 4, 53147520, 33
+            elif self.stage == "pugnacious":
+                instance_id, option_count, date, revision = 8110, 4, 53147520, 34
+            elif self.stage == "neighbor_governor":
+                instance_id, option_count, date, revision = 8100, 3, 53147520, 34
+            elif self.stage == "silk_road":
+                instance_id, option_count, date, revision = 40, 3, 53147520, 35
+            elif self.stage == "arbitrary_tax":
+                instance_id, option_count, date, revision = 8130, 4, 53147520, 36
+            elif self.stage in {"hook_offer", "hook_offer_repeat"}:
+                instance_id, option_count, date, revision = (
+                    (381, 2, 53148768, 37)
+                    if self.stage == "hook_offer"
+                    else (382, 2, 53152656, 40)
+                )
+            elif self.stage == "no_secrets":
+                instance_id, option_count, date, revision = 399, 2, 53148768, 38
+            elif self.stage == "jingcha":
+                instance_id, option_count, date, revision = 40, 2, 53150880, 39
+            elif self.stage == "self_review":
+                instance_id, option_count, date, revision = 200, 3, 53152728, 40
+            else:
+                instance_id, option_count, date, revision = 3060, 3, 53148072, 41
+            snapshot_option_count = (
+                3
+                if self.stage == "doppelganger"
+                else 4
+                if self.stage in {
+                    "china_yearly", "grieving_child", "merchant_dispute", "neighbor_governor",
+                    "succession",
+                }
+                else option_count
+            )
+            return {
+                "snapshot_id": f"snapshot-{self.stage}",
+                "revision": revision,
+                "native_revision": revision + 100,
+                "date_raw": date,
+                "paused": True,
+                "speed": 1,
+                "map_ready": True,
+                "played_character": {"character_id": 29037},
+                "diagnostics": {"connection_generation": 7},
+                "active_event": {
+                    "instance_id": instance_id,
+                    "option_count": snapshot_option_count,
+                },
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            del expected_revision
+            if step == "resume-map" and self.stage == "b1":
+                self.stage = "pip"
+            return {"accepted": True, "status": "submitted"}
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            if self.stage not in {
+                "pip", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
+                "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha",
+                "self_review", "succession"
+            }:
+                return super().query_current_event_window_context_v1(
+                    event_instance_id, expected_revision=expected_revision
+                )
+            snapshot = self.snapshot()
+            if self.stage == "pip":
+                key = "zg361b2.40"
+                scopes = [
+                    _character_scope("zg361_reviewing_superior", 32904),
+                    _character_scope("zg361_b2_pip_prompt_owner", 32904),
+                    _character_scope("zg361_b2_pip_prompt_subject", 29037),
+                    _character_scope("zga_personal_result_target", 29037),
+                ]
+                option_count = 3
+            elif self.stage == "new_governorship":
+                key = "ep3_admin_events.0002"
+                scopes = [
+                    _opaque_scope("title", "landed_title"),
+                    _character_scope("previous_holder", 28557),
+                    _character_scope("new_holder", 29037),
+                    _opaque_scope("transfer_type", "flag"),
+                    _opaque_scope("nf_gov_type", "government_type"),
+                    _opaque_scope("governor_title", "landed_title"),
+                    _character_scope("previous_governor", 28557),
+                ]
+                option_count = 3
+            elif self.stage == "forced_retirement":
+                key = "ep3_interactions_events.0630"
+                scopes = [
+                    _character_scope("actor", 32904),
+                    _character_scope("recipient", 29037),
+                    _unavailable_character_scope("secondary_actor"),
+                    _unavailable_character_scope("secondary_recipient"),
+                    _unavailable_character_scope("intermediary"),
+                    _boolean_scope("hook"),
+                    _opaque_scope("force_retirement_treasury_cost", "value"),
+                ]
+                option_count = 1
+            elif self.stage == "doppelganger":
+                key = "bp1_yearly.9007"
+                scopes = [
+                    _character_scope(
+                        "bp1_yearly_9007_doppelganger", 16779978
+                    ),
+                ]
+                option_count = 2
+            elif self.stage == "china_yearly":
+                key = "tgp_china_yearly.0010"
+                scopes = [_character_scope("starving_lowborn", 16780004)]
+                option_count = 3
+            elif self.stage == "grieving_child":
+                key = "tgp_china_yearly.0005"
+                scopes = [
+                    _character_scope("grieving_child", 16780023),
+                    _character_scope("orphan_mother", 16780148),
+                    _character_scope("orphan_father", 16780149),
+                    _character_scope("parent", 16780149),
+                    _character_scope("guardian", 31647),
+                    _character_scope("messenger", 31647),
+                ]
+                option_count = 3
+            elif self.stage == "merchant_dispute":
+                key = "tgp_china_yearly.0015"
+                scopes = [
+                    _character_scope("market_vendor", 16780002),
+                    _character_scope("traveling_merchant", 16780004),
+                ]
+                option_count = 3
+            elif self.stage == "unpaid_taxes":
+                key = "tgp_china_yearly.0020"
+                scopes = [
+                    _opaque_scope("taxless_county", "landed_title"),
+                    _character_scope("tax_official", 29346),
+                    _character_scope("tax_liege", 32904),
+                ]
+                option_count = 2
+            elif self.stage == "emperor_assistance":
+                key = "ep3_emperor_yearly.2200"
+                scopes = [
+                    _character_scope("liege", 32904),
+                    _opaque_scope("governorship", "landed_title"),
+                    _opaque_scope("capital", "landed_title"),
+                ]
+                option_count = 2
+            elif self.stage == "scholar":
+                key = "ep3_emperor_yearly.2240"
+                scopes = [_character_scope("the_scholar", 56656)]
+                option_count = 3
+            elif self.stage == "learned_eunuch":
+                key = "ep1_flavor.1200"
+                scopes = [
+                    _opaque_scope("eunuch_target_culture", "culture"),
+                    _character_scope("eunuch_target", 16780004),
+                ]
+                option_count = 4
+            elif self.stage == "equitable":
+                key = "ep3_governor_yearly.8160"
+                scopes = [
+                    _opaque_scope("minority_county", "landed_title"),
+                    _character_scope("councillor", 31003),
+                    _character_scope("culture", 29037),
+                    _character_scope("administrator", 16780148),
+                ]
+                option_count = 3
+            elif self.stage == "local_defense":
+                key = "ep3_governor_yearly.8170"
+                scopes = [
+                    _character_scope("governor", 29037),
+                    _character_scope("marshal", 29575),
+                    _character_scope("raider", 32922),
+                    _opaque_scope("raid_county", "landed_title"),
+                ]
+                option_count = 4
+            elif self.stage == "governor_yearly":
+                key = "ep3_governor_yearly.8060"
+                scopes = []
+                option_count = 4
+            elif self.stage == "pugnacious":
+                key = "ep3_governor_yearly.8110"
+                scopes = [
+                    _character_scope("governor_1", 28598),
+                    _character_scope("governor_2", 27181),
+                ]
+                option_count = 4
+            elif self.stage == "neighbor_governor":
+                key = "ep3_governor_yearly.8100"
+                scopes = [
+                    _character_scope("governor", 28598),
+                    _character_scope("neighboring_promoted_char", 62537),
+                    _character_scope("target_family_member", 31647),
+                ]
+                option_count = 3
+            elif self.stage == "silk_road":
+                key = "tgp_dynastic_cycle_events.0040"
+                scopes = [
+                    _opaque_scope("my_situation", "situation"),
+                    _opaque_scope("silk_road_situation", "situation"),
+                    _opaque_scope(
+                        "my_movement", "situation_participant_group"
+                    ),
+                    _character_scope("steward", 31003),
+                ]
+                option_count = 3
+            elif self.stage == "arbitrary_tax":
+                key = "ep3_governor_yearly.8130"
+                scopes = []
+                option_count = 4
+            elif self.stage in {"hook_offer", "hook_offer_repeat"}:
+                key = "spymaster_task.0381"
+                scopes = [
+                    _character_scope("councillor", 27963),
+                    _character_scope("councillor_liege", 29037),
+                    _character_scope("target_character", 27051),
+                    _boolean_scope("having_find_secrets_event"),
+                    _character_scope(
+                        "character_to_hook",
+                        31660 if self.stage == "hook_offer" else 32086,
+                    ),
+                ]
+                option_count = 2
+            elif self.stage == "no_secrets":
+                key = "spymaster_task.0399"
+                scopes = [
+                    _character_scope("councillor", 27963),
+                    _character_scope("councillor_liege", 29037),
+                    _character_scope("target_character", 27051),
+                    _boolean_scope("no_secrets_here"),
+                ]
+                option_count = 2
+            elif self.stage == "jingcha":
+                key = "zg361.40"
+                scopes = []
+                option_count = 2
+            elif self.stage == "self_review":
+                key = "zg361b1.200"
+                scopes = [
+                    _character_scope("zga_phase2_seed_player", 29037),
+                    _character_scope("zg361_b1_ticket_owner", 29628),
+                    _opaque_scope("zg361_b1_ticket_cycle", "value"),
+                    _opaque_scope("zg361_b1_ticket_case", "value"),
+                    _opaque_scope("zg361_b1_ticket_state", "value"),
+                    _character_scope("zg361_b1_self_ticket_owner", 29628),
+                    _character_scope("zg361_b1_self_ticket_subject", 29037),
+                    _opaque_scope("zg361_b1_self_ticket_cycle", "value"),
+                    _opaque_scope("zg361_b1_self_ticket_case", "value"),
+                    _opaque_scope("zg361_b1_self_ticket_state", "value"),
+                ]
+                option_count = 3
+            else:
+                key = "ep3_governor_yearly.3060"
+                scopes = [
+                    _opaque_scope("title", "landed_title"),
+                    _character_scope("previous_holder", 32904),
+                    _character_scope("new_holder", 36354),
+                    _opaque_scope("transfer_type", "flag"),
+                    _opaque_scope("nf_gov_type", "government_type"),
+                    _character_scope("emperor", 36354),
+                    _character_scope("root_scope", 29037),
+                    _opaque_scope("emp_location", "province"),
+                ]
+                option_count = 3
+            return {
+                "status": "available",
+                "binding": {
+                    "snapshot_id": snapshot["snapshot_id"],
+                    "revision": expected_revision,
+                    "native_revision": snapshot["native_revision"],
+                    "event_instance_id": event_instance_id,
+                },
+                "current_event_window_context": {
+                    "schema": "current-event-window-context-v1",
+                    "schema_version": 1,
+                    "status": "available",
+                    "window_match_count": 1,
+                    "event_definition_key": key,
+                    "current_event_instance_id": event_instance_id,
+                    "date_raw": snapshot["date_raw"],
+                    "root_scope": _character_scope("root", 29037)["scope"],
+                    "saved_scopes": scopes,
+                    "options": _options(
+                        option_count,
+                        native_indices=(
+                            (0, 1, 3)
+                            if self.stage == "neighbor_governor"
+                            else (0, 2)
+                            if self.stage == "doppelganger"
+                            else (0, 1, 2)
+                            if self.stage in {
+                                "china_yearly", "grieving_child",
+                                "merchant_dispute",
+                            }
+                            else (1, 2, 3)
+                            if self.stage == "succession"
+                            else None
+                        ),
+                    ),
+                },
+            }
+
+        def select_event_option(
+            self, option_number: int, *, event_instance_id: int,
+            expected_revision: int,
+        ) -> dict[str, object]:
+            del expected_revision
+            self.selected.append(option_number)
+            native_index = (
+                3
+                if self.stage in {"neighbor_governor", "succession"}
+                else 2
+                if self.stage == "doppelganger"
+                else option_number - 1
+            )
+            if self.stage == "pip":
+                assert option_number == 1
+                self.stage = "new_governorship"
+            elif self.stage == "new_governorship":
+                assert option_number == 3
+                self.stage = "forced_retirement"
+            elif self.stage == "forced_retirement":
+                assert option_number == 1
+                self.stage = "doppelganger"
+            elif self.stage == "doppelganger":
+                assert option_number == 3
+                self.stage = "china_yearly"
+            elif self.stage == "china_yearly":
+                assert option_number == 3
+                self.stage = "grieving_child"
+            elif self.stage == "grieving_child":
+                assert option_number == 3
+                self.stage = "merchant_dispute"
+            elif self.stage == "merchant_dispute":
+                assert option_number == 3
+                self.stage = "unpaid_taxes"
+            elif self.stage == "unpaid_taxes":
+                assert option_number == 1
+                self.stage = "emperor_assistance"
+            elif self.stage == "emperor_assistance":
+                assert option_number == 2
+                self.stage = "scholar"
+            elif self.stage == "scholar":
+                assert option_number == 3
+                self.stage = "learned_eunuch"
+            elif self.stage == "learned_eunuch":
+                assert option_number == 4
+                self.stage = "equitable"
+            elif self.stage == "equitable":
+                assert option_number == 3
+                self.stage = "local_defense"
+            elif self.stage == "local_defense":
+                assert option_number == 4
+                self.stage = "governor_yearly"
+            elif self.stage == "governor_yearly":
+                assert option_number == 4
+                self.stage = "pugnacious"
+            elif self.stage == "pugnacious":
+                assert option_number == 2
+                self.stage = "neighbor_governor"
+            elif self.stage == "neighbor_governor":
+                assert option_number == 4
+                self.stage = "silk_road"
+            elif self.stage == "silk_road":
+                assert option_number == 3
+                self.stage = "arbitrary_tax"
+            elif self.stage == "arbitrary_tax":
+                assert option_number == 4
+                self.stage = "hook_offer"
+            elif self.stage == "hook_offer":
+                assert option_number == 2
+                self.stage = "no_secrets"
+            elif self.stage == "no_secrets":
+                assert option_number == 2
+                self.stage = "jingcha"
+            elif self.stage == "jingcha":
+                assert option_number == 1
+                self.stage = "hook_offer_repeat"
+            elif self.stage == "hook_offer_repeat":
+                assert option_number == 2
+                self.stage = "self_review"
+            elif self.stage == "self_review":
+                assert option_number == 1
+                self.stage = "succession"
+            elif self.stage == "succession":
+                assert option_number == 4
+                self.stage = "m146"
+            else:
+                self.stage = "m147"
+            return {
+                "step": f"select-event-option-{option_number}",
+                "accepted": True,
+                "status": "submitted",
+                "option_number": option_number,
+                "option_index": native_index,
+                "event_selection": {
+                    "postcondition_verified": True,
+                    "old_event_instance_id": event_instance_id,
+                    "new_event_instance_id": event_instance_id + 1,
+                    "selected_option_number": option_number,
+                    "selected_native_option_index": native_index,
+                },
+            }
+
+    service = _InterruptedService()
+    result = enter_promotion_source_checkpoint_v1(
+        service, poll_interval_seconds=0
+    )
+    assert result["result"] == "GREEN"
+    assert [
+        row["event_definition_key"]
+        for row in result["timeline_interrupt_drains"]
+    ] == [
+        "zg361b2.40",
+        "ep3_admin_events.0002",
+        "ep3_interactions_events.0630",
+        "bp1_yearly.9007",
+        "tgp_china_yearly.0010",
+        "tgp_china_yearly.0005",
+        "tgp_china_yearly.0015",
+        "tgp_china_yearly.0020",
+        "ep3_emperor_yearly.2200",
+        "ep3_emperor_yearly.2240",
+        "ep1_flavor.1200",
+        "ep3_governor_yearly.8160",
+        "ep3_governor_yearly.8170",
+        "ep3_governor_yearly.8060",
+        "ep3_governor_yearly.8110",
+        "ep3_governor_yearly.8100",
+        "tgp_dynastic_cycle_events.0040",
+        "ep3_governor_yearly.8130",
+        "spymaster_task.0381",
+        "spymaster_task.0399",
+        "zg361.40",
+        "spymaster_task.0381",
+        "zg361b1.200",
+        "ep3_governor_yearly.3060",
+    ]
+    assert service.selected == [1, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 2, 4, 3, 4, 2, 2, 1, 2, 1, 4, 1]
+
+
+def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:
+    class _DriftedInterruptedService(_Service):
+        def snapshot(self) -> dict[str, object]:
+            if self.stage != "pip":
+                return super().snapshot()
+            return {
+                "snapshot_id": "snapshot-pip",
+                "revision": 30,
+                "native_revision": 130,
+                "date_raw": 53147040,
+                "paused": True,
+                "speed": 1,
+                "map_ready": True,
+                "played_character": {"character_id": 29037},
+                "diagnostics": {"connection_generation": 7},
+                "active_event": {"instance_id": 400, "option_count": 3},
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            del expected_revision
+            if step == "resume-map" and self.stage == "b1":
+                self.stage = "pip"
+            return {"accepted": True, "status": "submitted"}
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            snapshot = self.snapshot()
+            return {
+                "status": "available",
+                "binding": {
+                    "snapshot_id": snapshot["snapshot_id"],
+                    "revision": expected_revision,
+                    "native_revision": snapshot["native_revision"],
+                    "event_instance_id": event_instance_id,
+                },
+                "current_event_window_context": {
+                    "schema": "current-event-window-context-v1",
+                    "schema_version": 1,
+                    "status": "available",
+                    "window_match_count": 1,
+                    "event_definition_key": "zg361b2.40",
+                    "current_event_instance_id": event_instance_id,
+                    "date_raw": snapshot["date_raw"],
+                    "root_scope": _character_scope("root", 29037)["scope"],
+                    "saved_scopes": [
+                        _character_scope("zg361_reviewing_superior", 99999),
+                        _character_scope("zg361_b2_pip_prompt_owner", 32904),
+                        _character_scope("zg361_b2_pip_prompt_subject", 29037),
+                        _character_scope("zga_personal_result_target", 29037),
+                    ],
+                    "options": _options(3),
+                },
+            }
+
+    service = _DriftedInterruptedService()
+    with pytest.raises(
+        PromotionProductionEntryError,
+        match=r"zg361b2\.40.*scope:zg361_reviewing_superior",
+    ):
+        enter_promotion_source_checkpoint_v1(
+            service, poll_interval_seconds=0
+        )
+    assert service.selected == []
 
 
 def test_unavailable_progress_reports_native_reason_and_widgets() -> None:

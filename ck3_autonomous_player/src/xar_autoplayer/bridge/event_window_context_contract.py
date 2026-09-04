@@ -207,7 +207,12 @@ def _effect_indicator(value: Any, label: str) -> None:
     raise ValueError(f"{label}.kind is invalid")
 
 
-def _event_scope(value: Any, label: str) -> None:
+def _event_scope(
+    value: Any,
+    label: str,
+    *,
+    allow_unavailable_character_identity: bool = False,
+) -> None:
     scope = _exact_object(value, _SCOPE_FIELDS, label)
     if scope["status"] != "available":
         raise ValueError(f"{label}.status is invalid")
@@ -223,6 +228,18 @@ def _event_scope(value: Any, label: str) -> None:
     if raw_type_index == 4:
         if type_key != "character":
             raise ValueError(f"{label} character type key drifted")
+        if isinstance(identity, dict) and identity.get("status") == "unavailable":
+            identity = _exact_object(
+                identity,
+                {"status", "reason"},
+                f"{label}.typed_identity",
+            )
+            if not allow_unavailable_character_identity or identity != {
+                "status": "unavailable",
+                "reason": "character_scope_identity_unavailable",
+            }:
+                raise ValueError(f"{label}.typed_identity is invalid")
+            return
         identity = _exact_object(
             identity,
             {"status", "kind", "character_id"},
@@ -388,7 +405,9 @@ def normalize_current_event_window_context_v1(
         saved_names.add(name)
         saved_identifiers.add(identifier)
         _event_scope(
-            saved["scope"], f"current event saved scope {index}.scope"
+            saved["scope"],
+            f"current event saved scope {index}.scope",
+            allow_unavailable_character_identity=True,
         )
     if readiness != {
         "event_definition_identity_ready": True,

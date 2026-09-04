@@ -174,6 +174,20 @@ int main() {
   }
   available.options.front().shown = true;
   const auto valid = available;
+  auto partial_saved_character = valid;
+  partial_saved_character.saved_scopes[0].scope.typed_identity.available = false;
+  partial_saved_character.saved_scopes[0].scope.typed_identity.character_id.reset();
+  partial_saved_character.saved_scopes[0].scope.typed_identity.unavailable_reason =
+      "character_scope_identity_unavailable";
+  const auto partial_saved_character_json =
+      xar::ck3_11906::SerializeEventWindowContextV1(partial_saved_character);
+  if (!Contains(partial_saved_character_json,
+                "\"type_key\":\"character\",\"subtype\":2,"
+                "\"typed_identity\":{\"status\":\"unavailable\","
+                "\"reason\":\"character_scope_identity_unavailable\"}")) {
+    std::cerr << "unresolved saved character identity was not serialized\n";
+    return 1;
+  }
   auto invalid = valid;
   invalid.event_definition_key.clear();
   if (!xar::ck3_11906::SerializeEventWindowContextV1(invalid).empty()) {

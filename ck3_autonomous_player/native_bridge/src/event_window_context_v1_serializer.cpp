@@ -16,6 +16,8 @@ constexpr std::uint16_t kCharacterScopeTypeIndex = 4;
 constexpr std::string_view kCharacterScopeTypeKey = "character";
 constexpr std::string_view kGenericScopeIdentityUnavailableReason =
     "generic_scope_payload_identity_not_closed";
+constexpr std::string_view kCharacterScopeIdentityUnavailableReason =
+    "character_scope_identity_unavailable";
 
 template <typename T> std::string Number(T value) {
   std::array<char, 32> buffer{};
@@ -124,16 +126,24 @@ void AppendEffectIndicator(std::string &output,
   }
 }
 
-bool ValidScope(const game::EventScopeV1 &scope) {
+bool ValidScope(const game::EventScopeV1 &scope,
+                bool allow_unresolved_character_identity = false) {
   if (scope.raw_type_index == 0 || scope.type_key.empty() ||
       scope.type_key.size() > kMaximumEventDefinitionKeyBytes) {
     return false;
   }
   const auto &identity = scope.typed_identity;
   if (scope.raw_type_index == kCharacterScopeTypeIndex) {
-    return scope.type_key == kCharacterScopeTypeKey && identity.available &&
-           identity.character_id.has_value() &&
-           *identity.character_id > 0 && identity.unavailable_reason.empty();
+    const bool resolved = identity.available &&
+                          identity.character_id.has_value() &&
+                          *identity.character_id > 0 &&
+                          identity.unavailable_reason.empty();
+    const bool unresolved = allow_unresolved_character_identity &&
+                            !identity.available &&
+                            !identity.character_id.has_value() &&
+                            identity.unavailable_reason ==
+                                kCharacterScopeIdentityUnavailableReason;
+    return scope.type_key == kCharacterScopeTypeKey && (resolved || unresolved);
   }
   return scope.type_key != kCharacterScopeTypeKey && !identity.available &&
          !identity.character_id.has_value() &&
@@ -173,7 +183,7 @@ bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes) {
         });
     if (scope.name.empty() ||
         scope.name.size() > kMaximumEventDefinitionKeyBytes || duplicate ||
-        !ValidScope(scope.scope)) {
+        !ValidScope(scope.scope, true)) {
       return false;
     }
   }

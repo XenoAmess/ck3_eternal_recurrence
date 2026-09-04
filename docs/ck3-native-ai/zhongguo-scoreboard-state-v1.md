@@ -23,14 +23,17 @@
 
 - GUI global slot RVA：`0x576CC68`；
 - root/owner chain：`[slot] -> +0x1B8 -> +0x58 -> +0x3D0 -> +0x08`；
+- GUI owner 的全局 widget root：`owner +0xD0`；这里的 owner 字段与下方 widget 自身 `+0xD0` flags 属于不同对象，不能混用；
 - GUI context modal receiver vector：data `+0x290`、`int32 count +0x29C`，静态读取上限 256，top receiver 为最后一项；
-- exact top-level runtime widget lookup RVA：`0x36D0B20`；
+- exact top-level runtime widget lookup RVA：`0x36D0B20`。其冻结 span 为 `0x36D0B20..0x36D0CA8`（`0x188` B，SHA-256 `AA460EB52819C0D02F64293EE7F3793DD8D3B0CB010A3347011CE04AECA4B83F`）；函数先读 `owner+0xD0`，然后只枚举该 root 的 `+0xF0/+0xFC` direct children 做 exact-name 比较，不递归；
 - widget local hidden flags：`+0xD0`，mask `0x10`；effective-hidden 递归缓存位：同一字节 mask `0x08`；
 - widget effective-disabled cache：`+0xD0`，mask `0x02`；local-disabled source bit 为 `0x04`；
 - parent：`+0xE8`；children pointer/count：`+0xF0/+0xFC`；
 - MSVC widget name string：`+0x1B8`。
 
-这里调用的是 runtime top-level instance lookup。GUI definition lookup、脚本变量存在、源文件中出现 `name = ...` 都不能替代它。当前尚未保存 paused CK3 response artifact，因此 root singleton 只属于 exact-build 静态逆向证据，不能标为 production-live。
+这里调用的是 runtime direct-child instance lookup。GUI definition lookup、脚本变量存在、源文件中出现 `name = ...` 都不能替代它。当前尚未保存 scoreboard state/open-close-switch 的 paused CK3 response artifact，因此 scoreboard provider 不能标为 production-live。
+
+同一 owner/root ABI 已取得一条用途受限的旁证：B3 promotion R12 的 custom/native direct-child probes 全为 none；promotion-only candidate 随后在 direct lookup miss 时从 `owner+0xD0` 做固定名字、depth 64 / traversal 4096 的 descendant fallback，R13/R14 均越过最初 progress query。该结果只证明 private promotion candidate 的 discovery 分支实机经过；scoreboard 的 `FindFixedWidgets` 仍保持 direct lookup，且没有 scoreboard response artifact，不能把旁证外推为 scoreboard live 或公开动作能力。
 
 固定 runtime allowlist 有 15 项。下表概括四个外层对象；三个入口、三个 outer tab、三个 list-page witness 和 backdrop/header close 也以编译期固定名字读取：
 
@@ -145,7 +148,7 @@ received-self 面要求首行与 self character 都是当前玩家；received he
 
 只有 player binding、GUI root、15 个固定实例最小状态、ACL 和 same-frame 全部成立时，`state_acl_query_ready=true`。这只表示“固定实例 + effective-enabled + 当前玩家 ACL”的只读查询可用。
 
-`production_live_ready=false` 在本版本固定不变。没有真实 paused artifact，不得把离线 fixture、源码契约、命令 ACK 或 capability registration 写成 live。
+`production_live_ready=false` 在本版本固定不变。没有真实 scoreboard state/open-close-switch paused artifact，不得把离线 fixture、promotion discovery 旁证、源码契约、命令 ACK 或 capability registration 写成 scoreboard live。
 
 ## 证据与下一步
 
@@ -157,4 +160,4 @@ received-self 面要求首行与 self character 都是当前玩家；received he
 
 离线 native fixture 覆盖 received-only 玩家不能获得 manager ACL、A 策略 B1/result case 独立、local/effective hidden 缓存对照、未冻结字段 typed unavailable、read-only 动作边界、exact RVA binder，以及 identical/A-B-A/ACK-validation/unavailable 的 provider tracker 对照。Python contract 覆盖固定 step、五个 provider 字段、未知字段/任意 widget 输入拒绝、严格响应归一化、MCP facade 与 shared wiring。
 
-允许启动 CK3 后的下一项施工必须是：在真实角色与真实考核榜实例上取得同一 paused world frame 的 MCP response artifact，分别覆盖 managed 与 received-only 玩家，再按 artifact 单独把外层五个原子动作提升为 production-live primitive。focus、scroll、rect 与页面内动作仍是后续独立 ABI；provider revision 必须取得真实 open/close/switch 对照，reopen 必须取得 close/open 两阶段各自的 ACK 与 later query。在此之前正式完整 runner gate 继续保持 RED。
+允许启动 CK3 后的下一项 scoreboard 施工必须是：在真实角色与真实考核榜实例上取得同一 paused world frame 的 MCP response artifact，分别覆盖 managed 与 received-only 玩家，再按 artifact 单独把外层五个原子动作提升为 production-live primitive。focus、scroll、rect 与页面内动作仍是后续独立 ABI；provider revision 必须取得真实 open/close/switch 对照，reopen 必须取得 close/open 两阶段各自的 ACK 与 later query。在此之前正式完整 runner gate 继续保持 RED。

@@ -361,3 +361,39 @@ fixture 范围内 `live_validated=true`。后继非空 fixture 的证据另见
 | 其它 saved scopes | unknown | 继续追 `EventTargetScope` 其它容器到稳定业务 identity 的映射，不暴露指针 |
 | full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
 | production bridge query | fixture-scoped live | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) Attempt4 seed/checkpoint/fresh-cold GREEN；完整 effect preview 与 semantic choice 仍 unavailable |
+
+## 2026-09-05：失效 saved Character 不再拖垮整扇事件窗
+
+Phase2 产品时间线 R31 与 R33 在同一 paused frame（`date_raw=53147256`、event instance `14`）稳定复现
+`event_saved_scope_invalid`。20 次有界重试都保持同一 native revision，证明它不是 scope 构建中的瞬态窗口；同一时刻
+`error.log` 又记录 `intrigue_dread.1501:after` 对已经死亡的 scope character 执行 effect。故最小实际故障是：事件仍然可见、
+event key 与 options 仍有决策价值，但一个 named Character token 已不能通过 generation lookup，旧 reader 因此丢弃整帧。
+
+production reader/serializer 现在采用下列不对称边界：
+
+- root Character 仍必须解析为完整、generation-valid 的正 CharacterID；失败时整帧 unavailable。
+- saved scope 的 canonical name、type index、subtype 和 `type_key=character` 仍必须合法；若仅 Character identity 已失效，
+  保留该 scope 并发布 `typed_identity={status:unavailable, reason:character_scope_identity_unavailable}`，绝不发布或猜测 ID。
+- 非 Character payload 继续使用 `generic_scope_payload_identity_not_closed`；name/type/vector/双观察任一结构失败仍令整帧
+  unavailable。下游 exact contract 可以绑定失效 scope 的 name/type，但若决策必须依赖其身份，仍须 fail closed。
+
+新实现由独立 MSVC build `Z:\b3probe-msvc4` 验证，94/94 CTest GREEN；DLL SHA-256 为
+`6E5BB70B5ADFE38245DED493BE7BDD451D51EFAFE25E9A8688D0F4F4B222984F`。R34/R35 使用该 DLL 的 loader 均
+GREEN，且后续原版事件 scope/option 查询正常；截至记录时，随机时间线尚未再次落到那一条失效人物事件，所以“同一
+R33 frame 已 live 转为 available”仍是 pending，不把单测或其它 event query 冒充该专项 live closure。
+
+### R40/R41 端到端实机闭环
+
+R40 在真实 `ep3_interactions_events.0630` 上命中新边界：`secondary_actor`、`secondary_recipient` 与
+`intermediary` 都保留 `type_key=character` 和 canonical name，但 generation lookup 已失效。native DLL 按设计发布三条
+`typed_identity={status:unavailable, reason:character_scope_identity_unavailable}`，没有 ID；root、actor 与 recipient 仍为完整有效
+CharacterID。旧 Python normalizer 将所有 Character scope 强制解释为 available ID，因而以 malformed frame RED。
+
+下游最小修复只允许 **saved scope** 使用上述精确 unavailable 对象；root Character 仍必须 available，错误 reason、额外字段或伪 ID
+仍拒绝。R41 随后在同一 `.0630` 事件上成功归一化完整 frame，并进入 exact-event policy 的 unknown-key gate，证明 native provider、
+serializer、pipe、driver normalizer 的端到端 live 路径已经闭合。该事件只有一个 acknowledgement option，策略不依赖三个失效角色的
+身份；若未来某个决策依赖失效 ID，policy 层仍必须 fail closed。
+
+R43 还实证了动作编号边界：query 的 `rendered_index` 只描述 GUI 顺序；提交 API 的 public number 必须为
+`native_option_index + 1`。`.3060` 的可见 native indices 是 `(1,2,3)`，因此第三个可见项要提交
+`select-event-option-4`，不是 `-3`。production entry 现以显式不变量校验该关系；不得从 `rendered_index` 合成动作编号。

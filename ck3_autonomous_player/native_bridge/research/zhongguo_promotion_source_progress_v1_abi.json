@@ -1,6 +1,6 @@
 {
   "contract": "zhongguo_promotion_source_progress_and_review_action_v1",
-  "status": "static_ready_default_off_live_pending",
+  "status": "private_candidate_gui_discovery_live_exercised_product_loop_red",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "query_capability": "game.command.query-zhongguo-promotion-source-progress-v1",
@@ -15,6 +15,34 @@
     "zg361_promotion_source_central_active",
     "zg361_promotion_source_pp_active"
   ],
+  "gui_discovery": {
+    "shared_pointer_chain": [
+      "deref_module_plus_0x576CC68",
+      "+0x1B8",
+      "+0x58",
+      "+0x3D0",
+      "+0x08_gui_owner"
+    ],
+    "owner_root_widget_offset": "0xD0",
+    "direct_lookup": {
+      "rva": "0x36D0B20",
+      "scope": "owner_root_direct_children_only",
+      "name_validation": "returned widget must retain the exact fixed runtime name"
+    },
+    "fallback": "only when the direct lookup is null or wrong-name, find the fixed promotion root as a descendant of owner+0xD0, then find the four fixed descendants beneath that root",
+    "bounds": {
+      "maximum_depth": 64,
+      "maximum_traversal": 4096,
+      "maximum_children_per_node": 4096
+    },
+    "caller_selectable_name": false,
+    "live_control_evidence": {
+      "r12_direct_probe": "custom_top_level_probe_none_and_native_top_level_probe_none",
+      "r13_r14_recursive_candidate_crossed_initial_progress_query": true,
+      "candidate_dll_sha256": "D512F330CE81DEF122EFAB61CF70F8E24EA82B36AB0F1EA15713C7C33B88F80E",
+      "boundary": "private candidate discovery branch exercised; full query payload was not frozen and the product loop remained RED"
+    }
+  },
   "public_inputs": ["request_nonce", "expected_revision"],
   "forbidden_inputs": [
     "widget_name",
@@ -44,8 +72,10 @@
   ],
   "readiness": {
     "product_entry": "static_ready",
-    "native_query_and_action": "static_ready",
+    "native_query_and_action": "private_candidate_discovery_live_exercised_action_loop_red",
     "runner_choreography": "static_ready",
+    "private_candidate_gui_discovery_live_exercised": true,
+    "complete_query_payload_frozen": false,
     "production_capability_advertised": false,
     "production_live_ready": false,
     "unique_live_prerequisite": "one product-only managed CK3 1.19.0.6 run must observe action -> independently observed B1 -> .146 option1 -> D+1 paused .147 -> native save"

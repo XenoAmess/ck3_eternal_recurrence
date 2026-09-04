@@ -159,6 +159,7 @@ inline constexpr std::size_t kZhongguoGuiChainFirstOffset = 0x1B8;
 inline constexpr std::size_t kZhongguoGuiChainSecondOffset = 0x58;
 inline constexpr std::size_t kZhongguoGuiContextOffset = 0x3D0;
 inline constexpr std::size_t kZhongguoGuiOwnerOffset = 0x08;
+inline constexpr std::size_t kZhongguoGuiOwnerRootWidgetOffset = 0xD0;
 inline constexpr std::size_t kZhongguoGuiModalReceiversOffset = 0x290;
 inline constexpr std::size_t kZhongguoGuiModalReceiverCountOffset = 0x29C;
 inline constexpr std::size_t kZhongguoWidgetHiddenFlagsOffset = 0xD0;

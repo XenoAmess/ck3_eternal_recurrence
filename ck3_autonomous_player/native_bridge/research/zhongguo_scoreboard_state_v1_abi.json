@@ -114,10 +114,25 @@
   "gui_root": {
     "global_slot_rva": "0x576CC68",
     "pointer_chain": ["deref_global_slot", "+0x1B8", "+0x58", "+0x3D0", "+0x08"],
+    "owner_root_widget_offset": "0xD0",
     "find_top_level_widget_rva": "0x36D0B20",
     "find_top_level_widget_abi": "void* __fastcall(void* gui_owner, const std::string* exact_name)",
+    "find_top_level_widget_scope": "reads gui_owner_plus_0xD0 then enumerates only root direct children at plus_0xF0_plus_0xFC; exact-name; non-recursive",
+    "find_top_level_widget_span": {
+      "start_rva": "0x36D0B20",
+      "end_rva": "0x36D0CA8",
+      "byte_length": "0x188",
+      "sha256": "AA460EB52819C0D02F64293EE7F3793DD8D3B0CB010A3347011CE04AECA4B83F"
+    },
     "root_claim": "exact_build_static_reverse_evidence_only",
-    "paused_live_artifact": false
+    "scoreboard_state_paused_live_artifact": false,
+    "shared_gui_discovery_control_evidence": {
+      "r12_direct_custom_and_native_probe": "all_none",
+      "promotion_only_descendant_fallback_live_exercised": true,
+      "promotion_runs": ["b3r13", "b3r14"],
+      "scoreboard_provider_uses_descendant_fallback": false,
+      "boundary": "promotion private-candidate control-flow evidence is not a scoreboard response artifact or production capability"
+    }
   },
   "widget_abi": {
     "local_hidden_flags_offset": "0xD0",

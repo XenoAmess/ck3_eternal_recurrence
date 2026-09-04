@@ -353,6 +353,52 @@ class EventWindowContractTests(unittest.TestCase):
                         expected_snapshot_revision=NATIVE_REVISION,
                     )
 
+    def test_stale_saved_character_keeps_inventory_without_fabricated_id(self) -> None:
+        frame = _frame()
+        frame["saved_scopes"][0]["scope"]["typed_identity"] = {
+            "status": "unavailable",
+            "reason": "character_scope_identity_unavailable",
+        }
+        normalized = normalize_current_event_window_context_v1(
+            frame,
+            expected_event_instance_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(
+            normalized["saved_scopes"][0]["scope"]["typed_identity"],
+            {
+                "status": "unavailable",
+                "reason": "character_scope_identity_unavailable",
+            },
+        )
+
+        stale_root = _frame()
+        stale_root["root_scope"]["typed_identity"] = {
+            "status": "unavailable",
+            "reason": "character_scope_identity_unavailable",
+        }
+        wrong_reason = _frame()
+        wrong_reason["saved_scopes"][0]["scope"]["typed_identity"] = {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed",
+        }
+        extra_field = _frame()
+        extra_field["saved_scopes"][0]["scope"]["typed_identity"] = {
+            "status": "unavailable",
+            "reason": "character_scope_identity_unavailable",
+            "character_id": CHARACTER_ID,
+        }
+        for mutation in (stale_root, wrong_reason, extra_field):
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(ValueError):
+                    normalize_current_event_window_context_v1(
+                        mutation,
+                        expected_event_instance_id=EVENT_ID,
+                        expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+
     def test_unavailable_scope_inventory_remains_null_and_unready(self) -> None:
         unavailable = _frame("unavailable")
         normalized = normalize_current_event_window_context_v1(

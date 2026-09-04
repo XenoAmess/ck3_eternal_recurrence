@@ -611,6 +611,24 @@ bool TestReaderProductionGates() {
       return false;
     }
   }
+  {
+    Fixture fixture;
+    Store<std::int64_t>(fixture.saved_scope_rows.data(), 0x10,
+                        kCharacterId + 1);
+    xar::game::EventWindowContextV1 output{};
+    if (xar::ck3_11906::ReadEventWindowContextV1(
+            fixture.bindings, kRevision, kEventId, output) !=
+            xar::game::ReadEventWindowContextResultV1::available ||
+        output.saved_scopes.size() != 2 ||
+        output.saved_scopes[0].scope.type_key != "character" ||
+        output.saved_scopes[0].scope.typed_identity.available ||
+        output.saved_scopes[0].scope.typed_identity.character_id.has_value() ||
+        output.saved_scopes[0].scope.typed_identity.unavailable_reason !=
+            "character_scope_identity_unavailable") {
+      std::cerr << "stale saved character identity was not retained as unavailable\n";
+      return false;
+    }
+  }
   for (const auto [count, capacity] :
        std::array<std::array<std::int32_t, 2>, 3>{
            std::array<std::int32_t, 2>{-1, 2},

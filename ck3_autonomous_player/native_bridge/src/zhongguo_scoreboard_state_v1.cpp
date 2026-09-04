@@ -1571,7 +1571,7 @@ void SetPromotionProgressUnavailable(
 std::string PromotionTopLevelProbeReason(
     const ZhongguoPromotionSourceProgressNativeEnvironmentV1 &environment,
     const ZhongguoPromotionSourceProgressAccessV1 &access) {
-  std::string reason{"widget_not_instantiated:top_level_probe="};
+  std::string reason{"widget_not_instantiated:custom_top_level_probe="};
   if (environment.offline_fixture_function_overrides) {
     reason += "offline_fixture";
     return reason;
@@ -1591,6 +1591,43 @@ std::string PromotionTopLevelProbeReason(
     void *const widget = CallFindTopLevelWidget(
         environment.find_top_level_widget, owner, &name);
     if (widget != nullptr && WidgetNameEquals(access, widget, comparison)) {
+      if (found_any) reason.push_back(',');
+      reason.append(comparison);
+      found_any = true;
+    }
+  }
+  if (!found_any) reason += "none";
+  reason += ":native_top_level_probe=";
+  constexpr std::array<std::string_view, 4> native_names{
+      "hud_bottom", "ingame_topbar", "war_overview_window",
+      "console_window"};
+  found_any = false;
+  for (const auto comparison : native_names) {
+    std::string name{comparison};
+    void *const widget = CallFindTopLevelWidget(
+        environment.find_top_level_widget, owner, &name);
+    if (widget != nullptr && WidgetNameEquals(access, widget, comparison)) {
+      if (found_any) reason.push_back(',');
+      reason.append(comparison);
+      found_any = true;
+    }
+  }
+  if (!found_any) reason += "none";
+  reason += ":global_tree_probe=";
+  void *global_root = nullptr;
+  if (!ReadValue(access, owner, kZhongguoGuiOwnerRootWidgetOffset,
+                 global_root) ||
+      global_root == nullptr) {
+    reason += "root_unavailable";
+    return reason;
+  }
+  constexpr std::array<std::string_view, 3> global_tree_names{
+      "zg361_promotion_source_bridge_window", "hud_bottom",
+      "ingame_topbar"};
+  found_any = false;
+  for (const auto comparison : global_tree_names) {
+    void *const widget = FindDescendant(access, global_root, comparison);
+    if (widget != nullptr) {
       if (found_any) reason.push_back(',');
       reason.append(comparison);
       found_any = true;
@@ -1623,13 +1660,24 @@ bool FindPromotionProgressWidgets(
       kZhongguoPromotionSourceProgressV1WidgetNames.front()};
   void *window = CallFindTopLevelWidget(environment.find_top_level_widget,
                                         owner, &window_name);
-  widgets[0] = window;
   if (window == nullptr ||
       !WidgetNameEquals(access, window,
                         kZhongguoPromotionSourceProgressV1WidgetNames[0])) {
-    widgets[0] = nullptr;
-    return true;
+    window = nullptr;
+    void *global_root = nullptr;
+    if (ReadValue(access, owner, kZhongguoGuiOwnerRootWidgetOffset,
+                  global_root) &&
+        global_root != nullptr) {
+      window = FindDescendant(
+          access, global_root,
+          kZhongguoPromotionSourceProgressV1WidgetNames[0]);
+    }
+    if (window == nullptr) {
+      widgets[0] = nullptr;
+      return true;
+    }
   }
+  widgets[0] = window;
   for (std::size_t index = 1; index < widgets.size(); ++index) {
     widgets[index] = FindDescendant(
         access, window, kZhongguoPromotionSourceProgressV1WidgetNames[index]);
