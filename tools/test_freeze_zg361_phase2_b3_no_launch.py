@@ -145,6 +145,64 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             self.assertFalse(result["green"])
             self.assertEqual(["zg361probe.1"], result["missing_events"])
 
+    def test_parameterized_event_argument_is_in_closure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_effects(
+                root,
+                "root_effects.txt",
+                "zg361_probe_root_effect = {\n"
+                "    zg361_probe_schedule_effect = {\n"
+                "        EVENT = zg361probe.7\n"
+                "    }\n"
+                "}\n\n"
+                "zg361_probe_schedule_effect = {\n"
+                "    trigger_event = { id = $EVENT$ days = 1 }\n"
+                "}\n",
+            )
+            write_events(
+                root,
+                "probe_events.txt",
+                "namespace = zg361probe\n\n"
+                "zg361probe.7 = { hidden = yes }\n",
+            )
+            result = freeze.central_effect_call_closure(
+                root,
+                roots=("zg361_probe_root_effect",),
+                required_effect_provider_files=frozenset(),
+                required_event_provider_files=frozenset({"probe_events.txt"}),
+            )
+            self.assertTrue(result["green"])
+            self.assertEqual(["zg361probe.7"], result["reachable_events"])
+
+    def test_material_projection_rejects_missing_parameterized_event(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_effects(
+                root,
+                "root_effects.txt",
+                "zg361_probe_root_effect = {\n"
+                "    zg361_probe_schedule_effect = {\n"
+                "        EVENT = zg361probe.9\n"
+                "    }\n"
+                "}\n\n"
+                "zg361_probe_schedule_effect = {\n"
+                "    trigger_event = { id = $EVENT$ days = 1 }\n"
+                "}\n",
+            )
+            result = freeze.central_effect_call_closure(
+                root,
+                roots=("zg361_probe_root_effect",),
+                required_effect_provider_files=frozenset(),
+                required_event_provider_files=frozenset(),
+            )
+            self.assertEqual(["zg361probe.9"], result["missing_events"])
+            self.assertEqual(
+                ["zg361probe.9"],
+                result["material_projection"]["missing_events"],
+            )
+            self.assertFalse(result["green"])
+
     def test_material_projection_rejects_missing_event_from_sibling_effect(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -238,6 +296,58 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             self.assertFalse(result["loader_performance_claimed"])
             self.assertFalse(result["size_ab_triggered"])
             self.assertEqual(2, result["missing_event_line_count"])
+            self.assertTrue(result["cleanup_green"])
+
+    def test_predecessor_parameterized_event_red_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "cell").mkdir()
+            (root / "report.json").write_text(
+                json.dumps({"result": "RED"}), encoding="utf-8"
+            )
+            (root / "cell" / "report.json").write_text(
+                json.dumps(
+                    {
+                        "result": "RED",
+                        "error_reason": (
+                            "CK3 reached frontend but did not enter "
+                            "Load Save/In Game"
+                        ),
+                        "duration_seconds": 312.77,
+                        "loader_gate_executed": False,
+                        "gameplay_acceptance_executed": False,
+                        "native_cleanup": {
+                            "result": "GREEN",
+                            "failed_checks": [],
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            lines = []
+            for event in sorted(
+                freeze.EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS
+            ):
+                lines.append(f"Event [{event}] not found")
+            lines.append(freeze.PARAMETERIZED_EVENT_PREDECESSOR_CALLER_FILE)
+            log_text = "\n".join(lines) + "\n"
+            (root / "cell" / "final_error.log").write_text(
+                log_text, encoding="utf-8"
+            )
+            (root / "cell" / "final_game.log").write_text(
+                log_text, encoding="utf-8"
+            )
+            (root / "evidence-index.json").write_text("{}\n", encoding="utf-8")
+            result = freeze.predecessor_parameterized_event_live_red_evidence(
+                root
+            )
+            self.assertEqual(
+                "material-projection-parameterized-event-closure-red",
+                result["classification"],
+            )
+            self.assertEqual(14, result["missing_event_line_count"])
+            self.assertFalse(result["loader_performance_claimed"])
+            self.assertFalse(result["size_ab_triggered"])
             self.assertTrue(result["cleanup_green"])
 
     def test_closure_expansion_evidence_is_hash_bound(self) -> None:

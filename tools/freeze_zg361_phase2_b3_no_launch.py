@@ -50,7 +50,9 @@ REQUIRED_CENTRAL_EVENT_PROVIDER_FILES = frozenset(
     {"zg361_phase2_central_001_serial_dispatch_events.txt"}
 )
 CUSTOM_EFFECT_CALL_RE = re.compile(r"\b(zg361_[A-Za-z0-9_]+_effect)\s*=")
-CUSTOM_EVENT_ID_RE = re.compile(r"\bid\s*=\s*(zg361[A-Za-z0-9_]*\.[0-9]+)\b")
+CUSTOM_EVENT_ID_RE = re.compile(
+    r"\b(?:id|EVENT)\s*=\s*(zg361[A-Za-z0-9_]*\.[0-9]+)\b"
+)
 CUSTOM_EVENT_DIRECT_CALL_RE = re.compile(
     r"\b(?:trigger_event|character_event|event)\s*=\s*"
     r"(zg361[A-Za-z0-9_]*\.[0-9]+)\b"
@@ -68,6 +70,28 @@ EXPECTED_EVENT_PREDECESSOR_MISSING_EVENTS = frozenset(
 EVENT_PREDECESSOR_CALLER_FILE = (
     "common/scripted_effects/"
     "zg361_phase2_central_003_dispatch_control_effects.txt"
+)
+EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS = frozenset(
+    {
+        "zg361we.4804",
+        "zg361cl.100",
+        "zg361cl.101",
+        "zg361cl.102",
+        "zg361cl.103",
+        "zg361cl.104",
+        "zg361cl.105",
+        "zg361cl.200",
+        "zg361cl.201",
+        "zg361cl.202",
+        "zg361cl.203",
+        "zg361cl.204",
+        "zg361ip.202",
+        "zg361ip.302",
+    }
+)
+PARAMETERIZED_EVENT_PREDECESSOR_CALLER_FILE = (
+    "common/scripted_effects/"
+    "zg361_case_kernel_001_shared_helpers_effects.txt"
 )
 
 B3_EFFECT_SHARDS = (
@@ -545,6 +569,81 @@ def predecessor_event_live_red_evidence(root: Path) -> dict[str, object]:
     }
 
 
+def predecessor_parameterized_event_live_red_evidence(
+    root: Path,
+) -> dict[str, object]:
+    outer_report_path = root / "report.json"
+    cell_report_path = root / "cell" / "report.json"
+    error_log_path = root / "cell" / "final_error.log"
+    game_log_path = root / "cell" / "final_game.log"
+    evidence_index_path = root / "evidence-index.json"
+    outer_report = read_json(outer_report_path)
+    cell_report = read_json(cell_report_path)
+    error_log = error_log_path.read_text(encoding="utf-8-sig", errors="replace")
+    game_log = game_log_path.read_text(encoding="utf-8-sig", errors="replace")
+    pattern = r"Event \[(zg361[A-Za-z0-9_]*\.[0-9]+)\] not found"
+    error_missing_events = re.findall(pattern, error_log)
+    game_missing_events = re.findall(pattern, game_log)
+    cleanup = cell_report.get("native_cleanup")
+    cleanup_green = (
+        isinstance(cleanup, dict)
+        and cleanup.get("result") == "GREEN"
+        and not cleanup.get("failed_checks")
+    )
+    error_reason = str(cell_report.get("error_reason", ""))
+    green = (
+        outer_report.get("result") == "RED"
+        and cell_report.get("result") == "RED"
+        and cell_report.get("duration_seconds") == 312.77
+        and cell_report.get("loader_gate_executed") is False
+        and cell_report.get("gameplay_acceptance_executed") is False
+        and "reached frontend but did not enter Load Save/In Game" in error_reason
+        and len(error_missing_events)
+        == len(EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS)
+        and len(game_missing_events)
+        == len(EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS)
+        and set(error_missing_events)
+        == EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS
+        and set(game_missing_events)
+        == EXPECTED_PARAMETERIZED_EVENT_PREDECESSOR_MISSING_EVENTS
+        and PARAMETERIZED_EVENT_PREDECESSOR_CALLER_FILE
+        in error_log.replace("\\", "/")
+        and PARAMETERIZED_EVENT_PREDECESSOR_CALLER_FILE
+        in game_log.replace("\\", "/")
+        and cleanup_green
+    )
+    if not green:
+        raise FreezeError(
+            "predecessor B3 parameterized-event RED evidence no longer matches "
+            "its material-closure root cause"
+        )
+    return {
+        "classification": "material-projection-parameterized-event-closure-red",
+        "loader_performance_claimed": False,
+        "size_ab_triggered": False,
+        "artifact_root": str(root),
+        "duration_seconds": cell_report.get("duration_seconds"),
+        "frontend_reached": True,
+        "load_save_or_in_game_reached": False,
+        "missing_event_line_count": len(error_missing_events),
+        "missing_events": sorted(set(error_missing_events)),
+        "caller_file": PARAMETERIZED_EVENT_PREDECESSOR_CALLER_FILE,
+        "root_cause": (
+            "EVENT=<custom-event-id> arguments were absent from the B3 "
+            "effect/event closure graph"
+        ),
+        "cleanup_green": cleanup_green,
+        "files": {
+            "outer_report": record(outer_report_path),
+            "cell_report": record(cell_report_path),
+            "final_error_log": record(error_log_path),
+            "final_game_log": record(game_log_path),
+            "evidence_index": record(evidence_index_path),
+        },
+        "preserved": True,
+    }
+
+
 def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
     expansion_path = attempt / "closure-expansion.json"
     release_manifest_path = attempt / "canonical-release.manifest.json"
@@ -684,6 +783,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repository-manifest", type=Path, required=True)
     parser.add_argument("--predecessor-live-red", type=Path, required=True)
     parser.add_argument("--predecessor-event-live-red", type=Path, required=True)
+    parser.add_argument(
+        "--predecessor-parameterized-event-live-red", type=Path, required=True
+    )
     args = parser.parse_args(argv)
 
     attempt = args.attempt_dir.resolve()
@@ -745,6 +847,11 @@ def main(argv: list[str] | None = None) -> int:
     predecessor_event_red = predecessor_event_live_red_evidence(
         args.predecessor_event_live_red.resolve()
     )
+    predecessor_parameterized_event_red = (
+        predecessor_parameterized_event_live_red_evidence(
+            args.predecessor_parameterized_event_live_red.resolve()
+        )
+    )
     expansion_evidence = closure_expansion_evidence(attempt)
 
     python = str(args.python.resolve())
@@ -767,6 +874,8 @@ def main(argv: list[str] | None = None) -> int:
         [python, "-O", "mod_zhongguo_style/tools/test_zg361_manager_governance_runtime.py"],
         [python, "tools/test_freeze_zg361_phase2_b3_no_launch.py"],
         [python, "-O", "tools/test_freeze_zg361_phase2_b3_no_launch.py"],
+        [python, "tools/test_expand_zg361_phase2_b3_projection_closure.py"],
+        [python, "-O", "tools/test_expand_zg361_phase2_b3_projection_closure.py"],
     )
     static_results = [run(command) for command in static_commands]
     static_green = all(result["returncode"] == 0 for result in static_results)
@@ -817,6 +926,10 @@ def main(argv: list[str] | None = None) -> int:
         "seed_contract": record(ROOT / "tools" / "zg361_phase2_seed_contract.json", relative_to=ROOT),
         "historical_b2_r10_contract": record(ROOT / "tools" / "zg361_phase2_seed_production_closure.json", relative_to=ROOT),
         "projection_utility": record(ROOT / "tools" / "zg361_phase2_product_projection.py", relative_to=ROOT),
+        "projection_closure_expander": record(
+            ROOT / "tools" / "expand_zg361_phase2_b3_projection_closure.py",
+            relative_to=ROOT,
+        ),
         "ck3_executable": exe_row,
     }
 
@@ -876,6 +989,9 @@ def main(argv: list[str] | None = None) -> int:
         },
         "predecessor_live_red": predecessor_red,
         "predecessor_event_live_red": predecessor_event_red,
+        "predecessor_parameterized_event_live_red": (
+            predecessor_parameterized_event_red
+        ),
         "action_cell_only_inputs": action_cells,
         "static_checks": [
             {
