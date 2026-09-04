@@ -174,3 +174,7 @@ r5 产品实际只有 39 个 localization 文件；event/effect/trigger fixed po
 providers。当前 `tools/expand_zg361_phase2_b3_projection_closure.py` 只对 `zg361pp.9004` 的三个 terminal key 做窄同步，不能闭合
 这 816-key 集合。这是必须修复的独立产品缺口，也是后续获得低噪声 loader evidence 与发布就绪的门槛；但 r4 在相同 952 条错误下
 已经越过 Frontend，故 loc closure 不得抢在 false-stub 单变量实验之前，也不得与该实验混跑。
+
+后续静态施工已在 [`b3-reachable-localization-closure-2026-09-04.md`](b3-reachable-localization-closure-2026-09-04.md)
+闭合该产品缺口：新 schema 要求七族 × 九语言的 63 个 provider exact-byte 同步，并在递归代码 provider fixed point 之后执行；
+formal no-launch 已 GREEN，但尚未用 CK3 复测，因此本节记录的历史 952-line live 噪声不能仅凭静态结果改写为 live GREEN。

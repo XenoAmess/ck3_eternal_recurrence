@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -30,138 +31,233 @@ PLACEHOLDER_LANGUAGES = (
 )
 LOCALIZATION_LANGUAGES = AUTHORED_LANGUAGES + PLACEHOLDER_LANGUAGES
 LOCALIZATION_LINE = re.compile(r'^\s*([^\s:#]+):\d+\s+"(.*)"\s*$')
+B3_REACHABLE_LOCALIZATION_FAMILIES = (
+    "zg361_career_hc",
+    "zg361_career_learning",
+    "zg361_compensation_runtime",
+    "zg361_credit_project",
+    "zg361_feedback_promotion_pip",
+    "zg361_phase2_central",
+    "zg361_phase3_metrics_delivery",
+)
+B3_LOCALIZATION_EVENT_PREFIXES = {
+    "zg361_career_hc": ("zg361_career_hc_",),
+    "zg361_career_learning": ("zg361_career_learning_",),
+    "zg361_compensation_runtime": ("zg361_generated_compensation_runtime_",),
+    "zg361_credit_project": ("zg361_credit_project_",),
+    "zg361_feedback_promotion_pip": ("zg361_feedback_promotion_pip_",),
+    "zg361_phase2_central": ("zg361_phase2_central_",),
+    "zg361_phase3_metrics_delivery": ("zg361_phase3_metrics_delivery_",),
+}
+
+
+def _localization_relative(family: str, language: str) -> str:
+    return f"localization/{language}/{family}_l_{language}.yml"
 
 
 def _promotion_localization_relative(language: str) -> str:
-    return (
-        f"localization/{language}/"
-        f"zg361_feedback_promotion_pip_l_{language}.yml"
-    )
+    return _localization_relative("zg361_feedback_promotion_pip", language)
 
 
-def _localization_values(path: Path) -> dict[str, str]:
+def _all_localization_values(path: Path) -> dict[str, str]:
     payload = path.read_bytes()
     if not payload.startswith(BOM):
         raise freeze.FreezeError(f"localization provider is missing UTF-8 BOM: {path}")
     values: dict[str, str] = {}
     for line in payload.decode("utf-8-sig").splitlines():
         match = LOCALIZATION_LINE.match(line)
-        if match and match.group(1) in B3_TERMINAL_LOC_KEYS:
-            values[match.group(1)] = match.group(2)
+        if not match:
+            continue
+        key = match.group(1)
+        if key in values:
+            raise freeze.FreezeError(
+                f"localization provider contains a duplicate key: {path}: {key}"
+            )
+        values[key] = match.group(2)
     return values
 
 
-def _candidate_has_b3_terminal_event(candidate: Path) -> bool:
-    event_root = candidate / "events"
-    return any(
-        name == B3_TERMINAL_EVENT
-        for path in sorted(event_root.glob("*.txt"), key=lambda value: value.name)
-        for name, _block in freeze._top_level_event_entries(path)
-    )
+def _localization_values(path: Path) -> dict[str, str]:
+    return {
+        key: value
+        for key, value in _all_localization_values(path).items()
+        if key in B3_TERMINAL_LOC_KEYS
+    }
 
 
-def synchronize_b3_terminal_localization(
+def _required_localization_families(candidate: Path) -> list[str]:
+    event_names = {
+        path.name
+        for path in (candidate / "events").glob("*.txt")
+        if path.is_file()
+    }
+    return [
+        family
+        for family in B3_REACHABLE_LOCALIZATION_FAMILIES
+        if any(
+            event_name.startswith(prefix)
+            for event_name in event_names
+            for prefix in B3_LOCALIZATION_EVENT_PREFIXES[family]
+        )
+    ]
+
+
+def _provider_inventory_sha256(records: list[dict[str, object]]) -> str:
+    lines = [
+        f"{record['path']}\t{record['bytes']}\t{str(record['sha256']).lower()}"
+        for record in sorted(records, key=lambda value: str(value["path"]))
+    ]
+    return hashlib.sha256("\n".join(lines).encode("utf-8")).hexdigest()
+
+
+def synchronize_b3_reachable_localization(
     candidate: Path, canonical: Path
 ) -> dict[str, object]:
-    """Copy the generated provider when the projected terminal event needs it."""
+    """Copy exact all-language providers for every reachable B3 purpose family."""
 
-    required_keys = list(B3_TERMINAL_LOC_KEYS)
-    if not _candidate_has_b3_terminal_event(candidate):
+    required_families = _required_localization_families(candidate)
+    if not required_families:
         return {
             "green": True,
             "applicable": False,
-            "event": B3_TERMINAL_EVENT,
-            "required_keys": required_keys,
+            "required_families": [],
+            "required_key_count": 0,
             "authored_languages": list(AUTHORED_LANGUAGES),
             "placeholder_languages": list(PLACEHOLDER_LANGUAGES),
             "initial_missing_by_language": {},
             "updated_files": [],
             "final_missing_by_language": {},
             "placeholder_values_match_english": True,
+            "provider_files_exact": True,
+            "provider_file_count": 0,
+            "provider_bytes": 0,
+            "provider_inventory_sha256": hashlib.sha256(b"").hexdigest(),
         }
 
-    canonical_values: dict[str, dict[str, str]] = {}
-    for language in LOCALIZATION_LANGUAGES:
-        relative = _promotion_localization_relative(language)
-        source = canonical / relative
-        if not source.is_file():
+    canonical_values: dict[str, dict[str, dict[str, str]]] = {}
+    canonical_records: list[dict[str, object]] = []
+    for family in required_families:
+        family_values: dict[str, dict[str, str]] = {}
+        for language in LOCALIZATION_LANGUAGES:
+            relative = _localization_relative(family, language)
+            source = canonical / relative
+            if not source.is_file():
+                raise freeze.FreezeError(
+                    f"canonical localization provider is missing: {relative}"
+                )
+            values = _all_localization_values(source)
+            if not values:
+                raise freeze.FreezeError(
+                    f"canonical localization provider has no keys: {relative}"
+                )
+            family_values[language] = values
+            canonical_records.append(freeze.record(source, relative_to=canonical))
+        english_keys = set(family_values["english"])
+        structural_mismatches = {
+            language: {
+                "missing": sorted(english_keys - set(family_values[language])),
+                "extra": sorted(set(family_values[language]) - english_keys),
+            }
+            for language in LOCALIZATION_LANGUAGES
+            if set(family_values[language]) != english_keys
+        }
+        if structural_mismatches:
             raise freeze.FreezeError(
-                f"canonical localization provider is missing: {relative}"
+                "canonical B3 localization provider key sets differ from English: "
+                f"{family}: {structural_mismatches}"
             )
-        values = _localization_values(source)
-        missing = sorted(set(B3_TERMINAL_LOC_KEYS) - set(values))
-        if missing:
-            raise freeze.FreezeError(
-                f"canonical localization provider lacks B3 terminal keys: "
-                f"{relative}: {missing}"
-            )
-        canonical_values[language] = values
+        canonical_values[family] = family_values
 
-    english_values = canonical_values["english"]
+    placeholder_mismatches: dict[str, dict[str, list[str]]] = {}
+    for family in required_families:
+        english_values = canonical_values[family]["english"]
+        family_mismatches = {
+            language: sorted(
+                key
+                for key, value in canonical_values[family][language].items()
+                if value != english_values[key]
+            )
+            for language in PLACEHOLDER_LANGUAGES
+        }
+        family_mismatches = {
+            language: keys
+            for language, keys in family_mismatches.items()
+            if keys
+        }
+        if family_mismatches:
+            placeholder_mismatches[family] = family_mismatches
     placeholder_mismatches = {
-        language: sorted(
-            key
-            for key in B3_TERMINAL_LOC_KEYS
-            if canonical_values[language][key] != english_values[key]
-        )
-        for language in PLACEHOLDER_LANGUAGES
-    }
-    placeholder_mismatches = {
-        language: keys
-        for language, keys in placeholder_mismatches.items()
-        if keys
+        family: mismatches
+        for family, mismatches in placeholder_mismatches.items()
+        if mismatches
     }
     if placeholder_mismatches:
         raise freeze.FreezeError(
-            "non-authored B3 terminal localization must retain English placeholders: "
+            "non-authored B3 localization must retain English placeholders: "
             f"{placeholder_mismatches}"
         )
 
-    initial_missing_by_language: dict[str, list[str]] = {}
+    initial_missing: dict[str, set[str]] = {}
     updated_relatives: list[str] = []
-    for language in LOCALIZATION_LANGUAGES:
-        relative = _promotion_localization_relative(language)
-        source = canonical / relative
-        target = candidate / relative
-        target_has_bom = target.is_file() and target.read_bytes().startswith(BOM)
-        values = _localization_values(target) if target_has_bom else {}
-        missing = sorted(set(B3_TERMINAL_LOC_KEYS) - set(values))
-        if missing:
-            initial_missing_by_language[language] = missing
-        if (
-            missing
-            or not target.is_file()
-            or not target_has_bom
-            or any(
-                values.get(key) != canonical_values[language][key]
-                for key in B3_TERMINAL_LOC_KEYS
-            )
-        ):
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, target)
-            updated_relatives.append(relative)
+    for family in required_families:
+        for language in LOCALIZATION_LANGUAGES:
+            relative = _localization_relative(family, language)
+            source = canonical / relative
+            target = candidate / relative
+            target_has_bom = target.is_file() and target.read_bytes().startswith(BOM)
+            values = _all_localization_values(target) if target_has_bom else {}
+            missing = set(canonical_values[family][language]) - set(values)
+            if missing:
+                initial_missing.setdefault(language, set()).update(missing)
+            if not target.is_file() or target.read_bytes() != source.read_bytes():
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, target)
+                updated_relatives.append(relative)
 
-    final_missing_by_language: dict[str, list[str]] = {}
-    final_values: dict[str, dict[str, str]] = {}
-    for language in LOCALIZATION_LANGUAGES:
-        relative = _promotion_localization_relative(language)
-        values = _localization_values(candidate / relative)
-        missing = sorted(set(B3_TERMINAL_LOC_KEYS) - set(values))
-        if missing:
-            final_missing_by_language[language] = missing
-        final_values[language] = values
-    final_english = final_values["english"]
+    final_missing: dict[str, set[str]] = {}
+    final_values: dict[str, dict[str, dict[str, str]]] = {}
+    provider_files_exact = True
+    for family in required_families:
+        family_values = {}
+        for language in LOCALIZATION_LANGUAGES:
+            relative = _localization_relative(family, language)
+            source = canonical / relative
+            target = candidate / relative
+            values = _all_localization_values(target)
+            missing = set(canonical_values[family][language]) - set(values)
+            if missing:
+                final_missing.setdefault(language, set()).update(missing)
+            if target.read_bytes() != source.read_bytes():
+                provider_files_exact = False
+            family_values[language] = values
+        final_values[family] = family_values
     placeholders_match = all(
-        final_values[language].get(key) == final_english.get(key)
+        final_values[family][language].get(key)
+        == final_values[family]["english"].get(key)
+        for family in required_families
         for language in PLACEHOLDER_LANGUAGES
-        for key in B3_TERMINAL_LOC_KEYS
+        for key in final_values[family]["english"]
     )
-    green = not final_missing_by_language and placeholders_match
+    final_missing_by_language = {
+        language: sorted(keys) for language, keys in sorted(final_missing.items())
+    }
+    initial_missing_by_language = {
+        language: sorted(keys) for language, keys in sorted(initial_missing.items())
+    }
+    provider_bytes = sum(int(record["bytes"]) for record in canonical_records)
+    green = (
+        not final_missing_by_language
+        and placeholders_match
+        and provider_files_exact
+    )
     return {
         "green": green,
         "applicable": True,
-        "event": B3_TERMINAL_EVENT,
-        "required_keys": required_keys,
+        "required_families": required_families,
+        "required_key_count": sum(
+            len(canonical_values[family]["english"])
+            for family in required_families
+        ),
         "authored_languages": list(AUTHORED_LANGUAGES),
         "placeholder_languages": list(PLACEHOLDER_LANGUAGES),
         "initial_missing_by_language": initial_missing_by_language,
@@ -171,7 +267,21 @@ def synchronize_b3_terminal_localization(
         ],
         "final_missing_by_language": final_missing_by_language,
         "placeholder_values_match_english": placeholders_match,
+        "provider_files_exact": provider_files_exact,
+        "provider_file_count": len(canonical_records),
+        "provider_bytes": provider_bytes,
+        "provider_inventory_sha256": _provider_inventory_sha256(
+            canonical_records
+        ),
     }
+
+
+def synchronize_b3_terminal_localization(
+    candidate: Path, canonical: Path
+) -> dict[str, object]:
+    """Compatibility entry point; now closes all reachable B3 provider families."""
+
+    return synchronize_b3_reachable_localization(candidate, canonical)
 
 
 def _provider_files(
@@ -225,7 +335,6 @@ def expand_projection_closure(
     canonical = canonical.resolve()
     if not candidate.is_dir() or not canonical.is_dir():
         raise freeze.FreezeError("candidate and canonical roots must exist")
-    localization_closure = synchronize_b3_terminal_localization(candidate, canonical)
     effect_providers, event_providers, trigger_providers = _provider_files(canonical)
     added_files: set[str] = set()
     rounds: list[dict[str, object]] = []
@@ -296,6 +405,9 @@ def expand_projection_closure(
             }
         )
 
+    localization_closure = synchronize_b3_reachable_localization(
+        candidate, canonical
+    )
     final_closure = freeze.central_effect_call_closure(candidate)
     final_missing_effects = sorted(
         set(final_closure["missing_effects"])
@@ -314,7 +426,7 @@ def expand_projection_closure(
         and localization_closure["green"] is True
     )
     evidence: dict[str, object] = {
-        "schema_version": 2,
+        "schema_version": 3,
         "kind": "zg361_phase2_b3_material_custom_call_closure_expansion",
         "green": green,
         "candidate_source": str(candidate),

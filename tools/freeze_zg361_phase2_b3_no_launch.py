@@ -122,6 +122,16 @@ B3_EFFECT_SHARDS = (
     "zg361_policy_history_effects.txt",
     "zg361_policy_fairness_effects.txt",
 )
+B3_REACHABLE_LOCALIZATION_FAMILIES = (
+    "zg361_career_hc",
+    "zg361_career_learning",
+    "zg361_compensation_runtime",
+    "zg361_credit_project",
+    "zg361_feedback_promotion_pip",
+    "zg361_phase2_central",
+    "zg361_phase3_metrics_delivery",
+)
+B3_LOCALIZATION_LANGUAGE_COUNT = 9
 
 # These five Python cells were present at the freeze point, but they are not
 # CK3 product files and must not inherit a production-live claim from B3.
@@ -802,11 +812,31 @@ def closure_expansion_evidence(attempt: Path) -> dict[str, object]:
     added_files = expansion.get("added_files")
     rounds = expansion.get("rounds")
     localization = expansion.get("localization_closure")
+    localization_inventory_sha256 = (
+        localization.get("provider_inventory_sha256")
+        if isinstance(localization, dict)
+        else None
+    )
     localization_green = (
-        isinstance(localization, dict)
+        expansion.get("schema_version") == 3
+        and isinstance(localization, dict)
         and localization.get("green") is True
+        and localization.get("applicable") is True
+        and localization.get("required_families")
+        == list(B3_REACHABLE_LOCALIZATION_FAMILIES)
+        and isinstance(localization.get("required_key_count"), int)
+        and localization.get("required_key_count", 0) > 0
         and localization.get("final_missing_by_language") == {}
         and localization.get("placeholder_values_match_english") is True
+        and localization.get("provider_files_exact") is True
+        and localization.get("provider_file_count")
+        == len(B3_REACHABLE_LOCALIZATION_FAMILIES)
+        * B3_LOCALIZATION_LANGUAGE_COUNT
+        and isinstance(localization.get("provider_bytes"), int)
+        and localization.get("provider_bytes", 0) > 0
+        and isinstance(localization_inventory_sha256, str)
+        and re.fullmatch(r"[0-9a-f]{64}", localization_inventory_sha256)
+        is not None
         and isinstance(localization.get("updated_files"), list)
     )
     green = (

@@ -472,6 +472,7 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             (root / "closure-expansion.json").write_text(
                 json.dumps(
                     {
+                        "schema_version": 3,
                         "kind": (
                             "zg361_phase2_b3_material_custom_call_"
                             "closure_expansion"
@@ -489,11 +490,19 @@ class CentralEffectCallClosureTests(unittest.TestCase):
                         "localization_closure": {
                             "green": True,
                             "applicable": True,
+                            "required_families": list(
+                                freeze.B3_REACHABLE_LOCALIZATION_FAMILIES
+                            ),
+                            "required_key_count": 1,
                             "updated_files": [
                                 "localization/english/probe_l_english.yml"
                             ],
                             "final_missing_by_language": {},
                             "placeholder_values_match_english": True,
+                            "provider_files_exact": True,
+                            "provider_file_count": 63,
+                            "provider_bytes": 1,
+                            "provider_inventory_sha256": "a" * 64,
                         },
                     }
                 ),
@@ -507,6 +516,54 @@ class CentralEffectCallClosureTests(unittest.TestCase):
             self.assertEqual(1, result["round_count"])
             self.assertEqual(1, result["added_file_count"])
             self.assertEqual(64, len(result["expansion"]["sha256"]))
+
+    def test_closure_expansion_rejects_legacy_three_key_localization(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "closure-expansion.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "kind": (
+                            "zg361_phase2_b3_material_custom_call_"
+                            "closure_expansion"
+                        ),
+                        "green": True,
+                        "rounds": [{"round": 1}],
+                        "added_file_count": 1,
+                        "added_files": ["events/probe.txt"],
+                        "final_missing_effects": [],
+                        "final_missing_events": [],
+                        "final_missing_triggers": [],
+                        "localization_closure": {
+                            "green": True,
+                            "applicable": True,
+                            "event": "zg361pp.9004",
+                            "required_keys": [
+                                "zg361pp.9004.t",
+                                "zg361pp.9004.desc",
+                                "zg361pp.9004.a",
+                            ],
+                            "updated_files": [
+                                "localization/english/"
+                                "zg361_feedback_promotion_pip_l_english.yml"
+                            ],
+                            "final_missing_by_language": {},
+                            "placeholder_values_match_english": True,
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "canonical-release.manifest.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+
+            with self.assertRaisesRegex(
+                freeze.FreezeError,
+                "closure expansion evidence is RED",
+            ):
+                freeze.closure_expansion_evidence(root)
 
 
 if __name__ == "__main__":
