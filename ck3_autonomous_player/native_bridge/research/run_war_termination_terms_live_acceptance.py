@@ -125,6 +125,13 @@ def _expected_sha256(value: object, name: str) -> str:
     return result
 
 
+def _sha256_equal(actual: object, expected: object, name: str) -> bool:
+    return _expected_sha256(actual, f"prepared {name}") == _expected_sha256(
+        expected,
+        f"expected {name}",
+    )
+
+
 def _write_json_atomic(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
@@ -694,11 +701,11 @@ def _run(
             args, "expected_production_tree_sha256", None
         )
         if expected_product_tree is not None:
-            expected_product_tree = _expected_sha256(
+            if not _sha256_equal(
+                preparation["production_tree_sha256"],
                 expected_product_tree,
-                "expected production-tree SHA-256",
-            )
-            if preparation["production_tree_sha256"] != expected_product_tree:
+                "production-tree SHA-256",
+            ):
                 raise AgentError(
                     "prepared production tree differs from the frozen "
                     "short-path product"

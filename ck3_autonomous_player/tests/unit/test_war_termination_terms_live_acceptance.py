@@ -73,6 +73,23 @@ def _payload(
 
 
 class WarTerminationTermsLiveAcceptanceChecksTests(unittest.TestCase):
+    def test_product_tree_sha256_comparison_is_case_insensitive(self) -> None:
+        uppercase = "F4E63FFFA6CF9332BA41EB5985D1CB72F280F4BF375A15473F4638F43CF944BE"
+        self.assertTrue(
+            HARNESS._sha256_equal(
+                uppercase.lower(),
+                uppercase,
+                "production-tree SHA-256",
+            )
+        )
+        self.assertFalse(
+            HARNESS._sha256_equal(
+                "0" * 64,
+                uppercase,
+                "production-tree SHA-256",
+            )
+        )
+
     def test_exact_build_proof_distinguishes_template_and_concrete_step(self) -> None:
         capability = HARNESS.QUERY_WAR_TERMINATION_TERMS_CAPABILITY
         base = {
