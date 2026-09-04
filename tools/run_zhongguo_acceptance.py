@@ -15107,10 +15107,14 @@ def run_phase2_b2_result_continuation_prelude(
         raise acceptance.RunnerError(reason)
 
     def accepted_submission(value: object, step: str) -> None:
+        status = value.get("status") if isinstance(value, dict) else None
         if not (
             isinstance(value, dict)
             and value.get("accepted") is True
-            and value.get("status") == "submitted"
+            and (
+                status == "submitted"
+                or (step == "resume-map" and status == "already_running")
+            )
         ):
             fail(f"phase-two B2 result-continuation {step} ACK was not accepted")
 

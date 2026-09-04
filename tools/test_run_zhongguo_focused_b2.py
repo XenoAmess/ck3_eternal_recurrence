@@ -389,6 +389,54 @@ class FocusedB2ResultContinuationTests(unittest.TestCase):
         self.assertEqual(service.selected[0][:2], (1, 77))
         self.assertIsNone(evidence["selection_materialization"]["new_event_instance_id"])
 
+    def test_delayed_resume_accepts_idempotent_already_running_ack(self) -> None:
+        class DelayedResumeService(self.Service):
+            def __init__(self) -> None:
+                super().__init__()
+                self.resume_count = 0
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                if step != "resume-map":
+                    return super().execute_step(
+                        step, expected_revision=expected_revision
+                    )
+                assert expected_revision == self.revision
+                self.resume_count += 1
+                if self.resume_count == 1:
+                    return {
+                        "step": step,
+                        "accepted": True,
+                        "status": "submitted",
+                    }
+                self.paused = False
+                self.event_visible = True
+                self.revision += 1
+                return {
+                    "step": step,
+                    "accepted": True,
+                    "status": "already_running",
+                }
+
+        service = DelayedResumeService()
+        service.speed = 1
+        with tempfile.TemporaryDirectory() as temporary:
+            evidence = capture.run_phase2_b2_result_continuation_prelude(
+                service,
+                Path(temporary),
+                baseline_binding=capture._phase2_paused_binding(
+                    service.snapshot(), label="test delayed resume baseline"
+                ),
+                poll_interval_s=0,
+            )
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertEqual(service.resume_count, 2)
+        self.assertEqual(
+            [row["status"] for row in evidence["submissions"][:2]],
+            ["submitted", "already_running"],
+        )
+
     def test_unexpected_visible_event_fails_without_selection(self) -> None:
         service = self.Service(event_key="vanilla.999")
         service.event_visible = True
