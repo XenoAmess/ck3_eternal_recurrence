@@ -22,6 +22,7 @@ EXPECTED_EXE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 EXPECTED_GAME_VERSION = "1.19.0.6"
+EXPECTED_NATIVE_TESTS = 92
 TARGET_EFFECT_MAX = 10
 HARD_EFFECT_MAX = 20
 EXPECTED_CASE_KERNEL_SHARDS = 39
@@ -460,7 +461,7 @@ def main(argv: list[str] | None = None) -> int:
     native_green = (
         ctest_result["returncode"] == 0
         and "100% tests passed" in str(ctest_result["stdout"])
-        and "90/90" in str(ctest_result["stdout"])
+        and f"{EXPECTED_NATIVE_TESTS}/{EXPECTED_NATIVE_TESTS}" in str(ctest_result["stdout"])
     )
 
     static_commands = (
@@ -550,7 +551,11 @@ def main(argv: list[str] | None = None) -> int:
             "source_fingerprint_sha256": source_fingerprint,
             "build_fresh_tests_ran": True,
             "dependency_gate": "ck3_11906.hpp-recorded",
-            "ctest": {"green": native_green, "total": 90, "log": ctest_log},
+            "ctest": {
+                "green": native_green,
+                "total": EXPECTED_NATIVE_TESTS,
+                "log": ctest_log,
+            },
             "dll": record(dll),
             "injector": record(injector),
         },
