@@ -54,7 +54,6 @@ KNOWN_PRE_BOOTSTRAP_EVENT = {
         "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733"
     ),
     "event_definition_key": "zg361.4",
-    "calculated_event_id": 3030004,
     "date_raw": 53147016,
     "root_character_id": 29037,
     "reviewing_superior_character_id": 32904,
@@ -1891,8 +1890,6 @@ def _known_pre_bootstrap_event_checks(
         "unique_window": context.get("window_match_count") == 1,
         "event_definition_key": context.get("event_definition_key")
         == expected["event_definition_key"],
-        "calculated_event_id": context.get("calculated_event_id")
-        == expected["calculated_event_id"],
         "event_instance_id": context.get("current_event_instance_id")
         == event_instance_id,
         "snapshot_date_raw": snapshot.get("date_raw") == expected["date_raw"],
@@ -2076,6 +2073,13 @@ def wait_for_bootstrap_event(
                         "source_save_sha256": source_save_sha256,
                         "event_instance_id": event_id,
                         "event_definition_key": key,
+                        # Live evidence from repeated launches of the same
+                        # frozen save/product/build proves this engine-local
+                        # value is not stable across processes.  Preserve it
+                        # for diagnosis, but never use it as an identity gate.
+                        "observed_calculated_event_id": context.get(
+                            "calculated_event_id"
+                        ),
                         "identity_checks": identity_checks,
                         "query": query,
                         "selection": None,

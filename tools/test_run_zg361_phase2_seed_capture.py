@@ -1316,7 +1316,9 @@ def test_native_session_process_exit_cleanup() -> None:
         )
 
 
-def _known_predecessor_context(root_character_id: int = 29037) -> dict[str, object]:
+def _known_predecessor_context(
+    root_character_id: int = 29037, calculated_event_id: int = 3030004
+) -> dict[str, object]:
     return {
         "schema": "current-event-window-context-v1",
         "schema_version": 1,
@@ -1328,9 +1330,7 @@ def _known_predecessor_context(root_character_id: int = 29037) -> dict[str, obje
         "event_definition_key": capture.KNOWN_PRE_BOOTSTRAP_EVENT[
             "event_definition_key"
         ],
-        "calculated_event_id": capture.KNOWN_PRE_BOOTSTRAP_EVENT[
-            "calculated_event_id"
-        ],
+        "calculated_event_id": calculated_event_id,
         "root_scope": {
             "typed_identity": {
                 "status": "available",
@@ -1365,10 +1365,13 @@ def _known_predecessor_context(root_character_id: int = 29037) -> dict[str, obje
 
 
 class KnownPredecessorService:
-    def __init__(self, *, root_character_id: int = 29037) -> None:
+    def __init__(
+        self, *, root_character_id: int = 29037, calculated_event_id: int = 3030004
+    ) -> None:
         self.state = "predecessor"
         self.revision = 5
         self.root_character_id = root_character_id
+        self.calculated_event_id = calculated_event_id
         self.selections: list[tuple[int, int, int]] = []
 
     def snapshot(self) -> dict[str, object]:
@@ -1393,7 +1396,7 @@ class KnownPredecessorService:
             require(event_instance_id == 10, "wrong predecessor instance queried")
             return {
                 "current_event_window_context": _known_predecessor_context(
-                    self.root_character_id
+                    self.root_character_id, self.calculated_event_id
                 )
             }
         require(event_instance_id == 11, "wrong seed instance queried")
@@ -1465,6 +1468,41 @@ def test_exact_known_predecessor_is_drained_once() -> None:
             all(drain["identity_checks"].values())
             and all(drain["selection_checks"].values()),
             "predecessor drain did not preserve its exact identity/ACK gates",
+        )
+        require(
+            drain["observed_calculated_event_id"] == 3030004,
+            "process-local calculated event ID was not retained as evidence",
+        )
+
+
+def test_calculated_event_id_is_observed_but_not_an_identity_gate() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownPredecessorService(calculated_event_id=2990004)
+        capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_EVENT[
+                "source_save_sha256"
+            ],
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        drain = json.loads(
+            (artifacts / "known-pre-bootstrap-event-drain.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        require(drain["result"] == "GREEN", "unstable engine ID blocked drain")
+        require(
+            drain["observed_calculated_event_id"] == 2990004,
+            "drifted engine ID was not retained as a non-gating observation",
+        )
+        require(
+            "calculated_event_id" not in drain["identity_checks"],
+            "unstable engine ID remained an identity check",
         )
 
 
@@ -2399,6 +2437,7 @@ def main() -> int:
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()
     test_exact_known_predecessor_is_drained_once()
+    test_calculated_event_id_is_observed_but_not_an_identity_gate()
     test_pause_revision_race_reloads_snapshot_and_retries()
     test_known_predecessor_identity_drift_fails_closed()
     test_total_event_deadline()
