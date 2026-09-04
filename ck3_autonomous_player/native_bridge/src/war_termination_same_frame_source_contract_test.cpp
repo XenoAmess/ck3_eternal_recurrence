@@ -66,10 +66,16 @@ int main(int argc, char **argv) {
   const auto actual_expiry_end = view.find(
       "kRaiktorActualTruceExpiryV1StepPrefix",
       begin == std::string_view::npos ? 0 : begin + 1);
-  const auto end = actual_expiry_end != std::string_view::npos &&
-                           actual_expiry_end < terms_end
-                       ? actual_expiry_end
-                       : terms_end;
+  const auto war_bound_cleanup_end = view.find(
+      "kRaiktorWarBoundLossCleanupV1StepPrefix",
+      begin == std::string_view::npos ? 0 : begin + 1);
+  auto end = terms_end;
+  for (const auto candidate : {actual_expiry_end, war_bound_cleanup_end}) {
+    if (candidate != std::string_view::npos &&
+        (end == std::string_view::npos || candidate < end)) {
+      end = candidate;
+    }
+  }
   if (session == std::string_view::npos ||
       begin == std::string_view::npos || end == std::string_view::npos ||
       begin >= end) {
