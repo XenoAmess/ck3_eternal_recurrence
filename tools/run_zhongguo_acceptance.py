@@ -9569,10 +9569,14 @@ def wait_for_phase2_b2_pip_prompt(
         raise acceptance.RunnerError(reason)
 
     def accepted_submission(value: object, step: str) -> None:
+        status = value.get("status") if isinstance(value, dict) else None
         if not (
             isinstance(value, dict)
             and value.get("accepted") is True
-            and value.get("status") == "submitted"
+            and (
+                status == "submitted"
+                or (step == "pause-map" and status == "already_paused")
+            )
         ):
             fail(f"phase-two B2 prompt {step} ACK was not accepted")
 
@@ -15121,6 +15125,7 @@ def run_phase2_b2_result_continuation_prelude(
             and (
                 status == "submitted"
                 or (step == "resume-map" and status == "already_running")
+                or (step == "pause-map" and status == "already_paused")
             )
         ):
             fail(f"phase-two B2 result-continuation {step} ACK was not accepted")
