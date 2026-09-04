@@ -810,5 +810,59 @@ class FocusedB2LifecycleTests(unittest.TestCase):
         self.assertFalse(supervisor["session_thread"].is_alive())
 
 
+class Phase2DiagnosticClassificationTests(unittest.TestCase):
+    def test_phase2_static_liveness_lines_are_retained_as_warnings(self) -> None:
+        lines = [
+            "[E][jomini_effect.cpp:1145]: Variable 'zg361_example' is set "
+            "but is never used. Note that use in localization doesn't count",
+            "[E][jomini_effect.cpp:1161]: List target 'zg361_list' is used "
+            "but is never set. Setting it in an unused scripted trigger or "
+            "effect does not count",
+            "[E][jomini_eventmanager.cpp:372]: Event zg361we.361 is orphaned",
+            "[E][jomini_effect.cpp:999]: unknown effect zg361_real_failure",
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            logs = root / "profile" / "logs"
+            artifacts = root / "artifacts"
+            logs.mkdir(parents=True)
+            artifacts.mkdir()
+            (logs / "error.log").write_text(
+                "\n".join(lines) + "\n", encoding="utf-8"
+            )
+
+            blocking, warnings = capture.project_diagnostics(
+                root / "profile",
+                artifacts,
+                "phase2",
+                allow_phase2_static_liveness_warnings=True,
+            )
+
+        self.assertEqual(len(warnings), 3)
+        self.assertEqual(len(blocking), 1)
+        self.assertIn("unknown effect zg361_real_failure", blocking[0])
+
+    def test_legacy_diagnostic_policy_stays_strict(self) -> None:
+        line = (
+            "[E][jomini_effect.cpp:1161]: Variable 'zg361_example' is used "
+            "but is never set. Setting it in an unused scripted trigger or "
+            "effect does not count"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            logs = root / "profile" / "logs"
+            artifacts = root / "artifacts"
+            logs.mkdir(parents=True)
+            artifacts.mkdir()
+            (logs / "error.log").write_text(line + "\n", encoding="utf-8")
+
+            blocking, warnings = capture.project_diagnostics(
+                root / "profile", artifacts, "legacy"
+            )
+
+        self.assertEqual(warnings, [])
+        self.assertEqual(len(blocking), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

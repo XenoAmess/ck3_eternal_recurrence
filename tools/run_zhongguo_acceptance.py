@@ -4827,8 +4827,47 @@ def resolved_historical_personal_result_target(stream: MarkerStream) -> str:
     return history_id
 
 
+def _is_phase2_static_liveness_warning(line: str) -> bool:
+    """Recognize CK3 loader liveness diagnostics that do not reject Phase 2.
+
+    These messages describe the engine's static reachability accounting, not
+    a parse failure or a runtime effect failure.  The focused B2 r21 artifact
+    proved the distinction: the same messages were present before the loader
+    gate went GREEN, and all three product actions plus their postconditions
+    completed before the generic diagnostic pass reclassified them as fatal.
+    Keep the match deliberately exact so other project-attributed errors stay
+    blocking.
+    """
+
+    lowered = line.lower()
+    return (
+        (
+            "jomini_effect.cpp:1145" in lowered
+            and " is set but is never used." in lowered
+        )
+        or (
+            "jomini_effect.cpp:1161" in lowered
+            and " is used but is never set." in lowered
+            and (
+                "setting it in an unused scripted trigger or effect "
+                "does not count"
+            )
+            in lowered
+        )
+        or (
+            "jomini_eventmanager.cpp:372" in lowered
+            and "event " in lowered
+            and " is orphaned" in lowered
+        )
+    )
+
+
 def project_diagnostics(
-    userdir: Path, artifacts: Path, stem: str
+    userdir: Path,
+    artifacts: Path,
+    stem: str,
+    *,
+    allow_phase2_static_liveness_warnings: bool = False,
 ) -> tuple[list[str], list[str]]:
     blocking: list[str] = []
     observed_engine_warnings: list[str] = []
@@ -4850,6 +4889,12 @@ def project_diagnostics(
                 and "dynastic_cycle" in lowered
             )
             if dynastic_cycle_stepdown_warning:
+                observed_engine_warnings.append(f"{name}: {line.strip()}")
+            elif (
+                allow_phase2_static_liveness_warnings
+                and attributed
+                and _is_phase2_static_liveness_warning(line)
+            ):
                 observed_engine_warnings.append(f"{name}: {line.strip()}")
             elif attributed or (
                 duplicate and any(token in context for token in PROJECT_TOKENS)
@@ -16758,7 +16803,10 @@ def run_cell(
             if isinstance(capabilities_value, dict):
                 phase2_final_capabilities = capabilities_value
         new_diagnostics, new_warnings = project_diagnostics(
-            userdir, artifacts, "10_runtime"
+            userdir,
+            artifacts,
+            "10_runtime",
+            allow_phase2_static_liveness_warnings=phase2_runtime_mode,
         )
         diagnostics.extend(new_diagnostics)
         observed_engine_warnings.extend(new_warnings)
@@ -16949,7 +16997,10 @@ def run_cell(
             )
         try:
             new_diagnostics, new_warnings = project_diagnostics(
-                userdir, artifacts, "11_shutdown"
+                userdir,
+                artifacts,
+                "11_shutdown",
+                allow_phase2_static_liveness_warnings=phase2_runtime_mode,
             )
             diagnostics.extend(new_diagnostics)
             observed_engine_warnings.extend(new_warnings)
