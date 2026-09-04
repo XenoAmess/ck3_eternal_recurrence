@@ -77,7 +77,7 @@ def _checkpoint_registry(root: Path) -> dict[str, object]:
         path.write_bytes(f"checkpoint-{index}".encode("ascii"))
         sha = hashlib.sha256(path.read_bytes()).hexdigest().upper()
         owner = 9200 + index
-        player = owner if handler == "capture_incidents_operations" else 9001
+        player = 9001
         entries.append(
             {
                 "span_id": plan.span_id,

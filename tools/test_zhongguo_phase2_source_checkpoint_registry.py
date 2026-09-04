@@ -82,7 +82,7 @@ def record_all(
         source.write_bytes(f"real-ck3-checkpoint-{ordinal}".encode("ascii"))
         sha256 = hashlib.sha256(source.read_bytes()).hexdigest().upper()
         owner = 9100 + ordinal
-        player = owner if handler == "capture_incidents_operations" else 9001
+        player = 9001
         entries.append(
             builder.record(
                 plan,
@@ -110,7 +110,7 @@ def capture_manifest(root: Path) -> Path:
         checkpoint.write_bytes(f"observed-checkpoint-{ordinal}".encode("ascii"))
         sha256 = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
         owner = 9200 + ordinal
-        player = owner if handler == "capture_incidents_operations" else 9001
+        player = 9001
         date_raw = 820 + ordinal
         entries.append(
             {
@@ -187,6 +187,15 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
             self.assertEqual(registry["evidence_class"], "real_ck3")
             self.assertFalse(registry["fixture_used"])
             self.assertFalse(registry["console_used"])
+            incident = next(
+                row
+                for row in registry["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            self.assertNotEqual(
+                incident["owner_character_id"],
+                incident["player_character_id"],
+            )
             self.assertEqual(
                 json.loads(registry_path.read_text(encoding="utf-8")),
                 registry,
@@ -271,7 +280,7 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
             )
             self.assertFalse((root / "frozen").exists())
 
-    def test_incident_requires_current_player_to_be_owner(self) -> None:
+    def test_incident_requires_distinct_notice_owner_and_played_subject(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             builder = self.builder(root)
@@ -308,19 +317,23 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
                     plan,
                     source_checkpoint=source,
                     owner_character_id=9200,
-                    player_character_id=9001,
+                    player_character_id=9200,
                     date_raw=723,
                     source_receipt=source_receipt(
                         plan=plan,
                         owner_character_id=9200,
-                        player_character_id=9001,
+                        player_character_id=9200,
                         date_raw=723,
                         checkpoint_sha256=sha256,
                     ),
                 )
             self.assertEqual(
                 raised.exception.reason_code,
-                "incident_checkpoint_player_not_owner",
+                "incident_checkpoint_owner_equals_player",
+            )
+            self.assertEqual(
+                raised.exception.evidence["required_binding"],
+                "played_subject_with_distinct_notice_owner",
             )
 
     def test_incomplete_registry_and_second_write_are_red(self) -> None:

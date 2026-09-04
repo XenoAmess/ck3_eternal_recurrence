@@ -38,7 +38,7 @@ def _registry(root: Path) -> dict[str, object]:
         path.write_bytes(f"real-checkpoint-{index}".encode("ascii"))
         sha = hashlib.sha256(path.read_bytes()).hexdigest().upper()
         owner = 9100 + index
-        player = owner if handler == "capture_incidents_operations" else 9001
+        player = 9001
         entries.append(
             {
                 "span_id": plan.span_id,
@@ -157,12 +157,15 @@ class Phase2SourceCheckpointProviderTests(unittest.TestCase):
             )
             result = provider.restore(plan)
         self.assertEqual(len(calls), 1)
-        self.assertEqual(calls[0].owner_character_id, calls[0].player_character_id)
+        self.assertNotEqual(
+            calls[0].owner_character_id,
+            calls[0].player_character_id,
+        )
         self.assertFalse(result["generic_character_rebind_used"])
         self.assertFalse(result["fixture_used"])
         self.assertFalse(result["console_used"])
 
-    def test_hash_drift_and_incident_nonowner_player_are_red(self) -> None:
+    def test_hash_drift_and_incident_owner_equal_player_are_red(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             registry = _registry(root)
@@ -186,8 +189,10 @@ class Phase2SourceCheckpointProviderTests(unittest.TestCase):
                 for row in registry["entries"]
                 if row["handler"] == "capture_incidents_operations"
             )
-            incident["player_character_id"] += 1
-            incident["source_receipt"]["player_character_id"] += 1
+            incident["player_character_id"] = incident["owner_character_id"]
+            incident["source_receipt"]["player_character_id"] = incident[
+                "owner_character_id"
+            ]
             provider = Phase2SourceCheckpointProvider(
                 registry,
                 restore_registered_checkpoint=lambda _entry: {},
@@ -196,7 +201,12 @@ class Phase2SourceCheckpointProviderTests(unittest.TestCase):
             with self.assertRaises(Phase2SourceCheckpointError) as raised:
                 provider.preflight()
             self.assertEqual(
-                raised.exception.reason_code, "incident_checkpoint_player_not_owner"
+                raised.exception.reason_code,
+                "incident_checkpoint_owner_equals_player",
+            )
+            self.assertEqual(
+                raised.exception.evidence["required_binding"],
+                "played_subject_with_distinct_notice_owner",
             )
 
 

@@ -194,13 +194,16 @@ class Phase2SourceCheckpointRegistryBuilder:
             )
         if (
             plan.handler == "capture_incidents_operations"
-            and owner_character_id != player_character_id
+            and owner_character_id == player_character_id
         ):
             raise Phase2SourceCheckpointRegistryBuildError(
-                "incident_checkpoint_player_not_owner",
+                "incident_checkpoint_owner_equals_player",
                 {
                     "owner_character_id": owner_character_id,
                     "player_character_id": player_character_id,
+                    "required_binding": (
+                        "played_subject_with_distinct_notice_owner"
+                    ),
                 },
             )
 

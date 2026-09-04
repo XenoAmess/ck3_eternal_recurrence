@@ -213,11 +213,11 @@ class Phase2SourceCheckpointProvider:
             )
         if any(
             entry.handler == "capture_incidents_operations"
-            and entry.owner_character_id != entry.player_character_id
+            and entry.owner_character_id == entry.player_character_id
             for entry in entries
         ):
             raise Phase2SourceCheckpointError(
-                "incident_checkpoint_player_not_owner",
+                "incident_checkpoint_owner_equals_player",
                 {
                     "incident_entries": [
                         {
@@ -226,7 +226,10 @@ class Phase2SourceCheckpointProvider:
                         }
                         for entry in entries
                         if entry.handler == "capture_incidents_operations"
-                    ]
+                    ],
+                    "required_binding": (
+                        "played_subject_with_distinct_notice_owner"
+                    ),
                 },
             )
         self._entries = {entry.handler: entry for entry in entries}
