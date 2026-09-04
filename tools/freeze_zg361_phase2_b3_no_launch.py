@@ -43,16 +43,31 @@ FORBIDDEN_SPLIT_MONOLITHS = frozenset(
     }
 )
 CENTRAL_ROOT_EFFECTS = ("zg361_p2c_stage_10_manager_governance_effect",)
-REQUIRED_CENTRAL_PROVIDER_FILES = frozenset(
+REQUIRED_CENTRAL_EFFECT_PROVIDER_FILES = frozenset(
     {"zg361_phase2_central_003_dispatch_control_effects.txt"}
 )
+REQUIRED_CENTRAL_EVENT_PROVIDER_FILES = frozenset(
+    {"zg361_phase2_central_001_serial_dispatch_events.txt"}
+)
 CUSTOM_EFFECT_CALL_RE = re.compile(r"\b(zg361_[A-Za-z0-9_]+_effect)\s*=")
+CUSTOM_EVENT_ID_RE = re.compile(r"\bid\s*=\s*(zg361[A-Za-z0-9_]*\.[0-9]+)\b")
+CUSTOM_EVENT_DIRECT_CALL_RE = re.compile(
+    r"\b(?:trigger_event|character_event|event)\s*=\s*"
+    r"(zg361[A-Za-z0-9_]*\.[0-9]+)\b"
+)
 EXPECTED_PREDECESSOR_UNKNOWN_EFFECTS = frozenset(
     {"zg361_p2c_record_red_effect", "zg361_p2c_record_stage_effect"}
 )
 PREDECESSOR_CALLER_FILE = (
     "common/scripted_effects/"
     "zg361_phase2_central_008_stage10_manager_governance_effects.txt"
+)
+EXPECTED_EVENT_PREDECESSOR_MISSING_EVENTS = frozenset(
+    {"zg361p2c.1", "zg361p2c.2"}
+)
+EVENT_PREDECESSOR_CALLER_FILE = (
+    "common/scripted_effects/"
+    "zg361_phase2_central_003_dispatch_control_effects.txt"
 )
 
 B3_EFFECT_SHARDS = (
@@ -239,34 +254,108 @@ def _mask_comments_and_strings(text: str) -> str:
     return "".join(output)
 
 
+def _top_level_event_entries(path: Path) -> list[tuple[str, str]]:
+    """Return top-level namespaced event blocks without guessing event metadata."""
+
+    text = path.read_text(encoding="utf-8-sig")
+    masked = _mask_comments_and_strings(text)
+    entries: list[tuple[str, str]] = []
+    pattern = re.compile(
+        r"(?m)^(zg361[A-Za-z0-9_]*\.[0-9]+)\s*=\s*\{"
+    )
+    for match in pattern.finditer(masked):
+        opening = masked.find("{", match.start(), match.end())
+        depth = 0
+        end = None
+        for index in range(opening, len(masked)):
+            if masked[index] == "{":
+                depth += 1
+            elif masked[index] == "}":
+                depth -= 1
+                if depth == 0:
+                    end = index + 1
+                    break
+        if end is None:
+            raise FreezeError(f"unterminated event block {match.group(1)} in {path}")
+        entries.append((match.group(1), text[match.start():end]))
+    return entries
+
+
 def central_effect_call_closure(
     product_source: Path,
     *,
     roots: tuple[str, ...] = CENTRAL_ROOT_EFFECTS,
-    required_provider_files: frozenset[str] = REQUIRED_CENTRAL_PROVIDER_FILES,
+    required_effect_provider_files: frozenset[str] = (
+        REQUIRED_CENTRAL_EFFECT_PROVIDER_FILES
+    ),
+    required_event_provider_files: frozenset[str] = (
+        REQUIRED_CENTRAL_EVENT_PROVIDER_FILES
+    ),
 ) -> dict[str, object]:
-    """Resolve custom effect calls reachable from selected central roots."""
+    """Resolve reachable custom effect and event calls from central roots."""
 
     sys.path.insert(0, str(MOD_ROOT / "tools"))
     from zg361_effect_sharding import top_level_effect_entries
 
     directory = product_source / "common" / "scripted_effects"
-    providers: dict[str, tuple[str, str]] = {}
-    duplicates: set[str] = set()
+    effect_providers: dict[str, tuple[str, str]] = {}
+    duplicate_effects: set[str] = set()
     for path in sorted(directory.glob("*.txt"), key=lambda value: value.name):
         relative = path.relative_to(product_source).as_posix()
         for entry in top_level_effect_entries(path.read_bytes()):
-            if entry.name in providers:
-                duplicates.add(entry.name)
+            if entry.name in effect_providers:
+                duplicate_effects.add(entry.name)
             else:
-                providers[entry.name] = (relative, entry.block)
+                effect_providers[entry.name] = (relative, entry.block)
 
-    queue = deque(roots)
-    reachable: set[str] = set()
-    missing: set[str] = set()
-    edges: set[tuple[str, str]] = set()
+    event_providers: dict[str, tuple[str, str]] = {}
+    duplicate_events: set[str] = set()
+    event_directory = product_source / "events"
+    for path in sorted(event_directory.glob("*.txt"), key=lambda value: value.name):
+        relative = path.relative_to(product_source).as_posix()
+        for name, block in _top_level_event_entries(path):
+            if name in event_providers:
+                duplicate_events.add(name)
+            else:
+                event_providers[name] = (relative, block)
+
+    material_effect_edges: set[tuple[str, str, str]] = set()
+    material_event_edges: set[tuple[str, str, str]] = set()
+    material_missing_effects: set[str] = set()
+    material_missing_events: set[str] = set()
+    for caller_kind, provider_map in (
+        ("effect", effect_providers),
+        ("event", event_providers),
+    ):
+        for caller, (_, block) in provider_map.items():
+            masked = _mask_comments_and_strings(block)
+            effect_references = set(CUSTOM_EFFECT_CALL_RE.findall(masked))
+            event_references = set(CUSTOM_EVENT_ID_RE.findall(masked))
+            event_references.update(CUSTOM_EVENT_DIRECT_CALL_RE.findall(masked))
+            if caller_kind == "effect":
+                effect_references.discard(caller)
+            else:
+                event_references.discard(caller)
+            for reference in effect_references:
+                material_effect_edges.add((caller_kind, caller, reference))
+                if reference not in effect_providers:
+                    material_missing_effects.add(reference)
+            for reference in event_references:
+                material_event_edges.add((caller_kind, caller, reference))
+                if reference not in event_providers:
+                    material_missing_events.add(reference)
+
+    queue = deque(("effect", name) for name in roots)
+    reachable_effects: set[str] = set()
+    reachable_events: set[str] = set()
+    missing_effects: set[str] = set()
+    missing_events: set[str] = set()
+    edges: set[tuple[str, str, str, str]] = set()
     while queue:
-        name = queue.popleft()
+        kind, name = queue.popleft()
+        reachable = reachable_effects if kind == "effect" else reachable_events
+        missing = missing_effects if kind == "effect" else missing_events
+        providers = effect_providers if kind == "effect" else event_providers
         if name in reachable or name in missing:
             continue
         provider = providers.get(name)
@@ -274,30 +363,82 @@ def central_effect_call_closure(
             missing.add(name)
             continue
         reachable.add(name)
-        references = set(CUSTOM_EFFECT_CALL_RE.findall(_mask_comments_and_strings(provider[1])))
-        references.discard(name)
-        for reference in sorted(references):
-            edges.add((name, reference))
-            if reference not in reachable:
-                queue.append(reference)
+        masked = _mask_comments_and_strings(provider[1])
+        effect_references = set(CUSTOM_EFFECT_CALL_RE.findall(masked))
+        event_references = set(CUSTOM_EVENT_ID_RE.findall(masked))
+        event_references.update(CUSTOM_EVENT_DIRECT_CALL_RE.findall(masked))
+        if kind == "effect":
+            effect_references.discard(name)
+        else:
+            event_references.discard(name)
+        for reference in sorted(effect_references):
+            edges.add((kind, name, "effect", reference))
+            if reference not in reachable_effects:
+                queue.append(("effect", reference))
+        for reference in sorted(event_references):
+            edges.add((kind, name, "event", reference))
+            if reference not in reachable_events:
+                queue.append(("event", reference))
 
-    provider_files = sorted({providers[name][0] for name in reachable})
-    present_filenames = {Path(path).name for path in provider_files}
-    missing_provider_files = sorted(required_provider_files - present_filenames)
+    effect_provider_files = sorted(
+        {effect_providers[name][0] for name in reachable_effects}
+    )
+    event_provider_files = sorted(
+        {event_providers[name][0] for name in reachable_events}
+    )
+    effect_filenames = {Path(path).name for path in effect_provider_files}
+    event_filenames = {Path(path).name for path in event_provider_files}
+    missing_effect_provider_files = sorted(
+        required_effect_provider_files - effect_filenames
+    )
+    missing_event_provider_files = sorted(
+        required_event_provider_files - event_filenames
+    )
     return {
         "roots": list(roots),
-        "reachable_effect_count": len(reachable),
-        "reachable_effects": sorted(reachable),
+        "reachable_effect_count": len(reachable_effects),
+        "reachable_effects": sorted(reachable_effects),
+        "reachable_event_count": len(reachable_events),
+        "reachable_events": sorted(reachable_events),
         "edges": [
-            {"caller": caller, "callee": callee}
-            for caller, callee in sorted(edges)
+            {
+                "caller_kind": caller_kind,
+                "caller": caller,
+                "callee_kind": callee_kind,
+                "callee": callee,
+            }
+            for caller_kind, caller, callee_kind, callee in sorted(edges)
         ],
-        "provider_files": provider_files,
-        "missing_effects": sorted(missing),
-        "duplicate_effect_providers": sorted(duplicates),
-        "required_provider_files": sorted(required_provider_files),
-        "missing_required_provider_files": missing_provider_files,
-        "green": not missing and not duplicates and not missing_provider_files,
+        "effect_provider_files": effect_provider_files,
+        "event_provider_files": event_provider_files,
+        "provider_files": sorted(effect_provider_files + event_provider_files),
+        "missing_effects": sorted(missing_effects),
+        "missing_events": sorted(missing_events),
+        "duplicate_effect_providers": sorted(duplicate_effects),
+        "duplicate_event_providers": sorted(duplicate_events),
+        "required_effect_provider_files": sorted(required_effect_provider_files),
+        "required_event_provider_files": sorted(required_event_provider_files),
+        "missing_required_effect_provider_files": missing_effect_provider_files,
+        "missing_required_event_provider_files": missing_event_provider_files,
+        "material_projection": {
+            "effect_definition_count": len(effect_providers),
+            "event_definition_count": len(event_providers),
+            "effect_reference_count": len(material_effect_edges),
+            "event_reference_count": len(material_event_edges),
+            "missing_effects": sorted(material_missing_effects),
+            "missing_events": sorted(material_missing_events),
+            "green": not material_missing_effects and not material_missing_events,
+        },
+        "green": not (
+            missing_effects
+            or missing_events
+            or duplicate_effects
+            or duplicate_events
+            or missing_effect_provider_files
+            or missing_event_provider_files
+            or material_missing_effects
+            or material_missing_events
+        ),
     }
 
 
@@ -340,6 +481,58 @@ def predecessor_live_red_evidence(root: Path) -> dict[str, object]:
         "missing_provider_file": (
             "common/scripted_effects/"
             "zg361_phase2_central_003_dispatch_control_effects.txt"
+        ),
+        "cleanup_green": cleanup_green,
+        "files": {
+            "outer_report": record(outer_report_path),
+            "cell_report": record(cell_report_path),
+            "final_error_log": record(error_log_path),
+            "evidence_index": record(evidence_index_path),
+        },
+        "preserved": True,
+    }
+
+
+def predecessor_event_live_red_evidence(root: Path) -> dict[str, object]:
+    outer_report_path = root / "report.json"
+    cell_report_path = root / "cell" / "report.json"
+    error_log_path = root / "cell" / "final_error.log"
+    evidence_index_path = root / "evidence-index.json"
+    outer_report = read_json(outer_report_path)
+    cell_report = read_json(cell_report_path)
+    error_log = error_log_path.read_text(encoding="utf-8-sig", errors="replace")
+    missing_events = re.findall(
+        r"Event \[(zg361[A-Za-z0-9_]*\.[0-9]+)\] not found", error_log
+    )
+    cleanup = cell_report.get("native_cleanup")
+    cleanup_green = (
+        isinstance(cleanup, dict)
+        and cleanup.get("result") == "GREEN"
+        and not cleanup.get("failed_checks")
+    )
+    green = (
+        outer_report.get("result") == "RED"
+        and cell_report.get("result") == "RED"
+        and len(missing_events) == 2
+        and set(missing_events) == EXPECTED_EVENT_PREDECESSOR_MISSING_EVENTS
+        and EVENT_PREDECESSOR_CALLER_FILE in error_log.replace("\\", "/")
+        and cleanup_green
+    )
+    if not green:
+        raise FreezeError(
+            "predecessor B3 event RED evidence no longer matches its "
+            "material-closure root cause"
+        )
+    return {
+        "classification": "material-projection-event-closure-red",
+        "loader_performance_claimed": False,
+        "size_ab_triggered": False,
+        "artifact_root": str(root),
+        "missing_event_line_count": len(missing_events),
+        "missing_events": sorted(set(missing_events)),
+        "caller_file": EVENT_PREDECESSOR_CALLER_FILE,
+        "missing_provider_file": (
+            "events/zg361_phase2_central_001_serial_dispatch_events.txt"
         ),
         "cleanup_green": cleanup_green,
         "files": {
@@ -456,6 +649,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pipe", required=True)
     parser.add_argument("--repository-manifest", type=Path, required=True)
     parser.add_argument("--predecessor-live-red", type=Path, required=True)
+    parser.add_argument("--predecessor-event-live-red", type=Path, required=True)
     args = parser.parse_args(argv)
 
     attempt = args.attempt_dir.resolve()
@@ -513,6 +707,9 @@ def main(argv: list[str] | None = None) -> int:
         raise FreezeError(f"central effect call closure is RED: {central_closure}")
     predecessor_red = predecessor_live_red_evidence(
         args.predecessor_live_red.resolve()
+    )
+    predecessor_event_red = predecessor_event_live_red_evidence(
+        args.predecessor_event_live_red.resolve()
     )
 
     python = str(args.python.resolve())
@@ -642,6 +839,7 @@ def main(argv: list[str] | None = None) -> int:
             "central_effect_call_closure": central_closure,
         },
         "predecessor_live_red": predecessor_red,
+        "predecessor_event_live_red": predecessor_event_red,
         "action_cell_only_inputs": action_cells,
         "static_checks": [
             {
