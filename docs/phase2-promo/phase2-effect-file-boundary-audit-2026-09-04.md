@@ -12,6 +12,12 @@
 生成器、读取方、production closure 与静态门均已切换到用途分片；旧 owner 不得与新分片并存。新 canonical 布局当前为 `static-ready / live-pending`，下一次 CK3 验收只能使用拆分版本。权威现行合同见
 [`mod_zhongguo_style/docs/361-effect-file-boundary-contract.md`](../../mod_zhongguo_style/docs/361-effect-file-boundary-contract.md)。下文保留 2026-09-04 的历史快照和实机 artifact，不再授权任何 legacy 白名单。
 
+### R79 产品投影门禁
+
+`phase2-b3-production-closure-r79-f953503` 的 closure expander 会在计算固定点前强制退休候选中的 mechanism/B1 历史 owner，安装 canonical `186 + 12` 个用途 shard，并继续安装四个 core shard。runner 预检只读取 core shard，发现旧 `zg361_effects.txt` 或任一 shard 缺失即 RED。
+
+对 `Z:\p2ag\p\common\scripted_effects` 的深度感知扫描结果为 `618 files / 3708 effects / maximum 10 / target misses 0 / >20 violations 0 / legacy owners 0`；closure `3708 effects / 988 events / 24 triggers / missing 0`。closure expansion / product manifest SHA-256 为 `1188760A606A3ECB1E9C8734B00C0E9BC150601158B072DF7DFACF093A6AC6F0` / `B667EB5BCC7FA2B677E529F42E597A5932ECFAF23A6316C23DF2B14C400A69E3`。静态门与 no-launch acceptance preflight 均 GREEN；实机状态仍待 R79。
+
 状态：**GREEN / static-only / no CK3 launch**。审计基线为 canonical commit
 `75c1432a46b5fc3f442de61711bbbff9973aa307`，范围是
 `mod_zhongguo_style/common/scripted_effects/*.txt`。政策口径保持为：B2 起按用途分组，目标每文件 `1–10`

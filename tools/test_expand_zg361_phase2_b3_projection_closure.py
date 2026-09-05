@@ -39,6 +39,49 @@ def write_localization_family(
 
 
 class ProjectionClosureExpansionTests(unittest.TestCase):
+    def test_legacy_effect_family_is_replaced_by_canonical_purpose_shards(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            legacy = (
+                Path("common/scripted_effects/legacy_a.txt"),
+                Path("common/scripted_effects/legacy_b.txt"),
+            )
+            write(candidate, legacy[0].as_posix(), "zg361_old_a_effect = {\n old = yes\n}\n")
+            write(candidate, legacy[1].as_posix(), "zg361_old_b_effect = {\n old = yes\n}\n")
+            write(
+                canonical,
+                "common/scripted_effects/family_001_alpha_effects.txt",
+                "zg361_old_a_effect = {\n current = yes\n}\n",
+            )
+            write(
+                canonical,
+                "common/scripted_effects/family_002_beta_effects.txt",
+                "zg361_old_b_effect = {\n current = yes\n}\n"
+                "zg361_new_effect = {\n current = yes\n}\n",
+            )
+
+            result = expand.migrate_canonical_effect_family_shards(
+                candidate,
+                canonical,
+                name="test_family",
+                legacy_paths=legacy,
+                shard_glob="family_[0-9][0-9][0-9]_*_effects.txt",
+            )
+
+            self.assertTrue(result["green"])
+            self.assertEqual(2, result["shard_count"])
+            self.assertEqual(3, result["definition_count"])
+            self.assertEqual(2, result["max_effects_per_file"])
+            self.assertTrue(all(not (candidate / path).exists() for path in legacy))
+            self.assertEqual(
+                (canonical / "common/scripted_effects/family_001_alpha_effects.txt").read_bytes(),
+                (candidate / "common/scripted_effects/family_001_alpha_effects.txt").read_bytes(),
+            )
+
     def test_selected_same_path_files_are_refreshed_from_canonical(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

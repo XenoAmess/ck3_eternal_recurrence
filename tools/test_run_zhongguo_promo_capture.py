@@ -1364,6 +1364,61 @@ def main() -> int:
     # shortcuts with the formerly accepted quoted spelling must be rejected.
     product_errors = capture.product_source_errors()
     assert product_errors == [], product_errors
+    assert not (
+        capture.SOURCE
+        / "common"
+        / "scripted_effects"
+        / capture.LEGACY_PRODUCTION_CORE_EFFECT_OWNER
+    ).exists()
+    assert capture.PRODUCTION_CORE_EFFECT_SHARDS == (
+        "zg361_core_appeal_scoreboard_effects.txt",
+        "zg361_core_elimination_effects.txt",
+        "zg361_core_result_delivery_effects.txt",
+        "zg361_core_review_cycle_effects.txt",
+    )
+    for shard_name in capture.PRODUCTION_CORE_EFFECT_SHARDS:
+        assert (
+            capture.SOURCE / "common" / "scripted_effects" / shard_name
+        ).is_file(), shard_name
+
+    original_is_file = Path.is_file
+    legacy_core_path = (
+        capture.SOURCE
+        / "common"
+        / "scripted_effects"
+        / capture.LEGACY_PRODUCTION_CORE_EFFECT_OWNER
+    ).resolve()
+
+    def is_file_with_legacy_core(path: Path) -> bool:
+        if path.resolve() == legacy_core_path:
+            return True
+        return original_is_file(path)
+
+    with mock.patch.object(Path, "is_file", is_file_with_legacy_core):
+        legacy_core_errors = capture.product_source_errors()
+    assert (
+        "legacy production core effect owner must be replaced by purpose shards: "
+        "zg361_effects.txt" in legacy_core_errors
+    ), legacy_core_errors
+
+    missing_core_path = (
+        capture.SOURCE
+        / "common"
+        / "scripted_effects"
+        / capture.PRODUCTION_CORE_EFFECT_SHARDS[0]
+    ).resolve()
+
+    def is_file_without_one_core_shard(path: Path) -> bool:
+        if path.resolve() == missing_core_path:
+            return False
+        return original_is_file(path)
+
+    with mock.patch.object(Path, "is_file", is_file_without_one_core_shard):
+        missing_core_errors = capture.product_source_errors()
+    assert (
+        "production core effect shard is missing: "
+        "zg361_core_appeal_scoreboard_effects.txt" in missing_core_errors
+    ), missing_core_errors
     authoritative_gui = bom_text(SCOREBOARD_GUI)
     assert authoritative_gui.count("shortcut = close_window") == 2
     quoted_gui = authoritative_gui.replace(

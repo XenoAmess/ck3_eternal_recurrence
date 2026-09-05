@@ -44,6 +44,21 @@ CURRENT_CORE_SHARDS = (
     Path("common/scripted_effects/zg361_core_result_delivery_effects.txt"),
     Path("common/scripted_effects/zg361_core_review_cycle_effects.txt"),
 )
+CANONICAL_EFFECT_FAMILY_MIGRATIONS = (
+    {
+        "name": "mechanism",
+        "legacy": (Path("common/scripted_effects/zg361_generated_mechanism_effects.txt"),),
+        "glob": "zg361_generated_mechanism_[0-9][0-9][0-9]_*_effects.txt",
+    },
+    {
+        "name": "b1_runtime",
+        "legacy": (
+            Path("common/scripted_effects/zg361_b1_runtime_effects.txt"),
+            Path("common/scripted_effects/zg361_b1_runtime_effects_part2.txt"),
+        ),
+        "glob": "zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt",
+    },
+)
 B3_REACHABLE_LOCALIZATION_FAMILIES = (
     "zg361_career_hc",
     "zg361_career_learning",
@@ -609,6 +624,93 @@ def synchronize_selected_canonical_files(
     }
 
 
+def migrate_canonical_effect_family_shards(
+    candidate: Path,
+    canonical: Path,
+    *,
+    name: str,
+    legacy_paths: tuple[Path, ...],
+    shard_glob: str,
+) -> dict[str, object]:
+    """Replace inherited effect owners with the complete canonical shard set."""
+
+    sys.path.insert(0, str(freeze.MOD_ROOT / "tools"))
+    from zg361_effect_sharding import top_level_effect_entries
+
+    canonical_root = canonical / "common" / "scripted_effects"
+    candidate_root = candidate / "common" / "scripted_effects"
+    canonical_shards = tuple(
+        sorted(canonical_root.glob(shard_glob), key=lambda path: path.name)
+    )
+    inherited_legacy = tuple(path for path in legacy_paths if (candidate / path).is_file())
+    inherited_shards = tuple(
+        sorted(candidate_root.glob(shard_glob), key=lambda path: path.name)
+    )
+    if not inherited_legacy and not inherited_shards:
+        return {"green": True, "applicable": False, "name": name}
+    if inherited_legacy and set(inherited_legacy) != set(legacy_paths):
+        missing = sorted(path.as_posix() for path in set(legacy_paths) - set(inherited_legacy))
+        raise freeze.FreezeError(
+            f"{name} legacy effect owner set is incomplete: missing={missing}"
+        )
+    if not canonical_shards:
+        raise freeze.FreezeError(f"{name} canonical effect shards are missing")
+
+    canonical_names: list[str] = []
+    for path in canonical_shards:
+        entries = top_level_effect_entries(path.read_bytes())
+        if not 1 <= len(entries) <= 10:
+            raise freeze.FreezeError(
+                f"{name} canonical shard violates 1..10: {path.name}: {len(entries)}"
+            )
+        canonical_names.extend(entry.name for entry in entries)
+    if len(canonical_names) != len(set(canonical_names)):
+        raise freeze.FreezeError(f"{name} canonical shards contain duplicate effects")
+
+    inherited_names: list[str] = []
+    for relative in inherited_legacy:
+        inherited_names.extend(
+            entry.name
+            for entry in top_level_effect_entries((candidate / relative).read_bytes())
+        )
+    for path in inherited_shards:
+        inherited_names.extend(entry.name for entry in top_level_effect_entries(path.read_bytes()))
+    if inherited_names and not set(inherited_names).issubset(canonical_names):
+        missing = sorted(set(inherited_names) - set(canonical_names))
+        raise freeze.FreezeError(
+            f"{name} canonical shards dropped inherited effects: {missing}"
+        )
+
+    for relative in inherited_legacy:
+        (candidate / relative).unlink()
+    canonical_names_on_disk = {path.name for path in canonical_shards}
+    for path in inherited_shards:
+        if path.name not in canonical_names_on_disk:
+            path.unlink()
+    candidate_root.mkdir(parents=True, exist_ok=True)
+    for source in canonical_shards:
+        shutil.copy2(source, candidate_root / source.name)
+
+    final_shards = tuple(sorted(candidate_root.glob(shard_glob), key=lambda path: path.name))
+    exact = len(final_shards) == len(canonical_shards) and all(
+        target.read_bytes() == source.read_bytes()
+        for target, source in zip(final_shards, canonical_shards, strict=True)
+    )
+    return {
+        "green": exact,
+        "applicable": True,
+        "name": name,
+        "removed_legacy_files": [path.as_posix() for path in inherited_legacy],
+        "shard_count": len(canonical_shards),
+        "definition_count": len(canonical_names),
+        "max_effects_per_file": max(
+            len(top_level_effect_entries(path.read_bytes())) for path in canonical_shards
+        ),
+        "canonical_shards_exact": exact,
+        "files": [freeze.record(path, relative_to=canonical) for path in canonical_shards],
+    }
+
+
 def _provider_files(
     source: Path,
 ) -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
@@ -660,6 +762,16 @@ def expand_projection_closure(
     canonical = canonical.resolve()
     if not candidate.is_dir() or not canonical.is_dir():
         raise freeze.FreezeError("candidate and canonical roots must exist")
+    effect_family_migrations = [
+        migrate_canonical_effect_family_shards(
+            candidate,
+            canonical,
+            name=str(spec["name"]),
+            legacy_paths=tuple(spec["legacy"]),
+            shard_glob=str(spec["glob"]),
+        )
+        for spec in CANONICAL_EFFECT_FAMILY_MIGRATIONS
+    ]
     selected_canonical_files = synchronize_selected_canonical_files(
         candidate, canonical
     )
@@ -757,6 +869,7 @@ def expand_projection_closure(
     )
     green = (
         final_closure["green"] is True
+        and all(row["green"] is True for row in effect_family_migrations)
         and selected_canonical_files["green"] is True
         and current_core_effect_shards["green"] is True
         and localization_closure["green"] is True
@@ -768,6 +881,7 @@ def expand_projection_closure(
         "green": green,
         "candidate_source": str(candidate),
         "canonical_source": str(canonical),
+        "effect_family_migrations": effect_family_migrations,
         "initial_missing_effects": initial_missing_effects or [],
         "initial_missing_events": initial_missing_events or [],
         "initial_missing_triggers": initial_missing_triggers or [],

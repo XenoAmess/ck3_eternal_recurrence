@@ -45,6 +45,13 @@ from zg361_phase2_incident_source_capture_entry import (
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "mod_zhongguo_style"
+PRODUCTION_CORE_EFFECT_SHARDS = (
+    "zg361_core_appeal_scoreboard_effects.txt",
+    "zg361_core_elimination_effects.txt",
+    "zg361_core_result_delivery_effects.txt",
+    "zg361_core_review_cycle_effects.txt",
+)
+LEGACY_PRODUCTION_CORE_EFFECT_OWNER = "zg361_effects.txt"
 FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
 PHASE2_WORKFORCE_ACTION_FIXTURE_SOURCE = (
     ROOT / "tools" / "fixtures" / "zg361_phase2_workforce_action"
@@ -3626,13 +3633,23 @@ def product_source_errors() -> list[str]:
                     "361 entry must include non-independent celestial dukes and kings"
                 )
 
-    effects = SOURCE / "common" / "scripted_effects" / "zg361_effects.txt"
-    effects_text = effects.read_text(encoding="utf-8-sig") if effects.is_file() else ""
+    effects_root = SOURCE / "common" / "scripted_effects"
+    legacy_effects = effects_root / LEGACY_PRODUCTION_CORE_EFFECT_OWNER
+    if legacy_effects.is_file():
+        errors.append(
+            "legacy production core effect owner must be replaced by purpose shards: "
+            f"{LEGACY_PRODUCTION_CORE_EFFECT_OWNER}"
+        )
+    core_effect_texts: list[str] = []
+    for shard_name in PRODUCTION_CORE_EFFECT_SHARDS:
+        shard = effects_root / shard_name
+        if not shard.is_file():
+            errors.append(f"production core effect shard is missing: {shard_name}")
+            continue
+        core_effect_texts.append(shard.read_text(encoding="utf-8-sig"))
+    effects_text = "\n".join(core_effect_texts)
     snapshot_effects = (
-        SOURCE
-        / "common"
-        / "scripted_effects"
-        / "zg361_generated_scoreboard_snapshots.txt"
+        effects_root / "zg361_generated_scoreboard_snapshots.txt"
     )
     scoreboard_effects_text = effects_text + (
         snapshot_effects.read_text(encoding="utf-8-sig")
