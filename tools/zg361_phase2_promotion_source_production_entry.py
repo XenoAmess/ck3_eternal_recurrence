@@ -648,6 +648,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "chancellor_task.1104": {
+        # Vanilla foreign-affairs success letter. The active chancellor has
+        # already selected a neighboring ruler in .1103; this one-option
+        # continuation only grants that neighbor a temporary positive opinion
+        # of root. Bind source-defined role aliases instead of allocator IDs.
+        "date_raw": 53149872,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "councillor_liege": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "councillor": (29037,),
+            "chancellor": (29037,),
+            "active_councillor": (29037,),
+            "neighbor": (29037,),
+        },
+        "character_scope_matches_any": {
+            "chancellor": ("councillor",),
+            "active_councillor": ("councillor",),
+        },
+        "character_scope_differs_from": {
+            "neighbor": ("councillor", "chancellor", "active_councillor"),
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 5,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "sway_outcome.2001": {
         # Vanilla diplomatic-misunderstanding outcome for the seed's existing
         # sway scheme.  The event has one unavoidable acknowledgement: the
@@ -1059,6 +1088,21 @@ def _known_interrupt_checks(
         checks[f"scope:{name}:matches_any"] = len(ids) == 1 and any(
             ids == character_ids(str(candidate_name))
             for candidate_name in candidate_names
+        )
+    differs_from_value = contract.get("character_scope_differs_from", {})
+    differs_from = (
+        differs_from_value if isinstance(differs_from_value, Mapping) else {}
+    )
+    for name, other_names_value in differs_from.items():
+        other_names = (
+            other_names_value if isinstance(other_names_value, tuple) else ()
+        )
+        ids = character_ids(str(name))
+        other_ids = [character_ids(str(other_name)) for other_name in other_names]
+        checks[f"scope:{name}:differs_from"] = (
+            len(ids) == 1
+            and bool(other_ids)
+            and all(len(values) == 1 and ids.isdisjoint(values) for values in other_ids)
         )
     for name in boolean_scopes:
         matches = [

@@ -290,7 +290,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             if self.stage not in {
                 "pip", "flood_relief", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
                 "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha", "jingcha_repeat", "withering_mind",
-                "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding",
+                "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding", "chancellor_success",
                 "governor_bargain", "succession"
             }:
                 return super().snapshot()
@@ -356,6 +356,8 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 instance_id, option_count, date, revision = 346, 1, 53152920, 41
             elif self.stage == "sway_misunderstanding":
                 instance_id, option_count, date, revision = 2001, 1, 53153952, 42
+            elif self.stage == "chancellor_success":
+                instance_id, option_count, date, revision = 1104, 1, 53149872, 42
             else:
                 instance_id, option_count, date, revision = 3060, 3, 53148072, 43
             snapshot_option_count = (
@@ -398,7 +400,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             if self.stage not in {
                 "pip", "flood_relief", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
                 "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha", "jingcha_repeat", "withering_mind",
-                "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding",
+                "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding", "chancellor_success",
                 "governor_bargain", "succession"
             }:
                 return super().query_current_event_window_context_v1(
@@ -643,6 +645,16 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                     _character_scope("target", 27051),
                 ]
                 option_count = 1
+            elif self.stage == "chancellor_success":
+                key = "chancellor_task.1104"
+                scopes = [
+                    _character_scope("councillor", 26936),
+                    _character_scope("councillor_liege", 29037),
+                    _character_scope("chancellor", 26936),
+                    _character_scope("active_councillor", 26936),
+                    _character_scope("neighbor", 35649),
+                ]
+                option_count = 1
             else:
                 key = "ep3_governor_yearly.3060"
                 scopes = [
@@ -793,6 +805,9 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 self.stage = "sway_misunderstanding"
             elif self.stage == "sway_misunderstanding":
                 assert option_number == 1
+                self.stage = "chancellor_success"
+            elif self.stage == "chancellor_success":
+                assert option_number == 1
                 self.stage = "jingcha_repeat"
             elif self.stage == "jingcha_repeat":
                 assert option_number == 1
@@ -855,10 +870,11 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         "spymaster_task.0342",
         "spymaster_task.0346",
         "sway_outcome.2001",
+        "chancellor_task.1104",
         "zg361.40",
         "ep3_governor_yearly.3060",
     ]
-    assert service.selected == [1, 3, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 4, 1]
+    assert service.selected == [1, 3, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 4, 1]
 
 
 def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:
@@ -974,6 +990,52 @@ def test_grieving_child_contract_binds_dynamic_parent_relationship() -> None:
         contract=contract,
     )
     assert checks["scope:parent:matches_any"] is False
+
+
+def test_chancellor_success_contract_binds_aliases_and_distinct_neighbor() -> None:
+    scopes = [
+        _character_scope("councillor", 26936),
+        _character_scope("councillor_liege", 29037),
+        _character_scope("chancellor", 26936),
+        _character_scope("active_councillor", 26936),
+        _character_scope("neighbor", 35649),
+    ]
+    snapshot = {
+        "date_raw": 53149872,
+        "active_event": {"option_count": 1},
+    }
+    event = {"event_instance_id": 1104}
+    context = {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "chancellor_task.1104",
+        "current_event_instance_id": 1104,
+        "date_raw": 53149872,
+        "root_scope": _character_scope("root", 29037)["scope"],
+        "saved_scopes": scopes,
+        "options": _options(1),
+    }
+    contract = KNOWN_TIMELINE_INTERRUPTS["chancellor_task.1104"]
+    checks = _known_interrupt_checks(
+        snapshot=snapshot,
+        event=event,
+        context=context,
+        event_key="chancellor_task.1104",
+        contract=contract,
+    )
+    assert all(checks.values())
+
+    scopes[4] = _character_scope("neighbor", 26936)
+    checks = _known_interrupt_checks(
+        snapshot=snapshot,
+        event=event,
+        context=context,
+        event_key="chancellor_task.1104",
+        contract=contract,
+    )
+    assert checks["scope:neighbor:differs_from"] is False
 
 
 def test_self_review_contract_allows_only_named_fixture_scope() -> None:

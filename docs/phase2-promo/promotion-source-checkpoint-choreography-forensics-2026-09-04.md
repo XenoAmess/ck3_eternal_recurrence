@@ -632,3 +632,29 @@ Duration was 756.753 seconds; cleanup was GREEN and CK3 returned to zero. No
 P2C, `.146`, or `.147` trace appeared before the stop. This remains a product
 runtime correctness RED after a healthy loader and does not authorize another
 file-size split.
+
+## R63: one-option foreign-affairs success letter
+
+R63 ran from pushed commit `af9502d` and the unchanged 634-file R63 product.
+Frontend took 120.172 seconds and the final loader was GREEN. Before D+180 it
+failed closed without action on the previously unregistered vanilla event
+`chancellor_task.1104`. The exact frame was `date_raw=53149872`, instance 15,
+played root 29037, five Character scopes, and one shown/enabled native option 0.
+
+Exact 1.19.0.6 source at `chancellor_task_events.txt:765-783` shows that `.1103`
+has already chosen a neighboring ruler. The `.1104` letter exposes only one
+option, which adds a bounded positive opinion of root to that neighbor. The
+new contract binds `councillor_liege` to root, requires
+`councillor=chancellor=active_councillor`, requires all dynamic roles to be
+non-player, and requires neighbor to differ from the three chancellor aliases.
+It does not freeze allocator IDs and selects authored option 1/native index 0.
+A negative test rejects a collapsed neighbor/chancellor identity; promotion
+tests pass normal and optimized at 12/12 and checkpoint tests at 15/15.
+
+R63 recorded zero weak-scope errors, but it stopped before `.100`/D+180 and
+emitted no prune marker. The `is_alive` correction therefore remains live
+pending. Outer report/evidence-index SHA-256 values are
+`8D5520CEE1E85D9F3290630CC8D7C05DD54CF076CA1E0FBCCA877C97BD7EB5D5`
+and `5EC3218F1FE6384ADA372FA8AFCDF12F4CD320CDB5ED57C32F3803F1687E0DBD`;
+duration was 482.618 seconds, cleanup was GREEN, and CK3 returned to zero. This
+was another post-loader vanilla interruption and is not a file-size signal.
