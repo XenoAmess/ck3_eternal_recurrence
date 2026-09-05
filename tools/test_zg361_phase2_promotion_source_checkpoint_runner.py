@@ -1260,13 +1260,19 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 "scope": {"status": "available", "type_key": "value"},
             }
 
-        names = production.KNOWN_TIMELINE_INTERRUPTS["zg361.50"][
-            "saved_scope_name_sets"
-        ][0]
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.50"],
+            starting_date=53147016,
+        )
+        first_cycle_names, later_cycle_names = contract["saved_scope_name_sets"]
         manager = 28598
         character_names = {
             "zg361_b1_bank_ticket_owner": 32904,
             "zg361_b1_ticket_owner": manager,
+            "zg361_b1_self_ticket_owner": manager,
+            "zg361_b1_self_ticket_subject": 29037,
+            "zg361_b1_shadow_ticket_owner": manager,
+            "zg361_b1_shadow_ticket_subject": 29037,
             "zg361_b1_oversight_ticket_owner": manager,
             "zg361_b1_pending_continue_owner": manager,
             "zg361_b1_pending_continue_subject": 32536,
@@ -1276,39 +1282,38 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "zg361_notice_prompt_subject": 29037,
             "zg361_reviewing_superior": manager,
         }
-        context = {
-            "schema": "current-event-window-context-v1",
-            "schema_version": 1,
-            "status": "available",
-            "window_match_count": 1,
-            "event_definition_key": "zg361.50",
-            "current_event_instance_id": 42,
-            "date_raw": 53156952,
-            "root_scope": character_scope("root", 29037)["scope"],
-            "saved_scopes": [
-                character_scope(name, character_names[name])
-                if name in character_names
-                else value_scope(name)
-                for name in names
-            ],
-            "options": [
-                {
-                    "rendered_index": index,
-                    "native_option_index": index,
-                    "shown": True,
-                    "enabled": True,
-                    "fallback": False,
-                    "cancel": False,
-                }
-                for index in range(3)
-            ],
-        }
+        def context_for(names: tuple[str, ...]) -> dict[str, object]:
+            return {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": "zg361.50",
+                "current_event_instance_id": 42,
+                "date_raw": 53156952,
+                "root_scope": character_scope("root", 29037)["scope"],
+                "saved_scopes": [
+                    character_scope(name, character_names[name])
+                    if name in character_names
+                    else value_scope(name)
+                    for name in names
+                ],
+                "options": [
+                    {
+                        "rendered_index": index,
+                        "native_option_index": index,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                    for index in range(3)
+                ],
+            }
+
+        context = context_for(first_cycle_names)
         snapshot = {"date_raw": 53156952, "active_event": {"option_count": 3}}
         event = {"event_instance_id": 42}
-        contract = production._timeline_contract_for_window(
-            production.KNOWN_TIMELINE_INTERRUPTS["zg361.50"],
-            starting_date=53147016,
-        )
 
         def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
             return production._known_interrupt_checks(
@@ -1324,8 +1329,16 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
 
+        later_cycle = context_for(later_cycle_names)
+        later_checks = checks_for(later_cycle)
+        self.assertTrue(all(later_checks.values()), later_checks)
+        self.assertNotIn(
+            "scope:zg361_b1_bank_ticket_owner:unique_third_party",
+            later_checks,
+        )
+
         wrong_subject = copy.deepcopy(context)
-        prompt_subject_index = names.index("zg361_notice_prompt_subject")
+        prompt_subject_index = first_cycle_names.index("zg361_notice_prompt_subject")
         wrong_subject["saved_scopes"][prompt_subject_index] = character_scope(
             "zg361_notice_prompt_subject", 29038
         )
@@ -1333,14 +1346,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(checks["scope:zg361_notice_prompt_subject"])
 
         wrong_owner = copy.deepcopy(context)
-        reviewer_index = names.index("zg361_reviewing_superior")
+        reviewer_index = first_cycle_names.index("zg361_reviewing_superior")
         wrong_owner["saved_scopes"][reviewer_index] = character_scope(
             "zg361_reviewing_superior", 28599
         )
         checks = checks_for(wrong_owner)
         self.assertFalse(checks["scope:zg361_reviewing_superior:matches_any"])
 
-        extra_scope = copy.deepcopy(context)
+        extra_scope = copy.deepcopy(later_cycle)
         extra_scope["saved_scopes"].append(value_scope("unrelated_scope"))
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_names_exact"])
