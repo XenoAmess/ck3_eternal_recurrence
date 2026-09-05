@@ -22,7 +22,7 @@ EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
 EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
-EFFECT_BLOCK_COUNTS = (42, 36)
+EFFECT_BLOCK_COUNTS = (42, 37)
 LEGACY_EFFECT_PATHS = (
     EFFECTS_DIR / "zg361_b1_runtime_effects.txt",
     EFFECTS_DIR / "zg361_b1_runtime_effects_part2.txt",
@@ -768,6 +768,79 @@ def render_stage_s_policy_freeze_blocks() -> str:
 \telse = {{ remove_variable = zg361_b1_m{key}_policy_debt_serial }}'''
         )
     return "\n".join(blocks)
+
+
+def render_legacy_cycle_recovery() -> str:
+    """Render the one-shot migration for active pre-schema-v2 manager cycles."""
+
+    return r'''# One-time save compatibility for an already-active cycle created before the
+# cross-year common-superior bank contract.  The old case is terminally
+# retired without publishing a grade or paying a reward.  Exact tuple checks
+# prevent this manager from mutating a subject case owned by another manager.
+zg361_b1_recover_legacy_active_cycle_effect = {
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			trigger_if = {
+				limit = { has_variable = zg361_b1_cycle_runtime_schema }
+				var:zg361_b1_cycle_runtime_schema != 2
+			}
+			trigger_else = { always = yes }
+		}
+		save_temporary_scope_as = zg361_b1_legacy_recovery_manager
+		set_variable = { name = zg361_b1_legacy_recovery_state value = 1 }
+		set_variable = { name = zg361_b1_legacy_recovery_subject_n value = 0 }
+		if = {
+			limit = { has_variable = zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_legacy_recovery_cycle value = var:zg361_b1_manager_cycle_serial }
+		}
+		if = {
+			limit = { has_variable = zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_legacy_recovery_case value = var:zg361_b1_manager_case_serial }
+		}
+		zg361_b1_prune_unavailable_subjects_effect = yes
+		if = {
+			limit = { has_variable_list = zg361_b1_subjects }
+			every_in_list = {
+				variable = zg361_b1_subjects
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_active
+						var:zg361_b1_case_owner = scope:zg361_b1_legacy_recovery_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial = scope:zg361_b1_legacy_recovery_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_legacy_recovery_manager.var:zg361_b1_manager_case_serial
+						var:zg361_b1_case_active = 1
+					}
+					set_variable = { name = zg361_b1_case_state value = 8 }
+					set_variable = { name = zg361_b1_case_active value = 0 }
+					set_variable = { name = zg361_b1_roster_included value = 0 }
+					scope:zg361_b1_legacy_recovery_manager = {
+						change_variable = { name = zg361_b1_legacy_recovery_subject_n add = 1 }
+					}
+				}
+			}
+			clear_variable_list = zg361_b1_subjects
+		}
+		if = {
+			limit = { has_variable_list = zg361_b1_processing_subjects }
+			clear_variable_list = zg361_b1_processing_subjects
+		}
+		set_variable = { name = zg361_b1_cycle_state value = 8 }
+		set_variable = { name = zg361_b1_rewards_issued value = 0 }
+		set_variable = { name = zg361_b1_pending_rewards_committed value = 0 }
+		set_variable = { name = zg361_b1_cycle_runtime_schema value = 2 }
+		set_variable = { name = zg361_b1_legacy_recovery_state value = 2 }
+		remove_variable = zg361_b1_cycle_open_year
+		remove_character_flag = zg361_review_in_progress
+		remove_character_flag = zg361_b1_cycle_active
+		debug_log = "ZG361B1: legacy active cycle retired before schema-v2 restart"
+	}
+}'''
 
 
 def render_effect_source() -> str:
@@ -1892,6 +1965,21 @@ zg361_b1_initialize_subject_case_effect = {
 
 zg361_b1_open_cycle_effect = {
 	zg361_b1_migrate_manager_identity_effect = yes
+	# A canonical acceptance seed can already contain an active cycle produced
+	# by an older runtime.  Such a cycle cannot acquire the schema-v2 shared
+	# bank retroactively, so retire it without publication/rewards and let this
+	# same invocation open a clean current-runtime cycle.
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			trigger_if = {
+				limit = { has_variable = zg361_b1_cycle_runtime_schema }
+				var:zg361_b1_cycle_runtime_schema != 2
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_b1_recover_legacy_active_cycle_effect = yes
+	}
 	if = {
 		limit = {
 			has_game_rule = zg361_on
@@ -1905,6 +1993,7 @@ zg361_b1_open_cycle_effect = {
 			trigger_else = { always = yes }
 		}
 		add_character_flag = zg361_b1_cycle_active
+		set_variable = { name = zg361_b1_cycle_runtime_schema value = 2 }
 		if = {
 			limit = { NOT = { has_variable = zg361_b1_manager_cycle_serial } }
 			set_variable = { name = zg361_b1_manager_cycle_serial value = 0 }
@@ -3139,11 +3228,18 @@ zg361_b1_register_common_superior_bank_effect = {
 				save_temporary_scope_as = zg361_b1_bank_owner
 				if = {
 					limit = {
-						trigger_if = {
-							limit = { has_variable = zg361_b1_bank_state }
-							var:zg361_b1_bank_state != 1
+						OR = {
+							trigger_if = {
+								limit = { has_variable = zg361_b1_bank_runtime_schema }
+								var:zg361_b1_bank_runtime_schema != 2
+							}
+							trigger_else = { always = yes }
+							trigger_if = {
+								limit = { has_variable = zg361_b1_bank_state }
+								var:zg361_b1_bank_state != 1
+							}
+							trigger_else = { always = yes }
 						}
-						trigger_else = { always = yes }
 					}
 					if = {
 						limit = { has_variable_list = zg361_b1_expected_managers }
@@ -3160,6 +3256,7 @@ zg361_b1_register_common_superior_bank_effect = {
 					}
 					change_variable = { name = zg361_b1_bank_case_serial add = 1 }
 					set_variable = { name = zg361_b1_bank_state value = 1 }
+					set_variable = { name = zg361_b1_bank_runtime_schema value = 2 }
 					set_variable = { name = zg361_b1_bank_m136_mode value = 1 }
 					set_variable = { name = zg361_b1_bank_m138_mode value = 1 }
 					set_variable = { name = zg361_b1_bank_m141_mode value = 1 }
@@ -8841,6 +8938,8 @@ zg361_b1_submit_peer_negative_effect = {
         + appeal_slot_consumers
         + "\n\n"
         + render_m360_source_producer()
+        + "\n\n"
+        + render_legacy_cycle_recovery()
     )
 
 
@@ -10045,6 +10144,10 @@ B1_EFFECT_PURPOSES = (
             "zg361_b1_apply_appeal_credit_slot_3_effect",
             "zg361_b1_publish_m360_cohort_source_effect",
         ),
+    ),
+    (
+        "cycle_migration_recovery",
+        ("zg361_b1_recover_legacy_active_cycle_effect",),
     ),
 )
 

@@ -145,30 +145,28 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R93",
-    observed_at="2026-09-05 20:47 Asia/Shanghai",
+    run_id="R94",
+    observed_at="2026-09-05 21:10 Asia/Shanghai",
     result="RED",
-    product_commit="24189c1",
-    projection="phase2-full-release-r88-24189c1",
+    product_commit="4bc9561",
+    projection="phase2-full-release-r94-4bc9561",
     verified_file_count=936,
-    product_tree_sha256="A9FED5E8BFEB41E539FC28EC32F9CDAEF924F3E3A3DBE046A8B99C94030269D1",
-    release_manifest_sha256="B27E1A420949DF213460F59FDA2A27518467418077BC6B378C209B0C64C46015",
+    product_tree_sha256="2641FA92F0440EC6725106851A37F340DCF1E3EB15058E8B65FF9E36CD39A281",
+    release_manifest_sha256="EF68228351E4BE3592B6151D66EA1C0851504665ED117B69ED14CE5A67CA3E94",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=1256,
-    native_observations=296,
+    observation_days=569,
+    native_observations=135,
     drained_event_keys=(
         "zg361b2.40",
-        "tgp_china_yearly.0010",
-        "spymaster_task.0399",
-        "ep3_governor_yearly.3060",
-        "zg361.40",
+        "ep3_governor_yearly.8160",
+        "spymaster_task.0381",
         "zg361b1.200",
-        "zg361b1.201",
+        "spymaster_task.0381",
+        "spymaster_task.0342",
         "zg361.40",
-        "zg361.40",
-        "zg361.40",
+        "tgp_interaction_event.0016",
     ),
     cleared_product_signatures=(
         "This scope doesn't support variables",
@@ -180,19 +178,21 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r88\evidence-index.json",
-        r"Z:\b3r93\evidence-index.json",
-        r"Z:\b3r93\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r93_resume6\03_promotion_source_production_entry.json",
-        r"Z:\b3r93_resume8\03_promotion_source_production_entry.json",
+        r"Z:\b3r94\evidence-index.json",
+        r"Z:\b3r94\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r94_resume1\report.json",
+        r"Z:\b3r94_resume1\03_promotion_source_production_entry.json",
     ),
     boundary=(
-        "The release-identical R88 product loaded and the listed regressions remained "
-        "clear. R93 and two retained-session continuations observed the same CK3 PID "
-        "for 1,256 game days; player B1 remained active while Central and PP remained "
-        "inactive, and the product logged a stale common-superior bank deadline. The "
-        "cross-year bank fix is static-ready and awaits the fresh R94 product run. This "
-        "whole-product snapshot does not promote any per-ID readiness tier."
+        "The committed R94 release-identical product loaded and the listed regressions "
+        "remained clear. After correcting the harness-only dynamic administrator "
+        "contract for ep3_governor_yearly.8160, the same CK3 PID was observed for 569 "
+        "game days; player B1 remained active while Central and PP remained inactive. "
+        "The canonical seed was authored at commit 218026a and already had B1 active at "
+        "the first R94 frame, so the new bank rule could not retroactively repair that "
+        "saved manager cycle. A schema-v2 one-shot legacy-cycle retirement/restart is "
+        "static-ready and awaits fresh R95 verification. This whole-product snapshot "
+        "does not promote any per-ID readiness tier."
     ),
 )
 

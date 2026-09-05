@@ -1173,3 +1173,54 @@ The resume6 and resume8 entry SHA-256 values are
 and `F22563B20893C59CFB1AEFC75DAD65CF584C8B60611E6E7D2EDEDDC95FBAE5DB`.
 The old session was then stopped through its managed file queue. Because the
 fix changes mod bytes, R94 requires one fresh CK3 startup.
+
+## R94: current bank bytes exposed a pre-v2 active-cycle migration boundary
+
+R94 cold-started the committed `4bc9561` product projection
+`phase2-full-release-r94-4bc9561`. The staging contained 936 verified files;
+its tree SHA-256 was
+`2641FA92F0440EC6725106851A37F340DCF1E3EB15058E8B65FF9E36CD39A281`
+and its release-manifest SHA-256 was
+`EF68228351E4BE3592B6151D66EA1C0851504665ED117B69ED14CE5A67CA3E94`.
+All 303 database nodes loaded with no fatal loader error.
+
+The first client stopped before original event `ep3_governor_yearly.8160`
+because the harness had frozen one allocator ID for `scope:administrator`.
+Exact-build source proves that `.8160` creates a fresh administrator in its
+`immediate` block. The contract now requires the live administrator to be a
+unique non-player Character distinct from the known councillor, while keeping
+the native option shape and selecting empty dismissal option 3. A replacement
+client applied that correction to the retained PID and drained the event
+GREEN; no CK3 restart was performed for this harness-only change.
+
+Across the cold client and continuation, the same process advanced from
+`53147016` to `53160672`: 569 game days, 135 paused player progress samples,
+and eight exact drains (`zg361b2.40`, `.8160`, two `.0381`, `zg361b1.200`,
+`.0342`, `zg361.40`, and `.0016`). Every sample remained
+`B1=true / Central=false / PP=false`. The R94 report, evidence index, cold
+entry, continuation report, and continuation entry SHA-256 values are:
+
+- `4E6A43B06084DDDA0CAF342C84305B109DE25B8DBB37EDBBF3CFF7D74157BC35`
+- `A164CD3CA6F0555BDE172290F25D68B9DAB4F9DA683ECE6B084F6B903A2F4A9D`
+- `185234021B2FEF1516C91B102EF5C3E7181C18EEAF894C279ED48B39EDB29F27`
+- `D9BBB7D96C22C89CCFB403F7C5B071F8DC1B8702AC9A8229E6CF9052B8EC40C2`
+- `FD1D5DDF7760C5B4282943DF1C33EF58E9867D6E07001179407CB830243EA738`
+
+The seed receipt binds the canonical save to source commit
+`218026a65d61db0a4c0d5248a2a68d3a4f42ce4e`, and the very first R94 progress
+frame already has player B1 active. The cross-year registration fix therefore
+cannot rewrite that saved manager cycle in place. This is the narrow evidence
+for a backward-compatible migration, not a claim that the new-bank rule failed
+for a newly opened cycle.
+
+The generator now assigns schema version 2 to both fresh manager cycles and
+common-superior banks. At the next real annual entry, an active pre-v2 cycle is
+retired with exact owner/subject/cycle/case checks, no publication and no
+reward; its stale lists and review flag are cleared, then the same invocation
+opens a fresh v2 cycle. A pre-v2 bank is likewise rebuilt only once. The new
+recovery code occupies its own one-effect purpose shard, while every generated
+effect shard remains within the 1-10 contract. Focused B1 tests pass 68/68,
+effect-boundary tests 4/4, and promotion-runner tests 25/25 in both normal and
+`-O`; the full static gate is GREEN. R95 must cold-start because these are mod
+bytes, and remains responsible for production verification through publication
+and `.146/.147`.

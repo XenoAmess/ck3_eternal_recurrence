@@ -163,8 +163,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(keys_by_part[5][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
         all_keys = tuple(key for part in keys_by_part for key in part)
-        self.assertEqual(len(all_keys), 78)
-        self.assertEqual(len(set(all_keys)), 78)
+        self.assertEqual(len(all_keys), 79)
+        self.assertEqual(len(set(all_keys)), 79)
 
         observed_blocks = []
         for relative in B1_EFFECT_FILES:
@@ -202,6 +202,57 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn(
             "name = zg361_b1_m053_receipt_serial value = "
             "var:zg361_b1_manager_case_serial", self.effects
+        )
+
+    def test_pre_schema_active_cycle_is_retired_without_publication_then_reopened(self) -> None:
+        opener = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        recovery = top_level_block(
+            self.effects, "zg361_b1_recover_legacy_active_cycle_effect"
+        )
+        recovery_call = "zg361_b1_recover_legacy_active_cycle_effect = yes"
+        self.assertLess(opener.index(recovery_call), opener.index(
+            "NOT = { has_character_flag = zg361_b1_cycle_active }"
+        ))
+        self.assertIn("has_variable = zg361_b1_cycle_runtime_schema", opener)
+        self.assertIn("var:zg361_b1_cycle_runtime_schema != 2", opener)
+        self.assertIn(
+            "name = zg361_b1_cycle_runtime_schema value = 2", opener
+        )
+
+        for field in (
+            "zg361_b1_case_owner",
+            "zg361_b1_case_subject",
+            "zg361_b1_cycle_serial",
+            "zg361_b1_case_serial",
+            "zg361_b1_case_active",
+        ):
+            self.assertIn(f"has_variable = {field}", recovery)
+        self.assertIn(
+            "var:zg361_b1_case_owner = scope:zg361_b1_legacy_recovery_manager",
+            recovery,
+        )
+        self.assertIn(
+            "var:zg361_b1_cycle_serial = "
+            "scope:zg361_b1_legacy_recovery_manager.var:zg361_b1_manager_cycle_serial",
+            recovery,
+        )
+        self.assertIn("name = zg361_b1_case_state value = 8", recovery)
+        self.assertIn("name = zg361_b1_case_active value = 0", recovery)
+        self.assertIn("name = zg361_b1_roster_included value = 0", recovery)
+        self.assertIn("remove_variable = zg361_b1_cycle_open_year", recovery)
+        self.assertIn("remove_character_flag = zg361_review_in_progress", recovery)
+        self.assertIn("remove_character_flag = zg361_b1_cycle_active", recovery)
+        self.assertIn("name = zg361_b1_rewards_issued value = 0", recovery)
+        self.assertNotIn("zg361_b1_mark_published_effect", recovery)
+        self.assertNotIn("zg361_apply_pending_grades_effect", recovery)
+        self.assertEqual(B1_EFFECT_PURPOSES[-1], (
+            "cycle_migration_recovery",
+            ("zg361_b1_recover_legacy_active_cycle_effect",),
+        ))
+        self.assertTrue(
+            B1_EFFECT_FILES[-1].endswith(
+                "zg361_b1_runtime_013_cycle_migration_recovery_effects.txt"
+            )
         )
 
     def test_r66_source_derived_dual_role_identity_vectors(self) -> None:
@@ -1128,11 +1179,17 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertIn("has_variable = zg361_b1_bank_state", register)
         self.assertIn("var:zg361_b1_bank_state != 1", register)
+        self.assertIn("has_variable = zg361_b1_bank_runtime_schema", register)
+        self.assertIn("var:zg361_b1_bank_runtime_schema != 2", register)
         self.assertNotIn(
             "NOT = { var:zg361_b1_bank_season = current_year }", register
         )
         self.assertIn(
             "set_variable = { name = zg361_b1_bank_season value = current_year }",
+            register,
+        )
+        self.assertIn(
+            "set_variable = { name = zg361_b1_bank_runtime_schema value = 2 }",
             register,
         )
         self.assertIn("trigger_event = { id = zg361b1.110 days = 335 }", register)

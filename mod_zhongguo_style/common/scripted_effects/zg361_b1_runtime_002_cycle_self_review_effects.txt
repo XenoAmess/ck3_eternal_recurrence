@@ -6,6 +6,21 @@
 
 zg361_b1_open_cycle_effect = {
 	zg361_b1_migrate_manager_identity_effect = yes
+	# A canonical acceptance seed can already contain an active cycle produced
+	# by an older runtime.  Such a cycle cannot acquire the schema-v2 shared
+	# bank retroactively, so retire it without publication/rewards and let this
+	# same invocation open a clean current-runtime cycle.
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			trigger_if = {
+				limit = { has_variable = zg361_b1_cycle_runtime_schema }
+				var:zg361_b1_cycle_runtime_schema != 2
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_b1_recover_legacy_active_cycle_effect = yes
+	}
 	if = {
 		limit = {
 			has_game_rule = zg361_on
@@ -19,6 +34,7 @@ zg361_b1_open_cycle_effect = {
 			trigger_else = { always = yes }
 		}
 		add_character_flag = zg361_b1_cycle_active
+		set_variable = { name = zg361_b1_cycle_runtime_schema value = 2 }
 		if = {
 			limit = { NOT = { has_variable = zg361_b1_manager_cycle_serial } }
 			set_variable = { name = zg361_b1_manager_cycle_serial value = 0 }

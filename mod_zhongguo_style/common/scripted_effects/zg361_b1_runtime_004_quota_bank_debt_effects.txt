@@ -14,11 +14,18 @@ zg361_b1_register_common_superior_bank_effect = {
 				save_temporary_scope_as = zg361_b1_bank_owner
 				if = {
 					limit = {
-						trigger_if = {
-							limit = { has_variable = zg361_b1_bank_state }
-							var:zg361_b1_bank_state != 1
+						OR = {
+							trigger_if = {
+								limit = { has_variable = zg361_b1_bank_runtime_schema }
+								var:zg361_b1_bank_runtime_schema != 2
+							}
+							trigger_else = { always = yes }
+							trigger_if = {
+								limit = { has_variable = zg361_b1_bank_state }
+								var:zg361_b1_bank_state != 1
+							}
+							trigger_else = { always = yes }
 						}
-						trigger_else = { always = yes }
 					}
 					if = {
 						limit = { has_variable_list = zg361_b1_expected_managers }
@@ -35,6 +42,7 @@ zg361_b1_register_common_superior_bank_effect = {
 					}
 					change_variable = { name = zg361_b1_bank_case_serial add = 1 }
 					set_variable = { name = zg361_b1_bank_state value = 1 }
+					set_variable = { name = zg361_b1_bank_runtime_schema value = 2 }
 					set_variable = { name = zg361_b1_bank_m136_mode value = 1 }
 					set_variable = { name = zg361_b1_bank_m138_mode value = 1 }
 					set_variable = { name = zg361_b1_bank_m141_mode value = 1 }

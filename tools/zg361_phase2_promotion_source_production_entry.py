@@ -450,7 +450,15 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "character_scopes": {
             "councillor": 31003,
             "culture": 29037,
-            "administrator": 16780148,
+        },
+        # `create_character` allocates a fresh administrator every time this
+        # event opens.  Bind its event-local relationship, never a historical
+        # allocator ID from one prior run.
+        "unique_character_scope_excludes": {
+            "administrator": (29037,),
+        },
+        "character_scope_differs_from": {
+            "administrator": ("councillor",),
         },
         "scope_types": {"minority_county": "landed_title"},
         "boolean_scopes": (),

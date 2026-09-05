@@ -1,0 +1,74 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# Purpose shard: cycle migration recovery.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+# One-time save compatibility for an already-active cycle created before the
+# cross-year common-superior bank contract.  The old case is terminally
+# retired without publishing a grade or paying a reward.  Exact tuple checks
+# prevent this manager from mutating a subject case owned by another manager.
+zg361_b1_recover_legacy_active_cycle_effect = {
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			trigger_if = {
+				limit = { has_variable = zg361_b1_cycle_runtime_schema }
+				var:zg361_b1_cycle_runtime_schema != 2
+			}
+			trigger_else = { always = yes }
+		}
+		save_temporary_scope_as = zg361_b1_legacy_recovery_manager
+		set_variable = { name = zg361_b1_legacy_recovery_state value = 1 }
+		set_variable = { name = zg361_b1_legacy_recovery_subject_n value = 0 }
+		if = {
+			limit = { has_variable = zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_legacy_recovery_cycle value = var:zg361_b1_manager_cycle_serial }
+		}
+		if = {
+			limit = { has_variable = zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_legacy_recovery_case value = var:zg361_b1_manager_case_serial }
+		}
+		zg361_b1_prune_unavailable_subjects_effect = yes
+		if = {
+			limit = { has_variable_list = zg361_b1_subjects }
+			every_in_list = {
+				variable = zg361_b1_subjects
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_active
+						var:zg361_b1_case_owner = scope:zg361_b1_legacy_recovery_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial = scope:zg361_b1_legacy_recovery_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_legacy_recovery_manager.var:zg361_b1_manager_case_serial
+						var:zg361_b1_case_active = 1
+					}
+					set_variable = { name = zg361_b1_case_state value = 8 }
+					set_variable = { name = zg361_b1_case_active value = 0 }
+					set_variable = { name = zg361_b1_roster_included value = 0 }
+					scope:zg361_b1_legacy_recovery_manager = {
+						change_variable = { name = zg361_b1_legacy_recovery_subject_n add = 1 }
+					}
+				}
+			}
+			clear_variable_list = zg361_b1_subjects
+		}
+		if = {
+			limit = { has_variable_list = zg361_b1_processing_subjects }
+			clear_variable_list = zg361_b1_processing_subjects
+		}
+		set_variable = { name = zg361_b1_cycle_state value = 8 }
+		set_variable = { name = zg361_b1_rewards_issued value = 0 }
+		set_variable = { name = zg361_b1_pending_rewards_committed value = 0 }
+		set_variable = { name = zg361_b1_cycle_runtime_schema value = 2 }
+		set_variable = { name = zg361_b1_legacy_recovery_state value = 2 }
+		remove_variable = zg361_b1_cycle_open_year
+		remove_character_flag = zg361_review_in_progress
+		remove_character_flag = zg361_b1_cycle_active
+		debug_log = "ZG361B1: legacy active cycle retired before schema-v2 restart"
+	}
+}

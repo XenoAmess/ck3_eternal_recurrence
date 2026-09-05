@@ -1661,3 +1661,30 @@ deadline 跨过公历年后，被后来登记的 manager 按 `bank_season != cur
 ticket 因 owner/season/case/state 漂移而失效。修复后的初始化只在 bank state 缺失或不为
 active `1` 时发生；活动 bank 跨年保持原 season/case/deadline。该结论为真实产品故障证据，
 不是 loader 性能推断；修复 mod 字节改变，因此下一轮 R94 必须冷启动。
+
+### R94：旧验收存档的活动周期需要显式版本迁移（2026-09-05）
+
+R94 使用 commit `4bc9561` 的 fresh 936-file release staging 冷启动，完成 303/303
+database-node loader，fatal 0。首个 client 在原版 `ep3_governor_yearly.8160`
+动作前停住：原合同错误地冻结了由事件 `immediate` 每次动态创建的
+`administrator`。按 exact-build 原版源码改成动态、非玩家且不得与已知角色别名后，
+replacement client 复用同一 PID/pipe，精确选择无副作用的 option 3；这次 harness
+修订没有重启 CK3。
+
+同一进程随后从 `date_raw=53147016` 推进到 `53160672`，累计 569 游戏日、135 次
+paused native/MCP progress 观测和 8 次精确事件处理。玩家始终为
+`B1=true / Central=false / PP=false`。R94 并未否定跨年 bank 修复：canonical seed
+由 commit `218026a` 生成，而且第一个 R94 帧已经处于 B1 active；新注册逻辑只能保护
+由当前字节创建的 bank，不能倒写存档里已经存在的旧 manager cycle。这个结论来自
+seed provenance、首帧状态以及同 PID 时间序列的组合证据，按推断边界记录，不冒充
+已经通过的迁移验收。
+
+B1 当前给 manager cycle 与 common-superior bank 都写入 schema version 2。年度入口
+遇到 active 但非 schema-v2 的旧 cycle 时，会先按 owner/subject/cycle/case 精确元组将
+旧 subject case 置为终态，清理旧列表与 review flag，明确保持 rewards=0、禁止发布，
+再由同一次入口新开 schema-v2 周期；旧 bank 也只在首次 schema 迁移时重建一次。
+迁移实现位于独立用途分片
+`zg361_b1_runtime_013_cycle_migration_recovery_effects.txt`，仅 1 个顶层 effect。
+B1 68/68、effect boundary 4/4、promotion runner 25/25 均在 normal/`-O` 下 GREEN，
+全静态门 GREEN；产品字节已变化，因此 R95 必须 fresh 启动验证迁移、bank deadline、
+publication 以及 `.146/.147`。
