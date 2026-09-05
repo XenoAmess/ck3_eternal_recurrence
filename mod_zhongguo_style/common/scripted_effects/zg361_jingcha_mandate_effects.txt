@@ -89,7 +89,10 @@ zg361_refuse_jingcha_effect = {
 	# pending 先失效以防重复触发；上司/年份须保留到本 effect 完成问责读取。
 	remove_variable = zg361_jingcha_pending
 	if = {
-		limit = { has_variable = zg361_jingcha_mandate_superior }
+		limit = {
+			has_variable = zg361_jingcha_mandate_superior
+			var:zg361_jingcha_mandate_superior = { is_alive = yes }
+		}
 		var:zg361_jingcha_mandate_superior = {
 			add_opinion = { modifier = zg361_refused_jingcha target = prev }
 		}

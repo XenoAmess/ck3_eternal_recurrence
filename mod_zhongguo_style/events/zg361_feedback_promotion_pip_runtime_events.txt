@@ -4696,6 +4696,10 @@ zg361pp.2146 = {
 				set_variable = { name = zg361_pp_m146_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m146_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 146 audit ticket ignored" }
@@ -4738,6 +4742,10 @@ zg361pp.2147 = {
 				set_variable = { name = zg361_pp_m147_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m147_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 147 audit ticket ignored" }
@@ -4779,6 +4787,10 @@ zg361pp.2148 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m148_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m148_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
@@ -4831,6 +4843,10 @@ zg361pp.2149 = {
 				set_variable = { name = zg361_pp_m149_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m149_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 149 audit ticket ignored" }
@@ -4882,6 +4898,10 @@ zg361pp.2150 = {
 				set_variable = { name = zg361_pp_m150_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m150_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 150 audit ticket ignored" }
@@ -4927,6 +4947,10 @@ zg361pp.2151 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m151_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m151_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
@@ -4977,6 +5001,10 @@ zg361pp.3151 = {
 				set_variable = { name = zg361_pp_m151_audit_2_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m151_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 151 audit ticket ignored" }
@@ -5018,6 +5046,10 @@ zg361pp.2152 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m152_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m152_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
@@ -5061,6 +5093,10 @@ zg361pp.2153 = {
 				set_variable = { name = zg361_pp_m153_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m153_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 153 audit ticket ignored" }
@@ -5102,6 +5138,10 @@ zg361pp.2154 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m154_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m154_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
@@ -5145,6 +5185,10 @@ zg361pp.2155 = {
 				set_variable = { name = zg361_pp_m155_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m155_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 155 audit ticket ignored" }
@@ -5186,6 +5230,10 @@ zg361pp.2156 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m156_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m156_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_t_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_t_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
@@ -5229,6 +5277,10 @@ zg361pp.2157 = {
 				set_variable = { name = zg361_pp_m157_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m157_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 157 audit ticket ignored" }
@@ -5270,6 +5322,10 @@ zg361pp.2158 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m158_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m158_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
@@ -5320,6 +5376,10 @@ zg361pp.2159 = {
 				set_variable = { name = zg361_pp_m159_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m159_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 159 audit ticket ignored" }
@@ -5361,6 +5421,10 @@ zg361pp.2160 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m160_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m160_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
@@ -5404,6 +5468,10 @@ zg361pp.2161 = {
 				set_variable = { name = zg361_pp_m161_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m161_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 161 audit ticket ignored" }
@@ -5445,6 +5513,10 @@ zg361pp.2162 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m162_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m162_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
@@ -5488,6 +5560,10 @@ zg361pp.2163 = {
 				set_variable = { name = zg361_pp_m163_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m163_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 163 audit ticket ignored" }
@@ -5529,6 +5605,10 @@ zg361pp.2164 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m164_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m164_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
@@ -5572,6 +5652,10 @@ zg361pp.2165 = {
 				set_variable = { name = zg361_pp_m165_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m165_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 165 audit ticket ignored" }
@@ -5613,6 +5697,10 @@ zg361pp.2166 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m166_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m166_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
@@ -5662,6 +5750,10 @@ zg361pp.2167 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m167_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m167_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
@@ -5717,6 +5809,10 @@ zg361pp.2168 = {
 				set_variable = { name = zg361_pp_m168_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m168_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_u_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_u_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 168 audit ticket ignored" }
@@ -5758,6 +5854,10 @@ zg361pp.2169 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m169_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m169_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
@@ -5801,6 +5901,10 @@ zg361pp.2170 = {
 				set_variable = { name = zg361_pp_m170_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m170_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 170 audit ticket ignored" }
@@ -5842,6 +5946,10 @@ zg361pp.2171 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m171_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m171_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
@@ -5885,6 +5993,10 @@ zg361pp.2172 = {
 				set_variable = { name = zg361_pp_m172_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m172_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 172 audit ticket ignored" }
@@ -5926,6 +6038,10 @@ zg361pp.2173 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m173_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m173_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
@@ -5969,6 +6085,10 @@ zg361pp.2174 = {
 				set_variable = { name = zg361_pp_m174_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m174_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 174 audit ticket ignored" }
@@ -6010,6 +6130,10 @@ zg361pp.2175 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m175_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m175_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
@@ -6053,6 +6177,10 @@ zg361pp.2176 = {
 				set_variable = { name = zg361_pp_m176_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m176_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 176 audit ticket ignored" }
@@ -6094,6 +6222,10 @@ zg361pp.2177 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m177_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m177_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
@@ -6137,6 +6269,10 @@ zg361pp.2178 = {
 				set_variable = { name = zg361_pp_m178_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m178_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 178 audit ticket ignored" }
@@ -6178,6 +6314,10 @@ zg361pp.2179 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m179_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m179_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
@@ -6226,6 +6366,10 @@ zg361pp.2180 = {
 				set_variable = { name = zg361_pp_m180_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m180_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 180 audit ticket ignored" }
@@ -6273,6 +6417,10 @@ zg361pp.3180 = {
 				set_variable = { name = zg361_pp_m180_audit_2_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m180_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_v_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_v_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 180 audit ticket ignored" }
@@ -6315,6 +6463,10 @@ zg361pp.2181 = {
 				set_variable = { name = zg361_pp_m181_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m181_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 181 audit ticket ignored" }
@@ -6356,6 +6508,10 @@ zg361pp.2182 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m182_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m182_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
@@ -6412,6 +6568,10 @@ zg361pp.2183 = {
 				set_variable = { name = zg361_pp_m183_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m183_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 183 audit ticket ignored" }
@@ -6453,6 +6613,10 @@ zg361pp.2184 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m184_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m184_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
@@ -6556,6 +6720,10 @@ zg361pp.2185 = {
 				set_variable = { name = zg361_pp_m185_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m185_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 185 audit ticket ignored" }
@@ -6597,6 +6765,10 @@ zg361pp.2186 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m186_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m186_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
@@ -6683,6 +6855,10 @@ zg361pp.2187 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m187_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m187_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
@@ -6797,6 +6973,10 @@ zg361pp.2188 = {
 				set_variable = { name = zg361_pp_m188_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m188_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 188 audit ticket ignored" }
@@ -6838,6 +7018,10 @@ zg361pp.2189 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m189_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m189_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
@@ -6914,6 +7098,10 @@ zg361pp.2190 = {
 				set_variable = { name = zg361_pp_m190_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m190_visible_outcome_code value = 3 }
 			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
+			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 190 audit ticket ignored" }
@@ -6955,6 +7143,10 @@ zg361pp.2191 = {
 				# the typed business field named above.
 				set_variable = { name = zg361_pp_m191_audit_1_policy_debt_settled value = 1 }
 				set_variable = { name = zg361_pp_m191_visible_outcome_code value = 3 }
+			}
+			if = {
+				limit = { NOT = { has_variable = zg361_pp_w_visible_receipt_revision } }
+				set_variable = { name = zg361_pp_w_visible_receipt_revision value = 0 }
 			}
 			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}

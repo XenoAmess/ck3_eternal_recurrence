@@ -3002,6 +3002,17 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "name = zg361_b1_subjects",
         ):
             self.assertIn(marker, additions)
+        archive_owner_guard = (
+            "limit = { var:zg361_b1_reorg_archive_owner = { is_alive = yes } }"
+        )
+        archive_owner_write = (
+            "var:zg361_b1_reorg_archive_owner = { set_variable = { name = "
+            "zg361_b1_roster_reopen_required value = 1 } }"
+        )
+        self.assertIn(archive_owner_guard, additions)
+        self.assertLess(
+            additions.index(archive_owner_guard), additions.index(archive_owner_write)
+        )
         self.assertIn("name = zg361_b1_roster_included value = 1", initialize)
 
     def test_gray_leaver_freezes_roster_identity_but_not_employment_state(self) -> None:

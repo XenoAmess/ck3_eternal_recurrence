@@ -281,10 +281,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 612_921)
+        self.assertEqual(len(historical_bytes), 614_781)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "d1543b209472c019c0f3fc40ef6336a29cac3c8ef6c182a95cf0e27bb1d93bb5",
+            "4629335d6a0b3419a1bde9dfbf325cf3092529e605a99362e53ee7f887ac45fa",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -676,10 +676,27 @@ class CompensationRuntimeTests(unittest.TestCase):
         ):
             self.assertIn(token, reserve)
         deferred = top_level_block(self.effects, "zg361_comp_l_consume_deferred_effect")
+        for field in (
+            "zg361_comp_bonus_deferred_treasury_funded",
+            "zg361_comp_bonus_deferred_personal_funded",
+            "zg361_comp_bonus_deferred_unpaid_total",
+        ):
+            self.assertIn(f"NOT = {{ has_variable = {field} }}", deferred)
+            self.assertIn(f"name = {field} value = 0", deferred)
         self.assertIn("add_gold = { value = var:zg361_comp_bonus_deferred_unpaid_total }", deferred)
         self.assertIn("add_treasury = { value = var:zg361_comp_bonus_deferred_treasury_funded }", deferred)
         self.assertIn("add_gold = { value = var:zg361_comp_bonus_deferred_personal_funded }", deferred)
         self.assertIn("value = var:zg361_comp_m084_reserve_receipt", deferred)
+        self.assertIn("var:zg361_case_l_owner = { is_alive = yes }", deferred)
+        self.assertIn(
+            "name = zg361_comp_bonus_deferred_treasury_status value = 4", deferred
+        )
+        self.assertIn(
+            "name = zg361_comp_bonus_deceased_payer_cancelled value = 1", deferred
+        )
+        self.assertIn(
+            "deferred journal cancelled because frozen payer is dead", deferred
+        )
         clawback = top_level_block(self.effects, "zg361_comp_l_clawback_bonus_effect")
         self.assertIn("gold >= 2", clawback)
         self.assertIn("remove_short_term_gold = 2", clawback)

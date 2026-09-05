@@ -1329,3 +1329,56 @@ consecutive illness-death sequence from `1/3` to `0/3`; no health delta or
 survivability modifier has been applied. R99 must cold-start because mod bytes
 changed and must make all nine signatures disappear before this fix is promoted
 to loader-live.
+
+## R99: loader GREEN, same-PID continuation, and four runtime regressions
+
+R99 cold-started committed source `2d45678` through the release-identical
+projection `phase2-full-release-r99-2d45678`. The projection contained 937
+files; tree, release-manifest and ZIP SHA-256 were respectively
+`1C69EC7277F144E90EE4CB337F5C952EEECC40E5E099555B206F517D6C7D689E`,
+`A27E3A87F15957070FDE15C43662200EE42876121B7D5648631AFEDD5564F21C`
+and `7E3C4820FE4315CA03F01E0A06BC36D649FF0AF72220DBBA5A4639445DE5BF8B`.
+All 303 database nodes loaded with fatal zero. The loader scan found zero
+project matches, including zero instances of R98's `Unknown effect:
+has_variable`; its frozen full log SHA-256 is
+`AC6C1B7A0A18D646A6E7D97D866A6A75AE7867B0912018F0B91327EFF6EAD5AC`.
+
+The first client stopped because vanilla `spymaster_task.0381` appeared for a
+third time after two exact GREEN drains. All three deliveries preserved the
+same authored option identity and selected option 2 / native index 1 at
+`53148768`, `53152896` and `53157024`. The harness occurrence bound was
+therefore raised from two to the three live-observed deliveries. This changed
+no mod byte, so the replacement client resumed retained PID 53048 rather than
+restarting CK3.
+
+Across both clients, the same process advanced from `date_raw=53147016` to
+`53170200`: 966 game days, 239 paused native progress observations and 12 exact
+event drains. The continuation consumed `zg361b1.200`, `.201` and `.126` for a
+fresh player cycle, then ended at its own 550-day bound while the player was
+still `B1=true / Central=false / PP=false`. That final point is only 217 game
+days after `.200` opened the fresh cycle at `53164992`, before the authored
+D+300 facts boundary; it is not evidence that the repaired cycle is stuck.
+
+The live runtime log did reveal four product defects that require R100:
+
+- B1 roster amendment dereferenced a now-weak archived manager and attempted
+  `set_variable` without an `is_alive` boundary.
+- an older funded compensation receipt lacked split deferred payer-share
+  fields, and another refund path applied treasury/gold effects to a dead
+  frozen payer;
+- the jingcha refusal path attempted `add_opinion` on a dead frozen superior;
+- promotion/PIP delayed audits incremented a per-domain visible receipt
+  revision before its first initialization.
+
+The minimal source fixes initialize legacy missing monetary fields to zero,
+close a dead-payer journal as an explicit cancelled/forfeited obligation,
+guard old-manager and opinion writes by `is_alive`, and initialize each delayed
+receipt revision before incrementing it. Focused normal/optimized tests,
+effect-file boundaries, full 1650-test discovery, static validation and the
+937-file reproducible release check are GREEN. Compensation remains 25 purpose
+shards; all effect files remain within the mandatory boundary with no >20
+exception. Because these fixes alter mod bytes, R100 requires one fresh CK3
+process.
+
+R99 was not an illness-death failure. The consecutive illness counter remains
+`0/3`, and no health value or survivability modifier has been applied.

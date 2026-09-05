@@ -145,79 +145,65 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R96",
-    observed_at="2026-09-05 22:43 Asia/Shanghai",
+    run_id="R99",
+    observed_at="2026-09-06 00:18 Asia/Shanghai",
     result="RED",
-    product_commit="7ac52c0",
-    projection="phase2-full-release-r96-7ac52c0",
+    product_commit="2d45678",
+    projection="phase2-full-release-r99-2d45678",
     verified_file_count=937,
-    product_tree_sha256="8F2C862913A4FEEC717D8BB4A48065B513B532655D58E3A238AEBF8F6850FE44",
-    release_manifest_sha256="8E9C29A29236FE1BC0BE0C1E1AC83C8B75D1C161DFBBA101F5C25516DFA3EAD4",
+    product_tree_sha256="1C69EC7277F144E90EE4CB337F5C952EEECC40E5E099555B206F517D6C7D689E",
+    release_manifest_sha256="A27E3A87F15957070FDE15C43662200EE42876121B7D5648631AFEDD5564F21C",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=822,
-    native_observations=214,
+    observation_days=966,
+    native_observations=239,
     drained_event_keys=(
         "zg361b2.40",
-        "ep3_interactions_events.0630",
-        "ep3_admin_events.0002",
-        "ep3_emperor_yearly.2240",
+        "spymaster_task.0381",
         "zg361.40",
         "ep3_governor_yearly.3060",
+        "spymaster_task.0381",
+        "spymaster_task.0381",
+        "zg361.40",
+        "tgp_dynastic_cycle_events.0040",
         "zg361b1.200",
         "zg361b1.201",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361.40",
-        "zg361p2c.2",
-        "tgp_interaction_event.0016",
-        *("zg361comp.1" for _ in range(14)),
         "zg361b1.126",
-        "zg361m.1",
-        "zg361.1",
-        *(f"zg361ch.{event_id}" for event_id in range(19, 26)),
-        "zg361ch.901",
-        *(f"zg361ch.{event_id}" for event_id in range(92, 98)),
-        "zg361ch.902",
-        *(f"zg361ch.{event_id}" for event_id in range(98, 106)),
-        "zg361ch.903",
-        *(f"zg361ch.{event_id}" for event_id in range(106, 114)),
-        "zg361ch.904",
-        *(f"zg361ch.{event_id}" for event_id in range(114, 121)),
-        "zg361ch.905",
+        "zg361.40",
     ),
     cleared_product_signatures=(
-        "This scope doesn't support variables",
-        "ordered_in_list max bigger than list",
-        "zg361b1.201.desc",
-        "Could not find promote for",
-        "Variable 'zg361_b1_local_rank' is not set",
+        "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
+        "loader-attributed project errors",
     ),
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r96_retry1\evidence-index.json",
-        r"Z:\b3r96_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r96_resume2\03_promotion_source_production_entry.json",
-        r"Z:\b3r96_resume9\03_promotion_source_production_entry.json",
-        r"Z:\b3r96_resume13\03_promotion_source_production_entry.json",
-        r"Z:\b3r96_retry1_native_state\profile\logs\error.log",
+        r"Z:\b3r99_retry1\evidence-index.json",
+        r"Z:\b3r99_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r99_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r99_resume1\03_promotion_source_production_entry.json",
+        r"Z:\b3r99_retry1_native_state\profile\logs\error.log",
+        r"Z:\b3r99_retry1_native_state\profile\logs\debug.log",
     ),
     boundary=(
-        "The committed R96 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. One retained CK3 PID advanced from date_raw 53147016 to 53166744 at "
-        "speed 5 across 214 paused observations and 73 exact event drains. The fresh "
-        "schema-v2 B1 cycle published, Central became active, and the player then consumed "
-        "the complete D and M-Q career/HC portfolio event sequence. The first compensation "
-        "portfolio reached AE stage 5, where the AI subject's implicit no-appeal response "
-        "made manager route A unconsumable; the same option tooltip also read an unset "
-        "financial-applied flag, producing a real product RED and repeated zg361comp.1. "
-        "The generator fix is static-ready and requires a fresh R97 process because mod "
-        "bytes changed. Loader performance stayed GREEN, so this RED is not evidence for "
-        "another file split. This whole-product RED does not promote any per-ID tier."
+        "The committed R99 release-identical product loaded 303/303 database nodes with "
+        "fatal 0 and zero loader-attributed project errors. One retained CK3 PID advanced "
+        "from date_raw 53147016 to 53170200 at speed 5 across 239 paused observations and "
+        "12 exact event drains. The first client stopped only because the exact same "
+        "spymaster_task.0381 appeared a third time; the harness contract was widened from "
+        "two to the three live-observed occurrences and the same PID resumed without a "
+        "restart. A fresh player B1 cycle then consumed zg361b1.200, .201 and .126. The "
+        "resume bound ended only 217 game days after that fresh cycle opened, before its "
+        "authored D+300 boundary, so it is not evidence that the cycle is stuck. Runtime "
+        "logs nevertheless exposed four product regressions: a weak archived manager "
+        "write, deferred compensation against missing payer-share fields and a dead payer, "
+        "jingcha opinion against a dead superior, and delayed promotion receipt revision "
+        "increments before first initialization. Their minimal source fixes are "
+        "static-ready for R100 and require a fresh process because mod bytes changed. "
+        "This was not an illness-death failure; the consecutive counter remains 0/3 and "
+        "no health or survivability fixture was applied. This whole-product RED does not "
+        "promote any per-ID tier."
     ),
 )
 

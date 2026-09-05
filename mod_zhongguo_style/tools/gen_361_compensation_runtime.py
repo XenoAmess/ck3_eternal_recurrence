@@ -1781,6 +1781,11 @@ zg361_comp_l_clawback_bonus_effect = {{
 
 zg361_comp_l_consume_deferred_effect = {{
     set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
+    # Save-compatible first use: legacy funded receipts can predate these
+    # split payer-share fields. Their only honest reconstruction is zero.
+    if = {{ limit = {{ NOT = {{ has_variable = zg361_comp_bonus_deferred_treasury_funded }} }} set_variable = {{ name = zg361_comp_bonus_deferred_treasury_funded value = 0 }} }}
+    if = {{ limit = {{ NOT = {{ has_variable = zg361_comp_bonus_deferred_personal_funded }} }} set_variable = {{ name = zg361_comp_bonus_deferred_personal_funded value = 0 }} }}
+    if = {{ limit = {{ NOT = {{ has_variable = zg361_comp_bonus_deferred_unpaid_total }} }} set_variable = {{ name = zg361_comp_bonus_deferred_unpaid_total value = 0 }} }}
     if = {{
         limit = {{
             var:zg361_comp_bonus_funded = 1
@@ -1805,7 +1810,10 @@ zg361_comp_l_consume_deferred_effect = {{
         }}
     }}
     else_if = {{
-        limit = {{ var:zg361_comp_bonus_funded = 1 }}
+        limit = {{
+            var:zg361_comp_bonus_funded = 1
+            var:{owner} = {{ is_alive = yes }}
+        }}
         {refund_deferred}
         if = {{
             limit = {{
@@ -1825,6 +1833,22 @@ zg361_comp_l_consume_deferred_effect = {{
             {freeze_cash_identities("zg361_comp_bonus_refund_receipt", "l", 4)}
             set_variable = {{ name = zg361_comp_financial_applied value = 1 }}
         }}
+    }}
+    else_if = {{
+        limit = {{ var:zg361_comp_bonus_funded = 1 }}
+        # A dead frozen payer rejects character effects. Close the residual
+        # journal as a cancelled obligation without manufacturing a refund.
+        set_variable = {{ name = zg361_comp_bonus_deferred_treasury_status value = 4 }}
+        set_variable = {{ name = zg361_comp_bonus_deferred_personal_status value = 4 }}
+        set_variable = {{ name = zg361_comp_bonus_held_treasury_status value = 4 }}
+        set_variable = {{ name = zg361_comp_bonus_held_personal_status value = 4 }}
+        change_variable = {{ name = zg361_comp_bonus_forfeited add = var:zg361_comp_bonus_deferred_unpaid_total }}
+        set_variable = {{ name = zg361_comp_bonus_deferred_owed value = 0 }}
+        set_variable = {{ name = zg361_comp_bonus_held value = 0 }}
+        set_variable = {{ name = zg361_comp_bonus_deceased_payer_cancelled value = 1 }}
+        set_variable = {{ name = zg361_comp_bonus_funded value = 0 }}
+        set_variable = {{ name = zg361_comp_financial_applied value = 1 }}
+        debug_log = "ZG361COMP: deferred journal cancelled because frozen payer is dead"
     }}
     else = {{ set_variable = {{ name = zg361_comp_financial_applied value = 1 }} }}
     if = {{

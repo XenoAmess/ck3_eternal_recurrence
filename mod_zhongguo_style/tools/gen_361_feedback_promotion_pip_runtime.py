@@ -3049,6 +3049,10 @@ def delayed_consumer_write(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\tset_variable = {{ name = {p}_audit_{index}_policy_debt_settled value = 1 }}
 \t\t\t\tset_variable = {{ name = {p}_visible_outcome_code value = 3 }}
 \t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ NOT = {{ has_variable = zg361_pp_{mechanism.domain}_visible_receipt_revision }} }}
+\t\t\t\tset_variable = {{ name = zg361_pp_{mechanism.domain}_visible_receipt_revision value = 0 }}
+\t\t\t}}
 \t\t\tchange_variable = {{ name = zg361_pp_{mechanism.domain}_visible_receipt_revision add = 1 }}'''
 
 

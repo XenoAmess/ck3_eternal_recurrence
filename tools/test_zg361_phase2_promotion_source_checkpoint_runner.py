@@ -315,6 +315,18 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(production._contract_date_matches(53168424, contract))
         self.assertFalse(production._contract_date_matches(53159640, contract))
 
+    def test_find_secrets_interrupt_allows_the_three_live_observed_deliveries(self) -> None:
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["spymaster_task.0381"],
+            starting_date=53147016,
+        )
+        self.assertEqual(contract["max_occurrences"], 3)
+        for date_raw in (53148768, 53152896, 53157024):
+            with self.subTest(date_raw=date_raw):
+                self.assertTrue(production._contract_date_matches(date_raw, contract))
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
     def test_random_interrupt_dates_rebind_but_authored_anchor_stays_exact(self) -> None:
         random_contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS[

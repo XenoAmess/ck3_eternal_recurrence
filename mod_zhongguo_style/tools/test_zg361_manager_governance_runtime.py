@@ -813,6 +813,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_refuse_jingcha_effect = yes", deadline)
         self.assertIn("limit = { is_ai = yes }", self.jingcha_mandate)
         self.assertIn("AI jingcha duty entered the background performance season", self.jingcha_mandate)
+        self.assertIn(
+            "var:zg361_jingcha_mandate_superior = { is_alive = yes }",
+            self.jingcha_mandate,
+        )
         self.assertNotRegex(self.activity, r"remove_treasury|add_gold|remove_gold")
 
     def test_refusal_exact_minus_25_and_kpi_minus_50_once(self) -> None:

@@ -1136,13 +1136,15 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # party a decaying opinion modifier toward root.  The same exact event
         # can recur on this seed.  The second council-task delivery moved by
         # ten days between R35 and R57 while every semantic field stayed
-        # exact. Vanilla task progress/random discovery controls delivery;
-        # neither selected effect checks the calendar. Use this run's existing
-        # product observation window, independently of the two-occurrence cap.
+        # exact. R99 then observed a third delivery at date_raw 53157024 after
+        # two fully validated drains in the same PID. Vanilla task progress/
+        # random discovery controls delivery; neither selected effect checks
+        # the calendar. Use this run's existing product observation window,
+        # independently of the three-occurrence cap.
         "date_raw": (53148768, 53152656),
         "date_raw_range": (53148768, 53152896),
         "date_policy": "product-observation-window",
-        "max_occurrences": 2,
+        "max_occurrences": 3,
         "root_character_id": 29037,
         "character_scopes": {
             "councillor": 27963,

@@ -220,6 +220,13 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 )
                 self.assertIn("stale", block)
                 self.assertIn(f"audit_{index}_consumed = 0", block)
+                revision = f"zg361_pp_{row.domain}_visible_receipt_revision"
+                self.assertIn(f"NOT = {{ has_variable = {revision} }}", block)
+                self.assertIn(f"name = {revision} value = 0", block)
+                self.assertLess(
+                    block.index(f"name = {revision} value = 0"),
+                    block.index(f"change_variable = {{ name = {revision} add = 1 }}"),
+                )
 
     def test_case_kernel_stage_deadlines_are_target_bound(self) -> None:
         stage_count = sum(len(domain.stages) for domain in gen.DOMAINS)

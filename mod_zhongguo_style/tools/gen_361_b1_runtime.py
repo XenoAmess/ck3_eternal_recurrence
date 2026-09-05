@@ -3749,7 +3749,10 @@ zg361_b1_audit_locked_roster_additions_effect = {
 				set_variable = { name = zg361_b1_reorg_allocation_evidence_count value = 3 }
 				set_variable = { name = zg361_b1_reorg_allocation_receipt_state value = 1 }
 				set_variable = { name = zg361_b1_roster_included value = 1 }
-				var:zg361_b1_reorg_archive_owner = { set_variable = { name = zg361_b1_roster_reopen_required value = 1 } }
+				if = {
+					limit = { var:zg361_b1_reorg_archive_owner = { is_alive = yes } }
+					var:zg361_b1_reorg_archive_owner = { set_variable = { name = zg361_b1_roster_reopen_required value = 1 } }
+				}
 				set_variable = { name = zg361_b1_m140_receipt_serial value = var:zg361_b1_reorg_object_case }
 			}
 			if = {
