@@ -1547,7 +1547,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
-    def test_health_1006_binds_diagnosis_frame_and_no_treatment_branch(self) -> None:
+    def test_health_1006_binds_diagnosis_frame_and_safe_treatment_branch(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None
         ) -> dict[str, object]:
@@ -1607,8 +1607,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
 
         checks = checks_for(context)
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["selected_option_number"], 7)
-        self.assertEqual(contract["selected_native_option_index"], 6)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
 
         wrong_projection = copy.deepcopy(context)
         wrong_projection["options"][-1]["native_option_index"] = 5

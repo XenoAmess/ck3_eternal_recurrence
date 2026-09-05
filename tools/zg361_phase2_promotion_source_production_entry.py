@@ -1505,8 +1505,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # Vanilla consumption diagnosis.  The disease is applied in immediate
         # before the window opens, so no option can avoid that state change.
         # This live frame exposes authored treatment options 4/5 plus authored
-        # option 7.  The final branch starts no treatment and is therefore the
-        # least invasive way to drain the already-applied diagnosis event.
+        # option 7.  R97 proved that declining treatment lets the played owner
+        # die within 27 days and invalidates the character-bound Phase2 path.
+        # Authored option 4 is the conservative physician treatment and is the
+        # least disruptive branch that preserves a viable acceptance owner.
         "date_raw": 53168904,
         "root_character_id": 29037,
         "character_scopes": {
@@ -1525,8 +1527,8 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "option_count": 3,
         "snapshot_option_count": 7,
         "native_option_indices": (3, 4, 6),
-        "selected_option_number": 7,
-        "selected_native_option_index": 6,
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
     },
 }
 KNOWN_TIMELINE_INTERRUPTS.update(CAREER_HC_TIMELINE_CONTRACTS)
