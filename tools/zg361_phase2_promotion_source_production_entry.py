@@ -505,6 +505,21 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "health.7200": {
+        # Vanilla yearly-health onset of withering mind.  The event has no
+        # saved scopes and exposes one mandatory acknowledgement whose sole
+        # scripted effect adds the indicated withering_mind trait.  There is
+        # no alternative branch to prefer; bind the complete one-option frame
+        # before acknowledging it.
+        "date_raw": 53152296,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "boolean_scopes": (),
+        "saved_scope_count": 0,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "spymaster_task.0381": {
         # Independent vanilla Find Secrets hook opportunity.  Option 1 spends
         # gold and fabricates a hook; option 2 only grants the one typed third

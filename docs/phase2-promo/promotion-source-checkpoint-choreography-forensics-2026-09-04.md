@@ -445,3 +445,27 @@ and `9D57471CB05BEE7523FBB35094C3D28ABD4C89F640C00D609CBE8DF279497401`.
 All three final logs still contain zero B2 unset-variable reads; cleanup was
 GREEN and CK3 count returned to zero. This remains a post-loader timeline
 contract RED and provides no basis for another effect-file size split.
+
+## R58: mandatory vanilla withering-mind event
+
+R58 ran from pushed commit `27536e7` and passed frontend-first plus the final
+loader. It drained B2 PIP, the first `.0381`, `.3060`, and `zg361.40`, then
+stopped before unknown action on vanilla `health.7200`. The second `.0381` did
+not occur before this stop, so the R57 upper date bound remains live pending.
+
+The exact frame was `date_raw=53152296`, instance 17, played root 29037, no
+saved scopes, and one shown/enabled native option 0 whose native indicator adds
+`withering_mind`. In the exact 1.19.0.6 `health_events.txt` source this event is
+selected by `yearly_health_pulse` and exposes only that option; its sole
+scripted effect adds the trait. There is therefore no lower-impact alternative
+to choose. The new contract acknowledges authored option 1/native index 0 only
+after the entire observed single-option frame matches.
+
+Focused normal and optimized regression passes are both 16/16 GREEN, and the
+no-launch preflight is GREEN. R58 outer report and
+evidence-index SHA-256 values are
+`FBED343DD372D173409E07A0E29C560E099DDB50F127769E6BB337E1C469795E`
+and `B5D39ADBFD4556D9F2EF8EE810ED47DD0D2620A517853CEA60035342F86981D7`.
+All final logs retain zero B2 unset-variable reads, cleanup was GREEN, and CK3
+returned to zero. This random post-loader health interrupt is not evidence of
+file-size or loader-performance failure and does not trigger another split.
