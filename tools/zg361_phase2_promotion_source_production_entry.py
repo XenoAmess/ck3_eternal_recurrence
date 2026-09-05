@@ -149,9 +149,19 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "date_raw": 53147280,
         "root_character_id": 29037,
         "character_scopes": {
-            "previous_holder": 28557,
             "new_holder": 29037,
-            "previous_governor": 28557,
+        },
+        # Both identities come from the title's live previous holder (source
+        # line 282), so realm turnover changes the character while preserving
+        # the alias.  R97 also arrived through appointment succession and
+        # retained two additional typed title scopes that were absent in the
+        # earlier transfer shape.
+        "unique_character_scope_excludes": {
+            "previous_holder": (29037,),
+            "previous_governor": (29037,),
+        },
+        "character_scope_matches_any": {
+            "previous_holder": ("previous_governor",),
         },
         "scope_types": {
             "title": "landed_title",
@@ -159,8 +169,33 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "nf_gov_type": "government_type",
             "governor_title": "landed_title",
         },
+        "optional_scope_types": {
+            "county_title": "landed_title",
+            "appointment_succession": "landed_title",
+        },
         "boolean_scopes": (),
-        "saved_scope_count": 7,
+        "saved_scope_name_sets": (
+            (
+                "title",
+                "previous_holder",
+                "new_holder",
+                "transfer_type",
+                "nf_gov_type",
+                "governor_title",
+                "previous_governor",
+            ),
+            (
+                "title",
+                "previous_holder",
+                "new_holder",
+                "transfer_type",
+                "county_title",
+                "nf_gov_type",
+                "governor_title",
+                "previous_governor",
+                "appointment_succession",
+            ),
+        ),
         "option_count": 3,
         "selected_option_number": 3,
         "selected_native_option_index": 2,
@@ -1997,6 +2032,24 @@ def _known_interrupt_checks(
             if isinstance(row_value, Mapping) and row_value.get("name") == name
         ]
         checks[f"scope:{name}:type"] = (
+            len(matches) == 1
+            and isinstance(matches[0].get("scope"), Mapping)
+            and matches[0]["scope"].get("status") == "available"
+            and matches[0]["scope"].get("type_key") == expected_type
+        )
+    optional_scope_types_value = contract.get("optional_scope_types", {})
+    optional_scope_types = (
+        optional_scope_types_value
+        if isinstance(optional_scope_types_value, Mapping)
+        else {}
+    )
+    for name, expected_type in optional_scope_types.items():
+        matches = [
+            row_value
+            for row_value in scopes
+            if isinstance(row_value, Mapping) and row_value.get("name") == name
+        ]
+        checks[f"scope:{name}:optional_type"] = not matches or (
             len(matches) == 1
             and isinstance(matches[0].get("scope"), Mapping)
             and matches[0]["scope"].get("status") == "available"

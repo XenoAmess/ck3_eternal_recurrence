@@ -160,6 +160,110 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             checks_for(player_actor)["scope:actor:unique_third_party"]
         )
 
+    def test_new_governorship_notice_binds_dynamic_previous_holder_alias(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            else:
+                value["typed_identity"] = {
+                    "status": "unavailable",
+                    "reason": "generic_scope_payload_identity_not_closed",
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "ep3_admin_events.0002"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53164992,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 24,
+            "date_raw": 53165496,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("title", "landed_title"),
+                scope("previous_holder", "character", 28893),
+                scope("new_holder", "character", 29037),
+                scope("transfer_type", "flag"),
+                scope("county_title", "landed_title"),
+                scope("nf_gov_type", "government_type"),
+                scope("governor_title", "landed_title"),
+                scope("previous_governor", "character", 28893),
+                scope("appointment_succession", "landed_title"),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53165496, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 24}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        earlier_shape = copy.deepcopy(context)
+        earlier_shape["saved_scopes"] = [
+            scope("title", "landed_title"),
+            scope("previous_holder", "character", 28557),
+            scope("new_holder", "character", 29037),
+            scope("transfer_type", "flag"),
+            scope("nf_gov_type", "government_type"),
+            scope("governor_title", "landed_title"),
+            scope("previous_governor", "character", 28557),
+        ]
+        earlier_checks = checks_for(earlier_shape)
+        self.assertTrue(all(earlier_checks.values()), earlier_checks)
+
+        wrong_optional_type = copy.deepcopy(context)
+        wrong_optional_type["saved_scopes"][8] = scope(
+            "appointment_succession", "flag"
+        )
+        self.assertFalse(
+            checks_for(wrong_optional_type)[
+                "scope:appointment_succession:optional_type"
+            ]
+        )
+
+        mismatched_alias = copy.deepcopy(context)
+        mismatched_alias["saved_scopes"][7] = scope(
+            "previous_governor", "character", 28557
+        )
+        self.assertFalse(
+            checks_for(mismatched_alias)["scope:previous_holder:matches_any"]
+        )
+
     def test_retained_client_waits_for_async_dll_reconnect(self) -> None:
         calls = {"capabilities": 0, "clock": 0.0}
 
