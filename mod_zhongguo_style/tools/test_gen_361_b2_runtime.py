@@ -191,10 +191,11 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 267_419)
+        # R66 changes only the five manager-side cycle references (+40 bytes).
+        self.assertEqual(len(historical_bytes), 267_459)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "ae563e2e2484b846d4be97f0fb5c9c095f055278cb76d7f537eb8c388e9569fd",
+            "cd12ec02ef8f3ffb1d232d9f2b26f376b321b02d3d1d0ebd2b42189a8f749bec",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1633,11 +1634,11 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         for token in (
             "has_character_flag = zg361_b1_cycle_active",
-            "root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle",
+            "root.var:zg361_b1_manager_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle",
             "NOT = { has_character_flag = zg361_b1_cycle_active }",
             "root.var:zg361_review_serial >= var:zg361_b2_pip_performance_evidence_source_cycle",
             "zg361_b2_pip_performance_evidence_consumed_cycle value = var:zg361_b2_pip_performance_evidence_due_cycle",
-            "zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_cycle_serial",
+            "zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_manager_cycle_serial",
         ):
             self.assertIn(token, consumer)
         self.assertNotIn(

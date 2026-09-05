@@ -173,11 +173,11 @@ DISTRIBUTION_DUE_GUARD = """\t\t\thas_variable = zg361_mg_distribution_policy_so
 \t\t\t$EXACT_DUE_CYCLE$
 \t\t\tOR = {
 \t\t\t\tAND = {
-\t\t\t\t\thas_variable = zg361_b1_cycle_serial
-\t\t\t\t\tvar:zg361_b1_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
+\t\t\t\t\thas_variable = zg361_b1_manager_cycle_serial
+\t\t\t\t\tvar:zg361_b1_manager_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
 \t\t\t\t}
 \t\t\t\tAND = {
-\t\t\t\t\tNOT = { has_variable = zg361_b1_cycle_serial }
+\t\t\t\t\tNOT = { has_variable = zg361_b1_manager_cycle_serial }
 \t\t\t\t\thas_variable = zg361_review_serial
 \t\t\t\t\tvar:zg361_review_serial >= var:zg361_mg_distribution_policy_source_cycle
 \t\t\t\t}
@@ -1032,7 +1032,7 @@ $DISTRIBUTION_DUE_GUARD$
 		}
 		set_variable = { name = zg361_mg_distribution_effective_mode value = var:zg361_mg_distribution_policy_mode }
 		set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_mg_distribution_policy_due_cycle }
-		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_cycle_serial } }
+		if = { limit = { has_variable = zg361_b1_manager_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_manager_cycle_serial } }
 		set_variable = { name = zg361_mg_distribution_effective_source_cycle value = var:zg361_mg_distribution_policy_source_cycle }
 		set_variable = { name = zg361_mg_distribution_effective_source_case value = var:zg361_mg_distribution_policy_source_case }
 		set_variable = { name = zg361_mg_distribution_effective_input_revision value = var:zg361_mg_distribution_policy_input_revision }

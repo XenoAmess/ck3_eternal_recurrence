@@ -76,8 +76,8 @@ zg361_run_review_effect = {
 					has_variable = zg361_b1_roster_included
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 3
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -127,7 +127,7 @@ zg361_run_review_effect = {
 		# 每次有效考核都有独立轮次号；榜单只收本轮、由本领主评定的人，避免调任后混入旧数据。
 		if = {
 			limit = { has_character_flag = zg361_b1_cycle_active }
-			set_variable = { name = zg361_review_serial value = var:zg361_b1_cycle_serial }
+			set_variable = { name = zg361_review_serial value = var:zg361_b1_manager_cycle_serial }
 		}
 		else = {
 			if = {
@@ -176,7 +176,7 @@ zg361_run_review_effect = {
 				limit = { var:zg361_cohort_n >= 1 }
 				if = {
 					limit = { has_character_flag = zg361_b1_cycle_active }
-					set_variable = { name = zg361_review_serial value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_review_serial value = var:zg361_b1_manager_cycle_serial }
 				}
 				else = {
 					if = {
@@ -553,8 +553,8 @@ zg361_apply_pending_grades_effect = {
 					has_variable = zg361_b1_roster_included
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -655,8 +655,8 @@ zg361_freeze_result_case_effect = {
 					has_variable = zg361_b1_leaver_route
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -1365,8 +1365,8 @@ zg361_publish_scoreboard_effect = {
 				has_variable = zg361_b1_case_serial
 				has_variable = zg361_b1_roster_included
 				var:zg361_b1_case_owner = root
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_roster_included = 1
 				has_variable = zg361_last_reviewer
 				var:zg361_last_reviewer = root
@@ -1421,8 +1421,8 @@ zg361_publish_scoreboard_effect = {
 				has_variable = zg361_b1_case_serial
 				has_variable = zg361_b1_roster_included
 				var:zg361_b1_case_owner = root
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_roster_included = 1
 				has_variable = zg361_last_reviewer
 				var:zg361_last_reviewer = root

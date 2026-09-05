@@ -23,8 +23,9 @@ READINESS = "static-ready"
 LEGACY_EFFECT_FILENAME = "zg361_phase2_central_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
-HISTORICAL_EFFECT_BYTES = 132_001
-HISTORICAL_EFFECT_SHA256 = "C1A03DD1E410CB2C65FC992FAE3DB453ED44BDD7B3EAF810D82352AC9B0D6FF1"
+# R66: reviewed manager/subject identity separation; shard order is unchanged.
+HISTORICAL_EFFECT_BYTES = 132_231
+HISTORICAL_EFFECT_SHA256 = "B5A4F31CCB4248B556E31EED717C07F1086AB31DEDF928D8F0A53BDEDE029899"
 HISTORICAL_EFFECT_COUNT = 33
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -35,8 +36,8 @@ EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
 LEGACY_EVENT_FILENAME = "zg361_phase2_central_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_phase2_central_*_events.txt"
-HISTORICAL_EVENT_BYTES = 20_548
-HISTORICAL_EVENT_SHA256 = "84B8FAEAC837A00AFBD993D36F86433DCF71E53E9E92C84A95C24AB31B2673F0"
+HISTORICAL_EVENT_BYTES = 20_619
+HISTORICAL_EVENT_SHA256 = "A783F51175E214754E9DDE1223AB6B2D4D9C898802AFA47BD82DD192E977AD8A"
 HISTORICAL_EVENT_COUNT = 7
 EVENT_TARGET_MAX = 10
 
@@ -1195,6 +1196,7 @@ zg361_p2c_suspend_external_effect = {
 # It freezes one deterministic current-result subject and merely queues D+2;
 # no domain adapter is opened inside the publication stack.
 zg361_p2c_on_review_published_effect = {
+    zg361_b1_migrate_manager_identity_effect = yes
     # A newer B1 publication may arrive while an older central portfolio is
     # still active.  Terminate the old immutable tuple first; never overwrite
     # its case/stage/ticket in place.
@@ -1208,7 +1210,7 @@ zg361_p2c_on_review_published_effect = {
         }
         set_variable = { name = zg361_p2c_previous_aborted_cycle value = var:zg361_p2c_cycle }
         set_variable = { name = zg361_p2c_deferred_reinit_cycle value = var:zg361_review_serial }
-        set_variable = { name = zg361_p2c_deferred_reinit_b1_case value = var:zg361_b1_case_serial }
+        set_variable = { name = zg361_p2c_deferred_reinit_b1_case value = var:zg361_b1_manager_case_serial }
         set_variable = { name = zg361_p2c_deferred_reinit value = 1 }
         zg361_p2c_abort_stale_effect = { CODE = 9101 }
         trigger_event = { id = zg361p2c.3 days = 2 }
@@ -1218,11 +1220,11 @@ zg361_p2c_on_review_published_effect = {
             has_game_rule = zg361_on
             zg361_is_celestial_liege_trigger = yes
             has_variable = zg361_review_serial
-            has_variable = zg361_b1_cycle_serial
-            has_variable = zg361_b1_case_serial
+            has_variable = zg361_b1_manager_cycle_serial
+            has_variable = zg361_b1_manager_case_serial
             has_variable = zg361_b1_cycle_state
             has_variable = zg361_b1_closure_state
-            var:zg361_b1_cycle_serial = var:zg361_review_serial
+            var:zg361_b1_manager_cycle_serial = var:zg361_review_serial
             var:zg361_b1_cycle_state = 8
             var:zg361_b1_closure_state = 4
             # Publication closure has exactly one proof route selected by the
@@ -1233,13 +1235,13 @@ zg361_p2c_on_review_published_effect = {
                     has_variable = zg361_b1_m013_mode
                     var:zg361_b1_m013_mode != 3
                     has_variable = zg361_b1_m013_receipt_serial
-                    var:zg361_b1_m013_receipt_serial = var:zg361_b1_case_serial
+                    var:zg361_b1_m013_receipt_serial = var:zg361_b1_manager_case_serial
                 }
                 AND = {
                     has_variable = zg361_b1_m013_mode
                     var:zg361_b1_m013_mode = 3
                     has_variable = zg361_b1_m013_policy_debt_serial
-                    var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_case_serial
+                    var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_manager_case_serial
                 }
             }
             NOT = { has_character_flag = zg361_review_in_progress }
@@ -1269,8 +1271,8 @@ zg361_p2c_on_review_published_effect = {
                 has_variable = zg361_b1_case_state
                 var:zg361_b1_case_owner = root
                 var:zg361_b1_case_subject = this
-                var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-                var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+                var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+                var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
                 var:zg361_b1_case_state = 8
                 has_variable = zg361_result_case_owner
                 has_variable = zg361_result_cycle_serial
@@ -1290,8 +1292,8 @@ zg361_p2c_on_review_published_effect = {
                 liege = root
                 var:zg361_b1_case_owner = root
                 var:zg361_b1_case_subject = this
-                var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-                var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+                var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+                var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
                 var:zg361_b1_case_state = 8
                 has_variable = zg361_result_case_owner
                 has_variable = zg361_result_cycle_serial
@@ -1309,8 +1311,8 @@ zg361_p2c_on_review_published_effect = {
                 set_variable = { name = zg361_p2c_active value = 1 }
                 set_variable = { name = zg361_p2c_case_serial value = var:zg361_p2c_case_cursor }
                 set_variable = { name = zg361_p2c_b1_owner value = this }
-                set_variable = { name = zg361_p2c_b1_cycle value = var:zg361_b1_cycle_serial }
-                set_variable = { name = zg361_p2c_b1_case value = var:zg361_b1_case_serial }
+                set_variable = { name = zg361_p2c_b1_cycle value = var:zg361_b1_manager_cycle_serial }
+                set_variable = { name = zg361_p2c_b1_case value = var:zg361_b1_manager_case_serial }
                 set_variable = { name = zg361_p2c_cycle value = var:zg361_review_serial }
                 set_variable = { name = zg361_p2c_subject value = scope:zg361_p2c_selected_subject }
                 set_variable = { name = zg361_p2c_result_owner value = this }
@@ -2364,6 +2366,7 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
 # One entry point and one else-if chain: a single pump can dispatch at most one
 # stage, and each stage body calls at most one public adapter/domain opener.
 zg361_p2c_pump_effect = {
+    zg361_b1_migrate_manager_identity_effect = yes
     if = {
         limit = {
             has_game_rule = zg361_on
@@ -2377,12 +2380,12 @@ zg361_p2c_pump_effect = {
             has_variable = zg361_p2c_subject
             has_variable = zg361_p2c_result_case
             has_variable = zg361_review_serial
-            has_variable = zg361_b1_cycle_serial
-            has_variable = zg361_b1_case_serial
+            has_variable = zg361_b1_manager_cycle_serial
+            has_variable = zg361_b1_manager_case_serial
             has_variable = zg361_b1_closure_state
             var:zg361_review_serial = var:zg361_p2c_cycle
-            var:zg361_b1_cycle_serial = var:zg361_p2c_b1_cycle
-            var:zg361_b1_case_serial = var:zg361_p2c_b1_case
+            var:zg361_b1_manager_cycle_serial = var:zg361_p2c_b1_cycle
+            var:zg361_b1_manager_case_serial = var:zg361_p2c_b1_case
             var:zg361_b1_closure_state = 4
             var:zg361_p2c_subject = {
                 is_alive = yes
@@ -2648,14 +2651,15 @@ zg361p2c.3 = {
     type = character_event
     hidden = yes
     immediate = {
+        zg361_b1_migrate_manager_identity_effect = yes
         if = {
             limit = {
                 has_variable = zg361_p2c_deferred_reinit
                 var:zg361_p2c_deferred_reinit = 1
                 has_variable = zg361_review_serial
-                has_variable = zg361_b1_case_serial
+                has_variable = zg361_b1_manager_case_serial
                 var:zg361_review_serial = var:zg361_p2c_deferred_reinit_cycle
-                var:zg361_b1_case_serial = var:zg361_p2c_deferred_reinit_b1_case
+                var:zg361_b1_manager_case_serial = var:zg361_p2c_deferred_reinit_b1_case
             }
             remove_variable = zg361_p2c_deferred_reinit
             zg361_p2c_on_review_published_effect = yes

@@ -94,14 +94,14 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
   `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 3 / 1`，最大为 9。33 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 132,001 bytes，SHA-256
-  `C1A03DD1E410CB2C65FC992FAE3DB453ED44BDD7B3EAF810D82352AC9B0D6FF1`。
+  顺序和定义集合一致；冻结聚合为 132,231 bytes，SHA-256
+  `B5A4F31CCB4248B556E31EED717C07F1086AB31DEDF928D8F0A53BDEDE029899`。
 - Central event 已拆为三个用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
   `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`，
   `zg361_phase2_central_003_m360_resume_events.txt` 只含 `zg361p2c.7`。7 个 event block
-  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 20,548 bytes，SHA-256
-  `84B8FAEAC837A00AFBD993D36F86433DCF71E53E9E92C84A95C24AB31B2673F0`。
+  与冻结聚合逐字节、顺序和定义集合一致；冻结聚合为 20,619 bytes，SHA-256
+  `A783F51175E214754E9DDE1223AB6B2D4D9C898802AFA47BD82DD192E977AD8A`。
 - 旧 `zg361_phase2_central_runtime_effects.txt` 与 `zg361_phase2_central_runtime_events.txt` 已退役；
   生成器不再输出它们，`--check` 会拒绝旧单体或其他 stale shard。
 - exact seed whole-file 闭包只选择 M275 的

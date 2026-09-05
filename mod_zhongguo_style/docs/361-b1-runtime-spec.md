@@ -140,6 +140,27 @@ subject case，不得建立 cohort、分配配额、校准别人或替别人提�
 旧周期、旧案号或错误状态必须 no-op。旧存档无 v2 字段时，只允许从现有 `review_serial/result_*` 建立下一周期基线，不得重写
 已经结算的旧榜。
 
+#### 2026-09-05 R66：主管与受评人身份分域（static-ready，修复实机待验）
+
+R66 已记录玩家 Character `29037` 的 active manager 旧序号 `19/19` 被上司初始化受评案覆盖为 `1/1`，
+再覆盖为 `2/2`；后续 `.100` 记录了旧票据与当前字段不一致。主管现使用
+`zg361_b1_manager_cycle_serial / zg361_b1_manager_case_serial`；原
+`zg361_b1_cycle_serial / zg361_b1_case_serial` 专属 subject case，保持 native subject ABI 不变。
+主体比较是 `subject.old_serial = manager.manager_serial`，不得整仓替换变量名。
+
+已存在的主管身份只能分别从主管专属 `policy_next_review_serial - 1` 与 `m053_receipt_serial` 恢复；
+`zg361_b1_migrate_manager_identity_effect` 对每个已存在的新字段 no-op，不读取已被污染的旧共享字段。
+迁移在 opener、manager delayed entry、active manager 被初始化为 subject 前调用；Central 独立入口同样调用。
+无凭据的新主管由 opener 从独立零值开始；缺失凭据的旧主管不伪造恢复值，更不能强行匹配某个旧票据。
+这是上段通用旧存档基线规则中的 B1 双身份迁移特例，不改已公示旧榜。
+
+同轮 R66 还实证无首府离任者的期末 `capital_county` 读取失败。期末基线只在 `exists = capital_county`
+时读取原生数值；无首府改为 `baseline_available=0 / baseline_state_delta=0`，记录
+`ZG361B1:baseline-unavailable-no-capital`，保留期初事实与冻结 cohort。`.100` 与 `.102` 首消费前
+复用现有 `is_alive` 名册清理，不增加 `is_landed`，活着的离任者仍按 #040 保留。
+完整证据、角色消费者矩阵与剩余 live gate 见
+[R66 修复记录](../../docs/phase2-promo/b1-r66-manager-subject-fix-2026-09-05.md)。
+
 ### 2.2 同阶段只迁移一次
 
 Phase 0 的通用计划会让同一领域的多个编号共享 `from → to`。逐号调用 `case.transition` 会导致第一个编号推进状态后，其余编号

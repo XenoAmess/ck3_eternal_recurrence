@@ -81,7 +81,7 @@ zg361_b1_freeze_001_013_policy_effect = {
 		limit = { NOT = { has_variable = zg361_b1_policy_debt_open_n } }
 		set_variable = { name = zg361_b1_policy_debt_open_n value = 0 }
 	}
-	set_variable = { name = zg361_b1_policy_next_review_serial value = { value = var:zg361_b1_cycle_serial add = 1 } }
+	set_variable = { name = zg361_b1_policy_next_review_serial value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
 	set_variable = { name = zg361_b1_m001_mode value = 1 }
 	if = {
 		limit = { has_variable = zg361_mechanism_001_choice }
@@ -92,11 +92,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m001_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m001_policy_debt_serial }
-				NOT = { var:zg361_b1_m001_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m001_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m001_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m001_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -111,11 +111,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m002_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m002_policy_debt_serial }
-				NOT = { var:zg361_b1_m002_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m002_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m002_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m002_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -130,11 +130,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m003_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m003_policy_debt_serial }
-				NOT = { var:zg361_b1_m003_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m003_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m003_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m003_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -149,11 +149,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m004_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m004_policy_debt_serial }
-				NOT = { var:zg361_b1_m004_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m004_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m004_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m004_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -168,11 +168,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m005_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m005_policy_debt_serial }
-				NOT = { var:zg361_b1_m005_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m005_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m005_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m005_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -187,11 +187,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m006_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m006_policy_debt_serial }
-				NOT = { var:zg361_b1_m006_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m006_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m006_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m006_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -206,11 +206,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m007_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m007_policy_debt_serial }
-				NOT = { var:zg361_b1_m007_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m007_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m007_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m007_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -225,11 +225,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m008_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m008_policy_debt_serial }
-				NOT = { var:zg361_b1_m008_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m008_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m008_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m008_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -244,11 +244,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m009_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m009_policy_debt_serial }
-				NOT = { var:zg361_b1_m009_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m009_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m009_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m009_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -263,11 +263,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m010_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m010_policy_debt_serial }
-				NOT = { var:zg361_b1_m010_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m010_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m010_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m010_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -282,11 +282,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m011_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m011_policy_debt_serial }
-				NOT = { var:zg361_b1_m011_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m011_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m011_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m011_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -301,11 +301,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m012_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m012_policy_debt_serial }
-				NOT = { var:zg361_b1_m012_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m012_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m012_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m012_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -320,11 +320,11 @@ zg361_b1_freeze_001_013_policy_effect = {
 			var:zg361_b1_m013_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m013_policy_debt_serial }
-				NOT = { var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m013_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m013_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -345,11 +345,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m135_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m135_policy_debt_serial }
-				NOT = { var:zg361_b1_m135_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m135_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m135_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m135_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -365,11 +365,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m136_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m136_policy_debt_serial }
-				NOT = { var:zg361_b1_m136_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m136_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m136_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m136_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -385,11 +385,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m137_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m137_policy_debt_serial }
-				NOT = { var:zg361_b1_m137_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m137_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m137_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m137_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -405,11 +405,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m138_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m138_policy_debt_serial }
-				NOT = { var:zg361_b1_m138_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m138_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m138_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m138_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -425,11 +425,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m140_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m140_policy_debt_serial }
-				NOT = { var:zg361_b1_m140_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m140_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m140_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m140_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -445,11 +445,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m141_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m141_policy_debt_serial }
-				NOT = { var:zg361_b1_m141_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m141_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m141_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m141_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -465,11 +465,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m142_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m142_policy_debt_serial }
-				NOT = { var:zg361_b1_m142_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m142_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m142_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m142_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -485,11 +485,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m143_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m143_policy_debt_serial }
-				NOT = { var:zg361_b1_m143_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m143_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m143_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m143_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -505,11 +505,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m144_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m144_policy_debt_serial }
-				NOT = { var:zg361_b1_m144_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m144_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m144_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m144_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -525,11 +525,11 @@ zg361_b1_freeze_135_145_policy_effect = {
 			var:zg361_b1_m145_mode = 3
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m145_policy_debt_serial }
-				NOT = { var:zg361_b1_m145_policy_debt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m145_policy_debt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_m145_policy_debt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m145_policy_debt_serial value = var:zg361_b1_manager_case_serial }
 		change_variable = { name = zg361_b1_policy_debt_cycle_n add = 1 }
 		change_variable = { name = zg361_b1_policy_debt_open_n add = 1 }
 		set_variable = { name = zg361_b1_policy_debt_due_year value = { value = current_year add = 1 } }
@@ -610,8 +610,8 @@ zg361_b1_snapshot_owner_bound_kpi_effect = {
 			has_variable = zg361_b1_case_serial
 			var:zg361_b1_case_owner = root
 			var:zg361_b1_case_subject = this
-			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 			is_alive = yes
 			liege = root
 		}
@@ -701,8 +701,8 @@ zg361_b1_apply_departed_grade_effect = {
 		limit = {
 			var:zg361_b1_case_owner = root
 			var:zg361_b1_case_subject = this
-			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 			var:zg361_b1_case_state = 7
 			var:zg361_b1_case_active = 1
 			var:zg361_b1_roster_included = 1
@@ -737,18 +737,23 @@ zg361_b1_apply_departed_grade_effect = {
 }
 
 zg361_b1_initialize_subject_case_effect = {
+	# Preserve this character's separate manager identity before subject ABI writes.
+	if = {
+		limit = { has_character_flag = zg361_b1_cycle_active }
+		zg361_b1_migrate_manager_identity_effect = yes
+	}
 	# Read-only diagnosis of the real manager/subject dual-role overwrite.
 	# Temporary scopes must not become inherited delayed-event ticket fields.
 	if = {
 		limit = { is_ai = no has_character_flag = zg361_b1_cycle_active }
 		save_temporary_scope_as = zg361_b1_diag_human_subject
 		if = {
-			limit = { has_variable = zg361_b1_cycle_serial }
-			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_before value = var:zg361_b1_cycle_serial }
+			limit = { has_variable = zg361_b1_manager_cycle_serial }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_before value = var:zg361_b1_manager_cycle_serial }
 		}
 		if = {
-			limit = { has_variable = zg361_b1_case_serial }
-			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_before value = var:zg361_b1_case_serial }
+			limit = { has_variable = zg361_b1_manager_case_serial }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_before value = var:zg361_b1_manager_case_serial }
 		}
 		if = {
 			limit = { has_variable = zg361_b1_cycle_state }
@@ -757,12 +762,12 @@ zg361_b1_initialize_subject_case_effect = {
 		root = {
 			save_temporary_scope_as = zg361_b1_diag_initializing_owner
 			if = {
-				limit = { has_variable = zg361_b1_cycle_serial }
-				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_cycle value = var:zg361_b1_cycle_serial }
+				limit = { has_variable = zg361_b1_manager_cycle_serial }
+				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_cycle value = var:zg361_b1_manager_cycle_serial }
 			}
 			if = {
-				limit = { has_variable = zg361_b1_case_serial }
-				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_case value = var:zg361_b1_case_serial }
+				limit = { has_variable = zg361_b1_manager_case_serial }
+				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_case value = var:zg361_b1_manager_case_serial }
 			}
 		}
 		debug_log = "ZG361B1_DIAG: human active manager initialized as subject; before and incoming identities"
@@ -770,8 +775,8 @@ zg361_b1_initialize_subject_case_effect = {
 	}
 	set_variable = { name = zg361_b1_case_owner value = root }
 	set_variable = { name = zg361_b1_case_subject value = this }
-	set_variable = { name = zg361_b1_cycle_serial value = root.var:zg361_b1_cycle_serial }
-	set_variable = { name = zg361_b1_case_serial value = root.var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_cycle_serial value = root.var:zg361_b1_manager_cycle_serial }
+	set_variable = { name = zg361_b1_case_serial value = root.var:zg361_b1_manager_case_serial }
 	set_variable = { name = zg361_b1_case_state value = 1 }
 	set_variable = { name = zg361_b1_case_active value = 1 }
 	set_variable = { name = zg361_b1_case_revision value = 1 }
@@ -1248,12 +1253,12 @@ zg361_b1_initialize_subject_case_effect = {
 			var:zg361_b1_pending_next_cycle_object_owner = root
 			var:zg361_b1_pending_next_cycle_object_subject = this
 			var:zg361_b1_pending_next_cycle_object_state = 1
-			var:zg361_b1_pending_next_cycle_object_cycle = root.var:zg361_b1_cycle_serial
+			var:zg361_b1_pending_next_cycle_object_cycle = root.var:zg361_b1_manager_cycle_serial
 			var:zg361_b1_pending_next_cycle_due = var:zg361_b1_pending_next_cycle_object_cycle
 		}
 		set_variable = { name = zg361_b1_pending_carried_adjustment value = var:zg361_b1_pending_next_cycle_delta }
 		set_variable = { name = zg361_b1_pending_next_cycle_object_state value = 2 }
-		set_variable = { name = zg361_b1_pending_next_cycle_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_pending_next_cycle_consumed_cycle value = root.var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_pending_next_cycle_consumption_receipt_case value = var:zg361_b1_pending_next_cycle_object_case }
 	}
 	set_variable = { name = zg361_b1_reopen_carried_adjustment value = 0 }
@@ -1268,12 +1273,12 @@ zg361_b1_initialize_subject_case_effect = {
 			var:zg361_b1_reopen_next_cycle_object_owner = root
 			var:zg361_b1_reopen_next_cycle_object_subject = this
 			var:zg361_b1_reopen_next_cycle_object_state = 1
-			var:zg361_b1_reopen_next_cycle_object_cycle = root.var:zg361_b1_cycle_serial
+			var:zg361_b1_reopen_next_cycle_object_cycle = root.var:zg361_b1_manager_cycle_serial
 			var:zg361_b1_reopen_next_cycle_due = var:zg361_b1_reopen_next_cycle_object_cycle
 		}
 		set_variable = { name = zg361_b1_reopen_carried_adjustment value = var:zg361_b1_reopen_next_cycle_delta }
 		set_variable = { name = zg361_b1_reopen_next_cycle_object_state value = 2 }
-		set_variable = { name = zg361_b1_reopen_next_cycle_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_reopen_next_cycle_consumed_cycle value = root.var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_reopen_next_cycle_consumption_receipt_case value = var:zg361_b1_reopen_next_cycle_object_case }
 	}
 	set_variable = { name = zg361_b1_reopen_serial value = 0 }
@@ -1582,8 +1587,8 @@ zg361_b1_initialize_subject_case_effect = {
 		FEEDBACK_VAR = zg361_b1_case_feedback_revision
 		TICKET_OWNER = root
 		TICKET_SUBJECT = this
-		TICKET_CYCLE = root.var:zg361_b1_cycle_serial
-		TICKET_CASE = root.var:zg361_b1_case_serial
+		TICKET_CYCLE = root.var:zg361_b1_manager_cycle_serial
+		TICKET_CASE = root.var:zg361_b1_manager_case_serial
 		TICKET_STATE = 1
 		OPERATION_ID = 39
 		CHOICE = 1
@@ -1591,6 +1596,7 @@ zg361_b1_initialize_subject_case_effect = {
 }
 
 zg361_b1_open_cycle_effect = {
+	zg361_b1_migrate_manager_identity_effect = yes
 	if = {
 		limit = {
 			has_game_rule = zg361_on
@@ -1605,15 +1611,15 @@ zg361_b1_open_cycle_effect = {
 		}
 		add_character_flag = zg361_b1_cycle_active
 		if = {
-			limit = { NOT = { has_variable = zg361_b1_cycle_serial } }
-			set_variable = { name = zg361_b1_cycle_serial value = 0 }
+			limit = { NOT = { has_variable = zg361_b1_manager_cycle_serial } }
+			set_variable = { name = zg361_b1_manager_cycle_serial value = 0 }
 		}
 		if = {
-			limit = { NOT = { has_variable = zg361_b1_case_serial } }
-			set_variable = { name = zg361_b1_case_serial value = 0 }
+			limit = { NOT = { has_variable = zg361_b1_manager_case_serial } }
+			set_variable = { name = zg361_b1_manager_case_serial value = 0 }
 		}
-		change_variable = { name = zg361_b1_cycle_serial add = 1 }
-		change_variable = { name = zg361_b1_case_serial add = 1 }
+		change_variable = { name = zg361_b1_manager_cycle_serial add = 1 }
+		change_variable = { name = zg361_b1_manager_case_serial add = 1 }
 		set_variable = { name = zg361_b1_cycle_state value = 1 }
 		set_variable = { name = zg361_b1_cycle_open_year value = current_year }
 		remove_variable = zg361_b1_m009_receipt_serial
@@ -1699,7 +1705,7 @@ zg361_b1_open_cycle_effect = {
 				set_variable = { name = zg361_b1_peer_use_mode value = 0 }
 			}
 		}
-		set_variable = { name = zg361_b1_m053_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m053_receipt_serial value = var:zg361_b1_manager_case_serial }
 		if = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			clear_variable_list = zg361_b1_subjects
@@ -1748,8 +1754,8 @@ zg361_b1_open_cycle_effect = {
 			limit = { var:zg361_b1_subject_n >= 1 }
 			zg361_b1_register_common_superior_bank_effect = yes
 			save_scope_as = zg361_b1_ticket_owner
-			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 			save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 			trigger_event = { id = zg361b1.100 days = 180 }
 			debug_log = "ZG361B1: performance season opened"
@@ -1836,8 +1842,8 @@ zg361_b1_midcycle_dispatcher_effect = {
 			if = {
 				limit = {
 					var:zg361_b1_case_owner = root
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 1
 				}
 				# Refresh only while the old owner relation still exists.  If the
@@ -2160,8 +2166,8 @@ zg361_b1_prepare_facts_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 3
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -2369,7 +2375,7 @@ zg361_b1_finalize_subject_facts_effect = {
 	set_variable = { name = zg361_b1_difficulty_improvement value = { value = var:zg361_kpi subtract = var:zg361_b1_evidence_early } }
 	set_variable = { name = zg361_b1_difficulty_score_adjustment value = 0 }
 	if = {
-		limit = { var:zg361_b1_baseline_available = 1 }
+		limit = { var:zg361_b1_baseline_available = 1 exists = capital_county }
 		set_variable = { name = zg361_b1_baseline_end_development value = capital_county.development_level }
 		set_variable = { name = zg361_b1_baseline_end_control value = capital_county.county_control }
 		set_variable = { name = zg361_b1_baseline_end_gold value = gold }
@@ -2394,6 +2400,13 @@ zg361_b1_finalize_subject_facts_effect = {
 			limit = { root.var:zg361_b1_m006_mode = 1 }
 			set_variable = { name = zg361_b1_difficulty_score_adjustment value = { value = var:zg361_b1_baseline_state_delta round = yes max = var:zg361_b1_difficulty_cap min = -5 } }
 		}
+	}
+	else_if = {
+		limit = { var:zg361_b1_baseline_available = 1 }
+		# Loss of capital does not invalidate the frozen cohort or its start facts.
+		set_variable = { name = zg361_b1_baseline_available value = 0 }
+		set_variable = { name = zg361_b1_baseline_state_delta value = 0 }
+		debug_log = "ZG361B1:baseline-unavailable-no-capital"
 	}
 	if = {
 		limit = { root.var:zg361_b1_m001_mode != 3 }
@@ -2571,8 +2584,8 @@ zg361_b1_freeze_blind_named_diff_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = scope:zg361_b1_blind_named_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -2773,8 +2786,8 @@ zg361_b1_open_shadow_effect = {
 		zg361_b1_freeze_blind_named_diff_effect = yes
 		set_variable = { name = zg361_b1_cycle_state value = 5 }
 		save_scope_as = zg361_b1_ticket_owner
-		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 		save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 		trigger_event = { id = zg361b1.103 days = 30 }
 		debug_log = "ZG361B1: facts frozen and shadow response opened"
@@ -2884,11 +2897,11 @@ zg361_b1_compute_exact_quota_effect = {
 		if = {
 			limit = { var:zg361_b1_quota_rounding_work_route != 3 }
 			set_variable = { name = zg361_b1_quota_rounding_local_object_available value = 1 }
-			set_variable = { name = zg361_b1_quota_rounding_local_object_id value = { value = var:zg361_b1_case_serial multiply = 100 add = 38 } }
+			set_variable = { name = zg361_b1_quota_rounding_local_object_id value = { value = var:zg361_b1_manager_case_serial multiply = 100 add = 38 } }
 			set_variable = { name = zg361_b1_quota_rounding_local_owner value = this }
 			set_variable = { name = zg361_b1_quota_rounding_local_subject value = this }
-			set_variable = { name = zg361_b1_quota_rounding_local_cycle value = var:zg361_b1_cycle_serial }
-			set_variable = { name = zg361_b1_quota_rounding_local_case value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_quota_rounding_local_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_quota_rounding_local_case value = var:zg361_b1_manager_case_serial }
 			set_variable = { name = zg361_b1_quota_rounding_local_state value = 1 }
 			set_variable = { name = zg361_b1_quota_rounding_local_route value = var:zg361_b1_quota_rounding_work_route }
 			set_variable = { name = zg361_b1_quota_rounding_local_team_n value = 1 }
@@ -2898,8 +2911,8 @@ zg361_b1_compute_exact_quota_effect = {
 			if = {
 				limit = {
 					has_variable = zg361_b1_quota_rounding_local_rotation_cycle
-					var:zg361_b1_quota_rounding_local_rotation_cycle = var:zg361_b1_cycle_serial
-					var:zg361_b1_quota_rounding_local_rotation_case = var:zg361_b1_case_serial
+					var:zg361_b1_quota_rounding_local_rotation_cycle = var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_quota_rounding_local_rotation_case = var:zg361_b1_manager_case_serial
 				}
 				set_variable = { name = zg361_b1_quota_rounding_local_rotation_advance value = 0 }
 			}
@@ -2908,8 +2921,8 @@ zg361_b1_compute_exact_quota_effect = {
 				if = { limit = { NOT = { has_variable = zg361_b1_quota_rounding_local_rotation_cursor } } set_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor value = 1 } }
 				else = { change_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor add = 1 } }
 				if = { limit = { var:zg361_b1_quota_rounding_local_rotation_cursor > 2 } set_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor value = 1 } }
-				set_variable = { name = zg361_b1_quota_rounding_local_rotation_cycle value = var:zg361_b1_cycle_serial }
-				set_variable = { name = zg361_b1_quota_rounding_local_rotation_case value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_case value = var:zg361_b1_manager_case_serial }
 			}
 			if = { limit = { var:zg361_b1_quota_rounding_work_route = 2 } set_variable = { name = zg361_b1_quota_rounding_local_chair value = this } set_variable = { name = zg361_b1_quota_rounding_local_blackbox_risk value = 1 } }
 		}
@@ -3091,8 +3104,8 @@ zg361_b1_audit_frozen_roster_effect = {
 					has_variable = zg361_b1_roster_employment_state
 					var:zg361_b1_case_owner = scope:zg361_b1_roster_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_roster_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_roster_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_roster_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_roster_manager.var:zg361_b1_manager_case_serial
 					OR = { var:zg361_b1_case_state = 3 var:zg361_b1_case_state = 5 }
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3166,7 +3179,7 @@ zg361_b1_audit_frozen_roster_effect = {
 				}
 			}
 		}
-		set_variable = { name = zg361_b1_roster_audited_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_roster_audited_serial value = var:zg361_b1_manager_case_serial }
 	}
 }
 
@@ -3381,7 +3394,7 @@ zg361_b1_audit_locked_roster_additions_effect = {
 			}
 		}
 	}
-	set_variable = { name = zg361_b1_roster_additions_audited_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_roster_additions_audited_serial value = var:zg361_b1_manager_case_serial }
 }
 
 zg361_b1_rebuild_local_quota_effect = {
@@ -3399,8 +3412,8 @@ zg361_b1_rebuild_local_quota_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = root
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				has_variable = zg361_pending_grade
@@ -3422,7 +3435,7 @@ zg361_b1_rebuild_local_quota_effect = {
 		set_variable = { name = zg361_b1_quota_rounding_local_team_1 value = this }
 		set_variable = { name = zg361_b1_quota_rounding_local_remainder_team value = this }
 		set_variable = { name = zg361_b1_quota_rounding_local_affected_team value = this }
-		set_variable = { name = zg361_b1_quota_rounding_local_operation_seal value = { value = var:zg361_b1_cycle_serial multiply = 100000 add = var:zg361_b1_case_serial } }
+		set_variable = { name = zg361_b1_quota_rounding_local_operation_seal value = { value = var:zg361_b1_manager_cycle_serial multiply = 100000 add = var:zg361_b1_manager_case_serial } }
 		set_variable = { name = zg361_b1_quota_rounding_local_state value = 2 }
 	}
 	if = {
@@ -3432,7 +3445,7 @@ zg361_b1_rebuild_local_quota_effect = {
 	set_variable = { name = zg361_b1_local_top_slots value = var:zg361_b1_quota_top_slots }
 	set_variable = { name = zg361_b1_local_middle_slots value = var:zg361_b1_quota_middle_slots }
 	set_variable = { name = zg361_b1_local_bottom_slots value = var:zg361_b1_quota_bottom_slots }
-	set_variable = { name = zg361_b1_quota_built_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_quota_built_serial value = var:zg361_b1_manager_case_serial }
 	if = {
 		limit = { var:zg361_b1_local_candidate_n >= 1 }
 		set_variable = { name = zg361_b1_local_rank_cursor value = 0 }
@@ -3571,7 +3584,7 @@ zg361_b1_settle_due_debt_effect = {
 			has_variable = zg361_b1_quota_debt_source_trade
 			has_variable = zg361_b1_quota_debt_liability
 			var:zg361_b1_quota_debt_state = 1
-			var:zg361_b1_cycle_serial >= var:zg361_b1_quota_debt_due_cycle
+			var:zg361_b1_manager_cycle_serial >= var:zg361_b1_quota_debt_due_cycle
 			var:zg361_b1_quota_debt_creditor = {
 				has_variable = zg361_b1_quota_credit_state
 				has_variable = zg361_b1_quota_credit_creditor
@@ -3607,8 +3620,8 @@ zg361_b1_settle_due_debt_effect = {
 					has_variable = zg361_pending_grade
 					var:zg361_b1_case_owner = scope:zg361_b1_debt_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3646,8 +3659,8 @@ zg361_b1_settle_due_debt_effect = {
 					has_variable = zg361_pending_grade
 					var:zg361_b1_case_owner = scope:zg361_b1_debt_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3675,8 +3688,8 @@ zg361_b1_settle_due_debt_effect = {
 			set_variable = { name = zg361_b1_quota_debt_after_middle value = var:zg361_pending_35_n }
 			set_variable = { name = zg361_b1_quota_debt_after_bottom value = var:zg361_pending_325_n }
 			set_variable = { name = zg361_b1_quota_debt_state value = 2 }
-			set_variable = { name = zg361_b1_quota_debt_settled_cycle value = var:zg361_b1_cycle_serial }
-			set_variable = { name = zg361_b1_quota_debt_settlement_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_quota_debt_settled_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_quota_debt_settlement_serial value = var:zg361_b1_manager_case_serial }
 			change_variable = { name = zg361_b1_quota_book_version add = 1 }
 			if = {
 				limit = { has_variable = zg361_b1_quota_debt_creditor }
@@ -3697,11 +3710,11 @@ zg361_b1_settle_due_debt_effect = {
 							var:zg361_b1_quota_credit_liability = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_liability
 						}
 						set_variable = { name = zg361_b1_quota_credit_state value = 2 }
-						set_variable = { name = zg361_b1_quota_credit_settled_cycle value = scope:zg361_b1_debt_manager.var:zg361_b1_cycle_serial }
+						set_variable = { name = zg361_b1_quota_credit_settled_cycle value = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial }
 					}
 				}
 			}
-			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 			debug_log = "ZG361B1: one-shot quota responsibility debt settled"
 		}
 	}
@@ -3755,8 +3768,8 @@ zg361_b1_execute_unique_pool_trade_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = scope:zg361_b1_pool_four_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3780,8 +3793,8 @@ zg361_b1_execute_unique_pool_trade_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = scope:zg361_b1_pool_three_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3827,10 +3840,10 @@ zg361_b1_execute_unique_pool_trade_effect = {
 				set_variable = { name = zg361_b1_quota_credit_state value = 1 }
 				set_variable = { name = zg361_b1_quota_credit_creditor value = this }
 				set_variable = { name = zg361_b1_quota_credit_debtor value = scope:zg361_b1_pool_three_manager }
-				set_variable = { name = zg361_b1_quota_credit_due_cycle value = { value = var:zg361_b1_cycle_serial add = 1 } }
+				set_variable = { name = zg361_b1_quota_credit_due_cycle value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
 				set_variable = { name = zg361_b1_quota_credit_source_trade value = root.var:zg361_b1_unique_pool_trade_serial }
 				set_variable = { name = zg361_b1_quota_credit_liability value = root.var:zg361_b1_unique_pool_trade_serial }
-				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
 			}
 			scope:zg361_b1_pool_three_manager = {
 				change_variable = { name = zg361_pending_375_n add = 1 }
@@ -3844,15 +3857,15 @@ zg361_b1_execute_unique_pool_trade_effect = {
 				set_variable = { name = zg361_b1_quota_debt_state value = 1 }
 				set_variable = { name = zg361_b1_quota_debt_kind value = 3 }
 				set_variable = { name = zg361_b1_quota_debt_slots value = 1 }
-				set_variable = { name = zg361_b1_quota_debt_created_cycle value = var:zg361_b1_cycle_serial }
-				set_variable = { name = zg361_b1_quota_debt_due_cycle value = { value = var:zg361_b1_cycle_serial add = 1 } }
+				set_variable = { name = zg361_b1_quota_debt_created_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_quota_debt_due_cycle value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
 				set_variable = { name = zg361_b1_quota_debt_source_trade value = root.var:zg361_b1_unique_pool_trade_serial }
 				set_variable = { name = zg361_b1_quota_debt_creditor value = scope:zg361_b1_pool_four_manager }
 				set_variable = { name = zg361_b1_quota_debt_debtor value = this }
 				set_variable = { name = zg361_b1_quota_debt_approver value = root }
 				set_variable = { name = zg361_b1_quota_debt_liability value = root.var:zg361_b1_unique_pool_trade_serial }
-				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
-				set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+				set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 			}
 			debug_log = "ZG361B1: exact one-slot bilateral trade and next-cycle liability recorded"
 		}
@@ -3894,7 +3907,7 @@ zg361_b1_submit_quota_book_effect = {
 					change_variable = { name = zg361_b1_pool_n add = scope:zg361_b1_ready_manager.var:zg361_cohort_n }
 					scope:zg361_b1_ready_manager = {
 						set_variable = { name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n }
-						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_manager_case_serial }
 					}
 				}
 				if = {
@@ -4028,8 +4041,8 @@ zg361_b1_prepare_bank_huddle_effect = {
 					limit = {
 						var:zg361_b1_case_owner = scope:zg361_b1_huddle_prealloc_manager
 						var:zg361_b1_case_subject = this
-						var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_case_serial
+						var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_manager_case_serial
 						var:zg361_b1_case_state = 5
 						var:zg361_b1_case_active = 1
 						var:zg361_b1_roster_included = 1
@@ -4140,8 +4153,8 @@ zg361_b1_prepare_bank_must_review_effect = {
 						set_variable = { name = zg361_b1_must_review_manager_link_state value = 1 }
 						set_variable = { name = zg361_b1_must_review_manager_link_subject value = scope:zg361_b1_must_review_subject }
 						set_variable = { name = zg361_b1_must_review_manager_link_route value = root.var:zg361_b1_bank_m141_mode }
-						set_variable = { name = zg361_b1_must_review_manager_link_cycle value = var:zg361_b1_cycle_serial }
-						set_variable = { name = zg361_b1_must_review_manager_link_case value = var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_must_review_manager_link_cycle value = var:zg361_b1_manager_cycle_serial }
+						set_variable = { name = zg361_b1_must_review_manager_link_case value = var:zg361_b1_manager_case_serial }
 						set_variable = { name = zg361_b1_must_review_manager_link_book_version_before value = var:zg361_b1_quota_book_version }
 						if = { limit = { root.var:zg361_b1_bank_m141_mode = 2 exists = scope:zg361_b1_must_review_frozen_peer } set_variable = { name = zg361_b1_must_review_manager_link_peer value = scope:zg361_b1_must_review_frozen_peer } }
 					}
@@ -4287,15 +4300,15 @@ zg361_b1_close_common_superior_bank_legacy_unused_effect = {
 			}
 		}
 		set_variable = { name = zg361_b1_cycle_state value = 6 }
-		set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
-		set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_case_serial }
-		set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 		# This loop is owned by the common superior, so ROOT is still the
 		# superior. Cross one committed event boundary to reset ROOT to this
 		# manager before touching manager-owned subject lists or settlement.
 		save_scope_as = zg361_b1_ticket_owner
-		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 		save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 		trigger_event = { id = zg361b1.111 days = 1 }
 	}
@@ -4357,8 +4370,8 @@ zg361_b1_close_common_superior_bank_effect = {
 								has_variable = zg361_b1_case_active
 								var:zg361_b1_case_owner = scope:zg361_b1_unique_pool_manager
 								var:zg361_b1_case_subject = this
-								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_cycle_serial
-								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_case_serial
+								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_case_serial
 								var:zg361_b1_case_state = 5
 								var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -4388,8 +4401,8 @@ zg361_b1_close_common_superior_bank_effect = {
 								has_variable = zg361_b1_case_active
 								var:zg361_b1_case_owner = scope:zg361_b1_unique_pool_manager
 								var:zg361_b1_case_subject = this
-								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_cycle_serial
-								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_case_serial
+								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_case_serial
 								var:zg361_b1_case_state = 5
 								var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -4580,8 +4593,8 @@ zg361_b1_close_common_superior_bank_effect = {
 									has_variable = zg361_b1_case_active
 									var:zg361_b1_case_owner = scope:zg361_b1_allocated_manager
 									var:zg361_b1_case_subject = this
-									var:zg361_b1_cycle_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_cycle_serial
-									var:zg361_b1_case_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_case_serial
+									var:zg361_b1_cycle_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_manager_cycle_serial
+									var:zg361_b1_case_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_manager_case_serial
 									var:zg361_b1_case_state = 5
 									var:zg361_b1_case_active = 1
 								var:zg361_b1_roster_included = 1
@@ -4616,12 +4629,12 @@ zg361_b1_close_common_superior_bank_effect = {
 				zg361_b1_settle_due_debt_effect = yes
 			}
 			set_variable = { name = zg361_b1_cycle_state value = 6 }
-			set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
-			set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_case_serial }
-			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 			save_scope_as = zg361_b1_ticket_owner
-			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 			save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 			trigger_event = { id = zg361b1.111 days = 1 }
 		}
@@ -4632,7 +4645,7 @@ zg361_b1_close_common_superior_bank_effect = {
 zg361_b1_apply_local_quota_effect = {
 	set_variable = { name = zg361_b1_cycle_state value = 6 }
 	zg361_b1_settle_due_debt_effect = yes
-	set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
 	zg361_b1_open_calibration_effect = yes
 }
 
@@ -4647,8 +4660,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		limit = {
 			var:zg361_b1_case_owner = root
 			var:zg361_b1_case_subject = this
-			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 			var:zg361_b1_case_state = 7
 			var:zg361_b1_case_active = 1
 			var:zg361_b1_roster_included = 1
@@ -4674,8 +4687,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = scope:zg361_b1_rerank_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -4793,8 +4806,8 @@ zg361_b1_build_agenda_and_attention_effect = {
 		set_variable = { name = zg361_b1_agenda_header_object_available value = 1 }
 		set_variable = { name = zg361_b1_agenda_header_owner value = this }
 		set_variable = { name = zg361_b1_agenda_header_subject value = this }
-		set_variable = { name = zg361_b1_agenda_header_cycle value = var:zg361_b1_cycle_serial }
-		set_variable = { name = zg361_b1_agenda_header_case value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_agenda_header_cycle value = var:zg361_b1_manager_cycle_serial }
+		set_variable = { name = zg361_b1_agenda_header_case value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_agenda_header_state value = 1 }
 		set_variable = { name = zg361_b1_agenda_chair value = this }
 		set_variable = { name = zg361_b1_agenda_frozen_year value = current_year }
@@ -4813,8 +4826,8 @@ zg361_b1_build_agenda_and_attention_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = scope:zg361_b1_agenda_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -4874,7 +4887,7 @@ zg361_b1_build_agenda_and_attention_effect = {
 	set_variable = { name = zg361_b1_agenda_remaining_top_cursor value = var:zg361_pending_375_n }
 	set_variable = { name = zg361_b1_agenda_remaining_middle_cursor value = var:zg361_pending_35_n }
 	set_variable = { name = zg361_b1_agenda_remaining_bottom_cursor value = var:zg361_pending_325_n }
-	set_variable = { name = zg361_b1_agenda_hash value = { value = var:zg361_b1_case_serial multiply = 1000 } }
+	set_variable = { name = zg361_b1_agenda_hash value = { value = var:zg361_b1_manager_case_serial multiply = 1000 } }
 	ordered_in_list = {
 		list = zg361_b1_agenda_candidates
 		order_by = var:zg361_b1_agenda_sort_key
@@ -4999,5 +5012,5 @@ zg361_b1_build_agenda_and_attention_effect = {
 		name = zg361_b1_attention_remaining_minutes
 		value = { value = var:zg361_b1_attention_total_minutes subtract = var:zg361_b1_attention_spent_minutes min = 0 }
 	}
-	set_variable = { name = zg361_b1_m043_receipt_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_m043_receipt_serial value = var:zg361_b1_manager_case_serial }
 }

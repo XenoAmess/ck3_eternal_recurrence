@@ -475,7 +475,7 @@ class GeneratedFileTests(unittest.TestCase):
             self.assertIn(f"var:{dp}_kpi_due_offset = 1", value)
             self.assertIn(f"var:{dp}_kpi_due_cycle > var:{dp}_kpi_origin_cycle", value)
             self.assertIn(
-                f"var:zg361_b1_cycle_serial >= prev.var:{dp}_kpi_due_cycle",
+                f"var:zg361_b1_manager_cycle_serial >= prev.var:{dp}_kpi_due_cycle",
                 value,
             )
             self.assertIn(
@@ -543,7 +543,7 @@ class GeneratedFileTests(unittest.TestCase):
         self.assertIn("var:zg361_ip_policy_kpi_due_offset = 1", value)
         self.assertIn("var:zg361_ip_policy_kpi_due_cycle > var:zg361_ip_policy_kpi_origin_cycle", value)
         self.assertIn(
-            "var:zg361_b1_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle",
+            "var:zg361_b1_manager_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle",
             value,
         )
         self.assertIn(

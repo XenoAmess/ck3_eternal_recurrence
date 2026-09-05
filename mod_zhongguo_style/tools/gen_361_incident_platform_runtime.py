@@ -1462,8 +1462,8 @@ def _kpi_due_guard(domain: Domain) -> str:
 \t\t\t\tvar:{dp}_kpi_consequence_kind > 0
 \t\t\t\tOR = {{
 \t\t\t\t\tAND = {{
-\t\t\t\t\t\tliege = {{ has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }}
-\t\t\t\t\t\tliege = {{ var:zg361_b1_cycle_serial >= prev.var:{dp}_kpi_due_cycle }}
+\t\t\t\t\t\tliege = {{ has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }}
+\t\t\t\t\t\tliege = {{ var:zg361_b1_manager_cycle_serial >= prev.var:{dp}_kpi_due_cycle }}
 \t\t\t\t\t}}
 \t\t\t\t\tAND = {{
 \t\t\t\t\t\tliege = {{ NOT = {{ has_character_flag = zg361_b1_cycle_active }} has_variable = zg361_review_serial }}
@@ -1498,8 +1498,8 @@ def _policy_kpi_guard() -> str:
 \t\t\t\tvar:zg361_ip_policy_kpi_entry_count > 0
 \t\t\t\tOR = {
 \t\t\t\t\tAND = {
-\t\t\t\t\t\tliege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
-\t\t\t\t\t\tliege = { var:zg361_b1_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle }
+\t\t\t\t\t\tliege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }
+\t\t\t\t\t\tliege = { var:zg361_b1_manager_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle }
 \t\t\t\t\t}
 \t\t\t\t\tAND = {
 \t\t\t\t\t\tliege = { NOT = { has_character_flag = zg361_b1_cycle_active } has_variable = zg361_review_serial }
@@ -1609,9 +1609,9 @@ zg361_ip_consume_due_kpi_inputs_effect = {
 	if = {
 		limit = {
 			zg361_is_reviewable_vassal_trigger = yes
-			liege = { zg361_is_celestial_liege_trigger = yes has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
+			liege = { zg361_is_celestial_liege_trigger = yes has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }
 		}
-		set_variable = { name = zg361_ip_kpi_consumer_cycle value = liege.var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_ip_kpi_consumer_cycle value = liege.var:zg361_b1_manager_cycle_serial }
 	}
 	else_if = {
 		limit = { zg361_is_reviewable_vassal_trigger = yes liege = { zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial } }

@@ -51,11 +51,11 @@ def opened_owner_projection() -> OwnerProjection:
     prefix = opened.split("zg361_b1_classify_function_effect = yes", 1)[0]
     added = re.findall(r"add_character_flag\s*=\s*(\w+)", prefix)
     serial_initial = re.search(
-        r"set_variable\s*=\s*\{\s*name = zg361_b1_cycle_serial value = (\d+)\s*\}",
+        r"set_variable\s*=\s*\{\s*name = zg361_b1_manager_cycle_serial value = (\d+)\s*\}",
         prefix,
     )
     serial_add = re.search(
-        r"change_variable\s*=\s*\{\s*name = zg361_b1_cycle_serial add = (\d+)\s*\}",
+        r"change_variable\s*=\s*\{\s*name = zg361_b1_manager_cycle_serial add = (\d+)\s*\}",
         prefix,
     )
     state = re.search(
@@ -67,7 +67,7 @@ def opened_owner_projection() -> OwnerProjection:
     return OwnerProjection(
         flags=set(added),
         variables={
-            "zg361_b1_cycle_serial": int(serial_initial[1]) + int(serial_add[1]),
+            "zg361_b1_manager_cycle_serial": int(serial_initial[1]) + int(serial_add[1]),
             "zg361_b1_cycle_state": int(state[1]),
         },
     )
@@ -156,7 +156,7 @@ class B1WitnessSourceTests(unittest.TestCase):
             "zg361_b1_initialize_subject_case_effect",
         )
         for assignment in (
-            "name = zg361_b1_cycle_serial value = root.var:zg361_b1_cycle_serial",
+            "name = zg361_b1_cycle_serial value = root.var:zg361_b1_manager_cycle_serial",
             "name = zg361_b1_case_state value = 1",
             "name = zg361_b1_case_active value = 1",
         ):

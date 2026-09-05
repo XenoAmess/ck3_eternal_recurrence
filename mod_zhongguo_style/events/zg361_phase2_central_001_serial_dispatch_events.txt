@@ -45,14 +45,15 @@ zg361p2c.3 = {
     type = character_event
     hidden = yes
     immediate = {
+        zg361_b1_migrate_manager_identity_effect = yes
         if = {
             limit = {
                 has_variable = zg361_p2c_deferred_reinit
                 var:zg361_p2c_deferred_reinit = 1
                 has_variable = zg361_review_serial
-                has_variable = zg361_b1_case_serial
+                has_variable = zg361_b1_manager_case_serial
                 var:zg361_review_serial = var:zg361_p2c_deferred_reinit_cycle
-                var:zg361_b1_case_serial = var:zg361_p2c_deferred_reinit_b1_case
+                var:zg361_b1_manager_case_serial = var:zg361_p2c_deferred_reinit_b1_case
             }
             remove_variable = zg361_p2c_deferred_reinit
             zg361_p2c_on_review_published_effect = yes

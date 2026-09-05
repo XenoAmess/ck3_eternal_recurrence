@@ -34,8 +34,8 @@ zg361_ip_next_cycle_kpi_value = {
 				var:zg361_ip_x_kpi_consequence_kind > 0
 				OR = {
 					AND = {
-						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
-						liege = { var:zg361_b1_cycle_serial >= prev.var:zg361_ip_x_kpi_due_cycle }
+						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }
+						liege = { var:zg361_b1_manager_cycle_serial >= prev.var:zg361_ip_x_kpi_due_cycle }
 					}
 					AND = {
 						liege = { NOT = { has_character_flag = zg361_b1_cycle_active } has_variable = zg361_review_serial }
@@ -77,8 +77,8 @@ zg361_ip_next_cycle_kpi_value = {
 				var:zg361_ip_y_kpi_consequence_kind > 0
 				OR = {
 					AND = {
-						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
-						liege = { var:zg361_b1_cycle_serial >= prev.var:zg361_ip_y_kpi_due_cycle }
+						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }
+						liege = { var:zg361_b1_manager_cycle_serial >= prev.var:zg361_ip_y_kpi_due_cycle }
 					}
 					AND = {
 						liege = { NOT = { has_character_flag = zg361_b1_cycle_active } has_variable = zg361_review_serial }
@@ -120,8 +120,8 @@ zg361_ip_next_cycle_kpi_value = {
 				var:zg361_ip_z_kpi_consequence_kind > 0
 				OR = {
 					AND = {
-						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
-						liege = { var:zg361_b1_cycle_serial >= prev.var:zg361_ip_z_kpi_due_cycle }
+						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }
+						liege = { var:zg361_b1_manager_cycle_serial >= prev.var:zg361_ip_z_kpi_due_cycle }
 					}
 					AND = {
 						liege = { NOT = { has_character_flag = zg361_b1_cycle_active } has_variable = zg361_review_serial }
@@ -158,8 +158,8 @@ zg361_ip_next_cycle_kpi_value = {
 				var:zg361_ip_policy_kpi_entry_count > 0
 				OR = {
 					AND = {
-						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
-						liege = { var:zg361_b1_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle }
+						liege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_manager_cycle_serial }
+						liege = { var:zg361_b1_manager_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle }
 					}
 					AND = {
 						liege = { NOT = { has_character_flag = zg361_b1_cycle_active } has_variable = zg361_review_serial }

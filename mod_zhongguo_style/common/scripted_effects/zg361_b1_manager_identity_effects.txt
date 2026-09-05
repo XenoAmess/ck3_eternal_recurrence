@@ -1,0 +1,21 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# CURRENT is a manager (possibly also a subject). Legacy subject serials are
+# not recovery sources: R66 proved a superior overwrites them during open_cycle.
+# These witnesses have manager-only producers and each missing field migrates
+# independently; subsequent calls never change an existing manager identity.
+zg361_b1_migrate_manager_identity_effect = {
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_b1_manager_cycle_serial }
+			has_variable = zg361_b1_policy_next_review_serial
+		}
+		set_variable = { name = zg361_b1_manager_cycle_serial value = { value = var:zg361_b1_policy_next_review_serial subtract = 1 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_b1_manager_case_serial }
+			has_variable = zg361_b1_m053_receipt_serial
+		}
+		set_variable = { name = zg361_b1_manager_case_serial value = var:zg361_b1_m053_receipt_serial }
+	}
+}

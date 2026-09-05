@@ -77,6 +77,9 @@ class B1RuntimeFoundationTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.effect_parts = tuple(read(relative) for relative in B1_EFFECT_FILES)
         cls.effects = "\n".join(cls.effect_parts)
+        cls.manager_identity = read(
+            "common/scripted_effects/zg361_b1_manager_identity_effects.txt"
+        )
         cls.events = read("events/zg361_b1_runtime_events.txt")
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.jingcha = read(
@@ -159,6 +162,132 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             bodies[0].rstrip() + "\n\n" + bodies[1].lstrip()
         )
         self.assertEqual(reconstructed, render_effects())
+
+    def test_manager_identity_migration_has_own_one_effect_shard(self) -> None:
+        keys = re.findall(r"(?m)^(zg361_b1_\w+) = \{", self.manager_identity)
+        self.assertEqual(keys, ["zg361_b1_migrate_manager_identity_effect"])
+        self.assertNotIn(keys[0] + " = {", self.effects)
+        migration = top_level_block(self.manager_identity, keys[0])
+        self.assertNotIn("var:zg361_b1_cycle_serial", migration)
+        self.assertNotIn("var:zg361_b1_case_serial", migration)
+        self.assertEqual(migration.count("set_variable ="), 2)
+        for field, witness in (
+            ("cycle", "policy_next_review_serial"),
+            ("case", "m053_receipt_serial"),
+        ):
+            self.assertRegex(
+                migration,
+                rf"NOT = \{{ has_variable = zg361_b1_manager_{field}_serial \}}"
+                rf"\s+has_variable = zg361_b1_{witness}",
+            )
+            self.assertEqual(
+                self.effects.count(f"name = zg361_b1_{witness} value ="), 1
+            )
+        self.assertIn(
+            "name = zg361_b1_policy_next_review_serial value = { value = "
+            "var:zg361_b1_manager_cycle_serial add = 1 }", self.effects
+        )
+        self.assertIn(
+            "name = zg361_b1_m053_receipt_serial value = "
+            "var:zg361_b1_manager_case_serial", self.effects
+        )
+
+    def test_r66_source_derived_dual_role_identity_vectors(self) -> None:
+        # A narrow source-derived assignment model, not CK3 runtime evidence.
+        # Keep the exact production migration expressions and initializer
+        # sources in this regression instead of inventing an alternate path.
+        rules = re.findall(
+            r"name = (zg361_b1_manager_\w+_serial) value = "
+            r"(?:\{ value = )?var:(zg361_b1_\w+)"
+            r"(?: subtract = (\d+))?", self.manager_identity
+        )
+        self.assertEqual(len(rules), 2)
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        assignments = re.findall(
+            r"name = (zg361_b1_(?:cycle|case)_serial) value = "
+            r"root.var:(zg361_b1_manager_\w+_serial)", initialize
+        )
+        self.assertEqual(len(assignments), 2)
+
+        def migrate(character: dict[str, int]) -> None:
+            for target, witness, subtract in rules:
+                if target not in character and witness in character:
+                    character[target] = character[witness] - int(subtract or 0)
+
+        character = {
+            "zg361_b1_cycle_serial": 19, "zg361_b1_case_serial": 19,
+            "zg361_b1_policy_next_review_serial": 20,
+            "zg361_b1_m053_receipt_serial": 19,
+        }
+        for incoming in (1, 2):
+            migrate(character)
+            owner = {target: incoming for target, _, _ in rules}
+            for subject_field, manager_source in assignments:
+                character[subject_field] = owner[manager_source]
+            self.assertEqual(
+                [character[target] for target, _, _ in rules], [19, 19]
+            )
+            self.assertEqual(
+                [character[target] for target, _ in assignments],
+                [incoming, incoming],
+            )
+        # A genuinely old ticket 17 stays stale; migration never coerces it.
+        self.assertNotEqual([character[target] for target, _, _ in rules], [17, 17])
+        character["zg361_b1_manager_cycle_serial"] = 20
+        migrate(character)
+        self.assertEqual(character["zg361_b1_manager_cycle_serial"], 20)
+        del character["zg361_b1_manager_case_serial"]
+        migrate(character)
+        self.assertEqual(character["zg361_b1_manager_case_serial"], 19)
+        fresh = {"zg361_b1_cycle_serial": 999, "zg361_b1_case_serial": 999}
+        migrate(fresh)
+        self.assertEqual(len(fresh), 2)  # Shared subject values are not witnesses.
+
+    def test_manager_entries_migrate_and_subject_abi_stays_separate(self) -> None:
+        call = "zg361_b1_migrate_manager_identity_effect = yes"
+        opener = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        initialize = top_level_block(self.effects, "zg361_b1_initialize_subject_case_effect")
+        self.assertLess(opener.index(call), opener.index("change_variable ="))
+        self.assertNotRegex(opener, r"name = zg361_b1_(?:cycle|case)_serial\b")
+        self.assertLess(initialize.index(call), initialize.index("name = zg361_b1_cycle_serial"))
+        self.assertIn("limit = { has_character_flag = zg361_b1_cycle_active }", initialize)
+        for event_id in (100, 101, 102, 103, 110, 111, 122, 123, 124, 125):
+            event = top_level_block(self.events, f"zg361b1.{event_id}")
+            self.assertIn("immediate = {\n\t\t" + call, event)
+        for event_id in (121, 200, 201, 126):
+            self.assertNotIn(call, top_level_block(self.events, f"zg361b1.{event_id}"))
+        for event_id in (100, 101, 102, 103, 111, 122, 123, 124, 125):
+            event = top_level_block(self.events, f"zg361b1.{event_id}")
+            for field in ("cycle", "case"):
+                self.assertIn(f"has_variable = zg361_b1_manager_{field}_serial", event)
+                self.assertIn(f"var:zg361_b1_manager_{field}_serial = scope:", event)
+        must_review = top_level_block(self.effects, "zg361_b1_consume_must_review_effect")
+        for field in ("cycle", "case"):
+            self.assertIn(
+                f"var:zg361_b1_must_review_manager_link_{field} = "
+                f"var:zg361_b1_manager_{field}_serial", must_review
+            )
+            self.assertEqual(must_review.count(
+                f"var:zg361_b1_{field}_serial = root.var:zg361_b1_manager_{field}_serial"
+            ), 2)
+
+    def test_finalize_without_capital_preserves_cohort_and_start_facts(self) -> None:
+        finalize = top_level_block(self.effects, "zg361_b1_finalize_subject_facts_effect")
+        guard = "limit = { var:zg361_b1_baseline_available = 1 exists = capital_county }"
+        self.assertLess(finalize.index(guard), finalize.index("capital_county.development_level"))
+        fallback = finalize.rsplit("\telse_if = {", 1)[1].split(
+            "\tif = {\n\t\tlimit = { root.var:zg361_b1_m001_mode", 1
+        )[0]
+        self.assertIn("name = zg361_b1_baseline_available value = 0", fallback)
+        self.assertIn("name = zg361_b1_baseline_state_delta value = 0", fallback)
+        self.assertIn('debug_log = "ZG361B1:baseline-unavailable-no-capital"', fallback)
+        self.assertNotIn("capital_county.", fallback)
+        self.assertNotIn("baseline_start_", fallback)
+        self.assertNotIn("roster_included", fallback)
+        self.assertNotIn("clear_variable_list", fallback)
+        self.assertLess(finalize.index("name = zg361_b1_difficulty_score_adjustment value = 0"), finalize.index(guard))
 
     def test_cycle_uses_persistent_subject_roster(self) -> None:
         self.assertIn("clear_variable_list = zg361_b1_subjects", self.effects)
@@ -1397,8 +1526,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         for identity in (
             "var:zg361_b1_case_owner = root",
             "var:zg361_b1_case_subject = this",
-            "var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial",
-            "var:zg361_b1_case_serial = root.var:zg361_b1_case_serial",
+            "var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial",
+            "var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial",
             "var:zg361_b1_case_state = 3",
             "var:zg361_b1_case_active = 1",
             "var:zg361_b1_roster_included = 1",
@@ -1421,11 +1550,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn("var:zg361_b1_case_owner = root", consumer)
             self.assertIn("var:zg361_b1_case_subject = this", consumer)
             self.assertIn(
-                "var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial",
+                "var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial",
                 consumer,
             )
             self.assertIn(
-                "var:zg361_b1_case_serial = root.var:zg361_b1_case_serial",
+                "var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial",
                 consumer,
             )
             self.assertIn("var:zg361_b1_case_state = 3", consumer)
@@ -1514,8 +1643,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         for token in (
             "var:zg361_b1_case_owner = scope:zg361_b1_conflict_manager",
             "var:zg361_b1_case_subject = this",
-            "var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_cycle_serial",
-            "var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_case_serial",
+            "var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_cycle_serial",
+            "var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_case_serial",
             "var:zg361_b1_case_state = 5",
             "var:zg361_b1_case_active = 1",
             "var:zg361_b1_roster_included = 1",
@@ -1533,7 +1662,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("var:zg361_b1_m009_mode != 3", swap)
         self.assertIn("var:zg361_b1_cycle_state = 7", swap)
         self.assertIn(
-            "NOT = { var:zg361_b1_m009_receipt_serial = var:zg361_b1_case_serial }",
+            "NOT = { var:zg361_b1_m009_receipt_serial = var:zg361_b1_manager_case_serial }",
             swap,
         )
         self.assertEqual(swap.count("var:zg361_b1_recusal_active = 0"), 2)
@@ -1686,8 +1815,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         for token in (
             "var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager",
             "var:zg361_b1_case_subject = this",
-            "var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial",
-            "var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial",
+            "var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial",
+            "var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial",
             "var:zg361_b1_case_state = 5",
             "var:zg361_b1_case_active = 1",
             "var:zg361_b1_roster_included = 1",
@@ -1764,11 +1893,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "var:zg361_b1_recusal_review_receipt_subject = this", review
         )
         self.assertIn(
-            "var:zg361_b1_recusal_review_receipt_cycle = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial",
+            "var:zg361_b1_recusal_review_receipt_cycle = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial",
             review,
         )
         self.assertIn(
-            "var:zg361_b1_recusal_review_receipt_case = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial",
+            "var:zg361_b1_recusal_review_receipt_case = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial",
             review,
         )
         self.assertIn("var:zg361_b1_recusal_review_receipt_state = 2", review)
@@ -1929,7 +2058,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn(required, source)
 
         self.assertIn(
-            "value = { value = var:zg361_b1_case_serial multiply = 1000 }",
+            "value = { value = var:zg361_b1_manager_case_serial multiply = 1000 }",
             source,
         )
         self.assertIn(
@@ -1949,7 +2078,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             source,
         )
         self.assertIn(
-            "name = zg361_b1_m360_source_all_meet_receipt_serial value = var:zg361_b1_case_serial",
+            "name = zg361_b1_m360_source_all_meet_receipt_serial value = var:zg361_b1_manager_case_serial",
             source,
         )
         self.assertIn("name = zg361_b1_m360_source_id", source)
@@ -2508,11 +2637,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             diagnostic,
         )
         expected_reads = (
-            ("manager_cycle_before", "cycle_serial"),
-            ("manager_case_before", "case_serial"),
+            ("manager_cycle_before", "manager_cycle_serial"),
+            ("manager_case_before", "manager_case_serial"),
             ("manager_state_before", "cycle_state"),
-            ("incoming_subject_cycle", "cycle_serial"),
-            ("incoming_subject_case", "case_serial"),
+            ("incoming_subject_cycle", "manager_cycle_serial"),
+            ("incoming_subject_case", "manager_case_serial"),
         )
         midcycle = top_level_block(self.events, "zg361b1.100")
         stale = midcycle.split(
@@ -2525,8 +2654,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         for section, reads in (
             (diagnostic, expected_reads),
             (stale, (
-                ("manager_cycle_current", "cycle_serial"),
-                ("manager_case_current", "case_serial"),
+                ("manager_cycle_current", "manager_cycle_serial"),
+                ("manager_case_current", "manager_case_serial"),
                 ("manager_state_current", "cycle_state"),
             )),
         ):
@@ -2569,14 +2698,18 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             prune.index("clear_variable_list = zg361_b1_subjects"),
         )
         self.assertNotIn("limit = { exists = this }", prune)
-
-        midcycle_event = top_level_block(self.events, "zg361b1.100")
-        self.assertLess(
-            midcycle_event.index(
-                "zg361_b1_prune_unavailable_subjects_effect = yes"
-            ),
-            midcycle_event.index("zg361_b1_midcycle_dispatcher_effect = yes"),
-        )
+        self.assertNotIn("is_landed", prune)
+        for event_id, first_consumer in (
+            (100, "zg361_b1_midcycle_dispatcher_effect"),
+            (102, "zg361_b1_prepare_facts_effect"),
+        ):
+            event = top_level_block(self.events, f"zg361b1.{event_id}")
+            self.assertEqual(event.count("zg361_b1_prune_unavailable_subjects_effect = yes"), 1)
+            self.assertLess(
+                event.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+                event.index(first_consumer + " = yes"),
+            )
+        self.assertNotIn("zg361_b1_prune_unavailable_subjects_effect = yes", top_level_block(self.events, "zg361b1.103"))
 
     def test_roster_change_receipts_are_real_and_consumed_by_denominator(self) -> None:
         initialize = top_level_block(
@@ -2721,8 +2854,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         for identity in (
             "var:zg361_b1_case_owner = root",
             "var:zg361_b1_case_subject = this",
-            "var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial",
-            "var:zg361_b1_case_serial = root.var:zg361_b1_case_serial",
+            "var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial",
+            "var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial",
             "liege = root",
         ):
             self.assertIn(identity, snapshot)
@@ -2950,7 +3083,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn(field, trade)
         self.assertIn("NOT = { var:zg361_b1_quota_credit_state = 1 }", trade)
         self.assertGreaterEqual(
-            trade.count("value = { value = var:zg361_b1_cycle_serial add = 1 }"),
+            trade.count("value = { value = var:zg361_b1_manager_cycle_serial add = 1 }"),
             2,
         )
         settle = top_level_block(
@@ -2958,7 +3091,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertIn("var:zg361_b1_quota_debt_state = 1", settle)
         self.assertIn(
-            "var:zg361_b1_cycle_serial >= var:zg361_b1_quota_debt_due_cycle",
+            "var:zg361_b1_manager_cycle_serial >= var:zg361_b1_quota_debt_due_cycle",
             settle,
         )
         self.assertIn("name = zg361_b1_quota_debt_state value = 2", settle)
@@ -3224,7 +3357,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("name = zg361_b1_reward_snapshot_hash", gate)
         self.assertIn("name = zg361_b1_reward_snapshot_checksum", gate)
         self.assertIn(
-            "value = var:zg361_b1_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version",
+            "value = var:zg361_b1_manager_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version",
             gate,
         )
         self.assertIn("name = zg361_b1_pending_reward_expected_n value = 0", gate)

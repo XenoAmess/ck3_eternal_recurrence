@@ -172,6 +172,36 @@ The loader callback contract was merged as `56e786c` from
 were deleted immediately after the focused `4/4` test passed. Its detached
 worktree and static artifacts remain available for evidence.
 
+## 2026-09-05 branch-debt retirement
+
+The repository had accumulated **199 local branches, 198 GitHub branches, and
+293 registered worktrees**. The dominant cause was operational rather than
+product divergence: earlier work created one branch and worktree per
+diagnostic, frozen candidate, replay, or evidence package, then integrated the
+result through cherry-pick or a later reimplementation. The completed branch
+refs were not retired. A stale local `master` that was 636 commits behind the
+remote also made ancestry-only checks misclassify most integrated work as
+unmerged.
+
+The cleanup therefore used current `origin/master`, patch equivalence, commit
+subject mapping, and content comparison rather than ancestry alone. It retired
+175 patch-equivalent local and remote refs first, then reviewed every remaining
+non-protected branch. The final 20 GitHub candidates were all either present on
+master or superseded by later production implementations; none required a
+merge. Their occupied worktrees were switched to detached HEAD at the same
+commit before their refs were removed. Dirty and untracked bytes were retained,
+and no worktree, clone, artifact, build directory, or process-assets directory
+was deleted. The foreign-root promo-toolchain `main` history was removed from
+this repository only after commit `fbdf990` was proven to be an ancestor of
+the independent tool repository's `origin/main`.
+
+After this pass, both the local repository and GitHub contain only `master` and
+the temporary current integration ref. They point to the same pre-repair commit;
+the integration ref must be retired immediately after the in-flight B1 repair
+is committed and fast-forwarded to `master`. Future evidence freezes use
+detached HEAD by default, and each completed work package retires its branch
+ref as part of delivery rather than as a later cleanup project.
+
 ## 合并与清理 checklist
 
 - [ ] base SHA、owner、reason、acceptance、deadline 和 status 已进 ledger；

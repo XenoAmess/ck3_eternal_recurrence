@@ -1330,11 +1330,11 @@ zg361_mg_apply_due_distribution_policy_effect = {
 			AND = { var:zg361_mg_distribution_policy_due_cycle >= { value = var:zg361_mg_distribution_policy_source_cycle add = 1 } var:zg361_mg_distribution_policy_due_cycle <= { value = var:zg361_mg_distribution_policy_source_cycle add = 1 } }
 			OR = {
 				AND = {
-					has_variable = zg361_b1_cycle_serial
-					var:zg361_b1_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
+					has_variable = zg361_b1_manager_cycle_serial
+					var:zg361_b1_manager_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle
 				}
 				AND = {
-					NOT = { has_variable = zg361_b1_cycle_serial }
+					NOT = { has_variable = zg361_b1_manager_cycle_serial }
 					has_variable = zg361_review_serial
 					var:zg361_review_serial >= var:zg361_mg_distribution_policy_source_cycle
 				}
@@ -1345,7 +1345,7 @@ zg361_mg_apply_due_distribution_policy_effect = {
 		}
 		set_variable = { name = zg361_mg_distribution_effective_mode value = var:zg361_mg_distribution_policy_mode }
 		set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_mg_distribution_policy_due_cycle }
-		if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_cycle_serial } }
+		if = { limit = { has_variable = zg361_b1_manager_cycle_serial } set_variable = { name = zg361_mg_distribution_effective_cycle value = var:zg361_b1_manager_cycle_serial } }
 		set_variable = { name = zg361_mg_distribution_effective_source_cycle value = var:zg361_mg_distribution_policy_source_cycle }
 		set_variable = { name = zg361_mg_distribution_effective_source_case value = var:zg361_mg_distribution_policy_source_case }
 		set_variable = { name = zg361_mg_distribution_effective_input_revision value = var:zg361_mg_distribution_policy_input_revision }

@@ -3,6 +3,7 @@
 # READINESS: static-ready. No CK3 parser, paused snapshot or live evidence is claimed.
 
 zg361_p2c_pump_effect = {
+    zg361_b1_migrate_manager_identity_effect = yes
     if = {
         limit = {
             has_game_rule = zg361_on
@@ -16,12 +17,12 @@ zg361_p2c_pump_effect = {
             has_variable = zg361_p2c_subject
             has_variable = zg361_p2c_result_case
             has_variable = zg361_review_serial
-            has_variable = zg361_b1_cycle_serial
-            has_variable = zg361_b1_case_serial
+            has_variable = zg361_b1_manager_cycle_serial
+            has_variable = zg361_b1_manager_case_serial
             has_variable = zg361_b1_closure_state
             var:zg361_review_serial = var:zg361_p2c_cycle
-            var:zg361_b1_cycle_serial = var:zg361_p2c_b1_cycle
-            var:zg361_b1_case_serial = var:zg361_p2c_b1_case
+            var:zg361_b1_manager_cycle_serial = var:zg361_p2c_b1_cycle
+            var:zg361_b1_manager_case_serial = var:zg361_p2c_b1_case
             var:zg361_b1_closure_state = 4
             var:zg361_p2c_subject = {
                 is_alive = yes

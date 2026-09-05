@@ -22,9 +22,9 @@ zg361_b2_consume_pip_performance_evidence_effect = {
 					AND = {
 						root = {
 							has_character_flag = zg361_b1_cycle_active
-							has_variable = zg361_b1_cycle_serial
+							has_variable = zg361_b1_manager_cycle_serial
 						}
-						root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+						root.var:zg361_b1_manager_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
 					}
 					AND = {
 						root = {
@@ -52,11 +52,11 @@ zg361_b2_consume_pip_performance_evidence_effect = {
 			limit = {
 				root = {
 					has_character_flag = zg361_b1_cycle_active
-					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_manager_cycle_serial
 				}
-				root.var:zg361_b1_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
+				root.var:zg361_b1_manager_cycle_serial >= var:zg361_b2_pip_performance_evidence_due_cycle
 			}
-			set_variable = { name = zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+			set_variable = { name = zg361_b2_pip_performance_evidence_consumed_cycle value = root.var:zg361_b1_manager_cycle_serial }
 		}
 		set_variable = { name = zg361_b2_pip_performance_evidence_consumed_case value = var:zg361_b2_pip_performance_evidence_source_case }
 		debug_log = "ZG361B2: terminal PIP evidence consumed once by a later KPI computation"

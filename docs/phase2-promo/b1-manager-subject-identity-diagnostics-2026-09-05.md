@@ -3,6 +3,11 @@
 Status: `static-ready / diagnostic-live-pending`. No CK3 session was started
 or attached by this work package. This does not close the promotion source.
 
+Update: R66 subsequently proved the dual-role writes for player `29037`.
+The original investigation below is retained as historical evidence;
+[the R66 production fix record](b1-r66-manager-subject-fix-2026-09-05.md)
+supersedes its hypothesis and migration status, not its source-closure boundary.
+
 ## Why this observation is needed
 
 R59 and R61 contain stale B1 tickets and central aborts, but the previous

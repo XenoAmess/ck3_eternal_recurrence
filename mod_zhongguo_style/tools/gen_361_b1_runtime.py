@@ -72,8 +72,8 @@ def render_peer_slot_consumer(slot: int) -> str:
 \t\t\thas_variable = zg361_b1_peer_slot_{slot}_common_task_defender
 \t\t\tvar:zg361_b1_case_owner = root
 \t\t\tvar:zg361_b1_case_subject = this
-\t\t\tvar:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-\t\t\tvar:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+\t\t\tvar:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+\t\t\tvar:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 \t\t\tvar:zg361_b1_case_state = 3
 \t\t\tvar:zg361_b1_case_active = 1
 \t\t\tvar:zg361_b1_roster_included = 1
@@ -386,13 +386,13 @@ __M360_SOURCE_CLEANUP__
 	# current tuple is bindable, every non-ready terminal gets an explicit type.
 	if = {
 		limit = {
-			has_variable = zg361_b1_cycle_serial
-			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_manager_cycle_serial
+			has_variable = zg361_b1_manager_case_serial
 			has_variable = zg361_b1_cycle_state
 		}
 		set_variable = { name = zg361_b1_m360_source_manager value = this }
-		set_variable = { name = zg361_b1_m360_source_cycle value = var:zg361_b1_cycle_serial }
-		set_variable = { name = zg361_b1_m360_source_case value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m360_source_cycle value = var:zg361_b1_manager_cycle_serial }
+		set_variable = { name = zg361_b1_m360_source_case value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_m360_source_state value = var:zg361_b1_cycle_state }
 		set_variable = { name = zg361_b1_m360_source_status value = 3 }
 		set_variable = { name = zg361_b1_m360_source_reason value = 101 }
@@ -421,8 +421,8 @@ __M360_SOURCE_CLEANUP__
 	if = {
 		limit = {
 			has_variable_list = zg361_b1_processing_subjects
-			has_variable = zg361_b1_cycle_serial
-			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_manager_cycle_serial
+			has_variable = zg361_b1_manager_case_serial
 			has_variable = zg361_b1_cycle_state
 			has_variable = zg361_b1_closure_state
 			has_variable = zg361_b1_processing_n
@@ -445,7 +445,7 @@ __M360_SOURCE_CLEANUP__
 		}
 		set_variable = {
 			name = zg361_b1_m360_work_member_hash
-			value = { value = var:zg361_b1_case_serial multiply = 1000 }
+			value = { value = var:zg361_b1_manager_case_serial multiply = 1000 }
 		}
 		set_variable = {
 			name = zg361_b1_m360_work_agenda_closed_n
@@ -462,10 +462,10 @@ __M360_SOURCE_CLEANUP__
 				var:zg361_b1_agenda_header_object_available = 1
 				var:zg361_b1_agenda_header_owner = this
 				var:zg361_b1_agenda_header_subject = this
-				var:zg361_b1_agenda_header_cycle = var:zg361_b1_cycle_serial
-				var:zg361_b1_agenda_header_case = var:zg361_b1_case_serial
+				var:zg361_b1_agenda_header_cycle = var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_agenda_header_case = var:zg361_b1_manager_case_serial
 				var:zg361_b1_agenda_header_state = 2
-				var:zg361_b1_agenda_closed_case = var:zg361_b1_case_serial
+				var:zg361_b1_agenda_closed_case = var:zg361_b1_manager_case_serial
 				var:zg361_b1_m360_work_agenda_closed_n = var:zg361_b1_agenda_n
 				var:zg361_b1_quota_conservation_valid = 1
 				var:zg361_b1_quota_recount_bottom = var:zg361_pending_325_n
@@ -524,8 +524,8 @@ __M360_SOURCE_CLEANUP__
 						limit = {
 							var:zg361_b1_case_owner = root
 							var:zg361_b1_case_subject = this
-							var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-							var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+							var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+							var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 							var:zg361_b1_case_state = 8
 							var:zg361_b1_case_active = 0
 							var:zg361_b1_roster_included = 1
@@ -598,19 +598,19 @@ __M360_SOURCE_CLEANUP__
 					var:zg361_b1_m360_work_forced_count = var:zg361_pending_325_n
 				}
 				set_variable = { name = zg361_b1_m360_source_manager value = this }
-				set_variable = { name = zg361_b1_m360_source_cycle value = var:zg361_b1_cycle_serial }
-				set_variable = { name = zg361_b1_m360_source_case value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m360_source_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_m360_source_case value = var:zg361_b1_manager_case_serial }
 				set_variable = { name = zg361_b1_m360_source_state value = 8 }
 				set_variable = { name = zg361_b1_m360_source_member_count value = var:zg361_b1_m360_work_member_count }
 				set_variable = { name = zg361_b1_m360_source_member_hash value = var:zg361_b1_m360_work_member_hash }
 				set_variable = { name = zg361_b1_m360_source_agenda_count value = var:zg361_b1_agenda_n }
 				set_variable = { name = zg361_b1_m360_source_agenda_hash value = var:zg361_b1_agenda_new_hash }
 				set_variable = { name = zg361_b1_m360_source_quota value = var:zg361_pending_325_n }
-				set_variable = { name = zg361_b1_m360_source_all_meet_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m360_source_all_meet_receipt_serial value = var:zg361_b1_manager_case_serial }
 				set_variable = { name = zg361_b1_m360_source_forced_count value = var:zg361_b1_m360_work_forced_count }
 				set_variable = {
 					name = zg361_b1_m360_source_id
-					value = { value = var:zg361_b1_cycle_serial multiply = 1000000 add = { value = var:zg361_b1_case_serial multiply = 1000 } add = 360 }
+					value = { value = var:zg361_b1_manager_cycle_serial multiply = 1000000 add = { value = var:zg361_b1_manager_case_serial multiply = 1000 } add = 360 }
 				}
 				set_variable = {
 					name = zg361_b1_m360_source_hash
@@ -618,7 +618,7 @@ __M360_SOURCE_CLEANUP__
 						value = var:zg361_b1_m360_source_id
 						add = var:zg361_b1_m360_work_member_hash
 						add = var:zg361_b1_agenda_new_hash
-						add = { value = var:zg361_b1_case_serial multiply = 137 }
+						add = { value = var:zg361_b1_manager_case_serial multiply = 137 }
 						add = { value = var:zg361_pending_325_n multiply = 360 }
 						add = var:zg361_b1_m360_work_m357_hash_sum
 					}
@@ -712,11 +712,11 @@ def render_policy_freeze_blocks() -> str:
 \t\t\tvar:zg361_b1_m{key}_mode = 3
 \t\t\ttrigger_if = {{
 \t\t\t\tlimit = {{ has_variable = zg361_b1_m{key}_policy_debt_serial }}
-\t\t\t\tNOT = {{ var:zg361_b1_m{key}_policy_debt_serial = var:zg361_b1_case_serial }}
+\t\t\t\tNOT = {{ var:zg361_b1_m{key}_policy_debt_serial = var:zg361_b1_manager_case_serial }}
 \t\t\t}}
 \t\t\ttrigger_else = {{ always = yes }}
 \t\t}}
-\t\tset_variable = {{ name = zg361_b1_m{key}_policy_debt_serial value = var:zg361_b1_case_serial }}
+\t\tset_variable = {{ name = zg361_b1_m{key}_policy_debt_serial value = var:zg361_b1_manager_case_serial }}
 \t\tchange_variable = {{ name = zg361_b1_policy_debt_cycle_n add = 1 }}
 \t\tchange_variable = {{ name = zg361_b1_policy_debt_open_n add = 1 }}
 \t\tset_variable = {{ name = zg361_b1_policy_debt_due_year value = {{ value = current_year add = 1 }} }}
@@ -748,11 +748,11 @@ def render_stage_s_policy_freeze_blocks() -> str:
 \t\t\tvar:zg361_b1_m{key}_mode = 3
 \t\t\ttrigger_if = {{
 \t\t\t\tlimit = {{ has_variable = zg361_b1_m{key}_policy_debt_serial }}
-\t\t\t\tNOT = {{ var:zg361_b1_m{key}_policy_debt_serial = var:zg361_b1_case_serial }}
+\t\t\t\tNOT = {{ var:zg361_b1_m{key}_policy_debt_serial = var:zg361_b1_manager_case_serial }}
 \t\t\t}}
 \t\t\ttrigger_else = {{ always = yes }}
 \t\t}}
-\t\tset_variable = {{ name = zg361_b1_m{key}_policy_debt_serial value = var:zg361_b1_case_serial }}
+\t\tset_variable = {{ name = zg361_b1_m{key}_policy_debt_serial value = var:zg361_b1_manager_case_serial }}
 \t\tchange_variable = {{ name = zg361_b1_policy_debt_cycle_n add = 1 }}
 \t\tchange_variable = {{ name = zg361_b1_policy_debt_open_n add = 1 }}
 \t\tset_variable = {{ name = zg361_b1_policy_debt_due_year value = {{ value = current_year add = 1 }} }}
@@ -813,7 +813,7 @@ zg361_b1_freeze_001_013_policy_effect = {
 		limit = { NOT = { has_variable = zg361_b1_policy_debt_open_n } }
 		set_variable = { name = zg361_b1_policy_debt_open_n value = 0 }
 	}
-	set_variable = { name = zg361_b1_policy_next_review_serial value = { value = var:zg361_b1_cycle_serial add = 1 } }
+	set_variable = { name = zg361_b1_policy_next_review_serial value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
 __POLICY_FREEZE_BLOCKS__
 }
 
@@ -897,8 +897,8 @@ zg361_b1_snapshot_owner_bound_kpi_effect = {
 			has_variable = zg361_b1_case_serial
 			var:zg361_b1_case_owner = root
 			var:zg361_b1_case_subject = this
-			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 			is_alive = yes
 			liege = root
 		}
@@ -988,8 +988,8 @@ zg361_b1_apply_departed_grade_effect = {
 		limit = {
 			var:zg361_b1_case_owner = root
 			var:zg361_b1_case_subject = this
-			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 			var:zg361_b1_case_state = 7
 			var:zg361_b1_case_active = 1
 			var:zg361_b1_roster_included = 1
@@ -1024,18 +1024,23 @@ zg361_b1_apply_departed_grade_effect = {
 }
 
 zg361_b1_initialize_subject_case_effect = {
+	# Preserve this character's separate manager identity before subject ABI writes.
+	if = {
+		limit = { has_character_flag = zg361_b1_cycle_active }
+		zg361_b1_migrate_manager_identity_effect = yes
+	}
 	# Read-only diagnosis of the real manager/subject dual-role overwrite.
 	# Temporary scopes must not become inherited delayed-event ticket fields.
 	if = {
 		limit = { is_ai = no has_character_flag = zg361_b1_cycle_active }
 		save_temporary_scope_as = zg361_b1_diag_human_subject
 		if = {
-			limit = { has_variable = zg361_b1_cycle_serial }
-			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_before value = var:zg361_b1_cycle_serial }
+			limit = { has_variable = zg361_b1_manager_cycle_serial }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_before value = var:zg361_b1_manager_cycle_serial }
 		}
 		if = {
-			limit = { has_variable = zg361_b1_case_serial }
-			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_before value = var:zg361_b1_case_serial }
+			limit = { has_variable = zg361_b1_manager_case_serial }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_before value = var:zg361_b1_manager_case_serial }
 		}
 		if = {
 			limit = { has_variable = zg361_b1_cycle_state }
@@ -1044,12 +1049,12 @@ zg361_b1_initialize_subject_case_effect = {
 		root = {
 			save_temporary_scope_as = zg361_b1_diag_initializing_owner
 			if = {
-				limit = { has_variable = zg361_b1_cycle_serial }
-				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_cycle value = var:zg361_b1_cycle_serial }
+				limit = { has_variable = zg361_b1_manager_cycle_serial }
+				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_cycle value = var:zg361_b1_manager_cycle_serial }
 			}
 			if = {
-				limit = { has_variable = zg361_b1_case_serial }
-				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_case value = var:zg361_b1_case_serial }
+				limit = { has_variable = zg361_b1_manager_case_serial }
+				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_case value = var:zg361_b1_manager_case_serial }
 			}
 		}
 		debug_log = "ZG361B1_DIAG: human active manager initialized as subject; before and incoming identities"
@@ -1057,8 +1062,8 @@ zg361_b1_initialize_subject_case_effect = {
 	}
 	set_variable = { name = zg361_b1_case_owner value = root }
 	set_variable = { name = zg361_b1_case_subject value = this }
-	set_variable = { name = zg361_b1_cycle_serial value = root.var:zg361_b1_cycle_serial }
-	set_variable = { name = zg361_b1_case_serial value = root.var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_cycle_serial value = root.var:zg361_b1_manager_cycle_serial }
+	set_variable = { name = zg361_b1_case_serial value = root.var:zg361_b1_manager_case_serial }
 	set_variable = { name = zg361_b1_case_state value = 1 }
 	set_variable = { name = zg361_b1_case_active value = 1 }
 	set_variable = { name = zg361_b1_case_revision value = 1 }
@@ -1535,12 +1540,12 @@ zg361_b1_initialize_subject_case_effect = {
 			var:zg361_b1_pending_next_cycle_object_owner = root
 			var:zg361_b1_pending_next_cycle_object_subject = this
 			var:zg361_b1_pending_next_cycle_object_state = 1
-			var:zg361_b1_pending_next_cycle_object_cycle = root.var:zg361_b1_cycle_serial
+			var:zg361_b1_pending_next_cycle_object_cycle = root.var:zg361_b1_manager_cycle_serial
 			var:zg361_b1_pending_next_cycle_due = var:zg361_b1_pending_next_cycle_object_cycle
 		}
 		set_variable = { name = zg361_b1_pending_carried_adjustment value = var:zg361_b1_pending_next_cycle_delta }
 		set_variable = { name = zg361_b1_pending_next_cycle_object_state value = 2 }
-		set_variable = { name = zg361_b1_pending_next_cycle_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_pending_next_cycle_consumed_cycle value = root.var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_pending_next_cycle_consumption_receipt_case value = var:zg361_b1_pending_next_cycle_object_case }
 	}
 	set_variable = { name = zg361_b1_reopen_carried_adjustment value = 0 }
@@ -1555,12 +1560,12 @@ zg361_b1_initialize_subject_case_effect = {
 			var:zg361_b1_reopen_next_cycle_object_owner = root
 			var:zg361_b1_reopen_next_cycle_object_subject = this
 			var:zg361_b1_reopen_next_cycle_object_state = 1
-			var:zg361_b1_reopen_next_cycle_object_cycle = root.var:zg361_b1_cycle_serial
+			var:zg361_b1_reopen_next_cycle_object_cycle = root.var:zg361_b1_manager_cycle_serial
 			var:zg361_b1_reopen_next_cycle_due = var:zg361_b1_reopen_next_cycle_object_cycle
 		}
 		set_variable = { name = zg361_b1_reopen_carried_adjustment value = var:zg361_b1_reopen_next_cycle_delta }
 		set_variable = { name = zg361_b1_reopen_next_cycle_object_state value = 2 }
-		set_variable = { name = zg361_b1_reopen_next_cycle_consumed_cycle value = root.var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_reopen_next_cycle_consumed_cycle value = root.var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_reopen_next_cycle_consumption_receipt_case value = var:zg361_b1_reopen_next_cycle_object_case }
 	}
 	set_variable = { name = zg361_b1_reopen_serial value = 0 }
@@ -1869,8 +1874,8 @@ zg361_b1_initialize_subject_case_effect = {
 		FEEDBACK_VAR = zg361_b1_case_feedback_revision
 		TICKET_OWNER = root
 		TICKET_SUBJECT = this
-		TICKET_CYCLE = root.var:zg361_b1_cycle_serial
-		TICKET_CASE = root.var:zg361_b1_case_serial
+		TICKET_CYCLE = root.var:zg361_b1_manager_cycle_serial
+		TICKET_CASE = root.var:zg361_b1_manager_case_serial
 		TICKET_STATE = 1
 		OPERATION_ID = 39
 		CHOICE = 1
@@ -1878,6 +1883,7 @@ zg361_b1_initialize_subject_case_effect = {
 }
 
 zg361_b1_open_cycle_effect = {
+	zg361_b1_migrate_manager_identity_effect = yes
 	if = {
 		limit = {
 			has_game_rule = zg361_on
@@ -1892,15 +1898,15 @@ zg361_b1_open_cycle_effect = {
 		}
 		add_character_flag = zg361_b1_cycle_active
 		if = {
-			limit = { NOT = { has_variable = zg361_b1_cycle_serial } }
-			set_variable = { name = zg361_b1_cycle_serial value = 0 }
+			limit = { NOT = { has_variable = zg361_b1_manager_cycle_serial } }
+			set_variable = { name = zg361_b1_manager_cycle_serial value = 0 }
 		}
 		if = {
-			limit = { NOT = { has_variable = zg361_b1_case_serial } }
-			set_variable = { name = zg361_b1_case_serial value = 0 }
+			limit = { NOT = { has_variable = zg361_b1_manager_case_serial } }
+			set_variable = { name = zg361_b1_manager_case_serial value = 0 }
 		}
-		change_variable = { name = zg361_b1_cycle_serial add = 1 }
-		change_variable = { name = zg361_b1_case_serial add = 1 }
+		change_variable = { name = zg361_b1_manager_cycle_serial add = 1 }
+		change_variable = { name = zg361_b1_manager_case_serial add = 1 }
 		set_variable = { name = zg361_b1_cycle_state value = 1 }
 		set_variable = { name = zg361_b1_cycle_open_year value = current_year }
 		remove_variable = zg361_b1_m009_receipt_serial
@@ -1986,7 +1992,7 @@ zg361_b1_open_cycle_effect = {
 				set_variable = { name = zg361_b1_peer_use_mode value = 0 }
 			}
 		}
-		set_variable = { name = zg361_b1_m053_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m053_receipt_serial value = var:zg361_b1_manager_case_serial }
 		if = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			clear_variable_list = zg361_b1_subjects
@@ -2035,8 +2041,8 @@ zg361_b1_open_cycle_effect = {
 			limit = { var:zg361_b1_subject_n >= 1 }
 			zg361_b1_register_common_superior_bank_effect = yes
 			save_scope_as = zg361_b1_ticket_owner
-			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 			save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 			trigger_event = { id = zg361b1.100 days = 180 }
 			debug_log = "ZG361B1: performance season opened"
@@ -2123,8 +2129,8 @@ zg361_b1_midcycle_dispatcher_effect = {
 			if = {
 				limit = {
 					var:zg361_b1_case_owner = root
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 1
 				}
 				# Refresh only while the old owner relation still exists.  If the
@@ -2447,8 +2453,8 @@ zg361_b1_prepare_facts_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 3
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -2656,7 +2662,7 @@ zg361_b1_finalize_subject_facts_effect = {
 	set_variable = { name = zg361_b1_difficulty_improvement value = { value = var:zg361_kpi subtract = var:zg361_b1_evidence_early } }
 	set_variable = { name = zg361_b1_difficulty_score_adjustment value = 0 }
 	if = {
-		limit = { var:zg361_b1_baseline_available = 1 }
+		limit = { var:zg361_b1_baseline_available = 1 exists = capital_county }
 		set_variable = { name = zg361_b1_baseline_end_development value = capital_county.development_level }
 		set_variable = { name = zg361_b1_baseline_end_control value = capital_county.county_control }
 		set_variable = { name = zg361_b1_baseline_end_gold value = gold }
@@ -2681,6 +2687,13 @@ zg361_b1_finalize_subject_facts_effect = {
 			limit = { root.var:zg361_b1_m006_mode = 1 }
 			set_variable = { name = zg361_b1_difficulty_score_adjustment value = { value = var:zg361_b1_baseline_state_delta round = yes max = var:zg361_b1_difficulty_cap min = -5 } }
 		}
+	}
+	else_if = {
+		limit = { var:zg361_b1_baseline_available = 1 }
+		# Loss of capital does not invalidate the frozen cohort or its start facts.
+		set_variable = { name = zg361_b1_baseline_available value = 0 }
+		set_variable = { name = zg361_b1_baseline_state_delta value = 0 }
+		debug_log = "ZG361B1:baseline-unavailable-no-capital"
 	}
 	if = {
 		limit = { root.var:zg361_b1_m001_mode != 3 }
@@ -2858,8 +2871,8 @@ zg361_b1_freeze_blind_named_diff_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = scope:zg361_b1_blind_named_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_blind_named_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -3060,8 +3073,8 @@ zg361_b1_open_shadow_effect = {
 		zg361_b1_freeze_blind_named_diff_effect = yes
 		set_variable = { name = zg361_b1_cycle_state value = 5 }
 		save_scope_as = zg361_b1_ticket_owner
-		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 		save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 		trigger_event = { id = zg361b1.103 days = 30 }
 		debug_log = "ZG361B1: facts frozen and shadow response opened"
@@ -3171,11 +3184,11 @@ zg361_b1_compute_exact_quota_effect = {
 		if = {
 			limit = { var:zg361_b1_quota_rounding_work_route != 3 }
 			set_variable = { name = zg361_b1_quota_rounding_local_object_available value = 1 }
-			set_variable = { name = zg361_b1_quota_rounding_local_object_id value = { value = var:zg361_b1_case_serial multiply = 100 add = 38 } }
+			set_variable = { name = zg361_b1_quota_rounding_local_object_id value = { value = var:zg361_b1_manager_case_serial multiply = 100 add = 38 } }
 			set_variable = { name = zg361_b1_quota_rounding_local_owner value = this }
 			set_variable = { name = zg361_b1_quota_rounding_local_subject value = this }
-			set_variable = { name = zg361_b1_quota_rounding_local_cycle value = var:zg361_b1_cycle_serial }
-			set_variable = { name = zg361_b1_quota_rounding_local_case value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_quota_rounding_local_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_quota_rounding_local_case value = var:zg361_b1_manager_case_serial }
 			set_variable = { name = zg361_b1_quota_rounding_local_state value = 1 }
 			set_variable = { name = zg361_b1_quota_rounding_local_route value = var:zg361_b1_quota_rounding_work_route }
 			set_variable = { name = zg361_b1_quota_rounding_local_team_n value = 1 }
@@ -3185,8 +3198,8 @@ zg361_b1_compute_exact_quota_effect = {
 			if = {
 				limit = {
 					has_variable = zg361_b1_quota_rounding_local_rotation_cycle
-					var:zg361_b1_quota_rounding_local_rotation_cycle = var:zg361_b1_cycle_serial
-					var:zg361_b1_quota_rounding_local_rotation_case = var:zg361_b1_case_serial
+					var:zg361_b1_quota_rounding_local_rotation_cycle = var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_quota_rounding_local_rotation_case = var:zg361_b1_manager_case_serial
 				}
 				set_variable = { name = zg361_b1_quota_rounding_local_rotation_advance value = 0 }
 			}
@@ -3195,8 +3208,8 @@ zg361_b1_compute_exact_quota_effect = {
 				if = { limit = { NOT = { has_variable = zg361_b1_quota_rounding_local_rotation_cursor } } set_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor value = 1 } }
 				else = { change_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor add = 1 } }
 				if = { limit = { var:zg361_b1_quota_rounding_local_rotation_cursor > 2 } set_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor value = 1 } }
-				set_variable = { name = zg361_b1_quota_rounding_local_rotation_cycle value = var:zg361_b1_cycle_serial }
-				set_variable = { name = zg361_b1_quota_rounding_local_rotation_case value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_case value = var:zg361_b1_manager_case_serial }
 			}
 			if = { limit = { var:zg361_b1_quota_rounding_work_route = 2 } set_variable = { name = zg361_b1_quota_rounding_local_chair value = this } set_variable = { name = zg361_b1_quota_rounding_local_blackbox_risk value = 1 } }
 		}
@@ -3378,8 +3391,8 @@ zg361_b1_audit_frozen_roster_effect = {
 					has_variable = zg361_b1_roster_employment_state
 					var:zg361_b1_case_owner = scope:zg361_b1_roster_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_roster_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_roster_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_roster_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_roster_manager.var:zg361_b1_manager_case_serial
 					OR = { var:zg361_b1_case_state = 3 var:zg361_b1_case_state = 5 }
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3453,7 +3466,7 @@ zg361_b1_audit_frozen_roster_effect = {
 				}
 			}
 		}
-		set_variable = { name = zg361_b1_roster_audited_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_roster_audited_serial value = var:zg361_b1_manager_case_serial }
 	}
 }
 
@@ -3668,7 +3681,7 @@ zg361_b1_audit_locked_roster_additions_effect = {
 			}
 		}
 	}
-	set_variable = { name = zg361_b1_roster_additions_audited_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_roster_additions_audited_serial value = var:zg361_b1_manager_case_serial }
 }
 
 zg361_b1_rebuild_local_quota_effect = {
@@ -3686,8 +3699,8 @@ zg361_b1_rebuild_local_quota_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = root
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				has_variable = zg361_pending_grade
@@ -3709,7 +3722,7 @@ zg361_b1_rebuild_local_quota_effect = {
 		set_variable = { name = zg361_b1_quota_rounding_local_team_1 value = this }
 		set_variable = { name = zg361_b1_quota_rounding_local_remainder_team value = this }
 		set_variable = { name = zg361_b1_quota_rounding_local_affected_team value = this }
-		set_variable = { name = zg361_b1_quota_rounding_local_operation_seal value = { value = var:zg361_b1_cycle_serial multiply = 100000 add = var:zg361_b1_case_serial } }
+		set_variable = { name = zg361_b1_quota_rounding_local_operation_seal value = { value = var:zg361_b1_manager_cycle_serial multiply = 100000 add = var:zg361_b1_manager_case_serial } }
 		set_variable = { name = zg361_b1_quota_rounding_local_state value = 2 }
 	}
 	if = {
@@ -3719,7 +3732,7 @@ zg361_b1_rebuild_local_quota_effect = {
 	set_variable = { name = zg361_b1_local_top_slots value = var:zg361_b1_quota_top_slots }
 	set_variable = { name = zg361_b1_local_middle_slots value = var:zg361_b1_quota_middle_slots }
 	set_variable = { name = zg361_b1_local_bottom_slots value = var:zg361_b1_quota_bottom_slots }
-	set_variable = { name = zg361_b1_quota_built_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_quota_built_serial value = var:zg361_b1_manager_case_serial }
 	if = {
 		limit = { var:zg361_b1_local_candidate_n >= 1 }
 		set_variable = { name = zg361_b1_local_rank_cursor value = 0 }
@@ -3858,7 +3871,7 @@ zg361_b1_settle_due_debt_effect = {
 			has_variable = zg361_b1_quota_debt_source_trade
 			has_variable = zg361_b1_quota_debt_liability
 			var:zg361_b1_quota_debt_state = 1
-			var:zg361_b1_cycle_serial >= var:zg361_b1_quota_debt_due_cycle
+			var:zg361_b1_manager_cycle_serial >= var:zg361_b1_quota_debt_due_cycle
 			var:zg361_b1_quota_debt_creditor = {
 				has_variable = zg361_b1_quota_credit_state
 				has_variable = zg361_b1_quota_credit_creditor
@@ -3894,8 +3907,8 @@ zg361_b1_settle_due_debt_effect = {
 					has_variable = zg361_pending_grade
 					var:zg361_b1_case_owner = scope:zg361_b1_debt_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3933,8 +3946,8 @@ zg361_b1_settle_due_debt_effect = {
 					has_variable = zg361_pending_grade
 					var:zg361_b1_case_owner = scope:zg361_b1_debt_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -3962,8 +3975,8 @@ zg361_b1_settle_due_debt_effect = {
 			set_variable = { name = zg361_b1_quota_debt_after_middle value = var:zg361_pending_35_n }
 			set_variable = { name = zg361_b1_quota_debt_after_bottom value = var:zg361_pending_325_n }
 			set_variable = { name = zg361_b1_quota_debt_state value = 2 }
-			set_variable = { name = zg361_b1_quota_debt_settled_cycle value = var:zg361_b1_cycle_serial }
-			set_variable = { name = zg361_b1_quota_debt_settlement_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_quota_debt_settled_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_quota_debt_settlement_serial value = var:zg361_b1_manager_case_serial }
 			change_variable = { name = zg361_b1_quota_book_version add = 1 }
 			if = {
 				limit = { has_variable = zg361_b1_quota_debt_creditor }
@@ -3984,11 +3997,11 @@ zg361_b1_settle_due_debt_effect = {
 							var:zg361_b1_quota_credit_liability = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_liability
 						}
 						set_variable = { name = zg361_b1_quota_credit_state value = 2 }
-						set_variable = { name = zg361_b1_quota_credit_settled_cycle value = scope:zg361_b1_debt_manager.var:zg361_b1_cycle_serial }
+						set_variable = { name = zg361_b1_quota_credit_settled_cycle value = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial }
 					}
 				}
 			}
-			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 			debug_log = "ZG361B1: one-shot quota responsibility debt settled"
 		}
 	}
@@ -4042,8 +4055,8 @@ zg361_b1_execute_unique_pool_trade_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = scope:zg361_b1_pool_four_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -4067,8 +4080,8 @@ zg361_b1_execute_unique_pool_trade_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = scope:zg361_b1_pool_three_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -4114,10 +4127,10 @@ zg361_b1_execute_unique_pool_trade_effect = {
 				set_variable = { name = zg361_b1_quota_credit_state value = 1 }
 				set_variable = { name = zg361_b1_quota_credit_creditor value = this }
 				set_variable = { name = zg361_b1_quota_credit_debtor value = scope:zg361_b1_pool_three_manager }
-				set_variable = { name = zg361_b1_quota_credit_due_cycle value = { value = var:zg361_b1_cycle_serial add = 1 } }
+				set_variable = { name = zg361_b1_quota_credit_due_cycle value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
 				set_variable = { name = zg361_b1_quota_credit_source_trade value = root.var:zg361_b1_unique_pool_trade_serial }
 				set_variable = { name = zg361_b1_quota_credit_liability value = root.var:zg361_b1_unique_pool_trade_serial }
-				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
 			}
 			scope:zg361_b1_pool_three_manager = {
 				change_variable = { name = zg361_pending_375_n add = 1 }
@@ -4131,15 +4144,15 @@ zg361_b1_execute_unique_pool_trade_effect = {
 				set_variable = { name = zg361_b1_quota_debt_state value = 1 }
 				set_variable = { name = zg361_b1_quota_debt_kind value = 3 }
 				set_variable = { name = zg361_b1_quota_debt_slots value = 1 }
-				set_variable = { name = zg361_b1_quota_debt_created_cycle value = var:zg361_b1_cycle_serial }
-				set_variable = { name = zg361_b1_quota_debt_due_cycle value = { value = var:zg361_b1_cycle_serial add = 1 } }
+				set_variable = { name = zg361_b1_quota_debt_created_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_quota_debt_due_cycle value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
 				set_variable = { name = zg361_b1_quota_debt_source_trade value = root.var:zg361_b1_unique_pool_trade_serial }
 				set_variable = { name = zg361_b1_quota_debt_creditor value = scope:zg361_b1_pool_four_manager }
 				set_variable = { name = zg361_b1_quota_debt_debtor value = this }
 				set_variable = { name = zg361_b1_quota_debt_approver value = root }
 				set_variable = { name = zg361_b1_quota_debt_liability value = root.var:zg361_b1_unique_pool_trade_serial }
-				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
-				set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+				set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 			}
 			debug_log = "ZG361B1: exact one-slot bilateral trade and next-cycle liability recorded"
 		}
@@ -4181,7 +4194,7 @@ zg361_b1_submit_quota_book_effect = {
 					change_variable = { name = zg361_b1_pool_n add = scope:zg361_b1_ready_manager.var:zg361_cohort_n }
 					scope:zg361_b1_ready_manager = {
 						set_variable = { name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n }
-						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_manager_case_serial }
 					}
 				}
 				if = {
@@ -4315,8 +4328,8 @@ zg361_b1_prepare_bank_huddle_effect = {
 					limit = {
 						var:zg361_b1_case_owner = scope:zg361_b1_huddle_prealloc_manager
 						var:zg361_b1_case_subject = this
-						var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_case_serial
+						var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_manager_case_serial
 						var:zg361_b1_case_state = 5
 						var:zg361_b1_case_active = 1
 						var:zg361_b1_roster_included = 1
@@ -4427,8 +4440,8 @@ zg361_b1_prepare_bank_must_review_effect = {
 						set_variable = { name = zg361_b1_must_review_manager_link_state value = 1 }
 						set_variable = { name = zg361_b1_must_review_manager_link_subject value = scope:zg361_b1_must_review_subject }
 						set_variable = { name = zg361_b1_must_review_manager_link_route value = root.var:zg361_b1_bank_m141_mode }
-						set_variable = { name = zg361_b1_must_review_manager_link_cycle value = var:zg361_b1_cycle_serial }
-						set_variable = { name = zg361_b1_must_review_manager_link_case value = var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_must_review_manager_link_cycle value = var:zg361_b1_manager_cycle_serial }
+						set_variable = { name = zg361_b1_must_review_manager_link_case value = var:zg361_b1_manager_case_serial }
 						set_variable = { name = zg361_b1_must_review_manager_link_book_version_before value = var:zg361_b1_quota_book_version }
 						if = { limit = { root.var:zg361_b1_bank_m141_mode = 2 exists = scope:zg361_b1_must_review_frozen_peer } set_variable = { name = zg361_b1_must_review_manager_link_peer value = scope:zg361_b1_must_review_frozen_peer } }
 					}
@@ -4574,15 +4587,15 @@ zg361_b1_close_common_superior_bank_legacy_unused_effect = {
 			}
 		}
 		set_variable = { name = zg361_b1_cycle_state value = 6 }
-		set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
-		set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_case_serial }
-		set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 		# This loop is owned by the common superior, so ROOT is still the
 		# superior. Cross one committed event boundary to reset ROOT to this
 		# manager before touching manager-owned subject lists or settlement.
 		save_scope_as = zg361_b1_ticket_owner
-		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 		save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 		trigger_event = { id = zg361b1.111 days = 1 }
 	}
@@ -4644,8 +4657,8 @@ zg361_b1_close_common_superior_bank_effect = {
 								has_variable = zg361_b1_case_active
 								var:zg361_b1_case_owner = scope:zg361_b1_unique_pool_manager
 								var:zg361_b1_case_subject = this
-								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_cycle_serial
-								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_case_serial
+								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_case_serial
 								var:zg361_b1_case_state = 5
 								var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -4675,8 +4688,8 @@ zg361_b1_close_common_superior_bank_effect = {
 								has_variable = zg361_b1_case_active
 								var:zg361_b1_case_owner = scope:zg361_b1_unique_pool_manager
 								var:zg361_b1_case_subject = this
-								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_cycle_serial
-								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_case_serial
+								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_case_serial
 								var:zg361_b1_case_state = 5
 								var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -4867,8 +4880,8 @@ zg361_b1_close_common_superior_bank_effect = {
 									has_variable = zg361_b1_case_active
 									var:zg361_b1_case_owner = scope:zg361_b1_allocated_manager
 									var:zg361_b1_case_subject = this
-									var:zg361_b1_cycle_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_cycle_serial
-									var:zg361_b1_case_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_case_serial
+									var:zg361_b1_cycle_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_manager_cycle_serial
+									var:zg361_b1_case_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_manager_case_serial
 									var:zg361_b1_case_state = 5
 									var:zg361_b1_case_active = 1
 								var:zg361_b1_roster_included = 1
@@ -4903,12 +4916,12 @@ zg361_b1_close_common_superior_bank_effect = {
 				zg361_b1_settle_due_debt_effect = yes
 			}
 			set_variable = { name = zg361_b1_cycle_state value = 6 }
-			set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_case_serial }
-			set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_case_serial }
-			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
 			save_scope_as = zg361_b1_ticket_owner
-			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 			save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 			trigger_event = { id = zg361b1.111 days = 1 }
 		}
@@ -4919,7 +4932,7 @@ zg361_b1_close_common_superior_bank_effect = {
 zg361_b1_apply_local_quota_effect = {
 	set_variable = { name = zg361_b1_cycle_state value = 6 }
 	zg361_b1_settle_due_debt_effect = yes
-	set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
 	zg361_b1_open_calibration_effect = yes
 }
 
@@ -4934,8 +4947,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		limit = {
 			var:zg361_b1_case_owner = root
 			var:zg361_b1_case_subject = this
-			var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-			var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 			var:zg361_b1_case_state = 7
 			var:zg361_b1_case_active = 1
 			var:zg361_b1_roster_included = 1
@@ -4961,8 +4974,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = scope:zg361_b1_rerank_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -5080,8 +5093,8 @@ zg361_b1_build_agenda_and_attention_effect = {
 		set_variable = { name = zg361_b1_agenda_header_object_available value = 1 }
 		set_variable = { name = zg361_b1_agenda_header_owner value = this }
 		set_variable = { name = zg361_b1_agenda_header_subject value = this }
-		set_variable = { name = zg361_b1_agenda_header_cycle value = var:zg361_b1_cycle_serial }
-		set_variable = { name = zg361_b1_agenda_header_case value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_agenda_header_cycle value = var:zg361_b1_manager_cycle_serial }
+		set_variable = { name = zg361_b1_agenda_header_case value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_agenda_header_state value = 1 }
 		set_variable = { name = zg361_b1_agenda_chair value = this }
 		set_variable = { name = zg361_b1_agenda_frozen_year value = current_year }
@@ -5100,8 +5113,8 @@ zg361_b1_build_agenda_and_attention_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = scope:zg361_b1_agenda_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -5161,7 +5174,7 @@ zg361_b1_build_agenda_and_attention_effect = {
 	set_variable = { name = zg361_b1_agenda_remaining_top_cursor value = var:zg361_pending_375_n }
 	set_variable = { name = zg361_b1_agenda_remaining_middle_cursor value = var:zg361_pending_35_n }
 	set_variable = { name = zg361_b1_agenda_remaining_bottom_cursor value = var:zg361_pending_325_n }
-	set_variable = { name = zg361_b1_agenda_hash value = { value = var:zg361_b1_case_serial multiply = 1000 } }
+	set_variable = { name = zg361_b1_agenda_hash value = { value = var:zg361_b1_manager_case_serial multiply = 1000 } }
 	ordered_in_list = {
 		list = zg361_b1_agenda_candidates
 		order_by = var:zg361_b1_agenda_sort_key
@@ -5286,7 +5299,7 @@ zg361_b1_build_agenda_and_attention_effect = {
 		name = zg361_b1_attention_remaining_minutes
 		value = { value = var:zg361_b1_attention_total_minutes subtract = var:zg361_b1_attention_spent_minutes min = 0 }
 	}
-	set_variable = { name = zg361_b1_m043_receipt_serial value = var:zg361_b1_case_serial }
+	set_variable = { name = zg361_b1_m043_receipt_serial value = var:zg361_b1_manager_case_serial }
 }
 
 zg361_b1_finalize_agenda_audit_effect = {
@@ -5300,8 +5313,8 @@ zg361_b1_finalize_agenda_audit_effect = {
 			var:zg361_b1_agenda_header_object_available = 1
 			var:zg361_b1_agenda_header_owner = this
 			var:zg361_b1_agenda_header_subject = this
-			var:zg361_b1_agenda_header_cycle = var:zg361_b1_cycle_serial
-			var:zg361_b1_agenda_header_case = var:zg361_b1_case_serial
+			var:zg361_b1_agenda_header_cycle = var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_agenda_header_case = var:zg361_b1_manager_case_serial
 			var:zg361_b1_agenda_header_state = 1
 		}
 		save_temporary_scope_as = zg361_b1_agenda_finalize_manager
@@ -5310,8 +5323,8 @@ zg361_b1_finalize_agenda_audit_effect = {
 			limit = {
 				var:zg361_b1_case_owner = scope:zg361_b1_agenda_finalize_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_finalize_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_agenda_finalize_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_finalize_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_agenda_finalize_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_agenda_item_object_available = 1
@@ -5343,7 +5356,7 @@ zg361_b1_finalize_agenda_audit_effect = {
 			}
 		}
 		set_variable = { name = zg361_b1_agenda_header_state value = 2 }
-		set_variable = { name = zg361_b1_agenda_closed_case value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_agenda_closed_case value = var:zg361_b1_manager_case_serial }
 	}
 }
 
@@ -5366,15 +5379,15 @@ zg361_b1_finalize_huddle_diff_effect = {
 			}
 		}
 		set_variable = { name = zg361_b1_huddle_attendee_diff_n value = 0 }
-		set_variable = { name = zg361_b1_huddle_attendee_formal_hash value = { value = var:zg361_b1_case_serial multiply = 1000 } }
+		set_variable = { name = zg361_b1_huddle_attendee_formal_hash value = { value = var:zg361_b1_manager_case_serial multiply = 1000 } }
 		save_temporary_scope_as = zg361_b1_huddle_finalize_manager
 		every_in_list = {
 			variable = zg361_b1_processing_subjects
 			limit = {
 				var:zg361_b1_case_owner = scope:zg361_b1_huddle_finalize_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_finalize_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_huddle_finalize_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_finalize_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_huddle_finalize_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_huddle_assignment_available = 1
@@ -5398,7 +5411,7 @@ zg361_b1_finalize_huddle_diff_effect = {
 		}
 		set_variable = { name = zg361_b1_huddle_attendee_minutes_consumed value = var:zg361_b1_huddle_attendee_minutes_budget }
 		set_variable = { name = zg361_b1_huddle_attendee_state value = 2 }
-		set_variable = { name = zg361_b1_huddle_attendee_consumed_case value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_huddle_attendee_consumed_case value = var:zg361_b1_manager_case_serial }
 		if = {
 			limit = { var:zg361_b1_huddle_attendee_ack_posted = 0 }
 			set_variable = { name = zg361_b1_huddle_attendee_ack_posted value = 1 }
@@ -5430,16 +5443,16 @@ zg361_b1_consume_must_review_effect = {
 			var:zg361_b1_must_review_manager_link_available = 1
 			var:zg361_b1_must_review_manager_link_state = 1
 			has_variable = zg361_b1_must_review_manager_link_subject
-			var:zg361_b1_must_review_manager_link_cycle = var:zg361_b1_cycle_serial
-			var:zg361_b1_must_review_manager_link_case = var:zg361_b1_case_serial
+			var:zg361_b1_must_review_manager_link_cycle = var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_must_review_manager_link_case = var:zg361_b1_manager_case_serial
 		}
 		var:zg361_b1_must_review_manager_link_subject = {
 			if = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_recusal_active = 0
@@ -5474,8 +5487,8 @@ zg361_b1_consume_must_review_effect = {
 									limit = {
 										var:zg361_b1_case_owner = root
 										var:zg361_b1_case_subject = this
-										var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-										var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+										var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+										var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 										var:zg361_b1_case_state = 7
 										var:zg361_b1_case_active = 1
 										var:zg361_b1_roster_included = 1
@@ -5665,8 +5678,8 @@ zg361_b1_record_named_dissent_effect = {
 			limit = {
 				var:zg361_b1_case_owner = root
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -5708,8 +5721,8 @@ zg361_b1_finalize_named_dissent_effect = {
 			limit = {
 				var:zg361_b1_case_owner = scope:zg361_b1_dissent_finalize_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_dissent_finalize_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_dissent_finalize_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_dissent_finalize_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_dissent_finalize_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_dissent_object_available = 1
@@ -5774,8 +5787,8 @@ zg361_b1_finalize_named_dissent_effect = {
 						var:zg361_b1_dissent_object_available = 1
 						var:zg361_b1_dissent_object_owner = root
 						var:zg361_b1_dissent_object_subject = this
-						var:zg361_b1_dissent_object_cycle = root.var:zg361_b1_cycle_serial
-						var:zg361_b1_dissent_object_case = root.var:zg361_b1_case_serial
+						var:zg361_b1_dissent_object_cycle = root.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_dissent_object_case = root.var:zg361_b1_manager_case_serial
 						var:zg361_b1_dissent_object_state = 1
 					}
 					set_variable = { name = zg361_b1_dissent_object_state value = 3 }
@@ -5794,8 +5807,8 @@ zg361_b1_finalize_named_dissent_effect = {
 					var:zg361_b1_consensus_object_available = 1
 					var:zg361_b1_consensus_owner = root
 					var:zg361_b1_consensus_subject = this
-					var:zg361_b1_consensus_cycle = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_consensus_case = root.var:zg361_b1_case_serial
+					var:zg361_b1_consensus_cycle = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_consensus_case = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_consensus_state = 1
 				}
 				set_variable = { name = zg361_b1_consensus_final_band value = var:zg361_pending_grade }
@@ -5834,8 +5847,8 @@ zg361_b1_refresh_individual_publications_effect = {
 				has_variable = zg361_pending_grade
 				var:zg361_b1_case_owner = scope:zg361_b1_local_publish_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_local_publish_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_local_publish_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_local_publish_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_local_publish_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -5993,8 +6006,8 @@ zg361_b1_open_pending_slots_effect = {
 						has_variable = zg361_b1_case_active
 						var:zg361_b1_case_owner = scope:zg361_b1_pending_manager
 						var:zg361_b1_case_subject = this
-						var:zg361_b1_cycle_serial = scope:zg361_b1_pending_manager.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = scope:zg361_b1_pending_manager.var:zg361_b1_case_serial
+						var:zg361_b1_cycle_serial = scope:zg361_b1_pending_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_pending_manager.var:zg361_b1_manager_case_serial
 						var:zg361_b1_case_state = 7
 						var:zg361_b1_case_active = 1
 						var:zg361_b1_pending_state = 0
@@ -6134,8 +6147,8 @@ zg361_b1_open_pending_slots_effect = {
 	if = {
 		limit = { var:zg361_b1_m142_mode = 1 var:zg361_b1_pending_open_n >= 1 }
 		save_scope_as = zg361_b1_pending_watch_owner
-		save_scope_value_as = { name = zg361_b1_pending_watch_cycle value = var:zg361_b1_cycle_serial }
-		save_scope_value_as = { name = zg361_b1_pending_watch_case value = var:zg361_b1_case_serial }
+		save_scope_value_as = { name = zg361_b1_pending_watch_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_pending_watch_case value = var:zg361_b1_manager_case_serial }
 		save_scope_value_as = { name = zg361_b1_pending_watch_state value = var:zg361_b1_cycle_state }
 		trigger_event = { id = zg361b1.125 days = 31 }
 	}
@@ -6309,8 +6322,8 @@ zg361_b1_resolve_pending_subject_effect = {
 					limit = { var:zg361_b1_pending_open_n = 0 }
 					save_scope_as = zg361_b1_pending_continue_owner
 					scope:zg361_b1_pending_subject = { save_scope_as = zg361_b1_pending_continue_subject }
-					save_scope_value_as = { name = zg361_b1_pending_continue_cycle value = var:zg361_b1_cycle_serial }
-					save_scope_value_as = { name = zg361_b1_pending_continue_case value = var:zg361_b1_case_serial }
+					save_scope_value_as = { name = zg361_b1_pending_continue_cycle value = var:zg361_b1_manager_cycle_serial }
+					save_scope_value_as = { name = zg361_b1_pending_continue_case value = var:zg361_b1_manager_case_serial }
 					save_scope_value_as = { name = zg361_b1_pending_continue_state value = var:zg361_b1_cycle_state }
 					trigger_event = { id = zg361b1.123 days = 1 }
 				}
@@ -6365,17 +6378,17 @@ zg361_b1_prepare_reopen_gate_effect = {
 		# it is deliberately not trusted as an injective identity hash.
 		set_variable = {
 			name = zg361_b1_sealed_board_hash
-			value = { value = var:zg361_b1_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version }
+			value = { value = var:zg361_b1_manager_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version }
 		}
-		set_variable = { name = zg361_b1_sealed_board_checksum value = { value = var:zg361_b1_case_serial multiply = 10000 } }
+		set_variable = { name = zg361_b1_sealed_board_checksum value = { value = var:zg361_b1_manager_case_serial multiply = 10000 } }
 		every_in_list = {
 			variable = zg361_b1_processing_subjects
 			if = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -6402,8 +6415,8 @@ zg361_b1_prepare_reopen_gate_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -6429,11 +6442,11 @@ zg361_b1_prepare_reopen_gate_effect = {
 		if = {
 			limit = { var:zg361_b1_m143_mode != 3 }
 			set_variable = { name = zg361_b1_reopen_batch_object_available value = 1 }
-			set_variable = { name = zg361_b1_reopen_batch_object_id value = { value = var:zg361_b1_case_serial multiply = 100 add = 43 } }
+			set_variable = { name = zg361_b1_reopen_batch_object_id value = { value = var:zg361_b1_manager_case_serial multiply = 100 add = 43 } }
 			set_variable = { name = zg361_b1_reopen_batch_owner value = this }
 			set_variable = { name = zg361_b1_reopen_batch_subject value = this }
-			set_variable = { name = zg361_b1_reopen_batch_cycle value = var:zg361_b1_cycle_serial }
-			set_variable = { name = zg361_b1_reopen_batch_case value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_reopen_batch_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_reopen_batch_case value = var:zg361_b1_manager_case_serial }
 			set_variable = { name = zg361_b1_reopen_batch_state value = 1 }
 			set_variable = { name = zg361_b1_reopen_batch_route value = var:zg361_b1_m143_mode }
 			set_variable = { name = zg361_b1_reopen_batch_result value = 0 }
@@ -6443,8 +6456,8 @@ zg361_b1_prepare_reopen_gate_effect = {
 					limit = {
 						var:zg361_b1_case_owner = root
 						var:zg361_b1_case_subject = this
-						var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+						var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 						var:zg361_b1_case_state = 7
 						var:zg361_b1_case_active = 1
 						var:zg361_b1_roster_included = 1
@@ -6465,8 +6478,8 @@ zg361_b1_prepare_reopen_gate_effect = {
 						change_variable = { name = zg361_b1_reopen_candidate_n add = 1 }
 						change_variable = { name = zg361_b1_reopen_pending_n add = 1 }
 						save_scope_as = zg361_b1_reopen_ticket_owner
-						save_scope_value_as = { name = zg361_b1_reopen_ticket_cycle value = var:zg361_b1_cycle_serial }
-						save_scope_value_as = { name = zg361_b1_reopen_ticket_case value = var:zg361_b1_case_serial }
+						save_scope_value_as = { name = zg361_b1_reopen_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+						save_scope_value_as = { name = zg361_b1_reopen_ticket_case value = var:zg361_b1_manager_case_serial }
 						save_scope_value_as = { name = zg361_b1_reopen_ticket_state value = var:zg361_b1_cycle_state }
 						save_scope_value_as = { name = zg361_b1_reopen_ticket_object value = scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_reopen_object_id }
 						save_scope_value_as = { name = zg361_b1_reopen_ticket_route value = scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_reopen_route }
@@ -6491,8 +6504,8 @@ zg361_b1_materialize_reopen_a_self_safe_effect = {
 			var:zg361_b1_reopen_batch_object_available = 1
 			var:zg361_b1_reopen_batch_owner = this
 			var:zg361_b1_reopen_batch_subject = this
-			var:zg361_b1_reopen_batch_cycle = var:zg361_b1_cycle_serial
-			var:zg361_b1_reopen_batch_case = var:zg361_b1_case_serial
+			var:zg361_b1_reopen_batch_cycle = var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_reopen_batch_case = var:zg361_b1_manager_case_serial
 			var:zg361_b1_reopen_batch_state = 2
 			OR = {
 				var:zg361_b1_reopen_batch_result = 1
@@ -6505,8 +6518,8 @@ zg361_b1_materialize_reopen_a_self_safe_effect = {
 			limit = {
 				var:zg361_b1_case_owner = scope:zg361_b1_reopen_projection_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_reopen_object_available = 1
 				has_variable = zg361_b1_reopen_object_id
@@ -6561,8 +6574,8 @@ zg361_b1_resolve_reopen_batch_effect = {
 			var:zg361_b1_reopen_batch_object_available = 1
 			var:zg361_b1_reopen_batch_owner = this
 			var:zg361_b1_reopen_batch_subject = this
-			var:zg361_b1_reopen_batch_cycle = var:zg361_b1_cycle_serial
-			var:zg361_b1_reopen_batch_case = var:zg361_b1_case_serial
+			var:zg361_b1_reopen_batch_cycle = var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_reopen_batch_case = var:zg361_b1_manager_case_serial
 			var:zg361_b1_reopen_batch_state = 1
 		}
 		set_variable = { name = zg361_b1_reopen_batch_candidate_n value = 0 }
@@ -6575,8 +6588,8 @@ zg361_b1_resolve_reopen_batch_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_reopen_object_state = 2
@@ -6651,17 +6664,17 @@ zg361_b1_apply_symmetric_reopen_effect = {
 		set_variable = { name = zg361_b1_reopen_recomputed_bottom value = var:zg361_pending_325_n }
 		set_variable = {
 			name = zg361_b1_reopen_new_board_hash
-			value = { value = var:zg361_b1_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version }
+			value = { value = var:zg361_b1_manager_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version }
 		}
-		set_variable = { name = zg361_b1_reopen_new_board_checksum value = { value = var:zg361_b1_case_serial multiply = 10000 } }
+		set_variable = { name = zg361_b1_reopen_new_board_checksum value = { value = var:zg361_b1_manager_case_serial multiply = 10000 } }
 		every_in_list = {
 			variable = zg361_b1_processing_subjects
 			if = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 				}
@@ -6691,7 +6704,7 @@ zg361_b1_apply_symmetric_reopen_effect = {
 			}
 		}
 		set_variable = { name = zg361_b1_reopen_new_reward_hash value = var:zg361_b1_reward_snapshot_hash }
-		set_variable = { name = zg361_b1_reopen_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_reopen_receipt_serial value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_closure_state value = 3 }
 		set_variable = { name = zg361_b1_m143_receipt_serial value = var:zg361_b1_reopen_batch_case }
 		zg361_b1_materialize_reopen_a_self_safe_effect = yes
@@ -6717,8 +6730,8 @@ zg361_b1_apply_final_gray_leaver_effect = {
 				limit = {
 					var:zg361_b1_case_owner = scope:zg361_b1_m040_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_m040_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_m040_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_m040_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_m040_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -6758,8 +6771,8 @@ zg361_b1_apply_final_gray_leaver_effect = {
 						max = 1
 						limit = {
 							var:zg361_b1_case_owner = scope:zg361_b1_m040_manager
-							var:zg361_b1_cycle_serial = scope:zg361_b1_m040_manager.var:zg361_b1_cycle_serial
-							var:zg361_b1_case_serial = scope:zg361_b1_m040_manager.var:zg361_b1_case_serial
+							var:zg361_b1_cycle_serial = scope:zg361_b1_m040_manager.var:zg361_b1_manager_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_m040_manager.var:zg361_b1_manager_case_serial
 							var:zg361_b1_case_state = 7
 							var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -6820,15 +6833,15 @@ zg361_b1_apply_final_gray_leaver_effect = {
 				}
 			}
 			# Re-seal the final quota book after the only possible gray swap.
-			set_variable = { name = zg361_b1_sealed_board_hash value = { value = var:zg361_b1_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version } }
-			set_variable = { name = zg361_b1_sealed_board_checksum value = { value = var:zg361_b1_case_serial multiply = 10000 } }
+			set_variable = { name = zg361_b1_sealed_board_hash value = { value = var:zg361_b1_manager_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version } }
+			set_variable = { name = zg361_b1_sealed_board_checksum value = { value = var:zg361_b1_manager_case_serial multiply = 10000 } }
 			every_in_list = {
 				variable = zg361_b1_processing_subjects
 				if = {
 					limit = {
 						var:zg361_b1_case_owner = root
-						var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+						var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 						var:zg361_b1_case_state = 7
 						var:zg361_b1_case_active = 1
 						var:zg361_b1_roster_included = 1
@@ -6865,8 +6878,8 @@ zg361_b1_pay_frozen_pending_rewards_effect = {
 				limit = {
 					var:zg361_b1_case_owner = scope:zg361_b1_pending_reward_manager
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_reward_manager.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_pending_reward_manager.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_reward_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pending_reward_manager.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_pending_state = 2
@@ -6924,8 +6937,8 @@ zg361_b1_freeze_conflict_recusals_effect = {
 			limit = {
 				var:zg361_b1_case_owner = scope:zg361_b1_conflict_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -6944,8 +6957,8 @@ zg361_b1_freeze_conflict_recusals_effect = {
 				has_variable = zg361_b1_case_active
 				var:zg361_b1_case_owner = scope:zg361_b1_conflict_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -7024,8 +7037,8 @@ zg361_b1_apply_recusal_replacement_reviews_effect = {
 			limit = {
 				var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -7062,8 +7075,8 @@ zg361_b1_apply_recusal_replacement_reviews_effect = {
 						has_variable = zg361_b1_recusal_review_receipt_state
 						var:zg361_b1_recusal_review_receipt_owner = scope:zg361_b1_recusal_review_manager
 						var:zg361_b1_recusal_review_receipt_subject = this
-						var:zg361_b1_recusal_review_receipt_cycle = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial
-						var:zg361_b1_recusal_review_receipt_case = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial
+						var:zg361_b1_recusal_review_receipt_cycle = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_recusal_review_receipt_case = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
 						var:zg361_b1_recusal_review_receipt_state = 2
 					}
 				}
@@ -7104,8 +7117,8 @@ zg361_b1_apply_recusal_replacement_reviews_effect = {
 						limit = {
 							var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager
 							var:zg361_b1_case_subject = this
-							var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial
-							var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial
+							var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
 							var:zg361_b1_case_state = 5
 							var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -7128,8 +7141,8 @@ zg361_b1_apply_recusal_replacement_reviews_effect = {
 						limit = {
 							var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager
 							var:zg361_b1_case_subject = this
-							var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial
-							var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial
+							var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
 							var:zg361_b1_case_state = 5
 							var:zg361_b1_case_active = 1
 							var:zg361_b1_roster_included = 1
@@ -7151,7 +7164,7 @@ zg361_b1_apply_recusal_replacement_reviews_effect = {
 				limit = { scope:zg361_b1_recusal_review_manager.var:zg361_b1_recusal_review_partner_n = 1 }
 				scope:zg361_b1_recusal_review_partner = {
 					set_variable = { name = zg361_b1_recusal_partner_swap_subject value = scope:zg361_b1_recusal_review_subject }
-					set_variable = { name = zg361_b1_recusal_partner_swap_case value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_recusal_partner_swap_case value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial }
 					set_variable = { name = zg361_b1_recusal_partner_swap_pre_grade value = var:zg361_pending_grade }
 					set_variable = { name = zg361_pending_grade value = scope:zg361_b1_recusal_review_subject.var:zg361_b1_recusal_review_pre_grade }
 					set_variable = { name = zg361_b1_recusal_partner_swap_post_grade value = var:zg361_pending_grade }
@@ -7183,8 +7196,8 @@ zg361_b1_apply_recusal_replacement_reviews_effect = {
 			set_variable = { name = zg361_b1_recusal_review_post_grade value = var:zg361_pending_grade }
 			set_variable = { name = zg361_b1_recusal_review_receipt_owner value = scope:zg361_b1_recusal_review_manager }
 			set_variable = { name = zg361_b1_recusal_review_receipt_subject value = this }
-			set_variable = { name = zg361_b1_recusal_review_receipt_cycle value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial }
-			set_variable = { name = zg361_b1_recusal_review_receipt_case value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_recusal_review_receipt_cycle value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_recusal_review_receipt_case value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial }
 			set_variable = { name = zg361_b1_recusal_review_receipt_state value = 2 }
 		}
 	}
@@ -7200,11 +7213,11 @@ zg361_b1_apply_atomic_calibration_swap_effect = {
 			var:zg361_b1_cycle_state = 7
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m009_receipt_serial }
-				NOT = { var:zg361_b1_m009_receipt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m009_receipt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
-		set_variable = { name = zg361_b1_calibration_id value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_calibration_id value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_calibration_state value = 1 }
 		set_variable = { name = zg361_b1_calibration_route value = var:zg361_b1_m009_mode }
 		set_variable = { name = zg361_b1_calibration_quick_close value = 0 }
@@ -7227,8 +7240,8 @@ zg361_b1_apply_atomic_calibration_swap_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -7245,8 +7258,8 @@ zg361_b1_apply_atomic_calibration_swap_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -7304,8 +7317,8 @@ zg361_b1_apply_atomic_calibration_swap_effect = {
 					has_variable = zg361_pending_grade
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -7338,7 +7351,7 @@ zg361_b1_apply_atomic_calibration_swap_effect = {
 		if = {
 			limit = { var:zg361_b1_calibration_quick_close_blocked = 0 }
 			set_variable = { name = zg361_b1_calibration_state value = 2 }
-			set_variable = { name = zg361_b1_m009_receipt_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_m009_receipt_serial value = var:zg361_b1_manager_case_serial }
 		}
 	}
 }
@@ -7351,7 +7364,7 @@ zg361_b1_apply_bottom_protection_effect = {
 			var:zg361_pending_325_n >= 1
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m010_receipt_serial }
-				NOT = { var:zg361_b1_m010_receipt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m010_receipt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
@@ -7370,7 +7383,7 @@ zg361_b1_apply_bottom_protection_effect = {
 				max = 1
 				limit = {
 					var:zg361_b1_case_owner = root var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5 var:zg361_b1_case_active = 1 var:zg361_b1_roster_included = 1
 					var:zg361_b1_recusal_active = 0 var:zg361_pending_grade = 1 var:zg361_b1_peer_normalized_score >= 5
 				}
@@ -7383,7 +7396,7 @@ zg361_b1_apply_bottom_protection_effect = {
 				max = 1
 				limit = {
 					var:zg361_b1_case_owner = root var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5 var:zg361_b1_case_active = 1 var:zg361_b1_roster_included = 1
 					var:zg361_b1_recusal_active = 0 var:zg361_pending_grade = 2
 					NOT = { has_character_flag = zg361_newcomer_this_cycle }
@@ -7410,17 +7423,17 @@ zg361_b1_apply_bottom_protection_effect = {
 					set_variable = { name = zg361_b1_bottom_carrier value = 1 }
 					set_variable = { name = zg361_b1_appeal_risk value = 1 }
 				}
-				set_variable = { name = zg361_b1_forced_bottom_case_id value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_forced_bottom_case_id value = var:zg361_b1_manager_case_serial }
 				set_variable = { name = zg361_b1_bottom_protected_subject value = scope:zg361_b1_bottom_protected_subject }
 				set_variable = { name = zg361_b1_bottom_carrier_subject value = scope:zg361_b1_bottom_carrier_subject }
 				set_variable = { name = zg361_b1_bottom_protection_cost value = 25 }
 				add_prestige = -25
 				set_variable = { name = zg361_b1_protection_debt_state value = 1 }
-				set_variable = { name = zg361_b1_protection_debt_created_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_protection_debt_created_cycle value = var:zg361_b1_manager_cycle_serial }
 				set_variable = { name = zg361_b1_protection_debt_due_year value = { value = current_year add = 1 } }
 				set_variable = { name = zg361_b1_bottom_protection_used value = 1 }
 				change_variable = { name = zg361_b1_quota_book_version add = 1 }
-				set_variable = { name = zg361_b1_m010_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m010_receipt_serial value = var:zg361_b1_manager_case_serial }
 			}
 		}
 	}
@@ -7431,7 +7444,7 @@ zg361_b1_apply_bottom_protection_effect = {
 			var:zg361_pending_325_n >= 1
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m010_receipt_serial }
-				NOT = { var:zg361_b1_m010_receipt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m010_receipt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
@@ -7443,8 +7456,8 @@ zg361_b1_apply_bottom_protection_effect = {
 			limit = {
 				var:zg361_b1_case_owner = root
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 5
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -7460,8 +7473,8 @@ zg361_b1_apply_bottom_protection_effect = {
 				limit = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 5
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -7474,11 +7487,11 @@ zg361_b1_apply_bottom_protection_effect = {
 			}
 			if = {
 				limit = { var:zg361_b1_bottom_edge_candidate_n = 1 }
-				set_variable = { name = zg361_b1_forced_bottom_case_id value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_forced_bottom_case_id value = var:zg361_b1_manager_case_serial }
 				set_variable = { name = zg361_b1_bottom_carrier_subject value = scope:zg361_b1_bottom_edge_subject }
 				set_variable = { name = zg361_b1_bottom_edge_route value = 2 }
 				set_variable = { name = zg361_b1_bottom_protection_used value = 1 }
-				set_variable = { name = zg361_b1_m010_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m010_receipt_serial value = var:zg361_b1_manager_case_serial }
 				scope:zg361_b1_bottom_edge_subject = {
 					set_variable = { name = zg361_b1_bottom_carrier value = 1 }
 					set_variable = { name = zg361_b1_appeal_risk value = 1 }
@@ -7491,7 +7504,7 @@ zg361_b1_apply_bottom_protection_effect = {
 				# Never bypass an already-frozen newcomer protection just to create
 				# the B-route risk object.  The exact base quota remains untouched.
 				set_variable = { name = zg361_b1_bottom_edge_blocked_newcomer_protection value = 1 }
-				set_variable = { name = zg361_b1_m010_receipt_serial value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_m010_receipt_serial value = var:zg361_b1_manager_case_serial }
 			}
 		}
 	}
@@ -7517,20 +7530,20 @@ zg361_b1_prepare_skip_level_return_effect = {
 			var:zg361_b1_oversight_issue_n >= 1
 			has_variable = zg361_b1_bank_superior
 		}
-		set_variable = { name = zg361_b1_oversight_case_id value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_oversight_case_id value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_oversight_owner value = this }
 		set_variable = { name = zg361_b1_oversight_reviewer value = var:zg361_b1_bank_superior }
-		set_variable = { name = zg361_b1_oversight_cycle value = var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_oversight_cycle value = var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_oversight_return_status value = 1 }
 		set_variable = { name = zg361_b1_oversight_return_reason value = 1 }
 		set_variable = { name = zg361_b1_skip_level_return_used value = 1 }
 		set_variable = { name = zg361_b1_skip_level_return_count value = 1 }
 		set_variable = { name = zg361_b1_publication_blocked value = 1 }
 		set_variable = { name = zg361_b1_cycle_state value = 6 }
-		set_variable = { name = zg361_b1_m011_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m011_receipt_serial value = var:zg361_b1_manager_case_serial }
 		save_scope_as = zg361_b1_oversight_ticket_owner
-		save_scope_value_as = { name = zg361_b1_oversight_ticket_cycle value = var:zg361_b1_cycle_serial }
-		save_scope_value_as = { name = zg361_b1_oversight_ticket_case value = var:zg361_b1_case_serial }
+		save_scope_value_as = { name = zg361_b1_oversight_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_oversight_ticket_case value = var:zg361_b1_manager_case_serial }
 		save_scope_value_as = { name = zg361_b1_oversight_ticket_state value = var:zg361_b1_cycle_state }
 		trigger_event = { id = zg361b1.124 days = 1 }
 	}
@@ -7540,7 +7553,7 @@ zg361_b1_prepare_skip_level_return_effect = {
 			has_variable = zg361_b1_bank_superior
 			trigger_if = {
 				limit = { has_variable = zg361_b1_m011_receipt_serial }
-				NOT = { var:zg361_b1_m011_receipt_serial = var:zg361_b1_case_serial }
+				NOT = { var:zg361_b1_m011_receipt_serial = var:zg361_b1_manager_case_serial }
 			}
 			trigger_else = { always = yes }
 		}
@@ -7548,10 +7561,10 @@ zg361_b1_prepare_skip_level_return_effect = {
 		# manager's single quota book remains the only writer/owner.  This avoids
 		# manufacturing a second imperial review serial while still preserving the
 		# deliberately improper B-route result and its audit trail.
-		set_variable = { name = zg361_b1_oversight_case_id value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_oversight_case_id value = var:zg361_b1_manager_case_serial }
 		set_variable = { name = zg361_b1_oversight_owner value = this }
 		set_variable = { name = zg361_b1_oversight_reviewer value = var:zg361_b1_bank_superior }
-		set_variable = { name = zg361_b1_oversight_cycle value = var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_oversight_cycle value = var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_oversight_route value = 2 }
 		set_variable = { name = zg361_b1_oversight_improper_route_risk value = 1 }
 		set_variable = { name = zg361_b1_oversight_override_executed value = 0 }
@@ -7566,8 +7579,8 @@ zg361_b1_prepare_skip_level_return_effect = {
 			limit = {
 				var:zg361_b1_case_owner = root
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -7584,8 +7597,8 @@ zg361_b1_prepare_skip_level_return_effect = {
 			limit = {
 				var:zg361_b1_case_owner = root
 				var:zg361_b1_case_subject = this
-				var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-				var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
 				var:zg361_b1_roster_included = 1
@@ -7627,7 +7640,7 @@ zg361_b1_prepare_skip_level_return_effect = {
 		set_variable = { name = zg361_b1_oversight_after_top value = var:zg361_pending_375_n }
 		set_variable = { name = zg361_b1_oversight_after_middle value = var:zg361_pending_35_n }
 		set_variable = { name = zg361_b1_oversight_after_bottom value = var:zg361_pending_325_n }
-		set_variable = { name = zg361_b1_m011_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m011_receipt_serial value = var:zg361_b1_manager_case_serial }
 	}
 }
 
@@ -7671,10 +7684,10 @@ zg361_b1_freeze_band_order_effect = {
 	if = {
 		limit = { var:zg361_b1_band_order_mode != 3 }
 		set_variable = { name = zg361_b1_band_order_batch_available value = 1 }
-		set_variable = { name = zg361_b1_band_order_batch_id value = { value = var:zg361_b1_case_serial multiply = 100 add = 45 } }
+		set_variable = { name = zg361_b1_band_order_batch_id value = { value = var:zg361_b1_manager_case_serial multiply = 100 add = 45 } }
 		set_variable = { name = zg361_b1_band_order_batch_owner value = this }
 		set_variable = { name = zg361_b1_band_order_batch_subject value = this }
-		set_variable = { name = zg361_b1_band_order_batch_cycle value = var:zg361_b1_cycle_serial }
+		set_variable = { name = zg361_b1_band_order_batch_cycle value = var:zg361_b1_manager_cycle_serial }
 		set_variable = { name = zg361_b1_band_order_batch_case value = var:zg361_b1_band_order_batch_id }
 		set_variable = { name = zg361_b1_band_order_batch_state value = 1 }
 		set_variable = { name = zg361_b1_band_order_batch_result value = 2 }
@@ -7800,8 +7813,8 @@ zg361_b1_open_calibration_effect = {
 						has_variable = zg361_b1_case_active
 						var:zg361_b1_case_owner = root
 						var:zg361_b1_case_subject = this
-						var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+						var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 						var:zg361_b1_case_state = 5
 						var:zg361_b1_case_active = 1
 				}
@@ -7832,10 +7845,10 @@ zg361_b1_mark_published_effect = {
 		set_variable = { name = zg361_b1_closure_state value = 4 }
 		if = {
 			limit = { var:zg361_b1_m013_mode != 3 }
-			set_variable = { name = zg361_b1_m013_receipt_serial value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_m013_receipt_serial value = var:zg361_b1_manager_case_serial }
 		}
-		set_variable = { name = zg361_b1_m045_receipt_serial value = var:zg361_b1_case_serial }
-		set_variable = { name = zg361_b1_m051_receipt_serial value = var:zg361_b1_case_serial }
+		set_variable = { name = zg361_b1_m045_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m051_receipt_serial value = var:zg361_b1_manager_case_serial }
 			every_in_list = {
 			variable = zg361_b1_subjects
 			if = {
@@ -7848,8 +7861,8 @@ zg361_b1_mark_published_effect = {
 					has_variable = zg361_b1_case_active
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = root.var:zg361_b1_case_serial
+					var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
 					var:zg361_b1_case_state = 7
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
@@ -8757,6 +8770,33 @@ def render_effect_parts() -> tuple[bytes, bytes]:
     return generated(sources[0]), generated(sources[1])
 
 
+def render_manager_identity_effects() -> bytes:
+    """Keep dual-role migration in a dedicated one-effect purpose shard."""
+
+    return generated(r'''
+# CURRENT is a manager (possibly also a subject). Legacy subject serials are
+# not recovery sources: R66 proved a superior overwrites them during open_cycle.
+# These witnesses have manager-only producers and each missing field migrates
+# independently; subsequent calls never change an existing manager identity.
+zg361_b1_migrate_manager_identity_effect = {
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_b1_manager_cycle_serial }
+			has_variable = zg361_b1_policy_next_review_serial
+		}
+		set_variable = { name = zg361_b1_manager_cycle_serial value = { value = var:zg361_b1_policy_next_review_serial subtract = 1 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_b1_manager_case_serial }
+			has_variable = zg361_b1_m053_receipt_serial
+		}
+		set_variable = { name = zg361_b1_manager_case_serial value = var:zg361_b1_m053_receipt_serial }
+	}
+}
+''')
+
+
 def render_events() -> bytes:
     return generated(r'''
 namespace = zg361b1
@@ -8814,26 +8854,27 @@ zg361b1.100 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_ticket_owner
-				has_variable = zg361_b1_cycle_serial
-				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				has_variable = zg361_b1_cycle_state
 			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 1
 				}
 				zg361_b1_prune_unavailable_subjects_effect = yes
 				zg361_b1_midcycle_dispatcher_effect = yes
 				save_scope_as = zg361_b1_ticket_owner
-				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 				trigger_event = { id = zg361b1.101 days = 60 }
 			}
@@ -8843,12 +8884,12 @@ zg361b1.100 = {
 					limit = { is_ai = no }
 					save_temporary_scope_as = zg361_b1_diag_midcycle_manager
 					if = {
-						limit = { has_variable = zg361_b1_cycle_serial }
-						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_current value = var:zg361_b1_cycle_serial }
+						limit = { has_variable = zg361_b1_manager_cycle_serial }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_current value = var:zg361_b1_manager_cycle_serial }
 					}
 					if = {
-						limit = { has_variable = zg361_b1_case_serial }
-						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_current value = var:zg361_b1_case_serial }
+						limit = { has_variable = zg361_b1_manager_case_serial }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_current value = var:zg361_b1_manager_case_serial }
 					}
 					if = {
 						limit = { has_variable = zg361_b1_cycle_state }
@@ -8870,20 +8911,26 @@ zg361b1.101 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
-			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 2
 				}
 				zg361_b1_peer_window_dispatcher_effect = yes
 				save_scope_as = zg361_b1_ticket_owner
-				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 				trigger_event = { id = zg361b1.102 days = 60 }
 			}
@@ -8899,16 +8946,23 @@ zg361b1.102 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
-			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 3
 				}
+				zg361_b1_prune_unavailable_subjects_effect = yes
 				zg361_b1_prepare_facts_effect = yes
 				zg361_run_review_effect = yes
 			}
@@ -8923,6 +8977,7 @@ zg361b1.103 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		# Save the event-root character as a real object scope before writing the
 		# list. CK3 1.19.0.6 does not count a flag: enum as a setter for a list
 		# later consumed as character scopes. Keep this object anchor alive through
@@ -8935,12 +8990,17 @@ zg361b1.103 = {
 		}
 		add_to_variable_list = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 		if = {
-			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 5
 				}
@@ -8994,6 +9054,7 @@ zg361b1.110 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		# Use a real character scope for the loader-visible write. A character flag
 		# preserves the pre-anchor branch decision; the object anchor is removed
 		# before the close effect, so no manager iterator can consume the superior.
@@ -9070,18 +9131,19 @@ zg361b1.111 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_ticket_owner
-				has_variable = zg361_b1_cycle_serial
-				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				has_variable = zg361_b1_cycle_state
 			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 6
 				}
@@ -9155,14 +9217,17 @@ zg361b1.122 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		set_variable = { name = zg361_b1_reopen_callback_consumed value = 0 }
 		if = {
 			limit = {
 				exists = scope:zg361_b1_reopen_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				exists = scope:zg361_b1_reopen_ticket_subject
 				this = scope:zg361_b1_reopen_ticket_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_reopen_ticket_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_reopen_ticket_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_closure_state = 1
@@ -9173,8 +9238,8 @@ zg361b1.122 = {
 				var:zg361_b1_reopen_batch_object_available = 1
 				var:zg361_b1_reopen_batch_owner = this
 				var:zg361_b1_reopen_batch_subject = this
-				var:zg361_b1_reopen_batch_cycle = var:zg361_b1_cycle_serial
-				var:zg361_b1_reopen_batch_case = var:zg361_b1_case_serial
+				var:zg361_b1_reopen_batch_cycle = var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_reopen_batch_case = var:zg361_b1_manager_case_serial
 				var:zg361_b1_reopen_batch_state = 1
 			}
 			if = {
@@ -9301,13 +9366,16 @@ zg361b1.123 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_pending_continue_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				exists = scope:zg361_b1_pending_continue_subject
 				this = scope:zg361_b1_pending_continue_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_pending_continue_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_pending_continue_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_pending_continue_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_pending_continue_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_pending_continue_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_pending_open_n = 0
@@ -9335,12 +9403,15 @@ zg361b1.124 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_oversight_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				this = scope:zg361_b1_oversight_ticket_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_oversight_ticket_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_oversight_ticket_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_oversight_ticket_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_oversight_ticket_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_oversight_ticket_state
 				var:zg361_b1_cycle_state = 6
 				var:zg361_b1_oversight_return_status = 1
@@ -9368,12 +9439,15 @@ zg361b1.125 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_pending_watch_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				this = scope:zg361_b1_pending_watch_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_pending_watch_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_pending_watch_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_pending_watch_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_pending_watch_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_pending_watch_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_pending_open_n >= 1
@@ -9657,6 +9731,7 @@ def outputs() -> dict[Path, bytes]:
     rendered = {
         MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt": effects_part1,
         MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects_part2.txt": effects_part2,
+        MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_manager_identity_effects.txt": render_manager_identity_effects(),
         MOD_ROOT / "events" / "zg361_b1_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_b1_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_b1_l_simp_chinese.yml": render_simp_chinese_localization(),

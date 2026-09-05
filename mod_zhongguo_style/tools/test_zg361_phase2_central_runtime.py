@@ -364,6 +364,41 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         for _, _, opener in generator.STAGES:
             self.assertNotIn(f"{opener} =", hook)
 
+    def test_manager_identity_is_separate_from_subject_case_abi(self) -> None:
+        hook = block(self.effects, "zg361_p2c_on_review_published_effect")
+        pump = block(self.effects, "zg361_p2c_pump_effect")
+        deferred = block(self.events, "zg361p2c.3")
+        migration = "zg361_b1_migrate_manager_identity_effect = yes"
+        for source in (hook, pump, deferred):
+            self.assertEqual(source.count(migration), 1)
+            self.assertLess(source.index(migration), source.index("if = {"))
+        for suffix in ("cycle", "case"):
+            self.assertIn(
+                f"name = zg361_p2c_b1_{suffix} value = var:zg361_b1_manager_{suffix}_serial",
+                hook,
+            )
+            self.assertIn(
+                f"var:zg361_b1_{suffix}_serial = root.var:zg361_b1_manager_{suffix}_serial",
+                hook,
+            )
+            self.assertIn(
+                f"var:zg361_b1_manager_{suffix}_serial = var:zg361_p2c_b1_{suffix}", pump,
+            )
+            self.assertIn(
+                f"var:zg361_b1_{suffix}_serial = root.var:zg361_p2c_b1_{suffix}", pump,
+            )
+        self.assertIn("var:zg361_b1_manager_case_serial = var:zg361_p2c_deferred_reinit_b1_case", deferred)
+        for effect in ("zg361_run_review_effect", "zg361_apply_pending_grades_effect",
+                       "zg361_freeze_result_case_effect", "zg361_publish_scoreboard_effect"):
+            source = block(self.core, effect)
+            for suffix in ("cycle", "case"):
+                self.assertIn(
+                    f"var:zg361_b1_{suffix}_serial = root.var:zg361_b1_manager_{suffix}_serial", source,
+                )
+                self.assertNotIn(f"root.var:zg361_b1_{suffix}_serial", source)
+        review = block(self.core, "zg361_run_review_effect")
+        self.assertEqual(review.count("name = zg361_review_serial value = var:zg361_b1_manager_cycle_serial"), 2)
+
     def test_m013_publication_proofs_are_mode_selected_and_cannot_mix(self) -> None:
         hook = block(self.effects, "zg361_p2c_on_review_published_effect")
         exact_guard = """            OR = {
@@ -371,13 +406,13 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
                     has_variable = zg361_b1_m013_mode
                     var:zg361_b1_m013_mode != 3
                     has_variable = zg361_b1_m013_receipt_serial
-                    var:zg361_b1_m013_receipt_serial = var:zg361_b1_case_serial
+                    var:zg361_b1_m013_receipt_serial = var:zg361_b1_manager_case_serial
                 }
                 AND = {
                     has_variable = zg361_b1_m013_mode
                     var:zg361_b1_m013_mode = 3
                     has_variable = zg361_b1_m013_policy_debt_serial
-                    var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_case_serial
+                    var:zg361_b1_m013_policy_debt_serial = var:zg361_b1_manager_case_serial
                 }
             }"""
         self.assertEqual(hook.count(exact_guard), 1)

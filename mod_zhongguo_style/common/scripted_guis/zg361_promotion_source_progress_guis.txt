@@ -37,9 +37,9 @@ zg361_promotion_source_b1_active_gui = {
 			has_character_flag = zg361_b1_cycle_active
 			has_character_flag = zg361_review_in_progress
 		}
-		has_variable = zg361_b1_cycle_serial
+		has_variable = zg361_b1_manager_cycle_serial
 		has_variable = zg361_b1_cycle_state
-		var:zg361_b1_cycle_serial > 0
+		var:zg361_b1_manager_cycle_serial > 0
 		var:zg361_b1_cycle_state >= 1
 		var:zg361_b1_cycle_state <= 8
 	}

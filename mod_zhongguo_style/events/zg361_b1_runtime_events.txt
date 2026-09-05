@@ -54,26 +54,27 @@ zg361b1.100 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_ticket_owner
-				has_variable = zg361_b1_cycle_serial
-				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				has_variable = zg361_b1_cycle_state
 			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 1
 				}
 				zg361_b1_prune_unavailable_subjects_effect = yes
 				zg361_b1_midcycle_dispatcher_effect = yes
 				save_scope_as = zg361_b1_ticket_owner
-				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 				trigger_event = { id = zg361b1.101 days = 60 }
 			}
@@ -83,12 +84,12 @@ zg361b1.100 = {
 					limit = { is_ai = no }
 					save_temporary_scope_as = zg361_b1_diag_midcycle_manager
 					if = {
-						limit = { has_variable = zg361_b1_cycle_serial }
-						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_current value = var:zg361_b1_cycle_serial }
+						limit = { has_variable = zg361_b1_manager_cycle_serial }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_current value = var:zg361_b1_manager_cycle_serial }
 					}
 					if = {
-						limit = { has_variable = zg361_b1_case_serial }
-						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_current value = var:zg361_b1_case_serial }
+						limit = { has_variable = zg361_b1_manager_case_serial }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_current value = var:zg361_b1_manager_case_serial }
 					}
 					if = {
 						limit = { has_variable = zg361_b1_cycle_state }
@@ -110,20 +111,26 @@ zg361b1.101 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
-			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 2
 				}
 				zg361_b1_peer_window_dispatcher_effect = yes
 				save_scope_as = zg361_b1_ticket_owner
-				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
-				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
 				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 				trigger_event = { id = zg361b1.102 days = 60 }
 			}
@@ -139,16 +146,23 @@ zg361b1.102 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
-			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 3
 				}
+				zg361_b1_prune_unavailable_subjects_effect = yes
 				zg361_b1_prepare_facts_effect = yes
 				zg361_run_review_effect = yes
 			}
@@ -163,6 +177,7 @@ zg361b1.103 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		# Save the event-root character as a real object scope before writing the
 		# list. CK3 1.19.0.6 does not count a flag: enum as a setter for a list
 		# later consumed as character scopes. Keep this object anchor alive through
@@ -175,12 +190,17 @@ zg361b1.103 = {
 		}
 		add_to_variable_list = { name = zg361_b1_subjects target = scope:zg361_b1_subjects_event_loader_anchor }
 		if = {
-			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 5
 				}
@@ -234,6 +254,7 @@ zg361b1.110 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		# Use a real character scope for the loader-visible write. A character flag
 		# preserves the pre-anchor branch decision; the object anchor is removed
 		# before the close effect, so no manager iterator can consume the superior.
@@ -310,18 +331,19 @@ zg361b1.111 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_ticket_owner
-				has_variable = zg361_b1_cycle_serial
-				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				has_variable = zg361_b1_cycle_state
 			}
 			if = {
 				limit = {
 					this = scope:zg361_b1_ticket_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_manager_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_manager_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 6
 				}
@@ -395,14 +417,17 @@ zg361b1.122 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		set_variable = { name = zg361_b1_reopen_callback_consumed value = 0 }
 		if = {
 			limit = {
 				exists = scope:zg361_b1_reopen_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				exists = scope:zg361_b1_reopen_ticket_subject
 				this = scope:zg361_b1_reopen_ticket_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_reopen_ticket_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_reopen_ticket_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_closure_state = 1
@@ -413,8 +438,8 @@ zg361b1.122 = {
 				var:zg361_b1_reopen_batch_object_available = 1
 				var:zg361_b1_reopen_batch_owner = this
 				var:zg361_b1_reopen_batch_subject = this
-				var:zg361_b1_reopen_batch_cycle = var:zg361_b1_cycle_serial
-				var:zg361_b1_reopen_batch_case = var:zg361_b1_case_serial
+				var:zg361_b1_reopen_batch_cycle = var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_reopen_batch_case = var:zg361_b1_manager_case_serial
 				var:zg361_b1_reopen_batch_state = 1
 			}
 			if = {
@@ -541,13 +566,16 @@ zg361b1.123 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_pending_continue_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				exists = scope:zg361_b1_pending_continue_subject
 				this = scope:zg361_b1_pending_continue_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_pending_continue_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_pending_continue_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_pending_continue_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_pending_continue_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_pending_continue_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_pending_open_n = 0
@@ -575,12 +603,15 @@ zg361b1.124 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_oversight_ticket_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				this = scope:zg361_b1_oversight_ticket_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_oversight_ticket_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_oversight_ticket_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_oversight_ticket_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_oversight_ticket_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_oversight_ticket_state
 				var:zg361_b1_cycle_state = 6
 				var:zg361_b1_oversight_return_status = 1
@@ -608,12 +639,15 @@ zg361b1.125 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
 			limit = {
 				exists = scope:zg361_b1_pending_watch_owner
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
 				this = scope:zg361_b1_pending_watch_owner
-				var:zg361_b1_cycle_serial = scope:zg361_b1_pending_watch_cycle
-				var:zg361_b1_case_serial = scope:zg361_b1_pending_watch_case
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_pending_watch_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_pending_watch_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_pending_watch_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_pending_open_n >= 1

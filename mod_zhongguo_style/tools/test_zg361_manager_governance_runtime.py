@@ -206,10 +206,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        self.assertEqual(len(historical_bytes), 386_750)
+        # R66 changes only distribution's five manager-side references.
+        self.assertEqual(len(historical_bytes), 386_790)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "53120757ab63b1694a3c2b93ef4ac7a409a71300767ce93382720a246d0dab18",
+            "8a85269c6765c7dec588e36035db09bb1fa8d971ad17f9c815c556313bea5355",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -394,6 +395,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_mg_distribution_policy_status value = 2", apply_due)
         self.assertIn("zg361_mg_distribution_policy_settlement_receipt", apply_due)
         self.assertEqual(apply_due.count(DISTRIBUTION_DUE_GUARD.strip()), 1)
+        self.assertIn("var:zg361_b1_manager_cycle_serial >= var:zg361_mg_distribution_policy_due_cycle", apply_due)
+        self.assertNotIn("zg361_b1_cycle_serial", apply_due)
+        # Organization KPI and refusal cases are subject ABI, unlike distribution.
+        self.assertIn("zg361_b1_cycle_serial", ORGANIZATION_DUE_GUARD)
+        self.assertNotIn("zg361_b1_manager_cycle_serial", ORGANIZATION_DUE_GUARD)
         self.assertIn("zg361_mg_distribution_policy_applied_this_rank value = 1", apply_due)
         self.assertNotIn("distribution_policy_due_cycle <= var:zg361_review_serial", apply_due)
         self.assertLess(
