@@ -52,6 +52,7 @@ _install_optional_desktop_stubs()
 sys.path.insert(0, str(ROOT / "tools"))
 
 import run_zhongguo_acceptance as runner  # noqa: E402
+import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
     _enter_common_run_cell_patches,
 )
@@ -165,6 +166,113 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 loader_smoke=True,
                 phase2_promotion_source_capture_live=True,
             )
+
+    def test_b1_self_review_accepts_only_exact_bank_descendant_shape(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def value_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": "value"},
+            }
+
+        manager = 36354
+        names = (
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
+            "zg361_b1_ticket_owner",
+            "zg361_b1_ticket_cycle",
+            "zg361_b1_ticket_case",
+            "zg361_b1_ticket_state",
+            "zg361_b1_self_ticket_owner",
+            "zg361_b1_self_ticket_subject",
+            "zg361_b1_self_ticket_cycle",
+            "zg361_b1_self_ticket_case",
+            "zg361_b1_self_ticket_state",
+        )
+        character_names = {
+            "zg361_b1_bank_ticket_owner": manager,
+            "zg361_b1_ticket_owner": manager,
+            "zg361_b1_self_ticket_owner": manager,
+            "zg361_b1_self_ticket_subject": 29037,
+        }
+        scopes = [
+            character_scope(name, character_names[name])
+            if name in character_names
+            else value_scope(name)
+            for name in names
+        ]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361b1.200",
+            "current_event_instance_id": 18,
+            "date_raw": 53156232,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": scopes,
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53156232, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 18}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS["zg361b1.200"]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="zg361b1.200",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+
+        extra = copy.deepcopy(context)
+        extra["saved_scopes"].append(value_scope("unrelated_scope"))
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra,
+            event_key="zg361b1.200",
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_names_exact"])
+
+        wrong_alias = copy.deepcopy(context)
+        wrong_alias["saved_scopes"][0] = character_scope(
+            "zg361_b1_bank_ticket_owner", 36355
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_alias,
+            event_key="zg361b1.200",
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:zg361_b1_bank_ticket_owner:matches_any"])
 
     def test_run_cell_passes_owned_product_lineage_to_capture_callable(self) -> None:
         self._run_cell_case(entry_error=False)

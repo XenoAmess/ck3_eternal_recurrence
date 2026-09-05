@@ -146,3 +146,33 @@ Frozen R67 SHA-256:
 - promotion entry: `2CDAB8C205FF3411AABC5B06A6C38A1572ED9D29A1D9499DEFFE5316CD58C89A`
 - loader gate: `A771A66C3BB19248B18927AB5999E3AFCBBA534631C26AC2879C11CBD250DB78`
 - cleanup: `BAE137B0EC4F2FA6EB33C60A1125AD256B58BA314305CCD681E171CA418717CE`
+
+## R68: bank-descendant self-review frame
+
+R68 proved the old-save active witness in CK3: the initial B1 widget was
+`effective_visible=true`, review-now remained false during the already-active
+cycle, and the runner advanced through the real product timeline.  Loader was
+GREEN and the mounted/product/canonical trees remained unchanged.
+
+The run stopped before action at `zg361b1.200`, date raw `53156232`, instance
+18, player `29037`, manager `36354`.  The exact frame contains the nine existing
+self-review/manager ticket scopes plus the four
+`zg361_b1_bank_ticket_{owner,season,case,state}` scopes.  Product source shows
+that `.110` receives this four-field bank ticket and calls the bank-close path;
+the descendant manager/self-review event can retain those scopes.  The runner
+contract therefore adds only the exact 13-name set (and its existing optional
+seed-scope variant), requires all three bank values to be `value`, requires the
+bank owner to be a non-player character, and aliases it to the review-ticket
+manager.  Arbitrary extra scopes and a different bank owner remain RED.
+
+R68 remained `static-ready-live-pending`; it did not submit `.200`, reach
+`.146/.147`, or create a registry entry.  It is a post-loader choreography
+contract RED, not a file-size/load-performance RED, so no effect split follows.
+
+Frozen R68 SHA-256:
+
+- outer report: `F2EB34AAEEA2321B34C323B72526E5EBB90102CA1C0FF8CAB892E088A66C379A`
+- evidence index: `4321004D974E056A1CC4F3EA9374D792CA788845B781B420BDFA9384F91445B5`
+- promotion entry: `C0BE2B9D4A18DE0A4919E526EC275E34D7C048668DA0762C4D92FAEAE6120CBB`
+- loader gate: `DD87111238CBB70B5D3FF16D284906AF3499380B842A663EA0E1B477EEF52292`
+- cleanup: `253F67A80A3E9921EB22F1751131C02E09139A057CCDBA3ACBE55C774BA9BB34`
