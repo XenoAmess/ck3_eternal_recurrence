@@ -229,7 +229,7 @@ zg361_career_hc_m114_core_effect = {
                     }
                     var:zg361_case_p_owner = {
                         remove_treasury = 5
-                        add_gold = { value = 0 subtract = 5 }
+                        remove_short_term_gold = 5
                     }
                     add_treasury = 5
                     add_gold = 5

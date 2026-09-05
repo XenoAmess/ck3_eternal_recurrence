@@ -71,23 +71,32 @@ zg361_p2c_on_review_published_effect = {
             any_vassal = {
                 zg361_is_reviewable_vassal_trigger = yes
                 liege = root
-                has_variable = zg361_b1_case_owner
-                has_variable = zg361_b1_case_subject
-                has_variable = zg361_b1_cycle_serial
-                has_variable = zg361_b1_case_serial
-                has_variable = zg361_b1_case_state
-                var:zg361_b1_case_owner = root
-                var:zg361_b1_case_subject = this
-                var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
-                var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
-                var:zg361_b1_case_state = 8
-                has_variable = zg361_result_case_owner
-                has_variable = zg361_result_cycle_serial
-                has_variable = zg361_result_case_serial
-                has_variable = zg361_result_case_state
-                has_variable = zg361_result_grade
-                var:zg361_result_case_owner = root
-                var:zg361_result_cycle_serial = root.var:zg361_review_serial
+                # any_vassal enumerates unrelated subjects too, and CK3 does not
+                # short-circuit a flat has_variable + var comparison list.
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_b1_case_owner
+                        has_variable = zg361_b1_case_subject
+                        has_variable = zg361_b1_cycle_serial
+                        has_variable = zg361_b1_case_serial
+                        has_variable = zg361_b1_case_state
+                        has_variable = zg361_result_case_owner
+                        has_variable = zg361_result_cycle_serial
+                        has_variable = zg361_result_case_serial
+                        has_variable = zg361_result_case_state
+                        has_variable = zg361_result_grade
+                    }
+                    AND = {
+                        var:zg361_b1_case_owner = root
+                        var:zg361_b1_case_subject = this
+                        var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+                        var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+                        var:zg361_b1_case_state = 8
+                        var:zg361_result_case_owner = root
+                        var:zg361_result_cycle_serial = root.var:zg361_review_serial
+                    }
+                }
+                trigger_else = { always = no }
             }
         }
         if = { limit = { NOT = { has_variable = zg361_p2c_case_cursor } } set_variable = { name = zg361_p2c_case_cursor value = 0 } }
@@ -97,18 +106,30 @@ zg361_p2c_on_review_published_effect = {
             limit = {
                 zg361_is_reviewable_vassal_trigger = yes
                 liege = root
-                var:zg361_b1_case_owner = root
-                var:zg361_b1_case_subject = this
-                var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
-                var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
-                var:zg361_b1_case_state = 8
-                has_variable = zg361_result_case_owner
-                has_variable = zg361_result_cycle_serial
-                has_variable = zg361_result_case_serial
-                has_variable = zg361_result_case_state
-                has_variable = zg361_result_grade
-                var:zg361_result_case_owner = root
-                var:zg361_result_cycle_serial = root.var:zg361_review_serial
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_b1_case_owner
+                        has_variable = zg361_b1_case_subject
+                        has_variable = zg361_b1_cycle_serial
+                        has_variable = zg361_b1_case_serial
+                        has_variable = zg361_b1_case_state
+                        has_variable = zg361_result_case_owner
+                        has_variable = zg361_result_cycle_serial
+                        has_variable = zg361_result_case_serial
+                        has_variable = zg361_result_case_state
+                        has_variable = zg361_result_grade
+                    }
+                    AND = {
+                        var:zg361_b1_case_owner = root
+                        var:zg361_b1_case_subject = this
+                        var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+                        var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+                        var:zg361_b1_case_state = 8
+                        var:zg361_result_case_owner = root
+                        var:zg361_result_cycle_serial = root.var:zg361_review_serial
+                    }
+                }
+                trigger_else = { always = no }
             }
             order_by = stewardship
             position = 0

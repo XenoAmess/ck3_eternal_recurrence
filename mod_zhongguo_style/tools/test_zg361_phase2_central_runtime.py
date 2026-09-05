@@ -364,6 +364,23 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         for _, _, opener in generator.STAGES:
             self.assertNotIn(f"{opener} =", hook)
 
+    def test_publication_candidate_reads_are_presence_gated(self) -> None:
+        hook = block(self.effects, "zg361_p2c_on_review_published_effect")
+        for field in (
+            "zg361_b1_case_owner",
+            "zg361_b1_case_subject",
+            "zg361_b1_cycle_serial",
+            "zg361_b1_case_serial",
+            "zg361_b1_case_state",
+            "zg361_result_case_owner",
+            "zg361_result_cycle_serial",
+            "zg361_result_case_serial",
+            "zg361_result_case_state",
+            "zg361_result_grade",
+        ):
+            self.assertGreaterEqual(hook.count(f"has_variable = {field}"), 2)
+        self.assertGreaterEqual(hook.count("trigger_else = { always = no }"), 2)
+
     def test_manager_identity_is_separate_from_subject_case_abi(self) -> None:
         hook = block(self.effects, "zg361_p2c_on_review_published_effect")
         pump = block(self.effects, "zg361_p2c_pump_effect")
@@ -536,6 +553,19 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("has_character_flag = zg361_comp_portfolio_active", comp)
         self.assertEqual(comp.count("zg361_p2c_call_compensation_adapter_effect = yes"), 1)
         self.assertIn("zg361_p2c_result_case", comp)
+        for field in (
+            "zg361_comp_portfolio_completed_cycle",
+            "zg361_comp_portfolio_result_owner",
+            "zg361_comp_portfolio_result_subject",
+            "zg361_comp_portfolio_result_cycle",
+            "zg361_comp_portfolio_result_case",
+            "zg361_comp_portfolio_result_state",
+        ):
+            self.assertIn(f"has_variable = {field}", comp)
+        career = block(self.effects, "zg361_p2c_stage_01_career_hc_effect")
+        self.assertIn(
+            "has_variable = zg361_ch_manager_portfolio_completed_cycle", career
+        )
         comp_preflight = block(self.effects, "zg361_p2c_call_compensation_adapter_effect")
         self.assertEqual(comp_preflight.count("zg361_comp_portfolio_open_next_effect = yes"), 2)
         self.assertIn("var:zg361_p2c_adapter_candidate = var:zg361_p2c_subject", comp_preflight)

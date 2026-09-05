@@ -312,7 +312,7 @@ zg361_cl_m326_core_effect = {
                 } }
                 var:zg361_case_ai_owner = {
                     remove_treasury = 9
-                    add_gold = { value = 0 subtract = 3 }
+                    remove_short_term_gold = 3
                 }
                 set_variable = { name = zg361_cl_m326_dual_payment_settled value = 1 }
                 set_variable = { name = zg361_cl_m326_total_cost value = 12 }

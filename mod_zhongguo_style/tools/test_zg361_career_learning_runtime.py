@@ -437,9 +437,8 @@ class CareerLearningRuntimeTests(unittest.TestCase):
                 self.assertIn(f"treasury >= {treasury}", source)
                 self.assertIn(f"gold >= {manager}", source)
                 self.assertIn(f"remove_treasury = {treasury}", source)
-                self.assertIn(
-                    f"add_gold = {{ value = 0 subtract = {manager} }}", source
-                )
+                self.assertIn(f"remove_short_term_gold = {manager}", source)
+                self.assertNotIn("add_gold = { value = 0 subtract", source)
                 self.assertIn("dual_payment_settled value = 1", source)
                 for route in routes:
                     self.assertIn(f"scope:zg361_cl_route = {route}", source)
@@ -695,7 +694,8 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("application_evidence value = 0", consumer)
         self.assertIn("recovery_settled = 0", recovery)
         self.assertIn("gold >= 18", recovery)
-        self.assertIn("subtract = 18", recovery)
+        self.assertIn("remove_short_term_gold = 18", recovery)
+        self.assertNotIn("add_gold = { value = 0 subtract", recovery)
         self.assertIn("add_treasury = 13", recovery)
         self.assertIn("add_gold = 5", recovery)
         self.assertIn("recovered value = 18", recovery)

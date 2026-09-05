@@ -981,6 +981,14 @@ B2 及后续 effect 文件从设计时就按用途分组：目标每文件 `1–
 分片的定义数、唯一性和 generator `--check` 覆盖；确需超过 `20` 的例外必须在对应专题先写明理由及实机证据。
 B1 已通过的 `41 + 36` 双文件结构保留为本轮冻结恢复基线，不反向改写既有 live evidence；后续功能分片不得把它当作新文件模板。
 
+2026-09-05 R74 又提供一组反向证据：636-file production closure 中的
+`zg361_generated_mechanism_events.txt` 为 `429,368 B`，对应 generated mechanism effect 源为
+`1,019,397 B`，二者均通过正式 loader；运行继续到 1067 年 12 月后才在业务 effect 中出现无 liege、weak Character、
+首用变量和负数 `add_gold` 错误。该轮 loader receipt SHA-256 为
+`7771D01A078E4E3139E1C338FC2BFA34431F298490269E73440E3CA167098983`。因此遇到“能加载、游戏日持续推进、随后业务日志
+RED”时，应按首个产品调用栈修复运行期语义，不能仅因树内存在大文件就触发拆分。修复后边界仍为
+`428 files / 3721 effects / max non-legacy 10 / >20 violations 0`；只有新的 loader 性能 RED 才重新启动同条件 A/B 拆分实验。
+
 2026-09-04 的 Incident owner 给出了这条规则的下一组实证。旧 aggregate effect 为 `700,085 B / 124 effects`，旧 aggregate
 event 为 `8,573 B / 54 events`；generator 现分别输出 27 个与 12 个用途分片，所有分片最多 `7` 个定义，逐顶层 block
 parity SHA-256 分别保持为

@@ -1440,7 +1440,7 @@ def render_core(mechanism_id: int, domain: str, state: int) -> str:
                     }}
                     var:{row["owner"]} = {{
                         remove_treasury = 5
-                        add_gold = {{ value = 0 subtract = 5 }}
+                        remove_short_term_gold = 5
                     }}
                     add_treasury = 5
                     add_gold = 5

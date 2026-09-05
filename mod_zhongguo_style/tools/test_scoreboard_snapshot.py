@@ -1586,16 +1586,35 @@ class ReviewRegressionTests(unittest.TestCase):
             triggers,
             re.compile(
                 r"zg361_is_current_liege_review_record_trigger\s*=\s*\{.*?"
+                r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*"
+                r"exists\s*=\s*liege\s*\}.*?"
                 r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{.*?"
                 r"has_variable\s*=\s*zg361_last_reviewer.*?"
                 r"has_variable\s*=\s*zg361_last_review_serial.*?"
                 r"liege\s*=\s*\{\s*has_variable\s*=\s*zg361_review_serial\s*\}.*?"
                 r"var:zg361_last_reviewer\s*=\s*liege.*?"
                 r"var:zg361_last_review_serial\s*=\s*liege\.var:zg361_review_serial.*?"
+                r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}.*?"
                 r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
                 re.S,
             ),
         )
+
+        values = (
+            MOD_ROOT / "common" / "script_values" / "zg361_values.txt"
+        ).read_text(encoding="utf-8-sig")
+        for name in (
+            "zg361_kpi_superior_evidence_value",
+            "zg361_kpi_jingcha_evidence_value",
+            "zg361_kpi_organization_evidence_value",
+        ):
+            self.assertRegex(
+                values,
+                re.compile(
+                    rf"{name}\s*=\s*\{{.*?limit\s*=\s*\{{\s*exists\s*=\s*liege\s*\}}",
+                    re.S,
+                ),
+            )
         self.assertIn("save_temporary_scope_as = zg361_calibration_demote_target", effects)
         self.assertIn("save_temporary_scope_as = zg361_calibration_rescue_target", effects)
         assignment_at = effects.index("zg361_assign_pending_grades_effect = yes")

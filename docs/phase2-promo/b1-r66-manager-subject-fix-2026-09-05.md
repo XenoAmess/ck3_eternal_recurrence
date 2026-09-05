@@ -390,3 +390,64 @@ Frozen R73 SHA-256:
 
 This is another post-loader event-choreography stop. It adds no
 file-size/performance RED and triggers no effect split.
+
+## R74: first full product-error inventory and mechanism policy card
+
+R74 used committed `4adf315`, the unchanged 636-file `Z:\p2ad\p` product,
+and exact CK3 1.19.0.6. R73's `health.7500` acknowledgement passed: the run
+continued beyond D+220 and reached December 1067. Frontend, final loader,
+unique mount, protected storage, source/product immutability and managed
+cleanup were GREEN; no CK3 process remained. The run then stopped before
+action on previously unregistered product event `zg361m.1`, raw date
+`53156376`, instance `19`, root `29037`, with three shown/enabled native
+options `0/1/2`.
+
+The exact generated source defines this as mechanism 001's player policy
+card. Every branch writes a bounded ledger; option A is the reference charter
+and is also the product's deterministic default. The runner contract therefore
+binds the product observation window, exact root and three-option shape, then
+selects authored option 1/native 0. Twenty-three inherited B1 ticket scopes are
+not consumed by this event and remain opaque instead of being mislabelled as
+mechanism inputs. Wrong root or option shape stays RED.
+
+Unlike R67–R73, R74 also reached enough product execution to expose a real
+post-loader error inventory. The actionable families are:
+
+- no-current-liege reads in the KPI values and current-review trigger;
+- stale weak Character reads at `.101` and late publication consumers;
+- optional huddle, departed-grade and Central portfolio fields read before
+  their variables exist, because CK3 trigger lists do not short-circuit;
+- six Career/HC dual-payment mechanisms using a negative `add_gold`, which
+  CK3 1.19 rejects at runtime;
+- `ordered_in_list` capping caused by the processing count/list drifting after
+  a weak Character disappeared.
+
+The minimal static repair now guards `liege` before context switches, nests
+presence gates before value comparisons, rebuilds both manager-owned Character
+lists at each observed delayed consumer, updates the processing count from the
+rebuilt list, and uses `remove_short_term_gold` for real debits. The same
+engine-proven negative-`add_gold` form was removed from Career Learning too.
+Generated files were rebuilt only through their four generators.
+
+Focused results are checkpoint `11/11`, choreography `5/5`, B1 `64/64`,
+Central `41/41`, Career/HC `42/42`, Career Learning `34/34` and scoreboard
+`32/32`; generator parity, product-local validation and root static validation
+are GREEN. Effect boundaries remain **428 files / 3721 effects / maximum
+non-legacy 10 / target misses 0 / over-20 violations 0**. These are static
+results; R75 must prove the error families absent in a fresh production CK3
+run.
+
+Frozen R74 SHA-256:
+
+- outer report: `E35572FB4E654CF0821188D967A8F7428CFCF710D823B51006721EA404F5CC31`
+- evidence index: `1C3F7BFF766289AC7CD3A3D41B0237063697C7EEA184FF625FA29F95070CA124`
+- cell report: `180722211C636A6A6AA8FDECD7A32DC905C9D95BA91E1CE13D0DD54B6C27F1A2`
+- loader gate: `7771D01A078E4E3139E1C338FC2BFA34431F298490269E73440E3CA167098983`
+- promotion entry: `5A7B424E8C382848F106BCCD6E53D9ABA6B5710EC828B76FCCC2C4C2A0333F0B`
+- cleanup: `C6D5D682AEEAED44599CD7E7E1579D4B6404C5C727AD9F3BA488EF30D59547AD`
+
+The largest loaded mechanism event/effect sources were still 429,368 and
+1,019,397 bytes. They loaded normally, and the first actionable errors arrived
+only during gameplay. R74 is therefore further negative evidence against file
+size as this run's cause. No performance-driven split is triggered; the B2+
+purpose-shard limit remains independently GREEN.

@@ -537,6 +537,78 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_mechanism_001_accepts_the_reference_charter_choice(self) -> None:
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361m.1",
+            "current_event_instance_id": 19,
+            "date_raw": 53156376,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            # R74 carried unrelated B1 ticket scopes into this frame.  The
+            # mechanism event source reads none of them, so the contract must
+            # remain valid regardless of inherited saved-scope payloads.
+            "saved_scopes": [
+                {
+                    "name": "zg361_b1_pending_continue_subject",
+                    "scope": {
+                        "status": "available",
+                        "type_key": "character",
+                        "typed_identity": {
+                            "status": "available",
+                            "kind": "character",
+                            "character_id": 29575,
+                        },
+                    },
+                }
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53156376, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 19}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS["zg361m.1"]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="zg361m.1",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_root = copy.deepcopy(context)
+        wrong_root["root_scope"]["typed_identity"]["character_id"] = 29575
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_root,
+            event_key="zg361m.1",
+            contract=contract,
+        )
+        self.assertFalse(checks["root_character_id"])
+
     def test_sway_compliment_accepts_dynamic_three_plus_empty_fallback(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

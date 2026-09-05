@@ -2709,7 +2709,54 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 event.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
                 event.index(first_consumer + " = yes"),
             )
-        self.assertNotIn("zg361_b1_prune_unavailable_subjects_effect = yes", top_level_block(self.events, "zg361b1.103"))
+        peer = top_level_block(self.effects, "zg361_b1_peer_window_dispatcher_effect")
+        self.assertLess(
+            peer.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            peer.index("every_in_list = {"),
+        )
+
+        for token in (
+            "variable = zg361_b1_processing_subjects",
+            "limit = { is_alive = yes }",
+            "name = zg361_b1_available_processing_subjects",
+            "clear_variable_list = zg361_b1_processing_subjects",
+            "name = zg361_b1_processing_n value = list_size:zg361_b1_processing_subjects",
+        ):
+            self.assertIn(token, prune)
+        for consumer_name in (
+            "zg361_b1_finalize_huddle_diff_effect",
+            "zg361_b1_record_named_dissent_effect",
+            "zg361_b1_refresh_individual_publications_effect",
+        ):
+            consumer = top_level_block(self.effects, consumer_name)
+            self.assertLess(
+                consumer.index(
+                    "zg361_b1_prune_unavailable_subjects_effect = yes"
+                ),
+                consumer.index("variable = zg361_b1_processing_subjects"),
+            )
+
+    def test_optional_huddle_and_departed_grade_reads_are_presence_gated(self) -> None:
+        for effect_name in (
+            "zg361_b1_finalize_huddle_diff_effect",
+            "zg361_b1_record_named_dissent_effect",
+        ):
+            source = top_level_block(self.effects, effect_name)
+            self.assertIn("trigger_if = {", source)
+            self.assertIn(
+                "has_variable = zg361_b1_huddle_attendee_attending", source
+            )
+            self.assertLess(
+                source.index("has_variable = zg361_b1_huddle_attendee_attending"),
+                source.index("var:zg361_b1_huddle_attendee_attending = 1"),
+            )
+
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        pending_guard = publish.index("has_variable = zg361_pending_grade")
+        pending_read = publish.index(
+            "var:zg361_last_grade = var:zg361_pending_grade"
+        )
+        self.assertLess(pending_guard, pending_read)
 
     def test_roster_change_receipts_are_real_and_consumed_by_denominator(self) -> None:
         initialize = top_level_block(

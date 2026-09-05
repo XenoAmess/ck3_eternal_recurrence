@@ -133,20 +133,25 @@ zg361_kpi_growth_evidence_value = {
 zg361_kpi_superior_evidence_value = {
 	value = 0
 	if = {
-		limit = { liege = { opinion = { target = prev value >= 50 } } }
-		add = 10
-	}
-	else_if = {
-		limit = { liege = { opinion = { target = prev value >= 20 } } }
-		add = 5
-	}
-	else_if = {
-		limit = { liege = { opinion = { target = prev value <= -50 } } }
-		add = -20
-	}
-	else_if = {
-		limit = { liege = { opinion = { target = prev value <= -20 } } }
-		add = -10
+		# A departed or de-landed subject can legitimately have no current liege.
+		# Keep the frozen KPI row neutral instead of evaluating an invalid scope.
+		limit = { exists = liege }
+		if = {
+			limit = { liege = { opinion = { target = prev value >= 50 } } }
+			add = 10
+		}
+		else_if = {
+			limit = { liege = { opinion = { target = prev value >= 20 } } }
+			add = 5
+		}
+		else_if = {
+			limit = { liege = { opinion = { target = prev value <= -50 } } }
+			add = -20
+		}
+		else_if = {
+			limit = { liege = { opinion = { target = prev value <= -20 } } }
+			add = -10
+		}
 	}
 }
 
@@ -211,13 +216,16 @@ zg361_kpi_collaboration_evidence_value = {
 zg361_kpi_jingcha_evidence_value = {
 	value = 0
 	if = {
-		limit = {
-			has_variable = zg361_skipped_jingcha_superior
-			var:zg361_skipped_jingcha_superior = liege
-		}
-		add = {
-			value = 0
-			subtract = zg361_skipped_jingcha_kpi_malus_value
+		limit = { exists = liege }
+		if = {
+			limit = { has_variable = zg361_skipped_jingcha_superior }
+			if = {
+				limit = { var:zg361_skipped_jingcha_superior = liege }
+				add = {
+					value = 0
+					subtract = zg361_skipped_jingcha_kpi_malus_value
+				}
+			}
 		}
 	}
 }
@@ -226,8 +234,11 @@ zg361_kpi_jingcha_evidence_value = {
 zg361_kpi_organization_evidence_value = {
 	value = 0
 	if = {
-		limit = { liege = { has_variable = zg361_mechanism_configured_n } }
-		add = zg361_team_mechanism_kpi_value
+		limit = { exists = liege }
+		if = {
+			limit = { liege = { has_variable = zg361_mechanism_configured_n } }
+			add = zg361_team_mechanism_kpi_value
+		}
 	}
 	if = {
 		limit = { has_variable = zg361_mechanism_configured_n }

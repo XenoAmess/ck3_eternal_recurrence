@@ -584,6 +584,26 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361m.1": {
+        # First player-facing mechanism policy card, dispatched by the
+        # product immediately after an annual review is published.  Every
+        # branch deliberately writes the organizational ledger, so this is
+        # not a neutral modal to dismiss.  Option A is the product's
+        # reference-charter choice (and its highest base AI weight): it adds
+        # evidence/trust while recording mechanism choice 001 exactly once.
+        # The event itself consumes no saved scopes.  R74 retained unrelated
+        # B1 review-ticket scopes on the window; do not turn those inherited
+        # implementation details into a false policy-card dependency.
+        "date_raw": (53156376,),
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "health.7200": {
         # Vanilla yearly-health onset of withering mind.  The event has no
         # saved scopes and exposes one mandatory acknowledgement whose sole

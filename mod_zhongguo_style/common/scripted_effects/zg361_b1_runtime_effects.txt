@@ -1827,6 +1827,43 @@ zg361_b1_prune_unavailable_subjects_effect = {
 			debug_log = "ZG361B1: unavailable weak subjects pruned before delayed review"
 		}
 	}
+	# The ranking list is materialized only after D+300 and then survives several
+	# independent delayed callbacks. Rebuild it under the same boundary. The
+	# roster block above is the sole owner of vacancy receipts.
+	if = {
+		limit = { has_variable_list = zg361_b1_processing_subjects }
+		if = {
+			limit = { has_variable_list = zg361_b1_available_processing_subjects }
+			clear_variable_list = zg361_b1_available_processing_subjects
+		}
+		every_in_list = {
+			variable = zg361_b1_processing_subjects
+			limit = { is_alive = yes }
+			save_temporary_scope_as = zg361_b1_available_processing_subject
+			root = {
+				add_to_variable_list = {
+					name = zg361_b1_available_processing_subjects
+					target = scope:zg361_b1_available_processing_subject
+				}
+			}
+		}
+		clear_variable_list = zg361_b1_processing_subjects
+		if = {
+			limit = { has_variable_list = zg361_b1_available_processing_subjects }
+			every_in_list = {
+				variable = zg361_b1_available_processing_subjects
+				save_temporary_scope_as = zg361_b1_available_processing_subject
+				root = {
+					add_to_variable_list = {
+						name = zg361_b1_processing_subjects
+						target = scope:zg361_b1_available_processing_subject
+					}
+				}
+			}
+			clear_variable_list = zg361_b1_available_processing_subjects
+		}
+		set_variable = { name = zg361_b1_processing_n value = list_size:zg361_b1_processing_subjects }
+	}
 }
 
 zg361_b1_midcycle_dispatcher_effect = {
@@ -2109,6 +2146,7 @@ zg361_b1_submit_self_conservative_ticket_effect = {
 }
 
 zg361_b1_peer_window_dispatcher_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	every_in_list = {
 		variable = zg361_b1_subjects
 		if = {

@@ -127,15 +127,20 @@ zg361_b1_peer_submission_recipient_trigger = {
 # 必须仍属于做出该记录的直属领主，且记录来自该领主的最新考核轮次。
 zg361_is_current_liege_review_record_trigger = {
 	# any_vassal 会枚举未参加本轮考核的直属封臣；AND 条件不短路，
-	# 所以不能把 has_variable 与 var: 读取平铺在同一层。
+	# 所以不能把 has_variable 与 var: 读取平铺在同一层。离任/失地角色
+	# 还可能已经没有 liege；先在外层闭合对象，再读取双方变量。
 	trigger_if = {
-		limit = {
-			has_variable = zg361_last_reviewer
-			has_variable = zg361_last_review_serial
-			liege = { has_variable = zg361_review_serial }
+		limit = { exists = liege }
+		trigger_if = {
+			limit = {
+				has_variable = zg361_last_reviewer
+				has_variable = zg361_last_review_serial
+				liege = { has_variable = zg361_review_serial }
+			}
+			var:zg361_last_reviewer = liege
+			var:zg361_last_review_serial = liege.var:zg361_review_serial
 		}
-		var:zg361_last_reviewer = liege
-		var:zg361_last_review_serial = liege.var:zg361_review_serial
+		trigger_else = { always = no }
 	}
 	trigger_else = { always = no }
 }

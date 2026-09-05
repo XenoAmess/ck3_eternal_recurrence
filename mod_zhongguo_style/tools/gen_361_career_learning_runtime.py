@@ -465,7 +465,7 @@ def render_dual_apply(row: Mechanism) -> str:
                 limit = {{ {trigger} }}
                 var:{v["owner"]} = {{
                     remove_treasury = {treasury}
-                    add_gold = {{ value = 0 subtract = {manager} }}
+                    remove_short_term_gold = {manager}
                 }}
                 set_variable = {{ name = {p}_dual_payment_settled value = 1 }}
                 set_variable = {{ name = {p}_total_cost value = {treasury + manager} }}
@@ -1873,7 +1873,7 @@ zg361_cl_m333_recover_outstanding_effect = {{
             var:zg361_cl_m333_outstanding = 18
             gold >= 18
         }}
-        add_gold = {{ value = 0 subtract = 18 }}
+        remove_short_term_gold = 18
         var:zg361_cl_m333_object_owner = {{
             add_treasury = 13
             add_gold = 5

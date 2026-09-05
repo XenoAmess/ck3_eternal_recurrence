@@ -2114,6 +2114,43 @@ zg361_b1_prune_unavailable_subjects_effect = {
 			debug_log = "ZG361B1: unavailable weak subjects pruned before delayed review"
 		}
 	}
+	# The ranking list is materialized only after D+300 and then survives several
+	# independent delayed callbacks. Rebuild it under the same boundary. The
+	# roster block above is the sole owner of vacancy receipts.
+	if = {
+		limit = { has_variable_list = zg361_b1_processing_subjects }
+		if = {
+			limit = { has_variable_list = zg361_b1_available_processing_subjects }
+			clear_variable_list = zg361_b1_available_processing_subjects
+		}
+		every_in_list = {
+			variable = zg361_b1_processing_subjects
+			limit = { is_alive = yes }
+			save_temporary_scope_as = zg361_b1_available_processing_subject
+			root = {
+				add_to_variable_list = {
+					name = zg361_b1_available_processing_subjects
+					target = scope:zg361_b1_available_processing_subject
+				}
+			}
+		}
+		clear_variable_list = zg361_b1_processing_subjects
+		if = {
+			limit = { has_variable_list = zg361_b1_available_processing_subjects }
+			every_in_list = {
+				variable = zg361_b1_available_processing_subjects
+				save_temporary_scope_as = zg361_b1_available_processing_subject
+				root = {
+					add_to_variable_list = {
+						name = zg361_b1_processing_subjects
+						target = scope:zg361_b1_available_processing_subject
+					}
+				}
+			}
+			clear_variable_list = zg361_b1_available_processing_subjects
+		}
+		set_variable = { name = zg361_b1_processing_n value = list_size:zg361_b1_processing_subjects }
+	}
 }
 
 zg361_b1_midcycle_dispatcher_effect = {
@@ -2396,6 +2433,7 @@ zg361_b1_submit_self_conservative_ticket_effect = {
 }
 
 zg361_b1_peer_window_dispatcher_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	every_in_list = {
 		variable = zg361_b1_subjects
 		if = {
@@ -5361,22 +5399,34 @@ zg361_b1_finalize_agenda_audit_effect = {
 }
 
 zg361_b1_finalize_huddle_diff_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	if = {
 		limit = {
-			var:zg361_b1_huddle_attendee_attending = 1
-			var:zg361_b1_huddle_attendee_state = 1
-			var:zg361_b1_huddle_attendee_route != 3
-			has_variable = zg361_b1_huddle_attendee_owner
-			var:zg361_b1_huddle_attendee_subject = this
-			var:zg361_b1_huddle_attendee_owner = {
-				var:zg361_b1_huddle_host_object_available = 1
-				var:zg361_b1_huddle_host_owner = this
-				var:zg361_b1_huddle_host_subject = this
-				var:zg361_b1_huddle_host_cycle = prev.var:zg361_b1_huddle_attendee_cycle
-				var:zg361_b1_huddle_host_case = prev.var:zg361_b1_huddle_attendee_case
-				var:zg361_b1_huddle_host_id = prev.var:zg361_b1_huddle_attendee_id
-				var:zg361_b1_huddle_host_state = 1
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_huddle_attendee_attending
+					has_variable = zg361_b1_huddle_attendee_state
+					has_variable = zg361_b1_huddle_attendee_route
+					has_variable = zg361_b1_huddle_attendee_owner
+					has_variable = zg361_b1_huddle_attendee_subject
+				}
+				AND = {
+					var:zg361_b1_huddle_attendee_attending = 1
+					var:zg361_b1_huddle_attendee_state = 1
+					var:zg361_b1_huddle_attendee_route != 3
+					var:zg361_b1_huddle_attendee_subject = this
+					var:zg361_b1_huddle_attendee_owner = {
+						var:zg361_b1_huddle_host_object_available = 1
+						var:zg361_b1_huddle_host_owner = this
+						var:zg361_b1_huddle_host_subject = this
+						var:zg361_b1_huddle_host_cycle = prev.var:zg361_b1_huddle_attendee_cycle
+						var:zg361_b1_huddle_host_case = prev.var:zg361_b1_huddle_attendee_case
+						var:zg361_b1_huddle_host_id = prev.var:zg361_b1_huddle_attendee_id
+						var:zg361_b1_huddle_host_state = 1
+					}
+				}
 			}
+			trigger_else = { always = no }
 		}
 		set_variable = { name = zg361_b1_huddle_attendee_diff_n value = 0 }
 		set_variable = { name = zg361_b1_huddle_attendee_formal_hash value = { value = var:zg361_b1_manager_case_serial multiply = 1000 } }
@@ -5582,28 +5632,37 @@ zg361_b1_consume_must_review_effect = {
 # a non-zero fact reason and an independent superior reviewer; route B freezes
 # only a consensus record and never manufactures a minority identity.
 zg361_b1_record_named_dissent_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	set_variable = { name = zg361_b1_consensus_object_available value = 0 }
 	if = {
 		limit = {
-			var:zg361_b1_m144_mode = 1
-			var:zg361_b1_huddle_attendee_attending = 1
-			var:zg361_b1_dissent_used = 0
-			var:zg361_b1_calibration_attention >= 1
-			has_variable = zg361_b1_bank_superior
-			NOT = { var:zg361_b1_bank_superior = this }
-			var:zg361_b1_huddle_attendee_owner = var:zg361_b1_bank_superior
-			var:zg361_b1_huddle_attendee_subject = this
-			var:zg361_b1_huddle_attendee_state = 1
-			var:zg361_b1_bank_superior = {
-				var:zg361_b1_huddle_host_object_available = 1
-				var:zg361_b1_huddle_host_owner = this
-				var:zg361_b1_huddle_host_subject = this
-				var:zg361_b1_huddle_host_cycle = prev.var:zg361_b1_huddle_attendee_cycle
-				var:zg361_b1_huddle_host_case = prev.var:zg361_b1_huddle_attendee_case
-				var:zg361_b1_huddle_host_id = prev.var:zg361_b1_huddle_attendee_id
-				var:zg361_b1_huddle_host_state = 1
-				var:zg361_b1_dissent_review_attention_budget >= 1
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_huddle_attendee_attending
+					has_variable = zg361_b1_bank_superior
+				}
+				AND = {
+					var:zg361_b1_m144_mode = 1
+					var:zg361_b1_huddle_attendee_attending = 1
+					var:zg361_b1_dissent_used = 0
+					var:zg361_b1_calibration_attention >= 1
+					NOT = { var:zg361_b1_bank_superior = this }
+					var:zg361_b1_huddle_attendee_owner = var:zg361_b1_bank_superior
+					var:zg361_b1_huddle_attendee_subject = this
+					var:zg361_b1_huddle_attendee_state = 1
+					var:zg361_b1_bank_superior = {
+						var:zg361_b1_huddle_host_object_available = 1
+						var:zg361_b1_huddle_host_owner = this
+						var:zg361_b1_huddle_host_subject = this
+						var:zg361_b1_huddle_host_cycle = prev.var:zg361_b1_huddle_attendee_cycle
+						var:zg361_b1_huddle_host_case = prev.var:zg361_b1_huddle_attendee_case
+						var:zg361_b1_huddle_host_id = prev.var:zg361_b1_huddle_attendee_id
+						var:zg361_b1_huddle_host_state = 1
+						var:zg361_b1_dissent_review_attention_budget >= 1
+					}
+				}
 			}
+			trigger_else = { always = no }
 		}
 		set_variable = { name = zg361_b1_dissent_candidate_n value = 0 }
 		ordered_in_list = {
@@ -5827,6 +5886,7 @@ zg361_b1_finalize_named_dissent_effect = {
 # resolution makes both grades stable.  A later #143 rerank updates only rows
 # whose grade changed and advances the manager revision once per changed row.
 zg361_b1_refresh_individual_publications_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	save_temporary_scope_as = zg361_b1_local_publish_manager
 	set_variable = { name = zg361_b1_local_publish_available value = 1 }
 	set_variable = { name = zg361_b1_local_publish_expected_n value = 0 }
@@ -8019,7 +8079,11 @@ __RESULT_ADAPTER_PEER_SLOTS__
 						set_variable = { name = zg361_b1_m357_external_receipt_hash value = { value = var:zg361_result_case_serial multiply = 10000 add = { value = var:zg361_b1_final_reason multiply = 1000 } add = 357 } }
 					}
 					if = {
-						limit = { var:zg361_b1_recusal_active = 1 has_variable = zg361_last_grade }
+						limit = {
+							var:zg361_b1_recusal_active = 1
+							has_variable = zg361_last_grade
+							has_variable = zg361_pending_grade
+						}
 						set_variable = { name = zg361_b1_recusal_post_grade value = var:zg361_last_grade }
 						set_variable = { name = zg361_b1_recusal_lock_match value = 0 }
 						if = {
