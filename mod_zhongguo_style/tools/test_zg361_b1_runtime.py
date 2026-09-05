@@ -2489,6 +2489,66 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ):
             self.assertIn(field, common)
 
+    def test_dual_role_diagnostics_are_guarded_temporary_observations(self) -> None:
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        diagnostic = initialize.split(
+            "\tset_variable = { name = zg361_b1_case_owner value = root }", 1
+        )[0]
+        self.assertIn(
+            "limit = { is_ai = no has_character_flag = zg361_b1_cycle_active }",
+            diagnostic,
+        )
+        self.assertIn(
+            "save_temporary_scope_as = zg361_b1_diag_human_subject", diagnostic
+        )
+        self.assertIn(
+            "save_temporary_scope_as = zg361_b1_diag_initializing_owner",
+            diagnostic,
+        )
+        expected_reads = (
+            ("manager_cycle_before", "cycle_serial"),
+            ("manager_case_before", "case_serial"),
+            ("manager_state_before", "cycle_state"),
+            ("incoming_subject_cycle", "cycle_serial"),
+            ("incoming_subject_case", "case_serial"),
+        )
+        midcycle = top_level_block(self.events, "zg361b1.100")
+        stale = midcycle.split(
+            'debug_log = "ZG361B1: stale midcycle ticket ignored"', 1
+        )[1].split("# The existing saved ticket", 1)[0]
+        self.assertIn("limit = { is_ai = no }", stale)
+        self.assertIn(
+            "save_temporary_scope_as = zg361_b1_diag_midcycle_manager", stale
+        )
+        for section, reads in (
+            (diagnostic, expected_reads),
+            (stale, (
+                ("manager_cycle_current", "cycle_serial"),
+                ("manager_case_current", "case_serial"),
+                ("manager_state_current", "cycle_state"),
+            )),
+        ):
+            for target, source in reads:
+                self.assertRegex(
+                    section,
+                    rf"limit = \{{ has_variable = zg361_b1_{source} \}}\s+"
+                    rf"save_temporary_scope_value_as = \{{ name = "
+                    rf"zg361_b1_diag_{target} value = var:zg361_b1_{source} \}}",
+                )
+            self.assertNotRegex(
+                without_comments(section),
+                r"\b(?:set_variable|change_variable|remove_variable|"
+                r"save_scope_as|save_scope_value_as|trigger_event)\s*=",
+            )
+        self.assertIn("debug_log_scopes = yes", diagnostic)
+        self.assertIn(
+            'debug_log = "ZG361B1_DIAG: human stale midcycle; saved ticket '
+            'versus current manager identity"\n\t\t\t\t\tdebug_log_scopes = yes',
+            midcycle,
+        )
+
     def test_delayed_review_prunes_unavailable_weak_subjects_before_reads(self) -> None:
         prune = top_level_block(
             self.effects, "zg361_b1_prune_unavailable_subjects_effect"

@@ -1024,6 +1024,37 @@ zg361_b1_apply_departed_grade_effect = {
 }
 
 zg361_b1_initialize_subject_case_effect = {
+	# Read-only diagnosis of the real manager/subject dual-role overwrite.
+	# Temporary scopes must not become inherited delayed-event ticket fields.
+	if = {
+		limit = { is_ai = no has_character_flag = zg361_b1_cycle_active }
+		save_temporary_scope_as = zg361_b1_diag_human_subject
+		if = {
+			limit = { has_variable = zg361_b1_cycle_serial }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_before value = var:zg361_b1_cycle_serial }
+		}
+		if = {
+			limit = { has_variable = zg361_b1_case_serial }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_before value = var:zg361_b1_case_serial }
+		}
+		if = {
+			limit = { has_variable = zg361_b1_cycle_state }
+			save_temporary_scope_value_as = { name = zg361_b1_diag_manager_state_before value = var:zg361_b1_cycle_state }
+		}
+		root = {
+			save_temporary_scope_as = zg361_b1_diag_initializing_owner
+			if = {
+				limit = { has_variable = zg361_b1_cycle_serial }
+				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_cycle value = var:zg361_b1_cycle_serial }
+			}
+			if = {
+				limit = { has_variable = zg361_b1_case_serial }
+				save_temporary_scope_value_as = { name = zg361_b1_diag_incoming_subject_case value = var:zg361_b1_case_serial }
+			}
+		}
+		debug_log = "ZG361B1_DIAG: human active manager initialized as subject; before and incoming identities"
+		debug_log_scopes = yes
+	}
 	set_variable = { name = zg361_b1_case_owner value = root }
 	set_variable = { name = zg361_b1_case_subject value = this }
 	set_variable = { name = zg361_b1_cycle_serial value = root.var:zg361_b1_cycle_serial }
@@ -8806,7 +8837,29 @@ zg361b1.100 = {
 				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
 				trigger_event = { id = zg361b1.101 days = 60 }
 			}
-			else = { debug_log = "ZG361B1: stale midcycle ticket ignored" }
+			else = {
+				debug_log = "ZG361B1: stale midcycle ticket ignored"
+				if = {
+					limit = { is_ai = no }
+					save_temporary_scope_as = zg361_b1_diag_midcycle_manager
+					if = {
+						limit = { has_variable = zg361_b1_cycle_serial }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_cycle_current value = var:zg361_b1_cycle_serial }
+					}
+					if = {
+						limit = { has_variable = zg361_b1_case_serial }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_case_current value = var:zg361_b1_case_serial }
+					}
+					if = {
+						limit = { has_variable = zg361_b1_cycle_state }
+						save_temporary_scope_value_as = { name = zg361_b1_diag_manager_state_current value = var:zg361_b1_cycle_state }
+					}
+					# The existing saved ticket owner/cycle/case/state are emitted
+					# directly by debug_log_scopes; no extra ticket reads are needed.
+					debug_log = "ZG361B1_DIAG: human stale midcycle; saved ticket versus current manager identity"
+					debug_log_scopes = yes
+				}
+			}
 		}
 		else = { debug_log = "ZG361B1: incomplete midcycle ticket ignored" }
 	}
