@@ -1067,6 +1067,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
 
         manager = 36354
         names = (
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
             "zg361_b1_ticket_owner",
             "zg361_b1_ticket_cycle",
             "zg361_b1_ticket_case",
@@ -1086,6 +1090,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "zg361_b1_local_publish_notice_revision",
         )
         character_names = {
+            "zg361_b1_bank_ticket_owner": 32904,
             "zg361_b1_ticket_owner": manager,
             "zg361_b1_oversight_ticket_owner": manager,
             "zg361_b1_pending_watch_owner": manager,
@@ -1145,7 +1150,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(checks["saved_scope_names_exact"])
 
         wrong_manager = copy.deepcopy(context)
-        wrong_manager["saved_scopes"][8] = character_scope(
+        wrong_manager["saved_scopes"][12] = character_scope(
             "zg361_b1_pending_watch_owner", 36355
         )
         checks = checks_for(wrong_manager)

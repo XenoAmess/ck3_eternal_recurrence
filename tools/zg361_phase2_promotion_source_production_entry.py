@@ -795,10 +795,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
     "zg361b1.126": {
         # Human-only subject-local publication notice. Its trigger has already
         # matched the frozen owner/subject/cycle/case/revision tuple and its
-        # single option has no effect. Preserve the ticket/oversight/watch and
-        # publication-notice names that reach this independently scheduled
-        # window, bind all consumed value types and require all owner aliases
-        # to refer to one non-player manager before acknowledging the notice.
+        # single option has no effect. Preserve the outer bank plus the
+        # ticket/oversight/watch and publication-notice names that reach this
+        # independently scheduled window, bind all consumed value types and
+        # require the active owner aliases to refer to one non-player manager.
         # The earlier .200 self-review and .201 shadow-accept scopes belong to
         # those event windows; R106 proved they are not part of .126's ABI.
         "date_raw": 53155368,
@@ -842,6 +842,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             )
         },
         "saved_scope_name_sets": ((
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
             "zg361_b1_ticket_owner",
             "zg361_b1_ticket_cycle",
             "zg361_b1_ticket_case",
