@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import threading
 import types
 import unittest
 from types import SimpleNamespace
@@ -52,6 +53,7 @@ _install_optional_desktop_stubs()
 sys.path.insert(0, str(ROOT / "tools"))
 
 import run_zhongguo_acceptance as runner  # noqa: E402
+import resume_zg361_phase2_promotion_source_session as retained_client  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
     _enter_common_run_cell_patches,
@@ -59,6 +61,53 @@ from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_retained_client_binds_exact_state_pipe_seed_and_loader(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state = root / "state"
+            (state / "profile").mkdir(parents=True)
+            cell = root / "source-cell"
+            cell.mkdir()
+            pipe = r"\\.\pipe\retained-unit"
+            (cell / "09_phase2_native_session_retained.json").write_text(
+                json.dumps({
+                    "result": "RETAINED",
+                    "reconnect_authorized": True,
+                    "process_restart_required": False,
+                    "state_dir": str(state.resolve()),
+                    "profile_dir": str((state / "profile").resolve()),
+                    "pipe": pipe,
+                }),
+                encoding="utf-8",
+            )
+            (cell / "00_phase2_seed_install.json").write_text(
+                json.dumps({
+                    "result": "GREEN",
+                    "contract": {
+                        "ready": True,
+                        "status": "ready",
+                        "source": {"sha256": "A" * 64},
+                    },
+                }),
+                encoding="utf-8",
+            )
+            (cell / "03_loader_gate.json").write_text(
+                json.dumps({"result": "GREEN"}), encoding="utf-8"
+            )
+
+            result = retained_client.validate_retained_session_inputs(
+                state_dir=state, pipe_name=pipe, source_run_cell=cell
+            )
+            self.assertTrue(all(result["checks"].values()))
+            with self.assertRaisesRegex(
+                retained_client.RetainedSessionError, "pipe_exact"
+            ):
+                retained_client.validate_retained_session_inputs(
+                    state_dir=state,
+                    pipe_name=r"\\.\pipe\different",
+                    source_run_cell=cell,
+                )
+
     def _capabilities(self, pid: int) -> dict[str, object]:
         bridge_labels = (
             runner.PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS
@@ -162,6 +211,55 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 encoding="utf-8"
             )
         self.assertIn('"result": "RED"', persisted)
+
+    def test_resume_rebinds_a_pre_submission_heartbeat_without_restart(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.revision = 118
+                self.attempted_revisions: list[int] = []
+
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "revision": self.revision,
+                    "date_raw": 53150352,
+                    "played_character": {"character_id": 29037},
+                    "diagnostics": {"connection_generation": 9},
+                    "paused": True,
+                    "speed": 5,
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.assert_step(step)
+                self.attempted_revisions.append(expected_revision)
+                if len(self.attempted_revisions) == 1:
+                    self.revision += 1
+                    raise production.PreSubmissionRevisionMismatchError(
+                        "native gameplay revision mismatch: expected 118, current 119"
+                    )
+                return {"accepted": True, "status": "submitted"}
+
+            @staticmethod
+            def assert_step(step: str) -> None:
+                if step != "resume-map":
+                    raise AssertionError(f"unexpected step: {step}")
+
+        service = Service()
+        audit: list[dict[str, object]] = []
+        result = production._resume_map_from_latest_binding(
+            service,
+            player=29037,
+            connection_generation=9,
+            rebind_audit=audit,
+        )
+
+        self.assertEqual(result, {"accepted": True, "status": "submitted"})
+        self.assertEqual(service.attempted_revisions, [118, 119])
+        self.assertEqual(len(audit), 1)
+        self.assertEqual(audit[0]["stale_revision"], 118)
+        self.assertFalse(audit[0]["request_submitted"])
 
     def test_product_entry_uses_speed_five_and_pauses_before_progress_query(self) -> None:
         class Service:
@@ -1444,7 +1542,12 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
     def test_run_cell_preserves_production_timeline_on_entry_error(self) -> None:
         self._run_cell_case(entry_error=True)
 
-    def _run_cell_case(self, *, entry_error: bool) -> None:
+    def test_run_cell_retains_healthy_session_on_harness_red(self) -> None:
+        self._run_cell_case(entry_error=True, retain_session=True)
+
+    def _run_cell_case(
+        self, *, entry_error: bool, retain_session: bool = False
+    ) -> None:
         seed_sha = "A" * 64
         seed_contract = {
             "status": "ready",
@@ -1486,7 +1589,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     mock.patch.object(
                         runner,
                         "start_phase2_native_session_supervisor",
-                        return_value={"kind": "fake-supervisor"},
+                        return_value={
+                            "kind": "fake-supervisor",
+                            "session_done": threading.Event(),
+                        },
                     )
                 )
                 stack.enter_context(
@@ -1552,6 +1658,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     native_bridge=bridge,
                     phase2_promotion_source_capture_live=True,
                     phase2_promotion_source_capture_timeout_seconds=12.5,
+                    retain_healthy_phase2_session_on_red=retain_session,
                     runtime_source=root / "runtime",
                     runtime_identity={
                         "native_bridge_runtime": {"identity": "unit"}
@@ -1574,7 +1681,17 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             self.assertEqual(retained["result"], "RED")
             self.assertIn("known interrupt date drift", retained["error_reason"])
             self.assertEqual(report["result"], "RED")
-            stop.assert_called_once()
+            if retain_session:
+                stop.assert_not_called()
+                retention = report["phase2_session_retention"]
+                self.assertEqual(retention["result"], "RETAINED")
+                self.assertTrue(retention["reconnect_authorized"])
+                self.assertFalse(
+                    retention["process_restart_required"]
+                )
+                self.assertEqual(report["native_cleanup"]["result"], "RETAINED")
+            else:
+                stop.assert_called_once()
             return
         capture.assert_called_once()
         self.assertEqual(retained["result"], "GREEN")

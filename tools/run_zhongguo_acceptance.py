@@ -18982,6 +18982,7 @@ def run_cell(
     phase2_promo_capture: bool = False,
     phase2_promotion_source_capture_live: bool = False,
     phase2_promotion_source_capture_timeout_seconds: float = 300.0,
+    retain_healthy_phase2_session_on_red: bool = False,
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
@@ -19031,6 +19032,14 @@ def run_cell(
     if phase2_promotion_source_capture_timeout_seconds <= 0:
         raise acceptance.RunnerError(
             "promotion source capture timeout must be positive"
+        )
+    if retain_healthy_phase2_session_on_red and not phase2_runtime_mode:
+        raise acceptance.RunnerError(
+            "healthy session retention requires a Phase2 runtime mode"
+        )
+    if retain_healthy_phase2_session_on_red and not keep_userdir:
+        raise acceptance.RunnerError(
+            "healthy session retention requires the isolated userdir to be kept"
         )
     _validate_phase2_frontend_first_options(
         phase2_frontend_first_load_save_name,
@@ -19157,6 +19166,7 @@ def run_cell(
     phase2_initial_binding: dict[str, object] | None = None
     phase2_final_capabilities: dict[str, object] | None = None
     phase2_native_session_liveness: dict[str, object] | None = None
+    phase2_session_retention: dict[str, object] | None = None
     phase2_legal_consent: dict[str, object] | None = None
     phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
     phase2_promo_producer_error: dict[str, object] | None = None
@@ -19863,6 +19873,89 @@ def run_cell(
                 )
         if phase2_supervisor is not None:
             try:
+                retain_live_session = False
+                if retain_healthy_phase2_session_on_red and result == "RED":
+                    session_done = phase2_supervisor.get("session_done")
+                    retained_capabilities = title_navigation_service.capabilities()
+                    retained_snapshot = title_navigation_service.snapshot()
+                    retained_diagnostics = retained_capabilities.get("diagnostics")
+                    retained_player = retained_snapshot.get("played_character")
+                    retain_checks = {
+                        "supervisor_still_running": (
+                            isinstance(session_done, threading.Event)
+                            and not session_done.is_set()
+                        ),
+                        "bridge_connected": (
+                            retained_capabilities.get("mode") == NATIVE_BRIDGE_MODE
+                            and isinstance(retained_diagnostics, Mapping)
+                            and retained_diagnostics.get("connected") is True
+                        ),
+                        "tracked_pid_unchanged": (
+                            isinstance(retained_diagnostics, Mapping)
+                            and retained_diagnostics.get("bridge_pid")
+                            == tracked_ck3_pid
+                        ),
+                        "map_ready": retained_snapshot.get("map_ready") is True,
+                        "played_character_bound": (
+                            isinstance(retained_player, Mapping)
+                            and isinstance(
+                                retained_player.get("character_id"), int
+                            )
+                            and not isinstance(
+                                retained_player.get("character_id"), bool
+                            )
+                            and int(retained_player["character_id"]) > 0
+                        ),
+                    }
+                    retain_live_session = all(retain_checks.values())
+                    phase2_session_retention = {
+                        "schema_version": 1,
+                        "kind": "zg361_phase2_healthy_session_retention",
+                        "result": "RETAINED" if retain_live_session else "RED",
+                        "reason": "harness_or_scenario_red_with_healthy_ck3",
+                        "state_dir": str(state_dir),
+                        "profile_dir": str(userdir),
+                        "pipe": native_bridge.pipe_name,
+                        "bridge_pid": (
+                            retained_diagnostics.get("bridge_pid")
+                            if isinstance(retained_diagnostics, Mapping)
+                            else None
+                        ),
+                        "connection_generation": (
+                            retained_diagnostics.get("connection_generation")
+                            if isinstance(retained_diagnostics, Mapping)
+                            else None
+                        ),
+                        "snapshot_id": retained_snapshot.get("snapshot_id"),
+                        "revision": retained_snapshot.get("revision"),
+                        "date_raw": retained_snapshot.get("date_raw"),
+                        "paused": retained_snapshot.get("paused"),
+                        "checks": retain_checks,
+                        "failed_checks": [
+                            name for name, passed in retain_checks.items()
+                            if passed is not True
+                        ],
+                        "process_restart_required": False,
+                        "reconnect_authorized": retain_live_session,
+                    }
+                    write_json(
+                        artifacts / "09_phase2_native_session_retained.json",
+                        phase2_session_retention,
+                    )
+                    if retain_live_session:
+                        native_cleanup = {
+                            "schema_version": 1,
+                            "result": "RETAINED",
+                            "cleanup_performed": False,
+                            "cleanup_required": False,
+                            "reconnect_authorized": True,
+                            "retention": phase2_session_retention,
+                        }
+                        log(
+                            "retained healthy Phase2 CK3 session after RED on "
+                            f"PID {tracked_ck3_pid}; reconnect on "
+                            f"{native_bridge.pipe_name}"
+                        )
                 scenario_filename = (
                     "05_phase2_incident_source_checkpoint_capture.json"
                     if phase2_incident_source_checkpoint_capture
@@ -19885,7 +19978,9 @@ def run_cell(
                     )
                     if isinstance(scenario_value, dict):
                         evidence = scenario_value
-                if phase2_b2_lifecycle is not None:
+                if retain_live_session:
+                    pass
+                elif phase2_b2_lifecycle is not None:
                     native_cleanup = (
                         prove_phase2_b2_matrix_native_session_cleanup(
                             phase2_b2_lifecycle,
@@ -19916,7 +20011,7 @@ def run_cell(
                             phase2_final_capabilities = final_capabilities_value
                     except Exception:
                         phase2_final_capabilities = None
-                if phase2_b2_lifecycle is None:
+                if not retain_live_session and phase2_b2_lifecycle is None:
                     native_cleanup = stop_phase2_native_session_supervisor(
                         phase2_supervisor,
                         artifacts,
@@ -20278,6 +20373,10 @@ def run_cell(
         "phase2_promotion_source_capture_live": (
             phase2_promotion_source_capture_live
         ),
+        "retain_healthy_phase2_session_on_red": (
+            retain_healthy_phase2_session_on_red
+        ),
+        "phase2_session_retention": phase2_session_retention,
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
         "phase2_b3_manager_governance_live": (
@@ -20489,6 +20588,7 @@ def main(
     phase2_live_batch: bool = False,
     phase2_promotion_source_capture_live: bool = False,
     phase2_promotion_source_capture_timeout_seconds: float = 300.0,
+    retain_healthy_phase2_session_on_red: bool = False,
     phase2_b2_same_checkpoint: bool = False,
     phase2_b3_manager_governance_live: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
@@ -20983,6 +21083,9 @@ def main(
         ),
         phase2_promotion_source_capture_timeout_seconds=(
             phase2_promotion_source_capture_timeout_seconds
+        ),
+        retain_healthy_phase2_session_on_red=(
+            retain_healthy_phase2_session_on_red
         ),
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
@@ -21565,6 +21668,14 @@ if __name__ == "__main__":
         action="store_true",
         help="delete the isolated userdir after GREEN; default preserves all process material",
     )
+    parser.add_argument(
+        "--retain-healthy-phase2-session-on-red",
+        action="store_true",
+        help=(
+            "keep a healthy managed CK3 process and isolated userdir alive after "
+            "a Phase2 RED so a corrected harness can reconnect without reloading"
+        ),
+    )
     parser.add_argument("--preflight", action="store_true", help="do not launch CK3")
     parser.add_argument(
         "--promo-capture",
@@ -21812,6 +21923,9 @@ if __name__ == "__main__":
                 ),
                 phase2_promotion_source_capture_timeout_seconds=(
                     arguments.phase2_promotion_source_checkpoint_timeout_seconds
+                ),
+                retain_healthy_phase2_session_on_red=(
+                    arguments.retain_healthy_phase2_session_on_red
                 ),
                 phase2_b2_same_checkpoint=(
                     arguments.phase2_b2_same_checkpoint

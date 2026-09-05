@@ -42,7 +42,7 @@
 | `P2-B1-001` | manager/subject 身份 | manager cycle/case 与 subject ABI 独立，旧存档只读 witness 可见 | subject 字段不得冒充 manager；旧 ticket 不得强行复活 | `LIVE_PARTIAL` |
 | `P2-B1-002` | 长期名单与嵌套角色引用 | 每个延迟消费边界剔除不可用 weak Character；每次解引用 Character-valued variable 都重新用外层 `is_alive=yes` 隔离，再读取角色变量 | 产品调用栈出现 `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `LIVE_GREEN`：R88 跑满同类 550 日窗口，产品 weak-variable 调用栈为 0 |
 | `P2-B1-003` | baseline | 有首府正常结算；无首府时 comparator unavailable 且 delta=0 | 不得把缺值当真实 0，不得读取新 owner 代替冻结对象 | `LIVE_PARTIAL` |
-| `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `BLOCKED`：R88 已实机到达 B1 publication 与 Central hook，但聚合日志不能证明属于玩家；550 日内仍无 `.146/.147`。R89–R91 将观测 harness 收窄为同日起停抖动及 pause 后 heartbeat 收敛；R92 已改为新日期/事件才暂停并等待 350ms 后查询，待 live |
+| `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `LIVE_PARTIAL / BLOCKED`：R92 已在真实 CK3 以 33 个 paused sample 覆盖 139 日，始终 `B1=true / Central=false / PP=false`；新日期/350ms heartbeat cadence 已 live。末端仅为 `resume-map` pre-submission revision race，现已动作前重绑；R93 继续完整 400+150 日窗口 |
 | `P2-B2-001` | 送达/申诉/PIP | 三条真实分支、四次 exact restore、最终 baseline、跨进程 event identity | unset owner、跨 case receipt、申诉加重、资金不守恒即 RED | `LIVE_GREEN`：focused gate；不等于 Phase2 全量 |
 | `P2-B3-001` | 管理者/制度 | 上一轮团队快照、京察、校准、PIP/申诉/留任聚合 | 同轮递归、manager/subject 混同、AI 非授权入口即 RED | `LIVE_PARTIAL` |
 | `P2-B4-001` | 晋升/职级/现金 | 资格至任命/失败冷却，HC/奖金预留释放，欠付补发守恒 | 失败不释放、跨案串账、玩家/owner 错位即 RED | `STATIC_GREEN / live pending` |
@@ -95,8 +95,9 @@
 & Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\test_zg361_phase2_promotion_source_checkpoint_runner.py
 & Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\test_zg361_phase2_promotion_source_choreography.py
 
-# CK3 实机由 run_zhongguo_acceptance.py 的专用 mode 串行执行；每个 run 使用
-# 独立 artifacts-dir / userdir / pipe，完成后必须有 cleanup receipt。
+# CK3 启动仍由 run_zhongguo_acceptance.py 串行执行；同一 product/bridge 的连续
+# 场景复用受管 session。harness RED 可写 RETAINED receipt 并由独立 client 接续；
+# 产品/bridge 变化或最终收口时才要求新启动或 cleanup receipt。
 ```
 
 每次实机后只更新被真实证据改变的 case。loader GREEN 只更新

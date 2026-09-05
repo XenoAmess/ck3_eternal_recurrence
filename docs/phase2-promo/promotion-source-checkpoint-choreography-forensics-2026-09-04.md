@@ -1092,3 +1092,43 @@ cleanup SHA-256 values are respectively
 and `0D02B8F5F0989665305FB7172C01DD530CDCCA158F503A16423B72B5126A93BB`.
 The loader scan was GREEN; the product path did not advance far enough to
 change B1 readiness.
+
+## R92: long-running sampling succeeded; resume used a stale public revision
+
+R92 passed preflight and the complete 303/303 loader gate, then kept the same
+product session running at speed 5 from `date_raw=53147016` to
+`53150352` (139 game days). It collected 33 successful paused-frame player
+progress observations and drained `zg361b2.40` plus
+`spymaster_task.0381`; every sample remained
+`B1=true / Central=false / PP=false`. This proves the R92 date/heartbeat
+cadence works and supplies real player-owned progress, but the elapsed window
+is still too short to judge the full authored B1 bound.
+
+The RED occurred after progress query 33. A later native heartbeat advanced
+the public revision from 118 to 119 before `resume-map`; the old runner sent
+118 and the driver rejected it *before submission*. No gameplay input crossed
+that stale binding. The resume helper now takes a fresh binding immediately
+before the idempotent map-state request and retries only
+`PreSubmissionRevisionMismatchError`, with every rejected revision recorded
+as `request_submitted=false`.
+
+R92 outer report, evidence index, cell report, promotion entry and cleanup
+SHA-256 values are respectively
+`D247A2ACEED79BAE1E59D7A44F6F21CEC67A46629F9C66D72BA0544BC6B0437A`,
+`0EF2D2113AE7597E6844F8BFE6E2231CFA89DAFF0F9E0ADA55D907FBF5129CF4`,
+`05D71C704046F402D170C8ED5C59155AC1478DF16B61649073BFFE24D78BC6EA`,
+`6B208B61EBA731BEABBC2C188A1281B0A2C9A8E69CB2D05EDE2CE8FE46A68E79`
+and
+`085B9D0C3C5548F6129567533FF2F9E37E513B99F0F5B8724C2FD726E882FDB6`.
+Cleanup was GREEN and CK3 returned to zero.
+
+R92 also exposed a lifecycle defect: a healthy CK3 was terminated merely
+because its Python client raised. The runner now supports
+`--retain-healthy-phase2-session-on-red`. On a Phase2 RED it verifies the
+live supervisor, exact PID/pipe/generation, map readiness and played-character
+binding, writes `09_phase2_native_session_retained.json`, closes only the
+failed client, and leaves the owning CK3 session available. The separate
+`resume_zg361_phase2_promotion_source_session.py` client validates the
+retention, seed and loader receipts before reconnecting. It neither launches
+nor stops CK3 by default. Product/mod or bridge changes still require a new
+session; Python harness changes do not.

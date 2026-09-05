@@ -86,11 +86,22 @@ class _FakeService:
 
     def capabilities(self) -> dict[str, object]:
         return {
+            "mode": capture.NATIVE_BRIDGE_MODE,
             "diagnostics": {
                 "connected": True,
                 "bridge_pid": 4321,
                 "connection_generation": 1,
             }
+        }
+
+    def snapshot(self) -> dict[str, object]:
+        return {
+            "snapshot_id": "native:retained-unit",
+            "revision": 17,
+            "date_raw": 53150352,
+            "map_ready": True,
+            "paused": True,
+            "played_character": {"character_id": 29037},
         }
 
 

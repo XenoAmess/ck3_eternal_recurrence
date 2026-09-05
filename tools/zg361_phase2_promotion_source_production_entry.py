@@ -8,6 +8,7 @@ import time
 from collections.abc import Callable, Mapping
 from typing import Protocol
 
+from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
 from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import (
     verify_review_now_independent_postcondition_v1,
     widget_visible,
@@ -30,6 +31,7 @@ HOURS_PER_DAY = 24
 # pause can become visible to Python before the next heartbeat has replaced
 # every cached Snapshot field used by the query's direct-read equality gate.
 PAUSED_PROGRESS_SETTLE_SECONDS = 0.35
+MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 4
 
 # These are not namespace-wide allowlists.  They are exact pending events
 # already proven on the immutable phase-two seed lineage.  Each contract binds
@@ -1124,6 +1126,51 @@ def _accepted(value: object, step: str) -> dict[str, object]:
     return result
 
 
+def _resume_map_from_latest_binding(
+    service: PromotionProductionEntryService,
+    *,
+    player: int,
+    connection_generation: int,
+    rebind_audit: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Resume a still-paused event-free frame after rebinding heartbeats.
+
+    A progress query or the native heartbeat can publish a newer public
+    revision after the outer loop sampled its paused frame. A
+    ``PreSubmissionRevisionMismatchError`` proves that no input was submitted,
+    so this idempotent map-state request can bind the newest frame and retry.
+    If an event appeared or the map already resumed, the outer loop owns the
+    new state and no request is sent.
+    """
+
+    last_error: PreSubmissionRevisionMismatchError | None = None
+    for attempt in range(1, MAX_PRE_SUBMISSION_REBIND_ATTEMPTS + 1):
+        snapshot, event = _binding(
+            service.snapshot(),
+            player=player,
+            connection_generation=connection_generation,
+        )
+        if event is not None or snapshot.get("paused") is not True:
+            return None
+        revision = int(snapshot["revision"])
+        try:
+            return _accepted(
+                service.execute_step("resume-map", expected_revision=revision),
+                "resume-map",
+            )
+        except PreSubmissionRevisionMismatchError as error:
+            last_error = error
+            rebind_audit.append({
+                "step": "resume-map",
+                "attempt": attempt,
+                "stale_revision": revision,
+                "error": f"{type(error).__name__}: {error}",
+                "request_submitted": False,
+            })
+    assert last_error is not None
+    raise last_error
+
+
 def _compact_progress_observation(
     query: object, *, date_raw: int, revision: int,
 ) -> dict[str, object]:
@@ -1801,6 +1848,7 @@ def enter_promotion_source_checkpoint_v1(
         "generic_character_rebind_used": False,
         "observations": [],
         "progress_observations": [],
+        "pre_submission_revision_rebinds": [],
     })
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
@@ -2073,11 +2121,13 @@ def enter_promotion_source_checkpoint_v1(
                 connection_generation=generation,
             )
         if snapshot.get("paused") is True:
-            _accepted(
-                service.execute_step(
-                    "resume-map", expected_revision=int(snapshot["revision"])
-                ),
-                "resume-map",
+            rebind_audit = evidence["pre_submission_revision_rebinds"]
+            assert isinstance(rebind_audit, list)
+            _resume_map_from_latest_binding(
+                service,
+                player=player,
+                connection_generation=generation,
+                rebind_audit=rebind_audit,
             )
         if poll_interval_seconds:
             sleeper(poll_interval_seconds)
@@ -2092,6 +2142,7 @@ __all__ = [
     "M146",
     "M147",
     "KNOWN_TIMELINE_INTERRUPTS",
+    "MAX_PRE_SUBMISSION_REBIND_ATTEMPTS",
     "PAUSED_PROGRESS_SETTLE_SECONDS",
     "POST_PUBLICATION_OBSERVATION_DAYS",
     "PromotionProductionEntryError",

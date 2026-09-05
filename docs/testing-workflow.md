@@ -1623,3 +1623,24 @@ preflight 必须同时发现 `game.command.set-speed-5` / `set-speed-5`，行为
 原生暂停帧识别并处理，没有使用 acceptance fixture 或 OCR（`fixture_used=false`、
 `ocr_used=false`）。因此后续同类验收必须保持 5 速默认值，任何回退到常规 1 速都应由测试或
 报告显式暴露。
+
+### Phase2 实机会话复用（2026-09-05）
+
+同一 hash-bound product、同一 CK3/bridge build 且只修改 Python runner、断言、
+查询节奏或证据写入时，不得再把客户端 RED 等同于 CK3 必须退出。正式冷启动仍负责
+loader、挂载树和启动回归；进入 gameplay 后，同一产品树的连续场景应复用同一受管
+CK3 会话。
+
+`run_zhongguo_acceptance.py --retain-healthy-phase2-session-on-red` 会在 RED
+清理点先验证 supervisor 未退出、bridge 仍连接、PID 未漂移、地图 ready 且玩家绑定
+存在。全部通过时写出 `09_phase2_native_session_retained.json`，只关闭失败的
+Python driver，不终止 CK3，也不删除隔离 userdir。随后可用
+`tools/resume_zg361_phase2_promotion_source_session.py` 从新 Python 进程验证
+retention/seed/loader 三份 receipt 后连接同一 pipe 并继续；该客户端默认完成后仍保留
+会话给下一个场景。
+
+必须新建 CK3 会话的边界是：mod/runtime 挂载字节改变、native bridge DLL 或游戏
+exact build 改变、保留门任一健康检查失败，或者场景需要一个无法在当前 lineage
+恢复的独立初态。纯 harness 代码改变、pre-submission revision 冲突和证据格式修正
+均不属于重启理由。最终交付仍需一次明确的受控 stop/cleanup receipt；中途
+`RETAINED` 是可重连生命周期状态，不得冒充 cleanup GREEN。
