@@ -783,3 +783,40 @@ are respectively
 and `E68AA0378448D609DDF037FC82DFDF439291B4733879D6B3398F7C267DB7BF67`.
 Cleanup was GREEN and CK3 returned to zero. R84 must accept the exact `.201`
 frame and continue through bank close, calibration, publication and `.146/.147`.
+
+## R84: shadow response passed; full-walk regression located
+
+R84 used the fresh 936-file release-identical product from pushed commit
+`45e0ce1`. Its source tree remained
+`24D9463AAEE34F2D42038B1A8C19317751C9F6F0306FFE3D1C5D7ECF49A6C5B4`;
+formal verification, no-launch preflight and the complete effect-file boundary
+(`626 files / 3721 effects / max 10 / target miss 0 / >20 0`) were GREEN.
+The default speed-5 loop selected the registered `.201` option and drained ten
+exact events in total, but the 550-day product observation bound expired before
+the player's `.146/.147` pair appeared. Initial native progress showed the
+player B1 marker visible, while review-now, Central and PP were not visible.
+
+The complete log disproved the initial idea that Central had never run: P2C
+froze twice, while later publications were either unauthorized or stale. The
+actual product RED was earlier in the B1 data path. Removing `max` from thirteen
+full-list `ordered_in_list` walks had changed them into one-row walks, leaving
+the rest of `zg361_b1_local_rank` unset before subsequent sorting. The corrected
+contract retains each explicit full-walk maximum, adds
+`check_range_bounds = no` for lists that can shrink, and prunes unavailable
+subjects before quota or reopen processing. The `.122` cancellation callback
+now reads subject variables only inside an `is_alive=yes` branch. Finally,
+`.201.desc` and the identical `.126.desc` variable projection use the proven
+character-localization form `ROOT.Char.MakeScope.Var(...)`; R84 had logged the
+invalid `ROOT.MakeScope` data error three times. B1 tests pass 66/66 in normal
+and optimized modes. These repairs are static-ready and require fresh R85 live
+proof; R84 itself remains RED and does not close the migration tree.
+
+The outer report, evidence index, cell report, production entry, loader and
+cleanup SHA-256 values are respectively
+`A0C3C80AAD96DF2E62BB8C1B48EF98352EC46CCC7B20739AD2A41C377EEE69DF`,
+`DFB5B80F284AE9BA7D0438ABFB7877911A10608D7A381D77A40AAB319C3E0933`,
+`DC17BAD4EC5A9BC9C5FB21A1D26554D984CB12E92E470E95764C18A3FE98179E`,
+`C7174ABE9ED9043B48E14377CEF3124DBC63E2DDCD8B36842191B6E79BF7DBB7`,
+`B7E428055D2954ED2EFDAE5BF95E5D00200C3BBD877D901AD4A0E62E31681158`
+and `F5983C07239A0FA6794A29822F0CF3111417DC23BD634645D74E497CCC727E8D`.
+Cleanup was GREEN and CK3 returned to zero.

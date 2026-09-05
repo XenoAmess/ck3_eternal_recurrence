@@ -634,6 +634,8 @@ __M360_SOURCE_CLEANUP__
 				ordered_in_list = {
 					variable = zg361_b1_processing_subjects
 					order_by = { value = var:zg361_b1_processing_order multiply = -1 }
+					max = { value = var:zg361_b1_processing_n max = 80 }
+					check_range_bounds = no
 					limit = { var:zg361_b1_final_grade = 1 var:zg361_b1_forced_down = 1 }
 					root = { change_variable = { name = zg361_b1_m360_work_slot add = 1 } }
 __M360_FORCED_SLOT_WRITES__
@@ -2941,6 +2943,8 @@ zg361_b1_freeze_blind_named_diff_effect = {
 	ordered_in_list = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_blind_score
+		max = { value = var:zg361_b1_blind_named_n max = 80 }
+		check_range_bounds = no
 		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_blind_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_blind_rank value = root.var:zg361_b1_blind_rank_cursor }
@@ -2949,6 +2953,8 @@ zg361_b1_freeze_blind_named_diff_effect = {
 	ordered_in_list = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_named_score
+		max = { value = var:zg361_b1_blind_named_n max = 80 }
+		check_range_bounds = no
 		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_named_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_named_rank value = root.var:zg361_b1_named_rank_cursor }
@@ -3727,6 +3733,7 @@ zg361_b1_audit_locked_roster_additions_effect = {
 }
 
 zg361_b1_rebuild_local_quota_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	zg361_b1_audit_frozen_roster_effect = yes
 	set_variable = { name = zg361_b1_local_candidate_n value = 0 }
 	every_in_list = {
@@ -3781,6 +3788,8 @@ zg361_b1_rebuild_local_quota_effect = {
 		ordered_in_list = {
 			list = zg361_b1_local_candidates
 			order_by = var:zg361_b1_calibration_score
+			max = list_size:zg361_b1_local_candidates
+			check_range_bounds = no
 			root = { change_variable = { name = zg361_b1_local_rank_cursor add = 1 } }
 			set_variable = { name = zg361_rank value = root.var:zg361_b1_local_rank_cursor }
 			set_variable = { name = zg361_b1_local_rank value = root.var:zg361_b1_local_rank_cursor }
@@ -3805,6 +3814,8 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_bottom_candidates
 				order_by = var:zg361_b1_local_rank
+				max = list_size:zg361_b1_local_bottom_candidates
+				check_range_bounds = no
 				if = {
 					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
 					set_variable = { name = zg361_pending_grade value = 1 }
@@ -3823,6 +3834,8 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_candidates
 				order_by = var:zg361_b1_local_rank
+				max = list_size:zg361_b1_local_candidates
+				check_range_bounds = no
 				limit = { var:zg361_pending_grade = 2 }
 				if = {
 					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
@@ -3840,6 +3853,8 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_candidates
 				order_by = var:zg361_b1_calibration_score
+				max = list_size:zg361_b1_local_candidates
+				check_range_bounds = no
 				limit = { var:zg361_pending_grade = 2 }
 				if = {
 					limit = { root.var:zg361_b1_local_top_assigned < root.var:zg361_b1_local_top_slots }
@@ -4401,6 +4416,8 @@ zg361_b1_prepare_bank_must_review_effect = {
 		ordered_in_list = {
 			list = zg361_b1_ready_managers
 			order_by = { value = var:zg361_b1_bank_ready_order multiply = -1 }
+			max = { value = var:zg361_b1_ready_manager_n max = 80 }
+			check_range_bounds = no
 			if = {
 				limit = { root.var:zg361_b1_must_review_count = 0 }
 				save_temporary_scope_as = zg361_b1_must_review_manager
@@ -5029,6 +5046,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 	ordered_in_list = {
 		list = zg361_b1_rerank_candidates
 		order_by = var:zg361_b1_calibration_score
+		max = { value = var:zg361_b1_rerank_n max = 80 }
+		check_range_bounds = no
 		root = { change_variable = { name = zg361_b1_rerank_cursor add = 1 } }
 		set_variable = { name = zg361_rank value = root.var:zg361_b1_rerank_cursor }
 		set_variable = { name = zg361_b1_rerank_order value = root.var:zg361_b1_rerank_cursor }
@@ -5050,6 +5069,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_bottom_candidates
 			order_by = var:zg361_rank
+			max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }
+			check_range_bounds = no
 			if = {
 				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
 				set_variable = { name = zg361_pending_grade value = 1 }
@@ -5064,6 +5085,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_candidates
 			order_by = var:zg361_rank
+			max = { value = var:zg361_b1_rerank_n max = 80 }
+			check_range_bounds = no
 			limit = { var:zg361_pending_grade = 2 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
@@ -5079,6 +5102,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_candidates
 			order_by = var:zg361_b1_calibration_score
+			max = { value = var:zg361_b1_rerank_n max = 80 }
+			check_range_bounds = no
 			limit = { var:zg361_pending_grade = 2 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_top_assigned < root.var:zg361_b1_rerank_target_top }
@@ -5212,6 +5237,8 @@ zg361_b1_build_agenda_and_attention_effect = {
 	ordered_in_list = {
 		list = zg361_b1_agenda_candidates
 		order_by = var:zg361_b1_agenda_sort_key
+		max = { value = var:zg361_b1_processing_n max = 80 }
+		check_range_bounds = no
 		root = { change_variable = { name = zg361_b1_agenda_cursor add = 1 } }
 		set_variable = { name = zg361_b1_processing_order value = root.var:zg361_b1_agenda_cursor }
 		save_temporary_scope_as = zg361_b1_agenda_subject_to_store
@@ -6633,6 +6660,10 @@ zg361_b1_materialize_reopen_a_self_safe_effect = {
 }
 
 zg361_b1_resolve_reopen_batch_effect = {
+	# The independently delayed subject callbacks can outlive another member of
+	# the frozen processing list.  Rebuild the Character-safe list before the
+	# ordered candidate pass or the terminal self projections read any fields.
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	if = {
 		limit = {
 			var:zg361_b1_closure_state = 1
@@ -9435,34 +9466,37 @@ zg361b1.122 = {
 			}
 			else = {
 				# A dead, transferred or otherwise invalid subject still consumes its
-				# one manager barrier slot. If its character object still owns the
-				# exact tuple, close that object too; a weak/no-variable scope skips
-				# only the object mutation, never the manager-side cancellation.
+				# one manager barrier slot. If it is still a live Character and owns
+				# the exact tuple, close that object too; a weak/no-variable scope skips
+				# every variable read and only performs the manager-side cancellation.
 					scope:zg361_b1_reopen_ticket_subject = {
 						if = {
-							limit = {
-								trigger_if = {
-									limit = {
-										has_variable = zg361_b1_reopen_object_available
-										has_variable = zg361_b1_reopen_object_id
-										has_variable = zg361_b1_reopen_object_owner
-										has_variable = zg361_b1_reopen_object_subject
-										has_variable = zg361_b1_reopen_object_cycle
-										has_variable = zg361_b1_reopen_object_case
-										has_variable = zg361_b1_reopen_object_state
+							limit = { is_alive = yes }
+							if = {
+								limit = {
+									trigger_if = {
+										limit = {
+											has_variable = zg361_b1_reopen_object_available
+											has_variable = zg361_b1_reopen_object_id
+											has_variable = zg361_b1_reopen_object_owner
+											has_variable = zg361_b1_reopen_object_subject
+											has_variable = zg361_b1_reopen_object_cycle
+											has_variable = zg361_b1_reopen_object_case
+											has_variable = zg361_b1_reopen_object_state
+										}
+										var:zg361_b1_reopen_object_available = 1
+										var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
+										var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
+										var:zg361_b1_reopen_object_subject = this
+										var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
+										var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
+										var:zg361_b1_reopen_object_state = 1
 									}
-									var:zg361_b1_reopen_object_available = 1
-									var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
-									var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
-									var:zg361_b1_reopen_object_subject = this
-									var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
-									var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
-									var:zg361_b1_reopen_object_state = 1
+									trigger_else = { always = no }
 								}
-								trigger_else = { always = no }
+								set_variable = { name = zg361_b1_reopen_object_state value = 3 }
+								set_variable = { name = zg361_b1_reopen_cancel_reason value = 1 }
 							}
-							set_variable = { name = zg361_b1_reopen_object_state value = 3 }
-							set_variable = { name = zg361_b1_reopen_cancel_reason value = 1 }
 						}
 					}
 				change_variable = { name = zg361_b1_reopen_pending_n add = -1 }
@@ -9684,11 +9718,11 @@ l_english:
  zg361b1.200.b:0 "Present the strongest possible account."
  zg361b1.200.c:0 "Understate my own contribution."
  zg361b1.201.t:0 "Non-Final Shadow Grade"
- zg361b1.201.desc:0 "Your manager has opened a non-final shadow band code of #high [ROOT.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!. Frozen gap magnitude: [ROOT.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]; response window: [ROOT.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] days. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded, non-zero evidence packet; the frozen KPI will not change."
+ zg361b1.201.desc:0 "Your manager has opened a non-final shadow band code of #high [ROOT.Char.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!. Frozen gap magnitude: [ROOT.Char.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]; response window: [ROOT.Char.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] days. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded, non-zero evidence packet; the frozen KPI will not change."
  zg361b1.201.a:0 "Accept the shadow record."
  zg361b1.201.b:0 "Submit supplementary evidence."
  zg361b1.126.t:0 "Your Rating Has Been Posted"
- zg361b1.126.desc:0 "Your manager has posted your stable row without waiting for unrelated pending cases. This notice freezes revision [ROOT.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] of your own review object; it grants no early reward and does not expose another subject's case."
+ zg361b1.126.desc:0 "Your manager has posted your stable row without waiting for unrelated pending cases. This notice freezes revision [ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] of your own review object; it grants no early reward and does not expose another subject's case."
  zg361b1.126.grade_375:0 "Current posted rating: #P 3.75#!."
  zg361b1.126.grade_35:0 "Current posted rating: #V 3.5#!."
  zg361b1.126.grade_325:0 "Current posted rating: #N 3.25#!."
@@ -9774,11 +9808,11 @@ l_simp_chinese:
  zg361b1.200.b:0 "把最耀眼的一面写进案卷。"
  zg361b1.200.c:0 "收敛锋芒，保守自陈。"
  zg361b1.201.t:0 "非最终影子档"
- zg361b1.201.desc:0 "直属上司给出的非最终影子档代码是 #high [ROOT.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!；冻结差距幅度为 [ROOT.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]，回应窗口为 [ROOT.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] 天。此档尚不发放奖惩，也不占用最终配额。你可以接受，或补交一份有界且非零的新证据；已经封存的事实 KPI 不会改变。"
+ zg361b1.201.desc:0 "直属上司给出的非最终影子档代码是 #high [ROOT.Char.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!；冻结差距幅度为 [ROOT.Char.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]，回应窗口为 [ROOT.Char.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] 天。此档尚不发放奖惩，也不占用最终配额。你可以接受，或补交一份有界且非零的新证据；已经封存的事实 KPI 不会改变。"
  zg361b1.201.a:0 "接受这份影子记录。"
  zg361b1.201.b:0 "补交证据，交由校准复核。"
  zg361b1.126.t:0 "你的绩效行已公示"
- zg361b1.126.desc:0 "直属上司已先公示你的稳定结果，不再让无关的待定案卷拖住全组。这是你本人案卷的第 [ROOT.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] 次冻结发布；它不会提前发奖，也不会泄露其他人的待定内容。"
+ zg361b1.126.desc:0 "直属上司已先公示你的稳定结果，不再让无关的待定案卷拖住全组。这是你本人案卷的第 [ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] 次冻结发布；它不会提前发奖，也不会泄露其他人的待定内容。"
  zg361b1.126.grade_375:0 "当前公示档位：#P 3.75#!。"
  zg361b1.126.grade_35:0 "当前公示档位：#V 3.5#!。"
  zg361b1.126.grade_325:0 "当前公示档位：#N 3.25#!。"

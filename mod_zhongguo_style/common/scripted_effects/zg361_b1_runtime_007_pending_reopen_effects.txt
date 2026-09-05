@@ -599,6 +599,10 @@ zg361_b1_materialize_reopen_a_self_safe_effect = {
 }
 
 zg361_b1_resolve_reopen_batch_effect = {
+	# The independently delayed subject callbacks can outlive another member of
+	# the frozen processing list.  Rebuild the Character-safe list before the
+	# ordered candidate pass or the terminal self projections read any fields.
+	zg361_b1_prune_unavailable_subjects_effect = yes
 	if = {
 		limit = {
 			var:zg361_b1_closure_state = 1

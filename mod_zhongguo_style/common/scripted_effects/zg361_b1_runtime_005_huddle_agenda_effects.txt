@@ -154,6 +154,8 @@ zg361_b1_prepare_bank_must_review_effect = {
 		ordered_in_list = {
 			list = zg361_b1_ready_managers
 			order_by = { value = var:zg361_b1_bank_ready_order multiply = -1 }
+			max = { value = var:zg361_b1_ready_manager_n max = 80 }
+			check_range_bounds = no
 			if = {
 				limit = { root.var:zg361_b1_must_review_count = 0 }
 				save_temporary_scope_as = zg361_b1_must_review_manager
@@ -782,6 +784,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 	ordered_in_list = {
 		list = zg361_b1_rerank_candidates
 		order_by = var:zg361_b1_calibration_score
+		max = { value = var:zg361_b1_rerank_n max = 80 }
+		check_range_bounds = no
 		root = { change_variable = { name = zg361_b1_rerank_cursor add = 1 } }
 		set_variable = { name = zg361_rank value = root.var:zg361_b1_rerank_cursor }
 		set_variable = { name = zg361_b1_rerank_order value = root.var:zg361_b1_rerank_cursor }
@@ -803,6 +807,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_bottom_candidates
 			order_by = var:zg361_rank
+			max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }
+			check_range_bounds = no
 			if = {
 				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
 				set_variable = { name = zg361_pending_grade value = 1 }
@@ -817,6 +823,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_candidates
 			order_by = var:zg361_rank
+			max = { value = var:zg361_b1_rerank_n max = 80 }
+			check_range_bounds = no
 			limit = { var:zg361_pending_grade = 2 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
@@ -832,6 +840,8 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_candidates
 			order_by = var:zg361_b1_calibration_score
+			max = { value = var:zg361_b1_rerank_n max = 80 }
+			check_range_bounds = no
 			limit = { var:zg361_pending_grade = 2 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_top_assigned < root.var:zg361_b1_rerank_target_top }
@@ -965,6 +975,8 @@ zg361_b1_build_agenda_and_attention_effect = {
 	ordered_in_list = {
 		list = zg361_b1_agenda_candidates
 		order_by = var:zg361_b1_agenda_sort_key
+		max = { value = var:zg361_b1_processing_n max = 80 }
+		check_range_bounds = no
 		root = { change_variable = { name = zg361_b1_agenda_cursor add = 1 } }
 		set_variable = { name = zg361_b1_processing_order value = root.var:zg361_b1_agenda_cursor }
 		save_temporary_scope_as = zg361_b1_agenda_subject_to_store

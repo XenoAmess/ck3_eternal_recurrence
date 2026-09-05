@@ -1404,6 +1404,16 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             with self.subTest(placeholder=language):
                 self.assertEqual(localization.splitlines()[1:], english_body)
 
+        # R84 proved that event ROOT is a typed scope wrapper in localization;
+        # character variables require the explicit character projection.
+        for localization in (self.loc_en, self.loc_zh, *self.placeholder_locs.values()):
+            self.assertNotIn("ROOT.MakeScope.Var", localization)
+            self.assertIn("ROOT.Char.MakeScope.Var('zg361_b1_shadow_grade')", localization)
+            self.assertIn(
+                "ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision')",
+                localization,
+            )
+
     def test_jingcha_opens_cycle_and_no_longer_instantly_settles(self) -> None:
         issue = self.jingcha.split("zg361_issue_jingcha_mandate_effect = {", 1)[1]
         self.assertIn("zg361_b1_open_cycle_effect = yes", issue)
@@ -2762,6 +2772,35 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             peer.index("every_in_list = {"),
         )
 
+        local_quota = top_level_block(
+            self.effects, "zg361_b1_rebuild_local_quota_effect"
+        )
+        self.assertLess(
+            local_quota.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            local_quota.index("zg361_b1_audit_frozen_roster_effect = yes"),
+        )
+
+        reopen_resolver = top_level_block(
+            self.effects, "zg361_b1_resolve_reopen_batch_effect"
+        )
+        self.assertLess(
+            reopen_resolver.index(
+                "zg361_b1_prune_unavailable_subjects_effect = yes"
+            ),
+            reopen_resolver.index("variable = zg361_b1_processing_subjects"),
+        )
+
+        reopen_callback = top_level_block(self.events, "zg361b1.122")
+        # The cancellation branch needs its own nested safe predicate; the
+        # success tuple already begins its scope trigger with `is_alive`.
+        self.assertEqual(reopen_callback.count("limit = { is_alive = yes }"), 1)
+        self.assertLess(
+            reopen_callback.rindex("limit = { is_alive = yes }"),
+            reopen_callback.rindex(
+                "has_variable = zg361_b1_reopen_object_available"
+            ),
+        )
+
         for token in (
             "variable = zg361_b1_processing_subjects",
             "limit = { is_alive = yes }",
@@ -2783,11 +2822,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 consumer.index("variable = zg361_b1_processing_subjects"),
             )
 
-    def test_ordered_list_full_walks_do_not_request_more_rows_than_filtered_lists(self) -> None:
-        # R82 proved CK3 reports a script error when an ordered list's `max`
-        # is based on the unfiltered list while its limit leaves fewer rows.
-        # These passes already use assignment counters where a subset is
-        # needed, so an uncapped ordered walk is the exact intended behavior.
+    def test_ordered_list_full_walks_disable_short_range_errors(self) -> None:
+        # `ordered_in_list` defaults to one row. R84 proved that deleting `max`
+        # made later passes read ranks that had never been assigned. Keep the
+        # full-walk maxima and use the engine's explicit short-range switch for
+        # filtered or concurrently pruned lists.
         for token in (
             "max = list_size:zg361_b1_local_candidates",
             "max = list_size:zg361_b1_local_bottom_candidates",
@@ -2797,7 +2836,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "max = { value = var:zg361_b1_rerank_n max = 80 }",
             "max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }",
         ):
-            self.assertNotIn(token, self.effects)
+            self.assertIn(token, self.effects)
+        self.assertEqual(self.effects.count("check_range_bounds = no"), 13)
 
     def test_optional_huddle_and_departed_grade_reads_are_presence_gated(self) -> None:
         for effect_name in (
