@@ -451,3 +451,49 @@ The largest loaded mechanism event/effect sources were still 429,368 and
 only during gameplay. R74 is therefore further negative evidence against file
 size as this run's cause. No performance-driven split is triggered; the B2+
 purpose-shard limit remains independently GREEN.
+
+## R75: loader performance RED and boundary-only fallback trigger
+
+R75 used committed `5b696f7` and the fresh 636-file `Z:\p2ae\p` product
+projection (`98db471b68c3734108c2ee0f5428d4db49406072397e02a1a6b7a8a88a6ce668`).
+The generic promotion entry preflight and projection generation were GREEN,
+and CK3 1.19.0.6 started under the managed supervisor as PID `64232`.
+
+This time the 300-second loader gate returned `RED / loader_stage_timeout`.
+All 303 database callbacks completed and history loading ended, with
+`CJominiInGameMusicDatabase` as the last callback (`10 ms`), but no database
+completion publication, post-init, Frontend, Load Save, In Game or native
+readiness followed. Elapsed time was `299.745s`; callback-completion quiet time
+was `183.784s`. Fatal and theme-warning counts were both zero. Cleanup and
+protected-storage checks were GREEN and no CK3 process remained.
+
+Because R75 never entered gameplay, it is inconclusive for the R74 runtime
+error regression: no liege/weak-list/optional-field/negative-gold family may be
+promoted on this attempt. It is, however, a genuine load-performance RED and
+therefore triggers the previously prepared boundary-only A/B fallback.
+
+Frozen R75 SHA-256:
+
+- outer report: `A48246F29F8373C4C2FDBB5C8BAD8922C4346FA75A0C6D1919F398ECFBC4AD2D`
+- evidence index: `8395C211429A81B72E5DF5A41E0F8DC719663785AA556F0488EB103464676632`
+- cell report: `8686E0B71F856C9C2F4BE998DA5C8C967577A231318A7F6C568C3A45960021DD`
+- loader gate: `5EFD65FDB519239EB7A1764A944EA1A89275D16F2E0E21F96D22435959EC29D7`
+- cleanup: `996598774A9E3B24B6147A1BFD6472AA9D677931A7AACCCE68FB90C8305CE447`
+- final error log: `F3CAF5C41C4808F4FA4FE1AAD4E8052D491E19B636C65451C217174FD765EE2E`
+
+The refreshed boundary tool recognized the new
+`zg361_b1_prune_unavailable_subjects_effect` as part of the cycle/self-review
+purpose group, bringing that shard to exactly 10 effects. It materialized
+`Z:\p2af\p` from the exact R75 product without changing an effect body: three
+legacy owners were replaced by 198 purpose shards, producing 618 effect files
+and 3,708 parsed definitions with maximum 10 per file, zero target misses and
+zero over-20 exceptions. The definition-surface and call-graph digests are
+`622010396d1e0f71d06eabb91d83dd736b187f103fe3274a66d1e85dee2b2c29`
+and `c774a0da4c2752f0ec191add1be3e587f3eafc57f3db400b82c4cf2f8617072e`.
+The sidecar SHA-256 is
+`A07E065DBA90CEBB486ACF854153AF9B0D3E89AF4E8A006DE1CFF12E7999A393`;
+the 831-file R76 projection tree is
+`e842e6967d754c8e6f5d46ac3ed9ad045d86abfac6f0273d160e8c3883000289`.
+R76 must now determine whether this current-tree split clears the loader gate;
+the older ABBA experiment remains negative evidence against declaring file
+size the root cause from a single run.

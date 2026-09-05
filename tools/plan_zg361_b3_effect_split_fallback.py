@@ -91,6 +91,7 @@ B1_PURPOSE_GROUPS = (
         "02_cycle_self_review",
         (
             "zg361_b1_open_cycle_effect",
+            "zg361_b1_prune_unavailable_subjects_effect",
             "zg361_b1_midcycle_dispatcher_effect",
             "zg361_b1_finalize_self_review_effect",
             "zg361_b1_record_self_honest_effect",

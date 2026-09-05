@@ -202,3 +202,23 @@ ABBA 区分于轮次波动的稳定加载收益；实验不支持“文件边界
 
 最终判定引用了四轮 exact report、projection/sidecar hash 与 callback milestone。总进程时长受固定 timeout 支配，不能单独用作加载性能指标；
 下一项调查应针对共同的 post-callback/frontend terminal 缺失，而不是继续扩大 boundary-only 拆分。
+
+## 2026-09-05 R75 再触发与当前树 R76 候选
+
+R75 在 commit `5b696f7` 的 636-file product 上再次出现纯 loader RED：303 callbacks 已完成，最后节点仍是
+`CJominiInGameMusicDatabase`，但 `299.745s` 内没有 completion publish/post-init/Frontend/native readiness；fatal/theme 均为 0，
+cleanup 与 protected storage GREEN。它没有进入 gameplay，因此既不能验证 R74 语义修复，也构成用户约定的“加载性能 RED 后试拆分”触发条件。
+
+旧 fallback 锚点最初因 R74 新增 `zg361_b1_prune_unavailable_subjects_effect` 而 fail-closed，没有生成半棵候选树。用途清单已显式把它归入
+`02_cycle_self_review`，该 shard 从 9 增至 10 effects；focused fallback tests 为 6/6 GREEN。随后从精确 R75 A 树物化一次性 B：
+
+- B root：`Z:\p2af\p`；三 legacy owners 退役，新增 198 个用途 shard；
+- 618 effect files / 3,708 parsed definitions / max 10 / target miss 0 / `>20` 0；
+- definition surface：`622010396d1e0f71d06eabb91d83dd736b187f103fe3274a66d1e85dee2b2c29`；
+- call graph：`c774a0da4c2752f0ec191add1be3e587f3eafc57f3db400b82c4cf2f8617072e`；
+- split sidecar SHA-256：`A07E065DBA90CEBB486ACF854153AF9B0D3E89AF4E8A006DE1CFF12E7999A393`；
+- R76 projection：831 files，tree `e842e6967d754c8e6f5d46ac3ed9ad045d86abfac6f0273d160e8c3883000289`，manifest SHA-256
+  `66D2FEF6FA88CB4A0219CBBEE33900CA115B0744CDBEBE312570B37FF1A3FC03`。
+
+R76 是当前修复树上的同入口 boundary-only B，不预先进入正式 generators。旧 ABBA 已证明轮次波动很大，所以 R76 即使 GREEN 也只能证明
+“拆分候选本轮可加载”；必须结合 A 的既有连续 GREEN/本轮 RED 与后续同条件复测，不能单轮宣称文件体量是根因。

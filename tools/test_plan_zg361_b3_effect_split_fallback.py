@@ -38,19 +38,19 @@ class B3EffectSplitFallbackTests(unittest.TestCase):
         )
         return source
 
-    def test_frozen_owner_identity_and_purpose_plan(self) -> None:
+    def test_current_owner_shape_and_purpose_plan(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             source = self._minimal_r3_shape(Path(raw))
             report = fallback.build_report(source)
         self.assertEqual("GREEN", report["result"])
-        self.assertTrue(report["input_matches_r3"])
+        self.assertFalse(report["input_matches_r3"])
         self.assertEqual(4, report["inventory"]["effect_file_count"])
-        self.assertEqual(1527, report["inventory"]["effect_definition_count"])
+        self.assertEqual(1528, report["inventory"]["effect_definition_count"])
         candidate = report["candidate_B"]
         self.assertEqual(198, candidate["created_shard_count"])
         self.assertEqual(199, candidate["projected_effect_file_count"])
-        self.assertEqual(1527, candidate["projected_effect_definition_count"])
-        self.assertEqual(9, candidate["maximum_effects_per_file"])
+        self.assertEqual(1528, candidate["projected_effect_definition_count"])
+        self.assertEqual(10, candidate["maximum_effects_per_file"])
         self.assertEqual(0, candidate["target_miss_count"])
         self.assertEqual(0, candidate["over_20_violation_count"])
         self.assertTrue(all(report["checks"].values()))
@@ -62,7 +62,7 @@ class B3EffectSplitFallbackTests(unittest.TestCase):
             output = root / "candidate-B"
             manifest = root / "candidate-B.effect-split-manifest.json"
             receipt = fallback.materialize_candidate(
-                source, output, manifest, require_r3_identity=True
+                source, output, manifest
             )
             persisted = json.loads(manifest.read_text(encoding="utf-8"))
             effect_root = output / fallback.EFFECT_ROOT
