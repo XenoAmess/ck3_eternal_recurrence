@@ -113,8 +113,8 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
         self.assertEqual(snapshot.observation_days, 887)
-        self.assertEqual(snapshot.native_observations, 217)
-        self.assertEqual(len(snapshot.drained_event_keys), 74)
+        self.assertEqual(snapshot.native_observations, 219)
+        self.assertEqual(len(snapshot.drained_event_keys), 75)
         self.assertIn("zg361b2.40", snapshot.drained_event_keys)
         self.assertIn("zg361b1.201", snapshot.drained_event_keys)
         self.assertIn("zg361ch.102", snapshot.drained_event_keys)
@@ -132,7 +132,7 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertIn("`R106`", ledger)
         self.assertIn("937 files", ledger)
         self.assertIn("887 游戏日", ledger)
-        self.assertIn("217 次 native/MCP 观测", ledger)
+        self.assertIn("219 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

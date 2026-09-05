@@ -1156,6 +1156,101 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(wrong_manager)
         self.assertFalse(checks["scope:zg361_b1_pending_watch_owner:matches_any"])
 
+    def test_annual_summary_accepts_exact_first_and_later_cycle_scope_sets(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def value_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": "value"},
+            }
+
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.1"],
+            starting_date=53168304,
+        )
+        first_cycle_names, later_cycle_names = contract["saved_scope_name_sets"]
+        character_names = {
+            "zg361_b1_bank_ticket_owner": 32904,
+            "zg361_b1_ticket_owner": 29037,
+            "zg361_b1_oversight_ticket_owner": 29037,
+            "zg361_b1_reopen_ticket_subject": 45214,
+            "zg361_b1_reopen_ticket_owner": 29037,
+        }
+
+        def context_for(names: tuple[str, ...]) -> dict[str, object]:
+            return {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": "zg361.1",
+                "current_event_instance_id": 87,
+                "date_raw": 53168304,
+                "root_scope": character_scope("root", 29037)["scope"],
+                "saved_scopes": [
+                    character_scope(name, character_names[name])
+                    if name in character_names
+                    else value_scope(name)
+                    for name in names
+                ],
+                "options": [
+                    {
+                        "rendered_index": 0,
+                        "native_option_index": 0,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                ],
+            }
+
+        snapshot = {"date_raw": 53168304, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 87}
+
+        def checks_for(names: tuple[str, ...]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=context_for(names),
+                event_key="zg361.1",
+                contract=contract,
+            )
+
+        first_cycle_checks = checks_for(first_cycle_names)
+        self.assertTrue(all(first_cycle_checks.values()), first_cycle_checks)
+        later_cycle_checks = checks_for(later_cycle_names)
+        self.assertTrue(all(later_cycle_checks.values()), later_cycle_checks)
+        self.assertNotIn(
+            "scope:zg361_b1_bank_ticket_owner:unique_third_party",
+            later_cycle_checks,
+        )
+        self.assertNotIn(
+            "scope:zg361_b1_bank_ticket_owner:differs_from",
+            later_cycle_checks,
+        )
+        self.assertNotIn(
+            "scope:zg361_b1_bank_ticket_season:type",
+            later_cycle_checks,
+        )
+
+        extra_names = later_cycle_names + ("unrelated_scope",)
+        extra_checks = checks_for(extra_names)
+        self.assertFalse(extra_checks["saved_scope_names_exact"])
+
     def test_player_325_notice_binds_prompt_tuple_and_exact_inherited_names(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

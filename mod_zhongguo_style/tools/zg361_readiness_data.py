@@ -146,7 +146,7 @@ LIVE_BOUNDARY: Final = (
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     run_id="R106",
-    observed_at="2026-09-06 05:29 Asia/Shanghai",
+    observed_at="2026-09-06 05:33 Asia/Shanghai",
     result="RED",
     product_commit="7f17fed",
     projection="phase2-full-release-r106-7f17fed",
@@ -157,7 +157,7 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_fatal_count=0,
     speed=5,
     observation_days=887,
-    native_observations=217,
+    native_observations=219,
     drained_event_keys=(
         "zg361b2.40",
         "ep3_interactions_events.0630",
@@ -233,6 +233,7 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361comp.1",
         "zg361comp.1",
         "zg361b1.200",
+        "zg361m.2",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -267,13 +268,15 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         r"Z:\b3r106_resume4\report.json",
         r"Z:\b3r106_resume5\03_promotion_source_production_entry.json",
         r"Z:\b3r106_resume5\report.json",
+        r"Z:\b3r106_resume6\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume6\report.json",
         r"Z:\p2r106\phase2-product-projection.json",
         r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
         "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 887 game days at speed 5 across 217 paused native/MCP "
-        "observations and 74 exact GREEN event drains. It reached and drained both "
+        "fatal 0. PID 30492 advanced 887 game days at speed 5 across 219 paused native/MCP "
+        "observations and 75 exact GREEN event drains. It reached and drained both "
         "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
         "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
         "then observed B1 close and Central activate before processing the annual summary and "
@@ -287,9 +290,12 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "only route that can retain the player's career, whereas option 3 always retires every "
         "landed title. The selected appeal succeeded in product state: the player remained "
         "landed, entered another annual B1 cycle, closed it, and activated Central again. The "
-        "current allowlist gap is the valid zg361m.2 mechanism card; its source-reviewed option "
-        "A is the reference-charter path. This remains a harness-contract RED rather than a "
-        "new mod RED. Healthy "
+        "zg361m.2 then drained GREEN through its source-reviewed reference-charter option A. "
+        "The next same-date zg361.1 annual summary exposed a valid second-cycle scope shape: "
+        "unlike the first-cycle summary, it no longer inherits the completed outer bank-ticket "
+        "tuple, which the summary source does not consume. This remains a harness-contract RED "
+        "rather than a new mod RED; the contract now accepts both exact observed cycle shapes "
+        "while rejecting unrelated names. Healthy "
         "CK3 PID 30492 remains retained "
         "for another same-process client "
         "continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
