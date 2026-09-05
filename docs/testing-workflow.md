@@ -1607,3 +1607,19 @@ closure/manifest evidence SHA-256 分别为
 R79 对 `phase2-b3-production-closure-r79-f953503` 的 831-file 产品使用 180 秒 frontend-first 门。到 `180.001s` 时 `frontend_gui_complete=true`，debug log 仍持续输出 database node init，已完成 276 个 node，`Setting idler 'Frontend'` 尚未发布、fatal 为 0。runner 正确地没有启动 bridge、加载存档或授权 gameplay，并保留 `Z:\b3r79\cell`（outer report SHA-256 `C79497F0BF3C595A5A90AD5110D2223BB1EE8A7ACCCB812C6F49B6DF1B4B3DC5`）。
 
 后续同一 hash-bound 产品的完整验收使用至少 360 秒 frontend-first timeout；`frontend_gui_complete` 单独不构成 Frontend ready。超时 attempt 必须换新 artifact 根，不得覆盖；文件边界扫描仍必须先保持 max 10、target miss 0、hard violation 0、legacy owner 0。
+
+### Phase2 长时间线默认使用 5 速（2026-09-05）
+
+天朝二期 source checkpoint、完整迁移树和同类产品时间线验收，进入地图且没有活动事件时默认执行
+`set-speed-5 -> resume-map`。一旦原生 bridge 报告活动事件，runner 立即执行 `pause-map`，并只在
+暂停帧上通过 MCP 查询 event identity、typed scopes、完整 option shape 和进度，再执行已登记动作。
+处理完成后恢复 5 速并继续使用原始总截止时间。1 速不再作为这类验收的常规时间线速度；确需逐日
+战术接触、精确日界或专项 A/B 时，必须在对应场景合同和报告中明确记录例外理由。
+
+该规则已经是可执行门禁，而不只是文档约定：`run_zhongguo_acceptance.py` 的 promotion-source
+preflight 必须同时发现 `game.command.set-speed-5` / `set-speed-5`，行为回归锁定无事件路径的
+`set-speed-5 -> resume-map -> pause-map` 顺序。R81 的完整发布树实机从 `date_raw=53147016`
+推进到 `53160096`，约 550 游戏日的时间线在最终 loader 后约 20 秒完成；期间六个活动事件均由
+原生暂停帧识别并处理，没有使用 acceptance fixture 或 OCR（`fixture_used=false`、
+`ocr_used=false`）。因此后续同类验收必须保持 5 速默认值，任何回退到常规 1 速都应由测试或
+报告显式暴露。

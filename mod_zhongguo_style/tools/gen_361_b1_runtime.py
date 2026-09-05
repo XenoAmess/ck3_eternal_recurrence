@@ -9062,6 +9062,11 @@ zg361b1.103 = {
 	hidden = yes
 	immediate = {
 		zg361_b1_migrate_manager_identity_effect = yes
+		# D+330 is another delayed boundary. Rebuild both manager-owned
+		# character lists before the temporary event-root anchor or any case
+		# variable read; a weak Character still passes `exists = this` but does
+		# not support variables on CK3 1.19.0.6.
+		zg361_b1_prune_unavailable_subjects_effect = yes
 		# Save the event-root character as a real object scope before writing the
 		# list. CK3 1.19.0.6 does not count a flag: enum as a setter for a list
 		# later consumed as character scopes. Keep this object anchor alive through
@@ -9545,6 +9550,9 @@ zg361b1.124 = {
 			set_variable = { name = zg361_b1_oversight_reopen_year value = current_year }
 			set_variable = { name = zg361_b1_publication_blocked value = 0 }
 			set_variable = { name = zg361_b1_cycle_state value = 7 }
+			# The return is delayed by one day, so apply the same Character-safe
+			# list boundary again before rebuilding the agenda.
+			zg361_b1_prune_unavailable_subjects_effect = yes
 			zg361_b1_build_agenda_and_attention_effect = yes
 			zg361_b1_consume_must_review_effect = yes
 			zg361_b1_record_named_dissent_effect = yes

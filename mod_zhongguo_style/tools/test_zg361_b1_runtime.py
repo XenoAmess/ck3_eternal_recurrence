@@ -2736,6 +2736,26 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 event.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
                 event.index(first_consumer + " = yes"),
             )
+        shadow_close = top_level_block(self.events, "zg361b1.103")
+        self.assertEqual(
+            shadow_close.count("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            1,
+        )
+        self.assertLess(
+            shadow_close.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            shadow_close.index(
+                "save_temporary_scope_as = zg361_b1_subjects_event_loader_anchor"
+            ),
+        )
+        continuation = top_level_block(self.events, "zg361b1.124")
+        self.assertEqual(
+            continuation.count("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            1,
+        )
+        self.assertLess(
+            continuation.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            continuation.index("zg361_b1_build_agenda_and_attention_effect = yes"),
+        )
         peer = top_level_block(self.effects, "zg361_b1_peer_window_dispatcher_effect")
         self.assertLess(
             peer.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
