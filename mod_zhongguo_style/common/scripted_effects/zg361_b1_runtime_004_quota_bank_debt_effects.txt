@@ -662,7 +662,6 @@ zg361_b1_rebuild_local_quota_effect = {
 		ordered_in_list = {
 			list = zg361_b1_local_candidates
 			order_by = var:zg361_b1_calibration_score
-			max = list_size:zg361_b1_local_candidates
 			root = { change_variable = { name = zg361_b1_local_rank_cursor add = 1 } }
 			set_variable = { name = zg361_rank value = root.var:zg361_b1_local_rank_cursor }
 			set_variable = { name = zg361_b1_local_rank value = root.var:zg361_b1_local_rank_cursor }
@@ -687,7 +686,6 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_bottom_candidates
 				order_by = var:zg361_b1_local_rank
-				max = list_size:zg361_b1_local_bottom_candidates
 				if = {
 					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
 					set_variable = { name = zg361_pending_grade value = 1 }
@@ -706,7 +704,6 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_candidates
 				order_by = var:zg361_b1_local_rank
-				max = list_size:zg361_b1_local_candidates
 				limit = { var:zg361_pending_grade = 2 }
 				if = {
 					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
@@ -724,7 +721,6 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_candidates
 				order_by = var:zg361_b1_calibration_score
-				max = list_size:zg361_b1_local_candidates
 				limit = { var:zg361_pending_grade = 2 }
 				if = {
 					limit = { root.var:zg361_b1_local_top_assigned < root.var:zg361_b1_local_top_slots }

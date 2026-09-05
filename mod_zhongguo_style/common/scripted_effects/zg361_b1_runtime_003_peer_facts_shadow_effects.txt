@@ -507,7 +507,6 @@ zg361_b1_freeze_blind_named_diff_effect = {
 	ordered_in_list = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_blind_score
-		max = { value = var:zg361_b1_blind_named_n max = 80 }
 		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_blind_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_blind_rank value = root.var:zg361_b1_blind_rank_cursor }
@@ -516,7 +515,6 @@ zg361_b1_freeze_blind_named_diff_effect = {
 	ordered_in_list = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_named_score
-		max = { value = var:zg361_b1_blind_named_n max = 80 }
 		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_named_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_named_rank value = root.var:zg361_b1_named_rank_cursor }

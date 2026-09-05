@@ -483,7 +483,6 @@ zg361_b1_publish_m360_cohort_source_effect = {
 				ordered_in_list = {
 					variable = zg361_b1_processing_subjects
 					order_by = { value = var:zg361_b1_processing_order multiply = -1 }
-					max = { value = var:zg361_b1_processing_n max = 80 }
 					limit = { var:zg361_b1_final_grade = 1 var:zg361_b1_forced_down = 1 }
 					root = { change_variable = { name = zg361_b1_m360_work_slot add = 1 } }
 			if = {

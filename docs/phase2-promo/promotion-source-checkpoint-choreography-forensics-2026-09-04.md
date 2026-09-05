@@ -700,3 +700,49 @@ emitted by the summary helper on stale abort as well as success, so those
 lines cannot be counted as successful AI portfolio completion. Neither fact
 alone proves why the human `.146` is absent. Targeted B1 owner/subject identity
 diagnostics are being prepared; no global business rewrite is justified yet.
+
+## R82: military-aid acknowledgement and final weak Character call sites
+
+R82 used the 936-file release-identical product from pushed commit `e442893`.
+Formal verification, the `626 files / 3721 effects / max 10 / target miss 0 /
+over-20 0 / exceptions 0` effect boundary, and the CK3 1.19.0.6 no-launch
+preflight were GREEN. After frontend warmup, the native timeline advanced about
+540 game days at the acceptance default speed 5 before failing closed on the
+previously unregistered vanilla `tgp_interaction_event.0016`.
+
+The paused MCP frame froze `date_raw=53159976`, event instance 20, player root
+29037, five available Character scopes, two typed Character scopes with
+unavailable identity, seven saved scopes, and one shown/enabled native option
+0. Exact source in `events/dlc/tgp/tgp_interaction_events.txt:338` gives the
+letter no scripted option effect. The originating military-aid interaction in
+`common/character_interactions/10_tgp_interactions.txt:6703` joins the governor
+to the recipient's wars before it opens the letter. The bounded contract may
+therefore acknowledge its sole option only after all identities, weak slots,
+scope count, option shape and observation-window date pass. Negative tests
+reject an invented weak identity, a different joining governor, and an extra
+saved scope. The source file SHA-256 values are
+`C845EBEB53A7D80E5155AF1D6FC42D03A86931C7088613CFA39A19B0DF468C75`
+and `D081DD47F856C4F62313BDD1512177BCA049EADCE224F274A8E635F851576822`.
+
+R82 reduced the previous run's 102 product weak-variable errors to three. Two
+now originate in the subject-rooted `.121` deadline and one in the `.125`
+manager watchdog. The deadline now requires an available live Character root;
+the manager D+31 watchdog remains the owner-side accounting path. The watchdog
+now places every pending-object variable read inside a nested `is_alive=yes`
+branch. Thirteen separate `ordered_in_list max bigger than list` errors were
+also mapped to full-list walks whose explicit maxima were derived from an
+unfiltered list; those invalid maxima are removed while existing assignment
+counters retain all bounded selection semantics. B1 normal and optimized suites
+are GREEN at 66/66, and the checkpoint suite is GREEN at 15/15 in both modes.
+
+The outer report, evidence index, cell report, promotion entry, loader and
+cleanup SHA-256 values are respectively
+`1ED926666B53F844058A77D9853F470F4ABCF129D5B3F488D41235DB990B2483`,
+`ACD738C00461A2585942C4D02F425E981AC5CFE18D7FEB52C591BB904052CCCF`,
+`B765E40C19EF4C4D867DDF1F498F72EA25D7B9A9EFC4A8043A5AD836069CA1F1`,
+`F079ADBA8D922F1C1A4852A01E7830E80E78B44ACBCE3A3E160340A59AF00E2D`,
+`8465CC0EBF62519FE6F060B7A7BA1D3FC49AAFF891C1612B7D51AA511FFE193F`,
+and `5A05D5777CC585E77E95729FCAF4B1ECC43CA9F95E2E95DA06B2FB61EC209DB7`.
+Cleanup was GREEN and CK3 returned to zero. R83 must prove the three weak errors
+and thirteen ordered-list errors absent, drain the registered vanilla letter,
+and continue the `.146 -> .147` product chain.

@@ -779,6 +779,104 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_tgp_military_aid_letter_binds_weak_slots_and_empty_ack(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def unavailable_character_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "unavailable",
+                        "reason": "character_scope_identity_unavailable",
+                    },
+                },
+            }
+
+        event_key = "tgp_interaction_event.0016"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53147016,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 20,
+            "date_raw": 53159976,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope("actor", 30987),
+                character_scope("recipient", 32904),
+                unavailable_character_scope("secondary_actor"),
+                character_scope("secondary_recipient", 29037),
+                unavailable_character_scope("intermediary"),
+                character_scope("governor_at_war", 32904),
+                character_scope("governor_joining", 29037),
+            ],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53159976, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 20}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        invented_weak_identity = copy.deepcopy(context)
+        invented_weak_identity["saved_scopes"][2] = character_scope(
+            "secondary_actor", 30987
+        )
+        checks = checks_for(invented_weak_identity)
+        self.assertFalse(checks["scope:secondary_actor:unavailable_character"])
+
+        wrong_joining_governor = copy.deepcopy(context)
+        wrong_joining_governor["saved_scopes"][-1] = character_scope(
+            "governor_joining", 29038
+        )
+        checks = checks_for(wrong_joining_governor)
+        self.assertFalse(checks["scope:governor_joining"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(character_scope("extra", 29037))
+        checks = checks_for(extra_scope)
+        self.assertFalse(checks["saved_scope_count"])
+
     def test_mechanism_001_accepts_the_reference_charter_choice(self) -> None:
         context = {
             "schema": "current-event-window-context-v1",

@@ -365,6 +365,10 @@ zg361b1.111 = {
 zg361b1.121 = {
 	type = character_event
 	hidden = yes
+	# The subject-rooted deadline may outlive the Character object. CK3 still
+	# dispatches that weak root, but it cannot own/read variables. Let the
+	# manager-owned D+31 watchdog account for the abandoned pending slot.
+	trigger = { is_alive = yes }
 	immediate = {
 		zg361_case_kernel_expire_deadline_effect = {
 			OWNER_VAR = zg361_b1_case_owner
@@ -702,42 +706,50 @@ zg361b1.125 = {
 			set_variable = { name = zg361_b1_pending_watchdog_cancelled_n value = 0 }
 			every_in_list = {
 				variable = zg361_b1_pending_watch_subjects
-				limit = {
-					var:zg361_b1_pending_object_available = 1
-					var:zg361_b1_pending_object_owner = root
-					var:zg361_b1_pending_object_subject = this
-					var:zg361_b1_pending_object_cycle = scope:zg361_b1_pending_watch_cycle
-					var:zg361_b1_pending_object_case = scope:zg361_b1_pending_watch_case
-					var:zg361_b1_pending_object_state = 1
-					var:zg361_b1_pending_state = 1
-				}
-				save_temporary_scope_as = zg361_b1_pending_watch_subject
 				if = {
-					limit = { has_variable = zg361_b1_pending_fallback_subject }
-					var:zg361_b1_pending_fallback_subject = {
+					# `is_alive` is the exact-build safe predicate for a weak
+					# Character. Keep every variable read in a nested branch so the
+					# engine never evaluates it for an unavailable list entry.
+					limit = { is_alive = yes }
+					if = {
+						limit = {
+							var:zg361_b1_pending_object_available = 1
+							var:zg361_b1_pending_object_owner = root
+							var:zg361_b1_pending_object_subject = this
+							var:zg361_b1_pending_object_cycle = scope:zg361_b1_pending_watch_cycle
+							var:zg361_b1_pending_object_case = scope:zg361_b1_pending_watch_case
+							var:zg361_b1_pending_object_state = 1
+							var:zg361_b1_pending_state = 1
+						}
+						save_temporary_scope_as = zg361_b1_pending_watch_subject
 						if = {
-							limit = {
-								trigger_if = {
-									limit = { has_variable = zg361_b1_pending_reservation_state }
-									var:zg361_b1_pending_reservation_state = 1
-									has_variable = zg361_b1_pending_reserved_for_subject
-									var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+							limit = { has_variable = zg361_b1_pending_fallback_subject }
+							var:zg361_b1_pending_fallback_subject = {
+								if = {
+									limit = {
+										trigger_if = {
+											limit = { has_variable = zg361_b1_pending_reservation_state }
+											var:zg361_b1_pending_reservation_state = 1
+											has_variable = zg361_b1_pending_reserved_for_subject
+											var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+										}
+										trigger_else = { always = no }
+									}
+									set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
+									remove_variable = zg361_b1_pending_reserved_for_subject
 								}
-								trigger_else = { always = no }
 							}
-							set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
-							remove_variable = zg361_b1_pending_reserved_for_subject
+						}
+						set_variable = { name = zg361_b1_pending_object_state value = 5 }
+						set_variable = { name = zg361_b1_pending_state value = 5 }
+						set_variable = { name = zg361_b1_pending_cancel_reason value = 1 }
+						set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
+						root = {
+							change_variable = { name = zg361_b1_pending_open_n add = -1 }
+							change_variable = { name = zg361_b1_pending_watchdog_cancelled_n add = 1 }
+							change_variable = { name = zg361_b1_pending_fallback_middle_available add = 1 }
 						}
 					}
-				}
-				set_variable = { name = zg361_b1_pending_object_state value = 5 }
-				set_variable = { name = zg361_b1_pending_state value = 5 }
-				set_variable = { name = zg361_b1_pending_cancel_reason value = 1 }
-				set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
-				root = {
-					change_variable = { name = zg361_b1_pending_open_n add = -1 }
-					change_variable = { name = zg361_b1_pending_watchdog_cancelled_n add = 1 }
-					change_variable = { name = zg361_b1_pending_fallback_middle_available add = 1 }
 				}
 			}
 			if = {

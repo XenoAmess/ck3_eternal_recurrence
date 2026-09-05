@@ -857,6 +857,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 13,
         "selected_native_option_index": 12,
     },
+    "tgp_interaction_event.0016": {
+        # Roads to Power military-aid order sent to the joining governor.
+        # The interaction has already joined root to the recipient's wars
+        # before this letter opens. The event immediate only adds a custom
+        # tooltip and its single option has no scripted effect, so the sole
+        # acknowledgement is the exact bounded path. Generic interaction
+        # slots may retain typed weak Character scopes; bind their unavailable
+        # identity explicitly instead of inventing character IDs.
+        "date_raw": 53159976,
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "actor": 30987,
+            "recipient": 32904,
+            "secondary_recipient": 29037,
+            "governor_at_war": 32904,
+            "governor_joining": 29037,
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "intermediary",
+        ),
+        "boolean_scopes": (),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "sway_outcome.2001": {
         # Vanilla diplomatic-misunderstanding outcome for the seed's existing
         # sway scheme.  The event has one unavoidable acknowledgement: the

@@ -634,7 +634,6 @@ __M360_SOURCE_CLEANUP__
 				ordered_in_list = {
 					variable = zg361_b1_processing_subjects
 					order_by = { value = var:zg361_b1_processing_order multiply = -1 }
-					max = { value = var:zg361_b1_processing_n max = 80 }
 					limit = { var:zg361_b1_final_grade = 1 var:zg361_b1_forced_down = 1 }
 					root = { change_variable = { name = zg361_b1_m360_work_slot add = 1 } }
 __M360_FORCED_SLOT_WRITES__
@@ -2942,7 +2941,6 @@ zg361_b1_freeze_blind_named_diff_effect = {
 	ordered_in_list = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_blind_score
-		max = { value = var:zg361_b1_blind_named_n max = 80 }
 		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_blind_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_blind_rank value = root.var:zg361_b1_blind_rank_cursor }
@@ -2951,7 +2949,6 @@ zg361_b1_freeze_blind_named_diff_effect = {
 	ordered_in_list = {
 		list = zg361_b1_blind_named_candidates
 		order_by = var:zg361_b1_named_score
-		max = { value = var:zg361_b1_blind_named_n max = 80 }
 		limit = { NOT = { this = scope:zg361_b1_blind_named_manager } }
 		root = { change_variable = { name = zg361_b1_named_rank_cursor add = 1 } }
 		set_variable = { name = zg361_b1_named_rank value = root.var:zg361_b1_named_rank_cursor }
@@ -3784,7 +3781,6 @@ zg361_b1_rebuild_local_quota_effect = {
 		ordered_in_list = {
 			list = zg361_b1_local_candidates
 			order_by = var:zg361_b1_calibration_score
-			max = list_size:zg361_b1_local_candidates
 			root = { change_variable = { name = zg361_b1_local_rank_cursor add = 1 } }
 			set_variable = { name = zg361_rank value = root.var:zg361_b1_local_rank_cursor }
 			set_variable = { name = zg361_b1_local_rank value = root.var:zg361_b1_local_rank_cursor }
@@ -3809,7 +3805,6 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_bottom_candidates
 				order_by = var:zg361_b1_local_rank
-				max = list_size:zg361_b1_local_bottom_candidates
 				if = {
 					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
 					set_variable = { name = zg361_pending_grade value = 1 }
@@ -3828,7 +3823,6 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_candidates
 				order_by = var:zg361_b1_local_rank
-				max = list_size:zg361_b1_local_candidates
 				limit = { var:zg361_pending_grade = 2 }
 				if = {
 					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
@@ -3846,7 +3840,6 @@ zg361_b1_rebuild_local_quota_effect = {
 			ordered_in_list = {
 				list = zg361_b1_local_candidates
 				order_by = var:zg361_b1_calibration_score
-				max = list_size:zg361_b1_local_candidates
 				limit = { var:zg361_pending_grade = 2 }
 				if = {
 					limit = { root.var:zg361_b1_local_top_assigned < root.var:zg361_b1_local_top_slots }
@@ -4408,7 +4401,6 @@ zg361_b1_prepare_bank_must_review_effect = {
 		ordered_in_list = {
 			list = zg361_b1_ready_managers
 			order_by = { value = var:zg361_b1_bank_ready_order multiply = -1 }
-			max = { value = var:zg361_b1_ready_manager_n max = 80 }
 			if = {
 				limit = { root.var:zg361_b1_must_review_count = 0 }
 				save_temporary_scope_as = zg361_b1_must_review_manager
@@ -5037,7 +5029,6 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 	ordered_in_list = {
 		list = zg361_b1_rerank_candidates
 		order_by = var:zg361_b1_calibration_score
-		max = { value = var:zg361_b1_rerank_n max = 80 }
 		root = { change_variable = { name = zg361_b1_rerank_cursor add = 1 } }
 		set_variable = { name = zg361_rank value = root.var:zg361_b1_rerank_cursor }
 		set_variable = { name = zg361_b1_rerank_order value = root.var:zg361_b1_rerank_cursor }
@@ -5059,7 +5050,6 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_bottom_candidates
 			order_by = var:zg361_rank
-			max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
 				set_variable = { name = zg361_pending_grade value = 1 }
@@ -5074,7 +5064,6 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_candidates
 			order_by = var:zg361_rank
-			max = { value = var:zg361_b1_rerank_n max = 80 }
 			limit = { var:zg361_pending_grade = 2 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
@@ -5090,7 +5079,6 @@ zg361_b1_rerank_frozen_quota_book_effect = {
 		ordered_in_list = {
 			list = zg361_b1_rerank_candidates
 			order_by = var:zg361_b1_calibration_score
-			max = { value = var:zg361_b1_rerank_n max = 80 }
 			limit = { var:zg361_pending_grade = 2 }
 			if = {
 				limit = { root.var:zg361_b1_rerank_top_assigned < root.var:zg361_b1_rerank_target_top }
@@ -5224,7 +5212,6 @@ zg361_b1_build_agenda_and_attention_effect = {
 	ordered_in_list = {
 		list = zg361_b1_agenda_candidates
 		order_by = var:zg361_b1_agenda_sort_key
-		max = { value = var:zg361_b1_processing_n max = 80 }
 		root = { change_variable = { name = zg361_b1_agenda_cursor add = 1 } }
 		set_variable = { name = zg361_b1_processing_order value = root.var:zg361_b1_agenda_cursor }
 		save_temporary_scope_as = zg361_b1_agenda_subject_to_store
@@ -9249,6 +9236,10 @@ zg361b1.111 = {
 zg361b1.121 = {
 	type = character_event
 	hidden = yes
+	# The subject-rooted deadline may outlive the Character object. CK3 still
+	# dispatches that weak root, but it cannot own/read variables. Let the
+	# manager-owned D+31 watchdog account for the abandoned pending slot.
+	trigger = { is_alive = yes }
 	immediate = {
 		zg361_case_kernel_expire_deadline_effect = {
 			OWNER_VAR = zg361_b1_case_owner
@@ -9586,42 +9577,50 @@ zg361b1.125 = {
 			set_variable = { name = zg361_b1_pending_watchdog_cancelled_n value = 0 }
 			every_in_list = {
 				variable = zg361_b1_pending_watch_subjects
-				limit = {
-					var:zg361_b1_pending_object_available = 1
-					var:zg361_b1_pending_object_owner = root
-					var:zg361_b1_pending_object_subject = this
-					var:zg361_b1_pending_object_cycle = scope:zg361_b1_pending_watch_cycle
-					var:zg361_b1_pending_object_case = scope:zg361_b1_pending_watch_case
-					var:zg361_b1_pending_object_state = 1
-					var:zg361_b1_pending_state = 1
-				}
-				save_temporary_scope_as = zg361_b1_pending_watch_subject
 				if = {
-					limit = { has_variable = zg361_b1_pending_fallback_subject }
-					var:zg361_b1_pending_fallback_subject = {
+					# `is_alive` is the exact-build safe predicate for a weak
+					# Character. Keep every variable read in a nested branch so the
+					# engine never evaluates it for an unavailable list entry.
+					limit = { is_alive = yes }
+					if = {
+						limit = {
+							var:zg361_b1_pending_object_available = 1
+							var:zg361_b1_pending_object_owner = root
+							var:zg361_b1_pending_object_subject = this
+							var:zg361_b1_pending_object_cycle = scope:zg361_b1_pending_watch_cycle
+							var:zg361_b1_pending_object_case = scope:zg361_b1_pending_watch_case
+							var:zg361_b1_pending_object_state = 1
+							var:zg361_b1_pending_state = 1
+						}
+						save_temporary_scope_as = zg361_b1_pending_watch_subject
 						if = {
-							limit = {
-								trigger_if = {
-									limit = { has_variable = zg361_b1_pending_reservation_state }
-									var:zg361_b1_pending_reservation_state = 1
-									has_variable = zg361_b1_pending_reserved_for_subject
-									var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+							limit = { has_variable = zg361_b1_pending_fallback_subject }
+							var:zg361_b1_pending_fallback_subject = {
+								if = {
+									limit = {
+										trigger_if = {
+											limit = { has_variable = zg361_b1_pending_reservation_state }
+											var:zg361_b1_pending_reservation_state = 1
+											has_variable = zg361_b1_pending_reserved_for_subject
+											var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+										}
+										trigger_else = { always = no }
+									}
+									set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
+									remove_variable = zg361_b1_pending_reserved_for_subject
 								}
-								trigger_else = { always = no }
 							}
-							set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
-							remove_variable = zg361_b1_pending_reserved_for_subject
+						}
+						set_variable = { name = zg361_b1_pending_object_state value = 5 }
+						set_variable = { name = zg361_b1_pending_state value = 5 }
+						set_variable = { name = zg361_b1_pending_cancel_reason value = 1 }
+						set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
+						root = {
+							change_variable = { name = zg361_b1_pending_open_n add = -1 }
+							change_variable = { name = zg361_b1_pending_watchdog_cancelled_n add = 1 }
+							change_variable = { name = zg361_b1_pending_fallback_middle_available add = 1 }
 						}
 					}
-				}
-				set_variable = { name = zg361_b1_pending_object_state value = 5 }
-				set_variable = { name = zg361_b1_pending_state value = 5 }
-				set_variable = { name = zg361_b1_pending_cancel_reason value = 1 }
-				set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
-				root = {
-					change_variable = { name = zg361_b1_pending_open_n add = -1 }
-					change_variable = { name = zg361_b1_pending_watchdog_cancelled_n add = 1 }
-					change_variable = { name = zg361_b1_pending_fallback_middle_available add = 1 }
 				}
 			}
 			if = {

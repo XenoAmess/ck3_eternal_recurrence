@@ -2783,6 +2783,22 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 consumer.index("variable = zg361_b1_processing_subjects"),
             )
 
+    def test_ordered_list_full_walks_do_not_request_more_rows_than_filtered_lists(self) -> None:
+        # R82 proved CK3 reports a script error when an ordered list's `max`
+        # is based on the unfiltered list while its limit leaves fewer rows.
+        # These passes already use assignment counters where a subset is
+        # needed, so an uncapped ordered walk is the exact intended behavior.
+        for token in (
+            "max = list_size:zg361_b1_local_candidates",
+            "max = list_size:zg361_b1_local_bottom_candidates",
+            "max = { value = var:zg361_b1_processing_n max = 80 }",
+            "max = { value = var:zg361_b1_blind_named_n max = 80 }",
+            "max = { value = var:zg361_b1_ready_manager_n max = 80 }",
+            "max = { value = var:zg361_b1_rerank_n max = 80 }",
+            "max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }",
+        ):
+            self.assertNotIn(token, self.effects)
+
     def test_optional_huddle_and_departed_grade_reads_are_presence_gated(self) -> None:
         for effect_name in (
             "zg361_b1_finalize_huddle_diff_effect",
@@ -3294,6 +3310,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("zg361_case_kernel_schedule_deadline_effect = {", open_pending)
         self.assertIn("EVENT = zg361b1.121", open_pending)
         deadline = top_level_block(self.events, "zg361b1.121")
+        self.assertIn("trigger = { is_alive = yes }", deadline)
+        self.assertLess(
+            deadline.index("trigger = { is_alive = yes }"),
+            deadline.index("zg361_case_kernel_expire_deadline_effect = {"),
+        )
         self.assertIn("zg361_case_kernel_expire_deadline_effect = {", deadline)
         for token in (
             "OWNER_VAR = zg361_b1_case_owner",
@@ -3352,6 +3373,17 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("var:zg361_b1_case_active = 1", continuation)
         self.assertIn("var:zg361_b1_roster_included = 1", continuation)
         self.assertIn("stale pending continuation ticket ignored", continuation)
+
+        watchdog = top_level_block(self.events, "zg361b1.125")
+        safe_branch = watchdog.index("limit = { is_alive = yes }")
+        self.assertLess(
+            safe_branch,
+            watchdog.index("var:zg361_b1_pending_object_available = 1"),
+        )
+        self.assertLess(
+            safe_branch,
+            watchdog.index("has_variable = zg361_b1_pending_fallback_subject"),
+        )
 
     def test_pending_publishes_stable_subjects_then_revises_each_resolved_row(self) -> None:
         initialize = top_level_block(
