@@ -755,6 +755,101 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_yearly_1040_and_direct_disclosure_bind_r85_live_shape(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        base_scopes = [
+            scope("suspicious", "character", 31647),
+            scope("suspicious_type", "flag"),
+            scope("surprise_type", "flag"),
+        ]
+
+        def checks_for(
+            event_key: str,
+            option_count: int,
+            candidate_scopes: list[dict[str, object]],
+        ) -> dict[str, bool]:
+            contract = production._timeline_contract_for_window(
+                production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+                starting_date=53147016,
+            )
+            context = {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": event_key,
+                "current_event_instance_id": 14,
+                "date_raw": 53147520,
+                "root_scope": scope("root", "character", 29037)["scope"],
+                "saved_scopes": candidate_scopes,
+                "options": [
+                    {
+                        "rendered_index": index,
+                        "native_option_index": index,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                    for index in range(option_count)
+                ],
+            }
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53147520,
+                    "active_event": {"option_count": option_count},
+                },
+                event={"event_instance_id": 14},
+                context=context,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        opening = checks_for("yearly.1040", 3, copy.deepcopy(base_scopes))
+        self.assertTrue(all(opening.values()), opening)
+        opening_contract = production.KNOWN_TIMELINE_INTERRUPTS["yearly.1040"]
+        self.assertEqual(opening_contract["selected_option_number"], 1)
+        self.assertEqual(opening_contract["selected_native_option_index"], 0)
+
+        disclosure = checks_for("yearly.1041", 1, copy.deepcopy(base_scopes))
+        self.assertTrue(all(disclosure.values()), disclosure)
+
+        player_target = copy.deepcopy(base_scopes)
+        player_target[0] = scope("suspicious", "character", 29037)
+        self.assertFalse(
+            checks_for("yearly.1040", 3, player_target)[
+                "scope:suspicious:unique_third_party"
+            ]
+        )
+
+        wrong_type = copy.deepcopy(base_scopes)
+        wrong_type[-1] = scope("surprise_type", "value")
+        self.assertFalse(
+            checks_for("yearly.1040", 3, wrong_type)[
+                "scope:surprise_type:type"
+            ]
+        )
+
+        extra = copy.deepcopy(base_scopes)
+        extra.append(scope("unrelated", "flag"))
+        self.assertFalse(
+            checks_for("yearly.1040", 3, extra)["saved_scope_count"]
+        )
+
     def test_ep3_governor_3060_binds_late_product_window_and_safe_option(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None

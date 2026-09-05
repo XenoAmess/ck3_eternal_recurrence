@@ -907,6 +907,54 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 2,
         "selected_native_option_index": 1,
     },
+    "yearly.1040": {
+        # Vanilla yearly "suspicious letter" event. R85 froze the good-
+        # surprise branch as one third-party Character plus two opaque flag
+        # values. Option 1 changes that character's opinion once and enters
+        # the immediate, one-option .1041 disclosure. Option 2 adds a duel and
+        # may schedule .1044; option 3 is known-good here and always schedules
+        # .1044, adding a later resource/relationship outcome. Bind the exact
+        # live shape and choose the shorter deterministic continuation.
+        "date_raw": (53147520,),
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "suspicious": (29037,),
+        },
+        "scope_types": {
+            "suspicious_type": "flag",
+            "surprise_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "yearly.1041": {
+        # Source-direct continuation of yearly.1040 option 1. The event adds
+        # no new scope, has one unavoidable acknowledgement, and on the R85
+        # good-surprise branch only renders the already-frozen surprise.
+        "date_raw": (53147520,),
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "suspicious": (29037,),
+        },
+        "scope_types": {
+            "suspicious_type": "flag",
+            "surprise_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 3,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "ep3_governor_yearly.8080": {
         # Roads to Power annual governor event.  The event creates exactly
         # one temporary magistrate.  Option 1 punishes the magistrate by

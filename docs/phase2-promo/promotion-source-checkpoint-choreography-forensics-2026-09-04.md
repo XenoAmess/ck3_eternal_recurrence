@@ -820,3 +820,41 @@ cleanup SHA-256 values are respectively
 `B7E428055D2954ED2EFDAE5BF95E5D00200C3BBD877D901AD4A0E62E31681158`
 and `F5983C07239A0FA6794A29822F0CF3111417DC23BD634645D74E497CCC727E8D`.
 Cleanup was GREEN and CK3 returned to zero.
+
+## R85: `yearly.1040` frozen before action
+
+Commit `a6c0c86` produced a fresh 936-file R85 release with manifest
+`45BF2E1760B2F2A0E8909BC81E45BB331F715DF92CC3AA890B5FC4D1B336C981`,
+ZIP `68EEB734A9ABD14924DBF80DBE4F615767096F201AD20F8BD22F7205EBCBB7B3`
+and product tree
+`8EB6F597FB42884695B2073D85198A2CB7316F8E219BC39FD0CC10BEAE953C98`.
+Formal verification and the CK3 1.19.0.6 no-launch preflight were GREEN.
+The product loader completed, then the speed-5 timeline safely stopped before
+acting on the previously unregistered vanilla `yearly.1040` at
+`date_raw=53147520`.
+
+The native frame binds root/player 29037, a unique third-party `suspicious`
+Character 31647, opaque `suspicious_type` and `surprise_type` flag scopes, and
+exact native options 0/1/2. Exact source is CK3 1.19.0.6
+`events/yearly_events/yearly_events_2.txt`, SHA-256
+`64B778B7B3DFE1056EB0151A7ED3AA7CFB3E6E738E68144006BAF97E93E0A3E8`.
+The frame is the good-surprise branch. Option 3 would schedule `.1044` and add
+a later resource/relationship outcome; option 2 adds a duel. Option 1 makes
+one opinion change and immediately enters the source-defined one-option
+`.1041`, which adds no new scope and only discloses the already-frozen branch.
+Both `.1040` and its direct `.1041` continuation now have fail-closed contracts;
+wrong target, wrong flag type, extra scope or option drift remains RED. The
+checkpoint suite passes 17/17 and choreography 5/5 in both modes.
+
+R85 ended before the repaired B1 quota path was due, so zero occurrences of
+the old signatures in this short run are not promoted to regression proof.
+The outer report, evidence index, cell report, production entry, loader and
+cleanup SHA-256 values are respectively
+`1DAF60238A09B56696A66215DEE5CE8F66A4D84EB023D1653C950F78A56F4EFF`,
+`BF94792EA61D691D8101E626DD5CD1C12CB6CCE1D75CFE043B9AF2883A2429AC`,
+`7416B75839D0CF42503D5E3D065D316E3604B0485111D5B71284E9910040A7DB`,
+`EB6FA73DB56CA3F4A2881ECA7EF2E2B3FCFD6079037F85E4ECC00AD268140470`,
+`B22EAAA46C6A97F9D43890F7AE7AFC012CC009542397A7E39B5B9DFC9CEB0DE3`
+and `64E4068582255DF68BA4E8C986737407CCFB940C803061CE18281FF5D0E91F1D`.
+Cleanup was GREEN and CK3 returned to zero. R86 must consume both exact
+contracts and reach the repaired B1 quota/reopen path.
