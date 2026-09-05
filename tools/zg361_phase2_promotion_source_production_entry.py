@@ -40,6 +40,7 @@ MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 4
 KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
     "zg361b2.40": {
         "date_raw": 53147040,
+        "date_policy": "exact-authored-anchor",
         "root_character_id": 29037,
         "character_scopes": {
             "zg361_reviewing_superior": 32904,
@@ -509,7 +510,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
     },
     "zg361b1.200": {
-        # Product B1 self-review receipt at D+238.  The honest branch records
+        # Product B1 self-review receipt at the authored D+240 stage. The
+        # absolute delivery date depends on which manager cycle enrolled the
+        # player, so bind it to this client's finite product observation window.
+        # The honest branch records
         # the already frozen mid-cycle evidence without the +15/-15 bias of
         # the exaggerated/conservative branches, while advancing the same
         # ticket-guarded review state machine.
@@ -527,6 +531,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # nine self-review/manager ticket fields that .200 actually consumes.
         "date_raw": (53152728, 53156256),
         "date_raw_range": (53152728, 53156256),
+        "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
             "zg361_b1_self_ticket_subject": 29037,
@@ -1069,6 +1074,56 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "scheme_critical_moments.1134": {
+        # Vanilla slander target-reaction notice. Its immediate block has
+        # already applied the influence/modifier outcome before the window is
+        # rendered; the sole option is empty and the after block only clears
+        # a temporary nickname flag. Bind the exact live scheme payload and
+        # acknowledge the only branch so the product timeline can continue.
+        "date_raw": 53189328,
+        "root_character_id": 29037,
+        "character_scopes": {"target": 29037},
+        "unique_character_scope_excludes": {"owner": (29037,)},
+        "scope_types": {
+            "scheme": "scheme",
+            "artifact": "artifact",
+            "follow_up_event": "flag",
+            "discovery_chance": "value",
+        },
+        "boolean_scopes": ("scheme_discovered", "scheme_successful"),
+        "saved_scope_count": 8,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "realm_maintenance.2001": {
+        # Vanilla title-inheritance notice. The transfer has already happened
+        # before this window opens and there is only one acknowledgement.
+        # Preserve the full observed title/government and character-role shape
+        # so the runner cannot mistake a different one-option event for it.
+        "date_raw": 53199000,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "new_holder": 29037,
+            "new_minister": 29037,
+            "title_holder": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "previous_holder": (29037,),
+            "councillor_liege": (29037,),
+        },
+        "scope_types": {
+            "title": "landed_title",
+            "transfer_type": "flag",
+            "capital_county": "landed_title",
+            "nf_gov_type": "government_type",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 9,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "sway_outcome.2001": {
         # Vanilla diplomatic-misunderstanding outcome for the seed's existing
         # sway scheme.  The event has one unavoidable acknowledgement: the
@@ -1137,22 +1192,27 @@ def _accepted(value: object, step: str) -> dict[str, object]:
     return result
 
 
-def _resume_map_from_latest_binding(
+def _map_control_from_latest_binding(
     service: PromotionProductionEntryService,
     *,
+    step: str,
     player: int,
     connection_generation: int,
     rebind_audit: list[dict[str, object]],
 ) -> dict[str, object] | None:
-    """Resume a still-paused event-free frame after rebinding heartbeats.
+    """Submit one idempotent map control after rebinding heartbeats.
 
     A progress query or the native heartbeat can publish a newer public
     revision after the outer loop sampled its paused frame. A
     ``PreSubmissionRevisionMismatchError`` proves that no input was submitted,
-    so this idempotent map-state request can bind the newest frame and retry.
-    If an event appeared or the map already resumed, the outer loop owns the
-    new state and no request is sent.
+    so an idempotent pause/resume/speed request can bind the newest frame and
+    retry. If the requested state already exists, or a modal appears before a
+    resume/speed request, the outer loop owns the new state and no request is
+    sent.
     """
+
+    if step not in {"pause-map", "resume-map", "set-speed-5"}:
+        raise ValueError(f"unsupported rebound map control: {step}")
 
     last_error: PreSubmissionRevisionMismatchError | None = None
     for attempt in range(1, MAX_PRE_SUBMISSION_REBIND_ATTEMPTS + 1):
@@ -1161,18 +1221,26 @@ def _resume_map_from_latest_binding(
             player=player,
             connection_generation=connection_generation,
         )
-        if event is not None or snapshot.get("paused") is not True:
+        if step == "pause-map" and snapshot.get("paused") is True:
+            return None
+        if step == "resume-map" and (
+            event is not None or snapshot.get("paused") is not True
+        ):
+            return None
+        if step == "set-speed-5" and (
+            event is not None or snapshot.get("speed") == 5
+        ):
             return None
         revision = int(snapshot["revision"])
         try:
             return _accepted(
-                service.execute_step("resume-map", expected_revision=revision),
-                "resume-map",
+                service.execute_step(step, expected_revision=revision),
+                step,
             )
         except PreSubmissionRevisionMismatchError as error:
             last_error = error
             rebind_audit.append({
-                "step": "resume-map",
+                "step": step,
                 "attempt": attempt,
                 "stale_revision": revision,
                 "error": f"{type(error).__name__}: {error}",
@@ -1180,6 +1248,22 @@ def _resume_map_from_latest_binding(
             })
     assert last_error is not None
     raise last_error
+
+
+def _resume_map_from_latest_binding(
+    service: PromotionProductionEntryService,
+    *,
+    player: int,
+    connection_generation: int,
+    rebind_audit: list[dict[str, object]],
+) -> dict[str, object] | None:
+    return _map_control_from_latest_binding(
+        service,
+        step="resume-map",
+        player=player,
+        connection_generation=connection_generation,
+        rebind_audit=rebind_audit,
+    )
 
 
 def _compact_progress_observation(
@@ -1365,12 +1449,16 @@ def _typed_character_id(value: object) -> int | None:
 def _timeline_contract_for_window(
     contract: Mapping[str, object], *, starting_date: int,
 ) -> dict[str, object]:
-    """Bind source-reviewed random deliveries to this run, not old RNG dates."""
+    """Bind source-reviewed random deliveries to this run, not old RNG dates.
+
+    The only exact calendar anchor in this interrupt table is explicitly
+    marked. Every other delivery is either vanilla/random or a product stage
+    whose absolute date depends on the enrolled manager cycle; its semantic
+    contract is the bounded observation window plus the unchanged event,
+    scope, type, option and occurrence constraints.
+    """
     bound = dict(contract)
-    if contract.get("date_policy") in (
-        "product-observation-window",
-        "yearly-pulse-in-observation-window",
-    ):
+    if contract.get("date_policy") != "exact-authored-anchor":
         bound["date_raw_range"] = (
             starting_date, starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
         )
@@ -1900,10 +1988,18 @@ def enter_promotion_source_checkpoint_v1(
             connection_generation=generation,
         )
     if initial.get("paused") is not True:
-        pause = service.execute_step(
-            "pause-map", expected_revision=int(initial["revision"])
+        pause = _map_control_from_latest_binding(
+            service,
+            step="pause-map",
+            player=player,
+            connection_generation=generation,
+            rebind_audit=evidence["pre_submission_revision_rebinds"],
         )
-        _accepted(pause, "pause-map")
+        # A retained client commonly attaches while speed 5 is still running.
+        # The pause ACK only proves command dispatch; wait for the next native
+        # heartbeat before binding the first strict paused-frame query, exactly
+        # as the polling path below already does.
+        sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
         initial, _ = _binding(
             service.snapshot(), player=player,
             connection_generation=generation,
@@ -2006,11 +2102,12 @@ def enter_promotion_source_checkpoint_v1(
         # Once a new date/event boundary exists, pause and wait past one native
         # 250 ms heartbeat before binding the query.
         if snapshot.get("paused") is not True:
-            _accepted(
-                service.execute_step(
-                    "pause-map", expected_revision=int(snapshot["revision"])
-                ),
-                "pause-map",
+            _map_control_from_latest_binding(
+                service,
+                step="pause-map",
+                player=player,
+                connection_generation=generation,
+                rebind_audit=evidence["pre_submission_revision_rebinds"],
             )
             sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
             snapshot, event = _binding(
@@ -2143,11 +2240,12 @@ def enter_promotion_source_checkpoint_v1(
                 sleeper(poll_interval_seconds)
             continue
         if snapshot.get("speed") != 5:
-            _accepted(
-                service.execute_step(
-                    "set-speed-5", expected_revision=int(snapshot["revision"])
-                ),
-                "set-speed-5",
+            _map_control_from_latest_binding(
+                service,
+                step="set-speed-5",
+                player=player,
+                connection_generation=generation,
+                rebind_audit=evidence["pre_submission_revision_rebinds"],
             )
             # Setting speed while paused is applied asynchronously by CK3.
             # R90 proved that leaving the map paused until the next loop can

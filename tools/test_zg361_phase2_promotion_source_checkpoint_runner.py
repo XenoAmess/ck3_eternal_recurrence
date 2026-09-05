@@ -105,6 +105,27 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(production._contract_date_matches(53168424, contract))
         self.assertFalse(production._contract_date_matches(53159640, contract))
 
+    def test_random_interrupt_dates_rebind_but_authored_anchor_stays_exact(self) -> None:
+        random_contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[
+                "tgp_dynastic_cycle_events.0040"
+            ],
+            starting_date=53173752,
+        )
+        self.assertTrue(
+            production._contract_date_matches(53182368, random_contract)
+        )
+        authored_contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361b2.40"],
+            starting_date=53173752,
+        )
+        self.assertTrue(
+            production._contract_date_matches(53147040, authored_contract)
+        )
+        self.assertFalse(
+            production._contract_date_matches(53173752, authored_contract)
+        )
+
     def test_retained_client_binds_exact_state_pipe_seed_and_loader(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -309,7 +330,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         class Service:
             def __init__(self) -> None:
                 self.speed = 1
-                self.paused = True
+                # Retained production sessions hand over while speed 5 is
+                # normally still running. Exercise the first pause heartbeat,
+                # not only the later timeline polling pause.
+                self.paused = False
                 self.event_pending = False
                 self.speed_transition_pending = False
                 self.pause_transition_pending = False
@@ -336,7 +360,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self, request_nonce: str, *, expected_revision: int
             ) -> dict[str, object]:
                 self.progress_queries.append(request_nonce)
-                if request_nonce.startswith("promo.entry.poll.") and not self.paused:
+                if not self.paused:
                     raise AssertionError("progress polling must use a paused frame")
                 if (
                     request_nonce.startswith("promo.entry.poll.")
@@ -346,8 +370,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                         "progress polling must not bisect a paused speed transition"
                     )
                 if (
-                    request_nonce.startswith("promo.entry.poll.")
-                    and self.pause_transition_pending
+                    self.pause_transition_pending
                 ):
                     raise AssertionError(
                         "progress polling must wait for the paused heartbeat"
@@ -406,6 +429,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(
             service.steps,
             [
+                "pause-map",
                 "set-speed-5",
                 "resume-map",
                 "pause-map",

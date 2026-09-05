@@ -13,13 +13,13 @@
 
 | 项 | 实证 |
 |---|---|
-| 运行 | `R94` · `2026-09-05 21:10 Asia/Shanghai` · `RED` |
-| 产品身份 | commit `4bc9561` · projection `phase2-full-release-r94-4bc9561` · 936 files · tree `2641FA92F0440EC6725106851A37F340DCF1E3EB15058E8B65FF9E36CD39A281` · manifest `EF68228351E4BE3592B6151D66EA1C0851504665ED117B69ED14CE5A67CA3E94` |
+| 运行 | `R95` · `2026-09-05 21:48 Asia/Shanghai` · `RED` |
+| 产品身份 | commit `2d15103` · projection `phase2-full-release-r95-2d15103` · 937 files · tree `B31D0A444E0BA76C9E2715E6C660F5EC750D455A23F02B5EA11EF3E1E514B387` · manifest `2AA0E515F3510A9F591947E0294FD073DBCCD37D071DF4F31A01A0437FC9A39D` |
 | CK3 loader | exact build 完成 303/303 database nodes，fatal=0 |
-| 实机时间轴 | 默认 5 速，569 游戏日，135 次 native/MCP 观测，精确处理 8 次事件：`zg361b2.40`, `ep3_governor_yearly.8160`, `spymaster_task.0381`, `zg361b1.200`, `spymaster_task.0381`, `spymaster_task.0342`, `zg361.40`, `tgp_interaction_event.0016` |
+| 实机时间轴 | 默认 5 速，2166 游戏日，455 次 native/MCP 观测，精确处理 19 次事件：`zg361b2.40`, `ep3_governor_yearly.8120`, `spymaster_task.0381`, `spymaster_task.0381`, `spymaster_task.0346`, `zg361.40`, `tgp_interaction_event.0016`, `spymaster_task.0342`, `ep3_governor_yearly.3060`, `spymaster_task.0381`, `zg361.40`, `spymaster_task.0381`, `zg361b1.200`, `zg361b1.201`, `zg361.40`, `tgp_dynastic_cycle_events.0040`, `zg361.40`, `scheme_critical_moments.1134`, `zg361.40` |
 | 已闭合回归 | 产品签名归零：`This scope doesn't support variables`、`ordered_in_list max bigger than list`、`zg361b1.201.desc`、`Could not find promote for`、`Variable 'zg361_b1_local_rank' is not set` |
-| 证据 | `docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md`<br>`docs/phase2-promo/phase2-acceptance-case-index.md`<br>`Z:\b3r94\evidence-index.json`<br>`Z:\b3r94\cell\03_promotion_source_production_entry.json`<br>`Z:\b3r94_resume1\report.json`<br>`Z:\b3r94_resume1\03_promotion_source_production_entry.json` |
-| 边界 | The committed R94 release-identical product loaded and the listed regressions remained clear. After correcting the harness-only dynamic administrator contract for ep3_governor_yearly.8160, the same CK3 PID was observed for 569 game days; player B1 remained active while Central and PP remained inactive. The canonical seed was authored at commit 218026a and already had B1 active at the first R94 frame, so the new bank rule could not retroactively repair that saved manager cycle. A schema-v2 one-shot legacy-cycle retirement/restart is static-ready and awaits fresh R95 verification. This whole-product snapshot does not promote any per-ID readiness tier. |
+| 证据 | `docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md`<br>`docs/phase2-promo/phase2-acceptance-case-index.md`<br>`Z:\b3r95\evidence-index.json`<br>`Z:\b3r95\cell\03_promotion_source_production_entry.json`<br>`Z:\b3r95_resume2\03_promotion_source_production_entry.json`<br>`Z:\b3r95_resume4\03_promotion_source_production_entry.json`<br>`Z:\b3r95_resume6\03_promotion_source_production_entry.json` |
+| 边界 | The committed R95 release-identical product loaded 303/303 database nodes with fatal 0. The schema-v2 migration executed and replaced the saved cycle, while one retained CK3 PID advanced from date_raw 53147016 to 53199000 at speed 5. Across 455 paused observations and 19 typed event drains, the player remained B1 active while Central and PP stayed inactive; a human-manager diagnostic later observed cycle/case 18 at state 7. Harness-only pause/revision/date-contract failures were repaired without restarting the unchanged product. The session was stopped after long-running role/title drift, and fresh state-7 quota/finalization diagnostics are static-ready for R96. This whole-product RED does not promote any per-ID readiness tier. |
 
 ## 最高状态（互斥）
 

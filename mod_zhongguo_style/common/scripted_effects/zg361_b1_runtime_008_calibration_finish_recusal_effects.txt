@@ -40,6 +40,18 @@ zg361_b1_pay_frozen_pending_rewards_effect = {
 
 zg361_b1_finish_calibration_effect = {
 	if = {
+		limit = { is_ai = no }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_cycle_state value = var:zg361_b1_cycle_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_closure_state value = var:zg361_b1_closure_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_pending_open_n value = var:zg361_b1_pending_open_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_rewards_issued value = var:zg361_b1_rewards_issued }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_calibration_finalized value = var:zg361_b1_calibration_finalized }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_rewards_paid_n value = var:zg361_b1_pending_rewards_paid_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_rewards_expected_n value = var:zg361_b1_pending_reward_expected_n }
+		debug_log = "ZG361B1_DIAG: human calibration finish evaluated"
+		debug_log_scopes = yes
+	}
+	if = {
 		limit = {
 			OR = { var:zg361_b1_closure_state = 1 var:zg361_b1_closure_state = 3 }
 			var:zg361_b1_pending_open_n = 0

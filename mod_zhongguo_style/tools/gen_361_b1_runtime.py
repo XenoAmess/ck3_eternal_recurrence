@@ -6388,6 +6388,16 @@ zg361_b1_open_pending_slots_effect = {
 		limit = { var:zg361_b1_pending_open_n = 0 }
 		zg361_b1_prepare_reopen_gate_effect = yes
 	}
+	if = {
+		limit = { is_ai = no }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_pending_cycle_state value = var:zg361_b1_cycle_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_pending_mode value = var:zg361_b1_m142_mode }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_pending_open_n value = var:zg361_b1_pending_open_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_pending_closure_state value = var:zg361_b1_closure_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_pending_quota_valid value = var:zg361_b1_quota_conservation_valid }
+		debug_log = "ZG361B1_DIAG: human pending/reopen route evaluated"
+		debug_log_scopes = yes
+	}
 }
 
 zg361_b1_resolve_pending_subject_effect = {
@@ -6562,6 +6572,22 @@ zg361_b1_verify_frozen_quota_conservation_effect = {
 
 zg361_b1_prepare_reopen_gate_effect = {
 	zg361_b1_verify_frozen_quota_conservation_effect = yes
+	if = {
+		limit = { is_ai = no }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_cycle_state value = var:zg361_b1_cycle_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_closure_state value = var:zg361_b1_closure_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_pending_open_n value = var:zg361_b1_pending_open_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_calibration_finalized value = var:zg361_b1_calibration_finalized }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_quota_valid value = var:zg361_b1_quota_conservation_valid }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_recount_top value = var:zg361_b1_quota_recount_top }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_recount_middle value = var:zg361_b1_quota_recount_middle }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_recount_bottom value = var:zg361_b1_quota_recount_bottom }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_target_top value = var:zg361_pending_375_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_target_middle value = var:zg361_pending_35_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_gate_target_bottom value = var:zg361_pending_325_n }
+		debug_log = "ZG361B1_DIAG: human closure gate evaluated"
+		debug_log_scopes = yes
+	}
 	if = {
 		limit = {
 			var:zg361_b1_closure_state = 0
@@ -7104,6 +7130,18 @@ zg361_b1_pay_frozen_pending_rewards_effect = {
 }
 
 zg361_b1_finish_calibration_effect = {
+	if = {
+		limit = { is_ai = no }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_cycle_state value = var:zg361_b1_cycle_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_closure_state value = var:zg361_b1_closure_state }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_pending_open_n value = var:zg361_b1_pending_open_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_rewards_issued value = var:zg361_b1_rewards_issued }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_calibration_finalized value = var:zg361_b1_calibration_finalized }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_rewards_paid_n value = var:zg361_b1_pending_rewards_paid_n }
+		save_temporary_scope_value_as = { name = zg361_b1_diag_finish_rewards_expected_n value = var:zg361_b1_pending_reward_expected_n }
+		debug_log = "ZG361B1_DIAG: human calibration finish evaluated"
+		debug_log_scopes = yes
+	}
 	if = {
 		limit = {
 			OR = { var:zg361_b1_closure_state = 1 var:zg361_b1_closure_state = 3 }

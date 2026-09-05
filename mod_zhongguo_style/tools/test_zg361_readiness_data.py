@@ -105,26 +105,26 @@ class ReadinessDataTests(unittest.TestCase):
             "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_latest_product_snapshot_records_r88_without_promoting_ids(self) -> None:
+    def test_latest_product_snapshot_records_r95_without_promoting_ids(self) -> None:
         snapshot = LATEST_PRODUCT_ACCEPTANCE
-        self.assertEqual(snapshot.run_id, "R88")
+        self.assertEqual(snapshot.run_id, "R95")
         self.assertEqual(snapshot.result, "RED")
-        self.assertEqual(snapshot.product_commit, "24189c1")
-        self.assertEqual(snapshot.verified_file_count, 936)
+        self.assertEqual(snapshot.product_commit, "2d15103")
+        self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 550)
-        self.assertEqual(snapshot.native_observations, 398)
-        self.assertEqual(len(snapshot.drained_event_keys), 7)
+        self.assertEqual(snapshot.observation_days, 2166)
+        self.assertEqual(snapshot.native_observations, 455)
+        self.assertEqual(len(snapshot.drained_event_keys), 19)
         self.assertIn("zg361b1.200", snapshot.drained_event_keys)
-        self.assertIn("zg361pp.146/.147", snapshot.boundary)
+        self.assertIn("state 7", snapshot.boundary)
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("最新完整产品验收快照", ledger)
-        self.assertIn("`R88`", ledger)
-        self.assertIn("936 files", ledger)
-        self.assertIn("550 游戏日", ledger)
-        self.assertIn("398 次 native/MCP 观测", ledger)
+        self.assertIn("`R95`", ledger)
+        self.assertIn("937 files", ledger)
+        self.assertIn("2166 游戏日", ledger)
+        self.assertIn("455 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

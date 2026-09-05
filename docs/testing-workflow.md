@@ -1688,3 +1688,33 @@ B1 当前给 manager cycle 与 common-superior bank 都写入 schema version 2�
 B1 68/68、effect boundary 4/4、promotion runner 25/25 均在 normal/`-O` 下 GREEN，
 全静态门 GREEN；产品字节已变化，因此 R95 必须 fresh 启动验证迁移、bank deadline、
 publication 以及 `.146/.147`。
+
+### R95：同一实机会话复用与 state-7 诊断边界（2026-09-05）
+
+R95 使用 commit `2d15103` 的 937-file release-identical 产品树冷启动，完成
+303/303 database-node loader，fatal 为 0。schema-v2 迁移在真实日志中执行，旧周期被退休并重新开户；
+同一 CK3 PID `32376` 随后由多个 replacement client 复用，在 5 速下从
+`date_raw=53147016` 推进到 `53199000`（跨度 2,166 游戏日）。455 个暂停帧观察和 19 个 typed
+事件处理均未使用 fixture、OCR 或坐标输入。玩家状态始终为 `B1=true / Central=false / PP=false`；
+针对玩家的 manager 初始化取证进一步记录到 `cycle=18 / case=18 / state=7`。因此，迁移入口已实机触发，
+当前 RED 已收窄到 state 7 后的 pending、配额守恒或 calibration/finalization 路径，不能记为完整迁移树 GREEN。
+
+R95 同时证明三项 runner 生命周期规则。第一，接入仍在运行的 retained session 时，首个 `pause-map` ACK 后
+必须等待至少一个 250 ms native heartbeat，再绑定严格暂停帧查询。第二，`pause-map`、`resume-map` 与
+`set-speed-5` 都是幂等地图控制；若在提交前得到 revision mismatch，且服务明确证明请求未提交，则重新绑定
+最新 snapshot/revision 后有限重试，不需要重启 CK3。第三，只有 `zg361b2.40` 是显式 authored exact-date
+anchor；随机原版事件与依赖周期开户日期的产品事件必须绑定到当前有限观察窗口，同时继续逐项验证 exact key、
+root、typed scopes、option shape 与选择结果。`zg361b1.200/.201` 已在更晚周期日期按此合同实机处理通过。
+
+R95 会话连续运行多年后，玩家继承了新的 title/role，已不再是原始 checkpoint 的独立初态；此时才通过
+managed stop receipt 结束 PID `32376`。下一轮 R96 因新增了 mod 内 human-only 诊断字节，且需要恢复原始
+checkpoint lineage，所以必须冷启动。诊断仍放在既有用途分片中：pending/reopen route、closure gate 与
+calibration finish 分别记录 cycle state、pending 数、配额 recount/target、finalized 与 rewards paid/expected；
+对应 effect 文件保持 8 个和 4 个顶层 effect，满足每文件 1–10、硬上限 20 的边界。
+
+R95 主报告 SHA-256 为
+`93F56ADF2D4BA6CB04020E54857053050E249E0F93C940E6573601AB727457C4`；首段与最后一段产品入口证据分别为
+`Z:\b3r95\cell\03_promotion_source_production_entry.json`（SHA-256
+`E73E0F847FD233B6FFF55D8A5DB12E502576F6A84E984109C20DED97C042E5B0`）与
+`Z:\b3r95_resume6\03_promotion_source_production_entry.json`（SHA-256
+`0E87E74C5749808F8DAA40CA48205129A5B133915FC1CC0023A049687247AE40`）。

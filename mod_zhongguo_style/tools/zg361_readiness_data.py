@@ -145,28 +145,39 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R94",
-    observed_at="2026-09-05 21:10 Asia/Shanghai",
+    run_id="R95",
+    observed_at="2026-09-05 21:48 Asia/Shanghai",
     result="RED",
-    product_commit="4bc9561",
-    projection="phase2-full-release-r94-4bc9561",
-    verified_file_count=936,
-    product_tree_sha256="2641FA92F0440EC6725106851A37F340DCF1E3EB15058E8B65FF9E36CD39A281",
-    release_manifest_sha256="EF68228351E4BE3592B6151D66EA1C0851504665ED117B69ED14CE5A67CA3E94",
+    product_commit="2d15103",
+    projection="phase2-full-release-r95-2d15103",
+    verified_file_count=937,
+    product_tree_sha256="B31D0A444E0BA76C9E2715E6C660F5EC750D455A23F02B5EA11EF3E1E514B387",
+    release_manifest_sha256="2AA0E515F3510A9F591947E0294FD073DBCCD37D071DF4F31A01A0437FC9A39D",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=569,
-    native_observations=135,
+    observation_days=2166,
+    native_observations=455,
     drained_event_keys=(
         "zg361b2.40",
-        "ep3_governor_yearly.8160",
+        "ep3_governor_yearly.8120",
         "spymaster_task.0381",
-        "zg361b1.200",
         "spymaster_task.0381",
-        "spymaster_task.0342",
+        "spymaster_task.0346",
         "zg361.40",
         "tgp_interaction_event.0016",
+        "spymaster_task.0342",
+        "ep3_governor_yearly.3060",
+        "spymaster_task.0381",
+        "zg361.40",
+        "spymaster_task.0381",
+        "zg361b1.200",
+        "zg361b1.201",
+        "zg361.40",
+        "tgp_dynastic_cycle_events.0040",
+        "zg361.40",
+        "scheme_critical_moments.1134",
+        "zg361.40",
     ),
     cleared_product_signatures=(
         "This scope doesn't support variables",
@@ -178,21 +189,23 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r94\evidence-index.json",
-        r"Z:\b3r94\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r94_resume1\report.json",
-        r"Z:\b3r94_resume1\03_promotion_source_production_entry.json",
+        r"Z:\b3r95\evidence-index.json",
+        r"Z:\b3r95\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r95_resume2\03_promotion_source_production_entry.json",
+        r"Z:\b3r95_resume4\03_promotion_source_production_entry.json",
+        r"Z:\b3r95_resume6\03_promotion_source_production_entry.json",
     ),
     boundary=(
-        "The committed R94 release-identical product loaded and the listed regressions "
-        "remained clear. After correcting the harness-only dynamic administrator "
-        "contract for ep3_governor_yearly.8160, the same CK3 PID was observed for 569 "
-        "game days; player B1 remained active while Central and PP remained inactive. "
-        "The canonical seed was authored at commit 218026a and already had B1 active at "
-        "the first R94 frame, so the new bank rule could not retroactively repair that "
-        "saved manager cycle. A schema-v2 one-shot legacy-cycle retirement/restart is "
-        "static-ready and awaits fresh R95 verification. This whole-product snapshot "
-        "does not promote any per-ID readiness tier."
+        "The committed R95 release-identical product loaded 303/303 database nodes with "
+        "fatal 0. The schema-v2 migration executed and replaced the saved cycle, while "
+        "one retained CK3 PID advanced from date_raw 53147016 to 53199000 at speed 5. "
+        "Across 455 paused observations and 19 typed event drains, the player remained "
+        "B1 active while Central and PP stayed inactive; a human-manager diagnostic later "
+        "observed cycle/case 18 at state 7. Harness-only pause/revision/date-contract "
+        "failures were repaired without restarting the unchanged product. The session was "
+        "stopped after long-running role/title drift, and fresh state-7 quota/finalization "
+        "diagnostics are static-ready for R96. This whole-product RED does not promote any "
+        "per-ID readiness tier."
     ),
 )
 
