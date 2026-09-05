@@ -626,6 +626,8 @@ class CareerHcRuntimeTests(unittest.TestCase):
             "zg361_career_hc_claim_cl_transfer_vacancy_effect",
         )
         for token in (
+            "has_variable = zg361_transfer_vacancy_active",
+            "has_variable = zg361_transfer_consumer_kind",
             "zg361_transfer_vacancy_status = 1",
             "zg361_transfer_vacancy_maturity_cycle <= $TICKET_CYCLE$",
             "primary_title = var:zg361_transfer_vacancy_title",

@@ -573,7 +573,13 @@ def render_mobility_preaction(row: Mechanism) -> str:
             remove_variable = zg361_transfer_cl_applied
             {action}
             if = {{
-                limit = {{ NOT = {{ var:zg361_transfer_cl_applied = 1 }} }}
+                limit = {{
+                    trigger_if = {{
+                        limit = {{ has_variable = zg361_transfer_cl_applied }}
+                        NOT = {{ var:zg361_transfer_cl_applied = 1 }}
+                    }}
+                    trigger_else = {{ always = yes }}
+                }}
                 # A missing/stale vacancy, invalid receiver, war, or broken HC
                 # reserve becomes an explicit policy debt.  No liege/title
                 # mutation has occurred on these adapter RED paths.

@@ -2380,6 +2380,7 @@ def portfolio_domain_dispatch(domain: DomainSpec) -> str:
     return f'''if = {{
         limit = {{ var:zg361_comp_portfolio_domain = {DOMAINS.index(domain) + 1} }}
         var:zg361_comp_portfolio_subject = {{
+            has_variable = zg361_case_{domain.key}_state
             {chr(10).join(state_branches)}
         }}
     }}'''
@@ -2706,7 +2707,7 @@ def render_deadline_event(prefix: str, consumer: str) -> str:
     immediate = {{
         {expire_deadline(prefix)}
         if = {{
-            limit = {{ var:zg361_case_kernel_applied = 1 }}
+            limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
             {consumer} = yes
         }}
         else = {{ debug_log = "ZG361COMP: stale {prefix} five-field ticket ignored" }}

@@ -241,13 +241,23 @@ zg361_p2c_stage_02_compensation_effect = {
 zg361_p2c_stage_03_feedback_promotion_pip_effect = {
     if = {
         limit = {
-            var:zg361_pp_portfolio_complete_cycle = var:zg361_p2c_cycle
-            var:zg361_p2c_subject = {
-                var:zg361_pp_t_portfolio_done_cycle = root.var:zg361_p2c_cycle
-                var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_p2c_cycle
-                var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_p2c_cycle
-                var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_p2c_cycle
+            trigger_if = {
+                limit = { has_variable = zg361_pp_portfolio_complete_cycle }
+                AND = {
+                    var:zg361_pp_portfolio_complete_cycle = var:zg361_p2c_cycle
+                    var:zg361_p2c_subject = {
+                        has_variable = zg361_pp_t_portfolio_done_cycle
+                        has_variable = zg361_pp_u_portfolio_done_cycle
+                        has_variable = zg361_pp_v_portfolio_done_cycle
+                        has_variable = zg361_pp_w_portfolio_done_cycle
+                        var:zg361_pp_t_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                    }
+                }
             }
+            trigger_else = { always = no }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_03_status }
     }

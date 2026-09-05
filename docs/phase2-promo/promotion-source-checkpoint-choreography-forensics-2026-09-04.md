@@ -1274,3 +1274,24 @@ This RED is not a loader-performance signal: the full product already completed
 therefore retained as state-machine/tooltip evidence, not used to justify an
 unrelated split. The fix changes generated mod bytes, so R97 requires one fresh
 CK3 launch; the old R96 session cannot verify it.
+
+## R97 illness-death contingency authorization
+
+R97 continuation `Z:\b3r97_resume4` started from player character `29037` at
+`date_raw=53168904`, drained the exact vanilla `health.1006` event, and selected
+authored option 7 / native option 6. The character died during the following
+roughly 27-day slice and the played owner changed to `31647`, so the runner
+correctly stopped on its immutable played-owner binding. The retained report is
+RED with `PromotionProductionEntryError: promotion path crossed its
+played-owner/connection binding`; the event drain itself is GREEN. This is the
+first and currently only Phase2 acceptance failure attributed to illness death.
+
+On 2026-09-05 the project owner authorized a bounded acceptance contingency:
+only after illness death of the validation character causes **three consecutive
+acceptance failures** may the isolated acceptance fixture add health and a
+survivability modifier to that character. The counter is currently `1/3`, so no
+health value or modifier has been applied. If the threshold is reached, the run
+must record the exact health delta, modifier identity and duration, application
+and removal points, affected character, attempt counter, and live artifact. The
+fixture must remain outside the production mod/release projection; a non-illness
+outcome breaks the consecutive-failure sequence.

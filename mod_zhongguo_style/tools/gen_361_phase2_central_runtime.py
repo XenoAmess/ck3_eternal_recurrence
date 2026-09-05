@@ -23,10 +23,10 @@ READINESS = "static-ready"
 LEGACY_EFFECT_FILENAME = "zg361_phase2_central_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
-# R74: guard unrelated-vassal and first-use portfolio reads proven noisy by the
-# production CK3 log; purpose grouping and shard order remain unchanged.
-HISTORICAL_EFFECT_BYTES = 134_357
-HISTORICAL_EFFECT_SHA256 = "666CBE3BCF5930F254F1B00684F0D77CB09FCA7C965C7F86CDCDC7ACE10E1DC0"
+# R98: guard the stage-3 first-use completion read proven fatal to the PP
+# adapter in the R97 production CK3 log; grouping and order remain unchanged.
+HISTORICAL_EFFECT_BYTES = 137_340
+HISTORICAL_EFFECT_SHA256 = "5D0A5CBA7DE49DA76B2CBA863DC31D1830B0AA497C87306FC4F440E2CFB4EE81"
 HISTORICAL_EFFECT_COUNT = 33
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -1666,13 +1666,23 @@ zg361_p2c_stage_02_compensation_effect = {
 zg361_p2c_stage_03_feedback_promotion_pip_effect = {
     if = {
         limit = {
-            var:zg361_pp_portfolio_complete_cycle = var:zg361_p2c_cycle
-            var:zg361_p2c_subject = {
-                var:zg361_pp_t_portfolio_done_cycle = root.var:zg361_p2c_cycle
-                var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_p2c_cycle
-                var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_p2c_cycle
-                var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_p2c_cycle
+            trigger_if = {
+                limit = { has_variable = zg361_pp_portfolio_complete_cycle }
+                AND = {
+                    var:zg361_pp_portfolio_complete_cycle = var:zg361_p2c_cycle
+                    var:zg361_p2c_subject = {
+                        has_variable = zg361_pp_t_portfolio_done_cycle
+                        has_variable = zg361_pp_u_portfolio_done_cycle
+                        has_variable = zg361_pp_v_portfolio_done_cycle
+                        has_variable = zg361_pp_w_portfolio_done_cycle
+                        var:zg361_pp_t_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_pp_u_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_pp_v_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_pp_w_portfolio_done_cycle = root.var:zg361_p2c_cycle
+                    }
+                }
             }
+            trigger_else = { always = no }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_03_status }
     }
@@ -1727,6 +1737,17 @@ zg361_p2c_stage_08_metrics_delivery_effect = {
     else_if = {
         limit = {
             var:zg361_p2c_subject = {
+                has_variable = zg361_p3_portfolio_closed
+                has_variable = zg361_p3_portfolio_owner
+                has_variable = zg361_p3_portfolio_cycle
+                has_variable = zg361_p3_portfolio_result_owner
+                has_variable = zg361_p3_portfolio_result_subject
+                has_variable = zg361_p3_portfolio_result_cycle
+                has_variable = zg361_p3_portfolio_result_case
+                has_variable = zg361_p3_final_owner
+                has_variable = zg361_p3_final_subject
+                has_variable = zg361_p3_final_cycle
+                has_variable = zg361_p3_final_conservation_ok
                 var:zg361_p3_portfolio_closed = 1
                 var:zg361_p3_portfolio_owner = root
                 var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
@@ -1745,6 +1766,8 @@ zg361_p2c_stage_08_metrics_delivery_effect = {
     else_if = {
         limit = {
             var:zg361_p2c_subject = {
+                has_variable = zg361_p3_portfolio_owner
+                has_variable = zg361_p3_portfolio_cycle
                 var:zg361_p3_portfolio_owner = root
                 var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
                 OR = { var:zg361_case_aa_active = 1 var:zg361_case_ag_active = 1 var:zg361_case_aj_active = 1 }
@@ -1759,6 +1782,13 @@ zg361_p2c_stage_08_metrics_delivery_effect = {
         limit = {
             var:zg361_p2c_stage_status = 1
             var:zg361_p2c_subject = {
+                has_variable = zg361_p3_portfolio_closed
+                has_variable = zg361_p3_portfolio_owner
+                has_variable = zg361_p3_portfolio_cycle
+                has_variable = zg361_p3_portfolio_result_owner
+                has_variable = zg361_p3_portfolio_result_subject
+                has_variable = zg361_p3_portfolio_result_cycle
+                has_variable = zg361_p3_portfolio_result_case
                 var:zg361_p3_portfolio_closed = 0
                 var:zg361_p3_portfolio_owner = root
                 var:zg361_p3_portfolio_cycle = root.var:zg361_p2c_cycle
@@ -1781,7 +1811,7 @@ zg361_p2c_stage_08_metrics_delivery_effect = {
                 var:zg361_result_case_state >= 3
             }
         }
-        zg361_p3_open_portfolio_effect = { SUBJECT = var:zg361_p2c_subject }
+        zg361_p3_open_portfolio_effect = { SUBJECT = root.var:zg361_p2c_subject }
         if = {
             limit = {
                 var:zg361_p2c_subject = {
@@ -1806,6 +1836,12 @@ zg361_p2c_stage_07_credit_project_effect = {
     if = {
         limit = {
             var:zg361_p2c_subject = {
+                has_variable = zg361_cp_portfolio_closed
+                has_variable = zg361_cp_portfolio_cycle
+                has_variable = zg361_cp_final_owner
+                has_variable = zg361_cp_final_subject
+                has_variable = zg361_cp_final_cycle
+                has_variable = zg361_cp_final_conservation_ok
                 var:zg361_cp_portfolio_closed = 1
                 var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
                 var:zg361_cp_final_owner = root
@@ -1829,6 +1865,7 @@ zg361_p2c_stage_07_credit_project_effect = {
     else_if = {
         limit = {
             var:zg361_p2c_subject = {
+                has_variable = zg361_cp_portfolio_cycle
                 var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
                 OR = { var:zg361_case_e_active = 1 var:zg361_case_i_active = 1 var:zg361_case_j_active = 1 var:zg361_case_r_active = 1 }
             }
@@ -1842,6 +1879,8 @@ zg361_p2c_stage_07_credit_project_effect = {
         limit = {
             var:zg361_p2c_stage_status = 1
             var:zg361_p2c_subject = {
+                has_variable = zg361_cp_portfolio_closed
+                has_variable = zg361_cp_portfolio_cycle
                 var:zg361_cp_portfolio_closed = 0
                 var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
             }
@@ -1851,7 +1890,7 @@ zg361_p2c_stage_07_credit_project_effect = {
     }
     else_if = {
         limit = { var:zg361_p2c_stage_status = 0 }
-        zg361_cp_open_portfolio_effect = { SUBJECT = var:zg361_p2c_subject }
+        zg361_cp_open_portfolio_effect = { SUBJECT = root.var:zg361_p2c_subject }
         if = {
             limit = {
                 var:zg361_p2c_subject = {
@@ -1877,6 +1916,11 @@ zg361_p2c_stage_09_career_learning_effect = {
         limit = {
             has_variable = zg361_p2c_cl_partial_open
             var:zg361_p2c_cl_partial_open = 1
+            has_variable = zg361_cl_portfolio_cycle
+            has_variable = zg361_cl_portfolio_ah_completed
+            has_variable = zg361_cl_portfolio_ah_expected
+            has_variable = zg361_cl_portfolio_ai_completed
+            has_variable = zg361_cl_portfolio_ai_expected
             var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
             var:zg361_cl_portfolio_ah_completed >= var:zg361_cl_portfolio_ah_expected
             var:zg361_cl_portfolio_ai_completed >= var:zg361_cl_portfolio_ai_expected
@@ -1887,6 +1931,11 @@ zg361_p2c_stage_09_career_learning_effect = {
     }
     else_if = {
         limit = {
+            has_variable = zg361_cl_portfolio_cycle
+            has_variable = zg361_cl_portfolio_ah_completed
+            has_variable = zg361_cl_portfolio_ah_expected
+            has_variable = zg361_cl_portfolio_ai_completed
+            has_variable = zg361_cl_portfolio_ai_expected
             var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
             var:zg361_p2c_cl_frozen_count > 0
             var:zg361_cl_portfolio_ah_expected = var:zg361_p2c_cl_frozen_count
@@ -1914,6 +1963,9 @@ zg361_p2c_stage_09_career_learning_effect = {
         zg361_cl_dispatch_direct_reports_effect = yes
         if = {
             limit = {
+                has_variable = zg361_cl_portfolio_cycle
+                has_variable = zg361_cl_portfolio_ah_expected
+                has_variable = zg361_cl_portfolio_ai_expected
                 var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
                 var:zg361_p2c_cl_frozen_count > 0
                 var:zg361_cl_portfolio_ah_expected = var:zg361_p2c_cl_frozen_count

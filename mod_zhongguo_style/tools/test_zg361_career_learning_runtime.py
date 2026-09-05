@@ -550,6 +550,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             core = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_core_effect")
             self.assertIn(call, core)
             self.assertIn("zg361_transfer_cl_applied", core)
+            self.assertIn("has_variable = zg361_transfer_cl_applied", core)
             self.assertIn("zg361_cl_route value = 3", core)
             self.assertIn(f"CODE = 6 MECHANISM = {mechanism_id}", core)
 

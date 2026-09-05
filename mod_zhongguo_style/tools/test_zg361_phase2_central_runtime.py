@@ -580,6 +580,11 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         pp = block(self.effects, "zg361_p2c_stage_03_feedback_promotion_pip_effect")
         for domain in "tuvw":
             self.assertIn(f"zg361_pp_{domain}_portfolio_done_cycle", pp)
+        self.assertIn(
+            "limit = { has_variable = zg361_pp_portfolio_complete_cycle }",
+            pp,
+        )
+        self.assertIn("trigger_else = { always = no }", pp)
         self.assertIn("zg361_pp_portfolio_queue_active", pp)
         self.assertEqual(pp.count("zg361_p2c_call_pp_adapter_effect = yes"), 1)
         pp_preflight = block(self.effects, "zg361_p2c_call_pp_adapter_effect")
@@ -669,7 +674,13 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("NOT = { this = root.var:zg361_p2c_subject }", cp)
         self.assertIn("liege = { zg361_is_celestial_liege_trigger = yes }", cp)
         self.assertIn("STATUS = 3", cp)
+        self.assertIn(
+            "zg361_cp_open_portfolio_effect = { SUBJECT = root.var:zg361_p2c_subject }",
+            cp,
+        )
+        self.assertIn("has_variable = zg361_cp_portfolio_closed", cp)
         cl = block(self.effects, "zg361_p2c_stage_09_career_learning_effect")
+        self.assertIn("has_variable = zg361_cl_portfolio_cycle", cl)
         self.assertIn("zg361_cl_portfolio_ah_expected", cl)
         self.assertIn("zg361_cl_portfolio_ai_completed", cl)
         self.assertIn("NOT = { has_variable = zg361_cl_digest_pending }", cl)
@@ -689,6 +700,13 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_p2c_mg_active", mg)
         self.assertIn("zg361_p2c_mg_open_failed", mg)
         self.assertIn("CODE = 1011", mg)
+
+        p3 = block(self.effects, "zg361_p2c_stage_08_metrics_delivery_effect")
+        self.assertIn(
+            "zg361_p3_open_portfolio_effect = { SUBJECT = root.var:zg361_p2c_subject }",
+            p3,
+        )
+        self.assertIn("has_variable = zg361_p3_portfolio_closed", p3)
 
     def test_m360_stage10_freezes_ordered_manager_identity(self) -> None:
         mg = block(self.effects, "zg361_p2c_stage_10_manager_governance_effect")

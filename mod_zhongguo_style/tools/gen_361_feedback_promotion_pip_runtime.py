@@ -1671,8 +1671,17 @@ def no_pending_audit_trigger(domain: DomainSpec) -> str:
         for mechanism_id in stage:
             mechanism = MECHANISM_BY_ID[mechanism_id]
             for index, _ in enumerate(mechanism.deadlines, start=1):
+                state = (
+                    f"{PREFIX}_m{mechanism_id:03d}_audit_{index}_state"
+                )
                 rows.append(
-                    f"NOT = {{ var:{PREFIX}_m{mechanism_id:03d}_audit_{index}_state = 1 }}"
+                    "NOT = {\n"
+                    "\ttrigger_if = {\n"
+                    f"\t\tlimit = {{ has_variable = {state} }}\n"
+                    f"\t\tvar:{state} = 1\n"
+                    "\t}\n"
+                    "\ttrigger_else = { always = no }\n"
+                    "}"
                 )
     return "\n".join(rows)
 
@@ -3189,7 +3198,7 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
         else:
             special_audit = f'''set_variable = {{ name = {p}_appeal_clock_closed value = 1 }}
 \t\t\tif = {{
-\t\t\t\tlimit = {{ var:{p}_appeal_filed = 1 }}
+\t\t\t\tlimit = {{ has_variable = {p}_appeal_filed var:{p}_appeal_filed = 1 }}
 \t\t\t\tset_variable = {{ name = {p}_appeal_result_grade value = var:zg361_result_grade }}
 \t\t\t\tset_variable = {{ name = {p}_non_aggravation_ok value = 0 }}
 \t\t\t\tif = {{ limit = {{ var:zg361_result_grade >= var:{p}_appeal_snapshot_grade }} set_variable = {{ name = {p}_non_aggravation_ok value = 1 }} }}
@@ -3526,7 +3535,7 @@ def render_stage_deadline_event(domain: DomainSpec, state: int) -> str:
 \t\t\tDEADLINE_PENDING_VAR = {dl}_pending
 \t\t\tDEADLINE_EXPIRED_VAR = {dl}_expired
 \t\t}}
-\t\tif = {{ limit = {{ var:zg361_case_kernel_applied = 1 }} zg361_pp_{domain.key}_timeout_stage_{state:02d}_effect = yes }}
+\t\tif = {{ limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }} zg361_pp_{domain.key}_timeout_stage_{state:02d}_effect = yes }}
 \t}}
 }}'''
 

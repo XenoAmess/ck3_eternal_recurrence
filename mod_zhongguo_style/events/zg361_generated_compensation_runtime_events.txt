@@ -24,7 +24,7 @@ zg361comp.100 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_l_deferred_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_l_consume_deferred_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale l_deferred five-field ticket ignored" }
@@ -54,7 +54,7 @@ zg361comp.210 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_ae_due_90_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_ae_consume_due_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale ae_due_90 five-field ticket ignored" }
@@ -84,7 +84,7 @@ zg361comp.211 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_ae_due_180_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_ae_consume_due_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale ae_due_180 five-field ticket ignored" }
@@ -114,7 +114,7 @@ zg361comp.300 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_30_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_af_consume_vest_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale af_vest_30 five-field ticket ignored" }
@@ -144,7 +144,7 @@ zg361comp.301 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_90_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_af_consume_vest_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale af_vest_90 five-field ticket ignored" }
@@ -174,7 +174,7 @@ zg361comp.302 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_180_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_af_consume_vest_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale af_vest_180 five-field ticket ignored" }
@@ -204,7 +204,7 @@ zg361comp.303 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_365_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_af_consume_vest_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale af_vest_365 five-field ticket ignored" }
@@ -234,7 +234,7 @@ zg361comp.304 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_730_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_af_consume_vest_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale af_vest_730 five-field ticket ignored" }
@@ -264,7 +264,7 @@ zg361comp.310 = {
             DEADLINE_EXPIRED_VAR = zg361_comp_af_buyback_90_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
             zg361_comp_af_consume_buyback_effect = yes
         }
         else = { debug_log = "ZG361COMP: stale af_buyback_90 five-field ticket ignored" }

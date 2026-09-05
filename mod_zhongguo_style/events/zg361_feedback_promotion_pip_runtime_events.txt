@@ -4959,7 +4959,7 @@ zg361pp.3151 = {
 			else = { set_variable = { name = zg361_pp_m151_audit_2_outcome value = 3 } }
 			set_variable = { name = zg361_pp_m151_appeal_clock_closed value = 1 }
 			if = {
-				limit = { var:zg361_pp_m151_appeal_filed = 1 }
+				limit = { has_variable = zg361_pp_m151_appeal_filed var:zg361_pp_m151_appeal_filed = 1 }
 				set_variable = { name = zg361_pp_m151_appeal_result_grade value = var:zg361_result_grade }
 				set_variable = { name = zg361_pp_m151_non_aggravation_ok value = 0 }
 				if = { limit = { var:zg361_result_grade >= var:zg361_pp_m151_appeal_snapshot_grade } set_variable = { name = zg361_pp_m151_non_aggravation_ok value = 1 } }
@@ -6984,7 +6984,7 @@ zg361pp.4001 = {
 			DEADLINE_PENDING_VAR = zg361_pp_t_stage_1_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_t_stage_1_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_01_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_01_effect = yes }
 	}
 }
 
@@ -7010,7 +7010,7 @@ zg361pp.4002 = {
 			DEADLINE_PENDING_VAR = zg361_pp_t_stage_2_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_t_stage_2_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_02_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_02_effect = yes }
 	}
 }
 
@@ -7036,7 +7036,7 @@ zg361pp.4003 = {
 			DEADLINE_PENDING_VAR = zg361_pp_t_stage_3_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_t_stage_3_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_03_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_03_effect = yes }
 	}
 }
 
@@ -7062,7 +7062,7 @@ zg361pp.4004 = {
 			DEADLINE_PENDING_VAR = zg361_pp_t_stage_4_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_t_stage_4_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_04_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_t_timeout_stage_04_effect = yes }
 	}
 }
 
@@ -7113,7 +7113,7 @@ zg361pp.4011 = {
 			DEADLINE_PENDING_VAR = zg361_pp_u_stage_1_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_u_stage_1_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_01_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_01_effect = yes }
 	}
 }
 
@@ -7139,7 +7139,7 @@ zg361pp.4012 = {
 			DEADLINE_PENDING_VAR = zg361_pp_u_stage_2_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_u_stage_2_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_02_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_02_effect = yes }
 	}
 }
 
@@ -7165,7 +7165,7 @@ zg361pp.4013 = {
 			DEADLINE_PENDING_VAR = zg361_pp_u_stage_3_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_u_stage_3_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_03_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_03_effect = yes }
 	}
 }
 
@@ -7191,7 +7191,7 @@ zg361pp.4014 = {
 			DEADLINE_PENDING_VAR = zg361_pp_u_stage_4_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_u_stage_4_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_04_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_u_timeout_stage_04_effect = yes }
 	}
 }
 
@@ -7242,7 +7242,7 @@ zg361pp.4021 = {
 			DEADLINE_PENDING_VAR = zg361_pp_v_stage_1_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_v_stage_1_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_01_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_01_effect = yes }
 	}
 }
 
@@ -7268,7 +7268,7 @@ zg361pp.4022 = {
 			DEADLINE_PENDING_VAR = zg361_pp_v_stage_2_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_v_stage_2_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_02_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_02_effect = yes }
 	}
 }
 
@@ -7294,7 +7294,7 @@ zg361pp.4023 = {
 			DEADLINE_PENDING_VAR = zg361_pp_v_stage_3_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_v_stage_3_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_03_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_03_effect = yes }
 	}
 }
 
@@ -7320,7 +7320,7 @@ zg361pp.4024 = {
 			DEADLINE_PENDING_VAR = zg361_pp_v_stage_4_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_v_stage_4_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_04_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_04_effect = yes }
 	}
 }
 
@@ -7346,7 +7346,7 @@ zg361pp.4025 = {
 			DEADLINE_PENDING_VAR = zg361_pp_v_stage_5_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_v_stage_5_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_05_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_v_timeout_stage_05_effect = yes }
 	}
 }
 
@@ -7397,7 +7397,7 @@ zg361pp.4031 = {
 			DEADLINE_PENDING_VAR = zg361_pp_w_stage_1_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_w_stage_1_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_01_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_01_effect = yes }
 	}
 }
 
@@ -7423,7 +7423,7 @@ zg361pp.4032 = {
 			DEADLINE_PENDING_VAR = zg361_pp_w_stage_2_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_w_stage_2_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_02_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_02_effect = yes }
 	}
 }
 
@@ -7449,7 +7449,7 @@ zg361pp.4033 = {
 			DEADLINE_PENDING_VAR = zg361_pp_w_stage_3_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_w_stage_3_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_03_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_03_effect = yes }
 	}
 }
 
@@ -7475,7 +7475,7 @@ zg361pp.4034 = {
 			DEADLINE_PENDING_VAR = zg361_pp_w_stage_4_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_w_stage_4_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_04_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_04_effect = yes }
 	}
 }
 
@@ -7501,7 +7501,7 @@ zg361pp.4035 = {
 			DEADLINE_PENDING_VAR = zg361_pp_w_stage_5_deadline_pending
 			DEADLINE_EXPIRED_VAR = zg361_pp_w_stage_5_deadline_expired
 		}
-		if = { limit = { var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_05_effect = yes }
+		if = { limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 } zg361_pp_w_timeout_stage_05_effect = yes }
 	}
 }
 

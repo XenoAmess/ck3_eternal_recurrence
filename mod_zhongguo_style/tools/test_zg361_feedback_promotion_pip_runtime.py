@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 969_746)
+        self.assertEqual(len(historical), 988_154)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "ee5d31d44321729b10ff635246c3b6f9e2318227ce671f688c193e50a9b287cd",
+            "9197dd6f1519ef180076b71a439d97cc7a90c433478e6e2822b1d5e91145f0c1",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -233,6 +233,15 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 event_id = 4000 + (ord(domain.key) - ord("t")) * 10 + state
                 event = effect_block(self.events, f"zg361pp.{event_id}")
                 self.assertIn("zg361_case_kernel_expire_deadline_effect", event)
+                self.assertIn("has_variable = zg361_case_kernel_applied", event)
+                self.assertIn("var:zg361_case_kernel_applied = 1", event)
+
+        appeal_audit = effect_block(self.events, "zg361pp.3151")
+        self.assertIn(
+            "has_variable = zg361_pp_m151_appeal_filed "
+            "var:zg361_pp_m151_appeal_filed = 1",
+            appeal_audit,
+        )
 
     def test_named_resources_are_atomic_and_not_generic_slot_spam(self) -> None:
         # The per-operation journal is deliberately separate from scarce
@@ -332,9 +341,12 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 for suffix in ("owner", "cycle", "case"):
                     self.assertIn(f"remove_variable = {receipt}_{suffix}", opened)
             for index, _ in enumerate(row.deadlines, start=1):
-                pending = f"NOT = {{ var:zg361_pp_m{row.mechanism_id:03d}_audit_{index}_state = 1 }}"
-                self.assertIn(pending, adapter)
-                self.assertIn(pending, opened)
+                state = (
+                    f"zg361_pp_m{row.mechanism_id:03d}_audit_{index}_state"
+                )
+                for target in (adapter, opened):
+                    self.assertIn(f"has_variable = {state}", target)
+                    self.assertIn(f"var:{state} = 1", target)
                 self.assertIn(
                     f"name = zg361_pp_m{row.mechanism_id:03d}_audit_{index}_business_settled value = 0",
                     opened,
@@ -351,6 +363,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 self.assertIn(f"remove_variable = zg361_pp_m{row.mechanism_id:03d}_{suffix}", opened)
             for suffix in gen.RESPONSE_ONLY_FIELDS_BY_ID.get(row.mechanism_id, ()):
                 self.assertIn(f"remove_variable = zg361_pp_m{row.mechanism_id:03d}_{suffix}", opened)
+        self.assertNotRegex(
+            adapter,
+            r"NOT = \{ var:zg361_pp_m\d{3}_audit_\d+_state = 1 \}",
+        )
 
     def test_reset_does_not_read_nonexistent_subject_or_withdraw_fields(self) -> None:
         # CK3 reports remove_variable as a read.  Resetting a field with no real

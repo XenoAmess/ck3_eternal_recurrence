@@ -151,6 +151,7 @@ zg361_comp_portfolio_apply_stage_effect = {
         if = {
         limit = { var:zg361_comp_portfolio_domain = 1 }
         var:zg361_comp_portfolio_subject = {
+            has_variable = zg361_case_l_state
             if = {
                 limit = { var:zg361_case_l_state = 1 }
                 zg361_comp_m082_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
@@ -178,6 +179,7 @@ else_if = {
     if = {
         limit = { var:zg361_comp_portfolio_domain = 2 }
         var:zg361_comp_portfolio_subject = {
+            has_variable = zg361_case_ae_state
             if = {
                 limit = { var:zg361_case_ae_state = 1 }
                 zg361_comp_m278_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
@@ -210,6 +212,7 @@ else_if = {
     if = {
         limit = { var:zg361_comp_portfolio_domain = 3 }
         var:zg361_comp_portfolio_subject = {
+            has_variable = zg361_case_af_state
             if = {
                 limit = { var:zg361_case_af_state = 1 }
                 zg361_comp_m290_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }

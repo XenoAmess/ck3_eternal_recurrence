@@ -34,18 +34,90 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m146_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m147_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m148_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m149_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m150_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m151_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m151_audit_2_state = 1 }
-						NOT = { var:zg361_pp_m152_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m153_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m154_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m155_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m156_audit_1_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m146_audit_1_state }
+								var:zg361_pp_m146_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m147_audit_1_state }
+								var:zg361_pp_m147_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m148_audit_1_state }
+								var:zg361_pp_m148_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m149_audit_1_state }
+								var:zg361_pp_m149_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m150_audit_1_state }
+								var:zg361_pp_m150_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m151_audit_1_state }
+								var:zg361_pp_m151_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m151_audit_2_state }
+								var:zg361_pp_m151_audit_2_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m152_audit_1_state }
+								var:zg361_pp_m152_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m153_audit_1_state }
+								var:zg361_pp_m153_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m154_audit_1_state }
+								var:zg361_pp_m154_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m155_audit_1_state }
+								var:zg361_pp_m155_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m156_audit_1_state }
+								var:zg361_pp_m156_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
 					}
 					zg361_pp_open_t_case_effect = yes
 				}
@@ -58,18 +130,90 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m157_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m158_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m159_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m163_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m164_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m165_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m161_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m162_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m166_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m160_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m167_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m168_audit_1_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m157_audit_1_state }
+								var:zg361_pp_m157_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m158_audit_1_state }
+								var:zg361_pp_m158_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m159_audit_1_state }
+								var:zg361_pp_m159_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m163_audit_1_state }
+								var:zg361_pp_m163_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m164_audit_1_state }
+								var:zg361_pp_m164_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m165_audit_1_state }
+								var:zg361_pp_m165_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m161_audit_1_state }
+								var:zg361_pp_m161_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m162_audit_1_state }
+								var:zg361_pp_m162_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m166_audit_1_state }
+								var:zg361_pp_m166_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m160_audit_1_state }
+								var:zg361_pp_m160_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m167_audit_1_state }
+								var:zg361_pp_m167_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m168_audit_1_state }
+								var:zg361_pp_m168_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
 						NOT = {
 							has_variable = zg361_result_case_owner
 							var:zg361_result_case_owner = root
@@ -96,18 +240,90 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m157_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m158_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m159_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m163_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m164_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m165_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m161_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m162_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m166_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m160_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m167_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m168_audit_1_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m157_audit_1_state }
+								var:zg361_pp_m157_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m158_audit_1_state }
+								var:zg361_pp_m158_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m159_audit_1_state }
+								var:zg361_pp_m159_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m163_audit_1_state }
+								var:zg361_pp_m163_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m164_audit_1_state }
+								var:zg361_pp_m164_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m165_audit_1_state }
+								var:zg361_pp_m165_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m161_audit_1_state }
+								var:zg361_pp_m161_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m162_audit_1_state }
+								var:zg361_pp_m162_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m166_audit_1_state }
+								var:zg361_pp_m166_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m160_audit_1_state }
+								var:zg361_pp_m160_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m167_audit_1_state }
+								var:zg361_pp_m167_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m168_audit_1_state }
+								var:zg361_pp_m168_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
 					}
 					zg361_pp_open_u_case_effect = yes
 				}
@@ -120,19 +336,97 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m169_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m170_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m171_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m172_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m173_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m174_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m175_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m176_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m177_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m178_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m179_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m180_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m180_audit_2_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m169_audit_1_state }
+								var:zg361_pp_m169_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m170_audit_1_state }
+								var:zg361_pp_m170_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m171_audit_1_state }
+								var:zg361_pp_m171_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m172_audit_1_state }
+								var:zg361_pp_m172_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m173_audit_1_state }
+								var:zg361_pp_m173_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m174_audit_1_state }
+								var:zg361_pp_m174_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m175_audit_1_state }
+								var:zg361_pp_m175_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m176_audit_1_state }
+								var:zg361_pp_m176_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m177_audit_1_state }
+								var:zg361_pp_m177_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m178_audit_1_state }
+								var:zg361_pp_m178_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m179_audit_1_state }
+								var:zg361_pp_m179_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m180_audit_1_state }
+								var:zg361_pp_m180_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m180_audit_2_state }
+								var:zg361_pp_m180_audit_2_state = 1
+							}
+							trigger_else = { always = no }
+						}
 						NOT = {
 							var:zg361_pp_m160_prescreen_pass = 1
 							var:zg361_pp_m160_packet_candidate_consumed = this
@@ -152,19 +446,97 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m169_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m170_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m171_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m172_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m173_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m174_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m175_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m176_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m177_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m178_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m179_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m180_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m180_audit_2_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m169_audit_1_state }
+								var:zg361_pp_m169_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m170_audit_1_state }
+								var:zg361_pp_m170_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m171_audit_1_state }
+								var:zg361_pp_m171_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m172_audit_1_state }
+								var:zg361_pp_m172_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m173_audit_1_state }
+								var:zg361_pp_m173_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m174_audit_1_state }
+								var:zg361_pp_m174_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m175_audit_1_state }
+								var:zg361_pp_m175_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m176_audit_1_state }
+								var:zg361_pp_m176_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m177_audit_1_state }
+								var:zg361_pp_m177_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m178_audit_1_state }
+								var:zg361_pp_m178_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m179_audit_1_state }
+								var:zg361_pp_m179_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m180_audit_1_state }
+								var:zg361_pp_m180_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m180_audit_2_state }
+								var:zg361_pp_m180_audit_2_state = 1
+							}
+							trigger_else = { always = no }
+						}
 					}
 					zg361_pp_open_v_case_effect = yes
 				}
@@ -177,17 +549,83 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m181_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m182_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m183_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m184_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m185_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m186_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m187_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m188_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m189_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m190_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m191_audit_1_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m181_audit_1_state }
+								var:zg361_pp_m181_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m182_audit_1_state }
+								var:zg361_pp_m182_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m183_audit_1_state }
+								var:zg361_pp_m183_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m184_audit_1_state }
+								var:zg361_pp_m184_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m185_audit_1_state }
+								var:zg361_pp_m185_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m186_audit_1_state }
+								var:zg361_pp_m186_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m187_audit_1_state }
+								var:zg361_pp_m187_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m188_audit_1_state }
+								var:zg361_pp_m188_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m189_audit_1_state }
+								var:zg361_pp_m189_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m190_audit_1_state }
+								var:zg361_pp_m190_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m191_audit_1_state }
+								var:zg361_pp_m191_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
 						NOT = {
 							has_variable = zg361_result_case_owner
 							var:zg361_result_case_owner = root
@@ -241,17 +679,83 @@ zg361_pp_manager_portfolio_adapter_effect = {
 					}
 					trigger_else = { always = no }
 				}
-						NOT = { var:zg361_pp_m181_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m182_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m183_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m184_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m185_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m186_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m187_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m188_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m189_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m190_audit_1_state = 1 }
-						NOT = { var:zg361_pp_m191_audit_1_state = 1 }
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m181_audit_1_state }
+								var:zg361_pp_m181_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m182_audit_1_state }
+								var:zg361_pp_m182_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m183_audit_1_state }
+								var:zg361_pp_m183_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m184_audit_1_state }
+								var:zg361_pp_m184_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m185_audit_1_state }
+								var:zg361_pp_m185_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m186_audit_1_state }
+								var:zg361_pp_m186_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m187_audit_1_state }
+								var:zg361_pp_m187_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m188_audit_1_state }
+								var:zg361_pp_m188_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m189_audit_1_state }
+								var:zg361_pp_m189_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m190_audit_1_state }
+								var:zg361_pp_m190_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
+						NOT = {
+							trigger_if = {
+								limit = { has_variable = zg361_pp_m191_audit_1_state }
+								var:zg361_pp_m191_audit_1_state = 1
+							}
+							trigger_else = { always = no }
+						}
 					}
 					zg361_pp_open_w_case_effect = yes
 				}

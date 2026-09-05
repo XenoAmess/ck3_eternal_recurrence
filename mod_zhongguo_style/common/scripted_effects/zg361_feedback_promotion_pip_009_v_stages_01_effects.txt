@@ -17,19 +17,97 @@ zg361_pp_open_v_case_effect = {
 			# Do not reuse this domain's receipt variables while any delayed
 			# audit is pending.  The portfolio adapter may skip to another
 			# domain and retry this one after the old receipt is terminal.
-			NOT = { var:zg361_pp_m169_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m170_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m171_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m172_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m173_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m174_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m175_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m176_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m177_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m178_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m179_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m180_audit_1_state = 1 }
-			NOT = { var:zg361_pp_m180_audit_2_state = 1 }
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m169_audit_1_state }
+					var:zg361_pp_m169_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m170_audit_1_state }
+					var:zg361_pp_m170_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m171_audit_1_state }
+					var:zg361_pp_m171_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m172_audit_1_state }
+					var:zg361_pp_m172_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m173_audit_1_state }
+					var:zg361_pp_m173_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m174_audit_1_state }
+					var:zg361_pp_m174_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m175_audit_1_state }
+					var:zg361_pp_m175_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m176_audit_1_state }
+					var:zg361_pp_m176_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m177_audit_1_state }
+					var:zg361_pp_m177_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m178_audit_1_state }
+					var:zg361_pp_m178_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m179_audit_1_state }
+					var:zg361_pp_m179_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m180_audit_1_state }
+					var:zg361_pp_m180_audit_1_state = 1
+				}
+				trigger_else = { always = no }
+			}
+			NOT = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_m180_audit_2_state }
+					var:zg361_pp_m180_audit_2_state = 1
+				}
+				trigger_else = { always = no }
+			}
 		}
 		zg361_case_v_open_effect = yes
 		if = {

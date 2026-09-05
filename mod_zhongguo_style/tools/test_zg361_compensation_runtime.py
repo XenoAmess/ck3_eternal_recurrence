@@ -281,10 +281,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 612_622)
+        self.assertEqual(len(historical_bytes), 612_762)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "d0255ca971b9b330ca122eff49dff86c5d7d77e91c282c72973f132177141226",
+            "1a9ac77f8eb5b8113b54c42d6cc7463a2451729ccc308a3ad3ec5c3167f62c6f",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1058,7 +1058,14 @@ class CompensationRuntimeTests(unittest.TestCase):
                         f"DEADLINE_{field}_VAR = {names[field.lower()]}", event
                     )
                 self.assertIn("var:zg361_case_kernel_applied = 1", event)
+                self.assertIn("has_variable = zg361_case_kernel_applied", event)
                 self.assertIn(f"stale {prefix} five-field ticket ignored", event)
+
+        portfolio = top_level_block(
+            self.effects, "zg361_comp_portfolio_apply_stage_effect"
+        )
+        for domain in ("l", "ae", "af"):
+            self.assertIn(f"has_variable = zg361_case_{domain}_state", portfolio)
 
     def test_portfolio_freezes_only_a_current_delivered_result_for_all_domains(self) -> None:
         snapshot = top_level_block(
