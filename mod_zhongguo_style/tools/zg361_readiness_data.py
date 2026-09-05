@@ -145,26 +145,29 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R100",
-    observed_at="2026-09-06 00:48 Asia/Shanghai",
+    run_id="R101",
+    observed_at="2026-09-06 01:08 Asia/Shanghai",
     result="RED",
-    product_commit="13504c3",
-    projection="phase2-full-release-r100-13504c3",
+    product_commit="2848dd1",
+    projection="phase2-full-release-r101-2848dd1",
     verified_file_count=937,
-    product_tree_sha256="613ABE6544B155FD38055A267CF068A2942C0F0548C6B27CA872F8241822307C",
-    release_manifest_sha256="0E44A891C008C70F473997833113A851A38AA527B7FE6EA1DF49E1789D052C72",
+    product_tree_sha256="F4EC20F05578B35D447D657CC040557D2D9D1446EB7F27B88903CE7892979E81",
+    release_manifest_sha256="A1154F6A966D3E040F4DDEA0E652338ABA2E6209534D6407949F87F8EA277056",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=548,
-    native_observations=134,
+    observation_days=549,
+    native_observations=144,
     drained_event_keys=(
         "zg361b2.40",
-        "spymaster_task.0381",
-        "spymaster_task.0381",
-        "ep3_governor_yearly.3060",
+        "sway_ongoing.1002",
         "spymaster_task.0381",
         "zg361.40",
+        "spymaster_task.0381",
+        "spymaster_task.0381",
+        "zg361.40",
+        "tgp_interaction_event.0016",
+        "zg361b1.200",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -177,25 +180,26 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r100_retry1\evidence-index.json",
-        r"Z:\b3r100_retry1\cell\02_loader_error_scan.json",
-        r"Z:\b3r100_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r100_retry1\cell\final_error.log",
-        r"Z:\b3r100_retry1\cell\final_debug.log",
+        r"Z:\b3r101_retry1\evidence-index.json",
+        r"Z:\b3r101_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r101_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r101_retry1\cell\final_error.log",
+        r"Z:\b3r101_retry1\cell\final_debug.log",
     ),
     boundary=(
-        "The committed R100 release-identical product loaded 303/303 database nodes with "
-        "fatal 0 and zero loader-attributed project errors. PID 18072 advanced 548 observed "
-        "game days at speed 5 across 134 paused native observations and six exact GREEN "
-        "event drains. All four R99 runtime signatures were zero in the gameplay log. The "
-        "player remained B1 active and did not publish .146/.147 before the 550-day bound; "
-        "the same log exposed three instances where the common-superior bank close used "
-        "literal ordered_in_list max=7 against a shorter actual candidate list. All four "
-        "full-list walks now use the exact live list_size and are static-ready for R101. "
-        "The retained R100 process was managed-stopped because mod bytes changed. This was "
-        "not an illness-death failure; the consecutive counter remains 0/3 and no health "
-        "or survivability fixture was applied. This whole-product RED does not promote any "
-        "per-ID tier."
+        "The committed R101 release-identical product loaded 303/303 database nodes with "
+        "fatal 0 and zero loader-attributed project errors. PID 48940 advanced 549 observed "
+        "game days at speed 5 across 144 paused native observations and nine exact GREEN "
+        "event drains. All four R99 runtime signatures remained zero. The final drain was "
+        "zg361b1.200 at date_raw 53160192, so the stale seed cycle only opened the fresh "
+        "player cycle at the end of this bound. The bank error nevertheless repeated three "
+        "times even though max already equaled the live container list_size: its inner "
+        "pending_grade=2 filter made the effective sorted range shorter after bottom "
+        "assignment. Both mutable-grade filtered walks now retain full-list max and set "
+        "check_range_bounds=no, static-ready for R102. The R101 process was managed-stopped "
+        "because mod bytes changed. This was not an illness-death failure; the consecutive "
+        "counter remains 0/3 and no health or survivability fixture was applied. This "
+        "whole-product RED does not promote any per-ID tier."
     ),
 )
 

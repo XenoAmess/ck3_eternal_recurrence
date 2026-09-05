@@ -1416,3 +1416,35 @@ through its managed queue; R101 requires one fresh process.
 
 R100 was not an illness-death failure. The consecutive illness counter remains
 `0/3`; no health value or survivability modifier has been applied.
+
+## R101: `list_size` alone does not cover a filtered ordered range
+
+R101 cold-started committed source `2848dd1` through the 937-file
+release-identical projection `phase2-full-release-r101-2848dd1`. Its source
+tree, release manifest and ZIP SHA-256 were respectively
+`F4EC20F05578B35D447D657CC040557D2D9D1446EB7F27B88903CE7892979E81`,
+`A1154F6A966D3E040F4DDEA0E652338ABA2E6209534D6407949F87F8EA277056`
+and `4D20073D7FED6E5C08A787DEE48FC49CC1540F68A03D129A40806CF953B30F7F`.
+It again loaded 303/303 database nodes with fatal zero and zero loader scan
+matches; the frozen loader log SHA-256 is
+`B119D1F927E548CE636959CB989FDAB2E2294C38C4F5629777C43B7E5ABB8035`.
+
+PID 48940 then advanced 549 observed days at speed 5, producing 144 paused
+native observations and nine exact GREEN event drains. The final drain was
+`zg361b1.200` at `date_raw=53160192`: the stale seed cycle only then opened the
+fresh player cycle, so the absence of `.146/.147` in the preceding window is
+not evidence that the new cycle missed its D+300 publication deadline. The
+same PID was retained only until the changed source required a managed stop.
+
+R101 reproduced the bank error three times at the same top-assignment walk.
+Inspection of the exact R101 product proved that `max` was already the live
+candidate-list size. The remaining mismatch came from the walk's inner
+`limit = { var:zg361_pending_grade = 2 }`: bottom assignment had already
+removed rows from the effective sorted range. The R102 fix therefore retains
+the full-list `max` and adds `check_range_bounds = no` to the two bank walks
+that filter on the mutable pending grade. The two unfiltered walks keep exact
+live `list_size` without disabling range checks. B1 normal/optimized tests,
+the 7-effect file boundary and static validation are GREEN.
+
+R101 was not an illness-death failure. The consecutive illness counter remains
+`0/3`; no health value or survivability modifier has been applied.
