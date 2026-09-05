@@ -4919,7 +4919,7 @@ zg361_b1_close_common_superior_bank_effect = {
 				ordered_in_list = {
 					list = zg361_b1_unique_pool_candidates
 					order_by = var:zg361_b1_quota_pool_tie_key
-					max = 7
+					max = list_size:zg361_b1_unique_pool_candidates
 					root = { change_variable = { name = zg361_b1_unique_pool_cursor add = 1 } }
 					set_variable = { name = zg361_rank value = root.var:zg361_b1_unique_pool_cursor }
 					set_variable = { name = zg361_b1_pool_rank value = root.var:zg361_b1_unique_pool_cursor }
@@ -4944,7 +4944,7 @@ zg361_b1_close_common_superior_bank_effect = {
 					ordered_in_list = {
 						list = zg361_b1_unique_pool_bottom_candidates
 						order_by = var:zg361_b1_pool_rank
-						max = 7
+						max = list_size:zg361_b1_unique_pool_bottom_candidates
 						if = {
 							limit = { root.var:zg361_b1_unique_pool_bottom_assigned < root.var:zg361_b1_unique_pool_bottom_slots }
 							set_variable = { name = zg361_pending_grade value = 1 }
@@ -4959,7 +4959,7 @@ zg361_b1_close_common_superior_bank_effect = {
 					ordered_in_list = {
 						list = zg361_b1_unique_pool_candidates
 						order_by = var:zg361_b1_pool_rank
-						max = 7
+						max = list_size:zg361_b1_unique_pool_candidates
 						limit = { var:zg361_pending_grade = 2 }
 						if = {
 							limit = { root.var:zg361_b1_unique_pool_bottom_assigned < root.var:zg361_b1_unique_pool_bottom_slots }
@@ -4975,7 +4975,7 @@ zg361_b1_close_common_superior_bank_effect = {
 					ordered_in_list = {
 						list = zg361_b1_unique_pool_candidates
 						order_by = var:zg361_b1_quota_pool_tie_key
-						max = 7
+						max = list_size:zg361_b1_unique_pool_candidates
 						limit = { var:zg361_pending_grade = 2 }
 						if = {
 							limit = { root.var:zg361_b1_unique_pool_top_assigned < root.var:zg361_b1_unique_pool_top_slots }

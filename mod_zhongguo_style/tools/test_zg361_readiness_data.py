@@ -105,28 +105,28 @@ class ReadinessDataTests(unittest.TestCase):
             "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_latest_product_snapshot_records_r99_without_promoting_ids(self) -> None:
+    def test_latest_product_snapshot_records_r100_without_promoting_ids(self) -> None:
         snapshot = LATEST_PRODUCT_ACCEPTANCE
-        self.assertEqual(snapshot.run_id, "R99")
+        self.assertEqual(snapshot.run_id, "R100")
         self.assertEqual(snapshot.result, "RED")
-        self.assertEqual(snapshot.product_commit, "2d45678")
+        self.assertEqual(snapshot.product_commit, "13504c3")
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 966)
-        self.assertEqual(snapshot.native_observations, 239)
-        self.assertEqual(len(snapshot.drained_event_keys), 12)
-        self.assertIn("zg361b1.200", snapshot.drained_event_keys)
-        self.assertIn("third time", snapshot.boundary)
-        self.assertIn("217 game days", snapshot.boundary)
+        self.assertEqual(snapshot.observation_days, 548)
+        self.assertEqual(snapshot.native_observations, 134)
+        self.assertEqual(len(snapshot.drained_event_keys), 6)
+        self.assertIn("ep3_governor_yearly.3060", snapshot.drained_event_keys)
+        self.assertIn("All four R99 runtime signatures were zero", snapshot.boundary)
+        self.assertIn("literal ordered_in_list max=7", snapshot.boundary)
         self.assertIn("0/3", snapshot.boundary)
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("最新完整产品验收快照", ledger)
-        self.assertIn("`R99`", ledger)
+        self.assertIn("`R100`", ledger)
         self.assertIn("937 files", ledger)
-        self.assertIn("966 游戏日", ledger)
-        self.assertIn("239 次 native/MCP 观测", ledger)
+        self.assertIn("548 游戏日", ledger)
+        self.assertIn("134 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

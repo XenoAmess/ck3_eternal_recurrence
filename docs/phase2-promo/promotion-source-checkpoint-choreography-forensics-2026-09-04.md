@@ -1382,3 +1382,37 @@ process.
 
 R99 was not an illness-death failure. The consecutive illness counter remains
 `0/3`, and no health value or survivability modifier has been applied.
+
+## R100: prior regressions cleared; live-size bank allocator RED
+
+R100 cold-started committed source `13504c3` through release-identical
+projection `phase2-full-release-r100-13504c3`. The 937-file product tree,
+release manifest and ZIP SHA-256 were respectively
+`613ABE6544B155FD38055A267CF068A2942C0F0548C6B27CA872F8241822307C`,
+`0E44A891C008C70F473997833113A851A38AA527B7FE6EA1DF49E1789D052C72`
+and `AD1607599BB016059A4DF9F0F708C837FA6373F593D7E231241EF2ECD8A07550`.
+The fresh process loaded 303/303 database nodes with fatal zero and zero
+loader-attributed project matches. Its frozen loader log SHA-256 is
+`9F1530314512C5228E679DC5772F29BEBA335A76A9B7E3655BCC6613225E185B`.
+
+At default speed 5, PID 18072 advanced 548 observed game days with 134 paused
+native progress observations and six exact GREEN event drains. The player
+remained `B1=true / Central=false / PP=false`; no `.146/.147` source receipt
+was produced before the 550-day bound. The gameplay log confirms all four R99
+runtime signatures at zero, but exposes one new product defect three times:
+`zg361_b1_close_common_superior_bank_effect` supplied literal `max = 7` to an
+`ordered_in_list` whose actual candidate list contained fewer rows. This is a
+business-runtime RED, not a loader failure and not an illness death.
+
+The minimal R101 source fix preserves full-list traversal while replacing all
+four literal maxima in the bank allocator with the `list_size` of the exact
+list being walked. Generator regression now requires three candidate-list
+bounds, one incumbent-bottom-list bound, and rejects `max = 7` in this effect.
+B1 normal/optimized tests, the effect-file boundary gate, static validation
+and the 937-file reproducible release check are GREEN. The effect shard still
+contains seven top-level effects, so the mandatory purpose/size boundary has
+no exception. Because mod bytes changed, the retained R100 process was stopped
+through its managed queue; R101 requires one fresh process.
+
+R100 was not an illness-death failure. The consecutive illness counter remains
+`0/3`; no health value or survivability modifier has been applied.

@@ -145,65 +145,57 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R99",
-    observed_at="2026-09-06 00:18 Asia/Shanghai",
+    run_id="R100",
+    observed_at="2026-09-06 00:48 Asia/Shanghai",
     result="RED",
-    product_commit="2d45678",
-    projection="phase2-full-release-r99-2d45678",
+    product_commit="13504c3",
+    projection="phase2-full-release-r100-13504c3",
     verified_file_count=937,
-    product_tree_sha256="1C69EC7277F144E90EE4CB337F5C952EEECC40E5E099555B206F517D6C7D689E",
-    release_manifest_sha256="A27E3A87F15957070FDE15C43662200EE42876121B7D5648631AFEDD5564F21C",
+    product_tree_sha256="613ABE6544B155FD38055A267CF068A2942C0F0548C6B27CA872F8241822307C",
+    release_manifest_sha256="0E44A891C008C70F473997833113A851A38AA527B7FE6EA1DF49E1789D052C72",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=966,
-    native_observations=239,
+    observation_days=548,
+    native_observations=134,
     drained_event_keys=(
         "zg361b2.40",
         "spymaster_task.0381",
-        "zg361.40",
+        "spymaster_task.0381",
         "ep3_governor_yearly.3060",
         "spymaster_task.0381",
-        "spymaster_task.0381",
-        "zg361.40",
-        "tgp_dynastic_cycle_events.0040",
-        "zg361b1.200",
-        "zg361b1.201",
-        "zg361b1.126",
         "zg361.40",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
+        "weak archived manager write (R99 B1 roster amendment)",
+        "legacy compensation payer-share/dead payer (R99)",
+        "dead jingcha superior opinion (R99)",
+        "promotion/PIP first-use receipt revision (R99)",
         "loader-attributed project errors",
     ),
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r99_retry1\evidence-index.json",
-        r"Z:\b3r99_retry1\cell\02_loader_error_scan.json",
-        r"Z:\b3r99_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r99_resume1\03_promotion_source_production_entry.json",
-        r"Z:\b3r99_retry1_native_state\profile\logs\error.log",
-        r"Z:\b3r99_retry1_native_state\profile\logs\debug.log",
+        r"Z:\b3r100_retry1\evidence-index.json",
+        r"Z:\b3r100_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r100_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r100_retry1\cell\final_error.log",
+        r"Z:\b3r100_retry1\cell\final_debug.log",
     ),
     boundary=(
-        "The committed R99 release-identical product loaded 303/303 database nodes with "
-        "fatal 0 and zero loader-attributed project errors. One retained CK3 PID advanced "
-        "from date_raw 53147016 to 53170200 at speed 5 across 239 paused observations and "
-        "12 exact event drains. The first client stopped only because the exact same "
-        "spymaster_task.0381 appeared a third time; the harness contract was widened from "
-        "two to the three live-observed occurrences and the same PID resumed without a "
-        "restart. A fresh player B1 cycle then consumed zg361b1.200, .201 and .126. The "
-        "resume bound ended only 217 game days after that fresh cycle opened, before its "
-        "authored D+300 boundary, so it is not evidence that the cycle is stuck. Runtime "
-        "logs nevertheless exposed four product regressions: a weak archived manager "
-        "write, deferred compensation against missing payer-share fields and a dead payer, "
-        "jingcha opinion against a dead superior, and delayed promotion receipt revision "
-        "increments before first initialization. Their minimal source fixes are "
-        "static-ready for R100 and require a fresh process because mod bytes changed. "
-        "This was not an illness-death failure; the consecutive counter remains 0/3 and "
-        "no health or survivability fixture was applied. This whole-product RED does not "
-        "promote any per-ID tier."
+        "The committed R100 release-identical product loaded 303/303 database nodes with "
+        "fatal 0 and zero loader-attributed project errors. PID 18072 advanced 548 observed "
+        "game days at speed 5 across 134 paused native observations and six exact GREEN "
+        "event drains. All four R99 runtime signatures were zero in the gameplay log. The "
+        "player remained B1 active and did not publish .146/.147 before the 550-day bound; "
+        "the same log exposed three instances where the common-superior bank close used "
+        "literal ordered_in_list max=7 against a shorter actual candidate list. All four "
+        "full-list walks now use the exact live list_size and are static-ready for R101. "
+        "The retained R100 process was managed-stopped because mod bytes changed. This was "
+        "not an illness-death failure; the consecutive counter remains 0/3 and no health "
+        "or survivability fixture was applied. This whole-product RED does not promote any "
+        "per-ID tier."
     ),
 )
 

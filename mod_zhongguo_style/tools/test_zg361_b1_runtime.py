@@ -2911,6 +2911,23 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn(token, self.effects)
         self.assertEqual(self.effects.count("check_range_bounds = no"), 13)
 
+        bank_close = top_level_block(
+            self.effects, "zg361_b1_close_common_superior_bank_effect"
+        )
+        self.assertEqual(
+            bank_close.count(
+                "max = list_size:zg361_b1_unique_pool_candidates"
+            ),
+            3,
+        )
+        self.assertEqual(
+            bank_close.count(
+                "max = list_size:zg361_b1_unique_pool_bottom_candidates"
+            ),
+            1,
+        )
+        self.assertNotIn("max = 7", bank_close)
+
     def test_optional_huddle_and_departed_grade_reads_are_presence_gated(self) -> None:
         for effect_name in (
             "zg361_b1_finalize_huddle_diff_effect",
