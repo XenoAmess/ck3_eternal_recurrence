@@ -850,6 +850,89 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             checks_for("yearly.1040", 3, extra)["saved_scope_count"]
         )
 
+    def test_tgp_merchant_dispute_binds_dynamic_distinct_characters(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        event_key = "tgp_china_yearly.0015"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 14,
+            "date_raw": 53147520,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope("market_vendor", 16780100),
+                character_scope("traveling_merchant", 16780101),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((0, 1, 2))
+            ],
+        }
+        snapshot = {"date_raw": 53147520, "active_event": {"option_count": 4}}
+        event = {"event_instance_id": 14}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        player_vendor = copy.deepcopy(context)
+        player_vendor["saved_scopes"][0] = character_scope(
+            "market_vendor", 29037
+        )
+        self.assertFalse(
+            checks_for(player_vendor)["scope:market_vendor:unique_third_party"]
+        )
+
+        duplicate = copy.deepcopy(context)
+        duplicate["saved_scopes"][1] = character_scope(
+            "traveling_merchant", 16780100
+        )
+        duplicate_checks = checks_for(duplicate)
+        self.assertFalse(
+            duplicate_checks["scope:market_vendor:differs_from"]
+        )
+        self.assertFalse(
+            duplicate_checks["scope:traveling_merchant:differs_from"]
+        )
+
+        extra = copy.deepcopy(context)
+        extra["saved_scopes"].append(character_scope("unrelated", 16780102))
+        self.assertFalse(checks_for(extra)["saved_scope_count"])
+
     def test_ep3_governor_3060_binds_late_product_window_and_safe_option(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None

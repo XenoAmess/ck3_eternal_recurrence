@@ -301,9 +301,17 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # temporary merchants.
         "date_raw": 53147520,
         "root_character_id": 29037,
-        "character_scopes": {
-            "market_vendor": 16780002,
-            "traveling_merchant": 16780004,
+        "character_scopes": {},
+        # Both merchants are created in this event's immediate block. Their
+        # allocator IDs legitimately change on each seed reinstall; the
+        # stable source contract is two distinct non-player Characters.
+        "unique_character_scope_excludes": {
+            "market_vendor": (29037,),
+            "traveling_merchant": (29037,),
+        },
+        "character_scope_differs_from": {
+            "market_vendor": ("traveling_merchant",),
+            "traveling_merchant": ("market_vendor",),
         },
         "boolean_scopes": (),
         "saved_scope_count": 2,

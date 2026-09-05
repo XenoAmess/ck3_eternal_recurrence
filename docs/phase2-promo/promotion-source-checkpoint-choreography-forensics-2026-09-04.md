@@ -858,3 +858,35 @@ cleanup SHA-256 values are respectively
 and `64E4068582255DF68BA4E8C986737407CCFB940C803061CE18281FF5D0E91F1D`.
 Cleanup was GREEN and CK3 returned to zero. R86 must consume both exact
 contracts and reach the repaired B1 quota/reopen path.
+
+## R86: dynamic merchant identities corrected
+
+R86 bound the same product bytes to pushed commit `a26c46a`; the release
+manifest was
+`9B98C28B72D5EE1C4B34E63089CE4E027D34932BCFEA3FF382645842470FA75A`
+and formal/no-launch checks were GREEN. This seed reinstall did not encounter
+the newly registered `yearly.1040/.1041` pair. It instead reached the already
+known `tgp_china_yearly.0015` at `date_raw=53147520` and correctly stopped
+before action because the contract had frozen two obsolete allocator IDs.
+
+Exact 1.19.0.6 source creates `market_vendor` and `traveling_merchant` inside
+the event's `immediate` block, so their numeric Character IDs are not stable
+across reinstalls. The source file is
+`events/dlc/tgp/tgp_china_yearly_events.txt`, SHA-256
+`4E722C41EE880085BD81E4793BADE40CC75B32933E7DC9AE6ED860C9879CB227`.
+The corrected contract requires exactly two distinct, non-player Character
+scopes with those source-defined names, retains the exact rendered/native
+option shape and continues to select native option 2. Negative tests reject a
+player merchant, aliased merchants and any extra scope. The checkpoint suite
+passes 18/18 in both modes.
+
+R86 stopped before the repaired B1 quota path, so it is not regression proof
+for that repair. The outer report, evidence index, cell report, production
+entry, loader and cleanup SHA-256 values are respectively
+`DDD499A8535CB4E1D576AA5140F456830718DBE3D8F02574B00DCC96C32615FB`,
+`CCC890B2DA4374DDA0A94876DE609794A81151E53E4925A8662F8E8737F278B5`,
+`0B371F3828E98E349BD8816639D8874C7D4AB7DA993AFFAC2E8F6CF85C2BE9BC`,
+`7445EDFC54B6922598438B36C45635186ECA6C9CBB413CE11B84E473083F8CAE`,
+`1F945543A52FA768107F4254F480A31892815FE0BB6A6539113DB48E8570967D`
+and `A8F45B8DA7A6B6880DAC8EE1803D398208CE533AF43AA76A5D909751D924AC37`.
+Cleanup was GREEN and CK3 returned to zero.
