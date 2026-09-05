@@ -15,6 +15,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_rows
+
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
@@ -113,8 +115,8 @@ def _m(
         a_en,
         b_cn,
         b_en,
-        "延期，但把负责人、期限和欠账写进案卷。",
-        "Defer, but bind an owner, deadline and policy-debt receipt.",
+        "本轮不采纳本项，登记制度债并继续下一项；本项不会自动重提。",
+        "Decline this item for the current case, record policy debt, and continue; it will not be proposed again automatically.",
         due,
         consumer,
     )
@@ -166,7 +168,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(185, "w", "pip_midpoint", "PIP 中期检查", "PIP midpoint review", "只做一次中检，并允许一次有证据修正。", "Run one midpoint and allow one evidence-backed correction.", "跳过中检，随后不得倒造资源或目标更正。", "Skip the midpoint; later resource or goal corrections become invalid.", 180, "PIP 时间线消费进度、资源交付和目标有效性"),
     _m(186, "w", "goal_creep_lock", "PIP 目标膨胀锁", "PIP goal-creep lock", "加任务必须等量替换、延期或获紧急复核。", "Add work only with equal replacement, extension or emergency review.", "直接加码，并生成目标膨胀违规。", "Add workload directly and post a goal-creep violation.", 7, "变更账比较基线、当前工作量和补偿路线"),
     _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "读取唯一案卷的毕业或失败回执；经理只能选择复核程序。", "Read the unique case's graduation or failure receipt; the manager chooses only the review procedure.", "要求程序复核，但不能替本人签字或替结算器宣布毕业。", "Request procedural review without signing for the subject or declaring graduation for the settler.", 366, "毕业或失败只读取 B2 唯一结算回执，绝不直接写档位"),
-    _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "贴长期标签，并记录过度披露风险。", "Apply a long-lived label and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
+    _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "在 365 日观察期内持续贴标签，并记录过度披露风险。", "Keep the label during the 365-day observation window and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
     _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer or exit", "按支持、错岗和真实空缺只选一条合法路线。", "Choose one legal route from support sufficiency, role mismatch and real vacancy.", "强制退出，并结算空缺、交接和补员成本。", "Force exit and settle vacancy, handover and replacement costs.", 30, "终局决定页只接受一个排他终态"),
     _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "只向真实接收经理披露目标、支持、结果和本人陈述。", "Disclose goals, support, outcome and the subject statement only to the real receiving manager.", "贴粗糙标签，但不得编造细节或改旧档位。", "Apply a coarse label without inventing details or rewriting the old rating.", 30, "转岗包按 ACL 投影最小字段"),
     _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "以实际付款回执列空缺、交接、加班和补员净成本。", "Post vacancy, handover, overtime and replacement net cost from actual receipts.", "只报节省，隐藏成本转为经理债。", "Report gross savings and move hidden costs to manager debt.", 30, "团队成本表和经理记分卡消费同一净额"),
@@ -315,7 +317,13 @@ AUDIT_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
 }
 
 RESPONSE_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
-    151: ("appeal_snapshot_grade",),
+    151: (
+        "receipt_acknowledged",
+        "agreed",
+        "disputed",
+        "appeal_filed",
+        "appeal_snapshot_grade",
+    ),
     190: (
         "subject_statement_author",
         "subject_statement_receiver",
@@ -1449,12 +1457,23 @@ set_variable = {{ name = {p}_result_state_snapshot value = var:zg361_pp_w_result
 set_variable = {{ name = {p}_result_grade_snapshot value = var:zg361_pp_w_frozen_grade }}
 set_variable = {{ name = {p}_result_reason_snapshot value = var:zg361_pp_w_frozen_reason }}
 set_variable = {{ name = {p}_evidence_component_count value = var:zg361_pp_w_evidence_component_count }}
-set_variable = {{ name = {p}_primary_category value = 0 }}
-set_variable = {{ name = {p}_triage_truth_status value = 0 }}
-set_variable = {{ name = {p}_triage_red_code value = 1 }}
+set_variable = {{ name = {p}_primary_category value = 1 }}
+set_variable = {{ name = {p}_triage_truth_status value = 1 }}
+set_variable = {{ name = {p}_triage_red_code value = 0 }}
 set_variable = {{ name = {p}_manager_proposed_category value = scope:zg361_pp_route }}
 set_variable = {{ name = {p}_current_rating_unchanged value = 1 }}
-set_variable = {{ name = {p}_misdiagnosis_risk value = 1 }}''',
+set_variable = {{ name = {p}_misdiagnosis_risk value = 0 }}
+# The same forced-quota reason is already the frozen category-3 witness used
+# by the post-graduation relapse audit.  Reuse it here so a real role-mismatch
+# transfer can become reachable when a mature vacancy exists.
+if = {{ limit = {{ scope:zg361_pp_route = 1 var:{p}_result_reason_snapshot = 5 }} set_variable = {{ name = {p}_primary_category value = 3 }} }}
+if = {{
+	limit = {{ scope:zg361_pp_route = 2 }}
+	set_variable = {{ name = {p}_primary_category value = 2 }}
+	set_variable = {{ name = {p}_triage_truth_status value = 0 }}
+	set_variable = {{ name = {p}_triage_red_code value = 1 }}
+	set_variable = {{ name = {p}_misdiagnosis_risk value = 1 }}
+}}''',
         182: f'''set_variable = {{ name = {p}_evidence_bundle_id value = var:zg361_pp_m181_evidence_id }}
 set_variable = {{ name = {p}_evidence_component_count value = var:zg361_b2_pip_gate_component_count }}
 set_variable = {{ name = {p}_threshold_required value = var:zg361_b2_pip_gate_threshold }}
@@ -1504,14 +1523,21 @@ set_variable = {{ name = {p}_corrections_remaining value = 1 }}
 set_variable = {{ name = {p}_skipped_midpoint value = 0 }}
 set_variable = {{ name = {p}_manager_midpoint_route value = scope:zg361_pp_route }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_corrections_remaining value = 0 }} set_variable = {{ name = {p}_skipped_midpoint value = 1 }} }}''',
-        186: f'''set_variable = {{ name = {p}_baseline_workload value = 0 }}
-set_variable = {{ name = {p}_current_workload value = 0 }}
-set_variable = {{ name = {p}_replacement_workload value = 0 }}
+        186: f'''set_variable = {{ name = {p}_baseline_workload value = 10 }}
+set_variable = {{ name = {p}_current_workload value = 10 }}
+set_variable = {{ name = {p}_replacement_workload value = 2 }}
 set_variable = {{ name = {p}_deadline_extension_days value = 0 }}
 set_variable = {{ name = {p}_goal_creep_violation value = 0 }}
-set_variable = {{ name = {p}_workload_truth_status value = 0 }}
-set_variable = {{ name = {p}_workload_red_code value = 1 }}
-set_variable = {{ name = {p}_manager_workload_route value = scope:zg361_pp_route }}''',
+set_variable = {{ name = {p}_workload_truth_status value = 1 }}
+set_variable = {{ name = {p}_workload_red_code value = 0 }}
+set_variable = {{ name = {p}_manager_workload_route value = scope:zg361_pp_route }}
+if = {{
+	limit = {{ scope:zg361_pp_route = 2 }}
+	set_variable = {{ name = {p}_current_workload value = 15 }}
+	set_variable = {{ name = {p}_replacement_workload value = 0 }}
+	set_variable = {{ name = {p}_goal_creep_violation value = 1 }}
+	set_variable = {{ name = {p}_workload_red_code value = 2 }}
+}}''',
         187: f'''set_variable = {{ name = {p}_milestone_evidence_submitted value = 0 }}
 set_variable = {{ name = {p}_stability_days_required value = 365 }}
 set_variable = {{ name = {p}_independent_review_required value = 1 }}
@@ -2270,11 +2296,14 @@ def render_subject_response(mechanism: MechanismSpec) -> str:
     if mechanism.mechanism_id == 151:
         response_action = f'''if = {{
 \t\t\tlimit = {{ scope:zg361_pp_subject_route = 1 }}
-\t\t\tset_variable = {{ name = {p}_agreed value = 1 }}
+\t\t\tset_variable = {{ name = {p}_receipt_acknowledged value = 1 }}
+\t\t\tset_variable = {{ name = {p}_agreed value = 0 }}
 \t\t\tset_variable = {{ name = {p}_disputed value = 0 }}
 \t\t}}
 \t\telse_if = {{
 \t\t\tlimit = {{ scope:zg361_pp_subject_route = 2 }}
+\t\t\tset_variable = {{ name = {p}_receipt_acknowledged value = 1 }}
+\t\t\tset_variable = {{ name = {p}_agreed value = 0 }}
 \t\t\tset_variable = {{ name = {p}_appeal_filed value = 1 }}
 \t\t\tset_variable = {{ name = {p}_appeal_snapshot_grade value = var:zg361_pp_t_frozen_grade }}
 \t\t\tset_variable = {{ name = {p}_disputed value = 1 }}
@@ -3099,8 +3128,30 @@ def render_player_event(mechanism: MechanismSpec) -> str:
 \t\t\tscope:zg361_pp_prompt_subject = {{ {queue_decision_call(nxt)} }}
 \t\t}}'''
     options = []
-    for route, letter in ((1, "a"), (2, "b"), (3, "c")):
+    route_rows: tuple[tuple[int, str, str], ...] = (
+        (1, "a", ""), (2, "b", ""), (3, "c", "")
+    )
+    if mechanism.mechanism_id == 189:
+        route_rows = (
+            (
+                1,
+                "transfer",
+                "var:zg361_pp_m181_primary_category = 3\n"
+                "var:zg361_pp_w_real_vacancy = 1",
+            ),
+            (
+                1,
+                "second_pip",
+                "NOT = { AND = { var:zg361_pp_m181_primary_category = 3 "
+                "var:zg361_pp_w_real_vacancy = 1 } }",
+            ),
+            (2, "b", ""),
+            (3, "c", ""),
+        )
+    for route, letter, extra_guard in route_rows:
         option_guard = business_dependency_conditions(mechanism.mechanism_id, route)
+        if extra_guard:
+            option_guard += "\n" + extra_guard
         options.append(
             f'''option = {{
 \t\tname = zg361pp.{mechanism.mechanism_id}.{letter}
@@ -3151,13 +3202,25 @@ def render_subject_response_event(mechanism: MechanismSpec) -> str:
     row = case_vars(mechanism.domain)
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
     event_id = 5000 + mechanism.mechanism_id
+    title = f"zg361pp.{mechanism.mechanism_id}.t"
+    desc = f"zg361pp.{mechanism.mechanism_id}.desc"
+    if mechanism.mechanism_id == 151:
+        title = "zg361pp.5151.t"
+        desc = '''{
+\t\tdesc = zg361pp.5151.desc
+\t\tfirst_valid = {
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 3 } desc = zg361pp.grade.375 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 2 } desc = zg361pp.grade.350 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 1 } desc = zg361pp.grade.325 }
+\t\t}
+\t}'''
     return f'''# {mechanism.mechanism_id:03d}: the assessed official, never the manager,
 # owns this response. AI subjects use the same effect silently at the queue.
 zg361pp.{event_id} = {{
 \ttype = character_event
 \ttheme = vassal
-\ttitle = zg361pp.{mechanism.mechanism_id}.t
-\tdesc = zg361pp.{mechanism.mechanism_id}.desc
+\ttitle = {title}
+\tdesc = {desc}
 \ttrigger = {{
 \t\tis_ai = no
 \t\thas_game_rule = zg361_on
@@ -3678,9 +3741,9 @@ def localization_rows(language: str) -> list[str]:
         )
     subject_response_rows = {
         151: (
-            ("确认收到并同意。", "确认收到，但保留异议并提出申诉。")
+            ("确认收到；这不表示同意内容。", "确认收到，保留异议并提出申诉。")
             if chinese
-            else ("Acknowledge receipt and agree.", "Acknowledge receipt, preserve my objection, and appeal.")
+            else ("Acknowledge receipt without consenting to its contents.", "Acknowledge receipt, preserve my objection, and appeal.")
         ),
         166: (
             ("撤回我的晋升包。", "继续参评，由经理处理后续程序。")
@@ -3700,12 +3763,27 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361pp.{mechanism_id}.subject.b:0 "{escape_loc(options[1])}"',
             )
         )
+    if chinese:
+        rows.extend(
+            (
+                ' zg361pp.5151.t:0 "绩效反馈送达：请本人确认收件"',
+                " zg361pp.5151.desc:0 \"受评官员：[scope:zg361_pp_subject_prompt_subject.GetShortUIName]。送达人：[scope:zg361_pp_subject_prompt_owner.GetShortUIName]。本轮冻结档位列在下方；冻结理由编号为 [ROOT.MakeScope.Var('zg361_pp_t_frozen_reason').GetValue|0]，案卷证据共 [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。你有 90 日提出申诉。这里仅确认送达，不要求你同意档位、理由或证据。\"",
+            )
+        )
+    else:
+        rows.extend(
+            (
+                ' zg361pp.5151.t:0 "Performance Feedback Served: Confirm Receipt"',
+                " zg361pp.5151.desc:0 \"Assessed official: [scope:zg361_pp_subject_prompt_subject.GetShortUIName]. Served by: [scope:zg361_pp_subject_prompt_owner.GetShortUIName]. The frozen grade appears below; reason code [ROOT.MakeScope.Var('zg361_pp_t_frozen_reason').GetValue|0], with [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items. You have 90 days to appeal. This confirms delivery only and does not require agreement with the grade, reason, or evidence.\"",
+            )
+        )
     for mechanism in MECHANISMS:
         title = mechanism.title_cn if chinese else mechanism.title_en
+        due = "、".join(str(days) for days in mechanism.deadlines)
         desc = (
-            f"{mechanism.consumer}。这一步写入的是可复核案卷，不会凭一句‘业务需要’穿越状态机。"
+            f"受评官员：[scope:zg361_pp_prompt_subject.GetShortUIName]；裁决者：[scope:zg361_pp_prompt_owner.GetShortUIName]。本案现在处理「{title}」。选择会立即写入本案；需要后续核验的结果将在第 {due} 日到期。按钮中的数字与条件是本案采用的制度参数，只有已经存在的付款、证据或人物回执才会被当作既成事实。"
             if chinese
-            else f"Consumer: {mechanism.consumer}. This writes a reviewable case receipt; 'business needs' cannot skip the state machine."
+            else f"Assessed official: [scope:zg361_pp_prompt_subject.GetShortUIName]; decision owner: [scope:zg361_pp_prompt_owner.GetShortUIName]. This case now resolves {title}. The choice is recorded immediately; any follow-up check falls due after {due} days. Numbers and conditions in the options are policy parameters, and only existing payment, evidence, or character receipts count as facts."
         )
         routes = (
             (mechanism.a_cn, mechanism.b_cn, mechanism.c_cn)
@@ -3721,13 +3799,27 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361pp.{mechanism.mechanism_id}.c:0 "{escape_loc(routes[2])}"',
             )
         )
+    if chinese:
+        rows.extend(
+            (
+                ' zg361pp.189.transfer:0 "错岗证据与真实空缺均已具备：调往已冻结的接收上司门下。"',
+                ' zg361pp.189.second_pip:0 "没有可用的错岗空缺：明确开启一次有支持资源的二次改进计划。"',
+            )
+        )
+    else:
+        rows.extend(
+            (
+                ' zg361pp.189.transfer:0 "Role-mismatch evidence and a real vacancy are both present: transfer to the frozen receiving manager."',
+                ' zg361pp.189.second_pip:0 "No eligible role-mismatch vacancy exists: explicitly open one supported second improvement plan."',
+            )
+        )
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 9000 + domain_index
         title = f"三六一案卷已结：{domain.title_cn}" if chinese else f"361 Case Closed: {domain.title_en}"
         desc = (
-            "本域全部回执、资源和期限已经收口。你可以不同意制度，但账本现在至少敢把名字写全。"
+            "本轮需要玩家选择的制度路线已经录入；仍在期限内的付款、复核、观察或申诉会继续依各自日期结算。本卡不宣称那些未来审计已经完成。"
             if chinese
-            else "All receipts, resources and deadlines in this domain have closed. You may still hate the policy; at least its ledger now signs its name."
+            else "All player choices for this pass have been recorded. Payments, reviews, observations, and appeals whose deadlines remain open will settle on their own dates; this card does not claim those future audits are complete."
         )
         option = "归档。下一轮继续互相成就。" if chinese else "File it. Continue mutually enabling each other next cycle."
         rows.extend(
@@ -3737,7 +3829,7 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361pp.{event_id}.a:0 "{escape_loc(option)}"',
             )
         )
-    return rows
+    return normalize_localization_rows(rows) if chinese else rows
 
 
 def render_localization(language: str) -> bytes:

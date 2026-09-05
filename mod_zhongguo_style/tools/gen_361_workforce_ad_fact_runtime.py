@@ -14,6 +14,8 @@ import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_rows
+
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
@@ -1301,16 +1303,16 @@ zg361wad.20 = {
 
 LOCALIZATION_EN = {
     "referral.t": "A Referral Must Have an Author",
-    "referral.desc": "You are the named referrer for this candidate. Submit the relationship openly and leave a case-bound receipt, or decline; nobody else may sign in your place.",
+    "referral.desc": "You are the named referrer for [scope:zg361_wad_referral_subject_scope.GetShortUIName]. Submit the relationship openly and leave a case-bound receipt, or deny authorship; nobody else may sign in your place.",
     "referral.submit": "Submit my referral and disclose the relationship",
     "referral.decline": "I did not make this referral",
     "vote.t": "Seal Your Own Interview Vote",
-    "vote.desc": "You are one of three distinct managers on this panel. Record your own judgment before any debrief; the receipt binds this vote to you and this candidate.",
+    "vote.desc": "You are one of three distinct managers interviewing [scope:zg361_wad_panel_subject_scope.GetShortUIName]. Record your own judgment before any debrief; the receipt binds this vote to you and this named candidate.",
     "vote.a": "Strong evidence: advance the candidate",
     "vote.b": "Mixed evidence: keep the candidate under review",
     "vote.c": "Insufficient evidence: do not advance",
     "offer.t": "The Offer Is Yours to Answer",
-    "offer.desc": "The terms have reached you personally. Accept them, or refuse for the reason that actually blocks this appointment; the manager cannot answer on your behalf.",
+    "offer.desc": "[ROOT.MakeScope.Var('zg361_wad_offer_source_owner').Char.GetShortUIName] has delivered an appointment offer to you. The current game source exposes no more detailed pay or authority schedule on this card, so accept only if the proposal is sufficient; otherwise record the exact blocking category. The manager cannot answer for you.",
     "offer.accept": "Accept the offer",
     "offer.refuse_pay": "Refuse: compensation is inadequate",
     "offer.refuse_role": "Refuse: the role or authority is wrong",
@@ -1319,17 +1321,17 @@ LOCALIZATION_EN = {
 
 LOCALIZATION_CN = {
     "referral.t": "内推必须有亲笔署名",
-    "referral.desc": "你是这名候选人的实名内推人。请公开关系并留下绑定本案的回执，或者明确否认；任何经理都不能替你落款。",
+    "referral.desc": "你是候选人 [scope:zg361_wad_referral_subject_scope.GetShortUIName] 的实名内推人。请公开关系并留下绑定本案的回执，或者明确否认；任何经理都不能替你落款。",
     "referral.submit": "提交我的内推，并公开关系",
     "referral.decline": "这份内推不是我提交的",
     "vote.t": "封存你自己的面试票",
-    "vote.desc": "你是三名互不相同的经理评委之一。复盘开始前，请亲自写下判断；回执会把这张票与你和候选人一并冻结。",
+    "vote.desc": "你是候选人 [scope:zg361_wad_panel_subject_scope.GetShortUIName] 的三名独立评委之一。复盘开始前，请亲自写下判断；回执会把这张票与你和这名候选人一并冻结。",
     "vote.a": "证据充分：推进候选人",
     "vote.b": "证据混合：继续审查",
     "vote.c": "证据不足：不予推进",
-    "offer.t": "这份 Offer 只能由你回答",
-    "offer.desc": "条款已经送到你本人面前。接受，或如实写下阻止任命的原因；经理不能替你回答。",
-    "offer.accept": "接受 Offer",
+    "offer.t": "这份录用邀约只能由你回答",
+    "offer.desc": "[ROOT.MakeScope.Var('zg361_wad_offer_source_owner').Char.GetShortUIName] 已向你送达录用邀约。当前游戏事实没有在本卡提供更细的薪资或权限清单，因此只有在现有提议足够时才接受；否则应写明真正阻止任命的类别。直属上司不能替你回答。",
+    "offer.accept": "接受录用邀约",
     "offer.refuse_pay": "拒绝：报酬不足",
     "offer.refuse_role": "拒绝：岗位或权限不符",
     "offer.refuse_move": "拒绝：调动或报到条件不可接受",
@@ -1345,6 +1347,8 @@ def render_localization(language: str) -> bytes:
     rows = [f"l_{language}:"]
     for key, value in values.items():
         rows.append(f' zg361wad.{key}:0 "{esc(value)}"')
+    if language == "simp_chinese":
+        rows = normalize_localization_rows(rows)
     return localized("\n".join(rows))
 
 

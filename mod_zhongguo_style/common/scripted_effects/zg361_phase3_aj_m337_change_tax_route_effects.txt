@@ -688,7 +688,6 @@ zg361_p3_m337_route_b_effect = {
 			set_variable = { name = zg361_p3_change_tax_route value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m337_demand_case value = var:zg361_p3_demand_object_case }
 			set_variable = { name = zg361_p3_m337_applicable value = var:zg361_p3_demand_admitted }
 			set_variable = { name = zg361_p3_m337_change_route value = 2 }

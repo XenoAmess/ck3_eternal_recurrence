@@ -621,7 +621,6 @@ zg361_p3_m303_route_b_effect = {
 			set_variable = { name = zg361_p3_incubation_protection value = 2 }
 			change_variable = { name = zg361_p3_ag_operation_used add = 1 }
 			change_variable = { name = zg361_p3_ag_quality add = 1 }
-			change_variable = { name = zg361_p3_ag_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m303_reorg_case value = var:zg361_p3_reorg_object_case }
 			set_variable = { name = zg361_p3_m303_start_cycle value = $TICKET_CYCLE$ }
 			set_variable = { name = zg361_p3_m303_expiry_cycle value = $TICKET_CYCLE$ }

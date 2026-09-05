@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 988_833)
+        self.assertEqual(len(historical), 990_215)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "836081eeb1553b121d136bfd48254a3811480a2d8de0643c26e0d9c3620a71b9",
+            "8802d826d54995e2dd3d010a8efa0c2c4addf67648aa2174eaa0cf44e32d9f70",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -693,7 +693,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         )
         for row in gen.MECHANISMS:
             block = effect_block(self.events, f"zg361pp.{row.mechanism_id}")
-            self.assertEqual(block.count("option = {"), 3)
+            self.assertEqual(block.count("option = {"), 4 if row.mechanism_id == 189 else 3)
             self.assertNotIn("immediate = {", block)
             # Each selected option can schedule at most the one next card.
             for option in re.findall(r"option = \{.*?\n\t\}", block, re.DOTALL):

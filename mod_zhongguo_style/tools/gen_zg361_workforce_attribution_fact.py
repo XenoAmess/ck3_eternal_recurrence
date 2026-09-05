@@ -1945,7 +1945,7 @@ def render_event_parts() -> dict[str, bytes]:
 LOCALIZATION_EN: Final[dict[str, str]] = {
     "1.title": "Sign the Interview Accountability Split",
     "1.desc": (
-        "The offer is frozen and the three interview ballots still have names attached. "
+        "The offer for [scope:zg361_workforce_attribution_fact_subject_scope.GetShortUIName] is frozen and the three interview ballots still have names attached. "
         "Choose which interviewer owns the lead share of the later quality writeback: "
         "[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName], "
         "[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName], or "
@@ -1960,7 +1960,7 @@ LOCALIZATION_EN: Final[dict[str, str]] = {
 LOCALIZATION_CN: Final[dict[str, str]] = {
     "1.title": "请最终拍板者签署面试责任分配",
     "1.desc": (
-        "Offer 已冻结，三张面试票也都还实名挂着。请决定后续录用质量回写由谁承担主责："
+        "候选人 [scope:zg361_workforce_attribution_fact_subject_scope.GetShortUIName] 的录用邀约已冻结，三张面试票也都还实名挂着。请决定后续录用质量回写由谁承担主责："
         "[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName]、"
         "[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName]，或"
         "[scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]。"

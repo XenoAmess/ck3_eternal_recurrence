@@ -643,7 +643,15 @@ zg361workforceremediationfact.1 = {
 	type = character_event
 	theme = stewardship
 	title = zg361workforceremediationfact.1.t
-	desc = zg361workforceremediationfact.1.desc
+	desc = {
+		desc = zg361workforceremediationfact.1.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_workforce_remediation_fact_ticket_reason = 1 } desc = zg361workforceremediationfact.1.reason_pay }
+			triggered_desc = { trigger = { scope:zg361_workforce_remediation_fact_ticket_reason = 2 } desc = zg361workforceremediationfact.1.reason_role }
+			triggered_desc = { trigger = { scope:zg361_workforce_remediation_fact_ticket_reason = 3 } desc = zg361workforceremediationfact.1.reason_move }
+			desc = zg361workforceremediationfact.1.reason_unknown
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -691,22 +699,30 @@ zg361workforceremediationfact.1 = {
 ENGLISH = {
     "title": "The Vacancy Still Remembers",
     "desc": (
-        "Thirty days have passed since the offer was refused. The held position "
+        "Thirty days have passed since [scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer. The held position "
         "may be released only if you record what the refusal exposed and whether "
         "that exact condition was actually corrected. A plan, a promise, or an "
         "empty checkbox is not a completion receipt."
     ),
     "complete": "Record the corrective action as completed and verified",
     "fail": "Record that the corrective action failed",
+    "reason_pay": "Frozen requirement: correct the inadequate-compensation objection with terms the candidate can actually review.",
+    "reason_role": "Frozen requirement: correct the role-or-authority mismatch with terms the candidate can actually review.",
+    "reason_move": "Frozen requirement: correct the relocation-or-reporting objection with terms the candidate can actually review.",
+    "reason_unknown": "The source did not provide a valid refusal category; do not claim remediation completed.",
 }
 CHINESE = {
     "title": "空缺仍记得那次拒绝",
     "desc": (
-        "录用被拒已经三十日。只有把那次拒绝暴露的问题逐项记清，并确认同一个问题确已整改，冻结编制才有资格释放。"
+        "[scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 拒绝录用已经 30 日。只有把那次拒绝暴露的问题逐项记清，并确认同一个问题确已整改，冻结编制才有资格释放。"
         "计划、承诺和一枚空勾都不是完成回执。"
     ),
     "complete": "确认整改已完成并通过核验",
     "fail": "如实记录整改失败",
+    "reason_pay": "冻结整改项：以候选人能够复核的新条款纠正报酬不足。",
+    "reason_role": "冻结整改项：以候选人能够复核的新条款纠正岗位或权限不符。",
+    "reason_move": "冻结整改项：以候选人能够复核的新条款纠正调动或报到条件。",
+    "reason_unknown": "来源没有给出有效拒绝类别，不得声称整改已经完成。",
 }
 
 
@@ -722,6 +738,10 @@ def render_localization(language: str) -> bytes:
         f' {NAMESPACE}.1.desc:0 "{esc(values["desc"])}"',
         f' {NAMESPACE}.1.complete:0 "{esc(values["complete"])}"',
         f' {NAMESPACE}.1.fail:0 "{esc(values["fail"])}"',
+        f' {NAMESPACE}.1.reason_pay:0 "{esc(values["reason_pay"])}"',
+        f' {NAMESPACE}.1.reason_role:0 "{esc(values["reason_role"])}"',
+        f' {NAMESPACE}.1.reason_move:0 "{esc(values["reason_move"])}"',
+        f' {NAMESPACE}.1.reason_unknown:0 "{esc(values["reason_unknown"])}"',
     ]
     return localized("\n".join(rows))
 

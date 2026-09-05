@@ -75,9 +75,9 @@ MECHANISMS: tuple[Mechanism, ...] = (
     m(315, "ah", 2, "market.run_bilateral_trial", "Ninety Days, Three Exit Doors", "九十天试岗，三方可退", "Complete a balanced trial", "完成权责对等试岗", "Return after a role mismatch", "岗位不合就原路返回"),
     m(316, "ah", 3, "market.freeze_pay_mapping", "Map Pay Before the Move", "转岗前先把钱说清", "Protect and phase the mapping", "保薪并分期映射", "Force an immediate cut", "立刻降档省预算"),
     m(317, "ah", 3, "market.project_stage_acl", "Your Application Is Not Team News", "你的申请不是团队早报", "Respect stage ACL", "遵守分阶段权限", "Leak it and retaliate", "提前泄露并秋后算账"),
-    m(318, "ah", 2, "market.consume_application_slot", "Two Applications, Not Two Silences", "两次申请，不是两次石沉大海", "Use one formal slot", "使用一次正式申请", "Return a slot after manager timeout", "经理超时则返还名额"),
-    m(319, "ah", 4, "market.counteroffer_then_release", "One Counteroffer, Then Let Go", "只许反 Offer 一次，然后放人", "Reject and release on time", "拒绝后按时放人", "Promise everything and deliver nothing", "全都答应，然后全不兑现"),
-    m(320, "ah", 5, "market.aggregate_exit_voice", "Exit Voice Needs a Sample", "离职心声也要样本量", "Aggregate named and anonymous evidence", "聚合实名与匿名证据", "Reclassify the complaint away", "把投诉重新分类没"),
+    m(318, "ah", 2, "market.consume_application_slot", "Two Applications, Not Two Silences", "两次申请，不是两次石沉大海", "Use one formal slot", "接受使用一次正式申请名额；提交后撤回仍占用本次名额", "Decline before filing and keep the slot", "提交前拒绝；本次申请名额不消耗"),
+    m(319, "ah", 4, "market.counteroffer_then_release", "One Counteroffer, Then Let Go", "只许一次反邀约，然后放人", "Reject the counteroffer and transfer within 30 days", "拒绝反邀约，并在 30 日内调任", "Accept the written counteroffer; review delivery in 90 days", "接受书面反邀约；90 日后复核兑现，失约将扣上司 20 分"),
+    m(320, "ah", 5, "market.aggregate_exit_voice", "Exit Voice Needs a Sample", "离职心声也要样本量", "Aggregate named and anonymous evidence", "聚合实名与匿名证据", "Reclassify the complaint away", "通过改类掩去投诉"),
     m(321, "ah", 5, "market.maintain_alumni_relationship", "Alumni, With Consent", "前同事关系也要同意", "Maintain one consented contact", "维护一次经同意的联系", "Delete the contact card, keep the shame", "删掉联系人，黑历史还在"),
     m(322, "ah", 6, "market.open_returnee_case", "A Returnee Brings Old Receipts", "回流员工自带旧账", "Link old cases and new evidence", "回链旧案与新证据", "Attempt a clean-slate rewrite", "试图一键洗白历史"),
     m(323, "ai", 1, "learning.allocate_dual_budget", "Learning Has Two Budgets", "学习有两本预算", "Fund gold and protected hours", "同时拨金币与保护工时", "Buy certificates, reserve no time", "只买证书，不给时间"),
@@ -86,7 +86,7 @@ MECHANISMS: tuple[Mechanism, ...] = (
     m(326, "ai", 2, "learning.settle_conference_adoption", "Conference Photos Are Not Adoption", "会议合影不算组织贡献", "Bring back an adopted playbook", "带回并落地一份打法", "Return with exposure only", "只带回行业曝光"),
     m(327, "ai", 2, "learning.attribute_teaching_impact", "Teaching Has a Capacity Bill", "内部授课也占产能", "Split impact after application", "应用后再分影响", "Count attendance as impact", "把到场人数当业务影响"),
     m(328, "ai", 3, "learning.settle_community_adoption", "A Community Needs Maintainers", "专业社区需要维护者", "Fund maintained shared artifacts", "维护并采用公共产物", "Publish and abandon", "发布即弃坑"),
-    m(329, "ai", 3, "learning.match_cross_team_mentor", "One Mentee, One Active Mentor", "一名学员同时一个导师", "Match with paid capacity", "用明确产能完成匹配", "Rematch once without moving the deadline", "只换一次且不重置期限"),
+    m(329, "ai", 3, "learning.match_cross_team_mentor", "One Mentee, One Active Mentor", "一名学员同时只能有一名导师", "Match with paid capacity", "用明确产能完成匹配", "Rematch once without moving the deadline", "只换一次且不重置期限"),
     m(330, "ai", 4, "learning.settle_reskill_route", "Reskill or Hire, Pay Either Way", "转型培养或外招，都得付钱", "Reskill the existing official", "培养现有官员", "Hire outside and record fairness debt", "外招并记录公平债"),
     m(331, "ai", 4, "learning.borrow_protected_time", "Protected Time Is Not Decorative", "保护工时不是装饰品", "Borrow for a real crisis and repay", "真危机借用并按期补回", "Repay late and charge the manager", "逾期补回并扣经理分"),
     m(332, "ai", 5, "learning.run_safe_succession_drill", "The Drill Is Not the Disaster", "演练不是事故现场", "Run a successful safe simulation", "完成安全继任演练", "Expose a development gap", "暴露培养缺口"),
@@ -117,7 +117,7 @@ OBLIGATION_DAYS: dict[int, dict[int, int]] = {
     315: {1: 90, 2: 90, 3: 30},
     316: {1: 90, 3: 365},
     317: {2: 7, 3: 7},
-    318: {2: 14, 3: 14},
+    318: {1: 14, 3: 14},
     319: {1: 30, 2: 90, 3: 45},
     320: {1: 180, 2: 180, 3: 180},
     321: {1: 365, 3: 30},
@@ -696,7 +696,8 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_withdrawal_still_consumes value = 1 }}
             set_variable = {{ name = {p}_exploratory_consumes value = 0 }}
             set_variable = {{ name = {p}_manager_timeout_refunds value = 0 }}
-            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_formal_used value = 0 }} set_variable = {{ name = {p}_manager_timeout_refunds value = 1 }} }}
+            set_variable = {{ name = {p}_subject_declined_before_filing value = 0 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_formal_used value = 0 }} set_variable = {{ name = {p}_subject_declined_before_filing value = 1 }} }}
             set_variable = {{ name = {p}_formal_remaining value = {{ value = 2 subtract = var:{p}_formal_used }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_formal_remaining }}''',
         319: f'''set_variable = {{ name = {p}_counteroffer_count value = 1 }}
@@ -2047,7 +2048,7 @@ def render_subject_response_event(row: Mechanism) -> str:
 zg361cl.{row.mechanism_id} = {{
     type = character_event
     title = {p}_title
-    desc = zg361_cl_subject_prompt_desc
+    desc = {p}_desc
     theme = stewardship
     trigger = {{
         is_ai = no
@@ -2103,23 +2104,21 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "人才流动与学习账本已合批"),
-                ("zg361_cl_digest_desc", "这次没有二十二封弹窗排队敲门。内部流动案 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，学习案 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件，已按收据、期限与资源账本收口。"),
-                ("zg361_cl_digest_ack", "很好，至少日报只写一封。"),
-                ("zg361_cl_route_defer", "先记制度债，下轮再议"),
-                ("zg361_cl_subject_prompt_desc", "这是关于你本人的内部流动或学习安排。你可以接受，也可以明确拒绝；回应不会让你获得考核他人的权限。"),
+                ("zg361_cl_digest_desc", "本轮二十二项人才流动与学习机制已合批：其中六项由当事人亲自回应，其余十六项无需本人表态，已按证据路线自动登记。内部流动案 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，学习案 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件。仍在期限内的业务回执会按各自日期结算。"),
+                ("zg361_cl_digest_ack", "很好，状态报告只写一条。"),
             )
         )
     else:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "Career and Learning Ledger Batched"),
-                ("zg361_cl_digest_desc", "Twenty-two popups did not line up at the door. [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] mobility cases and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] learning cases closed through receipts, deadlines, and conserved resources."),
+                ("zg361_cl_digest_desc", "This pass batched twenty-two career and learning mechanisms: six asked the affected official to respond, while sixteen required no personal consent and were recorded automatically on the evidence-led route. [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] mobility cases and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] learning cases were recorded; open business receipts will settle on their own dates."),
                 ("zg361_cl_digest_ack", "Good. One status mail is enough."),
-                ("zg361_cl_route_defer", "Record policy debt and revisit next cycle"),
-                ("zg361_cl_subject_prompt_desc", "This internal-mobility or learning choice concerns you. Accept or decline explicitly; answering grants no authority to review anyone else."),
             )
         )
     for row in MECHANISMS:
+        if row.mechanism_id not in SUBJECT_RESPONSE_IDS:
+            continue
         if chinese:
             title, route_a, route_b = row.title_zh, row.route_a_zh, row.route_b_zh
         else:
@@ -2127,9 +2126,17 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 (f"zg361_cl_m{row.mechanism_id:03d}_title", title),
+                (
+                    f"zg361_cl_m{row.mechanism_id:03d}_desc",
+                    (
+                        f"This proposal concerns [ROOT.GetShortUIName] and was served by [ROOT.GetLiege.GetShortUIName]. "
+                        f"It resolves {title}. Choose only your own response; this does not grant authority over anyone else's review."
+                        if not chinese
+                        else f"本案当事人是 [ROOT.GetShortUIName]，提案人是 [ROOT.GetLiege.GetShortUIName]。当前需要你回应「{title}」。你只是在决定本人是否接受这项安排，不会因此获得考核他人的权限。"
+                    ),
+                ),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_a", route_a),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_b", route_b),
-                (f"zg361_cl_m{row.mechanism_id:03d}_route_c", "先记制度债，下轮再议" if chinese else "Record policy debt and revisit next cycle"),
             )
         )
     return entries

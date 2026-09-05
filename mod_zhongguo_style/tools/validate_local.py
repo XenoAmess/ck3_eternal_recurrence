@@ -11,7 +11,9 @@ Checks (plain rule / code hygiene only, scoped to this mod directory):
      allowlisted daily-development UI keys authored only in Chinese/English.
   5. Every localization-referenced key found in scripts and GUI exists in
      simp_chinese and english yml.
-  6. Runtime regression guards for the decision GUI bridge, appeal settlement,
+  6. Player localization contains no naked ``#`` followed by a digit, which
+     CK3 interprets as the start of a formatting marker and may swallow.
+  7. Runtime regression guards for the decision GUI bridge, appeal settlement,
      and scoreboard registration/data publication.
 
 Exit code 0 = GREEN, 1 = RED.
@@ -217,9 +219,17 @@ def parse_yml_keys(path: Path) -> list[str]:
     for lineno, line in enumerate(read_text(path).splitlines(), start=1):
         if lineno == 1 or not line.strip() or line.strip().startswith("#"):
             continue
-        m = re.match(r"^\s*([A-Za-z0-9_.\-]+):\d+\s*\"(?:[^\"\\]|\\.)*\"\s*$", line)
+        m = re.match(
+            r'^\s*([A-Za-z0-9_.\-]+):\d+\s*"((?:[^"\\]|\\.)*)"\s*$',
+            line,
+        )
         if m:
             keys.append(m.group(1))
+            if re.search(r"#[0-9]", m.group(2)):
+                err(
+                    "unsafe naked numeric localization marker "
+                    f"{path.relative_to(MOD_ROOT)}:{lineno}: {m.group(1)}"
+                )
         else:
             err(f"malformed yml line {lineno} in {path.relative_to(MOD_ROOT)}: {line.strip()[:80]}")
     return keys
@@ -1050,10 +1060,10 @@ def check_runtime_invariants() -> None:
     ):
         err("skipped-jingcha marker must be consumed immediately after its KPI is calculated")
 
-    if interactions.count("zg361_b1_peer_submission_actor_trigger = yes") != 2:
-        err("recommendation and slander must both require the live B1 peer window")
-    if interactions.count("zg361_b1_peer_submission_recipient_trigger = yes") != 2:
-        err("recommendation and slander must both require a same-cycle recipient slot")
+    if interactions.count("zg361_b1_peer_submission_actor_trigger = yes") != 6:
+        err("recommendation and slander must gate visibility and validity on the live B1 peer window")
+    if interactions.count("zg361_b1_peer_submission_recipient_trigger = yes") != 6:
+        err("recommendation and slander must gate visibility and validity on a same-cycle recipient slot")
 
     chinese = read_text(
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"

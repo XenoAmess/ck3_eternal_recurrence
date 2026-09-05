@@ -25,6 +25,7 @@ from zg361_domain_data import (
 )
 from zg361_operation_registry import primitive_recipe_for
 from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
+from zg361_localization_style import normalize_player_chinese
 from zg361_readiness_data import (
     CENTRAL_WIRING_BOUNDARY,
     CUMULATIVE_COUNTS,
@@ -49,6 +50,17 @@ GENERATED_HEADER = "# GENERATED FILE — edit tools/zg361_mechanism_data.py or t
 BOM = b"\xef\xbb\xbf"
 LEGACY_EFFECTS_PATH = EFFECTS_DIR / "zg361_generated_mechanism_effects.txt"
 EFFECT_SHARD_GLOB = "zg361_generated_mechanism_*_effects.txt"
+
+# These catalogue choices currently have no domain-specific consumer.  They
+# are still real policy-ledger choices, but must never tell the player that a
+# payment, appointment, transfer, hire, refund or other concrete business
+# action has already happened.  Keep this list explicit until each item gains
+# a typed consumer and is removed by the corresponding implementation change.
+LEDGER_ONLY_MECHANISM_IDS = frozenset(
+    (*range(18, 32), 38, 39, 42, *range(44, 47), *range(48, 53),
+     *range(54, 69), *range(82, 135), *range(146, 192),
+     *range(229, 345), *range(355, 358), 360, 361)
+)
 
 
 def script_text(body: str) -> bytes:
@@ -582,16 +594,16 @@ def localization_values(
     # in the other seven languages.
     common = {
         "zg361_next_mechanism_decision": "召开下一项制度评审" if is_chinese else "Review the Next Performance Policy",
-        "zg361_next_mechanism_decision_desc": "从尚未定案的 361 机制中提取下一项，作出会进入组织账本的真实选择。" if is_chinese else "Open the next unresolved item in the 361 policy catalogue and make a choice that enters the organizational ledger.",
+        "zg361_next_mechanism_decision_desc": "从尚未定案的 361 项制度中提取下一项。选择会立即写入组织账本；只有已经接入业务案卷的条目才会进一步执行人物、支付、任命或调岗动作。" if is_chinese else "Open the next unresolved policy. Every choice enters the organizational ledger immediately; only items with a connected business case also execute character, payment, appointment, or transfer actions.",
         "zg361_next_mechanism_decision_tooltip": "打开下一项 361 制度卡片。" if is_chinese else "Open the next 361 policy card.",
         "zg361_next_mechanism_decision_confirm": "叫下一位产品经理进来" if is_chinese else "Bring in the next policy owner",
         "zg361_reference_charter_decision": "一键部署《大厂全家桶》" if is_chinese else "Deploy the Reference 361 Charter",
-        "zg361_reference_charter_decision_desc": "一次性采用 361 项推荐默认值。省下三十年开会时间，也会立刻背上完整的行政、预算和组织后果。" if is_chinese else "Adopt the recommended default for all 361 policies at once. It saves decades of meetings and immediately carries the full administrative, fiscal, and organizational consequences.",
-        "zg361_reference_charter_decision_tooltip": "一次结算全部 361 项，不是纯展示按钮。" if is_chinese else "Resolve all 361 items in one real, state-changing batch.",
+        "zg361_reference_charter_decision_desc": "一次性采用 361 项推荐默认值，并立即写入组织指标与制度债。此按钮只批量配置政策；没有业务案卷的条目不会凭空发薪、任命、招聘、调岗或退款。" if is_chinese else "Adopt all 361 recommended defaults and write their organizational indicators and policy debt immediately. This configures policy in bulk; items without a business case do not invent payments, appointments, hires, transfers, or refunds.",
+        "zg361_reference_charter_decision_tooltip": "一次配置全部 361 项组织账本；具体业务动作仍以已接入的案卷为准。" if is_chinese else "Configure all 361 ledger choices; concrete actions still require a connected business case.",
         "zg361_reference_charter_decision_confirm": "我全都要，现在就要" if is_chinese else "Ship the entire portfolio",
         "zg361_mechanism_choice_a_tt": "长期路线：证据、信任或能力更强，但要支付行政、预算或短期交付成本。" if is_chinese else "Durable route: improves evidence, trust, or capability while consuming administrative, fiscal, or short-term delivery capacity.",
         "zg361_mechanism_choice_b_tt": "冲刺路线：眼前结果更漂亮，但把风险、倦怠、技术债或申诉债留给未来。" if is_chinese else "Sprint route: improves the immediate result while carrying risk, burnout, technical debt, or appeal debt into later reviews.",
-        "zg361_mechanism_choice_c_tt": "暂缓路线：现在少开一场会，但明确增加制度债；它会进入你自己的上司考核。" if is_chinese else "Deferral route: saves effort now but records policy debt that feeds your own superior's next review.",
+        "zg361_mechanism_choice_c_tt": "本局搁置：本项不会自动再次提案；立即登记制度债，并进入你自己的上司考核。" if is_chinese else "Shelve for this campaign: this item will not be proposed again automatically; policy debt is recorded immediately and feeds your superior's review.",
         "zg361_scoreboard_tab_system": "制度驾驶舱" if is_chinese else "Policy Cockpit",
         "zg361_ledger_title": "361 制度账本：漂亮报表下面那一层" if is_chinese else "361 Policy Ledger: What Sits Beneath the Dashboard",
         "zg361_ledger_configured": "已定案机制" if is_chinese else "Configured mechanisms",
@@ -631,15 +643,21 @@ def localization_values(
     values = dict(common)
 
     for mechanism in mechanisms:
+        ledger_only = mechanism.id in LEDGER_ONLY_MECHANISM_IDS
         if is_chinese:
             title = f"#{mechanism.id:03d} · {mechanism.title_cn}"
             desc = (
                 f"【{mechanism.group_code} · {mechanism.group_title}／{mechanism.priority}】\\n\\n"
                 f"决策：{mechanism.decision_cn}\\n\\n后果：{mechanism.consequence_cn}"
             )
-            option_a = mechanism.option_a_cn
-            option_b = mechanism.option_b_cn
-            option_c = "这季度先不碰，登记制度债"
+            if ledger_only:
+                desc += "\\n\\n边界：本项尚未接入具体业务案卷；本次只配置政策倾向并改变组织账本，不会直接执行文中举例的人事、支付或资源动作。"
+                option_a = f"登记路线甲倾向：{mechanism.option_a_cn}（只调整组织账本）"
+                option_b = f"登记路线乙倾向：{mechanism.option_b_cn}（只调整组织账本）"
+            else:
+                option_a = mechanism.option_a_cn
+                option_b = mechanism.option_b_cn
+            option_c = "本局搁置本项，不会自动重提；登记制度债"
         else:
             title = f"#{mechanism.id:03d} · {mechanism.title_en}"
             desc = (
@@ -647,9 +665,14 @@ def localization_values(
                 "organizational ledger. Its selected rule changes delivery, evidence, trust, workload, risk, "
                 "talent, or fiscal pressure and therefore affects later team results and the manager's own review."
             )
-            option_a = mechanism.option_a_en
-            option_b = mechanism.option_b_en
-            option_c = "Defer it and record explicit policy debt"
+            if ledger_only:
+                desc += " This item has no connected business case yet: it configures policy and changes only the organizational ledger; it does not directly execute the example personnel, payment, or resource action."
+                option_a = f"Record route A preference: {mechanism.option_a_en} (organizational ledger only)"
+                option_b = f"Record route B preference: {mechanism.option_b_en} (organizational ledger only)"
+            else:
+                option_a = mechanism.option_a_en
+                option_b = mechanism.option_b_en
+            option_c = "Shelve this item for the campaign; it will not return automatically, and policy debt is recorded"
         values.update(
             {
                 f"zg361m.{mechanism.id}.t": title,
@@ -659,6 +682,15 @@ def localization_values(
                 f"zg361m.{mechanism.id}.c": option_c,
             }
         )
+    if is_chinese:
+        normalized = {
+            key: normalize_player_chinese(value) for key, value in values.items()
+        }
+        for key, value in tuple(normalized.items()):
+            if key.startswith("zg361m.") and key.endswith((".a", ".b")):
+                if not value.endswith(("。", "！", "？", "；", ".", "!", "?")):
+                    normalized[key] = value + "。"
+        return normalized
     return values
 
 

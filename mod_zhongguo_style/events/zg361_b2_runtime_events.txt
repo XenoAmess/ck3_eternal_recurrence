@@ -7,7 +7,15 @@ zg361b2.40 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.40.t
-	desc = zg361b2.40.desc
+	desc = {
+		desc = zg361b2.40.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 1 } desc = zg361b2.40.task.governance }
+			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 2 } desc = zg361b2.40.task.capability }
+			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 3 } desc = zg361b2.40.task.collaboration }
+		}
+		desc = zg361b2.40.resources
+	}
 	trigger = {
 		is_ai = no
 		has_game_rule = zg361_on
@@ -489,7 +497,14 @@ zg361b2.131 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.131.t
-	desc = zg361b2.131.desc
+	desc = {
+		desc = zg361b2.131.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade = 3 } desc = zg361b2.grade.375 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 2 } desc = zg361b2.grade.350 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 1 } desc = zg361b2.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_b2_redelivery_prompt_owner
@@ -705,7 +720,15 @@ zg361b2.160 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.160.t
-	desc = zg361b2.160.desc
+	desc = {
+		desc = zg361b2.160.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 1 } desc = zg361b2.160.action.purge }
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 2 } desc = zg361b2.160.action.retire }
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 3 } desc = zg361b2.160.action.demote }
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 4 } desc = zg361b2.160.action.extend }
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_b2_separate_prompt_owner
@@ -794,19 +817,31 @@ zg361b2.162 = {
 				var:zg361_b2_separate_notice_state = 3
 			}
 			set_variable = { name = zg361_b2_separate_appeal_open value = 0 }
-			set_variable = { name = zg361_b2_separate_notice_state value = 4 }
 			if = {
 				limit = { has_variable = zg361_b2_separate_objection }
-				set_variable = { name = zg361_b2_separate_review_outcome value = 2 }
-				remove_variable = zg361_b2_pending_adverse_action
 				if = {
-					limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
-					set_variable = { name = zg361_b2_m017_state value = 4 }
-					set_variable = { name = zg361_b2_m017_disposition_cancelled value = var:zg361_b2_pip_case }
-					zg361_b2_m017_consume_business_object_effect = yes
+					limit = {
+						var:zg361_b2_separate_reviewer_independent = 1
+						has_variable = zg361_b2_separate_reviewer
+						var:zg361_b2_retaliation_new_fact = 1
+					}
+					set_variable = { name = zg361_b2_separate_review_outcome value = 1 }
+					set_variable = { name = zg361_b2_separate_notice_state value = 3 }
+					zg361_b2_execute_pending_adverse_action_effect = yes
+				}
+				else = {
+					set_variable = { name = zg361_b2_separate_review_outcome value = 2 }
+					remove_variable = zg361_b2_pending_adverse_action
+					if = {
+						limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
+						set_variable = { name = zg361_b2_m017_state value = 4 }
+						set_variable = { name = zg361_b2_m017_disposition_cancelled value = var:zg361_b2_pip_case }
+						zg361_b2_m017_consume_business_object_effect = yes
+					}
 				}
 			}
 			else = { set_variable = { name = zg361_b2_separate_review_outcome value = 1 } }
+			set_variable = { name = zg361_b2_separate_notice_state value = 4 }
 		}
 		else = { debug_log = "ZG361B2: stale separate-case D+90 ticket ignored" }
 	}

@@ -177,6 +177,17 @@ DEFER_DELTAS: Final[dict[str, int]] = {
     "trust": -1,
 }
 
+# A three-year deferred award creates a future obligation and reduces current
+# cash pressure; paying the whole award now does the reverse.  Mechanism 84 is
+# the one compensation catalogue item whose concrete direction differs from
+# the broad profile used by ordinary pay-policy choices.
+MECHANISM_DELTA_OVERRIDES: Final[dict[int, dict[str, dict[str, int]]]] = {
+    84: {
+        "a": {"pay_debt": 3, "trust": 2, "budget_pressure": -2},
+        "b": {"delivery": 1, "budget_pressure": 3, "pay_debt": -3, "trust": -1},
+    }
+}
+
 
 def _catalogue_lines(document: Path) -> list[str]:
     text = document.read_text(encoding="utf-8-sig")
@@ -414,4 +425,6 @@ def load_mechanisms(mod_root: Path, *, require_reviewed_choices: bool = True) ->
 def mechanism_deltas(mechanism: Mechanism, choice: str) -> dict[str, int]:
     if choice == "c":
         return dict(DEFER_DELTAS)
+    if mechanism.id in MECHANISM_DELTA_OVERRIDES:
+        return dict(MECHANISM_DELTA_OVERRIDES[mechanism.id][choice])
     return dict(PROFILE_DELTAS[mechanism.profile][choice])

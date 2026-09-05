@@ -14,6 +14,8 @@ import re
 import textwrap
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_document
+
 from zg361_b2_runtime_data import B2_BINDINGS, validate_b2_bindings
 
 
@@ -3602,6 +3604,19 @@ zg361_b2_m358_open_separate_case_effect = {
 		set_variable = { name = zg361_b2_separate_notice_cycle value = var:zg361_b2_retaliation_cycle }
 		set_variable = { name = zg361_b2_separate_notice_case value = var:zg361_b2_m358_separate_case }
 		set_variable = { name = zg361_b2_separate_notice_state value = 1 }
+		set_variable = { name = zg361_b2_separate_reviewer_independent value = 0 }
+		remove_variable = zg361_b2_separate_reviewer
+		if = {
+			limit = {
+				has_variable = zg361_b2_m077_reviewer
+				has_variable = zg361_b2_m077_independent
+				var:zg361_b2_m077_independent = 1
+				NOT = { var:zg361_b2_m077_reviewer = var:zg361_b2_retaliation_owner }
+				NOT = { var:zg361_b2_m077_reviewer = this }
+			}
+			set_variable = { name = zg361_b2_separate_reviewer value = var:zg361_b2_m077_reviewer }
+			set_variable = { name = zg361_b2_separate_reviewer_independent value = 1 }
+		}
 		set_variable = { name = zg361_b2_m358_state value = 2 }
 		if = {
 			limit = { is_ai = no }
@@ -4182,7 +4197,15 @@ zg361b2.40 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.40.t
-	desc = zg361b2.40.desc
+	desc = {
+		desc = zg361b2.40.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 1 } desc = zg361b2.40.task.governance }
+			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 2 } desc = zg361b2.40.task.capability }
+			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 3 } desc = zg361b2.40.task.collaboration }
+		}
+		desc = zg361b2.40.resources
+	}
 	trigger = {
 		is_ai = no
 		has_game_rule = zg361_on
@@ -4664,7 +4687,14 @@ zg361b2.131 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.131.t
-	desc = zg361b2.131.desc
+	desc = {
+		desc = zg361b2.131.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade = 3 } desc = zg361b2.grade.375 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 2 } desc = zg361b2.grade.350 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 1 } desc = zg361b2.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_b2_redelivery_prompt_owner
@@ -4880,7 +4910,15 @@ zg361b2.160 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.160.t
-	desc = zg361b2.160.desc
+	desc = {
+		desc = zg361b2.160.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 1 } desc = zg361b2.160.action.purge }
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 2 } desc = zg361b2.160.action.retire }
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 3 } desc = zg361b2.160.action.demote }
+			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 4 } desc = zg361b2.160.action.extend }
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_b2_separate_prompt_owner
@@ -4969,19 +5007,31 @@ zg361b2.162 = {
 				var:zg361_b2_separate_notice_state = 3
 			}
 			set_variable = { name = zg361_b2_separate_appeal_open value = 0 }
-			set_variable = { name = zg361_b2_separate_notice_state value = 4 }
 			if = {
 				limit = { has_variable = zg361_b2_separate_objection }
-				set_variable = { name = zg361_b2_separate_review_outcome value = 2 }
-				remove_variable = zg361_b2_pending_adverse_action
 				if = {
-					limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
-					set_variable = { name = zg361_b2_m017_state value = 4 }
-					set_variable = { name = zg361_b2_m017_disposition_cancelled value = var:zg361_b2_pip_case }
-					zg361_b2_m017_consume_business_object_effect = yes
+					limit = {
+						var:zg361_b2_separate_reviewer_independent = 1
+						has_variable = zg361_b2_separate_reviewer
+						var:zg361_b2_retaliation_new_fact = 1
+					}
+					set_variable = { name = zg361_b2_separate_review_outcome value = 1 }
+					set_variable = { name = zg361_b2_separate_notice_state value = 3 }
+					zg361_b2_execute_pending_adverse_action_effect = yes
+				}
+				else = {
+					set_variable = { name = zg361_b2_separate_review_outcome value = 2 }
+					remove_variable = zg361_b2_pending_adverse_action
+					if = {
+						limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
+						set_variable = { name = zg361_b2_m017_state value = 4 }
+						set_variable = { name = zg361_b2_m017_disposition_cancelled value = var:zg361_b2_pip_case }
+						zg361_b2_m017_consume_business_object_effect = yes
+					}
 				}
 			}
 			else = { set_variable = { name = zg361_b2_separate_review_outcome value = 1 } }
+			set_variable = { name = zg361_b2_separate_notice_state value = 4 }
 		}
 		else = { debug_log = "ZG361B2: stale separate-case D+90 ticket ignored" }
 	}
@@ -5032,12 +5082,16 @@ def render_english_localization() -> bytes:
     return localized(r'''
 l_english:
  zg361b2.40.t:0 "A Measured Recovery Plan"
- zg361b2.40.desc:0 "The notice is settled. Its recovery plan now asks for one controllable task and records the support promised beside it. Refusal is evidence for a later review, not another punishment today."
+ zg361b2.40.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_pip_prompt_owner.GetShortUIName]. The result identified at least three adverse evidence components and opened one 365-day improvement plan, with a midpoint check after 180 days."
+ zg361b2.40.task.governance:0 "Controllable task: improve the frozen governance component."
+ zg361b2.40.task.capability:0 "Controllable task: improve the frozen local-capability component."
+ zg361b2.40.task.collaboration:0 "Controllable task: improve the frozen collaboration component."
+ zg361b2.40.resources:0 "If the support route is funded and the manager can supply one mentor, one capacity slot, and 25 treasury, the case reserves 12 support hours and one attention slot; otherwise the absence is recorded instead of invented. Refusal creates -15 evidence for the next cycle only."
  zg361b2.40.a:0 "Accept the plan and its support."
  zg361b2.40.b:0 "Revise the goal once, then begin."
  zg361b2.40.c:0 "Refuse, and let only the next cycle judge it."
  zg361b2.50.t:0 "After the Appeal"
- zg361b2.50.desc:0 "The ruling stands, yet the pattern behind it may deserve a wider record. You may publish the evidence, file a protected report, or leave a policy debt for another day."
+ zg361b2.50.desc:0 "Appellant: [scope:zg361_b2_escalation_subject.GetShortUIName]. Case owner: [scope:zg361_b2_escalation_owner.GetShortUIName]. The appeal ruling is complete; this separate choice controls whether its bounded evidence is published, protected, or left as policy debt."
  zg361b2.50.a:0 "Publish the bounded evidence packet."
  zg361b2.50.b:0 "File a protected anonymous report."
  zg361b2.50.c:0 "Defer escalation and record the debt."
@@ -5046,23 +5100,30 @@ l_english:
  zg361b2.60.a:0 "Accept the funded neutral exit."
  zg361b2.60.b:0 "Remain under the ordinary process."
  zg361b2.110.t:0 "PIP Disposition"
- zg361b2.110.desc:0 "The bounded recovery period has closed without graduation. Choose one recorded disposition; any live appeal safeguard still applies."
+ zg361b2.110.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_disposition_owner.GetShortUIName]. The 365-day improvement period closed without graduation. The manager has offered the legally available dispositions as a negotiated package; your selection accepts that one route and executes it immediately, unless an appeal safeguard holds it."
  zg361b2.110.a:0 "Extend support for one final cycle."
  zg361b2.110.b:0 "Demote, but retain the official."
  zg361b2.110.c:0 "Offer an orderly retirement."
  zg361b2.110.d:0 "Accept a funded, neutral redundancy exit."
  zg361b2.130.t:0 "Return the Corrected Quota"
  zg361b2.130.desc:0 "A corrected appeal releases one bottom-slot obligation. Consume a reserve, reopen the boundary with fresh notice and appeal, or post the obligation to the next real review."
- zg361b2.130.a:0 "Return the exact PP #157 nomination-slot receipt."
+ zg361b2.130.a:0 "Return the exact promotion item 157 nomination-slot receipt."
  zg361b2.130.b:0 "Reopen and re-serve the boundary case."
  zg361b2.130.c:0 "Post one slot to the next cycle."
  zg361b2.131.t:0 "Fresh Boundary Notice"
- zg361b2.131.desc:0 "A corrected case has moved the quota boundary. This is a new notice with its own receipt and ninety-day challenge window; it does not borrow the old appeal."
+ zg361b2.131.desc:0 "Official: [ROOT.GetShortUIName]. Case owner: [scope:zg361_b2_redelivery_prompt_owner.GetShortUIName]. A corrected appeal moved the quota boundary and selected this official as the replacement boundary case. This new notice has its own receipt and 90-day challenge window; it does not borrow the old appeal."
+ zg361b2.grade.375:0 "Corrected posted grade: 3.75."
+ zg361b2.grade.350:0 "Corrected posted grade: 3.50."
+ zg361b2.grade.325:0 "Corrected posted grade: 3.25."
  zg361b2.131.a:0 "Acknowledge the new notice."
  zg361b2.131.b:0 "Acknowledge and contest it."
  zg361b2.131.c:0 "Refuse signature; require witnessed delivery."
  zg361b2.160.t:0 "Separate Misconduct Notice"
- zg361b2.160.desc:0 "A later fact cannot be folded into the appealed result. It arrives as a separate notice, with a separate receipt and its own challenge window."
+ zg361b2.160.desc:0 "Official: [ROOT.GetShortUIName]. Case owner: [scope:zg361_b2_separate_prompt_owner.GetShortUIName]. A later review cycle produced a new low-result fact, so it cannot be folded into the old appeal. This separate notice has its own receipt and 90-day objection window. An objection suspends execution; an independent reviewer and the still-matching new fact are both required to uphold it, otherwise it is cancelled."
+ zg361b2.160.action.purge:0 "Proposed separate action: removal from landed office."
+ zg361b2.160.action.retire:0 "Proposed separate action: ordered retirement."
+ zg361b2.160.action.demote:0 "Proposed separate action: demotion with retention."
+ zg361b2.160.action.extend:0 "Proposed separate action: extend the improvement plan."
  zg361b2.160.a:0 "Acknowledge the separate notice."
  zg361b2.160.b:0 "Acknowledge and object."
  zg361b2.160.c:0 "Refuse signature; require a witness."
@@ -5076,15 +5137,19 @@ l_english:
 
 
 def render_simp_chinese_localization() -> bytes:
-    return localized(r'''
+    return localized(normalize_localization_document(r'''
 l_simp_chinese:
  zg361b2.40.t:0 "有界改进计划"
- zg361b2.40.desc:0 "结果已经送达。改进计划只要求一项本人可控制的任务，并把上级承诺的支持一并记入案卷。拒绝只会成为下一轮证据，不会在今天再罚一次。"
+ zg361b2.40.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_pip_prompt_owner.GetShortUIName]。本次结果已有至少三项负向证据，因此开启一份 365 日改进计划，并在第 180 日检查中期进展。"
+ zg361b2.40.task.governance:0 "本人可控制的任务：改善已冻结的治理指标。"
+ zg361b2.40.task.capability:0 "本人可控制的任务：改善已冻结的本地能力指标。"
+ zg361b2.40.task.collaboration:0 "本人可控制的任务：改善已冻结的协作指标。"
+ zg361b2.40.resources:0 "若本案采用投入支持路线，且上司能提供一名导师、一个容量席位和 25 国库资金，案卷会预留 12 小时支持与一个关注席位；条件不足时只记录支持缺失，不会伪造资源。拒绝只形成下一周期 -15 证据，不在今天重复处罚。"
  zg361b2.40.a:0 "接受计划及配套支持。"
  zg361b2.40.b:0 "修改一次目标，然后开始执行。"
  zg361b2.40.c:0 "拒绝，并只让下一轮评价此事。"
  zg361b2.50.t:0 "申诉之后"
- zg361b2.50.desc:0 "裁决已经作出，但背后的模式也许值得留下更广的记录。你可以公开有界证据、提交受保护报告，或把政策债留待以后处理。"
+ zg361b2.50.desc:0 "申诉人：[scope:zg361_b2_escalation_subject.GetShortUIName]；案卷责任人：[scope:zg361_b2_escalation_owner.GetShortUIName]。申诉裁决已经完成；这里另行决定是公开有界证据、提交受保护报告，还是只登记制度债。"
  zg361b2.50.a:0 "公开这份有界证据包。"
  zg361b2.50.b:0 "匿名提交受保护报告。"
  zg361b2.50.c:0 "暂不升级，但记下一笔政策债。"
@@ -5093,23 +5158,30 @@ l_simp_chinese:
  zg361b2.60.a:0 "接受已有资金保障的中性离任。"
  zg361b2.60.b:0 "留下，继续走普通程序。"
  zg361b2.110.t:0 "改进期处置"
- zg361b2.110.desc:0 "有界改进期结束，但尚未达成毕业条件。请选择一项留痕处置；仍在生效的申诉保护不会因此消失。"
+ zg361b2.110.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_disposition_owner.GetShortUIName]。365 日改进期已经结束，但尚未达成毕业条件。上司已把当前合法路线作为可协商处置包交给你；你的选择表示接受其中一项并立即执行，仍在生效的申诉保护会暂缓执行。"
  zg361b2.110.a:0 "再延长一个周期的支持。"
  zg361b2.110.b:0 "降岗留用。"
  zg361b2.110.c:0 "安排有序致仕。"
  zg361b2.110.d:0 "接受已有资金保障的中性裁撤离任。"
  zg361b2.130.t:0 "回流改判后的配额"
  zg361b2.130.desc:0 "一次申诉改判释放了一个末档义务。你可以消耗预留名额、重新划定边界并重新送达，或把义务记到下一次真实考核。"
- zg361b2.130.a:0 "按 PP #157 的原始回执退回这一格提名名额。"
+ zg361b2.130.a:0 "按晋升机制第 157 项的原始回执退回这一格提名名额。"
  zg361b2.130.b:0 "重开边界案并重新送达。"
  zg361b2.130.c:0 "把一个名额记入下一周期。"
  zg361b2.131.t:0 "新的边界通知"
- zg361b2.131.desc:0 "申诉改判移动了配额边界。这是一份有独立收据和九十日异议窗口的新通知，不会借用旧申诉。"
+ zg361b2.131.desc:0 "受评官员：[ROOT.GetShortUIName]；案卷责任人：[scope:zg361_b2_redelivery_prompt_owner.GetShortUIName]。申诉改判移动了配额边界，并把你选为新的边界个案。这份通知拥有独立回执与 90 日异议窗口，不会借用旧申诉。"
+ zg361b2.grade.375:0 "改判后的公示档位：3.75。"
+ zg361b2.grade.350:0 "改判后的公示档位：3.50。"
+ zg361b2.grade.325:0 "改判后的公示档位：3.25。"
  zg361b2.131.a:0 "签收新的通知。"
  zg361b2.131.b:0 "签收但提出异议。"
  zg361b2.131.c:0 "拒绝签字，要求见证送达。"
  zg361b2.160.t:0 "独立失当通知"
- zg361b2.160.desc:0 "后续新事实不能塞回正在申诉的结果。它必须作为独立通知送达，并拥有独立收据与异议窗口。"
+ zg361b2.160.desc:0 "受评官员：[ROOT.GetShortUIName]；案卷责任人：[scope:zg361_b2_separate_prompt_owner.GetShortUIName]。后续考核周期出现了新的低档事实，因此不能塞回旧申诉。这份独立通知拥有自己的回执与 90 日异议窗口。提出异议会暂停执行；只有独立复核人仍在位且新事实继续匹配时才会维持处分，否则撤销。"
+ zg361b2.160.action.purge:0 "拟议的独立处分：免去领地职务。"
+ zg361b2.160.action.retire:0 "拟议的独立处分：勒令致仕。"
+ zg361b2.160.action.demote:0 "拟议的独立处分：降岗留用。"
+ zg361b2.160.action.extend:0 "拟议的独立处分：延长改进计划。"
  zg361b2.160.a:0 "签收独立通知。"
  zg361b2.160.b:0 "签收但提出异议。"
  zg361b2.160.c:0 "拒绝签字，要求见证。"
@@ -5119,7 +5191,7 @@ l_simp_chinese:
  zg361b2.statement.corrected:0 "B2 申诉：已改判；实际入账的扣款只反冲一次。"
  zg361b2.statement.pip:0 "B2 改进计划：执行中，并已记录有界支持承诺。"
  zg361b2.statement.retaliation:0 "B2 保护：为期一年的绑定对象不利行动观察正在生效。"
-''')
+'''))
 
 
 def render_english_placeholder_localization(language: str) -> bytes:

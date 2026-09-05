@@ -13,6 +13,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_document
+
 from zg361_b1_runtime_data import B1_BINDINGS, validate_b1_bindings
 from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
 
@@ -3486,7 +3488,47 @@ zg361_b1_compute_exact_quota_effect = {
 	set_variable = { name = zg361_b1_quota_top_slots value = var:zg361_b1_quota_top_rounded }
 	set_variable = { name = zg361_b1_quota_middle_slots value = var:zg361_b1_quota_middle_rounded }
 	set_variable = { name = zg361_b1_quota_bottom_slots value = var:zg361_b1_quota_bottom_rounded }
-	set_variable = { name = zg361_b1_quota_forced_distribution value = 1 }
+	# The largest-remainder calculation above freezes the stable 30% top-band
+	# allocation and #138 rounding provenance.  The player-selected bottom-ratio
+	# rule then owns the actual bottom band: strict=10% with a five-person
+	# minimum, relaxed=floor(5%), off=0.  Middle receives the exact remainder so
+	# conservation remains true for every cohort size.
+	set_variable = { name = zg361_b1_quota_ratio_mode value = 1 }
+	if = {
+		limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 5 }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 2 }
+	}
+	else_if = {
+		limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 0 }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 3 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_relaxed }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 2 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_off }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 3 }
+	}
+	if = {
+		limit = { var:zg361_b1_quota_ratio_mode = 1 }
+		set_variable = { name = zg361_b1_quota_bottom_slots value = { value = var:zg361_b1_quota_cohort_size multiply = 0.1 floor = yes } }
+		if = {
+			limit = { var:zg361_b1_quota_cohort_size >= 5 var:zg361_b1_quota_bottom_slots < 1 }
+			set_variable = { name = zg361_b1_quota_bottom_slots value = 1 }
+		}
+	}
+	else_if = {
+		limit = { var:zg361_b1_quota_ratio_mode = 2 }
+		set_variable = { name = zg361_b1_quota_bottom_slots value = { value = var:zg361_b1_quota_cohort_size multiply = 0.05 floor = yes } }
+	}
+	else = { set_variable = { name = zg361_b1_quota_bottom_slots value = 0 } }
+	set_variable = {
+		name = zg361_b1_quota_middle_slots
+		value = { value = var:zg361_b1_quota_cohort_size subtract = var:zg361_b1_quota_top_slots subtract = var:zg361_b1_quota_bottom_slots }
+	}
+	set_variable = { name = zg361_b1_quota_forced_distribution value = 0 }
+	if = { limit = { var:zg361_b1_quota_bottom_slots >= 1 } set_variable = { name = zg361_b1_quota_forced_distribution value = 1 } }
 	if = {
 		limit = { var:zg361_b1_quota_cohort_size < 3 }
 		set_variable = { name = zg361_b1_quota_top_slots value = 0 }
@@ -3506,8 +3548,10 @@ zg361_b1_compute_exact_quota_effect = {
 		limit = { var:zg361_b1_quota_rounding_work_scope = 2 }
 		set_variable = { name = zg361_b1_quota_rounding_bank_method value = var:zg361_b1_quota_rounding_work_route }
 	}
-	# Reference vectors: 0=0/0/0, 1=0/1/0, 2=0/2/0, 3=1/2/0,
-	# 4=1/3/0, 7=2/4/1, 14=4/9/1, 23=7/14/2.
+	# Strict reference vectors: 0=0/0/0, 1=0/1/0, 2=0/2/0,
+	# 3=1/2/0, 4=1/3/0, 5=2/2/1, 6=2/3/1,
+	# 7=2/4/1, 14=4/9/1, 23=7/14/2.
+	# Relaxed uses floor(5%) with no minimum; off always has zero bottom slots.
 }
 
 # Compare the frozen variable list with current ownership immediately before
@@ -8538,6 +8582,7 @@ zg361_b1_submit_peer_recommendation_effect = {
 }
 
 zg361_b1_submit_peer_positive_effect = {
+	remove_variable = zg361_b1_peer_submission_applied
 	zg361_b1_prepare_shared_war_peer_task_effect = yes
 	if = {
 		limit = {
@@ -8734,6 +8779,7 @@ zg361_b1_submit_peer_positive_effect = {
 			change_variable = { name = zg361_b1_peer_raw_sum add = 10 }
 			change_variable = { name = zg361_b1_peer_timely_n add = 1 }
 		}
+		set_variable = { name = zg361_b1_peer_submission_applied value = 1 }
 		debug_log = "ZG361B1: sealed positive peer record submitted"
 	}
 	else = {
@@ -8754,6 +8800,7 @@ zg361_b1_submit_peer_positive_effect = {
 }
 
 zg361_b1_submit_peer_negative_effect = {
+	remove_variable = zg361_b1_peer_submission_applied
 	zg361_b1_prepare_shared_war_peer_task_effect = yes
 	if = {
 		limit = {
@@ -8950,6 +8997,7 @@ zg361_b1_submit_peer_negative_effect = {
 			change_variable = { name = zg361_b1_peer_raw_sum add = -15 }
 			change_variable = { name = zg361_b1_peer_timely_n add = 1 }
 		}
+		set_variable = { name = zg361_b1_peer_submission_applied value = 1 }
 		debug_log = "ZG361B1: sealed negative peer record submitted"
 	}
 	else = {
@@ -9922,45 +9970,41 @@ l_english:
  zg361_scoreboard_detail_field_leaver_quota_source:0 "Leaver Quota Source (1 Natural C / 2 Swapped C / 3 No Existing C)"
  zg361_scoreboard_detail_field_leaver_effective_year:0 "Departure Effective Year"
  zg361_scoreboard_detail_field_leaver_receipt_state:0 "Leaver Receipt State"
- zg361_scoreboard_detail_field_b1_case_owner:0 "B1 Case Owner"
- zg361_scoreboard_detail_field_b1_cycle_serial:0 "B1 Cycle Serial"
- zg361_scoreboard_detail_field_b1_case_serial:0 "B1 Case Serial"
- zg361_scoreboard_detail_field_b1_case_state:0 "B1 Case State Code"
  zg361_scoreboard_detail_field_b1_fact_sheet_serial:0 "B1 Fact Sheet Serial"
  zg361_scoreboard_detail_field_b1_peer_sealed:0 "B1 Peer Evidence Sealed"
  zg361_scoreboard_detail_field_b1_self_receipt_serial:0 "B1 Self-Review Receipt Serial"
  zg361_scoreboard_detail_field_b1_peer_receipt_serial:0 "B1 Peer-Seal Receipt Serial"
  zg361_scoreboard_detail_field_b1_shadow_receipt_serial:0 "B1 Shadow-Open Receipt Serial"
  zg361_scoreboard_detail_field_b1_band_receipt_serial:0 "B1 Band-Order Receipt Serial"
- zg361_scoreboard_detail_field_b1_141_must_review_marker:0 "#141 Superior Review Required"
- zg361_scoreboard_detail_field_b1_141_agenda_reason:0 "#141 Frozen Agenda Reason"
- zg361_scoreboard_detail_field_b1_141_review_outcome:0 "#141 Review Outcome (1 Aligned / 2 Diverged)"
- zg361_scoreboard_detail_field_b1_142_pending_marker:0 "#142 Pending Review Marker"
- zg361_scoreboard_detail_field_b1_142_milestone:0 "#142 Pending Milestone"
- zg361_scoreboard_detail_field_b1_142_deadline_cycle:0 "#142 Pending Deadline Cycle"
- zg361_scoreboard_detail_field_b1_142_current_final_unchanged:0 "#142 Current Result Unchanged"
- zg361_scoreboard_detail_field_b1_142_next_cycle_evidence:0 "#142 Evidence Queued for Next Cycle"
- zg361_scoreboard_detail_field_b1_143_reopen_result:0 "#143 Reopen Result (1 Self / 2 None / 3 Another)"
- zg361_scoreboard_detail_field_b1_143_reason_code:0 "#143 Reopen Reason Code"
- zg361_scoreboard_detail_field_b1_143_next_cycle_evidence:0 "#143 Evidence Queued for Next Cycle"
- zg361_scoreboard_detail_field_b1_143_target_cycle:0 "#143 Evidence Target Cycle"
- zg361_scoreboard_detail_field_b1_144_dissent_marker:0 "#144 Named Dissent Recorded"
- zg361_scoreboard_detail_field_b1_144_fact_reason:0 "#144 Dissent Fact Reason"
- zg361_scoreboard_detail_field_b1_144_review_outcome:0 "#144 Dissent Review Outcome"
- zg361_scoreboard_detail_field_b1_144_consensus_marker:0 "#144 Consensus Sealed"
- zg361_scoreboard_detail_field_b1_145_formal_band:0 "#145 Formal Rating Band"
- zg361_scoreboard_detail_field_b1_145_within_middle_order:0 "#145 Position Within Middle Band"
- zg361_scoreboard_detail_field_b1_145_opportunity_capacity:0 "#145 Opportunity Capacity"
- zg361_scoreboard_detail_field_b1_145_opportunity_selected:0 "#145 Opportunity Selected"
- zg361_scoreboard_detail_field_b1_145_coaching_selected:0 "#145 Coaching Selected"
- zg361_scoreboard_detail_field_b1_145_own_opportunity_selected:0 "#145 Own Opportunity Selected"
- zg361_scoreboard_detail_field_b1_145_appeal_evidence_available:0 "#145 Appeal Evidence Available"
- zg361_scoreboard_detail_field_b1_145_blackbox_audit:0 "#145 Black-Box Audit Marker"
+ zg361_scoreboard_detail_field_b1_141_must_review_marker:0 "Item 141 — Superior Review Required"
+ zg361_scoreboard_detail_field_b1_141_agenda_reason:0 "Item 141 — Frozen Agenda Reason"
+ zg361_scoreboard_detail_field_b1_141_review_outcome:0 "Item 141 — Review Outcome (1 Aligned / 2 Diverged)"
+ zg361_scoreboard_detail_field_b1_142_pending_marker:0 "Item 142 — Pending Review Marker"
+ zg361_scoreboard_detail_field_b1_142_milestone:0 "Item 142 — Pending Milestone"
+ zg361_scoreboard_detail_field_b1_142_deadline_cycle:0 "Item 142 — Pending Deadline Cycle"
+ zg361_scoreboard_detail_field_b1_142_current_final_unchanged:0 "Item 142 — Current Result Unchanged"
+ zg361_scoreboard_detail_field_b1_142_next_cycle_evidence:0 "Item 142 — Evidence Queued for Next Cycle"
+ zg361_scoreboard_detail_field_b1_143_reopen_result:0 "Item 143 — Reopen Result (1 Self / 2 None / 3 Another)"
+ zg361_scoreboard_detail_field_b1_143_reason_code:0 "Item 143 — Reopen Reason Code"
+ zg361_scoreboard_detail_field_b1_143_next_cycle_evidence:0 "Item 143 — Evidence Queued for Next Cycle"
+ zg361_scoreboard_detail_field_b1_143_target_cycle:0 "Item 143 — Evidence Target Cycle"
+ zg361_scoreboard_detail_field_b1_144_dissent_marker:0 "Item 144 — Named Dissent Recorded"
+ zg361_scoreboard_detail_field_b1_144_fact_reason:0 "Item 144 — Dissent Fact Reason"
+ zg361_scoreboard_detail_field_b1_144_review_outcome:0 "Item 144 — Dissent Review Outcome"
+ zg361_scoreboard_detail_field_b1_144_consensus_marker:0 "Item 144 — Consensus Sealed"
+ zg361_scoreboard_detail_field_b1_145_formal_band:0 "Item 145 — Formal Rating Band"
+ zg361_scoreboard_detail_field_b1_145_within_middle_order:0 "Item 145 — Position Within Middle Band"
+ zg361_scoreboard_detail_field_b1_145_opportunity_capacity:0 "Item 145 — Opportunity Capacity"
+ zg361_scoreboard_detail_field_b1_145_opportunity_selected:0 "Item 145 — Opportunity Selected"
+ zg361_scoreboard_detail_field_b1_145_coaching_selected:0 "Item 145 — Coaching Selected"
+ zg361_scoreboard_detail_field_b1_145_own_opportunity_selected:0 "Item 145 — Own Opportunity Selected"
+ zg361_scoreboard_detail_field_b1_145_appeal_evidence_available:0 "Item 145 — Appeal Evidence Available"
+ zg361_scoreboard_detail_field_b1_145_blackbox_audit:0 "Item 145 — Black-Box Audit Marker"
 ''')
 
 
 def render_simp_chinese_localization() -> bytes:
-    return localized(r'''
+    return localized(normalize_localization_document(r'''
 l_simp_chinese:
  zg361b1.200.t:0 "封存自评"
  zg361b1.200.desc:0 "证据窗口将闭。你的陈述会与期中记录一同封存：它可以说明成果为何未被看见，却不能改写已经发生的硬事实。"
@@ -10012,41 +10056,37 @@ l_simp_chinese:
  zg361_scoreboard_detail_field_leaver_quota_source:0 "离任配额来源（1 自然 C / 2 换得 C / 3 无既有 C）"
  zg361_scoreboard_detail_field_leaver_effective_year:0 "离任生效年份"
  zg361_scoreboard_detail_field_leaver_receipt_state:0 "离任收据状态"
- zg361_scoreboard_detail_field_b1_case_owner:0 "B1 案卷所有者"
- zg361_scoreboard_detail_field_b1_cycle_serial:0 "B1 轮次序号"
- zg361_scoreboard_detail_field_b1_case_serial:0 "B1 案卷序号"
- zg361_scoreboard_detail_field_b1_case_state:0 "B1 案卷状态码"
  zg361_scoreboard_detail_field_b1_fact_sheet_serial:0 "B1 事实表序号"
  zg361_scoreboard_detail_field_b1_peer_sealed:0 "B1 互评证据是否封存"
  zg361_scoreboard_detail_field_b1_self_receipt_serial:0 "B1 自评收据序号"
  zg361_scoreboard_detail_field_b1_peer_receipt_serial:0 "B1 互评封存收据序号"
  zg361_scoreboard_detail_field_b1_shadow_receipt_serial:0 "B1 影子档开启收据序号"
  zg361_scoreboard_detail_field_b1_band_receipt_serial:0 "B1 排档收据序号"
- zg361_scoreboard_detail_field_b1_141_must_review_marker:0 "#141 上级复核必经项"
- zg361_scoreboard_detail_field_b1_141_agenda_reason:0 "#141 冻结议题理由"
- zg361_scoreboard_detail_field_b1_141_review_outcome:0 "#141 复核结果（1 一致 / 2 分歧）"
- zg361_scoreboard_detail_field_b1_142_pending_marker:0 "#142 待定评审标记"
- zg361_scoreboard_detail_field_b1_142_milestone:0 "#142 待定里程碑"
- zg361_scoreboard_detail_field_b1_142_deadline_cycle:0 "#142 待定截止轮次"
- zg361_scoreboard_detail_field_b1_142_current_final_unchanged:0 "#142 本轮终评未改动"
- zg361_scoreboard_detail_field_b1_142_next_cycle_evidence:0 "#142 证据已排入下轮"
- zg361_scoreboard_detail_field_b1_143_reopen_result:0 "#143 重开结果（1 本人 / 2 无人 / 3 他人）"
- zg361_scoreboard_detail_field_b1_143_reason_code:0 "#143 重开理由码"
- zg361_scoreboard_detail_field_b1_143_next_cycle_evidence:0 "#143 证据已排入下轮"
- zg361_scoreboard_detail_field_b1_143_target_cycle:0 "#143 证据目标轮次"
- zg361_scoreboard_detail_field_b1_144_dissent_marker:0 "#144 具名异议已记录"
- zg361_scoreboard_detail_field_b1_144_fact_reason:0 "#144 异议事实理由"
- zg361_scoreboard_detail_field_b1_144_review_outcome:0 "#144 异议复核结果"
- zg361_scoreboard_detail_field_b1_144_consensus_marker:0 "#144 共识已封存"
- zg361_scoreboard_detail_field_b1_145_formal_band:0 "#145 正式绩效档位"
- zg361_scoreboard_detail_field_b1_145_within_middle_order:0 "#145 中档内部次序"
- zg361_scoreboard_detail_field_b1_145_opportunity_capacity:0 "#145 机会名额"
- zg361_scoreboard_detail_field_b1_145_opportunity_selected:0 "#145 已获机会名额"
- zg361_scoreboard_detail_field_b1_145_coaching_selected:0 "#145 已入辅导名单"
- zg361_scoreboard_detail_field_b1_145_own_opportunity_selected:0 "#145 本人是否获机会"
- zg361_scoreboard_detail_field_b1_145_appeal_evidence_available:0 "#145 申诉证据可用"
- zg361_scoreboard_detail_field_b1_145_blackbox_audit:0 "#145 黑箱审计标记"
-''')
+ zg361_scoreboard_detail_field_b1_141_must_review_marker:0 "第 141 项：上级复核必经项"
+ zg361_scoreboard_detail_field_b1_141_agenda_reason:0 "第 141 项：冻结议题理由"
+ zg361_scoreboard_detail_field_b1_141_review_outcome:0 "第 141 项：复核结果（1 一致 / 2 分歧）"
+ zg361_scoreboard_detail_field_b1_142_pending_marker:0 "第 142 项：待定评审标记"
+ zg361_scoreboard_detail_field_b1_142_milestone:0 "第 142 项：待定里程碑"
+ zg361_scoreboard_detail_field_b1_142_deadline_cycle:0 "第 142 项：待定截止轮次"
+ zg361_scoreboard_detail_field_b1_142_current_final_unchanged:0 "第 142 项：本轮终评未改动"
+ zg361_scoreboard_detail_field_b1_142_next_cycle_evidence:0 "第 142 项：证据已排入下轮"
+ zg361_scoreboard_detail_field_b1_143_reopen_result:0 "第 143 项：重开结果（1 本人 / 2 无人 / 3 他人）"
+ zg361_scoreboard_detail_field_b1_143_reason_code:0 "第 143 项：重开理由"
+ zg361_scoreboard_detail_field_b1_143_next_cycle_evidence:0 "第 143 项：证据已排入下轮"
+ zg361_scoreboard_detail_field_b1_143_target_cycle:0 "第 143 项：证据目标轮次"
+ zg361_scoreboard_detail_field_b1_144_dissent_marker:0 "第 144 项：具名异议已记录"
+ zg361_scoreboard_detail_field_b1_144_fact_reason:0 "第 144 项：异议事实理由"
+ zg361_scoreboard_detail_field_b1_144_review_outcome:0 "第 144 项：异议复核结果"
+ zg361_scoreboard_detail_field_b1_144_consensus_marker:0 "第 144 项：共识已封存"
+ zg361_scoreboard_detail_field_b1_145_formal_band:0 "第 145 项：正式绩效档位"
+ zg361_scoreboard_detail_field_b1_145_within_middle_order:0 "第 145 项：中档内部次序"
+ zg361_scoreboard_detail_field_b1_145_opportunity_capacity:0 "第 145 项：机会名额"
+ zg361_scoreboard_detail_field_b1_145_opportunity_selected:0 "第 145 项：已获机会名额"
+ zg361_scoreboard_detail_field_b1_145_coaching_selected:0 "第 145 项：已入辅导名单"
+ zg361_scoreboard_detail_field_b1_145_own_opportunity_selected:0 "第 145 项：本人是否获机会"
+ zg361_scoreboard_detail_field_b1_145_appeal_evidence_available:0 "第 145 项：申诉证据可用"
+ zg361_scoreboard_detail_field_b1_145_blackbox_audit:0 "第 145 项：黑箱审计标记"
+'''))
 
 
 def render_english_placeholder_localization(language: str) -> bytes:

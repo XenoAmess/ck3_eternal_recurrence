@@ -1574,7 +1574,15 @@ second_effect = { value = 2 }
         expected.update(
             f"zg361we.handoff.{step}.{suffix}"
             for step in (1, 2, 3)
-            for suffix in ("t", "desc", "complete", "refuse")
+            for suffix in (
+                "t",
+                "subject.desc",
+                "owner.desc",
+                "subject.complete",
+                "subject.refuse",
+                "owner.complete",
+                "owner.refuse",
+            )
         )
         for language, mapping in rows.items():
             self.assertEqual(expected, set(mapping), language)

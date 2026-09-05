@@ -694,7 +694,6 @@ zg361_p3_m311_route_b_effect = {
 			set_variable = { name = zg361_p3_pivot_policy value = 2 }
 			change_variable = { name = zg361_p3_ag_operation_used add = 1 }
 			change_variable = { name = zg361_p3_ag_quality add = 1 }
-			change_variable = { name = zg361_p3_ag_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m311_reorg_case value = var:zg361_p3_reorg_object_case }
 			set_variable = { name = zg361_p3_m311_pivot_version value = 1 }
 			set_variable = { name = zg361_p3_m311_old_goal_case value = var:zg361_p3_metric_object_case }

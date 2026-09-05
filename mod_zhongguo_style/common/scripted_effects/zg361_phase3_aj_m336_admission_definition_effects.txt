@@ -638,7 +638,6 @@ zg361_p3_m336_route_b_effect = {
 			set_variable = { name = zg361_p3_admission_definition value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m336_demand_case value = var:zg361_p3_demand_object_case }
 			set_variable = { name = zg361_p3_m336_admission_route value = 2 }
 			set_variable = { name = zg361_p3_m336_benefit_defined value = 1 }

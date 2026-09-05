@@ -90,9 +90,9 @@ zg361_mechanism_084_choice_a_effect = {
 		limit = { NOT = { has_variable = zg361_mechanism_084_choice } }
 		zg361_init_org_ledger_effect = yes
 		set_variable = { name = zg361_mechanism_084_choice value = 1 }
-		change_variable = { name = zg361_org_pay_debt add = -3 }
+		change_variable = { name = zg361_org_pay_debt add = 3 }
 		change_variable = { name = zg361_org_trust add = 2 }
-		change_variable = { name = zg361_org_budget_pressure add = 3 }
+		change_variable = { name = zg361_org_budget_pressure add = -2 }
 		change_variable = { name = zg361_mechanism_configured_n add = 1 }
 		change_variable = { name = zg361_mechanism_checksum add = 84 }
 		debug_log = "ZG361M: CASE 084 CHOICE A APPLIED"
@@ -105,8 +105,8 @@ zg361_mechanism_084_choice_b_effect = {
 		zg361_init_org_ledger_effect = yes
 		set_variable = { name = zg361_mechanism_084_choice value = 2 }
 		change_variable = { name = zg361_org_delivery add = 1 }
-		change_variable = { name = zg361_org_budget_pressure add = -2 }
-		change_variable = { name = zg361_org_pay_debt add = 2 }
+		change_variable = { name = zg361_org_budget_pressure add = 3 }
+		change_variable = { name = zg361_org_pay_debt add = -3 }
 		change_variable = { name = zg361_org_trust add = -1 }
 		change_variable = { name = zg361_mechanism_configured_n add = 1 }
 		change_variable = { name = zg361_mechanism_checksum add = 168 }

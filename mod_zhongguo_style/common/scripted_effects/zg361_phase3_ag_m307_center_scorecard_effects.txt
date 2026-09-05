@@ -623,7 +623,6 @@ zg361_p3_m307_route_b_effect = {
 			set_variable = { name = zg361_p3_center_scorecard value = 2 }
 			change_variable = { name = zg361_p3_ag_operation_used add = 1 }
 			change_variable = { name = zg361_p3_ag_quality add = 1 }
-			change_variable = { name = zg361_p3_ag_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m307_reorg_case value = var:zg361_p3_reorg_object_case }
 			set_variable = { name = zg361_p3_m307_team value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_p3_m307_center_type value = 2 }

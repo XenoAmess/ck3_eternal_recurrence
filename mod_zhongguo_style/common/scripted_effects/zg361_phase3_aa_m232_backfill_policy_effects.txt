@@ -620,7 +620,6 @@ zg361_p3_m232_route_b_effect = {
 			set_variable = { name = zg361_p3_backfill_policy value = 2 }
 			change_variable = { name = zg361_p3_aa_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aa_quality add = 1 }
-			change_variable = { name = zg361_p3_aa_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m232_metric_case value = var:zg361_p3_metric_object_case }
 			set_variable = { name = zg361_p3_m232_missing_units value = 10 }
 			set_variable = { name = zg361_p3_m232_filled_units value = 8 }

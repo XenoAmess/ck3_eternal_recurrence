@@ -14,13 +14,15 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_rows
+
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
-DEFER_ROUTE_EN = "Defer this mechanism and open one next-cycle policy debt."
-DEFER_ROUTE_CN = "延期本机制，并登记一笔下周期制度债。"
+DEFER_ROUTE_EN = "Close this item without its business action; record one next-cycle policy debt. It will not be proposed again automatically."
+DEFER_ROUTE_CN = "本轮不执行该业务动作并关闭本项；登记一笔下周期制度债，且不会自动重提。"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -65,7 +67,9 @@ def m(
     c_cn: str,
 ) -> Mechanism:
     return Mechanism(
-        mid, domain, state, field, title_en, title_cn, desc_en, desc_cn,
+        mid, domain, state, field, title_en, title_cn,
+        desc_en + " Routes A and B enact the stated business choice; route C only closes this item and records policy debt.",
+        desc_cn + " 路线甲、乙会执行所述业务选择；路线丙只关闭本项并登记制度债。",
         # Runtime authority is uniform: legacy per-item C copy remains only as
         # research context; generated player copy is canonical policy.defer.
         (a_en, b_en, DEFER_ROUTE_EN), (a_cn, b_cn, DEFER_ROUTE_CN),
@@ -127,7 +131,7 @@ MECHANISMS = (
       "Traffic can rise while the final value stays flat. Settle both ledgers instead of promoting the louder chart.",
       "流量可以很热闹，最终价值却原地踏步。两本账都结，别只奖嗓门大的图。",
       "Weight verified value heavily.", "Balance adoption and value.", "Credit reach first but retain value debt.",
-      "大幅偏向已验证价值。", "采用与价值均衡结算。", "先认覆盖面，但保留价值债。"),
+      "大幅偏向已验证价值。", "采用率与价值均衡结算。", "先认覆盖面，但保留价值债。"),
     m(239, "aa", 5, "learning_credit", "A Failed Experiment Still Learned", "实验失败，学习不能归零",
       "A preregistered failure may buy useful knowledge. Decide how much bounded learning credit survives the miss.",
       "预注册实验失败，也可能买到真知识。决定有多少有界学习收益能留下。",
@@ -155,10 +159,10 @@ MECHANISMS = (
       "Grant one short protected cycle.", "Use milestone-gated protection.", "Decline protection and fund extra support.",
       "给一个短周期保护。", "按里程碑逐段保护。", "不保护分布，但追加支持。"),
     m(304, "ag", 2, "dual_parent_weights", "Two Parents, One Review", "两个家长，一份绩效",
-      "Project and functional managers both claim authority. Freeze weights and goal shares before either writes the review.",
-      "项目线和职能线都说自己说了算。写评语前，先冻结权重与目标份额。",
-      "Give the project parent sixty percent.", "Use equal parent weights.", "Give the functional parent sixty percent.",
-      "项目家长六成。", "双方各半。", "职能家长六成。"),
+      "Project and functional managers both claim authority. Issue one review directive that freezes weights and goal shares; it is not a claim that either manager personally replied.",
+      "项目线和职能线都说自己说了算。现在由裁决者签发一份冻结权重与目标份额的考核指令；这不代表两名上司已亲自回应。",
+      "Direct a sixty-percent project-line weight.", "Direct equal parent weights.", "Direct a sixty-percent functional-line weight.",
+      "责令项目线权重为六成。", "责令双方权重各半。", "责令职能线权重为六成。"),
     m(305, "ag", 3, "quiet_period", "Reorg Quiet Period", "重组静默期",
       "A reporting-line change must not rewrite a nearly finished review. Choose the protected quiet-period rule.",
       "汇报线刚换，不能顺手重写快结束的考核。请选择静默期规则。",
@@ -185,10 +189,10 @@ MECHANISMS = (
       "Spend capacity on an on-site visit.", "Spend capacity on a remote evidence forum.", "Accept the visibility discount and record debt.",
       "花带宽实地走访。", "花带宽开远程证据会。", "接受可见度折损并记债。"),
     m(310, "ag", 4, "legacy_rating_map", "Old Ratings, New Org", "旧档怎么搬进新组织",
-      "A reorg changes reporting lines, not historical authorship. Map the old case without moving its frozen owner.",
-      "重组会换汇报线，不会穿越回去换作者。映射旧案，但历史 owner 不能漂移。",
-      "Map by frozen historical owner.", "Map through a dual-signed bridge.", "Keep the old case separate for one cycle.",
-      "按冻结历史 owner 映射。", "通过双签桥接映射。", "旧案独立保留一个周期。"),
+      "A reorg changes reporting lines, not historical authorship. Issue a two-owner mapping record without pretending that either owner personally countersigned it.",
+      "重组会换汇报线，不会穿越回去换作者。由裁决者签发一份保留新旧责任人的映射记录，不冒充两名责任人亲自会签。",
+      "Map by the frozen historical owner.", "Record both old and new owners in the bridge.", "Keep the old case separate for one cycle.",
+      "按冻结的历史责任人映射。", "在桥接记录中同时列明新旧责任人。", "旧案独立保留一个周期。"),
     m(311, "ag", 5, "pivot_policy", "A Pivot Is Not a Time Machine", "战略转向不是时光机",
       "New strategy may change future goals, never the old signed target. Freeze the boundary between both records.",
       "新战略可以改未来目标，不能倒改旧签字目标。把两份记录的边界冻结。",
@@ -240,11 +244,11 @@ MECHANISMS = (
       "跨周期不是免费进度。释放本周期预留，并且只向下周期精确记账一次。",
       "Carry the whole remainder.", "Split and accept a finished slice.", "Cancel the remainder and close its debt.",
       "整体结转剩余工作。", "拆分并验收已完成部分。", "取消剩余部分并关闭其债。"),
-    m(343, "aj", 6, "acceptance_route", "Three Signatures, One Delivery", "提出、执行、验收三方签收",
-      "Delivery is not complete because the builder says so. Freeze proposer, executor and acceptor signatures with the outcome.",
-      "不是执行者说“好了”就算交付。把提出、执行、验收三方签字和结论一起冻结。",
-      "Accept with all three signatures.", "Accept conditionally with follow-up debt.", "Reject with a signed defect list.",
-      "三方签字后验收。", "有条件验收，并留下跟进债。", "附签字缺陷清单后拒收。"),
+    m(343, "aj", 6, "acceptance_route", "Three Parties, One Delivery Ruling", "提出、执行、验收三方送达",
+      "Delivery is not complete because the builder says so. Serve the ruling to proposer, executor and acceptor and record the outcome; this does not claim that all three personally consented.",
+      "不是执行者说“好了”就算交付。把裁决送达提出人、执行人和验收人并登记结论；这不代表三人都已亲自同意。",
+      "Serve all three parties and accept.", "Serve a conditional acceptance with follow-up debt.", "Serve a rejection with a defect list.",
+      "向三方送达后通过验收。", "向三方送达有条件验收，并留下跟进债。", "向三方送达缺陷清单并拒收。"),
     m(344, "aj", 7, "value_stage_split", "Launch Is Not Value", "上线不等于价值",
       "Settle launch, adoption and verified value as three conserved shares; no stage may mint a second hundred percent.",
       "上线、采用、验证价值要拆成三份守恒账；任何阶段都不能再印一套百分之百。",
@@ -596,7 +600,10 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     if choice == 1:
         lines += [addv(f"zg361_p3_{d}_quality", 2)]
     elif choice == 2:
-        lines += [addv(f"zg361_p3_{d}_quality", 1), addv(f"zg361_p3_{d}_management_debt", 1)]
+        # Route B is often a legitimate balanced or alternative policy.  A
+        # mechanism may still add an explicit debt in its own payload, but
+        # there is no hidden blanket penalty merely for choosing B.
+        lines += [addv(f"zg361_p3_{d}_quality", 1)]
     else:
         raise AssertionError("unreachable route choice")
 
@@ -799,8 +806,8 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             setv("zg361_p3_m304_reorg_case", "var:zg361_p3_reorg_object_case"),
             setv("zg361_p3_m304_project_parent", "$TICKET_OWNER$"),
             setv("zg361_p3_m304_function_parent", "var:zg361_p3_cross_reviewer"),
-            setv("zg361_p3_m304_project_parent_signed", 1),
-            setv("zg361_p3_m304_function_parent_signed", 1),
+            setv("zg361_p3_m304_project_parent_named", 1),
+            setv("zg361_p3_m304_function_parent_named", 1),
             setv("zg361_p3_m304_final_owner", ("$TICKET_OWNER$", "$TICKET_OWNER$", "var:zg361_p3_cross_reviewer")[choice - 1]),
             setv("zg361_p3_m304_final_owner_count", 1),
         ]
@@ -864,9 +871,9 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             setv("zg361_p3_m310_current_quota_slots", 0),
             setv("zg361_p3_m310_bridge_signer_old", "var:zg361_p3_portfolio_result_owner"),
             setv("zg361_p3_m310_bridge_signer_new", "var:zg361_p3_cross_reviewer"),
-            setv("zg361_p3_m310_bridge_old_signed", 1),
-            setv("zg361_p3_m310_bridge_new_signed", 1),
-            setv("zg361_p3_m310_bridge_signature_count", 2),
+            setv("zg361_p3_m310_bridge_old_owner_recorded", 1),
+            setv("zg361_p3_m310_bridge_new_owner_recorded", 1),
+            setv("zg361_p3_m310_bridge_owner_count", 2),
         ]
     elif mid == 311:
         lines += [
@@ -1040,12 +1047,12 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             setv("zg361_p3_m343_proposer_signer", "var:zg361_p3_demand_proposer"),
             setv("zg361_p3_m343_executor_signer", "var:zg361_p3_demand_executor"),
             setv("zg361_p3_m343_acceptor_signer", "var:zg361_p3_demand_acceptor"),
-            setv("zg361_p3_m343_proposer_signed", 0),
-            setv("zg361_p3_m343_executor_signed", 0),
-            setv("zg361_p3_m343_acceptor_signed", 0),
-            setv("zg361_p3_m343_signature_count", 0),
+            setv("zg361_p3_m343_proposer_served", 0),
+            setv("zg361_p3_m343_executor_served", 0),
+            setv("zg361_p3_m343_acceptor_served", 0),
+            setv("zg361_p3_m343_service_count", 0),
             setv("zg361_p3_demand_acceptance_outcome", 4),
-            "if = {\n\tlimit = { var:zg361_p3_demand_accepted_hours > 0 }\n\tset_variable = { name = zg361_p3_m343_applicable value = 1 }\n\tset_variable = { name = zg361_p3_m343_proposer_signed value = 1 }\n\tset_variable = { name = zg361_p3_m343_executor_signed value = 1 }\n\tset_variable = { name = zg361_p3_m343_acceptor_signed value = 1 }\n\tset_variable = { name = zg361_p3_m343_signature_count value = 3 }\n"
+            "if = {\n\tlimit = { var:zg361_p3_demand_accepted_hours > 0 }\n\tset_variable = { name = zg361_p3_m343_applicable value = 1 }\n\tset_variable = { name = zg361_p3_m343_proposer_served value = 1 }\n\tset_variable = { name = zg361_p3_m343_executor_served value = 1 }\n\tset_variable = { name = zg361_p3_m343_acceptor_served value = 1 }\n\tset_variable = { name = zg361_p3_m343_service_count value = 3 }\n"
             + f"\tset_variable = {{ name = zg361_p3_demand_acceptance_outcome value = {outcome} }}\n\tset_variable = {{ name = zg361_p3_demand_status value = 6 }}\n\tset_variable = {{ name = zg361_p3_delivery_status value = {3 + outcome} }}\n\tchange_variable = {{ name = zg361_p3_delivery_object_version add = 1 }}\n\tchange_variable = {{ name = zg361_p3_demand_object_version add = 1 }}\n}}",
         ]
     elif mid == 344:
@@ -1104,7 +1111,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             f"set_variable = {{ name = zg361_p3_m304_project_goal_bps value = {weights[0]} }}",
             f"set_variable = {{ name = zg361_p3_m304_function_goal_bps value = {weights[1]} }}",
             "set_variable = { name = zg361_p3_m304_goal_share_total value = 10000 }",
-            setv("zg361_p3_m304_dual_signature", 1),
+            setv("zg361_p3_m304_directive_issued", 1),
         ]
     if mid == 306:
         weights = ((30, 70), (50, 50), (70, 30))[choice - 1]
@@ -1129,7 +1136,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [
             "set_variable = { name = zg361_p3_m310_historical_owner value = var:zg361_p3_portfolio_result_owner }",
             "set_variable = { name = zg361_p3_m310_mapped_owner value = var:zg361_p3_reorg_object_owner }",
-            "set_variable = { name = zg361_p3_m310_bridge_dual_signed value = 1 }",
+            "set_variable = { name = zg361_p3_m310_bridge_record_issued value = 1 }",
             "change_variable = { name = zg361_p3_reorg_object_version add = 1 }",
         ]
     if mid == 311:
@@ -1197,7 +1204,7 @@ CONSUMER_SOURCES: dict[int, tuple[str, ...]] = {
     307: ("zg361_p3_m307_center_type", "zg361_p3_m307_revenue_metric", "zg361_p3_m307_savings_metric", "zg361_p3_m307_forced_common_metric"),
     308: ("zg361_p3_m308_before_manager_hc", "zg361_p3_m308_before_expert_hc", "zg361_p3_ag_manager_hc", "zg361_p3_ag_expert_hc", "zg361_p3_ag_hc_total"),
     309: ("zg361_p3_m309_manager_hours", "zg361_p3_m309_visibility_gain", "zg361_p3_m309_delivery_output_created", "zg361_p3_ag_management_capacity_remaining"),
-    310: ("zg361_p3_m310_old_case", "zg361_p3_m310_mapping_version", "zg361_p3_m310_mapping_route", "zg361_p3_m310_historical_owner", "zg361_p3_m310_mapped_owner", "zg361_p3_m310_bridge_signature_count", "zg361_p3_m310_current_quota_slots"),
+    310: ("zg361_p3_m310_old_case", "zg361_p3_m310_mapping_version", "zg361_p3_m310_mapping_route", "zg361_p3_m310_historical_owner", "zg361_p3_m310_mapped_owner", "zg361_p3_m310_bridge_owner_count", "zg361_p3_m310_current_quota_slots"),
     311: ("zg361_p3_m311_old_goal_case", "zg361_p3_m311_old_goal_completed", "zg361_p3_m311_old_goal_rewritten", "zg361_p3_m311_new_goal_version", "zg361_p3_m311_effective_cycle"),
     334: ("zg361_p3_demand_source_code", "zg361_p3_demand_source_owner", "zg361_p3_demand_proposer", "zg361_p3_demand_executor", "zg361_p3_demand_acceptor", "zg361_p3_demand_queue_sequence"),
     335: ("zg361_p3_m335_slot_consumed", "zg361_p3_m335_scope_trade_hours", "zg361_p3_m335_queue_debt", "zg361_p3_aj_emergency_used"),
@@ -1208,7 +1215,7 @@ CONSUMER_SOURCES: dict[int, tuple[str, ...]] = {
     340: ("zg361_p3_m340_applicable", "zg361_p3_m340_wip_slots", "zg361_p3_m340_exception_signed", "zg361_p3_m340_hidden_penalty", "zg361_p3_delivery_reserved_hours"),
     341: ("zg361_p3_m341_applicable", "zg361_p3_m341_transfer_hours", "zg361_p3_m341_accepted_hours", "zg361_p3_m341_cancelled", "zg361_p3_m341_released_current", "zg361_p3_aj_next_capacity_reserved"),
     342: ("zg361_p3_m342_applicable", "zg361_p3_m342_blocker_owner", "zg361_p3_m342_blocked_since_sequence", "zg361_p3_m342_escalated_sequence", "zg361_p3_m342_blocker_total", "zg361_p3_m342_executor_low_output_penalty"),
-    343: ("zg361_p3_m343_applicable", "zg361_p3_m343_proposer_signer", "zg361_p3_m343_executor_signer", "zg361_p3_m343_acceptor_signer", "zg361_p3_m343_signature_count", "zg361_p3_demand_acceptance_outcome"),
+    343: ("zg361_p3_m343_applicable", "zg361_p3_m343_proposer_signer", "zg361_p3_m343_executor_signer", "zg361_p3_m343_acceptor_signer", "zg361_p3_m343_service_count", "zg361_p3_demand_acceptance_outcome"),
     344: ("zg361_p3_m344_applicable", "zg361_p3_m344_launch_share", "zg361_p3_m344_adoption_share", "zg361_p3_m344_verified_value_share", "zg361_p3_m344_maturity", "zg361_p3_m344_launch_order", "zg361_p3_m344_adoption_order", "zg361_p3_m344_value_order", "zg361_p3_m344_unallocated_share", "zg361_p3_m344_ledger_total"),
 }
 
@@ -2363,20 +2370,32 @@ def render_localization(language: str) -> bytes:
         header = "l_simp_chinese:"
         rows = []
         for spec in MECHANISMS:
+            desc = (
+                f"当事人：[scope:zg361_p3_{spec.domain}_subject.GetShortUIName]；裁决者："
+                f"[scope:zg361_p3_{spec.domain}_owner.GetShortUIName]。{spec.desc_cn} "
+                "本卡承接同一案卷的上一项结果，选择后立即写入；按钮写明本项实际处理，后续卡不会改写本次选择。"
+            )
             rows += [
                 f' zg361p3.{spec.mid}.t:0 "{esc(spec.title_cn)}"',
-                f' zg361p3.{spec.mid}.desc:0 "{esc(spec.desc_cn)}"',
+                f' zg361p3.{spec.mid}.desc:0 "{esc(desc)}"',
                 *(f' zg361p3.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", spec.routes_cn)),
             ]
     else:
         header = f"l_{language}:"
         rows = []
         for spec in MECHANISMS:
+            desc = (
+                f"Official: [scope:zg361_p3_{spec.domain}_subject.GetShortUIName]. Decision owner: "
+                f"[scope:zg361_p3_{spec.domain}_owner.GetShortUIName]. {spec.desc_en} "
+                "This card follows the preceding result in the same case and records its choice immediately; later cards do not rewrite it."
+            )
             rows += [
                 f' zg361p3.{spec.mid}.t:0 "{esc(spec.title_en)}"',
-                f' zg361p3.{spec.mid}.desc:0 "{esc(spec.desc_en)}"',
+                f' zg361p3.{spec.mid}.desc:0 "{esc(desc)}"',
                 *(f' zg361p3.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", spec.routes_en)),
             ]
+    if language == "simp_chinese":
+        rows = normalize_localization_rows(rows)
     return localized(header + "\n" + "\n".join(rows))
 
 

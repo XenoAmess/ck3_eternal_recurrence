@@ -249,6 +249,19 @@ zg361_b2_m358_open_separate_case_effect = {
 		set_variable = { name = zg361_b2_separate_notice_cycle value = var:zg361_b2_retaliation_cycle }
 		set_variable = { name = zg361_b2_separate_notice_case value = var:zg361_b2_m358_separate_case }
 		set_variable = { name = zg361_b2_separate_notice_state value = 1 }
+		set_variable = { name = zg361_b2_separate_reviewer_independent value = 0 }
+		remove_variable = zg361_b2_separate_reviewer
+		if = {
+			limit = {
+				has_variable = zg361_b2_m077_reviewer
+				has_variable = zg361_b2_m077_independent
+				var:zg361_b2_m077_independent = 1
+				NOT = { var:zg361_b2_m077_reviewer = var:zg361_b2_retaliation_owner }
+				NOT = { var:zg361_b2_m077_reviewer = this }
+			}
+			set_variable = { name = zg361_b2_separate_reviewer value = var:zg361_b2_m077_reviewer }
+			set_variable = { name = zg361_b2_separate_reviewer_independent value = 1 }
+		}
 		set_variable = { name = zg361_b2_m358_state value = 2 }
 		if = {
 			limit = { is_ai = no }

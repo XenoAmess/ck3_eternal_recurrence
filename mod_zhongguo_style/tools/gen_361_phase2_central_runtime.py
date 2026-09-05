@@ -3132,27 +3132,25 @@ def render_event_parts() -> dict[str, str]:
 def render_localization(language: str, header: str) -> str:
     chinese = language == "simp_chinese"
     if chinese:
-        title = "二期绩效流水线：终于跑完了"
+        title = "二期考核流程已收口"
         desc = (
-            "公示后的二期案卷已经串行收口。成功域：#high "
-            "[ROOT.Var('zg361_p2c_success_n')|0]#!；不适用："
-            "[ROOT.Var('zg361_p2c_na_n')|0]；RED："
-            "[ROOT.Var('zg361_p2c_red_n')|0]；曾等待外部依赖："
-            "[ROOT.Var('zg361_p2c_external_n')|0]。好消息是没有九个部门同时弹窗，"
-            "坏消息是它们确实都留下了表格。"
+            "本轮公示后的后续事项已依次处理：完成 #high "
+            "[ROOT.Var('zg361_p2c_success_n')|0]#! 项；无需处理 "
+            "[ROOT.Var('zg361_p2c_na_n')|0] 项；仍未完成 "
+            "[ROOT.Var('zg361_p2c_red_n')|0] 项；其中曾因所需事实尚未到达而等待 "
+            "[ROOT.Var('zg361_p2c_external_n')|0] 项。未完成事项不会被记作成功。"
         )
-        ack = "很好，把这摞表从我桌上拿走。"
+        ack = "收存本轮结案记录。"
     else:
-        title = "Phase-Two Performance Pipeline: Finally Closed"
+        title = "Phase-Two Review Follow-up Closed"
         desc = (
-            "The post-publication phase-two portfolio has closed serially. Successful domains: #high "
-            "[ROOT.Var('zg361_p2c_success_n')|0]#!; not applicable: "
-            "[ROOT.Var('zg361_p2c_na_n')|0]; RED: "
-            "[ROOT.Var('zg361_p2c_red_n')|0]; external waits encountered: "
-            "[ROOT.Var('zg361_p2c_external_n')|0]. The good news is that nine teams did not "
-            "open nine windows at once. The bad news is that every team still produced a spreadsheet."
+            "Post-publication follow-up is closed: #high [ROOT.Var('zg361_p2c_success_n')|0]#! "
+            "items completed; [ROOT.Var('zg361_p2c_na_n')|0] required no action; "
+            "[ROOT.Var('zg361_p2c_red_n')|0] remain incomplete. Of these, "
+            "[ROOT.Var('zg361_p2c_external_n')|0] had to wait for a required fact. "
+            "Incomplete items are not counted as successes."
         )
-        ack = "Excellent. Remove this stack from my desk."
+        ack = "Archive this cycle's closure record."
     return f'{header}:\n # GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py\n zg361_p2c_summary_title:0 "{title}"\n zg361_p2c_summary_desc:0 "{desc}"\n zg361_p2c_summary_ack:0 "{ack}"\n'
 
 

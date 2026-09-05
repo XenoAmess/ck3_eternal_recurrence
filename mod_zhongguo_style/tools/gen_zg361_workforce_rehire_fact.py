@@ -1326,7 +1326,7 @@ def render_events() -> bytes:
 def localization_rows(language: str) -> list[str]:
     if language == "simp_chinese":
         title = "回聘履历封存"
-        desc = "旧离任案、PIP 引用与后来真实绩效证据均已保留。回聘只开启未来考察，不会清零旧 3.25，也不会凭新成果自动保送。"
+        desc = "旧离任案、绩效改进计划引用与后来真实绩效证据均已保留。回聘只开启未来考察，不会清零旧 3.25，也不会凭新成果自动保送。"
         option = "旧账不删，新账照算。"
     else:
         title = "Rehire history sealed"

@@ -158,7 +158,7 @@ zg361_cl_m318_core_effect = {
                     else = { set_variable = { name = zg361_cl_m318_acl_class value = 2 } }
                 }
                 if = {
-                    limit = { scope:zg361_cl_route = 2 }
+                    limit = { scope:zg361_cl_route = 1 }
                     set_variable = { name = zg361_cl_m318_obligation_pending value = 1 }
                     set_variable = { name = zg361_cl_m318_obligation_days value = 14 }
                     set_variable = { name = zg361_cl_m318_obligation_owner value = $TICKET_OWNER$ }
@@ -225,7 +225,8 @@ zg361_cl_m318_consume_effect = {
             set_variable = { name = zg361_cl_m318_withdrawal_still_consumes value = 1 }
             set_variable = { name = zg361_cl_m318_exploratory_consumes value = 0 }
             set_variable = { name = zg361_cl_m318_manager_timeout_refunds value = 0 }
-            if = { limit = { var:zg361_cl_m318_route = 2 } set_variable = { name = zg361_cl_m318_formal_used value = 0 } set_variable = { name = zg361_cl_m318_manager_timeout_refunds value = 1 } }
+            set_variable = { name = zg361_cl_m318_subject_declined_before_filing value = 0 }
+            if = { limit = { var:zg361_cl_m318_route = 2 } set_variable = { name = zg361_cl_m318_formal_used value = 0 } set_variable = { name = zg361_cl_m318_subject_declined_before_filing value = 1 } }
             set_variable = { name = zg361_cl_m318_formal_remaining value = { value = 2 subtract = var:zg361_cl_m318_formal_used } }
             set_variable = { name = zg361_cl_m318_consumer_value value = var:zg361_cl_m318_formal_remaining }
 

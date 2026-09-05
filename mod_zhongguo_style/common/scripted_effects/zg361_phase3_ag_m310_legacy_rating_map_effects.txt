@@ -177,7 +177,7 @@ zg361_p3_m310_consume_effect = {
 				has_variable = zg361_p3_m310_mapping_route
 				has_variable = zg361_p3_m310_historical_owner
 				has_variable = zg361_p3_m310_mapped_owner
-				has_variable = zg361_p3_m310_bridge_signature_count
+				has_variable = zg361_p3_m310_bridge_owner_count
 				has_variable = zg361_p3_m310_current_quota_slots
 				}
 			var:zg361_p3_m310_write_owner = var:zg361_case_ag_owner
@@ -219,7 +219,7 @@ zg361_p3_m310_consume_effect = {
 		set_variable = { name = zg361_p3_m310_visible_m310_mapping_route value = var:zg361_p3_m310_mapping_route }
 		set_variable = { name = zg361_p3_m310_visible_m310_historical_owner value = var:zg361_p3_m310_historical_owner }
 		set_variable = { name = zg361_p3_m310_visible_m310_mapped_owner value = var:zg361_p3_m310_mapped_owner }
-		set_variable = { name = zg361_p3_m310_visible_m310_bridge_signature_count value = var:zg361_p3_m310_bridge_signature_count }
+		set_variable = { name = zg361_p3_m310_visible_m310_bridge_owner_count value = var:zg361_p3_m310_bridge_owner_count }
 		set_variable = { name = zg361_p3_m310_visible_m310_current_quota_slots value = var:zg361_p3_m310_current_quota_slots }
 		change_variable = { name = zg361_p3_ag_visible_revision add = 1 }
 	}
@@ -349,12 +349,12 @@ zg361_p3_m310_route_a_effect = {
 			set_variable = { name = zg361_p3_m310_current_quota_slots value = 0 }
 			set_variable = { name = zg361_p3_m310_bridge_signer_old value = var:zg361_p3_portfolio_result_owner }
 			set_variable = { name = zg361_p3_m310_bridge_signer_new value = var:zg361_p3_cross_reviewer }
-			set_variable = { name = zg361_p3_m310_bridge_old_signed value = 1 }
-			set_variable = { name = zg361_p3_m310_bridge_new_signed value = 1 }
-			set_variable = { name = zg361_p3_m310_bridge_signature_count value = 2 }
+			set_variable = { name = zg361_p3_m310_bridge_old_owner_recorded value = 1 }
+			set_variable = { name = zg361_p3_m310_bridge_new_owner_recorded value = 1 }
+			set_variable = { name = zg361_p3_m310_bridge_owner_count value = 2 }
 			set_variable = { name = zg361_p3_m310_historical_owner value = var:zg361_p3_portfolio_result_owner }
 			set_variable = { name = zg361_p3_m310_mapped_owner value = var:zg361_p3_reorg_object_owner }
-			set_variable = { name = zg361_p3_m310_bridge_dual_signed value = 1 }
+			set_variable = { name = zg361_p3_m310_bridge_record_issued value = 1 }
 			change_variable = { name = zg361_p3_reorg_object_version add = 1 }
 			set_variable = { name = zg361_p3_m310_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_p3_m310_write_subject value = $TICKET_SUBJECT$ }
@@ -821,7 +821,6 @@ zg361_p3_m310_route_b_effect = {
 			set_variable = { name = zg361_p3_legacy_rating_map value = 2 }
 			change_variable = { name = zg361_p3_ag_operation_used add = 1 }
 			change_variable = { name = zg361_p3_ag_quality add = 1 }
-			change_variable = { name = zg361_p3_ag_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m310_reorg_case value = var:zg361_p3_reorg_object_case }
 			set_variable = { name = zg361_p3_m310_old_case value = var:zg361_p3_portfolio_result_case }
 			set_variable = { name = zg361_p3_m310_mapping_version value = var:zg361_p3_reorg_object_version }
@@ -830,12 +829,12 @@ zg361_p3_m310_route_b_effect = {
 			set_variable = { name = zg361_p3_m310_current_quota_slots value = 0 }
 			set_variable = { name = zg361_p3_m310_bridge_signer_old value = var:zg361_p3_portfolio_result_owner }
 			set_variable = { name = zg361_p3_m310_bridge_signer_new value = var:zg361_p3_cross_reviewer }
-			set_variable = { name = zg361_p3_m310_bridge_old_signed value = 1 }
-			set_variable = { name = zg361_p3_m310_bridge_new_signed value = 1 }
-			set_variable = { name = zg361_p3_m310_bridge_signature_count value = 2 }
+			set_variable = { name = zg361_p3_m310_bridge_old_owner_recorded value = 1 }
+			set_variable = { name = zg361_p3_m310_bridge_new_owner_recorded value = 1 }
+			set_variable = { name = zg361_p3_m310_bridge_owner_count value = 2 }
 			set_variable = { name = zg361_p3_m310_historical_owner value = var:zg361_p3_portfolio_result_owner }
 			set_variable = { name = zg361_p3_m310_mapped_owner value = var:zg361_p3_reorg_object_owner }
-			set_variable = { name = zg361_p3_m310_bridge_dual_signed value = 1 }
+			set_variable = { name = zg361_p3_m310_bridge_record_issued value = 1 }
 			change_variable = { name = zg361_p3_reorg_object_version add = 1 }
 			set_variable = { name = zg361_p3_m310_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_p3_m310_write_subject value = $TICKET_SUBJECT$ }

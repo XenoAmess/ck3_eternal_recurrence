@@ -812,7 +812,6 @@ zg361_p3_m341_route_b_effect = {
 			set_variable = { name = zg361_p3_carryover_route value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m341_demand_case value = var:zg361_p3_demand_object_case }
 			set_variable = { name = zg361_p3_m341_applicable value = var:zg361_p3_demand_active }
 			set_variable = { name = zg361_p3_m341_transfer_hours value = 0 }

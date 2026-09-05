@@ -625,7 +625,6 @@ zg361_p3_m308_route_b_effect = {
 			set_variable = { name = zg361_p3_hc_mix value = 2 }
 			change_variable = { name = zg361_p3_ag_operation_used add = 1 }
 			change_variable = { name = zg361_p3_ag_quality add = 1 }
-			change_variable = { name = zg361_p3_ag_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m308_reorg_case value = var:zg361_p3_reorg_object_case }
 			set_variable = { name = zg361_p3_m308_before_manager_hc value = var:zg361_p3_ag_manager_hc }
 			set_variable = { name = zg361_p3_m308_before_expert_hc value = var:zg361_p3_ag_expert_hc }

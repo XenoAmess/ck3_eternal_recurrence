@@ -12812,14 +12812,14 @@
       "actor_boundary": "celestial duke-or-higher manager; counts/barons remain assessed-only",
       "state_changes": {
         "a": {
-          "pay_debt": -3,
+          "pay_debt": 3,
           "trust": 2,
-          "budget_pressure": 3
+          "budget_pressure": -2
         },
         "b": {
           "delivery": 1,
-          "budget_pressure": -2,
-          "pay_debt": 2,
+          "budget_pressure": 3,
+          "pay_debt": -3,
           "trust": -1
         },
         "c": {
@@ -39436,7 +39436,7 @@
       "group": "AC",
       "group_title": "外包、派遣与借调灰区",
       "priority": "P2",
-      "title_cn": "人力补位 / 结果承包二种合同",
+      "title_cn": "人力补位 / 结果承包两种合同",
       "title_en": "Staff Augmentation Versus Outcome Contract",
       "profile": "external",
       "reference_choice": "c",

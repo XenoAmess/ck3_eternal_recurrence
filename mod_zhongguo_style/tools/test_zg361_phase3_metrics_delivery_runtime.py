@@ -135,10 +135,10 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical_bytes = gen.render_effects()
-        self.assertEqual(len(historical_bytes), 1_862_640)
+        self.assertEqual(len(historical_bytes), 1_860_262)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "1da7c60db49b238edd4098136240b430eaa0e12aafe2c54d31165cc90eca1084",
+            "4cae4834ddbc6fde78df08730ce84e5f14d316be5a464e9df2ba5f5c32a9fa79",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -823,7 +823,7 @@ class GeneratorContractTests(unittest.TestCase):
             hc = block(self.effects, f"zg361_p3_m308_route_{letter}_effect")
             self.assertIn("m304_parent_weight_total value = 10000", dual)
             self.assertIn("m304_goal_share_total value = 10000", dual)
-            self.assertIn("m304_dual_signature value = 1", dual)
+            self.assertIn("m304_directive_issued value = 1", dual)
             self.assertIn("m306_weight_total value = 100", hats)
             self.assertIn("zg361_p3_ag_hc_total value = 100", hc)
         for mid, token in ((304, "m304_parent_weight_total"), (306, "m306_weight_total"), (308, "zg361_p3_ag_hc_total")):
@@ -845,8 +845,8 @@ class GeneratorContractTests(unittest.TestCase):
             route = block(self.effects, f"zg361_p3_m310_route_{letter}_effect")
             self.assertIn("m310_historical_owner value = var:zg361_p3_portfolio_result_owner", route)
             self.assertIn("m310_mapped_owner value = var:zg361_p3_reorg_object_owner", route)
-            self.assertIn("m310_bridge_signature_count value = 2", route)
-            self.assertIn("m310_bridge_dual_signed value = 1", route)
+            self.assertIn("m310_bridge_owner_count value = 2", route)
+            self.assertIn("m310_bridge_record_issued value = 1", route)
             self.assertNotIn("m310_historical_owner value = $TICKET_OWNER$", route)
         route_c = block(self.effects, "zg361_p3_m310_route_c_effect")
         self.assertNotIn("m310_historical_owner", route_c)
@@ -911,14 +911,15 @@ class GeneratorContractTests(unittest.TestCase):
             accept = block(self.effects, f"zg361_p3_m343_route_{letter}_effect")
             value = block(self.effects, f"zg361_p3_m344_route_{letter}_effect")
             self.assertIn("m338_tradeoff_signed value = 1", triangle)
-            for signer in ("proposer", "executor", "acceptor"):
-                self.assertIn(f"m343_{signer}_signed value = 1", accept)
+            for party in ("proposer", "executor", "acceptor"):
+                self.assertIn(f"m343_{party}_served value = 1", accept)
+            self.assertIn("m343_service_count value = 3", accept)
             self.assertLess(value.index("value_credit_remaining = 10000"), value.index("record_operation"))
             self.assertIn("m344_share_total value = 10000", value)
             self.assertIn("value_credit_remaining value = 0", value)
         for mid, tokens in (
             (338, ("m338_tradeoff_signed",)),
-            (343, ("m343_proposer_signed", "m343_executor_signed", "m343_acceptor_signed")),
+            (343, ("m343_proposer_served", "m343_executor_served", "m343_acceptor_served")),
             (344, ("value_credit_remaining", "m344_share_total")),
         ):
             route_c = block(self.effects, f"zg361_p3_m{mid}_route_c_effect")

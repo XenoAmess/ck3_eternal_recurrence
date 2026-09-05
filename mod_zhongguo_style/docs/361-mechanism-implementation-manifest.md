@@ -269,7 +269,7 @@
 | 257 | 外包转正式的有限通道 | AC | P1 | `hc` | `zg361m.257` | `zg361_mechanism_257_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 258 | 权限差导致的绩效校正 | AC | P1 | `external` | `zg361m.258` | `zg361_mechanism_258_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 259 | 供应商 SLA 与个体责任分开 | AC | P1 | `external` | `zg361m.259` | `zg361_mechanism_259_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 260 | 人力补位 / 结果承包二种合同 | AC | P2 | `external` | `zg361m.260` | `zg361_mechanism_260_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 260 | 人力补位 / 结果承包两种合同 | AC | P2 | `external` | `zg361m.260` | `zg361_mechanism_260_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 261 | 多层转包与真实执行者披露 | AC | P1 | `external` | `zg361m.261` | `zg361_mechanism_261_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 262 | 借调人员双线评价 | AC | P1 | `assessment` | `zg361m.262` | `zg361_mechanism_262_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 263 | 借调结束的返岗权 | AC | P1 | `organization` | `zg361m.263` | `zg361_mechanism_263_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
@@ -372,4 +372,4 @@
 | 360 | 经理集体拒绝“硬背 C” | AL | P2 | `endgame` | `zg361m.360` | `zg361_mechanism_360_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 361 | 《三六一绩效宪章》 | AL | P2 | `endgame` | `zg361m.361` | `zg361_mechanism_361_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 
-Manifest semantic SHA-256: `dea593ac8a86a800b20fa0c23903b33554f46a41327ada31c564a53ca01f1cbd`
+Manifest semantic SHA-256: `6d0a0315974389d9855f1c9890d7e28a3fd944ea3bdfd3fc255615fe6b03ba0d`

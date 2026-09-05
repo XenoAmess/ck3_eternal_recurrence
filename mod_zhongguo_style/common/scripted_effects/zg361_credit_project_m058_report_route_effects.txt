@@ -143,7 +143,7 @@ zg361_cp_m58_route_a_effect = {
 					has_variable = zg361_cp_report_object_case
 					has_variable = zg361_cp_report_object_version
 					has_variable = zg361_cp_report_project_origin_case
-					has_variable = zg361_cp_report_signed
+					has_variable = zg361_cp_report_version_frozen
 				}
 				var:zg361_cp_i_operation_used < var:zg361_cp_i_operation_total
 				var:zg361_cp_project_object_manager = $TICKET_OWNER$
@@ -154,7 +154,7 @@ zg361_cp_m58_route_a_effect = {
 				var:zg361_cp_report_object_cycle = $TICKET_CYCLE$
 				var:zg361_cp_report_object_case = $TICKET_CASE$
 				var:zg361_cp_report_project_origin_case = var:zg361_cp_project_object_origin_case
-				var:zg361_cp_report_signed = 1
+				var:zg361_cp_report_version_frozen = 1
 			}
 			trigger_else = { always = no }
 		}
@@ -293,7 +293,7 @@ zg361_cp_m58_route_a_effect = {
 						has_variable = zg361_cp_report_object_case
 						has_variable = zg361_cp_report_object_version
 						has_variable = zg361_cp_report_project_origin_case
-						has_variable = zg361_cp_report_signed
+						has_variable = zg361_cp_report_version_frozen
 					}
 					var:zg361_cp_i_operation_used < var:zg361_cp_i_operation_total
 					var:zg361_cp_project_object_manager = $TICKET_OWNER$
@@ -304,7 +304,7 @@ zg361_cp_m58_route_a_effect = {
 					var:zg361_cp_report_object_cycle = $TICKET_CYCLE$
 					var:zg361_cp_report_object_case = $TICKET_CASE$
 					var:zg361_cp_report_project_origin_case = var:zg361_cp_project_object_origin_case
-					var:zg361_cp_report_signed = 1
+					var:zg361_cp_report_version_frozen = 1
 				}
 				trigger_else = { always = no }
 			}
@@ -459,7 +459,7 @@ zg361_cp_m58_route_b_effect = {
 					has_variable = zg361_cp_report_object_case
 					has_variable = zg361_cp_report_object_version
 					has_variable = zg361_cp_report_project_origin_case
-					has_variable = zg361_cp_report_signed
+					has_variable = zg361_cp_report_version_frozen
 				}
 				var:zg361_cp_i_operation_used < var:zg361_cp_i_operation_total
 				var:zg361_cp_project_object_manager = $TICKET_OWNER$
@@ -470,7 +470,7 @@ zg361_cp_m58_route_b_effect = {
 				var:zg361_cp_report_object_cycle = $TICKET_CYCLE$
 				var:zg361_cp_report_object_case = $TICKET_CASE$
 				var:zg361_cp_report_project_origin_case = var:zg361_cp_project_object_origin_case
-				var:zg361_cp_report_signed = 1
+				var:zg361_cp_report_version_frozen = 1
 			}
 			trigger_else = { always = no }
 		}
@@ -609,7 +609,7 @@ zg361_cp_m58_route_b_effect = {
 						has_variable = zg361_cp_report_object_case
 						has_variable = zg361_cp_report_object_version
 						has_variable = zg361_cp_report_project_origin_case
-						has_variable = zg361_cp_report_signed
+						has_variable = zg361_cp_report_version_frozen
 					}
 					var:zg361_cp_i_operation_used < var:zg361_cp_i_operation_total
 					var:zg361_cp_project_object_manager = $TICKET_OWNER$
@@ -620,7 +620,7 @@ zg361_cp_m58_route_b_effect = {
 					var:zg361_cp_report_object_cycle = $TICKET_CYCLE$
 					var:zg361_cp_report_object_case = $TICKET_CASE$
 					var:zg361_cp_report_project_origin_case = var:zg361_cp_project_object_origin_case
-					var:zg361_cp_report_signed = 1
+					var:zg361_cp_report_version_frozen = 1
 				}
 				trigger_else = { always = no }
 			}

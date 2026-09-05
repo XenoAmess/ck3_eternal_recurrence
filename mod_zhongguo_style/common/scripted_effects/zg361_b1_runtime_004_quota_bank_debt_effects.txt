@@ -272,7 +272,47 @@ zg361_b1_compute_exact_quota_effect = {
 	set_variable = { name = zg361_b1_quota_top_slots value = var:zg361_b1_quota_top_rounded }
 	set_variable = { name = zg361_b1_quota_middle_slots value = var:zg361_b1_quota_middle_rounded }
 	set_variable = { name = zg361_b1_quota_bottom_slots value = var:zg361_b1_quota_bottom_rounded }
-	set_variable = { name = zg361_b1_quota_forced_distribution value = 1 }
+	# The largest-remainder calculation above freezes the stable 30% top-band
+	# allocation and #138 rounding provenance.  The player-selected bottom-ratio
+	# rule then owns the actual bottom band: strict=10% with a five-person
+	# minimum, relaxed=floor(5%), off=0.  Middle receives the exact remainder so
+	# conservation remains true for every cohort size.
+	set_variable = { name = zg361_b1_quota_ratio_mode value = 1 }
+	if = {
+		limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 5 }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 2 }
+	}
+	else_if = {
+		limit = { has_variable = zg361_ratio_override var:zg361_ratio_override = 0 }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 3 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_relaxed }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 2 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_ratio_override } has_game_rule = zg361_ratio_off }
+		set_variable = { name = zg361_b1_quota_ratio_mode value = 3 }
+	}
+	if = {
+		limit = { var:zg361_b1_quota_ratio_mode = 1 }
+		set_variable = { name = zg361_b1_quota_bottom_slots value = { value = var:zg361_b1_quota_cohort_size multiply = 0.1 floor = yes } }
+		if = {
+			limit = { var:zg361_b1_quota_cohort_size >= 5 var:zg361_b1_quota_bottom_slots < 1 }
+			set_variable = { name = zg361_b1_quota_bottom_slots value = 1 }
+		}
+	}
+	else_if = {
+		limit = { var:zg361_b1_quota_ratio_mode = 2 }
+		set_variable = { name = zg361_b1_quota_bottom_slots value = { value = var:zg361_b1_quota_cohort_size multiply = 0.05 floor = yes } }
+	}
+	else = { set_variable = { name = zg361_b1_quota_bottom_slots value = 0 } }
+	set_variable = {
+		name = zg361_b1_quota_middle_slots
+		value = { value = var:zg361_b1_quota_cohort_size subtract = var:zg361_b1_quota_top_slots subtract = var:zg361_b1_quota_bottom_slots }
+	}
+	set_variable = { name = zg361_b1_quota_forced_distribution value = 0 }
+	if = { limit = { var:zg361_b1_quota_bottom_slots >= 1 } set_variable = { name = zg361_b1_quota_forced_distribution value = 1 } }
 	if = {
 		limit = { var:zg361_b1_quota_cohort_size < 3 }
 		set_variable = { name = zg361_b1_quota_top_slots value = 0 }
@@ -292,8 +332,10 @@ zg361_b1_compute_exact_quota_effect = {
 		limit = { var:zg361_b1_quota_rounding_work_scope = 2 }
 		set_variable = { name = zg361_b1_quota_rounding_bank_method value = var:zg361_b1_quota_rounding_work_route }
 	}
-	# Reference vectors: 0=0/0/0, 1=0/1/0, 2=0/2/0, 3=1/2/0,
-	# 4=1/3/0, 7=2/4/1, 14=4/9/1, 23=7/14/2.
+	# Strict reference vectors: 0=0/0/0, 1=0/1/0, 2=0/2/0,
+	# 3=1/2/0, 4=1/3/0, 5=2/2/1, 6=2/3/1,
+	# 7=2/4/1, 14=4/9/1, 23=7/14/2.
+	# Relaxed uses floor(5%) with no minimum; off always has zero bottom slots.
 }
 
 # Compare the frozen variable list with current ownership immediately before

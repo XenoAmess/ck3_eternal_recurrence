@@ -13,13 +13,15 @@ import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_rows
+
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
-DEFER_ROUTE_EN = "Defer this mechanism and open one next-cycle policy debt."
-DEFER_ROUTE_CN = "延期本机制，并登记一笔下周期制度债。"
+DEFER_ROUTE_EN = "Close this item without its business action; record one next-cycle policy debt. It will not be proposed again automatically."
+DEFER_ROUTE_CN = "本轮不执行该业务动作并关闭本项；登记一笔下周期制度债，且不会自动重提。"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -77,8 +79,8 @@ def m(
         field,
         title_en,
         title_cn,
-        desc_en,
-        desc_cn,
+        desc_en + " Routes A and B enact the stated business choice; route C only closes this item and records policy debt.",
+        desc_cn + " 路线甲、乙会执行所述业务选择；路线丙只关闭本项并登记制度债。",
         # The acceptance/runtime program is authoritative: route C is the
         # mechanism-specific policy.defer control route, never a third
         # business payload.  The legacy per-item C copy remains accepted by
@@ -95,14 +97,14 @@ MECHANISMS = (
       "交付、汇报与关系工时花的是同一份项目容量，只有交付工时会生成真实产出。",
       "Protect delivery and keep reporting lean.", "Balance delivery with a fuller account.", "Spend heavily on visibility and record the displaced output.",
       "保护交付，只做精简汇报。", "交付与完整汇报并重。", "重押可见度，并如实记录被挤掉的产出。"),
-    m(27, "e", 2, "signed_contribution", "Sign One Hundred Percent of the Credit", "把百分之百贡献签清楚",
-      "The subject, direct manager and cross-department contributor must sign a complete ten-thousand-basis-point allocation.",
-      "受评者、直属上司与跨部门贡献者必须把一万基点完整签清。",
-      "Give the subject the clear majority.", "Use a balanced cross-functional split.", "Give management and coordination more weight.",
+    m(27, "e", 2, "signed_contribution", "Allocate One Hundred Percent of the Credit", "把百分之百贡献分配清楚",
+      "The decision owner must issue one complete ten-thousand-basis-point allocation across the subject, direct manager and cross-department contributor. It records an allocation, not three personal signatures.",
+      "裁决者必须在受评者、直属上司与跨部门贡献者之间完整分配一万基点。这是裁决者签发的归属底稿，不冒充三人亲自签字。",
+      "Allocate a clear majority to the subject.", "Use a balanced cross-functional allocation.", "Give management and coordination more weight.",
       "让受评者取得明确多数。", "采用均衡的跨部门分配。", "提高管理与协调贡献的权重。"),
     m(28, "e", 3, "credit_claim", "Credit Claim and Audit Reversal", "抢功申诉与审计回拨",
-      "A credit transfer must be net zero, and a rejected grab must be reversed without rewriting the signed baseline.",
-      "功劳转移必须净额为零；抢功不成立时必须完整回拨，不能改写签字底稿。",
+      "A credit transfer must be net zero, and a rejected grab must be reversed without rewriting the frozen allocation baseline.",
+      "功劳转移必须净额为零；抢功不成立时必须完整回拨，不能改写冻结的归属底稿。",
       "Uphold a bounded manager claim.", "Reverse the grab after evidence review.", "Reject the unsupported claim without transfer.",
       "支持一笔有界的上司主张。", "审证后完整回拨抢功。", "驳回无证据主张，不发生转移。"),
     m(29, "e", 4, "metric_audit", "Metric Packaging and Audit", "指标包装与审计",
@@ -123,36 +125,36 @@ MECHANISMS = (
     m(54, "i", 1, "report_build", "Reporting Consumes Delivery Capacity", "汇报会挤占交付容量",
       "Building the packet spends real hours from the project without creating hard output.",
       "制作材料会真实消耗项目工时，却不会直接生成交付产出。",
-      "Build the signed short fact sheet.", "Build the long narrative and pay four hours.", "Build an exception-only packet.",
-      "制作签字短事实表。", "制作长叙事，并支付四小时。", "只制作异常事项材料。"),
+      "Build the frozen short fact sheet.", "Build the long narrative and pay four hours.", "Build an exception-only packet.",
+      "制作冻结的短事实表。", "制作长叙事，并支付四小时。", "只制作异常事项材料。"),
     m(55, "i", 4, "attention_read", "Routing Is Not Reading", "送达不等于阅读",
       "A routed report becomes visible only when a manager spends one of two finite deep-read slots.",
       "材料送达后，只有上司实际消耗两个有限深读席位之一，才算真正看见。",
       "Spend one slot on the direct manager.", "Spend both slots on direct and skip-level readers.", "Route it without claiming that anyone read it.",
       "让直属上司消耗一个阅读席位。", "直属与越级上司各消耗一个席位。", "只完成路由，不声称有人阅读。"),
     m(56, "i", 2, "forwarded_credit", "Forward Without Quietly Taking Credit", "逐级上报不能悄悄截功",
-      "Forwarded attribution starts from the signed contribution book and every transfer remains net zero.",
-      "逐级上报必须从签字贡献底稿出发，任何转移都必须净额为零。",
-      "Forward the signed shares unchanged.", "Transfer five hundred basis points to the manager.", "Add cross-department evidence and preserve the shares.",
-      "原样转发签字份额。", "向上司转移五百基点。", "补充跨部门证据，但不改份额。"),
-    m(57, "i", 2, "version_signature", "Freeze the Report Version", "冻结汇报版本签名",
-      "Only a complete ten-thousand-basis-point attribution may receive the author's version signature.",
-      "只有合计一万基点的完整归属表，才能取得作者的版本签名。",
-      "Sign version one.", "Sign version two after evidence review.", "Sign version three with the cross-department appendix.",
-      "签署第一版。", "审证后签署第二版。", "带跨部门附件签署第三版。"),
-    m(58, "i", 3, "report_route", "Signed Material Before Routing", "先签字，再路由",
+      "Forwarded attribution starts from the frozen contribution book and every transfer remains net zero.",
+      "逐级上报必须从冻结的贡献底稿出发，任何转移都必须净额为零。",
+      "Forward the frozen shares unchanged.", "Transfer five hundred basis points to the manager.", "Add cross-department evidence and preserve the shares.",
+      "原样转发冻结份额。", "向上司转移五百基点。", "补充跨部门证据，但不改份额。"),
+    m(57, "i", 2, "version_signature", "Freeze the Report Version", "冻结汇报版本",
+      "Only a complete ten-thousand-basis-point attribution may be frozen as the subject-authored report version. Freezing authorship does not claim a new personal signature.",
+      "只有合计一万基点的完整归属表，才能冻结为受评者署名的汇报版本；冻结作者身份不等于冒充本人新签字。",
+      "Freeze version one.", "Freeze version two after evidence review.", "Freeze version three with the cross-department appendix.",
+      "冻结第一版。", "审证后冻结第二版。", "带跨部门附件冻结第三版。"),
+    m(58, "i", 3, "report_route", "Freeze Material Before Routing", "先冻结版本，再路由",
       "Direct and skip-level routing records recipients, but does not itself consume an attention slot.",
       "直属与越级路由只记录收件人，本身不会消耗阅读席位。",
       "Route to the direct manager only.", "Route to direct and skip-level managers.", "Route with a cross-department evidence copy.",
       "只送直属上司。", "同时送直属与越级上司。", "附跨部门证据副本后路由。"),
     m(59, "i", 3, "risk_timing", "Bad News Has a Timestamp", "坏消息必须有时间戳",
       "Early, delayed and hidden risk reports produce different remaining loss and integrity receipts.",
-      "早报、迟报与隐瞒会产生不同的剩余损失和诚信收执。",
+      "早报、迟报与隐瞒会产生不同的剩余损失和诚信回执。",
       "Report early and halve the remaining loss.", "Report late and retain the full loss.", "Hide it and double the loss.",
       "提前报告，把剩余损失减半。", "延迟报告，承担全部损失。", "继续隐瞒，让损失翻倍。"),
-    m(60, "i", 4, "idea_arbitration", "The Signed Version Owns the Idea", "创意归属服从签字版本",
-      "Idea theft is arbitrated against the frozen author signature and cross-department provenance.",
-      "创意窃取争议以冻结作者签名和跨部门来源为裁判依据。",
+    m(60, "i", 4, "idea_arbitration", "The Frozen Version Owns the Idea", "创意归属服从冻结版本",
+      "Idea theft is arbitrated against the frozen author record and cross-department provenance.",
+      "创意窃取争议以冻结作者记录和跨部门来源为裁判依据。",
       "Uphold the original author.", "Recognize a proven joint authorship.", "Reject the theft allegation for lack of matching provenance.",
       "支持原作者。", "认可证据充分的共同作者。", "来源不匹配，驳回窃取指控。"),
     m(61, "i", 1, "report_policy", "Choose the Reporting Regime First", "先定汇报制度",
@@ -170,11 +172,11 @@ MECHANISMS = (
       "周期开始时冻结两名管理者的权重，合计必须正好一百。",
       "Use seventy-thirty toward the solid line.", "Use equal weights.", "Use forty-sixty toward the dotted line.",
       "实线七成、虚线三成。", "双方各半。", "实线四成、虚线六成。"),
-    m(64, "j", 3, "manager_handoff", "A Manager Handoff Needs Two Signatures", "换老板必须双签",
-      "Only old and new managers together may move future responsibility; historical case ownership never moves.",
-      "只有新旧上司共同签字才能转移未来责任；历史案卷 owner 永远不动。",
-      "Collect both signatures and finalize.", "Record only the old manager's signature.", "Decline the handoff and keep the current manager.",
-      "收齐双方签名并完成交接。", "只记录旧上司签名。", "拒绝交接，保留现任上司。"),
+    m(64, "j", 3, "manager_handoff", "A Manager Handoff Needs Both Owners Named", "换上司必须列明新旧责任人",
+      "The decision owner may order a future-responsibility handoff only after naming both old and new managers; historical case ownership never moves. This record is not their personal consent.",
+      "裁决者只有列明新旧上司后，才能下令转移未来责任；历史案卷责任人永远不动。这份命令不冒充两名上司亲自同意。",
+      "Name both managers and finalize the ordered handoff.", "Record only the old manager and leave the handoff pending.", "Decline the handoff and keep the current manager.",
+      "列明新旧上司并完成责令交接。", "只记录旧上司，交接保持待定。", "拒绝交接，保留现任上司。"),
     m(65, "j", 2, "parachute_staffing", "An Airborne Manager Brings a Staff Pack", "空降主管与旧部包",
       "Imported staff reduce retained institutional memory and can trigger a favoritism audit.",
       "随空降主管带入的旧部会挤掉组织记忆，也可能触发任人唯亲审计。",
@@ -394,7 +396,7 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
     if mid == 27:
         checks += ["has_variable = zg361_cp_cross_reviewer_valid", "var:zg361_cp_cross_reviewer_valid = 1"]
     if mid == 28:
-        checks += ["has_variable = zg361_cp_signed_share_total", "var:zg361_cp_signed_share_total = 10000"]
+        checks += ["has_variable = zg361_cp_baseline_share_total", "var:zg361_cp_baseline_share_total = 10000"]
     if mid == 54:
         hours = (1, 4, 1)[choice - 1]
         checks += [
@@ -411,7 +413,7 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         if mid == 57:
             checks += ["has_variable = zg361_cp_report_share_total", "var:zg361_cp_report_share_total = 10000"]
         else:
-            checks += ["has_variable = zg361_cp_report_signed", "var:zg361_cp_report_signed = 1"]
+            checks += ["has_variable = zg361_cp_report_version_frozen", "var:zg361_cp_report_version_frozen = 1"]
     if mid == 55 and choice in (1, 2):
         needed = choice
         checks += [
@@ -504,17 +506,17 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 27:
         shares = ((7000, 2000, 1000), (5000, 3000, 2000), (4000, 4000, 2000))[choice - 1]
         lines += [
-            f"set_variable = {{ name = zg361_cp_signed_subject_bps value = {shares[0]} }}",
-            f"set_variable = {{ name = zg361_cp_signed_manager_bps value = {shares[1]} }}",
-            f"set_variable = {{ name = zg361_cp_signed_cross_bps value = {shares[2]} }}",
-            "set_variable = { name = zg361_cp_signed_share_total value = 10000 }",
+            f"set_variable = {{ name = zg361_cp_baseline_subject_bps value = {shares[0]} }}",
+            f"set_variable = {{ name = zg361_cp_baseline_manager_bps value = {shares[1]} }}",
+            f"set_variable = {{ name = zg361_cp_baseline_cross_bps value = {shares[2]} }}",
+            "set_variable = { name = zg361_cp_baseline_share_total value = 10000 }",
             f"set_variable = {{ name = zg361_cp_claimed_subject_bps value = {shares[0]} }}",
             f"set_variable = {{ name = zg361_cp_claimed_manager_bps value = {shares[1]} }}",
             f"set_variable = {{ name = zg361_cp_claimed_cross_bps value = {shares[2]} }}",
             "set_variable = { name = zg361_cp_claimed_share_total value = 10000 }",
-            "set_variable = { name = zg361_cp_contribution_signer_subject value = $TICKET_SUBJECT$ }",
-            "set_variable = { name = zg361_cp_contribution_signer_manager value = $TICKET_OWNER$ }",
-            "set_variable = { name = zg361_cp_contribution_signer_cross value = var:zg361_cp_cross_reviewer }",
+            "set_variable = { name = zg361_cp_contribution_party_subject value = $TICKET_SUBJECT$ }",
+            "set_variable = { name = zg361_cp_contribution_party_manager value = $TICKET_OWNER$ }",
+            "set_variable = { name = zg361_cp_contribution_party_cross value = var:zg361_cp_cross_reviewer }",
         ]
     elif mid == 31:
         grant, spend, visibility = ((20, 0, 5), (30, 10, 10), (0, 0, 0))[choice - 1]
@@ -611,9 +613,9 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 57:
         lines += [
             f"set_variable = {{ name = zg361_cp_report_version value = {choice} }}",
-            "set_variable = { name = zg361_cp_report_signer value = $TICKET_SUBJECT$ }",
-            "set_variable = { name = zg361_cp_report_signature_case value = $TICKET_CASE$ }",
-            "set_variable = { name = zg361_cp_report_signed value = 1 }",
+            "set_variable = { name = zg361_cp_report_version_author value = $TICKET_SUBJECT$ }",
+            "set_variable = { name = zg361_cp_report_version_case value = $TICKET_CASE$ }",
+            "set_variable = { name = zg361_cp_report_version_frozen value = 1 }",
         ]
     elif mid == 58:
         routes = (1, 2, 3)[choice - 1]
@@ -631,7 +633,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             "set_variable = { name = zg361_cp_risk_severity value = 9 }",
             f"set_variable = {{ name = zg361_cp_risk_remaining_loss value = {loss} }}",
             f"set_variable = {{ name = zg361_cp_risk_integrity_delta value = {integrity} }}",
-            "set_variable = { name = zg361_cp_risk_version_case value = var:zg361_cp_report_signature_case }",
+            "set_variable = { name = zg361_cp_risk_version_case value = var:zg361_cp_report_version_case }",
         ]
     elif mid == 55:
         reads = (1, 2, 0)[choice - 1]
@@ -646,7 +648,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [
             f"set_variable = {{ name = zg361_cp_idea_owner value = {owner} }}",
             f"set_variable = {{ name = zg361_cp_theft_upheld value = {1 if choice == 1 else 0} }}",
-            "set_variable = { name = zg361_cp_idea_signature_used value = var:zg361_cp_report_signature_case }",
+            "set_variable = { name = zg361_cp_idea_version_used value = var:zg361_cp_report_version_case }",
         ]
     elif mid == 63:
         solid, dotted = ((70, 30), (50, 50), (40, 60))[choice - 1]
@@ -675,8 +677,8 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [
             "set_variable = { name = zg361_cp_handoff_old_manager value = $TICKET_OWNER$ }",
             "set_variable = { name = zg361_cp_handoff_new_manager value = var:zg361_cp_successor_manager }",
-            f"set_variable = {{ name = zg361_cp_handoff_old_signed value = {1 if choice in (1, 2) else 0} }}",
-            f"set_variable = {{ name = zg361_cp_handoff_new_signed value = {1 if choice == 1 else 0} }}",
+            f"set_variable = {{ name = zg361_cp_handoff_old_manager_recorded value = {1 if choice in (1, 2) else 0} }}",
+            f"set_variable = {{ name = zg361_cp_handoff_new_manager_recorded value = {1 if choice == 1 else 0} }}",
             f"set_variable = {{ name = zg361_cp_handoff_finalized value = {1 if choice == 1 else 0} }}",
         ]
         if choice == 1:
@@ -828,7 +830,7 @@ def consumer_effects(spec: Mechanism) -> list[str]:
     mid = spec.mid
     specific: dict[int, list[str]] = {
         26: ["set_variable = { name = zg361_cp_visible_hard_output value = var:zg361_cp_hard_output }", "set_variable = { name = zg361_cp_visible_visibility value = var:zg361_cp_visibility_points }"],
-        27: ["set_variable = { name = zg361_cp_visible_signed_share_total value = var:zg361_cp_signed_share_total }"],
+        27: ["set_variable = { name = zg361_cp_visible_baseline_share_total value = var:zg361_cp_baseline_share_total }"],
         28: ["set_variable = { name = zg361_cp_visible_claimed_share_total value = var:zg361_cp_claimed_share_total }", "set_variable = { name = zg361_cp_visible_claim_delta_total value = var:zg361_cp_claim_transfer_total }", "set_variable = { name = zg361_cp_visible_audit_delta_total value = var:zg361_cp_claim_audit_total }"],
         29: ["set_variable = { name = zg361_cp_visible_metric_net value = var:zg361_cp_metric_net }", "if = { limit = { has_variable = zg361_kpi_value } change_variable = { name = zg361_kpi_value add = var:zg361_cp_metric_net } }"],
         30: ["set_variable = { name = zg361_cp_visible_capacity_reserved value = var:zg361_cp_capacity_reserved }", "set_variable = { name = zg361_cp_visible_resource_winners value = var:zg361_cp_resource_winner_n }"],
@@ -836,7 +838,7 @@ def consumer_effects(spec: Mechanism) -> list[str]:
         54: ["set_variable = { name = zg361_cp_visible_delivery_capacity value = var:zg361_cp_capacity_remaining }", "set_variable = { name = zg361_cp_visible_report_output value = var:zg361_cp_report_packet_hard_output }"],
         55: ["set_variable = { name = zg361_cp_visible_attention_used value = var:zg361_cp_attention_used }", "set_variable = { name = zg361_cp_visible_seen_count value = var:zg361_cp_report_seen_count }"],
         56: ["set_variable = { name = zg361_cp_visible_forward_total value = var:zg361_cp_report_share_total }"],
-        57: ["set_variable = { name = zg361_cp_visible_signature_case value = var:zg361_cp_report_signature_case }"],
+        57: ["set_variable = { name = zg361_cp_visible_version_case value = var:zg361_cp_report_version_case }"],
         58: ["set_variable = { name = zg361_cp_visible_route_count value = var:zg361_cp_report_route_count }", "set_variable = { name = zg361_cp_visible_route_seen_count value = var:zg361_cp_report_seen_count }"],
         59: ["set_variable = { name = zg361_cp_visible_risk_loss value = var:zg361_cp_risk_remaining_loss }"],
         60: ["set_variable = { name = zg361_cp_visible_idea_owner value = var:zg361_cp_idea_owner }"],
@@ -1855,13 +1857,23 @@ def render_localization(language: str) -> bytes:
     rows: list[str] = []
     for spec in MECHANISMS:
         title = spec.title_cn if chinese else spec.title_en
-        desc = spec.desc_cn if chinese else spec.desc_en
+        desc = (
+            f"当事人：[scope:zg361_cp_{spec.domain}_subject.GetShortUIName]；裁决者："
+            f"[scope:zg361_cp_{spec.domain}_owner.GetShortUIName]。{spec.desc_cn} "
+            "本卡承接同一项目案卷的上一项回执，选择会立即写入；按钮写明本项实际处理。"
+            if chinese
+            else f"Official: [scope:zg361_cp_{spec.domain}_subject.GetShortUIName]. Decision owner: "
+            f"[scope:zg361_cp_{spec.domain}_owner.GetShortUIName]. {spec.desc_en} "
+            "This card follows the previous receipt in the same project case and records the choice immediately; each option states the action taken."
+        )
         routes = spec.routes_cn if chinese else spec.routes_en
         rows += [
             f' zg361cp.{spec.mid}.t:0 "{esc(title)}"',
             f' zg361cp.{spec.mid}.desc:0 "{esc(desc)}"',
             *(f' zg361cp.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", routes)),
         ]
+    if chinese:
+        rows = normalize_localization_rows(rows)
     return localized(f"l_{language}:\n" + "\n".join(rows))
 
 

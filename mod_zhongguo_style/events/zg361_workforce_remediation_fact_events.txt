@@ -7,7 +7,15 @@ zg361workforceremediationfact.1 = {
 	type = character_event
 	theme = stewardship
 	title = zg361workforceremediationfact.1.t
-	desc = zg361workforceremediationfact.1.desc
+	desc = {
+		desc = zg361workforceremediationfact.1.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_workforce_remediation_fact_ticket_reason = 1 } desc = zg361workforceremediationfact.1.reason_pay }
+			triggered_desc = { trigger = { scope:zg361_workforce_remediation_fact_ticket_reason = 2 } desc = zg361workforceremediationfact.1.reason_role }
+			triggered_desc = { trigger = { scope:zg361_workforce_remediation_fact_ticket_reason = 3 } desc = zg361workforceremediationfact.1.reason_move }
+			desc = zg361workforceremediationfact.1.reason_unknown
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes

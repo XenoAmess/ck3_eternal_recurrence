@@ -733,7 +733,6 @@ zg361_p3_m338_route_b_effect = {
 			set_variable = { name = zg361_p3_triangle_signature value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m338_demand_case value = var:zg361_p3_demand_object_case }
 			set_variable = { name = zg361_p3_m338_applicable value = var:zg361_p3_demand_admitted }
 			set_variable = { name = zg361_p3_m338_tradeoff_code value = 2 }

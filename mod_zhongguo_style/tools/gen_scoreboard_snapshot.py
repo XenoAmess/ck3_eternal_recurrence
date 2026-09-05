@@ -949,6 +949,19 @@ def append_field_copy(
         if source_scope
         else f"has_variable = {field.source_var}"
     )
+    # Bootstrap initializes the leaver fields to the sentinel route 0 for
+    # every assessed official.  Absence and sentinel zero both mean "not a
+    # leaver"; never project those placeholders as a real 3.50 grade or an
+    # apparent leaver receipt in the player-facing scoreboard.
+    if field.name.startswith("leaver_"):
+        route_guard = (
+            f"{source_scope} = {{ has_variable = zg361_b1_leaver_route "
+            "NOT = { var:zg361_b1_leaver_route = 0 } }"
+            if source_scope
+            else "has_variable = zg361_b1_leaver_route "
+            "NOT = { var:zg361_b1_leaver_route = 0 }"
+        )
+        has_source = f"{has_source} {route_guard}"
     source_value = (
         f"{source_scope}.var:{field.source_var}"
         if source_scope

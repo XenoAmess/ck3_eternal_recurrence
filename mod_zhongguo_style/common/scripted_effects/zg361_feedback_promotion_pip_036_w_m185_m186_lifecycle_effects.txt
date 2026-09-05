@@ -522,14 +522,21 @@ zg361_pp_m186_core_effect = {
 					set_variable = { name = zg361_pp_m186_object_cycle value = var:zg361_case_w_cycle_serial }
 					set_variable = { name = zg361_pp_m186_object_case value = var:zg361_case_w_case_serial }
 					set_variable = { name = zg361_pp_m186_object_state value = 3 }
-					set_variable = { name = zg361_pp_m186_baseline_workload value = 0 }
-					set_variable = { name = zg361_pp_m186_current_workload value = 0 }
-					set_variable = { name = zg361_pp_m186_replacement_workload value = 0 }
+					set_variable = { name = zg361_pp_m186_baseline_workload value = 10 }
+					set_variable = { name = zg361_pp_m186_current_workload value = 10 }
+					set_variable = { name = zg361_pp_m186_replacement_workload value = 2 }
 					set_variable = { name = zg361_pp_m186_deadline_extension_days value = 0 }
 					set_variable = { name = zg361_pp_m186_goal_creep_violation value = 0 }
-					set_variable = { name = zg361_pp_m186_workload_truth_status value = 0 }
-					set_variable = { name = zg361_pp_m186_workload_red_code value = 1 }
+					set_variable = { name = zg361_pp_m186_workload_truth_status value = 1 }
+					set_variable = { name = zg361_pp_m186_workload_red_code value = 0 }
 					set_variable = { name = zg361_pp_m186_manager_workload_route value = scope:zg361_pp_route }
+					if = {
+						limit = { scope:zg361_pp_route = 2 }
+						set_variable = { name = zg361_pp_m186_current_workload value = 15 }
+						set_variable = { name = zg361_pp_m186_replacement_workload value = 0 }
+						set_variable = { name = zg361_pp_m186_goal_creep_violation value = 1 }
+						set_variable = { name = zg361_pp_m186_workload_red_code value = 2 }
+					}
 
 				}
 

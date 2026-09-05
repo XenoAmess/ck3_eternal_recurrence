@@ -361,7 +361,15 @@ zg361comp.902 = {
     type = character_event
     theme = vassal
     title = zg361comp.902.t
-    desc = zg361comp.902.desc
+	desc = {
+		desc = zg361comp.902.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_comp_m287_visibility_mode = 1 } desc = zg361comp.902.private }
+			triggered_desc = { trigger = { var:zg361_comp_m287_visibility_mode = 2 } desc = zg361comp.902.public }
+			triggered_desc = { trigger = { var:zg361_comp_m287_visibility_mode = 3 } desc = zg361comp.902.anonymous }
+			desc = zg361comp.902.unknown
+		}
+	}
     trigger = { is_ai = no }
     option = { name = zg361comp.ok }
 }
@@ -379,7 +387,15 @@ zg361comp.904 = {
     type = character_event
     theme = vassal
     title = zg361comp.904.t
-    desc = zg361comp.904.desc
+	desc = {
+		desc = zg361comp.904.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_comp_m299_leaver_class = 1 } desc = zg361comp.904.good }
+			triggered_desc = { trigger = { var:zg361_comp_m299_leaver_class = 2 } desc = zg361comp.904.bad }
+			triggered_desc = { trigger = { var:zg361_comp_m299_leaver_class = 3 } desc = zg361comp.904.transfer }
+			desc = zg361comp.904.unknown
+		}
+	}
     trigger = { is_ai = no }
     option = { name = zg361comp.ok }
 }

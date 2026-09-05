@@ -130,13 +130,13 @@ zg361_cp_m28_route_a_effect = {
 					has_variable = zg361_cp_project_object_version
 					has_variable = zg361_cp_project_object_deadline_cycle
 					has_variable = zg361_cp_project_object_status
-					has_variable = zg361_cp_signed_share_total
+					has_variable = zg361_cp_baseline_share_total
 				}
 				var:zg361_cp_e_operation_used < var:zg361_cp_e_operation_total
 				var:zg361_cp_project_object_manager = $TICKET_OWNER$
 				var:zg361_cp_project_object_subject = $TICKET_SUBJECT$
 				var:zg361_cp_project_object_cycle = $TICKET_CYCLE$
-				var:zg361_cp_signed_share_total = 10000
+				var:zg361_cp_baseline_share_total = 10000
 			}
 			trigger_else = { always = no }
 		}
@@ -328,13 +328,13 @@ zg361_cp_m28_route_a_effect = {
 						has_variable = zg361_cp_project_object_version
 						has_variable = zg361_cp_project_object_deadline_cycle
 						has_variable = zg361_cp_project_object_status
-						has_variable = zg361_cp_signed_share_total
+						has_variable = zg361_cp_baseline_share_total
 					}
 					var:zg361_cp_e_operation_used < var:zg361_cp_e_operation_total
 					var:zg361_cp_project_object_manager = $TICKET_OWNER$
 					var:zg361_cp_project_object_subject = $TICKET_SUBJECT$
 					var:zg361_cp_project_object_cycle = $TICKET_CYCLE$
-					var:zg361_cp_signed_share_total = 10000
+					var:zg361_cp_baseline_share_total = 10000
 				}
 				trigger_else = { always = no }
 			}
@@ -483,13 +483,13 @@ zg361_cp_m28_route_b_effect = {
 					has_variable = zg361_cp_project_object_version
 					has_variable = zg361_cp_project_object_deadline_cycle
 					has_variable = zg361_cp_project_object_status
-					has_variable = zg361_cp_signed_share_total
+					has_variable = zg361_cp_baseline_share_total
 				}
 				var:zg361_cp_e_operation_used < var:zg361_cp_e_operation_total
 				var:zg361_cp_project_object_manager = $TICKET_OWNER$
 				var:zg361_cp_project_object_subject = $TICKET_SUBJECT$
 				var:zg361_cp_project_object_cycle = $TICKET_CYCLE$
-				var:zg361_cp_signed_share_total = 10000
+				var:zg361_cp_baseline_share_total = 10000
 			}
 			trigger_else = { always = no }
 		}
@@ -685,13 +685,13 @@ zg361_cp_m28_route_b_effect = {
 						has_variable = zg361_cp_project_object_version
 						has_variable = zg361_cp_project_object_deadline_cycle
 						has_variable = zg361_cp_project_object_status
-						has_variable = zg361_cp_signed_share_total
+						has_variable = zg361_cp_baseline_share_total
 					}
 					var:zg361_cp_e_operation_used < var:zg361_cp_e_operation_total
 					var:zg361_cp_project_object_manager = $TICKET_OWNER$
 					var:zg361_cp_project_object_subject = $TICKET_SUBJECT$
 					var:zg361_cp_project_object_cycle = $TICKET_CYCLE$
-					var:zg361_cp_signed_share_total = 10000
+					var:zg361_cp_baseline_share_total = 10000
 				}
 				trigger_else = { always = no }
 			}

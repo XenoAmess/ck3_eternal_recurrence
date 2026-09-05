@@ -85,7 +85,7 @@ zg361_mechanism_259_ai_effect = {
 	}
 }
 
-# 260 人力补位 / 结果承包二种合同
+# 260 人力补位 / 结果承包两种合同
 zg361_mechanism_260_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_260_choice } }

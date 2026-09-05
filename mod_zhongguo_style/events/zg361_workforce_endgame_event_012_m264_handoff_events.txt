@@ -8,7 +8,12 @@ zg361we.5264 = {
 	type = character_event
 	theme = stewardship
 	title = zg361we.handoff.1.t
-	desc = zg361we.handoff.1.desc
+	desc = {
+		first_valid = {
+			triggered_desc = { trigger = { this = scope:zg361_we_m264_handoff_subject_scope } desc = zg361we.handoff.1.subject.desc }
+			desc = zg361we.handoff.1.owner.desc
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_we_m264_handoff_subject_scope
@@ -25,11 +30,23 @@ zg361we.5264 = {
 		}
 	}
 	option = {
-		name = zg361we.handoff.1.complete
+		trigger = { this = scope:zg361_we_m264_handoff_subject_scope }
+		name = zg361we.handoff.1.subject.complete
 		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_documentation_effect = yes }
 	}
 	option = {
-		name = zg361we.handoff.1.refuse
+		trigger = { this = scope:zg361_we_m264_handoff_subject_scope }
+		name = zg361we.handoff.1.subject.refuse
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 1 } }
+	}
+	option = {
+		trigger = { this = scope:zg361_we_m264_handoff_owner_scope }
+		name = zg361we.handoff.1.owner.complete
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_documentation_effect = yes }
+	}
+	option = {
+		trigger = { this = scope:zg361_we_m264_handoff_owner_scope }
+		name = zg361we.handoff.1.owner.refuse
 		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 1 } }
 	}
 }
@@ -38,7 +55,12 @@ zg361we.5265 = {
 	type = character_event
 	theme = stewardship
 	title = zg361we.handoff.2.t
-	desc = zg361we.handoff.2.desc
+	desc = {
+		first_valid = {
+			triggered_desc = { trigger = { this = scope:zg361_we_m264_handoff_subject_scope } desc = zg361we.handoff.2.subject.desc }
+			desc = zg361we.handoff.2.owner.desc
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_we_m264_handoff_subject_scope
@@ -55,11 +77,23 @@ zg361we.5265 = {
 		}
 	}
 	option = {
-		name = zg361we.handoff.2.complete
+		trigger = { this = scope:zg361_we_m264_handoff_subject_scope }
+		name = zg361we.handoff.2.subject.complete
 		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_shadowing_effect = yes }
 	}
 	option = {
-		name = zg361we.handoff.2.refuse
+		trigger = { this = scope:zg361_we_m264_handoff_subject_scope }
+		name = zg361we.handoff.2.subject.refuse
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 2 } }
+	}
+	option = {
+		trigger = { this = scope:zg361_we_m264_handoff_owner_scope }
+		name = zg361we.handoff.2.owner.complete
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_shadowing_effect = yes }
+	}
+	option = {
+		trigger = { this = scope:zg361_we_m264_handoff_owner_scope }
+		name = zg361we.handoff.2.owner.refuse
 		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 2 } }
 	}
 }
@@ -68,7 +102,12 @@ zg361we.5266 = {
 	type = character_event
 	theme = stewardship
 	title = zg361we.handoff.3.t
-	desc = zg361we.handoff.3.desc
+	desc = {
+		first_valid = {
+			triggered_desc = { trigger = { this = scope:zg361_we_m264_handoff_subject_scope } desc = zg361we.handoff.3.subject.desc }
+			desc = zg361we.handoff.3.owner.desc
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_we_m264_handoff_subject_scope
@@ -85,11 +124,23 @@ zg361we.5266 = {
 		}
 	}
 	option = {
-		name = zg361we.handoff.3.complete
+		trigger = { this = scope:zg361_we_m264_handoff_subject_scope }
+		name = zg361we.handoff.3.subject.complete
 		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_practical_effect = yes }
 	}
 	option = {
-		name = zg361we.handoff.3.refuse
+		trigger = { this = scope:zg361_we_m264_handoff_subject_scope }
+		name = zg361we.handoff.3.subject.refuse
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 3 } }
+	}
+	option = {
+		trigger = { this = scope:zg361_we_m264_handoff_owner_scope }
+		name = zg361we.handoff.3.owner.complete
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_practical_effect = yes }
+	}
+	option = {
+		trigger = { this = scope:zg361_we_m264_handoff_owner_scope }
+		name = zg361we.handoff.3.owner.refuse
 		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 3 } }
 	}
 }

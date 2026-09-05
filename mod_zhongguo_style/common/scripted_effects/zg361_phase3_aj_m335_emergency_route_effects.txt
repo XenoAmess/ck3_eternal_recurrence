@@ -731,7 +731,6 @@ zg361_p3_m335_route_b_effect = {
 			set_variable = { name = zg361_p3_emergency_route value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m335_demand_case value = var:zg361_p3_demand_object_case }
 			set_variable = { name = zg361_p3_m335_route_code value = 2 }
 			set_variable = { name = zg361_p3_m335_slot_consumed value = 0 }

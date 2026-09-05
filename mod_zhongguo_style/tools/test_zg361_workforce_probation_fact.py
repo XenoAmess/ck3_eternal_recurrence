@@ -498,7 +498,7 @@ class WorkforceProbationFactTests(unittest.TestCase):
         for key in ("zg361wpf.2.t:0", "zg361wpf.2.desc:0", "zg361wpf.2.a:0"):
             self.assertIn(key, english)
             self.assertIn(key, chinese)
-        self.assertIn("PIP、真实正常离职或岗位变更排除项", chinese)
+        self.assertIn("改进计划、真实正常离职或岗位变更排除项", chinese)
         self.assertIn("consumed the same outcome once", english)
         for language in generator.LANGUAGES[2:]:
             with self.subTest(language=language):

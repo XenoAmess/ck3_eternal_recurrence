@@ -211,6 +211,7 @@ zg361_b1_submit_peer_recommendation_effect = {
 }
 
 zg361_b1_submit_peer_positive_effect = {
+	remove_variable = zg361_b1_peer_submission_applied
 	zg361_b1_prepare_shared_war_peer_task_effect = yes
 	if = {
 		limit = {
@@ -407,6 +408,7 @@ zg361_b1_submit_peer_positive_effect = {
 			change_variable = { name = zg361_b1_peer_raw_sum add = 10 }
 			change_variable = { name = zg361_b1_peer_timely_n add = 1 }
 		}
+		set_variable = { name = zg361_b1_peer_submission_applied value = 1 }
 		debug_log = "ZG361B1: sealed positive peer record submitted"
 	}
 	else = {
@@ -427,6 +429,7 @@ zg361_b1_submit_peer_positive_effect = {
 }
 
 zg361_b1_submit_peer_negative_effect = {
+	remove_variable = zg361_b1_peer_submission_applied
 	zg361_b1_prepare_shared_war_peer_task_effect = yes
 	if = {
 		limit = {
@@ -623,6 +626,7 @@ zg361_b1_submit_peer_negative_effect = {
 			change_variable = { name = zg361_b1_peer_raw_sum add = -15 }
 			change_variable = { name = zg361_b1_peer_timely_n add = 1 }
 		}
+		set_variable = { name = zg361_b1_peer_submission_applied value = 1 }
 		debug_log = "ZG361B1: sealed negative peer record submitted"
 	}
 	else = {

@@ -2684,7 +2684,21 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ):
             self.assertIn(formula, exact)
         self.assertNotIn("multiply = 0.3", exact)
-        self.assertNotIn("multiply = 0.1", exact)
+        self.assertIn("has_game_rule = zg361_ratio_relaxed", exact)
+        self.assertIn("has_game_rule = zg361_ratio_off", exact)
+        self.assertIn("has_variable = zg361_ratio_override", exact)
+        self.assertIn(
+            "value = var:zg361_b1_quota_cohort_size multiply = 0.1 floor = yes",
+            exact,
+        )
+        self.assertIn(
+            "value = var:zg361_b1_quota_cohort_size multiply = 0.05 floor = yes",
+            exact,
+        )
+        self.assertIn(
+            "var:zg361_b1_quota_cohort_size >= 5 var:zg361_b1_quota_bottom_slots < 1",
+            exact,
+        )
         self.assertNotIn("round = yes", exact)
         self.assertIn(
             "var:zg361_b1_quota_top_remainder >= var:zg361_b1_quota_middle_remainder",

@@ -245,7 +245,7 @@ zg361cp.26 = {
 	}
 }
 
-# #027 — Sign One Hundred Percent of the Credit
+# #027 — Allocate One Hundred Percent of the Credit
 zg361cp.27 = {
 	type = character_event
 	theme = stewardship
@@ -1197,7 +1197,7 @@ zg361cp.57 = {
 	}
 }
 
-# #058 — Signed Material Before Routing
+# #058 — Freeze Material Before Routing
 zg361cp.58 = {
 	type = character_event
 	theme = stewardship
@@ -1563,7 +1563,7 @@ zg361cp.55 = {
 	}
 }
 
-# #060 — The Signed Version Owns the Idea
+# #060 — The Frozen Version Owns the Idea
 zg361cp.60 = {
 	type = character_event
 	theme = stewardship
@@ -2015,7 +2015,7 @@ zg361cp.65 = {
 	}
 }
 
-# #064 — A Manager Handoff Needs Two Signatures
+# #064 — A Manager Handoff Needs Both Owners Named
 zg361cp.64 = {
 	type = character_event
 	theme = stewardship

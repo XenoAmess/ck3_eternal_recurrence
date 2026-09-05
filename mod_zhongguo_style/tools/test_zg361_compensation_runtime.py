@@ -346,10 +346,18 @@ class CompensationRuntimeTests(unittest.TestCase):
             "zg361comp.901.desc",
             "zg361comp.902.t",
             "zg361comp.902.desc",
+            "zg361comp.902.private",
+            "zg361comp.902.public",
+            "zg361comp.902.anonymous",
+            "zg361comp.902.unknown",
             "zg361comp.903.t",
             "zg361comp.903.desc",
             "zg361comp.904.t",
             "zg361comp.904.desc",
+            "zg361comp.904.good",
+            "zg361comp.904.bad",
+            "zg361comp.904.transfer",
+            "zg361comp.904.unknown",
             "zg361comp.ok",
         )
         localization_paths = [
@@ -1328,14 +1336,23 @@ class CompensationRuntimeTests(unittest.TestCase):
                 "zg361_comp_bonus_total",
                 "zg361_comp_ae_statement_payable",
                 "zg361_comp_ae_statement_owed",
-                "zg361_comp_m287_visibility_mode",
                 "zg361_comp_af_total_units",
                 "zg361_comp_m294_current_value",
                 "zg361_comp_m294_liquid_value",
-                "zg361_comp_m299_leaver_class",
                 "zg361_comp_af_repurchased_units",
             ):
                 self.assertIn(f"ROOT.MakeScope.Var('{variable}').GetValue", source)
+            for key in (
+                "zg361comp.902.private",
+                "zg361comp.902.public",
+                "zg361comp.902.anonymous",
+                "zg361comp.902.unknown",
+                "zg361comp.904.good",
+                "zg361comp.904.bad",
+                "zg361comp.904.transfer",
+                "zg361comp.904.unknown",
+            ):
+                self.assertIn(f" {key}:0 ", source)
             self.assertNotIn("named_peer_salary", source)
 
     def test_runtime_claims_only_static_ready_without_live_evidence(self) -> None:

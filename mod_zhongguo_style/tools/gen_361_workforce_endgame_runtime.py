@@ -20,6 +20,7 @@ from zg361_phase3_workforce_endgame_model import (
     WORKFORCE_EXECUTION_ORDER,
     WORKFORCE_EXECUTION_STAGE,
 )
+from zg361_localization_style import normalize_localization_rows
 
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
@@ -58,8 +59,8 @@ RETIRED_EFFECT_PATHS = tuple(
 LEGACY_EVENT_FILENAME = "zg361_workforce_endgame_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_workforce_endgame_event_*_events.txt"
-HISTORICAL_EVENT_BYTES = 168_729
-HISTORICAL_EVENT_SHA256 = "637F65CC72C176E6E19BE982F41B203DC326047939B79A80E5E43D3A9D361EF7"
+HISTORICAL_EVENT_BYTES = 171_007
+HISTORICAL_EVENT_SHA256 = "DEAA55F39B21D1452AD82BC2F3D9AB64225F0D00A2BD907223E73E79EB458181"
 HISTORICAL_EVENT_COUNT = 149
 EVENT_TARGET_MAX = 10
 EVENT_HARD_MAX = 20
@@ -375,11 +376,16 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
             title_cn = binding.title_cn
             conservation = binding.conservation_rule.rstrip(".")
             desc_en = (
-                f"The portfolio has reached {title_en}. Freeze one route, its "
-                f"evidence and its resource direction; {conservation}."
+                f"Case owner [scope:{PREFIX}_{domain}_owner.GetShortUIName] is deciding "
+                f"{title_en} for [scope:{PREFIX}_{domain}_subject.GetShortUIName]. "
+                "The two active routes and their immediate consequences are written on the buttons; "
+                "route C closes this item for the current campaign, creates no business object, "
+                f"and will not re-propose it automatically. {conservation}."
             )
             desc_cn = (
-                f"案卷来到“{title_cn}”。请选择一条制度路线；证据、资源流向与未来后果都会冻结在本案。"
+                f"案卷责任人 [scope:{PREFIX}_{domain}_owner.GetShortUIName] 正在为当事人 "
+                f"[scope:{PREFIX}_{domain}_subject.GetShortUIName] 裁决「{title_cn}」。"
+                "A/B 的具体动作与立即后果写在按钮上；C 会在本局永久关闭本项、不创建业务对象，也不会自动重新提案。"
             )
             rows.append(
                 Mechanism(
@@ -398,12 +404,12 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
                     (
                         choice["option_a_en"],
                         choice["option_b_en"],
-                        "Defer this mechanism, bind one due-cycle debt, and create no business object.",
+                        "Close this item for the current campaign, bind one due-cycle policy debt, create no business object, and do not re-propose it automatically.",
                     ),
                     (
                         choice["option_a_cn"],
                         choice["option_b_cn"],
-                        "暂缓本机制，只绑定一笔到期制度债，不创建业务对象。",
+                        "本局关闭本项，只绑定一笔到期制度债，不创建业务对象，也不会自动重新提案。",
                     ),
                 )
             )
@@ -8833,7 +8839,12 @@ def render_handoff_events() -> str:
 \ttype = character_event
 \ttheme = stewardship
 \ttitle = {NAMESPACE}.handoff.{step}.t
-\tdesc = {NAMESPACE}.handoff.{step}.desc
+\tdesc = {{
+\t\tfirst_valid = {{
+\t\t\ttriggered_desc = {{ trigger = {{ this = scope:{PREFIX}_m264_handoff_subject_scope }} desc = {NAMESPACE}.handoff.{step}.subject.desc }}
+\t\t\tdesc = {NAMESPACE}.handoff.{step}.owner.desc
+\t\t}}
+\t}}
 \ttrigger = {{
 \t\tis_ai = no
 \t\texists = scope:{PREFIX}_m264_handoff_subject_scope
@@ -8850,11 +8861,23 @@ def render_handoff_events() -> str:
 \t\t}}
 \t}}
 \toption = {{
-\t\tname = {NAMESPACE}.handoff.{step}.complete
+\t\ttrigger = {{ this = scope:{PREFIX}_m264_handoff_subject_scope }}
+\t\tname = {NAMESPACE}.handoff.{step}.subject.complete
 \t\tscope:{PREFIX}_m264_handoff_subject_scope = {{ {step_effect[step]} = yes }}
 \t}}
 \toption = {{
-\t\tname = {NAMESPACE}.handoff.{step}.refuse
+\t\ttrigger = {{ this = scope:{PREFIX}_m264_handoff_subject_scope }}
+\t\tname = {NAMESPACE}.handoff.{step}.subject.refuse
+\t\tscope:{PREFIX}_m264_handoff_subject_scope = {{ {PREFIX}_m264_refuse_handoff_effect = {{ EXPECTED_STEP = {step} }} }}
+\t}}
+\toption = {{
+\t\ttrigger = {{ this = scope:{PREFIX}_m264_handoff_owner_scope }}
+\t\tname = {NAMESPACE}.handoff.{step}.owner.complete
+\t\tscope:{PREFIX}_m264_handoff_subject_scope = {{ {step_effect[step]} = yes }}
+\t}}
+\toption = {{
+\t\ttrigger = {{ this = scope:{PREFIX}_m264_handoff_owner_scope }}
+\t\tname = {NAMESPACE}.handoff.{step}.owner.refuse
 \t\tscope:{PREFIX}_m264_handoff_subject_scope = {{ {PREFIX}_m264_refuse_handoff_effect = {{ EXPECTED_STEP = {step} }} }}
 \t}}
 }}""")
@@ -9055,12 +9078,27 @@ def render_localization(language: str) -> bytes:
     }
     for step in (1, 2, 3):
         title, desc, complete, refuse = (handoff_cn if chinese else handoff_en)[step]
+        if chinese:
+            subject_desc = f"你是 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]，{desc}"
+            owner_desc = f"你是责任人 [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]；当事人 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] 无法亲自处理本关。请只记录你实际核验过的结果。"
+            owner_complete = "我已亲自核验并代为记录完成"
+            owner_refuse = "我无法核验完成，记录本关失败"
+        else:
+            subject_desc = f"You are [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]. {desc}"
+            owner_desc = f"You are the accountable owner [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]; [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] cannot answer this checkpoint personally. Record only what you verified."
+            owner_complete = "I personally verified completion and record it"
+            owner_refuse = "I cannot verify completion; record failure"
         rows += [
             f' {NAMESPACE}.handoff.{step}.t:0 "{esc(title)}"',
-            f' {NAMESPACE}.handoff.{step}.desc:0 "{esc(desc)}"',
-            f' {NAMESPACE}.handoff.{step}.complete:0 "{esc(complete)}"',
-            f' {NAMESPACE}.handoff.{step}.refuse:0 "{esc(refuse)}"',
+            f' {NAMESPACE}.handoff.{step}.subject.desc:0 "{esc(subject_desc)}"',
+            f' {NAMESPACE}.handoff.{step}.owner.desc:0 "{esc(owner_desc)}"',
+            f' {NAMESPACE}.handoff.{step}.subject.complete:0 "{esc(complete)}"',
+            f' {NAMESPACE}.handoff.{step}.subject.refuse:0 "{esc(refuse)}"',
+            f' {NAMESPACE}.handoff.{step}.owner.complete:0 "{esc(owner_complete)}"',
+            f' {NAMESPACE}.handoff.{step}.owner.refuse:0 "{esc(owner_refuse)}"',
         ]
+    if chinese:
+        rows = normalize_localization_rows(rows)
     return localized(f"l_{language}:\n" + "\n".join(rows))
 
 

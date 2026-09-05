@@ -22,6 +22,7 @@ from zg361_career_hc_semantic_model import (
     SEMANTIC_SPECS,
 )
 from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
+from zg361_localization_style import normalize_localization_rows
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -81,6 +82,67 @@ STAGE_BY_ID = {
 # the manager's government treasury and personal gold pay five; the assessed
 # official receives the matching two credits.  Route C never spends money.
 DUAL_COST_IDS = frozenset({21, 25, 101, 104, 112, 114, 119})
+
+# Player-facing route names are deliberately separate from the frozen English
+# state identifiers in the semantic model.  The latter are audit vocabulary;
+# these strings tell the player what will actually be recorded.
+ROUTE_LABELS_CN = {
+    19: ("按资格门槛列为可晋升", "绕过提名担保直接列入候选"),
+    20: ("提交跨部门评审材料", "提交由提名担保人主导的材料"),
+    21: ("按奖金—调薪矩阵兑现", "把预算集中为一次现金激励"),
+    22: ("为该岗位预留编制预算", "因例外安排冻结该编制"),
+    23: ("完成编制答辩且不借用名额", "以紧急名义借用下一周期名额"),
+    24: ("安排下一周期转岗", "阻止本次内部流动"),
+    25: ("发出书面留任邀约", "只作口头反邀约"),
+    92: ("保持专业与管理双通道分离", "把明星专家直接转为管理者"),
+    93: ("让失败经理回到专家岗", "强留管理岗或降级"),
+    94: ("授予有边界的微职级", "只给半级头衔而不补权责"),
+    95: ("完成年度管理权复审", "撤销本期管理权限"),
+    96: ("预留一个破格晋升名额", "按提名担保关系破格"),
+    97: ("按跨团队校准结果分配名额", "按本地工作量分配名额"),
+    98: ("把名额绑定到明确岗位类型", "把名额作为通用空编使用"),
+    99: ("只结转一次未用名额", "年底收回未用名额"),
+    100: ("仅为关键岗位批准冻结期例外", "因关系安排冻结名额"),
+    101: ("按梯队方案占用编制", "把编制全部投向资深人选"),
+    102: ("按零基重审重新预留编制", "年度结算时收回编制"),
+    103: ("收回长期空置的占坑编制", "以虚拟候选继续冻结编制"),
+    104: ("按新人池与成熟人才池混合补员", "只从成熟人才池补员"),
+    105: ("把补岗责任绑定到离任岗位", "阻止释放补岗名额"),
+    106: ("分别登记关键岗位与关键人才", "把受宠者直接等同于关键岗位"),
+    107: ("按证据登记继任准备度", "直接登记为已具备继任资格"),
+    108: ("同时授予代理权限、资源与目标", "只加责任而不给资源权限"),
+    109: ("只向必要知情人披露高潜标签", "公开高潜标签"),
+    110: ("先冻结绩效，再单独校准潜力", "用潜力覆盖已冻结绩效"),
+    111: ("如实区分遗憾流失与正常流失", "把流失统一包装为健康流动"),
+    112: ("只承诺一项有资金保障的留任条件", "临时追加反邀约"),
+    113: ("按里程碑复制关键知识", "继续依赖单一关键人"),
+    114: ("转岗完成后给原经理人才输出信用", "由原经理阻止人才输出"),
+    115: ("在终选前隐藏内部应聘身份", "在批准前提前暴露身份"),
+    116: ("在 90 日内放人", "使用唯一一次延期，在 150 日内放人"),
+    117: ("只使用一次转岗爬坡保护", "到岗后立即参加完整排名"),
+    118: ("把试用期判定与末位配额分开", "把新人直接放入末位池"),
+    119: ("把招聘质量回写给三方责任人", "只奖励招聘速度"),
+    120: ("按 3、6、12 个月里程碑结算导师责任", "登记无资源保障的导师关系"),
+    121: ("先用三人小团队试任经理", "直接交付大团队"),
+    122: ("采用结果 40%、育人 30%、价值观 30%", "把结果权重提高到 80%"),
+    123: ("采用六因素可信下属反馈", "只采纳一张匿名票"),
+    124: ("先确认接班人，再批准经理晋升", "先晋升经理，再补接班人"),
+    125: ("把危机处置授权给团队", "由经理亲自包揽救火"),
+    126: ("按绩效与价值观四象限处置", "只按绩效处置"),
+    127: ("按管理层级限制管理幅度", "保持扁平结构并承受评分失真"),
+    128: ("把本次气候结果用于下一周期政策", "下一周期继续沿用刚性配额"),
+}
+
+OBJECT_KIND_CN = {
+    "candidate": "候选人",
+    "vacancy": "岗位空缺",
+    "compensation": "薪酬回执",
+    "hc-slot": "编制名额",
+    "incumbent": "在任者",
+    "succession": "继任案卷",
+    "backfill": "补岗责任",
+    "manager": "管理者责任",
+}
 
 # Subject-owned acknowledgements are separate from manager decisions.  They
 # may be used by counts/barons on their own frozen case and never open/advance
@@ -156,6 +218,8 @@ def validate_specs() -> None:
         raise ValueError("career/HC semantic registry ID drifted")
     if set(SEMANTIC_SPECS) != set(EXPECTED_IDS):
         raise ValueError("career/HC semantic registry coverage drifted")
+    if set(ROUTE_LABELS_CN) != set(EXPECTED_IDS):
+        raise ValueError("career/HC player-facing route label coverage drifted")
     q_kinds = {
         kind.value
         for mechanism_id in Q_AUTHORITY_IDS
@@ -2376,23 +2440,44 @@ def localization_rows(language: str) -> list[str]:
         behavior = MECHANISM_BEHAVIORS[mechanism_id]
         title = behavior.behavior_key.replace("_", " ").title() if english else behavior.title_cn
         domain = DOMAIN_BY_ID[mechanism_id]
-        desc = (
-            f"Decide how this frozen {domain.title_en.lower()} case will handle {title}. "
-            "The route is bound to this manager, official, review cycle, case and stage."
-            if english
-            else f"这份已冻结的{domain.title_cn}案卷来到“{title}”。"
-            "路线会绑定上司、受评官员、考核周期、案卷与阶段，不能靠重开窗口改口。"
+        scopes = event_scope_names(domain.key)
+        deadline = domain.deadlines[STAGE_BY_ID[mechanism_id] - 1]
+        object_names_cn = "、".join(
+            OBJECT_KIND_CN[kind.value] for kind in SEMANTIC_SPECS[mechanism_id].object_kinds
         )
+        object_names_en = ", ".join(
+            kind.value.replace("-", " ") for kind in SEMANTIC_SPECS[mechanism_id].object_kinds
+        )
+        desc = (
+            f"Official: [scope:{scopes['subject']}.GetShortUIName]. Decision owner: "
+            f"[scope:{scopes['owner']}.GetShortUIName]. The preceding career/headcount receipt has brought "
+            f"{title} to decision. Routes A and B immediately record {object_names_en}; any unfinished stage "
+            f"falls due after {deadline} days. Route C closes this item without creating those business objects "
+            "and records a next-cycle deferral receipt; it is not automatically proposed again."
+            if english
+            else f"当事人：[scope:{scopes['subject']}.GetShortUIName]；裁决者：[scope:{scopes['owner']}.GetShortUIName]。"
+            f"上一项职业与编制回执已把「{title}」送到当前节点。路线甲、乙会立即登记{object_names_cn}；"
+            f"未完成阶段最迟在 {deadline} 日后结算。路线丙只关闭本项并登记下一周期到期的搁置回执，"
+            "不会创建上述业务对象，也不会自动再次提案。"
+        )
+        route_a_cn, route_b_cn = ROUTE_LABELS_CN[mechanism_id]
+        route_a_en = SEMANTIC_SPECS[mechanism_id].a_state.replace("-", " ").capitalize() + "."
+        route_b_en = SEMANTIC_SPECS[mechanism_id].b_state.replace("-", " ").capitalize() + "."
+        if mechanism_id in DUAL_COST_IDS:
+            route_a_cn += "；直属上司的国库与私人钱财各支付 5，当事人的国库与私人钱财各收到 5。"
+            route_b_cn += "；直属上司的国库与私人钱财各支付 5，当事人的国库与私人钱财各收到 5。"
+            route_a_en += " The direct manager pays 5 treasury and 5 personal gold; the official receives both amounts."
+            route_b_en += " The direct manager pays 5 treasury and 5 personal gold; the official receives both amounts."
         rows.extend(
             (
                 f' zg361ch.m{mechanism_id:03d}.name:0 "{title}"',
                 f' zg361ch.m{mechanism_id:03d}.desc:0 "{desc}"',
-                f' zg361ch.m{mechanism_id:03d}.a:0 "Evidence-led route"' if english else f' zg361ch.m{mechanism_id:03d}.a:0 "按证据办"',
-                f' zg361ch.m{mechanism_id:03d}.b:0 "Political route"' if english else f' zg361ch.m{mechanism_id:03d}.b:0 "按政治办"',
-                f' zg361ch.m{mechanism_id:03d}.c:0 "Defer with recorded debt"' if english else f' zg361ch.m{mechanism_id:03d}.c:0 "延期，但欠账留痕"',
+                f' zg361ch.m{mechanism_id:03d}.a:0 "{route_a_en}"' if english else f' zg361ch.m{mechanism_id:03d}.a:0 "{route_a_cn}"',
+                f' zg361ch.m{mechanism_id:03d}.b:0 "{route_b_en}"' if english else f' zg361ch.m{mechanism_id:03d}.b:0 "{route_b_cn}"',
+                f' zg361ch.m{mechanism_id:03d}.c:0 "Close this item, create no business object, and record a next-cycle deferral receipt; it will not be proposed again automatically."' if english else f' zg361ch.m{mechanism_id:03d}.c:0 "关闭本项，不创建业务对象，登记下一周期到期的搁置回执；不会自动重提。"',
             )
         )
-    return rows
+    return normalize_localization_rows(rows) if not english else rows
 
 
 def render_localization(language: str) -> bytes:

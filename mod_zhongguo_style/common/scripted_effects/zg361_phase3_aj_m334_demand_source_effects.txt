@@ -617,7 +617,6 @@ zg361_p3_m334_route_b_effect = {
 			set_variable = { name = zg361_p3_demand_source value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_demand_object_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_p3_demand_object_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_p3_demand_object_cycle value = $TICKET_CYCLE$ }

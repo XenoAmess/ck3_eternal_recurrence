@@ -182,7 +182,7 @@ zg361_p3_m343_consume_effect = {
 				has_variable = zg361_p3_m343_proposer_signer
 				has_variable = zg361_p3_m343_executor_signer
 				has_variable = zg361_p3_m343_acceptor_signer
-				has_variable = zg361_p3_m343_signature_count
+				has_variable = zg361_p3_m343_service_count
 				has_variable = zg361_p3_demand_acceptance_outcome
 				}
 			var:zg361_p3_m343_write_owner = var:zg361_case_aj_owner
@@ -229,7 +229,7 @@ zg361_p3_m343_consume_effect = {
 		set_variable = { name = zg361_p3_m343_visible_m343_proposer_signer value = var:zg361_p3_m343_proposer_signer }
 		set_variable = { name = zg361_p3_m343_visible_m343_executor_signer value = var:zg361_p3_m343_executor_signer }
 		set_variable = { name = zg361_p3_m343_visible_m343_acceptor_signer value = var:zg361_p3_m343_acceptor_signer }
-		set_variable = { name = zg361_p3_m343_visible_m343_signature_count value = var:zg361_p3_m343_signature_count }
+		set_variable = { name = zg361_p3_m343_visible_m343_service_count value = var:zg361_p3_m343_service_count }
 		set_variable = { name = zg361_p3_m343_visible_demand_acceptance_outcome value = var:zg361_p3_demand_acceptance_outcome }
 		change_variable = { name = zg361_p3_aj_visible_revision add = 1 }
 	}
@@ -376,18 +376,18 @@ zg361_p3_m343_route_a_effect = {
 			set_variable = { name = zg361_p3_m343_proposer_signer value = var:zg361_p3_demand_proposer }
 			set_variable = { name = zg361_p3_m343_executor_signer value = var:zg361_p3_demand_executor }
 			set_variable = { name = zg361_p3_m343_acceptor_signer value = var:zg361_p3_demand_acceptor }
-			set_variable = { name = zg361_p3_m343_proposer_signed value = 0 }
-			set_variable = { name = zg361_p3_m343_executor_signed value = 0 }
-			set_variable = { name = zg361_p3_m343_acceptor_signed value = 0 }
-			set_variable = { name = zg361_p3_m343_signature_count value = 0 }
+			set_variable = { name = zg361_p3_m343_proposer_served value = 0 }
+			set_variable = { name = zg361_p3_m343_executor_served value = 0 }
+			set_variable = { name = zg361_p3_m343_acceptor_served value = 0 }
+			set_variable = { name = zg361_p3_m343_service_count value = 0 }
 			set_variable = { name = zg361_p3_demand_acceptance_outcome value = 4 }
 			if = {
 				limit = { var:zg361_p3_demand_accepted_hours > 0 }
 				set_variable = { name = zg361_p3_m343_applicable value = 1 }
-				set_variable = { name = zg361_p3_m343_proposer_signed value = 1 }
-				set_variable = { name = zg361_p3_m343_executor_signed value = 1 }
-				set_variable = { name = zg361_p3_m343_acceptor_signed value = 1 }
-				set_variable = { name = zg361_p3_m343_signature_count value = 3 }
+				set_variable = { name = zg361_p3_m343_proposer_served value = 1 }
+				set_variable = { name = zg361_p3_m343_executor_served value = 1 }
+				set_variable = { name = zg361_p3_m343_acceptor_served value = 1 }
+				set_variable = { name = zg361_p3_m343_service_count value = 3 }
 				set_variable = { name = zg361_p3_demand_acceptance_outcome value = 1 }
 				set_variable = { name = zg361_p3_demand_status value = 6 }
 				set_variable = { name = zg361_p3_delivery_status value = 4 }
@@ -767,24 +767,23 @@ zg361_p3_m343_route_b_effect = {
 			set_variable = { name = zg361_p3_acceptance_route value = 2 }
 			change_variable = { name = zg361_p3_aj_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aj_quality add = 1 }
-			change_variable = { name = zg361_p3_aj_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m343_demand_case value = var:zg361_p3_demand_object_case }
 			set_variable = { name = zg361_p3_m343_applicable value = 0 }
 			set_variable = { name = zg361_p3_m343_proposer_signer value = var:zg361_p3_demand_proposer }
 			set_variable = { name = zg361_p3_m343_executor_signer value = var:zg361_p3_demand_executor }
 			set_variable = { name = zg361_p3_m343_acceptor_signer value = var:zg361_p3_demand_acceptor }
-			set_variable = { name = zg361_p3_m343_proposer_signed value = 0 }
-			set_variable = { name = zg361_p3_m343_executor_signed value = 0 }
-			set_variable = { name = zg361_p3_m343_acceptor_signed value = 0 }
-			set_variable = { name = zg361_p3_m343_signature_count value = 0 }
+			set_variable = { name = zg361_p3_m343_proposer_served value = 0 }
+			set_variable = { name = zg361_p3_m343_executor_served value = 0 }
+			set_variable = { name = zg361_p3_m343_acceptor_served value = 0 }
+			set_variable = { name = zg361_p3_m343_service_count value = 0 }
 			set_variable = { name = zg361_p3_demand_acceptance_outcome value = 4 }
 			if = {
 				limit = { var:zg361_p3_demand_accepted_hours > 0 }
 				set_variable = { name = zg361_p3_m343_applicable value = 1 }
-				set_variable = { name = zg361_p3_m343_proposer_signed value = 1 }
-				set_variable = { name = zg361_p3_m343_executor_signed value = 1 }
-				set_variable = { name = zg361_p3_m343_acceptor_signed value = 1 }
-				set_variable = { name = zg361_p3_m343_signature_count value = 3 }
+				set_variable = { name = zg361_p3_m343_proposer_served value = 1 }
+				set_variable = { name = zg361_p3_m343_executor_served value = 1 }
+				set_variable = { name = zg361_p3_m343_acceptor_served value = 1 }
+				set_variable = { name = zg361_p3_m343_service_count value = 3 }
 				set_variable = { name = zg361_p3_demand_acceptance_outcome value = 2 }
 				set_variable = { name = zg361_p3_demand_status value = 6 }
 				set_variable = { name = zg361_p3_delivery_status value = 5 }

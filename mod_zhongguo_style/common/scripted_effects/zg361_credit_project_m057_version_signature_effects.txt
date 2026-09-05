@@ -43,7 +43,7 @@ zg361_cp_m57_consume_effect = {
 		set_variable = { name = zg361_cp_m57_consumed_state value = var:zg361_cp_m57_write_state }
 		set_variable = { name = zg361_cp_m57_visible_value value = var:zg361_cp_version_signature }
 		set_variable = { name = zg361_cp_m57_visible_provenance_case value = var:zg361_cp_m57_write_case }
-		set_variable = { name = zg361_cp_visible_signature_case value = var:zg361_cp_report_signature_case }
+		set_variable = { name = zg361_cp_visible_version_case value = var:zg361_cp_report_version_case }
 		set_variable = { name = zg361_cp_visible_project_manager value = var:zg361_cp_project_object_manager }
 		set_variable = { name = zg361_cp_visible_project_owner value = var:zg361_cp_project_object_owner }
 		set_variable = { name = zg361_cp_visible_project_subject value = var:zg361_cp_project_object_subject }
@@ -194,9 +194,9 @@ zg361_cp_m57_route_a_effect = {
 			set_variable = { name = zg361_cp_version_signature value = 1 }
 			change_variable = { name = zg361_cp_i_operation_used add = 1 }
 			set_variable = { name = zg361_cp_report_version value = 1 }
-			set_variable = { name = zg361_cp_report_signer value = $TICKET_SUBJECT$ }
-			set_variable = { name = zg361_cp_report_signature_case value = $TICKET_CASE$ }
-			set_variable = { name = zg361_cp_report_signed value = 1 }
+			set_variable = { name = zg361_cp_report_version_author value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_cp_report_version_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_cp_report_version_frozen value = 1 }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			change_variable = { name = zg361_cp_report_object_version add = 1 }
 			set_variable = { name = zg361_cp_m57_write_owner value = $TICKET_OWNER$ }
@@ -606,9 +606,9 @@ zg361_cp_m57_route_b_effect = {
 			set_variable = { name = zg361_cp_version_signature value = 2 }
 			change_variable = { name = zg361_cp_i_operation_used add = 1 }
 			set_variable = { name = zg361_cp_report_version value = 2 }
-			set_variable = { name = zg361_cp_report_signer value = $TICKET_SUBJECT$ }
-			set_variable = { name = zg361_cp_report_signature_case value = $TICKET_CASE$ }
-			set_variable = { name = zg361_cp_report_signed value = 1 }
+			set_variable = { name = zg361_cp_report_version_author value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_cp_report_version_case value = $TICKET_CASE$ }
+			set_variable = { name = zg361_cp_report_version_frozen value = 1 }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			change_variable = { name = zg361_cp_report_object_version add = 1 }
 			set_variable = { name = zg361_cp_m57_write_owner value = $TICKET_OWNER$ }

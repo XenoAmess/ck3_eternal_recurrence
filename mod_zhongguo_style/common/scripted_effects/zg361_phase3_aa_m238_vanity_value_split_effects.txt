@@ -621,7 +621,6 @@ zg361_p3_m238_route_b_effect = {
 			set_variable = { name = zg361_p3_vanity_value_split value = 2 }
 			change_variable = { name = zg361_p3_aa_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aa_quality add = 1 }
-			change_variable = { name = zg361_p3_aa_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m238_metric_case value = var:zg361_p3_metric_object_case }
 			set_variable = { name = zg361_p3_m238_provisional_credit_bps value = 6000 }
 			set_variable = { name = zg361_p3_m238_adoption_verified value = 0 }

@@ -435,6 +435,7 @@ zg361_pp_open_t_case_effect = {
 		remove_variable = zg361_pp_m151_operation_capacity_owner
 		remove_variable = zg361_pp_m151_policy_debt_due_days
 		remove_variable = zg361_pp_m151_procedural_debt
+		remove_variable = zg361_pp_m151_receipt_acknowledged
 		remove_variable = zg361_pp_m151_receipt_agreement
 		remove_variable = zg361_pp_m151_receipt_case
 		remove_variable = zg361_pp_m151_receipt_cycle

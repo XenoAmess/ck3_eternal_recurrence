@@ -2230,12 +2230,12 @@ def localization_rows(language: str) -> list[str]:
         title = "Probation outcome receipt"
         desc = (
             "A settled result, PIP decision, real normal exit, or role-change exclusion "
-            "has been bound to this hire. Workforce #269 consumed the same outcome once."
+            "has been bound to this hire. Workforce item 269 consumed the same outcome once."
         )
         option = "Keep the receipt with the hire case."
     else:
         title = "试用期结局回执"
-        desc = "正式绩效、PIP、真实正常离职或岗位变更排除项，已绑定到这次录用。Workforce #269 只消费同一结局一次。"
+        desc = "正式绩效、改进计划、真实正常离职或岗位变更排除项，已绑定到这次录用。第 269 项用工案只消费同一结局一次。"
         option = "把回执归入本次录用案。"
     return [
         f"l_{language}:",

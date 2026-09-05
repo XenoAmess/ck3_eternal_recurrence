@@ -173,10 +173,10 @@ class RegistryAndGenerationTests(unittest.TestCase):
 
     def test_shards_preserve_legacy_effect_bodies_and_order_exactly(self) -> None:
         legacy_bytes = gen.render_effects()
-        self.assertEqual(len(legacy_bytes), 1_307_062)
+        self.assertEqual(len(legacy_bytes), 1_307_272)
         self.assertEqual(
             hashlib.sha256(legacy_bytes).hexdigest(),
-            "3529d8b5581fa958ef72e22d2e3be0842d659de76cea97d2b40d5fbcc2e2f0df",
+            "b3ea9acbe2de150418cfcb4061d6ef483c80b3cc37c238f9de6176735889311b",
         )
         legacy = legacy_bytes.decode("utf-8-sig")
         self.assertEqual(top_level_effect_blocks(read_effects()), top_level_effect_blocks(legacy))
@@ -782,7 +782,7 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
             signed = block(self.effects, f"zg361_cp_m27_route_{letter}_effect")
             claim = block(self.effects, f"zg361_cp_m28_route_{letter}_effect")
             forward = block(self.effects, f"zg361_cp_m56_route_{letter}_effect")
-            self.assertIn("signed_share_total value = 10000", signed)
+            self.assertIn("baseline_share_total value = 10000", signed)
             self.assertIn("claimed_share_total value = 10000", signed)
             self.assertIn("claim_transfer_total value = 0", claim)
             self.assertIn("claim_audit_total value = 0", claim)
@@ -805,7 +805,7 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
         signed = block(self.effects, "zg361_cp_m27_route_a_effect")
         self.assertIn("var:zg361_cp_cross_reviewer_valid = 1", signed)
         for token in (
-            "zg361_cp_contribution_signer_cross",
+            "zg361_cp_contribution_party_cross",
             "zg361_cp_cross_evidence_attached",
             "zg361_cp_report_cross_recipient",
             "zg361_cp_idea_owner",
@@ -818,7 +818,7 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
         signed = "".join(block(self.effects, f"zg361_cp_m57_route_{letter}_effect") for letter in "ab")
         routed = "".join(block(self.effects, f"zg361_cp_m58_route_{letter}_effect") for letter in "ab")
         read = "".join(block(self.effects, f"zg361_cp_m55_route_{letter}_effect") for letter in "ab")
-        self.assertIn("report_signed value = 1", signed)
+        self.assertIn("report_version_frozen value = 1", signed)
         self.assertIn("report_seen_count value = 0", routed)
         self.assertNotIn("attention_free subtract", routed)
         self.assertIn("var:zg361_cp_report_routed = 1", read)
@@ -843,8 +843,8 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
             weights = block(self.effects, f"zg361_cp_m63_route_{letter}_effect")
             self.assertIn("matrix_weight_total value = 100", weights)
         handoff = block(self.effects, "zg361_cp_m64_route_a_effect")
-        self.assertIn("handoff_old_signed value = 1", handoff)
-        self.assertIn("handoff_new_signed value = 1", handoff)
+        self.assertIn("handoff_old_manager_recorded value = 1", handoff)
+        self.assertIn("handoff_new_manager_recorded value = 1", handoff)
         self.assertIn("handoff_finalized value = 1", handoff)
         self.assertIn("active_manager value = var:zg361_cp_successor_manager", handoff)
         self.assertNotIn("historical_owner value", handoff)

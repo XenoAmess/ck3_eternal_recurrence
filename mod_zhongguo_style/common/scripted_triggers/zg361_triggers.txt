@@ -85,13 +85,22 @@ zg361_b1_peer_submission_actor_trigger = {
 		limit = {
 			exists = liege
 			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
 			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
 			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_case_active
+			has_variable = zg361_b1_roster_included
 			has_variable = zg361_b1_peer_used
 			has_variable = zg361_b1_peer_cap
+			has_variable = zg361_b1_peer_use_mode
 		}
+		var:zg361_b1_case_subject = this
 		var:zg361_b1_case_state = 3
+		var:zg361_b1_case_active = 1
+		var:zg361_b1_roster_included = 1
 		var:zg361_b1_peer_used < var:zg361_b1_peer_cap
+		var:zg361_b1_peer_use_mode != 0
 		var:zg361_b1_case_owner = liege
 	}
 	trigger_else = { always = no }
@@ -101,26 +110,96 @@ zg361_b1_peer_submission_recipient_trigger = {
 	trigger_if = {
 		limit = {
 			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
 			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
 			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_case_active
+			has_variable = zg361_b1_roster_included
 			has_variable = zg361_b1_peer_slot_1_filled
 			has_variable = zg361_b1_peer_slot_2_filled
 			has_variable = zg361_b1_peer_slot_3_filled
 			scope:actor = {
 				has_variable = zg361_b1_case_owner
 				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
 			}
 		}
 		var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner
+		var:zg361_b1_case_subject = this
 		var:zg361_b1_cycle_serial = scope:actor.var:zg361_b1_cycle_serial
+		var:zg361_b1_case_serial = scope:actor.var:zg361_b1_case_serial
 		var:zg361_b1_case_state = 3
+		var:zg361_b1_case_active = 1
+		var:zg361_b1_roster_included = 1
 		OR = {
 			var:zg361_b1_peer_slot_1_filled = 0
 			var:zg361_b1_peer_slot_2_filled = 0
 			var:zg361_b1_peer_slot_3_filled = 0
 		}
+		NOT = {
+			OR = {
+				AND = {
+					var:zg361_b1_peer_slot_1_filled = 1
+					trigger_if = {
+						limit = { has_variable = zg361_b1_peer_slot_1_evaluator }
+						var:zg361_b1_peer_slot_1_evaluator = scope:actor
+					}
+					trigger_else = { always = no }
+				}
+				AND = {
+					var:zg361_b1_peer_slot_2_filled = 1
+					trigger_if = {
+						limit = { has_variable = zg361_b1_peer_slot_2_evaluator }
+						var:zg361_b1_peer_slot_2_evaluator = scope:actor
+					}
+					trigger_else = { always = no }
+				}
+				AND = {
+					var:zg361_b1_peer_slot_3_filled = 1
+					trigger_if = {
+						limit = { has_variable = zg361_b1_peer_slot_3_evaluator }
+						var:zg361_b1_peer_slot_3_evaluator = scope:actor
+					}
+					trigger_else = { always = no }
+				}
+			}
+		}
+		scope:actor = {
+			any_character_war = {
+				OR = {
+					AND = {
+						scope:actor = { is_attacker_in_war = prev }
+						scope:recipient = { is_attacker_in_war = prev }
+					}
+					AND = {
+						scope:actor = { is_defender_in_war = prev }
+						scope:recipient = { is_defender_in_war = prev }
+					}
+				}
+			}
+		}
 	}
 	trigger_else = { always = no }
+}
+
+# Adverse action is not executable while either the primary result appeal or
+# the separately reviewed action is still open.  Keep this as a UI gate as
+# well as an effect-side guard so a click never silently does nothing.
+zg361_adverse_action_ready_trigger = {
+	zg361_is_elimination_candidate_trigger = yes
+	NOT = {
+		OR = {
+			AND = {
+				has_variable = zg361_result_appeal_open
+				var:zg361_result_appeal_open = 1
+			}
+			AND = {
+				has_variable = zg361_b2_separate_appeal_open
+				var:zg361_b2_separate_appeal_open = 1
+			}
+		}
+	}
 }
 
 # 本周期淘汰候选人：连续 3.25 且本周期仍 3.25（用于玩家领主事件内重新推导名单）

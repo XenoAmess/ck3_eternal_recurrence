@@ -194,7 +194,7 @@ zg361_cp_m59_route_a_effect = {
 			set_variable = { name = zg361_cp_risk_severity value = 9 }
 			set_variable = { name = zg361_cp_risk_remaining_loss value = 5 }
 			set_variable = { name = zg361_cp_risk_integrity_delta value = 1 }
-			set_variable = { name = zg361_cp_risk_version_case value = var:zg361_cp_report_signature_case }
+			set_variable = { name = zg361_cp_risk_version_case value = var:zg361_cp_report_version_case }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			change_variable = { name = zg361_cp_report_object_version add = 1 }
 			set_variable = { name = zg361_cp_m59_write_owner value = $TICKET_OWNER$ }
@@ -602,7 +602,7 @@ zg361_cp_m59_route_b_effect = {
 			set_variable = { name = zg361_cp_risk_severity value = 9 }
 			set_variable = { name = zg361_cp_risk_remaining_loss value = 9 }
 			set_variable = { name = zg361_cp_risk_integrity_delta value = 0 }
-			set_variable = { name = zg361_cp_risk_version_case value = var:zg361_cp_report_signature_case }
+			set_variable = { name = zg361_cp_risk_version_case value = var:zg361_cp_report_version_case }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			change_variable = { name = zg361_cp_report_object_version add = 1 }
 			set_variable = { name = zg361_cp_m59_write_owner value = $TICKET_OWNER$ }

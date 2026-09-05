@@ -391,7 +391,7 @@ MECHANISM_BINDINGS: Final[dict[int, MechanismBinding]] = {
     257: _binding(257, "AC", "外包转正式的有限通道", "contract_type_locked", "convert_external_worker_257", "conversion consumes one formal HC and releases one shadow HC"),
     258: _binding(258, "AC", "权限差导致的绩效校正", "supplier_selected", "freeze_controllable_scope_258", "access correction is bounded and never writes a formal grade"),
     259: _binding(259, "AC", "供应商 SLA 与个体责任分开", "supplier_selected", "allocate_sla_responsibility_259", "responsibility shares total exactly 10000 bp"),
-    260: _binding(260, "AC", "人力补位 / 结果承包二种合同", "contract_active", "lock_contract_type_260", "contract type freezes who owns change and delay"),
+    260: _binding(260, "AC", "人力补位 / 结果承包两种合同", "contract_active", "lock_contract_type_260", "contract type freezes who owns change and delay"),
     261: _binding(261, "AC", "多层转包与真实执行者披露", "contract_active", "disclose_executor_chain_261", "provenance is acyclic and ends at the real executor"),
     262: _binding(262, "AC", "借调人员双线评价", "delivery_due", "open_secondment_review_262", "home and host weights total 100 and cost is booked once"),
     263: _binding(263, "AC", "借调结束的返岗权", "delivery_due", "resolve_secondment_return_263", "one bounded return decision preserves prior identity"),

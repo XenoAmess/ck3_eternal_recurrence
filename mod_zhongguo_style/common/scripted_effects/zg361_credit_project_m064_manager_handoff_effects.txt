@@ -177,8 +177,8 @@ zg361_cp_m64_route_a_effect = {
 			change_variable = { name = zg361_cp_j_operation_used add = 1 }
 			set_variable = { name = zg361_cp_handoff_old_manager value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_cp_handoff_new_manager value = var:zg361_cp_successor_manager }
-			set_variable = { name = zg361_cp_handoff_old_signed value = 1 }
-			set_variable = { name = zg361_cp_handoff_new_signed value = 1 }
+			set_variable = { name = zg361_cp_handoff_old_manager_recorded value = 1 }
+			set_variable = { name = zg361_cp_handoff_new_manager_recorded value = 1 }
 			set_variable = { name = zg361_cp_handoff_finalized value = 1 }
 			set_variable = { name = zg361_cp_active_manager value = var:zg361_cp_successor_manager }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
@@ -522,8 +522,8 @@ zg361_cp_m64_route_b_effect = {
 			change_variable = { name = zg361_cp_j_operation_used add = 1 }
 			set_variable = { name = zg361_cp_handoff_old_manager value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_cp_handoff_new_manager value = var:zg361_cp_successor_manager }
-			set_variable = { name = zg361_cp_handoff_old_signed value = 1 }
-			set_variable = { name = zg361_cp_handoff_new_signed value = 0 }
+			set_variable = { name = zg361_cp_handoff_old_manager_recorded value = 1 }
+			set_variable = { name = zg361_cp_handoff_new_manager_recorded value = 0 }
 			set_variable = { name = zg361_cp_handoff_finalized value = 0 }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			set_variable = { name = zg361_cp_m64_write_owner value = $TICKET_OWNER$ }

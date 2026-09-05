@@ -39,7 +39,7 @@ zg361_cp_m27_consume_effect = {
 		set_variable = { name = zg361_cp_m27_consumed_state value = var:zg361_cp_m27_write_state }
 		set_variable = { name = zg361_cp_m27_visible_value value = var:zg361_cp_signed_contribution }
 		set_variable = { name = zg361_cp_m27_visible_provenance_case value = var:zg361_cp_m27_write_case }
-		set_variable = { name = zg361_cp_visible_signed_share_total value = var:zg361_cp_signed_share_total }
+		set_variable = { name = zg361_cp_visible_baseline_share_total value = var:zg361_cp_baseline_share_total }
 		set_variable = { name = zg361_cp_visible_project_manager value = var:zg361_cp_project_object_manager }
 		set_variable = { name = zg361_cp_visible_project_owner value = var:zg361_cp_project_object_owner }
 		set_variable = { name = zg361_cp_visible_project_subject value = var:zg361_cp_project_object_subject }
@@ -174,17 +174,17 @@ zg361_cp_m27_route_a_effect = {
 			}
 			set_variable = { name = zg361_cp_signed_contribution value = 1 }
 			change_variable = { name = zg361_cp_e_operation_used add = 1 }
-			set_variable = { name = zg361_cp_signed_subject_bps value = 7000 }
-			set_variable = { name = zg361_cp_signed_manager_bps value = 2000 }
-			set_variable = { name = zg361_cp_signed_cross_bps value = 1000 }
-			set_variable = { name = zg361_cp_signed_share_total value = 10000 }
+			set_variable = { name = zg361_cp_baseline_subject_bps value = 7000 }
+			set_variable = { name = zg361_cp_baseline_manager_bps value = 2000 }
+			set_variable = { name = zg361_cp_baseline_cross_bps value = 1000 }
+			set_variable = { name = zg361_cp_baseline_share_total value = 10000 }
 			set_variable = { name = zg361_cp_claimed_subject_bps value = 7000 }
 			set_variable = { name = zg361_cp_claimed_manager_bps value = 2000 }
 			set_variable = { name = zg361_cp_claimed_cross_bps value = 1000 }
 			set_variable = { name = zg361_cp_claimed_share_total value = 10000 }
-			set_variable = { name = zg361_cp_contribution_signer_subject value = $TICKET_SUBJECT$ }
-			set_variable = { name = zg361_cp_contribution_signer_manager value = $TICKET_OWNER$ }
-			set_variable = { name = zg361_cp_contribution_signer_cross value = var:zg361_cp_cross_reviewer }
+			set_variable = { name = zg361_cp_contribution_party_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_cp_contribution_party_manager value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_cp_contribution_party_cross value = var:zg361_cp_cross_reviewer }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			set_variable = { name = zg361_cp_m27_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_cp_m27_write_subject value = $TICKET_SUBJECT$ }
@@ -472,17 +472,17 @@ zg361_cp_m27_route_b_effect = {
 			}
 			set_variable = { name = zg361_cp_signed_contribution value = 2 }
 			change_variable = { name = zg361_cp_e_operation_used add = 1 }
-			set_variable = { name = zg361_cp_signed_subject_bps value = 5000 }
-			set_variable = { name = zg361_cp_signed_manager_bps value = 3000 }
-			set_variable = { name = zg361_cp_signed_cross_bps value = 2000 }
-			set_variable = { name = zg361_cp_signed_share_total value = 10000 }
+			set_variable = { name = zg361_cp_baseline_subject_bps value = 5000 }
+			set_variable = { name = zg361_cp_baseline_manager_bps value = 3000 }
+			set_variable = { name = zg361_cp_baseline_cross_bps value = 2000 }
+			set_variable = { name = zg361_cp_baseline_share_total value = 10000 }
 			set_variable = { name = zg361_cp_claimed_subject_bps value = 5000 }
 			set_variable = { name = zg361_cp_claimed_manager_bps value = 3000 }
 			set_variable = { name = zg361_cp_claimed_cross_bps value = 2000 }
 			set_variable = { name = zg361_cp_claimed_share_total value = 10000 }
-			set_variable = { name = zg361_cp_contribution_signer_subject value = $TICKET_SUBJECT$ }
-			set_variable = { name = zg361_cp_contribution_signer_manager value = $TICKET_OWNER$ }
-			set_variable = { name = zg361_cp_contribution_signer_cross value = var:zg361_cp_cross_reviewer }
+			set_variable = { name = zg361_cp_contribution_party_subject value = $TICKET_SUBJECT$ }
+			set_variable = { name = zg361_cp_contribution_party_manager value = $TICKET_OWNER$ }
+			set_variable = { name = zg361_cp_contribution_party_cross value = var:zg361_cp_cross_reviewer }
 			change_variable = { name = zg361_cp_project_object_version add = 1 }
 			set_variable = { name = zg361_cp_m27_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_cp_m27_write_subject value = $TICKET_SUBJECT$ }

@@ -422,8 +422,11 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             )
             self.assertEqual(event.count("ROUTE = 1"), 1)
             self.assertEqual(event.count("ROUTE = 2"), 1)
-        self.assertIn("Twenty-two popups did not line up", self.loc_en)
-        self.assertIn("没有二十二封弹窗排队敲门", self.loc_zh)
+        self.assertIn(
+            "six asked the affected official to respond, while sixteen required no personal consent",
+            self.loc_en,
+        )
+        self.assertIn("其中六项由当事人亲自回应，其余十六项无需本人表态", self.loc_zh)
 
     def test_dual_payer_set_is_exact_atomic_and_real(self) -> None:
         self.assertEqual(set(generator.DUAL_COSTS), {314, 321, 323, 326, 330, 333})
@@ -889,7 +892,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
 
     def test_localization_has_identical_nine_language_structure(self) -> None:
         expected_keys = loc_keys(self.loc_en)
-        self.assertEqual(len(expected_keys), 5 + 22 * 4)
+        self.assertEqual(len(expected_keys), 3 + len(generator.SUBJECT_RESPONSE_IDS) * 4)
         self.assertEqual(expected_keys, loc_keys(self.loc_zh))
         for folder, _header in generator.LANGUAGES:
             path = (
@@ -898,7 +901,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             )
             text = path.read_text(encoding="utf-8-sig")
             self.assertEqual(loc_keys(text), expected_keys, folder)
-        self.assertIn("这岗位真的存在", self.loc_zh)
+        self.assertIn("本案当事人是 [ROOT.GetShortUIName]", self.loc_zh)
         self.assertIn("Training Debt Shrinks Monthly", self.loc_en)
         self.assertIn("English structural placeholders", self.spec)
 

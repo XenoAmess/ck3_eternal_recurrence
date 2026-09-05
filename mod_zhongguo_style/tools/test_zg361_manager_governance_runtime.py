@@ -869,16 +869,20 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("desc = zg361mg.120.desc", event)
         for variable in (
             "zg361_mg_report_manager_score",
+            "zg361_mg_report_reason_total",
+        ):
+            self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_en)
+            self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_zh)
+        for hidden_implementation_field in (
             "zg361_mg_report_score_available",
             "zg361_mg_snapshot_source_serial",
             "zg361_case_f_cycle_serial",
-            "zg361_mg_report_reason_total",
             "zg361_mg_report_reason_available",
             "zg361_mg_report_nine_box_code",
             "zg361_mg_report_nine_box_available",
         ):
-            self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_en)
-            self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_zh)
+            self.assertNotIn(hidden_implementation_field, self.loc_en)
+            self.assertNotIn(hidden_implementation_field, self.loc_zh)
 
     def test_f032_uses_only_strictly_prior_seven_metric_aggregate(self) -> None:
         snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")

@@ -621,7 +621,6 @@ zg361_p3_m234_route_b_effect = {
 			set_variable = { name = zg361_p3_signal_split value = 2 }
 			change_variable = { name = zg361_p3_aa_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aa_quality add = 1 }
-			change_variable = { name = zg361_p3_aa_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m234_metric_case value = var:zg361_p3_metric_object_case }
 			set_variable = { name = zg361_p3_m234_leading_value value = 80 }
 			set_variable = { name = zg361_p3_m234_lagging_value value = 60 }

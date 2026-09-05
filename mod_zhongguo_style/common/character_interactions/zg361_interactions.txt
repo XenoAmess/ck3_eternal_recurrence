@@ -125,8 +125,6 @@ zg361_recommend_interaction = {
 	category = interaction_category_friendly
 	desc = zg361_recommend_interaction_desc
 
-	cooldown = { years = 1 }
-	cooldown_against_recipient = { years = 2 }
 	auto_accept = yes
 
 	is_shown = {
@@ -140,10 +138,28 @@ zg361_recommend_interaction = {
 		}
 	}
 
+	is_valid = {
+		custom_tooltip = {
+			text = zg361_peer_submission_invalid_tt
+			scope:actor = { zg361_b1_peer_submission_actor_trigger = yes }
+			scope:recipient = { zg361_b1_peer_submission_recipient_trigger = yes }
+		}
+	}
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
+			text = zg361_peer_submission_invalid_tt
+			scope:actor = { zg361_b1_peer_submission_actor_trigger = yes }
+			scope:recipient = { zg361_b1_peer_submission_recipient_trigger = yes }
+		}
+	}
+
 	ai_will_do = { base = 0 }
 
 	on_accept = {
-		scope:actor = { zg361_b1_submit_peer_positive_effect = yes }
+		scope:actor = {
+			zg361_b1_submit_peer_positive_effect = yes
+			remove_variable = zg361_b1_peer_submission_applied
+		}
 	}
 }
 
@@ -155,10 +171,6 @@ zg361_slander_interaction = {
 	category = interaction_category_hostile
 	desc = zg361_slander_interaction_desc
 
-	cost = { prestige = 50 }
-
-	cooldown = { years = 1 }
-	cooldown_against_recipient = { years = 2 }
 	auto_accept = yes
 
 	is_shown = {
@@ -172,10 +184,41 @@ zg361_slander_interaction = {
 		}
 	}
 
+	is_valid = {
+		custom_tooltip = {
+			text = zg361_peer_submission_invalid_tt
+			scope:actor = {
+				zg361_b1_peer_submission_actor_trigger = yes
+				prestige >= 50
+			}
+			scope:recipient = { zg361_b1_peer_submission_recipient_trigger = yes }
+		}
+	}
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
+			text = zg361_peer_submission_invalid_tt
+			scope:actor = {
+				zg361_b1_peer_submission_actor_trigger = yes
+				prestige >= 50
+			}
+			scope:recipient = { zg361_b1_peer_submission_recipient_trigger = yes }
+		}
+	}
+
 	ai_will_do = { base = 0 }
 
 	on_accept = {
-		scope:actor = { zg361_b1_submit_peer_negative_effect = yes }
+		scope:actor = {
+			zg361_b1_submit_peer_negative_effect = yes
+			if = {
+				limit = {
+					has_variable = zg361_b1_peer_submission_applied
+					var:zg361_b1_peer_submission_applied = 1
+				}
+				add_prestige = -50
+				remove_variable = zg361_b1_peer_submission_applied
+			}
+		}
 	}
 }
 
@@ -198,6 +241,25 @@ zg361_purge_interaction = {
 		scope:recipient = {
 			zg361_is_elimination_candidate_trigger = yes
 			liege = scope:actor
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = zg361_adverse_action_appeal_pending_tt
+			scope:recipient = {
+				zg361_adverse_action_ready_trigger = yes
+				liege = scope:actor
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
+			text = zg361_adverse_action_appeal_pending_tt
+			scope:recipient = {
+				zg361_adverse_action_ready_trigger = yes
+				liege = scope:actor
+			}
 		}
 	}
 
@@ -229,6 +291,25 @@ zg361_force_retire_interaction = {
 		scope:recipient = {
 			zg361_is_elimination_candidate_trigger = yes
 			liege = scope:actor
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = zg361_adverse_action_appeal_pending_tt
+			scope:recipient = {
+				zg361_adverse_action_ready_trigger = yes
+				liege = scope:actor
+			}
+		}
+	}
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
+			text = zg361_adverse_action_appeal_pending_tt
+			scope:recipient = {
+				zg361_adverse_action_ready_trigger = yes
+				liege = scope:actor
+			}
 		}
 	}
 

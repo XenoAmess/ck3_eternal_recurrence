@@ -693,7 +693,6 @@ zg361_p3_m241_route_b_effect = {
 			set_variable = { name = zg361_p3_long_tail_attribution value = 2 }
 			change_variable = { name = zg361_p3_aa_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aa_quality add = 1 }
-			change_variable = { name = zg361_p3_aa_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m241_metric_case value = var:zg361_p3_metric_object_case }
 			set_variable = { name = zg361_p3_m241_attribution_version value = 1 }
 			set_variable = { name = zg361_p3_m241_builder value = $TICKET_SUBJECT$ }

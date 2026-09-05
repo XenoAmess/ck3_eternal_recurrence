@@ -628,7 +628,6 @@ zg361_p3_m309_route_b_effect = {
 			set_variable = { name = zg361_p3_remote_visibility value = 2 }
 			change_variable = { name = zg361_p3_ag_operation_used add = 1 }
 			change_variable = { name = zg361_p3_ag_quality add = 1 }
-			change_variable = { name = zg361_p3_ag_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m309_reorg_case value = var:zg361_p3_reorg_object_case }
 			set_variable = { name = zg361_p3_m309_team value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_p3_m309_route_code value = 2 }

@@ -1389,15 +1389,15 @@ def _localization_rows(language: str) -> dict[str, str]:
     english = {
         POSITION_KEY: "361 Probationary Appointment",
         f"{POSITION_KEY}_desc": (
-            "A bounded probationary office for a real 361 recruitment settlement. CK3 creates it "
-            "through native appointment; exact Workforce consumption or the next-day audit releases it."
+            "A temporary office held while a new appointee completes the recruitment settlement. "
+            "It exists only after appointment succeeds and is released when the same case is closed."
         ),
     }
     chinese = {
         POSITION_KEY: "三六一试任编制",
         f"{POSITION_KEY}_desc": (
-            "用于三六一招聘交割的有界试任岗位。CK3 原生任命成功后岗位才成立；"
-            "同案 Workforce 回执消费后立即原生撤任，阻断时最迟由次日审计释放。"
+            "新录用官员在完成入职手续期间暂居此位。任命真正成立后才占位；"
+            "同一录用案结清后即释放，不另生俸禄。"
         ),
     }
     return chinese if language == "simp_chinese" else english

@@ -4207,7 +4207,7 @@ zg361pp.189 = {
 		}
 	}
 	option = {
-			name = zg361pp.189.a
+			name = zg361pp.189.transfer
 			trigger = { scope:zg361_pp_prompt_subject = { OR = {
 		AND = {
 			var:zg361_pp_m187_graduation_status = 2
@@ -4231,7 +4231,48 @@ zg361pp.189 = {
 			var:zg361_pp_m188_skipped_first_failure = 1
 		}
 		var:zg361_pp_m188_same_category_relapse = 1
-	} } }
+	}
+	var:zg361_pp_m181_primary_category = 3
+	var:zg361_pp_w_real_vacancy = 1 } }
+			scope:zg361_pp_prompt_subject = {
+				zg361_pp_m189_manager_apply_effect = {
+					ROUTE = 1
+					TICKET_OWNER = scope:zg361_pp_prompt_owner
+					TICKET_SUBJECT = scope:zg361_pp_prompt_subject
+					TICKET_CYCLE = scope:zg361_pp_prompt_cycle
+					TICKET_CASE = scope:zg361_pp_prompt_case
+					TICKET_STATE = scope:zg361_pp_prompt_state
+				}
+			}
+
+		}
+	option = {
+			name = zg361pp.189.second_pip
+			trigger = { scope:zg361_pp_prompt_subject = { OR = {
+		AND = {
+			var:zg361_pp_m187_graduation_status = 2
+			var:zg361_pp_m188_skipped_first_failure = 1
+			var:zg361_b2_pip_owner = var:zg361_case_w_owner
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
+			var:zg361_b2_pip_case = var:zg361_case_w_case_serial
+			var:zg361_b2_pip_state = 4
+			var:zg361_b2_pip_failure_receipt = var:zg361_b2_pip_case
+		}
+		AND = {
+			var:zg361_pp_m188_audit_1_consumed = 1
+			var:zg361_pp_m188_observation_closed = 1
+			var:zg361_pp_m188_relapse_status = 1
+		}
+	}
+	OR = {
+		AND = {
+			var:zg361_pp_m187_graduation_status = 2
+			var:zg361_pp_m188_skipped_first_failure = 1
+		}
+		var:zg361_pp_m188_same_category_relapse = 1
+	}
+	NOT = { AND = { var:zg361_pp_m181_primary_category = 3 var:zg361_pp_w_real_vacancy = 1 } } } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m189_manager_apply_effect = {
 					ROUTE = 1
@@ -4563,8 +4604,15 @@ zg361pp.191 = {
 zg361pp.5151 = {
 	type = character_event
 	theme = vassal
-	title = zg361pp.151.t
-	desc = zg361pp.151.desc
+	title = zg361pp.5151.t
+	desc = {
+		desc = zg361pp.5151.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 3 } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 2 } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 1 } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		has_game_rule = zg361_on

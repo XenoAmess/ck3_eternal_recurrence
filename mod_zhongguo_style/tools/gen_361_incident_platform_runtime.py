@@ -17,7 +17,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Final
 
-from zg361_mechanism_data import load_mechanisms
 from zg361_phase3_incident_platform_model import (
     BEHAVIORS,
     DOMAIN_EXECUTION_ORDER,
@@ -2149,11 +2148,6 @@ def render_event_parts() -> dict[str, bytes]:
 
 
 def _loc_rows(language: str) -> dict[str, str]:
-    mechanisms = {
-        row.id: row
-        for row in load_mechanisms(MOD_ROOT)
-        if 192 <= row.id <= 228
-    }
     english: dict[str, str] = {
         "zg361ip.result.ok": "Archive the receipts",
         "zg361ip.190.t": "Incident postmortem closed",
@@ -2172,15 +2166,6 @@ def _loc_rows(language: str) -> dict[str, str]:
         "zg361ip.390.t": "共享平台分账结案",
         "zg361ip.390.desc": "采用、客户与底座双分、迁移、平台成本、内部开源分功和爆炸半径责任已经分别结算，不再用一张大饼糊过去。",
     }
-    for mechanism_id, row in mechanisms.items():
-        english[f"zg361_ip_m{mechanism_id:03d}_name"] = row.title_en
-        english[f"zg361_ip_m{mechanism_id:03d}_result"] = (
-            f"Mechanism {mechanism_id:03d} froze an A/B/C route, a five-field receipt and a result consumed by its domain settlement."
-        )
-        chinese[f"zg361_ip_m{mechanism_id:03d}_name"] = row.title_cn
-        chinese[f"zg361_ip_m{mechanism_id:03d}_result"] = (
-            f"机制 {mechanism_id:03d} 已冻结 A/B/C 路径、五元回执，并把结果送入本领域结算。"
-        )
     return chinese if language == "simp_chinese" else english
 
 

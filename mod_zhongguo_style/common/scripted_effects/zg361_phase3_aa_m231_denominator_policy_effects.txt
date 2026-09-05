@@ -620,7 +620,6 @@ zg361_p3_m231_route_b_effect = {
 			set_variable = { name = zg361_p3_denominator_policy value = 2 }
 			change_variable = { name = zg361_p3_aa_operation_used add = 1 }
 			change_variable = { name = zg361_p3_aa_quality add = 1 }
-			change_variable = { name = zg361_p3_aa_management_debt add = 1 }
 			set_variable = { name = zg361_p3_m231_old_version value = var:zg361_p3_metric_object_version }
 			set_variable = { name = zg361_p3_m231_old_denominator value = var:zg361_p3_metric_denominator }
 			set_variable = { name = zg361_p3_m231_new_version value = 2 }

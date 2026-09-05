@@ -2024,14 +2024,14 @@ def _loc_rows(language: str) -> dict[str, str]:
     english = {
         POSITION_KEY: "361 Formal Career Slot",
         f"{POSITION_KEY}_desc": (
-            "A zero-salary native carrier for a confirmed formal-HC appointment. "
-            "It remains until a real PIP exit revokes the slot."
+            "A zero-salary formal office for a confirmed appointment. "
+            "It remains while the appointee serves and ends only after a recorded departure."
         ),
     }
     chinese = {
         POSITION_KEY: "三六一正式在岗编制",
         f"{POSITION_KEY}_desc": (
-            "已由原生任命确认的正式 HC 在岗载体，不另发俸禄；只有真实 PIP 离任撤职后才结束。"
+            "任命确认后的正式在岗职位，不另发俸禄；官员在任期间持续保留，只有登记离任后才结束。"
         ),
     }
     return chinese if language == "simp_chinese" else english

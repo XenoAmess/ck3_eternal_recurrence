@@ -2485,7 +2485,7 @@ zg361p3.341 = {
 	}
 }
 
-# #343 — Three Signatures, One Delivery
+# #343 — Three Parties, One Delivery Ruling
 zg361p3.343 = {
 	type = character_event
 	theme = stewardship

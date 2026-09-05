@@ -15,20 +15,21 @@ import prepare_release_localization as release_loc  # noqa: E402
 
 
 class ReleaseLocalizationTests(unittest.TestCase):
-    def test_batches_cover_two_thousand_and_ninety_one_keys_once(self) -> None:
+    def test_batches_cover_two_thousand_and_eighty_five_keys_once(self) -> None:
         batches = release_loc.build_batches()
-        self.assertEqual(19, len(batches))
+        self.assertEqual(18, len(batches))
         core = [key for batch in batches if batch.source == "core" for key in batch.keys]
         mechanisms = [
             key for batch in batches if batch.source == "mechanisms" for key in batch.keys
         ]
-        self.assertEqual(243, len(core))
+        self.assertEqual(237, len(core))
         self.assertEqual(1848, len(mechanisms))
         self.assertEqual(len(core), len(set(core)))
         self.assertEqual(len(mechanisms), len(set(mechanisms)))
-        self.assertEqual(80, len(batches[2].keys))
-        self.assertEqual(3, len(batches[3].keys))
-        self.assertEqual(168, len(batches[4].keys))
+        self.assertEqual(80, len(batches[0].keys))
+        self.assertEqual(80, len(batches[1].keys))
+        self.assertEqual(77, len(batches[2].keys))
+        self.assertEqual(168, len(batches[3].keys))
         self.assertEqual(55, len(batches[-1].keys))
 
     def test_merge_raw_yml_appends_only_a_source_order_suffix(self) -> None:
@@ -1221,12 +1222,12 @@ class ReleaseLocalizationTests(unittest.TestCase):
 
         expected = {
             "english": (
-                "Order the evaluation bureau to rank your direct roster immediately instead of waiting for the annual season. You may settle only one review per calendar year; officials already covered by your settled review that year will not be evaluated again.",
-                "Immediately review at least one direct incumbent official; you cannot settle another review in the same calendar year.",
+                "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results usually arrive about six months later. Starts must be at least one year apart, and only one review may settle per calendar year.",
+                "Start the review and freeze at least one direct incumbent official; this does not create an immediate ranking.",
             ),
             "simp_chinese": (
-                "不等年度绩效季，现在就命考功司开榜排名。你每个自然年只能结算一次考核；本年度已纳入你结算考核的直属官员不会重复评定。",
-                "立即考核至少一名直属在任官员；同一自然年不能再次结算考核。",
+                "不等年度绩效季，现在就启动本年度考核并冻结直属官员名册。自评、互评、校准与公示会在后续阶段依次推进，通常约半年后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
+                "立即启动考核流程并冻结至少一名直属在任官员；不会当场生成排名。",
             ),
             "french": (
                 "Ordonnez au bureau des examens de classer immédiatement vos officiers directs au lieu d'attendre la saison annuelle. Les officiers déjà évalués cette année ne seront pas réexaminés.",

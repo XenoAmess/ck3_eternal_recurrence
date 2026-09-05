@@ -238,7 +238,7 @@ class MechanismGenerationTests(unittest.TestCase):
         )
         chinese = self.rendered[chinese_path].decode("utf-8-sig")
         english = self.rendered[english_path].decode("utf-8-sig")
-        self.assertIn('zg361m.1.t:0 "第001号 · KPI 分项证据单"', chinese)
+        self.assertIn('zg361m.1.t:0 "第001号 · 绩效指标分项证据单"', chinese)
         self.assertIn('zg361m.1.t:0 "No.001 · Itemized KPI Evidence Sheet"', english)
         self.assertIn(r"／P0】\n\n决策：", chinese)
         self.assertNotIn(r"\\n", chinese)

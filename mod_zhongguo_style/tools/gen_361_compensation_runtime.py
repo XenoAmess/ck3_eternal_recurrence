@@ -15,6 +15,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from zg361_localization_style import normalize_localization_document
+
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
@@ -2847,7 +2849,15 @@ zg361comp.902 = {
     type = character_event
     theme = vassal
     title = zg361comp.902.t
-    desc = zg361comp.902.desc
+	desc = {
+		desc = zg361comp.902.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_comp_m287_visibility_mode = 1 } desc = zg361comp.902.private }
+			triggered_desc = { trigger = { var:zg361_comp_m287_visibility_mode = 2 } desc = zg361comp.902.public }
+			triggered_desc = { trigger = { var:zg361_comp_m287_visibility_mode = 3 } desc = zg361comp.902.anonymous }
+			desc = zg361comp.902.unknown
+		}
+	}
     trigger = { is_ai = no }
     option = { name = zg361comp.ok }
 }
@@ -2865,7 +2875,15 @@ zg361comp.904 = {
     type = character_event
     theme = vassal
     title = zg361comp.904.t
-    desc = zg361comp.904.desc
+	desc = {
+		desc = zg361comp.904.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_comp_m299_leaver_class = 1 } desc = zg361comp.904.good }
+			triggered_desc = { trigger = { var:zg361_comp_m299_leaver_class = 2 } desc = zg361comp.904.bad }
+			triggered_desc = { trigger = { var:zg361_comp_m299_leaver_class = 3 } desc = zg361comp.904.transfer }
+			desc = zg361comp.904.unknown
+		}
+	}
     trigger = { is_ai = no }
     option = { name = zg361comp.ok }
 }'''
@@ -3028,24 +3046,24 @@ def render_effect_parts() -> dict[str, bytes]:
 def render_english_localization() -> bytes:
     return localized(r'''l_english:
  zg361comp.1.t:0 "Compensation Portfolio"
- zg361comp.1.desc:0 "One sealed compensation case is before you. Choose the route for this stage; its numbered writes will be consumed together, never as thirty-three competing windows."
- zg361comp.1.l1:0 "Bonus formula. A: quote 45, reserve 20 (treasury 14 / your gold 6). B: quote 37, reserve 16 (11 / 5). C: fixed pay only; create no bonus."
- zg361comp.1.l2:0 "Retention and holdback. A: record a two-year refresh gap and settle the deferred award. B: one-year gap, claw back 2 already paid, refund the unpaid reserve. C: no refresh grant and refund the unpaid reserve."
- zg361comp.1.l3:0 "Band and package. A: inside-band market package, authority plus a 4-pay next-statement increase. B: above-band authority package, no fixed-pay increase. C: decline the raise pool and package."
- zg361comp.1.l4:0 "Spot award. A: pay 10 (treasury 7 / your gold 3), accounted as tenure 3 + performance 7. B: pay 6 (4 / 2), accounted as 4 + 2. C: no spot-award object."
- zg361comp.1.ae1:0 "Statement basis. A: fixed extra month with full-cycle proration. B: performance extra month at half-cycle proration, payable only for frozen 3.75. C: discretionary extra month pays zero."
- zg361comp.1.ae2:0 "Payment date. A: pay the statement now and pay 4 backpay. B: freeze the full debt for 90 days and add 4 backpay owed. C: freeze it for 180 days and reject backpay."
- zg361comp.1.ae3:0 "Promotion and pay slope. A: 4 dry-promotion debt + 4 same-band raise; next-cycle base steps down 2. B: 2 + 2 debt, preserve professional pay. C: no new debt; next-cycle base drops 4."
- zg361comp.1.ae4:0 "Band correction and visibility. A: 4 fixed-pay catch-up owed, private pay. B: 4 one-time award owed, public band. C: one-cycle exception, anonymous distribution, no new debt."
- zg361comp.1.ae5:0 "Repair and appeal. A: 4 inversion repair owed and 4 appeal correction paid. B: 2 repair + 2 partial-appeal debt. C: no repair; deny the appeal without changing the grade."
- zg361comp.1.af1:0 "LTI nomination. A: retention-heavy score, 100 option-style units. B: balanced score, 80 restricted units. C: zero units and a 10 cash alternative. Frozen 3.75 is required; eligibility is not entitlement."
- zg361comp.1.af2:0 "Bonus conversion and valuation. A: voluntarily convert 4 to units, pay 6 cash, show 50% liquidity. B: pay all 10 cash, show full liquidity. C: create no conversion and show zero liquidity."
- zg361comp.1.af3:0 "Vesting clock. A: 365-day cliff then 12 monthly tranches. B: 180-day cliff then 4 quarterly tranches. C: 730-day cliff then one annual tranche."
- zg361comp.1.af4:0 "Vesting gates. A: 50/50 service-performance with both gates open. B: 70/30, organization gate only. C: service-only. After a vesting tick, A/B request exit classification while C waits another period."
- zg361comp.1.af5:0 "Exit and liquidity. A: Good Leaver, forfeit unvested units, buy back 10 now. B: Bad Leaver, mark clawback eligibility, queue a 10 buyback for 90 days. C: transfer classification, retain vested units, request no buyback."
- zg361comp.1.a:0 "Follow the frozen contract and evidence."
- zg361comp.1.b:0 "Use the bounded alternative."
- zg361comp.1.c:0 "Defer or decline this stage."
+ zg361comp.1.desc:0 "You are deciding the current compensation stage for [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]. The paragraph below states the exact amount, payer, deadline, and immediate consequence for each route."
+ zg361comp.1.l1:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — bonus formula. A: quote 45, reserve 20 (treasury 14 / your gold 6). B: quote 37, reserve 16 (11 / 5). C: fixed pay only; create no bonus."
+ zg361comp.1.l2:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — retention and holdback. A: record a two-year refresh gap and settle the deferred award. B: one-year gap, claw back 2 already paid, refund the unpaid reserve. C: no refresh grant and refund the unpaid reserve."
+ zg361comp.1.l3:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — band and package. A: inside-band market package, authority plus a 4-pay next-statement increase. B: above-band authority package, no fixed-pay increase. C: decline the raise pool and package."
+ zg361comp.1.l4:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — spot award. A: pay 10 (treasury 7 / your gold 3), accounted as tenure 3 + performance 7. B: pay 6 (4 / 2), accounted as 4 + 2. C: no spot-award object."
+ zg361comp.1.ae1:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — statement basis. A: fixed extra month with full-cycle proration. B: performance extra month at half-cycle proration, payable only for frozen 3.75. C: discretionary extra month pays zero."
+ zg361comp.1.ae2:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — payment date. A: pay the statement now and pay 4 backpay. B: freeze the full debt for 90 days and add 4 backpay owed. C: freeze it for 180 days and reject backpay."
+ zg361comp.1.ae3:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — promotion and pay slope. A: 4 dry-promotion debt + 4 same-band raise; next-cycle base steps down 2. B: 2 + 2 debt, preserve professional pay. C: no new debt; next-cycle base drops 4."
+ zg361comp.1.ae4:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — band correction and visibility. A: 4 fixed-pay catch-up owed, private pay. B: 4 one-time award owed, public band. C: one-cycle exception, anonymous distribution, no new debt."
+ zg361comp.1.ae5:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — repair and appeal. A: 4 inversion repair owed and 4 appeal correction paid. B: 2 repair + 2 partial-appeal debt. C: no repair; deny the appeal without changing the grade."
+ zg361comp.1.af1:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — long-term award nomination. A: retention-heavy score, 100 option-style units. B: balanced score, 80 restricted units. C: zero units and a 10 cash alternative. Frozen 3.75 is required; eligibility is not entitlement."
+ zg361comp.1.af2:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — bonus conversion and valuation. A: voluntarily convert 4 to units, pay 6 cash, show 50% liquidity. B: pay all 10 cash, show full liquidity. C: create no conversion and show zero liquidity."
+ zg361comp.1.af3:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — vesting clock. A: 365-day cliff then 12 monthly tranches. B: 180-day cliff then 4 quarterly tranches. C: 730-day cliff then one annual tranche."
+ zg361comp.1.af4:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — vesting gates. A: 50/50 service-performance with both gates open. B: 70/30, organization gate only. C: service-only. After a vesting tick, A/B request exit classification while C waits another period."
+ zg361comp.1.af5:0 "For [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] — exit and liquidity. A: normal departure, forfeit unvested units, buy back 10 now. B: departure with cause, mark clawback eligibility, queue a 10 buyback for 90 days. C: transfer classification, retain vested units, request no buyback."
+ zg361comp.1.a:0 "Execute route A with the amount and consequence stated above."
+ zg361comp.1.b:0 "Execute route B with the amount and consequence stated above."
+ zg361comp.1.c:0 "Execute route C and accept the stated closure or delay."
  zg361comp.289.t:0 "Compensation Statement Appeal"
  zg361comp.289.desc:0 "The statement is itemized and the performance grade remains frozen. You may appeal the money account without reopening the rating track."
  zg361comp.289.a:0 "File a compensation-only appeal."
@@ -3055,20 +3073,28 @@ def render_english_localization() -> bytes:
  zg361comp.901.t:0 "Deferred Award Resolved"
  zg361comp.901.desc:0 "The delayed award resolved against its frozen reserve. Total paid [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]; returned [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]; forfeited [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]."
  zg361comp.902.t:0 "Pay Statement Closed"
- zg361comp.902.desc:0 "Statement closed: payable [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0], paid [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0], owed [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0], returned [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]. Visibility mode [ROOT.MakeScope.Var('zg361_comp_m287_visibility_mode').GetValue|0]; the frozen grade was not rewritten."
+ zg361comp.902.desc:0 "Statement closed: payable [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0], paid [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0], owed [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0], returned [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]. The frozen grade was not rewritten."
+ zg361comp.902.private:0 "Pay visibility: private to the parties."
+ zg361comp.902.public:0 "Pay visibility: the band is public; the individual amount remains in the statement."
+ zg361comp.902.anonymous:0 "Pay visibility: only an anonymous distribution is published."
+ zg361comp.902.unknown:0 "Pay visibility was not established; no stronger disclosure is claimed."
  zg361comp.903.t:0 "Long-Term Units Vested"
  zg361comp.903.desc:0 "Vesting ledger: total [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0], service unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0], performance unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0], vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]. Current value [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]; liquid value [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]."
  zg361comp.904.t:0 "Long-Term Incentive Settled"
- zg361comp.904.desc:0 "LTI closed: leaver class [ROOT.MakeScope.Var('zg361_comp_m299_leaver_class').GetValue|0], vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0], forfeited [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0], repurchased [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]. FIFO and both payers remained binding."
+ zg361comp.904.desc:0 "Long-term award closed: vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0], forfeited [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0], repurchased [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]. Earlier grants were processed before later grants, and treasury/personal payment obligations were kept separate."
+ zg361comp.904.good:0 "Exit classification: normal departure."
+ zg361comp.904.bad:0 "Exit classification: departure with cause; clawback remains eligible."
+ zg361comp.904.transfer:0 "Exit classification: internal transfer; vested units remain."
+ zg361comp.904.unknown:0 "Exit classification is not yet supported by a valid receipt."
  zg361comp.ok:0 "Record the receipt."
 ''')
 
 
 def render_simp_chinese_localization() -> bytes:
-    return localized(r'''l_simp_chinese:
+    return localized(normalize_localization_document(r'''l_simp_chinese:
  zg361comp.1.t:0 "薪酬案卷"
- zg361comp.1.desc:0 "一份封存的薪酬案卷正在候审。请选择本阶段路线；各编号写入会成组消费，绝不会化作三十三扇争相弹出的窗口。"
- zg361comp.1.l1:0 "奖金公式。A：总包报价 45，预留 20（国库 14 / 你的金币 6）；B：报价 37，预留 16（11 / 5）；C：只留固定俸，不创建奖金对象。"
+ zg361comp.1.desc:0 "你正在裁决 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的本阶段薪酬事项。下文逐项列出每条路线的金额、付款人、期限和立即后果。"
+ zg361comp.1.l1:0 "[ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的奖金公式。A：总包报价 45，预留 20（国库 14 / 你的金币 6）；B：报价 37，预留 16（11 / 5）；C：只留固定俸，不创建奖金对象。"
  zg361comp.1.l2:0 "留任与暂扣。A：记录两年续授断崖并结算递延奖；B：一年断崖，追回已付 2，并退回未付预留；C：不续授，退回未付预留。"
  zg361comp.1.l3:0 "薪带与待遇包。A：带内市场包，给权并让下张薪酬单加 4；B：带上给权不加固定俸；C：放弃调薪池与待遇包。"
  zg361comp.1.l4:0 "专项奖。A：支付 10（国库 7 / 你的金币 3），分账为年功 3 + 绩效 7；B：支付 6（4 / 2），分账 4 + 2；C：不创建专项奖。"
@@ -3082,9 +3108,9 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.1.af3:0 "归属时钟。A：365 日 Cliff，之后月度 12 期；B：180 日，季度 4 期；C：730 日，年度 1 期。"
  zg361comp.1.af4:0 "归属门槛。A：服务/绩效各半且双门开启；B：七三分，只有组织门开启；C：纯服务。归属一次后，A/B 请求离任分类，C 再等一期。"
  zg361comp.1.af5:0 "离任与流动性。A：Good Leaver，没收未归属，立即回购 10；B：Bad Leaver，标记追索资格，90 日后排队回购 10；C：正常调动，保留已归属但不申请回购。"
- zg361comp.1.a:0 "依冻结合同与证据执行。"
- zg361comp.1.b:0 "采用有界替代方案。"
- zg361comp.1.c:0 "延期或放弃本阶段。"
+ zg361comp.1.a:0 "执行上文 A 路线及所列金额与后果。"
+ zg361comp.1.b:0 "执行上文 B 路线及所列金额与后果。"
+ zg361comp.1.c:0 "执行上文 C 路线，并承担所列关闭或延期后果。"
  zg361comp.289.t:0 "薪酬单申诉"
  zg361comp.289.desc:0 "薪酬单已经逐项列明，绩效档仍保持冻结。你可以申诉钱账，但不能借此重开绩效案轨。"
  zg361comp.289.a:0 "仅就薪酬账发起申诉。"
@@ -3094,13 +3120,21 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.901.t:0 "递延奖励已处理"
  zg361comp.901.desc:0 "递延奖励已按冻结预留处理：累计已付 [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]；追回 [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]；没收 [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]。"
  zg361comp.902.t:0 "薪酬单已关闭"
- zg361comp.902.desc:0 "薪酬单关闭：应付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0]，实付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0]，欠付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]，退回 [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]。可见模式 [ROOT.MakeScope.Var('zg361_comp_m287_visibility_mode').GetValue|0]；冻结绩效档未改写。"
+ zg361comp.902.desc:0 "薪酬单关闭：应付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0]，实付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0]，欠付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]，退回 [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]。冻结绩效档未改写。"
+ zg361comp.902.private:0 "披露方式：金额只向当事双方公开。"
+ zg361comp.902.public:0 "披露方式：薪带公开，个人金额仍只载于薪酬单。"
+ zg361comp.902.anonymous:0 "披露方式：只公示匿名分布。"
+ zg361comp.902.unknown:0 "披露方式尚无有效记录，因此不作更强声明。"
  zg361comp.903.t:0 "长期份额归属"
  zg361comp.903.desc:0 "归属账：总份额 [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0]，未归属服务 [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0]，未归属绩效 [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0]，已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]。现值 [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]；可变现值 [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]。"
  zg361comp.904.t:0 "长期激励结清"
- zg361comp.904.desc:0 "长期功赏关闭：离任分类 [ROOT.MakeScope.Var('zg361_comp_m299_leaver_class').GetValue|0]，已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]，没收 [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0]，已回购 [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]。FIFO 与双付款仍有效。"
+ zg361comp.904.desc:0 "长期功赏关闭：已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]，没收 [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0]，已回购 [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]。较早授予的份额先于后来份额处理；国库与个人付款义务分别核算，不会重复付款。"
+ zg361comp.904.good:0 "离任分类：正常离任。"
+ zg361comp.904.bad:0 "离任分类：有责离任；仍可依法追索。"
+ zg361comp.904.transfer:0 "离任分类：内部调动；保留已归属份额。"
+ zg361comp.904.unknown:0 "离任分类尚无有效回执，因此不作更强声明。"
  zg361comp.ok:0 "收存这份凭据。"
-''')
+'''))
 
 
 def render_placeholder_localization(language: str) -> bytes:

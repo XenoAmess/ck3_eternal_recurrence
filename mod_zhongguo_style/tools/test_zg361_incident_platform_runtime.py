@@ -845,11 +845,6 @@ class GeneratedFileTests(unittest.TestCase):
             for domain in gen.DOMAINS
             for suffix in ("t", "desc")
         )
-        expected_keys.update(
-            f"zg361_ip_m{mechanism_id:03d}_{suffix}"
-            for mechanism_id in range(192, 229)
-            for suffix in ("name", "result")
-        )
         english = gen._loc_rows("english")
         chinese = gen._loc_rows("simp_chinese")
         self.assertEqual(set(english), expected_keys)

@@ -199,10 +199,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The canonical rendering includes the purpose-sharded core owner note.
-        self.assertEqual(len(historical_bytes), 267_604)
+        self.assertEqual(len(historical_bytes), 268_175)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "8e17777cd0ce60c96aa308ea2b80ae910af4c90dd0110107d75e1471548048d2",
+            "37fae954e957b72967eaf50e5b3967530966b400e1208b7863b02dbdfb10ec75",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
