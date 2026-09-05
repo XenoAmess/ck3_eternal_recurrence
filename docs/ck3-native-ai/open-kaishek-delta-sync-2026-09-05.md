@@ -119,3 +119,41 @@ status 为 `observed_generic_boundary_source_attribution_required`；
 不重跑无变化的 Maven、parser 或历史 R3。public/action/decision/automatic/GEN-034
 全部保持 false；没有启动/附加 CK3。B1 D0 witness 本轮也未出现超出前次 parser
 覆盖的语法变化，不能据此宣称有限 runtime 已支持其游戏执行语义。
+
+## 增量：`523432a` source-specific capture/provider
+
+提交 `523432aec7846d0da833c5a351faad743fa23d2d` 的伴随检查结论仍为
+`not-applicable / NO_EXTERNAL_CODE_CHANGE`。本提交新增主仓 Python typed capture
+normalizer、离线 preflight、合同与测试/专题；没有修改共享 native DLL、MCP/public
+wire、既有 cleanup/expiry receipt 或 Paradox 脚本。新 preflight 直接调用
+`normalize_raiktor_source_specific_capture`，不调用 open_kaishek。
+
+本次以 `git show --stat/--name-only 523432a` 确认七文件改动范围，并读取新合同、
+normalizer/preflight 调用点及
+[source-specific 原生专题](g2-source-specific-war-loss-provider-2026-09-05.md)。
+外部仓全树 `rg` 对
+`raiktor-source-specific-war-loss-attribution-provider-v1`、
+`raiktor-war-bound-private-capture-v1`、`normalize_raiktor_source_specific_capture`、
+`raiktor_source_specific_war_loss`、`source_set_sha256` 的精确检索结果为 0 匹配；
+现有 `G2PostwarCleanupExpiryAdapterMetadata` 与 `G2WarBoundLossCandidateMetadata`
+中的 `SOURCE_SPECIFIC_ATTRIBUTION_READY=false` 与新合同完全一致。
+
+| 本次读取的源输入 | SHA-256 |
+| --- | --- |
+| `raiktor_source_specific_war_loss_attribution_v1_contract.json` | `1633808E42C324EF6C282481040B905DAF7FE9B0147F7072382919CA5064F9CE` |
+| `prepare_raiktor_source_specific_war_loss_capture.py` | `6286921CF0782FE47EFFEC911BCD93697FF6F77BA99CD815784E957DD0A80D9E` |
+| `raiktor_source_specific_war_loss_contract.py` | `F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A` |
+
+新输出仅证明六次源执行捕获的结构和创建时实测士兵总数。当前尚无 classified live
+capture，也没有贯穿同生命周期 current/action/postwar 的 source-specific join；
+`source_specific_loss_ready`、`comparison_input_ready`、public/action/decision/
+automatic-surrender/GEN-034 均未升级。不能把既有 R3 的 generic `598 -> 0`
+事后归因给这六次源执行。
+
+因此外部 HEAD/origin 保持 `84a2b18fedad74de37bf5cd0472519ee321f367d`、工作树 clean；
+不新增 Java descriptor、opcode、IR/runtime handler、fixture 或 metadata pin。
+复用专题已记录的 GREEN 静态 preflight
+`FE3CDDF93E07B0028ED40BF472F55C89589CF497B2395DC587806ED4C913EB4B`，
+本次不重复 Maven、parser、capture self-test 或 ABI verifier。仅作上述一次必要的
+源码/合同消费关系检查和文档 `git diff --check`；没有启动/附加 CK3，没有写存档，
+没有 effect-file 体量或加载性能的新实证。
