@@ -222,3 +222,12 @@ cleanup 与 protected storage GREEN。它没有进入 gameplay，因此既不能
 
 R76 是当前修复树上的同入口 boundary-only B，不预先进入正式 generators。旧 ABBA 已证明轮次波动很大，所以 R76 即使 GREEN 也只能证明
 “拆分候选本轮可加载”；必须结合 A 的既有连续 GREEN/本轮 RED 与后续同条件复测，不能单轮宣称文件体量是根因。
+
+### R76/R77 实际结果
+
+- R76 遗漏了成功基线中的 `--phase2-frontend-first-load-save-name autosave`：split B 到达 Frontend，但 runner 无权发起正式 load-save，
+  `299.883s` 返回 `save_resume_red / frontend_without_load_save`。这是 harness 配置 RED，不计作 A/B 产品结果。
+- R77 恢复参数后，同一 split B 的正式 save-loading PID 在 `63.480s` 达到 loader GREEN，并继续到真实 gameplay；随后在
+  `ep3_governor_yearly.8080` 未登记事件动作前 fail-closed，属于 choreography RED。
+- R77 只证明 B 本轮可加载。由于旧 ABBA 的 A2 与 B1/B2 都在约 126–138s 完成 callbacks 且同样 terminal RED，当前仍不能把
+  R75(A RED) → R77(B GREEN) 单独归因于文件边界。下一轮 R78 使用未拆分 A、完整相同 frontend-first 参数；B 不进入正式 generators。

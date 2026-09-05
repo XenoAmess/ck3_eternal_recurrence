@@ -479,6 +479,85 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_ep3_governor_8080_binds_magistrate_and_punishment_option(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "ep3_governor_yearly.8080",
+            "current_event_instance_id": 16,
+            "date_raw": 53147520,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [character_scope("magistrate", 16780023)],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(4)
+            ],
+        }
+        snapshot = {"date_raw": 53147520, "active_event": {"option_count": 4}}
+        event = {"event_instance_id": 16}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[
+            "ep3_governor_yearly.8080"
+        ]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="ep3_governor_yearly.8080",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        player_as_magistrate = copy.deepcopy(context)
+        player_as_magistrate["saved_scopes"] = [
+            character_scope("magistrate", 29037)
+        ]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=player_as_magistrate,
+            event_key="ep3_governor_yearly.8080",
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:magistrate:unique_third_party"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(
+            character_scope("unrelated_scope", 16780024)
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra_scope,
+            event_key="ep3_governor_yearly.8080",
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_count"])
+
     def test_health_7500_accepts_only_the_source_proven_single_option_frame(self) -> None:
         context = {
             "schema": "current-event-window-context-v1",

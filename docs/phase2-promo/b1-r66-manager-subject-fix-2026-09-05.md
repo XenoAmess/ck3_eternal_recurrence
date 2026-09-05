@@ -497,3 +497,53 @@ the 831-file R76 projection tree is
 R76 must now determine whether this current-tree split clears the loader gate;
 the older ABBA experiment remains negative evidence against declaring file
 size the root cause from a single run.
+
+## R76/R77: harness correction, split loader GREEN, new vanilla interrupt
+
+R76 used the split product but accidentally omitted the R74 command's
+`--phase2-frontend-first-load-save-name autosave` argument. It reached real
+Frontend after all 303 callbacks, then correctly returned
+`RED / save_resume_red / frontend_without_load_save` at `299.883s`. This is a
+harness configuration RED, not a product or split verdict. Its outer, evidence,
+cell, loader and cleanup hashes are respectively
+`5BFE18A8EDC4402B329A76F2F55528ACE624A5CD3304A29789069FC3FAC5ED9C`,
+`B4A238C32E81EA47199A2BB6D5C327AF775B762A30F4803B9D34D3F9536453E3`,
+`44C549AB9D7DB1F6EDB525C7E4849E07BAA46D16D447952C81F73CE2C4732826`,
+`1AF26546AC4067D0A8B33595D6F46CB43D941858D4B425163D9C66EABC1EBD14`
+and `33EA3F3901AA77BE5625359A6E5AE2B84BEB2743E902FEA2C2D8572D5C9C81CA`.
+
+R77 restored that exact frontend-first argument on the same split tree. Its
+formal loader gate was GREEN at `63.480s` for the final save-loading PID, with
+Load Save/native readiness and same-PID continuation authorized. The product
+then advanced from raw date `53147016` to `53147520` and stopped before action
+on the previously unregistered vanilla Roads to Power event
+`ep3_governor_yearly.8080`: instance 16, root/player 29037, exactly one dynamic
+non-player `magistrate` Character (`16780023`) and four shown/enabled native
+options `0/1/2/3`.
+
+Exact source file
+`Crusader Kings III/game/events/dlc/ep3/ep3_governor_yearly_8.txt` is 104,171
+bytes with SHA-256
+`DA8B840BD0A71705421ABE2FB1C743C451253156917BAB1DC0F6165074194789`.
+Option 1 punishes the magistrate and changes only root's governance and a
+ten-year bureaucracy modifier. The other choices kill the magistrate, embezzle
+gold, or recruit the magistrate and add a hook. The new exact contract
+therefore selects authored option 1/native 0, binds the one dynamic non-player
+scope and complete option shape, and rejects an extra scope or player alias.
+Checkpoint tests now pass 12/12 and choreography 5/5 in normal and optimized
+modes.
+
+Frozen R77 SHA-256:
+
+- outer report: `7719092AC329D7394A4010AC89553312E603A8629072EC6340BAEFAD44280C91`
+- evidence index: `23A79C6145DC600EFB3A226FDF8A2FD0B711EA2FD4D49C40673803E5B3E67925`
+- cell report: `171D834BEECD1ADF26AC9A48B4B83E66E6899BF0122749B11B520BF1A7748037`
+- loader gate: `B4868CC6E292EE96D97F4E149B3EF8ED9058E494FF54A6C39069439208B3C345`
+- promotion entry: `BD77917FA9D00939DFE17ED2AC2A56A9010AF9755CD7423458E9BAB12E18390C`
+- cleanup: `A440BFF8E9FF646183AA4D8CE1FFF4847A4CD987E7BC93F5A631FE0694C3C225`
+
+R77 proves this split candidate can load, not that splitting caused the GREEN.
+The historical ABBA and R67–R74 runs show large same-boundary timing variance.
+R78 therefore returns to the unsplit 636-file A tree with the corrected
+frontend-first command. Only that comparison can distinguish a stable boundary
+effect from ordinary cold-start/run-order variance.

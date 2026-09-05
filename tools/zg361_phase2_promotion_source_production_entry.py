@@ -805,6 +805,26 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 2,
         "selected_native_option_index": 1,
     },
+    "ep3_governor_yearly.8080": {
+        # Roads to Power annual governor event.  The event creates exactly
+        # one temporary magistrate.  Option 1 punishes the magistrate by
+        # changing only root's governance and ten-year bureaucracy modifier;
+        # unlike the alternatives it neither kills/recruits the character nor
+        # embezzles gold, so it is the minimum external-side-effect path.
+        "date_raw": 53147520,
+        "date_raw_range": (53147520, 53147520),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "magistrate": (29037,),
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 1,
+        "option_count": 4,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "sway_ongoing.1002": {
         # Vanilla ongoing-sway compliment letter. The no-friend branch
         # randomizes three distinct compliment flags from the first twelve

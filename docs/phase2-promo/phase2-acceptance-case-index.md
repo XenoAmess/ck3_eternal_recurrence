@@ -38,7 +38,7 @@
 | `P2-L0-001` | 361 manifest | ID 001–361 恰好一次、38 领域、B1–B8 无重叠无遗漏 | 缺号、重复号、错误批次、生成结果漂移即 RED | `STATIC_GREEN` |
 | `P2-L0-002` | 脚本/本地化/发布树 | BOM、parser、loc、玩家限定、production allowlist 和生成器 parity | AI 入口、raw key、acceptance-only 泄漏、生成文件手改即 RED | `STATIC_GREEN` |
 | `P2-FILE-001` | effect 边界 | B2 起按用途分组，目标每文件 1–10 个 definition | 原则上 >20 即 RED；例外必须有理由和实机证据 | `STATIC_GREEN`：当前非 legacy 最大 10、>20 为 0 |
-| `P2-LOAD-001` | 生产 closure | exact CK3 1.19.0.6 加载 hash-bound production tree，唯一产品挂载，loader scan GREEN | frontend/history 超时、Unknown effect/trigger、错误挂载或树漂移即 RED | `BLOCKED`：R67–R74 连续 GREEN 后，R75 在 303 callbacks/history 完成后超时；R76 boundary-only split 待实机 |
+| `P2-LOAD-001` | 生产 closure | exact CK3 1.19.0.6 加载 hash-bound production tree，唯一产品挂载，loader scan GREEN | frontend/history 超时、Unknown effect/trigger、错误挂载或树漂移即 RED | `BLOCKED`：R75 unsplit A 超时；R77 split B loader GREEN，R78 回到 A 做同参数对照 |
 | `P2-B1-001` | manager/subject 身份 | manager cycle/case 与 subject ABI 独立，旧存档只读 witness 可见 | subject 字段不得冒充 manager；旧 ticket 不得强行复活 | `LIVE_PARTIAL` |
 | `P2-B1-002` | 长期名单 | 每个延迟消费边界剔除不可用 weak Character，保留仍活着的离任者 | `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `BLOCKED`：R74 重现；静态修复已入树，但 R75 未越过 loader，仍待 R76+ gameplay |
 | `P2-B1-003` | baseline | 有首府正常结算；无首府时 comparator unavailable 且 delta=0 | 不得把缺值当真实 0，不得读取新 owner 代替冻结对象 | `LIVE_PARTIAL` |
@@ -65,6 +65,7 @@
 | `P2-INT-1002` | `.1002` 前三项为 `0..11` 内递增互异，末项 native 12；选择 authored 13 | 重复、越界、末项错误、receiver 不等于冻结 target | `STATIC_GREEN / next occurrence live pending` |
 | `P2-INT-B1200` | `.200` 精确 9/10 或 bank-descendant 13/14 名称集；只绑定事件实际消费的 manager/self-review 九字段，选择 honest option 1 | 少/多 scope、玩家 subject 错位、两个 manager owner 不同、六个消费值类型漂移即 RED；四个未消费 bank payload 不作伪身份断言 | `STATIC_GREEN / R71 correction live pending` |
 | `P2-INT-9006` | `bp1_yearly.9006` 精确一个随机非玩家 courtier、两项 native 0/1；选择只影响玩家自身 piety/stress 的 option 2 | courtier=玩家、多余 scope、选项漂移或同局超过两次即 RED | `STATIC_GREEN / R72 correction live pending` |
+| `P2-INT-8080` | `ep3_governor_yearly.8080` 精确一个动态非玩家 magistrate、四项 native 0–3；选择不杀人/不招募/不取金的 punish option 1 | magistrate=玩家、多余 scope、错误日期或选项漂移即 RED | `STATIC_GREEN / R77 correction live pending` |
 | `P2-INT-7500` | `health.7500` 精确 root、0 scope、唯一 native 0；不可避免地添加 `fragile_bones` | 任意 scope、额外/缺失 option、日期或 root 漂移即 RED | `STATIC_GREEN / R73 correction live pending` |
 | `P2-INT-M001` | 产品 `zg361m.1` 精确 root、3 个 native 0/1/2 选项；选择 reference charter/native 0 | 错误 root、选项漂移；外层遗留 B1 scopes 不得冒充本事件输入 | `STATIC_GREEN / R74 correction live pending` |
 | `P2-INT-EXACT` | 已登记事件逐项绑定 date policy、root、typed scopes、完整显示选项与最小副作用路径 | 未知事件或任一字段漂移必须动作前停机 | `LIVE_PARTIAL`；每次 RED artifact 保留 |
