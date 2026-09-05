@@ -1125,11 +1125,11 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "root_scope": character_scope("root", 29037)["scope"],
             "saved_scopes": [
                 character_scope("actor", 30987),
-                character_scope("recipient", 32904),
+                character_scope("recipient", 45123),
                 unavailable_character_scope("secondary_actor"),
                 character_scope("secondary_recipient", 29037),
                 unavailable_character_scope("intermediary"),
-                character_scope("governor_at_war", 32904),
+                character_scope("governor_at_war", 45123),
                 character_scope("governor_joining", 29037),
             ],
             "options": [
@@ -1173,6 +1173,23 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         checks = checks_for(wrong_joining_governor)
         self.assertFalse(checks["scope:governor_joining"])
+
+        mismatched_war_governor = copy.deepcopy(context)
+        mismatched_war_governor["saved_scopes"][-2] = character_scope(
+            "governor_at_war", 45124
+        )
+        checks = checks_for(mismatched_war_governor)
+        self.assertFalse(checks["scope:recipient:matches_any"])
+
+        player_as_war_governor = copy.deepcopy(context)
+        player_as_war_governor["saved_scopes"][1] = character_scope(
+            "recipient", 29037
+        )
+        player_as_war_governor["saved_scopes"][-2] = character_scope(
+            "governor_at_war", 29037
+        )
+        checks = checks_for(player_as_war_governor)
+        self.assertFalse(checks["scope:recipient:unique_third_party"])
 
         extra_scope = copy.deepcopy(context)
         extra_scope["saved_scopes"].append(character_scope("extra", 29037))

@@ -6319,15 +6319,21 @@ zg361_b1_resolve_pending_subject_effect = {
 				has_variable = zg361_b1_pending_fallback_subject
 				var:zg361_b1_pending_fallback_subject = {
 					trigger_if = {
-						limit = { has_variable = zg361_b1_pending_reservation_state }
-						var:zg361_b1_pending_reservation_state = 1
-						has_variable = zg361_b1_pending_reserved_for_subject
-						var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
-						var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
-						var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
-						var:zg361_b1_case_state = 7
-						var:zg361_pending_grade = 2
+						# A Character variable is a weak reference.  Test availability in
+						# an outer branch before evaluating reservation variables on it.
+						limit = { is_alive = yes }
+						trigger_if = {
+							limit = { has_variable = zg361_b1_pending_reservation_state }
+							var:zg361_b1_pending_reservation_state = 1
+							has_variable = zg361_b1_pending_reserved_for_subject
+							var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
+							var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
+							var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
+							var:zg361_b1_case_state = 7
+							var:zg361_pending_grade = 2
+						}
+						trigger_else = { always = no }
 					}
 					trigger_else = { always = no }
 				}
@@ -6353,15 +6359,19 @@ zg361_b1_resolve_pending_subject_effect = {
 					has_variable = zg361_b1_pending_fallback_subject
 					var:zg361_b1_pending_fallback_subject = {
 						trigger_if = {
-							limit = { has_variable = zg361_b1_pending_reservation_state }
-							var:zg361_b1_pending_reservation_state = 1
-							has_variable = zg361_b1_pending_reserved_for_subject
-							var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
-							var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
-							var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
-							var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
-							var:zg361_b1_case_state = 7
-							var:zg361_pending_grade = 2
+							limit = { is_alive = yes }
+							trigger_if = {
+								limit = { has_variable = zg361_b1_pending_reservation_state }
+								var:zg361_b1_pending_reservation_state = 1
+								has_variable = zg361_b1_pending_reserved_for_subject
+								var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
+								var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
+								var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
+								var:zg361_b1_case_state = 7
+								var:zg361_pending_grade = 2
+							}
+							trigger_else = { always = no }
 						}
 						trigger_else = { always = no }
 					}
@@ -9631,17 +9641,20 @@ zg361b1.125 = {
 							limit = { has_variable = zg361_b1_pending_fallback_subject }
 							var:zg361_b1_pending_fallback_subject = {
 								if = {
-									limit = {
-										trigger_if = {
-											limit = { has_variable = zg361_b1_pending_reservation_state }
-											var:zg361_b1_pending_reservation_state = 1
-											has_variable = zg361_b1_pending_reserved_for_subject
-											var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+									limit = { is_alive = yes }
+									if = {
+										limit = {
+											trigger_if = {
+												limit = { has_variable = zg361_b1_pending_reservation_state }
+												var:zg361_b1_pending_reservation_state = 1
+												has_variable = zg361_b1_pending_reserved_for_subject
+												var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+											}
+											trigger_else = { always = no }
 										}
-										trigger_else = { always = no }
+										set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
+										remove_variable = zg361_b1_pending_reserved_for_subject
 									}
-									set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
-									remove_variable = zg361_b1_pending_reserved_for_subject
 								}
 							}
 						}

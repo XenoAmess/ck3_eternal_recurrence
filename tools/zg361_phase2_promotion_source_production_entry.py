@@ -1021,17 +1021,26 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # tooltip and its single option has no scripted effect, so the sole
         # acknowledgement is the exact bounded path. Generic interaction
         # slots may retain typed weak Character scopes; bind their unavailable
-        # identity explicitly instead of inventing character IDs.
+        # identity explicitly instead of inventing character IDs.  Recipient
+        # is selected dynamically by each interaction, then source line 6658
+        # saves that same Character as governor_at_war.  Freeze that authored
+        # role alias, not one allocator-specific historical ID.
         "date_raw": 53159976,
         "date_raw_range": (53147016, 53160216),
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
             "actor": 30987,
-            "recipient": 32904,
             "secondary_recipient": 29037,
-            "governor_at_war": 32904,
             "governor_joining": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "recipient": (29037, 30987),
+            "governor_at_war": (29037, 30987),
+        },
+        "character_scope_matches_any": {
+            "recipient": ("governor_at_war",),
+            "governor_at_war": ("recipient",),
         },
         "unavailable_character_scopes": (
             "secondary_actor",

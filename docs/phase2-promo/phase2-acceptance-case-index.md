@@ -40,7 +40,7 @@
 | `P2-FILE-001` | effect 边界 | 全部 effect 按用途分组，目标每文件 1–10 个 definition | >20 即 RED；例外必须有不可拆理由和精确实机证据 | `STATIC_GREEN / live pending`：626 files / 3721 effects / 最大 10 / 例外 0 |
 | `P2-LOAD-001` | 生产 closure | exact CK3 1.19.0.6 加载 hash-bound production tree，唯一产品挂载，loader scan GREEN | frontend/history 超时、Unknown effect/trigger、错误挂载或树漂移即 RED | `LIVE_PARTIAL`：R77 拆分树 loader GREEN；正式 canonical 拆分树待下一轮验证 |
 | `P2-B1-001` | manager/subject 身份 | manager cycle/case 与 subject ABI 独立，旧存档只读 witness 可见 | subject 字段不得冒充 manager；旧 ticket 不得强行复活 | `LIVE_PARTIAL` |
-| `P2-B1-002` | 长期名单 | 每个延迟消费边界剔除不可用 weak Character，保留仍活着的离任者 | `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `BLOCKED`：R74 重现；静态修复已入树，但 R75 未越过 loader，仍待 R76+ gameplay |
+| `P2-B1-002` | 长期名单与嵌套角色引用 | 每个延迟消费边界剔除不可用 weak Character；每次解引用 Character-valued variable 都重新用外层 `is_alive=yes` 隔离，再读取角色变量 | 产品调用栈出现 `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `BLOCKED`：R83 曾将旧调用点实机归零；R87 又在 pending 对象内嵌 fallback Character 上发现 5 条产品 RED，静态修复已 GREEN，待 R88 归零 |
 | `P2-B1-003` | baseline | 有首府正常结算；无首府时 comparator unavailable 且 delta=0 | 不得把缺值当真实 0，不得读取新 owner 代替冻结对象 | `LIVE_PARTIAL` |
 | `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `BLOCKED`：R78 跑满 550 日仍无 Central、`.146/.147` |
 | `P2-B2-001` | 送达/申诉/PIP | 三条真实分支、四次 exact restore、最终 baseline、跨进程 event identity | unset owner、跨 case receipt、申诉加重、资金不守恒即 RED | `LIVE_GREEN`：focused gate；不等于 Phase2 全量 |

@@ -3408,6 +3408,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             ),
             2,
         )
+        # The reserved peer is stored as a weak Character variable.  Both
+        # success and failure predicates must reject an unavailable peer in an
+        # outer branch before either predicate reads its variables.
+        self.assertEqual(resolve.count("limit = { is_alive = yes }"), 2)
         continuation = top_level_block(self.events, "zg361b1.123")
         self.assertIn("var:zg361_b1_pending_open_n = 0", continuation)
         self.assertIn("var:zg361_b1_case_active = 1", continuation)
@@ -3424,6 +3428,9 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             safe_branch,
             watchdog.index("has_variable = zg361_b1_pending_fallback_subject"),
         )
+        # One guard protects the watched subject list row; the second protects
+        # that row's independently weak fallback Character variable.
+        self.assertGreaterEqual(watchdog.count("limit = { is_alive = yes }"), 2)
 
     def test_pending_publishes_stable_subjects_then_revises_each_resolved_row(self) -> None:
         initialize = top_level_block(

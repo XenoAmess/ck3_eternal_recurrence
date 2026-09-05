@@ -890,3 +890,53 @@ entry, loader and cleanup SHA-256 values are respectively
 `1F945543A52FA768107F4254F480A31892815FE0BB6A6539113DB48E8570967D`
 and `A8F45B8DA7A6B6880DAC8EE1803D398208CE533AF43AA76A5D909751D924AC37`.
 Cleanup was GREEN and CK3 returned to zero.
+
+## R87: dynamic military-aid role and nested weak fallback
+
+R87 used fresh projection `phase2-full-release-r87-d2001b2` from the pushed
+936-file product. Its manifest was
+`48480C8F7867ED523F34948181068BE1004E724AD716562B5CEDD9E87372201D`;
+formal verification, no-launch preflight and the complete effect boundary
+(`626 files / 3721 effects / max 10 / target miss 0 / >20 0`) were GREEN.
+The CK3 1.19.0.6 loader completed with 303/303 callbacks, fatal count zero,
+then the default speed-5 native/MCP timeline made 394 observations and drained
+seven exact events. It stopped before action on known
+`tgp_interaction_event.0016` because only `recipient` and
+`governor_at_war` had changed from their previously frozen numeric IDs.
+
+Exact source shows why those IDs are not stable. The interaction chooses its
+recipient dynamically, then
+`common/character_interactions/10_tgp_interactions.txt:6658` saves that same
+scope as `governor_at_war`; the joining governor is likewise both
+`secondary_recipient` and `governor_joining`. The corrected contract freezes
+these source-defined aliases, the fixed player/joining role, distinct
+non-player recipient, typed unavailable generic slots, scope count and the
+single option. Negative tests reject an alias mismatch or player recipient.
+Source SHA-256 values remain
+`C845EBEB53A7D80E5155AF1D6FC42D03A86931C7088613CFA39A19B0DF468C75`
+and `D081DD47F856C4F62313BDD1512177BCA049EADCE224F274A8E635F851576822`.
+
+This longer run reached B1 pending resolution and found five product
+`This scope doesn't support variables` errors: three in
+`zg361_b1_resolve_pending_subject_effect` and two in the `.125` watchdog.
+All five dereferenced the pending subject's separately stored fallback
+Character after the outer subject had already passed its own guard. Three
+additional occurrences were exact-build vanilla combat/accolade paths and are
+not attributed to the mod. Each fallback dereference now has its own outer
+`is_alive=yes` branch before reservation variables are evaluated; the
+manager-owned watchdog still closes the pending barrier when the fallback is
+unavailable. The old ordered-list and localization signatures remained zero.
+B1 tests are GREEN at 66/66 and checkpoint tests at 18/18 in normal and
+optimized modes; choreography, capture, static validation, build tests and the
+effect boundary are GREEN. These repairs remain static-ready until R88 proves
+the five product errors absent and continues toward `.146 -> .147`.
+
+R87 outer report, evidence index, cell report, promotion entry, loader and
+cleanup SHA-256 values are respectively
+`9612F7A1294EECDAB72C1EF526BC8D0A0E38F85760F501BB095B0426DF9CDE9F`,
+`316A24B24F781B8171B306D9224BCE10F22C767ABC32EA678807E8AB8287CAC1`,
+`4C83636EC729B5E3C19DFE8BD6F5DFCCCC4244EF07A00E1F32257B2EB99C67B9`,
+`018C1A5065F6304E3ABE83E5F1B88C47C4AE4CE28B1492AB239291B7343D1514`,
+`7148C7C9C4D14E9D0AD0947F21579ADD5EDE289261D60A56A396C9E5AE252615`
+and `F0D50BFCBE76F2516216D5F7D6CA0AAD26FA42A993F5C3306EA3983204AFDD2D`.
+Cleanup completed and CK3 returned to zero.
