@@ -752,6 +752,37 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "sway_ongoing.1002": {
+        # Vanilla ongoing-sway compliment letter. The no-friend branch
+        # randomizes three distinct compliment flags from the first twelve
+        # authored options, so their concrete native indices are deliberately
+        # dynamic. The thirteenth authored option is always available and has
+        # no option effect; only the event-wide after block clears the
+        # temporary compliment flags. Select that bounded fallback while
+        # binding the exact scheme owner/target frame and source-defined
+        # three-random-plus-final option shape.
+        "date_raw": 53149920,
+        "date_raw_range": (53149920, 53149920),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "owner": 29037,
+            "target": 27051,
+            "compliment_receiver": 27051,
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "artifact": "artifact",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 5,
+        "option_count": 4,
+        "snapshot_option_count": 13,
+        "native_option_prefix_range": (0, 11),
+        "native_option_suffix": (12,),
+        "selected_option_number": 13,
+        "selected_native_option_index": 12,
+    },
     "sway_outcome.2001": {
         # Vanilla diplomatic-misunderstanding outcome for the seed's existing
         # sway scheme.  The event has one unavoidable acknowledgement: the
@@ -1006,25 +1037,14 @@ def _known_interrupt_checks(
     options = options_value if isinstance(options_value, list) else []
     option_count = contract["option_count"]
     snapshot_option_count = contract.get("snapshot_option_count", option_count)
-    native_option_indices_value = contract.get(
-        "native_option_indices", tuple(range(int(option_count)))
-    )
-    native_option_indices = (
-        native_option_indices_value
-        if isinstance(native_option_indices_value, tuple)
-        else ()
-    )
-    authored_options_exact = (
-        len(options) == option_count
-        and len(native_option_indices) == option_count
-    )
+    actual_native_option_indices: list[object] = []
+    authored_options_exact = len(options) == option_count
     if authored_options_exact:
         for index, row_value in enumerate(options):
             row = row_value if isinstance(row_value, Mapping) else {}
+            actual_native_option_indices.append(row.get("native_option_index"))
             if not (
                 row.get("rendered_index") == index
-                and row.get("native_option_index")
-                == native_option_indices[index]
                 and row.get("shown") is True
                 and row.get("enabled") is True
                 and row.get("fallback") is False
@@ -1032,6 +1052,47 @@ def _known_interrupt_checks(
             ):
                 authored_options_exact = False
                 break
+    native_option_prefix_range = contract.get("native_option_prefix_range")
+    native_option_suffix = contract.get("native_option_suffix")
+    if (
+        authored_options_exact
+        and isinstance(native_option_prefix_range, tuple)
+        and len(native_option_prefix_range) == 2
+        and all(
+            isinstance(value, int) and not isinstance(value, bool)
+            for value in native_option_prefix_range
+        )
+        and isinstance(native_option_suffix, tuple)
+    ):
+        lower, upper = native_option_prefix_range
+        prefix = actual_native_option_indices[: -len(native_option_suffix)]
+        suffix = actual_native_option_indices[-len(native_option_suffix) :]
+        authored_options_exact = (
+            bool(native_option_suffix)
+            and lower <= upper
+            and prefix == sorted(prefix)
+            and len(prefix) == len(set(prefix))
+            and all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and lower <= value <= upper
+                for value in prefix
+            )
+            and tuple(suffix) == native_option_suffix
+        )
+    elif authored_options_exact:
+        native_option_indices_value = contract.get(
+            "native_option_indices", tuple(range(int(option_count)))
+        )
+        native_option_indices = (
+            native_option_indices_value
+            if isinstance(native_option_indices_value, tuple)
+            else ()
+        )
+        authored_options_exact = (
+            len(native_option_indices) == option_count
+            and tuple(actual_native_option_indices) == native_option_indices
+        )
 
     scopes_value = context.get("saved_scopes")
     scopes = scopes_value if isinstance(scopes_value, list) else []

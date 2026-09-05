@@ -371,6 +371,96 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(out_of_window)
         self.assertFalse(checks["context_date_raw"])
 
+    def test_sway_compliment_accepts_dynamic_three_plus_empty_fallback(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def typed_scope(name: str, type_key: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": type_key},
+            }
+
+        def options(native_indices: tuple[int, ...]) -> list[dict[str, object]]:
+            return [
+                {
+                    "rendered_index": index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index, native_index in enumerate(native_indices)
+            ]
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "sway_ongoing.1002",
+            "current_event_instance_id": 15,
+            "date_raw": 53149920,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                typed_scope("scheme", "scheme"),
+                character_scope("owner", 29037),
+                typed_scope("artifact", "artifact"),
+                character_scope("target", 27051),
+                character_scope("compliment_receiver", 27051),
+            ],
+            "options": options((1, 3, 8, 12)),
+        }
+        snapshot = {"date_raw": 53149920, "active_event": {"option_count": 13}}
+        event = {"event_instance_id": 15}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["sway_ongoing.1002"],
+            starting_date=53147016,
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="sway_ongoing.1002",
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        alternate_random_flags = copy.deepcopy(context)
+        alternate_random_flags["options"] = options((0, 5, 11, 12))
+        checks = checks_for(alternate_random_flags)
+        self.assertTrue(all(checks.values()), checks)
+
+        for bad_indices in ((1, 1, 8, 12), (1, 3, 12, 12), (1, 3, 8, 11)):
+            with self.subTest(native_indices=bad_indices):
+                bad_shape = copy.deepcopy(context)
+                bad_shape["options"] = options(bad_indices)
+                checks = checks_for(bad_shape)
+                self.assertFalse(checks["authored_options_exact"])
+
+        wrong_receiver = copy.deepcopy(context)
+        wrong_receiver["saved_scopes"][-1] = character_scope(
+            "compliment_receiver", 27052
+        )
+        checks = checks_for(wrong_receiver)
+        self.assertFalse(checks["scope:compliment_receiver"])
+
     def test_run_cell_passes_owned_product_lineage_to_capture_callable(self) -> None:
         self._run_cell_case(entry_error=False)
 

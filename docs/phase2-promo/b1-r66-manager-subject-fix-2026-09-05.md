@@ -221,3 +221,51 @@ check. There is no loader/file-size/performance RED, so no effect file is
 split for this failure. The B2+ policy remains purpose grouping, target 1–10
 effects per file, hard-normal ceiling 20; any future loader-performance RED
 must again be tested against exact shard sizes before a purpose split.
+
+## R70: source-randomized sway compliment options
+
+R70 ran from committed `34d2dbf` against the same unchanged 636-file product.
+The formal loader gate, native readiness, capability preflight, error scan,
+mount, protected storage and cleanup were GREEN. It drained B2 PIP and vanilla
+`spymaster_task.0381`, then stopped before action at the previously unregistered
+vanilla `sway_ongoing.1002`, date raw `53149920`, event instance `15`, root
+`29037`. R69's `.0399` event did not recur, so its dual-Boolean correction
+remains live-pending rather than being claimed as R70-verified.
+
+The exact `.1002` frame has five saved scopes: Characters `owner=29037`,
+`target=27051`, `compliment_receiver=27051`, plus typed `scheme` and `artifact`.
+Four shown/enabled rows map to native option indices `(1, 3, 8, 12)`. Frozen
+1.19.0.6 source establishes that the no-friend branch randomly selects three
+distinct compliment flags from twelve authored compliment options. The final,
+thirteenth authored option has only a name; unlike the compliment branches it
+does not evaluate a compliment or invoke the common outcome effect. All paths
+still run the event-wide `after` cleanup, and the 3650-day scheme flag was set
+in `immediate` before the window opened.
+
+The runner therefore does not freeze the random `(1, 3, 8)` prefix. It accepts
+exactly three strictly increasing, distinct native indices in `0..11`, followed
+by native index `12`, while retaining the exact root/owner/target/receiver,
+scope types, five-scope count, four rendered rows and thirteen-authored-option
+snapshot. It selects authored option number **13** (native index `12`), not
+rendered row number 4. Duplicate/out-of-range compliment indices, a missing
+final index, or a wrong receiver identity remain RED. Delivery is sourced from
+the monthly randomized sway on-action, so the date is bound to the existing
+per-run product observation window.
+
+R70 reached only raw date `53149920`, before B1 D+180. Zero weak-variable,
+no-capital, B1 diagnostic, P2C and `.146/.147` markers at that stop do not close
+their live gates. Registry remains **0/4**.
+
+Frozen R70 SHA-256:
+
+- outer report: `232983ED61746AC7330BEABE565DE4A767A9A905C185CDA844583924D02E23D9`
+- evidence index: `76E5B855C0466D736E822BEC4AF6827B3C8D257D5D641D77E4F246A3FB69AC9E`
+- promotion entry: `21B846EAC8D090485BA5F3A15837BEA9A4590E72429247C00A6098D1A73B1F98`
+- loader gate: `E8D5C58E234277C1123C48F5A03E075E0EAEC100A4473E59A7F323E6F380E751`
+- cleanup: `C290AF4C37FB0B5D58DDEC38D234B247E19F9E8A143D66DDB15A58EDDB49F331`
+- driver state: `A4F93A28D78C7C5155DAEC993AC621E62CF5FCA81AE2E39384F52C24512FAC51`
+- vanilla sway event: `F646FAE510A66A87A01B464140F7206921B141E6F3D3D06CE20570C18C7B9759`
+
+This is another post-loader choreography RED. The 636-file tree again loaded
+GREEN, so R70 supplies no evidence for an additional effect split. The B2+
+purpose-shard target and ceiling remain unchanged.
