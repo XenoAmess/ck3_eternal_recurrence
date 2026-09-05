@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "84a2b18fedad74de37bf5cd0472519ee321f367d"
+    "open_kaishek_commit": "4c1f6867ff168f476a30a7b13220a8c2e0aa3294"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -128,7 +128,7 @@
     "allowlist_id": "zg361-promotion-source-fixed-widget-progress-v1",
     "game_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-    "root_integration_commit": "d077bcf0114f227d319d8f23f64385ba6950238b",
+    "root_integration_commit": "a05b94e545fc6074fa2ffae2ffa76e34d9990d62",
     "root_source_contract_sha256": "a167bfe43cb1b0254e124abebef954a5fb8b2164afee31b16be8badc5e8fa786",
     "root_abi_sha256": "eb22c5339a483614e75cd5135b896742ac9e0040166ac9689fb8af3070c94068",
     "root_python_contract_sha256": "5cfa9fdea255b180612cace27687e9b3c89fa884f2a9fa92ac2c268c19876aea",

@@ -1,7 +1,7 @@
 # G2 source-specific war-loss next-live runbook
 
-Status: **NO-LAUNCH preflight GREEN / exclusive live NO-GO until the Python
-lifecycle handoff is present**.
+Status: **same-lifecycle Python continuation static-ready / no launch / outer
+exclusive launch owner still pending**.
 
 This runbook is pinned to root commit
 `523432aec7846d0da833c5a351faad743fa23d2d`. It prepares the next exclusive
@@ -68,15 +68,22 @@ cannot prove a same-PID, same-generation, same-episode chain. Running them in
 sequence would create two unrelated live artifacts and must not set
 `source_specific_loss_ready` or `comparison_input_ready`.
 
-The minimum executable seam is a Python-only composite lifecycle runner. It
-must keep the normally launched CK3 PID alive after the standalone observer
-restores the breakpoint and detaches, pause that same process, attach the
-already-frozen private bridge through an explicit unique pipe, and run the
-current-checkpoint, one-surrender, cleanup and expiry receipt sequence before
-one final managed process cleanup. No C++ or DLL change is required. Until
-that runner and its no-launch manifest are frozen, the exact next exclusive
-command is intentionally **NO-GO before CK3 launch**, rather than an invalid
-or evidence-breaking command.
+The minimum Python continuation now exists as
+`run_g2_source_specific_war_loss_lifecycle.py`, with its frozen no-launch
+manifest and focused deterministic tests. It consumes the already connected
+driver from the same capture PID, joins all three exact generation sets,
+creates the source-bound retention ticket, and reuses the existing
+one-surrender cleanup/expiry continuation. No C++ or DLL change was required.
+
+The remaining outer launch-owner work is intentionally separate: it must keep
+the normally launched CK3 PID alive after the standalone observer restores the
+breakpoint and detaches, pause that process, attach the already-frozen private
+bridge through an explicit unique pipe, pass the driver into the continuation,
+and perform one final managed cleanup. The old standalone capture runner still
+kills its owned CK3 process and therefore remains invalid as the live command.
+Until an exclusive owner composes that handoff, the next CK3 command remains
+**NO-GO before launch**. See
+[the lifecycle runner record](g2-source-specific-war-loss-lifecycle-runner-2026-09-05.md).
 
 ## Source-capture success fields
 

@@ -178,6 +178,29 @@ async def _run_private_sequence(
         expected_character_id=expected_character_id,
         expected_date_raw=expected_date_raw,
     )
+    return await _continue_private_sequence(
+        driver,
+        war_id=war_id,
+        ticket=ticket,
+        postwar_timeout=postwar_timeout,
+        pre_sequence=pre_sequence,
+    )
+
+
+async def _continue_private_sequence(
+    driver: Any,
+    *,
+    war_id: int,
+    ticket: dict[str, object],
+    postwar_timeout: float,
+    pre_sequence: dict[str, object],
+) -> dict[str, object]:
+    """Continue an already sampled paused lifecycle through one surrender.
+
+    The extraction lets a source-attribution observer hand the same CK3
+    process to the existing action/cleanup/expiry implementation without
+    launching a second cold process or repeating the pre-termination reads.
+    """
     if pre_sequence.get("ok") is not True:
         raise AgentError("pre-termination paused dual query is not GREEN")
     before = _structured_record(

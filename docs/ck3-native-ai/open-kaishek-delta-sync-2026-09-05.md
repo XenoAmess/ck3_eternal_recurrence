@@ -157,3 +157,35 @@ automatic-surrender/GEN-034 均未升级。不能把既有 R3 的 generic `598 -
 本次不重复 Maven、parser、capture self-test 或 ABI verifier。仅作上述一次必要的
 源码/合同消费关系检查和文档 `git diff --check`；没有启动/附加 CK3，没有写存档，
 没有 effect-file 体量或加载性能的新实证。
+
+## 12:27 增量：`a05b94e` 旧存档 B1 active witness provenance
+
+主仓 `a05b94e545fc6074fa2ffae2ffa76e34d9990d62` 只改变现有固定 widget
+`zg361_promotion_source_b1_active` 的生产端真值条件：直接加载的旧存档尚无新
+manager cycle serial 时，可用 manager-only `policy_next_review_serial > 1` 作为
+只读 active witness。固定 widget 身份及传输字段 `widgets.effective_visible` 不变，
+因此 public ABI、request/output schema、能力 ID、allowlist、native decoder 均无
+delta；但该文件是 promotion source contract 列明的产品源，故外部 profile 的精确
+source provenance pin 需要推进。
+
+独立 `open_kaishek` 已在 clean `main == origin/main == 84a2b18` 上直接完成四文件
+最小同步并推送 `4c1f6867ff168f476a30a7b13220a8c2e0aa3294`。其中
+`ROOT_INTEGRATION_COMMIT` 推进到 `a05b94e`；profile ID、source-contract / ABI /
+Python-contract hashes、字段、invariants 与所有 readiness/certification flags 均不变。
+新增 GUI 分支只使用既有 `OR` / `AND` / `NOT` block、`has_variable` 与 `var:*`
+比较形状，不新增 parser vocabulary、opcode、IR 或 runtime handler。
+
+外部 focused Maven profile test 为 3/3 GREEN；新 CLI 对目标 GUI 返回
+`PARSED`、2,566 bytes、641 tokens、20 blocks、`roundTrip=true`、0 diagnostics，
+CLI / GUI SHA-256 分别为 `B1DB12AF…9801A` / `31AD1EE1…3A5568`。这些是
+静态 profile/parser 证据，不能冒充 CK3 runtime。R68 已独立实机证明旧种子 active
+widget 可见，但完整 promotion loop 仍在 `.200` saved-scope 合同处 RED，所以外部
+profile 继续 `PRODUCTION_LIVE_READY=false`，不因本次 T2 同步升级。
+
+主仓 fixture 同步 `root_binding.open_kaishek_commit=4c1f686` 与
+`promotion_source_transport.root_integration_commit=a05b94e`；公开桥常量及其
+单测期望同步到同一 external commit。focused compatibility tests 在 normal / `-O`
+下各为 13 passed + 16 subtests passed；verifier 两种模式均退出 0、
+`GREEN_STATIC`，并确认 external HEAD=origin/main=`4c1f686`、clean、promotion
+pin=`a05b94e`。`git diff --check` GREEN。没有生成新的 live artifact，也没有启动
+CK3；完整 promotion loop 的 RED 边界保持不变。
