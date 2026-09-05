@@ -246,6 +246,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         earlier_checks = checks_for(earlier_shape)
         self.assertTrue(all(earlier_checks.values()), earlier_checks)
 
+        appointment_without_county = copy.deepcopy(earlier_shape)
+        appointment_without_county["saved_scopes"].append(
+            scope("appointment_succession", "landed_title")
+        )
+        appointment_checks = checks_for(appointment_without_county)
+        self.assertTrue(all(appointment_checks.values()), appointment_checks)
+
         wrong_optional_type = copy.deepcopy(context)
         wrong_optional_type["saved_scopes"][8] = scope(
             "appointment_succession", "flag"
