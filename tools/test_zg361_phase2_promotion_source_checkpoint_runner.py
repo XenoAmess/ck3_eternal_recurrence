@@ -1547,6 +1547,85 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_health_1006_binds_diagnosis_frame_and_no_treatment_branch(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "health.1006"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 27,
+            "date_raw": 53168904,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("epidemic", "epidemic"),
+                scope("disease_type", "flag"),
+                scope("physician", "character", 56656),
+                scope("sick_character", "character", 29037),
+                scope("new_memory", "character_memory"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((3, 4, 6))
+            ],
+        }
+        snapshot = {"date_raw": 53168904, "active_event": {"option_count": 7}}
+        event = {"event_instance_id": 27}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 7)
+        self.assertEqual(contract["selected_native_option_index"], 6)
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][-1]["native_option_index"] = 5
+        self.assertFalse(checks_for(wrong_projection)["authored_options_exact"])
+
+        player_physician = copy.deepcopy(context)
+        player_physician["saved_scopes"][2] = scope(
+            "physician", "character", 29037
+        )
+        self.assertFalse(
+            checks_for(player_physician)["scope:physician:unique_third_party"]
+        )
+
+        wrong_scope_type = copy.deepcopy(context)
+        wrong_scope_type["saved_scopes"][0]["scope"]["type_key"] = "flag"
+        self.assertFalse(checks_for(wrong_scope_type)["scope:epidemic:type"])
+
     def test_ep3_governor_8160_binds_fresh_administrator_relationship(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None

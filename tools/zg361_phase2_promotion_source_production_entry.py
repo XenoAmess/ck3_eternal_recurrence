@@ -1501,6 +1501,33 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "health.1006": {
+        # Vanilla consumption diagnosis.  The disease is applied in immediate
+        # before the window opens, so no option can avoid that state change.
+        # This live frame exposes authored treatment options 4/5 plus authored
+        # option 7.  The final branch starts no treatment and is therefore the
+        # least invasive way to drain the already-applied diagnosis event.
+        "date_raw": 53168904,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "sick_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "new_memory": "character_memory",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 5,
+        "option_count": 3,
+        "snapshot_option_count": 7,
+        "native_option_indices": (3, 4, 6),
+        "selected_option_number": 7,
+        "selected_native_option_index": 6,
+    },
 }
 KNOWN_TIMELINE_INTERRUPTS.update(CAREER_HC_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(COMPENSATION_TIMELINE_CONTRACTS)
