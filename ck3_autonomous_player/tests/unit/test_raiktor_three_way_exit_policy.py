@@ -10,9 +10,11 @@ from xar_autoplayer.simulation.raiktor_continue_vs_surrender_policy import (
 )
 from xar_autoplayer.simulation.raiktor_three_way_exit_policy import (
     CAMPAIGN_PROVIDER,
+    OBSERVED_SURRENDER_OUTCOME_CONTRACT,
     OWNER_BUDGET_PROFILE_CONTRACT,
     OWNER_BUDGET_PROVIDER,
     POLICY_VERSION,
+    SOURCE_SPECIFIC_LOSS_PROVIDER,
     WHITE_PEACE_COMPARISON_CONTRACT,
     WHITE_PEACE_PROVIDER,
     assess_raiktor_three_way_exit,
@@ -188,7 +190,88 @@ def _complete_inputs(
     return candidate, terms, campaign, owner, white
 
 
+def _observed_surrender_outcome() -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "contract": OBSERVED_SURRENDER_OUTCOME_CONTRACT,
+        "status": "partial",
+        "source_report_sha256": "A" * 64,
+        "production_live": True,
+        "private_default_off": True,
+        "binding": {
+            "exact_build_sha256": "B" * 64,
+            "ck3_pid": 17_292,
+            "connection_generation": 1,
+            "episode_run_id": "native-29829-fixture",
+            "character_id": 29_829,
+            "opponent_character_id": 36_769,
+            "war_id": 50_331_699,
+            "pre_snapshot_id": "native:3",
+            "pre_revision": 4,
+            "pre_native_revision": 3,
+            "pre_date_raw": 53_223_936,
+            "post_revision": 5,
+            "post_native_revision": 4,
+            "post_date_raw": 53_223_936,
+        },
+        "termination": {
+            "action_literal": "surrender-war-50331699",
+            "accepted": True,
+            "receipt_id": "C" * 64,
+        },
+        "war_bound_cleanup": {
+            "status": "destroyed",
+            "frozen_generation_sha256": "D" * 64,
+            "frozen_persistent_regiment_count": 8,
+            "frozen_current_regiment_count": 8,
+            "frozen_army_count": 2,
+            "pre_termination_soldiers": 598,
+            "post_termination_soldiers": 0,
+            "proven_boundary_soldiers_lost": 598,
+            "source_specific_attribution_ready": False,
+        },
+        "truce": {
+            "source": "persisted_native_truce_row",
+            "formula_derived": False,
+            "evaluated_days": 1825,
+            "queried_at_date_raw": 53_223_936,
+            "expiry_date_raw": 53_267_736,
+        },
+        "boundaries": {
+            "public_readiness_promoted": False,
+            "action_readiness_promoted": False,
+            "decision_ready": False,
+            "automatic_surrender_ready": False,
+            "gen034_closed": False,
+        },
+    }
+
+
 class RaiktorThreeWayExitPolicyTests(unittest.TestCase):
+    def test_live_generic_postwar_outcome_is_consumed_but_not_compared(
+        self,
+    ) -> None:
+        candidate, terms, campaign, owner, white = _complete_inputs()
+        result = assess_raiktor_three_way_exit(
+            candidate,
+            terms,
+            campaign,
+            owner,
+            white,
+            _observed_surrender_outcome(),
+        )
+        observed = result["observed_surrender_outcome"]
+        self.assertTrue(observed["observed_checkpoint_boundary_ready"])
+        self.assertFalse(observed["source_specific_loss_comparison_ready"])
+        self.assertFalse(observed["comparison_input_ready"])
+        self.assertEqual(
+            observed["blockers"],
+            ["source_specific_war_loss_attribution_unavailable"],
+        )
+        self.assertEqual(observed["next_provider"], SOURCE_SPECIFIC_LOSS_PROVIDER)
+        self.assertEqual(result["recommended_outcome"], "white_peace")
+        self.assertFalse(result["action_ready"])
+
     def test_current_checkpoint_reports_exact_missing_providers(self) -> None:
         result = assess_raiktor_three_way_exit(
             _candidate(), _current_incomplete_terms(), None, None, None

@@ -422,3 +422,35 @@ new DLL, exactly two terms queries, and equality across strict child,
 six-domain aggregate, session identity and cache binding. Until that artifact
 exists this is not production-live evidence, and it does not advance truce,
 source-specific war-bound loss, surrender action or `GEN-034` completion.
+
+## 2026-09-05 R3 postwar outcome consumer
+
+[static/no-launch consumer GREEN; decision still RED] The retained private R3
+report (SHA-256
+`44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0`)
+is now consumed by this policy through the optional
+`observed_surrender_outcome_value` input. The adapter revalidates the existing
+retention ticket and the complete action-bound receipt before projecting the
+same PID/generation/episode surrender, generic exact-store `598 -> 0`
+cleanup, and non-formula persisted expiry with `evaluated_days=1825`.
+
+The output is intentionally
+`observed_generic_boundary_source_attribution_required`. It records the
+measured postwar checkpoint, but keeps
+`source_specific_loss_comparison_ready=false` and
+`comparison_input_ready=false`; the generic rows cannot enter campaign utility
+as Raiktor-source losses. It also cannot replace the missing campaign,
+owner-budget, or white-peace providers, so `recommended_outcome=null` for the
+current checkpoint and action/readiness/automatic surrender/`GEN-034` remain
+false.
+
+The compact no-launch consumer artifact is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-postwar-comparison-intake-e72f9fa-20260905\intake-r1.json`
+(SHA-256
+`01C0EBAAB1B5BF59EC077118C9DF9C23FC380668D4D10101874AF3DA98939C9E`).
+Its exact next source-attribution entry remains the already frozen
+`bookmark.1071.a` `spawn_army` post-finalize window at RVA `0x2E7F951`: bind
+all six executions to the selected loaded node and exact WarID, then freeze
+their created persistent/current/CArmy generations before gameplay advances.
+See
+[g2-postwar-outcome-comparison-intake-2026-09-05.md](g2-postwar-outcome-comparison-intake-2026-09-05.md).

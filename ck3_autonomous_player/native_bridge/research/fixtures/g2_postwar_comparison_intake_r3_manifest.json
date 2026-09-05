@@ -1,0 +1,52 @@
+{
+  "schema": "xar.ck3.g2_postwar_comparison_intake_r3_manifest.v1",
+  "state": "r3-live-input-private-comparison-intake",
+  "created_at": "2026-09-05T00:00:00+08:00",
+  "default_off": true,
+  "live_authorized": false,
+  "paths": {
+    "source_report": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\live-r3\\report.json",
+    "retention_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_retention_expiry_no_launch_manifest.json",
+    "current_pin_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_cleanup_expiry_current_pin_live_manifest.json"
+  },
+  "sha256": {
+    "source_report": "44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0",
+    "retention_manifest": "21D5E530DF76D80EC5919F536276BCB0340A607D0C83DBBD73E6451B724D5E91",
+    "current_pin_manifest": "2113032784CC3ACC5DA14557C14315B0AEC9AF03CDC15654739A3C54704F96DA"
+  },
+  "expected": {
+    "source_commit": "e72f9fa302811a823479635648eb008a6f5d8418",
+    "source_report_sha256": "44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0",
+    "source_report_size_bytes": 214389654,
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B",
+    "bridge_injector_sha256": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
+    "retention_ticket_id": "E0A93DDC584BB2313BC03CE076779BAFD261ABBABB69E9DE3BEF284DFE14823A",
+    "character_id": 29829,
+    "opponent_character_id": 36769,
+    "war_id": 50331699,
+    "counts": {
+      "frozen_persistent_regiments": 8,
+      "frozen_current_regiments": 8,
+      "frozen_armies": 2,
+      "pre_termination_soldiers": 598,
+      "post_termination_soldiers": 0,
+      "proven_boundary_soldiers_lost": 598,
+      "evaluated_days": 1825
+    }
+  },
+  "comparison_contract": {
+    "consumer": "raiktor-three-way-exit-policy-v1",
+    "observed_outcome_contract": "raiktor-observed-surrender-outcome-v1",
+    "observed_checkpoint_boundary_ready": true,
+    "source_specific_loss_comparison_ready": false,
+    "comparison_input_ready": false,
+    "remaining_provider": "raiktor-source-specific-war-loss-attribution-provider-v1",
+    "next_native_entry": "spawn_army_post_finalize_rva_0x2e7f951"
+  },
+  "public_readiness_promoted": false,
+  "action_readiness_promoted": false,
+  "decision_ready": false,
+  "automatic_surrender_ready": false,
+  "gen034_closed": false
+}

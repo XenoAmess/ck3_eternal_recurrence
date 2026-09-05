@@ -27,10 +27,16 @@ OWNER_BUDGET_PROFILE_CONTRACT = "raiktor-owner-budget-profile-v1"
 WHITE_PEACE_COMPARISON_CONTRACT = (
     "raiktor-white-peace-comparison-certificate-v1"
 )
+OBSERVED_SURRENDER_OUTCOME_CONTRACT = (
+    "raiktor-observed-surrender-outcome-v1"
+)
 
 CAMPAIGN_PROVIDER = "raiktor-campaign-dominance-certificate-provider-v1"
 OWNER_BUDGET_PROVIDER = "raiktor-owner-budget-profile-provider-v1"
 WHITE_PEACE_PROVIDER = "raiktor-white-peace-comparison-provider-v1"
+SOURCE_SPECIFIC_LOSS_PROVIDER = (
+    "raiktor-source-specific-war-loss-attribution-provider-v1"
+)
 
 _OWNER_KEYS = {
     "schema_version",
@@ -136,6 +142,65 @@ _TERMS_KEYS = {
 }
 _PAIR_KEYS = {"jailer_character_id", "prisoner_character_id"}
 _UTILITY_KEYS = {"white_peace_lower_raw", "white_peace_upper_raw"}
+_OBSERVED_OUTCOME_KEYS = {
+    "schema_version",
+    "contract",
+    "status",
+    "source_report_sha256",
+    "production_live",
+    "private_default_off",
+    "binding",
+    "termination",
+    "war_bound_cleanup",
+    "truce",
+    "boundaries",
+}
+_OBSERVED_BINDING_KEYS = {
+    "exact_build_sha256",
+    "ck3_pid",
+    "connection_generation",
+    "episode_run_id",
+    "character_id",
+    "opponent_character_id",
+    "war_id",
+    "pre_snapshot_id",
+    "pre_revision",
+    "pre_native_revision",
+    "pre_date_raw",
+    "post_revision",
+    "post_native_revision",
+    "post_date_raw",
+}
+_OBSERVED_TERMINATION_KEYS = {
+    "action_literal",
+    "accepted",
+    "receipt_id",
+}
+_OBSERVED_CLEANUP_KEYS = {
+    "status",
+    "frozen_generation_sha256",
+    "frozen_persistent_regiment_count",
+    "frozen_current_regiment_count",
+    "frozen_army_count",
+    "pre_termination_soldiers",
+    "post_termination_soldiers",
+    "proven_boundary_soldiers_lost",
+    "source_specific_attribution_ready",
+}
+_OBSERVED_TRUCE_KEYS = {
+    "source",
+    "formula_derived",
+    "evaluated_days",
+    "queried_at_date_raw",
+    "expiry_date_raw",
+}
+_OBSERVED_BOUNDARY_KEYS = {
+    "public_readiness_promoted",
+    "action_readiness_promoted",
+    "decision_ready",
+    "automatic_surrender_ready",
+    "gen034_closed",
+}
 _SHA256_RE = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -145,6 +210,7 @@ def assess_raiktor_three_way_exit(
     campaign_value: object | None,
     owner_budget_value: object | None,
     white_peace_value: object | None,
+    observed_surrender_outcome_value: object | None = None,
 ) -> dict[str, object]:
     """Assess continue, white peace, and surrender without authorizing action.
 
@@ -154,6 +220,9 @@ def assess_raiktor_three_way_exit(
     RED result without guessing a replacement.
     """
 
+    observed_surrender_outcome = _assess_observed_surrender_outcome(
+        observed_surrender_outcome_value
+    )
     provider_blockers: list[dict[str, str]] = []
     if campaign_value is None:
         provider_blockers.append(
@@ -181,6 +250,7 @@ def assess_raiktor_three_way_exit(
         return _red_result(
             provider_blockers=provider_blockers,
             owner_blockers=["owner_budget_profile_unavailable"],
+            observed_surrender_outcome=observed_surrender_outcome,
         )
 
     owner = _normalize_owner_budget(owner_budget_value)
@@ -190,6 +260,7 @@ def assess_raiktor_three_way_exit(
             provider_blockers=provider_blockers,
             owner_blockers=owner_blockers,
             owner_budget_sha256=canonical_policy_input_sha256(owner),
+            observed_surrender_outcome=observed_surrender_outcome,
         )
 
     pairwise = assess_raiktor_continue_vs_surrender(
@@ -206,6 +277,7 @@ def assess_raiktor_three_way_exit(
             owner_blockers=[],
             owner_budget_sha256=owner_sha256,
             pairwise=pairwise,
+            observed_surrender_outcome=observed_surrender_outcome,
         )
 
     white = _normalize_white_peace(white_peace_value)
@@ -325,6 +397,7 @@ def assess_raiktor_three_way_exit(
         "white_peace_budget_blockers": white_budget_blockers,
         "eligible_candidates": eligible_candidates,
         "robust_margin_raw": margins,
+        "observed_surrender_outcome": observed_surrender_outcome,
         "explicit_boundaries": _explicit_boundaries(),
     }
 
@@ -335,6 +408,7 @@ def _red_result(
     owner_blockers: list[str],
     owner_budget_sha256: str | None = None,
     pairwise: dict[str, object] | None = None,
+    observed_surrender_outcome: dict[str, object],
 ) -> dict[str, object]:
     return {
         "policy_version": POLICY_VERSION,
@@ -364,7 +438,241 @@ def _red_result(
             "white_peace": None,
             "surrender": None,
         },
+        "observed_surrender_outcome": observed_surrender_outcome,
         "explicit_boundaries": _explicit_boundaries(),
+    }
+
+
+def _assess_observed_surrender_outcome(
+    value: object | None,
+) -> dict[str, object]:
+    """Normalize a live surrender outcome without treating it as utility.
+
+    A postwar receipt is historical calibration evidence.  It cannot replace
+    the same-frame campaign, owner-budget, or white-peace providers required
+    by the pre-action comparison.  Generic war-bound cleanup is retained as a
+    measured checkpoint boundary while source attribution remains a typed
+    provider gap.
+    """
+
+    if value is None:
+        return {
+            "status": "not_supplied",
+            "observed_checkpoint_boundary_ready": False,
+            "source_specific_loss_comparison_ready": False,
+            "comparison_input_ready": False,
+            "observation_sha256": None,
+            "blockers": ["observed_surrender_outcome_unavailable"],
+            "next_provider": SOURCE_SPECIFIC_LOSS_PROVIDER,
+            "next_native_entry": "spawn_army_post_finalize_rva_0x2e7f951",
+            "normalized": None,
+        }
+
+    item = _exact_dict(value, _OBSERVED_OUTCOME_KEYS, "observed outcome")
+    if item["schema_version"] != 1:
+        raise ValueError("observed outcome schema_version must be 1")
+    if item["contract"] != OBSERVED_SURRENDER_OUTCOME_CONTRACT:
+        raise ValueError("observed outcome contract drifted")
+    if item["status"] not in {"partial", "complete"}:
+        raise ValueError("observed outcome status must be partial or complete")
+    if _strict_bool(item["production_live"], "production_live") is not True:
+        raise ValueError("observed outcome must be production live")
+    if _strict_bool(item["private_default_off"], "private_default_off") is not True:
+        raise ValueError("observed outcome must remain private default-off")
+
+    binding_item = _exact_dict(
+        item["binding"], _OBSERVED_BINDING_KEYS, "observed binding"
+    )
+    binding = {
+        "exact_build_sha256": _sha256(
+            binding_item["exact_build_sha256"], "exact_build_sha256"
+        ),
+        "ck3_pid": _positive_int32(binding_item["ck3_pid"], "ck3_pid"),
+        "connection_generation": _positive_int32(
+            binding_item["connection_generation"], "connection_generation"
+        ),
+        "episode_run_id": _nonempty_string(
+            binding_item["episode_run_id"], "episode_run_id"
+        ),
+        "character_id": _full_id(
+            binding_item["character_id"], "character_id"
+        ),
+        "opponent_character_id": _full_id(
+            binding_item["opponent_character_id"], "opponent_character_id"
+        ),
+        "war_id": _full_id(binding_item["war_id"], "war_id"),
+        "pre_snapshot_id": _nonempty_string(
+            binding_item["pre_snapshot_id"], "pre_snapshot_id"
+        ),
+        "pre_revision": _positive_uint64(
+            binding_item["pre_revision"], "pre_revision"
+        ),
+        "pre_native_revision": _positive_uint64(
+            binding_item["pre_native_revision"], "pre_native_revision"
+        ),
+        "pre_date_raw": _signed_int32(
+            binding_item["pre_date_raw"], "pre_date_raw"
+        ),
+        "post_revision": _positive_uint64(
+            binding_item["post_revision"], "post_revision"
+        ),
+        "post_native_revision": _positive_uint64(
+            binding_item["post_native_revision"], "post_native_revision"
+        ),
+        "post_date_raw": _signed_int32(
+            binding_item["post_date_raw"], "post_date_raw"
+        ),
+    }
+    if (
+        binding["character_id"] == binding["opponent_character_id"]
+        or binding["post_revision"] <= binding["pre_revision"]
+        or binding["post_native_revision"] <= binding["pre_native_revision"]
+        or binding["post_date_raw"] < binding["pre_date_raw"]
+    ):
+        raise ValueError("observed outcome binding is not a successor")
+
+    termination_item = _exact_dict(
+        item["termination"],
+        _OBSERVED_TERMINATION_KEYS,
+        "observed termination",
+    )
+    expected_action = f"surrender-war-{binding['war_id']}"
+    termination = {
+        "action_literal": _nonempty_string(
+            termination_item["action_literal"], "action_literal"
+        ),
+        "accepted": _strict_bool(termination_item["accepted"], "accepted"),
+        "receipt_id": _sha256(termination_item["receipt_id"], "receipt_id"),
+    }
+    if (
+        termination["action_literal"] != expected_action
+        or termination["accepted"] is not True
+    ):
+        raise ValueError("observed outcome is not the bound surrender action")
+
+    cleanup_item = _exact_dict(
+        item["war_bound_cleanup"],
+        _OBSERVED_CLEANUP_KEYS,
+        "observed cleanup",
+    )
+    cleanup = {
+        "status": _nonempty_string(cleanup_item["status"], "cleanup status"),
+        "frozen_generation_sha256": _sha256(
+            cleanup_item["frozen_generation_sha256"],
+            "frozen_generation_sha256",
+        ),
+        "frozen_persistent_regiment_count": _positive_int32(
+            cleanup_item["frozen_persistent_regiment_count"],
+            "frozen_persistent_regiment_count",
+        ),
+        "frozen_current_regiment_count": _positive_int32(
+            cleanup_item["frozen_current_regiment_count"],
+            "frozen_current_regiment_count",
+        ),
+        "frozen_army_count": _positive_int32(
+            cleanup_item["frozen_army_count"], "frozen_army_count"
+        ),
+        "pre_termination_soldiers": _positive_int32(
+            cleanup_item["pre_termination_soldiers"],
+            "pre_termination_soldiers",
+        ),
+        "post_termination_soldiers": _nonnegative_int32(
+            cleanup_item["post_termination_soldiers"],
+            "post_termination_soldiers",
+        ),
+        "proven_boundary_soldiers_lost": _positive_int32(
+            cleanup_item["proven_boundary_soldiers_lost"],
+            "proven_boundary_soldiers_lost",
+        ),
+        "source_specific_attribution_ready": _strict_bool(
+            cleanup_item["source_specific_attribution_ready"],
+            "source_specific_attribution_ready",
+        ),
+    }
+    if (
+        cleanup["status"] != "destroyed"
+        or cleanup["post_termination_soldiers"] != 0
+        or cleanup["proven_boundary_soldiers_lost"]
+        != cleanup["pre_termination_soldiers"]
+    ):
+        raise ValueError("observed war-bound cleanup boundary drifted")
+
+    truce_item = _exact_dict(
+        item["truce"], _OBSERVED_TRUCE_KEYS, "observed truce"
+    )
+    truce = {
+        "source": _nonempty_string(truce_item["source"], "truce source"),
+        "formula_derived": _strict_bool(
+            truce_item["formula_derived"], "formula_derived"
+        ),
+        "evaluated_days": _positive_int32(
+            truce_item["evaluated_days"], "evaluated_days"
+        ),
+        "queried_at_date_raw": _signed_int32(
+            truce_item["queried_at_date_raw"], "queried_at_date_raw"
+        ),
+        "expiry_date_raw": _signed_int32(
+            truce_item["expiry_date_raw"], "expiry_date_raw"
+        ),
+    }
+    if (
+        truce["source"] != "persisted_native_truce_row"
+        or truce["formula_derived"] is not False
+        or truce["queried_at_date_raw"] != binding["post_date_raw"]
+        or truce["expiry_date_raw"] <= truce["queried_at_date_raw"]
+    ):
+        raise ValueError("observed persisted truce boundary drifted")
+
+    boundaries_item = _exact_dict(
+        item["boundaries"],
+        _OBSERVED_BOUNDARY_KEYS,
+        "observed boundaries",
+    )
+    boundaries = {
+        key: _strict_bool(boundaries_item[key], key)
+        for key in sorted(_OBSERVED_BOUNDARY_KEYS)
+    }
+    if any(boundaries.values()):
+        raise ValueError("observed outcome cannot promote readiness")
+    normalized = {
+        "schema_version": 1,
+        "contract": OBSERVED_SURRENDER_OUTCOME_CONTRACT,
+        "status": item["status"],
+        "source_report_sha256": _sha256(
+            item["source_report_sha256"], "source_report_sha256"
+        ),
+        "production_live": True,
+        "private_default_off": True,
+        "binding": binding,
+        "termination": termination,
+        "war_bound_cleanup": cleanup,
+        "truce": truce,
+        "boundaries": boundaries,
+    }
+    source_ready = cleanup["source_specific_attribution_ready"] is True
+    blockers = (
+        []
+        if source_ready
+        else ["source_specific_war_loss_attribution_unavailable"]
+    )
+    return {
+        "status": (
+            "source_specific_outcome_observed"
+            if source_ready
+            else "observed_generic_boundary_source_attribution_required"
+        ),
+        "observed_checkpoint_boundary_ready": True,
+        "source_specific_loss_comparison_ready": source_ready,
+        "comparison_input_ready": source_ready,
+        "observation_sha256": canonical_policy_input_sha256(normalized),
+        "blockers": blockers,
+        "next_provider": None if source_ready else SOURCE_SPECIFIC_LOSS_PROVIDER,
+        "next_native_entry": (
+            None
+            if source_ready
+            else "spawn_army_post_finalize_rva_0x2e7f951"
+        ),
+        "normalized": normalized,
     }
 
 

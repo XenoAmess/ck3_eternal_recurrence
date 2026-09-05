@@ -216,7 +216,7 @@
   fail-closed schema 草案。
 - [static-confirmed] [war-termination.md](war-termination.md) 记录原版 AI 的执行要求、白和、投降三棵主动提出与
   接受树，包括战分、时长、债务、其它战争、人格、人质与 auto-accept 边界。
-- [static-confirmed / no-launch ticket, live pending] [g2-postwar-retention-expiry-preflight-2026-09-04.md](g2-postwar-retention-expiry-preflight-2026-09-04.md)
+- [private production-live action-bound receipt; public/action readiness false] [g2-postwar-retention-expiry-preflight-2026-09-04.md](g2-postwar-retention-expiry-preflight-2026-09-04.md)
   把 production r1 的 WarID `50331699`、同 session 的八个 persistent/current generation、两组 CArmy 与实测
   `598` 冻结为 deterministic retention ticket；未来 receipt 必须在同 PID/connection/episode 内绑定唯一 termination
   submit、全 destroyed cleanup 与真实 persisted truce-row expiry。`04c1a00` 已补 default-OFF expiry query，后续适配边界见
@@ -226,7 +226,16 @@
   DLL 与 source/ABI 已冻结，fixture/静态已 GREEN；当前 canonical `549076f`
   的 fresh binary/product/唯一 short-path command 另见
   [g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md](g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md)。
-  尚未执行 CK3 live，故 public/action/automatic-surrender/GEN-034 仍全 false。
+  R3 已在 exact `e72f9fa` candidate 上完成同 lifecycle surrender → exact-store cleanup → persisted-expiry
+  双读：`598 -> 0`、`evaluated_days=1825`，完整 report SHA-256 为
+  `44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0`。该证据仍为 private
+  default-OFF，且 generic war-bound rows 没有 Raiktor source attribution，所以
+  public/action/automatic-surrender/GEN-034 仍全 false。
+- [static/no-launch comparison intake; source-specific comparison still RED] [g2-postwar-outcome-comparison-intake-2026-09-05.md](g2-postwar-outcome-comparison-intake-2026-09-05.md)
+  R3 receipt 现已进入现有 `raiktor-three-way-exit-policy-v1` consumer；policy 接受 action-bound
+  checkpoint/cleanup/actual-expiry facts，但明确返回
+  `source_specific_war_loss_attribution_unavailable`，不把 generic `598 -> 0` 当成 Raiktor-source loss，
+  也不产生三方赢家或 action。
 - [production-live read-only primitives + static policy, not action-ready] [raiktor-three-way-exit-policy.md](raiktor-three-way-exit-policy.md)
   冻结 G2 `GEN-034` 的 Raiktor continue/white-peace/surrender 三方静态策略；exact-build
   paused probes 已把 gold/prestige/prisoner/favor 四个窄域和 truce `evaluated_days` 提升为 read-only
