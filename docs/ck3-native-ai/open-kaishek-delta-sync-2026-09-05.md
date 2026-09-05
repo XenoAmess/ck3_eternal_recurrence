@@ -189,3 +189,19 @@ profile 继续 `PRODUCTION_LIVE_READY=false`，不因本次 T2 同步升级。
 `GREEN_STATIC`，并确认 external HEAD=origin/main=`4c1f686`、clean、promotion
 pin=`a05b94e`。`git diff --check` GREEN。没有生成新的 live artifact，也没有启动
 CK3；完整 promotion loop 的 RED 边界保持不变。
+
+## 13:17 增量：`cf07a67..bab9679` 无 companion 消费面
+
+复核根仓 `cf07a67` 与 `bab9679` 后，结论为
+`not-applicable / NO_EXTERNAL_CODE_CHANGE`。前者新增的是根仓 Python 内部的
+G2 source-specific 同生命周期 continuation 与 no-launch manifest；后者只修订
+天朝 promotion Python runner 的原版事件合同。两者都没有改变 open_kaishek
+当前消费的 Java profile、公共 bridge/wire、Paradox AST 或 runtime evaluator。
+
+外部仓继续保持 `main == origin/main ==
+4c1f6867ff168f476a30a7b13220a8c2e0aa3294` 且 clean。历史
+`ROOT_RUNNER_SHA256` 不追写为新文件哈希；`SOURCE_SPECIFIC_ATTRIBUTION_READY`
+和 `PRODUCTION_LIVE_READY` 继续为 false。已有兼容测试证据足够，本次只做一次
+变更面/消费关系检查，不重复 Maven、parser 或 CK3 实机。R71 随后暴露的
+`.200` descendant scope 也只属于 promotion runner choreography，不产生新的
+companion delta。

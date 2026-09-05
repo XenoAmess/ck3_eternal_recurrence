@@ -167,7 +167,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 phase2_promotion_source_capture_live=True,
             )
 
-    def test_b1_self_review_accepts_only_exact_bank_descendant_shape(self) -> None:
+    def test_b1_self_review_binds_consumed_ticket_and_only_names_outer_bank_scopes(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
                 "name": name,
@@ -188,6 +188,15 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 "scope": {"status": "available", "type_key": "value"},
             }
 
+        def inherited_outer_scope(name: str) -> dict[str, object]:
+            # R71 observed that the four bank-ticket names can survive into
+            # .200 after their payload bindings cease to describe the active
+            # self-review. The event source does not consume these fields.
+            return {
+                "name": name,
+                "scope": {"status": "unavailable", "type_key": "unknown"},
+            }
+
         manager = 36354
         names = (
             "zg361_b1_bank_ticket_owner",
@@ -205,14 +214,21 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "zg361_b1_self_ticket_state",
         )
         character_names = {
-            "zg361_b1_bank_ticket_owner": manager,
             "zg361_b1_ticket_owner": manager,
             "zg361_b1_self_ticket_owner": manager,
             "zg361_b1_self_ticket_subject": 29037,
         }
+        inherited_outer_names = {
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
+        }
         scopes = [
             character_scope(name, character_names[name])
             if name in character_names
+            else inherited_outer_scope(name)
+            if name in inherited_outer_names
             else value_scope(name)
             for name in names
         ]
@@ -262,8 +278,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(checks["saved_scope_names_exact"])
 
         wrong_alias = copy.deepcopy(context)
-        wrong_alias["saved_scopes"][0] = character_scope(
-            "zg361_b1_bank_ticket_owner", 36355
+        wrong_alias["saved_scopes"][4] = character_scope(
+            "zg361_b1_ticket_owner", 36355
         )
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -272,7 +288,18 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             event_key="zg361b1.200",
             contract=contract,
         )
-        self.assertFalse(checks["scope:zg361_b1_bank_ticket_owner:matches_any"])
+        self.assertFalse(checks["scope:zg361_b1_ticket_owner:matches_any"])
+
+        missing_outer_name = copy.deepcopy(context)
+        del missing_outer_name["saved_scopes"][0]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=missing_outer_name,
+            event_key="zg361b1.200",
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_names_exact"])
 
     def test_spymaster_no_find_accepts_only_source_proven_boolean_branch(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:

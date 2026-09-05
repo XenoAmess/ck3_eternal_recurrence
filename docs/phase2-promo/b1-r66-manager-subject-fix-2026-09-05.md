@@ -269,3 +269,45 @@ Frozen R70 SHA-256:
 This is another post-loader choreography RED. The 636-file tree again loaded
 GREEN, so R70 supplies no evidence for an additional effect split. The B2+
 purpose-shard target and ceiling remain unchanged.
+
+## R71: inherited bank-ticket payload is opaque on `.200`
+
+R71 ran from committed `bab9679` against the unchanged 636-file product. The
+frontend-first warmup, final native bridge, capability preflight, product
+mount, loader error scan and managed cleanup were GREEN. The run drained B2
+PIP, vanilla `spymaster_task.0381` and product `zg361.40`, then stopped before
+action at `zg361b1.200`, raw date `53152728`, instance `18`, player `29037`.
+It therefore did not exercise the R69 `.0399` or R70 `.1002` branches and did
+not reach `.146/.147`.
+
+The exact 13 saved-scope names added after R68 were present, but five R68
+payload assumptions failed: the three inherited bank values no longer had
+type `value`, and `zg361_b1_bank_ticket_owner` neither matched the active
+review manager nor remained a provable unique non-player character. Product
+source explains the boundary. The four bank-ticket fields are authored for
+the outer `.110` bank-close event; `.200` neither reads nor validates them.
+Only the nine manager/self-review ticket fields are created for and consumed
+by `.200`. Descendant context can preserve the four outer names after their
+payload bindings cease to be meaningful.
+
+The R71 correction therefore keeps exact 9/10 and 13/14 name-set admission,
+keeps player subject, review-manager alias, manager non-player identity, all
+six consumed value types, exact three-option shape and honest option 1, but
+treats the four inherited bank payloads as opaque. Missing or extra names and
+any drift in a field actually consumed by `.200` remain RED. The focused
+checkpoint suite passes 8/8 in normal and `-O` modes. This is a runner
+contract correction only; the production tree did not change.
+
+Frozen R71 SHA-256:
+
+- outer report: `398A1F0290402C856EF20226356D50036A9CFD10434121A192A5BF05A376CF49`
+- evidence index: `C7ACC748707B90D402C8FC21244AB709D2A8EFC02B7189356A066ECE6B3114EB`
+- promotion entry: `241F661FC7AE86547D5418D2921ADCF58CF9F32695823FE66134AB1137210470`
+- loader gate: `0986ECFA2F1A94EB5063668B8694721FF62FA2CF399312C115A326D16700C1B3`
+- cleanup: `9D69DBF388742B6F41E300543E9D6CD70339D9BEC89D65C6C041E34E031C9A08`
+
+R71 again separates loader health from event choreography: load remained
+GREEN and the failure occurred roughly eight minutes later at an action gate.
+It is negative evidence against file size being this failure's cause. No
+effect split is triggered; the B2+ purpose grouping target of 1–10 and normal
+ceiling of 20 remains enforced.

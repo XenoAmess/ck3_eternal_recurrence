@@ -1,0 +1,83 @@
+{
+  "schema": "xar.ck3.g2_source_specific_war_loss_outer_owner_manifest.v1",
+  "status": "static-ready-no-launch",
+  "created_at": "2026-09-05T15:20:00+08:00",
+  "candidate_source_commit": "bab9679e0192768701c100ae4b523e93631f969e",
+  "default_off": true,
+  "live_authorized": false,
+  "paths": {
+    "runner": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
+    "lifecycle_runner": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_lifecycle.py",
+    "source_observer": "ck3_autonomous_player/native_bridge/research/raiktor_war_bound_private_capture_v1.cpp",
+    "standalone_capture_runner": "ck3_autonomous_player/native_bridge/research/run_raiktor_war_bound_private_capture_v1.py",
+    "source_provider": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_source_specific_war_loss_contract.py",
+    "source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_source_specific_war_loss_attribution_v1_contract.json",
+    "postwar_runner": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py",
+    "terms_runner": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-20260905\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
+    "game_executable": "Crusader Kings III/binaries/ck3.exe",
+    "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
+  },
+  "sha256": {
+    "runner": "341D1A589B1430866DD9B918BB2A000D94440A41CC90CF35F3E2BE2BE07B9CBB",
+    "lifecycle_runner": "6633C1A235C95EF6C972E937BD391FF48F71D6ABF4D079D2B1C9A16B5D09D708",
+    "source_observer": "A84601C5BB6927DEF52DF6B27E8602B8C2CAC0C6475A9F1A75B30085433848D8",
+    "standalone_capture_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
+    "source_provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A",
+    "source_contract": "1633808E42C324EF6C282481040B905DAF7FE9B0147F7072382919CA5064F9CE",
+    "postwar_runner": "40CB5CDF82DE59562D8B18E638EB5464F9C8083E5D9B061028F94474AF4FC116",
+    "terms_runner": "BA06A5A8B781912FB02D6F083C905B5D808782E5C7B7F46F654DB603AC018E61",
+    "capture_executable": "B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72",
+    "bridge_dll": "4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B",
+    "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
+    "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF"
+  },
+  "observer_detach_contract": {
+    "attach_mode": true,
+    "debug_set_process_kill_on_exit_false": true,
+    "original_breakpoint_byte_restored_before_handoff": true,
+    "debug_active_process_stop_before_bridge": true,
+    "process_terminated": false,
+    "target_must_remain_alive_after_detach": true,
+    "terminate_process_is_non_attach_branch_only": true
+  },
+  "ownership_contract": {
+    "exclusive_launch_slot_required": true,
+    "startup_mode": "normal-event",
+    "event_target": "bookmark.1071.a",
+    "same_pid_capture_pause_bridge_lifecycle": true,
+    "same_driver_object_passed_to_continuation": true,
+    "one_final_cleanup_call": true,
+    "final_cleanup_runs_on_green_and_red": true
+  },
+  "composition": {
+    "deterministic_orchestration_implemented": true,
+    "live_adapter_implemented": false,
+    "standalone_capture_runner_used_as_inner_phase": false,
+    "standalone_capture_runner_reason": "Its finally block terminates the CK3 process it launched, so it cannot be nested inside the same-PID owner.",
+    "source_observer_used_as_detach_only_phase": true,
+    "lifecycle_continuation": "run_g2_source_specific_war_loss_lifecycle.run_same_lifecycle_sequence",
+    "final_cleanup_owner": "outer-owner",
+    "cold_second_process_forbidden": true
+  },
+  "no_go": {
+    "live_command_available": false,
+    "reason": "No concrete exclusive normal-launch, observer, pause, bridge-attach and cleanup adapter is implemented in this package.",
+    "next_admission": "Implement and review that adapter, then run one serial CK3 acceptance against this exact frozen dependency set."
+  },
+  "boundaries": {
+    "live_executed": false,
+    "source_specific_loss_ready": false,
+    "comparison_input_ready": false,
+    "three_way_comparison_ready": false,
+    "public_readiness_promoted": false,
+    "action_readiness_promoted": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false,
+    "t1_percent": 90
+  }
+}

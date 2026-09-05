@@ -1,5 +1,9 @@
 # 天朝二期双宣传片导演方案
 
+测试与验收用例的统一执行索引见
+[`phase2-acceptance-case-index.md`](phase2-acceptance-case-index.md)；361 项批次权威定义仍以
+`mod_zhongguo_style/docs/361-phase2-full-implementation-program.md` 为准。
+
 这里是天朝二期两条正式宣传片路线的权威导演文档入口。用户已明确要求：**两个版本都保留、都制作、都分别交付成片。**二者不存在“主方案/废案”或“长版/短版”的从属关系。
 
 ## 当前实机门（2026-09-04 12:49）

@@ -1,7 +1,7 @@
 # G2 source-specific war-loss next-live runbook
 
-Status: **same-lifecycle Python continuation static-ready / no launch / outer
-exclusive launch owner still pending**.
+Status: **same-lifecycle continuation and deterministic outer ownership
+static-ready / no launch / concrete live adapter still pending**.
 
 This runbook is pinned to root commit
 `523432aec7846d0da833c5a351faad743fa23d2d`. It prepares the next exclusive
@@ -75,15 +75,21 @@ driver from the same capture PID, joins all three exact generation sets,
 creates the source-bound retention ticket, and reuses the existing
 one-surrender cleanup/expiry continuation. No C++ or DLL change was required.
 
-The remaining outer launch-owner work is intentionally separate: it must keep
-the normally launched CK3 PID alive after the standalone observer restores the
-breakpoint and detaches, pause that process, attach the already-frozen private
-bridge through an explicit unique pipe, pass the driver into the continuation,
-and perform one final managed cleanup. The old standalone capture runner still
-kills its owned CK3 process and therefore remains invalid as the live command.
-Until an exclusive owner composes that handoff, the next CK3 command remains
-**NO-GO before launch**. See
-[the lifecycle runner record](g2-source-specific-war-loss-lifecycle-runner-2026-09-05.md).
+The deterministic outer-owner composition now exists as
+`run_g2_source_specific_war_loss_outer_owner.py`. It requires one exclusive
+slot and normal-event PID, validates observer breakpoint restoration and
+detach-without-kill, checks that the process survives, pauses that same PID,
+verifies explicit same-PID bridge attach, passes the exact driver object into
+the lifecycle continuation, and invokes one outer cleanup on both success and
+failure. The C++ observer supports this handoff, but the old standalone Python
+capture runner remains invalid as an inner phase because its `finally` kills
+the CK3 process it launched.
+
+The package deliberately has no concrete normal-launch/UI/observer/bridge
+adapter yet. Until that adapter implements the injected operations, the next
+CK3 command remains **NO-GO before launch**. See
+[the lifecycle runner record](g2-source-specific-war-loss-lifecycle-runner-2026-09-05.md)
+and [the outer-owner record](g2-source-specific-war-loss-outer-owner-2026-09-05.md).
 
 ## Source-capture success fields
 

@@ -490,11 +490,15 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # The player's reviewing manager is selected by the manager-rooted
         # peer window and varies across live runs.  The acceptance-only seed
         # scope can also remain attached to the first frame, but is absent
-        # from the product-authored ticket itself.  R68 also proved that when
-        # the manager review is reached through the common-superior bank close,
-        # that event's four exact bank-ticket scopes remain on the descendant
-        # self-review frame. Bind the exact source-derived name sets and owner
-        # aliases rather than either incidental identity or arbitrary extras.
+        # from the product-authored ticket itself.  R68 proved that when the
+        # manager review is reached through the common-superior bank close,
+        # that event's four bank-ticket *names* remain on the descendant
+        # self-review frame. R71 then proved that their inherited payloads are
+        # no longer reliable bindings on that descendant: all three values had
+        # lost their value type and the bank owner no longer aliased the active
+        # review manager. The .200 source never reads those outer bank scopes;
+        # bind their exact presence, but bind types/identities only for the
+        # nine self-review/manager ticket fields that .200 actually consumes.
         "date_raw": (53152728, 53156256),
         "date_raw_range": (53152728, 53156256),
         "root_character_id": 29037,
@@ -505,21 +509,13 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "zga_phase2_seed_player": 29037,
         },
         "unique_character_scope_excludes": {
-            "zg361_b1_bank_ticket_owner": (29037,),
             "zg361_b1_ticket_owner": (29037,),
             "zg361_b1_self_ticket_owner": (29037,),
         },
         "character_scope_matches_any": {
-            "zg361_b1_bank_ticket_owner": (
-                "zg361_b1_ticket_owner",
-                "zg361_b1_self_ticket_owner",
-            ),
             "zg361_b1_ticket_owner": ("zg361_b1_self_ticket_owner",),
         },
         "scope_types": {
-            "zg361_b1_bank_ticket_season": "value",
-            "zg361_b1_bank_ticket_case": "value",
-            "zg361_b1_bank_ticket_state": "value",
             "zg361_b1_ticket_cycle": "value",
             "zg361_b1_ticket_case": "value",
             "zg361_b1_ticket_state": "value",
