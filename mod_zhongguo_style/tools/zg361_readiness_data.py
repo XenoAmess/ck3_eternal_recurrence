@@ -145,29 +145,41 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R101",
-    observed_at="2026-09-06 01:08 Asia/Shanghai",
+    run_id="R102",
+    observed_at="2026-09-06 01:29 Asia/Shanghai",
     result="RED",
-    product_commit="2848dd1",
-    projection="phase2-full-release-r101-2848dd1",
+    product_commit="19b1ea2",
+    projection="phase2-full-release-r102-19b1ea2",
     verified_file_count=937,
-    product_tree_sha256="F4EC20F05578B35D447D657CC040557D2D9D1446EB7F27B88903CE7892979E81",
-    release_manifest_sha256="A1154F6A966D3E040F4DDEA0E652338ABA2E6209534D6407949F87F8EA277056",
+    product_tree_sha256="BA5722EBA455406D391BF4BBBECBDE58E293D1035536F6E2222EEF3ACCC0AB2C",
+    release_manifest_sha256="01FB6637E3DB06C25E44317C3D5E591B2D978CE31D810C90B929C87DAC1D6FA4",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=549,
-    native_observations=144,
+    observation_days=1346,
+    native_observations=307,
     drained_event_keys=(
         "zg361b2.40",
-        "sway_ongoing.1002",
+        "ep3_governor_yearly.8120",
+        "ep3_governor_yearly.3060",
         "spymaster_task.0381",
+        "sway_ongoing.5011",
         "zg361.40",
-        "spymaster_task.0381",
-        "spymaster_task.0381",
-        "zg361.40",
-        "tgp_interaction_event.0016",
+        "spymaster_task.0342",
+        "sway_outcome.1001",
         "zg361b1.200",
+        "spymaster_task.0346",
+        "zg361b1.201",
+        "sway_ongoing.1002",
+        "zg361.40",
+        "spymaster_task.0381",
+        "tgp_interaction_event.0016",
+        "spymaster_task.0381",
+        "tgp_china_yearly.0020",
+        "zg361.40",
+        "spymaster_task.0381",
+        "spymaster_task.0381",
+        "zg361.40",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -180,26 +192,30 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r101_retry1\evidence-index.json",
-        r"Z:\b3r101_retry1\cell\02_loader_error_scan.json",
-        r"Z:\b3r101_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r101_retry1\cell\final_error.log",
-        r"Z:\b3r101_retry1\cell\final_debug.log",
+        r"Z:\b3r102_retry1\evidence-index.json",
+        r"Z:\b3r102_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r102_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r102_resume1\03_promotion_source_production_entry.json",
+        r"Z:\b3r102_resume2\03_promotion_source_production_entry.json",
+        r"Z:\b3r102_resume3\03_promotion_source_production_entry.json",
+        r"Z:\b3r102_retry1_native_state\profile\logs\error.log",
+        r"Z:\b3r102_retry1_native_state\profile\logs\debug.log",
     ),
     boundary=(
-        "The committed R101 release-identical product loaded 303/303 database nodes with "
-        "fatal 0 and zero loader-attributed project errors. PID 48940 advanced 549 observed "
-        "game days at speed 5 across 144 paused native observations and nine exact GREEN "
-        "event drains. All four R99 runtime signatures remained zero. The final drain was "
-        "zg361b1.200 at date_raw 53160192, so the stale seed cycle only opened the fresh "
-        "player cycle at the end of this bound. The bank error nevertheless repeated three "
-        "times even though max already equaled the live container list_size: its inner "
-        "pending_grade=2 filter made the effective sorted range shorter after bottom "
-        "assignment. Both mutable-grade filtered walks now retain full-list max and set "
-        "check_range_bounds=no, static-ready for R102. The R101 process was managed-stopped "
-        "because mod bytes changed. This was not an illness-death failure; the consecutive "
-        "counter remains 0/3 and no health or survivability fixture was applied. This "
-        "whole-product RED does not promote any per-ID tier."
+        "The committed R102 release-identical product loaded 303/303 database nodes with "
+        "fatal 0 and zero loader-attributed project errors. Retained PID 38964 advanced "
+        "1346 game days at speed 5 across 307 paused native observations and 21 exact GREEN "
+        "event drains. The R101 filtered bank-range signature remained zero, so that fix is "
+        "gameplay-live. Exact harness contracts for sway_ongoing.5011, sway_outcome.1001 "
+        "and the dynamic tgp_china_yearly.0020 liege/official frame were also live GREEN "
+        "without a restart. The target zg361pp.146 -> D+1 .147 checkpoint did not appear; "
+        "the canonical registry therefore remains 0/4. The longer full-product log exposed "
+        "four new project error families: missing legacy compensation funded shares, "
+        "missing career-transfer consumer/receiver state, missing B2 redundancy state, and "
+        "an elimination read of a character without rank. R102 is retained only until those "
+        "mod-byte fixes are ready, then requires a managed stop and fresh R103. This was not "
+        "an illness-death failure; the consecutive counter remains 0/3 and no health or "
+        "survivability fixture was applied. This whole-product RED promotes no per-ID tier."
     ),
 )
 

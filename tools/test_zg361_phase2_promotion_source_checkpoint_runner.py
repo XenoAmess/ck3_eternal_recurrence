@@ -2065,6 +2065,223 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(wrong_receiver)
         self.assertFalse(checks["scope:compliment_receiver"])
 
+    def test_sway_visit_uses_exact_no_followup_stress_loss_branch(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "sway_ongoing.5011",
+            "current_event_instance_id": 17,
+            "date_raw": 53149200,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                {"name": "scheme", "scope": {"status": "available", "type_key": "scheme"}},
+                character_scope("owner", 29037),
+                {"name": "artifact", "scope": {"status": "available", "type_key": "artifact"}},
+                character_scope("target", 27051),
+                {"name": "capital", "scope": {"status": "available", "type_key": "province"}},
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53149200, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 17}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["sway_ongoing.5011"],
+            starting_date=53147016,
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="sway_ongoing.5011",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        wrong_target = copy.deepcopy(context)
+        wrong_target["saved_scopes"][3] = character_scope("target", 27052)
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_target,
+            event_key="sway_ongoing.5011",
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:target"])
+
+    def test_sway_success_uses_exact_deterministic_outcome_branch(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "sway_outcome.1001",
+            "current_event_instance_id": 20,
+            "date_raw": 53153952,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                {"name": "scheme", "scope": {"status": "available", "type_key": "scheme"}},
+                character_scope("owner", 29037),
+                {"name": "artifact", "scope": {"status": "available", "type_key": "artifact"}},
+                character_scope("target", 27051),
+                {
+                    "name": "scheme_successful",
+                    "scope": {"status": "available", "type_key": "boolean"},
+                },
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53153952, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 20}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["sway_outcome.1001"],
+            starting_date=53147016,
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="sway_outcome.1001",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        wrong_success_type = copy.deepcopy(context)
+        wrong_success_type["saved_scopes"][4]["scope"]["type_key"] = "value"
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_success_type,
+            event_key="sway_outcome.1001",
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:scheme_successful"])
+
+    def test_unpaid_tax_binds_dynamic_distinct_liege_and_official(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "tgp_china_yearly.0020",
+            "current_event_instance_id": 29,
+            "date_raw": 53166240,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                {
+                    "name": "taxless_county",
+                    "scope": {"status": "available", "type_key": "landed_title"},
+                },
+                character_scope("tax_official", 29346),
+                character_scope("tax_liege", 36354),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53166240, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 29}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["tgp_china_yearly.0020"],
+            starting_date=53153952,
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="tgp_china_yearly.0020",
+                contract=contract,
+            )
+
+        self.assertTrue(all(checks_for(context).values()), checks_for(context))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        player_liege = copy.deepcopy(context)
+        player_liege["saved_scopes"][2] = character_scope("tax_liege", 29037)
+        self.assertFalse(checks_for(player_liege)["scope:tax_liege:unique_third_party"])
+
+        same_role = copy.deepcopy(context)
+        same_role["saved_scopes"][2] = character_scope("tax_liege", 29346)
+        self.assertFalse(checks_for(same_role)["scope:tax_liege:differs_from"])
+
     def test_run_cell_passes_owned_product_lineage_to_capture_callable(self) -> None:
         self._run_cell_case(entry_error=False)
 

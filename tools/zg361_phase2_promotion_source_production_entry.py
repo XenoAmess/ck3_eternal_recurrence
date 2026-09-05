@@ -404,9 +404,18 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # modifier.  Select the first bounded branch without the long modifier.
         "date_raw": 53147520,
         "root_character_id": 29037,
-        "character_scopes": {
-            "tax_official": 29346,
-            "tax_liege": 32904,
+        "character_scopes": {},
+        # The event immediate reads root.liege at delivery time and chooses a
+        # current councillor from that liege.  Both character IDs therefore
+        # legitimately change as the seed timeline advances; the stable
+        # source contract is two distinct non-player Character roles.
+        "unique_character_scope_excludes": {
+            "tax_official": (29037,),
+            "tax_liege": (29037,),
+        },
+        "character_scope_differs_from": {
+            "tax_official": ("tax_liege",),
+            "tax_liege": ("tax_official",),
         },
         "scope_types": {"taxless_county": "landed_title"},
         "boolean_scopes": (),
@@ -1402,6 +1411,57 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_suffix": (12,),
         "selected_option_number": 13,
         "selected_native_option_index": 12,
+    },
+    "sway_ongoing.5011": {
+        # Vanilla ongoing-sway visit opening. Option 1 starts a multi-event
+        # delayed exploration chain; option 2 only grants a minor stress loss
+        # to the player and ends this branch. Bind the exact live scheme,
+        # owner, target, artifact and target-capital frame, then choose the
+        # bounded no-follow-up path so unrelated sway gameplay cannot consume
+        # the promotion observation window.
+        "date_raw": 53149200,
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "owner": 29037,
+            "target": 27051,
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "artifact": "artifact",
+            "capital": "province",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
+    "sway_outcome.1001": {
+        # Vanilla successful-sway outcome reached by the same exact scheme.
+        # Option 1 starts a diplomacy duel with random prestige and opinion
+        # results; option 2 deterministically applies the smaller opinion
+        # gain (plus any authored conditional piety) and ends the scheme.
+        # Bind the live owner/target and boolean success marker so this does
+        # not become a generic handler for unrelated outcome windows.
+        "date_raw": 53153952,
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "owner": 29037,
+            "target": 27051,
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "artifact": "artifact",
+        },
+        "boolean_scopes": ("scheme_successful",),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
     },
     "tgp_interaction_event.0016": {
         # Roads to Power military-aid order sent to the joining governor.

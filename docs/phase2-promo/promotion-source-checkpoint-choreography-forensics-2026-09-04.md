@@ -1448,3 +1448,39 @@ the 7-effect file boundary and static validation are GREEN.
 
 R101 was not an illness-death failure. The consecutive illness counter remains
 `0/3`; no health value or survivability modifier has been applied.
+
+## R102: filtered bank range cleared; long-window product REDs exposed
+
+R102 cold-started committed source `19b1ea2` through the 937-file
+release-identical projection `phase2-full-release-r102-19b1ea2`. Its source
+tree, release manifest and ZIP SHA-256 were respectively
+`BA5722EBA455406D391BF4BBBECBDE58E293D1035536F6E2222EEF3ACCC0AB2C`,
+`01FB6637E3DB06C25E44317C3D5E591B2D978CE31D810C90B929C87DAC1D6FA4`
+and `0F1469E4A5456E24FF66E8B2CE60F4AEB54CFCDDB80BCADB0A8FEA4AF3628895`.
+The product again loaded 303/303 database nodes with fatal zero. PID 38964 was
+retained across three harness-only client replacements and advanced 1,346 game
+days at speed 5, with 307 paused native observations and 21 exact GREEN event
+drains. The filtered bank-range error remained zero throughout, promoting the
+R101 source fix to gameplay-live.
+
+The retained clients added exact source-bound contracts for vanilla
+`sway_ongoing.5011` and `sway_outcome.1001`, selecting their deterministic
+least-disruptive second options. A later `tgp_china_yearly.0020` delivery proved
+that `tax_liege` is the current `root.liege`, not the historical 32904 ID; its
+tax official is likewise selected at delivery time. The corrected contract
+requires two distinct non-player Character roles and then drained the exact
+live window GREEN without restarting CK3.
+
+The target `zg361pp.146` followed by independently observed D+1 `.147` did not
+appear, so the canonical promotion source remains 0/1 and the full registry
+remains 0/4. The extended gameplay log (3,718,875 bytes, SHA-256
+`8FD4156422C6DA1FFAC1ECED8EA6B61CDB47D11F30DC24D90AAF5EF674A7BB44`)
+also exposed four new project error families: legacy compensation payer-share
+fields absent, career-transfer consumer/receiver fields absent, a B2
+redundancy flag absent, and elimination reading a character without rank.
+These are product REDs and are the R103 repair input; they do not invalidate
+the loader or bank-range GREEN evidence.
+
+R102 was not an illness-death failure. The player remained alive, the
+consecutive illness counter remains `0/3`, and no health value or survivability
+modifier has been applied.
