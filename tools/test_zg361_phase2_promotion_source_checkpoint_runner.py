@@ -376,6 +376,67 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     source_run_cell=cell,
                 )
 
+    def test_retained_client_accepts_exact_managed_restore_pid_successor(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary)
+            driver_state = state / "native-session" / "driver-state.json"
+            driver_state.parent.mkdir(parents=True)
+            pipe = r"\\.\pipe\retained-unit"
+            checkpoint_sha = "a" * 64
+            driver_state.write_text(
+                json.dumps({
+                    "bridge_pid": 202,
+                    "command_history": [{
+                        "index": 7,
+                        "command": "restore-checkpoint",
+                        "ok": True,
+                        "result": {
+                            "accepted": True,
+                            "status": "restored",
+                            "restored_date_raw": 53164440,
+                            "checkpoint": {
+                                "status": "restored",
+                                "size": 75,
+                                "sha256": checkpoint_sha,
+                            },
+                            "lifecycle": {
+                                "status": "relaunched",
+                                "lifecycle_intent": "restore",
+                                "pipe": pipe,
+                                "previous_pid": 101,
+                                "pid": 202,
+                                "checkpoint": {
+                                    "size": 75,
+                                    "sha256": checkpoint_sha,
+                                },
+                            },
+                        },
+                    }],
+                }),
+                encoding="utf-8",
+            )
+            evidence = retained_client.retained_pid_lineage_evidence(
+                state_dir=state,
+                retention={"bridge_pid": 101},
+                live_pid=202,
+                pipe_name=pipe,
+            )
+            self.assertEqual(evidence["result"], "GREEN")
+            self.assertEqual(evidence["restart_count"], 1)
+            self.assertEqual(evidence["restores"][0]["previous_pid"], 101)
+            self.assertEqual(evidence["restores"][0]["pid"], 202)
+
+            with self.assertRaisesRegex(
+                retained_client.RetainedSessionError,
+                "retained_or_managed_restore_successor",
+            ):
+                retained_client.retained_pid_lineage_evidence(
+                    state_dir=state,
+                    retention={"bridge_pid": 303},
+                    live_pid=202,
+                    pipe_name=pipe,
+                )
+
     def _capabilities(self, pid: int) -> dict[str, object]:
         bridge_labels = (
             runner.PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS

@@ -185,6 +185,104 @@ def wait_for_retained_session_reconnect(
     )
 
 
+def retained_pid_lineage_evidence(
+    *,
+    state_dir: Path,
+    retention: Mapping[str, object],
+    live_pid: object,
+    pipe_name: str,
+) -> dict[str, object]:
+    """Accept the retained PID or an exact managed restore successor chain."""
+
+    source_pid = retention.get("bridge_pid")
+    if (
+        isinstance(source_pid, bool)
+        or not isinstance(source_pid, int)
+        or source_pid <= 0
+        or isinstance(live_pid, bool)
+        or not isinstance(live_pid, int)
+        or live_pid <= 0
+    ):
+        raise RetainedSessionError("retained/live PID identity is invalid")
+    driver_state = _read_object(
+        state_dir / "native-session" / "driver-state.json",
+        "native driver state",
+    )
+    command_history = driver_state.get("command_history")
+    if not isinstance(command_history, list):
+        command_history = []
+    current_pid = source_pid
+    restores: list[dict[str, object]] = []
+    for row_value in command_history:
+        if current_pid == live_pid:
+            break
+        if not isinstance(row_value, Mapping):
+            continue
+        result_value = row_value.get("result")
+        result = result_value if isinstance(result_value, Mapping) else {}
+        lifecycle_value = result.get("lifecycle")
+        lifecycle = (
+            lifecycle_value if isinstance(lifecycle_value, Mapping) else {}
+        )
+        checkpoint_value = result.get("checkpoint")
+        checkpoint = (
+            checkpoint_value if isinstance(checkpoint_value, Mapping) else {}
+        )
+        lifecycle_checkpoint_value = lifecycle.get("checkpoint")
+        lifecycle_checkpoint = (
+            lifecycle_checkpoint_value
+            if isinstance(lifecycle_checkpoint_value, Mapping)
+            else {}
+        )
+        if not (
+            row_value.get("command") == "restore-checkpoint"
+            and row_value.get("ok") is True
+            and result.get("accepted") is True
+            and result.get("status") == "restored"
+            and lifecycle.get("status") == "relaunched"
+            and lifecycle.get("lifecycle_intent") == "restore"
+            and lifecycle.get("pipe") == pipe_name
+            and lifecycle.get("previous_pid") == current_pid
+            and checkpoint.get("status") == "restored"
+            and isinstance(checkpoint.get("size"), int)
+            and checkpoint.get("size") > 0
+            and checkpoint.get("size") == lifecycle_checkpoint.get("size")
+            and checkpoint.get("sha256") == lifecycle_checkpoint.get("sha256")
+        ):
+            continue
+        successor = lifecycle.get("pid")
+        if isinstance(successor, bool) or not isinstance(successor, int):
+            continue
+        restores.append({
+            "history_index": row_value.get("index"),
+            "previous_pid": current_pid,
+            "pid": successor,
+            "checkpoint_size": checkpoint.get("size"),
+            "checkpoint_sha256": checkpoint.get("sha256"),
+            "restored_date_raw": result.get("restored_date_raw"),
+        })
+        current_pid = successor
+    checks = {
+        "source_pid_positive": source_pid > 0,
+        "live_pid_positive": live_pid > 0,
+        "driver_state_live_pid": driver_state.get("bridge_pid") == live_pid,
+        "retained_or_managed_restore_successor": current_pid == live_pid,
+    }
+    failed = [name for name, passed in checks.items() if passed is not True]
+    if failed:
+        raise RetainedSessionError(
+            "retained PID lineage failed: " + ", ".join(failed)
+        )
+    return {
+        "result": "GREEN",
+        "source_pid": source_pid,
+        "live_pid": live_pid,
+        "restart_count": len(restores),
+        "restores": restores,
+        "checks": checks,
+    }
+
+
 def run(
     *,
     state_dir: Path,
@@ -240,14 +338,26 @@ def run(
         )
         diagnostics = capabilities.get("diagnostics")
         played = snapshot.get("played_character")
+        live_pid = (
+            diagnostics.get("bridge_pid")
+            if isinstance(diagnostics, Mapping)
+            else None
+        )
+        pid_lineage = retained_pid_lineage_evidence(
+            state_dir=state_dir,
+            retention=retention,
+            live_pid=live_pid,
+            pipe_name=pipe_name,
+        )
+        report["pid_lineage"] = pid_lineage
+        report["restart_performed"] = pid_lineage["restart_count"] > 0
         live_checks = {
             "bridge_connected": (
                 isinstance(diagnostics, Mapping)
                 and diagnostics.get("connected") is True
             ),
-            "same_pid": (
-                isinstance(diagnostics, Mapping)
-                and diagnostics.get("bridge_pid") == retention.get("bridge_pid")
+            "retained_or_managed_restore_successor": (
+                pid_lineage.get("result") == "GREEN"
             ),
             # The public protocol generation is scoped to one Python endpoint;
             # reconnect identity is carried by the exact pipe + CK3 PID and
