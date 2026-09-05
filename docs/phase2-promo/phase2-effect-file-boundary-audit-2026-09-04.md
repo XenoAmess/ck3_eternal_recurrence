@@ -18,6 +18,8 @@
 
 对 `Z:\p2ag\p\common\scripted_effects` 的深度感知扫描结果为 `618 files / 3708 effects / maximum 10 / target misses 0 / >20 violations 0 / legacy owners 0`；closure `3708 effects / 988 events / 24 triggers / missing 0`。closure expansion / product manifest SHA-256 为 `1188760A606A3ECB1E9C8734B00C0E9BC150601158B072DF7DFACF093A6AC6F0` / `B667EB5BCC7FA2B677E529F42E597A5932ECFAF23A6316C23DF2B14C400A69E3`。静态门与 no-launch acceptance preflight 均 GREEN；实机状态仍待 R79。
 
+R79 已真实挂载该精确产品。180 秒时 loader 仍在 database init，runner 因 Frontend idler 未发布而 RED 并受控停止；它没有进入 gameplay，因此不改变业务 readiness。此 attempt 固定保留在 `Z:\b3r79\cell`，outer report SHA-256 `C79497F0BF3C595A5A90AD5110D2223BB1EE8A7ACCCB812C6F49B6DF1B4B3DC5`。R80 保持同一分片产品，把 frontend-first 观察门设为 360 秒；任何后续候选仍必须先通过全量边界门。
+
 状态：**GREEN / static-only / no CK3 launch**。审计基线为 canonical commit
 `75c1432a46b5fc3f442de61711bbbff9973aa307`，范围是
 `mod_zhongguo_style/common/scripted_effects/*.txt`。政策口径保持为：B2 起按用途分组，目标每文件 `1–10`

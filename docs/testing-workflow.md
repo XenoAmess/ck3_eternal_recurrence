@@ -1599,3 +1599,11 @@ closure/manifest evidence SHA-256 分别为
 422 个 effect 文件、3,707 effects、max non-legacy 10、target miss 0、`>20` 违规 0；
 只有后续 CK3 出现可复现 loader-performance RED 且更早没有材料、parser、递归或调用图错误时，
 才按用途继续做拆分 A/B。
+
+### 全量用途分片产品的 frontend-first 时间门（2026-09-05）
+
+当前全量 effect 边界是强制门：按用途拆分，目标每文件 1–10 个顶层 effect，旧聚合 owner 不得重新进入候选；不再以是否观测到性能问题决定是否执行拆分。
+
+R79 对 `phase2-b3-production-closure-r79-f953503` 的 831-file 产品使用 180 秒 frontend-first 门。到 `180.001s` 时 `frontend_gui_complete=true`，debug log 仍持续输出 database node init，已完成 276 个 node，`Setting idler 'Frontend'` 尚未发布、fatal 为 0。runner 正确地没有启动 bridge、加载存档或授权 gameplay，并保留 `Z:\b3r79\cell`（outer report SHA-256 `C79497F0BF3C595A5A90AD5110D2223BB1EE8A7ACCCB812C6F49B6DF1B4B3DC5`）。
+
+后续同一 hash-bound 产品的完整验收使用至少 360 秒 frontend-first timeout；`frontend_gui_complete` 单独不构成 Frontend ready。超时 attempt 必须换新 artifact 根，不得覆盖；文件边界扫描仍必须先保持 max 10、target miss 0、hard violation 0、legacy owner 0。
