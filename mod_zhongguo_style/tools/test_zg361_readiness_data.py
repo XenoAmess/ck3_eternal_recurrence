@@ -105,35 +105,33 @@ class ReadinessDataTests(unittest.TestCase):
             "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_latest_product_snapshot_records_r106_without_promoting_ids(self) -> None:
+    def test_latest_product_snapshot_records_r107_without_promoting_ids(self) -> None:
         snapshot = LATEST_PRODUCT_ACCEPTANCE
-        self.assertEqual(snapshot.run_id, "R106")
+        self.assertEqual(snapshot.run_id, "R107")
         self.assertEqual(snapshot.result, "RED")
-        self.assertEqual(snapshot.product_commit, "7f17fed")
+        self.assertEqual(snapshot.product_commit, "275ee65")
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 1107)
-        self.assertEqual(snapshot.native_observations, 279)
-        self.assertEqual(len(snapshot.drained_event_keys), 123)
+        self.assertEqual(snapshot.observation_days, 918)
+        self.assertEqual(snapshot.native_observations, 221)
+        self.assertEqual(len(snapshot.drained_event_keys), 68)
         self.assertIn("zg361b2.40", snapshot.drained_event_keys)
-        self.assertIn("zg361b1.201", snapshot.drained_event_keys)
+        self.assertIn("zg361ch.128", snapshot.drained_event_keys)
         self.assertIn("zg361ch.102", snapshot.drained_event_keys)
-        self.assertIn("zg361.50", snapshot.drained_event_keys)
         self.assertIn("zg361comp.1", snapshot.drained_event_keys)
-        self.assertIn("zg361.6", snapshot.drained_event_keys)
-        self.assertIn("harness-contract RED", snapshot.boundary)
-        self.assertIn("separate product copy RED", snapshot.boundary)
-        self.assertIn("retained R106 PID 30492 cannot validate", snapshot.boundary)
+        self.assertIn("four replacement clients", snapshot.boundary)
+        self.assertIn("copy audit remains RED", snapshot.boundary)
+        self.assertIn("PID 32972", snapshot.boundary)
         self.assertIn("canonical registry remains 0/4", snapshot.boundary)
         self.assertIn("0/3", snapshot.boundary)
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("最新完整产品验收快照", ledger)
-        self.assertIn("`R106`", ledger)
+        self.assertIn("`R107`", ledger)
         self.assertIn("937 files", ledger)
-        self.assertIn("1107 游戏日", ledger)
-        self.assertIn("279 次 native/MCP 观测", ledger)
+        self.assertIn("918 游戏日", ledger)
+        self.assertIn("221 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

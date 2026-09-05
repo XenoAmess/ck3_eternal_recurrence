@@ -10,9 +10,10 @@ _OBSERVED_M_ENTRY_DATE_RAW = 53156688
 # Frozen by the authoritative career/HC generator.  Every business event has
 # exactly the same four typed event scopes and three authored routes.  Only
 # the listed dual-cost mechanisms conditionally hide routes 1 and 2.  The
-# retained lineage already proved that shared treasury predicate false at D
-# mechanisms 21 and 25, so later dual-cost windows must retain only native
-# route 2 unless a live context proves the product state changed.
+# retained lineage first proved the shared treasury predicate false at D
+# mechanisms 21 and 25. R107 then proved that the same lineage can satisfy it
+# after earlier transfers. Every dual-cost event therefore binds either the
+# exact three-route funded projection or the exact defer-only projection.
 _DOMAIN_BUSINESS_IDS = {
     "m": tuple(range(92, 98)),
     "n": tuple(range(98, 106)),
@@ -40,13 +41,27 @@ def _business_contract(domain: str, mechanism_id: int) -> dict[str, object]:
             f"zg361_ch_{domain}_event_case": "value",
         },
         "boolean_scopes": (),
-        "option_count": 1 if conditional_defer else 3,
+        "option_count": 3,
         **({
             "snapshot_option_count": 3,
-            "native_option_indices": (2,),
+            "native_option_indices": (0, 1, 2),
+            "option_variants": (
+                {
+                    "option_count": 3,
+                    "native_option_indices": (0, 1, 2),
+                    "selected_option_number": 1,
+                    "selected_native_option_index": 0,
+                },
+                {
+                    "option_count": 1,
+                    "native_option_indices": (2,),
+                    "selected_option_number": 3,
+                    "selected_native_option_index": 2,
+                },
+            ),
         } if conditional_defer else {}),
-        "selected_option_number": 3 if conditional_defer else 1,
-        "selected_native_option_index": 2 if conditional_defer else 0,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
     }
 
 
@@ -66,9 +81,8 @@ CAREER_HC_TIMELINE_CONTRACTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
     },
     "zg361ch.25": {
-        # Like .21, the retained D-lane manager does not satisfy the two
-        # treasury-backed routes.  CK3 renders only the always-on defer route
-        # in native slot 2; the active-event ABI retains all three slots.
+        # Like .21, this can render either all funded routes or only defer,
+        # depending on the same live treasury and personal-gold predicates.
         "date_raw": 53156640,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -81,11 +95,25 @@ CAREER_HC_TIMELINE_CONTRACTS: dict[str, dict[str, object]] = {
             "zg361_ch_d_event_case": "value",
         },
         "boolean_scopes": (),
-        "option_count": 1,
+        "option_count": 3,
         "snapshot_option_count": 3,
-        "native_option_indices": (2,),
-        "selected_option_number": 3,
-        "selected_native_option_index": 2,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+            {
+                "option_count": 1,
+                "native_option_indices": (2,),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ),
     },
 }
 

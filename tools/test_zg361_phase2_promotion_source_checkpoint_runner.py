@@ -1144,7 +1144,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(wrong_manager)
         self.assertFalse(checks["scope:zg361_b1_pending_watch_owner:matches_any"])
 
-    def test_annual_summary_accepts_exact_first_and_later_cycle_scope_sets(self) -> None:
+    def test_annual_summary_accepts_all_exact_live_scope_sets(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
                 "name": name,
@@ -1169,7 +1169,12 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             production.KNOWN_TIMELINE_INTERRUPTS["zg361.1"],
             starting_date=53168304,
         )
-        first_cycle_names, later_cycle_names = contract["saved_scope_name_sets"]
+        (
+            first_cycle_names,
+            later_cycle_names,
+            extended_cycle_names,
+            extended_later_cycle_names,
+        ) = contract["saved_scope_name_sets"]
         character_names = {
             "zg361_b1_bank_ticket_owner": 32904,
             "zg361_b1_ticket_owner": 29037,
@@ -1222,6 +1227,12 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(first_cycle_checks.values()), first_cycle_checks)
         later_cycle_checks = checks_for(later_cycle_names)
         self.assertTrue(all(later_cycle_checks.values()), later_cycle_checks)
+        extended_cycle_checks = checks_for(extended_cycle_names)
+        self.assertTrue(all(extended_cycle_checks.values()), extended_cycle_checks)
+        extended_later_cycle_checks = checks_for(extended_later_cycle_names)
+        self.assertTrue(
+            all(extended_later_cycle_checks.values()), extended_later_cycle_checks
+        )
         self.assertNotIn(
             "scope:zg361_b1_bank_ticket_owner:unique_third_party",
             later_cycle_checks,
@@ -1235,9 +1246,122 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             later_cycle_checks,
         )
 
-        extra_names = later_cycle_names + ("unrelated_scope",)
+        extra_names = extended_later_cycle_names + ("unrelated_scope",)
         extra_checks = checks_for(extra_names)
         self.assertFalse(extra_checks["saved_scope_names_exact"])
+
+    def test_bonus_salary_matrix_accepts_funded_and_defer_only_options(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def option(rendered: int, native: int) -> dict[str, object]:
+            return {
+                "rendered_index": rendered,
+                "native_option_index": native,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361ch.21"],
+            starting_date=53156544,
+        )
+        base_context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361ch.21",
+            "current_event_instance_id": 91,
+            "date_raw": 53156544,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope("zg361_ch_d_event_owner", 29037),
+                character_scope("zg361_ch_d_event_subject", 45214),
+                {
+                    "name": "zg361_ch_d_event_cycle",
+                    "scope": {"status": "available", "type_key": "value"},
+                },
+                {
+                    "name": "zg361_ch_d_event_case",
+                    "scope": {"status": "available", "type_key": "value"},
+                },
+            ],
+        }
+        snapshot = {"date_raw": 53156544, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 91}
+
+        for indices, selected_number, selected_native in (
+            ((0, 1, 2), 1, 0),
+            ((2,), 3, 2),
+        ):
+            with self.subTest(indices=indices):
+                context = copy.deepcopy(base_context)
+                context["options"] = [
+                    option(rendered, native)
+                    for rendered, native in enumerate(indices)
+                ]
+                checks = production._known_interrupt_checks(
+                    snapshot=snapshot,
+                    event=event,
+                    context=context,
+                    event_key="zg361ch.21",
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
+                resolved = production._option_contract_for_context(
+                    context["options"], contract
+                )
+                self.assertEqual(resolved["selected_option_number"], selected_number)
+                self.assertEqual(
+                    resolved["selected_native_option_index"], selected_native
+                )
+
+        unknown = copy.deepcopy(base_context)
+        unknown["options"] = [option(0, 1), option(1, 2)]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=unknown,
+            event_key="zg361ch.21",
+            contract=contract,
+        )
+        self.assertFalse(checks["authored_options_exact"])
+
+        for event_key in (
+            "zg361ch.25",
+            "zg361ch.101",
+            "zg361ch.104",
+            "zg361ch.112",
+            "zg361ch.114",
+            "zg361ch.119",
+        ):
+            candidate = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+            with self.subTest(event_key=event_key, projection="funded"):
+                resolved = production._option_contract_for_context(
+                    [option(0, 0), option(1, 1), option(2, 2)], candidate
+                )
+                self.assertEqual(resolved["selected_option_number"], 1)
+                self.assertEqual(resolved["selected_native_option_index"], 0)
+            with self.subTest(event_key=event_key, projection="defer-only"):
+                resolved = production._option_contract_for_context(
+                    [option(0, 2)], candidate
+                )
+                self.assertEqual(resolved["selected_option_number"], 3)
+                self.assertEqual(resolved["selected_native_option_index"], 2)
 
     def test_player_325_notice_binds_prompt_tuple_and_exact_inherited_names(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:

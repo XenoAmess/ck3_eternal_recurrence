@@ -1231,8 +1231,12 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # sole acknowledgement has no effect. The first-cycle window can
         # inherit the outer B1 bank-ticket names from the publication call
         # stack, while a later cycle can expose the same summary without that
-        # already-completed outer tuple. Bind both exact observed name sets;
-        # the summary itself consumes neither the bank owner nor its values.
+        # already-completed outer tuple. R107 also observed the first summary
+        # while the surrounding B1 continuation, B2 PIP and notice-deadline
+        # calls were still alive. A later annual summary retained that same
+        # extended stack after the bank tuple expired. Bind all four exact
+        # observed name sets; the
+        # summary itself consumes none of those inherited outer tuples.
         "date_raw": 53156448,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -1305,6 +1309,11 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_b1_oversight_ticket_cycle",
                 "zg361_b1_oversight_ticket_case",
                 "zg361_b1_oversight_ticket_state",
+                "zg361_b1_pending_continue_subject",
+                "zg361_b1_pending_continue_owner",
+                "zg361_b1_pending_continue_cycle",
+                "zg361_b1_pending_continue_case",
+                "zg361_b1_pending_continue_state",
                 "zg361_b1_reopen_ticket_subject",
                 "zg361_b1_reopen_ticket_owner",
                 "zg361_b1_reopen_ticket_cycle",
@@ -1315,6 +1324,87 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_b1_reopen_ticket_hash",
                 "zg361_b1_reopen_ticket_reward_hash",
                 "zg361_b1_reopen_ticket_book_version",
+                "zg361_b2_pip_review_candidate",
+                "zg361_b2_support_mentor",
+                "zg361_b2_pip_deadline_owner",
+                "zg361_b2_pip_deadline_subject",
+                "zg361_b2_pip_deadline_cycle",
+                "zg361_b2_pip_deadline_case",
+                "zg361_b2_pip_deadline_state",
+                "zg361_notice_deadline_owner",
+                "zg361_notice_deadline_subject",
+                "zg361_notice_deadline_cycle",
+                "zg361_notice_deadline_case",
+                "zg361_notice_deadline_state",
+                "zg361_n_375",
+                "zg361_n_35",
+                "zg361_n_325",
+                "zg361_n_elim",
+            ),
+            (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_reopen_ticket_subject",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_b1_reopen_ticket_cycle",
+                "zg361_b1_reopen_ticket_case",
+                "zg361_b1_reopen_ticket_state",
+                "zg361_b1_reopen_ticket_object",
+                "zg361_b1_reopen_ticket_route",
+                "zg361_b1_reopen_ticket_hash",
+                "zg361_b1_reopen_ticket_reward_hash",
+                "zg361_b1_reopen_ticket_book_version",
+                "zg361_n_375",
+                "zg361_n_35",
+                "zg361_n_325",
+                "zg361_n_elim",
+            ),
+            (
+                "zg361_b1_bank_ticket_owner",
+                "zg361_b1_bank_ticket_season",
+                "zg361_b1_bank_ticket_case",
+                "zg361_b1_bank_ticket_state",
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_pending_continue_subject",
+                "zg361_b1_pending_continue_owner",
+                "zg361_b1_pending_continue_cycle",
+                "zg361_b1_pending_continue_case",
+                "zg361_b1_pending_continue_state",
+                "zg361_b1_reopen_ticket_subject",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_b1_reopen_ticket_cycle",
+                "zg361_b1_reopen_ticket_case",
+                "zg361_b1_reopen_ticket_state",
+                "zg361_b1_reopen_ticket_object",
+                "zg361_b1_reopen_ticket_route",
+                "zg361_b1_reopen_ticket_hash",
+                "zg361_b1_reopen_ticket_reward_hash",
+                "zg361_b1_reopen_ticket_book_version",
+                "zg361_b2_pip_review_candidate",
+                "zg361_b2_support_mentor",
+                "zg361_b2_pip_deadline_owner",
+                "zg361_b2_pip_deadline_subject",
+                "zg361_b2_pip_deadline_cycle",
+                "zg361_b2_pip_deadline_case",
+                "zg361_b2_pip_deadline_state",
+                "zg361_notice_deadline_owner",
+                "zg361_notice_deadline_subject",
+                "zg361_notice_deadline_cycle",
+                "zg361_notice_deadline_case",
+                "zg361_notice_deadline_state",
                 "zg361_n_375",
                 "zg361_n_35",
                 "zg361_n_325",
@@ -1370,10 +1460,11 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
     },
     "zg361ch.21": {
-        # The retained D-lane manager lacks the treasury/gold predicates for
-        # authored routes 1 and 2.  CK3 therefore renders only the always-on
-        # defer route (native slot 2), while the active-event ABI still
-        # reports all three authored slots.  Preserve that observed mapping.
+        # CK3 always reports all three authored slots, but the rendered set is
+        # resource-dependent. R92 observed only the always-on defer route
+        # (native slot 2); R107 had enough treasury/gold and exposed all three
+        # routes. Preserve both exact projections. Prefer the source-reviewed
+        # funded matrix route when available, otherwise use defer.
         "date_raw": 53156544,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -1386,11 +1477,25 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "zg361_ch_d_event_case": "value",
         },
         "boolean_scopes": (),
-        "option_count": 1,
+        "option_count": 3,
         "snapshot_option_count": 3,
-        "native_option_indices": (2,),
-        "selected_option_number": 3,
-        "selected_native_option_index": 2,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+            {
+                "option_count": 1,
+                "native_option_indices": (2,),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ),
     },
     "zg361ch.22": {
         # Source-reviewed D-lane state-2 window: three unconditional routes,
@@ -2500,6 +2605,32 @@ def _contract_date_matches(
     return value in date_raw_values
 
 
+def _option_contract_for_context(
+    options: list[object], contract: Mapping[str, object]
+) -> Mapping[str, object]:
+    """Resolve an exact resource-dependent rendered-option projection."""
+
+    variants_value = contract.get("option_variants")
+    variants = variants_value if isinstance(variants_value, tuple) else ()
+    if not variants:
+        return contract
+    actual_native_indices = tuple(
+        row.get("native_option_index") if isinstance(row, Mapping) else None
+        for row in options
+    )
+    for variant_value in variants:
+        if not isinstance(variant_value, Mapping):
+            continue
+        expected_indices = variant_value.get("native_option_indices")
+        if (
+            variant_value.get("option_count") == len(options)
+            and isinstance(expected_indices, tuple)
+            and actual_native_indices == expected_indices
+        ):
+            return {**contract, **variant_value}
+    return contract
+
+
 def _known_interrupt_checks(
     *,
     snapshot: Mapping[str, object],
@@ -2510,8 +2641,11 @@ def _known_interrupt_checks(
 ) -> dict[str, bool]:
     options_value = context.get("options")
     options = options_value if isinstance(options_value, list) else []
-    option_count = contract["option_count"]
-    snapshot_option_count = contract.get("snapshot_option_count", option_count)
+    effective_contract = _option_contract_for_context(options, contract)
+    option_count = effective_contract["option_count"]
+    snapshot_option_count = effective_contract.get(
+        "snapshot_option_count", option_count
+    )
     actual_native_option_indices: list[object] = []
     authored_options_exact = len(options) == option_count
     if authored_options_exact:
@@ -2527,8 +2661,10 @@ def _known_interrupt_checks(
             ):
                 authored_options_exact = False
                 break
-    native_option_prefix_range = contract.get("native_option_prefix_range")
-    native_option_suffix = contract.get("native_option_suffix")
+    native_option_prefix_range = effective_contract.get(
+        "native_option_prefix_range"
+    )
+    native_option_suffix = effective_contract.get("native_option_suffix")
     if (
         authored_options_exact
         and isinstance(native_option_prefix_range, tuple)
@@ -2556,7 +2692,7 @@ def _known_interrupt_checks(
             and tuple(suffix) == native_option_suffix
         )
     elif authored_options_exact:
-        native_option_indices_value = contract.get(
+        native_option_indices_value = effective_contract.get(
             "native_option_indices", tuple(range(int(option_count)))
         )
         native_option_indices = (
@@ -2619,8 +2755,8 @@ def _known_interrupt_checks(
         )
         == snapshot_option_count,
         "authored_options_exact": authored_options_exact,
-        "selected_option_mapping": contract["selected_option_number"]
-        == contract["selected_native_option_index"] + 1,
+        "selected_option_mapping": effective_contract["selected_option_number"]
+        == effective_contract["selected_native_option_index"] + 1,
     }
     for name, expected_character_id in character_scopes.items():
         checks[f"scope:{name}"] = character_ids(str(name)) == {
@@ -2843,9 +2979,61 @@ def _drain_known_timeline_interrupt(
     )
     if not all(checks.values()):
         failed = sorted(name for name, passed in checks.items() if not passed)
+        diagnostic = ""
+        if "authored_options_exact" in failed:
+            options_value = context.get("options")
+            actual_options = options_value if isinstance(options_value, list) else []
+            option_projection = [
+                {
+                    key: row.get(key)
+                    for key in (
+                        "rendered_index",
+                        "native_option_index",
+                        "shown",
+                        "enabled",
+                        "fallback",
+                        "cancel",
+                    )
+                }
+                for row in actual_options
+                if isinstance(row, Mapping)
+            ]
+            diagnostic += (
+                f"; actual_options={option_projection!r}; "
+                f"expected_option_count={contract.get('option_count')!r}; "
+                "expected_native_option_indices="
+                f"{contract.get('native_option_indices')!r}; "
+                f"allowed_option_variants={contract.get('option_variants')!r}"
+            )
+        if "saved_scope_names_exact" in failed:
+            scopes_value = context.get("saved_scopes")
+            scopes = scopes_value if isinstance(scopes_value, list) else []
+            actual_scope_names = sorted(
+                row.get("name")
+                for row in scopes
+                if isinstance(row, Mapping) and isinstance(row.get("name"), str)
+            )
+            expected_scope_name_sets_value = contract.get(
+                "saved_scope_name_sets", ()
+            )
+            expected_scope_name_sets = (
+                expected_scope_name_sets_value
+                if isinstance(expected_scope_name_sets_value, tuple)
+                else ()
+            )
+            diagnostic += (
+                f"; actual_saved_scope_names={actual_scope_names!r}; "
+                "allowed_saved_scope_name_sets="
+                f"{[sorted(names) for names in expected_scope_name_sets]!r}"
+            )
         raise PromotionProductionEntryError(
             f"known promotion-timeline interrupt {event_key!r} drifted: {failed!r}"
+            f"{diagnostic}"
         )
+
+    options_value = context.get("options")
+    options = options_value if isinstance(options_value, list) else []
+    effective_contract = _option_contract_for_context(options, contract)
 
     # A context query publishes a newer driver revision.  Rebind the same
     # paused event immediately before mutation instead of reusing the query's
@@ -2872,7 +3060,9 @@ def _drain_known_timeline_interrupt(
             if isinstance(selection_snapshot.get("active_event"), Mapping)
             else None
         )
-        == contract.get("snapshot_option_count", contract["option_count"]),
+        == effective_contract.get(
+            "snapshot_option_count", effective_contract["option_count"]
+        ),
     }
     if not all(pre_selection_checks.values()) or selection_event is None:
         failed = sorted(
@@ -2883,7 +3073,7 @@ def _drain_known_timeline_interrupt(
             f"selection: {failed!r}"
         )
 
-    option_number = int(contract["selected_option_number"])
+    option_number = int(effective_contract["selected_option_number"])
     selection = service.select_event_option(
         option_number,
         event_instance_id=int(selection_event["event_instance_id"]),
@@ -2899,7 +3089,7 @@ def _drain_known_timeline_interrupt(
     selection_checks = {
         "option_number": submission.get("option_number") == option_number,
         "option_index": submission.get("option_index")
-        == contract["selected_native_option_index"],
+        == effective_contract["selected_native_option_index"],
         "postcondition_verified": event_selection.get("postcondition_verified")
         is True,
         "old_event_instance_id": event_selection.get("old_event_instance_id")
@@ -2909,7 +3099,7 @@ def _drain_known_timeline_interrupt(
         "selected_native_option_index": event_selection.get(
             "selected_native_option_index"
         )
-        == contract["selected_native_option_index"],
+        == effective_contract["selected_native_option_index"],
         "old_instance_not_retained": event_selection.get(
             "new_event_instance_id"
         )

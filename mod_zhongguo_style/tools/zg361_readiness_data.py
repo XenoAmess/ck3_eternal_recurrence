@@ -145,31 +145,28 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R106",
-    observed_at="2026-09-06 05:49 Asia/Shanghai",
+    run_id="R107",
+    observed_at="2026-09-06 06:23 Asia/Shanghai",
     result="RED",
-    product_commit="7f17fed",
-    projection="phase2-full-release-r106-7f17fed",
+    product_commit="275ee65",
+    projection="phase2-full-release-r107-275ee65",
     verified_file_count=937,
-    product_tree_sha256="EC65D1088A36418ACA8067266776AF7EAB9DD4C87DFB644BFF96B60DB2F044B9",
-    release_manifest_sha256="075E2C4F4E2391A6088A63C446A50AFEEB128BC1F4DB6EC7F460C883D82BAAD1",
+    product_tree_sha256="309F14CBD47DAE5653171A8B70C0EE834799BEC28D48F467E0EC000443709AA2",
+    release_manifest_sha256="7D38B0831E039A3328890AC56B0CF46E479BBBC2E9EA26E95951FC8394FA3E94",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=1107,
-    native_observations=279,
+    observation_days=918,
+    native_observations=221,
     drained_event_keys=(
         "zg361b2.40",
-        "ep3_interactions_events.0630",
-        "ep3_admin_events.0002",
-        "tgp_dynastic_cycle_events.0040",
+        "spymaster_task.0381",
         "zg361.40",
-        "zg361b1.200",
-        "zg361b1.201",
-        "zg361b1.126",
+        "spymaster_task.0346",
         "zg361m.1",
         "zg361.1",
         "zg361ch.19",
+        "spymaster_task.0342",
         "zg361ch.20",
         "zg361ch.21",
         "zg361ch.22",
@@ -189,8 +186,6 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361ch.100",
         "zg361ch.101",
         "zg361ch.102",
-        "zg361.50",
-        "zg361.4",
         "zg361ch.103",
         "zg361ch.104",
         "zg361ch.105",
@@ -212,76 +207,26 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361ch.119",
         "zg361ch.120",
         "zg361ch.905",
-        "zg361b1.126",
-        "zg361.50",
-        "zg361.4",
+        "zg361ch.121",
+        "zg361ch.122",
+        "zg361ch.123",
+        "zg361ch.124",
+        "zg361ch.125",
+        "zg361ch.126",
+        "zg361ch.127",
+        "zg361ch.128",
+        "zg361ch.906",
         "zg361comp.1",
         "zg361comp.1",
         "zg361comp.1",
         "zg361comp.1",
-        "zg361.6",
-        "zg361.40",
         "zg361p2c.2",
-        "tgp_interaction_event.0016",
+        "zg361.40",
+        "spymaster_task.0399",
         "ep3_governor_yearly.3060",
-        "tgp_china_yearly.0015",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361comp.1",
-        "zg361b1.200",
-        "zg361m.2",
-        "zg361.1",
-        "zg361ch.19",
-        "zg361ch.20",
-        "zg361p2c.2",
+        "ep3_governor_yearly.8170",
         "zg361.40",
-        "zg361ch.21",
-        "zg361ch.22",
-        "zg361ch.23",
-        "zg361ch.24",
-        "zg361ch.25",
-        "zg361ch.901",
-        "zg361ch.92",
-        "zg361ch.93",
-        "zg361ch.94",
-        "zg361ch.95",
-        "zg361b1.201",
-        "zg361ch.96",
-        "zg361ch.97",
-        "zg361ch.902",
-        "zg361ch.98",
-        "zg361ch.99",
-        "zg361ch.100",
-        "zg361ch.101",
-        "zg361ch.102",
-        "zg361ch.103",
-        "zg361ch.104",
-        "zg361ch.105",
-        "zg361ch.903",
-        "zg361ch.106",
-        "zg361ch.107",
-        "zg361ch.108",
-        "zg361ch.109",
-        "zg361ch.110",
-        "zg361ch.111",
-        "zg361ch.112",
-        "zg361ch.113",
-        "zg361ch.904",
-        "zg361ch.114",
-        "zg361ch.115",
-        "zg361ch.116",
-        "zg361ch.117",
-        "zg361ch.118",
-        "zg361ch.119",
-        "zg361ch.120",
-        "zg361ch.905",
+        "zg361m.2",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -301,80 +246,40 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r106_retry1\evidence-index.json",
-        r"Z:\b3r106_retry1\cell\02_loader_error_scan.json",
-        r"Z:\b3r106_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_retry1\cell\final_error.log",
-        r"Z:\b3r106_retry1\cell\final_debug.log",
-        r"Z:\b3r106_resume1\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume1\report.json",
-        r"Z:\b3r106_resume2\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume2\report.json",
-        r"Z:\b3r106_resume3\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume3\report.json",
-        r"Z:\b3r106_resume4\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume4\report.json",
-        r"Z:\b3r106_resume5\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume5\report.json",
-        r"Z:\b3r106_resume6\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume6\report.json",
-        r"Z:\b3r106_resume7\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume7\report.json",
-        r"Z:\b3r106_resume8\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume8\report.json",
-        r"Z:\b3r106_resume9\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume9\report.json",
-        r"Z:\b3r106_resume10\03_promotion_source_production_entry.json",
-        r"Z:\b3r106_resume10\report.json",
-        r"Z:\p2r106\phase2-product-projection.json",
-        r"Z:\p2r106\p.manifest.json",
+        r"Z:\b3r107\evidence-index.json",
+        r"Z:\b3r107\cell\02_loader_error_scan.json",
+        r"Z:\b3r107\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r107\cell\final_error.log",
+        r"Z:\b3r107\cell\final_debug.log",
+        r"Z:\b3r107_resume_diag\report.json",
+        r"Z:\b3r107_resume1\report.json",
+        r"Z:\b3r107_resume_diag2\report.json",
+        r"Z:\b3r107_resume2\report.json",
+        r"Z:\b3r107_resume3\report.json",
+        r"Z:\p2r107\phase2-product-projection.json",
+        r"Z:\p2r107\p.manifest.json",
     ),
     boundary=(
-        "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 1107 game days at speed 5 across 279 paused native/MCP "
-        "observations and 123 exact GREEN event drains. It reached and drained both "
-        "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
-        "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
-        "then observed B1 close and Central activate before processing the annual summary and "
-        "21 central windows. The runner now fails closed before clicking a source-reviewed "
-        "player-only zg361.50 notice because that valid product window was absent from the "
-        "harness allowlist. A second replacement client bound its exact native scope context "
-        "and completed its idempotent option 1 path. A third replacement client handled the "
-        "following zg361.4 reaction plus 25 more central/compensation windows. The current "
-        "fail-closed window is zg361.6, the player's last elimination appeal. The frozen seed "
-        "offers only authored options 1 and 3; source review selects option 1 because it is the "
-        "only route that can retain the player's career, whereas option 3 always retires every "
-        "landed title. The selected appeal succeeded in product state: the player remained "
-        "landed, entered another annual B1 cycle, closed it, and activated Central again. The "
-        "zg361m.2 then drained GREEN through its source-reviewed reference-charter option A. "
-        "The next same-date zg361.1 annual summary exposed a valid second-cycle scope shape: "
-        "unlike the first-cycle summary, it no longer inherits the completed outer bank-ticket "
-        "tuple, which the summary source does not consume. The corrected contract drained that "
-        "summary GREEN and continued through another 44 game days and 44 further exact windows. "
-        "The next zg361b1.126 publication notice retained completed self/shadow ticket names "
-        "instead of the first cycle's outer bank tuple; its consumed ticket, oversight, watch "
-        "and publication identities all match. This remains a harness-contract RED rather than "
-        "a new mod RED; the contract now accepts both complete observed inheritance shapes while "
-        "rejecting partial or unrelated names. That recurring notice then drained GREEN; the "
-        "same process advanced another 61 days before the recurring zg361.50 result notice "
-        "exposed the same later-cycle self/shadow-versus-bank inheritance distinction. Its "
-        "prompt, result and manager aliases all match. That notice then drained GREEN; the "
-        "immediate recurring zg361.4 reaction exposed the same inherited-name distinction. "
-        "Because the reaction consumes no saved scope and keeps its exact four-option shape, "
-        "both complete observed inheritance sets are now bound. That reaction then drained "
-        "GREEN and the same process advanced another 114 days before reaching the first live "
-        "player career-learning response, zg361cl.314. The runner correctly stopped before "
-        "clicking because this valid event was absent from its allowlist; its exact two-option "
-        "and inherited-scope frame is now bound in a new one-contract purpose module. Player "
-        "review of the paused card also exposed a separate product copy RED: a policy-slogan "
-        "title, a shared scope/permission template, and the phrases 有钱的调任包 and 绩效锅. "
-        "The earlier audit had identified this family, so its blanket 0/24 High closure claim "
-        "was invalid. Six subject cards and the digest have now been rewritten, but those new "
-        "product bytes require fresh R107 acceptance; retained R106 PID 30492 cannot validate "
-        "them and will be managed-stopped after this evidence is committed. No "
-        "zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
-        "registry remains 0/4. The player remains alive; illness-death count is 0/3 and no "
-        "health fixture was applied. This run promotes no per-ID tier."
+        "The committed R107 release-identical product at commit 275ee65 loaded all 303/303 "
+        "database nodes with fatal 0 and no loading-performance RED. PID 32972 advanced 918 "
+        "game days at the default speed 5 across four replacement clients, 221 paused "
+        "native/MCP observations and 68 exact GREEN event drains without a CK3 restart. It "
+        "completed the full 44-card career/HC manager sequence, all six domain receipts and "
+        "four compensation decisions. The fresh product proves the rewritten career-learning "
+        "localization bytes are loadable, but the run has not yet revisited a player-visible "
+        "career-learning response and therefore does not claim visual copy GREEN. R107 exposed "
+        "two harness-only resource/context variants: annual summary zg361.1 can inherit B1, "
+        "B2 and notice tuples with or without the expired bank tuple; dual-cost career/HC "
+        "cards can render either all three funded options or the exact defer-only option. "
+        "Both cases now retain exact contracts rather than wildcards. The current fail-closed "
+        "window is a recurring zg361.1 with the extended later-cycle scope set; no click was "
+        "sent. The broader Chinese copy audit remains RED: the screenshot repair covered only "
+        "six career-learning subject cards and its digest, while the audited Career/HC, PP, "
+        "B2, compensation and other player-facing families still require itemized closure. "
+        "Further live continuation is intentionally paused until those copy findings are "
+        "repaired. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical registry "
+        "remains 0/4. The player remains alive; illness-death count is 0/3 and no health "
+        "fixture was applied. This run promotes no per-ID tier."
     ),
 )
 
