@@ -146,8 +146,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(keys_by_part[1][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
         all_keys = keys_by_part[0] + keys_by_part[1]
-        self.assertEqual(len(all_keys), 77)
-        self.assertEqual(len(set(all_keys)), 77)
+        self.assertEqual(len(all_keys), 78)
+        self.assertEqual(len(set(all_keys)), 78)
 
         bodies = []
         for relative in B1_EFFECT_FILES:
@@ -2488,6 +2488,34 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "zg361_b1_quota_pool_conservation_check",
         ):
             self.assertIn(field, common)
+
+    def test_delayed_review_prunes_unavailable_weak_subjects_before_reads(self) -> None:
+        prune = top_level_block(
+            self.effects, "zg361_b1_prune_unavailable_subjects_effect"
+        )
+        for token in (
+            "variable = zg361_b1_subjects",
+            "limit = { exists = this }",
+            "name = zg361_b1_available_subjects",
+            "clear_variable_list = zg361_b1_subjects",
+            "name = zg361_b1_subject_n value = list_size:zg361_b1_subjects",
+            "name = zg361_b1_m040_review_vacancy_n add = var:zg361_b1_roster_pruned_n",
+            "name = zg361_b1_roster_amendment_n add = var:zg361_b1_roster_pruned_n",
+            "name = zg361_b1_roster_reopen_required value = 1",
+        ):
+            self.assertIn(token, prune)
+        self.assertLess(
+            prune.index("limit = { exists = this }"),
+            prune.index("clear_variable_list = zg361_b1_subjects"),
+        )
+
+        midcycle_event = top_level_block(self.events, "zg361b1.100")
+        self.assertLess(
+            midcycle_event.index(
+                "zg361_b1_prune_unavailable_subjects_effect = yes"
+            ),
+            midcycle_event.index("zg361_b1_midcycle_dispatcher_effect = yes"),
+        )
 
     def test_roster_change_receipts_are_real_and_consumed_by_denominator(self) -> None:
         initialize = top_level_block(

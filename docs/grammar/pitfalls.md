@@ -112,6 +112,12 @@
 | 原版 effect 报错的调用栈只因 `common/on_action/xar_*.txt` 路径而命中 XAR 错误门禁 | 用 `on_actions = {}` 扩展原版 hook 后，引擎会把原版 effect 的调用者位置归到扩展定义文件；2026-08-19 九年长测实测 EP3 `war_task_contracts_completion_effect` 的原版错误因此带上适配器路径，但没有进入 `xar_contract_*` effect | on_action 适配器使用不含 `xar` 的中性文件名，hook/effect 标识仍保留 `xar_*`；这样真实自定义 effect 错误仍会由脚本位置中的符号命中门禁，原版错误不会仅因调用者文件名误报 |
 | 死亡中间节点后的在世后代不计分，或清理时报 `remove_character_flag effect [ scope is dead during effect execution ]` | `every_child`/`any_parent` 关系列表默认排除已故角色；加 `even_if_dead` 后，清理 effect 又会实际进入 dead scope，而角色 flag effect 不接受死者 | 后代展开、清理和 preview 的所有关系列表都加 `even_if_dead = yes`；计分与清 flag 分别包 `is_alive = yes`，关系遍历仍可穿过死者。2026-08-19 受控谱系 `xar_accept_h0lgmvyf` 实测 1–5 代、死亡中间节点、双路径去重和清理，0 `xar` errors。 |
 
+## 延迟名单中的失效对象弱引用
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `has_variable trigger [ This scope doesn't support variables ]`，scope 仍显示 Character 姓名、internal ID 和 `weak`；同一名单在多个延迟 consumer 中反复报错 | variable list 保存的是对象弱引用。角色在入表时有效，但无地角色可在后续游戏日从 live character database 淘汰；名单中的弱引用仍有显示 identity，却已不是支持角色变量的有效 scope。2026-09-05 CK3 1.19.0.6 B1 D+180 实测 119 条 | 在第一个延迟 consumer **之前**重建长期名单：`every_in_list` 只放 `limit = { exists = this }`，把存活对象复制到 scratch list，再清空并回填原名单；所有 `has_variable`/`var:` 读取必须发生在重建后。不要把 `exists = this` 与变量读取并列后期待短路。名单缩减若影响业务分母，必须同步写入 vacancy/amendment/audit receipt。原版 `common/on_action/dlc/mpo/mpo_on_actions_2.txt:323-329` 也会先用 `exists = this` 过滤 retained list member |
+
 ## 事件背景图 / 纹理
 
 | 现象 | 原因 | 解法 |

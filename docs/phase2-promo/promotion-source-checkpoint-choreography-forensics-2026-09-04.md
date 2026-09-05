@@ -533,3 +533,57 @@ report/evidence-index SHA-256 values are
 and `C8991B49FBACEE57378664331FF0021461998AC70C6BBE99E24751C3F3D95888`.
 B2 unset reads remain zero, cleanup was GREEN, and CK3 returned to zero. This
 is a post-loader semantic-contract correction, not a file-size signal.
+
+## R61: stale variable-list Character scopes fail before delayed review
+
+R61 ran from pushed commit `04c9d1b`. Frontend was reached in 121.156 seconds,
+the final loader remained GREEN, and the managed process was cleaned up. The
+entry then failed closed before action on `spymaster_task.0342`: the new frame
+was at `date_raw=53157024`, instance 19, root 29037, the same seven typed saved
+scopes, and the same sole shown/enabled native option 0 as the older frame at
+`53152896`. Exact 1.19.0.6 source exposes only that option and reveals the
+already-bound secret to root. The contract therefore admits only the observed
+date envelope `53152896..53157024`; root, scope names/types/identities, and
+option shape remain exact.
+
+Independently, the R61 final error log contains 119 real product errors of the
+form `This scope doesn't support variables`. The manager-owned
+`zg361_b1_subjects` list was populated with live Character objects at cycle
+open. By the D+180 `.100` consumer, some unlanded entries had been removed from
+the live character database while their list references still rendered a name
+and internal ID as `weak`. Reading `has_variable` on those stale scopes failed,
+and the same objects propagated into later `.101/.102/.103` consumers. This is
+a production runtime/capability RED, not a hypothetical consistency issue.
+
+The minimal correction rebuilds the list immediately before the first delayed
+consumer. Its iterator has a dedicated `limit = { exists = this }` boundary;
+only surviving scopes are copied, and all business-variable reads occur after
+the original list is rebuilt. Removed rows increment the existing review
+vacancy, roster amendment/audit, and reopen receipts rather than silently
+changing a denominator. Vanilla 1.19.0.6 uses the same object-existence filter
+for retained list members in `common/on_action/dlc/mpo/mpo_on_actions_2.txt`.
+The correction is static-ready and still needs R62 live closure; these errors
+may disrupt promotion progress, but R61 alone does not prove they are the sole
+cause of the absent `.146`.
+
+B1 generator tests pass normal and optimized at 58/58, promotion tests at
+11/11, and checkpoint choreography/preflight/runner tests at 15/15. The effect
+boundary audit remains GREEN at 427 files / 3,720 definitions, no target misses,
+maximum non-legacy size 10, and no `>20` violations. The legacy B1 first half
+grew from 41 to 42 definitions solely for this repair; no B2+ purpose shard was
+expanded. The refreshed R62 product has 634 files, tree
+`C3DD2D6E1C59578689EDD69F02F405258872528552866CA5310F18CBF1866D59`,
+and a 3,707-effect / 988-event / 24-trigger fixed point with zero missing
+providers. Projection and closure evidence SHA-256 values are
+`7F2526A2D7B3C860A756EA02CB03510F9D13CF72376BE70E767D34AD149AA323`
+and `B075218A96CB48403985733EFD5C31AD34921F4589E6BAF1EC0CB63538096C23`;
+the no-launch preflight is GREEN.
+
+R61 outer report/evidence-index SHA-256 values are
+`86C9BF011281DC96C294A4450A418350E5DB7B860B65E46B02EB069A477558BA`
+and `E994B71BF8FA2854CA022DFA8AFD37443D65E9D77DEF7FE1EFD07A74387296B0`.
+The 1,087.466-second run emitted four central tuple freezes, one AI silent
+completion, one typed stale RED, and three ignored hooks; neither `.146` nor
+`.147` appeared. Its self-review event was the older owner/date shape, so the
+R60 dynamic-manager correction also remains live pending. Loader performance
+was GREEN throughout, providing no evidence for another size-driven split.

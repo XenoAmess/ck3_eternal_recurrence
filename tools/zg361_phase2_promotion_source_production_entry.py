@@ -604,7 +604,11 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # Vanilla Find Secrets discovery notification.  The secret and its
         # participants are already fixed when the window opens; there is one
         # authored acknowledgement, which reveals that exact secret to root.
-        "date_raw": 53152896,
+        # R61 observed the same exact one-option/scope identity later in the
+        # continuing Find Secrets task. The notification date is selected by
+        # the vanilla discovery cadence, not by the revealed-secret contract.
+        "date_raw": (53152896, 53157024),
+        "date_raw_range": (53152896, 53157024),
         "root_character_id": 29037,
         "character_scopes": {
             "councillor": 27963,

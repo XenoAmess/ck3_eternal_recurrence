@@ -20,7 +20,7 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
 EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
-EFFECT_BLOCK_COUNTS = (41, 36)
+EFFECT_BLOCK_COUNTS = (42, 36)
 
 
 def generated(text: str) -> bytes:
@@ -2017,6 +2017,64 @@ zg361_b1_open_cycle_effect = {
 		}
 	}
 	else = { debug_log = "ZG361B1: cycle open ignored while another case is active" }
+}
+
+# A frozen variable-list entry is a weak object reference. CK3 can retain
+# the display identity after an unlanded subject is pruned from the live
+# character database, but that stale scope no longer supports variables.
+# Rebuild the manager-owned list through an `exists = this` iterator before
+# the first delayed consumer reads any case field. The removed entry is a
+# real review vacancy and must leave the same reconstructible counters as a
+# death/C departure that the normal roster audit can still inspect.
+zg361_b1_prune_unavailable_subjects_effect = {
+	set_variable = { name = zg361_b1_roster_pruned_n value = 0 }
+	if = {
+		limit = { has_variable_list = zg361_b1_subjects }
+		set_variable = { name = zg361_b1_roster_before_prune_n value = list_size:zg361_b1_subjects }
+		if = {
+			limit = { has_variable_list = zg361_b1_available_subjects }
+			clear_variable_list = zg361_b1_available_subjects
+		}
+		every_in_list = {
+			variable = zg361_b1_subjects
+			limit = { exists = this }
+			save_temporary_scope_as = zg361_b1_available_subject
+			root = {
+				add_to_variable_list = {
+					name = zg361_b1_available_subjects
+					target = scope:zg361_b1_available_subject
+				}
+			}
+		}
+		clear_variable_list = zg361_b1_subjects
+		if = {
+			limit = { has_variable_list = zg361_b1_available_subjects }
+			every_in_list = {
+				variable = zg361_b1_available_subjects
+				save_temporary_scope_as = zg361_b1_available_subject
+				root = {
+					add_to_variable_list = {
+						name = zg361_b1_subjects
+						target = scope:zg361_b1_available_subject
+					}
+				}
+			}
+			clear_variable_list = zg361_b1_available_subjects
+		}
+		set_variable = { name = zg361_b1_subject_n value = list_size:zg361_b1_subjects }
+		set_variable = {
+			name = zg361_b1_roster_pruned_n
+			value = { value = var:zg361_b1_roster_before_prune_n subtract = var:zg361_b1_subject_n min = 0 }
+		}
+		if = {
+			limit = { var:zg361_b1_roster_pruned_n >= 1 }
+			change_variable = { name = zg361_b1_m040_review_vacancy_n add = var:zg361_b1_roster_pruned_n }
+			change_variable = { name = zg361_b1_roster_amendment_n add = var:zg361_b1_roster_pruned_n }
+			change_variable = { name = zg361_b1_roster_audit_version add = var:zg361_b1_roster_pruned_n }
+			set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
+			debug_log = "ZG361B1: unavailable weak subjects pruned before delayed review"
+		}
+	}
 }
 
 zg361_b1_midcycle_dispatcher_effect = {
@@ -8738,6 +8796,7 @@ zg361b1.100 = {
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 1
 				}
+				zg361_b1_prune_unavailable_subjects_effect = yes
 				zg361_b1_midcycle_dispatcher_effect = yes
 				save_scope_as = zg361_b1_ticket_owner
 				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }

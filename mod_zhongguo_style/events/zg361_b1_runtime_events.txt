@@ -69,6 +69,7 @@ zg361b1.100 = {
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 1
 				}
+				zg361_b1_prune_unavailable_subjects_effect = yes
 				zg361_b1_midcycle_dispatcher_effect = yes
 				save_scope_as = zg361_b1_ticket_owner
 				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
