@@ -1332,6 +1332,80 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_names_exact"])
 
+    def test_player_elimination_appeal_binds_sparse_options_and_exact_names(self) -> None:
+        def character_scope(character_id: int) -> dict[str, object]:
+            return {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                },
+            }
+
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.6"],
+            starting_date=53147016,
+        )
+        names = contract["saved_scope_name_sets"][0]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361.6",
+            "current_event_instance_id": 70,
+            "date_raw": 53159136,
+            "root_scope": character_scope(29037),
+            "saved_scopes": [
+                {
+                    "name": name,
+                    "scope": {"status": "available", "type_key": "unknown"},
+                }
+                for name in names
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_index in enumerate((0, 2))
+            ],
+        }
+        snapshot = {"date_raw": 53159136, "active_event": {"option_count": 4}}
+        event = {"event_instance_id": 70}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="zg361.6",
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        dense_options = copy.deepcopy(context)
+        dense_options["options"][1]["native_option_index"] = 1
+        checks = checks_for(dense_options)
+        self.assertFalse(checks["authored_options_exact"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(
+            {"name": "unrelated_scope", "scope": {"status": "available"}}
+        )
+        checks = checks_for(extra_scope)
+        self.assertFalse(checks["saved_scope_names_exact"])
+
     def test_spymaster_no_find_accepts_only_source_proven_boolean_branch(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
