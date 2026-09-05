@@ -341,6 +341,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.running_sleeps = 0
                 self.steps: list[str] = []
                 self.progress_queries: list[str] = []
+                self.progress_binding_rejected_once = False
 
             def snapshot(self) -> dict[str, object]:
                 snapshot: dict[str, object] = {
@@ -375,6 +376,15 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     raise AssertionError(
                         "progress polling must wait for the paused heartbeat"
                     )
+                if (
+                    request_nonce.startswith("promo.entry.poll.")
+                    and not self.progress_binding_rejected_once
+                ):
+                    self.progress_binding_rejected_once = True
+                    raise production.BridgeUnavailableError(
+                        "native gameplay step failed: ZhongGuo promotion "
+                        "source progress binding changed or is not ready"
+                    )
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
                     for _ in range(5)
@@ -404,6 +414,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
 
         ticks = iter((0.0, 0.0, 0.0, 0.0, 0.0, 2.0))
         service = Service()
+        evidence: dict[str, object] = {}
 
         def settle(_seconds: float) -> None:
             if service.paused:
@@ -425,6 +436,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 poll_interval_seconds=0.05,
                 clock=lambda: next(ticks),
                 sleeper=settle,
+                evidence_out=evidence,
             )
         self.assertEqual(
             service.steps,
@@ -437,8 +449,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             ],
         )
         self.assertEqual(service.progress_queries[0], "promo.entry.before")
-        self.assertEqual(len(service.progress_queries), 2)
+        self.assertEqual(len(service.progress_queries), 3)
         self.assertEqual(service.progress_queries[1], "promo.entry.poll.1")
+        self.assertEqual(service.progress_queries[2], "promo.entry.poll.1")
+        self.assertEqual(len(evidence["progress_query_rebinds"]), 1)
+        self.assertFalse(
+            evidence["progress_query_rebinds"][0]["state_mutation_submitted"]
+        )
 
     def test_product_progress_observation_rejects_unavailable_widget(self) -> None:
         widgets = [

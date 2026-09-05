@@ -281,10 +281,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 603_552)
+        self.assertEqual(len(historical_bytes), 612_622)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "916cbf030c91804846e6ba8d6f4dbbd3bb27c44689bdca41b4f4fb364e6ef0a8",
+            "d0255ca971b9b330ca122eff49dff86c5d7d77e91c282c72973f132177141226",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1227,6 +1227,29 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertIn(f"scope:zg361_comp_notify_domain = {domain_number}", notifier)
             self.assertIn(f"var:zg361_case_{domain}_owner", notifier)
         self.assertEqual(notifier.count("zg361_comp_portfolio_refresh_effect = yes"), 3)
+
+    def test_background_ae_subject_files_an_executable_appeal_and_finance_flags_are_total(self) -> None:
+        """R96: route A must close AE stage 5 without unset tooltip reads."""
+
+        stage_four = top_level_block(
+            self.effects, "zg361_comp_ae_try_advance_04_effect"
+        )
+        self.assertIn(
+            "set_variable = { name = zg361_comp_ae_appeal_response_recorded value = 1 }",
+            stage_four,
+        )
+        self.assertIn(
+            "set_variable = { name = zg361_comp_ae_appeal_requested value = 1 }",
+            stage_four,
+        )
+
+        core = top_level_block(self.effects, "zg361_comp_m289_core_effect")
+        self.assertIn(
+            "set_variable = { name = zg361_comp_financial_applied value = 0 }",
+            core,
+        )
+        self.assertIn("has_variable = zg361_comp_financial_applied", core)
+        self.assertNotIn("remove_variable = zg361_comp_financial_applied", self.effects)
 
     def test_player_card_explains_each_stage_and_completion_cards_show_numeric_ledgers(self) -> None:
         player_card = top_level_block(self.events, "zg361comp.1")

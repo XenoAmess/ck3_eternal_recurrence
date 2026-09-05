@@ -52,7 +52,7 @@ zg361_comp_ae_consume_due_effect = {
         name = zg361_comp_due_personal
         value = var:zg361_comp_ae_due_frozen_personal
     }
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     if = {
         limit = {
             scope:zg361_comp_due_gross >= 2
@@ -73,7 +73,13 @@ zg361_comp_ae_consume_due_effect = {
         set_variable = { name = zg361_comp_financial_applied value = 1 }
     }
     if = {
-        limit = { var:zg361_comp_financial_applied = 1 }
+        limit = {
+            trigger_if = {
+                limit = { has_variable = zg361_comp_financial_applied }
+                var:zg361_comp_financial_applied = 1
+            }
+            trigger_else = { always = no }
+        }
         change_variable = { name = zg361_comp_ae_statement_paid add = scope:zg361_comp_due_gross }
         set_variable = { name = zg361_comp_ae_statement_owed value = 0 }
     }

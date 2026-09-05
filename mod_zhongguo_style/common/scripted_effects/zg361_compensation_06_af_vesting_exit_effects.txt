@@ -272,7 +272,7 @@ zg361_comp_af_request_exit_effect = {
 }
 
 zg361_comp_af_consume_buyback_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     if = {
         limit = {
             has_variable = zg361_case_af_owner
@@ -308,7 +308,13 @@ zg361_comp_af_consume_buyback_effect = {
         zg361_comp_af_pay_buyback_later_effect = yes
     }
     if = {
-        limit = { var:zg361_comp_financial_applied = 1 }
+        limit = {
+            trigger_if = {
+                limit = { has_variable = zg361_comp_financial_applied }
+                var:zg361_comp_financial_applied = 1
+            }
+            trigger_else = { always = no }
+        }
         change_variable = { name = zg361_comp_af_vested_units add = -10 }
         change_variable = { name = zg361_comp_af_repurchased_units add = 10 }
         set_variable = { name = zg361_comp_af_request_state value = 2 }

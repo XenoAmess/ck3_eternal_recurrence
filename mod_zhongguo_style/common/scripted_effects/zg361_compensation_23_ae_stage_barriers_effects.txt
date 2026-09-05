@@ -190,8 +190,12 @@ zg361_comp_ae_try_advance_04_effect = {
             limit = { var:zg361_case_kernel_applied = 1 }
             if = {
             limit = { OR = { is_ai = yes var:zg361_case_ae_owner = { is_ai = yes } } }
+            # The authorized background subject takes the same evidence-first
+            # route as the hidden AI portfolio.  A recorded appeal keeps the
+            # manager's route-1 adjudication executable instead of leaving
+            # the visible portfolio card in an unconsumable stage-5 loop.
             set_variable = { name = zg361_comp_ae_appeal_response_recorded value = 1 }
-            set_variable = { name = zg361_comp_ae_appeal_requested value = 0 }
+            set_variable = { name = zg361_comp_ae_appeal_requested value = 1 }
         }
         else = { trigger_event = { id = zg361comp.289 days = 1 } }
             zg361_comp_portfolio_notify_owner_effect = { DOMAIN = 2 }

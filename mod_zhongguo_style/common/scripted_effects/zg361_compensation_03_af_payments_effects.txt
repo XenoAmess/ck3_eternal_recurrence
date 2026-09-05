@@ -3,7 +3,7 @@
 # Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
 
 zg361_comp_af_pay_cash_alternative_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_af_owner
                 SUBJECT_VAR = zg361_case_af_subject
@@ -121,7 +121,7 @@ zg361_comp_af_pay_cash_alternative_effect = {
 }
 
 zg361_comp_af_pay_conversion_remainder_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_af_owner
                 SUBJECT_VAR = zg361_case_af_subject
@@ -239,7 +239,7 @@ zg361_comp_af_pay_conversion_remainder_effect = {
 }
 
 zg361_comp_af_pay_unconverted_bonus_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_af_owner
                 SUBJECT_VAR = zg361_case_af_subject
@@ -357,7 +357,7 @@ zg361_comp_af_pay_unconverted_bonus_effect = {
 }
 
 zg361_comp_af_pay_buyback_now_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_af_owner
                 SUBJECT_VAR = zg361_case_af_subject
@@ -475,7 +475,7 @@ zg361_comp_af_pay_buyback_now_effect = {
 }
 
 zg361_comp_af_pay_buyback_later_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_af_owner
                 SUBJECT_VAR = zg361_case_af_subject

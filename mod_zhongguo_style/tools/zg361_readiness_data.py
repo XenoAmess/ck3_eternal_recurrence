@@ -145,39 +145,49 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R95",
-    observed_at="2026-09-05 21:48 Asia/Shanghai",
+    run_id="R96",
+    observed_at="2026-09-05 22:43 Asia/Shanghai",
     result="RED",
-    product_commit="2d15103",
-    projection="phase2-full-release-r95-2d15103",
+    product_commit="7ac52c0",
+    projection="phase2-full-release-r96-7ac52c0",
     verified_file_count=937,
-    product_tree_sha256="B31D0A444E0BA76C9E2715E6C660F5EC750D455A23F02B5EA11EF3E1E514B387",
-    release_manifest_sha256="2AA0E515F3510A9F591947E0294FD073DBCCD37D071DF4F31A01A0437FC9A39D",
+    product_tree_sha256="8F2C862913A4FEEC717D8BB4A48065B513B532655D58E3A238AEBF8F6850FE44",
+    release_manifest_sha256="8E9C29A29236FE1BC0BE0C1E1AC83C8B75D1C161DFBBA101F5C25516DFA3EAD4",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=2166,
-    native_observations=455,
+    observation_days=822,
+    native_observations=214,
     drained_event_keys=(
         "zg361b2.40",
-        "ep3_governor_yearly.8120",
-        "spymaster_task.0381",
-        "spymaster_task.0381",
-        "spymaster_task.0346",
+        "ep3_interactions_events.0630",
+        "ep3_admin_events.0002",
+        "ep3_emperor_yearly.2240",
         "zg361.40",
-        "tgp_interaction_event.0016",
-        "spymaster_task.0342",
         "ep3_governor_yearly.3060",
-        "spymaster_task.0381",
-        "zg361.40",
-        "spymaster_task.0381",
         "zg361b1.200",
         "zg361b1.201",
+        "zg361comp.1",
+        "zg361comp.1",
+        "zg361comp.1",
+        "zg361comp.1",
         "zg361.40",
-        "tgp_dynastic_cycle_events.0040",
-        "zg361.40",
-        "scheme_critical_moments.1134",
-        "zg361.40",
+        "zg361p2c.2",
+        "tgp_interaction_event.0016",
+        *("zg361comp.1" for _ in range(14)),
+        "zg361b1.126",
+        "zg361m.1",
+        "zg361.1",
+        *(f"zg361ch.{event_id}" for event_id in range(19, 26)),
+        "zg361ch.901",
+        *(f"zg361ch.{event_id}" for event_id in range(92, 98)),
+        "zg361ch.902",
+        *(f"zg361ch.{event_id}" for event_id in range(98, 106)),
+        "zg361ch.903",
+        *(f"zg361ch.{event_id}" for event_id in range(106, 114)),
+        "zg361ch.904",
+        *(f"zg361ch.{event_id}" for event_id in range(114, 121)),
+        "zg361ch.905",
     ),
     cleared_product_signatures=(
         "This scope doesn't support variables",
@@ -189,23 +199,25 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r95\evidence-index.json",
-        r"Z:\b3r95\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r95_resume2\03_promotion_source_production_entry.json",
-        r"Z:\b3r95_resume4\03_promotion_source_production_entry.json",
-        r"Z:\b3r95_resume6\03_promotion_source_production_entry.json",
+        r"Z:\b3r96_retry1\evidence-index.json",
+        r"Z:\b3r96_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r96_resume2\03_promotion_source_production_entry.json",
+        r"Z:\b3r96_resume9\03_promotion_source_production_entry.json",
+        r"Z:\b3r96_resume13\03_promotion_source_production_entry.json",
+        r"Z:\b3r96_retry1_native_state\profile\logs\error.log",
     ),
     boundary=(
-        "The committed R95 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. The schema-v2 migration executed and replaced the saved cycle, while "
-        "one retained CK3 PID advanced from date_raw 53147016 to 53199000 at speed 5. "
-        "Across 455 paused observations and 19 typed event drains, the player remained "
-        "B1 active while Central and PP stayed inactive; a human-manager diagnostic later "
-        "observed cycle/case 18 at state 7. Harness-only pause/revision/date-contract "
-        "failures were repaired without restarting the unchanged product. The session was "
-        "stopped after long-running role/title drift, and fresh state-7 quota/finalization "
-        "diagnostics are static-ready for R96. This whole-product RED does not promote any "
-        "per-ID readiness tier."
+        "The committed R96 release-identical product loaded 303/303 database nodes with "
+        "fatal 0. One retained CK3 PID advanced from date_raw 53147016 to 53166744 at "
+        "speed 5 across 214 paused observations and 73 exact event drains. The fresh "
+        "schema-v2 B1 cycle published, Central became active, and the player then consumed "
+        "the complete D and M-Q career/HC portfolio event sequence. The first compensation "
+        "portfolio reached AE stage 5, where the AI subject's implicit no-appeal response "
+        "made manager route A unconsumable; the same option tooltip also read an unset "
+        "financial-applied flag, producing a real product RED and repeated zg361comp.1. "
+        "The generator fix is static-ready and requires a fresh R97 process because mod "
+        "bytes changed. Loader performance stayed GREEN, so this RED is not evidence for "
+        "another file split. This whole-product RED does not promote any per-ID tier."
     ),
 )
 

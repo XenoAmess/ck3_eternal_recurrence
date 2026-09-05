@@ -56,7 +56,7 @@ class FoundationEffectShardingTests(unittest.TestCase):
             expected,
             b1.generated_effect_residue(set(rendered)),
         )
-        self.assertEqual(len(rendered), 12)
+        self.assertEqual(len(rendered), 13)
 
     def test_repository_has_no_effect_count_exception(self) -> None:
         report = boundaries.audit_report()

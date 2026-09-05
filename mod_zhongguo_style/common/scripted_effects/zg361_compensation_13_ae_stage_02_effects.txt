@@ -34,7 +34,7 @@ zg361_comp_m281_manager_apply_effect = {
 zg361_comp_m281_core_effect = {
     save_temporary_scope_value_as = { name = zg361_comp_route value = $ROUTE$ }
     remove_variable = zg361_comp_runtime_applied
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     save_temporary_scope_value_as = {
         name = zg361_comp_due_gross
         value = var:zg361_comp_ae_statement_owed
@@ -119,7 +119,13 @@ zg361_comp_m281_core_effect = {
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }
             if = {
-                limit = { var:zg361_comp_financial_applied = 1 }
+                limit = {
+                    trigger_if = {
+                        limit = { has_variable = zg361_comp_financial_applied }
+                        var:zg361_comp_financial_applied = 1
+                    }
+                    trigger_else = { always = no }
+                }
                 set_variable = { name = zg361_comp_m281_receipt_active value = 1 }
                 set_variable = { name = zg361_comp_m281_route value = scope:zg361_comp_route }
                 set_variable = { name = zg361_comp_m281_value value = 0 }
@@ -270,7 +276,7 @@ zg361_comp_m282_manager_apply_effect = {
 zg361_comp_m282_core_effect = {
     save_temporary_scope_value_as = { name = zg361_comp_route value = $ROUTE$ }
     remove_variable = zg361_comp_runtime_applied
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
 
     if = {
         limit = {
@@ -346,7 +352,13 @@ zg361_comp_m282_core_effect = {
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }
             if = {
-                limit = { var:zg361_comp_financial_applied = 1 }
+                limit = {
+                    trigger_if = {
+                        limit = { has_variable = zg361_comp_financial_applied }
+                        var:zg361_comp_financial_applied = 1
+                    }
+                    trigger_else = { always = no }
+                }
                 set_variable = { name = zg361_comp_m282_receipt_active value = 1 }
                 set_variable = { name = zg361_comp_m282_route value = scope:zg361_comp_route }
                 set_variable = { name = zg361_comp_m282_value value = 0 }

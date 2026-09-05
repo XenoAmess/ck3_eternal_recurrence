@@ -8,12 +8,22 @@ import time
 from collections.abc import Callable, Mapping
 from typing import Protocol
 
-from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
+from xar_autoplayer.bridge.driver import (
+    BridgeUnavailableError,
+    PreSubmissionRevisionMismatchError,
+)
 from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import (
     verify_review_now_independent_postcondition_v1,
     widget_visible,
 )
 from zg361_phase2_promotion_compensation_action_cell import _snapshot_binding
+from zg361_phase2_promotion_career_hc_contracts import (
+    CAREER_HC_TIMELINE_CONTRACTS,
+)
+from zg361_phase2_promotion_compensation_contracts import (
+    COMPENSATION_TIMELINE_CONTRACTS,
+)
+from zg361_phase2_promotion_central_contracts import CENTRAL_TIMELINE_CONTRACTS
 
 
 M146 = "zg361pp.146"
@@ -32,6 +42,11 @@ HOURS_PER_DAY = 24
 # every cached Snapshot field used by the query's direct-read equality gate.
 PAUSED_PROGRESS_SETTLE_SECONDS = 0.35
 MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 4
+_TRANSIENT_PROGRESS_BINDING_ERRORS = (
+    "promotion source progress lacks a stable paused player binding",
+    "ZhongGuo promotion source progress binding changed or is not ready",
+    "promotion source progress is not bound to the requested frame",
+)
 
 # These are not namespace-wide allowlists.  They are exact pending events
 # already proven on the immutable phase-two seed lineage.  Each contract binds
@@ -504,7 +519,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "root_character_id": 29037,
         "character_scopes": {},
         "boolean_scopes": (),
-        "saved_scope_count": 0,
         "option_count": 2,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
@@ -713,6 +727,304 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         ),
         "boolean_scopes": (),
         "option_count": 2,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361b1.126": {
+        # Human-only subject-local publication notice. Its trigger has already
+        # matched the frozen owner/subject/cycle/case/revision tuple and its
+        # single option has no effect. Preserve every inherited ticket name,
+        # bind all consumed value types and require all owner aliases to refer
+        # to one non-player manager before acknowledging the notice.
+        "date_raw": 53155368,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "zg361_b1_self_ticket_subject": 29037,
+            "zg361_b1_shadow_ticket_subject": 29037,
+            "zg361_b1_local_publish_notice_subject": 29037,
+        },
+        "unique_character_scope_excludes": {
+            name: (29037,)
+            for name in (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_self_ticket_owner",
+                "zg361_b1_shadow_ticket_owner",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_pending_watch_owner",
+                "zg361_b1_local_publish_notice_owner",
+            )
+        },
+        "character_scope_matches_any": {
+            name: ("zg361_b1_local_publish_notice_owner",)
+            for name in (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_self_ticket_owner",
+                "zg361_b1_shadow_ticket_owner",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_pending_watch_owner",
+            )
+        },
+        "scope_types": {
+            name: "value"
+            for name in (
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_self_ticket_cycle",
+                "zg361_b1_self_ticket_case",
+                "zg361_b1_self_ticket_state",
+                "zg361_b1_shadow_ticket_cycle",
+                "zg361_b1_shadow_ticket_case",
+                "zg361_b1_shadow_ticket_state",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_pending_watch_cycle",
+                "zg361_b1_pending_watch_case",
+                "zg361_b1_pending_watch_state",
+                "zg361_b1_local_publish_notice_cycle",
+                "zg361_b1_local_publish_notice_case",
+                "zg361_b1_local_publish_notice_revision",
+            )
+        },
+        "saved_scope_name_sets": ((
+            "zg361_b1_ticket_owner",
+            "zg361_b1_ticket_cycle",
+            "zg361_b1_ticket_case",
+            "zg361_b1_ticket_state",
+            "zg361_b1_self_ticket_owner",
+            "zg361_b1_self_ticket_subject",
+            "zg361_b1_self_ticket_cycle",
+            "zg361_b1_self_ticket_case",
+            "zg361_b1_self_ticket_state",
+            "zg361_b1_shadow_ticket_owner",
+            "zg361_b1_shadow_ticket_subject",
+            "zg361_b1_shadow_ticket_cycle",
+            "zg361_b1_shadow_ticket_case",
+            "zg361_b1_shadow_ticket_state",
+            "zg361_b1_oversight_ticket_owner",
+            "zg361_b1_oversight_ticket_cycle",
+            "zg361_b1_oversight_ticket_case",
+            "zg361_b1_oversight_ticket_state",
+            "zg361_b1_pending_watch_owner",
+            "zg361_b1_pending_watch_cycle",
+            "zg361_b1_pending_watch_case",
+            "zg361_b1_pending_watch_state",
+            "zg361_b1_local_publish_notice_owner",
+            "zg361_b1_local_publish_notice_subject",
+            "zg361_b1_local_publish_notice_cycle",
+            "zg361_b1_local_publish_notice_case",
+            "zg361_b1_local_publish_notice_revision",
+        ),),
+        "boolean_scopes": (),
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361.1": {
+        # Player-liege annual review summary. Its immediate block only copies
+        # four already-published grade counts into event-local values, and its
+        # sole acknowledgement has no effect. The window can inherit the B1
+        # bank/reopen tickets from the publication call stack; bind that exact
+        # observed shape without confusing the player manager with the outer
+        # common-superior bank owner or reopened subject.
+        "date_raw": 53156448,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "zg361_b1_ticket_owner": 29037,
+            "zg361_b1_oversight_ticket_owner": 29037,
+            "zg361_b1_reopen_ticket_owner": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "zg361_b1_bank_ticket_owner": (29037,),
+            "zg361_b1_reopen_ticket_subject": (29037,),
+        },
+        "character_scope_differs_from": {
+            "zg361_b1_bank_ticket_owner": (
+                "zg361_b1_reopen_ticket_subject",
+            ),
+        },
+        "scope_types": {
+            name: "value"
+            for name in (
+                "zg361_b1_bank_ticket_season",
+                "zg361_b1_bank_ticket_case",
+                "zg361_b1_bank_ticket_state",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_reopen_ticket_cycle",
+                "zg361_b1_reopen_ticket_case",
+                "zg361_b1_reopen_ticket_state",
+                "zg361_b1_reopen_ticket_object",
+                "zg361_b1_reopen_ticket_route",
+                "zg361_b1_reopen_ticket_hash",
+                "zg361_b1_reopen_ticket_reward_hash",
+                "zg361_b1_reopen_ticket_book_version",
+                "zg361_n_375",
+                "zg361_n_35",
+                "zg361_n_325",
+                "zg361_n_elim",
+            )
+        },
+        "saved_scope_name_sets": ((
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
+            "zg361_b1_ticket_owner",
+            "zg361_b1_ticket_cycle",
+            "zg361_b1_ticket_case",
+            "zg361_b1_ticket_state",
+            "zg361_b1_oversight_ticket_owner",
+            "zg361_b1_oversight_ticket_cycle",
+            "zg361_b1_oversight_ticket_case",
+            "zg361_b1_oversight_ticket_state",
+            "zg361_b1_reopen_ticket_subject",
+            "zg361_b1_reopen_ticket_owner",
+            "zg361_b1_reopen_ticket_cycle",
+            "zg361_b1_reopen_ticket_case",
+            "zg361_b1_reopen_ticket_state",
+            "zg361_b1_reopen_ticket_object",
+            "zg361_b1_reopen_ticket_route",
+            "zg361_b1_reopen_ticket_hash",
+            "zg361_b1_reopen_ticket_reward_hash",
+            "zg361_b1_reopen_ticket_book_version",
+            "zg361_n_375",
+            "zg361_n_35",
+            "zg361_n_325",
+            "zg361_n_elim",
+        ),),
+        "boolean_scopes": (),
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361ch.19": {
+        # First player-manager career/HC business window opened from the real
+        # Central publication hook. Route 1 is the generator's reference
+        # evidence-first path and the same route used by its authorized AI
+        # executor. Only the four zg361_ch_d_event_* scopes are consumed;
+        # inherited B1/Central tickets are intentionally not contracted.
+        "date_raw": 53156496,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {"zg361_ch_d_event_owner": 29037},
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (29037,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361ch.20": {
+        # Second D-lane player-manager business window.  The retained product
+        # session exposes the same four case-bound scopes and all three
+        # authored routes.  Route 1 continues the source generator's
+        # evidence-first reference path to D+1 window .21.
+        "date_raw": 53156520,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {"zg361_ch_d_event_owner": 29037},
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (29037,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361ch.21": {
+        # The retained D-lane manager lacks the treasury/gold predicates for
+        # authored routes 1 and 2.  CK3 therefore renders only the always-on
+        # defer route (native slot 2), while the active-event ABI still
+        # reports all three authored slots.  Preserve that observed mapping.
+        "date_raw": 53156544,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {"zg361_ch_d_event_owner": 29037},
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (29037,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 1,
+        "snapshot_option_count": 3,
+        "native_option_indices": (2,),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+    },
+    "zg361ch.22": {
+        # Source-reviewed D-lane state-2 window: three unconditional routes,
+        # with route 1 continuing the evidence-first reference path.
+        "date_raw": 53156568,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {"zg361_ch_d_event_owner": 29037},
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (29037,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361ch.23": {
+        # Source-reviewed D-lane state-3 entry window.  All routes are
+        # unconditional; route 1 keeps the reference evidence path.
+        "date_raw": 53156592,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {"zg361_ch_d_event_owner": 29037},
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (29037,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361ch.24": {
+        # Source-reviewed D-lane state-3 decision window.  Its three routes
+        # are unconditional and option 1 advances to the final .25 window.
+        "date_raw": 53156616,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {"zg361_ch_d_event_owner": 29037},
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (29037,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 3,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
@@ -1147,6 +1459,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
     },
 }
+KNOWN_TIMELINE_INTERRUPTS.update(CAREER_HC_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(COMPENSATION_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(CENTRAL_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):
@@ -1964,6 +2279,7 @@ def enter_promotion_source_checkpoint_v1(
         "observations": [],
         "progress_observations": [],
         "pre_submission_revision_rebinds": [],
+        "progress_query_rebinds": [],
         "initial_known_interrupt": None,
     })
     if initial_event is not None:
@@ -2070,6 +2386,7 @@ def enter_promotion_source_checkpoint_v1(
 
     deadline = clock() + timeout_seconds
     last_progress_date_raw = starting_date
+    consecutive_progress_query_rebinds = 0
     while clock() < deadline:
         snapshot, event = _binding(
             service.snapshot(), player=player,
@@ -2132,18 +2449,46 @@ def enter_promotion_source_checkpoint_v1(
         if should_sample_progress:
             observations = evidence["observations"]
             assert isinstance(observations, list)
+            progress_observations = evidence["progress_observations"]
+            assert isinstance(progress_observations, list)
+            try:
+                progress_query = (
+                    service.query_zhongguo_promotion_source_progress_v1(
+                        f"promo.entry.poll.{len(progress_observations) + 1}",
+                        expected_revision=int(snapshot["revision"]),
+                    )
+                )
+            except BridgeUnavailableError as error:
+                if not any(
+                    marker in str(error)
+                    for marker in _TRANSIENT_PROGRESS_BINDING_ERRORS
+                ):
+                    raise
+                consecutive_progress_query_rebinds += 1
+                rebinds = evidence["progress_query_rebinds"]
+                assert isinstance(rebinds, list)
+                rebinds.append({
+                    "attempt": consecutive_progress_query_rebinds,
+                    "stale_revision": int(snapshot["revision"]),
+                    "date_raw": date_raw,
+                    "active_event": event is not None,
+                    "error": f"{type(error).__name__}: {error}",
+                    "state_mutation_submitted": False,
+                })
+                if (
+                    consecutive_progress_query_rebinds
+                    >= MAX_PRE_SUBMISSION_REBIND_ATTEMPTS
+                ):
+                    raise
+                sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
+                continue
+            consecutive_progress_query_rebinds = 0
             observations.append({
                 "revision": snapshot["revision"],
                 "date_raw": date_raw,
                 "paused": snapshot.get("paused"),
                 "active_event": event is not None,
             })
-            progress_observations = evidence["progress_observations"]
-            assert isinstance(progress_observations, list)
-            progress_query = service.query_zhongguo_promotion_source_progress_v1(
-                f"promo.entry.poll.{len(progress_observations) + 1}",
-                expected_revision=int(snapshot["revision"]),
-            )
             progress_observations.append(
                 _compact_progress_observation(
                     progress_query,

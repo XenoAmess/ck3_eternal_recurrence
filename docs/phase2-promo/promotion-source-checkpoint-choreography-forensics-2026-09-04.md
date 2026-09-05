@@ -1224,3 +1224,53 @@ effect-boundary tests 4/4, and promotion-runner tests 25/25 in both normal and
 `-O`; the full static gate is GREEN. R95 must cold-start because these are mod
 bytes, and remains responsible for production verification through publication
 and `.146/.147`.
+
+## R96: B1 published; compensation AE stage 5 exposed an executable-route defect
+
+R96 used the committed `7ac52c0` release-identical projection
+`phase2-full-release-r96-7ac52c0`. The product contained 937 files; its tree
+SHA-256 was
+`8F2C862913A4FEEC717D8BB4A48065B513B532655D58E3A238AEBF8F6850FE44`
+and release-manifest SHA-256 was
+`8E9C29A29236FE1BC0BE0C1E1AC83C8B75D1C161DFBBA101F5C25516DFA3EAD4`.
+The exact-build loader completed 303/303 database nodes with fatal count zero.
+The original start was interrupted by host power loss; the retry created CK3
+PID 53712, and all subsequent harness-only corrections reused that same process.
+
+Across the cold client and 13 replacement clients, the retained session advanced
+from `date_raw=53147016` to `53166744` at speed 5. It produced 214 paused native
+progress observations and 73 exact event drains. The fresh schema-v2 B1 cycle
+reached publication: the live state changed from
+`B1=true / Central=false / PP=false` to
+`B1=false / Central=true / PP=false`. The same process then consumed the complete
+career/HC D portfolio (`zg361ch.19`–`.25`, receipt `.901`) and M–Q portfolio
+(`.92`–`.120`, receipts `.902`–`.905`) through exact event identity and option
+contracts. These are whole-tree reachability observations; they do not by
+themselves promote all affected numbered mechanisms to `ck3-live`.
+
+The compensation portfolio then exposed a real product RED. Fourteen expected
+`zg361comp.1` stages were selected, but AE stage 5 consumed mechanism 288 and
+left mechanism 289 pending, so the portfolio opened a fifteenth copy. Source and
+live state agree on the cause: the AI subject background branch recorded an
+appeal response while setting `zg361_comp_ae_appeal_requested=0`; the player
+manager's route-A portfolio path nevertheless attempted the route-A 289
+adjudication, whose contract requires a filed appeal. Separately, CK3 tooltip
+evaluation reached a direct read of the unset
+`zg361_comp_financial_applied` scratch flag, producing repeated
+`Invalid left side during comparison 'var'` and unset-variable errors at
+`zg361_compensation_16_ae_stage_05_effects.txt:322`.
+
+The generator now gives the authorized AI subject the same evidence-first appeal
+response as the hidden AI portfolio and initializes the financial scratch flag
+to zero. Reads that can occur during option-description evaluation are wrapped in
+a total `trigger_if(has_variable)/trigger_else(always=no)` predicate. The
+compensation generator/test suite passes 29/29, its pure model passes 58/58, the
+promotion runner passes 26/26 in normal and optimized modes, and effect-boundary
+tests pass 4/4. Compensation remains split into 25 purpose files, with at most six
+top-level effects per file and no hard-limit exception.
+
+This RED is not a loader-performance signal: the full product already completed
+303/303 nodes with fatal zero. Under the mandatory file-boundary policy it is
+therefore retained as state-machine/tooltip evidence, not used to justify an
+unrelated split. The fix changes generated mod bytes, so R97 requires one fresh
+CK3 launch; the old R96 session cannot verify it.

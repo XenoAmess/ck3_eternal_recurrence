@@ -202,6 +202,9 @@ payable -> due -> decided -> corrected -> appealed -> closed
 
 289 只开放 compensation appeal：受评者先在 `appealed` 状态写本人响应，管理者随后才可裁决。补发/纠错只改钱账，
 `frozen_performance_grade` 不得被薪酬申诉重写；绩效申诉仍属于另一案轨。玩家本人可见申诉事件，AI 当事人保持后台。
+后台 AI 当事人采用证据优先的“提出薪酬申诉”响应，使管理者的 A 路线具备可执行前置条件；不得记录“未申诉”后仍向
+组合案卷派发同一条 A 路线并把 289 留在未消费状态。所有付款 helper 的 `financial_applied` 是总定义的 0/1 临时结果；
+事件选项 tooltip 中读取它时必须先用 `has_variable` 的 `trigger_if/trigger_else` 包装，避免 CK3 的说明求值读取未设变量。
 
 283、285、286、288 和 289-B 写入的金额是显式 `owed`，不是“已经付款”的文字。它们持续保留在
 `payable = paid + owed - returned` 中；实际支付时仍必须经过同一双账户 precheck/journal。任何小于无法同时表示

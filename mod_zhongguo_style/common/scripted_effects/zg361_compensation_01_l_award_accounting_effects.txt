@@ -3,7 +3,7 @@
 # Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
 
 zg361_comp_l_reserve_bonus_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     if = {
         limit = { scope:zg361_comp_route = 1 }
         zg361_case_kernel_reserve_transaction_effect = {
@@ -447,7 +447,7 @@ zg361_comp_l_reserve_bonus_effect = {
 }
 
 zg361_comp_l_clawback_bonus_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     if = {
         limit = {
             var:zg361_comp_bonus_clawback_status = 0
@@ -479,7 +479,7 @@ zg361_comp_l_clawback_bonus_effect = {
 }
 
 zg361_comp_l_consume_deferred_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     if = {
         limit = {
             var:zg361_comp_bonus_funded = 1
@@ -715,7 +715,7 @@ zg361_comp_l_check_conservation_effect = {
 }
 
 zg361_comp_l_pay_spot_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
@@ -833,7 +833,7 @@ zg361_comp_l_pay_spot_effect = {
 }
 
 zg361_comp_l_pay_spot_bounded_effect = {
-    remove_variable = zg361_comp_financial_applied
+    set_variable = { name = zg361_comp_financial_applied value = 0 }
     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject

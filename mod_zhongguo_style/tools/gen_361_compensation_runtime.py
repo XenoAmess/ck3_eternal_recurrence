@@ -429,7 +429,7 @@ def render_fixed_dual_payment(
     total = treasury_amount + personal_amount
     row = vars_for(domain)
     return f'''{name} = {{
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     {journal_reserve(domain, state, prefix, "treasury", str(treasury_amount))}
     if = {{
         limit = {{ var:zg361_case_kernel_applied = 1 }}
@@ -474,7 +474,7 @@ def render_dynamic_dual_payment(
 ) -> str:
     row = vars_for(domain)
     return f'''{name} = {{
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     {journal_reserve(domain, state, prefix, "treasury", treasury_scope)}
     if = {{
         limit = {{ var:zg361_case_kernel_applied = 1 }}
@@ -1134,7 +1134,7 @@ def render_core(mechanism_id: int, domain: str, state: int) -> str:
 zg361_comp_m{mechanism_id:03d}_core_effect = {{
     save_temporary_scope_value_as = {{ name = zg361_comp_route value = $ROUTE$ }}
     remove_variable = zg361_comp_runtime_applied
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     {prelude}
     if = {{
         limit = {{
@@ -1154,7 +1154,13 @@ zg361_comp_m{mechanism_id:03d}_core_effect = {{
             limit = {{ var:zg361_case_kernel_applied = 1 }}
             {finance}
             if = {{
-                limit = {{ var:zg361_comp_financial_applied = 1 }}
+                limit = {{
+                    trigger_if = {{
+                        limit = {{ has_variable = zg361_comp_financial_applied }}
+                        var:zg361_comp_financial_applied = 1
+                    }}
+                    trigger_else = {{ always = no }}
+                }}
                 set_variable = {{ name = {p}_receipt_active value = 1 }}
                 set_variable = {{ name = {p}_route value = scope:zg361_comp_route }}
                 set_variable = {{ name = {p}_value value = 0 }}
@@ -1738,7 +1744,7 @@ def render_bonus_financial_helpers() -> str:
         )
     )
     return f'''zg361_comp_l_reserve_bonus_effect = {{
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     if = {{
         limit = {{ scope:zg361_comp_route = 1 }}
         {bonus_path(10, 4, 3, 1, 1, 1)}
@@ -1750,7 +1756,7 @@ def render_bonus_financial_helpers() -> str:
 }}
 
 zg361_comp_l_clawback_bonus_effect = {{
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     if = {{
         limit = {{
             var:zg361_comp_bonus_clawback_status = 0
@@ -1774,7 +1780,7 @@ zg361_comp_l_clawback_bonus_effect = {{
 }}
 
 zg361_comp_l_consume_deferred_effect = {{
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     if = {{
         limit = {{
             var:zg361_comp_bonus_funded = 1
@@ -2007,8 +2013,12 @@ def after_transition(domain: str, state: int) -> str:
     if domain == "ae" and state == 4:
         return '''if = {
             limit = { OR = { is_ai = yes var:zg361_case_ae_owner = { is_ai = yes } } }
+            # The authorized background subject takes the same evidence-first
+            # route as the hidden AI portfolio.  A recorded appeal keeps the
+            # manager's route-1 adjudication executable instead of leaving
+            # the visible portfolio card in an unconsumable stage-5 loop.
             set_variable = { name = zg361_comp_ae_appeal_response_recorded value = 1 }
-            set_variable = { name = zg361_comp_ae_appeal_requested value = 0 }
+            set_variable = { name = zg361_comp_ae_appeal_requested value = 1 }
         }
         else = { trigger_event = { id = zg361comp.289 days = 1 } }'''
     if domain == "ae" and state == 5:
@@ -2096,7 +2106,7 @@ zg361_comp_ae_consume_due_effect = {{
         name = zg361_comp_due_personal
         value = var:zg361_comp_ae_due_frozen_personal
     }}
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     if = {{
         limit = {{
             scope:zg361_comp_due_gross >= 2
@@ -2117,7 +2127,13 @@ zg361_comp_ae_consume_due_effect = {{
         set_variable = {{ name = zg361_comp_financial_applied value = 1 }}
     }}
     if = {{
-        limit = {{ var:zg361_comp_financial_applied = 1 }}
+        limit = {{
+            trigger_if = {{
+                limit = {{ has_variable = zg361_comp_financial_applied }}
+                var:zg361_comp_financial_applied = 1
+            }}
+            trigger_else = {{ always = no }}
+        }}
         change_variable = {{ name = zg361_comp_ae_statement_paid add = scope:zg361_comp_due_gross }}
         set_variable = {{ name = zg361_comp_ae_statement_owed value = 0 }}
     }}
@@ -2264,7 +2280,7 @@ zg361_comp_af_request_exit_effect = {{
 }}
 
 zg361_comp_af_consume_buyback_effect = {{
-    remove_variable = zg361_comp_financial_applied
+    set_variable = {{ name = zg361_comp_financial_applied value = 0 }}
     if = {{
         limit = {{
             has_variable = {owner}
@@ -2288,7 +2304,13 @@ zg361_comp_af_consume_buyback_effect = {{
         zg361_comp_af_pay_buyback_later_effect = yes
     }}
     if = {{
-        limit = {{ var:zg361_comp_financial_applied = 1 }}
+        limit = {{
+            trigger_if = {{
+                limit = {{ has_variable = zg361_comp_financial_applied }}
+                var:zg361_comp_financial_applied = 1
+            }}
+            trigger_else = {{ always = no }}
+        }}
         change_variable = {{ name = zg361_comp_af_vested_units add = -10 }}
         change_variable = {{ name = zg361_comp_af_repurchased_units add = 10 }}
         set_variable = {{ name = zg361_comp_af_request_state value = 2 }}
