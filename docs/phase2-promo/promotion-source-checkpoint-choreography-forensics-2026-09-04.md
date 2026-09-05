@@ -658,3 +658,45 @@ pending. Outer report/evidence-index SHA-256 values are
 and `5EC3218F1FE6384ADA372FA8AFCDF12F4CD320CDB5ED57C32F3803F1687E0DBD`;
 duration was 482.618 seconds, cleanup was GREEN, and CK3 returned to zero. This
 was another post-loader vanilla interruption and is not a file-size signal.
+
+## 2026-09-05 10:31: source-semantic dates and preserved failure timelines
+
+R57 `.0381`, R61 `.0342` and R62 `.0346` failed on delivery-date drift, not on
+changed authored choices. Exact 1.19.0.6 `00_spymaster_tasks.txt:350-355,381-457,674-707`
+uses progress, `restart_on_finish=yes` and random discovery;
+`councillor_on_actions.txt:516-532` dispatches task outcomes and first-valid
+secret types. `spymaster_task_events.txt:143-174,208-210,336-371` freezes the
+secret before dispatch. `.0342:583-594` and `.0346:1028-1073` reveal that scoped
+secret; `.0381:1746-1854` freezes a hook target and our second option adds its
+opinion. These effects contain no calendar eligibility or cost branch. Opinion
+duration still begins on the actual click date; time does affect world state.
+
+Only these three encountered keys now bind their dates to the existing run's
+`starting_date_raw .. starting_date_raw + 550*24` window. The 550 days remain a
+harness bound, not a claimed vanilla task period. Per-run copied contracts
+leave historical observed dates untouched; role/type/option and occurrence
+checks remain unchanged. Source SHA-256 values, in the order above:
+
+- `EBE10909D2618AE9B6360C738397F6304C6D61FA597DBA16232772C05B4E0613`
+- `5629D03928014BAFDAB3E42576D20BBE13F2A76F0BECC0219B729515010EA95E`
+- `2D7F0237D9888812A55C14B7A8A3BBA551FF64D8AE72AE28088456AF93FCFF57`
+
+R59/R61 also exposed an actual diagnostic loss: a raised entry exception lost
+the accumulated local observations and before/after GUI query results because
+the runner wrote them only after a successful return. An optional mutable
+`evidence_out` now retains them; the runner writes the existing
+`03_promotion_source_production_entry.json` in `finally`, retaining RED and its
+error. It does not treat an ACK as state evidence. The focused suite passed
+31 tests; the subsequently extended runner suite passed 5, including persisted
+failure observations and no downstream capture after failure. This is
+static-ready; R65b was already running the previous imported code.
+
+Two important corrections to earlier interpretation: vanilla
+`ep3_interactions_events.0630` is not a harmless post-resolution notice. Its
+only option executes `governor_resignation_title_transfer_effect`
+(`ep3_interactions_events.txt:4577-4583`); R59 then saw the player's new-holder
+`.0002` event. Also `eligible AI central portfolio completed silently` is
+emitted by the summary helper on stale abort as well as success, so those
+lines cannot be counted as successful AI portfolio completion. Neither fact
+alone proves why the human `.146` is absent. Targeted B1 owner/subject identity
+diagnostics are being prepared; no global business rewrite is justified yet.

@@ -23,7 +23,9 @@ from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     MAX_ADVANCE_DAYS,
     POST_PUBLICATION_OBSERVATION_DAYS,
     PromotionProductionEntryError,
+    _contract_date_matches,
     _known_interrupt_checks,
+    _timeline_contract_for_window,
     enter_promotion_source_checkpoint_v1,
 )
 
@@ -197,9 +199,11 @@ def test_query_step_is_fixed_owner_nonce_only() -> None:
 
 def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
     service = _Service()
+    retained: dict[str, object] = {}
     result = enter_promotion_source_checkpoint_v1(
-        service, poll_interval_seconds=0
+        service, poll_interval_seconds=0, evidence_out=retained,
     )
+    assert result is retained
     assert result["result"] == "GREEN"
     assert result["readiness"] == "paused-real-zg361pp.147"
     assert result["action_ack_used_as_state_evidence"] is False
@@ -212,6 +216,50 @@ def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
     }
     assert MAX_ADVANCE_DAYS == 550
     assert service.selected == [1]
+
+
+@pytest.mark.parametrize("key", (
+    "spymaster_task.0381", "spymaster_task.0342", "spymaster_task.0346",
+))
+def test_random_task_dates_use_existing_product_window(key: str) -> None:
+    original = KNOWN_TIMELINE_INTERRUPTS[key]
+    historical_range = original["date_raw_range"]
+    start = 53147016
+    end = start + MAX_ADVANCE_DAYS * 24
+    bound = _timeline_contract_for_window(original, starting_date=start)
+    for date in (start, 53152896, 53152920, 53157024, end):
+        assert _contract_date_matches(date, bound)
+    assert not _contract_date_matches(start - 1, bound)
+    assert not _contract_date_matches(end + 1, bound)
+    assert original["date_raw_range"] == historical_range
+    assert bound["character_scopes"] == original["character_scopes"]
+    assert bound["selected_option_number"] == original["selected_option_number"]
+    assert bound.get("max_occurrences", 1) == original.get("max_occurrences", 1)
+
+
+def test_failed_entry_retains_timeline_and_actual_progress() -> None:
+    class _UnexpectedEventService(_Service):
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int,
+        ) -> dict[str, object]:
+            result = super().query_current_event_window_context_v1(
+                event_instance_id, expected_revision=expected_revision,
+            )
+            result["current_event_window_context"]["event_definition_key"] = "unknown.1"
+            return result
+
+    retained: dict[str, object] = {}
+    service = _UnexpectedEventService()
+    with pytest.raises(PromotionProductionEntryError, match="unexpected event"):
+        enter_promotion_source_checkpoint_v1(
+            service, poll_interval_seconds=0, evidence_out=retained,
+        )
+    assert retained["result"] == "RED"
+    assert retained["observations"][-1]["active_event"] is True
+    assert retained["initial_progress"]["status"] == "available"
+    assert retained["post_action_progress"]["query_sequence"] == 2
+    assert retained["review_action_postcondition"]["after_query_sequence"] == 2
+    assert service.selected == []
 
 
 def test_product_path_accepts_idempotent_already_running_ack() -> None:

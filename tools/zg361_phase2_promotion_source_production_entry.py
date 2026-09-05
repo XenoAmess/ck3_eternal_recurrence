@@ -84,13 +84,14 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
     },
     "ep3_interactions_events.0630": {
-        # Vanilla governor-removal letter emitted after the interaction has
-        # already resolved.  It exposes one acknowledgement option only.
+        # Vanilla governor-removal letter with one option. IMPORTANT: that
+        # option executes governor_resignation_title_transfer_effect; it is
+        # not a no-op acknowledgement of a previously completed title change.
         # Three generic interaction slots retain their names/type after the
         # referenced characters have gone stale; bind that exact degraded
         # identity shape instead of fabricating character IDs.
         "date_raw": (53147256, 53151600),
-        # Two live runs delivered the same already-resolved interaction
+        # Two live runs delivered the same single-option interaction
         # letter on different ticks while every semantic field stayed exact.
         "date_raw_range": (53147256, 53151600),
         "root_character_id": 29037,
@@ -566,10 +567,12 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # party a decaying opinion modifier toward root.  The same exact event
         # can recur on this seed.  The second council-task delivery moved by
         # ten days between R35 and R57 while every semantic field stayed
-        # exact, so its observed date envelope is bounded independently from
-        # the strict two-occurrence cap.
+        # exact. Vanilla task progress/random discovery controls delivery;
+        # neither selected effect checks the calendar. Use this run's existing
+        # product observation window, independently of the two-occurrence cap.
         "date_raw": (53148768, 53152656),
         "date_raw_range": (53148768, 53152896),
+        "date_policy": "product-observation-window",
         "max_occurrences": 2,
         "root_character_id": 29037,
         "character_scopes": {
@@ -609,6 +612,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # the vanilla discovery cadence, not by the revealed-secret contract.
         "date_raw": (53152896, 53157024),
         "date_raw_range": (53152896, 53157024),
+        "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
             "councillor": 27963,
@@ -632,6 +636,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # bind the observed Find Secrets cadence without changing semantics.
         "date_raw": (53152896, 53152920),
         "date_raw_range": (53152896, 53152920),
+        "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
             "councillor": 27963,
@@ -885,6 +890,18 @@ def _typed_character_id(value: object) -> int | None:
     ):
         return None
     return character_id
+
+
+def _timeline_contract_for_window(
+    contract: Mapping[str, object], *, starting_date: int,
+) -> dict[str, object]:
+    """Bind source-reviewed random deliveries to this run, not old RNG dates."""
+    bound = dict(contract)
+    if contract.get("date_policy") == "product-observation-window":
+        bound["date_raw_range"] = (
+            starting_date, starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
+        )
+    return bound
 
 
 def _contract_date_matches(
@@ -1267,6 +1284,7 @@ def enter_promotion_source_checkpoint_v1(
     poll_interval_seconds: float = 0.05,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
+    evidence_out: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Open player B1, advance to .146, choose option 1, stop on D+1 .147."""
     if timeout_seconds <= 0 or poll_interval_seconds < 0:
@@ -1275,7 +1293,10 @@ def enter_promotion_source_checkpoint_v1(
     player = int(initial["played_character"]["character_id"])
     generation = int(initial["diagnostics"]["connection_generation"])
     starting_date = int(initial["date_raw"])
-    evidence: dict[str, object] = {
+    # The caller retains this same object even if a later interrupt raises.
+    # R59/R61 lost their accumulated timeline because only success returned it.
+    evidence: dict[str, object] = {} if evidence_out is None else evidence_out
+    evidence.update({
         "schema_version": 1,
         "kind": "zg361_phase2_promotion_source_production_entry",
         "result": "RED",
@@ -1301,7 +1322,7 @@ def enter_promotion_source_checkpoint_v1(
         "console_used": False,
         "generic_character_rebind_used": False,
         "observations": [],
-    }
+    })
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
         if key == M147:
@@ -1324,6 +1345,7 @@ def enter_promotion_source_checkpoint_v1(
     before = service.query_zhongguo_promotion_source_progress_v1(
         "promo.entry.before", expected_revision=int(initial["revision"])
     )
+    evidence["initial_progress"] = copy.deepcopy(before)
     progress = before.get("zhongguo_promotion_source_progress")
     if before.get("status") != "available" or not isinstance(progress, dict):
         unavailable_reason = (
@@ -1370,6 +1392,7 @@ def enter_promotion_source_checkpoint_v1(
             "promo.entry.after",
             expected_revision=int(after_snapshot["revision"]),
         )
+        evidence["post_action_progress"] = copy.deepcopy(after)
         try:
             evidence["review_action_postcondition"] = (
                 verify_review_now_independent_postcondition_v1(
@@ -1430,6 +1453,9 @@ def enter_promotion_source_checkpoint_v1(
             drains = evidence["timeline_interrupt_drains"]
             assert isinstance(drains, list)
             if contract is not None:
+                contract = _timeline_contract_for_window(
+                    contract, starting_date=starting_date,
+                )
                 occurrence_count = sum(
                     isinstance(row, Mapping)
                     and row.get("event_definition_key") == key

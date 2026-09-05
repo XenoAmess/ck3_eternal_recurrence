@@ -1183,13 +1183,38 @@ class ReleaseLocalizationTests(unittest.TestCase):
         decisions = (
             release_loc.MOD_ROOT / "common" / "decisions" / "zg361_decisions.txt"
         ).read_text(encoding="utf-8-sig")
+        triggers = (
+            release_loc.MOD_ROOT
+            / "common"
+            / "scripted_triggers"
+            / "zg361_triggers.txt"
+        ).read_text(encoding="utf-8-sig")
         effects = (
             release_loc.MOD_ROOT
             / "common"
             / "scripted_effects"
             / "zg361_effects.txt"
         ).read_text(encoding="utf-8-sig")
-        self.assertIn(guard, decisions)
+        # The decision delegates both validity paths to the shared business
+        # trigger; retain the same-year guard check at its actual definition.
+        decision = " ".join(
+            decisions.partition("zg361_review_now_decision = {")[2]
+            .partition("\n}")[0].split()
+        )
+        business_trigger = " ".join(
+            triggers.partition("zg361_review_now_business_valid_trigger = {")[2]
+            .partition("\n}")[0].split()
+        )
+        for validity_path in ("is_valid", "is_valid_showing_failures_only"):
+            self.assertIn(
+                f"{validity_path} = {{ zg361_review_now_business_valid_trigger = yes }}",
+                decision,
+            )
+        self.assertIn(
+            "trigger_if = { limit = { has_variable = zg361_last_settled_year } "
+            + guard + " }",
+            business_trigger,
+        )
         self.assertIn(guard, effects)
 
         expected = {

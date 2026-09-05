@@ -7,6 +7,7 @@ import copy
 from contextlib import ExitStack
 import importlib.machinery
 import importlib.util
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -166,6 +167,12 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
 
     def test_run_cell_passes_owned_product_lineage_to_capture_callable(self) -> None:
+        self._run_cell_case(entry_error=False)
+
+    def test_run_cell_preserves_production_timeline_on_entry_error(self) -> None:
+        self._run_cell_case(entry_error=True)
+
+    def _run_cell_case(self, *, entry_error: bool) -> None:
         seed_sha = "A" * 64
         seed_contract = {
             "status": "ready",
@@ -242,16 +249,24 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                         return_value=copy.deepcopy(captured),
                     )
                 )
+                def run_entry(*args, **kwargs):
+                    retained = kwargs["evidence_out"]
+                    retained.update({
+                        "schema_version": 1,
+                        "kind": "zg361_phase2_promotion_source_production_entry",
+                        "result": "RED" if entry_error else "GREEN",
+                        "readiness": "static-ready-live-pending" if entry_error else "paused-real-zg361pp.147",
+                        "observations": [{"date_raw": 53157024, "active_event": True}],
+                    })
+                    if entry_error:
+                        raise RuntimeError("known interrupt date drift")
+                    return retained
+
                 entry = stack.enter_context(
                     mock.patch.object(
                         runner,
                         "enter_promotion_source_checkpoint_v1",
-                        return_value={
-                            "schema_version": 1,
-                            "kind": "zg361_phase2_promotion_source_production_entry",
-                            "result": "GREEN",
-                            "readiness": "paused-real-zg361pp.147",
-                        },
+                        side_effect=run_entry,
                     )
                 )
                 forbidden_launch = stack.enter_context(
@@ -270,15 +285,27 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                         "native_bridge_runtime": {"identity": "unit"}
                     },
                 )
+                retained = json.loads(
+                    (root / "artifacts" / "03_promotion_source_production_entry.json").read_text(encoding="utf-8")
+                )
 
         forbidden_launch.assert_not_called()
         gate.assert_called_once()
         self.assertTrue(
             gate.call_args.kwargs["phase2_promotion_source_capture_live"]
         )
-        capture.assert_called_once()
         entry.assert_called_once()
         self.assertEqual(entry.call_args.kwargs["timeout_seconds"], 12.5)
+        self.assertEqual(retained["observations"], [{"date_raw": 53157024, "active_event": True}])
+        if entry_error:
+            capture.assert_not_called()
+            self.assertEqual(retained["result"], "RED")
+            self.assertIn("known interrupt date drift", retained["error_reason"])
+            self.assertEqual(report["result"], "RED")
+            stop.assert_called_once()
+            return
+        capture.assert_called_once()
+        self.assertEqual(retained["result"], "GREEN")
         self.assertEqual(capture.call_args.kwargs["timeout_seconds"], 12.5)
         session = capture.call_args.kwargs["managed_product_session"]
         lineage = capture.call_args.kwargs["capture_lineage"]

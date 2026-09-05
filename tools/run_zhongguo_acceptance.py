@@ -19443,16 +19443,25 @@ def run_cell(
                 "console_used": False,
                 "generic_character_rebind_used": False,
             }
-            promotion_entry = enter_promotion_source_checkpoint_v1(
-                title_navigation_service,
-                timeout_seconds=(
-                    phase2_promotion_source_capture_timeout_seconds
-                ),
-            )
-            write_json(
-                artifacts / "03_promotion_source_production_entry.json",
-                promotion_entry,
-            )
+            promotion_entry: dict[str, object] = {}
+            try:
+                enter_promotion_source_checkpoint_v1(
+                    title_navigation_service,
+                    timeout_seconds=(
+                        phase2_promotion_source_capture_timeout_seconds
+                    ),
+                    evidence_out=promotion_entry,
+                )
+            except Exception as error:
+                promotion_entry.update(
+                    result="RED", error_reason=f"{type(error).__name__}: {error}"
+                )
+                raise
+            finally:
+                write_json(
+                    artifacts / "03_promotion_source_production_entry.json",
+                    promotion_entry,
+                )
             evidence = capture_promotion_source_checkpoint_v2(
                 title_navigation_service,
                 checkpoint_root=artifacts / "promotion-source-checkpoints",
