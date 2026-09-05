@@ -585,6 +585,107 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361b1.201": {
+        # Product B1 non-final shadow-grade response.  Option 1 accepts the
+        # frozen shadow record and adds no calibration delta; it is the
+        # canonical target-directed path already fixed by the production
+        # choreography.  Only the five shadow ticket scopes are consumed by
+        # this event.  The manager/self/bank ticket names may remain inherited
+        # from the exact preceding .102/.200 chain, so admit only the four
+        # already-proven inheritance shapes plus the five shadow fields.
+        "date_raw": (53157672,),
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "zg361_b1_shadow_ticket_subject": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "zg361_b1_shadow_ticket_owner": (29037,),
+        },
+        "character_scope_matches_any": {
+            "zg361_b1_shadow_ticket_owner": (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_self_ticket_owner",
+                "zg361_b1_bank_ticket_owner",
+            ),
+        },
+        "scope_types": {
+            "zg361_b1_shadow_ticket_cycle": "value",
+            "zg361_b1_shadow_ticket_case": "value",
+            "zg361_b1_shadow_ticket_state": "value",
+        },
+        "saved_scope_name_sets": tuple(
+            tuple(names)
+            + (
+                "zg361_b1_shadow_ticket_owner",
+                "zg361_b1_shadow_ticket_subject",
+                "zg361_b1_shadow_ticket_cycle",
+                "zg361_b1_shadow_ticket_case",
+                "zg361_b1_shadow_ticket_state",
+            )
+            for names in (
+                (
+                    "zg361_b1_ticket_owner",
+                    "zg361_b1_ticket_cycle",
+                    "zg361_b1_ticket_case",
+                    "zg361_b1_ticket_state",
+                    "zg361_b1_self_ticket_owner",
+                    "zg361_b1_self_ticket_subject",
+                    "zg361_b1_self_ticket_cycle",
+                    "zg361_b1_self_ticket_case",
+                    "zg361_b1_self_ticket_state",
+                ),
+                (
+                    "zga_phase2_seed_player",
+                    "zg361_b1_ticket_owner",
+                    "zg361_b1_ticket_cycle",
+                    "zg361_b1_ticket_case",
+                    "zg361_b1_ticket_state",
+                    "zg361_b1_self_ticket_owner",
+                    "zg361_b1_self_ticket_subject",
+                    "zg361_b1_self_ticket_cycle",
+                    "zg361_b1_self_ticket_case",
+                    "zg361_b1_self_ticket_state",
+                ),
+                (
+                    "zg361_b1_bank_ticket_owner",
+                    "zg361_b1_bank_ticket_season",
+                    "zg361_b1_bank_ticket_case",
+                    "zg361_b1_bank_ticket_state",
+                    "zg361_b1_ticket_owner",
+                    "zg361_b1_ticket_cycle",
+                    "zg361_b1_ticket_case",
+                    "zg361_b1_ticket_state",
+                    "zg361_b1_self_ticket_owner",
+                    "zg361_b1_self_ticket_subject",
+                    "zg361_b1_self_ticket_cycle",
+                    "zg361_b1_self_ticket_case",
+                    "zg361_b1_self_ticket_state",
+                ),
+                (
+                    "zga_phase2_seed_player",
+                    "zg361_b1_bank_ticket_owner",
+                    "zg361_b1_bank_ticket_season",
+                    "zg361_b1_bank_ticket_case",
+                    "zg361_b1_bank_ticket_state",
+                    "zg361_b1_ticket_owner",
+                    "zg361_b1_ticket_cycle",
+                    "zg361_b1_ticket_case",
+                    "zg361_b1_ticket_state",
+                    "zg361_b1_self_ticket_owner",
+                    "zg361_b1_self_ticket_subject",
+                    "zg361_b1_self_ticket_cycle",
+                    "zg361_b1_self_ticket_case",
+                    "zg361_b1_self_ticket_state",
+                ),
+            )
+        ),
+        "boolean_scopes": (),
+        "option_count": 2,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "zg361m.1": {
         # First player-facing mechanism policy card, dispatched by the
         # product immediately after an annual review is published.  Every

@@ -746,3 +746,40 @@ and `5A05D5777CC585E77E95729FCAF4B1ECC43CA9F95E2E95DA06B2FB61EC209DB7`.
 Cleanup was GREEN and CK3 returned to zero. R83 must prove the three weak errors
 and thirteen ordered-list errors absent, drain the registered vanilla letter,
 and continue the `.146 -> .147` product chain.
+
+## R83: first product shadow-response frame
+
+The weak-scope and ordered-list patch was pushed as `d869194`. Its fresh R83
+release contained 936 files with source tree
+`24D9463AAEE34F2D42038B1A8C19317751C9F6F0306FFE3D1C5D7ECF49A6C5B4`;
+formal verification, no-launch preflight and the complete effect boundary were
+GREEN. The loader completed and the default speed-5 loop drained seven exact
+events before stopping without action on the first observed product
+`zg361b1.201` frame at `date_raw=53157672`.
+
+This is the authored non-final shadow-grade response opened by `.102`, not the
+promotion-source `.146/.147` target. The native MCP frame bound player/root
+29037, manager 36354, 18 saved scopes and two shown/enabled native options 0/1.
+The five scopes consumed by `.201` are the shadow ticket owner, subject, cycle,
+case and state. The remaining bank, manager and self-review ticket names are
+the exact inherited shape from the preceding product chain. Existing production
+choreography already selects option 1: accept the frozen shadow record without
+adding a new calibration delta. The new contract binds the five consumed
+fields, the manager aliases, four already-proven inherited name sets, the full
+two-option shape and the product observation date window. Negative tests reject
+a different manager, different player subject, wrong value type and any extra
+saved scope. Checkpoint tests pass at 16/16 in normal and optimized modes.
+
+R83 is the production-live proof for the preceding fixes: both
+`This scope doesn't support variables` and
+`ordered_in_list max bigger than list` occur zero times. The outer report,
+evidence index, cell report, production entry, loader and cleanup SHA-256 values
+are respectively
+`CFCC0157C836E121EA3277629B4FFAEBBBF785FCD990BB6B69216AFE16D3481A`,
+`2476C6F6C42183EAC8252DBF429BD9B056F055964823A738B255AB98630733A6`,
+`F9B0B7413FAFF8BE3131686451C3BD8768B8941730726DF1A18D781236B0F9CF`,
+`9BD46C1814BDEB9F234F8CE99C4DE31F6E002015B2E8CB3093B42F342F94D619`,
+`E7F74303AD3B929B300B424B51C78817232F3BAA7EF3E44BB06C40D2657C4066`,
+and `E68AA0378448D609DDF037FC82DFDF439291B4733879D6B3398F7C267DB7BF67`.
+Cleanup was GREEN and CK3 returned to zero. R84 must accept the exact `.201`
+frame and continue through bank close, calibration, publication and `.146/.147`.

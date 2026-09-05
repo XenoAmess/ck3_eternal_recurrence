@@ -59,7 +59,8 @@ not claims that the player will receive 3.25.
    tuple. Keep player=root=subject `29037` and distinct live notice owner
    `32904` as invariants; death, succession, transfer, or owner replacement is
    a typed stop rather than permission to rebind.
-2. Use only `set-speed-1`, `resume-map`, and `pause-map` for time. The existing
+2. Use `set-speed-5`, `resume-map`, and `pause-map` for the default timeline;
+   reserve lower speeds for an explicitly documented precision exception. The existing
    hidden ticket reaches `zg361b1.100` at D+180 (`date_raw=53151240`), which
    schedules hidden `.101` for D+240 (`53152680`). `.101` opens the peer/self
    evidence window and schedules hidden `.102` for D+300 (`53154120`).

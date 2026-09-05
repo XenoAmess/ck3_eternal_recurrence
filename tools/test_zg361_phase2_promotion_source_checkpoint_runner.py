@@ -374,6 +374,130 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_names_exact"])
 
+    def test_b1_shadow_accept_binds_consumed_ticket_and_exact_inheritance(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def value_scope(name: str, *, type_key: str = "value") -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": type_key},
+            }
+
+        manager = 36354
+        names = (
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
+            "zg361_b1_ticket_owner",
+            "zg361_b1_ticket_cycle",
+            "zg361_b1_ticket_case",
+            "zg361_b1_ticket_state",
+            "zg361_b1_self_ticket_owner",
+            "zg361_b1_self_ticket_subject",
+            "zg361_b1_self_ticket_cycle",
+            "zg361_b1_self_ticket_case",
+            "zg361_b1_self_ticket_state",
+            "zg361_b1_shadow_ticket_owner",
+            "zg361_b1_shadow_ticket_subject",
+            "zg361_b1_shadow_ticket_cycle",
+            "zg361_b1_shadow_ticket_case",
+            "zg361_b1_shadow_ticket_state",
+        )
+        character_names = {
+            "zg361_b1_bank_ticket_owner": manager,
+            "zg361_b1_ticket_owner": manager,
+            "zg361_b1_self_ticket_owner": manager,
+            "zg361_b1_self_ticket_subject": 29037,
+            "zg361_b1_shadow_ticket_owner": manager,
+            "zg361_b1_shadow_ticket_subject": 29037,
+        }
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361b1.201",
+            "current_event_instance_id": 20,
+            "date_raw": 53157672,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope(name, character_names[name])
+                if name in character_names
+                else value_scope(name)
+                for name in names
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53157672, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 20}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361b1.201"],
+            starting_date=53147016,
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="zg361b1.201",
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_owner = copy.deepcopy(context)
+        wrong_owner["saved_scopes"][13] = character_scope(
+            "zg361_b1_shadow_ticket_owner", 36355
+        )
+        checks = checks_for(wrong_owner)
+        self.assertFalse(checks["scope:zg361_b1_shadow_ticket_owner:matches_any"])
+
+        wrong_subject = copy.deepcopy(context)
+        wrong_subject["saved_scopes"][14] = character_scope(
+            "zg361_b1_shadow_ticket_subject", 29038
+        )
+        checks = checks_for(wrong_subject)
+        self.assertFalse(checks["scope:zg361_b1_shadow_ticket_subject"])
+
+        wrong_value_type = copy.deepcopy(context)
+        wrong_value_type["saved_scopes"][15] = value_scope(
+            "zg361_b1_shadow_ticket_cycle", type_key="boolean"
+        )
+        checks = checks_for(wrong_value_type)
+        self.assertFalse(checks["scope:zg361_b1_shadow_ticket_cycle:type"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(value_scope("unrelated_scope"))
+        checks = checks_for(extra_scope)
+        self.assertFalse(checks["saved_scope_names_exact"])
+
     def test_spymaster_no_find_accepts_only_source_proven_boolean_branch(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
