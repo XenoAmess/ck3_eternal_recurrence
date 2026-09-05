@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "contract": "raiktor-source-specific-war-loss-attribution-provider-v1",
+  "status": "static-ready-private-capture-live-not-run",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "default_off": true,
+  "private_only": true,
+  "read_only_observer": true,
+  "live_authorized": false,
+  "paths": {
+    "game_executable": "Crusader Kings III/binaries/ck3.exe",
+    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-20260905\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
+    "preflight": "ck3_autonomous_player/native_bridge/research/prepare_raiktor_source_specific_war_loss_capture.py",
+    "spawn_army_abi": "ck3_autonomous_player/native_bridge/research/raiktor_spawn_army_execute_v1_abi.json",
+    "spawn_army_verifier": "ck3_autonomous_player/native_bridge/research/verify_raiktor_spawn_army_execute_v1.py",
+    "capture_source": "ck3_autonomous_player/native_bridge/research/raiktor_war_bound_private_capture_v1.cpp",
+    "capture_manifest": "ck3_autonomous_player/native_bridge/research/raiktor_war_bound_private_capture_v1_manifest.json",
+    "cmake": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "provider": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_source_specific_war_loss_contract.py"
+  },
+  "sha256": {
+    "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "capture_executable": "B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72",
+    "preflight": "6286921CF0782FE47EFFEC911BCD93697FF6F77BA99CD815784E957DD0A80D9E",
+    "spawn_army_abi": "C81963E32264CF2B0B09353A8EA25CA0A4035B43B13C9E5C36F050E1BA346AF0",
+    "spawn_army_verifier": "A6FEF375185074F5CAC107334DFCED17083FE75B873CF0A8EA27D3A4F5CCAC72",
+    "capture_source": "A84601C5BB6927DEF52DF6B27E8602B8C2CAC0C6475A9F1A75B30085433848D8",
+    "capture_manifest": "0D7E4B948F6D6600A6D4412FADAA328728ED451B01330E652548995CF2B9BDAD",
+    "cmake": "0F871589014C9FE3F0D93AA8072AD830A2AB10D9BCAD64FE5F9138AD5FA6063E",
+    "provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A"
+  },
+  "exact_observation": {
+    "execute_rva": "0x2E7F010",
+    "stop_rva": "0x2E7F951",
+    "window_end_rva_exclusive": "0x2E7F9A6",
+    "spawn_army_runtime_vtable_rva": "0x443C6E8",
+    "effect_loaded_node_register": "R14",
+    "created_carmy_register": "RSI",
+    "persistent_vector_begin": "[RSP+0x60]",
+    "persistent_vector_count": "int32 [RSP+0x6C]",
+    "evaluated_name": "MSVC string at RBP+0x70"
+  },
+  "source_identity": {
+    "event_definition_key": "bookmark.1071",
+    "option_key": "bookmark.1071.a",
+    "option_index": 0,
+    "arm_file_sha256": "B7DC28B0B9EDB0F8A03E5DB2F03AD6CA1E3B649648BAE161B6A487063735B9B8",
+    "required_execution_count": 6,
+    "required_unique_loaded_nodes": 6,
+    "required_unique_army_generation_ids": 6,
+    "required_same_full_generation_war_id": true,
+    "evaluated_name": "norman_highwaymen",
+    "evaluated_name_is_standalone_selector": false
+  },
+  "typed_output": {
+    "status": "normalized_private_capture",
+    "source_set": [
+      "same full-generation WarID",
+      "six ordered unique loaded spawn_army nodes",
+      "six unique created CArmy generations",
+      "all created persistent CRegiment generations",
+      "all current CArmyRegiment generations",
+      "per-current-regiment measured soldiers",
+      "persistent-to-current generation mapping",
+      "measured creation-time soldier total"
+    ],
+    "source_set_sha256_required": true,
+    "live_evidence_classified": false,
+    "action_bound_current_ready": false,
+    "postwar_cleanup_ready": false,
+    "source_specific_loss_ready": false,
+    "comparison_input_ready": false
+  },
+  "implementation": {
+    "existing_cmake_option": "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1",
+    "default_enabled": false,
+    "standalone_target": "xar_ck3_raiktor_war_bound_private_capture_v1",
+    "shared_bridge_dll_changed": false,
+    "public_wire_changed": false,
+    "queues_game_command": false,
+    "advances_time": false
+  },
+  "offline_build": {
+    "generator": "Visual Studio 18 2026",
+    "architecture": "x64",
+    "configuration": "Release",
+    "compiler": "MSVC 19.51.36248.0",
+    "self_test_expected": "PASS: private=1 action_arm=1 loaded_nodes=6 exact_war_id=1 public_abi=0 readiness=0",
+    "self_test_exit_code": 0
+  },
+  "hard_boundaries": {
+    "capture_live_executed": false,
+    "provider_production_live": false,
+    "authored_3000_used": false,
+    "existing_r3_generic_rows_retroactively_attributed": false,
+    "public_readiness_promoted": false,
+    "action_readiness_promoted": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false
+  },
+  "next_live_completion": "A future exclusive fresh natural bookmark.1071.a run must capture all six source executions, then carry that exact source_set identity through an action-bound current checkpoint and exact-generation postwar cleanup before source_specific_loss_ready or comparison_input_ready can become true."
+}

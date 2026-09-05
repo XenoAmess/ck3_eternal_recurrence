@@ -98,6 +98,13 @@ measured soldiers before gameplay advances. Exactly six source executions are
 required. Evaluated name is supporting evidence only. A capture from the
 already-post-bookmark R3 checkpoint cannot reconstruct this provenance.
 
+The provider's offline portion is now implemented and preflight GREEN: its
+typed normalizer consumes the existing default-OFF standalone capture shape,
+and the exact ABI plus fresh standalone self-test are frozen in
+[g2-source-specific-war-loss-provider-2026-09-05.md](g2-source-specific-war-loss-provider-2026-09-05.md).
+No real six-execution capture exists yet, so source-specific comparison remains
+RED and the R3 outcome status above is unchanged.
+
 Even after that provider exists, the complete three-way decision still needs
 the separately listed campaign-dominance certificate, an owner-authored budget
 profile, and a same-frame white-peace comparison certificate. No observed
