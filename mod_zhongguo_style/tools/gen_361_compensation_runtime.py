@@ -2380,8 +2380,10 @@ def portfolio_domain_dispatch(domain: DomainSpec) -> str:
     return f'''if = {{
         limit = {{ var:zg361_comp_portfolio_domain = {DOMAINS.index(domain) + 1} }}
         var:zg361_comp_portfolio_subject = {{
-            has_variable = zg361_case_{domain.key}_state
-            {chr(10).join(state_branches)}
+            if = {{
+                limit = {{ has_variable = zg361_case_{domain.key}_state }}
+                {chr(10).join(state_branches)}
+            }}
         }}
     }}'''
 

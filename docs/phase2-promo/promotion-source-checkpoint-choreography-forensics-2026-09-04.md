@@ -1295,3 +1295,37 @@ must record the exact health delta, modifier identity and duration, application
 and removal points, affected character, attempt counter, and live artifact. The
 fixture must remain outside the production mod/release projection; a non-illness
 outcome breaks the consecutive-failure sequence.
+
+## R98: first-use guard shape caused a parser RED
+
+R98 cold-started committed source `7092fa5` through release-identical projection
+`phase2-full-release-r98-7092fa5`. The projection contained 937 files with tree
+SHA-256 `BCA83442602936F20E3F6B713ECCDD7DE7D053A4573F80F15C231ED6C70EFD3B`;
+the release manifest and ZIP SHA-256 values were respectively
+`D1AA89CD3597E1398D4707358F302DD7B85AD9423065D195B1AC360A54DDB607`
+and `55C640389B58C730F41B640BCEC90BE41DB319EE49F87DE2F3A5121171DDE940`.
+Frontend-first warm-up reached its exact marker in 136.78 seconds, was cleanly
+reaped, and final PID 46224 loaded the canonical player `29037` with the native
+bridge connected.
+
+The loader gate then found nine project-attributed parser signatures. They were
+three identical repetitions of each of three source sites in
+`common/scripted_effects/zg361_compensation_07_portfolio_effects.txt`: L, AE and
+AF portfolio dispatches had placed bare `has_variable` triggers directly inside
+a character effect scope. CK3 reported `Unknown effect: has_variable` at generated
+lines 154/182/215 (reported near 156/184/217). The frozen error scan is
+`Z:\b3r98_retry1\cell\02_loader_error_scan.json`; the full error log is 3,510,036
+bytes with SHA-256
+`6017A7B5B89CB5F9337182E3DABB3011AD36AFC47AB8F0FA12237FEDFA162B8B`.
+The runner made no gameplay claim and retained the healthy PID for diagnosis;
+after the generator fix changed mod bytes, the PID was stopped through its managed
+queue and CK3 returned to zero.
+
+The generator now nests the presence test under `if = { limit = { ... } }` before
+the state branches and has a regression that rejects the invalid bare-trigger
+shape. Compensation remains 25 purpose shards with no file-boundary exception.
+This is a parser/product RED, not illness death, so it breaks and resets the
+consecutive illness-death sequence from `1/3` to `0/3`; no health delta or
+survivability modifier has been applied. R99 must cold-start because mod bytes
+changed and must make all nine signatures disappear before this fix is promoted
+to loader-live.

@@ -281,10 +281,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 612_762)
+        self.assertEqual(len(historical_bytes), 612_921)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "1a9ac77f8eb5b8113b54c42d6cc7463a2451729ccc308a3ad3ec5c3167f62c6f",
+            "d1543b209472c019c0f3fc40ef6336a29cac3c8ef6c182a95cf0e27bb1d93bb5",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1066,6 +1066,16 @@ class CompensationRuntimeTests(unittest.TestCase):
         )
         for domain in ("l", "ae", "af"):
             self.assertIn(f"has_variable = zg361_case_{domain}_state", portfolio)
+            self.assertRegex(
+                portfolio,
+                rf"var:zg361_comp_portfolio_subject\s*=\s*\{{\s*"
+                rf"if\s*=\s*\{{\s*limit\s*=\s*\{{\s*"
+                rf"has_variable\s*=\s*zg361_case_{domain}_state",
+            )
+        self.assertNotRegex(
+            portfolio,
+            r"var:zg361_comp_portfolio_subject\s*=\s*\{\s*has_variable\s*=",
+        )
 
     def test_portfolio_freezes_only_a_current_delivered_result_for_all_domains(self) -> None:
         snapshot = top_level_block(
