@@ -145,40 +145,41 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R102",
-    observed_at="2026-09-06 01:29 Asia/Shanghai",
+    run_id="R103",
+    observed_at="2026-09-06 02:21 Asia/Shanghai",
     result="RED",
-    product_commit="19b1ea2",
-    projection="phase2-full-release-r102-19b1ea2",
+    product_commit="5b80006",
+    projection="phase2-full-release-r103-5b80006",
     verified_file_count=937,
-    product_tree_sha256="BA5722EBA455406D391BF4BBBECBDE58E293D1035536F6E2222EEF3ACCC0AB2C",
-    release_manifest_sha256="01FB6637E3DB06C25E44317C3D5E591B2D978CE31D810C90B929C87DAC1D6FA4",
+    product_tree_sha256="67AF3335E74656C731B3EBA98C26C4305570250F82FA6B6584ADE52DFF4FDE95",
+    release_manifest_sha256="DAFCD67135C9077F67BBC384A8508040B97A6ACF911A55198CD682FFF4E7A731",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=1346,
-    native_observations=307,
+    observation_days=2345,
+    native_observations=500,
     drained_event_keys=(
         "zg361b2.40",
-        "ep3_governor_yearly.8120",
+        "ep3_emperor_yearly.2240",
         "ep3_governor_yearly.3060",
         "spymaster_task.0381",
-        "sway_ongoing.5011",
         "zg361.40",
-        "spymaster_task.0342",
-        "sway_outcome.1001",
+        "ep3_governor_yearly.8160",
+        "zg361.40",
         "zg361b1.200",
-        "spymaster_task.0346",
         "zg361b1.201",
-        "sway_ongoing.1002",
+        "health.1001",
+        "health.3104",
         "zg361.40",
-        "spymaster_task.0381",
-        "tgp_interaction_event.0016",
-        "spymaster_task.0381",
-        "tgp_china_yearly.0020",
+        "tgp_interaction_event.0030",
+        "ep3_admin_events.0002",
+        "scheme_critical_moments.1134",
+        "ep3_governor_yearly.8100",
+        "health.1101",
         "zg361.40",
-        "spymaster_task.0381",
-        "spymaster_task.0381",
+        "health.7400",
+        "zg361.40",
+        "tgp_china_yearly.0010",
         "zg361.40",
     ),
     cleared_product_signatures=(
@@ -187,35 +188,41 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "legacy compensation payer-share/dead payer (R99)",
         "dead jingcha superior opinion (R99)",
         "promotion/PIP first-use receipt revision (R99)",
+        "legacy compensation funded shares (R102)",
+        "career-transfer consumer/receiver state (R102)",
+        "B2 redundancy state (R102)",
+        "elimination rank read (R102)",
         "loader-attributed project errors",
     ),
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r102_retry1\evidence-index.json",
-        r"Z:\b3r102_retry1\cell\02_loader_error_scan.json",
-        r"Z:\b3r102_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r102_resume1\03_promotion_source_production_entry.json",
-        r"Z:\b3r102_resume2\03_promotion_source_production_entry.json",
-        r"Z:\b3r102_resume3\03_promotion_source_production_entry.json",
-        r"Z:\b3r102_retry1_native_state\profile\logs\error.log",
-        r"Z:\b3r102_retry1_native_state\profile\logs\debug.log",
+        r"Z:\b3r103_retry1\evidence-index.json",
+        r"Z:\b3r103_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r103_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume1\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume2\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume3\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume4\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume5\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume6\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume7\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_resume8\03_promotion_source_production_entry.json",
+        r"Z:\b3r103_retry1_native_state\profile\logs\error.log",
+        r"Z:\b3r103_retry1_native_state\profile\logs\debug.log",
     ),
     boundary=(
-        "The committed R102 release-identical product loaded 303/303 database nodes with "
-        "fatal 0 and zero loader-attributed project errors. Retained PID 38964 advanced "
-        "1346 game days at speed 5 across 307 paused native observations and 21 exact GREEN "
-        "event drains. The R101 filtered bank-range signature remained zero, so that fix is "
-        "gameplay-live. Exact harness contracts for sway_ongoing.5011, sway_outcome.1001 "
-        "and the dynamic tgp_china_yearly.0020 liege/official frame were also live GREEN "
-        "without a restart. The target zg361pp.146 -> D+1 .147 checkpoint did not appear; "
-        "the canonical registry therefore remains 0/4. The longer full-product log exposed "
-        "four new project error families: missing legacy compensation funded shares, "
-        "missing career-transfer consumer/receiver state, missing B2 redundancy state, and "
-        "an elimination read of a character without rank. R102 is retained only until those "
-        "mod-byte fixes are ready, then requires a managed stop and fresh R103. This was not "
-        "an illness-death failure; the consecutive counter remains 0/3 and no health or "
-        "survivability fixture was applied. This whole-product RED promotes no per-ID tier."
+        "The committed R103 release-identical product loaded 303/303 database nodes with "
+        "fatal 0. Retained PID 9240 advanced 2345 game days at speed 5 across 500 paused "
+        "native observations and 22 exact GREEN event drains. The filtered bank-range "
+        "signature remained zero; the R102 four-family repair also remained zero, so both are "
+        "gameplay-live. The target zg361pp.146 -> D+1 .147 checkpoint did not appear; the "
+        "canonical registry therefore remains 0/4. The longer product log exposed one B1 "
+        "weak-subject calibration cascade and two promotion/PIP optional-state reads in "
+        "zg361pp.2167/.2168. All three are product REDs and are R104 repair inputs. The "
+        "player remained alive, including recovery after illness; this was not an illness-"
+        "death failure, the consecutive counter remains 0/3, and no health or survivability "
+        "fixture was applied. This whole-product RED promotes no per-ID tier."
     ),
 )
 

@@ -105,16 +105,16 @@ class ReadinessDataTests(unittest.TestCase):
             "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_latest_product_snapshot_records_r102_without_promoting_ids(self) -> None:
+    def test_latest_product_snapshot_records_r103_without_promoting_ids(self) -> None:
         snapshot = LATEST_PRODUCT_ACCEPTANCE
-        self.assertEqual(snapshot.run_id, "R102")
+        self.assertEqual(snapshot.run_id, "R103")
         self.assertEqual(snapshot.result, "RED")
-        self.assertEqual(snapshot.product_commit, "19b1ea2")
+        self.assertEqual(snapshot.product_commit, "5b80006")
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 1346)
-        self.assertEqual(snapshot.native_observations, 307)
-        self.assertEqual(len(snapshot.drained_event_keys), 21)
+        self.assertEqual(snapshot.observation_days, 2345)
+        self.assertEqual(snapshot.native_observations, 500)
+        self.assertEqual(len(snapshot.drained_event_keys), 22)
         self.assertIn("zg361b1.200", snapshot.drained_event_keys)
         self.assertIn("filtered bank-range signature remained zero", snapshot.boundary)
         self.assertIn("canonical registry therefore remains 0/4", snapshot.boundary)
@@ -123,10 +123,10 @@ class ReadinessDataTests(unittest.TestCase):
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("最新完整产品验收快照", ledger)
-        self.assertIn("`R102`", ledger)
+        self.assertIn("`R103`", ledger)
         self.assertIn("937 files", ledger)
-        self.assertIn("1346 游戏日", ledger)
-        self.assertIn("307 次 native/MCP 观测", ledger)
+        self.assertIn("2345 游戏日", ledger)
+        self.assertIn("500 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

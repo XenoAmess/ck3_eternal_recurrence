@@ -579,6 +579,7 @@ L1 使用 native/MCP snapshot → 产品动作 → 独立 ACK → 新 revision q
 - common-superior barrier 必须两阶段：上司保存 frozen `expected_managers` 与 `ready_managers` 两个 variable list；经理只提交一次
   ready receipt；全部就绪或 deadline 才由上司一次关账，再把 allocation receipt 写回各经理。调任仍归 frozen superior/season，
   不能按 live `liege` 搬旧账；上司死亡走本地确定性降级。
+- common-superior 延迟结束后，calibration 作为新的 consumer 边界，必须在读取 subject list 前再次以 `is_alive = yes` 重建；较早阶段的 prune 不能覆盖回调间发生的死亡或 scope 失效。
 - variable list 不假定自动去重。追加前先用存在性分支与 `is_target_in_variable_list` 检查；不存在的列表不能直接做 size/membership 求值。
 - 同层 AND/OR/NOT 不保证短路。所有 state/receipt/cursor 在创建案卷时显式初始化；不得用
   `has_variable = x` 与 `var:x = ...` 平铺在同一层来保护未设置读取。

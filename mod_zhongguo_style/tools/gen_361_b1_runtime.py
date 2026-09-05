@@ -8043,6 +8043,11 @@ zg361_b1_open_calibration_effect = {
 		set_variable = { name = zg361_b1_calibration_swap_used value = 0 }
 		set_variable = { name = zg361_b1_bottom_protection_used value = 0 }
 		set_variable = { name = zg361_b1_calibration_quick_close_blocked value = 0 }
+		# The common-superior allocation delay can outlive a frozen subject.
+		# R103 proved that a stale weak Character survives in the variable list
+		# but cannot expose case variables. Rebuild both lists before the first
+		# calibration consumer reads any subject-owned field.
+		zg361_b1_prune_unavailable_subjects_effect = yes
 		zg361_b1_freeze_conflict_recusals_effect = yes
 		zg361_b1_apply_recusal_replacement_reviews_effect = yes
 		zg361_b1_apply_atomic_calibration_swap_effect = yes

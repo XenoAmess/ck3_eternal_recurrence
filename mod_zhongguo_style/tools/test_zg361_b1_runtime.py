@@ -2852,6 +2852,24 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             local_quota.index("zg361_b1_audit_frozen_roster_effect = yes"),
         )
 
+        open_calibration = top_level_block(
+            self.effects, "zg361_b1_open_calibration_effect"
+        )
+        self.assertEqual(
+            open_calibration.count(
+                "zg361_b1_prune_unavailable_subjects_effect = yes"
+            ),
+            1,
+        )
+        self.assertLess(
+            open_calibration.index(
+                "zg361_b1_prune_unavailable_subjects_effect = yes"
+            ),
+            open_calibration.index(
+                "zg361_b1_freeze_conflict_recusals_effect = yes"
+            ),
+        )
+
         reopen_resolver = top_level_block(
             self.effects, "zg361_b1_resolve_reopen_batch_effect"
         )

@@ -516,9 +516,24 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
 
         audit_167 = effect_block(self.events, "zg361pp.2167")
         audit_168 = effect_block(self.events, "zg361pp.2168")
+        self.assertIn("has_variable = zg361_pp_m167_observation_settled", audit_167)
         self.assertIn("zg361_pp_m167_observation_settled = 0", audit_167)
+        self.assertLess(
+            audit_167.index("has_variable = zg361_pp_m167_observation_settled"),
+            audit_167.index("var:zg361_pp_m167_observation_settled = 0"),
+        )
         self.assertIn("zg361_pp_m167_sponsor_credit_delta", audit_167)
+        self.assertIn("has_variable = zg361_pp_m168_sample_pending", audit_168)
+        self.assertIn("has_variable = zg361_pp_m168_sample_settled", audit_168)
         self.assertIn("zg361_pp_m168_sample_pending = 1", audit_168)
+        self.assertLess(
+            audit_168.index("has_variable = zg361_pp_m168_sample_pending"),
+            audit_168.index("var:zg361_pp_m168_sample_pending = 1"),
+        )
+        self.assertLess(
+            audit_168.index("has_variable = zg361_pp_m168_sample_settled"),
+            audit_168.index("var:zg361_pp_m168_sample_settled = 0"),
+        )
         self.assertIn("zg361_pp_u_next_quota_pending value = 1", audit_168)
 
         dead_aggregate_ledgers = (

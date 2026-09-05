@@ -1627,6 +1627,301 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_health_7400_accepts_unavoidable_faltering_heart_frame(self) -> None:
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "health.7400",
+            "current_event_instance_id": 31,
+            "date_raw": 53190360,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            "saved_scopes": [],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53190360, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 31}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS["health.7400"]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="health.7400",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"] = [
+            {
+                "name": "unrelated_scope",
+                "scope": {"status": "available", "type_key": "value"},
+            }
+        ]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra_scope,
+            event_key="health.7400",
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_count"])
+
+    def test_health_1001_binds_generic_illness_and_safe_treatment_branch(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "health.1001"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 22,
+            "date_raw": 53175480,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("physician", "character", 56656),
+                scope("sick_character", "character", 29037),
+                scope("disease_type", "flag"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((3, 4, 6))
+            ],
+        }
+        snapshot = {"date_raw": 53175480, "active_event": {"option_count": 7}}
+        event = {"event_instance_id": 22}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][-1]["native_option_index"] = 5
+        self.assertFalse(checks_for(wrong_projection)["authored_options_exact"])
+
+        player_physician = copy.deepcopy(context)
+        player_physician["saved_scopes"][0] = scope(
+            "physician", "character", 29037
+        )
+        self.assertFalse(
+            checks_for(player_physician)["scope:physician:unique_third_party"]
+        )
+
+        wrong_scope_type = copy.deepcopy(context)
+        wrong_scope_type["saved_scopes"][-1]["scope"]["type_key"] = "value"
+        self.assertFalse(checks_for(wrong_scope_type)["scope:disease_type:type"])
+
+    def test_health_3104_binds_safe_treatment_failure_acknowledgement(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "health.3104"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 23,
+            "date_raw": 53175480,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("physician", "character", 56656),
+                scope("sick_character", "character", 29037),
+                scope("disease_type", "flag"),
+                scope("treatment_picker", "character", 29037),
+                scope("treatment", "flag"),
+                scope("outcome", "flag"),
+                scope("portrait", "character", 56656),
+                scope("background_terrain_scope", "province"),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53175480, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 23}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_portrait = copy.deepcopy(context)
+        wrong_portrait["saved_scopes"][6] = scope(
+            "portrait", "character", 56657
+        )
+        self.assertFalse(
+            checks_for(wrong_portrait)["scope:physician:matches_any"]
+        )
+
+        non_player_picker = copy.deepcopy(context)
+        non_player_picker["saved_scopes"][3] = scope(
+            "treatment_picker", "character", 56656
+        )
+        self.assertFalse(
+            checks_for(non_player_picker)["scope:treatment_picker"]
+        )
+
+        wrong_scope_type = copy.deepcopy(context)
+        wrong_scope_type["saved_scopes"][-1]["scope"]["type_key"] = "flag"
+        self.assertFalse(
+            checks_for(wrong_scope_type)["scope:background_terrain_scope:type"]
+        )
+
+    def test_health_1101_binds_generic_illness_recovery_acknowledgement(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "health.1101"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 29,
+            "date_raw": 53183712,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("physician", "character", 56656),
+                scope("sick_character", "character", 29037),
+                scope("disease_type", "flag"),
+            ],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53183712, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 29}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        player_physician = copy.deepcopy(context)
+        player_physician["saved_scopes"][0] = scope(
+            "physician", "character", 29037
+        )
+        self.assertFalse(
+            checks_for(player_physician)["scope:physician:unique_third_party"]
+        )
+
+        wrong_disease_type = copy.deepcopy(context)
+        wrong_disease_type["saved_scopes"][-1]["scope"]["type_key"] = "value"
+        self.assertFalse(
+            checks_for(wrong_disease_type)["scope:disease_type:type"]
+        )
+
     def test_health_1006_binds_diagnosis_frame_and_safe_treatment_branch(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None
@@ -1705,6 +2000,96 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         wrong_scope_type = copy.deepcopy(context)
         wrong_scope_type["saved_scopes"][0]["scope"]["type_key"] = "flag"
         self.assertFalse(checks_for(wrong_scope_type)["scope:epidemic:type"])
+
+    def test_slander_reaction_accepts_both_source_boolean_shapes(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "scheme_critical_moments.1134"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53177256,
+        )
+        base_scopes = [
+            scope("scheme", "scheme"),
+            scope("owner", "character", 28424),
+            scope("artifact", "artifact"),
+            scope("target", "character", 29037),
+            scope("follow_up_event", "flag"),
+            scope("discovery_chance", "value"),
+        ]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 27,
+            "date_raw": 53181000,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": base_scopes + [
+                scope("scheme_successful", "boolean")
+            ],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53181000, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 27}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        discovered = copy.deepcopy(context)
+        discovered["saved_scopes"].insert(
+            -1, scope("scheme_discovered", "boolean")
+        )
+        checks = checks_for(discovered)
+        self.assertTrue(all(checks.values()), checks)
+
+        missing_success = copy.deepcopy(context)
+        missing_success["saved_scopes"] = base_scopes
+        checks = checks_for(missing_success)
+        self.assertFalse(checks["boolean_scope_names_exact"])
+        self.assertFalse(checks["saved_scope_names_exact"])
+
+        extra_boolean = copy.deepcopy(context)
+        extra_boolean["saved_scopes"].insert(
+            -1, scope("scheme_discovered", "boolean")
+        )
+        extra_boolean["saved_scopes"].insert(
+            -1, scope("unrelated_boolean", "boolean")
+        )
+        checks = checks_for(extra_boolean)
+        self.assertFalse(checks["saved_scope_names_exact"])
 
     def test_ep3_governor_8160_binds_fresh_administrator_relationship(self) -> None:
         def scope(
@@ -1902,6 +2287,121 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         extra_scope["saved_scopes"].append(character_scope("extra", 29037))
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_count"])
+
+    def test_tgp_elder_break_letter_binds_relationship_payload(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        def unavailable_character_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "unavailable",
+                        "reason": "character_scope_identity_unavailable",
+                    },
+                },
+            }
+
+        event_key = "tgp_interaction_event.0030"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53175480,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 25,
+            "date_raw": 53177256,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("actor", "character", 29491),
+                scope("recipient", "character", 29037),
+                unavailable_character_scope("secondary_actor"),
+                unavailable_character_scope("secondary_recipient"),
+                unavailable_character_scope("intermediary"),
+                scope("prestige", "boolean"),
+                scope("gift", "boolean"),
+                scope("gift_significant", "boolean"),
+                scope("offer_hook", "boolean"),
+                scope("offer_hook_strong", "boolean"),
+                scope("influence", "boolean"),
+                scope("piety", "boolean"),
+                scope("hook", "boolean"),
+                scope("actors_movement", "situation_participant_group"),
+                scope("new_disciple", "character", 29491),
+                scope("old_elder", "character", 29037),
+                scope("new_elder", "character", 26743),
+            ],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53177256, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 25}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+
+        mismatched_disciple = copy.deepcopy(context)
+        mismatched_disciple["saved_scopes"][14] = scope(
+            "new_disciple", "character", 29492
+        )
+        self.assertFalse(
+            checks_for(mismatched_disciple)["scope:actor:matches_any"]
+        )
+
+        player_new_elder = copy.deepcopy(context)
+        player_new_elder["saved_scopes"][-1] = scope(
+            "new_elder", "character", 29037
+        )
+        self.assertFalse(
+            checks_for(player_new_elder)["scope:new_elder:unique_third_party"]
+        )
+
+        invented_weak_identity = copy.deepcopy(context)
+        invented_weak_identity["saved_scopes"][2] = scope(
+            "secondary_actor", "character", 29491
+        )
+        self.assertFalse(
+            checks_for(invented_weak_identity)[
+                "scope:secondary_actor:unavailable_character"
+            ]
+        )
 
     def test_mechanism_001_accepts_the_reference_charter_choice(self) -> None:
         context = {

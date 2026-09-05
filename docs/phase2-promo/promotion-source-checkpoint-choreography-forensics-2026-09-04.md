@@ -1509,3 +1509,48 @@ ZIP `C53A677784BA5F4457FA7A42D575E41F03D50406FF4DC760FE1BEC6F96500F51`).
 This remains static-ready until a fresh R103 CK3 run proves the four R102
 families absent. No illness death occurred and no survivability fixture was
 used.
+
+## R103: R102 fixes cleared; delayed optional-state REDs exposed
+
+R103 cold-started committed source `5b80006` through the 937-file
+release-identical projection `phase2-full-release-r103-5b80006`. Its source
+tree, release manifest and ZIP SHA-256 were respectively
+`67AF3335E74656C731B3EBA98C26C4305570250F82FA6B6584ADE52DFF4FDE95`,
+`DAFCD67135C9077F67BBC384A8508040B97A6ACF911A55198CD682FFF4E7A731`
+and `C53A677784BA5F4457FA7A42D575E41F03D50406FF4DC760FE1BEC6F96500F51`.
+It loaded 303/303 database nodes with fatal zero.
+
+PID 9240 was retained across eight harness-only continuations. The combined
+timeline advanced 2,345 game days at the default speed 5, made 500 paused
+native observations, and safely drained 22 exact events. The four R102 product
+families and the filtered bank-range signature remained zero throughout, so
+those repairs are gameplay-live. The target `zg361pp.146 -> D+1 .147`
+checkpoint still did not appear; the canonical registry remains `0/4`.
+
+The long-window log exposed three new product causes:
+
+- a B1 subject became a weak character after the earlier roster prune and
+  before delayed calibration; the first calibration consumer then cascaded
+  through recusal, replacement, swap and bottom-protection reads;
+- `zg361pp.2167` read absent optional
+  `zg361_pp_m167_observation_settled`;
+- `zg361pp.2168` read absent optional
+  `zg361_pp_m168_sample_pending`.
+
+The player remained alive. A normal illness and failed safe treatment were
+followed by recovery, not death; the consecutive illness-death counter is
+`0/3`, and no health value or survivability modifier was applied.
+
+## R104 repair candidate: re-prune at delayed use and skip absent objects
+
+The B1 calibration opener now rebuilds its subject list through the existing
+`is_alive = yes` prune immediately before the first independent calibration
+consumer group. The two promotion/PIP delayed audits now inspect their
+optional settlement/sample values only inside lazy
+`trigger_if/trigger_else` presence guards. Missing state means the underlying
+observation or sample was never created, so the audit skips settlement instead
+of fabricating a zero-valued business object.
+
+Generator checks, B1 `68/68` and promotion/PIP `51/51` suites are GREEN in
+normal and optimized modes. These repairs remain static-ready until one fresh
+R104 exact-product run clears the R103 signatures.

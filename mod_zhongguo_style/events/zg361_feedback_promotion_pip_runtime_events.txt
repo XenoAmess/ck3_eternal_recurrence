@@ -5732,7 +5732,16 @@ zg361pp.2167 = {
 			else_if = { limit = { var:zg361_pp_m167_route = 2 } set_variable = { name = zg361_pp_m167_audit_1_outcome value = 2 } }
 			else = { set_variable = { name = zg361_pp_m167_audit_1_outcome value = 3 } }
 			if = {
-				limit = { var:zg361_pp_m167_observation_settled = 0 }
+				# R103 reached this delayed audit through an older route without an
+				# observation object. Missing optional state means there is nothing
+				# to settle; read its value only behind a lazy presence guard.
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_m167_observation_settled }
+						var:zg361_pp_m167_observation_settled = 0
+					}
+					trigger_else = { always = no }
+				}
 				set_variable = { name = zg361_pp_m167_competent value = 0 }
 				if = { limit = { stewardship >= 10 } set_variable = { name = zg361_pp_m167_competent value = 1 } }
 				set_variable = { name = zg361_pp_m167_sponsor_credit_delta value = { value = var:zg361_pp_m167_sponsor_strength multiply = -1 } }
@@ -5785,7 +5794,20 @@ zg361pp.2168 = {
 			else_if = { limit = { var:zg361_pp_m168_route = 2 } set_variable = { name = zg361_pp_m168_audit_1_outcome value = 2 } }
 			else = { set_variable = { name = zg361_pp_m168_audit_1_outcome value = 3 } }
 			if = {
-				limit = { var:zg361_pp_m168_sample_pending = 1 var:zg361_pp_m168_sample_settled = 0 }
+				# As above, an absent sample is not a zero-valued sample. Both
+				# optional fields must exist before their values are inspected.
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_pp_m168_sample_pending }
+						var:zg361_pp_m168_sample_pending = 1
+						trigger_if = {
+							limit = { has_variable = zg361_pp_m168_sample_settled }
+							var:zg361_pp_m168_sample_settled = 0
+						}
+						trigger_else = { always = no }
+					}
+					trigger_else = { always = no }
+				}
 				set_variable = { name = zg361_pp_m168_competent value = 0 }
 				if = { limit = { stewardship >= 10 } set_variable = { name = zg361_pp_m168_competent value = 1 } }
 				var:zg361_case_u_owner = {

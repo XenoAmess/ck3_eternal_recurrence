@@ -1125,6 +1125,19 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "health.7400": {
+        # Vanilla yearly-health onset of faltering heart. The event has no
+        # saved scopes and one unavoidable acknowledgement whose sole effect
+        # adds the indicated trait. Bind the complete R103 one-option frame.
+        "date_raw": 53190360,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "boolean_scopes": (),
+        "saved_scope_count": 0,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "health.7500": {
         # Vanilla yearly-health onset of fragile bones. Like health.7200, the
         # event has no saved scopes and one unavoidable acknowledgement. Its
@@ -1501,6 +1514,54 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "tgp_interaction_event.0030": {
+        # Vanilla elder-break notification. The disciple/elder relationship
+        # changes in immediate before the letter is rendered; its sole option
+        # is empty. Bind the R103 interaction payload, including weak generic
+        # interaction slots, the old/new elder identities and the authored
+        # actor/new-disciple alias before acknowledging it.
+        "date_raw": 53177256,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "recipient": 29037,
+            "old_elder": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (29037,),
+            "new_disciple": (29037,),
+            "new_elder": (29037,),
+        },
+        "character_scope_matches_any": {
+            "actor": ("new_disciple",),
+            "new_disciple": ("actor",),
+        },
+        "character_scope_differs_from": {
+            "actor": ("new_elder",),
+            "new_elder": ("actor",),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),
+        "scope_types": {
+            "actors_movement": "situation_participant_group",
+        },
+        "boolean_scopes": (
+            "prestige",
+            "gift",
+            "gift_significant",
+            "offer_hook",
+            "offer_hook_strong",
+            "influence",
+            "piety",
+            "hook",
+        ),
+        "saved_scope_count": 17,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "scheme_critical_moments.1134": {
         # Vanilla slander target-reaction notice. Its immediate block has
         # already applied the influence/modifier outcome before the window is
@@ -1517,8 +1578,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "follow_up_event": "flag",
             "discovery_chance": "value",
         },
-        "boolean_scopes": ("scheme_discovered", "scheme_successful"),
-        "saved_scope_count": 8,
+        # The event source writes scheme_successful whenever this branch
+        # opens, while scheme_discovered is conditional on the live scheme
+        # outcome. R102 observed both flags; R103 observed only success.
+        "boolean_scopes": (),
+        "boolean_scope_name_sets": (
+            ("scheme_successful",),
+            ("scheme_discovered", "scheme_successful"),
+        ),
+        "saved_scope_name_sets": (
+            (
+                "scheme",
+                "owner",
+                "artifact",
+                "target",
+                "follow_up_event",
+                "discovery_chance",
+                "scheme_successful",
+            ),
+            (
+                "scheme",
+                "owner",
+                "artifact",
+                "target",
+                "follow_up_event",
+                "discovery_chance",
+                "scheme_discovered",
+                "scheme_successful",
+            ),
+        ),
         "option_count": 1,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
@@ -1569,6 +1657,86 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "boolean_scopes": (),
         "saved_scope_count": 4,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "health.1001": {
+        # Vanilla generic-illness diagnosis. The disease is applied in the
+        # immediate block before the window opens, so no visible option can
+        # avoid that state change. This R103 live frame exposes authored
+        # treatment options 4/5 plus authored option 7, with the played owner
+        # and one non-player physician bound explicitly. Authored option 4 is
+        # the conservative physician treatment and is the least disruptive
+        # branch for preserving the character-bound Phase2 acceptance path.
+        "date_raw": 53175480,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "sick_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+        },
+        "scope_types": {
+            "disease_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "snapshot_option_count": 7,
+        "native_option_indices": (3, 4, 6),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+    },
+    "health.3104": {
+        # Vanilla safe-treatment failure opened immediately by health.1001's
+        # conservative treatment branch. The treatment outcome and modifiers
+        # are applied in immediate before this result window; option 1 is the
+        # only acknowledgement without imprisonment or execution of the
+        # physician. Bind the complete R103 live scope and option shape before
+        # dismissing it.
+        "date_raw": 53175480,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "sick_character": 29037,
+            "treatment_picker": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+        },
+        "character_scope_matches_any": {
+            "physician": ("portrait",),
+        },
+        "scope_types": {
+            "disease_type": "flag",
+            "treatment": "flag",
+            "outcome": "flag",
+            "background_terrain_scope": "province",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 8,
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "health.1101": {
+        # Vanilla recovery from generic illness. The immediate block has
+        # already removed the ill trait and treatment state; the sole option
+        # only exposes that completed removal as a tooltip. Bind the complete
+        # R103 recovery payload before acknowledging it.
+        "date_raw": 53183712,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "sick_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+        },
+        "scope_types": {
+            "disease_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 3,
         "option_count": 1,
         "selected_option_number": 1,
         "selected_native_option_index": 0,

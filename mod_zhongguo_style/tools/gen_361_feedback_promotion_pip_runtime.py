@@ -3219,7 +3219,16 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t}}'''
     elif mechanism.mechanism_id == 167:
         special_audit = f'''if = {{
-\t\t\t\tlimit = {{ var:{p}_observation_settled = 0 }}
+\t\t\t\t# R103 reached this delayed audit through an older route without an
+\t\t\t\t# observation object. Missing optional state means there is nothing
+\t\t\t\t# to settle; read its value only behind a lazy presence guard.
+\t\t\t\tlimit = {{
+\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\tlimit = {{ has_variable = {p}_observation_settled }}
+\t\t\t\t\t\tvar:{p}_observation_settled = 0
+\t\t\t\t\t}}
+\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t}}
 \t\t\t\tset_variable = {{ name = {p}_competent value = 0 }}
 \t\t\t\tif = {{ limit = {{ stewardship >= 10 }} set_variable = {{ name = {p}_competent value = 1 }} }}
 \t\t\t\tset_variable = {{ name = {p}_sponsor_credit_delta value = {{ value = var:{p}_sponsor_strength multiply = -1 }} }}
@@ -3228,7 +3237,20 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t}}'''
     elif mechanism.mechanism_id == 168:
         special_audit = f'''if = {{
-\t\t\t\tlimit = {{ var:{p}_sample_pending = 1 var:{p}_sample_settled = 0 }}
+\t\t\t\t# As above, an absent sample is not a zero-valued sample. Both
+\t\t\t\t# optional fields must exist before their values are inspected.
+\t\t\t\tlimit = {{
+\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\tlimit = {{ has_variable = {p}_sample_pending }}
+\t\t\t\t\t\tvar:{p}_sample_pending = 1
+\t\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\t\tlimit = {{ has_variable = {p}_sample_settled }}
+\t\t\t\t\t\t\tvar:{p}_sample_settled = 0
+\t\t\t\t\t\t}}
+\t\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t\t}}
+\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t}}
 \t\t\t\tset_variable = {{ name = {p}_competent value = 0 }}
 \t\t\t\tif = {{ limit = {{ stewardship >= 10 }} set_variable = {{ name = {p}_competent value = 1 }} }}
 \t\t\t\tvar:zg361_case_u_owner = {{
