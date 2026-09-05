@@ -1002,3 +1002,30 @@ never starts Central, starts and immediately becomes stale, or reaches stage
 optimized Python; choreography, B1 witness and runner-plumbing suites pass
 5/5, 5/5 and 18/18 respectively in both modes. This remains static-ready until
 R89 supplies a real time series.
+
+## R89: running-frame query rejected before business progression
+
+R89 passed the no-launch preflight, exact 303-node loader gate and managed
+native-session startup on PID 98608. The first two compact progress samples at
+`date_raw=53147016` consistently showed played-character B1 active, Central
+inactive and PP inactive. On the next running-frame sample the native bridge
+rejected the GUI-backed progress command with `ZhongGuo promotion source
+progress binding changed or is not ready`.
+
+This is a harness RED, not a product-capability RED: the query contract is
+paused-frame bound, while the first implementation issued it before pausing a
+running map. The runner now explicitly pauses before every progress sample,
+rebinds the same player/connection/date, queries, then resumes at speed 5 when
+there is no event. The focused fake rejects any poll made while running and
+locks the pause/query/resume order. Runner tests are again 19/19 in normal and
+optimized modes. R90 must verify the corrected sampling loop in CK3 before its
+time series can be used to diagnose the player path.
+
+R89 outer report, evidence index, cell report, promotion entry and cleanup
+SHA-256 values are respectively
+`96737B540EF20905D9481A3EAC3C4FDB78E8B3AABD6B0726A200B0B18F431B6B`,
+`D60A08FA033C539308F7CB3CFF70F9102212C85E00DB695339B7822E12A19DA7`,
+`2643D6F5CBB88816CA03118E93C17B00AA91FC785C16FD4C3F3BFE3F1B8EC66A`,
+`6E37FEA597112699DBCD63BFCD2D658F5EC8834B5A5E3C1AA052934D44C71391`
+and `241DF92FC5D508E6453AF2051BDB2778A79AA0276709B062B340D89426438FB2`.
+Cleanup was GREEN and CK3 returned to zero.

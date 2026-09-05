@@ -1893,6 +1893,27 @@ def enter_promotion_source_checkpoint_v1(
                 "bound (400-day authored B1 window plus 150-day "
                 "post-publication window)"
             )
+        # The fixed GUI-backed progress observer is a paused-frame query.
+        # Pause before every sample, then resume at speed 5 below. This also
+        # closes the race where an event becomes active between snapshots.
+        if snapshot.get("paused") is not True:
+            _accepted(
+                service.execute_step(
+                    "pause-map", expected_revision=int(snapshot["revision"])
+                ),
+                "pause-map",
+            )
+            snapshot, event = _binding(
+                service.snapshot(), player=player,
+                connection_generation=generation,
+            )
+            date_raw = int(snapshot["date_raw"])
+            if date_raw > starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY:
+                raise PromotionProductionEntryError(
+                    "promotion path exceeded its 550-day product observation "
+                    "bound (400-day authored B1 window plus 150-day "
+                    "post-publication window)"
+                )
         observations = evidence["observations"]
         assert isinstance(observations, list)
         observations.append({
@@ -1915,12 +1936,6 @@ def enter_promotion_source_checkpoint_v1(
             )
         )
         if isinstance(snapshot.get("active_event"), Mapping) and event is None:
-            _accepted(
-                service.execute_step(
-                    "pause-map", expected_revision=int(snapshot["revision"])
-                ),
-                "pause-map",
-            )
             if poll_interval_seconds:
                 sleeper(poll_interval_seconds)
             continue

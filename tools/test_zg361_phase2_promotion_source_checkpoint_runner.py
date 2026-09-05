@@ -163,7 +163,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
         self.assertIn('"result": "RED"', persisted)
 
-    def test_product_entry_uses_speed_five_and_pauses_before_event_query(self) -> None:
+    def test_product_entry_uses_speed_five_and_pauses_before_progress_query(self) -> None:
         class Service:
             def __init__(self) -> None:
                 self.speed = 1
@@ -190,6 +190,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self, request_nonce: str, *, expected_revision: int
             ) -> dict[str, object]:
                 self.progress_queries.append(request_nonce)
+                if request_nonce.startswith("promo.entry.poll.") and not self.paused:
+                    raise AssertionError("progress polling must use a paused frame")
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
                     for _ in range(5)
@@ -212,6 +214,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     self.event_pending = True
                 elif step == "pause-map":
                     self.paused = True
+                    self.event_pending = False
                 return {"accepted": True, "status": "submitted"}
 
         ticks = iter((0.0, 0.0, 0.0, 0.0, 2.0))
@@ -229,7 +232,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
         self.assertEqual(
             service.steps,
-            ["set-speed-5", "resume-map", "pause-map"],
+            ["set-speed-5", "resume-map", "pause-map", "resume-map"],
         )
         self.assertEqual(service.progress_queries[0], "promo.entry.before")
         self.assertGreaterEqual(len(service.progress_queries), 3)

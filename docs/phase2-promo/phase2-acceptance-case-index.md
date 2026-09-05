@@ -42,7 +42,7 @@
 | `P2-B1-001` | manager/subject 身份 | manager cycle/case 与 subject ABI 独立，旧存档只读 witness 可见 | subject 字段不得冒充 manager；旧 ticket 不得强行复活 | `LIVE_PARTIAL` |
 | `P2-B1-002` | 长期名单与嵌套角色引用 | 每个延迟消费边界剔除不可用 weak Character；每次解引用 Character-valued variable 都重新用外层 `is_alive=yes` 隔离，再读取角色变量 | 产品调用栈出现 `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `LIVE_GREEN`：R88 跑满同类 550 日窗口，产品 weak-variable 调用栈为 0 |
 | `P2-B1-003` | baseline | 有首府正常结算；无首府时 comparator unavailable 且 delta=0 | 不得把缺值当真实 0，不得读取新 owner 代替冻结对象 | `LIVE_PARTIAL` |
-| `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `BLOCKED`：R88 已实机到达 B1 publication 与 Central hook，但聚合日志不能证明属于玩家；550 日内仍无 `.146/.147`。R89 已静态锁定逐观测的 player-owned B1/Central/PP 时间序列 |
+| `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `BLOCKED`：R88 已实机到达 B1 publication 与 Central hook，但聚合日志不能证明属于玩家；550 日内仍无 `.146/.147`。R89 在业务推进前暴露 running-frame query harness RED，已改为逐轮 pause/query/resume，待 R90 live |
 | `P2-B2-001` | 送达/申诉/PIP | 三条真实分支、四次 exact restore、最终 baseline、跨进程 event identity | unset owner、跨 case receipt、申诉加重、资金不守恒即 RED | `LIVE_GREEN`：focused gate；不等于 Phase2 全量 |
 | `P2-B3-001` | 管理者/制度 | 上一轮团队快照、京察、校准、PIP/申诉/留任聚合 | 同轮递归、manager/subject 混同、AI 非授权入口即 RED | `LIVE_PARTIAL` |
 | `P2-B4-001` | 晋升/职级/现金 | 资格至任命/失败冷却，HC/奖金预留释放，欠付补发守恒 | 失败不释放、跨案串账、玩家/owner 错位即 RED | `STATIC_GREEN / live pending` |
