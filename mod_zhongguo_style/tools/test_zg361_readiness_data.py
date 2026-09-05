@@ -112,9 +112,9 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(snapshot.product_commit, "7f17fed")
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 993)
-        self.assertEqual(snapshot.native_observations, 272)
-        self.assertEqual(len(snapshot.drained_event_keys), 122)
+        self.assertEqual(snapshot.observation_days, 1107)
+        self.assertEqual(snapshot.native_observations, 279)
+        self.assertEqual(len(snapshot.drained_event_keys), 123)
         self.assertIn("zg361b2.40", snapshot.drained_event_keys)
         self.assertIn("zg361b1.201", snapshot.drained_event_keys)
         self.assertIn("zg361ch.102", snapshot.drained_event_keys)
@@ -122,7 +122,8 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertIn("zg361comp.1", snapshot.drained_event_keys)
         self.assertIn("zg361.6", snapshot.drained_event_keys)
         self.assertIn("harness-contract RED", snapshot.boundary)
-        self.assertIn("PID 30492 remains retained", snapshot.boundary)
+        self.assertIn("separate product copy RED", snapshot.boundary)
+        self.assertIn("retained R106 PID 30492 cannot validate", snapshot.boundary)
         self.assertIn("canonical registry remains 0/4", snapshot.boundary)
         self.assertIn("0/3", snapshot.boundary)
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
@@ -131,8 +132,8 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertIn("最新完整产品验收快照", ledger)
         self.assertIn("`R106`", ledger)
         self.assertIn("937 files", ledger)
-        self.assertIn("993 游戏日", ledger)
-        self.assertIn("272 次 native/MCP 观测", ledger)
+        self.assertIn("1107 游戏日", ledger)
+        self.assertIn("279 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

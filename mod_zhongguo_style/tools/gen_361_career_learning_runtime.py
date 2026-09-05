@@ -71,14 +71,14 @@ def m(
 MECHANISMS: tuple[Mechanism, ...] = (
     m(312, "ah", 1, "market.publish_real_vacancy", "A Vacancy That Exists", "这岗位真的存在", "Publish real HC and terms", "公开真实编制与条款", "Post a phantom vacancy", "挂一个空气岗位"),
     m(313, "ah", 1, "market.freeze_structured_reference", "The Reference Has Columns", "推荐信终于有列", "Freeze the complete record", "冻结完整履历", "Omit risk and whisper revenge", "隐去风险并顺手报复"),
-    m(314, "ah", 2, "market.offer_relocation_package", "Relocation Is Not Exposure", "异地调任不能只发愿景", "Accept the funded package", "接受有钱的调任包", "Decline without a rating penalty", "拒绝且不背绩效锅"),
-    m(315, "ah", 2, "market.run_bilateral_trial", "Ninety Days, Three Exit Doors", "九十天试岗，三方可退", "Complete a balanced trial", "完成权责对等试岗", "Return after a role mismatch", "岗位不合就原路返回"),
+    m(314, "ah", 2, "market.offer_relocation_package", "A Distant Posting in Writing", "一纸异地调令", "Accept the transfer with its relocation terms", "接受附有安置条款的调任方案", "Decline and remain at the present post", "谢绝调任，仍守本职"),
+    m(315, "ah", 2, "market.run_bilateral_trial", "Ninety Days to Test the Post", "先试九十日，再定去留", "Begin the ninety-day trial", "依约开始九十日试任", "Decline and return to the former post", "职事不合，按约回任"),
     m(316, "ah", 3, "market.freeze_pay_mapping", "Map Pay Before the Move", "转岗前先把钱说清", "Protect and phase the mapping", "保薪并分期映射", "Force an immediate cut", "立刻降档省预算"),
     m(317, "ah", 3, "market.project_stage_acl", "Your Application Is Not Team News", "你的申请不是团队早报", "Respect stage ACL", "遵守分阶段权限", "Leak it and retaliate", "提前泄露并秋后算账"),
-    m(318, "ah", 2, "market.consume_application_slot", "Two Applications, Not Two Silences", "两次申请，不是两次石沉大海", "Use one formal slot", "接受使用一次正式申请名额；提交后撤回仍占用本次名额", "Decline before filing and keep the slot", "提交前拒绝；本次申请名额不消耗"),
-    m(319, "ah", 4, "market.counteroffer_then_release", "One Counteroffer, Then Let Go", "只许一次反邀约，然后放人", "Reject the counteroffer and transfer within 30 days", "拒绝反邀约，并在 30 日内调任", "Accept the written counteroffer; review delivery in 90 days", "接受书面反邀约；90 日后复核兑现，失约将扣上司 20 分"),
+    m(318, "ah", 2, "market.consume_application_slot", "Two Petitions, Two Chances", "两封求调书，两次落笔", "File the petition and use one chance", "递交文书，用去一次名额", "Wait and keep this chance", "暂不递交，保留这次机会"),
+    m(319, "ah", 4, "market.counteroffer_then_release", "One Last Offer", "离任前的最后挽留", "Decline and begin the thirty-day transfer", "拒绝挽留，启动三十日调任", "Remain on an unfulfilled promise; settle it in ninety days", "接受未兑现的挽留，九十日后追责"),
     m(320, "ah", 5, "market.aggregate_exit_voice", "Exit Voice Needs a Sample", "离职心声也要样本量", "Aggregate named and anonymous evidence", "聚合实名与匿名证据", "Reclassify the complaint away", "通过改类掩去投诉"),
-    m(321, "ah", 5, "market.maintain_alumni_relationship", "Alumni, With Consent", "前同事关系也要同意", "Maintain one consented contact", "维护一次经同意的联系", "Delete the contact card, keep the shame", "删掉联系人，黑历史还在"),
+    m(321, "ah", 5, "market.maintain_alumni_relationship", "Old Colleagues, By Mutual Consent", "旧袍泽，也须两厢情愿", "Accept the card and remain in contact", "收下名帖，容后往来", "Return the card and part ways", "退回名帖，就此别过"),
     m(322, "ah", 6, "market.open_returnee_case", "A Returnee Brings Old Receipts", "回流员工自带旧账", "Link old cases and new evidence", "回链旧案与新证据", "Attempt a clean-slate rewrite", "试图一键洗白历史"),
     m(323, "ai", 1, "learning.allocate_dual_budget", "Learning Has Two Budgets", "学习有两本预算", "Fund gold and protected hours", "同时拨金币与保护工时", "Buy certificates, reserve no time", "只买证书，不给时间"),
     m(324, "ai", 1, "learning.advance_three_stages", "Completed Is Not Applied", "结课不等于会用", "Prove completion, application, outcome", "证明结课、应用与结果", "Stop at the completion badge", "停在结课徽章"),
@@ -90,11 +90,37 @@ MECHANISMS: tuple[Mechanism, ...] = (
     m(330, "ai", 4, "learning.settle_reskill_route", "Reskill or Hire, Pay Either Way", "转型培养或外招，都得付钱", "Reskill the existing official", "培养现有官员", "Hire outside and record fairness debt", "外招并记录公平债"),
     m(331, "ai", 4, "learning.borrow_protected_time", "Protected Time Is Not Decorative", "保护工时不是装饰品", "Borrow for a real crisis and repay", "真危机借用并按期补回", "Repay late and charge the manager", "逾期补回并扣经理分"),
     m(332, "ai", 5, "learning.run_safe_succession_drill", "The Drill Is Not the Disaster", "演练不是事故现场", "Run a successful safe simulation", "完成安全继任演练", "Expose a development gap", "暴露培养缺口"),
-    m(333, "ai", 5, "learning.settle_training_commitment", "Training Debt Shrinks Monthly", "培训服务债按月递减", "Apply the skill and serve", "应用所学并履约", "Leave early and repay the remainder", "提前离开并返还余额"),
+    m(333, "ai", 5, "learning.settle_training_commitment", "The Bond That Paid for Learning", "学成之后，尚有一纸旧约", "Remain in service and honour the bond", "留下任职，以所学偿约", "Leave early and repay the balance", "提前离任，归还余款"),
 )
 
 EXPECTED_IDS = tuple(range(312, 334))
 SUBJECT_RESPONSE_IDS = frozenset({314, 315, 318, 319, 321, 333})
+SUBJECT_RESPONSE_DESCRIPTIONS: dict[int, tuple[str, str]] = {
+    314: (
+        "[ROOT.GetLiege.GetShortUIName] has offered you a distant posting. Its written relocation budget assigns 10 gold to the move, 6 to a temporary allowance, and 4 to your household. You may accept the arrangement or decline without changing this review's rating.",
+        "[ROOT.GetLiege.GetShortUIName] 派人送来一纸异地调令，并把二十金的安置预算写得分明：迁费十金、临时津贴六金、家眷安置四金。你可以接受这项安排，也可以谢绝；本次考课不会因此改档。",
+    ),
+    315: (
+        "The new office offers a ninety-day trial. Your former office retains 40 percent of the credit and the new office receives 60 percent; you and both offices may end the arrangement. A poor fit returns you to your former post without being treated as a low rating.",
+        "新官署愿给你九十日试任：原任官署保留四成功劳，新任官署记六成；你与两方官署都可在职事不合时终止试任。若最终回任，试任不成也不会被记作低档。",
+    ),
+    318: (
+        "You have two formal transfer petitions in this round. Once a petition is filed, withdrawing it later still uses one chance; if you do not file now, the chance remains yours.",
+        "本轮你只有两次正式求调的机会。文书一经投出，日后即使撤回，也算用去一次；若现在不投，这次名额仍为你保留。",
+    ),
+    319: (
+        "[ROOT.GetLiege.GetShortUIName] has sent one final written offer to keep you. Decline it to begin a transfer due within thirty days. The other choice is to remain on a promise that has no proof of delivery; after ninety days it will close as a broken promise charged to the official who made it.",
+        "[ROOT.GetLiege.GetShortUIName] 命人送来最后一份书面挽留。拒绝之后，三十日调任程序便会启动；另一条路是留下，接受一份尚无兑现凭据的承诺，九十日后按失约结案，责任记在许诺者名下。",
+    ),
+    321: (
+        "Your former office asks to keep one line of contact after your departure. Old ties may continue only with your consent; returning the card ends future contact, but does not erase the record of what came before.",
+        "离任之后，旧官署仍想与你保留一条联络。旧谊可以延续，却不能逼你应允；若退回名帖，往来名册会被删除，但昔日案卷不会随之抹去。",
+    ),
+    333: (
+        "The office will pay 18 gold from its treasury and 6 from the sponsor's purse for your training. Remain and honour the service bond through your work; leave voluntarily and 18 gold falls due after ninety days. An involuntary dismissal waives repayment.",
+        "官署愿为你的进修支付公帑十八金，提名者另出六金。留下任职，便以所学履行旧约；若自愿提前离任，九十日后须归还十八金。若是官署裁撤，则免于追偿。",
+    ),
+}
 DUAL_COSTS: dict[int, tuple[int, int, frozenset[int]]] = {
     314: (15, 5, frozenset({1})),
     321: (4, 2, frozenset({1})),
@@ -202,6 +228,10 @@ def validate_data() -> None:
                     raise ValueError(f"stage metadata drift for {mechanism_id}")
     if set(DUAL_COSTS) != {314, 321, 323, 326, 330, 333}:
         raise ValueError("dual-payer set drift")
+    if set(SUBJECT_RESPONSE_DESCRIPTIONS) != set(SUBJECT_RESPONSE_IDS):
+        raise ValueError("every player response needs its own narrative description")
+    if any(not english.strip() or not chinese.strip() for english, chinese in SUBJECT_RESPONSE_DESCRIPTIONS.values()):
+        raise ValueError("player-response descriptions cannot be empty")
     if set(OBLIGATION_DAYS) != set(EXPECTED_IDS):
         raise ValueError("every career/learning mechanism needs an obligation policy")
     for mechanism_id, routes in OBLIGATION_DAYS.items():
@@ -2103,17 +2133,17 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
     if chinese:
         entries.extend(
             (
-                ("zg361_cl_digest_title", "人才流动与学习账本已合批"),
-                ("zg361_cl_digest_desc", "本轮二十二项人才流动与学习机制已合批：其中六项由当事人亲自回应，其余十六项无需本人表态，已按证据路线自动登记。内部流动案 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，学习案 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件。仍在期限内的业务回执会按各自日期结算。"),
-                ("zg361_cl_digest_ack", "很好，状态报告只写一条。"),
+                ("zg361_cl_digest_title", "本轮人才安排已经登记"),
+                ("zg361_cl_digest_desc", "本轮人才流动与进修案卷已经汇齐：内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件。尚在履行期内的调任、试任与培训约定，将在到期时另行呈报。"),
+                ("zg361_cl_digest_ack", "收下案卷，照章续办。"),
             )
         )
     else:
         entries.extend(
             (
-                ("zg361_cl_digest_title", "Career and Learning Ledger Batched"),
-                ("zg361_cl_digest_desc", "This pass batched twenty-two career and learning mechanisms: six asked the affected official to respond, while sixteen required no personal consent and were recorded automatically on the evidence-led route. [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] mobility cases and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] learning cases were recorded; open business receipts will settle on their own dates."),
-                ("zg361_cl_digest_ack", "Good. One status mail is enough."),
+                ("zg361_cl_digest_title", "This Round of Career Plans Is Recorded"),
+                ("zg361_cl_digest_desc", "This round's career and learning docket is complete: [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] training matters were recorded. Transfers, trials, and training commitments still in progress will be reported when they fall due."),
+                ("zg361_cl_digest_ack", "Take the docket and proceed."),
             )
         )
     for row in MECHANISMS:
@@ -2121,20 +2151,14 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
             continue
         if chinese:
             title, route_a, route_b = row.title_zh, row.route_a_zh, row.route_b_zh
+            description = SUBJECT_RESPONSE_DESCRIPTIONS[row.mechanism_id][1]
         else:
             title, route_a, route_b = row.title_en, row.route_a_en, row.route_b_en
+            description = SUBJECT_RESPONSE_DESCRIPTIONS[row.mechanism_id][0]
         entries.extend(
             (
                 (f"zg361_cl_m{row.mechanism_id:03d}_title", title),
-                (
-                    f"zg361_cl_m{row.mechanism_id:03d}_desc",
-                    (
-                        f"This proposal concerns [ROOT.GetShortUIName] and was served by [ROOT.GetLiege.GetShortUIName]. "
-                        f"It resolves {title}. Choose only your own response; this does not grant authority over anyone else's review."
-                        if not chinese
-                        else f"本案当事人是 [ROOT.GetShortUIName]，提案人是 [ROOT.GetLiege.GetShortUIName]。当前需要你回应「{title}」。你只是在决定本人是否接受这项安排，不会因此获得考核他人的权限。"
-                    ),
-                ),
+                (f"zg361_cl_m{row.mechanism_id:03d}_desc", description),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_a", route_a),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_b", route_b),
             )

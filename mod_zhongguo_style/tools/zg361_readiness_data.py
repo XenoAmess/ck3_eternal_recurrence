@@ -146,7 +146,7 @@ LIVE_BOUNDARY: Final = (
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     run_id="R106",
-    observed_at="2026-09-06 05:46 Asia/Shanghai",
+    observed_at="2026-09-06 05:49 Asia/Shanghai",
     result="RED",
     product_commit="7f17fed",
     projection="phase2-full-release-r106-7f17fed",
@@ -156,8 +156,8 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=993,
-    native_observations=272,
+    observation_days=1107,
+    native_observations=279,
     drained_event_keys=(
         "zg361b2.40",
         "ep3_interactions_events.0630",
@@ -214,6 +214,7 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361ch.905",
         "zg361b1.126",
         "zg361.50",
+        "zg361.4",
         "zg361comp.1",
         "zg361comp.1",
         "zg361comp.1",
@@ -323,13 +324,15 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         r"Z:\b3r106_resume8\report.json",
         r"Z:\b3r106_resume9\03_promotion_source_production_entry.json",
         r"Z:\b3r106_resume9\report.json",
+        r"Z:\b3r106_resume10\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume10\report.json",
         r"Z:\p2r106\phase2-product-projection.json",
         r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
         "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 993 game days at speed 5 across 272 paused native/MCP "
-        "observations and 122 exact GREEN event drains. It reached and drained both "
+        "fatal 0. PID 30492 advanced 1107 game days at speed 5 across 279 paused native/MCP "
+        "observations and 123 exact GREEN event drains. It reached and drained both "
         "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
         "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
         "then observed B1 close and Central activate before processing the annual summary and "
@@ -358,11 +361,18 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "prompt, result and manager aliases all match. That notice then drained GREEN; the "
         "immediate recurring zg361.4 reaction exposed the same inherited-name distinction. "
         "Because the reaction consumes no saved scope and keeps its exact four-option shape, "
-        "this remains harness-contract RED, not mod RED; both complete observed inheritance "
-        "sets are now bound. Healthy "
-        "CK3 PID 30492 remains retained "
-        "for another same-process client "
-        "continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
+        "both complete observed inheritance sets are now bound. That reaction then drained "
+        "GREEN and the same process advanced another 114 days before reaching the first live "
+        "player career-learning response, zg361cl.314. The runner correctly stopped before "
+        "clicking because this valid event was absent from its allowlist; its exact two-option "
+        "and inherited-scope frame is now bound in a new one-contract purpose module. Player "
+        "review of the paused card also exposed a separate product copy RED: a policy-slogan "
+        "title, a shared scope/permission template, and the phrases 有钱的调任包 and 绩效锅. "
+        "The earlier audit had identified this family, so its blanket 0/24 High closure claim "
+        "was invalid. Six subject cards and the digest have now been rewritten, but those new "
+        "product bytes require fresh R107 acceptance; retained R106 PID 30492 cannot validate "
+        "them and will be managed-stopped after this evidence is committed. No "
+        "zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
         "registry remains 0/4. The player remains alive; illness-death count is 0/3 and no "
         "health fixture was applied. This run promotes no per-ID tier."
     ),

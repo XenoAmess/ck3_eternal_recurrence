@@ -24,6 +24,9 @@ from zg361_phase2_promotion_compensation_contracts import (
     COMPENSATION_TIMELINE_CONTRACTS,
 )
 from zg361_phase2_promotion_central_contracts import CENTRAL_TIMELINE_CONTRACTS
+from zg361_phase2_promotion_career_learning_contracts import (
+    CAREER_LEARNING_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -2145,6 +2148,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
 KNOWN_TIMELINE_INTERRUPTS.update(CAREER_HC_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(COMPENSATION_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(CENTRAL_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(CAREER_LEARNING_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):

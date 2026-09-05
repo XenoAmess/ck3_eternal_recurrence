@@ -422,11 +422,8 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             )
             self.assertEqual(event.count("ROUTE = 1"), 1)
             self.assertEqual(event.count("ROUTE = 2"), 1)
-        self.assertIn(
-            "six asked the affected official to respond, while sixteen required no personal consent",
-            self.loc_en,
-        )
-        self.assertIn("其中六项由当事人亲自回应，其余十六项无需本人表态", self.loc_zh)
+        self.assertIn("career and learning docket is complete", self.loc_en)
+        self.assertIn("本轮人才流动与进修案卷已经汇齐", self.loc_zh)
 
     def test_dual_payer_set_is_exact_atomic_and_real(self) -> None:
         self.assertEqual(set(generator.DUAL_COSTS), {314, 321, 323, 326, 330, 333})
@@ -901,8 +898,8 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             )
             text = path.read_text(encoding="utf-8-sig")
             self.assertEqual(loc_keys(text), expected_keys, folder)
-        self.assertIn("本案当事人是 [ROOT.GetShortUIName]", self.loc_zh)
-        self.assertIn("Training Debt Shrinks Monthly", self.loc_en)
+        self.assertIn("一纸异地调令", self.loc_zh)
+        self.assertIn("The Bond That Paid for Learning", self.loc_en)
         self.assertIn("English structural placeholders", self.spec)
 
     def test_no_gui_or_central_file_is_generated(self) -> None:
