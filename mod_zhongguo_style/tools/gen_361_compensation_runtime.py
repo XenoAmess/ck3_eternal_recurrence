@@ -1822,9 +1822,13 @@ zg361_comp_l_consume_deferred_effect = {{
                 var:zg361_comp_bonus_held_treasury_status = 3
                 var:zg361_comp_bonus_held_personal_status = 3
             }}
+            # The funded-share variables belong to the frozen recipient. Save
+            # that scope before entering the payer so the refund cannot read
+            # same-named (normally absent) variables from the payer.
+            save_temporary_scope_as = zg361_comp_deferred_refund_recipient
             var:{owner} = {{
-                add_treasury = {{ value = var:zg361_comp_bonus_deferred_treasury_funded }}
-                add_gold = {{ value = var:zg361_comp_bonus_deferred_personal_funded }}
+                add_treasury = {{ value = scope:zg361_comp_deferred_refund_recipient.var:zg361_comp_bonus_deferred_treasury_funded }}
+                add_gold = {{ value = scope:zg361_comp_deferred_refund_recipient.var:zg361_comp_bonus_deferred_personal_funded }}
             }}
             change_variable = {{ name = zg361_comp_bonus_forfeited add = var:zg361_comp_bonus_deferred_unpaid_total }}
             set_variable = {{ name = zg361_comp_bonus_deferred_owed value = 0 }}

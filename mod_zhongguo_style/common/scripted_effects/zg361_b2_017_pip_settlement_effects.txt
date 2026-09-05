@@ -390,7 +390,11 @@ zg361_b2_m017_open_disposition_effect = {
 			if = {
 				limit = {
 					age >= 60
-					var:zg361_b2_m074_redundancy_eligible = 1
+					trigger_if = {
+						limit = { has_variable = zg361_b2_m074_redundancy_eligible }
+						var:zg361_b2_m074_redundancy_eligible = 1
+					}
+					trigger_else = { always = no }
 				}
 				zg361_b2_m074_accept_redundancy_effect = yes
 			}

@@ -178,7 +178,7 @@ zg361_cl_m319_core_effect = {
                 set_variable = { name = zg361_cl_m319_relation_manager value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m319_relation_official value = $TICKET_SUBJECT$ }
                 set_variable = { name = zg361_cl_m319_releasing_manager value = var:zg361_cl_m319_object_owner }
-                set_variable = { name = zg361_cl_m319_target_manager value = var:zg361_transfer_cl_receiver }
+                if = { limit = { has_variable = zg361_transfer_cl_receiver } set_variable = { name = zg361_cl_m319_target_manager value = var:zg361_transfer_cl_receiver } }
                 set_variable = { name = zg361_cl_m319_released_official value = var:zg361_cl_m319_object_subject }
                 if = {
                     limit = { scope:zg361_cl_route = 3 }

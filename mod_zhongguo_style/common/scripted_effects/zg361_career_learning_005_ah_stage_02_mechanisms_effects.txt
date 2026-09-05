@@ -373,7 +373,7 @@ zg361_cl_m314_core_effect = {
                 set_variable = { name = zg361_cl_m314_obligation_resolved value = 0 }
                 set_variable = { name = zg361_cl_m314_relation_manager value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m314_relation_official value = $TICKET_SUBJECT$ }
-                set_variable = { name = zg361_cl_m314_target_manager value = var:zg361_transfer_cl_receiver }
+                if = { limit = { has_variable = zg361_transfer_cl_receiver } set_variable = { name = zg361_cl_m314_target_manager value = var:zg361_transfer_cl_receiver } }
                 set_variable = { name = zg361_cl_m314_offered_official value = var:zg361_cl_m314_object_subject }
                 if = {
                     limit = { scope:zg361_cl_route = 3 }
@@ -833,7 +833,7 @@ zg361_cl_m315_core_effect = {
                 set_variable = { name = zg361_cl_m315_obligation_resolved value = 0 }
                 set_variable = { name = zg361_cl_m315_relation_manager value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m315_relation_official value = $TICKET_SUBJECT$ }
-                set_variable = { name = zg361_cl_m315_trial_target_manager value = var:zg361_transfer_cl_receiver }
+                if = { limit = { has_variable = zg361_transfer_cl_receiver } set_variable = { name = zg361_cl_m315_trial_target_manager value = var:zg361_transfer_cl_receiver } }
                 set_variable = { name = zg361_cl_m315_trial_official value = var:zg361_cl_m315_object_subject }
                 if = {
                     limit = { scope:zg361_cl_route = 3 }

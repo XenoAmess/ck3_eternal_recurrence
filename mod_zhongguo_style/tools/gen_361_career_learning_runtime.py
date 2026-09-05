@@ -911,10 +911,20 @@ def render_typed_relations(row: Mechanism) -> str:
                     set_variable = {{ name = {p}_mentor_distinct value = 0 }}
                 }}
                 set_variable = {{ name = {p}_mentee value = {subject} }}'''
-    return "\n                ".join(
-        f"set_variable = {{ name = {p}_{name} value = {value} }}"
-        for name, value in relations[row.mechanism_id]
-    )
+    rendered: list[str] = []
+    for name, value in relations[row.mechanism_id]:
+        assignment = f"set_variable = {{ name = {p}_{name} value = {value} }}"
+        if value == "var:zg361_transfer_cl_receiver":
+            # Route C is the explicit no-vacancy/no-receiver policy-debt path.
+            # Keep the typed receiver absent instead of fabricating an identity
+            # or dereferencing a transfer variable that intentionally does not
+            # exist on that path.
+            assignment = (
+                "if = { limit = { has_variable = zg361_transfer_cl_receiver } "
+                f"{assignment} }}"
+            )
+        rendered.append(assignment)
+    return "\n                ".join(rendered)
 
 
 def render_object_open(row: Mechanism) -> str:

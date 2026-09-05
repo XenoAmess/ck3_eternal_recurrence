@@ -670,6 +670,30 @@ class CareerHcRuntimeTests(unittest.TestCase):
             self.assertNotIn("change_liege", source)
             self.assertNotIn("zg361_pp_", source)
 
+        # A no-vacancy route reaches these adapters without any transfer
+        # consumer state. Presence must be checked before every kind read so
+        # the adapter returns an explicit RED instead of dereferencing none.
+        for effect in (
+            "zg361_career_hc_accept_cl_transfer_effect",
+            "zg361_career_hc_decline_cl_transfer_effect",
+            "zg361_career_hc_start_cl_transfer_trial_effect",
+            "zg361_career_hc_authorize_cl_transfer_release_effect",
+            "zg361_career_hc_settle_cl_transfer_effect",
+        ):
+            source = block(self.effects, effect)
+            self.assertEqual(
+                len(
+                    re.findall(
+                        r"trigger_if\s*=\s*\{\s*"
+                        r"limit\s*=\s*\{\s*has_variable\s*=\s*"
+                        r"zg361_transfer_consumer_kind\s*\}\s*"
+                        r"var:zg361_transfer_consumer_kind\s*=\s*2",
+                        source,
+                    )
+                ),
+                source.count("var:zg361_transfer_consumer_kind = 2"),
+            )
+
         settle = block(self.effects, "zg361_career_hc_settle_cl_transfer_effect")
         for mechanism_id in (312, 314, 315, 319):
             self.assertIn(f"zg361_cl_m{mechanism_id:03d}_receipt_owner", settle)

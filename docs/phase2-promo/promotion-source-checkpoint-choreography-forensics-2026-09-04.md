@@ -1484,3 +1484,28 @@ the loader or bank-range GREEN evidence.
 R102 was not an illness-death failure. The player remained alive, the
 consecutive illness counter remains `0/3`, and no health value or survivability
 modifier has been applied.
+
+## R103 repair candidate: four R102 product families closed statically
+
+The R102 call stacks reduced to four business causes, all repaired without
+inventing state:
+
+- deferred compensation now freezes the recipient scope before entering the
+  payer and reads both funded-share variables explicitly from that recipient;
+- every HC transfer adapter uses a lazy `trigger_if` around the optional
+  consumer-kind read, while Career/Learning route C leaves the typed receiver
+  absent instead of fabricating a character;
+- the B2 age-based redundancy branch lazily reads eligibility, so a missing
+  offer falls through to the existing non-acceptance disposition;
+- AI elimination grants the annual-rank bonus only when rank exists.
+
+The compensation, HC, Career/Learning and B2 suites are respectively
+`29/29`, `43/43`, `34/34` and `40/40` GREEN in normal and optimized modes.
+The global effect-boundary test is `4/4`, both complete discoveries are
+`1651/1651`, static validation is GREEN, and the 937-file ZhongGuo release is
+byte reproducible (manifest
+`87C020D9FC475D8314456D092F6E6E2797A36161163CD0117BFE4404CD67B07C`,
+ZIP `C53A677784BA5F4457FA7A42D575E41F03D50406FF4DC760FE1BEC6F96500F51`).
+This remains static-ready until a fresh R103 CK3 run proves the four R102
+families absent. No illness death occurred and no survivability fixture was
+used.

@@ -281,10 +281,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 614_781)
+        self.assertEqual(len(historical_bytes), 615_166)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "4629335d6a0b3419a1bde9dfbf325cf3092529e605a99362e53ee7f887ac45fa",
+            "224ad5b7d76cde7225022b2dfc7b34d1400a9bce5e8b3b0426c0a36953c30086",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -684,8 +684,28 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertIn(f"NOT = {{ has_variable = {field} }}", deferred)
             self.assertIn(f"name = {field} value = 0", deferred)
         self.assertIn("add_gold = { value = var:zg361_comp_bonus_deferred_unpaid_total }", deferred)
-        self.assertIn("add_treasury = { value = var:zg361_comp_bonus_deferred_treasury_funded }", deferred)
-        self.assertIn("add_gold = { value = var:zg361_comp_bonus_deferred_personal_funded }", deferred)
+        self.assertIn(
+            "save_temporary_scope_as = zg361_comp_deferred_refund_recipient",
+            deferred,
+        )
+        self.assertIn(
+            "add_treasury = { value = scope:zg361_comp_deferred_refund_recipient."
+            "var:zg361_comp_bonus_deferred_treasury_funded }",
+            deferred,
+        )
+        self.assertIn(
+            "add_gold = { value = scope:zg361_comp_deferred_refund_recipient."
+            "var:zg361_comp_bonus_deferred_personal_funded }",
+            deferred,
+        )
+        self.assertNotIn(
+            "add_treasury = { value = var:zg361_comp_bonus_deferred_treasury_funded }",
+            deferred,
+        )
+        self.assertNotIn(
+            "add_gold = { value = var:zg361_comp_bonus_deferred_personal_funded }",
+            deferred,
+        )
         self.assertIn("value = var:zg361_comp_m084_reserve_receipt", deferred)
         self.assertIn("var:zg361_case_l_owner = { is_alive = yes }", deferred)
         self.assertIn(

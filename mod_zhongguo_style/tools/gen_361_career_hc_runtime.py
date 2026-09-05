@@ -1042,8 +1042,11 @@ zg361_career_hc_claim_cl_transfer_vacancy_effect = {
     else_if = {
         limit = {
             this = $TICKET_SUBJECT$
-            has_variable = zg361_transfer_consumer_kind
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_status = 2
             var:zg361_transfer_cl_phase = 1
             var:zg361_transfer_cl_owner = $TICKET_OWNER$
@@ -1073,7 +1076,11 @@ zg361_career_hc_accept_cl_transfer_effect = {
     if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_active = 1
             var:zg361_transfer_vacancy_status = 2
             var:zg361_transfer_cl_phase = 1
@@ -1095,7 +1102,11 @@ zg361_career_hc_accept_cl_transfer_effect = {
     else_if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_cl_phase = 2
             var:zg361_transfer_cl_owner = $TICKET_OWNER$
             var:zg361_transfer_cl_subject = this
@@ -1114,7 +1125,11 @@ zg361_career_hc_decline_cl_transfer_effect = {
     if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_active = 1
             var:zg361_transfer_vacancy_status = 2
             var:zg361_transfer_cl_owner = $TICKET_OWNER$
@@ -1131,7 +1146,11 @@ zg361_career_hc_decline_cl_transfer_effect = {
     else_if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_status = 4
             var:zg361_transfer_cl_phase = 5
             var:zg361_transfer_cl_owner = $TICKET_OWNER$
@@ -1151,7 +1170,11 @@ zg361_career_hc_start_cl_transfer_trial_effect = {
     if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_active = 1
             var:zg361_transfer_vacancy_status = 2
             var:zg361_transfer_cl_phase = 2
@@ -1170,7 +1193,11 @@ zg361_career_hc_start_cl_transfer_trial_effect = {
     else_if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_cl_phase = 3
             var:zg361_transfer_cl_owner = $TICKET_OWNER$
             var:zg361_transfer_cl_subject = this
@@ -1189,7 +1216,11 @@ zg361_career_hc_authorize_cl_transfer_release_effect = {
     if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_active = 1
             var:zg361_transfer_vacancy_status = 2
             var:zg361_transfer_cl_phase = 3
@@ -1208,7 +1239,11 @@ zg361_career_hc_authorize_cl_transfer_release_effect = {
     else_if = {
         limit = {
             this = $TICKET_SUBJECT$
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_cl_phase = 4
             var:zg361_transfer_cl_owner = $TICKET_OWNER$
             var:zg361_transfer_cl_subject = this
@@ -1226,7 +1261,11 @@ zg361_career_hc_settle_cl_transfer_effect = {
     set_variable = { name = zg361_transfer_cl_red_code value = 0 }
     if = {
         limit = {
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_active = 1
             var:zg361_transfer_vacancy_status = 2
             var:zg361_transfer_cl_phase = 4
@@ -1354,7 +1393,11 @@ zg361_career_hc_settle_cl_transfer_effect = {
     }
     else_if = {
         limit = {
-            var:zg361_transfer_consumer_kind = 2
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_consumer_kind }
+                var:zg361_transfer_consumer_kind = 2
+            }
+            trigger_else = { always = no }
             var:zg361_transfer_vacancy_status = 3
             var:zg361_transfer_cl_phase = 6
             var:zg361_transfer_cl_subject = this

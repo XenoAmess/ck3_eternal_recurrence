@@ -199,10 +199,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The canonical rendering includes the purpose-sharded core owner note.
-        self.assertEqual(len(historical_bytes), 267_473)
+        self.assertEqual(len(historical_bytes), 267_604)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "37a84a40965f1bcd09ddf772064d32ecbb451c225ebe4e26152b08937bbe7fac",
+            "8e17777cd0ce60c96aa308ea2b80ae910af4c90dd0110107d75e1471548048d2",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -452,6 +452,19 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         self.assertIn("zg361_b2_m017_first_low_restricted value = 1", opened)
         self.assertIn("zg361_b2_m017_expedited_evidence", opened)
+        eligible_guard = (
+            "has_variable = zg361_b2_m074_redundancy_eligible"
+        )
+        eligible_read = "var:zg361_b2_m074_redundancy_eligible = 1"
+        self.assertIn(eligible_guard, opened)
+        self.assertLess(opened.index(eligible_guard), opened.index(eligible_read))
+        self.assertRegex(
+            opened,
+            r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*has_variable\s*=\s*"
+            r"zg361_b2_m074_redundancy_eligible\s*\}\s*"
+            r"var:zg361_b2_m074_redundancy_eligible\s*=\s*1\s*\}\s*"
+            r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+        )
         event = top_level_block(self.events, "zg361b2.110")
         self.assertGreaterEqual(
             event.count("zg361_b2_m017_first_low_restricted = 0"), 3
@@ -459,6 +472,21 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_streak_bottom >= 2", event)
         self.assertIn("var:zg361_streak_bottom >= 3", event)
         self.assertIn("zg361_b2_m017_disposition_receipt", event)
+
+    def test_ai_elimination_treats_missing_annual_rank_as_no_rank_bonus(self) -> None:
+        elimination = top_level_block(self.core, "zg361_ai_elimination_effect")
+        rank_guard = "has_variable = zg361_rank"
+        rank_read = "var:zg361_rank >= scope:zg361_liege.var:zg361_cohort_n"
+        self.assertIn(rank_guard, elimination)
+        self.assertIn(rank_read, elimination)
+        self.assertLess(elimination.index(rank_guard), elimination.index(rank_read))
+        self.assertRegex(
+            elimination,
+            r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*has_variable\s*=\s*"
+            r"zg361_rank\s*\}\s*var:zg361_rank\s*>=\s*"
+            r"scope:zg361_liege\.var:zg361_cohort_n\s*\}\s*"
+            r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+        )
 
     def test_075_route_c_cannot_open_a_ghost_exit_offer(self) -> None:
         escalation = top_level_block(

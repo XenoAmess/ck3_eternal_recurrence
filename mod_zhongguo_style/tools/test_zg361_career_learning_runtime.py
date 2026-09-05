@@ -554,6 +554,19 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             self.assertIn("zg361_cl_route value = 3", core)
             self.assertIn(f"CODE = 6 MECHANISM = {mechanism_id}", core)
 
+        for mechanism_id, relation in (
+            (314, "target_manager"),
+            (315, "trial_target_manager"),
+            (319, "target_manager"),
+        ):
+            core = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_core_effect")
+            self.assertIn(
+                "if = { limit = { has_variable = zg361_transfer_cl_receiver } "
+                f"set_variable = {{ name = zg361_cl_m{mechanism_id:03d}_{relation} "
+                "value = var:zg361_transfer_cl_receiver } }",
+                core,
+            )
+
         claim = block(
             self.career_effects,
             "zg361_career_hc_claim_cl_transfer_vacancy_effect",

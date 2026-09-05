@@ -46,7 +46,13 @@ zg361_ai_elimination_effect = {
 	}
 	# 淘汰者中也垫底（当年名次最后）→ +50
 	if = {
-		limit = { var:zg361_rank >= scope:zg361_liege.var:zg361_cohort_n }
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_rank }
+				var:zg361_rank >= scope:zg361_liege.var:zg361_cohort_n
+			}
+			trigger_else = { always = no }
+		}
 		change_variable = { name = zg361_purge_score add = 50 }
 	}
 	# 随机宽宥：皇帝心情不错
