@@ -9,7 +9,7 @@
   },
   "shared_claim_source": {
     "path": "mod_zhongguo_style/promo/phase2-authoring-claims.json",
-    "sha256": "9AD63985561C4BF08BBCCE7B7676579C71C0953C7BEF718E56BE45C2C722B11B"
+    "sha256": "9CE654A6C2563AAE55D00DDE87C67B61261DA347EB8AC62FCEB7F02E9374FF4D"
   },
   "authoring_status": "draft-only-not-builder-input",
   "chapters": [
