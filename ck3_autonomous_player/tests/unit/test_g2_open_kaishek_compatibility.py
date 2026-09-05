@@ -43,6 +43,27 @@ def _configured_checkout() -> Path:
 
 
 class G2OpenKaishekCompatibilityTests(unittest.TestCase):
+    def test_r3_live_receipt_is_separate_from_synthetic_and_policy_readiness(self) -> None:
+        fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+        cleanup = fixture["postwar_cleanup_expiry_adapter"]
+        self.assertEqual(
+            cleanup["live_root_source_commit"],
+            "e72f9fa302811a823479635648eb008a6f5d8418",
+        )
+        self.assertEqual(
+            cleanup["live_report_sha256"],
+            "44e1f7c0b470b2cf7b6549192865402f21f88c7cf073e896de1b93632311d5d0",
+        )
+        self.assertTrue(cleanup["cleanup_dispatch_live_tested"])
+        self.assertTrue(cleanup["runtime_cleanup_ready"])
+        self.assertTrue(cleanup["synthetic_fixture"])
+        for key in (
+            "fixture_is_live", "public_readiness_promoted", "action_readiness_promoted",
+            "source_specific_attribution_ready", "decision_ready",
+            "automatic_surrender_ready", "gen_034_resolved",
+        ):
+            self.assertFalse(cleanup[key], key)
+
     def test_root_and_frozen_fixture_are_consistent(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             report = audit(checkout=Path(directory) / "missing")

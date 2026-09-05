@@ -253,6 +253,11 @@ _CLEANUP_ADAPTER_STRING_CONSTANTS = {
     ),
     "candidate_dll_sha256": "CANDIDATE_DLL_SHA256",
     "candidate_native_test_sha256": "CANDIDATE_NATIVE_TEST_SHA256",
+    "live_root_source_commit": "LIVE_ROOT_SOURCE_COMMIT",
+    "live_result": "LIVE_RESULT",
+    "live_manifest_sha256": "LIVE_MANIFEST_SHA256",
+    "live_report_sha256": "LIVE_REPORT_SHA256",
+    "live_candidate_dll_sha256": "LIVE_CANDIDATE_DLL_SHA256",
 }
 _CLEANUP_ADAPTER_INT_CONSTANTS = {
     "war_id": "WAR_ID",
@@ -261,6 +266,7 @@ _CLEANUP_ADAPTER_INT_CONSTANTS = {
     "pre_termination_soldiers": "PRE_TERMINATION_SOLDIERS",
     "post_termination_soldiers": "POST_TERMINATION_SOLDIERS",
     "proven_boundary_soldiers_lost": "PROVEN_BOUNDARY_SOLDIERS_LOST",
+    "live_actual_expiry_date_raw": "LIVE_ACTUAL_EXPIRY_DATE_RAW",
 }
 _CLEANUP_ADAPTER_BOOLEAN_CONSTANTS = {
     "metadata_only": "METADATA_ONLY",
@@ -560,7 +566,7 @@ def parse_actual_truce_expiry_source(
 def parse_postwar_cleanup_expiry_adapter_source(
     path: Path,
 ) -> dict[str, str | int | bool]:
-    """Extract fixture-only cleanup/expiry adapter pins and closed gates."""
+    """Extract separate synthetic/live pins and bounded private readiness."""
 
     source = path.read_text(encoding="utf-8")
     return _parse_java_constants(
@@ -834,6 +840,8 @@ def audit(
         "cleanup_candidate_library_present",
         "cleanup_query_dispatch_present",
         "cleanup_query_private",
+        "cleanup_dispatch_live_tested",
+        "runtime_cleanup_ready",
         "same_lifecycle_native_cleanup_required",
         "war_id_absence_admission_only",
         "destroyed_result_from_exact_stores",
@@ -841,7 +849,10 @@ def audit(
     }
     checks["fixture_cleanup_adapter_private_dispatch_bounded"] = (
         expected_cleanup.get("status")
-        == "STATIC_READY_PRIVATE_DISPATCH_LIVE_NOT_RUN"
+        == "PRIVATE_DISPATCH_LIVE_PRIMITIVE_COMPARISON_PENDING"
+        and expected_cleanup.get("live_result")
+        == "GREEN_ACTION_BOUND_POSTWAR_RETENTION_EXPIRY"
+        and expected_cleanup.get("live_actual_expiry_date_raw") == 53267736
         and expected_cleanup.get("pre_termination_soldiers") == 598
         and expected_cleanup.get("post_termination_soldiers") == 0
         and expected_cleanup.get("proven_boundary_soldiers_lost") == 598

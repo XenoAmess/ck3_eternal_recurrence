@@ -1,0 +1,84 @@
+# T2：T0 / G2 当前增量同步（2026-09-05）
+
+## 已交付
+
+open_kaishek 已提交并推送到 `main == origin/main ==
+84a2b18fedad74de37bf5cd0472519ee321f367d`，工作树 clean。主仓同步其
+compatibility fixture、Java metadata 提取器及现行 profile commit pin；没有改动
+CK3 native provider、公共 wire、产品 effect 或 G2 比较策略。
+
+本包的实际差异是：
+
+- T0 promotion transport ABI pin 从旧 `d53befa` 推进到 `d077bcf`，反映已取证的
+  fixed-name descendant fallback。ABI SHA 为
+  `EB22C5339A483614E75CD5135B896742AC9E0040166AC9689FB8AF3070C94068`。
+  source contract、Python contract、能力 ID、字段与 readiness 不变量均不变。
+- G2 metadata 补齐既有 R3 的 same-lifecycle 私有 cleanup / persisted-expiry 实机事实，
+  不再写 `LIVE_NOT_RUN`。新增独立 live source / manifest / report / DLL pins；原
+  static / synthetic pins 保留，`synthetic_fixture=true`、`fixture_is_live=false`
+  保持不变，不能把旧 synthetic 记录改称实机。
+- B1 `is_alive` / list 重建与 B2 first-use lazy trigger 使用现有 parser 结构，
+  四个发生变化的产品脚本均 parser GREEN。弱引用生命周期、列表重建、写入求值顺序
+  和 lazy evaluation 仍非 open_kaishek 已认证 finite-runtime 语义；本包不对 B1
+  实机修复效果作结论。
+- native event-window 的 stale named Character typed-unavailable 输出，以及 promotion
+  Python 事件角色/时间窗/失败时间轴，均没有 open_kaishek decoder/runtime consumer；
+  对应执行语义同步为 `not-applicable`，不新增 opcode 或猜测事件动作。
+
+## 精确身份与验证
+
+CK3 `1.19.0.6` / EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+离线 parser profile `ck3-1.19.0.6-zg361`；metadata profiles
+`ck3-1.19.0.6-zg361-promotion-source-transport-v1`、
+`ck3-1.19.0.6-g2-postwar-cleanup-expiry-adapter-v1` 未改名。
+
+外部仓命令：
+
+```powershell
+mvn -o -ntp -pl kaishek-cli -am '-Dtest=ZhongguoPromotionSourceTransportCapabilityProfileTest,G2PostwarCleanupExpiryAdapterMetadataTest' '-Dsurefire.failIfNoSpecifiedTests=false' package
+java -jar kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar parse <changed-product-file>
+```
+
+结果：focused Java `7/7`，package GREEN；四个真实变更产品文件各解析一次，
+`4/4 PARSED`、roundTrip=true、0 diagnostics。解释器为 JDK21
+`C:\jdk-21\bin\java.exe`，Maven 为 `C:\apache-maven\bin\mvn.cmd`。
+完整命令语境、四文件路径/bytes/SHA 与不支持项已提交外部仓
+[`docs/companion-delta-sync-2026-09-05.md`](https://github.com/XenoAmess/open_kaishek/blob/84a2b18fedad74de37bf5cd0472519ee321f367d/docs/companion-delta-sync-2026-09-05.md)。
+不重复 unchanged 全量 reactor / corpus。
+
+当前 CLI JAR 为 358,078 bytes，SHA-256
+`BB94CD9142112A62DF57B901CA5E008B3A8EC0C05FEEC6EC3D3A7551DF5512C9`。
+主仓 fixture
+`ck3_autonomous_player/native_bridge/research/fixtures/g2_open_kaishek_compatibility_v1.json`
+SHA-256 为 `14FD1469EE1D590F714F6B5C11A14C5EBDAAB2186B81FFFD4BCEE3C00AD987E2`。
+
+主仓命令（显式使用已验证主 worktree venv）：
+
+```powershell
+$env:PYTHONPATH='ck3_autonomous_player/src'
+& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -m pytest -q --disable-warnings ck3_autonomous_player/tests/unit/test_g2_open_kaishek_compatibility.py ck3_autonomous_player/tests/unit/test_raiktor_surrender_truce_contract.py
+```
+
+`13 passed, 16 subtests passed in 0.33s`。现有 available-checkout 测试确认
+真实外部 HEAD / origin / clean 与 Java profile / fixture 一致；新增断言区分 R3
+live receipt、synthetic fixture 和未完成的自动策略。`git diff --check` GREEN。
+
+## 实机证据边界
+
+本包没有启动/附加 CK3，没有写存档，没有发送游戏动作。复用的 R3 native source 为
+`e72f9fa302811a823479635648eb008a6f5d8418`，report SHA
+`44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0`；
+冻结 manifest SHA
+`2113032784CC3ACC5DA14557C14315B0AEC9AF03CDC15654739A3C54704F96DA`。
+两份保留 artifact 的 bytes/SHA 读取一致。来源见
+[R3 原生专题](g2-postwar-cleanup-expiry-current-pin-no-launch-2026-09-04.md)。
+
+现行 metadata 允许表述 private cleanup dispatch 已 live-tested、companion
+runtime-cleanup primitive ready；不等于 open_kaishek runtime evaluator 或新认证。
+public/action/source-specific-attribution/decision/automatic-surrender/GEN-034
+仍 false。T0 `.146 -> D+1 .147` 完整源链不因本包升级。
+
+旧 R3 manifest、source ZIP、driver-state 和历史报告继续绑定当时的 `37cab82`，
+不会被改写为今日 accelerator 版本，也不因文档/metadata 同步重复运行 CK3。
+下一实际 G2 comparison intake 若产生新的共享合同，由其工作包单独同步。
