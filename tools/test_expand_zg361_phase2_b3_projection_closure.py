@@ -119,6 +119,40 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
             self.assertIn("zg361_new_cross_boundary_effect = yes", review)
             self.assertNotIn("old = yes", review)
 
+    def test_canonical_current_core_shards_are_copied_directly(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            for index, relative in enumerate(expand.CURRENT_CORE_SHARDS, start=1):
+                name = f"zg361_core_{index}_effect"
+                write(
+                    candidate,
+                    relative.as_posix(),
+                    f"{name} = {{\n    old = yes\n}}\n",
+                )
+                write(
+                    canonical,
+                    relative.as_posix(),
+                    f"{name} = {{\n    current = yes\n}}\n",
+                )
+
+            result = expand.synchronize_current_core_effect_shards(
+                candidate, canonical
+            )
+
+            self.assertTrue(result["green"])
+            self.assertEqual(result["source"]["kind"], "canonical-purpose-shards")
+            self.assertEqual(result["definition_count"], 4)
+            self.assertEqual(result["max_effects_per_file"], 1)
+            for relative in expand.CURRENT_CORE_SHARDS:
+                self.assertEqual(
+                    (canonical / relative).read_bytes(),
+                    (candidate / relative).read_bytes(),
+                )
+
     def test_scripted_widget_registration_copies_exact_gui_provider(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

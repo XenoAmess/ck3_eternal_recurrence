@@ -1,0 +1,500 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Purpose shard: ai batch.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+# AI managers configure twelve consecutive cards per completed review.
+zg361_mechanism_ai_batch_effect = {
+	zg361_init_org_ledger_effect = yes
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_ai_batch } }
+		set_variable = { name = zg361_mechanism_ai_batch value = 0 }
+	}
+	if = {
+		limit = { var:zg361_mechanism_ai_batch = 0 }
+		zg361_mechanism_001_ai_effect = yes
+		zg361_mechanism_002_ai_effect = yes
+		zg361_mechanism_003_ai_effect = yes
+		zg361_mechanism_004_ai_effect = yes
+		zg361_mechanism_005_ai_effect = yes
+		zg361_mechanism_006_ai_effect = yes
+		zg361_mechanism_007_ai_effect = yes
+		zg361_mechanism_008_ai_effect = yes
+		zg361_mechanism_009_ai_effect = yes
+		zg361_mechanism_010_ai_effect = yes
+		zg361_mechanism_011_ai_effect = yes
+		zg361_mechanism_012_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 1 }
+		zg361_mechanism_013_ai_effect = yes
+		zg361_mechanism_014_ai_effect = yes
+		zg361_mechanism_015_ai_effect = yes
+		zg361_mechanism_016_ai_effect = yes
+		zg361_mechanism_017_ai_effect = yes
+		zg361_mechanism_018_ai_effect = yes
+		zg361_mechanism_019_ai_effect = yes
+		zg361_mechanism_020_ai_effect = yes
+		zg361_mechanism_021_ai_effect = yes
+		zg361_mechanism_022_ai_effect = yes
+		zg361_mechanism_023_ai_effect = yes
+		zg361_mechanism_024_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 2 }
+		zg361_mechanism_025_ai_effect = yes
+		zg361_mechanism_026_ai_effect = yes
+		zg361_mechanism_027_ai_effect = yes
+		zg361_mechanism_028_ai_effect = yes
+		zg361_mechanism_029_ai_effect = yes
+		zg361_mechanism_030_ai_effect = yes
+		zg361_mechanism_031_ai_effect = yes
+		zg361_mechanism_032_ai_effect = yes
+		zg361_mechanism_033_ai_effect = yes
+		zg361_mechanism_034_ai_effect = yes
+		zg361_mechanism_035_ai_effect = yes
+		zg361_mechanism_036_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 3 }
+		zg361_mechanism_037_ai_effect = yes
+		zg361_mechanism_038_ai_effect = yes
+		zg361_mechanism_039_ai_effect = yes
+		zg361_mechanism_040_ai_effect = yes
+		zg361_mechanism_041_ai_effect = yes
+		zg361_mechanism_042_ai_effect = yes
+		zg361_mechanism_043_ai_effect = yes
+		zg361_mechanism_044_ai_effect = yes
+		zg361_mechanism_045_ai_effect = yes
+		zg361_mechanism_046_ai_effect = yes
+		zg361_mechanism_047_ai_effect = yes
+		zg361_mechanism_048_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 4 }
+		zg361_mechanism_049_ai_effect = yes
+		zg361_mechanism_050_ai_effect = yes
+		zg361_mechanism_051_ai_effect = yes
+		zg361_mechanism_052_ai_effect = yes
+		zg361_mechanism_053_ai_effect = yes
+		zg361_mechanism_054_ai_effect = yes
+		zg361_mechanism_055_ai_effect = yes
+		zg361_mechanism_056_ai_effect = yes
+		zg361_mechanism_057_ai_effect = yes
+		zg361_mechanism_058_ai_effect = yes
+		zg361_mechanism_059_ai_effect = yes
+		zg361_mechanism_060_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 5 }
+		zg361_mechanism_061_ai_effect = yes
+		zg361_mechanism_062_ai_effect = yes
+		zg361_mechanism_063_ai_effect = yes
+		zg361_mechanism_064_ai_effect = yes
+		zg361_mechanism_065_ai_effect = yes
+		zg361_mechanism_066_ai_effect = yes
+		zg361_mechanism_067_ai_effect = yes
+		zg361_mechanism_068_ai_effect = yes
+		zg361_mechanism_069_ai_effect = yes
+		zg361_mechanism_070_ai_effect = yes
+		zg361_mechanism_071_ai_effect = yes
+		zg361_mechanism_072_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 6 }
+		zg361_mechanism_073_ai_effect = yes
+		zg361_mechanism_074_ai_effect = yes
+		zg361_mechanism_075_ai_effect = yes
+		zg361_mechanism_076_ai_effect = yes
+		zg361_mechanism_077_ai_effect = yes
+		zg361_mechanism_078_ai_effect = yes
+		zg361_mechanism_079_ai_effect = yes
+		zg361_mechanism_080_ai_effect = yes
+		zg361_mechanism_081_ai_effect = yes
+		zg361_mechanism_082_ai_effect = yes
+		zg361_mechanism_083_ai_effect = yes
+		zg361_mechanism_084_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 7 }
+		zg361_mechanism_085_ai_effect = yes
+		zg361_mechanism_086_ai_effect = yes
+		zg361_mechanism_087_ai_effect = yes
+		zg361_mechanism_088_ai_effect = yes
+		zg361_mechanism_089_ai_effect = yes
+		zg361_mechanism_090_ai_effect = yes
+		zg361_mechanism_091_ai_effect = yes
+		zg361_mechanism_092_ai_effect = yes
+		zg361_mechanism_093_ai_effect = yes
+		zg361_mechanism_094_ai_effect = yes
+		zg361_mechanism_095_ai_effect = yes
+		zg361_mechanism_096_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 8 }
+		zg361_mechanism_097_ai_effect = yes
+		zg361_mechanism_098_ai_effect = yes
+		zg361_mechanism_099_ai_effect = yes
+		zg361_mechanism_100_ai_effect = yes
+		zg361_mechanism_101_ai_effect = yes
+		zg361_mechanism_102_ai_effect = yes
+		zg361_mechanism_103_ai_effect = yes
+		zg361_mechanism_104_ai_effect = yes
+		zg361_mechanism_105_ai_effect = yes
+		zg361_mechanism_106_ai_effect = yes
+		zg361_mechanism_107_ai_effect = yes
+		zg361_mechanism_108_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 9 }
+		zg361_mechanism_109_ai_effect = yes
+		zg361_mechanism_110_ai_effect = yes
+		zg361_mechanism_111_ai_effect = yes
+		zg361_mechanism_112_ai_effect = yes
+		zg361_mechanism_113_ai_effect = yes
+		zg361_mechanism_114_ai_effect = yes
+		zg361_mechanism_115_ai_effect = yes
+		zg361_mechanism_116_ai_effect = yes
+		zg361_mechanism_117_ai_effect = yes
+		zg361_mechanism_118_ai_effect = yes
+		zg361_mechanism_119_ai_effect = yes
+		zg361_mechanism_120_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 10 }
+		zg361_mechanism_121_ai_effect = yes
+		zg361_mechanism_122_ai_effect = yes
+		zg361_mechanism_123_ai_effect = yes
+		zg361_mechanism_124_ai_effect = yes
+		zg361_mechanism_125_ai_effect = yes
+		zg361_mechanism_126_ai_effect = yes
+		zg361_mechanism_127_ai_effect = yes
+		zg361_mechanism_128_ai_effect = yes
+		zg361_mechanism_129_ai_effect = yes
+		zg361_mechanism_130_ai_effect = yes
+		zg361_mechanism_131_ai_effect = yes
+		zg361_mechanism_132_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 11 }
+		zg361_mechanism_133_ai_effect = yes
+		zg361_mechanism_134_ai_effect = yes
+		zg361_mechanism_135_ai_effect = yes
+		zg361_mechanism_136_ai_effect = yes
+		zg361_mechanism_137_ai_effect = yes
+		zg361_mechanism_138_ai_effect = yes
+		zg361_mechanism_139_ai_effect = yes
+		zg361_mechanism_140_ai_effect = yes
+		zg361_mechanism_141_ai_effect = yes
+		zg361_mechanism_142_ai_effect = yes
+		zg361_mechanism_143_ai_effect = yes
+		zg361_mechanism_144_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 12 }
+		zg361_mechanism_145_ai_effect = yes
+		zg361_mechanism_146_ai_effect = yes
+		zg361_mechanism_147_ai_effect = yes
+		zg361_mechanism_148_ai_effect = yes
+		zg361_mechanism_149_ai_effect = yes
+		zg361_mechanism_150_ai_effect = yes
+		zg361_mechanism_151_ai_effect = yes
+		zg361_mechanism_152_ai_effect = yes
+		zg361_mechanism_153_ai_effect = yes
+		zg361_mechanism_154_ai_effect = yes
+		zg361_mechanism_155_ai_effect = yes
+		zg361_mechanism_156_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 13 }
+		zg361_mechanism_157_ai_effect = yes
+		zg361_mechanism_158_ai_effect = yes
+		zg361_mechanism_159_ai_effect = yes
+		zg361_mechanism_160_ai_effect = yes
+		zg361_mechanism_161_ai_effect = yes
+		zg361_mechanism_162_ai_effect = yes
+		zg361_mechanism_163_ai_effect = yes
+		zg361_mechanism_164_ai_effect = yes
+		zg361_mechanism_165_ai_effect = yes
+		zg361_mechanism_166_ai_effect = yes
+		zg361_mechanism_167_ai_effect = yes
+		zg361_mechanism_168_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 14 }
+		zg361_mechanism_169_ai_effect = yes
+		zg361_mechanism_170_ai_effect = yes
+		zg361_mechanism_171_ai_effect = yes
+		zg361_mechanism_172_ai_effect = yes
+		zg361_mechanism_173_ai_effect = yes
+		zg361_mechanism_174_ai_effect = yes
+		zg361_mechanism_175_ai_effect = yes
+		zg361_mechanism_176_ai_effect = yes
+		zg361_mechanism_177_ai_effect = yes
+		zg361_mechanism_178_ai_effect = yes
+		zg361_mechanism_179_ai_effect = yes
+		zg361_mechanism_180_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 15 }
+		zg361_mechanism_181_ai_effect = yes
+		zg361_mechanism_182_ai_effect = yes
+		zg361_mechanism_183_ai_effect = yes
+		zg361_mechanism_184_ai_effect = yes
+		zg361_mechanism_185_ai_effect = yes
+		zg361_mechanism_186_ai_effect = yes
+		zg361_mechanism_187_ai_effect = yes
+		zg361_mechanism_188_ai_effect = yes
+		zg361_mechanism_189_ai_effect = yes
+		zg361_mechanism_190_ai_effect = yes
+		zg361_mechanism_191_ai_effect = yes
+		zg361_mechanism_192_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 16 }
+		zg361_mechanism_193_ai_effect = yes
+		zg361_mechanism_194_ai_effect = yes
+		zg361_mechanism_195_ai_effect = yes
+		zg361_mechanism_196_ai_effect = yes
+		zg361_mechanism_197_ai_effect = yes
+		zg361_mechanism_198_ai_effect = yes
+		zg361_mechanism_199_ai_effect = yes
+		zg361_mechanism_200_ai_effect = yes
+		zg361_mechanism_201_ai_effect = yes
+		zg361_mechanism_202_ai_effect = yes
+		zg361_mechanism_203_ai_effect = yes
+		zg361_mechanism_204_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 17 }
+		zg361_mechanism_205_ai_effect = yes
+		zg361_mechanism_206_ai_effect = yes
+		zg361_mechanism_207_ai_effect = yes
+		zg361_mechanism_208_ai_effect = yes
+		zg361_mechanism_209_ai_effect = yes
+		zg361_mechanism_210_ai_effect = yes
+		zg361_mechanism_211_ai_effect = yes
+		zg361_mechanism_212_ai_effect = yes
+		zg361_mechanism_213_ai_effect = yes
+		zg361_mechanism_214_ai_effect = yes
+		zg361_mechanism_215_ai_effect = yes
+		zg361_mechanism_216_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 18 }
+		zg361_mechanism_217_ai_effect = yes
+		zg361_mechanism_218_ai_effect = yes
+		zg361_mechanism_219_ai_effect = yes
+		zg361_mechanism_220_ai_effect = yes
+		zg361_mechanism_221_ai_effect = yes
+		zg361_mechanism_222_ai_effect = yes
+		zg361_mechanism_223_ai_effect = yes
+		zg361_mechanism_224_ai_effect = yes
+		zg361_mechanism_225_ai_effect = yes
+		zg361_mechanism_226_ai_effect = yes
+		zg361_mechanism_227_ai_effect = yes
+		zg361_mechanism_228_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 19 }
+		zg361_mechanism_229_ai_effect = yes
+		zg361_mechanism_230_ai_effect = yes
+		zg361_mechanism_231_ai_effect = yes
+		zg361_mechanism_232_ai_effect = yes
+		zg361_mechanism_233_ai_effect = yes
+		zg361_mechanism_234_ai_effect = yes
+		zg361_mechanism_235_ai_effect = yes
+		zg361_mechanism_236_ai_effect = yes
+		zg361_mechanism_237_ai_effect = yes
+		zg361_mechanism_238_ai_effect = yes
+		zg361_mechanism_239_ai_effect = yes
+		zg361_mechanism_240_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 20 }
+		zg361_mechanism_241_ai_effect = yes
+		zg361_mechanism_242_ai_effect = yes
+		zg361_mechanism_243_ai_effect = yes
+		zg361_mechanism_244_ai_effect = yes
+		zg361_mechanism_245_ai_effect = yes
+		zg361_mechanism_246_ai_effect = yes
+		zg361_mechanism_247_ai_effect = yes
+		zg361_mechanism_248_ai_effect = yes
+		zg361_mechanism_249_ai_effect = yes
+		zg361_mechanism_250_ai_effect = yes
+		zg361_mechanism_251_ai_effect = yes
+		zg361_mechanism_252_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 21 }
+		zg361_mechanism_253_ai_effect = yes
+		zg361_mechanism_254_ai_effect = yes
+		zg361_mechanism_255_ai_effect = yes
+		zg361_mechanism_256_ai_effect = yes
+		zg361_mechanism_257_ai_effect = yes
+		zg361_mechanism_258_ai_effect = yes
+		zg361_mechanism_259_ai_effect = yes
+		zg361_mechanism_260_ai_effect = yes
+		zg361_mechanism_261_ai_effect = yes
+		zg361_mechanism_262_ai_effect = yes
+		zg361_mechanism_263_ai_effect = yes
+		zg361_mechanism_264_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 22 }
+		zg361_mechanism_265_ai_effect = yes
+		zg361_mechanism_266_ai_effect = yes
+		zg361_mechanism_267_ai_effect = yes
+		zg361_mechanism_268_ai_effect = yes
+		zg361_mechanism_269_ai_effect = yes
+		zg361_mechanism_270_ai_effect = yes
+		zg361_mechanism_271_ai_effect = yes
+		zg361_mechanism_272_ai_effect = yes
+		zg361_mechanism_273_ai_effect = yes
+		zg361_mechanism_274_ai_effect = yes
+		zg361_mechanism_275_ai_effect = yes
+		zg361_mechanism_276_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 23 }
+		zg361_mechanism_277_ai_effect = yes
+		zg361_mechanism_278_ai_effect = yes
+		zg361_mechanism_279_ai_effect = yes
+		zg361_mechanism_280_ai_effect = yes
+		zg361_mechanism_281_ai_effect = yes
+		zg361_mechanism_282_ai_effect = yes
+		zg361_mechanism_283_ai_effect = yes
+		zg361_mechanism_284_ai_effect = yes
+		zg361_mechanism_285_ai_effect = yes
+		zg361_mechanism_286_ai_effect = yes
+		zg361_mechanism_287_ai_effect = yes
+		zg361_mechanism_288_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 24 }
+		zg361_mechanism_289_ai_effect = yes
+		zg361_mechanism_290_ai_effect = yes
+		zg361_mechanism_291_ai_effect = yes
+		zg361_mechanism_292_ai_effect = yes
+		zg361_mechanism_293_ai_effect = yes
+		zg361_mechanism_294_ai_effect = yes
+		zg361_mechanism_295_ai_effect = yes
+		zg361_mechanism_296_ai_effect = yes
+		zg361_mechanism_297_ai_effect = yes
+		zg361_mechanism_298_ai_effect = yes
+		zg361_mechanism_299_ai_effect = yes
+		zg361_mechanism_300_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 25 }
+		zg361_mechanism_301_ai_effect = yes
+		zg361_mechanism_302_ai_effect = yes
+		zg361_mechanism_303_ai_effect = yes
+		zg361_mechanism_304_ai_effect = yes
+		zg361_mechanism_305_ai_effect = yes
+		zg361_mechanism_306_ai_effect = yes
+		zg361_mechanism_307_ai_effect = yes
+		zg361_mechanism_308_ai_effect = yes
+		zg361_mechanism_309_ai_effect = yes
+		zg361_mechanism_310_ai_effect = yes
+		zg361_mechanism_311_ai_effect = yes
+		zg361_mechanism_312_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 26 }
+		zg361_mechanism_313_ai_effect = yes
+		zg361_mechanism_314_ai_effect = yes
+		zg361_mechanism_315_ai_effect = yes
+		zg361_mechanism_316_ai_effect = yes
+		zg361_mechanism_317_ai_effect = yes
+		zg361_mechanism_318_ai_effect = yes
+		zg361_mechanism_319_ai_effect = yes
+		zg361_mechanism_320_ai_effect = yes
+		zg361_mechanism_321_ai_effect = yes
+		zg361_mechanism_322_ai_effect = yes
+		zg361_mechanism_323_ai_effect = yes
+		zg361_mechanism_324_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 27 }
+		zg361_mechanism_325_ai_effect = yes
+		zg361_mechanism_326_ai_effect = yes
+		zg361_mechanism_327_ai_effect = yes
+		zg361_mechanism_328_ai_effect = yes
+		zg361_mechanism_329_ai_effect = yes
+		zg361_mechanism_330_ai_effect = yes
+		zg361_mechanism_331_ai_effect = yes
+		zg361_mechanism_332_ai_effect = yes
+		zg361_mechanism_333_ai_effect = yes
+		zg361_mechanism_334_ai_effect = yes
+		zg361_mechanism_335_ai_effect = yes
+		zg361_mechanism_336_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 28 }
+		zg361_mechanism_337_ai_effect = yes
+		zg361_mechanism_338_ai_effect = yes
+		zg361_mechanism_339_ai_effect = yes
+		zg361_mechanism_340_ai_effect = yes
+		zg361_mechanism_341_ai_effect = yes
+		zg361_mechanism_342_ai_effect = yes
+		zg361_mechanism_343_ai_effect = yes
+		zg361_mechanism_344_ai_effect = yes
+		zg361_mechanism_345_ai_effect = yes
+		zg361_mechanism_346_ai_effect = yes
+		zg361_mechanism_347_ai_effect = yes
+		zg361_mechanism_348_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 29 }
+		zg361_mechanism_349_ai_effect = yes
+		zg361_mechanism_350_ai_effect = yes
+		zg361_mechanism_351_ai_effect = yes
+		zg361_mechanism_352_ai_effect = yes
+		zg361_mechanism_353_ai_effect = yes
+		zg361_mechanism_354_ai_effect = yes
+		zg361_mechanism_355_ai_effect = yes
+		zg361_mechanism_356_ai_effect = yes
+		zg361_mechanism_357_ai_effect = yes
+		zg361_mechanism_358_ai_effect = yes
+		zg361_mechanism_359_ai_effect = yes
+		zg361_mechanism_360_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	else_if = {
+		limit = { var:zg361_mechanism_ai_batch = 30 }
+		zg361_mechanism_361_ai_effect = yes
+		change_variable = { name = zg361_mechanism_ai_batch add = 1 }
+	}
+	zg361_refresh_org_climate_effect = yes
+}

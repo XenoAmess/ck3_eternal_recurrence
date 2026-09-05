@@ -1,0 +1,344 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# Purpose shard: calibration finish recusal.
+# Boundary contract: 1-10 top-level effects; this file has 4.
+
+
+
+zg361_b1_pay_frozen_pending_rewards_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_pending_rewards_committed = 1
+			var:zg361_b1_finalization_board_hash = var:zg361_b1_sealed_board_hash
+			var:zg361_b1_finalization_reward_hash = var:zg361_b1_reward_snapshot_hash
+		}
+		save_temporary_scope_as = zg361_b1_pending_reward_manager
+		every_in_list = {
+			variable = zg361_b1_subjects
+			if = {
+				limit = {
+					var:zg361_b1_case_owner = scope:zg361_b1_pending_reward_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_reward_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pending_reward_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_state = 7
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_pending_state = 2
+					var:zg361_b1_pending_reward_due = 25
+					var:zg361_b1_pending_reward_paid = 0
+				}
+				add_prestige = 25
+				set_variable = { name = zg361_b1_pending_reward_paid value = var:zg361_b1_pending_reward_due }
+				set_variable = { name = zg361_b1_pending_reward_due value = 0 }
+				set_variable = { name = zg361_b1_pending_reward_board_hash value = scope:zg361_b1_pending_reward_manager.var:zg361_b1_finalization_board_hash }
+				set_variable = { name = zg361_b1_pending_reward_snapshot_hash value = scope:zg361_b1_pending_reward_manager.var:zg361_b1_finalization_reward_hash }
+				set_variable = { name = zg361_b1_pending_reward_receipt_serial value = var:zg361_b1_case_serial }
+				scope:zg361_b1_pending_reward_manager = { change_variable = { name = zg361_b1_pending_rewards_paid_n add = 1 } }
+			}
+		}
+	}
+}
+
+zg361_b1_finish_calibration_effect = {
+	if = {
+		limit = {
+			OR = { var:zg361_b1_closure_state = 1 var:zg361_b1_closure_state = 3 }
+			var:zg361_b1_pending_open_n = 0
+			var:zg361_b1_rewards_issued = 0
+			var:zg361_b1_calibration_finalized = 0
+		}
+		zg361_b1_apply_final_gray_leaver_effect = yes
+		zg361_b1_freeze_band_order_effect = yes
+		set_variable = { name = zg361_b1_finalization_board_hash value = var:zg361_b1_sealed_board_hash }
+		set_variable = { name = zg361_b1_finalization_reward_hash value = var:zg361_b1_reward_snapshot_hash }
+		set_variable = { name = zg361_b1_pending_rewards_committed value = 1 }
+		zg361_b1_pay_frozen_pending_rewards_effect = yes
+		if = {
+			limit = { var:zg361_b1_pending_rewards_paid_n = var:zg361_b1_pending_reward_expected_n }
+			set_variable = { name = zg361_b1_calibration_finalized value = 1 }
+			set_variable = { name = zg361_b1_local_publish_update_kind value = 4 }
+			zg361_b1_refresh_individual_publications_effect = yes
+			# Settlement is the only post-recusal commit path.  The legacy player
+			# calibration event exposes independent promote/demote writers that do
+			# not understand the frozen conflict ACL, so B1 closes directly through
+			# the same deterministic settlement effect for AI and players.
+			zg361_apply_pending_grades_effect = yes
+		}
+		else = { debug_log = "ZG361B1: frozen pending reward ledger incomplete; publication withheld" }
+	}
+}
+
+zg361_b1_freeze_conflict_recusals_effect = {
+	set_variable = { name = zg361_b1_conflict_case_n value = 0 }
+	set_variable = { name = zg361_b1_recusal_n value = 0 }
+	save_temporary_scope_as = zg361_b1_conflict_manager
+	every_in_list = {
+		variable = zg361_b1_subjects
+		if = {
+			limit = {
+				var:zg361_b1_case_owner = scope:zg361_b1_conflict_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_case_serial
+				var:zg361_b1_case_state = 5
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+			}
+			set_variable = { name = zg361_b1_grade_write_acl_frozen value = 1 }
+			set_variable = { name = zg361_b1_grade_write_authority value = 1 }
+			set_variable = { name = zg361_b1_grade_write_reviewer value = scope:zg361_b1_conflict_manager }
+		}
+		if = {
+			limit = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_case_subject
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_case_state
+				has_variable = zg361_b1_case_active
+				var:zg361_b1_case_owner = scope:zg361_b1_conflict_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_manager_case_serial
+				var:zg361_b1_case_state = 5
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				var:zg361_b1_conflict_case_state = 0
+				root.var:zg361_b1_m012_mode != 3
+				OR = {
+					is_close_family_of = root
+					has_relation_friend = root
+					has_relation_lover = root
+					has_relation_rival = root
+					has_relation_nemesis = root
+				}
+			}
+			set_variable = { name = zg361_b1_conflict_case_state value = 1 }
+			set_variable = { name = zg361_b1_conflict_case_id value = { value = var:zg361_b1_case_serial multiply = 100 add = var:zg361_b1_roster_frozen_order } }
+			set_variable = { name = zg361_b1_recusal_relation value = 1 }
+			if = { limit = { has_relation_friend = root } set_variable = { name = zg361_b1_recusal_relation value = 2 } }
+			else_if = { limit = { has_relation_lover = root } set_variable = { name = zg361_b1_recusal_relation value = 3 } }
+			else_if = { limit = { has_relation_rival = root } set_variable = { name = zg361_b1_recusal_relation value = 4 } }
+			else_if = { limit = { has_relation_nemesis = root } set_variable = { name = zg361_b1_recusal_relation value = 5 } }
+			set_variable = { name = zg361_b1_recusal_pre_grade value = var:zg361_pending_grade }
+			set_variable = { name = zg361_b1_recusal_post_recommendation value = 0 }
+			set_variable = { name = zg361_b1_recusal_actor value = scope:zg361_b1_conflict_manager }
+			if = {
+				limit = { root.var:zg361_b1_m012_mode = 1 }
+				set_variable = { name = zg361_b1_recusal_active value = 1 }
+				set_variable = { name = zg361_b1_recusal_replacement_kind value = 2 }
+				set_variable = { name = zg361_b1_grade_write_authority value = 3 }
+				remove_variable = zg361_b1_grade_write_reviewer
+				if = {
+					limit = {
+						root = {
+							has_variable = zg361_b1_bank_superior
+							NOT = { var:zg361_b1_bank_superior = this }
+						}
+						NOT = { this = root.var:zg361_b1_bank_superior }
+					}
+					set_variable = { name = zg361_b1_recusal_replacement_kind value = 1 }
+					set_variable = { name = zg361_b1_recusal_reviewer value = root.var:zg361_b1_bank_superior }
+					set_variable = { name = zg361_b1_grade_write_authority value = 2 }
+					set_variable = { name = zg361_b1_grade_write_reviewer value = root.var:zg361_b1_bank_superior }
+				}
+				root = { change_variable = { name = zg361_b1_recusal_n add = 1 } }
+			}
+			else_if = {
+				limit = { root.var:zg361_b1_m012_mode = 2 }
+				set_variable = { name = zg361_b1_recusal_active value = 0 }
+				set_variable = { name = zg361_b1_appeal_risk value = 1 }
+				if = {
+					limit = { root = { NOT = { has_variable = zg361_b1_feedback_debt_open_n } } }
+					root = { set_variable = { name = zg361_b1_feedback_debt_open_n value = 0 } }
+				}
+				root = {
+					change_variable = { name = zg361_b1_feedback_debt_open_n add = 1 }
+					set_variable = { name = zg361_b1_feedback_debt_due_year value = { value = current_year add = 1 } }
+				}
+			}
+			root = { change_variable = { name = zg361_b1_conflict_case_n add = 1 } }
+			set_variable = { name = zg361_b1_m012_receipt_serial value = var:zg361_b1_case_serial }
+		}
+	}
+}
+
+# A recused manager never writes the conflicted subject again.  A named
+# superior, when distinct from both manager and subject, or the abstract review
+# seat for a small cohort instead recomputes the recommendation from the frozen
+# identity-blind score.  A changed recommendation is applied only as a two-sided
+# quota-neutral swap with one unrecused case peer; otherwise the independent
+# recommendation is frozen with an explicit quota-blocked result.  The five
+# receipt fields make replay and stale cases no-ops.
+zg361_b1_apply_recusal_replacement_reviews_effect = {
+	save_temporary_scope_as = zg361_b1_recusal_review_manager
+	every_in_list = {
+		variable = zg361_b1_subjects
+		if = {
+			limit = {
+				var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
+				var:zg361_b1_case_state = 5
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				var:zg361_b1_conflict_case_state = 1
+				var:zg361_b1_recusal_active = 1
+				var:zg361_b1_grade_write_acl_frozen = 1
+				has_variable = zg361_pending_grade
+				has_variable = zg361_b1_blind_score
+				scope:zg361_b1_recusal_review_manager.var:zg361_b1_m012_mode = 1
+				OR = {
+					AND = {
+						var:zg361_b1_grade_write_authority = 2
+						var:zg361_b1_recusal_replacement_kind = 1
+						has_variable = zg361_b1_recusal_reviewer
+						has_variable = zg361_b1_grade_write_reviewer
+						var:zg361_b1_grade_write_reviewer = var:zg361_b1_recusal_reviewer
+						NOT = { var:zg361_b1_grade_write_reviewer = scope:zg361_b1_recusal_review_manager }
+						NOT = { var:zg361_b1_grade_write_reviewer = this }
+						NOT = { var:zg361_b1_grade_write_reviewer = var:zg361_b1_recusal_actor }
+					}
+					AND = {
+						var:zg361_b1_grade_write_authority = 3
+						var:zg361_b1_recusal_replacement_kind = 2
+						NOT = { has_variable = zg361_b1_grade_write_reviewer }
+						NOT = { has_variable = zg361_b1_recusal_reviewer }
+					}
+				}
+				NOT = {
+					AND = {
+						has_variable = zg361_b1_recusal_review_receipt_owner
+						has_variable = zg361_b1_recusal_review_receipt_subject
+						has_variable = zg361_b1_recusal_review_receipt_cycle
+						has_variable = zg361_b1_recusal_review_receipt_case
+						has_variable = zg361_b1_recusal_review_receipt_state
+						var:zg361_b1_recusal_review_receipt_owner = scope:zg361_b1_recusal_review_manager
+						var:zg361_b1_recusal_review_receipt_subject = this
+						var:zg361_b1_recusal_review_receipt_cycle = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_recusal_review_receipt_case = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
+						var:zg361_b1_recusal_review_receipt_state = 2
+					}
+				}
+			}
+			set_variable = { name = zg361_b1_recusal_review_state value = 1 }
+			set_variable = { name = zg361_b1_recusal_review_base_score value = var:zg361_b1_blind_score }
+			set_variable = { name = zg361_b1_recusal_review_score value = var:zg361_b1_recusal_review_base_score }
+			set_variable = { name = zg361_b1_recusal_review_pre_grade value = var:zg361_pending_grade }
+			set_variable = { name = zg361_b1_recusal_review_recommended_grade value = 2 }
+			if = {
+				limit = { var:zg361_b1_recusal_review_score >= 50 }
+				set_variable = { name = zg361_b1_recusal_review_recommended_grade value = 3 }
+			}
+			else_if = {
+				limit = { var:zg361_b1_recusal_review_score < 0 }
+				set_variable = { name = zg361_b1_recusal_review_recommended_grade value = 1 }
+			}
+			set_variable = { name = zg361_b1_recusal_post_recommendation value = var:zg361_b1_recusal_review_recommended_grade }
+			set_variable = { name = zg361_b1_recusal_review_applied value = 0 }
+			set_variable = { name = zg361_b1_recusal_review_quota_blocked value = 0 }
+			set_variable = { name = zg361_b1_recusal_review_actor_kind value = var:zg361_b1_grade_write_authority }
+			if = {
+				limit = { var:zg361_b1_grade_write_authority = 2 }
+				set_variable = { name = zg361_b1_recusal_review_actor value = var:zg361_b1_grade_write_reviewer }
+			}
+			else = { remove_variable = zg361_b1_recusal_review_actor }
+			save_temporary_scope_as = zg361_b1_recusal_review_subject
+			scope:zg361_b1_recusal_review_manager = {
+				set_variable = { name = zg361_b1_recusal_review_partner_n value = 0 }
+			}
+			if = {
+				limit = { var:zg361_b1_recusal_review_recommended_grade > var:zg361_b1_recusal_review_pre_grade }
+				scope:zg361_b1_recusal_review_manager = {
+					ordered_in_list = {
+						variable = zg361_b1_subjects
+						order_by = var:zg361_b1_calibration_score
+						max = 1
+						limit = {
+							var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager
+							var:zg361_b1_case_subject = this
+							var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
+							var:zg361_b1_case_state = 5
+							var:zg361_b1_case_active = 1
+							var:zg361_b1_roster_included = 1
+							var:zg361_b1_grade_write_acl_frozen = 1
+							var:zg361_b1_recusal_active = 0
+							var:zg361_pending_grade = scope:zg361_b1_recusal_review_subject.var:zg361_b1_recusal_review_recommended_grade
+						}
+						save_temporary_scope_as = zg361_b1_recusal_review_partner
+						root = { change_variable = { name = zg361_b1_recusal_review_partner_n add = 1 } }
+					}
+				}
+			}
+			else_if = {
+				limit = { var:zg361_b1_recusal_review_recommended_grade < var:zg361_b1_recusal_review_pre_grade }
+				scope:zg361_b1_recusal_review_manager = {
+					ordered_in_list = {
+						variable = zg361_b1_subjects
+						order_by = { value = var:zg361_b1_calibration_score multiply = -1 }
+						max = 1
+						limit = {
+							var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager
+							var:zg361_b1_case_subject = this
+							var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial
+							var:zg361_b1_case_state = 5
+							var:zg361_b1_case_active = 1
+							var:zg361_b1_roster_included = 1
+							var:zg361_b1_grade_write_acl_frozen = 1
+							var:zg361_b1_recusal_active = 0
+							var:zg361_pending_grade = scope:zg361_b1_recusal_review_subject.var:zg361_b1_recusal_review_recommended_grade
+						}
+						save_temporary_scope_as = zg361_b1_recusal_review_partner
+						root = { change_variable = { name = zg361_b1_recusal_review_partner_n add = 1 } }
+					}
+				}
+			}
+			if = {
+				limit = { var:zg361_b1_recusal_review_recommended_grade = var:zg361_b1_recusal_review_pre_grade }
+				set_variable = { name = zg361_b1_recusal_review_applied value = 1 }
+				set_variable = { name = zg361_b1_recusal_review_state value = 2 }
+			}
+			else_if = {
+				limit = { scope:zg361_b1_recusal_review_manager.var:zg361_b1_recusal_review_partner_n = 1 }
+				scope:zg361_b1_recusal_review_partner = {
+					set_variable = { name = zg361_b1_recusal_partner_swap_subject value = scope:zg361_b1_recusal_review_subject }
+					set_variable = { name = zg361_b1_recusal_partner_swap_case value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial }
+					set_variable = { name = zg361_b1_recusal_partner_swap_pre_grade value = var:zg361_pending_grade }
+					set_variable = { name = zg361_pending_grade value = scope:zg361_b1_recusal_review_subject.var:zg361_b1_recusal_review_pre_grade }
+					set_variable = { name = zg361_b1_recusal_partner_swap_post_grade value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade } }
+					set_variable = { name = zg361_b1_forced_down value = 0 }
+					if = {
+						limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+						set_variable = { name = zg361_b1_forced_down value = 1 }
+					}
+				}
+				set_variable = { name = zg361_b1_recusal_review_partner value = scope:zg361_b1_recusal_review_partner }
+				set_variable = { name = zg361_pending_grade value = var:zg361_b1_recusal_review_recommended_grade }
+				set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+				set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade } }
+				set_variable = { name = zg361_b1_forced_down value = 0 }
+				if = {
+					limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+					set_variable = { name = zg361_b1_forced_down value = 1 }
+				}
+				set_variable = { name = zg361_b1_recusal_review_applied value = 1 }
+				set_variable = { name = zg361_b1_recusal_review_state value = 2 }
+				scope:zg361_b1_recusal_review_manager = { change_variable = { name = zg361_b1_quota_book_version add = 1 } }
+			}
+			else = {
+				set_variable = { name = zg361_b1_recusal_review_quota_blocked value = 1 }
+				set_variable = { name = zg361_b1_recusal_review_state value = 3 }
+			}
+			set_variable = { name = zg361_b1_recusal_review_post_grade value = var:zg361_pending_grade }
+			set_variable = { name = zg361_b1_recusal_review_receipt_owner value = scope:zg361_b1_recusal_review_manager }
+			set_variable = { name = zg361_b1_recusal_review_receipt_subject value = this }
+			set_variable = { name = zg361_b1_recusal_review_receipt_cycle value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_recusal_review_receipt_case value = scope:zg361_b1_recusal_review_manager.var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_recusal_review_receipt_state value = 2 }
+		}
+	}
+}

@@ -1,0 +1,643 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# Purpose shard: appeal peer submission.
+# Boundary contract: 1-10 top-level effects; this file has 5.
+
+
+
+# Public adapter called only by the generic successful appeal-regrade effect.
+# The frozen result<->B1 link, five-field B1 receipt and 1->2 direction guard
+# make stale or repeated hooks no-op.  Only a negative peer opinion was itself
+# overturned; a non-negative A-route opinion may gain corroboration credit.
+zg361_b1_on_appeal_corrected_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b1_result_adapter_result_owner
+			has_variable = zg361_b1_result_adapter_result_subject
+			has_variable = zg361_b1_result_adapter_result_cycle
+			has_variable = zg361_b1_result_adapter_result_case
+			has_variable = zg361_b1_result_adapter_b1_owner
+			has_variable = zg361_b1_result_adapter_b1_subject
+			has_variable = zg361_b1_result_adapter_b1_cycle
+			has_variable = zg361_b1_result_adapter_b1_case
+			has_variable = zg361_b1_result_adapter_b1_state
+			has_variable = zg361_b1_result_adapter_original_grade
+			has_variable = zg361_b1_result_adapter_m008_mode
+			has_variable = zg361_b1_result_adapter_m008_receipt
+			has_variable = zg361_b1_result_adapter_peer_sealed
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+			has_variable = zg361_result_grade
+			has_variable = zg361_result_appeal_outcome
+			has_variable = zg361_result_refund_posted_serial
+			var:zg361_b1_result_adapter_b1_subject = this
+			var:zg361_b1_result_adapter_b1_state = 8
+			var:zg361_b1_result_adapter_result_owner = var:zg361_result_case_owner
+			var:zg361_b1_result_adapter_result_subject = this
+			var:zg361_b1_result_adapter_result_cycle = var:zg361_result_cycle_serial
+			var:zg361_b1_result_adapter_result_case = var:zg361_result_case_serial
+			var:zg361_b1_result_adapter_original_grade = 1
+			var:zg361_result_case_state = 5
+			var:zg361_result_grade = 2
+			var:zg361_result_appeal_outcome = 1
+			var:zg361_result_refund_posted_serial = var:zg361_result_case_serial
+			var:zg361_b1_result_adapter_peer_sealed = 1
+			var:zg361_b1_result_adapter_m008_receipt = var:zg361_b1_result_adapter_b1_case
+			var:zg361_b1_result_adapter_m008_mode != 3
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_peer_appeal_receipt_owner
+					has_variable = zg361_b1_peer_appeal_receipt_subject
+					has_variable = zg361_b1_peer_appeal_receipt_cycle
+					has_variable = zg361_b1_peer_appeal_receipt_case
+					has_variable = zg361_b1_peer_appeal_receipt_state
+					has_variable = zg361_b1_peer_appeal_overturn_receipt
+				}
+				NOT = {
+					AND = {
+						var:zg361_b1_peer_appeal_receipt_owner = var:zg361_b1_result_adapter_b1_owner
+						var:zg361_b1_peer_appeal_receipt_subject = this
+						var:zg361_b1_peer_appeal_receipt_cycle = var:zg361_b1_result_adapter_b1_cycle
+						var:zg361_b1_peer_appeal_receipt_case = var:zg361_b1_result_adapter_b1_case
+						var:zg361_b1_peer_appeal_receipt_state = var:zg361_b1_result_adapter_b1_state
+						var:zg361_b1_peer_appeal_overturn_receipt = var:zg361_result_case_serial
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		zg361_b1_apply_appeal_credit_slot_1_effect = yes
+		zg361_b1_apply_appeal_credit_slot_2_effect = yes
+		zg361_b1_apply_appeal_credit_slot_3_effect = yes
+		set_variable = { name = zg361_b1_peer_appeal_overturn_processed value = 1 }
+		set_variable = { name = zg361_b1_peer_appeal_receipt_owner value = var:zg361_b1_result_adapter_b1_owner }
+		set_variable = { name = zg361_b1_peer_appeal_receipt_subject value = this }
+		set_variable = { name = zg361_b1_peer_appeal_receipt_cycle value = var:zg361_b1_result_adapter_b1_cycle }
+		set_variable = { name = zg361_b1_peer_appeal_receipt_case value = var:zg361_b1_result_adapter_b1_case }
+		set_variable = { name = zg361_b1_peer_appeal_receipt_state value = var:zg361_b1_result_adapter_b1_state }
+		set_variable = { name = zg361_b1_peer_appeal_overturn_receipt value = var:zg361_result_case_serial }
+	}
+}
+
+# A peer record is accepted only when both officials are registered
+# participants on the same side of one live war.  The evidence tuple is minted
+# on that real war scope and copied into the sealed slot; a cohort/case serial
+# is never used as a synthetic "common task" substitute.
+zg361_b1_prepare_shared_war_peer_task_effect = {
+	set_variable = { name = zg361_b1_peer_common_task_found value = 0 }
+	set_variable = { name = zg361_b1_peer_common_task_kind value = 0 }
+	set_variable = { name = zg361_b1_peer_common_task_serial value = 0 }
+	remove_variable = zg361_b1_peer_common_task_owner
+	remove_variable = zg361_b1_peer_common_task_attacker
+	remove_variable = zg361_b1_peer_common_task_defender
+	if = {
+		limit = {
+			zg361_b1_peer_submission_actor_trigger = yes
+			has_variable = zg361_b1_case_subject
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_active
+			has_variable = zg361_b1_roster_included
+			has_variable = zg361_b1_peer_use_mode
+			NOT = { this = scope:recipient }
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_peer_use_mode != 0
+			var:zg361_b1_case_owner = {
+				is_target_in_variable_list = {
+					name = zg361_b1_subjects
+					target = scope:recipient
+				}
+			}
+			scope:recipient = {
+				zg361_b1_peer_submission_recipient_trigger = yes
+				has_variable = zg361_b1_case_subject
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_case_active
+				has_variable = zg361_b1_roster_included
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_case_serial = scope:actor.var:zg361_b1_case_serial
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				NOT = {
+					OR = {
+						AND = {
+							var:zg361_b1_peer_slot_1_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_1_evaluator }
+								var:zg361_b1_peer_slot_1_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_2_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_2_evaluator }
+								var:zg361_b1_peer_slot_2_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_3_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_3_evaluator }
+								var:zg361_b1_peer_slot_3_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+					}
+				}
+			}
+		}
+		random_character_war = {
+			limit = {
+				OR = {
+					AND = {
+						scope:actor = { is_attacker_in_war = prev }
+						scope:recipient = { is_attacker_in_war = prev }
+					}
+					AND = {
+						scope:actor = { is_defender_in_war = prev }
+						scope:recipient = { is_defender_in_war = prev }
+					}
+				}
+			}
+			save_temporary_scope_as = zg361_b1_peer_common_war
+			scope:actor = { set_variable = { name = zg361_b1_peer_common_task_found value = 1 } }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_common_task_found = 1 exists = scope:zg361_b1_peer_common_war }
+			scope:zg361_b1_peer_common_war = {
+				if = {
+					limit = { NOT = { has_variable = zg361_b1_peer_task_serial_cursor } }
+					set_variable = { name = zg361_b1_peer_task_serial_cursor value = 0 }
+				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_task_owner
+								has_variable = zg361_b1_peer_task_cycle
+								has_variable = zg361_b1_peer_task_case
+							}
+							OR = {
+								NOT = { var:zg361_b1_peer_task_owner = scope:actor.var:zg361_b1_case_owner }
+								NOT = { var:zg361_b1_peer_task_cycle = scope:actor.var:zg361_b1_cycle_serial }
+								NOT = { var:zg361_b1_peer_task_case = scope:actor.var:zg361_b1_case_serial }
+							}
+						}
+						trigger_else = { always = yes }
+					}
+					change_variable = { name = zg361_b1_peer_task_serial_cursor add = 1 }
+					set_variable = { name = zg361_b1_peer_task_owner value = scope:actor.var:zg361_b1_case_owner }
+					set_variable = { name = zg361_b1_peer_task_cycle value = scope:actor.var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_peer_task_case value = scope:actor.var:zg361_b1_case_serial }
+				}
+			}
+			set_variable = { name = zg361_b1_peer_common_task_kind value = 1 }
+			set_variable = { name = zg361_b1_peer_common_task_serial value = scope:zg361_b1_peer_common_war.var:zg361_b1_peer_task_serial_cursor }
+			set_variable = { name = zg361_b1_peer_common_task_owner value = var:zg361_b1_case_owner }
+			set_variable = { name = zg361_b1_peer_common_task_cycle value = var:zg361_b1_cycle_serial }
+			set_variable = { name = zg361_b1_peer_common_task_case value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_peer_common_task_attacker value = scope:zg361_b1_peer_common_war.primary_attacker }
+			set_variable = { name = zg361_b1_peer_common_task_defender value = scope:zg361_b1_peer_common_war.primary_defender }
+		}
+	}
+}
+
+zg361_b1_submit_peer_recommendation_effect = {
+	zg361_b1_submit_peer_positive_effect = yes
+}
+
+zg361_b1_submit_peer_positive_effect = {
+	zg361_b1_prepare_shared_war_peer_task_effect = yes
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					has_variable = zg361_b1_roster_included
+					has_variable = zg361_b1_peer_used
+					has_variable = zg361_b1_peer_cap
+					has_variable = zg361_b1_peer_fatigue
+					has_variable = zg361_b1_peer_use_mode
+					scope:recipient = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_case_active
+						has_variable = zg361_b1_roster_included
+						has_variable = zg361_b1_peer_slot_1_filled
+						has_variable = zg361_b1_peer_slot_2_filled
+						has_variable = zg361_b1_peer_slot_3_filled
+					}
+				}
+				NOT = { this = scope:recipient }
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				var:zg361_b1_peer_use_mode != 0
+				var:zg361_b1_peer_common_task_found = 1
+				var:zg361_b1_peer_common_task_kind = 1
+				var:zg361_b1_peer_used < var:zg361_b1_peer_cap
+				var:zg361_b1_case_owner = {
+					trigger_if = {
+						limit = { has_variable_list = zg361_b1_subjects }
+						is_target_in_variable_list = {
+							name = zg361_b1_subjects
+							target = scope:recipient
+						}
+					}
+					trigger_else = { always = no }
+				}
+				scope:recipient = {
+					var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:actor.var:zg361_b1_cycle_serial
+					var:zg361_b1_case_serial = scope:actor.var:zg361_b1_case_serial
+					var:zg361_b1_case_state = 3
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					OR = {
+						var:zg361_b1_peer_slot_1_filled = 0
+						var:zg361_b1_peer_slot_2_filled = 0
+						var:zg361_b1_peer_slot_3_filled = 0
+					}
+					NOT = {
+						OR = {
+						AND = {
+							var:zg361_b1_peer_slot_1_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_1_evaluator }
+								var:zg361_b1_peer_slot_1_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_2_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_2_evaluator }
+								var:zg361_b1_peer_slot_2_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_3_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_3_evaluator }
+								var:zg361_b1_peer_slot_3_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						}
+					}
+				}
+			}
+			trigger_else = { always = no }
+		}
+		if = {
+			limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+			set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+			set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+		}
+		set_variable = {
+			name = zg361_b1_peer_submission_weight
+			value = {
+				value = var:zg361_b1_evaluator_credit
+				subtract = var:zg361_b1_peer_fatigue
+				max = 100
+				min = 25
+			}
+		}
+		if = {
+			limit = { scope:recipient.var:zg361_b1_peer_slot_1_filled = 0 }
+			scope:recipient = {
+				set_variable = { name = zg361_b1_peer_slot_1_filled value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_1_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_1_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_1_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_peer_slot_1_raw value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_1_performance value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_1_collaboration value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_1_values value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_1_example_id value = { value = var:zg361_b1_case_serial multiply = 10 add = 1 } }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_id value = scope:actor.var:zg361_b1_peer_common_task_serial }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_kind value = scope:actor.var:zg361_b1_peer_common_task_kind }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_owner value = scope:actor.var:zg361_b1_peer_common_task_owner }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_cycle value = scope:actor.var:zg361_b1_peer_common_task_cycle }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_case value = scope:actor.var:zg361_b1_peer_common_task_case }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_attacker value = scope:actor.var:zg361_b1_peer_common_task_attacker }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_defender value = scope:actor.var:zg361_b1_peer_common_task_defender }
+				set_variable = { name = zg361_b1_peer_slot_1_invitation_source value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_1_anonymous value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_1_contribution_weight value = 5 }
+				set_variable = { name = zg361_b1_peer_slot_1_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_1_submitted_year value = current_year }
+			}
+		}
+		else_if = {
+			limit = { scope:recipient.var:zg361_b1_peer_slot_2_filled = 0 }
+				scope:recipient = {
+				set_variable = { name = zg361_b1_peer_slot_2_filled value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_2_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_2_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_2_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_peer_slot_2_raw value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_2_performance value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_2_collaboration value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_2_values value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_2_example_id value = { value = var:zg361_b1_case_serial multiply = 10 add = 2 } }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_id value = scope:actor.var:zg361_b1_peer_common_task_serial }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_kind value = scope:actor.var:zg361_b1_peer_common_task_kind }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_owner value = scope:actor.var:zg361_b1_peer_common_task_owner }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_cycle value = scope:actor.var:zg361_b1_peer_common_task_cycle }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_case value = scope:actor.var:zg361_b1_peer_common_task_case }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_attacker value = scope:actor.var:zg361_b1_peer_common_task_attacker }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_defender value = scope:actor.var:zg361_b1_peer_common_task_defender }
+				set_variable = { name = zg361_b1_peer_slot_2_invitation_source value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_2_anonymous value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_2_contribution_weight value = 5 }
+				set_variable = { name = zg361_b1_peer_slot_2_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_2_submitted_year value = current_year }
+			}
+		}
+		else_if = {
+			limit = { scope:recipient.var:zg361_b1_peer_slot_3_filled = 0 }
+				scope:recipient = {
+				set_variable = { name = zg361_b1_peer_slot_3_filled value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_3_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_3_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_3_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_peer_slot_3_raw value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_3_performance value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_3_collaboration value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_3_values value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_3_example_id value = { value = var:zg361_b1_case_serial multiply = 10 add = 3 } }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_id value = scope:actor.var:zg361_b1_peer_common_task_serial }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_kind value = scope:actor.var:zg361_b1_peer_common_task_kind }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_owner value = scope:actor.var:zg361_b1_peer_common_task_owner }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_cycle value = scope:actor.var:zg361_b1_peer_common_task_cycle }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_case value = scope:actor.var:zg361_b1_peer_common_task_case }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_attacker value = scope:actor.var:zg361_b1_peer_common_task_attacker }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_defender value = scope:actor.var:zg361_b1_peer_common_task_defender }
+				set_variable = { name = zg361_b1_peer_slot_3_invitation_source value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_3_anonymous value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_3_contribution_weight value = 5 }
+				set_variable = { name = zg361_b1_peer_slot_3_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_3_submitted_year value = current_year }
+			}
+		}
+		change_variable = { name = zg361_b1_peer_used add = 1 }
+		change_variable = { name = zg361_b1_peer_fatigue add = 15 }
+		set_variable = {
+			name = zg361_b1_peer_fatigue
+			value = { value = var:zg361_b1_peer_fatigue max = 60 }
+		}
+		scope:recipient = {
+			change_variable = { name = zg361_b1_peer_n add = 1 }
+			change_variable = { name = zg361_b1_peer_raw_sum add = 10 }
+			change_variable = { name = zg361_b1_peer_timely_n add = 1 }
+		}
+		debug_log = "ZG361B1: sealed positive peer record submitted"
+	}
+	else = {
+		if = {
+			limit = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b1_peer_used
+						has_variable = zg361_b1_peer_cap
+					}
+					var:zg361_b1_peer_used >= var:zg361_b1_peer_cap
+				}
+				trigger_else = { always = no }
+			}
+			change_variable = { name = zg361_b1_peer_over_cap add = 1 }
+		}
+	}
+}
+
+zg361_b1_submit_peer_negative_effect = {
+	zg361_b1_prepare_shared_war_peer_task_effect = yes
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					has_variable = zg361_b1_roster_included
+					has_variable = zg361_b1_peer_used
+					has_variable = zg361_b1_peer_cap
+					has_variable = zg361_b1_peer_fatigue
+					has_variable = zg361_b1_peer_use_mode
+					scope:recipient = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_case_active
+						has_variable = zg361_b1_roster_included
+						has_variable = zg361_b1_peer_slot_1_filled
+						has_variable = zg361_b1_peer_slot_2_filled
+						has_variable = zg361_b1_peer_slot_3_filled
+					}
+				}
+				NOT = { this = scope:recipient }
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				var:zg361_b1_peer_use_mode != 0
+				var:zg361_b1_peer_common_task_found = 1
+				var:zg361_b1_peer_common_task_kind = 1
+				var:zg361_b1_peer_used < var:zg361_b1_peer_cap
+				var:zg361_b1_case_owner = {
+					trigger_if = {
+						limit = { has_variable_list = zg361_b1_subjects }
+						is_target_in_variable_list = {
+							name = zg361_b1_subjects
+							target = scope:recipient
+						}
+					}
+					trigger_else = { always = no }
+				}
+				scope:recipient = {
+					var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:actor.var:zg361_b1_cycle_serial
+					var:zg361_b1_case_serial = scope:actor.var:zg361_b1_case_serial
+					var:zg361_b1_case_state = 3
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					OR = {
+						var:zg361_b1_peer_slot_1_filled = 0
+						var:zg361_b1_peer_slot_2_filled = 0
+						var:zg361_b1_peer_slot_3_filled = 0
+					}
+					NOT = {
+						OR = {
+						AND = {
+							var:zg361_b1_peer_slot_1_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_1_evaluator }
+								var:zg361_b1_peer_slot_1_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_2_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_2_evaluator }
+								var:zg361_b1_peer_slot_2_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_3_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_3_evaluator }
+								var:zg361_b1_peer_slot_3_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						}
+					}
+				}
+			}
+			trigger_else = { always = no }
+		}
+		if = {
+			limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+			set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+			set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+		}
+		set_variable = {
+			name = zg361_b1_peer_submission_weight
+			value = {
+				value = var:zg361_b1_evaluator_credit
+				subtract = var:zg361_b1_peer_fatigue
+				max = 100
+				min = 25
+			}
+		}
+		if = {
+			limit = { scope:recipient.var:zg361_b1_peer_slot_1_filled = 0 }
+			scope:recipient = {
+				set_variable = { name = zg361_b1_peer_slot_1_filled value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_1_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_1_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_1_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_peer_slot_1_raw value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_1_performance value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_1_collaboration value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_1_values value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_1_example_id value = { value = var:zg361_b1_case_serial multiply = 10 add = 1 } }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_id value = scope:actor.var:zg361_b1_peer_common_task_serial }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_kind value = scope:actor.var:zg361_b1_peer_common_task_kind }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_owner value = scope:actor.var:zg361_b1_peer_common_task_owner }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_cycle value = scope:actor.var:zg361_b1_peer_common_task_cycle }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_case value = scope:actor.var:zg361_b1_peer_common_task_case }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_attacker value = scope:actor.var:zg361_b1_peer_common_task_attacker }
+				set_variable = { name = zg361_b1_peer_slot_1_common_task_defender value = scope:actor.var:zg361_b1_peer_common_task_defender }
+				set_variable = { name = zg361_b1_peer_slot_1_invitation_source value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_1_anonymous value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_1_contribution_weight value = 5 }
+				set_variable = { name = zg361_b1_peer_slot_1_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_1_submitted_year value = current_year }
+			}
+		}
+		else_if = {
+			limit = { scope:recipient.var:zg361_b1_peer_slot_2_filled = 0 }
+			scope:recipient = {
+				set_variable = { name = zg361_b1_peer_slot_2_filled value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_2_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_2_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_2_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_peer_slot_2_raw value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_2_performance value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_2_collaboration value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_2_values value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_2_example_id value = { value = var:zg361_b1_case_serial multiply = 10 add = 2 } }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_id value = scope:actor.var:zg361_b1_peer_common_task_serial }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_kind value = scope:actor.var:zg361_b1_peer_common_task_kind }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_owner value = scope:actor.var:zg361_b1_peer_common_task_owner }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_cycle value = scope:actor.var:zg361_b1_peer_common_task_cycle }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_case value = scope:actor.var:zg361_b1_peer_common_task_case }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_attacker value = scope:actor.var:zg361_b1_peer_common_task_attacker }
+				set_variable = { name = zg361_b1_peer_slot_2_common_task_defender value = scope:actor.var:zg361_b1_peer_common_task_defender }
+				set_variable = { name = zg361_b1_peer_slot_2_invitation_source value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_2_anonymous value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_2_contribution_weight value = 5 }
+				set_variable = { name = zg361_b1_peer_slot_2_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_2_submitted_year value = current_year }
+			}
+		}
+		else_if = {
+			limit = { scope:recipient.var:zg361_b1_peer_slot_3_filled = 0 }
+			scope:recipient = {
+				set_variable = { name = zg361_b1_peer_slot_3_filled value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_3_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_3_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_3_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_peer_slot_3_raw value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_3_performance value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_3_collaboration value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_3_values value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_3_example_id value = { value = var:zg361_b1_case_serial multiply = 10 add = 3 } }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_id value = scope:actor.var:zg361_b1_peer_common_task_serial }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_kind value = scope:actor.var:zg361_b1_peer_common_task_kind }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_owner value = scope:actor.var:zg361_b1_peer_common_task_owner }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_cycle value = scope:actor.var:zg361_b1_peer_common_task_cycle }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_case value = scope:actor.var:zg361_b1_peer_common_task_case }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_attacker value = scope:actor.var:zg361_b1_peer_common_task_attacker }
+				set_variable = { name = zg361_b1_peer_slot_3_common_task_defender value = scope:actor.var:zg361_b1_peer_common_task_defender }
+				set_variable = { name = zg361_b1_peer_slot_3_invitation_source value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_3_anonymous value = 1 }
+				set_variable = { name = zg361_b1_peer_slot_3_contribution_weight value = 5 }
+				set_variable = { name = zg361_b1_peer_slot_3_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_3_submitted_year value = current_year }
+			}
+		}
+		change_variable = { name = zg361_b1_peer_used add = 1 }
+		change_variable = { name = zg361_b1_peer_fatigue add = 15 }
+		set_variable = {
+			name = zg361_b1_peer_fatigue
+			value = { value = var:zg361_b1_peer_fatigue max = 60 }
+		}
+		scope:recipient = {
+			change_variable = { name = zg361_b1_peer_n add = 1 }
+			change_variable = { name = zg361_b1_peer_raw_sum add = -15 }
+			change_variable = { name = zg361_b1_peer_timely_n add = 1 }
+		}
+		debug_log = "ZG361B1: sealed negative peer record submitted"
+	}
+	else = {
+		if = {
+			limit = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b1_peer_used
+						has_variable = zg361_b1_peer_cap
+					}
+					var:zg361_b1_peer_used >= var:zg361_b1_peer_cap
+				}
+				trigger_else = { always = no }
+			}
+			change_variable = { name = zg361_b1_peer_over_cap add = 1 }
+		}
+	}
+}

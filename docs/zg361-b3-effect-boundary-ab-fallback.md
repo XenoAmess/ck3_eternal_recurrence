@@ -1,5 +1,8 @@
 # B3 纯加载性能 RED 的 effect 文件边界 A/B 预案
 
+> **2026-09-05 已废止为决策依据：** 项目现行规则把单文件过大直接视为必须修复的文件边界缺陷，不再讨论是否拆分，也不再生成未拆分候选。下文仅保留历史 artifact、旧轮次与当时判定，后续一律使用按用途拆分的 canonical source。现行合同见
+> [`mod_zhongguo_style/docs/361-effect-file-boundary-contract.md`](../mod_zhongguo_style/docs/361-effect-file-boundary-contract.md)。
+
 ## 状态与使用门槛
 
 本节保留预案形成时 **no-launch、未物化** 的 fallback 基线；预案后来已在 r5 触发，四轮实机结果见文末：

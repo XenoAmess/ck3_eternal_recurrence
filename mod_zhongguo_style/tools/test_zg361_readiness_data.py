@@ -130,7 +130,10 @@ class ReadinessDataTests(unittest.TestCase):
                     "tools/gen_361_phase2_central_runtime.py",
                     "tools/test_zg361_phase2_central_runtime.py",
                     "docs/361-phase2-central-runtime-spec.md",
-                    "common/scripted_effects/zg361_effects.txt",
+                    "common/scripted_effects/zg361_core_review_cycle_effects.txt",
+                    "common/scripted_effects/zg361_core_result_delivery_effects.txt",
+                    "common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt",
+                    "common/scripted_effects/zg361_core_elimination_effects.txt",
                 ),
             )
             if mechanism_id in {360, 361}:

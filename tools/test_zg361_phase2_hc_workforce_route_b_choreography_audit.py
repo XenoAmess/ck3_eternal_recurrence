@@ -40,12 +40,11 @@ RESUME = (
     / "scripted_effects"
     / "zg361_workforce_endgame_005_m360_central_source_effects.txt"
 )
-B1_EFFECTS = (
+B1_EFFECT_ROOT = (
     ROOT
     / "mod_zhongguo_style"
     / "common"
     / "scripted_effects"
-    / "zg361_b1_runtime_effects.txt"
 )
 B1_EVENTS = ROOT / "mod_zhongguo_style" / "events" / "zg361_b1_runtime_events.txt"
 CHECKPOINT = ROOT / "tools" / "zg361_phase2_hc_workforce_route_b_checkpoint.py"
@@ -60,6 +59,17 @@ AUDIT = (
 
 def read(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
+
+
+def read_b1_effects() -> str:
+    return "\n".join(
+        read(path)
+        for path in sorted(
+            B1_EFFECT_ROOT.glob(
+                "zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt"
+            )
+        )
+    )
 
 
 def function_block(source: str, name: str) -> str:
@@ -182,7 +192,7 @@ class RouteBProductionChoreographyAuditTests(unittest.TestCase):
         )
 
     def test_b1_fixed_time_anchors_are_preserved(self) -> None:
-        effects = read(B1_EFFECTS)
+        effects = read_b1_effects()
         events = read(B1_EVENTS)
         self.assertIn("trigger_event = { id = zg361b1.100 days = 180 }", effects)
         self.assertIn("trigger_event = { id = zg361b1.101 days = 60 }", events)

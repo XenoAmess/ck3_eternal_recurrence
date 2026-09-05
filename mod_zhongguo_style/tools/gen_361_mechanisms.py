@@ -24,6 +24,7 @@ from zg361_domain_data import (
     build_runtime_plans,
 )
 from zg361_operation_registry import primitive_recipe_for
+from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
 from zg361_readiness_data import (
     CENTRAL_WIRING_BOUNDARY,
     CUMULATIVE_COUNTS,
@@ -42,8 +43,11 @@ from zg361_readiness_data import (
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
+EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
 GENERATED_HEADER = "# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json\n"
 BOM = b"\xef\xbb\xbf"
+LEGACY_EFFECTS_PATH = EFFECTS_DIR / "zg361_generated_mechanism_effects.txt"
+EFFECT_SHARD_GLOB = "zg361_generated_mechanism_*_effects.txt"
 
 
 def script_text(body: str) -> bytes:
@@ -270,6 +274,63 @@ def render_effects(mechanisms: list[Mechanism]) -> bytes:
         )
     lines.append("}")
     return script_text("\n".join(lines))
+
+
+def effect_purpose(name: str) -> str:
+    """Map every mechanism definition to a small, stable purpose family."""
+
+    if name == "zg361_init_org_ledger_effect":
+        return "ledger_bootstrap"
+    prefix = "zg361_mechanism_"
+    if name.startswith(prefix) and len(name) >= len(prefix) + 3:
+        digits = name[len(prefix) : len(prefix) + 3]
+        if digits.isdigit():
+            mechanism_id = int(digits)
+            if 1 <= mechanism_id <= MECHANISM_COUNT:
+                first = ((mechanism_id - 1) // 2) * 2 + 1
+                last = min(first + 1, MECHANISM_COUNT)
+                return f"policy_{first:03d}_{last:03d}"
+    helpers = {
+        "zg361_mechanism_dispatch_next_effect": "player_dispatch",
+        "zg361_mechanism_ai_batch_effect": "ai_batch",
+        "zg361_adopt_reference_charter_effect": "reference_charter",
+        "zg361_refresh_org_climate_effect": "org_climate",
+    }
+    try:
+        return helpers[name]
+    except KeyError as error:
+        raise ValueError(f"unclassified mechanism scripted effect: {name}") from error
+
+
+def effect_shard_outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
+    """Render purpose-grouped effect files with a 1-10 definition boundary."""
+
+    shards = plan_effect_shards(
+        render_effects(mechanisms),
+        generated_header=GENERATED_HEADER,
+        classify=effect_purpose,
+    )
+    rendered: dict[Path, bytes] = {}
+    for index, shard in enumerate(shards, start=1):
+        if not 1 <= len(shard.names) <= MAX_EFFECTS_PER_SHARD:
+            raise ValueError(f"mechanism shard {index} violates the 1-10 effect boundary")
+        part = f"_part_{shard.part:02d}" if shard.part > 1 else ""
+        path = EFFECTS_DIR / (
+            f"zg361_generated_mechanism_{index:03d}_{shard.purpose}{part}_effects.txt"
+        )
+        rendered[path] = script_text(
+            f"# Purpose shard: {shard.purpose.replace('_', ' ')}.\n"
+            f"# Boundary contract: 1-10 top-level effects; this file has {len(shard.names)}.\n\n"
+            f"{shard.body}"
+        )
+    return rendered
+
+
+def generated_effect_residue(expected: set[Path]) -> tuple[Path, ...]:
+    candidates = set(EFFECTS_DIR.glob(EFFECT_SHARD_GLOB))
+    if LEGACY_EFFECTS_PATH.exists():
+        candidates.add(LEGACY_EFFECTS_PATH)
+    return tuple(sorted(candidates - expected))
 
 
 def render_values() -> bytes:
@@ -1043,7 +1104,6 @@ def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
         plan["primitive_recipe"] = list(primitive_recipe_for(plan))
     payload = manifest_payload(mechanisms, runtime_plans)
     result: dict[Path, bytes] = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_mechanism_effects.txt": render_effects(mechanisms),
         MOD_ROOT / "common" / "script_values" / "zg361_generated_mechanism_values.txt": render_values(),
         MOD_ROOT / "common" / "modifiers" / "zg361_generated_mechanism_modifiers.txt": render_modifiers(),
         MOD_ROOT / "events" / "zg361_generated_mechanism_events.txt": render_events(mechanisms),
@@ -1051,6 +1111,7 @@ def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
         MOD_ROOT / "common" / "scripted_guis" / "zg361_generated_mechanism_guis.txt": render_scripted_guis(),
         MOD_ROOT / "gui" / "zg361_mechanism_bridge.gui": render_bridge_gui(),
     }
+    result.update(effect_shard_outputs(mechanisms))
     result.update(render_runtime_plan_files(mechanisms, runtime_plans))
     for language in (
         "english",
@@ -1097,19 +1158,32 @@ def main(argv: list[str] | None = None) -> int:
         print(f"RED: {error}")
         return 1
 
-    mismatches: list[str] = []
-    for path, data in rendered.items():
-        if args.check:
-            if not path.is_file() or path.read_bytes() != data:
-                mismatches.append(path.relative_to(MOD_ROOT).as_posix())
-        else:
+    expected_effects = {path for path in rendered if path.parent == EFFECTS_DIR}
+    residue = generated_effect_residue(expected_effects)
+    if args.check:
+        mismatches = [
+            path.relative_to(MOD_ROOT).as_posix()
+            for path, data in rendered.items()
+            if not path.is_file() or path.read_bytes() != data
+        ]
+        if mismatches or residue:
+            print("RED: generated files are stale:")
+            for mismatch in mismatches:
+                print(f"  - {mismatch}")
+            for path in residue:
+                print(f"  - LEGACY_OR_UNEXPECTED {path.relative_to(MOD_ROOT).as_posix()}")
+            return 1
+    else:
+        for path in residue:
+            payload = path.read_bytes()
+            if path != LEGACY_EFFECTS_PATH and not payload.startswith(
+                BOM + GENERATED_HEADER.encode("utf-8")
+            ):
+                raise RuntimeError(f"refusing to remove unowned effect file: {path}")
+            path.unlink()
+        for path, data in rendered.items():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
-    if mismatches:
-        print("RED: generated files are stale:")
-        for mismatch in mismatches:
-            print(f"  - {mismatch}")
-        return 1
     verb = "checked" if args.check else "generated"
     print(f"GREEN: {verb} {MECHANISM_COUNT} mechanisms across {len(rendered)} files")
     return 0

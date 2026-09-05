@@ -45,6 +45,13 @@ class MechanismGenerationTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.mechanisms = load_mechanisms(MOD_ROOT)
         cls.rendered = outputs(cls.mechanisms)
+        cls.effects = "\n".join(
+            payload.decode("utf-8-sig")
+            for path, payload in sorted(cls.rendered.items())
+            if path.parent == MOD_ROOT / "common" / "scripted_effects"
+            and path.name.startswith("zg361_generated_mechanism_")
+            and path.name.endswith("_effects.txt")
+        )
 
     def test_exact_catalogue(self) -> None:
         self.assertEqual(len(self.mechanisms), MECHANISM_COUNT)
@@ -172,14 +179,8 @@ class MechanismGenerationTests(unittest.TestCase):
 
     def test_generated_runtime_coverage(self) -> None:
         event_path = MOD_ROOT / "events" / "zg361_generated_mechanism_events.txt"
-        effect_path = (
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_mechanism_effects.txt"
-        )
         events = self.rendered[event_path].decode("utf-8-sig")
-        effects = self.rendered[effect_path].decode("utf-8-sig")
+        effects = self.effects
         for mechanism in self.mechanisms:
             with self.subTest(mechanism=mechanism.id):
                 self.assertEqual(events.count(f"zg361m.{mechanism.id} = {{"), 1)
@@ -192,13 +193,7 @@ class MechanismGenerationTests(unittest.TestCase):
                 self.assertIn(f"ZG361M: CASE {mechanism.id:03d}", effects)
 
     def test_org_climate_thresholds_do_not_read_unset_ledgers(self) -> None:
-        effect_path = (
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_mechanism_effects.txt"
-        )
-        effects = self.rendered[effect_path].decode("utf-8-sig")
+        effects = self.effects
         climate = effects.split("zg361_refresh_org_climate_effect = {", 1)[1]
         expected = (
             ("trust", 20, "zg361_org_high_trust"),

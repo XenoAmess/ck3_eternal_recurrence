@@ -1,0 +1,1095 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# Purpose shard: huddle agenda.
+# Boundary contract: 1-10 top-level effects; this file has 7.
+
+
+
+# #136 freezes one real 3-4 manager pre-huddle on the common-superior bank.
+# A records only a boundary recommendation; B freezes each attendee's complete
+# preallocation and its rubber-stamp risk.  No manager alias can occupy two
+# seats because the input is the unique ready-manager list.
+zg361_b1_prepare_bank_huddle_effect = {
+	remove_variable = zg361_b1_m136_receipt_serial
+	set_variable = { name = zg361_b1_huddle_host_object_available value = 0 }
+	set_variable = { name = zg361_b1_huddle_host_state value = 0 }
+	remove_variable = zg361_b1_huddle_host_owner
+	remove_variable = zg361_b1_huddle_host_subject
+	remove_variable = zg361_b1_huddle_host_id
+	set_variable = { name = zg361_b1_huddle_host_cycle value = 0 }
+	set_variable = { name = zg361_b1_huddle_host_case value = 0 }
+	set_variable = { name = zg361_b1_huddle_host_attendee_n value = 0 }
+	remove_variable = zg361_b1_huddle_host_manager_1
+	remove_variable = zg361_b1_huddle_host_manager_2
+	remove_variable = zg361_b1_huddle_host_manager_3
+	remove_variable = zg361_b1_huddle_host_manager_4
+	if = {
+		limit = { has_variable_list = zg361_b1_ready_managers }
+		every_in_list = {
+			list = zg361_b1_ready_managers
+			set_variable = { name = zg361_b1_huddle_attendee_attending value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_route value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_state value = 0 }
+			remove_variable = zg361_b1_huddle_attendee_owner
+			remove_variable = zg361_b1_huddle_attendee_subject
+			remove_variable = zg361_b1_huddle_attendee_id
+			set_variable = { name = zg361_b1_huddle_attendee_cycle value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_case value = 0 }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_b1_bank_m136_mode != 3
+			var:zg361_b1_ready_manager_n >= 3
+		}
+		set_variable = { name = zg361_b1_huddle_host_object_available value = 1 }
+		set_variable = { name = zg361_b1_huddle_host_id value = { value = var:zg361_b1_bank_case_serial multiply = 100 add = 36 } }
+		set_variable = { name = zg361_b1_huddle_host_owner value = this }
+		set_variable = { name = zg361_b1_huddle_host_subject value = this }
+		set_variable = { name = zg361_b1_huddle_host_cycle value = var:zg361_b1_bank_season }
+		set_variable = { name = zg361_b1_huddle_host_case value = var:zg361_b1_bank_case_serial }
+		set_variable = { name = zg361_b1_huddle_host_frozen_year value = current_year }
+		set_variable = { name = zg361_b1_huddle_host_fact_standard value = 8 }
+		set_variable = { name = zg361_b1_huddle_host_quota_standard value = 361 }
+		set_variable = { name = zg361_b1_huddle_host_state value = 1 }
+		set_variable = { name = zg361_b1_huddle_host_ack_n value = 0 }
+		set_variable = { name = zg361_b1_huddle_host_minutes_budget value = 30 }
+		set_variable = { name = zg361_b1_huddle_host_standard_snapshot_hash value = { value = var:zg361_b1_bank_case_serial multiply = 1000 add = var:zg361_b1_ready_manager_n } }
+		ordered_in_list = {
+			list = zg361_b1_ready_managers
+			order_by = { value = var:zg361_b1_bank_ready_order multiply = -1 }
+			max = 4
+			root = { change_variable = { name = zg361_b1_huddle_host_attendee_n add = 1 } }
+			set_variable = { name = zg361_b1_huddle_attendee_attending value = 1 }
+			save_temporary_scope_as = zg361_b1_huddle_manager
+			if = { limit = { root.var:zg361_b1_huddle_host_attendee_n = 1 } root = { set_variable = { name = zg361_b1_huddle_host_manager_1 value = scope:zg361_b1_huddle_manager } } }
+			else_if = { limit = { root.var:zg361_b1_huddle_host_attendee_n = 2 } root = { set_variable = { name = zg361_b1_huddle_host_manager_2 value = scope:zg361_b1_huddle_manager } } }
+			else_if = { limit = { root.var:zg361_b1_huddle_host_attendee_n = 3 } root = { set_variable = { name = zg361_b1_huddle_host_manager_3 value = scope:zg361_b1_huddle_manager } } }
+			else_if = { limit = { root.var:zg361_b1_huddle_host_attendee_n = 4 } root = { set_variable = { name = zg361_b1_huddle_host_manager_4 value = scope:zg361_b1_huddle_manager } } }
+			set_variable = { name = zg361_b1_huddle_attendee_id value = root.var:zg361_b1_huddle_host_id }
+			set_variable = { name = zg361_b1_huddle_attendee_seat value = root.var:zg361_b1_huddle_host_attendee_n }
+			set_variable = { name = zg361_b1_huddle_attendee_route value = root.var:zg361_b1_bank_m136_mode }
+			set_variable = { name = zg361_b1_huddle_attendee_owner value = root }
+			set_variable = { name = zg361_b1_huddle_attendee_subject value = this }
+			set_variable = { name = zg361_b1_huddle_attendee_cycle value = root.var:zg361_b1_huddle_host_cycle }
+			set_variable = { name = zg361_b1_huddle_attendee_case value = root.var:zg361_b1_huddle_host_case }
+			set_variable = { name = zg361_b1_huddle_attendee_state value = 1 }
+			set_variable = { name = zg361_b1_huddle_attendee_minutes_budget value = 30 }
+			set_variable = { name = zg361_b1_huddle_attendee_minutes_consumed value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_ack_posted value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_diff_n value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_boundary_case_n value = 0 }
+			set_variable = { name = zg361_b1_huddle_attendee_suggestion_grade value = 0 }
+			if = {
+				limit = { root.var:zg361_b1_bank_m136_mode = 1 }
+				ordered_in_list = {
+					variable = zg361_b1_subjects
+					order_by = { value = var:zg361_b1_calibration_score multiply = 1000 subtract = var:zg361_b1_roster_frozen_order }
+					max = 1
+					limit = {
+						var:zg361_b1_case_owner = scope:zg361_b1_huddle_manager
+						var:zg361_b1_case_state = 5
+						var:zg361_b1_case_active = 1
+						var:zg361_b1_roster_included = 1
+						var:zg361_pending_grade = 2
+					}
+					set_variable = { name = zg361_b1_huddle_attendee_boundary_recommendation value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_huddle_assignment_available value = 1 }
+					set_variable = { name = zg361_b1_huddle_assignment_owner value = scope:zg361_b1_huddle_manager }
+					set_variable = { name = zg361_b1_huddle_assignment_subject value = this }
+					set_variable = { name = zg361_b1_huddle_assignment_cycle value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_huddle_assignment_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_huddle_assignment_state value = 1 }
+					set_variable = { name = zg361_b1_huddle_suggested_grade value = var:zg361_pending_grade }
+					save_temporary_scope_as = zg361_b1_huddle_boundary_subject_scope
+					scope:zg361_b1_huddle_manager = {
+						set_variable = { name = zg361_b1_huddle_attendee_boundary_subject value = scope:zg361_b1_huddle_boundary_subject_scope }
+						set_variable = { name = zg361_b1_huddle_attendee_boundary_case_n value = 1 }
+						set_variable = { name = zg361_b1_huddle_attendee_suggestion_grade value = 2 }
+					}
+				}
+			}
+			else = {
+				set_variable = { name = zg361_b1_huddle_attendee_preallocation_top value = var:zg361_pending_375_n }
+				set_variable = { name = zg361_b1_huddle_attendee_preallocation_middle value = var:zg361_pending_35_n }
+				set_variable = { name = zg361_b1_huddle_attendee_preallocation_bottom value = var:zg361_pending_325_n }
+				set_variable = { name = zg361_b1_huddle_attendee_preallocation_total value = { value = var:zg361_pending_375_n add = var:zg361_pending_35_n add = var:zg361_pending_325_n } }
+				set_variable = { name = zg361_b1_huddle_attendee_rubber_stamp_risk value = 1 }
+				save_temporary_scope_as = zg361_b1_huddle_prealloc_manager
+				every_in_list = {
+					variable = zg361_b1_subjects
+					limit = {
+						var:zg361_b1_case_owner = scope:zg361_b1_huddle_prealloc_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_huddle_prealloc_manager.var:zg361_b1_manager_case_serial
+						var:zg361_b1_case_state = 5
+						var:zg361_b1_case_active = 1
+						var:zg361_b1_roster_included = 1
+					}
+					set_variable = { name = zg361_b1_huddle_assignment_available value = 1 }
+					set_variable = { name = zg361_b1_huddle_assignment_owner value = scope:zg361_b1_huddle_prealloc_manager }
+					set_variable = { name = zg361_b1_huddle_assignment_subject value = this }
+					set_variable = { name = zg361_b1_huddle_assignment_cycle value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_huddle_assignment_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_huddle_assignment_state value = 1 }
+					set_variable = { name = zg361_b1_huddle_suggested_grade value = var:zg361_pending_grade }
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_dissent_review_attention_budget value = var:zg361_b1_huddle_host_attendee_n }
+		set_variable = { name = zg361_b1_m136_receipt_serial value = var:zg361_b1_huddle_host_case }
+	}
+}
+
+# #141 selects at most one real grandchild boundary case. A writes only a
+# must-review agenda marker and consumes the direct manager's attention later;
+# B allows that direct manager to execute one conserved MIDDLE<->TOP peer swap.
+# The common superior never writes a grade.
+zg361_b1_prepare_bank_must_review_effect = {
+	set_variable = { name = zg361_b1_must_review_host_object_available value = 0 }
+	set_variable = { name = zg361_b1_must_review_host_state value = 0 }
+	set_variable = { name = zg361_b1_must_review_count value = 0 }
+	if = {
+		limit = { var:zg361_b1_bank_m141_mode != 3 var:zg361_b1_ready_manager_n >= 1 }
+		ordered_in_list = {
+			list = zg361_b1_ready_managers
+			order_by = { value = var:zg361_b1_bank_ready_order multiply = -1 }
+			max = { value = var:zg361_b1_ready_manager_n max = 80 }
+			if = {
+				limit = { root.var:zg361_b1_must_review_count = 0 }
+				save_temporary_scope_as = zg361_b1_must_review_manager
+				ordered_in_list = {
+					variable = zg361_b1_subjects
+					order_by = { value = var:zg361_b1_calibration_score multiply = 1000 subtract = var:zg361_b1_roster_frozen_order }
+					max = 1
+					limit = {
+						var:zg361_b1_case_owner = scope:zg361_b1_must_review_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_case_state = 5
+						var:zg361_b1_case_active = 1
+						var:zg361_b1_roster_included = 1
+						var:zg361_pending_grade = 2
+						var:zg361_b1_fact_sheet_serial >= 1
+						trigger_if = {
+							limit = { root.var:zg361_b1_bank_m141_mode = 2 }
+							scope:zg361_b1_must_review_manager = {
+								any_in_list = {
+									variable = zg361_b1_subjects
+									var:zg361_b1_case_owner = scope:zg361_b1_must_review_manager
+									var:zg361_b1_case_state = 5
+									var:zg361_b1_case_active = 1
+									var:zg361_b1_roster_included = 1
+									var:zg361_pending_grade = 3
+								}
+							}
+						}
+						trigger_else = { always = yes }
+					}
+					save_temporary_scope_as = zg361_b1_must_review_subject
+					if = {
+						limit = { root.var:zg361_b1_bank_m141_mode = 2 }
+						scope:zg361_b1_must_review_manager = {
+							ordered_in_list = {
+								variable = zg361_b1_subjects
+								order_by = { value = var:zg361_b1_calibration_score multiply = 1000 subtract = var:zg361_b1_roster_frozen_order }
+								max = 1
+								limit = {
+									var:zg361_b1_case_owner = scope:zg361_b1_must_review_manager
+									var:zg361_b1_case_subject = this
+									var:zg361_b1_case_state = 5
+									var:zg361_b1_case_active = 1
+									var:zg361_b1_roster_included = 1
+									var:zg361_pending_grade = 3
+									NOT = { this = scope:zg361_b1_must_review_subject }
+								}
+								save_temporary_scope_as = zg361_b1_must_review_frozen_peer
+							}
+						}
+					}
+					# Both A and B create one real must-review case.  The superior may
+					# force agenda/attention, but any B-route grade movement is executed
+					# later by the direct manager inside the manager's sole quota book.
+					set_variable = { name = zg361_b1_must_review_object_available value = 1 }
+					set_variable = { name = zg361_b1_must_review_object_id value = { value = var:zg361_b1_case_serial multiply = 100 add = 41 } }
+					set_variable = { name = zg361_b1_must_review_object_owner value = scope:zg361_b1_must_review_manager }
+					set_variable = { name = zg361_b1_must_review_object_subject value = this }
+					set_variable = { name = zg361_b1_must_review_object_cycle value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_must_review_object_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_must_review_object_state value = 1 }
+					set_variable = { name = zg361_b1_must_review_state value = 1 }
+					set_variable = { name = zg361_b1_must_review_route value = root.var:zg361_b1_bank_m141_mode }
+					set_variable = { name = zg361_b1_must_review_superior value = root }
+					set_variable = { name = zg361_b1_must_review_manager value = scope:zg361_b1_must_review_manager }
+					set_variable = { name = zg361_b1_must_review_subject value = this }
+					set_variable = { name = zg361_b1_must_review_reason_fact value = var:zg361_b1_fact_sheet_serial }
+					set_variable = { name = zg361_b1_must_review_recommendation value = 3 }
+					set_variable = { name = zg361_b1_must_review_direction value = 1 }
+					set_variable = { name = zg361_b1_must_review_override_blocked value = 1 }
+					set_variable = { name = zg361_b1_must_review_book_version_before value = scope:zg361_b1_must_review_manager.var:zg361_b1_quota_book_version }
+					if = { limit = { root.var:zg361_b1_bank_m141_mode = 2 exists = scope:zg361_b1_must_review_frozen_peer } set_variable = { name = zg361_b1_must_review_swap_peer value = scope:zg361_b1_must_review_frozen_peer } }
+					scope:zg361_b1_must_review_manager = {
+						set_variable = { name = zg361_b1_must_review_manager_link_available value = 1 }
+						set_variable = { name = zg361_b1_must_review_manager_link_state value = 1 }
+						set_variable = { name = zg361_b1_must_review_manager_link_subject value = scope:zg361_b1_must_review_subject }
+						set_variable = { name = zg361_b1_must_review_manager_link_route value = root.var:zg361_b1_bank_m141_mode }
+						set_variable = { name = zg361_b1_must_review_manager_link_cycle value = var:zg361_b1_manager_cycle_serial }
+						set_variable = { name = zg361_b1_must_review_manager_link_case value = var:zg361_b1_manager_case_serial }
+						set_variable = { name = zg361_b1_must_review_manager_link_book_version_before value = var:zg361_b1_quota_book_version }
+						if = { limit = { root.var:zg361_b1_bank_m141_mode = 2 exists = scope:zg361_b1_must_review_frozen_peer } set_variable = { name = zg361_b1_must_review_manager_link_peer value = scope:zg361_b1_must_review_frozen_peer } }
+					}
+					root = {
+						set_variable = { name = zg361_b1_must_review_host_object_available value = 1 }
+						set_variable = { name = zg361_b1_must_review_host_object_id value = scope:zg361_b1_must_review_subject.var:zg361_b1_must_review_object_id }
+						set_variable = { name = zg361_b1_must_review_host_owner value = scope:zg361_b1_must_review_manager }
+						set_variable = { name = zg361_b1_must_review_host_subject value = scope:zg361_b1_must_review_subject }
+						set_variable = { name = zg361_b1_must_review_host_cycle value = scope:zg361_b1_must_review_subject.var:zg361_b1_cycle_serial }
+						set_variable = { name = zg361_b1_must_review_host_case value = scope:zg361_b1_must_review_subject.var:zg361_b1_case_serial }
+						set_variable = { name = zg361_b1_must_review_host_state value = 1 }
+						set_variable = { name = zg361_b1_must_review_host_reason_fact value = scope:zg361_b1_must_review_subject.var:zg361_b1_fact_sheet_serial }
+						change_variable = { name = zg361_b1_must_review_count add = 1 }
+					}
+				}
+			}
+		}
+		if = {
+			limit = { var:zg361_b1_must_review_count = 1 }
+			set_variable = { name = zg361_b1_m141_receipt_serial value = var:zg361_b1_bank_case_serial }
+		}
+	}
+}
+
+zg361_b1_close_common_superior_bank_legacy_unused_effect = {
+	set_variable = { name = zg361_b1_bank_state value = 2 }
+	set_variable = { name = zg361_b1_pool_cursor value = 0 }
+	set_variable = { name = zg361_b1_pool_n value = 0 }
+	every_in_list = {
+		variable = zg361_b1_ready_managers
+		save_temporary_scope_as = zg361_b1_pool_manager
+		every_in_list = {
+			variable = zg361_b1_subjects
+			if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					var:zg361_b1_case_owner = scope:zg361_b1_pool_manager
+					var:zg361_b1_case_state = 5
+					has_variable = zg361_pending_grade
+					has_variable = zg361_b1_calibration_score
+				}
+				add_to_list = zg361_b1_pool_candidates
+				root = { change_variable = { name = zg361_b1_pool_n add = 1 } }
+			}
+		}
+	}
+	set_variable = { name = zg361_b1_pool_top_slots value = 0 }
+	set_variable = { name = zg361_b1_pool_bottom_slots value = 0 }
+	if = {
+		limit = { var:zg361_b1_pool_n >= 1 }
+	set_variable = {
+		name = zg361_b1_pool_top_slots
+		value = { value = var:zg361_b1_pool_n multiply = 0.3 round = yes min = 1 }
+	}
+	set_variable = { name = zg361_b1_pool_bottom_slots value = 0 }
+	if = {
+		limit = { var:zg361_b1_pool_n >= 5 }
+		set_variable = {
+			name = zg361_b1_pool_bottom_slots
+			value = { value = var:zg361_b1_pool_n multiply = 0.1 floor = yes min = 1 }
+		}
+	}
+	ordered_in_list = {
+		list = zg361_b1_pool_candidates
+		order_by = var:zg361_b1_calibration_score
+		max = { value = list_size:zg361_b1_pool_candidates max = 80 }
+		root = { change_variable = { name = zg361_b1_pool_cursor add = 1 } }
+		set_variable = { name = zg361_rank value = root.var:zg361_b1_pool_cursor }
+		set_variable = { name = zg361_b1_pool_rank value = root.var:zg361_b1_pool_cursor }
+		set_variable = { name = zg361_pending_grade value = 2 }
+		if = {
+			limit = { var:zg361_b1_pool_rank <= root.var:zg361_b1_pool_top_slots }
+			set_variable = { name = zg361_pending_grade value = 3 }
+		}
+		set_variable = { name = zg361_last_reviewer value = var:zg361_b1_case_owner }
+		set_variable = { name = zg361_last_review_serial value = var:zg361_b1_cycle_serial }
+	}
+	set_variable = { name = zg361_b1_pool_bottom_candidate_n value = 0 }
+	every_in_list = {
+		list = zg361_b1_pool_candidates
+		limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
+		add_to_list = zg361_b1_pool_bottom_candidates
+		root = { change_variable = { name = zg361_b1_pool_bottom_candidate_n add = 1 } }
+	}
+	set_variable = { name = zg361_b1_pool_bottom_cursor value = 0 }
+	if = {
+		limit = {
+			var:zg361_b1_pool_bottom_slots >= 1
+			var:zg361_b1_pool_bottom_candidate_n >= 1
+		}
+		ordered_in_list = {
+			list = zg361_b1_pool_bottom_candidates
+			order_by = var:zg361_b1_pool_rank
+			max = { value = list_size:zg361_b1_pool_bottom_candidates max = 80 }
+			if = {
+				limit = { root.var:zg361_b1_pool_bottom_cursor < root.var:zg361_b1_pool_bottom_slots }
+				set_variable = { name = zg361_pending_grade value = 1 }
+			}
+			root = { change_variable = { name = zg361_b1_pool_bottom_cursor add = 1 } }
+		}
+	}
+	every_in_list = {
+		list = zg361_b1_pool_candidates
+		set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+		set_variable = {
+			name = zg361_b1_shadow_to_quota_delta
+			value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade }
+		}
+		set_variable = { name = zg361_b1_forced_down value = 0 }
+		if = {
+			limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+			set_variable = { name = zg361_b1_forced_down value = 1 }
+		}
+	}
+	}
+	every_in_list = {
+		variable = zg361_b1_ready_managers
+		set_variable = { name = zg361_pending_375_n value = 0 }
+		set_variable = { name = zg361_pending_35_n value = 0 }
+		set_variable = { name = zg361_pending_325_n value = 0 }
+		set_variable = { name = zg361_top_cut value = root.var:zg361_b1_pool_top_slots }
+		set_variable = { name = zg361_top_cut_next value = { value = root.var:zg361_b1_pool_top_slots add = 1 } }
+		set_variable = { name = zg361_bottom_slots value = root.var:zg361_b1_pool_bottom_slots }
+		save_temporary_scope_as = zg361_b1_allocated_manager
+		every_in_list = {
+			variable = zg361_b1_subjects
+			if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					var:zg361_b1_case_owner = scope:zg361_b1_allocated_manager
+					var:zg361_b1_case_state = 5
+					has_variable = zg361_pending_grade
+				}
+				if = {
+					limit = { var:zg361_pending_grade = 3 }
+					scope:zg361_b1_allocated_manager = { change_variable = { name = zg361_pending_375_n add = 1 } }
+				}
+				else_if = {
+					limit = { var:zg361_pending_grade = 1 }
+					scope:zg361_b1_allocated_manager = { change_variable = { name = zg361_pending_325_n add = 1 } }
+				}
+				else = { scope:zg361_b1_allocated_manager = { change_variable = { name = zg361_pending_35_n add = 1 } } }
+			}
+		}
+		set_variable = { name = zg361_b1_cycle_state value = 6 }
+		set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
+		# This loop is owned by the common superior, so ROOT is still the
+		# superior. Cross one committed event boundary to reset ROOT to this
+		# manager before touching manager-owned subject lists or settlement.
+		save_scope_as = zg361_b1_ticket_owner
+		save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
+		save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
+		trigger_event = { id = zg361b1.111 days = 1 }
+	}
+	debug_log = "ZG361B1: common-superior quota bank closed once"
+}
+
+zg361_b1_close_common_superior_bank_effect = {
+	if = {
+		limit = { var:zg361_b1_bank_state = 1 }
+		set_variable = { name = zg361_b1_bank_state value = 2 }
+		zg361_b1_prepare_bank_huddle_effect = yes
+		set_variable = { name = zg361_b1_unique_pool_active value = 0 }
+		set_variable = { name = zg361_b1_unique_pool_three_n value = 0 }
+		set_variable = { name = zg361_b1_unique_pool_four_n value = 0 }
+		set_variable = { name = zg361_b1_unique_pool_trade_used value = 0 }
+		if = {
+			limit = { NOT = { has_variable = zg361_b1_unique_pool_trade_serial } }
+			set_variable = { name = zg361_b1_unique_pool_trade_serial value = 0 }
+		}
+		every_in_list = {
+			variable = zg361_b1_ready_managers
+			set_variable = { name = zg361_b1_quota_pool_membership value = 0 }
+			if = {
+				limit = { var:zg361_b1_local_candidate_n = 3 }
+				save_temporary_scope_as = zg361_b1_pool_three_manager
+				root = { change_variable = { name = zg361_b1_unique_pool_three_n add = 1 } }
+			}
+			else_if = {
+				limit = { var:zg361_b1_local_candidate_n = 4 }
+				save_temporary_scope_as = zg361_b1_pool_four_manager
+				root = { change_variable = { name = zg361_b1_unique_pool_four_n add = 1 } }
+			}
+		}
+		# A pool exists only when the frozen bank contains one unambiguous 3-team
+		# and one unambiguous 4-team and both carry the same function code. The
+		# bank owner is their already-frozen common superior.
+		if = {
+			limit = {
+				var:zg361_b1_unique_pool_three_n = 1
+				var:zg361_b1_unique_pool_four_n = 1
+				scope:zg361_b1_pool_three_manager.var:zg361_b1_quota_function_code = scope:zg361_b1_pool_four_manager.var:zg361_b1_quota_function_code
+			}
+			set_variable = { name = zg361_b1_unique_pool_active value = 1 }
+			set_variable = { name = zg361_b1_unique_pool_n value = 0 }
+			scope:zg361_b1_pool_three_manager = {
+				set_variable = { name = zg361_b1_quota_pool_membership value = 1 }
+				set_variable = { name = zg361_b1_quota_pool_team_n value = 2 }
+				set_variable = { name = zg361_b1_quota_pool_source_size value = 3 }
+				save_temporary_scope_as = zg361_b1_unique_pool_manager
+					every_in_list = {
+						variable = zg361_b1_subjects
+						if = {
+							limit = {
+								has_variable = zg361_b1_case_owner
+								has_variable = zg361_b1_case_subject
+								has_variable = zg361_b1_cycle_serial
+								has_variable = zg361_b1_case_serial
+								has_variable = zg361_b1_case_state
+								has_variable = zg361_b1_case_active
+								var:zg361_b1_case_owner = scope:zg361_b1_unique_pool_manager
+								var:zg361_b1_case_subject = this
+								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_case_serial
+								var:zg361_b1_case_state = 5
+								var:zg361_b1_case_active = 1
+							var:zg361_b1_roster_included = 1
+							has_variable = zg361_pending_grade
+							has_variable = zg361_b1_calibration_score
+						}
+						set_variable = { name = zg361_b1_quota_pool_subject_source_size value = 3 }
+						add_to_list = zg361_b1_unique_pool_candidates
+						root = { change_variable = { name = zg361_b1_unique_pool_n add = 1 } }
+					}
+				}
+			}
+			scope:zg361_b1_pool_four_manager = {
+				set_variable = { name = zg361_b1_quota_pool_membership value = 1 }
+				set_variable = { name = zg361_b1_quota_pool_team_n value = 2 }
+				set_variable = { name = zg361_b1_quota_pool_source_size value = 4 }
+				save_temporary_scope_as = zg361_b1_unique_pool_manager
+					every_in_list = {
+						variable = zg361_b1_subjects
+						if = {
+							limit = {
+								has_variable = zg361_b1_case_owner
+								has_variable = zg361_b1_case_subject
+								has_variable = zg361_b1_cycle_serial
+								has_variable = zg361_b1_case_serial
+								has_variable = zg361_b1_case_state
+								has_variable = zg361_b1_case_active
+								var:zg361_b1_case_owner = scope:zg361_b1_unique_pool_manager
+								var:zg361_b1_case_subject = this
+								var:zg361_b1_cycle_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_cycle_serial
+								var:zg361_b1_case_serial = scope:zg361_b1_unique_pool_manager.var:zg361_b1_manager_case_serial
+								var:zg361_b1_case_state = 5
+								var:zg361_b1_case_active = 1
+							var:zg361_b1_roster_included = 1
+							has_variable = zg361_pending_grade
+							has_variable = zg361_b1_calibration_score
+						}
+						set_variable = { name = zg361_b1_quota_pool_subject_source_size value = 4 }
+						add_to_list = zg361_b1_unique_pool_candidates
+						root = { change_variable = { name = zg361_b1_unique_pool_n add = 1 } }
+					}
+				}
+			}
+			if = {
+				limit = { var:zg361_b1_unique_pool_n = 7 }
+				zg361_b1_compute_exact_quota_effect = { COHORT_SIZE = var:zg361_b1_unique_pool_n ROUNDING_SCOPE = 2 }
+				if = {
+					limit = { var:zg361_b1_bank_m138_mode != 3 var:zg361_b1_quota_rounding_bank_object_available = 1 }
+					set_variable = { name = zg361_b1_quota_rounding_bank_team_n value = 2 }
+					set_variable = { name = zg361_b1_quota_rounding_bank_team_1 value = scope:zg361_b1_pool_three_manager }
+					set_variable = { name = zg361_b1_quota_rounding_bank_team_2 value = scope:zg361_b1_pool_four_manager }
+					set_variable = { name = zg361_b1_quota_rounding_bank_remainder_team value = scope:zg361_b1_pool_three_manager }
+					set_variable = { name = zg361_b1_quota_rounding_bank_affected_team value = scope:zg361_b1_pool_four_manager }
+					if = {
+						limit = { var:zg361_b1_quota_rounding_bank_route = 1 var:zg361_b1_quota_rounding_bank_rotation_cursor = 2 }
+						set_variable = { name = zg361_b1_quota_rounding_bank_remainder_team value = scope:zg361_b1_pool_four_manager }
+						set_variable = { name = zg361_b1_quota_rounding_bank_affected_team value = scope:zg361_b1_pool_three_manager }
+					}
+					else_if = {
+						limit = { var:zg361_b1_quota_rounding_bank_route = 2 }
+						# Chair discretion changes only the team receipt, never 7/14/2.
+						set_variable = { name = zg361_b1_quota_rounding_bank_chair value = this }
+						set_variable = { name = zg361_b1_quota_rounding_bank_remainder_team value = scope:zg361_b1_pool_four_manager }
+						set_variable = { name = zg361_b1_quota_rounding_bank_affected_team value = scope:zg361_b1_pool_three_manager }
+					}
+					set_variable = { name = zg361_b1_quota_rounding_bank_operation_seal value = { value = var:zg361_b1_bank_season multiply = 100000 add = var:zg361_b1_bank_case_serial } }
+					set_variable = { name = zg361_b1_quota_rounding_bank_state value = 2 }
+					set_variable = { name = zg361_b1_m138_receipt_serial value = var:zg361_b1_quota_rounding_bank_case }
+					var:zg361_b1_quota_rounding_bank_remainder_team = {
+						set_variable = { name = zg361_b1_quota_rounding_remainder_credit value = 1 }
+						set_variable = { name = zg361_b1_quota_rounding_receipt_owner value = root }
+					}
+					var:zg361_b1_quota_rounding_bank_affected_team = {
+						set_variable = { name = zg361_b1_quota_rounding_affected_receipt value = 1 }
+						set_variable = { name = zg361_b1_quota_rounding_receipt_owner value = root }
+					}
+				}
+				set_variable = { name = zg361_b1_unique_pool_top_slots value = var:zg361_b1_quota_top_slots }
+				set_variable = { name = zg361_b1_unique_pool_middle_slots value = var:zg361_b1_quota_middle_slots }
+				set_variable = { name = zg361_b1_unique_pool_bottom_slots value = var:zg361_b1_quota_bottom_slots }
+				every_in_list = {
+					list = zg361_b1_unique_pool_candidates
+					set_variable = { name = zg361_b1_quota_rounding_team_priority value = 0 }
+					if = {
+						limit = {
+							root.var:zg361_b1_quota_rounding_bank_object_available = 1
+							var:zg361_b1_case_owner = root.var:zg361_b1_quota_rounding_bank_remainder_team
+						}
+						set_variable = { name = zg361_b1_quota_rounding_team_priority value = 1 }
+					}
+					set_variable = {
+						name = zg361_b1_quota_pool_tie_key
+						value = {
+							value = var:zg361_b1_calibration_score multiply = 10000
+							add = { value = var:zg361_b1_quota_rounding_team_priority multiply = 1000 }
+							add = { value = var:zg361_b1_quota_pool_subject_source_size multiply = 100 }
+							subtract = var:zg361_b1_roster_frozen_order
+						}
+					}
+				}
+				if = { limit = { var:zg361_b1_quota_rounding_bank_object_available = 1 } set_variable = { name = zg361_b1_quota_rounding_bank_tie_consumer_active value = 1 } }
+				set_variable = { name = zg361_b1_unique_pool_cursor value = 0 }
+				ordered_in_list = {
+					list = zg361_b1_unique_pool_candidates
+					order_by = var:zg361_b1_quota_pool_tie_key
+					max = 7
+					root = { change_variable = { name = zg361_b1_unique_pool_cursor add = 1 } }
+					set_variable = { name = zg361_rank value = root.var:zg361_b1_unique_pool_cursor }
+					set_variable = { name = zg361_b1_pool_rank value = root.var:zg361_b1_unique_pool_cursor }
+					set_variable = { name = zg361_pending_grade value = 2 }
+					set_variable = { name = zg361_b1_newcomer_forced_bottom value = 0 }
+				}
+				set_variable = { name = zg361_b1_unique_pool_bottom_candidate_n value = 0 }
+				set_variable = { name = zg361_b1_unique_pool_bottom_assigned value = 0 }
+				set_variable = { name = zg361_b1_unique_pool_newcomer_bottom_exception value = 0 }
+				every_in_list = {
+					list = zg361_b1_unique_pool_candidates
+					limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
+					add_to_list = zg361_b1_unique_pool_bottom_candidates
+					root = { change_variable = { name = zg361_b1_unique_pool_bottom_candidate_n add = 1 } }
+				}
+				set_variable = { name = zg361_b1_unique_pool_bottom_cursor value = 0 }
+				if = {
+					limit = {
+						var:zg361_b1_unique_pool_bottom_slots >= 1
+						var:zg361_b1_unique_pool_bottom_candidate_n >= 1
+					}
+					ordered_in_list = {
+						list = zg361_b1_unique_pool_bottom_candidates
+						order_by = var:zg361_b1_pool_rank
+						max = 7
+						if = {
+							limit = { root.var:zg361_b1_unique_pool_bottom_assigned < root.var:zg361_b1_unique_pool_bottom_slots }
+							set_variable = { name = zg361_pending_grade value = 1 }
+							root = { change_variable = { name = zg361_b1_unique_pool_bottom_assigned add = 1 } }
+						}
+						root = { change_variable = { name = zg361_b1_unique_pool_bottom_cursor add = 1 } }
+					}
+				}
+				if = {
+					limit = { var:zg361_b1_unique_pool_bottom_assigned < var:zg361_b1_unique_pool_bottom_slots }
+					set_variable = { name = zg361_b1_unique_pool_newcomer_bottom_exception value = 1 }
+					ordered_in_list = {
+						list = zg361_b1_unique_pool_candidates
+						order_by = var:zg361_b1_pool_rank
+						max = 7
+						limit = { var:zg361_pending_grade = 2 }
+						if = {
+							limit = { root.var:zg361_b1_unique_pool_bottom_assigned < root.var:zg361_b1_unique_pool_bottom_slots }
+							set_variable = { name = zg361_pending_grade value = 1 }
+							set_variable = { name = zg361_b1_newcomer_forced_bottom value = 1 }
+							root = { change_variable = { name = zg361_b1_unique_pool_bottom_assigned add = 1 } }
+						}
+					}
+				}
+				set_variable = { name = zg361_b1_unique_pool_top_assigned value = 0 }
+				if = {
+					limit = { var:zg361_b1_unique_pool_top_slots >= 1 }
+					ordered_in_list = {
+						list = zg361_b1_unique_pool_candidates
+						order_by = var:zg361_b1_quota_pool_tie_key
+						max = 7
+						limit = { var:zg361_pending_grade = 2 }
+						if = {
+							limit = { root.var:zg361_b1_unique_pool_top_assigned < root.var:zg361_b1_unique_pool_top_slots }
+							set_variable = { name = zg361_pending_grade value = 3 }
+							root = { change_variable = { name = zg361_b1_unique_pool_top_assigned add = 1 } }
+						}
+					}
+				}
+				every_in_list = {
+					list = zg361_b1_unique_pool_candidates
+					set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade } }
+					set_variable = { name = zg361_b1_forced_down value = 0 }
+					if = {
+						limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+						set_variable = { name = zg361_b1_forced_down value = 1 }
+					}
+				}
+				every_in_list = {
+					list = zg361_b1_ready_managers
+					limit = { var:zg361_b1_quota_pool_membership = 1 }
+					set_variable = { name = zg361_pending_375_n value = 0 }
+					set_variable = { name = zg361_pending_35_n value = 0 }
+					set_variable = { name = zg361_pending_325_n value = 0 }
+					set_variable = { name = zg361_b1_quota_pool_n value = root.var:zg361_b1_unique_pool_n }
+					set_variable = { name = zg361_b1_quota_pool_top_slots value = root.var:zg361_b1_unique_pool_top_slots }
+					set_variable = { name = zg361_b1_quota_pool_middle_slots value = root.var:zg361_b1_unique_pool_middle_slots }
+					set_variable = { name = zg361_b1_quota_pool_bottom_slots value = root.var:zg361_b1_unique_pool_bottom_slots }
+					# Copy the exact allocator before-image into both pooled books.  The
+					# common superior owns the calculation variables, while the frozen
+					# manager books are the later audit/scoreboard consumers.
+					set_variable = { name = zg361_b1_quota_pool_top_raw_numerator value = root.var:zg361_b1_quota_top_raw_numerator }
+					set_variable = { name = zg361_b1_quota_pool_middle_raw_numerator value = root.var:zg361_b1_quota_middle_raw_numerator }
+					set_variable = { name = zg361_b1_quota_pool_bottom_raw_numerator value = root.var:zg361_b1_quota_bottom_raw_numerator }
+					set_variable = { name = zg361_b1_quota_pool_top_floor value = root.var:zg361_b1_quota_top_floor }
+					set_variable = { name = zg361_b1_quota_pool_middle_floor value = root.var:zg361_b1_quota_middle_floor }
+					set_variable = { name = zg361_b1_quota_pool_bottom_floor value = root.var:zg361_b1_quota_bottom_floor }
+					set_variable = { name = zg361_b1_quota_pool_top_remainder value = root.var:zg361_b1_quota_top_remainder }
+					set_variable = { name = zg361_b1_quota_pool_middle_remainder value = root.var:zg361_b1_quota_middle_remainder }
+					set_variable = { name = zg361_b1_quota_pool_bottom_remainder value = root.var:zg361_b1_quota_bottom_remainder }
+					set_variable = { name = zg361_b1_quota_pool_top_award value = root.var:zg361_b1_quota_top_award }
+					set_variable = { name = zg361_b1_quota_pool_middle_award value = root.var:zg361_b1_quota_middle_award }
+					set_variable = { name = zg361_b1_quota_pool_bottom_award value = root.var:zg361_b1_quota_bottom_award }
+					set_variable = { name = zg361_b1_quota_pool_rounding_method value = root.var:zg361_b1_quota_rounding_bank_method }
+					set_variable = { name = zg361_b1_quota_pool_conservation_check value = root.var:zg361_b1_quota_conservation_check }
+					set_variable = { name = zg361_b1_quota_pool_newcomer_bottom_exception value = root.var:zg361_b1_unique_pool_newcomer_bottom_exception }
+					save_temporary_scope_as = zg361_b1_allocated_manager
+						every_in_list = {
+							variable = zg361_b1_subjects
+							if = {
+								limit = {
+									has_variable = zg361_b1_case_owner
+									has_variable = zg361_b1_case_subject
+									has_variable = zg361_b1_cycle_serial
+									has_variable = zg361_b1_case_serial
+									has_variable = zg361_b1_case_state
+									has_variable = zg361_b1_case_active
+									var:zg361_b1_case_owner = scope:zg361_b1_allocated_manager
+									var:zg361_b1_case_subject = this
+									var:zg361_b1_cycle_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_manager_cycle_serial
+									var:zg361_b1_case_serial = scope:zg361_b1_allocated_manager.var:zg361_b1_manager_case_serial
+									var:zg361_b1_case_state = 5
+									var:zg361_b1_case_active = 1
+								var:zg361_b1_roster_included = 1
+								has_variable = zg361_pending_grade
+							}
+							if = { limit = { var:zg361_pending_grade = 3 } scope:zg361_b1_allocated_manager = { change_variable = { name = zg361_pending_375_n add = 1 } } }
+							else_if = { limit = { var:zg361_pending_grade = 1 } scope:zg361_b1_allocated_manager = { change_variable = { name = zg361_pending_325_n add = 1 } } }
+							else = { scope:zg361_b1_allocated_manager = { change_variable = { name = zg361_pending_35_n add = 1 } } }
+						}
+					}
+					change_variable = { name = zg361_b1_quota_book_version add = 1 }
+					zg361_b1_settle_due_debt_effect = yes
+				}
+				zg361_b1_execute_unique_pool_trade_effect = yes
+			}
+			else = {
+				# Any count drift makes the supposed pair non-unique; both managers keep
+				# their already-built local books and no pooled receipt is claimed.
+				set_variable = { name = zg361_b1_unique_pool_active value = 0 }
+				scope:zg361_b1_pool_three_manager = { set_variable = { name = zg361_b1_quota_pool_membership value = 0 } }
+				scope:zg361_b1_pool_four_manager = { set_variable = { name = zg361_b1_quota_pool_membership value = 0 } }
+			}
+		}
+		# #141 freezes only now, after every local or pooled book has reached its
+		# final pre-calibration bands.  Opening before the 3+4 pool could strand a
+		# subject that is no longer MIDDLE or lose the required TOP peer.
+		zg361_b1_prepare_bank_must_review_effect = yes
+		every_in_list = {
+			variable = zg361_b1_ready_managers
+			if = {
+				limit = { var:zg361_b1_quota_pool_membership = 0 }
+				zg361_b1_settle_due_debt_effect = yes
+			}
+			set_variable = { name = zg361_b1_cycle_state value = 6 }
+			set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
+			save_scope_as = zg361_b1_ticket_owner
+			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_manager_case_serial }
+			save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
+			trigger_event = { id = zg361b1.111 days = 1 }
+		}
+		debug_log = "ZG361B1: exact quota bank closed with at most one unique same-function 3+4 pool"
+	}
+}
+
+zg361_b1_apply_local_quota_effect = {
+	set_variable = { name = zg361_b1_cycle_state value = 6 }
+	zg361_b1_settle_due_debt_effect = yes
+	set_variable = { name = zg361_b1_m038_receipt_serial value = var:zg361_b1_manager_case_serial }
+	zg361_b1_open_calibration_effect = yes
+}
+
+zg361_b1_rerank_frozen_quota_book_effect = {
+	save_temporary_scope_as = zg361_b1_rerank_manager
+	set_variable = { name = zg361_b1_rerank_n value = 0 }
+	set_variable = { name = zg361_b1_rerank_fixed_top value = 0 }
+	set_variable = { name = zg361_b1_rerank_fixed_middle value = 0 }
+	set_variable = { name = zg361_b1_rerank_fixed_bottom value = 0 }
+	every_in_list = {
+		variable = zg361_b1_subjects
+		limit = {
+			var:zg361_b1_case_owner = root
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+			var:zg361_b1_case_state = 7
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_recusal_active = 1
+			has_variable = zg361_pending_grade
+		}
+		if = { limit = { var:zg361_pending_grade = 3 } root = { change_variable = { name = zg361_b1_rerank_fixed_top add = 1 } } }
+		else_if = { limit = { var:zg361_pending_grade = 1 } root = { change_variable = { name = zg361_b1_rerank_fixed_bottom add = 1 } } }
+		else = { root = { change_variable = { name = zg361_b1_rerank_fixed_middle add = 1 } } }
+	}
+	set_variable = { name = zg361_b1_rerank_target_top value = { value = var:zg361_pending_375_n subtract = var:zg361_b1_rerank_fixed_top min = 0 } }
+	set_variable = { name = zg361_b1_rerank_target_middle value = { value = var:zg361_pending_35_n subtract = var:zg361_b1_rerank_fixed_middle min = 0 } }
+	set_variable = { name = zg361_b1_rerank_target_bottom value = { value = var:zg361_pending_325_n subtract = var:zg361_b1_rerank_fixed_bottom min = 0 } }
+		every_in_list = {
+			variable = zg361_b1_subjects
+			if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					var:zg361_b1_case_owner = scope:zg361_b1_rerank_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_rerank_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_state = 7
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_b1_recusal_active = 0
+					has_variable = zg361_pending_grade
+					has_variable = zg361_b1_calibration_score
+				}
+			add_to_list = zg361_b1_rerank_candidates
+			root = { change_variable = { name = zg361_b1_rerank_n add = 1 } }
+		}
+	}
+	set_variable = { name = zg361_b1_rerank_cursor value = 0 }
+	ordered_in_list = {
+		list = zg361_b1_rerank_candidates
+		order_by = var:zg361_b1_calibration_score
+		max = { value = var:zg361_b1_rerank_n max = 80 }
+		root = { change_variable = { name = zg361_b1_rerank_cursor add = 1 } }
+		set_variable = { name = zg361_rank value = root.var:zg361_b1_rerank_cursor }
+		set_variable = { name = zg361_b1_rerank_order value = root.var:zg361_b1_rerank_cursor }
+		set_variable = { name = zg361_pending_grade value = 2 }
+		set_variable = { name = zg361_b1_newcomer_forced_bottom value = 0 }
+	}
+	set_variable = { name = zg361_b1_rerank_bottom_candidate_n value = 0 }
+	set_variable = { name = zg361_b1_rerank_bottom_assigned value = 0 }
+	set_variable = { name = zg361_b1_rerank_newcomer_bottom_exception value = 0 }
+	every_in_list = {
+		list = zg361_b1_rerank_candidates
+		limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
+		add_to_list = zg361_b1_rerank_bottom_candidates
+		root = { change_variable = { name = zg361_b1_rerank_bottom_candidate_n add = 1 } }
+	}
+	set_variable = { name = zg361_b1_rerank_bottom_cursor value = 0 }
+	if = {
+		limit = { var:zg361_b1_rerank_target_bottom >= 1 var:zg361_b1_rerank_bottom_candidate_n >= 1 }
+		ordered_in_list = {
+			list = zg361_b1_rerank_bottom_candidates
+			order_by = var:zg361_rank
+			max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }
+			if = {
+				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
+				set_variable = { name = zg361_pending_grade value = 1 }
+				root = { change_variable = { name = zg361_b1_rerank_bottom_assigned add = 1 } }
+			}
+			root = { change_variable = { name = zg361_b1_rerank_bottom_cursor add = 1 } }
+		}
+	}
+	if = {
+		limit = { var:zg361_b1_rerank_bottom_assigned < var:zg361_b1_rerank_target_bottom }
+		set_variable = { name = zg361_b1_rerank_newcomer_bottom_exception value = 1 }
+		ordered_in_list = {
+			list = zg361_b1_rerank_candidates
+			order_by = var:zg361_rank
+			max = { value = var:zg361_b1_rerank_n max = 80 }
+			limit = { var:zg361_pending_grade = 2 }
+			if = {
+				limit = { root.var:zg361_b1_rerank_bottom_assigned < root.var:zg361_b1_rerank_target_bottom }
+				set_variable = { name = zg361_pending_grade value = 1 }
+				set_variable = { name = zg361_b1_newcomer_forced_bottom value = 1 }
+				root = { change_variable = { name = zg361_b1_rerank_bottom_assigned add = 1 } }
+			}
+		}
+	}
+	set_variable = { name = zg361_b1_rerank_top_assigned value = 0 }
+	if = {
+		limit = { var:zg361_b1_rerank_target_top >= 1 }
+		ordered_in_list = {
+			list = zg361_b1_rerank_candidates
+			order_by = var:zg361_b1_calibration_score
+			max = { value = var:zg361_b1_rerank_n max = 80 }
+			limit = { var:zg361_pending_grade = 2 }
+			if = {
+				limit = { root.var:zg361_b1_rerank_top_assigned < root.var:zg361_b1_rerank_target_top }
+				set_variable = { name = zg361_pending_grade value = 3 }
+				root = { change_variable = { name = zg361_b1_rerank_top_assigned add = 1 } }
+			}
+		}
+	}
+	every_in_list = {
+		list = zg361_b1_rerank_candidates
+		set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+		set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade } }
+		set_variable = { name = zg361_b1_forced_down value = 0 }
+		if = {
+			limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+			set_variable = { name = zg361_b1_forced_down value = 1 }
+		}
+	}
+	change_variable = { name = zg361_b1_quota_book_version add = 1 }
+}
+
+zg361_b1_build_agenda_and_attention_effect = {
+	if = {
+		limit = { has_variable_list = zg361_b1_agenda_subjects }
+		clear_variable_list = zg361_b1_agenda_subjects
+	}
+	if = {
+		limit = { has_variable_list = zg361_b1_processing_subjects }
+		clear_variable_list = zg361_b1_processing_subjects
+	}
+	set_variable = { name = zg361_b1_agenda_old_hash value = 0 }
+	if = { limit = { has_variable = zg361_b1_agenda_hash } set_variable = { name = zg361_b1_agenda_old_hash value = var:zg361_b1_agenda_hash } }
+	set_variable = { name = zg361_b1_agenda_version value = { value = var:zg361_b1_agenda_version add = 1 } }
+	set_variable = { name = zg361_b1_agenda_n value = 0 }
+	set_variable = { name = zg361_b1_processing_n value = 0 }
+	set_variable = { name = zg361_b1_agenda_mode value = var:zg361_b1_m137_mode }
+	set_variable = { name = zg361_b1_agenda_header_object_available value = 0 }
+	set_variable = { name = zg361_b1_agenda_header_state value = 0 }
+	remove_variable = zg361_b1_agenda_header_owner
+	remove_variable = zg361_b1_agenda_header_subject
+	set_variable = { name = zg361_b1_agenda_header_cycle value = 0 }
+	set_variable = { name = zg361_b1_agenda_header_case value = 0 }
+	set_variable = { name = zg361_b1_agenda_chair_bias_risk value = 0 }
+	if = {
+		limit = { var:zg361_b1_m137_mode != 3 }
+		set_variable = { name = zg361_b1_agenda_header_object_available value = 1 }
+		set_variable = { name = zg361_b1_agenda_header_owner value = this }
+		set_variable = { name = zg361_b1_agenda_header_subject value = this }
+		set_variable = { name = zg361_b1_agenda_header_cycle value = var:zg361_b1_manager_cycle_serial }
+		set_variable = { name = zg361_b1_agenda_header_case value = var:zg361_b1_manager_case_serial }
+		set_variable = { name = zg361_b1_agenda_header_state value = 1 }
+		set_variable = { name = zg361_b1_agenda_chair value = this }
+		set_variable = { name = zg361_b1_agenda_frozen_year value = current_year }
+		if = { limit = { var:zg361_b1_m137_mode = 2 } set_variable = { name = zg361_b1_agenda_chair_bias_risk value = 1 } }
+	}
+	save_temporary_scope_as = zg361_b1_agenda_manager
+	every_in_list = {
+		variable = zg361_b1_subjects
+		if = {
+			limit = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_case_subject
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_case_state
+				has_variable = zg361_b1_case_active
+				var:zg361_b1_case_owner = scope:zg361_b1_agenda_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_agenda_manager.var:zg361_b1_manager_case_serial
+				var:zg361_b1_case_state = 7
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+				has_variable = zg361_pending_grade
+			}
+			set_variable = { name = zg361_b1_agenda_sort_key value = { value = var:zg361_rank multiply = -1 } }
+			if = {
+				limit = { var:zg361_b1_must_review_state = 1 }
+				set_variable = { name = zg361_b1_agenda_sort_key value = 100000 }
+			}
+			else_if = {
+				limit = { scope:zg361_b1_agenda_manager.var:zg361_b1_agenda_mode = 1 }
+				set_variable = {
+					name = zg361_b1_agenda_rotation_distance
+					value = { value = var:zg361_b1_roster_frozen_order subtract = scope:zg361_b1_agenda_manager.var:zg361_b1_agenda_rotation_start }
+				}
+				if = {
+					limit = { var:zg361_b1_agenda_rotation_distance < 0 }
+					change_variable = { name = zg361_b1_agenda_rotation_distance add = scope:zg361_b1_agenda_manager.var:zg361_b1_subject_n }
+				}
+				set_variable = {
+					name = zg361_b1_agenda_sort_key
+					value = { value = 1000 subtract = var:zg361_b1_agenda_rotation_distance }
+				}
+			}
+			else_if = {
+				limit = { scope:zg361_b1_agenda_manager.var:zg361_b1_agenda_mode = 2 }
+				set_variable = { name = zg361_b1_agenda_strategic_flag value = 0 }
+				set_variable = { name = zg361_b1_agenda_strategic_reason value = 0 }
+				if = {
+					limit = { OR = { var:zg361_b1_role_code >= 3 has_relation_friend = scope:zg361_b1_agenda_manager } }
+					set_variable = { name = zg361_b1_agenda_strategic_flag value = 1 }
+					set_variable = { name = zg361_b1_agenda_strategic_reason value = var:zg361_b1_role_code }
+					if = { limit = { has_relation_friend = scope:zg361_b1_agenda_manager } set_variable = { name = zg361_b1_agenda_strategic_reason value = 5 } }
+				}
+				set_variable = {
+					name = zg361_b1_agenda_sort_key
+					value = { value = var:zg361_b1_calibration_score multiply = 1000 subtract = var:zg361_b1_roster_frozen_order }
+				}
+				if = { limit = { var:zg361_b1_agenda_strategic_flag = 1 } change_variable = { name = zg361_b1_agenda_sort_key add = 1000000 } }
+			}
+			set_variable = { name = zg361_b1_late_evidence_delta value = { value = var:zg361_b1_evidence_late subtract = var:zg361_b1_evidence_mid } }
+			set_variable = { name = zg361_b1_agenda_review_duration_minutes value = 0 }
+			set_variable = { name = zg361_b1_late_evidence_magnitude value = var:zg361_b1_late_evidence_delta }
+			if = {
+				limit = { var:zg361_b1_late_evidence_magnitude < 0 }
+				set_variable = { name = zg361_b1_late_evidence_magnitude value = { value = var:zg361_b1_late_evidence_magnitude multiply = -1 } }
+			}
+			add_to_list = zg361_b1_agenda_candidates
+			root = {
+				change_variable = { name = zg361_b1_processing_n add = 1 }
+				if = { limit = { var:zg361_b1_m137_mode != 3 } change_variable = { name = zg361_b1_agenda_n add = 1 } }
+			}
+		}
+	}
+	set_variable = { name = zg361_b1_agenda_cursor value = 0 }
+	set_variable = { name = zg361_b1_agenda_remaining_top_cursor value = var:zg361_pending_375_n }
+	set_variable = { name = zg361_b1_agenda_remaining_middle_cursor value = var:zg361_pending_35_n }
+	set_variable = { name = zg361_b1_agenda_remaining_bottom_cursor value = var:zg361_pending_325_n }
+	set_variable = { name = zg361_b1_agenda_hash value = { value = var:zg361_b1_manager_case_serial multiply = 1000 } }
+	ordered_in_list = {
+		list = zg361_b1_agenda_candidates
+		order_by = var:zg361_b1_agenda_sort_key
+		max = { value = var:zg361_b1_processing_n max = 80 }
+		root = { change_variable = { name = zg361_b1_agenda_cursor add = 1 } }
+		set_variable = { name = zg361_b1_processing_order value = root.var:zg361_b1_agenda_cursor }
+		save_temporary_scope_as = zg361_b1_agenda_subject_to_store
+		root = {
+			add_to_variable_list = { name = zg361_b1_processing_subjects target = scope:zg361_b1_agenda_subject_to_store }
+			change_variable = { name = zg361_b1_agenda_hash add = { value = scope:zg361_b1_agenda_subject_to_store.var:zg361_b1_roster_frozen_order multiply = var:zg361_b1_agenda_cursor } }
+		}
+		if = {
+			limit = { root.var:zg361_b1_m137_mode != 3 }
+			set_variable = { name = zg361_b1_agenda_item_object_available value = 1 }
+			set_variable = { name = zg361_b1_agenda_item_owner value = root }
+			set_variable = { name = zg361_b1_agenda_item_subject value = this }
+			set_variable = { name = zg361_b1_agenda_item_cycle value = var:zg361_b1_cycle_serial }
+			set_variable = { name = zg361_b1_agenda_item_case value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_agenda_item_state value = 1 }
+			set_variable = { name = zg361_b1_agenda_order value = root.var:zg361_b1_agenda_cursor }
+			set_variable = { name = zg361_b1_agenda_item_mode value = root.var:zg361_b1_agenda_mode }
+			set_variable = { name = zg361_b1_agenda_item_version value = root.var:zg361_b1_agenda_version }
+			set_variable = { name = zg361_b1_agenda_remaining_top value = root.var:zg361_b1_agenda_remaining_top_cursor }
+			set_variable = { name = zg361_b1_agenda_remaining_middle value = root.var:zg361_b1_agenda_remaining_middle_cursor }
+			set_variable = { name = zg361_b1_agenda_remaining_bottom value = root.var:zg361_b1_agenda_remaining_bottom_cursor }
+			if = { limit = { var:zg361_pending_grade = 3 } root = { change_variable = { name = zg361_b1_agenda_remaining_top_cursor add = -1 } } }
+			else_if = { limit = { var:zg361_pending_grade = 1 } root = { change_variable = { name = zg361_b1_agenda_remaining_bottom_cursor add = -1 } } }
+			else = { root = { change_variable = { name = zg361_b1_agenda_remaining_middle_cursor add = -1 } } }
+			set_variable = { name = zg361_b1_agenda_tail_pressure value = 0 }
+			if = { limit = { var:zg361_b1_agenda_order > 3 } set_variable = { name = zg361_b1_agenda_tail_pressure value = 1 } }
+			set_variable = { name = zg361_b1_m137_receipt_serial value = var:zg361_b1_agenda_item_case }
+			root = { add_to_variable_list = { name = zg361_b1_agenda_subjects target = scope:zg361_b1_agenda_subject_to_store } }
+		}
+	}
+	set_variable = { name = zg361_b1_agenda_new_hash value = var:zg361_b1_agenda_hash }
+	set_variable = { name = zg361_b1_agenda_rebuild_reason value = 0 }
+	if = { limit = { var:zg361_b1_agenda_version > 1 NOT = { var:zg361_b1_agenda_old_hash = var:zg361_b1_agenda_new_hash } } set_variable = { name = zg361_b1_agenda_rebuild_reason value = 1 } }
+	# Three ten-minute seats are frozen. Choice B deliberately leaves seat 3
+	# unconsumed, then replaces it with agenda item 4 and pays real overtime.
+	set_variable = { name = zg361_b1_attention_total_seats value = { value = var:zg361_b1_processing_n max = 3 } }
+	set_variable = { name = zg361_b1_attention_total_minutes value = { value = var:zg361_b1_attention_total_seats multiply = 10 } }
+	set_variable = { name = zg361_b1_attention_spent_minutes value = 0 }
+	set_variable = { name = zg361_b1_attention_overtime_minutes value = 0 }
+	set_variable = { name = zg361_b1_attention_patience_cost value = 0 }
+	set_variable = { name = zg361_b1_attention_political_cost value = 0 }
+	set_variable = { name = zg361_b1_attention_overtime_enabled value = 0 }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_043_choice
+			var:zg361_mechanism_043_choice = 2
+			var:zg361_b1_processing_n >= 4
+		}
+		set_variable = { name = zg361_b1_attention_overtime_enabled value = 1 }
+	}
+	set_variable = { name = zg361_b1_attention_cursor value = 0 }
+	every_in_list = {
+		variable = zg361_b1_processing_subjects
+		root = { change_variable = { name = zg361_b1_attention_cursor add = 1 } }
+		set_variable = { name = zg361_b1_attention_frozen_grade value = var:zg361_pending_grade }
+		if = {
+			limit = { root.var:zg361_b1_attention_cursor <= root.var:zg361_b1_attention_total_seats }
+			set_variable = { name = zg361_b1_attention_seat value = root.var:zg361_b1_attention_cursor }
+			set_variable = { name = zg361_b1_attention_bound value = 1 }
+			set_variable = { name = zg361_b1_attention_evidence_serial value = var:zg361_b1_fact_sheet_serial }
+			set_variable = { name = zg361_b1_attention_owner value = root }
+			if = {
+				limit = { root.var:zg361_b1_attention_overtime_enabled = 1 root.var:zg361_b1_attention_cursor = 3 }
+				set_variable = { name = zg361_b1_attention_consumed value = 0 }
+				save_temporary_scope_as = zg361_b1_attention_displaced_subject_scope
+				root = { set_variable = { name = zg361_b1_attention_displaced_subject value = scope:zg361_b1_attention_displaced_subject_scope } }
+			}
+			else = {
+				set_variable = { name = zg361_b1_attention_consumed value = 1 }
+				set_variable = { name = zg361_b1_attention_minutes_used value = 10 }
+				set_variable = { name = zg361_b1_agenda_review_duration_minutes value = 10 }
+				set_variable = { name = zg361_b1_pending_candidate value = 1 }
+				root = { change_variable = { name = zg361_b1_attention_spent_minutes add = 10 } }
+				if = {
+					limit = { var:zg361_b1_must_review_state = 1 }
+					set_variable = { name = zg361_b1_must_review_attention_consumed value = 1 }
+					root = {
+						set_variable = { name = zg361_b1_must_review_agenda_consumed value = 1 }
+						set_variable = { name = zg361_b1_must_review_attention_debit value = 1 }
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { root.var:zg361_b1_attention_overtime_enabled = 1 root.var:zg361_b1_attention_cursor = 4 }
+			save_temporary_scope_as = zg361_b1_attention_favored_subject_scope
+			root = { set_variable = { name = zg361_b1_attention_favored_subject value = scope:zg361_b1_attention_favored_subject_scope } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_b1_attention_overtime_enabled = 1
+			has_variable = zg361_b1_attention_displaced_subject
+			has_variable = zg361_b1_attention_favored_subject
+		}
+		var:zg361_b1_attention_displaced_subject = {
+			set_variable = { name = zg361_b1_attention_bound value = 0 }
+			set_variable = { name = zg361_b1_attention_displaced value = 1 }
+		}
+		var:zg361_b1_attention_favored_subject = {
+			set_variable = { name = zg361_b1_attention_seat value = 3 }
+			set_variable = { name = zg361_b1_attention_bound value = 1 }
+			set_variable = { name = zg361_b1_attention_consumed value = 1 }
+			set_variable = { name = zg361_b1_attention_minutes_used value = 20 }
+			set_variable = { name = zg361_b1_agenda_review_duration_minutes value = 20 }
+			set_variable = { name = zg361_b1_attention_evidence_serial value = var:zg361_b1_fact_sheet_serial }
+			set_variable = { name = zg361_b1_attention_owner value = root }
+			set_variable = { name = zg361_b1_pending_candidate value = 1 }
+		}
+		change_variable = { name = zg361_b1_attention_spent_minutes add = 20 }
+		set_variable = { name = zg361_b1_attention_overtime_minutes value = 10 }
+		set_variable = { name = zg361_b1_attention_patience_cost value = 10 }
+		set_variable = { name = zg361_b1_attention_political_cost value = 25 }
+		add_prestige = -25
+		add_stress = 10
+	}
+	set_variable = {
+		name = zg361_b1_attention_remaining_minutes
+		value = { value = var:zg361_b1_attention_total_minutes subtract = var:zg361_b1_attention_spent_minutes min = 0 }
+	}
+	set_variable = { name = zg361_b1_m043_receipt_serial value = var:zg361_b1_manager_case_serial }
+}

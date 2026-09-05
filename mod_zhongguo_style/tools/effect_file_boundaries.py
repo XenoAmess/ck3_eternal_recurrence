@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Audit ZhongGuo scripted-effect file boundaries without launching CK3.
 
-Phase-two runtime files target one to ten top-level effects per purpose shard.
-More than twenty is a policy violation.  The explicit exclusions below are
-pre-B2 compatibility surfaces; they are not exceptions for new phase-two
-work and must not be expanded to make a failing audit green.
+All runtime effect files target one to ten top-level effects per purpose shard.
+More than twenty is a policy violation.  Legacy monoliths have been retired;
+the compatibility set remains empty and must not be expanded to hide a miss.
 """
 
 from __future__ import annotations
@@ -24,16 +23,7 @@ TOP_LEVEL_EFFECT_RE = re.compile(
     r"^(?P<name>[A-Za-z0-9_.:-]+)[ \t]*=[ \t]*\{"
 )
 
-# These files predate the B2 boundary policy.  Keeping the list narrow makes
-# every new or renamed phase-two file subject to the <=20 gate by default.
-PRE_B2_COMPATIBILITY_FILES = frozenset(
-    {
-        "zg361_b1_runtime_effects.txt",
-        "zg361_b1_runtime_effects_part2.txt",
-        "zg361_effects.txt",
-        "zg361_generated_mechanism_effects.txt",
-    }
-)
+PRE_B2_COMPATIBILITY_FILES: frozenset[str] = frozenset()
 
 
 @dataclass(frozen=True, slots=True)
@@ -109,7 +99,7 @@ def audit_report(effect_root: Path = EFFECT_ROOT) -> dict[str, object]:
     return {
         "schema_version": 1,
         "policy": {
-            "scope": "B2-and-later scripted-effect files",
+            "scope": "all ZhongGuo scripted-effect files",
             "target_max_effects_per_file": TARGET_MAX,
             "principle_max_effects_per_file": PRINCIPLE_MAX,
             "pre_b2_compatibility_files": sorted(PRE_B2_COMPATIBILITY_FILES),

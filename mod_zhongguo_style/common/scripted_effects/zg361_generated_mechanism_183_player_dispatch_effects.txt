@@ -1,0 +1,1457 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Purpose shard: player dispatch.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+# Trigger the first unresolved player-facing policy card.
+zg361_mechanism_dispatch_next_effect = {
+	zg361_init_org_ledger_effect = yes
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_001_choice } }
+		trigger_event = { id = zg361m.1 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_002_choice } }
+		trigger_event = { id = zg361m.2 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_003_choice } }
+		trigger_event = { id = zg361m.3 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_004_choice } }
+		trigger_event = { id = zg361m.4 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_005_choice } }
+		trigger_event = { id = zg361m.5 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_006_choice } }
+		trigger_event = { id = zg361m.6 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_007_choice } }
+		trigger_event = { id = zg361m.7 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_008_choice } }
+		trigger_event = { id = zg361m.8 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_009_choice } }
+		trigger_event = { id = zg361m.9 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_010_choice } }
+		trigger_event = { id = zg361m.10 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_011_choice } }
+		trigger_event = { id = zg361m.11 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_012_choice } }
+		trigger_event = { id = zg361m.12 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_013_choice } }
+		trigger_event = { id = zg361m.13 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_014_choice } }
+		trigger_event = { id = zg361m.14 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_015_choice } }
+		trigger_event = { id = zg361m.15 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_016_choice } }
+		trigger_event = { id = zg361m.16 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_017_choice } }
+		trigger_event = { id = zg361m.17 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_018_choice } }
+		trigger_event = { id = zg361m.18 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_019_choice } }
+		trigger_event = { id = zg361m.19 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_020_choice } }
+		trigger_event = { id = zg361m.20 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_021_choice } }
+		trigger_event = { id = zg361m.21 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_022_choice } }
+		trigger_event = { id = zg361m.22 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_023_choice } }
+		trigger_event = { id = zg361m.23 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_024_choice } }
+		trigger_event = { id = zg361m.24 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_025_choice } }
+		trigger_event = { id = zg361m.25 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_026_choice } }
+		trigger_event = { id = zg361m.26 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_027_choice } }
+		trigger_event = { id = zg361m.27 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_028_choice } }
+		trigger_event = { id = zg361m.28 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_029_choice } }
+		trigger_event = { id = zg361m.29 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_030_choice } }
+		trigger_event = { id = zg361m.30 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_031_choice } }
+		trigger_event = { id = zg361m.31 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_032_choice } }
+		trigger_event = { id = zg361m.32 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_033_choice } }
+		trigger_event = { id = zg361m.33 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_034_choice } }
+		trigger_event = { id = zg361m.34 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_035_choice } }
+		trigger_event = { id = zg361m.35 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_036_choice } }
+		trigger_event = { id = zg361m.36 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_037_choice } }
+		trigger_event = { id = zg361m.37 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_038_choice } }
+		trigger_event = { id = zg361m.38 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_039_choice } }
+		trigger_event = { id = zg361m.39 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_040_choice } }
+		trigger_event = { id = zg361m.40 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_041_choice } }
+		trigger_event = { id = zg361m.41 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_042_choice } }
+		trigger_event = { id = zg361m.42 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_043_choice } }
+		trigger_event = { id = zg361m.43 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_044_choice } }
+		trigger_event = { id = zg361m.44 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_045_choice } }
+		trigger_event = { id = zg361m.45 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_046_choice } }
+		trigger_event = { id = zg361m.46 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_047_choice } }
+		trigger_event = { id = zg361m.47 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_048_choice } }
+		trigger_event = { id = zg361m.48 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_049_choice } }
+		trigger_event = { id = zg361m.49 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_050_choice } }
+		trigger_event = { id = zg361m.50 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_051_choice } }
+		trigger_event = { id = zg361m.51 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_052_choice } }
+		trigger_event = { id = zg361m.52 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_053_choice } }
+		trigger_event = { id = zg361m.53 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_054_choice } }
+		trigger_event = { id = zg361m.54 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_055_choice } }
+		trigger_event = { id = zg361m.55 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_056_choice } }
+		trigger_event = { id = zg361m.56 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_057_choice } }
+		trigger_event = { id = zg361m.57 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_058_choice } }
+		trigger_event = { id = zg361m.58 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_059_choice } }
+		trigger_event = { id = zg361m.59 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_060_choice } }
+		trigger_event = { id = zg361m.60 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_061_choice } }
+		trigger_event = { id = zg361m.61 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_062_choice } }
+		trigger_event = { id = zg361m.62 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_063_choice } }
+		trigger_event = { id = zg361m.63 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_064_choice } }
+		trigger_event = { id = zg361m.64 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_065_choice } }
+		trigger_event = { id = zg361m.65 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_066_choice } }
+		trigger_event = { id = zg361m.66 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_067_choice } }
+		trigger_event = { id = zg361m.67 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_068_choice } }
+		trigger_event = { id = zg361m.68 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_069_choice } }
+		trigger_event = { id = zg361m.69 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_070_choice } }
+		trigger_event = { id = zg361m.70 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_071_choice } }
+		trigger_event = { id = zg361m.71 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_072_choice } }
+		trigger_event = { id = zg361m.72 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_073_choice } }
+		trigger_event = { id = zg361m.73 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_074_choice } }
+		trigger_event = { id = zg361m.74 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_075_choice } }
+		trigger_event = { id = zg361m.75 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_076_choice } }
+		trigger_event = { id = zg361m.76 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_077_choice } }
+		trigger_event = { id = zg361m.77 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_078_choice } }
+		trigger_event = { id = zg361m.78 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_079_choice } }
+		trigger_event = { id = zg361m.79 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_080_choice } }
+		trigger_event = { id = zg361m.80 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_081_choice } }
+		trigger_event = { id = zg361m.81 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_082_choice } }
+		trigger_event = { id = zg361m.82 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_083_choice } }
+		trigger_event = { id = zg361m.83 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_084_choice } }
+		trigger_event = { id = zg361m.84 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_085_choice } }
+		trigger_event = { id = zg361m.85 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_086_choice } }
+		trigger_event = { id = zg361m.86 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_087_choice } }
+		trigger_event = { id = zg361m.87 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_088_choice } }
+		trigger_event = { id = zg361m.88 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_089_choice } }
+		trigger_event = { id = zg361m.89 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_090_choice } }
+		trigger_event = { id = zg361m.90 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_091_choice } }
+		trigger_event = { id = zg361m.91 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_092_choice } }
+		trigger_event = { id = zg361m.92 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_093_choice } }
+		trigger_event = { id = zg361m.93 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_094_choice } }
+		trigger_event = { id = zg361m.94 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_095_choice } }
+		trigger_event = { id = zg361m.95 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_096_choice } }
+		trigger_event = { id = zg361m.96 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_097_choice } }
+		trigger_event = { id = zg361m.97 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_098_choice } }
+		trigger_event = { id = zg361m.98 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_099_choice } }
+		trigger_event = { id = zg361m.99 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_100_choice } }
+		trigger_event = { id = zg361m.100 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_101_choice } }
+		trigger_event = { id = zg361m.101 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_102_choice } }
+		trigger_event = { id = zg361m.102 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_103_choice } }
+		trigger_event = { id = zg361m.103 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_104_choice } }
+		trigger_event = { id = zg361m.104 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_105_choice } }
+		trigger_event = { id = zg361m.105 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_106_choice } }
+		trigger_event = { id = zg361m.106 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_107_choice } }
+		trigger_event = { id = zg361m.107 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_108_choice } }
+		trigger_event = { id = zg361m.108 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_109_choice } }
+		trigger_event = { id = zg361m.109 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_110_choice } }
+		trigger_event = { id = zg361m.110 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_111_choice } }
+		trigger_event = { id = zg361m.111 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_112_choice } }
+		trigger_event = { id = zg361m.112 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_113_choice } }
+		trigger_event = { id = zg361m.113 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_114_choice } }
+		trigger_event = { id = zg361m.114 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_115_choice } }
+		trigger_event = { id = zg361m.115 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_116_choice } }
+		trigger_event = { id = zg361m.116 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_117_choice } }
+		trigger_event = { id = zg361m.117 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_118_choice } }
+		trigger_event = { id = zg361m.118 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_119_choice } }
+		trigger_event = { id = zg361m.119 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_120_choice } }
+		trigger_event = { id = zg361m.120 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_121_choice } }
+		trigger_event = { id = zg361m.121 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_122_choice } }
+		trigger_event = { id = zg361m.122 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_123_choice } }
+		trigger_event = { id = zg361m.123 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_124_choice } }
+		trigger_event = { id = zg361m.124 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_125_choice } }
+		trigger_event = { id = zg361m.125 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_126_choice } }
+		trigger_event = { id = zg361m.126 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_127_choice } }
+		trigger_event = { id = zg361m.127 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_128_choice } }
+		trigger_event = { id = zg361m.128 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_129_choice } }
+		trigger_event = { id = zg361m.129 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_130_choice } }
+		trigger_event = { id = zg361m.130 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_131_choice } }
+		trigger_event = { id = zg361m.131 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_132_choice } }
+		trigger_event = { id = zg361m.132 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_133_choice } }
+		trigger_event = { id = zg361m.133 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_134_choice } }
+		trigger_event = { id = zg361m.134 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_135_choice } }
+		trigger_event = { id = zg361m.135 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_136_choice } }
+		trigger_event = { id = zg361m.136 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_137_choice } }
+		trigger_event = { id = zg361m.137 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_138_choice } }
+		trigger_event = { id = zg361m.138 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_139_choice } }
+		trigger_event = { id = zg361m.139 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_140_choice } }
+		trigger_event = { id = zg361m.140 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_141_choice } }
+		trigger_event = { id = zg361m.141 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_142_choice } }
+		trigger_event = { id = zg361m.142 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_143_choice } }
+		trigger_event = { id = zg361m.143 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_144_choice } }
+		trigger_event = { id = zg361m.144 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_145_choice } }
+		trigger_event = { id = zg361m.145 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_146_choice } }
+		trigger_event = { id = zg361m.146 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_147_choice } }
+		trigger_event = { id = zg361m.147 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_148_choice } }
+		trigger_event = { id = zg361m.148 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_149_choice } }
+		trigger_event = { id = zg361m.149 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_150_choice } }
+		trigger_event = { id = zg361m.150 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_151_choice } }
+		trigger_event = { id = zg361m.151 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_152_choice } }
+		trigger_event = { id = zg361m.152 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_153_choice } }
+		trigger_event = { id = zg361m.153 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_154_choice } }
+		trigger_event = { id = zg361m.154 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_155_choice } }
+		trigger_event = { id = zg361m.155 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_156_choice } }
+		trigger_event = { id = zg361m.156 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_157_choice } }
+		trigger_event = { id = zg361m.157 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_158_choice } }
+		trigger_event = { id = zg361m.158 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_159_choice } }
+		trigger_event = { id = zg361m.159 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_160_choice } }
+		trigger_event = { id = zg361m.160 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_161_choice } }
+		trigger_event = { id = zg361m.161 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_162_choice } }
+		trigger_event = { id = zg361m.162 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_163_choice } }
+		trigger_event = { id = zg361m.163 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_164_choice } }
+		trigger_event = { id = zg361m.164 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_165_choice } }
+		trigger_event = { id = zg361m.165 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_166_choice } }
+		trigger_event = { id = zg361m.166 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_167_choice } }
+		trigger_event = { id = zg361m.167 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_168_choice } }
+		trigger_event = { id = zg361m.168 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_169_choice } }
+		trigger_event = { id = zg361m.169 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_170_choice } }
+		trigger_event = { id = zg361m.170 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_171_choice } }
+		trigger_event = { id = zg361m.171 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_172_choice } }
+		trigger_event = { id = zg361m.172 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_173_choice } }
+		trigger_event = { id = zg361m.173 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_174_choice } }
+		trigger_event = { id = zg361m.174 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_175_choice } }
+		trigger_event = { id = zg361m.175 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_176_choice } }
+		trigger_event = { id = zg361m.176 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_177_choice } }
+		trigger_event = { id = zg361m.177 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_178_choice } }
+		trigger_event = { id = zg361m.178 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_179_choice } }
+		trigger_event = { id = zg361m.179 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_180_choice } }
+		trigger_event = { id = zg361m.180 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_181_choice } }
+		trigger_event = { id = zg361m.181 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_182_choice } }
+		trigger_event = { id = zg361m.182 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_183_choice } }
+		trigger_event = { id = zg361m.183 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_184_choice } }
+		trigger_event = { id = zg361m.184 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_185_choice } }
+		trigger_event = { id = zg361m.185 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_186_choice } }
+		trigger_event = { id = zg361m.186 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_187_choice } }
+		trigger_event = { id = zg361m.187 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_188_choice } }
+		trigger_event = { id = zg361m.188 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_189_choice } }
+		trigger_event = { id = zg361m.189 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_190_choice } }
+		trigger_event = { id = zg361m.190 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_191_choice } }
+		trigger_event = { id = zg361m.191 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_192_choice } }
+		trigger_event = { id = zg361m.192 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_193_choice } }
+		trigger_event = { id = zg361m.193 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_194_choice } }
+		trigger_event = { id = zg361m.194 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_195_choice } }
+		trigger_event = { id = zg361m.195 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_196_choice } }
+		trigger_event = { id = zg361m.196 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_197_choice } }
+		trigger_event = { id = zg361m.197 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_198_choice } }
+		trigger_event = { id = zg361m.198 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_199_choice } }
+		trigger_event = { id = zg361m.199 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_200_choice } }
+		trigger_event = { id = zg361m.200 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_201_choice } }
+		trigger_event = { id = zg361m.201 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_202_choice } }
+		trigger_event = { id = zg361m.202 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_203_choice } }
+		trigger_event = { id = zg361m.203 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_204_choice } }
+		trigger_event = { id = zg361m.204 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_205_choice } }
+		trigger_event = { id = zg361m.205 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_206_choice } }
+		trigger_event = { id = zg361m.206 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_207_choice } }
+		trigger_event = { id = zg361m.207 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_208_choice } }
+		trigger_event = { id = zg361m.208 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_209_choice } }
+		trigger_event = { id = zg361m.209 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_210_choice } }
+		trigger_event = { id = zg361m.210 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_211_choice } }
+		trigger_event = { id = zg361m.211 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_212_choice } }
+		trigger_event = { id = zg361m.212 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_213_choice } }
+		trigger_event = { id = zg361m.213 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_214_choice } }
+		trigger_event = { id = zg361m.214 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_215_choice } }
+		trigger_event = { id = zg361m.215 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_216_choice } }
+		trigger_event = { id = zg361m.216 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_217_choice } }
+		trigger_event = { id = zg361m.217 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_218_choice } }
+		trigger_event = { id = zg361m.218 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_219_choice } }
+		trigger_event = { id = zg361m.219 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_220_choice } }
+		trigger_event = { id = zg361m.220 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_221_choice } }
+		trigger_event = { id = zg361m.221 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_222_choice } }
+		trigger_event = { id = zg361m.222 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_223_choice } }
+		trigger_event = { id = zg361m.223 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_224_choice } }
+		trigger_event = { id = zg361m.224 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_225_choice } }
+		trigger_event = { id = zg361m.225 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_226_choice } }
+		trigger_event = { id = zg361m.226 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_227_choice } }
+		trigger_event = { id = zg361m.227 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_228_choice } }
+		trigger_event = { id = zg361m.228 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_229_choice } }
+		trigger_event = { id = zg361m.229 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_230_choice } }
+		trigger_event = { id = zg361m.230 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_231_choice } }
+		trigger_event = { id = zg361m.231 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_232_choice } }
+		trigger_event = { id = zg361m.232 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_233_choice } }
+		trigger_event = { id = zg361m.233 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_234_choice } }
+		trigger_event = { id = zg361m.234 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_235_choice } }
+		trigger_event = { id = zg361m.235 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_236_choice } }
+		trigger_event = { id = zg361m.236 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_237_choice } }
+		trigger_event = { id = zg361m.237 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_238_choice } }
+		trigger_event = { id = zg361m.238 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_239_choice } }
+		trigger_event = { id = zg361m.239 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_240_choice } }
+		trigger_event = { id = zg361m.240 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_241_choice } }
+		trigger_event = { id = zg361m.241 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_242_choice } }
+		trigger_event = { id = zg361m.242 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_243_choice } }
+		trigger_event = { id = zg361m.243 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_244_choice } }
+		trigger_event = { id = zg361m.244 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_245_choice } }
+		trigger_event = { id = zg361m.245 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_246_choice } }
+		trigger_event = { id = zg361m.246 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_247_choice } }
+		trigger_event = { id = zg361m.247 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_248_choice } }
+		trigger_event = { id = zg361m.248 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_249_choice } }
+		trigger_event = { id = zg361m.249 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_250_choice } }
+		trigger_event = { id = zg361m.250 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_251_choice } }
+		trigger_event = { id = zg361m.251 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_252_choice } }
+		trigger_event = { id = zg361m.252 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_253_choice } }
+		trigger_event = { id = zg361m.253 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_254_choice } }
+		trigger_event = { id = zg361m.254 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_255_choice } }
+		trigger_event = { id = zg361m.255 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_256_choice } }
+		trigger_event = { id = zg361m.256 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_257_choice } }
+		trigger_event = { id = zg361m.257 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_258_choice } }
+		trigger_event = { id = zg361m.258 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_259_choice } }
+		trigger_event = { id = zg361m.259 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_260_choice } }
+		trigger_event = { id = zg361m.260 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_261_choice } }
+		trigger_event = { id = zg361m.261 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_262_choice } }
+		trigger_event = { id = zg361m.262 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_263_choice } }
+		trigger_event = { id = zg361m.263 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_264_choice } }
+		trigger_event = { id = zg361m.264 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_265_choice } }
+		trigger_event = { id = zg361m.265 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_266_choice } }
+		trigger_event = { id = zg361m.266 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_267_choice } }
+		trigger_event = { id = zg361m.267 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_268_choice } }
+		trigger_event = { id = zg361m.268 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_269_choice } }
+		trigger_event = { id = zg361m.269 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_270_choice } }
+		trigger_event = { id = zg361m.270 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_271_choice } }
+		trigger_event = { id = zg361m.271 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_272_choice } }
+		trigger_event = { id = zg361m.272 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_273_choice } }
+		trigger_event = { id = zg361m.273 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_274_choice } }
+		trigger_event = { id = zg361m.274 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_275_choice } }
+		trigger_event = { id = zg361m.275 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_276_choice } }
+		trigger_event = { id = zg361m.276 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_277_choice } }
+		trigger_event = { id = zg361m.277 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_278_choice } }
+		trigger_event = { id = zg361m.278 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_279_choice } }
+		trigger_event = { id = zg361m.279 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_280_choice } }
+		trigger_event = { id = zg361m.280 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_281_choice } }
+		trigger_event = { id = zg361m.281 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_282_choice } }
+		trigger_event = { id = zg361m.282 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_283_choice } }
+		trigger_event = { id = zg361m.283 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_284_choice } }
+		trigger_event = { id = zg361m.284 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_285_choice } }
+		trigger_event = { id = zg361m.285 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_286_choice } }
+		trigger_event = { id = zg361m.286 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_287_choice } }
+		trigger_event = { id = zg361m.287 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_288_choice } }
+		trigger_event = { id = zg361m.288 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_289_choice } }
+		trigger_event = { id = zg361m.289 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_290_choice } }
+		trigger_event = { id = zg361m.290 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_291_choice } }
+		trigger_event = { id = zg361m.291 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_292_choice } }
+		trigger_event = { id = zg361m.292 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_293_choice } }
+		trigger_event = { id = zg361m.293 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_294_choice } }
+		trigger_event = { id = zg361m.294 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_295_choice } }
+		trigger_event = { id = zg361m.295 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_296_choice } }
+		trigger_event = { id = zg361m.296 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_297_choice } }
+		trigger_event = { id = zg361m.297 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_298_choice } }
+		trigger_event = { id = zg361m.298 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_299_choice } }
+		trigger_event = { id = zg361m.299 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_300_choice } }
+		trigger_event = { id = zg361m.300 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_301_choice } }
+		trigger_event = { id = zg361m.301 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_302_choice } }
+		trigger_event = { id = zg361m.302 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_303_choice } }
+		trigger_event = { id = zg361m.303 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_304_choice } }
+		trigger_event = { id = zg361m.304 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_305_choice } }
+		trigger_event = { id = zg361m.305 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_306_choice } }
+		trigger_event = { id = zg361m.306 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_307_choice } }
+		trigger_event = { id = zg361m.307 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_308_choice } }
+		trigger_event = { id = zg361m.308 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_309_choice } }
+		trigger_event = { id = zg361m.309 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_310_choice } }
+		trigger_event = { id = zg361m.310 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_311_choice } }
+		trigger_event = { id = zg361m.311 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_312_choice } }
+		trigger_event = { id = zg361m.312 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_313_choice } }
+		trigger_event = { id = zg361m.313 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_314_choice } }
+		trigger_event = { id = zg361m.314 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_315_choice } }
+		trigger_event = { id = zg361m.315 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_316_choice } }
+		trigger_event = { id = zg361m.316 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_317_choice } }
+		trigger_event = { id = zg361m.317 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_318_choice } }
+		trigger_event = { id = zg361m.318 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_319_choice } }
+		trigger_event = { id = zg361m.319 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_320_choice } }
+		trigger_event = { id = zg361m.320 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_321_choice } }
+		trigger_event = { id = zg361m.321 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_322_choice } }
+		trigger_event = { id = zg361m.322 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_323_choice } }
+		trigger_event = { id = zg361m.323 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_324_choice } }
+		trigger_event = { id = zg361m.324 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_325_choice } }
+		trigger_event = { id = zg361m.325 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_326_choice } }
+		trigger_event = { id = zg361m.326 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_327_choice } }
+		trigger_event = { id = zg361m.327 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_328_choice } }
+		trigger_event = { id = zg361m.328 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_329_choice } }
+		trigger_event = { id = zg361m.329 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_330_choice } }
+		trigger_event = { id = zg361m.330 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_331_choice } }
+		trigger_event = { id = zg361m.331 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_332_choice } }
+		trigger_event = { id = zg361m.332 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_333_choice } }
+		trigger_event = { id = zg361m.333 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_334_choice } }
+		trigger_event = { id = zg361m.334 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_335_choice } }
+		trigger_event = { id = zg361m.335 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_336_choice } }
+		trigger_event = { id = zg361m.336 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_337_choice } }
+		trigger_event = { id = zg361m.337 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_338_choice } }
+		trigger_event = { id = zg361m.338 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_339_choice } }
+		trigger_event = { id = zg361m.339 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_340_choice } }
+		trigger_event = { id = zg361m.340 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_341_choice } }
+		trigger_event = { id = zg361m.341 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_342_choice } }
+		trigger_event = { id = zg361m.342 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_343_choice } }
+		trigger_event = { id = zg361m.343 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_344_choice } }
+		trigger_event = { id = zg361m.344 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_345_choice } }
+		trigger_event = { id = zg361m.345 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_346_choice } }
+		trigger_event = { id = zg361m.346 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_347_choice } }
+		trigger_event = { id = zg361m.347 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_348_choice } }
+		trigger_event = { id = zg361m.348 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_349_choice } }
+		trigger_event = { id = zg361m.349 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_350_choice } }
+		trigger_event = { id = zg361m.350 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_351_choice } }
+		trigger_event = { id = zg361m.351 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_352_choice } }
+		trigger_event = { id = zg361m.352 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_353_choice } }
+		trigger_event = { id = zg361m.353 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_354_choice } }
+		trigger_event = { id = zg361m.354 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_355_choice } }
+		trigger_event = { id = zg361m.355 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_356_choice } }
+		trigger_event = { id = zg361m.356 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_357_choice } }
+		trigger_event = { id = zg361m.357 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_358_choice } }
+		trigger_event = { id = zg361m.358 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_359_choice } }
+		trigger_event = { id = zg361m.359 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_360_choice } }
+		trigger_event = { id = zg361m.360 days = 1 }
+	}
+	else_if = {
+		limit = { NOT = { has_variable = zg361_mechanism_361_choice } }
+		trigger_event = { id = zg361m.361 days = 1 }
+	}
+	else = {
+		debug_log = "ZG361M: all 361 mechanisms already configured"
+	}
+}

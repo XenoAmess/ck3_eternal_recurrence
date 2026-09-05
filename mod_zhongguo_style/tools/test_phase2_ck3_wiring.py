@@ -27,7 +27,14 @@ class Phase2Ck3WiringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.values = read("common/script_values/zg361_values.txt")
-        cls.effects = read("common/scripted_effects/zg361_effects.txt")
+        cls.effects = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_core_*_effects.txt"
+                )
+            )
+        )
         cls.events = read("events/zg361_events.txt")
         cls.decisions = read("common/decisions/zg361_decisions.txt")
         cls.interactions = read("common/character_interactions/zg361_interactions.txt")
@@ -340,7 +347,6 @@ class Phase2Ck3WiringTests(unittest.TestCase):
     def test_all_product_script_files_keep_utf8_bom(self) -> None:
         paths = (
             "common/script_values/zg361_values.txt",
-            "common/scripted_effects/zg361_effects.txt",
             "events/zg361_events.txt",
             "common/decisions/zg361_decisions.txt",
             "common/character_interactions/zg361_interactions.txt",
@@ -350,6 +356,13 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         for relative in paths:
             with self.subTest(relative=relative):
                 self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(b"\xef\xbb\xbf"))
+        for path in sorted(
+            (MOD_ROOT / "common" / "scripted_effects").glob(
+                "zg361_core_*_effects.txt"
+            )
+        ):
+            with self.subTest(relative=path.relative_to(MOD_ROOT).as_posix()):
+                self.assertTrue(path.read_bytes().startswith(b"\xef\xbb\xbf"))
 
 
 if __name__ == "__main__":

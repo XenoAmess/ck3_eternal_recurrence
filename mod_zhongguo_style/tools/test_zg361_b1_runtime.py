@@ -13,6 +13,7 @@ import re
 import unittest
 
 from gen_361_b1_runtime import (
+    B1_EFFECT_PURPOSES,
     EFFECT_BLOCK_COUNTS,
     EFFECT_SPLIT_KEY,
     HEADER,
@@ -21,6 +22,7 @@ from gen_361_b1_runtime import (
     outputs,
     render_effects,
 )
+from zg361_effect_sharding import top_level_effect_blocks
 from zg361_b1_quota_model import compute_quota
 from zg361_b1_runtime_data import B1_BINDINGS, B1_IDS, STAGE_SEQUENCE
 
@@ -29,9 +31,13 @@ def read(relative: str) -> str:
     return (MOD_ROOT / relative).read_text(encoding="utf-8-sig")
 
 
-B1_EFFECT_FILES = (
-    "common/scripted_effects/zg361_b1_runtime_effects.txt",
-    "common/scripted_effects/zg361_b1_runtime_effects_part2.txt",
+B1_EFFECT_FILES = tuple(
+    path.relative_to(MOD_ROOT).as_posix()
+    for path in sorted(
+        (MOD_ROOT / "common" / "scripted_effects").glob(
+            "zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt"
+        )
+    )
 )
 
 
@@ -81,7 +87,14 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "common/scripted_effects/zg361_b1_manager_identity_effects.txt"
         )
         cls.events = read("events/zg361_b1_runtime_events.txt")
-        cls.core = read("common/scripted_effects/zg361_effects.txt")
+        cls.core = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_core_*_effects.txt"
+                )
+            )
+        )
         cls.jingcha = read(
             "common/scripted_effects/zg361_jingcha_mandate_effects.txt"
         )
@@ -145,23 +158,22 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             tuple(re.findall(r"(?m)^(zg361_b1_[A-Za-z0-9_]+)\s*=\s*\{", part))
             for part in self.effect_parts
         )
-        self.assertEqual(tuple(map(len, keys_by_part)), EFFECT_BLOCK_COUNTS)
-        self.assertEqual(keys_by_part[1][0], EFFECT_SPLIT_KEY)
+        purpose_counts = tuple(len(names) for _purpose, names in B1_EFFECT_PURPOSES)
+        self.assertEqual(tuple(map(len, keys_by_part)), purpose_counts)
+        self.assertEqual(keys_by_part[5][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
-        all_keys = keys_by_part[0] + keys_by_part[1]
+        all_keys = tuple(key for part in keys_by_part for key in part)
         self.assertEqual(len(all_keys), 78)
         self.assertEqual(len(set(all_keys)), 78)
 
-        bodies = []
+        observed_blocks = []
         for relative in B1_EFFECT_FILES:
             payload = (MOD_ROOT / relative).read_bytes()
             text = payload.decode("utf-8-sig")
             self.assertTrue(text.startswith(HEADER), relative)
-            bodies.append(text.removeprefix(HEADER))
-        reconstructed = generated(
-            bodies[0].rstrip() + "\n\n" + bodies[1].lstrip()
-        )
-        self.assertEqual(reconstructed, render_effects())
+            observed_blocks.extend(top_level_effect_blocks(payload))
+        expected_blocks = top_level_effect_blocks(render_effects())
+        self.assertEqual(tuple(observed_blocks), expected_blocks)
 
     def test_manager_identity_migration_has_own_one_effect_shard(self) -> None:
         keys = re.findall(r"(?m)^(zg361_b1_\w+) = \{", self.manager_identity)

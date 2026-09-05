@@ -372,4 +372,4 @@
 | 360 | 经理集体拒绝“硬背 C” | AL | P2 | `endgame` | `zg361m.360` | `zg361_mechanism_360_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 361 | 《三六一绩效宪章》 | AL | P2 | `endgame` | `zg361m.361` | `zg361_mechanism_361_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 
-Manifest semantic SHA-256: `ba37ad2e6a122cd644c2ec1b8d4625b0e2e85bd81ae8998e07dceae9e6494178`
+Manifest semantic SHA-256: `dea593ac8a86a800b20fa0c23903b33554f46a41327ada31c564a53ca01f1cbd`

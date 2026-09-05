@@ -64,17 +64,26 @@ from gen_scoreboard_snapshot import (
 )
 
 
+def read_core_effects() -> str:
+    return "\n".join(
+        path.read_text(encoding="utf-8-sig")
+        for path in sorted(
+            (MOD_ROOT / "common" / "scripted_effects").glob(
+                "zg361_core_*_effects.txt"
+            )
+        )
+    )
+
+
 class ScoreboardSnapshotTests(unittest.TestCase):
     def test_case_detail_schema_uses_only_existing_frozen_product_fields(self) -> None:
+        effect_root = MOD_ROOT / "common" / "scripted_effects"
+        paths = list(sorted(effect_root.glob("zg361_core_*_effects.txt")))
+        paths.extend(
+            sorted(effect_root.glob("zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt"))
+        )
         product_effects = "\n".join(
-            (
-                MOD_ROOT / "common" / "scripted_effects" / filename
-            ).read_text(encoding="utf-8-sig")
-            for filename in (
-                "zg361_effects.txt",
-                "zg361_b1_runtime_effects.txt",
-                "zg361_b1_runtime_effects_part2.txt",
-            )
+            path.read_text(encoding="utf-8-sig") for path in paths
         )
         self.assertTrue(all(isinstance(field, FieldSpec) for field in BASE_FIELDS))
         self.assertTrue(all(isinstance(field, FieldSpec) for field in CASE_FIELDS))
@@ -604,9 +613,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertIn("zg361_sb_m_01_b1_141_review_outcome", patch)
         for mechanism_id in (142, 143, 144, 145):
             self.assertNotIn(f"zg361_sb_m_01_b1_{mechanism_id}_", patch)
-        core = (
-            MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt"
-        ).read_text(encoding="utf-8-sig")
+        core = read_core_effects()
         settlement = core.split("zg361_apply_pending_grades_effect = {", 1)[1].split(
             "\n}\n\n", 1
         )[0]
@@ -1105,9 +1112,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             self.assertNotEqual(balance(text.rsplit("}", 1)[0]), 0, path.name)
 
     def test_eighty_row_cap_is_explicitly_reported_as_shown_over_full(self) -> None:
-        product_effects = (
-            MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt"
-        ).read_text(encoding="utf-8-sig")
+        product_effects = read_core_effects()
         gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
             "utf-8-sig"
         )
@@ -1548,9 +1553,7 @@ class ReviewRegressionTests(unittest.TestCase):
         self.assertEqual(rows[2]["grade"], 2)
 
     def test_product_and_live_fixture_use_the_atomic_contract(self) -> None:
-        effects = (MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt").read_text(
-            encoding="utf-8-sig"
-        )
+        effects = read_core_effects()
         events = (MOD_ROOT / "events" / "zg361_events.txt").read_text(
             encoding="utf-8-sig"
         )

@@ -45,16 +45,16 @@ class EffectFileBoundaryTests(unittest.TestCase):
         self.assertEqual("RED", report["result"])
         self.assertEqual(1, report["violation_count"])
 
-    def test_pre_b2_compatibility_file_is_explicitly_excluded(self) -> None:
+    def test_legacy_names_do_not_bypass_the_boundary(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             (root / "zg361_b1_runtime_effects.txt").write_text(
                 effect_source(21), encoding="utf-8-sig"
             )
             report = boundary.audit_report(root)
-        self.assertEqual("GREEN", report["result"])
-        self.assertEqual(0, report["target_miss_count"])
-        self.assertEqual(0, report["violation_count"])
+        self.assertEqual("RED", report["result"])
+        self.assertEqual(1, report["target_miss_count"])
+        self.assertEqual(1, report["violation_count"])
 
 
 if __name__ == "__main__":

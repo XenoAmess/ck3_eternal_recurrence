@@ -121,12 +121,12 @@ SHARED_HOOK_CONTRACT: dict[str, tuple[str, str]] = {
         "zg361_kpi_organization_evidence_value",
     ),
     "organization_settlement": (
-        "common/scripted_effects/zg361_effects.txt",
+        "common/scripted_effects/zg361_core_review_cycle_effects.txt",
         "zg361_b2_consume_management_debt_effect = yes",
     ),
     "distribution_settlement": (
-        "common/scripted_effects/zg361_effects.txt",
-        "set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }",
+        "common/scripted_effects/zg361_core_review_cycle_effects.txt",
+        "zg361_mg_set_bottom_slots_effect = yes",
     ),
 }
 

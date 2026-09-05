@@ -1,0 +1,72 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Purpose shard: ledger bootstrap.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+# Shared organizational ledger and all mechanism state transitions.
+
+zg361_init_org_ledger_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_org_evidence } }
+		set_variable = { name = zg361_org_evidence value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_trust } }
+		set_variable = { name = zg361_org_trust value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_admin_load } }
+		set_variable = { name = zg361_org_admin_load value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_appeal_risk } }
+		set_variable = { name = zg361_org_appeal_risk value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_delivery } }
+		set_variable = { name = zg361_org_delivery value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_stability } }
+		set_variable = { name = zg361_org_stability value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_tech_debt } }
+		set_variable = { name = zg361_org_tech_debt value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_data_quality } }
+		set_variable = { name = zg361_org_data_quality value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_burnout } }
+		set_variable = { name = zg361_org_burnout value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_talent } }
+		set_variable = { name = zg361_org_talent value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_hc_pressure } }
+		set_variable = { name = zg361_org_hc_pressure value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_pay_debt } }
+		set_variable = { name = zg361_org_pay_debt value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_policy_debt } }
+		set_variable = { name = zg361_org_policy_debt value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_org_budget_pressure } }
+		set_variable = { name = zg361_org_budget_pressure value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_configured_n } }
+		set_variable = { name = zg361_mechanism_configured_n value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_checksum } }
+		set_variable = { name = zg361_mechanism_checksum value = 0 }
+	}
+}

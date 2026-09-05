@@ -131,6 +131,15 @@ def read_text(path: Path) -> str:
     return path.read_bytes().decode("utf-8-sig")
 
 
+def read_effect_family(pattern: str) -> str:
+    effect_root = MOD_ROOT / "common" / "scripted_effects"
+    paths = sorted(effect_root.glob(pattern))
+    if not paths:
+        err(f"scripted-effect family is missing: {pattern}")
+        return ""
+    return "\n".join(read_text(path) for path in paths)
+
+
 def check_bom() -> None:
     for path in sorted(MOD_ROOT.rglob("*")):
         if not path.is_file():
@@ -347,7 +356,7 @@ def collect_referenced_keys() -> dict[str, set[str]]:
 def check_runtime_invariants() -> None:
     triggers = read_text(MOD_ROOT / "common" / "scripted_triggers" / "zg361_triggers.txt")
     decisions = read_text(MOD_ROOT / "common" / "decisions" / "zg361_decisions.txt")
-    effects = read_text(MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt")
+    effects = read_effect_family("zg361_core_*_effects.txt")
     events = read_text(MOD_ROOT / "events" / "zg361_events.txt")
     registrations = read_text(MOD_ROOT / "gui" / "scripted_widgets" / "zg361_scripted_widgets.txt")
     scoreboard_gui = read_text(MOD_ROOT / "gui" / "zg361_scoreboard.gui")
@@ -1098,11 +1107,8 @@ def check_generated_contracts() -> None:
     if ids != list(range(1, 362)):
         err("361 mechanism manifest must contain ordered IDs 1..361 exactly once")
     events_path = MOD_ROOT / "events" / "zg361_generated_mechanism_events.txt"
-    effects_path = (
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_mechanism_effects.txt"
-    )
     event_text = read_text(events_path) if events_path.is_file() else ""
-    effect_text = read_text(effects_path) if effects_path.is_file() else ""
+    effect_text = read_effect_family("zg361_generated_mechanism_[0-9][0-9][0-9]_*_effects.txt")
     event_ids = [int(value) for value in re.findall(r"^zg361m\.(\d+)\s*=\s*\{", event_text, re.M)]
     if event_ids != list(range(1, 362)):
         err("generated mechanism events must define zg361m.1..361 in order")

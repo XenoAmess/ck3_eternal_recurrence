@@ -27,6 +27,13 @@ def text(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
 
 
+def effect_family(pattern: str) -> str:
+    return "\n".join(
+        text(path)
+        for path in sorted((MOD / "common" / "scripted_effects").glob(pattern))
+    )
+
+
 class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
     def test_frozen_seed_identity_and_honest_gap(self) -> None:
         seed = json.loads(
@@ -58,9 +65,7 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
         scripted_gui = text(
             MOD / "common" / "scripted_guis" / "zg361_scoreboard_guis.txt"
         )
-        b1 = text(
-            MOD / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt"
-        )
+        b1 = effect_family("zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt")
         b1_events = text(MOD / "events" / "zg361_b1_runtime_events.txt")
         publication = text(
             ROOT
@@ -71,9 +76,7 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
             / "scripted_effects"
             / "zg361_core_review_cycle_effects.txt"
         )
-        canonical_publication = text(
-            MOD / "common" / "scripted_effects" / "zg361_effects.txt"
-        )
+        canonical_publication = effect_family("zg361_core_*_effects.txt")
         lifecycle = text(
             MOD
             / "common"

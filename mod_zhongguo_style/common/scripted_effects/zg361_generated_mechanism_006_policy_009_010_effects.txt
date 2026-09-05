@@ -1,0 +1,167 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Purpose shard: policy 009 010.
+# Boundary contract: 1-10 top-level effects; this file has 8.
+
+
+
+# 009 校准会驾驶舱
+zg361_mechanism_009_choice_a_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_009_choice } }
+		zg361_init_org_ledger_effect = yes
+		set_variable = { name = zg361_mechanism_009_choice value = 1 }
+		change_variable = { name = zg361_org_evidence add = 2 }
+		change_variable = { name = zg361_org_trust add = 2 }
+		change_variable = { name = zg361_org_admin_load add = 2 }
+		change_variable = { name = zg361_org_appeal_risk add = -2 }
+		change_variable = { name = zg361_mechanism_configured_n add = 1 }
+		change_variable = { name = zg361_mechanism_checksum add = 9 }
+		debug_log = "ZG361M: CASE 009 CHOICE A APPLIED"
+	}
+}
+
+zg361_mechanism_009_choice_b_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_009_choice } }
+		zg361_init_org_ledger_effect = yes
+		set_variable = { name = zg361_mechanism_009_choice value = 2 }
+		change_variable = { name = zg361_org_delivery add = 1 }
+		change_variable = { name = zg361_org_admin_load add = -1 }
+		change_variable = { name = zg361_org_trust add = -2 }
+		change_variable = { name = zg361_org_appeal_risk add = 3 }
+		change_variable = { name = zg361_mechanism_configured_n add = 1 }
+		change_variable = { name = zg361_mechanism_checksum add = 18 }
+		debug_log = "ZG361M: CASE 009 CHOICE B APPLIED"
+	}
+}
+
+zg361_mechanism_009_choice_c_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_009_choice } }
+		zg361_init_org_ledger_effect = yes
+		set_variable = { name = zg361_mechanism_009_choice value = 3 }
+		change_variable = { name = zg361_org_admin_load add = -1 }
+		change_variable = { name = zg361_org_budget_pressure add = -1 }
+		change_variable = { name = zg361_org_policy_debt add = 3 }
+		change_variable = { name = zg361_org_trust add = -1 }
+		change_variable = { name = zg361_mechanism_configured_n add = 1 }
+		change_variable = { name = zg361_mechanism_checksum add = 27 }
+		debug_log = "ZG361M: CASE 009 CHOICE C APPLIED"
+	}
+}
+
+zg361_mechanism_009_ai_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_trait = just
+				has_trait = honest
+				has_trait = diligent
+				has_trait = compassionate
+			}
+		}
+		zg361_mechanism_009_choice_a_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_trait = arbitrary
+				has_trait = callous
+				has_trait = deceitful
+				has_trait = ambitious
+			}
+		}
+		zg361_mechanism_009_choice_b_effect = yes
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_org_budget_pressure
+			var:zg361_org_budget_pressure >= 25
+		}
+		zg361_mechanism_009_choice_c_effect = yes
+	}
+	else = {
+		zg361_mechanism_009_choice_a_effect = yes
+	}
+}
+
+# 010 “背 C”与护人
+zg361_mechanism_010_choice_a_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_010_choice } }
+		zg361_init_org_ledger_effect = yes
+		set_variable = { name = zg361_mechanism_010_choice value = 1 }
+		change_variable = { name = zg361_org_evidence add = 2 }
+		change_variable = { name = zg361_org_trust add = 2 }
+		change_variable = { name = zg361_org_admin_load add = 2 }
+		change_variable = { name = zg361_org_appeal_risk add = -2 }
+		change_variable = { name = zg361_mechanism_configured_n add = 1 }
+		change_variable = { name = zg361_mechanism_checksum add = 10 }
+		debug_log = "ZG361M: CASE 010 CHOICE A APPLIED"
+	}
+}
+
+zg361_mechanism_010_choice_b_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_010_choice } }
+		zg361_init_org_ledger_effect = yes
+		set_variable = { name = zg361_mechanism_010_choice value = 2 }
+		change_variable = { name = zg361_org_delivery add = 1 }
+		change_variable = { name = zg361_org_admin_load add = -1 }
+		change_variable = { name = zg361_org_trust add = -2 }
+		change_variable = { name = zg361_org_appeal_risk add = 3 }
+		change_variable = { name = zg361_mechanism_configured_n add = 1 }
+		change_variable = { name = zg361_mechanism_checksum add = 20 }
+		debug_log = "ZG361M: CASE 010 CHOICE B APPLIED"
+	}
+}
+
+zg361_mechanism_010_choice_c_effect = {
+	if = {
+		limit = { NOT = { has_variable = zg361_mechanism_010_choice } }
+		zg361_init_org_ledger_effect = yes
+		set_variable = { name = zg361_mechanism_010_choice value = 3 }
+		change_variable = { name = zg361_org_admin_load add = -1 }
+		change_variable = { name = zg361_org_budget_pressure add = -1 }
+		change_variable = { name = zg361_org_policy_debt add = 3 }
+		change_variable = { name = zg361_org_trust add = -1 }
+		change_variable = { name = zg361_mechanism_configured_n add = 1 }
+		change_variable = { name = zg361_mechanism_checksum add = 30 }
+		debug_log = "ZG361M: CASE 010 CHOICE C APPLIED"
+	}
+}
+
+zg361_mechanism_010_ai_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_trait = just
+				has_trait = honest
+				has_trait = diligent
+				has_trait = compassionate
+			}
+		}
+		zg361_mechanism_010_choice_a_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_trait = arbitrary
+				has_trait = callous
+				has_trait = deceitful
+				has_trait = ambitious
+			}
+		}
+		zg361_mechanism_010_choice_b_effect = yes
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_org_budget_pressure
+			var:zg361_org_budget_pressure >= 25
+		}
+		zg361_mechanism_010_choice_c_effect = yes
+	}
+	else = {
+		zg361_mechanism_010_choice_a_effect = yes
+	}
+}

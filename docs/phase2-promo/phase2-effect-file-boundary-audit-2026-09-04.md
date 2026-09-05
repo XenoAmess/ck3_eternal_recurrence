@@ -1,5 +1,17 @@
 # 天朝二期 effect 文件边界审计（2026-09-04）
 
+## 2026-09-05 现行结论（取代下方旧白名单政策）
+
+项目已把单文件过大强制视为文件边界缺陷，不再等待性能 RED，也不再讨论是否拆分。四个旧兼容 owner 已全部从 canonical source 退役：
+
+- 361 mechanism：`1,449` 个 effect 拆为 `186` 个用途文件，每文件 `1–8`；
+- B1 runtime：`78` 个 effect 拆为 `12` 个用途文件，每文件 `3–10`；
+- Phase2 core：`26` 个 effect 拆为 `4` 个用途文件，分别为 `3 / 6 / 8 / 9`；
+- 当前全树：`626 files / 3721 effects / maximum 10 / target misses 0 / >20 violations 0 / exceptions 0`。
+
+生成器、读取方、production closure 与静态门均已切换到用途分片；旧 owner 不得与新分片并存。新 canonical 布局当前为 `static-ready / live-pending`，下一次 CK3 验收只能使用拆分版本。权威现行合同见
+[`mod_zhongguo_style/docs/361-effect-file-boundary-contract.md`](../../mod_zhongguo_style/docs/361-effect-file-boundary-contract.md)。下文保留 2026-09-04 的历史快照和实机 artifact，不再授权任何 legacy 白名单。
+
 状态：**GREEN / static-only / no CK3 launch**。审计基线为 canonical commit
 `75c1432a46b5fc3f442de61711bbbff9973aa307`，范围是
 `mod_zhongguo_style/common/scripted_effects/*.txt`。政策口径保持为：B2 起按用途分组，目标每文件 `1–10`

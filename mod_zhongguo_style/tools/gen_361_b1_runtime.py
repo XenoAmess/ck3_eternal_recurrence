@@ -14,13 +14,20 @@ import argparse
 from pathlib import Path
 
 from zg361_b1_runtime_data import B1_BINDINGS, validate_b1_bindings
+from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
+EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
 EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
 EFFECT_BLOCK_COUNTS = (42, 36)
+LEGACY_EFFECT_PATHS = (
+    EFFECTS_DIR / "zg361_b1_runtime_effects.txt",
+    EFFECTS_DIR / "zg361_b1_runtime_effects_part2.txt",
+)
+EFFECT_SHARD_GLOB = "zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt"
 
 
 def generated(text: str) -> bytes:
@@ -9789,17 +9796,206 @@ def render_english_placeholder_localization(language: str) -> bytes:
     return localized(english.replace("l_english:", f"l_{language}:", 1))
 
 
+B1_EFFECT_PURPOSES = (
+    (
+        "case_bootstrap_policy_kpi",
+        (
+            "zg361_b1_classify_function_effect",
+            "zg361_b1_freeze_001_013_policy_effect",
+            "zg361_b1_freeze_135_145_policy_effect",
+            "zg361_b1_consume_manager_liabilities_as_subject_effect",
+            "zg361_b1_snapshot_owner_bound_kpi_effect",
+            "zg361_b1_materialize_departed_kpi_effect",
+            "zg361_b1_apply_departed_grade_effect",
+            "zg361_b1_initialize_subject_case_effect",
+        ),
+    ),
+    (
+        "cycle_self_review",
+        (
+            "zg361_b1_open_cycle_effect",
+            "zg361_b1_prune_unavailable_subjects_effect",
+            "zg361_b1_midcycle_dispatcher_effect",
+            "zg361_b1_finalize_self_review_effect",
+            "zg361_b1_record_self_honest_effect",
+            "zg361_b1_record_self_exaggerated_effect",
+            "zg361_b1_record_self_conservative_effect",
+            "zg361_b1_submit_self_honest_ticket_effect",
+            "zg361_b1_submit_self_exaggerated_ticket_effect",
+            "zg361_b1_submit_self_conservative_ticket_effect",
+        ),
+    ),
+    (
+        "peer_facts_shadow",
+        (
+            "zg361_b1_peer_window_dispatcher_effect",
+            "zg361_b1_prepare_facts_effect",
+            "zg361_b1_finalize_subject_facts_effect",
+            "zg361_b1_record_shadow_accept_effect",
+            "zg361_b1_record_shadow_supplement_effect",
+            "zg361_b1_submit_shadow_accept_ticket_effect",
+            "zg361_b1_submit_shadow_supplement_ticket_effect",
+            "zg361_b1_freeze_blind_named_diff_effect",
+            "zg361_b1_open_shadow_effect",
+        ),
+    ),
+    (
+        "quota_bank_debt",
+        (
+            "zg361_b1_register_common_superior_bank_effect",
+            "zg361_b1_compute_exact_quota_effect",
+            "zg361_b1_audit_frozen_roster_effect",
+            "zg361_b1_audit_locked_roster_additions_effect",
+            "zg361_b1_rebuild_local_quota_effect",
+            "zg361_b1_settle_due_debt_effect",
+            "zg361_b1_execute_unique_pool_trade_effect",
+            "zg361_b1_submit_quota_book_effect",
+        ),
+    ),
+    (
+        "huddle_agenda",
+        (
+            "zg361_b1_prepare_bank_huddle_effect",
+            "zg361_b1_prepare_bank_must_review_effect",
+            "zg361_b1_close_common_superior_bank_legacy_unused_effect",
+            "zg361_b1_close_common_superior_bank_effect",
+            "zg361_b1_apply_local_quota_effect",
+            "zg361_b1_rerank_frozen_quota_book_effect",
+            "zg361_b1_build_agenda_and_attention_effect",
+        ),
+    ),
+    (
+        "agenda_dissent_publication",
+        (
+            "zg361_b1_finalize_agenda_audit_effect",
+            "zg361_b1_finalize_huddle_diff_effect",
+            "zg361_b1_consume_must_review_effect",
+            "zg361_b1_record_named_dissent_effect",
+            "zg361_b1_finalize_named_dissent_effect",
+            "zg361_b1_refresh_individual_publications_effect",
+        ),
+    ),
+    (
+        "pending_reopen",
+        (
+            "zg361_b1_open_pending_slots_effect",
+            "zg361_b1_resolve_pending_subject_effect",
+            "zg361_b1_verify_frozen_quota_conservation_effect",
+            "zg361_b1_prepare_reopen_gate_effect",
+            "zg361_b1_materialize_reopen_a_self_safe_effect",
+            "zg361_b1_resolve_reopen_batch_effect",
+            "zg361_b1_apply_symmetric_reopen_effect",
+            "zg361_b1_apply_final_gray_leaver_effect",
+        ),
+    ),
+    (
+        "calibration_finish_recusal",
+        (
+            "zg361_b1_pay_frozen_pending_rewards_effect",
+            "zg361_b1_finish_calibration_effect",
+            "zg361_b1_freeze_conflict_recusals_effect",
+            "zg361_b1_apply_recusal_replacement_reviews_effect",
+        ),
+    ),
+    (
+        "calibration_controls_publish",
+        (
+            "zg361_b1_apply_atomic_calibration_swap_effect",
+            "zg361_b1_apply_bottom_protection_effect",
+            "zg361_b1_prepare_skip_level_return_effect",
+            "zg361_b1_freeze_band_order_effect",
+            "zg361_b1_open_calibration_effect",
+            "zg361_b1_mark_published_effect",
+        ),
+    ),
+    (
+        "appeal_peer_submission",
+        (
+            "zg361_b1_on_appeal_corrected_effect",
+            "zg361_b1_prepare_shared_war_peer_task_effect",
+            "zg361_b1_submit_peer_recommendation_effect",
+            "zg361_b1_submit_peer_positive_effect",
+            "zg361_b1_submit_peer_negative_effect",
+        ),
+    ),
+    (
+        "peer_slot_consumption",
+        (
+            "zg361_b1_consume_peer_slot_1_effect",
+            "zg361_b1_consume_peer_slot_2_effect",
+            "zg361_b1_consume_peer_slot_3_effect",
+        ),
+    ),
+    (
+        "appeal_credit_m360_source",
+        (
+            "zg361_b1_apply_appeal_credit_slot_1_effect",
+            "zg361_b1_apply_appeal_credit_slot_2_effect",
+            "zg361_b1_apply_appeal_credit_slot_3_effect",
+            "zg361_b1_publish_m360_cohort_source_effect",
+        ),
+    ),
+)
+
+B1_EFFECT_PURPOSE_BY_NAME = {
+    name: purpose for purpose, names in B1_EFFECT_PURPOSES for name in names
+}
+
+
+def effect_purpose(name: str) -> str:
+    try:
+        return B1_EFFECT_PURPOSE_BY_NAME[name]
+    except KeyError as error:
+        raise ValueError(f"unclassified B1 scripted effect: {name}") from error
+
+
+def effect_shard_outputs() -> dict[Path, bytes]:
+    effects_part1, effects_part2 = render_effect_parts()
+    sources = (effects_part1, effects_part2)
+    shards = tuple(
+        shard
+        for source in sources
+        for shard in plan_effect_shards(
+            source,
+            generated_header=HEADER,
+            classify=effect_purpose,
+        )
+    )
+    observed = tuple(name for shard in shards for name in shard.names)
+    expected = tuple(name for _purpose, names in B1_EFFECT_PURPOSES for name in names)
+    if observed != expected:
+        raise ValueError("B1 purpose anchors drifted; update B1_EFFECT_PURPOSES")
+    rendered: dict[Path, bytes] = {}
+    for index, shard in enumerate(shards, start=1):
+        if not 1 <= len(shard.names) <= MAX_EFFECTS_PER_SHARD:
+            raise ValueError(f"B1 shard {index} violates the 1-10 effect boundary")
+        part = f"_part_{shard.part:02d}" if shard.part > 1 else ""
+        path = EFFECTS_DIR / (
+            f"zg361_b1_runtime_{index:03d}_{shard.purpose}{part}_effects.txt"
+        )
+        rendered[path] = generated(
+            f"# Purpose shard: {shard.purpose.replace('_', ' ')}.\n"
+            f"# Boundary contract: 1-10 top-level effects; this file has {len(shard.names)}.\n\n"
+            f"{shard.body}"
+        )
+    return rendered
+
+
+def generated_effect_residue(expected: set[Path]) -> tuple[Path, ...]:
+    candidates = set(EFFECTS_DIR.glob(EFFECT_SHARD_GLOB))
+    candidates.update(path for path in LEGACY_EFFECT_PATHS if path.exists())
+    return tuple(sorted(candidates - expected))
+
+
 def outputs() -> dict[Path, bytes]:
     validate_b1_bindings()
-    effects_part1, effects_part2 = render_effect_parts()
     rendered = {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt": effects_part1,
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects_part2.txt": effects_part2,
         MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_manager_identity_effects.txt": render_manager_identity_effects(),
         MOD_ROOT / "events" / "zg361_b1_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_b1_l_english.yml": render_english_localization(),
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_b1_l_simp_chinese.yml": render_simp_chinese_localization(),
     }
+    rendered.update(effect_shard_outputs())
     for language in (
         "french",
         "german",
@@ -9823,15 +10019,24 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     rendered = outputs()
+    expected_effects = {path for path in rendered if path.parent == EFFECTS_DIR}
+    residue = generated_effect_residue(expected_effects)
     stale = [path for path, payload in rendered.items() if not path.is_file() or path.read_bytes() != payload]
     if args.check:
-        if stale:
+        if stale or residue:
             print("RED: stale B1 generated files:")
             for path in stale:
                 print(path.relative_to(MOD_ROOT))
+            for path in residue:
+                print(f"LEGACY_OR_UNEXPECTED {path.relative_to(MOD_ROOT)}")
             return 1
         print("GREEN: B1 generated files are current")
         return 0
+    for path in residue:
+        payload = path.read_bytes()
+        if path not in LEGACY_EFFECT_PATHS and not payload.startswith(BOM + HEADER.encode("utf-8")):
+            raise RuntimeError(f"refusing to remove unowned effect file: {path}")
+        path.unlink()
     for path, payload in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)

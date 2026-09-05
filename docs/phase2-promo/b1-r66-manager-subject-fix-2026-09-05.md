@@ -547,3 +547,45 @@ The historical ABBA and R67–R74 runs show large same-boundary timing variance.
 R78 therefore returns to the unsplit 636-file A tree with the corrected
 frontend-first command. Only that comparison can distinguish a stable boundary
 effect from ordinary cold-start/run-order variance.
+
+## R78: full observation bound reached; promotion source remains RED
+
+R78 used the frozen `Z:\p2ae\p` product and the complete frontend-first command.
+The final save-loading PID `104320` passed the loader gate, remained the same
+gameplay PID, and advanced from raw date `53147016` to `53160216`, the full
+`550`-day product observation bound. Eight exact event interrupts were drained
+successfully. B1 remained active, but Central/promotion source never became
+available, no review action appeared, and neither `.146` nor D+1 `.147` was
+captured. The production entry therefore ended `RED / static-ready-live-pending`
+with `PromotionProductionEntryError: promotion path exceeded its 550-day product observation bound`.
+
+The unchanged frozen product tree also produced actionable runtime diagnostics:
+duplicate temporary/permanent `zg361_b1_reopen_ticket_subject`, unset
+`zg361_b1_ready_manager_n`, missing `zg361_b1_pending_reservation_state`, unset
+`zg361_comp_m090_spot_gross`, and unset `zg361_case_kernel_applied` on the
+observed product paths. These become the next business-runtime repair inputs;
+loader GREEN does not waive them. Product/runtime hashes remained unchanged.
+The canonical checkout changed concurrently because the now-mandatory source
+sharding migration was in progress, so the broad checkout immutability flag is
+RED and is not used as product mutation evidence.
+
+Frozen R78 SHA-256:
+
+- outer report: `253F1CAABB5A2CE4835FC63A3256C9741746EEAA61E6F502EAEB9CEE8841F951`
+- evidence index: `39D3BF398F90CA0ED7B4A9A0512381E926788B38984374F9B56F7E3C9FB201B4`
+- cell report: `E9E92C8233F2519F2EEEA7CF3FA9984E987EDC37025BCC437B3265DF732686A1`
+- loader gate: `C063C374B0DEA583A8DF3647133570B8189692F3A1B09957BE45ECA4076234A4`
+- promotion entry: `DB21B4B9ADAF892B51341B841F453CABB1F4921341FB3EB031CD6F9DFC477CAC`
+- cleanup: `F54874EE7971CFC59D7529BD0C7B87D988C86A5F7C47DA652065BF6C5CD118A8`
+- final error log: `233BB5139D914DCE896DCF2C8A63C2856CB442C5B34F6FF005F4A9AE22E4D12D`
+
+## Mandatory canonical purpose sharding
+
+The project owner has superseded the former optional A/B policy. Oversized
+scripted-effect owners are now mandatory defects: no further unsplit candidate
+or causality discussion is allowed. Canonical source now retires all four old
+owner families and emits 186 mechanism, 12 B1 runtime, and four core purpose
+files. The current whole-tree boundary is `626 files / 3721 effects / maximum
+10 / target misses 0 / over-20 violations 0 / exceptions 0`. Generators,
+consumers and the B3 production closure use the split layout. Static validation
+is GREEN; the next CK3 run must use a freshly materialized split product.

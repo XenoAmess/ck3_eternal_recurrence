@@ -139,7 +139,14 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         cls.jingcha_mandate = read(
             "common/scripted_effects/zg361_jingcha_mandate_effects.txt"
         )
-        cls.core = read("common/scripted_effects/zg361_effects.txt")
+        cls.core = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_core_*_effects.txt"
+                )
+            )
+        )
         cls.values = read("common/script_values/zg361_values.txt")
         cls.manager_values = read(
             "common/script_values/zg361_manager_governance_runtime_values.txt"
@@ -416,7 +423,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("multiply = 0.05", effective)
         self.assertEqual(
             SHARED_HOOK_CONTRACT["distribution_settlement"][1],
-            "set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }",
+            "zg361_mg_set_bottom_slots_effect = yes",
         )
 
     def test_shared_hooks_are_unmerged_or_atomically_match_the_contract(self) -> None:

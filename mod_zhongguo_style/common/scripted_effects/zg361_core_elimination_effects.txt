@@ -1,0 +1,175 @@
+﻿# Canonical Phase-2 core scripted effects.
+# Purpose-grouped source; migrated from the production projection.
+# Purpose boundary: elimination_effects
+
+zg361_process_elimination_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_eliminate_n
+			var:zg361_eliminate_n >= 1
+		}
+		if = {
+			limit = { is_ai = yes }
+			# AI 皇帝：静默裁决；玩家封臣给最后机会事件
+			every_vassal = {
+				limit = { zg361_is_elimination_candidate_trigger = yes }
+				if = {
+					limit = { is_ai = no }
+					trigger_event = { id = zg361.6 days = 2 }
+				}
+				else = {
+					zg361_ai_elimination_effect = yes
+				}
+			}
+		}
+		else = {
+			# 玩家皇帝：弹末位淘汰处置事件（总览 zg361.1 之后）
+			trigger_event = { id = zg361.5 days = 2 }
+		}
+	}
+}
+
+zg361_ai_elimination_effect = {
+	set_variable = { name = zg361_purge_score value = zg361_ai_purge_score_value }
+	liege = { save_temporary_scope_as = zg361_liege }
+	# 军力对比：封臣兵力 > 皇帝 20% → 投鼠忌器（-50）
+	if = {
+		limit = {
+			current_military_strength > { value = scope:zg361_liege.current_military_strength multiply = 0.2 }
+		}
+		change_variable = { name = zg361_purge_score add = -50 }
+	}
+	# 皇帝直辖未满 → 夺爵回血动机（+20）
+	if = {
+		limit = { scope:zg361_liege = { domain_size < domain_limit } }
+		change_variable = { name = zg361_purge_score add = 20 }
+	}
+	# 淘汰者中也垫底（当年名次最后）→ +50
+	if = {
+		limit = { var:zg361_rank >= scope:zg361_liege.var:zg361_cohort_n }
+		change_variable = { name = zg361_purge_score add = 50 }
+	}
+	# 随机宽宥：皇帝心情不错
+	random = {
+		chance = 15
+		change_variable = { name = zg361_purge_score add = -40 }
+	}
+	if = {
+		limit = {
+			age >= 60
+			liege = { opinion = { target = prev value >= 0 } }
+		}
+		zg361_eliminate_stepdown_effect = yes
+	}
+	else_if = {
+		limit = {
+			house = {
+				OR = {
+					is_powerful_family = yes
+					is_dominant_family = yes
+				}
+			}
+		}
+		zg361_eliminate_stepdown_effect = yes
+	}
+	else_if = {
+		# 封臣兵力已达皇帝一半：硬夺必反，给个体面
+		limit = {
+			current_military_strength > { value = scope:zg361_liege.current_military_strength multiply = 0.5 }
+		}
+		zg361_eliminate_stepdown_effect = yes
+	}
+	else_if = {
+		limit = { var:zg361_purge_score >= 200 }
+		zg361_eliminate_purge_effect = yes
+	}
+	else_if = {
+		limit = { var:zg361_purge_score >= 120 }
+		if = {
+			limit = {
+				government_has_flag = government_has_merit
+				merit_level >= 5
+			}
+			zg361_eliminate_demote_effect = yes
+		}
+		else = {
+			zg361_eliminate_stepdown_effect = yes
+		}
+	}
+	else_if = {
+		limit = { var:zg361_purge_score >= 60 }
+		zg361_eliminate_demote_effect = yes
+	}
+	else = {
+		if = {
+			limit = {
+				liege = { opinion = { target = prev value >= 30 } }
+				var:zg361_streak_bottom < 3
+			}
+			zg361_eliminate_extend_effect = yes
+		}
+		else = {
+			zg361_eliminate_demote_effect = yes
+		}
+	}
+}
+
+zg361_eliminate_purge_effect = {
+	set_variable = { name = zg361_b2_pending_adverse_action value = 1 }
+	zg361_b2_prepare_adverse_action_effect = yes
+	if = {
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> purge (title stripped)"
+		if = {
+			limit = { government_has_flag = government_has_merit }
+			change_merit = massive_merit_loss
+		}
+		add_opinion = { modifier = zg361_purged target = liege }
+		force_step_down_landed_titles = yes
+		zg361_b2_finish_adverse_action_effect = yes
+	}
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
+}
+
+zg361_eliminate_stepdown_effect = {
+	set_variable = { name = zg361_b2_pending_adverse_action value = 2 }
+	zg361_b2_prepare_adverse_action_effect = yes
+	if = {
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> forced retirement"
+		add_opinion = { modifier = zg361_forced_retire target = liege }
+		force_step_down_landed_titles = yes
+		zg361_b2_finish_adverse_action_effect = yes
+	}
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
+}
+
+zg361_eliminate_demote_effect = {
+	set_variable = { name = zg361_b2_pending_adverse_action value = 3 }
+	zg361_b2_prepare_adverse_action_effect = yes
+	if = {
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> demoted but retained"
+		if = {
+			limit = { government_has_flag = government_has_merit }
+			change_merit = major_merit_loss
+		}
+		add_character_modifier = { modifier = zg361_demoted years = 1 }
+		add_character_modifier = { modifier = zg361_pip years = 1 }
+		set_variable = { name = zg361_streak_bottom value = 0 }
+		zg361_b2_finish_adverse_action_effect = yes
+	}
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
+}
+
+zg361_eliminate_extend_effect = {
+	set_variable = { name = zg361_b2_pending_adverse_action value = 4 }
+	zg361_b2_prepare_adverse_action_effect = yes
+	if = {
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> PIP extended"
+		add_character_modifier = { modifier = zg361_pip years = 1 }
+		zg361_b2_finish_adverse_action_effect = yes
+	}
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
+}

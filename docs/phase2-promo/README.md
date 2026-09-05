@@ -1,5 +1,10 @@
 # 天朝二期双宣传片导演方案
 
+## 现行 effect 文件边界（2026-09-05）
+
+单文件过大现按强制缺陷处理，不再讨论是否拆分或等待性能触发。canonical source 已退役 mechanism、B1 runtime 与 core 的四类旧聚合 owner，改为 `186 + 12 + 4` 个用途分片；当前全树 `626 files / 3721 effects / maximum 10 / >20=0 / exceptions=0`。后续 production 与 CK3 验收只允许使用拆分布局，详见
+[`phase2-effect-file-boundary-audit-2026-09-04.md`](phase2-effect-file-boundary-audit-2026-09-04.md)。
+
 测试与验收用例的统一执行索引见
 [`phase2-acceptance-case-index.md`](phase2-acceptance-case-index.md)；361 项批次权威定义仍以
 `mod_zhongguo_style/docs/361-phase2-full-implementation-program.md` 为准。

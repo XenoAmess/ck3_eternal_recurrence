@@ -22,6 +22,17 @@ def read(relative: str) -> str:
     return (MOD / relative).read_text(encoding="utf-8-sig")
 
 
+def read_b1_effects() -> str:
+    return "\n".join(
+        path.read_text(encoding="utf-8-sig")
+        for path in sorted(
+            (MOD / "common" / "scripted_effects").glob(
+                "zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt"
+            )
+        )
+    )
+
+
 def block(source: str, key: str) -> str:
     match = re.search(rf"\b{re.escape(key)}\s*=\s*\{{", source)
     if match is None:
@@ -45,7 +56,7 @@ class OwnerProjection:
 def opened_owner_projection() -> OwnerProjection:
     """Project only writes preceding the first authored classification call."""
     opened = block(
-        read("common/scripted_effects/zg361_b1_runtime_effects.txt"),
+        read_b1_effects(),
         "zg361_b1_open_cycle_effect",
     )
     prefix = opened.split("zg361_b1_classify_function_effect = yes", 1)[0]
@@ -167,7 +178,7 @@ class B1WitnessSourceTests(unittest.TestCase):
         self.assertFalse(shown(self.witness, OwnerProjection()))
         self.assertFalse(shown(self.witness, OwnerProjection(flags={"zg361_review_in_progress"})))
         subject_initializer = block(
-            read("common/scripted_effects/zg361_b1_runtime_effects.txt"),
+            read_b1_effects(),
             "zg361_b1_initialize_subject_case_effect",
         )
         for assignment in (
@@ -190,7 +201,7 @@ class B1WitnessSourceTests(unittest.TestCase):
             self.assertFalse(shown(self.witness, owner))
 
     def test_active_gate_matches_opener_and_both_action_paths_use_it(self) -> None:
-        opened = block(read("common/scripted_effects/zg361_b1_runtime_effects.txt"), "zg361_b1_open_cycle_effect")
+        opened = block(read_b1_effects(), "zg361_b1_open_cycle_effect")
         active_gate = "NOT = { has_character_flag = zg361_b1_cycle_active }"
         self.assertIn(active_gate, block(opened, "limit"))
         self.assertIn(active_gate, self.business)

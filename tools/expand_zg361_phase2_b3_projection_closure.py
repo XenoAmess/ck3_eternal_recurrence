@@ -421,13 +421,14 @@ def synchronize_scripted_widget_gui_files(
 def synchronize_current_core_effect_shards(
     candidate: Path, canonical: Path
 ) -> dict[str, object]:
-    """Replace the inherited B2 core shards with current canonical bodies.
+    """Replace inherited B2 core shards with current canonical bodies.
 
     The B3 candidate inherits four purpose shards from the B2 seed closure.
     Merely expanding missing providers cannot detect a changed body whose
     definition name already exists in one of those shards.  Regenerate the
-    same <=10-effect boundary from the canonical monolith before computing the
-    B3 fixed point, so new cross-boundary calls become visible to the closure.
+    same <=10-effect boundary from the canonical source before computing the B3
+    fixed point.  New repositories own these four purpose shards directly;
+    historical frozen trees may still provide the retired monolith.
     """
 
     present = [relative for relative in CURRENT_CORE_SHARDS if (candidate / relative).is_file()]
@@ -447,11 +448,64 @@ def synchronize_current_core_effect_shards(
             f"B3 current-core shard set is incomplete: missing={missing}"
         )
 
-    source = canonical / CURRENT_CORE_SOURCE
-    if not source.is_file() or source.is_symlink():
-        raise freeze.FreezeError(f"canonical current-core owner is missing: {source}")
     sys.path.insert(0, str(freeze.MOD_ROOT / "tools"))
     from zg361_effect_sharding import top_level_effect_entries
+
+    source = canonical / CURRENT_CORE_SOURCE
+    canonical_shard_paths = tuple(canonical / relative for relative in CURRENT_CORE_SHARDS)
+    if not source.is_file():
+        if not all(path.is_file() and not path.is_symlink() for path in canonical_shard_paths):
+            raise freeze.FreezeError(
+                "canonical current-core purpose shards are missing or incomplete"
+            )
+        canonical_entries_by_path = {
+            relative: top_level_effect_entries((canonical / relative).read_bytes())
+            for relative in CURRENT_CORE_SHARDS
+        }
+        canonical_names = [
+            entry.name
+            for relative in CURRENT_CORE_SHARDS
+            for entry in canonical_entries_by_path[relative]
+        ]
+        inherited_names = [
+            entry.name
+            for relative in CURRENT_CORE_SHARDS
+            for entry in top_level_effect_entries((candidate / relative).read_bytes())
+        ]
+        if len(canonical_names) != len(set(canonical_names)):
+            raise freeze.FreezeError("canonical current-core shards contain duplicates")
+        if set(inherited_names) != set(canonical_names):
+            raise freeze.FreezeError(
+                "B3 current-core shard union differs from canonical purpose shards"
+            )
+        updated = []
+        for relative in CURRENT_CORE_SHARDS:
+            entries = canonical_entries_by_path[relative]
+            if not 1 <= len(entries) <= 10:
+                raise freeze.FreezeError(
+                    f"canonical current-core shard violates 1..10: {relative}: {len(entries)}"
+                )
+            shutil.copy2(canonical / relative, candidate / relative)
+            updated.append(freeze.record(candidate / relative, relative_to=candidate))
+        return {
+            "green": True,
+            "applicable": True,
+            "source": {
+                "kind": "canonical-purpose-shards",
+                "files": [
+                    freeze.record(path, relative_to=canonical)
+                    for path in canonical_shard_paths
+                ],
+            },
+            "updated_files": updated,
+            "definition_count": len(canonical_names),
+            "max_effects_per_file": max(
+                len(entries) for entries in canonical_entries_by_path.values()
+            ),
+            "canonical_blocks_exact": True,
+        }
+    if source.is_symlink():
+        raise freeze.FreezeError(f"canonical current-core owner is a symlink: {source}")
 
     canonical_entries = top_level_effect_entries(source.read_bytes())
     canonical_by_name = {entry.name: entry for entry in canonical_entries}

@@ -1,0 +1,289 @@
+﻿# Canonical Phase-2 core scripted effects.
+# Purpose-grouped source; migrated from the production projection.
+# Purpose boundary: appeal_scoreboard_effects
+
+zg361_appeal_regrade_to_35_effect = {
+	if = {
+		limit = {
+			has_character_modifier = zg361_grade_325
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_result_case_state
+			var:zg361_result_case_state = 3
+			has_variable = zg361_result_appeal_open
+			var:zg361_result_appeal_open = 1
+			has_variable = zg361_result_settlement_posted_serial
+			var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+			var:zg361_result_refund_posted_serial = 0
+			has_variable = zg361_last_penalty_reviewer
+			var:zg361_last_penalty_reviewer = var:zg361_result_case_owner
+			has_variable = zg361_last_penalty_serial
+			var:zg361_last_penalty_serial = var:zg361_result_cycle_serial
+		}
+		zg361_apply_receipted_appeal_regrade_effect = yes
+	}
+	else = {
+		debug_log = "ZG361: duplicate or stale appeal regrade ignored"
+	}
+}
+
+zg361_apply_receipted_appeal_regrade_effect = {
+	save_temporary_scope_as = zg361_regraded_official
+	# 改判反冲已送达时记录的实扣 receipt，不重算应扣常量。
+	# 一年俸禄减成由移除 3.25 modifier 立即停止；此前已经结算的月份不伪造回溯金额。
+	if = {
+		limit = {
+			has_variable = zg361_result_treasury_paid
+			var:zg361_result_treasury_paid > 0
+		}
+		add_treasury = var:zg361_result_treasury_paid
+		set_variable = { name = zg361_result_treasury_refunded value = var:zg361_result_treasury_paid }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_result_gold_paid
+			var:zg361_result_gold_paid > 0
+		}
+		add_gold = var:zg361_result_gold_paid
+		set_variable = { name = zg361_result_gold_refunded value = var:zg361_result_gold_paid }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_result_merit_paid
+			var:zg361_result_merit_paid > 0
+		}
+		change_merit = { value = var:zg361_result_merit_paid }
+		set_variable = { name = zg361_result_merit_refunded value = var:zg361_result_merit_paid }
+	}
+	set_variable = { name = zg361_result_refund_posted_serial value = var:zg361_result_case_serial }
+	set_variable = { name = zg361_result_appeal_open value = 0 }
+	set_variable = { name = zg361_result_case_state value = 5 }
+	set_variable = { name = zg361_result_salary_cut_active value = 0 }
+	set_variable = { name = zg361_result_grade value = 2 }
+	set_variable = { name = zg361_result_appeal_outcome value = 1 }
+	remove_variable = zg361_last_treasury_penalty_paid
+	remove_variable = zg361_last_gold_penalty_paid
+	remove_variable = zg361_last_merit_penalty_paid
+	remove_variable = zg361_last_penalty_reviewer
+	remove_variable = zg361_last_penalty_serial
+
+	# 只在原 owner 仍保留同一轮 summary 时回冲本轮人数；后来的轮次不得被旧申诉改写。
+	var:zg361_result_case_owner = {
+		if = {
+			limit = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial = scope:zg361_regraded_official.var:zg361_result_cycle_serial
+			}
+			if = {
+				limit = {
+					scope:zg361_regraded_official.var:zg361_streak_bottom >= 2
+					has_variable = zg361_eliminate_n
+					var:zg361_eliminate_n >= 1
+				}
+				change_variable = { name = zg361_eliminate_n add = -1 }
+			}
+			if = {
+				limit = { has_variable = zg361_last_325_n var:zg361_last_325_n >= 1 }
+				change_variable = { name = zg361_last_325_n add = -1 }
+			}
+		}
+		if = {
+			limit = { is_alive = yes }
+			remove_opinion = {
+				target = scope:zg361_regraded_official
+				modifier = zg361_poor_review
+			}
+		}
+	}
+
+	remove_character_modifier = zg361_grade_325
+	remove_character_modifier = zg361_pip
+	set_variable = { name = zg361_streak_bottom value = 0 }
+	set_variable = { name = zg361_appeal_regrade_in_progress value = 1 }
+	zg361_grade_35_apply_effect = yes
+	remove_variable = zg361_appeal_regrade_in_progress
+
+	# 冻结 owner 上的榜单表头只在同一周期快照上修正。
+	var:zg361_result_case_owner = {
+		if = {
+			limit = {
+				has_variable = zg361_scoreboard_managed_cycle_serial
+				var:zg361_scoreboard_managed_cycle_serial = scope:zg361_regraded_official.var:zg361_result_cycle_serial
+				has_variable = zg361_scoreboard_managed_325_n
+				var:zg361_scoreboard_managed_325_n >= 1
+			}
+			change_variable = { name = zg361_scoreboard_managed_325_n add = -1 }
+			change_variable = { name = zg361_scoreboard_managed_35_n add = 1 }
+		}
+	}
+
+	# 玩家受评者读取自己的榜单镜像；调任后仍按冻结 owner/cycle 修正。
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_325_n
+			var:zg361_scoreboard_received_325_n >= 1
+		}
+		change_variable = { name = zg361_scoreboard_received_325_n add = -1 }
+		change_variable = { name = zg361_scoreboard_received_35_n add = 1 }
+	}
+	zg361_update_regraded_scoreboard_slots_effect = yes
+	zg361_b2_on_appeal_corrected_effect = yes
+	zg361_b1_on_appeal_corrected_effect = yes
+}
+
+zg361_publish_scoreboard_effect = {
+	# 清理上一次固定槽位；名单与所有数值都冻结在评定领主身上，不再从人物活变量读取。
+	zg361_clear_scoreboard_m_slots_effect = yes
+	set_variable = { name = zg361_scoreboard_managed_owner value = root }
+	set_variable = { name = zg361_scoreboard_managed_year value = current_year }
+	set_variable = { name = zg361_scoreboard_managed_cycle_serial value = var:zg361_review_serial }
+	set_variable = { name = zg361_scoreboard_managed_n value = var:zg361_cohort_n }
+	# 事件选项 tooltip 会预演 effect，却不会提交前一条 set_variable。把上限
+	# 直接折进同一次赋值，禁止在预演中读取“刚写入”的 shown_n。
+	set_variable = {
+		name = zg361_scoreboard_managed_shown_n
+		value = {
+			value = var:zg361_cohort_n
+			max = 80
+		}
+	}
+	set_variable = { name = zg361_scoreboard_managed_375_n value = var:zg361_last_375_n }
+	set_variable = { name = zg361_scoreboard_managed_35_n value = var:zg361_last_35_n }
+	set_variable = { name = zg361_scoreboard_managed_325_n value = var:zg361_last_325_n }
+	save_temporary_scope_as = zg361_scoreboard_source
+
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			has_variable_list = zg361_b1_subjects
+		}
+		every_in_list = {
+			variable = zg361_b1_subjects
+			limit = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_roster_included
+				var:zg361_b1_case_owner = root
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+				var:zg361_b1_roster_included = 1
+				has_variable = zg361_last_reviewer
+				var:zg361_last_reviewer = root
+				has_variable = zg361_last_review_serial
+				var:zg361_last_review_serial = root.var:zg361_review_serial
+				has_variable = zg361_last_grade
+			}
+			add_to_list = zg361_scoreboard_candidates
+		}
+	}
+	else = {
+		every_vassal = {
+			limit = {
+				has_variable = zg361_last_reviewer
+				var:zg361_last_reviewer = root
+				has_variable = zg361_last_review_serial
+				var:zg361_last_review_serial = root.var:zg361_review_serial
+				has_variable = zg361_last_grade
+			}
+			add_to_list = zg361_scoreboard_candidates
+		}
+	}
+	set_variable = { name = zg361_scoreboard_slot_cursor value = 0 }
+	ordered_in_list = {
+		list = zg361_scoreboard_candidates
+		order_by = var:zg361_kpi
+		# 固定槽只保存前 80 名；表头另存 shown/full，绝不把截断列表冒充全员。
+		# tooltip 预演不提交前面的 add_to_list；动态取 min(list_size, 80)，
+		# 避免空预演列表与正常少于 80 人队列触发 range-bounds error。
+		max = {
+			value = list_size:zg361_scoreboard_candidates
+			max = 80
+		}
+		root = { change_variable = { name = zg361_scoreboard_slot_cursor add = 1 } }
+		zg361_write_managed_scoreboard_slot_effect = yes
+	}
+	remove_variable = zg361_scoreboard_slot_cursor
+
+	# AI 领主的玩家受评者也应看见同一份冻结快照；B1 的离任玩家
+	# 仍属于旧周期 roster，不能因当前不再直属而失去本人镜像。
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			has_variable_list = zg361_b1_subjects
+		}
+		every_in_list = {
+			variable = zg361_b1_subjects
+			limit = {
+				is_ai = no
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_roster_included
+				var:zg361_b1_case_owner = root
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+				var:zg361_b1_roster_included = 1
+				has_variable = zg361_last_reviewer
+				var:zg361_last_reviewer = root
+				has_variable = zg361_last_review_serial
+				var:zg361_last_review_serial = root.var:zg361_review_serial
+			}
+			add_to_list = zg361_scoreboard_recipients
+		}
+	}
+	else = {
+		every_vassal = {
+			limit = {
+				is_ai = no
+				has_variable = zg361_last_reviewer
+				var:zg361_last_reviewer = root
+				has_variable = zg361_last_review_serial
+				var:zg361_last_review_serial = root.var:zg361_review_serial
+			}
+			add_to_list = zg361_scoreboard_recipients
+		}
+	}
+	every_in_list = {
+		list = zg361_scoreboard_recipients
+		set_variable = { name = zg361_scoreboard_received_owner value = root }
+		set_variable = { name = zg361_scoreboard_received_year value = root.var:zg361_scoreboard_managed_year }
+		set_variable = { name = zg361_scoreboard_received_cycle_serial value = root.var:zg361_scoreboard_managed_cycle_serial }
+		set_variable = { name = zg361_scoreboard_received_shown_n value = root.var:zg361_scoreboard_managed_shown_n }
+		set_variable = { name = zg361_scoreboard_received_375_n value = root.var:zg361_scoreboard_managed_375_n }
+		set_variable = { name = zg361_scoreboard_received_35_n value = root.var:zg361_scoreboard_managed_35_n }
+		set_variable = { name = zg361_scoreboard_received_325_n value = root.var:zg361_scoreboard_managed_325_n }
+		# GUI-only reads do not satisfy CK3's variable-use analyzer. Recompose the total in
+		# live script so every mirrored header field is both checked and displayed.
+		set_variable = {
+			name = zg361_scoreboard_received_n
+			value = {
+				value = var:zg361_scoreboard_received_375_n
+				add = var:zg361_scoreboard_received_35_n
+				add = var:zg361_scoreboard_received_325_n
+			}
+		}
+		if = {
+			limit = {
+				has_variable = zg361_scoreboard_received_shown_n
+				var:zg361_scoreboard_received_shown_n > var:zg361_scoreboard_received_n
+			}
+			set_variable = { name = zg361_scoreboard_received_shown_n value = var:zg361_scoreboard_received_n }
+		}
+		if = {
+			limit = { var:zg361_scoreboard_received_year > current_year }
+			set_variable = { name = zg361_scoreboard_received_year value = current_year }
+		}
+		if = {
+			limit = { var:zg361_scoreboard_received_n >= 1 }
+			debug_log = "ZG361: received scoreboard mirrored to player"
+		}
+		zg361_copy_received_scoreboard_slots_effect = yes
+	}
+	debug_log = "ZG361: scoreboard published"
+}

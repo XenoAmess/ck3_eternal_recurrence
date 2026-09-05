@@ -1,0 +1,555 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# Purpose shard: peer slot consumption.
+# Boundary contract: 1-10 top-level effects; this file has 3.
+
+
+
+
+zg361_b1_consume_peer_slot_1_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_case_active
+			var:zg361_b1_peer_slot_1_filled = 1
+			has_variable = zg361_b1_peer_slot_1_evaluator
+			has_variable = zg361_b1_peer_slot_1_subject
+			has_variable = zg361_b1_peer_slot_1_cycle
+			has_variable = zg361_b1_peer_slot_1_common_task_id
+			has_variable = zg361_b1_peer_slot_1_common_task_kind
+			has_variable = zg361_b1_peer_slot_1_common_task_owner
+			has_variable = zg361_b1_peer_slot_1_common_task_cycle
+			has_variable = zg361_b1_peer_slot_1_common_task_case
+			has_variable = zg361_b1_peer_slot_1_common_task_attacker
+			has_variable = zg361_b1_peer_slot_1_common_task_defender
+			var:zg361_b1_case_owner = root
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+			var:zg361_b1_case_state = 3
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_peer_slot_1_subject = this
+			var:zg361_b1_peer_slot_1_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_peer_slot_1_common_task_kind = 1
+			var:zg361_b1_peer_slot_1_common_task_owner = root
+			var:zg361_b1_peer_slot_1_common_task_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_peer_slot_1_common_task_case = var:zg361_b1_case_serial
+		}
+		save_scope_as = zg361_b1_peer_subject
+		set_variable = { name = zg361_b1_peer_slot_1_reciprocal value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_b1_peer_slot_1_evaluator
+				var:zg361_b1_peer_slot_1_raw > 0
+			}
+			if = {
+				limit = {
+					var:zg361_b1_peer_slot_1_evaluator = {
+						OR = {
+					AND = {
+						has_variable = zg361_b1_peer_slot_1_evaluator
+						has_variable = zg361_b1_peer_slot_1_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_1_evaluator
+								has_variable = zg361_b1_peer_slot_1_raw
+							}
+							var:zg361_b1_peer_slot_1_raw > 0
+							var:zg361_b1_peer_slot_1_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+					AND = {
+						has_variable = zg361_b1_peer_slot_2_evaluator
+						has_variable = zg361_b1_peer_slot_2_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_2_evaluator
+								has_variable = zg361_b1_peer_slot_2_raw
+							}
+							var:zg361_b1_peer_slot_2_raw > 0
+							var:zg361_b1_peer_slot_2_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+					AND = {
+						has_variable = zg361_b1_peer_slot_3_evaluator
+						has_variable = zg361_b1_peer_slot_3_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_3_evaluator
+								has_variable = zg361_b1_peer_slot_3_raw
+							}
+							var:zg361_b1_peer_slot_3_raw > 0
+							var:zg361_b1_peer_slot_3_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+						}
+					}
+				}
+				set_variable = { name = zg361_b1_peer_slot_1_reciprocal value = 1 }
+				set_variable = { name = zg361_b1_peer_reciprocity_risk value = 1 }
+				set_variable = {
+					name = zg361_b1_peer_slot_1_weight
+					value = { value = var:zg361_b1_peer_slot_1_weight multiply = 0.5 floor = yes min = 10 }
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_peer_slot_1_adjusted value = var:zg361_b1_peer_slot_1_raw }
+		var:zg361_b1_peer_slot_1_evaluator = {
+			if = {
+				limit = { NOT = { has_variable = zg361_b1_evaluator_profile_id } }
+				set_variable = { name = zg361_b1_evaluator_profile_id value = scope:zg361_b1_peer_subject.var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_evaluator_history_n value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_sum value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_sum_squares value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_mean value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_variance value = 0 }
+				set_variable = { name = zg361_b1_evaluator_overturn_n value = 0 }
+			}
+			change_variable = { name = zg361_b1_evaluator_history_n add = 1 }
+			change_variable = { name = zg361_b1_evaluator_history_sum add = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_1_raw }
+			set_variable = {
+				name = zg361_b1_evaluator_history_current_square
+				value = { value = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_1_raw multiply = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_1_raw }
+			}
+			change_variable = { name = zg361_b1_evaluator_history_sum_squares add = var:zg361_b1_evaluator_history_current_square }
+			set_variable = { name = zg361_b1_evaluator_history_mean value = { value = var:zg361_b1_evaluator_history_sum divide = var:zg361_b1_evaluator_history_n } }
+			set_variable = {
+				name = zg361_b1_evaluator_history_variance
+				value = {
+					value = var:zg361_b1_evaluator_history_sum_squares
+					divide = var:zg361_b1_evaluator_history_n
+					subtract = { value = var:zg361_b1_evaluator_history_mean multiply = var:zg361_b1_evaluator_history_mean }
+					min = 0
+				}
+			}
+			set_variable = { name = zg361_b1_evaluator_statistics_cycle value = scope:zg361_b1_peer_subject.var:zg361_b1_cycle_serial }
+			scope:zg361_b1_peer_subject = {
+				set_variable = {
+					name = zg361_b1_peer_slot_1_adjusted
+					value = { value = var:zg361_b1_peer_slot_1_raw subtract = { value = prev.var:zg361_b1_evaluator_history_mean multiply = 0.2 } max = 10 min = -15 }
+				}
+			}
+		}
+		change_variable = { name = zg361_b1_peer_n add = 1 }
+		change_variable = { name = zg361_b1_peer_raw_sum add = var:zg361_b1_peer_slot_1_raw }
+		change_variable = { name = zg361_b1_peer_adjusted_sum add = var:zg361_b1_peer_slot_1_adjusted }
+		change_variable = { name = zg361_b1_peer_credit_total add = var:zg361_b1_peer_slot_1_weight }
+		set_variable = {
+			name = zg361_b1_peer_slot_1_weighted
+			value = { value = var:zg361_b1_peer_slot_1_adjusted multiply = var:zg361_b1_peer_slot_1_weight }
+		}
+		change_variable = { name = zg361_b1_peer_weighted_sum add = var:zg361_b1_peer_slot_1_weighted }
+		set_variable = {
+			name = zg361_b1_peer_slot_1_square
+			value = { value = var:zg361_b1_peer_slot_1_raw multiply = var:zg361_b1_peer_slot_1_raw }
+		}
+		change_variable = { name = zg361_b1_peer_sum_squares add = var:zg361_b1_peer_slot_1_square }
+		set_variable = { name = zg361_b1_peer_slot_1_sealed_serial value = var:zg361_b1_case_serial }
+		var:zg361_b1_peer_slot_1_evaluator = {
+			if = {
+				limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+				set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+				set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+			}
+			change_variable = { name = zg361_b1_evaluator_sample_n add = 1 }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_slot_1_raw >= 0 }
+			if = {
+				limit = { var:zg361_b1_evidence_late >= 0 }
+				var:zg361_b1_peer_slot_1_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = 2 } }
+			}
+			else = { var:zg361_b1_peer_slot_1_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -5 } } }
+		}
+		else = {
+			if = {
+				limit = { var:zg361_b1_evidence_late < 0 }
+				var:zg361_b1_peer_slot_1_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = 2 } }
+			}
+			else = { var:zg361_b1_peer_slot_1_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -5 } } }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_slot_1_reciprocal = 1 }
+			var:zg361_b1_peer_slot_1_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -3 } }
+		}
+		var:zg361_b1_peer_slot_1_evaluator = {
+			set_variable = {
+				name = zg361_b1_evaluator_credit
+				value = { value = var:zg361_b1_evaluator_credit max = 125 min = 25 }
+			}
+		}
+	}
+}
+
+zg361_b1_consume_peer_slot_2_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_case_active
+			var:zg361_b1_peer_slot_2_filled = 1
+			has_variable = zg361_b1_peer_slot_2_evaluator
+			has_variable = zg361_b1_peer_slot_2_subject
+			has_variable = zg361_b1_peer_slot_2_cycle
+			has_variable = zg361_b1_peer_slot_2_common_task_id
+			has_variable = zg361_b1_peer_slot_2_common_task_kind
+			has_variable = zg361_b1_peer_slot_2_common_task_owner
+			has_variable = zg361_b1_peer_slot_2_common_task_cycle
+			has_variable = zg361_b1_peer_slot_2_common_task_case
+			has_variable = zg361_b1_peer_slot_2_common_task_attacker
+			has_variable = zg361_b1_peer_slot_2_common_task_defender
+			var:zg361_b1_case_owner = root
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+			var:zg361_b1_case_state = 3
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_peer_slot_2_subject = this
+			var:zg361_b1_peer_slot_2_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_peer_slot_2_common_task_kind = 1
+			var:zg361_b1_peer_slot_2_common_task_owner = root
+			var:zg361_b1_peer_slot_2_common_task_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_peer_slot_2_common_task_case = var:zg361_b1_case_serial
+		}
+		save_scope_as = zg361_b1_peer_subject
+		set_variable = { name = zg361_b1_peer_slot_2_reciprocal value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_b1_peer_slot_2_evaluator
+				var:zg361_b1_peer_slot_2_raw > 0
+			}
+			if = {
+				limit = {
+					var:zg361_b1_peer_slot_2_evaluator = {
+						OR = {
+					AND = {
+						has_variable = zg361_b1_peer_slot_1_evaluator
+						has_variable = zg361_b1_peer_slot_1_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_1_evaluator
+								has_variable = zg361_b1_peer_slot_1_raw
+							}
+							var:zg361_b1_peer_slot_1_raw > 0
+							var:zg361_b1_peer_slot_1_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+					AND = {
+						has_variable = zg361_b1_peer_slot_2_evaluator
+						has_variable = zg361_b1_peer_slot_2_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_2_evaluator
+								has_variable = zg361_b1_peer_slot_2_raw
+							}
+							var:zg361_b1_peer_slot_2_raw > 0
+							var:zg361_b1_peer_slot_2_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+					AND = {
+						has_variable = zg361_b1_peer_slot_3_evaluator
+						has_variable = zg361_b1_peer_slot_3_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_3_evaluator
+								has_variable = zg361_b1_peer_slot_3_raw
+							}
+							var:zg361_b1_peer_slot_3_raw > 0
+							var:zg361_b1_peer_slot_3_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+						}
+					}
+				}
+				set_variable = { name = zg361_b1_peer_slot_2_reciprocal value = 1 }
+				set_variable = { name = zg361_b1_peer_reciprocity_risk value = 1 }
+				set_variable = {
+					name = zg361_b1_peer_slot_2_weight
+					value = { value = var:zg361_b1_peer_slot_2_weight multiply = 0.5 floor = yes min = 10 }
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_peer_slot_2_adjusted value = var:zg361_b1_peer_slot_2_raw }
+		var:zg361_b1_peer_slot_2_evaluator = {
+			if = {
+				limit = { NOT = { has_variable = zg361_b1_evaluator_profile_id } }
+				set_variable = { name = zg361_b1_evaluator_profile_id value = scope:zg361_b1_peer_subject.var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_evaluator_history_n value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_sum value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_sum_squares value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_mean value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_variance value = 0 }
+				set_variable = { name = zg361_b1_evaluator_overturn_n value = 0 }
+			}
+			change_variable = { name = zg361_b1_evaluator_history_n add = 1 }
+			change_variable = { name = zg361_b1_evaluator_history_sum add = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_2_raw }
+			set_variable = {
+				name = zg361_b1_evaluator_history_current_square
+				value = { value = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_2_raw multiply = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_2_raw }
+			}
+			change_variable = { name = zg361_b1_evaluator_history_sum_squares add = var:zg361_b1_evaluator_history_current_square }
+			set_variable = { name = zg361_b1_evaluator_history_mean value = { value = var:zg361_b1_evaluator_history_sum divide = var:zg361_b1_evaluator_history_n } }
+			set_variable = {
+				name = zg361_b1_evaluator_history_variance
+				value = {
+					value = var:zg361_b1_evaluator_history_sum_squares
+					divide = var:zg361_b1_evaluator_history_n
+					subtract = { value = var:zg361_b1_evaluator_history_mean multiply = var:zg361_b1_evaluator_history_mean }
+					min = 0
+				}
+			}
+			set_variable = { name = zg361_b1_evaluator_statistics_cycle value = scope:zg361_b1_peer_subject.var:zg361_b1_cycle_serial }
+			scope:zg361_b1_peer_subject = {
+				set_variable = {
+					name = zg361_b1_peer_slot_2_adjusted
+					value = { value = var:zg361_b1_peer_slot_2_raw subtract = { value = prev.var:zg361_b1_evaluator_history_mean multiply = 0.2 } max = 10 min = -15 }
+				}
+			}
+		}
+		change_variable = { name = zg361_b1_peer_n add = 1 }
+		change_variable = { name = zg361_b1_peer_raw_sum add = var:zg361_b1_peer_slot_2_raw }
+		change_variable = { name = zg361_b1_peer_adjusted_sum add = var:zg361_b1_peer_slot_2_adjusted }
+		change_variable = { name = zg361_b1_peer_credit_total add = var:zg361_b1_peer_slot_2_weight }
+		set_variable = {
+			name = zg361_b1_peer_slot_2_weighted
+			value = { value = var:zg361_b1_peer_slot_2_adjusted multiply = var:zg361_b1_peer_slot_2_weight }
+		}
+		change_variable = { name = zg361_b1_peer_weighted_sum add = var:zg361_b1_peer_slot_2_weighted }
+		set_variable = {
+			name = zg361_b1_peer_slot_2_square
+			value = { value = var:zg361_b1_peer_slot_2_raw multiply = var:zg361_b1_peer_slot_2_raw }
+		}
+		change_variable = { name = zg361_b1_peer_sum_squares add = var:zg361_b1_peer_slot_2_square }
+		set_variable = { name = zg361_b1_peer_slot_2_sealed_serial value = var:zg361_b1_case_serial }
+		var:zg361_b1_peer_slot_2_evaluator = {
+			if = {
+				limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+				set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+				set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+			}
+			change_variable = { name = zg361_b1_evaluator_sample_n add = 1 }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_slot_2_raw >= 0 }
+			if = {
+				limit = { var:zg361_b1_evidence_late >= 0 }
+				var:zg361_b1_peer_slot_2_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = 2 } }
+			}
+			else = { var:zg361_b1_peer_slot_2_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -5 } } }
+		}
+		else = {
+			if = {
+				limit = { var:zg361_b1_evidence_late < 0 }
+				var:zg361_b1_peer_slot_2_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = 2 } }
+			}
+			else = { var:zg361_b1_peer_slot_2_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -5 } } }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_slot_2_reciprocal = 1 }
+			var:zg361_b1_peer_slot_2_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -3 } }
+		}
+		var:zg361_b1_peer_slot_2_evaluator = {
+			set_variable = {
+				name = zg361_b1_evaluator_credit
+				value = { value = var:zg361_b1_evaluator_credit max = 125 min = 25 }
+			}
+		}
+	}
+}
+
+zg361_b1_consume_peer_slot_3_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_case_active
+			var:zg361_b1_peer_slot_3_filled = 1
+			has_variable = zg361_b1_peer_slot_3_evaluator
+			has_variable = zg361_b1_peer_slot_3_subject
+			has_variable = zg361_b1_peer_slot_3_cycle
+			has_variable = zg361_b1_peer_slot_3_common_task_id
+			has_variable = zg361_b1_peer_slot_3_common_task_kind
+			has_variable = zg361_b1_peer_slot_3_common_task_owner
+			has_variable = zg361_b1_peer_slot_3_common_task_cycle
+			has_variable = zg361_b1_peer_slot_3_common_task_case
+			has_variable = zg361_b1_peer_slot_3_common_task_attacker
+			has_variable = zg361_b1_peer_slot_3_common_task_defender
+			var:zg361_b1_case_owner = root
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+			var:zg361_b1_case_state = 3
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+			var:zg361_b1_peer_slot_3_subject = this
+			var:zg361_b1_peer_slot_3_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_peer_slot_3_common_task_kind = 1
+			var:zg361_b1_peer_slot_3_common_task_owner = root
+			var:zg361_b1_peer_slot_3_common_task_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_peer_slot_3_common_task_case = var:zg361_b1_case_serial
+		}
+		save_scope_as = zg361_b1_peer_subject
+		set_variable = { name = zg361_b1_peer_slot_3_reciprocal value = 0 }
+		if = {
+			limit = {
+				has_variable = zg361_b1_peer_slot_3_evaluator
+				var:zg361_b1_peer_slot_3_raw > 0
+			}
+			if = {
+				limit = {
+					var:zg361_b1_peer_slot_3_evaluator = {
+						OR = {
+					AND = {
+						has_variable = zg361_b1_peer_slot_1_evaluator
+						has_variable = zg361_b1_peer_slot_1_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_1_evaluator
+								has_variable = zg361_b1_peer_slot_1_raw
+							}
+							var:zg361_b1_peer_slot_1_raw > 0
+							var:zg361_b1_peer_slot_1_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+					AND = {
+						has_variable = zg361_b1_peer_slot_2_evaluator
+						has_variable = zg361_b1_peer_slot_2_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_2_evaluator
+								has_variable = zg361_b1_peer_slot_2_raw
+							}
+							var:zg361_b1_peer_slot_2_raw > 0
+							var:zg361_b1_peer_slot_2_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+					AND = {
+						has_variable = zg361_b1_peer_slot_3_evaluator
+						has_variable = zg361_b1_peer_slot_3_raw
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_peer_slot_3_evaluator
+								has_variable = zg361_b1_peer_slot_3_raw
+							}
+							var:zg361_b1_peer_slot_3_raw > 0
+							var:zg361_b1_peer_slot_3_evaluator = scope:zg361_b1_peer_subject
+						}
+						trigger_else = { always = no }
+					}
+						}
+					}
+				}
+				set_variable = { name = zg361_b1_peer_slot_3_reciprocal value = 1 }
+				set_variable = { name = zg361_b1_peer_reciprocity_risk value = 1 }
+				set_variable = {
+					name = zg361_b1_peer_slot_3_weight
+					value = { value = var:zg361_b1_peer_slot_3_weight multiply = 0.5 floor = yes min = 10 }
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_peer_slot_3_adjusted value = var:zg361_b1_peer_slot_3_raw }
+		var:zg361_b1_peer_slot_3_evaluator = {
+			if = {
+				limit = { NOT = { has_variable = zg361_b1_evaluator_profile_id } }
+				set_variable = { name = zg361_b1_evaluator_profile_id value = scope:zg361_b1_peer_subject.var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_evaluator_history_n value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_sum value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_sum_squares value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_mean value = 0 }
+				set_variable = { name = zg361_b1_evaluator_history_variance value = 0 }
+				set_variable = { name = zg361_b1_evaluator_overturn_n value = 0 }
+			}
+			change_variable = { name = zg361_b1_evaluator_history_n add = 1 }
+			change_variable = { name = zg361_b1_evaluator_history_sum add = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_3_raw }
+			set_variable = {
+				name = zg361_b1_evaluator_history_current_square
+				value = { value = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_3_raw multiply = scope:zg361_b1_peer_subject.var:zg361_b1_peer_slot_3_raw }
+			}
+			change_variable = { name = zg361_b1_evaluator_history_sum_squares add = var:zg361_b1_evaluator_history_current_square }
+			set_variable = { name = zg361_b1_evaluator_history_mean value = { value = var:zg361_b1_evaluator_history_sum divide = var:zg361_b1_evaluator_history_n } }
+			set_variable = {
+				name = zg361_b1_evaluator_history_variance
+				value = {
+					value = var:zg361_b1_evaluator_history_sum_squares
+					divide = var:zg361_b1_evaluator_history_n
+					subtract = { value = var:zg361_b1_evaluator_history_mean multiply = var:zg361_b1_evaluator_history_mean }
+					min = 0
+				}
+			}
+			set_variable = { name = zg361_b1_evaluator_statistics_cycle value = scope:zg361_b1_peer_subject.var:zg361_b1_cycle_serial }
+			scope:zg361_b1_peer_subject = {
+				set_variable = {
+					name = zg361_b1_peer_slot_3_adjusted
+					value = { value = var:zg361_b1_peer_slot_3_raw subtract = { value = prev.var:zg361_b1_evaluator_history_mean multiply = 0.2 } max = 10 min = -15 }
+				}
+			}
+		}
+		change_variable = { name = zg361_b1_peer_n add = 1 }
+		change_variable = { name = zg361_b1_peer_raw_sum add = var:zg361_b1_peer_slot_3_raw }
+		change_variable = { name = zg361_b1_peer_adjusted_sum add = var:zg361_b1_peer_slot_3_adjusted }
+		change_variable = { name = zg361_b1_peer_credit_total add = var:zg361_b1_peer_slot_3_weight }
+		set_variable = {
+			name = zg361_b1_peer_slot_3_weighted
+			value = { value = var:zg361_b1_peer_slot_3_adjusted multiply = var:zg361_b1_peer_slot_3_weight }
+		}
+		change_variable = { name = zg361_b1_peer_weighted_sum add = var:zg361_b1_peer_slot_3_weighted }
+		set_variable = {
+			name = zg361_b1_peer_slot_3_square
+			value = { value = var:zg361_b1_peer_slot_3_raw multiply = var:zg361_b1_peer_slot_3_raw }
+		}
+		change_variable = { name = zg361_b1_peer_sum_squares add = var:zg361_b1_peer_slot_3_square }
+		set_variable = { name = zg361_b1_peer_slot_3_sealed_serial value = var:zg361_b1_case_serial }
+		var:zg361_b1_peer_slot_3_evaluator = {
+			if = {
+				limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+				set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+				set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+			}
+			change_variable = { name = zg361_b1_evaluator_sample_n add = 1 }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_slot_3_raw >= 0 }
+			if = {
+				limit = { var:zg361_b1_evidence_late >= 0 }
+				var:zg361_b1_peer_slot_3_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = 2 } }
+			}
+			else = { var:zg361_b1_peer_slot_3_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -5 } } }
+		}
+		else = {
+			if = {
+				limit = { var:zg361_b1_evidence_late < 0 }
+				var:zg361_b1_peer_slot_3_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = 2 } }
+			}
+			else = { var:zg361_b1_peer_slot_3_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -5 } } }
+		}
+		if = {
+			limit = { var:zg361_b1_peer_slot_3_reciprocal = 1 }
+			var:zg361_b1_peer_slot_3_evaluator = { change_variable = { name = zg361_b1_evaluator_credit add = -3 } }
+		}
+		var:zg361_b1_peer_slot_3_evaluator = {
+			set_variable = {
+				name = zg361_b1_evaluator_credit
+				value = { value = var:zg361_b1_evaluator_credit max = 125 min = 25 }
+			}
+		}
+	}
+}

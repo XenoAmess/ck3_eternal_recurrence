@@ -90,7 +90,14 @@ class B2CK3RuntimeTests(unittest.TestCase):
             read(f"common/scripted_effects/{group.filename}")
             for group in probation_generator.EFFECT_GROUPS
         )
-        cls.core = read("common/scripted_effects/zg361_effects.txt")
+        cls.core = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_core_*_effects.txt"
+                )
+            )
+        )
         cls.core_events = read("events/zg361_events.txt")
         cls.interactions = read(
             "common/character_interactions/zg361_interactions.txt"

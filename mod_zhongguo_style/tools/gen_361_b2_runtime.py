@@ -753,8 +753,8 @@ def render_effect_source() -> str:
 # ZhongGuo 361 B2 — delivery, appeal justice and first PIP product runtime.
 #
 # State is stored on the assessed official.  Every timed event freezes owner,
-# subject, cycle, case and expected state.  Existing zg361_effects.txt remains
-# the only implementation of 3.25 settlement and receipt-bounded refund.
+# subject, cycle, case and expected state.  The purpose-grouped zg361_core_*
+# effect owners remain the implementation of 3.25 settlement and receipt-bounded refund.
 
 # ---------------------------------------------------------------------------
 # Result freeze and delivery adapters: #069, #072, #081.

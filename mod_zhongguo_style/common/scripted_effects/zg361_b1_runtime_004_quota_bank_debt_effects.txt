@@ -1,0 +1,1136 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+# Purpose shard: quota bank debt.
+# Boundary contract: 1-10 top-level effects; this file has 8.
+
+
+
+zg361_b1_register_common_superior_bank_effect = {
+	if = {
+		limit = { exists = liege }
+		save_temporary_scope_as = zg361_b1_registering_manager
+		liege = {
+			if = {
+				limit = { zg361_is_celestial_liege_trigger = yes }
+				save_temporary_scope_as = zg361_b1_bank_owner
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_b1_bank_season }
+							NOT = { var:zg361_b1_bank_season = current_year }
+						}
+						trigger_else = { always = yes }
+					}
+					if = {
+						limit = { has_variable_list = zg361_b1_expected_managers }
+						clear_variable_list = zg361_b1_expected_managers
+					}
+					if = {
+						limit = { has_variable_list = zg361_b1_ready_managers }
+						clear_variable_list = zg361_b1_ready_managers
+					}
+					set_variable = { name = zg361_b1_bank_season value = current_year }
+					if = {
+						limit = { NOT = { has_variable = zg361_b1_bank_case_serial } }
+						set_variable = { name = zg361_b1_bank_case_serial value = 0 }
+					}
+					change_variable = { name = zg361_b1_bank_case_serial add = 1 }
+					set_variable = { name = zg361_b1_bank_state value = 1 }
+					set_variable = { name = zg361_b1_bank_m136_mode value = 1 }
+					set_variable = { name = zg361_b1_bank_m138_mode value = 1 }
+					set_variable = { name = zg361_b1_bank_m141_mode value = 1 }
+					if = { limit = { has_variable = zg361_mechanism_136_choice } set_variable = { name = zg361_b1_bank_m136_mode value = var:zg361_mechanism_136_choice } }
+					if = { limit = { has_variable = zg361_mechanism_138_choice } set_variable = { name = zg361_b1_bank_m138_mode value = var:zg361_mechanism_138_choice } }
+					if = { limit = { has_variable = zg361_mechanism_141_choice } set_variable = { name = zg361_b1_bank_m141_mode value = var:zg361_mechanism_141_choice } }
+					set_variable = { name = zg361_b1_huddle_host_object_available value = 0 }
+					set_variable = { name = zg361_b1_huddle_host_attendee_n value = 0 }
+					set_variable = { name = zg361_b1_must_review_host_object_available value = 0 }
+					set_variable = { name = zg361_b1_must_review_count value = 0 }
+					set_variable = { name = zg361_b1_expected_manager_n value = 0 }
+					set_variable = { name = zg361_b1_ready_manager_n value = 0 }
+					set_variable = { name = zg361_b1_pool_n value = 0 }
+					every_vassal = {
+						limit = {
+							zg361_is_celestial_liege_trigger = yes
+							any_vassal = {
+								count >= 1
+								zg361_is_reviewable_vassal_trigger = yes
+							}
+						}
+						save_temporary_scope_as = zg361_b1_expected_manager
+						scope:zg361_b1_bank_owner = {
+							add_to_variable_list = {
+								name = zg361_b1_expected_managers
+								target = scope:zg361_b1_expected_manager
+							}
+							change_variable = { name = zg361_b1_expected_manager_n add = 1 }
+						}
+						# Reset ROOT through a one-day character event before calling
+						# the manager-owned cycle effect. Direct nested calls would retain
+						# the first manager as ROOT and corrupt sibling case ownership.
+						trigger_event = { id = zg361b1.90 days = 1 }
+					}
+					save_scope_as = zg361_b1_bank_ticket_owner
+					save_scope_value_as = { name = zg361_b1_bank_ticket_season value = var:zg361_b1_bank_season }
+					save_scope_value_as = { name = zg361_b1_bank_ticket_case value = var:zg361_b1_bank_case_serial }
+					save_scope_value_as = { name = zg361_b1_bank_ticket_state value = var:zg361_b1_bank_state }
+					trigger_event = { id = zg361b1.110 days = 335 }
+				}
+				scope:zg361_b1_registering_manager = {
+					set_variable = { name = zg361_b1_bank_superior value = scope:zg361_b1_bank_owner }
+					set_variable = { name = zg361_b1_bank_season value = scope:zg361_b1_bank_owner.var:zg361_b1_bank_season }
+				}
+			}
+		}
+	}
+}
+
+# Exact 30/60/10 largest-remainder allocator. Raw values are stored as integer
+# numerators over the frozen denominator 10, so CK3 never depends on binary
+# floating-point ties. Stable tie priority is TOP, MIDDLE, BOTTOM.
+zg361_b1_compute_exact_quota_effect = {
+	# ROUNDING_SCOPE is mandatory: 1 = this manager's local book, 2 = the
+	# common-superior pooled book.  A ruler can own both roles, so their durable
+	# five-tuples and rotation cursors must never share singleton storage.
+	remove_variable = zg361_b1_m138_receipt_serial
+	set_variable = { name = zg361_b1_quota_rounding_work_scope value = $ROUNDING_SCOPE$ }
+	set_variable = { name = zg361_b1_quota_rounding_work_route value = 3 }
+	if = {
+		limit = { var:zg361_b1_quota_rounding_work_scope = 1 has_variable = zg361_b1_m138_mode }
+		set_variable = { name = zg361_b1_quota_rounding_work_route value = var:zg361_b1_m138_mode }
+		set_variable = { name = zg361_b1_quota_rounding_local_object_available value = 0 }
+		set_variable = { name = zg361_b1_quota_rounding_local_state value = 0 }
+		remove_variable = zg361_b1_quota_rounding_local_owner
+		remove_variable = zg361_b1_quota_rounding_local_subject
+		set_variable = { name = zg361_b1_quota_rounding_local_cycle value = 0 }
+		set_variable = { name = zg361_b1_quota_rounding_local_case value = 0 }
+		set_variable = { name = zg361_b1_quota_rounding_local_blackbox_risk value = 0 }
+		if = {
+			limit = { var:zg361_b1_quota_rounding_work_route != 3 }
+			set_variable = { name = zg361_b1_quota_rounding_local_object_available value = 1 }
+			set_variable = { name = zg361_b1_quota_rounding_local_object_id value = { value = var:zg361_b1_manager_case_serial multiply = 100 add = 38 } }
+			set_variable = { name = zg361_b1_quota_rounding_local_owner value = this }
+			set_variable = { name = zg361_b1_quota_rounding_local_subject value = this }
+			set_variable = { name = zg361_b1_quota_rounding_local_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_quota_rounding_local_case value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_quota_rounding_local_state value = 1 }
+			set_variable = { name = zg361_b1_quota_rounding_local_route value = var:zg361_b1_quota_rounding_work_route }
+			set_variable = { name = zg361_b1_quota_rounding_local_team_n value = 1 }
+			set_variable = { name = zg361_b1_quota_rounding_local_team_1 value = this }
+			set_variable = { name = zg361_b1_quota_rounding_local_remainder_team value = this }
+			set_variable = { name = zg361_b1_quota_rounding_local_rotation_advance value = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_b1_quota_rounding_local_rotation_cycle
+					var:zg361_b1_quota_rounding_local_rotation_cycle = var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_quota_rounding_local_rotation_case = var:zg361_b1_manager_case_serial
+				}
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_advance value = 0 }
+			}
+			if = {
+				limit = { var:zg361_b1_quota_rounding_local_rotation_advance = 1 }
+				if = { limit = { NOT = { has_variable = zg361_b1_quota_rounding_local_rotation_cursor } } set_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor value = 1 } }
+				else = { change_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor add = 1 } }
+				if = { limit = { var:zg361_b1_quota_rounding_local_rotation_cursor > 2 } set_variable = { name = zg361_b1_quota_rounding_local_rotation_cursor value = 1 } }
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_quota_rounding_local_rotation_case value = var:zg361_b1_manager_case_serial }
+			}
+			if = { limit = { var:zg361_b1_quota_rounding_work_route = 2 } set_variable = { name = zg361_b1_quota_rounding_local_chair value = this } set_variable = { name = zg361_b1_quota_rounding_local_blackbox_risk value = 1 } }
+		}
+	}
+	else_if = {
+		limit = { var:zg361_b1_quota_rounding_work_scope = 2 has_variable = zg361_b1_bank_m138_mode }
+		set_variable = { name = zg361_b1_quota_rounding_work_route value = var:zg361_b1_bank_m138_mode }
+		set_variable = { name = zg361_b1_quota_rounding_bank_object_available value = 0 }
+		set_variable = { name = zg361_b1_quota_rounding_bank_state value = 0 }
+		remove_variable = zg361_b1_quota_rounding_bank_owner
+		remove_variable = zg361_b1_quota_rounding_bank_subject
+		set_variable = { name = zg361_b1_quota_rounding_bank_cycle value = 0 }
+		set_variable = { name = zg361_b1_quota_rounding_bank_case value = 0 }
+		set_variable = { name = zg361_b1_quota_rounding_bank_blackbox_risk value = 0 }
+		if = {
+			limit = { var:zg361_b1_quota_rounding_work_route != 3 }
+			set_variable = { name = zg361_b1_quota_rounding_bank_object_available value = 1 }
+			set_variable = { name = zg361_b1_quota_rounding_bank_object_id value = { value = var:zg361_b1_bank_case_serial multiply = 100 add = 38 } }
+			set_variable = { name = zg361_b1_quota_rounding_bank_owner value = this }
+			set_variable = { name = zg361_b1_quota_rounding_bank_subject value = this }
+			set_variable = { name = zg361_b1_quota_rounding_bank_cycle value = var:zg361_b1_bank_season }
+			set_variable = { name = zg361_b1_quota_rounding_bank_case value = var:zg361_b1_bank_case_serial }
+			set_variable = { name = zg361_b1_quota_rounding_bank_state value = 1 }
+			set_variable = { name = zg361_b1_quota_rounding_bank_route value = var:zg361_b1_quota_rounding_work_route }
+			set_variable = { name = zg361_b1_quota_rounding_bank_team_n value = 1 }
+			set_variable = { name = zg361_b1_quota_rounding_bank_team_1 value = this }
+			set_variable = { name = zg361_b1_quota_rounding_bank_remainder_team value = this }
+			set_variable = { name = zg361_b1_quota_rounding_bank_rotation_advance value = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_b1_quota_rounding_bank_rotation_cycle
+					var:zg361_b1_quota_rounding_bank_rotation_cycle = var:zg361_b1_bank_season
+					var:zg361_b1_quota_rounding_bank_rotation_case = var:zg361_b1_bank_case_serial
+				}
+				set_variable = { name = zg361_b1_quota_rounding_bank_rotation_advance value = 0 }
+			}
+			if = {
+				limit = { var:zg361_b1_quota_rounding_bank_rotation_advance = 1 }
+				if = { limit = { NOT = { has_variable = zg361_b1_quota_rounding_bank_rotation_cursor } } set_variable = { name = zg361_b1_quota_rounding_bank_rotation_cursor value = 1 } }
+				else = { change_variable = { name = zg361_b1_quota_rounding_bank_rotation_cursor add = 1 } }
+				if = { limit = { var:zg361_b1_quota_rounding_bank_rotation_cursor > 2 } set_variable = { name = zg361_b1_quota_rounding_bank_rotation_cursor value = 1 } }
+				set_variable = { name = zg361_b1_quota_rounding_bank_rotation_cycle value = var:zg361_b1_bank_season }
+				set_variable = { name = zg361_b1_quota_rounding_bank_rotation_case value = var:zg361_b1_bank_case_serial }
+			}
+			if = { limit = { var:zg361_b1_quota_rounding_work_route = 2 } set_variable = { name = zg361_b1_quota_rounding_bank_chair value = this } set_variable = { name = zg361_b1_quota_rounding_bank_blackbox_risk value = 1 } }
+		}
+	}
+	set_variable = { name = zg361_b1_quota_cohort_size value = $COHORT_SIZE$ }
+	set_variable = { name = zg361_b1_quota_denominator value = 10 }
+	set_variable = { name = zg361_b1_quota_top_raw_numerator value = { value = var:zg361_b1_quota_cohort_size multiply = 3 } }
+	set_variable = { name = zg361_b1_quota_middle_raw_numerator value = { value = var:zg361_b1_quota_cohort_size multiply = 6 } }
+	set_variable = { name = zg361_b1_quota_bottom_raw_numerator value = var:zg361_b1_quota_cohort_size }
+	set_variable = { name = zg361_b1_quota_top_floor value = { value = var:zg361_b1_quota_top_raw_numerator divide = 10 floor = yes } }
+	set_variable = { name = zg361_b1_quota_middle_floor value = { value = var:zg361_b1_quota_middle_raw_numerator divide = 10 floor = yes } }
+	set_variable = { name = zg361_b1_quota_bottom_floor value = { value = var:zg361_b1_quota_bottom_raw_numerator divide = 10 floor = yes } }
+	set_variable = {
+		name = zg361_b1_quota_top_remainder
+		value = { value = var:zg361_b1_quota_top_raw_numerator subtract = { value = var:zg361_b1_quota_top_floor multiply = 10 } }
+	}
+	set_variable = {
+		name = zg361_b1_quota_middle_remainder
+		value = { value = var:zg361_b1_quota_middle_raw_numerator subtract = { value = var:zg361_b1_quota_middle_floor multiply = 10 } }
+	}
+	set_variable = {
+		name = zg361_b1_quota_bottom_remainder
+		value = { value = var:zg361_b1_quota_bottom_raw_numerator subtract = { value = var:zg361_b1_quota_bottom_floor multiply = 10 } }
+	}
+	set_variable = {
+		name = zg361_b1_quota_remainder_slots
+		value = {
+			value = var:zg361_b1_quota_cohort_size
+			subtract = var:zg361_b1_quota_top_floor
+			subtract = var:zg361_b1_quota_middle_floor
+			subtract = var:zg361_b1_quota_bottom_floor
+		}
+	}
+	set_variable = { name = zg361_b1_quota_top_award value = 0 }
+	set_variable = { name = zg361_b1_quota_middle_award value = 0 }
+	set_variable = { name = zg361_b1_quota_bottom_award value = 0 }
+	# First remainder slot: >= implements the frozen TOP-first tie break.
+	if = {
+		limit = { var:zg361_b1_quota_remainder_slots >= 1 }
+		if = {
+			limit = {
+				var:zg361_b1_quota_top_remainder >= var:zg361_b1_quota_middle_remainder
+				var:zg361_b1_quota_top_remainder >= var:zg361_b1_quota_bottom_remainder
+			}
+			set_variable = { name = zg361_b1_quota_top_award value = 1 }
+			set_variable = { name = zg361_b1_quota_top_remainder_cursor value = -1 }
+			set_variable = { name = zg361_b1_quota_middle_remainder_cursor value = var:zg361_b1_quota_middle_remainder }
+			set_variable = { name = zg361_b1_quota_bottom_remainder_cursor value = var:zg361_b1_quota_bottom_remainder }
+		}
+		else_if = {
+			limit = { var:zg361_b1_quota_middle_remainder >= var:zg361_b1_quota_bottom_remainder }
+			set_variable = { name = zg361_b1_quota_middle_award value = 1 }
+			set_variable = { name = zg361_b1_quota_top_remainder_cursor value = var:zg361_b1_quota_top_remainder }
+			set_variable = { name = zg361_b1_quota_middle_remainder_cursor value = -1 }
+			set_variable = { name = zg361_b1_quota_bottom_remainder_cursor value = var:zg361_b1_quota_bottom_remainder }
+		}
+		else = {
+			set_variable = { name = zg361_b1_quota_bottom_award value = 1 }
+			set_variable = { name = zg361_b1_quota_top_remainder_cursor value = var:zg361_b1_quota_top_remainder }
+			set_variable = { name = zg361_b1_quota_middle_remainder_cursor value = var:zg361_b1_quota_middle_remainder }
+			set_variable = { name = zg361_b1_quota_bottom_remainder_cursor value = -1 }
+		}
+	}
+	# Second slot repeats the same stable ordering after masking the winner.
+	if = {
+		limit = { var:zg361_b1_quota_remainder_slots >= 2 }
+		if = {
+			limit = {
+				var:zg361_b1_quota_top_remainder_cursor >= var:zg361_b1_quota_middle_remainder_cursor
+				var:zg361_b1_quota_top_remainder_cursor >= var:zg361_b1_quota_bottom_remainder_cursor
+			}
+			set_variable = { name = zg361_b1_quota_top_award value = 1 }
+		}
+		else_if = {
+			limit = { var:zg361_b1_quota_middle_remainder_cursor >= var:zg361_b1_quota_bottom_remainder_cursor }
+			set_variable = { name = zg361_b1_quota_middle_award value = 1 }
+		}
+		else = { set_variable = { name = zg361_b1_quota_bottom_award value = 1 } }
+	}
+	# A/B may decide which real team owns the indivisible remainder receipt, but
+	# neither route is allowed to rewrite the exact 3/6/1 band counts.  Team
+	# identity is attached by the local/common-superior caller below.
+	set_variable = { name = zg361_b1_quota_top_rounded value = { value = var:zg361_b1_quota_top_floor add = var:zg361_b1_quota_top_award } }
+	set_variable = { name = zg361_b1_quota_middle_rounded value = { value = var:zg361_b1_quota_middle_floor add = var:zg361_b1_quota_middle_award } }
+	set_variable = { name = zg361_b1_quota_bottom_rounded value = { value = var:zg361_b1_quota_bottom_floor add = var:zg361_b1_quota_bottom_award } }
+	set_variable = { name = zg361_b1_quota_top_slots value = var:zg361_b1_quota_top_rounded }
+	set_variable = { name = zg361_b1_quota_middle_slots value = var:zg361_b1_quota_middle_rounded }
+	set_variable = { name = zg361_b1_quota_bottom_slots value = var:zg361_b1_quota_bottom_rounded }
+	set_variable = { name = zg361_b1_quota_forced_distribution value = 1 }
+	if = {
+		limit = { var:zg361_b1_quota_cohort_size < 3 }
+		set_variable = { name = zg361_b1_quota_top_slots value = 0 }
+		set_variable = { name = zg361_b1_quota_middle_slots value = var:zg361_b1_quota_cohort_size }
+		set_variable = { name = zg361_b1_quota_bottom_slots value = 0 }
+		set_variable = { name = zg361_b1_quota_forced_distribution value = 0 }
+	}
+	set_variable = {
+		name = zg361_b1_quota_conservation_check
+		value = { value = var:zg361_b1_quota_top_slots add = var:zg361_b1_quota_middle_slots add = var:zg361_b1_quota_bottom_slots }
+	}
+	if = {
+		limit = { var:zg361_b1_quota_rounding_work_scope = 1 }
+		set_variable = { name = zg361_b1_quota_rounding_local_method value = var:zg361_b1_quota_rounding_work_route }
+	}
+	else_if = {
+		limit = { var:zg361_b1_quota_rounding_work_scope = 2 }
+		set_variable = { name = zg361_b1_quota_rounding_bank_method value = var:zg361_b1_quota_rounding_work_route }
+	}
+	# Reference vectors: 0=0/0/0, 1=0/1/0, 2=0/2/0, 3=1/2/0,
+	# 4=1/3/0, 7=2/4/1, 14=4/9/1, 23=7/14/2.
+}
+
+# Compare the frozen variable list with current ownership immediately before
+# quota calculation.  Employment state and review membership are deliberately
+# separate: alive A/B leavers keep their D+0 denominator slot, while death/C
+# creates a review vacancy.  The one-time receipt survives save/load because a
+# processed row leaves employment_state=1 permanently.
+zg361_b1_audit_frozen_roster_effect = {
+	if = {
+		limit = {
+			zg361_is_celestial_liege_trigger = yes
+			OR = { var:zg361_b1_cycle_state = 3 var:zg361_b1_cycle_state = 5 var:zg361_b1_cycle_state = 6 }
+		}
+		save_temporary_scope_as = zg361_b1_roster_manager
+		every_in_list = {
+			variable = zg361_b1_subjects
+			if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					has_variable = zg361_b1_roster_included
+					has_variable = zg361_b1_roster_employment_state
+					var:zg361_b1_case_owner = scope:zg361_b1_roster_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_roster_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_roster_manager.var:zg361_b1_manager_case_serial
+					OR = { var:zg361_b1_case_state = 3 var:zg361_b1_case_state = 5 }
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_b1_roster_employment_state = 1
+					OR = {
+						is_alive = no
+						is_landed = no
+						NOT = { liege = scope:zg361_b1_roster_manager }
+					}
+				}
+				set_variable = { name = zg361_b1_roster_change_before value = 1 }
+				set_variable = { name = zg361_b1_roster_change_after value = 1 }
+				set_variable = { name = zg361_b1_roster_change_reason value = 1 }
+				if = {
+					limit = { is_alive = no }
+					set_variable = { name = zg361_b1_roster_change_reason value = 1 }
+				}
+				else_if = {
+					limit = { is_landed = no }
+					set_variable = { name = zg361_b1_roster_change_reason value = 2 }
+				}
+				else = { set_variable = { name = zg361_b1_roster_change_reason value = 3 } }
+				set_variable = { name = zg361_b1_roster_change_actor value = scope:zg361_b1_roster_manager }
+				set_variable = { name = zg361_b1_roster_change_approver value = scope:zg361_b1_roster_manager }
+				set_variable = { name = zg361_b1_roster_change_year value = current_year }
+				change_variable = { name = zg361_b1_roster_change_version add = 1 }
+				set_variable = { name = zg361_b1_roster_amendment value = 1 }
+				set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
+				set_variable = { name = zg361_b1_roster_employment_state value = 2 }
+				set_variable = { name = zg361_b1_leaver_effective_year value = current_year }
+				set_variable = { name = zg361_b1_leaver_receipt_state value = 1 }
+				set_variable = { name = zg361_b1_m040_receipt_serial value = var:zg361_b1_case_serial }
+				scope:zg361_b1_roster_manager = {
+					change_variable = { name = zg361_b1_m040_hc_vacancy_n add = 1 }
+					change_variable = { name = zg361_b1_roster_audit_version add = 1 }
+					set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
+				}
+				if = {
+					limit = {
+						is_alive = yes
+						scope:zg361_b1_roster_manager.var:zg361_b1_m040_mode != 3
+					}
+					# Honest A and all non-selected B departures remain evidence-led.
+					set_variable = { name = zg361_b1_leaver_route value = 1 }
+					if = {
+						limit = {
+							scope:zg361_b1_roster_manager.var:zg361_b1_m040_mode = 2
+							scope:zg361_b1_roster_manager.var:zg361_b1_m040_gray_used = 0
+						}
+						set_variable = { name = zg361_b1_leaver_route value = 2 }
+						scope:zg361_b1_roster_manager = {
+							set_variable = { name = zg361_b1_m040_gray_used value = 1 }
+							set_variable = { name = zg361_b1_m040_gray_subject value = prev }
+						}
+					}
+					scope:zg361_b1_roster_manager = {
+						change_variable = { name = zg361_b1_m040_frozen_leaver_n add = 1 }
+					}
+				}
+				else = {
+					# Death and explicit C create a review vacancy.  They may be
+					# backfilled under the existing #039/#140 path, but cannot be
+					# confused with an occupied gray quota slot.
+					set_variable = { name = zg361_b1_roster_change_after value = 0 }
+					set_variable = { name = zg361_b1_roster_included value = 0 }
+					set_variable = { name = zg361_b1_leaver_route value = 3 }
+					scope:zg361_b1_roster_manager = {
+						change_variable = { name = zg361_b1_m040_review_vacancy_n add = 1 }
+						change_variable = { name = zg361_b1_roster_amendment_n add = 1 }
+					}
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_roster_audited_serial value = var:zg361_b1_manager_case_serial }
+	}
+}
+
+# After the D+0 list is locked, compare it with the live direct-vassal roster at
+# the facts boundary.  A legal new arrival receives a full five-field case and
+# a reconstructible amendment; a prior departure creates a backfill vacancy,
+# otherwise the arrival is an explicit late join.  Both routes enter the real
+# denominator and force quota reconstruction.
+zg361_b1_audit_locked_roster_additions_effect = {
+	zg361_b1_audit_frozen_roster_effect = yes
+	set_variable = { name = zg361_b1_roster_backfill_needed value = var:zg361_b1_roster_amendment_n }
+	save_temporary_scope_as = zg361_b1_roster_add_manager
+	every_vassal = {
+		limit = { zg361_is_reviewable_vassal_trigger = yes }
+		save_temporary_scope_as = zg361_b1_roster_add_subject
+		if = {
+			limit = {
+				scope:zg361_b1_roster_add_manager = {
+					OR = {
+						var:zg361_b1_roster_backfill_needed >= 1
+						AND = {
+							var:zg361_b1_subject_n < 80
+							var:zg361_b1_m040_frozen_leaver_n = 0
+						}
+					}
+					trigger_if = {
+						limit = { has_variable_list = zg361_b1_subjects }
+						NOT = {
+							is_target_in_variable_list = {
+								name = zg361_b1_subjects
+								target = scope:zg361_b1_roster_add_subject
+							}
+						}
+					}
+					trigger_else = { always = yes }
+				}
+			}
+			# A character may already own an active old-manager case.  Freeze that
+			# namespace before any B-route initialization; A keeps the old quota
+			# owner, B opens one new-manager segment, and C creates no reorg object.
+			set_variable = { name = zg361_b1_reorg_transfer_detected value = 0 }
+			set_variable = { name = zg361_b1_reorg_replay_detected value = 0 }
+			set_variable = { name = zg361_b1_reorg_should_add value = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_b1_reorg_archive_case
+					has_variable = zg361_b1_reorg_new_manager
+					var:zg361_b1_reorg_new_manager = scope:zg361_b1_roster_add_manager
+					var:zg361_b1_reorg_object_available = 1
+					var:zg361_b1_reorg_object_subject = this
+					var:zg361_b1_reorg_object_state = 2
+					OR = {
+						AND = {
+							var:zg361_b1_reorg_route = 1
+							var:zg361_b1_reorg_archive_case = var:zg361_b1_case_serial
+							var:zg361_b1_reorg_archive_subject = this
+							var:zg361_b1_reorg_object_owner = var:zg361_b1_reorg_archive_owner
+							var:zg361_b1_reorg_object_cycle = var:zg361_b1_reorg_archive_cycle
+							var:zg361_b1_reorg_object_case = var:zg361_b1_reorg_archive_case
+						}
+						AND = {
+							var:zg361_b1_reorg_route = 2
+							var:zg361_b1_reorg_object_owner = scope:zg361_b1_roster_add_manager
+							var:zg361_b1_reorg_object_cycle = var:zg361_b1_cycle_serial
+							var:zg361_b1_reorg_object_case = var:zg361_b1_case_serial
+						}
+					}
+				}
+				set_variable = { name = zg361_b1_reorg_replay_detected value = 1 }
+				set_variable = { name = zg361_b1_reorg_should_add value = 0 }
+			}
+			if = {
+				limit = {
+					var:zg361_b1_reorg_replay_detected = 0
+					scope:zg361_b1_roster_add_manager.var:zg361_b1_m140_mode != 3
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_case_active = 1
+					OR = { var:zg361_b1_case_state = 3 var:zg361_b1_case_state = 5 }
+					NOT = { var:zg361_b1_case_owner = scope:zg361_b1_roster_add_manager }
+					trigger_if = {
+						limit = { has_variable = zg361_b1_reorg_archive_case }
+						NOT = { var:zg361_b1_reorg_archive_case = var:zg361_b1_case_serial }
+					}
+					trigger_else = { always = yes }
+				}
+				set_variable = { name = zg361_b1_reorg_transfer_detected value = 1 }
+				set_variable = { name = zg361_b1_reorg_archive_owner value = var:zg361_b1_case_owner }
+				set_variable = { name = zg361_b1_reorg_archive_subject value = this }
+				set_variable = { name = zg361_b1_reorg_archive_cycle value = var:zg361_b1_cycle_serial }
+				set_variable = { name = zg361_b1_reorg_archive_case value = var:zg361_b1_case_serial }
+				set_variable = { name = zg361_b1_reorg_archive_state value = var:zg361_b1_case_state }
+				set_variable = { name = zg361_b1_reorg_archive_evidence_early value = var:zg361_b1_evidence_early }
+				set_variable = { name = zg361_b1_reorg_archive_evidence_mid value = var:zg361_b1_evidence_mid }
+				set_variable = { name = zg361_b1_reorg_archive_evidence_late value = var:zg361_b1_evidence_late }
+				set_variable = { name = zg361_b1_reorg_archive_quota_grade value = 0 }
+				if = {
+					limit = { has_variable = zg361_pending_grade }
+					set_variable = { name = zg361_b1_reorg_archive_quota_grade value = var:zg361_pending_grade }
+				}
+				set_variable = { name = zg361_b1_reorg_old_manager value = var:zg361_b1_case_owner }
+				set_variable = { name = zg361_b1_reorg_new_manager value = scope:zg361_b1_roster_add_manager }
+				# The transfer is first observed at the facts boundary; exact tenure is
+				# unknowable from script state, so never manufacture 300/65-day claims.
+				set_variable = { name = zg361_b1_reorg_service_days value = 0 }
+				set_variable = { name = zg361_b1_reorg_service_days_observed value = 0 }
+				set_variable = { name = zg361_b1_reorg_observation_year value = current_year }
+			}
+			if = {
+				limit = {
+					var:zg361_b1_reorg_transfer_detected = 1
+					scope:zg361_b1_roster_add_manager.var:zg361_b1_m140_mode = 1
+				}
+				set_variable = { name = zg361_b1_reorg_should_add value = 0 }
+				set_variable = { name = zg361_b1_reorg_object_available value = 1 }
+				set_variable = { name = zg361_b1_reorg_route value = 1 }
+				set_variable = { name = zg361_b1_reorg_object_owner value = var:zg361_b1_reorg_archive_owner }
+				set_variable = { name = zg361_b1_reorg_object_subject value = this }
+				set_variable = { name = zg361_b1_reorg_object_cycle value = var:zg361_b1_reorg_archive_cycle }
+				set_variable = { name = zg361_b1_reorg_object_case value = var:zg361_b1_reorg_archive_case }
+				set_variable = { name = zg361_b1_reorg_object_state value = 2 }
+				set_variable = { name = zg361_b1_reorg_quota_owner value = var:zg361_b1_reorg_archive_owner }
+				set_variable = { name = zg361_b1_reorg_new_evidence_segment_start value = zg361_kpi_value }
+				set_variable = { name = zg361_b1_reorg_new_evidence_segment_end value = zg361_kpi_value }
+				set_variable = { name = zg361_b1_reorg_old_evidence_hash value = { value = var:zg361_b1_reorg_archive_evidence_early multiply = 10000 add = { value = var:zg361_b1_reorg_archive_evidence_mid multiply = 100 } add = var:zg361_b1_reorg_archive_evidence_late } }
+				set_variable = { name = zg361_b1_reorg_new_evidence_hash value = zg361_kpi_value }
+				set_variable = { name = zg361_b1_reorg_new_observation_n value = 1 }
+				set_variable = { name = zg361_b1_reorg_new_evidence_segment_available value = 0 }
+				set_variable = { name = zg361_b1_reorg_allocation_occupied_slots value = 1 }
+				set_variable = { name = zg361_b1_reorg_allocation_evidence_count value = 3 }
+				set_variable = { name = zg361_b1_reorg_allocation_receipt_state value = 1 }
+				set_variable = { name = zg361_b1_roster_included value = 1 }
+				var:zg361_b1_reorg_archive_owner = { set_variable = { name = zg361_b1_roster_reopen_required value = 1 } }
+				set_variable = { name = zg361_b1_m140_receipt_serial value = var:zg361_b1_reorg_object_case }
+			}
+			if = {
+				limit = { var:zg361_b1_reorg_should_add = 1 }
+				zg361_b1_initialize_subject_case_effect = yes
+				set_variable = { name = zg361_b1_case_state value = 3 }
+				set_variable = { name = zg361_b1_roster_change_before value = 0 }
+				set_variable = { name = zg361_b1_roster_change_after value = 1 }
+				set_variable = { name = zg361_b1_roster_change_reason value = 4 }
+				set_variable = { name = zg361_b1_roster_change_actor value = scope:zg361_b1_roster_add_manager }
+				set_variable = { name = zg361_b1_roster_change_approver value = scope:zg361_b1_roster_add_manager }
+				set_variable = { name = zg361_b1_roster_change_year value = current_year }
+				set_variable = { name = zg361_b1_roster_change_version value = 1 }
+				set_variable = { name = zg361_b1_roster_amendment value = 1 }
+				set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
+				set_variable = { name = zg361_b1_late_join_route value = 1 }
+				set_variable = { name = zg361_b1_backfill_route value = 0 }
+				set_variable = { name = zg361_b1_evidence_early_available value = 0 }
+				set_variable = { name = zg361_b1_evidence_mid_available value = 1 }
+				set_variable = { name = zg361_b1_evidence_early value = 0 }
+				set_variable = { name = zg361_b1_evidence_mid value = zg361_kpi_value }
+				set_variable = { name = zg361_b1_self_score value = var:zg361_b1_evidence_mid }
+				add_character_flag = zg361_newcomer_this_cycle
+				set_variable = { name = zg361_b1_newcomer_route value = 1 }
+				if = {
+					limit = {
+						var:zg361_b1_reorg_transfer_detected = 1
+						scope:zg361_b1_roster_add_manager.var:zg361_b1_m140_mode = 2
+					}
+					set_variable = { name = zg361_b1_reorg_object_available value = 1 }
+					set_variable = { name = zg361_b1_reorg_route value = 2 }
+					set_variable = { name = zg361_b1_reorg_old_manager value = var:zg361_b1_reorg_archive_owner }
+					set_variable = { name = zg361_b1_reorg_new_manager value = scope:zg361_b1_roster_add_manager }
+					set_variable = { name = zg361_b1_reorg_service_days value = 0 }
+					set_variable = { name = zg361_b1_reorg_service_days_observed value = 0 }
+					set_variable = { name = zg361_b1_reorg_observation_year value = current_year }
+					set_variable = { name = zg361_b1_reorg_object_owner value = scope:zg361_b1_roster_add_manager }
+					set_variable = { name = zg361_b1_reorg_object_subject value = this }
+					set_variable = { name = zg361_b1_reorg_object_cycle value = var:zg361_b1_cycle_serial }
+					set_variable = { name = zg361_b1_reorg_object_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_reorg_object_state value = 2 }
+					set_variable = { name = zg361_b1_reorg_quota_owner value = scope:zg361_b1_roster_add_manager }
+					set_variable = { name = zg361_b1_reorg_new_evidence_segment_start value = var:zg361_b1_evidence_mid }
+					set_variable = { name = zg361_b1_reorg_new_evidence_segment_end value = var:zg361_b1_evidence_mid }
+					set_variable = { name = zg361_b1_reorg_old_evidence_hash value = { value = var:zg361_b1_reorg_archive_evidence_early multiply = 10000 add = { value = var:zg361_b1_reorg_archive_evidence_mid multiply = 100 } add = var:zg361_b1_reorg_archive_evidence_late } }
+					set_variable = { name = zg361_b1_reorg_new_evidence_hash value = var:zg361_b1_evidence_mid }
+					set_variable = { name = zg361_b1_reorg_new_observation_n value = 1 }
+					set_variable = { name = zg361_b1_reorg_new_evidence_segment_available value = 0 }
+					set_variable = { name = zg361_b1_reorg_allocation_occupied_slots value = 1 }
+					set_variable = { name = zg361_b1_reorg_allocation_evidence_count value = 3 }
+					set_variable = { name = zg361_b1_reorg_allocation_receipt_state value = 1 }
+					set_variable = { name = zg361_b1_m140_receipt_serial value = var:zg361_b1_reorg_object_case }
+				}
+				if = {
+					limit = { scope:zg361_b1_roster_add_manager.var:zg361_b1_roster_backfill_needed >= 1 }
+					set_variable = { name = zg361_b1_roster_change_reason value = 5 }
+					set_variable = { name = zg361_b1_late_join_route value = 0 }
+					set_variable = { name = zg361_b1_backfill_route value = 1 }
+					scope:zg361_b1_roster_add_manager = {
+						change_variable = { name = zg361_b1_roster_backfill_needed add = -1 }
+					}
+				}
+				scope:zg361_b1_roster_add_manager = {
+					if = {
+						limit = { scope:zg361_b1_roster_add_subject.var:zg361_b1_backfill_route = 0 }
+						change_variable = { name = zg361_b1_subject_n add = 1 }
+					}
+					change_variable = { name = zg361_b1_roster_amendment_n add = 1 }
+					change_variable = { name = zg361_b1_roster_audit_version add = 1 }
+					set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
+					add_to_variable_list = { name = zg361_b1_subjects target = scope:zg361_b1_roster_add_subject }
+				}
+				set_variable = { name = zg361_b1_roster_frozen_order value = scope:zg361_b1_roster_add_manager.var:zg361_b1_subject_n }
+			}
+		}
+	}
+	set_variable = { name = zg361_b1_roster_additions_audited_serial value = var:zg361_b1_manager_case_serial }
+}
+
+zg361_b1_rebuild_local_quota_effect = {
+	zg361_b1_audit_frozen_roster_effect = yes
+	set_variable = { name = zg361_b1_local_candidate_n value = 0 }
+	every_in_list = {
+		variable = zg361_b1_subjects
+		if = {
+			limit = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_case_subject
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_case_state
+				has_variable = zg361_b1_case_active
+				var:zg361_b1_case_owner = root
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = root.var:zg361_b1_manager_cycle_serial
+				var:zg361_b1_case_serial = root.var:zg361_b1_manager_case_serial
+				var:zg361_b1_case_state = 5
+				var:zg361_b1_case_active = 1
+				has_variable = zg361_pending_grade
+				has_variable = zg361_b1_calibration_score
+				var:zg361_b1_roster_included = 1
+				OR = {
+					NOT = { has_variable = zg361_b1_reorg_quota_owner }
+					var:zg361_b1_reorg_quota_owner = root
+				}
+			}
+			add_to_list = zg361_b1_local_candidates
+			root = { change_variable = { name = zg361_b1_local_candidate_n add = 1 } }
+		}
+	}
+	zg361_b1_compute_exact_quota_effect = { COHORT_SIZE = var:zg361_b1_local_candidate_n ROUNDING_SCOPE = 1 }
+	if = {
+		limit = { var:zg361_b1_quota_rounding_local_object_available = 1 }
+		set_variable = { name = zg361_b1_quota_rounding_local_team_n value = 1 }
+		set_variable = { name = zg361_b1_quota_rounding_local_team_1 value = this }
+		set_variable = { name = zg361_b1_quota_rounding_local_remainder_team value = this }
+		set_variable = { name = zg361_b1_quota_rounding_local_affected_team value = this }
+		set_variable = { name = zg361_b1_quota_rounding_local_operation_seal value = { value = var:zg361_b1_manager_cycle_serial multiply = 100000 add = var:zg361_b1_manager_case_serial } }
+		set_variable = { name = zg361_b1_quota_rounding_local_state value = 2 }
+	}
+	if = {
+		limit = { var:zg361_b1_m138_mode != 3 var:zg361_b1_quota_rounding_local_object_available = 1 }
+		set_variable = { name = zg361_b1_m138_receipt_serial value = var:zg361_b1_quota_rounding_local_case }
+	}
+	set_variable = { name = zg361_b1_local_top_slots value = var:zg361_b1_quota_top_slots }
+	set_variable = { name = zg361_b1_local_middle_slots value = var:zg361_b1_quota_middle_slots }
+	set_variable = { name = zg361_b1_local_bottom_slots value = var:zg361_b1_quota_bottom_slots }
+	set_variable = { name = zg361_b1_quota_built_serial value = var:zg361_b1_manager_case_serial }
+	if = {
+		limit = { var:zg361_b1_local_candidate_n >= 1 }
+		set_variable = { name = zg361_b1_local_rank_cursor value = 0 }
+		ordered_in_list = {
+			list = zg361_b1_local_candidates
+			order_by = var:zg361_b1_calibration_score
+			max = list_size:zg361_b1_local_candidates
+			root = { change_variable = { name = zg361_b1_local_rank_cursor add = 1 } }
+			set_variable = { name = zg361_rank value = root.var:zg361_b1_local_rank_cursor }
+			set_variable = { name = zg361_b1_local_rank value = root.var:zg361_b1_local_rank_cursor }
+			set_variable = { name = zg361_pending_grade value = 2 }
+			set_variable = { name = zg361_b1_newcomer_forced_bottom value = 0 }
+		}
+		set_variable = { name = zg361_b1_local_bottom_candidate_n value = 0 }
+		set_variable = { name = zg361_b1_local_bottom_assigned value = 0 }
+		set_variable = { name = zg361_b1_newcomer_bottom_exception value = 0 }
+		every_in_list = {
+			list = zg361_b1_local_candidates
+			limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
+			add_to_list = zg361_b1_local_bottom_candidates
+			root = { change_variable = { name = zg361_b1_local_bottom_candidate_n add = 1 } }
+		}
+		set_variable = { name = zg361_b1_local_bottom_cursor value = 0 }
+		if = {
+			limit = {
+				var:zg361_b1_local_bottom_slots >= 1
+				var:zg361_b1_local_bottom_candidate_n >= 1
+			}
+			ordered_in_list = {
+				list = zg361_b1_local_bottom_candidates
+				order_by = var:zg361_b1_local_rank
+				max = list_size:zg361_b1_local_bottom_candidates
+				if = {
+					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
+					set_variable = { name = zg361_pending_grade value = 1 }
+					root = { change_variable = { name = zg361_b1_local_bottom_assigned add = 1 } }
+				}
+				root = { change_variable = { name = zg361_b1_local_bottom_cursor add = 1 } }
+			}
+		}
+		# Prefer protecting every newcomer, but quota conservation wins when the
+		# frozen roster has fewer bottom-eligible incumbents than bottom slots.
+		# The explicit exception receipt makes that otherwise-impossible case
+		# visible instead of silently shrinking the exact LR bottom count.
+		if = {
+			limit = { var:zg361_b1_local_bottom_assigned < var:zg361_b1_local_bottom_slots }
+			set_variable = { name = zg361_b1_newcomer_bottom_exception value = 1 }
+			ordered_in_list = {
+				list = zg361_b1_local_candidates
+				order_by = var:zg361_b1_local_rank
+				max = list_size:zg361_b1_local_candidates
+				limit = { var:zg361_pending_grade = 2 }
+				if = {
+					limit = { root.var:zg361_b1_local_bottom_assigned < root.var:zg361_b1_local_bottom_slots }
+					set_variable = { name = zg361_pending_grade value = 1 }
+					set_variable = { name = zg361_b1_newcomer_forced_bottom value = 1 }
+					root = { change_variable = { name = zg361_b1_local_bottom_assigned add = 1 } }
+				}
+			}
+		}
+		# Assign TOP only after BOTTOM is frozen. This prevents newcomer protection
+		# from overwriting a TOP without promoting a replacement.
+		set_variable = { name = zg361_b1_local_top_assigned value = 0 }
+		if = {
+			limit = { var:zg361_b1_local_top_slots >= 1 }
+			ordered_in_list = {
+				list = zg361_b1_local_candidates
+				order_by = var:zg361_b1_calibration_score
+				max = list_size:zg361_b1_local_candidates
+				limit = { var:zg361_pending_grade = 2 }
+				if = {
+					limit = { root.var:zg361_b1_local_top_assigned < root.var:zg361_b1_local_top_slots }
+					set_variable = { name = zg361_pending_grade value = 3 }
+					root = { change_variable = { name = zg361_b1_local_top_assigned add = 1 } }
+				}
+			}
+		}
+		every_in_list = {
+			list = zg361_b1_local_candidates
+			set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+			set_variable = {
+				name = zg361_b1_shadow_to_quota_delta
+				value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade }
+			}
+			set_variable = { name = zg361_b1_forced_down value = 0 }
+			if = {
+				limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+				set_variable = { name = zg361_b1_forced_down value = 1 }
+			}
+		}
+		# Recount the actual writes instead of claiming nominal targets. Under the
+		# frozen roster/newcomer policy these equal the pre-shadow counts; the
+		# explicit recount also keeps an old/malformed save honest.
+		set_variable = { name = zg361_pending_375_n value = 0 }
+		set_variable = { name = zg361_pending_35_n value = 0 }
+		set_variable = { name = zg361_pending_325_n value = 0 }
+		every_in_list = {
+			list = zg361_b1_local_candidates
+			if = {
+				limit = { var:zg361_pending_grade = 3 }
+				root = { change_variable = { name = zg361_pending_375_n add = 1 } }
+			}
+			else_if = {
+				limit = { var:zg361_pending_grade = 1 }
+				root = { change_variable = { name = zg361_pending_325_n add = 1 } }
+			}
+			else = { root = { change_variable = { name = zg361_pending_35_n add = 1 } } }
+		}
+		set_variable = { name = zg361_top_cut value = var:zg361_b1_local_top_slots }
+		set_variable = { name = zg361_top_cut_next value = { value = var:zg361_b1_local_top_slots add = 1 } }
+		set_variable = { name = zg361_bottom_slots value = var:zg361_b1_local_bottom_slots }
+		change_variable = { name = zg361_b1_quota_book_version add = 1 }
+		if = {
+			limit = { var:zg361_b1_roster_reopen_required = 1 }
+			set_variable = { name = zg361_b1_quota_roster_amendment_version value = var:zg361_b1_roster_audit_version }
+			set_variable = { name = zg361_b1_quota_rebuilt_for_roster value = 1 }
+			set_variable = { name = zg361_b1_roster_reopen_required value = 0 }
+		}
+		debug_log = "ZG361B1: local quota reranked by bounded post-shadow calibration score"
+	}
+}
+
+# Consume one open responsibility debt only when its exact due cycle has
+# arrived. The grade write is guarded by owner/subject/cycle/case/state and the
+# debt state flips to settled, so replaying either the quota close or deadline
+# cannot repay twice.
+zg361_b1_settle_due_debt_effect = {
+	save_temporary_scope_as = zg361_b1_debt_manager
+	if = {
+		limit = {
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_b1_quota_debt_state
+			has_variable = zg361_b1_quota_debt_due_cycle
+			has_variable = zg361_b1_quota_debt_kind
+			has_variable = zg361_b1_quota_debt_creditor
+			has_variable = zg361_b1_quota_debt_source_trade
+			has_variable = zg361_b1_quota_debt_liability
+			var:zg361_b1_quota_debt_state = 1
+			var:zg361_b1_manager_cycle_serial >= var:zg361_b1_quota_debt_due_cycle
+			var:zg361_b1_quota_debt_creditor = {
+				has_variable = zg361_b1_quota_credit_state
+				has_variable = zg361_b1_quota_credit_creditor
+				has_variable = zg361_b1_quota_credit_debtor
+				has_variable = zg361_b1_quota_credit_due_cycle
+				has_variable = zg361_b1_quota_credit_source_trade
+				has_variable = zg361_b1_quota_credit_liability
+				var:zg361_b1_quota_credit_state = 1
+				var:zg361_b1_quota_credit_creditor = this
+				var:zg361_b1_quota_credit_debtor = scope:zg361_b1_debt_manager
+				var:zg361_b1_quota_credit_due_cycle = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_due_cycle
+				var:zg361_b1_quota_credit_source_trade = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_source_trade
+				var:zg361_b1_quota_credit_liability = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_liability
+			}
+		}
+		set_variable = { name = zg361_b1_quota_debt_settlement_found value = 0 }
+		set_variable = { name = zg361_b1_quota_debt_before_top value = var:zg361_pending_375_n }
+		set_variable = { name = zg361_b1_quota_debt_before_middle value = var:zg361_pending_35_n }
+		set_variable = { name = zg361_b1_quota_debt_before_bottom value = var:zg361_pending_325_n }
+		if = {
+			limit = { var:zg361_b1_quota_debt_kind = 3 var:zg361_pending_375_n >= 1 }
+			ordered_in_list = {
+				variable = zg361_b1_subjects
+				order_by = { value = var:zg361_b1_calibration_score multiply = -1 }
+				max = 1
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					has_variable = zg361_pending_grade
+					var:zg361_b1_case_owner = scope:zg361_b1_debt_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_state = 5
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_pending_grade = 3
+				}
+				set_variable = { name = zg361_pending_grade value = 2 }
+				set_variable = { name = zg361_b1_quota_snapshot value = 2 }
+				set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = 2 subtract = var:zg361_b1_shadow_grade } }
+				set_variable = { name = zg361_b1_forced_down value = 0 }
+				if = {
+					limit = { var:zg361_absolute_grade > 2 }
+					set_variable = { name = zg361_b1_forced_down value = 1 }
+				}
+				scope:zg361_b1_debt_manager = { set_variable = { name = zg361_b1_quota_debt_settlement_found value = 1 } }
+			}
+			if = {
+				limit = { var:zg361_b1_quota_debt_settlement_found = 1 }
+				change_variable = { name = zg361_pending_375_n add = -1 }
+				change_variable = { name = zg361_pending_35_n add = 1 }
+			}
+		}
+		else_if = {
+			limit = { var:zg361_b1_quota_debt_kind = 1 var:zg361_pending_325_n >= 1 }
+			ordered_in_list = {
+				variable = zg361_b1_subjects
+				order_by = var:zg361_b1_calibration_score
+				max = 1
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					has_variable = zg361_pending_grade
+					var:zg361_b1_case_owner = scope:zg361_b1_debt_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_debt_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_state = 5
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_pending_grade = 1
+				}
+				set_variable = { name = zg361_pending_grade value = 2 }
+				set_variable = { name = zg361_b1_quota_snapshot value = 2 }
+				set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = 2 subtract = var:zg361_b1_shadow_grade } }
+				set_variable = { name = zg361_b1_forced_down value = 0 }
+				if = {
+					limit = { var:zg361_absolute_grade > 2 }
+					set_variable = { name = zg361_b1_forced_down value = 1 }
+				}
+				scope:zg361_b1_debt_manager = { set_variable = { name = zg361_b1_quota_debt_settlement_found value = 1 } }
+			}
+			if = {
+				limit = { var:zg361_b1_quota_debt_settlement_found = 1 }
+				change_variable = { name = zg361_pending_325_n add = -1 }
+				change_variable = { name = zg361_pending_35_n add = 1 }
+			}
+		}
+		if = {
+			limit = { var:zg361_b1_quota_debt_settlement_found = 1 }
+			set_variable = { name = zg361_b1_quota_debt_after_top value = var:zg361_pending_375_n }
+			set_variable = { name = zg361_b1_quota_debt_after_middle value = var:zg361_pending_35_n }
+			set_variable = { name = zg361_b1_quota_debt_after_bottom value = var:zg361_pending_325_n }
+			set_variable = { name = zg361_b1_quota_debt_state value = 2 }
+			set_variable = { name = zg361_b1_quota_debt_settled_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_quota_debt_settlement_serial value = var:zg361_b1_manager_case_serial }
+			change_variable = { name = zg361_b1_quota_book_version add = 1 }
+			if = {
+				limit = { has_variable = zg361_b1_quota_debt_creditor }
+				var:zg361_b1_quota_debt_creditor = {
+					if = {
+						limit = {
+							has_variable = zg361_b1_quota_credit_state
+							has_variable = zg361_b1_quota_credit_creditor
+							has_variable = zg361_b1_quota_credit_debtor
+							has_variable = zg361_b1_quota_credit_due_cycle
+							has_variable = zg361_b1_quota_credit_source_trade
+							has_variable = zg361_b1_quota_credit_liability
+							var:zg361_b1_quota_credit_state = 1
+							var:zg361_b1_quota_credit_creditor = this
+							var:zg361_b1_quota_credit_debtor = scope:zg361_b1_debt_manager
+							var:zg361_b1_quota_credit_due_cycle = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_due_cycle
+							var:zg361_b1_quota_credit_source_trade = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_source_trade
+							var:zg361_b1_quota_credit_liability = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_liability
+						}
+						set_variable = { name = zg361_b1_quota_credit_state value = 2 }
+						set_variable = { name = zg361_b1_quota_credit_settled_cycle value = scope:zg361_b1_debt_manager.var:zg361_b1_manager_cycle_serial }
+					}
+				}
+			}
+			set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
+			debug_log = "ZG361B1: one-shot quota responsibility debt settled"
+		}
+	}
+}
+
+# Execute one TOP-for-MIDDLE exchange inside the unique 3+4 pool. Both books
+# advance once, both parties retain the same operation receipt, and the
+# receiver receives one liability due at created_cycle + 1.
+zg361_b1_execute_unique_pool_trade_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_unique_pool_active = 1
+			var:zg361_b1_unique_pool_trade_used = 0
+			has_variable = zg361_mechanism_037_choice
+			has_variable = zg361_mechanism_139_choice
+			var:zg361_mechanism_037_choice = 1
+			var:zg361_mechanism_139_choice = 1
+			scope:zg361_b1_pool_four_manager = {
+				var:zg361_b1_quota_pool_membership = 1
+				var:zg361_b1_bank_superior = root
+				var:zg361_pending_375_n >= 1
+				trigger_if = {
+					limit = { has_variable = zg361_b1_quota_credit_state }
+					NOT = { var:zg361_b1_quota_credit_state = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+			scope:zg361_b1_pool_three_manager = {
+				var:zg361_b1_quota_pool_membership = 1
+				var:zg361_b1_bank_superior = root
+				var:zg361_pending_35_n >= 1
+				trigger_if = {
+					limit = { has_variable = zg361_b1_quota_debt_state }
+					NOT = { var:zg361_b1_quota_debt_state = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+		}
+		set_variable = { name = zg361_b1_unique_pool_trade_candidate_n value = 0 }
+		scope:zg361_b1_pool_four_manager = {
+			ordered_in_list = {
+				variable = zg361_b1_subjects
+				order_by = { value = var:zg361_b1_calibration_score multiply = -1 }
+				max = 1
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					var:zg361_b1_case_owner = scope:zg361_b1_pool_four_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pool_four_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_state = 5
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_pending_grade = 3
+				}
+				save_temporary_scope_as = zg361_b1_trade_donor_subject
+				root = { change_variable = { name = zg361_b1_unique_pool_trade_candidate_n add = 1 } }
+			}
+		}
+		scope:zg361_b1_pool_three_manager = {
+			ordered_in_list = {
+				variable = zg361_b1_subjects
+				order_by = var:zg361_b1_calibration_score
+				max = 1
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					var:zg361_b1_case_owner = scope:zg361_b1_pool_three_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pool_three_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_state = 5
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_pending_grade = 2
+				}
+				save_temporary_scope_as = zg361_b1_trade_receiver_subject
+				root = { change_variable = { name = zg361_b1_unique_pool_trade_candidate_n add = 1 } }
+			}
+		}
+		if = {
+			limit = { var:zg361_b1_unique_pool_trade_candidate_n = 2 }
+			scope:zg361_b1_trade_donor_subject = {
+				set_variable = { name = zg361_pending_grade value = 2 }
+				set_variable = { name = zg361_b1_quota_snapshot value = 2 }
+				set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = 2 subtract = var:zg361_b1_shadow_grade } }
+				set_variable = { name = zg361_b1_forced_down value = 0 }
+				if = {
+					limit = { var:zg361_absolute_grade > 2 }
+					set_variable = { name = zg361_b1_forced_down value = 1 }
+				}
+			}
+			scope:zg361_b1_trade_receiver_subject = {
+				set_variable = { name = zg361_pending_grade value = 3 }
+				set_variable = { name = zg361_b1_quota_snapshot value = 3 }
+				set_variable = { name = zg361_b1_shadow_to_quota_delta value = { value = 3 subtract = var:zg361_b1_shadow_grade } }
+				set_variable = { name = zg361_b1_forced_down value = 0 }
+				if = {
+					limit = { var:zg361_absolute_grade > 3 }
+					set_variable = { name = zg361_b1_forced_down value = 1 }
+				}
+			}
+			change_variable = { name = zg361_b1_unique_pool_trade_serial add = 1 }
+			set_variable = { name = zg361_b1_unique_pool_trade_used value = 1 }
+			scope:zg361_b1_pool_four_manager = {
+				change_variable = { name = zg361_pending_375_n add = -1 }
+				change_variable = { name = zg361_pending_35_n add = 1 }
+				change_variable = { name = zg361_b1_quota_book_version add = 1 }
+				set_variable = { name = zg361_b1_quota_trade_applied value = 1 }
+				set_variable = { name = zg361_b1_quota_trade_slots value = 1 }
+				set_variable = { name = zg361_b1_quota_trade_band value = 3 }
+				set_variable = { name = zg361_b1_quota_trade_counterparty value = scope:zg361_b1_pool_three_manager }
+				set_variable = { name = zg361_b1_quota_trade_operation_serial value = root.var:zg361_b1_unique_pool_trade_serial }
+				set_variable = { name = zg361_b1_quota_credit_state value = 1 }
+				set_variable = { name = zg361_b1_quota_credit_creditor value = this }
+				set_variable = { name = zg361_b1_quota_credit_debtor value = scope:zg361_b1_pool_three_manager }
+				set_variable = { name = zg361_b1_quota_credit_due_cycle value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
+				set_variable = { name = zg361_b1_quota_credit_source_trade value = root.var:zg361_b1_unique_pool_trade_serial }
+				set_variable = { name = zg361_b1_quota_credit_liability value = root.var:zg361_b1_unique_pool_trade_serial }
+				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+			}
+			scope:zg361_b1_pool_three_manager = {
+				change_variable = { name = zg361_pending_375_n add = 1 }
+				change_variable = { name = zg361_pending_35_n add = -1 }
+				change_variable = { name = zg361_b1_quota_book_version add = 1 }
+				set_variable = { name = zg361_b1_quota_trade_applied value = 1 }
+				set_variable = { name = zg361_b1_quota_trade_slots value = 1 }
+				set_variable = { name = zg361_b1_quota_trade_band value = 3 }
+				set_variable = { name = zg361_b1_quota_trade_counterparty value = scope:zg361_b1_pool_four_manager }
+				set_variable = { name = zg361_b1_quota_trade_operation_serial value = root.var:zg361_b1_unique_pool_trade_serial }
+				set_variable = { name = zg361_b1_quota_debt_state value = 1 }
+				set_variable = { name = zg361_b1_quota_debt_kind value = 3 }
+				set_variable = { name = zg361_b1_quota_debt_slots value = 1 }
+				set_variable = { name = zg361_b1_quota_debt_created_cycle value = var:zg361_b1_manager_cycle_serial }
+				set_variable = { name = zg361_b1_quota_debt_due_cycle value = { value = var:zg361_b1_manager_cycle_serial add = 1 } }
+				set_variable = { name = zg361_b1_quota_debt_source_trade value = root.var:zg361_b1_unique_pool_trade_serial }
+				set_variable = { name = zg361_b1_quota_debt_creditor value = scope:zg361_b1_pool_four_manager }
+				set_variable = { name = zg361_b1_quota_debt_debtor value = this }
+				set_variable = { name = zg361_b1_quota_debt_approver value = root }
+				set_variable = { name = zg361_b1_quota_debt_liability value = root.var:zg361_b1_unique_pool_trade_serial }
+				set_variable = { name = zg361_b1_m037_receipt_serial value = var:zg361_b1_manager_case_serial }
+				set_variable = { name = zg361_b1_m139_receipt_serial value = var:zg361_b1_manager_case_serial }
+			}
+			debug_log = "ZG361B1: exact one-slot bilateral trade and next-cycle liability recorded"
+		}
+	}
+}
+
+zg361_b1_submit_quota_book_effect = {
+	zg361_b1_rebuild_local_quota_effect = yes
+	if = {
+		limit = { has_variable = zg361_b1_bank_superior }
+		save_temporary_scope_as = zg361_b1_ready_manager
+		var:zg361_b1_bank_superior = {
+			if = {
+				limit = {
+					is_alive = yes
+					has_variable = zg361_b1_bank_state
+					var:zg361_b1_bank_state = 1
+					has_variable = zg361_b1_bank_season
+					var:zg361_b1_bank_season = scope:zg361_b1_ready_manager.var:zg361_b1_bank_season
+				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable_list = zg361_b1_ready_managers }
+							NOT = {
+								is_target_in_variable_list = {
+									name = zg361_b1_ready_managers
+									target = scope:zg361_b1_ready_manager
+								}
+							}
+						}
+						trigger_else = { always = yes }
+					}
+					add_to_variable_list = {
+						name = zg361_b1_ready_managers
+						target = scope:zg361_b1_ready_manager
+					}
+					change_variable = { name = zg361_b1_ready_manager_n add = 1 }
+					change_variable = { name = zg361_b1_pool_n add = scope:zg361_b1_ready_manager.var:zg361_cohort_n }
+					scope:zg361_b1_ready_manager = {
+						set_variable = { name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n }
+						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_manager_case_serial }
+					}
+				}
+				if = {
+					limit = { var:zg361_b1_ready_manager_n >= var:zg361_b1_expected_manager_n }
+					save_scope_as = zg361_b1_bank_ticket_owner
+					save_scope_value_as = { name = zg361_b1_bank_ticket_season value = var:zg361_b1_bank_season }
+					save_scope_value_as = { name = zg361_b1_bank_ticket_case value = var:zg361_b1_bank_case_serial }
+					save_scope_value_as = { name = zg361_b1_bank_ticket_state value = var:zg361_b1_bank_state }
+					trigger_event = { id = zg361b1.110 days = 1 }
+				}
+			}
+			else = { scope:zg361_b1_ready_manager = { zg361_b1_apply_local_quota_effect = yes } }
+		}
+	}
+	else = { zg361_b1_apply_local_quota_effect = yes }
+}

@@ -1189,12 +1189,14 @@ class ReleaseLocalizationTests(unittest.TestCase):
             / "scripted_triggers"
             / "zg361_triggers.txt"
         ).read_text(encoding="utf-8-sig")
-        effects = (
-            release_loc.MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_effects.txt"
-        ).read_text(encoding="utf-8-sig")
+        effects = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (release_loc.MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_core_*_effects.txt"
+                )
+            )
+        )
         # The decision delegates both validity paths to the shared business
         # trigger; retain the same-year guard check at its actual definition.
         decision = " ".join(

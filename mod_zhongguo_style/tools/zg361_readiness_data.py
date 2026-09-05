@@ -99,11 +99,17 @@ CENTRAL_WIRING_BOUNDARY: Final = (
     "central-wired records committed hook reachability only; it does not prove "
     "complete per-ID semantics, a complete player-visible loop, or CK3 live acceptance"
 )
+CORE_EFFECT_EVIDENCE: Final = (
+    "common/scripted_effects/zg361_core_review_cycle_effects.txt",
+    "common/scripted_effects/zg361_core_result_delivery_effects.txt",
+    "common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt",
+    "common/scripted_effects/zg361_core_elimination_effects.txt",
+)
 CENTRAL_RUNTIME_EVIDENCE: Final = (
     "tools/gen_361_phase2_central_runtime.py",
     "tools/test_zg361_phase2_central_runtime.py",
     "docs/361-phase2-central-runtime-spec.md",
-    "common/scripted_effects/zg361_effects.txt",
+    *CORE_EFFECT_EVIDENCE,
 )
 CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY: Final = (
     "central-wired records committed reachability to the Workforce adapter and its "
@@ -246,7 +252,7 @@ CLAIMS: Final[tuple[ReadinessClaim, ...]] = (
         (
             "tools/gen_361_b2_runtime.py",
             "tools/test_gen_361_b2_runtime.py",
-            "common/scripted_effects/zg361_effects.txt",
+            *CORE_EFFECT_EVIDENCE,
         ),
         CENTRAL_WIRING_BOUNDARY,
     ),

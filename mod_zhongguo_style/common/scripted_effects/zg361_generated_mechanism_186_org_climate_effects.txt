@@ -1,0 +1,74 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Purpose shard: org climate.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+zg361_refresh_org_climate_effect = {
+	remove_character_modifier = zg361_org_high_trust
+	remove_character_modifier = zg361_org_admin_overload
+	remove_character_modifier = zg361_org_burnout_crisis
+	remove_character_modifier = zg361_org_delivery_stable
+	remove_character_modifier = zg361_org_tech_debt_crisis
+	remove_character_modifier = zg361_org_talent_healthy
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_org_trust }
+				var:zg361_org_trust >= 20
+			}
+			trigger_else = { always = no }
+		}
+		add_character_modifier = { modifier = zg361_org_high_trust years = 1 }
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_org_admin_load }
+				var:zg361_org_admin_load >= 35
+			}
+			trigger_else = { always = no }
+		}
+		add_character_modifier = { modifier = zg361_org_admin_overload years = 1 }
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_org_burnout }
+				var:zg361_org_burnout >= 20
+			}
+			trigger_else = { always = no }
+		}
+		add_character_modifier = { modifier = zg361_org_burnout_crisis years = 1 }
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_org_stability }
+				var:zg361_org_stability >= 20
+			}
+			trigger_else = { always = no }
+		}
+		add_character_modifier = { modifier = zg361_org_delivery_stable years = 1 }
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_org_tech_debt }
+				var:zg361_org_tech_debt >= 20
+			}
+			trigger_else = { always = no }
+		}
+		add_character_modifier = { modifier = zg361_org_tech_debt_crisis years = 1 }
+	}
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_org_talent }
+				var:zg361_org_talent >= 20
+			}
+			trigger_else = { always = no }
+		}
+		add_character_modifier = { modifier = zg361_org_talent_healthy years = 1 }
+	}
+}

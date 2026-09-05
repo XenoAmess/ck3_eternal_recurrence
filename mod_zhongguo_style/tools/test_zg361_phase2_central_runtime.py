@@ -109,12 +109,20 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         cls.effects = read_central_effect_shards()
         cls.triggers = read("common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt")
         cls.events = read_central_event_shards()
-        cls.core = read("common/scripted_effects/zg361_effects.txt")
+        cls.core = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_core_*_effects.txt"
+                )
+            )
+        )
         cls.b1 = "\n".join(
-            read(f"common/scripted_effects/{filename}")
-            for filename in (
-                "zg361_b1_runtime_effects.txt",
-                "zg361_b1_runtime_effects_part2.txt",
+            path.read_text(encoding="utf-8-sig")
+            for path in sorted(
+                (MOD_ROOT / "common" / "scripted_effects").glob(
+                    "zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt"
+                )
             )
         )
         cls.workforce = read_workforce_effect_shards()

@@ -22,6 +22,13 @@ def text(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
 
 
+def effect_family(pattern: str) -> str:
+    return "\n".join(
+        text(path)
+        for path in sorted((MOD / "common" / "scripted_effects").glob(pattern))
+    )
+
+
 def top_level_block(source: str, key: str) -> str:
     marker = f"{key} = {{"
     start = source.find(marker)
@@ -70,15 +77,8 @@ class IncidentSourceProductionChoreographyTests(unittest.TestCase):
         self.assertEqual(observed["receipt_key"], "roster_lock")
 
     def test_generated_b1_timeline_reaches_real_settlement(self) -> None:
-        effects_1 = text(
-            MOD / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt"
-        )
-        effects_2 = text(
-            MOD
-            / "common"
-            / "scripted_effects"
-            / "zg361_b1_runtime_effects_part2.txt"
-        )
+        effects_1 = effect_family("zg361_b1_runtime_[0-9][0-9][0-9]_*_effects.txt")
+        effects_2 = effects_1
         events = text(MOD / "events" / "zg361_b1_runtime_events.txt")
         generator = text(MOD / "tools" / "gen_361_b1_runtime.py")
 
@@ -138,7 +138,7 @@ class IncidentSourceProductionChoreographyTests(unittest.TestCase):
         self.assertIn("name = zg361b1.126.a", event_126)
 
     def test_real_grade_325_delivery_preserves_received_self_identity(self) -> None:
-        effects = text(MOD / "common" / "scripted_effects" / "zg361_effects.txt")
+        effects = effect_family("zg361_core_*_effects.txt")
         events = text(MOD / "events" / "zg361_events.txt")
         apply_grade = top_level_block(effects, "zg361_apply_grade_effect")
         grade_325 = top_level_block(effects, "zg361_grade_325_apply_effect")
