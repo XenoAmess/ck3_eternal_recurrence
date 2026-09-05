@@ -587,3 +587,48 @@ completion, one typed stale RED, and three ignored hooks; neither `.146` nor
 `.147` appeared. Its self-review event was the older owner/date shape, so the
 R60 dynamic-manager correction also remains live pending. Loader performance
 was GREEN throughout, providing no evidence for another size-driven split.
+
+## R62: `exists = this` is true for the failing weak Character scope
+
+R62 ran from pushed commit `eb667da` and the 634-file product tree
+`C3DD2D6E1C59578689EDD69F02F405258872528552866CA5310F18CBF1866D59`.
+Frontend took 131.735 seconds and the final loader remained GREEN. The run then
+failed closed before action on `spymaster_task.0346` at `date_raw=53152920`.
+The older frame was one day earlier at `53152896`; root 29037, all eight saved
+scopes including lover 45267, and the sole shown/enabled native option 0 were
+otherwise exact. The contract now binds only that observed date envelope.
+
+More importantly, R62 directly falsified the first pruning predicate. The
+`.100` event invoked the new prune effect, but two weak Character rows still
+reached `zg361_b1_midcycle_dispatcher_effect`; the final log contains four
+`This scope doesn't support variables` errors and no prune marker. Therefore
+`exists = this` remains true for a weak Character that retains display
+identity, even though that scope cannot host variables. Because R62 stopped
+earlier than R61, four versus 119 is not a valid total-error performance
+comparison; the same-call-stack recurrence after the filter is the evidence.
+
+The R63 correction changes the dedicated iterator predicate to
+`is_alive = yes`, then performs the same scratch-list rebuild before any
+variable read. Exact vanilla 1.19.0.6 source documents and uses this rule for
+dead people that enter a retained list at
+`common/scripted_effects/06_dlc_ce1_epidemics_effects.txt:867-874`.
+Vacancy/amendment/audit receipts remain unchanged. Normal and optimized B1,
+promotion, and checkpoint suites pass at 58/58, 11/11, and 15/15 respectively;
+the effect boundary remains 427 files / 3,720 definitions, maximum non-legacy
+10, and no `>20` violation. The change remains live pending until R63.
+
+The frozen R63 product at `Z:\p2w\p` has 634 files, tree
+`B0CF1632AFA61E508C1F469E8346954ADB8B768E1BF961500F220FE897F2CB81`,
+and a 3,707-effect / 988-event / 24-trigger fixed point with no missing
+provider. Projection and closure SHA-256 values are
+`577876F01EEA6E0FD9633F8C866D3E3433D2CB98EC694EE85324D66AA5176312`
+and `601D8D1670E6E74A7B6E896AD8E7CB5E2EE25F5688819DA0C60C081D97BA827F`.
+The complete Zhongguo static validator and R63 no-launch preflight are GREEN.
+
+R62 outer report/evidence-index SHA-256 values are
+`986E2AC2CDE5153CC26DA82D2093C71E0BC1FD3EA66607BB516F0B66E2399E38`
+and `4B102D0ACB3C362AE78FC8EAE007763E2D988C45D3354E3EDB0916AD7177231B`.
+Duration was 756.753 seconds; cleanup was GREEN and CK3 returned to zero. No
+P2C, `.146`, or `.147` trace appeared before the stop. This remains a product
+runtime correctness RED after a healthy loader and does not authorize another
+file-size split.

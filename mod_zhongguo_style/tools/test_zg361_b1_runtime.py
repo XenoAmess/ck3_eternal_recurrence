@@ -2495,7 +2495,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         for token in (
             "variable = zg361_b1_subjects",
-            "limit = { exists = this }",
+            "limit = { is_alive = yes }",
             "name = zg361_b1_available_subjects",
             "clear_variable_list = zg361_b1_subjects",
             "name = zg361_b1_subject_n value = list_size:zg361_b1_subjects",
@@ -2505,9 +2505,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ):
             self.assertIn(token, prune)
         self.assertLess(
-            prune.index("limit = { exists = this }"),
+            prune.index("limit = { is_alive = yes }"),
             prune.index("clear_variable_list = zg361_b1_subjects"),
         )
+        self.assertNotIn("limit = { exists = this }", prune)
 
         midcycle_event = top_level_block(self.events, "zg361b1.100")
         self.assertLess(

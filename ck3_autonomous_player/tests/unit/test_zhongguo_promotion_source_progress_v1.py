@@ -353,7 +353,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             elif self.stage == "secret_discovery":
                 instance_id, option_count, date, revision = 342, 1, 53157024, 40
             elif self.stage == "lover_secret":
-                instance_id, option_count, date, revision = 346, 1, 53152896, 41
+                instance_id, option_count, date, revision = 346, 1, 53152920, 41
             elif self.stage == "sway_misunderstanding":
                 instance_id, option_count, date, revision = 2001, 1, 53153952, 42
             else:

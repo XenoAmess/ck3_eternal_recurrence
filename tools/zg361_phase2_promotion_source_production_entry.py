@@ -628,7 +628,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # Vanilla Find Secrets lover-secret notification.  Like .0342, the
         # discovery is already fixed when the window opens and exposes one
         # acknowledgement, which reveals that exact secret to root.
-        "date_raw": 53152896,
+        # R62 delivered the same exact scope/option identity one day later;
+        # bind the observed Find Secrets cadence without changing semantics.
+        "date_raw": (53152896, 53152920),
+        "date_raw_range": (53152896, 53152920),
         "root_character_id": 29037,
         "character_scopes": {
             "councillor": 27963,

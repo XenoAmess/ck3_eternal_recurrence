@@ -1735,10 +1735,12 @@ zg361_b1_open_cycle_effect = {
 # A frozen variable-list entry is a weak object reference. CK3 can retain
 # the display identity after an unlanded subject is pruned from the live
 # character database, but that stale scope no longer supports variables.
-# Rebuild the manager-owned list through an `exists = this` iterator before
-# the first delayed consumer reads any case field. The removed entry is a
-# real review vacancy and must leave the same reconstructible counters as a
-# death/C departure that the normal roster audit can still inspect.
+# R62 proved that `exists = this` remains true for these stale weak scopes.
+# Rebuild the manager-owned list through the engine's Character-safe
+# `is_alive = yes` filter before the first delayed consumer reads any case
+# field. The removed entry is a real review vacancy and must leave the same
+# reconstructible counters as a death/C departure that the normal roster
+# audit can still inspect.
 zg361_b1_prune_unavailable_subjects_effect = {
 	set_variable = { name = zg361_b1_roster_pruned_n value = 0 }
 	if = {
@@ -1750,7 +1752,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 		}
 		every_in_list = {
 			variable = zg361_b1_subjects
-			limit = { exists = this }
+			limit = { is_alive = yes }
 			save_temporary_scope_as = zg361_b1_available_subject
 			root = {
 				add_to_variable_list = {

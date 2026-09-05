@@ -116,7 +116,7 @@
 
 | 现象 | 原因 | 解法 |
 |---|---|---|
-| `has_variable trigger [ This scope doesn't support variables ]`，scope 仍显示 Character 姓名、internal ID 和 `weak`；同一名单在多个延迟 consumer 中反复报错 | variable list 保存的是对象弱引用。角色在入表时有效，但无地角色可在后续游戏日从 live character database 淘汰；名单中的弱引用仍有显示 identity，却已不是支持角色变量的有效 scope。2026-09-05 CK3 1.19.0.6 B1 D+180 实测 119 条 | 在第一个延迟 consumer **之前**重建长期名单：`every_in_list` 只放 `limit = { exists = this }`，把存活对象复制到 scratch list，再清空并回填原名单；所有 `has_variable`/`var:` 读取必须发生在重建后。不要把 `exists = this` 与变量读取并列后期待短路。名单缩减若影响业务分母，必须同步写入 vacancy/amendment/audit receipt。原版 `common/on_action/dlc/mpo/mpo_on_actions_2.txt:323-329` 也会先用 `exists = this` 过滤 retained list member |
+| `has_variable trigger [ This scope doesn't support variables ]`，scope 仍显示 Character 姓名、internal ID 和 `weak`；同一名单在多个延迟 consumer 中反复报错 | variable list 保存的是对象弱引用。角色在入表时有效，但无地角色可在后续游戏日从 live character database 淘汰；名单中的弱引用仍有显示 identity，却已不是支持角色变量的有效 scope。2026-09-05 CK3 1.19.0.6 B1 D+180 实测：R61 有 119 条，R62 在清理 effect 之后仍于 `.100` 直接出现 4 条 | 在第一个延迟 consumer **之前**重建长期角色名单：`every_in_list` 用 `limit = { is_alive = yes }`，把存活对象复制到 scratch list，再清空并回填原名单；所有 `has_variable`/`var:` 读取必须发生在重建后。R62 已证明 `exists = this` 对 weak Character 仍返回真，不能作为此类筛选条件。名单缩减若影响业务分母，必须同步写入 vacancy/amendment/audit receipt。原版 `common/scripted_effects/06_dlc_ce1_epidemics_effects.txt:867-874` 也明确用 `is_alive = yes` 处理会混入名单的 dead people |
 
 ## 事件背景图 / 纹理
 
