@@ -204,6 +204,10 @@ zg361_b1_open_cycle_effect = {
 # reconstructible counters as a death/C departure that the normal roster
 # audit can still inspect.
 zg361_b1_prune_unavailable_subjects_effect = {
+	# A scripted effect preserves the caller chain's ROOT even when it is
+	# invoked inside `var:<manager> = { ... }`.  Freeze THIS explicitly so list
+	# scratch space and rebuilt rows always stay on the manager who owns them.
+	save_temporary_scope_as = zg361_b1_prune_manager
 	set_variable = { name = zg361_b1_roster_pruned_n value = 0 }
 	if = {
 		limit = { has_variable_list = zg361_b1_subjects }
@@ -216,7 +220,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 			variable = zg361_b1_subjects
 			limit = { is_alive = yes }
 			save_temporary_scope_as = zg361_b1_available_subject
-			root = {
+			scope:zg361_b1_prune_manager = {
 				add_to_variable_list = {
 					name = zg361_b1_available_subjects
 					target = scope:zg361_b1_available_subject
@@ -229,7 +233,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 			every_in_list = {
 				variable = zg361_b1_available_subjects
 				save_temporary_scope_as = zg361_b1_available_subject
-				root = {
+				scope:zg361_b1_prune_manager = {
 					add_to_variable_list = {
 						name = zg361_b1_subjects
 						target = scope:zg361_b1_available_subject
@@ -265,7 +269,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 			variable = zg361_b1_processing_subjects
 			limit = { is_alive = yes }
 			save_temporary_scope_as = zg361_b1_available_processing_subject
-			root = {
+			scope:zg361_b1_prune_manager = {
 				add_to_variable_list = {
 					name = zg361_b1_available_processing_subjects
 					target = scope:zg361_b1_available_processing_subject
@@ -278,7 +282,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 			every_in_list = {
 				variable = zg361_b1_available_processing_subjects
 				save_temporary_scope_as = zg361_b1_available_processing_subject
-				root = {
+				scope:zg361_b1_prune_manager = {
 					add_to_variable_list = {
 						name = zg361_b1_processing_subjects
 						target = scope:zg361_b1_available_processing_subject

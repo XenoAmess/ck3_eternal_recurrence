@@ -2805,6 +2805,20 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         prune = top_level_block(
             self.effects, "zg361_b1_prune_unavailable_subjects_effect"
         )
+        self.assertLess(
+            prune.index("save_temporary_scope_as = zg361_b1_prune_manager"),
+            prune.index("name = zg361_b1_roster_pruned_n value = 0"),
+        )
+        self.assertEqual(
+            prune.count("scope:zg361_b1_prune_manager = {"),
+            4,
+            "both manager-owned lists must be rebuilt on the explicit manager scope",
+        )
+        self.assertNotIn(
+            "root = {\n\t\t\t\tadd_to_variable_list",
+            prune,
+            "nested callbacks retain the employee as ROOT; list scratch must not leak there",
+        )
         for token in (
             "variable = zg361_b1_subjects",
             "limit = { is_alive = yes }",
