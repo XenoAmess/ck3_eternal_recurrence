@@ -1383,29 +1383,33 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             production.KNOWN_TIMELINE_INTERRUPTS["zg361.4"],
             starting_date=53147016,
         )
-        names = contract["saved_scope_name_sets"][0]
-        context = {
-            "schema": "current-event-window-context-v1",
-            "schema_version": 1,
-            "status": "available",
-            "window_match_count": 1,
-            "event_definition_key": "zg361.4",
-            "current_event_instance_id": 45,
-            "date_raw": 53156976,
-            "root_scope": character_scope("root", 29037)["scope"],
-            "saved_scopes": [inherited_scope(name) for name in names],
-            "options": [
-                {
-                    "rendered_index": index,
-                    "native_option_index": index,
-                    "shown": True,
-                    "enabled": True,
-                    "fallback": False,
-                    "cancel": False,
-                }
-                for index in range(4)
-            ],
-        }
+        first_cycle_names, later_cycle_names = contract["saved_scope_name_sets"]
+
+        def context_for(names: tuple[str, ...]) -> dict[str, object]:
+            return {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": "zg361.4",
+                "current_event_instance_id": 45,
+                "date_raw": 53156976,
+                "root_scope": character_scope("root", 29037)["scope"],
+                "saved_scopes": [inherited_scope(name) for name in names],
+                "options": [
+                    {
+                        "rendered_index": index,
+                        "native_option_index": index,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                    for index in range(4)
+                ],
+            }
+
+        context = context_for(first_cycle_names)
         snapshot = {"date_raw": 53156976, "active_event": {"option_count": 4}}
         event = {"event_instance_id": 45}
 
@@ -1422,6 +1426,9 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+
+        later_checks = checks_for(context_for(later_cycle_names))
+        self.assertTrue(all(later_checks.values()), later_checks)
 
         extra_scope = copy.deepcopy(context)
         extra_scope["saved_scopes"].append(inherited_scope("unrelated_scope"))

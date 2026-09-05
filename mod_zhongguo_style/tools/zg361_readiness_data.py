@@ -146,7 +146,7 @@ LIVE_BOUNDARY: Final = (
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     run_id="R106",
-    observed_at="2026-09-06 05:43 Asia/Shanghai",
+    observed_at="2026-09-06 05:46 Asia/Shanghai",
     result="RED",
     product_commit="7f17fed",
     projection="phase2-full-release-r106-7f17fed",
@@ -156,8 +156,8 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=992,
-    native_observations=270,
+    observation_days=993,
+    native_observations=272,
     drained_event_keys=(
         "zg361b2.40",
         "ep3_interactions_events.0630",
@@ -213,6 +213,7 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361ch.120",
         "zg361ch.905",
         "zg361b1.126",
+        "zg361.50",
         "zg361comp.1",
         "zg361comp.1",
         "zg361comp.1",
@@ -320,13 +321,15 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         r"Z:\b3r106_resume7\report.json",
         r"Z:\b3r106_resume8\03_promotion_source_production_entry.json",
         r"Z:\b3r106_resume8\report.json",
+        r"Z:\b3r106_resume9\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume9\report.json",
         r"Z:\p2r106\phase2-product-projection.json",
         r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
         "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 992 game days at speed 5 across 270 paused native/MCP "
-        "observations and 121 exact GREEN event drains. It reached and drained both "
+        "fatal 0. PID 30492 advanced 993 game days at speed 5 across 272 paused native/MCP "
+        "observations and 122 exact GREEN event drains. It reached and drained both "
         "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
         "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
         "then observed B1 close and Central activate before processing the annual summary and "
@@ -352,8 +355,11 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "rejecting partial or unrelated names. That recurring notice then drained GREEN; the "
         "same process advanced another 61 days before the recurring zg361.50 result notice "
         "exposed the same later-cycle self/shadow-versus-bank inheritance distinction. Its "
-        "prompt, result and manager aliases all match, so this remains harness-contract RED, "
-        "not mod RED. Healthy "
+        "prompt, result and manager aliases all match. That notice then drained GREEN; the "
+        "immediate recurring zg361.4 reaction exposed the same inherited-name distinction. "
+        "Because the reaction consumes no saved scope and keeps its exact four-option shape, "
+        "this remains harness-contract RED, not mod RED; both complete observed inheritance "
+        "sets are now bound. Healthy "
         "CK3 PID 30492 remains retained "
         "for another same-process client "
         "continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
