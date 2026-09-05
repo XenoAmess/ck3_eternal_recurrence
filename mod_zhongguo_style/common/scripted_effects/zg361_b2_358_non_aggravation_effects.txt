@@ -258,6 +258,7 @@ zg361_b2_m358_open_separate_case_effect = {
 				var:zg361_b2_m077_independent = 1
 				NOT = { var:zg361_b2_m077_reviewer = var:zg361_b2_retaliation_owner }
 				NOT = { var:zg361_b2_m077_reviewer = this }
+				var:zg361_b2_m077_reviewer = { is_alive = yes }
 			}
 			set_variable = { name = zg361_b2_separate_reviewer value = var:zg361_b2_m077_reviewer }
 			set_variable = { name = zg361_b2_separate_reviewer_independent value = 1 }

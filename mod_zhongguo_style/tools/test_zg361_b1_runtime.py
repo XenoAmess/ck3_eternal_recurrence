@@ -1480,11 +1480,24 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         # character variables require the explicit character projection.
         for localization in (self.loc_en, self.loc_zh, *self.placeholder_locs.values()):
             self.assertNotIn("ROOT.MakeScope.Var", localization)
-            self.assertIn("ROOT.Char.MakeScope.Var('zg361_b1_shadow_grade')", localization)
+            self.assertIn(
+                "ROOT.Char.MakeScope.Var('zg361_b1_shadow_gap_magnitude')",
+                localization,
+            )
+            self.assertIn(
+                "ROOT.Char.MakeScope.Var('zg361_b1_shadow_deadline_days')",
+                localization,
+            )
             self.assertIn(
                 "ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision')",
                 localization,
             )
+        # The provisional rating itself is selected in script and localized as
+        # 3.75/3.5/3.25; players no longer receive the internal 3/2/1 code.
+        for key in ("grade_375", "grade_35", "grade_325"):
+            self.assertIn(f"desc = zg361b1.201.{key}", self.events)
+            self.assertIn(f"zg361b1.201.{key}:0", self.loc_en)
+            self.assertIn(f"zg361b1.201.{key}:0", self.loc_zh)
 
     def test_jingcha_opens_cycle_and_no_longer_instantly_settles(self) -> None:
         issue = self.jingcha.split("zg361_issue_jingcha_mandate_effect = {", 1)[1]

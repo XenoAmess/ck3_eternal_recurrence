@@ -1,5 +1,5 @@
 ﻿l_simp_chinese:
  # GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
- zg361_p2c_summary_title:0 "二期考核流程已收口"
- zg361_p2c_summary_desc:0 "本轮公示后的后续事项已依次处理：完成 #high [ROOT.Var('zg361_p2c_success_n')|0]#! 项；无需处理 [ROOT.Var('zg361_p2c_na_n')|0] 项；仍未完成 [ROOT.Var('zg361_p2c_red_n')|0] 项；其中曾因所需事实尚未到达而等待 [ROOT.Var('zg361_p2c_external_n')|0] 项。未完成事项不会被记作成功。"
- zg361_p2c_summary_ack:0 "收存本轮结案记录。"
+ zg361_p2c_summary_title:0 "公示后续事项清点"
+ zg361_p2c_summary_desc:0 "官署已经清点本轮公示后的处置结果。按原定安排办结 #high [ROOT.Var('zg361_p2c_success_n')|0]#! 项；经核对无需另办 [ROOT.Var('zg361_p2c_na_n')|0] 项；尚有 [ROOT.Var('zg361_p2c_red_n')|0] 项未能办结，其中 [ROOT.Var('zg361_p2c_external_n')|0] 项是因为所需案情尚未送达。未办事项会留到下一轮重新核对，不会混入本轮功绩。"
+ zg361_p2c_summary_ack:0 "办结与未办，分别记清。"

@@ -1365,7 +1365,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
     def test_nine_localizations_have_key_parity_and_placeholders_are_honest(self) -> None:
         expected_keys = localization_keys(self.loc_en)
         self.assertEqual(expected_keys, localization_keys(self.loc_zh))
-        self.assertEqual(len(expected_keys), 6)
+        self.assertEqual(len(expected_keys), 12)
         for language in (
             "french",
             "german",
@@ -1384,6 +1384,49 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             )
         self.assertIn("English structural placeholders", self.spec)
         self.assertIn("not release-grade translations", self.spec)
+
+    def test_player_reports_explain_business_results_without_implementation_jargon(self) -> None:
+        report = top_level_block(self.events, "zg361mg.120")
+        operations = top_level_block(self.events, "zg361mg.220")
+        for key in (
+            "zg361mg.120.desc_score_only",
+            "zg361mg.120.desc_reasons_only",
+            "zg361mg.120.desc_unavailable",
+        ):
+            self.assertIn(key, report)
+        for key in (
+            "zg361mg.220.fairness_deferred",
+            "zg361mg.220.fairness_remediation",
+            "zg361mg.220.fairness_clear",
+        ):
+            self.assertIn(key, operations)
+        for reason in (
+            "校准记录",
+            "申诉改判",
+            "改进成效",
+            "任务兑现",
+            "编制运用",
+            "上下级关系修正",
+        ):
+            self.assertIn(reason, self.loc_zh)
+        for forbidden in (
+            "流水线",
+            "success domain",
+            "N/A",
+            "RED",
+            "availability",
+            "source serial",
+            "fingerprint",
+            "九宫格 code",
+            "原生任命",
+            "Workforce 回执",
+            "A/B",
+            "按A",
+            "按 A",
+        ):
+            self.assertNotIn(forbidden, self.loc_zh)
+        for value in re.findall(r':0\s+"([^"]*)"', self.loc_zh):
+            self.assertFalse(value.startswith(("。", ".", "；", ";", "，", ",")), value)
 
 
 if __name__ == "__main__":

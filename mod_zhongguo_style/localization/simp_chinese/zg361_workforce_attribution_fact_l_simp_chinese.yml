@@ -1,6 +1,6 @@
 ﻿l_simp_chinese:
- zg361workforceattributionfact.1.title:0 "请最终拍板者签署面试责任分配"
- zg361workforceattributionfact.1.desc:0 "候选人 [scope:zg361_workforce_attribution_fact_subject_scope.GetShortUIName] 的录用邀约已冻结，三张面试票也都还实名挂着。请决定后续录用质量回写由谁承担主责：[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName]、[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName]，或[scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]。你的签字会同时绑定三份证据回执，并把整整一万个基点分完；这口锅不能平均到小数点后。"
- zg361workforceattributionfact.1.option_1:0 "第一席主责：60% / 20% / 20%"
- zg361workforceattributionfact.1.option_2:0 "第二席主责：20% / 60% / 20%"
- zg361workforceattributionfact.1.option_3:0 "第三席主责：20% / 20% / 60%"
+ zg361workforceattributionfact.1.title:0 "面试责任簿等待落款"
+ zg361workforceattributionfact.1.desc:0 "候选人 [scope:zg361_workforce_attribution_fact_subject_scope.GetShortUIName] 的录用邀约已经冻结。参加面试的是 [scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName]、[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] 与 [scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]；三张实名表决及其回执都已封存。这份案卷没有面试题目、回答或独立评分细目。落款只分配日后的录用质量责任，不会把缺失的面试证据凭空补齐。"
+ zg361workforceattributionfact.1.option_1:0 "由 [scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName] 主责：60% / 20% / 20%"
+ zg361workforceattributionfact.1.option_2:0 "由 [scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] 主责：20% / 60% / 20%"
+ zg361workforceattributionfact.1.option_3:0 "由 [scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName] 主责：20% / 20% / 60%"

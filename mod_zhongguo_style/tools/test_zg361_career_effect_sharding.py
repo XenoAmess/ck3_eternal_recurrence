@@ -33,7 +33,7 @@ class CareerEffectShardingTests(unittest.TestCase):
         self.assertEqual(tuple(actual), expected)
 
     def test_career_hc_effect_boundaries(self) -> None:
-        self.assert_family(career_hc, 267)
+        self.assert_family(career_hc, 271)
 
     def test_career_learning_effect_boundaries(self) -> None:
         self.assert_family(career_learning, 125)

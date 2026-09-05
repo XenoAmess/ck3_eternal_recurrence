@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: q stage 04 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 8.
+# Boundary contract: 1-10 top-level effects; this file has 10.
 
 
 
@@ -164,6 +164,52 @@ zg361_career_hc_m127_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_04_effect = yes
+    }
+}
+
+# Low-risk portfolio default for #127; original card is the fallback.
+zg361_career_hc_m127_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            trigger_if = {
+                limit = { var:zg361_ch_player_batch_route = 1 }
+                var:zg361_ch_q_manager_hc_available >= 1
+            }
+            trigger_else = { always = yes }
+        }
+        zg361_career_hc_m127_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m128_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.128 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.127 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.127 days = 1 } }
     }
 }
 
@@ -537,6 +583,37 @@ zg361_career_hc_m128_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_04_effect = yes
+    }
+}
+
+# Low-risk portfolio default for #128; original card is the fallback.
+zg361_career_hc_m128_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m128_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            zg361_career_hc_finalize_q_portfolio_effect = yes
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.128 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.128 days = 1 } }
     }
 }
 

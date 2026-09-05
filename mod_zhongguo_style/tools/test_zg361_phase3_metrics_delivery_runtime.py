@@ -87,6 +87,10 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertEqual(set(self.specs), EXPECTED_IDS)
         self.assertEqual(len(gen.MECHANISMS), 35)
         self.assertEqual(sum(map(len, gen.DOMAIN_ORDER.values())), 35)
+        self.assertEqual(gen.PLAYER_BACKGROUND_IDS | gen.PLAYER_VISIBLE_IDS, EXPECTED_IDS)
+        self.assertFalse(gen.PLAYER_BACKGROUND_IDS & gen.PLAYER_VISIBLE_IDS)
+        self.assertEqual(len(gen.PLAYER_BACKGROUND_IDS), 22)
+        self.assertEqual(len(gen.PLAYER_VISIBLE_IDS), 13)
 
     def test_domain_ranges(self) -> None:
         self.assertEqual({mid for mid, spec in self.specs.items() if spec.domain == "aa"}, set(range(229, 242)))
@@ -135,10 +139,10 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical_bytes = gen.render_effects()
-        self.assertEqual(len(historical_bytes), 1_860_262)
+        self.assertEqual(len(historical_bytes), 1_915_858)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "4cae4834ddbc6fde78df08730ce84e5f14d316be5a464e9df2ba5f5c32a9fa79",
+            "a06d8f47b10fab50989d7799c0d671fa67f3cd4912958152086551be006ade96",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -148,10 +152,10 @@ class GeneratorContractTests(unittest.TestCase):
         configured_names = [
             name for _filename, names in gen.EFFECT_GROUPS for name in names
         ]
-        self.assertEqual(len(historical_names), 192)
-        self.assertEqual(len(set(historical_names)), 192)
-        self.assertEqual(len(configured_names), 192)
-        self.assertEqual(len(set(configured_names)), 192)
+        self.assertEqual(len(historical_names), 195)
+        self.assertEqual(len(set(historical_names)), 195)
+        self.assertEqual(len(configured_names), 195)
+        self.assertEqual(len(set(configured_names)), 195)
         self.assertEqual(set(configured_names), set(historical_names))
 
         for filename, expected_names in gen.EFFECT_GROUPS:
@@ -233,7 +237,10 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertEqual(len(route_defs), 105)
         self.assertEqual({int(mid) for mid, _ in route_defs}, EXPECTED_IDS)
         self.assertEqual({int(mid) for mid in consumer_defs}, EXPECTED_IDS)
-        self.assertEqual({int(mid) for mid in event_defs}, EXPECTED_IDS | set(gen.QUEUE_EVENTS.values()))
+        self.assertEqual(
+            {int(mid) for mid in event_defs},
+            EXPECTED_IDS | set(gen.QUEUE_EVENTS.values()) | {gen.PLAYER_MODE_EVENT},
+        )
 
     def test_each_event_has_exactly_three_options(self) -> None:
         for mid in sorted(EXPECTED_IDS):
@@ -694,7 +701,14 @@ class GeneratorContractTests(unittest.TestCase):
                         self.assertEqual(event.count(edge), 3)
                         self.assertNotIn(f"trigger_event = {{ id = zg361p3.{next_mid} }}", event)
                     else:
-                        self.assertNotIn("trigger_event", event)
+                        retry_ids = {
+                            int(event_id)
+                            for event_id in re.findall(
+                                r"trigger_event = \{ id = zg361p3\.(\d+) days = 1 \}",
+                                event,
+                            )
+                        }
+                        self.assertEqual(retry_ids, {mid})
 
     def test_closed_domain_queues_next_domain_and_aj_finalizes(self) -> None:
         final_by_domain = {domain: order[-1] for domain, order in gen.DOMAIN_ORDER.items()}
@@ -738,14 +752,191 @@ class GeneratorContractTests(unittest.TestCase):
 
     def test_same_day_visible_entrypoints_are_bounded(self) -> None:
         direct = re.findall(r"trigger_event = \{ id = zg361p3\.(\d+) \}", self.effects + self.events)
-        self.assertEqual({int(mid) for mid in direct}, {order[0] for order in gen.DOMAIN_ORDER.values()})
+        self.assertEqual(
+            {int(mid) for mid in direct},
+            {gen.PLAYER_MODE_EVENT, gen.DOMAIN_ORDER["ag"][0], gen.DOMAIN_ORDER["aj"][0]},
+        )
         for domain, order in gen.DOMAIN_ORDER.items():
             launch = block(self.effects, f"zg361_p3_{domain}_launch_effect")
-            self.assertEqual(launch.count(f"trigger_event = {{ id = zg361p3.{order[0]} }}"), 1)
+            expected = gen.PLAYER_MODE_EVENT if domain == "aa" else order[0]
+            self.assertEqual(launch.count(f"trigger_event = {{ id = zg361p3.{expected} }}"), 1)
         adapter = block(self.effects, "zg361_p3_open_portfolio_effect")
         self.assertEqual(adapter.count("zg361_p3_aa_launch_effect = yes"), 1)
         self.assertNotIn("zg361_p3_ag_launch_effect", adapter)
         self.assertNotIn("zg361_p3_aj_launch_effect", adapter)
+
+    def test_player_popup_split_is_frozen_at_twenty_two_background_thirteen_visible(self) -> None:
+        self.assertEqual(
+            gen.PLAYER_BACKGROUND_IDS,
+            {
+                230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
+                301, 302, 303, 304, 305, 306, 307, 308,
+                334, 336, 339, 342,
+            },
+        )
+        self.assertEqual(
+            gen.PLAYER_VISIBLE_IDS,
+            {
+                229, 240, 241,
+                309, 310, 311,
+                335, 337, 338, 340, 341, 343, 344,
+            },
+        )
+        # Batch A/B/C: one mode selector plus thirteen required rulings.
+        self.assertEqual(1 + len(gen.PLAYER_VISIBLE_IDS), 14)
+        # Mode D preserves all thirty-five original business cards, plus the
+        # one explicit selector through which the player requests that path.
+        self.assertEqual(1 + len(EXPECTED_IDS), 36)
+        for domain, order in gen.DOMAIN_ORDER.items():
+            self.assertIn(order[-1], gen.PLAYER_VISIBLE_IDS, domain)
+
+    def test_player_mode_event_is_guarded_and_buttons_state_complete_actions(self) -> None:
+        event = block(self.events, f"zg361p3.{gen.PLAYER_MODE_EVENT}")
+        self.assertEqual(event.count("\n\toption = {"), 4)
+        self.assertIn("is_ai = no", event)
+        self.assertIn("zg361_case_kernel_full_guard_trigger", event)
+        self.assertIn("EXPECTED_STATE = 1", event)
+        self.assertNotRegex(event, r"zg361_p3_m\d+_route_[abc]_effect")
+        for mode, letter in enumerate("abcd", 1):
+            self.assertIn(f"name = zg361p3.{gen.PLAYER_MODE_EVENT}.{letter}", event)
+            self.assertIn(f"name = zg361_p3_player_batch_mode value = {mode}", event)
+        self.assertEqual(event.count("zg361_p3_aa_continue_player_effect = yes"), 4)
+
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"
+        )
+        self.assertEqual(chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.t"], "本轮办案方式")
+        self.assertIn("二十二项", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.desc"])
+        self.assertIn("十三项", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.desc"])
+        self.assertIn("正式案卷、期限与回执", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.desc"])
+        self.assertIn("证据完整、可复核", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.a"])
+        self.assertIn("以迅速交付为先", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.b"])
+        self.assertIn("每件各记一笔下周期制度债", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.c"])
+        self.assertIn("全部三十五项逐案呈报", chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.d"])
+        mode_copy = "\n".join(
+            chinese[f"zg361p3.{gen.PLAYER_MODE_EVENT}.{key}"]
+            for key in ("t", "desc", "a", "b", "c", "d")
+        )
+        for forbidden in (
+            "后台", "首要处置", "备选处置", "失败项", "原案", "原始案卷", "弹窗", "批处理",
+        ):
+            self.assertNotIn(forbidden, mode_copy)
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_phase3_metrics_delivery_l_english.yml"
+        )
+        english_mode_copy = "\n".join(
+            english[f"zg361p3.{gen.PLAYER_MODE_EVENT}.{key}"]
+            for key in ("t", "desc", "a", "b", "c", "d")
+        ).lower()
+        for forbidden in ("background", "original card", "failed item", "batch"):
+            self.assertNotIn(forbidden, english_mode_copy)
+
+    def test_batch_dispatch_calls_original_cores_and_falls_back_to_exact_card(self) -> None:
+        for domain, order in gen.DOMAIN_ORDER.items():
+            dispatch = block(self.effects, f"zg361_p3_{domain}_continue_player_effect")
+            domain_background = [mid for mid in order if mid in gen.PLAYER_BACKGROUND_IDS]
+            domain_visible = [mid for mid in order if mid in gen.PLAYER_VISIBLE_IDS]
+            with self.subTest(domain=domain):
+                self.assertNotIn("record_operation", dispatch)
+                self.assertNotIn("_advance_", dispatch)
+                for mid in domain_background:
+                    for letter, mode in zip("abc", (1, 2, 3)):
+                        self.assertEqual(
+                            dispatch.count(f"zg361_p3_m{mid}_route_{letter}_effect = {{"),
+                            1,
+                        )
+                        self.assertIn(f"var:zg361_p3_player_batch_mode = {mode}", dispatch)
+                    self.assertGreaterEqual(
+                        dispatch.count(f"trigger_event = {{ id = zg361p3.{mid} days = 1 }}"),
+                        2,
+                    )
+                    self.assertIn(
+                        f"name = zg361_p3_player_batch_fallback_mid value = {mid}",
+                        dispatch,
+                    )
+                for mid in domain_visible:
+                    self.assertNotRegex(dispatch, rf"zg361_p3_m{mid}_route_[abc]_effect")
+                    self.assertEqual(
+                        dispatch.count(f"trigger_event = {{ id = zg361p3.{mid} days = 1 }}"),
+                        1,
+                    )
+                self.assertEqual(
+                    len(re.findall(
+                        r"NOT = \{\s+AND = \{\s+has_variable = zg361_p3_runtime_applied",
+                        dispatch,
+                    )),
+                    len(domain_background),
+                )
+
+    def test_batch_mode_c_and_manual_c_share_visible_policy_debt_counter(self) -> None:
+        dispatches = "\n".join(
+            block(self.effects, f"zg361_p3_{domain}_continue_player_effect")
+            for domain in gen.DOMAIN_ORDER
+        )
+        self.assertEqual(
+            dispatches.count(
+                "change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }"
+            ),
+            len(gen.PLAYER_BACKGROUND_IDS),
+        )
+        for mid in EXPECTED_IDS:
+            event = block(self.events, f"zg361p3.{mid}")
+            self.assertEqual(
+                event.count(
+                    "change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }"
+                ),
+                1,
+            )
+        initializer = block(self.effects, "zg361_p3_initialize_portfolio_effect")
+        self.assertIn(
+            "name = zg361_p3_player_policy_debt_disclosed_n value = 0",
+            initializer,
+        )
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"
+        )
+        for mid in gen.PLAYER_VISIBLE_IDS:
+            self.assertIn(
+                "zg361_p3_player_policy_debt_disclosed_n",
+                chinese[f"zg361p3.{mid}.desc"],
+            )
+
+    def test_batch_continuation_and_mode_d_original_chain_coexist(self) -> None:
+        for domain, order in gen.DOMAIN_ORDER.items():
+            launch = block(self.effects, f"zg361_p3_{domain}_launch_effect")
+            if domain == "aa":
+                self.assertIn(f"id = zg361p3.{gen.PLAYER_MODE_EVENT}", launch)
+            else:
+                self.assertIn("var:zg361_p3_player_batch_mode < 4", launch)
+                self.assertIn(f"zg361_p3_{domain}_continue_player_effect = yes", launch)
+                self.assertIn(f"id = zg361p3.{order[0]}", launch)
+
+            for index, mid in enumerate(order[:-1]):
+                next_mid = order[index + 1]
+                event = block(self.events, f"zg361p3.{mid}")
+                with self.subTest(domain=domain, mid=mid):
+                    self.assertEqual(
+                        event.count(f"zg361_p3_{domain}_continue_player_effect = yes"),
+                        3,
+                    )
+                    self.assertEqual(
+                        event.count(f"trigger_event = {{ id = zg361p3.{next_mid} days = 1 }}"),
+                        3,
+                    )
+                    self.assertEqual(event.count("var:zg361_p3_player_batch_mode < 4"), 3)
+
+    def test_every_manual_route_failure_returns_to_the_exact_original_event(self) -> None:
+        for mid in EXPECTED_IDS:
+            event = block(self.events, f"zg361p3.{mid}")
+            with self.subTest(mid=mid):
+                self.assertEqual(
+                    event.count(f"trigger_event = {{ id = zg361p3.{mid} days = 1 }}"),
+                    3,
+                )
+                self.assertEqual(
+                    event.count(f"name = zg361_p3_player_batch_fallback_mid value = {mid}"),
+                    3,
+                )
 
     def test_ai_portfolio_stays_background_only(self) -> None:
         for domain in gen.DOMAIN_ORDER:
@@ -983,12 +1174,89 @@ class GeneratorContractTests(unittest.TestCase):
         expected_keys = {
             key
             for mid in EXPECTED_IDS
-            for key in (f"zg361p3.{mid}.t", f"zg361p3.{mid}.desc", f"zg361p3.{mid}.a", f"zg361p3.{mid}.b", f"zg361p3.{mid}.c")
+            for key in (
+                f"zg361p3.{mid}.t",
+                f"zg361p3.{mid}.desc",
+                f"zg361p3.{mid}.a",
+                f"zg361p3.{mid}.b",
+                f"zg361p3.{mid}.c",
+                f"zg361p3.{mid}.c.tt",
+            )
         }
+        expected_keys.update(
+            f"zg361p3.{gen.PLAYER_MODE_EVENT}.{key}"
+            for key in ("t", "desc", "a", "b", "c", "d")
+        )
         for language, mapping in rows.items():
             with self.subTest(language=language):
                 self.assertEqual(set(mapping), expected_keys)
         self.assertNotEqual(rows["simp_chinese"], rows["english"])
+        for mid in EXPECTED_IDS:
+            with self.subTest(mid=mid, route="c"):
+                event = block(read(EVENTS_PATH), f"zg361p3.{mid}")
+                self.assertIn(f"custom_tooltip = zg361p3.{mid}.c.tt", event)
+                self.assertEqual(rows["english"][f"zg361p3.{mid}.c"], gen.DEFER_ROUTE_EN)
+                self.assertEqual(rows["simp_chinese"][f"zg361p3.{mid}.c"], gen.DEFER_ROUTE_CN)
+                self.assertEqual(rows["english"][f"zg361p3.{mid}.c.tt"], gen.DEFER_TOOLTIP_EN)
+                self.assertEqual(rows["simp_chinese"][f"zg361p3.{mid}.c.tt"], gen.DEFER_TOOLTIP_CN)
+
+    def test_player_copy_separates_case_context_from_decision_buttons(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_phase3_metrics_delivery_l_english.yml"
+        )
+        banned_cn = ("路线甲", "路线乙", "路线丙", "本卡承接", "按钮写明", "按A", "按B", "按C")
+        banned_en = ("Routes A", "route C", "This card follows", "records its choice immediately")
+        for spec in gen.MECHANISMS:
+            with self.subTest(mid=spec.mid):
+                desc_cn = chinese[f"zg361p3.{spec.mid}.desc"]
+                desc_en = english[f"zg361p3.{spec.mid}.desc"]
+                self.assertNotIn(desc_cn[0], "。！？，、；：.!?;:[$@")
+                self.assertIn(f"[scope:zg361_p3_{spec.domain}_subject.GetShortUIName]", desc_cn)
+                self.assertIn(f"[scope:zg361_p3_{spec.domain}_owner.GetShortUIName]", desc_cn)
+                self.assertTrue(desc_en.startswith(gen.CASE_OPENING_EN[spec.domain]))
+                self.assertNotIn(gen.DEFER_ROUTE_CN, desc_cn)
+                self.assertNotIn(gen.DEFER_ROUTE_EN, desc_en)
+                for token in banned_cn:
+                    self.assertNotIn(token, desc_cn)
+                for token in banned_en:
+                    self.assertNotIn(token, desc_en)
+                for route in spec.routes_cn[:2]:
+                    self.assertNotIn(route, desc_cn)
+                for route in spec.routes_en[:2]:
+                    self.assertNotIn(route, desc_en)
+
+    def test_m342_external_blocker_button_names_action_and_exact_consequences(self) -> None:
+        expected_cn = "指定独立复核人负责解阻；阻塞工时归于团队无法控制的阻碍，交付团队不扣分。"
+        expected_en = (
+            "Name the independent reviewer as unblock owner; assign all blocked time to "
+            "obstacles beyond the delivery team's control and apply no team penalty."
+        )
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_phase3_metrics_delivery_l_english.yml"
+        )
+        self.assertEqual(self.specs[342].routes_cn[0], expected_cn)
+        self.assertEqual(self.specs[342].routes_en[0], expected_en)
+        self.assertEqual(chinese["zg361p3.342.a"], expected_cn)
+        self.assertEqual(english["zg361p3.342.a"], expected_en)
+        self.assertNotIn("计入外部依赖。", "\n".join(chinese.values()))
+        self.assertNotIn("外部依赖", chinese["zg361p3.342.a"])
+        self.assertNotIn("Charge the external dependency.", "\n".join(english.values()))
+        self.assertNotIn("external", english["zg361p3.342.a"].lower())
+
+        route = block(self.effects, "zg361_p3_m342_route_a_effect")
+        self.assertIn(
+            "name = zg361_p3_m342_blocker_owner value = var:zg361_p3_cross_reviewer",
+            route,
+        )
+        self.assertIn("name = zg361_p3_m342_team_blocker_bps value = 0", route)
+        self.assertIn("name = zg361_p3_m342_external_blocker_bps value = 10000", route)
+        self.assertIn("name = zg361_p3_m342_executor_low_output_penalty value = 0", route)
 
     def test_seven_daily_languages_are_exact_english_placeholders(self) -> None:
         english = loc_rows(MOD_ROOT / "localization" / "english" / "zg361_phase3_metrics_delivery_l_english.yml")

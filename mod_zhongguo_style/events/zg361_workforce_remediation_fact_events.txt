@@ -44,12 +44,6 @@ zg361workforceremediationfact.1 = {
 		}
 	}
 	option = {
-		name = zg361workforceremediationfact.1.complete
-		scope:zg361_workforce_remediation_fact_ticket_subject = {
-			zg361_workforce_remediation_fact_settle_effect = { ACTOR = root RESULT = 1 }
-		}
-	}
-	option = {
 		name = zg361workforceremediationfact.1.fail
 		scope:zg361_workforce_remediation_fact_ticket_subject = {
 			zg361_workforce_remediation_fact_settle_effect = { ACTOR = root RESULT = 2 }

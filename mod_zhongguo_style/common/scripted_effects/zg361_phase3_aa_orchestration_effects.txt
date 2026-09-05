@@ -320,6 +320,826 @@ zg361_p3_aa_run_authorized_ai_effect = {
 	}
 }
 
+zg361_p3_aa_continue_player_effect = {
+	remove_variable = zg361_p3_player_dispatch_blocked
+	set_variable = { name = zg361_p3_player_dispatch_blocked value = 0 }
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m229_receipt_choice }
+		}
+		scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.229 days = 1 } }
+		set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m230_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m230_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m230_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m230_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.230 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.230 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 230 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m231_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m231_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m231_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m231_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.231 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.231 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 231 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m232_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m232_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m232_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m232_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.232 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.232 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 232 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m233_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m233_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m233_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m233_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.233 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.233 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 233 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m234_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m234_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m234_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m234_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.234 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.234 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 234 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m235_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m235_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m235_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m235_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.235 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.235 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 235 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m236_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m236_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m236_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m236_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.236 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.236 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 236 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m237_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m237_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m237_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m237_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.237 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.237 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 237 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m240_receipt_choice }
+		}
+		scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.240 days = 1 } }
+		set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m238_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m238_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m238_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m238_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.238 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.238 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 238 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m239_receipt_choice }
+		}
+		if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 1
+				}
+			}
+			zg361_p3_m239_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 2
+				}
+			}
+			zg361_p3_m239_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else_if = {
+			limit = {
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			zg361_p3_m239_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		else = {
+			# Missing/invalid mode is itself a reason to fall back to the original card.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.239 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+		}
+		if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				NOT = {
+					AND = {
+						has_variable = zg361_p3_runtime_applied
+						var:zg361_p3_runtime_applied = 1
+					}
+				}
+			}
+			# Preserve the exact item and its three original buttons after any
+			# tuple-guard, dependency or resource failure.
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.239 days = 1 } }
+			set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+			root = { set_variable = { name = zg361_p3_player_batch_fallback_mid value = 239 } }
+		}
+		else_if = {
+			limit = {
+				var:zg361_p3_player_dispatch_blocked = 0
+				root = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode = 3
+				}
+			}
+			root = { change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 } }
+		}
+	}
+	if = {
+		limit = {
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = { has_variable = zg361_p3_m241_receipt_choice }
+		}
+		scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.241 days = 1 } }
+		set_variable = { name = zg361_p3_player_dispatch_blocked value = 1 }
+	}
+	remove_variable = zg361_p3_player_dispatch_blocked
+}
+
 zg361_p3_aa_launch_effect = {
 	remove_variable = zg361_p3_runtime_applied
 	zg361_case_aa_open_effect = yes
@@ -338,7 +1158,7 @@ zg361_p3_aa_launch_effect = {
 		}
 		else_if = {
 			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.229 } }
+			scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.9000 } }
 		}
 	}
 }

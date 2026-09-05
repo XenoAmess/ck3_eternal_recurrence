@@ -3317,7 +3317,23 @@ zg361mg.120 = {
 	type = character_event
 	theme = vassal
 	title = zg361mg.120.t
-	desc = zg361mg.120.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:zg361_mg_report_score_available = 1 var:zg361_mg_report_reason_available = 1 }
+				desc = zg361mg.120.desc
+			}
+			triggered_desc = {
+				trigger = { var:zg361_mg_report_score_available = 1 }
+				desc = zg361mg.120.desc_score_only
+			}
+			triggered_desc = {
+				trigger = { var:zg361_mg_report_reason_available = 1 }
+				desc = zg361mg.120.desc_reasons_only
+			}
+			desc = zg361mg.120.desc_unavailable
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_mg_f_ticket_owner
@@ -3377,7 +3393,20 @@ zg361mg.220 = {
 	type = character_event
 	theme = stewardship
 	title = zg361mg.220.t
-	desc = zg361mg.220.desc
+	desc = {
+		desc = zg361mg.220.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:zg361_mg_m354_receipt_choice = 3 }
+				desc = zg361mg.220.fairness_deferred
+			}
+			triggered_desc = {
+				trigger = { var:zg361_mg_fairness_gaming = 1 }
+				desc = zg361mg.220.fairness_remediation
+			}
+			desc = zg361mg.220.fairness_clear
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_mg_ak_ticket_owner
@@ -3420,22 +3449,34 @@ zg361mg.250 = {
 ENGLISH_LOC = r'''
 l_english:
  zg361mg.120.t:0 "Your Manager Performance Record"
- zg361mg.120.desc:0 "Your direct superior has closed the manager review. Manager score: #high [ROOT.MakeScope.Var('zg361_mg_report_manager_score').GetValue|0]#!; accumulated profile reasons: [ROOT.MakeScope.Var('zg361_mg_report_reason_total').GetValue|0]. If the case lacks enough frozen history for a placement judgment, no placement is claimed. A Jingcha refusal, when present, is listed once as exactly -50."
- zg361mg.120.a:0 "I have read the score and its reasons."
+ zg361mg.120.desc:0 "The settled record gives you a manager score of #high [ROOT.MakeScope.Var('zg361_mg_report_manager_score').GetValue|0]#!. Its readable weighted grounds are calibration [ROOT.MakeScope.Var('zg361_mg_reason_calibration').GetValue|0], appeal reversals [ROOT.MakeScope.Var('zg361_mg_reason_appeal').GetValue|0], improvement outcomes [ROOT.MakeScope.Var('zg361_mg_reason_pip').GetValue|0], target delivery [ROOT.MakeScope.Var('zg361_mg_reason_delivery').GetValue|0], staffing use [ROOT.MakeScope.Var('zg361_mg_reason_hc').GetValue|0], and relationship adjustment [ROOT.MakeScope.Var('zg361_mg_reason_relationship_once').GetValue|0]. Together they produce an explanatory total of [ROOT.MakeScope.Var('zg361_mg_report_reason_total').GetValue|0]. A Jingcha refusal, when present, is charged once in the overall score."
+ zg361mg.120.desc_score_only:0 "The settled record gives you a manager score of #high [ROOT.MakeScope.Var('zg361_mg_report_manager_score').GetValue|0]#!, but the surviving evidence is not sufficient to provide a reliable breakdown. This cycle therefore records the score without inventing reasons or making a placement judgment; a later complete review may supply the missing explanation."
+ zg361mg.120.desc_reasons_only:0 "The surviving record is not sufficient to publish a reliable overall score, but it does support these weighted grounds: calibration [ROOT.MakeScope.Var('zg361_mg_reason_calibration').GetValue|0], appeal reversals [ROOT.MakeScope.Var('zg361_mg_reason_appeal').GetValue|0], improvement outcomes [ROOT.MakeScope.Var('zg361_mg_reason_pip').GetValue|0], target delivery [ROOT.MakeScope.Var('zg361_mg_reason_delivery').GetValue|0], staffing use [ROOT.MakeScope.Var('zg361_mg_reason_hc').GetValue|0], and relationship adjustment [ROOT.MakeScope.Var('zg361_mg_reason_relationship_once').GetValue|0]. Their explanatory total is [ROOT.MakeScope.Var('zg361_mg_report_reason_total').GetValue|0]. No placement judgment is made from this partial record."
+ zg361mg.120.desc_unavailable:0 "Too little settled evidence survives to publish either a manager score or its grounds. This cycle is archived as incomplete and makes no placement judgment; the next complete review must establish the missing record before reaching a conclusion."
+ zg361mg.120.a:0 "Archive exactly what this record can support."
  zg361mg.220.t:0 "Performance-System Operations Report"
- zg361mg.220.desc:0 "This cycle's management review is archived. Capacity remaining for further governance work: #high [ROOT.MakeScope.Var('zg361_mg_admin_capacity_remaining').GetValue|0]#!; records reviewed: [ROOT.MakeScope.Var('zg361_mg_audit_sample_n').GetValue|0]. Any confirmed manipulation will be handled in its own case rather than hidden behind a code."
- zg361mg.220.a:0 "Archive the receipts."
+ zg361mg.220.desc:0 "The office reviewed [ROOT.MakeScope.Var('zg361_mg_audit_sample_n').GetValue|0] records this cycle. After forms, meetings, appeals, and calibration work, #high [ROOT.MakeScope.Var('zg361_mg_admin_capacity_remaining').GetValue|0]#! governance capacity remains. The cost of that work will be carried into the next manager review."
+ zg361mg.220.fairness_deferred:0 "No substantive fairness comparison was completed this cycle. The underlying records remain on file for the next review."
+ zg361mg.220.fairness_remediation:0 "Comparison against the original appeals, reversals, and normal departures found that the reported figures did not match the record. A correction plan is now due for review in the next assessment cycle."
+ zg361mg.220.fairness_clear:0 "Comparison against the original appeals, reversals, and normal departures found no discrepancy that currently requires correction."
+ zg361mg.220.a:0 "File the findings and carry forward the stated follow-up."
 '''
 
 
 CHINESE_LOC = r'''
 l_simp_chinese:
  zg361mg.120.t:0 "你的管理者绩效案卷"
- zg361mg.120.desc:0 "直属上司已经完成对你的管理者考核。管理绩效分：#high [ROOT.MakeScope.Var('zg361_mg_report_manager_score').GetValue|0]#!；画像理由累计：[ROOT.MakeScope.Var('zg361_mg_report_reason_total').GetValue|0]。若冻结历史尚不足以判断任职位置，本案不会假称已有结论。若你拒办京察，案卷会单独列出一次性的 -50。"
- zg361mg.120.a:0 "分数和理由都写明白了，我已阅。"
+ zg361mg.120.desc:0 "案卷将你的本轮管理总评定为 #high [ROOT.MakeScope.Var('zg361_mg_report_manager_score').GetValue|0]#!。这不是一枚没有来由的数字：校准记录贡献 [ROOT.MakeScope.Var('zg361_mg_reason_calibration').GetValue|0]，申诉改判贡献 [ROOT.MakeScope.Var('zg361_mg_reason_appeal').GetValue|0]，改进成效贡献 [ROOT.MakeScope.Var('zg361_mg_reason_pip').GetValue|0]，任务兑现贡献 [ROOT.MakeScope.Var('zg361_mg_reason_delivery').GetValue|0]，编制运用贡献 [ROOT.MakeScope.Var('zg361_mg_reason_hc').GetValue|0]，上下级关系修正贡献 [ROOT.MakeScope.Var('zg361_mg_reason_relationship_once').GetValue|0]；六项加权说明合计 [ROOT.MakeScope.Var('zg361_mg_report_reason_total').GetValue|0]。若本轮曾拒办京察，该项只在总评中扣除一次。"
+ zg361mg.120.desc_score_only:0 "案卷将你的本轮管理总评定为 #high [ROOT.MakeScope.Var('zg361_mg_report_manager_score').GetValue|0]#!，但现存记录不足以拆出可靠依据。本轮只登记分数，不编造理由，也不据此判断任职位置；待下次取得完整复核记录后再补做说明。"
+ zg361mg.120.desc_reasons_only:0 "现存记录不足以发布可靠的管理总评，但足以列明已经核对的依据：校准记录贡献 [ROOT.MakeScope.Var('zg361_mg_reason_calibration').GetValue|0]，申诉改判贡献 [ROOT.MakeScope.Var('zg361_mg_reason_appeal').GetValue|0]，改进成效贡献 [ROOT.MakeScope.Var('zg361_mg_reason_pip').GetValue|0]，任务兑现贡献 [ROOT.MakeScope.Var('zg361_mg_reason_delivery').GetValue|0]，编制运用贡献 [ROOT.MakeScope.Var('zg361_mg_reason_hc').GetValue|0]，上下级关系修正贡献 [ROOT.MakeScope.Var('zg361_mg_reason_relationship_once').GetValue|0]；六项加权说明合计 [ROOT.MakeScope.Var('zg361_mg_report_reason_total').GetValue|0]。这份残缺记录不用于判断任职位置。"
+ zg361mg.120.desc_unavailable:0 "现存的结案材料太少，既不足以发布管理总评，也不足以列出可信理由。本轮只能如实记作材料不全，不判断任职位置；下次完整复核必须先补齐依据再下结论。"
+ zg361mg.120.a:0 "案卷能证明多少，就归档多少。"
  zg361mg.220.t:0 "绩效制度运营报告"
- zg361mg.220.desc:0 "本轮管理者考核已经归档。尚可投入后续治理的精力：#high [ROOT.MakeScope.Var('zg361_mg_admin_capacity_remaining').GetValue|0]#!；已复核记录：[ROOT.MakeScope.Var('zg361_mg_audit_sample_n').GetValue|0] 份。若确认有人操弄公平指标，将另立案件说明，不再用代码代替结论。"
- zg361mg.220.a:0 "收好收据，下轮再校准。"
+ zg361mg.220.desc:0 "官署本轮复核了 [ROOT.MakeScope.Var('zg361_mg_audit_sample_n').GetValue|0] 份记录。办完表册、例会、申诉和校准事务后，尚余 #high [ROOT.MakeScope.Var('zg361_mg_admin_capacity_remaining').GetValue|0]#! 点治理精力；本轮耗费将在下一次管理者考核中结算。"
+ zg361mg.220.fairness_deferred:0 "本轮没有完成实质性的公平性对照，相关底账会保留到下一次复核。"
+ zg361mg.220.fairness_remediation:0 "把申诉、改判与正常离任的原始记录逐项对照后，官署发现呈报数字与底账不符。整改方案必须在下一考核期接受复核。"
+ zg361mg.220.fairness_clear:0 "把申诉、改判与正常离任的原始记录逐项对照后，官署没有发现需要立即整改的差异。"
+ zg361mg.220.a:0 "结论照实归档，后续事项留待下轮办理。"
 '''
 
 

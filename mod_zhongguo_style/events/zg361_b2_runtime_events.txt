@@ -14,7 +14,6 @@ zg361b2.40 = {
 			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 2 } desc = zg361b2.40.task.capability }
 			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 3 } desc = zg361b2.40.task.collaboration }
 		}
-		desc = zg361b2.40.resources
 	}
 	trigger = {
 		is_ai = no
@@ -39,7 +38,28 @@ zg361b2.50 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.50.t
-	desc = zg361b2.50.desc
+	desc = {
+		desc = zg361b2.50.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade = 3 } desc = zg361b2.50.grade.375 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 2 } desc = zg361b2.50.grade.350 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 1 } desc = zg361b2.50.grade.325 }
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.50.grade.unknown }
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 0 } desc = zg361b2.50.reason.0 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 1 } desc = zg361b2.50.reason.1 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 2 } desc = zg361b2.50.reason.2 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 3 } desc = zg361b2.50.reason.3 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 4 } desc = zg361b2.50.reason.4 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 5 } desc = zg361b2.50.reason.5 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 6 } desc = zg361b2.50.reason.6 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 7 } desc = zg361b2.50.reason.7 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 8 } desc = zg361b2.50.reason.8 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 9 } desc = zg361b2.50.reason.9 }
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.50.reason.unknown }
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_b2_escalation_owner
@@ -723,6 +743,42 @@ zg361b2.160 = {
 	desc = {
 		desc = zg361b2.160.desc
 		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_variable = zg361_b2_retaliation_new_fact_kpi
+					has_variable = zg361_b2_retaliation_new_fact_rank
+					has_variable = zg361_b2_retaliation_new_fact_cohort
+					has_variable = zg361_b2_retaliation_new_fact_case
+				}
+				desc = zg361b2.160.fact
+			}
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.160.fact.unknown }
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 0 } desc = zg361b2.160.reason.0 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 1 } desc = zg361b2.160.reason.1 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 2 } desc = zg361b2.160.reason.2 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 3 } desc = zg361b2.160.reason.3 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 4 } desc = zg361b2.160.reason.4 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 5 } desc = zg361b2.160.reason.5 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 6 } desc = zg361b2.160.reason.6 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 7 } desc = zg361b2.160.reason.7 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 8 } desc = zg361b2.160.reason.8 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 9 } desc = zg361b2.160.reason.9 }
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.160.reason.unknown }
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:zg361_b2_separate_reviewer_independent = 1
+					has_variable = zg361_b2_separate_reviewer
+					var:zg361_b2_separate_reviewer = { is_alive = yes }
+				}
+				desc = zg361b2.160.reviewer
+			}
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.160.reviewer.unknown }
+		}
+		first_valid = {
 			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 1 } desc = zg361b2.160.action.purge }
 			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 2 } desc = zg361b2.160.action.retire }
 			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 3 } desc = zg361b2.160.action.demote }
@@ -824,6 +880,32 @@ zg361b2.162 = {
 						var:zg361_b2_separate_reviewer_independent = 1
 						has_variable = zg361_b2_separate_reviewer
 						var:zg361_b2_retaliation_new_fact = 1
+						has_variable = zg361_b2_retaliation_new_fact_cycle
+						has_variable = zg361_b2_retaliation_new_fact_case
+						has_variable = zg361_b2_retaliation_new_fact_grade
+						has_variable = zg361_b2_retaliation_new_fact_kpi
+						has_variable = zg361_b2_retaliation_new_fact_rank
+						has_variable = zg361_b2_retaliation_new_fact_cohort
+						has_variable = zg361_b2_retaliation_new_fact_reason
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_grade
+						has_variable = zg361_result_kpi_frozen
+						has_variable = zg361_result_rank_frozen
+						has_variable = zg361_result_cohort_n_frozen
+						has_variable = zg361_result_grade_reason
+						var:zg361_result_cycle_serial = var:zg361_b2_retaliation_new_fact_cycle
+						var:zg361_result_case_serial = var:zg361_b2_retaliation_new_fact_case
+						var:zg361_result_grade = var:zg361_b2_retaliation_new_fact_grade
+						var:zg361_result_kpi_frozen = var:zg361_b2_retaliation_new_fact_kpi
+						var:zg361_result_rank_frozen = var:zg361_b2_retaliation_new_fact_rank
+						var:zg361_result_cohort_n_frozen = var:zg361_b2_retaliation_new_fact_cohort
+						var:zg361_result_grade_reason = var:zg361_b2_retaliation_new_fact_reason
+						var:zg361_b2_separate_reviewer = {
+							is_alive = yes
+							NOT = { this = scope:zg361_b2_separate_deadline_owner }
+							NOT = { this = scope:zg361_b2_separate_deadline_subject }
+						}
 					}
 					set_variable = { name = zg361_b2_separate_review_outcome value = 1 }
 					set_variable = { name = zg361_b2_separate_notice_state value = 3 }

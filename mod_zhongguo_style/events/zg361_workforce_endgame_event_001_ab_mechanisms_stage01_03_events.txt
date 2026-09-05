@@ -35,6 +35,7 @@ zg361we.242 = {
 	}
 	option = {
 		name = zg361we.242.a
+		custom_tooltip = zg361we.242.a.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m242_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -50,6 +51,7 @@ zg361we.242 = {
 	}
 	option = {
 		name = zg361we.242.b
+		custom_tooltip = zg361we.242.b.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m242_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -65,6 +67,7 @@ zg361we.242 = {
 	}
 	option = {
 		name = zg361we.242.c
+		custom_tooltip = zg361we.242.c.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m242_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -112,6 +115,7 @@ zg361we.243 = {
 	}
 	option = {
 		name = zg361we.243.a
+		custom_tooltip = zg361we.243.a.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m243_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -127,6 +131,7 @@ zg361we.243 = {
 	}
 	option = {
 		name = zg361we.243.b
+		custom_tooltip = zg361we.243.b.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m243_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -142,6 +147,7 @@ zg361we.243 = {
 	}
 	option = {
 		name = zg361we.243.c
+		custom_tooltip = zg361we.243.c.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m243_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -189,6 +195,7 @@ zg361we.244 = {
 	}
 	option = {
 		name = zg361we.244.a
+		custom_tooltip = zg361we.244.a.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m244_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -204,6 +211,7 @@ zg361we.244 = {
 	}
 	option = {
 		name = zg361we.244.b
+		custom_tooltip = zg361we.244.b.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m244_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -219,6 +227,7 @@ zg361we.244 = {
 	}
 	option = {
 		name = zg361we.244.c
+		custom_tooltip = zg361we.244.c.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m244_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -266,6 +275,7 @@ zg361we.245 = {
 	}
 	option = {
 		name = zg361we.245.a
+		custom_tooltip = zg361we.245.a.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m245_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -281,6 +291,7 @@ zg361we.245 = {
 	}
 	option = {
 		name = zg361we.245.b
+		custom_tooltip = zg361we.245.b.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m245_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -296,6 +307,7 @@ zg361we.245 = {
 	}
 	option = {
 		name = zg361we.245.c
+		custom_tooltip = zg361we.245.c.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m245_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -343,6 +355,7 @@ zg361we.246 = {
 	}
 	option = {
 		name = zg361we.246.a
+		custom_tooltip = zg361we.246.a.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m246_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -358,6 +371,7 @@ zg361we.246 = {
 	}
 	option = {
 		name = zg361we.246.b
+		custom_tooltip = zg361we.246.b.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m246_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -373,6 +387,7 @@ zg361we.246 = {
 	}
 	option = {
 		name = zg361we.246.c
+		custom_tooltip = zg361we.246.c.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m246_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -420,6 +435,7 @@ zg361we.247 = {
 	}
 	option = {
 		name = zg361we.247.a
+		custom_tooltip = zg361we.247.a.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m247_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -435,6 +451,7 @@ zg361we.247 = {
 	}
 	option = {
 		name = zg361we.247.b
+		custom_tooltip = zg361we.247.b.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m247_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner
@@ -450,6 +467,7 @@ zg361we.247 = {
 	}
 	option = {
 		name = zg361we.247.c
+		custom_tooltip = zg361we.247.c.tt
 		scope:zg361_we_ab_subject = {
 			zg361_we_m247_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ab_owner

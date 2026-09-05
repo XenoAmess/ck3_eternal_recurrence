@@ -422,8 +422,10 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             )
             self.assertEqual(event.count("ROUTE = 1"), 1)
             self.assertEqual(event.count("ROUTE = 2"), 1)
-        self.assertIn("career and learning docket is complete", self.loc_en)
-        self.assertIn("本轮人才流动与进修案卷已经汇齐", self.loc_zh)
+        self.assertIn("sixteen open no separate response window", self.loc_en)
+        self.assertIn("fifteen always take each case's first compliant disposition", self.loc_en)
+        self.assertIn("另有十六项不另开窗口", self.loc_zh)
+        self.assertIn("十五项固定采用各案第一项合规处置", self.loc_zh)
 
     def test_dual_payer_set_is_exact_atomic_and_real(self) -> None:
         self.assertEqual(set(generator.DUAL_COSTS), {314, 321, 323, 326, 330, 333})

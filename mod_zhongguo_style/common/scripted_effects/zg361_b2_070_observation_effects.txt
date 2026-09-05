@@ -101,6 +101,13 @@ zg361_b2_m070_open_observation_effect = {
 	set_variable = { name = zg361_b2_retaliation_case value = var:zg361_b2_case_serial }
 	set_variable = { name = zg361_b2_retaliation_state value = 1 }
 	set_variable = { name = zg361_b2_retaliation_new_fact value = 0 }
+	remove_variable = zg361_b2_retaliation_new_fact_cycle
+	remove_variable = zg361_b2_retaliation_new_fact_case
+	remove_variable = zg361_b2_retaliation_new_fact_grade
+	remove_variable = zg361_b2_retaliation_new_fact_kpi
+	remove_variable = zg361_b2_retaliation_new_fact_rank
+	remove_variable = zg361_b2_retaliation_new_fact_cohort
+	remove_variable = zg361_b2_retaliation_new_fact_reason
 	set_variable = { name = zg361_b2_retaliation_suspended_n value = 0 }
 	set_variable = { name = zg361_b2_m070_state value = 1 }
 	set_variable = { name = zg361_b2_m070_receipt_serial value = var:zg361_b2_case_serial }

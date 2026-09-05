@@ -254,7 +254,7 @@ zg361_cp_i_launch_effect = {
 		}
 		else_if = {
 			limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-			scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.61 } }
+			scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.9261 } }
 		}
 	}
 }

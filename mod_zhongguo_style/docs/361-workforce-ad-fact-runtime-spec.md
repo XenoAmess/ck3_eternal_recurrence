@@ -76,15 +76,15 @@ runner-up 只从 owner 的另一名真实 `zg361_is_reviewable_vassal_trigger` �
 
 #271 B 的推荐奖励也不在 #271 写入时付款：它与 A 一样只从 owner 扣 5 金并进入 referral escrow，明确写 `paid_before_probation=0`。只有 #267 B 在 operation 前验证 `interviewer_1=referrer`、该 slot 的 actor receipt 确由 interviewer 生成且三票/证据完整，operation 成功后才从 escrow 向真实 referrer 支付 5 金。#267 A 的 recusal 路继续等 probation 结果结算；因此“referrer 实际投票”不是一条未经验证的布尔声明。
 
-### 2.3 #272 后：subject 本人接受或拒绝
+### 2.3 #272 后：subject 本人只能在知情条件下回应
 
 ```text
 zg361_wad_begin_offer_response_source_effect
 ```
 
-前置为当前 #272 object 已消费且 stage barrier 已把 AD 推到 state=4。真人 subject 收到 `zg361wad.20`：接受，或以报酬、岗位/权限、调动/报到三项原因之一拒绝。`refusal_reason_id` 只由拒绝选项生成；接受没有伪 refusal。AI subject 在第二 AI 例外内静默接受，不收到可见事件。
+前置为当前 #272 object 已消费且 stage barrier 已把 AD 推到 state=4。当前事实包没有提供报酬、岗位权限和调任报到条款，因此真人 subject 收到 `zg361wad.20` 时不能被要求盲目接受，只能以这三类缺失事实之一实名拒绝。底层 `response=1` ABI 继续为未来接入完整条款的真实 producer 保留，但当前玩家界面不可达；AI subject 在项目所有者授权的第二 AI 例外内仍可静默接受，不收到可见事件。`refusal_reason_id` 只由拒绝选项生成。
 
-当前接线：#272 A/B 把 stage barrier 推到 state=4 后调用本入口，原先 #272→#274 的直接边已撤下。`response=1` 时，#274 A 仍必须另外等待真实 native appointment receipt；本包的接受 receipt 绝不冒充任命，只有 appointment operation 成功后才消费 offer source。`response=2` 时 core 先成功提交 #274 B，再必经 #275；#275 A/B 读取本人 refusal reason，且只有 #275 operation 成功后才消费 offer source。AI 上司遇到真人 subject 拒绝时也按真实 runner-up 是否存在选择 #275 A/B，再走 no-hire 尾链，不会停在 state 4。route C 或 native appointment 缺失不得消费。
+当前接线：#272 A/B 把 stage barrier 推到 state=4 后调用本入口，原先 #272→#274 的直接边已撤下。未来完整条款 producer 若写入 `response=1`，#274 A 仍必须另外等待真实 native appointment receipt；接受 receipt 绝不冒充任命，只有 appointment operation 成功后才消费 offer source。当前真人玩家只能形成 `response=2`：core 先成功提交 #274 B，再必经 #275；#275 A/B 读取本人拒绝原因，且只有 #275 operation 成功后才消费 offer source。AI 上司遇到真人 subject 拒绝时也按真实 runner-up 是否存在选择 #275 A/B，再走 no-hire 尾链，不会停在 state 4。route C 或 native appointment 缺失不得消费。
 
 五个可见事实事件 `zg361wad.1/.11/.12/.13/.20` 均显式使用合法 `theme=stewardship`。旧实机日志中的五条 Theme missing 已在静态生成物归零，但在新 loader artifact 出来前仍只称 static-ready。
 
@@ -92,7 +92,7 @@ zg361_wad_begin_offer_response_source_effect
 
 - 案卷 owner、panel interviewer 与任何 manager 决策都必须通过天朝制公爵及以上 trigger。
 - 伯爵/男爵可以是完整 AD subject、referral candidate、Offer respondent 和 runner-up；他们只有被考核与本人响应权，不获得 open/core/stage/manager 权限。
-- 真人事件永远要求 `is_ai=no`，并发给事实的实际 actor：referrer 本人、每位 interviewer 本人、subject 本人。玩家 owner 不能替另一名真人签 referral、投票或拒绝 Offer。
+- 真人事件永远要求 `is_ai=no`，并发给事实的实际 actor：referrer 本人、每位 interviewer 本人、subject 本人。玩家 owner 不能替另一名真人签 referral、投票或拒绝录用邀约；条款不足时也不能替 subject 接受。
 - AI 后台分支只在 manager-owned AD full guard 内使用项目已授权的第二 AI 例外；AI 不收到可见玩家事件。
 - 没有 real character、合法三人 panel 或 runner-up 时保存 typed N/A/defer，绝不创建角色、假 character、假 hash 或补零。
 
@@ -116,6 +116,6 @@ producer 重放同一 pending tuple 只返回 status=2；不同 tuple 遇到未�
 
 ## 5. L0 与尚未完成
 
-测试冻结：16 项旧 alias 被三格 source 替代；14 个事实生成物与 BOM；三个 full-guard 入口；真实 relation selector；三名互异 manager；逐真人/AI actor 票与单调 receipt；runner-up 存在才写 evidence；subject 本人拒绝；source id/hash commit-last；operation-success 后消费；C-only retire；tuple-bound replay/reuse；AI N/A/拒绝续跑；#271 B 延迟到 #267 验证后支付；五个事件 theme；九语 key 一致与英文占位。
+测试冻结：16 项旧 alias 被三格 source 替代；14 个事实生成物与 BOM；三个 full-guard 入口；真实 relation selector；三名互异 manager；逐真人/AI actor 票与单调 receipt；runner-up 存在才写 evidence；条款不足时真人只可实名拒绝、不可盲目接受；source id/hash commit-last；operation-success 后消费；C-only retire；tuple-bound replay/reuse；AI N/A/拒绝续跑；#271 B 延迟到 #267 验证后支付；五个事件 theme；九语 key 一致与英文占位。
 
 当前静态接线把旧 loader 账本中的 AD 30 项再替换 16 项，静态预期只剩 14 项真正外部 producer 字段；冻结的 2026-08-31 ledger 仍保留当时“剩余 30”的历史原文，不回写成新证据。下一步必须运行新 loader 差量与 MCP-first paused 验收，证明 theme、alias warning、真实角色事件分流、消费/退役、付款和 AI 后台链在 CK3 内均按预期发生；静态可达性不能冒充 live GREEN。

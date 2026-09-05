@@ -12,10 +12,11 @@
 - **四类稳定业务对象（仅 A/B）**：AA229 创建唯一指标对象，AG301 创建重组对象，AJ334 创建需求对象，AJ340 从需求派生独立交付对象。对象各自冻结 owner/subject/cycle/case/version；后续 A/B route 必须同时通过 case kernel 五元身份和对象身份，receipt 不能冒充对象。
 - **已实现的宽领域层（仅 A/B）**：样本、份额、矩阵权重、HC、管理容量、历史 owner、紧急槽、签名、期限、WIP、跨期容量与价值 credit 均有真实写入和读侧投影。AJ344 的 A/B 对已验收交付按 `上线 → 采用 → 价值` 写顺序 1/2/3；AJ344-C 不铸造 value ledger，finalizer 只凭冻结的 choice-3 receipt 闭案。
 - **唯一 manager-scope portfolio adapter**：中央调度只允许调用 `zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }`。adapter 先消费该受评人恰好到期的上一周期 C 债，再只打开 AA 首案；AA→AG→AJ 依靠带完整冻结身份复核的 D+1 hidden queue 串行交接。
+- **玩家办案方式**：每轮先显示一次 `zg361p3.9000`。A/B/C 只统一处理冻结的 22 项低风险白名单，13 项涉及资源、人物去留或最终结算的关键事项仍逐案呈报；统一办理仍逐项调用原 A/B/C route，guard、依赖或资源不足时精确恢复原编号事件。D 保留全部 35 项逐案呈报。A/B/C 的可见业务路径因此由 35 张降为 14 张（1 张方式卡 + 13 张关键卡），D 为 36 张。
 
 后文机制表的 A/B 与“consumer 必须发布”列描述该机制面向案卷/考核榜/MCP 的丰富查询合同；C 列只保留玩家为何选择延期的业务语境，不授权执行该格描述的任何业务写入。当前静态包完成的是 A/B 的 write→consumer 主链、C 的 debt→next-cycle sink 主链及上述专门字段，查询键、GUI 和 live 证据仍在 readiness 边界之外。
 
-Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 56 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
+Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 63 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
 
 ## 权威来源与产物边界
 
@@ -261,8 +262,9 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 
 窗口节流合同如下：
 
-- adapter 只在 AA launch 前同步消费一次恰好到期的 C 债 aggregate，并只打开 AA；玩家当日只收到 AA 第一张业务卡，不会同时打开 AG 或 AJ。
-- 玩家选择某卡且 route 真正 `applied = 1` 后，同 domain 下一张卡统一使用 `days = 1`；typed RED、stale 或 receipt no-op 不排后续卡。
+- adapter 只在 AA launch 前同步消费一次恰好到期的 C 债 aggregate，并只打开 AA；玩家先收到一次办案方式卡，不会同时打开 AG 或 AJ。
+- A/B/C 对 22 项白名单逐项调用原 route，只有 `applied = 1` 才继续；失败时在 D+1 精确恢复该编号原卡。13 项关键卡始终单独呈报；C 每成功处理一项便单独登记一笔下周期制度债。D 不统一处理任何一项。
+- 玩家完成某张关键卡且 route 真正 `applied = 1` 后，同 domain 下一项统一使用 `days = 1`；typed RED、stale 或 receipt no-op 不排后续卡。
 - AA 和 AG 的最后一个 barrier 关闭本案后，只给冻结 owner 排一个 `days = 1` hidden queue event。hidden event 必须重新核对刚关闭案卷的 owner/subject/cycle/case/state、`active = 0`、管理者制度周期，以及冻结结果案卷五元；全部匹配才分别打开 AG、AJ 首案。
 - 因此，一个 portfolio 在同一游戏日最多产生一个可见业务窗口。hidden queue 本身没有 title、desc 或 option，不计作可见业务窗。
 - AJ 最后一个 barrier 只在共享 close 确认 applied 后冻结最终案卷五元并关闭 portfolio，不再排可见卡。
@@ -296,7 +298,7 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 7. AA240、AA241、AG304、AG306、AG308、AG309、AJ335、AJ337、AJ340、AJ341、AJ344 的 A/B 守恒断言存在，C 对应业务账为零写入；
 8. 玩家 A/B/C 事件链和授权 AI 复用同一 wrapper；正常 AI portfolio 默认 A，first-C 后 deferred portfolio 的后续 A/B 不可用，AI runner 确定性走 C；
 9. 只有一个 manager-scope portfolio adapter；唯一 debt aggregate 只在其中调用一次并位于 AA launch 前，每 ID due consumer 只对 exact next-cycle/frozen owner/frozen subject/five-tuple/choice-3 写 B2 sink 和 settlement metadata；duplicate、stale、future、cross-owner 对业务与 settlement no-op，诊断审计可写；
-10. 玩家同 domain 后续卡与 AA→AG→AJ 跨案交接全部是 D+1；hidden queue 逐项复核关闭案卷与冻结 portfolio，静态数据流中同日最多一个可见业务窗；
+10. 玩家先选一次办案方式；22 项白名单与 13 项关键卡严格分区，A/B/C 失败精确回退原编号，D 保留 35 项逐案；同 domain 后续卡与 AA→AG→AJ 跨案交接全部是 D+1，hidden queue 逐项复核关闭案卷与冻结 portfolio，静态数据流中同日最多一个可见业务窗；
 11. AI domain runner 不含 `trigger_event`，跨案 queue 全部 `hidden = yes`；管理入口要求天朝制公爵及以上，伯爵/男爵只有 subject self-consumer；
 12. AJ344-C 无 value ledger 时仍可由 choice-3 receipt 通过 finalizer，且不能铸造 value credit；
 13. 九语 key parity、中文/英文原创集合、七语英文结构占位和 BOM 均通过。

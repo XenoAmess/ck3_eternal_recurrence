@@ -9,7 +9,8 @@
 - `common/scripted_effects/zg361_credit_project_portfolio_lifecycle_effects.txt`
 - `common/scripted_effects/zg361_credit_project_{e,i,j,r}_{orchestration,policy_debt}_effects.txt`
 - `common/scripted_effects/zg361_credit_project_mNNN_<purpose>_effects.txt`（每项机制一个 consumer + A/B/C routes）
-- `events/zg361_credit_project_runtime_events.txt`
+- `events/zg361_credit_project_portfolio_events.txt`
+- `events/zg361_credit_project_{e,i,j,r}_{case,batch}_events.txt`
 - `localization/*/zg361_credit_project_l_*.yml`
 
 专测：`tools/test_gen_361_credit_project_runtime.py`
@@ -22,6 +23,10 @@ Python 参考合同仍为 `tools/zg361_phase3_credit_project_model.py`；本包�
 
 `--check` 会把旧 monolith 残留判作 drift，普通生成会在全部 shard 写出后删除该旧文件。专测还把 36 个 shard 按生成顺序拼接，并逐个比较全部 156 个顶层 effect 的名称、顺序与完整定义体，确保拆分只改变文件边界。这个约束用于降低加载边界风险和提升故障定位性；它本身不构成“此前启动问题由文件过大造成”的因果证据，本包仍保持 static-ready / not live，后续加载性能结论必须来自真实 CK3 artifact。
 
+玩家事件也已按用途拆分：portfolio 入口/跨域队列 1 个文件，E/I/J/R 四域各有 case 与 batch 两类文件，
+共 9 个 event shard；每文件 1–8 个事件。旧 `events/zg361_credit_project_runtime_events.txt`
+已退役，生成器会删除残留，专测会拒绝旧单体重新出现。
+
 ## 语义权威与冲突裁决
 
 本包逐号路线的权威优先级是：
@@ -31,6 +36,16 @@ Python 参考合同仍为 `tools/zg361_phase3_credit_project_model.py`；本包�
 3. 本规格、生成器及其生成投影。
 
 因此，旧细粒度设计表或旧文案中把 C 写成第三条业务方案的内容不再是运行时权威。下列 27 项的 **C 全部是纯 `policy.defer`**，不能因为机制标题涉及抢功、汇报、PIP、止损等主题，就在 C 中偷偷创建相应业务对象。A/B 保留原有业务语义。
+
+## 玩家办案方式与可见窗口
+
+每周期先呈报一张“本轮办案方式”。常规登记项
+`31,56,57,58,61,62,63,65,68,131,134` 可由玩家选择统一采用可追溯证据口径、执行速度口径，
+或逐案关闭并各记一笔制度债；其余 16 项仍须逐案裁决。任一常规项的五元身份、资源或业务前置不成立时，
+只把该项改为单独呈报，不得静默跳过，也不得改变其他项目的路线。
+
+逐项模式保留原 27 张业务卡；三种统一模式的成功路径为 1 张办案方式卡加 16 张关键业务卡，共 17 张。
+C 只关闭实际进入的 11 项常规案，每案至多新增一笔制度债；它不得借原全局 defer 链把 16 张关键卡一并关闭。
 
 ## 精确范围与状态图
 

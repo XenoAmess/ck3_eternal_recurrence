@@ -262,9 +262,15 @@ CASE_FIELDS = (
         "audit",
         "number",
         True,
+        visible=False,
     ),
     FieldSpec(
-        "refund_serial", "zg361_result_refund_posted_serial", "audit", "number", True
+        "refund_serial",
+        "zg361_result_refund_posted_serial",
+        "audit",
+        "number",
+        True,
+        visible=False,
     ),
     FieldSpec(
         "salary_cut_active", "zg361_result_salary_cut_active", "audit", "number", True
@@ -293,19 +299,36 @@ CASE_FIELDS = (
     FieldSpec("b1_cycle_serial", "zg361_b1_cycle_serial", "audit", visible=False),
     FieldSpec("b1_case_serial", "zg361_b1_case_serial", "audit", visible=False),
     FieldSpec("b1_case_state", "zg361_b1_case_state", "audit", visible=False),
-    FieldSpec("b1_fact_sheet_serial", "zg361_b1_fact_sheet_serial", "audit"),
+    FieldSpec(
+        "b1_fact_sheet_serial",
+        "zg361_b1_fact_sheet_serial",
+        "audit",
+        visible=False,
+    ),
     FieldSpec("b1_peer_sealed", "zg361_b1_peer_sealed", "audit"),
     FieldSpec(
-        "b1_self_receipt_serial", "zg361_b1_m004_receipt_serial", "audit"
+        "b1_self_receipt_serial",
+        "zg361_b1_m004_receipt_serial",
+        "audit",
+        visible=False,
     ),
     FieldSpec(
-        "b1_peer_receipt_serial", "zg361_b1_m008_receipt_serial", "audit"
+        "b1_peer_receipt_serial",
+        "zg361_b1_m008_receipt_serial",
+        "audit",
+        visible=False,
     ),
     FieldSpec(
-        "b1_shadow_receipt_serial", "zg361_b1_m001_receipt_serial", "audit"
+        "b1_shadow_receipt_serial",
+        "zg361_b1_m001_receipt_serial",
+        "audit",
+        visible=False,
     ),
     FieldSpec(
-        "b1_band_receipt_serial", "zg361_b1_m145_receipt_serial", "audit"
+        "b1_band_receipt_serial",
+        "zg361_b1_m145_receipt_serial",
+        "audit",
+        visible=False,
     ),
 )
 
@@ -343,6 +366,7 @@ class B1ObjectFieldSpec:
     mechanism_id: int
     routes: tuple[int, ...]
     kind: str = "number"
+    visible: bool = True
 
 
 @dataclass(frozen=True)
@@ -375,6 +399,7 @@ B1_OBJECT_FIELDS = (
         "audit",
         141,
         (1, 2),
+        visible=False,
     ),
     B1ObjectFieldSpec(
         "b1_141_review_outcome",
@@ -459,6 +484,7 @@ B1_OBJECT_FIELDS = (
         "audit",
         144,
         (1,),
+        visible=False,
     ),
     B1ObjectFieldSpec(
         "b1_144_review_outcome",
@@ -532,6 +558,76 @@ B1_OBJECT_FIELDS = (
         (2,),
     ),
 )
+
+# Player-facing enum and boolean fields are rendered as localized business
+# meanings. The frozen numeric values remain internal audit data, but the
+# dossier never asks a player to decode implementation codes.
+SEMANTIC_FIELD_VALUES: dict[str, tuple[tuple[int, str], ...]] = {
+    "self_choice": ((0, "pending"), (1, "honest"), (2, "emphasized"), (3, "conservative")),
+    "shadow_response": ((0, "pending"), (1, "accepted"), (2, "supplemented")),
+    "peer_shape": (
+        (0, "no_evidence"),
+        (1, "positive"),
+        (2, "balanced"),
+        (3, "negative"),
+        (4, "divergent"),
+    ),
+    "peer_reciprocity_risk": ((0, "clear"), (1, "flagged")),
+    "peer_use_mode": ((0, "unused"), (1, "direct"), (2, "credit_weighted")),
+    "forced_down": ((0, "no"), (1, "yes")),
+    "roster_employment_state": ((1, "active"), (2, "departed")),
+    "leaver_route": ((1, "evidence"), (2, "gray_c"), (3, "excluded")),
+    "leaver_quota_source": ((1, "natural_c"), (2, "swapped_c"), (3, "none_available")),
+    "leaver_receipt_state": ((1, "departure_recorded"), (2, "gray_c_posted"), (3, "closed_without_c")),
+    "grade_reason": (
+        (0, "facts_match"),
+        (1, "displaced_from_top"),
+        (2, "raised_to_top"),
+        (3, "moved_to_low"),
+        (4, "removed_from_low"),
+        (5, "quota_forced_down"),
+        (6, "newcomer_protected"),
+        (7, "rank_raised"),
+        (8, "small_cohort_neutral"),
+        (9, "departed_gray_c"),
+        (10, "c_swapped_to_departed"),
+    ),
+    "delivery_method": (
+        (0, "pending"),
+        (1, "acknowledged"),
+        (2, "acknowledged_with_objection"),
+        (3, "witnessed"),
+        (4, "automatic"),
+        (5, "departure_closure"),
+    ),
+    "appeal_open": ((0, "closed"), (1, "open")),
+    "appeal_outcome": ((0, "undecided"), (1, "upheld"), (2, "corrected")),
+    "salary_cut_active": ((0, "inactive"), (1, "active")),
+    "b1_peer_sealed": ((0, "not_sealed"), (1, "sealed")),
+    "b1_141_must_review_marker": ((0, "not_required"), (1, "required")),
+    "b1_141_review_outcome": ((0, "pending"), (1, "aligned"), (2, "diverged")),
+    "b1_142_pending_marker": ((0, "none"), (1, "pending")),
+    "b1_142_milestone": ((0, "none"), (1, "awaiting_evidence")),
+    "b1_142_current_final_unchanged": ((0, "no"), (1, "yes")),
+    "b1_142_next_cycle_evidence": ((0, "not_queued"), (1, "queued")),
+    "b1_143_reopen_result": ((0, "pending"), (1, "self"), (2, "none"), (3, "other")),
+    "b1_143_reason_code": (
+        (0, "pending"),
+        (1, "positive_evidence"),
+        (2, "negative_evidence"),
+        (3, "no_qualifying_evidence"),
+        (4, "another_case_selected"),
+    ),
+    "b1_143_next_cycle_evidence": ((0, "not_queued"), (1, "queued")),
+    "b1_144_dissent_marker": ((0, "none"), (1, "recorded")),
+    "b1_144_review_outcome": ((0, "pending"), (1, "accepted"), (2, "rejected")),
+    "b1_144_consensus_marker": ((0, "not_sealed"), (1, "sealed")),
+    "b1_145_opportunity_selected": ((0, "no"), (1, "yes")),
+    "b1_145_coaching_selected": ((0, "no"), (1, "yes")),
+    "b1_145_own_opportunity_selected": ((0, "no"), (1, "yes")),
+    "b1_145_appeal_evidence_available": ((0, "no"), (1, "yes")),
+    "b1_145_blackbox_audit": ((0, "clear"), (1, "flagged")),
+}
 
 B1_OBJECT_CONTRACTS = (
     B1ObjectContract(
@@ -1703,7 +1799,9 @@ def render_scripted_guis() -> bytes:
     )
     append_received_identity_gate(lines, indent="\t\t")
     lines.extend(["\t}", "}", ""])
-    for field in tuple(field for field in DETAIL_CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
+    for field in tuple(field for field in DETAIL_CASE_FIELDS if field.visible) + tuple(
+        field for field in B1_OBJECT_FIELDS if field.visible
+    ):
         lines.extend(
             [
                 f"zg361_sb_detail_{field.name}_available_gui = {{",
@@ -1713,6 +1811,36 @@ def render_scripted_guis() -> bytes:
                 "",
             ]
         )
+        for value, slug in SEMANTIC_FIELD_VALUES.get(field.name, ()):
+            lines.extend(
+                [
+                    f"zg361_sb_detail_{field.name}_{slug}_gui = {{",
+                    "\tscope = character",
+                    "\tis_shown = {",
+                    f"\t\thas_variable = {fixed_var('detail', field.name)}",
+                    f"\t\tvar:{fixed_var('detail', field.name)} = {value}",
+                    "\t}",
+                    "}",
+                    "",
+                ]
+            )
+        semantic_values = SEMANTIC_FIELD_VALUES.get(field.name, ())
+        if semantic_values:
+            lines.extend(
+                [
+                    f"zg361_sb_detail_{field.name}_unknown_gui = {{",
+                    "\tscope = character",
+                    "\tis_shown = {",
+                    f"\t\thas_variable = {fixed_var('detail', field.name)}",
+                    *(
+                        f"\t\tNOT = {{ var:{fixed_var('detail', field.name)} = {value} }}"
+                        for value, _slug in semantic_values
+                    ),
+                    "\t}",
+                    "}",
+                    "",
+                ]
+            )
     for prefix in ("m", "r"):
         for slot in range(1, SLOT_COUNT + 1):
             lines.extend(
@@ -1771,7 +1899,9 @@ def render_scripted_guis() -> bytes:
                 f"\t\tset_variable = {{ name = {fixed_var('detail', 'rank')} value = var:{var('m', slot, 'rank')} }}",
             ]
         )
-        for field in tuple(field for field in DETAIL_CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
+        for field in tuple(field for field in DETAIL_CASE_FIELDS if field.visible) + tuple(
+            field for field in B1_OBJECT_FIELDS if field.visible
+        ):
             lines.append(
                 f"\t\tif = {{ limit = {{ has_variable = {var('m', slot, field.name)} }} "
                 f"set_variable = {{ name = {fixed_var('detail', field.name)} value = var:{var('m', slot, field.name)} }} }}"
@@ -2032,7 +2162,18 @@ def detail_field_row(field: FieldSpec | B1ObjectFieldSpec) -> list[str]:
         f"\ttext_single = {{ min_width = 390 max_width = 390 text = \"zg361_scoreboard_detail_field_{field.name}\" default_format = \"#weak\" align = nobaseline }}",
         "\texpand = {}",
     ]
-    if field.kind == "character":
+    semantic_values = SEMANTIC_FIELD_VALUES.get(field.name, ())
+    if semantic_values:
+        for _value, slug in semantic_values:
+            semantic_gui = f"zg361_sb_detail_{field.name}_{slug}_gui"
+            lines.append(
+                f"\ttext_single = {{ visible = \"[GetScriptedGui('{semantic_gui}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_detail_value_{field.name}_{slug}\" default_format = \"#high\" align = nobaseline }}"
+            )
+        unknown_gui = f"zg361_sb_detail_{field.name}_unknown_gui"
+        lines.append(
+            f"\ttext_single = {{ visible = \"[GetScriptedGui('{unknown_gui}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_detail_value_unknown\" default_format = \"#weak\" align = nobaseline }}"
+        )
+    elif field.kind == "character":
         lines.append(
             f"\ttext_single = {{ visible = \"[GetScriptedGui('{available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"[GetPlayer.MakeScope.Var('{value_var}').Char.GetUINameNotMeNoTooltip]\" default_format = \"#high\" align = nobaseline }}"
         )

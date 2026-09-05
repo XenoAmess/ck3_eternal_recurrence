@@ -199,10 +199,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The canonical rendering includes the purpose-sharded core owner note.
-        self.assertEqual(len(historical_bytes), 268_175)
+        self.assertEqual(len(historical_bytes), 269_511)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "37fae954e957b72967eaf50e5b3967530966b400e1208b7863b02dbdfb10ec75",
+            "c0129d706a87d355ea8e8debabe30e69ad974817955fd0b453ee38bbd8e8c601",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -317,6 +317,127 @@ class B2CK3RuntimeTests(unittest.TestCase):
             with self.subTest(placeholder=language):
                 self.assertEqual(localization.splitlines()[1:], english_body)
         self.assertNotEqual(self.loc_zh.splitlines()[1:], english_body)
+
+    def test_visible_copy_uses_body_for_case_facts_and_options_for_choices(self) -> None:
+        rows: dict[str, str] = {}
+        for row in self.loc_zh.splitlines()[1:]:
+            match = re.match(r'^\s*([^:]+):0 "(.*)"$', row)
+            if match is not None:
+                rows[match.group(1)] = match.group(2)
+
+        for event_id in (40, 50, 60, 110, 130, 131, 160):
+            with self.subTest(event=event_id):
+                title = rows[f"zg361b2.{event_id}.t"]
+                body = rows[f"zg361b2.{event_id}.desc"]
+                self.assertNotEqual(body, title)
+                self.assertFalse(body.startswith(title))
+                self.assertFalse(body.startswith(("。", "；", "，", ".", ";", ",")))
+                self.assertFalse(body.startswith("["))
+
+        # The event body states what happened. Route-specific action and cost
+        # belong to the option that actually executes them.
+        self.assertNotIn("这里另行决定", rows["zg361b2.50.desc"])
+        self.assertNotIn("你可以消耗", rows["zg361b2.130.desc"])
+        self.assertNotIn("提出异议会暂停", rows["zg361b2.160.desc"])
+        self.assertNotIn("若本案采用", rows["zg361b2.40.desc"])
+        self.assertLessEqual(len(rows["zg361b2.40.a"]), 42)
+        self.assertIn("365日", rows["zg361b2.40.a"])
+        self.assertIn("资源齐备", rows["zg361b2.40.a"])
+        self.assertIn("25国库金", rows["zg361b2.40.a"])
+        self.assertIn("12小时支持", rows["zg361b2.40.a"])
+        self.assertIn("-15 证据", rows["zg361b2.40.c"])
+        self.assertIn("损失 50 威望", rows["zg361b2.50.a"])
+        self.assertIn("恰好收到 50 金币", rows["zg361b2.60.a"])
+        self.assertIn("暂停执行 90 日", rows["zg361b2.160.b"])
+        self.assertIn("7 日后见证送达", rows["zg361b2.160.c"])
+        self.assertNotIn("第 157 项", self.loc_zh)
+
+    def test_player_localization_never_exposes_b2_internal_stage_name(self) -> None:
+        for language, localization in (
+            ("english", self.loc_en),
+            ("simp_chinese", self.loc_zh),
+        ):
+            with self.subTest(language=language):
+                self.assertNotRegex(localization, r'(?i):0 "[^"]*\bB2\b')
+        for key, label in (
+            ("prepared", "考绩案卷"),
+            ("delivered", "考绩通知"),
+            ("appeal", "考绩申诉"),
+            ("corrected", "申诉裁决"),
+            ("pip", "改进计划"),
+            ("retaliation", "申诉保护"),
+        ):
+            self.assertIn(f'zg361b2.statement.{key}:0 "{label}', self.loc_zh)
+
+    def test_rejected_appeal_card_shows_outcome_grade_and_reason(self) -> None:
+        card = top_level_block(self.events, "zg361b2.50")
+        self.assertIn("desc = zg361b2.50.desc", card)
+        for grade in ("375", "350", "325", "unknown"):
+            self.assertIn(f"desc = zg361b2.50.grade.{grade}", card)
+        for reason in range(10):
+            self.assertIn(f"desc = zg361b2.50.reason.{reason}", card)
+        for field in (
+            "zg361_result_kpi_frozen",
+            "zg361_result_rank_frozen",
+            "zg361_result_cohort_n_frozen",
+        ):
+            self.assertIn(field, self.loc_zh)
+        self.assertIn("复核已经驳回本次申诉", self.loc_zh)
+
+    def test_separate_case_requires_and_displays_exact_new_low_result(self) -> None:
+        freeze = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
+        low_gate = freeze[freeze.index("has_variable = zg361_b2_retaliation_state") :]
+        self.assertIn("var:zg361_result_grade = 1", low_gate)
+        for suffix, source in (
+            ("cycle", "zg361_result_cycle_serial"),
+            ("case", "zg361_result_case_serial"),
+            ("grade", "zg361_result_grade"),
+            ("kpi", "zg361_result_kpi_frozen"),
+            ("rank", "zg361_result_rank_frozen"),
+            ("cohort", "zg361_result_cohort_n_frozen"),
+            ("reason", "zg361_result_grade_reason"),
+        ):
+            self.assertIn(
+                f"name = zg361_b2_retaliation_new_fact_{suffix} value = var:{source}",
+                low_gate,
+            )
+
+        card = top_level_block(self.events, "zg361b2.160")
+        for key in (
+            "zg361b2.160.fact",
+            "zg361b2.160.fact.unknown",
+            "zg361b2.160.reviewer",
+            "zg361b2.160.reviewer.unknown",
+        ):
+            self.assertIn(f"desc = {key}", card)
+        for reason in range(10):
+            self.assertIn(f"desc = zg361b2.160.reason.{reason}", card)
+        self.assertIn("新记录如下", self.loc_zh)
+        self.assertIn("案卷登记的独立复核人", self.loc_zh)
+
+    def test_separate_case_deadline_rechecks_reviewer_and_frozen_fact(self) -> None:
+        review = top_level_block(self.events, "zg361b2.162")
+        self.assertIn("var:zg361_b2_separate_reviewer = {", review)
+        self.assertIn("is_alive = yes", review)
+        self.assertIn(
+            "NOT = { this = scope:zg361_b2_separate_deadline_owner }", review
+        )
+        self.assertIn(
+            "NOT = { this = scope:zg361_b2_separate_deadline_subject }", review
+        )
+        for current, frozen in (
+            ("zg361_result_cycle_serial", "zg361_b2_retaliation_new_fact_cycle"),
+            ("zg361_result_case_serial", "zg361_b2_retaliation_new_fact_case"),
+            ("zg361_result_grade", "zg361_b2_retaliation_new_fact_grade"),
+            ("zg361_result_kpi_frozen", "zg361_b2_retaliation_new_fact_kpi"),
+            ("zg361_result_rank_frozen", "zg361_b2_retaliation_new_fact_rank"),
+            (
+                "zg361_result_cohort_n_frozen",
+                "zg361_b2_retaliation_new_fact_cohort",
+            ),
+            ("zg361_result_grade_reason", "zg361_b2_retaliation_new_fact_reason"),
+        ):
+            self.assertIn(f"var:{current} = var:{frozen}", review)
 
     def test_every_delayed_ticket_has_owner_subject_cycle_case_state_and_stale_noop(self) -> None:
         delayed = {

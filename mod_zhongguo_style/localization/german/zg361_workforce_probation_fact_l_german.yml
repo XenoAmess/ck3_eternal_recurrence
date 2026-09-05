@@ -1,4 +1,10 @@
 ﻿l_german:
- zg361wpf.2.t:0 "Probation outcome receipt"
- zg361wpf.2.desc:0 "A settled result, PIP decision, real normal exit, or role-change exclusion has been bound to this hire. Workforce item 269 consumed the same outcome once."
- zg361wpf.2.a:0 "Keep the receipt with the hire case."
+ zg361wpf.2.t:0 "The Appointment's Outcome"
+ zg361wpf.2.desc:0 "This appointment now has a verified later outcome."
+ zg361wpf.2.quality_pass:0 "The later review found that the officer met the requirements of the post."
+ zg361wpf.2.quality_mismatch:0 "The improvement period ended below its requirements. The outcome is recorded as a role mismatch, not a normal departure."
+ zg361wpf.2.quality_attrition:0 "The officer left normally after the appointment. The departure payment and release of the post were both confirmed, so the outcome is recorded as ordinary attrition."
+ zg361wpf.2.quality_role_change:0 "The officer left the original role because the appointment changed. This is excluded from both performance failure and ordinary attrition."
+ zg361wpf.2.followup_evidence:0 "The office will compare this outcome with the evidence used in the original interview when it reviews the quality of that decision."
+ zg361wpf.2.followup_accountability:0 "The office will place this outcome on the record of the person who made the final appointment decision."
+ zg361wpf.2.a:0 "Now I know how this appointment ended."

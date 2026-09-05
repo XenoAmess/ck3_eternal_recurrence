@@ -35,6 +35,7 @@ zg361we.266 = {
 	}
 	option = {
 		name = zg361we.266.a
+		custom_tooltip = zg361we.266.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m266_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -50,6 +51,7 @@ zg361we.266 = {
 	}
 	option = {
 		name = zg361we.266.b
+		custom_tooltip = zg361we.266.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m266_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -65,6 +67,7 @@ zg361we.266 = {
 	}
 	option = {
 		name = zg361we.266.c
+		custom_tooltip = zg361we.266.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m266_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -112,6 +115,7 @@ zg361we.273 = {
 	}
 	option = {
 		name = zg361we.273.a
+		custom_tooltip = zg361we.273.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m273_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -123,6 +127,7 @@ zg361we.273 = {
 	}
 	option = {
 		name = zg361we.273.b
+		custom_tooltip = zg361we.273.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m273_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -134,6 +139,7 @@ zg361we.273 = {
 	}
 	option = {
 		name = zg361we.273.c
+		custom_tooltip = zg361we.273.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m273_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -181,6 +187,7 @@ zg361we.271 = {
 	}
 	option = {
 		name = zg361we.271.a
+		custom_tooltip = zg361we.271.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m271_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -192,6 +199,7 @@ zg361we.271 = {
 	}
 	option = {
 		name = zg361we.271.b
+		custom_tooltip = zg361we.271.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m271_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -203,6 +211,7 @@ zg361we.271 = {
 	}
 	option = {
 		name = zg361we.271.c
+		custom_tooltip = zg361we.271.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m271_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -250,6 +259,7 @@ zg361we.267 = {
 	}
 	option = {
 		name = zg361we.267.a
+		custom_tooltip = zg361we.267.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m267_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -265,6 +275,7 @@ zg361we.267 = {
 	}
 	option = {
 		name = zg361we.267.b
+		custom_tooltip = zg361we.267.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m267_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -280,6 +291,7 @@ zg361we.267 = {
 	}
 	option = {
 		name = zg361we.267.c
+		custom_tooltip = zg361we.267.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m267_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -327,6 +339,7 @@ zg361we.268 = {
 	}
 	option = {
 		name = zg361we.268.a
+		custom_tooltip = zg361we.268.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m268_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -342,6 +355,7 @@ zg361we.268 = {
 	}
 	option = {
 		name = zg361we.268.b
+		custom_tooltip = zg361we.268.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m268_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -357,6 +371,7 @@ zg361we.268 = {
 	}
 	option = {
 		name = zg361we.268.c
+		custom_tooltip = zg361we.268.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m268_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -404,6 +419,7 @@ zg361we.270 = {
 	}
 	option = {
 		name = zg361we.270.a
+		custom_tooltip = zg361we.270.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m270_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -419,6 +435,7 @@ zg361we.270 = {
 	}
 	option = {
 		name = zg361we.270.b
+		custom_tooltip = zg361we.270.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m270_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -434,6 +451,7 @@ zg361we.270 = {
 	}
 	option = {
 		name = zg361we.270.c
+		custom_tooltip = zg361we.270.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m270_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -481,6 +499,7 @@ zg361we.272 = {
 	}
 	option = {
 		name = zg361we.272.a
+		custom_tooltip = zg361we.272.a.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m272_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -492,6 +511,7 @@ zg361we.272 = {
 	}
 	option = {
 		name = zg361we.272.b
+		custom_tooltip = zg361we.272.b.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m272_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner
@@ -503,6 +523,7 @@ zg361we.272 = {
 	}
 	option = {
 		name = zg361we.272.c
+		custom_tooltip = zg361we.272.c.tt
 		scope:zg361_we_ad_subject = {
 			zg361_we_m272_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ad_owner

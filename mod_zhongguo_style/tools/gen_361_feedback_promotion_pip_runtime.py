@@ -129,7 +129,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(149, "t", "bargain_terms", "绩效结果谈判包", "Performance-result bargain package", "书面冻结补偿条款、负责人和到期日；本轮低档不变。", "Freeze written terms, owner and due date without changing the current lower rating.", "只留口头保证，不得冒充已经履约。", "Record an oral assurance without pretending the debt is fulfilled.", 180, "个人谈判页核销实际付款回执"),
     _m(150, "t", "sacrifice_promise", "“这次先委屈你”的补偿承诺", "A promise for this cycle's sacrifice", "建立有资金、有期限的非改档补偿义务。", "Open a funded, dated, non-rating compensation obligation.", "继续画饼，并公开它仍是未履约债。", "Make an oral promise and expose it as unfulfilled debt.", 365, "承诺时间线到期后结算履约或背约"),
     _m(151, "t", "receipt_agreement", "签收不等于认同", "Receipt is not agreement", "把送达、认同、异议分别记录，保留申诉。", "Record delivery, agreement and objection separately; keep appeal available.", "把签收强写成认同，并产生程序债。", "Coerce receipt into agreement and post procedural debt.", (7, 90), "收据行、见证送达与申诉案卷分别消费"),
-    _m(152, "t", "actionability_score", "反馈可行动性评分", "Feedback actionability score", "按具体、可控、期限、资源四项冻结评分。", "Freeze specificity, controllability, deadline and resource scores.", "只记满意度，模糊建议不得拿满分。", "Record sentiment only; vague advice cannot receive full actionability credit.", 365, "经理反馈质量表按收件人一次性回写"),
+    _m(152, "t", "actionability_score", "反馈可行动性评分", "Feedback actionability score", "按具体、可控、期限、资源四项冻结评分。", "Freeze specificity, controllability, deadline and resource scores.", "只记满意度，模糊建议不得拿满分。", "Record sentiment only; vague advice cannot receive full actionability credit.", 365, "经理反馈质量表按收件人一次性追记"),
     _m(153, "t", "action_item", "反馈后行动项闭环", "Post-feedback action closure", "建立唯一负责人、原始期限和验收证据。", "Open one action with an owner, original due date and acceptance evidence.", "允许改期或取消，但完整保留历史和理由。", "Allow change or cancellation while preserving history and reasons.", 90, "行动时间线只接受一个终态回执"),
     _m(154, "t", "minutes_mode", "录音式完整纪要 / 摘要纪要", "Full minutes or summary minutes", "保存附证据引用的完整追加式纪要。", "Keep complete append-only minutes with evidence references.", "保存摘要，但必须保留结果与证据索引。", "Keep a summary while retaining result and evidence references.", 7, "申诉投影只读纪要版本和更正附录"),
     _m(155, "t", "public_private_boundary", "公开表扬与私下批评边界", "Public praise and private criticism boundary", "只公开获准成绩，敏感反馈留在本人案卷。", "Publish approved achievements and keep sensitive feedback private.", "公开点名末位，并承担羞辱与报复成本。", "Name bottom performers publicly and incur shaming and retaliation costs.", 1, "团队公告与私人反馈使用不同字段投影"),
@@ -153,7 +153,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(171, "v", "panel_recusal", "答辩评委利益回避", "Panel conflict recusal", "披露冲突并用同专业的清洁备选席替换。", "Disclose conflicts and replace each seat with a clean peer of the same kind.", "隐瞒冲突；发现后整包进入重审债。", "Hide conflicts and post full-packet re-review debt when found.", 30, "投票器只接受回避后的活跃评委集合"),
     _m(172, "v", "decision_rule", "一票否决 / 多数票 / 平均分", "Veto, majority or trimmed mean", "投票前冻结规则；否决必须附可复核理由。", "Freeze the rule before voting and require a reviewable reason for every veto.", "临场改规则帮助目标候选，并留下规则漂移债。", "Change the rule midstream for a favored candidate and post rule-drift debt.", 30, "最终决定只消费冻结规则下的一人一票"),
     _m(173, "v", "blind_live_review", "盲材料审查与现场答辩", "Blind packet and live defense", "先冻结去身份材料分，再实名现场提问。", "Freeze identity-blind packet scores before the named live defense.", "直接现场看关系，仍保留书面工件缺口。", "Review live with relationship anchors and retain the missing-artifact gap.", 30, "评委质量复盘比较不可变盲分与现场分"),
-    _m(174, "v", "defense_time", "答辩时间预算", "Defense time budget", "六十分钟中保护二十分钟质询，其余用于陈述。", "Protect twenty of sixty minutes for questions and use the rest for presentation.", "让 PPT 占满大部分时间，但总时长仍守恒。", "Let slides consume most of the session while total time still conserves.", 30, "答辩记录校验陈述加质询等于冻结总时长"),
+    _m(174, "v", "defense_time", "答辩时间预算", "Defense time budget", "六十分钟中保护二十分钟质询，其余用于陈述。", "Protect twenty of sixty minutes for questions and use the rest for presentation.", "让陈述占满大部分时间，但总时长仍守恒。", "Let the presentation consume most of the session while preserving the total duration.", 30, "答辩记录校验陈述加质询等于冻结总时长"),
     _m(175, "v", "coaching_pool", "模拟答辩与辅导资源", "Mock-defense coaching pool", "从公共教练池按透明规则分配有限工时。", "Allocate finite hours from a transparent shared coaching pool.", "只辅导亲信，并把机会不均写进案卷。", "Coach favorites and record unequal opportunity evidence.", 30, "辅导账校验已分配工时不超过开放池"),
     _m(176, "v", "individual_attribution", "团队成绩的个人归因质询", "Individual attribution of team results", "把候选与同伴贡献拆分到一百。", "Split candidate and peer contribution shares to exactly one hundred.", "把团队成绩全据为己有，生成抢功债。", "Claim the team result wholesale and post credit-grab debt.", 30, "评委只按冻结个人份额计算影响证据"),
     _m(177, "v", "scale_leverage", "项目规模与个人杠杆分离", "Project scale versus personal leverage", "分别冻结项目规模与个人杠杆。", "Freeze project scale and personal leverage as separate scores.", "用大项目光环替代个人杠杆，留下分离差值。", "Substitute project halo for personal leverage and retain the gap.", 30, "目标职级判定同时消费两个独立维度"),
@@ -161,17 +161,17 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(179, "v", "rejection_feedback", "失败答辩的具体反馈 owner", "Named owner for rejection feedback", "每条差距绑定一名实际评委和下一证据。", "Bind each gap and next evidence item to an actual panelist.", "写“再提升影响力”，空话扣评委质量。", "Write a vague improvement slogan and charge reviewer-quality debt.", 90, "下轮材料对照同一 gap，不得无故换口径"),
     _m(180, "v", "retry_cooldown", "晋升冷却与材料刷新", "Promotion retry cooldown and refresh", "冷却一轮；指定差距完成可提前重开。", "Cool down for one cycle, with early retry after every frozen gap is closed.", "立即重复消耗评委，并累积评审拥塞。", "Retry immediately and accumulate panel congestion.", (90, 365), "重试只复用版本化旧材料并追加新影响"),
 
-    _m(181, "w", "triage_category", "能力、意愿、错岗三分诊", "Skill, will or role-mismatch triage", "按证据分诊并把错岗导向真实转岗，不改本轮档位。", "Triage from evidence and route role mismatch to a real transfer without rewriting the rating.", "一律归为不愿做，生成误诊与申诉风险。", "Assume unwillingness and post misdiagnosis and appeal risk.", 30, "PIP 入口按唯一主类别选择训练、纪律或转岗"),
+    _m(181, "w", "triage_category", "能力、意愿、错岗三分诊", "Skill, will or role-mismatch triage", "现有回执只证明绩效结果，分类保持未查明；不得据此冒充错岗。", "The available receipt proves only the performance result, so keep the category unknown; do not misrepresent it as role mismatch.", "一律归为不愿做，生成误诊与申诉风险。", "Assume unwillingness and post misdiagnosis and appeal risk.", 30, "PIP 入口按唯一主类别选择训练、纪律或转岗"),
     _m(182, "w", "pip_evidence_gate", "PIP 启动证据门槛", "PIP evidence threshold", "只有冻结证据组合过线才正式开案。", "Open a formal PIP only after the frozen evidence combination meets threshold.", "看到 3.25 就自动开案，并记录误伤风险。", "Auto-start from a 3.25 rating and record false-positive risk.", 30, "启动门把红线违纪分流到独立纪律案"),
     _m(183, "w", "pip_acknowledgement", "PIP 目标双签与拒签理由", "Dual-signature PIP goals", "目标、资源、期限双签后计时。", "Start the clock after dual signature on goals, resources and deadlines.", "保留拒签理由，交独立席判断合理性。", "Preserve refusal reasons for independent reasonableness review.", 30, "任务页区分送达、认同、拒签和一次修订"),
-    _m(184, "w", "pip_caseload", "经理的 PIP 承载量", "Manager PIP caseload", "预留经理工时，或增加导师与错峰容量。", "Reserve manager hours or add mentor and staggered capacity.", "超载开案，并把支持失败责任回写经理。", "Overbook cases and assign support-failure liability to the manager.", 1, "容量面板按终态一次释放每案预留"),
+    _m(184, "w", "pip_caseload", "经理的 PIP 承载量", "Manager PIP caseload", "预留经理工时，或增加导师与错峰容量。", "Reserve manager hours or add mentor and staggered capacity.", "超载开案，并将支持失败责任追记在经理名下。", "Overbook cases and charge support-failure liability to the manager's record.", 1, "容量面板按终态一次释放每案预留"),
     _m(185, "w", "pip_midpoint", "PIP 中期检查", "PIP midpoint review", "只做一次中检，并允许一次有证据修正。", "Run one midpoint and allow one evidence-backed correction.", "跳过中检，随后不得倒造资源或目标更正。", "Skip the midpoint; later resource or goal corrections become invalid.", 180, "PIP 时间线消费进度、资源交付和目标有效性"),
     _m(186, "w", "goal_creep_lock", "PIP 目标膨胀锁", "PIP goal-creep lock", "加任务必须等量替换、延期或获紧急复核。", "Add work only with equal replacement, extension or emergency review.", "直接加码，并生成目标膨胀违规。", "Add workload directly and post a goal-creep violation.", 7, "变更账比较基线、当前工作量和补偿路线"),
-    _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "读取唯一案卷的毕业或失败回执；经理只能选择复核程序。", "Read the unique case's graduation or failure receipt; the manager chooses only the review procedure.", "要求程序复核，但不能替本人签字或替结算器宣布毕业。", "Request procedural review without signing for the subject or declaring graduation for the settler.", 366, "毕业或失败只读取 B2 唯一结算回执，绝不直接写档位"),
+    _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "读取唯一案卷的毕业或失败回执；经理只能选择复核程序。", "Read the unique case's graduation or failure receipt; the manager chooses only the review procedure.", "要求程序复核，但不能替本人签字或替最终裁决宣布毕业。", "Request procedural review without signing for the subject or preempting the final ruling on graduation.", 366, "毕业或失败只读取 B2 唯一结算回执，绝不直接写档位"),
     _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "在 365 日观察期内持续贴标签，并记录过度披露风险。", "Keep the label during the 365-day observation window and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
     _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer or exit", "按支持、错岗和真实空缺只选一条合法路线。", "Choose one legal route from support sufficiency, role mismatch and real vacancy.", "强制退出，并结算空缺、交接和补员成本。", "Force exit and settle vacancy, handover and replacement costs.", 30, "终局决定页只接受一个排他终态"),
     _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "只向真实接收经理披露目标、支持、结果和本人陈述。", "Disclose goals, support, outcome and the subject statement only to the real receiving manager.", "贴粗糙标签，但不得编造细节或改旧档位。", "Apply a coarse label without inventing details or rewriting the old rating.", 30, "转岗包按 ACL 投影最小字段"),
-    _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "以实际付款回执列空缺、交接、加班和补员净成本。", "Post vacancy, handover, overtime and replacement net cost from actual receipts.", "只报节省，隐藏成本转为经理债。", "Report gross savings and move hidden costs to manager debt.", 30, "团队成本表和经理记分卡消费同一净额"),
+    _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "登记完整的退出成本模型。", "Record the complete exit-cost model.", "登记零成本口径，并留下隐瞒债。", "Record a zero-cost presentation and leave concealment debt.", 30, "团队成本表和经理记分卡消费同一净额"),
 )
 MECHANISM_BY_ID = {mechanism.mechanism_id: mechanism for mechanism in MECHANISMS}
 EXPECTED_IDS = tuple(range(146, 192))
@@ -269,6 +269,22 @@ DELAYED_CONSUMER_FIELD_BY_ID: dict[int, str] = {
 # the next same-stage card, otherwise the player could choose a terminal fork
 # before the one-cycle relapse window had elapsed.
 DELAYED_STAGE_GATE_IDS = frozenset({185, 187, 188})
+
+# M-11 popup-noise closure.  These low-risk procedural choices may reuse one
+# explicit portfolio strategy (A/B/C) instead of asking the player the same
+# question again.  Every item still enters its original core, consumer and
+# delayed-audit chain.  A failed core guard falls back to that item's original
+# visible event.  #191 appeared in the initial triage list, but it owns the
+# exit-cost resource settlement and is therefore deliberately kept visible.
+REQUESTED_BACKGROUND_BATCH_IDS = frozenset(
+    {146, 147, 148, 152, 154, 156, 163, 164, 167, 168,
+     169, 171, 172, 174, 176, 177, 179, 181, 186, 191}
+)
+BACKGROUND_BATCH_PROTECTED_IDS = frozenset({191})
+BACKGROUND_BATCH_IDS = (
+    REQUESTED_BACKGROUND_BATCH_IDS - BACKGROUND_BATCH_PROTECTED_IDS
+)
+BATCH_STRATEGY_EVENT_ID = 9100
 
 AUDIT_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
     149: ("fulfilled_receipt", "breach_receipt"),
@@ -515,10 +531,26 @@ def validate_specs() -> None:
         raise ValueError("every owned mechanism needs one typed delayed consumer")
     if not DELAYED_STAGE_GATE_IDS <= set(EXPECTED_IDS):
         raise ValueError("delayed stage gate outside owned range")
+    if not BACKGROUND_BATCH_IDS <= set(EXPECTED_IDS):
+        raise ValueError("background batch mechanism outside owned range")
+    if BACKGROUND_BATCH_IDS & (
+        DUAL_COST_IDS | SUBJECT_RESPONSE_IDS | DELAYED_STAGE_GATE_IDS
+    ):
+        raise ValueError(
+            "money, subject-response and delayed-gate mechanisms must stay visible"
+        )
+    if REQUESTED_BACKGROUND_BATCH_IDS - BACKGROUND_BATCH_IDS != {191}:
+        raise ValueError("only #191 may be rejected from the M-11 triage list")
+    if 191 not in BACKGROUND_BATCH_PROTECTED_IDS:
+        raise ValueError("#191 exit-cost settlement must stay visible")
     if not set(AUDIT_ONLY_FIELDS_BY_ID) <= set(EXPECTED_IDS):
         raise ValueError("audit-only reset field outside owned range")
     if not set(RESPONSE_ONLY_FIELDS_BY_ID) <= set(SUBJECT_RESPONSE_IDS):
         raise ValueError("response-only reset field without subject response")
+    if set(PP_SCENES) != set(EXPECTED_IDS):
+        raise ValueError("every player-facing PP card needs one authored scene")
+    if set(RESULT_REASON_TEXT) != set(range(11)):
+        raise ValueError("result delivery needs readable reason text for codes 0--10")
     if READINESS != "static-ready":
         raise ValueError("generator must not claim live readiness")
 
@@ -1457,16 +1489,15 @@ set_variable = {{ name = {p}_result_state_snapshot value = var:zg361_pp_w_result
 set_variable = {{ name = {p}_result_grade_snapshot value = var:zg361_pp_w_frozen_grade }}
 set_variable = {{ name = {p}_result_reason_snapshot value = var:zg361_pp_w_frozen_reason }}
 set_variable = {{ name = {p}_evidence_component_count value = var:zg361_pp_w_evidence_component_count }}
-set_variable = {{ name = {p}_primary_category value = 1 }}
-set_variable = {{ name = {p}_triage_truth_status value = 1 }}
-set_variable = {{ name = {p}_triage_red_code value = 0 }}
+set_variable = {{ name = {p}_primary_category value = 0 }}
+set_variable = {{ name = {p}_triage_truth_status value = 0 }}
+set_variable = {{ name = {p}_triage_red_code value = 2 }}
 set_variable = {{ name = {p}_manager_proposed_category value = scope:zg361_pp_route }}
 set_variable = {{ name = {p}_current_rating_unchanged value = 1 }}
 set_variable = {{ name = {p}_misdiagnosis_risk value = 0 }}
-# The same forced-quota reason is already the frozen category-3 witness used
-# by the post-graduation relapse audit.  Reuse it here so a real role-mismatch
-# transfer can become reachable when a mature vacancy exists.
-if = {{ limit = {{ scope:zg361_pp_route = 1 var:{p}_result_reason_snapshot = 5 }} set_variable = {{ name = {p}_primary_category value = 3 }} }}
+# A frozen grade reason describes how the final performance band was reached.
+# It is not evidence of skill, willingness, or role mismatch.  In particular,
+# reason 5 means forced-distribution demotion and must never unlock transfer.
 if = {{
 	limit = {{ scope:zg361_pp_route = 2 }}
 	set_variable = {{ name = {p}_primary_category value = 2 }}
@@ -1680,6 +1711,19 @@ def queue_decision_call(mechanism_id: int) -> str:
     return queue_manager_decision_call(mechanism_id)
 
 
+def batch_strategy_current_trigger(allow_itemized: bool = True) -> str:
+    """Require one explicit, cycle-bound manager choice."""
+
+    routes = (1, 2, 3, 4) if allow_itemized else (1, 2, 3)
+    route_rows = " ".join(
+        f"var:zg361_pp_batch_strategy_route = {route}" for route in routes
+    )
+    return f'''has_variable = zg361_pp_batch_strategy_route
+has_variable = zg361_pp_batch_strategy_cycle
+var:zg361_pp_batch_strategy_cycle = var:zg361_review_serial
+OR = {{ {route_rows} }}'''
+
+
 def portfolio_done_trigger(domain: str, expected: bool = True) -> str:
     body = f'''trigger_if = {{
 \tlimit = {{ has_variable = zg361_pp_{domain}_portfolio_done_cycle }}
@@ -1765,6 +1809,27 @@ def render_portfolio_adapter() -> str:
 # again only after the visible queue has closed.
 zg361_pp_manager_portfolio_adapter_effect = {{
 \tremove_variable = zg361_pp_runtime_applied
+\t# A player chooses the batch policy once per review cycle. Queue ownership
+\t# prevents repeated central-adapter calls from opening duplicate policy cards.
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_game_rule = zg361_on
+\t\t\tzg361_is_celestial_liege_trigger = yes
+\t\t\tis_ai = no
+\t\t\thas_variable = zg361_review_serial
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{ has_variable = zg361_pp_portfolio_queue_active }}
+\t\t\t\tvar:zg361_pp_portfolio_queue_active = 0
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = yes }}
+\t\t\tany_vassal = {{ zg361_is_reviewable_vassal_trigger = yes }}
+\t\t\tNOT = {{
+\t\t\t\t{indent(batch_strategy_current_trigger(), 4).lstrip()}
+\t\t\t}}
+\t\t}}
+\t\tset_variable = {{ name = zg361_pp_portfolio_queue_active value = 1 }}
+\t\ttrigger_event = {{ id = {EVENT_NAMESPACE}.{BATCH_STRATEGY_EVENT_ID} days = 1 }}
+\t}}
 \tif = {{
 \t\tlimit = {{
 \t\t\thas_game_rule = zg361_on
@@ -2184,6 +2249,7 @@ var:zg361_b2_m015_receipt_serial = var:zg361_b2_pip_case'''
 
 
 def render_open(domain: DomainSpec) -> str:
+    row = case_vars(domain.key)
     ids = tuple(mechanism_id for stage in domain.stages for mechanism_id in stage)
     resets: list[str] = []
     for mechanism_id in ids:
@@ -2245,6 +2311,17 @@ zg361_pp_open_{domain.key}_case_effect = {{
 \t\tzg361_case_{domain.key}_open_effect = yes
 \t\tif = {{
 \t\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
+\t\t\t# Freeze the manager's cycle-level choice on the case subject. AI
+\t\t\t# managers retain the itemized sentinel and use their existing path.
+\t\t\tif = {{
+\t\t\t\tlimit = {{ root = {{ {batch_strategy_current_trigger()} }} }}
+\t\t\t\tset_variable = {{ name = zg361_pp_batch_strategy_route_frozen value = root.var:zg361_pp_batch_strategy_route }}
+\t\t\t\tset_variable = {{ name = zg361_pp_batch_strategy_cycle_frozen value = var:{row["cycle"]} }}
+\t\t\t}}
+\t\t\telse = {{
+\t\t\t\tset_variable = {{ name = zg361_pp_batch_strategy_route_frozen value = 4 }}
+\t\t\t\tset_variable = {{ name = zg361_pp_batch_strategy_cycle_frozen value = var:{row["cycle"]} }}
+\t\t\t}}
 \t\t\tset_variable = {{ name = zg361_pp_{domain.key}_authorized value = {authorized} }}
 \t\t\tset_variable = {{ name = zg361_pp_{domain.key}_completed value = 0 }}
 \t\t\tset_variable = {{ name = zg361_pp_{domain.key}_evidence_led value = 0 }}
@@ -2667,6 +2744,76 @@ def render_schedule_stage(domain: DomainSpec, state: int, days: int) -> str:
 }}'''
 
 
+def render_player_stage_batch_dispatch(
+    domain: DomainSpec, state: int, stage: tuple[int, ...]
+) -> str:
+    """Run safe portfolio items, stopping at the first item needing a card.
+
+    The selected route is frozen on the subject when the case opens.  A safe
+    item's unchanged core owns every dependency/resource check and all receipt,
+    consumer and deadline writes.  If that core does not apply, the exact
+    original manager event is queued; no item is silently skipped.
+    """
+
+    row = case_vars(domain.key)
+    continue_var = f"zg361_pp_batch_dispatch_{domain.key}_{state:02d}_continue"
+    rows = [f"set_variable = {{ name = {continue_var} value = 1 }}"]
+    for mechanism_id in stage:
+        p = f"{PREFIX}_m{mechanism_id:03d}"
+        fallback = queue_decision_call(mechanism_id)
+        pending = f"var:{continue_var} = 1 NOT = {{ var:{p}_consumed = 1 }}"
+        if mechanism_id not in BACKGROUND_BATCH_IDS:
+            rows.append(
+                f'''if = {{
+\tlimit = {{ {pending} }}
+\t{indent(fallback, 1).lstrip()}
+\tset_variable = {{ name = {continue_var} value = 0 }}
+}}'''
+            )
+            continue
+        core = f'''zg361_pp_m{mechanism_id:03d}_core_effect = {{
+\tROUTE = var:zg361_pp_batch_strategy_route_frozen
+\tTICKET_OWNER = var:{row["owner"]}
+\tTICKET_SUBJECT = this
+\tTICKET_CYCLE = var:{row["cycle"]}
+\tTICKET_CASE = var:{row["case"]}
+\tTICKET_STATE = {state}
+}}'''
+        rows.append(
+            f'''if = {{
+\tlimit = {{ {pending} }}
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = zg361_pp_batch_strategy_route_frozen
+\t\t\thas_variable = zg361_pp_batch_strategy_cycle_frozen
+\t\t\tvar:zg361_pp_batch_strategy_cycle_frozen = var:{row["cycle"]}
+\t\t\tOR = {{
+\t\t\t\tvar:zg361_pp_batch_strategy_route_frozen = 1
+\t\t\t\tvar:zg361_pp_batch_strategy_route_frozen = 2
+\t\t\t\tvar:zg361_pp_batch_strategy_route_frozen = 3
+\t\t\t}}
+\t\t}}
+\t\t# Preserve the original core/consumer/deadline path. A failed resource or
+\t\t# dependency guard leaves runtime_applied unset and falls back to the card.
+\t\t{indent(core, 2).lstrip()}
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\tNOT = {{ has_variable = zg361_pp_runtime_applied }}
+\t\t\t}}
+\t\t\t{indent(fallback, 3).lstrip()}
+\t\t\tset_variable = {{ name = {continue_var} value = 0 }}
+\t\t}}
+\t}}
+\telse = {{
+\t\t{indent(fallback, 2).lstrip()}
+\t\tset_variable = {{ name = {continue_var} value = 0 }}
+\t}}
+}}'''
+        )
+    rows.append(f"remove_variable = {continue_var}")
+    return "\n".join(rows)
+
+
 def render_stage_dispatch(domain: DomainSpec, state: int, stage: tuple[int, ...]) -> str:
     first = stage[0]
     ai_calls = []
@@ -2699,7 +2846,7 @@ else_if = {{ limit = {{ var:zg361_case_{domain.key}_owner = {{ OR = {{ has_trait
 }}'''
         )
     ai_text = "\n\t\t".join(ai_calls)
-    queue = queue_decision_call(first)
+    queue = render_player_stage_batch_dispatch(domain, state, stage)
     if domain.key == "w" and state == 4:
         terminal_queue = queue_decision_call(189)
         first_failure_guard = '''var:zg361_pp_m187_graduation_status = 2
@@ -3125,7 +3272,7 @@ def render_player_event(mechanism: MechanismSpec) -> str:
     if nxt is not None:
         chain = f'''if = {{
 \t\t\tlimit = {{ scope:zg361_pp_prompt_subject = {{ var:{p}_consumed = 1 }} }}
-\t\t\tscope:zg361_pp_prompt_subject = {{ {queue_decision_call(nxt)} }}
+\t\t\tscope:zg361_pp_prompt_subject = {{ zg361_pp_dispatch_{mechanism.domain}_stage_{state:02d}_effect = yes }}
 \t\t}}'''
     options = []
     route_rows: tuple[tuple[int, str, str], ...] = (
@@ -3155,6 +3302,7 @@ def render_player_event(mechanism: MechanismSpec) -> str:
         options.append(
             f'''option = {{
 \t\tname = zg361pp.{mechanism.mechanism_id}.{letter}
+\t\tcustom_tooltip = zg361pp.{mechanism.mechanism_id}.{letter}.tt
 \t\ttrigger = {{ scope:zg361_pp_prompt_subject = {{ {option_guard} }} }}
 \t\tscope:zg361_pp_prompt_subject = {{
 \t\t\tzg361_pp_m{mechanism.mechanism_id:03d}_manager_apply_effect = {{
@@ -3213,7 +3361,26 @@ def render_subject_response_event(mechanism: MechanismSpec) -> str:
 \t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 2 } desc = zg361pp.grade.350 }
 \t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 1 } desc = zg361pp.grade.325 }
 \t\t}
+\t\tfirst_valid = {
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 0 } desc = zg361pp.5151.reason.0 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 1 } desc = zg361pp.5151.reason.1 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 2 } desc = zg361pp.5151.reason.2 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 3 } desc = zg361pp.5151.reason.3 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 4 } desc = zg361pp.5151.reason.4 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 5 } desc = zg361pp.5151.reason.5 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 6 } desc = zg361pp.5151.reason.6 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 7 } desc = zg361pp.5151.reason.7 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 8 } desc = zg361pp.5151.reason.8 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 9 } desc = zg361pp.5151.reason.9 }
+\t\t\ttriggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 10 } desc = zg361pp.5151.reason.10 }
+\t\t\tdesc = zg361pp.5151.reason.unknown
+\t\t}
+\t\tdesc = zg361pp.5151.evidence
 \t}'''
+    elif mechanism.mechanism_id in {166, 190}:
+        # The manager event and the subject-response event freeze different
+        # saved-scope families; sharing their body would render empty names.
+        desc = f"zg361pp.{event_id}.desc"
     return f'''# {mechanism.mechanism_id:03d}: the assessed official, never the manager,
 # owns this response. AI subjects use the same effect silently at the queue.
 zg361pp.{event_id} = {{
@@ -3511,16 +3678,17 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\t\tset_variable = {{ name = {p}_observed_result_state value = var:zg361_result_case_state }}
 \t\t\t\t\tset_variable = {{ name = {p}_observed_result_grade value = var:zg361_result_grade }}
 \t\t\t\t\tset_variable = {{ name = {p}_observed_result_reason value = var:zg361_result_grade_reason }}
-\t\t\t\t\tset_variable = {{ name = {p}_observed_category value = 1 }}
-\t\t\t\t\tif = {{ limit = {{ var:zg361_result_grade_reason = 5 }} set_variable = {{ name = {p}_observed_category value = 3 }} }}
+\t\t\t\t\t# A grade reason is not a problem-category witness.  Keep the
+\t\t\t\t\t# observed category unknown until a dedicated fact producer exists.
+\t\t\t\t\tset_variable = {{ name = {p}_observed_category value = 0 }}
 \t\t\t\t\tif = {{
 \t\t\t\t\t\tlimit = {{
 \t\t\t\t\t\t\tOR = {{
 \t\t\t\t\t\t\t\tvar:{p}_route = 2
-\t\t\t\t\t\t\t\tAND = {{ var:{p}_route = 1 var:{p}_observed_category = var:{p}_category_snapshot }}
+\t\t\t\t\t\t\t\tAND = {{ var:{p}_route = 1 var:{p}_observed_category >= 1 var:{p}_observed_category = var:{p}_category_snapshot }}
 \t\t\t\t\t\t\t}}
 \t\t\t\t\t\t}}
-\t\t\t\t\t\tif = {{ limit = {{ var:{p}_observed_category = var:{p}_category_snapshot }} set_variable = {{ name = {p}_same_category_relapse value = 1 }} }}
+\t\t\t\t\t\tif = {{ limit = {{ var:{p}_observed_category >= 1 var:{p}_observed_category = var:{p}_category_snapshot }} set_variable = {{ name = {p}_same_category_relapse value = 1 }} }}
 \t\t\t\t\t\tset_variable = {{ name = {p}_relapse_status value = 1 }}
 \t\t\t\t\t}}
 \t\t\t\t}}
@@ -3685,8 +3853,40 @@ def render_completion_event(domain: DomainSpec, event_id: int) -> str:
 }}'''
 
 
+def render_batch_strategy_event() -> str:
+    options = []
+    for route, key in ((1, "a"), (2, "b"), (3, "c"), (4, "d")):
+        options.append(
+            f'''option = {{
+\t\tname = zg361pp.{BATCH_STRATEGY_EVENT_ID}.{key}
+\t\tcustom_tooltip = zg361pp.{BATCH_STRATEGY_EVENT_ID}.{key}.tt
+\t\tset_variable = {{ name = zg361_pp_batch_strategy_route value = {route} }}
+\t\tset_variable = {{ name = zg361_pp_batch_strategy_cycle value = var:zg361_review_serial }}
+\t\tset_variable = {{ name = zg361_pp_portfolio_queue_active value = 0 }}
+\t\tzg361_pp_manager_portfolio_adapter_effect = yes
+\t}}'''
+        )
+    return f'''# One explicit player-owned policy for the safe PP subset.  The choice is
+# cycle-bound; itemized mode and every protected operation retain original cards.
+zg361pp.{BATCH_STRATEGY_EVENT_ID} = {{
+\ttype = character_event
+\ttheme = vassal
+\ttitle = zg361pp.{BATCH_STRATEGY_EVENT_ID}.t
+\tdesc = zg361pp.{BATCH_STRATEGY_EVENT_ID}.desc
+\ttrigger = {{
+\t\tis_ai = no
+\t\tzg361_is_celestial_liege_trigger = yes
+\t\thas_game_rule = zg361_on
+\t\thas_variable = zg361_review_serial
+\t\tvar:zg361_pp_portfolio_queue_active = 1
+\t}}
+\t{indent(chr(10).join(options), 1).lstrip()}
+}}'''
+
+
 def render_events() -> bytes:
     sections = ["namespace = zg361pp"]
+    sections.append(render_batch_strategy_event())
     sections.extend(render_player_event(mechanism) for mechanism in MECHANISMS)
     sections.extend(
         render_subject_response_event(MECHANISM_BY_ID[mechanism_id])
@@ -3706,6 +3906,111 @@ def escape_loc(value: str) -> str:
     return value.replace('"', '\\"')
 
 
+PP_SCENES: dict[int, tuple[str, str]] = {
+    146: ("冻结档位已经送到当事人手里，案卷还缺一份确认其是否真正听懂结论的回执。", "The frozen grade has reached the subject, but the file still lacks a receipt confirming whether the conclusion was understood."),
+    147: ("本轮证据索引已经封存，反馈稿中哪些褒贬有证据支撑仍未登记。", "This cycle's evidence index is sealed, but the file does not yet identify which praise or criticism is supported."),
+    148: ("档位与证据均已冻结，面谈纪要尚未记录二者的出示次序及当事人的异议。", "The grade and evidence are frozen, while the meeting record still lacks their presentation order and the subject's objections."),
+    149: ("本轮较低档位不会因协商改变，案卷仍缺补偿责任人、到期日和履约状态。", "The lower grade will not change through bargaining; the file still lacks a compensation owner, due date, and fulfillment status."),
+    150: ("当事人的本轮让步已经记入案卷，但所谓日后补偿尚无书面义务和到期状态。", "The subject's sacrifice is on file, but the promised future compensation has no written obligation or due status."),
+    151: ("结果已经送达，当事人尚未决定仅确认收件，还是在保留异议的同时提出申诉。", "The result has been served; the subject has not yet chosen between receipt alone and receipt with an objection and appeal."),
+    152: ("案卷里已有一份反馈稿，但它能否转化为具体、可控、有期限且有资源的行动仍未评分。", "A feedback draft exists, but its specificity, controllability, deadline, and resources have not been assessed."),
+    153: ("反馈已经留下，后续行动却还没有唯一责任人、原始期限或验收凭据。", "Feedback has been recorded, but the follow-up action still lacks one owner, an original deadline, and acceptance evidence."),
+    154: ("证据索引已经封存，面谈纪要的保存范围和后续更正方式仍是空白。", "The evidence index is sealed, while the minutes' retention scope and correction method remain unset."),
+    155: ("个人结果即将进入团队传播环节，公开字段与本人私密反馈之间尚未划界。", "The individual result is about to enter team communication, but public fields and private feedback have not been separated."),
+    156: ("个人档位已经送达，团队仍未收到分布原则、共性问题和资源安排的说明回执。", "Individual grades have been served, but the team still lacks a receipt for the distribution, common issues, and resource plan briefing."),
+    157: ("冻结档位已经给出候选资格，提名案卷尚未确定由本人还是直属上司发起。", "The frozen grade establishes eligibility, but the nomination file does not yet record whether the candidate or manager initiated it."),
+    158: ("候选包已经进入队列，授权、占用和剩余额度需要在同一本账中对齐。", "A candidate packet is in the queue, and authorized, used, and remaining slots must reconcile in one ledger."),
+    159: ("这名候选既承担当前产出又可能进入下一职级，案卷尚无接班安排或明确提名期限。", "This candidate supports current delivery while approaching the next level, yet the file has no succession arrangement or dated nomination path."),
+    160: ("候选材料、职级依据和前序程序已经汇入案卷，预审结果仍待登记。", "Candidate materials, level evidence, and prior procedure are in the file; the prescreen result remains unset."),
+    161: ("主推候选已经明确，队列中是否另塞入一份并不打算支持的材料仍未落账。", "The primary candidate is known, but the ledger does not yet say whether an unsupported filler packet will be inserted."),
+    162: ("本案没有外部材料证明候选已经获得资历豁免，只能登记本轮是否占用破格席位。", "No external record proves a tenure exception was granted; the proceeding can only record whether this cycle consumes an exception slot."),
+    163: ("候选当前结果已经冻结，供晋升判断使用的历史周期范围还没有封存。", "The candidate's current result is frozen, but the historical observation window for promotion has not been sealed."),
+    164: ("案卷没有外部跨团队付款或贡献回执；这里只能建立待复核的贡献归因记录。", "The file has no external cross-team payment or contribution receipt; it can only create an attribution record for later review."),
+    165: ("案卷没有外部试岗合同；授权、补偿、期限与退出条件只能作为本案规则一并登记。", "No external trial-role contract exists; authority, compensation, deadline, and exit terms can only be recorded together as case policy."),
+    166: ("候选包仍停在预审之前，是否撤回必须由候选本人留下回执。", "The packet is still before prescreen, and only the candidate can leave a withdrawal receipt."),
+    167: ("提名已经进入案卷，提名担保人的背书边界及后续信用观察尚未封存。", "The nomination is on file, but the sponsor's endorsement boundary and later credit observation remain unset."),
+    168: ("当前只有本轮提名案卷；通过与任职表现要到后续观察期才能成为命中率事实。", "Only the current nomination file exists; passage and later performance cannot become hit-rate facts until a later observation."),
+    169: ("候选已进入评审准备，专业席与外部席的计分权重仍未登记。", "The candidate is entering review preparation, but expert and external scoring weights remain unset."),
+    170: ("跨部门备选池已经建立，最终评委席位及其与候选的关系边界尚未冻结。", "A cross-unit reserve pool exists, but final panel seats and their relationship boundary with the candidate are not frozen."),
+    171: ("评委席位已有候选人选，冲突披露与替补席启用情况还没有回执。", "Proposed panelists exist, but the file lacks receipts for conflict disclosure and replacement seats."),
+    172: ("三名在席评委已经冻结，投票所采用的规则和权重仍未写入本案。", "Three active panelists are frozen, while the voting rule and weights remain unset."),
+    173: ("评委与候选已经确定，书面材料分和现场陈述分尚未形成可区分的记录。", "Panelists and candidate are identified, but packet and live-defense scores have not yet been separated."),
+    174: ("答辩尚未开始，陈述与质询各自占用多少时间仍只是待登记的规则。", "The defense has not begun; presentation and questions remain policy allocations rather than elapsed time."),
+    175: ("案卷没有实际辅导工时回执，只能登记从共享辅导池分配的政策额度。", "The file has no actual coaching-hours receipt; the proceeding can only record a policy allocation from the shared pool."),
+    176: ("团队成果已经进入候选材料，个人与同伴各占多少贡献仍是待复核的归因模型。", "A team result is in the packet, but candidate and peer contribution shares remain an attribution model for review."),
+    177: ("项目规模已经进入陈述，候选本人的杠杆贡献尚未与项目光环分开记录。", "Project scale is in the presentation, but the candidate's leverage has not yet been separated from the project's halo."),
+    178: ("书面材料与现场陈述都已进入评审，是否满足投票门槛仍待本案结算。", "The packet and live defense are both under review; voting eligibility remains unsettled."),
+    179: ("本轮答辩未通过，案卷还没有把具体差距、负责评委与下一份证据绑定起来。", "The defense did not pass, and the file still lacks a binding among each gap, its responsible panelist, and the next evidence item."),
+    180: ("失败材料已经封存，下一次重开所需的冷却期和材料版本尚未登记。", "The failed packet is sealed, but its retry cooldown and next material version remain unset."),
+    181: ("现有案卷只证明绩效结果及其形成原因，没有能力、意愿或错岗的独立事实。", "The available file proves only the performance result and how it was reached; it contains no independent skill, will, or role-mismatch fact."),
+    182: ("绩效改进计划的证据组合与门槛回执已经冻结，是否按该回执开案仍待登记。", "The evidence bundle and threshold receipt for the improvement plan are frozen; opening the case from that receipt remains unsettled."),
+    183: ("目标、支持资源与期限已经送给当事人，本人签收、异议或拒签回执已经进入本案。", "Goals, support, and deadline were served to the subject, whose acknowledgment, objection, or refusal receipt is now in the file."),
+    184: ("支持资源回执已经冻结，直属上司能否承载本案取决于已登记的工时和预算，而非口头承诺。", "The support receipt is frozen; manager capacity depends on recorded hours and budget, not an oral assurance."),
+    185: ("本案进入中点前，尚无完成中检或修正目标与资源的回执。", "Before the case reaches its midpoint, no receipt yet proves a review or a correction to goals and resources."),
+    186: ("案卷没有外部工作量清单；基准十项、替换两项等数字仅是本案采用的政策模型。", "The file has no external workload list; figures such as a ten-item baseline and two-item replacement are only this case's policy model."),
+    187: ("中检回执与工作量基线已经就位，毕业或失败仍必须等待唯一结算回执。", "The midpoint receipt and workload baseline are present, but graduation or failure must wait for the unique settlement receipt."),
+    188: ("只有已经毕业的案卷才进入观察；当前没有后续周期的同类复发事实。", "Only a graduated case enters observation, and no same-category relapse fact exists for a later cycle yet."),
+    189: ("最终裁决已经给出毕业失败或同类复发回执；现有证据没有证明错岗，真实空缺也不能替代该证明。", "Final adjudication has produced a failure or same-category relapse receipt; current evidence does not prove role mismatch, and a real vacancy cannot substitute for that proof."),
+    190: ("只有真实转岗成立时才会出现接收上司；披露包尚未由当事人确认最小陈述范围。", "A receiving manager exists only after a real transfer; the subject has not yet confirmed the minimum statement included in the disclosure bundle."),
+    191: ("退出终态已经登记，但空缺、交接、加班和补员没有外部实际付款明细。", "The exit terminal is recorded, but no external payment breakdown exists for vacancy, handover, overtime, or replacement."),
+}
+
+
+RESULT_REASON_TEXT: dict[int, tuple[str, str]] = {
+    0: ("事实档与最终档一致，没有发生校准或配额调整。", "The evidence band and final band agree; no calibration or quota adjustment occurred."),
+    1: ("校准交换把当事人从 3.75 档挤出。", "A calibration swap moved the subject out of the 3.75 band."),
+    2: ("校准交换把当事人抬入 3.75 档。", "A calibration swap moved the subject into the 3.75 band."),
+    3: ("校准交换把当事人压入 3.25 档。", "A calibration swap moved the subject into the 3.25 band."),
+    4: ("校准交换把当事人从 3.25 档救回。", "A calibration swap moved the subject out of the 3.25 band."),
+    5: ("事实档高于最终档；强制分布配额将其下调。这不构成错岗证据。", "The evidence band exceeded the final band and forced distribution moved it down. This is not role-mismatch evidence."),
+    6: ("新人保护规则把当事人抬升一档。", "Newcomer protection raised the subject by one band."),
+    7: ("横向配额规则把当事人抬升一档。", "A lateral quota rule raised the subject by one band."),
+    8: ("队列过小，结果按中性档处理。", "The cohort was too small, so the result used the neutral band."),
+    9: ("灰色离任占用了既有的 3.25 名额。", "A gray departure occupied an existing 3.25 slot."),
+    10: ("原 3.25 承担者与离任者按应得档完成对调。", "The former 3.25 bearer swapped bands with the departing subject according to their evidence bands."),
+}
+
+
+def option_tooltip(
+    mechanism: MechanismSpec, route: int, action: str, chinese: bool
+) -> str:
+    if route == 3:
+        due_days = 180 if mechanism.mechanism_id in P2_DEFER_IDS else 90
+        due = str(due_days)
+    else:
+        due = "、".join(str(days) for days in mechanism.deadlines)
+    payment = ""
+    if DUAL_COST_ROUTE_BY_ID.get(mechanism.mechanism_id) == route:
+        payment = (
+            "执行时直属上司实际支付国库 5 与个人金币 5，当事人实际收到 10；这笔支付与其他政策模型数字分别记账。"
+            if chinese
+            else "On execution, the manager actually pays treasury 5 and personal gold 5, and the subject actually receives 10; this payment is separate from all policy-model figures."
+        )
+    if mechanism.mechanism_id == 191 and route == 1:
+        model = (
+            "成本拆分 3/2/0/5、合计 10 只是政策模拟，不是外部付款回执。"
+            if chinese
+            else "The 3/2/0/5 breakdown totaling 10 is a policy simulation, not an external payment receipt."
+        )
+    elif mechanism.mechanism_id == 191 and route == 2:
+        model = (
+            "零成本与 10 点隐瞒债均为本案模型值，不是实际节省或实际付款。"
+            if chinese
+            else "The zero-cost presentation and ten concealment-debt points are case-model values, not actual savings or payments."
+        )
+    else:
+        model = ""
+    if chinese:
+        return (
+            f"{action} 登记立即生效；计划核验日：第 {due} 日。"
+            f"{payment}{model}未出现外部回执的数字只代表本案政策参数。"
+        )
+    return (
+        f"{action} The record takes effect immediately; scheduled review day: {due}. "
+        f"{payment}{model}Figures without an external receipt are case policy parameters only."
+    )
+
+
 def localization_rows(language: str) -> list[str]:
     chinese = language == "simp_chinese"
     rows = [f"l_{language}:"]
@@ -3714,7 +4019,7 @@ def localization_rows(language: str) -> list[str]:
             (
                 ' zg361pp.grade.375:0 "本轮冻结绩效：3.75。别急，这一页还没开始夸你。"',
                 ' zg361pp.grade.350:0 "本轮冻结绩效：3.5。翻译成人话：干得不少，坑也给你留着。"',
-                ' zg361pp.grade.325:0 "本轮冻结绩效：3.25。PPT 叫改进空间，账本叫证据起点。"',
+                ' zg361pp.grade.325:0 "本轮冻结绩效：3.25。考评会上称它还有改进余地，案卷则把它记作继续取证的起点。"',
                 ' zg361pp.outcome.evidence:0 "证据路线占优：流程没有变善良，只是这次终于留下了能对账的东西。"',
                 ' zg361pp.outcome.political:0 "政治路线占优：业务很灵活，责任很稳定——稳定地落在经理名下。"',
                 ' zg361pp.outcome.mixed:0 "路线打平：制度和人情各赢一半，只有会议时间全输了。"',
@@ -3737,6 +4042,36 @@ def localization_rows(language: str) -> list[str]:
                 ' zg361pp.terminal.graduated:0 "Terminal: no same-category relapse. The improvement plan did not renew its subscription this time."',
                 ' zg361pp.terminal.transfer:0 "Terminal: real transfer. This moves a vacancy and receiving manager, not merely the problem into another chat."',
                 ' zg361pp.terminal.exit:0 "Terminal: exit. Vacancy, handover, overtime and replacement costs all survived the optimization."',
+            )
+        )
+    if chinese:
+        rows.extend(
+            (
+                ' zg361pp.9100.t:0 "本轮办案方式"',
+                ' zg361pp.9100.desc:0 "本轮至多十九项程序性记录可以沿用同一种处置。付款、本人回应、限期复核、转岗、人物去留与成本结算仍会逐项呈报。统一办理仍逐案留下案卷、期限与回执；材料或资源不足时，该事项会另行呈报。"',
+                ' zg361pp.9100.a:0 "统一办理程序性记录，以书证完整可复核为准。"',
+                ' zg361pp.9100.a.tt:0 "进入实际案卷的至多十九项程序性记录分别以书证完整、可复核为准；其余事项继续逐项呈报，材料或资源不足的事项也会另行呈报。"',
+                ' zg361pp.9100.b:0 "统一办理程序性记录，以迅速执行为先。"',
+                ' zg361pp.9100.b.tt:0 "进入实际案卷的至多十九项程序性记录分别以迅速执行为先；其余事项继续逐项呈报，材料或资源不足的事项也会另行呈报。"',
+                ' zg361pp.9100.c:0 "搁置程序性记录，每件各留一笔到期制度债。"',
+                ' zg361pp.9100.c.tt:0 "每件实际立案的程序性事项各留一笔制度债，并依该事项既定期限到期；其余事项继续逐项呈报。"',
+                ' zg361pp.9100.d:0 "全部四十六项都逐项呈报。"',
+                ' zg361pp.9100.d.tt:0 "本轮四十六项管理裁定全部逐项呈报；本人回应与分域归档照常办理。"',
+            )
+        )
+    else:
+        rows.extend(
+            (
+                ' zg361pp.9100.t:0 "Casework Mode for This Cycle"',
+                ' zg361pp.9100.desc:0 "Up to nineteen procedural records in this cycle may share one disposition. Payments, subject responses, scheduled reviews, transfers, personnel outcomes, and cost settlements remain itemized. Common handling still leaves a separate file, deadline, and receipt for every matter; any matter short of evidence or resources will be presented separately."',
+                ' zg361pp.9100.a:0 "Handle procedural records together, subject to complete and reviewable evidence."',
+                ' zg361pp.9100.a.tt:0 "Up to nineteen procedural records that enter a real file will each require complete, reviewable evidence. Every other matter remains separately presented, as does any matter short of evidence or resources."',
+                ' zg361pp.9100.b:0 "Handle procedural records together, giving priority to prompt execution."',
+                ' zg361pp.9100.b.tt:0 "Up to nineteen procedural records that enter a real file will each give priority to prompt execution. Every other matter remains separately presented, as does any matter short of evidence or resources."',
+                ' zg361pp.9100.c:0 "Shelve procedural records and leave one due policy debt for each matter."',
+                ' zg361pp.9100.c.tt:0 "Every procedural matter actually opened leaves its own policy debt, due on that matter\'s established deadline. Every other matter remains separately presented."',
+                ' zg361pp.9100.d:0 "Present all forty-six matters separately."',
+                ' zg361pp.9100.d.tt:0 "All forty-six management decisions are presented separately this cycle; subject responses and domain filings proceed as usual."',
             )
         )
     subject_response_rows = {
@@ -3766,24 +4101,54 @@ def localization_rows(language: str) -> list[str]:
     if chinese:
         rows.extend(
             (
+                " zg361pp.5166.desc:0 \"晋升包仍停在预审之前。[scope:zg361_pp_subject_prompt_subject.GetShortUIName]必须亲自决定是否撤回；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]只负责接收回应，不能替当事人作答。\"",
+                " zg361pp.5190.desc:0 \"调任案卷已经锁定接收范围。[scope:zg361_pp_subject_prompt_subject.GetShortUIName]现在决定是否附上本人陈述；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]只能接收回应，不得替本人扩大披露。\"",
+            )
+        )
+    else:
+        rows.extend(
+            (
+                " zg361pp.5166.desc:0 \"The promotion packet remains before prescreen. [scope:zg361_pp_subject_prompt_subject.GetShortUIName] must personally decide whether to withdraw; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may receive the response but cannot answer for the candidate.\"",
+                " zg361pp.5190.desc:0 \"The transfer file has fixed its disclosure boundary. [scope:zg361_pp_subject_prompt_subject.GetShortUIName] now decides whether to attach a personal statement; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may receive the response but cannot broaden disclosure on the subject's behalf.\"",
+            )
+        )
+    if chinese:
+        rows.extend(
+            (
                 ' zg361pp.5151.t:0 "绩效反馈送达：请本人确认收件"',
-                " zg361pp.5151.desc:0 \"受评官员：[scope:zg361_pp_subject_prompt_subject.GetShortUIName]。送达人：[scope:zg361_pp_subject_prompt_owner.GetShortUIName]。本轮冻结档位列在下方；冻结理由编号为 [ROOT.MakeScope.Var('zg361_pp_t_frozen_reason').GetValue|0]，案卷证据共 [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。你有 90 日提出申诉。这里仅确认送达，不要求你同意档位、理由或证据。\"",
+                " zg361pp.5151.desc:0 \"告身已经送达：[scope:zg361_pp_subject_prompt_owner.GetShortUIName]把本轮结果交到[scope:zg361_pp_subject_prompt_subject.GetShortUIName]手中。你有 90 日提出申诉；这份告身只确认收件，不要求你同意档位、理由或证据。\"",
+                " zg361pp.5151.evidence:0 \"冻结证据摘要：绩效指标 [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0]，队列名次 [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0]，案卷证据 [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。\"",
             )
         )
     else:
         rows.extend(
             (
                 ' zg361pp.5151.t:0 "Performance Feedback Served: Confirm Receipt"',
-                " zg361pp.5151.desc:0 \"Assessed official: [scope:zg361_pp_subject_prompt_subject.GetShortUIName]. Served by: [scope:zg361_pp_subject_prompt_owner.GetShortUIName]. The frozen grade appears below; reason code [ROOT.MakeScope.Var('zg361_pp_t_frozen_reason').GetValue|0], with [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items. You have 90 days to appeal. This confirms delivery only and does not require agreement with the grade, reason, or evidence.\"",
+                " zg361pp.5151.desc:0 \"The notice has been served: [scope:zg361_pp_subject_prompt_owner.GetShortUIName] delivered this cycle's result to [scope:zg361_pp_subject_prompt_subject.GetShortUIName]. You have 90 days to appeal; the notice confirms receipt only and does not require agreement with the grade, reason, or evidence.\"",
+                " zg361pp.5151.evidence:0 \"Frozen evidence summary: performance indicator [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items.\"",
             )
         )
+    for reason_code, reason_text in RESULT_REASON_TEXT.items():
+        value = reason_text[0] if chinese else reason_text[1]
+        rows.append(
+            f' zg361pp.5151.reason.{reason_code}:0 "{escape_loc(value)}"'
+        )
+    unknown_reason = (
+        "案卷没有可识别的调整理由；承办记录不会替缺失事实编造解释。"
+        if chinese
+        else "The file has no recognized adjustment reason; the record will not invent an explanation for missing facts."
+    )
+    rows.append(
+        f' zg361pp.5151.reason.unknown:0 "{escape_loc(unknown_reason)}"'
+    )
     for mechanism in MECHANISMS:
         title = mechanism.title_cn if chinese else mechanism.title_en
         due = "、".join(str(days) for days in mechanism.deadlines)
+        scene = PP_SCENES[mechanism.mechanism_id][0 if chinese else 1]
         desc = (
-            f"受评官员：[scope:zg361_pp_prompt_subject.GetShortUIName]；裁决者：[scope:zg361_pp_prompt_owner.GetShortUIName]。本案现在处理「{title}」。选择会立即写入本案；需要后续核验的结果将在第 {due} 日到期。按钮中的数字与条件是本案采用的制度参数，只有已经存在的付款、证据或人物回执才会被当作既成事实。"
+            f"{scene}承办者是[scope:zg361_pp_prompt_owner.GetShortUIName]，当事人是[scope:zg361_pp_prompt_subject.GetShortUIName]。需要后续核验的回执计划在第 {due} 日到期；这只是本案期限，不表示结果已经发生。"
             if chinese
-            else f"Assessed official: [scope:zg361_pp_prompt_subject.GetShortUIName]; decision owner: [scope:zg361_pp_prompt_owner.GetShortUIName]. This case now resolves {title}. The choice is recorded immediately; any follow-up check falls due after {due} days. Numbers and conditions in the options are policy parameters, and only existing payment, evidence, or character receipts count as facts."
+            else f"{scene} The decision owner is [scope:zg361_pp_prompt_owner.GetShortUIName], and the subject is [scope:zg361_pp_prompt_subject.GetShortUIName]. Any follow-up receipt is scheduled for day {due}; this is a case deadline, not a claim that the outcome already occurred."
         )
         routes = (
             (mechanism.a_cn, mechanism.b_cn, mechanism.c_cn)
@@ -3797,29 +4162,36 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361pp.{mechanism.mechanism_id}.a:0 "{escape_loc(routes[0])}"',
                 f' zg361pp.{mechanism.mechanism_id}.b:0 "{escape_loc(routes[1])}"',
                 f' zg361pp.{mechanism.mechanism_id}.c:0 "{escape_loc(routes[2])}"',
+                f' zg361pp.{mechanism.mechanism_id}.a.tt:0 "{escape_loc(option_tooltip(mechanism, 1, routes[0], chinese))}"',
+                f' zg361pp.{mechanism.mechanism_id}.b.tt:0 "{escape_loc(option_tooltip(mechanism, 2, routes[1], chinese))}"',
+                f' zg361pp.{mechanism.mechanism_id}.c.tt:0 "{escape_loc(option_tooltip(mechanism, 3, routes[2], chinese))}"',
             )
         )
     if chinese:
         rows.extend(
             (
-                ' zg361pp.189.transfer:0 "错岗证据与真实空缺均已具备：调往已冻结的接收上司门下。"',
-                ' zg361pp.189.second_pip:0 "没有可用的错岗空缺：明确开启一次有支持资源的二次改进计划。"',
+                ' zg361pp.189.transfer:0 "凭独立错岗事实转入真实空缺。"',
+                ' zg361pp.189.second_pip:0 "没有错岗事实；开启有资源的二次改进。"',
+                ' zg361pp.189.transfer.tt:0 "仅当独立错岗事实与真实空缺同时存在时，才调往已冻结的接收上司门下。绩效档形成原因不能冒充错岗事实。"',
+                ' zg361pp.189.second_pip.tt:0 "现有案卷没有独立错岗事实，因此只开放一次有支持资源的二次改进计划；本轮档位不被改写。"',
             )
         )
     else:
         rows.extend(
             (
-                ' zg361pp.189.transfer:0 "Role-mismatch evidence and a real vacancy are both present: transfer to the frozen receiving manager."',
-                ' zg361pp.189.second_pip:0 "No eligible role-mismatch vacancy exists: explicitly open one supported second improvement plan."',
+                ' zg361pp.189.transfer:0 "Transfer on independent mismatch facts and a real vacancy."',
+                ' zg361pp.189.second_pip:0 "No mismatch fact; open a supported second improvement plan."',
+                ' zg361pp.189.transfer.tt:0 "Transfer to the frozen receiving manager only when an independent role-mismatch fact and a real vacancy both exist. A grade-adjustment reason cannot stand in for mismatch evidence."',
+                ' zg361pp.189.second_pip.tt:0 "The current file has no independent role-mismatch fact, so it permits only one supported second improvement plan; the current grade remains unchanged."',
             )
         )
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 9000 + domain_index
-        title = f"三六一案卷已结：{domain.title_cn}" if chinese else f"361 Case Closed: {domain.title_en}"
+        title = f"本轮选择已录入：{domain.title_cn}" if chinese else f"Cycle Choices Recorded: {domain.title_en}"
         desc = (
-            "本轮需要玩家选择的制度路线已经录入；仍在期限内的付款、复核、观察或申诉会继续依各自日期结算。本卡不宣称那些未来审计已经完成。"
+            "本轮制度取舍已经录入案卷。尚未到期的付款、复核、观察或申诉仍依各自日期办理；未发生的结果不会提前落笔。"
             if chinese
-            else "All player choices for this pass have been recorded. Payments, reviews, observations, and appeals whose deadlines remain open will settle on their own dates; this card does not claim those future audits are complete."
+            else "This cycle's institutional choices are now in the file. Payments, reviews, observations, and appeals not yet due will proceed on their own dates; no future outcome is entered before it occurs."
         )
         option = "归档。下一轮继续互相成就。" if chinese else "File it. Continue mutually enabling each other next cycle."
         rows.extend(

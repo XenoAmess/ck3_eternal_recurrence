@@ -61,6 +61,7 @@ NEXT_DOMAIN = {
 # They deliberately do not overlap the numbered player events or 901-906
 # completion receipts.
 QUEUE_EVENTS = {"d": 951, "m": 952, "n": 953, "o": 954, "p": 955}
+BATCH_CHOICE_EVENT = 950
 
 EXPECTED_IDS = tuple(
     (*range(19, 26), *range(92, 129))
@@ -83,17 +84,49 @@ STAGE_BY_ID = {
 # official receives the matching two credits.  Route C never spends money.
 DUAL_COST_IDS = frozenset({21, 25, 101, 104, 112, 114, 119})
 
+# The player chooses one default treatment for low-risk portfolio paperwork.
+# These entries still execute their original guarded core/consumer and retain
+# their original visible card as a fail-closed fallback.  Funded transfers,
+# people moves, delayed releases and other consequential rulings stay visible.
+BATCHABLE_IDS = frozenset(
+    {
+        19,
+        20,
+        22,
+        23,
+        92,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        102,
+        106,
+        109,
+        110,
+        117,
+        118,
+        122,
+        126,
+        127,
+        128,
+    }
+)
+VISIBLE_RULING_IDS = frozenset(EXPECTED_IDS) - BATCHABLE_IDS
+
 # Player-facing route names are deliberately separate from the frozen English
 # state identifiers in the semantic model.  The latter are audit vocabulary;
 # these strings tell the player what will actually be recorded.
 ROUTE_LABELS_CN = {
     19: ("按资格门槛列为可晋升", "绕过提名担保直接列入候选"),
     20: ("提交跨部门评审材料", "提交由提名担保人主导的材料"),
-    21: ("按奖金—调薪矩阵兑现", "把预算集中为一次现金激励"),
+    21: ("按矩阵兑现", "集中为现金激励"),
     22: ("为该岗位预留编制预算", "因例外安排冻结该编制"),
     23: ("完成编制答辩且不借用名额", "以紧急名义借用下一周期名额"),
     24: ("安排下一周期转岗", "阻止本次内部流动"),
-    25: ("发出书面留任邀约", "只作口头反邀约"),
+    25: ("发出书面留任邀约", "仅作口头反邀约"),
     92: ("保持专业与管理双通道分离", "把明星专家直接转为管理者"),
     93: ("让失败经理回到专家岗", "强留管理岗或降级"),
     94: ("授予有边界的微职级", "只给半级头衔而不补权责"),
@@ -103,10 +136,10 @@ ROUTE_LABELS_CN = {
     98: ("把名额绑定到明确岗位类型", "把名额作为通用空编使用"),
     99: ("只结转一次未用名额", "年底收回未用名额"),
     100: ("仅为关键岗位批准冻结期例外", "因关系安排冻结名额"),
-    101: ("按梯队方案占用编制", "把编制全部投向资深人选"),
+    101: ("按梯队占用编制", "编制全投资深人选"),
     102: ("按零基重审重新预留编制", "年度结算时收回编制"),
     103: ("收回长期空置的占坑编制", "以虚拟候选继续冻结编制"),
-    104: ("按新人池与成熟人才池混合补员", "只从成熟人才池补员"),
+    104: ("混合两类人才补员", "只招成熟人才"),
     105: ("把补岗责任绑定到离任岗位", "阻止释放补岗名额"),
     106: ("分别登记关键岗位与关键人才", "把受宠者直接等同于关键岗位"),
     107: ("按证据登记继任准备度", "直接登记为已具备继任资格"),
@@ -114,14 +147,14 @@ ROUTE_LABELS_CN = {
     109: ("只向必要知情人披露高潜标签", "公开高潜标签"),
     110: ("先冻结绩效，再单独校准潜力", "用潜力覆盖已冻结绩效"),
     111: ("如实区分遗憾流失与正常流失", "把流失统一包装为健康流动"),
-    112: ("只承诺一项有资金保障的留任条件", "临时追加反邀约"),
+    112: ("兑现一项留任条件", "临时追加反邀约"),
     113: ("按里程碑复制关键知识", "继续依赖单一关键人"),
-    114: ("转岗完成后给原经理人才输出信用", "由原经理阻止人才输出"),
+    114: ("登记人才输出信用", "阻止人才转出"),
     115: ("在终选前隐藏内部应聘身份", "在批准前提前暴露身份"),
     116: ("在 90 日内放人", "使用唯一一次延期，在 150 日内放人"),
     117: ("只使用一次转岗爬坡保护", "到岗后立即参加完整排名"),
     118: ("把试用期判定与末位配额分开", "把新人直接放入末位池"),
-    119: ("把招聘质量回写给三方责任人", "只奖励招聘速度"),
+    119: ("追记三方招聘责任", "只奖招聘速度"),
     120: ("按 3、6、12 个月里程碑结算导师责任", "登记无资源保障的导师关系"),
     121: ("先用三人小团队试任经理", "直接交付大团队"),
     122: ("采用结果 40%、育人 30%、价值观 30%", "把结果权重提高到 80%"),
@@ -131,6 +164,81 @@ ROUTE_LABELS_CN = {
     126: ("按绩效与价值观四象限处置", "只按绩效处置"),
     127: ("按管理层级限制管理幅度", "保持扁平结构并承受评分失真"),
     128: ("把本次气候结果用于下一周期政策", "下一周期继续沿用刚性配额"),
+}
+
+# What has happened before the player chooses.  These are deliberately not
+# mini-catalogues of A/B/C: the buttons own the executable decisions, while
+# the body names the person, the live conflict and why a ruling is due now.
+CASE_CONTEXT_CN = {
+    19: "晋升材料已过初核，但资格证据与提名关系并不一致；现在必须决定是否把当事人列入候选册。",
+    20: "候选材料已经送齐，跨部门证据与提名担保人的陈述互有出入；评审包必须在本阶段定稿。",
+    21: "本轮绩效已经冻结，奖金与调薪只能从同一笔预算兑现；任何支付都会同时记入双方钱账。",
+    22: "拟任岗位尚未取得稳定编制，现有名额又已被其他承诺占用；本阶段必须确定这处空缺是否继续保留。",
+    23: "团队已经提交增员理由，但下一周期名额也有人预先占用；这次答辩必须留下可追责的编制结论。",
+    24: "当事人提出内部调动，原任岗位的交接与补岗尚无定案；流动窗口将在本阶段结束。",
+    25: "外部邀约已经送到当事人手中，留任预算与口头承诺不能混为一谈；挽留条件须在离任前落定。",
+    92: "当事人的专业贡献已经达到进阶门槛，但管理职责尚未接受检验；两条职业路径必须明确分开。",
+    93: "现任管理者未能完成管理职责，专业能力却仍有价值；本阶段要为其确定可继续承担的岗位。",
+    94: "完整晋升条件尚未满足，但职责已经扩大；若授予过渡职级，权责与薪酬边界必须同时留下记录。",
+    95: "年度管理复审已经到期，在任者的团队结果与履责记录均已冻结；本期权限需要重新确认。",
+    96: "候选人请求跳过通常年限，破格名额只有一个；战功、绩效与担保关系必须在本次裁决中分开。",
+    97: "多个团队争用同一批晋升名额，各自的本地排名不能直接互比；跨团队校准已经进入分配阶段。",
+    98: "一处新名额正在增长、补缺与临时项目之间争用；用途一旦登记，就会约束后续空缺。",
+    99: "本周期留下一个未用名额，招聘进度不足以自动保留它；到期前必须决定是否允许一次结转。",
+    100: "冻结期内出现关键岗位申请，普通增员已经停办；这项例外必须留下岗位风险和批准责任。",
+    101: "同一笔编制预算只能组成一支人才梯队，资深交付与后备培养正在争用名额。",
+    102: "旧编制已经进入零基重审，部分岗位仍无近期工作量；保留与回收都必须在本阶段落账。",
+    103: "一处编制长期空置，候选管线仍未形成；继续占用将挤压其他团队的真实补员需求。",
+    104: "新人培养与成熟人才采购争用同一笔补员预算；选择将立即形成候选与薪酬记录。",
+    105: "有人离任后留下岗位空缺，原团队与中央编制池都主张名额归己；补岗责任必须先确定。",
+    106: "当前岗位的重要性与现任者的受宠程度被混在一起；继任案卷需要先把两者拆开。",
+    107: "继任候选已经进入盘点，但准备程度尚无统一证据；本次登记会决定其后续培养位置。",
+    108: "候选人即将开始代理任职，责任、权限与资源仍未完全对齐；试任条件必须在开始前写清。",
+    109: "高潜名单已经形成，公开范围却尚未确定；披露过多会伤害未入选者，过少则妨碍培养。",
+    110: "本期绩效已经冻结，潜力判断随后才到；两张表若混写，会改坏已经完成的考核。",
+    111: "一名关键成员即将离任，真实原因会影响补岗与管理问责；流失类型必须在案卷关闭前登记。",
+    112: "当事人已有离开意向，官署只能兑现一项有预算的留任条件；未经拨款的许诺不得冒充保障。",
+    113: "关键知识仍集中在一人手里，继任者尚不能独立接手；移交期限已经进入最后阶段。",
+    114: "当事人的转岗申请已获接收方关注，原上司却要承担空缺；人才输出信用与补岗责任需要同时落账。",
+    115: "一份内部应聘材料已经进入终选，过早暴露身份可能引来阻拦；申请人的知情范围必须确定。",
+    116: "内部录用已经成立，原团队仍有交接任务未完；正常放人期与唯一一次延期都从现在起算。",
+    117: "转岗者刚到新岗位，旧履历与新职责不能直接等量比较；首轮爬坡期需要明确边界。",
+    118: "新人仍在试用期，岗位门槛与团队末位配额发生冲突；本案必须区分胜任判断和排名。",
+    119: "一名新人的爬坡结果已经可见，选人、批准与带教三方的责任都要据此追记。",
+    120: "新人尚未独立交付，导师投入也没有完成结算；三段带教里程碑必须确定责任与资源。",
+    121: "一名专家第一次承担管理职责，尚无带领大团队的证据；试任规模会决定这次失败的代价。",
+    122: "管理者本期结果不错，但育人与价值观记录并不同步；三类权重必须在记分前冻结。",
+    123: "下属反馈已经收齐，样本可信度和匿名情绪并不相同；管理评价需要确定采用哪些证据。",
+    124: "现任经理进入晋升窗口，但原团队还没有可接班的人；晋升与继任的先后必须现在落定。",
+    125: "团队遭遇一次急务，经理与下属都能出手；这次处置会留下授权或包揽的管理证据。",
+    126: "当事人的绩效与价值观落在不同象限，只看其中一张表会得到相反结论。",
+    127: "直属人数已经逼近管理上限，现有层级不足以保持可靠评分；组织幅度必须在本轮调整。",
+    128: "本周期的压力、协作和流失记录已经汇齐；下一轮是否继续刚性配额要以这批结果为依据。",
+}
+
+COMPLETION_COPY_CN = {
+    "d": ("职业安排办理完毕", "晋升、调任、留任与相关钱账已经分别归档；尚在期限内的安排会按到期日继续结算。"),
+    "m": ("职级路径办理完毕", "专业与管理路径、过渡职级和破格名额已经落定；本轮不会再改写这些选择。"),
+    "n": ("编制处置办理完毕", "保留、占用、回收与补岗责任已经写入各自名额；下一轮将沿用本次结论。"),
+    "o": ("继任盘点办理完毕", "关键岗位、候选准备度与知识移交已经归档；未到期的试任和留任条件仍会继续履行。"),
+    "p": ("内部流动办理完毕", "应聘、放人、爬坡、补岗与带教责任已经分开登记；后续只按各自期限结算。"),
+    "q": ("管理复审办理完毕", "试任、权重、下属反馈、继任与授权记录已经写入本轮管理评价。"),
+}
+
+TITLE_OVERRIDE_CN = {119: "招聘质量追责"}
+TITLE_OVERRIDE_EN = {119: "Recruitment quality accountability"}
+CASE_CONTEXT_OVERRIDE_EN = {
+    119: (
+        "One recruit's ramp-up result is now available. Accountability for "
+        "selection, approval and mentoring must be recorded against that outcome; "
+        "this ruling settles within 90 days."
+    )
+}
+ROUTE_LABELS_OVERRIDE_EN = {
+    119: (
+        "Record accountability across selection, approval and mentoring.",
+        "Reward hiring speed alone.",
+    )
 }
 
 OBJECT_KIND_CN = {
@@ -143,13 +251,6 @@ OBJECT_KIND_CN = {
     "backfill": "补岗责任",
     "manager": "管理者责任",
 }
-
-# Subject-owned acknowledgements are separate from manager decisions.  They
-# may be used by counts/barons on their own frozen case and never open/advance
-# a case or consume the manager receipt.
-SUBJECT_RESPONSE_IDS = frozenset(
-    {19, 20, 24, 25, 92, 93, 94, 107, 108, 109, 112, 113, 114, 115, 116, 117, 119, 120}
-)
 
 HC_DEST_A = {
     98: "reserved",
@@ -212,14 +313,32 @@ def validate_specs() -> None:
             raise ValueError(f"{domain.key}: repeated mechanism")
     if not DUAL_COST_IDS <= set(EXPECTED_IDS):
         raise ValueError("dual-cost mechanism outside slice")
-    if not SUBJECT_RESPONSE_IDS <= set(EXPECTED_IDS):
-        raise ValueError("subject response outside slice")
+    if len(BATCHABLE_IDS) != 22:
+        raise ValueError("career/HC background batch must cover exactly 22 low-risk rulings")
+    if BATCHABLE_IDS | VISIBLE_RULING_IDS != set(EXPECTED_IDS):
+        raise ValueError("career/HC batch/visible partition lost a frozen mechanism")
+    if BATCHABLE_IDS & VISIBLE_RULING_IDS:
+        raise ValueError("career/HC batch/visible partition overlaps")
+    if DUAL_COST_IDS & BATCHABLE_IDS:
+        raise ValueError("funded career/HC rulings must remain visible")
     if EXPECTED_IDS != SEMANTIC_EXPECTED_IDS:
         raise ValueError("career/HC semantic registry ID drifted")
     if set(SEMANTIC_SPECS) != set(EXPECTED_IDS):
         raise ValueError("career/HC semantic registry coverage drifted")
     if set(ROUTE_LABELS_CN) != set(EXPECTED_IDS):
         raise ValueError("career/HC player-facing route label coverage drifted")
+    if set(CASE_CONTEXT_CN) != set(EXPECTED_IDS):
+        raise ValueError("career/HC player-facing case context coverage drifted")
+    if set(COMPLETION_COPY_CN) != set(DOMAIN_ORDER):
+        raise ValueError("career/HC completion copy coverage drifted")
+    for overrides in (
+        TITLE_OVERRIDE_CN,
+        TITLE_OVERRIDE_EN,
+        CASE_CONTEXT_OVERRIDE_EN,
+        ROUTE_LABELS_OVERRIDE_EN,
+    ):
+        if not set(overrides) <= set(EXPECTED_IDS):
+            raise ValueError("career/HC localization override references an unknown mechanism")
     q_kinds = {
         kind.value
         for mechanism_id in Q_AUTHORITY_IDS
@@ -484,6 +603,104 @@ def event_scope_names(domain: str) -> dict[str, str]:
     }
 
 
+def next_domain_mechanism(domain: DomainSpec, mechanism_id: int) -> int | None:
+    mechanisms = domain_mechanisms(domain)
+    index = mechanisms.index(mechanism_id)
+    return mechanisms[index + 1] if index + 1 < len(mechanisms) else None
+
+
+def render_batch_route_guard() -> str:
+    return '''has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }'''
+
+
+def render_subject_entry(domain: DomainSpec, mechanism_id: int) -> str:
+    """Enter one numbered ruling from assessed-official scope.
+
+    Batchable rulings attempt the exact same manager/core/consumer chain.  An
+    absent batch preference, stale case guard, or other failed application
+    opens the original card instead of silently skipping the ruling.
+    """
+
+    if mechanism_id not in BATCHABLE_IDS:
+        return f"root = {{ trigger_event = {{ id = zg361ch.{mechanism_id} days = 1 }} }}"
+    return f'''if = {{
+        limit = {{
+            {render_batch_route_guard()}
+        }}
+        zg361_career_hc_m{mechanism_id:03d}_background_apply_effect = yes
+    }}
+    else = {{ root = {{ trigger_event = {{ id = zg361ch.{mechanism_id} days = 1 }} }} }}'''
+
+
+def render_subject_successor(domain: DomainSpec, mechanism_id: int) -> str:
+    """Continue a player portfolio from assessed-official scope."""
+
+    successor = next_domain_mechanism(domain, mechanism_id)
+    if successor is not None:
+        return render_subject_entry(domain, successor)
+    if NEXT_DOMAIN[domain.key] is not None:
+        return f"root = {{ trigger_event = {{ id = zg361ch.{QUEUE_EVENTS[domain.key]} days = 1 }} }}"
+    return f"zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes"
+
+
+def render_background_resource_guard(mechanism_id: int) -> str:
+    """Return the precondition that forces scarce-resource cases visible."""
+
+    if mechanism_id in {98, 99, 100, 102}:
+        return '''trigger_if = {
+                limit = {
+                    OR = {
+                        var:zg361_ch_player_batch_route = 1
+                        var:zg361_ch_player_batch_route = 2
+                    }
+                }
+                var:zg361_ch_hc_available >= 1
+            }
+            trigger_else = { always = yes }'''
+    if mechanism_id == 127:
+        return '''trigger_if = {
+                limit = { var:zg361_ch_player_batch_route = 1 }
+                var:zg361_ch_q_manager_hc_available >= 1
+            }
+            trigger_else = { always = yes }'''
+    return "always = yes"
+
+
+def render_background_apply(mechanism_id: int, domain: DomainSpec) -> str:
+    """Apply one low-risk ruling silently, with its original card as fallback."""
+
+    return f'''# Low-risk portfolio default for #{mechanism_id:03d}; original card is the fallback.
+zg361_career_hc_m{mechanism_id:03d}_background_apply_effect = {{
+    if = {{
+        limit = {{
+            {render_batch_route_guard()}
+            {render_background_resource_guard(mechanism_id)}
+        }}
+        zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{
+            ROUTE = var:zg361_ch_player_batch_route
+        }}
+        if = {{
+            limit = {{
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }}
+            {render_subject_successor(domain, mechanism_id)}
+        }}
+        else = {{
+            root = {{ trigger_event = {{ id = zg361ch.{mechanism_id} days = 1 }} }}
+        }}
+    }}
+    else = {{
+        root = {{ trigger_event = {{ id = zg361ch.{mechanism_id} days = 1 }} }}
+    }}
+}}'''
+
+
 def render_domain_open(domain: DomainSpec) -> str:
     extra_q = (
         "\n            zg361_is_celestial_liege_trigger = yes"
@@ -500,7 +717,6 @@ def render_domain_open(domain: DomainSpec) -> str:
             (
                 f"set_variable = {{ name = {p}_receipt_active value = 0 }}",
                 f"set_variable = {{ name = {p}_consumed value = 0 }}",
-                f"set_variable = {{ name = {p}_subject_ack value = 0 }}",
                 f"set_variable = {{ name = {p}_deferred value = 0 }}",
             )
         )
@@ -528,6 +744,11 @@ def render_domain_open(domain: DomainSpec) -> str:
             )
     all_resets = "\n        ".join((*receipt_resets, *cost_resets, *deadline_resets))
     count = len(ids)
+    player_start = (
+        f"root = {{ trigger_event = {{ id = zg361ch.{BATCH_CHOICE_EVENT} days = 1 }} }}"
+        if domain.key == "d"
+        else render_subject_entry(domain, ids[0])
+    )
     return f'''# Open domain {domain.key.upper()} on one assessed direct vassal.
 zg361_career_hc_open_{domain.key}_case_effect = {{
     remove_variable = zg361_ch_runtime_applied
@@ -573,7 +794,7 @@ zg361_career_hc_open_{domain.key}_case_effect = {{
             }}
             else_if = {{
                 limit = {{ root = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
-                root = {{ trigger_event = {{ id = zg361ch.{ids[0]} days = 1 }} }}
+                {player_start}
             }}
             debug_log = "ZG361CH: opened {domain.key.upper()} career/HC case"
         }}
@@ -1490,37 +1711,6 @@ def render_manager_entry(mechanism_id: int, domain: str, state: int) -> str:
 }}'''
 
 
-def render_subject_response(mechanism_id: int, domain: str, state: int) -> str:
-    if mechanism_id not in SUBJECT_RESPONSE_IDS:
-        return ""
-    p = f"zg361_ch_m{mechanism_id:03d}"
-    return f'''# Assessed-official self response; grants no manager/HC/panel authority.
-zg361_career_hc_m{mechanism_id:03d}_subject_response_effect = {{
-    save_temporary_scope_value_as = {{ name = zg361_ch_subject_route value = $ROUTE$ }}
-    if = {{
-        limit = {{
-            is_ai = no
-            zg361_case_kernel_subject_self_guard_trigger = {{
-                SUBJECT_VAR = zg361_case_{domain}_subject
-                ACTIVE_VAR = zg361_case_{domain}_active
-            }}
-            has_variable = zg361_case_{domain}_state
-            var:zg361_case_{domain}_state = {state}
-            var:{p}_subject_ack = 0
-            OR = {{
-                scope:zg361_ch_subject_route = 1
-                scope:zg361_ch_subject_route = 2
-                scope:zg361_ch_subject_route = 3
-            }}
-        }}
-        set_variable = {{ name = {p}_subject_ack value = 1 }}
-        set_variable = {{ name = {p}_subject_route value = scope:zg361_ch_subject_route }}
-        change_variable = {{ name = zg361_case_{domain}_feedback_revision add = 1 }}
-        debug_log = "ZG361CH: subject response {mechanism_id:03d} recorded"
-    }}
-}}'''
-
-
 def render_core(mechanism_id: int, domain: str, state: int) -> str:
     p = f"zg361_ch_m{mechanism_id:03d}"
     row = domain_vars(domain)
@@ -1579,7 +1769,7 @@ def render_core(mechanism_id: int, domain: str, state: int) -> str:
                     set_variable = {{ name = {p}_dual_payment_settled value = 1 }}
                 }}
             }}'''
-    return f'''# {mechanism_id:03d} {MECHANISM_BEHAVIORS[mechanism_id].title_cn}
+    return f'''# {mechanism_id:03d} {TITLE_OVERRIDE_CN.get(mechanism_id, MECHANISM_BEHAVIORS[mechanism_id].title_cn)}
 zg361_career_hc_m{mechanism_id:03d}_core_effect = {{
     save_temporary_scope_value_as = {{ name = zg361_ch_route value = $ROUTE$ }}
     remove_variable = zg361_ch_runtime_applied
@@ -2196,15 +2386,10 @@ def render_business_option(
         scope:{scopes["subject"]} = {{ government_has_flag = government_has_treasury }}
     }}
 '''
-    if next_mechanism is not None:
-        continuation = f"trigger_event = {{ id = zg361ch.{next_mechanism} days = 1 }}"
-    elif NEXT_DOMAIN[domain.key] is not None:
-        continuation = f"trigger_event = {{ id = zg361ch.{QUEUE_EVENTS[domain.key]} days = 1 }}"
-    else:
-        continuation = (
-            f"scope:{scopes['subject']} = {{ "
-            f"zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes }}"
-        )
+    expected_successor = next_domain_mechanism(domain, mechanism_id)
+    if next_mechanism != expected_successor:
+        raise ValueError(f"{mechanism_id}: player successor drifted")
+    continuation = render_subject_successor(domain, mechanism_id)
     return f'''option = {{
     name = zg361ch.m{mechanism_id:03d}.{letter}
 {option_trigger}    scope:{scopes["subject"]} = {{
@@ -2217,7 +2402,42 @@ def render_business_option(
                 var:zg361_ch_runtime_applied = 1
             }}
         }}
-        {continuation}
+        scope:{scopes["subject"]} = {{
+            {continuation}
+        }}
+    }}
+}}'''
+
+
+def render_batch_choice_option(route: int) -> str:
+    scopes = event_scope_names("d")
+    letter = "abc"[route - 1]
+    return f'''option = {{
+    name = zg361ch.{BATCH_CHOICE_EVENT}.{letter}
+    scope:{scopes["subject"]} = {{
+        set_variable = {{ name = zg361_ch_player_batch_route value = {route} }}
+        zg361_career_hc_m019_background_apply_effect = yes
+    }}
+}}'''
+
+
+def render_batch_choice_event() -> str:
+    scopes = event_scope_names("d")
+    options = "\n".join(render_batch_choice_option(route) for route in (1, 2, 3))
+    return f'''# One player portfolio choice replaces 22 low-risk D+1 cards.
+zg361ch.{BATCH_CHOICE_EVENT} = {{
+    type = character_event
+    theme = stewardship
+    title = zg361ch.{BATCH_CHOICE_EVENT}.t
+    desc = zg361ch.{BATCH_CHOICE_EVENT}.desc
+    trigger = {{
+        {render_business_event_guard(19, "d", STAGE_BY_ID[19])}
+    }}
+    {options}
+    option = {{
+        name = zg361ch.{BATCH_CHOICE_EVENT}.d
+        scope:{scopes["subject"]} = {{ remove_variable = zg361_ch_player_batch_route }}
+        trigger_event = {{ id = zg361ch.19 days = 1 }}
     }}
 }}'''
 
@@ -2318,11 +2538,10 @@ def render_effects() -> bytes:
         for state, stage_ids in enumerate(domain.stages, start=1):
             for mechanism_id in stage_ids:
                 sections.append(render_manager_entry(mechanism_id, domain.key, state))
-                response = render_subject_response(mechanism_id, domain.key, state)
-                if response:
-                    sections.append(response)
                 sections.append(render_core(mechanism_id, domain.key, state))
                 sections.append(render_consumer(mechanism_id, domain.key, state))
+                if mechanism_id in BATCHABLE_IDS:
+                    sections.append(render_background_apply(mechanism_id, domain))
                 if mechanism_id in Q_AUTHORITY_IDS:
                     sections.append(render_q_business_consumer(mechanism_id, state))
     sections.append(render_portfolio_finalizer(DOMAIN_BY_KEY["p"]))
@@ -2390,7 +2609,7 @@ def generated_effect_residue(expected: set[Path]) -> tuple[Path, ...]:
 
 
 def render_events() -> bytes:
-    sections = ["namespace = zg361ch"]
+    sections = ["namespace = zg361ch", render_batch_choice_event()]
     for domain in DOMAINS:
         mechanisms = domain_mechanisms(domain)
         for index, mechanism_id in enumerate(mechanisms):
@@ -2420,14 +2639,32 @@ zg361ch.990 = {
 def localization_rows(language: str) -> list[str]:
     english = language != "simp_chinese"
     rows = [f"l_{language}:"]
+    if english:
+        rows.extend(
+            (
+                f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "Set this portfolio\'s routine"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "This portfolio contains forty-four career and headcount rulings. Twenty-two consequential rulings involving payment, movement, release timing, or named people will still be presented individually. Choose one standard treatment for the other twenty-two. Each will retain its own formal record; any case lacking the required conditions will be presented separately."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "Use traceable evidence to settle twenty-two routine cases; present any case lacking the required conditions separately."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "Put execution speed first in twenty-two routine cases; present any case lacking the required conditions separately."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "Defer twenty-two routine cases, recording one next-cycle policy debt for each case."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "Present all forty-four cases individually for my separate rulings."',
+            )
+        )
+    else:
+        rows.extend(
+            (
+                f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "确定本轮办案方式"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "本轮共有四十四项职业与编制裁决。涉及付款、调动、放人期限或具名人员的二十二项仍会逐项呈报；其余二十二项可按统一口径办理。统一办理仍会逐案留下正式记录；任一案件条件不足时，便改为单独呈报。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "以可追溯证据为准，统一办理二十二项常规案；条件不足者单独呈报。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "以执行速度为先，统一办理二十二项常规案；条件不足者单独呈报。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "搁置二十二项常规案，每案记下一笔下周期制度债。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "全部四十四项逐案呈报，由我分别裁决。"',
+            )
+        )
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 900 + domain_index
-        title = f"361 Case Closed: {domain.title_en}" if english else f"三六一案卷已结：{domain.title_cn}"
-        desc = (
-            "The frozen career and headcount receipts have been consumed. The result now affects capacity, resources and the next review cycle."
-            if english
-            else "冻结的职业与编制回执均已消费。结论已经进入容量、资源与下一轮考核，不是一张只会喊口号的制度卡。"
-        )
+        title = f"{domain.title_en} decisions recorded" if english else COMPLETION_COPY_CN[domain.key][0]
+        desc = "The decisions in this career domain are recorded; open dated obligations will continue to settle on their own deadlines." if english else COMPLETION_COPY_CN[domain.key][1]
         option = "File the receipt." if english else "归档。下轮再见。"
         rows.extend(
             (
@@ -2438,7 +2675,14 @@ def localization_rows(language: str) -> list[str]:
         )
     for mechanism_id in EXPECTED_IDS:
         behavior = MECHANISM_BEHAVIORS[mechanism_id]
-        title = behavior.behavior_key.replace("_", " ").title() if english else behavior.title_cn
+        title = (
+            TITLE_OVERRIDE_EN.get(
+                mechanism_id,
+                behavior.behavior_key.replace("_", " ").title(),
+            )
+            if english
+            else TITLE_OVERRIDE_CN.get(mechanism_id, behavior.title_cn)
+        )
         domain = DOMAIN_BY_ID[mechanism_id]
         scopes = event_scope_names(domain.key)
         deadline = domain.deadlines[STAGE_BY_ID[mechanism_id] - 1]
@@ -2448,24 +2692,35 @@ def localization_rows(language: str) -> list[str]:
         object_names_en = ", ".join(
             kind.value.replace("-", " ") for kind in SEMANTIC_SPECS[mechanism_id].object_kinds
         )
-        desc = (
-            f"Official: [scope:{scopes['subject']}.GetShortUIName]. Decision owner: "
-            f"[scope:{scopes['owner']}.GetShortUIName]. The preceding career/headcount receipt has brought "
-            f"{title} to decision. Routes A and B immediately record {object_names_en}; any unfinished stage "
-            f"falls due after {deadline} days. Route C closes this item without creating those business objects "
-            "and records a next-cycle deferral receipt; it is not automatically proposed again."
-            if english
-            else f"当事人：[scope:{scopes['subject']}.GetShortUIName]；裁决者：[scope:{scopes['owner']}.GetShortUIName]。"
-            f"上一项职业与编制回执已把「{title}」送到当前节点。路线甲、乙会立即登记{object_names_cn}；"
-            f"未完成阶段最迟在 {deadline} 日后结算。路线丙只关闭本项并登记下一周期到期的搁置回执，"
-            "不会创建上述业务对象，也不会自动再次提案。"
-        )
+        if english and mechanism_id in CASE_CONTEXT_OVERRIDE_EN:
+            desc = (
+                f"Official [scope:{scopes['subject']}.GetShortUIName] now requires a ruling from "
+                f"[scope:{scopes['owner']}.GetShortUIName]. "
+                f"{CASE_CONTEXT_OVERRIDE_EN[mechanism_id]}"
+            )
+        elif english:
+            desc = (
+                f"Official [scope:{scopes['subject']}.GetShortUIName] now requires a ruling from "
+                f"[scope:{scopes['owner']}.GetShortUIName]. The prior career step is complete; this ruling records "
+                f"{object_names_en} and any open stage settles within {deadline} days."
+            )
+        else:
+            desc = (
+                f"当事人 [scope:{scopes['subject']}.GetShortUIName]；裁决者 "
+                f"[scope:{scopes['owner']}.GetShortUIName]。"
+                f"{CASE_CONTEXT_CN[mechanism_id]}本项最迟在 {deadline} 日内结算。"
+            )
         route_a_cn, route_b_cn = ROUTE_LABELS_CN[mechanism_id]
-        route_a_en = SEMANTIC_SPECS[mechanism_id].a_state.replace("-", " ").capitalize() + "."
-        route_b_en = SEMANTIC_SPECS[mechanism_id].b_state.replace("-", " ").capitalize() + "."
+        route_a_en, route_b_en = ROUTE_LABELS_OVERRIDE_EN.get(
+            mechanism_id,
+            (
+                SEMANTIC_SPECS[mechanism_id].a_state.replace("-", " ").capitalize() + ".",
+                SEMANTIC_SPECS[mechanism_id].b_state.replace("-", " ").capitalize() + ".",
+            ),
+        )
         if mechanism_id in DUAL_COST_IDS:
-            route_a_cn += "；直属上司的国库与私人钱财各支付 5，当事人的国库与私人钱财各收到 5。"
-            route_b_cn += "；直属上司的国库与私人钱财各支付 5，当事人的国库与私人钱财各收到 5。"
+            route_a_cn += "；上司公私各付5，当事人公私各收5"
+            route_b_cn += "；上司公私各付5，当事人公私各收5"
             route_a_en += " The direct manager pays 5 treasury and 5 personal gold; the official receives both amounts."
             route_b_en += " The direct manager pays 5 treasury and 5 personal gold; the official receives both amounts."
         rows.extend(
@@ -2474,7 +2729,7 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361ch.m{mechanism_id:03d}.desc:0 "{desc}"',
                 f' zg361ch.m{mechanism_id:03d}.a:0 "{route_a_en}"' if english else f' zg361ch.m{mechanism_id:03d}.a:0 "{route_a_cn}"',
                 f' zg361ch.m{mechanism_id:03d}.b:0 "{route_b_en}"' if english else f' zg361ch.m{mechanism_id:03d}.b:0 "{route_b_cn}"',
-                f' zg361ch.m{mechanism_id:03d}.c:0 "Close this item, create no business object, and record a next-cycle deferral receipt; it will not be proposed again automatically."' if english else f' zg361ch.m{mechanism_id:03d}.c:0 "关闭本项，不创建业务对象，登记下一周期到期的搁置回执；不会自动重提。"',
+                f' zg361ch.m{mechanism_id:03d}.c:0 "Shelve this ruling, record next-cycle policy debt, and do not propose it again this campaign."' if english else f' zg361ch.m{mechanism_id:03d}.c:0 "搁置本项，记下周期制度债；本局不再提案。"',
             )
         )
     return normalize_localization_rows(rows) if not english else rows

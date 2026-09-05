@@ -211,9 +211,22 @@ zg361_b2_on_result_frozen_effect = {
 				var:zg361_b2_retaliation_owner = var:zg361_result_case_owner
 				has_variable = zg361_b2_retaliation_cycle
 				var:zg361_result_cycle_serial > var:zg361_b2_retaliation_cycle
+				has_variable = zg361_result_grade
+				var:zg361_result_grade = 1
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_kpi_frozen
+				has_variable = zg361_result_rank_frozen
+				has_variable = zg361_result_cohort_n_frozen
+				has_variable = zg361_result_grade_reason
 			}
 			set_variable = { name = zg361_b2_retaliation_new_fact value = 1 }
 			set_variable = { name = zg361_b2_retaliation_new_fact_cycle value = var:zg361_result_cycle_serial }
+			set_variable = { name = zg361_b2_retaliation_new_fact_case value = var:zg361_result_case_serial }
+			set_variable = { name = zg361_b2_retaliation_new_fact_grade value = var:zg361_result_grade }
+			set_variable = { name = zg361_b2_retaliation_new_fact_kpi value = var:zg361_result_kpi_frozen }
+			set_variable = { name = zg361_b2_retaliation_new_fact_rank value = var:zg361_result_rank_frozen }
+			set_variable = { name = zg361_b2_retaliation_new_fact_cohort value = var:zg361_result_cohort_n_frozen }
+			set_variable = { name = zg361_b2_retaliation_new_fact_reason value = var:zg361_result_grade_reason }
 		}
 		set_variable = { name = zg361_b2_case_owner value = var:zg361_result_case_owner }
 		set_variable = { name = zg361_b2_case_subject value = this }

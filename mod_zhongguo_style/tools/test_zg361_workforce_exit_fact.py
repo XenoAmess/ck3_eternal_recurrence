@@ -336,8 +336,13 @@ class WorkforceExitFactTests(unittest.TestCase):
         )
         self.assertEqual(localization_keys(english), expected_keys)
         self.assertEqual(localization_keys(chinese), expected_keys)
-        self.assertIn("361 Formal Career Slot", english)
-        self.assertIn("三六一正式在岗编制", chinese)
+        self.assertIn("Established Officer", english)
+        self.assertIn("正式属官", chinese)
+        chinese_values = "\n".join(re.findall(r':0\s+"([^"]*)"', chinese))
+        for forbidden in ("361", "原生", "流水线", "source", "fingerprint", "RED", "N/A", "A/B", "按A", "按 A"):
+            self.assertNotIn(forbidden, chinese_values)
+        for value in re.findall(r':0\s+"([^"]*)"', chinese):
+            self.assertFalse(value.startswith(("。", ".", "；", ";", "，", ",")), value)
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             placeholder = text(
                 MOD_ROOT
@@ -346,7 +351,7 @@ class WorkforceExitFactTests(unittest.TestCase):
                 / gen.LOC_BASENAME.format(language=language)
             )
             self.assertEqual(localization_keys(placeholder), expected_keys)
-            self.assertIn("361 Formal Career Slot", placeholder)
+            self.assertIn("Established Officer", placeholder)
 
     def test_persistent_carrier_is_real_hidden_zero_salary_native_position(self) -> None:
         position = block(self.position, gen.POSITION_KEY)

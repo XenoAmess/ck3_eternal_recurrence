@@ -452,8 +452,25 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
                 self.assertIn(f"{generator.NAMESPACE}.{generator.NOTICE_EVENT_ID}.{suffix}:0", text)
         zh = (MOD_ROOT / "localization/simp_chinese" / f"{generator.PREFIX}_l_simp_chinese.yml").read_text(encoding="utf-8-sig")
         en = (MOD_ROOT / "localization/english" / f"{generator.PREFIX}_l_english.yml").read_text(encoding="utf-8-sig")
-        self.assertIn("正常离职", zh)
-        self.assertIn("Normal-exit", en)
+        self.assertIn("正常离任", zh)
+        self.assertIn("Departure Formalities Completed", en)
+        for required in ("五十金币", "任职关系已经解除", "在岗名额", "重新任用"):
+            self.assertIn(required, zh)
+        for forbidden in (
+            "3.25",
+            "原生职业槽",
+            "流水线",
+            "source serial",
+            "fingerprint",
+            "RED",
+            "N/A",
+            "A/B",
+            "按A",
+            "按 A",
+        ):
+            self.assertNotIn(forbidden, zh)
+        for value in re.findall(r':0\s+"([^"]*)"', zh):
+            self.assertFalse(value.startswith(("。", ".", "；", ";", "，", ",")), value)
 
     def test_24_rehire_contract_accepts_the_same_always_and_conditional_abi(self) -> None:
         normal_always = {f"receipt_{field}" for field in generator.RECEIPT_ALWAYS_FIELDS}

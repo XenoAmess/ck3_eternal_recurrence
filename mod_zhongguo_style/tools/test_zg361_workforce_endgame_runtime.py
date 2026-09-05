@@ -1569,7 +1569,12 @@ second_effect = { value = 2 }
         expected = {
             key
             for mid in EXPECTED_IDS
-            for key in (f"zg361we.{mid}.t", f"zg361we.{mid}.desc", f"zg361we.{mid}.a", f"zg361we.{mid}.b", f"zg361we.{mid}.c")
+            for key in (
+                f"zg361we.{mid}.t",
+                f"zg361we.{mid}.desc",
+                *(f"zg361we.{mid}.{letter}" for letter in "abc"),
+                *(f"zg361we.{mid}.{letter}.tt" for letter in "abc"),
+            )
         }
         expected.update(
             f"zg361we.handoff.{step}.{suffix}"

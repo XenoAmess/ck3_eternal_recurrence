@@ -97,28 +97,28 @@ EXPECTED_IDS = tuple(range(312, 334))
 SUBJECT_RESPONSE_IDS = frozenset({314, 315, 318, 319, 321, 333})
 SUBJECT_RESPONSE_DESCRIPTIONS: dict[int, tuple[str, str]] = {
     314: (
-        "[ROOT.GetLiege.GetShortUIName] has offered you a distant posting. Its written relocation budget assigns 10 gold to the move, 6 to a temporary allowance, and 4 to your household. You may accept the arrangement or decline without changing this review's rating.",
-        "[ROOT.GetLiege.GetShortUIName] 派人送来一纸异地调令，并把二十金的安置预算写得分明：迁费十金、临时津贴六金、家眷安置四金。你可以接受这项安排，也可以谢绝；本次考课不会因此改档。",
+        "The distant posting carries a written relocation budget of 20 gold: 10 for the move, 6 for a temporary allowance, and 4 for the household. The answer given here does not change this review's rating.",
+        "这纸异地调令附有二十金的书面安置预算：迁费十金、临时津贴六金、家眷安置四金。本次考课档次不受这次答复影响。",
     ),
     315: (
-        "The new office offers a ninety-day trial. Your former office retains 40 percent of the credit and the new office receives 60 percent; you and both offices may end the arrangement. A poor fit returns you to your former post without being treated as a low rating.",
-        "新官署愿给你九十日试任：原任官署保留四成功劳，新任官署记六成；你与两方官署都可在职事不合时终止试任。若最终回任，试任不成也不会被记作低档。",
+        "The proposed trial lasts ninety days. The former office retains 40 percent of the credit and the new office receives 60 percent. You and both offices may end a poor fit, and a return to the former post is not treated as a low rating.",
+        "这次试任以九十日为限：原任官署保留四成功劳，新任官署记六成。你与两方官署都可因职事不合终止试任；按约回任不作低档论。",
     ),
     318: (
-        "You have two formal transfer petitions in this round. Once a petition is filed, withdrawing it later still uses one chance; if you do not file now, the chance remains yours.",
-        "本轮你只有两次正式求调的机会。文书一经投出，日后即使撤回，也算用去一次；若现在不投，这次名额仍为你保留。",
+        "This round allows two formal transfer petitions. Filing consumes one chance even if the petition is later withdrawn; an unfiled petition consumes nothing.",
+        "本轮只受理两次正式求调。文书一经投出，日后即使撤回，也算用去一次；未曾递交便不占名额。",
     ),
     319: (
-        "[ROOT.GetLiege.GetShortUIName] has sent one final written offer to keep you. Decline it to begin a transfer due within thirty days. The other choice is to remain on a promise that has no proof of delivery; after ninety days it will close as a broken promise charged to the official who made it.",
-        "[ROOT.GetLiege.GetShortUIName] 命人送来最后一份书面挽留。拒绝之后，三十日调任程序便会启动；另一条路是留下，接受一份尚无兑现凭据的承诺，九十日后按失约结案，责任记在许诺者名下。",
+        "The final written counteroffer has no proof of delivery behind its promise. A transfer can be completed within thirty days; an undelivered counteroffer closes after ninety days as a broken promise charged to the official who made it.",
+        "最后一份书面挽留仍没有兑现凭据。调任可在三十日内办结；挽留承诺若九十日仍未交付，便按失约结案，责任记在许诺者名下。",
     ),
     321: (
-        "Your former office asks to keep one line of contact after your departure. Old ties may continue only with your consent; returning the card ends future contact, but does not erase the record of what came before.",
-        "离任之后，旧官署仍想与你保留一条联络。旧谊可以延续，却不能逼你应允；若退回名帖，往来名册会被删除，但昔日案卷不会随之抹去。",
+        "The former office enclosed a calling card in the departure file and asks to keep one line of contact. Continued contact requires your consent; ending it removes the contact entry but does not erase the earlier case record.",
+        "旧官署在离任案卷中夹了一张名帖，希望日后仍能联络。往来须经你同意；终止联络只会删去往来名册，昔日案卷仍旧留存。",
     ),
     333: (
-        "The office will pay 18 gold from its treasury and 6 from the sponsor's purse for your training. Remain and honour the service bond through your work; leave voluntarily and 18 gold falls due after ninety days. An involuntary dismissal waives repayment.",
-        "官署愿为你的进修支付公帑十八金，提名者另出六金。留下任职，便以所学履行旧约；若自愿提前离任，九十日后须归还十八金。若是官署裁撤，则免于追偿。",
+        "The training is funded with 18 gold from the office treasury and 6 from the sponsor's purse. The service bond is discharged through continued service; voluntary early departure makes 18 gold due after ninety days, while an involuntary dismissal waives repayment.",
+        "这次进修由官署支付公帑十八金，提名者另出六金。任职期满即可履清培训旧约；自愿提前离任须在九十日后归还十八金，若是官署裁撤则免于追偿。",
     ),
 }
 DUAL_COSTS: dict[int, tuple[int, int, frozenset[int]]] = {
@@ -2134,7 +2134,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "本轮人才安排已经登记"),
-                ("zg361_cl_digest_desc", "本轮人才流动与进修案卷已经汇齐：内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件。尚在履行期内的调任、试任与培训约定，将在到期时另行呈报。"),
+                ("zg361_cl_digest_desc", "这套案卷里，六项会交由当事人亲自答复，另有十六项不另开窗口。由官署径办的十六项中，十五项固定采用各案第一项合规处置；保护工时一案另看实情：当事人或主官正在交战，才准登记借用并须按期补回；无战事便不虚构危机，而是留下未履约记录。由此登记真实岗位与完整履历，保护报酬和申请私密，追踪离任与回流旧案，也落实进修预算、实操验证、成果采用、导师产能、转型公平、继任演练及培训旧约。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。"),
                 ("zg361_cl_digest_ack", "收下案卷，照章续办。"),
             )
         )
@@ -2142,7 +2142,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "This Round of Career Plans Is Recorded"),
-                ("zg361_cl_digest_desc", "This round's career and learning docket is complete: [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] training matters were recorded. Transfers, trials, and training commitments still in progress will be reported when they fall due."),
+                ("zg361_cl_digest_desc", "Six matters in this docket ask the assessed official for a direct answer; sixteen open no separate response window. Of those sixteen background matters, fifteen always take each case's first compliant disposition. Protected time alone follows the real war facts: wartime permits a recorded loan that must be repaid, while peacetime cannot be called a crisis and leaves a non-performance record. These dispositions record real posts and complete references, protect pay and application privacy, preserve departure and returnee evidence, and settle training budgets, practical assessment, adoption, mentor capacity, reskilling fairness, succession drills, and training bonds. This round recorded [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] training matters; obligations still in progress will be reported when they fall due."),
                 ("zg361_cl_digest_ack", "Take the docket and proceed."),
             )
         )
@@ -2159,8 +2159,36 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
             (
                 (f"zg361_cl_m{row.mechanism_id:03d}_title", title),
                 (f"zg361_cl_m{row.mechanism_id:03d}_desc", description),
-                (f"zg361_cl_m{row.mechanism_id:03d}_route_a", route_a),
-                (f"zg361_cl_m{row.mechanism_id:03d}_route_b", route_b),
+                (f"zg361_cl_m{row.mechanism_id:03d}_route_a", {
+                    314: "接受调任，按二十金安置方案赴任",
+                    315: "开始九十日试任，按四六分记功劳",
+                    318: "递交求调文书，用去一次名额",
+                    319: "拒绝挽留，启动三十日调任",
+                    321: "收下名帖，同意日后往来",
+                    333: "留下任职，以所学履行培训旧约",
+                }.get(row.mechanism_id, route_a) if chinese else {
+                    314: "Accept the transfer under the 20-gold relocation plan",
+                    315: "Begin the ninety-day trial under the 40/60 credit split",
+                    318: "File the transfer petition and use one chance",
+                    319: "Decline the counteroffer and begin the thirty-day transfer",
+                    321: "Accept the card and consent to future contact",
+                    333: "Remain in service and discharge the training bond",
+                }.get(row.mechanism_id, route_a)),
+                (f"zg361_cl_m{row.mechanism_id:03d}_route_b", {
+                    314: "谢绝调任，仍守本职且考课不改档",
+                    315: "终止试任，按约回任且不记低档",
+                    318: "暂不递交，保留这次求调名额",
+                    319: "接受挽留；若九十日未兑现，按失约追责",
+                    321: "退回名帖，终止往来但保留旧案",
+                    333: "提前离任，九十日后归还十八金",
+                }.get(row.mechanism_id, route_b) if chinese else {
+                    314: "Decline the transfer, keep the present post and rating",
+                    315: "End the trial and return without a low rating",
+                    318: "Do not file and keep this transfer chance",
+                    319: "Accept the counteroffer; charge an undelivered promise after ninety days",
+                    321: "Return the card, end contact, and preserve the old record",
+                    333: "Leave early and repay 18 gold after ninety days",
+                }.get(row.mechanism_id, route_b)),
             )
         )
     return entries

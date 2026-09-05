@@ -1,0 +1,166 @@
+﻿# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py
+# PURPOSE: portfolio mode entry and cross-domain D+1 queue edges
+namespace = zg361cp
+
+# One player choice freezes how the eleven low-risk cards are handled.
+zg361cp.9050 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.batch.t
+	desc = zg361cp.batch.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.batch.a
+		scope:zg361_cp_e_subject = {
+			set_variable = { name = zg361_cp_player_batch_mode value = 1 }
+		}
+		trigger_event = { id = zg361cp.30 days = 1 }
+	}
+	option = {
+		name = zg361cp.batch.b
+		scope:zg361_cp_e_subject = {
+			set_variable = { name = zg361_cp_player_batch_mode value = 2 }
+		}
+		trigger_event = { id = zg361cp.30 days = 1 }
+	}
+	option = {
+		name = zg361cp.batch.c
+		custom_tooltip = zg361cp.batch.c.tt
+		scope:zg361_cp_e_subject = {
+			set_variable = { name = zg361_cp_player_batch_mode value = 3 }
+		}
+		trigger_event = { id = zg361cp.30 days = 1 }
+	}
+	option = {
+		name = zg361cp.batch.d
+		scope:zg361_cp_e_subject = {
+			set_variable = { name = zg361_cp_player_batch_mode value = 4 }
+		}
+		trigger_event = { id = zg361cp.30 days = 1 }
+	}
+}
+
+# D+1 hidden queue edge: E closed -> I opens.
+zg361cp.9001 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_e_owner
+					has_variable = zg361_case_e_subject
+					has_variable = zg361_case_e_cycle_serial
+					has_variable = zg361_case_e_case_serial
+					has_variable = zg361_case_e_state
+					has_variable = zg361_case_e_active
+				}
+				var:zg361_case_e_owner = scope:zg361_cp_e_owner
+				var:zg361_case_e_subject = scope:zg361_cp_e_subject
+				var:zg361_case_e_cycle_serial = scope:zg361_cp_e_cycle
+				var:zg361_case_e_case_serial = scope:zg361_cp_e_case
+				var:zg361_case_e_state = 5
+				var:zg361_case_e_active = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = { scope:zg361_cp_e_subject = { zg361_cp_i_launch_effect = yes } }
+}
+
+# D+1 hidden queue edge: I closed -> J opens.
+zg361cp.9002 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_i_owner
+					has_variable = zg361_case_i_subject
+					has_variable = zg361_case_i_cycle_serial
+					has_variable = zg361_case_i_case_serial
+					has_variable = zg361_case_i_state
+					has_variable = zg361_case_i_active
+				}
+				var:zg361_case_i_owner = scope:zg361_cp_i_owner
+				var:zg361_case_i_subject = scope:zg361_cp_i_subject
+				var:zg361_case_i_cycle_serial = scope:zg361_cp_i_cycle
+				var:zg361_case_i_case_serial = scope:zg361_cp_i_case
+				var:zg361_case_i_state = 5
+				var:zg361_case_i_active = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = { scope:zg361_cp_i_subject = { zg361_cp_j_launch_effect = yes } }
+}
+
+# D+1 hidden queue edge: J closed -> R opens.
+zg361cp.9003 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_j_owner
+					has_variable = zg361_case_j_subject
+					has_variable = zg361_case_j_cycle_serial
+					has_variable = zg361_case_j_case_serial
+					has_variable = zg361_case_j_state
+					has_variable = zg361_case_j_active
+				}
+				var:zg361_case_j_owner = scope:zg361_cp_j_owner
+				var:zg361_case_j_subject = scope:zg361_cp_j_subject
+				var:zg361_case_j_cycle_serial = scope:zg361_cp_j_cycle
+				var:zg361_case_j_case_serial = scope:zg361_cp_j_case
+				var:zg361_case_j_state = 5
+				var:zg361_case_j_active = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = { scope:zg361_cp_j_subject = { zg361_cp_r_launch_effect = yes } }
+}

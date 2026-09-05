@@ -534,8 +534,20 @@ class WorkforceAttributionFactTests(unittest.TestCase):
     def test_18_localization_is_zh_en_authored_with_seven_placeholders(self) -> None:
         en = read(MOD_ROOT / f"localization/english/{PREFIX}_l_english.yml")
         zh = read(MOD_ROOT / f"localization/simp_chinese/{PREFIX}_l_simp_chinese.yml")
-        self.assertIn("exactly 10,000 basis points", en)
-        self.assertIn("一万个基点", zh)
+        self.assertIn("Signing allocates later quality accountability only", en)
+        self.assertIn("三张实名表决及其回执都已封存", zh)
+        self.assertIn("没有面试题目、回答或独立评分细目", zh)
+        self.assertNotIn("请决定", zh)
+        self.assertNotIn("第一席主责", zh)
+        for slot in (1, 2, 3):
+            self.assertIn(
+                f"zg361_workforce_attribution_fact_interviewer_{slot}_scope.GetShortUIName",
+                generator.LOCALIZATION_CN[f"1.option_{slot}"],
+            )
+            self.assertIn(
+                f"zg361_workforce_attribution_fact_interviewer_{slot}_scope.GetShortUIName",
+                generator.LOCALIZATION_EN[f"1.option_{slot}"],
+            )
         self.assertNotEqual(en, zh)
         for language in generator.LANGUAGES:
             path = MOD_ROOT / "localization" / language / f"{PREFIX}_l_{language}.yml"

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
 import unittest
@@ -186,6 +187,10 @@ class MechanismGenerationTests(unittest.TestCase):
                 self.assertEqual(events.count(f"zg361m.{mechanism.id} = {{"), 1)
                 for choice in ("a", "b", "c"):
                     self.assertEqual(effects.count(f"{effect_name(mechanism.id, choice)} = {{"), 1)
+                    self.assertIn(
+                        f"custom_tooltip = zg361m.{mechanism.id}.{choice}.tt",
+                        events,
+                    )
                 self.assertEqual(
                     effects.count(f"zg361_mechanism_{mechanism.id:03d}_ai_effect = {{"),
                     1,
@@ -239,9 +244,134 @@ class MechanismGenerationTests(unittest.TestCase):
         chinese = self.rendered[chinese_path].decode("utf-8-sig")
         english = self.rendered[english_path].decode("utf-8-sig")
         self.assertIn('zg361m.1.t:0 "第001号 · 绩效指标分项证据单"', chinese)
+        self.assertIn('zg361m.3.t:0 "第003号 · 期中面谈与目标重置"', chinese)
         self.assertIn('zg361m.1.t:0 "No.001 · Itemized KPI Evidence Sheet"', english)
-        self.assertIn(r"／P0】\n\n决策：", chinese)
+        self.assertIn(
+            'zg361_next_mechanism_decision_confirm:0 "打开下一项制度评审"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361_reference_charter_decision_confirm:0 "采用全部 361 项推荐默认值，立即写入组织账本"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361_next_mechanism_decision_confirm:0 "Open the next policy review"',
+            english,
+        )
+        self.assertIn(
+            'zg361_reference_charter_decision_confirm:0 "Adopt all 361 recommended defaults and write them to the organizational ledger"',
+            english,
+        )
+        for empty_slogan in (
+            "叫下一位产品经理进来",
+            "我全都要，现在就要",
+            "Bring in the next policy owner",
+            "Ship the entire portfolio",
+        ):
+            with self.subTest(empty_slogan=empty_slogan):
+                self.assertNotIn(empty_slogan, chinese + english)
+        self.assertIn(
+            'zg361m.1.desc:0 "高低分必须附具体事例；申诉、绩效改进计划和晋升包复用同一份冻结证据，杜绝让下一年的现值改写旧案。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361m.18.a:0 "结算时冻结档位、名次、上司、理由（仅记账）。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361m.18.a.tt:0 "结算时冻结档位、名次、上司、理由，以及国库、个人金币、贤能三笔即时罚没与一年俸禄减成，逐项标记支付、退款和止扣状态。 本项只调整组织账目，不会直接执行具体业务动作。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361m.18.c:0 "这项制度本局不再提案；记下一笔制度债"',
+            chinese,
+        )
+        self.assertNotIn("决策：", chinese)
+        self.assertNotIn("后果：", chinese)
+        self.assertNotIn("登记路线甲倾向", chinese)
+        self.assertNotIn("登记路线乙倾向", chinese)
+        self.assertNotIn("／P0】", chinese)
+        self.assertNotIn("／P1】", chinese)
+        self.assertNotIn("／P2】", chinese)
+        self.assertNotIn("CK3", chinese)
+        self.assertNotIn("GUI", chinese)
+        self.assertNotIn("Override", chinese)
+        for untranslated_term in (
+            "HC",
+            "PIP",
+            "owner",
+            "KPI",
+            "Offer",
+            "sponsor",
+            "backfill",
+            "Cliff",
+            "FIFO",
+            "WIP",
+            "SLA",
+            "toil",
+            "onboarding",
+            "Check-in",
+            "玩家",
+            "脚本",
+            "回写",
+            "本卡",
+            "结算器",
+            "运行时纵切",
+            "OKR",
+            "HR",
+            " vs ",
+            " ID",
+            "cohort",
+            "PPT",
+            "原生治理成果",
+        ):
+            with self.subTest(untranslated_term=untranslated_term):
+                self.assertNotIn(untranslated_term, chinese)
+        for raw_grade_phrase in (
+            "背 C",
+            "C 档",
+            "员工 C",
+            "填 C",
+            "免 C",
+            "的 C",
+        ):
+            with self.subTest(raw_grade_phrase=raw_grade_phrase):
+                self.assertNotIn(raw_grade_phrase, chinese)
+        self.assertIsNone(re.search(r"(?<![A-Za-z])live(?![A-Za-z])", chinese))
+        self.assertIn(
+            'zg361m.18.a:0 "Freeze rating; marking every payment, refund, and termination separately (ledger only)"',
+            english,
+        )
+        self.assertIn(
+            'zg361m.18.a.tt:0 "Freeze rating, rank, superior, reasons, the three immediate treasury, personal-gold, and merit charges, and the one-year salary cut at settlement, marking every payment, refund, and termination separately. This item updates only the organizational ledger and does not execute a concrete business action."',
+            english,
+        )
+        self.assertIn(
+            'zg361m.18.c:0 "Close this policy for the campaign and record one policy debt"',
+            english,
+        )
+        self.assertNotIn("Record route A preference", english)
+        self.assertNotIn("Record route B preference", english)
         self.assertNotIn(r"\\n", chinese)
+        mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
+        long_buttons = []
+        for line in chinese.splitlines():
+            if not line.startswith(" zg361m."):
+                continue
+            if any(f".{choice}:0 \"" in line for choice in ("a", "b")):
+                value = line.split(':0 "', 1)[1].removesuffix('"')
+                if len(value) > 50:
+                    long_buttons.append((line.split(":", 1)[0], value))
+            if ".desc:0 " not in line:
+                continue
+            key, value = line.split(':0 "', 1)
+            mechanism_id = int(key.removeprefix(" zg361m.").removesuffix(".desc"))
+            description = value.removesuffix('"')
+            with self.subTest(mechanism_id=mechanism_id):
+                self.assertFalse(description.startswith(("。", "，", "；", "：", "！", "？")))
+                self.assertNotIn(mechanisms_by_id[mechanism_id].title_cn, description)
+                self.assertNotIn(mechanisms_by_id[mechanism_id].decision_cn, description)
+        self.assertEqual(long_buttons, [])
         for path, rendered in self.rendered.items():
             if path.name.startswith("zg361_mechanisms_l_"):
                 text = rendered.decode("utf-8-sig")

@@ -363,6 +363,8 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
         self.assertIn("RESPONDENT = this REASON = 1", event)
         self.assertIn("RESPONDENT = this REASON = 2", event)
         self.assertIn("RESPONDENT = this REASON = 3", event)
+        self.assertNotIn("zg361wad.offer.accept", event)
+        self.assertNotIn("zg361_wad_accept_offer_effect", event)
         self.assertIn("$RESPONDENT$ = this", accept)
         self.assertIn("offer_source_response value = 1", accept)
         self.assertIn("$REASON$ >= 1", refuse)
@@ -408,6 +410,32 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
             self.assertEqual(expected_keys, keys, language)
             if language not in ("english", "simp_chinese"):
                 self.assertEqual(gen.render_localization("english").split(b"\n", 1)[1], path.read_bytes().split(b"\n", 1)[1])
+
+    def test_player_copy_states_available_facts_and_keeps_actions_on_buttons(self) -> None:
+        zh = gen.LOCALIZATION_CN
+        en = gen.LOCALIZATION_EN
+        self.assertNotIn("offer.accept", zh)
+        self.assertNotIn("offer.accept", en)
+        for token in ("报酬", "职权范围", "调任条件", "无法在知情的前提下接受"):
+            self.assertIn(token, zh["offer.desc"])
+        for token in ("compensation", "scope of authority", "relocation terms", "cannot knowingly accept"):
+            self.assertIn(token, en["offer.desc"])
+        self.assertTrue(zh["offer.desc"].startswith("任命文书已经送达。"))
+        self.assertTrue(en["offer.desc"].startswith("An appointment document has arrived."))
+        self.assertFalse(zh["offer.desc"].startswith("["))
+        self.assertFalse(en["offer.desc"].startswith("["))
+        self.assertNotIn("证据充分", zh["vote.a"])
+        self.assertNotIn("证据充分", zh["vote.desc"])
+        self.assertIn("面试题目、回答、评分表或独立证明材料", zh["vote.desc"])
+        for key in ("vote.a", "vote.b", "vote.c"):
+            self.assertTrue(zh[key].startswith("我的判断："), key)
+            self.assertTrue(en[key].startswith("My judgment:"), key)
+        for key in ("referral.desc", "vote.desc", "offer.desc"):
+            self.assertFalse(zh[key].startswith(("。", "，", ".", ",")), key)
+            self.assertNotEqual(zh[key], zh[key.removesuffix(".desc") + ".t"], key)
+        visible_cn = "\n".join(zh.values())
+        for forbidden in ("本卡", "玩家", "结算器", "回写", "运行时纵切", "脚本"):
+            self.assertNotIn(forbidden, visible_cn)
 
     def test_spec_freezes_core_wiring_and_role_boundary(self) -> None:
         for token in (

@@ -1,3 +1,3 @@
 ﻿l_simp_chinese:
- zg361_workforce_appointment_fact_court_position:0 "三六一试任编制"
- zg361_workforce_appointment_fact_court_position_desc:0 "新录用官员在完成入职手续期间暂居此位。任命真正成立后才占位；同一录用案结清后即释放，不另生俸禄。"
+ zg361_workforce_appointment_fact_court_position:0 "试任属官"
+ zg361_workforce_appointment_fact_court_position_desc:0 "新任官员在入职案卷办结前暂居此位。此职不另发俸禄；任命手续结清后即行释放。"

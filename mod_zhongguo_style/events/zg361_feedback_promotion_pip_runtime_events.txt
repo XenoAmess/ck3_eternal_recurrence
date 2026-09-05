@@ -1,6 +1,54 @@
 ﻿# GENERATED FILE -- edit tools/gen_361_feedback_promotion_pip_runtime.py
 namespace = zg361pp
 
+# One explicit player-owned policy for the safe PP subset.  The choice is
+# cycle-bound; itemized mode and every protected operation retain original cards.
+zg361pp.9100 = {
+	type = character_event
+	theme = vassal
+	title = zg361pp.9100.t
+	desc = zg361pp.9100.desc
+	trigger = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		has_variable = zg361_review_serial
+		var:zg361_pp_portfolio_queue_active = 1
+	}
+	option = {
+			name = zg361pp.9100.a
+			custom_tooltip = zg361pp.9100.a.tt
+			set_variable = { name = zg361_pp_batch_strategy_route value = 1 }
+			set_variable = { name = zg361_pp_batch_strategy_cycle value = var:zg361_review_serial }
+			set_variable = { name = zg361_pp_portfolio_queue_active value = 0 }
+			zg361_pp_manager_portfolio_adapter_effect = yes
+		}
+	option = {
+			name = zg361pp.9100.b
+			custom_tooltip = zg361pp.9100.b.tt
+			set_variable = { name = zg361_pp_batch_strategy_route value = 2 }
+			set_variable = { name = zg361_pp_batch_strategy_cycle value = var:zg361_review_serial }
+			set_variable = { name = zg361_pp_portfolio_queue_active value = 0 }
+			zg361_pp_manager_portfolio_adapter_effect = yes
+		}
+	option = {
+			name = zg361pp.9100.c
+			custom_tooltip = zg361pp.9100.c.tt
+			set_variable = { name = zg361_pp_batch_strategy_route value = 3 }
+			set_variable = { name = zg361_pp_batch_strategy_cycle value = var:zg361_review_serial }
+			set_variable = { name = zg361_pp_portfolio_queue_active value = 0 }
+			zg361_pp_manager_portfolio_adapter_effect = yes
+		}
+	option = {
+			name = zg361pp.9100.d
+			custom_tooltip = zg361pp.9100.d.tt
+			set_variable = { name = zg361_pp_batch_strategy_route value = 4 }
+			set_variable = { name = zg361_pp_batch_strategy_cycle value = var:zg361_review_serial }
+			set_variable = { name = zg361_pp_portfolio_queue_active value = 0 }
+			zg361_pp_manager_portfolio_adapter_effect = yes
+		}
+}
+
 # 146: one queued manager decision; never shown to AI.
 zg361pp.146 = {
 	type = character_event
@@ -34,6 +82,7 @@ zg361pp.146 = {
 	}
 	option = {
 			name = zg361pp.146.a
+			custom_tooltip = zg361pp.146.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m146_manager_apply_effect = {
@@ -47,17 +96,12 @@ zg361pp.146 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m146_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 147 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.147 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.146.b
+			custom_tooltip = zg361pp.146.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m146_manager_apply_effect = {
@@ -71,17 +115,12 @@ zg361pp.146 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m146_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 147 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.147 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.146.c
+			custom_tooltip = zg361pp.146.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m146_manager_apply_effect = {
@@ -95,13 +134,7 @@ zg361pp.146 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m146_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 147 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.147 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_01_effect = yes }
 			}
 		}
 }
@@ -139,6 +172,7 @@ zg361pp.147 = {
 	}
 	option = {
 			name = zg361pp.147.a
+			custom_tooltip = zg361pp.147.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m147_manager_apply_effect = {
@@ -152,17 +186,12 @@ zg361pp.147 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m147_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 148 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.148 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.147.b
+			custom_tooltip = zg361pp.147.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m147_manager_apply_effect = {
@@ -176,17 +205,12 @@ zg361pp.147 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m147_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 148 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.148 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.147.c
+			custom_tooltip = zg361pp.147.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m147_manager_apply_effect = {
@@ -200,13 +224,7 @@ zg361pp.147 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m147_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 148 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.148 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_01_effect = yes }
 			}
 		}
 }
@@ -244,6 +262,7 @@ zg361pp.148 = {
 	}
 	option = {
 			name = zg361pp.148.a
+			custom_tooltip = zg361pp.148.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m148_manager_apply_effect = {
@@ -259,6 +278,7 @@ zg361pp.148 = {
 		}
 	option = {
 			name = zg361pp.148.b
+			custom_tooltip = zg361pp.148.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m148_manager_apply_effect = {
@@ -274,6 +294,7 @@ zg361pp.148 = {
 		}
 	option = {
 			name = zg361pp.148.c
+			custom_tooltip = zg361pp.148.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m148_manager_apply_effect = {
@@ -322,6 +343,7 @@ zg361pp.149 = {
 	}
 	option = {
 			name = zg361pp.149.a
+			custom_tooltip = zg361pp.149.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m149_manager_apply_effect = {
@@ -335,17 +357,12 @@ zg361pp.149 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m149_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 150 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.150 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.149.b
+			custom_tooltip = zg361pp.149.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m149_manager_apply_effect = {
@@ -359,17 +376,12 @@ zg361pp.149 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m149_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 150 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.150 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.149.c
+			custom_tooltip = zg361pp.149.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m149_manager_apply_effect = {
@@ -383,13 +395,7 @@ zg361pp.149 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m149_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 150 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.150 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_02_effect = yes }
 			}
 		}
 }
@@ -427,6 +433,7 @@ zg361pp.150 = {
 	}
 	option = {
 			name = zg361pp.150.a
+			custom_tooltip = zg361pp.150.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m150_manager_apply_effect = {
@@ -440,21 +447,12 @@ zg361pp.150 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m150_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_subject_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 2 }
-	if = {
-		limit = { is_ai = yes }
-		zg361_pp_m151_subject_response_effect = { ROUTE = 1 }
-		zg361_pp_m151_resume_after_subject_effect = yes
-	}
-	else = { trigger_event = { id = zg361pp.5151 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.150.b
+			custom_tooltip = zg361pp.150.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m150_manager_apply_effect = {
@@ -468,21 +466,12 @@ zg361pp.150 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m150_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_subject_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 2 }
-	if = {
-		limit = { is_ai = yes }
-		zg361_pp_m151_subject_response_effect = { ROUTE = 1 }
-		zg361_pp_m151_resume_after_subject_effect = yes
-	}
-	else = { trigger_event = { id = zg361pp.5151 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.150.c
+			custom_tooltip = zg361pp.150.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m150_manager_apply_effect = {
@@ -496,17 +485,7 @@ zg361pp.150 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m150_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_subject_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 2 }
-	if = {
-		limit = { is_ai = yes }
-		zg361_pp_m151_subject_response_effect = { ROUTE = 1 }
-		zg361_pp_m151_resume_after_subject_effect = yes
-	}
-	else = { trigger_event = { id = zg361pp.5151 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_02_effect = yes }
 			}
 		}
 }
@@ -544,6 +523,7 @@ zg361pp.151 = {
 	}
 	option = {
 			name = zg361pp.151.a
+			custom_tooltip = zg361pp.151.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m151_manager_apply_effect = {
@@ -559,6 +539,7 @@ zg361pp.151 = {
 		}
 	option = {
 			name = zg361pp.151.b
+			custom_tooltip = zg361pp.151.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m151_manager_apply_effect = {
@@ -574,6 +555,7 @@ zg361pp.151 = {
 		}
 	option = {
 			name = zg361pp.151.c
+			custom_tooltip = zg361pp.151.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m151_manager_apply_effect = {
@@ -622,6 +604,7 @@ zg361pp.152 = {
 	}
 	option = {
 			name = zg361pp.152.a
+			custom_tooltip = zg361pp.152.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m152_manager_apply_effect = {
@@ -635,17 +618,12 @@ zg361pp.152 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m152_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 153 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.153 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.152.b
+			custom_tooltip = zg361pp.152.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m152_manager_apply_effect = {
@@ -659,17 +637,12 @@ zg361pp.152 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m152_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 153 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.153 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.152.c
+			custom_tooltip = zg361pp.152.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m152_manager_apply_effect = {
@@ -683,13 +656,7 @@ zg361pp.152 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m152_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 153 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.153 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_03_effect = yes }
 			}
 		}
 }
@@ -727,6 +694,7 @@ zg361pp.153 = {
 	}
 	option = {
 			name = zg361pp.153.a
+			custom_tooltip = zg361pp.153.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m153_manager_apply_effect = {
@@ -740,17 +708,12 @@ zg361pp.153 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m153_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 154 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.154 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.153.b
+			custom_tooltip = zg361pp.153.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m153_manager_apply_effect = {
@@ -764,17 +727,12 @@ zg361pp.153 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m153_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 154 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.154 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.153.c
+			custom_tooltip = zg361pp.153.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m153_manager_apply_effect = {
@@ -788,13 +746,7 @@ zg361pp.153 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m153_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 154 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.154 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_03_effect = yes }
 			}
 		}
 }
@@ -832,6 +784,7 @@ zg361pp.154 = {
 	}
 	option = {
 			name = zg361pp.154.a
+			custom_tooltip = zg361pp.154.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m154_manager_apply_effect = {
@@ -847,6 +800,7 @@ zg361pp.154 = {
 		}
 	option = {
 			name = zg361pp.154.b
+			custom_tooltip = zg361pp.154.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m154_manager_apply_effect = {
@@ -862,6 +816,7 @@ zg361pp.154 = {
 		}
 	option = {
 			name = zg361pp.154.c
+			custom_tooltip = zg361pp.154.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m154_manager_apply_effect = {
@@ -910,6 +865,7 @@ zg361pp.155 = {
 	}
 	option = {
 			name = zg361pp.155.a
+			custom_tooltip = zg361pp.155.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m155_manager_apply_effect = {
@@ -923,17 +879,12 @@ zg361pp.155 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m155_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 156 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.156 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.155.b
+			custom_tooltip = zg361pp.155.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m155_manager_apply_effect = {
@@ -947,17 +898,12 @@ zg361pp.155 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m155_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 156 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.156 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.155.c
+			custom_tooltip = zg361pp.155.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m155_manager_apply_effect = {
@@ -971,13 +917,7 @@ zg361pp.155 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m155_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_t_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_t_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_t_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 156 }
-	var:zg361_case_t_owner = { trigger_event = { id = zg361pp.156 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_t_stage_04_effect = yes }
 			}
 		}
 }
@@ -1015,6 +955,7 @@ zg361pp.156 = {
 	}
 	option = {
 			name = zg361pp.156.a
+			custom_tooltip = zg361pp.156.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m156_manager_apply_effect = {
@@ -1030,6 +971,7 @@ zg361pp.156 = {
 		}
 	option = {
 			name = zg361pp.156.b
+			custom_tooltip = zg361pp.156.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m156_manager_apply_effect = {
@@ -1045,6 +987,7 @@ zg361pp.156 = {
 		}
 	option = {
 			name = zg361pp.156.c
+			custom_tooltip = zg361pp.156.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m156_manager_apply_effect = {
@@ -1086,6 +1029,7 @@ zg361pp.157 = {
 	}
 	option = {
 			name = zg361pp.157.a
+			custom_tooltip = zg361pp.157.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_u_candidate_eligible = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m157_manager_apply_effect = {
@@ -1099,17 +1043,12 @@ zg361pp.157 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 158 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.158 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.157.b
+			custom_tooltip = zg361pp.157.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_u_candidate_eligible = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m157_manager_apply_effect = {
@@ -1123,17 +1062,12 @@ zg361pp.157 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 158 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.158 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.157.c
+			custom_tooltip = zg361pp.157.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m157_manager_apply_effect = {
@@ -1147,13 +1081,7 @@ zg361pp.157 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 158 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.158 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_01_effect = yes }
 			}
 		}
 }
@@ -1184,6 +1112,7 @@ zg361pp.158 = {
 	}
 	option = {
 			name = zg361pp.158.a
+			custom_tooltip = zg361pp.158.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1206,17 +1135,12 @@ zg361pp.158 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m158_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 159 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.159 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.158.b
+			custom_tooltip = zg361pp.158.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1239,17 +1163,12 @@ zg361pp.158 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m158_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 159 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.159 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.158.c
+			custom_tooltip = zg361pp.158.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m158_manager_apply_effect = {
@@ -1263,13 +1182,7 @@ zg361pp.158 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m158_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 159 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.159 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_01_effect = yes }
 			}
 		}
 }
@@ -1300,6 +1213,7 @@ zg361pp.159 = {
 	}
 	option = {
 			name = zg361pp.159.a
+			custom_tooltip = zg361pp.159.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m159_manager_apply_effect = {
@@ -1315,6 +1229,7 @@ zg361pp.159 = {
 		}
 	option = {
 			name = zg361pp.159.b
+			custom_tooltip = zg361pp.159.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m159_manager_apply_effect = {
@@ -1330,6 +1245,7 @@ zg361pp.159 = {
 		}
 	option = {
 			name = zg361pp.159.c
+			custom_tooltip = zg361pp.159.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m159_manager_apply_effect = {
@@ -1371,6 +1287,7 @@ zg361pp.160 = {
 	}
 	option = {
 			name = zg361pp.160.a
+			custom_tooltip = zg361pp.160.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1402,17 +1319,12 @@ zg361pp.160 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 167 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.167 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.160.b
+			custom_tooltip = zg361pp.160.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1444,17 +1356,12 @@ zg361pp.160 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 167 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.167 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.160.c
+			custom_tooltip = zg361pp.160.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m160_manager_apply_effect = {
@@ -1468,13 +1375,7 @@ zg361pp.160 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 167 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.167 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_04_effect = yes }
 			}
 		}
 }
@@ -1505,6 +1406,7 @@ zg361pp.161 = {
 	}
 	option = {
 			name = zg361pp.161.a
+			custom_tooltip = zg361pp.161.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1527,17 +1429,12 @@ zg361pp.161 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m161_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 162 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.162 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.161.b
+			custom_tooltip = zg361pp.161.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1562,17 +1459,12 @@ zg361pp.161 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m161_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 162 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.162 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.161.c
+			custom_tooltip = zg361pp.161.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m161_manager_apply_effect = {
@@ -1586,13 +1478,7 @@ zg361pp.161 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m161_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 162 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.162 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_03_effect = yes }
 			}
 		}
 }
@@ -1623,6 +1509,7 @@ zg361pp.162 = {
 	}
 	option = {
 			name = zg361pp.162.a
+			custom_tooltip = zg361pp.162.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1645,21 +1532,12 @@ zg361pp.162 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m162_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_subject_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 3 }
-	if = {
-		limit = { is_ai = yes }
-		zg361_pp_m166_subject_response_effect = { ROUTE = 2 }
-		zg361_pp_m166_resume_after_subject_effect = yes
-	}
-	else = { trigger_event = { id = zg361pp.5166 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.162.b
+			custom_tooltip = zg361pp.162.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1682,21 +1560,12 @@ zg361pp.162 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m162_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_subject_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 3 }
-	if = {
-		limit = { is_ai = yes }
-		zg361_pp_m166_subject_response_effect = { ROUTE = 2 }
-		zg361_pp_m166_resume_after_subject_effect = yes
-	}
-	else = { trigger_event = { id = zg361pp.5166 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.162.c
+			custom_tooltip = zg361pp.162.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m162_manager_apply_effect = {
@@ -1710,17 +1579,7 @@ zg361pp.162 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m162_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_subject_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_subject_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_subject_prompt_state value = 3 }
-	if = {
-		limit = { is_ai = yes }
-		zg361_pp_m166_subject_response_effect = { ROUTE = 2 }
-		zg361_pp_m166_resume_after_subject_effect = yes
-	}
-	else = { trigger_event = { id = zg361pp.5166 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_03_effect = yes }
 			}
 		}
 }
@@ -1751,6 +1610,7 @@ zg361pp.163 = {
 	}
 	option = {
 			name = zg361pp.163.a
+			custom_tooltip = zg361pp.163.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1773,17 +1633,12 @@ zg361pp.163 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m163_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 164 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.164 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.163.b
+			custom_tooltip = zg361pp.163.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1806,17 +1661,12 @@ zg361pp.163 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m163_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 164 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.164 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.163.c
+			custom_tooltip = zg361pp.163.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m163_manager_apply_effect = {
@@ -1830,13 +1680,7 @@ zg361pp.163 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m163_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 164 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.164 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_02_effect = yes }
 			}
 		}
 }
@@ -1867,6 +1711,7 @@ zg361pp.164 = {
 	}
 	option = {
 			name = zg361pp.164.a
+			custom_tooltip = zg361pp.164.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1889,17 +1734,12 @@ zg361pp.164 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m164_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 165 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.165 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.164.b
+			custom_tooltip = zg361pp.164.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -1922,17 +1762,12 @@ zg361pp.164 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m164_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 165 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.165 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.164.c
+			custom_tooltip = zg361pp.164.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m164_manager_apply_effect = {
@@ -1946,13 +1781,7 @@ zg361pp.164 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m164_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 165 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.165 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_02_effect = yes }
 			}
 		}
 }
@@ -1983,6 +1812,7 @@ zg361pp.165 = {
 	}
 	option = {
 			name = zg361pp.165.a
+			custom_tooltip = zg361pp.165.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -2007,6 +1837,7 @@ zg361pp.165 = {
 		}
 	option = {
 			name = zg361pp.165.b
+			custom_tooltip = zg361pp.165.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -2031,6 +1862,7 @@ zg361pp.165 = {
 		}
 	option = {
 			name = zg361pp.165.c
+			custom_tooltip = zg361pp.165.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m165_manager_apply_effect = {
@@ -2072,6 +1904,7 @@ zg361pp.166 = {
 	}
 	option = {
 			name = zg361pp.166.a
+			custom_tooltip = zg361pp.166.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -2101,6 +1934,7 @@ zg361pp.166 = {
 		}
 	option = {
 			name = zg361pp.166.b
+			custom_tooltip = zg361pp.166.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
 	var:zg361_pp_m157_packet_status = 1
 	var:zg361_pp_m157_packet_candidate = this
@@ -2125,6 +1959,7 @@ zg361pp.166 = {
 		}
 	option = {
 			name = zg361pp.166.c
+			custom_tooltip = zg361pp.166.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m166_manager_apply_effect = {
@@ -2166,6 +2001,7 @@ zg361pp.167 = {
 	}
 	option = {
 			name = zg361pp.167.a
+			custom_tooltip = zg361pp.167.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m160_prescreen_pass
 	var:zg361_pp_m160_packet_candidate_consumed = this } }
 			scope:zg361_pp_prompt_subject = {
@@ -2180,17 +2016,12 @@ zg361pp.167 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m167_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 168 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.168 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.167.b
+			custom_tooltip = zg361pp.167.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m160_prescreen_pass
 	var:zg361_pp_m160_packet_candidate_consumed = this } }
 			scope:zg361_pp_prompt_subject = {
@@ -2205,17 +2036,12 @@ zg361pp.167 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m167_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 168 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.168 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.167.c
+			custom_tooltip = zg361pp.167.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m167_manager_apply_effect = {
@@ -2229,13 +2055,7 @@ zg361pp.167 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m167_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_u_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_u_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_u_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 168 }
-	var:zg361_case_u_owner = { trigger_event = { id = zg361pp.168 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_u_stage_04_effect = yes }
 			}
 		}
 }
@@ -2266,6 +2086,7 @@ zg361pp.168 = {
 	}
 	option = {
 			name = zg361pp.168.a
+			custom_tooltip = zg361pp.168.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m160_prescreen_pass
 	has_variable = zg361_pp_m167_observation_id } }
 			scope:zg361_pp_prompt_subject = {
@@ -2282,6 +2103,7 @@ zg361pp.168 = {
 		}
 	option = {
 			name = zg361pp.168.b
+			custom_tooltip = zg361pp.168.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m160_prescreen_pass
 	has_variable = zg361_pp_m167_observation_id } }
 			scope:zg361_pp_prompt_subject = {
@@ -2298,6 +2120,7 @@ zg361pp.168 = {
 		}
 	option = {
 			name = zg361pp.168.c
+			custom_tooltip = zg361pp.168.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m168_manager_apply_effect = {
@@ -2339,6 +2162,7 @@ zg361pp.169 = {
 	}
 	option = {
 			name = zg361pp.169.a
+			custom_tooltip = zg361pp.169.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_prescreen_pass = 1
 	var:zg361_pp_m160_packet_candidate_consumed = this
 	var:zg361_pp_m160_promotion_slot_status = 2
@@ -2355,17 +2179,12 @@ zg361pp.169 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m169_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 170 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.170 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.169.b
+			custom_tooltip = zg361pp.169.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_prescreen_pass = 1
 	var:zg361_pp_m160_packet_candidate_consumed = this
 	var:zg361_pp_m160_promotion_slot_status = 2
@@ -2382,17 +2201,12 @@ zg361pp.169 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m169_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 170 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.170 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.169.c
+			custom_tooltip = zg361pp.169.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m169_manager_apply_effect = {
@@ -2406,13 +2220,7 @@ zg361pp.169 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m169_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 170 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.170 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_01_effect = yes }
 			}
 		}
 }
@@ -2443,6 +2251,7 @@ zg361pp.170 = {
 	}
 	option = {
 			name = zg361pp.170.a
+			custom_tooltip = zg361pp.170.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_v_panel_pool_1
 	has_variable = zg361_pp_v_panel_pool_2
 	has_variable = zg361_pp_v_panel_pool_3 } }
@@ -2458,17 +2267,12 @@ zg361pp.170 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m170_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 171 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.171 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.170.b
+			custom_tooltip = zg361pp.170.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_v_panel_pool_1
 	has_variable = zg361_pp_v_panel_pool_2
 	has_variable = zg361_pp_v_panel_pool_3 } }
@@ -2484,17 +2288,12 @@ zg361pp.170 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m170_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 171 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.171 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.170.c
+			custom_tooltip = zg361pp.170.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m170_manager_apply_effect = {
@@ -2508,13 +2307,7 @@ zg361pp.170 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m170_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 171 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.171 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_01_effect = yes }
 			}
 		}
 }
@@ -2545,6 +2338,7 @@ zg361pp.171 = {
 	}
 	option = {
 			name = zg361pp.171.a
+			custom_tooltip = zg361pp.171.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m170_selection_replay_ok = 1
 	var:zg361_pp_m170_panel_unique = 1
 	has_variable = zg361_pp_v_panel_pool_4
@@ -2565,6 +2359,7 @@ zg361pp.171 = {
 		}
 	option = {
 			name = zg361pp.171.b
+			custom_tooltip = zg361pp.171.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m170_selection_replay_ok = 1
 	var:zg361_pp_m170_panel_unique = 1 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2581,6 +2376,7 @@ zg361pp.171 = {
 		}
 	option = {
 			name = zg361pp.171.c
+			custom_tooltip = zg361pp.171.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m171_manager_apply_effect = {
@@ -2622,6 +2418,7 @@ zg361pp.172 = {
 	}
 	option = {
 			name = zg361pp.172.a
+			custom_tooltip = zg361pp.172.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m169_weight_check = 100
 	var:zg361_pp_m171_active_panel_count = 3
 	has_variable = zg361_pp_m171_active_panel_revision } }
@@ -2637,17 +2434,12 @@ zg361pp.172 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m172_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 173 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.173 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.172.b
+			custom_tooltip = zg361pp.172.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m169_weight_check = 100
 	var:zg361_pp_m171_active_panel_count = 3
 	has_variable = zg361_pp_m171_active_panel_revision } }
@@ -2663,17 +2455,12 @@ zg361pp.172 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m172_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 173 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.173 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.172.c
+			custom_tooltip = zg361pp.172.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m172_manager_apply_effect = {
@@ -2687,13 +2474,7 @@ zg361pp.172 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m172_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 173 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.173 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_02_effect = yes }
 			}
 		}
 }
@@ -2724,6 +2505,7 @@ zg361pp.173 = {
 	}
 	option = {
 			name = zg361pp.173.a
+			custom_tooltip = zg361pp.173.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m172_rule_frozen_before_vote = 1
 	var:zg361_pp_m172_panel_weight_check = 100 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2740,6 +2522,7 @@ zg361pp.173 = {
 		}
 	option = {
 			name = zg361pp.173.b
+			custom_tooltip = zg361pp.173.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m172_rule_frozen_before_vote = 1
 	var:zg361_pp_m172_panel_weight_check = 100 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2756,6 +2539,7 @@ zg361pp.173 = {
 		}
 	option = {
 			name = zg361pp.173.c
+			custom_tooltip = zg361pp.173.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m173_manager_apply_effect = {
@@ -2797,6 +2581,7 @@ zg361pp.174 = {
 	}
 	option = {
 			name = zg361pp.174.a
+			custom_tooltip = zg361pp.174.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m173_blind_score
 	var:zg361_pp_m173_identity_fields_hidden = 1 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2811,17 +2596,12 @@ zg361pp.174 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 175 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.175 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.174.b
+			custom_tooltip = zg361pp.174.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m173_blind_score
 	var:zg361_pp_m173_identity_fields_hidden = 1 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2836,17 +2616,12 @@ zg361pp.174 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 175 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.175 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.174.c
+			custom_tooltip = zg361pp.174.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m174_manager_apply_effect = {
@@ -2860,13 +2635,7 @@ zg361pp.174 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 175 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.175 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_03_effect = yes }
 			}
 		}
 }
@@ -2897,6 +2666,7 @@ zg361pp.175 = {
 	}
 	option = {
 			name = zg361pp.175.a
+			custom_tooltip = zg361pp.175.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_time_check = 60
 	var:zg361_pp_m174_question_minutes >= 5 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2911,17 +2681,12 @@ zg361pp.175 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m175_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 176 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.176 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.175.b
+			custom_tooltip = zg361pp.175.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_time_check = 60
 	var:zg361_pp_m174_question_minutes >= 5 } }
 			scope:zg361_pp_prompt_subject = {
@@ -2936,17 +2701,12 @@ zg361pp.175 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m175_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 176 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.176 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.175.c
+			custom_tooltip = zg361pp.175.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m175_manager_apply_effect = {
@@ -2960,13 +2720,7 @@ zg361pp.175 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m175_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 176 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.176 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_03_effect = yes }
 			}
 		}
 }
@@ -2997,6 +2751,7 @@ zg361pp.176 = {
 	}
 	option = {
 			name = zg361pp.176.a
+			custom_tooltip = zg361pp.176.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_time_check = 60
 	has_variable = zg361_pp_m175_coaching_allocated } }
 			scope:zg361_pp_prompt_subject = {
@@ -3013,6 +2768,7 @@ zg361pp.176 = {
 		}
 	option = {
 			name = zg361pp.176.b
+			custom_tooltip = zg361pp.176.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m174_time_check = 60
 	has_variable = zg361_pp_m175_coaching_allocated } }
 			scope:zg361_pp_prompt_subject = {
@@ -3029,6 +2785,7 @@ zg361pp.176 = {
 		}
 	option = {
 			name = zg361pp.176.c
+			custom_tooltip = zg361pp.176.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m176_manager_apply_effect = {
@@ -3070,6 +2827,7 @@ zg361pp.177 = {
 	}
 	option = {
 			name = zg361pp.177.a
+			custom_tooltip = zg361pp.177.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m176_share_check = 100
 	has_variable = zg361_pp_m176_candidate_share } }
 			scope:zg361_pp_prompt_subject = {
@@ -3084,17 +2842,12 @@ zg361pp.177 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m177_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 178 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.178 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.177.b
+			custom_tooltip = zg361pp.177.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m176_share_check = 100
 	has_variable = zg361_pp_m176_candidate_share } }
 			scope:zg361_pp_prompt_subject = {
@@ -3109,17 +2862,12 @@ zg361pp.177 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m177_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 178 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.178 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_04_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.177.c
+			custom_tooltip = zg361pp.177.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m177_manager_apply_effect = {
@@ -3133,13 +2881,7 @@ zg361pp.177 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m177_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 178 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.178 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_04_effect = yes }
 			}
 		}
 }
@@ -3170,6 +2912,7 @@ zg361pp.178 = {
 	}
 	option = {
 			name = zg361pp.178.a
+			custom_tooltip = zg361pp.178.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m173_blind_score
 	var:zg361_pp_m174_time_check = 60
 	has_variable = zg361_pp_m175_coaching_allocated
@@ -3190,6 +2933,7 @@ zg361pp.178 = {
 		}
 	option = {
 			name = zg361pp.178.b
+			custom_tooltip = zg361pp.178.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m173_blind_score
 	var:zg361_pp_m174_time_check = 60
 	has_variable = zg361_pp_m175_coaching_allocated
@@ -3210,6 +2954,7 @@ zg361pp.178 = {
 		}
 	option = {
 			name = zg361pp.178.c
+			custom_tooltip = zg361pp.178.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m178_manager_apply_effect = {
@@ -3251,6 +2996,7 @@ zg361pp.179 = {
 	}
 	option = {
 			name = zg361pp.179.a
+			custom_tooltip = zg361pp.179.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
 	has_variable = zg361_pp_m171_active_panel_1 } }
 			scope:zg361_pp_prompt_subject = {
@@ -3265,17 +3011,12 @@ zg361pp.179 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m179_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 5 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 180 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.180 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_05_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.179.b
+			custom_tooltip = zg361pp.179.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
 	has_variable = zg361_pp_m171_active_panel_1 } }
 			scope:zg361_pp_prompt_subject = {
@@ -3290,17 +3031,12 @@ zg361pp.179 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m179_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 5 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 180 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.180 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_05_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.179.c
+			custom_tooltip = zg361pp.179.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m179_manager_apply_effect = {
@@ -3314,13 +3050,7 @@ zg361pp.179 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m179_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_v_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_v_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_v_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 5 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 180 }
-	var:zg361_case_v_owner = { trigger_event = { id = zg361pp.180 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_v_stage_05_effect = yes }
 			}
 		}
 }
@@ -3351,6 +3081,7 @@ zg361pp.180 = {
 	}
 	option = {
 			name = zg361pp.180.a
+			custom_tooltip = zg361pp.180.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
 	has_variable = zg361_pp_m179_gap_id
 	var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1 } }
@@ -3368,6 +3099,7 @@ zg361pp.180 = {
 		}
 	option = {
 			name = zg361pp.180.b
+			custom_tooltip = zg361pp.180.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
 	has_variable = zg361_pp_m179_gap_id
 	var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1 } }
@@ -3385,6 +3117,7 @@ zg361pp.180 = {
 		}
 	option = {
 			name = zg361pp.180.c
+			custom_tooltip = zg361pp.180.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m180_manager_apply_effect = {
@@ -3433,6 +3166,7 @@ zg361pp.181 = {
 	}
 	option = {
 			name = zg361pp.181.a
+			custom_tooltip = zg361pp.181.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m181_manager_apply_effect = {
@@ -3446,17 +3180,12 @@ zg361pp.181 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m181_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 182 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.182 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.181.b
+			custom_tooltip = zg361pp.181.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m181_manager_apply_effect = {
@@ -3470,17 +3199,12 @@ zg361pp.181 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m181_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 182 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.182 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.181.c
+			custom_tooltip = zg361pp.181.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m181_manager_apply_effect = {
@@ -3494,13 +3218,7 @@ zg361pp.181 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m181_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 182 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.182 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_01_effect = yes }
 			}
 		}
 }
@@ -3538,6 +3256,7 @@ zg361pp.182 = {
 	}
 	option = {
 			name = zg361pp.182.a
+			custom_tooltip = zg361pp.182.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m181_primary_category
 	has_variable = zg361_pp_m181_evidence_id
 	var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade
@@ -3554,17 +3273,12 @@ zg361pp.182 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 183 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.183 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.182.b
+			custom_tooltip = zg361pp.182.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m181_primary_category
 	has_variable = zg361_pp_m181_evidence_id
 	var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade
@@ -3581,17 +3295,12 @@ zg361pp.182 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 183 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.183 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_01_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.182.c
+			custom_tooltip = zg361pp.182.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m182_manager_apply_effect = {
@@ -3605,13 +3314,7 @@ zg361pp.182 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 1 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 183 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.183 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_01_effect = yes }
 			}
 		}
 }
@@ -3649,6 +3352,7 @@ zg361pp.183 = {
 	}
 	option = {
 			name = zg361pp.183.a
+			custom_tooltip = zg361pp.183.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_gate_status = 1
 	var:zg361_b2_pip_owner = var:zg361_case_w_owner
 	var:zg361_b2_pip_subject = this
@@ -3669,6 +3373,7 @@ zg361pp.183 = {
 		}
 	option = {
 			name = zg361pp.183.b
+			custom_tooltip = zg361pp.183.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_gate_status = 1
 	var:zg361_b2_pip_owner = var:zg361_case_w_owner
 	var:zg361_b2_pip_subject = this
@@ -3689,6 +3394,7 @@ zg361pp.183 = {
 		}
 	option = {
 			name = zg361pp.183.c
+			custom_tooltip = zg361pp.183.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m183_manager_apply_effect = {
@@ -3737,6 +3443,7 @@ zg361pp.184 = {
 	}
 	option = {
 			name = zg361pp.184.a
+			custom_tooltip = zg361pp.184.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_gate_status = 1
 	var:zg361_pp_m183_goals_frozen = 1
 	var:zg361_pp_m183_manager_signed = 1
@@ -3758,17 +3465,12 @@ zg361pp.184 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 185 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.185 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.184.b
+			custom_tooltip = zg361pp.184.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m182_gate_status = 1
 	var:zg361_pp_m183_goals_frozen = 1
 	var:zg361_pp_m183_manager_signed = 1
@@ -3790,17 +3492,12 @@ zg361pp.184 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 185 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.185 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_02_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.184.c
+			custom_tooltip = zg361pp.184.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m184_manager_apply_effect = {
@@ -3814,13 +3511,7 @@ zg361pp.184 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 185 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.185 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_02_effect = yes }
 			}
 		}
 }
@@ -3858,6 +3549,7 @@ zg361pp.185 = {
 	}
 	option = {
 			name = zg361pp.185.a
+			custom_tooltip = zg361pp.185.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_active_case = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m185_manager_apply_effect = {
@@ -3873,6 +3565,7 @@ zg361pp.185 = {
 		}
 	option = {
 			name = zg361pp.185.b
+			custom_tooltip = zg361pp.185.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_active_case = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m185_manager_apply_effect = {
@@ -3888,6 +3581,7 @@ zg361pp.185 = {
 		}
 	option = {
 			name = zg361pp.185.c
+			custom_tooltip = zg361pp.185.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m185_manager_apply_effect = {
@@ -3936,6 +3630,7 @@ zg361pp.186 = {
 	}
 	option = {
 			name = zg361pp.186.a
+			custom_tooltip = zg361pp.186.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
 	OR = {
 		var:zg361_pp_m185_midpoint_status = 1
@@ -3953,17 +3648,12 @@ zg361pp.186 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m186_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 187 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.187 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.186.b
+			custom_tooltip = zg361pp.186.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
 	OR = {
 		var:zg361_pp_m185_midpoint_status = 1
@@ -3981,17 +3671,12 @@ zg361pp.186 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m186_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 187 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.187 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_03_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.186.c
+			custom_tooltip = zg361pp.186.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m186_manager_apply_effect = {
@@ -4005,13 +3690,7 @@ zg361pp.186 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m186_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 187 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.187 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_03_effect = yes }
 			}
 		}
 }
@@ -4049,6 +3728,7 @@ zg361pp.187 = {
 	}
 	option = {
 			name = zg361pp.187.a
+			custom_tooltip = zg361pp.187.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
 	has_variable = zg361_pp_m186_baseline_workload } }
 			scope:zg361_pp_prompt_subject = {
@@ -4065,6 +3745,7 @@ zg361pp.187 = {
 		}
 	option = {
 			name = zg361pp.187.b
+			custom_tooltip = zg361pp.187.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
 	has_variable = zg361_pp_m186_baseline_workload } }
 			scope:zg361_pp_prompt_subject = {
@@ -4081,6 +3762,7 @@ zg361pp.187 = {
 		}
 	option = {
 			name = zg361pp.187.c
+			custom_tooltip = zg361pp.187.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m187_manager_apply_effect = {
@@ -4129,6 +3811,7 @@ zg361pp.188 = {
 	}
 	option = {
 			name = zg361pp.188.a
+			custom_tooltip = zg361pp.188.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m187_graduation_status = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m188_manager_apply_effect = {
@@ -4144,6 +3827,7 @@ zg361pp.188 = {
 		}
 	option = {
 			name = zg361pp.188.b
+			custom_tooltip = zg361pp.188.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m187_graduation_status = 1
 	var:zg361_pp_m187_graduation_status = 1 } }
 			scope:zg361_pp_prompt_subject = {
@@ -4160,6 +3844,7 @@ zg361pp.188 = {
 		}
 	option = {
 			name = zg361pp.188.c
+			custom_tooltip = zg361pp.188.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m188_manager_apply_effect = {
@@ -4208,6 +3893,7 @@ zg361pp.189 = {
 	}
 	option = {
 			name = zg361pp.189.transfer
+			custom_tooltip = zg361pp.189.transfer.tt
 			trigger = { scope:zg361_pp_prompt_subject = { OR = {
 		AND = {
 			var:zg361_pp_m187_graduation_status = 2
@@ -4248,6 +3934,7 @@ zg361pp.189 = {
 		}
 	option = {
 			name = zg361pp.189.second_pip
+			custom_tooltip = zg361pp.189.second_pip.tt
 			trigger = { scope:zg361_pp_prompt_subject = { OR = {
 		AND = {
 			var:zg361_pp_m187_graduation_status = 2
@@ -4287,6 +3974,7 @@ zg361pp.189 = {
 		}
 	option = {
 			name = zg361pp.189.b
+			custom_tooltip = zg361pp.189.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { OR = {
 		AND = {
 			var:zg361_pp_m187_graduation_status = 2
@@ -4319,6 +4007,7 @@ zg361pp.189 = {
 		}
 	option = {
 			name = zg361pp.189.c
+			custom_tooltip = zg361pp.189.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m189_manager_apply_effect = {
@@ -4367,6 +4056,7 @@ zg361pp.190 = {
 	}
 	option = {
 			name = zg361pp.190.a
+			custom_tooltip = zg361pp.190.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 2
 	has_variable = zg361_pp_m189_receiving_manager
 	var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager
@@ -4421,17 +4111,12 @@ zg361pp.190 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m190_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 5 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 191 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.191 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_05_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.190.b
+			custom_tooltip = zg361pp.190.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 2
 	has_variable = zg361_pp_m189_receiving_manager
 	var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager
@@ -4486,17 +4171,12 @@ zg361pp.190 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m190_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 5 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 191 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.191 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_05_effect = yes }
 			}
 		}
 	option = {
 			name = zg361pp.190.c
+			custom_tooltip = zg361pp.190.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m190_manager_apply_effect = {
@@ -4510,13 +4190,7 @@ zg361pp.190 = {
 			}
 			if = {
 				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m190_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 5 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 191 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.191 days = 1 } } }
+				scope:zg361_pp_prompt_subject = { zg361_pp_dispatch_w_stage_05_effect = yes }
 			}
 		}
 }
@@ -4554,6 +4228,7 @@ zg361pp.191 = {
 	}
 	option = {
 			name = zg361pp.191.a
+			custom_tooltip = zg361pp.191.a.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 3 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m191_manager_apply_effect = {
@@ -4569,6 +4244,7 @@ zg361pp.191 = {
 		}
 	option = {
 			name = zg361pp.191.b
+			custom_tooltip = zg361pp.191.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 3 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m191_manager_apply_effect = {
@@ -4584,6 +4260,7 @@ zg361pp.191 = {
 		}
 	option = {
 			name = zg361pp.191.c
+			custom_tooltip = zg361pp.191.c.tt
 			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m191_manager_apply_effect = {
@@ -4612,6 +4289,21 @@ zg361pp.5151 = {
 			triggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 2 } desc = zg361pp.grade.350 }
 			triggered_desc = { trigger = { var:zg361_pp_t_frozen_grade = 1 } desc = zg361pp.grade.325 }
 		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 0 } desc = zg361pp.5151.reason.0 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 1 } desc = zg361pp.5151.reason.1 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 2 } desc = zg361pp.5151.reason.2 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 3 } desc = zg361pp.5151.reason.3 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 4 } desc = zg361pp.5151.reason.4 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 5 } desc = zg361pp.5151.reason.5 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 6 } desc = zg361pp.5151.reason.6 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 7 } desc = zg361pp.5151.reason.7 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 8 } desc = zg361pp.5151.reason.8 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 9 } desc = zg361pp.5151.reason.9 }
+			triggered_desc = { trigger = { var:zg361_pp_t_frozen_reason = 10 } desc = zg361pp.5151.reason.10 }
+			desc = zg361pp.5151.reason.unknown
+		}
+		desc = zg361pp.5151.evidence
 	}
 	trigger = {
 		is_ai = no
@@ -4646,7 +4338,7 @@ zg361pp.5166 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.166.t
-	desc = zg361pp.166.desc
+	desc = zg361pp.5166.desc
 	trigger = {
 		is_ai = no
 		has_game_rule = zg361_on
@@ -4680,7 +4372,7 @@ zg361pp.5190 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.190.t
-	desc = zg361pp.190.desc
+	desc = zg361pp.5190.desc
 	trigger = {
 		is_ai = no
 		has_game_rule = zg361_on
@@ -6985,16 +6677,17 @@ zg361pp.2188 = {
 					set_variable = { name = zg361_pp_m188_observed_result_state value = var:zg361_result_case_state }
 					set_variable = { name = zg361_pp_m188_observed_result_grade value = var:zg361_result_grade }
 					set_variable = { name = zg361_pp_m188_observed_result_reason value = var:zg361_result_grade_reason }
-					set_variable = { name = zg361_pp_m188_observed_category value = 1 }
-					if = { limit = { var:zg361_result_grade_reason = 5 } set_variable = { name = zg361_pp_m188_observed_category value = 3 } }
+					# A grade reason is not a problem-category witness.  Keep the
+					# observed category unknown until a dedicated fact producer exists.
+					set_variable = { name = zg361_pp_m188_observed_category value = 0 }
 					if = {
 						limit = {
 							OR = {
 								var:zg361_pp_m188_route = 2
-								AND = { var:zg361_pp_m188_route = 1 var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot }
+								AND = { var:zg361_pp_m188_route = 1 var:zg361_pp_m188_observed_category >= 1 var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot }
 							}
 						}
-						if = { limit = { var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot } set_variable = { name = zg361_pp_m188_same_category_relapse value = 1 } }
+						if = { limit = { var:zg361_pp_m188_observed_category >= 1 var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot } set_variable = { name = zg361_pp_m188_same_category_relapse value = 1 } }
 						set_variable = { name = zg361_pp_m188_relapse_status value = 1 }
 					}
 				}

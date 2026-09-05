@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: p stage 04 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 4.
+# Boundary contract: 1-10 top-level effects; this file has 3.
 
 
 
@@ -29,33 +29,7 @@ zg361_career_hc_m119_manager_apply_effect = {
     }
 }
 
-# Assessed-official self response; grants no manager/HC/panel authority.
-zg361_career_hc_m119_subject_response_effect = {
-    save_temporary_scope_value_as = { name = zg361_ch_subject_route value = $ROUTE$ }
-    if = {
-        limit = {
-            is_ai = no
-            zg361_case_kernel_subject_self_guard_trigger = {
-                SUBJECT_VAR = zg361_case_p_subject
-                ACTIVE_VAR = zg361_case_p_active
-            }
-            has_variable = zg361_case_p_state
-            var:zg361_case_p_state = 4
-            var:zg361_ch_m119_subject_ack = 0
-            OR = {
-                scope:zg361_ch_subject_route = 1
-                scope:zg361_ch_subject_route = 2
-                scope:zg361_ch_subject_route = 3
-            }
-        }
-        set_variable = { name = zg361_ch_m119_subject_ack value = 1 }
-        set_variable = { name = zg361_ch_m119_subject_route value = scope:zg361_ch_subject_route }
-        change_variable = { name = zg361_case_p_feedback_revision add = 1 }
-        debug_log = "ZG361CH: subject response 119 recorded"
-    }
-}
-
-# 119 招聘质量回写
+# 119 招聘质量追责
 zg361_career_hc_m119_core_effect = {
     save_temporary_scope_value_as = { name = zg361_ch_route value = $ROUTE$ }
     remove_variable = zg361_ch_runtime_applied

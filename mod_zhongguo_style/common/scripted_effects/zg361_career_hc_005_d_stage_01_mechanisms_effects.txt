@@ -29,32 +29,6 @@ zg361_career_hc_m019_manager_apply_effect = {
     }
 }
 
-# Assessed-official self response; grants no manager/HC/panel authority.
-zg361_career_hc_m019_subject_response_effect = {
-    save_temporary_scope_value_as = { name = zg361_ch_subject_route value = $ROUTE$ }
-    if = {
-        limit = {
-            is_ai = no
-            zg361_case_kernel_subject_self_guard_trigger = {
-                SUBJECT_VAR = zg361_case_d_subject
-                ACTIVE_VAR = zg361_case_d_active
-            }
-            has_variable = zg361_case_d_state
-            var:zg361_case_d_state = 1
-            var:zg361_ch_m019_subject_ack = 0
-            OR = {
-                scope:zg361_ch_subject_route = 1
-                scope:zg361_ch_subject_route = 2
-                scope:zg361_ch_subject_route = 3
-            }
-        }
-        set_variable = { name = zg361_ch_m019_subject_ack value = 1 }
-        set_variable = { name = zg361_ch_m019_subject_route value = scope:zg361_ch_subject_route }
-        change_variable = { name = zg361_case_d_feedback_revision add = 1 }
-        debug_log = "ZG361CH: subject response 019 recorded"
-    }
-}
-
 # 019 晋升资格门槛
 zg361_career_hc_m019_core_effect = {
     save_temporary_scope_value_as = { name = zg361_ch_route value = $ROUTE$ }
@@ -191,6 +165,48 @@ zg361_career_hc_m019_consume_effect = {
     }
 }
 
+# Low-risk portfolio default for #019; original card is the fallback.
+zg361_career_hc_m019_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m019_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m020_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.20 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.19 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.19 days = 1 } }
+    }
+}
+
 zg361_career_hc_m020_manager_apply_effect = {
     remove_variable = zg361_ch_runtime_applied
     if = {
@@ -213,32 +229,6 @@ zg361_career_hc_m020_manager_apply_effect = {
             }
         }
         zg361_career_hc_m020_core_effect = { ROUTE = $ROUTE$ }
-    }
-}
-
-# Assessed-official self response; grants no manager/HC/panel authority.
-zg361_career_hc_m020_subject_response_effect = {
-    save_temporary_scope_value_as = { name = zg361_ch_subject_route value = $ROUTE$ }
-    if = {
-        limit = {
-            is_ai = no
-            zg361_case_kernel_subject_self_guard_trigger = {
-                SUBJECT_VAR = zg361_case_d_subject
-                ACTIVE_VAR = zg361_case_d_active
-            }
-            has_variable = zg361_case_d_state
-            var:zg361_case_d_state = 1
-            var:zg361_ch_m020_subject_ack = 0
-            OR = {
-                scope:zg361_ch_subject_route = 1
-                scope:zg361_ch_subject_route = 2
-                scope:zg361_ch_subject_route = 3
-            }
-        }
-        set_variable = { name = zg361_ch_m020_subject_ack value = 1 }
-        set_variable = { name = zg361_ch_m020_subject_route value = scope:zg361_ch_subject_route }
-        change_variable = { name = zg361_case_d_feedback_revision add = 1 }
-        debug_log = "ZG361CH: subject response 020 recorded"
     }
 }
 
@@ -375,5 +365,36 @@ zg361_career_hc_m020_consume_effect = {
             set_variable = { name = zg361_ch_d_conserved value = 1 }
         }
         zg361_career_hc_d_try_advance_01_effect = yes
+    }
+}
+
+# Low-risk portfolio default for #020; original card is the fallback.
+zg361_career_hc_m020_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m020_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            root = { trigger_event = { id = zg361ch.21 days = 1 } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.20 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.20 days = 1 } }
     }
 }

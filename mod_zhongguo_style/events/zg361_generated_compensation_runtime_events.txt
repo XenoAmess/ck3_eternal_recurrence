@@ -301,9 +301,342 @@ zg361comp.1 = {
         var:zg361_comp_portfolio_visible_pending = 1
     }
     immediate = { set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 } }
-    option = { name = zg361comp.1.a zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 } }
-    option = { name = zg361comp.1.b zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 } }
-    option = { name = zg361comp.1.c zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 } }
+    option = {
+        name = zg361comp.1.l1.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.l1.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.l1.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.l2.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.l2.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.l2.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.l3.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.l3.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.l3.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.l4.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.l4.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.l4.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.ae1.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.ae1.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.ae1.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.ae2.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.ae2.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.ae2.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.ae3.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.ae3.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.ae3.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.ae4.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.ae4.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.ae4.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.ae5.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 5 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.ae5.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 5 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.ae5.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 5 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.af1.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.af1.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.af1.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 1 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.af2.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.af2.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.af2.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 2 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.af3.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.af3.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.af3.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 3 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.af4.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.af4.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.af4.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 4 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
+    option = {
+        name = zg361comp.1.af5.r1
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 5 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+    }
+    option = {
+        name = zg361comp.1.af5.r2
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 5 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+    }
+    option = {
+        name = zg361comp.1.af5.r3
+        trigger = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 5 }
+        }
+        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+    }
 }
 
 # Authorized AI managers never open the visible portfolio card.

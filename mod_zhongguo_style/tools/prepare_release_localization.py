@@ -49,8 +49,9 @@ CORE_CONTEXT = (
     "satirical Chinese internet-company tone while keeping buttons and tooltips concise."
 )
 MECHANISM_CONTEXT = (
-    "Crusader Kings III ZhongGuo 361 performance-policy cards. Each five-key group is one "
-    "distinct policy dilemma; preserve its concrete decision, tradeoff, humor, and concise UI tone."
+    "Crusader Kings III ZhongGuo 361 performance-policy cards. Each eight-key group is one "
+    "distinct policy dilemma: title, situation, three decisions, and three matching tooltips. "
+    "Preserve its concrete decision, tradeoff, humor, and concise UI tone."
 )
 TRANSLATION_SOURCE_OVERRIDES = {
     "zg361m.14.desc": (
@@ -72,7 +73,7 @@ TRANSLATION_SOURCE_OVERRIDES = {
     ),
 }
 ENTRY = re.compile(r'^(?P<prefix> (?P<key>[^:\s]+):\d+ ")(?P<value>(?:[^"\\]|\\.)*)(?P<suffix>")$')
-MECHANISM_KEY = re.compile(r"^zg361m\.(\d+)\.(?:t|desc|a|b|c)$")
+MECHANISM_KEY = re.compile(r"^zg361m\.(\d+)\.(?:t|desc|[abc](?:\.tt)?)$")
 TECHNICAL_WORDS = re.compile(
     r"\b(?:KPI|OKR|PIP|HC|AI|CK3|DLC|UI|A|B|C|P0|P1|P2|P3)\b",
     re.I,
@@ -749,9 +750,9 @@ def build_batches() -> tuple[Batch, ...]:
         if match:
             by_id[int(match.group(1))].append(key)
     for identifier, keys in by_id.items():
-        if len(keys) != 5:
+        if len(keys) != 8:
             raise ReleaseLocalizationError(
-                f"mechanism {identifier:03d} has {len(keys)} localization keys, expected 5"
+                f"mechanism {identifier:03d} has {len(keys)} localization keys, expected 8"
             )
     for start in range(1, 362, 25):
         end = min(start + 24, 361)

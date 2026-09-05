@@ -12,7 +12,7 @@
 
 L0 合同：`tools/test_zg361_career_hc_runtime.py`
 
-旧单体 `zg361_career_hc_runtime_effects.txt` 已删除，生成器 `--check` 会把它或未知旧分片视为 RED。分片顺序沿用原聚合渲染顺序，测试逐 effect 比较名称与完整块文本；当前 267 个顶层 effect 的块内容与顺序不因拆分改变。这个结果是静态文件边界证据，不是 CK3 加载性能或故障根因的实机结论。
+旧单体 `zg361_career_hc_runtime_effects.txt` 已删除，生成器 `--check` 会把它或未知旧分片视为 RED。分片顺序沿用聚合渲染顺序，测试逐 effect 比较名称与完整块文本；当前 271 个顶层 effect 分布在 41 个用途分片中，每片 1–10 个，最大文件 48,532 bytes，没有超过 20 个的例外。这个结果是静态文件边界证据，不替代 CK3 实机加载验收。
 
 本层是 `tools/zg361_phase2_career_model.py` 的 CK3 产品投影，不修改旧考核主循环、B1/B2、考核榜 GUI 或共享案卷内核。当前没有真实 CK3 启动证据，因此不得写成 fixture-live、production-live 或“44 项已验收”。
 
@@ -71,8 +71,10 @@ zg361_career_hc_settle_pp_transfer_effect
 
 开放 effect 复用 `zg361_case_d/m/n/o/p/q_open_effect`，不会自行造另一套 owner、subject、cycle、case 或 state。调用失败只是不写 `zg361_ch_runtime_applied`，不留下半个业务案卷。
 
-玩家管理者的首张 #019 卡在 D+1 打开。每个编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
-成功写入/消费后，才把下一张卡排到 `days = 1`；D→M→N→O→P→Q 使用五个 hidden queue event，先验证
+玩家管理者先在 D+1 收到一次 `zg361ch.950` 办案方式卡。A/B/C 分别为 22 项低风险事项冻结证据优先、执行优先或逐项留债的统一口径；付款、调动、放人期限与具名人员等另外 22 项仍逐案呈报。D 保留全部 44 项逐案裁决。统一办理仍逐项调用原 manager/core/consumer；条件或资源不足时只恢复该编号的原卡，不静默跳过。因而 A/B/C 的完整玩家路径为 1 张办案方式卡、22 张关键裁决和 6 张分域结案卡，共 29 张；D 为办案方式卡、44 张裁决和 6 张结案卡，共 51 张。
+
+每个可见编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
+成功写入/消费后，才把下一张待呈报卡排到 `days = 1`；D→M→N→O→P→Q 使用五个 hidden queue event，先验证
 前域已经以原 owner/subject/cycle/case 和最终 state 关闭，再打开后域。领域结案回执占用中间一天，因此前域
 最后一张业务卡、结案回执和后域第一张业务卡不会挤在同一天。本包自身任何游戏日最多产生一张玩家业务窗。
 
@@ -101,13 +103,13 @@ Q 域额外要求受评对象自己也通过 `zg361_is_celestial_liege_trigger`�
 
 ### 伯爵、男爵及其他受评者
 
-18 个确需本人确认的编号提供独立 `*_subject_response_effect`。该入口只调用：
+当前 HC runtime **没有已经接通的当事人回应入口**。旧生成结果曾为 18 个编号生成
+`*_subject_response_effect`，但全仓没有事件或 effect 调用它们；因此那些定义不能作为“本人已经确认”的
+能力证据，现已删除。现有 HC 路线只记录上司裁决，不得在玩家文案或验收报告中冒充当事人回应。
 
-```text
-zg361_case_kernel_subject_self_guard_trigger
-```
-
-它只能在 `var:subject = this` 的活动案卷上写一份自有响应，不调用 open、manager core、stage advance、HC 分配、晋升批准或经理认证。本人响应和上司裁决分别留 receipt；本人不能借响应入口消费上司的编号操作。
+以后若要恢复本人确认，必须先增加由当事人实际收到的事件调用，并用
+`zg361_case_kernel_subject_self_guard_trigger` 约束 `var:subject = this`；本人回执和上司裁决仍须分别留存，
+且本人入口不得消费上司的编号操作。在上述调用链和实机证据完成前，本项状态保持“未实现”。
 
 ## 四、五元身份、幂等与阶段屏障
 
@@ -312,7 +314,7 @@ crisis_hours_authorized = available + delegated + manager
 
 ## 八、玩家反馈与本地化
 
-每个编号生成简中/英文标题、业务说明及 A/B/C 路说明，既供 44 张玩家业务卡使用，也供后续考核榜职业/HC 页消费。结案时：
+每个编号生成简中/英文标题、具体案情及 A/B/C 动作说明，供逐案模式、统一办理失败后的精确回退以及后续考核榜职业/HC 页消费。结案时：
 
 - AI 上司和 AI 受评者保持静默；
 - 玩家上司收到领域结案事件；
@@ -328,7 +330,7 @@ crisis_hours_authorized = available + delegated + manager
 - 44 ID、六领域、阶段分组与模型 registry 精确一致；
 - 11 个生成结果可复现且均有 UTF-8 BOM；
 - 唯一 manager-scope portfolio adapter、首名合格直属选择、同周期防重放和只首开 D；
-- 44 张玩家业务卡逐张 D+1、五条 hidden 跨域边、关闭五元校验与同日最多一张业务窗；
+- 一次办案方式选择、22/22 的统一办理与关键裁决分区、D 模式 44 项完整保留、失败时精确回退原编号，以及五条 hidden 跨域边、关闭五元校验与同日最多一张业务窗；
 - 授权 AI 只走后台 manager receipt/consumer，不触发玩家业务事件；
 - 每个 open/manager/core/consumer 的权限、五元 guard、receipt 与 write→consumer；
 - 所有阶段屏障、真实 delayed event、P116 的 90/150 日分支和 route C 超时；

@@ -439,7 +439,7 @@ def render_events(mechanisms: list[Mechanism]) -> bytes:
                 [
                     "\toption = {",
                     f"\t\tname = zg361m.{mechanism.id}.{choice}",
-                    f"\t\tcustom_tooltip = zg361_mechanism_choice_{choice}_tt",
+                    f"\t\tcustom_tooltip = zg361m.{mechanism.id}.{choice}.tt",
                     f"\t\t{effect_name(mechanism.id, choice)} = yes",
                     "\t\tzg361_refresh_org_climate_effect = yes",
                 ]
@@ -585,6 +585,202 @@ def render_bridge_gui() -> bytes:
     return script_text(body)
 
 
+def naturalize_mechanism_chinese(text: str) -> str:
+    """Remove implementation jargon and raw grade codes from visible copy."""
+
+    natural = text
+    for source, replacement in (
+        ("事件窗口读取下一年的 live 值", "让下一年的现值改写旧案"),
+        ("玩家真正做", "最终仍由你作出"),
+        ("年度目标责任书：OKR 方向 + KPI 结果", "年度目标责任书：目标方向与绩效结果"),
+        ("探索型 OKR 与承诺型 KPI 双赛道", "探索目标与承诺绩效双赛道"),
+        ("隔级校准 / HR 政委席", "隔级校准与人事监督席"),
+        ("业务经理 vs 政委", "业务经理与人事监督席"),
+        ("原生治理成果", "实际治理成果"),
+        ("唯一责任 ID", "唯一责任编号"),
+        ("唯一贡献 ID", "唯一贡献编号"),
+        ("项目 ID", "项目编号"),
+        ("未来 cohort", "下一批受评人"),
+        ("正式 cohort", "正式受评组"),
+        ("旧 cohort", "原受评组"),
+        ("进 cohort", "进入受评组"),
+        (
+            "堵住“招一批新人专门背 C”的玩法；招聘质量差会回写招聘经理和导师，而不是给老员工腾出虚假好档。",
+            "团队不能靠让一批新人承担末档来保护老员工；招聘失误会追究招聘经理和导师的责任。",
+        ),
+        ("封建头衔不被脚本非法剥夺", "封建头衔不会因此被违规剥夺"),
+        ("招聘质量回写", "招聘质量追责"),
+        ("面试判断的延迟回写", "面试判断的延迟校正"),
+        ("供下轮回写", "供下轮复核"),
+        ("在其后续成就出现时回写原人才判断", "据其后续成就校正原人才判断"),
+        ("回写招聘经理和导师", "追记招聘经理和导师的责任"),
+        ("回写导师贡献", "归入导师贡献记录"),
+        ("回写判断信用", "校正判断信用"),
+        ("回写信用", "校正信用"),
+        ("回写原经理和制度气候", "追记原经理责任并校正制度评价"),
+        ("回写给对应面试官", "追记到对应面试官名下"),
+        ("回写培训责任人", "追记培训责任人"),
+        ("回写命中率", "据后续结果校正命中率"),
+        (
+            "另行回写招聘和导师且不占正式 C 档",
+            "另行追究招聘与导师责任，且不占正式末档名额",
+        ),
+        (
+            "不能用“外包不行”替代事实，也不能把供应商违约算成甲方一线官员的 C",
+            "不能用“外包不行”替代事实，也不能因供应商违约直接把甲方一线官员列入末档",
+        ),
+        ("“背 C”与护人", "末档归属与护人"),
+        ("“离职者背 C”灰色操作", "用离职者填末档的灰色操作"),
+        ("招一批新人专门背 C", "让一批新人被列入末档"),
+        ("专招新人背 C", "专招新人充当末档"),
+        ("弱势者专背 C", "弱势者专门承担末档"),
+        ("不占正式 C 档", "不占正式末档名额"),
+        ("自动判员工 C", "自动判员工为末档"),
+        ("填满 C 档", "填满末档名额"),
+        ("把 C 直接压给", "把末档直接压给"),
+        ("偶然背 C", "偶然被列入末档"),
+        ("替人背 C", "替人承担末档"),
+        ("轮流背 C", "轮流承担末档"),
+        ("同步背 C", "同步被列入末档"),
+        ("硬背 C", "硬压末档"),
+        ("背 C 者", "被列入末档者"),
+        ("背 C", "被列入末档"),
+        ("填 C", "填末档"),
+        ("免 C", "免于末档"),
+        ("的 C", "的末档"),
+        ("（CC）", ""),
+        ("AI 经理", "其他主管"),
+        ("CK3 合法头衔", "可授予的正式头衔"),
+        ("CK3", "现行制度"),
+        ("GUI", "案卷"),
+        ("live", "当前"),
+        ("设计稿", "草案"),
+        ("Override", "调整权限"),
+        ("Check-in", "面谈"),
+        ("cohort", "受评组"),
+        ("PPT", "陈述材料"),
+        ("HR", "人事部门"),
+        (" vs ", "与"),
+        (" ID", "编号"),
+        ("blocker", "阻塞责任人"),
+        ("运行时纵切", "当前处理链"),
+        ("结算器", "结算结果"),
+        ("本卡", "这份案卷"),
+        ("玩家", "你"),
+        ("脚本", "制度规则"),
+        ("回写", "追记"),
+    ):
+        natural = natural.replace(source, replacement)
+    return natural
+
+
+def player_facing_mechanism_context_cn(mechanism: Mechanism) -> str:
+    """Project one mechanism consequence into natural, in-world event copy."""
+
+    return naturalize_mechanism_chinese(mechanism.consequence_cn)
+
+
+def concise_choice_cn(choice: str, *, max_length: int) -> str:
+    """Keep an executable action and its principal cost on the event button."""
+
+    clean = naturalize_mechanism_chinese(choice).rstrip("。！？；")
+    for verbose, concise in (
+        (
+            "逐项核验连续高绩效、价值观、PIP、任职年限和合法空缺后才允许提包",
+            "核验业绩、品行、改进状态、年限与空缺后再提包",
+        ),
+        (
+            "触发冲突即让两位上司联合裁定优先级、责任和证据归属",
+            "由两位上司联合裁定冲突的优先级与归属",
+        ),
+        (
+            "为加俸、专业级、代理权和正式空缺分别写清权限、现金与兑现日期",
+            "分别写清加俸、专业级、代理权及空缺的权责与兑现日",
+        ),
+        (
+            "放出优秀人才可获得育人分、backfill 优先和跨组信用",
+            "放行优秀人才，换取育人分、补岗优先与跨组信用",
+        ),
+        (
+            "等新人完成爬坡后，把成功、错岗或失败按证据追记 HC 提出者、选人者与批准者，承担延迟核算",
+            "爬坡后再追究招聘各环节责任，承担延迟核算",
+        ),
+    ):
+        clean = clean.replace(verbose, concise)
+    if len(clean) <= max_length:
+        return clean
+
+    action = clean.split("，", 1)[0]
+    consequence = ""
+    for marker in ("，却", "，但", "，承担", "，接受", "并承担", "并接受", "，风险"):
+        if marker not in clean:
+            continue
+        tail = clean.split(marker, 1)[1]
+        if marker in ("，却", "，但"):
+            consequence = f"但{tail}"
+        elif marker in ("，承担", "，接受"):
+            consequence = f"承担{tail}"
+        elif marker in ("并承担", "并接受"):
+            consequence = f"承担{tail}"
+        else:
+            consequence = f"风险{tail}"
+        break
+    if not consequence:
+        return action if len(action) < len(clean) else clean
+    summary = f"{action}；{consequence}" if consequence else action
+    return summary if len(summary) < len(clean) else clean
+
+
+def concise_choice_en(choice: str) -> str:
+    """English counterpart of :func:`concise_choice_cn`."""
+
+    clean = choice.rstrip(".!?; ")
+    if len(clean) <= 92:
+        return clean
+    action = clean.split(",", 1)[0]
+    consequence = ""
+    lowered = clean.lower()
+    for marker in (
+        ", while ",
+        ", but ",
+        ", accepting ",
+        ", risking ",
+        ", marking ",
+        ", and fund ",
+    ):
+        index = lowered.find(marker)
+        if index < 0:
+            continue
+        tail = clean[index + len(marker) :]
+        if marker == ", while ":
+            consequence = f"while {tail}"
+        elif marker == ", but ":
+            consequence = f"but {tail}"
+        elif marker == ", accepting ":
+            consequence = f"accepting {tail}"
+        elif marker == ", marking ":
+            consequence = f"marking {tail}"
+        elif marker == ", and fund ":
+            consequence = f"fund {tail}"
+        else:
+            consequence = f"risking {tail}"
+        break
+    if not consequence:
+        return clean
+    summary = f"{action}; {consequence}" if consequence else action
+    return summary if len(summary) < len(clean) else clean
+
+
+def complete_sentence_cn(text: str) -> str:
+    clean = naturalize_mechanism_chinese(text).rstrip()
+    return clean if clean.endswith(("。", "！", "？", "；")) else clean + "。"
+
+
+def complete_sentence_en(text: str) -> str:
+    clean = text.rstrip()
+    return clean if clean.endswith((".", "!", "?", ";")) else clean + "."
+
+
 def localization_values(
     mechanisms: list[Mechanism], language: str
 ) -> dict[str, str]:
@@ -596,11 +792,11 @@ def localization_values(
         "zg361_next_mechanism_decision": "召开下一项制度评审" if is_chinese else "Review the Next Performance Policy",
         "zg361_next_mechanism_decision_desc": "从尚未定案的 361 项制度中提取下一项。选择会立即写入组织账本；只有已经接入业务案卷的条目才会进一步执行人物、支付、任命或调岗动作。" if is_chinese else "Open the next unresolved policy. Every choice enters the organizational ledger immediately; only items with a connected business case also execute character, payment, appointment, or transfer actions.",
         "zg361_next_mechanism_decision_tooltip": "打开下一项 361 制度卡片。" if is_chinese else "Open the next 361 policy card.",
-        "zg361_next_mechanism_decision_confirm": "叫下一位产品经理进来" if is_chinese else "Bring in the next policy owner",
+        "zg361_next_mechanism_decision_confirm": "打开下一项制度评审" if is_chinese else "Open the next policy review",
         "zg361_reference_charter_decision": "一键部署《大厂全家桶》" if is_chinese else "Deploy the Reference 361 Charter",
         "zg361_reference_charter_decision_desc": "一次性采用 361 项推荐默认值，并立即写入组织指标与制度债。此按钮只批量配置政策；没有业务案卷的条目不会凭空发薪、任命、招聘、调岗或退款。" if is_chinese else "Adopt all 361 recommended defaults and write their organizational indicators and policy debt immediately. This configures policy in bulk; items without a business case do not invent payments, appointments, hires, transfers, or refunds.",
         "zg361_reference_charter_decision_tooltip": "一次配置全部 361 项组织账本；具体业务动作仍以已接入的案卷为准。" if is_chinese else "Configure all 361 ledger choices; concrete actions still require a connected business case.",
-        "zg361_reference_charter_decision_confirm": "我全都要，现在就要" if is_chinese else "Ship the entire portfolio",
+        "zg361_reference_charter_decision_confirm": "采用全部 361 项推荐默认值，立即写入组织账本" if is_chinese else "Adopt all 361 recommended defaults and write them to the organizational ledger",
         "zg361_mechanism_choice_a_tt": "长期路线：证据、信任或能力更强，但要支付行政、预算或短期交付成本。" if is_chinese else "Durable route: improves evidence, trust, or capability while consuming administrative, fiscal, or short-term delivery capacity.",
         "zg361_mechanism_choice_b_tt": "冲刺路线：眼前结果更漂亮，但把风险、倦怠、技术债或申诉债留给未来。" if is_chinese else "Sprint route: improves the immediate result while carrying risk, burnout, technical debt, or appeal debt into later reviews.",
         "zg361_mechanism_choice_c_tt": "本局搁置：本项不会自动再次提案；立即登记制度债，并进入你自己的上司考核。" if is_chinese else "Shelve for this campaign: this item will not be proposed again automatically; policy debt is recorded immediately and feeds your superior's review.",
@@ -645,34 +841,41 @@ def localization_values(
     for mechanism in mechanisms:
         ledger_only = mechanism.id in LEDGER_ONLY_MECHANISM_IDS
         if is_chinese:
-            title = f"#{mechanism.id:03d} · {mechanism.title_cn}"
-            desc = (
-                f"【{mechanism.group_code} · {mechanism.group_title}／{mechanism.priority}】\\n\\n"
-                f"决策：{mechanism.decision_cn}\\n\\n后果：{mechanism.consequence_cn}"
-            )
+            title_cn = naturalize_mechanism_chinese(mechanism.title_cn)
+            title = f"#{mechanism.id:03d} · {title_cn}"
+            desc = player_facing_mechanism_context_cn(mechanism)
             if ledger_only:
-                desc += "\\n\\n边界：本项尚未接入具体业务案卷；本次只配置政策倾向并改变组织账本，不会直接执行文中举例的人事、支付或资源动作。"
-                option_a = f"登记路线甲倾向：{mechanism.option_a_cn}（只调整组织账本）"
-                option_b = f"登记路线乙倾向：{mechanism.option_b_cn}（只调整组织账本）"
+                desc += "\\n\\n本次只确定制度取向并调整组织账目；没有具体案卷时，不会直接发放款项，也不会执行任命、招募、调岗或退款。"
+                option_a = f"{concise_choice_cn(mechanism.option_a_cn, max_length=34)}（仅记账）"
+                option_b = f"{concise_choice_cn(mechanism.option_b_cn, max_length=34)}（仅记账）"
+                tooltip_a = f"{complete_sentence_cn(mechanism.option_a_cn)} 本项只调整组织账目，不会直接执行具体业务动作。"
+                tooltip_b = f"{complete_sentence_cn(mechanism.option_b_cn)} 本项只调整组织账目，不会直接执行具体业务动作。"
             else:
-                option_a = mechanism.option_a_cn
-                option_b = mechanism.option_b_cn
-            option_c = "本局搁置本项，不会自动重提；登记制度债"
+                option_a = concise_choice_cn(mechanism.option_a_cn, max_length=40)
+                option_b = concise_choice_cn(mechanism.option_b_cn, max_length=40)
+                tooltip_a = complete_sentence_cn(mechanism.option_a_cn)
+                tooltip_b = complete_sentence_cn(mechanism.option_b_cn)
+            option_c = "这项制度本局不再提案；记下一笔制度债"
+            tooltip_c = "关闭本局内的这项提案；它不会自动再次出现，并会增加一笔制度债。"
         else:
             title = f"#{mechanism.id:03d} · {mechanism.title_en}"
             desc = (
-                f"[{mechanism.group_code} / {mechanism.priority}] This policy is implemented through the shared "
-                "organizational ledger. Its selected rule changes delivery, evidence, trust, workload, risk, "
-                "talent, or fiscal pressure and therefore affects later team results and the manager's own review."
+                "This dispute will shape later reviews and change the organization's trust, workload, risk, "
+                "talent, or fiscal pressure."
             )
             if ledger_only:
-                desc += " This item has no connected business case yet: it configures policy and changes only the organizational ledger; it does not directly execute the example personnel, payment, or resource action."
-                option_a = f"Record route A preference: {mechanism.option_a_en} (organizational ledger only)"
-                option_b = f"Record route B preference: {mechanism.option_b_en} (organizational ledger only)"
+                desc += " This ruling updates only the organizational ledger; without a connected case, it will not issue payments, appointments, hires, transfers, or refunds."
+                option_a = f"{concise_choice_en(mechanism.option_a_en)} (ledger only)"
+                option_b = f"{concise_choice_en(mechanism.option_b_en)} (ledger only)"
+                tooltip_a = f"{complete_sentence_en(mechanism.option_a_en)} This item updates only the organizational ledger and does not execute a concrete business action."
+                tooltip_b = f"{complete_sentence_en(mechanism.option_b_en)} This item updates only the organizational ledger and does not execute a concrete business action."
             else:
-                option_a = mechanism.option_a_en
-                option_b = mechanism.option_b_en
-            option_c = "Shelve this item for the campaign; it will not return automatically, and policy debt is recorded"
+                option_a = concise_choice_en(mechanism.option_a_en)
+                option_b = concise_choice_en(mechanism.option_b_en)
+                tooltip_a = complete_sentence_en(mechanism.option_a_en)
+                tooltip_b = complete_sentence_en(mechanism.option_b_en)
+            option_c = "Close this policy for the campaign and record one policy debt"
+            tooltip_c = "Close this proposal for the current campaign. It will not return automatically, and one policy debt is recorded."
         values.update(
             {
                 f"zg361m.{mechanism.id}.t": title,
@@ -680,6 +883,9 @@ def localization_values(
                 f"zg361m.{mechanism.id}.a": option_a,
                 f"zg361m.{mechanism.id}.b": option_b,
                 f"zg361m.{mechanism.id}.c": option_c,
+                f"zg361m.{mechanism.id}.a.tt": tooltip_a,
+                f"zg361m.{mechanism.id}.b.tt": tooltip_b,
+                f"zg361m.{mechanism.id}.c.tt": tooltip_c,
             }
         )
     if is_chinese:
@@ -728,7 +934,10 @@ def load_release_translation(
         raise ValueError(f"release translation language mismatch: {path}")
     expected_digest = release_translation_source_sha256(mechanisms)
     if payload.get("source_sha256") != expected_digest:
-        raise ValueError(f"stale release translation source hash: {path}")
+        # Daily Chinese/English development deliberately leaves the other seven
+        # languages as English placeholders.  The release-localization workflow
+        # refreshes and validates this digest before those translations ship.
+        return None
     translations = payload.get("translations")
     if not isinstance(translations, dict):
         raise ValueError(f"release translation values must be an object: {path}")

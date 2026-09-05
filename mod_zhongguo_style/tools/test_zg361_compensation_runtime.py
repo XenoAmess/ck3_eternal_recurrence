@@ -333,9 +333,11 @@ class CompensationRuntimeTests(unittest.TestCase):
             *(f"zg361comp.1.l{state}" for state in range(1, 5)),
             *(f"zg361comp.1.ae{state}" for state in range(1, 6)),
             *(f"zg361comp.1.af{state}" for state in range(1, 6)),
-            "zg361comp.1.a",
-            "zg361comp.1.b",
-            "zg361comp.1.c",
+            *(
+                f"zg361comp.1.{key}.r{route}"
+                for key, _domain_number, _state in generator.PORTFOLIO_STAGES
+                for route in (1, 2, 3)
+            ),
             "zg361comp.289.t",
             "zg361comp.289.desc",
             "zg361comp.289.a",
@@ -1250,9 +1252,25 @@ class CompensationRuntimeTests(unittest.TestCase):
         player_card = top_level_block(self.events, "zg361comp.1")
         self.assertIn("is_ai = no", player_card)
         self.assertNotIn("hidden = yes", player_card)
-        self.assertEqual(player_card.count("zg361_comp_portfolio_apply_stage_effect"), 3)
+        self.assertEqual(player_card.count("zg361_comp_portfolio_apply_stage_effect"), 42)
         for route in (1, 2, 3):
-            self.assertEqual(player_card.count(f"ROUTE = {route}"), 1)
+            self.assertEqual(player_card.count(f"ROUTE = {route}"), 14)
+        for key, domain_number, state in generator.PORTFOLIO_STAGES:
+            domain = key.rstrip("12345")
+            for route in (1, 2, 3):
+                with self.subTest(stage=key, route=route):
+                    option_pattern = re.compile(
+                        rf"option\s*=\s*\{{\s*"
+                        rf"name\s*=\s*zg361comp\.1\.{key}\.r{route}\s*"
+                        rf"trigger\s*=\s*\{{\s*"
+                        rf"var:zg361_comp_portfolio_domain\s*=\s*{domain_number}\s*"
+                        rf"var:zg361_comp_portfolio_subject\s*=\s*\{{\s*"
+                        rf"var:zg361_case_{domain}_state\s*=\s*{state}\s*\}}\s*\}}\s*"
+                        rf"zg361_comp_portfolio_apply_stage_effect\s*=\s*\{{\s*"
+                        rf"ROUTE\s*=\s*{route}\s*\}}\s*\}}",
+                        re.DOTALL,
+                    )
+                    self.assertRegex(player_card, option_pattern)
 
         ai_card = top_level_block(self.events, "zg361comp.2")
         self.assertIn("hidden = yes", ai_card)
@@ -1331,6 +1349,134 @@ class CompensationRuntimeTests(unittest.TestCase):
             with self.subTest(localization=key):
                 self.assertIn(f" {key}:0 ", english)
                 self.assertIn(f" {key}:0 ", chinese)
+        option_keys = tuple(
+            f"zg361comp.1.{key}.r{route}"
+            for key, _domain_number, _state in generator.PORTFOLIO_STAGES
+            for route in (1, 2, 3)
+        )
+        for key in option_keys:
+            with self.subTest(option_localization=key):
+                self.assertIn(f" {key}:0 ", english)
+                self.assertIn(f" {key}:0 ", chinese)
+        self.assertNotIn("zg361comp.1.a:0", english)
+        self.assertNotIn("zg361comp.1.b:0", english)
+        self.assertNotIn("zg361comp.1.c:0", english)
+
+        stage_key_pattern = "|".join(re.escape(key) for key in stage_keys)
+        english_stage_values = re.findall(
+            rf"^\s+(?:{stage_key_pattern}):0\s+\"(.*)\"$", english, re.MULTILINE
+        )
+        chinese_stage_values = re.findall(
+            rf"^\s+(?:{stage_key_pattern}):0\s+\"(.*)\"$", chinese, re.MULTILINE
+        )
+        self.assertEqual(len(english_stage_values), 14)
+        self.assertEqual(len(chinese_stage_values), 14)
+        self.assertTrue(all(not re.search(r"\b[ABC]:", value) for value in english_stage_values))
+        self.assertTrue(all(not re.search(r"[甲乙丙ABC][：:]", value) for value in chinese_stage_values))
+        self.assertTrue(all(not re.match(r"^[。！？；，]", value) for value in chinese_stage_values))
+        self.assertTrue(all(not value.startswith("[") for value in chinese_stage_values))
+        self.assertTrue(
+            all(
+                not re.match(r"^\[[^]]+\][。！？；，：]", value)
+                for value in chinese_stage_values
+            )
+        )
+
+        english_option_values = re.findall(
+            r'^\s+zg361comp\.1\.(?:l\d|ae\d|af\d)\.r[123]:0\s+"(.*)"$',
+            english,
+            re.MULTILINE,
+        )
+        chinese_option_values = re.findall(
+            r'^\s+zg361comp\.1\.(?:l\d|ae\d|af\d)\.r[123]:0\s+"(.*)"$',
+            chinese,
+            re.MULTILINE,
+        )
+        self.assertEqual(len(english_option_values), 42)
+        self.assertEqual(len(chinese_option_values), 42)
+        self.assertTrue(all("route A" not in value and "route B" not in value and "route C" not in value for value in english_option_values))
+        self.assertTrue(all("按A" not in value and "按B" not in value and "按C" not in value and "路线" not in value for value in chinese_option_values))
+        subject_projection = "ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName"
+        self.assertTrue(all(subject_projection in value for value in english_option_values))
+        self.assertTrue(all(subject_projection in value for value in chinese_option_values))
+        self.assertTrue(all("Compensation Docket" not in value for value in english_stage_values))
+        self.assertTrue(all("薪酬案卷" not in value for value in chinese_stage_values))
+
+        chinese_by_key = {
+            match.group(1): match.group(2)
+            for match in re.finditer(
+                r'^\s+(zg361comp\.1\.(?:l\d|ae\d|af\d)\.r[123]):0\s+"(.*)"$',
+                chinese,
+                re.MULTILINE,
+            )
+        }
+        english_by_key = {
+            match.group(1): match.group(2)
+            for match in re.finditer(
+                r'^\s+(zg361comp\.1\.(?:l\d|ae\d|af\d)\.r[123]):0\s+"(.*)"$',
+                english,
+                re.MULTILINE,
+            )
+        }
+        for forbidden in ("干升职兑现", "双门", "组织门"):
+            self.assertNotIn(forbidden, chinese)
+        for forbidden in ("dry promotion", "both gates", "organization gate"):
+            self.assertNotIn(forbidden, english)
+        self.assertIn("职责先加、俸额未跟", chinese_by_key["zg361comp.1.ae3.r1"])
+        self.assertIn("下轮复核到期", chinese_by_key["zg361comp.1.ae3.r1"])
+        self.assertIn("第二轮复核到期", chinese_by_key["zg361comp.1.ae3.r2"])
+        self.assertIn("both portions vest", english_by_key["zg361comp.1.af4.r1"])
+        self.assertIn("两者同归", chinese_by_key["zg361comp.1.af4.r1"])
+        self.assertIn("only service units vest", english_by_key["zg361comp.1.af4.r2"])
+        self.assertIn("绩效继续冻结", chinese_by_key["zg361comp.1.af4.r2"])
+        self.assertIn("vest them on the service schedule", english_by_key["zg361comp.1.af4.r3"])
+        self.assertIn("依服务期限归属", chinese_by_key["zg361comp.1.af4.r3"])
+        self.assertIn("total reward to 45", english_by_key["zg361comp.1.l1.r1"])
+        self.assertIn("stage bonus of 20", english_by_key["zg361comp.1.l1.r1"])
+        self.assertIn("总报酬四十五，其中本阶段奖金二十", chinese_by_key["zg361comp.1.l1.r1"])
+        self.assertIn("国库预留十四、私库预留六", chinese_by_key["zg361comp.1.l1.r1"])
+        self.assertIn("total reward to 37", english_by_key["zg361comp.1.l1.r2"])
+        self.assertIn("stage bonus of 16", english_by_key["zg361comp.1.l1.r2"])
+        self.assertIn("总报酬三十七，其中本阶段奖金十六", chinese_by_key["zg361comp.1.l1.r2"])
+        self.assertIn("国库预留十一、私库预留五", chinese_by_key["zg361comp.1.l1.r2"])
+        for key in (
+            "zg361comp.1.l1.r1",
+            "zg361comp.1.l1.r2",
+            "zg361comp.1.ae3.r1",
+            "zg361comp.1.ae3.r2",
+            "zg361comp.1.af4.r1",
+            "zg361comp.1.af4.r2",
+            "zg361comp.1.af4.r3",
+        ):
+            with self.subTest(short_option=key):
+                literal = re.sub(r"\[[^]]*\]", "", chinese_by_key[key])
+                self.assertLessEqual(len(literal), 48)
+        for key in (
+            "zg361comp.1.l4.r1",
+            "zg361comp.1.l4.r2",
+            "zg361comp.1.ae2.r1",
+            "zg361comp.1.ae5.r1",
+            "zg361comp.1.af1.r3",
+            "zg361comp.1.af2.r1",
+            "zg361comp.1.af2.r2",
+            "zg361comp.1.af5.r1",
+            "zg361comp.1.af5.r2",
+        ):
+            with self.subTest(paid_option=key):
+                self.assertIn("国库", chinese_by_key[key])
+                self.assertIn("私库", chinese_by_key[key])
+        for key, deadline in {
+            "zg361comp.1.l2.r1": "两年后",
+            "zg361comp.1.l2.r2": "一年后",
+            "zg361comp.1.ae2.r2": "九十日后",
+            "zg361comp.1.ae2.r3": "一百八十日后",
+            "zg361comp.1.af3.r1": "三百六十五日后",
+            "zg361comp.1.af3.r2": "一百八十日后",
+            "zg361comp.1.af3.r3": "七百三十日后",
+            "zg361comp.1.af5.r2": "九十日后",
+        }.items():
+            with self.subTest(deadline_option=key):
+                self.assertIn(deadline, chinese_by_key[key])
         for source in (english, chinese):
             for variable in (
                 "zg361_comp_bonus_total",

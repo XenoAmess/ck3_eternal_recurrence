@@ -35,6 +35,7 @@ zg361we.257 = {
 	}
 	option = {
 		name = zg361we.257.a
+		custom_tooltip = zg361we.257.a.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m257_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -50,6 +51,7 @@ zg361we.257 = {
 	}
 	option = {
 		name = zg361we.257.b
+		custom_tooltip = zg361we.257.b.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m257_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -65,6 +67,7 @@ zg361we.257 = {
 	}
 	option = {
 		name = zg361we.257.c
+		custom_tooltip = zg361we.257.c.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m257_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -112,6 +115,7 @@ zg361we.262 = {
 	}
 	option = {
 		name = zg361we.262.a
+		custom_tooltip = zg361we.262.a.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m262_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -123,6 +127,7 @@ zg361we.262 = {
 	}
 	option = {
 		name = zg361we.262.b
+		custom_tooltip = zg361we.262.b.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m262_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -134,6 +139,7 @@ zg361we.262 = {
 	}
 	option = {
 		name = zg361we.262.c
+		custom_tooltip = zg361we.262.c.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m262_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -181,6 +187,7 @@ zg361we.263 = {
 	}
 	option = {
 		name = zg361we.263.a
+		custom_tooltip = zg361we.263.a.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m263_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -192,6 +199,7 @@ zg361we.263 = {
 	}
 	option = {
 		name = zg361we.263.b
+		custom_tooltip = zg361we.263.b.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m263_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -203,6 +211,7 @@ zg361we.263 = {
 	}
 	option = {
 		name = zg361we.263.c
+		custom_tooltip = zg361we.263.c.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m263_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -246,6 +255,7 @@ zg361we.264 = {
 	}
 	option = {
 		name = zg361we.264.a
+		custom_tooltip = zg361we.264.a.tt
 		trigger = {
 			scope:zg361_we_ac_subject = {
 				has_variable = zg361_we_m264_handoff_response
@@ -267,6 +277,7 @@ zg361we.264 = {
 	}
 	option = {
 		name = zg361we.264.b
+		custom_tooltip = zg361we.264.b.tt
 		trigger = {
 			scope:zg361_we_ac_subject = {
 				has_variable = zg361_we_m264_handoff_response
@@ -288,6 +299,7 @@ zg361we.264 = {
 	}
 	option = {
 		name = zg361we.264.c
+		custom_tooltip = zg361we.264.c.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m264_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -335,6 +347,7 @@ zg361we.265 = {
 	}
 	option = {
 		name = zg361we.265.a
+		custom_tooltip = zg361we.265.a.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m265_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -346,6 +359,7 @@ zg361we.265 = {
 	}
 	option = {
 		name = zg361we.265.b
+		custom_tooltip = zg361we.265.b.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m265_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -357,6 +371,7 @@ zg361we.265 = {
 	}
 	option = {
 		name = zg361we.265.c
+		custom_tooltip = zg361we.265.c.tt
 		scope:zg361_we_ac_subject = {
 			zg361_we_m265_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner

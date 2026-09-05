@@ -227,16 +227,15 @@ zg361_pp_m181_core_effect = {
 					set_variable = { name = zg361_pp_m181_result_grade_snapshot value = var:zg361_pp_w_frozen_grade }
 					set_variable = { name = zg361_pp_m181_result_reason_snapshot value = var:zg361_pp_w_frozen_reason }
 					set_variable = { name = zg361_pp_m181_evidence_component_count value = var:zg361_pp_w_evidence_component_count }
-					set_variable = { name = zg361_pp_m181_primary_category value = 1 }
-					set_variable = { name = zg361_pp_m181_triage_truth_status value = 1 }
-					set_variable = { name = zg361_pp_m181_triage_red_code value = 0 }
+					set_variable = { name = zg361_pp_m181_primary_category value = 0 }
+					set_variable = { name = zg361_pp_m181_triage_truth_status value = 0 }
+					set_variable = { name = zg361_pp_m181_triage_red_code value = 2 }
 					set_variable = { name = zg361_pp_m181_manager_proposed_category value = scope:zg361_pp_route }
 					set_variable = { name = zg361_pp_m181_current_rating_unchanged value = 1 }
 					set_variable = { name = zg361_pp_m181_misdiagnosis_risk value = 0 }
-					# The same forced-quota reason is already the frozen category-3 witness used
-					# by the post-graduation relapse audit.  Reuse it here so a real role-mismatch
-					# transfer can become reachable when a mature vacancy exists.
-					if = { limit = { scope:zg361_pp_route = 1 var:zg361_pp_m181_result_reason_snapshot = 5 } set_variable = { name = zg361_pp_m181_primary_category value = 3 } }
+					# A frozen grade reason describes how the final performance band was reached.
+					# It is not evidence of skill, willingness, or role mismatch.  In particular,
+					# reason 5 means forced-distribution demotion and must never unlock transfer.
 					if = {
 						limit = { scope:zg361_pp_route = 2 }
 						set_variable = { name = zg361_pp_m181_primary_category value = 2 }

@@ -38,35 +38,27 @@ zg361_career_hc_open_o_case_effect = {
         set_variable = { name = zg361_ch_acting_authority_bound value = 0 }
             set_variable = { name = zg361_ch_m106_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m106_consumed value = 0 }
-        set_variable = { name = zg361_ch_m106_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m106_deferred value = 0 }
         set_variable = { name = zg361_ch_m107_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m107_consumed value = 0 }
-        set_variable = { name = zg361_ch_m107_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m107_deferred value = 0 }
         set_variable = { name = zg361_ch_m108_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m108_consumed value = 0 }
-        set_variable = { name = zg361_ch_m108_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m108_deferred value = 0 }
         set_variable = { name = zg361_ch_m109_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m109_consumed value = 0 }
-        set_variable = { name = zg361_ch_m109_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m109_deferred value = 0 }
         set_variable = { name = zg361_ch_m110_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m110_consumed value = 0 }
-        set_variable = { name = zg361_ch_m110_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m110_deferred value = 0 }
         set_variable = { name = zg361_ch_m111_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m111_consumed value = 0 }
-        set_variable = { name = zg361_ch_m111_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m111_deferred value = 0 }
         set_variable = { name = zg361_ch_m112_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m112_consumed value = 0 }
-        set_variable = { name = zg361_ch_m112_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m112_deferred value = 0 }
         set_variable = { name = zg361_ch_m113_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m113_consumed value = 0 }
-        set_variable = { name = zg361_ch_m113_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m113_deferred value = 0 }
         set_variable = { name = zg361_ch_m112_treasury_available value = 5 }
         set_variable = { name = zg361_ch_m112_treasury_reserved value = 0 }
@@ -99,7 +91,18 @@ zg361_career_hc_open_o_case_effect = {
             }
             else_if = {
                 limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-                root = { trigger_event = { id = zg361ch.106 days = 1 } }
+                if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m106_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.106 days = 1 } } }
             }
             debug_log = "ZG361CH: opened O career/HC case"
         }

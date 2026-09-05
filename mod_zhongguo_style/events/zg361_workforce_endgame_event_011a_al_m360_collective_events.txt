@@ -104,6 +104,7 @@ zg361we.360 = {
 	}
 	option = {
 		name = zg361we.360.a
+		custom_tooltip = zg361we.360.a.tt
 		scope:zg361_we_al_subject = {
 			zg361_we_materialize_m360_route_a_from_central_effect = {
 				TICKET_OWNER = scope:zg361_we_al_owner
@@ -129,6 +130,7 @@ zg361we.360 = {
 	}
 	option = {
 		name = zg361we.360.b
+		custom_tooltip = zg361we.360.b.tt
 		scope:zg361_we_al_subject = {
 			zg361_we_materialize_m360_route_b_from_central_effect = {
 				TICKET_OWNER = scope:zg361_we_al_owner
@@ -154,6 +156,7 @@ zg361we.360 = {
 	}
 	option = {
 		name = zg361we.360.c
+		custom_tooltip = zg361we.360.c.tt
 		scope:zg361_we_al_subject = {
 			zg361_we_m360_route_c_effect = {
 				TICKET_OWNER = scope:zg361_we_al_owner

@@ -1103,16 +1103,21 @@ def render_events() -> bytes:
 
 def localization_rows(language: str) -> list[str]:
     if language == "simp_chinese":
-        title = "正常离职履历封存"
-        desc = "旧 3.25、真实离职补偿与原生职业槽撤任均已落账。旧案不会因为离开公司就自动美颜。"
-        option = "人走了，账还在。"
-    else:
-        title = "Normal-exit history sealed"
+        title = "离任手续办结"
         desc = (
-            "The old 3.25 result, funded exit package, and native career-slot revocation are now sealed. "
-            "Leaving did not airbrush the old record."
+            "当事人已经正常离任：约定的五十金币补偿已经支付，任职关系已经解除，"
+            "一个在岗名额也已转入冻结。此前的低档考核结论仍按原样保留；"
+            "日后若要重新任用，官署会沿用这份离任记录核对资格。"
         )
-        option = "The employee left; the ledger did not."
+        option = "离任可以结案，旧绩效不得涂改。"
+    else:
+        title = "Departure Formalities Completed"
+        desc = (
+            "The employee has left normally: the agreed fifty-gold payment was made, the appointment ended, "
+            "and one occupied staffing place moved into the frozen ledger. The earlier low performance result "
+            "remains unchanged; any future reappointment will be checked against this departure record."
+        )
+        option = "Close the departure without rewriting the old result."
     return [
         f"l_{language}:",
         f' {NAMESPACE}.{NOTICE_EVENT_ID}.t:0 "{title}"',

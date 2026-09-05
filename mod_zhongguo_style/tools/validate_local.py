@@ -84,6 +84,28 @@ SCOREBOARD_B1_DETAIL_SOURCES = {
     "b1_145_appeal_evidence_available": "zg361_b1_band_self_appeal_evidence",
     "b1_145_blackbox_audit": "zg361_b1_band_order_blackbox_risk",
 }
+SCOREBOARD_B1_PLAYER_HIDDEN_FIELDS = frozenset(
+    {
+        # These remain frozen in the internal dossier but are implementation
+        # serials or raw reason flags, not meaningful player-facing facts.
+        "b1_fact_sheet_serial",
+        "b1_self_receipt_serial",
+        "b1_peer_receipt_serial",
+        "b1_shadow_receipt_serial",
+        "b1_band_receipt_serial",
+        "b1_141_agenda_reason",
+        "b1_144_fact_reason",
+    }
+)
+SCOREBOARD_B1_SELECTED_DETAIL_HIDDEN_FIELDS = frozenset(
+    {
+        "b1_fact_sheet_serial",
+        "b1_self_receipt_serial",
+        "b1_peer_receipt_serial",
+        "b1_shadow_receipt_serial",
+        "b1_band_receipt_serial",
+    }
+)
 SCOREBOARD_HIDDEN_BINDINGS = (
     "case_owner",
     "cycle_serial",
@@ -595,13 +617,20 @@ def check_runtime_invariants() -> None:
     ):
         err("received-self dossier identity gates must precede every self-buffer write")
     for field, source in SCOREBOARD_B1_DETAIL_SOURCES.items():
-        for token, surface in (
+        surfaces = [
             (source, "snapshot source"),
             (f"zg361_sb_m_01_{field}", "managed frozen slot"),
             (f"zg361_sb_self_{field}", "received-self ACL"),
-            (f"zg361_sb_detail_{field}", "selected detail buffer"),
-            (f"zg361_scoreboard_detail_field_{field}", "detail GUI row"),
-        ):
+        ]
+        if field not in SCOREBOARD_B1_SELECTED_DETAIL_HIDDEN_FIELDS:
+            surfaces.append(
+                (f"zg361_sb_detail_{field}", "selected detail buffer")
+            )
+        if field not in SCOREBOARD_B1_PLAYER_HIDDEN_FIELDS:
+            surfaces.append(
+                (f"zg361_scoreboard_detail_field_{field}", "detail GUI row")
+            )
+        for token, surface in surfaces:
             haystack = (
                 scoreboard_gui
                 if surface == "detail GUI row"
@@ -611,6 +640,12 @@ def check_runtime_invariants() -> None:
             )
             if token not in haystack:
                 err(f"scoreboard B1 {surface} missing {field}: {token}")
+    for field in SCOREBOARD_B1_SELECTED_DETAIL_HIDDEN_FIELDS:
+        if f"zg361_sb_detail_{field}" in slot_guis:
+            err(f"scoreboard raw B1 field must not reach selected detail: {field}")
+    for field in SCOREBOARD_B1_PLAYER_HIDDEN_FIELDS:
+        if f"zg361_scoreboard_detail_field_{field}" in scoreboard_gui:
+            err(f"scoreboard raw B1 field must not reach player GUI: {field}")
     for binding in SCOREBOARD_HIDDEN_BINDINGS:
         if f"zg361_sb_detail_{binding}_available_gui" in slot_guis:
             err(f"scoreboard binding must not expose availability GUI: {binding}")

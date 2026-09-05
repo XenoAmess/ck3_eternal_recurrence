@@ -27,6 +27,11 @@ zg361_p3_initialize_portfolio_effect = {
 	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
 	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
 	set_variable = { name = zg361_p3_portfolio_deferred value = 0 }
+	root = {
+		remove_variable = zg361_p3_player_batch_mode
+		remove_variable = zg361_p3_player_batch_fallback_mid
+		set_variable = { name = zg361_p3_player_policy_debt_disclosed_n value = 0 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_cp_m26_receipt_owner

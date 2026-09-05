@@ -680,12 +680,6 @@ zg361workforceremediationfact.1 = {
 		}
 	}
 	option = {
-		name = zg361workforceremediationfact.1.complete
-		scope:zg361_workforce_remediation_fact_ticket_subject = {
-			zg361_workforce_remediation_fact_settle_effect = { ACTOR = root RESULT = 1 }
-		}
-	}
-	option = {
 		name = zg361workforceremediationfact.1.fail
 		scope:zg361_workforce_remediation_fact_ticket_subject = {
 			zg361_workforce_remediation_fact_settle_effect = { ACTOR = root RESULT = 2 }
@@ -697,32 +691,29 @@ zg361workforceremediationfact.1 = {
 
 
 ENGLISH = {
-    "title": "The Vacancy Still Remembers",
+    "title": "The Refused Position Remains Held",
     "desc": (
-        "Thirty days have passed since [scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer. The held position "
-        "may be released only if you record what the refusal exposed and whether "
-        "that exact condition was actually corrected. A plan, a promise, or an "
-        "empty checkbox is not a completion receipt."
+        "The file shows that [scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer thirty days ago. "
+        "It preserves the refusal category, but contains neither the original clause, a revised clause, nor a candidate verification. "
+        "The available facts therefore cannot support a completion finding."
     ),
-    "complete": "Record the corrective action as completed and verified",
-    "fail": "Record that the corrective action failed",
-    "reason_pay": "Frozen requirement: correct the inadequate-compensation objection with terms the candidate can actually review.",
-    "reason_role": "Frozen requirement: correct the role-or-authority mismatch with terms the candidate can actually review.",
-    "reason_move": "Frozen requirement: correct the relocation-or-reporting objection with terms the candidate can actually review.",
-    "reason_unknown": "The source did not provide a valid refusal category; do not claim remediation completed.",
+    "fail": "Keep the position held: correction is not evidenced",
+    "reason_pay": "Recorded refusal category: inadequate compensation. No original and revised compensation clauses are available for comparison.",
+    "reason_role": "Recorded refusal category: role or authority mismatch. No original and revised authority clauses are available for comparison.",
+    "reason_move": "Recorded refusal category: relocation or reporting terms. No original and revised movement clauses are available for comparison.",
+    "reason_unknown": "The source did not preserve a valid refusal category, and no corrective terms are available for review.",
 }
 CHINESE = {
-    "title": "空缺仍记得那次拒绝",
+    "title": "遭拒的编制仍在冻结",
     "desc": (
-        "[scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 拒绝录用已经 30 日。只有把那次拒绝暴露的问题逐项记清，并确认同一个问题确已整改，冻结编制才有资格释放。"
-        "计划、承诺和一枚空勾都不是完成回执。"
+        "案卷显示，[scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 在 30 日前拒绝了录用。"
+        "目前只保留了拒绝类别，没有拒绝时的原条款、整改后的新条款，也没有候选人的复核记录；现有事实不足以确认整改完成。"
     ),
-    "complete": "确认整改已完成并通过核验",
-    "fail": "如实记录整改失败",
-    "reason_pay": "冻结整改项：以候选人能够复核的新条款纠正报酬不足。",
-    "reason_role": "冻结整改项：以候选人能够复核的新条款纠正岗位或权限不符。",
-    "reason_move": "冻结整改项：以候选人能够复核的新条款纠正调动或报到条件。",
-    "reason_unknown": "来源没有给出有效拒绝类别，不得声称整改已经完成。",
+    "fail": "维持冻结：现有记录不能证明整改完成",
+    "reason_pay": "已记录的拒绝类别是报酬不足；案卷没有可供对照的新旧报酬条款。",
+    "reason_role": "已记录的拒绝类别是岗位或权限不符；案卷没有可供对照的新旧职权条款。",
+    "reason_move": "已记录的拒绝类别是调动或报到条件；案卷没有可供对照的新旧调任条款。",
+    "reason_unknown": "来源没有保留有效的拒绝类别，也没有任何可供复核的整改条款。",
 }
 
 
@@ -736,7 +727,6 @@ def render_localization(language: str) -> bytes:
         f"l_{language}:",
         f' {NAMESPACE}.1.t:0 "{esc(values["title"])}"',
         f' {NAMESPACE}.1.desc:0 "{esc(values["desc"])}"',
-        f' {NAMESPACE}.1.complete:0 "{esc(values["complete"])}"',
         f' {NAMESPACE}.1.fail:0 "{esc(values["fail"])}"',
         f' {NAMESPACE}.1.reason_pay:0 "{esc(values["reason_pay"])}"',
         f' {NAMESPACE}.1.reason_role:0 "{esc(values["reason_role"])}"',
@@ -767,10 +757,7 @@ def render_spec() -> bytes:
 
 打开时只冻结 requirement：owner、subject、source cycle/case/state、拒绝理由、与 core `hold_due_cycle` 相同的截止周期，以及 subject-local 只增 requirement ID。首次 ID 为 1；后续 serial、requirement ID 与 delayed-event ticket 都分别从此前已提交的 counter 计算同一个 next value，不读取本 effect 刚写的值。打开、排队或 AI blocked 状态都不会写 completion alias。
 
-玩家 owner 在 30 日后的唯一事件中明确选择：
-
-1. `RESULT=1`：整改完成并核验；
-2. `RESULT=2`：整改失败。
+玩家 owner 在 30 日后的唯一事件中只能据实落下 `RESULT=2`（整改未获证明）。当前 source 没有冻结拒绝时原条款、整改后新条款或候选人复核，因此可见事件不暴露 `RESULT=1`，也不能把计划或承诺冒充完成。`RESULT=1` 仅保留为未来有真实新旧条款 producer 时可复用的底层 ABI，当前没有玩家可见入口。
 
 两条终态都只生成一次 receipt，并冻结 `receipt_owner/subject/cycle/case/result/reason_id/requirement_id/serial/id/hash`。每个 subject 的新 exact case 使用只增 serial；ID 由 serial/result 组成，hash 还折叠冻结的 cycle/case/reason/result。owner/subject 是 receipt tuple 的 opaque identity 字段，不伪装成可算数 hash；ID/hash 从不单独充当全局身份，也不接受 caller 参数。相同终态重放 idempotent；改变 result 的重放、过期 tuple、错误 actor 或缺 core hold 都 typed RED 且不改 receipt。完成结果另发布 `pending=1/consumed=0`；失败结果保持二者为零。
 
@@ -789,7 +776,7 @@ AI owner 没有可观察的整改完成 producer，因此只保留 open requirem
 
 ## 4. Readiness 与已接 ABI
 
-静态测试只证明生成可复现、BOM/九语结构、真实 source guard、玩家 owner 两个终态、receipt 一次性与 legacy alias 只在完成分支写入。它没有 CK3 parser、事件点击、30 日 scheduler、存读档或 paused snapshot 证据。
+静态测试只证明生成可复现、BOM/九语结构、真实 source guard、玩家可见事件只允许未获证明终态、receipt 一次性与 legacy alias 只在底层完成分支写入。它没有 CK3 parser、事件点击、30 日 scheduler、存读档或 paused snapshot 证据。
 
 master 集成已从 #275 route B 成功分支排入 D+1 事件，并在该已提交边界的 subject scope 调用：
 

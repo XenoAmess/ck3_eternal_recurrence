@@ -357,7 +357,7 @@ class WorkforceRemediationFactTests(unittest.TestCase):
             consume,
         )
 
-    def test_08_visible_event_is_exact_player_owner_and_has_both_real_outcomes(self) -> None:
+    def test_08_visible_event_cannot_claim_completion_without_comparable_terms(self) -> None:
         event = top_level_block(self.events, "zg361workforceremediationfact.1")
         self.assertIn("is_ai = no", event)
         self.assertIn("this = scope:zg361_workforce_remediation_fact_ticket_owner", event)
@@ -365,9 +365,10 @@ class WorkforceRemediationFactTests(unittest.TestCase):
             self.assertIn(
                 f"scope:zg361_workforce_remediation_fact_ticket_{token}", event
             )
-        self.assertEqual(event.count("zg361_workforce_remediation_fact_settle_effect"), 2)
-        self.assertIn("ACTOR = root RESULT = 1", event)
+        self.assertEqual(event.count("zg361_workforce_remediation_fact_settle_effect"), 1)
+        self.assertNotIn("ACTOR = root RESULT = 1", event)
         self.assertIn("ACTOR = root RESULT = 2", event)
+        self.assertNotIn("zg361workforceremediationfact.1.complete", event)
         self.assertNotIn("ai_chance", event)
         self.assertIn(
             "zg361_workforce_remediation_fact_serial = "
@@ -477,6 +478,18 @@ class WorkforceRemediationFactTests(unittest.TestCase):
         english_values = bodies["english"].splitlines()[1:]
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             self.assertEqual(bodies[language].splitlines()[1:], english_values)
+
+    def test_12a_copy_lists_only_available_facts_and_no_completion_action(self) -> None:
+        self.assertNotIn("complete", gen.CHINESE)
+        self.assertNotIn("complete", gen.ENGLISH)
+        for token in ("原条款", "新条款", "候选人的复核记录", "不足以确认整改完成"):
+            self.assertIn(token, gen.CHINESE["desc"])
+        for token in ("original clause", "revised clause", "candidate verification", "cannot support a completion finding"):
+            self.assertIn(token, gen.ENGLISH["desc"])
+        self.assertTrue(gen.CHINESE["desc"].startswith("案卷显示"))
+        self.assertFalse(gen.CHINESE["desc"].startswith(("。", "，", ".", ",")))
+        self.assertNotEqual(gen.CHINESE["title"], gen.CHINESE["desc"])
+        self.assertIn("现有记录不能证明整改完成", gen.CHINESE["fail"])
 
     def test_13_spec_is_honest_about_static_readiness_and_wired_core_abi(self) -> None:
         self.assertIn("ck3-script-static-ready-not-live", self.spec)

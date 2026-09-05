@@ -164,6 +164,37 @@ zg361_career_hc_m023_consume_effect = {
     }
 }
 
+# Low-risk portfolio default for #023; original card is the fallback.
+zg361_career_hc_m023_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m023_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            root = { trigger_event = { id = zg361ch.24 days = 1 } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.23 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.23 days = 1 } }
+    }
+}
+
 zg361_career_hc_m024_manager_apply_effect = {
     remove_variable = zg361_ch_runtime_applied
     if = {
@@ -186,32 +217,6 @@ zg361_career_hc_m024_manager_apply_effect = {
             }
         }
         zg361_career_hc_m024_core_effect = { ROUTE = $ROUTE$ }
-    }
-}
-
-# Assessed-official self response; grants no manager/HC/panel authority.
-zg361_career_hc_m024_subject_response_effect = {
-    save_temporary_scope_value_as = { name = zg361_ch_subject_route value = $ROUTE$ }
-    if = {
-        limit = {
-            is_ai = no
-            zg361_case_kernel_subject_self_guard_trigger = {
-                SUBJECT_VAR = zg361_case_d_subject
-                ACTIVE_VAR = zg361_case_d_active
-            }
-            has_variable = zg361_case_d_state
-            var:zg361_case_d_state = 3
-            var:zg361_ch_m024_subject_ack = 0
-            OR = {
-                scope:zg361_ch_subject_route = 1
-                scope:zg361_ch_subject_route = 2
-                scope:zg361_ch_subject_route = 3
-            }
-        }
-        set_variable = { name = zg361_ch_m024_subject_ack value = 1 }
-        set_variable = { name = zg361_ch_m024_subject_route value = scope:zg361_ch_subject_route }
-        change_variable = { name = zg361_case_d_feedback_revision add = 1 }
-        debug_log = "ZG361CH: subject response 024 recorded"
     }
 }
 

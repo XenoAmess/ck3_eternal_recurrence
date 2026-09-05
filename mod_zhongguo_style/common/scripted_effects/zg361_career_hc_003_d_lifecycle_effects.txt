@@ -38,31 +38,24 @@ zg361_career_hc_open_d_case_effect = {
         set_variable = { name = zg361_ch_future_promotion_debt value = 0 }
             set_variable = { name = zg361_ch_m019_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m019_consumed value = 0 }
-        set_variable = { name = zg361_ch_m019_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m019_deferred value = 0 }
         set_variable = { name = zg361_ch_m020_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m020_consumed value = 0 }
-        set_variable = { name = zg361_ch_m020_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m020_deferred value = 0 }
         set_variable = { name = zg361_ch_m021_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m021_consumed value = 0 }
-        set_variable = { name = zg361_ch_m021_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m021_deferred value = 0 }
         set_variable = { name = zg361_ch_m022_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m022_consumed value = 0 }
-        set_variable = { name = zg361_ch_m022_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m022_deferred value = 0 }
         set_variable = { name = zg361_ch_m023_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m023_consumed value = 0 }
-        set_variable = { name = zg361_ch_m023_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m023_deferred value = 0 }
         set_variable = { name = zg361_ch_m024_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m024_consumed value = 0 }
-        set_variable = { name = zg361_ch_m024_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m024_deferred value = 0 }
         set_variable = { name = zg361_ch_m025_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m025_consumed value = 0 }
-        set_variable = { name = zg361_ch_m025_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m025_deferred value = 0 }
         set_variable = { name = zg361_ch_m021_treasury_available value = 5 }
         set_variable = { name = zg361_ch_m021_treasury_reserved value = 0 }
@@ -101,7 +94,7 @@ zg361_career_hc_open_d_case_effect = {
             }
             else_if = {
                 limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-                root = { trigger_event = { id = zg361ch.19 days = 1 } }
+                root = { trigger_event = { id = zg361ch.950 days = 1 } }
             }
             debug_log = "ZG361CH: opened D career/HC case"
         }

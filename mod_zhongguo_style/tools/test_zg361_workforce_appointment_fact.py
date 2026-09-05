@@ -216,8 +216,13 @@ class AppointmentFactTests(unittest.TestCase):
         expected_keys = {gen.POSITION_KEY, f"{gen.POSITION_KEY}_desc"}
         self.assertEqual(localization_keys(english), expected_keys)
         self.assertEqual(localization_keys(chinese), expected_keys)
-        self.assertIn("361 Probationary Appointment", english)
-        self.assertIn("三六一试任编制", chinese)
+        self.assertIn("Probationary Officer", english)
+        self.assertIn("试任属官", chinese)
+        chinese_values = "\n".join(re.findall(r':0\s+"([^"]*)"', chinese))
+        for forbidden in ("361", "原生", "流水线", "source", "fingerprint", "RED", "N/A", "A/B", "按A", "按 A"):
+            self.assertNotIn(forbidden, chinese_values)
+        for value in re.findall(r':0\s+"([^"]*)"', chinese):
+            self.assertFalse(value.startswith(("。", ".", "；", ";", "，", ",")), value)
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             path = (
                 MOD_ROOT
@@ -227,7 +232,7 @@ class AppointmentFactTests(unittest.TestCase):
             )
             placeholder = text(path)
             self.assertEqual(localization_keys(placeholder), expected_keys)
-            self.assertIn("361 Probationary Appointment", placeholder)
+            self.assertIn("Probationary Officer", placeholder)
 
     def test_real_native_action_has_vanilla_preflight_and_engine_callback(self) -> None:
         request = block(

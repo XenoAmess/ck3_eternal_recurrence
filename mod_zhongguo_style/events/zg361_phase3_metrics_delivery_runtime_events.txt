@@ -1,6 +1,58 @@
 ﻿# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py
 namespace = zg361p3
 
+# One player-visible portfolio-mode choice.  Modes A/B/C affect only the
+# frozen background whitelist; mode D keeps the original 35-card route.
+zg361p3.9000 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.9000.t
+	desc = zg361p3.9000.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.9000.a
+		set_variable = { name = zg361_p3_player_batch_mode value = 1 }
+		scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+	}
+	option = {
+		name = zg361p3.9000.b
+		set_variable = { name = zg361_p3_player_batch_mode value = 2 }
+		scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+	}
+	option = {
+		name = zg361p3.9000.c
+		set_variable = { name = zg361_p3_player_batch_mode value = 3 }
+		scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+	}
+	option = {
+		name = zg361p3.9000.d
+		set_variable = { name = zg361_p3_player_batch_mode value = 4 }
+		scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+	}
+}
+
 # #229 — Who Owns the Metric Dictionary?
 zg361p3.229 = {
 	type = character_event
@@ -42,7 +94,22 @@ zg361p3.229 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.230 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.230 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.229 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 229 }
 		}
 	}
 	option = {
@@ -57,11 +124,27 @@ zg361p3.229 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.230 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.230 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.229 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 229 }
 		}
 	}
 	option = {
 		name = zg361p3.229.c
+		custom_tooltip = zg361p3.229.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m229_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -72,7 +155,23 @@ zg361p3.229 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.230 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.230 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.229 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 229 }
 		}
 	}
 }
@@ -118,7 +217,22 @@ zg361p3.230 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.231 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.231 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.230 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 230 }
 		}
 	}
 	option = {
@@ -133,11 +247,27 @@ zg361p3.230 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.231 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.231 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.230 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 230 }
 		}
 	}
 	option = {
 		name = zg361p3.230.c
+		custom_tooltip = zg361p3.230.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m230_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -148,7 +278,23 @@ zg361p3.230 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.231 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.231 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.230 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 230 }
 		}
 	}
 }
@@ -194,7 +340,22 @@ zg361p3.231 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.232 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.232 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.231 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 231 }
 		}
 	}
 	option = {
@@ -209,11 +370,27 @@ zg361p3.231 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.232 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.232 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.231 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 231 }
 		}
 	}
 	option = {
 		name = zg361p3.231.c
+		custom_tooltip = zg361p3.231.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m231_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -224,7 +401,23 @@ zg361p3.231 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.232 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.232 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.231 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 231 }
 		}
 	}
 }
@@ -270,7 +463,22 @@ zg361p3.232 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.233 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.233 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.232 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 232 }
 		}
 	}
 	option = {
@@ -285,11 +493,27 @@ zg361p3.232 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.233 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.233 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.232 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 232 }
 		}
 	}
 	option = {
 		name = zg361p3.232.c
+		custom_tooltip = zg361p3.232.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m232_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -300,7 +524,23 @@ zg361p3.232 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.233 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.233 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.232 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 232 }
 		}
 	}
 }
@@ -346,7 +586,22 @@ zg361p3.233 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.234 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.234 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.233 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 233 }
 		}
 	}
 	option = {
@@ -361,11 +616,27 @@ zg361p3.233 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.234 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.234 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.233 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 233 }
 		}
 	}
 	option = {
 		name = zg361p3.233.c
+		custom_tooltip = zg361p3.233.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m233_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -376,7 +647,23 @@ zg361p3.233 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.234 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.234 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.233 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 233 }
 		}
 	}
 }
@@ -422,7 +709,22 @@ zg361p3.234 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.235 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.235 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.234 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 234 }
 		}
 	}
 	option = {
@@ -437,11 +739,27 @@ zg361p3.234 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.235 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.235 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.234 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 234 }
 		}
 	}
 	option = {
 		name = zg361p3.234.c
+		custom_tooltip = zg361p3.234.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m234_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -452,7 +770,23 @@ zg361p3.234 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.235 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.235 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.234 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 234 }
 		}
 	}
 }
@@ -498,7 +832,22 @@ zg361p3.235 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.236 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.236 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.235 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 235 }
 		}
 	}
 	option = {
@@ -513,11 +862,27 @@ zg361p3.235 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.236 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.236 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.235 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 235 }
 		}
 	}
 	option = {
 		name = zg361p3.235.c
+		custom_tooltip = zg361p3.235.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m235_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -528,7 +893,23 @@ zg361p3.235 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.236 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.236 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.235 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 235 }
 		}
 	}
 }
@@ -574,7 +955,22 @@ zg361p3.236 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.237 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.237 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.236 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 236 }
 		}
 	}
 	option = {
@@ -589,11 +985,27 @@ zg361p3.236 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.237 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.237 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.236 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 236 }
 		}
 	}
 	option = {
 		name = zg361p3.236.c
+		custom_tooltip = zg361p3.236.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m236_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -604,7 +1016,23 @@ zg361p3.236 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.237 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.237 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.236 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 236 }
 		}
 	}
 }
@@ -650,7 +1078,22 @@ zg361p3.237 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.240 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.240 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.237 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 237 }
 		}
 	}
 	option = {
@@ -665,11 +1108,27 @@ zg361p3.237 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.240 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.240 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.237 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 237 }
 		}
 	}
 	option = {
 		name = zg361p3.237.c
+		custom_tooltip = zg361p3.237.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m237_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -680,7 +1139,23 @@ zg361p3.237 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.240 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.240 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.237 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 237 }
 		}
 	}
 }
@@ -726,7 +1201,22 @@ zg361p3.240 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.238 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.238 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.240 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 240 }
 		}
 	}
 	option = {
@@ -741,11 +1231,27 @@ zg361p3.240 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.238 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.238 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.240 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 240 }
 		}
 	}
 	option = {
 		name = zg361p3.240.c
+		custom_tooltip = zg361p3.240.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m240_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -756,7 +1262,23 @@ zg361p3.240 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.238 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.238 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.240 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 240 }
 		}
 	}
 }
@@ -802,7 +1324,22 @@ zg361p3.238 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.239 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.239 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.238 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 238 }
 		}
 	}
 	option = {
@@ -817,11 +1354,27 @@ zg361p3.238 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.239 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.239 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.238 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 238 }
 		}
 	}
 	option = {
 		name = zg361p3.238.c
+		custom_tooltip = zg361p3.238.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m238_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -832,7 +1385,23 @@ zg361p3.238 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.239 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.239 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.238 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 238 }
 		}
 	}
 }
@@ -878,7 +1447,22 @@ zg361p3.239 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.241 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.241 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.239 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 239 }
 		}
 	}
 	option = {
@@ -893,11 +1477,27 @@ zg361p3.239 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.241 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.241 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.239 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 239 }
 		}
 	}
 	option = {
 		name = zg361p3.239.c
+		custom_tooltip = zg361p3.239.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m239_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -908,7 +1508,23 @@ zg361p3.239 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.241 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aa_subject = { zg361_p3_aa_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.241 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.239 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 239 }
 		}
 	}
 }
@@ -952,6 +1568,22 @@ zg361p3.241 = {
 				TICKET_CASE = scope:zg361_p3_aa_case
 			}
 		}
+		if = {
+			limit = {
+				scope:zg361_p3_aa_subject = {
+					NOT = {
+						AND = {
+							has_variable = zg361_p3_runtime_applied
+							var:zg361_p3_runtime_applied = 1
+						}
+					}
+				}
+			}
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.241 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 241 }
+		}
 	}
 	option = {
 		name = zg361p3.241.b
@@ -963,9 +1595,26 @@ zg361p3.241 = {
 				TICKET_CASE = scope:zg361_p3_aa_case
 			}
 		}
+		if = {
+			limit = {
+				scope:zg361_p3_aa_subject = {
+					NOT = {
+						AND = {
+							has_variable = zg361_p3_runtime_applied
+							var:zg361_p3_runtime_applied = 1
+						}
+					}
+				}
+			}
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.241 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 241 }
+		}
 	}
 	option = {
 		name = zg361p3.241.c
+		custom_tooltip = zg361p3.241.c.tt
 		scope:zg361_p3_aa_subject = {
 			zg361_p3_m241_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aa_owner
@@ -973,6 +1622,16 @@ zg361p3.241 = {
 				TICKET_CYCLE = scope:zg361_p3_aa_cycle
 				TICKET_CASE = scope:zg361_p3_aa_case
 			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.241 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 241 }
 		}
 	}
 }
@@ -1018,7 +1677,22 @@ zg361p3.301 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.302 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.302 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.301 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 301 }
 		}
 	}
 	option = {
@@ -1033,11 +1707,27 @@ zg361p3.301 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.302 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.302 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.301 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 301 }
 		}
 	}
 	option = {
 		name = zg361p3.301.c
+		custom_tooltip = zg361p3.301.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m301_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1048,7 +1738,23 @@ zg361p3.301 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.302 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.302 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.301 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 301 }
 		}
 	}
 }
@@ -1094,7 +1800,22 @@ zg361p3.302 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.303 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.303 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.302 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 302 }
 		}
 	}
 	option = {
@@ -1109,11 +1830,27 @@ zg361p3.302 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.303 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.303 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.302 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 302 }
 		}
 	}
 	option = {
 		name = zg361p3.302.c
+		custom_tooltip = zg361p3.302.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m302_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1124,7 +1861,23 @@ zg361p3.302 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.303 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.303 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.302 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 302 }
 		}
 	}
 }
@@ -1170,7 +1923,22 @@ zg361p3.303 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.304 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.304 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.303 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 303 }
 		}
 	}
 	option = {
@@ -1185,11 +1953,27 @@ zg361p3.303 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.304 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.304 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.303 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 303 }
 		}
 	}
 	option = {
 		name = zg361p3.303.c
+		custom_tooltip = zg361p3.303.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m303_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1200,7 +1984,23 @@ zg361p3.303 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.304 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.304 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.303 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 303 }
 		}
 	}
 }
@@ -1246,7 +2046,22 @@ zg361p3.304 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.305 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.305 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.304 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 304 }
 		}
 	}
 	option = {
@@ -1261,11 +2076,27 @@ zg361p3.304 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.305 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.305 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.304 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 304 }
 		}
 	}
 	option = {
 		name = zg361p3.304.c
+		custom_tooltip = zg361p3.304.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m304_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1276,7 +2107,23 @@ zg361p3.304 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.305 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.305 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.304 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 304 }
 		}
 	}
 }
@@ -1322,7 +2169,22 @@ zg361p3.305 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.306 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.306 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.305 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 305 }
 		}
 	}
 	option = {
@@ -1337,11 +2199,27 @@ zg361p3.305 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.306 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.306 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.305 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 305 }
 		}
 	}
 	option = {
 		name = zg361p3.305.c
+		custom_tooltip = zg361p3.305.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m305_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1352,7 +2230,23 @@ zg361p3.305 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.306 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.306 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.305 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 305 }
 		}
 	}
 }
@@ -1398,7 +2292,22 @@ zg361p3.306 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.307 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.307 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.306 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 306 }
 		}
 	}
 	option = {
@@ -1413,11 +2322,27 @@ zg361p3.306 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.307 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.307 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.306 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 306 }
 		}
 	}
 	option = {
 		name = zg361p3.306.c
+		custom_tooltip = zg361p3.306.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m306_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1428,7 +2353,23 @@ zg361p3.306 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.307 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.307 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.306 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 306 }
 		}
 	}
 }
@@ -1474,7 +2415,22 @@ zg361p3.307 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.308 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.308 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.307 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 307 }
 		}
 	}
 	option = {
@@ -1489,11 +2445,27 @@ zg361p3.307 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.308 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.308 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.307 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 307 }
 		}
 	}
 	option = {
 		name = zg361p3.307.c
+		custom_tooltip = zg361p3.307.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m307_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1504,7 +2476,23 @@ zg361p3.307 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.308 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.308 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.307 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 307 }
 		}
 	}
 }
@@ -1550,7 +2538,22 @@ zg361p3.308 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.309 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.309 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.308 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 308 }
 		}
 	}
 	option = {
@@ -1565,11 +2568,27 @@ zg361p3.308 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.309 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.309 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.308 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 308 }
 		}
 	}
 	option = {
 		name = zg361p3.308.c
+		custom_tooltip = zg361p3.308.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m308_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1580,7 +2599,23 @@ zg361p3.308 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.309 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.309 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.308 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 308 }
 		}
 	}
 }
@@ -1626,7 +2661,22 @@ zg361p3.309 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.310 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.310 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.309 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 309 }
 		}
 	}
 	option = {
@@ -1641,11 +2691,27 @@ zg361p3.309 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.310 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.310 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.309 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 309 }
 		}
 	}
 	option = {
 		name = zg361p3.309.c
+		custom_tooltip = zg361p3.309.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m309_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1656,7 +2722,23 @@ zg361p3.309 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.310 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.310 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.309 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 309 }
 		}
 	}
 }
@@ -1702,7 +2784,22 @@ zg361p3.310 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.311 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.311 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.310 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 310 }
 		}
 	}
 	option = {
@@ -1717,11 +2814,27 @@ zg361p3.310 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.311 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.311 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.310 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 310 }
 		}
 	}
 	option = {
 		name = zg361p3.310.c
+		custom_tooltip = zg361p3.310.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m310_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1732,7 +2845,23 @@ zg361p3.310 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.311 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_ag_subject = { zg361_p3_ag_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.311 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.310 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 310 }
 		}
 	}
 }
@@ -1776,6 +2905,22 @@ zg361p3.311 = {
 				TICKET_CASE = scope:zg361_p3_ag_case
 			}
 		}
+		if = {
+			limit = {
+				scope:zg361_p3_ag_subject = {
+					NOT = {
+						AND = {
+							has_variable = zg361_p3_runtime_applied
+							var:zg361_p3_runtime_applied = 1
+						}
+					}
+				}
+			}
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.311 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 311 }
+		}
 	}
 	option = {
 		name = zg361p3.311.b
@@ -1787,9 +2932,26 @@ zg361p3.311 = {
 				TICKET_CASE = scope:zg361_p3_ag_case
 			}
 		}
+		if = {
+			limit = {
+				scope:zg361_p3_ag_subject = {
+					NOT = {
+						AND = {
+							has_variable = zg361_p3_runtime_applied
+							var:zg361_p3_runtime_applied = 1
+						}
+					}
+				}
+			}
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.311 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 311 }
+		}
 	}
 	option = {
 		name = zg361p3.311.c
+		custom_tooltip = zg361p3.311.c.tt
 		scope:zg361_p3_ag_subject = {
 			zg361_p3_m311_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_ag_owner
@@ -1797,6 +2959,16 @@ zg361p3.311 = {
 				TICKET_CYCLE = scope:zg361_p3_ag_cycle
 				TICKET_CASE = scope:zg361_p3_ag_case
 			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.311 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 311 }
 		}
 	}
 }
@@ -1842,7 +3014,22 @@ zg361p3.334 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.335 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.335 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.334 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 334 }
 		}
 	}
 	option = {
@@ -1857,11 +3044,27 @@ zg361p3.334 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.335 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.335 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.334 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 334 }
 		}
 	}
 	option = {
 		name = zg361p3.334.c
+		custom_tooltip = zg361p3.334.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m334_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -1872,7 +3075,23 @@ zg361p3.334 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.335 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.335 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.334 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 334 }
 		}
 	}
 }
@@ -1918,7 +3137,22 @@ zg361p3.335 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.336 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.336 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.335 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 335 }
 		}
 	}
 	option = {
@@ -1933,11 +3167,27 @@ zg361p3.335 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.336 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.336 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.335 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 335 }
 		}
 	}
 	option = {
 		name = zg361p3.335.c
+		custom_tooltip = zg361p3.335.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m335_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -1948,7 +3198,23 @@ zg361p3.335 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.336 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.336 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.335 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 335 }
 		}
 	}
 }
@@ -1994,7 +3260,22 @@ zg361p3.336 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.338 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.338 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.336 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 336 }
 		}
 	}
 	option = {
@@ -2009,11 +3290,27 @@ zg361p3.336 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.338 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.338 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.336 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 336 }
 		}
 	}
 	option = {
 		name = zg361p3.336.c
+		custom_tooltip = zg361p3.336.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m336_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2024,7 +3321,23 @@ zg361p3.336 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.338 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.338 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.336 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 336 }
 		}
 	}
 }
@@ -2070,7 +3383,22 @@ zg361p3.338 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.339 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.339 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.338 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 338 }
 		}
 	}
 	option = {
@@ -2085,11 +3413,27 @@ zg361p3.338 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.339 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.339 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.338 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 338 }
 		}
 	}
 	option = {
 		name = zg361p3.338.c
+		custom_tooltip = zg361p3.338.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m338_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2100,7 +3444,23 @@ zg361p3.338 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.339 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.339 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.338 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 338 }
 		}
 	}
 }
@@ -2146,7 +3506,22 @@ zg361p3.339 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.340 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.340 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.339 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 339 }
 		}
 	}
 	option = {
@@ -2161,11 +3536,27 @@ zg361p3.339 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.340 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.340 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.339 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 339 }
 		}
 	}
 	option = {
 		name = zg361p3.339.c
+		custom_tooltip = zg361p3.339.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m339_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2176,7 +3567,23 @@ zg361p3.339 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.340 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.340 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.339 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 339 }
 		}
 	}
 }
@@ -2222,7 +3629,22 @@ zg361p3.340 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.342 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.342 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.340 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 340 }
 		}
 	}
 	option = {
@@ -2237,11 +3659,27 @@ zg361p3.340 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.342 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.342 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.340 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 340 }
 		}
 	}
 	option = {
 		name = zg361p3.340.c
+		custom_tooltip = zg361p3.340.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m340_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2252,7 +3690,23 @@ zg361p3.340 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.342 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.342 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.340 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 340 }
 		}
 	}
 }
@@ -2298,7 +3752,22 @@ zg361p3.342 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.337 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.337 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.342 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 342 }
 		}
 	}
 	option = {
@@ -2313,11 +3782,27 @@ zg361p3.342 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.337 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.337 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.342 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 342 }
 		}
 	}
 	option = {
 		name = zg361p3.342.c
+		custom_tooltip = zg361p3.342.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m342_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2328,7 +3813,23 @@ zg361p3.342 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.337 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.337 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.342 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 342 }
 		}
 	}
 }
@@ -2374,7 +3875,22 @@ zg361p3.337 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.341 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.341 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.337 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 337 }
 		}
 	}
 	option = {
@@ -2389,11 +3905,27 @@ zg361p3.337 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.341 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.341 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.337 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 337 }
 		}
 	}
 	option = {
 		name = zg361p3.337.c
+		custom_tooltip = zg361p3.337.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m337_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2404,7 +3936,23 @@ zg361p3.337 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.341 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.341 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.337 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 337 }
 		}
 	}
 }
@@ -2450,7 +3998,22 @@ zg361p3.341 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.343 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.343 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.341 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 341 }
 		}
 	}
 	option = {
@@ -2465,11 +4028,27 @@ zg361p3.341 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.343 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.343 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.341 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 341 }
 		}
 	}
 	option = {
 		name = zg361p3.341.c
+		custom_tooltip = zg361p3.341.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m341_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2480,7 +4059,23 @@ zg361p3.341 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.343 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.343 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.341 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 341 }
 		}
 	}
 }
@@ -2526,7 +4121,22 @@ zg361p3.343 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.344 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.344 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.343 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 343 }
 		}
 	}
 	option = {
@@ -2541,11 +4151,27 @@ zg361p3.343 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.344 days = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.344 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.343 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 343 }
 		}
 	}
 	option = {
 		name = zg361p3.343.c
+		custom_tooltip = zg361p3.343.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m343_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2556,7 +4182,23 @@ zg361p3.343 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.344 days = 1 }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+			if = {
+				limit = {
+					has_variable = zg361_p3_player_batch_mode
+					var:zg361_p3_player_batch_mode < 4
+				}
+				scope:zg361_p3_aj_subject = { zg361_p3_aj_continue_player_effect = yes }
+			}
+			else = {
+				trigger_event = { id = zg361p3.344 days = 1 }
+			}
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.343 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 343 }
 		}
 	}
 }
@@ -2600,6 +4242,22 @@ zg361p3.344 = {
 				TICKET_CASE = scope:zg361_p3_aj_case
 			}
 		}
+		if = {
+			limit = {
+				scope:zg361_p3_aj_subject = {
+					NOT = {
+						AND = {
+							has_variable = zg361_p3_runtime_applied
+							var:zg361_p3_runtime_applied = 1
+						}
+					}
+				}
+			}
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.344 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 344 }
+		}
 	}
 	option = {
 		name = zg361p3.344.b
@@ -2611,9 +4269,26 @@ zg361p3.344 = {
 				TICKET_CASE = scope:zg361_p3_aj_case
 			}
 		}
+		if = {
+			limit = {
+				scope:zg361_p3_aj_subject = {
+					NOT = {
+						AND = {
+							has_variable = zg361_p3_runtime_applied
+							var:zg361_p3_runtime_applied = 1
+						}
+					}
+				}
+			}
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.344 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 344 }
+		}
 	}
 	option = {
 		name = zg361p3.344.c
+		custom_tooltip = zg361p3.344.c.tt
 		scope:zg361_p3_aj_subject = {
 			zg361_p3_m344_route_c_effect = {
 				TICKET_OWNER = scope:zg361_p3_aj_owner
@@ -2621,6 +4296,16 @@ zg361p3.344 = {
 				TICKET_CYCLE = scope:zg361_p3_aj_cycle
 				TICKET_CASE = scope:zg361_p3_aj_case
 			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			change_variable = { name = zg361_p3_player_policy_debt_disclosed_n add = 1 }
+		}
+		else = {
+			# A manual choice that fails its current tuple/resource guard returns to
+			# this exact card on D+1; the chain never advances on a failed write.
+			trigger_event = { id = zg361p3.344 days = 1 }
+			set_variable = { name = zg361_p3_player_batch_fallback_mid value = 344 }
 		}
 	}
 }

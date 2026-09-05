@@ -1013,6 +1013,28 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             for field in ("success_n", "na_n", "red_n", "external_n"):
                 self.assertIn(f"[ROOT.Var('zg361_p2c_{field}')|0]", text, language)
 
+    def test_summary_uses_business_conclusions_reasons_and_follow_up(self) -> None:
+        chinese = read(
+            "localization/simp_chinese/zg361_phase2_central_l_simp_chinese.yml"
+        )
+        for required in ("办结", "无需另办", "所需案情尚未送达", "下一轮重新核对"):
+            self.assertIn(required, chinese)
+        for forbidden in (
+            "流水线",
+            "成功域",
+            "N/A",
+            "RED",
+            "外部依赖",
+            "source serial",
+            "fingerprint",
+            "A/B",
+            "按A",
+            "按 A",
+        ):
+            self.assertNotIn(forbidden, chinese)
+        for value in re.findall(r':0\s+"([^"]*)"', chinese):
+            self.assertFalse(value.startswith(("。", ".", "；", ";", "，", ",")), value)
+
     def test_readiness_claim_is_honest(self) -> None:
         self.assertEqual(generator.READINESS, "static-ready")
         self.assertIn("Readiness: `static-ready`", self.spec)

@@ -887,9 +887,22 @@ zg361_b2_on_result_frozen_effect = {
 				var:zg361_b2_retaliation_owner = var:zg361_result_case_owner
 				has_variable = zg361_b2_retaliation_cycle
 				var:zg361_result_cycle_serial > var:zg361_b2_retaliation_cycle
+				has_variable = zg361_result_grade
+				var:zg361_result_grade = 1
+				has_variable = zg361_result_case_serial
+				has_variable = zg361_result_kpi_frozen
+				has_variable = zg361_result_rank_frozen
+				has_variable = zg361_result_cohort_n_frozen
+				has_variable = zg361_result_grade_reason
 			}
 			set_variable = { name = zg361_b2_retaliation_new_fact value = 1 }
 			set_variable = { name = zg361_b2_retaliation_new_fact_cycle value = var:zg361_result_cycle_serial }
+			set_variable = { name = zg361_b2_retaliation_new_fact_case value = var:zg361_result_case_serial }
+			set_variable = { name = zg361_b2_retaliation_new_fact_grade value = var:zg361_result_grade }
+			set_variable = { name = zg361_b2_retaliation_new_fact_kpi value = var:zg361_result_kpi_frozen }
+			set_variable = { name = zg361_b2_retaliation_new_fact_rank value = var:zg361_result_rank_frozen }
+			set_variable = { name = zg361_b2_retaliation_new_fact_cohort value = var:zg361_result_cohort_n_frozen }
+			set_variable = { name = zg361_b2_retaliation_new_fact_reason value = var:zg361_result_grade_reason }
 		}
 		set_variable = { name = zg361_b2_case_owner value = var:zg361_result_case_owner }
 		set_variable = { name = zg361_b2_case_subject value = this }
@@ -2373,6 +2386,13 @@ zg361_b2_m070_open_observation_effect = {
 	set_variable = { name = zg361_b2_retaliation_case value = var:zg361_b2_case_serial }
 	set_variable = { name = zg361_b2_retaliation_state value = 1 }
 	set_variable = { name = zg361_b2_retaliation_new_fact value = 0 }
+	remove_variable = zg361_b2_retaliation_new_fact_cycle
+	remove_variable = zg361_b2_retaliation_new_fact_case
+	remove_variable = zg361_b2_retaliation_new_fact_grade
+	remove_variable = zg361_b2_retaliation_new_fact_kpi
+	remove_variable = zg361_b2_retaliation_new_fact_rank
+	remove_variable = zg361_b2_retaliation_new_fact_cohort
+	remove_variable = zg361_b2_retaliation_new_fact_reason
 	set_variable = { name = zg361_b2_retaliation_suspended_n value = 0 }
 	set_variable = { name = zg361_b2_m070_state value = 1 }
 	set_variable = { name = zg361_b2_m070_receipt_serial value = var:zg361_b2_case_serial }
@@ -3613,6 +3633,7 @@ zg361_b2_m358_open_separate_case_effect = {
 				var:zg361_b2_m077_independent = 1
 				NOT = { var:zg361_b2_m077_reviewer = var:zg361_b2_retaliation_owner }
 				NOT = { var:zg361_b2_m077_reviewer = this }
+				var:zg361_b2_m077_reviewer = { is_alive = yes }
 			}
 			set_variable = { name = zg361_b2_separate_reviewer value = var:zg361_b2_m077_reviewer }
 			set_variable = { name = zg361_b2_separate_reviewer_independent value = 1 }
@@ -4204,7 +4225,6 @@ zg361b2.40 = {
 			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 2 } desc = zg361b2.40.task.capability }
 			triggered_desc = { trigger = { var:zg361_b2_pip_task_kind = 3 } desc = zg361b2.40.task.collaboration }
 		}
-		desc = zg361b2.40.resources
 	}
 	trigger = {
 		is_ai = no
@@ -4229,7 +4249,28 @@ zg361b2.50 = {
 	type = character_event
 	theme = vassal
 	title = zg361b2.50.t
-	desc = zg361b2.50.desc
+	desc = {
+		desc = zg361b2.50.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade = 3 } desc = zg361b2.50.grade.375 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 2 } desc = zg361b2.50.grade.350 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 1 } desc = zg361b2.50.grade.325 }
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.50.grade.unknown }
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 0 } desc = zg361b2.50.reason.0 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 1 } desc = zg361b2.50.reason.1 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 2 } desc = zg361b2.50.reason.2 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 3 } desc = zg361b2.50.reason.3 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 4 } desc = zg361b2.50.reason.4 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 5 } desc = zg361b2.50.reason.5 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 6 } desc = zg361b2.50.reason.6 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 7 } desc = zg361b2.50.reason.7 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 8 } desc = zg361b2.50.reason.8 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 9 } desc = zg361b2.50.reason.9 }
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.50.reason.unknown }
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_b2_escalation_owner
@@ -4913,6 +4954,42 @@ zg361b2.160 = {
 	desc = {
 		desc = zg361b2.160.desc
 		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_variable = zg361_b2_retaliation_new_fact_kpi
+					has_variable = zg361_b2_retaliation_new_fact_rank
+					has_variable = zg361_b2_retaliation_new_fact_cohort
+					has_variable = zg361_b2_retaliation_new_fact_case
+				}
+				desc = zg361b2.160.fact
+			}
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.160.fact.unknown }
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 0 } desc = zg361b2.160.reason.0 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 1 } desc = zg361b2.160.reason.1 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 2 } desc = zg361b2.160.reason.2 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 3 } desc = zg361b2.160.reason.3 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 4 } desc = zg361b2.160.reason.4 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 5 } desc = zg361b2.160.reason.5 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 6 } desc = zg361b2.160.reason.6 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 7 } desc = zg361b2.160.reason.7 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 8 } desc = zg361b2.160.reason.8 }
+			triggered_desc = { trigger = { var:zg361_b2_retaliation_new_fact_reason = 9 } desc = zg361b2.160.reason.9 }
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.160.reason.unknown }
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:zg361_b2_separate_reviewer_independent = 1
+					has_variable = zg361_b2_separate_reviewer
+					var:zg361_b2_separate_reviewer = { is_alive = yes }
+				}
+				desc = zg361b2.160.reviewer
+			}
+			triggered_desc = { trigger = { always = yes } desc = zg361b2.160.reviewer.unknown }
+		}
+		first_valid = {
 			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 1 } desc = zg361b2.160.action.purge }
 			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 2 } desc = zg361b2.160.action.retire }
 			triggered_desc = { trigger = { var:zg361_b2_pending_adverse_action = 3 } desc = zg361b2.160.action.demote }
@@ -5014,6 +5091,32 @@ zg361b2.162 = {
 						var:zg361_b2_separate_reviewer_independent = 1
 						has_variable = zg361_b2_separate_reviewer
 						var:zg361_b2_retaliation_new_fact = 1
+						has_variable = zg361_b2_retaliation_new_fact_cycle
+						has_variable = zg361_b2_retaliation_new_fact_case
+						has_variable = zg361_b2_retaliation_new_fact_grade
+						has_variable = zg361_b2_retaliation_new_fact_kpi
+						has_variable = zg361_b2_retaliation_new_fact_rank
+						has_variable = zg361_b2_retaliation_new_fact_cohort
+						has_variable = zg361_b2_retaliation_new_fact_reason
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_grade
+						has_variable = zg361_result_kpi_frozen
+						has_variable = zg361_result_rank_frozen
+						has_variable = zg361_result_cohort_n_frozen
+						has_variable = zg361_result_grade_reason
+						var:zg361_result_cycle_serial = var:zg361_b2_retaliation_new_fact_cycle
+						var:zg361_result_case_serial = var:zg361_b2_retaliation_new_fact_case
+						var:zg361_result_grade = var:zg361_b2_retaliation_new_fact_grade
+						var:zg361_result_kpi_frozen = var:zg361_b2_retaliation_new_fact_kpi
+						var:zg361_result_rank_frozen = var:zg361_b2_retaliation_new_fact_rank
+						var:zg361_result_cohort_n_frozen = var:zg361_b2_retaliation_new_fact_cohort
+						var:zg361_result_grade_reason = var:zg361_b2_retaliation_new_fact_reason
+						var:zg361_b2_separate_reviewer = {
+							is_alive = yes
+							NOT = { this = scope:zg361_b2_separate_deadline_owner }
+							NOT = { this = scope:zg361_b2_separate_deadline_subject }
+						}
 					}
 					set_variable = { name = zg361_b2_separate_review_outcome value = 1 }
 					set_variable = { name = zg361_b2_separate_notice_state value = 3 }
@@ -5082,32 +5185,46 @@ def render_english_localization() -> bytes:
     return localized(r'''
 l_english:
  zg361b2.40.t:0 "A Measured Recovery Plan"
- zg361b2.40.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_pip_prompt_owner.GetShortUIName]. The result identified at least three adverse evidence components and opened one 365-day improvement plan, with a midpoint check after 180 days."
+ zg361b2.40.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_pip_prompt_owner.GetShortUIName]. The review file contains at least three adverse evidence components. A 365-day improvement period is ready to begin, with a midpoint check on day 180. The single controllable task in this file is:"
  zg361b2.40.task.governance:0 "Controllable task: improve the frozen governance component."
  zg361b2.40.task.capability:0 "Controllable task: improve the frozen local-capability component."
  zg361b2.40.task.collaboration:0 "Controllable task: improve the frozen collaboration component."
- zg361b2.40.resources:0 "If the support route is funded and the manager can supply one mentor, one capacity slot, and 25 treasury, the case reserves 12 support hours and one attention slot; otherwise the absence is recorded instead of invented. Refusal creates -15 evidence for the next cycle only."
- zg361b2.40.a:0 "Accept the plan and its support."
- zg361b2.40.b:0 "Revise the goal once, then begin."
- zg361b2.40.c:0 "Refuse, and let only the next cycle judge it."
- zg361b2.50.t:0 "After the Appeal"
- zg361b2.50.desc:0 "Appellant: [scope:zg361_b2_escalation_subject.GetShortUIName]. Case owner: [scope:zg361_b2_escalation_owner.GetShortUIName]. The appeal ruling is complete; this separate choice controls whether its bounded evidence is published, protected, or left as policy debt."
- zg361b2.50.a:0 "Publish the bounded evidence packet."
+ zg361b2.40.a:0 "Begin the 365-day plan; if funded, reserve a mentor, capacity, 25 treasury, and 12 support hours."
+ zg361b2.40.b:0 "Revise the task once, then begin with the same bounded support commitment."
+ zg361b2.40.c:0 "Refuse the plan; record -15 evidence for the next cycle, with no second penalty today."
+ zg361b2.50.t:0 "Appeal Rejected"
+ zg361b2.50.desc:0 "Appellant: [scope:zg361_b2_escalation_subject.GetShortUIName]. Case owner: [scope:zg361_b2_escalation_owner.GetShortUIName]. The review rejected this appeal, so the original result and its posted settlement remain in force. The frozen record reviewed was:"
+ zg361b2.50.grade.375:0 "Final band 3.75; frozen KPI [ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]; cohort rank [ROOT.MakeScope.Var('zg361_result_rank_frozen').GetValue|0] of [ROOT.MakeScope.Var('zg361_result_cohort_n_frozen').GetValue|0]."
+ zg361b2.50.grade.350:0 "Final band 3.50; frozen KPI [ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]; cohort rank [ROOT.MakeScope.Var('zg361_result_rank_frozen').GetValue|0] of [ROOT.MakeScope.Var('zg361_result_cohort_n_frozen').GetValue|0]."
+ zg361b2.50.grade.325:0 "Final band 3.25; frozen KPI [ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]; cohort rank [ROOT.MakeScope.Var('zg361_result_rank_frozen').GetValue|0] of [ROOT.MakeScope.Var('zg361_result_cohort_n_frozen').GetValue|0]."
+ zg361b2.50.grade.unknown:0 "The file does not contain a displayable frozen grade, KPI, and cohort position. No missing value is being invented here."
+ zg361b2.50.reason.0:0 "Basis retained: the factual band and final band agree."
+ zg361b2.50.reason.1:0 "Basis retained: calibration displaced this official from a 3.75 slot."
+ zg361b2.50.reason.2:0 "Basis retained: calibration raised this official into a 3.75 slot."
+ zg361b2.50.reason.3:0 "Basis retained: calibration moved this official into 3.25."
+ zg361b2.50.reason.4:0 "Basis retained: calibration moved this official out of a 3.25 slot."
+ zg361b2.50.reason.5:0 "Basis retained: mandatory distribution lowered the final band below the factual band."
+ zg361b2.50.reason.6:0 "Basis retained: newcomer protection prevented an immediate 3.25 this cycle."
+ zg361b2.50.reason.7:0 "Basis retained: rank and quota lifted the final band above the factual band."
+ zg361b2.50.reason.8:0 "Basis retained: the one-to-two-person cohort bypassed forced distribution and returned the final band to 3.50."
+ zg361b2.50.reason.9:0 "Basis retained: a corrected quota boundary generated this replacement low-result notice."
+ zg361b2.50.reason.unknown:0 "The file contains no displayable reason for the retained result."
+ zg361b2.50.a:0 "Publish the evidence packet; lose 50 prestige now and open a 30-day fact check."
  zg361b2.50.b:0 "File a protected anonymous report."
  zg361b2.50.c:0 "Defer escalation and record the debt."
  zg361b2.60.t:0 "A Neutral Departure"
- zg361b2.60.desc:0 "A voluntary exit is offered without changing the appeal ruling. If accepted, fifty from the public treasury becomes exactly fifty personal gold; an unfunded promise cannot be signed."
- zg361b2.60.a:0 "Accept the funded neutral exit."
+ zg361b2.60.desc:0 "A funded voluntary departure agreement has arrived. [scope:zg361_b2_exit_offer_owner.GetShortUIName] supplies the treasury payment, and [ROOT.GetShortUIName] decides whether to accept; the agreement does not alter the rejected appeal or rewrite its evidence."
+ zg361b2.60.a:0 "Accept: step down, debit 50 from the owner's treasury, and receive exactly 50 personal gold."
  zg361b2.60.b:0 "Remain under the ordinary process."
  zg361b2.110.t:0 "PIP Disposition"
- zg361b2.110.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_disposition_owner.GetShortUIName]. The 365-day improvement period closed without graduation. The manager has offered the legally available dispositions as a negotiated package; your selection accepts that one route and executes it immediately, unless an appeal safeguard holds it."
- zg361b2.110.a:0 "Extend support for one final cycle."
- zg361b2.110.b:0 "Demote, but retain the official."
- zg361b2.110.c:0 "Offer an orderly retirement."
- zg361b2.110.d:0 "Accept a funded, neutral redundancy exit."
+ zg361b2.110.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_disposition_owner.GetShortUIName]. The 365-day improvement period closed without graduation. The manager has placed four negotiated dispositions before you; none takes effect without your acceptance, and an active appeal safeguard still suspends execution."
+ zg361b2.110.a:0 "Request and accept one final cycle of support."
+ zg361b2.110.b:0 "Waive immediate contest and accept demotion with retention."
+ zg361b2.110.c:0 "Petition for and accept an orderly retirement."
+ zg361b2.110.d:0 "Accept funded neutral redundancy: step down and receive exactly 50 gold from the owner's treasury."
  zg361b2.130.t:0 "Return the Corrected Quota"
- zg361b2.130.desc:0 "A corrected appeal releases one bottom-slot obligation. Consume a reserve, reopen the boundary with fresh notice and appeal, or post the obligation to the next real review."
- zg361b2.130.a:0 "Return the exact promotion item 157 nomination-slot receipt."
+ zg361b2.130.desc:0 "The corrected appeal released one bottom-slot obligation. The old result and its appeal cannot be reused; any replacement notice must have its own receipt and challenge period."
+ zg361b2.130.a:0 "Return one reserved promotion nomination slot to the corrected quota."
  zg361b2.130.b:0 "Reopen and re-serve the boundary case."
  zg361b2.130.c:0 "Post one slot to the next cycle."
  zg361b2.131.t:0 "Fresh Boundary Notice"
@@ -5119,20 +5236,35 @@ l_english:
  zg361b2.131.b:0 "Acknowledge and contest it."
  zg361b2.131.c:0 "Refuse signature; require witnessed delivery."
  zg361b2.160.t:0 "Separate Misconduct Notice"
- zg361b2.160.desc:0 "Official: [ROOT.GetShortUIName]. Case owner: [scope:zg361_b2_separate_prompt_owner.GetShortUIName]. A later review cycle produced a new low-result fact, so it cannot be folded into the old appeal. This separate notice has its own receipt and 90-day objection window. An objection suspends execution; an independent reviewer and the still-matching new fact are both required to uphold it, otherwise it is cancelled."
+ zg361b2.160.desc:0 "Official: [ROOT.GetShortUIName]. Case owner: [scope:zg361_b2_separate_prompt_owner.GetShortUIName]. A later 3.25 result was frozen after the earlier appeal, so this notice cannot borrow that old case or its ruling. The new record is:"
+ zg361b2.160.fact:0 "Final band 3.25; KPI [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_kpi').GetValue|0]; cohort rank [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_rank').GetValue|0] of [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_cohort').GetValue|0]; case [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_case').GetValue|0]."
+ zg361b2.160.fact.unknown:0 "The notice has no displayable new case, KPI, and cohort position. It therefore makes no claim that an unspecified fact was verified."
+ zg361b2.160.reason.0:0 "Reason: the factual band and final band agree."
+ zg361b2.160.reason.1:0 "Reason: calibration displaced this official from a 3.75 slot."
+ zg361b2.160.reason.2:0 "Reason: calibration raised this official into a 3.75 slot."
+ zg361b2.160.reason.3:0 "Reason: calibration moved this official into 3.25."
+ zg361b2.160.reason.4:0 "Reason: calibration moved this official out of a 3.25 slot."
+ zg361b2.160.reason.5:0 "Reason: mandatory distribution lowered the final band below the factual band."
+ zg361b2.160.reason.6:0 "Reason: newcomer protection prevented an immediate 3.25 in that cycle."
+ zg361b2.160.reason.7:0 "Reason: rank and quota lifted the final band above the factual band."
+ zg361b2.160.reason.8:0 "Reason: the one-to-two-person cohort bypassed forced distribution and returned the final band to 3.50."
+ zg361b2.160.reason.9:0 "Reason: a corrected quota boundary generated this replacement low-result notice."
+ zg361b2.160.reason.unknown:0 "No displayable reason is attached to the new result."
+ zg361b2.160.reviewer:0 "Independent reviewer on the file: [ROOT.MakeScope.Var('zg361_b2_separate_reviewer').Char.GetShortUIName]. Eligibility and survival will be checked again when the 90-day review closes."
+ zg361b2.160.reviewer.unknown:0 "No eligible independent reviewer is recorded. A timely objection therefore cannot be upheld by the automatic 90-day rule."
  zg361b2.160.action.purge:0 "Proposed separate action: removal from landed office."
  zg361b2.160.action.retire:0 "Proposed separate action: ordered retirement."
  zg361b2.160.action.demote:0 "Proposed separate action: demotion with retention."
  zg361b2.160.action.extend:0 "Proposed separate action: extend the improvement plan."
- zg361b2.160.a:0 "Acknowledge the separate notice."
- zg361b2.160.b:0 "Acknowledge and object."
- zg361b2.160.c:0 "Refuse signature; require a witness."
- zg361b2.statement.prepared:0 "B2 case: prepared; detailed evidence remains locked before delivery."
- zg361b2.statement.delivered:0 "B2 case: delivered with a bounded receipt and appeal deadline."
- zg361b2.statement.appeal:0 "B2 appeal: target-bound review is active."
- zg361b2.statement.corrected:0 "B2 appeal: corrected; actual posted receipts were reversed once."
- zg361b2.statement.pip:0 "B2 recovery plan: active with a bounded support commitment."
- zg361b2.statement.retaliation:0 "B2 safeguard: one-year target-bound adverse-action observation is active."
+ zg361b2.160.a:0 "Acknowledge the new case and execute the stated action now."
+ zg361b2.160.b:0 "Object: suspend execution for 90 days; cancel it if the fact or reviewer qualification fails."
+ zg361b2.160.c:0 "Refuse signature; execute the stated action after witnessed delivery in 7 days."
+ zg361b2.statement.prepared:0 "Performance case: prepared; detailed evidence remains locked before delivery."
+ zg361b2.statement.delivered:0 "Performance notice: delivered with its receipt and appeal deadline frozen."
+ zg361b2.statement.appeal:0 "Performance appeal: the review of this exact case is active."
+ zg361b2.statement.corrected:0 "Appeal ruling: corrected; actual posted deductions were reversed once."
+ zg361b2.statement.pip:0 "Improvement plan: active with its recorded support commitment."
+ zg361b2.statement.retaliation:0 "Appeal safeguard: the one-year observation of adverse action against this official is active."
 ''')
 
 
@@ -5140,32 +5272,46 @@ def render_simp_chinese_localization() -> bytes:
     return localized(normalize_localization_document(r'''
 l_simp_chinese:
  zg361b2.40.t:0 "有界改进计划"
- zg361b2.40.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_pip_prompt_owner.GetShortUIName]。本次结果已有至少三项负向证据，因此开启一份 365 日改进计划，并在第 180 日检查中期进展。"
+ zg361b2.40.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_pip_prompt_owner.GetShortUIName]。考绩案卷已有至少三项负向证据。一份为期 365 日的改进期正待开始，第 180 日复核中期进展。卷内只列一项本人能够改变的任务："
  zg361b2.40.task.governance:0 "本人可控制的任务：改善已冻结的治理指标。"
  zg361b2.40.task.capability:0 "本人可控制的任务：改善已冻结的本地能力指标。"
  zg361b2.40.task.collaboration:0 "本人可控制的任务：改善已冻结的协作指标。"
- zg361b2.40.resources:0 "若本案采用投入支持路线，且上司能提供一名导师、一个容量席位和 25 国库资金，案卷会预留 12 小时支持与一个关注席位；条件不足时只记录支持缺失，不会伪造资源。拒绝只形成下一周期 -15 证据，不在今天重复处罚。"
- zg361b2.40.a:0 "接受计划及配套支持。"
- zg361b2.40.b:0 "修改一次目标，然后开始执行。"
- zg361b2.40.c:0 "拒绝，并只让下一轮评价此事。"
- zg361b2.50.t:0 "申诉之后"
- zg361b2.50.desc:0 "申诉人：[scope:zg361_b2_escalation_subject.GetShortUIName]；案卷责任人：[scope:zg361_b2_escalation_owner.GetShortUIName]。申诉裁决已经完成；这里另行决定是公开有界证据、提交受保护报告，还是只登记制度债。"
- zg361b2.50.a:0 "公开这份有界证据包。"
+ zg361b2.40.a:0 "开始365日改进；资源齐备时预留导师、容量、25国库金、12小时支持与关注席位。"
+ zg361b2.40.b:0 "只修改一次任务，再按同样的有界支持承诺开始。"
+ zg361b2.40.c:0 "拒绝计划；只给下一周期记入 -15 证据，今天不再追加处罚。"
+ zg361b2.50.t:0 "申诉被驳回"
+ zg361b2.50.desc:0 "申诉人：[scope:zg361_b2_escalation_subject.GetShortUIName]；案卷责任人：[scope:zg361_b2_escalation_owner.GetShortUIName]。复核已经驳回本次申诉，原结果与已入账的清算继续生效。复核所据的冻结记录如下："
+ zg361b2.50.grade.375:0 "最终档位 3.75；冻结绩效指标 [ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]；同组位次第 [ROOT.MakeScope.Var('zg361_result_rank_frozen').GetValue|0] 名，共 [ROOT.MakeScope.Var('zg361_result_cohort_n_frozen').GetValue|0] 人。"
+ zg361b2.50.grade.350:0 "最终档位 3.50；冻结绩效指标 [ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]；同组位次第 [ROOT.MakeScope.Var('zg361_result_rank_frozen').GetValue|0] 名，共 [ROOT.MakeScope.Var('zg361_result_cohort_n_frozen').GetValue|0] 人。"
+ zg361b2.50.grade.325:0 "最终档位 3.25；冻结绩效指标 [ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]；同组位次第 [ROOT.MakeScope.Var('zg361_result_rank_frozen').GetValue|0] 名，共 [ROOT.MakeScope.Var('zg361_result_cohort_n_frozen').GetValue|0] 人。"
+ zg361b2.50.grade.unknown:0 "案卷没有可显示的冻结档位、绩效指标与同组位次；这里不替缺失记录编造结论。"
+ zg361b2.50.reason.0:0 "维持理由：事实档与最终档一致。"
+ zg361b2.50.reason.1:0 "维持理由：校准时被挤出 3.75 名额。"
+ zg361b2.50.reason.2:0 "维持理由：校准时被抬入 3.75 名额。"
+ zg361b2.50.reason.3:0 "维持理由：校准将本案调整为 3.25。"
+ zg361b2.50.reason.4:0 "维持理由：校准将本案从 3.25 名额中换出。"
+ zg361b2.50.reason.5:0 "维持理由：强制分布把最终档下调到事实档以下。"
+ zg361b2.50.reason.6:0 "维持理由：新人保护令本周期不直接定为 3.25。"
+ zg361b2.50.reason.7:0 "维持理由：排名与配额把最终档抬到事实档以上。"
+ zg361b2.50.reason.8:0 "维持理由：同组只有一至二人，未启动强制分布，最终档回归 3.50。"
+ zg361b2.50.reason.9:0 "维持理由：配额边界改判后，本案成为新补入的低档通知。"
+ zg361b2.50.reason.unknown:0 "案卷没有可显示的维持理由。"
+ zg361b2.50.a:0 "公开证据包；立即损失 50 威望，并在 30 日后核查真伪。"
  zg361b2.50.b:0 "匿名提交受保护报告。"
  zg361b2.50.c:0 "暂不升级，但记下一笔政策债。"
  zg361b2.60.t:0 "中性离任"
- zg361b2.60.desc:0 "你可以在不改变申诉裁决的前提下自愿离任。若接受，地方国库的五十会精确转成个人五十金币；没有资金的承诺不能签字。"
- zg361b2.60.a:0 "接受已有资金保障的中性离任。"
+ zg361b2.60.desc:0 "一份已有资金保障的自愿离任文书送到了你手中。出资责任人是[scope:zg361_b2_exit_offer_owner.GetShortUIName]，接受人是[ROOT.GetShortUIName]；这份文书不会改变被驳回的申诉，也不会改写原有证据。"
+ zg361b2.60.a:0 "接受：卸任，由责任人国库支出 50，你本人恰好收到 50 金币。"
  zg361b2.60.b:0 "留下，继续走普通程序。"
  zg361b2.110.t:0 "改进期处置"
- zg361b2.110.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_disposition_owner.GetShortUIName]。365 日改进期已经结束，但尚未达成毕业条件。上司已把当前合法路线作为可协商处置包交给你；你的选择表示接受其中一项并立即执行，仍在生效的申诉保护会暂缓执行。"
- zg361b2.110.a:0 "再延长一个周期的支持。"
- zg361b2.110.b:0 "降岗留用。"
- zg361b2.110.c:0 "安排有序致仕。"
- zg361b2.110.d:0 "接受已有资金保障的中性裁撤离任。"
+ zg361b2.110.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_disposition_owner.GetShortUIName]。365 日改进期已经结束，但尚未达到结案标准。上司把四份可协商的处置书摆在你面前；未经你接受便不能生效，仍在生效的申诉保护也会继续暂缓执行。"
+ zg361b2.110.a:0 "申请并接受最后一个周期的支持。"
+ zg361b2.110.b:0 "放弃立即争议，接受降岗留任。"
+ zg361b2.110.c:0 "请求并接受有序致仕。"
+ zg361b2.110.d:0 "接受有资金保障的中性裁撤：卸任，并从责任人国库恰好领取 50 金币。"
  zg361b2.130.t:0 "回流改判后的配额"
- zg361b2.130.desc:0 "一次申诉改判释放了一个末档义务。你可以消耗预留名额、重新划定边界并重新送达，或把义务记到下一次真实考核。"
- zg361b2.130.a:0 "按晋升机制第 157 项的原始回执退回这一格提名名额。"
+ zg361b2.130.desc:0 "申诉改判释放了一个末档义务。旧结果与旧申诉不得重复使用；若补入新的边界个案，必须另有回执和异议期限。"
+ zg361b2.130.a:0 "把一个预留的晋升提名名额退回改判后的配额。"
  zg361b2.130.b:0 "重开边界案并重新送达。"
  zg361b2.130.c:0 "把一个名额记入下一周期。"
  zg361b2.131.t:0 "新的边界通知"
@@ -5176,21 +5322,36 @@ l_simp_chinese:
  zg361b2.131.a:0 "签收新的通知。"
  zg361b2.131.b:0 "签收但提出异议。"
  zg361b2.131.c:0 "拒绝签字，要求见证送达。"
- zg361b2.160.t:0 "独立失当通知"
- zg361b2.160.desc:0 "受评官员：[ROOT.GetShortUIName]；案卷责任人：[scope:zg361_b2_separate_prompt_owner.GetShortUIName]。后续考核周期出现了新的低档事实，因此不能塞回旧申诉。这份独立通知拥有自己的回执与 90 日异议窗口。提出异议会暂停执行；只有独立复核人仍在位且新事实继续匹配时才会维持处分，否则撤销。"
+ zg361b2.160.t:0 "后续低档处分通知"
+ zg361b2.160.desc:0 "受评官员：[ROOT.GetShortUIName]；案卷责任人：[scope:zg361_b2_separate_prompt_owner.GetShortUIName]。旧申诉结束后，后续考核又冻结了一次 3.25 结果，因此本通知不能借用旧案及其裁决。新记录如下："
+ zg361b2.160.fact:0 "最终档位 3.25；绩效指标 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_kpi').GetValue|0]；同组位次第 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_rank').GetValue|0] 名，共 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_cohort').GetValue|0] 人；案号 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_case').GetValue|0]。"
+ zg361b2.160.fact.unknown:0 "本通知没有可显示的新案号、绩效指标与同组位次，因此这里不声称某项未注明的事实已经查实。"
+ zg361b2.160.reason.0:0 "定档理由：事实档与最终档一致。"
+ zg361b2.160.reason.1:0 "定档理由：校准时被挤出 3.75 名额。"
+ zg361b2.160.reason.2:0 "定档理由：校准时被抬入 3.75 名额。"
+ zg361b2.160.reason.3:0 "定档理由：校准将本案调整为 3.25。"
+ zg361b2.160.reason.4:0 "定档理由：校准将本案从 3.25 名额中换出。"
+ zg361b2.160.reason.5:0 "定档理由：强制分布把最终档下调到事实档以下。"
+ zg361b2.160.reason.6:0 "定档理由：新人保护令该周期不直接定为 3.25。"
+ zg361b2.160.reason.7:0 "定档理由：排名与配额把最终档抬到事实档以上。"
+ zg361b2.160.reason.8:0 "定档理由：同组只有一至二人，未启动强制分布，最终档回归 3.50。"
+ zg361b2.160.reason.9:0 "定档理由：配额边界改判后，本案成为新补入的低档通知。"
+ zg361b2.160.reason.unknown:0 "新结果没有附带可显示的定档理由。"
+ zg361b2.160.reviewer:0 "案卷登记的独立复核人：[ROOT.MakeScope.Var('zg361_b2_separate_reviewer').Char.GetShortUIName]。90 日期满时会再次核验其存活与回避资格。"
+ zg361b2.160.reviewer.unknown:0 "案卷没有登记合格的独立复核人；若按时提出异议，90 日自动规则便不能维持处分。"
  zg361b2.160.action.purge:0 "拟议的独立处分：免去领地职务。"
  zg361b2.160.action.retire:0 "拟议的独立处分：勒令致仕。"
  zg361b2.160.action.demote:0 "拟议的独立处分：降岗留用。"
  zg361b2.160.action.extend:0 "拟议的独立处分：延长改进计划。"
- zg361b2.160.a:0 "签收独立通知。"
- zg361b2.160.b:0 "签收但提出异议。"
- zg361b2.160.c:0 "拒绝签字，要求见证。"
- zg361b2.statement.prepared:0 "B2 案卷：已准备；正式送达前，详细证据仍受访问控制。"
- zg361b2.statement.delivered:0 "B2 案卷：已送达，并冻结有界收据与申诉期限。"
- zg361b2.statement.appeal:0 "B2 申诉：绑定对象的复核正在进行。"
- zg361b2.statement.corrected:0 "B2 申诉：已改判；实际入账的扣款只反冲一次。"
- zg361b2.statement.pip:0 "B2 改进计划：执行中，并已记录有界支持承诺。"
- zg361b2.statement.retaliation:0 "B2 保护：为期一年的绑定对象不利行动观察正在生效。"
+ zg361b2.160.a:0 "签收新案，并立即执行上述处分。"
+ zg361b2.160.b:0 "提出异议：暂停执行 90 日；事实或复核资格不成立即撤销。"
+ zg361b2.160.c:0 "拒绝签字；7 日后见证送达并执行上述处分。"
+ zg361b2.statement.prepared:0 "考绩案卷：已备妥；正式送达前，详细证据仍受查阅限制。"
+ zg361b2.statement.delivered:0 "考绩通知：已送达，并已冻结送达回执与申诉期限。"
+ zg361b2.statement.appeal:0 "考绩申诉：对本案的复核正在进行。"
+ zg361b2.statement.corrected:0 "申诉裁决：已改判；实际入账的扣款只退回一次。"
+ zg361b2.statement.pip:0 "改进计划：执行中，并已记录相应的支持承诺。"
+ zg361b2.statement.retaliation:0 "申诉保护：对本官员不利处置的一年观察期正在生效。"
 '''))
 
 

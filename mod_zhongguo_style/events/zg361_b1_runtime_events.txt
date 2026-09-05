@@ -29,7 +29,14 @@ zg361b1.201 = {
 	type = character_event
 	theme = vassal
 	title = zg361b1.201.t
-	desc = zg361b1.201.desc
+	desc = {
+		desc = zg361b1.201.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_b1_shadow_grade = 3 } desc = zg361b1.201.grade_375 }
+			triggered_desc = { trigger = { var:zg361_b1_shadow_grade = 2 } desc = zg361b1.201.grade_35 }
+			triggered_desc = { trigger = { var:zg361_b1_shadow_grade = 1 } desc = zg361b1.201.grade_325 }
+		}
+	}
 
 	option = {
 		name = zg361b1.201.a

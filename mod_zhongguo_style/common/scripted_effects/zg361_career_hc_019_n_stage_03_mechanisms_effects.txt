@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: n stage 03 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 6.
+# Boundary contract: 1-10 top-level effects; this file has 7.
 
 
 
@@ -181,6 +181,46 @@ zg361_career_hc_m102_consume_effect = {
             set_variable = { name = zg361_ch_n_conserved value = 1 }
         }
         zg361_career_hc_n_try_advance_03_effect = yes
+    }
+}
+
+# Low-risk portfolio default for #102; original card is the fallback.
+zg361_career_hc_m102_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            trigger_if = {
+                limit = {
+                    OR = {
+                        var:zg361_ch_player_batch_route = 1
+                        var:zg361_ch_player_batch_route = 2
+                    }
+                }
+                var:zg361_ch_hc_available >= 1
+            }
+            trigger_else = { always = yes }
+        }
+        zg361_career_hc_m102_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            root = { trigger_event = { id = zg361ch.103 days = 1 } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.102 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.102 days = 1 } }
     }
 }
 

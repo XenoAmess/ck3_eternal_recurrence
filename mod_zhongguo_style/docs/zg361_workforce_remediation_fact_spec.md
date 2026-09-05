@@ -18,10 +18,7 @@
 
 打开时只冻结 requirement：owner、subject、source cycle/case/state、拒绝理由、与 core `hold_due_cycle` 相同的截止周期，以及 subject-local 只增 requirement ID。首次 ID 为 1；后续 serial、requirement ID 与 delayed-event ticket 都分别从此前已提交的 counter 计算同一个 next value，不读取本 effect 刚写的值。打开、排队或 AI blocked 状态都不会写 completion alias。
 
-玩家 owner 在 30 日后的唯一事件中明确选择：
-
-1. `RESULT=1`：整改完成并核验；
-2. `RESULT=2`：整改失败。
+玩家 owner 在 30 日后的唯一事件中只能据实落下 `RESULT=2`（整改未获证明）。当前 source 没有冻结拒绝时原条款、整改后新条款或候选人复核，因此可见事件不暴露 `RESULT=1`，也不能把计划或承诺冒充完成。`RESULT=1` 仅保留为未来有真实新旧条款 producer 时可复用的底层 ABI，当前没有玩家可见入口。
 
 两条终态都只生成一次 receipt，并冻结 `receipt_owner/subject/cycle/case/result/reason_id/requirement_id/serial/id/hash`。每个 subject 的新 exact case 使用只增 serial；ID 由 serial/result 组成，hash 还折叠冻结的 cycle/case/reason/result。owner/subject 是 receipt tuple 的 opaque identity 字段，不伪装成可算数 hash；ID/hash 从不单独充当全局身份，也不接受 caller 参数。相同终态重放 idempotent；改变 result 的重放、过期 tuple、错误 actor 或缺 core hold 都 typed RED 且不改 receipt。完成结果另发布 `pending=1/consumed=0`；失败结果保持二者为零。
 
@@ -40,7 +37,7 @@ zg361_we_ad_external_m275_remediated_reason_id
 
 ## 4. Readiness 与已接 ABI
 
-静态测试只证明生成可复现、BOM/九语结构、真实 source guard、玩家 owner 两个终态、receipt 一次性与 legacy alias 只在完成分支写入。它没有 CK3 parser、事件点击、30 日 scheduler、存读档或 paused snapshot 证据。
+静态测试只证明生成可复现、BOM/九语结构、真实 source guard、玩家可见事件只允许未获证明终态、receipt 一次性与 legacy alias 只在底层完成分支写入。它没有 CK3 parser、事件点击、30 日 scheduler、存读档或 paused snapshot 证据。
 
 master 集成已从 #275 route B 成功分支排入 D+1 事件，并在该已提交边界的 subject scope 调用：
 

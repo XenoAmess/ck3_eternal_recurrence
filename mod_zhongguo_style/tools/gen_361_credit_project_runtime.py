@@ -20,8 +20,10 @@ MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
-DEFER_ROUTE_EN = "Close this item without its business action; record one next-cycle policy debt. It will not be proposed again automatically."
-DEFER_ROUTE_CN = "本轮不执行该业务动作并关闭本项；登记一笔下周期制度债，且不会自动重提。"
+DEFER_ROUTE_EN = "Close this item and record policy debt."
+DEFER_ROUTE_CN = "关闭本项，登记制度债。"
+DEFER_TOOLTIP_EN = "No business action is taken. One next-cycle policy debt is recorded, and this item will not be proposed again automatically."
+DEFER_TOOLTIP_CN = "不执行业务动作；登记一笔下周期制度债。本项不会自动重提。"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -35,6 +37,8 @@ LANGUAGES = (
 )
 EFFECTS_DIR = Path("common") / "scripted_effects"
 LEGACY_EFFECT_FILENAME = "zg361_credit_project_runtime_effects.txt"
+EVENTS_DIR = Path("events")
+LEGACY_EVENT_FILENAME = "zg361_credit_project_runtime_events.txt"
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
 # Any future hard-limit exception must carry both an engineering reason and a
@@ -79,8 +83,8 @@ def m(
         field,
         title_en,
         title_cn,
-        desc_en + " Routes A and B enact the stated business choice; route C only closes this item and records policy debt.",
-        desc_cn + " 路线甲、乙会执行所述业务选择；路线丙只关闭本项并登记制度债。",
+        desc_en,
+        desc_cn,
         # The acceptance/runtime program is authoritative: route C is the
         # mechanism-specific policy.defer control route, never a third
         # business payload.  The legacy per-item C copy remains accepted by
@@ -108,8 +112,8 @@ MECHANISMS = (
       "Uphold a bounded manager claim.", "Reverse the grab after evidence review.", "Reject the unsupported claim without transfer.",
       "支持一笔有界的上司主张。", "审证后完整回拨抢功。", "驳回无证据主张，不发生转移。"),
     m(29, "e", 4, "metric_audit", "Metric Packaging and Audit", "指标包装与审计",
-      "Short-term KPI gain, delayed cost and fraud clawback settle as separate traceable entries.",
-      "短期指标收益、延迟成本与造假回拨必须分账结算并可追溯。",
+      "The audit has reached one disputed gain. The file must distinguish a genuine improvement from metric gaming and preserve any delayed cost as a traceable entry.",
+      "审计已追到一笔有争议的收益。本案必须分清真实改善与指标博弈，并把延迟成本留下可追溯记录。",
       "Record a genuine improvement.", "Record gaming and its delayed cost.", "Record fraud and claw the gain back.",
       "记录真实改善。", "记录指标博弈及其延迟成本。", "记录造假并追回全部短期收益。"),
     m(30, "e", 1, "resource_race", "One Project Wins the Capacity Race", "资源赛马只产生一个赢家",
@@ -148,8 +152,8 @@ MECHANISMS = (
       "Route to the direct manager only.", "Route to direct and skip-level managers.", "Route with a cross-department evidence copy.",
       "只送直属上司。", "同时送直属与越级上司。", "附跨部门证据副本后路由。"),
     m(59, "i", 3, "risk_timing", "Bad News Has a Timestamp", "坏消息必须有时间戳",
-      "Early, delayed and hidden risk reports produce different remaining loss and integrity receipts.",
-      "早报、迟报与隐瞒会产生不同的剩余损失和诚信回执。",
+      "The risk has entered its reporting window. Every delay now leaves more loss unresolved and weakens the integrity receipt attached to the file.",
+      "风险已经进入报告时限。此后每拖延一步，未化解的损失都会增加，案卷上的诚信回执也会变差。",
       "Report early and halve the remaining loss.", "Report late and retain the full loss.", "Hide it and double the loss.",
       "提前报告，把剩余损失减半。", "延迟报告，承担全部损失。", "继续隐瞒，让损失翻倍。"),
     m(60, "i", 4, "idea_arbitration", "The Frozen Version Owns the Idea", "创意归属服从冻结版本",
@@ -158,18 +162,18 @@ MECHANISMS = (
       "Uphold the original author.", "Recognize a proven joint authorship.", "Reject the theft allegation for lack of matching provenance.",
       "支持原作者。", "认可证据充分的共同作者。", "来源不匹配，驳回窃取指控。"),
     m(61, "i", 1, "report_policy", "Choose the Reporting Regime First", "先定汇报制度",
-      "Short facts, long narrative and exception-only reporting carry different capacity costs.",
-      "短事实、长叙事与仅报异常三种制度，消耗的容量不同。",
+      "No common reporting rule exists yet. A short fact sheet and a long narrative consume different shares of the same project capacity.",
+      "眼下还没有统一汇报规则。短事实表与长叙事会从同一份项目容量中拿走不同份额。",
       "Use short factual reports.", "Require long narrative reports.", "Report exceptions only.",
       "采用短事实汇报。", "要求长叙事汇报。", "只汇报异常。"),
     m(62, "j", 2, "matrix_conflict", "Two Lines, One Recorded Choice", "两条汇报线，只能留下一个选择",
-      "Conflicting priorities must resolve by frozen weights, joint arbitration or an explicit integrity debt.",
-      "目标冲突必须按冻结权重、联合仲裁或明确的诚信债处理。",
+      "Two managers have issued incompatible priorities. The frozen weights and a joint arbitration are the available grounds for leaving one accountable instruction.",
+      "两名上司下达了互不相容的目标。现有冻结权重与联合仲裁，是留下唯一责任指令的两项依据。",
       "Follow the heavier solid-line weight.", "Use joint arbitration.", "Promise both and record integrity debt.",
       "服从权重更高的实线。", "提交联合仲裁。", "两边都答应，并记录诚信债。"),
     m(63, "j", 1, "matrix_weights", "Lock Solid and Dotted Weights", "锁定实线与虚线权重",
-      "Two manager weights are frozen at cycle start and must total exactly one hundred.",
-      "周期开始时冻结两名管理者的权重，合计必须正好一百。",
+      "Two managers are competing for the same assessment authority this cycle, while the solid- and dotted-line weights do not yet close to one hundred.",
+      "两名上司在本周期争用同一份考核权，而案卷中的实线与虚线权重还没有合计到一百。",
       "Use seventy-thirty toward the solid line.", "Use equal weights.", "Use forty-sixty toward the dotted line.",
       "实线七成、虚线三成。", "双方各半。", "实线四成、虚线六成。"),
     m(64, "j", 3, "manager_handoff", "A Manager Handoff Needs Both Owners Named", "换上司必须列明新旧责任人",
@@ -183,13 +187,13 @@ MECHANISMS = (
       "Import two of ten staff.", "Import three and trigger the audit threshold.", "Import six and expose severe memory loss.",
       "十人中带入两名旧部。", "带入三人并触发审计阈值。", "带入六人，暴露严重记忆流失。"),
     m(66, "j", 4, "strategic_cancel", "Business Cancellation Is Not Personal Failure", "业务取消不等于个人失败",
-      "A strategic cancellation releases unspent capacity while preserving independently verified contribution.",
-      "战略取消会释放未花容量，同时保留已独立验证的个人贡献。",
+      "The strategic review supports cancellation, but the file still mixes unspent capacity with independently verified personal contribution.",
+      "战略复核已经支持取消项目，案卷却仍把未花容量与已独立验证的个人贡献混在一起。",
       "Cancel now and preserve verified credit.", "Approve a later cancellation without rewriting credit.", "Keep the project active and record the strategic review.",
       "立即取消，并保留已验证功劳。", "批准稍后取消，不改写个人功劳。", "项目继续，但留下战略复核记录。"),
     m(67, "j", 4, "duplicate_role", "Two Incumbents Need One Terminal Owner", "一岗两人最终只能有一个 owner",
-      "Competition, retention or a bounded transition must end with exactly one accountable role owner.",
-      "公开竞争、直接保留或有界过渡，最终都必须留下唯一责任人。",
+      "Two incumbents are recorded against the same office. The file cannot close until exactly one of them remains accountable for it.",
+      "同一职司名下同时挂着两名现任者。案卷只有在其中一人成为唯一责任人后才能结清。",
       "Retain the assessed official.", "Retain the cross-department incumbent.", "Run a bounded transition and name one terminal owner.",
       "保留受评官员。", "保留跨部门现任者。", "完成有界过渡，并指定唯一终态 owner。"),
     m(68, "j", 4, "portable_history", "History Travels; Authorship Does Not", "履历可携带，历史作者不改写",
@@ -208,8 +212,8 @@ MECHANISMS = (
       "Disclose the PIP and run a supported trial.", "Rescue a proven wrong-role placement.", "Hide the PIP; failed trial returns liability to the source manager.",
       "披露 PIP，并进行有支持的试用。", "以错岗证据完成岗位救援。", "隐瞒 PIP；试用失败后责任回到原上司。"),
     m(131, "r", 1, "project_track", "Exploration and Commitment Are Different Tracks", "探索项目与承诺项目分轨",
-      "The project track and its success rule are frozen at registration, before results are known.",
-      "项目类型和成功口径必须在登记时、结果未知前冻结。",
+      "Results are not known yet. Registration must now fix whether this is exploratory work or a firm commitment and bind the matching success rule.",
+      "结果尚未出现。本案现在必须登记为探索项目或承诺项目，并同时锁定相应的成功口径。",
       "Register an exploration track.", "Register a commitment track.", "Register a bounded hybrid under commitment rules.",
       "登记为探索型项目。", "登记为承诺型项目。", "按承诺规则登记有界混合项目。"),
     m(132, "r", 4, "stop_loss", "A Timely Stop Can Earn Credit", "及时止损也可以算功",
@@ -223,8 +227,8 @@ MECHANISMS = (
       "Record learning with no proven violation.", "Record system learning and one named violation.", "Record a control repair and manager liability.",
       "记录学习，不认定个人违规。", "记录系统学习及一项具名违规。", "记录控制修复与上司责任。"),
     m(134, "r", 2, "shared_metric_owner", "A Shared Metric Still Has One Owner", "共享指标仍然只有一个 owner",
-      "Contributors and dependencies may be many, but settlement authority is assigned exactly once.",
-      "贡献者和依赖方可以很多，但最终结算责任只能分配一次。",
+      "Several contributors appear in the file, but final settlement authority can be assigned only once. Both the subject and the direct manager have a documented claim.",
+      "案卷列出了多名贡献者，但最终结算责任只能分配一次；受评者与直属上司都留有可核的责任主张。",
       "Assign the subject as sole owner.", "Assign the direct manager as sole owner.", "Assign the cross-department lead as sole owner.",
       "指定受评者为唯一 owner。", "指定直属上司为唯一 owner。", "指定跨部门负责人为唯一 owner。"),
 )
@@ -244,6 +248,13 @@ STAGE_LAST = {
 }
 NEXT_DOMAIN = {"e": "i", "i": "j", "j": "r", "r": None}
 QUEUE_EVENTS = {"e": 9001, "i": 9002, "j": 9003}
+BATCH_MODE_EVENT = 9050
+BATCH_DISPATCH_EVENT_BASE = 9200
+# These cards contain no payment, response, delay, personnel-disposition or
+# settlement decision. They may execute the player's frozen portfolio mode
+# without opening another window. Every other card keeps its original event.
+BATCHABLE_IDS = frozenset({31, 56, 57, 58, 61, 62, 63, 65, 68, 131, 134})
+RETAINED_POPUP_IDS = frozenset({26, 27, 28, 29, 30, 54, 55, 59, 60, 64, 66, 67, 129, 130, 132, 133})
 EXPECTED_IDS = (
     set(range(26, 32))
     | set(range(54, 62))
@@ -283,6 +294,10 @@ def validate_specs() -> None:
         raise ValueError("domain order must contain every requested ID exactly once")
     if len({spec.field for spec in MECHANISMS}) != 27:
         raise ValueError("every mechanism needs a unique semantic field")
+    if BATCHABLE_IDS & RETAINED_POPUP_IDS:
+        raise ValueError("batchable and retained-popup credit/project IDs overlap")
+    if BATCHABLE_IDS | RETAINED_POPUP_IDS != EXPECTED_IDS:
+        raise ValueError("batchable and retained-popup IDs must partition the package")
     for domain, order in DOMAIN_ORDER.items():
         states = [specs[mid].state for mid in order]
         if states != sorted(states):
@@ -1115,6 +1130,12 @@ def final_domain_action(domain: str) -> str:
     return "zg361_cp_finalize_portfolio_effect = yes"
 
 
+def player_event_id(mid: int) -> int:
+    """Return the hidden batch dispatcher or the original visible event."""
+
+    return BATCH_DISPATCH_EVENT_BASE + mid if mid in BATCHABLE_IDS else mid
+
+
 def render_route(spec: Mechanism, choice: int) -> str:
     d, mid = spec.domain, spec.mid
     letter = "abc"[choice - 1]
@@ -1310,6 +1331,7 @@ def render_ai(domain: str) -> str:
 
 def render_launch(domain: str) -> str:
     first = DOMAIN_ORDER[domain][0]
+    first_event = BATCH_MODE_EVENT if domain == "e" else player_event_id(first)
     portfolio_init = "\n\t\tzg361_cp_initialize_portfolio_effect = yes" if domain == "e" else ""
     return f"""# Subject-scope entry; ROOT remains the eligible direct manager.
 zg361_cp_{domain}_launch_effect = {{
@@ -1334,7 +1356,7 @@ zg361_cp_{domain}_launch_effect = {{
 \t\t}}
 \t\telse_if = {{
 \t\t\tlimit = {{ root = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
-\t\t\tscope:zg361_cp_{domain}_owner = {{ trigger_event = {{ id = zg361cp.{first} }} }}
+\t\t\tscope:zg361_cp_{domain}_owner = {{ trigger_event = {{ id = zg361cp.{first_event} }} }}
 \t\t}}
 \t}}
 }}"""
@@ -1716,6 +1738,7 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
     letter = "abc"[choice - 1]
     next_event = ""
     if next_mid is not None:
+        next_event_id = player_event_id(next_mid)
         next_event = f"""
 \tif = {{
 \t\tlimit = {{
@@ -1727,21 +1750,38 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
 \t\t\t\ttrigger_else = {{ always = no }}
 \t\t\t}}
 \t\t}}
-\t\ttrigger_event = {{ id = zg361cp.{next_mid} days = 1 }}
+\t\ttrigger_event = {{ id = zg361cp.{next_event_id} days = 1 }}
 \t}}"""
     option_trigger = ""
     business_checks: list[str] = []
     if choice in (1, 2):
         # Once any control-plane defer is chosen, later A/B business routes
-        # are unavailable because their prerequisite objects may deliberately
-        # not exist.  C remains available and carries the case to closure.
-        business_checks += [
-            "trigger_if = {",
-            "\tlimit = { has_variable = zg361_cp_portfolio_deferred }",
-            "\tvar:zg361_cp_portfolio_deferred = 0",
-            "}",
-            "trigger_else = { always = no }",
-        ]
+        # normally remain unavailable because prerequisite objects may not
+        # exist. Mode C is narrower: it closes only the eleven frozen low-risk
+        # items, so each retained high-value card still exposes its original
+        # A/B decisions and lets their unchanged preflight accept or reject it.
+        if spec.mid in RETAINED_POPUP_IDS:
+            business_checks += [
+                "trigger_if = {",
+                "\tlimit = { has_variable = zg361_cp_portfolio_deferred }",
+                "\tOR = {",
+                "\t\tvar:zg361_cp_portfolio_deferred = 0",
+                "\t\tAND = {",
+                "\t\t\thas_variable = zg361_cp_player_batch_mode",
+                "\t\t\tvar:zg361_cp_player_batch_mode = 3",
+                "\t\t}",
+                "\t}",
+                "}",
+                "trigger_else = { always = no }",
+            ]
+        else:
+            business_checks += [
+                "trigger_if = {",
+                "\tlimit = { has_variable = zg361_cp_portfolio_deferred }",
+                "\tvar:zg361_cp_portfolio_deferred = 0",
+                "}",
+                "trigger_else = { always = no }",
+            ]
     if spec.mid == 54 and choice in (1, 2):
         policy_hours = (1, 4, 1)[choice - 1]
         business_checks += [
@@ -1767,8 +1807,9 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
 {indent(chr(10).join(business_checks), 3)}
 \t\t}}
 \t}}"""
+    tooltip = f"\n\tcustom_tooltip = zg361cp.{mid}.c.tt" if choice == 3 else ""
     return f"""option = {{
-\tname = zg361cp.{mid}.{letter}
+\tname = zg361cp.{mid}.{letter}{tooltip}
 {option_trigger}
 \tscope:zg361_cp_{d}_subject = {{
 \t\tzg361_cp_m{mid}_route_{letter}_effect = {{
@@ -1778,6 +1819,114 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
 \t\t\tTICKET_CASE = scope:zg361_cp_{d}_case
 \t\t}}
 \t}}{next_event}
+}}"""
+
+
+def render_batch_mode_option(letter: str, mode: int) -> str:
+    tooltip = "\n\tcustom_tooltip = zg361cp.batch.c.tt" if mode == 3 else ""
+    return f"""option = {{
+\tname = zg361cp.batch.{letter}{tooltip}
+\tscope:zg361_cp_e_subject = {{
+\t\tset_variable = {{ name = zg361_cp_player_batch_mode value = {mode} }}
+\t}}
+\ttrigger_event = {{ id = zg361cp.{DOMAIN_ORDER['e'][0]} days = 1 }}
+}}"""
+
+
+def render_batch_mode_event() -> str:
+    spec = by_id()[DOMAIN_ORDER["e"][0]]
+    options = "\n".join(
+        render_batch_mode_option(letter, mode)
+        for letter, mode in zip("abcd", (1, 2, 3, 4))
+    )
+    return f"""# One player choice freezes how the eleven low-risk cards are handled.
+zg361cp.{BATCH_MODE_EVENT} = {{
+\ttype = character_event
+\ttheme = stewardship
+\ttitle = zg361cp.batch.t
+\tdesc = zg361cp.batch.desc
+\ttrigger = {{
+{indent(event_guard(spec), 2)}
+\t}}
+{indent(options)}
+}}"""
+
+
+def render_batch_route_call(spec: Mechanism, choice: int) -> str:
+    letter = "abc"[choice - 1]
+    d, mid = spec.domain, spec.mid
+    return f"""scope:zg361_cp_{d}_subject = {{
+\tzg361_cp_m{mid}_route_{letter}_effect = {{
+\t\tTICKET_OWNER = scope:zg361_cp_{d}_owner
+\t\tTICKET_SUBJECT = scope:zg361_cp_{d}_subject
+\t\tTICKET_CYCLE = scope:zg361_cp_{d}_cycle
+\t\tTICKET_CASE = scope:zg361_cp_{d}_case
+\t}}
+}}"""
+
+
+def render_batch_dispatch_event(spec: Mechanism, next_mid: int | None) -> str:
+    """Render one fail-open dispatcher around the unchanged route cores.
+
+    The dispatcher never guesses around a failed tuple/resource preflight.  It
+    calls the exact original event whenever the chosen core does not produce
+    ``runtime_applied = 1``; mode D and a missing/invalid mode do the same.
+    """
+
+    d, mid = spec.domain, spec.mid
+    route_branches = "\n".join(
+        (
+            ("if" if choice == 1 else "else_if")
+            + f" = {{\n\tlimit = {{ scope:zg361_cp_{d}_subject = {{ var:zg361_cp_player_batch_mode = {choice} }} }}\n"
+            + indent(render_batch_route_call(spec, choice))
+            + "\n}"
+        )
+        for choice in (1, 2, 3)
+    )
+    applied_guard = f"""scope:zg361_cp_{d}_subject = {{
+\ttrigger_if = {{
+\t\tlimit = {{ has_variable = zg361_cp_runtime_applied }}
+\t\tvar:zg361_cp_runtime_applied = 1
+\t}}
+\ttrigger_else = {{ always = no }}
+}}"""
+    if next_mid is not None:
+        outcome = f"""if = {{
+\tlimit = {{
+{indent(applied_guard, 2)}
+\t}}
+\ttrigger_event = {{ id = zg361cp.{player_event_id(next_mid)} days = 1 }}
+}}
+else = {{ trigger_event = {{ id = zg361cp.{mid} }} }}"""
+    else:
+        outcome = f"""if = {{
+\tlimit = {{
+\t\tNOT = {{
+{indent(applied_guard, 3)}
+\t\t}}
+\t}}
+\ttrigger_event = {{ id = zg361cp.{mid} }}
+}}"""
+    return f"""# #{mid:03d} hidden portfolio-mode dispatcher; every failure restores the original card.
+zg361cp.{player_event_id(mid)} = {{
+\ttype = character_event
+\thidden = yes
+\ttrigger = {{ is_ai = no }}
+\timmediate = {{
+\t\tif = {{
+\t\t\tlimit = {{
+{indent(event_guard(spec), 4)}
+\t\t\t\tscope:zg361_cp_{d}_subject = {{
+\t\t\t\t\thas_variable = zg361_cp_player_batch_mode
+\t\t\t\t\tvar:zg361_cp_player_batch_mode >= 1
+\t\t\t\t\tvar:zg361_cp_player_batch_mode <= 3
+\t\t\t\t}}
+\t\t\t}}
+{indent(route_branches, 3)}
+{indent(outcome, 3)}
+\t\t}}
+\t\telse = {{ trigger_event = {{ id = zg361cp.{mid} }} }}
+\t}}
 }}"""
 
 
@@ -1822,17 +1971,10 @@ zg361cp.{event_id} = {{
 }}"""
 
 
-def render_events() -> bytes:
-    validate_specs()
-    specs = by_id()
-    events = ["namespace = zg361cp"]
-    for domain in ("e", "i", "j", "r"):
-        order = DOMAIN_ORDER[domain]
-        for index, mid in enumerate(order):
-            spec = specs[mid]
-            next_mid = order[index + 1] if index + 1 < len(order) else None
-            options = "\n".join(render_option(spec, choice, next_mid) for choice in (1, 2, 3))
-            events.append(f"""# #{mid:03d} — {spec.title_en}
+def render_case_event(spec: Mechanism, next_mid: int | None) -> str:
+    mid = spec.mid
+    options = "\n".join(render_option(spec, choice, next_mid) for choice in (1, 2, 3))
+    return f"""# #{mid:03d} — {spec.title_en}
 zg361cp.{mid} = {{
 \ttype = character_event
 \ttheme = stewardship
@@ -1842,35 +1984,132 @@ zg361cp.{mid} = {{
 {indent(event_guard(spec), 2)}
 \t}}
 {indent(options)}
-}}""")
-    events.extend(render_queue_event(domain) for domain in ("e", "i", "j"))
-    return generated("\n\n".join(events))
+}}"""
+
+
+def event_shard_sections() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
+    """Keep each event file purpose-specific and below ten event blocks."""
+
+    specs = by_id()
+    shards: list[tuple[str, str, tuple[str, ...]]] = [
+        (
+            "zg361_credit_project_portfolio_events.txt",
+            "portfolio mode entry and cross-domain D+1 queue edges",
+            (
+                render_batch_mode_event(),
+                *(render_queue_event(domain) for domain in ("e", "i", "j")),
+            ),
+        )
+    ]
+    for domain, order in DOMAIN_ORDER.items():
+        cases: list[str] = []
+        dispatchers: list[str] = []
+        for index, mid in enumerate(order):
+            next_mid = order[index + 1] if index + 1 < len(order) else None
+            spec = specs[mid]
+            cases.append(render_case_event(spec, next_mid))
+            if mid in BATCHABLE_IDS:
+                dispatchers.append(render_batch_dispatch_event(spec, next_mid))
+        shards.append(
+            (
+                f"zg361_credit_project_{domain}_case_events.txt",
+                f"domain {domain.upper()} player case cards",
+                tuple(cases),
+            )
+        )
+        if dispatchers:
+            shards.append(
+                (
+                    f"zg361_credit_project_{domain}_batch_events.txt",
+                    f"domain {domain.upper()} hidden portfolio-mode dispatchers",
+                    tuple(dispatchers),
+                )
+            )
+    return tuple(shards)
+
+
+def render_event_shards() -> dict[Path, bytes]:
+    validate_specs()
+    return {
+        MOD_ROOT / EVENTS_DIR / filename: generated(
+            f"# PURPOSE: {purpose}\nnamespace = zg361cp\n\n" + "\n\n".join(sections)
+        )
+        for filename, purpose, sections in event_shard_sections()
+    }
+
+
+def event_output_paths() -> tuple[Path, ...]:
+    return tuple(render_event_shards())
+
+
+def legacy_event_path() -> Path:
+    return MOD_ROOT / EVENTS_DIR / LEGACY_EVENT_FILENAME
+
+
+def render_events() -> bytes:
+    """Render a test-only aggregate; release output always uses event shards."""
+
+    sections = [section for _filename, _purpose, shard in event_shard_sections() for section in shard]
+    return generated("namespace = zg361cp\n\n" + "\n\n".join(sections))
 
 
 def esc(text: str) -> str:
     return text.replace("\\", "\\\\").replace('"', '\\"')
 
 
+CASE_OPENING_CN = {
+    "e": "一份贡献与工时底稿已经摊开：[scope:zg361_cp_e_subject.GetShortUIName]是本案当事人，[scope:zg361_cp_e_owner.GetShortUIName]将作裁决。",
+    "i": "一份项目汇报案卷已经送达：[scope:zg361_cp_i_subject.GetShortUIName]是本案当事人，[scope:zg361_cp_i_owner.GetShortUIName]将作裁决。",
+    "j": "一宗跨线任用案已经送达：[scope:zg361_cp_j_subject.GetShortUIName]是本案当事人，[scope:zg361_cp_j_owner.GetShortUIName]将作裁决。",
+    "r": "一份在办项目案卷已经送达：[scope:zg361_cp_r_subject.GetShortUIName]是本案当事人，[scope:zg361_cp_r_owner.GetShortUIName]将作裁决。",
+}
+CASE_OPENING_EN = {
+    "e": "A contribution and time ledger is open: [scope:zg361_cp_e_subject.GetShortUIName] is the subject, and [scope:zg361_cp_e_owner.GetShortUIName] will decide the case.",
+    "i": "A project reporting file has arrived: [scope:zg361_cp_i_subject.GetShortUIName] is the subject, and [scope:zg361_cp_i_owner.GetShortUIName] will decide the case.",
+    "j": "A cross-line appointment case has arrived: [scope:zg361_cp_j_subject.GetShortUIName] is the subject, and [scope:zg361_cp_j_owner.GetShortUIName] will decide it.",
+    "r": "An active project file has arrived: [scope:zg361_cp_r_subject.GetShortUIName] is the subject, and [scope:zg361_cp_r_owner.GetShortUIName] will decide it.",
+}
+BATCH_COPY_CN = {
+    "t": "本轮办案方式",
+    "desc": "本轮项目案卷已经归集：[scope:zg361_cp_e_subject.GetShortUIName]是当事人，[scope:zg361_cp_e_owner.GetShortUIName]将作裁决。其中十一项属于常规登记，其余十六项涉及付款、回应、期限、去留或结算，仍须逐案审理。当前未清制度债为[scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]笔。",
+    "a": "以可追溯证据为准，统一办理十一项常规案；条件不足者单独呈报。",
+    "b": "以执行速度为先，统一办理十一项常规案；条件不足者单独呈报。",
+    "c": "关闭十一项常规案并各记一笔制度债；条件不足者单独呈报。",
+    "d": "保留全部二十七项案卷，逐项裁决。",
+    "c.tt": "实际新增数严格等于本次真正关闭的常规案数，每案至多记一笔；已经办结的案卷不会重复记账。涉及付款、回应、期限、去留或结算的其余十六项仍会逐案呈报，另行裁决。",
+}
+BATCH_COPY_EN = {
+    "t": "Method for This Portfolio",
+    "desc": "This project portfolio is assembled: [scope:zg361_cp_e_subject.GetShortUIName] is the subject, and [scope:zg361_cp_e_owner.GetShortUIName] will decide it. Eleven entries are routine records; the other sixteen involve payment, response, deadlines, personnel disposition, or settlement and still require individual judgment. Existing unresolved policy debt: [scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0].",
+    "a": "Resolve eleven routine cases by traceable evidence; report any case lacking conditions separately.",
+    "b": "Resolve eleven routine cases for execution speed; report any case lacking conditions separately.",
+    "c": "Close eleven routine cases with one policy debt each; report any case lacking conditions separately.",
+    "d": "Keep all twenty-seven case records and decide each one.",
+    "c.tt": "The number added equals the routine cases actually closed, at no more than one debt per case; an already resolved case is never recorded twice. The other sixteen cases involving payment, response, deadlines, personnel disposition, or settlement still arrive for individual judgment.",
+}
+
+
 def render_localization(language: str) -> bytes:
     validate_specs()
     chinese = language == "simp_chinese"
-    rows: list[str] = []
+    batch_copy = BATCH_COPY_CN if chinese else BATCH_COPY_EN
+    rows: list[str] = [
+        f' zg361cp.batch.{key}:0 "{esc(value)}"'
+        for key, value in batch_copy.items()
+    ]
     for spec in MECHANISMS:
         title = spec.title_cn if chinese else spec.title_en
         desc = (
-            f"当事人：[scope:zg361_cp_{spec.domain}_subject.GetShortUIName]；裁决者："
-            f"[scope:zg361_cp_{spec.domain}_owner.GetShortUIName]。{spec.desc_cn} "
-            "本卡承接同一项目案卷的上一项回执，选择会立即写入；按钮写明本项实际处理。"
+            f"{CASE_OPENING_CN[spec.domain]}{spec.desc_cn}"
             if chinese
-            else f"Official: [scope:zg361_cp_{spec.domain}_subject.GetShortUIName]. Decision owner: "
-            f"[scope:zg361_cp_{spec.domain}_owner.GetShortUIName]. {spec.desc_en} "
-            "This card follows the previous receipt in the same project case and records the choice immediately; each option states the action taken."
+            else f"{CASE_OPENING_EN[spec.domain]} {spec.desc_en}"
         )
         routes = spec.routes_cn if chinese else spec.routes_en
         rows += [
             f' zg361cp.{spec.mid}.t:0 "{esc(title)}"',
             f' zg361cp.{spec.mid}.desc:0 "{esc(desc)}"',
             *(f' zg361cp.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", routes)),
+            f' zg361cp.{spec.mid}.c.tt:0 "{esc(DEFER_TOOLTIP_CN if chinese else DEFER_TOOLTIP_EN)}"',
         ]
     if chinese:
         rows = normalize_localization_rows(rows)
@@ -1880,7 +2119,7 @@ def render_localization(language: str) -> bytes:
 def outputs() -> dict[Path, bytes]:
     rendered = {
         **render_effect_shards(),
-        MOD_ROOT / "events" / "zg361_credit_project_runtime_events.txt": render_events(),
+        **render_event_shards(),
     }
     for language in LANGUAGES:
         rendered[MOD_ROOT / "localization" / language / f"zg361_credit_project_l_{language}.yml"] = render_localization(language)
@@ -1899,12 +2138,12 @@ def sync_outputs(*, check: bool) -> list[Path]:
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(payload)
-    legacy = legacy_effect_path()
-    if legacy.exists():
-        if check:
-            drift.append(legacy)
-        else:
-            legacy.unlink()
+    for legacy in (legacy_effect_path(), legacy_event_path()):
+        if legacy.exists():
+            if check:
+                drift.append(legacy)
+            else:
+                legacy.unlink()
     return drift
 
 

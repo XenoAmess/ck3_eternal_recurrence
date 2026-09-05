@@ -1,3 +1,3 @@
 ﻿l_simp_chinese:
- zg361_workforce_exit_fact_career_slot_court_position:0 "三六一正式在岗编制"
- zg361_workforce_exit_fact_career_slot_court_position_desc:0 "任命确认后的正式在岗职位，不另发俸禄；官员在任期间持续保留，只有登记离任后才结束。"
+ zg361_workforce_exit_fact_career_slot_court_position:0 "正式属官"
+ zg361_workforce_exit_fact_career_slot_court_position_desc:0 "此职用于登记已经确认的正式任命，不另发俸禄；官员在任时持续保留，登记离任后才会释放。"

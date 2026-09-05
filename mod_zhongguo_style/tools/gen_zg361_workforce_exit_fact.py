@@ -2022,16 +2022,16 @@ def event_paths() -> tuple[Path, ...]:
 
 def _loc_rows(language: str) -> dict[str, str]:
     english = {
-        POSITION_KEY: "361 Formal Career Slot",
+        POSITION_KEY: "Established Officer",
         f"{POSITION_KEY}_desc": (
-            "A zero-salary formal office for a confirmed appointment. "
-            "It remains while the appointee serves and ends only after a recorded departure."
+            "This post records a confirmed appointment and carries no separate salary. "
+            "It remains while the officer serves and is released only after the departure is recorded."
         ),
     }
     chinese = {
-        POSITION_KEY: "三六一正式在岗编制",
+        POSITION_KEY: "正式属官",
         f"{POSITION_KEY}_desc": (
-            "任命确认后的正式在岗职位，不另发俸禄；官员在任期间持续保留，只有登记离任后才结束。"
+            "此职用于登记已经确认的正式任命，不另发俸禄；官员在任时持续保留，登记离任后才会释放。"
         ),
     }
     return chinese if language == "simp_chinese" else english

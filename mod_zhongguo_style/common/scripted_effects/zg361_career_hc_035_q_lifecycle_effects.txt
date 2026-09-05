@@ -87,35 +87,27 @@ zg361_career_hc_open_q_case_effect = {
         set_variable = { name = zg361_ch_m128_business_object_count value = 0 }
             set_variable = { name = zg361_ch_m121_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m121_consumed value = 0 }
-        set_variable = { name = zg361_ch_m121_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m121_deferred value = 0 }
         set_variable = { name = zg361_ch_m122_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m122_consumed value = 0 }
-        set_variable = { name = zg361_ch_m122_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m122_deferred value = 0 }
         set_variable = { name = zg361_ch_m123_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m123_consumed value = 0 }
-        set_variable = { name = zg361_ch_m123_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m123_deferred value = 0 }
         set_variable = { name = zg361_ch_m124_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m124_consumed value = 0 }
-        set_variable = { name = zg361_ch_m124_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m124_deferred value = 0 }
         set_variable = { name = zg361_ch_m125_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m125_consumed value = 0 }
-        set_variable = { name = zg361_ch_m125_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m125_deferred value = 0 }
         set_variable = { name = zg361_ch_m126_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m126_consumed value = 0 }
-        set_variable = { name = zg361_ch_m126_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m126_deferred value = 0 }
         set_variable = { name = zg361_ch_m127_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m127_consumed value = 0 }
-        set_variable = { name = zg361_ch_m127_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m127_deferred value = 0 }
         set_variable = { name = zg361_ch_m128_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m128_consumed value = 0 }
-        set_variable = { name = zg361_ch_m128_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m128_deferred value = 0 }
         set_variable = { name = zg361_ch_q_s1_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_q_s1_x_deadline_expired value = 0 }

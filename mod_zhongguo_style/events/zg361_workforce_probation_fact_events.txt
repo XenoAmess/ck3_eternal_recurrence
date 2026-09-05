@@ -18,7 +18,19 @@ zg361wpf.2 = {
     type = character_event
     theme = stewardship
     title = zg361wpf.2.t
-    desc = zg361wpf.2.desc
+    desc = {
+        desc = zg361wpf.2.desc
+        first_valid = {
+            triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 1 } desc = zg361wpf.2.quality_pass }
+            triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 2 } desc = zg361wpf.2.quality_mismatch }
+            triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 3 } desc = zg361wpf.2.quality_attrition }
+            triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 4 } desc = zg361wpf.2.quality_role_change }
+        }
+        first_valid = {
+            triggered_desc = { trigger = { var:zg361_workforce_probation_fact_consume_workforce_choice = 1 } desc = zg361wpf.2.followup_evidence }
+            triggered_desc = { trigger = { var:zg361_workforce_probation_fact_consume_workforce_choice = 2 } desc = zg361wpf.2.followup_accountability }
+        }
+    }
     trigger = {
         is_ai = no
         has_variable = zg361_workforce_probation_fact_state

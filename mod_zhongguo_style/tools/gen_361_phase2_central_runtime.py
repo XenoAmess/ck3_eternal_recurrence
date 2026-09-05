@@ -3132,25 +3132,27 @@ def render_event_parts() -> dict[str, str]:
 def render_localization(language: str, header: str) -> str:
     chinese = language == "simp_chinese"
     if chinese:
-        title = "二期考核流程已收口"
+        title = "公示后续事项清点"
         desc = (
-            "本轮公示后的后续事项已依次处理：完成 #high "
-            "[ROOT.Var('zg361_p2c_success_n')|0]#! 项；无需处理 "
-            "[ROOT.Var('zg361_p2c_na_n')|0] 项；仍未完成 "
-            "[ROOT.Var('zg361_p2c_red_n')|0] 项；其中曾因所需事实尚未到达而等待 "
-            "[ROOT.Var('zg361_p2c_external_n')|0] 项。未完成事项不会被记作成功。"
+            "官署已经清点本轮公示后的处置结果。按原定安排办结 #high "
+            "[ROOT.Var('zg361_p2c_success_n')|0]#! 项；经核对无需另办 "
+            "[ROOT.Var('zg361_p2c_na_n')|0] 项；尚有 "
+            "[ROOT.Var('zg361_p2c_red_n')|0] 项未能办结，其中 "
+            "[ROOT.Var('zg361_p2c_external_n')|0] 项是因为所需案情尚未送达。"
+            "未办事项会留到下一轮重新核对，不会混入本轮功绩。"
         )
-        ack = "收存本轮结案记录。"
+        ack = "办结与未办，分别记清。"
     else:
-        title = "Phase-Two Review Follow-up Closed"
+        title = "Post-Publication Matters Counted"
         desc = (
-            "Post-publication follow-up is closed: #high [ROOT.Var('zg361_p2c_success_n')|0]#! "
-            "items completed; [ROOT.Var('zg361_p2c_na_n')|0] required no action; "
-            "[ROOT.Var('zg361_p2c_red_n')|0] remain incomplete. Of these, "
-            "[ROOT.Var('zg361_p2c_external_n')|0] had to wait for a required fact. "
-            "Incomplete items are not counted as successes."
+            "The office has counted the outcomes of this cycle's post-publication work. "
+            "#high [ROOT.Var('zg361_p2c_success_n')|0]#! items were completed as planned; "
+            "[ROOT.Var('zg361_p2c_na_n')|0] were confirmed to require no further action; "
+            "and [ROOT.Var('zg361_p2c_red_n')|0] remain unfinished. Of the unfinished matters, "
+            "[ROOT.Var('zg361_p2c_external_n')|0] lacked facts that had not yet arrived. "
+            "They will be checked again next cycle and will not be counted among this cycle's achievements."
         )
-        ack = "Archive this cycle's closure record."
+        ack = "Record completed and unfinished matters separately."
     return f'{header}:\n # GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py\n zg361_p2c_summary_title:0 "{title}"\n zg361_p2c_summary_desc:0 "{desc}"\n zg361_p2c_summary_ack:0 "{ack}"\n'
 
 

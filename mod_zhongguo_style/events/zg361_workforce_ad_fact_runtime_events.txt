@@ -194,7 +194,6 @@ zg361wad.20 = {
 		var:zg361_wad_offer_source_subject = this
 		var:zg361_wad_offer_source_state = 4
 	}
-	option = { name = zg361wad.offer.accept zg361_wad_accept_offer_effect = { RESPONDENT = this } }
 	option = { name = zg361wad.offer.refuse_pay zg361_wad_refuse_offer_effect = { RESPONDENT = this REASON = 1 } }
 	option = { name = zg361wad.offer.refuse_role zg361_wad_refuse_offer_effect = { RESPONDENT = this REASON = 2 } }
 	option = { name = zg361wad.offer.refuse_move zg361_wad_refuse_offer_effect = { RESPONDENT = this REASON = 3 } }

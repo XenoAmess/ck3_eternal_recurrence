@@ -64,7 +64,23 @@ zg361mg.120 = {
 	type = character_event
 	theme = vassal
 	title = zg361mg.120.t
-	desc = zg361mg.120.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:zg361_mg_report_score_available = 1 var:zg361_mg_report_reason_available = 1 }
+				desc = zg361mg.120.desc
+			}
+			triggered_desc = {
+				trigger = { var:zg361_mg_report_score_available = 1 }
+				desc = zg361mg.120.desc_score_only
+			}
+			triggered_desc = {
+				trigger = { var:zg361_mg_report_reason_available = 1 }
+				desc = zg361mg.120.desc_reasons_only
+			}
+			desc = zg361mg.120.desc_unavailable
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_mg_f_ticket_owner
@@ -124,7 +140,20 @@ zg361mg.220 = {
 	type = character_event
 	theme = stewardship
 	title = zg361mg.220.t
-	desc = zg361mg.220.desc
+	desc = {
+		desc = zg361mg.220.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:zg361_mg_m354_receipt_choice = 3 }
+				desc = zg361mg.220.fairness_deferred
+			}
+			triggered_desc = {
+				trigger = { var:zg361_mg_fairness_gaming = 1 }
+				desc = zg361mg.220.fairness_remediation
+			}
+			desc = zg361mg.220.fairness_clear
+		}
+	}
 	trigger = {
 		is_ai = no
 		exists = scope:zg361_mg_ak_ticket_owner

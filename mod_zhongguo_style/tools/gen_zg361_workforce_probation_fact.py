@@ -2205,7 +2205,19 @@ def render_events() -> bytes:
             type = character_event
             theme = stewardship
             title = zg361wpf.2.t
-            desc = zg361wpf.2.desc
+            desc = {
+                desc = zg361wpf.2.desc
+                first_valid = {
+                    triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 1 } desc = zg361wpf.2.quality_pass }
+                    triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 2 } desc = zg361wpf.2.quality_mismatch }
+                    triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 3 } desc = zg361wpf.2.quality_attrition }
+                    triggered_desc = { trigger = { var:zg361_workforce_probation_fact_outcome_quality = 4 } desc = zg361wpf.2.quality_role_change }
+                }
+                first_valid = {
+                    triggered_desc = { trigger = { var:zg361_workforce_probation_fact_consume_workforce_choice = 1 } desc = zg361wpf.2.followup_evidence }
+                    triggered_desc = { trigger = { var:zg361_workforce_probation_fact_consume_workforce_choice = 2 } desc = zg361wpf.2.followup_accountability }
+                }
+            }
             trigger = {
                 is_ai = no
                 has_variable = zg361_workforce_probation_fact_state
@@ -2227,20 +2239,35 @@ def render_events() -> bytes:
 def localization_rows(language: str) -> list[str]:
     english = language != "simp_chinese"
     if english:
-        title = "Probation outcome receipt"
-        desc = (
-            "A settled result, PIP decision, real normal exit, or role-change exclusion "
-            "has been bound to this hire. Workforce item 269 consumed the same outcome once."
-        )
-        option = "Keep the receipt with the hire case."
+        title = "The Appointment's Outcome"
+        desc = "This appointment now has a verified later outcome."
+        quality_pass = "The later review found that the officer met the requirements of the post."
+        quality_mismatch = "The improvement period ended below its requirements. The outcome is recorded as a role mismatch, not a normal departure."
+        quality_attrition = "The officer left normally after the appointment. The departure payment and release of the post were both confirmed, so the outcome is recorded as ordinary attrition."
+        quality_role_change = "The officer left the original role because the appointment changed. This is excluded from both performance failure and ordinary attrition."
+        followup_evidence = "The office will compare this outcome with the evidence used in the original interview when it reviews the quality of that decision."
+        followup_accountability = "The office will place this outcome on the record of the person who made the final appointment decision."
+        option = "Now I know how this appointment ended."
     else:
         title = "试用期结局回执"
-        desc = "正式绩效、改进计划、真实正常离职或岗位变更排除项，已绑定到这次录用。第 269 项用工案只消费同一结局一次。"
-        option = "把回执归入本次录用案。"
+        desc = "这次任命如今有了一份经过核对的后续结论。"
+        quality_pass = "后续考核表明，当事人的任职表现达到了岗位要求。"
+        quality_mismatch = "改进期结束时仍未达到要求，这次结局记为岗位不匹配，不算正常离任。"
+        quality_attrition = "当事人在任命后正常离任，离任补偿与职位释放均已确认，这次结局记为自然流失。"
+        quality_role_change = "当事人因任职变动离开原岗位，这次结局既不算绩效失败，也不计入自然流失。"
+        followup_evidence = "官署会把这份结论与当初面试采用的证据逐项对照，用来复核那次判断是否可靠。"
+        followup_accountability = "官署会把这份结论归入最终任命决定者的责任记录。"
+        option = "这次任命如何收场，我已经看明白了。"
     return [
         f"l_{language}:",
         f' zg361wpf.2.t:0 "{title}"',
         f' zg361wpf.2.desc:0 "{desc}"',
+        f' zg361wpf.2.quality_pass:0 "{quality_pass}"',
+        f' zg361wpf.2.quality_mismatch:0 "{quality_mismatch}"',
+        f' zg361wpf.2.quality_attrition:0 "{quality_attrition}"',
+        f' zg361wpf.2.quality_role_change:0 "{quality_role_change}"',
+        f' zg361wpf.2.followup_evidence:0 "{followup_evidence}"',
+        f' zg361wpf.2.followup_accountability:0 "{followup_accountability}"',
         f' zg361wpf.2.a:0 "{option}"',
     ]
 

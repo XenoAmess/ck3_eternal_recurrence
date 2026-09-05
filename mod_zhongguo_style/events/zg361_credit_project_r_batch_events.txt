@@ -1,0 +1,177 @@
+﻿# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py
+# PURPOSE: domain R hidden portfolio-mode dispatchers
+namespace = zg361cp
+
+# #131 hidden portfolio-mode dispatcher; every failure restores the original card.
+zg361cp.9331 = {
+	type = character_event
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				exists = scope:zg361_cp_r_owner
+				exists = scope:zg361_cp_r_subject
+				exists = scope:zg361_cp_r_cycle
+				exists = scope:zg361_cp_r_case
+				this = scope:zg361_cp_r_owner
+				zg361_is_celestial_liege_trigger = yes
+				scope:zg361_cp_r_subject = {
+					zg361_case_kernel_full_guard_trigger = {
+						OWNER_VAR = zg361_case_r_owner
+						SUBJECT_VAR = zg361_case_r_subject
+						CYCLE_VAR = zg361_case_r_cycle_serial
+						CASE_VAR = zg361_case_r_case_serial
+						STATE_VAR = zg361_case_r_state
+						ACTIVE_VAR = zg361_case_r_active
+						EXPECTED_OWNER = scope:zg361_cp_r_owner
+						EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+						EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+						EXPECTED_CASE = scope:zg361_cp_r_case
+						EXPECTED_STATE = 1
+					}
+				}
+				scope:zg361_cp_r_subject = {
+					has_variable = zg361_cp_player_batch_mode
+					var:zg361_cp_player_batch_mode >= 1
+					var:zg361_cp_player_batch_mode <= 3
+				}
+			}
+			if = {
+				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 1 } }
+				scope:zg361_cp_r_subject = {
+					zg361_cp_m131_route_a_effect = {
+						TICKET_OWNER = scope:zg361_cp_r_owner
+						TICKET_SUBJECT = scope:zg361_cp_r_subject
+						TICKET_CYCLE = scope:zg361_cp_r_cycle
+						TICKET_CASE = scope:zg361_cp_r_case
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 2 } }
+				scope:zg361_cp_r_subject = {
+					zg361_cp_m131_route_b_effect = {
+						TICKET_OWNER = scope:zg361_cp_r_owner
+						TICKET_SUBJECT = scope:zg361_cp_r_subject
+						TICKET_CYCLE = scope:zg361_cp_r_cycle
+						TICKET_CASE = scope:zg361_cp_r_case
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 3 } }
+				scope:zg361_cp_r_subject = {
+					zg361_cp_m131_route_c_effect = {
+						TICKET_OWNER = scope:zg361_cp_r_owner
+						TICKET_SUBJECT = scope:zg361_cp_r_subject
+						TICKET_CYCLE = scope:zg361_cp_r_cycle
+						TICKET_CASE = scope:zg361_cp_r_case
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:zg361_cp_r_subject = {
+						trigger_if = {
+							limit = { has_variable = zg361_cp_runtime_applied }
+							var:zg361_cp_runtime_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+				}
+				trigger_event = { id = zg361cp.129 days = 1 }
+			}
+			else = { trigger_event = { id = zg361cp.131 } }
+		}
+		else = { trigger_event = { id = zg361cp.131 } }
+	}
+}
+
+# #134 hidden portfolio-mode dispatcher; every failure restores the original card.
+zg361cp.9334 = {
+	type = character_event
+	hidden = yes
+	trigger = { is_ai = no }
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				exists = scope:zg361_cp_r_owner
+				exists = scope:zg361_cp_r_subject
+				exists = scope:zg361_cp_r_cycle
+				exists = scope:zg361_cp_r_case
+				this = scope:zg361_cp_r_owner
+				zg361_is_celestial_liege_trigger = yes
+				scope:zg361_cp_r_subject = {
+					zg361_case_kernel_full_guard_trigger = {
+						OWNER_VAR = zg361_case_r_owner
+						SUBJECT_VAR = zg361_case_r_subject
+						CYCLE_VAR = zg361_case_r_cycle_serial
+						CASE_VAR = zg361_case_r_case_serial
+						STATE_VAR = zg361_case_r_state
+						ACTIVE_VAR = zg361_case_r_active
+						EXPECTED_OWNER = scope:zg361_cp_r_owner
+						EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+						EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+						EXPECTED_CASE = scope:zg361_cp_r_case
+						EXPECTED_STATE = 2
+					}
+				}
+				scope:zg361_cp_r_subject = {
+					has_variable = zg361_cp_player_batch_mode
+					var:zg361_cp_player_batch_mode >= 1
+					var:zg361_cp_player_batch_mode <= 3
+				}
+			}
+			if = {
+				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 1 } }
+				scope:zg361_cp_r_subject = {
+					zg361_cp_m134_route_a_effect = {
+						TICKET_OWNER = scope:zg361_cp_r_owner
+						TICKET_SUBJECT = scope:zg361_cp_r_subject
+						TICKET_CYCLE = scope:zg361_cp_r_cycle
+						TICKET_CASE = scope:zg361_cp_r_case
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 2 } }
+				scope:zg361_cp_r_subject = {
+					zg361_cp_m134_route_b_effect = {
+						TICKET_OWNER = scope:zg361_cp_r_owner
+						TICKET_SUBJECT = scope:zg361_cp_r_subject
+						TICKET_CYCLE = scope:zg361_cp_r_cycle
+						TICKET_CASE = scope:zg361_cp_r_case
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 3 } }
+				scope:zg361_cp_r_subject = {
+					zg361_cp_m134_route_c_effect = {
+						TICKET_OWNER = scope:zg361_cp_r_owner
+						TICKET_SUBJECT = scope:zg361_cp_r_subject
+						TICKET_CYCLE = scope:zg361_cp_r_cycle
+						TICKET_CASE = scope:zg361_cp_r_case
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:zg361_cp_r_subject = {
+						trigger_if = {
+							limit = { has_variable = zg361_cp_runtime_applied }
+							var:zg361_cp_runtime_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+				}
+				trigger_event = { id = zg361cp.130 days = 1 }
+			}
+			else = { trigger_event = { id = zg361cp.134 } }
+		}
+		else = { trigger_event = { id = zg361cp.134 } }
+	}
+}

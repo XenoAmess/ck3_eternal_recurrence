@@ -495,11 +495,49 @@ class WorkforceProbationFactTests(unittest.TestCase):
         chinese = (
             MOD_ROOT / "localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml"
         ).read_text(encoding="utf-8-sig")
-        for key in ("zg361wpf.2.t:0", "zg361wpf.2.desc:0", "zg361wpf.2.a:0"):
+        keys = (
+            "zg361wpf.2.t:0",
+            "zg361wpf.2.desc:0",
+            "zg361wpf.2.quality_pass:0",
+            "zg361wpf.2.quality_mismatch:0",
+            "zg361wpf.2.quality_attrition:0",
+            "zg361wpf.2.quality_role_change:0",
+            "zg361wpf.2.followup_evidence:0",
+            "zg361wpf.2.followup_accountability:0",
+            "zg361wpf.2.a:0",
+        )
+        for key in keys:
             self.assertIn(key, english)
             self.assertIn(key, chinese)
-        self.assertIn("改进计划、真实正常离职或岗位变更排除项", chinese)
-        self.assertIn("consumed the same outcome once", english)
+        for required in ("达到了岗位要求", "岗位不匹配", "自然流失", "任职变动"):
+            self.assertIn(required, chinese)
+        for forbidden in (
+            "第 269 项",
+            "消费同一结局",
+            "原生职业槽",
+            "流水线",
+            "source serial",
+            "fingerprint",
+            "RED",
+            "N/A",
+            "A/B",
+            "按A",
+            "按 A",
+        ):
+            self.assertNotIn(forbidden, chinese)
+        for value in re.findall(r':0\s+"([^"]*)"', chinese):
+            self.assertFalse(value.startswith(("。", ".", "；", ";", "，", ",")), value)
+        event = block(self.events, "zg361wpf.2")
+        for quality in range(1, 5):
+            self.assertIn(
+                f"zg361_workforce_probation_fact_outcome_quality = {quality}",
+                event,
+            )
+        for choice in (1, 2):
+            self.assertIn(
+                f"zg361_workforce_probation_fact_consume_workforce_choice = {choice}",
+                event,
+            )
         for language in generator.LANGUAGES[2:]:
             with self.subTest(language=language):
                 text = (

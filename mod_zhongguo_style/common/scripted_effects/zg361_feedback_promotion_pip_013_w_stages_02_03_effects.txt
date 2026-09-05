@@ -58,13 +58,30 @@ zg361_pp_m185_core_effect = {
 		limit = { var:zg361_case_w_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
 		# Exactly one visible decision is queued.  Each option schedules only the
 		# next card, so a 46-card popup storm is structurally impossible.
-		save_scope_as = zg361_pp_prompt_subject
-		var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-		save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-		save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-		save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
-		save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 184 }
-		var:zg361_case_w_owner = { trigger_event = { id = zg361pp.184 days = 1 } }
+		set_variable = { name = zg361_pp_batch_dispatch_w_02_continue value = 1 }
+		if = {
+			limit = { var:zg361_pp_batch_dispatch_w_02_continue = 1 NOT = { var:zg361_pp_m184_consumed = 1 } }
+			save_scope_as = zg361_pp_prompt_subject
+			var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
+			save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
+			save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
+			save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
+			save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 184 }
+			var:zg361_case_w_owner = { trigger_event = { id = zg361pp.184 days = 1 } }
+			set_variable = { name = zg361_pp_batch_dispatch_w_02_continue value = 0 }
+		}
+		if = {
+			limit = { var:zg361_pp_batch_dispatch_w_02_continue = 1 NOT = { var:zg361_pp_m185_consumed = 1 } }
+			save_scope_as = zg361_pp_prompt_subject
+			var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
+			save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
+			save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
+			save_scope_value_as = { name = zg361_pp_prompt_state value = 2 }
+			save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 185 }
+			var:zg361_case_w_owner = { trigger_event = { id = zg361pp.185 days = 1 } }
+			set_variable = { name = zg361_pp_batch_dispatch_w_02_continue value = 0 }
+		}
+		remove_variable = zg361_pp_batch_dispatch_w_02_continue
 	}
 }
 
@@ -182,13 +199,67 @@ zg361_pp_m187_core_effect = {
 		limit = { var:zg361_case_w_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
 		# Exactly one visible decision is queued.  Each option schedules only the
 		# next card, so a 46-card popup storm is structurally impossible.
-		save_scope_as = zg361_pp_prompt_subject
-		var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-		save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-		save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-		save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
-		save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 186 }
-		var:zg361_case_w_owner = { trigger_event = { id = zg361pp.186 days = 1 } }
+		set_variable = { name = zg361_pp_batch_dispatch_w_03_continue value = 1 }
+		if = {
+			limit = { var:zg361_pp_batch_dispatch_w_03_continue = 1 NOT = { var:zg361_pp_m186_consumed = 1 } }
+			if = {
+				limit = {
+					has_variable = zg361_pp_batch_strategy_route_frozen
+					has_variable = zg361_pp_batch_strategy_cycle_frozen
+					var:zg361_pp_batch_strategy_cycle_frozen = var:zg361_case_w_cycle_serial
+					OR = {
+						var:zg361_pp_batch_strategy_route_frozen = 1
+						var:zg361_pp_batch_strategy_route_frozen = 2
+						var:zg361_pp_batch_strategy_route_frozen = 3
+					}
+				}
+				# Preserve the original core/consumer/deadline path. A failed resource or
+				# dependency guard leaves runtime_applied unset and falls back to the card.
+				zg361_pp_m186_core_effect = {
+					ROUTE = var:zg361_pp_batch_strategy_route_frozen
+					TICKET_OWNER = var:zg361_case_w_owner
+					TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_case_w_cycle_serial
+					TICKET_CASE = var:zg361_case_w_case_serial
+					TICKET_STATE = 3
+				}
+				if = {
+					limit = {
+						NOT = { has_variable = zg361_pp_runtime_applied }
+					}
+					save_scope_as = zg361_pp_prompt_subject
+					var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
+					save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
+					save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
+					save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
+					save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 186 }
+					var:zg361_case_w_owner = { trigger_event = { id = zg361pp.186 days = 1 } }
+					set_variable = { name = zg361_pp_batch_dispatch_w_03_continue value = 0 }
+				}
+			}
+			else = {
+				save_scope_as = zg361_pp_prompt_subject
+				var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
+				save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
+				save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
+				save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
+				save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 186 }
+				var:zg361_case_w_owner = { trigger_event = { id = zg361pp.186 days = 1 } }
+				set_variable = { name = zg361_pp_batch_dispatch_w_03_continue value = 0 }
+			}
+		}
+		if = {
+			limit = { var:zg361_pp_batch_dispatch_w_03_continue = 1 NOT = { var:zg361_pp_m187_consumed = 1 } }
+			save_scope_as = zg361_pp_prompt_subject
+			var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
+			save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
+			save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
+			save_scope_value_as = { name = zg361_pp_prompt_state value = 3 }
+			save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 187 }
+			var:zg361_case_w_owner = { trigger_event = { id = zg361pp.187 days = 1 } }
+			set_variable = { name = zg361_pp_batch_dispatch_w_03_continue value = 0 }
+		}
+		remove_variable = zg361_pp_batch_dispatch_w_03_continue
 	}
 }
 

@@ -29,32 +29,6 @@ zg361_career_hc_m094_manager_apply_effect = {
     }
 }
 
-# Assessed-official self response; grants no manager/HC/panel authority.
-zg361_career_hc_m094_subject_response_effect = {
-    save_temporary_scope_value_as = { name = zg361_ch_subject_route value = $ROUTE$ }
-    if = {
-        limit = {
-            is_ai = no
-            zg361_case_kernel_subject_self_guard_trigger = {
-                SUBJECT_VAR = zg361_case_m_subject
-                ACTIVE_VAR = zg361_case_m_active
-            }
-            has_variable = zg361_case_m_state
-            var:zg361_case_m_state = 2
-            var:zg361_ch_m094_subject_ack = 0
-            OR = {
-                scope:zg361_ch_subject_route = 1
-                scope:zg361_ch_subject_route = 2
-                scope:zg361_ch_subject_route = 3
-            }
-        }
-        set_variable = { name = zg361_ch_m094_subject_ack value = 1 }
-        set_variable = { name = zg361_ch_m094_subject_route value = scope:zg361_ch_subject_route }
-        change_variable = { name = zg361_case_m_feedback_revision add = 1 }
-        debug_log = "ZG361CH: subject response 094 recorded"
-    }
-}
-
 # 094 微职级与“升半级”缓冲
 zg361_career_hc_m094_core_effect = {
     save_temporary_scope_value_as = { name = zg361_ch_route value = $ROUTE$ }
@@ -189,5 +163,47 @@ zg361_career_hc_m094_consume_effect = {
             set_variable = { name = zg361_ch_m_conserved value = 1 }
         }
         zg361_career_hc_m_try_advance_02_effect = yes
+    }
+}
+
+# Low-risk portfolio default for #094; original card is the fallback.
+zg361_career_hc_m094_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m094_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m095_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.95 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.94 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.94 days = 1 } }
     }
 }

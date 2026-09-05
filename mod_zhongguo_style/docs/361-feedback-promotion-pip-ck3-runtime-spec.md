@@ -18,7 +18,7 @@
 - `common/scripted_effects/zg361_feedback_promotion_pip_001_*_effects.txt` 至
   `zg361_feedback_promotion_pip_039_*_effects.txt`：按 portfolio adapter、T/U/V/W
   阶段编排和相邻机制生命周期分成 39 个用途文件；每文件 1–10 个顶层 effect，
-  当前最大 10 个、最大文件 50,900 bytes，没有超过 20 个的例外；
+  当前最大 10 个、最大文件 56,560 bytes，没有超过 20 个的例外；
 - `events/zg361_feedback_promotion_pip_runtime_events.txt`；
 - 九语言结构文件 `localization/*/zg361_feedback_promotion_pip_l_*.yml`；
 - `tools/test_zg361_feedback_promotion_pip_runtime.py`；
@@ -45,12 +45,12 @@ zg361_pp_manager_portfolio_adapter_effect
 
 adapter 当前 scope 必须是：在世、有地、天朝制、公爵及以上领主，并已有真实 `zg361_review_serial`。它按 stewardship 稳定选择一名直属可受评官员，并按 T → U → V → W 每次只打开一个尚未完成的领域。中央接线不应直接同时调用四个内部 `open_*`。
 
-- 玩家经理：每次只排入当前阶段的第一张决策卡；选完一张，所选 option 才会在 D+1 排下一张。
+- 玩家经理：每周期先收到一次 `zg361pp.9100` 办案方式卡。A/B/C 让 19 项低风险程序事项统一采用证据优先、执行优先或逐项留债，但每项仍走原 core、consumer、期限与 receipt；任一条件或资源不足，只恢复该编号原卡。付款、本人回应、限期复核、转岗、人物去留、资源结算均保持逐项呈报，#191 因退出成本结算从候选清单中剔除。D 保留全部 46 项逐案裁决。
 - 授权 AI 经理：这是项目所有者确认的第二 AI 例外；同样必须过天朝制公爵以上门槛，只走后台 resolver，绝不打开事件或 GUI。
 - 伯爵、男爵：可以成为直属受评 subject；不能成为 adapter ROOT，不能提名、组评委、发起 PIP 或考核别人。
 - #151、#166、#190 另有 PP subject-self response event（`zg361pp.5151/5166/5190`），仅允许本人签收、撤包或决定是否附上转岗陈述；这些 effect 不授予任何管理权限。#183 不再另造一套本人签字：它只读取 B2 唯一 PIP 案的 `subject_response/author/case`，真正的接受/协商/拒绝发生在 `zg361b2.40`。玩家 subject 只看到自己的 exact-ticket 两选项，AI subject 则静默走同一 self guard 后恢复经理后台流程。
 
-`zg361_pp_portfolio_queue_active` 在经理身上锁住当前可见队列。玩家路线在领域终态后仍保持锁，直到玩家确认唯一一张 completion card 才释放；AI 后台路线没有可见卡，领域终态立即释放。这样中央调用即使与终态同日发生，也不能把下一域首卡和完成卡叠在一起。因而即使本包包含 46 张玩家卡，任意时点也只会出现至多一张，不存在“一次弹 46 窗”。
+`zg361_pp_portfolio_queue_active` 在经理身上锁住当前可见队列。玩家路线在领域终态后仍保持锁，直到玩家确认唯一一张 completion card 才释放；AI 后台路线没有可见卡，领域终态立即释放。这样中央调用即使与终态同日发生，也不能把下一域首卡和完成卡叠在一起。A/B/C 路径的管理裁决窗口由 46 张降为 28 张；计入三次本人回应与四张分域结案，完整路径由 53 张降为 35 张。D 路径保留 46 张逐案裁决并增加一次办案方式选择。任意时点仍至多出现一张可见窗口。
 
 每个领域重开前还必须满足：该 subject 上本领域所有旧 `audit_*_state != 1`。这是跨周期票据的防覆盖条件；否则 D+365 的旧事件可能读到复用后的新变量并提前消费新案。adapter 遇到仍有旧审计的领域时跳到其他可开的领域，中央调用者之后重试；旧审计终态前绝不 reset 其 receipt。
 
@@ -210,7 +210,7 @@ external-blocked RED 并延迟重试；duplicate、stale、no-vacancy 或 native
 
 ## 七、可见队列与本地化
 
-玩家卡为 `zg361pp.146` 至 `zg361pp.191`。每张恰好三个 option；每个 option 最多排一个下一事件。阶段最后一张不自行排卡，而由 barrier 成功 advance 后只排下一阶段第一张；#188 是额外的时间门，D+365 audit 只有在真实复发时才排 #189，无复发则显示“观察期毕业”并显式 skip。四个 completion event 为 `zg361pp.9001–9004`；AI 永不收到它们。T/W 卡显示真实冻结档位，completion card 显示证据/政治/混合结果，W 还显示观察期毕业、二次 PIP、真实转岗或退出终态，而不是只说“流程已完成”。
+办案方式卡为 `zg361pp.9100`，逐案卡为 `zg361pp.146` 至 `zg361pp.191`。每张逐案卡恰好三个 option；每个 option 最多排一个下一事件。阶段最后一项不自行排卡，而由 barrier 成功 advance 后只排下一阶段第一项；#188 是额外的时间门，D+365 audit 只有在真实复发时才排 #189，无复发则显示“观察期毕业”并显式 skip。四个 completion event 为 `zg361pp.9001–9004`；AI 永不收到它们。T/W 卡显示真实冻结档位，completion card 显示证据/政治/混合结果，W 还显示观察期毕业、二次 PIP、真实转岗或退出终态，而不是只说“流程已完成”。
 
 每个业务操作还调度一个精确延迟 audit；#151 有 D+7/D+90 两个，#180 有完成差距的 D+90 提前解锁与正常 D+365 两个，因此共 48 个。每个 audit 在五元 guard 后必须读取该编号自己的 typed payload（46 项由 `DELAYED_CONSUMER_FIELD_BY_ID` 完整映射）；C 只结算 policy debt，不读取或制造该 payload。audit 保存并复核：
 
@@ -245,6 +245,6 @@ py tools/validate_local.py
 
 `tools/test_zg361_b2_runtime.py` 仍可作为 T/W Python reference 回归运行。本独立包不越权修改 B2 或中央 manifest；最终中央合并时必须由对应 owner 统一 readiness 口径。
 
-L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W exact B2 evidence gate、B2-only subject signature/support/settlement、D+180 与 D+366 typed projection、D+368 竞态边界、同类复发/无复发 skip、互斥终态、Career 空缺完整身份与成熟门、#190 exact request、四字段 receiver ACL、D+30 settlement 调用与 external typed RED、申诉不加重、manager/subject 权限、第二 AI 例外、三张 subject-self 事件、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
+L0 固定检查：46/46、19 项统一办理白名单、#191 强制逐案、逐项原链与精确失败回退、A/B/C/D 办案方式、四域状态组、每项 manager/core/consumer、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W exact B2 evidence gate、B2-only subject signature/support/settlement、D+180 与 D+366 typed projection、D+368 竞态边界、同类复发/无复发 skip、互斥终态、Career 空缺完整身份与成熟门、#190 exact request、四字段 receiver ACL、D+30 settlement 调用与 external typed RED、申诉不加重、manager/subject 权限、第二 AI 例外、三张 subject-self 事件、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
 
 中央已经调用 `zg361_pp_manager_portfolio_adapter_effect`，Career/HC→PP external chain 的脚本 ABI 已闭合。下一步仍必须以 CK3 实机覆盖：玩家公爵/国王/皇帝、授权 AI 公爵、伯爵/男爵 subject-only、非天朝 manager RED、A/B/C、无接收经理/无 vassal capacity、duplicate、stale、中央忙时重试、真实转封前后 title/liege 回读、D+7/30/90/180/365 与存读档。没有 paused snapshot、error/debug log 和真实 title/liege 证据前，本包保持 `static-ready`；strict adapter/RED 不能称为 production-live 成功。

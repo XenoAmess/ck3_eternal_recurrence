@@ -1387,17 +1387,16 @@ namespace = {NAMESPACE}
 
 def _localization_rows(language: str) -> dict[str, str]:
     english = {
-        POSITION_KEY: "361 Probationary Appointment",
+        POSITION_KEY: "Probationary Officer",
         f"{POSITION_KEY}_desc": (
-            "A temporary office held while a new appointee completes the recruitment settlement. "
-            "It exists only after appointment succeeds and is released when the same case is closed."
+            "A newly appointed officer holds this temporary post while the induction record is completed. "
+            "The post carries no separate salary and is released when the appointment is settled."
         ),
     }
     chinese = {
-        POSITION_KEY: "三六一试任编制",
+        POSITION_KEY: "试任属官",
         f"{POSITION_KEY}_desc": (
-            "新录用官员在完成入职手续期间暂居此位。任命真正成立后才占位；"
-            "同一录用案结清后即释放，不另生俸禄。"
+            "新任官员在入职案卷办结前暂居此位。此职不另发俸禄；任命手续结清后即行释放。"
         ),
     }
     return chinese if language == "simp_chinese" else english

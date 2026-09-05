@@ -38,27 +38,21 @@ zg361_career_hc_open_m_case_effect = {
         set_variable = { name = zg361_ch_management_authority value = 0 }
             set_variable = { name = zg361_ch_m092_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m092_consumed value = 0 }
-        set_variable = { name = zg361_ch_m092_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m092_deferred value = 0 }
         set_variable = { name = zg361_ch_m093_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m093_consumed value = 0 }
-        set_variable = { name = zg361_ch_m093_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m093_deferred value = 0 }
         set_variable = { name = zg361_ch_m094_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m094_consumed value = 0 }
-        set_variable = { name = zg361_ch_m094_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m094_deferred value = 0 }
         set_variable = { name = zg361_ch_m095_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m095_consumed value = 0 }
-        set_variable = { name = zg361_ch_m095_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m095_deferred value = 0 }
         set_variable = { name = zg361_ch_m096_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m096_consumed value = 0 }
-        set_variable = { name = zg361_ch_m096_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m096_deferred value = 0 }
         set_variable = { name = zg361_ch_m097_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m097_consumed value = 0 }
-        set_variable = { name = zg361_ch_m097_subject_ack value = 0 }
         set_variable = { name = zg361_ch_m097_deferred value = 0 }
         set_variable = { name = zg361_ch_m_s1_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_m_s1_x_deadline_expired value = 0 }
@@ -81,7 +75,18 @@ zg361_career_hc_open_m_case_effect = {
             }
             else_if = {
                 limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-                root = { trigger_event = { id = zg361ch.92 days = 1 } }
+                if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m092_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.92 days = 1 } } }
             }
             debug_log = "ZG361CH: opened M career/HC case"
         }

@@ -21,8 +21,10 @@ MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
-DEFER_ROUTE_EN = "Close this item without its business action; record one next-cycle policy debt. It will not be proposed again automatically."
-DEFER_ROUTE_CN = "本轮不执行该业务动作并关闭本项；登记一笔下周期制度债，且不会自动重提。"
+DEFER_ROUTE_EN = "Close this item and record policy debt."
+DEFER_ROUTE_CN = "关闭本项，登记制度债。"
+DEFER_TOOLTIP_EN = "No business action is taken. One next-cycle policy debt is recorded, and this item will not be proposed again automatically."
+DEFER_TOOLTIP_CN = "不执行业务动作；登记一笔下周期制度债。本项不会自动重提。"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -68,8 +70,8 @@ def m(
 ) -> Mechanism:
     return Mechanism(
         mid, domain, state, field, title_en, title_cn,
-        desc_en + " Routes A and B enact the stated business choice; route C only closes this item and records policy debt.",
-        desc_cn + " 路线甲、乙会执行所述业务选择；路线丙只关闭本项并登记制度债。",
+        desc_en,
+        desc_cn,
         # Runtime authority is uniform: legacy per-item C copy remains only as
         # research context; generated player copy is canonical policy.defer.
         (a_en, b_en, DEFER_ROUTE_EN), (a_cn, b_cn, DEFER_ROUTE_CN),
@@ -78,8 +80,8 @@ def m(
 
 MECHANISMS = (
     m(229, "aa", 1, "metric_dictionary_owner", "Who Owns the Metric Dictionary?", "指标字典归谁管",
-      "A metric without an owner is a slogan with a denominator. Freeze who may define it and who must sign later changes.",
-      "没有口径主人的指标，就是一个带分母的口号。先冻结谁能定义、谁要为改口径签字。",
+      "The metric has no named owner, and later changes have no accountable signer. Two readings of the same number are already circulating.",
+      "这项指标没有具名口径责任人，后续改动也无人签认；同一个数字已经流传出两种解释。",
       "Name one accountable owner.", "Require owner and steward co-signature.", "Let the committee own it collectively.",
       "指定一名口径责任人。", "责任人与数据管家双签。", "交给委员会集体负责。"),
     m(230, "aa", 1, "reconciliation_basis", "Two Dashboards, One Number", "两张看板，一个数字",
@@ -88,8 +90,8 @@ MECHANISMS = (
       "Use the named authoritative source.", "Reconcile jointly and publish the delta.", "Defer the metric and record uncertainty.",
       "采用预先指定的权威源。", "联合对账并公开差额。", "暂缓该指标并记录不确定性。"),
     m(231, "aa", 2, "denominator_policy", "The Denominator Moved", "分母怎么又变了",
-      "A denominator change can rescue any KPI. Choose how the old and new versions coexist before calibration.",
-      "分母一改，什么 KPI 都能被救活。校准前先决定新旧版本如何共存。",
+      "A changed denominator has produced two incompatible results for the same period. The file does not yet say which version governs calibration.",
+      "分母变更后，同一周期出现了两份互不相容的结果；案卷还没有说明校准应以哪一版为准。",
       "Restate both periods on the new denominator.", "Keep both versions side by side.", "Use the old denominator for this cycle.",
       "按新分母重算两个时期。", "新旧口径并列展示。", "本周期继续沿用旧分母。"),
     m(232, "aa", 2, "backfill_policy", "The Spreadsheet Has a Hole", "表里少了一块",
@@ -98,115 +100,115 @@ MECHANISMS = (
       "Backfill with audit samples.", "Impute and show an uncertainty band.", "Leave the gap visible.",
       "抽样审计后回填。", "插补并展示误差带。", "保留缺口，不假装完整。"),
     m(233, "aa", 2, "visibility_level", "Who May See the Dashboard?", "谁能看见这张看板",
-      "Access asymmetry creates performance asymmetry. Freeze a queryable visibility route for the assessed official.",
-      "看不见数据，就只能靠猜绩效。为被考核者冻结一条可查询的可见路径。",
+      "The assessed official can see only a summary score. The underlying detail and a query route are both missing from the file.",
+      "受评者目前只能看见汇总分；底层明细和可查询路径都还没有写进案卷。",
       "Open the full dashboard.", "Expose role-bounded detail and a query channel.", "Expose only the signed summary.",
       "开放完整看板。", "按职责开放明细，并保留查询通道。", "只开放签字后的摘要。"),
     m(234, "aa", 3, "signal_split", "Leading Signals, Lagging Results", "领先指标与滞后结果",
-      "Separate effort signals from eventual outcomes so a late result cannot rewrite the work already observed.",
-      "把过程信号和最终结果分账，别让迟到的结果倒改已经发生的工作。",
+      "Effort signals and eventual outcomes currently share one ledger, allowing a late result to rewrite work that was already observed.",
+      "过程信号与最终结果目前挤在同一本账里，迟到的结果因此能倒改早已发生的工作。",
       "Weight leading signals first.", "Balance signals and outcomes.", "Weight verified outcomes first.",
       "领先信号优先。", "过程与结果各半。", "已验证结果优先。"),
     m(235, "aa", 3, "guardrail_split", "A KPI Needs Guardrails", "主指标也得系安全带",
-      "Hitting the primary number while breaking quality is not delivery. Freeze the guardrail share before the run.",
-      "冲上主指标却把质量撞碎，不叫交付。开跑前先冻结护栏权重。",
+      "The primary metric has risen while its quality guardrail has fallen. Their relative weight is absent from the settlement file.",
+      "主指标已经上涨，质量护栏却同步下跌；结算案卷里还没有两者的相对权重。",
       "Give guardrails equal weight.", "Keep a sixty-forty balance.", "Permit a narrow primary-metric bias.",
       "主指标与护栏各半。", "主指标六、护栏四。", "允许有限度偏向主指标。"),
     m(236, "aa", 3, "scoring_curve", "The KPI Cliff", "KPI 悬崖",
-      "One decimal point should not turn a year of work into zero. Lock the scoring curve before results arrive.",
-      "一个小数点不该把一年努力清零。结果出来前，先把计分曲线锁死。",
+      "The current scoring rule drops from full credit to zero at one threshold. A tiny measurement change can erase a full cycle of work.",
+      "现行规则在一道阈值上从满分骤降为零，极小的测量变化就可能抹掉整周期工作。",
       "Use a continuous curve.", "Use a hybrid threshold with partial credit.", "Keep the hard cliff and accept its risk.",
       "采用连续计分。", "阈值与部分得分混合。", "保留硬悬崖并承担风险。"),
     m(237, "aa", 3, "window_audit", "The Most Beautiful Time Window", "截最美的一段",
-      "A flattering time window is still cherry-picking. Register the window and the comparison period now.",
-      "好看的时间窗也可能是挑数据。现在就登记观察窗和对照期。",
+      "The submitted chart shows only its most favorable interval. Neither the full observation window nor the comparison period appears in the file.",
+      "上报图表只截取了最有利的一段；完整观察窗与对照期都没有出现在案卷里。",
       "Use the preregistered full window.", "Publish full and selected windows together.", "Allow the slice but flag it for audit.",
       "使用预注册完整时间窗。", "完整窗与精选窗并列。", "允许截取，但挂上审计标记。"),
     m(240, "aa", 4, "sample_route", "Everyone Wants the Same Sample", "大家都想抢这批样本",
-      "Two teams cannot both claim a clean experiment on the same population. Spend a slot, partition it, or admit contamination.",
-      "同一批人不能同时给两支团队当“纯净样本”。要么占槽，要么切分，要么承认污染。",
+      "The same population appears in two experiment files. Unless an exclusive slot or a signed partition is recorded before settlement, neither team has a clean sample.",
+      "同一批人同时出现在两份实验案卷中。结算前若不登记独享样本槽或签字切分，两支团队都不能声称拿到了纯净样本。",
       "Reserve one exclusive sample slot.", "Partition one slot with a signed boundary.", "Queue the test and record no clean claim.",
       "占用一个独享样本槽。", "占用一个槽并签字切分。", "排队等待，不声称纯净实验。"),
     m(238, "aa", 5, "vanity_value_split", "Vanity Is Not Value", "热闹不等于价值",
-      "Traffic can rise while the final value stays flat. Settle both ledgers instead of promoting the louder chart.",
-      "流量可以很热闹，最终价值却原地踏步。两本账都结，别只奖嗓门大的图。",
+      "Traffic has risen while verified value remains flat. The louder adoption chart is currently crowding out the value ledger.",
+      "采用数据十分热闹，验证价值却原地踏步；声量更大的图表正在挤掉价值账。",
       "Weight verified value heavily.", "Balance adoption and value.", "Credit reach first but retain value debt.",
       "大幅偏向已验证价值。", "采用率与价值均衡结算。", "先认覆盖面，但保留价值债。"),
     m(239, "aa", 5, "learning_credit", "A Failed Experiment Still Learned", "实验失败，学习不能归零",
-      "A preregistered failure may buy useful knowledge. Decide how much bounded learning credit survives the miss.",
-      "预注册实验失败，也可能买到真知识。决定有多少有界学习收益能留下。",
+      "The preregistered experiment missed its business target but left verified new knowledge. The dispute is how much bounded credit that evidence deserves.",
+      "预注册实验没有达到业务目标，却留下了可验证的新知识；争议在于这些学习证据应获得多少有界权重。",
       "Credit verified learning strongly.", "Split credit between learning and delivery.", "Record learning without score credit.",
       "充分认可已验证学习。", "学习与交付分账。", "只入知识库，不计绩效分。"),
     m(241, "aa", 6, "long_tail_attribution", "Who Owns the Long Tail?", "长尾效果算谁的",
-      "Impact arrives after the team has moved on. Freeze attribution shares now so future value cannot be grabbed retroactively.",
-      "效果在团队散场后才慢慢冒出来。现在冻结归属份额，免得未来价值被倒抢。",
+      "The team has dispersed, but its impact is still arriving. No attribution shares govern the value that appears after handoff.",
+      "团队已经散场，长期效果却还在出现；交接后的新增价值目前没有归属份额可依。",
       "Credit the builder most.", "Split builder, operator and successor evenly.", "Credit the long-term operator most.",
       "建设者拿大头。", "建设、运营、继任近似均分。", "长期运营者拿大头。"),
 
     m(301, "ag", 1, "halo_normalization", "The Core-Business Halo", "核心业务光环",
-      "A tailwind is not personal magic. Separate inherited momentum from controllable contribution before calibration.",
-      "顺风不是个人法术。校准前，把继承来的势能和可控贡献拆开。",
+      "The team inherited strong momentum, but the assessment file currently credits all of it as controllable personal contribution.",
+      "团队继承了强劲势能，考核案卷却把它全部记成了个人可控贡献。",
       "Normalize the halo aggressively.", "Use a peer benchmark adjustment.", "Keep raw results but label the tailwind.",
       "强力剥离光环。", "按同类基准校正。", "保留原始结果，但标注顺风。"),
     m(302, "ag", 1, "headwind_normalization", "The Declining Business Headwind", "衰退业务的逆风",
-      "A shrinking market should not automatically become one official's failure. Freeze the uncontrollable headwind share.",
-      "大盘缩水不能自动变成某个人的罪。先冻结不可控逆风的份额。",
+      "The market contracted during the assessment period, but the file does not separate that uncontrollable headwind from personal contribution.",
+      "考核期内大盘已经缩水，案卷却没有把不可控逆风与个人贡献拆开。",
       "Normalize against the market decline.", "Compare with matched declining teams.", "Keep raw results with an explicit caveat.",
       "按市场跌幅校正。", "与同类衰退团队比较。", "保留原始结果并写明限制。"),
     m(303, "ag", 2, "incubation_protection", "Incubation Needs a Clock", "孵化保护也要到点",
-      "A new team needs protection, but not an immortal exemption. Sign its protected window and expiry.",
-      "新团队需要保护，但不能拿永久免死金牌。把保护期和到期日一起签了。",
+      "The new team is still ramping up, yet its file contains neither a protection period nor an expiry. Permanent immunity would hide later underperformance.",
+      "新团队仍在爬坡，案卷里却既没有保护期，也没有到期日；永久豁免又会遮住后续失责。",
       "Grant one short protected cycle.", "Use milestone-gated protection.", "Decline protection and fund extra support.",
       "给一个短周期保护。", "按里程碑逐段保护。", "不保护分布，但追加支持。"),
     m(304, "ag", 2, "dual_parent_weights", "Two Parents, One Review", "两个家长，一份绩效",
-      "Project and functional managers both claim authority. Issue one review directive that freezes weights and goal shares; it is not a claim that either manager personally replied.",
-      "项目线和职能线都说自己说了算。现在由裁决者签发一份冻结权重与目标份额的考核指令；这不代表两名上司已亲自回应。",
+      "Project and functional managers both claim authority. The file has no single frozen set of weights and goal shares, and neither manager has personally replied.",
+      "项目线和职能线都声称自己说了算；案卷里还没有唯一冻结的权重与目标份额，两名上司也都没有亲自回应。",
       "Direct a sixty-percent project-line weight.", "Direct equal parent weights.", "Direct a sixty-percent functional-line weight.",
       "责令项目线权重为六成。", "责令双方权重各半。", "责令职能线权重为六成。"),
     m(305, "ag", 3, "quiet_period", "Reorg Quiet Period", "重组静默期",
-      "A reporting-line change must not rewrite a nearly finished review. Choose the protected quiet-period rule.",
-      "汇报线刚换，不能顺手重写快结束的考核。请选择静默期规则。",
+      "The reporting line changed just before the review closed. Without a quiet-period rule, the incoming manager can rewrite an almost finished case.",
+      "汇报线在考核收口前刚刚变更；若没有静默期规则，新任上司就能改写一宗几乎结案的考核。",
       "Freeze ratings until calibration ends.", "Allow evidence additions but no score edits.", "Permit edits only with dual signature.",
       "校准结束前冻结评级。", "可补证据，不许改分。", "只有双签才能修改。"),
     m(306, "ag", 3, "double_hat_weights", "One Head, Two Hats", "一个脑袋，两顶帽子",
-      "A temporary dual-role lead has finite capacity. Split both responsibility and review weight to one hundred percent.",
-      "临时双帽负责人只有一份时间。责任和考核权重都必须拆到百分之百。",
+      "The temporary dual-role lead has one finite pool of time, while current responsibility and review weights do not yet close to one hundred percent.",
+      "临时双帽负责人只有一份时间，而当前责任份额与考核权重都还没有合计到百分之百。",
       "Split thirty-seventy toward the expert role.", "Split fifty-fifty.", "Split seventy-thirty toward management.",
       "管理三、专业七。", "两边各半。", "管理七、专业三。"),
     m(307, "ag", 4, "center_scorecard", "Profit Center or Cost Center?", "利润中心还是成本中心",
-      "Revenue and enablement teams need different scorecards. Pick one before comparing their outcomes.",
-      "创收团队和支撑团队不能共用一把尺。比较结果前先选记分卡。",
+      "Revenue and enablement teams are currently measured with the same scorecard, mixing growth with cost control before comparison.",
+      "创收团队与支撑团队目前共用一张记分卡，收入增长和成本控制在比较前就被混到了一起。",
       "Use a profit-center scorecard.", "Use a cost-and-service scorecard.", "Use a signed hybrid scorecard.",
       "采用利润中心记分卡。", "采用成本与服务记分卡。", "采用签字确认的混合记分卡。"),
     m(308, "ag", 4, "hc_mix", "Managers or Experts?", "管理岗还是专业岗",
-      "Changing the title mix must conserve total HC. Choose the composition without manufacturing headcount.",
-      "调岗位结构不能凭空长编制。请在总 HC 守恒下选择构成。",
+      "Management and specialist roles are competing for the same fixed headcount. Any new mix must remain within that total.",
+      "管理岗与专业岗正在争用同一份固定编制；任何新构成都不能突破总额。",
       "Keep twenty managers and eighty experts.", "Use a thirty-seventy mix.", "Use a forty-sixty mix.",
       "二十管理、八十专业。", "三十管理、七十专业。", "四十管理、六十专业。"),
     m(309, "ag", 4, "remote_visibility", "The Far Team Is Quiet", "边远团队没声量",
-      "Visibility work consumes management capacity. Spend it on a visit, a review forum, or accept a documented discount.",
-      "让边远团队被看见，也要占用管理带宽。走访、评审会，或者明着承认可见度折损。",
+      "The remote team is nearly absent from current review material, while management has only limited bandwidth for visits and evidence sessions.",
+      "边远团队在本期考核材料中几乎不可见，而管理层能用于走访和证据评审的带宽十分有限。",
       "Spend capacity on an on-site visit.", "Spend capacity on a remote evidence forum.", "Accept the visibility discount and record debt.",
       "花带宽实地走访。", "花带宽开远程证据会。", "接受可见度折损并记债。"),
     m(310, "ag", 4, "legacy_rating_map", "Old Ratings, New Org", "旧档怎么搬进新组织",
-      "A reorg changes reporting lines, not historical authorship. Issue a two-owner mapping record without pretending that either owner personally countersigned it.",
-      "重组会换汇报线，不会穿越回去换作者。由裁决者签发一份保留新旧责任人的映射记录，不冒充两名责任人亲自会签。",
+      "The reporting line has changed, but historical authorship remains with the old owner. The mapping record does not yet name both old and new accountable owners.",
+      "汇报线已经变更，旧案作者仍属于历史责任人；当前映射记录尚未同时列明新旧责任人。",
       "Map by the frozen historical owner.", "Record both old and new owners in the bridge.", "Keep the old case separate for one cycle.",
       "按冻结的历史责任人映射。", "在桥接记录中同时列明新旧责任人。", "旧案独立保留一个周期。"),
     m(311, "ag", 5, "pivot_policy", "A Pivot Is Not a Time Machine", "战略转向不是时光机",
-      "New strategy may change future goals, never the old signed target. Freeze the boundary between both records.",
-      "新战略可以改未来目标，不能倒改旧签字目标。把两份记录的边界冻结。",
+      "The new strategy is in force, while the old cycle still has signed goals. An unclear boundary would let future priorities rewrite past commitments.",
+      "新战略已经生效，旧周期仍留有签字目标；两份记录边界不清，就会让未来优先级倒改过去承诺。",
       "Close the old target and open a new one.", "Bridge them with explicit split credit.", "Delay the pivot until next cycle.",
       "关闭旧目标，另开新目标。", "明确拆分贡献后桥接。", "推迟到下一周期再转向。"),
 
     m(334, "aj", 1, "demand_source", "One Door for Every Demand", "需求统一从正门进",
-      "A demand without a source tag becomes free work. Record who asked, why, and where it entered.",
-      "没来源标签的需求，最后都会变成免费加班。把谁提的、为什么、从哪进来的记清楚。",
+      "One demand has arrived without a requester, business reason or intake label. In that state, its cost will fall into unowned overtime.",
+      "一条需求已经送达，却没有提出者、业务理由和入口标签；照此推进，成本只会落成无人负责的加班。",
       "Tag it as superior-sponsored.", "Tag it as territory demand.", "Tag it as incident-driven.",
       "标为上级发起。", "标为属地需求。", "标为事故驱动。"),
     m(335, "aj", 1, "emergency_route", "Everything Is Urgent", "怎么每件事都紧急",
-      "An emergency label spends a real slot. Use one, trade scope, or send the request through the ordinary queue.",
-      "“紧急”标签要吃真实槽位。占一个、拿范围交换，或者老老实实排队。",
+      "Several demands are marked urgent, but the portfolio has only one remaining slot and no free scope. The labels promise more capacity than exists.",
+      "多条需求都贴着“紧急”标签，组合账本却只剩一个槽位，也没有空余范围；标签承诺的容量已经超过现实。",
       "Spend one emergency slot.", "Trade equal scope instead of a slot.", "Reject urgency and keep queue order.",
       "消耗一个紧急插单槽。", "等量换出范围，不占槽。", "不认紧急，按原顺序排队。"),
     m(336, "aj", 2, "admission_definition", "Definition of Ready", "准入完成定义",
@@ -215,43 +217,43 @@ MECHANISMS = (
       "Return it for completion.", "Admit a bounded exploration.", "Force admission with sponsor liability.",
       "退回补全。", "准入一个有边界的探索。", "强制准入，发起人背模糊责任。"),
     m(338, "aj", 2, "triangle_signature", "Scope, Time, Quality: Pick Two", "范围、期限、质量：请签字",
-      "The delivery triangle cannot be wished away. Freeze which corner moves and whose signature accepts the tradeoff.",
-      "交付铁三角不会被口号消灭。冻结哪一角要动，以及谁签字承担取舍。",
+      "The demand has strained both scope and deadline, but the file names no signer for either tradeoff. The delivery team cannot own that choice by silence.",
+      "需求已经同时挤压范围与期限，案卷却没有给任何一项列出签字责任人；交付团队不能因沉默独吞取舍。",
       "Cut scope and sign it.", "Extend time and sign it.", "Add HC and sign the budget.",
       "缩范围并签字。", "延期限并签字。", "加 HC，并给预算签字。"),
     m(339, "aj", 3, "estimate_calibration", "Estimate the Work, Not the Hero", "校准估算，不奖赌命",
-      "Rewarding only on-time delivery trains sandbagging and heroics. Compare estimate error with its recorded cause.",
-      "只奖准时，会训练出灌水和赌命。把估算误差和已记录原因一起校准。",
+      "The current on-time reward has produced both padded estimates and last-minute heroics. Estimate errors are not yet paired with their recorded causes.",
+      "现行准时奖励同时养出了灌水估算和临门赌命；估算误差尚未与已记录原因对应起来。",
       "Credit calibrated accuracy.", "Credit transparent uncertainty.", "Credit recovery but record estimate debt.",
       "奖励校准后的准确度。", "奖励公开不确定性。", "认可救火，但记录估算债。"),
     m(340, "aj", 4, "wip_route", "Stop Starting, Start Finishing", "少开工，多完工",
-      "New work consumes delivery capacity and a WIP position. Respect the limit, sign an exception, or hide debt in plain sight.",
-      "新开工要同时占交付容量和 WIP 位。守上限、签例外，或者把偷开的债明着记下来。",
+      "The pending start would exceed both delivery capacity and the work-in-progress limit. No signed exception covers that excess.",
+      "这项待开任务会同时突破交付容量与在制任务上限，案卷里也没有覆盖超额部分的签字例外。",
       "Start within the WIP limit.", "Start with a signed WIP exception.", "Start over limit and record hidden-work debt.",
       "在 WIP 上限内开工。", "签署 WIP 例外后开工。", "超限开工并记录隐性工作债。"),
     m(342, "aj", 4, "blocker_attribution", "Who Owns the Blocked Time?", "阻塞时间算谁的",
       "Blocked hours belong to a cause and an unblock owner, not automatically to the delivery team.",
       "阻塞工时要归因到原因和解阻人，不能自动扣在交付团队头上。",
-      "Charge the external dependency.", "Split shared causation.", "Charge the team with a review flag.",
-      "计入外部依赖。", "按共同原因拆分。", "暂计团队，但挂复核标记。"),
+      "Name the independent reviewer as unblock owner; assign all blocked time to obstacles beyond the delivery team's control and apply no team penalty.", "Split shared causation.", "Charge the team with a review flag.",
+      "指定独立复核人负责解阻；阻塞工时归于团队无法控制的阻碍，交付团队不扣分。", "按共同原因拆分。", "暂计团队，但挂复核标记。"),
     m(337, "aj", 5, "change_tax_route", "A Change Request Has a Tax", "改需求要交税",
-      "Changing scope after work starts must move time, scope or capacity. A true disaster gets one recorded waiver.",
-      "开工后改范围，必须动期限、范围或容量。真灾害可以用一次有记录的豁免。",
+      "The requested scope change has consumed capacity after work began. Its added cost is absent from both the deadline ledger and the remaining-scope ledger.",
+      "开工后的范围变更已经吃掉额外容量，但新增成本既没有进入期限账，也没有进入剩余范围账。",
       "Pay ten capacity hours and extend time.", "Pay ten capacity hours and remove equal scope.", "Use the one disaster waiver and record policy debt.",
       "支付十小时容量并延期。", "支付十小时容量并等量减范围。", "使用一次灾害豁免并记录政策债。"),
     m(341, "aj", 5, "carryover_route", "Unfinished Work Crosses the Line", "未完工跨周期",
-      "Carryover is not free progress. Release the current reservation and charge the next cycle exactly once.",
-      "跨周期不是免费进度。释放本周期预留，并且只向下周期精确记账一次。",
+      "The unfinished work still occupies this cycle's reservation, while the next-cycle ledger is ready to charge it again. That would count the same capacity twice.",
+      "未完工作仍占着本周期预留，下周期账本却准备再次扣减；同一份容量将被重复计算。",
       "Carry the whole remainder.", "Split and accept a finished slice.", "Cancel the remainder and close its debt.",
       "整体结转剩余工作。", "拆分并验收已完成部分。", "取消剩余部分并关闭其债。"),
     m(343, "aj", 6, "acceptance_route", "Three Parties, One Delivery Ruling", "提出、执行、验收三方送达",
-      "Delivery is not complete because the builder says so. Serve the ruling to proposer, executor and acceptor and record the outcome; this does not claim that all three personally consented.",
-      "不是执行者说“好了”就算交付。把裁决送达提出人、执行人和验收人并登记结论；这不代表三人都已亲自同意。",
+      "The executor reports completion, but the file contains no acceptance conclusion visible to proposer, executor and acceptor. A delivery record is not their personal consent.",
+      "执行人已经报称完成，案卷里却没有一份让提出人、执行人和验收人共同可见的结论；交付记录也不等于三方亲自同意。",
       "Serve all three parties and accept.", "Serve a conditional acceptance with follow-up debt.", "Serve a rejection with a defect list.",
       "向三方送达后通过验收。", "向三方送达有条件验收，并留下跟进债。", "向三方送达缺陷清单并拒收。"),
     m(344, "aj", 7, "value_stage_split", "Launch Is Not Value", "上线不等于价值",
-      "Settle launch, adoption and verified value as three conserved shares; no stage may mint a second hundred percent.",
-      "上线、采用、验证价值要拆成三份守恒账；任何阶段都不能再印一套百分之百。",
+      "Launch, adoption and verified value have each been credited as a fresh hundred percent. The portfolio ledger is counting the same result more than once.",
+      "上线、采用与验证价值目前各记了一套百分之百，组合总账因此把同一成果重复计功。",
       "Front-load launch credit.", "Use a balanced staged settlement.", "Back-load credit to verified value.",
       "前置认可上线。", "三阶段均衡结算。", "把大头留给已验证价值。"),
 )
@@ -269,6 +271,21 @@ STAGE_LAST = {
 }
 NEXT_DOMAIN = {"aa": "ag", "ag": "aj", "aj": None}
 QUEUE_EVENTS = {"aa": 9001, "ag": 9002}
+PLAYER_MODE_EVENT = 9000
+# Only low-risk, no-payment/no-person-movement policy mechanics may be
+# auto-resolved.  Resource gates, signatures, delayed settlement and final
+# delivery rulings stay visible.  This list is deliberately frozen and tested:
+# widening it is a product decision, not a generator convenience.
+PLAYER_BACKGROUND_IDS = frozenset({
+    230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
+    301, 302, 303, 304, 305, 306, 307, 308,
+    334, 336, 339, 342,
+})
+PLAYER_VISIBLE_IDS = frozenset({
+    229, 240, 241,
+    309, 310, 311,
+    335, 337, 338, 340, 341, 343, 344,
+})
 DOMAIN_TOTALS = {domain: len(order) for domain, order in DOMAIN_ORDER.items()}
 LEGACY_EFFECT_FILENAME = "zg361_phase3_metrics_delivery_runtime_effects.txt"
 EFFECT_TARGET_MAX = 10
@@ -305,6 +322,7 @@ EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
                 f"zg361_p3_{domain}_initialize_effect",
                 f"zg361_p3_{domain}_subject_read_effect",
                 f"zg361_p3_{domain}_run_authorized_ai_effect",
+                f"zg361_p3_{domain}_continue_player_effect",
                 f"zg361_p3_{domain}_launch_effect",
             ),
         )
@@ -347,6 +365,14 @@ def validate_specs() -> None:
         raise ValueError("runtime slice must map exactly AA229-241, AG301-311, AJ334-344")
     if {mid for order in DOMAIN_ORDER.values() for mid in order} != expected:
         raise ValueError("domain execution order must touch every numbered mechanism once")
+    if PLAYER_BACKGROUND_IDS & PLAYER_VISIBLE_IDS:
+        raise ValueError("player background and visible mechanism sets must be disjoint")
+    if PLAYER_BACKGROUND_IDS | PLAYER_VISIBLE_IDS != expected:
+        raise ValueError("player background and visible mechanism sets must cover every mechanism")
+    if len(PLAYER_BACKGROUND_IDS) != 22 or len(PLAYER_VISIBLE_IDS) != 13:
+        raise ValueError("player portfolio mode must preserve the frozen 22/13 split")
+    if any(order[-1] not in PLAYER_VISIBLE_IDS for order in DOMAIN_ORDER.values()):
+        raise ValueError("every domain settlement node must remain player-visible")
     if len({spec.field for spec in MECHANISMS}) != len(MECHANISMS):
         raise ValueError("every mechanism needs a unique semantic write field")
     for domain, order in DOMAIN_ORDER.items():
@@ -1809,6 +1835,110 @@ else = {{
 }}"""
 
 
+def player_ticket(domain: str) -> str:
+    return f"""TICKET_OWNER = scope:zg361_p3_{domain}_owner
+TICKET_SUBJECT = scope:zg361_p3_{domain}_subject
+TICKET_CYCLE = scope:zg361_p3_{domain}_cycle
+TICKET_CASE = scope:zg361_p3_{domain}_case"""
+
+
+def render_player_background_step(spec: Mechanism) -> str:
+    """Render one fail-open-to-UI background attempt.
+
+    The numbered route effect remains the sole business authority.  The batch
+    dispatcher only selects A/B/C and verifies the route's existing applied
+    receipt.  Any guard or resource RED reopens this exact numbered event on
+    D+1; it never skips ahead or substitutes a different route.
+    """
+
+    domain, mid = spec.domain, spec.mid
+    ticket = player_ticket(domain)
+    route_branches = []
+    for mode, letter in enumerate("abc", 1):
+        keyword = "if" if mode == 1 else "else_if"
+        route_branches.append(f"""{keyword} = {{
+	limit = {{
+		root = {{
+			has_variable = zg361_p3_player_batch_mode
+			var:zg361_p3_player_batch_mode = {mode}
+		}}
+	}}
+	zg361_p3_m{mid}_route_{letter}_effect = {{
+{indent(ticket, 2)}
+	}}
+}}""")
+    route_branches.append(f"""else = {{
+	# Missing/invalid mode is itself a reason to fall back to the original card.
+	scope:zg361_p3_{domain}_owner = {{ trigger_event = {{ id = zg361p3.{mid} days = 1 }} }}
+	set_variable = {{ name = zg361_p3_player_dispatch_blocked value = 1 }}
+}}""")
+    return f"""if = {{
+	limit = {{
+		var:zg361_p3_player_dispatch_blocked = 0
+		NOT = {{ has_variable = zg361_p3_m{mid}_receipt_choice }}
+	}}
+{indent(chr(10).join(route_branches))}
+	if = {{
+		limit = {{
+			var:zg361_p3_player_dispatch_blocked = 0
+			NOT = {{
+				AND = {{
+					has_variable = zg361_p3_runtime_applied
+					var:zg361_p3_runtime_applied = 1
+				}}
+			}}
+		}}
+		# Preserve the exact item and its three original buttons after any
+		# tuple-guard, dependency or resource failure.
+		scope:zg361_p3_{domain}_owner = {{ trigger_event = {{ id = zg361p3.{mid} days = 1 }} }}
+		set_variable = {{ name = zg361_p3_player_dispatch_blocked value = 1 }}
+		root = {{ set_variable = {{ name = zg361_p3_player_batch_fallback_mid value = {mid} }} }}
+	}}
+	else_if = {{
+		limit = {{
+			var:zg361_p3_player_dispatch_blocked = 0
+			root = {{
+				has_variable = zg361_p3_player_batch_mode
+				var:zg361_p3_player_batch_mode = 3
+			}}
+		}}
+		root = {{ change_variable = {{ name = zg361_p3_player_policy_debt_disclosed_n add = 1 }} }}
+	}}
+}}"""
+
+
+def render_player_visible_step(spec: Mechanism) -> str:
+    domain, mid = spec.domain, spec.mid
+    return f"""if = {{
+	limit = {{
+		var:zg361_p3_player_dispatch_blocked = 0
+		NOT = {{ has_variable = zg361_p3_m{mid}_receipt_choice }}
+	}}
+	scope:zg361_p3_{domain}_owner = {{ trigger_event = {{ id = zg361p3.{mid} days = 1 }} }}
+	set_variable = {{ name = zg361_p3_player_dispatch_blocked value = 1 }}
+}}"""
+
+
+def render_player_dispatch(domain: str) -> str:
+    specs = by_id()
+    steps = []
+    for mid in DOMAIN_ORDER[domain]:
+        spec = specs[mid]
+        if mid in PLAYER_BACKGROUND_IDS:
+            steps.append(render_player_background_step(spec))
+        else:
+            steps.append(render_player_visible_step(spec))
+    return f"""# Player-only portfolio dispatcher.  It never owns business writes: every
+# automatic item calls the unchanged numbered route core, and every failed
+# automatic item falls back to its original D+1 event instead of being skipped.
+zg361_p3_{domain}_continue_player_effect = {{
+	remove_variable = zg361_p3_player_dispatch_blocked
+	set_variable = {{ name = zg361_p3_player_dispatch_blocked value = 0 }}
+{indent(chr(10).join(steps))}
+	remove_variable = zg361_p3_player_dispatch_blocked
+}}"""
+
+
 def render_portfolio_entries() -> str:
     return r'''# Freeze the institutional cycle and delivered result case once.  This is the
 # only manager-scope ABI exposed to a future central dispatcher.
@@ -1837,6 +1967,11 @@ zg361_p3_initialize_portfolio_effect = {
 	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
 	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
 	set_variable = { name = zg361_p3_portfolio_deferred value = 0 }
+	root = {
+		remove_variable = zg361_p3_player_batch_mode
+		remove_variable = zg361_p3_player_batch_fallback_mid
+		set_variable = { name = zg361_p3_player_policy_debt_disclosed_n value = 0 }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_cp_m26_receipt_owner
@@ -2052,6 +2187,24 @@ zg361_p3_finalize_portfolio_effect = {
 def render_launch(domain: str) -> str:
     first = DOMAIN_ORDER[domain][0]
     portfolio_init = "\n\t\tzg361_p3_initialize_portfolio_effect = yes" if domain == "aa" else ""
+    if domain == "aa":
+        player_entry = (
+            f"scope:zg361_p3_{domain}_owner = {{ "
+            f"trigger_event = {{ id = zg361p3.{PLAYER_MODE_EVENT} }} }}"
+        )
+    else:
+        player_entry = f"""if = {{
+\tlimit = {{
+\t\troot = {{
+\t\t\thas_variable = zg361_p3_player_batch_mode
+\t\t\tvar:zg361_p3_player_batch_mode < 4
+\t\t}}
+\t}}
+\tzg361_p3_{domain}_continue_player_effect = yes
+}}
+else = {{
+\tscope:zg361_p3_{domain}_owner = {{ trigger_event = {{ id = zg361p3.{first} }} }}
+}}"""
     return f"""# Internal domain entry. Call in assessed-subject scope with ROOT = frozen manager.
 zg361_p3_{domain}_launch_effect = {{
 \tremove_variable = zg361_p3_runtime_applied
@@ -2070,7 +2223,7 @@ zg361_p3_{domain}_launch_effect = {{
 \t\t}}
 \t\telse_if = {{
 \t\t\tlimit = {{ root = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
-\t\t\tscope:zg361_p3_{domain}_owner = {{ trigger_event = {{ id = zg361p3.{first} }} }}
+{indent(player_entry, 3)}
 \t\t}}
 \t}}
 }}"""
@@ -2090,7 +2243,13 @@ def render_effects() -> bytes:
         render_deferred_portfolio_cleanup(),
     ]
     for domain in ("aa", "ag", "aj"):
-        sections += [render_init(domain), render_subject_read(domain), render_ai(domain), render_launch(domain)]
+        sections += [
+            render_init(domain),
+            render_subject_read(domain),
+            render_ai(domain),
+            render_player_dispatch(domain),
+            render_launch(domain),
+        ]
     for spec in MECHANISMS:
         sections.append(render_due_debt_consumer(spec))
         sections.append(render_consumer(spec))
@@ -2155,10 +2314,10 @@ def render_effect_parts() -> dict[str, bytes]:
 
     if len(EFFECT_GROUPS) != 40:
         raise ValueError("phase-3 runtime must remain split into 40 purpose files")
-    if len(historical_names) != 192 or len(set(historical_names)) != 192:
-        raise ValueError("phase-3 historical render must contain 192 unique effects")
-    if len(configured_names) != 192 or len(set(configured_names)) != 192:
-        raise ValueError("phase-3 purpose map must contain 192 unique effects")
+    if len(historical_names) != 195 or len(set(historical_names)) != 195:
+        raise ValueError("phase-3 historical render must contain 195 unique effects")
+    if len(configured_names) != 195 or len(set(configured_names)) != 195:
+        raise ValueError("phase-3 purpose map must contain 195 unique effects")
     if set(configured_names) != set(historical_names):
         missing = sorted(set(historical_names) - set(configured_names))
         extra = sorted(set(configured_names) - set(historical_names))
@@ -2236,15 +2395,55 @@ scope:zg361_p3_{d}_subject = {{
 def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
     d, mid = spec.domain, spec.mid
     letter = "abc"[choice - 1]
-    next_event = ""
+    post_apply = []
+    if choice == 3:
+        post_apply.append(
+            "change_variable = { name = "
+            "zg361_p3_player_policy_debt_disclosed_n add = 1 }"
+        )
     if next_mid is not None:
+        post_apply.append(f"""if = {{
+\tlimit = {{
+\t\thas_variable = zg361_p3_player_batch_mode
+\t\tvar:zg361_p3_player_batch_mode < 4
+\t}}
+\tscope:zg361_p3_{d}_subject = {{ zg361_p3_{d}_continue_player_effect = yes }}
+}}
+else = {{
+\ttrigger_event = {{ id = zg361p3.{next_mid} days = 1 }}
+}}""")
+    retry = f"""# A manual choice that fails its current tuple/resource guard returns to
+# this exact card on D+1; the chain never advances on a failed write.
+trigger_event = {{ id = zg361p3.{mid} days = 1 }}
+set_variable = {{ name = zg361_p3_player_batch_fallback_mid value = {mid} }}"""
+    if post_apply:
+        applied_body = indent(chr(10).join(post_apply), 2)
         next_event = f"""
 \tif = {{
 \t\tlimit = {{ scope:zg361_p3_{d}_subject = {{ has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 }} }}
-\t\ttrigger_event = {{ id = zg361p3.{next_mid} days = 1 }}
+{applied_body}
+\t}}
+\telse = {{
+{indent(retry, 2)}
 \t}}"""
+    else:
+        next_event = f"""
+\tif = {{
+\t\tlimit = {{
+\t\t\tscope:zg361_p3_{d}_subject = {{
+\t\t\t\tNOT = {{
+\t\t\t\t\tAND = {{
+\t\t\t\t\t\thas_variable = zg361_p3_runtime_applied
+\t\t\t\t\t\tvar:zg361_p3_runtime_applied = 1
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t}}
+\t\t}}
+{indent(retry, 2)}
+\t}}"""
+    tooltip = f"\n\tcustom_tooltip = zg361p3.{mid}.c.tt" if choice == 3 else ""
     return f"""option = {{
-\tname = zg361p3.{mid}.{letter}
+\tname = zg361p3.{mid}.{letter}{tooltip}
 \tscope:zg361_p3_{d}_subject = {{
 \t\tzg361_p3_m{mid}_route_{letter}_effect = {{
 \t\t\tTICKET_OWNER = scope:zg361_p3_{d}_owner
@@ -2335,10 +2534,32 @@ zg361p3.{event_id} = {{
 }}"""
 
 
+def render_player_mode_event() -> str:
+    options = []
+    for mode, letter in enumerate("abcd", 1):
+        options.append(f"""option = {{
+\tname = zg361p3.{PLAYER_MODE_EVENT}.{letter}
+\tset_variable = {{ name = zg361_p3_player_batch_mode value = {mode} }}
+\tscope:zg361_p3_aa_subject = {{ zg361_p3_aa_continue_player_effect = yes }}
+}}""")
+    return f"""# One player-visible portfolio-mode choice.  Modes A/B/C affect only the
+# frozen background whitelist; mode D keeps the original 35-card route.
+zg361p3.{PLAYER_MODE_EVENT} = {{
+\ttype = character_event
+\ttheme = stewardship
+\ttitle = zg361p3.{PLAYER_MODE_EVENT}.t
+\tdesc = zg361p3.{PLAYER_MODE_EVENT}.desc
+\ttrigger = {{
+{indent(event_guard(by_id()[DOMAIN_ORDER['aa'][0]]), 2)}
+\t}}
+{indent(chr(10).join(options))}
+}}"""
+
+
 def render_events() -> bytes:
     validate_specs()
     specs = by_id()
-    events = ["namespace = zg361p3"]
+    events = ["namespace = zg361p3", render_player_mode_event()]
     for domain in ("aa", "ag", "aj"):
         order = DOMAIN_ORDER[domain]
         for index, mid in enumerate(order):
@@ -2364,35 +2585,81 @@ def esc(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
+CASE_OPENING_CN = {
+    "aa": "一份本期指标底稿已经摊开：[scope:zg361_p3_aa_subject.GetShortUIName]是本案当事人，[scope:zg361_p3_aa_owner.GetShortUIName]将作裁决。",
+    "ag": "一宗职司改组案已经送达：[scope:zg361_p3_ag_subject.GetShortUIName]是本案当事人，[scope:zg361_p3_ag_owner.GetShortUIName]将作裁决。",
+    "aj": "一份在办交付案已经送达：[scope:zg361_p3_aj_subject.GetShortUIName]是本案当事人，[scope:zg361_p3_aj_owner.GetShortUIName]将作裁决。",
+}
+CASE_OPENING_EN = {
+    "aa": "A current metrics ledger is open: [scope:zg361_p3_aa_subject.GetShortUIName] is the subject, and [scope:zg361_p3_aa_owner.GetShortUIName] will decide the case.",
+    "ag": "A reorganization case has arrived: [scope:zg361_p3_ag_subject.GetShortUIName] is the subject, and [scope:zg361_p3_ag_owner.GetShortUIName] will decide it.",
+    "aj": "An active delivery case has arrived: [scope:zg361_p3_aj_subject.GetShortUIName] is the subject, and [scope:zg361_p3_aj_owner.GetShortUIName] will decide it.",
+}
+PLAYER_DEBT_STATUS_CN = "本轮已经登记制度债 [ROOT.MakeScope.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] 笔。"
+PLAYER_DEBT_STATUS_EN = "This portfolio has recorded [ROOT.MakeScope.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
+PLAYER_MODE_CN = {
+    "t": "本轮办案方式",
+    "desc": (
+        "当事人 [scope:zg361_p3_aa_subject.GetShortUIName] 的指标、改组与交付案已经立卷。"
+        "全案共三十五项：二十二项常规案可以统一口径办理，十三项涉及资源、人物去留或最终结算，必须单独呈报。"
+        "统一办理仍为每项保留正式案卷、期限与回执。"
+        + PLAYER_DEBT_STATUS_CN
+    ),
+    "a": "二十二项常规案以证据完整、可复核为准统一办理；条件不足者单独呈报。",
+    "b": "常规案以迅速交付为先统一办理，承担相应约束与风险；条件不足者单独呈报。",
+    "c": "搁置二十二项常规案，每件各记一笔下周期制度债；十三项关键案仍单独呈报。",
+    "d": "全部三十五项逐案呈报，由我分别裁决。",
+}
+PLAYER_MODE_EN = {
+    "t": "How This Portfolio Will Be Heard",
+    "desc": (
+        "The metrics, reorganization, and delivery portfolio for "
+        "[scope:zg361_p3_aa_subject.GetShortUIName] is open. It contains thirty-five items: "
+        "twenty-two routine matters can follow one common standard, while thirteen matters "
+        "involving resources, people, or final settlement must be presented individually. "
+        "Common handling still preserves a formal file, deadline, and receipt for every matter. "
+        + PLAYER_DEBT_STATUS_EN
+    ),
+    "a": "Resolve twenty-two routine matters by complete, reviewable evidence; present any matter lacking the required conditions separately.",
+    "b": "Resolve twenty-two routine matters for prompt delivery and accept the resulting rules and risks; present any matter lacking the required conditions separately.",
+    "c": "Defer twenty-two routine matters, recording one next-cycle policy debt for each; present the thirteen key matters separately.",
+    "d": "Present all thirty-five matters one by one for my separate ruling.",
+}
+
+
 def render_localization(language: str) -> bytes:
     validate_specs()
     if language == "simp_chinese":
         header = "l_simp_chinese:"
-        rows = []
+        rows = [
+            f' zg361p3.{PLAYER_MODE_EVENT}.{key}:0 "{esc(value)}"'
+            for key, value in PLAYER_MODE_CN.items()
+        ]
         for spec in MECHANISMS:
-            desc = (
-                f"当事人：[scope:zg361_p3_{spec.domain}_subject.GetShortUIName]；裁决者："
-                f"[scope:zg361_p3_{spec.domain}_owner.GetShortUIName]。{spec.desc_cn} "
-                "本卡承接同一案卷的上一项结果，选择后立即写入；按钮写明本项实际处理，后续卡不会改写本次选择。"
-            )
+            desc = f"{CASE_OPENING_CN[spec.domain]}{spec.desc_cn}"
+            if spec.mid in PLAYER_VISIBLE_IDS:
+                desc += PLAYER_DEBT_STATUS_CN
             rows += [
                 f' zg361p3.{spec.mid}.t:0 "{esc(spec.title_cn)}"',
                 f' zg361p3.{spec.mid}.desc:0 "{esc(desc)}"',
                 *(f' zg361p3.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", spec.routes_cn)),
+                f' zg361p3.{spec.mid}.c.tt:0 "{esc(DEFER_TOOLTIP_CN)}"',
             ]
     else:
         header = f"l_{language}:"
-        rows = []
+        rows = [
+            f' zg361p3.{PLAYER_MODE_EVENT}.{key}:0 "{esc(value)}"'
+            for key, value in PLAYER_MODE_EN.items()
+        ]
         for spec in MECHANISMS:
-            desc = (
-                f"Official: [scope:zg361_p3_{spec.domain}_subject.GetShortUIName]. Decision owner: "
-                f"[scope:zg361_p3_{spec.domain}_owner.GetShortUIName]. {spec.desc_en} "
-                "This card follows the preceding result in the same case and records its choice immediately; later cards do not rewrite it."
-            )
+            desc = f"{CASE_OPENING_EN[spec.domain]} {spec.desc_en}"
+            if spec.mid in PLAYER_VISIBLE_IDS:
+                desc += f" {PLAYER_DEBT_STATUS_EN}"
             rows += [
                 f' zg361p3.{spec.mid}.t:0 "{esc(spec.title_en)}"',
                 f' zg361p3.{spec.mid}.desc:0 "{esc(desc)}"',
                 *(f' zg361p3.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", spec.routes_en)),
+                f' zg361p3.{spec.mid}.c.tt:0 "{esc(DEFER_TOOLTIP_EN)}"',
             ]
     if language == "simp_chinese":
         rows = normalize_localization_rows(rows)

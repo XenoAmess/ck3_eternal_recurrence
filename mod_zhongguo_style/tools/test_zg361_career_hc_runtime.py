@@ -176,6 +176,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
             + len(generator.QUEUE_EVENTS)
             + len(generator.DOMAINS)
             + 1  # exact externally-blocked transfer retry
+            + 1  # one player portfolio batching choice
         )
         self.assertEqual(len(event_ids), expected_events)
         self.assertEqual(len(event_ids), len(set(event_ids)))
@@ -234,7 +235,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
             self.assertIn(f"var:zg361_case_{domain}_active = 0", adapter)
         self.assertNotIn("is_ai = no", adapter)
 
-    def test_open_launches_one_player_card_d_plus_one_or_ai_background(self) -> None:
+    def test_open_launches_portfolio_batch_or_next_guarded_player_card(self) -> None:
         for domain in generator.DOMAINS:
             opened = block(
                 self.effects,
@@ -245,10 +246,29 @@ class CareerHcRuntimeTests(unittest.TestCase):
                 self.assertIn(f"save_scope_as = zg361_ch_{domain.key}_event_owner", opened)
                 self.assertIn(f"save_scope_as = zg361_ch_{domain.key}_event_subject", opened)
                 self.assertIn(f"save_scope_value_as = {{ name = zg361_ch_{domain.key}_event_cycle", opened)
-                self.assertEqual(
-                    opened.count(f"trigger_event = {{ id = zg361ch.{first} days = 1 }}"),
-                    1,
-                )
+                if domain.key == "d":
+                    self.assertEqual(
+                        opened.count(
+                            f"trigger_event = {{ id = zg361ch.{generator.BATCH_CHOICE_EVENT} days = 1 }}"
+                        ),
+                        1,
+                    )
+                elif first in generator.BATCHABLE_IDS:
+                    self.assertIn(
+                        f"zg361_career_hc_m{first:03d}_background_apply_effect = yes",
+                        opened,
+                    )
+                    self.assertIn(
+                        f"trigger_event = {{ id = zg361ch.{first} days = 1 }}",
+                        opened,
+                    )
+                else:
+                    self.assertEqual(
+                        opened.count(
+                            f"trigger_event = {{ id = zg361ch.{first} days = 1 }}"
+                        ),
+                        1,
+                    )
                 self.assertIn("is_ai = no", opened)
                 self.assertIn("is_ai = yes", opened)
                 self.assertIn(
@@ -387,7 +407,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
 
     def test_player_business_windows_are_serial_d_plus_one_with_five_field_guards(self) -> None:
         self.assertEqual(self.events.count("# Player manager business window #"), 44)
-        self.assertEqual(self.events.count("theme = stewardship"), 44)
+        self.assertEqual(self.events.count("theme = stewardship"), 45)
         for domain in generator.DOMAINS:
             mechanisms = generator.domain_mechanisms(domain)
             for index, mechanism_id in enumerate(mechanisms):
@@ -411,12 +431,26 @@ class CareerHcRuntimeTests(unittest.TestCase):
                         self.assertIn(f"ROUTE = {route}", event)
                     if index + 1 < len(mechanisms):
                         successor = mechanisms[index + 1]
-                        self.assertEqual(
-                            event.count(
-                                f"trigger_event = {{ id = zg361ch.{successor} days = 1 }}"
-                            ),
-                            3,
-                        )
+                        if successor in generator.BATCHABLE_IDS:
+                            self.assertEqual(
+                                event.count(
+                                    f"zg361_career_hc_m{successor:03d}_background_apply_effect = yes"
+                                ),
+                                3,
+                            )
+                            self.assertEqual(
+                                event.count(
+                                    f"trigger_event = {{ id = zg361ch.{successor} days = 1 }}"
+                                ),
+                                3,
+                            )
+                        else:
+                            self.assertEqual(
+                                event.count(
+                                    f"trigger_event = {{ id = zg361ch.{successor} days = 1 }}"
+                                ),
+                                3,
+                            )
                     elif generator.NEXT_DOMAIN[domain.key] is not None:
                         queue_event = generator.QUEUE_EVENTS[domain.key]
                         self.assertEqual(
@@ -432,6 +466,96 @@ class CareerHcRuntimeTests(unittest.TestCase):
                             ),
                             3,
                         )
+
+    def test_one_batch_choice_keeps_twenty_two_consequential_rulings_visible(self) -> None:
+        self.assertEqual(len(generator.BATCHABLE_IDS), 22)
+        self.assertEqual(len(generator.VISIBLE_RULING_IDS), 22)
+        self.assertEqual(
+            generator.BATCHABLE_IDS | generator.VISIBLE_RULING_IDS,
+            set(generator.EXPECTED_IDS),
+        )
+        self.assertFalse(generator.BATCHABLE_IDS & generator.VISIBLE_RULING_IDS)
+        self.assertFalse(generator.DUAL_COST_IDS & generator.BATCHABLE_IDS)
+        choice = block(self.events, f"zg361ch.{generator.BATCH_CHOICE_EVENT}")
+        self.assertIn("is_ai = no", choice)
+        self.assertIn("zg361_case_kernel_full_guard_trigger", choice)
+        for route, letter in ((1, "a"), (2, "b"), (3, "c")):
+            self.assertIn(
+                f"name = zg361ch.{generator.BATCH_CHOICE_EVENT}.{letter}",
+                choice,
+            )
+            self.assertIn(
+                f"zg361_ch_player_batch_route value = {route}",
+                choice,
+            )
+        self.assertIn(f"name = zg361ch.{generator.BATCH_CHOICE_EVENT}.d", choice)
+        self.assertIn("remove_variable = zg361_ch_player_batch_route", choice)
+        self.assertIn("trigger_event = { id = zg361ch.19 days = 1 }", choice)
+        # Normal batched flow: one policy card, 22 consequential cards and six
+        # domain receipts, instead of 44 business cards plus six receipts.
+        self.assertEqual(1 + len(generator.VISIBLE_RULING_IDS) + len(generator.DOMAINS), 29)
+
+    def test_background_rulings_use_original_core_receipt_and_visible_fallback(self) -> None:
+        for mechanism_id in generator.BATCHABLE_IDS:
+            domain = generator.DOMAIN_BY_ID[mechanism_id]
+            source = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_background_apply_effect",
+            )
+            with self.subTest(mechanism=mechanism_id):
+                self.assertIn("zg361_ch_player_batch_route", source)
+                self.assertIn(
+                    f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect",
+                    source,
+                )
+                self.assertIn("ROUTE = var:zg361_ch_player_batch_route", source)
+                self.assertIn("has_variable = zg361_ch_runtime_applied", source)
+                self.assertIn("var:zg361_ch_runtime_applied = 1", source)
+                self.assertIn(
+                    f"trigger_event = {{ id = zg361ch.{mechanism_id} days = 1 }}",
+                    source,
+                )
+                successor = generator.next_domain_mechanism(domain, mechanism_id)
+                if successor is not None and successor in generator.BATCHABLE_IDS:
+                    self.assertIn(
+                        f"zg361_career_hc_m{successor:03d}_background_apply_effect = yes",
+                        source,
+                    )
+
+    def test_background_resource_shortage_falls_back_before_consumption(self) -> None:
+        for mechanism_id in (98, 99, 100, 102):
+            source = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_background_apply_effect",
+            )
+            with self.subTest(mechanism=mechanism_id):
+                self.assertIn("zg361_ch_hc_available >= 1", source)
+                self.assertLess(
+                    source.index("zg361_ch_hc_available >= 1"),
+                    source.index(
+                        f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect"
+                    ),
+                )
+        q127 = block(
+            self.effects,
+            "zg361_career_hc_m127_background_apply_effect",
+        )
+        self.assertIn("zg361_ch_q_manager_hc_available >= 1", q127)
+        self.assertLess(
+            q127.index("zg361_ch_q_manager_hc_available >= 1"),
+            q127.index("zg361_career_hc_m127_manager_apply_effect"),
+        )
+
+    def test_batching_never_reimplements_case_or_business_semantics(self) -> None:
+        for mechanism_id in generator.BATCHABLE_IDS:
+            source = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_background_apply_effect",
+            )
+            with self.subTest(mechanism=mechanism_id):
+                self.assertNotIn("zg361_case_kernel_record_operation_effect", source)
+                self.assertNotIn("_consume_effect = yes", source)
+                self.assertNotIn("set_variable = { name = zg361_ch_m", source)
 
     def test_cross_domain_queue_edges_are_hidden_closed_identity_guards(self) -> None:
         for domain in generator.DOMAINS[:-1]:
@@ -978,28 +1102,11 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_career_hc_open_q_case_effect = yes", queue)
         self.assertIn("zg361_career_hc_finalize_p_portfolio_effect = yes", queue)
 
-    def test_assessed_subject_responses_never_gain_manager_authority(self) -> None:
-        found = set(
-            int(item)
-            for item in re.findall(
-                r"^zg361_career_hc_m(\d{3})_subject_response_effect = \{",
-                self.effects,
-                flags=re.MULTILINE,
-            )
-        )
-        self.assertEqual(found, set(generator.SUBJECT_RESPONSE_IDS))
-        for mechanism_id in found:
-            with self.subTest(mechanism=mechanism_id):
-                source = block(
-                    self.effects,
-                    f"zg361_career_hc_m{mechanism_id:03d}_subject_response_effect",
-                )
-                self.assertIn("zg361_case_kernel_subject_self_guard_trigger", source)
-                self.assertIn("is_ai = no", source)
-                self.assertNotIn("zg361_is_celestial_liege_trigger", source)
-                self.assertNotIn("_open_effect", source)
-                self.assertNotIn("_advance_", source)
-                self.assertNotIn("_core_effect", source)
+    def test_unwired_subject_responses_are_not_generated_or_claimed(self) -> None:
+        self.assertNotIn("_subject_response_effect", self.effects)
+        self.assertNotIn("subject response", self.effects.lower())
+        self.assertNotIn("subject_ack", self.effects)
+        self.assertNotIn("subject_route", self.effects)
 
     def test_authorized_ai_manager_path_is_silent_and_player_feedback_exists(self) -> None:
         # Manager entries intentionally have no is_ai=no gate: the project
@@ -1030,7 +1137,38 @@ class CareerHcRuntimeTests(unittest.TestCase):
         chinese = (
             MOD_ROOT / "localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml"
         ).read_text(encoding="utf-8-sig")
-        self.assertIn("不是一张只会喊口号的制度卡", chinese)
+        self.assertIn("晋升材料已过初核", chinese)
+        self.assertNotIn("上一项职业与编制回执已把", chinese)
+        self.assertNotIn("路线甲、乙", chinese)
+        self.assertNotIn("业务对象", chinese)
+        self.assertNotIn("后台事项", chinese)
+        self.assertNotIn("裁决卡", chinese)
+        self.assertNotIn("回写", chinese)
+        self.assertNotIn("writeback", english.lower())
+        self.assertNotIn("original card", english.lower())
+        self.assertIn("Each will retain its own formal record", english)
+        for exact in (
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.a:0 "以可追溯证据为准，统一办理二十二项常规案；条件不足者单独呈报。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.b:0 "以执行速度为先，统一办理二十二项常规案；条件不足者单独呈报。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.c:0 "搁置二十二项常规案，每案记下一笔下周期制度债。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.d:0 "全部四十四项逐案呈报，由我分别裁决。"',
+        ):
+            self.assertIn(exact, chinese)
+        for exact in (
+            "Use traceable evidence to settle twenty-two routine cases; present any case lacking the required conditions separately.",
+            "Put execution speed first in twenty-two routine cases; present any case lacking the required conditions separately.",
+            "Defer twenty-two routine cases, recording one next-cycle policy debt for each case.",
+            "Present all forty-four cases individually for my separate rulings.",
+        ):
+            self.assertIn(exact, english)
+        self.assertIn('zg361ch.m119.name:0 "招聘质量追责"', chinese)
+        self.assertIn("选人、批准与带教三方的责任都要据此追记", chinese)
+        self.assertIn("追记三方招聘责任", chinese)
+        self.assertIn("Recruitment quality accountability", english)
+        self.assertIn(
+            "Record accountability across selection, approval and mentoring.",
+            english,
+        )
         for mechanism_id in generator.EXPECTED_IDS:
             with self.subTest(mechanism=mechanism_id):
                 for suffix in ("name", "desc", "a", "b", "c"):

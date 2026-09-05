@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 990_215)
+        self.assertEqual(len(historical), 1_050_894)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "8802d826d54995e2dd3d010a8efa0c2c4addf67648aa2174eaa0cf44e32d9f70",
+            "852df456a88d74c64d82134e272d343f3bc90a3d129e283c996dea10095667c4",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -638,7 +638,9 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertEqual(adapter.count("zg361_pp_open_"), 4)
         self.assertIn("if = {", adapter)
         self.assertGreaterEqual(adapter.count("else_if = {"), 4)
-        self.assertNotIn("is_ai = no", adapter)
+        self.assertEqual(adapter.count("is_ai = no"), 1)
+        self.assertIn("trigger_event = { id = zg361pp.9100 days = 1 }", adapter)
+        self.assertIn("zg361_pp_batch_strategy_cycle = var:zg361_review_serial", adapter)
 
     def test_dukes_or_higher_manage_counts_and_barons_only_receive(self) -> None:
         for domain in gen.DOMAINS:
@@ -686,6 +688,30 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertIn(f"zg361_pp_m{mid:03d}_subject_response", response)
             self.assertIn("zg361_case_kernel_subject_self_guard_trigger", resume)
 
+    def test_manager_and_subject_copy_use_their_own_saved_scope_family(self) -> None:
+        rows = gen.localization_rows("simp_chinese")
+        loc: dict[str, str] = {}
+        for row in rows:
+            match = re.match(r'^\s*([^:]+):\d+\s+"(.*)"$', row)
+            if match:
+                loc[match.group(1)] = match.group(2)
+
+        for mid in (166, 190):
+            manager_event = effect_block(self.events, f"zg361pp.{mid}")
+            subject_event = effect_block(self.events, f"zg361pp.{5000 + mid}")
+            self.assertIn(f"desc = zg361pp.{mid}.desc", manager_event)
+            self.assertIn(f"desc = zg361pp.{5000 + mid}.desc", subject_event)
+            self.assertNotIn(f"desc = zg361pp.{mid}.desc", subject_event)
+
+            manager_copy = loc[f"zg361pp.{mid}.desc"]
+            subject_copy = loc[f"zg361pp.{5000 + mid}.desc"]
+            self.assertIn("scope:zg361_pp_prompt_owner", manager_copy)
+            self.assertIn("scope:zg361_pp_prompt_subject", manager_copy)
+            self.assertNotIn("scope:zg361_pp_subject_prompt_", manager_copy)
+            self.assertIn("scope:zg361_pp_subject_prompt_owner", subject_copy)
+            self.assertIn("scope:zg361_pp_subject_prompt_subject", subject_copy)
+            self.assertNotIn("scope:zg361_pp_prompt_", subject_copy)
+
     def test_visible_decisions_form_a_single_option_driven_queue(self) -> None:
         self.assertEqual(
             len(re.findall(r"^zg361pp\.(?:14[6-9]|1[5-8]\d|19[01]) = \{$", self.events, re.MULTILINE)),
@@ -708,6 +734,110 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertIn("The authorized AI route has no visible card", outcome)
             self.assertIn("var:zg361_pp_portfolio_queue_active = 1", completion)
             self.assertIn("name = zg361_pp_portfolio_queue_active value = 0", completion)
+
+    def test_m11_batch_strategy_reduces_only_the_safe_pp_subset(self) -> None:
+        requested = {
+            146, 147, 148, 152, 154, 156, 163, 164, 167, 168,
+            169, 171, 172, 174, 176, 177, 179, 181, 186, 191,
+        }
+        safe = requested - {191}
+        self.assertEqual(gen.REQUESTED_BACKGROUND_BATCH_IDS, requested)
+        self.assertEqual(gen.BACKGROUND_BATCH_PROTECTED_IDS, {191})
+        self.assertEqual(gen.BACKGROUND_BATCH_IDS, safe)
+        self.assertEqual(len(gen.BACKGROUND_BATCH_IDS), 19)
+        self.assertFalse(
+            gen.BACKGROUND_BATCH_IDS
+            & (
+                gen.DUAL_COST_IDS
+                | gen.SUBJECT_RESPONSE_IDS
+                | gen.DELAYED_STAGE_GATE_IDS
+                | {191}
+            )
+        )
+
+        strategy = effect_block(self.events, "zg361pp.9100")
+        self.assertEqual(strategy.count("option = {"), 4)
+        for route, key in ((1, "a"), (2, "b"), (3, "c"), (4, "d")):
+            self.assertIn(f"name = zg361pp.9100.{key}", strategy)
+            self.assertIn(
+                f"name = zg361_pp_batch_strategy_route value = {route}",
+                strategy,
+            )
+        self.assertEqual(
+            strategy.count(
+                "name = zg361_pp_batch_strategy_cycle value = var:zg361_review_serial"
+            ),
+            4,
+        )
+        self.assertEqual(
+            strategy.count("zg361_pp_manager_portfolio_adapter_effect = yes"),
+            4,
+        )
+
+        for mid in sorted(safe):
+            domain = gen.DOMAIN_BY_ID[mid]
+            state = gen.mechanism_stage(mid)
+            dispatch = effect_block(
+                self.effects,
+                f"zg361_pp_dispatch_{domain.key}_stage_{state:02d}_effect",
+            )
+            self.assertRegex(
+                dispatch,
+                rf"zg361_pp_m{mid:03d}_core_effect = \{{\n"
+                r"\s+ROUTE = var:zg361_pp_batch_strategy_route_frozen",
+                f"{mid}: safe item does not reuse its original core",
+            )
+            self.assertIn(
+                "NOT = { has_variable = zg361_pp_runtime_applied }",
+                dispatch,
+                f"{mid}: failed core cannot reach the visible fallback",
+            )
+            self.assertGreaterEqual(
+                dispatch.count(f"trigger_event = {{ id = zg361pp.{mid} days = 1 }}"),
+                2,
+                f"{mid}: dependency/resource failure or itemized mode can skip the card",
+            )
+
+        # The 46 original manager events stay generated as exact fallbacks.
+        for mid in range(146, 192):
+            self.assertIn(f"zg361pp.{mid} = {{", self.events)
+        protected = effect_block(self.effects, "zg361_pp_dispatch_w_stage_05_effect")
+        self.assertNotRegex(
+            protected,
+            r"zg361_pp_m191_core_effect = \{\n\s+ROUTE = "
+            r"var:zg361_pp_batch_strategy_route_frozen",
+        )
+        self.assertIn("trigger_event = { id = zg361pp.191 days = 1 }", protected)
+        # A/B/C replaces nineteen manager cards with one policy card; D keeps
+        # the whole original itemized sequence and adds only that policy card.
+        self.assertEqual(46 - len(safe) + 1, 28)
+        self.assertEqual(46 + 1, 47)
+
+    def test_player_copy_has_no_ui_or_implementation_meta_language(self) -> None:
+        loc = text(
+            MOD_ROOT
+            / "localization"
+            / "simp_chinese"
+            / "zg361_feedback_promotion_pip_l_simp_chinese.yml"
+        )
+        for token in (
+            "本卡", "玩家", "结算器", "回写", "下方按钮", "按钮及说明",
+            "批处理", "闸门", "调用", "原裁定卡", "归档卡", "原始条件",
+            "PPT",
+        ):
+            self.assertNotIn(token, loc, token)
+        english = text(
+            MOD_ROOT
+            / "localization"
+            / "english"
+            / "zg361_feedback_promotion_pip_l_english.yml"
+        ).lower()
+        for token in (
+            "this card", "player choices", "the settler", "write back",
+            "buttons and their tooltips", "batch handling", "time gates",
+            "invoke each original", "item's card",
+        ):
+            self.assertNotIn(token, english, token)
 
     def test_write_to_consumer_cross_links_are_present(self) -> None:
         for token in (
@@ -973,14 +1103,15 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "var:zg361_result_cycle_serial = var:zg361_pp_m188_observation_due_cycle",
             "has_variable = zg361_result_grade_reason",
             "zg361_pp_m188_observed_result_reason value = var:zg361_result_grade_reason",
-            "zg361_pp_m188_observed_category value = 1",
-            "var:zg361_result_grade_reason = 5",
+            "zg361_pp_m188_observed_category value = 0",
+            "var:zg361_pp_m188_observed_category >= 1",
             "var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot",
             "name = zg361_pp_m188_same_category_relapse value = 1",
             "name = zg361_pp_m188_relapse_status value = 1",
             "zg361_pp_m189_skip_no_relapse_effect = yes",
         ):
             self.assertIn(token, audit)
+        self.assertNotIn("var:zg361_result_grade_reason = 5", audit)
         for token in (
             "var:zg361_pp_m188_relapse_status = 2",
             "name = zg361_pp_m189_skipped_no_relapse value = 1",
@@ -1167,6 +1298,88 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "zg361pp.terminal.exit",
         ):
             self.assertIn(key, w)
+
+    def test_grade_reason_never_manufactures_role_mismatch(self) -> None:
+        m181 = effect_block(self.effects, "zg361_pp_m181_core_effect")
+        for token in (
+            "zg361_pp_m181_primary_category value = 0",
+            "zg361_pp_m181_triage_truth_status value = 0",
+            "zg361_pp_m181_triage_red_code value = 2",
+            "zg361_pp_m181_current_rating_unchanged value = 1",
+        ):
+            self.assertIn(token, m181)
+        self.assertNotIn("zg361_pp_m181_primary_category value = 3", m181)
+        self.assertNotIn("zg361_pp_m181_result_reason_snapshot = 5", m181)
+
+        m189 = effect_block(self.effects, "zg361_pp_m189_core_effect")
+        self.assertIn("var:zg361_pp_m181_primary_category = 3", m189)
+        self.assertIn("var:zg361_pp_w_real_vacancy = 1", m189)
+        self.assertIn("zg361_pp_m189_second_pip value = 1", m189)
+
+    def test_pp_copy_has_authored_scenes_and_self_explanatory_buttons(self) -> None:
+        rows = gen.localization_rows("simp_chinese")
+        loc: dict[str, str] = {}
+        for row in rows:
+            match = re.match(r'^\s*([^:]+):\d+\s+"(.*)"$', row)
+            if match:
+                loc[match.group(1)] = match.group(2)
+
+        self.assertEqual(set(gen.PP_SCENES), set(range(146, 192)))
+        descriptions = []
+        for mechanism in gen.MECHANISMS:
+            mid = mechanism.mechanism_id
+            title = loc[f"zg361pp.{mid}.t"]
+            desc = loc[f"zg361pp.{mid}.desc"]
+            descriptions.append(desc)
+            self.assertNotIn(title, desc, f"{mid}: body repeats title")
+            self.assertNotRegex(desc, r"^[。！？；：，、.?!;:,\[]")
+            self.assertNotRegex(desc, r"路线[甲乙丙]|按\s*[ABC]\s*(?:做|办|执行)")
+            for letter in "abc":
+                label = loc[f"zg361pp.{mid}.{letter}"]
+                tooltip = loc[f"zg361pp.{mid}.{letter}.tt"]
+                self.assertLessEqual(len(label), 40, f"{mid}.{letter}: overlong label")
+                self.assertNotRegex(label, r"路线[甲乙丙]|按\s*[ABC]\s*(?:做|办|执行)")
+                self.assertIn("计划核验日", tooltip)
+        self.assertEqual(len(descriptions), len(set(descriptions)))
+
+    def test_all_manager_options_expose_cost_and_deadline_tooltips(self) -> None:
+        for mechanism in gen.MECHANISMS:
+            event = effect_block(self.events, f"zg361pp.{mechanism.mechanism_id}")
+            letters = ("transfer", "second_pip", "b", "c") if mechanism.mechanism_id == 189 else ("a", "b", "c")
+            for letter in letters:
+                self.assertIn(
+                    f"custom_tooltip = zg361pp.{mechanism.mechanism_id}.{letter}.tt",
+                    event,
+                )
+
+        chinese = "\n".join(gen.localization_rows("simp_chinese"))
+        for mid, route in gen.DUAL_COST_ROUTE_BY_ID.items():
+            letter = "a" if route == 1 else "b"
+            match = re.search(
+                rf'^\s*zg361pp\.{mid}\.{letter}\.tt:\d+\s+"(.*)"$',
+                chinese,
+                re.MULTILINE,
+            )
+            self.assertIsNotNone(match)
+            self.assertIn("国库 5", match.group(1))
+            self.assertIn("个人金币 5", match.group(1))
+            self.assertIn("实际收到 10", match.group(1))
+        self.assertIn("成本拆分 3/2/0/5、合计 10 只是政策模拟", chinese)
+
+    def test_delivery_uses_readable_reason_text_and_completion_is_not_closed(self) -> None:
+        event = effect_block(self.events, "zg361pp.5151")
+        self.assertEqual(set(gen.RESULT_REASON_TEXT), set(range(11)))
+        for reason in range(11):
+            self.assertIn(f"var:zg361_pp_t_frozen_reason = {reason}", event)
+            self.assertIn(f"desc = zg361pp.5151.reason.{reason}", event)
+        self.assertIn("desc = zg361pp.5151.reason.unknown", event)
+        self.assertIn("desc = zg361pp.5151.evidence", event)
+
+        chinese = "\n".join(gen.localization_rows("simp_chinese"))
+        self.assertNotIn("冻结理由编号", chinese)
+        self.assertIn("强制分布配额将其下调。这不构成错岗证据", chinese)
+        self.assertNotIn("三六一案卷已结", chinese)
+        self.assertIn("本轮选择已录入", chinese)
 
     def test_events_and_effects_have_balanced_braces(self) -> None:
         self.assertEqual(self.effects.count("{"), self.effects.count("}"))

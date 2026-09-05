@@ -59,8 +59,8 @@ RETIRED_EFFECT_PATHS = tuple(
 LEGACY_EVENT_FILENAME = "zg361_workforce_endgame_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_workforce_endgame_event_*_events.txt"
-HISTORICAL_EVENT_BYTES = 171_007
-HISTORICAL_EVENT_SHA256 = "DEAA55F39B21D1452AD82BC2F3D9AB64225F0D00A2BD907223E73E79EB458181"
+HISTORICAL_EVENT_BYTES = 175_334
+HISTORICAL_EVENT_SHA256 = "686B09226545460F6729DA37D48FE57AE6521A48A9768C2ED6B5291C2C775BD0"
 HISTORICAL_EVENT_COUNT = 149
 EVENT_TARGET_MAX = 10
 EVENT_HARD_MAX = 20
@@ -120,6 +120,8 @@ class Mechanism:
     desc_cn: str
     routes_en: tuple[str, str, str]
     routes_cn: tuple[str, str, str]
+    route_details_en: tuple[str, str, str]
+    route_details_cn: tuple[str, str, str]
 
 
 @dataclass(frozen=True)
@@ -362,6 +364,193 @@ RETIRED_AD_EXTERNAL_ALIASES = frozenset({
     "zg361_we_ad_external_exit_position_type_id",
 })
 
+# Player-facing scenes describe the facts that force a ruling now.  The
+# available rulings belong on the buttons, not in a generic body that repeats
+# the title or asks the player to choose "A/B".  Keep every numbered card
+# distinct so a live screenshot can be understood without knowing the runtime
+# catalogue.
+SCENE_CN = {
+    242: "考核将近，[scope:zg361_we_ab_subject.GetShortUIName] 已连续数日最后离席，成果记录却没有相应增长。[scope:zg361_we_ab_owner.GetShortUIName] 今天必须封存本轮容量账，免得下一次考核继续把灯火通明当成功劳。",
+    243: "深夜送到 [scope:zg361_we_ab_subject.GetShortUIName] 手里的消息没有标明紧急程度，值守名册也无人可查。[scope:zg361_we_ab_owner.GetShortUIName] 必须在下一封夜讯发出前立下回复边界，现有容量与值守账会随之结算。",
+    244: "一项临时冲刺正在向 [scope:zg361_we_ab_subject.GetShortUIName] 征集额外工时，但报名、奖励和拒绝豁免都没有落纸。[scope:zg361_we_ab_owner.GetShortUIName] 若今天不裁定，这次动员就会在容量与金币账上留下说不清的缺口。",
+    245: "关账将近，[scope:zg361_we_ab_subject.GetShortUIName] 已在原期限下做出多笔额外工时，却找不到事前批准或事后补录。[scope:zg361_we_ab_owner.GetShortUIName] 必须处理这些申报，否则加班记录会与实际负荷彻底脱节。",
+    246: "上一批额外工时已经记到 [scope:zg361_we_ab_subject.GetShortUIName] 名下，兑现方式却仍是一句口头承诺。[scope:zg361_we_ab_owner.GetShortUIName] 今天要结清这笔劳动；金币、调休与目标账都在等待同一份结算记录。",
+    247: "危机令下达后，[scope:zg361_we_ab_subject.GetShortUIName] 所在团队已连续赶工，命令上却没有终止日和复盘人。[scope:zg361_we_ab_owner.GetShortUIName] 必须在下一轮开始前补齐边界；一年后的复核只认今天留下的冲刺记录。",
+    248: "一个长期空缺正由 [scope:zg361_we_ab_subject.GetShortUIName] 的团队持续分摊，原有目标从未缩减。[scope:zg361_we_ab_owner.GetShortUIName] 今天封账时必须说明这段超载由谁承担，否则容量缺口会继续被交付数字遮住。",
+    249: "本轮工时核对时，[scope:zg361_we_ab_subject.GetShortUIName] 参加的例会不断增加，留给实际工作的时间已经被挤压，若干会议甚至没有议程与结论。[scope:zg361_we_ab_owner.GetShortUIName] 必须在下一批邀请发出前结清会议工时。",
+    250: "最近一次会议坐满了人，真正提供信息和承担决定的人却没有单独记录，[scope:zg361_we_ab_subject.GetShortUIName] 的贡献也混在出席名单里。[scope:zg361_we_ab_owner.GetShortUIName] 必须在分功前补上证据。",
+    251: "会议结束后，[scope:zg361_we_ab_subject.GetShortUIName] 因拒绝出席而被要求记作不服从，而邀请上根本没有议程。[scope:zg361_we_ab_owner.GetShortUIName] 今天必须判断这次缺席是否有正当依据，并在容量与管理评价封存前留下凭据。",
+    252: "休假获批后，[scope:zg361_we_ab_subject.GetShortUIName] 的可工作日已经减少，原定目标却丝毫未减，替补者的成果归属也没有写清。[scope:zg361_we_ab_owner.GetShortUIName] 必须在本轮评分前统一三本账。",
+    253: "低绩效结论公布后，[scope:zg361_we_ab_subject.GetShortUIName] 已明显收缩投入，同时提交了对评分证据的异议。[scope:zg361_we_ab_owner.GetShortUIName] 今天要确定下一轮如何收拾残局，申诉、改进和管理评价都不能再悬着。",
+    254: "正式编制尚未获批，交付缺口已经压到 [scope:zg361_we_ac_subject.GetShortUIName] 身上，一份临时外包报价正等 [scope:zg361_we_ac_owner.GetShortUIName] 签字。采购金币、影子人力和退场期限必须在签约前同时入账。",
+    255: "补位合同已经摆在桌上，低报价很醒目，招聘、管理、流失和交接成本却散落在不同账册。[scope:zg361_we_ac_owner.GetShortUIName] 必须在为 [scope:zg361_we_ac_subject.GetShortUIName] 锁定预算前算清全周期代价。",
+    256: "外部团队已交出首批成果，交付速度、质量和服务承诺出现了不同方向的偏差，[scope:zg361_we_ac_subject.GetShortUIName] 却仍与他们共用一张绩效表。[scope:zg361_we_ac_owner.GetShortUIName] 必须在续约讨论前留下独立评价。",
+    257: "一名长期参与交付的外部成员已向 [scope:zg361_we_ac_subject.GetShortUIName] 提出转为正式岗位，预留名额与统一门槛尚未写明。[scope:zg361_we_ac_owner.GetShortUIName] 必须在下一轮招聘开始前定下通道，一年后的复核将追认今天的记录。",
+    258: "最近一次交付偏差中，[scope:zg361_we_ac_subject.GetShortUIName] 承担了结果目标，却仍拿不到完成任务所需的数据和决定权，责任已被直接算到个人头上。[scope:zg361_we_ac_owner.GetShortUIName] 必须在本轮评分前核清可控范围。",
+    259: "服务承诺已经逾期，供应商、内部管理者与一线执行者正相互推责，[scope:zg361_we_ac_subject.GetShortUIName] 首先被写进问责名单。[scope:zg361_we_ac_owner.GetShortUIName] 必须在整改启动前冻结责任证据。",
+    260: "采购方正为 [scope:zg361_we_ac_subject.GetShortUIName] 的补位需求起草合同，需求稳定度与后续变更价款仍未落纸。[scope:zg361_we_ac_owner.GetShortUIName] 必须在签章前锁定合同边界，避免交付中途才争论谁承担变化。",
+    261: "交付现场已经出现多层转包，[scope:zg361_we_ac_subject.GetShortUIName] 接触到的执行者与合同名单并不一致，差价去向也无人说明。[scope:zg361_we_ac_owner.GetShortUIName] 必须在下一笔款项放行前查清责任链。",
+    262: "年度复核将近，[scope:zg361_we_ac_subject.GetShortUIName] 的借调同时占用原团队容量并为接收团队交付成果，两边都准备认领全部功劳。[scope:zg361_we_ac_owner.GetShortUIName] 必须冻结双方记录，下一次核验只认这份底稿。",
+    263: "期限将至，[scope:zg361_we_ac_subject.GetShortUIName] 的临时借调仍没有明确原岗位、同级返岗位置和永久转入条件。[scope:zg361_we_ac_owner.GetShortUIName] 必须在下一轮人员安排前给出可执行归属，一年后不得再拿“临时”搪塞。",
+    264: "供应合同进入退场期，[scope:zg361_we_ac_subject.GetShortUIName] 尚未收到完整文档、跟岗记录与实操验收，尾款却已申请放行。[scope:zg361_we_ac_owner.GetShortUIName] 必须在一年内的退出节点前把知识和金币账一并结清。",
+    265: "一笔异常报价把回扣、亲属关系与泄题线索同时牵到 [scope:zg361_we_ac_subject.GetShortUIName] 的招聘链上，现有证据还不足以给整条管理线定罪。[scope:zg361_we_ac_owner.GetShortUIName] 必须在处分前确定取证与责任范围。",
+    266: "招募期限逼近，[scope:zg361_we_ad_subject.GetShortUIName] 负责的岗位仍然空缺，现有候选却没有完全达到原门槛。[scope:zg361_we_ad_owner.GetShortUIName] 必须在招聘继续前冻结这次用人标准和空岗代价。",
+    267: "三名面试官已经分别掌握了关于 [scope:zg361_we_ad_subject.GetShortUIName] 的证据，但讨论尚未开始，资深者的态度正影响其他人。[scope:zg361_we_ad_owner.GetShortUIName] 必须在合议前封存每个人的原始判断。",
+    268: "历史记录显示，同一批面试官的通过率与入职后结果长期偏离，[scope:zg361_we_ad_subject.GetShortUIName] 的本次评估也可能受此影响。[scope:zg361_we_ad_owner.GetShortUIName] 必须在下一场面试前处理这组校准数据。",
+    269: "观察期结束了，[scope:zg361_we_ad_subject.GetShortUIName] 的胜任、错配与流失证据终于可以和当初面试票逐项对照。[scope:zg361_we_ad_owner.GetShortUIName] 必须在年度复盘封账前把结果追记到对应面试官名下。",
+    270: "关键岗、增长岗与普通岗留下了截然不同的误招和漏招代价，统一门槛正在同时制造空缺与错配。[scope:zg361_we_ad_owner.GetShortUIName] 必须在继续评估 [scope:zg361_we_ad_subject.GetShortUIName] 前冻结本轮风险偏好。",
+    271: "内推名单送审时，[scope:zg361_we_ad_subject.GetShortUIName] 与推荐人的亲属或利益关系尚未完整披露，推荐奖却已经被催付。[scope:zg361_we_ad_owner.GetShortUIName] 必须在最终录用票与金币支出发生前处理回避。",
+    272: "报价发出前，[scope:zg361_we_ad_subject.GetShortUIName] 已通过面试，直属管理者因交付期限要求临时抬高职级，内部同岗倒挂尚未复核。[scope:zg361_we_ad_owner.GetShortUIName] 必须同时守住预算与公平线。",
+    273: "面试排期发生冲突，[scope:zg361_we_ad_subject.GetShortUIName] 的履历已被两个团队同时锁定，最先接触者主张独占，另一方则握有更紧急的岗位。[scope:zg361_we_ad_owner.GetShortUIName] 必须确认归属与发掘者功劳。",
+    274: "答复期限将近，[scope:zg361_we_ad_subject.GetShortUIName] 带着另一份报价回来议价，现有方案与公平线之间只剩一次调整空间。[scope:zg361_we_ad_owner.GetShortUIName] 必须决定是否动用金币和正式名额。",
+    275: "报价被拒后，[scope:zg361_we_ad_subject.GetShortUIName] 离开了流程，原岗位名额仍被冻结，下一名候选尚未出现。[scope:zg361_we_ad_owner.GetShortUIName] 必须在下一轮招聘前规定名额何时回收；一年后的检查会追究这次占用。",
+    276: "回聘申请递交后，[scope:zg361_we_ad_subject.GetShortUIName] 带来的新外部经历必须与旧档中的离职原因和冲突记录对照。[scope:zg361_we_ad_owner.GetShortUIName] 必须在恢复正式名额前核对这段成长是否真的弥合差距。",
+    277: "改进流程结束后，[scope:zg361_we_ad_subject.GetShortUIName] 的管理者随即要求返还一个正式名额，但原工作是否仍存在尚未证明。[scope:zg361_we_ad_owner.GetShortUIName] 必须在启动补招前核清岗位、成本和离场记录。",
+    355: "新周期目标起草时，[scope:zg361_we_al_subject.GetShortUIName] 上一轮的峰值被直接当作底线，其中不可重复的时机与临时资源尚未剔除。[scope:zg361_we_al_owner.GetShortUIName] 必须分清能力与红利，一年后按今天的基线复核。",
+    356: "封账前，[scope:zg361_we_al_subject.GetShortUIName] 才申报一项早已完成的成果；下一轮目标因此可能建立在失真的时间线上。[scope:zg361_we_al_owner.GetShortUIName] 必须固定真实完成日，一年后的审计会回看这笔记录。",
+    360: "三组管理者已联名拒绝现有末位指标，名单、人数和各自配额已经封存，[scope:zg361_we_al_subject.GetShortUIName] 正等待组织答复。[scope:zg361_we_al_owner.GetShortUIName] 必须在本轮集体行动升级前回应，一年后的结算会核对今天承担的代价。",
+    361: "多轮个案留下的临时规则彼此冲突，[scope:zg361_we_al_subject.GetShortUIName] 所在组织即将进入新的长期周期。[scope:zg361_we_al_owner.GetShortUIName] 必须在旧规则失效前签发统一文本；金币、默认政策与十年审计将从今天起算。",
+}
+
+SCENE_EN = {
+    242: "With review approaching, [scope:zg361_we_ab_subject.GetShortUIName] has been the last to leave for several nights, yet the output record has not risen with those hours. [scope:zg361_we_ab_owner.GetShortUIName] must close the capacity ledger today before another review mistakes lit windows for achievement.",
+    243: "A late-night message reached [scope:zg361_we_ab_subject.GetShortUIName] without an urgency mark, and no duty roster could be found. [scope:zg361_we_ab_owner.GetShortUIName] must set the response boundary before the next night message; the capacity and on-call books close with this ruling.",
+    244: "A temporary sprint is asking [scope:zg361_we_ab_subject.GetShortUIName] for extra hours, but enrollment, reward, and protection for declining were never written down. [scope:zg361_we_ab_owner.GetShortUIName] must rule today or leave an unexplained gap in the capacity and gold books.",
+    245: "As the books close, [scope:zg361_we_ab_subject.GetShortUIName] has accumulated several extra shifts under an unchanged deadline, with neither prior approval nor a later filing. [scope:zg361_we_ab_owner.GetShortUIName] must settle those claims or the overtime record will cease to reflect the load.",
+    246: "The last batch of extra labor is already charged to [scope:zg361_we_ab_subject.GetShortUIName], but its compensation remains an oral promise. [scope:zg361_we_ab_owner.GetShortUIName] must settle it today; the gold, leave, and target books all await the same record.",
+    247: "Since the emergency order, [scope:zg361_we_ab_subject.GetShortUIName]'s team has worked without an end date or named reviewer. [scope:zg361_we_ab_owner.GetShortUIName] must define the boundary before the next cycle; the review one year from now will recognize only the sprint record made today.",
+    248: "A long vacancy is still being spread across [scope:zg361_we_ab_subject.GetShortUIName]'s team while its original target remains intact. [scope:zg361_we_ab_owner.GetShortUIName] must account for the overload at today's close before delivery figures hide the capacity gap again.",
+    249: "Recurring meetings have taken an increasing share of [scope:zg361_we_ab_subject.GetShortUIName]'s cycle, and several had neither agenda nor recorded decision. [scope:zg361_we_ab_owner.GetShortUIName] must settle the meeting-time account before the next invitations go out.",
+    250: "The latest meeting filled every seat, but nobody recorded who supplied evidence or carried the decision; [scope:zg361_we_ab_subject.GetShortUIName]'s contribution is buried in attendance. [scope:zg361_we_ab_owner.GetShortUIName] must restore the evidence before credit is assigned.",
+    251: "After the meeting, [scope:zg361_we_ab_subject.GetShortUIName]'s refusal was reported as disobedience even though the invitation had no agenda. [scope:zg361_we_ab_owner.GetShortUIName] must judge the absence today before capacity and management scores are sealed.",
+    252: "After leave was approved, [scope:zg361_we_ab_subject.GetShortUIName]'s available workdays fell while the original target remained untouched and the substitute's credit unresolved. [scope:zg361_we_ab_owner.GetShortUIName] must reconcile all three records before this review closes.",
+    253: "After a low-performance finding, [scope:zg361_we_ab_subject.GetShortUIName] has withdrawn effort and challenged the underlying evidence. [scope:zg361_we_ab_owner.GetShortUIName] must define the next cycle today; the appeal, recovery, and management records cannot remain suspended.",
+    254: "Formal headcount is still unavailable, the delivery gap has reached [scope:zg361_we_ac_subject.GetShortUIName], and a temporary supplier quote awaits [scope:zg361_we_ac_owner.GetShortUIName]'s signature. Gold, shadow headcount, and the exit date must be recorded before signing.",
+    255: "The staffing contract is ready and its sticker price is conspicuous, while recruiting, supervision, attrition, and handoff costs sit in separate books. [scope:zg361_we_ac_owner.GetShortUIName] must total them before locking the budget for [scope:zg361_we_ac_subject.GetShortUIName].",
+    256: "The external team has delivered its first work, with speed, quality, and service commitments diverging, yet [scope:zg361_we_ac_subject.GetShortUIName] still shares its scorecard. [scope:zg361_we_ac_owner.GetShortUIName] must leave an independent assessment before renewal is discussed.",
+    257: "A long-serving contractor has asked [scope:zg361_we_ac_subject.GetShortUIName] for a permanent post, but neither a reserved slot nor a common threshold exists. [scope:zg361_we_ac_owner.GetShortUIName] must define the channel before the next hiring cycle; the review in one year will rely on today's record.",
+    258: "In the latest delivery miss, [scope:zg361_we_ac_subject.GetShortUIName] owned the result but still lacked the data and authority needed to produce it, and the fault was charged personally. [scope:zg361_we_ac_owner.GetShortUIName] must establish the controllable scope before this cycle's score is sealed.",
+    259: "A service commitment has been missed. The supplier, internal manager, and frontline executor are blaming one another, with [scope:zg361_we_ac_subject.GetShortUIName] first on the list. [scope:zg361_we_ac_owner.GetShortUIName] must freeze attribution evidence before remediation begins.",
+    260: "Procurement is drafting a staffing contract for [scope:zg361_we_ac_subject.GetShortUIName], while demand stability and future change prices remain unwritten. [scope:zg361_we_ac_owner.GetShortUIName] must fix the boundary before signature so ownership of later changes is not improvised.",
+    261: "Several subcontracting layers now stand between the contract and the work. The executors seen by [scope:zg361_we_ac_subject.GetShortUIName] do not match the named roster, and nobody has explained the margin. [scope:zg361_we_ac_owner.GetShortUIName] must trace responsibility before the next payment.",
+    262: "As annual review approaches, [scope:zg361_we_ac_subject.GetShortUIName]'s secondment consumes capacity from the home team while delivering for the host, and both sides intend to claim the full result. [scope:zg361_we_ac_owner.GetShortUIName] must freeze both records now.",
+    263: "With the term expiring, [scope:zg361_we_ac_subject.GetShortUIName]'s temporary secondment still lacks a recorded home post, equivalent return, or permanent-transfer condition. [scope:zg361_we_ac_owner.GetShortUIName] must provide an executable status before the next staffing cycle.",
+    264: "The supplier contract is entering exit, but [scope:zg361_we_ac_subject.GetShortUIName] still lacks complete documents, shadowing records, and practical acceptance while final payment is requested. [scope:zg361_we_ac_owner.GetShortUIName] must settle knowledge and gold before the exit checkpoint within one year.",
+    265: "An abnormal quote has linked kickback, kinship, and leaked-question signals to [scope:zg361_we_ac_subject.GetShortUIName]'s hiring chain, but the evidence does not yet condemn every manager. [scope:zg361_we_ac_owner.GetShortUIName] must define the investigation and attribution before punishment.",
+    266: "The post owned by [scope:zg361_we_ad_subject.GetShortUIName] remains vacant as delivery pressure nears its limit, and the available candidate misses the original threshold. [scope:zg361_we_ad_owner.GetShortUIName] must freeze the standard and vacancy cost before recruiting continues.",
+    267: "Three interviewers hold separate evidence about [scope:zg361_we_ad_subject.GetShortUIName], but discussion has not begun and the senior voice is already shaping the room. [scope:zg361_we_ad_owner.GetShortUIName] must seal each initial judgment before deliberation.",
+    268: "Past records show that the panel's pass rates and later job outcomes have diverged for several cycles, which may distort [scope:zg361_we_ad_subject.GetShortUIName]'s review. [scope:zg361_we_ad_owner.GetShortUIName] must address the calibration data before the next interview.",
+    269: "The observation period has ended, and [scope:zg361_we_ad_subject.GetShortUIName]'s evidence of fit, mismatch, and attrition can finally be compared with the original interview votes. [scope:zg361_we_ad_owner.GetShortUIName] must attribute the outcome to the responsible interviewers before annual review closes.",
+    270: "Critical, growth, and ordinary posts have produced sharply different costs from bad hires and missed hires, while one threshold creates both vacancies and mismatch. [scope:zg361_we_ad_owner.GetShortUIName] must freeze this cycle's risk preference before evaluating [scope:zg361_we_ad_subject.GetShortUIName] further.",
+    271: "As the referral list is reviewed, [scope:zg361_we_ad_subject.GetShortUIName]'s kinship and financial ties to the referrer remain incomplete while the reward is already being demanded. [scope:zg361_we_ad_owner.GetShortUIName] must resolve recusal before the final vote or gold payment.",
+    272: "Before the offer is sent, [scope:zg361_we_ad_subject.GetShortUIName] has passed the interview and the line manager seeks a higher grade for urgency, before internal pay inversion has been reviewed. [scope:zg361_we_ad_owner.GetShortUIName] must settle budget and equity.",
+    273: "Two teams have locked [scope:zg361_we_ad_subject.GetShortUIName]'s record at once. The first contact claims ownership while the other team has the more urgent post. [scope:zg361_we_ad_owner.GetShortUIName] must settle allocation and sourcing credit before interviews are scheduled.",
+    274: "As the response deadline approaches, [scope:zg361_we_ad_subject.GetShortUIName] has returned with a competing offer, and only one adjustment remains between the current terms and the fairness line. [scope:zg361_we_ad_owner.GetShortUIName] must decide whether gold and formal headcount can move.",
+    275: "After the offer was rejected, [scope:zg361_we_ad_subject.GetShortUIName] left the process while the original post remained frozen and no replacement candidate was ready. [scope:zg361_we_ad_owner.GetShortUIName] must define release before recruiting resumes.",
+    276: "After the return application arrived, [scope:zg361_we_ad_subject.GetShortUIName]'s new outside experience must be compared with the still-valid departure reason and conflict record. [scope:zg361_we_ad_owner.GetShortUIName] must verify that the growth closes those gaps before restoring formal headcount.",
+    277: "After the improvement process ended, [scope:zg361_we_ad_subject.GetShortUIName]'s manager immediately requested a replacement slot, although the underlying work has not been shown to remain. [scope:zg361_we_ad_owner.GetShortUIName] must verify the post, cost, and exit record before backfilling.",
+    355: "As the new target is drafted, [scope:zg361_we_al_subject.GetShortUIName]'s last peak is being used as the floor before temporary resources and unrepeatable timing are removed. [scope:zg361_we_al_owner.GetShortUIName] must separate capability from windfall; the one-year review will use today's baseline.",
+    356: "Before close, [scope:zg361_we_al_subject.GetShortUIName] has finally reported a result completed much earlier, threatening to build the next target on a false timeline. [scope:zg361_we_al_owner.GetShortUIName] must fix the actual completion date; the one-year audit will revisit this record.",
+    360: "Three manager cohorts have jointly refused the current bottom quota; their names, sizes, and allocations are sealed while [scope:zg361_we_al_subject.GetShortUIName] awaits an answer. [scope:zg361_we_al_owner.GetShortUIName] must respond before the collective action escalates, with a one-year settlement of today's cost.",
+    361: "Temporary rules left by many cases now contradict one another as [scope:zg361_we_al_subject.GetShortUIName]'s organization enters a new long cycle. [scope:zg361_we_al_owner.GetShortUIName] must issue one text before the old rules expire; gold, defaults, and the ten-year audit start today.",
+}
+
+BUTTON_CN = {
+    242: ("禁止晚归计功", "按在场时长计可见度"),
+    243: ("划定紧急分级与值守边界", "要求全员夜间限时回复"),
+    244: ("书面自愿报名", "全组默认参与"),
+    245: ("补录并兑现额外工时", "不准申报，维持原期限"),
+    246: ("兑现金币、调休或目标减免", "只发未来调休"),
+    247: ("写明冲刺期限并到期复盘", "以危机名义无限动员"),
+    248: ("减目标并补足容量", "维持目标，由团队填坑"),
+    249: ("设下会议时长上限", "允许随时召集长会"),
+    250: ("只请必要与会者", "关键会议全员到场"),
+    251: ("允许拒绝无议程会议", "将拒会记作不服从"),
+    252: ("按可工作日调整目标", "休假仍背全年目标"),
+    253: ("先查证并给出修复期", "立即强压降档"),
+    254: ("先缩目标，再限期外包", "用采购预算长期补位"),
+    255: ("核算全周期成本", "只选最低报价"),
+    256: ("单列供应商绩效", "并入正式人员排行"),
+    257: ("预留公开转正通道", "由经理直接点名转正"),
+    258: ("补齐权限或下调目标", "权限不变，结果照压"),
+    259: ("分层核定违约责任", "逾期一律归咎外包"),
+    260: ("按需求选择合同", "统一签死价硬期限"),
+    261: ("披露真实执行链", "允许供应商自由转包"),
+    262: ("借出与借入双方分别记账", "由接收方单方定档"),
+    263: ("保障到期返岗选择", "继续无限期借调"),
+    264: ("验收交接后再付尾款", "立即停约切割"),
+    265: ("逐层审计取证", "先冻结整条管理链"),
+    266: ("保持门槛，等待合格者", "降一档快速补位"),
+    267: ("先封票，再合议", "由最高职级先定调"),
+    268: ("按入职结果校准面试官", "设硬配额并暂停资格"),
+    269: ("按长期结果调整面试判断", "试用失败即追责拍板者"),
+    270: ("按岗位区分录用门槛", "全组织统一高门槛"),
+    271: ("试用通过后发奖并回避", "推荐即付奖并参与录用"),
+    272: ("跨团队复核职级特批", "直属经理当场抬级"),
+    273: ("共享候选池并记录分功", "由最先接触者独占"),
+    274: ("只给一次公平加价", "持续加价直到接受"),
+    275: ("短期保留，到期回收", "无限期占住名额"),
+    276: ("带旧档重新评估", "凭旧关系免试回聘"),
+    277: ("先核工作是否仍存在", "离开即自动返还名额"),
+    355: ("区分能力与偶然红利", "以上轮峰值作新底线"),
+    356: ("按真实完成日入账", "只按截止日入账"),
+    360: ("受理联名例外并公开改革", "命令经理逐个硬切"),
+    361: ("采用可修订的公平宪章", "采用高压竞争宪章"),
+}
+
+BUTTON_EN = {
+    242: ("Stop rewarding late presence", "Score visibility by time present"),
+    243: ("Set urgency and duty boundaries", "Require prompt replies from everyone"),
+    244: ("Take written voluntary enrollment", "Enroll the whole team by default"),
+    245: ("Record and compensate extra hours", "Reject claims and keep the deadline"),
+    246: ("Settle in gold, leave, or target relief", "Promise future leave only"),
+    247: ("Set an end date and review", "Mobilize indefinitely as a crisis"),
+    248: ("Reduce scope and restore capacity", "Keep targets and let the team cover"),
+    249: ("Cap meeting time", "Allow long meetings on demand"),
+    250: ("Invite only necessary participants", "Require everyone at key meetings"),
+    251: ("Allow refusal without an agenda", "Treat refusal as disobedience"),
+    252: ("Scale targets to workable days", "Keep the full-year target"),
+    253: ("Verify evidence and allow recovery", "Escalate pressure immediately"),
+    254: ("Reduce scope, then outsource briefly", "Use procurement for permanent cover"),
+    255: ("Compare full-cycle cost", "Choose the lowest quoted price"),
+    256: ("Score the supplier separately", "Rank contractors with employees"),
+    257: ("Reserve an open conversion channel", "Let the manager nominate directly"),
+    258: ("Restore access or lower the target", "Keep access and enforce the result"),
+    259: ("Attribute the breach by layer", "Blame the supplier for every delay"),
+    260: ("Match the contract to demand", "Use a fixed result and hard deadline"),
+    261: ("Disclose the executor chain", "Allow unrestricted subcontracting"),
+    262: ("Record both sides separately", "Let the host rate alone"),
+    263: ("Guarantee a return choice", "Extend the temporary loan indefinitely"),
+    264: ("Pay after handoff acceptance", "Terminate and separate immediately"),
+    265: ("Audit each layer", "Freeze the whole management chain first"),
+    266: ("Keep the bar and wait", "Lower the bar for a quick hire"),
+    267: ("Seal votes before discussion", "Let the senior interviewer set the tone"),
+    268: ("Calibrate against job outcomes", "Impose quotas and suspend outliers"),
+    269: ("Adjust judgments from long-term results", "Blame the final approver at once"),
+    270: ("Set thresholds by role", "Use one high threshold everywhere"),
+    271: ("Pay after probation and recuse", "Pay now and keep the referrer voting"),
+    272: ("Review the grade across teams", "Let the line manager raise it now"),
+    273: ("Share the pool and record sourcing credit", "Give the first team exclusive control"),
+    274: ("Make one fair counteroffer", "Keep bidding until acceptance"),
+    275: ("Hold briefly, then release", "Hold the slot indefinitely"),
+    276: ("Reassess with the old record", "Rehire on old relationships"),
+    277: ("Prove the work still exists", "Return the slot automatically"),
+    355: ("Separate capability from windfall", "Make the old peak the new floor"),
+    356: ("Book the true completion date", "Book only at the cutoff"),
+    360: ("Hear the joint exception openly", "Order managers to cut separately"),
+    361: ("Adopt a revisable fairness charter", "Adopt a high-pressure charter"),
+}
+
+
+TITLE_OVERRIDE_CN = {269: "面试判断的延迟追责"}
+TITLE_OVERRIDE_EN = {269: "Delayed Accountability for Interview Judgments"}
+DETAIL_OVERRIDE_CN = {
+    (269, 1): "数轮后核对胜任、错配与流失证据，把结果追记到各证据维度对应的面试官名下",
+}
+DETAIL_OVERRIDE_EN = {
+    (269, 1): "After several cycles, compare competence, mismatch, and attrition evidence, then attribute each result to the interviewer responsible for that evidence dimension",
+}
+
 
 def _load_mechanisms() -> tuple[Mechanism, ...]:
     choices_path = MOD_ROOT / "tools" / "mechanism_choices" / "choices_241_361.json"
@@ -372,21 +561,10 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
             binding = MECHANISM_BINDINGS[mid]
             choice = choices[str(mid)]
             state = binding.execution_stage
-            title_en = choice["title_en"]
-            title_cn = binding.title_cn
-            conservation = binding.conservation_rule.rstrip(".")
-            desc_en = (
-                f"Case owner [scope:{PREFIX}_{domain}_owner.GetShortUIName] is deciding "
-                f"{title_en} for [scope:{PREFIX}_{domain}_subject.GetShortUIName]. "
-                "The two active routes and their immediate consequences are written on the buttons; "
-                "route C closes this item for the current campaign, creates no business object, "
-                f"and will not re-propose it automatically. {conservation}."
-            )
-            desc_cn = (
-                f"案卷责任人 [scope:{PREFIX}_{domain}_owner.GetShortUIName] 正在为当事人 "
-                f"[scope:{PREFIX}_{domain}_subject.GetShortUIName] 裁决「{title_cn}」。"
-                "A/B 的具体动作与立即后果写在按钮上；C 会在本局永久关闭本项、不创建业务对象，也不会自动重新提案。"
-            )
+            title_en = TITLE_OVERRIDE_EN.get(mid, choice["title_en"])
+            title_cn = TITLE_OVERRIDE_CN.get(mid, binding.title_cn)
+            desc_en = SCENE_EN[mid]
+            desc_cn = SCENE_CN[mid]
             rows.append(
                 Mechanism(
                     mid,
@@ -402,14 +580,22 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
                     desc_en,
                     desc_cn,
                     (
-                        choice["option_a_en"],
-                        choice["option_b_en"],
-                        "Close this item for the current campaign, bind one due-cycle policy debt, create no business object, and do not re-propose it automatically.",
+                        *BUTTON_EN[mid],
+                        "I defer; close it this reign, one policy debt.",
                     ),
                     (
-                        choice["option_a_cn"],
-                        choice["option_b_cn"],
-                        "本局关闭本项，只绑定一笔到期制度债，不创建业务对象，也不会自动重新提案。",
+                        *BUTTON_CN[mid],
+                        "我暂不裁决；本局不再重提，并记我一笔到期制度债。",
+                    ),
+                    (
+                        DETAIL_OVERRIDE_EN.get((mid, 1), choice["option_a_en"]),
+                        DETAIL_OVERRIDE_EN.get((mid, 2), choice["option_b_en"]),
+                        f"'{title_en}' remains unresolved. No business record is created, one policy debt falls due next cycle, and this item will not be proposed again during the current campaign.",
+                    ),
+                    (
+                        DETAIL_OVERRIDE_CN.get((mid, 1), choice["option_a_cn"]),
+                        DETAIL_OVERRIDE_CN.get((mid, 2), choice["option_b_cn"]),
+                        f"“{title_cn}”保持未决：不形成处置记录，留下一笔下轮到期的制度债，本局也不会再次提案。",
                     ),
                 )
             )
@@ -438,6 +624,21 @@ def validate_specs() -> None:
         raise ValueError("workforce/endgame runtime must map the exact 40 authoritative IDs")
     if {mid for ids in DOMAIN_EXPECTED.values() for mid in ids} != expected:
         raise ValueError("domain ID partitions are incomplete")
+    if any(set(table) != expected for table in (SCENE_CN, SCENE_EN, BUTTON_CN, BUTTON_EN)):
+        raise ValueError("workforce/endgame copy tables must cover the exact 40 authoritative IDs")
+    if len(set(SCENE_CN.values())) != len(expected) or len(set(SCENE_EN.values())) != len(expected):
+        raise ValueError("every workforce/endgame card needs a unique player-facing scene")
+    forbidden_cn = ("A/B", "路线甲", "路线乙", "业务对象", "案卷责任人")
+    forbidden_en = ("route A", "route B", "business object", "Case owner")
+    for mid in sorted(expected):
+        if SCENE_CN[mid].startswith(("。", "，", "；", "：", ".", ",", ";", ":")):
+            raise ValueError(f"mechanism {mid} Chinese scene begins with punctuation")
+        if any(token in SCENE_CN[mid] for token in forbidden_cn):
+            raise ValueError(f"mechanism {mid} Chinese scene leaks a template or implementation term")
+        if any(token in SCENE_EN[mid] for token in forbidden_en):
+            raise ValueError(f"mechanism {mid} English scene leaks a template or implementation term")
+        if any(not label.strip() for label in (*BUTTON_CN[mid], *BUTTON_EN[mid])):
+            raise ValueError(f"mechanism {mid} has an empty action label")
     if {mid for order in DOMAIN_ORDER.values() for mid in order} != expected:
         raise ValueError("portfolio order must touch every ID once")
     if len({spec.field for spec in MECHANISMS}) != len(MECHANISMS):
@@ -8464,6 +8665,7 @@ def event_next_mid(spec: Mechanism) -> int | None:
 def render_option(spec: Mechanism, choice: int) -> str:
     d, mid = spec.domain, spec.mid
     letter = "abc"[choice - 1]
+    tooltip = f"\n\tcustom_tooltip = {NAMESPACE}.{mid}.{letter}.tt"
     ticket_state = f"\n\t\t\tTICKET_STATE = {spec.state}" if choice == 3 else ""
     next_mid = event_next_mid(spec)
     next_event = ""
@@ -8533,7 +8735,7 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t}}"""
     if mid == 276 and choice in (1, 2):
         return f"""option = {{
-\tname = {NAMESPACE}.{mid}.{letter}
+\tname = {NAMESPACE}.{mid}.{letter}{tooltip}
 \tscope:{PREFIX}_{d}_subject = {{
 \t\t{PREFIX}_m{mid}_route_{letter}_effect = {{
 \t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
@@ -8557,7 +8759,7 @@ def render_option(spec: Mechanism, choice: int) -> str:
             else f"{PREFIX}_m{mid}_route_{letter}_effect"
         )
         return f"""option = {{
-\tname = {NAMESPACE}.{mid}.{letter}{option_trigger}
+\tname = {NAMESPACE}.{mid}.{letter}{tooltip}{option_trigger}
 \tscope:{PREFIX}_{d}_subject = {{
 \t\t{route_effect} = {{
 \t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
@@ -8568,7 +8770,7 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t}}{next_event}
 }}"""
     return f"""option = {{
-\tname = {NAMESPACE}.{mid}.{letter}{option_trigger}
+\tname = {NAMESPACE}.{mid}.{letter}{tooltip}{option_trigger}
 \tscope:{PREFIX}_{d}_subject = {{
 \t\t{PREFIX}_materialize_m360_route_{letter}_from_central_effect = {{
 \t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
@@ -9031,10 +9233,18 @@ def render_localization(language: str) -> bytes:
         title = spec.title_cn if chinese else spec.title_en
         desc = spec.desc_cn if chinese else spec.desc_en
         routes = spec.routes_cn if chinese else spec.routes_en
+        route_details = spec.route_details_cn if chinese else spec.route_details_en
         rows += [
             f' {NAMESPACE}.{spec.mid}.t:0 "{esc(title)}"',
             f' {NAMESPACE}.{spec.mid}.desc:0 "{esc(desc)}"',
-            *(f' {NAMESPACE}.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", routes)),
+            *(
+                row
+                for letter, label, detail in zip("abc", routes, route_details)
+                for row in (
+                    f' {NAMESPACE}.{spec.mid}.{letter}:0 "{esc(label)}"',
+                    f' {NAMESPACE}.{spec.mid}.{letter}.tt:0 "{esc(detail)}"',
+                )
+            ),
         ]
     handoff_cn = {
         1: (
@@ -9050,7 +9260,7 @@ def render_localization(language: str) -> bytes:
             "拉群已经很给面子了",
         ),
         3: (
-            "交接第三关：PPT 不能替系统跑",
+            "交接第三关：纸上谈兵不算实作",
             "又过三十日，轮到实操验收。只有把既有交付与现场操作对上，尾款才有资格进入审批。",
             "完成实操验收，提交尾款审批",
             "演示到此为止，拒绝实操",
@@ -9070,7 +9280,7 @@ def render_localization(language: str) -> bytes:
             "The group invitation was enough",
         ),
         3: (
-            "Handoff III: Slides Do Not Run the System",
+            "Handoff III: A Written Brief Is Not Practice",
             "Another thirty days have passed. Practical acceptance must match the existing delivery record before final payment can be reviewed.",
             "Complete practical acceptance",
             "End the demo and refuse practice",

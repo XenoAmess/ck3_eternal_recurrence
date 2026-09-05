@@ -27,7 +27,7 @@ import zg361_phase3_credit_project_model as model
 
 
 EFFECTS_PATHS = gen.effect_output_paths()
-EVENTS_PATH = MOD_ROOT / "events" / "zg361_credit_project_runtime_events.txt"
+EVENTS_PATHS = gen.event_output_paths()
 SPEC_PATH = MOD_ROOT / "docs" / "361-phase3-credit-project-ck3-runtime-spec.md"
 EXPECTED_IDS = set(range(26, 32)) | set(range(54, 69)) | set(range(129, 135))
 DEBT_IDENTITY = ("owner", "subject", "cycle", "case", "state")
@@ -43,6 +43,10 @@ def read(path: Path) -> str:
 
 def read_effects() -> str:
     return "\n".join(read(path) for path in EFFECTS_PATHS)
+
+
+def read_events() -> str:
+    return "\n".join(read(path) for path in EVENTS_PATHS)
 
 
 def block(text: str, name: str) -> str:
@@ -102,7 +106,7 @@ class RegistryAndGenerationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.effects = read_effects()
-        cls.events = read(EVENTS_PATH)
+        cls.events = read_events()
         cls.spec = read(SPEC_PATH)
         cls.specs = gen.by_id()
 
@@ -140,13 +144,14 @@ class RegistryAndGenerationTests(unittest.TestCase):
 
     def test_outputs_are_exactly_the_independent_package(self) -> None:
         outputs = gen.outputs()
-        self.assertEqual(len(outputs), 46)
+        self.assertEqual(len(outputs), 54)
         effect_names = {filename for filename, _purpose, _sections in gen.effect_shard_sections()}
+        event_names = {filename for filename, _purpose, _sections in gen.event_shard_sections()}
         self.assertEqual(
             {path.name for path in outputs},
             {
                 *effect_names,
-                "zg361_credit_project_runtime_events.txt",
+                *event_names,
                 *(f"zg361_credit_project_l_{language}.yml" for language in gen.LANGUAGES),
             },
         )
@@ -171,28 +176,47 @@ class RegistryAndGenerationTests(unittest.TestCase):
         self.assertEqual(total, 156)
         self.assertEqual(max(len(top_level_effect_blocks(read(path))) for path in EFFECTS_PATHS), 8)
 
+    def test_event_shards_are_purpose_split_with_at_most_ten_events_each(self) -> None:
+        counts = []
+        for path in EVENTS_PATHS:
+            text = read(path)
+            count = len(re.findall(r"(?m)^zg361cp\.\d+ = \{$", text))
+            with self.subTest(path=path.name):
+                self.assertGreaterEqual(count, 1)
+                self.assertLessEqual(count, 10)
+                self.assertIn("# PURPOSE:", text)
+                self.assertIn("namespace = zg361cp", text)
+            counts.append(count)
+        self.assertEqual(sum(counts), 42)
+        self.assertEqual(max(counts), 8)
+
     def test_shards_preserve_legacy_effect_bodies_and_order_exactly(self) -> None:
         legacy_bytes = gen.render_effects()
-        self.assertEqual(len(legacy_bytes), 1_307_272)
+        self.assertEqual(len(legacy_bytes), 1_307_279)
         self.assertEqual(
             hashlib.sha256(legacy_bytes).hexdigest(),
-            "b3ea9acbe2de150418cfcb4061d6ef483c80b3cc37c238f9de6176735889311b",
+            "2563b8e2a16a44b4fa7bbc050c21fddfc3e41cec661dfe04803d39b41d3f8264",
         )
         legacy = legacy_bytes.decode("utf-8-sig")
         self.assertEqual(top_level_effect_blocks(read_effects()), top_level_effect_blocks(legacy))
 
     def test_retired_monolith_is_absent_and_sync_refuses_or_removes_it(self) -> None:
         self.assertFalse(gen.legacy_effect_path().exists())
+        self.assertFalse(gen.legacy_event_path().exists())
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
             with mock.patch.object(gen, "MOD_ROOT", root):
-                legacy = gen.legacy_effect_path()
-                legacy.parent.mkdir(parents=True)
-                legacy.write_bytes(gen.generated("zg361_cp_stale_effect = { }"))
-                self.assertIn(legacy, gen.sync_outputs(check=True))
-                self.assertTrue(legacy.exists())
+                legacies = (gen.legacy_effect_path(), gen.legacy_event_path())
+                for legacy in legacies:
+                    legacy.parent.mkdir(parents=True, exist_ok=True)
+                    legacy.write_bytes(gen.generated("zg361_cp_stale = { }"))
+                drift = gen.sync_outputs(check=True)
+                for legacy in legacies:
+                    self.assertIn(legacy, drift)
+                    self.assertTrue(legacy.exists())
                 self.assertEqual(gen.sync_outputs(check=False), [])
-                self.assertFalse(legacy.exists())
+                for legacy in legacies:
+                    self.assertFalse(legacy.exists())
 
     def test_generator_check_mode_is_green(self) -> None:
         result = subprocess.run(
@@ -212,7 +236,7 @@ class RegistryAndGenerationTests(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(gen.BOM))
 
     def test_generated_script_braces_balance(self) -> None:
-        for path in (*EFFECTS_PATHS, EVENTS_PATH):
+        for path in (*EFFECTS_PATHS, *EVENTS_PATHS):
             with self.subTest(path=path):
                 text = read(path)
                 self.assertEqual(text.count("{"), text.count("}"))
@@ -241,7 +265,7 @@ class ReceiptAndConsumerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.effects = read_effects()
-        cls.events = read(EVENTS_PATH)
+        cls.events = read_events()
         cls.specs = gen.by_id()
 
     def test_exact_route_consumer_and_event_counts(self) -> None:
@@ -255,11 +279,18 @@ class ReceiptAndConsumerTests(unittest.TestCase):
         self.assertEqual(len(consumers), 27)
         self.assertEqual(len(debt_consumers), 27)
         self.assertEqual(self.effects.count("zg361_cp_consume_due_policy_debts_effect = {"), 1)
-        self.assertEqual(len(events), 30)
+        dispatch_ids = {gen.player_event_id(mid) for mid in gen.BATCHABLE_IDS}
+        self.assertEqual(len(events), 42)
         self.assertEqual({int(mid) for mid, _ in routes}, EXPECTED_IDS)
         self.assertEqual({int(mid) for mid in consumers}, EXPECTED_IDS)
         self.assertEqual({int(mid) for mid in debt_consumers}, EXPECTED_IDS)
-        self.assertEqual({int(mid) for mid in events}, EXPECTED_IDS | set(gen.QUEUE_EVENTS.values()))
+        self.assertEqual(
+            {int(mid) for mid in events},
+            EXPECTED_IDS
+            | set(gen.QUEUE_EVENTS.values())
+            | dispatch_ids
+            | {gen.BATCH_MODE_EVENT},
+        )
 
     def test_every_player_event_has_three_routes_and_full_guard(self) -> None:
         for spec in gen.MECHANISMS:
@@ -271,6 +302,83 @@ class ReceiptAndConsumerTests(unittest.TestCase):
                 self.assertIn(f"EXPECTED_STATE = {spec.state}", event)
                 for name in ("owner", "subject", "cycle", "case"):
                     self.assertIn(f"exists = scope:zg361_cp_{spec.domain}_{name}", event)
+
+    def test_batch_and_retained_ids_are_the_frozen_non_overlapping_partition(self) -> None:
+        self.assertEqual(
+            gen.BATCHABLE_IDS,
+            {31, 56, 57, 58, 61, 62, 63, 65, 68, 131, 134},
+        )
+        self.assertEqual(
+            gen.RETAINED_POPUP_IDS,
+            {26, 27, 28, 29, 30, 54, 55, 59, 60, 64, 66, 67, 129, 130, 132, 133},
+        )
+        self.assertFalse(gen.BATCHABLE_IDS & gen.RETAINED_POPUP_IDS)
+        self.assertEqual(gen.BATCHABLE_IDS | gen.RETAINED_POPUP_IDS, EXPECTED_IDS)
+
+    def test_one_visible_entry_freezes_a_b_c_or_original_per_card_mode(self) -> None:
+        event = block(self.events, f"zg361cp.{gen.BATCH_MODE_EVENT}")
+        self.assertNotIn("hidden = yes", event)
+        self.assertIn("EXPECTED_STATE = 1", event)
+        self.assertEqual(event.count("\n\toption = {"), 4)
+        for mode, letter in enumerate("abcd", 1):
+            option = option_block(event, f"zg361cp.batch.{letter}")
+            with self.subTest(mode=mode):
+                self.assertIn(
+                    f"set_variable = {{ name = zg361_cp_player_batch_mode value = {mode} }}",
+                    option,
+                )
+                self.assertIn("trigger_event = { id = zg361cp.30 days = 1 }", option)
+        self.assertIn("custom_tooltip = zg361cp.batch.c.tt", option_block(event, "zg361cp.batch.c"))
+
+    def test_batch_dispatchers_use_original_route_cores_and_never_silently_skip(self) -> None:
+        specs = gen.by_id()
+        for domain, order in gen.DOMAIN_ORDER.items():
+            for index, mid in enumerate(order):
+                if mid not in gen.BATCHABLE_IDS:
+                    continue
+                event = block(self.events, f"zg361cp.{gen.player_event_id(mid)}")
+                spec = specs[mid]
+                with self.subTest(mid=mid):
+                    self.assertIn("hidden = yes", event)
+                    self.assertIn("trigger = { is_ai = no }", event)
+                    self.assertIn(f"EXPECTED_STATE = {spec.state}", event)
+                    for choice, letter in enumerate("abc", 1):
+                        self.assertIn(f"var:zg361_cp_player_batch_mode = {choice}", event)
+                        self.assertEqual(event.count(f"zg361_cp_m{mid}_route_{letter}_effect"), 1)
+                    # One fallback covers mode D/missing mode/tuple failure;
+                    # the other covers a selected route whose preflight REDs.
+                    self.assertGreaterEqual(
+                        event.count(f"trigger_event = {{ id = zg361cp.{mid} }}"),
+                        2,
+                    )
+                    self.assertIn("has_variable = zg361_cp_runtime_applied", event)
+                    self.assertIn("var:zg361_cp_runtime_applied = 1", event)
+                    if index + 1 < len(order):
+                        next_mid = order[index + 1]
+                        self.assertIn(
+                            f"trigger_event = {{ id = zg361cp.{gen.player_event_id(next_mid)} days = 1 }}",
+                            event,
+                        )
+
+    def test_all_player_edges_enter_dispatchers_only_for_batchable_cards(self) -> None:
+        for domain, order in gen.DOMAIN_ORDER.items():
+            launch = block(self.effects, f"zg361_cp_{domain}_launch_effect")
+            first = order[0]
+            expected_first = gen.BATCH_MODE_EVENT if domain == "e" else gen.player_event_id(first)
+            with self.subTest(domain=domain, edge="launch"):
+                self.assertIn(f"id = zg361cp.{expected_first}", launch)
+            for index, mid in enumerate(order[:-1]):
+                next_mid = order[index + 1]
+                event = block(self.events, f"zg361cp.{mid}")
+                target = gen.player_event_id(next_mid)
+                with self.subTest(mid=mid, next_mid=next_mid):
+                    self.assertEqual(event.count(f"id = zg361cp.{target} days = 1"), 3)
+            for mid in gen.RETAINED_POPUP_IDS & set(order):
+                with self.subTest(mid=mid, edge="retained"):
+                    self.assertNotRegex(
+                        self.events,
+                        rf"(?m)^zg361cp\.{gen.BATCH_DISPATCH_EVENT_BASE + mid} = \{{",
+                    )
 
     def test_every_route_has_five_tuple_guard_and_six_field_receipt(self) -> None:
         for spec in gen.MECHANISMS:
@@ -489,7 +597,7 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.effects = read_effects()
-        cls.events = read(EVENTS_PATH)
+        cls.events = read_events()
 
     def test_each_due_consumer_strongly_validates_debt_receipt_choice_and_due_cycle(self) -> None:
         for spec in gen.MECHANISMS:
@@ -597,7 +705,7 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
         self.assertIn("has_variable = zg361_cp_portfolio_subject", cleanup)
         self.assertIn("var:zg361_cp_portfolio_subject = this", cleanup)
 
-    def test_first_c_makes_later_player_business_routes_unavailable(self) -> None:
+    def test_defer_blocks_auto_business_but_mode_c_keeps_retained_decisions_visible(self) -> None:
         for spec in gen.MECHANISMS:
             event = block(self.events, f"zg361cp.{spec.mid}")
             for letter in "ab":
@@ -605,6 +713,11 @@ class PolicyDebtLifecycleTests(unittest.TestCase):
                 with self.subTest(mid=spec.mid, route=letter):
                     self.assertIn("has_variable = zg361_cp_portfolio_deferred", option)
                     self.assertIn("var:zg361_cp_portfolio_deferred = 0", option)
+                    if spec.mid in gen.RETAINED_POPUP_IDS:
+                        self.assertIn("has_variable = zg361_cp_player_batch_mode", option)
+                        self.assertIn("var:zg361_cp_player_batch_mode = 3", option)
+                    else:
+                        self.assertNotIn("zg361_cp_player_batch_mode", option)
             c_option = option_block(event, f"zg361cp.{spec.mid}.c")
             self.assertNotIn("var:zg361_cp_portfolio_deferred = 0", c_option)
 
@@ -826,7 +939,7 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
         self.assertIn("visibility_points add", read)
 
     def test_report_build_consumes_the_frozen_policy(self) -> None:
-        events = read(EVENTS_PATH)
+        events = read_events()
         event = block(events, "zg361cp.54")
         for choice, letter in enumerate("ab", 1):
             route = block(self.effects, f"zg361_cp_m54_route_{letter}_effect")
@@ -951,6 +1064,54 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
 
 
 class LocalizationAndBoundaryTests(unittest.TestCase):
+    def test_batch_entry_copy_discloses_scope_popup_boundary_and_cumulative_debt(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_credit_project_l_english.yml"
+        )
+        self.assertIn("十一项", chinese["zg361cp.batch.desc"])
+        self.assertIn("其余十六项涉及", chinese["zg361cp.batch.desc"])
+        self.assertIn("仍须逐案审理", chinese["zg361cp.batch.desc"])
+        self.assertIn("当前未清制度债", chinese["zg361cp.batch.desc"])
+        self.assertIn("各记一笔制度债", chinese["zg361cp.batch.c"])
+        self.assertIn("实际新增数严格等于本次真正关闭的常规案数", chinese["zg361cp.batch.c.tt"])
+        self.assertIn("actually closed", english["zg361cp.batch.c.tt"])
+        for letter in "abcd":
+            with self.subTest(letter=letter):
+                value = chinese[f"zg361cp.batch.{letter}"]
+                self.assertNotRegex(value, r"(?:按|路线)\s*[ABCＡＢＣ甲乙丙]")
+                self.assertLessEqual(len(value), 60)
+
+    def test_player_copy_separates_case_context_from_decision_buttons(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_credit_project_l_english.yml"
+        )
+        banned_cn = ("路线甲", "路线乙", "路线丙", "本卡承接", "按钮写明", "按A", "按B", "按C")
+        banned_en = ("Routes A", "route C", "This card follows", "each option states")
+        for spec in gen.MECHANISMS:
+            with self.subTest(mid=spec.mid):
+                desc_cn = chinese[f"zg361cp.{spec.mid}.desc"]
+                desc_en = english[f"zg361cp.{spec.mid}.desc"]
+                self.assertNotIn(desc_cn[0], "。！？，、；：.!?;:[$@")
+                self.assertIn(f"[scope:zg361_cp_{spec.domain}_subject.GetShortUIName]", desc_cn)
+                self.assertIn(f"[scope:zg361_cp_{spec.domain}_owner.GetShortUIName]", desc_cn)
+                self.assertTrue(desc_en.startswith(gen.CASE_OPENING_EN[spec.domain]))
+                self.assertNotIn(gen.DEFER_ROUTE_CN, desc_cn)
+                self.assertNotIn(gen.DEFER_ROUTE_EN, desc_en)
+                for token in banned_cn:
+                    self.assertNotIn(token, desc_cn)
+                for token in banned_en:
+                    self.assertNotIn(token, desc_en)
+                for route in spec.routes_cn[:2]:
+                    self.assertNotIn(route, desc_cn)
+                for route in spec.routes_en[:2]:
+                    self.assertNotIn(route, desc_en)
+
     def test_localization_keysets_match_and_seven_languages_are_english_placeholders(self) -> None:
         paths = {
             language: MOD_ROOT / "localization" / language / f"zg361_credit_project_l_{language}.yml"
@@ -960,12 +1121,26 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
         expected_keys = {
             key
             for mid in EXPECTED_IDS
-            for key in (f"zg361cp.{mid}.t", f"zg361cp.{mid}.desc", *(f"zg361cp.{mid}.{letter}" for letter in "abc"))
+            for key in (
+                f"zg361cp.{mid}.t",
+                f"zg361cp.{mid}.desc",
+                *(f"zg361cp.{mid}.{letter}" for letter in "abc"),
+                f"zg361cp.{mid}.c.tt",
+            )
+        }
+        expected_keys |= {
+            "zg361cp.batch.t",
+            "zg361cp.batch.desc",
+            "zg361cp.batch.a",
+            "zg361cp.batch.b",
+            "zg361cp.batch.c",
+            "zg361cp.batch.d",
+            "zg361cp.batch.c.tt",
         }
         for language, mapping in rows.items():
             with self.subTest(language=language):
                 self.assertEqual(set(mapping), expected_keys)
-                self.assertEqual(len(mapping), 135)
+                self.assertEqual(len(mapping), 169)
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             self.assertEqual(rows[language], rows["english"])
         self.assertNotEqual(rows["simp_chinese"], rows["english"])
@@ -973,12 +1148,18 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
             with self.subTest(mid=mid, route="c"):
                 self.assertEqual(rows["english"][f"zg361cp.{mid}.c"], gen.DEFER_ROUTE_EN)
                 self.assertEqual(rows["simp_chinese"][f"zg361cp.{mid}.c"], gen.DEFER_ROUTE_CN)
+                self.assertEqual(rows["english"][f"zg361cp.{mid}.c.tt"], gen.DEFER_TOOLTIP_EN)
+                self.assertEqual(rows["simp_chinese"][f"zg361cp.{mid}.c.tt"], gen.DEFER_TOOLTIP_CN)
+                self.assertIn(f"custom_tooltip = zg361cp.{mid}.c.tt", option_block(block(read_events(), f"zg361cp.{mid}"), f"zg361cp.{mid}.c"))
 
     def test_generated_headers_and_namespace_are_stable(self) -> None:
         effects = read_effects()
-        events = read(EVENTS_PATH)
         self.assertTrue(effects.startswith(gen.HEADER))
-        self.assertTrue(events.startswith(gen.HEADER + "namespace = zg361cp"))
+        for path in EVENTS_PATHS:
+            with self.subTest(path=path.name):
+                event_shard = read(path)
+                self.assertTrue(event_shard.startswith(gen.HEADER + "# PURPOSE:"))
+                self.assertIn("\nnamespace = zg361cp\n", event_shard)
 
     def test_runtime_spec_names_scope_role_and_non_live_boundary(self) -> None:
         spec = read(SPEC_PATH)
@@ -997,11 +1178,17 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
 
     def test_no_out_of_scope_generated_mechanism_ids(self) -> None:
         effects = read_effects()
-        events = read(EVENTS_PATH)
+        events = read_events()
         defined = {int(mid) for mid in re.findall(r"^zg361_cp_m(\d+)_consume_effect = \{$", effects, re.MULTILINE)}
         event_ids = {int(mid) for mid in re.findall(r"^zg361cp\.(\d+) = \{$", events, re.MULTILINE)}
         self.assertEqual(defined, EXPECTED_IDS)
-        self.assertEqual(event_ids, EXPECTED_IDS | set(gen.QUEUE_EVENTS.values()))
+        self.assertEqual(
+            event_ids,
+            EXPECTED_IDS
+            | set(gen.QUEUE_EVENTS.values())
+            | {gen.BATCH_MODE_EVENT}
+            | {gen.player_event_id(mid) for mid in gen.BATCHABLE_IDS},
+        )
         self.assertNotIn("zg361_scoreboard", effects)
         self.assertNotIn("zg361_b1_", effects)
 
