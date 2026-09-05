@@ -148,6 +148,21 @@ class B1WitnessSourceTests(unittest.TestCase):
             owner.variables["zg361_b1_cycle_state"] = state
             self.assertTrue(shown(self.witness, owner))
 
+    def test_frozen_old_save_uses_only_manager_review_witness(self) -> None:
+        owner = OwnerProjection(
+            flags={"zg361_b1_cycle_active"},
+            variables={
+                "zg361_b1_policy_next_review_serial": 20,
+                "zg361_b1_cycle_state": 1,
+            },
+        )
+        self.assertTrue(shown(self.witness, owner))
+        owner.variables["zg361_b1_policy_next_review_serial"] = 1
+        self.assertFalse(shown(self.witness, owner))
+        owner.variables["zg361_b1_policy_next_review_serial"] = 20
+        owner.flags.clear()
+        self.assertFalse(shown(self.witness, owner))
+
     def test_idle_legacy_only_subject_only_and_ai_are_not_manager_evidence(self) -> None:
         self.assertFalse(shown(self.witness, OwnerProjection()))
         self.assertFalse(shown(self.witness, OwnerProjection(flags={"zg361_review_in_progress"})))

@@ -117,3 +117,32 @@ Frozen log SHA-256:
 
 Exact CK3 build: `1.19.0.6`, EXE SHA-256
 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`.
+
+## R67: old-save read-only migration gap
+
+R67 used the repaired 636-file production closure at `Z:\p2ac\p`
+(`3,708 effects / 988 events / 24 triggers / missing 0`, tree SHA-256
+`e59ed83c91c3556408178bc938f6dcb690884e4db64976cf31fcf6938243c38a`).
+The loader was GREEN, but the runner stopped before a product action because
+all three active-source projections and review-now were false on the frozen
+seed.  The seed retained `zg361_b1_cycle_active` and the old manager-only
+`zg361_b1_policy_next_review_serial`, but had not yet executed a business
+effect that creates `zg361_b1_manager_cycle_serial`.
+
+This is an old-save compatibility gap, not a file-size/load-performance RED.
+Direct `-load_save` skips the lobby path, so a read-only GUI query may precede
+the first idempotent business migration.  The B1 active projection now accepts
+one additional, mutation-free branch only when the new manager cycle is absent:
+active-cycle/review flag, valid cycle state, and manager-only
+`policy_next_review_serial > 1`.  Because that witness is produced only for
+the manager and equals manager cycle plus one, subject-only legacy fields still
+cannot impersonate manager identity.  The first real `.100` entry remains
+responsible for the actual migration and ticket comparison.
+
+Frozen R67 SHA-256:
+
+- outer report: `EA23AF89CB786755388C88528213197A6B339D747D28C77832D8796CE4FFF48A`
+- evidence index: `279DF9622D30DDC58E8DD364490520EBDDAE53D1E77FCA919A3509C0189EB91A`
+- promotion entry: `2CDAB8C205FF3411AABC5B06A6C38A1572ED9D29A1D9499DEFFE5316CD58C89A`
+- loader gate: `A771A66C3BB19248B18927AB5999E3AFCBBA534631C26AC2879C11CBD250DB78`
+- cleanup: `BAE137B0EC4F2FA6EB33C60A1125AD256B58BA314305CCD681E171CA418717CE`
