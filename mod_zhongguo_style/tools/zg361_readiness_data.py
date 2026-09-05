@@ -146,7 +146,7 @@ LIVE_BOUNDARY: Final = (
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     run_id="R106",
-    observed_at="2026-09-06 05:11 Asia/Shanghai",
+    observed_at="2026-09-06 05:22 Asia/Shanghai",
     result="RED",
     product_commit="7f17fed",
     projection="phase2-full-release-r106-7f17fed",
@@ -156,8 +156,8 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=414,
-    native_observations=134,
+    observation_days=415,
+    native_observations=136,
     drained_event_keys=(
         "zg361b2.40",
         "ep3_interactions_events.0630",
@@ -189,6 +189,7 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361ch.100",
         "zg361ch.101",
         "zg361ch.102",
+        "zg361.50",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -217,21 +218,26 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         r"Z:\b3r106_resume1\report.json",
         r"Z:\b3r106_resume2\03_promotion_source_production_entry.json",
         r"Z:\b3r106_resume2\report.json",
+        r"Z:\b3r106_resume3\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume3\report.json",
         r"Z:\p2r106\phase2-product-projection.json",
         r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
         "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 414 game days at speed 5 across 134 paused native/MCP "
-        "observations and 30 exact GREEN event drains. It reached and drained both "
+        "fatal 0. PID 30492 advanced 415 game days at speed 5 across 136 paused native/MCP "
+        "observations and 31 exact GREEN event drains. It reached and drained both "
         "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
         "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
         "then observed B1 close and Central activate before processing the annual summary and "
         "21 central windows. The runner now fails closed before clicking a source-reviewed "
         "player-only zg361.50 notice because that valid product window was absent from the "
-        "harness allowlist. Its exact native scope context is frozen and option 1 is the simple "
-        "idempotent acknowledgement path. This remains a harness-contract RED rather than a "
-        "new mod RED. Healthy CK3 PID 30492 remains retained for another same-process client "
+        "harness allowlist. A second replacement client bound its exact native scope context "
+        "and completed its idempotent option 1 path. The current fail-closed window is the "
+        "immediately following zg361.4 reaction event; source review selects option 1 because "
+        "it only reduces stress and opens no appeal or next-cycle stance. This remains a "
+        "harness-contract RED rather than a new mod RED. Healthy CK3 PID 30492 remains retained "
+        "for another same-process client "
         "continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
         "registry remains 0/4. The player remains alive; illness-death count is 0/3 and no "
         "health fixture was applied. This run promotes no per-ID tier."

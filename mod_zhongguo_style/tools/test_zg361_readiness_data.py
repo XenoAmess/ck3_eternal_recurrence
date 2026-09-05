@@ -112,12 +112,13 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(snapshot.product_commit, "7f17fed")
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 414)
-        self.assertEqual(snapshot.native_observations, 134)
-        self.assertEqual(len(snapshot.drained_event_keys), 30)
+        self.assertEqual(snapshot.observation_days, 415)
+        self.assertEqual(snapshot.native_observations, 136)
+        self.assertEqual(len(snapshot.drained_event_keys), 31)
         self.assertIn("zg361b2.40", snapshot.drained_event_keys)
         self.assertIn("zg361b1.201", snapshot.drained_event_keys)
         self.assertIn("zg361ch.102", snapshot.drained_event_keys)
+        self.assertIn("zg361.50", snapshot.drained_event_keys)
         self.assertIn("harness-contract RED", snapshot.boundary)
         self.assertIn("PID 30492 remains retained", snapshot.boundary)
         self.assertIn("canonical registry remains 0/4", snapshot.boundary)
@@ -128,8 +129,8 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertIn("最新完整产品验收快照", ledger)
         self.assertIn("`R106`", ledger)
         self.assertIn("937 files", ledger)
-        self.assertIn("414 游戏日", ledger)
-        self.assertIn("134 次 native/MCP 观测", ledger)
+        self.assertIn("415 游戏日", ledger)
+        self.assertIn("136 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}
