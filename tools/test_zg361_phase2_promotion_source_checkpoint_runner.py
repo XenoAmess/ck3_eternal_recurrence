@@ -1044,6 +1044,113 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_names_exact"])
 
+    def test_b1_publication_notice_excludes_completed_event_local_tickets(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def value_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": "value"},
+            }
+
+        manager = 36354
+        names = (
+            "zg361_b1_ticket_owner",
+            "zg361_b1_ticket_cycle",
+            "zg361_b1_ticket_case",
+            "zg361_b1_ticket_state",
+            "zg361_b1_oversight_ticket_owner",
+            "zg361_b1_oversight_ticket_cycle",
+            "zg361_b1_oversight_ticket_case",
+            "zg361_b1_oversight_ticket_state",
+            "zg361_b1_pending_watch_owner",
+            "zg361_b1_pending_watch_cycle",
+            "zg361_b1_pending_watch_case",
+            "zg361_b1_pending_watch_state",
+            "zg361_b1_local_publish_notice_owner",
+            "zg361_b1_local_publish_notice_subject",
+            "zg361_b1_local_publish_notice_cycle",
+            "zg361_b1_local_publish_notice_case",
+            "zg361_b1_local_publish_notice_revision",
+        )
+        character_names = {
+            "zg361_b1_ticket_owner": manager,
+            "zg361_b1_oversight_ticket_owner": manager,
+            "zg361_b1_pending_watch_owner": manager,
+            "zg361_b1_local_publish_notice_owner": manager,
+            "zg361_b1_local_publish_notice_subject": 29037,
+        }
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361b1.126",
+            "current_event_instance_id": 20,
+            "date_raw": 53155488,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope(name, character_names[name])
+                if name in character_names
+                else value_scope(name)
+                for name in names
+            ],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53155488, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 20}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361b1.126"],
+            starting_date=53147016,
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="zg361b1.126",
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        stale_self_scope = copy.deepcopy(context)
+        stale_self_scope["saved_scopes"].append(
+            character_scope("zg361_b1_self_ticket_subject", 29037)
+        )
+        checks = checks_for(stale_self_scope)
+        self.assertFalse(checks["saved_scope_names_exact"])
+
+        wrong_manager = copy.deepcopy(context)
+        wrong_manager["saved_scopes"][8] = character_scope(
+            "zg361_b1_pending_watch_owner", 36355
+        )
+        checks = checks_for(wrong_manager)
+        self.assertFalse(checks["scope:zg361_b1_pending_watch_owner:matches_any"])
+
     def test_spymaster_no_find_accepts_only_source_proven_boolean_branch(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

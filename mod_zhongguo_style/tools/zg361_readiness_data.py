@@ -145,28 +145,27 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R105",
-    observed_at="2026-09-06 04:50 Asia/Shanghai",
+    run_id="R106",
+    observed_at="2026-09-06 05:11 Asia/Shanghai",
     result="RED",
-    product_commit="a298eea",
-    projection="phase2-full-release-r105-a298eea",
+    product_commit="7f17fed",
+    projection="phase2-full-release-r106-7f17fed",
     verified_file_count=937,
-    product_tree_sha256="FE61DC88CF8722EACB4E985C27B18812E32FE9D2E9380749D051FEFC4E9801EC",
-    release_manifest_sha256="C3BD5A242388C793954E57BDB19C3A4551E4F18AEB0CD516E04FADFDEFDE403F",
+    product_tree_sha256="EC65D1088A36418ACA8067266776AF7EAB9DD4C87DFB644BFF96B60DB2F044B9",
+    release_manifest_sha256="075E2C4F4E2391A6088A63C446A50AFEEB128BC1F4DB6EC7F460C883D82BAAD1",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=550,
-    native_observations=141,
+    observation_days=353,
+    native_observations=102,
     drained_event_keys=(
         "zg361b2.40",
-        "tgp_china_yearly.0015",
-        "spymaster_task.0381",
-        "spymaster_task.0342",
-        "spymaster_task.0346",
-        "ep3_governor_yearly.3060",
+        "ep3_interactions_events.0630",
+        "ep3_admin_events.0002",
+        "tgp_dynastic_cycle_events.0040",
         "zg361.40",
-        "tgp_interaction_event.0016",
+        "zg361b1.200",
+        "zg361b1.201",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -180,34 +179,34 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "elimination rank read (R102)",
         "B1 delayed weak-subject calibration cascade (R103)",
         "promotion/PIP optional settlement and sample state (R103)",
+        "manager-owned B1 roster rebuild across nested employee callback (R105)",
         "loader-attributed project errors",
     ),
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r105_retry2\evidence-index.json",
-        r"Z:\b3r105_retry2\cell\02_loader_error_scan.json",
-        r"Z:\b3r105_retry2\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r105_retry2\cell\final_error.log",
-        r"Z:\b3r105_retry2\cell\final_debug.log",
-        r"Z:\p2r105\phase2-product-projection.json",
-        r"Z:\p2r105\p.manifest.json",
+        r"Z:\b3r106_retry1\evidence-index.json",
+        r"Z:\b3r106_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r106_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_retry1\cell\final_error.log",
+        r"Z:\b3r106_retry1\cell\final_debug.log",
+        r"Z:\p2r106\phase2-product-projection.json",
+        r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
-        "The committed R105 release-identical product loaded 303/303 database nodes with "
-        "fatal 0 and no loading-performance RED. PID 10216 advanced through the 550-day "
-        "speed-5 bound across 141 paused native/MCP observations and eight exact GREEN event "
-        "drains. The player remained in B1 for every observation; central and PP never became "
-        "active, so no zg361pp.146 -> D+1 .147 checkpoint or completed registry receipt was "
-        "written and the canonical registry remains 0/4. The player-29037 debug snapshot "
-        "closed its pending barrier but showed target quotas 2/4/1 versus recount 0/0/0 and "
-        "no manager-owned zg361_b1_processing_subjects list. Source reconstruction ties that "
-        "state exactly to zg361b1.121 entering var:<manager>, calling the local-publication "
-        "refresh and then rebuilding list scratch through the preserved employee ROOT. Thus "
-        "the manager list was cleared and rehomed onto the employee. The player remained "
-        "alive; this was not an illness-death failure, the consecutive counter remains 0/3, "
-        "and no health or survivability fixture was applied. This whole-product RED promotes "
-        "no per-ID tier."
+        "The committed R106 release-identical product loaded 303/303 database nodes with "
+        "fatal 0. PID 30492 advanced 353 game days at speed 5 across 102 paused native/MCP "
+        "observations and seven exact GREEN event drains. It reached and drained both "
+        "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
+        "roster-rebuild product regression. The runner then failed closed before clicking the "
+        "active zg361b1.126 publication notice because its harness contract still required the "
+        "completed .200/.201 event-local self/shadow scopes; every ticket, oversight, pending-"
+        "watch and publication-notice check passed. Product source confirms .126 consumes only "
+        "the frozen publication-notice tuple, so this is a harness-contract RED rather than a "
+        "new mod RED. Healthy CK3 PID 30492 remains retained for a same-process replacement-"
+        "client continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
+        "registry remains 0/4. The player remains alive; illness-death count is 0/3 and no "
+        "health fixture was applied. This run promotes no per-ID tier."
     ),
 )
 

@@ -795,23 +795,22 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
     "zg361b1.126": {
         # Human-only subject-local publication notice. Its trigger has already
         # matched the frozen owner/subject/cycle/case/revision tuple and its
-        # single option has no effect. Preserve every inherited ticket name,
-        # bind all consumed value types and require all owner aliases to refer
-        # to one non-player manager before acknowledging the notice.
+        # single option has no effect. Preserve the ticket/oversight/watch and
+        # publication-notice names that reach this independently scheduled
+        # window, bind all consumed value types and require all owner aliases
+        # to refer to one non-player manager before acknowledging the notice.
+        # The earlier .200 self-review and .201 shadow-accept scopes belong to
+        # those event windows; R106 proved they are not part of .126's ABI.
         "date_raw": 53155368,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
-            "zg361_b1_self_ticket_subject": 29037,
-            "zg361_b1_shadow_ticket_subject": 29037,
             "zg361_b1_local_publish_notice_subject": 29037,
         },
         "unique_character_scope_excludes": {
             name: (29037,)
             for name in (
                 "zg361_b1_ticket_owner",
-                "zg361_b1_self_ticket_owner",
-                "zg361_b1_shadow_ticket_owner",
                 "zg361_b1_oversight_ticket_owner",
                 "zg361_b1_pending_watch_owner",
                 "zg361_b1_local_publish_notice_owner",
@@ -821,8 +820,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             name: ("zg361_b1_local_publish_notice_owner",)
             for name in (
                 "zg361_b1_ticket_owner",
-                "zg361_b1_self_ticket_owner",
-                "zg361_b1_shadow_ticket_owner",
                 "zg361_b1_oversight_ticket_owner",
                 "zg361_b1_pending_watch_owner",
             )
@@ -833,12 +830,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_b1_ticket_cycle",
                 "zg361_b1_ticket_case",
                 "zg361_b1_ticket_state",
-                "zg361_b1_self_ticket_cycle",
-                "zg361_b1_self_ticket_case",
-                "zg361_b1_self_ticket_state",
-                "zg361_b1_shadow_ticket_cycle",
-                "zg361_b1_shadow_ticket_case",
-                "zg361_b1_shadow_ticket_state",
                 "zg361_b1_oversight_ticket_cycle",
                 "zg361_b1_oversight_ticket_case",
                 "zg361_b1_oversight_ticket_state",
@@ -855,16 +846,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "zg361_b1_ticket_cycle",
             "zg361_b1_ticket_case",
             "zg361_b1_ticket_state",
-            "zg361_b1_self_ticket_owner",
-            "zg361_b1_self_ticket_subject",
-            "zg361_b1_self_ticket_cycle",
-            "zg361_b1_self_ticket_case",
-            "zg361_b1_self_ticket_state",
-            "zg361_b1_shadow_ticket_owner",
-            "zg361_b1_shadow_ticket_subject",
-            "zg361_b1_shadow_ticket_cycle",
-            "zg361_b1_shadow_ticket_case",
-            "zg361_b1_shadow_ticket_state",
             "zg361_b1_oversight_ticket_owner",
             "zg361_b1_oversight_ticket_cycle",
             "zg361_b1_oversight_ticket_case",
