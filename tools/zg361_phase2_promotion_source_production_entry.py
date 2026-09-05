@@ -631,14 +631,42 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
     },
     "spymaster_task.0399": {
-        "date_raw": 53148768,
+        # Vanilla Find Secrets "found nothing" delivery.  The event's
+        # immediate random_list saves exactly one of two boolean scopes:
+        # secrets_to_be_found when the Spymaster suspects a secret remains,
+        # or no_secrets_here otherwise.  R60/R69 observed the two legitimate
+        # branches with every character identity and option shape unchanged.
+        # The task cadence also controls the delivery date, so bind it to the
+        # same per-run product observation window as the other Find Secrets
+        # notifications instead of freezing one RNG tick.
+        "date_raw": (53148768, 53152896),
+        "date_raw_range": (53148768, 53152896),
+        "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
             "councillor": 27963,
             "councillor_liege": 29037,
             "target_character": 27051,
         },
-        "boolean_scopes": ("no_secrets_here",),
+        "boolean_scopes": (),
+        "boolean_scope_name_sets": (
+            ("no_secrets_here",),
+            ("secrets_to_be_found",),
+        ),
+        "saved_scope_name_sets": (
+            (
+                "councillor",
+                "councillor_liege",
+                "target_character",
+                "no_secrets_here",
+            ),
+            (
+                "councillor",
+                "councillor_liege",
+                "target_character",
+                "secrets_to_be_found",
+            ),
+        ),
         "option_count": 2,
         # Option 1 changes the councillor task.  Option 2 preserves the
         # current task and is the already-proven minimal side-effect path.
@@ -1174,6 +1202,40 @@ def _known_interrupt_checks(
             and isinstance(matches[0].get("scope"), Mapping)
             and matches[0]["scope"].get("status") == "available"
             and matches[0]["scope"].get("type_key") == "boolean"
+        )
+    boolean_scope_name_sets_value = contract.get(
+        "boolean_scope_name_sets", ()
+    )
+    boolean_scope_name_sets = (
+        boolean_scope_name_sets_value
+        if isinstance(boolean_scope_name_sets_value, tuple)
+        else ()
+    )
+    if boolean_scope_name_sets:
+        expected_boolean_name_sets = [
+            set(name_set)
+            for name_set in boolean_scope_name_sets
+            if isinstance(name_set, tuple)
+        ]
+        candidate_boolean_names = set().union(*expected_boolean_name_sets)
+        boolean_matches = [
+            row_value
+            for row_value in scopes
+            if isinstance(row_value, Mapping)
+            and row_value.get("name") in candidate_boolean_names
+        ]
+        actual_boolean_names = [
+            row_value.get("name") for row_value in boolean_matches
+        ]
+        checks["boolean_scope_names_exact"] = (
+            len(actual_boolean_names) == len(set(actual_boolean_names))
+            and set(actual_boolean_names) in expected_boolean_name_sets
+            and all(
+                isinstance(row_value.get("scope"), Mapping)
+                and row_value["scope"].get("status") == "available"
+                and row_value["scope"].get("type_key") == "boolean"
+                for row_value in boolean_matches
+            )
         )
     saved_scope_name_sets_value = contract.get("saved_scope_name_sets", ())
     saved_scope_name_sets = (

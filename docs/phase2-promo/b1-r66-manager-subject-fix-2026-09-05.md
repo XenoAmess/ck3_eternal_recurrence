@@ -176,3 +176,48 @@ Frozen R68 SHA-256:
 - promotion entry: `C0BE2B9D4A18DE0A4919E526EC275E34D7C048668DA0762C4D92FAEAE6120CBB`
 - loader gate: `DD87111238CBB70B5D3FF16D284906AF3499380B842A663EA0E1B477EEF52292`
 - cleanup: `253F67A80A3E9921EB22F1751131C02E09139A057CCDBA3ACBE55C774BA9BB34`
+
+## R69: source-proven Find Secrets boolean branch
+
+R69 reused the unchanged 636-file R68 product tree. The final loader gate was
+GREEN and the mounted product remained unchanged. The run then stopped before
+action at vanilla `spymaster_task.0399`, date raw `53152896`, event instance
+`18`, root/player `29037`. Its exact saved scopes were three Characters
+(`councillor=27963`, `councillor_liege=29037`,
+`target_character=27051`) plus Boolean `secrets_to_be_found`; both rendered
+options were shown and enabled, mapping to native indices 0/1.
+
+The frozen CK3 1.19.0.6 source in
+`events/councillor_task_events/spymaster_task_events.txt` proves that `.0399`
+uses an immediate 5/5 `random_list` and saves exactly one of two Boolean
+scopes: `secrets_to_be_found=yes` or `no_secrets_here=yes`. R60 had observed
+the latter at raw date `53148768`; R69 observed the former with the same three
+character identities and option shape. This is legitimate source-defined
+random state and delivery timing, not arbitrary schema drift.
+
+The runner contract now binds `.0399` to the existing per-run 550-day product
+observation window and accepts only the two exact four-name saved-scope sets.
+The selected action remains authored option 2/native index 1, which preserves
+the current Find Secrets task. Both Boolean names at once, the wrong scope
+type, an unrelated extra scope, or an out-of-window date remain RED. This is a
+runner choreography correction; it does not change the product projection.
+
+R69 is still incomplete for the promotion registry: it submitted no `.0399`
+action after the mismatch, reached neither `.146` nor `.147`, and created no
+valid source entry. The correct canonical registry count remains **0/4**, not
+the runner mode label that says it is attacking category one.
+
+Frozen R69 SHA-256:
+
+- outer report: `232312121E7ED5420B4CA4FCC12CDED9CA7FF41E781F630DCA22E654EB5041A9`
+- evidence index: `5823FA259D7CC61F064B91BBAB72C00FF731AFF20B20196DA0B596B92E3CC3D7`
+- promotion entry: `4B0E20EE40C40BA366B543A7B6FB8EEFC262ED761EE62CCAABBBE336FE96EF29`
+- loader gate: `45461BCA8DDF84095CC7EED1E822AFBB75B5A96A18E5E0668BCEBB1318524083`
+- cleanup: `A089E17F194050F52E385313205F9A059711D8B6D93242A43FB40914026D99A2`
+
+R69 adds another negative file-boundary datum: the 636-file product loaded
+GREEN and the failure occurred only after load at an exact event-contract
+check. There is no loader/file-size/performance RED, so no effect file is
+split for this failure. The B2+ policy remains purpose grouping, target 1–10
+effects per file, hard-normal ceiling 20; any future loader-performance RED
+must again be tested against exact shard sizes before a purpose split.

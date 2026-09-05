@@ -274,6 +274,103 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["scope:zg361_b1_bank_ticket_owner:matches_any"])
 
+    def test_spymaster_no_find_accepts_only_source_proven_boolean_branch(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def boolean_scope(
+            name: str, *, type_key: str = "boolean"
+        ) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": type_key},
+            }
+
+        base_scopes = [
+            character_scope("councillor", 27963),
+            character_scope("councillor_liege", 29037),
+            character_scope("target_character", 27051),
+        ]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "spymaster_task.0399",
+            "current_event_instance_id": 18,
+            "date_raw": 53152896,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": base_scopes + [boolean_scope("secrets_to_be_found")],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53152896, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 18}
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["spymaster_task.0399"],
+            starting_date=53147016,
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="spymaster_task.0399",
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        alternative = copy.deepcopy(context)
+        alternative["saved_scopes"][-1] = boolean_scope("no_secrets_here")
+        checks = checks_for(alternative)
+        self.assertTrue(all(checks.values()), checks)
+
+        both = copy.deepcopy(context)
+        both["saved_scopes"].append(boolean_scope("no_secrets_here"))
+        checks = checks_for(both)
+        self.assertFalse(checks["boolean_scope_names_exact"])
+        self.assertFalse(checks["saved_scope_names_exact"])
+
+        wrong_type = copy.deepcopy(context)
+        wrong_type["saved_scopes"][-1] = boolean_scope(
+            "secrets_to_be_found", type_key="value"
+        )
+        checks = checks_for(wrong_type)
+        self.assertFalse(checks["boolean_scope_names_exact"])
+
+        extra = copy.deepcopy(context)
+        extra["saved_scopes"].append(boolean_scope("unrelated_scope"))
+        checks = checks_for(extra)
+        self.assertFalse(checks["saved_scope_names_exact"])
+
+        out_of_window = copy.deepcopy(context)
+        out_of_window["date_raw"] = 53160240
+        checks = checks_for(out_of_window)
+        self.assertFalse(checks["context_date_raw"])
+
     def test_run_cell_passes_owned_product_lineage_to_capture_callable(self) -> None:
         self._run_cell_case(entry_error=False)
 
