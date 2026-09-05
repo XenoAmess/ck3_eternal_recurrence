@@ -501,3 +501,35 @@ and `1C20F900BC509977079F344A35E3022B68B183006DBCFAE176D5642B7DFACE0C`.
 All final logs contain zero B2 unset-variable reads, cleanup was GREEN, and
 CK3 count returned to zero. This is a post-loader annual-event bound, not a
 file-size/performance RED, and it does not trigger another effect split.
+
+## R60: manager identity is dynamic in the player self-review ticket
+
+R60 ran from pushed commit `8607e9a`, passed both loaders, and drained PIP,
+`.3060`, `.0399`, and the first `.0381`. It then failed closed before action
+on `zg361b1.200` because the old first-frame identity contract did not match.
+Neither the second annual Jingcha nor the random health event occurred, so
+those newer contracts remain live pending.
+
+The R60 frame is `date_raw=53156256`, instance 17, played root and self-ticket
+subject 29037, ticket/self-ticket owner 29348, six opaque value ticket scopes,
+and nine saved scopes total. The older frame was at `53152728` with manager
+29628 and additionally retained the acceptance-only
+`zga_phase2_seed_player`, for ten scopes total. The generated product source
+shows that each manager-rooted peer window sends this event to a human subject;
+the stable semantics are therefore equal non-player owner roles and a player
+self-ticket subject. The fixture seed scope is not part of the authored ticket.
+
+The corrected contract binds the live date envelope, exact alternative 9/10
+name sets, the owner alias, player subject, six value types, and the optional
+fixture scope's identity. It still selects honest option 1, avoiding the other
+branches' +15/-15 self-score bias. A negative unit case proves that an
+arbitrary tenth scope is rejected. Focused normal and optimized regression
+passes are both 17/17 GREEN, and the no-launch preflight is GREEN.
+
+R60 emitted eight `ZG361P2C` business rows: three freezes, two AI silent
+completions, two stale typed REDs, and one ignored hook. Its outer
+report/evidence-index SHA-256 values are
+`FC080F49D965782C5F5E9EAF2E3A5384D6CE083B172A9B01E1AC3FF00BE155CD`
+and `C8991B49FBACEE57378664331FF0021461998AC70C6BBE99E24751C3F3D95888`.
+B2 unset reads remain zero, cleanup was GREEN, and CK3 returned to zero. This
+is a post-loader semantic-contract correction, not a file-size signal.

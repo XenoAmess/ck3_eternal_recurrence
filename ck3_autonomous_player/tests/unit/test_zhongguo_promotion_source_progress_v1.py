@@ -349,7 +349,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             elif self.stage == "withering_mind":
                 instance_id, option_count, date, revision = 7200, 1, 53152296, 40
             elif self.stage == "self_review":
-                instance_id, option_count, date, revision = 200, 3, 53152728, 40
+                instance_id, option_count, date, revision = 200, 3, 53156256, 40
             elif self.stage == "secret_discovery":
                 instance_id, option_count, date, revision = 342, 1, 53152896, 40
             elif self.stage == "lover_secret":
@@ -598,12 +598,11 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             elif self.stage == "self_review":
                 key = "zg361b1.200"
                 scopes = [
-                    _character_scope("zga_phase2_seed_player", 29037),
-                    _character_scope("zg361_b1_ticket_owner", 29628),
+                    _character_scope("zg361_b1_ticket_owner", 29348),
                     _opaque_scope("zg361_b1_ticket_cycle", "value"),
                     _opaque_scope("zg361_b1_ticket_case", "value"),
                     _opaque_scope("zg361_b1_ticket_state", "value"),
-                    _character_scope("zg361_b1_self_ticket_owner", 29628),
+                    _character_scope("zg361_b1_self_ticket_owner", 29348),
                     _character_scope("zg361_b1_self_ticket_subject", 29037),
                     _opaque_scope("zg361_b1_self_ticket_cycle", "value"),
                     _opaque_scope("zg361_b1_self_ticket_case", "value"),
@@ -975,6 +974,57 @@ def test_grieving_child_contract_binds_dynamic_parent_relationship() -> None:
         contract=contract,
     )
     assert checks["scope:parent:matches_any"] is False
+
+
+def test_self_review_contract_allows_only_named_fixture_scope() -> None:
+    scopes = [
+        _character_scope("zga_phase2_seed_player", 29037),
+        _character_scope("zg361_b1_ticket_owner", 29628),
+        _opaque_scope("zg361_b1_ticket_cycle", "value"),
+        _opaque_scope("zg361_b1_ticket_case", "value"),
+        _opaque_scope("zg361_b1_ticket_state", "value"),
+        _character_scope("zg361_b1_self_ticket_owner", 29628),
+        _character_scope("zg361_b1_self_ticket_subject", 29037),
+        _opaque_scope("zg361_b1_self_ticket_cycle", "value"),
+        _opaque_scope("zg361_b1_self_ticket_case", "value"),
+        _opaque_scope("zg361_b1_self_ticket_state", "value"),
+    ]
+    snapshot = {
+        "date_raw": 53152728,
+        "active_event": {"option_count": 3},
+    }
+    event = {"event_instance_id": 200}
+    context = {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "zg361b1.200",
+        "current_event_instance_id": 200,
+        "date_raw": 53152728,
+        "root_scope": _character_scope("root", 29037)["scope"],
+        "saved_scopes": scopes,
+        "options": _options(3),
+    }
+    contract = KNOWN_TIMELINE_INTERRUPTS["zg361b1.200"]
+    checks = _known_interrupt_checks(
+        snapshot=snapshot,
+        event=event,
+        context=context,
+        event_key="zg361b1.200",
+        contract=contract,
+    )
+    assert all(checks.values())
+
+    scopes[0] = _character_scope("unexpected_fixture_scope", 29037)
+    checks = _known_interrupt_checks(
+        snapshot=snapshot,
+        event=event,
+        context=context,
+        event_key="zg361b1.200",
+        contract=contract,
+    )
+    assert checks["saved_scope_names_exact"] is False
 
 
 def test_unavailable_progress_reports_native_reason_and_widgets() -> None:

@@ -486,13 +486,26 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # the already frozen mid-cycle evidence without the +15/-15 bias of
         # the exaggerated/conservative branches, while advancing the same
         # ticket-guarded review state machine.
-        "date_raw": 53152728,
+        # The player's reviewing manager is selected by the manager-rooted
+        # peer window and varies across live runs.  The acceptance-only seed
+        # scope can also remain attached to the first frame, but is absent
+        # from the product-authored ticket itself.  Bind the exact required
+        # names and owner alias rather than either incidental identity.
+        "date_raw": (53152728, 53156256),
+        "date_raw_range": (53152728, 53156256),
         "root_character_id": 29037,
         "character_scopes": {
-            "zga_phase2_seed_player": 29037,
-            "zg361_b1_ticket_owner": 29628,
-            "zg361_b1_self_ticket_owner": 29628,
             "zg361_b1_self_ticket_subject": 29037,
+        },
+        "optional_character_scopes": {
+            "zga_phase2_seed_player": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "zg361_b1_ticket_owner": (29037,),
+            "zg361_b1_self_ticket_owner": (29037,),
+        },
+        "character_scope_matches_any": {
+            "zg361_b1_ticket_owner": ("zg361_b1_self_ticket_owner",),
         },
         "scope_types": {
             "zg361_b1_ticket_cycle": "value",
@@ -502,8 +515,32 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "zg361_b1_self_ticket_case": "value",
             "zg361_b1_self_ticket_state": "value",
         },
+        "saved_scope_name_sets": (
+            (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_self_ticket_owner",
+                "zg361_b1_self_ticket_subject",
+                "zg361_b1_self_ticket_cycle",
+                "zg361_b1_self_ticket_case",
+                "zg361_b1_self_ticket_state",
+            ),
+            (
+                "zga_phase2_seed_player",
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_self_ticket_owner",
+                "zg361_b1_self_ticket_subject",
+                "zg361_b1_self_ticket_cycle",
+                "zg361_b1_self_ticket_case",
+                "zg361_b1_self_ticket_state",
+            ),
+        ),
         "boolean_scopes": (),
-        "saved_scope_count": 10,
         "option_count": 3,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
@@ -930,6 +967,20 @@ def _known_interrupt_checks(
         checks[f"scope:{name}"] = character_ids(str(name)) == {
             expected_character_id
         }
+    optional_character_scopes_value = contract.get(
+        "optional_character_scopes", {}
+    )
+    optional_character_scopes = (
+        optional_character_scopes_value
+        if isinstance(optional_character_scopes_value, Mapping)
+        else {}
+    )
+    for name, expected_character_id in optional_character_scopes.items():
+        ids = character_ids(str(name))
+        checks[f"scope:{name}:optional"] = ids in (
+            set(),
+            {expected_character_id},
+        )
     unavailable_character_scopes_value = contract.get(
         "unavailable_character_scopes", ()
     )
@@ -1013,6 +1064,29 @@ def _known_interrupt_checks(
             and isinstance(matches[0].get("scope"), Mapping)
             and matches[0]["scope"].get("status") == "available"
             and matches[0]["scope"].get("type_key") == "boolean"
+        )
+    saved_scope_name_sets_value = contract.get("saved_scope_name_sets", ())
+    saved_scope_name_sets = (
+        saved_scope_name_sets_value
+        if isinstance(saved_scope_name_sets_value, tuple)
+        else ()
+    )
+    if saved_scope_name_sets:
+        actual_names = [
+            row_value.get("name")
+            for row_value in scopes
+            if isinstance(row_value, Mapping)
+            and isinstance(row_value.get("name"), str)
+        ]
+        expected_name_sets = [
+            set(name_set)
+            for name_set in saved_scope_name_sets
+            if isinstance(name_set, tuple)
+        ]
+        checks["saved_scope_names_exact"] = (
+            len(actual_names) == len(scopes)
+            and len(set(actual_names)) == len(actual_names)
+            and set(actual_names) in expected_name_sets
         )
     if "saved_scope_count" in contract:
         checks["saved_scope_count"] = (
