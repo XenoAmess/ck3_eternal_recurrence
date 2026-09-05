@@ -398,6 +398,87 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(out_of_window)
         self.assertFalse(checks["context_date_raw"])
 
+    def test_bp1_yearly_9006_binds_random_courtier_and_minimum_external_option(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "bp1_yearly.9006",
+            "current_event_instance_id": 14,
+            "date_raw": 53147520,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope("bp1_yearly_9006_sinful_courtier", 29068)
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53147520, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 14}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS["bp1_yearly.9006"]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="bp1_yearly.9006",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        player_as_courtier = copy.deepcopy(context)
+        player_as_courtier["saved_scopes"] = [
+            character_scope("bp1_yearly_9006_sinful_courtier", 29037)
+        ]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=player_as_courtier,
+            event_key="bp1_yearly.9006",
+            contract=contract,
+        )
+        self.assertFalse(
+            checks["scope:bp1_yearly_9006_sinful_courtier:unique_third_party"]
+        )
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(
+            character_scope("unrelated_scope", 29069)
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra_scope,
+            event_key="bp1_yearly.9006",
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_count"])
+
     def test_sway_compliment_accepts_dynamic_three_plus_empty_fallback(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

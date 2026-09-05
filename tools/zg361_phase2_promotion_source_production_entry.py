@@ -748,6 +748,29 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "bp1_yearly.9006": {
+        # Friends & Foes narrow-yearly event. Immediate selects exactly one
+        # unrelated courtier/vassal who shares a sinful trait with root. The
+        # first option creates or advances friendship and also changes piety
+        # and stress; option 2 changes only root's piety/stress and therefore
+        # is the bounded minimum-external-side-effect path for this capture.
+        # R72's frozen seed is not craven, so the conditional animal helper is
+        # absent and the complete live frame contains only the courtier.
+        "date_raw": 53147520,
+        "date_raw_range": (53147520, 53147520),
+        "date_policy": "product-observation-window",
+        "max_occurrences": 2,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "bp1_yearly_9006_sinful_courtier": (29037,),
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 1,
+        "option_count": 2,
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
     "sway_ongoing.1002": {
         # Vanilla ongoing-sway compliment letter. The no-friend branch
         # randomizes three distinct compliment flags from the first twelve
@@ -1477,6 +1500,7 @@ def enter_promotion_source_checkpoint_v1(
         "m146_option1_submission": None,
         "m146_date_raw": None,
         "timeline_interrupt_drains": [],
+        "unexpected_event": None,
         "target_binding": None,
         "action_ack_used_as_state_evidence": False,
         "fixture_used": False,
@@ -1644,6 +1668,12 @@ def enter_promotion_source_checkpoint_v1(
                     sleeper(poll_interval_seconds)
                 continue
             if key != M146 or evidence.get("m146_option1_submission") is not None:
+                evidence["unexpected_event"] = {
+                    "event_definition_key": key,
+                    "snapshot": copy.deepcopy(dict(snapshot)),
+                    "event": copy.deepcopy(dict(event)),
+                    "query": copy.deepcopy(dict(event_query)),
+                }
                 raise PromotionProductionEntryError(
                     f"promotion path encountered unexpected event {key!r}"
                 )

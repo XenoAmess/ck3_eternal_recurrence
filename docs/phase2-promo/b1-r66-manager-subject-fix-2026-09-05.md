@@ -311,3 +311,43 @@ GREEN and the failure occurred roughly eight minutes later at an action gate.
 It is negative evidence against file size being this failure's cause. No
 effect split is triggered; the B2+ purpose grouping target of 1–10 and normal
 ceiling of 20 remains enforced.
+
+## R72: Friends & Foes yearly interruption
+
+R72 started from committed `81d5c63` and the unchanged 636-file product.
+Frontend-first, final native/capability readiness, product mount, loader scan,
+protected storage and cleanup were GREEN. Before any new action, the runner
+stopped at previously unregistered vanilla `bp1_yearly.9006`, raw date
+`53147520`, instance `14`, root `29037`. The complete frozen window is retained
+in driver-state: one Character scope
+`bp1_yearly_9006_sinful_courtier=29068`, two shown/enabled options mapped to
+native indices 0/1, and no conditional animal scopes. R71's `.200` branch did
+not recur and therefore remains live-pending.
+
+Exact CK3 1.19.0.6 source shows that the narrow-yearly event randomly selects
+one courtier or vassal, distinct from root, who shares a qualifying trait.
+Option 1 creates or advances friendship and also changes root piety/stress;
+option 2 changes only root piety/stress. The runner binds the dynamic courtier
+as one unique non-player Character, exact one-scope/two-option shape and the
+existing product observation window, then selects authored option 2/native
+index 1 as the minimum external-side-effect path. The same yearly source can
+legally recur at most twice inside the 550-day run. A player-valued courtier,
+extra scope or option drift remains RED.
+
+The runner now also retains a full `unexpected_event` snapshot/query in its
+top-level evidence before failing, so the next genuinely unknown event no
+longer requires recovering context from driver-state. This changes only
+harness evidence, not product behavior.
+
+Frozen R72 SHA-256:
+
+- outer report: `EB76555AD4AF5DF5E4078BDDDD917C086DB3AA278A99E06252F981DCEA2243A8`
+- evidence index: `376745C06DC8E6BB6B2DC6A42F16C573F9E631C087777A6047BE4AFC886EEC4C`
+- promotion entry: `B36CDC6D8EB7910FCEE2081D86C317A090F70A1E9B29122B88C81EED96F8075A`
+- loader gate: `EA3F537C723951BB0F768D7F89B7FF2D68522BE94456EE7016DB53A2D27C60DD`
+- cleanup: `13C9D2C4D1526933BB3A4B283BA2D16188168AFC51F262F5DC568A8E603F1FEA`
+- driver-state: `E1A371641FAD29EDD376EF22DD231BE526D685822FE88B7452ADC79F76788F0A`
+- vanilla event: `013A6B602C8C344D27944D99020D1DA11E088C00354A542A97C0AE96FED0401B`
+
+R72 failed after a finalized GREEN loader, not during load. It adds no
+file-size/performance RED and triggers no effect split.
