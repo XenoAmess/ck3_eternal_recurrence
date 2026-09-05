@@ -1120,6 +1120,44 @@ def _accepted(value: object, step: str) -> dict[str, object]:
     return result
 
 
+def _compact_progress_observation(
+    query: object, *, date_raw: int, revision: int,
+) -> dict[str, object]:
+    """Reduce one native progress query to stable player-owned state bits."""
+
+    result = copy.deepcopy(dict(query)) if isinstance(query, Mapping) else {}
+    progress = result.get("zhongguo_promotion_source_progress")
+    widgets = progress.get("widgets") if isinstance(progress, Mapping) else None
+    if (
+        result.get("status") != "available"
+        or not isinstance(progress, dict)
+        or not isinstance(widgets, list)
+        or len(widgets) != 5
+    ):
+        raise PromotionProductionEntryError(
+            "promotion progress observer became unavailable during product timeline"
+        )
+    for index, widget in enumerate(widgets):
+        visible = widget.get("effective_visible") if isinstance(widget, Mapping) else None
+        if not (
+            isinstance(visible, Mapping)
+            and visible.get("status") == "available"
+            and isinstance(visible.get("value"), bool)
+        ):
+            raise PromotionProductionEntryError(
+                "promotion progress observer returned an unavailable widget "
+                f"during product timeline: index={index}"
+            )
+    return {
+        "revision": revision,
+        "date_raw": date_raw,
+        "review_now_eligible": widget_visible(progress, 1),
+        "b1_active": widget_visible(progress, 2),
+        "central_active": widget_visible(progress, 3),
+        "pp_active": widget_visible(progress, 4),
+    }
+
+
 def _binding(
     snapshot: object, *, player: int | None = None,
     connection_generation: int | None = None,
@@ -1757,6 +1795,7 @@ def enter_promotion_source_checkpoint_v1(
         "console_used": False,
         "generic_character_rebind_used": False,
         "observations": [],
+        "progress_observations": [],
     })
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
@@ -1862,6 +1901,19 @@ def enter_promotion_source_checkpoint_v1(
             "paused": snapshot.get("paused"),
             "active_event": event is not None,
         })
+        progress_observations = evidence["progress_observations"]
+        assert isinstance(progress_observations, list)
+        progress_query = service.query_zhongguo_promotion_source_progress_v1(
+            f"promo.entry.poll.{len(progress_observations) + 1}",
+            expected_revision=int(snapshot["revision"]),
+        )
+        progress_observations.append(
+            _compact_progress_observation(
+                progress_query,
+                date_raw=date_raw,
+                revision=int(snapshot["revision"]),
+            )
+        )
         if isinstance(snapshot.get("active_event"), Mapping) and event is None:
             _accepted(
                 service.execute_step(

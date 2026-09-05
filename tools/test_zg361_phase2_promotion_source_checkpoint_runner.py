@@ -170,6 +170,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.paused = True
                 self.event_pending = False
                 self.steps: list[str] = []
+                self.progress_queries: list[str] = []
 
             def snapshot(self) -> dict[str, object]:
                 snapshot: dict[str, object] = {
@@ -188,6 +189,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             def query_zhongguo_promotion_source_progress_v1(
                 self, request_nonce: str, *, expected_revision: int
             ) -> dict[str, object]:
+                self.progress_queries.append(request_nonce)
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
                     for _ in range(5)
@@ -229,6 +231,45 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             service.steps,
             ["set-speed-5", "resume-map", "pause-map"],
         )
+        self.assertEqual(service.progress_queries[0], "promo.entry.before")
+        self.assertGreaterEqual(len(service.progress_queries), 3)
+        self.assertEqual(service.progress_queries[1], "promo.entry.poll.1")
+
+    def test_product_progress_observation_rejects_unavailable_widget(self) -> None:
+        widgets = [
+            {"effective_visible": {"status": "available", "value": False}}
+            for _ in range(5)
+        ]
+        query = {
+            "status": "available",
+            "zhongguo_promotion_source_progress": {"widgets": widgets},
+        }
+        observed = production._compact_progress_observation(
+            query, date_raw=53147040, revision=8,
+        )
+        self.assertEqual(
+            observed,
+            {
+                "revision": 8,
+                "date_raw": 53147040,
+                "review_now_eligible": False,
+                "b1_active": False,
+                "central_active": False,
+                "pp_active": False,
+            },
+        )
+
+        widgets[3]["effective_visible"] = {
+            "status": "unavailable",
+            "value": None,
+        }
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "unavailable widget",
+        ):
+            production._compact_progress_observation(
+                query, date_raw=53147040, revision=8,
+            )
 
     def test_capture_mode_is_mutually_exclusive_with_other_runtime_modes(self) -> None:
         with self.assertRaisesRegex(

@@ -980,3 +980,25 @@ readiness and cleanup SHA-256 values are respectively
 `65CB35CCA192FD717137421DF878F279225A81922A4FB4D02598159A8F3DABAD`
 and `A041FC4F9E4D6703797A4FAE1922EEB9F3BD6CE6C27FA4782C6DFDA3AC3C4EC1`.
 Cleanup was GREEN and CK3 returned to zero.
+
+## R89 precondition: player-owned progress time series
+
+R88's 398 timeline rows carried only date, pause and active-event state. The
+native `query-zhongguo-promotion-source-progress-v1` observer was queried once
+before the run, when it proved only that the played character's B1 cycle was
+active. Consequently the later product logs prove that *some* managers
+published and reached Central, but cannot distinguish a played-character
+Central activation from the many AI managers' silent paths. Inferring the
+player path from those aggregate logs would be unsound.
+
+The R89 runner precondition now samples that existing read-only native/MCP
+observer on every product-timeline observation and retains compact
+played-character booleans for review-now eligibility, B1 active, Central
+active and PP active. Any unavailable widget stops the run instead of being
+recorded as false. This does not change gameplay or add an acceptance fixture;
+it closes the missing observation channel needed to decide whether the player
+never starts Central, starts and immediately becomes stale, or reaches stage
+3 without materializing `.146`. Runner tests pass 19/19 in normal and
+optimized Python; choreography, B1 witness and runner-plumbing suites pass
+5/5, 5/5 and 18/18 respectively in both modes. This remains static-ready until
+R89 supplies a real time series.
