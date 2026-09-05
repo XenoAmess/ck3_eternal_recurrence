@@ -26,6 +26,10 @@ MAX_ADVANCE_DAYS = (
     B1_AUTHORED_ADVANCE_DAYS + POST_PUBLICATION_OBSERVATION_DAYS
 )
 HOURS_PER_DAY = 24
+# Native bridge snapshots publish on a 250 ms heartbeat. A just-submitted
+# pause can become visible to Python before the next heartbeat has replaced
+# every cached Snapshot field used by the query's direct-read equality gate.
+PAUSED_PROGRESS_SETTLE_SECONDS = 0.35
 
 # These are not namespace-wide allowlists.  They are exact pending events
 # already proven on the immutable phase-two seed lineage.  Each contract binds
@@ -1783,6 +1787,7 @@ def enter_promotion_source_checkpoint_v1(
             ),
             "total_days": MAX_ADVANCE_DAYS,
         },
+        "paused_progress_settle_seconds": PAUSED_PROGRESS_SETTLE_SECONDS,
         "review_action": None,
         "review_action_postcondition": None,
         "m146_option1_submission": None,
@@ -1881,6 +1886,7 @@ def enter_promotion_source_checkpoint_v1(
             raise PromotionProductionEntryError(str(error)) from error
 
     deadline = clock() + timeout_seconds
+    last_progress_date_raw = starting_date
     while clock() < deadline:
         snapshot, event = _binding(
             service.snapshot(), player=player,
@@ -1893,9 +1899,25 @@ def enter_promotion_source_checkpoint_v1(
                 "bound (400-day authored B1 window plus 150-day "
                 "post-publication window)"
             )
+        # Do not immediately pause a speed-5 map again before even one native
+        # date transition. R91 proved that 50 ms pause/resume churn can keep
+        # the product on the same date and query the first, not-yet-settled
+        # paused snapshot. A rendered event still forces an immediate pause.
+        has_active_event_surface = isinstance(
+            snapshot.get("active_event"), Mapping
+        )
+        if (
+            snapshot.get("paused") is not True
+            and not has_active_event_surface
+            and date_raw <= last_progress_date_raw
+        ):
+            if poll_interval_seconds:
+                sleeper(poll_interval_seconds)
+            continue
+
         # The fixed GUI-backed progress observer is a paused-frame query.
-        # Pause before every sample, then resume at speed 5 below. This also
-        # closes the race where an event becomes active between snapshots.
+        # Once a new date/event boundary exists, pause and wait past one native
+        # 250 ms heartbeat before binding the query.
         if snapshot.get("paused") is not True:
             _accepted(
                 service.execute_step(
@@ -1903,6 +1925,7 @@ def enter_promotion_source_checkpoint_v1(
                 ),
                 "pause-map",
             )
+            sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
             snapshot, event = _binding(
                 service.snapshot(), player=player,
                 connection_generation=generation,
@@ -1914,27 +1937,37 @@ def enter_promotion_source_checkpoint_v1(
                     "bound (400-day authored B1 window plus 150-day "
                     "post-publication window)"
                 )
-        observations = evidence["observations"]
-        assert isinstance(observations, list)
-        observations.append({
-            "revision": snapshot["revision"],
-            "date_raw": date_raw,
-            "paused": snapshot.get("paused"),
-            "active_event": event is not None,
-        })
-        progress_observations = evidence["progress_observations"]
-        assert isinstance(progress_observations, list)
-        progress_query = service.query_zhongguo_promotion_source_progress_v1(
-            f"promo.entry.poll.{len(progress_observations) + 1}",
-            expected_revision=int(snapshot["revision"]),
+            if snapshot.get("paused") is not True:
+                if poll_interval_seconds:
+                    sleeper(poll_interval_seconds)
+                continue
+
+        should_sample_progress = (
+            date_raw > last_progress_date_raw or event is not None
         )
-        progress_observations.append(
-            _compact_progress_observation(
-                progress_query,
-                date_raw=date_raw,
-                revision=int(snapshot["revision"]),
+        if should_sample_progress:
+            observations = evidence["observations"]
+            assert isinstance(observations, list)
+            observations.append({
+                "revision": snapshot["revision"],
+                "date_raw": date_raw,
+                "paused": snapshot.get("paused"),
+                "active_event": event is not None,
+            })
+            progress_observations = evidence["progress_observations"]
+            assert isinstance(progress_observations, list)
+            progress_query = service.query_zhongguo_promotion_source_progress_v1(
+                f"promo.entry.poll.{len(progress_observations) + 1}",
+                expected_revision=int(snapshot["revision"]),
             )
-        )
+            progress_observations.append(
+                _compact_progress_observation(
+                    progress_query,
+                    date_raw=date_raw,
+                    revision=int(snapshot["revision"]),
+                )
+            )
+            last_progress_date_raw = date_raw
         if isinstance(snapshot.get("active_event"), Mapping) and event is None:
             if poll_interval_seconds:
                 sleeper(poll_interval_seconds)
@@ -2059,6 +2092,7 @@ __all__ = [
     "M146",
     "M147",
     "KNOWN_TIMELINE_INTERRUPTS",
+    "PAUSED_PROGRESS_SETTLE_SECONDS",
     "POST_PUBLICATION_OBSERVATION_DAYS",
     "PromotionProductionEntryError",
     "PromotionProductionEntryService",

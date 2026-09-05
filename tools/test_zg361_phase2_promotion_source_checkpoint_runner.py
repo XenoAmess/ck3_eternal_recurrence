@@ -170,6 +170,9 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.paused = True
                 self.event_pending = False
                 self.speed_transition_pending = False
+                self.pause_transition_pending = False
+                self.date_raw = 53147016
+                self.running_sleeps = 0
                 self.steps: list[str] = []
                 self.progress_queries: list[str] = []
 
@@ -177,7 +180,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 snapshot: dict[str, object] = {
                     "map_ready": True,
                     "revision": 7,
-                    "date_raw": 53147016,
+                    "date_raw": self.date_raw,
                     "played_character": {"character_id": 29037},
                     "diagnostics": {"connection_generation": 9},
                     "paused": self.paused,
@@ -200,6 +203,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     raise AssertionError(
                         "progress polling must not bisect a paused speed transition"
                     )
+                if (
+                    request_nonce.startswith("promo.entry.poll.")
+                    and self.pause_transition_pending
+                ):
+                    raise AssertionError(
+                        "progress polling must wait for the paused heartbeat"
+                    )
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
                     for _ in range(5)
@@ -221,14 +231,25 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 elif step == "resume-map":
                     self.paused = False
                     self.speed_transition_pending = False
-                    self.event_pending = True
                 elif step == "pause-map":
                     self.paused = True
+                    self.pause_transition_pending = True
                     self.event_pending = False
                 return {"accepted": True, "status": "submitted"}
 
-        ticks = iter((0.0, 0.0, 0.0, 0.0, 2.0))
+        ticks = iter((0.0, 0.0, 0.0, 0.0, 0.0, 2.0))
         service = Service()
+
+        def settle(_seconds: float) -> None:
+            if service.paused:
+                service.pause_transition_pending = False
+            else:
+                service.running_sleeps += 1
+                # Leave the first running poll on the same native date. The
+                # runner must keep running instead of immediately pausing it.
+                if service.running_sleeps % 2 == 0:
+                    service.date_raw += 24
+
         with self.assertRaisesRegex(
             production.PromotionProductionEntryError,
             "timed out before paused real zg361pp.147",
@@ -236,9 +257,9 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             production.enter_promotion_source_checkpoint_v1(
                 service,
                 timeout_seconds=1.0,
-                poll_interval_seconds=0.0,
+                poll_interval_seconds=0.05,
                 clock=lambda: next(ticks),
-                sleeper=lambda _seconds: None,
+                sleeper=settle,
             )
         self.assertEqual(
             service.steps,
@@ -247,12 +268,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 "resume-map",
                 "pause-map",
                 "resume-map",
-                "pause-map",
-                "resume-map",
             ],
         )
         self.assertEqual(service.progress_queries[0], "promo.entry.before")
-        self.assertGreaterEqual(len(service.progress_queries), 3)
+        self.assertEqual(len(service.progress_queries), 2)
         self.assertEqual(service.progress_queries[1], "promo.entry.poll.1")
 
     def test_product_progress_observation_rejects_unavailable_widget(self) -> None:

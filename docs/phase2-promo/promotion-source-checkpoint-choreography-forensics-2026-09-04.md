@@ -1061,3 +1061,34 @@ SHA-256 values are respectively
 and `CC42A1A1533A4193A7FC8DDC2CAB3EC69E5F198EA839E448F1938D161EA0406C`.
 Cleanup was GREEN and CK3 returned to zero. R91 is the first live verification
 of the complete pause/query/set-speed/resume cadence.
+
+## R91: same-date pause churn exposed the remaining race
+
+R91 passed formal preflight, the 303-node loader gate and managed startup on
+PID 98452. Its first timeline progress sample was again available at public
+revision 4 and `date_raw=53147016`. The runner then resumed at speed 5 but
+polled again after only 50 ms, paused before one game day advanced, and reached
+public revision 5 at the same date. That first post-pause query was rejected by
+the native direct-read equality gate. Cleanup was GREEN and CK3 returned to
+zero.
+
+This narrows the remaining harness defect beyond R90: immediate resume alone
+was insufficient because the loop still manufactured rapid same-date
+pause/resume churn and queried before the bridge's 250 ms heartbeat had settled
+the complete native Snapshot. The R92 runner therefore keeps an unchanged,
+event-free date running at speed 5. It pauses only after a new native date or
+rendered event exists, then waits 350 ms (one heartbeat plus margin), rebinds
+the exact player/connection/revision and performs the read-only query. The
+focused fake holds the first running poll on the same date and independently
+rejects both a paused-speed-transition query and a pre-heartbeat query.
+
+R91 outer report, evidence index, cell report, promotion entry, loader scan and
+cleanup SHA-256 values are respectively
+`34BF8002B469EDC1E0118910B129198FCF339A13FDBCB658FA0CB66C26AA1B17`,
+`7EC760898F62292CD1ED097999F4FE191E032F0C1996E9B3CC22B70FAE20621C`,
+`50B1F6D11C0DBFC5C8970863C9F905748C9C0C1745B49165B8FD15A107EDA66F`,
+`6473277DA9245B022D75C0B8E6E445ED998A557B15F53C78F104555C24EF7112`,
+`754A00259845E7380088BF9C9F94B0B9793E3FFEBF4C1904BAD0D175BC15E762`
+and `0D02B8F5F0989665305FB7172C01DD530CDCCA158F503A16423B72B5126A93BB`.
+The loader scan was GREEN; the product path did not advance far enough to
+change B1 readiness.
