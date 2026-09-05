@@ -2029,7 +2029,17 @@ def enter_promotion_source_checkpoint_v1(
                 ),
                 "set-speed-5",
             )
-        elif snapshot.get("paused") is True:
+            # Setting speed while paused is applied asynchronously by CK3.
+            # R90 proved that leaving the map paused until the next loop can
+            # expose the old cached snapshot to a second progress query while
+            # the native speed field is already changing.  Resume in this
+            # same loop so the next progress sample always follows a complete
+            # running -> pause transition.
+            snapshot, _ = _binding(
+                service.snapshot(), player=player,
+                connection_generation=generation,
+            )
+        if snapshot.get("paused") is True:
             _accepted(
                 service.execute_step(
                     "resume-map", expected_revision=int(snapshot["revision"])

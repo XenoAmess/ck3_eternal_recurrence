@@ -1029,3 +1029,35 @@ SHA-256 values are respectively
 `6E37FEA597112699DBCD63BFCD2D658F5EC8834B5A5E3C1AA052934D44C71391`
 and `241DF92FC5D508E6453AF2051BDB2778A79AA0276709B062B340D89426438FB2`.
 Cleanup was GREEN and CK3 returned to zero.
+
+## R90: paused speed-transition snapshot drift
+
+R90 again passed the no-launch preflight and exact 303-node loader gate, then
+started the managed native session on PID 90888. The initial query and first
+timeline query both bound the played character at `date_raw=53147016`; the
+compact player state remained `B1=true / Central=false / PP=false`. Before any
+game day advanced, the second timeline query was rejected with `ZhongGuo
+promotion source progress binding changed or is not ready`.
+
+The retained entry proves two observations at the same public revision and
+date, but only one successful timeline progress row. This is a second harness
+RED, not a product-path result. The runner set speed 5 while paused and left
+the map paused until the next loop. CK3 applies that speed command
+asynchronously: the cached bridge snapshot could still describe the old speed
+when the command returned, while the next query's direct native read already
+saw the new value. The query correctly rejected that mixed snapshot. The
+runner now completes `set-speed-5 -> fresh binding -> resume-map` in the same
+loop; no progress query may bisect a paused speed transition. The focused fake
+models this transition and fails if a poll occurs between those commands.
+Runner tests pass 19/19 in normal and optimized Python; choreography and
+capture suites pass 5/5 each.
+
+R90 outer report, evidence index, cell report, promotion entry and cleanup
+SHA-256 values are respectively
+`03AFACDBA444A26045A5127D156E94D72E37B6A6C2D0300604C9F79B3B357C5C`,
+`F98CFFCC29DAA319F524469B327F280B4ABAF78235BD8C1B714C5A440AC605FF`,
+`FA7AF3830FD4D4011CA7EDF3F9E087B49B7AC87923D5CAA4227994879A674071`,
+`380E5B779E6535EA41B601947C7779A3CB828D77F89091E42C7EBCA4A5E92909`
+and `CC42A1A1533A4193A7FC8DDC2CAB3EC69E5F198EA839E448F1938D161EA0406C`.
+Cleanup was GREEN and CK3 returned to zero. R91 is the first live verification
+of the complete pause/query/set-speed/resume cadence.

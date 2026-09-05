@@ -169,6 +169,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.speed = 1
                 self.paused = True
                 self.event_pending = False
+                self.speed_transition_pending = False
                 self.steps: list[str] = []
                 self.progress_queries: list[str] = []
 
@@ -192,6 +193,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.progress_queries.append(request_nonce)
                 if request_nonce.startswith("promo.entry.poll.") and not self.paused:
                     raise AssertionError("progress polling must use a paused frame")
+                if (
+                    request_nonce.startswith("promo.entry.poll.")
+                    and self.speed_transition_pending
+                ):
+                    raise AssertionError(
+                        "progress polling must not bisect a paused speed transition"
+                    )
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
                     for _ in range(5)
@@ -209,8 +217,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.steps.append(step)
                 if step == "set-speed-5":
                     self.speed = 5
+                    self.speed_transition_pending = True
                 elif step == "resume-map":
                     self.paused = False
+                    self.speed_transition_pending = False
                     self.event_pending = True
                 elif step == "pause-map":
                     self.paused = True
@@ -232,7 +242,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
         self.assertEqual(
             service.steps,
-            ["set-speed-5", "resume-map", "pause-map", "resume-map"],
+            [
+                "set-speed-5",
+                "resume-map",
+                "pause-map",
+                "resume-map",
+                "pause-map",
+                "resume-map",
+            ],
         )
         self.assertEqual(service.progress_queries[0], "promo.entry.before")
         self.assertGreaterEqual(len(service.progress_queries), 3)
