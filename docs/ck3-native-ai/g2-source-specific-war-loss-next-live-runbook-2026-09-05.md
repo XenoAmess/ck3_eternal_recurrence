@@ -1,7 +1,8 @@
 # G2 source-specific war-loss next-live runbook
 
-Status: **same-lifecycle continuation and deterministic outer ownership
-static-ready / no launch / concrete live adapter still pending**.
+Status: **same-lifecycle continuation, deterministic outer ownership and
+concrete platform adapter static-ready / default-OFF live command available /
+live not run**.
 
 This runbook is pinned to root commit
 `523432aec7846d0da833c5a351faad743fa23d2d`. It prepares the next exclusive
@@ -52,7 +53,7 @@ The capture executable self-test must remain exactly:
 PASS: private=1 action_arm=1 loaded_nodes=6 exact_war_id=1 public_abi=0 readiness=0
 ```
 
-## Why there is no legal exclusive-live command yet
+## Why the old standalone command remains invalid
 
 Do **not** invoke
 `run_raiktor_war_bound_private_capture_v1.py` unchanged. Its source SHA-256 is
@@ -85,11 +86,15 @@ failure. The C++ observer supports this handoff, but the old standalone Python
 capture runner remains invalid as an inner phase because its `finally` kills
 the CK3 process it launched.
 
-The package deliberately has no concrete normal-launch/UI/observer/bridge
-adapter yet. Until that adapter implements the injected operations, the next
-CK3 command remains **NO-GO before launch**. See
+The concrete composition now exists in
+`run_g2_source_specific_war_loss_live_adapter.py`. It performs normal launch,
+observer attach/detach, speed-5 natural event navigation, same-PID pause,
+explicit-pipe bridge attach, same-driver continuation and one outer cleanup.
+Its live path is still default-OFF and has not been run; this changes the gate
+from “no command exists” to “wait for an exclusive CK3 slot and execute the
+frozen command.” See
 [the lifecycle runner record](g2-source-specific-war-loss-lifecycle-runner-2026-09-05.md)
-and [the outer-owner record](g2-source-specific-war-loss-outer-owner-2026-09-05.md).
+and [the concrete adapter record](g2-source-specific-war-loss-live-adapter-2026-09-05.md).
 
 ## Source-capture success fields
 

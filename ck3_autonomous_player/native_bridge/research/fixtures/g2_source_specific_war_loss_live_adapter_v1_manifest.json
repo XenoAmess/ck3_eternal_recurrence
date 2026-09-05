@@ -1,0 +1,90 @@
+{
+  "schema": "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1",
+  "status": "static-ready-live-command-default-off",
+  "created_at": "2026-09-05T17:10:00+08:00",
+  "candidate_source_commit": "7dec66d",
+  "default_off": true,
+  "live_executed": false,
+  "paths": {
+    "adapter": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
+    "outer_owner_runner": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
+    "outer_owner_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/g2_source_specific_war_loss_outer_owner_v1_manifest.json",
+    "lifecycle_runner": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_lifecycle.py",
+    "source_ui_runner": "ck3_autonomous_player/native_bridge/research/run_raiktor_war_bound_private_capture_v1.py",
+    "source_provider": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_source_specific_war_loss_contract.py",
+    "source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_source_specific_war_loss_attribution_v1_contract.json",
+    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-20260905\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
+    "game_executable": "Crusader Kings III/binaries/ck3.exe",
+    "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt",
+    "run_acceptance": "tools/run_acceptance.py"
+  },
+  "sha256": {
+    "adapter": "4922AD1E4D57AC5E202E61D192848D4ED37753AC174A29676D15BE1FE2BE92CB",
+    "outer_owner_runner": "341D1A589B1430866DD9B918BB2A000D94440A41CC90CF35F3E2BE2BE07B9CBB",
+    "outer_owner_manifest": "26B7BD5B68F3FA55C3828EA7F18D02241D56DAFF0A5456B5BDAAE811F205DCE2",
+    "lifecycle_runner": "6633C1A235C95EF6C972E937BD391FF48F71D6ABF4D079D2B1C9A16B5D09D708",
+    "source_ui_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
+    "source_provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A",
+    "source_contract": "1633808E42C324EF6C282481040B905DAF7FE9B0147F7072382919CA5064F9CE",
+    "capture_executable": "B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72",
+    "bridge_dll": "4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B",
+    "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
+    "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF",
+    "run_acceptance": "CD5098E0E9CA793D98FE2DF6C44ADB6AE1D15F66033C7553B9255E2640BB7CE8"
+  },
+  "timeouts": {
+    "process_discovery_seconds": 30,
+    "main_menu_seconds": 300,
+    "main_menu_stage_seconds": [60, 120, 180, 240, 300],
+    "private_attach_seconds": 30,
+    "map_hud_seconds": 90,
+    "natural_event_seconds": 520,
+    "observer_timeout_ms": 1200000,
+    "post_selection_seconds": 30,
+    "bridge_attach_seconds": 60
+  },
+  "composition": {
+    "concrete_live_adapter_implemented": true,
+    "normal_launch_before_observer": true,
+    "observer_detach_before_bridge": true,
+    "same_pid_bridge_attach": true,
+    "same_driver_lifecycle_handoff": true,
+    "outer_owner_final_cleanup_only": true,
+    "expected_date_bound_from_bridge_snapshot": true,
+    "timeline_speed": 5,
+    "standalone_capture_runner_main_reused": false,
+    "source_ui_helpers_reused": true,
+    "mcp_state_truth_after_attach": true
+  },
+  "ocr_boundary": {
+    "used": true,
+    "scope": "main-menu, Robert bookmark, event popup, rendered pause verification before bridge attach",
+    "state_truth": false,
+    "source_attribution_truth": "private native observer",
+    "current_action_postwar_truth": "native MCP"
+  },
+  "live_admission": {
+    "command_available": true,
+    "authorize_private_live_flag_required": true,
+    "exclusive_ck3_slot_required": true,
+    "fresh_artifact_directory_required": true,
+    "fresh_isolated_userdir_required": true,
+    "expected_character_id_required": true,
+    "expected_date_raw_required": false,
+    "expected_date_raw_source": "same-PID paused bridge snapshot after natural event",
+    "one_surrender_mutation_only": true
+  },
+  "boundaries": {
+    "live_executed": false,
+    "source_specific_loss_ready": false,
+    "comparison_input_ready": false,
+    "three_way_comparison_ready": false,
+    "decision_ready": false,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false,
+    "t1_percent": 90
+  }
+}

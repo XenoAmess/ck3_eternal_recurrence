@@ -1,7 +1,7 @@
 # G2 source-specific war-loss exclusive outer owner
 
-Status: **deterministic orchestration static-ready / no live adapter / no
-launch / live NO-GO**.
+Status: **deterministic orchestration static-ready / concrete adapter supplied
+separately / live not run**.
 
 ## Delivered ownership contract
 
@@ -58,7 +58,7 @@ excluded as an inner phase. Its standalone `finally` terminates the CK3
 process it launched. Calling it from the new owner would break same-PID
 continuation and create two cleanup owners. It is pinned for provenance only.
 
-## Frozen preflight and NO-GO boundary
+## Frozen preflight and live-adapter boundary
 
 The manifest
 `native_bridge/research/fixtures/g2_source_specific_war_loss_outer_owner_v1_manifest.json`
@@ -68,11 +68,13 @@ and source capture executable. Its CLI checks every hash, verifies the
 observer attach/non-attach branch shape, and requires unchanged process
 inventory. The CLI cannot call the async orchestration seam or any CK3 API.
 
-There is still no concrete exclusive normal-launch/observer/pause/bridge/
-cleanup adapter and therefore no legal live command in this package. The next
-CK3 attempt remains **NO-GO before launch** until that small platform adapter
-is implemented and reviewed. No fixture, schema or source proof is classified
-as live.
+This frozen owner remains an implementation-independent orchestration proof.
+The separate
+`run_g2_source_specific_war_loss_live_adapter.py` now supplies its concrete
+normal-launch/observer/pause/bridge/cleanup operations and a default-OFF live
+command. That adapter has passed no-launch and deterministic tests but has not
+yet run CK3, so no fixture, schema or source proof is classified as live. See
+[the concrete adapter record](g2-source-specific-war-loss-live-adapter-2026-09-05.md).
 
 The no-launch CLI produced
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-source-outer-owner-static-20260905\preflight-r2.json`,
