@@ -869,6 +869,98 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361.50": {
+        # Player-only 3.25 result notice. Option 1 acknowledges the immutable
+        # result and executes the shared idempotent delivery settlement. Bind
+        # the prompt tuple and values consumed by this window; preserve the
+        # exact older B1 names observed on the frozen seed without treating
+        # their unrelated payloads as part of this event's semantic ABI.
+        "date_raw": 53156952,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "zg361_notice_prompt_subject": 29037,
+        },
+        "unique_character_scope_excludes": {
+            name: (29037,)
+            for name in (
+                "zg361_b1_bank_ticket_owner",
+                "zg361_b1_ticket_owner",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_pending_continue_owner",
+                "zg361_b1_pending_continue_subject",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_b1_reopen_ticket_subject",
+                "zg361_notice_prompt_owner",
+                "zg361_reviewing_superior",
+            )
+        },
+        "character_scope_matches_any": {
+            name: ("zg361_notice_prompt_owner",)
+            for name in (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_pending_continue_owner",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_reviewing_superior",
+            )
+        },
+        "scope_types": {
+            name: "value"
+            for name in (
+                "zg361_notice_prompt_cycle",
+                "zg361_notice_prompt_case",
+                "zg361_notice_prompt_state",
+                "zg361_notice_kpi",
+                "zg361_notice_rank",
+                "zg361_notice_cohort",
+                "zg361_notice_absolute_grade",
+            )
+        },
+        "saved_scope_name_sets": ((
+            "zg361_b1_bank_ticket_owner",
+            "zg361_b1_bank_ticket_season",
+            "zg361_b1_bank_ticket_case",
+            "zg361_b1_bank_ticket_state",
+            "zg361_b1_ticket_owner",
+            "zg361_b1_ticket_cycle",
+            "zg361_b1_ticket_case",
+            "zg361_b1_ticket_state",
+            "zg361_b1_oversight_ticket_owner",
+            "zg361_b1_oversight_ticket_cycle",
+            "zg361_b1_oversight_ticket_case",
+            "zg361_b1_oversight_ticket_state",
+            "zg361_b1_pending_continue_owner",
+            "zg361_b1_pending_continue_subject",
+            "zg361_b1_pending_continue_cycle",
+            "zg361_b1_pending_continue_case",
+            "zg361_b1_pending_continue_state",
+            "zg361_b1_reopen_ticket_subject",
+            "zg361_b1_reopen_ticket_owner",
+            "zg361_b1_reopen_ticket_cycle",
+            "zg361_b1_reopen_ticket_case",
+            "zg361_b1_reopen_ticket_state",
+            "zg361_b1_reopen_ticket_object",
+            "zg361_b1_reopen_ticket_route",
+            "zg361_b1_reopen_ticket_hash",
+            "zg361_b1_reopen_ticket_reward_hash",
+            "zg361_b1_reopen_ticket_book_version",
+            "zg361_notice_prompt_owner",
+            "zg361_notice_prompt_subject",
+            "zg361_notice_prompt_cycle",
+            "zg361_notice_prompt_case",
+            "zg361_notice_prompt_state",
+            "zg361_reviewing_superior",
+            "zg361_notice_kpi",
+            "zg361_notice_rank",
+            "zg361_notice_cohort",
+            "zg361_notice_absolute_grade",
+        ),),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "zg361.1": {
         # Player-liege annual review summary. Its immediate block only copies
         # four already-published grade counts into event-local values, and its

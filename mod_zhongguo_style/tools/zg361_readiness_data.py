@@ -156,8 +156,8 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=353,
-    native_observations=102,
+    observation_days=414,
+    native_observations=134,
     drained_event_keys=(
         "zg361b2.40",
         "ep3_interactions_events.0630",
@@ -166,6 +166,29 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361.40",
         "zg361b1.200",
         "zg361b1.201",
+        "zg361b1.126",
+        "zg361m.1",
+        "zg361.1",
+        "zg361ch.19",
+        "zg361ch.20",
+        "zg361ch.21",
+        "zg361ch.22",
+        "zg361ch.23",
+        "zg361ch.24",
+        "zg361ch.25",
+        "zg361ch.901",
+        "zg361ch.92",
+        "zg361ch.93",
+        "zg361ch.94",
+        "zg361ch.95",
+        "zg361ch.96",
+        "zg361ch.97",
+        "zg361ch.902",
+        "zg361ch.98",
+        "zg361ch.99",
+        "zg361ch.100",
+        "zg361ch.101",
+        "zg361ch.102",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -190,21 +213,26 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         r"Z:\b3r106_retry1\cell\03_promotion_source_production_entry.json",
         r"Z:\b3r106_retry1\cell\final_error.log",
         r"Z:\b3r106_retry1\cell\final_debug.log",
+        r"Z:\b3r106_resume1\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume1\report.json",
+        r"Z:\b3r106_resume2\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume2\report.json",
         r"Z:\p2r106\phase2-product-projection.json",
         r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
         "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 353 game days at speed 5 across 102 paused native/MCP "
-        "observations and seven exact GREEN event drains. It reached and drained both "
+        "fatal 0. PID 30492 advanced 414 game days at speed 5 across 134 paused native/MCP "
+        "observations and 30 exact GREEN event drains. It reached and drained both "
         "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
-        "roster-rebuild product regression. The runner then failed closed before clicking the "
-        "active zg361b1.126 publication notice because its harness contract still required the "
-        "completed .200/.201 event-local self/shadow scopes; every ticket, oversight, pending-"
-        "watch and publication-notice check passed. Product source confirms .126 consumes only "
-        "the frozen publication-notice tuple, so this is a harness-contract RED rather than a "
-        "new mod RED. Healthy CK3 PID 30492 remains retained for a same-process replacement-"
-        "client continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
+        "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
+        "then observed B1 close and Central activate before processing the annual summary and "
+        "21 central windows. The runner now fails closed before clicking a source-reviewed "
+        "player-only zg361.50 notice because that valid product window was absent from the "
+        "harness allowlist. Its exact native scope context is frozen and option 1 is the simple "
+        "idempotent acknowledgement path. This remains a harness-contract RED rather than a "
+        "new mod RED. Healthy CK3 PID 30492 remains retained for another same-process client "
+        "continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "
         "registry remains 0/4. The player remains alive; illness-death count is 0/3 and no "
         "health fixture was applied. This run promotes no per-ID tier."
     ),
