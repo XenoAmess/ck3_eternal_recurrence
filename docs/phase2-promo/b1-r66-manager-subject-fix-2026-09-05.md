@@ -351,3 +351,42 @@ Frozen R72 SHA-256:
 
 R72 failed after a finalized GREEN loader, not during load. It adds no
 file-size/performance RED and triggers no effect split.
+
+## R73: unavoidable fragile-bones acknowledgement
+
+R73 ran from committed `d0212c1` against the unchanged product. The finalized
+loader and managed cleanup were GREEN. It drained B2 PIP,
+`spymaster_task.0381` and `zg361.40`, then stopped before action at previously
+unregistered vanilla `health.7500`, raw date `53152296`, instance `16`, root
+`29037`. The new top-level `unexpected_event` evidence worked as designed:
+the artifact itself contains zero saved scopes, one shown/enabled native
+option 0, and the `fragile_bones` add-trait indicator. R72's `.9006` did not
+recur, so that contract remains live-pending.
+
+Exact `health_events.txt` proves that `.7500` has one option whose sole effect
+is `add_trait = fragile_bones`; the health pulse source selects it as an
+age-related ailment. There is no alternative branch. The runner now binds the
+exact date/root/zero-scope/one-option frame and acknowledges authored option
+1/native index 0. An extra scope or option drift remains RED. Focused
+checkpoint tests pass 10/10 in normal and `-O` modes.
+
+R73 reached raw date `53152296` (D+220). Its final error log contains one weak
+Character `has_variable` error, but the complete source chain is vanilla
+`tribute_mission.0001`; there are zero references to
+`zg361_b1_runtime_effects.txt`. The accompanying invalid court/province errors
+are from the same vanilla event. They are not attributed to the product and
+do not justify changing the mod. The absence of product-file weak-scope errors
+through D+220 is useful partial evidence, not the still-missing 550-day B1
+closure.
+
+Frozen R73 SHA-256:
+
+- outer report: `DF77359176D13828123560BC4706BBF069B7F13182CC5D609F6E32DF58C5DFB3`
+- evidence index: `78A91B3140714FCEDC6EFC0EC7E2DD82CECE29671C0E4847C49275946AD88BDD`
+- promotion entry: `6026F19099FC0213E4FE9F7A99E3C122714F17265CCA917D3790A1AF5043076E`
+- loader gate: `122E3E3A450A83002164763B6A8B46F80C67FDD697E2F48B7376B3A8E9D1095B`
+- cleanup: `6F5FB9EA682F42BA2A051654F8EBB5B3DDB561454D4EE6C67F4A1CD117235AE0`
+- vanilla health events: `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`
+
+This is another post-loader event-choreography stop. It adds no
+file-size/performance RED and triggers no effect split.

@@ -479,6 +479,64 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_health_7500_accepts_only_the_source_proven_single_option_frame(self) -> None:
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "health.7500",
+            "current_event_instance_id": 16,
+            "date_raw": 53152296,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            "saved_scopes": [],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 0,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        snapshot = {"date_raw": 53152296, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 16}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS["health.7500"]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="health.7500",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"] = [
+            {
+                "name": "unrelated_scope",
+                "scope": {"status": "available", "type_key": "value"},
+            }
+        ]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra_scope,
+            event_key="health.7500",
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_count"])
+
     def test_sway_compliment_accepts_dynamic_three_plus_empty_fallback(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

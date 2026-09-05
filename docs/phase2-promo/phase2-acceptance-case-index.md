@@ -65,6 +65,7 @@
 | `P2-INT-1002` | `.1002` 前三项为 `0..11` 内递增互异，末项 native 12；选择 authored 13 | 重复、越界、末项错误、receiver 不等于冻结 target | `STATIC_GREEN / next occurrence live pending` |
 | `P2-INT-B1200` | `.200` 精确 9/10 或 bank-descendant 13/14 名称集；只绑定事件实际消费的 manager/self-review 九字段，选择 honest option 1 | 少/多 scope、玩家 subject 错位、两个 manager owner 不同、六个消费值类型漂移即 RED；四个未消费 bank payload 不作伪身份断言 | `STATIC_GREEN / R71 correction live pending` |
 | `P2-INT-9006` | `bp1_yearly.9006` 精确一个随机非玩家 courtier、两项 native 0/1；选择只影响玩家自身 piety/stress 的 option 2 | courtier=玩家、多余 scope、选项漂移或同局超过两次即 RED | `STATIC_GREEN / R72 correction live pending` |
+| `P2-INT-7500` | `health.7500` 精确 root、0 scope、唯一 native 0；不可避免地添加 `fragile_bones` | 任意 scope、额外/缺失 option、日期或 root 漂移即 RED | `STATIC_GREEN / R73 correction live pending` |
 | `P2-INT-EXACT` | 已登记事件逐项绑定 date policy、root、typed scopes、完整显示选项与最小副作用路径 | 未知事件或任一字段漂移必须动作前停机 | `LIVE_PARTIAL`；每次 RED artifact 保留 |
 
 ## Registry、回归与宣传用例

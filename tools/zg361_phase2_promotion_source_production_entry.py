@@ -599,6 +599,20 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "health.7500": {
+        # Vanilla yearly-health onset of fragile bones. Like health.7200, the
+        # event has no saved scopes and one unavoidable acknowledgement. Its
+        # sole scripted effect adds fragile_bones, so there is no alternative
+        # branch to optimize; bind the complete one-option frame first.
+        "date_raw": 53152296,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "boolean_scopes": (),
+        "saved_scope_count": 0,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "spymaster_task.0381": {
         # Independent vanilla Find Secrets hook opportunity.  Option 1 spends
         # gold and fabricates a hook; option 2 only grants the one typed third
