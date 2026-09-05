@@ -61,6 +61,50 @@ from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_retained_client_waits_for_async_dll_reconnect(self) -> None:
+        calls = {"capabilities": 0, "clock": 0.0}
+
+        def capabilities() -> dict[str, object]:
+            calls["capabilities"] += 1
+            connected = calls["capabilities"] >= 3
+            return {
+                "diagnostics": {
+                    "connected": connected,
+                    "bridge_pid": 71148 if connected else None,
+                    "connection_generation": 2 if connected else 1,
+                }
+            }
+
+        def clock() -> float:
+            calls["clock"] += 0.01
+            return calls["clock"]
+
+        service = types.SimpleNamespace(
+            capabilities=capabilities,
+            snapshot=lambda: {"map_ready": True, "revision": 9},
+        )
+        actual_capabilities, snapshot = (
+            retained_client.wait_for_retained_session_reconnect(
+                service,
+                {"bridge_pid": 71148},
+                timeout_seconds=1.0,
+                sleeper=lambda _seconds: None,
+                clock=clock,
+            )
+        )
+        self.assertEqual(calls["capabilities"], 3)
+        self.assertTrue(actual_capabilities["diagnostics"]["connected"])
+        self.assertTrue(snapshot["map_ready"])
+
+    def test_yearly_jingcha_interrupt_rebinds_to_a_retained_window(self) -> None:
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.40"],
+            starting_date=53160240,
+        )
+        self.assertTrue(production._contract_date_matches(53168400, contract))
+        self.assertFalse(production._contract_date_matches(53168424, contract))
+        self.assertFalse(production._contract_date_matches(53159640, contract))
+
     def test_retained_client_binds_exact_state_pipe_seed_and_loader(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

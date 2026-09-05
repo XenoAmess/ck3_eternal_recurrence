@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 sys.path.insert(0, str(ROOT / "tools"))
 
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver  # noqa: E402
+from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
 from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.environment import write_json_atomic  # noqa: E402
 from zg361_phase2_promotion_source_checkpoint_capture import (  # noqa: E402
@@ -36,6 +37,10 @@ from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
 
 class RetainedSessionError(RuntimeError):
     pass
+
+
+RECONNECT_TIMEOUT_SECONDS = 30.0
+RECONNECT_POLL_SECONDS = 0.05
 
 
 def _read_object(path: Path, label: str) -> dict[str, object]:
@@ -138,6 +143,48 @@ def request_session_stop(state_dir: Path, *, timeout_seconds: float = 30.0) -> d
     raise RetainedSessionError("native-session stop response timed out")
 
 
+def wait_for_retained_session_reconnect(
+    service: GameplayBridgeService,
+    retention: Mapping[str, object],
+    *,
+    timeout_seconds: float = RECONNECT_TIMEOUT_SECONDS,
+    sleeper=time.sleep,
+    clock=time.monotonic,
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Wait for the injected DLL to attach to this replacement pipe server.
+
+    The DLL is the pipe client and reconnects asynchronously after the owning
+    runner closes its server endpoint.  A fresh Python client must therefore
+    wait for the next ``hello`` instead of interpreting the initial empty
+    capability snapshot as a dead CK3 process.
+    """
+
+    if timeout_seconds <= 0:
+        raise ValueError("reconnect timeout must be positive")
+    deadline = clock() + timeout_seconds
+    last_capabilities: dict[str, object] = {}
+    while clock() < deadline:
+        capabilities = service.capabilities()
+        if isinstance(capabilities, dict):
+            last_capabilities = capabilities
+        diagnostics = capabilities.get("diagnostics")
+        if isinstance(diagnostics, Mapping) and diagnostics.get("connected") is True:
+            try:
+                snapshot = service.snapshot()
+            except BridgeUnavailableError:
+                sleeper(RECONNECT_POLL_SECONDS)
+                continue
+            if isinstance(snapshot, dict) and snapshot.get("map_ready") is True:
+                return dict(capabilities), snapshot
+        sleeper(RECONNECT_POLL_SECONDS)
+    diagnostics = last_capabilities.get("diagnostics")
+    raise RetainedSessionError(
+        "native DLL did not reconnect to the replacement pipe server within "
+        f"{timeout_seconds:.1f}s: diagnostics={diagnostics!r}; "
+        f"retained_pid={retention.get('bridge_pid')!r}"
+    )
+
+
 def run(
     *,
     state_dir: Path,
@@ -186,8 +233,11 @@ def run(
             save_dir=state_dir / "profile" / "save games",
         )
         service = GameplayBridgeService(driver)
-        capabilities = service.capabilities()
-        snapshot = service.snapshot()
+        capabilities, snapshot = wait_for_retained_session_reconnect(
+            service,
+            retention,
+            timeout_seconds=min(timeout_seconds, RECONNECT_TIMEOUT_SECONDS),
+        )
         diagnostics = capabilities.get("diagnostics")
         played = snapshot.get("played_character")
         live_checks = {
@@ -199,10 +249,14 @@ def run(
                 isinstance(diagnostics, Mapping)
                 and diagnostics.get("bridge_pid") == retention.get("bridge_pid")
             ),
-            "same_generation": (
+            # The public protocol generation is scoped to one Python endpoint;
+            # reconnect identity is carried by the exact pipe + CK3 PID and
+            # the persisted episode binding, not by comparing two clients'
+            # local generation counters.
+            "positive_generation": (
                 isinstance(diagnostics, Mapping)
-                and diagnostics.get("connection_generation")
-                == retention.get("connection_generation")
+                and isinstance(diagnostics.get("connection_generation"), int)
+                and diagnostics.get("connection_generation") > 0
             ),
             "map_ready": snapshot.get("map_ready") is True,
             "player_bound": (

@@ -1122,6 +1122,21 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             bank,
         )
 
+    def test_active_common_superior_bank_is_not_replaced_at_year_rollover(self) -> None:
+        register = top_level_block(
+            self.effects, "zg361_b1_register_common_superior_bank_effect"
+        )
+        self.assertIn("has_variable = zg361_b1_bank_state", register)
+        self.assertIn("var:zg361_b1_bank_state != 1", register)
+        self.assertNotIn(
+            "NOT = { var:zg361_b1_bank_season = current_year }", register
+        )
+        self.assertIn(
+            "set_variable = { name = zg361_b1_bank_season value = current_year }",
+            register,
+        )
+        self.assertIn("trigger_event = { id = zg361b1.110 days = 335 }", register)
+
     def test_140_reorg_routes_have_one_complete_replay_safe_owner_object(self) -> None:
         initialize = top_level_block(
             self.effects, "zg361_b1_initialize_subject_case_effect"

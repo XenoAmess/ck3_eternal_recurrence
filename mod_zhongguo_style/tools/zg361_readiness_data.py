@@ -145,8 +145,8 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R88",
-    observed_at="2026-09-05 19:10 Asia/Shanghai",
+    run_id="R93",
+    observed_at="2026-09-05 20:47 Asia/Shanghai",
     result="RED",
     product_commit="24189c1",
     projection="phase2-full-release-r88-24189c1",
@@ -156,15 +156,18 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=550,
-    native_observations=398,
+    observation_days=1256,
+    native_observations=296,
     drained_event_keys=(
         "zg361b2.40",
+        "tgp_china_yearly.0010",
+        "spymaster_task.0399",
+        "ep3_governor_yearly.3060",
         "zg361.40",
         "zg361b1.200",
-        "spymaster_task.0381",
-        "ep3_governor_yearly.3060",
-        "spymaster_task.0342",
+        "zg361b1.201",
+        "zg361.40",
+        "zg361.40",
         "zg361.40",
     ),
     cleared_product_signatures=(
@@ -178,11 +181,18 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
         r"Z:\b3r88\evidence-index.json",
+        r"Z:\b3r93\evidence-index.json",
+        r"Z:\b3r93\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r93_resume6\03_promotion_source_production_entry.json",
+        r"Z:\b3r93_resume8\03_promotion_source_production_entry.json",
     ),
     boundary=(
-        "The release-identical product loaded and the listed regressions cleared, but "
-        "the 550-day bound expired before player promotion events zg361pp.146/.147. "
-        "This whole-product snapshot does not promote any per-ID readiness tier."
+        "The release-identical R88 product loaded and the listed regressions remained "
+        "clear. R93 and two retained-session continuations observed the same CK3 PID "
+        "for 1,256 game days; player B1 remained active while Central and PP remained "
+        "inactive, and the product logged a stale common-superior bank deadline. The "
+        "cross-year bank fix is static-ready and awaits the fresh R94 product run. This "
+        "whole-product snapshot does not promote any per-ID readiness tier."
     ),
 )
 

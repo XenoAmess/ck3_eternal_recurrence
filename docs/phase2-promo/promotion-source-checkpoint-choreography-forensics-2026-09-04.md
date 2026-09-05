@@ -1132,3 +1132,44 @@ failed client, and leaves the owning CK3 session available. The separate
 retention, seed and loader receipts before reconnecting. It neither launches
 nor stops CK3 by default. Product/mod or bridge changes still require a new
 session; Python harness changes do not.
+
+## R93: retained-session 1,256-day trace found the cross-year bank reset
+
+R93 loaded the unchanged R88 release-identical 936-file product through all
+303 database nodes with no fatal loader error. The cold-start client and two
+replacement Python clients then kept CK3 PID 71148 and the same exact pipe and
+episode alive from `date_raw=53147016` through `53177160`: 1,256 game days,
+296 paused-frame player progress queries, and 10 exact event drains. Every
+player sample was `B1=true / Central=false / PP=false`. The continuation is
+therefore strong contrary evidence to the earlier idea that the 550-day bound
+was simply too short.
+
+The live product log records `ZG361B1: stale common-superior bank ticket
+ignored` at `zg361b1.110`. Source reconstruction closes the causal chain. A
+common-superior bank schedules its closure at D+335, but registration formerly
+reinitialized the bank whenever `zg361_b1_bank_season != current_year`. A new
+manager registering after the calendar rollover could replace the active
+bank's season/case/state before the old deadline arrived. The old ticket then
+failed its exact identity checks, and existing manager cycles—including the
+player's—could remain active indefinitely.
+
+The authoritative B1 generator now initializes only when bank state is absent
+or is not the active value `1`. A live bank therefore retains its original
+season, case and deadline across the year boundary; a closed or absent bank
+still starts a new current-year season. The generated purpose shard remains
+at eight top-level effects. Focused B1 tests pass 67/67 in normal and `-O`,
+effect-boundary tests pass 4/4 in both modes, the promotion runner passes 24/24
+in both modes, choreography passes 5/5, and the whole static gate is GREEN.
+This is static-ready pending R94 production verification; it does not yet
+promote the `.146/.147` registry.
+
+R93 report, evidence index, entry and retention SHA-256 values are respectively
+`CDC26175696F7C477CB9D0EDFE75C48AD93E0743087F2EB60FC5B9C410EAE481`,
+`A7EDB3AEA8E228E74F850718C1BFD3A6E9F19CEB2440655F4597CFBC6A805C3C`,
+`3EF27660BFB0756EB608AB5F1225DCF072B38A7C952988F765DBC4909A3F4C87`
+and `45A20A96D71DFD52EB838FC5BD14E0531CA039CA82872949E0349BA9D6216151`.
+The resume6 and resume8 entry SHA-256 values are
+`ED46F363BBEACFC6087DE2063D836211B29F7B6DF53CA8141132D617B2D7FA29`
+and `F22563B20893C59CFB1AEFC75DAD65CF584C8B60611E6E7D2EDEDDC95FBAE5DB`.
+The old session was then stopped through its managed file queue. Because the
+fix changes mod bytes, R94 requires one fresh CK3 startup.

@@ -1644,3 +1644,20 @@ exact build 改变、保留门任一健康检查失败，或者场景需要一�
 恢复的独立初态。纯 harness 代码改变、pre-submission revision 冲突和证据格式修正
 均不属于重启理由。最终交付仍需一次明确的受控 stop/cleanup receipt；中途
 `RETAINED` 是可重连生命周期状态，不得冒充 cleanup GREEN。
+
+R93 首次把这条策略跑通。新的 Python pipe server 必须异步等待 DLL 再连接，直到收到
+`hello` 且首个 snapshot 为 `map_ready=true`；刚创建 server 时的空 capability 不是 CK3
+死亡证据。`connection_generation` 是单个 Python endpoint 的本地代数，跨 client 不比较
+数值；重连身份由同一 exact pipe、同一 CK3 PID 和持久 episode binding 共同约束。重连时
+若地图已停在登记过的 modal，先把该事件重新绑定到新 revision，再走正常的 paused
+query/validate/select 流程。年度 `zg361.40` 之类的重复事件按源码锚点和 8,760 小时周期
+绑定到当前观察窗口，不能把最初两次实测日期硬编码成永远的完整集合。
+
+R93 冷启动及两次同 PID 接续从 `date_raw=53147016` 推进到 `53177160`，累计 1,256
+游戏日、296 次玩家 progress 查询和 10 次精确事件处理；全程玩家均为
+`B1=true / Central=false / PP=false`。这证明 550 日窗口不足不是剩余解释。旧产品日志在
+`zg361b1.110` 明确记录 `stale common-superior bank ticket ignored`：活动 bank 的 335 日
+deadline 跨过公历年后，被后来登记的 manager 按 `bank_season != current_year` 重建，旧
+ticket 因 owner/season/case/state 漂移而失效。修复后的初始化只在 bank state 缺失或不为
+active `1` 时发生；活动 bank 跨年保持原 season/case/deadline。该结论为真实产品故障证据，
+不是 loader 性能推断；修复 mod 字节改变，因此下一轮 R94 必须冷启动。

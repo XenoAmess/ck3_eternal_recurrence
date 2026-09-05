@@ -3140,8 +3140,8 @@ zg361_b1_register_common_superior_bank_effect = {
 				if = {
 					limit = {
 						trigger_if = {
-							limit = { has_variable = zg361_b1_bank_season }
-							NOT = { var:zg361_b1_bank_season = current_year }
+							limit = { has_variable = zg361_b1_bank_state }
+							var:zg361_b1_bank_state != 1
 						}
 						trigger_else = { always = yes }
 					}

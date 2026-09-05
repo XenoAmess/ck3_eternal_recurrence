@@ -488,6 +488,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # lineage.  R59 observed the second delivery exactly 8,760 hours
         # after the first, matching the yearly playable pulse source.
         "date_raw": (53150880, 53159640),
+        "date_policy": "yearly-pulse-in-observation-window",
+        "date_raw_anchor": 53150880,
+        "date_period_hours": 8760,
         "max_occurrences": 2,
         "root_character_id": 29037,
         "character_scopes": {},
@@ -1356,7 +1359,10 @@ def _timeline_contract_for_window(
 ) -> dict[str, object]:
     """Bind source-reviewed random deliveries to this run, not old RNG dates."""
     bound = dict(contract)
-    if contract.get("date_policy") == "product-observation-window":
+    if contract.get("date_policy") in (
+        "product-observation-window",
+        "yearly-pulse-in-observation-window",
+    ):
         bound["date_raw_range"] = (
             starting_date, starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
         )
@@ -1375,7 +1381,20 @@ def _contract_date_matches(
         and all(isinstance(item, int) and not isinstance(item, bool) for item in range_value)
     ):
         lower, upper = range_value
-        return lower <= value <= upper
+        if not lower <= value <= upper:
+            return False
+        if contract.get("date_policy") == "yearly-pulse-in-observation-window":
+            anchor = contract.get("date_raw_anchor")
+            period = contract.get("date_period_hours")
+            return bool(
+                isinstance(anchor, int)
+                and not isinstance(anchor, bool)
+                and isinstance(period, int)
+                and not isinstance(period, bool)
+                and period > 0
+                and (value - anchor) % period == 0
+            )
+        return True
     date_raw_value = contract["date_raw"]
     date_raw_values = (
         date_raw_value if isinstance(date_raw_value, tuple) else (date_raw_value,)
@@ -1849,6 +1868,7 @@ def enter_promotion_source_checkpoint_v1(
         "observations": [],
         "progress_observations": [],
         "pre_submission_revision_rebinds": [],
+        "initial_known_interrupt": None,
     })
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
@@ -1857,8 +1877,19 @@ def enter_promotion_source_checkpoint_v1(
             evidence["readiness"] = "paused-real-zg361pp.147"
             evidence["target_binding"] = initial_event
             return evidence
-        raise PromotionProductionEntryError(
-            f"promotion entry started on unexpected event {key!r}"
+        if key not in KNOWN_TIMELINE_INTERRUPTS:
+            raise PromotionProductionEntryError(
+                f"promotion entry started on unexpected event {key!r}"
+            )
+        # A retained client can reconnect while the prior client was
+        # validating a known modal.  Preserve that exact event and let the
+        # normal loop query, validate and drain it after rebinding the query's
+        # newer public revision.
+        evidence["initial_known_interrupt"] = key
+        initial, initial_event = _binding(
+            service.snapshot(),
+            player=player,
+            connection_generation=generation,
         )
     if initial.get("paused") is not True:
         pause = service.execute_step(
