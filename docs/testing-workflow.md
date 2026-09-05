@@ -1559,3 +1559,29 @@ source-save SHA、日期、root、typed `character_to_hook` 与完整两项 opti
 仍停在 state 2；原版事件只是次生打断。下一 blocker 是 stale carrier / delivery
 state-2 transition。完整边界、artifact hashes 与 CK3-free 回归见
 [`phase2-promo/b3-prebootstrap-spymaster-event-2026-09-04.md`](phase2-promo/b3-prebootstrap-spymaster-event-2026-09-04.md)。
+
+### Scripted-widget GUI 还必须闭包 `GetScriptedGui` provider
+
+2026-09-05 的 `p2aa` 冻结树证明：只复制 `gui/scripted_widgets/*.txt` 注册的
+`gui/*.gui` 并不足以形成可执行产品。`gui/zg361_promotion_source_bridge.gui`
+已经存在，却调用了四个仅由
+`common/scripted_guis/zg361_promotion_source_progress_guis.txt` 定义的
+`GetScriptedGui(...)` 名称，而该 provider 文件没有进入候选树。原有 effect/event/trigger
+闭包和 no-launch promotion preflight 均会误报 GREEN。
+
+当前 B3 closure expander 在复制注册 GUI 后，会解析其中所有 `zg361_` 自定义
+`GetScriptedGui` 引用，建立 canonical `common/scripted_guis/*.txt` 顶层定义索引，
+递归复制精确 provider 文件；重复定义或缺失 provider 直接 RED。`p2ab` 修复后闭包为
+`3,707 effects / 988 events / 24 triggers / missing 0`，并额外记录 4 个 GUI provider，
+其中本轮新增的 promotion provider SHA-256 为
+`BB8B1AF26E5B58AA827A4AEF1EBBDE6A4A2E536F227A3375A145FED23F249E8F`。
+产品现为 635 files，tree
+`CF5545ACE9A9D83E20F11DA378916FE96E3AD923BBD0F5A5884413F8891164CA`；
+closure/manifest evidence SHA-256 分别为
+`5592B7FE03930E6177FC71DE9578738906DEBB3BF5A311FA119B183D5F0A7357` /
+`CCF20C4012FFCBB0BC22ADB0898ED3AA0F42F54B38500F718BECC8593F7A90B5`。
+
+这是一个已复现的**材料/调用图边界缺口**，不是单文件体量或加载性能根因。候选仍为
+422 个 effect 文件、3,707 effects、max non-legacy 10、target miss 0、`>20` 违规 0；
+只有后续 CK3 出现可复现 loader-performance RED 且更早没有材料、parser、递归或调用图错误时，
+才按用途继续做拆分 A/B。

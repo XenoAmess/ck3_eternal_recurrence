@@ -135,7 +135,18 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
             write(
                 canonical,
                 "gui/zg361_promotion_source_bridge.gui",
-                'window = { name = "zg361_promotion_source_bridge_window" }\n',
+                'window = {\n'
+                ' name = "zg361_promotion_source_bridge_window"\n'
+                ' visible = "[GetScriptedGui(\'zg361_promotion_source_gui\').IsShown()]"\n'
+                '}\n',
+            )
+            write(
+                canonical,
+                "common/scripted_guis/zg361_promotion_source_guis.txt",
+                "zg361_promotion_source_gui = {\n"
+                " scope = character\n"
+                " is_shown = { always = yes }\n"
+                "}\n",
             )
 
             result = expand.synchronize_scripted_widget_gui_files(
@@ -144,7 +155,11 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
 
             self.assertTrue(result["green"])
             self.assertEqual(1, result["required_file_count"])
-            self.assertEqual(1, len(result["updated_files"]))
+            self.assertEqual(1, result["scripted_gui_provider_count"])
+            self.assertEqual(
+                ["zg361_promotion_source_gui"], result["scripted_gui_names"]
+            )
+            self.assertEqual(2, len(result["updated_files"]))
             self.assertEqual(
                 (
                     canonical / "gui/zg361_promotion_source_bridge.gui"
@@ -153,6 +168,42 @@ class ProjectionClosureExpansionTests(unittest.TestCase):
                     candidate / "gui/zg361_promotion_source_bridge.gui"
                 ).read_bytes(),
             )
+            self.assertEqual(
+                (
+                    canonical
+                    / "common/scripted_guis/zg361_promotion_source_guis.txt"
+                ).read_bytes(),
+                (
+                    candidate
+                    / "common/scripted_guis/zg361_promotion_source_guis.txt"
+                ).read_bytes(),
+            )
+
+    def test_scripted_widget_rejects_missing_custom_scripted_gui(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            canonical = root / "canonical"
+            candidate.mkdir()
+            canonical.mkdir()
+            write(
+                candidate,
+                "gui/scripted_widgets/zg361_scripted_widgets.txt",
+                "gui/zg361_bridge.gui = zg361_bridge_window\n",
+            )
+            write(
+                canonical,
+                "gui/zg361_bridge.gui",
+                "window = {\n"
+                " visible = \"[GetScriptedGui('zg361_missing_gui').IsShown()]\"\n"
+                "}\n",
+            )
+
+            with self.assertRaisesRegex(
+                expand.freeze.FreezeError,
+                "canonical custom scripted-GUI provider is missing",
+            ):
+                expand.synchronize_scripted_widget_gui_files(candidate, canonical)
 
     def test_terminal_event_copies_generated_localization_fanout(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

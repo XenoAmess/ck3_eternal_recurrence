@@ -46,7 +46,7 @@ $env:PYTHONPATH = 'Z:\workspace\xar_promo_toolchain\src'
 共享解释器可在不影响进行中任务时按当前 `tools/requirements-promo-toolchain.txt` 升级到
 hash-pinned `0.2.1` wheel；本轮 source override 的 GREEN 不依赖该升级，也不声称已经完成它。
 
-## 一次真实环境预检
+## 人物版真实环境预检
 
 本次没有重复旧版全量单测、authoring 校验、no-media runbook 或素材复用审计。
 唯一新增的制作准备是运行现有 `preflight_phase2_media.py`，实测当前网络语音目录、字体、
@@ -80,6 +80,35 @@ $env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
 制度版配置 SHA-256 为 `77537A37D2D1B3E00F38120667491F8CF7047E999DFEEF640DCB8D4343524C7E`；
 **不把同一环境回执冒充制度版或未来 promoted 配置的生产回执。** 素材审阅后配置发生变化时，
 仍按既有双片生产合同分别绑定新配置和真实 source bundle。
+
+## 10:58 制度版独立环境回执
+
+按协调者后续明确工作包，制度版另跑一次现有预检，绑定它自己的 draft 配置。
+没有重跑人物版、拉取或旧单测；沿用本日 10:19 已更新的工具 HEAD 和明确源码覆盖：
+
+```powershell
+$env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
+& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' mod_zhongguo_style/tools/preflight_phase2_media.py `
+  --output Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260905-1058\media-environment-institution.json `
+  --project-config mod_zhongguo_style/promo/phase2-promo-institution-project.json `
+  --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c `
+  --planned-work-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-institution-led-final-20260905 `
+  --planned-tts-cache Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-tts-cache `
+  --planned-export-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-institution-led-export-20260905
+```
+
+只新建 append-only receipt 父目录，退出码 `0`，环境 `GREEN`。新回执独立于人物版：
+
+- 路径：`Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260905-1058\media-environment-institution.json`；
+- SHA-256：`5601C5679FA7834DC8EB5B76421350FAB8A68DE4493DD11CC33DB76BED1633F9`；
+- 配置：10 章，`3,176 B`，SHA-256 `77537A37D2D1B3E00F38120667491F8CF7047E999DFEEF640DCB8D4343524C7E`；
+- 生成：`2026-09-05T02:58:09+00:00`，有效至 `2026-09-06T02:58:09+00:00`；
+- 实际源码 `0.2.1`、HEAD `57c42fca13ea459432c1caf76e069a1fbccf602c`，clean，`fresh_fetch_verified=true`；
+- 六项执行 attestation 全部为 `false`，无 CK3、TTS、字幕媒体、编码、候选 workdir 或候选视频。
+
+制度版自己的 `final_promo_readiness` 仍为 `RED / waiting-for-inputs`，原因同样为
+`footage_pending` 与 `publish_target_pending`。双版现在各有本日独立 **draft 环境** 回执，
+不是两部成片完成，也不适用于随后 source review 提升后的不同配置字节。
 
 ## 尚未交付的部分
 

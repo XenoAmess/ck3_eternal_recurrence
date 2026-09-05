@@ -82,3 +82,40 @@ public/action/source-specific-attribution/decision/automatic-surrender/GEN-034
 旧 R3 manifest、source ZIP、driver-state 和历史报告继续绑定当时的 `37cab82`，
 不会被改写为今日 accelerator 版本，也不因文档/metadata 同步重复运行 CK3。
 下一实际 G2 comparison intake 若产生新的共享合同，由其工作包单独同步。
+
+## 10:59 增量：`ae60624` G2 comparison intake
+
+复核提交 `ae60624fd9b0de8775f6713ea089a94be18926d4` 后，结论为
+`not-applicable / NO_EXTERNAL_CODE_CHANGE`：open_kaishek `84a2b18` 没有消费
+本次新增的 Python policy 参数、intake manifest/schema 或 source-specific provider seam。
+
+新 `raiktor-observed-surrender-outcome-v1` 是主仓内部比较层输入，接到
+`assess_raiktor_three_way_exit` 的第六个可选参数
+`observed_surrender_outcome_value=None`；旧五参数调用保持兼容。该提交没有变更
+native bridge、MCP/public wire、Paradox 脚本或 open_kaishek 现有 profile/metadata
+声明的 cleanup/expiry receipt。新 source-specific provider ID 是下一施工入口，
+不是已实现或被外部 runtime 执行的能力。
+
+本次一次只读检查使用 `git show --stat/--name-only ae60624`、实际 policy/intake
+调用点，以及外部 repo 全树 `rg` 查询以下精确名称：
+`raiktor-observed-surrender-outcome-v1`、`observed_surrender_outcome_value`、
+`assess_raiktor_three_way_exit`、`g2_postwar_comparison_intake`、
+`raiktor-source-specific-war-loss-attribution-provider-v1`。外部无匹配；实际主仓
+调用是 intake → Python policy，没有调用 open_kaishek。外部 HEAD/origin 仍为
+`84a2b18fedad74de37bf5cd0472519ee321f367d` 且 clean。
+
+| 本次主仓输入 | SHA-256 |
+| --- | --- |
+| `g2_postwar_comparison_intake_r3_manifest.json` | `3360F729AAA7F8CEFDA27D918928CCCFAFDE343BF63DBE840BD7E5C41EF53D63` |
+| `prepare_g2_postwar_comparison_intake.py` | `34B995DD604706EA1D218968C90850E826B3CA190E36B83A57E31BE682E0B99B` |
+| `raiktor_three_way_exit_policy.py` | `3FCFC01532D1AE184D07D885391367DB784E66DFC45D36862F3753BA9036FC61` |
+
+复用 [G2 intake 专题](g2-postwar-outcome-comparison-intake-2026-09-05.md) 已完成的
+真实输入验证：normalized observation SHA
+`08132B217DDF647DF9602F00CF4F927096ED0146E53FF9AB56A87ACD92C81F97`，
+status 为 `observed_generic_boundary_source_attribution_required`；
+`comparison_input_ready=false`、`source_specific_loss_comparison_ready=false`。
+既有 R3 cleanup/expiry live metadata 仍准确，不新增 profile/opcode/runtime evaluator，
+不重跑无变化的 Maven、parser 或历史 R3。public/action/decision/automatic/GEN-034
+全部保持 false；没有启动/附加 CK3。B1 D0 witness 本轮也未出现超出前次 parser
+覆盖的语法变化，不能据此宣称有限 runtime 已支持其游戏执行语义。

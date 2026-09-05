@@ -34,6 +34,9 @@ LOCALIZATION_LINE = re.compile(r'^\s*([^\s:#]+):\d+\s+"(.*)"\s*$')
 SCRIPTED_WIDGET_REGISTRATION = re.compile(
     r"^\s*(gui/[^\s=]+\.gui)\s*=\s*[^\s#]+", re.MULTILINE
 )
+SCRIPTED_GUI_CALL = re.compile(
+    r"GetScriptedGui\(\s*['\"](?P<name>[A-Za-z0-9_]+)['\"]\s*\)"
+)
 CURRENT_CORE_SOURCE = Path("common/scripted_effects/zg361_effects.txt")
 CURRENT_CORE_SHARDS = (
     Path("common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt"),
@@ -297,7 +300,7 @@ def synchronize_b3_terminal_localization(
 def synchronize_scripted_widget_gui_files(
     candidate: Path, canonical: Path
 ) -> dict[str, object]:
-    """Copy exact GUI files named by the candidate's scripted-widget registry."""
+    """Close registered GUI files over their custom scripted-GUI providers."""
 
     registry_root = candidate / "gui" / "scripted_widgets"
     required = sorted(
@@ -322,21 +325,95 @@ def synchronize_scripted_widget_gui_files(
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, target)
             updated.append(relative)
-    exact = all(
+
+    sys.path.insert(0, str(freeze.MOD_ROOT / "tools"))
+    from zg361_effect_sharding import top_level_effect_entries
+
+    providers: dict[str, str] = {}
+    duplicate_providers: set[str] = set()
+    provider_root = canonical / "common" / "scripted_guis"
+    for path in sorted(provider_root.glob("*.txt"), key=lambda value: value.name):
+        relative = path.relative_to(canonical).as_posix()
+        try:
+            entries = top_level_effect_entries(path.read_bytes())
+        except ValueError:
+            continue
+        for entry in entries:
+            if entry.name in providers:
+                duplicate_providers.add(entry.name)
+            providers[entry.name] = relative
+    if duplicate_providers:
+        raise freeze.FreezeError(
+            "canonical scripted-GUI providers contain duplicate definitions: "
+            f"{sorted(duplicate_providers)}"
+        )
+
+    referenced_names = {
+        match.group("name")
+        for relative in required
+        for match in SCRIPTED_GUI_CALL.finditer(
+            (candidate / Path(*relative.split("/"))).read_text(
+                encoding="utf-8-sig"
+            )
+        )
+        if match.group("name").startswith("zg361_")
+    }
+    provider_files: set[str] = set()
+    scanned_names: set[str] = set()
+    while referenced_names - scanned_names:
+        name = sorted(referenced_names - scanned_names)[0]
+        scanned_names.add(name)
+        relative = providers.get(name)
+        if relative is None:
+            raise freeze.FreezeError(
+                f"canonical custom scripted-GUI provider is missing: {name}"
+            )
+        if relative in provider_files:
+            continue
+        provider_files.add(relative)
+        source = canonical / Path(*relative.split("/"))
+        referenced_names.update(
+            match.group("name")
+            for match in SCRIPTED_GUI_CALL.finditer(
+                source.read_text(encoding="utf-8-sig")
+            )
+            if match.group("name").startswith("zg361_")
+        )
+
+    for relative in sorted(provider_files):
+        source = canonical / Path(*relative.split("/"))
+        target = candidate / Path(*relative.split("/"))
+        if not target.is_file() or target.read_bytes() != source.read_bytes():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            updated.append(relative)
+
+    exact_gui_files = all(
         (candidate / Path(*relative.split("/"))).read_bytes()
         == (canonical / Path(*relative.split("/"))).read_bytes()
         for relative in required
     )
+    exact_provider_files = all(
+        (candidate / Path(*relative.split("/"))).read_bytes()
+        == (canonical / Path(*relative.split("/"))).read_bytes()
+        for relative in provider_files
+    )
+    exact = exact_gui_files and exact_provider_files
     return {
         "green": exact,
         "required_files": required,
         "required_file_count": len(required),
+        "scripted_gui_names": sorted(referenced_names),
+        "scripted_gui_provider_files": sorted(provider_files),
+        "scripted_gui_provider_count": len(provider_files),
         "updated_files": [
             freeze.record(
                 candidate / Path(*relative.split("/")), relative_to=candidate
             )
             for relative in updated
         ],
+        "gui_files_exact": exact_gui_files,
+        "scripted_gui_provider_files_exact": exact_provider_files,
         "provider_files_exact": exact,
     }
 
