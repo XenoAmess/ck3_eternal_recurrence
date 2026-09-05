@@ -795,12 +795,14 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
     "zg361b1.126": {
         # Human-only subject-local publication notice. Its trigger has already
         # matched the frozen owner/subject/cycle/case/revision tuple and its
-        # single option has no effect. Preserve the outer bank plus the
-        # ticket/oversight/watch and publication-notice names that reach this
-        # independently scheduled window, bind all consumed value types and
-        # require the active owner aliases to refer to one non-player manager.
-        # The earlier .200 self-review and .201 shadow-accept scopes belong to
-        # those event windows; R106 proved they are not part of .126's ABI.
+        # single option has no effect. Bind all consumed ticket/oversight/watch
+        # and publication-notice value types, and require their owner aliases
+        # to refer to one non-player manager. The first observed cycle retained
+        # the outer bank tuple after .200/.201 had expired; a later cycle
+        # retained the completed self/shadow ticket names instead, without the
+        # bank tuple. Those inherited names are not consumed by .126, so bind
+        # both complete observed name sets without promoting either one into
+        # the event's semantic ABI.
         "date_raw": 53155368,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -841,29 +843,60 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_b1_local_publish_notice_revision",
             )
         },
-        "saved_scope_name_sets": ((
-            "zg361_b1_bank_ticket_owner",
-            "zg361_b1_bank_ticket_season",
-            "zg361_b1_bank_ticket_case",
-            "zg361_b1_bank_ticket_state",
-            "zg361_b1_ticket_owner",
-            "zg361_b1_ticket_cycle",
-            "zg361_b1_ticket_case",
-            "zg361_b1_ticket_state",
-            "zg361_b1_oversight_ticket_owner",
-            "zg361_b1_oversight_ticket_cycle",
-            "zg361_b1_oversight_ticket_case",
-            "zg361_b1_oversight_ticket_state",
-            "zg361_b1_pending_watch_owner",
-            "zg361_b1_pending_watch_cycle",
-            "zg361_b1_pending_watch_case",
-            "zg361_b1_pending_watch_state",
-            "zg361_b1_local_publish_notice_owner",
-            "zg361_b1_local_publish_notice_subject",
-            "zg361_b1_local_publish_notice_cycle",
-            "zg361_b1_local_publish_notice_case",
-            "zg361_b1_local_publish_notice_revision",
-        ),),
+        "saved_scope_name_sets": (
+            (
+                "zg361_b1_bank_ticket_owner",
+                "zg361_b1_bank_ticket_season",
+                "zg361_b1_bank_ticket_case",
+                "zg361_b1_bank_ticket_state",
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_pending_watch_owner",
+                "zg361_b1_pending_watch_cycle",
+                "zg361_b1_pending_watch_case",
+                "zg361_b1_pending_watch_state",
+                "zg361_b1_local_publish_notice_owner",
+                "zg361_b1_local_publish_notice_subject",
+                "zg361_b1_local_publish_notice_cycle",
+                "zg361_b1_local_publish_notice_case",
+                "zg361_b1_local_publish_notice_revision",
+            ),
+            (
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_self_ticket_owner",
+                "zg361_b1_self_ticket_subject",
+                "zg361_b1_self_ticket_cycle",
+                "zg361_b1_self_ticket_case",
+                "zg361_b1_self_ticket_state",
+                "zg361_b1_shadow_ticket_owner",
+                "zg361_b1_shadow_ticket_subject",
+                "zg361_b1_shadow_ticket_cycle",
+                "zg361_b1_shadow_ticket_case",
+                "zg361_b1_shadow_ticket_state",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_pending_watch_owner",
+                "zg361_b1_pending_watch_cycle",
+                "zg361_b1_pending_watch_case",
+                "zg361_b1_pending_watch_state",
+                "zg361_b1_local_publish_notice_owner",
+                "zg361_b1_local_publish_notice_subject",
+                "zg361_b1_local_publish_notice_cycle",
+                "zg361_b1_local_publish_notice_case",
+                "zg361_b1_local_publish_notice_revision",
+            ),
+        ),
         "boolean_scopes": (),
         "option_count": 1,
         "selected_option_number": 1,

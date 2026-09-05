@@ -146,7 +146,7 @@ LIVE_BOUNDARY: Final = (
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     run_id="R106",
-    observed_at="2026-09-06 05:33 Asia/Shanghai",
+    observed_at="2026-09-06 05:40 Asia/Shanghai",
     result="RED",
     product_commit="7f17fed",
     projection="phase2-full-release-r106-7f17fed",
@@ -156,8 +156,8 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=887,
-    native_observations=219,
+    observation_days=931,
+    native_observations=265,
     drained_event_keys=(
         "zg361b2.40",
         "ep3_interactions_events.0630",
@@ -234,6 +234,51 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361comp.1",
         "zg361b1.200",
         "zg361m.2",
+        "zg361.1",
+        "zg361ch.19",
+        "zg361ch.20",
+        "zg361p2c.2",
+        "zg361.40",
+        "zg361ch.21",
+        "zg361ch.22",
+        "zg361ch.23",
+        "zg361ch.24",
+        "zg361ch.25",
+        "zg361ch.901",
+        "zg361ch.92",
+        "zg361ch.93",
+        "zg361ch.94",
+        "zg361ch.95",
+        "zg361b1.201",
+        "zg361ch.96",
+        "zg361ch.97",
+        "zg361ch.902",
+        "zg361ch.98",
+        "zg361ch.99",
+        "zg361ch.100",
+        "zg361ch.101",
+        "zg361ch.102",
+        "zg361ch.103",
+        "zg361ch.104",
+        "zg361ch.105",
+        "zg361ch.903",
+        "zg361ch.106",
+        "zg361ch.107",
+        "zg361ch.108",
+        "zg361ch.109",
+        "zg361ch.110",
+        "zg361ch.111",
+        "zg361ch.112",
+        "zg361ch.113",
+        "zg361ch.904",
+        "zg361ch.114",
+        "zg361ch.115",
+        "zg361ch.116",
+        "zg361ch.117",
+        "zg361ch.118",
+        "zg361ch.119",
+        "zg361ch.120",
+        "zg361ch.905",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -270,13 +315,15 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         r"Z:\b3r106_resume5\report.json",
         r"Z:\b3r106_resume6\03_promotion_source_production_entry.json",
         r"Z:\b3r106_resume6\report.json",
+        r"Z:\b3r106_resume7\03_promotion_source_production_entry.json",
+        r"Z:\b3r106_resume7\report.json",
         r"Z:\p2r106\phase2-product-projection.json",
         r"Z:\p2r106\p.manifest.json",
     ),
     boundary=(
         "The committed R106 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. PID 30492 advanced 887 game days at speed 5 across 219 paused native/MCP "
-        "observations and 75 exact GREEN event drains. It reached and drained both "
+        "fatal 0. PID 30492 advanced 931 game days at speed 5 across 265 paused native/MCP "
+        "observations and 120 exact GREEN event drains. It reached and drained both "
         "zg361b1.200 self review and zg361b1.201 shadow acceptance, closing the R105 nested-ROOT "
         "roster-rebuild product regression. A replacement client fixed and drained zg361b1.126, "
         "then observed B1 close and Central activate before processing the annual summary and "
@@ -293,9 +340,13 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "zg361m.2 then drained GREEN through its source-reviewed reference-charter option A. "
         "The next same-date zg361.1 annual summary exposed a valid second-cycle scope shape: "
         "unlike the first-cycle summary, it no longer inherits the completed outer bank-ticket "
-        "tuple, which the summary source does not consume. This remains a harness-contract RED "
-        "rather than a new mod RED; the contract now accepts both exact observed cycle shapes "
-        "while rejecting unrelated names. Healthy "
+        "tuple, which the summary source does not consume. The corrected contract drained that "
+        "summary GREEN and continued through another 44 game days and 44 further exact windows. "
+        "The next zg361b1.126 publication notice retained completed self/shadow ticket names "
+        "instead of the first cycle's outer bank tuple; its consumed ticket, oversight, watch "
+        "and publication identities all match. This remains a harness-contract RED rather than "
+        "a new mod RED; the contract now accepts both complete observed inheritance shapes while "
+        "rejecting partial or unrelated names. Healthy "
         "CK3 PID 30492 remains retained "
         "for another same-process client "
         "continuation. No zg361pp.146 -> D+1 .147 receipt exists yet and the canonical "

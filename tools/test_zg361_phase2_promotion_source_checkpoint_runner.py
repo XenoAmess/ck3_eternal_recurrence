@@ -1066,69 +1066,55 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             }
 
         manager = 36354
-        names = (
-            "zg361_b1_bank_ticket_owner",
-            "zg361_b1_bank_ticket_season",
-            "zg361_b1_bank_ticket_case",
-            "zg361_b1_bank_ticket_state",
-            "zg361_b1_ticket_owner",
-            "zg361_b1_ticket_cycle",
-            "zg361_b1_ticket_case",
-            "zg361_b1_ticket_state",
-            "zg361_b1_oversight_ticket_owner",
-            "zg361_b1_oversight_ticket_cycle",
-            "zg361_b1_oversight_ticket_case",
-            "zg361_b1_oversight_ticket_state",
-            "zg361_b1_pending_watch_owner",
-            "zg361_b1_pending_watch_cycle",
-            "zg361_b1_pending_watch_case",
-            "zg361_b1_pending_watch_state",
-            "zg361_b1_local_publish_notice_owner",
-            "zg361_b1_local_publish_notice_subject",
-            "zg361_b1_local_publish_notice_cycle",
-            "zg361_b1_local_publish_notice_case",
-            "zg361_b1_local_publish_notice_revision",
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361b1.126"],
+            starting_date=53147016,
         )
+        first_cycle_names, later_cycle_names = contract["saved_scope_name_sets"]
         character_names = {
             "zg361_b1_bank_ticket_owner": 32904,
             "zg361_b1_ticket_owner": manager,
+            "zg361_b1_self_ticket_owner": manager,
+            "zg361_b1_self_ticket_subject": 29037,
+            "zg361_b1_shadow_ticket_owner": manager,
+            "zg361_b1_shadow_ticket_subject": 29037,
             "zg361_b1_oversight_ticket_owner": manager,
             "zg361_b1_pending_watch_owner": manager,
             "zg361_b1_local_publish_notice_owner": manager,
             "zg361_b1_local_publish_notice_subject": 29037,
         }
-        context = {
-            "schema": "current-event-window-context-v1",
-            "schema_version": 1,
-            "status": "available",
-            "window_match_count": 1,
-            "event_definition_key": "zg361b1.126",
-            "current_event_instance_id": 20,
-            "date_raw": 53155488,
-            "root_scope": character_scope("root", 29037)["scope"],
-            "saved_scopes": [
-                character_scope(name, character_names[name])
-                if name in character_names
-                else value_scope(name)
-                for name in names
-            ],
-            "options": [
-                {
-                    "rendered_index": 0,
-                    "native_option_index": 0,
-                    "shown": True,
-                    "enabled": True,
-                    "fallback": False,
-                    "cancel": False,
-                }
-            ],
-        }
+
+        def context_for(names: tuple[str, ...]) -> dict[str, object]:
+            return {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": "zg361b1.126",
+                "current_event_instance_id": 20,
+                "date_raw": 53155488,
+                "root_scope": character_scope("root", 29037)["scope"],
+                "saved_scopes": [
+                    character_scope(name, character_names[name])
+                    if name in character_names
+                    else value_scope(name)
+                    for name in names
+                ],
+                "options": [
+                    {
+                        "rendered_index": 0,
+                        "native_option_index": 0,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                ],
+            }
+
+        context = context_for(first_cycle_names)
         snapshot = {"date_raw": 53155488, "active_event": {"option_count": 1}}
         event = {"event_instance_id": 20}
-        contract = production._timeline_contract_for_window(
-            production.KNOWN_TIMELINE_INTERRUPTS["zg361b1.126"],
-            starting_date=53147016,
-        )
 
         def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
             return production._known_interrupt_checks(
@@ -1142,11 +1128,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(context)
         self.assertTrue(all(checks.values()), checks)
 
-        stale_self_scope = copy.deepcopy(context)
-        stale_self_scope["saved_scopes"].append(
-            character_scope("zg361_b1_self_ticket_subject", 29037)
-        )
-        checks = checks_for(stale_self_scope)
+        later_cycle = context_for(later_cycle_names)
+        checks = checks_for(later_cycle)
+        self.assertTrue(all(checks.values()), checks)
+
+        partial_later_cycle = copy.deepcopy(later_cycle)
+        partial_later_cycle["saved_scopes"] = partial_later_cycle["saved_scopes"][:-1]
+        checks = checks_for(partial_later_cycle)
         self.assertFalse(checks["saved_scope_names_exact"])
 
         wrong_manager = copy.deepcopy(context)
