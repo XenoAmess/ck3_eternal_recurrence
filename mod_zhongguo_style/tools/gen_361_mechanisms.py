@@ -31,6 +31,7 @@ from zg361_readiness_data import (
     EXPECTED_CUMULATIVE_RANGES,
     EXPECTED_EXCLUSIVE_RANGES,
     EXCLUSIVE_COUNTS,
+    LATEST_PRODUCT_ACCEPTANCE,
     LEVELS,
     LIVE_BOUNDARY,
     MECHANISM_COUNT as READINESS_MECHANISM_COUNT,
@@ -1040,6 +1041,12 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
 
     mechanism_by_id = {mechanism.id: mechanism for mechanism in mechanisms}
     all_ids = set(range(1, MECHANISM_COUNT + 1))
+    snapshot = LATEST_PRODUCT_ACCEPTANCE
+    drained_events = ", ".join(f"`{key}`" for key in snapshot.drained_event_keys)
+    cleared_signatures = "、".join(
+        f"`{signature}`" for signature in snapshot.cleared_product_signatures
+    )
+    snapshot_evidence = "<br>".join(f"`{path}`" for path in snapshot.evidence)
     lines = [
         "# 361 二期实现覆盖账本",
         "",
@@ -1051,6 +1058,18 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
         f"- `{CENTRAL_WIRING_BOUNDARY}`。",
         f"- `{LIVE_BOUNDARY}`。",
         "- #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。",
+        "",
+        "## 最新完整产品验收快照（不改变逐号等级）",
+        "",
+        "| 项 | 实证 |",
+        "|---|---|",
+        f"| 运行 | `{snapshot.run_id}` · `{snapshot.observed_at}` · `{snapshot.result}` |",
+        f"| 产品身份 | commit `{snapshot.product_commit}` · projection `{snapshot.projection}` · {snapshot.verified_file_count} files · tree `{snapshot.product_tree_sha256}` · manifest `{snapshot.release_manifest_sha256}` |",
+        f"| CK3 loader | exact build 完成 {snapshot.loader_database_nodes}/{snapshot.loader_database_nodes} database nodes，fatal={snapshot.loader_fatal_count} |",
+        f"| 实机时间轴 | 默认 {snapshot.speed} 速，{snapshot.observation_days} 游戏日，{snapshot.native_observations} 次 native/MCP 观测，精确处理 {len(snapshot.drained_event_keys)} 次事件：{drained_events} |",
+        f"| 已闭合回归 | 产品签名归零：{cleared_signatures} |",
+        f"| 证据 | {snapshot_evidence} |",
+        f"| 边界 | {snapshot.boundary} |",
         "",
         "## 最高状态（互斥）",
         "",

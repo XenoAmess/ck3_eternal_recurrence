@@ -940,3 +940,43 @@ cleanup SHA-256 values are respectively
 `7148C7C9C4D14E9D0AD0947F21579ADD5EDE289261D60A56A396C9E5AE252615`
 and `F0D50BFCBE76F2516216D5F7D6CA0AAD26FA42A993F5C3306EA3983204AFDD2D`.
 Cleanup completed and CK3 returned to zero.
+
+## R88: regressions cleared; player promotion path still absent
+
+R88 used release-identical projection `phase2-full-release-r88-24189c1`
+from pushed commit `24189c1`. The product contains 936 files; its release
+manifest and product-tree SHA-256 values are respectively
+`B27E1A420949DF213460F59FDA2A27518467418077BC6B378C209B0C64C46015`
+and `A9FED5E8BFEB41E539FC28EC32F9CDAEF924F3E3A3DBE046A8B99C94030269D1`.
+The exact-build loader completed all 303 database nodes with zero fatal
+matches. The same managed CK3 process then ran the product timeline at speed
+5 for the complete 550-day bound.
+
+The native/MCP driver made 398 observations and safely drained seven exact
+events: `zg361b2.40`, `zg361.40`, `zg361b1.200`,
+`spymaster_task.0381`, `ep3_governor_yearly.3060`,
+`spymaster_task.0342`, then a second `zg361.40`. It used neither fixture nor
+console state. The final product log has zero occurrences of
+`This scope doesn't support variables`, `ordered_in_list max bigger than list`,
+`zg361b1.201.desc`, `Could not find promote for`,
+`Variable 'zg361_b1_local_rank' is not set`, and any B1 product path in
+`final_error.log`. This supplies production-live regression evidence for the
+R84/R87 repairs.
+
+The run is still RED. Product trace now proves that B1 seasons can rerank,
+publish and call the Central lifecycle hook, but each affected Central tuple
+either completes as an eligible AI portfolio or is rejected as stale. The
+played-character `zg361pp.146` source and delayed `.147` source never appeared
+before the 550-day bound expired. This is progress beyond the earlier
+pre-publication failures, not completion of the player promotion path and not
+a reason to inflate the per-mechanism fixture-live count.
+
+R88 outer report, evidence index, cell report, promotion entry, loader-native
+readiness and cleanup SHA-256 values are respectively
+`2471ABD31F25E4A9B1FC24E9991464F17CF2D5D10F75E60D7398DD96B22EC8DC`,
+`3F6980618C78AF1832722C161B660C7AEC42FD54A7C95E3D2CE1ADB93DE65F8B`,
+`599BFD0CF275AF72C3A41DC547BA86685BDAFDA9C53F29898CFC241F91058639`,
+`772208CDD4272AECD5D4C39BD6AE1B58DD3470824E21BCE15D72013CB0077678`,
+`65CB35CCA192FD717137421DF878F279225A81922A4FB4D02598159A8F3DABAD`
+and `A041FC4F9E4D6703797A4FAE1922EEB9F3BD6CE6C27FA4782C6DFDA3AC3C4EC1`.
+Cleanup was GREEN and CK3 returned to zero.

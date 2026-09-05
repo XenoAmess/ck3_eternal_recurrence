@@ -95,6 +95,29 @@ class ReadinessRecord:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class ProductAcceptanceSnapshot:
+    """Latest whole-product run, kept separate from per-ID readiness claims."""
+
+    run_id: str
+    observed_at: str
+    result: str
+    product_commit: str
+    projection: str
+    verified_file_count: int
+    product_tree_sha256: str
+    release_manifest_sha256: str
+    loader_database_nodes: int
+    loader_fatal_count: int
+    speed: int
+    observation_days: int
+    native_observations: int
+    drained_event_keys: tuple[str, ...]
+    cleared_product_signatures: tuple[str, ...]
+    evidence: tuple[str, ...]
+    boundary: str
+
+
 CENTRAL_WIRING_BOUNDARY: Final = (
     "central-wired records committed hook reachability only; it does not prove "
     "complete per-ID semantics, a complete player-visible loop, or CK3 live acceptance"
@@ -119,6 +142,48 @@ CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY: Final = (
 LIVE_BOUNDARY: Final = (
     "ck3-live means bounded fixture-live evidence for the named slice; no mechanism "
     "is promoted here to production-live or full semantic completion"
+)
+
+LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
+    run_id="R88",
+    observed_at="2026-09-05 19:10 Asia/Shanghai",
+    result="RED",
+    product_commit="24189c1",
+    projection="phase2-full-release-r88-24189c1",
+    verified_file_count=936,
+    product_tree_sha256="A9FED5E8BFEB41E539FC28EC32F9CDAEF924F3E3A3DBE046A8B99C94030269D1",
+    release_manifest_sha256="B27E1A420949DF213460F59FDA2A27518467418077BC6B378C209B0C64C46015",
+    loader_database_nodes=303,
+    loader_fatal_count=0,
+    speed=5,
+    observation_days=550,
+    native_observations=398,
+    drained_event_keys=(
+        "zg361b2.40",
+        "zg361.40",
+        "zg361b1.200",
+        "spymaster_task.0381",
+        "ep3_governor_yearly.3060",
+        "spymaster_task.0342",
+        "zg361.40",
+    ),
+    cleared_product_signatures=(
+        "This scope doesn't support variables",
+        "ordered_in_list max bigger than list",
+        "zg361b1.201.desc",
+        "Could not find promote for",
+        "Variable 'zg361_b1_local_rank' is not set",
+    ),
+    evidence=(
+        "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
+        "docs/phase2-promo/phase2-acceptance-case-index.md",
+        r"Z:\b3r88\evidence-index.json",
+    ),
+    boundary=(
+        "The release-identical product loaded and the listed regressions cleared, but "
+        "the 550-day bound expired before player promotion events zg361pp.146/.147. "
+        "This whole-product snapshot does not promote any per-ID readiness tier."
+    ),
 )
 
 
@@ -433,7 +498,9 @@ __all__ = [
     "LEVELS",
     "LEVEL_BY_KEY",
     "LIVE_BOUNDARY",
+    "LATEST_PRODUCT_ACCEPTANCE",
     "MECHANISM_COUNT",
+    "ProductAcceptanceSnapshot",
     "READINESS_BY_ID",
     "ReadinessClaim",
     "ReadinessLevel",

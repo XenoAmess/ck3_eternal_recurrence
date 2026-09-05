@@ -38,11 +38,11 @@
 | `P2-L0-001` | 361 manifest | ID 001–361 恰好一次、38 领域、B1–B8 无重叠无遗漏 | 缺号、重复号、错误批次、生成结果漂移即 RED | `STATIC_GREEN` |
 | `P2-L0-002` | 脚本/本地化/发布树 | BOM、parser、loc、玩家限定、production allowlist 和生成器 parity | AI 入口、raw key、acceptance-only 泄漏、生成文件手改即 RED | `STATIC_GREEN` |
 | `P2-FILE-001` | effect 边界 | 全部 effect 按用途分组，目标每文件 1–10 个 definition | >20 即 RED；例外必须有不可拆理由和精确实机证据 | `STATIC_GREEN / live pending`：626 files / 3721 effects / 最大 10 / 例外 0 |
-| `P2-LOAD-001` | 生产 closure | exact CK3 1.19.0.6 加载 hash-bound production tree，唯一产品挂载，loader scan GREEN | frontend/history 超时、Unknown effect/trigger、错误挂载或树漂移即 RED | `LIVE_PARTIAL`：R77 拆分树 loader GREEN；正式 canonical 拆分树待下一轮验证 |
+| `P2-LOAD-001` | 生产 closure | exact CK3 1.19.0.6 加载 hash-bound production tree，唯一产品挂载，loader scan GREEN | frontend/history 超时、Unknown effect/trigger、错误挂载或树漂移即 RED | `LIVE_GREEN`：R88 完整 936-file release-identical 拆分树完成 303/303 database nodes，fatal 0；不代表业务长链 GREEN |
 | `P2-B1-001` | manager/subject 身份 | manager cycle/case 与 subject ABI 独立，旧存档只读 witness 可见 | subject 字段不得冒充 manager；旧 ticket 不得强行复活 | `LIVE_PARTIAL` |
-| `P2-B1-002` | 长期名单与嵌套角色引用 | 每个延迟消费边界剔除不可用 weak Character；每次解引用 Character-valued variable 都重新用外层 `is_alive=yes` 隔离，再读取角色变量 | 产品调用栈出现 `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `BLOCKED`：R83 曾将旧调用点实机归零；R87 又在 pending 对象内嵌 fallback Character 上发现 5 条产品 RED，静态修复已 GREEN，待 R88 归零 |
+| `P2-B1-002` | 长期名单与嵌套角色引用 | 每个延迟消费边界剔除不可用 weak Character；每次解引用 Character-valued variable 都重新用外层 `is_alive=yes` 隔离，再读取角色变量 | 产品调用栈出现 `This scope doesn't support variables` 或错误缩小 cohort 即 RED | `LIVE_GREEN`：R88 跑满同类 550 日窗口，产品 weak-variable 调用栈为 0 |
 | `P2-B1-003` | baseline | 有首府正常结算；无首府时 comparator unavailable 且 delta=0 | 不得把缺值当真实 0，不得读取新 owner 代替冻结对象 | `LIVE_PARTIAL` |
-| `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `BLOCKED`：R78 跑满 550 日仍无 Central、`.146/.147` |
+| `P2-B1-004` | 发布链 | 玩家 B1 review 进入 Central，产生 `.146`，选择后 D+1 `.147` 保留 owner/subject/cycle/case | ACK、AI silent summary、fixture flag 不得冒充 source checkpoint | `BLOCKED`：R88 已实机到达 B1 publication 与 Central hook，但后续只有 AI silent/stale tuple；550 日内仍无玩家 `.146/.147` |
 | `P2-B2-001` | 送达/申诉/PIP | 三条真实分支、四次 exact restore、最终 baseline、跨进程 event identity | unset owner、跨 case receipt、申诉加重、资金不守恒即 RED | `LIVE_GREEN`：focused gate；不等于 Phase2 全量 |
 | `P2-B3-001` | 管理者/制度 | 上一轮团队快照、京察、校准、PIP/申诉/留任聚合 | 同轮递归、manager/subject 混同、AI 非授权入口即 RED | `LIVE_PARTIAL` |
 | `P2-B4-001` | 晋升/职级/现金 | 资格至任命/失败冷却，HC/奖金预留释放，欠付补发守恒 | 失败不释放、跨案串账、玩家/owner 错位即 RED | `STATIC_GREEN / live pending` |
@@ -63,7 +63,7 @@
 |---|---|---|---|
 | `P2-INT-0399` | `.0399` 精确三 Character + `no_secrets_here` 或 `secrets_to_be_found` 二选一 | 两者同时、错误类型、多余 scope、越界日期 | `STATIC_GREEN / live branch pending` |
 | `P2-INT-1002` | `.1002` 前三项为 `0..11` 内递增互异，末项 native 12；选择 authored 13 | 重复、越界、末项错误、receiver 不等于冻结 target | `STATIC_GREEN / next occurrence live pending` |
-| `P2-INT-B1200` | `.200` 精确 9/10 或 bank-descendant 13/14 名称集；只绑定事件实际消费的 manager/self-review 九字段，选择 honest option 1 | 少/多 scope、玩家 subject 错位、两个 manager owner 不同、六个消费值类型漂移即 RED；四个未消费 bank payload 不作伪身份断言 | `STATIC_GREEN / R71 correction live pending` |
+| `P2-INT-B1200` | `.200` 精确 9/10 或 bank-descendant 13/14 名称集；只绑定事件实际消费的 manager/self-review 九字段，选择 honest option 1 | 少/多 scope、玩家 subject 错位、两个 manager owner 不同、六个消费值类型漂移即 RED；四个未消费 bank payload 不作伪身份断言 | `LIVE_GREEN`：R88 完整字段合同通过并安全选择 option 1 |
 | `P2-INT-9006` | `bp1_yearly.9006` 精确一个随机非玩家 courtier、两项 native 0/1；选择只影响玩家自身 piety/stress 的 option 2 | courtier=玩家、多余 scope、选项漂移或同局超过两次即 RED | `STATIC_GREEN / R72 correction live pending` |
 | `P2-INT-8080` | `ep3_governor_yearly.8080` 精确一个动态非玩家 magistrate、四项 native 0–3；选择不杀人/不招募/不取金的 punish option 1 | magistrate=玩家、多余 scope、错误日期或选项漂移即 RED | `STATIC_GREEN / R77 correction live pending` |
 | `P2-INT-7500` | `health.7500` 精确 root、0 scope、唯一 native 0；不可避免地添加 `fragile_bones` | 任意 scope、额外/缺失 option、日期或 root 漂移即 RED | `STATIC_GREEN / R73 correction live pending` |
@@ -80,7 +80,7 @@
 | `P2-REG-004` | cross-cycle `.356` + owner `.361` + subject Workforce state | `0/1` |
 | `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `0/4`，`NOT_RUN` |
 | `P2-FULL-001` | B1–B8 production projection 一次启动、共享表面抽样、三周期长测、release staging | `NOT_RUN`；不得用 focused GREEN 代替 |
-| `P2-R74-ERR` | R74/R78 实证的产品运行时错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `STATIC_READY / LIVE_PENDING`：R78 五类签名已完成 generator 修复与跨域回归，待 R79 fresh split product 实机归零 |
+| `P2-R74-ERR` | R74/R78 实证的产品运行时错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `LIVE_GREEN`：R88 同类 550 日完整 gameplay error log 中 weak-scope、ordered-list、local-rank、旧事件/本地化签名均为 0 |
 | `P2-CAP-001` | 八个 canonical gameplay spans 均通过 source intake | `0/8` |
 | `P2-VIDEO-001` | 人物版完整 build、媒体抽检、双语字幕、安全区、全片审阅、SHA | `0/1` |
 | `P2-VIDEO-002` | 制度群像版独立完成同一套门禁 | `0/1` |

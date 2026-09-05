@@ -9,6 +9,18 @@
 - `ck3-live means bounded fixture-live evidence for the named slice; no mechanism is promoted here to production-live or full semantic completion`。
 - #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。
 
+## 最新完整产品验收快照（不改变逐号等级）
+
+| 项 | 实证 |
+|---|---|
+| 运行 | `R88` · `2026-09-05 19:10 Asia/Shanghai` · `RED` |
+| 产品身份 | commit `24189c1` · projection `phase2-full-release-r88-24189c1` · 936 files · tree `A9FED5E8BFEB41E539FC28EC32F9CDAEF924F3E3A3DBE046A8B99C94030269D1` · manifest `B27E1A420949DF213460F59FDA2A27518467418077BC6B378C209B0C64C46015` |
+| CK3 loader | exact build 完成 303/303 database nodes，fatal=0 |
+| 实机时间轴 | 默认 5 速，550 游戏日，398 次 native/MCP 观测，精确处理 7 次事件：`zg361b2.40`, `zg361.40`, `zg361b1.200`, `spymaster_task.0381`, `ep3_governor_yearly.3060`, `spymaster_task.0342`, `zg361.40` |
+| 已闭合回归 | 产品签名归零：`This scope doesn't support variables`、`ordered_in_list max bigger than list`、`zg361b1.201.desc`、`Could not find promote for`、`Variable 'zg361_b1_local_rank' is not set` |
+| 证据 | `docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md`<br>`docs/phase2-promo/phase2-acceptance-case-index.md`<br>`Z:\b3r88\evidence-index.json` |
+| 边界 | The release-identical product loaded and the listed regressions cleared, but the 550-day bound expired before player promotion events zg361pp.146/.147. This whole-product snapshot does not promote any per-ID readiness tier. |
+
 ## 最高状态（互斥）
 
 | 状态 | 数量 | 精确 ID ranges |
