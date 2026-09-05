@@ -2717,6 +2717,23 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
     os.replace(temporary, path)
 
 
+def source_tree_snapshot(root: Path) -> dict[str, dict[str, object]]:
+    """Hash authored source while excluding interpreter-derived bytecode."""
+
+    return {
+        relative: metadata
+        for relative, metadata in isolated.tree_snapshot(root).items()
+        if "__pycache__" not in Path(relative).parts
+        and not relative.endswith((".pyc", ".pyo"))
+    }
+
+
+def promotion_source_registry_display(capture_complete: bool) -> str:
+    """Report only a completed source receipt as a canonical registry entry."""
+
+    return f"INCOMPLETE ({1 if capture_complete else 0}/4)"
+
+
 class Phase2LegalConsentBlocked(acceptance.RunnerError):
     """A managed Phase2 run stopped before an unauthorized consent click."""
 
@@ -19069,9 +19086,9 @@ def run_cell(
     userdir = Path(userdir).resolve()
     runtime_identity = dict(runtime_identity or {})
     bridge_identity = runtime_identity.get("native_bridge_runtime")
-    source_before = isolated.tree_snapshot(SOURCE)
-    runtime_source_before = isolated.tree_snapshot(runtime_source)
-    selected_product_source_before = isolated.tree_snapshot(
+    source_before = source_tree_snapshot(SOURCE)
+    runtime_source_before = source_tree_snapshot(runtime_source)
+    selected_product_source_before = source_tree_snapshot(
         selected_product_source
     )
     acceptance.configure_runtime_userdir(userdir)
@@ -20151,12 +20168,12 @@ def run_cell(
                 runtime_after[key] = isolated.snapshot_digest(snapshot)
                 if snapshot != bootstrap["tree_snapshots"][key]:
                     runtime_unchanged = False
-            source_unchanged = isolated.tree_snapshot(SOURCE) == source_before
+            source_unchanged = source_tree_snapshot(SOURCE) == source_before
             runtime_source_unchanged = (
-                isolated.tree_snapshot(runtime_source) == runtime_source_before
+                source_tree_snapshot(runtime_source) == runtime_source_before
             )
             selected_product_source_unchanged = (
-                isolated.tree_snapshot(selected_product_source)
+                source_tree_snapshot(selected_product_source)
                 == selected_product_source_before
             )
             if (
@@ -21588,7 +21605,12 @@ def main(
                 else "INCOMPLETE / RED"
             )
         )
-        print("canonical registry     INCOMPLETE (1/4)")
+        print(
+            "canonical registry     "
+            + promotion_source_registry_display(
+                matrix["phase2_promotion_source_capture_complete"] is True
+            )
+        )
         print("gameplay GREEN claim    NONE")
     elif phase2_b2_same_checkpoint:
         print(

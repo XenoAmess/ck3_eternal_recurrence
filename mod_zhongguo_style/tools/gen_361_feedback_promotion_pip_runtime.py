@@ -1732,9 +1732,11 @@ def render_portfolio_adapter() -> str:
     chain = chain.replace("else_if = {", "if = {", 1)
     all_done = "\n\t\t\t\t".join(portfolio_done_trigger(domain.key) for domain in DOMAINS)
     return f'''# The only integration-facing seam.  Current scope is the manager.  One
-# deterministic assessed direct vassal receives one domain at a time; a later
-# central caller may invoke the adapter again only after the visible queue has
-# closed.  This file deliberately does not add that central caller.
+# deterministic assessed direct vassal receives one domain at a time.  An
+# active central portfolio keeps its already-frozen subject even if stewardship
+# ordering drifts while earlier serial stages run; standalone callers retain the
+# deterministic top-stewardship fallback.  A later caller may invoke the adapter
+# again only after the visible queue has closed.
 zg361_pp_manager_portfolio_adapter_effect = {{
 \tremove_variable = zg361_pp_runtime_applied
 \tif = {{
@@ -1750,11 +1752,29 @@ zg361_pp_manager_portfolio_adapter_effect = {{
 \t\t\tany_vassal = {{ zg361_is_reviewable_vassal_trigger = yes }}
 \t\t}}
 \t\tsave_temporary_scope_as = zg361_pp_portfolio_manager
-\t\tordered_vassal = {{
-\t\t\tlimit = {{ zg361_is_reviewable_vassal_trigger = yes liege = scope:zg361_pp_portfolio_manager }}
-\t\t\torder_by = stewardship
-\t\t\tposition = 0
-\t\t\tsave_temporary_scope_as = zg361_pp_portfolio_subject
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = zg361_p2c_active
+\t\t\t\tvar:zg361_p2c_active = 1
+\t\t\t\thas_variable = zg361_p2c_cycle
+\t\t\t\tvar:zg361_p2c_cycle = var:zg361_review_serial
+\t\t\t\thas_variable = zg361_p2c_subject
+\t\t\t\tvar:zg361_p2c_subject = {{
+\t\t\t\t\tis_alive = yes
+\t\t\t\t\tzg361_is_reviewable_vassal_trigger = yes
+\t\t\t\t\tliege = scope:zg361_pp_portfolio_manager
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tvar:zg361_p2c_subject = {{ save_temporary_scope_as = zg361_pp_portfolio_subject }}
+\t\t\tdebug_log = "ZG361PP: central frozen portfolio subject selected"
+\t\t}}
+\t\telse = {{
+\t\t\tordered_vassal = {{
+\t\t\t\tlimit = {{ zg361_is_reviewable_vassal_trigger = yes liege = scope:zg361_pp_portfolio_manager }}
+\t\t\t\torder_by = stewardship
+\t\t\t\tposition = 0
+\t\t\t\tsave_temporary_scope_as = zg361_pp_portfolio_subject
+\t\t\t}}
 \t\t}}
 \t\tif = {{
 \t\t\tlimit = {{ exists = scope:zg361_pp_portfolio_subject }}

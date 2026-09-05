@@ -25,8 +25,8 @@ LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FI
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
 # R98: guard the stage-3 first-use completion read proven fatal to the PP
 # adapter in the R97 production CK3 log; grouping and order remain unchanged.
-HISTORICAL_EFFECT_BYTES = 137_340
-HISTORICAL_EFFECT_SHA256 = "5D0A5CBA7DE49DA76B2CBA863DC31D1830B0AA497C87306FC4F440E2CFB4EE81"
+HISTORICAL_EFFECT_BYTES = 137_077
+HISTORICAL_EFFECT_SHA256 = "531743D7A826D04C84FA92600B1D7C682A637925B77E1B52424152874D0E3A3D"
 HISTORICAL_EFFECT_COUNT = 33
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -1507,16 +1507,15 @@ zg361_p2c_call_compensation_adapter_effect = {
 
 zg361_p2c_call_pp_adapter_effect = {
     set_variable = { name = zg361_p2c_adapter_called value = 0 }
-    remove_variable = zg361_p2c_adapter_candidate
-    ordered_vassal = {
-        limit = { zg361_is_reviewable_vassal_trigger = yes liege = root }
-        order_by = stewardship
-        position = 0
-        save_temporary_scope_as = zg361_p2c_preflight_candidate
-        root = { set_variable = { name = zg361_p2c_adapter_candidate value = scope:zg361_p2c_preflight_candidate } }
-    }
     if = {
-        limit = { has_variable = zg361_p2c_adapter_candidate var:zg361_p2c_adapter_candidate = var:zg361_p2c_subject }
+        limit = {
+            has_variable = zg361_p2c_subject
+            var:zg361_p2c_subject = {
+                is_alive = yes
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+            }
+        }
         zg361_pp_manager_portfolio_adapter_effect = yes
         set_variable = { name = zg361_p2c_adapter_called value = 1 }
     }
@@ -3136,10 +3135,10 @@ def render_localization(language: str, header: str) -> str:
         title = "二期绩效流水线：终于跑完了"
         desc = (
             "公示后的二期案卷已经串行收口。成功域：#high "
-            "[ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#!；不适用："
-            "[ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0]；RED："
-            "[ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0]；曾等待外部依赖："
-            "[ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0]。好消息是没有九个部门同时弹窗，"
+            "[ROOT.Var('zg361_p2c_success_n')|0]#!；不适用："
+            "[ROOT.Var('zg361_p2c_na_n')|0]；RED："
+            "[ROOT.Var('zg361_p2c_red_n')|0]；曾等待外部依赖："
+            "[ROOT.Var('zg361_p2c_external_n')|0]。好消息是没有九个部门同时弹窗，"
             "坏消息是它们确实都留下了表格。"
         )
         ack = "很好，把这摞表从我桌上拿走。"
@@ -3147,10 +3146,10 @@ def render_localization(language: str, header: str) -> str:
         title = "Phase-Two Performance Pipeline: Finally Closed"
         desc = (
             "The post-publication phase-two portfolio has closed serially. Successful domains: #high "
-            "[ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#!; not applicable: "
-            "[ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0]; RED: "
-            "[ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0]; external waits encountered: "
-            "[ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0]. The good news is that nine teams did not "
+            "[ROOT.Var('zg361_p2c_success_n')|0]#!; not applicable: "
+            "[ROOT.Var('zg361_p2c_na_n')|0]; RED: "
+            "[ROOT.Var('zg361_p2c_red_n')|0]; external waits encountered: "
+            "[ROOT.Var('zg361_p2c_external_n')|0]. The good news is that nine teams did not "
             "open nine windows at once. The bad news is that every team still produced a spreadsheet."
         )
         ack = "Excellent. Remove this stack from my desk."

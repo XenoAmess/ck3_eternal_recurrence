@@ -88,16 +88,15 @@ zg361_p2c_call_compensation_adapter_effect = {
 
 zg361_p2c_call_pp_adapter_effect = {
     set_variable = { name = zg361_p2c_adapter_called value = 0 }
-    remove_variable = zg361_p2c_adapter_candidate
-    ordered_vassal = {
-        limit = { zg361_is_reviewable_vassal_trigger = yes liege = root }
-        order_by = stewardship
-        position = 0
-        save_temporary_scope_as = zg361_p2c_preflight_candidate
-        root = { set_variable = { name = zg361_p2c_adapter_candidate value = scope:zg361_p2c_preflight_candidate } }
-    }
     if = {
-        limit = { has_variable = zg361_p2c_adapter_candidate var:zg361_p2c_adapter_candidate = var:zg361_p2c_subject }
+        limit = {
+            has_variable = zg361_p2c_subject
+            var:zg361_p2c_subject = {
+                is_alive = yes
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+            }
+        }
         zg361_pp_manager_portfolio_adapter_effect = yes
         set_variable = { name = zg361_p2c_adapter_called value = 1 }
     }

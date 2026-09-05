@@ -105,28 +105,32 @@ class ReadinessDataTests(unittest.TestCase):
             "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_latest_product_snapshot_records_r103_without_promoting_ids(self) -> None:
+    def test_latest_product_snapshot_records_r104_without_promoting_ids(self) -> None:
         snapshot = LATEST_PRODUCT_ACCEPTANCE
-        self.assertEqual(snapshot.run_id, "R103")
+        self.assertEqual(snapshot.run_id, "R104")
         self.assertEqual(snapshot.result, "RED")
-        self.assertEqual(snapshot.product_commit, "5b80006")
+        self.assertEqual(snapshot.product_commit, "37f6112")
         self.assertEqual(snapshot.verified_file_count, 937)
         self.assertEqual(snapshot.speed, 5)
-        self.assertEqual(snapshot.observation_days, 2345)
-        self.assertEqual(snapshot.native_observations, 500)
-        self.assertEqual(len(snapshot.drained_event_keys), 22)
+        self.assertEqual(snapshot.observation_days, 550)
+        self.assertEqual(snapshot.native_observations, 162)
+        self.assertEqual(len(snapshot.drained_event_keys), 58)
         self.assertIn("zg361b1.200", snapshot.drained_event_keys)
-        self.assertIn("filtered bank-range signature remained zero", snapshot.boundary)
+        self.assertIn(
+            "B1 publication -> central serial portfolio -> summary traversal",
+            snapshot.boundary,
+        )
+        self.assertIn("Every R103 product signature remained zero", snapshot.boundary)
         self.assertIn("canonical registry therefore remains 0/4", snapshot.boundary)
         self.assertIn("0/3", snapshot.boundary)
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("最新完整产品验收快照", ledger)
-        self.assertIn("`R103`", ledger)
+        self.assertIn("`R104`", ledger)
         self.assertIn("937 files", ledger)
-        self.assertIn("2345 游戏日", ledger)
-        self.assertIn("500 次 native/MCP 观测", ledger)
+        self.assertIn("550 游戏日", ledger)
+        self.assertIn("162 次 native/MCP 观测", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

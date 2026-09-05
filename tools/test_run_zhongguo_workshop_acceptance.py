@@ -51,6 +51,33 @@ class WorkshopRuntimeTests(unittest.TestCase):
             settings,
         )
 
+    def test_source_snapshot_ignores_only_interpreter_bytecode(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            authored = root / "tools" / "source.py"
+            authored.parent.mkdir(parents=True)
+            authored.write_text("value = 1\n", encoding="utf-8")
+            before = acceptance.source_tree_snapshot(root)
+
+            cache = root / "tools" / "__pycache__" / "source.cpython-313.pyc"
+            cache.parent.mkdir()
+            cache.write_bytes(b"derived")
+            (root / "loose.pyc").write_bytes(b"derived")
+            self.assertEqual(acceptance.source_tree_snapshot(root), before)
+
+            authored.write_text("value = 2\n", encoding="utf-8")
+            self.assertNotEqual(acceptance.source_tree_snapshot(root), before)
+
+    def test_registry_display_counts_only_completed_capture(self) -> None:
+        self.assertEqual(
+            acceptance.promotion_source_registry_display(False),
+            "INCOMPLETE (0/4)",
+        )
+        self.assertEqual(
+            acceptance.promotion_source_registry_display(True),
+            "INCOMPLETE (1/4)",
+        )
+
     def build_cache(self, root: Path) -> tuple[Path, Path, Path]:
         userdata = root / "Steam" / "userdata"
         userdata.mkdir(parents=True)

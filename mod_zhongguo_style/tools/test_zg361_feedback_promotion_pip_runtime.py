@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 988_154)
+        self.assertEqual(len(historical), 988_833)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "9197dd6f1519ef180076b71a439d97cc7a90c433478e6e2822b1d5e91145f0c1",
+            "836081eeb1553b121d136bfd48254a3811480a2d8de0643c26e0d9c3620a71b9",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -623,6 +623,17 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         adapter = effect_block(self.effects, "zg361_pp_manager_portfolio_adapter_effect")
         self.assertIn("zg361_is_celestial_liege_trigger = yes", adapter)
         self.assertIn("any_vassal = { zg361_is_reviewable_vassal_trigger = yes }", adapter)
+        for token in (
+            "has_variable = zg361_p2c_active",
+            "var:zg361_p2c_active = 1",
+            "has_variable = zg361_p2c_cycle",
+            "var:zg361_p2c_cycle = var:zg361_review_serial",
+            "has_variable = zg361_p2c_subject",
+            "var:zg361_p2c_subject = { save_temporary_scope_as = zg361_pp_portfolio_subject }",
+            "ZG361PP: central frozen portfolio subject selected",
+        ):
+            self.assertIn(token, adapter)
+        self.assertIn("else = {", adapter)
         self.assertIn("position = 0", adapter)
         self.assertEqual(adapter.count("zg361_pp_open_"), 4)
         self.assertIn("if = {", adapter)

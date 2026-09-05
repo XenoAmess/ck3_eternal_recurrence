@@ -589,7 +589,11 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertEqual(pp.count("zg361_p2c_call_pp_adapter_effect = yes"), 1)
         pp_preflight = block(self.effects, "zg361_p2c_call_pp_adapter_effect")
         self.assertEqual(pp_preflight.count("zg361_pp_manager_portfolio_adapter_effect = yes"), 1)
-        self.assertIn("var:zg361_p2c_adapter_candidate = var:zg361_p2c_subject", pp_preflight)
+        self.assertIn("has_variable = zg361_p2c_subject", pp_preflight)
+        self.assertIn("var:zg361_p2c_subject = {", pp_preflight)
+        self.assertIn("is_alive = yes", pp_preflight)
+        self.assertIn("liege = root", pp_preflight)
+        self.assertNotIn("ordered_vassal", pp_preflight)
         career_preflight = block(self.effects, "zg361_p2c_call_career_hc_adapter_effect")
         self.assertEqual(career_preflight.count("zg361_career_hc_open_portfolio_effect = yes"), 1)
         self.assertIn("var:zg361_p2c_adapter_candidate = var:zg361_p2c_subject", career_preflight)
@@ -1001,6 +1005,13 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             self.assertTrue(text.startswith(f"{header}:\n"), language)
             keys = set(re.findall(r'^\s+([^\s:]+):\d+\s+"', text, flags=re.MULTILINE))
             self.assertEqual(keys, expected, language)
+
+    def test_character_event_summary_reads_root_variables_directly(self) -> None:
+        for language, _header in generator.LANGUAGES:
+            text = read(f"localization/{language}/zg361_phase2_central_l_{language}.yml")
+            self.assertNotIn("ROOT.MakeScope.Var", text, language)
+            for field in ("success_n", "na_n", "red_n", "external_n"):
+                self.assertIn(f"[ROOT.Var('zg361_p2c_{field}')|0]", text, language)
 
     def test_readiness_claim_is_honest(self) -> None:
         self.assertEqual(generator.READINESS, "static-ready")

@@ -16,11 +16,29 @@ zg361_pp_manager_portfolio_adapter_effect = {
 			any_vassal = { zg361_is_reviewable_vassal_trigger = yes }
 		}
 		save_temporary_scope_as = zg361_pp_portfolio_manager
-		ordered_vassal = {
-			limit = { zg361_is_reviewable_vassal_trigger = yes liege = scope:zg361_pp_portfolio_manager }
-			order_by = stewardship
-			position = 0
-			save_temporary_scope_as = zg361_pp_portfolio_subject
+		if = {
+			limit = {
+				has_variable = zg361_p2c_active
+				var:zg361_p2c_active = 1
+				has_variable = zg361_p2c_cycle
+				var:zg361_p2c_cycle = var:zg361_review_serial
+				has_variable = zg361_p2c_subject
+				var:zg361_p2c_subject = {
+					is_alive = yes
+					zg361_is_reviewable_vassal_trigger = yes
+					liege = scope:zg361_pp_portfolio_manager
+				}
+			}
+			var:zg361_p2c_subject = { save_temporary_scope_as = zg361_pp_portfolio_subject }
+			debug_log = "ZG361PP: central frozen portfolio subject selected"
+		}
+		else = {
+			ordered_vassal = {
+				limit = { zg361_is_reviewable_vassal_trigger = yes liege = scope:zg361_pp_portfolio_manager }
+				order_by = stewardship
+				position = 0
+				save_temporary_scope_as = zg361_pp_portfolio_subject
+			}
 		}
 		if = {
 			limit = { exists = scope:zg361_pp_portfolio_subject }

@@ -145,42 +145,78 @@ LIVE_BOUNDARY: Final = (
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
-    run_id="R103",
-    observed_at="2026-09-06 02:21 Asia/Shanghai",
+    run_id="R104",
+    observed_at="2026-09-06 02:54 Asia/Shanghai",
     result="RED",
-    product_commit="5b80006",
-    projection="phase2-full-release-r103-5b80006",
+    product_commit="37f6112",
+    projection="phase2-full-release-r104-37f6112",
     verified_file_count=937,
-    product_tree_sha256="67AF3335E74656C731B3EBA98C26C4305570250F82FA6B6584ADE52DFF4FDE95",
-    release_manifest_sha256="DAFCD67135C9077F67BBC384A8508040B97A6ACF911A55198CD682FFF4E7A731",
+    product_tree_sha256="FE9BCEC220F06FC9E4299701700E150AB886468A381967A56AD2287CAA436C94",
+    release_manifest_sha256="4641B3F60C8B1F6A8055E94C64E6520188ABD6DBDAE6251FFE02D7EC1E8AD855",
     loader_database_nodes=303,
     loader_fatal_count=0,
     speed=5,
-    observation_days=2345,
-    native_observations=500,
+    observation_days=550,
+    native_observations=162,
     drained_event_keys=(
         "zg361b2.40",
-        "ep3_emperor_yearly.2240",
+        "ep3_interactions_events.0630",
+        "ep3_admin_events.0002",
         "ep3_governor_yearly.3060",
-        "spymaster_task.0381",
-        "zg361.40",
-        "ep3_governor_yearly.8160",
         "zg361.40",
         "zg361b1.200",
         "zg361b1.201",
-        "health.1001",
-        "health.3104",
+        "zg361b1.126",
+        "sway_ongoing.1002",
+        "zg361m.1",
+        "zg361.1",
+        "zg361ch.19",
+        "zg361ch.20",
+        "zg361ch.21",
+        "zg361ch.22",
+        "zg361ch.23",
+        "zg361ch.24",
+        "zg361ch.25",
+        "zg361ch.901",
+        "zg361ch.92",
+        "zg361ch.93",
+        "zg361ch.94",
+        "zg361ch.95",
+        "zg361ch.96",
+        "zg361ch.97",
+        "zg361ch.902",
+        "zg361ch.98",
+        "zg361ch.99",
+        "zg361ch.100",
+        "zg361ch.101",
+        "zg361ch.102",
+        "zg361ch.103",
+        "zg361ch.104",
+        "zg361ch.105",
+        "zg361ch.903",
+        "zg361ch.106",
+        "zg361ch.107",
+        "zg361ch.108",
+        "zg361ch.109",
+        "zg361ch.110",
+        "zg361ch.111",
+        "zg361ch.112",
+        "zg361ch.113",
+        "zg361ch.904",
+        "zg361ch.114",
+        "zg361ch.115",
+        "zg361ch.116",
+        "zg361ch.117",
+        "zg361ch.118",
+        "zg361ch.119",
+        "zg361ch.120",
+        "zg361ch.905",
+        "zg361comp.1",
+        "zg361comp.1",
+        "zg361comp.1",
+        "zg361comp.1",
         "zg361.40",
-        "tgp_interaction_event.0030",
-        "ep3_admin_events.0002",
-        "scheme_critical_moments.1134",
-        "ep3_governor_yearly.8100",
-        "health.1101",
-        "zg361.40",
-        "health.7400",
-        "zg361.40",
-        "tgp_china_yearly.0010",
-        "zg361.40",
+        "zg361p2c.2",
     ),
     cleared_product_signatures=(
         "Unknown effect: has_variable (R98 compensation portfolio dispatch)",
@@ -192,37 +228,37 @@ LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
         "career-transfer consumer/receiver state (R102)",
         "B2 redundancy state (R102)",
         "elimination rank read (R102)",
+        "B1 delayed weak-subject calibration cascade (R103)",
+        "promotion/PIP optional settlement and sample state (R103)",
         "loader-attributed project errors",
     ),
     evidence=(
         "docs/phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md",
         "docs/phase2-promo/phase2-acceptance-case-index.md",
-        r"Z:\b3r103_retry1\evidence-index.json",
-        r"Z:\b3r103_retry1\cell\02_loader_error_scan.json",
-        r"Z:\b3r103_retry1\cell\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume1\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume2\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume3\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume4\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume5\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume6\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume7\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_resume8\03_promotion_source_production_entry.json",
-        r"Z:\b3r103_retry1_native_state\profile\logs\error.log",
-        r"Z:\b3r103_retry1_native_state\profile\logs\debug.log",
+        r"Z:\b3r104_retry1\evidence-index.json",
+        r"Z:\b3r104_retry1\cell\02_loader_error_scan.json",
+        r"Z:\b3r104_retry1\cell\03_promotion_source_production_entry.json",
+        r"Z:\b3r104_retry1_native_state\profile\logs\error.log",
+        r"Z:\b3r104_retry1_native_state\profile\logs\debug.log",
+        r"Z:\p2r104\phase2-product-projection.json",
+        r"Z:\p2r104\p.manifest.json",
     ),
     boundary=(
-        "The committed R103 release-identical product loaded 303/303 database nodes with "
-        "fatal 0. Retained PID 9240 advanced 2345 game days at speed 5 across 500 paused "
-        "native observations and 22 exact GREEN event drains. The filtered bank-range "
-        "signature remained zero; the R102 four-family repair also remained zero, so both are "
-        "gameplay-live. The target zg361pp.146 -> D+1 .147 checkpoint did not appear; the "
-        "canonical registry therefore remains 0/4. The longer product log exposed one B1 "
-        "weak-subject calibration cascade and two promotion/PIP optional-state reads in "
-        "zg361pp.2167/.2168. All three are product REDs and are R104 repair inputs. The "
-        "player remained alive, including recovery after illness; this was not an illness-"
-        "death failure, the consecutive counter remains 0/3, and no health or survivability "
-        "fixture was applied. This whole-product RED promotes no per-ID tier."
+        "The committed R104 release-identical product loaded 303/303 database nodes with "
+        "fatal 0. PID 26728 advanced through the 550-day speed-5 bound across 162 paused "
+        "native observations and 58 exact GREEN event drains. It completed one full player "
+        "B1 publication -> central serial portfolio -> summary traversal. Every R103 product "
+        "signature remained zero, so those repairs are gameplay-live. The target zg361pp.146 "
+        "-> D+1 .147 checkpoint did not appear and no completed receipt was written; the "
+        "canonical registry therefore remains 0/4. Live evidence showed the central stage-3 "
+        "caller and PP adapter reselecting the top-stewardship subject after 42 game days of "
+        "earlier stages, so ordering drift skipped the frozen subject and typed the PP stage "
+        "RED. The visible central summary also used an invalid ROOT.MakeScope localization "
+        "chain. A derived __pycache__ file caused a separate harness-only source-integrity "
+        "false RED while the exact product and mounted runtime trees remained unchanged. The "
+        "player remained alive; this was not an illness-death failure, the consecutive "
+        "counter remains 0/3, and no health or survivability fixture was applied. This whole-"
+        "product RED promotes no per-ID tier."
     ),
 )
 
