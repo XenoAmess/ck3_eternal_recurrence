@@ -3510,6 +3510,27 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertNotIn("subtract = var:zg361_b1_evidence_late", event)
         self.assertIn("name = zg361_b1_reopen_observation_recorded value = 1", event)
+        self.assertIn("has_variable = zg361_b1_reopen_object_available", event)
+        self.assertIn("has_variable = zg361_b1_reopen_baseline_score", event)
+        self.assertIn("trigger_else = { always = no }", event)
+        cancellation = event.index(
+            "# A dead, transferred or otherwise invalid subject still consumes its"
+        )
+        self.assertIn("else = {", event[cancellation - 20 : cancellation])
+        self.assertNotIn("else_if = {", event[cancellation - 20 : cancellation])
+        manager_cancel = event.index(
+            "change_variable = { name = zg361_b1_reopen_cancelled_n add = 1 }",
+            cancellation,
+        )
+        subject_close = event.index(
+            "set_variable = { name = zg361_b1_reopen_object_state value = 3 }",
+            cancellation,
+        )
+        self.assertLess(subject_close, manager_cancel)
+        self.assertIn(
+            "trigger_if = {",
+            event[cancellation:subject_close],
+        )
         self.assertIn("stale post-seal batch ticket ignored", event)
         reopen = top_level_block(
             self.effects, "zg361_b1_apply_symmetric_reopen_effect"

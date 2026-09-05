@@ -693,6 +693,7 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "pause_timeline": "game.command.pause-map",
     "resume_timeline": "game.command.resume-map",
     "bounded_timeline_speed": "game.command.set-speed-1",
+    "fast_timeline_speed": "game.command.set-speed-5",
     "event_option_action_ack": "game.command.select-event-option-N",
     "save_checkpoint": "game.command.save-checkpoint",
     "current_event_context": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
@@ -756,6 +757,7 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "pause_timeline": "pause-map",
     "resume_timeline": "resume-map",
     "bounded_timeline_speed": "set-speed-1",
+    "fast_timeline_speed": "set-speed-5",
     "bounded_life_advance": "life-advance",
     "save_checkpoint": "save-checkpoint",
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -773,6 +775,7 @@ PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "pause_timeline",
     "resume_timeline",
     "bounded_timeline_speed",
+    "fast_timeline_speed",
     "event_option_action_ack",
     "promotion_source_progress_transport",
     "review_now_action_transport",
@@ -785,6 +788,7 @@ PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
     "pause_timeline",
     "resume_timeline",
     "bounded_timeline_speed",
+    "fast_timeline_speed",
 )
 PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",

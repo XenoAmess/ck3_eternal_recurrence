@@ -130,7 +130,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertEqual(
             set(report["required_action_steps"].values()),
-            {"save-checkpoint", "pause-map", "resume-map", "set-speed-1"},
+            {
+                "save-checkpoint",
+                "pause-map",
+                "resume-map",
+                "set-speed-1",
+                "set-speed-5",
+            },
         )
 
     def test_current_event_capability_absence_is_typed_red(self) -> None:
@@ -156,6 +162,73 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 encoding="utf-8"
             )
         self.assertIn('"result": "RED"', persisted)
+
+    def test_product_entry_uses_speed_five_and_pauses_before_event_query(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.speed = 1
+                self.paused = True
+                self.event_pending = False
+                self.steps: list[str] = []
+
+            def snapshot(self) -> dict[str, object]:
+                snapshot: dict[str, object] = {
+                    "map_ready": True,
+                    "revision": 7,
+                    "date_raw": 53147016,
+                    "played_character": {"character_id": 29037},
+                    "diagnostics": {"connection_generation": 9},
+                    "paused": self.paused,
+                    "speed": self.speed,
+                }
+                if self.event_pending:
+                    snapshot["active_event"] = {"option_count": 1}
+                return snapshot
+
+            def query_zhongguo_promotion_source_progress_v1(
+                self, request_nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                widgets = [
+                    {"effective_visible": {"status": "available", "value": False}}
+                    for _ in range(5)
+                ]
+                widgets[2]["effective_visible"]["value"] = True
+                return {
+                    "status": "available",
+                    "query_sequence": 1,
+                    "zhongguo_promotion_source_progress": {"widgets": widgets},
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.steps.append(step)
+                if step == "set-speed-5":
+                    self.speed = 5
+                elif step == "resume-map":
+                    self.paused = False
+                    self.event_pending = True
+                elif step == "pause-map":
+                    self.paused = True
+                return {"accepted": True, "status": "submitted"}
+
+        ticks = iter((0.0, 0.0, 0.0, 0.0, 2.0))
+        service = Service()
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "timed out before paused real zg361pp.147",
+        ):
+            production.enter_promotion_source_checkpoint_v1(
+                service,
+                timeout_seconds=1.0,
+                poll_interval_seconds=0.0,
+                clock=lambda: next(ticks),
+                sleeper=lambda _seconds: None,
+            )
+        self.assertEqual(
+            service.steps,
+            ["set-speed-5", "resume-map", "pause-map"],
+        )
 
     def test_capture_mode_is_mutually_exclusive_with_other_runtime_modes(self) -> None:
         with self.assertRaisesRegex(
@@ -557,6 +630,96 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(checks["saved_scope_count"])
+
+    def test_ep3_governor_3060_binds_late_product_window_and_safe_option(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "ep3_governor_yearly.3060"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53147016,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 19,
+            "date_raw": 53156640,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                scope("previous_holder", "character", 32904),
+                scope("new_holder", "character", 36354),
+                scope("emperor", "character", 36354),
+                scope("root_scope", "character", 29037),
+                scope("title", "landed_title"),
+                scope("transfer_type", "flag"),
+                scope("nf_gov_type", "government_type"),
+                scope("emp_location", "province"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((1, 2, 3))
+            ],
+        }
+        snapshot = {"date_raw": 53156640, "active_event": {"option_count": 4}}
+        event = {"event_instance_id": 19}
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+        outside = copy.deepcopy(context)
+        outside["date_raw"] = 53160240
+        outside_snapshot = copy.deepcopy(snapshot)
+        outside_snapshot["date_raw"] = 53160240
+        checks = production._known_interrupt_checks(
+            snapshot=outside_snapshot,
+            event=event,
+            context=outside,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(checks["context_date_raw"])
+        self.assertFalse(checks["snapshot_date_raw"])
+
+        wrong_scope_type = copy.deepcopy(context)
+        wrong_scope_type["saved_scopes"][-1]["scope"]["type_key"] = "value"
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_scope_type,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:emp_location:type"])
 
     def test_health_7500_accepts_only_the_source_proven_single_option_frame(self) -> None:
         context = {

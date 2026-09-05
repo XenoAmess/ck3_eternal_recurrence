@@ -384,12 +384,13 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # is hidden in this frame; rendered option 3 maps to native index 3
         # and has no scripted effect, unlike the political support/detractor
         # branches.
-        "date_raw": (53148048, 53149416, 53152368),
-        # Multiple live runs place this exact succession notice on adjacent
-        # day ticks.  Bind it to the observed product window rather than an
-        # ever-growing set of discrete timestamps; every other identity and
-        # option-shape check remains exact.
-        "date_raw_range": (53148048, 53152368),
+        "date_raw": (53148048, 53149416, 53152368, 53156640),
+        # This independent vanilla succession notice has now appeared from
+        # early through late in the same bounded product observation.  Bind
+        # only its date to that run's finite window; every identity, type,
+        # scope-count and option-shape check remains exact.
+        "date_raw_range": (53147016, 53160216),
+        "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
             "previous_holder": 32904,
@@ -1759,12 +1760,12 @@ def enter_promotion_source_checkpoint_v1(
             if poll_interval_seconds:
                 sleeper(poll_interval_seconds)
             continue
-        if snapshot.get("speed") != 1:
+        if snapshot.get("speed") != 5:
             _accepted(
                 service.execute_step(
-                    "set-speed-1", expected_revision=int(snapshot["revision"])
+                    "set-speed-5", expected_revision=int(snapshot["revision"])
                 ),
-                "set-speed-1",
+                "set-speed-5",
             )
         elif snapshot.get("paused") is True:
             _accepted(

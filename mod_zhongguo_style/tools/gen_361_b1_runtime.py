@@ -9330,22 +9330,47 @@ zg361b1.122 = {
 				limit = {
 				scope:zg361_b1_reopen_ticket_subject = {
 					is_alive = yes
-					var:zg361_b1_case_owner = scope:zg361_b1_reopen_ticket_owner
-					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
-					var:zg361_b1_case_state = 7
-					var:zg361_b1_case_active = 1
-					var:zg361_b1_roster_included = 1
-					var:zg361_pending_grade = var:zg361_b1_reopen_sealed_grade
-					var:zg361_b1_reopen_object_available = 1
-					var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
-					var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
-					var:zg361_b1_reopen_object_subject = this
-					var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
-					var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
-					var:zg361_b1_reopen_object_state = 1
-					var:zg361_b1_reopen_route = scope:zg361_b1_reopen_ticket_route
+					trigger_if = {
+						limit = {
+							has_variable = zg361_b1_case_owner
+							has_variable = zg361_b1_case_subject
+							has_variable = zg361_b1_cycle_serial
+							has_variable = zg361_b1_case_serial
+							has_variable = zg361_b1_case_state
+							has_variable = zg361_b1_case_active
+							has_variable = zg361_b1_roster_included
+							has_variable = zg361_pending_grade
+							has_variable = zg361_b1_reopen_sealed_grade
+							has_variable = zg361_b1_reopen_object_available
+							has_variable = zg361_b1_reopen_object_id
+							has_variable = zg361_b1_reopen_object_owner
+							has_variable = zg361_b1_reopen_object_subject
+							has_variable = zg361_b1_reopen_object_cycle
+							has_variable = zg361_b1_reopen_object_case
+							has_variable = zg361_b1_reopen_object_state
+							has_variable = zg361_b1_reopen_route
+							has_variable = zg361_b1_reopen_baseline_score
+							has_variable = zg361_b1_case_revision
+							has_variable = zg361_b1_roster_frozen_order
+						}
+						var:zg361_b1_case_owner = scope:zg361_b1_reopen_ticket_owner
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
+						var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
+						var:zg361_b1_case_state = 7
+						var:zg361_b1_case_active = 1
+						var:zg361_b1_roster_included = 1
+						var:zg361_pending_grade = var:zg361_b1_reopen_sealed_grade
+						var:zg361_b1_reopen_object_available = 1
+						var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
+						var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
+						var:zg361_b1_reopen_object_subject = this
+						var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
+						var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
+						var:zg361_b1_reopen_object_state = 1
+						var:zg361_b1_reopen_route = scope:zg361_b1_reopen_ticket_route
+					}
+					trigger_else = { always = no }
 				}
 				}
 				scope:zg361_b1_reopen_ticket_subject = {
@@ -9412,24 +9437,38 @@ zg361b1.122 = {
 				change_variable = { name = zg361_b1_reopen_processed_n add = 1 }
 				set_variable = { name = zg361_b1_reopen_callback_consumed value = 1 }
 			}
-			else_if = {
+			else = {
 				# A dead, transferred or otherwise invalid subject still consumes its
-				# one open batch object.  This is a cancellation, never a fake review.
-				limit = {
+				# one manager barrier slot. If its character object still owns the
+				# exact tuple, close that object too; a weak/no-variable scope skips
+				# only the object mutation, never the manager-side cancellation.
 					scope:zg361_b1_reopen_ticket_subject = {
-						var:zg361_b1_reopen_object_available = 1
-						var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
-						var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
-						var:zg361_b1_reopen_object_subject = this
-						var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
-						var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
-						var:zg361_b1_reopen_object_state = 1
+						if = {
+							limit = {
+								trigger_if = {
+									limit = {
+										has_variable = zg361_b1_reopen_object_available
+										has_variable = zg361_b1_reopen_object_id
+										has_variable = zg361_b1_reopen_object_owner
+										has_variable = zg361_b1_reopen_object_subject
+										has_variable = zg361_b1_reopen_object_cycle
+										has_variable = zg361_b1_reopen_object_case
+										has_variable = zg361_b1_reopen_object_state
+									}
+									var:zg361_b1_reopen_object_available = 1
+									var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
+									var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
+									var:zg361_b1_reopen_object_subject = this
+									var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
+									var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
+									var:zg361_b1_reopen_object_state = 1
+								}
+								trigger_else = { always = no }
+							}
+							set_variable = { name = zg361_b1_reopen_object_state value = 3 }
+							set_variable = { name = zg361_b1_reopen_cancel_reason value = 1 }
+						}
 					}
-				}
-				scope:zg361_b1_reopen_ticket_subject = {
-					set_variable = { name = zg361_b1_reopen_object_state value = 3 }
-					set_variable = { name = zg361_b1_reopen_cancel_reason value = 1 }
-			}
 				change_variable = { name = zg361_b1_reopen_pending_n add = -1 }
 				change_variable = { name = zg361_b1_reopen_processed_n add = 1 }
 				change_variable = { name = zg361_b1_reopen_cancelled_n add = 1 }
