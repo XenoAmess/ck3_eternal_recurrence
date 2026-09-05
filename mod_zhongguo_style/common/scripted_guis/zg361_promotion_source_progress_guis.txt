@@ -32,7 +32,11 @@ zg361_promotion_source_b1_active_gui = {
 	scope = character
 	is_shown = {
 		is_ai = no
-		has_character_flag = zg361_review_in_progress
+		# open_cycle sets cycle_active at D0; review_in_progress starts later.
+		OR = {
+			has_character_flag = zg361_b1_cycle_active
+			has_character_flag = zg361_review_in_progress
+		}
 		has_variable = zg361_b1_cycle_serial
 		has_variable = zg361_b1_cycle_state
 		var:zg361_b1_cycle_serial > 0

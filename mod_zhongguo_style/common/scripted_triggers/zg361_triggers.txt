@@ -20,6 +20,8 @@ zg361_is_reviewable_vassal_trigger = {
 # prestige 由各入口各自按同一个 150 成本核对；这里仅冻结业务前置，避免
 # 决议与无坐标 named-widget 入口日后发生语义漂移。
 zg361_review_now_business_valid_trigger = {
+	# The production opener already rejects an active B1 cycle from D0.
+	NOT = { has_character_flag = zg361_b1_cycle_active }
 	NOT = { has_character_flag = zg361_review_in_progress }
 	trigger_if = {
 		limit = { has_variable = zg361_last_settled_year }

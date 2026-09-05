@@ -15,6 +15,56 @@
 
 固定 off-screen product surface 只发布五个 allowlisted widget：window、review action、played-owner B1 active、central active、PP active。reader 在 application-main paused mailbox 中完成两次同帧读取，缺失或不一致返回 typed unavailable。
 
+### 2026-09-05：D0 witness 与重复开案入口对齐
+
+这是生产源码合同不匹配的最小修复，状态为 `source-confirmed / static-ready`，尚不构成新实机 GREEN：
+
+- 真实 `zg361_review_now_bridge_gui` 消费 pending flag 后调用 `zg361_b1_open_cycle_effect`；后者在 D0 写入
+  `zg361_b1_cycle_active`、递增 `zg361_b1_cycle_serial` 并设置 `zg361_b1_cycle_state = 1`。
+  原 witness 却必须看见后期才出现的 `zg361_review_in_progress`，因此确定性漏报刚打开的 B1。
+- witness 现在接受 `cycle_active OR review_in_progress`，仍保留 non-AI、正 serial 与 state `1..8` 条件。
+  旧 late-review 路径未删除；只存在 legacy review flag、没有 manager cycle 字段的存档仍不被认作 B1。
+- `zg361_review_now_business_valid_trigger` 增加 `NOT cycle_active`，与业务 opener 既有的 active 排除相同。
+  决议合法性及原生 action 的 shown/effect 两处都复用该 trigger；D0 开案后重复入口不再保持可用。
+  本补丁不修改 open-cycle、事件时间线、150 prestige 费用或 pending flag 消费方式。
+- `zg361_b1_initialize_subject_case_effect` 会给受评者写入同名 `cycle_serial` 和独立的
+  `case_state/case_active`，这些不等于 played owner 的 manager `cycle_state/cycle_active`。
+  当前 canonical seed 的 provider matrix 明示 owner `32904` / subject `29037`，不能据此把玩家
+  `29037` 的 subject 案升级成管理者周期；本补丁也不为 legacy-only seed 补造状态或重新绑定身份。
+
+有限 Python fixture 位于 `tools/test_zg361_promotion_source_b1_witness.py`：直接读取真实生成 opener 的
+D0 flag/serial/state 写入片段、真实 bridge、GUI 与 shared trigger；旧 witness 对该投影为 false，修复后为 true。
+它只求值本 witness 的有限 Boolean/flag/number 子集，不执行完整开案、原生 GUI、调度或世界状态，
+不是 CK3 runtime，也不是 open_kaishek finite-runtime。
+fixture 源文件 SHA-256：`9687d77fb158080450024aed2ab0ef589a8eccbb37d6f6e04113a0eec75cd99a`。
+
+本轮先执行 open_kaishek parser，再执行 focused fixture：
+
+- open_kaishek commit：`84a2b18fedad74de37bf5cd0472519ee321f367d`；CLI `0.1.0-cli`，目标 profile
+  `ck3-1.19.0.6-zg361`；CK3 exact build/EXE SHA 沿用本文顶部冻结值。`parse` 本身不运行 profile 语义。
+- JAR：`Z:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar`，SHA-256
+  `bb94cd9142112a62df57b901ca5e008b3a8ec0c05feec6ec3d3a7551df5512c9`。
+- corpus ID `promotion-source-b1-witness-d0-20260905`：以下两份真实脚本均 `PARSED`、diagnostics `0`、
+  `roundTrip=true`；只能称 parser GREEN。`set_variable/change_variable` 的真实执行、scope 及 native
+  widget 可见性不受此 parser 结果证明，仍需 CK3 paused query。
+
+| 输入文件（相对 mod_zhongguo_style） | 字节数 | SHA-256 |
+| --- | ---: | --- |
+| `common/scripted_guis/zg361_promotion_source_progress_guis.txt` | 2059 | `bb8b1af26e5b58aa827a4aef1ebbde6a4a2e536f227a3375a145fed23f249e8f` |
+| `common/scripted_triggers/zg361_triggers.txt` | 5188 | `6412efc348aaee0a60f557c03994dc4dcda65c4974edb29d77f014aa6124af36` |
+
+实际命令（工作目录为本 worktree；两次 parse 后再运行测试）：
+
+```powershell
+java -jar Z:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar parse mod_zhongguo_style/common/scripted_guis/zg361_promotion_source_progress_guis.txt
+java -jar Z:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar parse mod_zhongguo_style/common/scripted_triggers/zg361_triggers.txt
+& Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe tools/test_zg361_promotion_source_b1_witness.py -v
+```
+
+focused 测试 `4/4 GREEN`：D0 新旧对照、late-review 兼容、idle/legacy-only/subject-only/AI 排除、
+active gate 与两个原生动作路径及决议共享入口。后续仍须用完整新投影证明
+`review action -> independently observed manager B1; action hidden`，并另验 `.146 -> D+1 .147`。
+
 ## 动作与证据链
 
 ```mermaid
