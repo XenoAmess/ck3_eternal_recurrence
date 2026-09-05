@@ -61,6 +61,105 @@ from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_governor_removal_letter_binds_dynamic_nonplayer_actor(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def unavailable_character_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "unavailable",
+                        "reason": "character_scope_identity_unavailable",
+                    },
+                },
+            }
+
+        def generic_scope(name: str, type_key: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": {
+                        "status": "unavailable",
+                        "reason": "generic_scope_payload_identity_not_closed",
+                    },
+                },
+            }
+
+        event_key = "ep3_interactions_events.0630"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53160264,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 23,
+            "date_raw": 53164992,
+            "root_scope": character_scope("root", 29037)["scope"],
+            "saved_scopes": [
+                character_scope("actor", 36354),
+                character_scope("recipient", 29037),
+                unavailable_character_scope("secondary_actor"),
+                unavailable_character_scope("secondary_recipient"),
+                unavailable_character_scope("intermediary"),
+                generic_scope("hook", "boolean"),
+                generic_scope("force_retirement_treasury_cost", "value"),
+            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+        snapshot = {"date_raw": 53164992, "active_event": {"option_count": 1}}
+        event = {"event_instance_id": 23}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertTrue(checks["scope:actor:unique_third_party"])
+
+        earlier_actor = copy.deepcopy(context)
+        earlier_actor["saved_scopes"][0] = character_scope("actor", 32904)
+        self.assertTrue(all(checks_for(earlier_actor).values()))
+
+        player_actor = copy.deepcopy(context)
+        player_actor["saved_scopes"][0] = character_scope("actor", 29037)
+        self.assertFalse(
+            checks_for(player_actor)["scope:actor:unique_third_party"]
+        )
+
     def test_retained_client_waits_for_async_dll_reconnect(self) -> None:
         calls = {"capabilities": 0, "clock": 0.0}
 

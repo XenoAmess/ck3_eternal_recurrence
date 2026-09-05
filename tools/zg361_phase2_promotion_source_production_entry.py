@@ -118,8 +118,16 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "date_raw_range": (53147256, 53151600),
         "root_character_id": 29037,
         "character_scopes": {
-            "actor": 32904,
             "recipient": 29037,
+        },
+        # ``actor`` is the live governor-removal interaction initiator.  The
+        # exact source uses it as sender and title-transfer owner, but does
+        # not freeze one historical character.  R94 observed 32904 and the
+        # later R97 retained lineage observed 36354 after realm turnover.
+        # Bind the source invariant (one non-player actor) instead of the
+        # first run's incidental ID.
+        "unique_character_scope_excludes": {
+            "actor": (29037,),
         },
         "unavailable_character_scopes": (
             "secondary_actor",
