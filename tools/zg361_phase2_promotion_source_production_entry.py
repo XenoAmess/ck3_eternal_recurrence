@@ -464,12 +464,15 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 3,
     },
     "zg361.40": {
-        # Product Jingcha mandate at D+161.  The legal default opens the
+        # Product Jingcha mandate at D+161 and again one exact year later
+        # inside the 550-day observation window.  The legal default opens the
         # activity planner and schedules its hidden compliance deadline 300
-        # days later, beyond the D+330 promotion target.  Refusal would write
-        # manager-governance facts and a next-review KPI penalty, so it is not
-        # neutral for this capture lineage.
-        "date_raw": 53150880,
+        # days later.  Refusal would write manager-governance facts and a
+        # next-review KPI penalty, so it is not neutral for this capture
+        # lineage.  R59 observed the second delivery exactly 8,760 hours
+        # after the first, matching the yearly playable pulse source.
+        "date_raw": (53150880, 53159640),
+        "max_occurrences": 2,
         "root_character_id": 29037,
         "character_scopes": {},
         "boolean_scopes": (),

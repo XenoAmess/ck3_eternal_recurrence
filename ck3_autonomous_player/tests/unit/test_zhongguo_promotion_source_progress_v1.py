@@ -289,7 +289,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         def snapshot(self) -> dict[str, object]:
             if self.stage not in {
                 "pip", "flood_relief", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
-                "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha", "withering_mind",
+                "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha", "jingcha_repeat", "withering_mind",
                 "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding",
                 "governor_bargain", "succession"
             }:
@@ -344,6 +344,8 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 instance_id, option_count, date, revision = 399, 2, 53148768, 38
             elif self.stage == "jingcha":
                 instance_id, option_count, date, revision = 40, 2, 53150880, 39
+            elif self.stage == "jingcha_repeat":
+                instance_id, option_count, date, revision = 41, 2, 53159640, 43
             elif self.stage == "withering_mind":
                 instance_id, option_count, date, revision = 7200, 1, 53152296, 40
             elif self.stage == "self_review":
@@ -395,7 +397,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         ) -> dict[str, object]:
             if self.stage not in {
                 "pip", "flood_relief", "new_governorship", "forced_retirement", "doppelganger", "china_yearly", "grieving_child", "merchant_dispute", "unpaid_taxes", "emperor_assistance", "scholar", "learned_eunuch", "equitable", "local_defense", "governor_yearly", "pugnacious", "neighbor_governor", "silk_road",
-                "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha", "withering_mind",
+                "arbitrary_tax", "hook_offer", "hook_offer_repeat", "no_secrets", "jingcha", "jingcha_repeat", "withering_mind",
                 "self_review", "secret_discovery", "lover_secret", "sway_misunderstanding",
                 "governor_bargain", "succession"
             }:
@@ -585,7 +587,7 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                     _boolean_scope("no_secrets_here"),
                 ]
                 option_count = 2
-            elif self.stage == "jingcha":
+            elif self.stage in {"jingcha", "jingcha_repeat"}:
                 key = "zg361.40"
                 scopes = []
                 option_count = 2
@@ -792,6 +794,9 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
                 self.stage = "sway_misunderstanding"
             elif self.stage == "sway_misunderstanding":
                 assert option_number == 1
+                self.stage = "jingcha_repeat"
+            elif self.stage == "jingcha_repeat":
+                assert option_number == 1
                 self.stage = "succession"
             elif self.stage == "succession":
                 assert option_number == 4
@@ -851,9 +856,10 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
         "spymaster_task.0342",
         "spymaster_task.0346",
         "sway_outcome.2001",
+        "zg361.40",
         "ep3_governor_yearly.3060",
     ]
-    assert service.selected == [1, 3, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 1, 2, 1, 1, 1, 1, 4, 1]
+    assert service.selected == [1, 3, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 4, 1]
 
 
 def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:

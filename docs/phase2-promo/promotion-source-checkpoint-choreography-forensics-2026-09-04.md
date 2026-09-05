@@ -469,3 +469,35 @@ and `B5D39ADBFD4556D9F2EF8EE810ED47DD0D2620A517853CEA60035342F86981D7`.
 All final logs retain zero B2 unset-variable reads, cleanup was GREEN, and CK3
 returned to zero. This random post-loader health interrupt is not evidence of
 file-size or loader-performance failure and does not trigger another split.
+
+## R59: the 550-day window contains two annual Jingcha mandates
+
+R59 ran from pushed commit `3dcf75c`, passed both loaders, and drained PIP,
+`.0630`, `.0002`, the first `zg361.40`, and `zg361b1.200`. It then stopped
+before action when a second `zg361.40` exceeded the default one-occurrence
+guard. The random `health.7200` event did not recur, so its new contract is
+still live pending.
+
+The two product event frames are at `date_raw=53150880` and `53159640`, exactly
+8,760 hours (365 days) apart. Both have played root 29037, zero saved scopes,
+and two shown/enabled native options 0/1. The loaded product source routes
+`zg361_jingcha_annual_dispatch_effect` from the yearly playable pulse; after
+the first option-1 commitment reaches its 300-day cleanup boundary, the next
+annual mandate can legally be issued. The exact contract now admits only those
+two ticks and caps this key at two occurrences. Its option and frame checks
+remain unchanged. Focused normal and optimized regressions are both 16/16
+GREEN, and the no-launch preflight is GREEN.
+
+R59 also emitted 29 real `ZG361P2C` business rows: 11 post-publication tuple
+freezes, eight AI silent completions, eight stale typed REDs, and two
+unauthorized/incomplete ignores. No `.146` appeared before the second annual
+modal. After this bounded event is drained, a 550-day exhaustion must be
+analyzed from those business traces rather than answered by another blind
+timeout extension.
+
+The outer report/evidence-index SHA-256 values are
+`9656A3A14469D14540FE8AFE1927D14A1088BD963DF931AAA213B2F9C74DAC90`
+and `1C20F900BC509977079F344A35E3022B68B183006DBCFAE176D5642B7DFACE0C`.
+All final logs contain zero B2 unset-variable reads, cleanup was GREEN, and
+CK3 count returned to zero. This is a post-loader annual-event bound, not a
+file-size/performance RED, and it does not trigger another effect split.
