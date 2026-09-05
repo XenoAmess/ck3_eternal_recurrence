@@ -810,6 +810,14 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         # Manager arrival order is frozen once and is the sole seat order;
         # manager-local case serials are not a globally unique tie breaker.
         self.assertIn(
+            "name = zg361_b1_ready_order value = var:zg361_b1_ready_manager_n",
+            self.effects,
+        )
+        self.assertIn(
+            "name = zg361_b1_bank_ready_order value = scope:zg361_b1_ready_order",
+            self.effects,
+        )
+        self.assertNotIn(
             "name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n",
             self.effects,
         )
@@ -2306,6 +2314,13 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("name = zg361_b1_pending_object_state value = 5", watchdog)
         self.assertIn("name = zg361_b1_pending_open_n add = -1", watchdog)
         self.assertIn("name = zg361_b1_pending_open_n value = 0", watchdog)
+        self.assertIn(
+            "limit = { has_variable = zg361_b1_pending_reservation_state }",
+            watchdog,
+        )
+        self.assertIn(
+            "has_variable = zg361_b1_pending_reserved_for_subject", watchdog
+        )
         self.assertIn("zg361_b1_prepare_reopen_gate_effect = yes", watchdog)
 
     def test_143_full_cohort_batch_has_stable_result_and_distinct_next_cycle_consumer(self) -> None:
@@ -3306,6 +3321,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             failure.count("name = zg361_pending_grade value = 2"), 1
         )
         self.assertIn("zg361_b1_pending_fallback_subject = {", failure)
+        self.assertGreaterEqual(
+            resolve.count(
+                "limit = { has_variable = zg361_b1_pending_reservation_state }"
+            ),
+            2,
+        )
         continuation = top_level_block(self.events, "zg361b1.123")
         self.assertIn("var:zg361_b1_pending_open_n = 0", continuation)
         self.assertIn("var:zg361_b1_case_active = 1", continuation)
@@ -3348,6 +3369,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "name = zg361_b1_local_publish_conservation_valid value = 1",
         ):
             self.assertIn(token, refresh)
+        self.assertIn(
+            "limit = { has_variable = zg361_b1_pending_reservation_state }",
+            refresh,
+        )
         self.assertIn(
             "var:zg361_b1_local_publish_expected_n >= {", refresh
         )
@@ -3406,6 +3431,23 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertIn("zg361b1.126.reopened", notice)
         self.assertIn("zg361b1.126.appended", notice)
+
+    def test_reopen_selection_does_not_shadow_permanent_event_target(self) -> None:
+        resolver = top_level_block(
+            self.effects, "zg361_b1_resolve_reopen_batch_effect"
+        )
+        apply_reopen = top_level_block(
+            self.effects, "zg361_b1_apply_symmetric_reopen_effect"
+        )
+        self.assertIn(
+            "save_temporary_scope_as = zg361_b1_selected_reopen_subject",
+            resolver,
+        )
+        self.assertNotIn(
+            "save_temporary_scope_as = zg361_b1_reopen_ticket_subject",
+            resolver,
+        )
+        self.assertIn("scope:zg361_b1_selected_reopen_subject", apply_reopen)
 
     def test_symmetric_reopen_is_pre_reward_single_use_and_reseals(self) -> None:
         gate = top_level_block(

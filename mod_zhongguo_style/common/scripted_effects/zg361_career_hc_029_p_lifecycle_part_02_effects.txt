@@ -61,7 +61,13 @@ zg361_career_hc_p_try_advance_04_effect = {
             TICKET_CASE = var:zg361_case_p_case_serial
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_schedule_p_stage_05_effect = yes
         }
     }
@@ -123,7 +129,13 @@ zg361_career_hc_p_try_advance_05_effect = {
             TICKET_CASE = var:zg361_case_p_case_serial
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_resolve_p_outcome_effect = yes
         }
     }

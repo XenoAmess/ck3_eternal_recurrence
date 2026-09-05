@@ -383,7 +383,11 @@ zg361_comp_m091_consume_effect = {
             else_if = { limit = { var:zg361_comp_m091_route = 3 } set_variable = { name = zg361_comp_m091_tenure_award value = 0 } set_variable = { name = zg361_comp_m091_performance_award value = 0 } }
             set_variable = { name = zg361_comp_m091_award_total value = var:zg361_comp_m091_tenure_award }
             change_variable = { name = zg361_comp_m091_award_total add = var:zg361_comp_m091_performance_award }
-            set_variable = { name = zg361_comp_m091_source_spot_gross value = var:zg361_comp_m090_spot_gross }
+            set_variable = { name = zg361_comp_m091_source_spot_gross value = 0 }
+            if = {
+                limit = { has_variable = zg361_comp_m090_spot_gross }
+                set_variable = { name = zg361_comp_m091_source_spot_gross value = var:zg361_comp_m090_spot_gross }
+            }
 
 
 

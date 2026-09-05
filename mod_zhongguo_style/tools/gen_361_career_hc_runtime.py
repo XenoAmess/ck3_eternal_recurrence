@@ -258,7 +258,13 @@ def transaction_journal(mechanism_id: int, domain: str, state: int, resource: st
                 AMOUNT = 5
             }}
             if = {{
-                limit = {{ var:zg361_case_kernel_applied = 1 }}
+                limit = {{
+                    trigger_if = {{
+                        limit = {{ has_variable = zg361_case_kernel_applied }}
+                        var:zg361_case_kernel_applied = 1
+                    }}
+                    trigger_else = {{ always = no }}
+                }}
                 zg361_case_kernel_settle_transaction_effect = {{
                     OWNER_VAR = {row["owner"]}
                     SUBJECT_VAR = {row["subject"]}
@@ -472,7 +478,13 @@ zg361_career_hc_open_{domain.key}_case_effect = {{
         }}
         zg361_case_{domain.key}_open_effect = yes
         if = {{
-            limit = {{ var:zg361_case_kernel_applied = 1 }}
+            limit = {{
+                trigger_if = {{
+                    limit = {{ has_variable = zg361_case_kernel_applied }}
+                    var:zg361_case_kernel_applied = 1
+                }}
+                trigger_else = {{ always = no }}
+            }}
             set_variable = {{ name = zg361_ch_{domain.key}_authorized value = {count} }}
             set_variable = {{ name = zg361_ch_{domain.key}_available value = {count} }}
             set_variable = {{ name = zg361_ch_{domain.key}_used value = 0 }}
@@ -1429,12 +1441,22 @@ def render_core(mechanism_id: int, domain: str, state: int) -> str:
                 }}
                 {transaction_journal(mechanism_id, domain, state, "treasury")}
                 if = {{
-                    limit = {{ var:zg361_case_kernel_applied = 1 }}
+                    limit = {{
+                        trigger_if = {{
+                            limit = {{ has_variable = zg361_case_kernel_applied }}
+                            var:zg361_case_kernel_applied = 1
+                        }}
+                        trigger_else = {{ always = no }}
+                    }}
                     {transaction_journal(mechanism_id, domain, state, "gold")}
                 }}
                 if = {{
                     limit = {{
-                        var:zg361_case_kernel_applied = 1
+                        trigger_if = {{
+                            limit = {{ has_variable = zg361_case_kernel_applied }}
+                            var:zg361_case_kernel_applied = 1
+                        }}
+                        trigger_else = {{ always = no }}
                         var:{p}_treasury_status = 2
                         var:{p}_gold_status = 2
                     }}
@@ -1465,7 +1487,13 @@ zg361_career_hc_m{mechanism_id:03d}_core_effect = {{
         }}
         {record_operation(mechanism_id, domain, state)}
         if = {{
-            limit = {{ var:zg361_case_kernel_applied = 1 }}
+            limit = {{
+                trigger_if = {{
+                    limit = {{ has_variable = zg361_case_kernel_applied }}
+                    var:zg361_case_kernel_applied = 1
+                }}
+                trigger_else = {{ always = no }}
+            }}
             {cost_apply}
             set_variable = {{ name = {p}_receipt_active value = 1 }}
             set_variable = {{ name = {p}_route value = scope:zg361_ch_route }}
@@ -1900,7 +1928,13 @@ def render_barrier(domain: DomainSpec, state: int, stage_ids: tuple[int, ...]) -
             TICKET_CASE = var:{row["case"]}
         }}
         if = {{
-            limit = {{ var:zg361_case_kernel_applied = 1 }}
+            limit = {{
+                trigger_if = {{
+                    limit = {{ has_variable = zg361_case_kernel_applied }}
+                    var:zg361_case_kernel_applied = 1
+                }}
+                trigger_else = {{ always = no }}
+            }}
             {after}
         }}
     }}
@@ -1982,7 +2016,13 @@ def render_deadline_event(domain: DomainSpec, state: int, event_id: int, *, suff
             DEADLINE_EXPIRED_VAR = {dl}_expired
         }}
         if = {{
-            limit = {{ var:zg361_case_kernel_applied = 1 }}
+            limit = {{
+                trigger_if = {{
+                    limit = {{ has_variable = zg361_case_kernel_applied }}
+                    var:zg361_case_kernel_applied = 1
+                }}
+                trigger_else = {{ always = no }}
+            }}
             zg361_career_hc_{domain.key}_timeout_stage_{state:02d}_effect = yes
         }}
     }}

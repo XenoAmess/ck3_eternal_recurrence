@@ -157,16 +157,16 @@
   },
   "candidate": {
     "projection": "phase2-seed-entry-production-closure-20260904-r10",
-    "expected_file_count": 252,
-    "expected_overlay_file_count": 139,
+    "expected_file_count": 263,
+    "expected_overlay_file_count": 151,
     "expected_effect_files": 76,
-    "expected_inherited_hotfix_files": 21,
+    "expected_inherited_hotfix_files": 33,
     "expected_event_files": 35,
     "expected_court_position_files": 2,
     "expected_localization_files": 5,
     "expected_new_localization_keys": 28,
     "expected_five_root_closure": {
-      "effects": 2112,
+      "effects": 2114,
       "events": 589,
       "triggers": 6,
       "values": 0,
@@ -177,17 +177,44 @@
     "expected_effect_files_over_target": 0,
     "expected_effect_files_over_hard_max": 0,
     "effect_boundary_exceptions": [],
-    "inherited_effect_boundary_exceptions": [
-      {
-        "path": "common/scripted_effects/zg361_b1_runtime_effects.txt",
-        "definitions": 41,
-        "reason": "Grandfathered B1 owner file: r8 live exposed a legacy-save optional-object read bug; this hotfix changes only the existing provider body, while all B2+ purpose shards remain at or below 10 effects.",
-        "live_evidence": "Z:/ck3_mod_rewrite_process_assets/zg361/phase2-seed-r8-20260904-071527/artifacts-live/runner-report.json",
-        "live_evidence_sha256": "bdafa114402225ac0a3fb4db74c7ecc9544ee15f263b5147d55523a63b617a5f"
-      }
+    "inherited_effect_boundary_exceptions": [],
+    "inherited_replaced_files": [
+      "common/scripted_effects/zg361_b1_runtime_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_effects_part2.txt"
+    ],
+    "inherited_replacement_files": [
+      "common/scripted_effects/zg361_b1_runtime_001_case_bootstrap_policy_kpi_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_002_cycle_self_review_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_003_peer_facts_shadow_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_004_quota_bank_debt_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_005_huddle_agenda_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_006_agenda_dissent_publication_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_007_pending_reopen_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_008_calibration_finish_recusal_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_009_calibration_controls_publish_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_010_appeal_peer_submission_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_011_peer_slot_consumption_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_012_appeal_credit_m360_source_effects.txt",
+      "common/scripted_effects/zg361_b1_manager_identity_effects.txt"
+    ],
+    "inherited_replacement_additional_effects": [
+      "zg361_b1_prune_unavailable_subjects_effect",
+      "zg361_b1_migrate_manager_identity_effect"
     ],
     "inherited_hotfix_files": [
-      "common/scripted_effects/zg361_b1_runtime_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_001_case_bootstrap_policy_kpi_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_002_cycle_self_review_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_003_peer_facts_shadow_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_004_quota_bank_debt_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_005_huddle_agenda_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_006_agenda_dissent_publication_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_007_pending_reopen_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_008_calibration_finish_recusal_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_009_calibration_controls_publish_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_010_appeal_peer_submission_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_011_peer_slot_consumption_effects.txt",
+      "common/scripted_effects/zg361_b1_runtime_012_appeal_credit_m360_source_effects.txt",
+      "common/scripted_effects/zg361_b1_manager_identity_effects.txt",
       "common/scripted_effects/zg361_b2_014_appeal_lifecycle_effects.txt",
       "common/scripted_effects/zg361_b2_015_pip_open_effects.txt",
       "common/scripted_effects/zg361_b2_016_pip_support_effects.txt",
@@ -214,11 +241,11 @@
       "zg361_is_current_liege_review_record_trigger",
       "zg361_is_elimination_candidate_trigger"
     ],
-    "expected_bytes": 12106862,
-    "source_tree_sha256": "fc4218469ce72ea1bca4e5bc0e5fa668e644ec05dea537e38ebda607ae72dc8f",
-    "formal_overlay_tree_sha256": "3d7e551046b23f460ad2dfc90d3dbe384d54744e97c61eebd74ba2f319e08b2d",
-    "file_list_sha256": "4103f444fa14403b5df8821e1a4a2d84f4ec44d583e68ee7fb0b775fb5d311de",
-    "projection_manifest_sha256": "2015ebae83d218c2e21aeeb50b0b7312db184412c08f518dc7b51dbe8aac8ba1",
+    "expected_bytes": 12125310,
+    "source_tree_sha256": "fe81d330f1631b48d1a51983147ff87a35f40a2aaf7e10f5d6c04203875c5c60",
+    "formal_overlay_tree_sha256": "ecf08424c7cf0bd5d18d0c61d52b1fd464c6cd538fe060d8f02598fa14931164",
+    "file_list_sha256": "69b3940f7b8039c695c031ae9d0090f383393e3c6d7d82e0a9547d93463aac2a",
+    "projection_manifest_sha256": "22d8569febdb743b947810ce093affaaacb18178cc476fd47de9ee429ad068d7",
     "ck3_launch": "PENDING_EXTERNAL_B2_SEED_RECAPTURE",
     "live_status": "pending_b2_seed_recapture",
     "prior_live_evidence": {
@@ -233,8 +260,8 @@
     }
   },
   "overlay": {
-    "bytes": 3471960,
-    "inventory_sha256": "cc497e9ff6a81f24e2a3ab96b620c4eabeb87846077e0199a9409edb161596f9",
+    "bytes": 3731108,
+    "inventory_sha256": "1c9fc9cd14c66436b2a04dc0b42aa60956382f4042731168c1f9325829e352ca",
     "files": []
   },
   "forbidden_paths": [

@@ -54,19 +54,19 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             fixture["ordered_root_effects"],
         )
         candidate = self.contract["candidate"]
-        self.assertEqual(252, candidate["expected_file_count"])
-        self.assertEqual(139, candidate["expected_overlay_file_count"])
+        self.assertEqual(263, candidate["expected_file_count"])
+        self.assertEqual(151, candidate["expected_overlay_file_count"])
         self.assertEqual(76, candidate["expected_effect_files"])
-        self.assertEqual(21, candidate["expected_inherited_hotfix_files"])
+        self.assertEqual(33, candidate["expected_inherited_hotfix_files"])
         self.assertEqual(35, candidate["expected_event_files"])
         self.assertEqual(2, candidate["expected_court_position_files"])
         self.assertEqual(5, candidate["expected_localization_files"])
         self.assertEqual(28, candidate["expected_new_localization_keys"])
         self.assertEqual(0, candidate["expected_effect_files_over_target"])
         self.assertEqual(0, candidate["expected_effect_files_over_hard_max"])
-        self.assertEqual(21, len(candidate["inherited_hotfix_files"]))
+        self.assertEqual(33, len(candidate["inherited_hotfix_files"]))
         self.assertEqual(
-            "common/scripted_effects/zg361_b1_runtime_effects.txt",
+            "common/scripted_effects/zg361_b1_runtime_001_case_bootstrap_policy_kpi_effects.txt",
             candidate["inherited_hotfix_files"][0],
         )
         self.assertEqual(
@@ -74,18 +74,18 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             sum("/zg361_b2_" in path for path in candidate["inherited_hotfix_files"]),
         )
         self.assertEqual([], candidate["effect_boundary_exceptions"])
-        inherited_exceptions = candidate["inherited_effect_boundary_exceptions"]
-        self.assertEqual(1, len(inherited_exceptions))
+        self.assertEqual([], candidate["inherited_effect_boundary_exceptions"])
+        self.assertEqual(2, len(candidate["inherited_replaced_files"]))
+        self.assertEqual(13, len(candidate["inherited_replacement_files"]))
         self.assertEqual(
-            candidate["inherited_hotfix_files"][0],
-            inherited_exceptions[0]["path"],
+            [
+                "zg361_b1_prune_unavailable_subjects_effect",
+                "zg361_b1_migrate_manager_identity_effect",
+            ],
+            candidate["inherited_replacement_additional_effects"],
         )
-        self.assertEqual(41, inherited_exceptions[0]["definitions"])
-        self.assertTrue(inherited_exceptions[0]["reason"])
-        self.assertTrue(inherited_exceptions[0]["live_evidence"])
-        self.assertEqual(64, len(inherited_exceptions[0]["live_evidence_sha256"]))
-        self.assertEqual(12_106_862, candidate["expected_bytes"])
-        self.assertEqual(3_471_960, self.contract["overlay"]["bytes"])
+        self.assertEqual(3_731_108, self.contract["overlay"]["bytes"])
+        self.assertEqual(12_125_310, candidate["expected_bytes"])
 
     def test_phase_core_is_pinned_and_purpose_split(self) -> None:
         rows, check = closure.phase_core_overlay_rows(self.contract)
@@ -194,16 +194,16 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual([], selection["manager_triggers"])
         self.assertEqual([], selection["workforce_m360_effects"])
         self.assertEqual([], selection["workforce_m360_events"])
-        self.assertEqual(139, len(rows))
+        self.assertEqual(151, len(rows))
         by_kind = {
             kind: [row for row in rows if row["kind"] == kind]
             for kind in ("effect", "event", "court_position", "localization")
         }
-        self.assertEqual(97, len(by_kind["effect"]))
+        self.assertEqual(109, len(by_kind["effect"]))
         self.assertEqual(35, len(by_kind["event"]))
         self.assertEqual(2, len(by_kind["court_position"]))
         self.assertEqual(5, len(by_kind["localization"]))
-        self.assertEqual(517, sum(row["definitions"] for row in by_kind["effect"]))
+        self.assertEqual(555, sum(row["definitions"] for row in by_kind["effect"]))
         self.assertEqual(142, sum(row["definitions"] for row in by_kind["event"]))
         self.assertEqual(28, sum(row["definitions"] for row in by_kind["localization"]))
         purpose_effects = [
@@ -216,11 +216,11 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
         self.assertEqual(10, max(row["definitions"] for row in purpose_effects))
         by_path = {row["path"]: row for row in rows}
         inherited_hotfix = by_path[
-            "common/scripted_effects/zg361_b1_runtime_effects.txt"
+            "common/scripted_effects/zg361_b1_runtime_001_case_bootstrap_policy_kpi_effects.txt"
         ]
         self.assertIs(True, inherited_hotfix["inherited_baseline_hotfix"])
-        self.assertEqual(41, inherited_hotfix["definitions"])
-        self.assertEqual(21, len(selection["inherited_hotfix_files"]))
+        self.assertEqual(8, inherited_hotfix["definitions"])
+        self.assertEqual(33, len(selection["inherited_hotfix_files"]))
         self.assertIn(inherited_hotfix, selection["inherited_hotfix_files"])
         split_paths = {
             "common/scripted_effects/zg361_workforce_endgame_046a_ac_m257_effects.txt",
@@ -465,9 +465,9 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             )
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
-            self.assertEqual(252, result["candidate"]["expected_file_count"])
-            self.assertEqual(12_106_862, result["candidate"]["expected_bytes"])
-            self.assertEqual(139, result["overlay"]["file_count"])
+            self.assertEqual(263, result["candidate"]["expected_file_count"])
+            self.assertEqual(12_125_310, result["candidate"]["expected_bytes"])
+            self.assertEqual(151, result["overlay"]["file_count"])
             selection = result["checks"]["selection"]
             self.assertEqual(397, selection["full"]["effects"])
             self.assertEqual(164, selection["full"]["events"])
@@ -475,7 +475,7 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             self.assertEqual(142, selection["delta"]["events"])
             self.assertEqual(2, selection["delta"]["court_positions"])
             roots = result["checks"]["five_root_closure"]
-            self.assertEqual(2112, roots["effects"])
+            self.assertEqual(2114, roots["effects"])
             self.assertEqual(589, roots["events"])
             self.assertEqual(6, roots["triggers"])
             self.assertEqual(2, roots["court_positions"])
@@ -486,19 +486,16 @@ class Phase2SeedClosureCandidateTests(unittest.TestCase):
             )
             boundaries = result["checks"]["effect_boundaries"]
             self.assertEqual(10, boundaries["max_observed"])
-            self.assertEqual(41, boundaries["whole_overlay_max_observed"])
+            self.assertEqual(10, boundaries["whole_overlay_max_observed"])
             self.assertEqual([], boundaries["over_target"])
             self.assertEqual([], boundaries["over_hard_max"])
             self.assertEqual([], boundaries["exceptions"])
-            self.assertEqual(21, len(boundaries["inherited_hotfixes"]))
+            self.assertEqual(33, len(boundaries["inherited_hotfixes"]))
             self.assertEqual(
-                1,
-                len(boundaries["inherited_effect_boundary_exceptions"]),
+                [], boundaries["inherited_effect_boundary_exceptions"]
             )
-            self.assertEqual(
-                "common/scripted_effects/zg361_b1_runtime_effects.txt",
-                boundaries["inherited_effect_boundary_exceptions"][0]["path"],
-            )
+            for legacy in self.contract["candidate"]["inherited_replaced_files"]:
+                self.assertFalse((output / "source" / legacy).exists())
             formatting = result["checks"]["formatting"]
             self.assertEqual([], formatting["scalar_revoke_hits"])
             self.assertEqual([], formatting["self_call_hits"])

@@ -614,7 +614,11 @@ def special_payload(mechanism_id: int) -> str:
             else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_tenure_award value = 0 }} set_variable = {{ name = {p}_performance_award value = 0 }} }}
             set_variable = {{ name = {p}_award_total value = var:{p}_tenure_award }}
             change_variable = {{ name = {p}_award_total add = var:{p}_performance_award }}
-            set_variable = {{ name = {p}_source_spot_gross value = var:zg361_comp_m090_spot_gross }}''',
+            set_variable = {{ name = {p}_source_spot_gross value = 0 }}
+            if = {{
+                limit = {{ has_variable = zg361_comp_m090_spot_gross }}
+                set_variable = {{ name = {p}_source_spot_gross value = var:zg361_comp_m090_spot_gross }}
+            }}''',
         278: f'''set_variable = {{ name = {p}_promised value = var:zg361_comp_ae_statement_payable }}
             set_variable = {{ name = {p}_paid value = var:zg361_comp_ae_statement_paid }}
             set_variable = {{ name = {p}_owed value = var:zg361_comp_ae_statement_owed }}

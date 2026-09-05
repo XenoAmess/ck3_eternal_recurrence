@@ -198,11 +198,11 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        # R66 changes only the five manager-side cycle references (+40 bytes).
-        self.assertEqual(len(historical_bytes), 267_459)
+        # The canonical rendering includes the purpose-sharded core owner note.
+        self.assertEqual(len(historical_bytes), 267_473)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "cd12ec02ef8f3ffb1d232d9f2b26f376b321b02d3d1d0ebd2b42189a8f749bec",
+            "37a84a40965f1bcd09ddf772064d32ecbb451c225ebe4e26152b08937bbe7fac",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(

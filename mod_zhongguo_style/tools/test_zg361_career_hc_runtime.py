@@ -990,6 +990,13 @@ class CareerHcRuntimeTests(unittest.TestCase):
             self.assertNotIn("hidden = yes", source)
         self.assertIn("var:zg361_case_d_owner = { is_ai = no }", self.effects)
 
+    def test_optional_kernel_applied_reads_are_fail_closed(self) -> None:
+        combined = self.effects + "\n" + self.events
+        comparison = "var:zg361_case_kernel_applied = 1"
+        guard = "limit = { has_variable = zg361_case_kernel_applied }"
+        self.assertGreater(combined.count(comparison), 0)
+        self.assertEqual(combined.count(guard), combined.count(comparison))
+
     def test_localization_has_all_mechanism_and_completion_keys(self) -> None:
         english = (
             MOD_ROOT / "localization/english/zg361_career_hc_l_english.yml"

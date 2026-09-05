@@ -584,7 +584,11 @@ zg361_b1_refresh_individual_publications_effect = {
 				limit = {
 					OR = {
 						var:zg361_b1_pending_state = 1
-						var:zg361_b1_pending_reservation_state = 1
+						trigger_if = {
+							limit = { has_variable = zg361_b1_pending_reservation_state }
+							var:zg361_b1_pending_reservation_state = 1
+						}
+						trigger_else = { always = no }
 					}
 				}
 				set_variable = { name = zg361_b1_local_publish_work_waiting value = 1 }

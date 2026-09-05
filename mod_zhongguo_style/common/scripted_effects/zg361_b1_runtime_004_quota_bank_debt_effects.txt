@@ -1115,8 +1115,9 @@ zg361_b1_submit_quota_book_effect = {
 					}
 					change_variable = { name = zg361_b1_ready_manager_n add = 1 }
 					change_variable = { name = zg361_b1_pool_n add = scope:zg361_b1_ready_manager.var:zg361_cohort_n }
+					save_temporary_scope_value_as = { name = zg361_b1_ready_order value = var:zg361_b1_ready_manager_n }
 					scope:zg361_b1_ready_manager = {
-						set_variable = { name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n }
+						set_variable = { name = zg361_b1_bank_ready_order value = scope:zg361_b1_ready_order }
 						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_manager_case_serial }
 					}
 				}

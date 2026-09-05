@@ -110,7 +110,13 @@ zg361_career_hc_m120_core_effect = {
             OPERATION_ID = 120
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
 
             set_variable = { name = zg361_ch_m120_receipt_active value = 1 }
             set_variable = { name = zg361_ch_m120_route value = scope:zg361_ch_route }

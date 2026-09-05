@@ -518,8 +518,91 @@ def inherited_hotfix_rows(
     )
     if len(paths) != len(set(paths)):
         raise SeedClosureError("candidate.inherited_hotfix_files contains duplicates")
+    replaced_paths = tuple(
+        _relative(value, "candidate.inherited_replaced_files")
+        for value in _strings(
+            candidate.get("inherited_replaced_files", []),
+            "candidate.inherited_replaced_files",
+        )
+    )
+    replacement_paths = tuple(
+        _relative(value, "candidate.inherited_replacement_files")
+        for value in _strings(
+            candidate.get("inherited_replacement_files", []),
+            "candidate.inherited_replacement_files",
+        )
+    )
+    if len(replaced_paths) != len(set(replaced_paths)):
+        raise SeedClosureError("candidate.inherited_replaced_files contains duplicates")
+    if len(replacement_paths) != len(set(replacement_paths)):
+        raise SeedClosureError("candidate.inherited_replacement_files contains duplicates")
+    if not set(replacement_paths).issubset(paths):
+        raise SeedClosureError(
+            "candidate.inherited_replacement_files must be included in inherited_hotfix_files"
+        )
+    if bool(replaced_paths) != bool(replacement_paths):
+        raise SeedClosureError(
+            "candidate inherited split replacement requires both old and new owner lists"
+        )
+
     rows: list[dict[str, object]] = []
+    if replacement_paths:
+        baseline_names: list[str] = []
+        for relative in replaced_paths:
+            baseline_path = baseline_source / PurePosixPath(relative)
+            if not baseline_path.is_file() or baseline_path.is_symlink():
+                raise SeedClosureError(
+                    f"inherited replaced owner is missing or symlinked: {relative}"
+                )
+            _data, blocks = closure_utils._blocks(baseline_path, relative)
+            baseline_names.extend(block.name for block in blocks)
+
+        replacement_names: list[str] = []
+        for relative in replacement_paths:
+            canonical_path = canonical_source / PurePosixPath(relative)
+            if not canonical_path.is_file() or canonical_path.is_symlink():
+                raise SeedClosureError(
+                    f"inherited replacement shard is missing or symlinked: {relative}"
+                )
+            canonical_data, canonical_blocks = closure_utils._blocks(
+                canonical_path, relative
+            )
+            canonical_names = tuple(block.name for block in canonical_blocks)
+            if not 1 <= len(canonical_names) <= 10:
+                raise SeedClosureError(
+                    f"inherited replacement shard violates 1..10: {relative}"
+                )
+            replacement_names.extend(canonical_names)
+            rows.append(
+                {
+                    "path": relative,
+                    "kind": "effect",
+                    "definitions": len(canonical_names),
+                    "definition_names": list(canonical_names),
+                    "bytes": len(canonical_data),
+                    "sha256": sha256_bytes(canonical_data),
+                    "inherited_baseline_hotfix": True,
+                    "replaces_legacy_owner_set": True,
+                }
+            )
+        expected_additions = set(
+            _strings(
+                candidate.get("inherited_replacement_additional_effects", []),
+                "candidate.inherited_replacement_additional_effects",
+            )
+        )
+        if (
+            len(replacement_names) != len(set(replacement_names))
+            or not set(baseline_names).issubset(replacement_names)
+            or set(replacement_names) - set(baseline_names) != expected_additions
+        ):
+            raise SeedClosureError(
+                "inherited replacement shard union changed legacy providers"
+            )
+
     for relative in paths:
+        if relative in replacement_paths:
+            continue
         if not relative.startswith("common/scripted_effects/"):
             raise SeedClosureError(
                 f"inherited hotfix is not an effect owner file: {relative}"
@@ -1439,6 +1522,19 @@ def copy_overlay(
     ):
         raise SeedClosureError("phase core replaced owner identity drifted")
     replaced_path.unlink()
+    candidate_contract = _mapping(contract.get("candidate"), "candidate")
+    inherited_replaced = _strings(
+        candidate_contract.get("inherited_replaced_files", []),
+        "candidate.inherited_replaced_files",
+    )
+    for value in inherited_replaced:
+        relative = _relative(value, "candidate.inherited_replaced_files")
+        legacy_path = candidate_source / PurePosixPath(relative)
+        if not legacy_path.is_file() or legacy_path.is_symlink():
+            raise SeedClosureError(
+                f"inherited replaced owner is missing or symlinked: {legacy_path}"
+            )
+        legacy_path.unlink()
     baseline_paths = {
         path.relative_to(candidate_source).as_posix()
         for path in candidate_source.rglob("*")

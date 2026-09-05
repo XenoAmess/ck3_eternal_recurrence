@@ -98,7 +98,13 @@ zg361_career_hc_m021_core_effect = {
             OPERATION_ID = 21
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             if = {
                 limit = {
                     OR = {
@@ -129,7 +135,13 @@ zg361_career_hc_m021_core_effect = {
                 AMOUNT = 5
             }
             if = {
-                limit = { var:zg361_case_kernel_applied = 1 }
+                limit = {
+                    trigger_if = {
+                        limit = { has_variable = zg361_case_kernel_applied }
+                        var:zg361_case_kernel_applied = 1
+                    }
+                    trigger_else = { always = no }
+                }
                 zg361_case_kernel_settle_transaction_effect = {
                     OWNER_VAR = zg361_case_d_owner
                     SUBJECT_VAR = zg361_case_d_subject
@@ -150,7 +162,13 @@ zg361_career_hc_m021_core_effect = {
                 }
             }
                 if = {
-                    limit = { var:zg361_case_kernel_applied = 1 }
+                    limit = {
+                        trigger_if = {
+                            limit = { has_variable = zg361_case_kernel_applied }
+                            var:zg361_case_kernel_applied = 1
+                        }
+                        trigger_else = { always = no }
+                    }
                     zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_d_owner
                 SUBJECT_VAR = zg361_case_d_subject
@@ -174,7 +192,13 @@ zg361_career_hc_m021_core_effect = {
                 AMOUNT = 5
             }
             if = {
-                limit = { var:zg361_case_kernel_applied = 1 }
+                limit = {
+                    trigger_if = {
+                        limit = { has_variable = zg361_case_kernel_applied }
+                        var:zg361_case_kernel_applied = 1
+                    }
+                    trigger_else = { always = no }
+                }
                 zg361_case_kernel_settle_transaction_effect = {
                     OWNER_VAR = zg361_case_d_owner
                     SUBJECT_VAR = zg361_case_d_subject
@@ -197,7 +221,11 @@ zg361_career_hc_m021_core_effect = {
                 }
                 if = {
                     limit = {
-                        var:zg361_case_kernel_applied = 1
+                        trigger_if = {
+                            limit = { has_variable = zg361_case_kernel_applied }
+                            var:zg361_case_kernel_applied = 1
+                        }
+                        trigger_else = { always = no }
                         var:zg361_ch_m021_treasury_status = 2
                         var:zg361_ch_m021_gold_status = 2
                     }
@@ -363,7 +391,13 @@ zg361_career_hc_m022_core_effect = {
             OPERATION_ID = 22
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
 
             set_variable = { name = zg361_ch_m022_receipt_active value = 1 }
             set_variable = { name = zg361_ch_m022_route value = scope:zg361_ch_route }

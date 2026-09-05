@@ -80,7 +80,7 @@
 | `P2-REG-004` | cross-cycle `.356` + owner `.361` + subject Workforce state | `0/1` |
 | `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `0/4`，`NOT_RUN` |
 | `P2-FULL-001` | B1–B8 production projection 一次启动、共享表面抽样、三周期长测、release staging | `NOT_RUN`；不得用 focused GREEN 代替 |
-| `P2-R74-ERR` | R74 实证的无 liege、未初始化 portfolio/huddle、weak list 与负数 `add_gold` 产品错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `BLOCKED`：R78 重现 B1/compensation/case-kernel 未设变量及 reopen target 冲突，待修复后重跑 |
+| `P2-R74-ERR` | R74/R78 实证的产品运行时错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `STATIC_READY / LIVE_PENDING`：R78 五类签名已完成 generator 修复与跨域回归，待 R79 fresh split product 实机归零 |
 | `P2-CAP-001` | 八个 canonical gameplay spans 均通过 source intake | `0/8` |
 | `P2-VIDEO-001` | 人物版完整 build、媒体抽检、双语字幕、安全区、全片审阅、SHA | `0/1` |
 | `P2-VIDEO-002` | 制度群像版独立完成同一套门禁 | `0/1` |

@@ -4237,8 +4237,9 @@ zg361_b1_submit_quota_book_effect = {
 					}
 					change_variable = { name = zg361_b1_ready_manager_n add = 1 }
 					change_variable = { name = zg361_b1_pool_n add = scope:zg361_b1_ready_manager.var:zg361_cohort_n }
+					save_temporary_scope_value_as = { name = zg361_b1_ready_order value = var:zg361_b1_ready_manager_n }
 					scope:zg361_b1_ready_manager = {
-						set_variable = { name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n }
+						set_variable = { name = zg361_b1_bank_ready_order value = scope:zg361_b1_ready_order }
 						set_variable = { name = zg361_b1_bank_posted_serial value = var:zg361_b1_manager_case_serial }
 					}
 				}
@@ -5929,7 +5930,11 @@ zg361_b1_refresh_individual_publications_effect = {
 				limit = {
 					OR = {
 						var:zg361_b1_pending_state = 1
-						var:zg361_b1_pending_reservation_state = 1
+						trigger_if = {
+							limit = { has_variable = zg361_b1_pending_reservation_state }
+							var:zg361_b1_pending_reservation_state = 1
+						}
+						trigger_else = { always = no }
 					}
 				}
 				set_variable = { name = zg361_b1_local_publish_work_waiting value = 1 }
@@ -6299,14 +6304,18 @@ zg361_b1_resolve_pending_subject_effect = {
 				var:zg361_b1_pending_resolution = 1
 				has_variable = zg361_b1_pending_fallback_subject
 				var:zg361_b1_pending_fallback_subject = {
-					var:zg361_b1_pending_reservation_state = 1
-					has_variable = zg361_b1_pending_reserved_for_subject
-					var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
-					var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
-					var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
-					var:zg361_b1_case_state = 7
-					var:zg361_pending_grade = 2
+					trigger_if = {
+						limit = { has_variable = zg361_b1_pending_reservation_state }
+						var:zg361_b1_pending_reservation_state = 1
+						has_variable = zg361_b1_pending_reserved_for_subject
+						var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
+						var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
+						var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
+						var:zg361_b1_case_state = 7
+						var:zg361_pending_grade = 2
+					}
+					trigger_else = { always = no }
 				}
 			}
 			set_variable = { name = zg361_b1_pending_state value = 2 }
@@ -6329,14 +6338,18 @@ zg361_b1_resolve_pending_subject_effect = {
 				limit = {
 					has_variable = zg361_b1_pending_fallback_subject
 					var:zg361_b1_pending_fallback_subject = {
-						var:zg361_b1_pending_reservation_state = 1
-						has_variable = zg361_b1_pending_reserved_for_subject
-						var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
-						var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
-						var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
-						var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
-						var:zg361_b1_case_state = 7
-						var:zg361_pending_grade = 2
+						trigger_if = {
+							limit = { has_variable = zg361_b1_pending_reservation_state }
+							var:zg361_b1_pending_reservation_state = 1
+							has_variable = zg361_b1_pending_reserved_for_subject
+							var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
+							var:zg361_b1_case_owner = scope:zg361_b1_pending_subject.var:zg361_b1_case_owner
+							var:zg361_b1_cycle_serial = scope:zg361_b1_pending_subject.var:zg361_b1_cycle_serial
+							var:zg361_b1_case_serial = scope:zg361_b1_pending_subject.var:zg361_b1_case_serial
+							var:zg361_b1_case_state = 7
+							var:zg361_pending_grade = 2
+						}
+						trigger_else = { always = no }
 					}
 				}
 				# Atomic quota-neutral fallback: failed held TOP becomes MIDDLE and
@@ -6663,7 +6676,7 @@ zg361_b1_resolve_reopen_batch_effect = {
 					var:zg361_b1_reopen_observation_recorded = 1
 					var:zg361_b1_reopen_late_evidence_magnitude >= 10
 				}
-				save_temporary_scope_as = zg361_b1_reopen_ticket_subject
+				save_temporary_scope_as = zg361_b1_selected_reopen_subject
 				root = { change_variable = { name = zg361_b1_reopen_batch_candidate_n add = 1 } }
 			}
 		}
@@ -6697,17 +6710,17 @@ zg361_b1_apply_symmetric_reopen_effect = {
 			var:zg361_b1_reopen_count = 0
 			var:zg361_b1_rewards_issued = 0
 			var:zg361_b1_pending_rewards_committed = 0
-			scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_reopen_observation_recorded = 1
-			scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_reopen_late_evidence_magnitude >= 10
+			scope:zg361_b1_selected_reopen_subject.var:zg361_b1_reopen_observation_recorded = 1
+			scope:zg361_b1_selected_reopen_subject.var:zg361_b1_reopen_late_evidence_magnitude >= 10
 		}
 		set_variable = { name = zg361_b1_reopen_source_board_hash value = var:zg361_b1_sealed_board_hash }
 		set_variable = { name = zg361_b1_reopen_source_board_checksum value = var:zg361_b1_sealed_board_checksum }
 		set_variable = { name = zg361_b1_reopen_source_book_version value = var:zg361_b1_quota_book_version }
 		set_variable = { name = zg361_b1_reopen_source_reward_hash value = var:zg361_b1_reward_snapshot_hash }
-		set_variable = { name = zg361_b1_reopen_magnitude value = scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_reopen_late_evidence_magnitude }
-		set_variable = { name = zg361_b1_reopen_receipt_subject value = scope:zg361_b1_reopen_ticket_subject }
-		set_variable = { name = zg361_b1_reopen_subject_old_grade value = scope:zg361_b1_reopen_ticket_subject.var:zg361_pending_grade }
-		set_variable = { name = zg361_b1_reopen_subject_calibration_before value = scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_calibration_score }
+		set_variable = { name = zg361_b1_reopen_magnitude value = scope:zg361_b1_selected_reopen_subject.var:zg361_b1_reopen_late_evidence_magnitude }
+		set_variable = { name = zg361_b1_reopen_receipt_subject value = scope:zg361_b1_selected_reopen_subject }
+		set_variable = { name = zg361_b1_reopen_subject_old_grade value = scope:zg361_b1_selected_reopen_subject.var:zg361_pending_grade }
+		set_variable = { name = zg361_b1_reopen_subject_calibration_before value = scope:zg361_b1_selected_reopen_subject.var:zg361_b1_calibration_score }
 		set_variable = { name = zg361_b1_reopen_polarity value = 1 }
 		set_variable = { name = zg361_b1_closure_state value = 2 }
 		set_variable = { name = zg361_b1_reopen_count value = 1 }
@@ -6716,16 +6729,16 @@ zg361_b1_apply_symmetric_reopen_effect = {
 		set_variable = { name = zg361_b1_reopen_batch_result value = 1 }
 		set_variable = { name = zg361_b1_m143_receipt_serial value = var:zg361_b1_reopen_batch_case }
 		if = {
-			limit = { scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_reopen_late_evidence_delta < 0 }
+			limit = { scope:zg361_b1_selected_reopen_subject.var:zg361_b1_reopen_late_evidence_delta < 0 }
 			set_variable = { name = zg361_b1_reopen_polarity value = -1 }
-			scope:zg361_b1_reopen_ticket_subject = { change_variable = { name = zg361_b1_calibration_score add = -2 } }
+			scope:zg361_b1_selected_reopen_subject = { change_variable = { name = zg361_b1_calibration_score add = -2 } }
 		}
-		else = { scope:zg361_b1_reopen_ticket_subject = { change_variable = { name = zg361_b1_calibration_score add = 2 } } }
+		else = { scope:zg361_b1_selected_reopen_subject = { change_variable = { name = zg361_b1_calibration_score add = 2 } } }
 		zg361_b1_rerank_frozen_quota_book_effect = yes
 		set_variable = { name = zg361_b1_local_publish_update_kind value = 3 }
 		zg361_b1_refresh_individual_publications_effect = yes
-		set_variable = { name = zg361_b1_reopen_subject_new_grade value = scope:zg361_b1_reopen_ticket_subject.var:zg361_pending_grade }
-		set_variable = { name = zg361_b1_reopen_subject_calibration_after value = scope:zg361_b1_reopen_ticket_subject.var:zg361_b1_calibration_score }
+		set_variable = { name = zg361_b1_reopen_subject_new_grade value = scope:zg361_b1_selected_reopen_subject.var:zg361_pending_grade }
+		set_variable = { name = zg361_b1_reopen_subject_calibration_after value = scope:zg361_b1_selected_reopen_subject.var:zg361_b1_calibration_score }
 		set_variable = { name = zg361_b1_reopen_recomputed_top value = var:zg361_pending_375_n }
 		set_variable = { name = zg361_b1_reopen_recomputed_middle value = var:zg361_pending_35_n }
 		set_variable = { name = zg361_b1_reopen_recomputed_bottom value = var:zg361_pending_325_n }
@@ -9541,8 +9554,13 @@ zg361b1.125 = {
 					var:zg361_b1_pending_fallback_subject = {
 						if = {
 							limit = {
-								var:zg361_b1_pending_reservation_state = 1
-								var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+								trigger_if = {
+									limit = { has_variable = zg361_b1_pending_reservation_state }
+									var:zg361_b1_pending_reservation_state = 1
+									has_variable = zg361_b1_pending_reserved_for_subject
+									var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+								}
+								trigger_else = { always = no }
 							}
 							set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
 							remove_variable = zg361_b1_pending_reserved_for_subject

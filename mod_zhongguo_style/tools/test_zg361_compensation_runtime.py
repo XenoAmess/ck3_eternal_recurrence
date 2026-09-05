@@ -281,10 +281,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 603_363)
+        self.assertEqual(len(historical_bytes), 603_552)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "0be5605cced1b15986125a938081b8eaaaf437be297d727bf4dbf1f70b3e29eb",
+            "916cbf030c91804846e6ba8d6f4dbbd3bb27c44689bdca41b4f4fb364e6ef0a8",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -600,6 +600,20 @@ class CompensationRuntimeTests(unittest.TestCase):
                 self.assertTrue(
                     all(route.resource_values or not route.materializes_object for route in model.MECHANISM_ROUTE_OUTCOMES[mechanism_id])
                 )
+
+    def test_m091_defaults_missing_m090_spot_gross_before_optional_copy(self) -> None:
+        source = top_level_block(self.effects, "zg361_comp_m091_consume_effect")
+        default = "name = zg361_comp_m091_source_spot_gross value = 0"
+        guard = "limit = { has_variable = zg361_comp_m090_spot_gross }"
+        copy = (
+            "name = zg361_comp_m091_source_spot_gross "
+            "value = var:zg361_comp_m090_spot_gross"
+        )
+        self.assertIn(default, source)
+        self.assertIn(guard, source)
+        self.assertIn(copy, source)
+        self.assertLess(source.index(default), source.index(guard))
+        self.assertLess(source.index(guard), source.index(copy))
 
     def test_route_c_no_object_contract_matches_the_executable_model(self) -> None:
         expected = {84, 88, 90, 282, 283, 285, 288, 293, 300}

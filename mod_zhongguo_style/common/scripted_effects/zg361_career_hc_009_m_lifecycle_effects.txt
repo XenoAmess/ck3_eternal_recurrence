@@ -18,7 +18,13 @@ zg361_career_hc_open_m_case_effect = {
         }
         zg361_case_m_open_effect = yes
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = zg361_ch_m_authorized value = 6 }
             set_variable = { name = zg361_ch_m_available value = 6 }
             set_variable = { name = zg361_ch_m_used value = 0 }
@@ -149,7 +155,13 @@ zg361_career_hc_m_try_advance_01_effect = {
             TICKET_CASE = var:zg361_case_m_case_serial
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_schedule_m_stage_02_effect = yes
         }
     }
@@ -212,7 +224,13 @@ zg361_career_hc_m_try_advance_02_effect = {
             TICKET_CASE = var:zg361_case_m_case_serial
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_schedule_m_stage_03_effect = yes
         }
     }
@@ -275,7 +293,13 @@ zg361_career_hc_m_try_advance_03_effect = {
             TICKET_CASE = var:zg361_case_m_case_serial
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_schedule_m_stage_04_effect = yes
         }
     }

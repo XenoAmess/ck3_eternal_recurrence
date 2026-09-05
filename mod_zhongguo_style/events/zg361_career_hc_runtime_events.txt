@@ -601,7 +601,13 @@ zg361ch.402 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_d_s1_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_d_timeout_stage_01_effect = yes
         }
     }
@@ -630,7 +636,13 @@ zg361ch.404 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_d_s2_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_d_timeout_stage_02_effect = yes
         }
     }
@@ -659,7 +671,13 @@ zg361ch.406 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_d_s3_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_d_timeout_stage_03_effect = yes
         }
     }
@@ -688,7 +706,13 @@ zg361ch.408 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_d_s4_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_d_timeout_stage_04_effect = yes
         }
     }
@@ -1227,7 +1251,13 @@ zg361ch.1302 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_m_s1_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_m_timeout_stage_01_effect = yes
         }
     }
@@ -1256,7 +1286,13 @@ zg361ch.1304 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_m_s2_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_m_timeout_stage_02_effect = yes
         }
     }
@@ -1285,7 +1321,13 @@ zg361ch.1306 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_m_s3_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_m_timeout_stage_03_effect = yes
         }
     }
@@ -1314,7 +1356,13 @@ zg361ch.1308 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_m_s4_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_m_timeout_stage_04_effect = yes
         }
     }
@@ -2035,7 +2083,13 @@ zg361ch.1402 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_n_s1_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_n_timeout_stage_01_effect = yes
         }
     }
@@ -2064,7 +2118,13 @@ zg361ch.1404 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_n_s2_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_n_timeout_stage_02_effect = yes
         }
     }
@@ -2093,7 +2153,13 @@ zg361ch.1406 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_n_s3_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_n_timeout_stage_03_effect = yes
         }
     }
@@ -2122,7 +2188,13 @@ zg361ch.1408 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_n_s4_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_n_timeout_stage_04_effect = yes
         }
     }
@@ -2831,7 +2903,13 @@ zg361ch.1502 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_o_s1_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_o_timeout_stage_01_effect = yes
         }
     }
@@ -2860,7 +2938,13 @@ zg361ch.1504 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_o_s2_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_o_timeout_stage_02_effect = yes
         }
     }
@@ -2889,7 +2973,13 @@ zg361ch.1506 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_o_s3_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_o_timeout_stage_03_effect = yes
         }
     }
@@ -2918,7 +3008,13 @@ zg361ch.1508 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_o_s4_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_o_timeout_stage_04_effect = yes
         }
     }
@@ -2947,7 +3043,13 @@ zg361ch.1510 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_o_s5_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_o_timeout_stage_05_effect = yes
         }
     }
@@ -3589,7 +3691,13 @@ zg361ch.1602 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_p_s1_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_p_timeout_stage_01_effect = yes
         }
     }
@@ -3618,7 +3726,13 @@ zg361ch.1604 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_p_s2_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_p_timeout_stage_02_effect = yes
         }
     }
@@ -3647,7 +3761,13 @@ zg361ch.1606 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_p_s3_a_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_p_timeout_stage_03_effect = yes
         }
     }
@@ -3676,7 +3796,13 @@ zg361ch.1607 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_p_s3_b_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_p_timeout_stage_03_effect = yes
         }
     }
@@ -3705,7 +3831,13 @@ zg361ch.1608 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_p_s4_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_p_timeout_stage_04_effect = yes
         }
     }
@@ -3734,7 +3866,13 @@ zg361ch.1610 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_p_s5_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_p_timeout_stage_05_effect = yes
         }
     }
@@ -4441,7 +4579,13 @@ zg361ch.1702 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_q_s1_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_q_timeout_stage_01_effect = yes
         }
     }
@@ -4470,7 +4614,13 @@ zg361ch.1704 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_q_s2_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_q_timeout_stage_02_effect = yes
         }
     }
@@ -4499,7 +4649,13 @@ zg361ch.1706 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_q_s3_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_q_timeout_stage_03_effect = yes
         }
     }
@@ -4528,7 +4684,13 @@ zg361ch.1708 = {
             DEADLINE_EXPIRED_VAR = zg361_ch_q_s4_x_deadline_expired
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
             zg361_career_hc_q_timeout_stage_04_effect = yes
         }
     }

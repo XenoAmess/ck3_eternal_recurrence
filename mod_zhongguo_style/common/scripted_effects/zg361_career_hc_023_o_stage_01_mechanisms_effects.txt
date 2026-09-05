@@ -84,7 +84,13 @@ zg361_career_hc_m106_core_effect = {
             OPERATION_ID = 106
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
 
             set_variable = { name = zg361_ch_m106_receipt_active value = 1 }
             set_variable = { name = zg361_ch_m106_route value = scope:zg361_ch_route }
@@ -266,7 +272,13 @@ zg361_career_hc_m107_core_effect = {
             OPERATION_ID = 107
         }
         if = {
-            limit = { var:zg361_case_kernel_applied = 1 }
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
 
             set_variable = { name = zg361_ch_m107_receipt_active value = 1 }
             set_variable = { name = zg361_ch_m107_route value = scope:zg361_ch_route }

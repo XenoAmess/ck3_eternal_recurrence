@@ -589,3 +589,28 @@ files. The current whole-tree boundary is `626 files / 3721 effects / maximum
 10 / target misses 0 / over-20 violations 0 / exceptions 0`. Generators,
 consumers and the B3 production closure use the split layout. Static validation
 is GREEN; the next CK3 run must use a freshly materialized split product.
+
+## Post-R78 runtime repair and split-candidate closure
+
+The frozen R78 gameplay log supplies exact regression inputs: duplicate reopen
+target `2`, missing ready-manager order `3`, missing pending reservation state
+`2`, missing M090 spot gross `1`, and missing case-kernel applied state `215`.
+The authoritative generators now carry ready-manager order through a numeric
+temporary scope value, isolate optional reservation and kernel-applied reads
+behind nested `trigger_if` presence gates, separate the selected reopen subject
+from the permanent event target, and default M091's optional M090 source amount
+to numeric zero before copying an available value.
+
+The three generator checks and their `65 + 28 + 43` focused tests are GREEN.
+Central, B2, Manager, Career Learning, Promotion/PIP, scoreboard, normal and
+optimized file-boundary tests, both static validators, and the affected
+closure/choreography suites are also GREEN. The old fixed-seed projection
+builder now deletes its two inherited B1 owners and installs the 13 current B1
+purpose files (`12` runtime shards plus the one-effect identity migration), so
+it cannot rematerialize an unsplit candidate. Its deterministic source,
+product and replay contain `263` files; the whole effect overlay maximum is
+`10`, with no boundary exception.
+
+This repair remains `static-ready / production-live-pending`. R79 must be
+materialized from this current purpose-split source and recheck the five R78
+error signatures before any runtime status is promoted.

@@ -177,7 +177,7 @@ class Phase2B2ClosureCandidateTests(unittest.TestCase):
                 self.assertFalse((closure.MOD_ROOT / PurePosixPath(relative)).exists())
                 self.assertNotIn(relative, closure.overlay_paths(self.contract))
 
-    def test_authoritative_freeze_materializes_119_files_twice(self) -> None:
+    def test_authoritative_freeze_materializes_121_files_twice(self) -> None:
         if not (self.baseline_root / "projection.json").is_file():
             self.skipTest("local frozen B1 formal projection is not present")
         with tempfile.TemporaryDirectory(prefix="zg361-b2-closure-build-") as temp:
@@ -188,7 +188,7 @@ class Phase2B2ClosureCandidateTests(unittest.TestCase):
             )
             self.assertEqual("GREEN_STATIC", result["status"])
             self.assertTrue(result["no_stubs"])
-            self.assertEqual(119, result["candidate"]["file_count"])
+            self.assertEqual(121, result["candidate"]["file_count"])
             self.assertEqual("NOT_RUN", result["runtime"]["ck3_launch"])
             replay = result["checks"]["deterministic_materialization"]
             self.assertEqual("GREEN", replay["status"])

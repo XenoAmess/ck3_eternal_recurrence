@@ -120,6 +120,17 @@
 |---|---|---|
 | `has_variable trigger [ This scope doesn't support variables ]`，scope 仍显示 Character 姓名、internal ID 和 `weak`；同一名单在多个延迟 consumer 中反复报错 | variable list 保存的是对象弱引用。角色在入表时有效，但无地角色可在后续游戏日从 live character database 淘汰；名单中的弱引用仍有显示 identity，却已不是支持角色变量的有效 scope。2026-09-05 CK3 1.19.0.6 B1 实测：R61 有 119 条；R74 又证明角色可在 `.100→.101` 及 ranking list 建立后的 late publication 之间失效 | 在**每个相隔游戏日的延迟消费边界**重建所有长期角色名单，而不只在首次 consumer 前做一次：`every_in_list` 用 `limit = { is_alive = yes }`，复制到 scratch list，再清空并回填原名单；所有 `has_variable`/`var:` 读取必须发生在重建后。R62 已证明 `exists = this` 对 weak Character 仍返回真。名单缩减若影响业务分母，必须同步重算 list count，并由唯一权威 roster 路径写 vacancy/amendment/audit receipt，避免重复计账。原版 `common/scripted_effects/06_dlc_ce1_epidemics_effects.txt:867-874` 也明确用 `is_alive = yes` 处理会混入名单的 dead people |
 
+### R78 可选变量取证补充（2026-09-05，CK3 1.19.0.6）
+
+同级 presence/read 非短路规则在完整 550 日产品路径再次复现：
+`zg361_b1_pending_reservation_state` 2 次、
+`zg361_case_kernel_applied` 215 次；另有跨 scope 的
+`zg361_b1_ready_manager_n` 3 次及可选上游
+`zg361_comp_m090_spot_gross` 1 次。修复统一采用“缺省数值初始化”或
+`trigger_if` 内层 presence gate 后再读取，禁止把 `has_variable` 与
+`var:` 比较平铺在同一 trigger list。该结论已进入生成器测试，仍须
+R79 fresh split product 实机确认上述签名归零。
+
 ## 事件背景图 / 纹理
 
 | 现象 | 原因 | 解法 |
