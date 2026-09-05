@@ -121,3 +121,107 @@ TTS、build、claims audit、真人 1× 审片、signoff、本地 export。外�
 后续脚本和取材路线复用既有 [`phase2-dual-cut-production.md`](phase2-dual-cut-production.md)
 及 [`final-video-source-reuse-audit-2026-09-04.md`](final-video-source-reuse-audit-2026-09-04.md)，
 不为等待实机而重复生成同样的 RED runbook。
+
+## 11:24 接入检查：4/4 恢复点不等于 8/8 可剪辑素材
+
+本次按协调者要求检查现有 project、storyboard、shot-list 与真实 builder 接口；
+只读代码/配置并计算 draft 时长，没有重跑预检、没有改 runner/文案、没有生成媒体。
+这里的 `4/4` 是需要达到的 registry 输入目标，不把未提供给本工作包的 live artifact 推断为完成。
+
+### 已接好的部分与旧文档边界
+
+- 两版 project 各有 10 章：2 个 generated card、8 个 canonical clean span，顺序和 producer 一致；
+  全部仍 `planned`，`cues=[]`、`artifact_ids=[]`，这是等待真实素材审阅的意图文件。
+- 两版 overlay 各有 10 条中英字幕/中文旁白 cue，均 `release_usable=false`；
+  `promote_phase2_reviewed_authoring.py` 可消费真实 GREEN intake 与各版 source review，
+  写出新的 ready project 和 promotion receipt，不需要手填旧 draft。
+- `zhongguo_phase2_promo_cuts.py` 已接好独立 run/artifact/output；制度版明确重排经理段，
+  并分别在项目段和跨周期段之后做 2 秒的告身/经理回切，没有共享签核。
+- `mod_zhongguo_style/promo/storyboard.md` 是一期约 7:12 的旧分镜，不是二期机器输入。
+  `shot-list.md` 虽附有正确的二期八段 ID，但“视觉 hook 尚未注册”的文字已过时：
+  当前 `run_zhongguo_acceptance.py::_ensure_phase2_promo_capture_producer` 会安装 managed producer。
+  不能照旧文档改用一期 `--promo-capture`，也不能让旧分镜中的生成边界卡替代二期八段实录。
+  正式叙事权威仍是两份二期导演稿与 cut overlays；`final-storyboard.json` 在真实 candidate 后由
+  `materialize_phase2_post_candidate.py` 产生，现在没有必要伪造它。
+
+### 需要实际交入的精确输入
+
+四项 registry 必须是 schema 2、`zg361_phase2_canonical_source_checkpoint_registry`，
+按下列 handler 顺序保存同一 `seed_lineage_id` 的真实 checkpoint 与 provider/UI receipt。
+registry 交给 recorder 的 `--phase2-source-checkpoint-registry`，不是直接交给视频 builder。
+
+| registry handler | 所需 source event | 后续 canonical span |
+| --- | --- | --- |
+| `capture_promotion_compensation` | `zg361pp.147` | `phase2_promotion_compensation` |
+| `capture_projects_metrics` | `zg361cp.26` | `phase2_projects_metrics` |
+| `capture_incidents_operations` | `zg361.50`，另需 `received_self_incident_checkpoint_receipt` | `phase2_incidents_operations` |
+| `capture_cross_cycle_endgame` | `zg361we.356` | `phase2_cross_cycle_endgame` |
+
+每项还需实际 checkpoint 路径/bytes/SHA、owner/player/date、source receipt 的真实
+`provider_observed/ui_state_verified`、同一 lineage，且 fixture/console 均未使用；Incident
+须为 played subject、notice owner 与 player 不同。以上是现有 assembler 的输入，不是新增要求。
+
+视频侧随后需要一个真实 `<capture-root>`，包含 `report.json`、
+`cell/promo/capture-timeline.json`、`evidence-index.json`、`cell/04_phase2_seed_loaded.json`，
+以及 index 已绑定的 raw recording、每段 clean begin/end 全屏帧和动作后原生 evidence。
+八段输入不能用四份 save 或报告替代：
+
+| span 后缀（均为 `phase2_`） | 必须同时可见/可证的关键内容 |
+| --- | --- |
+| `fact_quota_calibration` | 事实/配额档、校准动作、榜单与 query revision 变化 |
+| `receipt_appeal_pip` | 告身/PIP surface；同 owner/subject/cycle/case 抵达所选 response |
+| `manager_governance` | 真实经理 surface 与 AI-owned case 的原生业务终态 |
+| `promotion_compensation` | 晋升选择和薪酬回执，绑定同一 frozen case |
+| `hc_workforce` | 同 hash checkpoint 的 A/B/C、相同 owner/subject、可见 no-opening 结果 |
+| `projects_metrics` | 真实项目选择与 contribution/metrics 结果 |
+| `incidents_operations` | X/Y/Z 三个 surface 依序可见，动作后 transition/closure 可证 |
+| `cross_cycle_endgame` | 终局与 carried debt/default-change cycle 的同 lineage 关系 |
+
+`zhongguo_phase2_footage_intake.py` GREEN 后，两版各缺一份真实具名
+`zg361_phase2_source_review_receipt`：绑定各版 config、overlay、intake bytes/SHA，完整
+1× 播放、同 cut、顺序完整的 approved cue IDs。随后才生成 promoted project，分别重新
+绑定该 project 的 24 小时 media receipt；本日上午两份 draft receipt 不能冒用。
+完整 build 还需要内容寻址 TTS cache，以及与 capture source/tree 相容的 GREEN
+`--seed-preflight-report`。candidate 后的 probe、audit、两轮真人 review、signoff、
+export manifest 都由既有后处理链产生；当前不填假路径或假 approval。
+
+### 正式录制前需要处理的真实接入差距
+
+1. **clean 区间与旁白/动作画面尚未对齐。** 当前 producer 默认 `hold_seconds=2.5`；
+   `run_phase2_capture_choreography` 在业务动作和 postcondition 检查以后才调用
+   `recorder.clean_hold`，后者只把最终 clean hold 包在 begin/end marks 内。
+   因此原始长录像里即使录到了动作，最终 clean span 也未必包含它。不能假定 8/8
+   业务 GREEN 就已满足上述多个前后画面的 claims。
+2. **当前没有足够的逐段时长预算。** builder 在 `build_phase2_promo_video.py` 中明确拒绝
+   `chapter narration duration > clean span duration`。2.5 秒是 hold 参数，不是实际
+   span 精确时长（还包括终帧检查开销）；本轮没有 live timeline，故不宣称必然 RED。
+   但当前两版八条 gameplay cue 的 draft 估算约为 7.705–11.038 秒，不能依赖检查开销
+   偶然把镜头拖长。最终录制须按较长一版的旁白与可见动作需求规划完整 clean 范围。
+3. **短 cue 与长导演目标不一致。** 按 builder 已有 `_draft_duration` 公式
+   `max(2.5, 0.8 + 非空白字符数 / 4.2)`，人物版 10 条共 `94.190 s`，制度版
+   `92.524 s`，后者另有 4 秒回切；这不是 TTS 实测，更不是 8–12 分钟成片。
+   两份导演稿目标分别约 9:30 / 9:40。正式叙事需在取材前后明确扩写/增加合法镜头停留，
+   或诚实收窄时长目标；不能现在就把 10 条短摘要宣称为完整长片脚本。
+
+这些是实际 producer/builder/authoring 路径之间的接入差距，不是安全审计或新门禁。
+本检查只报告，没有擅自改变游戏动作、旁白、镜头长度或既有证据合同。
+
+### 可以立即做与素材到齐后的用时
+
+无需 CK3/媒体即可继续：补一份明确区分一期旧分镜与二期权威的当前 shot-list；按两版
+较长 cue 制定每段“起始画面 → 动作 → 结果 → 可读停留”的拍摄预算；将上面精确输入作为
+主线交接清单；在不预写实机结论的前提下对齐导演时长与 draft 旁白。现有 IDs、命令链、
+review 模板和 run 身份已齐，不需要再造一套工具或重复生成缺素材 runbook。
+
+从**真正可剪辑且已 intake GREEN 的 8/8**起算，若旁白/镜头时长已对齐、两版并行、
+所需具名审阅者即时可用且没有返工，计划估算如下（不是本机实测吞吐）：
+
+- source review、旁白收口与 promoted 配置：约 `15–30` 分钟；
+- 两版 TTS/字幕/候选构建并行：沿用既有 `45–90` 分钟估计，不把两条简单相加；
+- 各版 probe/claims audit、两轮 1× 审阅与本地 export：约 `30–60` 分钟；
+- 总墙钟约 `1.5–3 小时`。两条 8–12 分钟目标片的两轮完整观看合计至少
+  `32–48` 人分钟，还不含批注或返工；审阅者不足、编码争用或素材需补拍时应延长。
+
+该估计不从当前 registry 状态起算，不包含缺失镜头补拍、实机故障修复或等待人工的未知时间。
+外部上传目标与平台处理也不计入本地导出工期；没有真实发布回执时，不把本地 export 写成
+现有 completion gate 所定义的 `COMPLETE`。
