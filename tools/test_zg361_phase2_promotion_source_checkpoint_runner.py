@@ -1406,6 +1406,52 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_names_exact"])
 
+    def test_second_mechanism_card_uses_reference_charter_choice(self) -> None:
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361m.2"],
+            starting_date=53159136,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361m.2",
+            "current_event_instance_id": 88,
+            "date_raw": 53168304,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            "saved_scopes": [],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53168304, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 88},
+            context=context,
+            event_key="zg361m.2",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
     def test_spymaster_no_find_accepts_only_source_proven_boolean_branch(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

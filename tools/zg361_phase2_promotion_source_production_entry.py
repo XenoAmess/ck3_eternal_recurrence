@@ -1311,6 +1311,21 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361m.2": {
+        # Second player-facing mechanism policy card. Like .1, all branches
+        # intentionally write the organization ledger; option A is the
+        # reference-charter route and highest-base-weight authored choice.
+        # The card consumes no saved scopes, so inherited B1 names are not a
+        # semantic dependency and are deliberately left unconstrained.
+        "date_raw": (53168304,),
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "boolean_scopes": (),
+        "option_count": 3,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "health.7200": {
         # Vanilla yearly-health onset of withering mind.  The event has no
         # saved scopes and exposes one mandatory acknowledgement whose sole
