@@ -257,6 +257,50 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_shinto_visitor_uses_deterministic_welcome_route(self) -> None:
+        event_key = "tgp_movement_events.0150"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=16,
+            date_raw=53150712,
+            player=32904,
+            scopes=[
+                _scope("other_ruler", "character", 29646),
+                _scope("monk", "character", 16783528),
+            ],
+            native_option_indices=(1, 2, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150712,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 16},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+        self.assertEqual(contract["saved_scope_count"], 2)
+
+        drifted = copy.deepcopy(context)
+        drifted["options"][0]["native_option_index"] = 0
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150712,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 16},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_military_aid_letter_acknowledges_exact_governor_pair(self) -> None:
         event_key = "tgp_interaction_event.0015"
         contract = _manager_contract(event_key, player=32904)

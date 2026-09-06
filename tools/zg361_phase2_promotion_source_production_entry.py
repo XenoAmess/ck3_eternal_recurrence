@@ -229,6 +229,44 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "tgp_movement_events.0150": {
+        # CK3 1.19.0.6 Shinto-monk visit. The diplomat-only alliance route is
+        # hidden in the R152 manager frame, leaving authored native options
+        # 1/2/3. Option 1 installs a durable conversion discount and penalizes
+        # zealot vassal opinion; option 2 runs a random conversion duel.
+        # Option 3 has no RNG or follow-up event: it welcomes the monk, grants
+        # medium diplomacy XP or prestige, and gives the sending ruler a small
+        # opinion increase. Bind both generated characters and select that
+        # deterministic, least invasive route.
+        "date_raw": 53150712,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "other_ruler": (29037,),
+            "monk": (29037,),
+        },
+        "character_scope_differs_from": {
+            "other_ruler": ("monk",),
+            "monk": ("other_ruler",),
+        },
+        "scope_types": {
+            "other_ruler": "character",
+            "monk": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "other_ruler",
+            "monk",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (1, 2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "max_occurrences": 1,
+    },
     "tgp_interaction_event.0015": {
         # CK3 1.19.0.6 notification sent to a military governor after another
         # governor has been ordered into the recipient's wars. The interaction

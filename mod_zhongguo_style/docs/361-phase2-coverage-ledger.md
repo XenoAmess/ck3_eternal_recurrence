@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R151 管理者存档续接增量（不改变逐号等级）
+## R131–R152 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -447,7 +447,19 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `a1cedc38887c32e14e5052169bb47ea2ce18ed639b7c67ebd1a7f122d5b7de62` /
   `fbaa96b71d450d0a927b4bd97b212cc754796ee6d28b4f9c616638333d97937d`。本轮未到 clean boundary，
   未产出 seed；cleanup GREEN、restart_count=0、最终 CK3 inventory 为空。这是新增的严格中断合同，不是产品 RED。
-- 以上 R131–R151 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R152 使用 `0ecba409bea674ea3cc72297a1896d9f5eb87f6e` 的冻结源与 1,031-file 正式产品投影；
+  no-launch preflight、loader 303/303 与 fatal=0 均 GREEN。该轮随机序列没有再次生成
+  `epidemic_events.1100`，因此不把 R151 新增合同冒充为实机复验。runner 在同一 PID / generation、默认
+  5 速下精确消化 `tribute_mission.1002/.1005`，随后于 `date_raw=53150712` 严格停在原版
+  `tgp_movement_events.0150`，未发送选择。typed context 绑定玩家/root `32904`、`other_ruler:character`
+  `29646` 与 `monk:character` `16783528`；原版四个 authored option 中 diplomat-only native 0 隐藏，
+  可见映射恰为 native 1/2/3。源码审计选择 authored option 4 / native 3：它无随机后续、联盟、永久改宗
+  折扣或皈依 duel，仅接纳僧侣并结算确定性的中等外交经验/威望、有限好感和 trait stress。runner 只在
+  两个角色 scope、四-of-三按钮投影及单次出现上限完全吻合时允许该路线。R152 manager recovery / runner /
+  cleanup SHA-256 分别为 `36284973e6ae2f451ffc1fb39bf3afa5a0823b6e7cb05fb57b50ef2af5a4b776` /
+  `06f4cb6c97fd48579efe5f5b6a92a4f143c90b7792b1cc8c86b8bd4e28874622` /
+  `4ba446528eb8cba690741b2b0fec50e415b2e327347a1faf47cbfac7add50919`；cleanup GREEN、restart_count=0。
+- 以上 R131–R152 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 
