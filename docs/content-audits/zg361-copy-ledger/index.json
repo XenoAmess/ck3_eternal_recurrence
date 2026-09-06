@@ -91,18 +91,18 @@
       "sha256": "6a6edfe336d4f6c52a5aa68deb6405db1935176949b98fd09d69d759368360e7"
     },
     {
-      "bytes": 68878,
+      "bytes": 68870,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-009.json",
       "records": 40,
-      "sha256": "677987d5a9456dcc39ab81fbded97b8166ccc747961948944151db089dec8d35"
+      "sha256": "c5007a0a39b70d8ce4f330a209ce6ca6fd319448bbee6c597a314fceb7b710e9"
     },
     {
-      "bytes": 68897,
+      "bytes": 68905,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-010.json",
       "records": 40,
-      "sha256": "19442a003cc1b56ddc2907e7417408b966ac2e3555641d9e03fcc0701275da96"
+      "sha256": "b5a2415a3ad32e0e21c223eba16596f0288f982625173aded36df886413daa90"
     },
     {
       "bytes": 68911,
@@ -203,39 +203,39 @@
       "sha256": "f61d025fea49d792d1e98334d47daf37eaf9da639e3d0b664824597cb3af1a79"
     },
     {
-      "bytes": 73676,
+      "bytes": 73703,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-009.json",
       "records": 180,
-      "sha256": "69c15bfc885adfe251bf810e91579ec4a0709a1d243477441e9401709abf7876"
+      "sha256": "5636b1b40c7b2ca547da750a8dbfe3137d5adb386600e51d9c52a81c679d332d"
     },
     {
-      "bytes": 76009,
+      "bytes": 76075,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-010.json",
       "records": 180,
-      "sha256": "9764286d4c559eb5116e5aae12818716db71671fed34c8bbd0e08bdebc261eae"
+      "sha256": "0d10aa42bbfa806e436a3c0cfdc055e3363b288602d04c5c293401bbf92c57cc"
     },
     {
-      "bytes": 72832,
+      "bytes": 75366,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-011.json",
       "records": 180,
-      "sha256": "caf293905d2190dfb4d04c1fd29665fa47669338ab15fba6e4b440185a7fbbee"
+      "sha256": "ed155b7476e8a8cc8f06d5289df8e91e070d99233ab6820bcde8293b021089c6"
     },
     {
-      "bytes": 68280,
+      "bytes": 74192,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-012.json",
       "records": 180,
-      "sha256": "bda39845a96e445f4243b10c5c62f908bf850f5450b4261b59e9cbddf9486fb1"
+      "sha256": "38592e09285b47dd95842463df982aa386aad7508903090e0bfcb8032de89280"
     },
     {
-      "bytes": 73468,
+      "bytes": 75828,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-013.json",
       "records": 180,
-      "sha256": "9ffd968c2052585d636e4760e7f94e9d35d0450ad060171049bf49682938665e"
+      "sha256": "f01539f060d1705f64233afbf928e384915d5071f43f02a1d1f980c853370fa3"
     },
     {
       "bytes": 77275,
@@ -580,10 +580,10 @@
           "method": "generated_file_header_multi_source",
           "status": "pass"
         },
-        "bytes": 416013,
+        "bytes": 416003,
         "lines": 17691,
         "path": "mod_zhongguo_style/events/zg361_generated_mechanism_events.txt",
-        "sha256": "81d45726501f4874958172f3e557e65620a1868bd6eab19a9eabcca134067947"
+        "sha256": "1c04c1cabcad0fb043e76ccb7d5c169f63b4a7b0c450d3b09847ba3e740ee5d5"
       },
       {
         "authority": {
@@ -1674,10 +1674,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 426234,
+        "bytes": 437133,
         "lines": 2932,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
-        "sha256": "c8b914005b3dd41294fe9b0b53cd10cdc1e43597e26db35907ff0b77694e8b1c"
+        "sha256": "e5915cef29b23602015874be1c1512c52a794239f3affff31429726c62d0d810"
       },
       {
         "authority": {
@@ -1824,9 +1824,9 @@
         "sha256": "b75ac0f8f61e7324ff6f40750918266b2572fd543864ab0087d71116fc2cdaa0"
       }
     ],
-    "git_commit": "6db27bea4293445ef757e6c49c1c51d338e92355",
+    "git_commit": "96636bd7f92ea97a0ca83cbd52d045c08f790c60",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "c1ebddc3ebc23f66ee30cb2baf7f717d29fa8df8d8697359c2fd93061ef5bef7"
+    "input_digest_sha256": "ffe1ba0228257b44fc6eb77def803566be429c1309b0ad01c12913a8452efc66"
   },
   "summary": {
     "all_event_definitions": 1009,
