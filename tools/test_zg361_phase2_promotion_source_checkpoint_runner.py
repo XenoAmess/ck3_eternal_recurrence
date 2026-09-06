@@ -1734,6 +1734,68 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
+    def test_treasury_budget_interrupt_keeps_existing_allocation(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        event_key = "tgp_china_ministry.0100"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53158008,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 21,
+            "date_raw": 53163168,
+            "root_scope": character_scope("root", 32904)["scope"],
+            "saved_scopes": [
+                character_scope("treasury_ruler", 32904),
+                character_scope("steward", 29346),
+                character_scope("salary_budget", 32904),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53163168, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 21},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
     def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
         class Service:
             def __init__(self) -> None:

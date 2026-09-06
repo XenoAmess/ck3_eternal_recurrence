@@ -445,6 +445,38 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "tgp_china_ministry.0100": {
+        # CK3 1.19.0.6 treasury-budget renewal for the top liege. Option 1
+        # opens the explicit budget picker and option 3 enacts the steward's
+        # preferred budget. Option 2 keeps the existing allocation and is the
+        # only terminal route that does not choose a new budget policy. R164
+        # observed the salary preference marker saved as the played ruler.
+        "date_raw": 53163168,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "treasury_ruler": 29037,
+            "salary_budget": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "steward": (29037,),
+        },
+        "scope_types": {
+            "steward": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "treasury_ruler",
+            "steward",
+            "salary_budget",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "tgp_interaction_event.0015": {
         # CK3 1.19.0.6 notification sent to a military governor after another
         # governor has been ordered into the recipient's wars. The interaction
