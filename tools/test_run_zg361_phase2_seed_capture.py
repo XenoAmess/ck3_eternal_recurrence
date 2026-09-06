@@ -5172,7 +5172,7 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
             ]
             == 53147280
             and final["manager_transition_contract"]["activation_carrier"]
-            == "native-date-only-daily-sentinel",
+            == "acceptance-hidden-daily-retry-under-native-date-only-sentinel",
             "clean continuation did not bind the exact next-day activation",
         )
         require(

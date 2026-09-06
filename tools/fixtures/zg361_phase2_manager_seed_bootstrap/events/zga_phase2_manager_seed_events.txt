@@ -75,6 +75,28 @@ zga_phase2_manager_seed.100 = {
 	}
 }
 
+# Acceptance-only retry carrier for an already-loaded player-manager. The
+# load diagnostic arms exactly one copy. Each hidden daily execution clears
+# its own in-flight flag, rechecks the complete seed gate through the shared
+# effect, then schedules one successor only if bootstrap is still pending.
+zga_phase2_manager_seed.101 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_character_flag = zga_phase2_manager_seed_daily_retry_logged }
+			}
+			add_character_flag = zga_phase2_manager_seed_daily_retry_logged
+			debug_log = "ZGAP2MANAGERSEED: daily retry carrier live"
+		}
+		remove_character_flag = zga_phase2_manager_seed_daily_retry_armed
+		zga_phase2_manager_seed_maybe_begin_effect = yes
+		zga_phase2_manager_seed_arm_daily_retry_effect = yes
+	}
+}
+
 # Hidden post-switch carrier. The load-safe scripted GUI switches control
 # immediately after the exact pending B2 PIP makes the subject reviewable and
 # before any later destructive event can invalidate it. A zero-day scheduled

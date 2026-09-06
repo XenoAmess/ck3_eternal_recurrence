@@ -1754,3 +1754,20 @@ snapshot 证明当前玩家从 CharacterID `29037` 切换为管理者 CharacterI
 保存响应和即时 typed snapshot 在任何严格检查失败前先落盘；跨进程 continuation 仍必须重新加载存档，
 独立证明当前玩家为目标管理者，不能靠放宽 episode 元数据跳过最终身份门。R130 因旧断言记为 harness RED，
 不提升逐号 readiness；其产品、fixture 和 clean source 前后哈希不变，cleanup GREEN、restart_count=0。
+
+### R153：scripted GUI animation state 不是长期条件轮询器（2026-09-07）
+
+R153 从 active-B1 管理者 checkpoint 在同一 PID、默认 5 速下推进到 `date_raw=53154144`；native/MCP
+证明 `review_now_eligible=true` 且 B1/Central/PP 全 false。暂停等待 1 秒没有生成 acceptance-only seed；
+date-only daily sentinel 随后只提交一次 resume，在原生 daily final-stage 返回后精确于 `53154168` 暂停，
+one tick、zero overshoot、玩家存活、active event 仍为空。再在暂停帧等待仍不会让 seed 出现。
+
+这组证据说明 `trigger_when` / `on_start` 的 scripted GUI animation state 不能承担“载入时为 false，数百日后
+变为 true 就必然重新进入”的持续轮询职责；暂停后延长等待或再造一个普通 GUI 帧没有证据收益。对只存在于
+acceptance fixture 的延迟 gate，使用已证明会在载入执行的 diagnostic effect 启动单实例 `days = 1` 隐藏事件：
+每次仅重验共享的完整业务 gate，未满足时调度一个 successor，seed 启动后由 acceptance-only flag 永久停止。
+该载体不得写 `zg361_*` 产品变量/收据，也不得进入 release staging。
+
+date-only sentinel 仍作为唯一日界 carrier：它在 daily final-stage 之后暂停，因此目标日的隐藏 scheduled event
+有机会先执行；runner 无需增加第二个 sentinel，更不得因为同一帧安静就重启 CK3。任何 fixture 或 mod/runtime
+挂载字节改变仍要求下一轮冷启动；仅 Python 断言或证据格式改变时继续遵守“同一健康 CK3 会话复用”规则。

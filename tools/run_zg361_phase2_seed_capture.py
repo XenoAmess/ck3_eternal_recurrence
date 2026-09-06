@@ -6067,7 +6067,7 @@ def run_capture(
                 clean_boundary_date_raw + 24
             )
             manager_route["activation_carrier"] = (
-                "native-date-only-daily-sentinel"
+                "acceptance-hidden-daily-retry-under-native-date-only-sentinel"
             )
             manager_route["activation_watched_army_count"] = 0
             manager_route["maximum_date_raw"] = (

@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R152 管理者存档续接增量（不改变逐号等级）
+## R131–R153 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -459,7 +459,19 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   cleanup SHA-256 分别为 `36284973e6ae2f451ffc1fb39bf3afa5a0823b6e7cb05fb57b50ef2af5a4b776` /
   `06f4cb6c97fd48579efe5f5b6a92a4f143c90b7792b1cc8c86b8bd4e28874622` /
   `4ba446528eb8cba690741b2b0fec50e415b2e327347a1faf47cbfac7add50919`；cleanup GREEN、restart_count=0。
-- 以上 R131–R152 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R153 在同一产品树上验证新增中断合同没有放宽未知事件门：本轮未生成 `tgp_movement_events.0150`，
+  两个朝贡事件 drain GREEN，manager recovery 首次重新到达 `date_raw=53154144` 的暂停 clean boundary。
+  native date-only sentinel 只提交一次 resume，并在 daily final-stage 后精确推进一日到 `53154168`；
+  one tick、zero overshoot、pause、玩家存活均 GREEN，但 acceptance-only `zga_phase2_manager_seed.1` 仍未
+  物化。debug log 只证明载入 diagnostic GUI 已执行并安装健康保护，无法证明数百日后 entry animation state
+  会重新进入。修复因此由该已证明的载入 edge arm 单实例 `days=1` 隐藏 retry carrier；未满足完整业务 gate
+  时只重排一个 successor，seed 启动后永久停止，不写任何 `zg361_*` 产品状态。R153 manager recovery /
+  runner / cleanup / date-wait SHA-256 分别为
+  `f6bae82fb3723817a606ab141a86ce5a276feebcea2a64341565ec3ab2184190` /
+  `3837b422c758a41baeaa4d5f4c62116f679548db81f604c0091680bf62ebbd67` /
+  `ab6d884b4c55046af75a04c737dc6d0c775a6a23f94f1a9de76ab3263ad1b132` /
+  `345defc4e3312dd6d33533ca8d97833395c329d3d5b2b9f3af524ee310ceac4a`；这是 fixture/harness RED。
+- 以上 R131–R153 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 

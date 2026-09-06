@@ -293,7 +293,7 @@ def main() -> int:
         r"(?m)^(zga_phase2_manager_seed_[a-z0-9_]+_effect)\s*=\s*\{",
         effects,
     )
-    assert len(fixture_effect_keys) == 4
+    assert len(fixture_effect_keys) == 5
     for effect_file in (FIXTURE / "common" / "scripted_effects").glob("*.txt"):
         effect_file_payload = text(effect_file)
         effect_file_keys = re.findall(
@@ -357,6 +357,60 @@ def main() -> int:
     )
     assert "health = 10" in survivability_modifier
     assert "epidemic_resistance = 100" in survivability_modifier
+    retry_arm = top_level_block(
+        effects, "zga_phase2_manager_seed_arm_daily_retry_effect"
+    )
+    for retry_gate in (
+        "is_ai = no",
+        "is_alive = yes",
+        "is_landed = yes",
+        "zg361_is_celestial_liege_trigger = yes",
+        "has_game_rule = zg361_on",
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_bootstrap_started }",
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_daily_retry_armed }",
+    ):
+        assert retry_gate in retry_arm
+    assert retry_arm.count(
+        "add_character_flag = zga_phase2_manager_seed_daily_retry_armed"
+    ) == 1
+    assert retry_arm.count(
+        "trigger_event = { id = zga_phase2_manager_seed.101 days = 1 }"
+    ) == 1
+    assert (
+        "zga_phase2_manager_seed_arm_daily_retry_effect = yes" in diagnostic
+    )
+    assert diagnostic.index(
+        "zga_phase2_manager_seed_arm_daily_retry_effect = yes"
+    ) < diagnostic.rindex("zga_phase2_manager_seed_maybe_begin_effect = yes")
+    retry_event = top_level_block(events, "zga_phase2_manager_seed.101")
+    assert "hidden = yes" in retry_event
+    assert retry_event.count(
+        "remove_character_flag = zga_phase2_manager_seed_daily_retry_armed"
+    ) == 1
+    assert retry_event.count(
+        "add_character_flag = zga_phase2_manager_seed_daily_retry_logged"
+    ) == 1
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_daily_retry_logged }" in retry_event
+    )
+    assert retry_event.count("ZGAP2MANAGERSEED: daily retry carrier live") == 1
+    assert retry_event.count(
+        "zga_phase2_manager_seed_maybe_begin_effect = yes"
+    ) == 1
+    assert retry_event.count(
+        "zga_phase2_manager_seed_arm_daily_retry_effect = yes"
+    ) == 1
+    assert retry_event.index(
+        "remove_character_flag = zga_phase2_manager_seed_daily_retry_armed"
+    ) < retry_event.index("zga_phase2_manager_seed_maybe_begin_effect = yes")
+    assert retry_event.index(
+        "zga_phase2_manager_seed_maybe_begin_effect = yes"
+    ) < retry_event.index(
+        "zga_phase2_manager_seed_arm_daily_retry_effect = yes"
+    )
     assert effects.count("set_player_character =") == 1
     assert "set_player_character = scope:zga_phase2_manager_owner" in effects
     assert "add_character_flag = zga_phase2_manager_seed_handoff_pending" in effects
