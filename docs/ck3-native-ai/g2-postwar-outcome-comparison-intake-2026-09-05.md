@@ -91,6 +91,13 @@ The unified intake therefore remains `status=evidence_required`, with
 `action_literal=null`. This is composition of existing evidence only, not a
 readiness promotion.
 
+The hash-bound three-way file intake can consume this complete output envelope
+directly. It checks the recorded receipt/outer validation, source-report
+binding, nested intake/policy equality, remaining provider and all false
+readiness boundaries before extracting the projection. Callers no longer need
+to detach the observation manually, and the generic source-attribution blocker
+is preserved after extraction.
+
 ## Exact next construction seam
 
 The remaining native provider is

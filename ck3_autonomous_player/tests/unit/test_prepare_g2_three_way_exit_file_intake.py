@@ -15,6 +15,12 @@ from test_prepare_g2_source_specific_comparison_intake import (
     INTAKE as SOURCE_INTAKE,
     _report as _source_specific_report,
 )
+from test_prepare_g2_postwar_comparison_intake import (
+    INTAKE as POSTWAR_INTAKE,
+    REPORT_SHA256 as POSTWAR_REPORT_SHA256,
+    _expected as _postwar_expected,
+    _report as _postwar_report,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -89,6 +95,53 @@ def _manifest(
     }
     path = root / "manifest.json"
     return path, _write_json(path, manifest)
+
+
+def _generic_postwar_envelope() -> dict[str, object]:
+    report, ticket = _postwar_report()
+    projection, validation = POSTWAR_INTAKE.build_observed_surrender_outcome(
+        report,
+        report_sha256=POSTWAR_REPORT_SHA256,
+        ticket=ticket,
+        expected=_postwar_expected(),
+    )
+    composed = POSTWAR_INTAKE.compose_three_way_intake(projection)
+    return {
+        "schema": POSTWAR_INTAKE.EXPECTED_OUTPUT_SCHEMA,
+        "status": POSTWAR_INTAKE.EXPECTED_OUTPUT_STATUS,
+        "ok": True,
+        "manifest": "fixture-manifest.json",
+        "manifest_sha256": "E" * 64,
+        "source_report": "fixture-report.json",
+        "source_report_sha256": POSTWAR_REPORT_SHA256,
+        "source_report_elapsed_seconds": report["elapsed_seconds"],
+        "source_commit": "F" * 40,
+        "ck3_started_or_attached": False,
+        "process_inventory_not_required_for_offline_artifact_read": True,
+        "receipt_validation": validation,
+        "observed_surrender_outcome": projection,
+        "three_way_intake_result": composed,
+        "three_way_policy_result": composed["assessment"],
+        "closed_gap": (
+            "R3 action-bound postwar facts are now consumed by the unified "
+            "three-way intake"
+        ),
+        "remaining_gap": {
+            "reason": "source_specific_war_loss_attribution_unavailable",
+            "provider": INTAKE.SOURCE_SPECIFIC_LOSS_PROVIDER,
+            "native_entry": "spawn_army_post_finalize_rva_0x2e7f951",
+            "required_observation": "fixture source observation",
+        },
+        "boundaries": {
+            "r3_generic_boundary_used_as_source_specific_loss": False,
+            "three_way_outcome_compared": False,
+            "public_readiness_promoted": False,
+            "action_readiness_promoted": False,
+            "decision_ready": False,
+            "automatic_surrender_ready": False,
+            "gen034_closed": False,
+        },
+    }
 
 
 class G2ThreeWayExitFileIntakeTests(unittest.TestCase):
@@ -255,6 +308,70 @@ class G2ThreeWayExitFileIntakeTests(unittest.TestCase):
             with self.assertRaisesRegex(
                 INTAKE.FileIntakeError,
                 "source-specific intake boundary drifted",
+            ):
+                INTAKE.run_file_intake(
+                    manifest,
+                    root / "result.json",
+                    expected_manifest_sha256=digest,
+                )
+
+    def test_generic_postwar_envelope_is_consumed_without_source_promotion(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest, _ = _manifest(root, complete=False)
+            postwar_output = root / "postwar-intake.json"
+            postwar_result = _generic_postwar_envelope()
+            _write_json(postwar_output, postwar_result)
+            manifest_value = json.loads(manifest.read_text(encoding="utf-8"))
+            manifest_value["inputs"]["observed_surrender_outcome"] = (
+                _binding(postwar_output)
+            )
+            digest = _write_json(manifest, manifest_value)
+
+            result = INTAKE.run_file_intake(
+                manifest,
+                root / "result.json",
+                expected_manifest_sha256=digest,
+            )
+
+            observed = result["intake_result"]["assessment"][
+                "observed_surrender_outcome"
+            ]
+            self.assertEqual(
+                observed["status"],
+                "observed_generic_boundary_source_attribution_required",
+            )
+            self.assertTrue(observed["observed_checkpoint_boundary_ready"])
+            self.assertFalse(observed["source_specific_loss_comparison_ready"])
+            self.assertEqual(
+                observed["blockers"],
+                ["source_specific_war_loss_attribution_unavailable"],
+            )
+            self.assertEqual(
+                observed["normalized"],
+                postwar_result["observed_surrender_outcome"],
+            )
+            self.assertFalse(result["boundaries"]["action_ready"])
+
+    def test_generic_postwar_envelope_overclaim_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest, _ = _manifest(root, complete=False)
+            postwar_output = root / "postwar-intake.json"
+            postwar_result = _generic_postwar_envelope()
+            postwar_result["boundaries"]["decision_ready"] = True
+            _write_json(postwar_output, postwar_result)
+            manifest_value = json.loads(manifest.read_text(encoding="utf-8"))
+            manifest_value["inputs"]["observed_surrender_outcome"] = (
+                _binding(postwar_output)
+            )
+            digest = _write_json(manifest, manifest_value)
+
+            with self.assertRaisesRegex(
+                INTAKE.FileIntakeError,
+                "generic postwar intake boundary drifted",
             ):
                 INTAKE.run_file_intake(
                     manifest,

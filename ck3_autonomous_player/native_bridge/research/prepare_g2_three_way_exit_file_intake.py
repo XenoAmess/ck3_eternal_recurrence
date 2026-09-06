@@ -31,6 +31,11 @@ SOURCE_SPECIFIC_INTAKE_SCHEMA = (
 SOURCE_SPECIFIC_INTAKE_STATUS = (
     "GREEN_STATIC_SOURCE_SPECIFIC_COMPARISON_INTAKE"
 )
+POSTWAR_INTAKE_SCHEMA = "xar.ck3.g2_postwar_comparison_intake.v1"
+POSTWAR_INTAKE_STATUS = "GREEN_STATIC_R3_COMPARISON_INTAKE"
+SOURCE_SPECIFIC_LOSS_PROVIDER = (
+    "raiktor-source-specific-war-loss-attribution-provider-v1"
+)
 SOURCE_SPECIFIC_REMAINING_PROVIDERS = [
     "campaign-dominance-certificate",
     "owner-authored-budget-profile",
@@ -170,11 +175,13 @@ def _load_bound_input(
 
 
 def _extract_observed_surrender_outcome(value: object) -> object:
-    """Accept a raw outcome or the complete source-specific intake envelope."""
+    """Accept a raw outcome or either complete postwar intake envelope."""
 
-    if not isinstance(value, dict) or value.get("schema") != (
-        SOURCE_SPECIFIC_INTAKE_SCHEMA
-    ):
+    if not isinstance(value, dict):
+        return value
+    if value.get("schema") == POSTWAR_INTAKE_SCHEMA:
+        return _extract_generic_postwar_outcome(value)
+    if value.get("schema") != SOURCE_SPECIFIC_INTAKE_SCHEMA:
         return value
     expected_keys = {
         "schema",
@@ -230,6 +237,97 @@ def _extract_observed_surrender_outcome(value: object) -> object:
         or policy_observed.get("normalized") != projection
     ):
         raise FileIntakeError("source-specific intake boundary drifted")
+    return projection
+
+
+def _extract_generic_postwar_outcome(
+    value: dict[str, object],
+) -> dict[str, object]:
+    expected_keys = {
+        "schema",
+        "status",
+        "ok",
+        "manifest",
+        "manifest_sha256",
+        "source_report",
+        "source_report_sha256",
+        "source_report_elapsed_seconds",
+        "source_commit",
+        "ck3_started_or_attached",
+        "process_inventory_not_required_for_offline_artifact_read",
+        "receipt_validation",
+        "observed_surrender_outcome",
+        "three_way_intake_result",
+        "three_way_policy_result",
+        "closed_gap",
+        "remaining_gap",
+        "boundaries",
+    }
+    expected_boundaries = {
+        "r3_generic_boundary_used_as_source_specific_loss": False,
+        "three_way_outcome_compared": False,
+        "public_readiness_promoted": False,
+        "action_readiness_promoted": False,
+        "decision_ready": False,
+        "automatic_surrender_ready": False,
+        "gen034_closed": False,
+    }
+    projection = value.get("observed_surrender_outcome")
+    composed = value.get("three_way_intake_result")
+    policy = value.get("three_way_policy_result")
+    policy_observed = (
+        policy.get("observed_surrender_outcome")
+        if isinstance(policy, dict)
+        else None
+    )
+    validation = value.get("receipt_validation")
+    receipt_validation = (
+        validation.get("receipt") if isinstance(validation, dict) else None
+    )
+    outer_validation = (
+        validation.get("outer") if isinstance(validation, dict) else None
+    )
+    receipt_checks = (
+        receipt_validation.get("checks")
+        if isinstance(receipt_validation, dict)
+        else None
+    )
+    remaining = value.get("remaining_gap")
+    if (
+        set(value) != expected_keys
+        or value.get("status") != POSTWAR_INTAKE_STATUS
+        or value.get("ok") is not True
+        or value.get("ck3_started_or_attached") is not False
+        or value.get("process_inventory_not_required_for_offline_artifact_read")
+        is not True
+        or value.get("boundaries") != expected_boundaries
+        or not isinstance(projection, dict)
+        or projection.get("source_report_sha256")
+        != value.get("source_report_sha256")
+        or not isinstance(composed, dict)
+        or composed.get("assessment") != policy
+        or composed.get("status") != "evidence_required"
+        or composed.get("production_recommendation_ready") is not False
+        or composed.get("action_ready") is not False
+        or composed.get("action_literal") is not None
+        or not isinstance(policy_observed, dict)
+        or policy_observed.get("normalized") != projection
+        or not isinstance(receipt_validation, dict)
+        or receipt_validation.get("ok") is not True
+        or not isinstance(receipt_checks, dict)
+        or not receipt_checks
+        or not all(check is True for check in receipt_checks.values())
+        or not isinstance(outer_validation, dict)
+        or not outer_validation
+        or not all(check is True for check in outer_validation.values())
+        or not isinstance(remaining, dict)
+        or remaining.get("reason")
+        != "source_specific_war_loss_attribution_unavailable"
+        or remaining.get("provider") != SOURCE_SPECIFIC_LOSS_PROVIDER
+        or remaining.get("native_entry")
+        != "spawn_army_post_finalize_rva_0x2e7f951"
+    ):
+        raise FileIntakeError("generic postwar intake boundary drifted")
     return projection
 
 

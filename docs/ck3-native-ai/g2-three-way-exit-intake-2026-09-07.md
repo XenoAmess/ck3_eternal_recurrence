@@ -71,3 +71,8 @@ MCP query、mutation 或 readiness promotion。
 已有 R3 generic postwar receipt 的离线 adapter 也已改走同一统一入口，并在输出中新增完整
 `three_way_intake_result`、保留 `three_way_policy_result` 兼容字段。R3 的 source attribution 仍为 RED，
 因此该接线只统一 typed blocker 与 provider 边界，不改变任何 production/action readiness。
+
+hash-bound 文件入口现在也可直接绑定这份完整 R3 generic postwar envelope，无需调用方手工抽取
+`observed_surrender_outcome`。入口验证 receipt/outer checks、嵌套 intake/policy 一致性、source report SHA
+绑定、remaining provider 和全部 false 的 readiness 边界后才提取 projection；提取后的 generic outcome 仍返回
+`source_specific_war_loss_attribution_unavailable`，不会被提升为 source-specific loss。
