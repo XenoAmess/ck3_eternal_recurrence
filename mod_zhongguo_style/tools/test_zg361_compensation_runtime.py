@@ -1635,7 +1635,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                 "zg361_comp_m294_liquid_value",
                 "zg361_comp_af_repurchased_units",
             ):
-                self.assertIn(f"ROOT.MakeScope.Var('{variable}').GetValue", source)
+                self.assertIn(f"ROOT.Var('{variable}').GetValue", source)
             for key in (
                 "zg361comp.902.private",
                 "zg361comp.902.public",
@@ -1748,7 +1748,7 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("否则均为零", chinese_values["zg361comp.1.af2.r1"])
         self.assertIn("没收未归属、保留已归属", chinese_values["zg361comp.1.af5.r3"])
 
-    def test_character_localization_variables_use_direct_root_var_projection(self) -> None:
+    def test_localization_variables_use_direct_root_var_projection(self) -> None:
         character_variable = "zg361_comp_portfolio_subject"
         expected_keys = {
             *(
@@ -1762,11 +1762,34 @@ class CompensationRuntimeTests(unittest.TestCase):
             ),
         }
         forbidden_projection = re.compile(
-            r"ROOT\.MakeScope\.Var\('[^']+'\)\.Char(?:\.[A-Za-z0-9_]+)*"
+            r"ROOT(?:\.Char)?\.MakeScope\.Var\('[^']+'\)"
+            r"\.(?:Char(?:\.[A-Za-z0-9_]+)*|GetValue)"
         )
         direct_projection = (
             f"ROOT.Var('{character_variable}').Char.GetShortUIName"
         )
+        numeric_projection = re.compile(
+            r"ROOT\.Var\('([^']+)'\)\.GetValue"
+        )
+        expected_numeric_variables = {
+            "zg361_comp_bonus_total",
+            "zg361_comp_bonus_paid_gross",
+            "zg361_comp_bonus_returned",
+            "zg361_comp_bonus_forfeited",
+            "zg361_comp_m090_spot_gross",
+            "zg361_comp_ae_statement_payable",
+            "zg361_comp_ae_statement_paid",
+            "zg361_comp_ae_statement_owed",
+            "zg361_comp_ae_statement_returned",
+            "zg361_comp_af_total_units",
+            "zg361_comp_af_unvested_service",
+            "zg361_comp_af_unvested_performance",
+            "zg361_comp_af_vested_units",
+            "zg361_comp_m294_current_value",
+            "zg361_comp_m294_liquid_value",
+            "zg361_comp_af_forfeited_units",
+            "zg361_comp_af_repurchased_units",
+        }
 
         generator_source = Path(generator.__file__).read_text(encoding="utf-8-sig")
         self.assertEqual(forbidden_projection.findall(generator_source), [])
@@ -1792,6 +1815,10 @@ class CompensationRuntimeTests(unittest.TestCase):
                 }
                 self.assertEqual(projected_keys, expected_keys)
                 self.assertEqual(source.count(direct_projection), 56)
+                numeric_variables = numeric_projection.findall(source)
+                self.assertEqual(len(numeric_variables), 21)
+                self.assertEqual(set(numeric_variables), expected_numeric_variables)
+                self.assertEqual(source.count(".GetValue"), 21)
 
         for variable in (
             "zg361_comp_bonus_total",
@@ -1799,7 +1826,7 @@ class CompensationRuntimeTests(unittest.TestCase):
             "zg361_comp_af_total_units",
         ):
             self.assertIn(
-                f"ROOT.MakeScope.Var('{variable}').GetValue",
+                f"ROOT.Var('{variable}').GetValue",
                 generator.render_english_localization().decode("utf-8-sig"),
             )
 
