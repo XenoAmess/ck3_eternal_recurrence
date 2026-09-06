@@ -871,8 +871,8 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             "zg361_mg_report_manager_score",
             "zg361_mg_report_reason_total",
         ):
-            self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_en)
-            self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_zh)
+            self.assertIn(f"ROOT.Var('{variable}').GetValue", self.loc_en)
+            self.assertIn(f"ROOT.Var('{variable}').GetValue", self.loc_zh)
         for hidden_implementation_field in (
             "zg361_mg_report_score_available",
             "zg361_mg_snapshot_source_serial",
@@ -883,6 +883,28 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         ):
             self.assertNotIn(hidden_implementation_field, self.loc_en)
             self.assertNotIn(hidden_implementation_field, self.loc_zh)
+
+    def test_character_root_numeric_localization_uses_exact_engine_path(self) -> None:
+        invalid = re.compile(
+            r"ROOT(?:\.Char)?\.MakeScope\.Var\('[^']+'\)\.GetValue"
+        )
+        localization_outputs = {
+            path: payload.decode("utf-8-sig")
+            for path, payload in outputs().items()
+            if "localization" in path.parts
+        }
+        self.assertEqual(len(localization_outputs), 9)
+        for path, text in localization_outputs.items():
+            with self.subTest(path=path):
+                self.assertIsNone(invalid.search(text))
+                self.assertIn(
+                    "ROOT.Var('zg361_mg_report_manager_score').GetValue",
+                    text,
+                )
+                self.assertIn(
+                    "ROOT.Var('zg361_mg_admin_capacity_remaining').GetValue",
+                    text,
+                )
 
     def test_f032_uses_only_strictly_prior_seven_metric_aggregate(self) -> None:
         snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
