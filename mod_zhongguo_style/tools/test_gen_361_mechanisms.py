@@ -186,6 +186,12 @@ class MechanismGenerationTests(unittest.TestCase):
             french_placeholder["zg361m.141.desc"],
             english["zg361m.141.desc"],
         )
+        for mechanism_id in range(72, 152):
+            for choice in ("a", "b"):
+                key = f"zg361m.{mechanism_id}.{choice}"
+                with self.subTest(key=key, issue="truncated-action"):
+                    self.assertNotIn("…", chinese[key])
+        self.assertNotIn("保护老员，", chinese["zg361m.118.b.tt"])
 
     def test_acceptance_contracts_are_typed_complete_and_specific(self) -> None:
         for mechanism in self.mechanisms:
