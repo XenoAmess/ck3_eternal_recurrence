@@ -1526,6 +1526,27 @@ class Phase2DiagnosticClassificationTests(unittest.TestCase):
         self.assertIn("ROOT.GetShortUIName", blocking[0])
         self.assertIn("zg361b2.40.desc", blocking[0])
 
+    def test_report_aggregation_skips_only_the_diagnostic_already_primary(self) -> None:
+        duplicate = "error.log: complete zg361 product error block"
+        distinct = "game.log: different zg361 product error block"
+        primary = f"product runtime diagnostic: {duplicate}"
+
+        self.assertIsNone(
+            capture._last_unreported_project_diagnostic(primary, [duplicate])
+        )
+        self.assertEqual(
+            capture._last_unreported_project_diagnostic(
+                primary, [duplicate, distinct]
+            ),
+            distinct,
+        )
+        self.assertEqual(
+            capture._last_unreported_project_diagnostic(
+                primary, [distinct, duplicate]
+            ),
+            distinct,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

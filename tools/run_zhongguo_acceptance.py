@@ -5870,6 +5870,18 @@ def runtime_project_diagnostics(
     )
 
 
+def _last_unreported_project_diagnostic(
+    primary_error: str | None,
+    diagnostics: Sequence[str],
+) -> str | None:
+    """Return the newest diagnostic not already embedded in the primary error."""
+
+    for diagnostic in reversed(diagnostics):
+        if not primary_error or diagnostic not in primary_error:
+            return diagnostic
+    return None
+
+
 def project_diagnostics(
     userdir: Path,
     artifacts: Path,
@@ -19508,8 +19520,11 @@ def run_cell(
             )
             diagnostics.extend(new_diagnostics)
             observed_engine_warnings.extend(new_warnings)
-            if diagnostics:
-                raise acceptance.RunnerError(diagnostics[-1])
+            diagnostic = _last_unreported_project_diagnostic(
+                error_reason, diagnostics
+            )
+            if diagnostic is not None:
+                raise acceptance.RunnerError(diagnostic)
         if not loader_smoke and not phase2_runtime_mode:
             isolated.dismiss_external_main_menu_popup(artifacts)
             acceptance.navigate_lobby(artifacts)
@@ -20019,8 +20034,11 @@ def run_cell(
         )
         diagnostics.extend(new_diagnostics)
         observed_engine_warnings.extend(new_warnings)
-        if diagnostics:
-            raise acceptance.RunnerError(diagnostics[-1])
+        diagnostic = _last_unreported_project_diagnostic(
+            error_reason, diagnostics
+        )
+        if diagnostic is not None:
+            raise acceptance.RunnerError(diagnostic)
         if not phase2_runtime_mode and process is not None and process.poll() is not None:
             raise acceptance.RunnerError(
                 f"CK3 PID {process.pid} exited before controlled shutdown"
@@ -20314,8 +20332,11 @@ def run_cell(
             diagnostics.extend(new_diagnostics)
             observed_engine_warnings.extend(new_warnings)
             copy_logs(userdir, artifacts)
-            if diagnostics:
-                raise acceptance.RunnerError(diagnostics[-1])
+            diagnostic = _last_unreported_project_diagnostic(
+                error_reason, diagnostics
+            )
+            if diagnostic is not None:
+                raise acceptance.RunnerError(diagnostic)
         except BaseException as error:
             result = "RED"
             reason = str(error) or type(error).__name__

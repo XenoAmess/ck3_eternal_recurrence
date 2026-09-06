@@ -3918,8 +3918,15 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
     def test_run_cell_retains_healthy_session_on_harness_red(self) -> None:
         self._run_cell_case(entry_error=True, retain_session=True)
 
+    def test_run_cell_deduplicates_primary_product_runtime_diagnostic(self) -> None:
+        self._run_cell_case(entry_error=True, diagnostic_dedupe=True)
+
     def _run_cell_case(
-        self, *, entry_error: bool, retain_session: bool = False
+        self,
+        *,
+        entry_error: bool,
+        retain_session: bool = False,
+        diagnostic_dedupe: bool = False,
     ) -> None:
         seed_sha = "A" * 64
         seed_contract = {
@@ -3951,6 +3958,17 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             bridge = SimpleNamespace(pipe_name=r"\\.\pipe\promotion-source-unit")
             with ExitStack() as stack:
                 _enter_common_run_cell_patches(stack, root)
+                duplicate_diagnostic = (
+                    "error.log: complete zg361 product runtime diagnostic block"
+                )
+                if diagnostic_dedupe:
+                    stack.enter_context(
+                        mock.patch.object(
+                            runner,
+                            "project_diagnostics",
+                            return_value=([duplicate_diagnostic], []),
+                        )
+                    )
                 stack.enter_context(
                     mock.patch.object(
                         runner,
@@ -4010,6 +4028,11 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                         "observations": [{"date_raw": 53157024, "active_event": True}],
                     })
                     if entry_error:
+                        if diagnostic_dedupe:
+                            raise RuntimeError(
+                                "product runtime diagnostic: "
+                                + duplicate_diagnostic
+                            )
                         raise RuntimeError("known interrupt date drift")
                     return retained
 
@@ -4055,8 +4078,17 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         if entry_error:
             capture.assert_not_called()
             self.assertEqual(retained["result"], "RED")
-            self.assertIn("known interrupt date drift", retained["error_reason"])
+            if diagnostic_dedupe:
+                self.assertIn(duplicate_diagnostic, retained["error_reason"])
+            else:
+                self.assertIn(
+                    "known interrupt date drift", retained["error_reason"]
+                )
             self.assertEqual(report["result"], "RED")
+            if diagnostic_dedupe:
+                self.assertEqual(
+                    report["error_reason"].count(duplicate_diagnostic), 1
+                )
             if retain_session:
                 stop.assert_not_called()
                 retention = report["phase2_session_retention"]
