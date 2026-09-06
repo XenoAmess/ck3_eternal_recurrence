@@ -78,8 +78,10 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
         } for direction_scope in _LAW_DIRECTION_SCOPES) + (
             {
                 # R175 observed the source-authored house branch without a
-                # disciple: the selected house member is exactly the province
-                # recipient while a distinct other member remains inherited.
+                # disciple, selecting the house member. R185 observed the
+                # same exact eight-scope shape after source option .0100.d
+                # selected the distinct other member. The recipient must be
+                # one of those two visible source-authored candidates.
                 "saved_scope_names": (
                     "petitioner",
                     "actors_movement",
@@ -105,7 +107,10 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
                     "province_change_recipient": (29037,),
                 },
                 "character_scope_matches_any": {
-                    "province_change_recipient": ("house_movement_member",),
+                    "province_change_recipient": (
+                        "house_movement_member",
+                        "other_movement_member",
+                    ),
                 },
             },
             {
