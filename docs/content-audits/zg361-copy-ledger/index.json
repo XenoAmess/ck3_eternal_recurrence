@@ -1,0 +1,1873 @@
+{
+  "checks": {
+    "body_choice_meta": "(?:路线\\s*[甲乙丙ＡＢＣABC]|[甲乙丙ＡＢＣABC]\\s*[/／、和与或]\\s*[甲乙丙ＡＢＣABC]\\s*(?:的)?\\s*(?:具体|实际|所述)?\\s*(?:路线|方案|选项|动作|处理|后果|选择)|按\\s*[ＡＢＣABC](?:做|办|执行|处理|走)?|(?:按钮|选项)(?:上|中|里)?[^。！？；]{0,12}(?:写明|列明|说明|展示)[^。！？；]{0,12}(?:动作|选择|处理|后果)|(?:下方|以下)[^。！？；]{0,8}按钮|按钮及说明)",
+    "dead_option_loc": "every visible option reference must resolve; unbound option-like rows remain review",
+    "generic_option": "(?:(?:按|照|选|走|采用)\\s*[ＡＢＣABC](?:做|办|执行|处理|路线)?|路线\\s*[甲乙丙ＡＢＣABC]|登记\\s*路线\\s*[甲乙丙ＡＢＣABC]\\s*倾向|按\\s*(?:证据|政治)\\s*办|^(?:照办|接受安排|继续|就这样)[。！!…]*$)",
+    "stripped_opening_punctuation": "first visible character after CK3 style/icon markup",
+    "title_similarity_contains": "literal normalized containment fails; similarity >= 0.50 remains review"
+  },
+  "human_semantic_review_status": "review",
+  "ledger_status": "review",
+  "live_render_validation_status": "pending",
+  "machine_checks_status": "pass",
+  "machine_failures": [],
+  "open_items": [
+    {
+      "count": 635,
+      "kind": "manual_semantic_review",
+      "reason": "machine checks do not prove that scene context, causality, voice, or information value is sound",
+      "records": "event shards",
+      "status": "review"
+    },
+    {
+      "count": 1,
+      "kind": "live_render_validation",
+      "reason": "static source binding cannot validate dynamic scopes, rendered layout, or in-game wording",
+      "status": "pending"
+    },
+    {
+      "count": 9,
+      "kind": "authority_source_not_unique",
+      "source_paths": [
+        "mod_zhongguo_style/events/zg361_events.txt",
+        "mod_zhongguo_style/events/zg361_generated_mechanism_events.txt",
+        "mod_zhongguo_style/events/zg361_jingcha_events.txt",
+        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_appointment_fact_l_simp_chinese.yml",
+        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_attribution_fact_l_simp_chinese.yml",
+        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_exit_fact_l_simp_chinese.yml",
+        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_normal_exit_fact_l_simp_chinese.yml",
+        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml",
+        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_rehire_fact_l_simp_chinese.yml"
+      ],
+      "status": "review"
+    }
+  ],
+  "schema_version": 1,
+  "scope": {
+    "authority_resolution": "join each record source.path to source_snapshot.files[].authority",
+    "event_visibility_rule": "event definition without direct hidden = yes",
+    "language": "simp_chinese",
+    "localization_resolution": "unique keys across lexically sorted simp_chinese yml files"
+  },
+  "shards": [
+    {
+      "bytes": 90166,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-001.json",
+      "records": 40,
+      "sha256": "2afce246957b8c53a49d440a3330d3e3fec0fbdeb07698c69afffb1bd5680a6b"
+    },
+    {
+      "bytes": 67132,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
+      "records": 40,
+      "sha256": "f4ae04f2a0c8624e24b874884ac6e0e8bff4e8e2d39136302c3492de4b6c2d44"
+    },
+    {
+      "bytes": 91481,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-003.json",
+      "records": 40,
+      "sha256": "8fb47e724f451116b8a2fc19c0ad50344073f9aeaf17c3bbd1d1ac04977e3552"
+    },
+    {
+      "bytes": 90774,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-004.json",
+      "records": 40,
+      "sha256": "fbc852229bb0b2b82b6655c82cd7b578f88e3102872e19545319daa201d1c74a"
+    },
+    {
+      "bytes": 87046,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
+      "records": 40,
+      "sha256": "bf12351911c38c218e98d247a19a0bb5912e0e0df666b031fc1547bd67aca4fc"
+    },
+    {
+      "bytes": 68228,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-006.json",
+      "records": 40,
+      "sha256": "a27de6fc29decf036b7ade498003cc777fb89839dd03b62c5440c8b9d37dab92"
+    },
+    {
+      "bytes": 68438,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-007.json",
+      "records": 40,
+      "sha256": "488ef19e8ae1379b5f0dea4b2a1838d9e5f0f278da108e8959c9b425039a4cc4"
+    },
+    {
+      "bytes": 68869,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-008.json",
+      "records": 40,
+      "sha256": "f42211c4fcdf5c433edaebda5e12cd6da6be22c8fe0c257476d829522ea3e483"
+    },
+    {
+      "bytes": 68878,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-009.json",
+      "records": 40,
+      "sha256": "677987d5a9456dcc39ab81fbded97b8166ccc747961948944151db089dec8d35"
+    },
+    {
+      "bytes": 68897,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-010.json",
+      "records": 40,
+      "sha256": "19442a003cc1b56ddc2907e7417408b966ac2e3555641d9e03fcc0701275da96"
+    },
+    {
+      "bytes": 68911,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-011.json",
+      "records": 40,
+      "sha256": "488d312ca4d6d79ac3f215edec9d8894b77287acbfc48f8ac64790e74093de5a"
+    },
+    {
+      "bytes": 68920,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-012.json",
+      "records": 40,
+      "sha256": "45fae85edf36c7231cb2689e1ff2f0e263e485b0d3f2c1dd1f2c262f4f714bb4"
+    },
+    {
+      "bytes": 68919,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-013.json",
+      "records": 40,
+      "sha256": "8f913251c82d276e66f764b653abf10f296a69c22b114325ae0889e475fd14fa"
+    },
+    {
+      "bytes": 59892,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-014.json",
+      "records": 40,
+      "sha256": "21149c24866e8004bb8eece9ecfd1caacc7f054fd2de0276f0a202f13538319b"
+    },
+    {
+      "bytes": 70690,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
+      "records": 40,
+      "sha256": "34a1f3dec0799e3cdb5642400992c9735640aa495a2d7fb80e38b78ec59a1d64"
+    },
+    {
+      "bytes": 67910,
+      "kind": "events",
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-016.json",
+      "records": 35,
+      "sha256": "2269c58be940f8b51f6114affbba78b3271cb039e0a5d17686c29dc1e9525da4"
+    },
+    {
+      "bytes": 65938,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-001.json",
+      "records": 180,
+      "sha256": "9c453089033a14fb8b407b5c904b3f6bb902d62537a5f89cf56f1d2aef2a17ae"
+    },
+    {
+      "bytes": 59645,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-002.json",
+      "records": 180,
+      "sha256": "4c1f00d796f9c9b0eac1b4d8ba24a2d298efcd2a4111767c59c1139713834de0"
+    },
+    {
+      "bytes": 63035,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-003.json",
+      "records": 180,
+      "sha256": "67d716a953840785d52b3fa09dbe1179c93d860d7510ab12f1a0e6e73380ce44"
+    },
+    {
+      "bytes": 68531,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-004.json",
+      "records": 180,
+      "sha256": "10d719fe02c6fb312462fda70a99a33eb33637153be8bda96202f0d5f7b532df"
+    },
+    {
+      "bytes": 75525,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-005.json",
+      "records": 180,
+      "sha256": "f05a779124ee2ed6c45723ce7bc75eaf57c2728cf730727772f501fea9c8b9c8"
+    },
+    {
+      "bytes": 65998,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-006.json",
+      "records": 180,
+      "sha256": "f064ecc2b26120d16d49b503e123de5b0ec0462c5a61b0727533b6899f824fff"
+    },
+    {
+      "bytes": 77867,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-007.json",
+      "records": 180,
+      "sha256": "ca232af6092b33ca5854129ba3a7bb0c001fdb5ccc931f71f11a866d54fcea09"
+    },
+    {
+      "bytes": 73643,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-008.json",
+      "records": 180,
+      "sha256": "57438acd622e3b3c88b698a4ea9bc8bab7ee581ccf3c45f2921979d786fdf2b2"
+    },
+    {
+      "bytes": 73454,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-009.json",
+      "records": 180,
+      "sha256": "dde905c5c9e347612a504dc83c25c5ad147814b43c45279c70882ba0062811fb"
+    },
+    {
+      "bytes": 76009,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-010.json",
+      "records": 180,
+      "sha256": "9764286d4c559eb5116e5aae12818716db71671fed34c8bbd0e08bdebc261eae"
+    },
+    {
+      "bytes": 72832,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-011.json",
+      "records": 180,
+      "sha256": "caf293905d2190dfb4d04c1fd29665fa47669338ab15fba6e4b440185a7fbbee"
+    },
+    {
+      "bytes": 68280,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-012.json",
+      "records": 180,
+      "sha256": "bda39845a96e445f4243b10c5c62f908bf850f5450b4261b59e9cbddf9486fb1"
+    },
+    {
+      "bytes": 73468,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-013.json",
+      "records": 180,
+      "sha256": "9ffd968c2052585d636e4760e7f94e9d35d0450ad060171049bf49682938665e"
+    },
+    {
+      "bytes": 77275,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-014.json",
+      "records": 180,
+      "sha256": "d9e18bc643401a2f6c0e48c93e1c4378011362d7912641d1e2f8072436382a8d"
+    },
+    {
+      "bytes": 77149,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-015.json",
+      "records": 180,
+      "sha256": "002a719bab7794192b41f65ed626161c0c4b64e6919c0f8ee11c11b82ebc03e3"
+    },
+    {
+      "bytes": 76616,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-016.json",
+      "records": 180,
+      "sha256": "acf7d72f0b8bc169b63fc5e770ebbb76aed649d89c7936299a5f2f8ae2439343"
+    },
+    {
+      "bytes": 76848,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-017.json",
+      "records": 180,
+      "sha256": "4db521f2ee9fe016152a0dfa3f9ebe33d26a9a620ac77432dcb4d9ee02ffd3f9"
+    },
+    {
+      "bytes": 76041,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-018.json",
+      "records": 180,
+      "sha256": "526a075b4362380778452930b79e64d6c1363e9421cd438747030cb6f005facb"
+    },
+    {
+      "bytes": 71712,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-019.json",
+      "records": 180,
+      "sha256": "021d798a0051575676a664634d037c01882bea8548da3bc713273f5aa6c00dd4"
+    },
+    {
+      "bytes": 75915,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-020.json",
+      "records": 180,
+      "sha256": "c0fec5490537b91bc6f3f9428c53c8c816c8fa8b3b63ba02bb99c626deaaa1aa"
+    },
+    {
+      "bytes": 74315,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-021.json",
+      "records": 180,
+      "sha256": "4e01cf83d58cbc7f0677444557acb64ebc6344afd218e9c955b3d4a5befdc0bc"
+    },
+    {
+      "bytes": 76569,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-022.json",
+      "records": 180,
+      "sha256": "4479a80fb0a708e4b9b54e92670a7cc5d3604b6b523a46829280163519353e97"
+    },
+    {
+      "bytes": 69189,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-023.json",
+      "records": 180,
+      "sha256": "6ce63952635c952cfce1f8e1e36b2574b431a86a447e5c026210acee8fab26b7"
+    },
+    {
+      "bytes": 76725,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-024.json",
+      "records": 180,
+      "sha256": "ed78fa29ae2d7ca6f62c46645d5d41beceec8f3bf5e0ed54c71ea99f9f1d730c"
+    },
+    {
+      "bytes": 78690,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-025.json",
+      "records": 180,
+      "sha256": "7b9513ccd44b89b3ed7d461bc6498cdec1f357378ac23e2eb363554901858d9a"
+    },
+    {
+      "bytes": 75431,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-026.json",
+      "records": 180,
+      "sha256": "e5ac15fbf3e6f81026064f1a18fb82f266aa2085a995111af0f5befa7518d468"
+    },
+    {
+      "bytes": 68981,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-027.json",
+      "records": 180,
+      "sha256": "f052b6f71540ebfa3e9e6f2237c2daa8affba1d8e3d40e96aecbe111b12f4d01"
+    },
+    {
+      "bytes": 55783,
+      "kind": "localization",
+      "path": "docs/content-audits/zg361-copy-ledger/localization/localization-028.json",
+      "records": 139,
+      "sha256": "02854f035923ab9f38ad51dffb6ca48c337df0579c2cb59259bb77e40b56296b"
+    }
+  ],
+  "source_snapshot": {
+    "files": [
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_b1_runtime.py"
+          ],
+          "declaration": "tools/gen_361_b1_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 38883,
+        "lines": 930,
+        "path": "mod_zhongguo_style/events/zg361_b1_runtime_events.txt",
+        "sha256": "099239db33c1336712f2ce8554d8157bcbcf40813c2ec2c69a7749fe70f30d54"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_b2_runtime.py"
+          ],
+          "declaration": "tools/gen_361_b2_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 41559,
+        "lines": 1014,
+        "path": "mod_zhongguo_style/events/zg361_b2_runtime_events.txt",
+        "sha256": "e88dd8ab0926b37b34d7301fef5d4596dbadeafea85b9753aef9cefd628e7ec4"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_career_hc_runtime.py"
+          ],
+          "declaration": "tools/gen_361_career_hc_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 189651,
+        "lines": 5631,
+        "path": "mod_zhongguo_style/events/zg361_career_hc_runtime_events.txt",
+        "sha256": "5aa9a5b29de6f2cfc628773d5c51389616241f6e5957c22f3fc307cb25f81fec"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_career_learning_runtime.py"
+          ],
+          "declaration": "tools/gen_361_career_learning_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 41205,
+        "lines": 1086,
+        "path": "mod_zhongguo_style/events/zg361_career_learning_runtime_events.txt",
+        "sha256": "440247133fa20087bc9ede735cf462783a546296f2647c749a83d87893138260"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2780,
+        "lines": 90,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_e_batch_events.txt",
+        "sha256": "8bcf7593dc2039f8bce4ce1629f435c9b81f91ff942381296695a8ccc0c1b675"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 18976,
+        "lines": 765,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_e_case_events.txt",
+        "sha256": "d8e603876802069dd8618a68604aaff4294acbfcef391d0aba9270ec18c5183c"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 10695,
+        "lines": 351,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_i_batch_events.txt",
+        "sha256": "66eae341647b2211afcf8ddbc191476724bcb80d44e2d5caac98dea09a8c340e"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 25272,
+        "lines": 1011,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_i_case_events.txt",
+        "sha256": "70e0ddf479f20861ee2f0fb5b9f708b5f13309b462b1198864a9f910a5853f90"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 10663,
+        "lines": 352,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_j_batch_events.txt",
+        "sha256": "cd63d6e922e701ffaa5cb72782549e83b10eb4b9f4e514e9692890d76acd1c1e"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 21683,
+        "lines": 869,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_j_case_events.txt",
+        "sha256": "06dc4e1a00d895b856d2396998660a130b71619b364132d365d5dc3dc284dd34"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 5058,
+        "lines": 166,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_portfolio_events.txt",
+        "sha256": "6f07569c146b1660f94ff91be8a7161163272159c6210f41d9d0a1c989a7bc46"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 5429,
+        "lines": 177,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_r_batch_events.txt",
+        "sha256": "b08a8622ad7d7e594fb40c8cd478bd82be501c6ee205614bf027a5557fe0213d"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "declaration": "tools/gen_361_credit_project_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 18787,
+        "lines": 753,
+        "path": "mod_zhongguo_style/events/zg361_credit_project_r_case_events.txt",
+        "sha256": "447f4a807ba9e0580c1fbfd9335635aef26f9b43ba6d0a91e8ef49a8f8783fb0"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 24092,
+        "lines": 678,
+        "path": "mod_zhongguo_style/events/zg361_events.txt",
+        "sha256": "cf6d2461739b05ab2f24ba3396858535c9c320207db12d021f9cf10b95271b84"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_feedback_promotion_pip_runtime.py"
+          ],
+          "declaration": "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 303429,
+        "lines": 7492,
+        "path": "mod_zhongguo_style/events/zg361_feedback_promotion_pip_runtime_events.txt",
+        "sha256": "dfd770bfb2ddd2e96d033140dee7f7e1de82d7367e0b72ac661410da0855496a"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_compensation_runtime.py"
+          ],
+          "declaration": "tools/gen_361_compensation_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 28076,
+        "lines": 740,
+        "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
+        "sha256": "cf1c8649291eb6a1142da2a2497820ddf488a7dd70366e84e8d91cdc0139d209"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/zg361_mechanism_data.py",
+            "mod_zhongguo_style/tools/mechanism_choices/choices_001_120.json",
+            "mod_zhongguo_style/tools/mechanism_choices/choices_121_240.json",
+            "mod_zhongguo_style/tools/mechanism_choices/choices_241_361.json"
+          ],
+          "declaration": "tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json",
+          "method": "generated_file_header",
+          "status": "review"
+        },
+        "bytes": 416048,
+        "lines": 17691,
+        "path": "mod_zhongguo_style/events/zg361_generated_mechanism_events.txt",
+        "sha256": "e56717bd6976cf487b7a645275101d17cffe8f498fe960f4680a51b29076a131"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 789,
+        "lines": 40,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_x_deadline_events.txt",
+        "sha256": "28404776d37f3ebbe9a4ee2716230dffaca0375588da14705a18c6bdeac29022"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 996,
+        "lines": 46,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_x_debt_7192_7198_events.txt",
+        "sha256": "274266970c7ed0935b6b8c3879b2bc20b2d56cf2588d968402f15fb8fbe06010"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 877,
+        "lines": 40,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_x_debt_7199_7204_events.txt",
+        "sha256": "d6cdc983ad158c73edc6b59502a65a1ee4dd23223b7f99c9f3b47217c5d5e583"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 392,
+        "lines": 13,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_x_result_events.txt",
+        "sha256": "32eaa9481cc86298b287cb6173b8c70bc1fee8dc6b7d7a1617b4d2b56dbbaf4c"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 586,
+        "lines": 28,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_y_deadline_events.txt",
+        "sha256": "4d4a59d5fffe8ecc9b843b835ad6cc2c3d0c346bb9fda158216a8424a47f2c24"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 877,
+        "lines": 40,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_y_debt_7205_7210_events.txt",
+        "sha256": "afb3a44525efaae59ef38aa1765bb02b036ef1e52a9812bb0f710c03ea5e3105"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 877,
+        "lines": 40,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_y_debt_7211_7216_events.txt",
+        "sha256": "9001df8a5aa89fc57f7a5fbf16455b4337fac6246f2cf1825fd5f41fdf4b18d4"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 400,
+        "lines": 13,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_y_result_events.txt",
+        "sha256": "ecdc1b68c564494291d3ed695fd33f1c7576ea01e5c79c1340e0b46f3d7bd470"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 585,
+        "lines": 28,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_z_deadline_events.txt",
+        "sha256": "777675c42e926a2598765e2a6fad68a23163c128bc08ae3725d1ac67337cd513"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 877,
+        "lines": 40,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_z_debt_7217_7222_events.txt",
+        "sha256": "5ca08bf3215680402c6d8c49e497b1e1fae08f91b382eb27549384acfb2b6d27"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 877,
+        "lines": 40,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_z_debt_7223_7228_events.txt",
+        "sha256": "9fd86f8ba69d8ad23f3191508ce4ef225024b44051a9e5c8a9ae11d05d66d643"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "declaration": "tools/gen_361_incident_platform_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 399,
+        "lines": 13,
+        "path": "mod_zhongguo_style/events/zg361_incident_platform_z_result_events.txt",
+        "sha256": "971d97b233bbf122fb8baa934e496e0e4447ae577887f29b7c3292f782e21c8a"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 2698,
+        "lines": 106,
+        "path": "mod_zhongguo_style/events/zg361_jingcha_events.txt",
+        "sha256": "af4a7a32e0b834b4447261911842ea6c5d9599f4dac747bc181f41a839f92e28"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_manager_governance_runtime.py"
+          ],
+          "declaration": "tools/gen_361_manager_governance_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 9075,
+        "lines": 192,
+        "path": "mod_zhongguo_style/events/zg361_manager_governance_runtime_events.txt",
+        "sha256": "8f6422b800ebbf3ce8011821beb323ba7757606bef884a5c0a4c609de5588326"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
+          ],
+          "declaration": "tools/gen_361_phase2_central_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2217,
+        "lines": 64,
+        "path": "mod_zhongguo_style/events/zg361_phase2_central_001_serial_dispatch_events.txt",
+        "sha256": "91f1faab84916a02ad3b77da13ed2debd6b2f91d25e05a7a02781fb7cc513f82"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
+          ],
+          "declaration": "tools/gen_361_phase2_central_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 9665,
+        "lines": 162,
+        "path": "mod_zhongguo_style/events/zg361_phase2_central_002_m275_requisition_events.txt",
+        "sha256": "e3f4a363379d7b1240011a9f2dc99b2f8b7143f37cd3c5c362d99f4e156276f4"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
+          ],
+          "declaration": "tools/gen_361_phase2_central_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 7947,
+        "lines": 123,
+        "path": "mod_zhongguo_style/events/zg361_phase2_central_003_m360_resume_events.txt",
+        "sha256": "a67714b8a0929ba910e8b7668811e022a2a9c7ef82ea49fa428b673f7e39822c"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_phase3_metrics_delivery_runtime.py"
+          ],
+          "declaration": "tools/gen_361_phase3_metrics_delivery_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 142406,
+        "lines": 4453,
+        "path": "mod_zhongguo_style/events/zg361_phase3_metrics_delivery_runtime_events.txt",
+        "sha256": "21823732db862632004412d7c864ca2364ea0e91759237d75764ff3a438d0f9b"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_ad_fact_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_ad_fact_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 6277,
+        "lines": 200,
+        "path": "mod_zhongguo_style/events/zg361_workforce_ad_fact_runtime_events.txt",
+        "sha256": "ac0373bffed5beff5b44b70f22fcd24c8d9add82c30d382a670cb6fe2a39293b"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_appointment_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_appointment_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2574,
+        "lines": 48,
+        "path": "mod_zhongguo_style/events/zg361_workforce_appointment_fact_events.txt",
+        "sha256": "5dd47ab944c571cccdfa1a3b5ebd05faf7e5b718304d28c7ab0c0a77df45440b"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_attribution_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_attribution_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 968,
+        "lines": 22,
+        "path": "mod_zhongguo_style/events/zg361_workforce_attribution_fact_probation_publish_events.txt",
+        "sha256": "f333b77a85aade6cb8d87760089fef194269857256d473083ac4e909529b2723"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_attribution_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_attribution_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 5138,
+        "lines": 107,
+        "path": "mod_zhongguo_style/events/zg361_workforce_attribution_fact_signature_events.txt",
+        "sha256": "7096855780ab84f91715ee7ae8751b3141c8b93fb86e56c3fbd4fb0da244019a"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 15119,
+        "lines": 485,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_001_ab_mechanisms_stage01_03_events.txt",
+        "sha256": "faa2730e482db1de0c13a9437c778c565c70012f4d8b93679d78984c73da1cb8"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 14516,
+        "lines": 473,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_002_ab_mechanisms_stage04_06_events.txt",
+        "sha256": "a0831afd0bf19d8f6236d1e93221b1557358b70551305d7ec39777e4427e72c5"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 17598,
+        "lines": 565,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_003_ac_mechanisms_stage01_03_events.txt",
+        "sha256": "966d4234d4a6e10e599738c7ecb022ded59ea1c4b0f80f2db40b66304eca19a1"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 11330,
+        "lines": 385,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_004_ac_mechanisms_stage04_06_events.txt",
+        "sha256": "0435f02cfac260b7afae02ccc5bd938c458f11195a3916956a9a3f23359ff70f"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 16392,
+        "lines": 541,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_005_ad_mechanisms_stage01_03_events.txt",
+        "sha256": "5fa9c01484910fc2b319d83b4d0df42c4b0c59ea4b7fc04636ef29097f270fb1"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 11007,
+        "lines": 294,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_006_ad_offer_outcome_events.txt",
+        "sha256": "618eddbc17efdd3055792d3b3d4c5ad56d8347ead7c05cf40dfcc5e38bb87b1b"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 3295,
+        "lines": 115,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_007_m276_rehire_lifecycle_events.txt",
+        "sha256": "f5f293f33c1e64b3d852d2373c57682fad8f511c7526de88e8e800c071029aff"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2249,
+        "lines": 79,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_008_m277_pip_exit_events.txt",
+        "sha256": "5d06198b833fa3181ae28c3511a45c2f26b7b2097750e68c7bd2b2dc735638e2"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2968,
+        "lines": 97,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_009_m355_target_ratchet_events.txt",
+        "sha256": "ae6c47d4f7ea2b559e7eb20964559c4478933844a418d0c42934c5f51f64ef50"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2363,
+        "lines": 85,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_010_m356_outcome_timing_events.txt",
+        "sha256": "29d1b86710caacd79b1fcfa20f3be42a01f24b2b88b63e8b7ac9d5bdd6c43c38"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 7402,
+        "lines": 174,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_011a_al_m360_collective_events.txt",
+        "sha256": "0c23f1b937839ff41e21e8c61f7072a8058c78a8512a9aeb818cb96b9d794bd0"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 3050,
+        "lines": 96,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_011b_al_m361_charter_events.txt",
+        "sha256": "6f700a707acdfcd3414ad5eb9fa58671e0589156f81aa60bf64611a0d6d59af3"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 5533,
+        "lines": 158,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_012_m264_handoff_events.txt",
+        "sha256": "9d8c3f71ca2eed4423803c24dc0cedfdff0a28b1a6eeb6e2f3c08f6e50ef2214"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 8225,
+        "lines": 209,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_013_ab_deadline_stage01_03_events.txt",
+        "sha256": "75ba8789c75631fdbe559d092f0ef2ce57d6983ea6d889c318704f137ca8cfa6"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 8225,
+        "lines": 209,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_014_ab_deadline_stage04_06_events.txt",
+        "sha256": "1efd5d9f5af8a68fb17daf7fa039ba7981392eeea9882a22173f69531ba6c1e7"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 8225,
+        "lines": 209,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_015_ac_deadline_stage01_03_events.txt",
+        "sha256": "dbdcb4ec7c871028c23da2b82c6a9b93312e6827f4ea99edc8531f8632598f06"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 8225,
+        "lines": 209,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_016_ac_deadline_stage04_06_events.txt",
+        "sha256": "b16ab70fc175a5a59c8d06414017a4689103dc3f5dfd22f50057192d1ff32868"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 8225,
+        "lines": 209,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_017_ad_deadline_stage01_03_events.txt",
+        "sha256": "ddc86e2d7b830883b6caad196103f8e7c7189ba67f0fb26ccb1545867e3d1a40"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 5566,
+        "lines": 141,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_018_ad_deadline_stage04_05_events.txt",
+        "sha256": "2df20b8ef16309d0713386ddf41ccbfe0896fd0b83fb10d2f98c70f39b160274"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2913,
+        "lines": 73,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_019_ad_deadline_stage06_events.txt",
+        "sha256": "3fab6aaf1e08690c9e6872363d72ad1bbd5d4b73bdd5df02e5d3c9546f7a5cba"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2913,
+        "lines": 73,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_020_al_deadline_stage01_events.txt",
+        "sha256": "075debe47528b074d79601e13137298c2e0c0c42aea8e65115a49fe1d4de1344"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2918,
+        "lines": 73,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_021a_al_stage04_m360_deadline_events.txt",
+        "sha256": "a841a7a693a721506ceefafebaf27145631cca0647d19c2842ef0f1bff6870c6"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2915,
+        "lines": 73,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_021b_al_stage05_m361_deadline_events.txt",
+        "sha256": "b44ff83207a1256e793a39f6b780bd4c295bb3811a37a5292f1198e23edf0db8"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 590,
+        "lines": 23,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_022_ac_future_transitions_events.txt",
+        "sha256": "f89f79362649f0b150281ced9006c8ccbd2c04ed7c78084b17633ecd6ddc2471"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 496,
+        "lines": 17,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_023_m269_postsettlement_events.txt",
+        "sha256": "01b8a820e613bb25b228a789df8ed1a1ee12de91bca1adfe3be198b6be4e5785"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 349,
+        "lines": 11,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_024_m275_hold_events.txt",
+        "sha256": "8b3c6c76a930710377bf172198b980087082bcb1eff4ecd9d1eafda5bfa97dd6"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 370,
+        "lines": 11,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_025_m361_future_charter_events.txt",
+        "sha256": "3f0af20a74c0b67ec89c6159f91ef46ad7d2cdaa627b93753135da9a86a4cbe0"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 1452,
+        "lines": 46,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_026_m274_attribution_events.txt",
+        "sha256": "c2cc66ebcd3a583d2804d3ab4af1cf49c32c0c310edd27796d66e449b3b56711"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 667,
+        "lines": 23,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_027a_m269_attribution_debt_cancellation_events.txt",
+        "sha256": "bf7cf003c78b564ba229b0d2c273759f500c8d463d63b463ad525b0f06d34b98"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 460,
+        "lines": 14,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_027b_m269_signed_result_publication_events.txt",
+        "sha256": "bbac33b409591a2ea26269a39f6e661958697d8d272c72411e1632d82be3bd2d"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 1174,
+        "lines": 41,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_028_m275_remediation_events.txt",
+        "sha256": "0e1284d20533dc36562a724e1992458b07d2c4721230d1324c0058859127dca3"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 960,
+        "lines": 41,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_029_ab_debt_stage01_03_events.txt",
+        "sha256": "d6791e22b76541c27326eff523f7c4e630256079e82c7dcfe946733bb634a54d"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 960,
+        "lines": 41,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_030_ab_debt_stage04_06_events.txt",
+        "sha256": "2027dfc2082218b534224ec3a24df5b32c64fe9793a6e8606b97c428521d186c"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 1079,
+        "lines": 47,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_031_ac_debt_stage01_03_events.txt",
+        "sha256": "a842443985907ce2ebbb535c3bb389089c19640619ad55422aca6935dbacc501"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 841,
+        "lines": 35,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_032_ac_debt_stage04_06_events.txt",
+        "sha256": "f37d818a7985299b1641089fec7b565aaf369aabbedf2630044e328b69e75b67"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 1079,
+        "lines": 47,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_033_ad_debt_stage01_03_events.txt",
+        "sha256": "36a43e9585fe254128794e0988025311289a73fb63e4348d3a90c31e9fa54873"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 603,
+        "lines": 23,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_034_ad_debt_stage04_05_events.txt",
+        "sha256": "70e9b46bcf53ccdef9476a6a236df14259424690a0478e6da5ca625cef1031d9"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 368,
+        "lines": 11,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_035a_al_m360_collective_debt_events.txt",
+        "sha256": "3bdb85eefb1c806d458d53793a50cb9d605bb6ce325b6b32e6dd695ec5f9e945"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "declaration": "tools/gen_361_workforce_endgame_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 365,
+        "lines": 11,
+        "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_035b_al_m361_charter_debt_events.txt",
+        "sha256": "94e71cdce96ba4f4b07bbc6bcd20a8eee62a92d97f43035a1096e12f662474c4"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_exit_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_exit_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 639,
+        "lines": 22,
+        "path": "mod_zhongguo_style/events/zg361_workforce_exit_fact_arm_events.txt",
+        "sha256": "5b424327d365ecd12a59e2efaaa3bec663acd5d55796deb7a94ba8e9d3b408e7"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_exit_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_exit_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 795,
+        "lines": 28,
+        "path": "mod_zhongguo_style/events/zg361_workforce_exit_fact_closed_pip_exit_events.txt",
+        "sha256": "d600a0cbbf11875d57b87f38d315325e8f7329d55722c3f8546c1013b1c5c321"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_exit_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_exit_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 890,
+        "lines": 25,
+        "path": "mod_zhongguo_style/events/zg361_workforce_exit_fact_role_failure_events.txt",
+        "sha256": "f9dd6786946ccf949b35554cc9a940ddc71aa9901d295175ee89b310558285f3"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_normal_exit_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_normal_exit_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 3312,
+        "lines": 86,
+        "path": "mod_zhongguo_style/events/zg361_workforce_normal_exit_fact_events.txt",
+        "sha256": "6d529756bc67621206d0491afd78c1b1769708781eae0429c7b0d7f8af2d9ba8"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_probation_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_probation_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2225,
+        "lines": 47,
+        "path": "mod_zhongguo_style/events/zg361_workforce_probation_fact_events.txt",
+        "sha256": "b182fbb9fe2292a60f4f33f7d071d06cd0a3ab316146a18f9fb8c24fceadbf02"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_zg361_workforce_rehire_fact.py"
+          ],
+          "declaration": "tools/gen_zg361_workforce_rehire_fact.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 950,
+        "lines": 26,
+        "path": "mod_zhongguo_style/events/zg361_workforce_rehire_fact_events.txt",
+        "sha256": "caaac4fca80f2cf225348ecd77df37802af900aaa7db5777412e5e9af7afdc3c"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/zg361_workforce_remediation_fact_gen.py"
+          ],
+          "declaration": "tools/zg361_workforce_remediation_fact_gen.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 2748,
+        "lines": 52,
+        "path": "mod_zhongguo_style/events/zg361_workforce_remediation_fact_events.txt",
+        "sha256": "7aa00afe02421641cfeb477e1b69e27f8e36a95c698c240a910a6131ae9582c2"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_b1_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 14623,
+        "lines": 175,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_b1_l_simp_chinese.yml",
+        "sha256": "45f6717cbf3200a7581902eb3ead8e169f747b609f9762e0bbfe4a975e2ad525"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_b2_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 9565,
+        "lines": 91,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_b2_l_simp_chinese.yml",
+        "sha256": "075c98c220945fd6e2bd132814df0143ca3cd8bcede7134da84e57adc46784f7"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_career_hc_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 26108,
+        "lines": 245,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml",
+        "sha256": "b54c638cd8fcfb333bc8a9591407614a5ddb3c417ef2d6ba20891cc4d5850f2b"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_career_learning_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 3231,
+        "lines": 28,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_learning_l_simp_chinese.yml",
+        "sha256": "43be7cc7c673b47404c7fb04a80ee969b15beb4faa1c3b1d7bd5a19834fca4d0"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_compensation_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 14317,
+        "lines": 86,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
+        "sha256": "b4a0015e687e4a02c68cffbbc5eaf3299941aa31d86610dffcc7b7a12be7ecfb"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_credit_project_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 14666,
+        "lines": 170,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_credit_project_l_simp_chinese.yml",
+        "sha256": "7b04bc3a833f75d5953e8eeaadf8a6a3bfd239c03d12a2df1d9d82ea6e9be016"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_feedback_promotion_pip_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 64801,
+        "lines": 428,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_feedback_promotion_pip_l_simp_chinese.yml",
+        "sha256": "1f337231a442d2cf589b1b483a108341546dd779a785c1f3aafd77443c17046f"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_incident_platform_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 970,
+        "lines": 8,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_incident_platform_l_simp_chinese.yml",
+        "sha256": "4895d9845d36178fe59cf0d65fec71d910f8f3bf422a235abd1ef05e8b6b06ec"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_phase2_placeholder_localization.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 22089,
+        "lines": 237,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
+        "sha256": "294211d29cc84a77654f1678534c814b55bfd9ce65e1ed66a45b21abca195c51"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_manager_governance_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 3021,
+        "lines": 13,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_manager_governance_l_simp_chinese.yml",
+        "sha256": "d4ea113ad9e6c3228863f41500dc88ed06714fdd3006efc64364dfe9ce7c21cd"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_mechanisms.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 424994,
+        "lines": 2932,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
+        "sha256": "029f0fd375f3806c6b18b8a0fd091d9d9601f08661d5ea4629cde110a908980c"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
+          ],
+          "declaration": "tools/gen_361_phase2_central_runtime.py",
+          "method": "generated_file_header",
+          "status": "pass"
+        },
+        "bytes": 660,
+        "lines": 5,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_phase2_central_l_simp_chinese.yml",
+        "sha256": "ad3b884e4963e02c4b9bbb35b9e3ce5183883d8d97822262e1be2e7ce2a37394"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_phase3_metrics_delivery_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 19665,
+        "lines": 217,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_phase3_metrics_delivery_l_simp_chinese.yml",
+        "sha256": "895329fbf871b2c1bfb51017326a9e91a3932f9c19c680b05e4c0d0c509c8494"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_ad_fact_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 1651,
+        "lines": 15,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_ad_fact_l_simp_chinese.yml",
+        "sha256": "e4f05213321c73776ae080e0ff3e5fa547d4b42ba6b9142abf93f7a31fa1ebf3"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 255,
+        "lines": 3,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_appointment_fact_l_simp_chinese.yml",
+        "sha256": "8e26677a77c6322718f64d31a52156cb75786806c5f4dd5ddc2c847a34e31005"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 1107,
+        "lines": 6,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_attribution_fact_l_simp_chinese.yml",
+        "sha256": "ce56a8146353f7f61889866a3c2cb66aa17da96762ebfefa05cd360b82fed8fc"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 36823,
+        "lines": 342,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
+        "sha256": "af48a045153ef0a416643d9bc9507b33e528b3e05216178a13f3036e43e56447"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 280,
+        "lines": 3,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_exit_fact_l_simp_chinese.yml",
+        "sha256": "470d03dcc6d56e6038bb2dcccaebbf70aa334cba80eca8f7e17ec9ff09e35a5a"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 463,
+        "lines": 4,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_normal_exit_fact_l_simp_chinese.yml",
+        "sha256": "cbe75612a5ab586db103d19a4f05ea39dcf03bae418ab59c54e5f033b85b72e5"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 1002,
+        "lines": 10,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml",
+        "sha256": "76b75fa563976280b1c5b4f2ad9531bc6ea854303aa7eeb4d043ba5991c0af84"
+      },
+      {
+        "authority": {
+          "candidates": [],
+          "method": "no_unique_authority",
+          "status": "review"
+        },
+        "bytes": 297,
+        "lines": 4,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_rehire_fact_l_simp_chinese.yml",
+        "sha256": "30d74e514c7b5614314dc84f55cc3f6191c610589da2bb2bb56845e587546a54"
+      },
+      {
+        "authority": {
+          "candidates": [
+            "mod_zhongguo_style/tools/zg361_workforce_remediation_fact_gen.py"
+          ],
+          "method": "unique_generator_output_literal",
+          "status": "pass"
+        },
+        "bytes": 1076,
+        "lines": 8,
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_remediation_fact_l_simp_chinese.yml",
+        "sha256": "b75ac0f8f61e7324ff6f40750918266b2572fd543864ab0087d71116fc2cdaa0"
+      }
+    ],
+    "git_commit": "6db27bea4293445ef757e6c49c1c51d338e92355",
+    "git_commit_semantics": "latest commit touching event/localization inputs at generation",
+    "input_digest_sha256": "19e8860bb361938e3433725f4d93d016a4b56d39c4cd0d427eba052d312bec77"
+  },
+  "summary": {
+    "all_event_definitions": 1009,
+    "check_status_counts": {
+      "body_choice_meta": {
+        "not_applicable": 9,
+        "pass": 626
+      },
+      "dead_option_loc": {
+        "not_applicable": 9,
+        "pass": 626
+      },
+      "generic_option": {
+        "not_applicable": 9,
+        "pass": 626
+      },
+      "manual_semantic_review": {
+        "review": 635
+      },
+      "stripped_opening_punctuation": {
+        "not_applicable": 9,
+        "pass": 626
+      },
+      "title_similarity_contains": {
+        "not_applicable": 9,
+        "pass": 626
+      }
+    },
+    "dead_option_loc": {
+      "bound_visible_option_count": 1848,
+      "missing_visible_option_count": 0,
+      "status": "pass",
+      "unbound_option_like_review_count": 0
+    },
+    "final_localization_keys": 4999,
+    "hidden_events": 374,
+    "machine_failure_count": 0,
+    "manual_review_open_count": 645,
+    "visible_description_bindings": 844,
+    "visible_events": 635,
+    "visible_option_bindings": 1856,
+    "visible_title_bindings": 626
+  }
+}
