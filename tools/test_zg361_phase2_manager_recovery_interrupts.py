@@ -471,6 +471,7 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["max_occurrences"], 2)
 
         drifted = copy.deepcopy(context)
         drifted["saved_scopes"][2] = _scope(

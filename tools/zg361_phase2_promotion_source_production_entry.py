@@ -509,8 +509,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # already exist before this window; its sole authored option has no
         # gameplay effect. R148 observed one child, three parent/spouse scopes
         # resolving to the expected family identities and three typed boolean
-        # birth flags. Bind that complete eight-scope frame before dismissing
-        # the sole acknowledgement; the runner never operates the name widget.
+        # birth flags. R180 then observed a second occurrence in one bounded
+        # product timeline. Bind every complete eight-scope frame before
+        # dismissing the sole acknowledgement; the runner never operates the
+        # name widget.
         "date_raw": 53154408,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -558,7 +560,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 1,
+        "max_occurrences": 2,
     },
     "epidemic_events.1100": {
         # CK3 1.19.0.6 outbreak notification. Its immediate block has already
