@@ -2541,6 +2541,8 @@ def wait_for_bootstrap_event(
     known_prebootstrap_drain_allowlist: tuple[str, ...] | None = None,
     known_b2_pip_option_number: int | None = None,
     known_b2_pip_source_save_sha256s: tuple[str, ...] | None = None,
+    post_activation_event_definition_key: str | None = None,
+    post_activation_paused_settle_seconds: float = 0.0,
     timeline_speed: int = 1,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -2587,6 +2589,23 @@ def wait_for_bootstrap_event(
         != len(known_b2_pip_source_save_sha256s)
     ):
         raise ValueError("known B2 PIP source hashes must be unique SHA-256 strings")
+    if (
+        isinstance(post_activation_paused_settle_seconds, bool)
+        or not math.isfinite(float(post_activation_paused_settle_seconds))
+        or post_activation_paused_settle_seconds < 0
+    ):
+        raise ValueError("post-activation paused settle must be finite and non-negative")
+    if (post_activation_event_definition_key is None) != (
+        post_activation_paused_settle_seconds == 0
+    ):
+        raise ValueError(
+            "post-activation event key and positive paused settle must be supplied together"
+        )
+    if post_activation_event_definition_key is not None and (
+        not isinstance(post_activation_event_definition_key, str)
+        or not post_activation_event_definition_key
+    ):
+        raise ValueError("post-activation event key must be a non-empty string")
     if isinstance(timeline_speed, bool) or timeline_speed not in range(1, 6):
         raise ValueError("bootstrap timeline speed must be an integer from 1 to 5")
     started = clock()
@@ -2607,6 +2626,7 @@ def wait_for_bootstrap_event(
     next_progress_log = 60.0
     resumed = False
     drained_pre_bootstrap_events: list[str] = []
+    post_activation_settle_deadline: float | None = None
     while clock() < deadline:
         now = clock()
         try:
@@ -2678,6 +2698,21 @@ def wait_for_bootstrap_event(
                 or snapshot.get("date_raw") > maximum_date_raw
             )
         ):
+            protective_pause: dict[str, Any] = {
+                "attempted": False,
+                "required": snapshot.get("paused") is not True,
+            }
+            if snapshot.get("paused") is not True:
+                protective_pause["attempted"] = True
+                try:
+                    pause_revision = _positive_revision(snapshot)
+                    protective_pause["expected_revision"] = pause_revision
+                    protective_pause["response"] = service.execute_step(
+                        "pause-map", expected_revision=pause_revision
+                    )
+                except BaseException as error:
+                    protective_pause["error_type"] = type(error).__name__
+                    protective_pause["error"] = str(error)
             evidence = {
                 "schema_version": 1,
                 "state": "maximum_bootstrap_date_exceeded",
@@ -2689,6 +2724,7 @@ def wait_for_bootstrap_event(
                 "known_prebootstrap_drain_allowlist": list(
                     known_prebootstrap_drain_allowlist or ()
                 ),
+                "protective_pause": protective_pause,
             }
             append_jsonl(evidence_path, evidence)
             raise SeedCaptureError(
@@ -2844,6 +2880,34 @@ def wait_for_bootstrap_event(
                             state_prefix=state_prefix,
                         )
                         drained_pre_bootstrap_events.append(key)
+                        if key == post_activation_event_definition_key:
+                            post_activation_settle_deadline = min(
+                                deadline,
+                                clock() + post_activation_paused_settle_seconds,
+                            )
+                            sequence += 1
+                            append_jsonl(
+                                evidence_path,
+                                {
+                                    "schema_version": 1,
+                                    "sequence": sequence,
+                                    "elapsed_seconds": round(
+                                        max(0.0, clock() - started), 3
+                                    ),
+                                    "state": "post_activation_gui_settle_started",
+                                    "result": "PENDING",
+                                    "activation_event_definition_key": key,
+                                    "expected_event_definition_key": (
+                                        expected_event_definition_key
+                                    ),
+                                    "date_raw": snapshot.get("date_raw"),
+                                    "paused": snapshot.get("paused"),
+                                    "settle_seconds": (
+                                        post_activation_paused_settle_seconds
+                                    ),
+                                    "timeline_resume_forbidden": True,
+                                },
+                            )
                         sleeper(0.1)
                         continue
                 evidence = {
@@ -2895,7 +2959,40 @@ def wait_for_bootstrap_event(
         if snapshot.get("map_ready") is True:
             revision = _positive_revision(snapshot)
             timeline_step = None
-            if snapshot.get("speed") != timeline_speed:
+            if post_activation_settle_deadline is not None:
+                if snapshot.get("paused") is not True:
+                    timeline_step = "pause-map"
+                elif clock() < post_activation_settle_deadline:
+                    sleeper(0.1)
+                    continue
+                else:
+                    evidence = {
+                        "schema_version": 1,
+                        "state": "post_activation_gui_settle_timeout",
+                        "result": "RED",
+                        "activation_event_definition_key": (
+                            post_activation_event_definition_key
+                        ),
+                        "expected_event_definition_key": (
+                            expected_event_definition_key
+                        ),
+                        "date_raw": snapshot.get("date_raw"),
+                        "paused": snapshot.get("paused"),
+                        "active_event": active,
+                        "settle_seconds": (
+                            post_activation_paused_settle_seconds
+                        ),
+                        "timeline_resumed_after_activation": False,
+                        "drained_pre_bootstrap_events": (
+                            drained_pre_bootstrap_events
+                        ),
+                    }
+                    append_jsonl(evidence_path, evidence)
+                    raise SeedCaptureError(
+                        "post-activation GUI did not materialize the exact seed event while paused",
+                        evidence,
+                    )
+            elif snapshot.get("speed") != timeline_speed:
                 timeline_step = f"set-speed-{timeline_speed}"
             elif snapshot.get("paused") is True:
                 timeline_step = "resume-map"
@@ -3028,7 +3125,7 @@ def _manager_preemptive_transition_contract(
         ),
         "load_safe_gui_activation": (
             transition.get("activation_surface")
-            == "load_safe_scripted_gui_false_to_true"
+            == "load_safe_scripted_gui_terminal_pip_retry"
         ),
         "activation_event_exact": (
             transition.get("activation_event_definition_key")
@@ -3039,6 +3136,22 @@ def _manager_preemptive_transition_contract(
             and transition.get("activation_event_selected_native_option_index")
             == 2
             and transition.get("activation_event_outcome") == "refuse"
+        ),
+        "terminal_pip_activation_signal": (
+            transition.get("activation_signal_variable")
+            == "zg361_b2_m015_state"
+            and transition.get("activation_signal_preselection_value") == 1
+            and transition.get("activation_signal_value") == 5
+        ),
+        "gui_retry_duration_is_bounded": (
+            transition.get("fixture_gui_retry_duration_seconds") == 0.5
+        ),
+        "post_activation_pause_is_bounded": (
+            transition.get("post_activation_paused_settle_seconds") == 5.0
+            and transition.get(
+                "forbids_timeline_resume_after_activation_event_drain"
+            )
+            is True
         ),
         "only_activation_event_allowed": (
             allowed_prebootstrap_events
@@ -3116,6 +3229,12 @@ def _manager_preemptive_transition_contract(
         ),
         "activation_event_selected_option_number": transition.get(
             "activation_event_selected_option_number"
+        ),
+        "post_activation_event_definition_key": transition.get(
+            "activation_event_definition_key"
+        ),
+        "post_activation_paused_settle_seconds": transition.get(
+            "post_activation_paused_settle_seconds"
         ),
         "checks": checks,
         "failed_checks": failed_checks,
@@ -4801,6 +4920,20 @@ def run_capture(
             ),
             known_b2_pip_source_save_sha256s=(
                 (observed_save_sha,) if preemptive_transition is not None else None
+            ),
+            post_activation_event_definition_key=(
+                preemptive_transition[
+                    "post_activation_event_definition_key"
+                ]
+                if preemptive_transition is not None
+                else None
+            ),
+            post_activation_paused_settle_seconds=(
+                preemptive_transition[
+                    "post_activation_paused_settle_seconds"
+                ]
+                if preemptive_transition is not None
+                else 0.0
             ),
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,

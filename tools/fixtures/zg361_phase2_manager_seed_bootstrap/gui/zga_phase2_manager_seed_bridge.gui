@@ -13,5 +13,8 @@ window = {
 		name = "zga_phase2_manager_seed_bootstrap"
 		trigger_when = "[GetScriptedGui('zga_phase2_manager_seed_bootstrap_bridge_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[GetScriptedGui('zga_phase2_manager_seed_bootstrap_bridge_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		# Keep retrying while the exact terminal PIP witness remains true.  The
+		# effect owns an idempotent handoff flag, so duplicate GUI frames are no-op.
+		duration = 0.5
 	}
 }

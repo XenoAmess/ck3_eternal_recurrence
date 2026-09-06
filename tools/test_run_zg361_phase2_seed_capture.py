@@ -87,6 +87,7 @@ class FakeService:
         self.event_state = "pip" if manager_pip_route else "final"
         self.played_character_id = 9001
         self.revision = 7
+        self.paused = True
         self.date_raw = (
             capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"]
             if manager_pip_route
@@ -98,7 +99,7 @@ class FakeService:
             "snapshot_id": "fake-snapshot-7",
             "revision": self.revision,
             "date_raw": self.date_raw,
-            "paused": True,
+            "paused": self.paused,
             "map_ready": True,
             "speed": 1,
             "played_character": {"character_id": self.played_character_id},
@@ -127,6 +128,8 @@ class FakeService:
 
     def execute_step(self, step: str, **_kwargs: object) -> dict[str, object]:
         self.calls.append(f"execute:{step}")
+        if step == "pause-map":
+            self.paused = True
         return {"accepted": True}
 
     def query_current_event_window_context_v1(
@@ -513,7 +516,9 @@ class Fixture:
             "player_transition_contract": {
                 "handoff_mode": "post_exact_pip_load_gui",
                 "trigger_effect_key": capture.MANAGER_SEED_PREEMPTIVE_EFFECT,
-                "activation_surface": "load_safe_scripted_gui_false_to_true",
+                "activation_surface": (
+                    "load_safe_scripted_gui_terminal_pip_retry"
+                ),
                 "hidden_carrier_event_definition_key": (
                     capture.MANAGER_SEED_HANDOFF_CARRIER_EVENT_DEFINITION_KEY
                 ),
@@ -529,6 +534,12 @@ class Fixture:
                 "activation_event_selected_option_number": 3,
                 "activation_event_selected_native_option_index": 2,
                 "activation_event_outcome": "refuse",
+                "activation_signal_variable": "zg361_b2_m015_state",
+                "activation_signal_preselection_value": 1,
+                "activation_signal_value": 5,
+                "fixture_gui_retry_duration_seconds": 0.5,
+                "post_activation_paused_settle_seconds": 5.0,
+                "forbids_timeline_resume_after_activation_event_drain": True,
                 "requires_exact_activation_event_drain": True,
                 "requires_completion_at_exact_date": True,
                 "forbids_other_prebootstrap_event_drains": True,
@@ -1476,6 +1487,20 @@ def test_player_manager_post_exact_pip_handoff_proves_final_event() -> None:
             "manager entry did not preserve the exact post-PIP .1 checkpoint",
         )
         transition = report["manager_player_transition"]
+        transition_contract = report["manager_transition_contract"]
+        require(
+            transition_contract["checks"]["terminal_pip_activation_signal"]
+            is True
+            and transition_contract["checks"][
+                "gui_retry_duration_is_bounded"
+            ]
+            is True
+            and transition_contract["checks"][
+                "post_activation_pause_is_bounded"
+            ]
+            is True,
+            "manager transition contract lost the R124 GUI settle gates",
+        )
         require(
             transition["result"] == "GREEN"
             and transition["source_character_id"] == 9001
@@ -1533,6 +1558,15 @@ def test_player_manager_post_exact_pip_handoff_proves_final_event() -> None:
         require(
             ready_keys == [capture.MANAGER_SEED_EVENT_DEFINITION_KEY],
             f"manager waiter did not accept only the final fixture event: {ready_keys}",
+        )
+        require(
+            any(
+                row.get("state") == "post_activation_gui_settle_started"
+                and row.get("settle_seconds") == 5.0
+                and row.get("timeline_resume_forbidden") is True
+                for row in wait_rows
+            ),
+            "manager run did not bind the exact PIP drain to paused GUI settle",
         )
         require(
             report["manager_activation_event_drain"]["selection"]["option_number"]
@@ -1599,6 +1633,7 @@ def test_player_manager_preemptive_handoff_rejects_later_date() -> None:
         service = runtime.service_factory(None)
         require(isinstance(service, FakeService), "manager date fake drifted")
         service.date_raw = 53147064
+        service.paused = False
         report = capture.run_capture(
             fixture.config(seed_purpose=purpose), runtime=runtime
         )
@@ -1608,8 +1643,13 @@ def test_player_manager_preemptive_handoff_rejects_later_date() -> None:
             isinstance(evidence, dict)
             and evidence.get("state") == "maximum_bootstrap_date_exceeded"
             and evidence.get("maximum_date_raw") == 53147040
-            and evidence.get("observed_date_raw") == 53147064,
+            and evidence.get("observed_date_raw") == 53147064
+            and evidence.get("protective_pause", {}).get("attempted") is True,
             f"later-date rejection evidence is not exact: {evidence}",
+        )
+        require(
+            "execute:pause-map" in calls,
+            "later-date RED did not attempt a protective MCP pause",
         )
         require(
             "seed-capture-mcp" not in calls
@@ -2274,21 +2314,43 @@ class KnownB2PipPrebootstrapService:
         prompt_owner_character_id: int = 32904,
         selected_option_number: int = 1,
         final_event_definition_key: str = capture.SEED_EVENT_DEFINITION_KEY,
+        post_drain_empty_snapshots: int = 0,
     ) -> None:
         self.state = "pip"
         self.revision = 7
         self.prompt_owner_character_id = prompt_owner_character_id
         self.selected_option_number = selected_option_number
         self.final_event_definition_key = final_event_definition_key
+        self.post_drain_empty_snapshots = post_drain_empty_snapshots
+        self.post_drain_snapshot_count = 0
         self.selections: list[tuple[int, int, int]] = []
+        self.steps: list[str] = []
 
     def snapshot(self) -> dict[str, object]:
         expected = capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT
-        active_event = (
-            {"source": "native", "instance_id": 30, "option_count": 3}
-            if self.state == "pip"
-            else {"source": "native", "instance_id": 31, "option_count": 1}
-        )
+        if self.state == "pip":
+            active_event: dict[str, object] | None = {
+                "source": "native",
+                "instance_id": 30,
+                "option_count": 3,
+            }
+        elif self.state == "settling":
+            self.post_drain_snapshot_count += 1
+            if self.post_drain_snapshot_count > self.post_drain_empty_snapshots:
+                self.state = "seed"
+                active_event = {
+                    "source": "native",
+                    "instance_id": 31,
+                    "option_count": 1,
+                }
+            else:
+                active_event = None
+        else:
+            active_event = {
+                "source": "native",
+                "instance_id": 31,
+                "option_count": 1,
+            }
         return {
             "revision": self.revision,
             "date_raw": expected["date_raw"],
@@ -2330,7 +2392,9 @@ class KnownB2PipPrebootstrapService:
             option_number == self.selected_option_number,
             "PIP selected option drifted",
         )
-        self.state = "seed"
+        self.state = (
+            "settling" if self.post_drain_empty_snapshots > 0 else "seed"
+        )
         self.revision += 1
         return {
             "step": f"select-event-option-{option_number}",
@@ -2346,6 +2410,13 @@ class KnownB2PipPrebootstrapService:
                 "selected_native_option_index": option_number - 1,
             },
         }
+
+    def execute_step(
+        self, step: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        require(expected_revision == self.revision, "PIP settle used stale revision")
+        self.steps.append(step)
+        return {"accepted": True}
 
 
 def _known_vanilla_no_secrets_context(
@@ -2784,6 +2855,110 @@ def test_manager_b2_pip_route_uses_refuse_option_only() -> None:
             and drain["selection"]["option_index"] == 2
             and all(drain["selection_checks"].values()),
             "manager PIP refusal lost its exact native option proof",
+        )
+
+
+def test_manager_post_activation_gui_settles_while_paused() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownB2PipPrebootstrapService(
+            selected_option_number=3,
+            final_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            post_drain_empty_snapshots=3,
+        )
+        fake_time = FakeTime()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            expected_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                "source_save_sha256"
+            ],
+            maximum_date_raw=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"],
+            expected_event_date_raw=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                "date_raw"
+            ],
+            known_prebootstrap_drain_allowlist=("zg361b2.40",),
+            known_b2_pip_option_number=3,
+            post_activation_event_definition_key="zg361b2.40",
+            post_activation_paused_settle_seconds=1.0,
+            timeline_speed=5,
+            clock=fake_time.clock,
+            sleeper=fake_time.sleep,
+        )
+        require(
+            snapshot["active_event"]
+            == {"source": "native", "instance_id": 31, "option_count": 1},
+            "paused GUI settle did not reach the manager event",
+        )
+        require(
+            service.steps == [],
+            f"paused GUI settle advanced the game timeline: {service.steps}",
+        )
+        wait_rows = rows(artifacts / "bootstrap-event-wait.jsonl")
+        require(
+            any(
+                row.get("state") == "post_activation_gui_settle_started"
+                and row.get("timeline_resume_forbidden") is True
+                for row in wait_rows
+            ),
+            "paused GUI settle lacks its typed start evidence",
+        )
+
+
+def test_manager_post_activation_gui_timeout_never_resumes_map() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownB2PipPrebootstrapService(
+            selected_option_number=3,
+            final_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            post_drain_empty_snapshots=100,
+        )
+        fake_time = FakeTime()
+        try:
+            capture.wait_for_bootstrap_event(
+                service,
+                artifacts,
+                bridge_unavailable_error=FakeBridgeUnavailableError,
+                timeout_seconds=10.0,
+                expected_event_definition_key=(
+                    capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+                ),
+                source_save_sha256=(
+                    capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                        "source_save_sha256"
+                    ]
+                ),
+                maximum_date_raw=(
+                    capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"]
+                ),
+                expected_event_date_raw=(
+                    capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"]
+                ),
+                known_prebootstrap_drain_allowlist=("zg361b2.40",),
+                known_b2_pip_option_number=3,
+                post_activation_event_definition_key="zg361b2.40",
+                post_activation_paused_settle_seconds=0.25,
+                timeline_speed=5,
+                clock=fake_time.clock,
+                sleeper=fake_time.sleep,
+            )
+        except capture.SeedCaptureError as error:
+            evidence = error.evidence
+        else:
+            raise AssertionError("post-activation GUI timeout false-GREENed")
+        require(
+            evidence.get("state") == "post_activation_gui_settle_timeout"
+            and evidence.get("timeline_resumed_after_activation") is False
+            and evidence.get("date_raw")
+            == capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"],
+            f"post-activation timeout evidence drifted: {evidence}",
+        )
+        require(
+            service.steps == [],
+            f"post-activation timeout resumed the map: {service.steps}",
         )
 
 
@@ -4308,6 +4483,8 @@ def main() -> int:
     test_exact_vanilla_prebootstrap_event_uses_option_two()
     test_exact_b2_pip_prebootstrap_event_uses_accept_option()
     test_manager_b2_pip_route_uses_refuse_option_only()
+    test_manager_post_activation_gui_settles_while_paused()
+    test_manager_post_activation_gui_timeout_never_resumes_map()
     test_b2_pip_prebootstrap_identity_drift_fails_closed()
     test_exact_vanilla_no_secrets_event_keeps_current_task()
     test_r120_source_hash_is_exactly_authorized_for_b2_sequence()

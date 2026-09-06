@@ -77,19 +77,54 @@ def main() -> int:
         / "on_action"
         / "zga_phase2_manager_seed_on_actions.txt"
     )
+    bridge = text(FIXTURE / "gui" / "zga_phase2_manager_seed_bridge.gui")
+    widgets = text(
+        FIXTURE
+        / "gui"
+        / "scripted_widgets"
+        / "zga_phase2_manager_seed_scripted_widgets.txt"
+    )
 
     for gate in (
         "is_ai = no",
         "is_alive = yes",
         "is_landed = yes",
-        "zg361_is_celestial_liege_trigger = yes",
         "has_game_rule = zg361_on",
-        "zg361_review_now_business_valid_trigger = yes",
-        "prestige >= 150",
     ):
         assert gate in on_actions
         assert gate in effects
         assert gate in scripted_gui
+    for manager_gate in (
+        "zg361_is_celestial_liege_trigger = yes",
+        "zg361_review_now_business_valid_trigger = yes",
+        "prestige >= 150",
+    ):
+        assert manager_gate in on_actions
+        assert manager_gate in effects
+    assert "duration = 0.5" in bridge
+    assert bridge.count("duration = 0.5") == 1
+    assert (
+        "GetScriptedGui('zga_phase2_manager_seed_bootstrap_bridge_gui')"
+        in bridge
+    )
+    assert (
+        "gui/zga_phase2_manager_seed_bridge.gui = "
+        "zga_phase2_manager_seed_bridge_window" in widgets
+    )
+    for terminal_signal in (
+        "this = character:han_6875",
+        "var:zg361_b2_m015_state = 5",
+        "var:zg361_b2_m015_object_active = 0",
+        "var:zg361_b2_m015_object_consumed = 1",
+        "var:zg361_b2_m015_object_subject = this",
+        "var:zg361_b2_m015_object_owner = liege",
+        "var:zg361_b2_pip_subject_response = 3",
+    ):
+        assert terminal_signal in scripted_gui
+        assert terminal_signal in effects
+    handoff_branch = effects[effects.index("\telse_if = {") :]
+    assert "zg361_review_now_business_valid_trigger = yes" not in handoff_branch
+    assert "prestige >= 150" not in handoff_branch
     assert "\non_game_start = {" not in on_actions
     assert "on_game_start_after_lobby = {" in on_actions
     assert on_actions.count("zga_phase2_manager_seed_on_game_start") == 2
@@ -156,10 +191,15 @@ def main() -> int:
     )
     assert "trigger_event = zga_phase2_manager_seed.100" in carrier
     assert "set_player_character =" not in carrier
-    for manager_entry_gate in (effects, scripted_gui, on_actions):
+    for manager_entry_gate in (effects, on_actions):
         assert (
             "NOT = { has_character_flag = "
             "zga_phase2_manager_seed_handoff_pending }" in manager_entry_gate
+        )
+    for retry_gate in (effects, scripted_gui):
+        assert (
+            "NOT = { has_character_flag = "
+            "zga_phase2_manager_seed_handoff_started }" in retry_gate
         )
     final_event = top_level_block(events, "zga_phase2_manager_seed.1")
     assert "hidden = yes" not in final_event
@@ -221,7 +261,7 @@ def main() -> int:
     assert transition == {
         "handoff_mode": "post_exact_pip_load_gui",
         "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-        "activation_surface": "load_safe_scripted_gui_false_to_true",
+        "activation_surface": "load_safe_scripted_gui_terminal_pip_retry",
         "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
         "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
         "hidden_carrier_delay_days": 0,
@@ -237,6 +277,12 @@ def main() -> int:
         "activation_event_selected_option_number": 3,
         "activation_event_selected_native_option_index": 2,
         "activation_event_outcome": "refuse",
+        "activation_signal_variable": "zg361_b2_m015_state",
+        "activation_signal_preselection_value": 1,
+        "activation_signal_value": 5,
+        "fixture_gui_retry_duration_seconds": 0.5,
+        "post_activation_paused_settle_seconds": 5.0,
+        "forbids_timeline_resume_after_activation_event_drain": True,
         "requires_exact_activation_event_drain": True,
         "requires_completion_at_exact_date": True,
         "forbids_other_prebootstrap_event_drains": True,
