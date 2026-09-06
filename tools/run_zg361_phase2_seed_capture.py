@@ -86,6 +86,10 @@ SEED_EVENT_DEFINITION_KEY = str(
 MANAGER_SEED_EVENT_DEFINITION_KEY = str(
     SEED_PURPOSE_SPECS[MANAGER_SEED_PURPOSE]["event_definition_key"]
 )
+MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY = "zga_phase2_manager_seed.10"
+MANAGER_SEED_HANDOFF_CARRIER_EVENT_DEFINITION_KEY = "zga_phase2_manager_seed.11"
+MANAGER_SEED_OWNER_SCOPE = "zga_phase2_manager_owner"
+MANAGER_SEED_SUBJECT_SCOPE = "zga_phase2_manager_subject"
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
         "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733"
@@ -2512,6 +2516,7 @@ def wait_for_bootstrap_event(
     pre_submission_revision_mismatch_error: type[BaseException] | None = None,
     timeout_seconds: float,
     expected_event_definition_key: str = SEED_EVENT_DEFINITION_KEY,
+    additional_expected_event_definition_keys: tuple[str, ...] = (),
     source_save_sha256: str | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -2523,6 +2528,17 @@ def wait_for_bootstrap_event(
         raise ValueError("bootstrap event timeout must be positive")
     started = clock()
     deadline = started + timeout_seconds
+    accepted_event_definition_keys = (
+        expected_event_definition_key,
+        *additional_expected_event_definition_keys,
+    )
+    if any(
+        not isinstance(key, str) or not key
+        for key in accepted_event_definition_keys
+    ) or len(set(accepted_event_definition_keys)) != len(
+        accepted_event_definition_keys
+    ):
+        raise ValueError("bootstrap event definition keys must be unique strings")
     evidence_path = artifacts / "bootstrap-event-wait.jsonl"
     sequence = 0
     next_progress_log = 60.0
@@ -2620,7 +2636,7 @@ def wait_for_bootstrap_event(
                 if isinstance(context, dict)
                 else None
             )
-            if key != expected_event_definition_key:
+            if key not in accepted_event_definition_keys:
                 if isinstance(context, dict) and key not in drained_pre_bootstrap_events:
                     if key == KNOWN_PRE_BOOTSTRAP_EVENT["event_definition_key"]:
                         expected = KNOWN_PRE_BOOTSTRAP_EVENT
@@ -2705,6 +2721,9 @@ def wait_for_bootstrap_event(
                 evidence = {
                     "state": "unexpected_visible_event",
                     "expected_event_definition_key": expected_event_definition_key,
+                    "accepted_event_definition_keys": list(
+                        accepted_event_definition_keys
+                    ),
                     "observed_event_definition_key": key,
                     "event_instance_id": event_id,
                     "drained_pre_bootstrap_events": drained_pre_bootstrap_events,
@@ -2804,6 +2823,96 @@ def wait_for_bootstrap_event(
     raise SeedCaptureError(
         f"timed out before exact {expected_event_definition_key}", evidence
     )
+
+
+def _manager_handoff_binding(
+    service: Any, snapshot: dict[str, Any]
+) -> dict[str, Any]:
+    """Read the fixture-owned manager target from the exact visible handoff."""
+
+    active = snapshot.get("active_event")
+    if not isinstance(active, dict):
+        raise SeedCaptureError("manager handoff snapshot has no active event")
+    event_instance_id = active.get("instance_id")
+    if (
+        not isinstance(event_instance_id, int)
+        or isinstance(event_instance_id, bool)
+        or event_instance_id <= 0
+    ):
+        raise SeedCaptureError("manager handoff event lacks a positive instance ID")
+    revision = _positive_revision(snapshot)
+    query = service.query_current_event_window_context_v1(
+        event_instance_id, expected_revision=revision
+    )
+    context = (
+        query.get("current_event_window_context")
+        if isinstance(query, dict)
+        else None
+    )
+    if not (
+        isinstance(context, dict)
+        and context.get("schema") == "current-event-window-context-v1"
+        and context.get("schema_version") == 1
+        and context.get("status") == "available"
+        and context.get("window_match_count") == 1
+        and context.get("event_definition_key")
+        == MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+        and context.get("current_event_instance_id") == event_instance_id
+    ):
+        raise SeedCaptureError(
+            "manager handoff context is not the unique typed fixture event"
+        )
+    root_character_id = _typed_character_id(context.get("root_scope"))
+    if root_character_id is None:
+        raise SeedCaptureError("manager handoff root is not a typed character")
+    saved_scopes = context.get("saved_scopes")
+    if not isinstance(saved_scopes, list):
+        raise SeedCaptureError("manager handoff saved scopes are absent")
+
+    def saved_character_id(name: str) -> int:
+        matches = [
+            row
+            for row in saved_scopes
+            if isinstance(row, dict) and row.get("name") == name
+        ]
+        if len(matches) != 1:
+            raise SeedCaptureError(
+                f"manager handoff does not bind exactly one saved scope {name}"
+            )
+        character_id = _typed_character_id(matches[0].get("scope"))
+        if character_id is None:
+            raise SeedCaptureError(
+                f"manager handoff saved scope {name} is not a typed character"
+            )
+        return character_id
+
+    owner_character_id = saved_character_id(MANAGER_SEED_OWNER_SCOPE)
+    subject_character_id = saved_character_id(MANAGER_SEED_SUBJECT_SCOPE)
+    options = context.get("options")
+    if not (
+        isinstance(options, list)
+        and len(options) == 1
+        and isinstance(options[0], dict)
+        and options[0].get("shown") is True
+        and options[0].get("enabled") is True
+        and options[0].get("native_option_index") == 0
+    ):
+        raise SeedCaptureError(
+            "manager handoff does not expose one enabled native option"
+        )
+    if (
+        subject_character_id != root_character_id
+        or owner_character_id == subject_character_id
+    ):
+        raise SeedCaptureError("manager handoff owner/subject identity is invalid")
+    return {
+        "event_definition_key": MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY,
+        "event_instance_id": event_instance_id,
+        "revision": revision,
+        "date_raw": snapshot.get("date_raw"),
+        "owner_character_id": owner_character_id,
+        "subject_character_id": subject_character_id,
+    }
 
 
 def provider_probe(
@@ -4433,7 +4542,8 @@ def run_capture(
         if loader_error_scan.get("result") != "GREEN":
             raise SeedCaptureError("loader error.log scan returned non-GREEN")
 
-        event_snapshot = wait_for_bootstrap_event(
+        event_wait_started = active_runtime.clock()
+        entry_snapshot = wait_for_bootstrap_event(
             service,
             artifacts,
             bridge_unavailable_error=active_runtime.bridge_unavailable_error,
@@ -4442,11 +4552,132 @@ def run_capture(
             ),
             timeout_seconds=config.event_timeout_seconds,
             expected_event_definition_key=config.seed_event_definition_key,
+            additional_expected_event_definition_keys=(
+                (MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY,)
+                if config.seed_purpose == MANAGER_SEED_PURPOSE
+                else ()
+            ),
             source_save_sha256=observed_save_sha,
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,
             logger=runner_log,
         )
+        event_snapshot = entry_snapshot
+        if config.seed_purpose == MANAGER_SEED_PURPOSE:
+            report["manager_transition_contract"] = {
+                "handoff_event_definition_key": (
+                    MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+                ),
+                "hidden_carrier_event_definition_key": (
+                    MANAGER_SEED_HANDOFF_CARRIER_EVENT_DEFINITION_KEY
+                ),
+                "post_switch_event_definition_key": (
+                    config.seed_event_definition_key
+                ),
+                "hidden_carrier_delay_days": 0,
+                "typed_transition_helper": (
+                    "run_zhongguo_acceptance."
+                    "select_typed_fixture_player_transition"
+                ),
+                "requires_final_manager_entry_identity_match": True,
+                "single_total_event_deadline": True,
+            }
+            entry_binding: dict[str, Any] | None = None
+            entry_active = entry_snapshot.get("active_event")
+            if not isinstance(entry_active, dict):
+                raise SeedCaptureError(
+                    "player-manager entry snapshot has no active event"
+                )
+            entry_event_id = entry_active.get("instance_id")
+            entry_revision = _positive_revision(entry_snapshot)
+            entry_query = service.query_current_event_window_context_v1(
+                entry_event_id, expected_revision=entry_revision
+            )
+            entry_context = (
+                entry_query.get("current_event_window_context")
+                if isinstance(entry_query, dict)
+                else None
+            )
+            entry_key = (
+                entry_context.get("event_definition_key")
+                if isinstance(entry_context, dict)
+                else None
+            )
+            report["manager_entry_event"] = {
+                "event_definition_key": entry_key,
+                "date_raw": entry_snapshot.get("date_raw"),
+                "revision": entry_revision,
+            }
+            if entry_key == MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY:
+                entry_binding = _manager_handoff_binding(service, entry_snapshot)
+                transition_helper = getattr(
+                    zgrun, "select_typed_fixture_player_transition", None
+                )
+                if not callable(transition_helper):
+                    raise SeedCaptureError(
+                        "clean-source runner lacks the existing typed player "
+                        "transition helper"
+                    )
+                transition = transition_helper(
+                    service,
+                    expected_event_definition_key=(
+                        MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+                    ),
+                    expected_player_before=entry_binding[
+                        "subject_character_id"
+                    ],
+                    expected_player_after=entry_binding["owner_character_id"],
+                    owner_character_id=entry_binding["owner_character_id"],
+                    subject_character_id=entry_binding[
+                        "subject_character_id"
+                    ],
+                    owner_scope_name=MANAGER_SEED_OWNER_SCOPE,
+                    subject_scope_name=MANAGER_SEED_SUBJECT_SCOPE,
+                    evidence_path=(
+                        artifacts / "manager-subject-to-owner-transition.json"
+                    ),
+                )
+                report["manager_player_transition"] = transition
+                remaining_event_seconds = config.event_timeout_seconds - (
+                    active_runtime.clock() - event_wait_started
+                )
+                if remaining_event_seconds <= 0:
+                    raise SeedCaptureError(
+                        "player-manager handoff consumed the total event deadline"
+                    )
+                event_snapshot = wait_for_bootstrap_event(
+                    service,
+                    artifacts,
+                    bridge_unavailable_error=(
+                        active_runtime.bridge_unavailable_error
+                    ),
+                    pre_submission_revision_mismatch_error=(
+                        active_runtime.pre_submission_revision_mismatch_error
+                    ),
+                    timeout_seconds=remaining_event_seconds,
+                    expected_event_definition_key=(
+                        config.seed_event_definition_key
+                    ),
+                    source_save_sha256=observed_save_sha,
+                    clock=active_runtime.clock,
+                    sleeper=active_runtime.sleep,
+                    logger=runner_log,
+                )
+                report["manager_entry_mode"] = "typed-subject-to-owner-handoff"
+            elif entry_key == config.seed_event_definition_key:
+                report["manager_player_transition"] = {
+                    "result": "NOT_APPLICABLE",
+                    "reason": "source checkpoint already plays an eligible manager",
+                }
+                report["manager_entry_mode"] = "already-player-manager"
+            else:
+                raise SeedCaptureError(
+                    f"unexpected player-manager entry event: {entry_key!r}"
+                )
+            write_json(
+                artifacts / "manager-entry-event-snapshot.json",
+                entry_snapshot,
+            )
         write_json(artifacts / "bootstrap-event-snapshot.json", event_snapshot)
         report["bootstrap_event"] = {
             "result": "GREEN",
@@ -4458,6 +4689,77 @@ def run_capture(
         candidate_dir = artifacts / "candidate"
         capture_result = seed.capture_mcp_evidence(service, capture_dir)
         report["capture"] = capture_result
+        if (
+            config.seed_purpose == MANAGER_SEED_PURPOSE
+            and entry_binding is not None
+        ):
+            final_entry = capture_result.get("manager_entry")
+            final_manager_id = (
+                final_entry.get("manager_character_id")
+                if isinstance(final_entry, dict)
+                else None
+            )
+            final_subject_id = (
+                final_entry.get("reviewable_subject_character_id")
+                if isinstance(final_entry, dict)
+                else None
+            )
+            expected_manager_id = entry_binding["owner_character_id"]
+            expected_subject_id = entry_binding["subject_character_id"]
+            final_binding_evidence = {
+                "schema_version": 1,
+                "result": "GREEN",
+                "stage": "post_switch_manager_entry_identity",
+                "handoff_event_definition_key": (
+                    MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+                ),
+                "final_event_definition_key": (
+                    config.seed_event_definition_key
+                ),
+                "expected_manager_character_id": expected_manager_id,
+                "observed_manager_character_id": final_manager_id,
+                "expected_reviewable_subject_character_id": (
+                    expected_subject_id
+                ),
+                "observed_reviewable_subject_character_id": final_subject_id,
+                "checks": {
+                    "manager_is_positive_integer": (
+                        isinstance(final_manager_id, int)
+                        and not isinstance(final_manager_id, bool)
+                        and final_manager_id > 0
+                    ),
+                    "subject_is_positive_integer": (
+                        isinstance(final_subject_id, int)
+                        and not isinstance(final_subject_id, bool)
+                        and final_subject_id > 0
+                    ),
+                    "manager_matches_typed_handoff_owner": (
+                        final_manager_id == expected_manager_id
+                    ),
+                    "subject_matches_typed_handoff_subject": (
+                        final_subject_id == expected_subject_id
+                    ),
+                },
+            }
+            failed_checks = [
+                name
+                for name, passed in final_binding_evidence["checks"].items()
+                if passed is not True
+            ]
+            final_binding_evidence["failed_checks"] = failed_checks
+            if failed_checks:
+                final_binding_evidence["result"] = "RED"
+            report["manager_handoff_final_binding"] = final_binding_evidence
+            write_json(
+                artifacts / "manager-handoff-final-binding.json",
+                final_binding_evidence,
+            )
+            if failed_checks:
+                raise SeedCaptureError(
+                    "post-switch manager event identities differ from the "
+                    "typed handoff owner/subject",
+                    final_binding_evidence,
+                )
         materialize_kwargs: dict[str, Any] = {
             "event_context_path": Path(capture_result["event_context_path"]),
             "paused_snapshot_path": Path(capture_result["paused_snapshot_path"]),

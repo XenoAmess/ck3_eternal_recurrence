@@ -82,17 +82,19 @@ class FakeService:
     ) -> None:
         self.calls = calls
         self.event_definition_key = event_definition_key
+        self.played_character_id = 9001
+        self.revision = 7
 
     def snapshot(self) -> dict[str, object]:
         return {
             "snapshot_id": "fake-snapshot-7",
-            "revision": 7,
+            "revision": self.revision,
             "date_raw": 777,
             "paused": True,
             "map_ready": True,
             "speed": 1,
-            "played_character": {"character_id": 9001},
-            "active_event": {"instance_id": 44},
+            "played_character": {"character_id": self.played_character_id},
+            "active_event": {"instance_id": 44, "option_count": 1},
             "diagnostics": {
                 "bridge_pid": 4321,
                 "connection_generation": 1,
@@ -119,6 +121,47 @@ class FakeService:
         self, _event_id: int, **_kwargs: object
     ) -> dict[str, object]:
         self.calls.append("event-context")
+        if (
+            self.event_definition_key
+            == capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+        ):
+            def character_scope(character_id: int) -> dict[str, object]:
+                return {
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    }
+                }
+
+            return {
+                "current_event_window_context": {
+                    "schema": "current-event-window-context-v1",
+                    "schema_version": 1,
+                    "status": "available",
+                    "window_match_count": 1,
+                    "current_event_instance_id": 44,
+                    "event_definition_key": self.event_definition_key,
+                    "root_scope": character_scope(9001),
+                    "saved_scopes": [
+                        {
+                            "name": capture.MANAGER_SEED_OWNER_SCOPE,
+                            "scope": character_scope(9002),
+                        },
+                        {
+                            "name": capture.MANAGER_SEED_SUBJECT_SCOPE,
+                            "scope": character_scope(9001),
+                        },
+                    ],
+                    "options": [
+                        {
+                            "shown": True,
+                            "enabled": True,
+                            "native_option_index": 0,
+                        }
+                    ],
+                }
+            }
         return {
             "current_event_window_context": {
                 "event_definition_key": self.event_definition_key
@@ -303,6 +346,48 @@ class FakeZhongguoRunner:
         self.calls.append("loader-error-scan")
         return {"result": "GREEN", "matches": []}
 
+    def select_typed_fixture_player_transition(
+        self, service: object, **kwargs: object
+    ) -> dict[str, object]:
+        self.calls.append("typed-player-transition")
+        require(
+            kwargs["expected_event_definition_key"]
+            == capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY,
+            "manager handoff used the wrong typed event",
+        )
+        require(
+            kwargs["expected_player_before"] == 9001
+            and kwargs["expected_player_after"] == 9002
+            and kwargs["owner_character_id"] == 9002
+            and kwargs["subject_character_id"] == 9001,
+            "manager handoff endpoints did not come from typed scopes",
+        )
+        require(
+            kwargs["owner_scope_name"] == capture.MANAGER_SEED_OWNER_SCOPE
+            and kwargs["subject_scope_name"]
+            == capture.MANAGER_SEED_SUBJECT_SCOPE,
+            "manager handoff scope names drifted",
+        )
+        require(isinstance(service, FakeService), "fake transition service drifted")
+        service.played_character_id = 9002
+        service.revision += 1
+        service.event_definition_key = capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+        evidence = {
+            "result": "GREEN",
+            "stage": "typed_fixture_player_transition",
+            "expected_event_definition_key": (
+                capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+            ),
+            "expected_player_before": 9001,
+            "expected_player_after": 9002,
+            "date_unchanged": True,
+            "revision_increased": True,
+        }
+        evidence_path = kwargs.get("evidence_path")
+        require(isinstance(evidence_path, Path), "transition evidence path missing")
+        capture.write_json(evidence_path, evidence)
+        return evidence
+
     def stop_phase2_native_session_supervisor(
         self, _supervisor: object, _artifacts: Path, **kwargs: object
     ) -> dict[str, object]:
@@ -329,9 +414,10 @@ class FakeSeed:
         self.calls = calls
         self.seed_purpose = seed_purpose
         self.materialize_kwargs: dict[str, object] | None = None
+        self.manager_entry_override: dict[str, object] | None = None
 
     def capture_mcp_evidence(
-        self, _service: object, output: Path
+        self, service: object, output: Path
     ) -> dict[str, object]:
         self.calls.append("seed-capture-mcp")
         output.mkdir(parents=True)
@@ -356,10 +442,17 @@ class FakeSeed:
                 "ai_owned_case_subject_character_id": 9001,
             }
         else:
-            result["manager_entry"] = {
-                "manager_character_id": 9001,
-                "reviewable_subject_character_id": 9002,
-            }
+            manager_id = getattr(service, "played_character_id", 9001)
+            result["manager_entry"] = (
+                dict(self.manager_entry_override)
+                if self.manager_entry_override is not None
+                else {
+                    "manager_character_id": manager_id,
+                    "reviewable_subject_character_id": (
+                        9001 if manager_id == 9002 else 9002
+                    ),
+                }
+            )
         return result
 
     def materialize_candidate(self, **kwargs: object) -> dict[str, object]:
@@ -1345,6 +1438,166 @@ def test_player_manager_capture_routes_fixture_event_and_materializer() -> None:
             (mounted_fixture / "descriptor.mod").read_text(encoding="utf-8")
             == "name=manager-fixture\n",
             "manager capture mounted the historical player-subject fixture",
+        )
+
+
+def test_player_manager_subject_handoff_uses_typed_transition_then_final_event() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            event_definition_key=(
+                capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+            ),
+        )
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        require(report["result"] == "GREEN", f"manager handoff RED: {report}")
+        require(
+            report["manager_entry_mode"] == "typed-subject-to-owner-handoff",
+            "manager handoff was not reported as the typed transition route",
+        )
+        require(
+            report["manager_entry_event"] == {
+                "event_definition_key": (
+                    capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+                ),
+                "date_raw": 777,
+                "revision": 7,
+            },
+            "manager entry did not preserve the exact .10 typed checkpoint",
+        )
+        require(
+            report["manager_transition_contract"] == {
+                "handoff_event_definition_key": (
+                    capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+                ),
+                "hidden_carrier_event_definition_key": (
+                    capture.MANAGER_SEED_HANDOFF_CARRIER_EVENT_DEFINITION_KEY
+                ),
+                "post_switch_event_definition_key": (
+                    capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+                ),
+                "hidden_carrier_delay_days": 0,
+                "typed_transition_helper": (
+                    "run_zhongguo_acceptance."
+                    "select_typed_fixture_player_transition"
+                ),
+                "requires_final_manager_entry_identity_match": True,
+                "single_total_event_deadline": True,
+            },
+            "manager report does not bind the .10 -> hidden .11 -> .1 route",
+        )
+        transition = report["manager_player_transition"]
+        require(
+            transition["result"] == "GREEN"
+            and transition["expected_player_before"] == 9001
+            and transition["expected_player_after"] == 9002
+            and transition["date_unchanged"] is True
+            and transition["revision_increased"] is True,
+            "typed player transition evidence did not prove the frozen rebind",
+        )
+        require(
+            report["manager_handoff_final_binding"]["result"] == "GREEN"
+            and report["manager_handoff_final_binding"]["failed_checks"] == []
+            and report["manager_handoff_final_binding"]
+            ["observed_manager_character_id"]
+            == 9002
+            and report["manager_handoff_final_binding"]
+            ["observed_reviewable_subject_character_id"]
+            == 9001,
+            "final .1 identities did not close against the typed handoff pair",
+        )
+        require(
+            report["bootstrap_event"]["event_definition_key"]
+            == capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+            and report["bootstrap_event"]["revision"] == 8,
+            "capture did not wait for the post-switch .1 manager event",
+        )
+        require(
+            calls.index("typed-player-transition")
+            < calls.index("seed-capture-mcp")
+            < calls.index("candidate-materialize"),
+            f"manager handoff execution order drifted: {calls}",
+        )
+        require(
+            not any(call.startswith("provider:") for call in calls),
+            "manager handoff queried player-subject product providers",
+        )
+        transition_artifact = (
+            fixture.artifacts / "manager-subject-to-owner-transition.json"
+        )
+        require(
+            transition_artifact.is_file()
+            and json.loads(transition_artifact.read_text(encoding="utf-8"))
+            == transition,
+            "typed transition artifact is absent or differs from the report",
+        )
+        wait_rows = rows(fixture.artifacts / "bootstrap-event-wait.jsonl")
+        ready_keys = [
+            row.get("event_definition_key")
+            for row in wait_rows
+            if row.get("state") == "bootstrap_event_ready"
+        ]
+        require(
+            ready_keys
+            == [
+                capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY,
+                capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            ],
+            f"manager waiter did not record both visible checkpoints: {ready_keys}",
+        )
+
+
+def test_player_manager_handoff_rejects_final_subject_identity_drift() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            event_definition_key=(
+                capture.MANAGER_SEED_HANDOFF_EVENT_DEFINITION_KEY
+            ),
+        )
+        seed = runtime.seed
+        require(isinstance(seed, FakeSeed), "manager mismatch seed fake drifted")
+        seed.manager_entry_override = {
+            "manager_character_id": 9002,
+            "reviewable_subject_character_id": 9003,
+        }
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        require(report["result"] == "RED", "manager identity drift false-GREENed")
+        require(
+            report["scenario_verdict"] == "RED"
+            and report["seed_verdict"] == "RED",
+            "manager identity drift did not remain scenario/seed RED",
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            isinstance(evidence, dict)
+            and evidence.get("stage") == "post_switch_manager_entry_identity"
+            and evidence.get("result") == "RED"
+            and evidence.get("expected_manager_character_id") == 9002
+            and evidence.get("observed_manager_character_id") == 9002
+            and evidence.get("expected_reviewable_subject_character_id") == 9001
+            and evidence.get("observed_reviewable_subject_character_id") == 9003
+            and evidence.get("failed_checks")
+            == ["subject_matches_typed_handoff_subject"],
+            f"manager identity drift evidence is not exact: {evidence}",
+        )
+        require(
+            "typed-player-transition" in calls
+            and "seed-capture-mcp" in calls
+            and "candidate-materialize" not in calls,
+            "manager identity drift was not stopped before materialization",
         )
 
 
@@ -3783,6 +4036,8 @@ def main() -> int:
     test_real_phase2_frontend_first_binding_uses_first_mcp_generation()
     test_green_capture()
     test_player_manager_capture_routes_fixture_event_and_materializer()
+    test_player_manager_subject_handoff_uses_typed_transition_then_final_event()
+    test_player_manager_handoff_rejects_final_subject_identity_drift()
     test_player_manager_wrong_event_is_scenario_and_seed_red()
     test_player_manager_preflight_reports_purpose_and_contract_kind()
     test_parser_red_cleanup()

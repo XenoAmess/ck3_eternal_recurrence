@@ -105,6 +105,37 @@ def main() -> int:
         "save_scope_as = zga_phase2_manager_subject",
     ):
         assert gate in opener
+    handoff = top_level_block(events, "zga_phase2_manager_seed.10")
+    assert "hidden = yes" not in handoff
+    assert "theme = stewardship" in handoff
+    assert len(re.findall(r"(?m)^\s*option\s*=\s*\{", handoff)) == 1
+    assert handoff.count("set_player_character =") == 1
+    assert (
+        "set_player_character = scope:zga_phase2_manager_owner" in handoff
+    )
+    assert "this = scope:zga_phase2_manager_subject" in handoff
+    assert "liege = { this = scope:zga_phase2_manager_owner }" in handoff
+    assert "is_ai = yes" in handoff
+    assert "zg361_review_now_business_valid_trigger = yes" in handoff
+    assert (
+        "trigger_event = { id = zga_phase2_manager_seed.11 days = 0 }"
+        in handoff
+    )
+    assert handoff.index(
+        "set_player_character = scope:zga_phase2_manager_owner"
+    ) < handoff.index(
+        "trigger_event = { id = zga_phase2_manager_seed.11 days = 0 }"
+    )
+    carrier = top_level_block(events, "zga_phase2_manager_seed.11")
+    assert "hidden = yes" in carrier
+    assert "this = scope:zga_phase2_manager_owner" in carrier
+    assert "is_ai = no" in carrier
+    assert "scope:zga_phase2_manager_subject = {" in carrier
+    assert "is_ai = yes" in carrier
+    assert "liege = root" in carrier
+    assert "zg361_review_now_business_valid_trigger = yes" in carrier
+    assert "trigger_event = zga_phase2_manager_seed.100" in carrier
+    assert "set_player_character =" not in carrier
     final_event = top_level_block(events, "zga_phase2_manager_seed.1")
     assert "hidden = yes" not in final_event
     assert "theme = stewardship" in final_event
@@ -113,6 +144,7 @@ def main() -> int:
 
     # The fixture may only expose acceptance identities. Product lifecycle
     # entrypoints and product receipt writes are forbidden.
+    assert payload.count("set_player_character =") == 1
     for token in (
         "zg361_b1_open_cycle_effect",
         "zg361_run_review_effect",
@@ -136,7 +168,6 @@ def main() -> int:
         "set_spouse",
         "add_relation",
         "set_relation",
-        "set_player_character",
     ):
         assert re.search(rf"\b{re.escape(token)}\b", payload) is None
 
@@ -157,6 +188,34 @@ def main() -> int:
     assert contract["seed_purpose"] == "player-manager"
     assert contract["status"] == "blocked_live_capture_required"
     assert contract["ready"] is False
+    assert contract["source"]["sha256"] == (
+        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9"
+    )
+    assert contract["saved_state"]["played_character_id"] == 29037
+    transition = contract["player_transition_contract"]
+    assert transition == {
+        "event_definition_key": "zga_phase2_manager_seed.10",
+        "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
+        "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
+        "hidden_carrier_delay_days": 0,
+        "source_character_id": 29037,
+        "target_character_id": 32904,
+        "target_source": "existing_immediate_liege_saved_by_fixture",
+        "owner_scope": "zga_phase2_manager_owner",
+        "subject_scope": "zga_phase2_manager_subject",
+        "requires_unique_enabled_option": True,
+        "requires_revision_increase": True,
+        "requires_date_unchanged": True,
+        "requires_typed_post_switch_player": True,
+        "requires_post_switch_manager_revalidation": True,
+        "requires_final_manager_entry_identity_match": True,
+        "fixture_set_player_character_count": 1,
+        "fixture_creates_character": False,
+        "fixture_creates_title": False,
+        "fixture_creates_relationship": False,
+        "fixture_calls_product_b1": False,
+        "fixture_writes_product_receipts": False,
+    }
     entry = contract["manager_entry_contract"]
     assert entry == {
         "event_definition_key": "zga_phase2_manager_seed.1",
@@ -176,7 +235,10 @@ def main() -> int:
         "fixture_opens_product_b1": False,
         "fixture_writes_product_receipts": False,
     }
-    print("GREEN: player-manager seed fixture is gated, typed and non-product")
+    print(
+        "GREEN: player-manager seed fixture has a typed existing-liege "
+        "handoff and non-product capture"
+    )
     return 0
 
 
