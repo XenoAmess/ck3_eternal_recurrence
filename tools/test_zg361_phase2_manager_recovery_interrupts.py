@@ -209,6 +209,54 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:target:type"])
 
+    def test_celestial_study_uses_friendship_progress_route(self) -> None:
+        event_key = "tgp_movement_events.0070"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=16,
+            date_raw=53150712,
+            player=32904,
+            scopes=[
+                _scope("my_movement", "situation_participant_group"),
+                _scope("councillor", "character", 29889),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150712,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 16},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(
+            contract["scope_types"]["my_movement"],
+            "situation_participant_group",
+        )
+        self.assertEqual(contract["scope_types"]["councillor"], "character")
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["options"][2]["native_option_index"] = 3
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150712,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 16},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

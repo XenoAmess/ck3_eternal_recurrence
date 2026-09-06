@@ -200,6 +200,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "tgp_movement_events.0070": {
+        # CK3 1.19.0.6 celestial-government study event. Option 2 mutates the
+        # selected councillor's skill by two points; option 3 mutates both the
+        # played ruler and councillor. Option 1 has no player resource or skill
+        # mutation and confines the unrelated event to friendship progress and
+        # trait-dependent stress, making it the least invasive authored route.
+        "date_raw": 53150712,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "councillor": (29037,),
+        },
+        "scope_types": {
+            "my_movement": "situation_participant_group",
+            "councillor": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "my_movement",
+            "councillor",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices

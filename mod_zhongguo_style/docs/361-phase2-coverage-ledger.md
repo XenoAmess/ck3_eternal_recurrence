@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R141 管理者存档续接增量（不改变逐号等级）
+## R131–R142 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -379,7 +379,13 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   精确形状。R141 manager recovery / runner SHA-256 分别为
   `b04d22be693115e970f66d87c2004b308b8c35f51bd8fa35a847ba061e1dc423` /
   `daca4220b95641eba837fa069c054ae7cff3dfa50b4e1fe937fefc20d090d416`。
-- 以上 R131–R141 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R142 在 `date_raw=53150712` 捕获原版 `tgp_movement_events.0070`；玩家 `32904` 存活且
+  B1 active。窗口恰有 `my_movement:situation_participant_group`、`councillor:character` 两个 scopes
+  与 native indices 0/1/2 三个按钮。为避免修改玩家或廷臣技能，合同选择只推进友谊关系并结算 stress
+  的 option 1。R142 manager recovery / runner SHA-256 分别为
+  `8cca1b0f39ff6e3e5f008a4c159a6bc32d9a28bd9b09356abbaa28ef5bfc3786` /
+  `0e262b77e7a74651a7c34974b33b6419da6d53730707f0f709adc2626c76729f`。
+- 以上 R131–R142 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 
