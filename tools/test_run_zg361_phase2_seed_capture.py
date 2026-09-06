@@ -2664,6 +2664,58 @@ def test_exact_vanilla_no_secrets_event_keeps_current_task() -> None:
         )
 
 
+def test_r120_source_hash_is_exactly_authorized_for_b2_sequence() -> None:
+    r120_hash = (
+        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9"
+    )
+    unexpected_hash = "0" * 64
+    service_rows = (
+        (
+            KnownB2PipPrebootstrapService(),
+            _known_b2_pip_context(),
+            capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT,
+            capture._known_pre_bootstrap_b2_pip_event_checks,
+            30,
+        ),
+        (
+            KnownVanillaNoSecretsPrebootstrapService(),
+            _known_vanilla_no_secrets_context(),
+            capture.KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT,
+            capture._known_pre_bootstrap_vanilla_no_secrets_event_checks,
+            40,
+        ),
+    )
+    for service, context, expected, checker, event_instance_id in service_rows:
+        require(
+            expected["source_save_sha256"] in expected["source_save_sha256s"]
+            and r120_hash in expected["source_save_sha256s"]
+            and len(expected["source_save_sha256s"]) == 2,
+            "exact old/R120 source hash allowlist drifted",
+        )
+        accepted = checker(
+            source_save_sha256=r120_hash,
+            snapshot=service.snapshot(),
+            context=context,
+            event_instance_id=event_instance_id,
+        )
+        rejected = checker(
+            source_save_sha256=unexpected_hash,
+            snapshot=service.snapshot(),
+            context=context,
+            event_instance_id=event_instance_id,
+        )
+        require(all(accepted.values()), "R120 exact source hash was not accepted")
+        require(
+            rejected["source_save_sha256"] is False
+            and all(
+                value
+                for key, value in rejected.items()
+                if key != "source_save_sha256"
+            ),
+            "unregistered source hash did not fail only the exact hash gate",
+        )
+
+
 def test_vanilla_no_secrets_identity_drift_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as raw:
         service = KnownVanillaNoSecretsPrebootstrapService(
@@ -4048,6 +4100,7 @@ def main() -> int:
     test_exact_b2_pip_prebootstrap_event_uses_accept_option()
     test_b2_pip_prebootstrap_identity_drift_fails_closed()
     test_exact_vanilla_no_secrets_event_keeps_current_task()
+    test_r120_source_hash_is_exactly_authorized_for_b2_sequence()
     test_vanilla_no_secrets_identity_drift_fails_closed()
     test_multiple_registered_prebootstrap_events_are_supported()
     test_vanilla_prebootstrap_identity_and_option_shape_fail_closed()

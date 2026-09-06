@@ -42,6 +42,35 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
 `03_promotion_source_production_entry.json`；冻结产品身份见 `Z:\\p2r118\phase2-product-projection.json` 与
 `Z:\\p2r118\p.manifest.json`。
 
+## R120 专用管理者 seed 的 harness RED（不改变逐号等级）
+
+- `2026-09-06 14:41–14:45 Asia/Shanghai` 对冻结 commit
+  `12405873745ea7df5cd399f4d25a4f91d4da2273` 执行专用 player-manager seed 捕获。预检
+  `Z:\\p2m120_a\preflight.json` 为 GREEN；冻结源 ZIP SHA-256 为
+  `77b9d5a8a076a9e4fe2b88c0fe9467efab9c4cd1b421a235ee3fe5ce88cb91a3`，源码树为
+  `213e3db0dd69cfb504fd599c7bf7df91d5656b567f61c153c48f0dec47c4a283`。
+- live 完成 loader 303/303、fatal=0、项目 loader blocking diagnostics=0，原生 paused
+  application-main/readiness 为 GREEN。随后看到存档中已经排队的 `zg361b2.40`；其 event key、instance、
+  date、root、manager/subject saved scopes、三个 authored options 等身份检查全部为 true，只有
+  `source_save_sha256` 为 false。runner 中该事件合同仍绑定旧 source SHA-256
+  `233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c`，本轮 exact source 实际为
+  `8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9`，因此在发送事件选择前 fail-closed。
+  结论是已知前置事件的 **harness identity-contract RED / seed 未评估**，不是产品 RED，也没有到达
+  `zga_phase2_manager_seed.10/.11/.1` 或生成候选 seed；本轮不构成完整迁移树 GREEN。
+- production projection 为 `phase2-full-release-r120-1240587`，1,031 files / 31,183,422 bytes，产品树
+  `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1`，projection manifest SHA-256
+  `b80bb8ebda083abe70acbeb17ae0faf2d269b089adfd78beb1b430a23bf2d55c`。关键 B2 产品字节等价检查 GREEN；
+  runtime product/fixture 结束后仍分别为 `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1` /
+  `07228b54b3a3da71d648301e494068a3852d5c9f1ed3f64de9699eebd9b18428`，外部依赖未变，源码 before/after
+  manifest 文件 SHA-256 均为 `8b8b169b75e39bd672698b5cab7fc4e23924057782d3355511fdbf03815245f2`。
+- managed cleanup GREEN：Frontend warmup PID `43576` 与 final PID `85688` 均已回收，final CK3 inventory
+  为空。主要证据 SHA-256：`runner-report.json`
+  `deb968923ca92a9546ccafd5a11606d300bceedcf7f1270e41e7636a7bf3af55`、native readiness
+  `32d37408d783c73826a86b7f99d565a3f530f90fec0c8b07db8845c9db5e9aef`、event identity
+  `aae555d9b9e14c2c218e400c9a93670ae9381d63861649cb7f59fe6cb12ea52f`、cleanup
+  `d362ce8ce064b4b3fa9675d701edd958570f93db4ccc1b462786cedcfe00b648`、relay
+  `0fcd537f849c64fbcbadbd7f9342c1f6a78c66eacf4719dc745807a64a30873a`。
+
 ## R107 基线完整产品验收快照（不改变逐号等级）
 
 | 项 | 实证 |

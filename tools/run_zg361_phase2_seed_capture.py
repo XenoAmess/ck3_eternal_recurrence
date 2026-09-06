@@ -127,6 +127,14 @@ KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT = {
     "source_save_sha256": (
         "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c"
     ),
+    # R120 replayed the same typed event from the retained single-player
+    # manager source.  Keep both exact fingerprints: neither entry is a
+    # namespace/event wildcard, and every event/date/scope/option gate below
+    # must still match before the runner crosses the selection boundary.
+    "source_save_sha256s": (
+        "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c",
+        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9",
+    ),
     "event_definition_key": "zg361b2.40",
     "date_raw": 53147040,
     "root_character_id": 29037,
@@ -144,6 +152,14 @@ KNOWN_PRE_BOOTSTRAP_VANILLA_NO_SECRETS_EVENT = {
     # current task; option 1 changes them to their default task.
     "source_save_sha256": (
         "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c"
+    ),
+    # The source fingerprint passed to the waiter remains the original save
+    # fingerprint after draining zg361b2.40.  Therefore the R120 manager save
+    # needs the same explicit authorization if its already-scheduled
+    # spymaster_task.0399 follows; all typed identities remain mandatory.
+    "source_save_sha256s": (
+        "233e70536d736c32efb9bbd20ef4bab9e0be8f96ee13524707b9ee31e319dc9c",
+        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9",
     ),
     "event_definition_key": "spymaster_task.0399",
     "date_raw": 53148768,
@@ -2245,7 +2261,7 @@ def _known_pre_bootstrap_b2_pip_event_checks(
 
     return {
         "source_save_sha256": source_save_sha256
-        == expected["source_save_sha256"],
+        in expected["source_save_sha256s"],
         "context_schema": context.get("schema")
         == "current-event-window-context-v1",
         "context_schema_version": context.get("schema_version") == 1,
@@ -2337,7 +2353,7 @@ def _known_pre_bootstrap_vanilla_no_secrets_event_checks(
     )
     return {
         "source_save_sha256": source_save_sha256
-        == expected["source_save_sha256"],
+        in expected["source_save_sha256s"],
         "context_schema": context.get("schema")
         == "current-event-window-context-v1",
         "context_schema_version": context.get("schema_version") == 1,
