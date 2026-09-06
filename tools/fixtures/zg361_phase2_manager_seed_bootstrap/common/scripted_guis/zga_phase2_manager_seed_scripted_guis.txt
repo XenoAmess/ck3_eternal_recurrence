@@ -90,6 +90,10 @@ zga_phase2_manager_seed_direct_manager_entry_gui = {
 		is_ai = no
 		is_alive = yes
 		is_landed = yes
+		# This acceptance-only modifier is installed by the loaded-map
+		# diagnostic. Requiring it prevents a partially restored save from
+		# consuming this animation state on a transient pre-B1 frame.
+		has_character_modifier = zga_phase2_manager_seed_survivability_modifier
 		zg361_is_celestial_liege_trigger = yes
 		has_game_rule = zg361_on
 		zg361_review_now_business_valid_trigger = yes

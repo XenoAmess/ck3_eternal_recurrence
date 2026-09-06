@@ -165,6 +165,8 @@ def main() -> int:
         "is_ai = no",
         "is_alive = yes",
         "is_landed = yes",
+        "has_character_modifier = "
+        "zga_phase2_manager_seed_survivability_modifier",
         "zg361_is_celestial_liege_trigger = yes",
         "has_game_rule = zg361_on",
         "zg361_review_now_business_valid_trigger = yes",
