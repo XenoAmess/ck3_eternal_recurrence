@@ -9,9 +9,9 @@
 - `ck3-live means bounded fixture-live evidence for the named slice; no mechanism is promoted here to production-live or full semantic completion`。
 - #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。
 
-## R111–R116 增量全量候选验收记录（不改变逐号等级）
+## R111–R118 增量全量候选验收记录（不改变逐号等级）
 
-六轮均使用独立冻结的 release-identical 产品树、原生 MCP-only 驱动和串行 CK3 启动门禁；`ocr_used=false`、
+八轮均使用独立冻结的 release-identical 产品树、原生 MCP-only 驱动和串行 CK3 启动门禁；`ocr_used=false`、
 `image_used=false`、`coordinates_used=false`。验收时间轴默认使用 `set-speed-5` 快进，仅在有界事件捕获窗口按 runner
 合同降速。各轮 loader 均完成 303/303 database nodes，项目归属 loader match 为 0；这只证明加载门 GREEN，不能覆盖随后
 发生的产品运行时 RED，也不能声称全量验收 GREEN。
@@ -24,12 +24,23 @@
 | `R114` · `2026-09-06 10:54 Asia/Shanghai` | commit `f6cf65378158669e35e493ba8466685f1ace0e1d` · projection `phase2-full-release-r114-f6cf653` · 1031 files · source tree `d54d3beb0dcf26a3831b6b0441e92dbba28a56aca8e77fae770c01416f208aa5` · manifest file SHA-256 `bbd86499307e9a1499b1ade628334ed9219e4d097d2d4db54cbbc23f010eb191` | loader 303/303 GREEN；产品 RED：`zg361comp.2` 对 weak Character subject 执行 `has_variable`，且 portfolio refresh 继续裸比较不可用 `var`，分别落在 `zg361_compensation_07b_portfolio_apply_stage_effects.txt` 与 `07c_portfolio_refresh_effects.txt`。 | compensation 生成源、生成结果与回归由 `4e76cd78c5addc44bcf4522500e985dc34a7a745` 修复；R115 在出现下一族 RED 前未重现 R114 签名。R114 不构成完整迁移树 GREEN，也不提升任何逐号证据层。 |
 | `R115` · `2026-09-06 11:23 Asia/Shanghai` | commit `4e76cd78c5addc44bcf4522500e985dc34a7a745` · projection `phase2-full-release-r115-4e76cd7` · 1031 files · source tree `d4616282305cdc6761aaf624b771731f93d221fe3cce4ab5a324acfe87d2ae10` · manifest file SHA-256 `4ee547e643e5a34df3ba1da2c7d10bfce98e6acabed10ffa90d7a8f7c2f51aca` | loader 303/303 GREEN；产品 RED：`zg361_p2c_summary_desc` 在 Character ROOT 上使用四个 `ROOT.MakeScope.Var(...).GetValue` 数值链，均无法 promote `MakeScope`，并触发本地化转换失败。 | P2C 及全仓同签名数值本地化链由 `2911b07e717ad88e69ea6aec0ec16c475633fa74` 收口为 `ROOT.Var(...).GetValue` 并补回归；R116 首次入口尝试未重现 R115 签名。R115 不构成完整迁移树 GREEN，也不提升任何逐号证据层。 |
 | `R116` · `2026-09-06 11:40–11:47 Asia/Shanghai` | commit `2911b07e717ad88e69ea6aec0ec16c475633fa74` · projection `phase2-full-release-r116-2911b07` · 1031 files · source tree `318d60a217065ffaaa51dd92ad9cf3b9db349d9a673ef86ee604b507553a5a44` · manifest file SHA-256 `3bfb52359100b060a60cc33aff05f7136282fbe0bb088ccd23633cfd11de48aa` | 首次入口 loader 303/303 GREEN、fatal=0、项目 loader match=0；入口/导航 harness 在遇到未列入该路径的 `zg361.30` 时 RED。随后 resume1 复用 PID 54484、launch/restart 均为 false、restart_count=0；`zg361.30` drain GREEN，36/36 interrupts 全部 GREEN。resume 运行时增量随后在 22 个 Career desc 上产生 154 条同族产品本地化错误：`[scope:<saved>.GetShortUIName]` 不能作为 localization 数据表达式。 | 冻结 R116 产品树的全同签名扫描为 2,601 处，分布在 8 个九语言生成文件族；修复计划覆盖 Career HC、feedback/promotion/PIP、workforce endgame、credit project、Phase3 metrics delivery、workforce AD、workforce attribution、workforce remediation，并以全语言硬门禁归零。resume1 中 R113、R114、R115 旧签名均为 0。另有产品生命周期故障：Central active 期间年度 B1 旋转 serial，使冻结 central tuple stale abort；因此 runner 最终报告的 550 日观察边界不是唯一故障。R116 不是全量 GREEN；产品树已改变，R117 必须 fresh 启动后验收，旧 PID 不得复验新产品。 |
+| `R117` · `2026-09-06 12:15–12:25 Asia/Shanghai` | commit `6512d2150e901678a10fbbc70814760a7e968ddd` · projection `phase2-full-release-r117-6512d21` · 1031 files · source tree `e4c68c8ec146afa6e0ca10ce55904e738af8e1335c7fb5ccc7599bc38686ef3c` · manifest file SHA-256 `278c3df7a2973f789fc86be0991f7e8c84284160e9bc88c17a82340f2973936b` | loader 303/303 GREEN、fatal=0、项目 loader match=0；首次入口在 `health.7000` 上暴露 harness 合同缺口，由 `904af39` 补齐后复用同一 PID 45944 续跑，restart_count=0。续跑最终捕获 561 条产品 runtime diagnostics。 | 561 条诊断均属于 `zg361b1.91 -> zg361_b1_open_cycle_effect` 的单一级联：旧的 `zg361_b1_subject_candidates` 仍保留 stale/dead subject，主要命中 weak Character 45030，少量命中无 capital 的 Character 45031。产品修复 `380af02` 在每轮开始前清空并按当前合法 roster 重建 candidates，同时补齐 player-only 与 eligibility gate。R117 不是完整迁移树 GREEN，也不提升任何逐号 readiness；修复后的产品必须 fresh 启动验收。 |
+| `R118` · `2026-09-06 12:40–12:52 Asia/Shanghai` | commit `380af02c8ccaace03144c6ea2beb4dda32454a33` · projection `phase2-full-release-r118-380af02` · 1031 files · source tree `4214a1d2c04a86df728b7df9ea17f77444fa097b164b93001046e1d15accda86` · manifest file SHA-256 `2e16aec5d2d69b983ec5b416c6e5a1c41a9c8e1ca4d6fd913ca72184fe9f50d9` | loader 303/303 GREEN、fatal=0、项目 loader match=0；原生 MCP-only，`ocr_used=false`，默认 5 速。`bp1_yearly.5725` 中断与 `zg361.1` 的新 saved-scope 集合均判定为 harness 合同缺口，修正后复用同一 PID 184992 续跑，restart_count=0。三段运行及续跑的产品 runtime blocking diagnostics 均为 0。 | 最终由原版 `ep3_interactions_events.0630` 的 governor removal 移除玩家管理者身份并破坏 manager roster；产品对 stale roster 的清理生效后，年度 B1 按预期记录 empty roster 并关闭，不再沿用无效对象。此时无 active B1/Central/PP witness，review-now 亦不可用，`zg361pp.147` 未到达。结论是 scenario/seed RED，不是产品 runtime RED，也不是完整迁移树 GREEN；R118 不提升任何逐号 readiness，下一轮必须更换不会被原版 governor removal 破坏的验收 seed/scenario。 |
 
 可核验证据：`Z:\\b3r111`–`Z:\\b3r116` 的 `evidence-index.json`、`report.json`、
 `cell/02_loader_error_scan.json`、`cell/03_loader_gate.json`、`cell/final_error.log`；以及 `Z:\\p2r111`–`Z:\\p2r116`
 的 `phase2-product-projection.json` 与 `p.manifest.json`。
 R116 续跑证据：`Z:\\b3r116_resume1\report.json`、`03_promotion_source_production_entry.json`，以及
 `Z:\\b3r116_native_state\profile\logs\error.log` / `debug.log` 的 11:46–11:47 运行时增量。
+R117 证据：`Z:\\b3r117\evidence-index.json`、`report.json`、`cell/02_loader_error_scan.json`、
+`cell/03_loader_gate.json`、`cell/03_promotion_source_production_entry.json`；同 PID 续跑见
+`Z:\\b3r117_resume1\report.json` 及 `03_promotion_source_production_entry.json`；冻结产品身份见
+`Z:\\p2r117\phase2-product-projection.json` 与 `Z:\\p2r117\p.manifest.json`。
+R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader_error_scan.json`、
+`cell/03_loader_gate.json`、`cell/03_promotion_source_production_entry.json`；续跑见
+`Z:\\b3r118_resume1\report.json`、`Z:\\b3r118_resume2\report.json` 及各自的
+`03_promotion_source_production_entry.json`；冻结产品身份见 `Z:\\p2r118\phase2-product-projection.json` 与
+`Z:\\p2r118\p.manifest.json`。
 
 ## R107 基线完整产品验收快照（不改变逐号等级）
 

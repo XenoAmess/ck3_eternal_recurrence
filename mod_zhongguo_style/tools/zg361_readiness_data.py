@@ -281,6 +281,51 @@ RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS: Final = (
             "R117 必须 fresh 启动后验收，旧 PID 不得复验新产品。"
         ),
     ),
+    ProductAcceptanceAttempt(
+        run_id="R117",
+        observed_at="2026-09-06 12:15–12:25 Asia/Shanghai",
+        product_commit="6512d2150e901678a10fbbc70814760a7e968ddd",
+        projection="phase2-full-release-r117-6512d21",
+        verified_file_count=1031,
+        product_tree_sha256="e4c68c8ec146afa6e0ca10ce55904e738af8e1335c7fb5ccc7599bc38686ef3c",
+        release_manifest_sha256="278c3df7a2973f789fc86be0991f7e8c84284160e9bc88c17a82340f2973936b",
+        loader_and_result=(
+            "loader 303/303 GREEN、fatal=0、项目 loader match=0；首次入口在 "
+            "`health.7000` 上暴露 harness 合同缺口，由 `904af39` 补齐后复用同一 PID 45944 "
+            "续跑，restart_count=0。续跑最终捕获 561 条产品 runtime diagnostics。"
+        ),
+        closure_boundary=(
+            "561 条诊断均属于 `zg361b1.91 -> zg361_b1_open_cycle_effect` 的单一级联：旧的 "
+            "`zg361_b1_subject_candidates` 仍保留 stale/dead subject，主要命中 weak Character "
+            "45030，少量命中无 capital 的 Character 45031。产品修复 `380af02` 在每轮开始前"
+            "清空并按当前合法 roster 重建 candidates，同时补齐 player-only 与 eligibility gate。"
+            "R117 不是完整迁移树 GREEN，也不提升任何逐号 readiness；修复后的产品必须 fresh "
+            "启动验收。"
+        ),
+    ),
+    ProductAcceptanceAttempt(
+        run_id="R118",
+        observed_at="2026-09-06 12:40–12:52 Asia/Shanghai",
+        product_commit="380af02c8ccaace03144c6ea2beb4dda32454a33",
+        projection="phase2-full-release-r118-380af02",
+        verified_file_count=1031,
+        product_tree_sha256="4214a1d2c04a86df728b7df9ea17f77444fa097b164b93001046e1d15accda86",
+        release_manifest_sha256="2e16aec5d2d69b983ec5b416c6e5a1c41a9c8e1ca4d6fd913ca72184fe9f50d9",
+        loader_and_result=(
+            "loader 303/303 GREEN、fatal=0、项目 loader match=0；原生 MCP-only，"
+            "`ocr_used=false`，默认 5 速。`bp1_yearly.5725` 中断与 `zg361.1` 的新 saved-scope "
+            "集合均判定为 harness 合同缺口，修正后复用同一 PID 184992 续跑，"
+            "restart_count=0。三段运行及续跑的产品 runtime blocking diagnostics 均为 0。"
+        ),
+        closure_boundary=(
+            "最终由原版 `ep3_interactions_events.0630` 的 governor removal 移除玩家管理者身份并"
+            "破坏 manager roster；产品对 stale roster 的清理生效后，年度 B1 按预期记录 empty roster "
+            "并关闭，不再沿用无效对象。此时无 active B1/Central/PP witness，review-now 亦不可用，"
+            "`zg361pp.147` 未到达。结论是 scenario/seed RED，不是产品 runtime RED，也不是完整迁移树 "
+            "GREEN；R118 不提升任何逐号 readiness，下一轮必须更换不会被原版 governor removal "
+            "破坏的验收 seed/scenario。"
+        ),
+    ),
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
