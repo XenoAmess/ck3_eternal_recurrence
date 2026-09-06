@@ -153,6 +153,7 @@ zg361_career_hc_m121_consume_effect = {
             limit = { NOT = { var:zg361_ch_m121_route = 3 } }
             set_variable = { name = zg361_ch_manager_trial_team_size value = 3 }
             set_variable = { name = zg361_ch_manager_trial_due_cycle value = { value = var:zg361_case_q_cycle_serial add = 1 } }
+            if = { limit = { var:zg361_ch_m121_route = 2 } set_variable = { name = zg361_ch_manager_trial_team_size value = 8 } set_variable = { name = zg361_ch_manager_trial_due_cycle value = 0 } }
         }
 
         zg361_career_hc_m121_business_consumer_effect = yes
@@ -550,6 +551,7 @@ zg361_career_hc_m122_consume_effect = {
             set_variable = { name = zg361_ch_manager_weight_hard value = 40 }
             set_variable = { name = zg361_ch_manager_weight_people value = 30 }
             set_variable = { name = zg361_ch_manager_weight_values value = 30 }
+            if = { limit = { var:zg361_ch_m122_route = 2 } set_variable = { name = zg361_ch_manager_weight_hard value = 80 } set_variable = { name = zg361_ch_manager_weight_people value = 10 } set_variable = { name = zg361_ch_manager_weight_values value = 10 } }
         }
 
         zg361_career_hc_m122_business_consumer_effect = yes
@@ -651,6 +653,9 @@ zg361_career_hc_m122_business_consumer_effect = {
             set_variable = { name = zg361_ch_manager_score_hard value = 70 }
             set_variable = { name = zg361_ch_manager_score_people value = 70 }
             set_variable = { name = zg361_ch_manager_score_values value = 70 }
+            set_variable = { name = zg361_ch_manager_weight_hard value = 40 }
+            set_variable = { name = zg361_ch_manager_weight_people value = 30 }
+            set_variable = { name = zg361_ch_manager_weight_values value = 30 }
             set_variable = { name = zg361_ch_manager_score_total value = 70 }
             set_variable = { name = zg361_ch_manager_score_weight_total value = 100 }
         }
@@ -676,7 +681,10 @@ zg361_career_hc_m122_business_consumer_effect = {
             set_variable = { name = zg361_ch_manager_score_hard value = 90 }
             set_variable = { name = zg361_ch_manager_score_people value = 35 }
             set_variable = { name = zg361_ch_manager_score_values value = 20 }
-            set_variable = { name = zg361_ch_manager_score_total value = 53 }
+            set_variable = { name = zg361_ch_manager_weight_hard value = 80 }
+            set_variable = { name = zg361_ch_manager_weight_people value = 10 }
+            set_variable = { name = zg361_ch_manager_weight_values value = 10 }
+            set_variable = { name = zg361_ch_manager_score_total value = 78 }
             set_variable = { name = zg361_ch_manager_score_weight_total value = 100 }
             set_variable = { name = zg361_ch_m122_business_debt value = 1 }
         }

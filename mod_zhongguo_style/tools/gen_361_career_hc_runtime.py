@@ -128,18 +128,18 @@ ROUTE_LABELS_CN = {
     24: ("安排下一周期转岗", "阻止本次内部流动"),
     25: ("发出书面留任邀约", "支付反邀约款，但只给口头留任承诺"),
     92: ("保持专业与管理双通道分离", "把明星专家直接转为管理者"),
-    93: ("让失败经理回到专家岗", "强留管理岗，若再失败便降回专家岗"),
+    93: ("让失败经理回到专家岗", "暂留管理岗，并登记下一周期复审"),
     94: ("授予有边界的微职级", "只给半级头衔而不补权责"),
     95: ("复审通过，维持本期管理权限", "复审不通过，撤销本期管理权限"),
     96: ("预留一个破格晋升名额", "按提名担保关系破格"),
-    97: ("按跨团队校准结果分配名额", "按本地工作量分配名额"),
+    97: ("登记跨团队校准为本案的名额依据", "登记本地工作量为本案的名额依据"),
     98: ("把名额绑定到明确岗位类型", "把名额作为通用空编使用"),
     99: ("只结转一次未用名额", "年底收回未用名额"),
     100: ("仅为关键岗位批准冻结期例外", "因关系安排冻结名额"),
-    101: ("按一名资深、两名普通与学徒梯队占用编制", "把全部编制投向资深人选"),
+    101: ("登记一名资深、两名普通与一名学徒的编制预算口径", "登记全部预算投向资深人选的编制口径"),
     102: ("按零基重审重新预留编制", "年度结算时收回编制"),
     103: ("收回长期空置的占坑编制", "以虚拟候选继续冻结编制"),
-    104: ("同时补入新人和成熟人才", "只补入成熟人才"),
+    104: ("登记新人和成熟人才并用的补员方案", "登记只采购成熟人才的补员方案"),
     105: ("把补岗责任绑定到离任岗位", "阻止释放补岗名额"),
     106: ("分别登记关键岗位与关键人才", "把受宠者直接等同于关键岗位"),
     107: ("按证据登记继任准备度", "直接登记为已具备继任资格"),
@@ -310,13 +310,21 @@ ROUTE_LABELS_OVERRIDE_EN = {
         "Pass the review and retain this cycle's management authority.",
         "Fail the review and revoke this cycle's management authority.",
     ),
+    93: (
+        "Return the failed manager to an expert post.",
+        "Retain the manager for now and record a review next cycle.",
+    ),
+    97: (
+        "Record cross-team calibration as this case's slot-allocation basis.",
+        "Record local workload as this case's slot-allocation basis.",
+    ),
     101: (
-        "Use staffing for one senior, two regular and one apprentice tier.",
-        "Commit all staffing capacity to senior candidates.",
+        "Record a staffing-budget plan for one senior, two regulars and one apprentice.",
+        "Record a staffing-budget plan that targets senior candidates only.",
     ),
     104: (
-        "Hire both newcomers and experienced candidates.",
-        "Hire experienced candidates only.",
+        "Record a hiring plan that combines newcomers and experienced candidates.",
+        "Record an experienced-candidate-only hiring plan.",
     ),
     109: (
         "Disclose the high-potential label only to those who need to know.",
@@ -588,32 +596,32 @@ def special_payload(mechanism_id: int) -> str:
         20: "set_variable = { name = zg361_ch_promotion_packet_state value = var:zg361_ch_m020_route }",
         21: "set_variable = { name = zg361_ch_bonus_salary_matrix value = var:zg361_ch_m021_value }",
         22: "set_variable = { name = zg361_ch_soft_hc_budget value = var:zg361_ch_m022_route }",
-        23: "set_variable = { name = zg361_ch_jingcha_treasury_delta value = 0 }\n            set_variable = { name = zg361_ch_jingcha_personal_delta value = 0 }\n            set_variable = { name = zg361_ch_hc_defense_year value = current_year }",
-        24: "set_variable = { name = zg361_ch_transfer_effective_cycle value = { value = var:zg361_case_d_cycle_serial add = 1 } }",
+        23: "set_variable = { name = zg361_ch_jingcha_treasury_delta value = 0 }\n            set_variable = { name = zg361_ch_jingcha_personal_delta value = 0 }\n            set_variable = { name = zg361_ch_hc_defense_year value = current_year }\n            set_variable = { name = zg361_ch_hc_borrowed_next_cycle value = 0 }\n            if = { limit = { var:zg361_ch_m023_route = 2 } set_variable = { name = zg361_ch_hc_borrowed_next_cycle value = 1 } change_variable = { name = zg361_ch_future_promotion_debt add = 1 } }",
+        24: "set_variable = { name = zg361_ch_transfer_effective_cycle value = { value = var:zg361_case_d_cycle_serial add = 1 } }\n            set_variable = { name = zg361_ch_transfer_blocked value = 0 }\n            if = { limit = { var:zg361_ch_m024_route = 2 } set_variable = { name = zg361_ch_transfer_effective_cycle value = 0 } set_variable = { name = zg361_ch_transfer_blocked value = 1 } }",
         25: "set_variable = { name = zg361_ch_counteroffer_terminal value = var:zg361_ch_m025_route }",
         92: "set_variable = { name = zg361_ch_career_track value = var:zg361_ch_m092_route }\n            set_variable = { name = zg361_ch_management_authority value = 0 }\n            if = { limit = { var:zg361_ch_m092_route = 2 zg361_is_celestial_liege_trigger = yes } set_variable = { name = zg361_ch_management_authority value = 1 } }",
-        93: "set_variable = { name = zg361_ch_returned_to_expert value = 1 }\n            set_variable = { name = zg361_ch_manager_retry_cycle value = { value = var:zg361_case_m_cycle_serial add = 1 } }",
-        94: "change_variable = { name = zg361_ch_micro_level add = 1 }\n            set_variable = { name = zg361_ch_title_unchanged value = 1 }",
-        95: "set_variable = { name = zg361_ch_management_review_year value = current_year }\n            set_variable = { name = zg361_ch_management_review_outcome value = var:zg361_ch_m095_route }",
+        93: "set_variable = { name = zg361_ch_returned_to_expert value = 1 }\n            set_variable = { name = zg361_ch_manager_retry_cycle value = 0 }\n            if = { limit = { var:zg361_ch_m093_route = 2 } set_variable = { name = zg361_ch_returned_to_expert value = 0 } set_variable = { name = zg361_ch_manager_retry_cycle value = { value = var:zg361_case_m_cycle_serial add = 1 } } }",
+        94: "change_variable = { name = zg361_ch_micro_level add = 1 }\n            set_variable = { name = zg361_ch_title_unchanged value = 1 }\n            set_variable = { name = zg361_ch_micro_authority_bound value = 0 }\n            set_variable = { name = zg361_ch_micro_compensation_bound value = 0 }\n            if = { limit = { var:zg361_ch_m094_route = 1 } set_variable = { name = zg361_ch_micro_authority_bound value = 1 } set_variable = { name = zg361_ch_micro_compensation_bound value = 1 } }",
+        95: "set_variable = { name = zg361_ch_management_review_year value = current_year }\n            set_variable = { name = zg361_ch_management_review_outcome value = var:zg361_ch_m095_route }\n            if = { limit = { var:zg361_ch_m095_route = 2 } set_variable = { name = zg361_ch_management_authority value = 0 } }",
         96: "set_variable = { name = zg361_ch_exceptional_slot_used value = 1 }\n            if = { limit = { var:zg361_ch_m096_route = 2 } change_variable = { name = zg361_ch_future_promotion_debt add = 1 } }",
-        97: "set_variable = { name = zg361_ch_cross_team_calibration_winner value = var:zg361_case_m_subject }",
+        97: "set_variable = { name = zg361_ch_promotion_slot_allocation_basis value = var:zg361_ch_m097_route }",
         106: "set_variable = { name = zg361_ch_critical_role_label value = 1 }\n            set_variable = { name = zg361_ch_key_talent_label value = var:zg361_ch_m106_route }",
         107: "set_variable = { name = zg361_ch_readiness_band value = var:zg361_ch_m107_route }\n            set_variable = { name = zg361_ch_readiness_due_cycle value = { value = var:zg361_case_o_cycle_serial add = 2 } }",
-        108: "set_variable = { name = zg361_ch_acting_authority_bound value = 1 }\n            set_variable = { name = zg361_ch_acting_capacity_units value = 1 }",
+        108: "set_variable = { name = zg361_ch_acting_responsibility_bound value = 1 }\n            set_variable = { name = zg361_ch_acting_authority_bound value = 0 }\n            set_variable = { name = zg361_ch_acting_capacity_units value = 0 }\n            if = { limit = { var:zg361_ch_m108_route = 1 } set_variable = { name = zg361_ch_acting_authority_bound value = 1 } set_variable = { name = zg361_ch_acting_capacity_units value = 1 } }",
         109: "set_variable = { name = zg361_ch_high_potential_visibility value = var:zg361_ch_m109_route }\n            set_variable = { name = zg361_ch_high_potential_subject_can_read value = 1 }",
-        110: "set_variable = { name = zg361_ch_performance_frozen_before_potential value = 1 }\n            set_variable = { name = zg361_ch_potential_score value = { value = var:zg361_ch_m110_value multiply = 10 add = 60 min = 0 max = 100 } }",
+        110: "set_variable = { name = zg361_ch_performance_frozen_before_potential value = 1 }\n            set_variable = { name = zg361_ch_potential_overrode_grade value = 0 }\n            if = { limit = { var:zg361_ch_m110_route = 2 } set_variable = { name = zg361_ch_performance_frozen_before_potential value = 0 } set_variable = { name = zg361_ch_potential_overrode_grade value = 1 } }\n            set_variable = { name = zg361_ch_potential_score value = { value = var:zg361_ch_m110_value multiply = 10 add = 60 min = 0 max = 100 } }",
         111: "set_variable = { name = zg361_ch_attrition_class value = var:zg361_ch_m111_route }\n            set_variable = { name = zg361_ch_attrition_hc_released value = 1 }",
         112: "set_variable = { name = zg361_ch_stay_promise_state value = var:zg361_ch_m112_route }\n            set_variable = { name = zg361_ch_stay_promise_due_cycle value = { value = var:zg361_case_o_cycle_serial add = 1 } }",
-        113: "change_variable = { name = zg361_ch_knowledge_coverage_percent add = 25 }\n            set_variable = { name = zg361_ch_knowledge_milestone_receipt value = var:zg361_case_o_case_serial }",
-        114: "set_variable = { name = zg361_ch_talent_export_credit value = 1 }\n            set_variable = { name = zg361_ch_backfill_settled value = 1 }",
+        113: "set_variable = { name = zg361_ch_hero_dependency value = 1 }\n            if = { limit = { var:zg361_ch_m113_route = 1 } change_variable = { name = zg361_ch_knowledge_coverage_percent add = 25 } set_variable = { name = zg361_ch_knowledge_milestone_receipt value = var:zg361_case_o_case_serial } set_variable = { name = zg361_ch_hero_dependency value = 0 } }",
+        114: "set_variable = { name = zg361_ch_talent_export_credit value = 0 }\n            set_variable = { name = zg361_ch_backfill_settled value = 0 }\n            set_variable = { name = zg361_ch_talent_export_blocked value = 1 }\n            if = { limit = { var:zg361_ch_m114_route = 1 } set_variable = { name = zg361_ch_talent_export_credit value = 1 } set_variable = { name = zg361_ch_backfill_settled value = 1 } set_variable = { name = zg361_ch_talent_export_blocked value = 0 } }",
         115: "set_variable = { name = zg361_ch_application_identity_visible value = 0 }\n            if = { limit = { var:zg361_ch_m115_route = 2 } set_variable = { name = zg361_ch_application_identity_visible value = 1 } }",
         116: "set_variable = { name = zg361_ch_release_days value = 90 }\n            set_variable = { name = zg361_ch_release_extension_used value = 0 }\n            if = { limit = { var:zg361_ch_m116_route = 2 } set_variable = { name = zg361_ch_release_days value = 150 } set_variable = { name = zg361_ch_release_extension_used value = 1 } }",
-        117: "set_variable = { name = zg361_ch_ramp_protection_used_lifetime value = 1 }\n            set_variable = { name = zg361_ch_ramp_participation_percent value = 40 }",
-        118: "set_variable = { name = zg361_ch_regular_quota_denominator value = 10 }\n            set_variable = { name = zg361_ch_probation_failures_separate value = 1 }",
+        117: "set_variable = { name = zg361_ch_ramp_protection_used_lifetime value = 0 }\n            set_variable = { name = zg361_ch_ramp_participation_percent value = 100 }\n            if = { limit = { var:zg361_ch_m117_route = 1 } set_variable = { name = zg361_ch_ramp_protection_used_lifetime value = 1 } set_variable = { name = zg361_ch_ramp_participation_percent value = 40 } }",
+        118: "set_variable = { name = zg361_ch_regular_quota_denominator value = 10 }\n            set_variable = { name = zg361_ch_probation_failures_separate value = 0 }\n            set_variable = { name = zg361_ch_newcomer_in_bottom_pool value = 1 }\n            if = { limit = { var:zg361_ch_m118_route = 1 } set_variable = { name = zg361_ch_probation_failures_separate value = 1 } set_variable = { name = zg361_ch_newcomer_in_bottom_pool value = 0 } }",
         119: "set_variable = { name = zg361_ch_hiring_quality_outcome value = var:zg361_ch_m119_route }\n            set_variable = { name = zg361_ch_hiring_quality_receivers value = 3 }",
-        120: "set_variable = { name = zg361_ch_mentor_month_3 value = 1 }\n            set_variable = { name = zg361_ch_mentor_month_6 value = 1 }\n            set_variable = { name = zg361_ch_mentor_month_12 value = 1 }\n            set_variable = { name = zg361_ch_mentor_credit_settled value = 1 }",
-        121: "set_variable = { name = zg361_ch_manager_trial_team_size value = 3 }\n            set_variable = { name = zg361_ch_manager_trial_due_cycle value = { value = var:zg361_case_q_cycle_serial add = 1 } }",
-        122: "set_variable = { name = zg361_ch_manager_weight_hard value = 40 }\n            set_variable = { name = zg361_ch_manager_weight_people value = 30 }\n            set_variable = { name = zg361_ch_manager_weight_values value = 30 }",
+        120: "set_variable = { name = zg361_ch_mentor_month_3 value = 0 }\n            set_variable = { name = zg361_ch_mentor_month_6 value = 0 }\n            set_variable = { name = zg361_ch_mentor_month_12 value = 0 }\n            set_variable = { name = zg361_ch_mentor_credit_settled value = 0 }\n            set_variable = { name = zg361_ch_unfunded_mentoring value = 1 }\n            if = { limit = { var:zg361_ch_m120_route = 1 } set_variable = { name = zg361_ch_mentor_month_3 value = 1 } set_variable = { name = zg361_ch_mentor_month_6 value = 1 } set_variable = { name = zg361_ch_mentor_month_12 value = 1 } set_variable = { name = zg361_ch_mentor_credit_settled value = 1 } set_variable = { name = zg361_ch_unfunded_mentoring value = 0 } }",
+        121: "set_variable = { name = zg361_ch_manager_trial_team_size value = 3 }\n            set_variable = { name = zg361_ch_manager_trial_due_cycle value = { value = var:zg361_case_q_cycle_serial add = 1 } }\n            if = { limit = { var:zg361_ch_m121_route = 2 } set_variable = { name = zg361_ch_manager_trial_team_size value = 8 } set_variable = { name = zg361_ch_manager_trial_due_cycle value = 0 } }",
+        122: "set_variable = { name = zg361_ch_manager_weight_hard value = 40 }\n            set_variable = { name = zg361_ch_manager_weight_people value = 30 }\n            set_variable = { name = zg361_ch_manager_weight_values value = 30 }\n            if = { limit = { var:zg361_ch_m122_route = 2 } set_variable = { name = zg361_ch_manager_weight_hard value = 80 } set_variable = { name = zg361_ch_manager_weight_people value = 10 } set_variable = { name = zg361_ch_manager_weight_values value = 10 } }",
         123: "set_variable = { name = zg361_ch_subordinate_survey_factors value = 6 }\n            set_variable = { name = zg361_ch_subordinate_survey_credibility value = 100 }",
         124: "set_variable = { name = zg361_ch_successor_accepted value = 1 }\n            set_variable = { name = zg361_ch_manager_promotion_released value = 1 }",
         125: "set_variable = { name = zg361_ch_crisis_hours_budget value = 100 }\n            set_variable = { name = zg361_ch_crisis_hours_used value = 100 }\n            set_variable = { name = zg361_ch_successor_evidence value = 1 }",
@@ -626,6 +634,10 @@ def special_payload(mechanism_id: int) -> str:
             f"set_variable = {{ name = zg361_ch_hc_mechanism_{mechanism_id:03d}_source value = "
             f"var:zg361_ch_m{mechanism_id:03d}_route }}"
         )
+    if mechanism_id == 101:
+        snippets[mechanism_id] += "\n            set_variable = { name = zg361_ch_hc_staffing_plan value = var:zg361_ch_m101_route }"
+    elif mechanism_id == 104:
+        snippets[mechanism_id] += "\n            set_variable = { name = zg361_ch_hc_sourcing_plan value = var:zg361_ch_m104_route }"
     return snippets[mechanism_id]
 
 
@@ -2061,12 +2073,17 @@ def render_q_route_payload(mechanism_id: int, state: int, route: int) -> str:
             set_variable = {{ name = zg361_ch_manager_trial_team_size value = {team_size} }}
             set_variable = {{ name = zg361_ch_manager_trial_authority_state value = {route} }}'''
     elif mechanism_id == 122:
-        hard, people, values, total = (
-            (70, 70, 70, 70) if route == 1 else (90, 35, 20, 53)
+        hard, people, values, hard_weight, people_weight, values_weight, total = (
+            (70, 70, 70, 40, 30, 30, 70)
+            if route == 1
+            else (90, 35, 20, 80, 10, 10, 78)
         )
         business = f'''set_variable = {{ name = zg361_ch_manager_score_hard value = {hard} }}
             set_variable = {{ name = zg361_ch_manager_score_people value = {people} }}
             set_variable = {{ name = zg361_ch_manager_score_values value = {values} }}
+            set_variable = {{ name = zg361_ch_manager_weight_hard value = {hard_weight} }}
+            set_variable = {{ name = zg361_ch_manager_weight_people value = {people_weight} }}
+            set_variable = {{ name = zg361_ch_manager_weight_values value = {values_weight} }}
             set_variable = {{ name = zg361_ch_manager_score_total value = {total} }}
             set_variable = {{ name = zg361_ch_manager_score_weight_total value = 100 }}'''
     elif mechanism_id == 123:

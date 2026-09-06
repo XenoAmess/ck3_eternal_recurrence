@@ -150,10 +150,12 @@ zg361_career_hc_m120_consume_effect = {
         else = { change_variable = { name = zg361_ch_p_debt add = 1 } }
         if = {
             limit = { NOT = { var:zg361_ch_m120_route = 3 } }
-            set_variable = { name = zg361_ch_mentor_month_3 value = 1 }
-            set_variable = { name = zg361_ch_mentor_month_6 value = 1 }
-            set_variable = { name = zg361_ch_mentor_month_12 value = 1 }
-            set_variable = { name = zg361_ch_mentor_credit_settled value = 1 }
+            set_variable = { name = zg361_ch_mentor_month_3 value = 0 }
+            set_variable = { name = zg361_ch_mentor_month_6 value = 0 }
+            set_variable = { name = zg361_ch_mentor_month_12 value = 0 }
+            set_variable = { name = zg361_ch_mentor_credit_settled value = 0 }
+            set_variable = { name = zg361_ch_unfunded_mentoring value = 1 }
+            if = { limit = { var:zg361_ch_m120_route = 1 } set_variable = { name = zg361_ch_mentor_month_3 value = 1 } set_variable = { name = zg361_ch_mentor_month_6 value = 1 } set_variable = { name = zg361_ch_mentor_month_12 value = 1 } set_variable = { name = zg361_ch_mentor_credit_settled value = 1 } set_variable = { name = zg361_ch_unfunded_mentoring value = 0 } }
         }
 
 

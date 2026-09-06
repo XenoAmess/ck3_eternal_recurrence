@@ -297,6 +297,7 @@ zg361_career_hc_m104_consume_effect = {
         if = {
             limit = { NOT = { var:zg361_ch_m104_route = 3 } }
             set_variable = { name = zg361_ch_hc_mechanism_104_source value = var:zg361_ch_m104_route }
+            set_variable = { name = zg361_ch_hc_sourcing_plan value = var:zg361_ch_m104_route }
         }
         if = {
                 limit = { var:zg361_ch_m104_route = 1 }

@@ -296,8 +296,10 @@ zg361_career_hc_m114_consume_effect = {
         else = { change_variable = { name = zg361_ch_p_debt add = 1 } }
         if = {
             limit = { NOT = { var:zg361_ch_m114_route = 3 } }
-            set_variable = { name = zg361_ch_talent_export_credit value = 1 }
-            set_variable = { name = zg361_ch_backfill_settled value = 1 }
+            set_variable = { name = zg361_ch_talent_export_credit value = 0 }
+            set_variable = { name = zg361_ch_backfill_settled value = 0 }
+            set_variable = { name = zg361_ch_talent_export_blocked value = 1 }
+            if = { limit = { var:zg361_ch_m114_route = 1 } set_variable = { name = zg361_ch_talent_export_credit value = 1 } set_variable = { name = zg361_ch_backfill_settled value = 1 } set_variable = { name = zg361_ch_talent_export_blocked value = 0 } }
         }
 
 

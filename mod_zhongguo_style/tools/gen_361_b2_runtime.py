@@ -3173,6 +3173,11 @@ zg361_b2_publish_anonymous_report_effect = {
 	if = {
 		limit = { var:zg361_b2_m071_state = 1 }
 		set_variable = { name = zg361_b2_m071_state value = 3 }
+		set_variable = { name = zg361_b2_m071_evidence_strength value = 1 }
+		if = {
+			limit = { var:zg361_b2_m081_visible_fields >= 8 }
+			set_variable = { name = zg361_b2_m071_evidence_strength value = 2 }
+		}
 		zg361_b2_m073_open_business_object_effect = yes
 		zg361_b2_m073_triage_report_effect = yes
 		zg361_b2_m071_consume_business_object_effect = yes
@@ -5274,8 +5279,8 @@ l_english:
  zg361b2.50.reason.8:0 "Basis retained: the one-to-two-person cohort bypassed forced distribution and returned the final band to 3.50."
  zg361b2.50.reason.9:0 "Basis retained: a corrected quota boundary generated this replacement low-result notice."
  zg361b2.50.reason.unknown:0 "The file contains no displayable reason for the retained result."
- zg361b2.50.a:0 "Publish the evidence packet; lose 50 prestige now and open a 30-day fact check."
- zg361b2.50.b:0 "File a protected anonymous report."
+ zg361b2.50.a:0 "Publish the evidence packet: lose 50 prestige now and open a 30-day fact check; if current escalation rules require immediate publication, the case owner also loses 25 prestige."
+ zg361b2.50.b:0 "File an anonymous report. It is protected only when current policy permits it and at least eight frozen fields are present; a shelved policy records debt only, and every other outcome costs 50 prestige now."
  zg361b2.50.c:0 "Defer escalation and record the debt."
  zg361b2.60.t:0 "A Neutral Departure"
  zg361b2.60.desc:0 "A funded voluntary departure agreement has arrived. [ROOT.Var('zg361_b2_case_owner').Char.GetShortUIName] is responsible for its treasury payment; the agreement does not alter the rejected appeal or rewrite its evidence."
@@ -5370,8 +5375,8 @@ l_simp_chinese:
  zg361b2.50.reason.8:0 "维持理由：同组只有一至二人，未启动强制分布，最终档回归 3.50。"
  zg361b2.50.reason.9:0 "维持理由：配额边界改判后，本案成为新补入的低档通知。"
  zg361b2.50.reason.unknown:0 "案卷没有可显示的维持理由。"
- zg361b2.50.a:0 "公开证据包；立即损失 50 威望，并在 30 日后核查真伪。"
- zg361b2.50.b:0 "匿名提交受保护报告。"
+ zg361b2.50.a:0 "公开证据包：本人立即损失 50 威望，并在 30 日后核查真伪；若现行升级规则要求立即公开，案卷责任人另损失 25 威望。"
+ zg361b2.50.b:0 "匿名提交报告：仅在现行制度允许且冻结材料至少八项时受保护；制度搁置则只记政策债，其余情况立即损失 50 威望。"
  zg361b2.50.c:0 "暂不升级，但记下一笔政策债。"
  zg361b2.60.t:0 "中性离任"
  zg361b2.60.desc:0 "一份已有资金保障的自愿离任文书送到了你手中。[ROOT.Var('zg361_b2_case_owner').Char.GetShortUIName]负责从国库出资；这份文书不会改变被驳回的申诉，也不会改写原有证据。"

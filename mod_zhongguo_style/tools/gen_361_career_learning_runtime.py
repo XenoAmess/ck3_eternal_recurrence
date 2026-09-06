@@ -2185,14 +2185,14 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                 }.get(row.mechanism_id, route_a)),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_b", {
                     314: "谢绝调任：不领取二十金，仍守本职且考课不改档",
-                    315: "终止九十日试任，按约回原职且不记低档",
+                    315: "不开始九十日试任，留在原职且不记低档",
                     318: "暂不递交，保留这次求调名额",
                     319: "接受挽留；若九十日未兑现，按失约追责",
                     321: "退回名帖：不支六金，终止往来且保留昔日案卷",
                     333: "提前离任，九十日后归还十八金",
                 }.get(row.mechanism_id, route_b) if chinese else {
                     314: "Decline the transfer, keep the present post and rating",
-                    315: "End the trial and return without a low rating",
+                    315: "Decline the ninety-day trial, remain in the source post, and receive no low rating",
                     318: "Do not file and keep this transfer chance",
                     319: "Accept the counteroffer; charge an undelivered promise after ninety days",
                     321: "Return the card, end contact, and preserve the earlier case record",

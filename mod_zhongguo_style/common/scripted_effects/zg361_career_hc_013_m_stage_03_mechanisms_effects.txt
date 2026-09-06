@@ -152,6 +152,7 @@ zg361_career_hc_m095_consume_effect = {
             limit = { NOT = { var:zg361_ch_m095_route = 3 } }
             set_variable = { name = zg361_ch_management_review_year value = current_year }
             set_variable = { name = zg361_ch_management_review_outcome value = var:zg361_ch_m095_route }
+            if = { limit = { var:zg361_ch_m095_route = 2 } set_variable = { name = zg361_ch_management_authority value = 0 } }
         }
 
 

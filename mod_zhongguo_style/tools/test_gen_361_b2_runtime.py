@@ -199,10 +199,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The canonical rendering includes the purpose-sharded core owner note.
-        self.assertEqual(len(historical_bytes), 270_548)
+        self.assertEqual(len(historical_bytes), 270_755)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "33241ab5e6c1f4d486c0834b7b284358749d28f596ca490729ddef9fa78efc2f",
+            "12f614fb03a5db63bad5c95770e0d740a9cc4d45beb748e47af07f56579befc0",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -347,7 +347,8 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("任何质疑都必须绑定下列冻结记录", rows["zg361b2.50.desc"])
         self.assertNotIn("复核已经驳回本次申诉", rows["zg361b2.50.desc"])
         self.assertIn("公开证据包", rows["zg361b2.50.a"])
-        self.assertIn("匿名提交受保护报告", rows["zg361b2.50.b"])
+        self.assertIn("冻结材料至少八项时受保护", rows["zg361b2.50.b"])
+        self.assertIn("其余情况立即损失 50 威望", rows["zg361b2.50.b"])
         self.assertNotIn("你可以消耗", rows["zg361b2.130.desc"])
         self.assertNotIn("提出异议会暂停", rows["zg361b2.160.desc"])
         self.assertNotIn("若本案采用", rows["zg361b2.40.desc"])
@@ -358,6 +359,7 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("12小时支持", rows["zg361b2.40.a"])
         self.assertIn("-15 证据", rows["zg361b2.40.c"])
         self.assertIn("损失 50 威望", rows["zg361b2.50.a"])
+        self.assertIn("案卷责任人另损失 25 威望", rows["zg361b2.50.a"])
         self.assertIn("恰好收到 50 金币", rows["zg361b2.60.a"])
         self.assertIn("新3.25", rows["zg361b2.131.a"])
         self.assertIn("90日申诉期", rows["zg361b2.131.a"])
@@ -2012,6 +2014,17 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         self.assertIn("zg361_b2_m071_evidence_hash", escalation)
         self.assertIn("trigger_event = { id = zg361b2.141 days = 30 }", escalation)
+        self.assertIn("add_prestige = { value = 0 subtract = 25 }", escalation)
+        anonymous = top_level_block(
+            self.effects, "zg361_b2_publish_anonymous_report_effect"
+        )
+        self.assertIn("zg361_b2_m071_evidence_strength value = 1", anonymous)
+        self.assertIn("zg361_b2_m081_visible_fields >= 8", anonymous)
+        self.assertIn("zg361_b2_m071_evidence_strength value = 2", anonymous)
+        self.assertLess(
+            anonymous.index("zg361_b2_m071_evidence_strength value = 2"),
+            anonymous.index("zg361_b2_m073_open_business_object_effect = yes"),
+        )
         access = top_level_block(
             self.effects, "zg361_b2_record_case_access_effect"
         )

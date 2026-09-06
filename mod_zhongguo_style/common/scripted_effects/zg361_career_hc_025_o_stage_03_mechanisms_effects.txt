@@ -151,6 +151,8 @@ zg361_career_hc_m110_consume_effect = {
         if = {
             limit = { NOT = { var:zg361_ch_m110_route = 3 } }
             set_variable = { name = zg361_ch_performance_frozen_before_potential value = 1 }
+            set_variable = { name = zg361_ch_potential_overrode_grade value = 0 }
+            if = { limit = { var:zg361_ch_m110_route = 2 } set_variable = { name = zg361_ch_performance_frozen_before_potential value = 0 } set_variable = { name = zg361_ch_potential_overrode_grade value = 1 } }
             set_variable = { name = zg361_ch_potential_score value = { value = var:zg361_ch_m110_value multiply = 10 add = 60 min = 0 max = 100 } }
         }
 

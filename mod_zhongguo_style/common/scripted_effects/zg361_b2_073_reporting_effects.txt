@@ -96,6 +96,11 @@ zg361_b2_publish_anonymous_report_effect = {
 	if = {
 		limit = { var:zg361_b2_m071_state = 1 }
 		set_variable = { name = zg361_b2_m071_state value = 3 }
+		set_variable = { name = zg361_b2_m071_evidence_strength value = 1 }
+		if = {
+			limit = { var:zg361_b2_m081_visible_fields >= 8 }
+			set_variable = { name = zg361_b2_m071_evidence_strength value = 2 }
+		}
 		zg361_b2_m073_open_business_object_effect = yes
 		zg361_b2_m073_triage_report_effect = yes
 		zg361_b2_m071_consume_business_object_effect = yes

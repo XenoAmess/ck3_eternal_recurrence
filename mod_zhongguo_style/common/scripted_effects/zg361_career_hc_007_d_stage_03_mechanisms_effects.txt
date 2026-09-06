@@ -151,6 +151,8 @@ zg361_career_hc_m023_consume_effect = {
         set_variable = { name = zg361_ch_jingcha_treasury_delta value = 0 }
             set_variable = { name = zg361_ch_jingcha_personal_delta value = 0 }
             set_variable = { name = zg361_ch_hc_defense_year value = current_year }
+            set_variable = { name = zg361_ch_hc_borrowed_next_cycle value = 0 }
+            if = { limit = { var:zg361_ch_m023_route = 2 } set_variable = { name = zg361_ch_hc_borrowed_next_cycle value = 1 } change_variable = { name = zg361_ch_future_promotion_debt add = 1 } }
 
 
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
@@ -342,6 +344,8 @@ zg361_career_hc_m024_consume_effect = {
         if = {
             limit = { NOT = { var:zg361_ch_m024_route = 3 } }
             set_variable = { name = zg361_ch_transfer_effective_cycle value = { value = var:zg361_case_d_cycle_serial add = 1 } }
+            set_variable = { name = zg361_ch_transfer_blocked value = 0 }
+            if = { limit = { var:zg361_ch_m024_route = 2 } set_variable = { name = zg361_ch_transfer_effective_cycle value = 0 } set_variable = { name = zg361_ch_transfer_blocked value = 1 } }
         }
 
 

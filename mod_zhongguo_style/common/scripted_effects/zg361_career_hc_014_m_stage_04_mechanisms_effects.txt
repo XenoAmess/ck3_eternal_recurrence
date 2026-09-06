@@ -150,7 +150,7 @@ zg361_career_hc_m097_consume_effect = {
         else = { change_variable = { name = zg361_ch_m_debt add = 1 } }
         if = {
             limit = { NOT = { var:zg361_ch_m097_route = 3 } }
-            set_variable = { name = zg361_ch_cross_team_calibration_winner value = var:zg361_case_m_subject }
+            set_variable = { name = zg361_ch_promotion_slot_allocation_basis value = var:zg361_ch_m097_route }
         }
 
 

@@ -289,6 +289,7 @@ class BusinessObjectTests(unittest.TestCase):
             political.apply(political.token(mechanism_id), f"qb-{mechanism_id}", Route.POLITICAL)
             deferred.apply(deferred.token(mechanism_id), f"qc-{mechanism_id}", Route.DEFER)
         self.assertEqual(evidence.q_score_weights, (40, 30, 30))
+        self.assertEqual(political.q_score_weights, (80, 10, 10))
         self.assertEqual(evidence.q_survey_factors, 6)
         self.assertEqual(evidence.q_survey_credibility, 100)
         self.assertEqual(evidence.q_values_quadrant, "double-high")

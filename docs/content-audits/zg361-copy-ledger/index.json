@@ -58,14 +58,14 @@
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-001.json",
       "records": 40,
-      "sha256": "2afce246957b8c53a49d440a3330d3e3fec0fbdeb07698c69afffb1bd5680a6b"
+      "sha256": "1f5196bb235c9434b239c973b735db51bae4ac099d34925ef8da452d0671cb4d"
     },
     {
-      "bytes": 67132,
+      "bytes": 67129,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
       "records": 40,
-      "sha256": "f4ae04f2a0c8624e24b874884ac6e0e8bff4e8e2d39136302c3492de4b6c2d44"
+      "sha256": "725290037d4bdd8123239dfdbfdf32caa6ca1355a09a762f5fe880a2bbc554e4"
     },
     {
       "bytes": 91481,
@@ -170,7 +170,7 @@
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-001.json",
       "records": 180,
-      "sha256": "9c453089033a14fb8b407b5c904b3f6bb902d62537a5f89cf56f1d2aef2a17ae"
+      "sha256": "3d40005350ef87b36a2969aeff0289d99dd9a245d7a280271e304150790d2be4"
     },
     {
       "bytes": 59645,
@@ -180,18 +180,18 @@
       "sha256": "4c1f00d796f9c9b0eac1b4d8ba24a2d298efcd2a4111767c59c1139713834de0"
     },
     {
-      "bytes": 63035,
+      "bytes": 63247,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-003.json",
       "records": 180,
-      "sha256": "67d716a953840785d52b3fa09dbe1179c93d860d7510ab12f1a0e6e73380ce44"
+      "sha256": "adaea881586c8cc44803f67af5ce37dcc4096b7b29f0499eeedd42f4485e13e4"
     },
     {
-      "bytes": 68531,
+      "bytes": 68618,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-004.json",
       "records": 180,
-      "sha256": "10d719fe02c6fb312462fda70a99a33eb33637153be8bda96202f0d5f7b532df"
+      "sha256": "a7297f82d261940bf96f12fe8739a37b6fcefcc83c2f76f327a8a449b1467dec"
     },
     {
       "bytes": 75546,
@@ -201,11 +201,11 @@
       "sha256": "00c0f8f2f65aa0f4c59bb22b7a5b373ac18334c646d750f49e44cfb6089b65cb"
     },
     {
-      "bytes": 66483,
+      "bytes": 68058,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-006.json",
       "records": 180,
-      "sha256": "65a9f496659886da359142fc34a4b1dadb68d01bfedf30784ce166cb76e7c500"
+      "sha256": "204fec151abe953f9bc8e0cb6f5faefb350c472b6ceeb70253a89a81251e5677"
     },
     {
       "bytes": 83619,
@@ -348,11 +348,11 @@
       "sha256": "7c383f00d6178e0f72e08cf6ec7684391d759e02eb9c33ce1f02a1534eaaedbd"
     },
     {
-      "bytes": 69197,
+      "bytes": 69156,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-027.json",
       "records": 180,
-      "sha256": "94173273001457ee6eb66ba0e1624d9237db369239c28b03518ce316d9fd9b09"
+      "sha256": "d73d2390df87b57178dc6a1fae424cb7ae99c452177dee804f1c143aa7f4e9ba"
     },
     {
       "bytes": 56102,
@@ -1576,10 +1576,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 9565,
+        "bytes": 9777,
         "lines": 91,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_b2_l_simp_chinese.yml",
-        "sha256": "075c98c220945fd6e2bd132814df0143ca3cd8bcede7134da84e57adc46784f7"
+        "sha256": "281d9613ba41a5a4b3dab644835ac64263e3297089e42c7f43061879ff717a7d"
       },
       {
         "authority": {
@@ -1589,10 +1589,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 26108,
+        "bytes": 26195,
         "lines": 245,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml",
-        "sha256": "b54c638cd8fcfb333bc8a9591407614a5ddb3c417ef2d6ba20891cc4d5850f2b"
+        "sha256": "a0785cd2413db0086c0b5e9482b4837df2aaff47bba6ed3973570b0bafa9bda5"
       },
       {
         "authority": {
@@ -1605,7 +1605,7 @@
         "bytes": 3231,
         "lines": 28,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_learning_l_simp_chinese.yml",
-        "sha256": "43be7cc7c673b47404c7fb04a80ee969b15beb4faa1c3b1d7bd5a19834fca4d0"
+        "sha256": "809be27f24d21a66168cdcd30a8c8d47d7ef50e568171821da687e185aa33064"
       },
       {
         "authority": {
@@ -1628,10 +1628,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 14666,
+        "bytes": 16241,
         "lines": 170,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_credit_project_l_simp_chinese.yml",
-        "sha256": "7b04bc3a833f75d5953e8eeaadf8a6a3bfd239c03d12a2df1d9d82ea6e9be016"
+        "sha256": "4fed8fb2686de00cb0149216f09819ce0af38d81bc893ba07a9d62e6c0b84e92"
       },
       {
         "authority": {
@@ -1772,10 +1772,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 37453,
+        "bytes": 37412,
         "lines": 342,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
-        "sha256": "2842ba2aadbe3fa5dfad7f86300e051408ccce43e6badc08e904ed45fc4fa8a0"
+        "sha256": "74bf5e47647eb471b2623031ce8aea584b943c07bfb643e38203c4abc76a679c"
       },
       {
         "authority": {
@@ -1843,9 +1843,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "ea24770a8e76eff62974b839e470206d4cb72bfe",
+    "git_commit": "3b6c4e855f65781e4fc3d9421acb031a54fd4738",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "0cf44d10e57e4c319922dbfe69dfabe5dfeeadfbe90a4de15149b9a17cb46171"
+    "input_digest_sha256": "5d842b17b59bd674b5ea3d9dcec1c2b6ecfd001528447ee6dbbd64f90e5ec1ae"
   },
   "summary": {
     "all_event_definitions": 1009,

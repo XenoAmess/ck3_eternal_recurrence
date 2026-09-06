@@ -659,7 +659,7 @@ class CareerHcSemanticRuntime:
             self.succession_candidate_id = self.identity.subject_id
         elif mechanism_id == 122:
             self.q_score_components = (70, 70, 70) if evidence else (90, 35, 20)
-            self.q_score_weights = (40, 30, 30)
+            self.q_score_weights = (40, 30, 30) if evidence else (80, 10, 10)
             if not evidence:
                 self.debts[122] = self.debts.get(122, 0) + 1
         elif mechanism_id == 123:

@@ -345,7 +345,8 @@ zg361_career_hc_m093_consume_effect = {
         if = {
             limit = { NOT = { var:zg361_ch_m093_route = 3 } }
             set_variable = { name = zg361_ch_returned_to_expert value = 1 }
-            set_variable = { name = zg361_ch_manager_retry_cycle value = { value = var:zg361_case_m_cycle_serial add = 1 } }
+            set_variable = { name = zg361_ch_manager_retry_cycle value = 0 }
+            if = { limit = { var:zg361_ch_m093_route = 2 } set_variable = { name = zg361_ch_returned_to_expert value = 0 } set_variable = { name = zg361_ch_manager_retry_cycle value = { value = var:zg361_case_m_cycle_serial add = 1 } } }
         }
 
 

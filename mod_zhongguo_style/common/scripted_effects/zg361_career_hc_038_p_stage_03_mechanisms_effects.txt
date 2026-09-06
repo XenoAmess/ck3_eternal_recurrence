@@ -150,8 +150,9 @@ zg361_career_hc_m117_consume_effect = {
         else = { change_variable = { name = zg361_ch_p_debt add = 1 } }
         if = {
             limit = { NOT = { var:zg361_ch_m117_route = 3 } }
-            set_variable = { name = zg361_ch_ramp_protection_used_lifetime value = 1 }
-            set_variable = { name = zg361_ch_ramp_participation_percent value = 40 }
+            set_variable = { name = zg361_ch_ramp_protection_used_lifetime value = 0 }
+            set_variable = { name = zg361_ch_ramp_participation_percent value = 100 }
+            if = { limit = { var:zg361_ch_m117_route = 1 } set_variable = { name = zg361_ch_ramp_protection_used_lifetime value = 1 } set_variable = { name = zg361_ch_ramp_participation_percent value = 40 } }
         }
 
 
@@ -355,7 +356,9 @@ zg361_career_hc_m118_consume_effect = {
         if = {
             limit = { NOT = { var:zg361_ch_m118_route = 3 } }
             set_variable = { name = zg361_ch_regular_quota_denominator value = 10 }
-            set_variable = { name = zg361_ch_probation_failures_separate value = 1 }
+            set_variable = { name = zg361_ch_probation_failures_separate value = 0 }
+            set_variable = { name = zg361_ch_newcomer_in_bottom_pool value = 1 }
+            if = { limit = { var:zg361_ch_m118_route = 1 } set_variable = { name = zg361_ch_probation_failures_separate value = 1 } set_variable = { name = zg361_ch_newcomer_in_bottom_pool value = 0 } }
         }
 
 

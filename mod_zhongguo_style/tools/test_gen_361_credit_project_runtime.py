@@ -1084,8 +1084,66 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
             text = read(path)
             with self.subTest(language=language):
                 self.assertNotIn("[scope:", text)
-                for expression in expected:
-                    self.assertEqual(text.count(expression), 1)
+                self.assertEqual(
+                    text.count("[zg361_cp_e_subject.GetShortUIName]"), 7
+                )
+                self.assertEqual(
+                    text.count("[zg361_cp_e_owner.GetShortUIName]"), 7
+                )
+                self.assertEqual(
+                    text.count("[zg361_cp_i_subject.GetShortUIName]"), 6
+                )
+                self.assertEqual(
+                    text.count("[zg361_cp_i_owner.GetShortUIName]"), 6
+                )
+                self.assertEqual(
+                    text.count(
+                        "[zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]"
+                    ),
+                    1,
+                )
+
+    def test_every_shard_001_002_credit_card_names_bound_subject_and_owner(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_credit_project_l_english.yml"
+        )
+        for domain, mids in (("e", (30, 26, 27, 31, 28, 29)), ("i", (61, 54, 56, 57, 58, 59))):
+            subject = f"[zg361_cp_{domain}_subject.GetShortUIName]"
+            owner = f"[zg361_cp_{domain}_owner.GetShortUIName]"
+            for mid in mids:
+                with self.subTest(domain=domain, mid=mid):
+                    for rows in (chinese, english):
+                        desc = rows[f"zg361cp.{mid}.desc"]
+                        self.assertEqual(desc.count(subject), 1)
+                        self.assertEqual(desc.count(owner), 1)
+
+    def test_under_evidenced_credit_choices_are_explicitly_provisional(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_credit_project_l_english.yml"
+        )
+        self.assertIn("不足以唯一推出一种比例", chinese["zg361cp.27.desc"])
+        self.assertIn("暂按", chinese["zg361cp.27.a"])
+        self.assertIn("暂按", chinese["zg361cp.27.b"])
+        self.assertIn("没有足以支持或驳回", chinese["zg361cp.28.desc"])
+        self.assertIn("驳回并撤销拟议", chinese["zg361cp.28.b"])
+        self.assertNotIn("审证后", chinese["zg361cp.28.b"])
+        self.assertIn("暂定核算口径", chinese["zg361cp.29.desc"])
+        self.assertIn("暂按", chinese["zg361cp.29.a"])
+        self.assertIn("暂按", chinese["zg361cp.29.b"])
+        self.assertIn("四十小时提案", chinese["zg361cp.30.desc"])
+        self.assertIn("六十小时跨部门提案", chinese["zg361cp.30.desc"])
+        self.assertNotIn("三份提案", chinese["zg361cp.30.desc"])
+        self.assertIn("没有冻结支持", chinese["zg361cp.56.desc"])
+        self.assertIn("不声称已经审证", chinese["zg361cp.56.b"])
+        self.assertIn("没有显示版本一与版本二之间的内容差异", chinese["zg361cp.57.desc"])
+        self.assertIn("当前未改动的归属表", chinese["zg361cp.57.a"])
+        self.assertIn("current unchanged attribution table", english["zg361cp.57.b"])
 
     def test_batch_entry_copy_discloses_scope_popup_boundary_and_cumulative_debt(self) -> None:
         chinese = loc_rows(

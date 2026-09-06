@@ -960,6 +960,37 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_ch_jingcha_treasury_delta value = 0", consumer)
         self.assertIn("zg361_ch_jingcha_personal_delta value = 0", consumer)
         self.assertIn("zg361_ch_hc_defense_year value = current_year", consumer)
+        self.assertIn("zg361_ch_hc_borrowed_next_cycle value = 0", consumer)
+        self.assertIn("zg361_ch_hc_borrowed_next_cycle value = 1", consumer)
+        self.assertIn("zg361_ch_future_promotion_debt add = 1", consumer)
+
+    def test_route_specific_copy_has_route_specific_business_state(self) -> None:
+        expected = {
+            24: ("transfer_effective_cycle value = 0", "transfer_blocked value = 1"),
+            93: ("returned_to_expert value = 0", "manager_retry_cycle value = 0"),
+            94: ("micro_authority_bound value = 1", "micro_compensation_bound value = 1"),
+            95: ("management_authority value = 0",),
+            97: ("promotion_slot_allocation_basis value = var:zg361_ch_m097_route",),
+            101: ("hc_staffing_plan value = var:zg361_ch_m101_route",),
+            104: ("hc_sourcing_plan value = var:zg361_ch_m104_route",),
+            108: ("acting_responsibility_bound value = 1", "acting_capacity_units value = 0"),
+            110: ("potential_overrode_grade value = 1", "performance_frozen_before_potential value = 0"),
+            113: ("hero_dependency value = 1", "knowledge_coverage_percent add = 25"),
+            114: ("talent_export_blocked value = 1", "talent_export_credit value = 1"),
+            117: ("ramp_participation_percent value = 100", "ramp_participation_percent value = 40"),
+            118: ("newcomer_in_bottom_pool value = 1", "probation_failures_separate value = 1"),
+            120: ("unfunded_mentoring value = 1", "mentor_credit_settled value = 1"),
+            121: ("manager_trial_team_size value = 8", "manager_trial_due_cycle value = 0"),
+            122: ("manager_weight_hard value = 80", "manager_weight_people value = 10"),
+        }
+        for mechanism_id, needles in expected.items():
+            consumer = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_consume_effect",
+            )
+            with self.subTest(mechanism=mechanism_id):
+                for needle in needles:
+                    self.assertIn(needle, consumer)
 
     def test_hc_partition_is_eight_units_and_never_minted(self) -> None:
         opened = block(self.effects, "zg361_career_hc_open_n_case_effect")
@@ -1123,6 +1154,10 @@ class CareerHcRuntimeTests(unittest.TestCase):
         m122 = block(self.effects, "zg361_career_hc_m122_business_consumer_effect")
         self.assertIn("zg361_ch_manager_score_hard value = 70", m122)
         self.assertIn("zg361_ch_manager_score_hard value = 90", m122)
+        self.assertIn("zg361_ch_manager_weight_hard value = 40", m122)
+        self.assertIn("zg361_ch_manager_weight_hard value = 80", m122)
+        self.assertIn("zg361_ch_manager_weight_people value = 10", m122)
+        self.assertIn("zg361_ch_manager_score_total value = 78", m122)
         self.assertIn("zg361_ch_manager_score_weight_total value = 100", m122)
         m123 = block(self.effects, "zg361_career_hc_m123_business_consumer_effect")
         self.assertIn("zg361_ch_subordinate_survey_factors value = 6", m123)
@@ -1365,10 +1400,10 @@ class CareerHcRuntimeTests(unittest.TestCase):
         expected = {
             21: ("按奖金与调薪矩阵兑现薪酬", "Pay compensation under the bonus and salary-adjustment matrix."),
             25: ("支付反邀约款，但只给口头留任承诺", "Pay for a counteroffer but give only an oral retention promise."),
-            93: ("强留管理岗，若再失败便降回专家岗", "Forced or demoted."),
+            93: ("暂留管理岗，并登记下一周期复审", "Retain the manager for now and record a review next cycle."),
             95: ("复审通过，维持本期管理权限", "Pass the review and retain this cycle's management authority."),
-            101: ("按一名资深、两名普通与学徒梯队占用编制", "Use staffing for one senior, two regular and one apprentice tier."),
-            104: ("同时补入新人和成熟人才", "Hire both newcomers and experienced candidates."),
+            101: ("登记一名资深、两名普通与一名学徒的编制预算口径", "Record a staffing-budget plan for one senior, two regulars and one apprentice."),
+            104: ("登记新人和成熟人才并用的补员方案", "Record a hiring plan that combines newcomers and experienced candidates."),
             109: ("向全体人员公开高潜标签", "Disclose the high-potential label to everyone."),
             112: ("加价反邀约，不留书面承诺", "Reactive counteroffer."),
             114: ("支付安抚款，同时阻止本次人才转出", "Pay a retention award and block this talent transfer."),

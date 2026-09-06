@@ -152,6 +152,9 @@ zg361_career_hc_m094_consume_effect = {
             limit = { NOT = { var:zg361_ch_m094_route = 3 } }
             change_variable = { name = zg361_ch_micro_level add = 1 }
             set_variable = { name = zg361_ch_title_unchanged value = 1 }
+            set_variable = { name = zg361_ch_micro_authority_bound value = 0 }
+            set_variable = { name = zg361_ch_micro_compensation_bound value = 0 }
+            if = { limit = { var:zg361_ch_m094_route = 1 } set_variable = { name = zg361_ch_micro_authority_bound value = 1 } set_variable = { name = zg361_ch_micro_compensation_bound value = 1 } }
         }
 
 
