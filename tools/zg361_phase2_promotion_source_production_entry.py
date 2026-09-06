@@ -1309,8 +1309,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # already-completed outer tuple. R107 also observed the first summary
         # while the surrounding B1 continuation, B2 PIP and notice-deadline
         # calls were still alive. A later annual summary retained that same
-        # extended stack after the bank tuple expired. Bind all four exact
-        # observed name sets; the
+        # extended stack after the bank tuple expired. R118 also exposed the
+        # pending-continuation stack after B2/notice expiry while retaining the
+        # immutable seed-player scope. Bind all five exact observed name sets;
+        # the
         # summary itself consumes none of those inherited outer tuples.
         "date_raw": 53156448,
         "date_policy": "product-observation-window",
@@ -1319,6 +1321,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "zg361_b1_ticket_owner": 29037,
             "zg361_b1_oversight_ticket_owner": 29037,
             "zg361_b1_reopen_ticket_owner": 29037,
+        },
+        "optional_character_scopes": {
+            "zga_phase2_seed_player": 29037,
         },
         "unique_character_scope_excludes": {
             "zg361_b1_reopen_ticket_subject": (29037,),
@@ -1480,6 +1485,36 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_notice_deadline_cycle",
                 "zg361_notice_deadline_case",
                 "zg361_notice_deadline_state",
+                "zg361_n_375",
+                "zg361_n_35",
+                "zg361_n_325",
+                "zg361_n_elim",
+            ),
+            (
+                "zga_phase2_seed_player",
+                "zg361_b1_ticket_owner",
+                "zg361_b1_ticket_cycle",
+                "zg361_b1_ticket_case",
+                "zg361_b1_ticket_state",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_pending_continue_subject",
+                "zg361_b1_pending_continue_owner",
+                "zg361_b1_pending_continue_cycle",
+                "zg361_b1_pending_continue_case",
+                "zg361_b1_pending_continue_state",
+                "zg361_b1_reopen_ticket_subject",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_b1_reopen_ticket_cycle",
+                "zg361_b1_reopen_ticket_case",
+                "zg361_b1_reopen_ticket_state",
+                "zg361_b1_reopen_ticket_object",
+                "zg361_b1_reopen_ticket_route",
+                "zg361_b1_reopen_ticket_hash",
+                "zg361_b1_reopen_ticket_reward_hash",
+                "zg361_b1_reopen_ticket_book_version",
                 "zg361_n_375",
                 "zg361_n_35",
                 "zg361_n_325",

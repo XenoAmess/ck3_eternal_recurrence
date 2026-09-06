@@ -1743,6 +1743,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             later_cycle_names,
             extended_cycle_names,
             extended_later_cycle_names,
+            retained_seed_pending_names,
         ) = contract["saved_scope_name_sets"]
         character_names = {
             "zg361_b1_bank_ticket_owner": 32904,
@@ -1750,6 +1751,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "zg361_b1_oversight_ticket_owner": 29037,
             "zg361_b1_reopen_ticket_subject": 45214,
             "zg361_b1_reopen_ticket_owner": 29037,
+            "zga_phase2_seed_player": 29037,
         }
 
         def context_for(names: tuple[str, ...]) -> dict[str, object]:
@@ -1801,6 +1803,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         extended_later_cycle_checks = checks_for(extended_later_cycle_names)
         self.assertTrue(
             all(extended_later_cycle_checks.values()), extended_later_cycle_checks
+        )
+        retained_seed_pending_checks = checks_for(retained_seed_pending_names)
+        self.assertTrue(
+            all(retained_seed_pending_checks.values()), retained_seed_pending_checks
         )
         self.assertNotIn(
             "scope:zg361_b1_bank_ticket_owner:unique_third_party",
