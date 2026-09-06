@@ -131,7 +131,7 @@ class IncidentGovernanceCentralCopyTest(unittest.TestCase):
         expected = {
             "zg361ip.result.ok": "归档此案；下轮据此核算功过。",
             "zg361mg.120.a": "归档本轮评定与现有依据。",
-            "zg361mg.220.a": "归档本轮复核，照所列事项续办。",
+            "zg361mg.220.a": "归档本轮复核，将未结差异与公平性底账转入下期核验。",
             "zg361_p2c_summary_ack": "办结与未办，分别记清。",
         }
         for family, keys in BUTTON_KEYS.items():
@@ -164,7 +164,7 @@ class IncidentGovernanceCentralCopyTest(unittest.TestCase):
             english["governance"]["zg361mg.120.a"],
         )
         self.assertEqual(
-            "Archive this review and carry its named work forward.",
+            "Archive this review; carry any unresolved variance and its fairness ledger into the next review.",
             english["governance"]["zg361mg.220.a"],
         )
 

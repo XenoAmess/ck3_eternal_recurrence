@@ -3459,7 +3459,7 @@ l_english:
  zg361mg.220.fairness_deferred:0 "No substantive fairness comparison was completed this cycle. The underlying records remain on file for the next review."
  zg361mg.220.fairness_remediation:0 "Comparison against the original appeals, reversals, and normal departures found that the reported figures did not match the record. A correction plan is now due for review in the next assessment cycle."
  zg361mg.220.fairness_clear:0 "Comparison against the original appeals, reversals, and normal departures found no discrepancy that currently requires correction."
- zg361mg.220.a:0 "Archive this review and carry its named work forward."
+ zg361mg.220.a:0 "Archive this review; carry any unresolved variance and its fairness ledger into the next review."
 '''
 
 
@@ -3476,7 +3476,7 @@ l_simp_chinese:
  zg361mg.220.fairness_deferred:0 "本轮没有完成实质性的公平性对照，相关底账会保留到下一次复核。"
  zg361mg.220.fairness_remediation:0 "把申诉、改判与正常离任的原始记录逐项对照后，官署发现呈报数字与底账不符。整改方案必须在下一考核期接受复核。"
  zg361mg.220.fairness_clear:0 "把申诉、改判与正常离任的原始记录逐项对照后，官署没有发现需要立即整改的差异。"
- zg361mg.220.a:0 "归档本轮复核，照所列事项续办。"
+ zg361mg.220.a:0 "归档本轮复核，将未结差异与公平性底账转入下期核验。"
 '''
 
 
