@@ -1,6 +1,6 @@
 # G2 postwar outcome comparison intake
 
-Status: **static/no-launch consumer GREEN; source-specific comparison RED**.
+Status: **static/no-launch unified-intake consumer GREEN; source-specific comparison RED**.
 
 This package consumes the retained R3 action-bound postwar receipt in the
 existing `raiktor-three-way-exit-policy-v1` core. It does not treat that
@@ -37,11 +37,14 @@ the existing retention ticket, reuses its 20 receipt checks, verifies the
 outer single-mutation/session/cleanup/source-invariant boundary, and projects
 `raiktor-observed-surrender-outcome-v1`.
 
-That projection is passed directly to
-`assess_raiktor_three_way_exit(..., observed_surrender_outcome_value=...)`.
-The old five-argument caller remains compatible. The policy returns the
-normalized observation and its canonical SHA-256, so the path has a real
-consumer rather than being a detached evidence summary.
+That projection is now passed through
+`raiktor-three-way-exit-intake-provider-v1`, which composes the owner-budget,
+white-peace and three-way policy providers without manufacturing any missing
+input. The output retains `three_way_policy_result` for compatibility and adds
+the complete `three_way_intake_result`, so the R3 path reports all typed
+provider gaps through the same entry as the source-specific lifecycle. The
+policy still returns the normalized observation and its canonical SHA-256, so
+the path has a real consumer rather than being a detached evidence summary.
 
 The no-launch result is:
 
@@ -82,6 +85,11 @@ R3 can now be used as a measured checkpoint/cleanup/actual-expiry observation,
 but its `598` loss is not allowed into campaign utility or a source-specific
 surrender comparison. It cannot fill the campaign, owner-budget, or
 white-peace providers either.
+
+The unified intake therefore remains `status=evidence_required`, with
+`production_recommendation_ready=false`, `action_ready=false` and
+`action_literal=null`. This is composition of existing evidence only, not a
+readiness promotion.
 
 ## Exact next construction seam
 

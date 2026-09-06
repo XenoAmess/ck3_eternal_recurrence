@@ -28,7 +28,9 @@ import prepare_g2_postwar_retention_expiry_capture as retention  # noqa: E402
 from xar_autoplayer.simulation.raiktor_three_way_exit_policy import (  # noqa: E402
     OBSERVED_SURRENDER_OUTCOME_CONTRACT,
     SOURCE_SPECIFIC_LOSS_PROVIDER,
-    assess_raiktor_three_way_exit,
+)
+from xar_autoplayer.simulation.raiktor_three_way_exit_intake import (  # noqa: E402
+    provide_raiktor_three_way_exit_intake,
 )
 
 
@@ -310,6 +312,22 @@ def build_observed_surrender_outcome(
     return projection, {"receipt": validation, "outer": outer_checks}
 
 
+def compose_three_way_intake(
+    projection: dict[str, object],
+) -> dict[str, object]:
+    """Route the measured R3 projection through the unified intake."""
+
+    return provide_raiktor_three_way_exit_intake(
+        candidate_value=None,
+        surrender_terms_value=None,
+        campaign_value=None,
+        owner_budget_source_path=None,
+        white_peace_observation_value=None,
+        white_peace_utility_evaluation_value=None,
+        observed_surrender_outcome_value=projection,
+    )
+
+
 def run_preflight(
     manifest_path: Path,
     output_path: Path,
@@ -382,13 +400,9 @@ def run_preflight(
         ticket=ticket,
         expected=expected,
     )
-    policy_result = assess_raiktor_three_way_exit(
-        None,
-        None,
-        None,
-        None,
-        None,
-        observed_surrender_outcome_value=projection,
+    three_way_intake = compose_three_way_intake(projection)
+    policy_result = _object(
+        three_way_intake.get("assessment"), "three-way assessment"
     )
     observed_result = _object(
         policy_result.get("observed_surrender_outcome"),
@@ -409,8 +423,12 @@ def run_preflight(
         or policy_result.get("recommended_outcome") is not None
         or policy_result.get("action_ready") is not False
         or policy_result.get("automatic_surrender_ready") is not False
+        or three_way_intake.get("status") != "evidence_required"
+        or three_way_intake.get("production_recommendation_ready") is not False
+        or three_way_intake.get("action_ready") is not False
+        or three_way_intake.get("action_literal") is not None
     ):
-        raise IntakeError("three-way policy did not preserve the R3 boundary")
+        raise IntakeError("three-way intake did not preserve the R3 boundary")
 
     output = {
         "schema": EXPECTED_OUTPUT_SCHEMA,
@@ -426,10 +444,11 @@ def run_preflight(
         "process_inventory_not_required_for_offline_artifact_read": True,
         "receipt_validation": validation,
         "observed_surrender_outcome": projection,
+        "three_way_intake_result": three_way_intake,
         "three_way_policy_result": policy_result,
         "closed_gap": (
-            "R3 action-bound postwar facts are now consumed by the existing "
-            "three-way policy core"
+            "R3 action-bound postwar facts are now consumed by the unified "
+            "three-way intake"
         ),
         "remaining_gap": {
             "reason": "source_specific_war_loss_attribution_unavailable",

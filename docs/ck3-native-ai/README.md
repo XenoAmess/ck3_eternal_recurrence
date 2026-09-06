@@ -231,9 +231,9 @@
   `44E1F7C0B470B2CF7B6549192865402F21F88C7CF073E896DE1B93632311D5D0`。该证据仍为 private
   default-OFF，且 generic war-bound rows 没有 Raiktor source attribution，所以
   public/action/automatic-surrender/GEN-034 仍全 false。
-- [static/no-launch comparison intake; source-specific comparison still RED] [g2-postwar-outcome-comparison-intake-2026-09-05.md](g2-postwar-outcome-comparison-intake-2026-09-05.md)
-  R3 receipt 现已进入现有 `raiktor-three-way-exit-policy-v1` consumer；policy 接受 action-bound
-  checkpoint/cleanup/actual-expiry facts，但明确返回
+- [static/no-launch unified intake; source-specific comparison still RED] [g2-postwar-outcome-comparison-intake-2026-09-05.md](g2-postwar-outcome-comparison-intake-2026-09-05.md)
+  R3 receipt 现已进入统一 `raiktor-three-way-exit-intake-provider-v1`，并保留既有 policy 兼容输出；intake 接受
+  action-bound checkpoint/cleanup/actual-expiry facts，但明确返回
   `source_specific_war_loss_attribution_unavailable`，不把 generic `598 -> 0` 当成 Raiktor-source loss，
   也不产生三方赢家或 action。
 - [static-ready / default-OFF source-attribution provider; live not run] [g2-source-specific-war-loss-provider-2026-09-05.md](g2-source-specific-war-loss-provider-2026-09-05.md)

@@ -36,7 +36,6 @@ SPEC.loader.exec_module(INTAKE)
 
 from xar_autoplayer.simulation.raiktor_three_way_exit_policy import (  # noqa: E402
     SOURCE_SPECIFIC_LOSS_PROVIDER,
-    assess_raiktor_three_way_exit,
 )
 
 
@@ -262,7 +261,7 @@ def _expected() -> dict[str, object]:
 
 
 class G2PostwarComparisonIntakeTests(unittest.TestCase):
-    def test_r3_receipt_reaches_existing_policy_but_stays_source_red(self) -> None:
+    def test_r3_receipt_reaches_unified_intake_but_stays_source_red(self) -> None:
         report, ticket = _report()
         projection, validation = INTAKE.build_observed_surrender_outcome(
             report,
@@ -270,11 +269,18 @@ class G2PostwarComparisonIntakeTests(unittest.TestCase):
             ticket=ticket,
             expected=_expected(),
         )
-        result = assess_raiktor_three_way_exit(
-            None, None, None, None, None, projection
-        )
+        composed = INTAKE.compose_three_way_intake(projection)
+        result = composed["assessment"]
         observed = result["observed_surrender_outcome"]
         self.assertTrue(validation["receipt"]["ok"])
+        self.assertEqual(
+            composed["schema"],
+            "xar.ck3.raiktor_three_way_exit_intake.v1",
+        )
+        self.assertEqual(composed["status"], "evidence_required")
+        self.assertFalse(composed["production_recommendation_ready"])
+        self.assertFalse(composed["action_ready"])
+        self.assertIsNone(composed["action_literal"])
         self.assertEqual(
             observed["status"],
             "observed_generic_boundary_source_attribution_required",
@@ -287,6 +293,10 @@ class G2PostwarComparisonIntakeTests(unittest.TestCase):
             ["source_specific_war_loss_attribution_unavailable"],
         )
         self.assertEqual(observed["next_provider"], SOURCE_SPECIFIC_LOSS_PROVIDER)
+        self.assertIn(
+            "source_specific_war_loss_attribution_unavailable",
+            composed["blockers"],
+        )
         self.assertIsNone(result["recommended_outcome"])
         self.assertFalse(result["action_ready"])
 

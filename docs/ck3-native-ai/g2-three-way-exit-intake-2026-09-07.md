@@ -67,3 +67,7 @@ focused tests 覆盖缺输入、完整绑定、draft owner、stale utility SHA�
 直连与 envelope readiness 过报拒绝；normal 与 `python -O` 均通过。
 相关 owner/white-peace/three-way/source-specific intake 回归也在同一矩阵中复跑。本包没有 CK3 进程、
 MCP query、mutation 或 readiness promotion。
+
+已有 R3 generic postwar receipt 的离线 adapter 也已改走同一统一入口，并在输出中新增完整
+`three_way_intake_result`、保留 `three_way_policy_result` 兼容字段。R3 的 source attribution 仍为 RED，
+因此该接线只统一 typed blocker 与 provider 边界，不改变任何 production/action readiness。
