@@ -181,6 +181,27 @@ class RaiktorWhitePeaceComparisonProviderTests(unittest.TestCase):
             "no_default_or_fixture_utility", result["boundaries"]
         )
 
+    def test_complete_other_inputs_do_not_synthesize_missing_utility(
+        self,
+    ) -> None:
+        _, _, campaign, owner, observation, _ = _provider_inputs()
+
+        result = provide_raiktor_white_peace_comparison(
+            observation_value=observation,
+            campaign_value=campaign,
+            owner_budget_value=owner,
+            utility_evaluation_value=None,
+        )
+
+        self.assertEqual(result["status"], "evidence_required")
+        self.assertEqual(
+            result["blockers"],
+            ["white_peace_utility_evaluation_unavailable"],
+        )
+        self.assertFalse(result["comparison_ready"])
+        self.assertFalse(result["production_live"])
+        self.assertIsNone(result["comparison_certificate"])
+
     def test_stale_utility_hash_is_typed_evidence_blocker(self) -> None:
         _, _, campaign, owner, observation, utility = _provider_inputs()
         utility["evaluated_observation_sha256"] = "C" * 64

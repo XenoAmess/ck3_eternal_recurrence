@@ -70,6 +70,12 @@ comparison_certificate = null
 `white_peace_utility_evaluation_unavailable`。provider 不启动 CK3、不查询 bridge、不生成 action，
 也不从脚本、战分、测试 fixture 或默认阈值推演 production terms/utility。
 
+2026-09-07 的
+[utility provider 施工审计](g2-white-peace-utility-provider-go-no-go-2026-09-07.md) 进一步确认：owner profile
+中的 ceiling/margin 只能做 hard-budget 排除，campaign 只给 continue/surrender interval，现有 combat-entry
+系数又不属于退出效用。因而 utility producer 当前为 NO-GO；在 owner-approved valuation model 和真实同帧输入
+出现前，不新增只搬运自填区间的 wrapper。
+
 ## 离线验收
 
 normal 与 `python -O` 各通过 33 项 focused tests，覆盖完整 SHA/frame 合取、既有 three-way
