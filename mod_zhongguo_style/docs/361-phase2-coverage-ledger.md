@@ -9,6 +9,19 @@
 - `ck3-live means bounded fixture-live evidence for the named slice; no mechanism is promoted here to production-live or full semantic completion`。
 - #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。
 
+## 简体中文文案审计闭合状态（不改变逐号等级）
+
+- 可复验 sidecar：`docs/content-audits/zg361-copy-ledger/index.json`，提交 `7778b678e103eb5c2ba52b153e40898c6ad839de`；其输入快照提交为
+  `6db27bea4293445ef757e6c49c1c51d338e92355`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。
+- 当前绑定 635 个 visible events、4999 个最终简中 key；
+  `machine_failures=0`、`user_named_static_open_items=0`、
+  `machine_checks_status=pass`。用户点名的句首标点、标题/正文无价值复写、
+  正文替按钮罗列选择以及抽象按钮标签等已知静态问题均为 0 个未闭合项。
+- sidecar 总状态仍为 `review`，因为机器规则不会冒充人工语境判断；
+  `live_render_validation_status=pending`。动态插值、实机排版和最终游戏内措辞仍为
+  **LIVE PENDING**，本节不能声称文案实机 GREEN，也不提升任何逐号 readiness。
+- 边界：确定性静态检查和用户点名的静态文案问题已经闭合。sidecar 仍将语境类人工判断保持为 review，不用规则结果冒充文案质量。动态插值、实机排版和最终游戏内措辞仍为 LIVE PENDING，本快照不据此声称实机 GREEN。
+
 ## R111–R118 增量全量候选验收记录（不改变逐号等级）
 
 八轮均使用独立冻结的 release-identical 产品树、原生 MCP-only 驱动和串行 CK3 启动门禁；`ocr_used=false`、

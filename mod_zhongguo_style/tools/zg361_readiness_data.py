@@ -133,6 +133,23 @@ class ProductAcceptanceAttempt:
     closure_boundary: str
 
 
+@dataclass(frozen=True, slots=True)
+class ChineseCopyAuditSnapshot:
+    """Current static copy closure, separate from per-ID/live readiness."""
+
+    sidecar_index: str
+    sidecar_commit: str
+    source_snapshot_git_commit: str
+    visible_events: int
+    final_zh_keys: int
+    machine_failures: int
+    user_named_static_open_items: int
+    ledger_status: str
+    machine_checks_status: str
+    live_render_validation_status: str
+    boundary: str
+
+
 CENTRAL_WIRING_BOUNDARY: Final = (
     "central-wired records committed hook reachability only; it does not prove "
     "complete per-ID semantics, a complete player-visible loop, or CK3 live acceptance"
@@ -157,6 +174,24 @@ CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY: Final = (
 LIVE_BOUNDARY: Final = (
     "ck3-live means bounded fixture-live evidence for the named slice; no mechanism "
     "is promoted here to production-live or full semantic completion"
+)
+
+CHINESE_COPY_AUDIT: Final = ChineseCopyAuditSnapshot(
+    sidecar_index="docs/content-audits/zg361-copy-ledger/index.json",
+    sidecar_commit="7778b678e103eb5c2ba52b153e40898c6ad839de",
+    source_snapshot_git_commit="6db27bea4293445ef757e6c49c1c51d338e92355",
+    visible_events=635,
+    final_zh_keys=4999,
+    machine_failures=0,
+    user_named_static_open_items=0,
+    ledger_status="review",
+    machine_checks_status="pass",
+    live_render_validation_status="pending",
+    boundary=(
+        "确定性静态检查和用户点名的静态文案问题已经闭合。sidecar 仍将语境类人工判断"
+        "保持为 review，不用规则结果冒充文案质量。动态插值、实机排版和最终游戏内措辞仍为 "
+        "LIVE PENDING，本快照不据此声称实机 GREEN。"
+    ),
 )
 
 RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS: Final = (

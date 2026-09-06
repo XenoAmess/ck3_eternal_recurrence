@@ -28,6 +28,7 @@ from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, plan_effect_shards
 from zg361_localization_style import normalize_player_chinese
 from zg361_readiness_data import (
     CENTRAL_WIRING_BOUNDARY,
+    CHINESE_COPY_AUDIT,
     CUMULATIVE_COUNTS,
     EXPECTED_CUMULATIVE_RANGES,
     EXPECTED_EXCLUSIVE_RANGES,
@@ -1416,6 +1417,7 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
         f"`{signature}`" for signature in snapshot.cleared_product_signatures
     )
     snapshot_evidence = "<br>".join(f"`{path}`" for path in snapshot.evidence)
+    copy_audit = CHINESE_COPY_AUDIT
     lines = [
         "# 361 二期实现覆盖账本",
         "",
@@ -1427,6 +1429,19 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
         f"- `{CENTRAL_WIRING_BOUNDARY}`。",
         f"- `{LIVE_BOUNDARY}`。",
         "- #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。",
+        "",
+        "## 简体中文文案审计闭合状态（不改变逐号等级）",
+        "",
+        f"- 可复验 sidecar：`{copy_audit.sidecar_index}`，提交 `{copy_audit.sidecar_commit}`；其输入快照提交为",
+        f"  `{copy_audit.source_snapshot_git_commit}`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。",
+        f"- 当前绑定 {copy_audit.visible_events} 个 visible events、{copy_audit.final_zh_keys} 个最终简中 key；",
+        f"  `machine_failures={copy_audit.machine_failures}`、`user_named_static_open_items={copy_audit.user_named_static_open_items}`、",
+        f"  `machine_checks_status={copy_audit.machine_checks_status}`。用户点名的句首标点、标题/正文无价值复写、",
+        "  正文替按钮罗列选择以及抽象按钮标签等已知静态问题均为 0 个未闭合项。",
+        f"- sidecar 总状态仍为 `{copy_audit.ledger_status}`，因为机器规则不会冒充人工语境判断；",
+        f"  `live_render_validation_status={copy_audit.live_render_validation_status}`。动态插值、实机排版和最终游戏内措辞仍为",
+        "  **LIVE PENDING**，本节不能声称文案实机 GREEN，也不提升任何逐号 readiness。",
+        f"- 边界：{copy_audit.boundary}",
         "",
         "## R111–R118 增量全量候选验收记录（不改变逐号等级）",
         "",

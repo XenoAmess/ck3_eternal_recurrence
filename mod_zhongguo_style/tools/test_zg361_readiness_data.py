@@ -14,6 +14,7 @@ from gen_361_mechanisms import BOM, MOD_ROOT, main, outputs
 from zg361_mechanism_data import load_mechanisms
 from zg361_readiness_data import (
     CLAIMS,
+    CHINESE_COPY_AUDIT,
     CUMULATIVE_COUNTS,
     EXPECTED_CUMULATIVE_COUNTS,
     EXPECTED_CUMULATIVE_RANGES,
@@ -180,6 +181,51 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertIn("937 files", ledger)
         self.assertIn("918 游戏日", ledger)
         self.assertIn("221 次 native/MCP 观测", ledger)
+
+    def test_copy_audit_snapshot_matches_sidecar_and_keeps_live_pending(self) -> None:
+        audit = CHINESE_COPY_AUDIT
+        sidecar_path = MOD_ROOT.parent / audit.sidecar_index
+        sidecar = json.loads(sidecar_path.read_text(encoding="utf-8"))
+        summary = sidecar["summary"]
+
+        self.assertEqual(
+            audit.sidecar_commit,
+            "7778b678e103eb5c2ba52b153e40898c6ad839de",
+        )
+        self.assertEqual(
+            sidecar["source_snapshot"]["git_commit"],
+            audit.source_snapshot_git_commit,
+        )
+        self.assertEqual(summary["visible_events"], audit.visible_events)
+        self.assertEqual(summary["final_localization_keys"], audit.final_zh_keys)
+        self.assertEqual(summary["machine_failure_count"], audit.machine_failures)
+        self.assertEqual(sidecar["machine_failures"], [])
+        self.assertEqual(sidecar["machine_checks_status"], audit.machine_checks_status)
+        self.assertEqual(
+            sidecar["live_render_validation_status"],
+            audit.live_render_validation_status,
+        )
+        self.assertEqual(summary["dead_option_loc"]["status"], "pass")
+        self.assertEqual(audit.user_named_static_open_items, 0)
+        for check in (
+            "stripped_opening_punctuation",
+            "title_similarity_contains",
+            "body_choice_meta",
+            "generic_option",
+            "dead_option_loc",
+        ):
+            self.assertNotIn("fail", summary["check_status_counts"][check])
+
+        ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
+        self.assertIn("简体中文文案审计闭合状态", ledger)
+        self.assertIn(audit.sidecar_index, ledger)
+        self.assertIn("635 个 visible events", ledger)
+        self.assertIn("4999 个最终简中 key", ledger)
+        self.assertIn("machine_failures=0", ledger)
+        self.assertIn("user_named_static_open_items=0", ledger)
+        self.assertIn("live_render_validation_status=pending", ledger)
+        self.assertIn("LIVE PENDING", ledger)
+        self.assertIn("不能声称文案实机 GREEN", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}
