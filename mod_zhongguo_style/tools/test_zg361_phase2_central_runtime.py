@@ -1007,12 +1007,22 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             self.assertEqual(keys, expected, language)
 
     def test_character_event_summary_reads_root_numeric_variable_values(self) -> None:
+        # Exact-build 1.19.0.6 character-event localization uses this chain in,
+        # among others, siege.0002, raiding.0011 and fp3_clan.1010:
+        # [ROOT.Var('numeric_variable').GetValue|...].  ROOT.Var without
+        # GetValue cannot render a numeric value; ROOT.MakeScope cannot be
+        # promoted from a Character ROOT.
         for language, _header in generator.LANGUAGES:
             text = read(f"localization/{language}/zg361_phase2_central_l_{language}.yml")
-            self.assertNotIn("[ROOT.Var('", text, language)
+            self.assertNotIn("[ROOT.MakeScope.Var('", text, language)
             for field in ("success_n", "na_n", "red_n", "external_n"):
                 self.assertIn(
-                    f"[ROOT.MakeScope.Var('zg361_p2c_{field}').GetValue|0]",
+                    f"[ROOT.Var('zg361_p2c_{field}').GetValue|0]",
+                    text,
+                    language,
+                )
+                self.assertNotIn(
+                    f"[ROOT.Var('zg361_p2c_{field}')|0]",
                     text,
                     language,
                 )

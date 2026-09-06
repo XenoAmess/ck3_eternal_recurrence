@@ -1,5 +1,5 @@
 ﻿l_simp_chinese:
  # GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
  zg361_p2c_summary_title:0 "公示后续事项清点"
- zg361_p2c_summary_desc:0 "官署已经清点本轮公示后的处置结果。按原定安排办结 #high [ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#! 项；经核对无需另办 [ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0] 项；尚有 [ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0] 项未能办结，其中 [ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0] 项是因为所需案情尚未送达。未办事项会留到下一轮重新核对，不会混入本轮功绩。"
+ zg361_p2c_summary_desc:0 "官署已经清点本轮公示后的处置结果。按原定安排办结 #high [ROOT.Var('zg361_p2c_success_n').GetValue|0]#! 项；经核对无需另办 [ROOT.Var('zg361_p2c_na_n').GetValue|0] 项；尚有 [ROOT.Var('zg361_p2c_red_n').GetValue|0] 项未能办结，其中 [ROOT.Var('zg361_p2c_external_n').GetValue|0] 项是因为所需案情尚未送达。未办事项会留到下一轮重新核对，不会混入本轮功绩。"
  zg361_p2c_summary_ack:0 "办结与未办，分别记清。"
