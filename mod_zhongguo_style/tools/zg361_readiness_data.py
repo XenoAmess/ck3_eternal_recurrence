@@ -257,21 +257,28 @@ RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS: Final = (
     ),
     ProductAcceptanceAttempt(
         run_id="R116",
-        observed_at="2026-09-06 11:40 Asia/Shanghai",
+        observed_at="2026-09-06 11:40–11:47 Asia/Shanghai",
         product_commit="2911b07e717ad88e69ea6aec0ec16c475633fa74",
         projection="phase2-full-release-r116-2911b07",
         verified_file_count=1031,
         product_tree_sha256="318d60a217065ffaaa51dd92ad9cf3b9db349d9a673ef86ee604b507553a5a44",
         release_manifest_sha256="3bfb52359100b060a60cc33aff05f7136282fbe0bb088ccd23633cfd11de48aa",
         loader_and_result=(
-            "截至首次入口尝试，loader 303/303 GREEN、fatal=0、项目 loader match=0；"
+            "首次入口 loader 303/303 GREEN、fatal=0、项目 loader match=0；"
             "入口/导航 harness 在遇到未列入该路径的 `zg361.30` 时 RED。"
-            "`gameplay_acceptance_executed=false`，未进入产品全链验收。"
+            "随后 resume1 复用 PID 54484、launch/restart 均为 false、restart_count=0；"
+            "`zg361.30` drain GREEN，36/36 interrupts 全部 GREEN。resume 运行时增量随后在 22 个 "
+            "Career desc 上产生 154 条同族产品本地化错误："
+            "`[scope:<saved>.GetShortUIName]` 不能作为 localization 数据表达式。"
         ),
         closure_boundary=(
-            "这是 harness navigation RED，不是产品 GREEN，也没有据此认领产品运行时 GREEN；"
-            "须先让入口驱动显式处理 `zg361.30`，再从 R116 健康会话续跑。"
-            "本条只冻结首次入口尝试，不覆盖或预判后续 resume 结果。"
+            "冻结 R116 产品树的全同签名扫描为 2,601 处，分布在 8 个九语言生成文件族；"
+            "修复计划覆盖 Career HC、feedback/promotion/PIP、workforce endgame、credit project、"
+            "Phase3 metrics delivery、workforce AD、workforce attribution、workforce remediation，"
+            "并以全语言硬门禁归零。resume1 中 R113、R114、R115 旧签名均为 0。另有产品生命周期"
+            "故障：Central active 期间年度 B1 旋转 serial，使冻结 central tuple stale abort；"
+            "因此 runner 最终报告的 550 日观察边界不是唯一故障。R116 不是全量 GREEN；产品树已改变，"
+            "R117 必须 fresh 启动后验收，旧 PID 不得复验新产品。"
         ),
     ),
 )
