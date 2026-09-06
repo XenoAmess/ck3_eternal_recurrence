@@ -413,15 +413,32 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
 
     def test_character_variables_use_direct_root_var_localization_path(self) -> None:
         expected = "[ROOT.Var('zg361_wad_offer_source_owner').Char.GetShortUIName]"
-        forbidden = re.compile(
+        forbidden_root_var = re.compile(
             r"ROOT(?:\.Char)?\.MakeScope\.Var\('[^']+'\)\.Char(?:\.|\])"
+        )
+        forbidden_saved_scope = re.compile(
+            r"\[scope:[A-Za-z0-9_]+\.GetShortUIName\]"
+        )
+        correct_saved_scope = re.compile(
+            r"\[zg361_wad_(?:referral|panel)_subject_scope\.GetShortUIName\]"
+        )
+        source_copy = "\n".join(
+            (*gen.LOCALIZATION_EN.values(), *gen.LOCALIZATION_CN.values())
         )
         self.assertIn(expected, gen.LOCALIZATION_EN["offer.desc"])
         self.assertIn(expected, gen.LOCALIZATION_CN["offer.desc"])
+        self.assertEqual([], forbidden_saved_scope.findall(source_copy))
+        self.assertEqual(4, len(correct_saved_scope.findall(source_copy)))
         for language in gen.LANGUAGES:
             rendered = gen.render_localization(language).decode("utf-8-sig")
             self.assertIn(expected, rendered, language)
-            self.assertEqual([], forbidden.findall(rendered), language)
+            self.assertEqual([], forbidden_root_var.findall(rendered), language)
+            self.assertEqual([], forbidden_saved_scope.findall(rendered), language)
+            self.assertEqual(
+                2,
+                len(correct_saved_scope.findall(rendered)),
+                language,
+            )
 
     def test_player_copy_states_available_facts_and_keeps_actions_on_buttons(self) -> None:
         zh = gen.LOCALIZATION_CN

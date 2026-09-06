@@ -1,10 +1,10 @@
 ﻿l_simp_chinese:
  zg361wad.referral.t:0 "内推必须有亲笔署名"
- zg361wad.referral.desc:0 "候选人 [scope:zg361_wad_referral_subject_scope.GetShortUIName] 的内推案卷正在等候署名。案卷会记录你的身份、你与候选人的关系，以及绑定本案的回执；若这份推荐并非出自你手，也可当场否认。"
+ zg361wad.referral.desc:0 "候选人 [zg361_wad_referral_subject_scope.GetShortUIName] 的内推案卷正在等候署名。案卷会记录你的身份、你与候选人的关系，以及绑定本案的回执；若这份推荐并非出自你手，也可当场否认。"
  zg361wad.referral.submit:0 "提交我的内推，并公开关系"
  zg361wad.referral.decline:0 "这份内推不是我提交的"
  zg361wad.vote.t:0 "封存你自己的面试票"
- zg361wad.vote.desc:0 "候选人 [scope:zg361_wad_panel_subject_scope.GetShortUIName] 正在接受三席独立评议，你是当前执笔的评委。案前现有材料只能核对候选人与当前评委的实名身份，并未附上面试题目、回答、评分表或独立证明材料。下列选项只记录你的面试判断，不代表案卷已经拥有充分证据。"
+ zg361wad.vote.desc:0 "候选人 [zg361_wad_panel_subject_scope.GetShortUIName] 正在接受三席独立评议，你是当前执笔的评委。案前现有材料只能核对候选人与当前评委的实名身份，并未附上面试题目、回答、评分表或独立证明材料。下列选项只记录你的面试判断，不代表案卷已经拥有充分证据。"
  zg361wad.vote.a:0 "我的判断：建议推进录用"
  zg361wad.vote.b:0 "我的判断：暂缓并继续审查"
  zg361wad.vote.c:0 "我的判断：不建议推进"

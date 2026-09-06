@@ -1,10 +1,10 @@
 ﻿l_korean:
  zg361wad.referral.t:0 "A Referral Must Have an Author"
- zg361wad.referral.desc:0 "The referral file for [scope:zg361_wad_referral_subject_scope.GetShortUIName] is waiting for a signature. It will record your identity, your relationship to the candidate, and a receipt bound to this case. If the recommendation was not yours, deny authorship here."
+ zg361wad.referral.desc:0 "The referral file for [zg361_wad_referral_subject_scope.GetShortUIName] is waiting for a signature. It will record your identity, your relationship to the candidate, and a receipt bound to this case. If the recommendation was not yours, deny authorship here."
  zg361wad.referral.submit:0 "Submit my referral and disclose the relationship"
  zg361wad.referral.decline:0 "I did not make this referral"
  zg361wad.vote.t:0 "Seal Your Own Interview Vote"
- zg361wad.vote.desc:0 "The three-seat panel is reviewing [scope:zg361_wad_panel_subject_scope.GetShortUIName], and you are the manager holding the current ballot. The available record verifies only the named candidate and your identity; it contains no interview questions, answers, scoring sheet, or independent evidence packet. The choices below record your interview judgment, not a claim that evidence is sufficient."
+ zg361wad.vote.desc:0 "The three-seat panel is reviewing [zg361_wad_panel_subject_scope.GetShortUIName], and you are the manager holding the current ballot. The available record verifies only the named candidate and your identity; it contains no interview questions, answers, scoring sheet, or independent evidence packet. The choices below record your interview judgment, not a claim that evidence is sufficient."
  zg361wad.vote.a:0 "My judgment: advance the candidate"
  zg361wad.vote.b:0 "My judgment: hold for further review"
  zg361wad.vote.c:0 "My judgment: do not advance"

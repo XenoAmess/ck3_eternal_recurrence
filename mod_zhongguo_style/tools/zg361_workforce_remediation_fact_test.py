@@ -479,7 +479,22 @@ class WorkforceRemediationFactTests(unittest.TestCase):
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             self.assertEqual(bodies[language].splitlines()[1:], english_values)
 
-    def test_12a_copy_lists_only_available_facts_and_no_completion_action(self) -> None:
+    def test_12a_saved_scope_localization_uses_direct_name_path(self) -> None:
+        forbidden_saved_scope = re.compile(
+            r"\[scope:[A-Za-z0-9_]+\.GetShortUIName\]"
+        )
+        correct_saved_scope = re.compile(
+            r"\[zg361_workforce_remediation_fact_ticket_subject\.GetShortUIName\]"
+        )
+        source_copy = "\n".join((*gen.ENGLISH.values(), *gen.CHINESE.values()))
+        self.assertEqual([], forbidden_saved_scope.findall(source_copy))
+        self.assertEqual(2, len(correct_saved_scope.findall(source_copy)))
+        for language in gen.LANGUAGES:
+            rendered = gen.render_localization(language).decode("utf-8-sig")
+            self.assertEqual([], forbidden_saved_scope.findall(rendered), language)
+            self.assertEqual(1, len(correct_saved_scope.findall(rendered)), language)
+
+    def test_12b_copy_lists_only_available_facts_and_no_completion_action(self) -> None:
         self.assertNotIn("complete", gen.CHINESE)
         self.assertNotIn("complete", gen.ENGLISH)
         for token in ("原条款", "新条款", "候选人的复核记录", "不足以确认整改完成"):

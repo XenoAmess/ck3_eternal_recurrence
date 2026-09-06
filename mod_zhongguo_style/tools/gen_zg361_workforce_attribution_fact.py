@@ -1945,29 +1945,29 @@ def render_event_parts() -> dict[str, bytes]:
 LOCALIZATION_EN: Final[dict[str, str]] = {
     "1.title": "The Interview Accountability Record Awaits Signature",
     "1.desc": (
-        "The offer for [scope:zg361_workforce_attribution_fact_subject_scope.GetShortUIName] is frozen. The panel consisted of "
-        "[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName], "
-        "[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName], and "
-        "[scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]; all three named ballots and their receipts are sealed. "
+        "The offer for [zg361_workforce_attribution_fact_subject_scope.GetShortUIName] is frozen. The panel consisted of "
+        "[zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName], "
+        "[zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName], and "
+        "[zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]; all three named ballots and their receipts are sealed. "
         "This record contains no interview questions, answers, or independent scoring details. Signing allocates later quality accountability only; it does not manufacture missing interview evidence."
     ),
-    "1.option_1": "[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName] leads: 60% / 20% / 20%",
-    "1.option_2": "[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] leads: 20% / 60% / 20%",
-    "1.option_3": "[scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName] leads: 20% / 20% / 60%",
+    "1.option_1": "[zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName] leads: 60% / 20% / 20%",
+    "1.option_2": "[zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] leads: 20% / 60% / 20%",
+    "1.option_3": "[zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName] leads: 20% / 20% / 60%",
 }
 
 LOCALIZATION_CN: Final[dict[str, str]] = {
     "1.title": "面试责任簿等待落款",
     "1.desc": (
-        "候选人 [scope:zg361_workforce_attribution_fact_subject_scope.GetShortUIName] 的录用邀约已经冻结。参加面试的是 "
-        "[scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName]、"
-        "[scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] 与 "
-        "[scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]；三张实名表决及其回执都已封存。"
+        "候选人 [zg361_workforce_attribution_fact_subject_scope.GetShortUIName] 的录用邀约已经冻结。参加面试的是 "
+        "[zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName]、"
+        "[zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] 与 "
+        "[zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName]；三张实名表决及其回执都已封存。"
         "这份案卷没有面试题目、回答或独立评分细目。落款只分配日后的录用质量责任，不会把缺失的面试证据凭空补齐。"
     ),
-    "1.option_1": "由 [scope:zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName] 主责：60% / 20% / 20%",
-    "1.option_2": "由 [scope:zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] 主责：20% / 60% / 20%",
-    "1.option_3": "由 [scope:zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName] 主责：20% / 20% / 60%",
+    "1.option_1": "由 [zg361_workforce_attribution_fact_interviewer_1_scope.GetShortUIName] 主责：60% / 20% / 20%",
+    "1.option_2": "由 [zg361_workforce_attribution_fact_interviewer_2_scope.GetShortUIName] 主责：20% / 60% / 20%",
+    "1.option_3": "由 [zg361_workforce_attribution_fact_interviewer_3_scope.GetShortUIName] 主责：20% / 20% / 60%",
 }
 
 

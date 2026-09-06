@@ -534,18 +534,30 @@ class WorkforceAttributionFactTests(unittest.TestCase):
     def test_18_localization_is_zh_en_authored_with_seven_placeholders(self) -> None:
         en = read(MOD_ROOT / f"localization/english/{PREFIX}_l_english.yml")
         zh = read(MOD_ROOT / f"localization/simp_chinese/{PREFIX}_l_simp_chinese.yml")
+        forbidden_saved_scope = re.compile(
+            r"\[scope:[A-Za-z0-9_]+\.GetShortUIName\]"
+        )
+        correct_saved_scope = re.compile(
+            r"\[zg361_workforce_attribution_fact_"
+            r"(?:subject_scope|interviewer_[123]_scope)\.GetShortUIName\]"
+        )
+        source_copy = "\n".join(
+            (*generator.LOCALIZATION_EN.values(), *generator.LOCALIZATION_CN.values())
+        )
         self.assertIn("Signing allocates later quality accountability only", en)
         self.assertIn("三张实名表决及其回执都已封存", zh)
         self.assertIn("没有面试题目、回答或独立评分细目", zh)
         self.assertNotIn("请决定", zh)
         self.assertNotIn("第一席主责", zh)
+        self.assertEqual([], forbidden_saved_scope.findall(source_copy))
+        self.assertEqual(14, len(correct_saved_scope.findall(source_copy)))
         for slot in (1, 2, 3):
             self.assertIn(
-                f"zg361_workforce_attribution_fact_interviewer_{slot}_scope.GetShortUIName",
+                f"[zg361_workforce_attribution_fact_interviewer_{slot}_scope.GetShortUIName]",
                 generator.LOCALIZATION_CN[f"1.option_{slot}"],
             )
             self.assertIn(
-                f"zg361_workforce_attribution_fact_interviewer_{slot}_scope.GetShortUIName",
+                f"[zg361_workforce_attribution_fact_interviewer_{slot}_scope.GetShortUIName]",
                 generator.LOCALIZATION_EN[f"1.option_{slot}"],
             )
         self.assertNotEqual(en, zh)
@@ -555,6 +567,8 @@ class WorkforceAttributionFactTests(unittest.TestCase):
             body = read(path)
             self.assertTrue(body.startswith(f"l_{language}:"), language)
             self.assertEqual(5, len(re.findall(rf"(?m)^ {re.escape(NAMESPACE)}\.", body)), language)
+            self.assertEqual([], forbidden_saved_scope.findall(body), language)
+            self.assertEqual(7, len(correct_saved_scope.findall(body)), language)
             if language not in {"english", "simp_chinese"}:
                 self.assertEqual(
                     en.replace("l_english:", f"l_{language}:", 1),

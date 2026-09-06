@@ -693,7 +693,7 @@ zg361workforceremediationfact.1 = {
 ENGLISH = {
     "title": "The Refused Position Remains Held",
     "desc": (
-        "The file shows that [scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer thirty days ago. "
+        "The file shows that [zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer thirty days ago. "
         "It preserves the refusal category, but contains neither the original clause, a revised clause, nor a candidate verification. "
         "The available facts therefore cannot support a completion finding."
     ),
@@ -706,7 +706,7 @@ ENGLISH = {
 CHINESE = {
     "title": "遭拒的编制仍在冻结",
     "desc": (
-        "案卷显示，[scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 在 30 日前拒绝了录用。"
+        "案卷显示，[zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 在 30 日前拒绝了录用。"
         "目前只保留了拒绝类别，没有拒绝时的原条款、整改后的新条款，也没有候选人的复核记录；现有事实不足以确认整改完成。"
     ),
     "fail": "维持冻结：现有记录不能证明整改完成",

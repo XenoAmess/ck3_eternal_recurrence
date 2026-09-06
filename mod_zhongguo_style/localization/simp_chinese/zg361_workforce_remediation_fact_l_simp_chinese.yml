@@ -1,6 +1,6 @@
 ﻿l_simp_chinese:
  zg361workforceremediationfact.1.t:0 "遭拒的编制仍在冻结"
- zg361workforceremediationfact.1.desc:0 "案卷显示，[scope:zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 在 30 日前拒绝了录用。目前只保留了拒绝类别，没有拒绝时的原条款、整改后的新条款，也没有候选人的复核记录；现有事实不足以确认整改完成。"
+ zg361workforceremediationfact.1.desc:0 "案卷显示，[zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] 在 30 日前拒绝了录用。目前只保留了拒绝类别，没有拒绝时的原条款、整改后的新条款，也没有候选人的复核记录；现有事实不足以确认整改完成。"
  zg361workforceremediationfact.1.fail:0 "维持冻结：现有记录不能证明整改完成"
  zg361workforceremediationfact.1.reason_pay:0 "已记录的拒绝类别是报酬不足；案卷没有可供对照的新旧报酬条款。"
  zg361workforceremediationfact.1.reason_role:0 "已记录的拒绝类别是岗位或权限不符；案卷没有可供对照的新旧职权条款。"

@@ -1302,11 +1302,11 @@ zg361wad.20 = {
 
 LOCALIZATION_EN = {
     "referral.t": "A Referral Must Have an Author",
-    "referral.desc": "The referral file for [scope:zg361_wad_referral_subject_scope.GetShortUIName] is waiting for a signature. It will record your identity, your relationship to the candidate, and a receipt bound to this case. If the recommendation was not yours, deny authorship here.",
+    "referral.desc": "The referral file for [zg361_wad_referral_subject_scope.GetShortUIName] is waiting for a signature. It will record your identity, your relationship to the candidate, and a receipt bound to this case. If the recommendation was not yours, deny authorship here.",
     "referral.submit": "Submit my referral and disclose the relationship",
     "referral.decline": "I did not make this referral",
     "vote.t": "Seal Your Own Interview Vote",
-    "vote.desc": "The three-seat panel is reviewing [scope:zg361_wad_panel_subject_scope.GetShortUIName], and you are the manager holding the current ballot. The available record verifies only the named candidate and your identity; it contains no interview questions, answers, scoring sheet, or independent evidence packet. The choices below record your interview judgment, not a claim that evidence is sufficient.",
+    "vote.desc": "The three-seat panel is reviewing [zg361_wad_panel_subject_scope.GetShortUIName], and you are the manager holding the current ballot. The available record verifies only the named candidate and your identity; it contains no interview questions, answers, scoring sheet, or independent evidence packet. The choices below record your interview judgment, not a claim that evidence is sufficient.",
     "vote.a": "My judgment: advance the candidate",
     "vote.b": "My judgment: hold for further review",
     "vote.c": "My judgment: do not advance",
@@ -1319,11 +1319,11 @@ LOCALIZATION_EN = {
 
 LOCALIZATION_CN = {
     "referral.t": "内推必须有亲笔署名",
-    "referral.desc": "候选人 [scope:zg361_wad_referral_subject_scope.GetShortUIName] 的内推案卷正在等候署名。案卷会记录你的身份、你与候选人的关系，以及绑定本案的回执；若这份推荐并非出自你手，也可当场否认。",
+    "referral.desc": "候选人 [zg361_wad_referral_subject_scope.GetShortUIName] 的内推案卷正在等候署名。案卷会记录你的身份、你与候选人的关系，以及绑定本案的回执；若这份推荐并非出自你手，也可当场否认。",
     "referral.submit": "提交我的内推，并公开关系",
     "referral.decline": "这份内推不是我提交的",
     "vote.t": "封存你自己的面试票",
-    "vote.desc": "候选人 [scope:zg361_wad_panel_subject_scope.GetShortUIName] 正在接受三席独立评议，你是当前执笔的评委。案前现有材料只能核对候选人与当前评委的实名身份，并未附上面试题目、回答、评分表或独立证明材料。下列选项只记录你的面试判断，不代表案卷已经拥有充分证据。",
+    "vote.desc": "候选人 [zg361_wad_panel_subject_scope.GetShortUIName] 正在接受三席独立评议，你是当前执笔的评委。案前现有材料只能核对候选人与当前评委的实名身份，并未附上面试题目、回答、评分表或独立证明材料。下列选项只记录你的面试判断，不代表案卷已经拥有充分证据。",
     "vote.a": "我的判断：建议推进录用",
     "vote.b": "我的判断：暂缓并继续审查",
     "vote.c": "我的判断：不建议推进",
