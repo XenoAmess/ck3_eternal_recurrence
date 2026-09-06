@@ -231,8 +231,47 @@ RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS: Final = (
             "`07c_portfolio_refresh_effects.txt`。"
         ),
         closure_boundary=(
-            "**未闭合。** 下一轮必须先修 compensation 生成源、生成结果与回归，再以改变后的"
-            "产品树 fresh 启动；R114 不构成完整迁移树 GREEN，也不提升任何逐号证据层。"
+            "compensation 生成源、生成结果与回归由 "
+            "`4e76cd78c5addc44bcf4522500e985dc34a7a745` 修复；R115 在出现下一族 RED 前"
+            "未重现 R114 签名。R114 不构成完整迁移树 GREEN，也不提升任何逐号证据层。"
+        ),
+    ),
+    ProductAcceptanceAttempt(
+        run_id="R115",
+        observed_at="2026-09-06 11:23 Asia/Shanghai",
+        product_commit="4e76cd78c5addc44bcf4522500e985dc34a7a745",
+        projection="phase2-full-release-r115-4e76cd7",
+        verified_file_count=1031,
+        product_tree_sha256="d4616282305cdc6761aaf624b771731f93d221fe3cce4ab5a324acfe87d2ae10",
+        release_manifest_sha256="4ee547e643e5a34df3ba1da2c7d10bfce98e6acabed10ffa90d7a8f7c2f51aca",
+        loader_and_result=(
+            "loader 303/303 GREEN；产品 RED：`zg361_p2c_summary_desc` 在 Character ROOT 上"
+            "使用四个 `ROOT.MakeScope.Var(...).GetValue` 数值链，均无法 promote `MakeScope`，"
+            "并触发本地化转换失败。"
+        ),
+        closure_boundary=(
+            "P2C 及全仓同签名数值本地化链由 `2911b07e717ad88e69ea6aec0ec16c475633fa74` "
+            "收口为 `ROOT.Var(...).GetValue` 并补回归；R116 首次入口尝试未重现 R115 签名。"
+            "R115 不构成完整迁移树 GREEN，也不提升任何逐号证据层。"
+        ),
+    ),
+    ProductAcceptanceAttempt(
+        run_id="R116",
+        observed_at="2026-09-06 11:40 Asia/Shanghai",
+        product_commit="2911b07e717ad88e69ea6aec0ec16c475633fa74",
+        projection="phase2-full-release-r116-2911b07",
+        verified_file_count=1031,
+        product_tree_sha256="318d60a217065ffaaa51dd92ad9cf3b9db349d9a673ef86ee604b507553a5a44",
+        release_manifest_sha256="3bfb52359100b060a60cc33aff05f7136282fbe0bb088ccd23633cfd11de48aa",
+        loader_and_result=(
+            "截至首次入口尝试，loader 303/303 GREEN、fatal=0、项目 loader match=0；"
+            "入口/导航 harness 在遇到未列入该路径的 `zg361.30` 时 RED。"
+            "`gameplay_acceptance_executed=false`，未进入产品全链验收。"
+        ),
+        closure_boundary=(
+            "这是 harness navigation RED，不是产品 GREEN，也没有据此认领产品运行时 GREEN；"
+            "须先让入口驱动显式处理 `zg361.30`，再从 R116 健康会话续跑。"
+            "本条只冻结首次入口尝试，不覆盖或预判后续 resume 结果。"
         ),
     ),
 )

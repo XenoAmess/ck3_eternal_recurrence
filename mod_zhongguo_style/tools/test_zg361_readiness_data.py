@@ -128,10 +128,10 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
-        self.assertIn("R111–R114 增量全量候选验收记录", ledger)
+        self.assertIn("R111–R116 增量全量候选验收记录", ledger)
         self.assertEqual(
             tuple(attempt.run_id for attempt in RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS),
-            ("R111", "R112", "R113", "R114"),
+            ("R111", "R112", "R113", "R114", "R115", "R116"),
         )
         self.assertTrue(
             all(attempt.verified_file_count == 1031 for attempt in RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS)
@@ -139,7 +139,13 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertIn("R107 基线完整产品验收快照", ledger)
         self.assertIn("`R107`", ledger)
         self.assertIn("`R114`", ledger)
+        self.assertIn("`R115`", ledger)
+        self.assertIn("`R116`", ledger)
         self.assertIn("d54d3beb0dcf26a3831b6b0441e92dbba28a56aca8e77fae770c01416f208aa5", ledger)
+        self.assertIn("d4616282305cdc6761aaf624b771731f93d221fe3cce4ab5a324acfe87d2ae10", ledger)
+        self.assertIn("318d60a217065ffaaa51dd92ad9cf3b9db349d9a673ef86ee604b507553a5a44", ledger)
+        self.assertIn("`gameplay_acceptance_executed=false`", ledger)
+        self.assertIn("不覆盖或预判后续 resume 结果", ledger)
         self.assertIn("937 files", ledger)
         self.assertIn("918 游戏日", ledger)
         self.assertIn("221 次 native/MCP 观测", ledger)

@@ -1313,9 +1313,9 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
         f"- `{LIVE_BOUNDARY}`。",
         "- #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。",
         "",
-        "## R111–R114 增量全量候选验收记录（不改变逐号等级）",
+        "## R111–R116 增量全量候选验收记录（不改变逐号等级）",
         "",
-        "四轮均使用独立冻结的 release-identical 产品树、原生 MCP-only 驱动和串行 CK3 启动门禁；`ocr_used=false`、",
+        "六轮均使用独立冻结的 release-identical 产品树、原生 MCP-only 驱动和串行 CK3 启动门禁；`ocr_used=false`、",
         "`image_used=false`、`coordinates_used=false`。验收时间轴默认使用 `set-speed-5` 快进，仅在有界事件捕获窗口按 runner",
         "合同降速。各轮 loader 均完成 303/303 database nodes，项目归属 loader match 为 0；这只证明加载门 GREEN，不能覆盖随后",
         "发生的产品运行时 RED，也不能声称全量验收 GREEN。",
@@ -1334,8 +1334,8 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
     lines.extend(
         [
         "",
-        "可核验证据：`Z:\\\\b3r111`–`Z:\\\\b3r114` 的 `evidence-index.json`、`report.json`、",
-        "`cell/02_loader_error_scan.json`、`cell/03_loader_gate.json`、`cell/final_error.log`；以及 `Z:\\\\p2r111`–`Z:\\\\p2r114`",
+        "可核验证据：`Z:\\\\b3r111`–`Z:\\\\b3r116` 的 `evidence-index.json`、`report.json`、",
+        "`cell/02_loader_error_scan.json`、`cell/03_loader_gate.json`、`cell/final_error.log`；以及 `Z:\\\\p2r111`–`Z:\\\\p2r116`",
         "的 `phase2-product-projection.json` 与 `p.manifest.json`。",
         "",
         "## R107 基线完整产品验收快照（不改变逐号等级）",
