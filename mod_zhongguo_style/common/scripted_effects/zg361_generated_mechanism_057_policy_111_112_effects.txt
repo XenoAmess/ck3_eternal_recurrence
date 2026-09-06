@@ -85,7 +85,7 @@ zg361_mechanism_111_ai_effect = {
 	}
 }
 
-# 112 留任访谈（Stay Interview）
+# 112 留任访谈
 zg361_mechanism_112_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_112_choice } }

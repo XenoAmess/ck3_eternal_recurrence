@@ -1,7 +1,9 @@
 {
   "121": {
     "title_en": "First-Time Manager Trial",
-    "option_a_cn": "先给小团队试管一周期，并配导师与隔级复盘",
+    "description_cn": "业务能力强不等于自然会带人；先试管小团队能验证管理能力，试运行失败不必直接断送仕途，但也不能无成本继续管理大团队。",
+    "description_en": "Strong individual performance does not automatically imply management skill. A small-team trial tests that ability; failure need not end the person's career, but it also cannot lead to cost-free control of a large team.",
+    "option_a_cn": "先让其试管一个小团队一周期，并配导师与隔级复盘",
     "option_a_en": "Run a one-cycle small-team trial with mentoring and skip-level review",
     "option_b_cn": "直接授予大团队正式管理权，只看首周期结果定去留",
     "option_b_en": "Grant full control of a large team and judge only the first cycle",
@@ -12,8 +14,8 @@
     "title_en": "Manager 40-30-30 Scorecard",
     "option_a_cn": "按四成结果、三成人才、三成过程留证打分",
     "option_a_en": "Score documented results, talent stewardship, and management process at 40-30-30",
-    "option_b_cn": "把当期硬结果提到绝对多数，流失与反馈债以后再算",
-    "option_b_en": "Let current hard results dominate and defer turnover and feedback debt",
+    "option_b_cn": "把当期硬结果的权重提高到过半，流失与反馈债以后再算",
+    "option_b_en": "Raise the weight of current hard results above half and defer turnover and feedback debt",
     "profile": "assessment",
     "reference_choice": "a"
   },
@@ -28,6 +30,8 @@
   },
   "124": {
     "title_en": "No Manager Promotion Without a Successor",
+    "description_cn": "提前培养接班人能促进知识移交；若门槛过死，尚无成熟继任者的优秀经理会长期无法升任。上级破例放行则须承担原团队断层风险。",
+    "description_en": "Preparing a successor promotes knowledge transfer. If the gate is too rigid, a strong manager without a mature successor may remain blocked indefinitely; a senior exception must carry the risk of a gap in the original team.",
     "option_a_cn": "先让继任者代理并验收交接，再放经理升任",
     "option_a_en": "Validate an acting successor and handover before promoting the manager",
     "option_b_cn": "立即提拔明星经理，由原团队自行填补断层",
@@ -46,6 +50,8 @@
   },
   "126": {
     "title_en": "Performance-Values Action Matrix",
+    "description_cn": "只留下低产但顺从者会拖累结果；纵容高产却破坏协作的人，则会增加抢功、报复与人才流失。组织必须同时判断业绩与行为。",
+    "description_en": "Retaining only low-output but compliant people drags down results. Tolerating high producers who damage collaboration increases credit theft, retaliation, and attrition. The organization must judge both performance and conduct.",
     "option_a_cn": "按业绩与价值观四象限分别留用、辅导、转岗或退出",
     "option_a_en": "Use four evidence-based quadrants for retention, coaching, transfer, or exit",
     "option_b_cn": "保住所有高产者并立即清退低产者，不另审协作破坏",
@@ -73,6 +79,8 @@
   },
   "129": {
     "title_en": "Promotion Queue and Career Plateau",
+    "description_cn": "透明队列能减少重复提交晋升申请，长期停滞则会显著提高人才被挖和消极工作的风险；插队必须使用破格名额，并向被跳过者说明理由。",
+    "description_en": "A transparent queue reduces repeated promotion applications, while prolonged stagnation raises poaching and disengagement risk. Any candidate who jumps the queue must use an exception slot and explain the decision to those passed over.",
     "option_a_cn": "建立有期限的透明候选队列，并给轮岗或现金补偿",
     "option_a_en": "Maintain a time-bounded transparent queue with rotations or cash compensation",
     "option_b_cn": "让主管逐年口头许诺，并为急需人选随时插队",
@@ -100,8 +108,10 @@
   },
   "132": {
     "title_en": "Credit for Killing a Project in Time",
-    "option_a_cn": "凭不可行证据止损，冻结节省预算并由 sponsor 复核",
-    "option_a_en": "Stop on infeasibility evidence, record saved resources, and obtain sponsor review",
+    "description_cn": "有证据的及时止损能保护剩余国库与编制名额，并计入判断力；逢难就砍会失去项目发起人或担保人的信任，死扛则积累沉没成本和隐瞒坏消息的责任。",
+    "description_en": "Evidence-based early termination protects remaining treasury and headcount and can count as sound judgment. Killing every difficult project loses the trust of its initiator or guarantor; persisting blindly accumulates sunk cost and responsibility for hidden bad news.",
+    "option_a_cn": "凭不可行证据止损，冻结节省的预算，并由项目发起人或担保人复核",
+    "option_a_en": "Stop on infeasibility evidence, record saved resources, and obtain review from the project initiator or guarantor",
     "option_b_cn": "继续投入直到交付或彻底失败，以免承认沉没成本",
     "option_b_en": "Keep funding until delivery or collapse rather than recognize sunk cost",
     "profile": "delivery",
@@ -109,6 +119,8 @@
   },
   "133": {
     "title_en": "Blameless Learning and Accountability on Separate Tracks",
+    "description_cn": "主动认错和及早报险不应自动导致降档，故意违规仍须追责；把复盘变成公开追责会，会降低今后主动报险的意愿。",
+    "description_en": "Admitting an error or raising a risk early should not automatically lower a rating, while deliberate misconduct remains accountable. Turning review into a public blame session reduces willingness to report future risks early.",
     "option_a_cn": "先冻结事实与系统原因，再另审造假、隐瞒和失职",
     "option_a_en": "Freeze facts and system causes before separately judging deceit or negligence",
     "option_b_cn": "事故后立即点名主责，以公开处分快速恢复秩序",
@@ -127,6 +139,8 @@
   },
   "135": {
     "title_en": "Shadow Rating and Expectation Window",
+    "description_cn": "诚实预告能减少年末意外，但不会锁死最终结果；用虚假的乐观预期维持稳定、最终再突然降档，会同时增加反馈债与申诉风险。",
+    "description_en": "Honest advance notice reduces year-end surprises without locking the final result. Maintaining calm through falsely optimistic expectations and then imposing a sudden downgrade increases both feedback debt and appeal risk.",
     "option_a_cn": "校准前告知暂定档与证据缺口，保留纠偏窗口",
     "option_a_en": "Disclose the provisional rating and evidence gaps before calibration",
     "option_b_cn": "封存影子档直到终评，一次公布以避免中途争议",
@@ -136,7 +150,7 @@
   },
   "136": {
     "title_en": "Cross-Manager Pre-Calibration Huddle",
-    "option_a_cn": "只预审边界案例并留纪要，不提前分完整名额",
+    "option_a_cn": "只预审边界案例并留纪要，不提前分完全部档位名额",
     "option_a_en": "Pre-review only boundary cases with minutes, without allocating every slot",
     "option_b_cn": "小会先把各档名额分完，让正式大会快速确认",
     "option_b_en": "Pre-allocate all ratings privately so the formal meeting can ratify them quickly",
@@ -154,8 +168,8 @@
   },
   "138": {
     "title_en": "Quota Rounding and Remainder Allocation",
-    "option_a_cn": "期初冻结最大余数与跨年轮换规则并公开尾差",
-    "option_a_en": "Freeze maximum-remainder and cross-cycle rotation rules before ratings begin",
+    "option_a_cn": "先按比例计算，余下名额依小数余数大小分配，并跨年轮换尾差",
+    "option_a_en": "Freeze the rounding rule before ratings: calculate proportional shares, assign remaining slots by largest fractional remainder, and rotate residual advantages across cycles",
     "option_b_cn": "看完名单后由主持人把尾差直接判给一个团队",
     "option_b_en": "Let the chair assign the remainder to one team after seeing the roster",
     "profile": "calibration",
@@ -163,8 +177,10 @@
   },
   "139": {
     "title_en": "Cross-Cycle Quota Debt",
-    "option_a_cn": "允许借一个档位名额，但登记到期日、经理与重组责任",
-    "option_a_en": "Allow one quota loan with an expiry, accountable manager, and reorganization liability",
+    "description_cn": "从下一轮预借一个档位名额能避免荒唐强排，却把压力递延给下一批受评人；即使负责人更替、组织重组或团队解散，债务仍由批准预借的经理承担。",
+    "description_en": "Borrowing one rating slot from the next cycle can avoid an absurd forced ranking but shifts pressure to the next group. A change of manager, reorganization, or team dissolution does not erase the debt; the manager who approved the advance remains accountable.",
+    "option_a_cn": "从下一轮预借一个档位；换负责人、重组或解散均不免批准经理的债",
+    "option_a_en": "Allow one rating slot to be borrowed from the next cycle with an expiry; the approving manager remains accountable after leadership change, reorganization, or team dissolution",
     "option_b_cn": "每轮刚性清零配额，不把头档或末位压力留给未来",
     "option_b_en": "Settle quotas rigidly every cycle and carry no rating debt forward",
     "profile": "calibration",
@@ -172,19 +188,24 @@
   },
   "140": {
     "title_en": "Quota Ownership Date in Reorganizations",
-    "option_a_cn": "按服务天数或目标 owner 归属，并在召集令时冻结",
-    "option_a_en": "Assign quota ownership by service days or goal owner and freeze it at convocation",
+    "description_cn": "重组时，原团队与新团队都可能拒收末档、争认头档；档位归属只影响分布，原上司与新上司仍须分别提交各自观察期的证据。",
+    "description_en": "During reorganization, both the original and new teams may reject bottom ratings while claiming top ratings. Quota ownership affects only the distribution; the former and new managers must still submit evidence from their respective observation periods.",
+    "option_a_cn": "按服务天数或目标责任人确定归属，并在校准会议发起时冻结",
+    "option_a_en": "Assign ownership by service days or goal owner and freeze it when the calibration meeting is opened",
     "option_b_cn": "一律由期末组织吸收全部头档与末位配额",
     "option_b_en": "Make the year-end organization absorb every top and bottom quota",
     "profile": "calibration",
     "reference_choice": "a"
   },
   "141": {
-    "title_en": "Executive Save-or-Kill List",
-    "option_a_cn": "只给高层一次书面必议额度，并审计理由与最终命中",
-    "option_a_en": "Give executives one documented discussion flag and audit its rationale and accuracy",
-    "option_b_cn": "允许高层直接保送或必杀孙级官员，迅速结束争论",
-    "option_b_en": "Let executives directly save or condemn skip-level staff to end debate",
+    "title_cn": "高层保荐与否决名单",
+    "title_en": "Executive Recommendation and Veto List",
+    "description_cn": "高层可以要求校准席书面复议隔级下属的评定，但不能直接改档；若事实推翻其保荐或否决，提出者的判断信誉会受损。",
+    "description_en": "Senior leaders may request written reconsideration of a skip-level subordinate's rating but cannot alter it directly. If the evidence overturns their recommendation or veto, the sponsor's judgment credibility suffers.",
+    "option_a_cn": "允许高层提交一次书面复议建议，列明证据并接受命中率审计",
+    "option_a_en": "Allow a senior leader to submit one written reconsideration proposal with evidence and accept an accuracy audit",
+    "option_b_cn": "允许高层直接干预隔级下属的档位，以权威迅速结束争论",
+    "option_b_en": "Allow senior leaders to intervene directly in a skip-level subordinate's rating and end the dispute through authority",
     "profile": "governance",
     "reference_choice": "c"
   },
@@ -198,7 +219,10 @@
     "reference_choice": "b"
   },
   "143": {
+    "title_cn": "截止后重大事件的对称处理",
     "title_en": "Symmetric Treatment of Post-Cutoff Events",
+    "description_cn": "截止后的重大成功与重大事故必须使用同一门槛对称处理，不能只为事故重开、对成功置之不理；重开一次后须重新封存，禁止反复改榜。",
+    "description_en": "Major successes and major incidents after cutoff must use the same threshold. The list cannot reopen only for failures while ignoring success; after one reopening it must be sealed again rather than revised repeatedly.",
     "option_a_cn": "奖惩发放前按同一重大门槛对称重开一次并再封榜",
     "option_a_en": "Before payout, reopen once under the same materiality threshold for gains and losses",
     "option_b_cn": "封榜后绝不重开，重大成功与事故都转入下一轮",
@@ -216,11 +240,14 @@
     "reference_choice": "a"
   },
   "145": {
+    "title_cn": "同档内的影子排序",
     "title_en": "Shadow Ordering Within a Rating Band",
-    "option_a_cn": "公开仅用于发展的 3.5 内部顺序，并禁止影响奖金",
+    "description_cn": "同属 3.5 档的人仍可能被暗中排出优先与末位；若内部顺序影响奖金就必须公开，否则只能作为培养与机会安排的参考。",
+    "description_en": "People sharing the 3.5 rating may still be secretly divided into priority and bottom positions. If that internal order affects pay it must be disclosed; otherwise it may guide development and opportunity allocation only.",
+    "option_a_cn": "公开同属 3.5 档人员的培养排序，并禁止其影响奖金",
     "option_a_en": "Publish a development-only order within 3.5 and bar it from affecting pay",
-    "option_b_cn": "让经理私下维护 B 加减序列并据此快速分机会",
-    "option_b_en": "Let managers keep a secret B-plus/B-minus order for allocating opportunities",
+    "option_b_cn": "让经理私下把同档人员排出优先与末位，并据此快速分配机会",
+    "option_b_en": "Let managers privately rank people within the same band into priority and bottom positions and allocate opportunities accordingly",
     "profile": "assessment",
     "reference_choice": "c"
   },
@@ -264,8 +291,8 @@
     "title_en": "Take-the-Hit-This-Time Compensation Promise",
     "option_a_cn": "把专项奖或优先机会写明 owner、期限与非预定档声明",
     "option_a_en": "Document the award or opportunity, owner, deadline, and non-guaranteed-rating clause",
-    "option_b_cn": "让员工先替团队背档，以经理个人信用口头担保下轮",
-    "option_b_en": "Make the employee absorb the quota now on the manager's verbal guarantee",
+    "option_b_cn": "让员工本轮承担档位，口头保证下轮补回 3.75 档",
+    "option_b_en": "Make the employee absorb the rating this cycle on the manager's verbal guarantee of restoring a 3.75 rating next cycle",
     "profile": "compensation",
     "reference_choice": "a"
   },

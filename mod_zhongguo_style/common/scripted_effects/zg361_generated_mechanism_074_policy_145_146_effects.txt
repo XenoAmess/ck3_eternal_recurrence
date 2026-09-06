@@ -4,7 +4,7 @@
 
 
 
-# 145 三档之内的影子排序
+# 145 同档内的影子排序
 zg361_mechanism_145_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_145_choice } }

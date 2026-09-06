@@ -87,6 +87,7 @@ class Mechanism:
     priority: str
     decision_cn: str
     consequence_cn: str
+    description_en: str
     acceptance_cn: str
     option_a_cn: str
     option_a_en: str
@@ -404,11 +405,19 @@ def load_mechanisms(mod_root: Path, *, require_reviewed_choices: bool = True) ->
                 id=mechanism_id,
                 group_code=fields["group_code"],
                 group_title=fields["group_title"],
-                title_cn=fields["title_cn"],
+                title_cn=str(override.get("title_cn", fields["title_cn"])),
                 title_en=str(override.get("title_en", f"Mechanism {mechanism_id}")),
                 priority=fields["priority"],
                 decision_cn=fields["decision_cn"],
-                consequence_cn=fields["consequence_cn"],
+                consequence_cn=str(
+                    override.get("description_cn", fields["consequence_cn"])
+                ),
+                description_en=str(
+                    override.get(
+                        "description_en",
+                        "This dispute will shape later reviews and change the organization's trust, workload, risk, talent, or fiscal pressure.",
+                    )
+                ),
                 acceptance_cn=fields["acceptance_cn"],
                 option_a_cn=str(override.get("option_a_cn", f"按证据落实“{fields['title_cn']}”")),
                 option_a_en=str(override.get("option_a_en", "Adopt the evidence-led policy")),

@@ -4,7 +4,7 @@
 
 
 
-# 141 高层“保送 / 必杀”名单
+# 141 高层保荐与否决名单
 zg361_mechanism_141_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_141_choice } }

@@ -96,7 +96,7 @@
 | 084 | 递延奖金与分期归属 | L | P2 | `compensation` | `zg361m.84` | `zg361_mechanism_084_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 085 | 续期激励断崖 | L | P2 | `compensation` | `zg361m.85` | `zg361_mechanism_085_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 086 | 奖金暂扣与追索 | L | P1 | `compensation` | `zg361m.86` | `zg361_mechanism_086_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 087 | 薪酬带宽与带内位置 | L | P1 | `compensation` | `zg361m.87` | `zg361_mechanism_087_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 087 | 薪酬区间与区间内位置 | L | P1 | `compensation` | `zg361m.87` | `zg361_mechanism_087_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 088 | 市场调薪与绩效调薪争预算 | L | P1 | `compensation` | `zg361m.88` | `zg361_mechanism_088_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 089 | 职级、任命、权力与现金解耦 | L | P1 | `promotion` | `zg361m.89` | `zg361_mechanism_089_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 090 | 专项即时奖 | L | P1 | `compensation` | `zg361m.90` | `zg361_mechanism_090_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
@@ -121,9 +121,9 @@
 | 109 | 高潜标签的公开层级 | O | P2 | `promotion` | `zg361m.109` | `zg361_mechanism_109_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 110 | 潜力校准与绩效校准分会 | O | P1 | `promotion` | `zg361m.110` | `zg361_mechanism_110_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 111 | 遗憾流失与健康流失分类 | O | P1 | `organization` | `zg361m.111` | `zg361_mechanism_111_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 112 | 留任访谈（Stay Interview） | O | P1 | `organization` | `zg361m.112` | `zg361_mechanism_112_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 112 | 留任访谈 | O | P1 | `organization` | `zg361m.112` | `zg361_mechanism_112_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 113 | 关键人依赖与知识移交 | O | P1 | `learning` | `zg361m.113` | `zg361_mechanism_113_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 114 | 经理“人才输出”积分 | P | P1 | `organization` | `zg361m.114` | `zg361_mechanism_114_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 114 | 经理育才功绩 | P | P1 | `organization` | `zg361m.114` | `zg361_mechanism_114_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 115 | 匿名内部应聘 | P | P1 | `organization` | `zg361m.115` | `zg361_mechanism_115_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 116 | 放人时限与一次交接延期 | P | P1 | `organization` | `zg361m.116` | `zg361_mechanism_116_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 117 | 转岗爬坡保护期 | P | P1 | `learning` | `zg361m.117` | `zg361_mechanism_117_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
@@ -150,11 +150,11 @@
 | 138 | 人数取整与尾差归属 | S | P1 | `calibration` | `zg361m.138` | `zg361_mechanism_138_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 139 | 跨周期配额债 | S | P2 | `calibration` | `zg361m.139` | `zg361_mechanism_139_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 140 | 重组中的配额归属日 | S | P1 | `calibration` | `zg361m.140` | `zg361_mechanism_140_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 141 | 高层“保送 / 必杀”名单 | S | P2 | `governance` | `zg361m.141` | `zg361_mechanism_141_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 141 | 高层保荐与否决名单 | S | P2 | `governance` | `zg361m.141` | `zg361_mechanism_141_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 142 | 里程碑待定档 | S | P2 | `assessment` | `zg361m.142` | `zg361_mechanism_142_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 143 | 截止后重大事故对称处理 | S | P1 | `governance` | `zg361m.143` | `zg361_mechanism_143_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 143 | 截止后重大事件的对称处理 | S | P1 | `governance` | `zg361m.143` | `zg361_mechanism_143_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 144 | 校准异议票与少数意见 | S | P1 | `calibration` | `zg361m.144` | `zg361_mechanism_144_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 145 | 三档之内的影子排序 | S | P2 | `assessment` | `zg361m.145` | `zg361_mechanism_145_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
+| 145 | 同档内的影子排序 | S | P2 | `assessment` | `zg361m.145` | `zg361_mechanism_145_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 146 | 直白档位 / 委婉话术制度 | T | P1 | `assessment` | `zg361m.146` | `zg361_mechanism_146_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 147 | 强制“一扬一抑”反馈模板 | T | P2 | `assessment` | `zg361m.147` | `zg361_mechanism_147_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 148 | 先讲证据还是先报结果 | T | P1 | `assessment` | `zg361m.148` | `zg361_mechanism_148_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
@@ -372,4 +372,4 @@
 | 360 | 经理集体拒绝“硬背 C” | AL | P2 | `endgame` | `zg361m.360` | `zg361_mechanism_360_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 361 | 《三六一绩效宪章》 | AL | P2 | `endgame` | `zg361m.361` | `zg361_mechanism_361_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 
-Manifest semantic SHA-256: `654d27c2dec7c8cc2a9c357ed0248964f4f6ac21740a665cb8354bab6edcce5f`
+Manifest semantic SHA-256: `0bb3488838c9b1e404bb68f2356c236e1fa2ba10eb8d627f8c3044f27c1bceb2`

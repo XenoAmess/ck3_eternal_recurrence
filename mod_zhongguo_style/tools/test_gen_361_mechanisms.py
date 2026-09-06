@@ -87,6 +87,105 @@ class MechanismGenerationTests(unittest.TestCase):
                 self.assertIn(mechanism.profile, PROFILE_DELTAS)
                 self.assertIn(mechanism.reference_choice, {"a", "b", "c"})
 
+    def test_audit_007_008_copy_closures_are_projected(self) -> None:
+        chinese = localization_values(self.mechanisms, "simp_chinese")
+        expected = {
+            "zg361m.74.desc": "只冻结今后裁撤个案的处理政策",
+            "zg361m.74.a": "确立公开裁撤政策",
+            "zg361m.74.b": "确立洗低成绩裁撤政策",
+            "zg361m.75.desc": "只冻结今后自愿离开个案的处理政策",
+            "zg361m.75.a": "确立自愿离开政策",
+            "zg361m.75.b": "确立强硬离开政策",
+            "zg361m.76.b.tt": "人事复核官",
+            "zg361m.79.desc": "隔级下属的档位",
+            "zg361m.84.desc": "尚未归属的奖金形成离职即损失的束缚",
+            "zg361m.85.b.tt": "临时加价挽留",
+            "zg361m.87.t": "薪酬区间与区间内位置",
+            "zg361m.87.a.tt": "区间内位置",
+            "zg361m.87.b.tt": "不超过区间上限",
+            "zg361m.92.b.tt": "造成管理失当",
+            "zg361m.93.desc": "取消保护并全额降职降俸",
+            "zg361m.93.b": "一律撤权并全额降职降俸",
+            "zg361m.94.a.tt": "薪酬区间",
+            "zg361m.97.desc": "未获通过的晋升提名",
+            "zg361m.99.b.tt": "年度编制使用率",
+            "zg361m.100.a": "书面特批有据可查的关键岗位",
+            "zg361m.101.desc": "一个编制名额不等于简单增添一名人手",
+            "zg361m.104.b.tt": "集中招募可立即履职的成熟人才",
+            "zg361m.107.b.tt": "钦定一名接班人",
+            "zg361m.110.b.tt": "仅凭一句“高潜”评价",
+            "zg361m.111.desc": "离任者日后取得高成就",
+            "zg361m.112.t": "留任访谈",
+            "zg361m.112.desc": "未兑现承诺形成可见债务",
+            "zg361m.112.b.tt": "紧急挽留条件",
+            "zg361m.114.t": "经理育才功绩",
+            "zg361m.114.a.tt": "育才功绩、补岗优先与跨团队信誉",
+            "zg361m.114.b.tt": "损害育才功绩与跨团队信誉",
+            "zg361m.115.desc": "申请本身不会立即调动人选或授予头衔",
+            "zg361m.119.a": "按结果追记招聘各环节表现",
+            "zg361m.121.desc": "不必直接断送仕途",
+            "zg361m.121.a.tt": "试管一个小团队一周期",
+            "zg361m.122.b.tt": "硬结果的权重提高到过半",
+            "zg361m.124.desc": "尚无成熟继任者的优秀经理会长期无法升任",
+            "zg361m.126.desc": "低产但顺从者会拖累结果",
+            "zg361m.129.desc": "重复提交晋升申请",
+            "zg361m.132.desc": "项目发起人或担保人的信任",
+            "zg361m.132.a.tt": "项目发起人或担保人复核",
+            "zg361m.133.desc": "公开追责会",
+            "zg361m.135.desc": "虚假的乐观预期",
+            "zg361m.136.a.tt": "不提前分完全部档位名额",
+            "zg361m.138.a.tt": "余下名额依小数余数大小分配",
+            "zg361m.139.desc": "从下一轮预借一个档位名额",
+            "zg361m.139.a.tt": "换负责人、重组或解散均不免批准经理的债",
+            "zg361m.140.desc": "原团队与新团队",
+            "zg361m.140.a.tt": "在校准会议发起时冻结",
+            "zg361m.141.t": "高层保荐与否决名单",
+            "zg361m.141.desc": "不能直接改档",
+            "zg361m.141.a": "书面复议建议",
+            "zg361m.141.b": "直接干预隔级下属的档位",
+            "zg361m.143.t": "截止后重大事件的对称处理",
+            "zg361m.143.desc": "重大成功与重大事故必须使用同一门槛",
+            "zg361m.145.t": "同档内的影子排序",
+            "zg361m.145.desc": "同属 3.5 档的人",
+            "zg361m.145.a": "培养排序",
+            "zg361m.145.b": "同档人员排出优先与末位",
+            "zg361m.150.b": "口头保证下轮补回 3.75 档",
+        }
+        for key, fragment in expected.items():
+            with self.subTest(key=key):
+                self.assertIn(fragment, chinese[key])
+
+        audited_ids = {
+            74, 75, 76, 79, 84, 85, 87, 92, 93, 94, 97, 99, 100,
+            101, 104, 107, 110, 111, 112, 114, 115, 119, 121, 122,
+            124, 126, 129, 132, 133, 135, 136, 138, 139, 140, 141,
+            143, 145, 150,
+        }
+        audited_copy = "\n".join(
+            chinese[f"zg361m.{mechanism_id}.{suffix}"]
+            for mechanism_id in audited_ids
+            for suffix in ("t", "desc", "a", "a.tt", "b", "b.tt")
+        )
+        for stale_phrase in (
+            "反 offer", "薪酬带宽", "带顶", "制造坏管理", "失败提包",
+            "多生成一个角色", "集中购买", "一位太子", "一句高潜",
+            "事后出现高成就", "Stay Interview", "饼债", "瞬移角色",
+            "职业死亡", "养兔子", "纵容野狗", "自杀式降档", "批斗会",
+            "孙级", "召集令", "欠债换老板", "保送", "必杀", "红线",
+            "三档之内", "B 加减序列",
+        ):
+            with self.subTest(stale_phrase=stale_phrase):
+                self.assertNotIn(stale_phrase, audited_copy)
+
+        english = localization_values(self.mechanisms, "english")
+        french_placeholder = localization_values(self.mechanisms, "french")
+        self.assertIn("only freezes the policy", english["zg361m.74.desc"])
+        self.assertIn("cannot alter it directly", english["zg361m.141.desc"])
+        self.assertEqual(
+            french_placeholder["zg361m.141.desc"],
+            english["zg361m.141.desc"],
+        )
+
     def test_acceptance_contracts_are_typed_complete_and_specific(self) -> None:
         for mechanism in self.mechanisms:
             contract = mechanism.acceptance_contract

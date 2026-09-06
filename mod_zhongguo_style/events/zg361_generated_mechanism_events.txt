@@ -4215,7 +4215,7 @@ zg361m.86 = {
 	}
 }
 
-# 087 薪酬带宽与带内位置
+# 087 薪酬区间与区间内位置
 zg361m.87 = {
 	type = character_event
 	theme = crown
@@ -5440,7 +5440,7 @@ zg361m.111 = {
 	}
 }
 
-# 112 留任访谈（Stay Interview）
+# 112 留任访谈
 zg361m.112 = {
 	type = character_event
 	theme = crown
@@ -5538,7 +5538,7 @@ zg361m.113 = {
 	}
 }
 
-# 114 经理“人才输出”积分
+# 114 经理育才功绩
 zg361m.114 = {
 	type = character_event
 	theme = crown
@@ -6861,7 +6861,7 @@ zg361m.140 = {
 	}
 }
 
-# 141 高层“保送 / 必杀”名单
+# 141 高层保荐与否决名单
 zg361m.141 = {
 	type = character_event
 	theme = crown
@@ -6959,7 +6959,7 @@ zg361m.142 = {
 	}
 }
 
-# 143 截止后重大事故对称处理
+# 143 截止后重大事件的对称处理
 zg361m.143 = {
 	type = character_event
 	theme = crown
@@ -7057,7 +7057,7 @@ zg361m.144 = {
 	}
 }
 
-# 145 三档之内的影子排序
+# 145 同档内的影子排序
 zg361m.145 = {
 	type = character_event
 	theme = crown

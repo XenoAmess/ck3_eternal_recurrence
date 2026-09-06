@@ -1051,10 +1051,7 @@ def localization_values(
             tooltip_c = "关闭本局内的这项提案；它不会自动再次出现，组织账本的制度债增加 3，行政负担减少 1。"
         else:
             title = f"#{mechanism.id:03d} · {mechanism.title_en}"
-            desc = (
-                "This dispute will shape later reviews and change the organization's trust, workload, risk, "
-                "talent, or fiscal pressure."
-            )
+            desc = mechanism.description_en
             if ledger_only:
                 desc += " This ruling updates only the organizational ledger; without a connected case, it will not issue payments, appointments, hires, transfers, or refunds."
                 option_a = f"{concise_choice_en(mechanism.option_a_en)} (ledger only)"

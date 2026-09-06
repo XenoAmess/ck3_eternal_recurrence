@@ -4,7 +4,7 @@
 
 
 
-# 143 截止后重大事故对称处理
+# 143 截止后重大事件的对称处理
 zg361_mechanism_143_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_143_choice } }

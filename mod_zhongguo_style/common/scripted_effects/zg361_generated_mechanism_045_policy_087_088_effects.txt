@@ -4,7 +4,7 @@
 
 
 
-# 087 薪酬带宽与带内位置
+# 087 薪酬区间与区间内位置
 zg361_mechanism_087_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_087_choice } }

@@ -85,7 +85,7 @@ zg361_mechanism_113_ai_effect = {
 	}
 }
 
-# 114 经理“人才输出”积分
+# 114 经理育才功绩
 zg361_mechanism_114_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_114_choice } }
