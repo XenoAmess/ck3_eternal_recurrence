@@ -149,7 +149,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(161, "u", "sham_competition", "“陪跑包”与虚假竞争", "Filler packets and sham competition", "只提交真愿意支持的候选。", "Submit only candidates the manager genuinely supports.", "放入陪跑包，计入准备工时和公平债。", "Insert a filler packet and charge its preparation hours and fairness debt.", 30, "经理公平信用和主推包合法性消费陪跑识别"),
     _m(162, "u", "tenure_exception", "资历门槛例外申请", "Tenure exception application", "先占破格额度并单独表决准入，再评能力。", "Reserve an exception slot and vote on admission before merit review.", "把普通表现包装成破格，并透支未来可信度。", "Package ordinary evidence as exceptional and spend future credibility.", 30, "破格额度账与后续能力评审保持分离"),
     _m(163, "u", "observation_window", "晋升绩效观察窗", "Promotion observation window", "周期初冻结最近两轮，并补充重组等背景。", "Freeze the last two cycles up front and attach context such as a reorganization.", "只挑最漂亮一轮，留下选窗审计差异。", "Cherry-pick the best cycle and retain the window audit diff.", 90, "预审只读取冻结窗口内的完整候选历史"),
-    _m(164, "u", "cross_team_evidence", "跨团队成果进入晋升包", "Cross-team evidence in the packet", "由原负责人共签或独立复核后，按贡献份额入包。", "Admit cross-team evidence after the former owner's cosign or an independent review, using bounded contribution shares.", "拿团队总成绩冒充个人影响，触发归因债。", "Claim the team total as personal impact and post attribution debt.", 90, "晋升包消费有来源的贡献份额而非团队总分"),
+    _m(164, "u", "cross_team_evidence", "跨团队成果进入晋升包", "Cross-team evidence in the packet", "按候选四成、同伴六成建立待复核归因；不声称已经共签或独立复核。", "Record a provisional forty-sixty candidate-to-peer attribution without claiming cosignature or independent review.", "拿团队总成绩冒充个人影响，触发归因债。", "Claim the team total as personal impact and post attribution debt.", 90, "晋升包消费有来源的贡献份额而非团队总分"),
     _m(165, "u", "next_level_trial", "“先干到下一级”试岗证据", "Next-level trial evidence", "同时冻结授权、补偿、期限和退出条件。", "Freeze authority, compensation, deadline and exit condition together.", "只加活不给权，并记录职级债。", "Add next-level work without authority and post level debt.", 90, "预审消费试岗验收回执，不改当期绩效"),
     _m(166, "u", "packet_withdrawal", "候选继续参评后的处理", "Handling a packet after the candidate continues", None, None, "让候选包继续预审，失败理由照实归档。", "Advance the candidate packet to prescreen and preserve any failure reason.", 90, "下轮材料版本读取已验证材料与准备度风险"),
     _m(167, "u", "sponsor_credit", "提名担保人的信用债", "Nomination sponsor credit", "按事实作有限背书，下一观察期再结算信用。", "Make a bounded factual endorsement and settle credit after observation.", "强力担保，失配时按同等强度折价。", "Guarantee strongly and accept an equal credibility discount on mismatch.", 365, "后续胜任观察只结算一次担保人信用"),
@@ -178,7 +178,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "在 365 日观察期内持续贴标签，并记录过度披露风险。", "Keep the label during the 365-day observation window and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
     _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer, or exit", None, None, "强制退出；直属上司支付十金离案补偿。", "Force an exit; the manager pays 10 gold in separation compensation.", 30, "终局决定页只接受一个排他终态"),
     _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "本人同意：只向真实接收经理披露目标、支持、结果和本人陈述。", "With the subject's consent, disclose goals, support, outcome, and the personal statement only to the real receiving manager.", "本人拒绝附言：只交付目标、支持与结果，不附本人陈述。", "The subject withheld the statement; deliver only goals, support, and outcome.", 30, "转岗包按访问边界投影最小字段"),
-    _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "登记退出补偿与团队成本估算。", "Record exit compensation and the estimated team costs.", "将团队成本登记为零，并留下十点隐瞒债。", "Record zero team cost and leave ten points of concealment debt.", 30, "团队成本表和经理记分卡消费同一净额"),
+    _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "另付十金离案补偿，并登记十点团队成本估算。", "Pay another 10 gold in separation compensation and record 10 points of estimated team cost.", "将团队成本登记为零，并留下十点隐瞒债。", "Record zero team cost and leave ten points of concealment debt.", 30, "团队成本表和经理记分卡消费同一净额"),
 )
 MECHANISM_BY_ID = {mechanism.mechanism_id: mechanism for mechanism in MECHANISMS}
 EXPECTED_IDS = tuple(range(146, 192))
@@ -4076,7 +4076,7 @@ PP_SCENES: dict[int, tuple[str, str]] = {
     188: ("只有已经毕业的案卷才进入观察；当前没有后续周期的同类复发事实。", "Only a graduated case enters observation, and no same-category relapse fact exists for a later cycle yet."),
     189: ("最终裁决已经给出毕业失败或同类复发回执；现有证据没有证明错岗，真实空缺也不能替代该证明。", "Final adjudication has produced a failure or same-category relapse receipt; current evidence does not prove role mismatch, and a real vacancy cannot substitute for that proof."),
     190: ("真实转岗、接收上司与当事人的披露回应已经进入案卷；承办者只能据此确定交付范围。", "The real transfer, receiving manager, and subject's disclosure response are now in the file; the decision owner may determine the delivery scope only from those records."),
-    191: ("退出终态已经登记，团队尚未核算空缺、交接、加班和补员四项预计成本。", "The exit is recorded, but estimated vacancy, handover, overtime, and replacement costs have not yet been totaled."),
+    191: ("退出终态及其首笔十金离案补偿已经登记；空缺、交接、加班和补员四项预计成本尚未核算，另行的十金补偿也尚未结算。", "The exit and its first 10-gold separation payment are recorded; vacancy, handover, overtime, and replacement costs have not yet been totaled, and the additional 10-gold payment remains unsettled."),
 }
 
 
@@ -4133,7 +4133,7 @@ TOOLTIP_DETAILS: dict[tuple[int, int], tuple[str, str]] = {
     (153, 2): ("保留九十日原期限，将当前期限改为一百二十日，并登记一次改期理由。", "Preserves the original day-90 deadline, moves the current deadline to day 120, and records one reason for revision."),
     (160, 1): ("材料、职级证据、战略匹配各记八十分，总分二百四十，达到一百八十分门槛。", "Packet, level evidence, and strategic fit each score 80; total 240 clears the 180 threshold."),
     (160, 2): ("政治筛选后的总分记一百二十，未达到一百八十分门槛。", "The political screen records a total of 120, below the 180 threshold."),
-    (164, 1): ("候选贡献记四成，同伴贡献记六成，总和一百。", "Candidate contribution is 40% and peer contribution is 60%, totaling 100%."),
+    (164, 1): ("候选贡献记四成，同伴贡献记六成，总和一百；共签或独立复核仍待后续回执。", "Candidate contribution is 40% and peer contribution is 60%, totaling 100%; cosignature or independent review still awaits a later receipt."),
     (164, 2): ("候选贡献记十成、同伴贡献记零，并登记归因债。", "Candidate contribution is recorded as 100% and peer contribution as zero, with attribution debt."),
     (169, 1): ("专业评委权重六成，外部评委权重四成。", "Subject-matter reviewers carry 60% and external reviewers 40%."),
     (169, 2): ("专业评委权重八成，外部评委权重两成，并登记关系风险。", "Subject-matter reviewers carry 80% and external reviewers 20%, with relationship risk recorded."),
@@ -4178,11 +4178,18 @@ def option_tooltip(
         )
     payment = ""
     if DUAL_COST_ROUTE_BY_ID.get(mechanism.mechanism_id) == route:
-        payment = (
-            "直属上司实付公帑五金与私库五金，当事人实收十金。"
-            if chinese
-            else "The manager pays 5 treasury and 5 personal gold, and the subject receives 10."
-        )
+        if mechanism.mechanism_id == 191:
+            payment = (
+                "另行扣除直属上司公帑五金与私库五金，当事人另收十金。"
+                if chinese
+                else "Separately charges the manager 5 treasury and 5 personal gold, and the subject receives another 10."
+            )
+        else:
+            payment = (
+                "直属上司实付公帑五金与私库五金，当事人实收十金。"
+                if chinese
+                else "The manager pays 5 treasury and 5 personal gold, and the subject receives 10."
+            )
     detail_pair = TOOLTIP_DETAILS.get((mechanism.mechanism_id, route))
     detail = detail_pair[0 if chinese else 1] if detail_pair else ""
     if chinese:
@@ -4395,19 +4402,12 @@ def localization_rows(language: str) -> list[str]:
         )
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 9000 + domain_index
-        if domain.key in {"v", "w"}:
-            completion_subject = "[zg361_pp_completion_subject.GetShortUIName]"
-            title = (
-                f"本轮选择已录入：{completion_subject}的{domain.title_cn}"
-                if chinese
-                else f"Cycle Choices Recorded for {completion_subject}: {domain.title_en}"
-            )
-        else:
-            title = (
-                f"本轮选择已录入：{domain.title_cn}"
-                if chinese
-                else f"Cycle Choices Recorded: {domain.title_en}"
-            )
+        completion_subject = "[zg361_pp_completion_subject.GetShortUIName]"
+        title = (
+            f"本轮选择已录入：{completion_subject}的{domain.title_cn}"
+            if chinese
+            else f"Cycle Choices Recorded for {completion_subject}: {domain.title_en}"
+        )
         completion = COMPLETION_COPY[domain.key]
         desc = completion[0 if chinese else 1]
         option = completion[2 if chinese else 3]

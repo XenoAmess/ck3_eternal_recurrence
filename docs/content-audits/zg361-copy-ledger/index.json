@@ -68,18 +68,18 @@
       "sha256": "725290037d4bdd8123239dfdbfdf32caa6ca1355a09a762f5fe880a2bbc554e4"
     },
     {
-      "bytes": 91504,
+      "bytes": 91501,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-003.json",
       "records": 40,
-      "sha256": "25a077d53545c7ab67c01cade393b70d995b06e8ad708003be08d6a85f467d22"
+      "sha256": "24a25f559b276fc03889c272ff4a1b700d576130809d8a00d10c008bf0715132"
     },
     {
-      "bytes": 90976,
+      "bytes": 90983,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-004.json",
       "records": 40,
-      "sha256": "7a0b9d868d2bccc70ca6db2226287ae423486d61eb27e842cf58ee5e83f88100"
+      "sha256": "b302249a25ad0e1f6babc25e452af130e012a54487537296bcde824a76ba8d2a"
     },
     {
       "bytes": 87057,
@@ -201,11 +201,11 @@
       "sha256": "00c0f8f2f65aa0f4c59bb22b7a5b373ac18334c646d750f49e44cfb6089b65cb"
     },
     {
-      "bytes": 69662,
+      "bytes": 69785,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-006.json",
       "records": 180,
-      "sha256": "761402ec8c8fb358d71100ad76f1feb4703fbf57ba0d26461050915eb0a4a50b"
+      "sha256": "951c7bc8709a11897ae7a5d79cb947c0dba70ddb91a19e341e0e1fcc8d7fc74a"
     },
     {
       "bytes": 83586,
@@ -334,18 +334,18 @@
       "sha256": "5b9ce3ceeac2d6952ab71707c122d5d55e6047c10a2d9ab6091c13ab9843175b"
     },
     {
-      "bytes": 69356,
+      "bytes": 69425,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-025.json",
       "records": 180,
-      "sha256": "f03bc9522aad491ee227fd43d0b0fa5361c6e89e10d877e586f36be38f11a164"
+      "sha256": "f680e46bec0d28ad885793904352111a04a0dd9740bce75de4dd64616e574d08"
     },
     {
-      "bytes": 72569,
+      "bytes": 72753,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-026.json",
       "records": 180,
-      "sha256": "5ad7266f944d9a2452fbcc59ca7408a2e90929de25da7fd813e54d879e962222"
+      "sha256": "9a52ed2d513ad364ebb9cd36d0c017ce0a3df3bdb5a493efa0d5350469abeae1"
     },
     {
       "bytes": 69184,
@@ -1628,10 +1628,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 17845,
+        "bytes": 17968,
         "lines": 170,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_credit_project_l_simp_chinese.yml",
-        "sha256": "76ae50dda95dc015fe82dc29a18839ebfa153ff4c66fa89b0414b07107095133"
+        "sha256": "fa17bae59b4fcd4f4c09be4628bcc20362ffa00fd82292c8a7aed47b8d6192e3"
       },
       {
         "authority": {
@@ -1641,10 +1641,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 45371,
+        "bytes": 45624,
         "lines": 427,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_feedback_promotion_pip_l_simp_chinese.yml",
-        "sha256": "88ec3670e201c30765e8057317d2ff99c8610c8385757a8bbcea1c3e7308dba9"
+        "sha256": "3f049c3898e99da8151019823afab52a39f7b861cddb42f618466af4b00d1d7d"
       },
       {
         "authority": {
@@ -1843,9 +1843,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "ae6ae85dec8007e4435f6fbe98748eec2f2b628f",
+    "git_commit": "499a9a39e11175e4bf747a14585a5fb3f10e300c",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "9d943c18fd9dd7a82eb93de45fe76e4eeed2bebce8c95aedf5a0105f324522b7"
+    "input_digest_sha256": "9c15371dea3bfce70db2a051e7781c1898bb65725516cf143e842ed6613cb609"
   },
   "summary": {
     "all_event_definitions": 1009,

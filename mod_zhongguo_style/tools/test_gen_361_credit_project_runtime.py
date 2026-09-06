@@ -1249,6 +1249,9 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
         chinese = loc_rows(
             MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
         )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_credit_project_l_english.yml"
+        )
         expected_tokens = {
             (26, "a"): ("二十小时交付", "二十三小时容量"),
             (26, "b"): ("十五小时交付", "二十二小时容量"),
@@ -1260,6 +1263,8 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
             (58, "b"): ("直属与越级上司", "暂不计入已阅读"),
             (59, "a"): ("剩余损失降至五", "诚信记录增加一点"),
             (59, "b"): ("保留九点损失", "诚信记录不增加"),
+            (60, "a"): ("支持原作者", "构成窃取"),
+            (60, "b"): ("唯一作者", "跨部门贡献者", "驳回对其窃取指控"),
             (61, "a"): ("短事实汇报制度", "一小时容量"),
             (61, "b"): ("长叙事汇报制度", "四小时容量"),
             (64, "a"): ("未来责任转给继任者", "旧案仍归原上司"),
@@ -1268,7 +1273,7 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
             (65, "b"): ("三名旧部", "七名原团队成员", "任人唯亲审计"),
             (66, "a"): ("释放全部剩余容量", "保留已验证功劳"),
             (66, "b"): ("暂不释放容量", "不改写个人功劳"),
-            (68, "a"): ("一个保护周期", "绩效改进计划", "不占本期名额"),
+            (68, "a"): ("一个保护周期", "确有未结绩效改进计划时", "不占本期名额"),
             (68, "b"): ("一个保护周期", "不携带绩效改进计划", "不占本期名额"),
             (129, "a"): ("保留两周期资格", "本期不授予"),
             (129, "b"): ("占用唯一槽位", "本期立即授予", "资格保留两周期"),
@@ -1282,6 +1287,10 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
         for mid in (27, 57, 64):
             with self.subTest(mid=mid, field="desc"):
                 self.assertNotRegex(chinese[f"zg361cp.{mid}.desc"], r"亲自签字|亲自表示同意")
+
+        self.assertNotIn("共同作者", chinese["zg361cp.60.b"])
+        self.assertIn("确有未结绩效改进计划时", chinese["zg361cp.68.desc"])
+        self.assertIn("PIP only if one remains open", english["zg361cp.68.a"])
 
     def test_localization_keysets_match_and_seven_languages_are_english_placeholders(self) -> None:
         paths = {

@@ -1353,14 +1353,18 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         ):
             self.assertIn(key, w)
 
-    def test_v_and_w_completion_titles_name_the_actual_subject(self) -> None:
+    def test_all_completion_titles_name_the_actual_subject(self) -> None:
         subject = "[zg361_pp_completion_subject.GetShortUIName]"
         expected = {
             "simp_chinese": {
+                "zg361pp.9001.t": f"本轮选择已录入：{subject}的反馈谈判与承诺债",
+                "zg361pp.9002.t": f"本轮选择已录入：{subject}的晋升提名与预审",
                 "zg361pp.9003.t": f"本轮选择已录入：{subject}的晋升答辩与评委政治",
                 "zg361pp.9004.t": f"本轮选择已录入：{subject}的绩效改进计划启动、毕业与复发",
             },
             "english": {
+                "zg361pp.9001.t": f"Cycle Choices Recorded for {subject}: Feedback bargaining and promise debt",
+                "zg361pp.9002.t": f"Cycle Choices Recorded for {subject}: Promotion nomination and prescreen",
                 "zg361pp.9003.t": f"Cycle Choices Recorded for {subject}: Promotion panels and review politics",
                 "zg361pp.9004.t": f"Cycle Choices Recorded for {subject}: PIP initiation, graduation and relapse",
             },
@@ -1582,8 +1586,21 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertIsNotNone(match)
             self.assertIn("公帑五金", match.group(1))
             self.assertIn("私库五金", match.group(1))
-            self.assertIn("实收十金", match.group(1))
+            if mid == 191:
+                self.assertIn("另收十金", match.group(1))
+            else:
+                self.assertIn("实收十金", match.group(1))
         self.assertIn("团队成本估算为三、二、零、五，合计十", chinese)
+        self.assertIn("退出终态及其首笔十金离案补偿已经登记", chinese)
+        self.assertIn("另行扣除直属上司公帑五金与私库五金", chinese)
+
+    def test_provisional_cross_team_attribution_does_not_claim_missing_review(self) -> None:
+        chinese = "\n".join(gen.localization_rows("simp_chinese"))
+        english = "\n".join(gen.localization_rows("english"))
+        self.assertIn("按候选四成、同伴六成建立待复核归因", chinese)
+        self.assertIn("共签或独立复核仍待后续回执", chinese)
+        self.assertNotIn("由原负责人共签或独立复核后", chinese)
+        self.assertIn("cosignature or independent review still awaits a later receipt", english)
 
     def test_delivery_uses_readable_reason_text_and_completion_is_not_closed(self) -> None:
         event = effect_block(self.events, "zg361pp.5151")
