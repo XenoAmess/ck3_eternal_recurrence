@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "松绑（5%）"
  setting_zg361_ratio_relaxed_desc:0 "末位名额按人数的 5% 向下取整，不设最低人数；不足 20 人时不会产生强制末位。"
  setting_zg361_ratio_off:0 "放养（0%）"
- setting_zg361_ratio_off_desc:0 "不再强制末位，考核沦为形式主义。"
+ setting_zg361_ratio_off_desc:0 "不再强制产生末位名额；考核、排名与其他档位仍照常进行。"
  # 决议组与决议
  decision_group_type_zg361:0 "绩效考核"
  zg361_review_now_decision:0 "立即开展绩效考核"

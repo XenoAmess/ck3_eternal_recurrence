@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "Poluzowane (5%)"
  setting_zg361_ratio_relaxed_desc:0 "Zachowaj ocenianie 361, lecz poluzuj sztywną kwotę końcowych 10%."
  setting_zg361_ratio_off:0 "Bez nadzoru (0%)"
- setting_zg361_ratio_off_desc:0 "Bez wymuszonej dolnej warstwy. Ocena staje się formalnością."
+ setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; reviews, rankings, and the other grade bands continue normally."
  # Decision group & decisions
  decision_group_type_zg361:0 "Ocena Wyników"
  zg361_review_now_decision:0 "Przeprowadź Ocenę Wyników Teraz"

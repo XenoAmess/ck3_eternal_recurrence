@@ -1258,17 +1258,14 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 "Evalúa inmediatamente al menos a un cargo titular directo en activo; no puedes realizar otra evaluación en el mismo año natural.",
             ),
         }
+        # Daily-development changes author Chinese and English; the other seven
+        # description values intentionally use the corrected English source
+        # until the release localization workflow translates them again.
+        english_description = expected["english"][0]
         for language in (
-            "french",
-            "german",
-            "japanese",
-            "korean",
-            "polish",
-            "russian",
-            "spanish",
+            "french", "german", "japanese", "korean", "polish", "russian", "spanish"
         ):
-            _, tooltip = expected[language]
-            expected[language] = (expected["english"][0], tooltip)
+            expected[language] = (english_description, expected[language][1])
         for language, (description, tooltip) in expected.items():
             with self.subTest(language=language):
                 path = (

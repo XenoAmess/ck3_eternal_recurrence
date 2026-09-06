@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "Relajado (5%)"
  setting_zg361_ratio_relaxed_desc:0 "Mantén la calificación 361, pero afloja la cuota rígida del 10% inferior."
  setting_zg361_ratio_off:0 "Laissez-faire (0%)"
- setting_zg361_ratio_off_desc:0 "Sin tramo inferior forzado. La evaluación se vuelve un formalismo."
+ setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; reviews, rankings, and the other grade bands continue normally."
  # Decision group & decisions
  decision_group_type_zg361:0 "Evaluación de Rendimiento"
  zg361_review_now_decision:0 "Realizar Evaluación de Rendimiento Ahora"

@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "Relaxed (5%)"
  setting_zg361_ratio_relaxed_desc:0 "Bottom slots are floor(5% of the cohort), with no minimum; cohorts below twenty have no forced bottom slot."
  setting_zg361_ratio_off:0 "Hands-off (0%)"
- setting_zg361_ratio_off_desc:0 "No forced bottom tier. The review becomes a formality."
+ setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; reviews, rankings, and the other grade bands continue normally."
  # Decision group & decisions
  decision_group_type_zg361:0 "Performance Review"
  zg361_review_now_decision:0 "Conduct Performance Review Now"

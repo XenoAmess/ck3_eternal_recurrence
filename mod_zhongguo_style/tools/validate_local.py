@@ -1130,6 +1130,25 @@ def check_runtime_invariants() -> None:
     chinese = read_text(
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"
     )
+    ratio_off_english = (
+        'setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; '
+        'reviews, rankings, and the other grade bands continue normally."'
+    )
+    for lang in ("simp_chinese", "english"):
+        ratio_off_loc = read_text(
+            MOD_ROOT / "localization" / lang / f"zg361_l_{lang}.yml"
+        )
+        expected = (
+            'setting_zg361_ratio_off_desc:0 "不再强制产生末位名额；'
+            '考核、排名与其他档位仍照常进行。"'
+            if lang == "simp_chinese"
+            else ratio_off_english
+        )
+        if expected not in ratio_off_loc:
+            err(
+                "ratio-off copy must state that only forced bottom slots are disabled: "
+                f"{lang}"
+            )
     for token in (
         'zg361.1.t:0 "你主持的考核：名册已定"',
         'zg361.2.t:0 "上司考定：3.75',

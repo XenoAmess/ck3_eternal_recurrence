@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "완화 (5%)"
  setting_zg361_ratio_relaxed_desc:0 "361 등급은 유지하되, 강제 하위 10% 쿼터는 풀어준다."
  setting_zg361_ratio_off:0 "방임 (0%)"
- setting_zg361_ratio_off_desc:0 "하위 등급 강제를 없앤다. 평가는 형식에 그친다."
+ setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; reviews, rankings, and the other grade bands continue normally."
  # Decision group & decisions
  decision_group_type_zg361:0 "성과 평가"
  zg361_review_now_decision:0 "지금 즉시 성과 평가 실시"

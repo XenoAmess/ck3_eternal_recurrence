@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "緩和（5%）"
  setting_zg361_ratio_relaxed_desc:0 "361方式の評価は維持しつつ、最下位1割の硬直的な枠を緩和する。"
  setting_zg361_ratio_off:0 "放任（0%）"
- setting_zg361_ratio_off_desc:0 "最下位を強制しない。評価は形骸化する。"
+ setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; reviews, rankings, and the other grade bands continue normally."
  # Decision group & decisions
  decision_group_type_zg361:0 "業績考課"
  zg361_review_now_decision:0 "今すぐ業績考課を実施"

@@ -16,7 +16,7 @@
  setting_zg361_ratio_relaxed:0 "Gelockert (5%)"
  setting_zg361_ratio_relaxed_desc:0 "Die 361-Bewertung bleibt, aber die starre 10%-Mindestquote wird gelockert."
  setting_zg361_ratio_off:0 "Lax (0%)"
- setting_zg361_ratio_off_desc:0 "Keine erzwungene untere Stufe. Die Beurteilung wird zur Formalität."
+ setting_zg361_ratio_off_desc:0 "No bottom-tier slots are forced; reviews, rankings, and the other grade bands continue normally."
  # Decision group & decisions
  decision_group_type_zg361:0 "Leistungsbeurteilung"
  zg361_review_now_decision:0 "Leistungsbeurteilung jetzt durchführen"
