@@ -477,6 +477,61 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "debate_event.5110": {
+        # CK3 1.19.0.6 imperial-debate result delivered to the top liege.
+        # Immediate has already calculated the winner. Option 1 overturns it
+        # and costs legitimacy; option 2 confirms the calculated winner, so
+        # option 2 is the bounded least-disruptive terminal route.
+        "date_raw": 53163240,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "host": (29037,),
+            "debate_opponent": (29037,),
+            "debate_contender": (29037,),
+            "debate_loser": (29037,),
+            "debate_winner": (29037,),
+        },
+        "character_scope_matches_any": {
+            "host": (
+                "debate_opponent",
+                "debate_contender",
+                "debate_loser",
+            ),
+            "debate_opponent": ("host",),
+            "debate_contender": ("host",),
+            "debate_loser": ("host",),
+        },
+        "character_scope_differs_from": {
+            "debate_winner": ("debate_loser",),
+        },
+        "scope_types": {
+            "activity": "activity",
+            "host": "character",
+            "province": "province",
+            "debate_opponent": "character",
+            "debate_contender": "character",
+            "debate_loser": "character",
+            "debate_winner": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "activity",
+            "host",
+            "province",
+            "debate_opponent",
+            "debate_contender",
+            "debate_loser",
+            "debate_winner",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "tgp_interaction_event.0015": {
         # CK3 1.19.0.6 notification sent to a military governor after another
         # governor has been ordered into the recipient's wars. The interaction

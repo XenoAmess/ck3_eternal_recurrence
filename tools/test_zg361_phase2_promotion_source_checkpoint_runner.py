@@ -1796,6 +1796,82 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
+    def test_imperial_debate_interrupt_confirms_calculated_winner(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None,
+        ) -> dict[str, object]:
+            identity: dict[str, object]
+            if character_id is None:
+                identity = {
+                    "status": "unavailable",
+                    "reason": "generic_scope_payload_identity_not_closed",
+                }
+            else:
+                identity = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": identity,
+                },
+            }
+
+        event_key = "debate_event.5110"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53163168,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 23,
+            "date_raw": 53163240,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("activity", "activity"),
+                scope("host", "character", 29752),
+                scope("province", "province"),
+                scope("debate_opponent", "character", 29752),
+                scope("debate_contender", "character", 29752),
+                scope("debate_loser", "character", 29752),
+                scope("debate_winner", "character", 29628),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53163240, "active_event": {"option_count": 2}},
+            event={"event_instance_id": 23},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
     def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
         class Service:
             def __init__(self) -> None:
