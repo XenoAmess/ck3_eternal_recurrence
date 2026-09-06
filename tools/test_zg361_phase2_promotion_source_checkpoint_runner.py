@@ -94,6 +94,95 @@ def _player_manager_seed_contract(seed_sha: str = "A" * 64) -> dict[str, object]
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_review_now_waits_for_heartbeat_before_product_postcondition(
+        self,
+    ) -> None:
+        order: list[object] = []
+
+        class Service:
+            @staticmethod
+            def activate_zhongguo_review_now_v1(
+                nonce: str,
+                source_progress: dict[str, object],
+                *,
+                expected_revision: int,
+            ) -> dict[str, object]:
+                order.append("action")
+                return {
+                    "accepted": True,
+                    "status": "acknowledged_verification_pending",
+                    "production_capability_advertised": False,
+                }
+
+            @staticmethod
+            def snapshot() -> dict[str, object]:
+                order.append("snapshot")
+                return {
+                    "map_ready": True,
+                    "revision": 8,
+                    "date_raw": 53154120,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {"connection_generation": 1},
+                    "paused": True,
+                    "speed": 5,
+                }
+
+            @staticmethod
+            def query_zhongguo_promotion_source_progress_v1(
+                request_nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                order.append("query")
+                widgets = [
+                    {
+                        "effective_visible": {
+                            "status": "available",
+                            "value": False,
+                        }
+                    }
+                    for _ in range(5)
+                ]
+                widgets[2]["effective_visible"]["value"] = True
+                return {
+                    "status": "available",
+                    "query_sequence": 2,
+                    "binding": {
+                        "connection_generation": 1,
+                        "player_character_id": 32904,
+                    },
+                    "zhongguo_promotion_source_progress": {
+                        "widgets": widgets
+                    },
+                }
+
+        evidence: dict[str, object] = {}
+
+        def settle(seconds: float) -> None:
+            order.append(("sleep", seconds))
+
+        production._activate_review_now_from_progress(
+            Service(),
+            source_progress={"query_sequence": 1},
+            source_revision=7,
+            player=32904,
+            connection_generation=1,
+            evidence=evidence,
+            nonce="promo.entry.review",
+            sleeper=settle,
+        )
+
+        self.assertEqual(
+            order,
+            [
+                "action",
+                ("sleep", production.PAUSED_PROGRESS_SETTLE_SECONDS),
+                "snapshot",
+                "query",
+            ],
+        )
+        self.assertEqual(
+            evidence["review_action_postcondition"]["status"], "verified"
+        )
+
     def test_binding_accepts_revision_growth_without_rebinding(self) -> None:
         snapshot = {
             "snapshot_id": "native:47",

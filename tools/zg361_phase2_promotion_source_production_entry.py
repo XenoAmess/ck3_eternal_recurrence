@@ -3242,6 +3242,7 @@ def _activate_review_now_from_progress(
     connection_generation: int,
     evidence: dict[str, object],
     nonce: str,
+    sleeper: Callable[[float], None],
 ) -> None:
     action = service.activate_zhongguo_review_now_v1(
         nonce,
@@ -3249,6 +3250,11 @@ def _activate_review_now_from_progress(
         expected_revision=source_revision,
     )
     evidence["review_action"] = action
+    # The accepted native ACK proves dispatch, not the scripted effect.  Wait
+    # for the next bridge heartbeat before binding the independent paused
+    # product query; otherwise it can still expose the cached pre-action GUI
+    # frame, as the retained R162 session demonstrated.
+    sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
     after_snapshot, _ = _binding(
         service.snapshot(),
         player=player,
@@ -4427,6 +4433,7 @@ def enter_promotion_source_checkpoint_v1(
             connection_generation=generation,
             evidence=evidence,
             nonce="promo.entry.review",
+            sleeper=sleeper,
         )
 
     deadline = clock() + timeout_seconds
@@ -4631,6 +4638,7 @@ def enter_promotion_source_checkpoint_v1(
                             connection_generation=generation,
                             evidence=evidence,
                             nonce="promo.entry.review.after-interrupt",
+                            sleeper=sleeper,
                         )
                         continue
         if isinstance(snapshot.get("active_event"), Mapping) and event is None:
