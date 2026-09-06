@@ -84,7 +84,7 @@ zg361_mechanism_285_ai_effect = {
 	}
 }
 
-# 286 超带冻结与低带追赶
+# 286 高于薪俸上限时冻结、低于下限时追补
 zg361_mechanism_286_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_286_choice } }

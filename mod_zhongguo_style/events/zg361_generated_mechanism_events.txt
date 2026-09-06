@@ -13378,7 +13378,7 @@ zg361m.273 = {
 	}
 }
 
-# 274 反 Offer 竞价上限
+# 274 候选人还价与竞价上限
 zg361m.274 = {
 	type = character_event
 	theme = crown
@@ -13819,7 +13819,7 @@ zg361m.282 = {
 	}
 }
 
-# 283 “干升职”兑现期限
+# 283 只升职责、不加俸的兑现期限
 zg361m.283 = {
 	type = character_event
 	theme = crown
@@ -13868,7 +13868,7 @@ zg361m.283 = {
 	}
 }
 
-# 284 降级薪俸缓冲坡
+# 284 降级后的薪俸分段递减
 zg361m.284 = {
 	type = character_event
 	theme = crown
@@ -13966,7 +13966,7 @@ zg361m.285 = {
 	}
 }
 
-# 286 超带冻结与低带追赶
+# 286 高于薪俸上限时冻结、低于下限时追补
 zg361m.286 = {
 	type = character_event
 	theme = crown
@@ -14015,7 +14015,7 @@ zg361m.286 = {
 	}
 }
 
-# 287 密薪 / 带宽公开 / 匿名分布
+# 287 薪酬保密、职级薪俸区间公开与匿名分布
 zg361m.287 = {
 	type = character_event
 	theme = crown
@@ -14848,7 +14848,7 @@ zg361m.303 = {
 	}
 }
 
-# 304 项目归属与职能归属双家长
+# 304 项目与职能的双重管理
 zg361m.304 = {
 	type = character_event
 	theme = crown
@@ -14946,7 +14946,7 @@ zg361m.305 = {
 	}
 }
 
-# 306 双帽临时负责人容量拆分
+# 306 临时代管两组时的精力与目标拆分
 zg361m.306 = {
 	type = character_event
 	theme = crown

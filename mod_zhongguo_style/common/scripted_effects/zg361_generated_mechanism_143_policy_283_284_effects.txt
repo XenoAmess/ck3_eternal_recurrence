@@ -4,7 +4,7 @@
 
 
 
-# 283 “干升职”兑现期限
+# 283 只升职责、不加俸的兑现期限
 zg361_mechanism_283_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_283_choice } }
@@ -84,7 +84,7 @@ zg361_mechanism_283_ai_effect = {
 	}
 }
 
-# 284 降级薪俸缓冲坡
+# 284 降级后的薪俸分段递减
 zg361_mechanism_284_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_284_choice } }

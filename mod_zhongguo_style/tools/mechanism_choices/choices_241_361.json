@@ -1,10 +1,11 @@
 {
   "241": {
     "title_en": "Long-Tail Outcome Attribution Window",
+    "consequence_en": "Do not let the first owner launch a project, immediately move on, and still monopolize years of gains; do not let a successor merely inherit finished work either. Trace delayed side effects through the same attribution window.",
     "option_a_cn": "在统一归因窗内冻结建设、运营、改进三段分功规则，并追溯延迟副作用",
     "option_a_en": "Within one attribution window, freeze credit rules for build, operations, and improvement and trace delayed side effects",
-    "option_b_cn": "上线即把未来收益全记给首任 owner，却让接任者独自承担运营与延迟副作用",
-    "option_b_en": "Book all future gains to the launch owner while making the successor bear operations and delayed side effects alone",
+    "option_b_cn": "未来收益全归首任责任人，接任者独担运营与延迟副作用",
+    "option_b_en": "Credit all future gains to the first owner while making the successor bear operations and delayed side effects alone",
     "profile": "assessment",
     "reference_choice": "a"
   },
@@ -73,8 +74,9 @@
   },
   "249": {
     "title_en": "Meeting-Hour Budget",
-    "option_a_cn": "设置周期会议上限；新会须替换旧会、等量缩时或举证决策价值，并留存 owner、议程与结论",
-    "option_a_en": "Cap meeting hours; a new meeting must replace one, offset time, or prove decision value, with an owner, agenda, and decision recorded",
+    "consequence_en": "Fewer meetings release execution time but may omit needed coordination. Long meetings without a decision or accountable owner reduce the manager's organizational performance, not each attendee's individual result.",
+    "option_a_cn": "设会议工时上限；新会须抵消工时并留存责任人、议程与结论",
+    "option_a_en": "Cap meeting hours; offset every new meeting and record its owner, agenda, and decision",
     "option_b_cn": "允许经理随时召集全员长会，牺牲办事时间换取即时同步",
     "option_b_en": "Let managers call long all-hands meetings at will, trading execution time for alignment",
     "profile": "workload",
@@ -136,10 +138,11 @@
   },
   "256": {
     "title_en": "Separate Performance Pool for Vendor Teams",
+    "consequence_en": "Keep employees and weaker-status vendor staff out of one forced ranking. A vendor's low evaluation affects procurement and the project, but does not directly punish an outside person who has no formal case file.",
     "option_a_cn": "供应商按交付、质量与 SLA 独立评级，只影响整改、续约和换商",
     "option_a_en": "Rate vendors separately on delivery, quality, and SLA, affecting remediation, renewal, or replacement only",
-    "option_b_cn": "把外部团队塞进正式 361 池，用弱势身份直接填末位",
-    "option_b_en": "Put vendor staff into the employee 361 pool and use the weaker status to fill the bottom",
+    "option_b_cn": "把外部团队塞进正式受评组，以弱势身份直接填末档",
+    "option_b_en": "Put vendor staff into the formal employee review cohort and use their weaker status to fill the bottom",
     "profile": "external",
     "reference_choice": "a"
   },
@@ -208,8 +211,9 @@
   },
   "264": {
     "title_en": "Knowledge Transfer on Vendor Exit",
-    "option_a_cn": "尾款绑定文档、影子跟岗、实操验收和遗留清单后再退出",
-    "option_a_en": "Tie final payment to documentation, shadowing, practical acceptance, and an issue ledger",
+    "consequence_en": "Tying final payment to handover reduces knowledge loss. Abrupt termination creates later failures and repeat procurement, while accepted deliverables become internal assets.",
+    "option_a_cn": "尾款绑定文档、跟岗交接、实操验收和遗留清单后再退出",
+    "option_a_en": "Tie final payment to documentation, accompanied handover, practical acceptance, and an issue ledger",
     "option_b_cn": "立即停约停款，以最快切割换取后续故障和重复采购风险",
     "option_b_en": "Terminate contract and payment immediately, accepting failures and repurchase risk for speed",
     "profile": "external",
@@ -217,6 +221,7 @@
   },
   "265": {
     "title_en": "Vendor Hiring Fraud and Manager Liability",
+    "consequence_en": "After fraud is proven, recover the loss, freeze the relevant permissions, and record responsibility in conduct evaluation. Hold managers jointly liable only for an actual supervision failure, not mechanically for every subordinate offense.",
     "option_a_cn": "按回扣、泄题、亲属与异常价格触发审计，逐层核验经理履责",
     "option_a_en": "Trigger audits on kickbacks, leaks, kinship, or abnormal prices and test each manager's duty",
     "option_b_cn": "发现舞弊即冻结整条管理链权限并集体扣分，先震慑后取证",
@@ -244,6 +249,7 @@
   },
   "268": {
     "title_en": "Calibration of Lenient and Harsh Interviewers",
+    "consequence_en": "Persistent leniency and blanket rejection both lose weight, while a new interviewer starts from a neutral baseline. Statistics assist the ruling but never replace the evidence in the current interview.",
     "option_a_cn": "展示通过率与入职结果，有限归一并训练长期失真的面试官",
     "option_a_en": "Show pass rates and hire outcomes, normalize lightly, and retrain persistently biased interviewers",
     "option_b_cn": "按历史通过率设硬配额，立即暂停最松或最严者资格",
@@ -297,7 +303,8 @@
     "reference_choice": "a"
   },
   "274": {
-    "title_en": "Counteroffer Bidding Cap",
+    "title_en": "Candidate Counteroffer and Bidding Cap",
+    "consequence_en": "Higher bids improve acceptance but create pay inversion, and every career promise must be deliverable. Repeated bidding erodes both the candidate's and the manager's credibility.",
     "option_a_cn": "只给一次可交付的加价或岗位方案，达到公平线后退出竞价",
     "option_a_en": "Make one deliverable pay or role counteroffer and leave the auction at the fairness line",
     "option_b_cn": "连续加价直至候选接受，以到岗率优先处理后续倒挂",
@@ -316,15 +323,17 @@
   },
   "276": {
     "title_en": "Rehiring Former Employees",
+    "consequence_en": "A returning employee ramps quickly and may correct a regretted departure, but old conflicts can return as well. Prior low-rating records are not erased automatically, and outside achievements do not guarantee rehiring.",
     "option_a_cn": "带入冻结履历、离职原因和外部成长，针对差距重审后回聘",
     "option_a_en": "Rehire through a targeted review of frozen history, exit cause, and external growth",
-    "option_b_cn": "凭旧关系快速免试回聘，并清空旧 3.25 与冲突记录",
-    "option_b_en": "Fast-track a familiar former employee and wipe old 3.25 ratings and conflicts",
+    "option_b_cn": "凭旧关系快速免试回聘，并清空原有低档记录与冲突",
+    "option_b_en": "Fast-track a familiar former employee and wipe prior low-rating records and conflicts",
     "profile": "hc",
     "reference_choice": "a"
   },
   "277": {
     "title_en": "No Automatic HC Refill After a PIP Exit",
+    "consequence_en": "Block the cycle of forcing an incumbent into low performance, removing them, and then seeking expansion. A genuine critical role can be refilled quickly, while invented workload sends the position to a higher-level reallocation.",
     "option_a_cn": "先证明工作仍存在且不可合并或自动化，再批准正式 backfill",
     "option_a_en": "Prove the work still exists and cannot be merged or automated before approving backfill",
     "option_b_cn": "低绩效者一离开就自动返还名额，让经理立即招替代者",
@@ -352,8 +361,9 @@
   },
   "280": {
     "title_en": "Midyear Entry, Transfer, and Exit Proration",
-    "option_a_cn": "入池时冻结按服务月、里程碑或周期门槛折算的单一公式",
-    "option_a_en": "Freeze one service-month, milestone, or full-cycle formula for midyear hires, transfers, and exits",
+    "consequence_en": "Reasonable proration reduces departures timed just after payout. An all-or-nothing rule may retain people more strongly, but creates cliff-edge departures and fairness appeals.",
+    "option_a_cn": "入列本轮奖金名单即冻结按服务月、里程碑或周期门槛折算的公式",
+    "option_a_en": "On entry to the current bonus list, freeze the service-month, milestone, or full-cycle proration formula",
     "option_b_cn": "以发奖日是否仍在岗作为全有全无门槛，强化临界留任",
     "option_b_en": "Make presence on payout day an all-or-nothing gate to enforce retention",
     "profile": "compensation",
@@ -361,6 +371,7 @@
   },
   "281": {
     "title_en": "Bonus Payment Date and Deferral Credibility",
+    "consequence_en": "A deferred award becomes a treasury liability and is reviewed automatically at maturity. Missing the new date damages hiring, retention, and the manager's credibility for honoring promises; it is not free financing.",
     "option_a_cn": "国库紧张时少承诺或写明延期日，欠款到期自动复核",
     "option_a_en": "Promise less or set a dated deferral under treasury stress, with automatic maturity review",
     "option_b_cn": "保留全额口头承诺却无期限拖欠，把奖金当免费融资",
@@ -378,7 +389,8 @@
     "reference_choice": "a"
   },
   "283": {
-    "title_en": "Deadline for a Dry Promotion",
+    "title_en": "Deadline for Paying a Duties-Only Promotion",
+    "consequence_en": "Adding higher duties without higher pay saves budget briefly, but a missed deadline creates level debt and departure risk. Sustained higher-level work cannot be treated as an unpaid loyalty test.",
     "option_a_cn": "先升职责须冻结最迟加俸轮次，逾期记职级债并允许拒绝",
     "option_a_en": "A duty-first promotion must set a pay deadline, accrue level debt if late, and allow refusal",
     "option_b_cn": "立即加职责与头衔但无限期缓发薪酬，以忠诚测试保交付",
@@ -387,7 +399,8 @@
     "reference_choice": "a"
   },
   "284": {
-    "title_en": "Pay-Buffer Slope After Demotion",
+    "title_en": "Staged Pay Reduction After Demotion",
+    "consequence_en": "A staged reduction costs more treasury funds but reduces humiliation and appeals. An immediate cut is cheaper but may drive away someone who still has professional value; serious fraud receives no default transition.",
     "option_a_cn": "非舞弊降级分两轮递减，或只撤管理津贴保留专业薪级",
     "option_a_en": "For non-fraud demotions, taper over two cycles or remove only the management premium",
     "option_b_cn": "撤责当天立即降到新岗底薪，以最低成本完成组织调整",
@@ -397,33 +410,37 @@
   },
   "285": {
     "title_en": "Second Calibration of Raises Within a Rating",
-    "option_a_cn": "按带内位置、稀缺、欠账和留任风险分配总池并逐项给理由码",
-    "option_a_en": "Allocate the pool by band position, scarcity, debt, and retention risk with reason codes",
+    "consequence_en": "People in the same top tier need not receive the same raise, and long-underpaid staff can catch up. Every difference needs a written reason and the total pool must remain conserved.",
+    "option_a_cn": "按薪俸区间位置、稀缺、欠账和留任风险分配总池，并逐项写明理由",
+    "option_a_en": "Allocate the pool by pay-range position, scarcity, debt, and retention risk, with a written reason for each difference",
     "option_b_cn": "经理在同档内直接倾斜最想保的人，不另留薪酬校准案卷",
     "option_b_en": "Let managers favor chosen retainers within a rating without a separate pay record",
     "profile": "compensation",
     "reference_choice": "a"
   },
   "286": {
-    "title_en": "Above-Band Freeze and Below-Band Catch-Up",
-    "option_a_cn": "优先补齐低于下限者，超上限改发一次奖，带外例外设到期日",
-    "option_a_en": "Catch up below-band pay, use one-time awards above band, and sunset exceptions",
-    "option_b_cn": "继续按绩效普涨固定俸，不让薪酬带阻碍即时奖励",
-    "option_b_en": "Raise fixed pay by rating regardless of bands so structure cannot delay rewards",
+    "title_en": "Freeze Above the Pay Range and Catch Up Below It",
+    "consequence_en": "Repairing the pay structure consumes some star-reward capacity, while leaving it alone compounds inversion. Every exception outside the pay range must be reviewed at expiry instead of disappearing permanently.",
+    "option_a_cn": "优先补齐低于薪俸下限者；高于上限改发一次奖，区间外例外须设到期日",
+    "option_a_en": "Catch up pay below the range, use one-time awards above it, and set an expiry for every exception",
+    "option_b_cn": "继续按绩效普涨固定俸，不让薪俸区间阻碍即时奖励",
+    "option_b_en": "Raise fixed pay by rating regardless of the pay range so structure cannot delay rewards",
     "profile": "compensation",
     "reference_choice": "a"
   },
   "287": {
-    "title_en": "Pay Secrecy, Public Bands, or Anonymous Distribution",
-    "option_a_cn": "公开职级带宽、本人位置和同岗匿名分布，同时封存申诉材料",
-    "option_a_en": "Publish bands, personal position, and anonymous peer distribution while sealing appeals",
-    "option_b_cn": "金额与带宽全部保密，由经理逐人议价维持灵活性",
-    "option_b_en": "Keep amounts and bands secret so managers can negotiate each case freely",
+    "title_en": "Pay Secrecy, Published Grade Ranges, or Anonymous Distribution",
+    "consequence_en": "Greater transparency exposes unfairness but also invites comparison. A complete black box gives managers bargaining room while increasing suspicion, leaks, and departures.",
+    "option_a_cn": "公开职级薪俸区间、本人位置和同岗匿名分布，同时封存申诉材料",
+    "option_a_en": "Publish grade pay ranges, personal position, and anonymous peer distribution while sealing appeals",
+    "option_b_cn": "金额与职级薪俸区间全部保密，由经理逐人议价维持灵活性",
+    "option_b_en": "Keep amounts and grade pay ranges secret so managers can negotiate each case freely",
     "profile": "governance",
     "reference_choice": "c"
   },
   "288": {
     "title_en": "Repairing New-Hire Pay Inversion",
+    "consequence_en": "Immediate correction is expensive but steadies the team. Ignoring inversion pushes consistently high-rated incumbents to test the market, while the pay gap itself does not change anyone's performance tier.",
     "option_a_cn": "补关键老臣或用限期津贴解释差额，未补部分登记公平债",
     "option_a_en": "Catch up key incumbents or explain gaps with dated premiums and ledger remaining fairness debt",
     "option_b_cn": "按市场变化容忍新人高薪，暂不修复老臣倒挂",
@@ -433,8 +450,9 @@
   },
   "289": {
     "title_en": "Separate Pay Appeals from Rating Appeals",
-    "option_a_cn": "另开奖金计算、带宽和欠款复核，算错只补钱不改榜",
-    "option_a_en": "Open a separate bonus, band, and arrears review; correct money without changing rank",
+    "consequence_en": "Keep every grievance from becoming a fight over ratings. A calculation error repays money, but cannot invent a top-tier result or reorder performance slots.",
+    "option_a_cn": "另开奖金计算、薪俸区间和欠款复核，算错只补钱不改榜",
+    "option_a_en": "Open a separate bonus, pay-range, and arrears review; correct money without changing rank",
     "option_b_cn": "所有薪酬争议并入绩效申诉，一次裁定后不再对账",
     "option_b_en": "Merge every pay dispute into the rating appeal and close all accounting after one ruling",
     "profile": "compensation",
@@ -442,10 +460,11 @@
   },
   "290": {
     "title_en": "Long-Term Award Nomination Pool",
+    "consequence_en": "Concentrating awards on stars increases retention leverage but widens hierarchy. Broad coverage builds shared stakes but weakens each award, and nomination reasons enter the next delivery audit.",
     "option_a_cn": "按连续绩效、关键岗位、潜力与留任风险打分，留存提名理由审计",
     "option_a_en": "Score sustained performance, criticality, potential, and retention risk and audit nominations",
-    "option_b_cn": "把有限长期奖集中给本轮最醒目的 3.75，迅速锁住明星",
-    "option_b_en": "Concentrate the pool on the most visible current 3.75 performers to lock stars quickly",
+    "option_b_cn": "把有限长期奖集中给本轮最醒目的最高档者，迅速锁住明星",
+    "option_b_en": "Concentrate the pool on the most visible top-rated performers to lock stars quickly",
     "profile": "compensation",
     "reference_choice": "a"
   },
@@ -460,8 +479,9 @@
   },
   "292": {
     "title_en": "High-Risk Options Versus Restricted Units",
-    "option_a_cn": "让受奖者知情选择期权、归属即有价值的限制份额或少量现金，并分别冻结风险",
-    "option_a_en": "Let recipients knowingly choose options, value-bearing restricted units, or smaller cash with frozen risks",
+    "consequence_en": "Risk-seeking recipients may bet on organizational growth, while conservative recipients value certainty. The choice does not alter prior performance, and a manager cannot force anyone to accept paper wealth.",
+    "option_a_cn": "由受奖者知情选择期权、限制份额或现金，并写明各自主要风险",
+    "option_a_en": "Let recipients knowingly choose options, restricted units, or cash, with each choice's principal risk recorded",
     "option_b_cn": "统一发可能归零的高上限期权，以纸面财富节省现金",
     "option_b_en": "Issue high-upside, potentially worthless options to everyone to conserve cash",
     "profile": "compensation",
@@ -505,10 +525,11 @@
   },
   "297": {
     "title_en": "Separate Service and Performance Vesting",
+    "consequence_en": "Service-based units are not all confiscated after one low rating, while performance-based units fail under their frozen conditions. Clear tracks prevent an ambiguous grant from being reinterpreted at will.",
     "option_a_cn": "每批写明服务与绩效归属占比，用冻结条件分别结算",
     "option_a_en": "State service and performance vesting shares per grant and settle each frozen condition separately",
-    "option_b_cn": "一次 3.25 即取消全部未归属份额，不再区分留任部分",
-    "option_b_en": "Cancel every unvested unit after one 3.25 without preserving the service portion",
+    "option_b_cn": "一次低档记录即取消全部未归属份额，不再区分留任部分",
+    "option_b_en": "Cancel every unvested unit after one low rating without preserving the service portion",
     "profile": "compensation",
     "reference_choice": "a"
   },
@@ -541,6 +562,7 @@
   },
   "301": {
     "title_en": "Core-Business Halo Adjustment",
+    "consequence_en": "Riding a large business no longer earns the top tier automatically, but core-team complexity is not erased either. Without sufficient evidence, calibration makes only a small adjustment.",
     "option_a_cn": "拆分战略顺风、资源倾斜与个人增量，只按证据小幅校正",
     "option_a_en": "Separate strategic tailwind, resource advantage, and individual increment, adjusting only with evidence",
     "option_b_cn": "按绝对规模直接排名，让核心团队以大盘结果优先拿高档",
@@ -550,8 +572,9 @@
   },
   "302": {
     "title_en": "Accountability in a Declining Business",
-    "option_a_cn": "以守住跌幅、主动收缩和第二曲线里程碑评价逆风贡献",
-    "option_a_en": "Assess headwind work through contained decline, managed contraction, and second-curve milestones",
+    "consequence_en": "Containing decline can be high-quality performance, while repeatedly using headwinds as an excuse loses resources. Concealing the decline turns a business problem into an integrity problem.",
+    "option_a_cn": "以守住跌幅、主动收缩和转型或新业务里程碑评价逆风贡献",
+    "option_a_en": "Assess headwind work through contained decline, managed contraction, and transformation or new-business milestones",
     "option_b_cn": "继续下达统一增长硬指标，以末位压力淘汰未增长者",
     "option_b_en": "Keep one hard growth target and use bottom-rating pressure on anyone who misses it",
     "profile": "assessment",
@@ -567,7 +590,8 @@
     "reference_choice": "a"
   },
   "304": {
-    "title_en": "Project and Functional Dual Ownership",
+    "title_en": "Dual Project and Functional Management",
+    "consequence_en": "Project success and professional decline can coexist. Conflicting managers enter joint calibration, and neither may leave the employee carrying two full sets of targets.",
     "option_a_cn": "冻结项目交付分、职能成长分权重与最终主责，冲突联合校准",
     "option_a_en": "Freeze project-delivery and functional-growth weights with one final owner and joint calibration",
     "option_b_cn": "两位经理各下满额目标，项目 owner 在冲突时直接拍板",
@@ -585,9 +609,10 @@
     "reference_choice": "a"
   },
   "306": {
-    "title_en": "Capacity Split for a Double-Hatted Acting Lead",
-    "option_a_cn": "冻结 50/50 或 70/30 容量，配津贴、减目标或代理副手并设到期日",
-    "option_a_en": "Freeze a 50/50 or 70/30 split, add pay, relief, or a deputy, and set an expiry",
+    "title_en": "Splitting Effort and Targets for a Two-Team Acting Lead",
+    "consequence_en": "Successfully covering two teams demonstrates coordination, but two full workloads over time transfer failure responsibility to the appointer. At expiry, make a formal appointment or end the acting assignment.",
+    "option_a_cn": "明确两组精力与目标占比；给津贴、减目标或配副手，并设到期日",
+    "option_a_en": "Split effort and targets between both teams; add pay, reduce goals, or appoint a deputy, with an expiry",
     "option_b_cn": "一人同时承担两组满额目标，以临时负责人名义强行保运转",
     "option_b_en": "Assign two full workloads to one acting lead to keep both teams running",
     "profile": "organization",
@@ -613,8 +638,9 @@
   },
   "309": {
     "title_en": "Visibility Discount for Remote Teams",
-    "option_a_cn": "安排轮值述职与上司巡访，并从经理容量中扣除真实曝光成本",
-    "option_a_en": "Rotate reviews and manager visits, charging the real visibility cost to management capacity",
+    "consequence_en": "More review opportunities reduce geographic bias but consume management time. Long neglect lets capital-city networks eclipse remote teams' actual results and increases talent loss.",
+    "option_a_cn": "安排轮值述职与上司巡访，并从主管工时中扣除实际成本",
+    "option_a_en": "Rotate reviews and manager visits, charging their time cost to the manager's workload",
     "option_b_cn": "继续只收远程材料，让京城关系与自我宣传决定可见度",
     "option_b_en": "Rely on remote reports and let capital relationships and self-promotion determine visibility",
     "profile": "organization",

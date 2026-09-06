@@ -85,7 +85,7 @@ zg361_mechanism_303_ai_effect = {
 	}
 }
 
-# 304 项目归属与职能归属双家长
+# 304 项目与职能的双重管理
 zg361_mechanism_304_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_304_choice } }

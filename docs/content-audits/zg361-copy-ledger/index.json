@@ -105,18 +105,18 @@
       "sha256": "b5a2415a3ad32e0e21c223eba16596f0288f982625173aded36df886413daa90"
     },
     {
-      "bytes": 68911,
+      "bytes": 68907,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-011.json",
       "records": 40,
-      "sha256": "488d312ca4d6d79ac3f215edec9d8894b77287acbfc48f8ac64790e74093de5a"
+      "sha256": "31b4b84126cf1922fd55da6200531309d64ac9e31e4a987e0ca2773279ce30d3"
     },
     {
-      "bytes": 68920,
+      "bytes": 68918,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-012.json",
       "records": 40,
-      "sha256": "45fae85edf36c7231cb2689e1ff2f0e263e485b0d3f2c1dd1f2c262f4f714bb4"
+      "sha256": "73750e7265083a31daf61457aa91207a5b9f43e95bc48ff4e0410c7fdca48926"
     },
     {
       "bytes": 68919,
@@ -231,39 +231,39 @@
       "sha256": "38592e09285b47dd95842463df982aa386aad7508903090e0bfcb8032de89280"
     },
     {
-      "bytes": 75828,
+      "bytes": 75934,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-013.json",
       "records": 180,
-      "sha256": "f01539f060d1705f64233afbf928e384915d5071f43f02a1d1f980c853370fa3"
+      "sha256": "b09728b6567b7d832ff963b2c8c43983e8747b5951d857a2bc6ec5cc45c6041b"
     },
     {
-      "bytes": 77275,
+      "bytes": 77277,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-014.json",
       "records": 180,
-      "sha256": "d9e18bc643401a2f6c0e48c93e1c4378011362d7912641d1e2f8072436382a8d"
+      "sha256": "d92489a26dcfa47ba494870f595152b2d9a5a3359372be36865f998478862e51"
     },
     {
-      "bytes": 77149,
+      "bytes": 77272,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-015.json",
       "records": 180,
-      "sha256": "002a719bab7794192b41f65ed626161c0c4b64e6919c0f8ee11c11b82ebc03e3"
+      "sha256": "66805e36c2b2c5393d5cf03077055feb9565e7b00f54a1d095f1d74c249897ec"
     },
     {
-      "bytes": 76616,
+      "bytes": 76920,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-016.json",
       "records": 180,
-      "sha256": "acf7d72f0b8bc169b63fc5e770ebbb76aed649d89c7936299a5f2f8ae2439343"
+      "sha256": "6b26aad6d082f6d7dcf6a980e87f0ad18091883dbc1bec52e5605454cdf93bd9"
     },
     {
-      "bytes": 76848,
+      "bytes": 76983,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-017.json",
       "records": 180,
-      "sha256": "4db521f2ee9fe016152a0dfa3f9ebe33d26a9a620ac77432dcb4d9ee02ffd3f9"
+      "sha256": "419083645fd55d13ca874b08b9a63b24d217773338d8b70de665aea94d3819da"
     },
     {
       "bytes": 76041,
@@ -580,10 +580,10 @@
           "method": "generated_file_header_multi_source",
           "status": "pass"
         },
-        "bytes": 416003,
+        "bytes": 416080,
         "lines": 17691,
         "path": "mod_zhongguo_style/events/zg361_generated_mechanism_events.txt",
-        "sha256": "1c04c1cabcad0fb043e76ccb7d5c169f63b4a7b0c450d3b09847ba3e740ee5d5"
+        "sha256": "88379d5fed456ca19f844d4310d2e98572e63a16d8ed7e072eaa8e1108c6b07f"
       },
       {
         "authority": {
@@ -1674,10 +1674,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 437133,
+        "bytes": 437803,
         "lines": 2932,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
-        "sha256": "e5915cef29b23602015874be1c1512c52a794239f3affff31429726c62d0d810"
+        "sha256": "033fff6d870aba6f8faf44bdeabb32919320745564bbc5068ed410a3b528303a"
       },
       {
         "authority": {
@@ -1826,7 +1826,7 @@
     ],
     "git_commit": "96636bd7f92ea97a0ca83cbd52d045c08f790c60",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "ffe1ba0228257b44fc6eb77def803566be429c1309b0ad01c12913a8452efc66"
+    "input_digest_sha256": "5c4a1cbdd07a0d49a28a5e1c02c3b28fc1959a757ae9e3e444df21225316011d"
   },
   "summary": {
     "all_event_definitions": 1009,

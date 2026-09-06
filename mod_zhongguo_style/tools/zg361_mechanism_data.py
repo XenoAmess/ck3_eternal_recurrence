@@ -415,7 +415,10 @@ def load_mechanisms(mod_root: Path, *, require_reviewed_choices: bool = True) ->
                 description_en=str(
                     override.get(
                         "description_en",
-                        "This dispute will shape later reviews and change the organization's trust, workload, risk, talent, or fiscal pressure.",
+                        override.get(
+                            "consequence_en",
+                            "This dispute will shape later reviews and change the organization's trust, workload, risk, talent, or fiscal pressure.",
+                        ),
                     )
                 ),
                 acceptance_cn=fields["acceptance_cn"],

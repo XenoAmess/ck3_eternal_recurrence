@@ -4,7 +4,7 @@
 
 
 
-# 287 密薪 / 带宽公开 / 匿名分布
+# 287 薪酬保密、职级薪俸区间公开与匿名分布
 zg361_mechanism_287_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_287_choice } }

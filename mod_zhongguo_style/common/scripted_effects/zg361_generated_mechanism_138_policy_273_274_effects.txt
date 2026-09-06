@@ -85,7 +85,7 @@ zg361_mechanism_273_ai_effect = {
 	}
 }
 
-# 274 反 Offer 竞价上限
+# 274 候选人还价与竞价上限
 zg361_mechanism_274_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_274_choice } }

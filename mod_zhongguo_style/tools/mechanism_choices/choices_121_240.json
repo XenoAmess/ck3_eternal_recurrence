@@ -1027,8 +1027,9 @@
   },
   "232": {
     "title_en": "Missing Data and Manual Backfill",
-    "option_a_cn": "用保守估计或人工凭证双签，并在真数到达后对账",
-    "option_a_en": "Use conservative estimates or dual-signed evidence and reconcile when real data arrives",
+    "consequence_en": "Timely backfill restores decision-making but also creates a path for tampering. If later actual data diverges too far, hold the method and approvers accountable instead of automatically penalizing the business owner.",
+    "option_a_cn": "用保守估计或人工凭证双签，真实数据到达后再逐项对账",
+    "option_a_en": "Use conservative estimates or dual-signed evidence and reconcile item by item once actual data arrives",
     "option_b_cn": "由单一主管快速回填最合理数字，避免延期发奖",
     "option_b_en": "Let one manager backfill the most plausible number to avoid delaying rewards",
     "profile": "data",
@@ -1045,8 +1046,9 @@
   },
   "234": {
     "title_en": "Leading Indicators and Lagging Outcomes",
-    "option_a_cn": "同时冻结领先信号与滞后结果，暂定认可到期再转正",
-    "option_a_en": "Freeze leading and lagging measures together and convert provisional credit at maturity",
+    "consequence_en": "Leading indicators permit earlier correction but can be gamed, while final outcomes are more reliable but slower. When the two conflict, open calibration and explain the discrepancy.",
+    "option_a_cn": "同时冻结早期信号与最终结果；先暂记，待结果到期后再确认",
+    "option_a_en": "Freeze early signals and final outcomes together; keep credit provisional until the result matures",
     "option_b_cn": "结果未成熟时先按领先指标发奖，以加快行为转向",
     "option_b_en": "Reward leading indicators before outcomes mature to accelerate behavior change",
     "profile": "data",
@@ -1054,6 +1056,7 @@
   },
   "235": {
     "title_en": "Primary Metrics and Guardrails",
+    "consequence_en": "A rising primary metric cannot earn a complete top-tier evaluation if its guardrail collapses. Whoever approves an exception shares both its success and its delayed side effects.",
     "option_a_cn": "每个主指标绑定一项护栏，突破须书面批准并追延迟后果",
     "option_a_en": "Pair every primary metric with a guardrail and track delayed effects of written exceptions",
     "option_b_cn": "危机期只追主指标，先拿结果再处理民心与质量",
@@ -1063,8 +1066,9 @@
   },
   "236": {
     "title_en": "KPI Threshold Cliff",
-    "option_a_cn": "用连续区间计分并保留关键底线，期初冻结斜率",
-    "option_a_en": "Use continuous scoring with a critical floor and freeze the slope up front",
+    "consequence_en": "A hard threshold drives a final push but can punish 99 percent like zero. Continuous scoring is fairer but may reduce urgency, and the rule cannot be changed at year end.",
+    "option_a_cn": "用连续区间计分并保留关键底线，期初写明各完成度对应分数",
+    "option_a_en": "Use continuous scoring with critical floors and publish the score for each completion level up front",
     "option_b_cn": "坚持百分百硬门槛，让未达标者统一承受完整后果",
     "option_b_en": "Keep a 100-percent cliff and impose full consequences on every miss",
     "profile": "data",

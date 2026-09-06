@@ -85,7 +85,7 @@ zg361_mechanism_305_ai_effect = {
 	}
 }
 
-# 306 双帽临时负责人容量拆分
+# 306 临时代管两组时的精力与目标拆分
 zg361_mechanism_306_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_306_choice } }
