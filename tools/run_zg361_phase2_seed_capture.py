@@ -44,6 +44,10 @@ import zipfile
 
 import kaishek_preflight
 from zg361_phase2_acceptance_observer_gate import evaluate_observer_gate
+from zg361_phase2_date_sentinel_activation import (
+    DateSentinelActivationError,
+    run_date_only_daily_activation,
+)
 
 
 EXPECTED_ENABLED_MODS = (
@@ -2964,7 +2968,7 @@ def wait_for_bootstrap_event(
     post_activation_paused_settle_seconds: float = 0.0,
     post_activation_checkpoint_capture: Callable[[], dict[str, Any]] | None = None,
     initial_paused_event_settle_seconds: float = 0.0,
-    initial_paused_activation_pulse: bool = False,
+    initial_paused_date_sentinel: bool = False,
     timeline_speed: int = 1,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -3041,15 +3045,15 @@ def wait_for_bootstrap_event(
         or initial_paused_event_settle_seconds < 0
     ):
         raise ValueError("initial paused event settle must be finite and non-negative")
-    if not isinstance(initial_paused_activation_pulse, bool):
-        raise ValueError("initial paused activation pulse must be boolean")
-    if initial_paused_activation_pulse and (
+    if not isinstance(initial_paused_date_sentinel, bool):
+        raise ValueError("initial paused date sentinel must be boolean")
+    if initial_paused_date_sentinel and (
         initial_paused_event_settle_seconds <= 0
         or maximum_date_raw is None
         or expected_event_date_raw != maximum_date_raw
     ):
         raise ValueError(
-            "initial paused activation pulse requires a positive settle and "
+            "initial paused date sentinel requires a positive settle and "
             "one exact maximum/expected event date"
         )
     if isinstance(timeline_speed, bool) or timeline_speed not in range(1, 6):
@@ -3078,7 +3082,8 @@ def wait_for_bootstrap_event(
         if initial_paused_event_settle_seconds > 0
         else None
     )
-    initial_activation_pulse_started = False
+    initial_date_sentinel_started = False
+    initial_date_sentinel_evidence: dict[str, Any] | None = None
     while clock() < deadline:
         now = clock()
         try:
@@ -3460,10 +3465,10 @@ def wait_for_bootstrap_event(
                     sleeper(0.1)
                     continue
                 elif (
-                    initial_paused_activation_pulse
-                    and not initial_activation_pulse_started
+                    initial_paused_date_sentinel
+                    and not initial_date_sentinel_started
                 ):
-                    initial_activation_pulse_started = True
+                    initial_date_sentinel_started = True
                     initial_paused_settle_deadline = None
                     sequence += 1
                     append_jsonl(
@@ -3474,7 +3479,7 @@ def wait_for_bootstrap_event(
                             "elapsed_seconds": round(
                                 max(0.0, clock() - started), 3
                             ),
-                            "state": "manager_continuation_activation_pulse_started",
+                            "state": "manager_continuation_date_sentinel_started",
                             "result": "PENDING",
                             "expected_event_definition_key": (
                                 expected_event_definition_key
@@ -3483,10 +3488,59 @@ def wait_for_bootstrap_event(
                             "maximum_date_raw": maximum_date_raw,
                             "expected_event_date_raw": expected_event_date_raw,
                             "timeline_speed": timeline_speed,
-                            "same_date_required": True,
+                            "date_only": True,
+                            "watched_army_count": 0,
+                            "external_pause_allowed": False,
                         },
                     )
-                    timeline_step = "resume-map"
+                    try:
+                        initial_date_sentinel_evidence = (
+                            run_date_only_daily_activation(
+                                service,
+                                snapshot,
+                                speed=timeline_speed,
+                                timeout_seconds=max(0.001, deadline - clock()),
+                                clock=clock,
+                                sleeper=sleeper,
+                            )
+                        )
+                    except DateSentinelActivationError as error:
+                        append_jsonl(evidence_path, error.evidence)
+                        raise SeedCaptureError(str(error), error.evidence) from error
+                    sequence += 1
+                    append_jsonl(
+                        evidence_path,
+                        {
+                            "schema_version": 1,
+                            "sequence": sequence,
+                            "elapsed_seconds": round(
+                                max(0.0, clock() - started), 3
+                            ),
+                            "state": "manager_continuation_date_sentinel_stopped",
+                            "result": "GREEN",
+                            "expected_event_definition_key": (
+                                expected_event_definition_key
+                            ),
+                            "starting_date_raw": (
+                                initial_date_sentinel_evidence[
+                                    "starting_date_raw"
+                                ]
+                            ),
+                            "target_date_raw": (
+                                initial_date_sentinel_evidence["target_date_raw"]
+                            ),
+                            "timeline_speed": timeline_speed,
+                            "resume_submission_count": 1,
+                            "external_pause_used": False,
+                            "sentinel": initial_date_sentinel_evidence,
+                        },
+                    )
+                    initial_paused_settle_deadline = min(
+                        deadline,
+                        clock() + initial_paused_event_settle_seconds,
+                    )
+                    sleeper(0.1)
+                    continue
                 else:
                     evidence = {
                         "schema_version": 1,
@@ -3500,6 +3554,7 @@ def wait_for_bootstrap_event(
                         "active_event": active,
                         "settle_seconds": initial_paused_event_settle_seconds,
                         "timeline_resumed": False,
+                        "date_sentinel": initial_date_sentinel_evidence,
                     }
                     append_jsonl(evidence_path, evidence)
                     raise SeedCaptureError(
@@ -6008,7 +6063,16 @@ def run_capture(
             manager_route["recovered_boundary_date_raw"] = (
                 clean_boundary_date_raw
             )
-            manager_route["maximum_date_raw"] = clean_boundary_date_raw
+            manager_route["activation_target_date_raw"] = (
+                clean_boundary_date_raw + 24
+            )
+            manager_route["activation_carrier"] = (
+                "native-date-only-daily-sentinel"
+            )
+            manager_route["activation_watched_army_count"] = 0
+            manager_route["maximum_date_raw"] = (
+                manager_route["activation_target_date_raw"]
+            )
             report["manager_transition_contract"] = manager_route
             write_json(
                 artifacts / "manager-entry-route-contract.json", manager_route
@@ -6026,7 +6090,7 @@ def run_capture(
             required_date_raw=None,
             source_save_sha256=observed_save_sha,
             maximum_date_raw=(
-                manager_route["recovered_boundary_date_raw"]
+                manager_route["activation_target_date_raw"]
                 if checkpoint_continuation_route
                 else manager_route.get(
                     "maximum_date_raw", manager_route["completion_date_raw"]
@@ -6035,7 +6099,7 @@ def run_capture(
                 else None
             ),
             expected_event_date_raw=(
-                manager_route["recovered_boundary_date_raw"]
+                manager_route["activation_target_date_raw"]
                 if checkpoint_continuation_route
                 else manager_route["completion_date_raw"]
                 if manager_route is not None
@@ -6079,7 +6143,7 @@ def run_capture(
             initial_paused_event_settle_seconds=(
                 1.0 if checkpoint_continuation_route else 0.0
             ),
-            initial_paused_activation_pulse=checkpoint_continuation_route,
+            initial_paused_date_sentinel=checkpoint_continuation_route,
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,

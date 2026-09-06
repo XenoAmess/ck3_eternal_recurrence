@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R148 管理者存档续接增量（不改变逐号等级）
+## R131–R149 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -425,7 +425,18 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   naming widget。R148 manager recovery / runner SHA-256 分别为
   `e6633aa9c9a9661484268371609e49a405099d951ce8ffda078c1559445de581` /
   `97fbbe9d0e229220b59b01066fe7027fef323027a24c61c7e6b9897d51b0e8bd`。
-- 以上 R131–R148 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R149 首次把同一管理者续接推进到 `date_raw=53154144` 的 clean review boundary，manager recovery 为
+  GREEN；暂停等待仍未生成 seed event。旧 runner 随后只提交一次 speed-5 resume，但 MCP 下一帧已到
+  `53154264`，超过同日上限 120 raw hours，maximum-date gate 立即保护性暂停并 RED。该实机证据否定了
+  ‘普通 resume 提供同日 GUI frame’的夹具假设，不是产品 RED。当前玩家军队为空，修复因此把 native
+  daily sentinel 窄扩为仅 terminal mode 可用的 `a-0` 日期路线，并把 runner 绑定到 clean date +24、
+  one tick、零 overshoot、单次 resume 和原生 pause；decision/省略 mode 的零军队请求仍拒绝。R149
+  manager recovery / runner / event-wait SHA-256 分别为
+  `ef38ff04dad10e48a6b06ba39351f7f51a852ca530503eabeb126b8f7dd1bde0` /
+  `a472986e3cac07b67012f008347e4e4a7f766d483df9e76ecc2b5fdb343ea588` /
+  `7d8f30386f1d2f2cc6a4a087f08310bd8cd8971c193938bf68a7389bc8ba5ddc`。本轮 loader 正常，
+  没有新的加载性能 RED，故不新增产品 effect 拆分；既有用途分组和每文件数量上限继续强制执行。
+- 以上 R131–R149 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 

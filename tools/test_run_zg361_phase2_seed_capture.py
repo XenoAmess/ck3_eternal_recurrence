@@ -3331,22 +3331,25 @@ def test_manager_post_activation_gui_timeout_never_resumes_map() -> None:
         )
 
 
-def test_clean_manager_continuation_uses_one_same_date_activation_pulse() -> None:
-    class CleanBoundaryPulseService:
+def test_clean_manager_continuation_uses_one_date_only_sentinel() -> None:
+    class CleanBoundarySentinelService:
         def __init__(self) -> None:
             self.revision = 90
             self.event_ready = False
             self.steps: list[str] = []
+            self.date_raw = 53154144
+            self.driver = self
 
         def snapshot(self) -> dict[str, object]:
             return {
                 "snapshot_id": f"native:{self.revision}",
                 "revision": self.revision,
                 "native_revision": self.revision,
-                "date_raw": 53154144,
+                "date_raw": self.date_raw,
                 "paused": True,
                 "speed": 5,
                 "map_ready": True,
+                "player_armies": [],
                 "played_character": {"character_id": 32904},
                 "active_event": (
                     {"source": "native", "instance_id": 91, "option_count": 1}
@@ -3355,18 +3358,84 @@ def test_clean_manager_continuation_uses_one_same_date_activation_pulse() -> Non
                 ),
             }
 
-        def execute_step(
-            self, step: str, *, expected_revision: int
+        def _execute_primitive_step(
+            self,
+            step: str,
+            *,
+            expected_revision: int | None,
+            required_capability: str | None = None,
+            timeout_seconds: float,
+            internal_semantic_snapshot: bool,
         ) -> dict[str, object]:
-            require(expected_revision == self.revision, "pulse revision drifted")
-            require(step == "resume-map", f"unexpected pulse step: {step}")
+            require(expected_revision is None, "sentinel used a stale public revision")
+            require(timeout_seconds > 0, "sentinel timeout was not positive")
+            require(internal_semantic_snapshot, "sentinel used the public view")
             self.steps.append(step)
-            self.revision += 1
-            self.event_ready = True
+            status = {
+                "state": "armed",
+                "generation": 4,
+                "starting_date_raw": 53154144,
+                "target_date_raw": 53154168,
+                "last_observed_date_raw": 53154144,
+                "trigger_date_raw": 0,
+                "speed": 5,
+                "mode": "terminal_or_sentinel",
+                "army_count": 0,
+                "combat_count": 0,
+                "completed_daily_ticks": 0,
+                "intermediate_pause_count": 0,
+                "trigger_flags": 0,
+                "trigger_reasons": [],
+                "signed_date_delta_from_target_raw": 0,
+                "overshoot_days": -1,
+                "pause_wrapper_called": False,
+                "pause_observed": False,
+                "terminal_observed": False,
+                "abnormal": False,
+            }
+            if step.startswith("research-arm-tactical-daily-sentinel-v1-"):
+                require(
+                    required_capability
+                    == "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                    "sentinel arm capability drifted",
+                )
+                return {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "tactical_daily_sentinel": status,
+                }
+            if step == "resume-map":
+                require(required_capability is None, "resume gained a research cap")
+                self.date_raw += 24
+                self.revision += 1
+                self.event_ready = True
+                return {"step": step, "accepted": True, "status": "submitted"}
+            require(
+                step == "research-query-tactical-daily-sentinel-v1",
+                f"unexpected sentinel step: {step}",
+            )
+            require(
+                required_capability
+                == "game.command.research-query-tactical-daily-sentinel-v1",
+                "sentinel status capability drifted",
+            )
             return {
                 "step": step,
                 "accepted": True,
-                "status": "submitted",
+                "status": "available",
+                "tactical_daily_sentinel": {
+                    **status,
+                    "state": "triggered",
+                    "last_observed_date_raw": 53154168,
+                    "trigger_date_raw": 53154168,
+                    "completed_daily_ticks": 1,
+                    "trigger_flags": 1,
+                    "trigger_reasons": ["date_deadline"],
+                    "overshoot_days": 0,
+                    "pause_wrapper_called": True,
+                    "pause_observed": True,
+                },
             }
 
         def query_current_event_window_context_v1(
@@ -3382,7 +3451,7 @@ def test_clean_manager_continuation_uses_one_same_date_activation_pulse() -> Non
 
     with tempfile.TemporaryDirectory() as raw:
         artifacts = Path(raw)
-        service = CleanBoundaryPulseService()
+        service = CleanBoundarySentinelService()
         fake_time = FakeTime()
         snapshot = capture.wait_for_bootstrap_event(
             service,
@@ -3390,31 +3459,40 @@ def test_clean_manager_continuation_uses_one_same_date_activation_pulse() -> Non
             bridge_unavailable_error=FakeBridgeUnavailableError,
             timeout_seconds=10.0,
             expected_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
-            maximum_date_raw=53154144,
-            expected_event_date_raw=53154144,
+            maximum_date_raw=53154168,
+            expected_event_date_raw=53154168,
             allow_known_prebootstrap_drains=False,
             initial_paused_event_settle_seconds=0.2,
-            initial_paused_activation_pulse=True,
+            initial_paused_date_sentinel=True,
             timeline_speed=5,
             clock=fake_time.clock,
             sleeper=fake_time.sleep,
         )
         require(
-            snapshot["date_raw"] == 53154144
+            snapshot["date_raw"] == 53154168
             and snapshot["active_event"]["instance_id"] == 91,
-            f"same-date activation pulse lost its event: {snapshot}",
+            f"date-only activation sentinel lost its event: {snapshot}",
         )
-        require(service.steps == ["resume-map"], "activation pulse was not unique")
+        require(
+            service.steps
+            == [
+                "research-arm-tactical-daily-sentinel-v1-53154144-to-53154168-speed-5-mode-terminal-a-0",
+                "resume-map",
+                "research-query-tactical-daily-sentinel-v1",
+            ],
+            f"date sentinel transport drifted: {service.steps}",
+        )
         wait_rows = rows(artifacts / "bootstrap-event-wait.jsonl")
         require(
             any(
                 row.get("state")
-                == "manager_continuation_activation_pulse_started"
-                and row.get("same_date_required") is True
+                == "manager_continuation_date_sentinel_stopped"
+                and row.get("resume_submission_count") == 1
+                and row.get("external_pause_used") is False
                 and row.get("timeline_speed") == 5
                 for row in wait_rows
             ),
-            "same-date activation pulse lacks typed evidence",
+            "date-only activation sentinel lacks typed evidence",
         )
 
 
@@ -4843,6 +4921,12 @@ def test_runner_import_guard_prevents_clean_source_bytecode() -> None:
             ),
             tools_dir / "zg361_phase2_acceptance_observer_gate.py",
         )
+        shutil.copy2(
+            Path(capture.__file__).with_name(
+                "zg361_phase2_date_sentinel_activation.py"
+            ),
+            tools_dir / "zg361_phase2_date_sentinel_activation.py",
+        )
         script = tools_dir / "run_zg361_phase2_seed_capture.py"
         environment = {
             key: value
@@ -5007,7 +5091,6 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
         ) -> dict[str, object]:
             continuation_calls.append("manager-cycle-recovery")
             service.date_raw += 240
-            service.event_state = "final"
             service.paused = True
             return {
                 "schema_version": 1,
@@ -5024,6 +5107,35 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
             }
 
         capture.recover_active_manager_cycle = fake_recovery
+        original_date_sentinel = capture.run_date_only_daily_activation
+
+        def fake_date_sentinel(
+            service: FakeService,
+            starting_snapshot: dict[str, object],
+            **kwargs: object,
+        ) -> dict[str, object]:
+            continuation_calls.append("date-only-sentinel")
+            require(
+                starting_snapshot["date_raw"] == 53147280
+                and service.event_state == "continuation_pending",
+                "continuation sentinel did not start at the clean boundary",
+            )
+            require(kwargs["speed"] == 5, "continuation sentinel lost speed five")
+            service.date_raw += 24
+            service.revision += 1
+            service.event_state = "final"
+            return {
+                "schema_version": 1,
+                "kind": "zg361_phase2_date_only_activation_sentinel",
+                "result": "GREEN",
+                "starting_date_raw": 53147280,
+                "target_date_raw": 53147304,
+                "speed": 5,
+                "resume_submission_count": 1,
+                "external_pause_used": False,
+            }
+
+        capture.run_date_only_daily_activation = fake_date_sentinel
         continuation_attempt = fixture.root / "continuation" / "attempt"
         continuation_artifacts = fixture.root / "continuation" / "artifacts"
         try:
@@ -5038,6 +5150,7 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
             )
         finally:
             capture.recover_active_manager_cycle = original_recovery
+            capture.run_date_only_daily_activation = original_date_sentinel
         require(final["result"] == "GREEN", f"clean continuation RED: {final}")
         require(
             final["manager_entry_mode"]
@@ -5049,16 +5162,23 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
             "clean continuation bypassed a final manager gate",
         )
         require(
-            final["manager_entry_event"]["date_raw"] == 53147280
+            final["manager_entry_event"]["date_raw"] == 53147304
             and final["manager_cycle_recovery"]["readiness"]
             == "paused-clean-review-boundary"
             and final["manager_transition_contract"]["maximum_date_raw"]
-            == 53147280,
-            "clean continuation did not bind the recovered business boundary",
+            == 53147304
+            and final["manager_transition_contract"][
+                "recovered_boundary_date_raw"
+            ]
+            == 53147280
+            and final["manager_transition_contract"]["activation_carrier"]
+            == "native-date-only-daily-sentinel",
+            "clean continuation did not bind the exact next-day activation",
         )
         require(
             not any(call.startswith("select-event-option:3") for call in continuation_calls)
             and "manager-cycle-recovery" in continuation_calls
+            and "date-only-sentinel" in continuation_calls
             and "seed-capture-mcp" in continuation_calls
             and "candidate-materialize" in continuation_calls,
             f"continuation replayed PIP or skipped final capture: {continuation_calls}",
@@ -5214,7 +5334,7 @@ def main() -> int:
     test_manager_b2_pip_route_uses_refuse_option_only()
     test_manager_post_activation_gui_settles_while_paused()
     test_manager_post_activation_gui_timeout_never_resumes_map()
-    test_clean_manager_continuation_uses_one_same_date_activation_pulse()
+    test_clean_manager_continuation_uses_one_date_only_sentinel()
     test_b2_pip_prebootstrap_identity_drift_fails_closed()
     test_exact_vanilla_no_secrets_event_keeps_current_task()
     test_r120_source_hash_is_exactly_authorized_for_b2_sequence()
