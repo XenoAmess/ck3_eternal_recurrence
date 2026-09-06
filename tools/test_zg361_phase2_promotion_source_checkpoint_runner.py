@@ -1550,6 +1550,163 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
         )
 
+    def test_movement_petition_interrupt_uses_terminal_refusal(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def generic_scope(name: str, type_key: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": {
+                        "status": "unavailable",
+                        "reason": "generic_scope_payload_identity_not_closed",
+                    },
+                },
+            }
+
+        event_key = "tgp_decision_events.0101"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53154120,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 18,
+            "date_raw": 53156928,
+            "root_scope": character_scope("root", 32904)["scope"],
+            "saved_scopes": [
+                character_scope("petitioner", 28664),
+                generic_scope("actors_movement", "situation_participant_group"),
+                character_scope("hegemon", 32904),
+                character_scope("petition_recipient", 32904),
+                generic_scope("province_metropolitan", "boolean"),
+                character_scope("other_movement_member", 27181),
+                character_scope("province_change_recipient", 27181),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53156928, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 18},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        inherited = copy.deepcopy(context)
+        inherited["saved_scopes"].insert(
+            -1, character_scope("house_movement_member", 27183)
+        )
+        inherited["saved_scopes"].insert(
+            -1, character_scope("disciple_movement_member", 27184)
+        )
+        inherited_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53158008, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 20},
+            context={
+                **inherited,
+                "current_event_instance_id": 20,
+                "date_raw": 53158008,
+            },
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(inherited_checks.values()), inherited_checks)
+
+    def test_administrative_confirmation_interrupt_uses_terminal_refusal(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        event_key = "ep3_decisions_event.2001"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 19,
+            "date_raw": 53157888,
+            "root_scope": character_scope("root", 32904)["scope"],
+            "saved_scopes": [
+                character_scope("confirmation_vassal", 28667),
+                character_scope("confirmation_liege", 32904),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53157888, "active_event": {"option_count": 2}},
+            event={"event_instance_id": 19},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
     def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
         class Service:
             def __init__(self) -> None:

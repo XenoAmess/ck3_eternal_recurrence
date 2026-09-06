@@ -7,6 +7,7 @@ zg361_mg_refuse_jingcha_exact_effect = {
 			has_variable = zg361_jingcha_pending
 			has_variable = zg361_jingcha_mandate_superior
 			has_variable = zg361_jingcha_mandate_year
+			var:zg361_jingcha_mandate_superior = { NOT = { this = prev } }
 		}
 		save_scope_as = zg361_mg_refusing_manager
 		set_variable = { name = zg361_mg_refusal_owner value = var:zg361_jingcha_mandate_superior }
@@ -49,14 +50,17 @@ zg361_mg_refuse_jingcha_exact_effect = {
 		limit = {
 			has_variable = zg361_jingcha_pending
 			has_variable = zg361_jingcha_mandate_year
-			NOT = { has_variable = zg361_jingcha_mandate_superior }
+			OR = {
+				NOT = { has_variable = zg361_jingcha_mandate_superior }
+				var:zg361_jingcha_mandate_superior = { this = prev }
+			}
 		}
 		add_prestige = {
 			value = 0
 			subtract = zg361_independent_refusal_prestige_cost_value
 		}
 		zg361_clear_jingcha_mandate_effect = yes
-		debug_log = "ZG361MG: independent top liege refused Jingcha (-200 prestige, no self-review)"
+		debug_log = "ZG361MG: independent or self-aliased top liege refused Jingcha (-200 prestige, no self-review)"
 	}
 	else = { zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 32 } }
 }

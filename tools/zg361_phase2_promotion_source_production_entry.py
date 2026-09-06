@@ -299,6 +299,118 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 3,
         "max_occurrences": 1,
     },
+    "tgp_decision_events.0101": {
+        # CK3 1.19.0.6 movement-petition decision delivered to the played
+        # hegemon.  Option 1 applies the requested law/budget/province change;
+        # option 2 opens a counter-offer chain.  Authored option 3 refuses and
+        # clears the petition/travel variables without mutating the Phase-2
+        # state machine, so it is the bounded terminal route for this unrelated
+        # interruption.  R163 observed the complete seven-scope/three-option
+        # frame while waiting for the next natural annual review pulse.
+        "date_raw": 53156928,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "hegemon": 29037,
+            "petition_recipient": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "petitioner": (29037,),
+            "other_movement_member": (29037,),
+            "province_change_recipient": (29037,),
+        },
+        "character_scope_matches_any": {
+            "other_movement_member": ("province_change_recipient",),
+            "province_change_recipient": ("other_movement_member",),
+        },
+        "scope_types": {
+            "petitioner": "character",
+            "actors_movement": "situation_participant_group",
+            "other_movement_member": "character",
+            "province_change_recipient": "character",
+        },
+        "boolean_scopes": ("province_metropolitan",),
+        "saved_scope_name_sets": ((
+            "petitioner",
+            "actors_movement",
+            "hegemon",
+            "petition_recipient",
+            "province_metropolitan",
+            "other_movement_member",
+            "province_change_recipient",
+        ),),
+        "saved_scope_count": 7,
+        "scope_variants": ({
+            # A later movement petition can retain both the disciple and
+            # house participant selected by its source situation.  Neither is
+            # consumed by option 3, but bind their exact names and character
+            # types instead of permitting arbitrary inherited scopes.
+            "saved_scope_names": (
+                "petitioner",
+                "actors_movement",
+                "hegemon",
+                "petition_recipient",
+                "province_metropolitan",
+                "other_movement_member",
+                "house_movement_member",
+                "disciple_movement_member",
+                "province_change_recipient",
+            ),
+            "saved_scope_count": 9,
+            "scope_types": {
+                "petitioner": "character",
+                "actors_movement": "situation_participant_group",
+                "other_movement_member": "character",
+                "house_movement_member": "character",
+                "disciple_movement_member": "character",
+                "province_change_recipient": "character",
+            },
+            "unique_character_scope_excludes": {
+                "petitioner": (29037,),
+                "other_movement_member": (29037,),
+                "house_movement_member": (29037,),
+                "disciple_movement_member": (29037,),
+                "province_change_recipient": (29037,),
+            },
+        },),
+        "option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
+    "ep3_decisions_event.2001": {
+        # CK3 1.19.0.6 administrative-vassal confirmation request.  Option 1
+        # begins the multi-event confirmation ceremony; option 2 terminates
+        # the request immediately through the authored refusal effect.  The
+        # refusal can change only this unrelated administrator relationship
+        # and trait-dependent stress, while avoiding a new blocking event
+        # chain during the bounded Phase-2 observation window.  R163 observed
+        # the complete two-character/two-option letter frame.
+        "date_raw": 53157888,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "confirmation_liege": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "confirmation_vassal": (29037,),
+        },
+        "scope_types": {
+            "confirmation_vassal": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "confirmation_vassal",
+            "confirmation_liege",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "tgp_interaction_event.0015": {
         # CK3 1.19.0.6 notification sent to a military governor after another
         # governor has been ordered into the recipient's wars. The interaction

@@ -171,11 +171,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
     def test_readiness_is_honest(self) -> None:
         self.assertEqual(READINESS, "static-ready")
-        self.assertIn("Readiness: `static-ready`", self.spec)
-        self.assertIn("MCP evidence: 首次启动只取得 loader/material RED 与 cleanup GREEN", self.spec)
+        self.assertIn("Readiness: `static-ready-live-pending`", self.spec)
+        self.assertIn("native manager→subordinate typed selector transport", self.spec)
         self.assertIn("CK3 live evidence: `RED only`", self.spec)
         self.assertIn("B3 readiness 仍为 `static-ready-live-pending`", self.spec)
-        self.assertIn("未进入 paused gameplay", self.spec)
+        self.assertIn("尚无可提升 B3 readiness 的 paused gameplay artifact", self.spec)
         self.assertIn("不触发\nsize A/B", self.spec)
         self.assertNotIn("fixture-live", self.spec.split("## Readiness boundary", 1)[0])
 
@@ -214,10 +214,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The generated payload includes the independent-Jingcha refusal branch.
-        self.assertEqual(len(historical_bytes), 387_417)
+        self.assertEqual(len(historical_bytes), 387_572)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "95383f7fea0ccbab524d654c385ac89f66e3ddb17bb02ef7791679102692d1e7",
+            "4e4b89cf3f6a2d1f512d7d17e284b2565c594767eee989ee2866120b4601d6d6",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -824,10 +824,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             "AI jingcha duty entered the background performance season",
             self.jingcha_mandate,
         )
-        self.assertIn(
-            "var:zg361_jingcha_mandate_superior = { is_alive = yes }",
-            self.jingcha_mandate,
+        refusal = top_level_block(
+            self.jingcha_mandate, "zg361_refuse_jingcha_effect"
         )
+        self.assertIn("is_alive = yes", refusal)
+        self.assertIn("NOT = { this = prev }", refusal)
         self.assertNotRegex(self.activity, r"remove_treasury|add_gold|remove_gold")
 
     def test_refusal_exact_minus_25_and_kpi_minus_50_once(self) -> None:
@@ -846,6 +847,17 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             adapter,
         )
         self.assertIn("zg361_mg_refusal_subject value = this", adapter)
+        self.assertRegex(
+            adapter,
+            r"var:zg361_jingcha_mandate_superior\s*=\s*\{\s*"
+            r"NOT\s*=\s*\{\s*this\s*=\s*prev",
+        )
+        self.assertRegex(
+            adapter,
+            r"OR\s*=\s*\{\s*NOT\s*=\s*\{\s*has_variable\s*=\s*"
+            r"zg361_jingcha_mandate_superior\s*\}\s*"
+            r"var:zg361_jingcha_mandate_superior\s*=\s*\{\s*this\s*=\s*prev",
+        )
         self.assertIn(
             "zg361_mg_refusal_cycle value = var:zg361_b1_cycle_serial", adapter
         )

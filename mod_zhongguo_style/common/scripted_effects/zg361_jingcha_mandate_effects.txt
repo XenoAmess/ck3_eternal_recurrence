@@ -169,7 +169,12 @@ zg361_refuse_jingcha_effect = {
 	if = {
 		limit = {
 			has_variable = zg361_jingcha_mandate_superior
-			var:zg361_jingcha_mandate_superior = { is_alive = yes }
+			var:zg361_jingcha_mandate_superior = {
+				is_alive = yes
+				# Celestial-government liege lookup can alias the top liege to
+				# the current character. Opinion effects may never target self.
+				NOT = { this = prev }
+			}
 		}
 		var:zg361_jingcha_mandate_superior = {
 			add_opinion = { modifier = zg361_refused_jingcha target = prev }
@@ -185,6 +190,8 @@ zg361_refuse_jingcha_effect = {
 		}
 	}
 	else = {
+		# Missing, dead or self-aliased superior: treat the player as the
+		# independent top liege and never fabricate an opinion/KPI relation.
 		add_prestige = {
 			value = 0
 			subtract = zg361_independent_refusal_prestige_cost_value
