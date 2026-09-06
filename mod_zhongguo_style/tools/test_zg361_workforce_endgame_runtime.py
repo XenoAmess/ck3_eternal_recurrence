@@ -111,6 +111,34 @@ def block(text: str, name: str) -> str:
         raise AssertionError(f"missing top-level block {name}") from error
 
 
+def m360_route_bundle(text: str, letter: str) -> str:
+    names = (
+        f"zg361_we_m360_route_{letter}_validate_collective_effect",
+        f"zg361_we_m360_route_{letter}_validate_collective_step_1_effect",
+        f"zg361_we_m360_route_{letter}_validate_collective_step_2_effect",
+        f"zg361_we_m360_route_{letter}_business_effect",
+        f"zg361_we_m360_route_{letter}_effect",
+    )
+    return "\n\n".join(block(text, name) for name in names)
+
+
+def m360_materialize_bundle(text: str, letter: str) -> str:
+    names = (
+        "zg361_we_m360_materialize_validate_ticket_effect",
+        "zg361_we_m360_materialize_validate_cohort_1_effect",
+        "zg361_we_m360_materialize_validate_cohort_2_effect",
+        "zg361_we_m360_materialize_validate_cohort_3_effect",
+        "zg361_we_m360_materialize_validate_identity_uniqueness_effect",
+        "zg361_we_m360_materialize_cleanup_effect",
+        f"zg361_we_m360_route_{letter}_validate_collective_effect",
+        f"zg361_we_m360_route_{letter}_validate_collective_step_1_effect",
+        f"zg361_we_m360_route_{letter}_validate_collective_step_2_effect",
+        f"zg361_we_m360_materialize_route_{letter}_writes_effect",
+        f"zg361_we_materialize_m360_route_{letter}_from_central_effect",
+    )
+    return "\n\n".join(block(text, name) for name in names)
+
+
 def loc_rows(path: Path) -> dict[str, str]:
     rows: dict[str, str] = {}
     for line in read(path).splitlines()[1:]:
@@ -140,7 +168,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         )
         debt = block(self.effects, "zg361_we_m242_consume_due_debt_effect")
         self.assertIn("debt_id = scope:zg361_we_m242_expected_debt_id", debt)
-        collective = block(self.effects, "zg361_we_m360_route_a_effect")
+        collective = m360_route_bundle(self.effects, "a")
         self.assertIn("name = zg361_we_expected_collective_total_quota", collective)
         self.assertIn(
             "external_collective_total_quota = scope:zg361_we_expected_collective_total_quota",
@@ -178,7 +206,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             f"events/{group.filename}"
             for group in gen.EVENT_GROUPS
         }
-        self.assertEqual(136, len(outputs))
+        self.assertEqual(146, len(outputs))
         self.assertEqual(
             expected_effects,
             {path for path in outputs if path.startswith("common/scripted_effects/")},
@@ -228,8 +256,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 parts[group.filename]
             )
         )
-        self.assertEqual(324, len(projected_blocks))
-        self.assertEqual(324, len({name for name, _ in projected_blocks}))
+        self.assertEqual(gen.HISTORICAL_EFFECT_COUNT, len(projected_blocks))
+        self.assertEqual(gen.HISTORICAL_EFFECT_COUNT, len({name for name, _ in projected_blocks}))
         self.assertEqual(dict(source_blocks), dict(projected_blocks))
         for group in gen.EFFECT_GROUPS:
             ranks = tuple(source_rank[name] for name in group.effect_names)
@@ -238,7 +266,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(source_blocks, reconstructed)
 
     def test_04c_effect_parts_obey_purpose_boundaries(self) -> None:
-        self.assertEqual(88, len(gen.EFFECT_GROUPS))
+        self.assertEqual(98, len(gen.EFFECT_GROUPS))
         self.assertEqual({}, gen.EFFECT_HARD_LIMIT_EXCEPTIONS)
         for group, path in zip(gen.EFFECT_GROUPS, EFFECT_PATHS, strict=True):
             with self.subTest(path=path.name):
@@ -247,6 +275,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 self.assertLessEqual(count, gen.EFFECT_TARGET_MAX)
                 self.assertLessEqual(count, gen.EFFECT_HARD_MAX)
                 payload = path.read_bytes()
+                self.assertLessEqual(len(payload), gen.EFFECT_FILE_BYTE_MAX)
                 self.assertTrue(payload.startswith(gen.BOM))
                 text = payload.decode("utf-8-sig")
                 self.assertTrue(text.startswith(gen.HEADER))
@@ -409,6 +438,10 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertEqual(
             set(gen.RETIRED_EFFECT_FILENAMES),
             {
+                "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
+                "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
+                "zg361_workforce_endgame_058_al_m360_route_a_effects.txt",
+                "zg361_workforce_endgame_059_al_m360_route_b_effects.txt",
                 "zg361_workforce_endgame_015a_m269_attribution_settlement_effects.txt",
                 "zg361_workforce_endgame_023b_al_m360_m361_due_debt_effects.txt",
                 "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
@@ -505,6 +538,74 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             }.issubset(gen.RETIRED_EFFECT_FILENAMES)
         )
 
+    def test_04d5_m360_large_owners_are_factored_without_reordering(self) -> None:
+        groups = {group.filename: group.effect_names for group in gen.EFFECT_GROUPS}
+        old_owners = {
+            "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
+            "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
+            "zg361_workforce_endgame_058_al_m360_route_a_effects.txt",
+            "zg361_workforce_endgame_059_al_m360_route_b_effects.txt",
+        }
+        self.assertTrue(old_owners.isdisjoint(groups))
+        self.assertTrue(old_owners.issubset(gen.RETIRED_EFFECT_FILENAMES))
+        effect_root = MOD_ROOT / "common" / "scripted_effects"
+        self.assertTrue(all(not (effect_root / old).exists() for old in old_owners))
+
+        focused = {
+            filename: payload
+            for filename, payload in gen.render_effect_parts().items()
+            if filename.startswith((
+                "zg361_workforce_endgame_003",
+                "zg361_workforce_endgame_004",
+                "zg361_workforce_endgame_058",
+                "zg361_workforce_endgame_059",
+            ))
+        }
+        self.assertEqual(14, len(focused))
+        self.assertLessEqual(max(map(len, focused.values())), 110_000)
+
+        for choice, letter in ((1, "a"), (2, "b")):
+            with self.subTest(letter=letter):
+                validation_names = gen._collective_validation_names(choice)
+                self.assertEqual(3, len(validation_names))
+                wrapper = block(self.effects, validation_names[0])
+                self.assertLess(
+                    wrapper.index(validation_names[1]),
+                    wrapper.index(validation_names[2]),
+                )
+                chunks = gen._ordered_line_chunks(gen._collective_external_checks(choice))
+                self.assertEqual(
+                    tuple(gen._collective_external_checks(choice)),
+                    tuple(line for chunk in chunks for line in chunk),
+                )
+
+                materialize = block(
+                    self.effects,
+                    f"zg361_we_materialize_m360_route_{letter}_from_central_effect",
+                )
+                materialize_calls = (
+                    "zg361_we_m360_materialize_validate_ticket_effect",
+                    "zg361_we_m360_materialize_validate_cohort_1_effect",
+                    "zg361_we_m360_materialize_validate_cohort_2_effect",
+                    "zg361_we_m360_materialize_validate_cohort_3_effect",
+                    "zg361_we_m360_materialize_validate_identity_uniqueness_effect",
+                    "zg361_we_m360_materialize_cleanup_effect",
+                    f"zg361_we_m360_materialize_route_{letter}_writes_effect",
+                    f"zg361_we_m360_route_{letter}_validate_collective_effect",
+                )
+                positions = tuple(materialize.index(name) for name in materialize_calls)
+                self.assertEqual(tuple(sorted(positions)), positions)
+
+                route = block(self.effects, f"zg361_we_m360_route_{letter}_effect")
+                self.assertLess(
+                    route.index(f"zg361_we_m360_route_{letter}_validate_collective_effect"),
+                    route.index("zg361_case_kernel_record_operation_effect"),
+                )
+                self.assertGreater(
+                    route.index(f"zg361_we_m360_route_{letter}_business_effect"),
+                    route.index("zg361_case_kernel_record_operation_effect"),
+                )
+
     def test_04f_b2_workforce_closure_is_exact_whole_shard_union(self) -> None:
         closure = set(gen.B2_EFFECT_CLOSURE_NAMES)
         selected = [
@@ -593,7 +694,7 @@ second_effect = { value = 2 }
             check=False,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("GREEN: 136", result.stdout)
+        self.assertIn("GREEN: 146", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
         paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]
@@ -1446,8 +1547,8 @@ second_effect = { value = 2 }
         self.assertIn("m356_duplicate_credit_reversed value = 1", audit)
 
     def test_40_collective_action_conserves_agenda_quota_and_cost_direction(self) -> None:
-        exception = block(self.effects, "zg361_we_m360_route_a_effect")
-        forced = block(self.effects, "zg361_we_m360_route_b_effect")
+        exception = m360_route_bundle(self.effects, "a")
+        forced = m360_route_bundle(self.effects, "b")
         for route in (exception, forced):
             self.assertIn("m360_cohort_count value = 3", route)
             self.assertIn("m360_cohort_size value = var:zg361_we_al_external_collective_total_members", route)
@@ -1968,6 +2069,20 @@ second_effect = { value = 2 }
         for letter in ("a", "b"):
             route = block(self.effects, f"zg361_we_m360_route_{letter}_effect")
             receipt = route.index("zg361_case_kernel_record_operation_effect")
+            validator_call = route.index(
+                f"zg361_we_m360_route_{letter}_validate_collective_effect"
+            )
+            business_call = route.index(f"zg361_we_m360_route_{letter}_business_effect")
+            self.assertLess(validator_call, receipt)
+            self.assertGreater(business_call, receipt)
+            validation = "\n".join(
+                block(
+                    self.effects,
+                    f"zg361_we_m360_route_{letter}_validate_collective_step_{step}_effect",
+                )
+                for step in (1, 2)
+            )
+            business = block(self.effects, f"zg361_we_m360_route_{letter}_business_effect")
             apply_positions = []
             for slot in (1, 2, 3):
                 base = f"zg361_we_al_external_collective_{slot}"
@@ -1980,34 +2095,31 @@ second_effect = { value = 2 }
                     "mg_snapshot_source_serial", "mg_snapshot_revision",
                     "b1_cycle", "b1_case", "b1_source_id", "b1_source_hash",
                 ):
-                    self.assertLess(route.index(f"has_variable = {base}_{name}"), receipt)
-                self.assertLess(
-                    route.index(
-                        f"zg361_mg_m360_collective_cost_c{slot}_can_apply_trigger"
-                    ),
-                    receipt,
+                    self.assertIn(f"has_variable = {base}_{name}", validation)
+                self.assertIn(
+                    f"zg361_mg_m360_collective_cost_c{slot}_can_apply_trigger",
+                    validation,
                 )
-                apply_position = route.index(
+                apply_position = business.index(
                     f"zg361_mg_m360_apply_collective_cost_c{slot}_effect"
                 )
                 apply_positions.append(apply_position)
-                self.assertGreater(apply_position, receipt)
                 self.assertGreater(
-                    route.index(f"m360_cohort_{slot}_cohort_id value"),
+                    business.index(f"m360_cohort_{slot}_cohort_id value"),
                     apply_position,
                 )
             if letter == "a":
-                receipt_copy = route.index(
+                receipt_copy = business.index(
                     "m360_cohort_1_manager_cost_receipt_id value"
                 )
-                trust = route.index(
+                trust = business.index(
                     "change_variable = { name = zg361_we_realm_trust"
                 )
                 self.assertGreater(receipt_copy, max(apply_positions))
                 self.assertGreater(trust, receipt_copy)
             else:
                 self.assertNotIn(
-                    "change_variable = { name = zg361_we_realm_trust", route
+                    "change_variable = { name = zg361_we_realm_trust", business
                 )
 
     def test_70_charter_uses_real_rolling_receipts_and_monotonic_product_ids(self) -> None:
@@ -2042,11 +2154,8 @@ second_effect = { value = 2 }
             ("a", "exception", "forced"),
             ("b", "forced", "exception"),
         ):
-            route = block(self.effects, f"zg361_we_m360_route_{letter}_effect")
-            materialize = block(
-                self.effects,
-                f"zg361_we_materialize_m360_route_{letter}_from_central_effect",
-            )
+            route = m360_route_bundle(self.effects, letter)
+            materialize = m360_materialize_bundle(self.effects, letter)
             self.assertIn("al_external_collective_total_quota <= 6", route)
             for cohort in (1, 2, 3):
                 base = f"zg361_we_al_external_collective_{cohort}"
@@ -2568,30 +2677,39 @@ second_effect = { value = 2 }
         self.assertIn("m360_event_queued value = 1", resume)
         self.assertIn("trigger_event = { id = zg361we.360 }", resume)
         for letter in ("a", "b"):
-            materialize = block(
+            public_materialize = block(
                 self.effects,
                 f"zg361_we_materialize_m360_route_{letter}_from_central_effect",
             )
+            materialize = m360_materialize_bundle(self.effects, letter)
             self.assertIn("EXPECTED_STATE = 4", materialize)
             self.assertIn("zg361_p2c_m360_source_cohort_count = 3", materialize)
             self.assertIn("al_external_collective_cohort_count value = 3", materialize)
             self.assertIn("al_external_collective_submission_sealed value = 1", materialize)
             self.assertIn("save_scope_as = zg361_we_m360_cost_subject", materialize)
             self.assertIn("save_scope_as = zg361_we_m360_cost_owner", materialize)
-            first_success = materialize.index("adapter_status value = 1")
+            first_success = public_materialize.index("adapter_status value = 1")
             for cohort in (1, 2, 3):
                 preflight = f"zg361_mg_m360_collective_cost_c{cohort}_can_apply_trigger"
                 self.assertIn(preflight, materialize)
-                self.assertLess(materialize.index(preflight), first_success)
             # A failed global preflight erases the draft seal and releases the
             # player queue so Central can resume instead of stranding #360.
+            cleanup = block(self.effects, "zg361_we_m360_materialize_cleanup_effect")
+            self.assertIn(
+                "remove_variable = zg361_we_al_external_collective_submission_sealed",
+                cleanup,
+            )
             self.assertGreaterEqual(
-                materialize.count(
-                    "remove_variable = zg361_we_al_external_collective_submission_sealed"
-                ),
+                public_materialize.count("zg361_we_m360_materialize_cleanup_effect"),
                 2,
             )
-            self.assertIn("m360_event_queued value = 0", materialize)
+            self.assertIn("m360_event_queued value = 0", public_materialize)
+            self.assertLess(
+                public_materialize.index(
+                    f"zg361_we_m360_route_{letter}_validate_collective_effect"
+                ),
+                first_success,
+            )
             for cohort in (1, 2, 3):
                 for field in gen.M360_CENTRAL_COHORT_FIELDS:
                     self.assertIn(

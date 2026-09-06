@@ -1,0 +1,1501 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_patch_scoreboard_b1_post_mark_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_cycle_state = 8
+			NOT = { has_character_flag = zg361_b1_cycle_active }
+			has_variable = zg361_review_serial
+			has_variable = zg361_scoreboard_managed_owner
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_owner = this
+			var:zg361_scoreboard_managed_cycle_serial = var:zg361_review_serial
+			trigger_if = {
+				limit = { has_variable = zg361_scoreboard_b1_post_mark_patch_serial }
+				NOT = { var:zg361_scoreboard_b1_post_mark_patch_serial = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_scoreboard_b1_post_mark_patch_serial value = var:zg361_review_serial }
+		save_temporary_scope_as = zg361_scoreboard_post_mark_manager
+		every_in_list = {
+			variable = zg361_b1_subjects
+			limit = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_case_subject
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_case_state
+				has_variable = zg361_result_case_owner
+				has_variable = zg361_result_cycle_serial
+				has_variable = zg361_result_case_serial
+				var:zg361_b1_case_owner = scope:zg361_scoreboard_post_mark_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_scoreboard_post_mark_manager.var:zg361_review_serial
+				var:zg361_b1_case_state = 8
+				var:zg361_result_case_owner = scope:zg361_scoreboard_post_mark_manager
+				var:zg361_result_cycle_serial = scope:zg361_scoreboard_post_mark_manager.var:zg361_review_serial
+			}
+			save_temporary_scope_as = zg361_scoreboard_post_mark_subject
+			root = {
+				zg361_patch_scoreboard_b1_post_mark_01_16_effect = yes
+				zg361_patch_scoreboard_b1_post_mark_17_32_effect = yes
+				zg361_patch_scoreboard_b1_post_mark_33_48_effect = yes
+				zg361_patch_scoreboard_b1_post_mark_49_64_effect = yes
+				zg361_patch_scoreboard_b1_post_mark_65_80_effect = yes
+			}
+			if = {
+				limit = {
+					is_ai = no
+					has_variable = zg361_sb_self_char
+					var:zg361_sb_self_char = this
+					has_variable = zg361_sb_self_disclosure_acl_mode
+					var:zg361_sb_self_disclosure_acl_mode = 3
+					has_variable = zg361_scoreboard_received_owner
+					var:zg361_scoreboard_received_owner = scope:zg361_scoreboard_post_mark_manager
+					has_variable = zg361_scoreboard_received_cycle_serial
+					var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+					has_variable = zg361_scoreboard_received_case_serial
+					var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+					has_variable = zg361_sb_self_case_owner
+					var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+					has_variable = zg361_sb_self_cycle_serial
+					var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+					has_variable = zg361_sb_self_case_serial
+					var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+				}
+				remove_variable = zg361_sb_self_b1_141_must_review_marker
+				remove_variable = zg361_sb_self_b1_141_agenda_reason
+				remove_variable = zg361_sb_self_b1_141_review_outcome
+				# B1_OBJECT_141_1_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_must_review_object_available
+						has_variable = zg361_b1_must_review_object_owner
+						has_variable = zg361_b1_must_review_object_subject
+						has_variable = zg361_b1_must_review_object_cycle
+						has_variable = zg361_b1_must_review_object_case
+						has_variable = zg361_b1_must_review_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_post_mark_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_must_review_object_available = 1
+						var:zg361_b1_must_review_object_owner = scope:zg361_scoreboard_post_mark_manager
+						var:zg361_b1_must_review_object_subject = this
+						var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+						OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+						has_variable = zg361_b1_must_review_route
+						var:zg361_b1_must_review_route = 1
+					}
+					if = { limit = { has_variable = zg361_b1_must_review_object_available } set_variable = { name = zg361_sb_self_b1_141_must_review_marker value = var:zg361_b1_must_review_object_available } }
+					if = { limit = { has_variable = zg361_b1_must_review_reason_fact } set_variable = { name = zg361_sb_self_b1_141_agenda_reason value = var:zg361_b1_must_review_reason_fact } }
+					if = { limit = { has_variable = zg361_b1_must_review_judgment_result } set_variable = { name = zg361_sb_self_b1_141_review_outcome value = var:zg361_b1_must_review_judgment_result } }
+				}
+				# B1_OBJECT_141_1_END
+				# B1_OBJECT_141_2_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_must_review_object_available
+						has_variable = zg361_b1_must_review_object_owner
+						has_variable = zg361_b1_must_review_object_subject
+						has_variable = zg361_b1_must_review_object_cycle
+						has_variable = zg361_b1_must_review_object_case
+						has_variable = zg361_b1_must_review_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_post_mark_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_must_review_object_available = 1
+						var:zg361_b1_must_review_object_owner = scope:zg361_scoreboard_post_mark_manager
+						var:zg361_b1_must_review_object_subject = this
+						var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+						OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+						has_variable = zg361_b1_must_review_route
+						var:zg361_b1_must_review_route = 2
+					}
+					if = { limit = { has_variable = zg361_b1_must_review_object_available } set_variable = { name = zg361_sb_self_b1_141_must_review_marker value = var:zg361_b1_must_review_object_available } }
+					if = { limit = { has_variable = zg361_b1_must_review_reason_fact } set_variable = { name = zg361_sb_self_b1_141_agenda_reason value = var:zg361_b1_must_review_reason_fact } }
+					if = { limit = { has_variable = zg361_b1_must_review_judgment_result } set_variable = { name = zg361_sb_self_b1_141_review_outcome value = var:zg361_b1_must_review_judgment_result } }
+				}
+				# B1_OBJECT_141_2_END
+			}
+		}
+	}
+}
+
+zg361_patch_scoreboard_b1_post_mark_01_16_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_01_char
+			var:zg361_sb_m_01_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_01_case_owner
+			var:zg361_sb_m_01_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_01_cycle_serial
+			var:zg361_sb_m_01_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_01_case_serial
+			var:zg361_sb_m_01_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_01_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_01_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_01_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_01_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_01_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_01_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_01_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_01_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_01_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_02_char
+			var:zg361_sb_m_02_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_02_case_owner
+			var:zg361_sb_m_02_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_02_cycle_serial
+			var:zg361_sb_m_02_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_02_case_serial
+			var:zg361_sb_m_02_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_02_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_02_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_02_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_02_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_02_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_02_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_02_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_02_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_02_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_03_char
+			var:zg361_sb_m_03_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_03_case_owner
+			var:zg361_sb_m_03_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_03_cycle_serial
+			var:zg361_sb_m_03_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_03_case_serial
+			var:zg361_sb_m_03_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_03_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_03_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_03_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_03_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_03_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_03_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_03_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_03_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_03_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_04_char
+			var:zg361_sb_m_04_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_04_case_owner
+			var:zg361_sb_m_04_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_04_cycle_serial
+			var:zg361_sb_m_04_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_04_case_serial
+			var:zg361_sb_m_04_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_04_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_04_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_04_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_04_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_04_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_04_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_04_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_04_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_04_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_05_char
+			var:zg361_sb_m_05_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_05_case_owner
+			var:zg361_sb_m_05_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_05_cycle_serial
+			var:zg361_sb_m_05_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_05_case_serial
+			var:zg361_sb_m_05_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_05_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_05_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_05_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_05_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_05_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_05_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_05_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_05_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_05_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_06_char
+			var:zg361_sb_m_06_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_06_case_owner
+			var:zg361_sb_m_06_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_06_cycle_serial
+			var:zg361_sb_m_06_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_06_case_serial
+			var:zg361_sb_m_06_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_06_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_06_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_06_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_06_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_06_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_06_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_06_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_06_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_06_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_07_char
+			var:zg361_sb_m_07_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_07_case_owner
+			var:zg361_sb_m_07_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_07_cycle_serial
+			var:zg361_sb_m_07_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_07_case_serial
+			var:zg361_sb_m_07_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_07_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_07_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_07_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_07_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_07_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_07_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_07_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_07_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_07_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_08_char
+			var:zg361_sb_m_08_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_08_case_owner
+			var:zg361_sb_m_08_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_08_cycle_serial
+			var:zg361_sb_m_08_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_08_case_serial
+			var:zg361_sb_m_08_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_08_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_08_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_08_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_08_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_08_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_08_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_08_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_08_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_08_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_09_char
+			var:zg361_sb_m_09_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_09_case_owner
+			var:zg361_sb_m_09_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_09_cycle_serial
+			var:zg361_sb_m_09_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_09_case_serial
+			var:zg361_sb_m_09_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_09_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_09_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_09_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_09_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_09_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_09_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_09_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_09_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_09_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_10_char
+			var:zg361_sb_m_10_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_10_case_owner
+			var:zg361_sb_m_10_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_10_cycle_serial
+			var:zg361_sb_m_10_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_10_case_serial
+			var:zg361_sb_m_10_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_10_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_10_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_10_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_10_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_10_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_10_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_10_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_10_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_10_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_11_char
+			var:zg361_sb_m_11_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_11_case_owner
+			var:zg361_sb_m_11_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_11_cycle_serial
+			var:zg361_sb_m_11_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_11_case_serial
+			var:zg361_sb_m_11_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_11_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_11_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_11_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_11_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_11_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_11_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_11_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_11_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_11_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_12_char
+			var:zg361_sb_m_12_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_12_case_owner
+			var:zg361_sb_m_12_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_12_cycle_serial
+			var:zg361_sb_m_12_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_12_case_serial
+			var:zg361_sb_m_12_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_12_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_12_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_12_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_12_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_12_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_12_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_12_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_12_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_12_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_13_char
+			var:zg361_sb_m_13_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_13_case_owner
+			var:zg361_sb_m_13_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_13_cycle_serial
+			var:zg361_sb_m_13_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_13_case_serial
+			var:zg361_sb_m_13_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_13_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_13_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_13_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_13_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_13_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_13_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_13_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_13_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_13_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_14_char
+			var:zg361_sb_m_14_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_14_case_owner
+			var:zg361_sb_m_14_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_14_cycle_serial
+			var:zg361_sb_m_14_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_14_case_serial
+			var:zg361_sb_m_14_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_14_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_14_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_14_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_14_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_14_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_14_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_14_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_14_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_14_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_15_char
+			var:zg361_sb_m_15_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_15_case_owner
+			var:zg361_sb_m_15_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_15_cycle_serial
+			var:zg361_sb_m_15_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_15_case_serial
+			var:zg361_sb_m_15_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_15_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_15_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_15_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_15_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_15_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_15_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_15_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_15_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_15_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+	if = {
+		limit = {
+			has_variable = zg361_sb_m_16_char
+			var:zg361_sb_m_16_char = scope:zg361_scoreboard_post_mark_subject
+			has_variable = zg361_sb_m_16_case_owner
+			var:zg361_sb_m_16_case_owner = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner
+			has_variable = zg361_sb_m_16_cycle_serial
+			var:zg361_sb_m_16_cycle_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_16_case_serial
+			var:zg361_sb_m_16_case_serial = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial
+		}
+		remove_variable = zg361_sb_m_16_b1_141_must_review_marker
+		remove_variable = zg361_sb_m_16_b1_141_agenda_reason
+		remove_variable = zg361_sb_m_16_b1_141_review_outcome
+		# B1_OBJECT_141_1_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 1
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_16_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_16_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_16_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_1_END
+		# B1_OBJECT_141_2_BEGIN
+		if = {
+			limit = {
+				scope:zg361_scoreboard_post_mark_subject = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_subject
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_must_review_object_available
+					has_variable = zg361_b1_must_review_object_owner
+					has_variable = zg361_b1_must_review_object_subject
+					has_variable = zg361_b1_must_review_object_cycle
+					has_variable = zg361_b1_must_review_object_case
+					has_variable = zg361_b1_must_review_object_state
+					var:zg361_b1_case_owner = root
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial >= 1
+					var:zg361_b1_case_serial >= 1
+					OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+					var:zg361_b1_must_review_object_available = 1
+					var:zg361_b1_must_review_object_owner = root
+					var:zg361_b1_must_review_object_subject = this
+					var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+					var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+					OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+					has_variable = zg361_b1_must_review_route
+					var:zg361_b1_must_review_route = 2
+				}
+			}
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_object_available } } set_variable = { name = zg361_sb_m_16_b1_141_must_review_marker value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_object_available } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_reason_fact } } set_variable = { name = zg361_sb_m_16_b1_141_agenda_reason value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_reason_fact } }
+			if = { limit = { scope:zg361_scoreboard_post_mark_subject = { has_variable = zg361_b1_must_review_judgment_result } } set_variable = { name = zg361_sb_m_16_b1_141_review_outcome value = scope:zg361_scoreboard_post_mark_subject.var:zg361_b1_must_review_judgment_result } }
+		}
+		# B1_OBJECT_141_2_END
+	}
+}

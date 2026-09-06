@@ -33,6 +33,8 @@ from gen_scoreboard_snapshot import (
     DISCLOSURE_B_CASE_FIELDS,
     DISCLOSURE_B_FIELD_NAMES,
     DISCLOSURE_POLICY_VARS,
+    EFFECTS_PER_SHARD_MAX,
+    EFFECT_SHARD_MAX_BYTES,
     MUTABLE_DISCLOSURE_A_CASE_FIELDS,
     MUTABLE_DISCLOSURE_B_CASE_FIELDS,
     MUTABLE_RECEIVED_CASE_FIELDS,
@@ -43,7 +45,9 @@ from gen_scoreboard_snapshot import (
     FieldSpec,
     GEOMETRY_RESOLUTIONS,
     GEOMETRY_UI_SCALES,
+    HEADER,
     LEDGER_CONTENT_WIDTH,
+    LEGACY_EFFECT_BUNDLE,
     MOD_ROOT,
     PANEL_HORIZONTAL_FRAME_MARGIN,
     PANEL_MIN_PHYSICAL_MARGIN,
@@ -57,10 +61,16 @@ from gen_scoreboard_snapshot import (
     disclosure_case_is_current,
     disclosure_policy_is_current,
     b1_disclosed_object_fields,
+    canonical_scoreboard_effect_shard_paths,
     disclosed_case_fields,
     outputs,
+    render_effects,
+    render_effect_blocks,
+    render_effect_shards,
+    read_checked_in_scoreboard_effects,
     received_case_fields,
     row_gui,
+    scoreboard_effect_purpose,
 )
 
 
@@ -136,12 +146,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 self.assertEqual(case_by_name[name].page, "audit")
 
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
             "utf-8-sig"
         )
@@ -215,12 +220,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_selected_detail_schema_has_no_remove_only_case_binding_duplicates(self) -> None:
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         slot_guis = rendered[
             MOD_ROOT
             / "common"
@@ -262,12 +262,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_single_case_detail_projection_and_selector_cardinality(self) -> None:
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         slot_guis = rendered[
             MOD_ROOT
             / "common"
@@ -379,12 +374,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertNotIn("var:zg361_sb_self_char = root", self_selector)
 
     def test_received_self_buffer_rejects_different_owner_cycle_or_case(self) -> None:
-        effects = outputs()[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         copy_self = effects.split(
             "zg361_copy_received_scoreboard_slots_effect = {", 1
         )[1].split(
@@ -425,12 +415,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             )
 
     def test_received_acl_excludes_peer_identities_and_unstructured_text(self) -> None:
-        effects = outputs()[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         copy_self = effects.split(
             "zg361_copy_received_scoreboard_slots_effect = {", 1
         )[1].split("\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source", 1)[0]
@@ -559,12 +544,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertNotIn("final_grade", b1_names)
 
     def test_b1_objects_use_strict_five_tuple_gates_and_no_received_team_slots(self) -> None:
-        effects = outputs()[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         for contract in B1_OBJECT_CONTRACTS:
             marker = f"# B1_OBJECT_{contract.mechanism_id}_{contract.route}_BEGIN"
             self.assertIn(marker, effects)
@@ -591,12 +571,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_b1_post_mark_patch_is_one_shot_and_preserves_publish_before_elimination(self) -> None:
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         patch = effects.split("zg361_patch_scoreboard_b1_post_mark_effect = {", 1)[1]
         for token in (
             "var:zg361_b1_cycle_state = 8",
@@ -632,12 +607,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_generated_received_copy_freezes_policy_and_applies_a_b_c(self) -> None:
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         copy_self = effects.split(
             "zg361_copy_received_scoreboard_slots_effect = {", 1
         )[1].split("\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source", 1)[0]
@@ -705,12 +675,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertNotIn("zg361_sb_m_01_disclosure_", effects)
 
     def test_mutable_updates_cannot_widen_the_frozen_disclosure_route(self) -> None:
-        effects = outputs()[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         phase2 = effects.split(
             "# Current scope = player official after witnessed/acknowledged 3.25 settlement.",
             1,
@@ -867,12 +832,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 )
             )
 
-        effects = outputs()[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         copy_self = effects.split(
             "zg361_copy_received_scoreboard_slots_effect = {", 1
         )[1].split("\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source", 1)[0]
@@ -929,14 +889,60 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         for path, data in first.items():
             self.assertTrue(data.startswith(b"\xef\xbb\xbf"), path.name)
 
+    def test_effect_shards_replace_the_legacy_bundle_and_obey_size_contract(self) -> None:
+        shards = render_effect_shards()
+        self.assertNotIn(LEGACY_EFFECT_BUNDLE, outputs())
+        for path, data in shards.items():
+            document = data.decode("utf-8-sig")
+            effect_names = re.findall(r"(?m)^([a-z0-9_]+_effect) = \{", document)
+            with self.subTest(path=path.name):
+                self.assertGreaterEqual(len(effect_names), 1)
+                self.assertLessEqual(len(effect_names), EFFECTS_PER_SHARD_MAX)
+                self.assertLessEqual(len(data), EFFECT_SHARD_MAX_BYTES)
+                self.assertTrue(data.endswith(b"\n"))
+                self.assertFalse(data.endswith(b"\n\n"))
+                self.assertEqual(
+                    {scoreboard_effect_purpose(name) for name in effect_names},
+                    {scoreboard_effect_purpose(effect_names[0])},
+                )
+
+    def test_effect_shards_preserve_every_block_in_canonical_order(self) -> None:
+        canonical = render_effects().decode("utf-8-sig")
+        self.assertTrue(canonical.startswith(HEADER))
+        rebuilt = "".join(
+            data.decode("utf-8-sig").removeprefix(HEADER)
+            for data in render_effect_shards().values()
+        )
+        # Standalone shards trim separator-only blank lines at their EOF.  All
+        # meaningful source lines and their order must remain byte-identical.
+        self.assertEqual(
+            [line for line in rebuilt.splitlines() if line.strip()],
+            [
+                line
+                for line in canonical.removeprefix(HEADER).splitlines()
+                if line.strip()
+            ],
+        )
+        expected_names = [name for name, _block in render_effect_blocks()]
+        actual_names = re.findall(r"(?m)^([a-z0-9_]+_effect) = \{", rebuilt)
+        self.assertEqual(actual_names, expected_names)
+        self.assertEqual(
+            canonical_scoreboard_effect_shard_paths(), tuple(render_effect_shards())
+        )
+        self.assertEqual(
+            read_checked_in_scoreboard_effects(),
+            "\n".join(
+                path.read_text(encoding="utf-8-sig")
+                for path in canonical_scoreboard_effect_shard_paths()
+            ),
+        )
+
+    def test_checked_in_tree_does_not_restore_legacy_effect_bundle(self) -> None:
+        self.assertFalse(LEGACY_EFFECT_BUNDLE.exists())
+
     def test_detail_selection_is_cleared_by_publication_and_navigation(self) -> None:
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
             "utf-8-sig"
         )
@@ -1010,12 +1016,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_exact_slots_and_no_live_score_reads(self) -> None:
         rendered = outputs()
-        effects = rendered[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode("utf-8-sig")
         for prefix in ("m", "r"):
             for slot in range(1, SLOT_COUNT + 1):
@@ -1053,12 +1054,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertEqual(stale, [])
 
     def test_phase2_case_updates_follow_frozen_owner_cycle_and_case(self) -> None:
-        effects = outputs()[
-            MOD_ROOT
-            / "common"
-            / "scripted_effects"
-            / "zg361_generated_scoreboard_snapshots.txt"
-        ].decode("utf-8-sig")
+        effects = render_effects().decode("utf-8-sig")
         phase2 = effects.split(
             "# Current scope = player official after witnessed/acknowledged 3.25 settlement.",
             1,

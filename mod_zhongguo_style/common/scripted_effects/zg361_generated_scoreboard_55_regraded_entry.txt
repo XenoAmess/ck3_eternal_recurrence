@@ -1,0 +1,626 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_update_regraded_scoreboard_slots_effect = {
+	save_temporary_scope_as = zg361_scoreboard_case_entry
+	var:zg361_result_case_owner = {
+		zg361_update_regraded_scoreboard_slots_managed_01_16_effect = yes
+		zg361_update_regraded_scoreboard_slots_managed_17_32_effect = yes
+		zg361_update_regraded_scoreboard_slots_managed_33_48_effect = yes
+		zg361_update_regraded_scoreboard_slots_managed_49_64_effect = yes
+		zg361_update_regraded_scoreboard_slots_managed_65_80_effect = yes
+		zg361_update_regraded_scoreboard_slots_managed_detail_effect = yes
+	}
+	zg361_update_regraded_scoreboard_slots_received_01_40_effect = yes
+	zg361_update_regraded_scoreboard_slots_received_41_80_effect = yes
+	zg361_update_regraded_scoreboard_slots_received_detail_effect = yes
+}
+
+zg361_update_regraded_scoreboard_slots_managed_01_16_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_01_char
+			var:zg361_sb_m_01_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_01_case_serial
+			var:zg361_sb_m_01_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_01_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_01_streak value = 0 }
+		set_variable = { name = zg361_sb_m_01_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_01_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_01_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_01_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_01_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_01_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_01_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_01_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_01_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_01_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_01_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_01_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_01_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_01_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_01_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_01_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_01_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_02_char
+			var:zg361_sb_m_02_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_02_case_serial
+			var:zg361_sb_m_02_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_02_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_02_streak value = 0 }
+		set_variable = { name = zg361_sb_m_02_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_02_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_02_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_02_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_02_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_02_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_02_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_02_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_02_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_02_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_02_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_02_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_02_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_02_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_02_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_02_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_02_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_03_char
+			var:zg361_sb_m_03_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_03_case_serial
+			var:zg361_sb_m_03_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_03_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_03_streak value = 0 }
+		set_variable = { name = zg361_sb_m_03_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_03_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_03_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_03_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_03_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_03_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_03_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_03_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_03_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_03_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_03_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_03_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_03_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_03_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_03_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_03_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_03_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_04_char
+			var:zg361_sb_m_04_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_04_case_serial
+			var:zg361_sb_m_04_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_04_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_04_streak value = 0 }
+		set_variable = { name = zg361_sb_m_04_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_04_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_04_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_04_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_04_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_04_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_04_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_04_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_04_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_04_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_04_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_04_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_04_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_04_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_04_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_04_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_04_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_05_char
+			var:zg361_sb_m_05_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_05_case_serial
+			var:zg361_sb_m_05_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_05_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_05_streak value = 0 }
+		set_variable = { name = zg361_sb_m_05_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_05_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_05_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_05_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_05_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_05_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_05_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_05_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_05_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_05_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_05_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_05_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_05_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_05_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_05_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_05_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_05_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_06_char
+			var:zg361_sb_m_06_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_06_case_serial
+			var:zg361_sb_m_06_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_06_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_06_streak value = 0 }
+		set_variable = { name = zg361_sb_m_06_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_06_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_06_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_06_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_06_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_06_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_06_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_06_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_06_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_06_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_06_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_06_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_06_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_06_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_06_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_06_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_06_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_07_char
+			var:zg361_sb_m_07_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_07_case_serial
+			var:zg361_sb_m_07_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_07_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_07_streak value = 0 }
+		set_variable = { name = zg361_sb_m_07_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_07_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_07_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_07_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_07_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_07_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_07_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_07_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_07_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_07_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_07_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_07_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_07_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_07_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_07_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_07_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_07_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_08_char
+			var:zg361_sb_m_08_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_08_case_serial
+			var:zg361_sb_m_08_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_08_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_08_streak value = 0 }
+		set_variable = { name = zg361_sb_m_08_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_08_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_08_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_08_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_08_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_08_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_08_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_08_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_08_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_08_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_08_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_08_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_08_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_08_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_08_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_08_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_08_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_09_char
+			var:zg361_sb_m_09_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_09_case_serial
+			var:zg361_sb_m_09_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_09_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_09_streak value = 0 }
+		set_variable = { name = zg361_sb_m_09_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_09_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_09_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_09_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_09_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_09_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_09_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_09_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_09_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_09_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_09_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_09_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_09_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_09_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_09_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_09_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_09_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_10_char
+			var:zg361_sb_m_10_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_10_case_serial
+			var:zg361_sb_m_10_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_10_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_10_streak value = 0 }
+		set_variable = { name = zg361_sb_m_10_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_10_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_10_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_10_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_10_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_10_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_10_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_10_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_10_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_10_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_10_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_10_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_10_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_10_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_10_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_10_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_10_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_11_char
+			var:zg361_sb_m_11_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_11_case_serial
+			var:zg361_sb_m_11_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_11_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_11_streak value = 0 }
+		set_variable = { name = zg361_sb_m_11_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_11_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_11_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_11_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_11_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_11_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_11_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_11_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_11_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_11_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_11_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_11_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_11_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_11_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_11_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_11_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_11_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_12_char
+			var:zg361_sb_m_12_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_12_case_serial
+			var:zg361_sb_m_12_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_12_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_12_streak value = 0 }
+		set_variable = { name = zg361_sb_m_12_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_12_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_12_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_12_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_12_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_12_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_12_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_12_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_12_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_12_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_12_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_12_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_12_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_12_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_12_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_12_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_12_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_13_char
+			var:zg361_sb_m_13_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_13_case_serial
+			var:zg361_sb_m_13_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_13_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_13_streak value = 0 }
+		set_variable = { name = zg361_sb_m_13_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_13_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_13_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_13_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_13_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_13_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_13_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_13_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_13_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_13_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_13_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_13_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_13_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_13_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_13_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_13_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_13_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_14_char
+			var:zg361_sb_m_14_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_14_case_serial
+			var:zg361_sb_m_14_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_14_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_14_streak value = 0 }
+		set_variable = { name = zg361_sb_m_14_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_14_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_14_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_14_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_14_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_14_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_14_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_14_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_14_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_14_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_14_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_14_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_14_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_14_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_14_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_14_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_14_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_15_char
+			var:zg361_sb_m_15_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_15_case_serial
+			var:zg361_sb_m_15_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_15_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_15_streak value = 0 }
+		set_variable = { name = zg361_sb_m_15_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_15_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_15_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_15_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_15_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_15_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_15_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_15_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_15_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_15_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_15_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_15_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_15_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_15_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_15_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_15_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_15_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_managed_cycle_serial
+			var:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial
+			has_variable = zg361_sb_m_16_char
+			var:zg361_sb_m_16_char = scope:zg361_scoreboard_case_entry
+			has_variable = zg361_sb_m_16_case_serial
+			var:zg361_sb_m_16_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial
+		}
+		set_variable = { name = zg361_sb_m_16_grade value = 3.5 }
+		set_variable = { name = zg361_sb_m_16_streak value = 0 }
+		set_variable = { name = zg361_sb_m_16_pip value = 0 }
+		if = {
+			limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_grade } }
+			set_variable = { name = zg361_sb_m_16_final_grade value = 3.5 }
+			if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 3 }
+				set_variable = { name = zg361_sb_m_16_final_grade value = 3.75 }
+			}
+			else_if = {
+				limit = { scope:zg361_scoreboard_case_entry.var:zg361_result_grade = 1 }
+				set_variable = { name = zg361_sb_m_16_final_grade value = 3.25 }
+			}
+		}
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_case_state } } set_variable = { name = zg361_sb_m_16_case_state value = scope:zg361_scoreboard_case_entry.var:zg361_result_case_state } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_delivery_method } } set_variable = { name = zg361_sb_m_16_delivery_method value = scope:zg361_scoreboard_case_entry.var:zg361_result_delivery_method } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_open } } set_variable = { name = zg361_sb_m_16_appeal_open value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_open } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_appeal_outcome } } set_variable = { name = zg361_sb_m_16_appeal_outcome value = scope:zg361_scoreboard_case_entry.var:zg361_result_appeal_outcome } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_settlement_posted_serial } } set_variable = { name = zg361_sb_m_16_settlement_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_settlement_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_refund_posted_serial } } set_variable = { name = zg361_sb_m_16_refund_serial value = scope:zg361_scoreboard_case_entry.var:zg361_result_refund_posted_serial } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_salary_cut_active } } set_variable = { name = zg361_sb_m_16_salary_cut_active value = scope:zg361_scoreboard_case_entry.var:zg361_result_salary_cut_active } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_paid } } set_variable = { name = zg361_sb_m_16_treasury_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_paid } } set_variable = { name = zg361_sb_m_16_gold_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_paid } } set_variable = { name = zg361_sb_m_16_merit_paid value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_paid } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_treasury_refunded } } set_variable = { name = zg361_sb_m_16_treasury_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_treasury_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_gold_refunded } } set_variable = { name = zg361_sb_m_16_gold_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_gold_refunded } }
+		if = { limit = { scope:zg361_scoreboard_case_entry = { has_variable = zg361_result_merit_refunded } } set_variable = { name = zg361_sb_m_16_merit_refunded value = scope:zg361_scoreboard_case_entry.var:zg361_result_merit_refunded } }
+	}
+}

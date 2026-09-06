@@ -1,0 +1,141 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_07b_portfolio_apply_stage_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_portfolio_apply_stage_effect = {
+    save_temporary_scope_value_as = { name = zg361_comp_portfolio_route value = $ROUTE$ }
+    if = {
+        limit = {
+            zg361_is_celestial_liege_trigger = yes
+            has_character_flag = zg361_comp_portfolio_active
+            has_variable = zg361_comp_portfolio_subject
+            OR = {
+                scope:zg361_comp_portfolio_route = 1
+                scope:zg361_comp_portfolio_route = 2
+                scope:zg361_comp_portfolio_route = 3
+            }
+        }
+        set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+        if = {
+        limit = { var:zg361_comp_portfolio_domain = 1 }
+        var:zg361_comp_portfolio_subject = {
+            if = {
+                limit = { has_variable = zg361_case_l_state }
+                if = {
+                limit = { var:zg361_case_l_state = 1 }
+                zg361_comp_m082_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m083_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m084_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_l_state = 2 }
+                zg361_comp_m085_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m086_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_l_state = 3 }
+                zg361_comp_m087_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m088_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m089_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_l_state = 4 }
+                zg361_comp_m090_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m091_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+            }
+        }
+    }
+    if = {
+        limit = { var:zg361_comp_portfolio_domain = 2 }
+        var:zg361_comp_portfolio_subject = {
+            if = {
+                limit = { has_variable = zg361_case_ae_state }
+                if = {
+                limit = { var:zg361_case_ae_state = 1 }
+                zg361_comp_m278_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m279_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m280_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_ae_state = 2 }
+                zg361_comp_m281_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m282_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_ae_state = 3 }
+                zg361_comp_m283_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m284_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m285_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_ae_state = 4 }
+                zg361_comp_m286_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m287_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_ae_state = 5 }
+                zg361_comp_m288_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m289_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+            }
+        }
+    }
+    if = {
+        limit = { var:zg361_comp_portfolio_domain = 3 }
+        var:zg361_comp_portfolio_subject = {
+            if = {
+                limit = { has_variable = zg361_case_af_state }
+                if = {
+                limit = { var:zg361_case_af_state = 1 }
+                zg361_comp_m290_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m291_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m292_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_af_state = 2 }
+                zg361_comp_m293_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m294_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_af_state = 3 }
+                zg361_comp_m295_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m296_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+else_if = {
+                limit = { var:zg361_case_af_state = 4 }
+                if = {
+                    limit = {
+                        var:zg361_comp_m297_consumed = 1
+                        var:zg361_comp_m298_consumed = 1
+                        var:zg361_comp_af_cliff_consumed = 1
+                    }
+                    if = {
+                        limit = { NOT = { scope:zg361_comp_portfolio_route = 3 } }
+                        zg361_comp_af_request_exit_effect = yes
+                    }
+                    else = {
+                        # Snoozing records this vesting period. The next
+                        # cadence tick may offer the one portfolio card again.
+                        set_variable = {
+                            name = zg361_comp_af_last_exit_offer_period
+                            value = var:zg361_comp_af_periods_processed
+                        }
+                    }
+                }
+                else = {
+                    zg361_comp_m297_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m298_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                }
+            }
+else_if = {
+                limit = { var:zg361_case_af_state = 5 }
+                zg361_comp_m299_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+                    zg361_comp_m300_manager_apply_effect = { ROUTE = scope:zg361_comp_portfolio_route }
+            }
+            }
+        }
+    }
+        zg361_comp_portfolio_refresh_effect = yes
+    }
+}

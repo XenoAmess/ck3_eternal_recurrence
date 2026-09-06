@@ -1,0 +1,106 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: p case entry.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+# Open domain P on one assessed direct vassal.
+zg361_career_hc_open_p_case_effect = {
+    remove_variable = zg361_ch_runtime_applied
+    if = {
+        limit = {
+            root = {
+                zg361_is_celestial_liege_trigger = yes
+                has_variable = zg361_review_serial
+            }
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+        }
+        zg361_case_p_open_effect = yes
+        if = {
+            limit = {
+                trigger_if = {
+                    limit = { has_variable = zg361_case_kernel_applied }
+                    var:zg361_case_kernel_applied = 1
+                }
+                trigger_else = { always = no }
+            }
+            set_variable = { name = zg361_ch_p_authorized value = 7 }
+            set_variable = { name = zg361_ch_p_available value = 7 }
+            set_variable = { name = zg361_ch_p_used value = 0 }
+            set_variable = { name = zg361_ch_p_debt value = 0 }
+            set_variable = { name = zg361_ch_p_completed value = 0 }
+            set_variable = { name = zg361_ch_p_favorable value = 0 }
+            set_variable = { name = zg361_ch_p_extractive value = 0 }
+            set_variable = { name = zg361_ch_p_outcome value = 0 }
+            set_variable = { name = zg361_ch_p_conserved value = 1 }
+            set_variable = { name = zg361_ch_application_identity_visible value = 0 }
+        set_variable = { name = zg361_ch_release_extension_used value = 0 }
+            set_variable = { name = zg361_ch_m114_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m114_consumed value = 0 }
+        set_variable = { name = zg361_ch_m114_deferred value = 0 }
+        set_variable = { name = zg361_ch_m115_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m115_consumed value = 0 }
+        set_variable = { name = zg361_ch_m115_deferred value = 0 }
+        set_variable = { name = zg361_ch_m116_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m116_consumed value = 0 }
+        set_variable = { name = zg361_ch_m116_deferred value = 0 }
+        set_variable = { name = zg361_ch_m117_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m117_consumed value = 0 }
+        set_variable = { name = zg361_ch_m117_deferred value = 0 }
+        set_variable = { name = zg361_ch_m118_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m118_consumed value = 0 }
+        set_variable = { name = zg361_ch_m118_deferred value = 0 }
+        set_variable = { name = zg361_ch_m119_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m119_consumed value = 0 }
+        set_variable = { name = zg361_ch_m119_deferred value = 0 }
+        set_variable = { name = zg361_ch_m120_receipt_active value = 0 }
+        set_variable = { name = zg361_ch_m120_consumed value = 0 }
+        set_variable = { name = zg361_ch_m120_deferred value = 0 }
+        set_variable = { name = zg361_ch_m114_treasury_available value = 5 }
+        set_variable = { name = zg361_ch_m114_treasury_reserved value = 0 }
+        set_variable = { name = zg361_ch_m114_treasury_settled value = 0 }
+        set_variable = { name = zg361_ch_m114_treasury_status value = 0 }
+        set_variable = { name = zg361_ch_m114_gold_available value = 5 }
+        set_variable = { name = zg361_ch_m114_gold_reserved value = 0 }
+        set_variable = { name = zg361_ch_m114_gold_settled value = 0 }
+        set_variable = { name = zg361_ch_m114_gold_status value = 0 }
+        set_variable = { name = zg361_ch_m119_treasury_available value = 5 }
+        set_variable = { name = zg361_ch_m119_treasury_reserved value = 0 }
+        set_variable = { name = zg361_ch_m119_treasury_settled value = 0 }
+        set_variable = { name = zg361_ch_m119_treasury_status value = 0 }
+        set_variable = { name = zg361_ch_m119_gold_available value = 5 }
+        set_variable = { name = zg361_ch_m119_gold_reserved value = 0 }
+        set_variable = { name = zg361_ch_m119_gold_settled value = 0 }
+        set_variable = { name = zg361_ch_m119_gold_status value = 0 }
+        set_variable = { name = zg361_ch_p_s1_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s1_x_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s2_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s2_x_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s3_a_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s3_a_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s3_b_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s3_b_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s4_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s4_x_deadline_expired value = 0 }
+        set_variable = { name = zg361_ch_p_s5_x_deadline_pending value = 0 }
+        set_variable = { name = zg361_ch_p_s5_x_deadline_expired value = 0 }
+
+            var:zg361_case_p_owner = { save_scope_as = zg361_ch_p_event_owner }
+            save_scope_as = zg361_ch_p_event_subject
+            save_scope_value_as = { name = zg361_ch_p_event_cycle value = var:zg361_case_p_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_p_event_case value = var:zg361_case_p_case_serial }
+            zg361_career_hc_schedule_p_stage_01_effect = yes
+            set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_p_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.114 days = 1 } }
+            }
+            debug_log = "ZG361CH: opened P career/HC case"
+        }
+    }
+}

@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
+import re
 import sys
 
 
@@ -43,6 +44,21 @@ SURFACE_MIN_SCROLL_VIEWPORTS = {
 }
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py\n"
+LEGACY_EFFECT_BUNDLE = (
+    MOD_ROOT
+    / "common"
+    / "scripted_effects"
+    / "zg361_generated_scoreboard_snapshots.txt"
+)
+EFFECT_SHARD_GLOB = "zg361_generated_scoreboard_[0-9][0-9]_*.txt"
+EFFECT_SHARD_TARGET_BYTES = 120 * 1024
+EFFECT_SHARD_MAX_BYTES = 200 * 1024
+EFFECTS_PER_SHARD_MAX = 10
+MANAGED_CLEAR_BATCH_SIZE = 20
+MANAGED_WRITE_BATCH_SIZE = 2
+CASE_UPDATE_MANAGED_BATCH_SIZE = 16
+CASE_UPDATE_RECEIVED_BATCH_SIZE = 40
+B1_POST_MARK_BATCH_SIZE = 16
 DETAIL_PAGES = ("facts", "peer", "quota", "audit")
 DETAIL_CLEAR_GUI = "zg361_scoreboard_detail_clear_gui"
 DETAIL_CLEAR_ACTION = (
@@ -1173,31 +1189,67 @@ def render_effects() -> bytes:
         if prefix == "r":
             lines.append("\tzg361_clear_scoreboard_self_effect = yes")
             lines.append("\tremove_variable = zg361_scoreboard_received_case_serial")
-        for slot in range(1, SLOT_COUNT + 1):
-            for field in BASE_FIELDS:
-                lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
-            if prefix == "m":
-                for field in CASE_FIELDS:
+            for slot in range(1, SLOT_COUNT + 1):
+                for field in BASE_FIELDS:
                     lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
-                for field in B1_OBJECT_FIELDS:
-                    lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
+        else:
+            for start in range(1, SLOT_COUNT + 1, MANAGED_CLEAR_BATCH_SIZE):
+                end = min(start + MANAGED_CLEAR_BATCH_SIZE - 1, SLOT_COUNT)
+                lines.append(
+                    f"\tzg361_clear_scoreboard_m_slots_{start:02d}_{end:02d}_effect = yes"
+                )
         lines.extend(["}", ""])
+
+        if prefix == "m":
+            for start in range(1, SLOT_COUNT + 1, MANAGED_CLEAR_BATCH_SIZE):
+                end = min(start + MANAGED_CLEAR_BATCH_SIZE - 1, SLOT_COUNT)
+                lines.append(
+                    f"zg361_clear_scoreboard_m_slots_{start:02d}_{end:02d}_effect = {{"
+                )
+                for slot in range(start, end + 1):
+                    for field in BASE_FIELDS:
+                        lines.append(
+                            f"\tremove_variable = {var(prefix, slot, field.name)}"
+                        )
+                    for field in CASE_FIELDS:
+                        lines.append(
+                            f"\tremove_variable = {var(prefix, slot, field.name)}"
+                        )
+                    for field in B1_OBJECT_FIELDS:
+                        lines.append(
+                            f"\tremove_variable = {var(prefix, slot, field.name)}"
+                        )
+                lines.extend(["}", ""])
 
     lines.extend(
         [
             "# Current scope = ranked official; ROOT = reviewing manager.",
             "zg361_write_managed_scoreboard_slot_effect = {",
             "\tsave_temporary_scope_as = zg361_scoreboard_snapshot_entry",
-            "\troot = {",
         ]
     )
-    for slot in range(1, SLOT_COUNT + 1):
-        keyword = "if" if slot == 1 else "else_if"
+    for start in range(1, SLOT_COUNT + 1, MANAGED_WRITE_BATCH_SIZE):
+        end = min(start + MANAGED_WRITE_BATCH_SIZE - 1, SLOT_COUNT)
+        lines.append(
+            f"\tzg361_write_managed_scoreboard_slots_{start:02d}_{end:02d}_effect = yes"
+        )
+    lines.extend(["}", ""])
+
+    for start in range(1, SLOT_COUNT + 1, MANAGED_WRITE_BATCH_SIZE):
+        end = min(start + MANAGED_WRITE_BATCH_SIZE - 1, SLOT_COUNT)
         lines.extend(
             [
-                f"\t\t{keyword} = {{",
-                f"\t\t\tlimit = {{ has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = {slot} }}",
-                f"\t\t\tset_variable = {{ name = {var('m', slot, 'char')} value = scope:zg361_scoreboard_snapshot_entry }}",
+                f"zg361_write_managed_scoreboard_slots_{start:02d}_{end:02d}_effect = {{",
+                "\troot = {",
+            ]
+        )
+        for slot in range(start, end + 1):
+            keyword = "if" if slot == start else "else_if"
+            lines.extend(
+                [
+                    f"\t\t{keyword} = {{",
+                    f"\t\t\tlimit = {{ has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = {slot} }}",
+                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'char')} value = scope:zg361_scoreboard_snapshot_entry }}",
                 "\t\t\tif = {",
                 "\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry = { has_variable = zg361_b1_roster_frozen_title } }",
                 f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'title')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_b1_roster_frozen_title }}",
@@ -1236,26 +1288,26 @@ def render_effects() -> bytes:
                 "\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry = { has_character_modifier = zg361_pip } }",
                 f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = 1 }}",
                 "\t\t\t}",
-            ]
-        )
-        for field in CASE_FIELDS:
-            append_field_copy(
+                ]
+            )
+            for field in CASE_FIELDS:
+                append_field_copy(
+                    lines,
+                    indent="\t\t\t",
+                    destination=var("m", slot, field.name),
+                    field=field,
+                    source_scope="scope:zg361_scoreboard_snapshot_entry",
+                )
+            append_b1_object_projection(
                 lines,
                 indent="\t\t\t",
-                destination=var("m", slot, field.name),
-                field=field,
+                destination_prefix="m",
                 source_scope="scope:zg361_scoreboard_snapshot_entry",
+                expected_owner="root",
+                slot=slot,
             )
-        append_b1_object_projection(
-            lines,
-            indent="\t\t\t",
-            destination_prefix="m",
-            source_scope="scope:zg361_scoreboard_snapshot_entry",
-            expected_owner="root",
-            slot=slot,
-        )
-        lines.append("\t\t}")
-    lines.extend(["\t}", "}", ""])
+            lines.append("\t\t}")
+        lines.extend(["\t}", "}", ""])
 
     lines.extend(
         [
@@ -1446,6 +1498,18 @@ def render_effects() -> bytes:
     ) -> None:
         """Update only the frozen owner/cycle/case copy of the current subject."""
 
+        stem = effect_name.removesuffix("_effect")
+        managed_batches = tuple(
+            (start, min(start + CASE_UPDATE_MANAGED_BATCH_SIZE - 1, SLOT_COUNT))
+            for start in range(1, SLOT_COUNT + 1, CASE_UPDATE_MANAGED_BATCH_SIZE)
+        )
+        received_batches = tuple(
+            (start, min(start + CASE_UPDATE_RECEIVED_BATCH_SIZE - 1, SLOT_COUNT))
+            for start in range(1, SLOT_COUNT + 1, CASE_UPDATE_RECEIVED_BATCH_SIZE)
+        )
+        managed_detail_helper = f"{stem}_managed_detail_effect"
+        received_detail_helper = f"{stem}_received_detail_effect"
+
         lines.extend(
             [
                 comment,
@@ -1454,91 +1518,109 @@ def render_effects() -> bytes:
                 "\tvar:zg361_result_case_owner = {",
             ]
         )
-        for slot in range(1, SLOT_COUNT + 1):
-            lines.extend(
-                [
-                    "\t\tif = {",
-                    "\t\t\tlimit = {",
-                    "\t\t\t\thas_variable = zg361_scoreboard_managed_cycle_serial",
-                    "\t\t\t\tvar:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
-                    f"\t\t\t\thas_variable = {var('m', slot, 'char')}",
-                    f"\t\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_case_entry",
-                    f"\t\t\t\thas_variable = {var('m', slot, 'case_serial')}",
-                    f"\t\t\t\tvar:{var('m', slot, 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
-                    "\t\t\t}",
-                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = {grade} }}",
-                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = {streak} }}",
-                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = {pip} }}",
-                ]
-            )
-            for field in MUTABLE_CASE_FIELDS:
-                append_field_copy(
-                    lines,
-                    indent="\t\t\t",
-                    destination=var("m", slot, field.name),
-                    field=field,
-                    source_scope="scope:zg361_scoreboard_case_entry",
+        for start, end in managed_batches:
+            lines.append(f"\t\t{stem}_managed_{start:02d}_{end:02d}_effect = yes")
+        lines.append(f"\t\t{managed_detail_helper} = yes")
+        lines.append("\t}")
+        for start, end in received_batches:
+            lines.append(f"\t{stem}_received_{start:02d}_{end:02d}_effect = yes")
+        lines.extend([f"\t{received_detail_helper} = yes", "}", ""])
+
+        for start, end in managed_batches:
+            lines.append(f"{stem}_managed_{start:02d}_{end:02d}_effect = {{")
+            for slot in range(start, end + 1):
+                lines.extend(
+                    [
+                        "\tif = {",
+                        "\t\tlimit = {",
+                        "\t\t\thas_variable = zg361_scoreboard_managed_cycle_serial",
+                        "\t\t\tvar:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                        f"\t\t\thas_variable = {var('m', slot, 'char')}",
+                        f"\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_case_entry",
+                        f"\t\t\thas_variable = {var('m', slot, 'case_serial')}",
+                        f"\t\t\tvar:{var('m', slot, 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+                        "\t\t}",
+                        f"\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = {grade} }}",
+                        f"\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = {streak} }}",
+                        f"\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = {pip} }}",
+                    ]
                 )
-            lines.append("\t\t}")
+                for field in MUTABLE_CASE_FIELDS:
+                    append_field_copy(
+                        lines,
+                        indent="\t\t",
+                        destination=var("m", slot, field.name),
+                        field=field,
+                        source_scope="scope:zg361_scoreboard_case_entry",
+                    )
+                lines.append("\t}")
+            lines.extend(["}", ""])
+
+        lines.append(f"{managed_detail_helper} = {{")
         lines.extend(
             [
-                "\t\tif = {",
-                "\t\t\tlimit = {",
-                f"\t\t\t\thas_variable = {fixed_var('detail', 'valid')}",
-                f"\t\t\t\thas_variable = {fixed_var('detail', 'char')}",
-                f"\t\t\t\tvar:{fixed_var('detail', 'char')} = scope:zg361_scoreboard_case_entry",
-                f"\t\t\t\thas_variable = {fixed_var('detail', 'binding_cycle_serial')}",
-                f"\t\t\t\tvar:{fixed_var('detail', 'binding_cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
-                f"\t\t\t\thas_variable = {fixed_var('detail', 'binding_case_serial')}",
-                f"\t\t\t\tvar:{fixed_var('detail', 'binding_case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
-                "\t\t\t}",
+                "\tif = {",
+                "\t\tlimit = {",
+                f"\t\t\thas_variable = {fixed_var('detail', 'valid')}",
+                f"\t\t\thas_variable = {fixed_var('detail', 'char')}",
+                f"\t\t\tvar:{fixed_var('detail', 'char')} = scope:zg361_scoreboard_case_entry",
+                f"\t\t\thas_variable = {fixed_var('detail', 'binding_cycle_serial')}",
+                f"\t\t\tvar:{fixed_var('detail', 'binding_cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                f"\t\t\thas_variable = {fixed_var('detail', 'binding_case_serial')}",
+                f"\t\t\tvar:{fixed_var('detail', 'binding_case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+                "\t\t}",
             ]
         )
         for field in MUTABLE_CASE_FIELDS:
             append_field_copy(
                 lines,
-                indent="\t\t\t",
+                indent="\t\t",
                 destination=fixed_var("detail", field.name),
                 field=field,
                 source_scope="scope:zg361_scoreboard_case_entry",
             )
-        lines.extend(["\t\t}", "\t}"])
+        lines.extend(["\t}", "}", ""])
 
         # Only the current player subject owns a received mirror.  Updating it
         # directly avoids enumerating whoever happens to be the owner's current
         # vassal after a transfer.
-        for slot in range(1, SLOT_COUNT + 1):
-            lines.extend(
-                [
-                    "\tif = {",
-                    "\t\tlimit = {",
-                    "\t\t\thas_variable = zg361_scoreboard_received_owner",
-                    "\t\t\tvar:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
-                    "\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
-                    "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
-                    "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
-                    "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
-                    f"\t\t\thas_variable = {fixed_var('self', 'case_owner')}",
-                    f"\t\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_result_case_owner",
-                    f"\t\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
-                    f"\t\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_result_cycle_serial",
-                    f"\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
-                    f"\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
-                    f"\t\t\thas_variable = {fixed_var('self', 'b1_case_owner')}",
-                    f"\t\t\tvar:{fixed_var('self', 'b1_case_owner')} = var:{fixed_var('self', 'case_owner')}",
-                    f"\t\t\thas_variable = {fixed_var('self', 'b1_cycle_serial')}",
-                    f"\t\t\tvar:{fixed_var('self', 'b1_cycle_serial')} = var:{fixed_var('self', 'cycle_serial')}",
-                    f"\t\t\thas_variable = {fixed_var('self', 'b1_case_serial')}",
-                    f"\t\t\thas_variable = {fixed_var('self', DISCLOSURE_ACL_MODE)}",
-                    f"\t\t\thas_variable = {var('r', slot, 'char')}",
-                    f"\t\t\tvar:{var('r', slot, 'char')} = scope:zg361_scoreboard_case_entry",
-                    "\t\t}",
-                    f"\t\tset_variable = {{ name = {var('r', slot, 'grade')} value = {grade} }}",
-                    f"\t\tset_variable = {{ name = {var('r', slot, 'streak')} value = {streak} }}",
-                    f"\t\tset_variable = {{ name = {var('r', slot, 'pip')} value = {pip} }}",
-                    "\t}",
-                ]
-            )
+        for start, end in received_batches:
+            lines.append(f"{stem}_received_{start:02d}_{end:02d}_effect = {{")
+            for slot in range(start, end + 1):
+                lines.extend(
+                    [
+                        "\tif = {",
+                        "\t\tlimit = {",
+                        "\t\t\thas_variable = zg361_scoreboard_received_owner",
+                        "\t\t\tvar:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
+                        "\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
+                        "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
+                        "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
+                        "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+                        f"\t\t\thas_variable = {fixed_var('self', 'case_owner')}",
+                        f"\t\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_result_case_owner",
+                        f"\t\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
+                        f"\t\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_result_cycle_serial",
+                        f"\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
+                        f"\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
+                        f"\t\t\thas_variable = {fixed_var('self', 'b1_case_owner')}",
+                        f"\t\t\tvar:{fixed_var('self', 'b1_case_owner')} = var:{fixed_var('self', 'case_owner')}",
+                        f"\t\t\thas_variable = {fixed_var('self', 'b1_cycle_serial')}",
+                        f"\t\t\tvar:{fixed_var('self', 'b1_cycle_serial')} = var:{fixed_var('self', 'cycle_serial')}",
+                        f"\t\t\thas_variable = {fixed_var('self', 'b1_case_serial')}",
+                        f"\t\t\thas_variable = {fixed_var('self', DISCLOSURE_ACL_MODE)}",
+                        f"\t\t\thas_variable = {var('r', slot, 'char')}",
+                        f"\t\t\tvar:{var('r', slot, 'char')} = scope:zg361_scoreboard_case_entry",
+                        "\t\t}",
+                        f"\t\tset_variable = {{ name = {var('r', slot, 'grade')} value = {grade} }}",
+                        f"\t\tset_variable = {{ name = {var('r', slot, 'streak')} value = {streak} }}",
+                        f"\t\tset_variable = {{ name = {var('r', slot, 'pip')} value = {pip} }}",
+                        "\t}",
+                    ]
+                )
+            lines.extend(["}", ""])
+
+        lines.append(f"{received_detail_helper} = {{")
         lines.extend(
             [
                 "\tif = {",
@@ -1672,36 +1754,14 @@ def render_effects() -> bytes:
             "\t\t\troot = {",
         ]
     )
-    for slot in range(1, SLOT_COUNT + 1):
-        lines.extend(
-            [
-                "\t\t\t\tif = {",
-                "\t\t\t\t\tlimit = {",
-                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'char')}",
-                f"\t\t\t\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_post_mark_subject",
-                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'case_owner')}",
-                f"\t\t\t\t\t\tvar:{var('m', slot, 'case_owner')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner",
-                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'cycle_serial')}",
-                f"\t\t\t\t\t\tvar:{var('m', slot, 'cycle_serial')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial",
-                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'case_serial')}",
-                f"\t\t\t\t\t\tvar:{var('m', slot, 'case_serial')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial",
-                "\t\t\t\t\t}",
-            ]
+    post_mark_batches = tuple(
+        (start, min(start + B1_POST_MARK_BATCH_SIZE - 1, SLOT_COUNT))
+        for start in range(1, SLOT_COUNT + 1, B1_POST_MARK_BATCH_SIZE)
+    )
+    for start, end in post_mark_batches:
+        lines.append(
+            f"\t\t\t\tzg361_patch_scoreboard_b1_post_mark_{start:02d}_{end:02d}_effect = yes"
         )
-        for field in B1_OBJECT_FIELDS:
-            if field.mechanism_id != 141:
-                continue
-            lines.append(f"\t\t\t\t\tremove_variable = {var('m', slot, field.name)}")
-        append_b1_object_projection(
-            lines,
-            indent="\t\t\t\t\t",
-            destination_prefix="m",
-            source_scope="scope:zg361_scoreboard_post_mark_subject",
-            expected_owner="root",
-            slot=slot,
-            mechanism_ids=frozenset({141}),
-        )
-        lines.append("\t\t\t\t}")
     lines.extend(
         [
             "\t\t\t}",
@@ -1749,7 +1809,168 @@ def render_effects() -> bytes:
             "",
         ]
     )
+
+    for start, end in post_mark_batches:
+        lines.append(
+            f"zg361_patch_scoreboard_b1_post_mark_{start:02d}_{end:02d}_effect = {{"
+        )
+        for slot in range(start, end + 1):
+            lines.extend(
+                [
+                    "\tif = {",
+                    "\t\tlimit = {",
+                    f"\t\t\thas_variable = {var('m', slot, 'char')}",
+                    f"\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_post_mark_subject",
+                    f"\t\t\thas_variable = {var('m', slot, 'case_owner')}",
+                    f"\t\t\tvar:{var('m', slot, 'case_owner')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner",
+                    f"\t\t\thas_variable = {var('m', slot, 'cycle_serial')}",
+                    f"\t\t\tvar:{var('m', slot, 'cycle_serial')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial",
+                    f"\t\t\thas_variable = {var('m', slot, 'case_serial')}",
+                    f"\t\t\tvar:{var('m', slot, 'case_serial')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial",
+                    "\t\t}",
+                ]
+            )
+            for field in B1_OBJECT_FIELDS:
+                if field.mechanism_id != 141:
+                    continue
+                lines.append(f"\t\tremove_variable = {var('m', slot, field.name)}")
+            append_b1_object_projection(
+                lines,
+                indent="\t\t",
+                destination_prefix="m",
+                source_scope="scope:zg361_scoreboard_post_mark_subject",
+                expected_owner="root",
+                slot=slot,
+                mechanism_ids=frozenset({141}),
+            )
+            lines.append("\t}")
+        lines.extend(["}", ""])
     return encoded("\n".join(lines))
+
+
+TOP_LEVEL_EFFECT_RE = re.compile(r"(?m)^([a-z0-9_]+_effect) = \{")
+
+
+def render_effect_blocks() -> tuple[tuple[str, str], ...]:
+    """Return the canonical effect stream as ordered, byte-stable blocks."""
+
+    aggregate = render_effects().decode("utf-8-sig")
+    if not aggregate.startswith(HEADER):
+        raise ValueError("scoreboard effect aggregate lost its generated header")
+    body = aggregate[len(HEADER) :]
+    matches = tuple(TOP_LEVEL_EFFECT_RE.finditer(body))
+    if not matches:
+        raise ValueError("scoreboard effect aggregate contains no top-level effects")
+    blocks: list[tuple[str, str]] = []
+    for index, match in enumerate(matches):
+        start = 0 if index == 0 else match.start()
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(body)
+        blocks.append((match.group(1), body[start:end]))
+    return tuple(blocks)
+
+
+def scoreboard_effect_purpose(effect_name: str) -> str:
+    """Classify a public/helper effect into one player-facing scoreboard purpose."""
+
+    if effect_name.startswith("zg361_clear_scoreboard_"):
+        return "clear"
+    if effect_name.startswith("zg361_write_managed_scoreboard_"):
+        return "managed_write"
+    if effect_name.startswith("zg361_freeze_received_") or effect_name.startswith(
+        "zg361_copy_received_"
+    ):
+        return "received_copy"
+    if effect_name.startswith("zg361_update_settled_325_"):
+        return "settled_update"
+    if effect_name.startswith("zg361_update_regraded_"):
+        return "regraded_update"
+    if effect_name.startswith("zg361_patch_scoreboard_b1_post_mark_") or effect_name == (
+        "zg361_patch_scoreboard_b1_post_mark_effect"
+    ):
+        return "b1_post_mark"
+    raise ValueError(f"unclassified scoreboard effect: {effect_name}")
+
+
+def scoreboard_effect_label(effect_name: str) -> str:
+    """Return a compact, stable filename label for one effect family member."""
+
+    prefixes = (
+        ("zg361_clear_scoreboard_", "clear_"),
+        ("zg361_write_managed_scoreboard_", "managed_write_"),
+        ("zg361_freeze_received_disclosure_", "received_freeze_"),
+        ("zg361_copy_received_scoreboard_", "received_copy_"),
+        ("zg361_update_settled_325_scoreboard_slots", "settled"),
+        ("zg361_update_regraded_scoreboard_slots", "regraded"),
+        ("zg361_patch_scoreboard_b1_post_mark", "b1_post_mark"),
+    )
+    for prefix, replacement in prefixes:
+        if effect_name.startswith(prefix):
+            suffix = effect_name[len(prefix) :].removesuffix("_effect")
+            if suffix:
+                return f"{replacement}_{suffix}".replace("__", "_")
+            return f"{replacement}_entry"
+    raise ValueError(f"unclassified scoreboard effect label: {effect_name}")
+
+
+def render_effect_shards() -> dict[Path, bytes]:
+    """Pack purpose-ordered effects into <=200 KiB generated source shards."""
+
+    groups: list[list[tuple[str, str]]] = []
+    current: list[tuple[str, str]] = []
+    for block in render_effect_blocks():
+        candidate = current + [block]
+        candidate_body = "".join(text for _name, text in candidate)
+        candidate_size = len(BOM) + len((HEADER + candidate_body).encode("utf-8"))
+        if current and (
+            scoreboard_effect_purpose(current[0][0])
+            != scoreboard_effect_purpose(block[0])
+            or
+            len(candidate) > EFFECTS_PER_SHARD_MAX
+            or candidate_size > EFFECT_SHARD_TARGET_BYTES
+        ):
+            groups.append(current)
+            current = [block]
+        else:
+            current = candidate
+    if current:
+        groups.append(current)
+
+    rendered: dict[Path, bytes] = {}
+    effect_dir = MOD_ROOT / "common" / "scripted_effects"
+    for index, group in enumerate(groups, 1):
+        body = "".join(text for _name, text in group)
+        slug = scoreboard_effect_label(group[0][0])
+        path = effect_dir / f"zg361_generated_scoreboard_{index:02d}_{slug}.txt"
+        # Git's patch checker treats a second terminal LF as a new blank line.
+        # Each standalone shard therefore owns exactly one terminal LF.
+        data = BOM + (HEADER + body.rstrip() + "\n").encode("utf-8")
+        if len(group) > EFFECTS_PER_SHARD_MAX:
+            raise ValueError(f"scoreboard shard has too many effects: {path.name}")
+        if len(data) > EFFECT_SHARD_MAX_BYTES:
+            raise ValueError(
+                f"scoreboard shard exceeds {EFFECT_SHARD_MAX_BYTES} bytes: "
+                f"{path.name} ({len(data)})"
+            )
+        rendered[path] = data
+    return rendered
+
+
+def canonical_scoreboard_effect_shard_paths(
+    mod_root: Path = MOD_ROOT,
+) -> tuple[Path, ...]:
+    """Return checked-in scoreboard shards in their zero-padded load order."""
+
+    effect_dir = mod_root / "common" / "scripted_effects"
+    return tuple(sorted(effect_dir.glob(EFFECT_SHARD_GLOB), key=lambda path: path.name))
+
+
+def read_checked_in_scoreboard_effects(mod_root: Path = MOD_ROOT) -> str:
+    """Read the canonical checked-in shard stream for static consumers."""
+
+    paths = canonical_scoreboard_effect_shard_paths(mod_root)
+    if not paths:
+        raise FileNotFoundError("generated scoreboard effect shards are missing")
+    return "\n".join(path.read_text(encoding="utf-8-sig") for path in paths)
 
 
 def render_scripted_guis() -> bytes:
@@ -2406,11 +2627,17 @@ def render_gui() -> bytes:
 
 
 def outputs() -> dict[Path, bytes]:
-    return {
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_scoreboard_snapshots.txt": render_effects(),
-        MOD_ROOT / "common" / "scripted_guis" / "zg361_generated_scoreboard_slots.txt": render_scripted_guis(),
-        MOD_ROOT / "gui" / "zg361_scoreboard.gui": render_gui(),
-    }
+    rendered = render_effect_shards()
+    rendered.update(
+        {
+            MOD_ROOT
+            / "common"
+            / "scripted_guis"
+            / "zg361_generated_scoreboard_slots.txt": render_scripted_guis(),
+            MOD_ROOT / "gui" / "zg361_scoreboard.gui": render_gui(),
+        }
+    )
+    return rendered
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -2418,13 +2645,27 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
     mismatches: list[str] = []
-    for path, data in outputs().items():
+    rendered = outputs()
+    effect_dir = MOD_ROOT / "common" / "scripted_effects"
+    expected_shards = {path for path in rendered if path.parent == effect_dir}
+    obsolete_shards = set(effect_dir.glob(EFFECT_SHARD_GLOB)) - expected_shards
+    if LEGACY_EFFECT_BUNDLE.is_file():
+        obsolete_shards.add(LEGACY_EFFECT_BUNDLE)
+    for path, data in rendered.items():
         if args.check:
             if not path.is_file() or path.read_bytes() != data:
                 mismatches.append(path.relative_to(MOD_ROOT).as_posix())
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
+    if args.check:
+        mismatches.extend(
+            f"obsolete:{path.relative_to(MOD_ROOT).as_posix()}"
+            for path in sorted(obsolete_shards)
+        )
+    else:
+        for path in obsolete_shards:
+            path.unlink()
     if mismatches:
         print("RED: scoreboard snapshot projections are stale:")
         for mismatch in mismatches:

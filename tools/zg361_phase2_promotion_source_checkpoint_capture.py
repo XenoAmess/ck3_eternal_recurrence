@@ -748,7 +748,8 @@ def build_no_launch_preflight() -> dict[str, object]:
         "production_entrypoint": "enter_promotion_source_checkpoint_v1",
         "unique_live_prerequisite": (
             "managed product-only review action -> independent B1 -> "
-            "zg361pp.146 option1 -> D+1 paused zg361pp.147 -> native save"
+            "zg361pp.9100 itemized route D -> zg361pp.146 option1 -> "
+            "D+1 paused zg361pp.147 -> native save"
         ),
         "source_event_definition_key": SOURCE_EVENT_DEFINITION_KEY,
         "source_option_number": SOURCE_OPTION_NUMBER,

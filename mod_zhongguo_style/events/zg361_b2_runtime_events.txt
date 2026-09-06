@@ -798,35 +798,80 @@ zg361b2.160 = {
 		var:zg361_b2_separate_notice_state = 1
 	}
 	option = {
-		name = zg361b2.160.a
+		name = zg361b2.160.a.purge
+		trigger = { var:zg361_b2_pending_adverse_action = 1 }
 		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
 		zg361_b2_deliver_separate_case_effect = yes
 		zg361_b2_execute_pending_adverse_action_effect = yes
 	}
 	option = {
-		name = zg361b2.160.b
+		name = zg361b2.160.a.retire
+		trigger = { var:zg361_b2_pending_adverse_action = 2 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.a.demote
+		trigger = { var:zg361_b2_pending_adverse_action = 3 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.a.extend
+		trigger = { var:zg361_b2_pending_adverse_action = 4 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b.purge
+		trigger = { var:zg361_b2_pending_adverse_action = 1 }
 		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
 		set_variable = { name = zg361_b2_separate_objection value = 1 }
 		zg361_b2_deliver_separate_case_effect = yes
 	}
 	option = {
-		name = zg361b2.160.c
-		set_variable = { name = zg361_b2_separate_notice_state value = 2 }
-		set_variable = { name = zg361_b2_separate_delivery_method value = 3 }
-		var:zg361_b2_separate_notice_owner = {
-			if = {
-				limit = { exists = liege liege = { is_alive = yes } }
-				liege = { save_scope_as = zg361_b2_separate_witness }
-			}
-			else = { save_scope_as = zg361_b2_separate_witness }
-		}
-		set_variable = { name = zg361_b2_separate_witness_identity value = scope:zg361_b2_separate_witness }
-		var:zg361_b2_separate_notice_owner = { save_scope_as = zg361_b2_separate_witness_owner }
-		save_scope_as = zg361_b2_separate_witness_subject
-		save_scope_value_as = { name = zg361_b2_separate_witness_cycle value = var:zg361_b2_separate_notice_cycle }
-		save_scope_value_as = { name = zg361_b2_separate_witness_case value = var:zg361_b2_separate_notice_case }
-		save_scope_value_as = { name = zg361_b2_separate_witness_state value = var:zg361_b2_separate_notice_state }
-		trigger_event = { id = zg361b2.161 days = 7 }
+		name = zg361b2.160.b.retire
+		trigger = { var:zg361_b2_pending_adverse_action = 2 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b.demote
+		trigger = { var:zg361_b2_pending_adverse_action = 3 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b.extend
+		trigger = { var:zg361_b2_pending_adverse_action = 4 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.purge
+		trigger = { var:zg361_b2_pending_adverse_action = 1 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.retire
+		trigger = { var:zg361_b2_pending_adverse_action = 2 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.demote
+		trigger = { var:zg361_b2_pending_adverse_action = 3 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.extend
+		trigger = { var:zg361_b2_pending_adverse_action = 4 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
 	}
 }
 

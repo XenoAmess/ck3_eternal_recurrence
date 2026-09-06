@@ -1595,14 +1595,24 @@ closure/manifest evidence SHA-256 分别为
 `5592B7FE03930E6177FC71DE9578738906DEBB3BF5A311FA119B183D5F0A7357` /
 `CCF20C4012FFCBB0BC22ADB0898ED3AA0F42F54B38500F718BECC8593F7A90B5`。
 
-这是一个已复现的**材料/调用图边界缺口**，不是单文件体量或加载性能根因。候选仍为
-422 个 effect 文件、3,707 effects、max non-legacy 10、target miss 0、`>20` 违规 0；
-只有后续 CK3 出现可复现 loader-performance RED 且更早没有材料、parser、递归或调用图错误时，
-才按用途继续做拆分 A/B。
+这是一个已复现的**材料/调用图边界缺口**。候选当时为 422 个 effect 文件、3,707 effects、
+max non-legacy 10、target miss 0、`>20` 违规 0。无论加载耗时表现如何，后续产品仍须持续满足
+用途分片强制门；不得用“尚未出现 loader-performance RED”作为保留聚合文件的理由。
 
 ### 全量用途分片产品的 frontend-first 时间门（2026-09-05）
 
-当前全量 effect 边界是强制门：按用途拆分，目标每文件 1–10 个顶层 effect，旧聚合 owner 不得重新进入候选；不再以是否观测到性能问题决定是否执行拆分。
+当前全量 effect 边界是强制门：按用途拆分，目标每文件 1–10 个顶层 effect，原则上不超过 20；
+同时任何单个 effect 文件不得超过 200 KiB。旧聚合 owner 不得重新进入候选；不再以是否观测到性能问题
+决定是否执行拆分。超过字节门的单-effect 文件也必须继续抽取用途 helper，不能用“顶层定义只有一个”豁免。
+
+同一工作树中的全量生成器测试，普通 Python 与 `python -O` 两轮必须串行执行，或分别使用隔离工作树/
+输出根。部分 residue-rejection 测试会在产品目录短暂创建预期被拒绝的旧文件名；两轮并发时会互相观察到
+这些临时文件并产生伪 RED。这是测试夹具隔离约束，不是产品或 CK3 加载 RED。
+
+2026-09-06 的最终拆分实证为 713 个 scripted-effect 文件、3,813 个顶层 effect、每文件最大 10 个、
+单文件最大 130,221 bytes，target miss、`>20` 与 `>200 KiB` 均为 0。拆分过程中必须同步迁移 runner、
+validator、preflight、CMake source-contract 等 active consumer；只删除 owner 而不反查消费者会形成
+FileNotFound 类型的 harness RED。冻结的历史 artifact/manifest 保留旧路径，不得为迎合当前树改写历史哈希。
 
 R79 对 `phase2-b3-production-closure-r79-f953503` 的 831-file 产品使用 180 秒 frontend-first 门。到 `180.001s` 时 `frontend_gui_complete=true`，debug log 仍持续输出 database node init，已完成 276 个 node，`Setting idler 'Frontend'` 尚未发布、fatal 为 0。runner 正确地没有启动 bridge、加载存档或授权 gameplay，并保留 `Z:\b3r79\cell`（outer report SHA-256 `C79497F0BF3C595A5A90AD5110D2223BB1EE8A7ACCCB812C6F49B6DF1B4B3DC5`）。
 

@@ -678,7 +678,7 @@ zg361comp.900 = {
     title = zg361comp.900.t
     desc = zg361comp.900.desc
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.900.a }
 }
 
 zg361comp.901 = {
@@ -687,7 +687,7 @@ zg361comp.901 = {
     title = zg361comp.901.t
     desc = zg361comp.901.desc
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.901.a }
 }
 
 zg361comp.902 = {
@@ -704,7 +704,7 @@ zg361comp.902 = {
 		}
 	}
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.902.a }
 }
 
 zg361comp.903 = {
@@ -713,7 +713,7 @@ zg361comp.903 = {
     title = zg361comp.903.t
     desc = zg361comp.903.desc
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.903.a }
 }
 
 zg361comp.904 = {
@@ -730,5 +730,5 @@ zg361comp.904 = {
 		}
 	}
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.904.a }
 }

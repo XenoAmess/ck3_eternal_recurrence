@@ -30,15 +30,21 @@ READINESS = "ck3-script-static-ready-not-live"
 LEGACY_EFFECT_FILENAME = "zg361_workforce_endgame_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_workforce_endgame_*_effects.txt"
-HISTORICAL_EFFECT_BYTES = 4_636_271
-HISTORICAL_EFFECT_SHA256 = "926453FE4B3621B5381743D61F5D03AC29C1D498181702E05A9532739D334D8A"
-HISTORICAL_EFFECT_COUNT = 324
+HISTORICAL_EFFECT_BYTES = 3_769_304
+HISTORICAL_EFFECT_SHA256 = "1549162C93AA3622A5417E8CAFFE21A2FFE8AF37380A04D2256A69E539D383CC"
+HISTORICAL_EFFECT_COUNT = 340
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
+EFFECT_FILE_BYTE_MAX = 204_800
+M360_HELPER_CHUNK_BYTES = 55_000
 # A future shard above the hard limit is invalid unless this map contains both
 # a concrete purpose-cohesion reason and a reference to CK3 live evidence.
 EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
 RETIRED_EFFECT_FILENAMES = (
+    "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
+    "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
+    "zg361_workforce_endgame_058_al_m360_route_a_effects.txt",
+    "zg361_workforce_endgame_059_al_m360_route_b_effects.txt",
     "zg361_workforce_endgame_024c_manager_terminal_cleanup_effects.txt",
     "zg361_workforce_endgame_015a_m269_attribution_settlement_effects.txt",
     "zg361_workforce_endgame_023b_al_m360_m361_due_debt_effects.txt",
@@ -590,12 +596,12 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
                     (
                         DETAIL_OVERRIDE_EN.get((mid, 1), choice["option_a_en"]),
                         DETAIL_OVERRIDE_EN.get((mid, 2), choice["option_b_en"]),
-                        f"'{title_en}' remains unresolved. No business record is created, one policy debt falls due next cycle, and this item will not be proposed again during the current campaign.",
+                        "This ruling remains unresolved. No business record is created, one policy debt falls due next cycle, and this matter will not be proposed again during the current campaign.",
                     ),
                     (
                         DETAIL_OVERRIDE_CN.get((mid, 1), choice["option_a_cn"]),
                         DETAIL_OVERRIDE_CN.get((mid, 2), choice["option_b_cn"]),
-                        f"“{title_cn}”保持未决：不形成处置记录，留下一笔下轮到期的制度债，本局也不会再次提案。",
+                        "这项裁决保持未决：不形成处置记录，留下一笔下轮到期的制度债，本局也不会再次提案。",
                     ),
                 )
             )
@@ -1271,6 +1277,91 @@ def _collective_business_writes(choice: int) -> list[str]:
     return lines
 
 
+def _ordered_line_chunks(
+    lines: list[str], *, maximum_bytes: int = M360_HELPER_CHUNK_BYTES
+) -> tuple[tuple[str, ...], ...]:
+    """Split complete CK3 statements without changing their historical order."""
+
+    chunks: list[tuple[str, ...]] = []
+    current: list[str] = []
+    for line in lines:
+        if len(line.encode("utf-8")) > maximum_bytes:
+            raise ValueError("one M360 helper statement exceeds the helper byte budget")
+        candidate = [*current, line]
+        if current and len("\n".join(candidate).encode("utf-8")) > maximum_bytes:
+            chunks.append(tuple(current))
+            current = [line]
+        else:
+            current = candidate
+    if current:
+        chunks.append(tuple(current))
+    return tuple(chunks)
+
+
+def _m360_ticket_call(effect_name: str) -> str:
+    return f"""{effect_name} = {{
+	TICKET_OWNER = $TICKET_OWNER$
+	TICKET_SUBJECT = $TICKET_SUBJECT$
+	TICKET_CYCLE = $TICKET_CYCLE$
+	TICKET_CASE = $TICKET_CASE$
+}}"""
+
+
+def _sticky_validation_effect(
+    effect_name: str, status_name: str, checks: tuple[str, ...] | list[str]
+) -> str:
+    """Keep one ordered validation step failed once any earlier step failed."""
+
+    return f"""{effect_name} = {{
+	if = {{
+		limit = {{
+			has_variable = {status_name}
+			var:{status_name} = 1
+{indent(chr(10).join(checks), 3)}
+		}}
+		set_variable = {{ name = {status_name} value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {status_name} value = 0 }} }}
+}}"""
+
+
+def _collective_validation_names(choice: int) -> tuple[str, ...]:
+    letter = "a" if choice == 1 else "b"
+    chunks = _ordered_line_chunks(_collective_external_checks(choice))
+    return (
+        f"{PREFIX}_m360_route_{letter}_validate_collective_effect",
+        *(f"{PREFIX}_m360_route_{letter}_validate_collective_step_{index}_effect"
+          for index in range(1, len(chunks) + 1)),
+    )
+
+
+def _render_collective_validation_helpers(choice: int) -> str:
+    letter = "a" if choice == 1 else "b"
+    chunks = _ordered_line_chunks(_collective_external_checks(choice))
+    status_name = f"{PREFIX}_m360_route_{letter}_collective_valid"
+    step_names = tuple(
+        f"{PREFIX}_m360_route_{letter}_validate_collective_step_{index}_effect"
+        for index in range(1, len(chunks) + 1)
+    )
+    wrapper_name = f"{PREFIX}_m360_route_{letter}_validate_collective_effect"
+    wrapper = f"""{wrapper_name} = {{
+	set_variable = {{ name = {status_name} value = 1 }}
+{indent(chr(10).join(_m360_ticket_call(name) for name in step_names))}
+}}"""
+    steps = tuple(
+        _sticky_validation_effect(name, status_name, chunk)
+        for name, chunk in zip(step_names, chunks, strict=True)
+    )
+    return "\n\n".join((wrapper, *steps))
+
+
+def _render_collective_business_helper(choice: int) -> str:
+    letter = "a" if choice == 1 else "b"
+    return f"""{PREFIX}_m360_route_{letter}_business_effect = {{
+{indent(chr(10).join(_collective_business_writes(choice)))}
+}}"""
+
+
 def _charter_evidence_checks() -> list[str]:
     """Validate the product-owned report projected from three real stage receipts."""
 
@@ -1940,7 +2031,11 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:{PREFIX}_al_external_stage_receipts_verified = 1",
         ]
         if choice in (1, 2):
-            checks += _collective_external_checks(choice)
+            letter = "a" if choice == 1 else "b"
+            checks += [
+                f"has_variable = {PREFIX}_m360_route_{letter}_collective_valid",
+                f"var:{PREFIX}_m360_route_{letter}_collective_valid = 1",
+            ]
         else:
             checks += [
                 f"{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}",
@@ -2293,7 +2388,8 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         if choice == 2:
             lines += [f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[356]} days = 90 }}"]
     elif mid == 360:
-        lines += _collective_business_writes(choice)
+        letter = "a" if choice == 1 else "b"
+        lines.append(_m360_ticket_call(f"{PREFIX}_m360_route_{letter}_business_effect"))
     elif mid == 361:
         lines += _charter_business_writes(choice)
         if choice == 1:
@@ -3210,6 +3306,15 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
         )
         if choice in (1, 2):
             value_prelude += indent(_collective_persistent_prelude()) + "\n"
+            letter = "a" if choice == 1 else "b"
+            value_prelude += (
+                indent(
+                    _m360_ticket_call(
+                        f"{PREFIX}_m360_route_{letter}_validate_collective_effect"
+                    )
+                )
+                + "\n"
+            )
     elif mid == 361:
         value_prelude += indent(_ticket_next_cycle_prelude()) + "\n"
     advance = ""
@@ -5899,26 +6004,79 @@ def render_collective_producer() -> str:
         ),
     ]
 
-    central_checks = _central_m360_owner_checks(1)
-    for cohort in (1, 2, 3):
-        central = f"zg361_p2c_m360_source_c{cohort}_manager"
-        central_checks.append(
-            f"var:{central} = {{\n{indent(chr(10).join(_central_m360_live_manager_checks(cohort)))}\n}}"
+    central_owner_checks = _central_m360_owner_checks(1)
+    central_cohort_checks = {
+        cohort: (
+            f"$TICKET_OWNER$ = {{\n"
+            f"{indent(f'var:zg361_p2c_m360_source_c{cohort}_manager = {{' + chr(10) + indent(chr(10).join(_central_m360_live_manager_checks(cohort))) + chr(10) + '}')}\n"
+            "}"
         )
+        for cohort in (1, 2, 3)
+    }
     candidate_slots = [
         (cohort, slot)
         for cohort in (1, 2, 3)
         for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1)
     ]
+    central_uniqueness_checks: list[str] = []
     for left_index, (lc, ls) in enumerate(candidate_slots):
         for rc, rs in candidate_slots[left_index + 1:]:
-            central_checks.append(
+            central_uniqueness_checks.append(
                 f"trigger_if = {{ limit = {{ var:zg361_p2c_m360_source_c{lc}_quota >= {ls} "
                 f"var:zg361_p2c_m360_source_c{rc}_quota >= {rs} }} "
                 f"NOT = {{ var:zg361_p2c_m360_source_c{lc}_manager.var:zg361_b1_m360_source_forced_{ls}_character = "
                 f"var:zg361_p2c_m360_source_c{rc}_manager.var:zg361_b1_m360_source_forced_{rs}_character }} }} "
                 f"trigger_else = {{ always = yes }}"
             )
+    central_checks = [*central_owner_checks]
+    for cohort in (1, 2, 3):
+        central_checks.append(
+            f"var:zg361_p2c_m360_source_c{cohort}_manager = {{\n"
+            f"{indent(chr(10).join(_central_m360_live_manager_checks(cohort)))}\n"
+            "}"
+        )
+    central_checks.extend(central_uniqueness_checks)
+
+    materialize_preflight_status = f"{PREFIX}_m360_materialize_preflight_valid"
+    materialize_preflight_names = (
+        f"{PREFIX}_m360_materialize_validate_ticket_effect",
+        *(f"{PREFIX}_m360_materialize_validate_cohort_{cohort}_effect" for cohort in (1, 2, 3)),
+        f"{PREFIX}_m360_materialize_validate_identity_uniqueness_effect",
+    )
+    materialize_ticket_checks = [
+        "zg361_case_kernel_full_guard_trigger = { OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$ EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4 }",
+        "$TICKET_SUBJECT$ = this",
+        "$TICKET_SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }",
+        _zero_or_missing(f"{PREFIX}_al_external_collective_submission_active"),
+        f"$TICKET_OWNER$ = {{\n{indent(chr(10).join(central_owner_checks))}\n}}",
+    ]
+    materialize_preflight_helpers = [
+        _sticky_validation_effect(
+            materialize_preflight_names[0],
+            materialize_preflight_status,
+            materialize_ticket_checks,
+        ),
+        *(
+            _sticky_validation_effect(
+                materialize_preflight_names[cohort],
+                materialize_preflight_status,
+                [central_cohort_checks[cohort]],
+            )
+            for cohort in (1, 2, 3)
+        ),
+        _sticky_validation_effect(
+            materialize_preflight_names[4],
+            materialize_preflight_status,
+            [
+                f"$TICKET_OWNER$ = {{\n"
+                f"{indent(chr(10).join(central_uniqueness_checks))}\n"
+                "}"
+            ],
+        ),
+    ]
+    cleanup_helper = f"""{PREFIX}_m360_materialize_cleanup_effect = {{
+{indent(chr(10).join(cleanup))}
+}}"""
 
     def route_materializer(choice: int) -> str:
         letter = "a" if choice == 1 else "b"
@@ -6005,14 +6163,13 @@ def render_collective_producer() -> str:
             f"set_variable = {{ name = {PREFIX}_al_external_collective_exception_count value = {f'var:{PREFIX}_al_external_collective_total_quota' if choice == 1 else '0'} }}",
             f"set_variable = {{ name = {PREFIX}_al_external_collective_manager_cost_total value = {f'var:{PREFIX}_al_external_collective_total_quota' if choice == 1 else '0'} }}",
         ]
-        main_checks = [
-            f"zg361_case_kernel_full_guard_trigger = {{ OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$ EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4 }}",
-            "$TICKET_SUBJECT$ = this",
-            "$TICKET_SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }",
-            f"{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}",
-            f"$TICKET_OWNER$ = {{\n{indent(chr(10).join(central_checks))}\n}}",
-        ]
-        return f"""# Route {letter.upper()} materializes only product-owned Central/B1 facts.
+        writes_helper_name = f"{PREFIX}_m360_materialize_route_{letter}_writes_effect"
+        writes_helper = f"""{writes_helper_name} = {{
+{indent(chr(10).join(writes))}
+}}"""
+        validate_name = f"{PREFIX}_m360_route_{letter}_validate_collective_effect"
+        validate_status = f"{PREFIX}_m360_route_{letter}_collective_valid"
+        public_entry = f"""# Route {letter.upper()} materializes only product-owned Central/B1 facts.
 {PREFIX}_materialize_m360_route_{letter}_from_central_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
@@ -6022,37 +6179,46 @@ def render_collective_producer() -> str:
 {indent(_m360_cost_scope_prelude())}
 {indent(_central_m360_quota_prelude())}
 {indent(_collective_persistent_prelude())}
+	set_variable = {{ name = {materialize_preflight_status} value = 1 }}
+{indent(chr(10).join(_m360_ticket_call(name) for name in materialize_preflight_names))}
 	if = {{
 		limit = {{
-{indent(chr(10).join(main_checks), 3)}
+			has_variable = {materialize_preflight_status}
+			var:{materialize_preflight_status} = 1
 		}}
-{indent(chr(10).join(cleanup), 2)}
-{indent(chr(10).join(writes), 2)}
+{indent(_m360_ticket_call(f'{PREFIX}_m360_materialize_cleanup_effect'), 2)}
+{indent(_m360_ticket_call(writes_helper_name), 2)}
 {indent(_collective_persistent_prelude(), 2)}
 		# Do not expose the draft as committed until all three MG managers and
 		# the owner trust book pass the same global preflight used by the route.
+		{validate_name} = {{
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}}
 		if = {{
-			limit = {{
-{indent(chr(10).join(_collective_external_checks(choice)), 4)}
-			}}
+			limit = {{ has_variable = {validate_status} var:{validate_status} = 1 }}
 			set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 		}}
 		else = {{
-{indent(chr(10).join(cleanup), 3)}
+{indent(_m360_ticket_call(f'{PREFIX}_m360_materialize_cleanup_effect'), 3)}
 			set_variable = {{ name = {PREFIX}_m360_event_queued value = 0 }}
 			set_variable = {{ name = {PREFIX}_adapter_status value = 4 }}
 			set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = {3604 + choice} }}
 		}}
 	}}
-	else_if = {{
-		limit = {{
-			$TICKET_SUBJECT$ = this
-{indent(chr(10).join(_collective_external_checks(choice)), 3)}
+	else = {{
+		{validate_name} = {{
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
 		}}
-		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+		if = {{
+			limit = {{ $TICKET_SUBJECT$ = this has_variable = {validate_status} var:{validate_status} = 1 }}
+			set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+		}}
+		else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = {3604 + choice} }} }}
 	}}
-	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = {3604 + choice} }} }}
 }}"""
+        return "\n\n".join((writes_helper, public_entry))
 
     m360_spec = by_id()[360]
     committed_ab_checks = [
@@ -6239,7 +6405,18 @@ def render_collective_producer() -> str:
 	}}
 	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3604 }} }}
 }}"""
-    return "\n\n".join((route_materializer(1), route_materializer(2), mark, resume))
+    return "\n\n".join((
+        *materialize_preflight_helpers,
+        cleanup_helper,
+        _render_collective_validation_helpers(1),
+        _render_collective_business_helper(1),
+        route_materializer(1),
+        _render_collective_validation_helpers(2),
+        _render_collective_business_helper(2),
+        route_materializer(2),
+        mark,
+        resume,
+    ))
 
 
 def render_completed_cycle_ledger() -> str:
@@ -7791,13 +7968,59 @@ EFFECT_GROUPS = (
         ("zg361_we_submit_al_357_359_receipts_effect",),
     ),
     EffectGroup(
-        "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
-        "materialize central M360 route A source",
+        "zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+        "M360 Central ticket, cohort, and cross-cohort identity preflight steps",
+        (
+            "zg361_we_m360_materialize_validate_ticket_effect",
+            "zg361_we_m360_materialize_validate_cohort_1_effect",
+            "zg361_we_m360_materialize_validate_cohort_2_effect",
+            "zg361_we_m360_materialize_validate_cohort_3_effect",
+            "zg361_we_m360_materialize_validate_identity_uniqueness_effect",
+        ),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+        "clear an incomplete M360 collective draft",
+        ("zg361_we_m360_materialize_cleanup_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_003c_m360_route_a_validation_step01_effects.txt",
+        "M360 route A collective validation entry and first ordered step",
+        _collective_validation_names(1)[:2],
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_003d_m360_route_a_validation_step02_effects.txt",
+        "M360 route A collective validation second ordered step",
+        _collective_validation_names(1)[2:],
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_003e_m360_central_route_a_write_effects.txt",
+        "materialize Central M360 route A facts after complete preflight",
+        ("zg361_we_m360_materialize_route_a_writes_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_003f_m360_central_route_a_public_effects.txt",
+        "public Central M360 route A materialization orchestrator",
         ("zg361_we_materialize_m360_route_a_from_central_effect",),
     ),
     EffectGroup(
-        "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
-        "materialize central M360 route B source",
+        "zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+        "M360 route B collective validation entry and first ordered step",
+        _collective_validation_names(2)[:2],
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+        "M360 route B collective validation second ordered step",
+        _collective_validation_names(2)[2:],
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+        "materialize Central M360 route B facts after complete preflight",
+        ("zg361_we_m360_materialize_route_b_writes_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+        "public Central M360 route B materialization orchestrator",
         ("zg361_we_materialize_m360_route_b_from_central_effect",),
     ),
     EffectGroup(
@@ -8118,8 +8341,26 @@ EFFECT_GROUPS = (
     EffectGroup("zg361_workforce_endgame_055_ad_m276_m277_effects.txt", "AD mechanisms M276-M277", _mechanism_effect_names(276, 277)),
     EffectGroup("zg361_workforce_endgame_056_al_m355_m356_effects.txt", "AL mechanisms M355-M356", _mechanism_effect_names(355, 356)),
     EffectGroup("zg361_workforce_endgame_057_al_m360_consumer_effects.txt", "AL M360 consumer", ("zg361_we_m360_consume_effect",)),
-    EffectGroup("zg361_workforce_endgame_058_al_m360_route_a_effects.txt", "AL M360 route A", ("zg361_we_m360_route_a_effect",)),
-    EffectGroup("zg361_workforce_endgame_059_al_m360_route_b_effects.txt", "AL M360 route B", ("zg361_we_m360_route_b_effect",)),
+    EffectGroup(
+        "zg361_workforce_endgame_058a_al_m360_route_a_business_effects.txt",
+        "AL M360 route A collective business writes",
+        ("zg361_we_m360_route_a_business_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_058b_al_m360_route_a_public_effects.txt",
+        "AL M360 route A public operation orchestrator",
+        ("zg361_we_m360_route_a_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+        "AL M360 route B collective business writes",
+        ("zg361_we_m360_route_b_business_effect",),
+    ),
+    EffectGroup(
+        "zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt",
+        "AL M360 route B public operation orchestrator",
+        ("zg361_we_m360_route_b_effect",),
+    ),
     EffectGroup("zg361_workforce_endgame_060_al_m360_route_c_effects.txt", "AL M360 route C", ("zg361_we_m360_route_c_effect",)),
     EffectGroup(
         "zg361_workforce_endgame_061a_al_m361_consume_route_a_effects.txt",
@@ -8549,6 +8790,16 @@ def render_effect_parts() -> dict[str, bytes]:
             f"# PURPOSE: {group.purpose}.\n"
             f"# READINESS: {READINESS}. No CK3 parser, paused snapshot or live evidence is claimed.\n\n"
             f"{body}"
+        )
+    oversized = {
+        filename: len(payload)
+        for filename, payload in parts.items()
+        if len(payload) > EFFECT_FILE_BYTE_MAX
+    }
+    if oversized:
+        raise ValueError(
+            "workforce/endgame effect shard byte limit exceeded; "
+            f"limit={EFFECT_FILE_BYTE_MAX}, oversized={oversized}"
         )
     return parts
 
@@ -9248,56 +9499,72 @@ def render_localization(language: str) -> bytes:
         ]
     handoff_cn = {
         1: (
-            "交接第一关：文档不是空气",
-            "交接进入文档签收。只有现在明确提交，系统才会生成绑定本案执行链的真实回执；一句“都在群里”不算知识库。",
-            "提交可核验文档，生成签收回执",
-            "文档？让下个人自己悟",
+            "交接第一关：文书必须落纸",
+            f"交接期限已经开始。你是 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]，掌管的章程、名册与未结事项仍未归档；今天若不给接任者一份可查文书，这一关便只能记作未成。",
+            f"交接期限已经开始。当事人 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] 未能亲自答复，案头只有零散文书。你是 [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]，现在只能按亲手核验到的归档情况裁定。",
+            "把文书归档并交给接任者",
+            "不再整理，任接任者自行摸索",
+            "文书齐全；我代为确认交付",
+            "文书不足；我记录本关未成",
         ),
         2: (
-            "交接第二关：跟岗不是群里 @ 一下",
-            "三十日已经过去。要么完成一轮真实跟岗并留下回执，要么承认这场所谓交接只是把人拉进了群。",
-            "完成跟岗，留下第二张回执",
-            "拉群已经很给面子了",
+            "交接第二关：耳闻不如随行",
+            f"文书交付已经过去三十日。你是 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]，接任者还没有随你处置过一次真实事务；今日必须确认随行学习是否确实发生。",
+            f"文书交付已经过去三十日。当事人 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] 未能亲自答复，接任者是否真正随行，只能由你 [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName] 依亲见事实裁定。",
+            "带接任者完成一次随行学习",
+            "不再安排随行学习",
+            "我亲见随行完成，代为确认",
+            "我未见随行完成，记录未成",
         ),
         3: (
             "交接第三关：纸上谈兵不算实作",
-            "又过三十日，轮到实操验收。只有把既有交付与现场操作对上，尾款才有资格进入审批。",
-            "完成实操验收，提交尾款审批",
-            "演示到此为止，拒绝实操",
+            f"随行学习又过去三十日。你是 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]，接任者尚未独立处置并交由你验看；尾款正在等待这次实作结果。",
+            f"随行学习又过去三十日。当事人 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] 未能亲自答复，接任者也尚无独立处置记录。你是 [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]，只能按亲手验看的结果裁定尾款。",
+            "让接任者独立实作并验收",
+            "拒绝实作，结束交接",
+            "我已验看实作，代为确认通过",
+            "我未见实作完成，记录未成",
         ),
     }
     handoff_en = {
         1: (
-            "Handoff I: Documentation Is Not Air",
-            "The documentation checkpoint is due. Only an explicit submission creates a receipt bound to this case's executor chain; saying 'it is in chat' does not count.",
-            "Submit verifiable documentation",
-            "Let the next person figure it out",
+            "Handoff I: The Record Must Be Written",
+            f"The handoff period has begun. You are [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName], and the rules, rolls, and unfinished matters in your care are still unfiled; without a readable record for the successor today, this stage remains incomplete.",
+            f"The handoff period has begun. [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] cannot answer personally, and only scattered papers remain. You are [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]; judge this stage only from the record you have verified yourself.",
+            "File the record and give it to the successor",
+            "Leave the record unfinished and let the successor cope",
+            "The record is complete; I confirm delivery",
+            "The record is incomplete; I mark this stage failed",
         ),
         2: (
-            "Handoff II: Shadowing Is More Than an @ Mention",
-            "Thirty days have passed. Complete real shadowing and leave a receipt, or admit that the handoff was only an invitation to a group chat.",
-            "Complete shadowing",
-            "The group invitation was enough",
+            "Handoff II: Hearing Is Not Accompanying",
+            f"Thirty days have passed since the record was delivered. You are [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName], yet the successor has not accompanied you through one real matter; whether that learning occurred must be settled today.",
+            f"Thirty days have passed since the record was delivered. [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] cannot answer personally, so only you, [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName], can judge from direct observation whether the successor truly accompanied the work.",
+            "Guide the successor through one real matter",
+            "Arrange no further accompanied work",
+            "I witnessed the work and confirm completion",
+            "I saw no completed work and mark this stage failed",
         ),
         3: (
             "Handoff III: A Written Brief Is Not Practice",
-            "Another thirty days have passed. Practical acceptance must match the existing delivery record before final payment can be reviewed.",
-            "Complete practical acceptance",
-            "End the demo and refuse practice",
+            f"Another thirty days have passed since the accompanied work. You are [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName], and the successor has yet to handle a matter alone under your inspection; final payment awaits that result.",
+            f"Another thirty days have passed since the accompanied work. [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] cannot answer personally, and no independent handling is recorded. You are [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]; final payment must follow only the work you inspected yourself.",
+            "Have the successor work alone and inspect it",
+            "Refuse the practical trial and end the handoff",
+            "I inspected the work and confirm completion",
+            "I saw no completed work and mark this stage failed",
         ),
     }
     for step in (1, 2, 3):
-        title, desc, complete, refuse = (handoff_cn if chinese else handoff_en)[step]
-        if chinese:
-            subject_desc = f"你是 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]，{desc}"
-            owner_desc = f"你是责任人 [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]；当事人 [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] 无法亲自处理本关。请只记录你实际核验过的结果。"
-            owner_complete = "我已亲自核验并代为记录完成"
-            owner_refuse = "我无法核验完成，记录本关失败"
-        else:
-            subject_desc = f"You are [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName]. {desc}"
-            owner_desc = f"You are the accountable owner [scope:{PREFIX}_m264_handoff_owner_scope.GetShortUIName]; [scope:{PREFIX}_m264_handoff_subject_scope.GetShortUIName] cannot answer this checkpoint personally. Record only what you verified."
-            owner_complete = "I personally verified completion and record it"
-            owner_refuse = "I cannot verify completion; record failure"
+        (
+            title,
+            subject_desc,
+            owner_desc,
+            complete,
+            refuse,
+            owner_complete,
+            owner_refuse,
+        ) = (handoff_cn if chinese else handoff_en)[step]
         rows += [
             f' {NAMESPACE}.handoff.{step}.t:0 "{esc(title)}"',
             f' {NAMESPACE}.handoff.{step}.subject.desc:0 "{esc(subject_desc)}"',

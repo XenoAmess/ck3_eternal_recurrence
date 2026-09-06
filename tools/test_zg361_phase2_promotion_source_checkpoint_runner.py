@@ -61,6 +61,180 @@ from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_career_hc_portfolio_mode_card_is_a_known_interrupt(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            payload: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            payload["typed_identity"] = (
+                {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+                if character_id is not None
+                else {
+                    "status": "unavailable",
+                    "reason": "generic_scope_payload_identity_not_closed",
+                }
+            )
+            return {"name": name, "scope": payload}
+
+        event_key = "zg361ch.950"
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 19,
+            "date_raw": 53157000,
+            "root_scope": scope("root", "character", 29037)["scope"],
+            "saved_scopes": [
+                # Inherited call-stack state is permitted but not required.
+                scope("zg361_b1_ticket_owner", "character", 29037),
+                scope("zg361_ch_d_event_owner", "character", 29037),
+                scope("zg361_ch_d_event_subject", "character", 26936),
+                scope("zg361_ch_d_event_cycle", "value"),
+                scope("zg361_ch_d_event_case", "value"),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(4)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53157000, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 19},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+    def test_compensation_card_binds_42_authored_slots_to_3_visible_routes(self) -> None:
+        event_key = "zg361comp.1"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53157768,
+        )
+        for stage_index in range(14):
+            option_start = stage_index * 3
+            context = {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": event_key,
+                "current_event_instance_id": 49 + stage_index,
+                "date_raw": 53157768 + stage_index * 24,
+                "root_scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": 29037,
+                    },
+                },
+                "saved_scopes": [],
+                "options": [
+                    {
+                        "rendered_index": index,
+                        "native_option_index": option_start + index,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                    for index in range(3)
+                ],
+            }
+            checks = production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": context["date_raw"],
+                    "active_event": {"option_count": 42},
+                },
+                event={"event_instance_id": context["current_event_instance_id"]},
+                context=context,
+                event_key=event_key,
+                contract=contract,
+            )
+
+            self.assertTrue(all(checks.values()), (stage_index, checks))
+
+    def test_pp_portfolio_mode_card_is_a_known_interrupt(self) -> None:
+        event_key = "zg361pp.9100"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 88,
+            "date_raw": 53169192,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            "saved_scopes": [
+                {
+                    "name": "zg361_b1_ticket_owner",
+                    "scope": {
+                        "status": "available",
+                        "type_key": "character",
+                        "typed_identity": {
+                            "status": "available",
+                            "kind": "character",
+                            "character_id": 29037,
+                        },
+                    },
+                }
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(4)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53169192, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 88},
+            context=context,
+            event_key=event_key,
+            contract=production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
     def test_governor_removal_letter_binds_dynamic_nonplayer_actor(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
@@ -3028,15 +3202,28 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             checks_for(player_new_elder)["scope:new_elder:unique_third_party"]
         )
 
-        invented_weak_identity = copy.deepcopy(context)
-        invented_weak_identity["saved_scopes"][2] = scope(
-            "secondary_actor", "character", 29491
+        invented_scope = copy.deepcopy(context)
+        invented_scope["saved_scopes"].append(
+            scope("unrelated_scope", "character", 29491)
         )
-        self.assertFalse(
-            checks_for(invented_weak_identity)[
-                "scope:secondary_actor:unavailable_character"
-            ]
-        )
+        self.assertFalse(checks_for(invented_scope)["saved_scope_names_exact"])
+
+        activity_variant = copy.deepcopy(context)
+        activity_variant["saved_scopes"] = [
+            scope("activity", "activity"),
+            scope("host", "character", 31703),
+            scope("province", "province"),
+            scope("elder_candidate", "character", 28679),
+            scope("rival_candidate", "character", 28907),
+            scope("my_movement", "situation_participant_group"),
+            scope("new_disciple", "character", 28907),
+            scope("old_elder", "character", 29037),
+            scope("new_elder", "character", 28679),
+            scope("actor", "character", 28907),
+            scope("recipient", "character", 29037),
+        ]
+        activity_checks = checks_for(activity_variant)
+        self.assertTrue(all(activity_checks.values()), activity_checks)
 
     def test_mechanism_001_accepts_the_reference_charter_choice(self) -> None:
         context = {

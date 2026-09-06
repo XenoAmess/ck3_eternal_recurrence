@@ -60,6 +60,33 @@ def seed_fixture(root: Path) -> Path:
 
 
 class B4HCWorkforcePreflightTests(unittest.TestCase):
+    def test_route_b_uses_exact_canonical_business_and_public_shards(self) -> None:
+        self.assertEqual(
+            [
+                "zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+                "zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+                "zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+                "zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+                "zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+                "zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+                "zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+                "zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt",
+            ],
+            [path.name for path in preflight.ROUTE_B_EFFECT_PATHS],
+        )
+        self.assertTrue(all(path.is_file() for path in preflight.ROUTE_B_EFFECT_PATHS))
+        self.assertFalse(preflight.RETIRED_ROUTE_B_EFFECT_PATH.exists())
+        route_b = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in preflight.ROUTE_B_EFFECT_PATHS
+        )
+        self.assertIn(
+            "var:zg361_we_al_external_collective_manager_cost_total = 0",
+            route_b,
+        )
+        self.assertIn("zg361_we_m360_route_b_effect = {", route_b)
+        self.assertIn("zg361_we_m360_route_b_business_effect = {", route_b)
+
     def test_green_preflight_selects_real_route_b_but_keeps_live_pending(self) -> None:
         with tempfile.TemporaryDirectory(prefix="zg361-b4-hc-workforce-") as name:
             report = preflight.build_preflight(

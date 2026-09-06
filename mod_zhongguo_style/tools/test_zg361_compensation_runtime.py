@@ -206,7 +206,7 @@ class CompensationRuntimeTests(unittest.TestCase):
             },
         )
 
-    def test_exact_35_outputs_are_current_bom_localized_and_isolated(self) -> None:
+    def test_exact_39_outputs_are_current_bom_localized_and_isolated(self) -> None:
         expected = {
             *(
                 f"common/scripted_effects/{filename}"
@@ -221,7 +221,7 @@ class CompensationRuntimeTests(unittest.TestCase):
         rendered = generator.outputs()
         actual = {path.relative_to(MOD_ROOT).as_posix() for path in rendered}
         self.assertEqual(actual, expected)
-        self.assertEqual(len(rendered), 35)
+        self.assertEqual(len(rendered), 39)
         self.assertEqual(sum(path.suffix == ".yml" for path in rendered), 9)
         for path, payload in rendered.items():
             with self.subTest(path=path.relative_to(MOD_ROOT)):
@@ -276,9 +276,46 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(generator.BOM))
 
     def test_effects_are_complete_byte_identical_ordered_purpose_shards(self) -> None:
-        self.assertEqual(len(generator.EFFECT_GROUPS), 25)
+        self.assertEqual(len(generator.EFFECT_GROUPS), 29)
         self.assertEqual(generator.EFFECT_HARD_LIMIT_EXCEPTIONS, {})
         self.assertFalse(LEGACY_EFFECTS_PATH.exists())
+        obsolete_portfolio = (
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_compensation_07_portfolio_effects.txt"
+        )
+        self.assertFalse(obsolete_portfolio.exists())
+        portfolio_groups = tuple(
+            (filename, names)
+            for filename, names in generator.EFFECT_GROUPS
+            if "_portfolio_" in filename
+        )
+        self.assertEqual(
+            portfolio_groups,
+            (
+                (
+                    "zg361_compensation_07a_portfolio_open_next_effects.txt",
+                    ("zg361_comp_portfolio_open_next_effect",),
+                ),
+                (
+                    "zg361_compensation_07b_portfolio_apply_stage_effects.txt",
+                    ("zg361_comp_portfolio_apply_stage_effect",),
+                ),
+                (
+                    "zg361_compensation_07c_portfolio_refresh_effects.txt",
+                    ("zg361_comp_portfolio_refresh_effect",),
+                ),
+                (
+                    "zg361_compensation_07d_portfolio_notify_effects.txt",
+                    ("zg361_comp_portfolio_notify_owner_effect",),
+                ),
+                (
+                    "zg361_compensation_07e_portfolio_closure_effects.txt",
+                    ("zg361_comp_portfolio_case_closed_effect",),
+                ),
+            ),
+        )
 
         historical_bytes = generator.render_effects()
         self.assertEqual(len(historical_bytes), 615_166)
@@ -360,7 +397,11 @@ class CompensationRuntimeTests(unittest.TestCase):
             "zg361comp.904.bad",
             "zg361comp.904.transfer",
             "zg361comp.904.unknown",
-            "zg361comp.ok",
+            "zg361comp.900.a",
+            "zg361comp.901.a",
+            "zg361comp.902.a",
+            "zg361comp.903.a",
+            "zg361comp.904.a",
         )
         localization_paths = [
             MOD_ROOT
@@ -1434,11 +1475,11 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("total reward to 45", english_by_key["zg361comp.1.l1.r1"])
         self.assertIn("stage bonus of 20", english_by_key["zg361comp.1.l1.r1"])
         self.assertIn("总报酬四十五，其中本阶段奖金二十", chinese_by_key["zg361comp.1.l1.r1"])
-        self.assertIn("国库预留十四、私库预留六", chinese_by_key["zg361comp.1.l1.r1"])
+        self.assertIn("国库出十四、私库出六：现付十四，余六待结", chinese_by_key["zg361comp.1.l1.r1"])
         self.assertIn("total reward to 37", english_by_key["zg361comp.1.l1.r2"])
         self.assertIn("stage bonus of 16", english_by_key["zg361comp.1.l1.r2"])
         self.assertIn("总报酬三十七，其中本阶段奖金十六", chinese_by_key["zg361comp.1.l1.r2"])
-        self.assertIn("国库预留十一、私库预留五", chinese_by_key["zg361comp.1.l1.r2"])
+        self.assertIn("国库出十一、私库出五：现付十，余六待结", chinese_by_key["zg361comp.1.l1.r2"])
         for key in (
             "zg361comp.1.l1.r1",
             "zg361comp.1.l1.r2",
@@ -1500,6 +1541,105 @@ class CompensationRuntimeTests(unittest.TestCase):
             ):
                 self.assertIn(f" {key}:0 ", source)
             self.assertNotIn("named_peer_salary", source)
+
+    def test_every_visible_compensation_key_separates_case_body_from_action_button(self) -> None:
+        english = generator.render_english_localization().decode("utf-8-sig")
+        chinese = generator.render_simp_chinese_localization().decode("utf-8-sig")
+
+        def values(source: str) -> dict[str, str]:
+            return {
+                match.group(1): match.group(2)
+                for match in re.finditer(
+                    r'^\s+(zg361comp\.[^:]+):0\s+"(.*)"$',
+                    source,
+                    re.MULTILINE,
+                )
+            }
+
+        english_values = values(english)
+        chinese_values = values(chinese)
+        stage_body_keys = tuple(
+            f"zg361comp.1.{key}"
+            for key, _domain_number, _state in generator.PORTFOLIO_STAGES
+        )
+        body_keys = (
+            "zg361comp.1.desc",
+            *stage_body_keys,
+            "zg361comp.289.desc",
+            "zg361comp.900.desc",
+            "zg361comp.901.desc",
+            "zg361comp.902.desc",
+            "zg361comp.903.desc",
+            "zg361comp.904.desc",
+        )
+        for key in body_keys:
+            with self.subTest(body=key):
+                value = chinese_values[key]
+                self.assertNotRegex(value, r"^[。！？；：，、,.!?;:\[$@]")
+                self.assertNotRegex(value, r"路线|选项|按钮|按\s*[ABCＡＢＣ](?:做|办|执行)?|下文")
+        title_body_pairs = (
+            ("zg361comp.1.t", "zg361comp.1.desc"),
+            ("zg361comp.289.t", "zg361comp.289.desc"),
+            ("zg361comp.900.t", "zg361comp.900.desc"),
+            ("zg361comp.901.t", "zg361comp.901.desc"),
+            ("zg361comp.902.t", "zg361comp.902.desc"),
+            ("zg361comp.903.t", "zg361comp.903.desc"),
+            ("zg361comp.904.t", "zg361comp.904.desc"),
+        )
+        for title_key, body_key in title_body_pairs:
+            with self.subTest(title=title_key, body=body_key):
+                self.assertNotIn(chinese_values[title_key], chinese_values[body_key])
+
+        stage_option_keys = tuple(
+            f"zg361comp.1.{key}.r{route}"
+            for key, _domain_number, _state in generator.PORTFOLIO_STAGES
+            for route in (1, 2, 3)
+        )
+        appeal_option_keys = ("zg361comp.289.a", "zg361comp.289.b")
+        receipt_option_keys = tuple(f"zg361comp.{event_id}.a" for event_id in range(900, 905))
+        visible_option_keys = stage_option_keys + appeal_option_keys + receipt_option_keys
+        event_option_keys = tuple(
+            re.findall(r"\boption\s*=\s*\{\s*name\s*=\s*(zg361comp\.[\w.]+)", self.events)
+        )
+        self.assertEqual(len(event_option_keys), 49)
+        self.assertEqual(set(event_option_keys), set(visible_option_keys))
+        self.assertNotIn("zg361comp.ok", self.events)
+        self.assertNotIn("zg361comp.ok", chinese)
+        self.assertNotIn("zg361comp.ok", english)
+        for key in visible_option_keys:
+            with self.subTest(option=key):
+                self.assertIn(key, chinese_values)
+                self.assertIn(key, english_values)
+
+        financial_result_terms = re.compile(
+            r"付款|支付|现付|全付|现金|金币|预留|追回|退回|欠|俸|奖金|份额|回购|账目"
+        )
+        for key in stage_option_keys:
+            with self.subTest(self_contained_stage_option=key):
+                value = chinese_values[key]
+                self.assertIn(
+                    "ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName",
+                    value,
+                )
+                self.assertRegex(value, financial_result_terms)
+                literal = re.sub(r"\[[^]]*\]", "", value)
+                self.assertLessEqual(len(literal), 48)
+        for key in appeal_option_keys:
+            self.assertIn("不花金币", chinese_values[key])
+            self.assertIn("Costs 0 gold", english_values[key])
+        for key in receipt_option_keys:
+            self.assertRegex(chinese_values[key], r"收存.*凭据；此举不")
+            self.assertRegex(english_values[key], r"File .*receipt; this")
+
+        self.assertIn("现付十四，余六待结", chinese_values["zg361comp.1.l1.r1"])
+        self.assertIn("现付十，余六待结", chinese_values["zg361comp.1.l1.r2"])
+        self.assertIn("原到期日", chinese_values["zg361comp.1.l2.r1"])
+        self.assertIn("余六到期按四、二退回", chinese_values["zg361comp.1.l2.r2"])
+        self.assertIn("余六到期退回国库四、私库二", chinese_values["zg361comp.1.l2.r3"])
+        self.assertIn("否则不授", chinese_values["zg361comp.1.af1.r1"])
+        self.assertIn("否则两项均为零", chinese_values["zg361comp.1.af1.r3"])
+        self.assertIn("否则均为零", chinese_values["zg361comp.1.af2.r1"])
+        self.assertIn("没收未归属、保留已归属", chinese_values["zg361comp.1.af5.r3"])
 
     def test_runtime_claims_only_static_ready_without_live_evidence(self) -> None:
         header = "\n".join(self.effects.splitlines()[:8]).lower()

@@ -1,0 +1,1530 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_copy_received_scoreboard_slots_effect = {
+	zg361_clear_scoreboard_r_slots_effect = yes
+	save_temporary_scope_as = zg361_scoreboard_self_entry
+	if = {
+		limit = {
+			has_variable = zg361_result_case_owner
+			has_variable = zg361_result_cycle_serial
+			has_variable = zg361_result_case_serial
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			scope:zg361_scoreboard_source = { has_variable = zg361_scoreboard_managed_cycle_serial }
+			var:zg361_result_case_owner = scope:zg361_scoreboard_source
+			scope:zg361_scoreboard_source = { var:zg361_scoreboard_managed_cycle_serial = root.var:zg361_result_cycle_serial }
+			var:zg361_b1_case_owner = var:zg361_result_case_owner
+			var:zg361_b1_cycle_serial = var:zg361_result_cycle_serial
+		}
+		# Freeze the complete #013 ABI only after result and B1 tuples match.
+		zg361_freeze_received_disclosure_policy_effect = yes
+		# Unknown configured modes stay fail-closed: no self dossier is written.
+		if = {
+			limit = { has_variable = zg361_sb_self_disclosure_acl_mode }
+			set_variable = { name = zg361_scoreboard_received_case_serial value = var:zg361_result_case_serial }
+			set_variable = { name = zg361_sb_self_char value = scope:zg361_scoreboard_self_entry }
+			set_variable = { name = zg361_sb_self_title value = scope:zg361_scoreboard_self_entry.primary_title }
+			if = {
+				limit = { has_variable = zg361_result_rank_frozen }
+				set_variable = { name = zg361_sb_self_rank value = var:zg361_result_rank_frozen }
+			}
+			if = { limit = { has_variable = zg361_result_case_owner } set_variable = { name = zg361_sb_self_case_owner value = var:zg361_result_case_owner } }
+			if = { limit = { has_variable = zg361_result_cycle_serial } set_variable = { name = zg361_sb_self_cycle_serial value = var:zg361_result_cycle_serial } }
+			if = { limit = { has_variable = zg361_result_case_serial } set_variable = { name = zg361_sb_self_case_serial value = var:zg361_result_case_serial } }
+			if = { limit = { has_variable = zg361_b1_case_owner } set_variable = { name = zg361_sb_self_b1_case_owner value = var:zg361_b1_case_owner } }
+			if = { limit = { has_variable = zg361_b1_cycle_serial } set_variable = { name = zg361_sb_self_b1_cycle_serial value = var:zg361_b1_cycle_serial } }
+			if = { limit = { has_variable = zg361_b1_case_serial } set_variable = { name = zg361_sb_self_b1_case_serial value = var:zg361_b1_case_serial } }
+			# DISCLOSURE_A_BEGIN self_mode=3
+			if = {
+				limit = { var:zg361_sb_self_disclosure_acl_mode = 3 }
+				if = { limit = { has_variable = zg361_result_kpi_frozen } set_variable = { name = zg361_sb_self_kpi_frozen value = var:zg361_result_kpi_frozen } }
+				if = { limit = { has_variable = zg361_result_values_frozen } set_variable = { name = zg361_sb_self_values_frozen value = var:zg361_result_values_frozen } }
+				if = { limit = { has_variable = zg361_result_evidence_governance } set_variable = { name = zg361_sb_self_evidence_governance value = var:zg361_result_evidence_governance } }
+				if = { limit = { has_variable = zg361_result_evidence_capability } set_variable = { name = zg361_sb_self_evidence_capability value = var:zg361_result_evidence_capability } }
+				if = { limit = { has_variable = zg361_result_evidence_growth } set_variable = { name = zg361_sb_self_evidence_growth value = var:zg361_result_evidence_growth } }
+				if = { limit = { has_variable = zg361_result_evidence_superior } set_variable = { name = zg361_sb_self_evidence_superior value = var:zg361_result_evidence_superior } }
+				if = { limit = { has_variable = zg361_result_evidence_values } set_variable = { name = zg361_sb_self_evidence_values value = var:zg361_result_evidence_values } }
+				if = { limit = { has_variable = zg361_result_evidence_collaboration } set_variable = { name = zg361_sb_self_evidence_collaboration value = var:zg361_result_evidence_collaboration } }
+				if = { limit = { has_variable = zg361_result_evidence_jingcha } set_variable = { name = zg361_sb_self_evidence_jingcha value = var:zg361_result_evidence_jingcha } }
+				if = { limit = { has_variable = zg361_result_evidence_organization } set_variable = { name = zg361_sb_self_evidence_organization value = var:zg361_result_evidence_organization } }
+				if = {
+					limit = { has_variable = zg361_result_grade }
+					set_variable = { name = zg361_sb_self_final_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_result_grade = 3 }
+						set_variable = { name = zg361_sb_self_final_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_result_grade = 1 }
+						set_variable = { name = zg361_sb_self_final_grade value = 3.25 }
+					}
+				}
+				if = { limit = { has_variable = zg361_result_grade_reason } set_variable = { name = zg361_sb_self_grade_reason value = var:zg361_result_grade_reason } }
+				if = { limit = { has_variable = zg361_result_appeal_open } set_variable = { name = zg361_sb_self_appeal_open value = var:zg361_result_appeal_open } }
+				if = { limit = { has_variable = zg361_result_appeal_outcome } set_variable = { name = zg361_sb_self_appeal_outcome value = var:zg361_result_appeal_outcome } }
+				# B1_OBJECT_141_1_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_must_review_object_available
+						has_variable = zg361_b1_must_review_object_owner
+						has_variable = zg361_b1_must_review_object_subject
+						has_variable = zg361_b1_must_review_object_cycle
+						has_variable = zg361_b1_must_review_object_case
+						has_variable = zg361_b1_must_review_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_must_review_object_available = 1
+						var:zg361_b1_must_review_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_must_review_object_subject = this
+						var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+						OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+						has_variable = zg361_b1_must_review_route
+						var:zg361_b1_must_review_route = 1
+					}
+					if = { limit = { has_variable = zg361_b1_must_review_object_available } set_variable = { name = zg361_sb_self_b1_141_must_review_marker value = var:zg361_b1_must_review_object_available } }
+					if = { limit = { has_variable = zg361_b1_must_review_reason_fact } set_variable = { name = zg361_sb_self_b1_141_agenda_reason value = var:zg361_b1_must_review_reason_fact } }
+					if = { limit = { has_variable = zg361_b1_must_review_judgment_result } set_variable = { name = zg361_sb_self_b1_141_review_outcome value = var:zg361_b1_must_review_judgment_result } }
+				}
+				# B1_OBJECT_141_1_END
+				# B1_OBJECT_141_2_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_must_review_object_available
+						has_variable = zg361_b1_must_review_object_owner
+						has_variable = zg361_b1_must_review_object_subject
+						has_variable = zg361_b1_must_review_object_cycle
+						has_variable = zg361_b1_must_review_object_case
+						has_variable = zg361_b1_must_review_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_must_review_object_available = 1
+						var:zg361_b1_must_review_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_must_review_object_subject = this
+						var:zg361_b1_must_review_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_must_review_object_case = var:zg361_b1_case_serial
+						OR = { var:zg361_b1_must_review_object_state = 2 var:zg361_b1_must_review_object_state = 3 }
+						has_variable = zg361_b1_must_review_route
+						var:zg361_b1_must_review_route = 2
+					}
+					if = { limit = { has_variable = zg361_b1_must_review_object_available } set_variable = { name = zg361_sb_self_b1_141_must_review_marker value = var:zg361_b1_must_review_object_available } }
+					if = { limit = { has_variable = zg361_b1_must_review_reason_fact } set_variable = { name = zg361_sb_self_b1_141_agenda_reason value = var:zg361_b1_must_review_reason_fact } }
+					if = { limit = { has_variable = zg361_b1_must_review_judgment_result } set_variable = { name = zg361_sb_self_b1_141_review_outcome value = var:zg361_b1_must_review_judgment_result } }
+				}
+				# B1_OBJECT_141_2_END
+				# B1_OBJECT_142_1_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_pending_object_available
+						has_variable = zg361_b1_pending_object_owner
+						has_variable = zg361_b1_pending_object_subject
+						has_variable = zg361_b1_pending_object_cycle
+						has_variable = zg361_b1_pending_object_case
+						has_variable = zg361_b1_pending_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_pending_object_available = 1
+						var:zg361_b1_pending_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_pending_object_subject = this
+						var:zg361_b1_pending_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_pending_object_case = var:zg361_b1_case_serial
+						OR = { var:zg361_b1_pending_object_state = 2 var:zg361_b1_pending_object_state = 3 var:zg361_b1_pending_object_state = 5 }
+						has_variable = zg361_b1_pending_projection_route
+						var:zg361_b1_pending_projection_route = 1
+					}
+					if = { limit = { has_variable = zg361_b1_pending_self_safe_marker } set_variable = { name = zg361_sb_self_b1_142_pending_marker value = var:zg361_b1_pending_self_safe_marker } }
+					if = { limit = { has_variable = zg361_b1_pending_self_safe_milestone } set_variable = { name = zg361_sb_self_b1_142_milestone value = var:zg361_b1_pending_self_safe_milestone } }
+					if = { limit = { has_variable = zg361_b1_pending_self_safe_deadline_cycle } set_variable = { name = zg361_sb_self_b1_142_deadline_cycle value = var:zg361_b1_pending_self_safe_deadline_cycle } }
+				}
+				# B1_OBJECT_142_1_END
+				# B1_OBJECT_142_2_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_pending_next_cycle_object_available
+						has_variable = zg361_b1_pending_next_cycle_object_owner
+						has_variable = zg361_b1_pending_next_cycle_object_subject
+						has_variable = zg361_b1_pending_next_cycle_object_cycle
+						has_variable = zg361_b1_pending_next_cycle_object_case
+						has_variable = zg361_b1_pending_next_cycle_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_pending_next_cycle_object_available = 1
+						var:zg361_b1_pending_next_cycle_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_pending_next_cycle_object_subject = this
+						var:zg361_b1_pending_next_cycle_object_cycle > var:zg361_b1_cycle_serial
+						var:zg361_b1_pending_next_cycle_due = var:zg361_b1_pending_next_cycle_object_cycle
+						has_variable = zg361_b1_m142_receipt_serial
+						var:zg361_b1_pending_next_cycle_object_case = var:zg361_b1_m142_receipt_serial
+						var:zg361_b1_pending_next_cycle_object_state = 1
+						has_variable = zg361_b1_pending_projection_route
+						var:zg361_b1_pending_projection_route = 2
+					}
+					if = { limit = { has_variable = zg361_b1_pending_self_safe_current_final_unchanged } set_variable = { name = zg361_sb_self_b1_142_current_final_unchanged value = var:zg361_b1_pending_self_safe_current_final_unchanged } }
+					if = { limit = { has_variable = zg361_b1_pending_self_safe_next_cycle_evidence } set_variable = { name = zg361_sb_self_b1_142_next_cycle_evidence value = var:zg361_b1_pending_self_safe_next_cycle_evidence } }
+				}
+				# B1_OBJECT_142_2_END
+				# B1_OBJECT_143_1_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_reopen_self_a_available
+						has_variable = zg361_b1_reopen_self_a_owner
+						has_variable = zg361_b1_reopen_self_a_subject
+						has_variable = zg361_b1_reopen_self_a_cycle
+						has_variable = zg361_b1_reopen_self_a_case
+						has_variable = zg361_b1_reopen_self_a_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_reopen_self_a_available = 1
+						var:zg361_b1_reopen_self_a_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_reopen_self_a_subject = this
+						var:zg361_b1_reopen_self_a_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_reopen_self_a_case = var:zg361_b1_case_serial
+						var:zg361_b1_reopen_self_a_state = 2
+					}
+					if = { limit = { has_variable = zg361_b1_reopen_self_a_result } set_variable = { name = zg361_sb_self_b1_143_reopen_result value = var:zg361_b1_reopen_self_a_result } }
+					if = { limit = { has_variable = zg361_b1_reopen_self_a_reason } set_variable = { name = zg361_sb_self_b1_143_reason_code value = var:zg361_b1_reopen_self_a_reason } }
+				}
+				# B1_OBJECT_143_1_END
+				# B1_OBJECT_143_2_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_reopen_self_b_available
+						has_variable = zg361_b1_reopen_self_b_owner
+						has_variable = zg361_b1_reopen_self_b_subject
+						has_variable = zg361_b1_reopen_self_b_cycle
+						has_variable = zg361_b1_reopen_self_b_case
+						has_variable = zg361_b1_reopen_self_b_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_reopen_self_b_available = 1
+						var:zg361_b1_reopen_self_b_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_reopen_self_b_subject = this
+						var:zg361_b1_reopen_self_b_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_reopen_self_b_case = var:zg361_b1_case_serial
+						var:zg361_b1_reopen_self_b_state = 2
+					}
+					if = { limit = { has_variable = zg361_b1_reopen_self_b_next_cycle_evidence } set_variable = { name = zg361_sb_self_b1_143_next_cycle_evidence value = var:zg361_b1_reopen_self_b_next_cycle_evidence } }
+					if = { limit = { has_variable = zg361_b1_reopen_self_b_target_cycle } set_variable = { name = zg361_sb_self_b1_143_target_cycle value = var:zg361_b1_reopen_self_b_target_cycle } }
+				}
+				# B1_OBJECT_143_2_END
+				# B1_OBJECT_144_1_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_dissent_object_available
+						has_variable = zg361_b1_dissent_object_owner
+						has_variable = zg361_b1_dissent_object_subject
+						has_variable = zg361_b1_dissent_object_cycle
+						has_variable = zg361_b1_dissent_object_case
+						has_variable = zg361_b1_dissent_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_dissent_object_available = 1
+						var:zg361_b1_dissent_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_dissent_object_subject = this
+						var:zg361_b1_dissent_object_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_dissent_object_case = var:zg361_b1_case_serial
+						OR = { var:zg361_b1_dissent_object_state = 2 var:zg361_b1_dissent_object_state = 3 }
+					}
+					if = { limit = { has_variable = zg361_b1_dissent_self_safe_evidence } set_variable = { name = zg361_sb_self_b1_144_dissent_marker value = var:zg361_b1_dissent_self_safe_evidence } }
+					if = { limit = { has_variable = zg361_b1_dissent_reason_fact } set_variable = { name = zg361_sb_self_b1_144_fact_reason value = var:zg361_b1_dissent_reason_fact } }
+					if = { limit = { has_variable = zg361_b1_dissent_final_result } set_variable = { name = zg361_sb_self_b1_144_review_outcome value = var:zg361_b1_dissent_final_result } }
+				}
+				# B1_OBJECT_144_1_END
+				# B1_OBJECT_144_2_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_consensus_object_available
+						has_variable = zg361_b1_consensus_owner
+						has_variable = zg361_b1_consensus_subject
+						has_variable = zg361_b1_consensus_cycle
+						has_variable = zg361_b1_consensus_case
+						has_variable = zg361_b1_consensus_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_consensus_object_available = 1
+						var:zg361_b1_consensus_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_consensus_subject = this
+						var:zg361_b1_consensus_cycle = var:zg361_b1_cycle_serial
+						var:zg361_b1_consensus_case = var:zg361_b1_case_serial
+						var:zg361_b1_consensus_state = 2
+					}
+					if = { limit = { has_variable = zg361_b1_consensus_sealed } set_variable = { name = zg361_sb_self_b1_144_consensus_marker value = var:zg361_b1_consensus_sealed } }
+				}
+				# B1_OBJECT_144_2_END
+				# B1_OBJECT_145_1_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_band_order_object_available
+						has_variable = zg361_b1_band_order_object_owner
+						has_variable = zg361_b1_band_order_object_subject
+						has_variable = zg361_b1_band_order_object_cycle
+						has_variable = zg361_b1_band_order_object_case
+						has_variable = zg361_b1_band_order_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_band_order_object_available = 1
+						var:zg361_b1_band_order_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_band_order_object_subject = this
+						var:zg361_b1_band_order_object_cycle = var:zg361_b1_cycle_serial
+						has_variable = zg361_b1_m145_receipt_serial
+						var:zg361_b1_band_order_object_case = var:zg361_b1_m145_receipt_serial
+						var:zg361_b1_band_order_object_state = 1
+						has_variable = zg361_b1_band_order_use_mode
+						var:zg361_b1_band_order_use_mode = 1
+					}
+					if = {
+						limit = { has_variable = zg361_b1_band_formal_band }
+						set_variable = { name = zg361_sb_self_b1_145_formal_band value = 3.5 }
+						if = {
+							limit = { var:zg361_b1_band_formal_band = 3 }
+							set_variable = { name = zg361_sb_self_b1_145_formal_band value = 3.75 }
+						}
+						else_if = {
+							limit = { var:zg361_b1_band_formal_band = 1 }
+							set_variable = { name = zg361_sb_self_b1_145_formal_band value = 3.25 }
+						}
+					}
+					if = { limit = { has_variable = zg361_b1_band_self_public_within_middle_order } set_variable = { name = zg361_sb_self_b1_145_within_middle_order value = var:zg361_b1_band_self_public_within_middle_order } }
+					if = { limit = { has_variable = zg361_b1_band_self_public_opportunity_capacity } set_variable = { name = zg361_sb_self_b1_145_opportunity_capacity value = var:zg361_b1_band_self_public_opportunity_capacity } }
+					if = { limit = { has_variable = zg361_b1_band_self_public_opportunity_selected } set_variable = { name = zg361_sb_self_b1_145_opportunity_selected value = var:zg361_b1_band_self_public_opportunity_selected } }
+					if = { limit = { has_variable = zg361_b1_band_self_public_coaching_selected } set_variable = { name = zg361_sb_self_b1_145_coaching_selected value = var:zg361_b1_band_self_public_coaching_selected } }
+				}
+				# B1_OBJECT_145_1_END
+				# B1_OBJECT_145_2_BEGIN
+				if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_band_order_object_available
+						has_variable = zg361_b1_band_order_object_owner
+						has_variable = zg361_b1_band_order_object_subject
+						has_variable = zg361_b1_band_order_object_cycle
+						has_variable = zg361_b1_band_order_object_case
+						has_variable = zg361_b1_band_order_object_state
+						var:zg361_b1_case_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial >= 1
+						var:zg361_b1_case_serial >= 1
+						OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }
+						var:zg361_b1_band_order_object_available = 1
+						var:zg361_b1_band_order_object_owner = scope:zg361_scoreboard_source
+						var:zg361_b1_band_order_object_subject = this
+						var:zg361_b1_band_order_object_cycle = var:zg361_b1_cycle_serial
+						has_variable = zg361_b1_m145_receipt_serial
+						var:zg361_b1_band_order_object_case = var:zg361_b1_m145_receipt_serial
+						var:zg361_b1_band_order_object_state = 1
+						has_variable = zg361_b1_band_order_use_mode
+						var:zg361_b1_band_order_use_mode = 2
+					}
+					if = {
+						limit = { has_variable = zg361_b1_band_formal_band }
+						set_variable = { name = zg361_sb_self_b1_145_formal_band value = 3.5 }
+						if = {
+							limit = { var:zg361_b1_band_formal_band = 3 }
+							set_variable = { name = zg361_sb_self_b1_145_formal_band value = 3.75 }
+						}
+						else_if = {
+							limit = { var:zg361_b1_band_formal_band = 1 }
+							set_variable = { name = zg361_sb_self_b1_145_formal_band value = 3.25 }
+						}
+					}
+					if = { limit = { has_variable = zg361_b1_band_self_private_opportunity_selected } set_variable = { name = zg361_sb_self_b1_145_own_opportunity_selected value = var:zg361_b1_band_self_private_opportunity_selected } }
+					if = { limit = { has_variable = zg361_b1_band_self_appeal_evidence } set_variable = { name = zg361_sb_self_b1_145_appeal_evidence_available value = var:zg361_b1_band_self_appeal_evidence } }
+					if = { limit = { has_variable = zg361_b1_band_order_blackbox_risk } set_variable = { name = zg361_sb_self_b1_145_blackbox_audit value = var:zg361_b1_band_order_blackbox_risk } }
+				}
+				# B1_OBJECT_145_2_END
+			}
+			# DISCLOSURE_A_END
+			# DISCLOSURE_B_BEGIN self_mode=1
+			else_if = {
+				limit = { var:zg361_sb_self_disclosure_acl_mode = 1 }
+				if = {
+					limit = { has_variable = zg361_result_grade }
+					set_variable = { name = zg361_sb_self_final_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_result_grade = 3 }
+						set_variable = { name = zg361_sb_self_final_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_result_grade = 1 }
+						set_variable = { name = zg361_sb_self_final_grade value = 3.25 }
+					}
+				}
+			}
+			# DISCLOSURE_B_END
+			# DISCLOSURE_C_LEGACY_BEGIN available=0-or-absent
+			else = {
+				if = { limit = { has_variable = zg361_result_kpi_frozen } set_variable = { name = zg361_sb_self_kpi_frozen value = var:zg361_result_kpi_frozen } }
+				if = { limit = { has_variable = zg361_result_values_frozen } set_variable = { name = zg361_sb_self_values_frozen value = var:zg361_result_values_frozen } }
+				if = { limit = { has_variable = zg361_result_evidence_governance } set_variable = { name = zg361_sb_self_evidence_governance value = var:zg361_result_evidence_governance } }
+				if = { limit = { has_variable = zg361_result_evidence_capability } set_variable = { name = zg361_sb_self_evidence_capability value = var:zg361_result_evidence_capability } }
+				if = { limit = { has_variable = zg361_result_evidence_growth } set_variable = { name = zg361_sb_self_evidence_growth value = var:zg361_result_evidence_growth } }
+				if = { limit = { has_variable = zg361_result_evidence_superior } set_variable = { name = zg361_sb_self_evidence_superior value = var:zg361_result_evidence_superior } }
+				if = { limit = { has_variable = zg361_result_evidence_values } set_variable = { name = zg361_sb_self_evidence_values value = var:zg361_result_evidence_values } }
+				if = { limit = { has_variable = zg361_result_evidence_collaboration } set_variable = { name = zg361_sb_self_evidence_collaboration value = var:zg361_result_evidence_collaboration } }
+				if = { limit = { has_variable = zg361_result_evidence_jingcha } set_variable = { name = zg361_sb_self_evidence_jingcha value = var:zg361_result_evidence_jingcha } }
+				if = { limit = { has_variable = zg361_result_evidence_organization } set_variable = { name = zg361_sb_self_evidence_organization value = var:zg361_result_evidence_organization } }
+				if = { limit = { has_variable = zg361_b1_self_choice } set_variable = { name = zg361_sb_self_self_choice value = var:zg361_b1_self_choice } }
+				if = { limit = { has_variable = zg361_b1_self_score } set_variable = { name = zg361_sb_self_self_score value = var:zg361_b1_self_score } }
+				if = { limit = { has_variable = zg361_b1_self_gap } set_variable = { name = zg361_sb_self_self_gap value = var:zg361_b1_self_gap } }
+				if = { limit = { has_variable = zg361_b1_self_submitted_year } set_variable = { name = zg361_sb_self_self_submitted_year value = var:zg361_b1_self_submitted_year } }
+				if = {
+					limit = { has_variable = zg361_b1_shadow_grade }
+					set_variable = { name = zg361_sb_self_shadow_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_b1_shadow_grade = 3 }
+						set_variable = { name = zg361_sb_self_shadow_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_b1_shadow_grade = 1 }
+						set_variable = { name = zg361_sb_self_shadow_grade value = 3.25 }
+					}
+				}
+				if = { limit = { has_variable = zg361_b1_shadow_response_state } set_variable = { name = zg361_sb_self_shadow_response value = var:zg361_b1_shadow_response_state } }
+				if = { limit = { has_variable = zg361_b1_shadow_evidence_delta } set_variable = { name = zg361_sb_self_shadow_delta value = var:zg361_b1_shadow_evidence_delta } }
+				if = { limit = { has_variable = zg361_b1_shadow_response_year } set_variable = { name = zg361_sb_self_shadow_response_year value = var:zg361_b1_shadow_response_year } }
+				if = { limit = { has_variable = zg361_b1_peer_n } set_variable = { name = zg361_sb_self_peer_n value = var:zg361_b1_peer_n } }
+				if = { limit = { has_variable = zg361_b1_peer_mean } set_variable = { name = zg361_sb_self_peer_mean value = var:zg361_b1_peer_mean } }
+				if = { limit = { has_variable = zg361_b1_peer_variance } set_variable = { name = zg361_sb_self_peer_variance value = var:zg361_b1_peer_variance } }
+				if = { limit = { has_variable = zg361_b1_peer_normalized_score } set_variable = { name = zg361_sb_self_peer_normalized_score value = var:zg361_b1_peer_normalized_score } }
+				if = { limit = { has_variable = zg361_b1_peer_shape } set_variable = { name = zg361_sb_self_peer_shape value = var:zg361_b1_peer_shape } }
+				if = { limit = { has_variable = zg361_b1_peer_reciprocity_risk } set_variable = { name = zg361_sb_self_peer_reciprocity_risk value = var:zg361_b1_peer_reciprocity_risk } }
+				if = { limit = { has_variable = zg361_b1_peer_timely_n } set_variable = { name = zg361_sb_self_peer_timely_n value = var:zg361_b1_peer_timely_n } }
+				if = { limit = { has_variable = zg361_b1_peer_credit_total } set_variable = { name = zg361_sb_self_peer_credit_total value = var:zg361_b1_peer_credit_total } }
+				if = { limit = { has_variable = zg361_b1_evaluator_credit } set_variable = { name = zg361_sb_self_evaluator_credit value = var:zg361_b1_evaluator_credit } }
+				if = { limit = { has_variable = zg361_b1_evaluator_sample_n } set_variable = { name = zg361_sb_self_evaluator_sample_n value = var:zg361_b1_evaluator_sample_n } }
+				if = { limit = { has_variable = zg361_b1_peer_use_mode } set_variable = { name = zg361_sb_self_peer_use_mode value = var:zg361_b1_peer_use_mode } }
+				if = { limit = { has_variable = zg361_b1_peer_fatigue } set_variable = { name = zg361_sb_self_peer_fatigue value = var:zg361_b1_peer_fatigue } }
+				if = { limit = { has_variable = zg361_result_cohort_n_frozen } set_variable = { name = zg361_sb_self_cohort_n value = var:zg361_result_cohort_n_frozen } }
+				if = {
+					limit = { has_variable = zg361_result_absolute_grade }
+					set_variable = { name = zg361_sb_self_absolute_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_result_absolute_grade = 3 }
+						set_variable = { name = zg361_sb_self_absolute_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_result_absolute_grade = 1 }
+						set_variable = { name = zg361_sb_self_absolute_grade value = 3.25 }
+					}
+				}
+				if = {
+					limit = { has_variable = zg361_result_grade }
+					set_variable = { name = zg361_sb_self_final_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_result_grade = 3 }
+						set_variable = { name = zg361_sb_self_final_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_result_grade = 1 }
+						set_variable = { name = zg361_sb_self_final_grade value = 3.25 }
+					}
+				}
+				if = { limit = { has_variable = zg361_result_grade_reason } set_variable = { name = zg361_sb_self_grade_reason value = var:zg361_result_grade_reason } }
+				if = { limit = { has_variable = zg361_b1_calibration_score } set_variable = { name = zg361_sb_self_calibration_score value = var:zg361_b1_calibration_score } }
+				if = { limit = { has_variable = zg361_b1_calibration_score_before_shadow } set_variable = { name = zg361_sb_self_calibration_score_before_shadow value = var:zg361_b1_calibration_score_before_shadow } }
+				if = { limit = { has_variable = zg361_b1_shadow_to_quota_delta } set_variable = { name = zg361_sb_self_shadow_to_quota_delta value = var:zg361_b1_shadow_to_quota_delta } }
+				if = {
+					limit = { has_variable = zg361_b1_quota_snapshot }
+					set_variable = { name = zg361_sb_self_quota_snapshot value = 3.5 }
+					if = {
+						limit = { var:zg361_b1_quota_snapshot = 3 }
+						set_variable = { name = zg361_sb_self_quota_snapshot value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_b1_quota_snapshot = 1 }
+						set_variable = { name = zg361_sb_self_quota_snapshot value = 3.25 }
+					}
+				}
+				if = { limit = { has_variable = zg361_b1_forced_down } set_variable = { name = zg361_sb_self_forced_down value = var:zg361_b1_forced_down } }
+				if = { limit = { has_variable = zg361_b1_roster_employment_state } set_variable = { name = zg361_sb_self_roster_employment_state value = var:zg361_b1_roster_employment_state } }
+				if = { limit = { has_variable = zg361_b1_leaver_route has_variable = zg361_b1_leaver_route NOT = { var:zg361_b1_leaver_route = 0 } } set_variable = { name = zg361_sb_self_leaver_route value = var:zg361_b1_leaver_route } }
+				if = {
+					limit = { has_variable = zg361_b1_leaver_honest_grade has_variable = zg361_b1_leaver_route NOT = { var:zg361_b1_leaver_route = 0 } }
+					set_variable = { name = zg361_sb_self_leaver_honest_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_b1_leaver_honest_grade = 3 }
+						set_variable = { name = zg361_sb_self_leaver_honest_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_b1_leaver_honest_grade = 1 }
+						set_variable = { name = zg361_sb_self_leaver_honest_grade value = 3.25 }
+					}
+				}
+				if = {
+					limit = { has_variable = zg361_b1_leaver_final_grade has_variable = zg361_b1_leaver_route NOT = { var:zg361_b1_leaver_route = 0 } }
+					set_variable = { name = zg361_sb_self_leaver_final_grade value = 3.5 }
+					if = {
+						limit = { var:zg361_b1_leaver_final_grade = 3 }
+						set_variable = { name = zg361_sb_self_leaver_final_grade value = 3.75 }
+					}
+					else_if = {
+						limit = { var:zg361_b1_leaver_final_grade = 1 }
+						set_variable = { name = zg361_sb_self_leaver_final_grade value = 3.25 }
+					}
+				}
+				if = { limit = { has_variable = zg361_b1_leaver_quota_source has_variable = zg361_b1_leaver_route NOT = { var:zg361_b1_leaver_route = 0 } } set_variable = { name = zg361_sb_self_leaver_quota_source value = var:zg361_b1_leaver_quota_source } }
+				if = { limit = { has_variable = zg361_b1_leaver_effective_year has_variable = zg361_b1_leaver_route NOT = { var:zg361_b1_leaver_route = 0 } } set_variable = { name = zg361_sb_self_leaver_effective_year value = var:zg361_b1_leaver_effective_year } }
+				if = { limit = { has_variable = zg361_b1_leaver_receipt_state has_variable = zg361_b1_leaver_route NOT = { var:zg361_b1_leaver_route = 0 } } set_variable = { name = zg361_sb_self_leaver_receipt_state value = var:zg361_b1_leaver_receipt_state } }
+				if = { limit = { has_variable = zg361_result_case_state } set_variable = { name = zg361_sb_self_case_state value = var:zg361_result_case_state } }
+				if = { limit = { has_variable = zg361_result_delivery_method } set_variable = { name = zg361_sb_self_delivery_method value = var:zg361_result_delivery_method } }
+				if = { limit = { has_variable = zg361_result_appeal_open } set_variable = { name = zg361_sb_self_appeal_open value = var:zg361_result_appeal_open } }
+				if = { limit = { has_variable = zg361_result_appeal_outcome } set_variable = { name = zg361_sb_self_appeal_outcome value = var:zg361_result_appeal_outcome } }
+				if = { limit = { has_variable = zg361_result_settlement_posted_serial } set_variable = { name = zg361_sb_self_settlement_serial value = var:zg361_result_settlement_posted_serial } }
+				if = { limit = { has_variable = zg361_result_refund_posted_serial } set_variable = { name = zg361_sb_self_refund_serial value = var:zg361_result_refund_posted_serial } }
+				if = { limit = { has_variable = zg361_result_salary_cut_active } set_variable = { name = zg361_sb_self_salary_cut_active value = var:zg361_result_salary_cut_active } }
+				if = { limit = { has_variable = zg361_result_treasury_paid } set_variable = { name = zg361_sb_self_treasury_paid value = var:zg361_result_treasury_paid } }
+				if = { limit = { has_variable = zg361_result_gold_paid } set_variable = { name = zg361_sb_self_gold_paid value = var:zg361_result_gold_paid } }
+				if = { limit = { has_variable = zg361_result_merit_paid } set_variable = { name = zg361_sb_self_merit_paid value = var:zg361_result_merit_paid } }
+				if = { limit = { has_variable = zg361_result_treasury_refunded } set_variable = { name = zg361_sb_self_treasury_refunded value = var:zg361_result_treasury_refunded } }
+				if = { limit = { has_variable = zg361_result_gold_refunded } set_variable = { name = zg361_sb_self_gold_refunded value = var:zg361_result_gold_refunded } }
+				if = { limit = { has_variable = zg361_result_merit_refunded } set_variable = { name = zg361_sb_self_merit_refunded value = var:zg361_result_merit_refunded } }
+				if = { limit = { has_variable = zg361_b1_case_state } set_variable = { name = zg361_sb_self_b1_case_state value = var:zg361_b1_case_state } }
+				if = { limit = { has_variable = zg361_b1_fact_sheet_serial } set_variable = { name = zg361_sb_self_b1_fact_sheet_serial value = var:zg361_b1_fact_sheet_serial } }
+				if = { limit = { has_variable = zg361_b1_peer_sealed } set_variable = { name = zg361_sb_self_b1_peer_sealed value = var:zg361_b1_peer_sealed } }
+				if = { limit = { has_variable = zg361_b1_m004_receipt_serial } set_variable = { name = zg361_sb_self_b1_self_receipt_serial value = var:zg361_b1_m004_receipt_serial } }
+				if = { limit = { has_variable = zg361_b1_m008_receipt_serial } set_variable = { name = zg361_sb_self_b1_peer_receipt_serial value = var:zg361_b1_m008_receipt_serial } }
+				if = { limit = { has_variable = zg361_b1_m001_receipt_serial } set_variable = { name = zg361_sb_self_b1_shadow_receipt_serial value = var:zg361_b1_m001_receipt_serial } }
+				if = { limit = { has_variable = zg361_b1_m145_receipt_serial } set_variable = { name = zg361_sb_self_b1_band_receipt_serial value = var:zg361_b1_m145_receipt_serial } }
+			}
+			# DISCLOSURE_C_LEGACY_END
+		}
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_01_char } }
+		set_variable = { name = zg361_sb_r_01_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_char }
+		set_variable = { name = zg361_sb_r_01_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_title }
+		set_variable = { name = zg361_sb_r_01_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_kpi }
+		set_variable = { name = zg361_sb_r_01_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_rank }
+		set_variable = { name = zg361_sb_r_01_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_values }
+		set_variable = { name = zg361_sb_r_01_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_grade }
+		set_variable = { name = zg361_sb_r_01_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_streak }
+		set_variable = { name = zg361_sb_r_01_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_promotion }
+		set_variable = { name = zg361_sb_r_01_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_01_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_02_char } }
+		set_variable = { name = zg361_sb_r_02_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_char }
+		set_variable = { name = zg361_sb_r_02_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_title }
+		set_variable = { name = zg361_sb_r_02_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_kpi }
+		set_variable = { name = zg361_sb_r_02_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_rank }
+		set_variable = { name = zg361_sb_r_02_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_values }
+		set_variable = { name = zg361_sb_r_02_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_grade }
+		set_variable = { name = zg361_sb_r_02_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_streak }
+		set_variable = { name = zg361_sb_r_02_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_promotion }
+		set_variable = { name = zg361_sb_r_02_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_02_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_03_char } }
+		set_variable = { name = zg361_sb_r_03_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_char }
+		set_variable = { name = zg361_sb_r_03_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_title }
+		set_variable = { name = zg361_sb_r_03_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_kpi }
+		set_variable = { name = zg361_sb_r_03_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_rank }
+		set_variable = { name = zg361_sb_r_03_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_values }
+		set_variable = { name = zg361_sb_r_03_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_grade }
+		set_variable = { name = zg361_sb_r_03_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_streak }
+		set_variable = { name = zg361_sb_r_03_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_promotion }
+		set_variable = { name = zg361_sb_r_03_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_03_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_04_char } }
+		set_variable = { name = zg361_sb_r_04_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_char }
+		set_variable = { name = zg361_sb_r_04_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_title }
+		set_variable = { name = zg361_sb_r_04_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_kpi }
+		set_variable = { name = zg361_sb_r_04_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_rank }
+		set_variable = { name = zg361_sb_r_04_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_values }
+		set_variable = { name = zg361_sb_r_04_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_grade }
+		set_variable = { name = zg361_sb_r_04_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_streak }
+		set_variable = { name = zg361_sb_r_04_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_promotion }
+		set_variable = { name = zg361_sb_r_04_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_04_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_05_char } }
+		set_variable = { name = zg361_sb_r_05_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_char }
+		set_variable = { name = zg361_sb_r_05_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_title }
+		set_variable = { name = zg361_sb_r_05_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_kpi }
+		set_variable = { name = zg361_sb_r_05_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_rank }
+		set_variable = { name = zg361_sb_r_05_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_values }
+		set_variable = { name = zg361_sb_r_05_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_grade }
+		set_variable = { name = zg361_sb_r_05_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_streak }
+		set_variable = { name = zg361_sb_r_05_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_promotion }
+		set_variable = { name = zg361_sb_r_05_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_05_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_06_char } }
+		set_variable = { name = zg361_sb_r_06_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_char }
+		set_variable = { name = zg361_sb_r_06_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_title }
+		set_variable = { name = zg361_sb_r_06_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_kpi }
+		set_variable = { name = zg361_sb_r_06_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_rank }
+		set_variable = { name = zg361_sb_r_06_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_values }
+		set_variable = { name = zg361_sb_r_06_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_grade }
+		set_variable = { name = zg361_sb_r_06_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_streak }
+		set_variable = { name = zg361_sb_r_06_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_promotion }
+		set_variable = { name = zg361_sb_r_06_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_06_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_07_char } }
+		set_variable = { name = zg361_sb_r_07_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_char }
+		set_variable = { name = zg361_sb_r_07_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_title }
+		set_variable = { name = zg361_sb_r_07_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_kpi }
+		set_variable = { name = zg361_sb_r_07_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_rank }
+		set_variable = { name = zg361_sb_r_07_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_values }
+		set_variable = { name = zg361_sb_r_07_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_grade }
+		set_variable = { name = zg361_sb_r_07_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_streak }
+		set_variable = { name = zg361_sb_r_07_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_promotion }
+		set_variable = { name = zg361_sb_r_07_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_07_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_08_char } }
+		set_variable = { name = zg361_sb_r_08_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_char }
+		set_variable = { name = zg361_sb_r_08_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_title }
+		set_variable = { name = zg361_sb_r_08_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_kpi }
+		set_variable = { name = zg361_sb_r_08_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_rank }
+		set_variable = { name = zg361_sb_r_08_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_values }
+		set_variable = { name = zg361_sb_r_08_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_grade }
+		set_variable = { name = zg361_sb_r_08_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_streak }
+		set_variable = { name = zg361_sb_r_08_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_promotion }
+		set_variable = { name = zg361_sb_r_08_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_08_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_09_char } }
+		set_variable = { name = zg361_sb_r_09_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_char }
+		set_variable = { name = zg361_sb_r_09_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_title }
+		set_variable = { name = zg361_sb_r_09_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_kpi }
+		set_variable = { name = zg361_sb_r_09_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_rank }
+		set_variable = { name = zg361_sb_r_09_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_values }
+		set_variable = { name = zg361_sb_r_09_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_grade }
+		set_variable = { name = zg361_sb_r_09_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_streak }
+		set_variable = { name = zg361_sb_r_09_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_promotion }
+		set_variable = { name = zg361_sb_r_09_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_09_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_10_char } }
+		set_variable = { name = zg361_sb_r_10_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_char }
+		set_variable = { name = zg361_sb_r_10_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_title }
+		set_variable = { name = zg361_sb_r_10_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_kpi }
+		set_variable = { name = zg361_sb_r_10_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_rank }
+		set_variable = { name = zg361_sb_r_10_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_values }
+		set_variable = { name = zg361_sb_r_10_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_grade }
+		set_variable = { name = zg361_sb_r_10_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_streak }
+		set_variable = { name = zg361_sb_r_10_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_promotion }
+		set_variable = { name = zg361_sb_r_10_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_10_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_11_char } }
+		set_variable = { name = zg361_sb_r_11_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_char }
+		set_variable = { name = zg361_sb_r_11_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_title }
+		set_variable = { name = zg361_sb_r_11_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_kpi }
+		set_variable = { name = zg361_sb_r_11_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_rank }
+		set_variable = { name = zg361_sb_r_11_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_values }
+		set_variable = { name = zg361_sb_r_11_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_grade }
+		set_variable = { name = zg361_sb_r_11_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_streak }
+		set_variable = { name = zg361_sb_r_11_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_promotion }
+		set_variable = { name = zg361_sb_r_11_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_11_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_12_char } }
+		set_variable = { name = zg361_sb_r_12_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_char }
+		set_variable = { name = zg361_sb_r_12_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_title }
+		set_variable = { name = zg361_sb_r_12_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_kpi }
+		set_variable = { name = zg361_sb_r_12_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_rank }
+		set_variable = { name = zg361_sb_r_12_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_values }
+		set_variable = { name = zg361_sb_r_12_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_grade }
+		set_variable = { name = zg361_sb_r_12_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_streak }
+		set_variable = { name = zg361_sb_r_12_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_promotion }
+		set_variable = { name = zg361_sb_r_12_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_12_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_13_char } }
+		set_variable = { name = zg361_sb_r_13_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_char }
+		set_variable = { name = zg361_sb_r_13_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_title }
+		set_variable = { name = zg361_sb_r_13_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_kpi }
+		set_variable = { name = zg361_sb_r_13_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_rank }
+		set_variable = { name = zg361_sb_r_13_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_values }
+		set_variable = { name = zg361_sb_r_13_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_grade }
+		set_variable = { name = zg361_sb_r_13_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_streak }
+		set_variable = { name = zg361_sb_r_13_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_promotion }
+		set_variable = { name = zg361_sb_r_13_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_13_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_14_char } }
+		set_variable = { name = zg361_sb_r_14_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_char }
+		set_variable = { name = zg361_sb_r_14_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_title }
+		set_variable = { name = zg361_sb_r_14_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_kpi }
+		set_variable = { name = zg361_sb_r_14_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_rank }
+		set_variable = { name = zg361_sb_r_14_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_values }
+		set_variable = { name = zg361_sb_r_14_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_grade }
+		set_variable = { name = zg361_sb_r_14_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_streak }
+		set_variable = { name = zg361_sb_r_14_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_promotion }
+		set_variable = { name = zg361_sb_r_14_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_14_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_15_char } }
+		set_variable = { name = zg361_sb_r_15_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_char }
+		set_variable = { name = zg361_sb_r_15_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_title }
+		set_variable = { name = zg361_sb_r_15_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_kpi }
+		set_variable = { name = zg361_sb_r_15_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_rank }
+		set_variable = { name = zg361_sb_r_15_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_values }
+		set_variable = { name = zg361_sb_r_15_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_grade }
+		set_variable = { name = zg361_sb_r_15_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_streak }
+		set_variable = { name = zg361_sb_r_15_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_promotion }
+		set_variable = { name = zg361_sb_r_15_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_15_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_16_char } }
+		set_variable = { name = zg361_sb_r_16_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_char }
+		set_variable = { name = zg361_sb_r_16_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_title }
+		set_variable = { name = zg361_sb_r_16_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_kpi }
+		set_variable = { name = zg361_sb_r_16_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_rank }
+		set_variable = { name = zg361_sb_r_16_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_values }
+		set_variable = { name = zg361_sb_r_16_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_grade }
+		set_variable = { name = zg361_sb_r_16_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_streak }
+		set_variable = { name = zg361_sb_r_16_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_promotion }
+		set_variable = { name = zg361_sb_r_16_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_16_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_17_char } }
+		set_variable = { name = zg361_sb_r_17_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_char }
+		set_variable = { name = zg361_sb_r_17_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_title }
+		set_variable = { name = zg361_sb_r_17_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_kpi }
+		set_variable = { name = zg361_sb_r_17_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_rank }
+		set_variable = { name = zg361_sb_r_17_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_values }
+		set_variable = { name = zg361_sb_r_17_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_grade }
+		set_variable = { name = zg361_sb_r_17_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_streak }
+		set_variable = { name = zg361_sb_r_17_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_promotion }
+		set_variable = { name = zg361_sb_r_17_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_17_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_18_char } }
+		set_variable = { name = zg361_sb_r_18_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_char }
+		set_variable = { name = zg361_sb_r_18_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_title }
+		set_variable = { name = zg361_sb_r_18_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_kpi }
+		set_variable = { name = zg361_sb_r_18_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_rank }
+		set_variable = { name = zg361_sb_r_18_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_values }
+		set_variable = { name = zg361_sb_r_18_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_grade }
+		set_variable = { name = zg361_sb_r_18_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_streak }
+		set_variable = { name = zg361_sb_r_18_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_promotion }
+		set_variable = { name = zg361_sb_r_18_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_18_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_19_char } }
+		set_variable = { name = zg361_sb_r_19_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_char }
+		set_variable = { name = zg361_sb_r_19_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_title }
+		set_variable = { name = zg361_sb_r_19_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_kpi }
+		set_variable = { name = zg361_sb_r_19_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_rank }
+		set_variable = { name = zg361_sb_r_19_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_values }
+		set_variable = { name = zg361_sb_r_19_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_grade }
+		set_variable = { name = zg361_sb_r_19_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_streak }
+		set_variable = { name = zg361_sb_r_19_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_promotion }
+		set_variable = { name = zg361_sb_r_19_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_19_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_20_char } }
+		set_variable = { name = zg361_sb_r_20_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_char }
+		set_variable = { name = zg361_sb_r_20_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_title }
+		set_variable = { name = zg361_sb_r_20_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_kpi }
+		set_variable = { name = zg361_sb_r_20_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_rank }
+		set_variable = { name = zg361_sb_r_20_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_values }
+		set_variable = { name = zg361_sb_r_20_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_grade }
+		set_variable = { name = zg361_sb_r_20_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_streak }
+		set_variable = { name = zg361_sb_r_20_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_promotion }
+		set_variable = { name = zg361_sb_r_20_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_20_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_21_char } }
+		set_variable = { name = zg361_sb_r_21_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_char }
+		set_variable = { name = zg361_sb_r_21_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_title }
+		set_variable = { name = zg361_sb_r_21_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_kpi }
+		set_variable = { name = zg361_sb_r_21_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_rank }
+		set_variable = { name = zg361_sb_r_21_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_values }
+		set_variable = { name = zg361_sb_r_21_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_grade }
+		set_variable = { name = zg361_sb_r_21_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_streak }
+		set_variable = { name = zg361_sb_r_21_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_promotion }
+		set_variable = { name = zg361_sb_r_21_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_21_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_22_char } }
+		set_variable = { name = zg361_sb_r_22_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_char }
+		set_variable = { name = zg361_sb_r_22_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_title }
+		set_variable = { name = zg361_sb_r_22_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_kpi }
+		set_variable = { name = zg361_sb_r_22_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_rank }
+		set_variable = { name = zg361_sb_r_22_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_values }
+		set_variable = { name = zg361_sb_r_22_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_grade }
+		set_variable = { name = zg361_sb_r_22_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_streak }
+		set_variable = { name = zg361_sb_r_22_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_promotion }
+		set_variable = { name = zg361_sb_r_22_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_22_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_23_char } }
+		set_variable = { name = zg361_sb_r_23_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_char }
+		set_variable = { name = zg361_sb_r_23_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_title }
+		set_variable = { name = zg361_sb_r_23_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_kpi }
+		set_variable = { name = zg361_sb_r_23_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_rank }
+		set_variable = { name = zg361_sb_r_23_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_values }
+		set_variable = { name = zg361_sb_r_23_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_grade }
+		set_variable = { name = zg361_sb_r_23_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_streak }
+		set_variable = { name = zg361_sb_r_23_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_promotion }
+		set_variable = { name = zg361_sb_r_23_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_23_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_24_char } }
+		set_variable = { name = zg361_sb_r_24_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_char }
+		set_variable = { name = zg361_sb_r_24_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_title }
+		set_variable = { name = zg361_sb_r_24_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_kpi }
+		set_variable = { name = zg361_sb_r_24_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_rank }
+		set_variable = { name = zg361_sb_r_24_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_values }
+		set_variable = { name = zg361_sb_r_24_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_grade }
+		set_variable = { name = zg361_sb_r_24_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_streak }
+		set_variable = { name = zg361_sb_r_24_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_promotion }
+		set_variable = { name = zg361_sb_r_24_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_24_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_25_char } }
+		set_variable = { name = zg361_sb_r_25_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_char }
+		set_variable = { name = zg361_sb_r_25_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_title }
+		set_variable = { name = zg361_sb_r_25_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_kpi }
+		set_variable = { name = zg361_sb_r_25_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_rank }
+		set_variable = { name = zg361_sb_r_25_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_values }
+		set_variable = { name = zg361_sb_r_25_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_grade }
+		set_variable = { name = zg361_sb_r_25_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_streak }
+		set_variable = { name = zg361_sb_r_25_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_promotion }
+		set_variable = { name = zg361_sb_r_25_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_25_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_26_char } }
+		set_variable = { name = zg361_sb_r_26_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_char }
+		set_variable = { name = zg361_sb_r_26_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_title }
+		set_variable = { name = zg361_sb_r_26_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_kpi }
+		set_variable = { name = zg361_sb_r_26_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_rank }
+		set_variable = { name = zg361_sb_r_26_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_values }
+		set_variable = { name = zg361_sb_r_26_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_grade }
+		set_variable = { name = zg361_sb_r_26_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_streak }
+		set_variable = { name = zg361_sb_r_26_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_promotion }
+		set_variable = { name = zg361_sb_r_26_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_26_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_27_char } }
+		set_variable = { name = zg361_sb_r_27_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_char }
+		set_variable = { name = zg361_sb_r_27_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_title }
+		set_variable = { name = zg361_sb_r_27_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_kpi }
+		set_variable = { name = zg361_sb_r_27_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_rank }
+		set_variable = { name = zg361_sb_r_27_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_values }
+		set_variable = { name = zg361_sb_r_27_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_grade }
+		set_variable = { name = zg361_sb_r_27_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_streak }
+		set_variable = { name = zg361_sb_r_27_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_promotion }
+		set_variable = { name = zg361_sb_r_27_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_27_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_28_char } }
+		set_variable = { name = zg361_sb_r_28_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_char }
+		set_variable = { name = zg361_sb_r_28_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_title }
+		set_variable = { name = zg361_sb_r_28_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_kpi }
+		set_variable = { name = zg361_sb_r_28_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_rank }
+		set_variable = { name = zg361_sb_r_28_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_values }
+		set_variable = { name = zg361_sb_r_28_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_grade }
+		set_variable = { name = zg361_sb_r_28_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_streak }
+		set_variable = { name = zg361_sb_r_28_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_promotion }
+		set_variable = { name = zg361_sb_r_28_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_28_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_29_char } }
+		set_variable = { name = zg361_sb_r_29_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_char }
+		set_variable = { name = zg361_sb_r_29_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_title }
+		set_variable = { name = zg361_sb_r_29_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_kpi }
+		set_variable = { name = zg361_sb_r_29_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_rank }
+		set_variable = { name = zg361_sb_r_29_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_values }
+		set_variable = { name = zg361_sb_r_29_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_grade }
+		set_variable = { name = zg361_sb_r_29_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_streak }
+		set_variable = { name = zg361_sb_r_29_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_promotion }
+		set_variable = { name = zg361_sb_r_29_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_29_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_30_char } }
+		set_variable = { name = zg361_sb_r_30_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_char }
+		set_variable = { name = zg361_sb_r_30_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_title }
+		set_variable = { name = zg361_sb_r_30_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_kpi }
+		set_variable = { name = zg361_sb_r_30_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_rank }
+		set_variable = { name = zg361_sb_r_30_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_values }
+		set_variable = { name = zg361_sb_r_30_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_grade }
+		set_variable = { name = zg361_sb_r_30_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_streak }
+		set_variable = { name = zg361_sb_r_30_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_promotion }
+		set_variable = { name = zg361_sb_r_30_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_30_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_31_char } }
+		set_variable = { name = zg361_sb_r_31_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_char }
+		set_variable = { name = zg361_sb_r_31_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_title }
+		set_variable = { name = zg361_sb_r_31_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_kpi }
+		set_variable = { name = zg361_sb_r_31_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_rank }
+		set_variable = { name = zg361_sb_r_31_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_values }
+		set_variable = { name = zg361_sb_r_31_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_grade }
+		set_variable = { name = zg361_sb_r_31_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_streak }
+		set_variable = { name = zg361_sb_r_31_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_promotion }
+		set_variable = { name = zg361_sb_r_31_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_31_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_32_char } }
+		set_variable = { name = zg361_sb_r_32_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_char }
+		set_variable = { name = zg361_sb_r_32_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_title }
+		set_variable = { name = zg361_sb_r_32_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_kpi }
+		set_variable = { name = zg361_sb_r_32_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_rank }
+		set_variable = { name = zg361_sb_r_32_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_values }
+		set_variable = { name = zg361_sb_r_32_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_grade }
+		set_variable = { name = zg361_sb_r_32_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_streak }
+		set_variable = { name = zg361_sb_r_32_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_promotion }
+		set_variable = { name = zg361_sb_r_32_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_32_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_33_char } }
+		set_variable = { name = zg361_sb_r_33_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_char }
+		set_variable = { name = zg361_sb_r_33_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_title }
+		set_variable = { name = zg361_sb_r_33_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_kpi }
+		set_variable = { name = zg361_sb_r_33_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_rank }
+		set_variable = { name = zg361_sb_r_33_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_values }
+		set_variable = { name = zg361_sb_r_33_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_grade }
+		set_variable = { name = zg361_sb_r_33_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_streak }
+		set_variable = { name = zg361_sb_r_33_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_promotion }
+		set_variable = { name = zg361_sb_r_33_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_33_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_34_char } }
+		set_variable = { name = zg361_sb_r_34_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_char }
+		set_variable = { name = zg361_sb_r_34_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_title }
+		set_variable = { name = zg361_sb_r_34_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_kpi }
+		set_variable = { name = zg361_sb_r_34_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_rank }
+		set_variable = { name = zg361_sb_r_34_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_values }
+		set_variable = { name = zg361_sb_r_34_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_grade }
+		set_variable = { name = zg361_sb_r_34_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_streak }
+		set_variable = { name = zg361_sb_r_34_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_promotion }
+		set_variable = { name = zg361_sb_r_34_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_34_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_35_char } }
+		set_variable = { name = zg361_sb_r_35_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_char }
+		set_variable = { name = zg361_sb_r_35_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_title }
+		set_variable = { name = zg361_sb_r_35_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_kpi }
+		set_variable = { name = zg361_sb_r_35_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_rank }
+		set_variable = { name = zg361_sb_r_35_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_values }
+		set_variable = { name = zg361_sb_r_35_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_grade }
+		set_variable = { name = zg361_sb_r_35_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_streak }
+		set_variable = { name = zg361_sb_r_35_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_promotion }
+		set_variable = { name = zg361_sb_r_35_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_35_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_36_char } }
+		set_variable = { name = zg361_sb_r_36_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_char }
+		set_variable = { name = zg361_sb_r_36_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_title }
+		set_variable = { name = zg361_sb_r_36_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_kpi }
+		set_variable = { name = zg361_sb_r_36_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_rank }
+		set_variable = { name = zg361_sb_r_36_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_values }
+		set_variable = { name = zg361_sb_r_36_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_grade }
+		set_variable = { name = zg361_sb_r_36_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_streak }
+		set_variable = { name = zg361_sb_r_36_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_promotion }
+		set_variable = { name = zg361_sb_r_36_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_36_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_37_char } }
+		set_variable = { name = zg361_sb_r_37_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_char }
+		set_variable = { name = zg361_sb_r_37_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_title }
+		set_variable = { name = zg361_sb_r_37_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_kpi }
+		set_variable = { name = zg361_sb_r_37_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_rank }
+		set_variable = { name = zg361_sb_r_37_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_values }
+		set_variable = { name = zg361_sb_r_37_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_grade }
+		set_variable = { name = zg361_sb_r_37_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_streak }
+		set_variable = { name = zg361_sb_r_37_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_promotion }
+		set_variable = { name = zg361_sb_r_37_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_37_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_38_char } }
+		set_variable = { name = zg361_sb_r_38_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_char }
+		set_variable = { name = zg361_sb_r_38_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_title }
+		set_variable = { name = zg361_sb_r_38_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_kpi }
+		set_variable = { name = zg361_sb_r_38_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_rank }
+		set_variable = { name = zg361_sb_r_38_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_values }
+		set_variable = { name = zg361_sb_r_38_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_grade }
+		set_variable = { name = zg361_sb_r_38_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_streak }
+		set_variable = { name = zg361_sb_r_38_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_promotion }
+		set_variable = { name = zg361_sb_r_38_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_38_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_39_char } }
+		set_variable = { name = zg361_sb_r_39_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_char }
+		set_variable = { name = zg361_sb_r_39_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_title }
+		set_variable = { name = zg361_sb_r_39_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_kpi }
+		set_variable = { name = zg361_sb_r_39_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_rank }
+		set_variable = { name = zg361_sb_r_39_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_values }
+		set_variable = { name = zg361_sb_r_39_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_grade }
+		set_variable = { name = zg361_sb_r_39_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_streak }
+		set_variable = { name = zg361_sb_r_39_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_promotion }
+		set_variable = { name = zg361_sb_r_39_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_39_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_40_char } }
+		set_variable = { name = zg361_sb_r_40_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_char }
+		set_variable = { name = zg361_sb_r_40_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_title }
+		set_variable = { name = zg361_sb_r_40_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_kpi }
+		set_variable = { name = zg361_sb_r_40_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_rank }
+		set_variable = { name = zg361_sb_r_40_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_values }
+		set_variable = { name = zg361_sb_r_40_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_grade }
+		set_variable = { name = zg361_sb_r_40_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_streak }
+		set_variable = { name = zg361_sb_r_40_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_promotion }
+		set_variable = { name = zg361_sb_r_40_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_40_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_41_char } }
+		set_variable = { name = zg361_sb_r_41_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_char }
+		set_variable = { name = zg361_sb_r_41_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_title }
+		set_variable = { name = zg361_sb_r_41_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_kpi }
+		set_variable = { name = zg361_sb_r_41_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_rank }
+		set_variable = { name = zg361_sb_r_41_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_values }
+		set_variable = { name = zg361_sb_r_41_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_grade }
+		set_variable = { name = zg361_sb_r_41_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_streak }
+		set_variable = { name = zg361_sb_r_41_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_promotion }
+		set_variable = { name = zg361_sb_r_41_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_41_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_42_char } }
+		set_variable = { name = zg361_sb_r_42_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_char }
+		set_variable = { name = zg361_sb_r_42_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_title }
+		set_variable = { name = zg361_sb_r_42_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_kpi }
+		set_variable = { name = zg361_sb_r_42_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_rank }
+		set_variable = { name = zg361_sb_r_42_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_values }
+		set_variable = { name = zg361_sb_r_42_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_grade }
+		set_variable = { name = zg361_sb_r_42_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_streak }
+		set_variable = { name = zg361_sb_r_42_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_promotion }
+		set_variable = { name = zg361_sb_r_42_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_42_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_43_char } }
+		set_variable = { name = zg361_sb_r_43_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_char }
+		set_variable = { name = zg361_sb_r_43_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_title }
+		set_variable = { name = zg361_sb_r_43_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_kpi }
+		set_variable = { name = zg361_sb_r_43_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_rank }
+		set_variable = { name = zg361_sb_r_43_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_values }
+		set_variable = { name = zg361_sb_r_43_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_grade }
+		set_variable = { name = zg361_sb_r_43_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_streak }
+		set_variable = { name = zg361_sb_r_43_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_promotion }
+		set_variable = { name = zg361_sb_r_43_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_43_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_44_char } }
+		set_variable = { name = zg361_sb_r_44_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_char }
+		set_variable = { name = zg361_sb_r_44_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_title }
+		set_variable = { name = zg361_sb_r_44_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_kpi }
+		set_variable = { name = zg361_sb_r_44_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_rank }
+		set_variable = { name = zg361_sb_r_44_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_values }
+		set_variable = { name = zg361_sb_r_44_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_grade }
+		set_variable = { name = zg361_sb_r_44_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_streak }
+		set_variable = { name = zg361_sb_r_44_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_promotion }
+		set_variable = { name = zg361_sb_r_44_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_44_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_45_char } }
+		set_variable = { name = zg361_sb_r_45_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_char }
+		set_variable = { name = zg361_sb_r_45_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_title }
+		set_variable = { name = zg361_sb_r_45_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_kpi }
+		set_variable = { name = zg361_sb_r_45_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_rank }
+		set_variable = { name = zg361_sb_r_45_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_values }
+		set_variable = { name = zg361_sb_r_45_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_grade }
+		set_variable = { name = zg361_sb_r_45_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_streak }
+		set_variable = { name = zg361_sb_r_45_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_promotion }
+		set_variable = { name = zg361_sb_r_45_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_45_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_46_char } }
+		set_variable = { name = zg361_sb_r_46_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_char }
+		set_variable = { name = zg361_sb_r_46_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_title }
+		set_variable = { name = zg361_sb_r_46_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_kpi }
+		set_variable = { name = zg361_sb_r_46_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_rank }
+		set_variable = { name = zg361_sb_r_46_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_values }
+		set_variable = { name = zg361_sb_r_46_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_grade }
+		set_variable = { name = zg361_sb_r_46_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_streak }
+		set_variable = { name = zg361_sb_r_46_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_promotion }
+		set_variable = { name = zg361_sb_r_46_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_46_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_47_char } }
+		set_variable = { name = zg361_sb_r_47_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_char }
+		set_variable = { name = zg361_sb_r_47_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_title }
+		set_variable = { name = zg361_sb_r_47_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_kpi }
+		set_variable = { name = zg361_sb_r_47_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_rank }
+		set_variable = { name = zg361_sb_r_47_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_values }
+		set_variable = { name = zg361_sb_r_47_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_grade }
+		set_variable = { name = zg361_sb_r_47_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_streak }
+		set_variable = { name = zg361_sb_r_47_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_promotion }
+		set_variable = { name = zg361_sb_r_47_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_47_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_48_char } }
+		set_variable = { name = zg361_sb_r_48_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_char }
+		set_variable = { name = zg361_sb_r_48_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_title }
+		set_variable = { name = zg361_sb_r_48_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_kpi }
+		set_variable = { name = zg361_sb_r_48_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_rank }
+		set_variable = { name = zg361_sb_r_48_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_values }
+		set_variable = { name = zg361_sb_r_48_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_grade }
+		set_variable = { name = zg361_sb_r_48_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_streak }
+		set_variable = { name = zg361_sb_r_48_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_promotion }
+		set_variable = { name = zg361_sb_r_48_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_48_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_49_char } }
+		set_variable = { name = zg361_sb_r_49_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_char }
+		set_variable = { name = zg361_sb_r_49_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_title }
+		set_variable = { name = zg361_sb_r_49_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_kpi }
+		set_variable = { name = zg361_sb_r_49_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_rank }
+		set_variable = { name = zg361_sb_r_49_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_values }
+		set_variable = { name = zg361_sb_r_49_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_grade }
+		set_variable = { name = zg361_sb_r_49_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_streak }
+		set_variable = { name = zg361_sb_r_49_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_promotion }
+		set_variable = { name = zg361_sb_r_49_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_49_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_50_char } }
+		set_variable = { name = zg361_sb_r_50_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_char }
+		set_variable = { name = zg361_sb_r_50_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_title }
+		set_variable = { name = zg361_sb_r_50_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_kpi }
+		set_variable = { name = zg361_sb_r_50_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_rank }
+		set_variable = { name = zg361_sb_r_50_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_values }
+		set_variable = { name = zg361_sb_r_50_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_grade }
+		set_variable = { name = zg361_sb_r_50_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_streak }
+		set_variable = { name = zg361_sb_r_50_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_promotion }
+		set_variable = { name = zg361_sb_r_50_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_50_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_51_char } }
+		set_variable = { name = zg361_sb_r_51_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_char }
+		set_variable = { name = zg361_sb_r_51_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_title }
+		set_variable = { name = zg361_sb_r_51_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_kpi }
+		set_variable = { name = zg361_sb_r_51_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_rank }
+		set_variable = { name = zg361_sb_r_51_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_values }
+		set_variable = { name = zg361_sb_r_51_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_grade }
+		set_variable = { name = zg361_sb_r_51_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_streak }
+		set_variable = { name = zg361_sb_r_51_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_promotion }
+		set_variable = { name = zg361_sb_r_51_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_51_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_52_char } }
+		set_variable = { name = zg361_sb_r_52_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_char }
+		set_variable = { name = zg361_sb_r_52_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_title }
+		set_variable = { name = zg361_sb_r_52_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_kpi }
+		set_variable = { name = zg361_sb_r_52_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_rank }
+		set_variable = { name = zg361_sb_r_52_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_values }
+		set_variable = { name = zg361_sb_r_52_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_grade }
+		set_variable = { name = zg361_sb_r_52_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_streak }
+		set_variable = { name = zg361_sb_r_52_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_promotion }
+		set_variable = { name = zg361_sb_r_52_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_52_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_53_char } }
+		set_variable = { name = zg361_sb_r_53_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_char }
+		set_variable = { name = zg361_sb_r_53_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_title }
+		set_variable = { name = zg361_sb_r_53_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_kpi }
+		set_variable = { name = zg361_sb_r_53_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_rank }
+		set_variable = { name = zg361_sb_r_53_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_values }
+		set_variable = { name = zg361_sb_r_53_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_grade }
+		set_variable = { name = zg361_sb_r_53_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_streak }
+		set_variable = { name = zg361_sb_r_53_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_promotion }
+		set_variable = { name = zg361_sb_r_53_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_53_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_54_char } }
+		set_variable = { name = zg361_sb_r_54_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_char }
+		set_variable = { name = zg361_sb_r_54_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_title }
+		set_variable = { name = zg361_sb_r_54_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_kpi }
+		set_variable = { name = zg361_sb_r_54_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_rank }
+		set_variable = { name = zg361_sb_r_54_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_values }
+		set_variable = { name = zg361_sb_r_54_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_grade }
+		set_variable = { name = zg361_sb_r_54_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_streak }
+		set_variable = { name = zg361_sb_r_54_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_promotion }
+		set_variable = { name = zg361_sb_r_54_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_54_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_55_char } }
+		set_variable = { name = zg361_sb_r_55_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_char }
+		set_variable = { name = zg361_sb_r_55_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_title }
+		set_variable = { name = zg361_sb_r_55_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_kpi }
+		set_variable = { name = zg361_sb_r_55_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_rank }
+		set_variable = { name = zg361_sb_r_55_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_values }
+		set_variable = { name = zg361_sb_r_55_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_grade }
+		set_variable = { name = zg361_sb_r_55_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_streak }
+		set_variable = { name = zg361_sb_r_55_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_promotion }
+		set_variable = { name = zg361_sb_r_55_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_55_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_56_char } }
+		set_variable = { name = zg361_sb_r_56_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_char }
+		set_variable = { name = zg361_sb_r_56_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_title }
+		set_variable = { name = zg361_sb_r_56_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_kpi }
+		set_variable = { name = zg361_sb_r_56_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_rank }
+		set_variable = { name = zg361_sb_r_56_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_values }
+		set_variable = { name = zg361_sb_r_56_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_grade }
+		set_variable = { name = zg361_sb_r_56_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_streak }
+		set_variable = { name = zg361_sb_r_56_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_promotion }
+		set_variable = { name = zg361_sb_r_56_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_56_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_57_char } }
+		set_variable = { name = zg361_sb_r_57_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_char }
+		set_variable = { name = zg361_sb_r_57_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_title }
+		set_variable = { name = zg361_sb_r_57_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_kpi }
+		set_variable = { name = zg361_sb_r_57_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_rank }
+		set_variable = { name = zg361_sb_r_57_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_values }
+		set_variable = { name = zg361_sb_r_57_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_grade }
+		set_variable = { name = zg361_sb_r_57_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_streak }
+		set_variable = { name = zg361_sb_r_57_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_promotion }
+		set_variable = { name = zg361_sb_r_57_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_57_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_58_char } }
+		set_variable = { name = zg361_sb_r_58_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_char }
+		set_variable = { name = zg361_sb_r_58_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_title }
+		set_variable = { name = zg361_sb_r_58_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_kpi }
+		set_variable = { name = zg361_sb_r_58_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_rank }
+		set_variable = { name = zg361_sb_r_58_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_values }
+		set_variable = { name = zg361_sb_r_58_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_grade }
+		set_variable = { name = zg361_sb_r_58_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_streak }
+		set_variable = { name = zg361_sb_r_58_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_promotion }
+		set_variable = { name = zg361_sb_r_58_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_58_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_59_char } }
+		set_variable = { name = zg361_sb_r_59_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_char }
+		set_variable = { name = zg361_sb_r_59_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_title }
+		set_variable = { name = zg361_sb_r_59_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_kpi }
+		set_variable = { name = zg361_sb_r_59_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_rank }
+		set_variable = { name = zg361_sb_r_59_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_values }
+		set_variable = { name = zg361_sb_r_59_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_grade }
+		set_variable = { name = zg361_sb_r_59_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_streak }
+		set_variable = { name = zg361_sb_r_59_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_promotion }
+		set_variable = { name = zg361_sb_r_59_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_59_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_60_char } }
+		set_variable = { name = zg361_sb_r_60_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_char }
+		set_variable = { name = zg361_sb_r_60_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_title }
+		set_variable = { name = zg361_sb_r_60_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_kpi }
+		set_variable = { name = zg361_sb_r_60_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_rank }
+		set_variable = { name = zg361_sb_r_60_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_values }
+		set_variable = { name = zg361_sb_r_60_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_grade }
+		set_variable = { name = zg361_sb_r_60_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_streak }
+		set_variable = { name = zg361_sb_r_60_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_promotion }
+		set_variable = { name = zg361_sb_r_60_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_60_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_61_char } }
+		set_variable = { name = zg361_sb_r_61_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_char }
+		set_variable = { name = zg361_sb_r_61_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_title }
+		set_variable = { name = zg361_sb_r_61_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_kpi }
+		set_variable = { name = zg361_sb_r_61_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_rank }
+		set_variable = { name = zg361_sb_r_61_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_values }
+		set_variable = { name = zg361_sb_r_61_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_grade }
+		set_variable = { name = zg361_sb_r_61_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_streak }
+		set_variable = { name = zg361_sb_r_61_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_promotion }
+		set_variable = { name = zg361_sb_r_61_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_61_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_62_char } }
+		set_variable = { name = zg361_sb_r_62_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_char }
+		set_variable = { name = zg361_sb_r_62_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_title }
+		set_variable = { name = zg361_sb_r_62_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_kpi }
+		set_variable = { name = zg361_sb_r_62_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_rank }
+		set_variable = { name = zg361_sb_r_62_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_values }
+		set_variable = { name = zg361_sb_r_62_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_grade }
+		set_variable = { name = zg361_sb_r_62_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_streak }
+		set_variable = { name = zg361_sb_r_62_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_promotion }
+		set_variable = { name = zg361_sb_r_62_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_62_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_63_char } }
+		set_variable = { name = zg361_sb_r_63_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_char }
+		set_variable = { name = zg361_sb_r_63_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_title }
+		set_variable = { name = zg361_sb_r_63_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_kpi }
+		set_variable = { name = zg361_sb_r_63_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_rank }
+		set_variable = { name = zg361_sb_r_63_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_values }
+		set_variable = { name = zg361_sb_r_63_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_grade }
+		set_variable = { name = zg361_sb_r_63_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_streak }
+		set_variable = { name = zg361_sb_r_63_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_promotion }
+		set_variable = { name = zg361_sb_r_63_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_63_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_64_char } }
+		set_variable = { name = zg361_sb_r_64_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_char }
+		set_variable = { name = zg361_sb_r_64_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_title }
+		set_variable = { name = zg361_sb_r_64_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_kpi }
+		set_variable = { name = zg361_sb_r_64_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_rank }
+		set_variable = { name = zg361_sb_r_64_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_values }
+		set_variable = { name = zg361_sb_r_64_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_grade }
+		set_variable = { name = zg361_sb_r_64_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_streak }
+		set_variable = { name = zg361_sb_r_64_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_promotion }
+		set_variable = { name = zg361_sb_r_64_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_64_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_65_char } }
+		set_variable = { name = zg361_sb_r_65_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_char }
+		set_variable = { name = zg361_sb_r_65_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_title }
+		set_variable = { name = zg361_sb_r_65_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_kpi }
+		set_variable = { name = zg361_sb_r_65_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_rank }
+		set_variable = { name = zg361_sb_r_65_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_values }
+		set_variable = { name = zg361_sb_r_65_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_grade }
+		set_variable = { name = zg361_sb_r_65_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_streak }
+		set_variable = { name = zg361_sb_r_65_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_promotion }
+		set_variable = { name = zg361_sb_r_65_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_65_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_66_char } }
+		set_variable = { name = zg361_sb_r_66_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_char }
+		set_variable = { name = zg361_sb_r_66_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_title }
+		set_variable = { name = zg361_sb_r_66_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_kpi }
+		set_variable = { name = zg361_sb_r_66_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_rank }
+		set_variable = { name = zg361_sb_r_66_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_values }
+		set_variable = { name = zg361_sb_r_66_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_grade }
+		set_variable = { name = zg361_sb_r_66_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_streak }
+		set_variable = { name = zg361_sb_r_66_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_promotion }
+		set_variable = { name = zg361_sb_r_66_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_66_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_67_char } }
+		set_variable = { name = zg361_sb_r_67_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_char }
+		set_variable = { name = zg361_sb_r_67_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_title }
+		set_variable = { name = zg361_sb_r_67_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_kpi }
+		set_variable = { name = zg361_sb_r_67_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_rank }
+		set_variable = { name = zg361_sb_r_67_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_values }
+		set_variable = { name = zg361_sb_r_67_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_grade }
+		set_variable = { name = zg361_sb_r_67_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_streak }
+		set_variable = { name = zg361_sb_r_67_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_promotion }
+		set_variable = { name = zg361_sb_r_67_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_67_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_68_char } }
+		set_variable = { name = zg361_sb_r_68_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_char }
+		set_variable = { name = zg361_sb_r_68_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_title }
+		set_variable = { name = zg361_sb_r_68_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_kpi }
+		set_variable = { name = zg361_sb_r_68_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_rank }
+		set_variable = { name = zg361_sb_r_68_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_values }
+		set_variable = { name = zg361_sb_r_68_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_grade }
+		set_variable = { name = zg361_sb_r_68_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_streak }
+		set_variable = { name = zg361_sb_r_68_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_promotion }
+		set_variable = { name = zg361_sb_r_68_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_68_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_69_char } }
+		set_variable = { name = zg361_sb_r_69_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_char }
+		set_variable = { name = zg361_sb_r_69_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_title }
+		set_variable = { name = zg361_sb_r_69_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_kpi }
+		set_variable = { name = zg361_sb_r_69_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_rank }
+		set_variable = { name = zg361_sb_r_69_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_values }
+		set_variable = { name = zg361_sb_r_69_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_grade }
+		set_variable = { name = zg361_sb_r_69_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_streak }
+		set_variable = { name = zg361_sb_r_69_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_promotion }
+		set_variable = { name = zg361_sb_r_69_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_69_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_70_char } }
+		set_variable = { name = zg361_sb_r_70_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_char }
+		set_variable = { name = zg361_sb_r_70_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_title }
+		set_variable = { name = zg361_sb_r_70_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_kpi }
+		set_variable = { name = zg361_sb_r_70_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_rank }
+		set_variable = { name = zg361_sb_r_70_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_values }
+		set_variable = { name = zg361_sb_r_70_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_grade }
+		set_variable = { name = zg361_sb_r_70_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_streak }
+		set_variable = { name = zg361_sb_r_70_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_promotion }
+		set_variable = { name = zg361_sb_r_70_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_70_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_71_char } }
+		set_variable = { name = zg361_sb_r_71_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_char }
+		set_variable = { name = zg361_sb_r_71_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_title }
+		set_variable = { name = zg361_sb_r_71_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_kpi }
+		set_variable = { name = zg361_sb_r_71_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_rank }
+		set_variable = { name = zg361_sb_r_71_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_values }
+		set_variable = { name = zg361_sb_r_71_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_grade }
+		set_variable = { name = zg361_sb_r_71_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_streak }
+		set_variable = { name = zg361_sb_r_71_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_promotion }
+		set_variable = { name = zg361_sb_r_71_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_71_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_72_char } }
+		set_variable = { name = zg361_sb_r_72_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_char }
+		set_variable = { name = zg361_sb_r_72_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_title }
+		set_variable = { name = zg361_sb_r_72_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_kpi }
+		set_variable = { name = zg361_sb_r_72_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_rank }
+		set_variable = { name = zg361_sb_r_72_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_values }
+		set_variable = { name = zg361_sb_r_72_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_grade }
+		set_variable = { name = zg361_sb_r_72_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_streak }
+		set_variable = { name = zg361_sb_r_72_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_promotion }
+		set_variable = { name = zg361_sb_r_72_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_72_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_73_char } }
+		set_variable = { name = zg361_sb_r_73_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_char }
+		set_variable = { name = zg361_sb_r_73_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_title }
+		set_variable = { name = zg361_sb_r_73_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_kpi }
+		set_variable = { name = zg361_sb_r_73_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_rank }
+		set_variable = { name = zg361_sb_r_73_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_values }
+		set_variable = { name = zg361_sb_r_73_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_grade }
+		set_variable = { name = zg361_sb_r_73_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_streak }
+		set_variable = { name = zg361_sb_r_73_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_promotion }
+		set_variable = { name = zg361_sb_r_73_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_73_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_74_char } }
+		set_variable = { name = zg361_sb_r_74_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_char }
+		set_variable = { name = zg361_sb_r_74_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_title }
+		set_variable = { name = zg361_sb_r_74_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_kpi }
+		set_variable = { name = zg361_sb_r_74_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_rank }
+		set_variable = { name = zg361_sb_r_74_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_values }
+		set_variable = { name = zg361_sb_r_74_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_grade }
+		set_variable = { name = zg361_sb_r_74_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_streak }
+		set_variable = { name = zg361_sb_r_74_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_promotion }
+		set_variable = { name = zg361_sb_r_74_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_74_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_75_char } }
+		set_variable = { name = zg361_sb_r_75_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_char }
+		set_variable = { name = zg361_sb_r_75_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_title }
+		set_variable = { name = zg361_sb_r_75_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_kpi }
+		set_variable = { name = zg361_sb_r_75_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_rank }
+		set_variable = { name = zg361_sb_r_75_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_values }
+		set_variable = { name = zg361_sb_r_75_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_grade }
+		set_variable = { name = zg361_sb_r_75_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_streak }
+		set_variable = { name = zg361_sb_r_75_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_promotion }
+		set_variable = { name = zg361_sb_r_75_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_75_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_76_char } }
+		set_variable = { name = zg361_sb_r_76_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_char }
+		set_variable = { name = zg361_sb_r_76_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_title }
+		set_variable = { name = zg361_sb_r_76_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_kpi }
+		set_variable = { name = zg361_sb_r_76_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_rank }
+		set_variable = { name = zg361_sb_r_76_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_values }
+		set_variable = { name = zg361_sb_r_76_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_grade }
+		set_variable = { name = zg361_sb_r_76_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_streak }
+		set_variable = { name = zg361_sb_r_76_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_promotion }
+		set_variable = { name = zg361_sb_r_76_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_76_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_77_char } }
+		set_variable = { name = zg361_sb_r_77_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_char }
+		set_variable = { name = zg361_sb_r_77_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_title }
+		set_variable = { name = zg361_sb_r_77_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_kpi }
+		set_variable = { name = zg361_sb_r_77_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_rank }
+		set_variable = { name = zg361_sb_r_77_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_values }
+		set_variable = { name = zg361_sb_r_77_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_grade }
+		set_variable = { name = zg361_sb_r_77_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_streak }
+		set_variable = { name = zg361_sb_r_77_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_promotion }
+		set_variable = { name = zg361_sb_r_77_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_77_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_78_char } }
+		set_variable = { name = zg361_sb_r_78_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_char }
+		set_variable = { name = zg361_sb_r_78_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_title }
+		set_variable = { name = zg361_sb_r_78_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_kpi }
+		set_variable = { name = zg361_sb_r_78_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_rank }
+		set_variable = { name = zg361_sb_r_78_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_values }
+		set_variable = { name = zg361_sb_r_78_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_grade }
+		set_variable = { name = zg361_sb_r_78_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_streak }
+		set_variable = { name = zg361_sb_r_78_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_promotion }
+		set_variable = { name = zg361_sb_r_78_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_78_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_79_char } }
+		set_variable = { name = zg361_sb_r_79_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_char }
+		set_variable = { name = zg361_sb_r_79_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_title }
+		set_variable = { name = zg361_sb_r_79_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_kpi }
+		set_variable = { name = zg361_sb_r_79_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_rank }
+		set_variable = { name = zg361_sb_r_79_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_values }
+		set_variable = { name = zg361_sb_r_79_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_grade }
+		set_variable = { name = zg361_sb_r_79_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_streak }
+		set_variable = { name = zg361_sb_r_79_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_promotion }
+		set_variable = { name = zg361_sb_r_79_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_79_pip }
+	}
+	if = {
+		limit = { scope:zg361_scoreboard_source = { has_variable = zg361_sb_m_80_char } }
+		set_variable = { name = zg361_sb_r_80_char value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_char }
+		set_variable = { name = zg361_sb_r_80_title value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_title }
+		set_variable = { name = zg361_sb_r_80_kpi value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_kpi }
+		set_variable = { name = zg361_sb_r_80_rank value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_rank }
+		set_variable = { name = zg361_sb_r_80_values value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_values }
+		set_variable = { name = zg361_sb_r_80_grade value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_grade }
+		set_variable = { name = zg361_sb_r_80_streak value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_streak }
+		set_variable = { name = zg361_sb_r_80_promotion value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_promotion }
+		set_variable = { name = zg361_sb_r_80_pip value = scope:zg361_scoreboard_source.var:zg361_sb_m_80_pip }
+	}
+}
+
+# Current scope = player official after witnessed/acknowledged 3.25 settlement. Update only the frozen owner/cycle copies.

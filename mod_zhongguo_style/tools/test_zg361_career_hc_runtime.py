@@ -19,6 +19,7 @@ from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, top_level_effect_blocks
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
 EVENTS_PATH = MOD_ROOT / "events/zg361_career_hc_runtime_events.txt"
+CHINESE_LOC_PATH = MOD_ROOT / "localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml"
 
 
 def effect_paths() -> tuple[Path, ...]:
@@ -86,6 +87,15 @@ def brace_balance(text: str) -> int:
                 if total < 0:
                     return total
     return total
+
+
+def localization_map(path: Path) -> dict[str, str]:
+    rows: dict[str, str] = {}
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        match = re.match(r'^\s+([^:]+):0\s+"(.*)"$', line)
+        if match:
+            rows[match.group(1)] = match.group(2)
+    return rows
 
 
 class CareerHcRuntimeTests(unittest.TestCase):
@@ -157,6 +167,38 @@ class CareerHcRuntimeTests(unittest.TestCase):
             actual.extend(blocks)
         expected = top_level_effect_blocks(generator.render_effects(), generated_header=generator.HEADER)
         self.assertEqual(tuple(actual), expected)
+
+    def test_p_lifecycle_is_frozen_into_business_subpurpose_shards(self) -> None:
+        expected = {
+            "p_case_entry": {"zg361_career_hc_open_p_case_effect"},
+            "p_ai_runner": {"zg361_career_hc_p_run_authorized_ai_effect"},
+            "p_outcome": {"zg361_career_hc_resolve_p_outcome_effect"},
+        }
+        for state in range(1, len(generator.DOMAIN_BY_KEY["p"].stages) + 1):
+            expected[f"p_stage_{state:02d}_lifecycle"] = {
+                f"zg361_career_hc_schedule_p_stage_{state:02d}_effect",
+                f"zg361_career_hc_p_try_advance_{state:02d}_effect",
+                f"zg361_career_hc_p_timeout_stage_{state:02d}_effect",
+            }
+        actual: dict[str, set[str]] = {}
+        for path in effect_paths():
+            names = {
+                name
+                for name, _ in top_level_effect_blocks(
+                    path.read_bytes(), generated_header=generator.HEADER
+                )
+            }
+            purposes = {generator.effect_purpose(name) for name in names}
+            if purposes & set(expected):
+                self.assertEqual(len(purposes), 1)
+                purpose = purposes.pop()
+                self.assertNotIn(purpose, actual)
+                actual[purpose] = names
+                self.assertLessEqual(len(names), 3)
+        self.assertEqual(actual, expected)
+        self.assertFalse(
+            any("_p_lifecycle" in path.name for path in effect_paths())
+        )
 
     def test_generated_ck3_files_have_balanced_braces(self) -> None:
         self.assertEqual(brace_balance(self.effects), 0)
@@ -1179,6 +1221,135 @@ class CareerHcRuntimeTests(unittest.TestCase):
             for suffix in ("t", "desc", "a"):
                 self.assertIn(f"zg361ch.{event_id}.{suffix}:0", english)
                 self.assertIn(f"zg361ch.{event_id}.{suffix}:0", chinese)
+
+    def test_every_chinese_body_has_a_literal_fact_opening_and_unique_substance(self) -> None:
+        rows = localization_map(CHINESE_LOC_PATH)
+        body_keys = {f"zg361ch.{generator.BATCH_CHOICE_EVENT}.desc"}
+        body_keys.update(f"zg361ch.{event_id}.desc" for event_id in range(901, 907))
+        body_keys.update(
+            f"zg361ch.m{mechanism_id:03d}.desc"
+            for mechanism_id in generator.EXPECTED_IDS
+        )
+        self.assertEqual(len(body_keys), 51)
+        bodies = {key: rows[key] for key in body_keys}
+        self.assertEqual(len(set(bodies.values())), len(bodies))
+        for key, body in bodies.items():
+            with self.subTest(key=key):
+                self.assertTrue(body)
+                self.assertNotIn(body[0], "。！？；：,.!?;:[]")
+                self.assertFalse(body.startswith("["))
+                for forbidden in (
+                    "路线甲",
+                    "路线乙",
+                    "按钮",
+                    "按A",
+                    "按 A",
+                    "按B",
+                    "按 B",
+                    "照做",
+                    "当前节点",
+                    "选择将",
+                ):
+                    self.assertNotIn(forbidden, body)
+
+    def test_chinese_bodies_do_not_repeat_titles_or_absorb_button_decisions(self) -> None:
+        rows = localization_map(CHINESE_LOC_PATH)
+        groups: list[tuple[str, str, tuple[str, ...]]] = [
+            (
+                f"zg361ch.{generator.BATCH_CHOICE_EVENT}.t",
+                f"zg361ch.{generator.BATCH_CHOICE_EVENT}.desc",
+                tuple(
+                    f"zg361ch.{generator.BATCH_CHOICE_EVENT}.{letter}"
+                    for letter in "abcd"
+                ),
+            )
+        ]
+        groups.extend(
+            (
+                f"zg361ch.{event_id}.t",
+                f"zg361ch.{event_id}.desc",
+                (f"zg361ch.{event_id}.a",),
+            )
+            for event_id in range(901, 907)
+        )
+        groups.extend(
+            (
+                f"zg361ch.m{mechanism_id:03d}.name",
+                f"zg361ch.m{mechanism_id:03d}.desc",
+                tuple(
+                    f"zg361ch.m{mechanism_id:03d}.{letter}"
+                    for letter in "abc"
+                ),
+            )
+            for mechanism_id in generator.EXPECTED_IDS
+        )
+        for title_key, body_key, option_keys in groups:
+            title = rows[title_key]
+            body = rows[body_key]
+            options = [rows[key] for key in option_keys]
+            with self.subTest(body=body_key):
+                self.assertNotIn(title, body)
+                self.assertEqual(len(options), len(set(options)))
+                for option in options:
+                    self.assertNotIn(option, body)
+
+    def test_every_numbered_chinese_button_states_its_own_action(self) -> None:
+        rows = localization_map(CHINESE_LOC_PATH)
+        generic = {
+            "A",
+            "B",
+            "C",
+            "按A做",
+            "按B做",
+            "照做",
+            "确认",
+            "同意",
+            "拒绝",
+        }
+        for mechanism_id in generator.EXPECTED_IDS:
+            options = [
+                rows[f"zg361ch.m{mechanism_id:03d}.{letter}"]
+                for letter in "abc"
+            ]
+            with self.subTest(mechanism=mechanism_id):
+                self.assertEqual(len(options), len(set(options)))
+                for option in options:
+                    self.assertNotIn(option, generic)
+                    self.assertGreaterEqual(len(option), 8)
+                self.assertIn("搁置本项", options[2])
+                self.assertIn("制度债", options[2])
+                self.assertIn("本局不再提案", options[2])
+
+    def test_strengthened_buttons_are_specific_in_chinese_and_english(self) -> None:
+        chinese = localization_map(CHINESE_LOC_PATH)
+        english = localization_map(
+            MOD_ROOT / "localization/english/zg361_career_hc_l_english.yml"
+        )
+        expected = {
+            21: ("按奖金与调薪矩阵兑现薪酬", "Pay compensation under the bonus and salary-adjustment matrix."),
+            25: ("支付反邀约款，但只给口头留任承诺", "Pay for a counteroffer but give only an oral retention promise."),
+            95: ("复审通过，维持本期管理权限", "Pass the review and retain this cycle's management authority."),
+            101: ("按一名资深、两名普通与学徒梯队占用编制", "Use staffing for one senior, two regular and one apprentice tier."),
+            104: ("同时补入新人和成熟人才", "Hire both newcomers and experienced candidates."),
+            109: ("向全体人员公开高潜标签", "Disclose the high-potential label to everyone."),
+            114: ("支付安抚款，同时阻止本次人才转出", "Pay a retention award and block this talent transfer."),
+            121: ("不经试任，直接交付大团队", "Skip the trial and assign a large team immediately."),
+            126: ("仅按绩效高低决定处置", "Decide the action from performance alone."),
+            127: ("增设一层管理岗，把直属人数限制为八人", "Add one management layer and limit direct reports to eight."),
+            128: ("忽略本次气候结果，下一周期继续沿用刚性配额", "Ignore this climate result and retain the rigid quota next cycle."),
+        }
+        for mechanism_id, (chinese_fragment, english_fragment) in expected.items():
+            with self.subTest(mechanism=mechanism_id):
+                option_values_cn = "\n".join(
+                    chinese[f"zg361ch.m{mechanism_id:03d}.{letter}"]
+                    for letter in "ab"
+                )
+                option_values_en = "\n".join(
+                    english[f"zg361ch.m{mechanism_id:03d}.{letter}"]
+                    for letter in "ab"
+                )
+                self.assertIn(chinese_fragment, option_values_cn)
+                self.assertIn(english_fragment, option_values_en)
 
     def test_seven_daily_languages_are_structural_english_placeholders(self) -> None:
         english = (

@@ -1,0 +1,2166 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_update_settled_325_scoreboard_slots_received_01_40_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_01_char
+			var:zg361_sb_r_01_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_01_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_01_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_01_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_02_char
+			var:zg361_sb_r_02_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_02_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_02_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_02_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_03_char
+			var:zg361_sb_r_03_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_03_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_03_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_03_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_04_char
+			var:zg361_sb_r_04_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_04_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_04_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_04_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_05_char
+			var:zg361_sb_r_05_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_05_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_05_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_05_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_06_char
+			var:zg361_sb_r_06_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_06_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_06_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_06_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_07_char
+			var:zg361_sb_r_07_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_07_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_07_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_07_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_08_char
+			var:zg361_sb_r_08_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_08_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_08_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_08_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_09_char
+			var:zg361_sb_r_09_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_09_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_09_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_09_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_10_char
+			var:zg361_sb_r_10_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_10_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_10_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_10_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_11_char
+			var:zg361_sb_r_11_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_11_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_11_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_11_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_12_char
+			var:zg361_sb_r_12_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_12_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_12_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_12_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_13_char
+			var:zg361_sb_r_13_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_13_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_13_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_13_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_14_char
+			var:zg361_sb_r_14_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_14_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_14_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_14_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_15_char
+			var:zg361_sb_r_15_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_15_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_15_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_15_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_16_char
+			var:zg361_sb_r_16_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_16_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_16_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_16_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_17_char
+			var:zg361_sb_r_17_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_17_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_17_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_17_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_18_char
+			var:zg361_sb_r_18_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_18_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_18_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_18_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_19_char
+			var:zg361_sb_r_19_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_19_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_19_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_19_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_20_char
+			var:zg361_sb_r_20_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_20_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_20_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_20_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_21_char
+			var:zg361_sb_r_21_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_21_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_21_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_21_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_22_char
+			var:zg361_sb_r_22_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_22_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_22_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_22_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_23_char
+			var:zg361_sb_r_23_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_23_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_23_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_23_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_24_char
+			var:zg361_sb_r_24_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_24_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_24_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_24_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_25_char
+			var:zg361_sb_r_25_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_25_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_25_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_25_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_26_char
+			var:zg361_sb_r_26_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_26_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_26_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_26_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_27_char
+			var:zg361_sb_r_27_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_27_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_27_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_27_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_28_char
+			var:zg361_sb_r_28_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_28_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_28_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_28_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_29_char
+			var:zg361_sb_r_29_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_29_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_29_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_29_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_30_char
+			var:zg361_sb_r_30_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_30_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_30_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_30_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_31_char
+			var:zg361_sb_r_31_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_31_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_31_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_31_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_32_char
+			var:zg361_sb_r_32_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_32_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_32_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_32_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_33_char
+			var:zg361_sb_r_33_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_33_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_33_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_33_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_34_char
+			var:zg361_sb_r_34_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_34_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_34_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_34_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_35_char
+			var:zg361_sb_r_35_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_35_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_35_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_35_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_36_char
+			var:zg361_sb_r_36_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_36_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_36_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_36_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_37_char
+			var:zg361_sb_r_37_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_37_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_37_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_37_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_38_char
+			var:zg361_sb_r_38_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_38_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_38_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_38_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_39_char
+			var:zg361_sb_r_39_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_39_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_39_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_39_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_40_char
+			var:zg361_sb_r_40_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_40_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_40_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_40_pip value = 1 }
+	}
+}
+
+zg361_update_settled_325_scoreboard_slots_received_41_80_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_41_char
+			var:zg361_sb_r_41_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_41_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_41_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_41_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_42_char
+			var:zg361_sb_r_42_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_42_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_42_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_42_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_43_char
+			var:zg361_sb_r_43_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_43_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_43_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_43_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_44_char
+			var:zg361_sb_r_44_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_44_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_44_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_44_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_45_char
+			var:zg361_sb_r_45_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_45_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_45_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_45_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_46_char
+			var:zg361_sb_r_46_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_46_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_46_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_46_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_47_char
+			var:zg361_sb_r_47_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_47_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_47_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_47_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_48_char
+			var:zg361_sb_r_48_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_48_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_48_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_48_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_49_char
+			var:zg361_sb_r_49_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_49_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_49_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_49_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_50_char
+			var:zg361_sb_r_50_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_50_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_50_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_50_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_51_char
+			var:zg361_sb_r_51_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_51_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_51_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_51_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_52_char
+			var:zg361_sb_r_52_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_52_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_52_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_52_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_53_char
+			var:zg361_sb_r_53_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_53_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_53_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_53_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_54_char
+			var:zg361_sb_r_54_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_54_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_54_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_54_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_55_char
+			var:zg361_sb_r_55_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_55_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_55_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_55_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_56_char
+			var:zg361_sb_r_56_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_56_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_56_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_56_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_57_char
+			var:zg361_sb_r_57_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_57_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_57_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_57_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_58_char
+			var:zg361_sb_r_58_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_58_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_58_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_58_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_59_char
+			var:zg361_sb_r_59_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_59_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_59_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_59_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_60_char
+			var:zg361_sb_r_60_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_60_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_60_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_60_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_61_char
+			var:zg361_sb_r_61_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_61_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_61_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_61_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_62_char
+			var:zg361_sb_r_62_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_62_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_62_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_62_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_63_char
+			var:zg361_sb_r_63_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_63_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_63_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_63_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_64_char
+			var:zg361_sb_r_64_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_64_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_64_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_64_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_65_char
+			var:zg361_sb_r_65_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_65_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_65_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_65_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_66_char
+			var:zg361_sb_r_66_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_66_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_66_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_66_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_67_char
+			var:zg361_sb_r_67_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_67_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_67_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_67_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_68_char
+			var:zg361_sb_r_68_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_68_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_68_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_68_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_69_char
+			var:zg361_sb_r_69_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_69_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_69_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_69_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_70_char
+			var:zg361_sb_r_70_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_70_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_70_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_70_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_71_char
+			var:zg361_sb_r_71_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_71_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_71_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_71_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_72_char
+			var:zg361_sb_r_72_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_72_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_72_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_72_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_73_char
+			var:zg361_sb_r_73_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_73_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_73_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_73_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_74_char
+			var:zg361_sb_r_74_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_74_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_74_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_74_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_75_char
+			var:zg361_sb_r_75_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_75_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_75_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_75_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_76_char
+			var:zg361_sb_r_76_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_76_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_76_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_76_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_77_char
+			var:zg361_sb_r_77_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_77_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_77_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_77_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_78_char
+			var:zg361_sb_r_78_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_78_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_78_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_78_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_79_char
+			var:zg361_sb_r_79_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_79_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_79_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_79_pip value = 1 }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_scoreboard_received_owner
+			var:zg361_scoreboard_received_owner = var:zg361_result_case_owner
+			has_variable = zg361_scoreboard_received_cycle_serial
+			var:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_scoreboard_received_case_serial
+			var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_case_owner
+			var:zg361_sb_self_case_owner = var:zg361_result_case_owner
+			has_variable = zg361_sb_self_cycle_serial
+			var:zg361_sb_self_cycle_serial = var:zg361_result_cycle_serial
+			has_variable = zg361_sb_self_case_serial
+			var:zg361_sb_self_case_serial = var:zg361_result_case_serial
+			has_variable = zg361_sb_self_b1_case_owner
+			var:zg361_sb_self_b1_case_owner = var:zg361_sb_self_case_owner
+			has_variable = zg361_sb_self_b1_cycle_serial
+			var:zg361_sb_self_b1_cycle_serial = var:zg361_sb_self_cycle_serial
+			has_variable = zg361_sb_self_b1_case_serial
+			has_variable = zg361_sb_self_disclosure_acl_mode
+			has_variable = zg361_sb_r_80_char
+			var:zg361_sb_r_80_char = scope:zg361_scoreboard_case_entry
+		}
+		set_variable = { name = zg361_sb_r_80_grade value = 3.25 }
+		set_variable = { name = zg361_sb_r_80_streak value = scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom }
+		set_variable = { name = zg361_sb_r_80_pip value = 1 }
+	}
+}

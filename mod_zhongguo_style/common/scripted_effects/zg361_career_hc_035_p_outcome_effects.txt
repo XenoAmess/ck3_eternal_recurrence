@@ -1,0 +1,40 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+# Purpose shard: p outcome.
+# Boundary contract: 1-10 top-level effects; this file has 1.
+
+
+
+zg361_career_hc_resolve_p_outcome_effect = {
+    if = {
+        limit = {
+            var:zg361_ch_p_completed = var:zg361_ch_p_authorized
+            var:zg361_ch_p_conserved = 1
+        }
+        if = {
+            limit = { var:zg361_ch_p_favorable > var:zg361_ch_p_extractive }
+            set_variable = { name = zg361_ch_p_outcome value = 1 }
+            add_prestige = 50
+            var:zg361_case_p_owner = { add_prestige = 25 }
+        }
+        else_if = {
+            limit = { var:zg361_ch_p_extractive > var:zg361_ch_p_favorable }
+            set_variable = { name = zg361_ch_p_outcome value = -1 }
+            add_stress = minor_stress_gain
+            var:zg361_case_p_owner = { add_prestige = { value = 0 subtract = 25 } }
+        }
+        else = {
+            set_variable = { name = zg361_ch_p_outcome value = 0 }
+            add_prestige = 10
+        }
+        set_variable = { name = zg361_ch_p_visible_receipt_revision value = var:zg361_case_p_revision }
+        if = {
+            limit = { var:zg361_case_p_owner = { is_ai = no } }
+            var:zg361_case_p_owner = { trigger_event = { id = zg361ch.905 days = 1 } }
+        }
+        if = {
+            limit = { is_ai = no }
+            trigger_event = { id = zg361ch.905 days = 1 }
+        }
+        debug_log = "ZG361CH: completed P career/HC case"
+    }
+}

@@ -40,11 +40,24 @@ PRODUCT_EVENT_PATH = (
     / "events"
     / "zg361_workforce_endgame_event_011a_al_m360_collective_events.txt"
 )
-ROUTE_B_EFFECT_PATH = (
-    ROOT
-    / "mod_zhongguo_style"
-    / "common"
-    / "scripted_effects"
+WORKFORCE_EFFECTS_PATH = (
+    ROOT / "mod_zhongguo_style" / "common" / "scripted_effects"
+)
+ROUTE_B_EFFECT_PATHS = tuple(
+    WORKFORCE_EFFECTS_PATH / filename
+    for filename in (
+        "zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+        "zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+        "zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+        "zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+        "zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+        "zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+        "zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+        "zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt",
+    )
+)
+RETIRED_ROUTE_B_EFFECT_PATH = (
+    WORKFORCE_EFFECTS_PATH
     / "zg361_workforce_endgame_059_al_m360_route_b_effects.txt"
 )
 PROVIDER_ABI_PATH = (
@@ -184,7 +197,9 @@ def _action_surface_ready(contract: Mapping[str, Any]) -> bool:
 def _product_route_ready() -> bool:
     try:
         event_text = PRODUCT_EVENT_PATH.read_text(encoding="utf-8-sig")
-        route_text = ROUTE_B_EFFECT_PATH.read_text(encoding="utf-8-sig")
+        route_text = "\n".join(
+            path.read_text(encoding="utf-8-sig") for path in ROUTE_B_EFFECT_PATHS
+        )
     except (OSError, UnicodeError):
         return False
     start = event_text.find("zg361we.360 = {")
@@ -203,6 +218,8 @@ def _product_route_ready() -> bool:
         and "zg361_we_m360_route_b_effect = {" in event_block
         and "zg361_we_m360_route_b_effect = {" in route_text
         and "set_variable = { name = zg361_we_m360_choice value = 2 }" in route_text
+        and all(path.is_file() for path in ROUTE_B_EFFECT_PATHS)
+        and not RETIRED_ROUTE_B_EFFECT_PATH.exists()
     )
 
 

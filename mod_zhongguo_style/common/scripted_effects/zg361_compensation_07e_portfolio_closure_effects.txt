@@ -1,0 +1,54 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_07e_portfolio_closure_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_portfolio_case_closed_effect = {
+    save_scope_as = zg361_comp_closed_subject
+    save_temporary_scope_value_as = { name = zg361_comp_closed_domain value = $DOMAIN$ }
+    if = {
+        limit = { scope:zg361_comp_closed_domain = 1 has_variable = zg361_case_l_owner }
+        var:zg361_case_l_owner = {
+            if = {
+                limit = {
+                    has_character_flag = zg361_comp_portfolio_active
+                    has_variable = zg361_comp_portfolio_subject
+                    var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject
+                }
+                remove_character_flag = zg361_comp_portfolio_active
+                set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+                change_variable = { name = zg361_comp_portfolio_domain add = 1 }
+                trigger_event = { id = zg361comp.3 days = 1 }
+            }
+        }
+    }
+    else_if = {
+        limit = { scope:zg361_comp_closed_domain = 2 has_variable = zg361_case_ae_owner }
+        var:zg361_case_ae_owner = {
+            if = {
+                limit = {
+                    has_character_flag = zg361_comp_portfolio_active
+                    var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject
+                }
+                remove_character_flag = zg361_comp_portfolio_active
+                set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+                change_variable = { name = zg361_comp_portfolio_domain add = 1 }
+                trigger_event = { id = zg361comp.3 days = 1 }
+            }
+        }
+    }
+    else_if = {
+        limit = { scope:zg361_comp_closed_domain = 3 has_variable = zg361_case_af_owner }
+        var:zg361_case_af_owner = {
+            if = {
+                limit = {
+                    has_character_flag = zg361_comp_portfolio_active
+                    var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject
+                }
+                remove_character_flag = zg361_comp_portfolio_active
+                set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+                change_variable = { name = zg361_comp_portfolio_domain add = 1 }
+                trigger_event = { id = zg361comp.3 days = 1 }
+            }
+        }
+    }
+}

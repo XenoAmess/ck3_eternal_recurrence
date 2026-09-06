@@ -94,6 +94,18 @@ def loc_keys(text: str) -> tuple[str, ...]:
     )
 
 
+def loc_rows(text: str) -> dict[str, str]:
+    rows = {
+        match.group(1): match.group(2)
+        for match in re.finditer(
+            r'^\s+([^\s:]+):\d+\s+"(.*)"\s*$', text, flags=re.MULTILINE
+        )
+    }
+    if len(rows) != len(loc_keys(text)):
+        raise AssertionError("duplicate localization key")
+    return rows
+
+
 class CareerLearningRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -422,10 +434,16 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             )
             self.assertEqual(event.count("ROUTE = 1"), 1)
             self.assertEqual(event.count("ROUTE = 2"), 1)
-        self.assertIn("sixteen open no separate response window", self.loc_en)
-        self.assertIn("fifteen always take each case's first compliant disposition", self.loc_en)
-        self.assertIn("另有十六项不另开窗口", self.loc_zh)
-        self.assertIn("十五项固定采用各案第一项合规处置", self.loc_zh)
+        self.assertIn("the other sixteen were resolved under standing rules", self.loc_en)
+        self.assertIn("其余十六宗依既定章程直接办结", self.loc_zh)
+        for forbidden in (
+            "background matters",
+            "response window",
+            "first compliant disposition",
+            "不另开窗口",
+            "第一项合规处置",
+        ):
+            self.assertNotIn(forbidden, self.loc_en + self.loc_zh)
 
     def test_dual_payer_set_is_exact_atomic_and_real(self) -> None:
         self.assertEqual(set(generator.DUAL_COSTS), {314, 321, 323, 326, 330, 333})
@@ -903,6 +921,98 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("一纸异地调令", self.loc_zh)
         self.assertIn("The Bond That Paid for Learning", self.loc_en)
         self.assertIn("English structural placeholders", self.spec)
+
+    def test_all_visible_chinese_copy_is_audited_per_key(self) -> None:
+        expected = {
+            "zg361_cl_digest_title": "本轮人才安排已经登记",
+            "zg361_cl_digest_desc": "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。",
+            "zg361_cl_digest_ack": "收下案卷，照章续办。",
+            "zg361_cl_m314_title": "一纸异地调令",
+            "zg361_cl_m314_desc": "安置预算共二十金：官署公帑十五金、主官私库五金；其中迁费十金、临时津贴六金、家眷安置四金。本次考课档次不受这次答复影响。",
+            "zg361_cl_m314_route_a": "接受调任；公帑支十五金、主官私库支五金",
+            "zg361_cl_m314_route_b": "谢绝调任，仍守本职且考课不改档",
+            "zg361_cl_m315_title": "先试九十日，再定去留",
+            "zg361_cl_m315_desc": "这次试任以九十日为限：原任官署保留四成功劳，新任官署记六成。你与两方官署都可因职事不合终止试任；按约回任不作低档论。",
+            "zg361_cl_m315_route_a": "开始九十日试任，按四六分记功劳",
+            "zg361_cl_m315_route_b": "终止试任，按约回任且不记低档",
+            "zg361_cl_m318_title": "两封求调书，两次落笔",
+            "zg361_cl_m318_desc": "本轮只受理两次正式求调。文书一经投出，日后即使撤回，也算用去一次；未曾递交便不占名额。",
+            "zg361_cl_m318_route_a": "递交求调文书，用去一次名额",
+            "zg361_cl_m318_route_b": "暂不递交，保留这次求调名额",
+            "zg361_cl_m319_title": "离任前的最后挽留",
+            "zg361_cl_m319_desc": "最后一份书面挽留仍没有兑现凭据。调任可在三十日内办结；挽留承诺若九十日仍未交付，便按失约结案，责任记在许诺者名下。",
+            "zg361_cl_m319_route_a": "拒绝挽留，启动三十日调任",
+            "zg361_cl_m319_route_b": "接受挽留；若九十日未兑现，按失约追责",
+            "zg361_cl_m321_title": "旧袍泽，也须两厢情愿",
+            "zg361_cl_m321_desc": "旧官署在离任案卷中夹了一张名帖，希望日后仍能联络。维持往来须征得你同意，并支出六金：官署公帑四金、主官私库二金；终止联络只删去往来名册，昔日案卷仍旧留存。",
+            "zg361_cl_m321_route_a": "收下名帖；公帑支四金、主官私库支二金",
+            "zg361_cl_m321_route_b": "退回名帖，终止往来且保留昔日案卷",
+            "zg361_cl_m333_title": "学成之后，尚有一纸旧约",
+            "zg361_cl_m333_desc": "这次进修由官署支付公帑十八金，提名者另出六金。任职期满即可履清培训旧约；自愿提前离任须在九十日后归还十八金，若是官署裁撤则免于追偿。",
+            "zg361_cl_m333_route_a": "留下任职，以所学履行培训旧约",
+            "zg361_cl_m333_route_b": "提前离任，九十日后归还十八金",
+        }
+        actual = loc_rows(self.loc_zh)
+        self.assertEqual(actual, expected)
+
+        descriptions = {
+            key: value for key, value in actual.items() if key.endswith("_desc")
+        }
+        for key, description in descriptions.items():
+            with self.subTest(key=key):
+                self.assertNotIn(description[0], "。！？，、；：.!?;:[$@")
+                title = actual[key.removesuffix("_desc") + "_title"]
+                self.assertNotIn(title, description)
+                for suffix in ("_route_a", "_route_b"):
+                    option_key = key.removesuffix("_desc") + suffix
+                    if option_key in actual:
+                        self.assertNotIn(actual[option_key], description)
+        for forbidden in (
+            "按A",
+            "按B",
+            "按钮",
+            "窗口",
+            "第一项合规处置",
+            "后台事项",
+            "批处理",
+        ):
+            self.assertNotIn(forbidden, "\n".join(actual.values()))
+
+    def test_visible_dual_payer_choices_disclose_the_real_charge(self) -> None:
+        zh = loc_rows(self.loc_zh)
+        en = loc_rows(self.loc_en)
+        expected = {
+            314: (
+                ("官署公帑十五金", "主官私库五金"),
+                ("公帑支十五金", "主官私库支五金"),
+                ("15 from the office treasury", "5 from the manager's purse"),
+                ("office pays 15 gold", "manager pays 5"),
+            ),
+            321: (
+                ("官署公帑四金", "主官私库二金"),
+                ("公帑支四金", "主官私库支二金"),
+                ("4 from the office treasury", "2 from the manager's purse"),
+                ("office pays 4 gold", "manager pays 2"),
+            ),
+        }
+        for mechanism_id, (
+            zh_desc_facts,
+            zh_option_facts,
+            en_desc_facts,
+            en_option_facts,
+        ) in expected.items():
+            prefix = f"zg361_cl_m{mechanism_id:03d}"
+            with self.subTest(mechanism_id=mechanism_id):
+                for fact in zh_desc_facts:
+                    self.assertIn(fact, zh[f"{prefix}_desc"])
+                for fact in zh_option_facts:
+                    self.assertIn(fact, zh[f"{prefix}_route_a"])
+                for fact in en_desc_facts:
+                    self.assertIn(fact, en[f"{prefix}_desc"])
+                for fact in en_option_facts:
+                    self.assertIn(fact, en[f"{prefix}_route_a"])
+                self.assertNotIn("金", zh[f"{prefix}_route_b"])
+                self.assertNotIn("gold", en[f"{prefix}_route_b"])
 
     def test_no_gui_or_central_file_is_generated(self) -> None:
         relative = {path.relative_to(MOD_ROOT).as_posix() for path in generator.outputs()}

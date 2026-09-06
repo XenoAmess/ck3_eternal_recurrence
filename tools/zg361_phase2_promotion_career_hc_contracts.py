@@ -66,6 +66,30 @@ def _business_contract(domain: str, mechanism_id: int) -> dict[str, object]:
 
 
 CAREER_HC_TIMELINE_CONTRACTS: dict[str, dict[str, object]] = {
+    "zg361ch.950": {
+        # R108's player portfolio-mode card precedes the numbered Career/HC
+        # rulings.  It consumes only the four D-case scopes; the much larger
+        # inherited B1/Central call stack observed on the same window is not
+        # a semantic dependency.  Route A keeps consequential rulings visible
+        # while applying the 22 low-risk defaults through their guarded cores.
+        "date_raw": 53157000,
+        "date_policy": "product-observation-window",
+        "root_character_id": _PLAYER_CHARACTER_ID,
+        "character_scopes": {
+            "zg361_ch_d_event_owner": _PLAYER_CHARACTER_ID,
+        },
+        "unique_character_scope_excludes": {
+            "zg361_ch_d_event_subject": (_PLAYER_CHARACTER_ID,),
+        },
+        "scope_types": {
+            "zg361_ch_d_event_cycle": "value",
+            "zg361_ch_d_event_case": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 4,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "zg361ch.901": {
         # D completion receipt scheduled by the generated lifecycle effect.
         # Its sole option has no scripted mutation; the case is already

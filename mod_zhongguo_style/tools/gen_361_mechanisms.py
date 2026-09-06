@@ -590,6 +590,18 @@ def naturalize_mechanism_chinese(text: str) -> str:
 
     natural = text
     for source, replacement in (
+        ("经理人工 Override 预算", "经理人工调整额度"),
+        (
+            "Override 命中后续好结果会提高信用，翻案则降低下轮额度",
+            "人工调整若被后续结果证明合理会提高信用，遭翻案则降低下轮额度",
+        ),
+        (
+            "穷尽私下沟通和正式申诉后，允许附冻结证据的实名长文进入受控复核，并投入调解与事实核查",
+            "穷尽私下沟通与正式申诉后，凭冻结证据实名公开并接受调解复核",
+        ),
+        ("风险和责任 owner", "风险与责任人"),
+        ("责任责任人", "责任人"),
+        ("编号 发奖", "编号发奖"),
         ("事件窗口读取下一年的 live 值", "让下一年的现值改写旧案"),
         ("玩家真正做", "最终仍由你作出"),
         ("年度目标责任书：OKR 方向 + KPI 结果", "年度目标责任书：目标方向与绩效结果"),
@@ -790,15 +802,15 @@ def localization_values(
     # in the other seven languages.
     common = {
         "zg361_next_mechanism_decision": "召开下一项制度评审" if is_chinese else "Review the Next Performance Policy",
-        "zg361_next_mechanism_decision_desc": "从尚未定案的 361 项制度中提取下一项。选择会立即写入组织账本；只有已经接入业务案卷的条目才会进一步执行人物、支付、任命或调岗动作。" if is_chinese else "Open the next unresolved policy. Every choice enters the organizational ledger immediately; only items with a connected business case also execute character, payment, appointment, or transfer actions.",
-        "zg361_next_mechanism_decision_tooltip": "打开下一项 361 制度卡片。" if is_chinese else "Open the next 361 policy card.",
+        "zg361_next_mechanism_decision_desc": "考功司仍有制度悬而未决。召开评审会后，裁定会立即记入组织账簿；只有已经立案的具体事项，才会据此办理款项、人事或职位变动。" if is_chinese else "The policy office still has unresolved matters. A ruling enters the organizational ledger immediately; payments, personnel actions, or position changes occur only when a concrete case already exists.",
+        "zg361_next_mechanism_decision_tooltip": "从未定案制度中打开下一项评审。" if is_chinese else "Open the next unresolved policy for review.",
         "zg361_next_mechanism_decision_confirm": "打开下一项制度评审" if is_chinese else "Open the next policy review",
-        "zg361_reference_charter_decision": "一键部署《大厂全家桶》" if is_chinese else "Deploy the Reference 361 Charter",
-        "zg361_reference_charter_decision_desc": "一次性采用 361 项推荐默认值，并立即写入组织指标与制度债。此按钮只批量配置政策；没有业务案卷的条目不会凭空发薪、任命、招聘、调岗或退款。" if is_chinese else "Adopt all 361 recommended defaults and write their organizational indicators and policy debt immediately. This configures policy in bulk; items without a business case do not invent payments, appointments, hires, transfers, or refunds.",
-        "zg361_reference_charter_decision_tooltip": "一次配置全部 361 项组织账本；具体业务动作仍以已接入的案卷为准。" if is_chinese else "Configure all 361 ledger choices; concrete actions still require a connected business case.",
+        "zg361_reference_charter_decision": "颁行《三六一考功章程》" if is_chinese else "Enact the Reference 361 Charter",
+        "zg361_reference_charter_decision_desc": "考功司已汇编一套包含 361 项制度的参考章程。颁行后，各项推荐裁定与相应制度债会立即记入组织账簿；没有具体案卷时，不会据此发放款项，也不会办理任命、招募、调岗或退款。" if is_chinese else "The policy office has compiled a reference charter covering all 361 matters. Enacting it records every recommended ruling and related policy debt immediately; without a concrete case, it issues no payment, appointment, hire, transfer, or refund.",
+        "zg361_reference_charter_decision_tooltip": "将 361 项推荐裁定一并记入组织账簿；具体事项仍须另有案卷。" if is_chinese else "Record all 361 recommended rulings in the organizational ledger; concrete actions still require a separate case.",
         "zg361_reference_charter_decision_confirm": "采用全部 361 项推荐默认值，立即写入组织账本" if is_chinese else "Adopt all 361 recommended defaults and write them to the organizational ledger",
-        "zg361_mechanism_choice_a_tt": "长期路线：证据、信任或能力更强，但要支付行政、预算或短期交付成本。" if is_chinese else "Durable route: improves evidence, trust, or capability while consuming administrative, fiscal, or short-term delivery capacity.",
-        "zg361_mechanism_choice_b_tt": "冲刺路线：眼前结果更漂亮，但把风险、倦怠、技术债或申诉债留给未来。" if is_chinese else "Sprint route: improves the immediate result while carrying risk, burnout, technical debt, or appeal debt into later reviews.",
+        "zg361_mechanism_choice_a_tt": "审慎办理会改善证据、信任或组织能力，但也会消耗行政、财政或短期交付能力。" if is_chinese else "Careful handling improves evidence, trust, or capability while consuming administrative, fiscal, or short-term delivery capacity.",
+        "zg361_mechanism_choice_b_tt": "从速办理能换取眼前结果，却会把风险、倦怠、技术债或申诉债留给以后。" if is_chinese else "Expedited handling improves the immediate result while carrying risk, burnout, technical debt, or appeal debt into later reviews.",
         "zg361_mechanism_choice_c_tt": "本局搁置：本项不会自动再次提案；立即登记制度债，并进入你自己的上司考核。" if is_chinese else "Shelve for this campaign: this item will not be proposed again automatically; policy debt is recorded immediately and feeds your superior's review.",
         "zg361_scoreboard_tab_system": "制度驾驶舱" if is_chinese else "Policy Cockpit",
         "zg361_ledger_title": "361 制度账本：漂亮报表下面那一层" if is_chinese else "361 Policy Ledger: What Sits Beneath the Dashboard",
@@ -845,11 +857,11 @@ def localization_values(
             title = f"#{mechanism.id:03d} · {title_cn}"
             desc = player_facing_mechanism_context_cn(mechanism)
             if ledger_only:
-                desc += "\\n\\n本次只确定制度取向并调整组织账目；没有具体案卷时，不会直接发放款项，也不会执行任命、招募、调岗或退款。"
+                desc += "\\n\\n这项裁定只记入组织账簿；没有具体案卷时，不会据此发放款项，也不会办理任命、招募、调岗或退款。"
                 option_a = f"{concise_choice_cn(mechanism.option_a_cn, max_length=34)}（仅记账）"
                 option_b = f"{concise_choice_cn(mechanism.option_b_cn, max_length=34)}（仅记账）"
-                tooltip_a = f"{complete_sentence_cn(mechanism.option_a_cn)} 本项只调整组织账目，不会直接执行具体业务动作。"
-                tooltip_b = f"{complete_sentence_cn(mechanism.option_b_cn)} 本项只调整组织账目，不会直接执行具体业务动作。"
+                tooltip_a = f"{complete_sentence_cn(mechanism.option_a_cn)}这项裁定只记入组织账簿；没有具体案卷时，不会据此办理款项、人事或职位变动。"
+                tooltip_b = f"{complete_sentence_cn(mechanism.option_b_cn)}这项裁定只记入组织账簿；没有具体案卷时，不会据此办理款项、人事或职位变动。"
             else:
                 option_a = concise_choice_cn(mechanism.option_a_cn, max_length=40)
                 option_b = concise_choice_cn(mechanism.option_b_cn, max_length=40)

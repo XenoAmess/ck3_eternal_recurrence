@@ -22,11 +22,13 @@ collective lifecycle, all three cohorts, rolling history and M361 charter gate.
 
 ## Product-source finding
 
-The purpose shard
-`common/scripted_effects/zg361_workforce_endgame_059_al_m360_route_b_effects.txt`
-contains the real M360 route-B implementation and its state-4/choice-2 receipt,
-but contains no `zg361_ch_hc_*` read or write. Route B forces the three cohort
-quotas with zero manager cost; it does not debit the career headcount ledger.
+The canonical route-B source closure now consists of the shared `003a/003b`
+preflight and cleanup shards, route-B `004a–004d` validation/materialization
+shards, and `059a/059b` business/public shards. Together they contain the real
+M360 route-B implementation and its state-4/choice-2 receipt, but contain no
+`zg361_ch_hc_*` read or write. The public shards keep the stable product entry
+points; the helper shards validate and apply the three forced cohort quotas with
+zero manager cost. Route B does not debit the career headcount ledger.
 The B6 postcondition therefore observes a conserved career-HC partition rather
 than inventing a headcount transition that the product does not perform.
 

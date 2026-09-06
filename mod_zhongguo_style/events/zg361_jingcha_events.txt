@@ -39,10 +39,7 @@ zg361.40 = {
 # 承诺后的隐藏履责截止点。活动 on_complete 会提前清除 pending，使本事件不再触发。
 zg361.41 = {
 	type = character_event
-	theme = crown
 	hidden = yes
-	title = zg361.41.t
-	desc = zg361.41.desc
 	trigger = {
 		has_variable = zg361_jingcha_pending
 	}
@@ -73,9 +70,5 @@ zg361.41 = {
 			# 制度关闭、死亡、降阶或改制时不再考核，只清理旧召集令。
 			zg361_clear_jingcha_mandate_effect = yes
 		}
-	}
-
-	option = {
-		name = zg361.41.a
 	}
 }

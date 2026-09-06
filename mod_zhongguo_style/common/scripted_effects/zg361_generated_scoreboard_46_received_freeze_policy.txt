@@ -1,0 +1,84 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_freeze_received_disclosure_policy_effect = {
+	if = {
+		limit = { has_variable = zg361_b1_disclosure_policy_available }
+		set_variable = { name = zg361_sb_self_disclosure_policy_available value = var:zg361_b1_disclosure_policy_available }
+	}
+	else = {
+		set_variable = { name = zg361_sb_self_disclosure_policy_available value = 0 }
+	}
+	if = {
+		limit = { has_variable = zg361_b1_disclosure_policy_id }
+		set_variable = { name = zg361_sb_self_disclosure_policy_id value = var:zg361_b1_disclosure_policy_id }
+	}
+	else = {
+		set_variable = { name = zg361_sb_self_disclosure_policy_id value = 0 }
+	}
+	if = {
+		limit = { has_variable = zg361_b1_disclosure_self_mode }
+		set_variable = { name = zg361_sb_self_disclosure_self_mode value = var:zg361_b1_disclosure_self_mode }
+	}
+	else = {
+		set_variable = { name = zg361_sb_self_disclosure_self_mode value = 0 }
+	}
+	if = {
+		limit = { has_variable = zg361_b1_disclosure_team_mode }
+		set_variable = { name = zg361_sb_self_disclosure_team_mode value = var:zg361_b1_disclosure_team_mode }
+	}
+	else = {
+		set_variable = { name = zg361_sb_self_disclosure_team_mode value = 0 }
+	}
+	if = {
+		limit = { has_variable = zg361_b1_disclosure_evaluator_identity_mode }
+		set_variable = { name = zg361_sb_self_disclosure_evaluator_identity_mode value = var:zg361_b1_disclosure_evaluator_identity_mode }
+	}
+	else = {
+		set_variable = { name = zg361_sb_self_disclosure_evaluator_identity_mode value = 0 }
+	}
+	if = {
+		limit = { has_variable = zg361_b1_disclosure_blackbox_risk }
+		set_variable = { name = zg361_sb_self_disclosure_blackbox_risk value = var:zg361_b1_disclosure_blackbox_risk }
+	}
+	else = {
+		set_variable = { name = zg361_sb_self_disclosure_blackbox_risk value = 0 }
+	}
+	# Legacy save or explicit C: preserve the pre-#013 received-self ACL.
+	if = {
+		limit = { NOT = { has_variable = zg361_b1_disclosure_policy_available } }
+		set_variable = { name = zg361_sb_self_disclosure_acl_mode value = 0 }
+	}
+	else_if = {
+		limit = { var:zg361_b1_disclosure_policy_available = 0 }
+		set_variable = { name = zg361_sb_self_disclosure_acl_mode value = 0 }
+	}
+	else = {
+		if = {
+			limit = {
+				has_variable = zg361_b1_disclosure_policy_available
+				has_variable = zg361_b1_disclosure_policy_id
+				has_variable = zg361_b1_disclosure_self_mode
+				has_variable = zg361_b1_disclosure_team_mode
+				has_variable = zg361_b1_disclosure_evaluator_identity_mode
+				has_variable = zg361_b1_disclosure_blackbox_risk
+			}
+			if = {
+				limit = {
+					var:zg361_b1_disclosure_policy_available = 1
+					var:zg361_b1_disclosure_policy_id = var:zg361_b1_case_serial
+					var:zg361_b1_disclosure_self_mode = 3
+				}
+				set_variable = { name = zg361_sb_self_disclosure_acl_mode value = 3 }
+			}
+			else_if = {
+				limit = {
+					var:zg361_b1_disclosure_policy_available = 1
+					var:zg361_b1_disclosure_policy_id = var:zg361_b1_case_serial
+					var:zg361_b1_disclosure_self_mode = 1
+				}
+				set_variable = { name = zg361_sb_self_disclosure_acl_mode value = 1 }
+			}
+		}
+	}
+}
+
+# Current scope = player official; scope:zg361_scoreboard_source = reviewing manager.

@@ -316,9 +316,10 @@ R106 证明遗留项不止按钮换行/截断：至少 Career Learning 六张主
 5. 以上规则必须写入自动化 copy gate，并对生成后的简中 YML 运行；随后逐卡复读所有受影响家族。
 6. 只有 B/H/N 全部闭合，M/L 完成重查且最终生成物门禁 GREEN 后，才允许 fresh product、默认 5 速的 CK3 实机复验。
 
-## 16. 最终已修 / 未修清单（2026-09-06；实机恢复前）
+## 16. 第一轮已修 / 未修清单（2026-09-06；已由第 17 节交叉复审替代）
 
-本节基于并发整改后的**最终生成树**重新审计，不沿用第 15 节的中间状态。结论严格拆成两层：
+本节记录第一轮并发整改后的生成树；第 17 节随后又由独立复审追回并修复漏项，因此本节数字只保留为
+过程证据，不再代表当前最终树。结论严格拆成两层：
 已知文案/逻辑缺陷已经静态闭合；动态渲染、换行与真实 scope 仍必须由 fresh product 实机确认。
 
 | 级别 | 静态已修 | 静态未修 | 当前边界 |
@@ -366,3 +367,73 @@ R106 证明遗留项不止按钮换行/截断：至少 Career Learning 六张主
 4. 复验 Career Learning、Workforce、结果说明与 scoreboard 的布局、换行和枚举映射。
 5. 在真实动态 scope 下确认 N-01/N-02 没有孤立标点、空名字或按钮截断；取得截图、native/MCP snapshot、
    error/debug log 与 hash-bound artifact 后，才把本报告提升为最终 LIVE GREEN。
+
+## 17. 并发逐 key 复审与最终静态销账（2026-09-06）
+
+用户指出原复审仍有明显漏网后，本轮不再按一条总流水线串行处理，而是按 PP、HC/Career、CP/P3、B1/B2、
+Career Learning、Compensation、Workforce/Endgame、Incident/Governance/Central、机制目录和 core/scoreboard
+拆成互不覆盖的修改包，并另设两个只读复审包交叉验证最终生成物。只读复审实际追回了三类原门禁未覆盖问题：
+
+- M-01 的 161 个死本地化：Incident 74、Career Learning 71、旧榜单 9、hidden carrier 7，现为 161/161 清除；
+- Career Learning 总览仍残留“第一项 / 不另开窗口”等实现口吻，以及 #314/#321 未完整披露真实付款方；
+- Workforce `.244/.273/.360` 的标题被模板再次套入中文引号，形成嵌套引号。
+
+以上问题均从权威生成源修复并加入禁止回流测试；PP `.9001–.9004` 也从公共结案模板拆为 T/U/V/W
+四套独立正文和归档动作。最终只读复扫不沿用旧销账结论，得到：
+
+| 级别 | 已闭合 | 未闭合 |
+|---|---:|---:|
+| Blocker | 12/12 | 0 |
+| High | 24/24 | 0 |
+| Medium | 14/14 | 0 |
+| Low | 7/7 | 0 |
+| N-01/N-02 | 2/2 | 0 |
+| **合计** | **59/59** | **0** |
+
+最终树包含 22 个简中 YML、4,970 个 `zg361` key、85 个事件文件、635 个 visible event 和 372 个 hidden
+event。3,237 个 visible-event 唯一 loc 引用、230 个 GUI loc 引用、7 个决议的 28 个 loc 引用、6 个互动的
+14 个 loc 引用均无缺失。产品门禁覆盖 796 个 body 与 1,849 个 option；标点或动态表达式起句、标题复读、
+正文枚举路线、正文逐字复制按钮、抽象 A/B/“按证据办”按钮、玩家可见实现/UI 术语均为 0。Unicode 引号栈
+扫描为 0 嵌套、0 不平衡。
+
+合并后完整 discovery 在绑定已更新且 clean 的 `Z:\workspace\xar_promo_toolchain` 后，普通与 `-O` 均为
+1,755/1,755 GREEN；promotion source runner 普通与 `-O` 均 50/50 GREEN；`validate_local.py`、根级
+`tools/validate_static.py` 与 `git diff --check` GREEN。normal/`-O` discovery 必须串行：部分生成器测试会在
+产品目录临时创建“应被拒绝的旧单体文件”，两进程并发会互相看见对方的临时残留并产生 harness-only RED。
+
+### 17.1 R108 实机证据与停止理由
+
+R108 的 945-file release-identical product 已完成 303/303 loader、fatal 0；同一 CK3 PID 69184 在默认 5 速下，
+由初始客户端及五个 replacement client 累计推进 508 游戏日、完成 206 次 paused native/MCP 观测与 50 次精确
+事件处理，全程没有重启，也没有 OCR。过程中确认新的 HC 办案方式卡、14 阶段补偿卡、PP 办案方式卡及多种原版
+事件 scope 变体均可加载和执行。
+
+R108 最终停在 `zg361pp.149`，原因是专用 source-checkpoint runner 在 `.9100` 选择了自动合批 A，而旧合同仍等待
+已由 A 正常后台办理的 `.146/.147`；这是验收夹具与新产品流程不一致，不是 MOD 功能 RED。runner 已改为在该专用
+采集场景选择逐案 D，使 `.146 option 1 → D+1 .147` 保持可达。随后本轮文案修复改变了 MOD 字节，旧进程不再能
+代表修复后产品，因此通过受管停止队列正常回收；下一轮使用 fresh R109 product，只启动一次 CK3，并在同一未改
+MOD 的进程内继续多个验收场景。
+
+本节结论仍是 **STATIC GREEN / LIVE PENDING**。动态人物、金额、期限、按钮换行、合批顺序与 guard fallback 必须在
+R109 默认 5 速实机中完成，不能用本节静态结果冒充最终 live GREEN。
+
+### 17.2 effect 数量与字节体量双门（2026-09-06）
+
+文案整改完成后又对全部 scripted-effect 文件做了 brace-depth=0 复扫，并把文件体量由经验项提升为静态硬门：
+每文件目标 1–10 个顶层 effect、原则上不超过 20，且单文件不得超过 200 KiB；即使文件只有一个顶层 effect，
+超过字节门也必须继续抽取用途 helper，不能豁免。
+
+本轮并发修复了 HC 生命周期、Compensation portfolio、Incident Z、PP T/U/V/W、scoreboard 与 Workforce M360：
+
+- 删除 5.48 MB 的 scoreboard 聚合 owner，改为 65 个同用途片、77 个顶层 effect，最大 125,044 bytes；
+- 删除四个 319–479 KB 的 Workforce owner，改为 validation、cleanup、materialize、business 与 public
+  orchestration 用途片，新 M360 分片最大 98,364 bytes；
+- Compensation 29-effect owner 改为 5 个单职责单-effect 文件；Incident 两个 11/12-effect owner 改为
+  4 个各 3-effect 文件；HC P lifecycle 改为开案、AI runner、五阶段和结案片；
+- PP 修正生成器中嵌套分支的错误顶格输出，39 个分片现在均为 2–10 个真正的顶层 effect。
+
+最终全局结果为 **713 files / 3,813 effects / target miss 0 / `>20` 0 / `>200 KiB` 0 / max 10 effects /
+max 130,221 bytes**。旧 owner 的 active consumer 也已同步迁移：scoreboard 统一使用 canonical shard reader，
+Incident CMake source-contract 改读四个新片，Workforce 两个 preflight 与 source-contract fixture 改读新的
+business/public 片；历史 hash-bound artifact 保留原路径，只作为历史证据。该门禁及测试夹具隔离规则已经写入
+`docs/testing-workflow.md`。

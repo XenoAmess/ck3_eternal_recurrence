@@ -11,7 +11,13 @@ import sys
 import tempfile
 import unittest
 
-from gen_361_mechanisms import MOD_ROOT, effect_name, outputs
+from gen_361_mechanisms import (
+    MOD_ROOT,
+    effect_name,
+    localization_values,
+    naturalize_mechanism_chinese,
+    outputs,
+)
 from zg361_mechanism_data import (
     ACCEPTANCE_FIELDS,
     AcceptanceContract,
@@ -279,7 +285,19 @@ class MechanismGenerationTests(unittest.TestCase):
             chinese,
         )
         self.assertIn(
-            'zg361m.18.a.tt:0 "结算时冻结档位、名次、上司、理由，以及国库、个人金币、贤能三笔即时罚没与一年俸禄减成，逐项标记支付、退款和止扣状态。 本项只调整组织账目，不会直接执行具体业务动作。"',
+            'zg361m.18.a.tt:0 "结算时冻结档位、名次、上司、理由，以及国库、个人金币、贤能三笔即时罚没与一年俸禄减成，逐项标记支付、退款和止扣状态。这项裁定只记入组织账簿；没有具体案卷时，不会据此办理款项、人事或职位变动。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361m.71.a:0 "穷尽私下沟通与正式申诉后，凭冻结证据实名公开并接受调解复核。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361m.206.a:0 "为每笔赶工记录省时本金、维护利息、风险与责任人。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361m.347.t:0 "第347号 · 经理人工调整额度"',
             chinese,
         )
         self.assertIn(
@@ -352,6 +370,9 @@ class MechanismGenerationTests(unittest.TestCase):
         )
         self.assertNotIn("Record route A preference", english)
         self.assertNotIn("Record route B preference", english)
+        self.assertNotIn("执行人物", chinese)
+        self.assertNotIn("一键部署《大厂全家桶》", chinese)
+        self.assertNotIn("。 本项", chinese)
         self.assertNotIn(r"\\n", chinese)
         mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
         long_buttons = []
@@ -383,6 +404,80 @@ class MechanismGenerationTests(unittest.TestCase):
                 with self.subTest(language=path.parent.name):
                     self.assertEqual(len(title_lines), 361)
                     self.assertFalse(any(':0 "#' in line for line in title_lines))
+
+    def test_every_policy_surface_has_self_contained_copy(self) -> None:
+        opening_punctuation = tuple("。！？；：，、,.!?;:)]}）】》〉」』”’…—-·/／")
+        dynamic_openers = tuple("[$@")
+        generic_button = re.compile(
+            r"^(?:(?:按|照|选|走|采用)\s*[ＡＢＣABC](?:做|办|执行|处理|路线)?"
+            r"|路线\s*[甲乙丙ＡＢＣABC]|照办|同意|执行|确定|就这么办|好|可以|知道了)"
+            r"[。！？]?$",
+            re.IGNORECASE,
+        )
+        body_choice_meta = re.compile(
+            r"(?:路线\s*[甲乙丙ＡＢＣABC]|方案\s*[甲乙丙ＡＢＣABC]"
+            r"|按\s*[ＡＢＣABC](?:做|办|执行|处理|走)?|(?:下方|以下).{0,8}按钮)",
+            re.IGNORECASE,
+        )
+        mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
+
+        for language in ("simp_chinese", "english"):
+            values = localization_values(self.mechanisms, language)
+            for key, value in values.items():
+                if not (key.endswith(".desc") or key.endswith("_desc")):
+                    continue
+                with self.subTest(language=language, key=key):
+                    visible = value.strip()
+                    self.assertTrue(visible)
+                    self.assertFalse(visible.startswith(opening_punctuation))
+                    self.assertFalse(visible.startswith(dynamic_openers))
+
+            for mechanism_id, mechanism in mechanisms_by_id.items():
+                prefix = f"zg361m.{mechanism_id}"
+                title = values[f"{prefix}.t"].split(" · ", 1)[-1]
+                description = values[f"{prefix}.desc"]
+                with self.subTest(language=language, mechanism=mechanism_id):
+                    self.assertGreaterEqual(len(description.split(r"\n", 1)[0]), 24)
+                    self.assertNotIn(title.casefold(), description.casefold())
+                    self.assertIsNone(body_choice_meta.search(description))
+                    for choice in ("a", "b", "c"):
+                        button = values[f"{prefix}.{choice}"]
+                        button_core = re.sub(
+                            r"(?:（仅记账）| \(ledger only\))[。！？.!?]?$",
+                            "",
+                            button,
+                        ).rstrip("。！？；.!?; ")
+                        self.assertIsNone(generic_button.fullmatch(button.strip()))
+                        self.assertNotIn(button_core.casefold(), description.casefold())
+                        if language == "simp_chinese":
+                            self.assertFalse(button_core.endswith("后"))
+
+        chinese = localization_values(self.mechanisms, "simp_chinese")
+        descriptions = [
+            chinese[f"zg361m.{mechanism.id}.desc"]
+            for mechanism in self.mechanisms
+        ]
+        self.assertEqual(len(set(descriptions)), MECHANISM_COUNT)
+        joined = "\n".join(chinese.values())
+        for malformed in (
+            "责任责任人",
+            "编号 发奖",
+            "经理人工 调整权限 预算",
+            "穷尽私下沟通和正式申诉后。",
+        ):
+            with self.subTest(malformed=malformed):
+                self.assertNotIn(malformed, joined)
+        for mechanism in self.mechanisms:
+            description = chinese[f"zg361m.{mechanism.id}.desc"]
+            with self.subTest(mechanism=mechanism.id, field="source-copy"):
+                self.assertNotIn(
+                    naturalize_mechanism_chinese(mechanism.title_cn),
+                    description,
+                )
+                self.assertNotIn(
+                    naturalize_mechanism_chinese(mechanism.decision_cn),
+                    description,
+                )
 
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"

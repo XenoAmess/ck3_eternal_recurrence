@@ -210,14 +210,24 @@ EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
         ),
     ),
     (
-        "zg361_compensation_07_portfolio_effects.txt",
-        (
-            "zg361_comp_portfolio_open_next_effect",
-            "zg361_comp_portfolio_apply_stage_effect",
-            "zg361_comp_portfolio_refresh_effect",
-            "zg361_comp_portfolio_notify_owner_effect",
-            "zg361_comp_portfolio_case_closed_effect",
-        ),
+        "zg361_compensation_07a_portfolio_open_next_effects.txt",
+        ("zg361_comp_portfolio_open_next_effect",),
+    ),
+    (
+        "zg361_compensation_07b_portfolio_apply_stage_effects.txt",
+        ("zg361_comp_portfolio_apply_stage_effect",),
+    ),
+    (
+        "zg361_compensation_07c_portfolio_refresh_effects.txt",
+        ("zg361_comp_portfolio_refresh_effect",),
+    ),
+    (
+        "zg361_compensation_07d_portfolio_notify_effects.txt",
+        ("zg361_comp_portfolio_notify_owner_effect",),
+    ),
+    (
+        "zg361_compensation_07e_portfolio_closure_effects.txt",
+        ("zg361_comp_portfolio_case_closed_effect",),
     ),
     ("zg361_compensation_08_l_stage_01_effects.txt", mechanism_effect_names(82, 83, 84)),
     ("zg361_compensation_09_l_stage_02_effects.txt", mechanism_effect_names(85, 86)),
@@ -2848,7 +2858,7 @@ zg361comp.900 = {
     title = zg361comp.900.t
     desc = zg361comp.900.desc
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.900.a }
 }
 
 zg361comp.901 = {
@@ -2857,7 +2867,7 @@ zg361comp.901 = {
     title = zg361comp.901.t
     desc = zg361comp.901.desc
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.901.a }
 }
 
 zg361comp.902 = {
@@ -2874,7 +2884,7 @@ zg361comp.902 = {
 		}
 	}
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.902.a }
 }
 
 zg361comp.903 = {
@@ -2883,7 +2893,7 @@ zg361comp.903 = {
     title = zg361comp.903.t
     desc = zg361comp.903.desc
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.903.a }
 }
 
 zg361comp.904 = {
@@ -2900,7 +2910,7 @@ zg361comp.904 = {
 		}
 	}
     trigger = { is_ai = no }
-    option = { name = zg361comp.ok }
+    option = { name = zg361comp.904.a }
 }'''.replace("__ZG361_COMP_PORTFOLIO_OPTIONS__", portfolio_options)
     return generated("namespace = zg361comp\n\n" + "\n\n".join(hidden) + "\n\n" + visible)
 
@@ -3003,8 +3013,8 @@ def render_effect_parts() -> dict[str, bytes]:
         name for _filename, names in EFFECT_GROUPS for name in names
     )
 
-    if len(EFFECT_GROUPS) != 25:
-        raise ValueError("compensation runtime must remain split into 25 purpose files")
+    if len(EFFECT_GROUPS) != 29:
+        raise ValueError("compensation runtime must remain split into 29 purpose files")
     if len(historical_names) != 148 or len(set(historical_names)) != 148:
         raise ValueError(
             "compensation historical render must contain 148 unique effects"
@@ -3061,7 +3071,7 @@ def render_effect_parts() -> dict[str, bytes]:
 def render_english_localization() -> bytes:
     return localized(r'''l_english:
  zg361comp.1.t:0 "Compensation Docket"
- zg361comp.1.desc:0 "No executable compensation stage matches this docket. No payment or promise will be made from this fallback view."
+ zg361comp.1.desc:0 "The stage seal and ledger entry disagree, so the clerks have closed the docket. Neither your treasury nor your purse will pay against it."
  zg361comp.1.l1:0 "The clerks have assembled [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s fixed pay, role allowance, and frozen performance record. No bonus coin has yet left your treasury or purse."
  zg361comp.1.l2:0 "The award reserved for [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] has reached its retention review. Paid coin and the unpaid reserve remain separately recorded against the original receipt."
  zg361comp.1.l3:0 "The pay-band record for [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is fixed for this review. Authority and future pay can now be recorded without pretending that either has already been delivered."
@@ -3076,12 +3086,12 @@ def render_english_localization() -> bytes:
  zg361comp.1.af3:0 "The units granted to [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] remain unvested. The first vesting date and every later cadence must now be fixed on the ledger."
  zg361comp.1.af4:0 "The service and performance portions of [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s grant are still separate. No exit classification can be requested before the next valid vesting tick."
  zg361comp.1.af5:0 "[ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s vested and unvested units are frozen before departure classification. No buyback money has yet been paid or queued."
- zg361comp.1.l1.r1:0 "Set [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s total reward to 45, including a stage bonus of 20: reserve 14 from your treasury and 6 from your purse; pay nothing yet."
- zg361comp.1.l1.r2:0 "Set [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s total reward to 37, including a stage bonus of 16: reserve 11 from your treasury and 5 from your purse; pay nothing yet."
+ zg361comp.1.l1.r1:0 "Set [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s total reward to 45, including a stage bonus of 20. Take 14 from your treasury and 6 from your purse: pay 14 now and hold 6 for settlement."
+ zg361comp.1.l1.r2:0 "Set [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s total reward to 37, including a stage bonus of 16. Take 11 from your treasury and 5 from your purse: pay 10 now and hold 6 for settlement."
  zg361comp.1.l1.r3:0 "Keep only fixed pay for [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] now; set the bonus to 0, take nothing from either account, and create no future due date."
- zg361comp.1.l2.r1:0 "Settle [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s deferred award now from the frozen reserve, and date the next grant window two years from this review."
- zg361comp.1.l2.r2:0 "Recover 2 already paid from [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] now, return the full unpaid reserve to its original funding accounts, and date the next grant window one year from this review."
- zg361comp.1.l2.r3:0 "Cancel the refresh grant now and return the full unpaid reserve to your original funding accounts; pay [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] nothing further and create no new due date."
+ zg361comp.1.l2.r1:0 "Keep [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s remaining 6 for payment from the frozen reserve on its original due date; set the next grant window two years out and pay nothing more today."
+ zg361comp.1.l2.r2:0 "Recover 2 from [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] now, returning 1 to each account; refund the remaining 6 as 4 treasury/2 personal when due, and set the next grant window one year out."
+ zg361comp.1.l2.r3:0 "End [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s future grants; refund the remaining 6 when due as 4 treasury/2 personal. Pay nothing today and create no new deadline."
  zg361comp.1.l3.r1:0 "Grant authority to [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] now and add 4, payable from your accounts on the next statement; no cash moves today."
  zg361comp.1.l3.r2:0 "Grant authority to [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] now at the above-band rate; add 0 to pay and create no payment deadline."
  zg361comp.1.l3.r3:0 "Decline the package now; grant [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] neither authority nor a raise, move 0, and create no future payment."
@@ -3103,10 +3113,10 @@ def render_english_localization() -> bytes:
  zg361comp.1.ae5.r1:0 "Owe [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 4 for pay inversion, then pay 4 appeal correction now—3 from your treasury and 1 from your purse—without changing the grade."
  zg361comp.1.ae5.r2:0 "Owe [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 2 for inversion and 2 for the partial appeal; pay 0 now and leave both sums on the statement."
  zg361comp.1.ae5.r3:0 "Deny both repairs now; owe and pay [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 0, and leave the frozen grade unchanged."
- zg361comp.1.af1.r1:0 "If the frozen result is 3.75, grant [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 100 option-style units now; move 0 cash and set no cash deadline."
- zg361comp.1.af1.r2:0 "If the frozen result is 3.75, grant [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 80 restricted units now; move 0 cash and set no cash deadline."
- zg361comp.1.af1.r3:0 "If the frozen result is 3.75, grant 0 units and pay [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 10 now—7 from your treasury and 3 from your purse."
- zg361comp.1.af2.r1:0 "Convert 4 of [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s bonus into units now and pay the remaining 6—4 from your treasury and 2 from your purse—at 50% recorded liquidity."
+ zg361comp.1.af1.r1:0 "If [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s frozen result is 3.75, grant 100 high-risk units; otherwise grant none. Cash is 0 either way."
+ zg361comp.1.af1.r2:0 "If [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s frozen result is 3.75, grant 80 restricted units; otherwise grant none. Cash is 0 either way."
+ zg361comp.1.af1.r3:0 "If [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s frozen result is 3.75, grant no units and pay 10 now—7 treasury/3 personal; otherwise both grant and payment are 0."
+ zg361comp.1.af2.r1:0 "If [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is eligible, convert 4 of the bonus and pay 6 now—4 treasury/2 personal; otherwise both are 0. Record 50% liquidity."
  zg361comp.1.af2.r2:0 "Convert 0 and pay [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] all 10 now—7 from your treasury and 3 from your purse—at full recorded liquidity."
  zg361comp.1.af2.r3:0 "Create no conversion for [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName], pay 0 from both accounts, and record 0 liquidity with no later deadline."
  zg361comp.1.af3.r1:0 "Set [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s first vesting for 365 days from now, followed by 12 tranches every 30 days; move 0 cash today."
@@ -3117,37 +3127,41 @@ def render_english_localization() -> bytes:
  zg361comp.1.af4.r3:0 "Record all [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s units as service-based and vest them on the service schedule. After the first vesting, wait one more period without departure classification; move 0 cash."
  zg361comp.1.af5.r1:0 "Classify [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] as a normal departure, forfeit all unvested units, and pay a 10 buyback now—7 from your treasury and 3 from your purse."
  zg361comp.1.af5.r2:0 "Classify [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] as a departure with cause, forfeit unvested units, and queue a 10 buyback for 90 days—7 treasury and 3 personal when due."
- zg361comp.1.af5.r3:0 "Classify [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] as an internal transfer now; preserve vested units, request no buyback, and pay 0."
+ zg361comp.1.af5.r3:0 "Classify [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] as an internal transfer: forfeit unvested units, preserve vested units, request no buyback, and pay 0."
  zg361comp.289.t:0 "Compensation Statement Appeal"
- zg361comp.289.desc:0 "The statement is itemized and the performance grade remains frozen. You may appeal the money account without reopening the rating track."
- zg361comp.289.a:0 "File a compensation-only appeal."
- zg361comp.289.b:0 "Accept the statement as served."
+ zg361comp.289.desc:0 "The statement has been served line by line. Its performance grade is sealed away from the money account, and no appeal receipt has yet been entered."
+ zg361comp.289.a:0 "Appeal the money account and await the manager's ruling; keep the performance grade sealed. Costs 0 gold."
+ zg361comp.289.b:0 "Accept the statement and waive this money appeal; keep the performance grade sealed. Costs 0 gold."
  zg361comp.900.t:0 "Compensation Case Settled"
  zg361comp.900.desc:0 "The award reconciles. Bonus [ROOT.MakeScope.Var('zg361_comp_bonus_total').GetValue|0]; paid [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]; returned [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]; forfeited [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]; spot [ROOT.MakeScope.Var('zg361_comp_m090_spot_gross').GetValue|0]."
  zg361comp.901.t:0 "Deferred Award Resolved"
- zg361comp.901.desc:0 "The delayed award resolved against its frozen reserve. Total paid [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]; returned [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]; forfeited [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]."
+ zg361comp.901.desc:0 "The frozen reserve has now been discharged: total paid [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]; returned [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]; forfeited [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]."
  zg361comp.902.t:0 "Pay Statement Closed"
- zg361comp.902.desc:0 "Statement closed: payable [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0], paid [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0], owed [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0], returned [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]. The frozen grade was not rewritten."
+ zg361comp.902.desc:0 "This cycle's money account is final: payable [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0], paid [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0], owed [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0], returned [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]. The frozen grade was not rewritten."
  zg361comp.902.private:0 "Pay visibility: private to the parties."
  zg361comp.902.public:0 "Pay visibility: the band is public; the individual amount remains in the statement."
  zg361comp.902.anonymous:0 "Pay visibility: only an anonymous distribution is published."
  zg361comp.902.unknown:0 "Pay visibility was not established; no stronger disclosure is claimed."
  zg361comp.903.t:0 "Long-Term Units Vested"
- zg361comp.903.desc:0 "Vesting ledger: total [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0], service unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0], performance unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0], vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]. Current value [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]; liquid value [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]."
+ zg361comp.903.desc:0 "This period changed the unit balances to: total [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0], service unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0], performance unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0], vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]. Current value [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]; liquid value [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]."
  zg361comp.904.t:0 "Long-Term Incentive Settled"
- zg361comp.904.desc:0 "Long-term award closed: vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0], forfeited [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0], repurchased [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]. Earlier grants were processed before later grants, and treasury/personal payment obligations were kept separate."
+ zg361comp.904.desc:0 "The final ledger records vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0], forfeited [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0], and repurchased [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]. Earlier grants were processed first, with treasury and personal obligations kept separate."
  zg361comp.904.good:0 "Exit classification: normal departure."
  zg361comp.904.bad:0 "Exit classification: departure with cause; clawback remains eligible."
  zg361comp.904.transfer:0 "Exit classification: internal transfer; vested units remain."
  zg361comp.904.unknown:0 "Exit classification is not yet supported by a valid receipt."
- zg361comp.ok:0 "Record the receipt."
+ zg361comp.900.a:0 "File the bonus settlement receipt; this changes no ledger balance."
+ zg361comp.901.a:0 "File the deferred-award receipt; this changes no ledger balance."
+ zg361comp.902.a:0 "File the pay-statement receipt; this does not alter the frozen grade."
+ zg361comp.903.a:0 "File this period's vesting receipt; this changes no unit balance."
+ zg361comp.904.a:0 "File the final long-term-award receipt; this changes no ledger balance."
 ''')
 
 
 def render_simp_chinese_localization() -> bytes:
     return localized(normalize_localization_document(r'''l_simp_chinese:
  zg361comp.1.t:0 "薪酬案卷"
- zg361comp.1.desc:0 "这份案卷没有匹配到可执行的薪酬阶段。你不会从这个兜底页面作出付款或许诺。"
+ zg361comp.1.desc:0 "案吏发现阶段签押与账簿互不相符，因而封存了这份案卷。国库与私库均不会据此付款。"
  zg361comp.1.l1:0 "案吏已经汇齐 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的固定俸、职务津贴与冻结绩效记录。奖金尚未从国库或你的私库支出。"
  zg361comp.1.l2:0 "此前为 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 预留的奖励已经进入留任复核。已付款与未付预留仍依原凭据分账记载。"
  zg361comp.1.l3:0 "本轮复核已经冻结 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的薪带位置。权责与未来俸额都尚未交付，须分别登记。"
@@ -3162,12 +3176,12 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.1.af3:0 "归属簿显示，授予 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的份额仍未归属。首次归属日与后续每一期日程都须在此刻冻结。"
  zg361comp.1.af4:0 "归属簿仍将当事人 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的服务份额与绩效份额分账保留。下一次有效归属发生前，不能发起离任分类。"
  zg361comp.1.af5:0 "离任审议开始前，案吏已冻结 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的已归属与未归属份额。回购款尚未支付，也未进入队列。"
- zg361comp.1.l1.r1:0 "为 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定总报酬四十五，其中本阶段奖金二十；国库预留十四、私库预留六，暂不付款。"
- zg361comp.1.l1.r2:0 "为 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定总报酬三十七，其中本阶段奖金十六；国库预留十一、私库预留五，暂不付款。"
+ zg361comp.1.l1.r1:0 "为 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定总报酬四十五，其中本阶段奖金二十；国库出十四、私库出六：现付十四，余六待结。"
+ zg361comp.1.l1.r2:0 "为 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定总报酬三十七，其中本阶段奖金十六；国库出十一、私库出五：现付十，余六待结。"
  zg361comp.1.l1.r3:0 "现在只保留 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的固定俸，奖金记零；国库与私库都不付款，也不留下到期项。"
- zg361comp.1.l2.r1:0 "现在从冻结预留中全额结清 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的递延奖，并把下次续授窗口定在两年后。"
- zg361comp.1.l2.r2:0 "现在向 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 追回已付二，并把全部未付预留退回原付款账户；下次续授窗口定在一年后。"
- zg361comp.1.l2.r3:0 "现在取消续授，把全部未付预留退回你的原付款账户；不再向 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 付款，也不留下新期限。"
+ zg361comp.1.l2.r1:0 "保留 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的余奖六，原到期日从冻结预留付清；下次续授定在两年后，今日不再付款。"
+ zg361comp.1.l2.r2:0 "现向 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 追回二，国库、私库各收一；余六到期按四、二退回，下次续授定在一年后。"
+ zg361comp.1.l2.r3:0 "不再续授 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]；余六到期退回国库四、私库二。今日不付款，也不留新期限。"
  zg361comp.1.l3.r1:0 "现在授予 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 相应权责，并在下一张薪酬单中由你的账户加付四；今日不付款。"
  zg361comp.1.l3.r2:0 "现在按带上待遇授予 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 相应权责；俸额增加为零，不设付款期限。"
  zg361comp.1.l3.r3:0 "现在驳回待遇包；不给 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 新权责或调薪，款项为零，也不留下未来付款。"
@@ -3189,10 +3203,10 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.1.ae5.r1:0 "欠 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 倒挂修复四；现在另付申诉纠正四，国库出三、你的私库出一，绩效档不动。"
  zg361comp.1.ae5.r2:0 "欠 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 倒挂修复二、部分申诉二；今日支付零，两笔都留在薪酬单上。"
  zg361comp.1.ae5.r3:0 "现在驳回两项修复；欠付与实付 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 均为零，冻结绩效档不动。"
- zg361comp.1.af1.r1:0 "若冻结结果为三点七五，现在授予 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 一百份高风险份额；现金为零，不设现金期限。"
- zg361comp.1.af1.r2:0 "若冻结结果为三点七五，现在授予 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 八十份限制份额；现金为零，不设现金期限。"
- zg361comp.1.af1.r3:0 "若冻结结果为三点七五，不授份额，改为现在向 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 支付十：国库出七，你的私库出三。"
- zg361comp.1.af2.r1:0 "现在把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的奖金四转换为份额，并支付余款六：国库出四，你的私库出二；按五成流动性记账。"
+ zg361comp.1.af1.r1:0 "若 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的冻结绩效为三点七五，授予一百份高风险份额；否则不授。现金均为零。"
+ zg361comp.1.af1.r2:0 "若 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的冻结绩效为三点七五，授予八十份限制份额；否则不授。现金均为零。"
+ zg361comp.1.af1.r3:0 "若 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的冻结绩效为三点七五，不授份额，现付十：国库七、私库三；否则两项均为零。"
+ zg361comp.1.af2.r1:0 "若 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 具资格，奖金四转份额、现付六：国库四、私库二；否则均为零，流动性记五成。"
  zg361comp.1.af2.r2:0 "不作转换，现在向 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 全付十：国库出七，你的私库出三；按完全流动记账。"
  zg361comp.1.af2.r3:0 "不为 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 创建转换；国库与私库都支付零，流动性记零，也不留期限。"
  zg361comp.1.af3.r1:0 "把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的首次归属定在三百六十五日后，此后每三十日一期、共十二期；今日现金为零。"
@@ -3203,30 +3217,34 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.1.af4.r3:0 "把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 全数记为服务份额，依服务期限归属。首次归属后再等一期，不报离任分类，现金为零。"
  zg361comp.1.af5.r1:0 "现在把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定为正常离任，没收全部未归属份额，并支付回购款十：国库出七，你的私库出三。"
  zg361comp.1.af5.r2:0 "现在把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定为有责离任，没收未归属份额；九十日后回购十，届时国库出七、你的私库出三。"
- zg361comp.1.af5.r3:0 "现在把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定为内部调动；保留已归属份额，不申请回购，支付零。"
+ zg361comp.1.af5.r3:0 "把 [ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 定为内部调动：没收未归属、保留已归属，不申请回购，支付零。"
  zg361comp.289.t:0 "薪酬单申诉"
- zg361comp.289.desc:0 "薪酬单已经逐项列明，绩效档仍保持冻结。你可以申诉钱账，但不能借此重开绩效案轨。"
- zg361comp.289.a:0 "仅就薪酬账发起申诉。"
- zg361comp.289.b:0 "接受送达的薪酬单。"
+ zg361comp.289.desc:0 "薪酬单已经逐项送达，绩效档与钱账分轨封存。案卷中尚无本轮申诉回执。"
+ zg361comp.289.a:0 "提出薪酬申诉，等待主管裁定钱账；绩效档不重审，不花金币。"
+ zg361comp.289.b:0 "接受薪酬单，放弃本轮钱账申诉；绩效档不重审，不花金币。"
  zg361comp.900.t:0 "薪酬案结清"
  zg361comp.900.desc:0 "奖金已对账：总额 [ROOT.MakeScope.Var('zg361_comp_bonus_total').GetValue|0]；已付 [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]；追回 [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]；没收 [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]；专项奖 [ROOT.MakeScope.Var('zg361_comp_m090_spot_gross').GetValue|0]。"
  zg361comp.901.t:0 "递延奖励已处理"
- zg361comp.901.desc:0 "递延奖励已按冻结预留处理：累计已付 [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]；追回 [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]；没收 [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]。"
+ zg361comp.901.desc:0 "冻结预留已经履约：累计已付 [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]；追回 [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]；没收 [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]。"
  zg361comp.902.t:0 "薪酬单已关闭"
- zg361comp.902.desc:0 "薪酬单关闭：应付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0]，实付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0]，欠付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]，退回 [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]。冻结绩效档未改写。"
+ zg361comp.902.desc:0 "本轮钱账落定：应付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0]，实付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0]，欠付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]，退回 [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]。冻结绩效档未改写。"
  zg361comp.902.private:0 "披露方式：金额只向当事双方公开。"
  zg361comp.902.public:0 "披露方式：薪带公开，个人金额仍只载于薪酬单。"
  zg361comp.902.anonymous:0 "披露方式：只公示匿名分布。"
  zg361comp.902.unknown:0 "披露方式尚无有效记录，因此不作更强声明。"
  zg361comp.903.t:0 "长期份额归属"
- zg361comp.903.desc:0 "归属账：总份额 [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0]，未归属服务 [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0]，未归属绩效 [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0]，已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]。现值 [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]；可变现值 [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]。"
+ zg361comp.903.desc:0 "本期份额变化如下：总份额 [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0]，未归属服务 [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0]，未归属绩效 [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0]，已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]。现值 [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]；可变现值 [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]。"
  zg361comp.904.t:0 "长期激励结清"
- zg361comp.904.desc:0 "长期功赏关闭：已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]，没收 [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0]，已回购 [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]。较早授予的份额先于后来份额处理；国库与个人付款义务分别核算，不会重复付款。"
+ zg361comp.904.desc:0 "账簿最后记下：已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]，没收 [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0]，已回购 [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]。较早授予的份额先处理；国库与个人付款义务分账核算。"
  zg361comp.904.good:0 "离任分类：正常离任。"
  zg361comp.904.bad:0 "离任分类：有责离任；仍可依法追索。"
  zg361comp.904.transfer:0 "离任分类：内部调动；保留已归属份额。"
  zg361comp.904.unknown:0 "离任分类尚无有效回执，因此不作更强声明。"
- zg361comp.ok:0 "收存这份凭据。"
+ zg361comp.900.a:0 "收存奖金结算凭据；此举不再改动账目。"
+ zg361comp.901.a:0 "收存递延奖励凭据；此举不再改动账目。"
+ zg361comp.902.a:0 "收存薪酬单凭据；此举不改动冻结绩效档。"
+ zg361comp.903.a:0 "收存本期归属凭据；此举不改动份额。"
+ zg361comp.904.a:0 "收存长期功赏结算凭据；此举不再改动账目。"
 '''))
 
 

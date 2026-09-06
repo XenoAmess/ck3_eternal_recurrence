@@ -32,38 +32,38 @@ zg361_pp_dispatch_u_stage_04_effect = {
 		limit = { var:zg361_case_u_owner = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
 		# Owner-authorized second AI exception: background resolver only, no GUI.
 		set_variable = { name = zg361_pp_ai_route value = 1 }
-if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
-else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
-zg361_pp_m160_core_effect = {
-	ROUTE = var:zg361_pp_ai_route
-	TICKET_OWNER = var:zg361_case_u_owner
-	TICKET_SUBJECT = this
-	TICKET_CYCLE = var:zg361_case_u_cycle_serial
-	TICKET_CASE = var:zg361_case_u_case_serial
-	TICKET_STATE = 4
-}
+		if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+		else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+		zg361_pp_m160_core_effect = {
+			ROUTE = var:zg361_pp_ai_route
+			TICKET_OWNER = var:zg361_case_u_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_u_cycle_serial
+			TICKET_CASE = var:zg361_case_u_case_serial
+			TICKET_STATE = 4
+		}
 		set_variable = { name = zg361_pp_ai_route value = 1 }
-if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
-else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
-zg361_pp_m167_core_effect = {
-	ROUTE = var:zg361_pp_ai_route
-	TICKET_OWNER = var:zg361_case_u_owner
-	TICKET_SUBJECT = this
-	TICKET_CYCLE = var:zg361_case_u_cycle_serial
-	TICKET_CASE = var:zg361_case_u_case_serial
-	TICKET_STATE = 4
-}
+		if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+		else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+		zg361_pp_m167_core_effect = {
+			ROUTE = var:zg361_pp_ai_route
+			TICKET_OWNER = var:zg361_case_u_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_u_cycle_serial
+			TICKET_CASE = var:zg361_case_u_case_serial
+			TICKET_STATE = 4
+		}
 		set_variable = { name = zg361_pp_ai_route value = 1 }
-if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
-else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
-zg361_pp_m168_core_effect = {
-	ROUTE = var:zg361_pp_ai_route
-	TICKET_OWNER = var:zg361_case_u_owner
-	TICKET_SUBJECT = this
-	TICKET_CYCLE = var:zg361_case_u_cycle_serial
-	TICKET_CASE = var:zg361_case_u_case_serial
-	TICKET_STATE = 4
-}
+		if = { limit = { var:zg361_case_u_owner = { is_at_war = yes } } set_variable = { name = zg361_pp_ai_route value = 3 } }
+		else_if = { limit = { var:zg361_case_u_owner = { OR = { has_trait = arbitrary has_trait = ambitious } } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+		zg361_pp_m168_core_effect = {
+			ROUTE = var:zg361_pp_ai_route
+			TICKET_OWNER = var:zg361_case_u_owner
+			TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_case_u_cycle_serial
+			TICKET_CASE = var:zg361_case_u_case_serial
+			TICKET_STATE = 4
+		}
 	}
 	else_if = {
 		limit = { var:zg361_case_u_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }

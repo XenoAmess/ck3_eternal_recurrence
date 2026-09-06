@@ -199,10 +199,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The canonical rendering includes the purpose-sharded core owner note.
-        self.assertEqual(len(historical_bytes), 269_511)
+        self.assertEqual(len(historical_bytes), 270_548)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "c0129d706a87d355ea8e8debabe30e69ad974817955fd0b453ee38bbd8e8c601",
+            "33241ab5e6c1f4d486c0834b7b284358749d28f596ca490729ddef9fa78efc2f",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -212,10 +212,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         configured_names = [
             name for _filename, names in EFFECT_GROUPS for name in names
         ]
-        self.assertEqual(len(historical_names), 152)
-        self.assertEqual(len(set(historical_names)), 152)
-        self.assertEqual(len(configured_names), 152)
-        self.assertEqual(len(set(configured_names)), 152)
+        self.assertEqual(len(historical_names), 153)
+        self.assertEqual(len(set(historical_names)), 153)
+        self.assertEqual(len(configured_names), 153)
+        self.assertEqual(len(set(configured_names)), 153)
         self.assertEqual(set(configured_names), set(historical_names))
 
         for filename, expected_names in EFFECT_GROUPS:
@@ -292,7 +292,12 @@ class B2CK3RuntimeTests(unittest.TestCase):
             110: ("t", "desc", "a", "b", "c", "d"),
             130: ("t", "desc", "a", "b", "c"),
             131: ("t", "desc", "a", "b", "c"),
-            160: ("t", "desc", "a", "b", "c"),
+            160: (
+                "t", "desc",
+                "a.purge", "a.retire", "a.demote", "a.extend",
+                "b.purge", "b.retire", "b.demote", "b.extend",
+                "c.purge", "c.retire", "c.demote", "c.extend",
+            ),
         }
         for event_id in visible:
             block = top_level_block(self.events, f"zg361b2.{event_id}")
@@ -348,8 +353,13 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("-15 证据", rows["zg361b2.40.c"])
         self.assertIn("损失 50 威望", rows["zg361b2.50.a"])
         self.assertIn("恰好收到 50 金币", rows["zg361b2.60.a"])
-        self.assertIn("暂停执行 90 日", rows["zg361b2.160.b"])
-        self.assertIn("7 日后见证送达", rows["zg361b2.160.c"])
+        self.assertIn("新3.25", rows["zg361b2.131.a"])
+        self.assertIn("90日申诉期", rows["zg361b2.131.a"])
+        self.assertIn("立即申诉", rows["zg361b2.131.b"])
+        self.assertIn("7日后见证送达", rows["zg361b2.131.c"])
+        for action in ("purge", "retire", "demote", "extend"):
+            self.assertIn("90日", rows[f"zg361b2.160.b.{action}"])
+            self.assertIn("7日后见证送达", rows[f"zg361b2.160.c.{action}"])
         self.assertNotIn("第 157 项", self.loc_zh)
 
     def test_player_localization_never_exposes_b2_internal_stage_name(self) -> None:
@@ -415,6 +425,34 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("新记录如下", self.loc_zh)
         self.assertIn("案卷登记的独立复核人", self.loc_zh)
 
+        action_words = {
+            "purge": "免职",
+            "retire": "致仕",
+            "demote": "降岗",
+            "extend": "延长",
+        }
+        for route in ("a", "b", "c"):
+            for action_index, (action, chinese) in enumerate(
+                action_words.items(), start=1
+            ):
+                option_key = f"zg361b2.160.{route}.{action}"
+                self.assertIn(f"name = {option_key}", card)
+                option_start = card.index(f"name = {option_key}")
+                option_end = card.find("\n\toption = {", option_start)
+                if option_end < 0:
+                    option_end = len(card)
+                option = card[option_start:option_end]
+                self.assertIn(
+                    f"var:zg361_b2_pending_adverse_action = {action_index}",
+                    option,
+                )
+                self.assertIn(chinese, self.loc_zh)
+        self.assertEqual(card.count("name = zg361b2.160."), 12)
+        self.assertEqual(
+            card.count("zg361_b2_schedule_separate_witness_delivery_effect = yes"),
+            4,
+        )
+
     def test_separate_case_deadline_rechecks_reviewer_and_frozen_fact(self) -> None:
         review = top_level_block(self.events, "zg361b2.162")
         self.assertIn("var:zg361_b2_separate_reviewer = {", review)
@@ -461,7 +499,7 @@ class B2CK3RuntimeTests(unittest.TestCase):
                 self.assertIn("stale", block)
                 self.assertIn("else = {", block)
         self.assertIn("id = zg361b2.132 days = 7", self.events)
-        self.assertIn("id = zg361b2.161 days = 7", self.events)
+        self.assertIn("id = zg361b2.161 days = 7", self.effects)
         self.assertIn("id = zg361b2.150 days = 90", self.effects)
         self.assertIn("id = zg361b2.162 days = 90", self.effects)
         self.assertIn("id = zg361b2.120 days = 365", self.effects)

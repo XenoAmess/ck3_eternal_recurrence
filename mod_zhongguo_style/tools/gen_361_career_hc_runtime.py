@@ -122,48 +122,48 @@ VISIBLE_RULING_IDS = frozenset(EXPECTED_IDS) - BATCHABLE_IDS
 ROUTE_LABELS_CN = {
     19: ("按资格门槛列为可晋升", "绕过提名担保直接列入候选"),
     20: ("提交跨部门评审材料", "提交由提名担保人主导的材料"),
-    21: ("按矩阵兑现", "集中为现金激励"),
+    21: ("按奖金与调薪矩阵兑现薪酬", "把同一预算集中为一次现金激励"),
     22: ("为该岗位预留编制预算", "因例外安排冻结该编制"),
     23: ("完成编制答辩且不借用名额", "以紧急名义借用下一周期名额"),
     24: ("安排下一周期转岗", "阻止本次内部流动"),
-    25: ("发出书面留任邀约", "仅作口头反邀约"),
+    25: ("发出书面留任邀约", "支付反邀约款，但只给口头留任承诺"),
     92: ("保持专业与管理双通道分离", "把明星专家直接转为管理者"),
     93: ("让失败经理回到专家岗", "强留管理岗或降级"),
     94: ("授予有边界的微职级", "只给半级头衔而不补权责"),
-    95: ("完成年度管理权复审", "撤销本期管理权限"),
+    95: ("复审通过，维持本期管理权限", "复审不通过，撤销本期管理权限"),
     96: ("预留一个破格晋升名额", "按提名担保关系破格"),
     97: ("按跨团队校准结果分配名额", "按本地工作量分配名额"),
     98: ("把名额绑定到明确岗位类型", "把名额作为通用空编使用"),
     99: ("只结转一次未用名额", "年底收回未用名额"),
     100: ("仅为关键岗位批准冻结期例外", "因关系安排冻结名额"),
-    101: ("按梯队占用编制", "编制全投资深人选"),
+    101: ("按一名资深、两名普通与学徒梯队占用编制", "把全部编制投向资深人选"),
     102: ("按零基重审重新预留编制", "年度结算时收回编制"),
     103: ("收回长期空置的占坑编制", "以虚拟候选继续冻结编制"),
-    104: ("混合两类人才补员", "只招成熟人才"),
+    104: ("同时补入新人和成熟人才", "只补入成熟人才"),
     105: ("把补岗责任绑定到离任岗位", "阻止释放补岗名额"),
     106: ("分别登记关键岗位与关键人才", "把受宠者直接等同于关键岗位"),
     107: ("按证据登记继任准备度", "直接登记为已具备继任资格"),
     108: ("同时授予代理权限、资源与目标", "只加责任而不给资源权限"),
-    109: ("只向必要知情人披露高潜标签", "公开高潜标签"),
+    109: ("只向必要知情人披露高潜标签", "向全体人员公开高潜标签"),
     110: ("先冻结绩效，再单独校准潜力", "用潜力覆盖已冻结绩效"),
     111: ("如实区分遗憾流失与正常流失", "把流失统一包装为健康流动"),
     112: ("兑现一项留任条件", "临时追加反邀约"),
     113: ("按里程碑复制关键知识", "继续依赖单一关键人"),
-    114: ("登记人才输出信用", "阻止人才转出"),
+    114: ("登记人才输出信用", "支付安抚款，同时阻止本次人才转出"),
     115: ("在终选前隐藏内部应聘身份", "在批准前提前暴露身份"),
     116: ("在 90 日内放人", "使用唯一一次延期，在 150 日内放人"),
     117: ("只使用一次转岗爬坡保护", "到岗后立即参加完整排名"),
     118: ("把试用期判定与末位配额分开", "把新人直接放入末位池"),
     119: ("追记三方招聘责任", "只奖招聘速度"),
     120: ("按 3、6、12 个月里程碑结算导师责任", "登记无资源保障的导师关系"),
-    121: ("先用三人小团队试任经理", "直接交付大团队"),
+    121: ("先用三人小团队试任经理", "不经试任，直接交付大团队"),
     122: ("采用结果 40%、育人 30%、价值观 30%", "把结果权重提高到 80%"),
     123: ("采用六因素可信下属反馈", "只采纳一张匿名票"),
     124: ("先确认接班人，再批准经理晋升", "先晋升经理，再补接班人"),
     125: ("把危机处置授权给团队", "由经理亲自包揽救火"),
-    126: ("按绩效与价值观四象限处置", "只按绩效处置"),
-    127: ("按管理层级限制管理幅度", "保持扁平结构并承受评分失真"),
-    128: ("把本次气候结果用于下一周期政策", "下一周期继续沿用刚性配额"),
+    126: ("按绩效与价值观四象限处置", "仅按绩效高低决定处置"),
+    127: ("增设一层管理岗，把直属人数限制为八人", "保持十一人直属的扁平结构，并承受评分失真"),
+    128: ("依据本次气候结果调整下一周期配额政策", "忽略本次气候结果，下一周期继续沿用刚性配额"),
 }
 
 # What has happened before the player chooses.  These are deliberately not
@@ -177,7 +177,7 @@ CASE_CONTEXT_CN = {
     23: "团队已经提交增员理由，但下一周期名额也有人预先占用；这次答辩必须留下可追责的编制结论。",
     24: "当事人提出内部调动，原任岗位的交接与补岗尚无定案；流动窗口将在本阶段结束。",
     25: "外部邀约已经送到当事人手中，留任预算与口头承诺不能混为一谈；挽留条件须在离任前落定。",
-    92: "当事人的专业贡献已经达到进阶门槛，但管理职责尚未接受检验；两条职业路径必须明确分开。",
+    92: "当事人的专业贡献已经达到进阶门槛，但管理职责尚未接受检验；专业进阶与转任管理的依据彼此冲突。",
     93: "现任管理者未能完成管理职责，专业能力却仍有价值；本阶段要为其确定可继续承担的岗位。",
     94: "完整晋升条件尚未满足，但职责已经扩大；若授予过渡职级，权责与薪酬边界必须同时留下记录。",
     95: "年度管理复审已经到期，在任者的团队结果与履责记录均已冻结；本期权限需要重新确认。",
@@ -189,9 +189,9 @@ CASE_CONTEXT_CN = {
     101: "同一笔编制预算只能组成一支人才梯队，资深交付与后备培养正在争用名额。",
     102: "旧编制已经进入零基重审，部分岗位仍无近期工作量；保留与回收都必须在本阶段落账。",
     103: "一处编制长期空置，候选管线仍未形成；继续占用将挤压其他团队的真实补员需求。",
-    104: "新人培养与成熟人才采购争用同一笔补员预算；选择将立即形成候选与薪酬记录。",
+    104: "新人培养与成熟人才采购争用同一笔补员预算；两类渠道的候选与薪酬记录目前都未落定。",
     105: "有人离任后留下岗位空缺，原团队与中央编制池都主张名额归己；补岗责任必须先确定。",
-    106: "当前岗位的重要性与现任者的受宠程度被混在一起；继任案卷需要先把两者拆开。",
+    106: "当前岗位的重要性与现任者的受宠程度被混在一起；两者若继续混写，继任依据就会失真。",
     107: "继任候选已经进入盘点，但准备程度尚无统一证据；本次登记会决定其后续培养位置。",
     108: "候选人即将开始代理任职，责任、权限与资源仍未完全对齐；试任条件必须在开始前写清。",
     109: "高潜名单已经形成，公开范围却尚未确定；披露过多会伤害未入选者，过少则妨碍培养。",
@@ -203,7 +203,7 @@ CASE_CONTEXT_CN = {
     115: "一份内部应聘材料已经进入终选，过早暴露身份可能引来阻拦；申请人的知情范围必须确定。",
     116: "内部录用已经成立，原团队仍有交接任务未完；正常放人期与唯一一次延期都从现在起算。",
     117: "转岗者刚到新岗位，旧履历与新职责不能直接等量比较；首轮爬坡期需要明确边界。",
-    118: "新人仍在试用期，岗位门槛与团队末位配额发生冲突；本案必须区分胜任判断和排名。",
+    118: "新人仍在试用期，岗位门槛与团队末位配额发生冲突；胜任判断和团队排名给出了不同结论。",
     119: "一名新人的爬坡结果已经可见，选人、批准与带教三方的责任都要据此追记。",
     120: "新人尚未独立交付，导师投入也没有完成结算；三段带教里程碑必须确定责任与资源。",
     121: "一名专家第一次承担管理职责，尚无带领大团队的证据；试任规模会决定这次失败的代价。",
@@ -212,8 +212,8 @@ CASE_CONTEXT_CN = {
     124: "现任经理进入晋升窗口，但原团队还没有可接班的人；晋升与继任的先后必须现在落定。",
     125: "团队遭遇一次急务，经理与下属都能出手；这次处置会留下授权或包揽的管理证据。",
     126: "当事人的绩效与价值观落在不同象限，只看其中一张表会得到相反结论。",
-    127: "直属人数已经逼近管理上限，现有层级不足以保持可靠评分；组织幅度必须在本轮调整。",
-    128: "本周期的压力、协作和流失记录已经汇齐；下一轮是否继续刚性配额要以这批结果为依据。",
+    127: "现有十一名直属人员已经超过八人的可靠评分上限；增设层级与维持扁平结构各有代价。",
+    128: "本周期的压力、协作和流失记录已经汇齐；这些记录与沿用刚性配额的旧例相互冲突。",
 }
 
 COMPLETION_COPY_CN = {
@@ -228,17 +228,91 @@ COMPLETION_COPY_CN = {
 TITLE_OVERRIDE_CN = {119: "招聘质量追责"}
 TITLE_OVERRIDE_EN = {119: "Recruitment quality accountability"}
 CASE_CONTEXT_OVERRIDE_EN = {
+    92: (
+        "The official's professional contribution has reached the advancement threshold, "
+        "but their management duties remain untested; the evidence for professional "
+        "advancement conflicts with the case for a management appointment. This ruling "
+        "settles within 90 days."
+    ),
+    104: (
+        "Developing newcomers and hiring experienced staff compete for the same staffing "
+        "budget; neither channel's candidate and compensation records are settled. This "
+        "ruling settles within 90 days."
+    ),
+    106: (
+        "The importance of the post has been conflated with the incumbent's favor; leaving "
+        "them combined would distort the succession record. This ruling settles within "
+        "90 days."
+    ),
+    118: (
+        "The recruit remains on probation, while the role threshold and the team's bottom "
+        "quota point to different outcomes. This ruling settles within 180 days."
+    ),
     119: (
         "One recruit's ramp-up result is now available. Accountability for "
         "selection, approval and mentoring must be recorded against that outcome; "
         "this ruling settles within 90 days."
-    )
+    ),
+    127: (
+        "Eleven direct reports now exceed the reliable evaluation span of eight; adding a "
+        "management layer and preserving the flat structure each carries a cost. This "
+        "ruling settles within 180 days."
+    ),
+    128: (
+        "This cycle's pressure, collaboration and attrition records are complete, and they "
+        "conflict with the precedent of retaining the rigid quota. This ruling settles "
+        "within 180 days."
+    ),
 }
 ROUTE_LABELS_OVERRIDE_EN = {
+    21: (
+        "Pay compensation under the bonus and salary-adjustment matrix.",
+        "Concentrate the same budget in a single cash award.",
+    ),
+    25: (
+        "Issue a written retention offer.",
+        "Pay for a counteroffer but give only an oral retention promise.",
+    ),
+    95: (
+        "Pass the review and retain this cycle's management authority.",
+        "Fail the review and revoke this cycle's management authority.",
+    ),
+    101: (
+        "Use staffing for one senior, two regular and one apprentice tier.",
+        "Commit all staffing capacity to senior candidates.",
+    ),
+    104: (
+        "Hire both newcomers and experienced candidates.",
+        "Hire experienced candidates only.",
+    ),
+    109: (
+        "Disclose the high-potential label only to those who need to know.",
+        "Disclose the high-potential label to everyone.",
+    ),
+    114: (
+        "Record talent-export credit.",
+        "Pay a retention award and block this talent transfer.",
+    ),
     119: (
         "Record accountability across selection, approval and mentoring.",
         "Reward hiring speed alone.",
-    )
+    ),
+    121: (
+        "Trial the manager with a three-person team first.",
+        "Skip the trial and assign a large team immediately.",
+    ),
+    126: (
+        "Act on the four-quadrant performance and values assessment.",
+        "Decide the action from performance alone.",
+    ),
+    127: (
+        "Add one management layer and limit direct reports to eight.",
+        "Keep eleven direct reports in a flat structure and accept distorted ratings.",
+    ),
+    128: (
+        "Use this climate result to adjust next cycle's quota policy.",
+        "Ignore this climate result and retain the rigid quota next cycle.",
+    ),
 }
 
 OBJECT_KIND_CN = {
@@ -2565,6 +2639,22 @@ def effect_purpose(name: str) -> str:
         domain = DOMAIN_BY_ID[mechanism_id].key
         state = STAGE_BY_ID[mechanism_id]
         return f"{domain}_stage_{state:02d}_mechanisms"
+    # P has five lifecycle stages and previously accumulated eleven top-level
+    # definitions in one coarse file.  Freeze its business sub-boundaries so a
+    # future lifecycle addition cannot recreate that oversized unit.
+    if name == "zg361_career_hc_open_p_case_effect":
+        return "p_case_entry"
+    if name == "zg361_career_hc_p_run_authorized_ai_effect":
+        return "p_ai_runner"
+    for state in range(1, len(DOMAIN_BY_KEY["p"].stages) + 1):
+        if name in {
+            f"zg361_career_hc_schedule_p_stage_{state:02d}_effect",
+            f"zg361_career_hc_p_try_advance_{state:02d}_effect",
+            f"zg361_career_hc_p_timeout_stage_{state:02d}_effect",
+        }:
+            return f"p_stage_{state:02d}_lifecycle"
+    if name == "zg361_career_hc_resolve_p_outcome_effect":
+        return "p_outcome"
     for domain in DOMAIN_ORDER:
         if any(
             marker in name

@@ -2,8 +2,9 @@
 """Audit ZhongGuo scripted-effect file boundaries without launching CK3.
 
 All runtime effect files target one to ten top-level effects per purpose shard.
-More than twenty is a policy violation.  Legacy monoliths have been retired;
-the compatibility set remains empty and must not be expanded to hide a miss.
+More than twenty effects or more than 200 KiB is a policy violation.  Legacy
+monoliths have been retired; the compatibility set remains empty and must not
+be expanded to hide a miss.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 EFFECT_ROOT = MOD_ROOT / "common" / "scripted_effects"
 TARGET_MAX = 10
 PRINCIPLE_MAX = 20
+MAX_BYTES_PER_FILE = 200 * 1024
 TOP_LEVEL_EFFECT_RE = re.compile(
     r"^(?P<name>[A-Za-z0-9_.:-]+)[ \t]*=[ \t]*\{"
 )
@@ -33,6 +35,7 @@ class EffectFileBoundary:
     bytes: int
     target_met: bool
     principle_met: bool
+    byte_limit_met: bool
     pre_b2_compatibility: bool
 
 
@@ -80,8 +83,9 @@ def audit_effect_files(effect_root: Path = EFFECT_ROOT) -> tuple[EffectFileBound
                 file=path.name,
                 effects=count,
                 bytes=len(payload),
-                target_met=count <= TARGET_MAX,
-                principle_met=pre_b2 or count <= PRINCIPLE_MAX,
+                target_met=1 <= count <= TARGET_MAX,
+                principle_met=pre_b2 or 1 <= count <= PRINCIPLE_MAX,
+                byte_limit_met=len(payload) <= MAX_BYTES_PER_FILE,
                 pre_b2_compatibility=pre_b2,
             )
         )
@@ -90,7 +94,12 @@ def audit_effect_files(effect_root: Path = EFFECT_ROOT) -> tuple[EffectFileBound
 
 def audit_report(effect_root: Path = EFFECT_ROOT) -> dict[str, object]:
     rows = audit_effect_files(effect_root)
-    violations = [asdict(row) for row in rows if not row.principle_met]
+    violations = [
+        asdict(row)
+        for row in rows
+        if not row.principle_met or not row.byte_limit_met
+    ]
+    byte_violations = [asdict(row) for row in rows if not row.byte_limit_met]
     target_misses = [
         asdict(row)
         for row in rows
@@ -102,6 +111,7 @@ def audit_report(effect_root: Path = EFFECT_ROOT) -> dict[str, object]:
             "scope": "all ZhongGuo scripted-effect files",
             "target_max_effects_per_file": TARGET_MAX,
             "principle_max_effects_per_file": PRINCIPLE_MAX,
+            "max_bytes_per_file": MAX_BYTES_PER_FILE,
             "pre_b2_compatibility_files": sorted(PRE_B2_COMPATIBILITY_FILES),
         },
         "result": "GREEN" if not violations else "RED",
@@ -109,11 +119,14 @@ def audit_report(effect_root: Path = EFFECT_ROOT) -> dict[str, object]:
         "effect_count": sum(row.effects for row in rows),
         "target_miss_count": len(target_misses),
         "violation_count": len(violations),
+        "byte_violation_count": len(byte_violations),
         "maximum_non_legacy_effect_count": max(
             (row.effects for row in rows if not row.pre_b2_compatibility),
             default=0,
         ),
+        "maximum_file_bytes": max((row.bytes for row in rows), default=0),
         "target_misses": target_misses,
+        "byte_violations": byte_violations,
         "violations": violations,
         "files": [asdict(row) for row in rows],
     }
@@ -131,11 +144,13 @@ def main() -> int:
             f"{report['result']}: {report['file_count']} files / "
             f"{report['effect_count']} effects; "
             f"target misses={report['target_miss_count']}; "
-            f">20 violations={report['violation_count']}; "
-            f"max non-legacy={report['maximum_non_legacy_effect_count']}"
+            f"policy violations={report['violation_count']}; "
+            f"byte violations={report['byte_violation_count']}; "
+            f"max non-legacy={report['maximum_non_legacy_effect_count']}; "
+            f"max bytes={report['maximum_file_bytes']}"
         )
         for row in report["violations"]:
-            print(f"  - {row['file']}: {row['effects']} effects")
+            print(f"  - {row['file']}: {row['effects']} effects / {row['bytes']} bytes")
     return 0 if report["result"] == "GREEN" else 1
 
 

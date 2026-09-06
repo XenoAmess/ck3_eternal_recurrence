@@ -1364,6 +1364,20 @@ def main() -> int:
     # shortcuts with the formerly accepted quoted spelling must be rejected.
     product_errors = capture.product_source_errors()
     assert product_errors == [], product_errors
+    assert (
+        "from gen_scoreboard_snapshot import read_checked_in_scoreboard_effects"
+        in runner
+    )
+    assert 'effects_root / "zg361_generated_scoreboard_snapshots.txt"' not in runner
+    with mock.patch.object(
+        capture,
+        "read_checked_in_scoreboard_effects",
+        side_effect=FileNotFoundError,
+    ):
+        missing_scoreboard_errors = capture.product_source_errors()
+    assert (
+        "generated scoreboard effect shards are missing" in missing_scoreboard_errors
+    ), missing_scoreboard_errors
     assert not (
         capture.SOURCE
         / "common"

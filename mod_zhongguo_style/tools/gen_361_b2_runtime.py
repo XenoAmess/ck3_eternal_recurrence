@@ -233,6 +233,7 @@ EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
             "zg361_b2_cancel_blocked_action_effect",
             "zg361_b2_deliver_separate_case_effect",
             "zg361_b2_execute_pending_adverse_action_effect",
+            "zg361_b2_schedule_separate_witness_delivery_effect",
         ),
     ),
     (
@@ -3671,6 +3672,25 @@ zg361_b2_deliver_separate_case_effect = {
 	}
 }
 
+zg361_b2_schedule_separate_witness_delivery_effect = {
+	set_variable = { name = zg361_b2_separate_notice_state value = 2 }
+	set_variable = { name = zg361_b2_separate_delivery_method value = 3 }
+	var:zg361_b2_separate_notice_owner = {
+		if = {
+			limit = { exists = liege liege = { is_alive = yes } }
+			liege = { save_scope_as = zg361_b2_separate_witness }
+		}
+		else = { save_scope_as = zg361_b2_separate_witness }
+	}
+	set_variable = { name = zg361_b2_separate_witness_identity value = scope:zg361_b2_separate_witness }
+	var:zg361_b2_separate_notice_owner = { save_scope_as = zg361_b2_separate_witness_owner }
+	save_scope_as = zg361_b2_separate_witness_subject
+	save_scope_value_as = { name = zg361_b2_separate_witness_cycle value = var:zg361_b2_separate_notice_cycle }
+	save_scope_value_as = { name = zg361_b2_separate_witness_case value = var:zg361_b2_separate_notice_case }
+	save_scope_value_as = { name = zg361_b2_separate_witness_state value = var:zg361_b2_separate_notice_state }
+	trigger_event = { id = zg361b2.161 days = 7 }
+}
+
 zg361_b2_execute_pending_adverse_action_effect = {
 	if = {
 		limit = {
@@ -4163,10 +4183,10 @@ def render_effect_parts() -> dict[str, bytes]:
 
     if len(EFFECT_GROUPS) != 25:
         raise ValueError("B2 runtime must remain split into exactly 25 purpose files")
-    if len(historical_names) != 152 or len(set(historical_names)) != 152:
-        raise ValueError("B2 historical render must contain 152 unique effects")
-    if len(configured_names) != 152 or len(set(configured_names)) != 152:
-        raise ValueError("B2 purpose map must contain 152 unique effects")
+    if len(historical_names) != 153 or len(set(historical_names)) != 153:
+        raise ValueError("B2 historical render must contain 153 unique effects")
+    if len(configured_names) != 153 or len(set(configured_names)) != 153:
+        raise ValueError("B2 purpose map must contain 153 unique effects")
     if set(configured_names) != set(historical_names):
         missing = sorted(set(historical_names) - set(configured_names))
         extra = sorted(set(configured_names) - set(historical_names))
@@ -5009,35 +5029,80 @@ zg361b2.160 = {
 		var:zg361_b2_separate_notice_state = 1
 	}
 	option = {
-		name = zg361b2.160.a
+		name = zg361b2.160.a.purge
+		trigger = { var:zg361_b2_pending_adverse_action = 1 }
 		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
 		zg361_b2_deliver_separate_case_effect = yes
 		zg361_b2_execute_pending_adverse_action_effect = yes
 	}
 	option = {
-		name = zg361b2.160.b
+		name = zg361b2.160.a.retire
+		trigger = { var:zg361_b2_pending_adverse_action = 2 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.a.demote
+		trigger = { var:zg361_b2_pending_adverse_action = 3 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.a.extend
+		trigger = { var:zg361_b2_pending_adverse_action = 4 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b.purge
+		trigger = { var:zg361_b2_pending_adverse_action = 1 }
 		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
 		set_variable = { name = zg361_b2_separate_objection value = 1 }
 		zg361_b2_deliver_separate_case_effect = yes
 	}
 	option = {
-		name = zg361b2.160.c
-		set_variable = { name = zg361_b2_separate_notice_state value = 2 }
-		set_variable = { name = zg361_b2_separate_delivery_method value = 3 }
-		var:zg361_b2_separate_notice_owner = {
-			if = {
-				limit = { exists = liege liege = { is_alive = yes } }
-				liege = { save_scope_as = zg361_b2_separate_witness }
-			}
-			else = { save_scope_as = zg361_b2_separate_witness }
-		}
-		set_variable = { name = zg361_b2_separate_witness_identity value = scope:zg361_b2_separate_witness }
-		var:zg361_b2_separate_notice_owner = { save_scope_as = zg361_b2_separate_witness_owner }
-		save_scope_as = zg361_b2_separate_witness_subject
-		save_scope_value_as = { name = zg361_b2_separate_witness_cycle value = var:zg361_b2_separate_notice_cycle }
-		save_scope_value_as = { name = zg361_b2_separate_witness_case value = var:zg361_b2_separate_notice_case }
-		save_scope_value_as = { name = zg361_b2_separate_witness_state value = var:zg361_b2_separate_notice_state }
-		trigger_event = { id = zg361b2.161 days = 7 }
+		name = zg361b2.160.b.retire
+		trigger = { var:zg361_b2_pending_adverse_action = 2 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b.demote
+		trigger = { var:zg361_b2_pending_adverse_action = 3 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b.extend
+		trigger = { var:zg361_b2_pending_adverse_action = 4 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.purge
+		trigger = { var:zg361_b2_pending_adverse_action = 1 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.retire
+		trigger = { var:zg361_b2_pending_adverse_action = 2 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.demote
+		trigger = { var:zg361_b2_pending_adverse_action = 3 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c.extend
+		trigger = { var:zg361_b2_pending_adverse_action = 4 }
+		zg361_b2_schedule_separate_witness_delivery_effect = yes
 	}
 }
 
@@ -5184,13 +5249,13 @@ zg361b2.171 = {
 def render_english_localization() -> bytes:
     return localized(r'''
 l_english:
- zg361b2.40.t:0 "A Measured Recovery Plan"
+ zg361b2.40.t:0 "The Year of Improvement"
  zg361b2.40.desc:0 "Official: [ROOT.GetShortUIName]. Manager: [scope:zg361_b2_pip_prompt_owner.GetShortUIName]. The review file contains at least three adverse evidence components. A 365-day improvement period is ready to begin, with a midpoint check on day 180. The single controllable task in this file is:"
  zg361b2.40.task.governance:0 "Controllable task: improve the frozen governance component."
  zg361b2.40.task.capability:0 "Controllable task: improve the frozen local-capability component."
  zg361b2.40.task.collaboration:0 "Controllable task: improve the frozen collaboration component."
  zg361b2.40.a:0 "Begin the 365-day plan; if funded, reserve a mentor, capacity, 25 treasury, and 12 support hours."
- zg361b2.40.b:0 "Revise the task once, then begin with the same bounded support commitment."
+ zg361b2.40.b:0 "Revise the task once, then begin the 365-day plan with the same funded support."
  zg361b2.40.c:0 "Refuse the plan; record -15 evidence for the next cycle, with no second penalty today."
  zg361b2.50.t:0 "Appeal Rejected"
  zg361b2.50.desc:0 "Appellant: [scope:zg361_b2_escalation_subject.GetShortUIName]. Case owner: [scope:zg361_b2_escalation_owner.GetShortUIName]. The review rejected this appeal, so the original result and its posted settlement remain in force. The frozen record reviewed was:"
@@ -5213,7 +5278,7 @@ l_english:
  zg361b2.50.b:0 "File a protected anonymous report."
  zg361b2.50.c:0 "Defer escalation and record the debt."
  zg361b2.60.t:0 "A Neutral Departure"
- zg361b2.60.desc:0 "A funded voluntary departure agreement has arrived. [scope:zg361_b2_exit_offer_owner.GetShortUIName] supplies the treasury payment, and [ROOT.GetShortUIName] decides whether to accept; the agreement does not alter the rejected appeal or rewrite its evidence."
+ zg361b2.60.desc:0 "A funded voluntary departure agreement has arrived. [scope:zg361_b2_exit_offer_owner.GetShortUIName] is responsible for its treasury payment; the agreement does not alter the rejected appeal or rewrite its evidence."
  zg361b2.60.a:0 "Accept: step down, debit 50 from the owner's treasury, and receive exactly 50 personal gold."
  zg361b2.60.b:0 "Remain under the ordinary process."
  zg361b2.110.t:0 "PIP Disposition"
@@ -5232,9 +5297,9 @@ l_english:
  zg361b2.grade.375:0 "Corrected posted grade: 3.75."
  zg361b2.grade.350:0 "Corrected posted grade: 3.50."
  zg361b2.grade.325:0 "Corrected posted grade: 3.25."
- zg361b2.131.a:0 "Acknowledge the new notice."
- zg361b2.131.b:0 "Acknowledge and contest it."
- zg361b2.131.c:0 "Refuse signature; require witnessed delivery."
+ zg361b2.131.a:0 "Acknowledge: post the new 3.25 result and open its 90-day appeal period."
+ zg361b2.131.b:0 "Acknowledge and appeal the new 3.25 result immediately."
+ zg361b2.131.c:0 "Refuse signature: post the new 3.25 result by witnessed delivery in 7 days."
  zg361b2.160.t:0 "Separate Misconduct Notice"
  zg361b2.160.desc:0 "Official: [ROOT.GetShortUIName]. Case owner: [scope:zg361_b2_separate_prompt_owner.GetShortUIName]. A later 3.25 result was frozen after the earlier appeal, so this notice cannot borrow that old case or its ruling. The new record is:"
  zg361b2.160.fact:0 "Final band 3.25; KPI [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_kpi').GetValue|0]; cohort rank [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_rank').GetValue|0] of [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_cohort').GetValue|0]; case [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_case').GetValue|0]."
@@ -5256,9 +5321,18 @@ l_english:
  zg361b2.160.action.retire:0 "Proposed separate action: ordered retirement."
  zg361b2.160.action.demote:0 "Proposed separate action: demotion with retention."
  zg361b2.160.action.extend:0 "Proposed separate action: extend the improvement plan."
- zg361b2.160.a:0 "Acknowledge the new case and execute the stated action now."
- zg361b2.160.b:0 "Object: suspend execution for 90 days; cancel it if the fact or reviewer qualification fails."
- zg361b2.160.c:0 "Refuse signature; execute the stated action after witnessed delivery in 7 days."
+ zg361b2.160.a.purge:0 "Acknowledge the new case and leave landed office now."
+ zg361b2.160.a.retire:0 "Acknowledge the new case and accept ordered retirement now."
+ zg361b2.160.a.demote:0 "Acknowledge the new case and accept demotion now."
+ zg361b2.160.a.extend:0 "Acknowledge the new case and extend the improvement plan now."
+ zg361b2.160.b.purge:0 "Contest removal: suspend it for 90 days and cancel it if the review fails."
+ zg361b2.160.b.retire:0 "Contest retirement: suspend it for 90 days and cancel it if the review fails."
+ zg361b2.160.b.demote:0 "Contest demotion: suspend it for 90 days and cancel it if the review fails."
+ zg361b2.160.b.extend:0 "Contest extension: suspend it for 90 days and cancel it if the review fails."
+ zg361b2.160.c.purge:0 "Refuse the removal notice; witnessed delivery removes you in 7 days."
+ zg361b2.160.c.retire:0 "Refuse the retirement notice; witnessed delivery retires you in 7 days."
+ zg361b2.160.c.demote:0 "Refuse the demotion notice; witnessed delivery demotes you in 7 days."
+ zg361b2.160.c.extend:0 "Refuse the extension notice; witnessed delivery extends the plan in 7 days."
  zg361b2.statement.prepared:0 "Performance case: prepared; detailed evidence remains locked before delivery."
  zg361b2.statement.delivered:0 "Performance notice: delivered with its receipt and appeal deadline frozen."
  zg361b2.statement.appeal:0 "Performance appeal: the review of this exact case is active."
@@ -5271,13 +5345,13 @@ l_english:
 def render_simp_chinese_localization() -> bytes:
     return localized(normalize_localization_document(r'''
 l_simp_chinese:
- zg361b2.40.t:0 "有界改进计划"
+ zg361b2.40.t:0 "一年改进书"
  zg361b2.40.desc:0 "受评官员：[ROOT.GetShortUIName]；直属上司：[scope:zg361_b2_pip_prompt_owner.GetShortUIName]。考绩案卷已有至少三项负向证据。一份为期 365 日的改进期正待开始，第 180 日复核中期进展。卷内只列一项本人能够改变的任务："
  zg361b2.40.task.governance:0 "本人可控制的任务：改善已冻结的治理指标。"
  zg361b2.40.task.capability:0 "本人可控制的任务：改善已冻结的本地能力指标。"
  zg361b2.40.task.collaboration:0 "本人可控制的任务：改善已冻结的协作指标。"
  zg361b2.40.a:0 "开始365日改进；资源齐备时预留导师、容量、25国库金、12小时支持与关注席位。"
- zg361b2.40.b:0 "只修改一次任务，再按同样的有界支持承诺开始。"
+ zg361b2.40.b:0 "修改一次任务后开始365日改进；资源齐备时提供同等支持。"
  zg361b2.40.c:0 "拒绝计划；只给下一周期记入 -15 证据，今天不再追加处罚。"
  zg361b2.50.t:0 "申诉被驳回"
  zg361b2.50.desc:0 "申诉人：[scope:zg361_b2_escalation_subject.GetShortUIName]；案卷责任人：[scope:zg361_b2_escalation_owner.GetShortUIName]。复核已经驳回本次申诉，原结果与已入账的清算继续生效。复核所据的冻结记录如下："
@@ -5300,7 +5374,7 @@ l_simp_chinese:
  zg361b2.50.b:0 "匿名提交受保护报告。"
  zg361b2.50.c:0 "暂不升级，但记下一笔政策债。"
  zg361b2.60.t:0 "中性离任"
- zg361b2.60.desc:0 "一份已有资金保障的自愿离任文书送到了你手中。出资责任人是[scope:zg361_b2_exit_offer_owner.GetShortUIName]，接受人是[ROOT.GetShortUIName]；这份文书不会改变被驳回的申诉，也不会改写原有证据。"
+ zg361b2.60.desc:0 "一份已有资金保障的自愿离任文书送到了你手中。[scope:zg361_b2_exit_offer_owner.GetShortUIName]负责从国库出资；这份文书不会改变被驳回的申诉，也不会改写原有证据。"
  zg361b2.60.a:0 "接受：卸任，由责任人国库支出 50，你本人恰好收到 50 金币。"
  zg361b2.60.b:0 "留下，继续走普通程序。"
  zg361b2.110.t:0 "改进期处置"
@@ -5319,9 +5393,9 @@ l_simp_chinese:
  zg361b2.grade.375:0 "改判后的公示档位：3.75。"
  zg361b2.grade.350:0 "改判后的公示档位：3.50。"
  zg361b2.grade.325:0 "改判后的公示档位：3.25。"
- zg361b2.131.a:0 "签收新的通知。"
- zg361b2.131.b:0 "签收但提出异议。"
- zg361b2.131.c:0 "拒绝签字，要求见证送达。"
+ zg361b2.131.a:0 "签收：新3.25及清算立即入账，并开启90日申诉期。"
+ zg361b2.131.b:0 "签收并立即申诉新3.25，启动独立复核。"
+ zg361b2.131.c:0 "拒签：7日后见证送达，新3.25及清算届时入账。"
  zg361b2.160.t:0 "后续低档处分通知"
  zg361b2.160.desc:0 "受评官员：[ROOT.GetShortUIName]；案卷责任人：[scope:zg361_b2_separate_prompt_owner.GetShortUIName]。旧申诉结束后，后续考核又冻结了一次 3.25 结果，因此本通知不能借用旧案及其裁决。新记录如下："
  zg361b2.160.fact:0 "最终档位 3.25；绩效指标 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_kpi').GetValue|0]；同组位次第 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_rank').GetValue|0] 名，共 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_cohort').GetValue|0] 人；案号 [ROOT.MakeScope.Var('zg361_b2_retaliation_new_fact_case').GetValue|0]。"
@@ -5343,9 +5417,18 @@ l_simp_chinese:
  zg361b2.160.action.retire:0 "拟议的独立处分：勒令致仕。"
  zg361b2.160.action.demote:0 "拟议的独立处分：降岗留用。"
  zg361b2.160.action.extend:0 "拟议的独立处分：延长改进计划。"
- zg361b2.160.a:0 "签收新案，并立即执行上述处分。"
- zg361b2.160.b:0 "提出异议：暂停执行 90 日；事实或复核资格不成立即撤销。"
- zg361b2.160.c:0 "拒绝签字；7 日后见证送达并执行上述处分。"
+ zg361b2.160.a.purge:0 "签收新案，立即卸去本人领地职务。"
+ zg361b2.160.a.retire:0 "签收新案，立即接受勒令致仕。"
+ zg361b2.160.a.demote:0 "签收新案，立即接受降岗留任。"
+ zg361b2.160.a.extend:0 "签收新案，立即延长改进计划。"
+ zg361b2.160.b.purge:0 "异议免职：暂停90日；复核不成立即撤销。"
+ zg361b2.160.b.retire:0 "异议致仕：暂停90日；复核不成立即撤销。"
+ zg361b2.160.b.demote:0 "异议降岗：暂停90日；复核不成立即撤销。"
+ zg361b2.160.b.extend:0 "异议延长：暂停90日；复核不成立即撤销。"
+ zg361b2.160.c.purge:0 "拒签免职通知；7日后见证送达并卸职。"
+ zg361b2.160.c.retire:0 "拒签致仕通知；7日后见证送达并致仕。"
+ zg361b2.160.c.demote:0 "拒签降岗通知；7日后见证送达并降岗。"
+ zg361b2.160.c.extend:0 "拒签延长通知；7日后见证送达并延长计划。"
  zg361b2.statement.prepared:0 "考绩案卷：已备妥；正式送达前，详细证据仍受查阅限制。"
  zg361b2.statement.delivered:0 "考绩通知：已送达，并已冻结送达回执与申诉期限。"
  zg361b2.statement.appeal:0 "考绩申诉：对本案的复核正在进行。"

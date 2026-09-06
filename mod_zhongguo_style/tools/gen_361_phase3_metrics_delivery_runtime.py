@@ -95,8 +95,8 @@ MECHANISMS = (
       "Restate both periods on the new denominator.", "Keep both versions side by side.", "Use the old denominator for this cycle.",
       "按新分母重算两个时期。", "新旧口径并列展示。", "本周期继续沿用旧分母。"),
     m(232, "aa", 2, "backfill_policy", "The Spreadsheet Has a Hole", "表里少了一块",
-      "Missing data demands a visible backfill rule and an owner for the estimate error.",
-      "缺失数据不能靠沉默填平：人工回填规则和估算误差都要有人署名。",
+      "One section of the table is empty. The file contains neither a visible backfill rule nor anyone accountable for estimation error.",
+      "表中有一段数据空缺；案卷里既没有公开回填规则，也没有人为估算误差负责。",
       "Backfill with audit samples.", "Impute and show an uncertainty band.", "Leave the gap visible.",
       "抽样审计后回填。", "插补并展示误差带。", "保留缺口，不假装完整。"),
     m(233, "aa", 2, "visibility_level", "Who May See the Dashboard?", "谁能看见这张看板",
@@ -125,8 +125,8 @@ MECHANISMS = (
       "Use the preregistered full window.", "Publish full and selected windows together.", "Allow the slice but flag it for audit.",
       "使用预注册完整时间窗。", "完整窗与精选窗并列。", "允许截取，但挂上审计标记。"),
     m(240, "aa", 4, "sample_route", "Everyone Wants the Same Sample", "大家都想抢这批样本",
-      "The same population appears in two experiment files. Unless an exclusive slot or a signed partition is recorded before settlement, neither team has a clean sample.",
-      "同一批人同时出现在两份实验案卷中。结算前若不登记独享样本槽或签字切分，两支团队都不能声称拿到了纯净样本。",
+      "The same population appears in two experiment files. Both teams currently claim a clean sample and the same sample slot is counted twice.",
+      "同一批人同时出现在两份实验案卷中；两支团队都声称拿到了纯净样本，同一个样本槽也被计算了两次。",
       "Reserve one exclusive sample slot.", "Partition one slot with a signed boundary.", "Queue the test and record no clean claim.",
       "占用一个独享样本槽。", "占用一个槽并签字切分。", "排队等待，不声称纯净实验。"),
     m(238, "aa", 5, "vanity_value_split", "Vanity Is Not Value", "热闹不等于价值",
@@ -148,8 +148,8 @@ MECHANISMS = (
     m(301, "ag", 1, "halo_normalization", "The Core-Business Halo", "核心业务光环",
       "The team inherited strong momentum, but the assessment file currently credits all of it as controllable personal contribution.",
       "团队继承了强劲势能，考核案卷却把它全部记成了个人可控贡献。",
-      "Normalize the halo aggressively.", "Use a peer benchmark adjustment.", "Keep raw results but label the tailwind.",
-      "强力剥离光环。", "按同类基准校正。", "保留原始结果，但标注顺风。"),
+      "Remove most inherited momentum from personal credit.", "Adjust personal credit against a peer benchmark.", "Keep raw results but label the tailwind.",
+      "从个人功劳中剥离大部分继承势能。", "按同类基准校正个人功劳。", "保留原始结果，但标注顺风。"),
     m(302, "ag", 1, "headwind_normalization", "The Declining Business Headwind", "衰退业务的逆风",
       "The market contracted during the assessment period, but the file does not separate that uncontrollable headwind from personal contribution.",
       "考核期内大盘已经缩水，案卷却没有把不可控逆风与个人贡献拆开。",
@@ -158,8 +158,8 @@ MECHANISMS = (
     m(303, "ag", 2, "incubation_protection", "Incubation Needs a Clock", "孵化保护也要到点",
       "The new team is still ramping up, yet its file contains neither a protection period nor an expiry. Permanent immunity would hide later underperformance.",
       "新团队仍在爬坡，案卷里却既没有保护期，也没有到期日；永久豁免又会遮住后续失责。",
-      "Grant one short protected cycle.", "Use milestone-gated protection.", "Decline protection and fund extra support.",
-      "给一个短周期保护。", "按里程碑逐段保护。", "不保护分布，但追加支持。"),
+      "Grant the new team one short protected cycle.", "Protect the new team only at signed milestones.", "Decline protection and fund extra support.",
+      "给予新团队一个短周期保护。", "只在签字里程碑处保护新团队。", "不保护分布，但追加支持。"),
     m(304, "ag", 2, "dual_parent_weights", "Two Parents, One Review", "两个家长，一份绩效",
       "Project and functional managers both claim authority. The file has no single frozen set of weights and goal shares, and neither manager has personally replied.",
       "项目线和职能线都声称自己说了算；案卷里还没有唯一冻结的权重与目标份额，两名上司也都没有亲自回应。",
@@ -173,8 +173,8 @@ MECHANISMS = (
     m(306, "ag", 3, "double_hat_weights", "One Head, Two Hats", "一个脑袋，两顶帽子",
       "The temporary dual-role lead has one finite pool of time, while current responsibility and review weights do not yet close to one hundred percent.",
       "临时双帽负责人只有一份时间，而当前责任份额与考核权重都还没有合计到百分之百。",
-      "Split thirty-seventy toward the expert role.", "Split fifty-fifty.", "Split seventy-thirty toward management.",
-      "管理三、专业七。", "两边各半。", "管理七、专业三。"),
+      "Split thirty-seventy toward the expert role.", "Split management and expert roles fifty-fifty.", "Split seventy-thirty toward management.",
+      "管理三成、专业七成。", "管理责任与专业责任各占五成。", "管理七成、专业三成。"),
     m(307, "ag", 4, "center_scorecard", "Profit Center or Cost Center?", "利润中心还是成本中心",
       "Revenue and enablement teams are currently measured with the same scorecard, mixing growth with cost control before comparison.",
       "创收团队与支撑团队目前共用一张记分卡，收入增长和成本控制在比较前就被混到了一起。",
@@ -186,8 +186,8 @@ MECHANISMS = (
       "Keep twenty managers and eighty experts.", "Use a thirty-seventy mix.", "Use a forty-sixty mix.",
       "二十管理、八十专业。", "三十管理、七十专业。", "四十管理、六十专业。"),
     m(309, "ag", 4, "remote_visibility", "The Far Team Is Quiet", "边远团队没声量",
-      "The remote team is nearly absent from current review material, while management has only limited bandwidth for visits and evidence sessions.",
-      "边远团队在本期考核材料中几乎不可见，而管理层能用于走访和证据评审的带宽十分有限。",
+      "The remote team is nearly absent from current review material. Management has bandwidth for only one additional verification, while the visibility gap is already distorting the assessment.",
+      "边远团队在本期考核材料中几乎不可见；管理层只剩一次额外核验的带宽，可见度差距却已经开始扭曲考核。",
       "Spend capacity on an on-site visit.", "Spend capacity on a remote evidence forum.", "Accept the visibility discount and record debt.",
       "花带宽实地走访。", "花带宽开远程证据会。", "接受可见度折损并记债。"),
     m(310, "ag", 4, "legacy_rating_map", "Old Ratings, New Org", "旧档怎么搬进新组织",
@@ -214,8 +214,8 @@ MECHANISMS = (
     m(336, "aj", 2, "admission_definition", "Definition of Ready", "准入完成定义",
       "A request enters delivery only after benefit, boundary and dependencies are signed—or its sponsor owns the ambiguity.",
       "收益、边界、依赖没签清楚，就不算能开工；硬塞进来，模糊责任归发起人。",
-      "Return it for completion.", "Admit a bounded exploration.", "Force admission with sponsor liability.",
-      "退回补全。", "准入一个有边界的探索。", "强制准入，发起人背模糊责任。"),
+      "Return the demand to complete benefit, boundary and dependencies.", "Admit the demand as a bounded exploration.", "Force admission with sponsor liability.",
+      "退回需求，补齐收益、边界与依赖。", "按有界探索准入这条需求。", "强制准入，发起人背模糊责任。"),
     m(338, "aj", 2, "triangle_signature", "Scope, Time, Quality: Pick Two", "范围、期限、质量：请签字",
       "The demand has strained both scope and deadline, but the file names no signer for either tradeoff. The delivery team cannot own that choice by silence.",
       "需求已经同时挤压范围与期限，案卷却没有给任何一项列出签字责任人；交付团队不能因沉默独吞取舍。",
@@ -232,10 +232,10 @@ MECHANISMS = (
       "Start within the WIP limit.", "Start with a signed WIP exception.", "Start over limit and record hidden-work debt.",
       "在 WIP 上限内开工。", "签署 WIP 例外后开工。", "超限开工并记录隐性工作债。"),
     m(342, "aj", 4, "blocker_attribution", "Who Owns the Blocked Time?", "阻塞时间算谁的",
-      "Blocked hours belong to a cause and an unblock owner, not automatically to the delivery team.",
-      "阻塞工时要归因到原因和解阻人，不能自动扣在交付团队头上。",
-      "Name the independent reviewer as unblock owner; assign all blocked time to obstacles beyond the delivery team's control and apply no team penalty.", "Split shared causation.", "Charge the team with a review flag.",
-      "指定独立复核人负责解阻；阻塞工时归于团队无法控制的阻碍，交付团队不扣分。", "按共同原因拆分。", "暂计团队，但挂复核标记。"),
+      "A block of stalled time has been charged directly to the delivery team, while the file names neither its cause nor anyone responsible for clearing it.",
+      "一段阻塞工时被直接扣在交付团队名下，案卷却既没有记录阻塞原因，也没有列出解阻责任人。",
+      "Name the independent reviewer as unblock owner; assign all blocked time to obstacles beyond the delivery team's control and apply no team penalty.", "Split blocked hours across shared causes.", "Charge the team with a review flag.",
+      "指定独立复核人负责解阻；阻塞工时归于团队无法控制的阻碍，交付团队不扣分。", "按共同原因拆分阻塞工时。", "阻塞工时暂计团队，并挂复核标记。"),
     m(337, "aj", 5, "change_tax_route", "A Change Request Has a Tax", "改需求要交税",
       "The requested scope change has consumed capacity after work began. Its added cost is absent from both the deadline ledger and the remaining-scope ledger.",
       "开工后的范围变更已经吃掉额外容量，但新增成本既没有进入期限账，也没有进入剩余范围账。",
@@ -254,8 +254,8 @@ MECHANISMS = (
     m(344, "aj", 7, "value_stage_split", "Launch Is Not Value", "上线不等于价值",
       "Launch, adoption and verified value have each been credited as a fresh hundred percent. The portfolio ledger is counting the same result more than once.",
       "上线、采用与验证价值目前各记了一套百分之百，组合总账因此把同一成果重复计功。",
-      "Front-load launch credit.", "Use a balanced staged settlement.", "Back-load credit to verified value.",
-      "前置认可上线。", "三阶段均衡结算。", "把大头留给已验证价值。"),
+      "Put most credit in the launch stage.", "Split credit evenly across all three stages.", "Back-load credit to verified value.",
+      "把大部分功劳记在上线阶段。", "上线、采用与价值三阶段均分功劳。", "把大头留给已验证价值。"),
 )
 
 
@@ -2585,16 +2585,6 @@ def esc(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
-CASE_OPENING_CN = {
-    "aa": "一份本期指标底稿已经摊开：[scope:zg361_p3_aa_subject.GetShortUIName]是本案当事人，[scope:zg361_p3_aa_owner.GetShortUIName]将作裁决。",
-    "ag": "一宗职司改组案已经送达：[scope:zg361_p3_ag_subject.GetShortUIName]是本案当事人，[scope:zg361_p3_ag_owner.GetShortUIName]将作裁决。",
-    "aj": "一份在办交付案已经送达：[scope:zg361_p3_aj_subject.GetShortUIName]是本案当事人，[scope:zg361_p3_aj_owner.GetShortUIName]将作裁决。",
-}
-CASE_OPENING_EN = {
-    "aa": "A current metrics ledger is open: [scope:zg361_p3_aa_subject.GetShortUIName] is the subject, and [scope:zg361_p3_aa_owner.GetShortUIName] will decide the case.",
-    "ag": "A reorganization case has arrived: [scope:zg361_p3_ag_subject.GetShortUIName] is the subject, and [scope:zg361_p3_ag_owner.GetShortUIName] will decide it.",
-    "aj": "An active delivery case has arrived: [scope:zg361_p3_aj_subject.GetShortUIName] is the subject, and [scope:zg361_p3_aj_owner.GetShortUIName] will decide it.",
-}
 PLAYER_DEBT_STATUS_CN = "本轮已经登记制度债 [ROOT.MakeScope.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] 笔。"
 PLAYER_DEBT_STATUS_EN = "This portfolio has recorded [ROOT.MakeScope.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
 PLAYER_MODE_CN = {
@@ -2605,9 +2595,9 @@ PLAYER_MODE_CN = {
         "统一办理仍为每项保留正式案卷、期限与回执。"
         + PLAYER_DEBT_STATUS_CN
     ),
-    "a": "二十二项常规案以证据完整、可复核为准统一办理；条件不足者单独呈报。",
-    "b": "常规案以迅速交付为先统一办理，承担相应约束与风险；条件不足者单独呈报。",
-    "c": "搁置二十二项常规案，每件各记一笔下周期制度债；十三项关键案仍单独呈报。",
+    "a": "证据完整、可复核者统一办理二十二项；条件不足则逐案呈报。",
+    "b": "以迅速交付为先统一办理二十二项；条件不足则逐案呈报。",
+    "c": "搁置二十二项常规案，每件各记一笔下周期制度债。",
     "d": "全部三十五项逐案呈报，由我分别裁决。",
 }
 PLAYER_MODE_EN = {
@@ -2620,9 +2610,9 @@ PLAYER_MODE_EN = {
         "Common handling still preserves a formal file, deadline, and receipt for every matter. "
         + PLAYER_DEBT_STATUS_EN
     ),
-    "a": "Resolve twenty-two routine matters by complete, reviewable evidence; present any matter lacking the required conditions separately.",
-    "b": "Resolve twenty-two routine matters for prompt delivery and accept the resulting rules and risks; present any matter lacking the required conditions separately.",
-    "c": "Defer twenty-two routine matters, recording one next-cycle policy debt for each; present the thirteen key matters separately.",
+    "a": "Resolve twenty-two routine matters by evidence; present any failed preflight separately.",
+    "b": "Resolve twenty-two routine matters for delivery; present any failed preflight separately.",
+    "c": "Defer twenty-two routine matters and record one next-cycle policy debt for each.",
     "d": "Present all thirty-five matters one by one for my separate ruling.",
 }
 
@@ -2636,7 +2626,7 @@ def render_localization(language: str) -> bytes:
             for key, value in PLAYER_MODE_CN.items()
         ]
         for spec in MECHANISMS:
-            desc = f"{CASE_OPENING_CN[spec.domain]}{spec.desc_cn}"
+            desc = spec.desc_cn
             if spec.mid in PLAYER_VISIBLE_IDS:
                 desc += PLAYER_DEBT_STATUS_CN
             rows += [
@@ -2652,7 +2642,7 @@ def render_localization(language: str) -> bytes:
             for key, value in PLAYER_MODE_EN.items()
         ]
         for spec in MECHANISMS:
-            desc = f"{CASE_OPENING_EN[spec.domain]} {spec.desc_en}"
+            desc = spec.desc_en
             if spec.mid in PLAYER_VISIBLE_IDS:
                 desc += f" {PLAYER_DEBT_STATUS_EN}"
             rows += [

@@ -1,0 +1,524 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: M360 Central ticket, cohort, and cross-cohort identity preflight steps.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_m360_materialize_validate_ticket_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_we_m360_materialize_preflight_valid
+			var:zg361_we_m360_materialize_preflight_valid = 1
+			zg361_case_kernel_full_guard_trigger = { OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$ EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4 }
+			$TICKET_SUBJECT$ = this
+			$TICKET_SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }
+			trigger_if = { limit = { has_variable = zg361_we_al_external_collective_submission_active } var:zg361_we_al_external_collective_submission_active = 0 } trigger_else = { always = yes }
+			$TICKET_OWNER$ = {
+				has_variable = zg361_p2c_m360_source_status
+				has_variable = zg361_p2c_m360_source_reason
+				has_variable = zg361_p2c_m360_source_owner
+				has_variable = zg361_p2c_m360_source_subject
+				has_variable = zg361_p2c_m360_source_p2c_cycle
+				has_variable = zg361_p2c_m360_source_p2c_case
+				has_variable = zg361_p2c_m360_source_al_cycle
+				has_variable = zg361_p2c_m360_source_al_case
+				has_variable = zg361_p2c_subject
+				has_variable = zg361_p2c_cycle
+				has_variable = zg361_p2c_case_serial
+				var:zg361_p2c_m360_source_status = 1
+				var:zg361_p2c_m360_source_owner = this
+				var:zg361_p2c_m360_source_subject = $TICKET_SUBJECT$
+				var:zg361_p2c_m360_source_subject = var:zg361_p2c_subject
+				var:zg361_p2c_m360_source_p2c_cycle = $TICKET_CYCLE$
+				var:zg361_p2c_m360_source_p2c_cycle = var:zg361_p2c_cycle
+				var:zg361_p2c_m360_source_p2c_case = var:zg361_p2c_case_serial
+				var:zg361_p2c_m360_source_al_cycle = $TICKET_CYCLE$
+				var:zg361_p2c_m360_source_al_case = $TICKET_CASE$
+				has_variable = zg361_p2c_m360_source_cohort_count
+				has_variable = zg361_p2c_m360_source_total_quota
+				var:zg361_p2c_m360_source_reason = 0
+				NOT = { has_variable = zg361_p2c_m360_source_upstream_reason }
+				var:zg361_p2c_m360_source_cohort_count = 3
+				var:zg361_p2c_m360_source_total_quota >= 1
+				var:zg361_p2c_m360_source_total_quota <= 6
+				has_variable = zg361_p2c_m360_source_c1_manager
+				has_variable = zg361_p2c_m360_source_c1_b1_cycle
+				has_variable = zg361_p2c_m360_source_c1_b1_case
+				has_variable = zg361_p2c_m360_source_c1_b1_source_id
+				has_variable = zg361_p2c_m360_source_c1_b1_source_hash
+				has_variable = zg361_p2c_m360_source_c1_quota
+				has_variable = zg361_p2c_m360_source_c1_mg_cycle
+				has_variable = zg361_p2c_m360_source_c1_mg_case
+				has_variable = zg361_p2c_m360_source_c1_mg_snapshot_source_serial
+				has_variable = zg361_p2c_m360_source_c1_mg_snapshot_revision
+				var:zg361_p2c_m360_source_c1_manager = { zg361_is_celestial_liege_trigger = yes liege = scope:zg361_we_m360_materialize_owner }
+				var:zg361_p2c_m360_source_c1_b1_cycle > 0
+				var:zg361_p2c_m360_source_c1_b1_case > 0
+				var:zg361_p2c_m360_source_c1_b1_source_id > 0
+				var:zg361_p2c_m360_source_c1_b1_source_hash > 0
+				var:zg361_p2c_m360_source_c1_quota >= 1
+				var:zg361_p2c_m360_source_c1_quota <= 6
+				var:zg361_p2c_m360_source_c1_mg_cycle > 0
+				var:zg361_p2c_m360_source_c1_mg_case > 0
+				var:zg361_p2c_m360_source_c1_mg_snapshot_source_serial > 0
+				var:zg361_p2c_m360_source_c1_mg_snapshot_revision > 0
+				has_variable = zg361_p2c_m360_source_c2_manager
+				has_variable = zg361_p2c_m360_source_c2_b1_cycle
+				has_variable = zg361_p2c_m360_source_c2_b1_case
+				has_variable = zg361_p2c_m360_source_c2_b1_source_id
+				has_variable = zg361_p2c_m360_source_c2_b1_source_hash
+				has_variable = zg361_p2c_m360_source_c2_quota
+				has_variable = zg361_p2c_m360_source_c2_mg_cycle
+				has_variable = zg361_p2c_m360_source_c2_mg_case
+				has_variable = zg361_p2c_m360_source_c2_mg_snapshot_source_serial
+				has_variable = zg361_p2c_m360_source_c2_mg_snapshot_revision
+				var:zg361_p2c_m360_source_c2_manager = { zg361_is_celestial_liege_trigger = yes liege = scope:zg361_we_m360_materialize_owner }
+				var:zg361_p2c_m360_source_c2_b1_cycle > 0
+				var:zg361_p2c_m360_source_c2_b1_case > 0
+				var:zg361_p2c_m360_source_c2_b1_source_id > 0
+				var:zg361_p2c_m360_source_c2_b1_source_hash > 0
+				var:zg361_p2c_m360_source_c2_quota >= 1
+				var:zg361_p2c_m360_source_c2_quota <= 6
+				var:zg361_p2c_m360_source_c2_mg_cycle > 0
+				var:zg361_p2c_m360_source_c2_mg_case > 0
+				var:zg361_p2c_m360_source_c2_mg_snapshot_source_serial > 0
+				var:zg361_p2c_m360_source_c2_mg_snapshot_revision > 0
+				has_variable = zg361_p2c_m360_source_c3_manager
+				has_variable = zg361_p2c_m360_source_c3_b1_cycle
+				has_variable = zg361_p2c_m360_source_c3_b1_case
+				has_variable = zg361_p2c_m360_source_c3_b1_source_id
+				has_variable = zg361_p2c_m360_source_c3_b1_source_hash
+				has_variable = zg361_p2c_m360_source_c3_quota
+				has_variable = zg361_p2c_m360_source_c3_mg_cycle
+				has_variable = zg361_p2c_m360_source_c3_mg_case
+				has_variable = zg361_p2c_m360_source_c3_mg_snapshot_source_serial
+				has_variable = zg361_p2c_m360_source_c3_mg_snapshot_revision
+				var:zg361_p2c_m360_source_c3_manager = { zg361_is_celestial_liege_trigger = yes liege = scope:zg361_we_m360_materialize_owner }
+				var:zg361_p2c_m360_source_c3_b1_cycle > 0
+				var:zg361_p2c_m360_source_c3_b1_case > 0
+				var:zg361_p2c_m360_source_c3_b1_source_id > 0
+				var:zg361_p2c_m360_source_c3_b1_source_hash > 0
+				var:zg361_p2c_m360_source_c3_quota >= 1
+				var:zg361_p2c_m360_source_c3_quota <= 6
+				var:zg361_p2c_m360_source_c3_mg_cycle > 0
+				var:zg361_p2c_m360_source_c3_mg_case > 0
+				var:zg361_p2c_m360_source_c3_mg_snapshot_source_serial > 0
+				var:zg361_p2c_m360_source_c3_mg_snapshot_revision > 0
+				var:zg361_p2c_m360_source_c1_manager = $TICKET_SUBJECT$
+				NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c2_manager }
+				NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c3_manager }
+				NOT = { var:zg361_p2c_m360_source_c2_manager = var:zg361_p2c_m360_source_c3_manager }
+				var:zg361_p2c_m360_source_total_quota = scope:zg361_we_expected_central_m360_total_quota
+			}
+		}
+		set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 0 } }
+}
+
+zg361_we_m360_materialize_validate_cohort_1_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_we_m360_materialize_preflight_valid
+			var:zg361_we_m360_materialize_preflight_valid = 1
+			$TICKET_OWNER$ = {
+				var:zg361_p2c_m360_source_c1_manager = {
+					zg361_is_celestial_liege_trigger = yes
+					liege = scope:zg361_we_m360_materialize_owner
+					has_variable = zg361_b1_m360_source_available
+					has_variable = zg361_b1_m360_source_sealed
+					has_variable = zg361_b1_m360_source_status
+					has_variable = zg361_b1_m360_source_manager
+					has_variable = zg361_b1_m360_source_cycle
+					has_variable = zg361_b1_m360_source_case
+					has_variable = zg361_b1_m360_source_state
+					has_variable = zg361_b1_m360_source_id
+					has_variable = zg361_b1_m360_source_hash
+					has_variable = zg361_b1_m360_source_member_count
+					has_variable = zg361_b1_m360_source_member_hash
+					has_variable = zg361_b1_m360_source_agenda_count
+					has_variable = zg361_b1_m360_source_agenda_hash
+					has_variable = zg361_b1_m360_source_quota
+					has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+					has_variable = zg361_b1_m360_source_forced_count
+					var:zg361_b1_m360_source_available = 1
+					var:zg361_b1_m360_source_sealed = 1
+					var:zg361_b1_m360_source_status = 1
+					var:zg361_b1_m360_source_manager = this
+					var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_cycle
+					var:zg361_b1_m360_source_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_case
+					var:zg361_b1_m360_source_state = 8
+					var:zg361_b1_m360_source_id = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_source_id
+					var:zg361_b1_m360_source_hash = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_source_hash
+					var:zg361_b1_m360_source_member_count >= 1
+					var:zg361_b1_m360_source_member_hash > 0
+					var:zg361_b1_m360_source_agenda_count = var:zg361_b1_m360_source_member_count
+					var:zg361_b1_m360_source_agenda_hash = var:zg361_b1_m360_source_member_hash
+					var:zg361_b1_m360_source_quota = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_quota
+					var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+					var:zg361_b1_m360_source_all_meet_receipt_serial > 0
+					has_variable = zg361_mg_team_snapshot_status
+					has_variable = zg361_mg_team_snapshot_owner
+					has_variable = zg361_mg_team_snapshot_subject
+					has_variable = zg361_mg_team_snapshot_cycle
+					has_variable = zg361_mg_team_snapshot_case
+					has_variable = zg361_mg_team_snapshot_revision
+					has_variable = zg361_mg_snapshot_source_serial
+					has_variable = zg361_mg_team_snapshot_b1_available
+					has_variable = zg361_mg_team_snapshot_b1_manager
+					has_variable = zg361_mg_team_snapshot_b1_cycle
+					has_variable = zg361_mg_team_snapshot_b1_case
+					has_variable = zg361_mg_team_snapshot_b1_id
+					has_variable = zg361_mg_team_snapshot_b1_hash
+					var:zg361_mg_team_snapshot_status = 1
+					var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_materialize_owner
+					var:zg361_mg_team_snapshot_subject = this
+					var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_mg_cycle
+					var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_mg_case
+					var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_mg_snapshot_source_serial
+					var:zg361_mg_team_snapshot_revision = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_mg_snapshot_revision
+					var:zg361_mg_team_snapshot_b1_available = 1
+					var:zg361_mg_team_snapshot_b1_manager = this
+					var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_cycle
+					var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_case
+					var:zg361_mg_team_snapshot_b1_id = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_source_id
+					var:zg361_mg_team_snapshot_b1_hash = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_source_hash
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 1 } has_variable = zg361_b1_m360_source_forced_1_character has_variable = zg361_b1_m360_source_forced_1_processing_order has_variable = zg361_b1_m360_source_forced_1_m357_receipt_id has_variable = zg361_b1_m360_source_forced_1_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_1_b1_owner has_variable = zg361_b1_m360_source_forced_1_b1_subject has_variable = zg361_b1_m360_source_forced_1_b1_cycle has_variable = zg361_b1_m360_source_forced_1_b1_case has_variable = zg361_b1_m360_source_forced_1_result_owner has_variable = zg361_b1_m360_source_forced_1_result_subject has_variable = zg361_b1_m360_source_forced_1_result_cycle has_variable = zg361_b1_m360_source_forced_1_result_case var:zg361_b1_m360_source_forced_1_processing_order >= 1 var:zg361_b1_m360_source_forced_1_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_1_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_1_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_1_b1_owner = this var:zg361_b1_m360_source_forced_1_b1_subject = var:zg361_b1_m360_source_forced_1_character var:zg361_b1_m360_source_forced_1_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_1_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_1_result_owner = this var:zg361_b1_m360_source_forced_1_result_subject = var:zg361_b1_m360_source_forced_1_character var:zg361_b1_m360_source_forced_1_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_1_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 2 } has_variable = zg361_b1_m360_source_forced_2_character has_variable = zg361_b1_m360_source_forced_2_processing_order has_variable = zg361_b1_m360_source_forced_2_m357_receipt_id has_variable = zg361_b1_m360_source_forced_2_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_2_b1_owner has_variable = zg361_b1_m360_source_forced_2_b1_subject has_variable = zg361_b1_m360_source_forced_2_b1_cycle has_variable = zg361_b1_m360_source_forced_2_b1_case has_variable = zg361_b1_m360_source_forced_2_result_owner has_variable = zg361_b1_m360_source_forced_2_result_subject has_variable = zg361_b1_m360_source_forced_2_result_cycle has_variable = zg361_b1_m360_source_forced_2_result_case var:zg361_b1_m360_source_forced_2_processing_order >= 1 var:zg361_b1_m360_source_forced_2_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_2_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_2_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_2_b1_owner = this var:zg361_b1_m360_source_forced_2_b1_subject = var:zg361_b1_m360_source_forced_2_character var:zg361_b1_m360_source_forced_2_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_2_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_2_result_owner = this var:zg361_b1_m360_source_forced_2_result_subject = var:zg361_b1_m360_source_forced_2_character var:zg361_b1_m360_source_forced_2_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_2_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 3 } has_variable = zg361_b1_m360_source_forced_3_character has_variable = zg361_b1_m360_source_forced_3_processing_order has_variable = zg361_b1_m360_source_forced_3_m357_receipt_id has_variable = zg361_b1_m360_source_forced_3_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_3_b1_owner has_variable = zg361_b1_m360_source_forced_3_b1_subject has_variable = zg361_b1_m360_source_forced_3_b1_cycle has_variable = zg361_b1_m360_source_forced_3_b1_case has_variable = zg361_b1_m360_source_forced_3_result_owner has_variable = zg361_b1_m360_source_forced_3_result_subject has_variable = zg361_b1_m360_source_forced_3_result_cycle has_variable = zg361_b1_m360_source_forced_3_result_case var:zg361_b1_m360_source_forced_3_processing_order >= 1 var:zg361_b1_m360_source_forced_3_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_3_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_3_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_3_b1_owner = this var:zg361_b1_m360_source_forced_3_b1_subject = var:zg361_b1_m360_source_forced_3_character var:zg361_b1_m360_source_forced_3_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_3_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_3_result_owner = this var:zg361_b1_m360_source_forced_3_result_subject = var:zg361_b1_m360_source_forced_3_character var:zg361_b1_m360_source_forced_3_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_3_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 4 } has_variable = zg361_b1_m360_source_forced_4_character has_variable = zg361_b1_m360_source_forced_4_processing_order has_variable = zg361_b1_m360_source_forced_4_m357_receipt_id has_variable = zg361_b1_m360_source_forced_4_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_4_b1_owner has_variable = zg361_b1_m360_source_forced_4_b1_subject has_variable = zg361_b1_m360_source_forced_4_b1_cycle has_variable = zg361_b1_m360_source_forced_4_b1_case has_variable = zg361_b1_m360_source_forced_4_result_owner has_variable = zg361_b1_m360_source_forced_4_result_subject has_variable = zg361_b1_m360_source_forced_4_result_cycle has_variable = zg361_b1_m360_source_forced_4_result_case var:zg361_b1_m360_source_forced_4_processing_order >= 1 var:zg361_b1_m360_source_forced_4_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_4_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_4_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_4_b1_owner = this var:zg361_b1_m360_source_forced_4_b1_subject = var:zg361_b1_m360_source_forced_4_character var:zg361_b1_m360_source_forced_4_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_4_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_4_result_owner = this var:zg361_b1_m360_source_forced_4_result_subject = var:zg361_b1_m360_source_forced_4_character var:zg361_b1_m360_source_forced_4_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_4_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 5 } has_variable = zg361_b1_m360_source_forced_5_character has_variable = zg361_b1_m360_source_forced_5_processing_order has_variable = zg361_b1_m360_source_forced_5_m357_receipt_id has_variable = zg361_b1_m360_source_forced_5_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_5_b1_owner has_variable = zg361_b1_m360_source_forced_5_b1_subject has_variable = zg361_b1_m360_source_forced_5_b1_cycle has_variable = zg361_b1_m360_source_forced_5_b1_case has_variable = zg361_b1_m360_source_forced_5_result_owner has_variable = zg361_b1_m360_source_forced_5_result_subject has_variable = zg361_b1_m360_source_forced_5_result_cycle has_variable = zg361_b1_m360_source_forced_5_result_case var:zg361_b1_m360_source_forced_5_processing_order >= 1 var:zg361_b1_m360_source_forced_5_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_5_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_5_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_5_b1_owner = this var:zg361_b1_m360_source_forced_5_b1_subject = var:zg361_b1_m360_source_forced_5_character var:zg361_b1_m360_source_forced_5_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_5_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_5_result_owner = this var:zg361_b1_m360_source_forced_5_result_subject = var:zg361_b1_m360_source_forced_5_character var:zg361_b1_m360_source_forced_5_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_5_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 6 } has_variable = zg361_b1_m360_source_forced_6_character has_variable = zg361_b1_m360_source_forced_6_processing_order has_variable = zg361_b1_m360_source_forced_6_m357_receipt_id has_variable = zg361_b1_m360_source_forced_6_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_6_b1_owner has_variable = zg361_b1_m360_source_forced_6_b1_subject has_variable = zg361_b1_m360_source_forced_6_b1_cycle has_variable = zg361_b1_m360_source_forced_6_b1_case has_variable = zg361_b1_m360_source_forced_6_result_owner has_variable = zg361_b1_m360_source_forced_6_result_subject has_variable = zg361_b1_m360_source_forced_6_result_cycle has_variable = zg361_b1_m360_source_forced_6_result_case var:zg361_b1_m360_source_forced_6_processing_order >= 1 var:zg361_b1_m360_source_forced_6_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_6_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_6_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_6_b1_owner = this var:zg361_b1_m360_source_forced_6_b1_subject = var:zg361_b1_m360_source_forced_6_character var:zg361_b1_m360_source_forced_6_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_6_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_6_result_owner = this var:zg361_b1_m360_source_forced_6_result_subject = var:zg361_b1_m360_source_forced_6_character var:zg361_b1_m360_source_forced_6_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_6_result_case > 0 } trigger_else = { always = yes }
+				}
+			}
+		}
+		set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 0 } }
+}
+
+zg361_we_m360_materialize_validate_cohort_2_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_we_m360_materialize_preflight_valid
+			var:zg361_we_m360_materialize_preflight_valid = 1
+			$TICKET_OWNER$ = {
+				var:zg361_p2c_m360_source_c2_manager = {
+					zg361_is_celestial_liege_trigger = yes
+					liege = scope:zg361_we_m360_materialize_owner
+					has_variable = zg361_b1_m360_source_available
+					has_variable = zg361_b1_m360_source_sealed
+					has_variable = zg361_b1_m360_source_status
+					has_variable = zg361_b1_m360_source_manager
+					has_variable = zg361_b1_m360_source_cycle
+					has_variable = zg361_b1_m360_source_case
+					has_variable = zg361_b1_m360_source_state
+					has_variable = zg361_b1_m360_source_id
+					has_variable = zg361_b1_m360_source_hash
+					has_variable = zg361_b1_m360_source_member_count
+					has_variable = zg361_b1_m360_source_member_hash
+					has_variable = zg361_b1_m360_source_agenda_count
+					has_variable = zg361_b1_m360_source_agenda_hash
+					has_variable = zg361_b1_m360_source_quota
+					has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+					has_variable = zg361_b1_m360_source_forced_count
+					var:zg361_b1_m360_source_available = 1
+					var:zg361_b1_m360_source_sealed = 1
+					var:zg361_b1_m360_source_status = 1
+					var:zg361_b1_m360_source_manager = this
+					var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_cycle
+					var:zg361_b1_m360_source_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_case
+					var:zg361_b1_m360_source_state = 8
+					var:zg361_b1_m360_source_id = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_source_id
+					var:zg361_b1_m360_source_hash = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_source_hash
+					var:zg361_b1_m360_source_member_count >= 1
+					var:zg361_b1_m360_source_member_hash > 0
+					var:zg361_b1_m360_source_agenda_count = var:zg361_b1_m360_source_member_count
+					var:zg361_b1_m360_source_agenda_hash = var:zg361_b1_m360_source_member_hash
+					var:zg361_b1_m360_source_quota = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_quota
+					var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+					var:zg361_b1_m360_source_all_meet_receipt_serial > 0
+					has_variable = zg361_mg_team_snapshot_status
+					has_variable = zg361_mg_team_snapshot_owner
+					has_variable = zg361_mg_team_snapshot_subject
+					has_variable = zg361_mg_team_snapshot_cycle
+					has_variable = zg361_mg_team_snapshot_case
+					has_variable = zg361_mg_team_snapshot_revision
+					has_variable = zg361_mg_snapshot_source_serial
+					has_variable = zg361_mg_team_snapshot_b1_available
+					has_variable = zg361_mg_team_snapshot_b1_manager
+					has_variable = zg361_mg_team_snapshot_b1_cycle
+					has_variable = zg361_mg_team_snapshot_b1_case
+					has_variable = zg361_mg_team_snapshot_b1_id
+					has_variable = zg361_mg_team_snapshot_b1_hash
+					var:zg361_mg_team_snapshot_status = 1
+					var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_materialize_owner
+					var:zg361_mg_team_snapshot_subject = this
+					var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_mg_cycle
+					var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_mg_case
+					var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_mg_snapshot_source_serial
+					var:zg361_mg_team_snapshot_revision = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_mg_snapshot_revision
+					var:zg361_mg_team_snapshot_b1_available = 1
+					var:zg361_mg_team_snapshot_b1_manager = this
+					var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_cycle
+					var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_case
+					var:zg361_mg_team_snapshot_b1_id = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_source_id
+					var:zg361_mg_team_snapshot_b1_hash = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_source_hash
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 1 } has_variable = zg361_b1_m360_source_forced_1_character has_variable = zg361_b1_m360_source_forced_1_processing_order has_variable = zg361_b1_m360_source_forced_1_m357_receipt_id has_variable = zg361_b1_m360_source_forced_1_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_1_b1_owner has_variable = zg361_b1_m360_source_forced_1_b1_subject has_variable = zg361_b1_m360_source_forced_1_b1_cycle has_variable = zg361_b1_m360_source_forced_1_b1_case has_variable = zg361_b1_m360_source_forced_1_result_owner has_variable = zg361_b1_m360_source_forced_1_result_subject has_variable = zg361_b1_m360_source_forced_1_result_cycle has_variable = zg361_b1_m360_source_forced_1_result_case var:zg361_b1_m360_source_forced_1_processing_order >= 1 var:zg361_b1_m360_source_forced_1_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_1_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_1_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_1_b1_owner = this var:zg361_b1_m360_source_forced_1_b1_subject = var:zg361_b1_m360_source_forced_1_character var:zg361_b1_m360_source_forced_1_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_1_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_1_result_owner = this var:zg361_b1_m360_source_forced_1_result_subject = var:zg361_b1_m360_source_forced_1_character var:zg361_b1_m360_source_forced_1_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_1_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 2 } has_variable = zg361_b1_m360_source_forced_2_character has_variable = zg361_b1_m360_source_forced_2_processing_order has_variable = zg361_b1_m360_source_forced_2_m357_receipt_id has_variable = zg361_b1_m360_source_forced_2_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_2_b1_owner has_variable = zg361_b1_m360_source_forced_2_b1_subject has_variable = zg361_b1_m360_source_forced_2_b1_cycle has_variable = zg361_b1_m360_source_forced_2_b1_case has_variable = zg361_b1_m360_source_forced_2_result_owner has_variable = zg361_b1_m360_source_forced_2_result_subject has_variable = zg361_b1_m360_source_forced_2_result_cycle has_variable = zg361_b1_m360_source_forced_2_result_case var:zg361_b1_m360_source_forced_2_processing_order >= 1 var:zg361_b1_m360_source_forced_2_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_2_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_2_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_2_b1_owner = this var:zg361_b1_m360_source_forced_2_b1_subject = var:zg361_b1_m360_source_forced_2_character var:zg361_b1_m360_source_forced_2_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_2_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_2_result_owner = this var:zg361_b1_m360_source_forced_2_result_subject = var:zg361_b1_m360_source_forced_2_character var:zg361_b1_m360_source_forced_2_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_2_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 3 } has_variable = zg361_b1_m360_source_forced_3_character has_variable = zg361_b1_m360_source_forced_3_processing_order has_variable = zg361_b1_m360_source_forced_3_m357_receipt_id has_variable = zg361_b1_m360_source_forced_3_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_3_b1_owner has_variable = zg361_b1_m360_source_forced_3_b1_subject has_variable = zg361_b1_m360_source_forced_3_b1_cycle has_variable = zg361_b1_m360_source_forced_3_b1_case has_variable = zg361_b1_m360_source_forced_3_result_owner has_variable = zg361_b1_m360_source_forced_3_result_subject has_variable = zg361_b1_m360_source_forced_3_result_cycle has_variable = zg361_b1_m360_source_forced_3_result_case var:zg361_b1_m360_source_forced_3_processing_order >= 1 var:zg361_b1_m360_source_forced_3_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_3_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_3_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_3_b1_owner = this var:zg361_b1_m360_source_forced_3_b1_subject = var:zg361_b1_m360_source_forced_3_character var:zg361_b1_m360_source_forced_3_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_3_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_3_result_owner = this var:zg361_b1_m360_source_forced_3_result_subject = var:zg361_b1_m360_source_forced_3_character var:zg361_b1_m360_source_forced_3_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_3_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 4 } has_variable = zg361_b1_m360_source_forced_4_character has_variable = zg361_b1_m360_source_forced_4_processing_order has_variable = zg361_b1_m360_source_forced_4_m357_receipt_id has_variable = zg361_b1_m360_source_forced_4_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_4_b1_owner has_variable = zg361_b1_m360_source_forced_4_b1_subject has_variable = zg361_b1_m360_source_forced_4_b1_cycle has_variable = zg361_b1_m360_source_forced_4_b1_case has_variable = zg361_b1_m360_source_forced_4_result_owner has_variable = zg361_b1_m360_source_forced_4_result_subject has_variable = zg361_b1_m360_source_forced_4_result_cycle has_variable = zg361_b1_m360_source_forced_4_result_case var:zg361_b1_m360_source_forced_4_processing_order >= 1 var:zg361_b1_m360_source_forced_4_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_4_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_4_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_4_b1_owner = this var:zg361_b1_m360_source_forced_4_b1_subject = var:zg361_b1_m360_source_forced_4_character var:zg361_b1_m360_source_forced_4_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_4_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_4_result_owner = this var:zg361_b1_m360_source_forced_4_result_subject = var:zg361_b1_m360_source_forced_4_character var:zg361_b1_m360_source_forced_4_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_4_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 5 } has_variable = zg361_b1_m360_source_forced_5_character has_variable = zg361_b1_m360_source_forced_5_processing_order has_variable = zg361_b1_m360_source_forced_5_m357_receipt_id has_variable = zg361_b1_m360_source_forced_5_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_5_b1_owner has_variable = zg361_b1_m360_source_forced_5_b1_subject has_variable = zg361_b1_m360_source_forced_5_b1_cycle has_variable = zg361_b1_m360_source_forced_5_b1_case has_variable = zg361_b1_m360_source_forced_5_result_owner has_variable = zg361_b1_m360_source_forced_5_result_subject has_variable = zg361_b1_m360_source_forced_5_result_cycle has_variable = zg361_b1_m360_source_forced_5_result_case var:zg361_b1_m360_source_forced_5_processing_order >= 1 var:zg361_b1_m360_source_forced_5_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_5_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_5_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_5_b1_owner = this var:zg361_b1_m360_source_forced_5_b1_subject = var:zg361_b1_m360_source_forced_5_character var:zg361_b1_m360_source_forced_5_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_5_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_5_result_owner = this var:zg361_b1_m360_source_forced_5_result_subject = var:zg361_b1_m360_source_forced_5_character var:zg361_b1_m360_source_forced_5_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_5_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 6 } has_variable = zg361_b1_m360_source_forced_6_character has_variable = zg361_b1_m360_source_forced_6_processing_order has_variable = zg361_b1_m360_source_forced_6_m357_receipt_id has_variable = zg361_b1_m360_source_forced_6_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_6_b1_owner has_variable = zg361_b1_m360_source_forced_6_b1_subject has_variable = zg361_b1_m360_source_forced_6_b1_cycle has_variable = zg361_b1_m360_source_forced_6_b1_case has_variable = zg361_b1_m360_source_forced_6_result_owner has_variable = zg361_b1_m360_source_forced_6_result_subject has_variable = zg361_b1_m360_source_forced_6_result_cycle has_variable = zg361_b1_m360_source_forced_6_result_case var:zg361_b1_m360_source_forced_6_processing_order >= 1 var:zg361_b1_m360_source_forced_6_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_6_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_6_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_6_b1_owner = this var:zg361_b1_m360_source_forced_6_b1_subject = var:zg361_b1_m360_source_forced_6_character var:zg361_b1_m360_source_forced_6_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_6_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_6_result_owner = this var:zg361_b1_m360_source_forced_6_result_subject = var:zg361_b1_m360_source_forced_6_character var:zg361_b1_m360_source_forced_6_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_6_result_case > 0 } trigger_else = { always = yes }
+				}
+			}
+		}
+		set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 0 } }
+}
+
+zg361_we_m360_materialize_validate_cohort_3_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_we_m360_materialize_preflight_valid
+			var:zg361_we_m360_materialize_preflight_valid = 1
+			$TICKET_OWNER$ = {
+				var:zg361_p2c_m360_source_c3_manager = {
+					zg361_is_celestial_liege_trigger = yes
+					liege = scope:zg361_we_m360_materialize_owner
+					has_variable = zg361_b1_m360_source_available
+					has_variable = zg361_b1_m360_source_sealed
+					has_variable = zg361_b1_m360_source_status
+					has_variable = zg361_b1_m360_source_manager
+					has_variable = zg361_b1_m360_source_cycle
+					has_variable = zg361_b1_m360_source_case
+					has_variable = zg361_b1_m360_source_state
+					has_variable = zg361_b1_m360_source_id
+					has_variable = zg361_b1_m360_source_hash
+					has_variable = zg361_b1_m360_source_member_count
+					has_variable = zg361_b1_m360_source_member_hash
+					has_variable = zg361_b1_m360_source_agenda_count
+					has_variable = zg361_b1_m360_source_agenda_hash
+					has_variable = zg361_b1_m360_source_quota
+					has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+					has_variable = zg361_b1_m360_source_forced_count
+					var:zg361_b1_m360_source_available = 1
+					var:zg361_b1_m360_source_sealed = 1
+					var:zg361_b1_m360_source_status = 1
+					var:zg361_b1_m360_source_manager = this
+					var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_cycle
+					var:zg361_b1_m360_source_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_case
+					var:zg361_b1_m360_source_state = 8
+					var:zg361_b1_m360_source_id = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_source_id
+					var:zg361_b1_m360_source_hash = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_source_hash
+					var:zg361_b1_m360_source_member_count >= 1
+					var:zg361_b1_m360_source_member_hash > 0
+					var:zg361_b1_m360_source_agenda_count = var:zg361_b1_m360_source_member_count
+					var:zg361_b1_m360_source_agenda_hash = var:zg361_b1_m360_source_member_hash
+					var:zg361_b1_m360_source_quota = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_quota
+					var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+					var:zg361_b1_m360_source_all_meet_receipt_serial > 0
+					has_variable = zg361_mg_team_snapshot_status
+					has_variable = zg361_mg_team_snapshot_owner
+					has_variable = zg361_mg_team_snapshot_subject
+					has_variable = zg361_mg_team_snapshot_cycle
+					has_variable = zg361_mg_team_snapshot_case
+					has_variable = zg361_mg_team_snapshot_revision
+					has_variable = zg361_mg_snapshot_source_serial
+					has_variable = zg361_mg_team_snapshot_b1_available
+					has_variable = zg361_mg_team_snapshot_b1_manager
+					has_variable = zg361_mg_team_snapshot_b1_cycle
+					has_variable = zg361_mg_team_snapshot_b1_case
+					has_variable = zg361_mg_team_snapshot_b1_id
+					has_variable = zg361_mg_team_snapshot_b1_hash
+					var:zg361_mg_team_snapshot_status = 1
+					var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_materialize_owner
+					var:zg361_mg_team_snapshot_subject = this
+					var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_mg_cycle
+					var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_mg_case
+					var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_mg_snapshot_source_serial
+					var:zg361_mg_team_snapshot_revision = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_mg_snapshot_revision
+					var:zg361_mg_team_snapshot_b1_available = 1
+					var:zg361_mg_team_snapshot_b1_manager = this
+					var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_cycle
+					var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_case
+					var:zg361_mg_team_snapshot_b1_id = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_source_id
+					var:zg361_mg_team_snapshot_b1_hash = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_source_hash
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 1 } has_variable = zg361_b1_m360_source_forced_1_character has_variable = zg361_b1_m360_source_forced_1_processing_order has_variable = zg361_b1_m360_source_forced_1_m357_receipt_id has_variable = zg361_b1_m360_source_forced_1_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_1_b1_owner has_variable = zg361_b1_m360_source_forced_1_b1_subject has_variable = zg361_b1_m360_source_forced_1_b1_cycle has_variable = zg361_b1_m360_source_forced_1_b1_case has_variable = zg361_b1_m360_source_forced_1_result_owner has_variable = zg361_b1_m360_source_forced_1_result_subject has_variable = zg361_b1_m360_source_forced_1_result_cycle has_variable = zg361_b1_m360_source_forced_1_result_case var:zg361_b1_m360_source_forced_1_processing_order >= 1 var:zg361_b1_m360_source_forced_1_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_1_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_1_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_1_b1_owner = this var:zg361_b1_m360_source_forced_1_b1_subject = var:zg361_b1_m360_source_forced_1_character var:zg361_b1_m360_source_forced_1_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_1_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_1_result_owner = this var:zg361_b1_m360_source_forced_1_result_subject = var:zg361_b1_m360_source_forced_1_character var:zg361_b1_m360_source_forced_1_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_1_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 2 } has_variable = zg361_b1_m360_source_forced_2_character has_variable = zg361_b1_m360_source_forced_2_processing_order has_variable = zg361_b1_m360_source_forced_2_m357_receipt_id has_variable = zg361_b1_m360_source_forced_2_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_2_b1_owner has_variable = zg361_b1_m360_source_forced_2_b1_subject has_variable = zg361_b1_m360_source_forced_2_b1_cycle has_variable = zg361_b1_m360_source_forced_2_b1_case has_variable = zg361_b1_m360_source_forced_2_result_owner has_variable = zg361_b1_m360_source_forced_2_result_subject has_variable = zg361_b1_m360_source_forced_2_result_cycle has_variable = zg361_b1_m360_source_forced_2_result_case var:zg361_b1_m360_source_forced_2_processing_order >= 1 var:zg361_b1_m360_source_forced_2_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_2_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_2_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_2_b1_owner = this var:zg361_b1_m360_source_forced_2_b1_subject = var:zg361_b1_m360_source_forced_2_character var:zg361_b1_m360_source_forced_2_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_2_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_2_result_owner = this var:zg361_b1_m360_source_forced_2_result_subject = var:zg361_b1_m360_source_forced_2_character var:zg361_b1_m360_source_forced_2_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_2_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 3 } has_variable = zg361_b1_m360_source_forced_3_character has_variable = zg361_b1_m360_source_forced_3_processing_order has_variable = zg361_b1_m360_source_forced_3_m357_receipt_id has_variable = zg361_b1_m360_source_forced_3_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_3_b1_owner has_variable = zg361_b1_m360_source_forced_3_b1_subject has_variable = zg361_b1_m360_source_forced_3_b1_cycle has_variable = zg361_b1_m360_source_forced_3_b1_case has_variable = zg361_b1_m360_source_forced_3_result_owner has_variable = zg361_b1_m360_source_forced_3_result_subject has_variable = zg361_b1_m360_source_forced_3_result_cycle has_variable = zg361_b1_m360_source_forced_3_result_case var:zg361_b1_m360_source_forced_3_processing_order >= 1 var:zg361_b1_m360_source_forced_3_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_3_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_3_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_3_b1_owner = this var:zg361_b1_m360_source_forced_3_b1_subject = var:zg361_b1_m360_source_forced_3_character var:zg361_b1_m360_source_forced_3_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_3_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_3_result_owner = this var:zg361_b1_m360_source_forced_3_result_subject = var:zg361_b1_m360_source_forced_3_character var:zg361_b1_m360_source_forced_3_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_3_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 4 } has_variable = zg361_b1_m360_source_forced_4_character has_variable = zg361_b1_m360_source_forced_4_processing_order has_variable = zg361_b1_m360_source_forced_4_m357_receipt_id has_variable = zg361_b1_m360_source_forced_4_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_4_b1_owner has_variable = zg361_b1_m360_source_forced_4_b1_subject has_variable = zg361_b1_m360_source_forced_4_b1_cycle has_variable = zg361_b1_m360_source_forced_4_b1_case has_variable = zg361_b1_m360_source_forced_4_result_owner has_variable = zg361_b1_m360_source_forced_4_result_subject has_variable = zg361_b1_m360_source_forced_4_result_cycle has_variable = zg361_b1_m360_source_forced_4_result_case var:zg361_b1_m360_source_forced_4_processing_order >= 1 var:zg361_b1_m360_source_forced_4_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_4_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_4_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_4_b1_owner = this var:zg361_b1_m360_source_forced_4_b1_subject = var:zg361_b1_m360_source_forced_4_character var:zg361_b1_m360_source_forced_4_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_4_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_4_result_owner = this var:zg361_b1_m360_source_forced_4_result_subject = var:zg361_b1_m360_source_forced_4_character var:zg361_b1_m360_source_forced_4_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_4_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 5 } has_variable = zg361_b1_m360_source_forced_5_character has_variable = zg361_b1_m360_source_forced_5_processing_order has_variable = zg361_b1_m360_source_forced_5_m357_receipt_id has_variable = zg361_b1_m360_source_forced_5_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_5_b1_owner has_variable = zg361_b1_m360_source_forced_5_b1_subject has_variable = zg361_b1_m360_source_forced_5_b1_cycle has_variable = zg361_b1_m360_source_forced_5_b1_case has_variable = zg361_b1_m360_source_forced_5_result_owner has_variable = zg361_b1_m360_source_forced_5_result_subject has_variable = zg361_b1_m360_source_forced_5_result_cycle has_variable = zg361_b1_m360_source_forced_5_result_case var:zg361_b1_m360_source_forced_5_processing_order >= 1 var:zg361_b1_m360_source_forced_5_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_5_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_5_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_5_b1_owner = this var:zg361_b1_m360_source_forced_5_b1_subject = var:zg361_b1_m360_source_forced_5_character var:zg361_b1_m360_source_forced_5_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_5_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_5_result_owner = this var:zg361_b1_m360_source_forced_5_result_subject = var:zg361_b1_m360_source_forced_5_character var:zg361_b1_m360_source_forced_5_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_5_result_case > 0 } trigger_else = { always = yes }
+					trigger_if = { limit = { var:zg361_b1_m360_source_quota >= 6 } has_variable = zg361_b1_m360_source_forced_6_character has_variable = zg361_b1_m360_source_forced_6_processing_order has_variable = zg361_b1_m360_source_forced_6_m357_receipt_id has_variable = zg361_b1_m360_source_forced_6_m357_receipt_hash has_variable = zg361_b1_m360_source_forced_6_b1_owner has_variable = zg361_b1_m360_source_forced_6_b1_subject has_variable = zg361_b1_m360_source_forced_6_b1_cycle has_variable = zg361_b1_m360_source_forced_6_b1_case has_variable = zg361_b1_m360_source_forced_6_result_owner has_variable = zg361_b1_m360_source_forced_6_result_subject has_variable = zg361_b1_m360_source_forced_6_result_cycle has_variable = zg361_b1_m360_source_forced_6_result_case var:zg361_b1_m360_source_forced_6_processing_order >= 1 var:zg361_b1_m360_source_forced_6_processing_order <= var:zg361_b1_m360_source_member_count var:zg361_b1_m360_source_forced_6_m357_receipt_id > 0 var:zg361_b1_m360_source_forced_6_m357_receipt_hash > 0 var:zg361_b1_m360_source_forced_6_b1_owner = this var:zg361_b1_m360_source_forced_6_b1_subject = var:zg361_b1_m360_source_forced_6_character var:zg361_b1_m360_source_forced_6_b1_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_6_b1_case = var:zg361_b1_m360_source_case var:zg361_b1_m360_source_forced_6_result_owner = this var:zg361_b1_m360_source_forced_6_result_subject = var:zg361_b1_m360_source_forced_6_character var:zg361_b1_m360_source_forced_6_result_cycle = var:zg361_b1_m360_source_cycle var:zg361_b1_m360_source_forced_6_result_case > 0 } trigger_else = { always = yes }
+				}
+			}
+		}
+		set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 0 } }
+}
+
+zg361_we_m360_materialize_validate_identity_uniqueness_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_we_m360_materialize_preflight_valid
+			var:zg361_we_m360_materialize_preflight_valid = 1
+			$TICKET_OWNER$ = {
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c1_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c1_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c1_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c1_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c1_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c1_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c1_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c1_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c1_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c1_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c1_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c1_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c1_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c1_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c1_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c2_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c1_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c1_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c2_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 1 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c2_quota >= 6 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c2_manager.var:zg361_b1_m360_source_forced_6_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 2 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 1 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_1_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 3 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 2 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_2_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 4 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 3 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_3_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 5 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 4 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_4_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+				trigger_if = { limit = { var:zg361_p2c_m360_source_c3_quota >= 5 var:zg361_p2c_m360_source_c3_quota >= 6 } NOT = { var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_5_character = var:zg361_p2c_m360_source_c3_manager.var:zg361_b1_m360_source_forced_6_character } } trigger_else = { always = yes }
+			}
+		}
+		set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 1 }
+	}
+	else = { set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 0 } }
+}

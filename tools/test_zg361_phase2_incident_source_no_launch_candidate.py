@@ -12,15 +12,48 @@ MANIFEST = ROOT / (
     "docs/phase2-promo/"
     "incident-production-source-capture-no-launch-candidate-5c54014-2026-09-04.json"
 )
-EFFECT_PATTERN = re.compile(r"^[A-Za-z0-9_]+\s*=\s*\{$", re.MULTILINE)
+EFFECT_PATTERN = re.compile(r"^(?P<name>[A-Za-z0-9_.:-]+)[ \t]*=[ \t]*\{")
 
 
 def _load() -> dict[str, object]:
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
 
+def _effect_names(path: Path) -> tuple[str, ...]:
+    """Return brace-depth-zero effect names without counting nested blocks."""
+
+    names: list[str] = []
+    depth = 0
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        code: list[str] = []
+        quoted = False
+        escaped = False
+        for character in line:
+            if quoted:
+                if escaped:
+                    escaped = False
+                elif character == "\\":
+                    escaped = True
+                elif character == '"':
+                    quoted = False
+                continue
+            if character == '"':
+                quoted = True
+                continue
+            if character == "#":
+                break
+            code.append(character)
+        code_line = "".join(code)
+        match = EFFECT_PATTERN.match(code_line)
+        if depth == 0 and match is not None:
+            names.append(match.group("name"))
+        depth += code_line.count("{") - code_line.count("}")
+    assert depth == 0, path
+    return tuple(names)
+
+
 def _effect_count(path: Path) -> int:
-    return len(EFFECT_PATTERN.findall(path.read_text(encoding="utf-8-sig")))
+    return len(_effect_names(path))
 
 
 def _git_blob(commit: str, relative: str) -> bytes:
@@ -173,17 +206,52 @@ def test_incident_effect_family_respects_hard_boundary() -> None:
     counts = {path.name: _effect_count(path) for path in files}
     assert files
     assert all(1 <= value <= 20 for value in counts.values())
-    recorded = boundary["canonical_incident_family_at_base"]
-    assert recorded["file_count"] == 27
-    assert recorded["min_effect_count"] == 1
-    assert recorded["max_effect_count"] == 12
+    expected_apply_shards = (
+        (
+            "zg361_incident_platform_z_apply_adoption_value_effects.txt",
+            tuple(f"zg361_ip_m{mechanism_id}_apply_effect" for mechanism_id in range(217, 220)),
+        ),
+        (
+            "zg361_incident_platform_z_apply_cost_migration_effects.txt",
+            tuple(f"zg361_ip_m{mechanism_id}_apply_effect" for mechanism_id in range(220, 223)),
+        ),
+        (
+            "zg361_incident_platform_z_apply_reuse_fork_effects.txt",
+            tuple(f"zg361_ip_m{mechanism_id}_apply_effect" for mechanism_id in range(223, 226)),
+        ),
+        (
+            "zg361_incident_platform_z_apply_credit_liability_effects.txt",
+            tuple(f"zg361_ip_m{mechanism_id}_apply_effect" for mechanism_id in range(226, 229)),
+        ),
+    )
     assert {
-        Path(item["path"]).name: item["effect_count"]
-        for item in recorded["files_over_target_max"]
-    } == {
-        "zg361_incident_platform_z_apply_217_222_effects.txt": 11,
-        "zg361_incident_platform_z_apply_223_228_effects.txt": 12,
-    }
+        filename: counts.get(filename)
+        for filename, _names in expected_apply_shards
+    } == {filename: 3 for filename, _names in expected_apply_shards}
+    assert all(
+        retired not in counts
+        for retired in (
+            "zg361_incident_platform_z_apply_217_222_effects.txt",
+            "zg361_incident_platform_z_apply_223_228_effects.txt",
+        )
+    )
+    assert tuple(
+        name
+        for filename, expected_names in expected_apply_shards
+        for name in _effect_names(effect_root / filename)
+    ) == tuple(
+        name
+        for _filename, expected_names in expected_apply_shards
+        for name in expected_names
+    ) == tuple(
+        f"zg361_ip_m{mechanism_id}_apply_effect"
+        for mechanism_id in range(217, 229)
+    )
+
+    # The manifest remains a frozen account of the older base commit.  It may
+    # retain historical paths, but those paths must not drive current-tree
+    # ownership or boundary assertions.
+    recorded = boundary["canonical_incident_family_at_base"]
     assert recorded["files_over_hard_principle_max"] == []
 
 

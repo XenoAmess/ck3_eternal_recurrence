@@ -214,7 +214,29 @@ class CareerHcWorkforcePostconditionContractTests(unittest.TestCase):
             contract["integration"]["native_provider_wiring"],
             "complete_default_off_until_live",
         )
-        self.assertFalse(contract["integration"]["formal_runner_registry_modified"])
+        self.assertTrue(contract["integration"]["formal_runner_registry_modified"])
+        self.assertEqual(
+            contract["generated_outputs"],
+            [
+                "mod_zhongguo_style/common/scripted_effects/zg361_career_hc_015_n_lifecycle_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+                "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt",
+            ],
+        )
+        generated_outputs = "\n".join(contract["generated_outputs"])
+        for old_owner in (
+            "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
+            "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
+            "zg361_workforce_endgame_058_al_m360_route_a_effects.txt",
+            "zg361_workforce_endgame_059_al_m360_route_b_effects.txt",
+        ):
+            self.assertNotIn(old_owner, generated_outputs)
 
     def test_exact_build_fixed_allowlist_and_public_request_are_frozen(self) -> None:
         abi = json.loads(ABI.read_text(encoding="utf-8"))

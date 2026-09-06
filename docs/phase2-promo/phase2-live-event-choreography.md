@@ -114,7 +114,8 @@ py tools/run_zhongguo_acceptance.py `
   --phase2-frontend-first-load-save-name <SAVE_AT_ZG361PP_147_OPTION1>
 ```
 
-该模式只在受管、product-only session 中等待并原生查询 `zg361pp.147`；要求 played owner 同时是事件 root 与保存的
+该模式在受管、product-only session 中遇到 `zg361pp.9100` 时固定选择逐案处理 D；A–C 会按产品定义后台办理
+`.146/.147`，无法生成这条专用 checkpoint。随后 runner 只等待并原生查询 `zg361pp.147`；要求 played owner 同时是事件 root 与保存的
 `zg361_pp_prompt_owner`，并绑定保存的 subject/case/cycle/mechanism/state、option 1 的 shown/enabled、同一 paused frame、
 原生存档 bytes/SHA/date/seed lineage。它不会点击 option，不加载 fixture，不使用 console/generic character rebind，也不把
 ACK 当作事件或业务状态。产物是 schema-2 的单条可追加输入，固定

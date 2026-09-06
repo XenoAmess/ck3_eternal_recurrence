@@ -152,6 +152,49 @@ class PlayerCopySemanticTests(unittest.TestCase):
         self.assertNotIn("B1 case identity", core_english)
         self.assertNotIn("B1 Peer Evidence", generated_english)
 
+        self.assertNotIn("影子档", generated_chinese)
+        self.assertNotIn("第 141 项", generated_chinese)
+        self.assertNotIn("第 142 项", generated_chinese)
+        self.assertNotIn("第 143 项", generated_chinese)
+        self.assertNotIn("第 144 项", generated_chinese)
+        self.assertNotIn("第 145 项", generated_chinese)
+        self.assertNotRegex(generated_english, r'"Item 14[1-5]\b')
+
+    def test_notice_body_explains_effects_without_hiding_the_menu(self) -> None:
+        core_chinese = (
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"
+        ).read_text(encoding="utf-8-sig")
+        core_english = (
+            MOD_ROOT / "localization" / "english" / "zg361_l_english.yml"
+        ).read_text(encoding="utf-8-sig")
+
+        self.assertNotIn("你可以直接签收，也可以", core_chinese)
+        self.assertNotIn("You may acknowledge it directly", core_english)
+        self.assertNotIn("幂等", core_chinese)
+        self.assertNotIn("背 C", core_chinese)
+        self.assertNotIn("posted idempotently", core_english)
+        self.assertIn('zg361.50.c:0 "拒绝签收。（7 日后见证送达）"', core_chinese)
+        self.assertIn(
+            'zg361.50.c:0 "Refuse to sign. (Witnessed service in seven days)"',
+            core_english,
+        )
+
+    def test_publication_and_provisional_events_use_plain_business_copy(self) -> None:
+        rendered = b1_outputs()
+        chinese = rendered[
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_b1_l_simp_chinese.yml"
+        ].decode("utf-8-sig")
+        english = rendered[
+            MOD_ROOT / "localization" / "english" / "zg361_b1_l_english.yml"
+        ].decode("utf-8-sig")
+
+        self.assertIn('zg361b1.201.t:0 "暂定考绩"', chinese)
+        self.assertIn('zg361b1.126.t:0 "你的考绩已经张榜"', chinese)
+        self.assertIn('zg361b1.201.t:0 "Provisional Assessment"', english)
+        self.assertIn('zg361b1.126.t:0 "Your Rating Has Been Posted"', english)
+        self.assertNotIn("上司的初步判断", chinese)
+        self.assertNotIn("Your Manager's Initial Judgment", english)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -71,14 +71,14 @@ def m(
 MECHANISMS: tuple[Mechanism, ...] = (
     m(312, "ah", 1, "market.publish_real_vacancy", "A Vacancy That Exists", "这岗位真的存在", "Publish real HC and terms", "公开真实编制与条款", "Post a phantom vacancy", "挂一个空气岗位"),
     m(313, "ah", 1, "market.freeze_structured_reference", "The Reference Has Columns", "推荐信终于有列", "Freeze the complete record", "冻结完整履历", "Omit risk and whisper revenge", "隐去风险并顺手报复"),
-    m(314, "ah", 2, "market.offer_relocation_package", "A Distant Posting in Writing", "一纸异地调令", "Accept the transfer with its relocation terms", "接受附有安置条款的调任方案", "Decline and remain at the present post", "谢绝调任，仍守本职"),
+    m(314, "ah", 2, "market.offer_relocation_package", "A Distant Posting in Writing", "一纸异地调令", "Accept the transfer; the office pays 15 gold and the manager pays 5", "接受调任；公帑支十五金、主官私库支五金", "Decline and remain at the present post", "谢绝调任，仍守本职"),
     m(315, "ah", 2, "market.run_bilateral_trial", "Ninety Days to Test the Post", "先试九十日，再定去留", "Begin the ninety-day trial", "依约开始九十日试任", "Decline and return to the former post", "职事不合，按约回任"),
     m(316, "ah", 3, "market.freeze_pay_mapping", "Map Pay Before the Move", "转岗前先把钱说清", "Protect and phase the mapping", "保薪并分期映射", "Force an immediate cut", "立刻降档省预算"),
     m(317, "ah", 3, "market.project_stage_acl", "Your Application Is Not Team News", "你的申请不是团队早报", "Respect stage ACL", "遵守分阶段权限", "Leak it and retaliate", "提前泄露并秋后算账"),
     m(318, "ah", 2, "market.consume_application_slot", "Two Petitions, Two Chances", "两封求调书，两次落笔", "File the petition and use one chance", "递交文书，用去一次名额", "Wait and keep this chance", "暂不递交，保留这次机会"),
     m(319, "ah", 4, "market.counteroffer_then_release", "One Last Offer", "离任前的最后挽留", "Decline and begin the thirty-day transfer", "拒绝挽留，启动三十日调任", "Remain on an unfulfilled promise; settle it in ninety days", "接受未兑现的挽留，九十日后追责"),
     m(320, "ah", 5, "market.aggregate_exit_voice", "Exit Voice Needs a Sample", "离职心声也要样本量", "Aggregate named and anonymous evidence", "聚合实名与匿名证据", "Reclassify the complaint away", "通过改类掩去投诉"),
-    m(321, "ah", 5, "market.maintain_alumni_relationship", "Old Colleagues, By Mutual Consent", "旧袍泽，也须两厢情愿", "Accept the card and remain in contact", "收下名帖，容后往来", "Return the card and part ways", "退回名帖，就此别过"),
+    m(321, "ah", 5, "market.maintain_alumni_relationship", "Old Colleagues, By Mutual Consent", "旧袍泽，也须两厢情愿", "Accept the card; the office pays 4 gold and the manager pays 2", "收下名帖；公帑支四金、主官私库支二金", "Return the card, end contact, and preserve the earlier record", "退回名帖，终止往来且保留昔日案卷"),
     m(322, "ah", 6, "market.open_returnee_case", "A Returnee Brings Old Receipts", "回流员工自带旧账", "Link old cases and new evidence", "回链旧案与新证据", "Attempt a clean-slate rewrite", "试图一键洗白历史"),
     m(323, "ai", 1, "learning.allocate_dual_budget", "Learning Has Two Budgets", "学习有两本预算", "Fund gold and protected hours", "同时拨金币与保护工时", "Buy certificates, reserve no time", "只买证书，不给时间"),
     m(324, "ai", 1, "learning.advance_three_stages", "Completed Is Not Applied", "结课不等于会用", "Prove completion, application, outcome", "证明结课、应用与结果", "Stop at the completion badge", "停在结课徽章"),
@@ -97,8 +97,8 @@ EXPECTED_IDS = tuple(range(312, 334))
 SUBJECT_RESPONSE_IDS = frozenset({314, 315, 318, 319, 321, 333})
 SUBJECT_RESPONSE_DESCRIPTIONS: dict[int, tuple[str, str]] = {
     314: (
-        "The distant posting carries a written relocation budget of 20 gold: 10 for the move, 6 for a temporary allowance, and 4 for the household. The answer given here does not change this review's rating.",
-        "这纸异地调令附有二十金的书面安置预算：迁费十金、临时津贴六金、家眷安置四金。本次考课档次不受这次答复影响。",
+        "The relocation budget totals 20 gold: 15 from the office treasury and 5 from the manager's purse, recorded as 10 for the move, 6 for a temporary allowance, and 4 for the household. The answer given here does not change this review's rating.",
+        "安置预算共二十金：官署公帑十五金、主官私库五金；其中迁费十金、临时津贴六金、家眷安置四金。本次考课档次不受这次答复影响。",
     ),
     315: (
         "The proposed trial lasts ninety days. The former office retains 40 percent of the credit and the new office receives 60 percent. You and both offices may end a poor fit, and a return to the former post is not treated as a low rating.",
@@ -113,8 +113,8 @@ SUBJECT_RESPONSE_DESCRIPTIONS: dict[int, tuple[str, str]] = {
         "最后一份书面挽留仍没有兑现凭据。调任可在三十日内办结；挽留承诺若九十日仍未交付，便按失约结案，责任记在许诺者名下。",
     ),
     321: (
-        "The former office enclosed a calling card in the departure file and asks to keep one line of contact. Continued contact requires your consent; ending it removes the contact entry but does not erase the earlier case record.",
-        "旧官署在离任案卷中夹了一张名帖，希望日后仍能联络。往来须经你同意；终止联络只会删去往来名册，昔日案卷仍旧留存。",
+        "The former office enclosed a calling card in the departure file and asks to keep one line of contact. Maintaining it requires consent and costs 6 gold: 4 from the office treasury and 2 from the manager's purse. Ending contact removes only the contact entry and preserves the earlier case record.",
+        "旧官署在离任案卷中夹了一张名帖，希望日后仍能联络。维持往来须征得你同意，并支出六金：官署公帑四金、主官私库二金；终止联络只删去往来名册，昔日案卷仍旧留存。",
     ),
     333: (
         "The training is funded with 18 gold from the office treasury and 6 from the sponsor's purse. The service bond is discharged through continued service; voluntary early departure makes 18 gold due after ninety days, while an involuntary dismissal waives repayment.",
@@ -2134,7 +2134,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "本轮人才安排已经登记"),
-                ("zg361_cl_digest_desc", "这套案卷里，六项会交由当事人亲自答复，另有十六项不另开窗口。由官署径办的十六项中，十五项固定采用各案第一项合规处置；保护工时一案另看实情：当事人或主官正在交战，才准登记借用并须按期补回；无战事便不虚构危机，而是留下未履约记录。由此登记真实岗位与完整履历，保护报酬和申请私密，追踪离任与回流旧案，也落实进修预算、实操验证、成果采用、导师产能、转型公平、继任演练及培训旧约。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。"),
+                ("zg361_cl_digest_desc", "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。"),
                 ("zg361_cl_digest_ack", "收下案卷，照章续办。"),
             )
         )
@@ -2142,7 +2142,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "This Round of Career Plans Is Recorded"),
-                ("zg361_cl_digest_desc", "Six matters in this docket ask the assessed official for a direct answer; sixteen open no separate response window. Of those sixteen background matters, fifteen always take each case's first compliant disposition. Protected time alone follows the real war facts: wartime permits a recorded loan that must be repaid, while peacetime cannot be called a crisis and leaves a non-performance record. These dispositions record real posts and complete references, protect pay and application privacy, preserve departure and returnee evidence, and settle training budgets, practical assessment, adoption, mentor capacity, reskilling fairness, succession drills, and training bonds. This round recorded [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] training matters; obligations still in progress will be reported when they fall due."),
+                ("zg361_cl_digest_desc", "The offices have closed this round of career-mobility and learning matters. Six matters concerning transfer, trial assignment, transfer petitions, counteroffers, former-office contact, or training bonds carry the assessed official's named answer; the other sixteen were resolved under standing rules, with a deadline and receipt retained for each. Protected hours may be borrowed only while the official or manager is at war; a peacetime request is recorded as non-performance. This round closed [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] learning matters; obligations still in progress will be reported when due."),
                 ("zg361_cl_digest_ack", "Take the docket and proceed."),
             )
         )
@@ -2160,18 +2160,18 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                 (f"zg361_cl_m{row.mechanism_id:03d}_title", title),
                 (f"zg361_cl_m{row.mechanism_id:03d}_desc", description),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_a", {
-                    314: "接受调任，按二十金安置方案赴任",
+                    314: "接受调任；公帑支十五金、主官私库支五金",
                     315: "开始九十日试任，按四六分记功劳",
                     318: "递交求调文书，用去一次名额",
                     319: "拒绝挽留，启动三十日调任",
-                    321: "收下名帖，同意日后往来",
+                    321: "收下名帖；公帑支四金、主官私库支二金",
                     333: "留下任职，以所学履行培训旧约",
                 }.get(row.mechanism_id, route_a) if chinese else {
-                    314: "Accept the transfer under the 20-gold relocation plan",
+                    314: "Accept the transfer; the office pays 15 gold and the manager pays 5",
                     315: "Begin the ninety-day trial under the 40/60 credit split",
                     318: "File the transfer petition and use one chance",
                     319: "Decline the counteroffer and begin the thirty-day transfer",
-                    321: "Accept the card and consent to future contact",
+                    321: "Accept the card; the office pays 4 gold and the manager pays 2",
                     333: "Remain in service and discharge the training bond",
                 }.get(row.mechanism_id, route_a)),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_b", {
@@ -2179,14 +2179,14 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                     315: "终止试任，按约回任且不记低档",
                     318: "暂不递交，保留这次求调名额",
                     319: "接受挽留；若九十日未兑现，按失约追责",
-                    321: "退回名帖，终止往来但保留旧案",
+                    321: "退回名帖，终止往来且保留昔日案卷",
                     333: "提前离任，九十日后归还十八金",
                 }.get(row.mechanism_id, route_b) if chinese else {
                     314: "Decline the transfer, keep the present post and rating",
                     315: "End the trial and return without a low rating",
                     318: "Do not file and keep this transfer chance",
                     319: "Accept the counteroffer; charge an undelivered promise after ninety days",
-                    321: "Return the card, end contact, and preserve the old record",
+                    321: "Return the card, end contact, and preserve the earlier case record",
                     333: "Leave early and repay 18 gold after ninety days",
                 }.get(row.mechanism_id, route_b)),
             )

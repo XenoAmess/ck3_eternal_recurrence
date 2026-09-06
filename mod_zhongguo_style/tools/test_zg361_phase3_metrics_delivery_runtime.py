@@ -1209,14 +1209,17 @@ class GeneratorContractTests(unittest.TestCase):
         )
         banned_cn = ("路线甲", "路线乙", "路线丙", "本卡承接", "按钮写明", "按A", "按B", "按C")
         banned_en = ("Routes A", "route C", "This card follows", "records its choice immediately")
+        weak_options_cn = ("双方各半", "两边各半", "退回补全", "按此办理", "照此办理")
+        descriptions_cn: set[str] = set()
         for spec in gen.MECHANISMS:
             with self.subTest(mid=spec.mid):
                 desc_cn = chinese[f"zg361p3.{spec.mid}.desc"]
                 desc_en = english[f"zg361p3.{spec.mid}.desc"]
                 self.assertNotIn(desc_cn[0], "。！？，、；：.!?;:[$@")
-                self.assertIn(f"[scope:zg361_p3_{spec.domain}_subject.GetShortUIName]", desc_cn)
-                self.assertIn(f"[scope:zg361_p3_{spec.domain}_owner.GetShortUIName]", desc_cn)
-                self.assertTrue(desc_en.startswith(gen.CASE_OPENING_EN[spec.domain]))
+                self.assertNotIn("是本案当事人", desc_cn)
+                self.assertNotIn("将作裁决", desc_cn)
+                descriptions_cn.add(desc_cn)
+                self.assertTrue(desc_en.startswith(spec.desc_en))
                 self.assertNotIn(gen.DEFER_ROUTE_CN, desc_cn)
                 self.assertNotIn(gen.DEFER_ROUTE_EN, desc_en)
                 for token in banned_cn:
@@ -1225,8 +1228,11 @@ class GeneratorContractTests(unittest.TestCase):
                     self.assertNotIn(token, desc_en)
                 for route in spec.routes_cn[:2]:
                     self.assertNotIn(route, desc_cn)
+                    for weak in weak_options_cn:
+                        self.assertNotIn(weak, route)
                 for route in spec.routes_en[:2]:
                     self.assertNotIn(route, desc_en)
+        self.assertEqual(len(descriptions_cn), len(gen.MECHANISMS))
 
     def test_m342_external_blocker_button_names_action_and_exact_consequences(self) -> None:
         expected_cn = "指定独立复核人负责解阻；阻塞工时归于团队无法控制的阻碍，交付团队不扣分。"

@@ -1,0 +1,158 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+# Compensation/LTI purpose shard: zg361_compensation_07c_portfolio_refresh_effects.txt
+# Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
+
+zg361_comp_portfolio_refresh_effect = {
+    if = {
+        limit = {
+            has_character_flag = zg361_comp_portfolio_active
+            has_variable = zg361_comp_portfolio_subject
+            OR = {
+                AND = {
+            var:zg361_comp_portfolio_domain = 1
+            var:zg361_comp_portfolio_subject = {
+                var:zg361_case_l_active = 1
+                OR = {
+                    AND = {
+                    var:zg361_case_l_state = 1
+                    OR = {
+                        var:zg361_comp_m082_consumed = 0
+                        var:zg361_comp_m083_consumed = 0
+                        var:zg361_comp_m084_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_l_state = 2
+                    OR = {
+                        var:zg361_comp_m085_consumed = 0
+                        var:zg361_comp_m086_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_l_state = 3
+                    OR = {
+                        var:zg361_comp_m087_consumed = 0
+                        var:zg361_comp_m088_consumed = 0
+                        var:zg361_comp_m089_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_l_state = 4
+                    OR = {
+                        var:zg361_comp_m090_consumed = 0
+                        var:zg361_comp_m091_consumed = 0
+                    }
+                }
+                }
+            }
+        }
+        AND = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_subject = {
+                var:zg361_case_ae_active = 1
+                OR = {
+                    AND = {
+                    var:zg361_case_ae_state = 1
+                    OR = {
+                        var:zg361_comp_m278_consumed = 0
+                        var:zg361_comp_m279_consumed = 0
+                        var:zg361_comp_m280_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_ae_state = 2
+                    OR = {
+                        var:zg361_comp_m281_consumed = 0
+                        var:zg361_comp_m282_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_ae_state = 3
+                    OR = {
+                        var:zg361_comp_m283_consumed = 0
+                        var:zg361_comp_m284_consumed = 0
+                        var:zg361_comp_m285_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_ae_state = 4
+                    OR = {
+                        var:zg361_comp_m286_consumed = 0
+                        var:zg361_comp_m287_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_ae_state = 5
+                    AND = {
+                        var:zg361_comp_ae_appeal_response_recorded = 1
+                        OR = {
+                        var:zg361_comp_m288_consumed = 0
+                        var:zg361_comp_m289_consumed = 0
+                    }
+                    }
+                }
+                }
+            }
+        }
+        AND = {
+            var:zg361_comp_portfolio_domain = 3
+            var:zg361_comp_portfolio_subject = {
+                var:zg361_case_af_active = 1
+                OR = {
+                    AND = {
+                    var:zg361_case_af_state = 1
+                    OR = {
+                        var:zg361_comp_m290_consumed = 0
+                        var:zg361_comp_m291_consumed = 0
+                        var:zg361_comp_m292_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_af_state = 2
+                    OR = {
+                        var:zg361_comp_m293_consumed = 0
+                        var:zg361_comp_m294_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_af_state = 3
+                    OR = {
+                        var:zg361_comp_m295_consumed = 0
+                        var:zg361_comp_m296_consumed = 0
+                    }
+                }
+AND = {
+                    var:zg361_case_af_state = 4
+                    OR = {
+                        var:zg361_comp_m297_consumed = 0
+                        var:zg361_comp_m298_consumed = 0
+                        AND = {
+                            var:zg361_comp_m297_consumed = 1
+                            var:zg361_comp_m298_consumed = 1
+                            var:zg361_comp_af_cliff_consumed = 1
+                            var:zg361_comp_af_exit_requested = 0
+                            var:zg361_comp_af_last_exit_offer_period < var:zg361_comp_af_periods_processed
+                        }
+                    }
+                }
+AND = {
+                    var:zg361_case_af_state = 5
+                    OR = {
+                        var:zg361_comp_m299_consumed = 0
+                        var:zg361_comp_m300_consumed = 0
+                    }
+                }
+                }
+            }
+        }
+            }
+            var:zg361_comp_portfolio_visible_pending = 0
+        }
+        set_variable = { name = zg361_comp_portfolio_visible_pending value = 1 }
+        if = {
+            limit = { is_ai = yes }
+            trigger_event = { id = zg361comp.2 days = 1 }
+        }
+        else = { trigger_event = { id = zg361comp.1 days = 1 } }
+    }
+}

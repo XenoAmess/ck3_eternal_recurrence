@@ -26,6 +26,8 @@ import sys
 import json
 from pathlib import Path
 
+from gen_scoreboard_snapshot import read_checked_in_scoreboard_effects
+
 MOD_ROOT = Path(__file__).resolve().parent.parent
 LANGUAGES = (
     "english", "simp_chinese", "french", "german", "japanese",
@@ -359,14 +361,31 @@ def collect_referenced_keys() -> dict[str, set[str]]:
     ids: set[str] = set()
     for ev in sorted((MOD_ROOT / "events").glob("zg361*.txt")):
         text = strip_comments_and_strings(read_text(ev))
-        file_ids = set(re.findall(r"^\s*(zg361m?\.\d+)\s*=\s*\{", text, re.M))
+        event_matches = list(
+            re.finditer(r"^\s*(zg361m?\.\d+)\s*=\s*\{", text, re.M)
+        )
+        file_ids = {match.group(1) for match in event_matches}
         duplicate_ids = ids & file_ids
         if duplicate_ids:
             err(f"duplicate event ids across zg361 event files: {sorted(duplicate_ids)}")
         ids |= file_ids
-        for eid in file_ids:
-            refs["events"].add(f"{eid}.t")
-            refs["events"].add(f"{eid}.desc")
+        for match in event_matches:
+            eid = match.group(1)
+            opening_brace = text.find("{", match.start())
+            depth = 0
+            closing_brace = len(text)
+            for offset in range(opening_brace, len(text)):
+                if text[offset] == "{":
+                    depth += 1
+                elif text[offset] == "}":
+                    depth -= 1
+                    if depth == 0:
+                        closing_brace = offset + 1
+                        break
+            event_block = text[opening_brace:closing_brace]
+            if not re.search(r"(?m)^\s*hidden\s*=\s*yes\s*$", event_block):
+                refs["events"].add(f"{eid}.t")
+                refs["events"].add(f"{eid}.desc")
         for m in re.finditer(r"name\s*=\s*(zg361m?\.\d+\.\w+)", text):
             refs["event_options"].add(m.group(1))
         for m in re.finditer(r"custom_tooltip\s*=\s*(zg361m?\.\d+\.[A-Za-z0-9_.]+)", text):
@@ -504,9 +523,7 @@ def check_runtime_invariants() -> None:
         err("negative add_gold pattern is invalid on CK3 1.19")
     if "trigger = {\n\t\tzg361_is_elimination_candidate_trigger = yes" not in events:
         err("delayed elimination event must re-check candidate status")
-    snapshot_effects = read_text(
-        MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_scoreboard_snapshots.txt"
-    )
+    snapshot_effects = read_checked_in_scoreboard_effects(MOD_ROOT)
     slot_guis = read_text(
         MOD_ROOT / "common" / "scripted_guis" / "zg361_generated_scoreboard_slots.txt"
     )

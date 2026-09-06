@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 1_050_894)
+        self.assertEqual(len(historical), 1_051_936)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "852df456a88d74c64d82134e272d343f3bc90a3d129e283c996dea10095667c4",
+            "4fe8ea6143bbc1532b2f9890ed0b6a5c32a5ea41fcb849c1bc99089b5c7f98ac",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -96,6 +96,9 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 self.assertLessEqual(count, gen.EFFECT_HARD_MAX)
                 payload = (effects_dir / group.filename).read_bytes()
                 self.assertTrue(payload.startswith(gen.BOM))
+                visible_count = len(gen.flush_left_assignment_names(payload))
+                self.assertGreaterEqual(visible_count, 1)
+                self.assertLessEqual(visible_count, gen.EFFECT_TARGET_MAX)
                 blocks = gen.top_level_effect_blocks(payload)
                 self.assertEqual(
                     tuple(name for name, _block in blocks),
@@ -103,6 +106,28 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 )
                 for name, block in blocks:
                     self.assertEqual(block, source_by_name[name])
+
+        formerly_oversized_stage_counts = {
+            "zg361_feedback_promotion_pip_003_t_stages_01_effects.txt": 5,
+            "zg361_feedback_promotion_pip_004_t_stages_02_03_effects.txt": 8,
+            "zg361_feedback_promotion_pip_005_t_stages_04_effects.txt": 5,
+            "zg361_feedback_promotion_pip_006_u_stages_01_effects.txt": 5,
+            "zg361_feedback_promotion_pip_007_u_stages_02_03_effects.txt": 8,
+            "zg361_feedback_promotion_pip_008_u_stages_04_effects.txt": 5,
+            "zg361_feedback_promotion_pip_009_v_stages_01_effects.txt": 5,
+            "zg361_feedback_promotion_pip_010_v_stages_02_03_effects.txt": 8,
+            "zg361_feedback_promotion_pip_011_v_stages_04_05_effects.txt": 9,
+            "zg361_feedback_promotion_pip_012_w_stages_01_effects.txt": 5,
+            "zg361_feedback_promotion_pip_013_w_stages_02_03_effects.txt": 8,
+            "zg361_feedback_promotion_pip_014_w_stages_04_05_effects.txt": 9,
+        }
+        self.assertEqual(
+            {
+                filename: len(gen.flush_left_assignment_names(self.effect_parts[filename]))
+                for filename in formerly_oversized_stage_counts
+            },
+            formerly_oversized_stage_counts,
+        )
 
     def test_exact_146_191_coverage_and_domain_partition(self) -> None:
         self.assertEqual(tuple(row.mechanism_id for row in gen.MECHANISMS), tuple(range(146, 192)))
@@ -1334,13 +1359,107 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertNotIn(title, desc, f"{mid}: body repeats title")
             self.assertNotRegex(desc, r"^[。！？；：，、.?!;:,\[]")
             self.assertNotRegex(desc, r"路线[甲乙丙]|按\s*[ABC]\s*(?:做|办|执行)")
+            self.assertNotRegex(
+                desc,
+                r"当前需要你回应|你只是在决定|下方按钮|按钮及说明|本卡|玩家|结算器|回写",
+            )
             for letter in "abc":
                 label = loc[f"zg361pp.{mid}.{letter}"]
                 tooltip = loc[f"zg361pp.{mid}.{letter}.tt"]
                 self.assertLessEqual(len(label), 40, f"{mid}.{letter}: overlong label")
                 self.assertNotRegex(label, r"路线[甲乙丙]|按\s*[ABC]\s*(?:做|办|执行)")
+                self.assertNotRegex(label, r"^(?:按|选择)\s*[ABC甲乙丙]|^照做$")
+                self.assertNotIn(label, desc, f"{mid}.{letter}: body copies the decision")
                 self.assertIn("计划核验日", tooltip)
         self.assertEqual(len(descriptions), len(set(descriptions)))
+
+        # Audit every visible PP body, not only the 46 manager cards.  A body
+        # must begin with authored facts, never punctuation or a dynamic scope,
+        # and must not fall back to implementation/UI instructions.
+        visible_desc = {
+            key: value for key, value in loc.items() if key.endswith(".desc")
+        }
+        self.assertEqual(len(visible_desc), 54)
+        for key, desc in visible_desc.items():
+            self.assertNotRegex(desc, r"^[。！？；：，、.?!;:,\[]", key)
+            self.assertNotRegex(
+                desc,
+                r"当前需要你回应|你只是在决定|下方按钮|按钮及说明|本卡|玩家|结算器|回写",
+                key,
+            )
+
+        event_body_keys = set(
+            re.findall(r"\bdesc = (zg361pp\.[A-Za-z0-9_.]+)", self.events)
+        )
+        self.assertEqual(len(event_body_keys), 77)
+        for key in event_body_keys:
+            self.assertIn(key, loc)
+            self.assertNotRegex(loc[key], r"^[。！？；：，、.?!;:,\[]", key)
+
+        option_keys = set(
+            re.findall(r"\bname = (zg361pp\.[A-Za-z0-9_.]+)", self.events)
+        )
+        self.assertEqual(len(option_keys), 153)
+        for key in option_keys:
+            self.assertIn(key, loc)
+            self.assertNotRegex(
+                loc[key],
+                r"^(?:按|选择)\s*[ABC甲乙丙](?:做|办|执行)?(?:。)?$|^照做(?:。)?$",
+                key,
+            )
+
+        title_body_pairs = [
+            ("zg361pp.9100.t", "zg361pp.9100.desc"),
+            ("zg361pp.5151.t", "zg361pp.5151.desc"),
+            ("zg361pp.166.t", "zg361pp.5166.desc"),
+            ("zg361pp.190.t", "zg361pp.5190.desc"),
+            *((f"zg361pp.{mid}.t", f"zg361pp.{mid}.desc") for mid in range(146, 192)),
+            *((f"zg361pp.{mid}.t", f"zg361pp.{mid}.desc") for mid in range(9001, 9005)),
+        ]
+        for title_key, body_key in title_body_pairs:
+            self.assertNotIn(loc[title_key], loc[body_key], body_key)
+
+        self.assertIn("送达回执与申诉时钟已经进入案卷", loc["zg361pp.151.desc"])
+        self.assertIn("候选本人已经选择继续参评", loc["zg361pp.166.desc"])
+        self.assertIn("披露回应已经进入案卷", loc["zg361pp.190.desc"])
+        self.assertIn("撤回权只属于", loc["zg361pp.5166.desc"])
+        self.assertIn("本人陈述尚未附卷", loc["zg361pp.5190.desc"])
+        self.assertNotIn("告身已经送达", loc["zg361pp.5151.desc"])
+        completion_desc = []
+        completion_options = []
+        for domain_index, domain in enumerate(gen.DOMAINS, start=1):
+            event_id = 9000 + domain_index
+            expected = gen.COMPLETION_COPY[domain.key]
+            completion_desc.append(loc[f"zg361pp.{event_id}.desc"])
+            completion_options.append(loc[f"zg361pp.{event_id}.a"])
+            self.assertEqual(loc[f"zg361pp.{event_id}.desc"], expected[0])
+            self.assertEqual(loc[f"zg361pp.{event_id}.a"], expected[2])
+        self.assertEqual(len(set(completion_desc)), 4)
+        self.assertEqual(len(set(completion_options)), 4)
+
+        english_rows = gen.localization_rows("english")
+        english = "\n".join(english_rows)
+        for stale in (
+            "has not yet chosen between receipt alone",
+            "must personally decide whether to withdraw",
+            "now decides whether to attach a personal statement",
+            "The notice has been served",
+            "This cycle's institutional choices are now in the file",
+        ):
+            self.assertNotIn(stale, english)
+        english_loc: dict[str, str] = {}
+        for row in english_rows:
+            match = re.match(r'^\s*([^:]+):\d+\s+"(.*)"$', row)
+            if match:
+                english_loc[match.group(1)] = match.group(2)
+        self.assertEqual(
+            len({english_loc[f"zg361pp.{event_id}.desc"] for event_id in range(9001, 9005)}),
+            4,
+        )
+        self.assertEqual(
+            len({english_loc[f"zg361pp.{event_id}.a"] for event_id in range(9001, 9005)}),
+            4,
+        )
 
     def test_all_manager_options_expose_cost_and_deadline_tooltips(self) -> None:
         for mechanism in gen.MECHANISMS:

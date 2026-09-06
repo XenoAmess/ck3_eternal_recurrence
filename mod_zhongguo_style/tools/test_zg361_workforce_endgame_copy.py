@@ -27,6 +27,15 @@ def literal_length(text: str) -> int:
     return len(re.sub(r"\[[^]]+]", "", text).strip())
 
 
+def localization_rows(language: str) -> dict[str, str]:
+    text = gen.render_localization(language).decode("utf-8-sig")
+    return {
+        match.group(1): match.group(2)
+        for row in text.splitlines()[1:]
+        if (match := re.match(r'^ ([^:]+):0 "(.*)"$', row)) is not None
+    }
+
+
 class WorkforceEndgameCopyTest(unittest.TestCase):
     def test_all_forty_cards_have_unique_concrete_scenes(self) -> None:
         expected = set(gen.EXPECTED_MECHANISM_IDS)
@@ -116,6 +125,92 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
             self.assertNotIn(term, chinese_title)
         for term in FORBIDDEN_HANDOFF_TITLE_EN:
             self.assertNotIn(term, english_title)
+
+    def test_every_visible_body_passes_the_same_literal_review(self) -> None:
+        rows = localization_rows("simp_chinese")
+        main_bodies = {f"zg361we.{mid}.desc" for mid in gen.EXPECTED_MECHANISM_IDS}
+        handoff_bodies = {
+            f"zg361we.handoff.{step}.{viewer}.desc"
+            for step in (1, 2, 3)
+            for viewer in ("subject", "owner")
+        }
+        body_keys = main_bodies | handoff_bodies
+        self.assertEqual(46, len(body_keys))
+        self.assertTrue(body_keys.issubset(rows))
+        self.assertEqual(46, len({rows[key] for key in body_keys}))
+        for key in sorted(body_keys):
+            body = rows[key].lstrip()
+            with self.subTest(key=key):
+                self.assertTrue(body)
+                self.assertFalse(body.startswith(("[", *PUNCTUATION_OPENERS)))
+                for term in CHINESE_TEMPLATE_TERMS:
+                    self.assertNotIn(term, body)
+        for step in (1, 2, 3):
+            title = rows[f"zg361we.handoff.{step}.t"]
+            for viewer in ("subject", "owner"):
+                self.assertNotIn(title, rows[f"zg361we.handoff.{step}.{viewer}.desc"])
+
+    def test_every_visible_button_names_an_action_outside_the_body(self) -> None:
+        rows = localization_rows("simp_chinese")
+        main_buttons = {
+            f"zg361we.{mid}.{letter}"
+            for mid in gen.EXPECTED_MECHANISM_IDS
+            for letter in "abc"
+        }
+        handoff_buttons = {
+            f"zg361we.handoff.{step}.{viewer}.{outcome}"
+            for step in (1, 2, 3)
+            for viewer in ("subject", "owner")
+            for outcome in ("complete", "refuse")
+        }
+        button_keys = main_buttons | handoff_buttons
+        self.assertEqual(132, len(button_keys))
+        self.assertTrue(button_keys.issubset(rows))
+        for key in sorted(button_keys):
+            label = rows[key]
+            with self.subTest(key=key):
+                self.assertTrue(label.strip())
+                self.assertLessEqual(literal_length(label), 42)
+                self.assertNotRegex(label, r"(?:路线[甲乙ABC]|按\s*[ABC]\s*(?:做|办|执行)?)")
+        for mid in gen.EXPECTED_MECHANISM_IDS:
+            body = rows[f"zg361we.{mid}.desc"]
+            for letter in "abc":
+                label = rows[f"zg361we.{mid}.{letter}"]
+                if len(label) >= 6:
+                    self.assertNotIn(label, body, (mid, letter))
+        for step in (1, 2, 3):
+            bodies = " ".join(
+                rows[f"zg361we.handoff.{step}.{viewer}.desc"]
+                for viewer in ("subject", "owner")
+            )
+            for viewer in ("subject", "owner"):
+                for outcome in ("complete", "refuse"):
+                    label = rows[f"zg361we.handoff.{step}.{viewer}.{outcome}"]
+                    self.assertNotIn(label, bodies, (step, viewer, outcome))
+
+    def test_final_chinese_projection_contains_no_reviewed_technical_shortcuts(self) -> None:
+        rows = localization_rows("simp_chinese")
+        forbidden = (*FORBIDDEN_TECHNICAL_CN, "PPT", "群里", "知识库", "@")
+        for key, value in rows.items():
+            for term in forbidden:
+                with self.subTest(key=key, term=term):
+                    self.assertNotIn(term, value)
+
+    def test_defer_tooltips_never_wrap_titles_with_nested_quotes(self) -> None:
+        chinese = localization_rows("simp_chinese")
+        english = localization_rows("english")
+        for mid in gen.EXPECTED_MECHANISM_IDS:
+            cn = chinese[f"zg361we.{mid}.c.tt"]
+            en = english[f"zg361we.{mid}.c.tt"]
+            with self.subTest(mid=mid):
+                self.assertTrue(cn.startswith("这项裁决保持未决："))
+                self.assertTrue(en.startswith("This ruling remains unresolved."))
+                self.assertNotIn(gen.by_id()[mid].title_cn, cn)
+                self.assertNotIn(gen.by_id()[mid].title_en, en)
+                self.assertNotIn("““", cn)
+                self.assertNotIn("””", cn)
+        for mid in (244, 273, 360):
+            self.assertNotRegex(chinese[f"zg361we.{mid}.c.tt"], r"[“”][^“”]*[“”][^“”]*[“”]")
 
 
 if __name__ == "__main__":

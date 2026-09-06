@@ -26,14 +26,29 @@ r3 `product-source/common/scripted_effects` 共 **401 个文件、3581 个顶层
 |---|---:|---:|---|
 | `zg361_generated_mechanism_effects.txt` | 1449 | 1,019,397 | 拆分 |
 | `zg361_generated_scoreboard_snapshots.txt` | 6 | 480,700 | 保持；已经符合 1–10 |
-| `zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt` | 1 | 478,588 | 保持；单定义不可做纯边界拆分 |
-| `zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt` | 1 | 469,778 | 保持；单定义不可做纯边界拆分 |
-| `zg361_workforce_endgame_058_al_m360_route_a_effects.txt` | 1 | 335,797 | 保持；单定义不可做纯边界拆分 |
-| `zg361_workforce_endgame_059_al_m360_route_b_effects.txt` | 1 | 319,374 | 保持；单定义不可做纯边界拆分 |
+| `zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt` | 1 | 478,588 | r3 历史判断为保持；2026-09-06 已推翻并强拆 |
+| `zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt` | 1 | 469,778 | r3 历史判断为保持；2026-09-06 已推翻并强拆 |
+| `zg361_workforce_endgame_058_al_m360_route_a_effects.txt` | 1 | 335,797 | r3 历史判断为保持；2026-09-06 已推翻并强拆 |
+| `zg361_workforce_endgame_059_al_m360_route_b_effects.txt` | 1 | 319,374 | r3 历史判断为保持；2026-09-06 已推翻并强拆 |
 | `zg361_b1_runtime_effects.txt` | 41 | 255,586 | 拆分 |
 | `zg361_b1_runtime_effects_part2.txt` | 36 | 240,700 | 拆分 |
 | `zg361_workforce_endgame_055_ad_m276_m277_effects.txt` | 8 | 130,221 | 保持；已经符合 1–10 |
 | `zg361_workforce_endgame_005_m360_central_source_effects.txt` | 2 | 120,279 | 保持；已经符合 1–10 |
+
+### 2026-09-06：超大单定义已强拆
+
+r3 的“单定义只能保持”只描述当时不改 definition surface 的纯文件边界实验，不能继续作为 canonical
+生成规则。现行字节门禁要求每个 effect 文件不超过 `204,800 B`；因此生成器已经把上述四个 owner
+按预检、分批校验、清理、中央写入、业务写入和稳定 public entry 拆为 14 个 helper/public 分片，并退役
+四个旧文件。原 public effect 名称保持不变，但其内部改为按冻结顺序调用 helper；这是一项有语义回归
+要求的内部重构，不再声称 definition block 逐字节不变。
+
+重生成后的 M360 新分片为 `44,993–98,364 B`；Workforce 全族最大文件为
+`zg361_workforce_endgame_055_ad_m276_m277_effects.txt` 的 `130,221 B`。2026-09-06 静态结果为：
+146 个 Workforce/Endgame 生成文件 current，runtime 普通模式与 `-O` 各 `122/122` GREEN，copy
+普通模式与 `-O` 各 `12/12` GREEN；全局 boundary 为 `713` 个 effect 文件、`3,813` 个顶层
+effect、最大 `130,221 B`，全部通过 `204,800 B` 硬门禁。本结果是 static-ready，尚不替代拆分后的
+CK3 实机回归。
 
 三个 B owner 的冻结身份为：
 
@@ -132,11 +147,19 @@ CK3 启动必须继续串行。每个 attempt 使用全新隔离 userdir，禁�
 
 ## 诚实边界与 B 后续
 
-四个 319–478 KB 文件各自只有一个完整 effect。保持 effect body 和调用图完全不变时，它们不能继续按文件边界拆分。`zg361_generated_scoreboard_snapshots.txt` 虽有 480,700 bytes，也已经只有 6 个 definitions；按 1–10 政策它不是违规项。
+> **历史判断，已由 2026-09-06 字节硬门与正式强拆取代。** 下两段只解释 2026-09-04
+> 为什么 byte-identity A/B 当时没有继续修改单 effect；它们不再定义当前合规边界。
+
+四个 319–478 KB 文件各自只有一个完整 effect。保持 effect body 和调用图完全不变时，它们不能继续按文件边界拆分。当时仅按 1–10 definitions 政策还把 `zg361_generated_scoreboard_snapshots.txt` 视作合规；这项判断现已失效，因为当前同时执行每文件不超过 `204,800 B` 的字节硬门。
 
 所以，若本 B 仍是纯性能 RED，下一实验不能继续称为“仅边界拆分”：必须把超大单 effect 抽取为 helper definitions，届时 effect surface 和调用图都会改变，需要新的语义回归与实机证据。
 
 B 若实机 GREEN，正式合并仍需修改 `gen_361_mechanisms.py` 与 `gen_361_b1_runtime.py` 让 shards 成为生成器权威输出，退役三个 monolith，更新 projection/release allowlist 与所有读取旧路径的测试，然后运行 generators `--check`、`validate_local.py`、release reproducibility 和完整 focused/live 验收。一次性 B source 不能直接当正式发布源。
+
+2026-09-06 的 canonical 生成器已经完成当时所说的 helper 重构：四个旧 Workforce owner 退役并拆成
+14 个 helper/public 分片，M360 新分片最大 `98,364 B`；旧榜单 owner 也已另行拆分。当前全局
+boundary 为 713 个 effect 文件、3,813 个顶层 effect、最大 `130,221 B`，不再存在“definition 数量少
+即可保留超大文件”的例外。
 
 ## r5 同条件 A/B 实机证据（2026-09-04）
 

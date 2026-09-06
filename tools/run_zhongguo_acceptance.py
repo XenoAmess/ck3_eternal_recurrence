@@ -243,6 +243,7 @@ TOOLS_DIRECTORY = ROOT / "tools"
 if str(TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIRECTORY))
 
+from gen_scoreboard_snapshot import read_checked_in_scoreboard_effects
 from zhongguo_phase2_promo_producer import (
     Phase2PromoCaptureContext,
     Phase2PromoProducerUnavailable,
@@ -3669,14 +3670,12 @@ def product_source_errors() -> list[str]:
             continue
         core_effect_texts.append(shard.read_text(encoding="utf-8-sig"))
     effects_text = "\n".join(core_effect_texts)
-    snapshot_effects = (
-        effects_root / "zg361_generated_scoreboard_snapshots.txt"
-    )
-    scoreboard_effects_text = effects_text + (
-        snapshot_effects.read_text(encoding="utf-8-sig")
-        if snapshot_effects.is_file()
-        else ""
-    )
+    try:
+        snapshot_effects_text = read_checked_in_scoreboard_effects(SOURCE)
+    except FileNotFoundError:
+        errors.append("generated scoreboard effect shards are missing")
+        snapshot_effects_text = ""
+    scoreboard_effects_text = effects_text + snapshot_effects_text
     for token in (
         "zg361_run_review_effect = {",
         'debug_log = "ZG361: annual review tick"',
@@ -21738,9 +21737,10 @@ if __name__ == "__main__":
         "--phase2-promotion-source-checkpoint-live",
         action="store_true",
         help=(
-            "in a managed product-only session, wait for real zg361pp.147 "
-            "option 1 and emit its single schema-2 checkpoint merge input; "
-            "does not select the option or claim a complete registry"
+            "in a managed product-only session, select PP itemized mode D, "
+            "wait for real zg361pp.147 option 1 and emit its single schema-2 "
+            "checkpoint merge input; does not select the source option or "
+            "claim a complete registry"
         ),
     )
     parser.add_argument(

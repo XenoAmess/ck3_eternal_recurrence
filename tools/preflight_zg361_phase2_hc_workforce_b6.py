@@ -50,12 +50,24 @@ CMAKE = NATIVE_BRIDGE / "CMakeLists.txt"
 SERVICE = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "service.py"
 MCP_SERVER = AUTOPLAYER_SRC / "xar_autoplayer" / "bridge" / "mcp_server.py"
 FORMAL_RUNNER = ROOT / "tools" / "run_zhongguo_acceptance.py"
-ROUTE_B_EFFECT = (
-    ROOT
-    / "mod_zhongguo_style"
-    / "common"
-    / "scripted_effects"
-    / "zg361_workforce_endgame_059_al_m360_route_b_effects.txt"
+WORKFORCE_EFFECTS = (
+    ROOT / "mod_zhongguo_style" / "common" / "scripted_effects"
+)
+ROUTE_B_EFFECT_SHARDS = tuple(
+    WORKFORCE_EFFECTS / filename
+    for filename in (
+        "zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+        "zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+        "zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+        "zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+        "zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+        "zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+        "zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+        "zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt",
+    )
+)
+RETIRED_ROUTE_B_EFFECT = (
+    WORKFORCE_EFFECTS / "zg361_workforce_endgame_059_al_m360_route_b_effects.txt"
 )
 CAREER_EFFECTS = (
     ROOT / "mod_zhongguo_style" / "common" / "scripted_effects"
@@ -74,7 +86,9 @@ def _default_adapter_projection(source: str) -> str:
 
 def run_preflight() -> dict[str, object]:
     contract = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
-    route_b = ROUTE_B_EFFECT.read_text(encoding="utf-8-sig")
+    route_b = "\n".join(
+        path.read_text(encoding="utf-8-sig") for path in ROUTE_B_EFFECT_SHARDS
+    )
     action_cell = ACTION_CELL.read_text(encoding="utf-8")
     native_header = NATIVE_HEADER.read_text(encoding="utf-8")
     native_source = NATIVE_SOURCE.read_text(encoding="utf-8")
@@ -181,6 +195,12 @@ def run_preflight() -> dict[str, object]:
             and "action_ack_is_business_postcondition" in action_cell
             and "subject_provider_session_required" in action_cell
         ),
+        "route_b_effect_shards_are_canonical": (
+            all(path.is_file() for path in ROUTE_B_EFFECT_SHARDS)
+            and not RETIRED_ROUTE_B_EFFECT.exists()
+            and contract.get("generated_outputs", [])[1:]
+            == [path.relative_to(ROOT).as_posix() for path in ROUTE_B_EFFECT_SHARDS]
+        ),
         "route_b_product_effect_present": "zg361_we_m360_route_b_effect = {"
         in route_b,
         "route_b_receipt_state_choice_bound": all(
@@ -224,6 +244,9 @@ def run_preflight() -> dict[str, object]:
             "minimum_effects_per_file": min(counts.values()) if counts else 0,
             "maximum_effects_per_file": max(counts.values()) if counts else 0,
         },
+        "route_b_effect_shards": [
+            path.relative_to(ROOT).as_posix() for path in ROUTE_B_EFFECT_SHARDS
+        ],
         "live_checkpoint_required": (
             "current cumulative projection; workforce transition fixture active; "
             "real zg361we.360 open before route-B selection; exact owner/subject "

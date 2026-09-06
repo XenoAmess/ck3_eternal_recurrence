@@ -30,7 +30,7 @@
 | 告身与申诉 | 被上司考核的玩家看到上司、档位、KPI、同组名次/人数；3.25 可付 150 威望申诉，成功后按回执退回三笔即时罚没、停止未结束减俸并同步修榜；重复/陈旧申诉幂等拒绝 | `events/zg361_events.txt`、`common/character_interactions/zg361_interactions.txt`、`common/scripted_effects/zg361_effects.txt` |
 | 连续末位处置 | 连续两次 3.25 进入末位处置；已有夺爵、致仕、降岗留用和再留一年等结果，AI 与玩家管理者分别走后台/事件入口 | 同上 |
 | 京察 | 免费、定期弹出的半强制活动；玩家默认应举办。拒办使原直属上司好感 -20 三年，并在上司下一次考核时造成一次性 KPI -50；独立领主改扣威望 200。合法失能、在押或来宾归零时只豁免集会，官员考核仍结算 | `common/activities/activity_types/zg361_jingcha.txt`、`events/zg361_jingcha_events.txt`、`common/scripted_effects/zg361_jingcha_mandate_effects.txt` |
-| 考核榜 | 结算后、淘汰前冻结所辖榜和本人收到榜；显示最多 80 行及显示数/总数；包括名次、人物、KPI、价值观、档位、连续次数、PIP/晋升状态，并提供制度驾驶舱 | `common/scripted_effects/zg361_effects.txt`、`common/scripted_effects/zg361_generated_scoreboard_snapshots.txt`、`gui/zg361_scoreboard.gui` |
+| 考核榜 | 结算后、淘汰前冻结所辖榜和本人收到榜；显示最多 80 行及显示数/总数；包括名次、人物、KPI、价值观、档位、连续次数、PIP/晋升状态，并提供制度驾驶舱 | `common/scripted_effects/zg361_effects.txt`、`common/scripted_effects/zg361_generated_scoreboard_[0-9][0-9]_*.txt` 用途分片、`gui/zg361_scoreboard.gui` |
 | 绩效谈话与同僚反馈 | 可谈绩效；合格受评者可推荐或踩同一直属队列的同僚，写入下一轮 KPI 输入 | `common/character_interactions/zg361_interactions.txt` |
 | 361 项政策配置 | 编号 001–361 均有政策卡、A/B/C 选择、持久选择变量、AI 路径和 14 本共享组织账；正常考核逐次抛出未配置项，也可用原生决议查看下一项/参考章程 | `common/decisions/zg361_mechanism_decisions.txt`、`common/scripted_effects/zg361_generated_mechanism_effects.txt`、`events/zg361_generated_mechanism_events.txt` |
 

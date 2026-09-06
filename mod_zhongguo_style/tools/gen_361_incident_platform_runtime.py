@@ -213,14 +213,24 @@ EFFECT_GROUPS: Final[tuple[EffectGroup, ...]] = (
         _apply_effect_names(211, 216),
     ),
     EffectGroup(
-        "zg361_incident_platform_z_apply_217_222_effects.txt",
-        "apply Z shared-platform mechanisms 217 through 222",
-        _apply_effect_names(217, 222),
+        "zg361_incident_platform_z_apply_adoption_value_effects.txt",
+        "apply Z adoption policy, dual-score, and realized-value mechanisms",
+        _apply_effect_names(217, 219),
     ),
     EffectGroup(
-        "zg361_incident_platform_z_apply_223_228_effects.txt",
-        "apply Z shared-platform mechanisms 223 through 228",
-        _apply_effect_names(223, 228),
+        "zg361_incident_platform_z_apply_cost_migration_effects.txt",
+        "apply Z platform-cost, migration-share, and dual-run exit mechanisms",
+        _apply_effect_names(220, 222),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_apply_reuse_fork_effects.txt",
+        "apply Z duplicate-scan, solution-merger, and legitimate-fork mechanisms",
+        _apply_effect_names(223, 225),
+    ),
+    EffectGroup(
+        "zg361_incident_platform_z_apply_credit_liability_effects.txt",
+        "apply Z inner-source credit, role-credit, and blast-liability mechanisms",
+        _apply_effect_names(226, 228),
     ),
     EffectGroup(
         "zg361_incident_platform_x_debt_192_198_effects.txt",
@@ -2149,22 +2159,22 @@ def render_event_parts() -> dict[str, bytes]:
 
 def _loc_rows(language: str) -> dict[str, str]:
     english: dict[str, str] = {
-        "zg361ip.result.ok": "Archive the receipts",
-        "zg361ip.190.t": "Incident postmortem closed",
-        "zg361ip.190.desc": "The on-call, severity, immutable timeline, action owners and reliability budget have settled. The averaged result now affects the assessed official's next review.",
-        "zg361ip.290.t": "Maintenance ledger closed",
-        "zg361ip.290.desc": "Toil, debt interest, protected repayment capacity, quality gates, retirement and handover have settled into a receipted maintenance result.",
-        "zg361ip.390.t": "Shared platform account closed",
-        "zg361ip.390.desc": "Adoption, dual scores, migration, platform costs, inner-source credit and blast-radius liability have settled without merging their ledgers.",
+        "zg361ip.result.ok": "Seal this finding in the record",
+        "zg361ip.190.t": "The Incident's Aftermath",
+        "zg361ip.190.desc": "This incident is over. Who stood watch, how grave the failure became, when each turn occurred, and who owns the remedies have all been established. The assessed official's gains and failures in the response will accompany the next review.",
+        "zg361ip.290.t": "Old Burdens Brought to Account",
+        "zg361ip.290.desc": "The allotted term for clearing old burdens has ended. Repeated labor, accrued obligations, protected repair time, acceptance standards, retired duties, and the departing official's handoff now bear named responsibility; the next review will judge whether the burden was truly reduced.",
+        "zg361ip.390.t": "The Shared Foundation Divided Fairly",
+        "zg361ip.390.desc": "This cycle's work on the shared foundation is finished. Adoption, migration burdens, common costs, credited contributions, and responsibility for wider failures now stand in separate accounts; no party may hide its own gain or loss inside the common result.",
     }
     chinese: dict[str, str] = {
-        "zg361ip.result.ok": "把回执归档",
-        "zg361ip.190.t": "事故复盘结案",
-        "zg361ip.190.desc": "值守、事故定级、不可改写时间线、行动项与可靠性预算均已结算；汇总结果将进入受评官员的下一轮考核。",
-        "zg361ip.290.t": "积弊账结案",
-        "zg361ip.290.desc": "重复运维、积弊本息、固定偿债工时、质量关、旧务退役与离岗交接，已经合成一份有回执的维护结果。",
-        "zg361ip.390.t": "共享平台分账结案",
-        "zg361ip.390.desc": "采用、客户与底座双分、迁移、平台成本、内部开源分功和爆炸半径责任已经分别结算，不再用一张大饼糊过去。",
+        "zg361ip.result.ok": "将这份结论封入簿册",
+        "zg361ip.190.t": "事故余波入册",
+        "zg361ip.190.desc": "本轮事故已经收尾。谁在值守、事态有多重、何时发生转折、补救交给谁，都已逐项核清；受评官员在处置中留下的得失，将随下一轮考核一并呈报。",
+        "zg361ip.290.t": "积弊清理到期",
+        "zg361ip.290.desc": "本轮清理旧务的期限已经届满。反复耗费的人力、累积的债务、留出的偿还时间、验收门槛与离岗交接都有了落款；下一轮复核将据此判断积弊是否真的减轻。",
+        "zg361ip.390.t": "共享底座各归其账",
+        "zg361ip.390.desc": "共享底座的本轮改造已经收尾。哪些团队采用、谁承担迁移、共同花费多少、贡献如何分配以及故障牵连到谁，均已各自记账；任何一方都不能再拿总成绩遮去自己的得失。",
     }
     return chinese if language == "simp_chinese" else english
 

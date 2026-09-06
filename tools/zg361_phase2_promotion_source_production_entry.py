@@ -1416,6 +1416,25 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361pp.9100": {
+        # R108's player portfolio-mode card precedes the PP numbered windows.
+        # The selected mode is stored on the player and the event consumes no
+        # saved scopes; inherited B1/Central scopes are therefore irrelevant.
+        # This focused source-capture entry must select route D (itemized): its
+        # immutable downstream contract begins at visible zg361pp.146 option 1
+        # and captures paused zg361pp.147.  Routes A-C intentionally batch
+        # both source windows, so selecting them makes that checkpoint
+        # unreachable even though the product is behaving correctly.
+        "date_raw": 53169192,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "scope_types": {},
+        "boolean_scopes": (),
+        "option_count": 4,
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+    },
     "zg361ch.19": {
         # First player-manager career/HC business window opened from the real
         # Central publication hook. Route 1 is the generator's reference
@@ -2018,25 +2037,46 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "actor": ("new_elder",),
             "new_elder": ("actor",),
         },
-        "unavailable_character_scopes": (
-            "secondary_actor",
-            "secondary_recipient",
-            "intermediary",
+        # R103 exposed the generic interaction payload.  R108 reached the
+        # same empty acknowledgement through a dynastic-cycle activity and
+        # exposed the activity candidates instead.  Bind both exact name
+        # sets while retaining the shared actor/elder identity constraints.
+        "saved_scope_name_sets": (
+            (
+                "actor",
+                "recipient",
+                "secondary_actor",
+                "secondary_recipient",
+                "intermediary",
+                "prestige",
+                "gift",
+                "gift_significant",
+                "offer_hook",
+                "offer_hook_strong",
+                "influence",
+                "piety",
+                "hook",
+                "actors_movement",
+                "new_disciple",
+                "old_elder",
+                "new_elder",
+            ),
+            (
+                "activity",
+                "host",
+                "province",
+                "elder_candidate",
+                "rival_candidate",
+                "my_movement",
+                "new_disciple",
+                "old_elder",
+                "new_elder",
+                "actor",
+                "recipient",
+            ),
         ),
-        "scope_types": {
-            "actors_movement": "situation_participant_group",
-        },
-        "boolean_scopes": (
-            "prestige",
-            "gift",
-            "gift_significant",
-            "offer_hook",
-            "offer_hook_strong",
-            "influence",
-            "piety",
-            "hook",
-        ),
-        "saved_scope_count": 17,
+        "scope_types": {},
+        "boolean_scopes": (),
         "option_count": 1,
         "selected_option_number": 1,
         "selected_native_option_index": 0,

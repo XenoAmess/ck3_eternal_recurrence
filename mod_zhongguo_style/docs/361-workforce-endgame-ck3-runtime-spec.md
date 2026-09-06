@@ -62,11 +62,13 @@ MCP query 或考核榜 typed action（固定四实例/current-player ACL 的只�
 它只作为历史语义基线保留，生成结果不得与新的用途分片共存；正常生成会删除旧单体，`--check` 发现旧单体则
 必须报错。
 
-当前生成器把这 324 个 effect 投影为 88 个用途分片：每个历史顶层 block 逐字节相同，全集 324/324，无遗漏、
-无新增、无重复；按冻结 source rank 重排所有分片后可逐 block、逐字节复原历史全集。88 片合计 `4,638,353 B`，
-单片最小 `511 B`、最大 `478,588 B`。所有文件均为 1–10 个
+2026-09-06 helper 重构后，当前生成器输出 340 个唯一顶层 effect 和 98 个用途分片。除四个超大 M360
+owner 被抽取为 helper 外，其余历史 block 仍按冻结 source rank 投影；新 public entry 保留旧外部 effect 名称，
+其内部预检、校验、清理和业务写入顺序由定向回归冻结。98 片合计 `3,773,955 B`，
+单片最小 `511 B`、最大 `130,221 B`。所有文件均为 1–10 个
 effect，effect 数量分布为
-`{1:25, 2:14, 3:7, 4:17, 5:1, 6:7, 7:3, 8:13, 10:1}`，当前 over-10、over-20 和 hard-limit
+`{1:32, 2:16, 3:7, 4:17, 5:2, 6:7, 7:3, 8:13, 10:1}`，当前 over-10、over-20、超过
+`204,800 B` 和 hard-limit
 exception 均为空。
 以后如确需超过 20，必须在生成器合同与本文同时记录不可避免的理由和对应 CK3 实机证据，不能只凭静态测试放行。
 B2 权威 40-effect 闭包现在恰好是其中 16 个**完整分片**的精确并集：覆盖 40/40，extra=0、missing=0，
@@ -74,7 +76,7 @@ B2 权威 40-effect 闭包现在恰好是其中 16 个**完整分片**的精确�
 
 | 分片编号 | 文件数 | 用途 |
 |---|---:|---|
-| 001–016（含字母后缀） | 24 | portfolio/AL 入口、#360/#361 bridge、AC handoff、AD fact/source/attribution 与 future transition |
+| 001–016（含字母后缀） | 34 | portfolio/AL 入口、#360/#361 bridge、M360 预检/校验/清理/中央写入/public entry、AC handoff、AD fact/source/attribution 与 future transition |
 | 017–023（含字母后缀） | 10 | AB/AC/AD/AL 分阶段 due-debt consumer；#360 与 #361 分片独立 |
 | 024a–024d | 4 | 放弃资源释放、Manager collective 清理与通用 portfolio finalize 各自独立 |
 | 025–035（含字母后缀） | 19 | 四域 control、dispatcher 与 deadline/timeout；AB/AC/AD lifecycle 与 subject-read 分开，AL stage 04/05 分开 |
@@ -116,17 +118,21 @@ source 顺序逐字节不变，变化仅为文件边界和新增的三个生成�
 
 第二轮四片合计 `228,993 B`，较退役两片的 `228,569 B` 增加 `424 B`，增量仍只来自两个额外生成头。
 
-最大分片是
-`zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt`，`478,588 B`，但其中只有一个
-顶层 effect。它已无法在保持顶层 effect block 逐字节相同的前提下继续按 effect 边界拆分；若后续实机加载证据仍指向
-该文件，下一步应是对这个单 effect 做有语义变化的内部 helper 重构，并重新走静态与 CK3 实机验收，而不能把当前
-byte-identity 迁移误写成已经解决加载性能。
+2026-09-06 起不再保留超大单定义豁免。原 `003`、`004`、`058`、`059` 四个 owner 已经退役；生成器按
+预检、分批校验、清理、中央写入、业务写入和稳定 public entry 抽取为 14 个 helper/public 分片。原 public
+effect 名称和外部调用接口不变，内部 helper 调用顺序由回归测试冻结；这次重构不再要求旧单 effect block
+逐字节不变。M360 新分片为 `44,993–98,364 B`，当前 Workforce 全族最大文件是
+`zg361_workforce_endgame_055_ad_m276_m277_effects.txt` 的 `130,221 B`，全部低于 `204,800 B` 硬门禁。
+
+2026-09-06 定向结果：runtime 普通模式与 `-O` 各 `122/122` GREEN，copy 普通模式与 `-O` 各
+`12/12` GREEN，generator `--check` 的 146 个输出 current；全局 boundary 为 713 个 effect 文件、
+3,813 个顶层 effect、最大 `130,221 B`。这些证据把 helper 重构提升到 static-ready；拆分后的 CK3
+loader 与业务路径仍须实机回归，不得由静态结果冒充 live。
 
 用途分片 manifest 按文件名排序，每行严格为
 `filename<TAB>bytes<TAB>effect_count<TAB>uppercase_sha256<LF>`；当前 manifest SHA-256 为
-`0530E97E473F78E4933F687C72A0851C4ADD8AADC2D598C3673EB0BCBD4FE79E`。本节只把分片实现提升为
-static-ready；第二轮拆分后变体尚无 CK3 loader、paused snapshot 或完整业务路径证据，整体 readiness 仍是
-`ck3-script-static-ready-not-live`，不得据此写成任何 live 等级。
+`41F49F0D2EC0FF395116A17F30DD115675316F624C6A1462FFB11C009D8FAE31`（98 个 effect 分片）。整体
+readiness 仍是 `ck3-script-static-ready-not-live`，不得据此写成任何 live 等级。
 
 ### Event 文件边界合同
 

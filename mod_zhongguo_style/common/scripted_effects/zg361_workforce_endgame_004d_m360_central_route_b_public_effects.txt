@@ -1,0 +1,217 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_endgame_runtime.py
+# PURPOSE: public Central M360 route B materialization orchestrator.
+# READINESS: ck3-script-static-ready-not-live. No CK3 parser, paused snapshot or live evidence is claimed.
+
+zg361_we_materialize_m360_route_b_from_central_effect = {
+	remove_variable = zg361_we_adapter_status
+	remove_variable = zg361_we_adapter_blocked_reason
+	remove_variable = zg361_we_runtime_applied
+	save_scope_as = zg361_we_m360_materialize_subject
+	$TICKET_OWNER$ = { save_scope_as = zg361_we_m360_materialize_owner }
+	save_scope_as = zg361_we_m360_cost_subject
+	$TICKET_OWNER$ = { save_scope_as = zg361_we_m360_cost_owner }
+	if = {
+		limit = {
+			scope:zg361_we_m360_materialize_owner = {
+				has_variable = zg361_p2c_m360_source_c1_quota
+				has_variable = zg361_p2c_m360_source_c2_quota
+				has_variable = zg361_p2c_m360_source_c3_quota
+			}
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_central_m360_total_quota
+			value = { value = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_quota add = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_quota add = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_quota }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = zg361_we_al_external_collective_1_member_count
+			has_variable = zg361_we_al_external_collective_1_quota
+			has_variable = zg361_we_al_external_collective_1_forced_count
+			has_variable = zg361_we_al_external_collective_1_exception_count
+			has_variable = zg361_we_al_external_collective_1_manager_cost
+			has_variable = zg361_we_al_external_collective_2_member_count
+			has_variable = zg361_we_al_external_collective_2_quota
+			has_variable = zg361_we_al_external_collective_2_forced_count
+			has_variable = zg361_we_al_external_collective_2_exception_count
+			has_variable = zg361_we_al_external_collective_2_manager_cost
+			has_variable = zg361_we_al_external_collective_3_member_count
+			has_variable = zg361_we_al_external_collective_3_quota
+			has_variable = zg361_we_al_external_collective_3_forced_count
+			has_variable = zg361_we_al_external_collective_3_exception_count
+			has_variable = zg361_we_al_external_collective_3_manager_cost
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_1_quota
+			value = { value = var:zg361_we_al_external_collective_1_forced_count add = var:zg361_we_al_external_collective_1_exception_count }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_2_quota
+			value = { value = var:zg361_we_al_external_collective_2_forced_count add = var:zg361_we_al_external_collective_2_exception_count }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_3_quota
+			value = { value = var:zg361_we_al_external_collective_3_forced_count add = var:zg361_we_al_external_collective_3_exception_count }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_total_members
+			value = { value = var:zg361_we_al_external_collective_1_member_count add = var:zg361_we_al_external_collective_2_member_count add = var:zg361_we_al_external_collective_3_member_count }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_total_quota
+			value = { value = var:zg361_we_al_external_collective_1_quota add = var:zg361_we_al_external_collective_2_quota add = var:zg361_we_al_external_collective_3_quota }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_forced_count
+			value = { value = var:zg361_we_al_external_collective_1_forced_count add = var:zg361_we_al_external_collective_2_forced_count add = var:zg361_we_al_external_collective_3_forced_count }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_exception_count
+			value = { value = var:zg361_we_al_external_collective_1_exception_count add = var:zg361_we_al_external_collective_2_exception_count add = var:zg361_we_al_external_collective_3_exception_count }
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_collective_manager_cost_total
+			value = { value = var:zg361_we_al_external_collective_1_manager_cost add = var:zg361_we_al_external_collective_2_manager_cost add = var:zg361_we_al_external_collective_3_manager_cost }
+		}
+	}
+	save_temporary_scope_value_as = {
+		name = zg361_we_expected_ticket_next_cycle
+		value = { value = $TICKET_CYCLE$ add = 1 }
+	}
+	set_variable = { name = zg361_we_m360_materialize_preflight_valid value = 1 }
+	zg361_we_m360_materialize_validate_ticket_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+	}
+	zg361_we_m360_materialize_validate_cohort_1_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+	}
+	zg361_we_m360_materialize_validate_cohort_2_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+	}
+	zg361_we_m360_materialize_validate_cohort_3_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+	}
+	zg361_we_m360_materialize_validate_identity_uniqueness_effect = {
+		TICKET_OWNER = $TICKET_OWNER$
+		TICKET_SUBJECT = $TICKET_SUBJECT$
+		TICKET_CYCLE = $TICKET_CYCLE$
+		TICKET_CASE = $TICKET_CASE$
+	}
+	if = {
+		limit = {
+			has_variable = zg361_we_m360_materialize_preflight_valid
+			var:zg361_we_m360_materialize_preflight_valid = 1
+		}
+		zg361_we_m360_materialize_cleanup_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		zg361_we_m360_materialize_route_b_writes_effect = {
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = {
+				has_variable = zg361_we_al_external_collective_1_member_count
+				has_variable = zg361_we_al_external_collective_1_quota
+				has_variable = zg361_we_al_external_collective_1_forced_count
+				has_variable = zg361_we_al_external_collective_1_exception_count
+				has_variable = zg361_we_al_external_collective_1_manager_cost
+				has_variable = zg361_we_al_external_collective_2_member_count
+				has_variable = zg361_we_al_external_collective_2_quota
+				has_variable = zg361_we_al_external_collective_2_forced_count
+				has_variable = zg361_we_al_external_collective_2_exception_count
+				has_variable = zg361_we_al_external_collective_2_manager_cost
+				has_variable = zg361_we_al_external_collective_3_member_count
+				has_variable = zg361_we_al_external_collective_3_quota
+				has_variable = zg361_we_al_external_collective_3_forced_count
+				has_variable = zg361_we_al_external_collective_3_exception_count
+				has_variable = zg361_we_al_external_collective_3_manager_cost
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_1_quota
+				value = { value = var:zg361_we_al_external_collective_1_forced_count add = var:zg361_we_al_external_collective_1_exception_count }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_2_quota
+				value = { value = var:zg361_we_al_external_collective_2_forced_count add = var:zg361_we_al_external_collective_2_exception_count }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_3_quota
+				value = { value = var:zg361_we_al_external_collective_3_forced_count add = var:zg361_we_al_external_collective_3_exception_count }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_total_members
+				value = { value = var:zg361_we_al_external_collective_1_member_count add = var:zg361_we_al_external_collective_2_member_count add = var:zg361_we_al_external_collective_3_member_count }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_total_quota
+				value = { value = var:zg361_we_al_external_collective_1_quota add = var:zg361_we_al_external_collective_2_quota add = var:zg361_we_al_external_collective_3_quota }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_forced_count
+				value = { value = var:zg361_we_al_external_collective_1_forced_count add = var:zg361_we_al_external_collective_2_forced_count add = var:zg361_we_al_external_collective_3_forced_count }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_exception_count
+				value = { value = var:zg361_we_al_external_collective_1_exception_count add = var:zg361_we_al_external_collective_2_exception_count add = var:zg361_we_al_external_collective_3_exception_count }
+			}
+			save_temporary_scope_value_as = {
+				name = zg361_we_expected_collective_manager_cost_total
+				value = { value = var:zg361_we_al_external_collective_1_manager_cost add = var:zg361_we_al_external_collective_2_manager_cost add = var:zg361_we_al_external_collective_3_manager_cost }
+			}
+		}
+		save_temporary_scope_value_as = {
+			name = zg361_we_expected_ticket_next_cycle
+			value = { value = $TICKET_CYCLE$ add = 1 }
+		}
+		# Do not expose the draft as committed until all three MG managers and
+		# the owner trust book pass the same global preflight used by the route.
+		zg361_we_m360_route_b_validate_collective_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { has_variable = zg361_we_m360_route_b_collective_valid var:zg361_we_m360_route_b_collective_valid = 1 }
+			set_variable = { name = zg361_we_adapter_status value = 1 }
+		}
+		else = {
+			zg361_we_m360_materialize_cleanup_effect = {
+				TICKET_OWNER = $TICKET_OWNER$
+				TICKET_SUBJECT = $TICKET_SUBJECT$
+				TICKET_CYCLE = $TICKET_CYCLE$
+				TICKET_CASE = $TICKET_CASE$
+			}
+			set_variable = { name = zg361_we_m360_event_queued value = 0 }
+			set_variable = { name = zg361_we_adapter_status value = 4 }
+			set_variable = { name = zg361_we_adapter_blocked_reason value = 3606 }
+		}
+	}
+	else = {
+		zg361_we_m360_route_b_validate_collective_effect = {
+			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+		}
+		if = {
+			limit = { $TICKET_SUBJECT$ = this has_variable = zg361_we_m360_route_b_collective_valid var:zg361_we_m360_route_b_collective_valid = 1 }
+			set_variable = { name = zg361_we_adapter_status value = 2 }
+		}
+		else = { set_variable = { name = zg361_we_adapter_status value = 4 } set_variable = { name = zg361_we_adapter_blocked_reason value = 3606 } }
+	}
+}

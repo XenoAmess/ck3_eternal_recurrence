@@ -63,7 +63,14 @@
   ],
   "generated_outputs": [
     "mod_zhongguo_style/common/scripted_effects/zg361_career_hc_015_n_lifecycle_effects.txt",
-    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_059_al_m360_route_b_effects.txt"
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt"
   ],
   "required_invariants": [
     "route_b_receipt_is_state_4_choice_2",

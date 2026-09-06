@@ -30,6 +30,10 @@ EFFECT_HARD_MAX = 20
 # Any future hard-limit exception must carry both an engineering reason and a
 # concrete CK3 live artifact.  The current B7 layout has no exception.
 EFFECT_HARD_LIMIT_EXCEPTIONS: dict[str, tuple[str, str]] = {}
+FLUSH_LEFT_ASSIGNMENT_RE = re.compile(
+    r"^(?P<name>[A-Za-z0-9_.:-]+)[ \t]*=[ \t]*\{",
+    re.MULTILINE,
+)
 
 
 @dataclass(frozen=True)
@@ -2290,6 +2294,7 @@ def render_open(domain: DomainSpec) -> str:
     reset_text = "\n\t\t".join(resets)
     prework = render_domain_prework(domain)
     authorized = len(ids)
+    batch_strategy_guard = indent(batch_strategy_current_trigger(), 5).lstrip()
     return f'''# Open one {domain.code} case on an assessed direct vassal.  ROOT is the
 # celestial duke-or-higher manager; counts and barons can only be this subject.
 zg361_pp_open_{domain.key}_case_effect = {{
@@ -2314,7 +2319,11 @@ zg361_pp_open_{domain.key}_case_effect = {{
 \t\t\t# Freeze the manager's cycle-level choice on the case subject. AI
 \t\t\t# managers retain the itemized sentinel and use their existing path.
 \t\t\tif = {{
-\t\t\t\tlimit = {{ root = {{ {batch_strategy_current_trigger()} }} }}
+\t\t\t\tlimit = {{
+\t\t\t\t\troot = {{
+\t\t\t\t\t\t{batch_strategy_guard}
+\t\t\t\t\t}}
+\t\t\t\t}}
 \t\t\t\tset_variable = {{ name = zg361_pp_batch_strategy_route_frozen value = root.var:zg361_pp_batch_strategy_route }}
 \t\t\t\tset_variable = {{ name = zg361_pp_batch_strategy_cycle_frozen value = var:{row["cycle"]} }}
 \t\t\t}}
@@ -2845,7 +2854,11 @@ else_if = {{ limit = {{ var:zg361_case_{domain.key}_owner = {{ OR = {{ has_trait
 \tTICKET_STATE = {mechanism_stage(mechanism_id)}
 }}'''
         )
-    ai_text = "\n\t\t".join(ai_calls)
+    # Keep every nested AI branch indented in the generated source.  Besides
+    # making ownership visible to reviewers, this prevents a flush-left file
+    # inventory from mistaking nested calls/conditions for additional effect
+    # definitions and silently defeating the 1--10 boundary.
+    ai_text = indent("\n".join(ai_calls), 2).lstrip()
     queue = render_player_stage_batch_dispatch(domain, state, stage)
     if domain.key == "w" and state == 4:
         terminal_queue = queue_decision_call(189)
@@ -3200,19 +3213,42 @@ def _validate_effect_groups(
         )
 
 
+def flush_left_assignment_names(source: bytes | str) -> tuple[str, ...]:
+    """Return assignments rendered as file-level declarations.
+
+    CK3 uses braces rather than indentation for scope, but our boundary tools
+    and human reviews also require nested snippets to remain visibly nested.
+    A nested branch rendered at column zero therefore fails this projection
+    even when the brace-depth parser can still recover the true definition.
+    """
+
+    text = source.decode("utf-8-sig") if isinstance(source, bytes) else source
+    return tuple(
+        match.group("name") for match in FLUSH_LEFT_ASSIGNMENT_RE.finditer(text)
+    )
+
+
 def render_effect_parts() -> dict[str, bytes]:
     """Render 39 purpose shards without changing any top-level block bytes."""
 
     source_blocks = top_level_effect_blocks(render_effects())
     _validate_effect_groups(source_blocks)
     by_name = dict(source_blocks)
-    return {
+    parts = {
         group.filename: generated(
             f"# PURPOSE: {group.purpose}.\n\n"
             + "\n\n".join(by_name[name] for name in group.effect_names)
         )
         for group in EFFECT_GROUPS
     }
+    for group in EFFECT_GROUPS:
+        visible_names = flush_left_assignment_names(parts[group.filename])
+        if not 1 <= len(visible_names) <= EFFECT_TARGET_MAX:
+            raise ValueError(
+                f"{group.filename} renders {len(visible_names)} file-level "
+                f"effects; expected 1..{EFFECT_TARGET_MAX}"
+            )
+    return parts
 
 
 def next_in_stage(mechanism_id: int) -> int | None:
@@ -3912,7 +3948,7 @@ PP_SCENES: dict[int, tuple[str, str]] = {
     148: ("档位与证据均已冻结，面谈纪要尚未记录二者的出示次序及当事人的异议。", "The grade and evidence are frozen, while the meeting record still lacks their presentation order and the subject's objections."),
     149: ("本轮较低档位不会因协商改变，案卷仍缺补偿责任人、到期日和履约状态。", "The lower grade will not change through bargaining; the file still lacks a compensation owner, due date, and fulfillment status."),
     150: ("当事人的本轮让步已经记入案卷，但所谓日后补偿尚无书面义务和到期状态。", "The subject's sacrifice is on file, but the promised future compensation has no written obligation or due status."),
-    151: ("结果已经送达，当事人尚未决定仅确认收件，还是在保留异议的同时提出申诉。", "The result has been served; the subject has not yet chosen between receipt alone and receipt with an objection and appeal."),
+    151: ("送达回执与申诉时钟已经进入案卷，签收、认同与异议仍须分栏保存。", "The delivery receipt and appeal clock are now in the file; receipt, agreement, and objection must remain separate records."),
     152: ("案卷里已有一份反馈稿，但它能否转化为具体、可控、有期限且有资源的行动仍未评分。", "A feedback draft exists, but its specificity, controllability, deadline, and resources have not been assessed."),
     153: ("反馈已经留下，后续行动却还没有唯一责任人、原始期限或验收凭据。", "Feedback has been recorded, but the follow-up action still lacks one owner, an original deadline, and acceptance evidence."),
     154: ("证据索引已经封存，面谈纪要的保存范围和后续更正方式仍是空白。", "The evidence index is sealed, while the minutes' retention scope and correction method remain unset."),
@@ -3927,7 +3963,7 @@ PP_SCENES: dict[int, tuple[str, str]] = {
     163: ("候选当前结果已经冻结，供晋升判断使用的历史周期范围还没有封存。", "The candidate's current result is frozen, but the historical observation window for promotion has not been sealed."),
     164: ("案卷没有外部跨团队付款或贡献回执；这里只能建立待复核的贡献归因记录。", "The file has no external cross-team payment or contribution receipt; it can only create an attribution record for later review."),
     165: ("案卷没有外部试岗合同；授权、补偿、期限与退出条件只能作为本案规则一并登记。", "No external trial-role contract exists; authority, compensation, deadline, and exit terms can only be recorded together as case policy."),
-    166: ("候选包仍停在预审之前，是否撤回必须由候选本人留下回执。", "The packet is still before prescreen, and only the candidate can leave a withdrawal receipt."),
+    166: ("候选本人已经选择继续参评，候选包仍停在预审之前；承办者只能据此处理后续程序。", "The candidate has chosen to continue, and the packet remains before prescreen; the decision owner may proceed only on that recorded response."),
     167: ("提名已经进入案卷，提名担保人的背书边界及后续信用观察尚未封存。", "The nomination is on file, but the sponsor's endorsement boundary and later credit observation remain unset."),
     168: ("当前只有本轮提名案卷；通过与任职表现要到后续观察期才能成为命中率事实。", "Only the current nomination file exists; passage and later performance cannot become hit-rate facts until a later observation."),
     169: ("候选已进入评审准备，专业席与外部席的计分权重仍未登记。", "The candidate is entering review preparation, but expert and external scoring weights remain unset."),
@@ -3951,7 +3987,7 @@ PP_SCENES: dict[int, tuple[str, str]] = {
     187: ("中检回执与工作量基线已经就位，毕业或失败仍必须等待唯一结算回执。", "The midpoint receipt and workload baseline are present, but graduation or failure must wait for the unique settlement receipt."),
     188: ("只有已经毕业的案卷才进入观察；当前没有后续周期的同类复发事实。", "Only a graduated case enters observation, and no same-category relapse fact exists for a later cycle yet."),
     189: ("最终裁决已经给出毕业失败或同类复发回执；现有证据没有证明错岗，真实空缺也不能替代该证明。", "Final adjudication has produced a failure or same-category relapse receipt; current evidence does not prove role mismatch, and a real vacancy cannot substitute for that proof."),
-    190: ("只有真实转岗成立时才会出现接收上司；披露包尚未由当事人确认最小陈述范围。", "A receiving manager exists only after a real transfer; the subject has not yet confirmed the minimum statement included in the disclosure bundle."),
+    190: ("真实转岗、接收上司与当事人的披露回应已经进入案卷；承办者只能据此确定交付范围。", "The real transfer, receiving manager, and subject's disclosure response are now in the file; the decision owner may determine the delivery scope only from those records."),
     191: ("退出终态已经登记，但空缺、交接、加班和补员没有外部实际付款明细。", "The exit terminal is recorded, but no external payment breakdown exists for vacancy, handover, overtime, or replacement."),
 }
 
@@ -3968,6 +4004,34 @@ RESULT_REASON_TEXT: dict[int, tuple[str, str]] = {
     8: ("队列过小，结果按中性档处理。", "The cohort was too small, so the result used the neutral band."),
     9: ("灰色离任占用了既有的 3.25 名额。", "A gray departure occupied an existing 3.25 slot."),
     10: ("原 3.25 承担者与离任者按应得档完成对调。", "The former 3.25 bearer swapped bands with the departing subject according to their evidence bands."),
+}
+
+
+COMPLETION_COPY: dict[str, tuple[str, str, str, str]] = {
+    "t": (
+        "反馈送达、承诺义务与行动回执已经分列入册；尚未到期的补偿、申诉和行动核验仍按各自日期追办。",
+        "Delivery, promise obligations, and action receipts are filed separately; compensation, appeals, and action reviews not yet due remain scheduled on their own dates.",
+        "封存本轮反馈卷，继续追办承诺与申诉。",
+        "Seal this feedback file and keep its promises and appeals on schedule.",
+    ),
+    "u": (
+        "提名来源、候选额度、预审结果与担保责任已经归入同一候选卷；后续胜任观察仍按原日期续记。",
+        "Nomination source, candidate slots, prescreen result, and sponsor liability now share one candidate file; later performance observations remain scheduled on their original dates.",
+        "封存本轮提名卷，保留后续胜任观察。",
+        "Seal this nomination file and preserve its later performance review.",
+    ),
+    "v": (
+        "评委席位、投票规则、材料与答辩记录已经合卷；失败差距和重开期限仍由原回执追办。",
+        "Panel seats, voting rules, materials, and defense records now share one file; recorded gaps and retry dates remain due under their receipts.",
+        "封存本轮答辩卷，续追差距与重开期限。",
+        "Seal this defense file and keep its gaps and retry dates under review.",
+    ),
+    "w": (
+        "改进计划的证据、支持、结算与终态已经归入同一案卷；观察、转岗、申诉和退出成本仍按各自回执续办。",
+        "Improvement-plan evidence, support, settlement, and terminal status now share one file; observation, transfer, appeal, and exit costs continue under their own receipts.",
+        "封存本轮改进卷，续办观察与终态责任。",
+        "Seal this improvement file and continue its observation and terminal obligations.",
+    ),
 }
 
 
@@ -4101,22 +4165,22 @@ def localization_rows(language: str) -> list[str]:
     if chinese:
         rows.extend(
             (
-                " zg361pp.5166.desc:0 \"晋升包仍停在预审之前。[scope:zg361_pp_subject_prompt_subject.GetShortUIName]必须亲自决定是否撤回；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]只负责接收回应，不能替当事人作答。\"",
-                " zg361pp.5190.desc:0 \"调任案卷已经锁定接收范围。[scope:zg361_pp_subject_prompt_subject.GetShortUIName]现在决定是否附上本人陈述；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]只能接收回应，不得替本人扩大披露。\"",
+                " zg361pp.5166.desc:0 \"晋升包尚未进入预审，撤回权只属于[scope:zg361_pp_subject_prompt_subject.GetShortUIName]；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]只能接收本人回执，不能代写意愿。\"",
+                " zg361pp.5190.desc:0 \"调任案卷已经锁定接收上司与披露边界。[scope:zg361_pp_subject_prompt_subject.GetShortUIName]的本人陈述尚未附卷；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]无权代写或扩大披露。\"",
             )
         )
     else:
         rows.extend(
             (
-                " zg361pp.5166.desc:0 \"The promotion packet remains before prescreen. [scope:zg361_pp_subject_prompt_subject.GetShortUIName] must personally decide whether to withdraw; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may receive the response but cannot answer for the candidate.\"",
-                " zg361pp.5190.desc:0 \"The transfer file has fixed its disclosure boundary. [scope:zg361_pp_subject_prompt_subject.GetShortUIName] now decides whether to attach a personal statement; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may receive the response but cannot broaden disclosure on the subject's behalf.\"",
+                " zg361pp.5166.desc:0 \"The promotion packet has not entered prescreen, and the right to withdraw belongs only to [scope:zg361_pp_subject_prompt_subject.GetShortUIName]; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may receive the subject's receipt but cannot author the subject's intent.\"",
+                " zg361pp.5190.desc:0 \"The transfer file has fixed the receiving manager and disclosure boundary. [scope:zg361_pp_subject_prompt_subject.GetShortUIName]'s personal statement is not yet attached; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may neither author it nor broaden disclosure.\"",
             )
         )
     if chinese:
         rows.extend(
             (
                 ' zg361pp.5151.t:0 "绩效反馈送达：请本人确认收件"',
-                " zg361pp.5151.desc:0 \"告身已经送达：[scope:zg361_pp_subject_prompt_owner.GetShortUIName]把本轮结果交到[scope:zg361_pp_subject_prompt_subject.GetShortUIName]手中。你有 90 日提出申诉；这份告身只确认收件，不要求你同意档位、理由或证据。\"",
+                " zg361pp.5151.desc:0 \"案卷同时封存了本轮档位、理由与证据索引，交接双方为[scope:zg361_pp_subject_prompt_owner.GetShortUIName]与[scope:zg361_pp_subject_prompt_subject.GetShortUIName]。申诉时限为 90 日；签收只证明材料到手，不表示认可其中结论。\"",
                 " zg361pp.5151.evidence:0 \"冻结证据摘要：绩效指标 [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0]，队列名次 [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0]，案卷证据 [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。\"",
             )
         )
@@ -4124,7 +4188,7 @@ def localization_rows(language: str) -> list[str]:
         rows.extend(
             (
                 ' zg361pp.5151.t:0 "Performance Feedback Served: Confirm Receipt"',
-                " zg361pp.5151.desc:0 \"The notice has been served: [scope:zg361_pp_subject_prompt_owner.GetShortUIName] delivered this cycle's result to [scope:zg361_pp_subject_prompt_subject.GetShortUIName]. You have 90 days to appeal; the notice confirms receipt only and does not require agreement with the grade, reason, or evidence.\"",
+                " zg361pp.5151.desc:0 \"The file seals this cycle's grade, reason, and evidence index, with [scope:zg361_pp_subject_prompt_owner.GetShortUIName] and [scope:zg361_pp_subject_prompt_subject.GetShortUIName] recorded as the two parties to delivery. The appeal window is 90 days; receipt proves only that the materials arrived, not agreement with their conclusion.\"",
                 " zg361pp.5151.evidence:0 \"Frozen evidence summary: performance indicator [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items.\"",
             )
         )
@@ -4188,12 +4252,9 @@ def localization_rows(language: str) -> list[str]:
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 9000 + domain_index
         title = f"本轮选择已录入：{domain.title_cn}" if chinese else f"Cycle Choices Recorded: {domain.title_en}"
-        desc = (
-            "本轮制度取舍已经录入案卷。尚未到期的付款、复核、观察或申诉仍依各自日期办理；未发生的结果不会提前落笔。"
-            if chinese
-            else "This cycle's institutional choices are now in the file. Payments, reviews, observations, and appeals not yet due will proceed on their own dates; no future outcome is entered before it occurs."
-        )
-        option = "归档。下一轮继续互相成就。" if chinese else "File it. Continue mutually enabling each other next cycle."
+        completion = COMPLETION_COPY[domain.key]
+        desc = completion[0 if chinese else 1]
+        option = completion[2 if chinese else 3]
         rows.extend(
             (
                 f' zg361pp.{event_id}.t:0 "{escape_loc(title)}"',

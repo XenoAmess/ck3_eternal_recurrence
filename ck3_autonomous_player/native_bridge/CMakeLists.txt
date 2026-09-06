@@ -1469,8 +1469,10 @@ if(BUILD_TESTING)
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_dispatch_effects.txt
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_y_lifecycle_effects.txt
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_yz_probe_effects.txt
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_217_222_effects.txt
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_223_228_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_adoption_value_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_cost_migration_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_reuse_fork_effects.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_apply_credit_liability_effects.txt
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_deadline_effects.txt
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_debt_217_222_effects.txt
     ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_z_debt_223_228_effects.txt

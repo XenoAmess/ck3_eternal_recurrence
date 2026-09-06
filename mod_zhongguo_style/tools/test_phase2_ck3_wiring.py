@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import unittest
 
+from gen_scoreboard_snapshot import read_checked_in_scoreboard_effects
 from zg361_readiness_data import CUMULATIVE_COUNTS
 
 
@@ -40,9 +41,7 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         cls.interactions = read("common/character_interactions/zg361_interactions.txt")
         cls.scripted_guis = read("common/scripted_guis/zg361_scoreboard_guis.txt")
         cls.bridge = read("gui/zg361_decision_bridge.gui")
-        cls.scoreboard = read(
-            "common/scripted_effects/zg361_generated_scoreboard_snapshots.txt"
-        )
+        cls.scoreboard = read_checked_in_scoreboard_effects(MOD_ROOT)
 
     def test_kpi_is_one_sum_of_eight_frozen_components(self) -> None:
         components = (

@@ -137,3 +137,22 @@ zg361_b2_execute_pending_adverse_action_effect = {
 		}
 	}
 }
+
+zg361_b2_schedule_separate_witness_delivery_effect = {
+	set_variable = { name = zg361_b2_separate_notice_state value = 2 }
+	set_variable = { name = zg361_b2_separate_delivery_method value = 3 }
+	var:zg361_b2_separate_notice_owner = {
+		if = {
+			limit = { exists = liege liege = { is_alive = yes } }
+			liege = { save_scope_as = zg361_b2_separate_witness }
+		}
+		else = { save_scope_as = zg361_b2_separate_witness }
+	}
+	set_variable = { name = zg361_b2_separate_witness_identity value = scope:zg361_b2_separate_witness }
+	var:zg361_b2_separate_notice_owner = { save_scope_as = zg361_b2_separate_witness_owner }
+	save_scope_as = zg361_b2_separate_witness_subject
+	save_scope_value_as = { name = zg361_b2_separate_witness_cycle value = var:zg361_b2_separate_notice_cycle }
+	save_scope_value_as = { name = zg361_b2_separate_witness_case value = var:zg361_b2_separate_notice_case }
+	save_scope_value_as = { name = zg361_b2_separate_witness_state value = var:zg361_b2_separate_notice_state }
+	trigger_event = { id = zg361b2.161 days = 7 }
+}

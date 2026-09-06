@@ -12,7 +12,12 @@ for item in (ROOT / "tools", AUTOPLAYER_SRC):
     if str(item) not in sys.path:
         sys.path.insert(0, str(item))
 
-from preflight_zg361_phase2_hc_workforce_b6 import run_preflight  # noqa: E402
+from preflight_zg361_phase2_hc_workforce_b6 import (  # noqa: E402
+    CMAKE,
+    RETIRED_ROUTE_B_EFFECT,
+    ROUTE_B_EFFECT_SHARDS,
+    run_preflight,
+)
 from xar_autoplayer.bridge.zhongguo_career_hc_workforce_postcondition_contract import (  # noqa: E402
     QUERY_ZHONGGUO_CAREER_HC_WORKFORCE_V1_CAPABILITY,
 )
@@ -129,6 +134,36 @@ def action_executor(_service: object, *, route: str) -> dict[str, object]:
 
 
 class CareerHcWorkforceB6ActionCellTests(unittest.TestCase):
+    def test_preflight_uses_exact_canonical_route_b_shards(self) -> None:
+        expected = [
+            "zg361_workforce_endgame_003a_m360_central_preflight_effects.txt",
+            "zg361_workforce_endgame_003b_m360_collective_cleanup_effects.txt",
+            "zg361_workforce_endgame_004a_m360_route_b_validation_step01_effects.txt",
+            "zg361_workforce_endgame_004b_m360_route_b_validation_step02_effects.txt",
+            "zg361_workforce_endgame_004c_m360_central_route_b_write_effects.txt",
+            "zg361_workforce_endgame_004d_m360_central_route_b_public_effects.txt",
+            "zg361_workforce_endgame_059a_al_m360_route_b_business_effects.txt",
+            "zg361_workforce_endgame_059b_al_m360_route_b_public_effects.txt",
+        ]
+        self.assertEqual(expected, [path.name for path in ROUTE_B_EFFECT_SHARDS])
+        self.assertTrue(all(path.is_file() for path in ROUTE_B_EFFECT_SHARDS))
+        self.assertFalse(RETIRED_ROUTE_B_EFFECT.exists())
+        report = run_preflight()
+        self.assertEqual("GREEN", report["result"])
+        self.assertTrue(report["checks"]["route_b_effect_shards_are_canonical"])
+        self.assertEqual(
+            [f"mod_zhongguo_style/common/scripted_effects/{name}" for name in expected],
+            report["route_b_effect_shards"],
+        )
+        cmake = CMAKE.read_text(encoding="utf-8")
+        for old_owner in (
+            "zg361_workforce_endgame_003_m360_central_route_a_materialize_effects.txt",
+            "zg361_workforce_endgame_004_m360_central_route_b_materialize_effects.txt",
+            "zg361_workforce_endgame_058_al_m360_route_a_effects.txt",
+            "zg361_workforce_endgame_059_al_m360_route_b_effects.txt",
+        ):
+            self.assertNotIn(old_owner, cmake)
+
     def test_green_requires_action_then_subject_provider_result(self) -> None:
         subject = FakeSubjectService()
         result = run_b6_career_hc_workforce_gameplay_action_cell(

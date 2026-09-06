@@ -191,6 +191,34 @@ class GeneratedFileTests(unittest.TestCase):
         self.assertTrue(all(1 <= len(group.event_ids) <= 10 for group in gen.EVENT_GROUPS))
         self.assertEqual(gen.EVENT_HARD_LIMIT_EXCEPTIONS, {})
 
+    def test_z_apply_shards_follow_subpurpose_boundaries(self) -> None:
+        z_apply_groups = {
+            group.filename: group.effect_names
+            for group in gen.EFFECT_GROUPS
+            if group.filename.startswith("zg361_incident_platform_z_apply_")
+        }
+        self.assertEqual(
+            z_apply_groups,
+            {
+                "zg361_incident_platform_z_apply_adoption_value_effects.txt":
+                    gen._apply_effect_names(217, 219),
+                "zg361_incident_platform_z_apply_cost_migration_effects.txt":
+                    gen._apply_effect_names(220, 222),
+                "zg361_incident_platform_z_apply_reuse_fork_effects.txt":
+                    gen._apply_effect_names(223, 225),
+                "zg361_incident_platform_z_apply_credit_liability_effects.txt":
+                    gen._apply_effect_names(226, 228),
+            },
+        )
+        self.assertEqual(
+            tuple(name for names in z_apply_groups.values() for name in names),
+            gen._apply_effect_names(217, 228),
+        )
+        self.assertTrue(all(1 <= len(names) <= 10 for names in z_apply_groups.values()))
+        rendered_names = {path.name for path in gen.outputs()}
+        self.assertNotIn("zg361_incident_platform_z_apply_217_222_effects.txt", rendered_names)
+        self.assertNotIn("zg361_incident_platform_z_apply_223_228_effects.txt", rendered_names)
+
     def test_x_closure_is_an_exact_whole_shard_union(self) -> None:
         effect_closure = set(gen.X_EFFECT_CLOSURE_NAMES)
         selected_effect_groups = [

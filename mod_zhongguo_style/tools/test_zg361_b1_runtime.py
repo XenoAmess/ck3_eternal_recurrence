@@ -31,6 +31,18 @@ def read(relative: str) -> str:
     return (MOD_ROOT / relative).read_text(encoding="utf-8-sig")
 
 
+def localization_values(document: str) -> dict[str, str]:
+    return {
+        match.group("key"): match.group("value")
+        for row in document.splitlines()
+        if (
+            match := re.match(
+                r'^\s*(?P<key>[^\s:#]+):\d+\s+"(?P<value>.*)"\s*$', row
+            )
+        )
+    }
+
+
 B1_EFFECT_FILES = tuple(
     path.relative_to(MOD_ROOT).as_posix()
     for path in sorted(
@@ -1498,6 +1510,156 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertIn(f"desc = zg361b1.201.{key}", self.events)
             self.assertIn(f"zg361b1.201.{key}:0", self.loc_en)
             self.assertIn(f"zg361b1.201.{key}:0", self.loc_zh)
+
+    def test_every_scoreboard_localization_key_has_a_product_reference(self) -> None:
+        localization_keys: set[str] = set()
+        localization_documents: list[str] = []
+        for path in (MOD_ROOT / "localization").rglob("*.yml"):
+            document = path.read_text(encoding="utf-8-sig")
+            localization_documents.append(document)
+            localization_keys.update(
+                re.findall(r"(?m)^\s*(zg361_scoreboard[^:]+):0\s", document)
+            )
+
+        product_documents: list[str] = []
+        for directory, suffix in (
+            ("common", "*.txt"),
+            ("events", "*.txt"),
+            ("gui", "*.gui"),
+        ):
+            product_documents.extend(
+                path.read_text(encoding="utf-8-sig")
+                for path in (MOD_ROOT / directory).rglob(suffix)
+            )
+        product_text = "\n".join(product_documents)
+        unused = sorted(key for key in localization_keys if key not in product_text)
+        self.assertEqual(unused, [])
+
+        removed_dead_keys = {
+            "zg361_scoreboard_detail_field_b1_fact_sheet_serial",
+            "zg361_scoreboard_detail_field_b1_self_receipt_serial",
+            "zg361_scoreboard_detail_field_b1_peer_receipt_serial",
+            "zg361_scoreboard_detail_field_b1_shadow_receipt_serial",
+            "zg361_scoreboard_detail_field_b1_band_receipt_serial",
+            "zg361_scoreboard_detail_field_b1_141_agenda_reason",
+            "zg361_scoreboard_detail_field_b1_144_fact_reason",
+            "zg361_scoreboard_detail_field_settlement_serial",
+            "zg361_scoreboard_detail_field_refund_serial",
+        }
+        all_localization_text = "\n".join(localization_documents)
+        self.assertTrue(localization_keys.isdisjoint(removed_dead_keys))
+        for key in removed_dead_keys:
+            self.assertNotIn(f"{key}:0", all_localization_text)
+
+    def test_every_base_event_localization_key_has_a_product_reference(self) -> None:
+        localization_keys: set[str] = set()
+        localization_documents: list[str] = []
+        for path in (MOD_ROOT / "localization").rglob("*.yml"):
+            document = path.read_text(encoding="utf-8-sig")
+            localization_documents.append(document)
+            localization_keys.update(
+                re.findall(r"(?m)^\s*(zg361\.\d+\.[^:]+):0\s", document)
+            )
+
+        product_documents: list[str] = []
+        for directory, suffix in (
+            ("common", "*.txt"),
+            ("events", "*.txt"),
+            ("gui", "*.gui"),
+        ):
+            product_documents.extend(
+                path.read_text(encoding="utf-8-sig")
+                for path in (MOD_ROOT / directory).rglob(suffix)
+            )
+        product_text = "\n".join(product_documents)
+        unused = sorted(key for key in localization_keys if key not in product_text)
+        self.assertEqual(unused, [])
+
+        event_namespace = "zg" + "361"
+        removed_hidden_event_keys = {
+            f"{event_namespace}.{event_id}.{suffix}"
+            for event_id, suffixes in (
+                (41, ("t", "desc", "a")),
+                (51, ("t", "desc")),
+                (52, ("t", "desc")),
+            )
+            for suffix in suffixes
+        }
+        all_localization_text = "\n".join(localization_documents)
+        self.assertTrue(localization_keys.isdisjoint(removed_hidden_event_keys))
+        for key in removed_hidden_event_keys:
+            self.assertNotIn(f"{key}:0", all_localization_text)
+
+    def test_visible_b1_copy_keeps_decisions_on_buttons_and_facts_in_bodies(self) -> None:
+        expected_zh = {
+            "zg361b1.200.t": "本期成果要怎样写入自评？",
+            "zg361b1.200.desc": "证据窗口即将关闭。你的自陈会与期中记录一同封存，但已经查明的事实不会因此改变。",
+            "zg361b1.200.a": "照实提交期中证据，不修正自评分。",
+            "zg361b1.200.b": "将自评分最多上调 15 点后提交。",
+            "zg361b1.200.c": "将自评分最多下调 15 点后提交。",
+            "zg361b1.201.t": "暂定考绩",
+            "zg361b1.201.desc": "上司已经给出对你本期表现的初步判断。这份判断与冻结事实相差 [ROOT.Char.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]；你有 [ROOT.Char.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] 日回应。窗口关闭前不会结算奖惩，也不会占用最终档位名额。",
+            "zg361b1.201.grade_375": "当前暂定档位：#P 3.75——超出预期#!。",
+            "zg361b1.201.grade_35": "当前暂定档位：#V 3.5——符合预期#!。",
+            "zg361b1.201.grade_325": "当前暂定档位：#N 3.25——待改进#!。",
+            "zg361b1.201.a": "接受暂定档位，不作校准修正。",
+            "zg361b1.201.b": "核验当前成果，校准分最多变动 10 点。",
+            "zg361b1.126.t": "你的考绩已经张榜",
+            "zg361b1.126.desc": "榜上已经列出你的最终档位。即使同组还有待决案卷，你的结果也不再延后；这是本案第 [ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] 次定稿。奖惩仍按正式结算时间入账，其他官员的待定内容不会在这里公开。",
+            "zg361b1.126.grade_375": "当前公示档位：#P 3.75#!。",
+            "zg361b1.126.grade_35": "当前公示档位：#V 3.5#!。",
+            "zg361b1.126.grade_325": "当前公示档位：#N 3.25#!。",
+            "zg361b1.126.initial": "这是本案在本期的首次定稿。",
+            "zg361b1.126.appended": "此前待决事项已经结清，你的结果现已补入榜册。",
+            "zg361b1.126.reopened": "新证据触发重新审理，本次定稿取代先前结果。",
+            "zg361b1.126.a": "记下本版档位与修订号。",
+        }
+        expected_en = {
+            "zg361b1.200.t": "How Will You State This Cycle's Work?",
+            "zg361b1.200.desc": "The evidence window is about to close. Your account will be sealed beside the mid-cycle record; the factual record itself will remain unchanged.",
+            "zg361b1.200.a": "Submit the mid-cycle evidence unchanged.",
+            "zg361b1.200.b": "Submit a self-rating raised by up to 15 points.",
+            "zg361b1.200.c": "Submit a self-rating lowered by up to 15 points.",
+            "zg361b1.201.t": "Provisional Assessment",
+            "zg361b1.201.desc": "Your manager has issued an early view of your standing. It differs from the sealed facts by [ROOT.Char.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0], and you have [ROOT.Char.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] days to respond. No reward or final-rating place is assigned during this window.",
+            "zg361b1.201.grade_375": "Current provisional rating: #P 3.75 — exceeds expectations#!.",
+            "zg361b1.201.grade_35": "Current provisional rating: #V 3.5 — meets expectations#!.",
+            "zg361b1.201.grade_325": "Current provisional rating: #N 3.25 — needs improvement#!.",
+            "zg361b1.201.a": "Accept it with no calibration adjustment.",
+            "zg361b1.201.b": "Check current results; adjust calibration by at most 10 points.",
+            "zg361b1.126.t": "Your Rating Has Been Posted",
+            "zg361b1.126.desc": "The board now shows your final rating. Other pending cases no longer hold yours back; this is revision [ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] of your case. Rewards and penalties will still be applied at formal settlement, and no other official's pending case is disclosed here.",
+            "zg361b1.126.grade_375": "Current posted rating: #P 3.75#!.",
+            "zg361b1.126.grade_35": "Current posted rating: #V 3.5#!.",
+            "zg361b1.126.grade_325": "Current posted rating: #N 3.25#!.",
+            "zg361b1.126.initial": "This is the first settled revision of your case this cycle.",
+            "zg361b1.126.appended": "The previously pending matter has been resolved, so your result has now been added to the board.",
+            "zg361b1.126.reopened": "New evidence triggered another review; this revision replaces the previous result.",
+            "zg361b1.126.a": "Note this rating and revision.",
+        }
+        references = set(
+            re.findall(
+                r"(?:title|desc|name)\s*=\s*(zg361b1\.(?:200|201|126)\.[\w]+)",
+                self.events,
+            )
+        )
+        self.assertEqual(references, set(expected_zh))
+        for document, expected in (
+            (self.loc_zh, expected_zh),
+            (self.loc_en, expected_en),
+        ):
+            values = localization_values(document)
+            self.assertEqual({key: values[key] for key in references}, expected)
+
+        # These labels mirror the exact writes: unchanged / +15 / -15, then
+        # zero calibration adjustment or a fresh, clamped +/-10 observation.
+        self.assertNotIn("上调", expected_zh["zg361b1.200.desc"])
+        self.assertNotIn("下调", expected_zh["zg361b1.200.desc"])
+        self.assertNotIn("提交", expected_zh["zg361b1.201.desc"])
+        self.assertIn("add = 15", self.effects)
+        self.assertIn("subtract = 15", self.effects)
+        self.assertIn("zg361_b1_shadow_evidence_delta value = 0", self.effects)
+        self.assertIn("max = 10 min = -10", self.effects)
 
     def test_jingcha_opens_cycle_and_no_longer_instantly_settles(self) -> None:
         issue = self.jingcha.split("zg361_issue_jingcha_mandate_effect = {", 1)[1]
