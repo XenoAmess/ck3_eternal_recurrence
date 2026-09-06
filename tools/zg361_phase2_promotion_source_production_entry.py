@@ -1665,6 +1665,20 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "health.7000": {
+        # Vanilla onset of infirmity.  Exact CK3 1.19.0.6 source and the R117
+        # native event context both expose one unavoidable acknowledgement:
+        # no saved scopes, one rendered/native option, and an infirm trait
+        # indicator.  There is no alternate branch to optimize.
+        "date_raw": 53152296,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "boolean_scopes": (),
+        "saved_scope_count": 0,
+        "option_count": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "health.7200": {
         # Vanilla yearly-health onset of withering mind.  The event has no
         # saved scopes and exposes one mandatory acknowledgement whose sole
