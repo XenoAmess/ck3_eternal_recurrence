@@ -167,6 +167,39 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "chancellor_task.1102": {
+        # CK3 1.19.0.6 chancellor side effect. The immediate block has already
+        # selected one current truce target; its sole authored option cancels
+        # that one-way truce. There is no acknowledgement-only alternative,
+        # so bind the exact manager root, three typed scopes and one-button
+        # shape before selecting the only route needed to continue the line.
+        "date_raw": 53151120,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "councillor_liege": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "councillor": (29037,),
+            "target": (29037,),
+        },
+        "scope_types": {
+            "councillor": "character",
+            "target": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "councillor",
+            "councillor_liege",
+            "target",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices

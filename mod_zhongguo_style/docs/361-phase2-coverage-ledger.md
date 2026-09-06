@@ -353,6 +353,36 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
+## R131–R141 管理者存档续接增量（不改变逐号等级）
+
+- R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
+  checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
+  玩家 CharacterID `32904`、paused/map-ready/5 速合同均 GREEN。该 checkpoint 是 active B1 中间态，
+  不是最终 seed，也不能冒充完整迁移树 GREEN。
+- R133 与 R137 两次实机续接分别捕获 `played_character_changed` owner terminal；现有 native 接口没有
+  死因字段，因此只记录角色终止/自然交接，不声称病死。R134 loader timeout、R135/R136/R138/R139
+  的随机事件或事件形状 RED 均不计入角色死亡次数，健康保护授权门仍未满足第三次同类终止。
+- R135–R139 逐项登记并回归了 `culture_notification.1111`、`tribute_mission.1002` 与
+  `tribute_mission.1005` 的两种完整 saved-scope 集合；所有选择前检查都绑定 exact key、root、typed
+  scopes、完整按钮映射和 observation window，不使用 namespace 泛化。purpose-split 中断测试文件保持
+  每文件 1–10 场景。
+- R140 在 R130 的同一 1,031-file 产品投影上首次穿过 active B1：两个朝贡事件 drain GREEN，并在
+  `date_raw=53154120` 取得 `review_now_eligible=true`、B1/Central/PP 均 false 的暂停干净评审边界。
+  随后的 seed 缺席已定位为 acceptance-only GUI 动画状态没有在 duration 结束后自动重入；修复将
+  载入诊断与完整业务门槛的 false-to-true 入口沿分离，不改产品字节。R140 manager recovery / runner
+  SHA-256 分别为 `e50dd0e8ea9cf83bec08da9bd92514c0093284e09c9bccc2645108b44be14b70` /
+  `ce395e028774d443fa122bc2f0362ae3224c42cd651b5b3d03f20a6b2ea7911`。
+- R141 no-launch preflight GREEN 后，在 `date_raw=53151120` 捕获新的原版
+  `chancellor_task.1102`。玩家 `32904` 存活、B1 active；窗口恰有一个 native option 0，saved scopes
+  恰为 character 类型的 `councillor`、`councillor_liege`、`target`，其中 councillor_liege 等于玩家
+  root。原版唯一按钮取消已选目标的一向停战，没有 acknowledgement-only 替代项；runner 现只登记该
+  精确形状。R141 manager recovery / runner SHA-256 分别为
+  `b04d22be693115e970f66d87c2004b308b8c35f51bd8fa35a847ba061e1dc423` /
+  `daca4220b95641eba837fa069c054ae7cff3dfa50b4e1fe937fefc20d090d416`。
+- 以上 R131–R141 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+  验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
+  取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
+
 ## R107 基线完整产品验收快照（不改变逐号等级）
 
 | 项 | 实证 |
