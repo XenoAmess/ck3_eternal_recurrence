@@ -1024,14 +1024,23 @@ def render_relationship_mutation(row: Mechanism) -> str:
         return ""
     p = f"zg361_cl_m{row.mechanism_id:03d}"
     return f'''if = {{
-            limit = {{ var:{p}_route = 1 }}
-            add_opinion = {{ modifier = friendliness_opinion target = var:{p}_object_owner opinion = 5 }}
-            set_variable = {{ name = {p}_relationship_revision value = 1 }}
-        }}
-        else_if = {{
-            limit = {{ var:{p}_route = 2 }}
-            add_opinion = {{ modifier = angry_opinion target = var:{p}_object_owner opinion = -5 }}
-            set_variable = {{ name = {p}_relationship_revision value = 1 }}
+            # The frozen owner can die while another subject's same-day stage
+            # event is still queued.  A weak dead character remains comparable
+            # by the receipt guard, but is not a legal add_opinion target.
+            limit = {{
+                has_variable = {p}_object_owner
+                var:{p}_object_owner = {{ is_alive = yes }}
+            }}
+            if = {{
+                limit = {{ var:{p}_route = 1 }}
+                add_opinion = {{ modifier = friendliness_opinion target = var:{p}_object_owner opinion = 5 }}
+                set_variable = {{ name = {p}_relationship_revision value = 1 }}
+            }}
+            else_if = {{
+                limit = {{ var:{p}_route = 2 }}
+                add_opinion = {{ modifier = angry_opinion target = var:{p}_object_owner opinion = -5 }}
+                set_variable = {{ name = {p}_relationship_revision value = 1 }}
+            }}
         }}'''
 
 

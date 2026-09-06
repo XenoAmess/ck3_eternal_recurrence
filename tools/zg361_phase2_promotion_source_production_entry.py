@@ -31,6 +31,10 @@ from zg361_phase2_promotion_career_learning_contracts import (
 
 M146 = "zg361pp.146"
 M147 = "zg361pp.147"
+# The managed product episode always starts from the immutable phase-two seed.
+# A retained Python client may reconnect much later, but reconnecting must not
+# grant the same CK3 process another full authored observation window.
+PRODUCT_TIMELINE_ORIGIN_DATE_RAW = 53147016
 B1_AUTHORED_ADVANCE_DAYS = 400
 # R54 first proved that a real player publication can occur at the end of the
 # authored B1 window.  Preserve that bound and add a separate, finite window
@@ -45,6 +49,8 @@ HOURS_PER_DAY = 24
 # every cached Snapshot field used by the query's direct-read equality gate.
 PAUSED_PROGRESS_SETTLE_SECONDS = 0.35
 MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 4
+ZG361_6_RETAIN_WAIT_DAYS = 365
+ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS = 10.0
 _TRANSIENT_PROGRESS_BINDING_ERRORS = (
     "promotion source progress lacks a stable paused player binding",
     "ZhongGuo promotion source progress binding changed or is not ready",
@@ -1164,10 +1170,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
     },
     "zg361.6": {
-        # Player-only last elimination appeal. On the frozen seed only authored
-        # options 1 and 3 are enabled; option 1 is the sole path that can retain
-        # the player's career, while option 3 deterministically steps down all
-        # landed titles. Bind the sparse native option map and choose option 1.
+        # Player-only last elimination appeal. Option 1 is only a 40% chance to
+        # retain the career and therefore cannot be a production-path action.
+        # Keep the modal open and advance the same CK3 process until authored
+        # option 2 (300 gold, deterministic demotion/retention) is enabled.
         # This trigger and choice read character state, not saved scopes. R110
         # observed the completed self-review and shadow-response tickets on
         # this descendant frame, while the older bank ticket had expired; bind
@@ -1227,11 +1233,22 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "zg361_notice_deadline_state",
         ),),
         "boolean_scopes": (),
-        "option_count": 2,
+        "option_count": 3,
         "snapshot_option_count": 4,
-        "native_option_indices": (0, 2),
-        "selected_option_number": 1,
-        "selected_native_option_index": 0,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 2),
+                "selection_deferred": True,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+            },
+        ),
     },
     "zg361.1": {
         # Player-liege annual review summary. Its immediate block only copies
@@ -2421,6 +2438,90 @@ def _resume_map_from_latest_binding(
     )
 
 
+def _snapshot_bridge_pid(snapshot: Mapping[str, object]) -> int | None:
+    diagnostics = snapshot.get("diagnostics")
+    value = diagnostics.get("bridge_pid") if isinstance(diagnostics, Mapping) else None
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        return None
+    return value
+
+
+def _retained_modal_map_control(
+    service: PromotionProductionEntryService,
+    *,
+    step: str,
+    player: int,
+    connection_generation: int,
+    bridge_pid: int,
+    event_instance_id: int,
+    rebind_audit: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Control time while retaining one exact modal in one CK3 process."""
+
+    if step not in {"set-speed-5", "resume-map"}:
+        raise ValueError(f"unsupported retained-modal map control: {step}")
+    last_error: PreSubmissionRevisionMismatchError | None = None
+    for attempt in range(1, MAX_PRE_SUBMISSION_REBIND_ATTEMPTS + 1):
+        snapshot, _ = _binding(
+            service.snapshot(),
+            player=player,
+            connection_generation=connection_generation,
+        )
+        active_event = snapshot.get("active_event")
+        actual_instance_id = (
+            active_event.get("instance_id")
+            if isinstance(active_event, Mapping)
+            else None
+        )
+        if (
+            _snapshot_bridge_pid(snapshot) != bridge_pid
+            or actual_instance_id != event_instance_id
+        ):
+            raise PromotionProductionEntryError(
+                "zg361.6 retain wait crossed its CK3 PID/event identity"
+            )
+        if step == "set-speed-5" and snapshot.get("speed") == 5:
+            return None
+        if step == "resume-map" and snapshot.get("paused") is not True:
+            return None
+        revision = int(snapshot["revision"])
+        try:
+            return _accepted(
+                service.execute_step(step, expected_revision=revision), step
+            )
+        except PreSubmissionRevisionMismatchError as error:
+            last_error = error
+            rebind_audit.append({
+                "step": step,
+                "attempt": attempt,
+                "stale_revision": revision,
+                "error": f"{type(error).__name__}: {error}",
+                "request_submitted": False,
+                "retained_event_instance_id": event_instance_id,
+                "tracked_ck3_pid": bridge_pid,
+            })
+    if last_error is None:
+        raise PromotionProductionEntryError(
+            "zg361.6 retain wait could not bind its modal map control"
+        )
+    raise last_error
+
+
+def _zg361_6_retain_option_ready(query: Mapping[str, object]) -> bool:
+    context = query.get("current_event_window_context")
+    options_value = context.get("options") if isinstance(context, Mapping) else None
+    options = options_value if isinstance(options_value, list) else []
+    return any(
+        isinstance(row, Mapping)
+        and row.get("native_option_index") == 1
+        and row.get("shown") is True
+        and row.get("enabled") is True
+        and row.get("fallback") is False
+        and row.get("cancel") is False
+        for row in options
+    )
+
+
 def _compact_progress_observation(
     query: object, *, date_raw: int, revision: int,
 ) -> dict[str, object]:
@@ -2457,6 +2558,58 @@ def _compact_progress_observation(
         "central_active": widget_visible(progress, 3),
         "pp_active": widget_visible(progress, 4),
     }
+
+
+def _post_interrupt_seed_is_invalid(
+    observation: Mapping[str, object],
+) -> bool:
+    return (
+        not any(
+            observation.get(name) is True
+            for name in ("b1_active", "central_active", "pp_active")
+        )
+        and observation.get("review_now_eligible") is not True
+    )
+
+
+def _activate_review_now_from_progress(
+    service: PromotionProductionEntryService,
+    *,
+    source_progress: dict[str, object],
+    source_revision: int,
+    player: int,
+    connection_generation: int,
+    evidence: dict[str, object],
+    nonce: str,
+) -> None:
+    action = service.activate_zhongguo_review_now_v1(
+        nonce,
+        source_progress,
+        expected_revision=source_revision,
+    )
+    evidence["review_action"] = action
+    after_snapshot, _ = _binding(
+        service.snapshot(),
+        player=player,
+        connection_generation=connection_generation,
+    )
+    after = service.query_zhongguo_promotion_source_progress_v1(
+        f"{nonce}.after",
+        expected_revision=int(after_snapshot["revision"]),
+    )
+    evidence["post_action_progress"] = copy.deepcopy(after)
+    try:
+        evidence["review_action_postcondition"] = (
+            verify_review_now_independent_postcondition_v1(
+                action_result=action,
+                before_query_sequence=int(source_progress["query_sequence"]),
+                after_result=after,
+                expected_connection_generation=connection_generation,
+                expected_player_character_id=player,
+            )
+        )
+    except ValueError as error:
+        raise PromotionProductionEntryError(str(error)) from error
 
 
 def _binding(
@@ -2803,8 +2956,11 @@ def _known_interrupt_checks(
         )
         == snapshot_option_count,
         "authored_options_exact": authored_options_exact,
-        "selected_option_mapping": effective_contract["selected_option_number"]
-        == effective_contract["selected_native_option_index"] + 1,
+        "selected_option_mapping": (
+            effective_contract.get("selection_deferred") is True
+            or effective_contract["selected_option_number"]
+            == effective_contract["selected_native_option_index"] + 1
+        ),
     }
     for name, expected_character_id in character_scopes.items():
         checks[f"scope:{name}"] = character_ids(str(name)) == {
@@ -3082,6 +3238,11 @@ def _drain_known_timeline_interrupt(
     options_value = context.get("options")
     options = options_value if isinstance(options_value, list) else []
     effective_contract = _option_contract_for_context(options, contract)
+    if effective_contract.get("selection_deferred") is True:
+        raise PromotionProductionEntryError(
+            f"known promotion-timeline interrupt {event_key!r} requires a "
+            "deterministic option before it may be drained"
+        )
 
     # A context query publishes a newer driver revision.  Rebind the same
     # paused event immediately before mutation instead of reusing the query's
@@ -3189,6 +3350,10 @@ def enter_promotion_source_checkpoint_v1(
     player = int(initial["played_character"]["character_id"])
     generation = int(initial["diagnostics"]["connection_generation"])
     starting_date = int(initial["date_raw"])
+    timeline_origin_date = PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+    absolute_end_date = (
+        timeline_origin_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY
+    )
     # The caller retains this same object even if a later interrupt raises.
     # R59/R61 lost their accumulated timeline because only success returned it.
     evidence: dict[str, object] = {} if evidence_out is None else evidence_out
@@ -3200,6 +3365,8 @@ def enter_promotion_source_checkpoint_v1(
         "player_character_id": player,
         "connection_generation": generation,
         "starting_date_raw": starting_date,
+        "timeline_origin_date_raw": timeline_origin_date,
+        "absolute_end_date_raw": absolute_end_date,
         "advance_bound": {
             "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
             "post_publication_observation_days": (
@@ -3224,7 +3391,14 @@ def enter_promotion_source_checkpoint_v1(
         "pre_submission_revision_rebinds": [],
         "progress_query_rebinds": [],
         "initial_known_interrupt": None,
+        "zg361_6_retain_wait": None,
+        "seed_invalid": None,
     })
+    if starting_date > absolute_end_date:
+        raise PromotionProductionEntryError(
+            "promotion path already exceeded its absolute 550-day product "
+            "observation bound before this retained-client reconnect"
+        )
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
         if key == M147:
@@ -3259,7 +3433,7 @@ def enter_promotion_source_checkpoint_v1(
         # heartbeat before binding the first strict paused-frame query, exactly
         # as the polling path below already does.
         sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
-        initial, _ = _binding(
+        initial, initial_event = _binding(
             service.snapshot(), player=player,
             connection_generation=generation,
         )
@@ -3295,53 +3469,74 @@ def enter_promotion_source_checkpoint_v1(
             f"reason={unavailable_reason!r}; "
             f"unavailable_widgets={unavailable_widgets!r}"
         )
-    if not any(widget_visible(progress, index) for index in (2, 3, 4)):
+    if (
+        initial_event is None
+        and not any(widget_visible(progress, index) for index in (2, 3, 4))
+    ):
         if not widget_visible(progress, 1):
             raise PromotionProductionEntryError(
                 "real review-now product action is not eligible on this seed"
             )
-        action = service.activate_zhongguo_review_now_v1(
-            "promo.entry.review", before,
-            expected_revision=int(initial["revision"]),
-        )
-        evidence["review_action"] = action
-        after_snapshot, _ = _binding(
-            service.snapshot(), player=player,
+        _activate_review_now_from_progress(
+            service,
+            source_progress=before,
+            source_revision=int(initial["revision"]),
+            player=player,
             connection_generation=generation,
+            evidence=evidence,
+            nonce="promo.entry.review",
         )
-        after = service.query_zhongguo_promotion_source_progress_v1(
-            "promo.entry.after",
-            expected_revision=int(after_snapshot["revision"]),
-        )
-        evidence["post_action_progress"] = copy.deepcopy(after)
-        try:
-            evidence["review_action_postcondition"] = (
-                verify_review_now_independent_postcondition_v1(
-                    action_result=action,
-                    before_query_sequence=int(before["query_sequence"]),
-                    after_result=after,
-                    expected_connection_generation=generation,
-                    expected_player_character_id=player,
-                )
-            )
-        except ValueError as error:
-            raise PromotionProductionEntryError(str(error)) from error
 
     deadline = clock() + timeout_seconds
     last_progress_date_raw = starting_date
     consecutive_progress_query_rebinds = 0
+    zg361_6_wait_state: dict[str, object] | None = None
+    post_interrupt_progress_due = False
     while clock() < deadline:
         snapshot, event = _binding(
             service.snapshot(), player=player,
             connection_generation=generation,
         )
         date_raw = int(snapshot["date_raw"])
-        if date_raw > starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY:
+        if date_raw > absolute_end_date:
             raise PromotionProductionEntryError(
                 "promotion path exceeded its 550-day product observation "
                 "bound (400-day authored B1 window plus 150-day "
                 "post-publication window)"
             )
+        if zg361_6_wait_state is not None:
+            active_event = snapshot.get("active_event")
+            current_instance_id = (
+                active_event.get("instance_id")
+                if isinstance(active_event, Mapping)
+                else None
+            )
+            if (
+                _snapshot_bridge_pid(snapshot)
+                != zg361_6_wait_state["tracked_ck3_pid"]
+                or current_instance_id
+                != zg361_6_wait_state["event_instance_id"]
+            ):
+                raise PromotionProductionEntryError(
+                    "zg361.6 retain wait crossed its CK3 PID/event identity"
+                )
+            date_advanced = date_raw > int(
+                zg361_6_wait_state["last_date_raw"]
+            )
+            if date_advanced:
+                zg361_6_wait_state["last_date_raw"] = date_raw
+                zg361_6_wait_state["advance_deadline"] = (
+                    clock() + ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS
+                )
+            elif clock() >= float(zg361_6_wait_state["advance_deadline"]):
+                raise PromotionProductionEntryError(
+                    "zg361.6 deterministic retain option is unavailable and "
+                    "the native modal cannot advance at speed 5"
+                )
+            if snapshot.get("paused") is not True and not date_advanced:
+                if poll_interval_seconds:
+                    sleeper(poll_interval_seconds)
+                continue
         # Do not immediately pause a speed-5 map again before even one native
         # date transition. R91 proved that 50 ms pause/resume churn can keep
         # the product on the same date and query the first, not-yet-settled
@@ -3375,7 +3570,7 @@ def enter_promotion_source_checkpoint_v1(
                 connection_generation=generation,
             )
             date_raw = int(snapshot["date_raw"])
-            if date_raw > starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY:
+            if date_raw > absolute_end_date:
                 raise PromotionProductionEntryError(
                     "promotion path exceeded its 550-day product observation "
                     "bound (400-day authored B1 window plus 150-day "
@@ -3387,7 +3582,9 @@ def enter_promotion_source_checkpoint_v1(
                 continue
 
         should_sample_progress = (
-            date_raw > last_progress_date_raw or event is not None
+            date_raw > last_progress_date_raw
+            or event is not None
+            or post_interrupt_progress_due
         )
         if should_sample_progress:
             observations = evidence["observations"]
@@ -3432,14 +3629,45 @@ def enter_promotion_source_checkpoint_v1(
                 "paused": snapshot.get("paused"),
                 "active_event": event is not None,
             })
-            progress_observations.append(
-                _compact_progress_observation(
-                    progress_query,
-                    date_raw=date_raw,
-                    revision=int(snapshot["revision"]),
-                )
+            progress_observation = _compact_progress_observation(
+                progress_query,
+                date_raw=date_raw,
+                revision=int(snapshot["revision"]),
             )
+            progress_observations.append(progress_observation)
             last_progress_date_raw = date_raw
+            if post_interrupt_progress_due and event is None:
+                post_interrupt_progress_due = False
+                active_witness = any(
+                    progress_observation[name]
+                    for name in ("b1_active", "central_active", "pp_active")
+                )
+                if not active_witness:
+                    if _post_interrupt_seed_is_invalid(progress_observation):
+                        evidence["seed_invalid"] = {
+                            "date_raw": date_raw,
+                            "reason": (
+                                "no active B1/Central/PP witness and review-now "
+                                "is not eligible after a known interrupt"
+                            ),
+                            "progress": copy.deepcopy(progress_observation),
+                        }
+                        raise PromotionProductionEntryError(
+                            "promotion seed invalid after known interrupt: no "
+                            "active B1/Central/PP witness and review-now is not "
+                            "eligible"
+                        )
+                    if evidence.get("review_action") is None:
+                        _activate_review_now_from_progress(
+                            service,
+                            source_progress=progress_query,
+                            source_revision=int(snapshot["revision"]),
+                            player=player,
+                            connection_generation=generation,
+                            evidence=evidence,
+                            nonce="promo.entry.review.after-interrupt",
+                        )
+                        continue
         if isinstance(snapshot.get("active_event"), Mapping) and event is None:
             if poll_interval_seconds:
                 sleeper(poll_interval_seconds)
@@ -3461,7 +3689,7 @@ def enter_promotion_source_checkpoint_v1(
             assert isinstance(drains, list)
             if contract is not None:
                 contract = _timeline_contract_for_window(
-                    contract, starting_date=starting_date,
+                    contract, starting_date=timeline_origin_date,
                 )
                 occurrence_count = sum(
                     isinstance(row, Mapping)
@@ -3474,6 +3702,91 @@ def enter_promotion_source_checkpoint_v1(
                         "known promotion-timeline interrupt exceeded its "
                         f"occurrence bound: {key!r}"
                     )
+                if key == "zg361.6" and not _zg361_6_retain_option_ready(
+                    event_query
+                ):
+                    context_value = event_query.get(
+                        "current_event_window_context"
+                    )
+                    context = (
+                        context_value
+                        if isinstance(context_value, Mapping)
+                        else {}
+                    )
+                    wait_checks = _known_interrupt_checks(
+                        snapshot=snapshot,
+                        event=event,
+                        context=context,
+                        event_key=key,
+                        contract=contract,
+                    )
+                    if not all(wait_checks.values()):
+                        failed = sorted(
+                            name for name, passed in wait_checks.items()
+                            if not passed
+                        )
+                        raise PromotionProductionEntryError(
+                            "known promotion-timeline interrupt 'zg361.6' "
+                            f"drifted before retain wait: {failed!r}"
+                        )
+                    tracked_ck3_pid = _snapshot_bridge_pid(snapshot)
+                    if tracked_ck3_pid is None:
+                        raise PromotionProductionEntryError(
+                            "zg361.6 retain wait lacks a positive tracked CK3 PID"
+                        )
+                    if zg361_6_wait_state is None:
+                        wait_end_date = min(
+                            absolute_end_date,
+                            date_raw
+                            + ZG361_6_RETAIN_WAIT_DAYS * HOURS_PER_DAY,
+                        )
+                        zg361_6_wait_state = {
+                            "event_instance_id": int(event["event_instance_id"]),
+                            "tracked_ck3_pid": tracked_ck3_pid,
+                            "starting_date_raw": date_raw,
+                            "last_date_raw": date_raw,
+                            "end_date_raw": wait_end_date,
+                            "advance_deadline": (
+                                clock()
+                                + ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS
+                            ),
+                        }
+                    if date_raw >= int(zg361_6_wait_state["end_date_raw"]):
+                        raise PromotionProductionEntryError(
+                            "zg361.6 deterministic retain option 2 did not "
+                            "become enabled within its finite product window"
+                        )
+                    evidence["zg361_6_retain_wait"] = {
+                        key: value
+                        for key, value in zg361_6_wait_state.items()
+                        if key != "advance_deadline"
+                    }
+                    rebind_audit = evidence["pre_submission_revision_rebinds"]
+                    if not isinstance(rebind_audit, list):
+                        raise PromotionProductionEntryError(
+                            "promotion entry rebind audit storage is invalid"
+                        )
+                    _retained_modal_map_control(
+                        service,
+                        step="set-speed-5",
+                        player=player,
+                        connection_generation=generation,
+                        bridge_pid=tracked_ck3_pid,
+                        event_instance_id=int(event["event_instance_id"]),
+                        rebind_audit=rebind_audit,
+                    )
+                    _retained_modal_map_control(
+                        service,
+                        step="resume-map",
+                        player=player,
+                        connection_generation=generation,
+                        bridge_pid=tracked_ck3_pid,
+                        event_instance_id=int(event["event_instance_id"]),
+                        rebind_audit=rebind_audit,
+                    )
+                    if poll_interval_seconds:
+                        sleeper(poll_interval_seconds)
+                    continue
                 drains.append(
                     _drain_known_timeline_interrupt(
                         service,
@@ -3486,6 +3799,17 @@ def enter_promotion_source_checkpoint_v1(
                         connection_generation=generation,
                     )
                 )
+                if key == "zg361.6":
+                    selection = drains[-1].get("selection")
+                    if not (
+                        isinstance(selection, Mapping)
+                        and selection.get("option_number") == 2
+                    ):
+                        raise PromotionProductionEntryError(
+                            "zg361.6 did not use deterministic retain option 2"
+                        )
+                    zg361_6_wait_state = None
+                post_interrupt_progress_due = True
                 if poll_interval_seconds:
                     sleeper(poll_interval_seconds)
                 continue

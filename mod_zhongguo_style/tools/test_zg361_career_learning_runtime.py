@@ -804,6 +804,26 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_cl_m329_mentor_distinct = 0", mentor_consumer)
         self.assertIn("zg361_cl_m329_match_failed value = 1", mentor_consumer)
 
+    def test_relationship_consumers_never_target_a_dead_frozen_owner(self) -> None:
+        for mechanism_id in generator.RELATIONSHIP_IDS:
+            p = f"zg361_cl_m{mechanism_id:03d}"
+            consumer = block(self.effects, f"{p}_consume_effect")
+            owner_presence = f"has_variable = {p}_object_owner"
+            alive_guard = f"var:{p}_object_owner = {{ is_alive = yes }}"
+            opinion_writes = tuple(
+                match.start()
+                for match in re.finditer(
+                    rf"add_opinion\s*=\s*\{{[^}}]*target\s*=\s*var:{p}_object_owner",
+                    consumer,
+                )
+            )
+            with self.subTest(mechanism_id=mechanism_id):
+                self.assertEqual(len(opinion_writes), 2)
+                self.assertIn(owner_presence, consumer)
+                self.assertIn(alive_guard, consumer)
+                guard_at = consumer.index(alive_guard)
+                self.assertTrue(all(guard_at < write_at for write_at in opinion_writes))
+
     def test_business_obligations_are_frozen_scheduled_and_single_use(self) -> None:
         self.assertEqual(set(generator.OBLIGATION_DAYS), set(range(312, 334)))
         for row in generator.MECHANISMS:

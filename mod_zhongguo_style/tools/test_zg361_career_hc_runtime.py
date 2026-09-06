@@ -786,6 +786,15 @@ class CareerHcRuntimeTests(unittest.TestCase):
         retry = block(self.events, "zg361ch.990")
         self.assertIn("zg361_career_hc_settle_pp_transfer_effect = yes", retry)
 
+    def test_transfer_title_holder_guards_keep_the_enclosing_character_scope(self) -> None:
+        # Entering a title-valued variable changes ``this`` to landed_title.
+        # The holder trigger expects a character, so it must compare with the
+        # enclosing character via ``prev`` rather than the nested title scope.
+        invalid = "var:zg361_transfer_vacancy_title = { holder = this }"
+        valid = "var:zg361_transfer_vacancy_title = { holder = prev }"
+        self.assertNotIn(invalid, self.effects)
+        self.assertEqual(self.effects.count(valid), 4)
+
     def test_cl_transfer_adapter_claims_one_real_vacancy_without_pp_forgery(self) -> None:
         claim = block(
             self.effects,

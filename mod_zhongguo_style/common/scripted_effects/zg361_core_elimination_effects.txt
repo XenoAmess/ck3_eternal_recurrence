@@ -124,7 +124,15 @@ zg361_eliminate_purge_effect = {
 	set_variable = { name = zg361_b2_pending_adverse_action value = 1 }
 	zg361_b2_prepare_adverse_action_effect = yes
 	if = {
-		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		# Event-option tooltip evaluation does not commit the prepare effect above.
+		# Keep this scratch read behind a real lazy presence boundary.
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_b2_adverse_action_allowed }
+				var:zg361_b2_adverse_action_allowed = 1
+			}
+			trigger_else = { always = no }
+		}
 		debug_log = "ZG361: elimination -> purge (title stripped)"
 		if = {
 			limit = { government_has_flag = government_has_merit }
@@ -141,7 +149,13 @@ zg361_eliminate_stepdown_effect = {
 	set_variable = { name = zg361_b2_pending_adverse_action value = 2 }
 	zg361_b2_prepare_adverse_action_effect = yes
 	if = {
-		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_b2_adverse_action_allowed }
+				var:zg361_b2_adverse_action_allowed = 1
+			}
+			trigger_else = { always = no }
+		}
 		debug_log = "ZG361: elimination -> forced retirement"
 		add_opinion = { modifier = zg361_forced_retire target = liege }
 		force_step_down_landed_titles = yes
@@ -154,7 +168,13 @@ zg361_eliminate_demote_effect = {
 	set_variable = { name = zg361_b2_pending_adverse_action value = 3 }
 	zg361_b2_prepare_adverse_action_effect = yes
 	if = {
-		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_b2_adverse_action_allowed }
+				var:zg361_b2_adverse_action_allowed = 1
+			}
+			trigger_else = { always = no }
+		}
 		debug_log = "ZG361: elimination -> demoted but retained"
 		if = {
 			limit = { government_has_flag = government_has_merit }
@@ -172,7 +192,13 @@ zg361_eliminate_extend_effect = {
 	set_variable = { name = zg361_b2_pending_adverse_action value = 4 }
 	zg361_b2_prepare_adverse_action_effect = yes
 	if = {
-		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_b2_adverse_action_allowed }
+				var:zg361_b2_adverse_action_allowed = 1
+			}
+			trigger_else = { always = no }
+		}
 		debug_log = "ZG361: elimination -> PIP extended"
 		add_character_modifier = { modifier = zg361_pip years = 1 }
 		zg361_b2_finish_adverse_action_effect = yes

@@ -3135,10 +3135,10 @@ def render_localization(language: str, header: str) -> str:
         title = "公示后续事项清点"
         desc = (
             "官署已经清点本轮公示后的处置结果。按原定安排办结 #high "
-            "[ROOT.Var('zg361_p2c_success_n')|0]#! 项；经核对无需另办 "
-            "[ROOT.Var('zg361_p2c_na_n')|0] 项；尚有 "
-            "[ROOT.Var('zg361_p2c_red_n')|0] 项未能办结，其中 "
-            "[ROOT.Var('zg361_p2c_external_n')|0] 项是因为所需案情尚未送达。"
+            "[ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#! 项；经核对无需另办 "
+            "[ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0] 项；尚有 "
+            "[ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0] 项未能办结，其中 "
+            "[ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0] 项是因为所需案情尚未送达。"
             "未办事项会留到下一轮重新核对，不会混入本轮功绩。"
         )
         ack = "办结与未办，分别记清。"
@@ -3146,10 +3146,10 @@ def render_localization(language: str, header: str) -> str:
         title = "Post-Publication Matters Counted"
         desc = (
             "The office has counted the outcomes of this cycle's post-publication work. "
-            "#high [ROOT.Var('zg361_p2c_success_n')|0]#! items were completed as planned; "
-            "[ROOT.Var('zg361_p2c_na_n')|0] were confirmed to require no further action; "
-            "and [ROOT.Var('zg361_p2c_red_n')|0] remain unfinished. Of the unfinished matters, "
-            "[ROOT.Var('zg361_p2c_external_n')|0] lacked facts that had not yet arrived. "
+            "#high [ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#! items were completed as planned; "
+            "[ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0] were confirmed to require no further action; "
+            "and [ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0] remain unfinished. Of the unfinished matters, "
+            "[ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0] lacked facts that had not yet arrived. "
             "They will be checked again next cycle and will not be counted among this cycle's achievements."
         )
         ack = "Record completed and unfinished matters separately."

@@ -241,14 +241,23 @@ zg361_cl_m322_consume_effect = {
             if = { limit = { var:zg361_cl_m322_route = 2 } set_variable = { name = zg361_cl_m322_history_wipe_blocked value = 1 } }
             set_variable = { name = zg361_cl_m322_consumer_value value = var:zg361_cl_m322_old_case_links }
         if = {
-            limit = { var:zg361_cl_m322_route = 1 }
-            add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m322_object_owner opinion = 5 }
-            set_variable = { name = zg361_cl_m322_relationship_revision value = 1 }
-        }
-        else_if = {
-            limit = { var:zg361_cl_m322_route = 2 }
-            add_opinion = { modifier = angry_opinion target = var:zg361_cl_m322_object_owner opinion = -5 }
-            set_variable = { name = zg361_cl_m322_relationship_revision value = 1 }
+            # The frozen owner can die while another subject's same-day stage
+            # event is still queued.  A weak dead character remains comparable
+            # by the receipt guard, but is not a legal add_opinion target.
+            limit = {
+                has_variable = zg361_cl_m322_object_owner
+                var:zg361_cl_m322_object_owner = { is_alive = yes }
+            }
+            if = {
+                limit = { var:zg361_cl_m322_route = 1 }
+                add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m322_object_owner opinion = 5 }
+                set_variable = { name = zg361_cl_m322_relationship_revision value = 1 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m322_route = 2 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m322_object_owner opinion = -5 }
+                set_variable = { name = zg361_cl_m322_relationship_revision value = 1 }
+            }
         }
         change_variable = { name = zg361_cl_m322_object_consumer_revision add = 1 }
         set_variable = { name = zg361_cl_m322_object_state value = 2 }

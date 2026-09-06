@@ -1006,12 +1006,16 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             keys = set(re.findall(r'^\s+([^\s:]+):\d+\s+"', text, flags=re.MULTILINE))
             self.assertEqual(keys, expected, language)
 
-    def test_character_event_summary_reads_root_variables_directly(self) -> None:
+    def test_character_event_summary_reads_root_numeric_variable_values(self) -> None:
         for language, _header in generator.LANGUAGES:
             text = read(f"localization/{language}/zg361_phase2_central_l_{language}.yml")
-            self.assertNotIn("ROOT.MakeScope.Var", text, language)
+            self.assertNotIn("[ROOT.Var('", text, language)
             for field in ("success_n", "na_n", "red_n", "external_n"):
-                self.assertIn(f"[ROOT.Var('zg361_p2c_{field}')|0]", text, language)
+                self.assertIn(
+                    f"[ROOT.MakeScope.Var('zg361_p2c_{field}').GetValue|0]",
+                    text,
+                    language,
+                )
 
     def test_summary_uses_business_conclusions_reasons_and_follow_up(self) -> None:
         chinese = read(

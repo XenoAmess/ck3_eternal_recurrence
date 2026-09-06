@@ -243,14 +243,23 @@ zg361_cl_m332_consume_effect = {
             if = { limit = { var:zg361_cl_m332_route = 2 } set_variable = { name = zg361_cl_m332_readiness_after value = 42 } set_variable = { name = zg361_cl_m332_success value = 0 } set_variable = { name = zg361_cl_m332_emergency_veto_used value = 1 } set_variable = { name = zg361_cl_m332_development_gap value = 1 } }
             set_variable = { name = zg361_cl_m332_consumer_value value = var:zg361_cl_m332_readiness_after }
         if = {
-            limit = { var:zg361_cl_m332_route = 1 }
-            add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m332_object_owner opinion = 5 }
-            set_variable = { name = zg361_cl_m332_relationship_revision value = 1 }
-        }
-        else_if = {
-            limit = { var:zg361_cl_m332_route = 2 }
-            add_opinion = { modifier = angry_opinion target = var:zg361_cl_m332_object_owner opinion = -5 }
-            set_variable = { name = zg361_cl_m332_relationship_revision value = 1 }
+            # The frozen owner can die while another subject's same-day stage
+            # event is still queued.  A weak dead character remains comparable
+            # by the receipt guard, but is not a legal add_opinion target.
+            limit = {
+                has_variable = zg361_cl_m332_object_owner
+                var:zg361_cl_m332_object_owner = { is_alive = yes }
+            }
+            if = {
+                limit = { var:zg361_cl_m332_route = 1 }
+                add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m332_object_owner opinion = 5 }
+                set_variable = { name = zg361_cl_m332_relationship_revision value = 1 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m332_route = 2 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m332_object_owner opinion = -5 }
+                set_variable = { name = zg361_cl_m332_relationship_revision value = 1 }
+            }
         }
         change_variable = { name = zg361_cl_m332_object_consumer_revision add = 1 }
         set_variable = { name = zg361_cl_m332_object_state value = 2 }
@@ -822,14 +831,23 @@ zg361_cl_m333_consume_effect = {
             if = { limit = { var:zg361_cl_m333_route = 2 } set_variable = { name = zg361_cl_m333_outstanding value = 18 } set_variable = { name = zg361_cl_m333_application_evidence value = 0 } set_variable = { name = zg361_cl_m333_performance_credit value = 0 } set_variable = { name = zg361_cl_m333_organization_layoff_exempt value = 0 } }
             set_variable = { name = zg361_cl_m333_consumer_value value = var:zg361_cl_m333_performance_credit }
         if = {
-            limit = { var:zg361_cl_m333_route = 1 }
-            add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m333_object_owner opinion = 5 }
-            set_variable = { name = zg361_cl_m333_relationship_revision value = 1 }
-        }
-        else_if = {
-            limit = { var:zg361_cl_m333_route = 2 }
-            add_opinion = { modifier = angry_opinion target = var:zg361_cl_m333_object_owner opinion = -5 }
-            set_variable = { name = zg361_cl_m333_relationship_revision value = 1 }
+            # The frozen owner can die while another subject's same-day stage
+            # event is still queued.  A weak dead character remains comparable
+            # by the receipt guard, but is not a legal add_opinion target.
+            limit = {
+                has_variable = zg361_cl_m333_object_owner
+                var:zg361_cl_m333_object_owner = { is_alive = yes }
+            }
+            if = {
+                limit = { var:zg361_cl_m333_route = 1 }
+                add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m333_object_owner opinion = 5 }
+                set_variable = { name = zg361_cl_m333_relationship_revision value = 1 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m333_route = 2 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m333_object_owner opinion = -5 }
+                set_variable = { name = zg361_cl_m333_relationship_revision value = 1 }
+            }
         }
         change_variable = { name = zg361_cl_m333_object_consumer_revision add = 1 }
         set_variable = { name = zg361_cl_m333_object_state value = 2 }

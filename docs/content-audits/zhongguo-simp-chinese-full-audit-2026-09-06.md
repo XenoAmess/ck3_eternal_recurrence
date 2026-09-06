@@ -457,3 +457,39 @@ Workforce 的业务顺序、写入和玩家文案。
 **713 files / 3,813 effects / `>10` 0 / `>20` 0 / `>200 KiB` 0 / max 10 effects / max 130,221 bytes**。
 因此当前结论是 **R109 LIVE RED 已定位，参数修复 STATIC GREEN，修复后 LIVE PENDING**；必须由下一次 fresh CK3
 loader 将这两类签名归零后，才恢复后续 gameplay 文案验收。
+
+### 17.4 R110 实机续跑、失效 seed 与四类运行时修复
+
+R110 fresh product 完成 **303/303** 个 loader node，fatal 0；R109 的两类
+`Scripted effect should have no arguments` 签名均归零，因此本轮 loader 为 GREEN。首次 gameplay 客户端在
+`zg361.6` 的 exact saved-scope 清单上报 harness RED：窗口本身、玩家 root 和可用选项均有效，只是合同尚未纳入
+当前谱系新增的 self/shadow ticket scope。修正纯验收合同后，续跑复用同一 CK3 PID **112096**、同一 pipe 与同一
+episode，没有重启游戏。
+
+续跑对已在窗口中的 `.6.a` 选择“最后申诉”；该路线只有 40% 改判机会，本次随机失败。`debug.log` 随即明确记录
+`elimination -> purge (title stripped)` 与 `final appeal rejected, purged`。玩家 `29037` 没有死亡，也没有发生
+继承或角色重绑定，但已失去全部 landed title，因此该 seed 不再具备后续晋升/B1 验收资格。之后 Central 从 true
+转为 false、再等待 550 日仍未出现新 B1，不能解释为产品晋升链卡死；resume 报告中的 observation-bound RED 是
+失效 seed 上继续观察的场景结果。
+
+独立按首次客户端冻结日志与 live append-only 日志的字节边界复核，resume 增量共有 **41,958 条产品归因运行时
+错误记录**，归并为四域：
+
+1. Core/B2 淘汰 option tooltip 在预求值时没有提交前置 prepare effect，却直接读取
+   `zg361_b2_adverse_action_allowed`；unset variable、unset `var` scope、invalid comparison 三种签名各
+   **13,976** 次，共 **41,928** 条。
+2. Central 汇总正文的四个 `ROOT.Var(...)` 不是合法的事件本地化数据表达式，产生 8 条 data-function 转换错误和
+   1 条 `zg361_p2c_summary_desc` data error，共 **9** 条。
+3. Career Learning 的 M317/M329 在冻结 owner 已死亡后仍执行 `add_opinion`，两个路径各 10 次，共 **20** 条。
+4. Career/HC transfer vacancy guard 在 landed-title 内层 scope 用 `holder = this`，造成 character 与
+   landed_title 类型比较错误 **1** 条。
+
+四域静态修复现已落盘：淘汰四路线用 lazy `has_variable` 边界读取 scratch 值；Central 九语言生成源改用
+`ROOT.MakeScope.Var(...).GetValue`；Career Learning 所有 relationship consumer 在写 opinion 前验证冻结 owner
+存在且存活；Career/HC 四处 title-holder guard 改为引用外层角色的 `holder = prev`。对应生成源和回归断言已同步，
+但这些改动尚无修复后 live 证据，不能把 STATIC 修复记成运行时归零。
+
+R110 全程使用默认 **5 速**，没有 OCR；失效谱系审计完毕后已通过 managed stop 回收，未让旧产品进程继续承担
+修复后验收。当前状态为 **R110 loader GREEN / gameplay seed invalid / 四域修复 STATIC GREEN / LIVE PENDING**；
+下一步必须由 **R111 fresh product** 重新验证 303/303 loader、上述 41,958 条签名归零，并从仍有地且具备资格的
+玩家谱系完成晋升链与文案实机验收。

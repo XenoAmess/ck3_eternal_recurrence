@@ -783,6 +783,213 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(audit[0]["stale_revision"], 118)
         self.assertFalse(audit[0]["request_submitted"])
 
+    def test_zg361_6_modal_wait_controls_only_the_same_pid_and_event(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.revision = 20
+                self.speed = 1
+                self.paused = True
+                self.pid = 361006
+                self.steps: list[str] = []
+
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "snapshot_id": f"snapshot-{self.revision}",
+                    "revision": self.revision,
+                    "native_revision": self.revision,
+                    "date_raw": 53159136,
+                    "played_character": {"character_id": 29037},
+                    "diagnostics": {
+                        "connection_generation": 9,
+                        "bridge_pid": self.pid,
+                    },
+                    "paused": self.paused,
+                    "speed": self.speed,
+                    "active_event": {"instance_id": 70, "option_count": 4},
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.assertEqual(expected_revision, self.revision)
+                self.steps.append(step)
+                self.revision += 1
+                if step == "set-speed-5":
+                    self.speed = 5
+                elif step == "resume-map":
+                    self.paused = False
+                return {"accepted": True, "status": "submitted"}
+
+            @staticmethod
+            def assertEqual(actual: object, expected: object) -> None:
+                if actual != expected:
+                    raise AssertionError((actual, expected))
+
+        service = Service()
+        audit: list[dict[str, object]] = []
+        production._retained_modal_map_control(
+            service,
+            step="set-speed-5",
+            player=29037,
+            connection_generation=9,
+            bridge_pid=361006,
+            event_instance_id=70,
+            rebind_audit=audit,
+        )
+        production._retained_modal_map_control(
+            service,
+            step="resume-map",
+            player=29037,
+            connection_generation=9,
+            bridge_pid=361006,
+            event_instance_id=70,
+            rebind_audit=audit,
+        )
+        self.assertEqual(service.steps, ["set-speed-5", "resume-map"])
+        service.pid += 1
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError, "PID/event identity"
+        ):
+            production._retained_modal_map_control(
+                service,
+                step="set-speed-5",
+                player=29037,
+                connection_generation=9,
+                bridge_pid=361006,
+                event_instance_id=70,
+                rebind_audit=audit,
+            )
+
+    def test_zg361_6_never_falls_back_when_modal_cannot_advance(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.revision = 20
+                self.speed = 1
+                self.paused = True
+                self.steps: list[str] = []
+                self.selections: list[int] = []
+
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "snapshot_id": f"snapshot-{self.revision}",
+                    "revision": self.revision,
+                    "native_revision": self.revision,
+                    "date_raw": 53159136,
+                    "played_character": {"character_id": 29037},
+                    "diagnostics": {
+                        "connection_generation": 9,
+                        "bridge_pid": 361006,
+                    },
+                    "paused": self.paused,
+                    "speed": self.speed,
+                    "active_event": {"instance_id": 70, "option_count": 4},
+                }
+
+            def query_zhongguo_promotion_source_progress_v1(
+                self, request_nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                widgets = [
+                    {"effective_visible": {"status": "available", "value": False}}
+                    for _ in range(5)
+                ]
+                widgets[3]["effective_visible"]["value"] = True
+                return {
+                    "status": "available",
+                    "query_sequence": 1,
+                    "zhongguo_promotion_source_progress": {"widgets": widgets},
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.steps.append(step)
+                self.revision += 1
+                if step == "set-speed-5":
+                    self.speed = 5
+                elif step == "resume-map":
+                    self.paused = False
+                return {"accepted": True, "status": "submitted"}
+
+            def select_event_option(
+                self, option_number: int, *, event_instance_id: int,
+                expected_revision: int,
+            ) -> dict[str, object]:
+                self.selections.append(option_number)
+                raise AssertionError("random appeal option must never be selected")
+
+        query = {
+            "current_event_window_context": {
+                "options": [
+                    {"native_option_index": 0, "shown": True, "enabled": True},
+                    {"native_option_index": 2, "shown": True, "enabled": True},
+                ]
+            }
+        }
+        service = Service()
+        with (
+            mock.patch.object(
+                production,
+                "_event_definition",
+                return_value=("zg361.6", query),
+            ),
+            mock.patch.object(
+                production,
+                "_known_interrupt_checks",
+                return_value={"identity": True},
+            ),
+            mock.patch.object(
+                production,
+                "ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS",
+                0.0,
+            ),
+        ):
+            with self.assertRaisesRegex(
+                production.PromotionProductionEntryError,
+                "native modal cannot advance at speed 5",
+            ):
+                production.enter_promotion_source_checkpoint_v1(
+                    service,
+                    timeout_seconds=1.0,
+                    poll_interval_seconds=0.0,
+                    clock=lambda: 0.0,
+                    sleeper=lambda _seconds: None,
+                )
+        self.assertEqual(service.steps, ["set-speed-5", "resume-map"])
+        self.assertEqual(service.selections, [])
+
+    def test_product_timeline_bound_is_anchored_to_canonical_seed(self) -> None:
+        reconnect_date = production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 500 * 24
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.6"],
+            starting_date=production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+        )
+        self.assertEqual(
+            contract["date_raw_range"],
+            (
+                production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+                production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+                + production.MAX_ADVANCE_DAYS * production.HOURS_PER_DAY,
+            ),
+        )
+        self.assertNotEqual(contract["date_raw_range"][0], reconnect_date)
+
+        service = SimpleNamespace(snapshot=lambda: {
+            "map_ready": True,
+            "revision": 1,
+            "date_raw": contract["date_raw_range"][1] + 1,
+            "played_character": {"character_id": 29037},
+            "diagnostics": {"connection_generation": 9},
+            "paused": True,
+            "speed": 5,
+        })
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "before this retained-client reconnect",
+        ):
+            production.enter_promotion_source_checkpoint_v1(service)
+
     def test_product_entry_uses_speed_five_and_pauses_before_progress_query(self) -> None:
         class Service:
             def __init__(self) -> None:
@@ -948,6 +1155,23 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         ):
             production._compact_progress_observation(
                 query, date_raw=53147040, revision=8,
+            )
+
+    def test_post_interrupt_seed_invalid_requires_no_live_or_review_witness(self) -> None:
+        inactive = {
+            "review_now_eligible": False,
+            "b1_active": False,
+            "central_active": False,
+            "pp_active": False,
+        }
+        self.assertTrue(production._post_interrupt_seed_is_invalid(inactive))
+        for witness in (
+            "review_now_eligible", "b1_active", "central_active", "pp_active"
+        ):
+            viable = dict(inactive)
+            viable[witness] = True
+            self.assertFalse(
+                production._post_interrupt_seed_is_invalid(viable), witness
             )
 
     def test_capture_mode_is_mutually_exclusive_with_other_runtime_modes(self) -> None:
@@ -1807,13 +2031,41 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
 
         checks = checks_for(context)
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["selected_option_number"], 1)
-        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertFalse(production._zg361_6_retain_option_ready({
+            "current_event_window_context": context
+        }))
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "requires a deterministic option",
+        ):
+            production._drain_known_timeline_interrupt(
+                SimpleNamespace(),
+                snapshot=snapshot,
+                event=event,
+                query={"current_event_window_context": context},
+                event_key="zg361.6",
+                contract=contract,
+                player=29037,
+                connection_generation=9,
+            )
 
         dense_options = copy.deepcopy(context)
         dense_options["options"][1]["native_option_index"] = 1
+        dense_options["options"].append({
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": True,
+            "enabled": True,
+            "fallback": False,
+            "cancel": False,
+        })
         checks = checks_for(dense_options)
-        self.assertFalse(checks["authored_options_exact"])
+        self.assertTrue(all(checks.values()), checks)
+        self.assertTrue(production._zg361_6_retain_option_ready({
+            "current_event_window_context": dense_options
+        }))
 
         extra_scope = copy.deepcopy(context)
         extra_scope["saved_scopes"].append(

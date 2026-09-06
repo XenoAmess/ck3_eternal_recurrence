@@ -1373,6 +1373,14 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("zg361_b2_adverse_action_allowed value = 1", prepare)
         self.assertIn("zg361_b2_m070_retaliation_action_executed", prepare)
         self.assertIn("zg361_b2_management_debt add = 2", prepare)
+        lazy_allowed = re.compile(
+            r"trigger_if\s*=\s*\{\s*"
+            r"limit\s*=\s*\{\s*has_variable\s*=\s*"
+            r"zg361_b2_adverse_action_allowed\s*\}\s*"
+            r"var:zg361_b2_adverse_action_allowed\s*=\s*1\s*\}\s*"
+            r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+            re.S,
+        )
         for index, name in enumerate(
             ("purge", "stepdown", "demote", "extend"), start=1
         ):
@@ -1384,7 +1392,12 @@ class B2CK3RuntimeTests(unittest.TestCase):
                     f"zg361_b2_pending_adverse_action value = {index}", block
                 )
                 self.assertIn("zg361_b2_prepare_adverse_action_effect = yes", block)
-                self.assertIn("zg361_b2_adverse_action_allowed = 1", block)
+                self.assertRegex(block, lazy_allowed)
+                self.assertNotRegex(
+                    block,
+                    r"limit\s*=\s*\{\s*"
+                    r"var:zg361_b2_adverse_action_allowed\s*=\s*1\s*\}",
+                )
                 self.assertIn("zg361_b2_finish_adverse_action_effect = yes", block)
                 self.assertIn("zg361_b2_cancel_blocked_action_effect = yes", block)
         settle = top_level_block(self.core, "zg361_settle_delivered_325_effect")

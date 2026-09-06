@@ -1167,7 +1167,7 @@ zg361_career_hc_accept_pp_transfer_request_effect = {
             var:zg361_transfer_vacancy_position_kind = var:zg361_pp_w_transfer_position_kind
             var:zg361_transfer_vacancy_position_kind = 1
             primary_title = var:zg361_transfer_vacancy_title
-            var:zg361_transfer_vacancy_title = { holder = this }
+            var:zg361_transfer_vacancy_title = { holder = prev }
             var:zg361_transfer_vacancy_maturity_cycle <= root.var:zg361_review_serial
             var:zg361_transfer_hc_authorized = 1
             var:zg361_transfer_hc_reserved = 1
@@ -1243,7 +1243,7 @@ zg361_career_hc_settle_pp_transfer_effect = {
                 limit = {
                     liege = var:zg361_transfer_vacancy_owner
                     primary_title = var:zg361_transfer_vacancy_title
-                    var:zg361_transfer_vacancy_title = { holder = this }
+                    var:zg361_transfer_vacancy_title = { holder = prev }
                     var:zg361_transfer_vacancy_receiver = {
                         zg361_is_celestial_liege_trigger = yes
                         liege = root.var:zg361_transfer_vacancy_owner
@@ -1369,7 +1369,7 @@ zg361_career_hc_claim_cl_transfer_vacancy_effect = {
             var:zg361_transfer_vacancy_maturity_cycle <= $TICKET_CYCLE$
             liege = $TICKET_OWNER$
             primary_title = var:zg361_transfer_vacancy_title
-            var:zg361_transfer_vacancy_title = { holder = this }
+            var:zg361_transfer_vacancy_title = { holder = prev }
             var:zg361_transfer_vacancy_receiver = {
                 is_landed = yes
                 NOT = { has_trait = gallivanter }
@@ -1681,7 +1681,7 @@ zg361_career_hc_settle_cl_transfer_effect = {
             limit = {
                 liege = var:zg361_transfer_vacancy_owner
                 primary_title = var:zg361_transfer_vacancy_title
-                var:zg361_transfer_vacancy_title = { holder = this }
+                var:zg361_transfer_vacancy_title = { holder = prev }
                 var:zg361_transfer_vacancy_receiver = {
                     is_landed = yes
                     NOT = { has_trait = gallivanter }

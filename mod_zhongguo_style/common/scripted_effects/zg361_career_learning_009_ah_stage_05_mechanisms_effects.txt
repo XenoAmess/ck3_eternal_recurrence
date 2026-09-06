@@ -802,14 +802,23 @@ zg361_cl_m321_consume_effect = {
             if = { limit = { var:zg361_cl_m321_route = 2 } set_variable = { name = zg361_cl_m321_consent value = 0 } set_variable = { name = zg361_cl_m321_contact_projection_deleted value = 1 } set_variable = { name = zg361_cl_m321_talent_reputation_delta value = -10 } }
             set_variable = { name = zg361_cl_m321_consumer_value value = var:zg361_cl_m321_talent_reputation_delta }
         if = {
-            limit = { var:zg361_cl_m321_route = 1 }
-            add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m321_object_owner opinion = 5 }
-            set_variable = { name = zg361_cl_m321_relationship_revision value = 1 }
-        }
-        else_if = {
-            limit = { var:zg361_cl_m321_route = 2 }
-            add_opinion = { modifier = angry_opinion target = var:zg361_cl_m321_object_owner opinion = -5 }
-            set_variable = { name = zg361_cl_m321_relationship_revision value = 1 }
+            # The frozen owner can die while another subject's same-day stage
+            # event is still queued.  A weak dead character remains comparable
+            # by the receipt guard, but is not a legal add_opinion target.
+            limit = {
+                has_variable = zg361_cl_m321_object_owner
+                var:zg361_cl_m321_object_owner = { is_alive = yes }
+            }
+            if = {
+                limit = { var:zg361_cl_m321_route = 1 }
+                add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m321_object_owner opinion = 5 }
+                set_variable = { name = zg361_cl_m321_relationship_revision value = 1 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m321_route = 2 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m321_object_owner opinion = -5 }
+                set_variable = { name = zg361_cl_m321_relationship_revision value = 1 }
+            }
         }
         change_variable = { name = zg361_cl_m321_object_consumer_revision add = 1 }
         set_variable = { name = zg361_cl_m321_object_state value = 2 }
