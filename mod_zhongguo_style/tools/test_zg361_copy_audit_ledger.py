@@ -15,6 +15,7 @@ from gen_zg361_copy_audit_ledger import (
     REPO_ROOT,
     build_outputs,
     check_outputs,
+    read_events,
 )
 
 
@@ -34,6 +35,25 @@ class CopyAuditLedgerTest(unittest.TestCase):
         self.assertGreater(summary["final_localization_keys"], 4_900)
         self.assertGreater(summary["visible_option_bindings"], 1_800)
         self.assertEqual(summary["dead_option_loc"]["missing_visible_option_count"], 0)
+
+    def test_inline_hidden_dispatch_events_are_not_player_visible(self) -> None:
+        events, duplicates = read_events()
+        self.assertEqual(duplicates, [])
+        by_key = {event.key: event for event in events}
+        inline_hidden = {
+            "zg361mg.101",
+            "zg361mg.102",
+            "zg361mg.103",
+            "zg361mg.200",
+            "zg361mg.201",
+            "zg361mg.202",
+            "zg361mg.203",
+            "zg361mg.204",
+            "zg361mg.250",
+        }
+        self.assertTrue(all(by_key[key].hidden for key in inline_hidden))
+        self.assertEqual(self.index["summary"]["visible_events"], 626)
+        self.assertEqual(self.index["summary"]["hidden_events"], 383)
 
     def test_human_semantic_judgment_is_not_auto_promoted(self) -> None:
         self.assertEqual(self.index["ledger_status"], "review")

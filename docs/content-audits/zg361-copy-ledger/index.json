@@ -13,7 +13,7 @@
   "machine_failures": [],
   "open_items": [
     {
-      "count": 635,
+      "count": 626,
       "kind": "manual_semantic_review",
       "reason": "machine checks do not prove that scene context, causality, voice, or information value is sound",
       "records": "event shards",
@@ -126,25 +126,25 @@
       "sha256": "8f913251c82d276e66f764b653abf10f296a69c22b114325ae0889e475fd14fa"
     },
     {
-      "bytes": 59892,
+      "bytes": 69787,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-014.json",
       "records": 40,
-      "sha256": "21149c24866e8004bb8eece9ecfd1caacc7f054fd2de0276f0a202f13538319b"
+      "sha256": "a80de3798ba6214a4e313f532897b2b5f32d534e5c47771a715a55cbda63082b"
     },
     {
-      "bytes": 70690,
+      "bytes": 70857,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
       "records": 40,
-      "sha256": "34a1f3dec0799e3cdb5642400992c9735640aa495a2d7fb80e38b78ec59a1d64"
+      "sha256": "e4942a018fd8e448f598cd13deab69d5e5a966fbe91790cb37fa30df47b34f82"
     },
     {
-      "bytes": 67910,
+      "bytes": 52002,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-016.json",
-      "records": 35,
-      "sha256": "2269c58be940f8b51f6114affbba78b3271cb039e0a5d17686c29dc1e9525da4"
+      "records": 26,
+      "sha256": "be2656914df5a28babaea22677f2161cf565d5669a088d4c0adc80e6a9e0e169"
     },
     {
       "bytes": 65938,
@@ -1832,26 +1832,21 @@
     "all_event_definitions": 1009,
     "check_status_counts": {
       "body_choice_meta": {
-        "not_applicable": 9,
         "pass": 626
       },
       "dead_option_loc": {
-        "not_applicable": 9,
         "pass": 626
       },
       "generic_option": {
-        "not_applicable": 9,
         "pass": 626
       },
       "manual_semantic_review": {
-        "review": 635
+        "review": 626
       },
       "stripped_opening_punctuation": {
-        "not_applicable": 9,
         "pass": 626
       },
       "title_similarity_contains": {
-        "not_applicable": 9,
         "pass": 626
       }
     },
@@ -1862,11 +1857,11 @@
       "unbound_option_like_review_count": 0
     },
     "final_localization_keys": 4999,
-    "hidden_events": 374,
+    "hidden_events": 383,
     "machine_failure_count": 0,
-    "manual_review_open_count": 636,
+    "manual_review_open_count": 627,
     "visible_description_bindings": 844,
-    "visible_events": 635,
+    "visible_events": 626,
     "visible_option_bindings": 1856,
     "visible_title_bindings": 626
   }

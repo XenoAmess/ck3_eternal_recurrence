@@ -40,7 +40,7 @@ FIELD_RE = re.compile(
 NAME_RE = re.compile(r"(?<![\w])name\s*=\s*(?P<key>zg361[\w.]*)\b")
 DIRECT_NAME_RE = re.compile(r"^\s*name\s*=\s*(?P<key>zg361[\w.]*)\b")
 TYPE_RE = re.compile(r"^\s*type\s*=\s*(?P<type>[\w.]+)")
-HIDDEN_RE = re.compile(r"^\s*hidden\s*=\s*yes\b")
+HIDDEN_RE = re.compile(r"(?<![\w])hidden\s*=\s*yes\b")
 OPTION_START_RE = re.compile(r"^\s*option\s*=\s*{")
 GENERATED_AUTHORITY_RE = re.compile(r"GENERATED FILE.*?edit\s+(.+)$", re.IGNORECASE)
 AUTHORITY_PATH_RE = re.compile(r"tools/[A-Za-z0-9_./*?-]+(?:\.py|\.json)")
@@ -186,15 +186,18 @@ def read_events() -> tuple[list[EventEntry], list[dict[str, object]]]:
                     "descriptions": [],
                     "options": [],
                 }
-                depth = code.count("{") - code.count("}")
-                continue
+                # Parse the remainder of a one-line event declaration too.
+                # Generated dispatch events legitimately use
+                # ``type = character_event hidden = yes`` on the opening row.
+                code = code[match.end() :]
+                depth = 1
 
             pre_depth = depth
             option_started = False
             if pre_depth == 1:
                 if (match := TYPE_RE.match(code)) is not None:
                     active["event_type"] = match.group("type")
-                if HIDDEN_RE.match(code) is not None:
+                if HIDDEN_RE.search(code) is not None:
                     active["hidden"] = True
                 if OPTION_START_RE.match(code) is not None:
                     option_depth = pre_depth + 1
