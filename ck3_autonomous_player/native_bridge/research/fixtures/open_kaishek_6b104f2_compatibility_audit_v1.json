@@ -1,23 +1,23 @@
 {
   "schema": "xar.ck3.open_kaishek_current_companion_compatibility_audit.v1",
   "status": "GREEN_STATIC",
-  "audited_at": "2026-09-06T20:38:10+08:00",
+  "audited_at": "2026-09-07T03:04:44+08:00",
   "root": {
-    "canonical_commit": "6b104f21d0cb800260f86f26b131354c2276f468",
+    "canonical_commit": "bf314be42b62b69c87c8825bf473286bf524a79b",
     "comparison_base": "a05b94e545fc6074fa2ffae2ffa76e34d9990d62",
     "ck3_started": false
   },
   "open_kaishek": {
     "initial_commit": "4c1f6867ff168f476a30a7b13220a8c2e0aa3294",
     "upstream_before_sync": "89abe057ddcf047f14167e2b0357082680128f42",
-    "current_commit": "38cb39926b7a6acf2590c713ef07eb53f68c3646",
-    "origin_main": "38cb39926b7a6acf2590c713ef07eb53f68c3646",
+    "current_commit": "ce62218a01020a55d88b511ba200fd768a3b19d0",
+    "origin_main": "ce62218a01020a55d88b511ba200fd768a3b19d0",
     "clean": true,
     "branch": "main",
     "only_local_branch": true,
     "only_remote_branch": true,
-    "jar_bytes": 362749,
-    "jar_sha256": "e77f54c2b427dd41109b5bc245eb10eb9232f219a0ed73f513a5322e89db407b"
+    "jar_bytes": 362766,
+    "jar_sha256": "2e2e9f7edee40158cfe960390dcbf4279bf3fa75d8bc61500eb7de7a1ae5ba2e"
   },
   "branch_reconciliation": {
     "merged_unique_branches": [],
@@ -99,9 +99,18 @@
       "reason": "Python comparison-policy inputs do not define open_kaishek parser, IR, runtime, CLI, or public transport commands"
     },
     "latest_transition_identity_delta": {
-      "root_commit": "6b104f21d0cb800260f86f26b131354c2276f468",
+      "root_commit": "bf314be42b62b69c87c8825bf473286bf524a79b",
       "open_kaishek_change_required": false,
-      "reason": "acceptance generator/runner identity handling only; no ck3_autonomous_player API file changed"
+      "reason": "Phase2 acceptance runner and capture orchestration only; no ck3_autonomous_player public API file changed"
+    },
+    "effect_sharding_provenance": {
+      "open_kaishek_change_required": true,
+      "effect_source": "mod_zhongguo_style/common/scripted_effects/zg361_core_appeal_scoreboard_effects.txt#31-137",
+      "effect_sha256": "8fa31bc18a16a520dd1bf25dcf5cfe55c958c4a05c588a09640771dbda308211",
+      "change_reason": "014 replay provenance referenced the deleted pre-sharding monolith",
+      "parser_vocabulary_changed": false,
+      "ir_or_runtime_changed": false,
+      "public_capability_changed": false
     }
   },
   "verification": {
