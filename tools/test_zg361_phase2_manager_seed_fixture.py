@@ -102,7 +102,7 @@ def main() -> int:
         assert manager_gate in on_actions
         assert manager_gate in effects
     assert "duration = 0.5" in bridge
-    assert bridge.count("duration = 0.5") == 2
+    assert bridge.count("duration = 0.5") == 3
     assert (
         "GetScriptedGui('zga_phase2_manager_seed_bootstrap_bridge_gui')"
         in bridge
@@ -149,6 +149,42 @@ def main() -> int:
         assert final_gate not in direct_gui_basic_gate
     assert (
         "GetScriptedGui('zga_phase2_manager_seed_direct_manager_diagnostic_gui')"
+        in bridge
+    )
+    entry_gui = top_level_block(
+        scripted_gui,
+        "zga_phase2_manager_seed_direct_manager_entry_gui",
+    )
+    for entry_gate in (
+        "is_ai = no",
+        "is_alive = yes",
+        "is_landed = yes",
+        "zg361_is_celestial_liege_trigger = yes",
+        "has_game_rule = zg361_on",
+        "zg361_review_now_business_valid_trigger = yes",
+        "prestige >= 150",
+        "NOT = { has_character_flag = zg361_b1_cycle_active }",
+        "NOT = { has_character_flag = zg361_review_in_progress }",
+        "var:zg361_p2c_active != 1",
+        "var:zg361_pp_portfolio_queue_active != 1",
+        "any_vassal = {",
+        "count >= 1",
+        "zg361_is_reviewable_vassal_trigger = yes",
+        "liege = root",
+    ):
+        assert entry_gate in entry_gui
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_bootstrap_started }" in entry_gui
+    )
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_handoff_pending }" in entry_gui
+    )
+    assert "zga_phase2_manager_seed_maybe_begin_effect = yes" in entry_gui
+    assert "set_player_character =" not in entry_gui
+    assert (
+        "GetScriptedGui('zga_phase2_manager_seed_direct_manager_entry_gui')"
         in bridge
     )
     diagnostic = top_level_block(

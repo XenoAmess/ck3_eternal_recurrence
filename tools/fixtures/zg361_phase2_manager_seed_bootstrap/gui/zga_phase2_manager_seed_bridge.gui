@@ -21,7 +21,15 @@ window = {
 		name = "zga_phase2_manager_seed_direct_manager_diagnostic"
 		trigger_when = "[GetScriptedGui('zga_phase2_manager_seed_direct_manager_diagnostic_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[GetScriptedGui('zga_phase2_manager_seed_direct_manager_diagnostic_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-		# The fixture flag makes this retrying load-safe state exactly-once.
+		# The fixture flag makes this load diagnostic exactly-once.
+		duration = 0.5
+	}
+	state = {
+		name = "zga_phase2_manager_seed_direct_manager_entry"
+		trigger_when = "[GetScriptedGui('zga_phase2_manager_seed_direct_manager_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('zga_phase2_manager_seed_direct_manager_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		# Unlike the diagnostic, this begins false while B1 is active and enters
+		# exactly when the complete clean-review gate becomes true.
 		duration = 0.5
 	}
 }
