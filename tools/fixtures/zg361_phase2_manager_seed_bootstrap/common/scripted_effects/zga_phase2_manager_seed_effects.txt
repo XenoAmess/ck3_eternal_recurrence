@@ -134,3 +134,103 @@ zga_phase2_manager_seed_log_direct_gates_effect = {
 		zga_phase2_manager_seed_maybe_begin_effect = yes
 	}
 }
+
+# Generic post-switch failure diagnostics. The hidden .11 carrier calls this
+# only after a real PIP refusal and player handoff failed its complete gate.
+# It is read-only: every branch emits evidence and changes no product state.
+zga_phase2_manager_seed_log_post_switch_gates_effect = {
+	if = {
+		limit = { is_ai = no }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate human=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate human=RED" }
+	if = {
+		limit = { is_alive = yes }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate alive=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate alive=RED" }
+	if = {
+		limit = { is_landed = yes }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate landed=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate landed=RED" }
+	if = {
+		limit = {
+			exists = scope:zga_phase2_manager_owner
+			this = scope:zga_phase2_manager_owner
+		}
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate owner_binding=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate owner_binding=RED" }
+	if = {
+		limit = { has_character_flag = zga_phase2_manager_seed_handoff_pending }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate handoff_pending=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate handoff_pending=RED" }
+	if = {
+		limit = { zg361_is_celestial_liege_trigger = yes }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate celestial=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate celestial=RED" }
+	if = {
+		limit = { has_game_rule = zg361_on }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate game_rule=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate game_rule=RED" }
+	if = {
+		limit = { zg361_review_now_business_valid_trigger = yes }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate review_now=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate review_now=RED" }
+	if = {
+		limit = { prestige >= 150 }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate prestige_150=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate prestige_150=RED" }
+	if = {
+		limit = { NOT = { has_character_flag = zg361_b1_cycle_active } }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate b1_inactive=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate b1_inactive=RED" }
+	if = {
+		limit = { NOT = { has_character_flag = zg361_review_in_progress } }
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate review_in_progress_inactive=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate review_in_progress_inactive=RED" }
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_p2c_active }
+				var:zg361_p2c_active != 1
+			}
+			trigger_else = { always = yes }
+		}
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate p2c_inactive=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate p2c_inactive=RED" }
+	if = {
+		limit = {
+			trigger_if = {
+				limit = { has_variable = zg361_pp_portfolio_queue_active }
+				var:zg361_pp_portfolio_queue_active != 1
+			}
+			trigger_else = { always = yes }
+		}
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate pp_inactive=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate pp_inactive=RED" }
+	if = {
+		limit = {
+			exists = scope:zga_phase2_manager_subject
+			scope:zga_phase2_manager_subject = {
+				is_ai = yes
+				is_alive = yes
+				is_landed = yes
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = root
+			}
+		}
+		debug_log = "ZGAP2MANAGERSEED: post-switch gate subject_binding=PASS"
+	}
+	else = { debug_log = "ZGAP2MANAGERSEED: post-switch gate subject_binding=RED" }
+}

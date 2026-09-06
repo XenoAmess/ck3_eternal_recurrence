@@ -122,6 +122,7 @@ zga_phase2_manager_seed.11 = {
 			trigger_event = zga_phase2_manager_seed.100
 		}
 		else = {
+			zga_phase2_manager_seed_log_post_switch_gates_effect = yes
 			debug_log = "ZGAP2MANAGERSEED: RED post-switch manager binding unavailable"
 		}
 	}
