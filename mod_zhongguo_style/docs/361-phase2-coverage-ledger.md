@@ -892,3 +892,11 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
 - The acceptance contract now resolves this exact scope-name shape as an isolated variant; existing human-tribute alias checks remain strict. On an exact match only, it retains authored option 6 / native index 5 as the least disruptive source-reviewed route.
 - Manager / runner / cleanup SHA-256: `24f899863d69eb2f1e4dbb2fb7428793275adb01bd3cc0e5ad1381ec33048a9a` / `023b5881012c4170fd0e338d3740d5f926d65f2031434aeed33f21e8363435cd` / `6f8f9934f317c20fa5aa2dd62fc4b674899bf3beca977aeb3490c40c95fc6b54`. Cleanup was GREEN with no CK3 process remaining.
 - R155 did not reach the clean review boundary or daily carrier, so the manager seed and full-tree acceptance remain incomplete and no per-ID readiness is raised.
+
+## R156 same-frame manager seed carrier evidence (no readiness change)
+
+- R156 froze `eb09b272988bc695244613c118c58feed64a6920`; the 1,031-file product tree remained `196e557e06ffa09ef488c819168f16237f5466089ab0d8087ac3f977398e4205`, and the 16-command no-launch preflight was GREEN.
+- One speed-5 PID consumed three exact vanilla interrupts, including the reviewed tribute route, then reached a clean product boundary at `date_raw=53154120` with `zga_phase2_manager_seed.1` event instance `17` already materialized.
+- The carrier therefore passed its first live materialization check. The runner incorrectly required `53154144` and stopped before capture or selection; this is an exact-date harness RED, not a product or carrier RED.
+- Manager / runner / cleanup SHA-256: `2adde4ff54ec5714a4a1fdd3dd375aa1952c3c9f947d5d987617745f2195ee39` / `aa3e19b9f417437c33f8aa2615aa6725af5352e2d4ed29c034df0f395d620971` / `b39fc4a138efae9130a07205b8f81451cba7708dc065f34525e63ebd01528be6`. Loader 303/303 and cleanup were GREEN; no CK3 process remained.
+- The runner now accepts an exact same-frame target binding and skips the extra daily sentinel; only an empty clean boundary may use one `+24` sentinel. Manager seed and full-tree acceptance remain incomplete, so no per-ID readiness is raised.

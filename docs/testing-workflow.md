@@ -1800,3 +1800,17 @@ R155 在默认 5 速恢复管理者 B1 时，于 `date_raw=53150352` 严格停�
 只有作用域 variant 与完整按钮投影同时吻合时，才选择源码审计确认的最小副作用路线 authored option 6 /
 native index 5。对应回归放在独立的
 `test_zg361_phase2_manager_recovery_tribute_interrupts.py`，普通与 `-O` 均必须进入 no-launch preflight。
+
+### R156：daily carrier 可在 clean boundary 同帧物化（2026-09-07）
+
+R156 首次完整消化已签约的三次原版 interrupt，并在 `date_raw=53154120` 同时观测到业务 clean boundary 与
+`zga_phase2_manager_seed.1`（event instance `17`）。这证明 acceptance-only daily retry carrier 已真实执行；事件
+不是必须等到 boundary 后再额外推进一天。旧 runner 无条件把 `activation_target_date_raw` 写成
+`clean_boundary_date_raw + 24`，因此把已在同帧安全物化的 seed event 误判成“提前一天”，属于 harness exact-date
+RED，不是产品或 carrier RED。
+
+续接规则改为两分支：若 manager recovery 返回的 exact `target_binding` 已绑定同日、暂停、map-ready、同玩家、
+同 connection generation、正 event instance 且恰有一个 option，则直接把 clean boundary 日期作为 activation
+日期，并禁止再运行 date sentinel；只有 clean boundary 没有 seed target 时，才允许一次 `+24` 的 native
+date-only sentinel。target binding 存在但任一字段漂移时仍 fail closed。R156 退出时 supervisor 已按既有清理合同
+回收 PID，因此 R157 需要重新装载 checkpoint；这不是同一健康会话内按场景重启。

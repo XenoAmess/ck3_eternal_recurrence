@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 from dataclasses import replace
 import hashlib
 import json
@@ -5187,6 +5188,70 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
         )
 
 
+def test_r156_materialized_manager_carrier_binds_clean_boundary_date() -> None:
+    recovery = {
+        "target_binding": {
+            "snapshot_id": "native:295",
+            "revision": 296,
+            "native_revision": 295,
+            "date_raw": 53154120,
+            "paused": True,
+            "map_ready": True,
+            "player_character_id": 32904,
+            "connection_generation": 1,
+            "event_instance_id": 17,
+            "event_option_count": 1,
+        }
+    }
+    contract = capture._manager_recovery_activation_contract(
+        recovery,
+        clean_boundary_date_raw=53154120,
+        expected_manager_character_id=32904,
+        expected_connection_generation=1,
+    )
+    require(
+        contract
+        == {
+            "activation_target_date_raw": 53154120,
+            "activation_carrier": (
+                "acceptance-hidden-daily-retry-materialized-at-clean-boundary"
+            ),
+            "activation_date_sentinel_required": False,
+            "activation_event_instance_id": 17,
+        },
+        f"materialized manager carrier date drifted: {contract}",
+    )
+
+    delayed = capture._manager_recovery_activation_contract(
+        {"target_binding": None},
+        clean_boundary_date_raw=53154120,
+        expected_manager_character_id=32904,
+        expected_connection_generation=1,
+    )
+    require(
+        delayed["activation_target_date_raw"] == 53154144
+        and delayed["activation_date_sentinel_required"] is True,
+        f"empty clean boundary lost its one-day sentinel: {delayed}",
+    )
+
+    drifted = copy.deepcopy(recovery)
+    drifted["target_binding"]["date_raw"] = 53154144
+    try:
+        capture._manager_recovery_activation_contract(
+            drifted,
+            clean_boundary_date_raw=53154120,
+            expected_manager_character_id=32904,
+            expected_connection_generation=1,
+        )
+    except capture.SeedCaptureError as error:
+        require(
+            error.evidence["checks"]["date_raw"] is False,
+            f"drifted carrier date lacked exact evidence: {error.evidence}",
+        )
+    else:
+        raise AssertionError("drifted manager carrier target false-GREENed")
+
+
 def test_r129_rejects_r119_r128_source_before_launch() -> None:
     digest = "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74"
     try:
@@ -5368,6 +5433,7 @@ def main() -> int:
     test_runner_import_guard_prevents_clean_source_bytecode()
     test_manager_recovery_classifies_terminal_owner_without_rebinding()
     test_r129_transition_checkpoint_then_clean_manager_continuation()
+    test_r156_materialized_manager_carrier_binds_clean_boundary_date()
     test_r129_rejects_r119_r128_source_before_launch()
     test_static_contract()
     print("GREEN: reusable phase-two seed capture is MCP-only and bounded")

@@ -2122,6 +2122,65 @@ def load_runtime(config: CaptureConfig) -> RuntimeBindings:
     )
 
 
+def _manager_recovery_activation_contract(
+    recovery: dict[str, Any],
+    *,
+    clean_boundary_date_raw: int,
+    expected_manager_character_id: int,
+    expected_connection_generation: int,
+) -> dict[str, Any]:
+    """Bind either an already-materialized seed modal or one daily retry."""
+
+    target_value = recovery.get("target_binding")
+    if target_value is None:
+        return {
+            "activation_target_date_raw": clean_boundary_date_raw + 24,
+            "activation_carrier": (
+                "acceptance-hidden-daily-retry-under-native-date-only-sentinel"
+            ),
+            "activation_date_sentinel_required": True,
+            "activation_event_instance_id": None,
+        }
+    if not isinstance(target_value, dict):
+        raise SeedCaptureError(
+            "manager recovery returned a malformed seed target binding"
+        )
+    checks = {
+        "date_raw": target_value.get("date_raw") == clean_boundary_date_raw,
+        "paused": target_value.get("paused") is True,
+        "map_ready": target_value.get("map_ready") is True,
+        "player_character_id": target_value.get("player_character_id")
+        == expected_manager_character_id,
+        "connection_generation": target_value.get("connection_generation")
+        == expected_connection_generation,
+        "event_instance_id": (
+            isinstance(target_value.get("event_instance_id"), int)
+            and not isinstance(target_value.get("event_instance_id"), bool)
+            and target_value["event_instance_id"] > 0
+        ),
+        "event_option_count": target_value.get("event_option_count") == 1,
+    }
+    if not all(checks.values()):
+        raise SeedCaptureError(
+            "manager recovery seed target binding drifted",
+            {
+                "stage": "manager_recovery_activation_contract",
+                "result": "RED",
+                "checks": checks,
+                "clean_boundary_date_raw": clean_boundary_date_raw,
+                "target_binding": target_value,
+            },
+        )
+    return {
+        "activation_target_date_raw": clean_boundary_date_raw,
+        "activation_carrier": (
+            "acceptance-hidden-daily-retry-materialized-at-clean-boundary"
+        ),
+        "activation_date_sentinel_required": False,
+        "activation_event_instance_id": target_value["event_instance_id"],
+    }
+
+
 def recover_active_manager_cycle(
     service: Any,
     *,
@@ -6032,6 +6091,7 @@ def run_capture(
             and manager_route["handoff_mode"]
             == MANAGER_TRANSITION_CONTINUATION_MODE
         )
+        checkpoint_continuation_date_sentinel_required = False
         manager_no_pip_route = direct_manager_route or checkpoint_continuation_route
         transition_checkpoint_callback: Callable[[], dict[str, Any]] | None = None
         if (
@@ -6091,11 +6151,19 @@ def run_capture(
             manager_route["recovered_boundary_date_raw"] = (
                 clean_boundary_date_raw
             )
-            manager_route["activation_target_date_raw"] = (
-                clean_boundary_date_raw + 24
+            activation_contract = _manager_recovery_activation_contract(
+                report["manager_cycle_recovery"],
+                clean_boundary_date_raw=clean_boundary_date_raw,
+                expected_manager_character_id=manager_route[
+                    "target_character_id"
+                ],
+                expected_connection_generation=int(
+                    binding["connection_generation"]
+                ),
             )
-            manager_route["activation_carrier"] = (
-                "acceptance-hidden-daily-retry-under-native-date-only-sentinel"
+            manager_route.update(activation_contract)
+            checkpoint_continuation_date_sentinel_required = bool(
+                activation_contract["activation_date_sentinel_required"]
             )
             manager_route["activation_watched_army_count"] = 0
             manager_route["maximum_date_raw"] = (
@@ -6171,7 +6239,10 @@ def run_capture(
             initial_paused_event_settle_seconds=(
                 1.0 if checkpoint_continuation_route else 0.0
             ),
-            initial_paused_date_sentinel=checkpoint_continuation_route,
+            initial_paused_date_sentinel=(
+                checkpoint_continuation_route
+                and checkpoint_continuation_date_sentinel_required
+            ),
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,
