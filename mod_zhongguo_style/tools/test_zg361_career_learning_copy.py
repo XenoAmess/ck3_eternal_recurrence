@@ -77,7 +77,7 @@ class CareerLearningCopyTests(unittest.TestCase):
         chinese = entries(chinese=True)
         self.assertEqual(chinese["zg361_cl_m314_route_a"], "接受调任；公帑支十五金、主官私库支五金")
         self.assertEqual(chinese["zg361_cl_m314_route_b"], "谢绝调任：不领取二十金，仍守本职且考课不改档")
-        self.assertEqual(chinese["zg361_cl_m315_route_b"], "终止九十日试任，按约回原职且不记低档")
+        self.assertEqual(chinese["zg361_cl_m315_route_b"], "不开始九十日试任，留在原职且不记低档")
         self.assertEqual(chinese["zg361_cl_m318_route_b"], "暂不递交，保留这次求调名额")
         self.assertEqual(chinese["zg361_cl_m319_route_a"], "拒绝挽留，启动三十日调任")
         self.assertEqual(chinese["zg361_cl_m319_route_b"], "接受挽留；若九十日未兑现，按失约追责")

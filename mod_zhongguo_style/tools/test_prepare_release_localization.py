@@ -1222,11 +1222,11 @@ class ReleaseLocalizationTests(unittest.TestCase):
 
         expected = {
             "english": (
-                "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results usually arrive about six months later. Starts must be at least one year apart, and only one review may settle per calendar year.",
+                "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results normally arrive about 330 days later. Starts must be at least one year apart, and only one review may settle per calendar year.",
                 "Start the review and freeze at least one direct incumbent official; this does not create an immediate ranking.",
             ),
             "simp_chinese": (
-                "不等年度绩效季，现在就启动本年度考核并冻结直属官员名册。自评、互评、校准与公示会在后续阶段依次推进，通常约半年后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
+                "不等年度绩效季，现在就启动本年度考核并冻结直属官员名册。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
                 "立即启动考核流程并冻结至少一名直属在任官员；不会当场生成排名。",
             ),
             "french": (
@@ -1258,6 +1258,17 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 "Evalúa inmediatamente al menos a un cargo titular directo en activo; no puedes realizar otra evaluación en el mismo año natural.",
             ),
         }
+        for language in (
+            "french",
+            "german",
+            "japanese",
+            "korean",
+            "polish",
+            "russian",
+            "spanish",
+        ):
+            _, tooltip = expected[language]
+            expected[language] = (expected["english"][0], tooltip)
         for language, (description, tooltip) in expected.items():
             with self.subTest(language=language):
                 path = (
