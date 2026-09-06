@@ -19,6 +19,64 @@ from gen_scoreboard_snapshot import (
 
 
 class PlayerCopySemanticTests(unittest.TestCase):
+    def test_calibration_cards_name_exact_swapped_officials_and_use_person_quantifiers(self) -> None:
+        effects = (
+            MOD_ROOT / "common" / "scripted_effects" / "zg361_core_review_cycle_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        expected_scopes = (
+            "zg361_calibration_promote_incoming",
+            "zg361_calibration_promote_outgoing",
+            "zg361_calibration_demote_lowered",
+            "zg361_calibration_demote_rescued",
+        )
+        for scope in expected_scopes:
+            self.assertIn(f"save_scope_as = {scope}", effects)
+
+        def rows(language: str) -> dict[str, str]:
+            document = (
+                MOD_ROOT / "localization" / language / f"zg361_l_{language}.yml"
+            ).read_text(encoding="utf-8-sig")
+            return {
+                match.group(1): match.group(2)
+                for match in re.finditer(r'^ ([^:]+):0 "(.*)"$', document, re.MULTILINE)
+            }
+
+        english = rows("english")
+        chinese = rows("simp_chinese")
+        for key, scopes in {
+            "zg361.11.desc": (
+                "zg361_calibration_promote_incoming",
+                "zg361_calibration_promote_outgoing",
+            ),
+            "zg361.12.desc": (
+                "zg361_calibration_demote_lowered",
+                "zg361_calibration_demote_rescued",
+            ),
+        }.items():
+            for language, mapping in (("english", english), ("simp_chinese", chinese)):
+                with self.subTest(key=key, language=language):
+                    for scope in scopes:
+                        self.assertIn(f"[{scope}.GetShortUIName]", mapping[key])
+
+        self.assertIn("名「野狗」官员", chinese["zg361.30.desc"])
+        self.assertIn("名「小白兔」官员", chinese["zg361.30.desc"])
+        self.assertNotIn("条「野狗」", chinese["zg361.30.desc"])
+        self.assertNotIn("只「小白兔」", chinese["zg361.30.desc"])
+        self.assertEqual(english["zg361.30.desc"].count("officials classed as"), 2)
+
+        changed_keys = (
+            "zg361.11.desc",
+            "zg361.11.a",
+            "zg361.12.desc",
+            "zg361.12.a",
+            "zg361.30.desc",
+        )
+        for language in ("french", "german", "japanese", "korean", "polish", "russian", "spanish"):
+            mapping = rows(language)
+            with self.subTest(language=language):
+                for key in changed_keys:
+                    self.assertEqual(mapping[key], english[key])
+
     def test_every_semantic_value_has_chinese_and_english_copy(self) -> None:
         rendered = b1_outputs()
         chinese = rendered[

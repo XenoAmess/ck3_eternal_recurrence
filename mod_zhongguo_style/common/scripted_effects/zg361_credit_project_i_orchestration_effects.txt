@@ -246,6 +246,10 @@ zg361_cp_i_launch_effect = {
 		zg361_cp_i_initialize_effect = yes
 		var:zg361_case_i_owner = { save_scope_as = zg361_cp_i_owner }
 		save_scope_as = zg361_cp_i_subject
+		var:zg361_cp_cross_reviewer = { save_scope_as = zg361_cp_i_cross_reviewer }
+		var:zg361_cp_successor_manager = { save_scope_as = zg361_cp_i_successor_manager }
+		var:zg361_cp_active_manager = { save_scope_as = zg361_cp_i_active_manager }
+		var:zg361_cp_historical_owner = { save_scope_as = zg361_cp_i_historical_owner }
 		save_scope_value_as = { name = zg361_cp_i_cycle value = var:zg361_case_i_cycle_serial }
 		save_scope_value_as = { name = zg361_cp_i_case value = var:zg361_case_i_case_serial }
 		if = {

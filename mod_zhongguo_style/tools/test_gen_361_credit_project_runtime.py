@@ -192,10 +192,10 @@ class RegistryAndGenerationTests(unittest.TestCase):
 
     def test_shards_preserve_legacy_effect_bodies_and_order_exactly(self) -> None:
         legacy_bytes = gen.render_effects()
-        self.assertEqual(len(legacy_bytes), 1_307_279)
+        self.assertEqual(len(legacy_bytes), 1_308_567)
         self.assertEqual(
             hashlib.sha256(legacy_bytes).hexdigest(),
-            "2563b8e2a16a44b4fa7bbc050c21fddfc3e41cec661dfe04803d39b41d3f8264",
+            "b027429ff8e7a942f3f72b75ec58aa5db60f3ecab4db04e9b73114469343e2eb",
         )
         legacy = legacy_bytes.decode("utf-8-sig")
         self.assertEqual(top_level_effect_blocks(read_effects()), top_level_effect_blocks(legacy))
@@ -1064,6 +1064,52 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
 
 
 class LocalizationAndBoundaryTests(unittest.TestCase):
+    def test_case_copy_names_the_actual_frozen_people(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_credit_project_l_english.yml"
+        )
+        expected = {
+            55: ("zg361_cp_i_subject", "zg361_cp_i_owner"),
+            60: ("zg361_cp_i_subject", "zg361_cp_i_cross_reviewer"),
+            62: ("zg361_cp_j_subject", "zg361_cp_j_owner", "zg361_cp_j_cross_reviewer"),
+            63: ("zg361_cp_j_subject", "zg361_cp_j_owner", "zg361_cp_j_cross_reviewer"),
+            64: ("zg361_cp_j_subject", "zg361_cp_j_owner", "zg361_cp_j_successor_manager"),
+            65: ("zg361_cp_j_subject", "zg361_cp_j_owner"),
+            66: ("zg361_cp_j_subject", "zg361_cp_j_owner"),
+            67: ("zg361_cp_j_subject", "zg361_cp_j_owner", "zg361_cp_j_cross_reviewer"),
+            68: ("zg361_cp_j_subject", "zg361_cp_j_active_manager", "zg361_cp_j_historical_owner"),
+            129: ("zg361_cp_r_subject", "zg361_cp_r_owner"),
+            130: ("zg361_cp_r_subject", "zg361_cp_r_owner", "zg361_cp_r_cross_reviewer"),
+            131: ("zg361_cp_r_subject", "zg361_cp_r_owner"),
+            132: ("zg361_cp_r_subject", "zg361_cp_r_owner"),
+            133: ("zg361_cp_r_subject", "zg361_cp_r_owner"),
+            134: ("zg361_cp_r_subject", "zg361_cp_r_owner", "zg361_cp_r_cross_reviewer"),
+        }
+        for mid, scopes in expected.items():
+            for language, rows in (("simp_chinese", chinese), ("english", english)):
+                desc = rows[f"zg361cp.{mid}.desc"]
+                with self.subTest(mid=mid, language=language):
+                    for scope in scopes:
+                        self.assertIn(f"[{scope}.GetShortUIName]", desc)
+
+        effects = read_effects()
+        for domain in gen.DOMAIN_ORDER:
+            launch = block(effects, f"zg361_cp_{domain}_launch_effect")
+            for role in (
+                "cross_reviewer",
+                "successor_manager",
+                "active_manager",
+                "historical_owner",
+            ):
+                with self.subTest(domain=domain, role=role):
+                    self.assertIn(
+                        f"var:zg361_cp_{role} = {{ save_scope_as = zg361_cp_{domain}_{role} }}",
+                        launch,
+                    )
+
     def test_saved_scope_localization_uses_exact_ck3_expressions(self) -> None:
         expected = {
             "[zg361_cp_e_subject.GetShortUIName]",
@@ -1091,10 +1137,10 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
                     text.count("[zg361_cp_e_owner.GetShortUIName]"), 7
                 )
                 self.assertEqual(
-                    text.count("[zg361_cp_i_subject.GetShortUIName]"), 6
+                    text.count("[zg361_cp_i_subject.GetShortUIName]"), 8
                 )
                 self.assertEqual(
-                    text.count("[zg361_cp_i_owner.GetShortUIName]"), 6
+                    text.count("[zg361_cp_i_owner.GetShortUIName]"), 7
                 )
                 self.assertEqual(
                     text.count(

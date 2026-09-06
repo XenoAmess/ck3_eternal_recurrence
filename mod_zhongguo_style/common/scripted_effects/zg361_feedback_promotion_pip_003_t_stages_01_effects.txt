@@ -201,6 +201,7 @@ zg361_pp_open_t_case_effect = {
 		remove_variable = zg361_pp_m147_consumer_revision
 		remove_variable = zg361_pp_m147_consumer_value
 		remove_variable = zg361_pp_m147_evidence_hash_consumed
+		remove_variable = zg361_pp_m147_item_level_support_proven
 		remove_variable = zg361_pp_m147_object_case
 		remove_variable = zg361_pp_m147_object_cycle
 		remove_variable = zg361_pp_m147_object_owner
@@ -220,9 +221,9 @@ zg361_pp_open_t_case_effect = {
 		remove_variable = zg361_pp_m147_receipt_serial
 		remove_variable = zg361_pp_m147_receipt_state
 		remove_variable = zg361_pp_m147_receipt_subject
+		remove_variable = zg361_pp_m147_recorded_critique_n
+		remove_variable = zg361_pp_m147_recorded_praise_n
 		remove_variable = zg361_pp_m147_route
-		remove_variable = zg361_pp_m147_supported_critique_n
-		remove_variable = zg361_pp_m147_supported_praise_n
 		remove_variable = zg361_pp_m147_unsupported_sentence_n
 		set_variable = { name = zg361_pp_m147_audit_1_business_settled value = 0 }
 		set_variable = { name = zg361_pp_m147_audit_1_consumed value = 0 }
@@ -434,6 +435,7 @@ zg361_pp_open_t_case_effect = {
 		remove_variable = zg361_pp_m151_capacity_hours_case
 		remove_variable = zg361_pp_m151_capacity_hours_cycle
 		remove_variable = zg361_pp_m151_capacity_hours_owner
+		remove_variable = zg361_pp_m151_coercion_attempted
 		remove_variable = zg361_pp_m151_consumer_revision
 		remove_variable = zg361_pp_m151_consumer_value
 		remove_variable = zg361_pp_m151_delivered

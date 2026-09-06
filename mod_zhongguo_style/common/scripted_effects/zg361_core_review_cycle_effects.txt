@@ -407,6 +407,7 @@ zg361_calibrate_promote_effect = {
 			var:zg361_pending_grade = 3
 			var:zg361_rank = root.var:zg361_top_cut
 		}
+		save_scope_as = zg361_calibration_promote_outgoing
 		set_variable = { name = zg361_pending_grade value = 2 }
 		set_variable = { name = zg361_calibration_reason value = 1 } # 被挤出 3.75
 	}
@@ -417,6 +418,7 @@ zg361_calibrate_promote_effect = {
 			var:zg361_pending_grade = 2
 			var:zg361_rank = root.var:zg361_top_cut_next
 		}
+		save_scope_as = zg361_calibration_promote_incoming
 		set_variable = { name = zg361_pending_grade value = 3 }
 		set_variable = { name = zg361_calibration_reason value = 2 } # 校准抬入 3.75
 	}
@@ -468,10 +470,12 @@ zg361_calibrate_demote_effect = {
 			}
 		}
 		scope:zg361_calibration_rescue_target = {
+			save_scope_as = zg361_calibration_demote_rescued
 			set_variable = { name = zg361_pending_grade value = 2 }
 			set_variable = { name = zg361_calibration_reason value = 4 } # 从 3.25 救回
 		}
 		scope:zg361_calibration_demote_target = {
+			save_scope_as = zg361_calibration_demote_lowered
 			set_variable = { name = zg361_pending_grade value = 1 }
 			set_variable = { name = zg361_calibration_reason value = 3 } # 校准踩入 3.25
 		}

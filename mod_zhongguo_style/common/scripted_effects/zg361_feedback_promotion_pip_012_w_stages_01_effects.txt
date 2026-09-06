@@ -678,6 +678,7 @@ zg361_pp_open_w_case_effect = {
 		remove_variable = zg361_pp_m190_subject_statement_receiver
 		remove_variable = zg361_pp_m190_subject_statement_snapshot
 		remove_variable = zg361_pp_m190_subject_statement_version
+		remove_variable = zg361_pp_m190_subject_statement_withheld
 		remove_variable = zg361_pp_m190_support_snapshot
 		remove_variable = zg361_pp_m190_transfer_disclosure
 		remove_variable = zg361_pp_m190_vacancy_id_snapshot

@@ -349,9 +349,14 @@ zg361_pp_m151_core_effect = {
 					set_variable = { name = zg361_pp_m151_grade_at_delivery value = var:zg361_pp_t_frozen_grade }
 					set_variable = { name = zg361_pp_m151_non_aggravation_grade value = var:zg361_pp_t_frozen_grade }
 					set_variable = { name = zg361_pp_m151_non_aggravation_ok value = 1 }
-					if = { limit = { var:zg361_pp_m151_subject_response = 1 } set_variable = { name = zg361_pp_m151_agreed value = 1 } }
-					else_if = { limit = { var:zg361_pp_m151_subject_response = 2 } set_variable = { name = zg361_pp_m151_disputed value = 1 } set_variable = { name = zg361_pp_m151_appeal_filed value = 1 } }
-					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m151_suppressed_objection value = 1 } set_variable = { name = zg361_pp_m151_procedural_debt value = 1 } }
+					if = { limit = { var:zg361_pp_m151_subject_response = 1 } set_variable = { name = zg361_pp_m151_receipt_acknowledged value = 1 } }
+					else_if = { limit = { var:zg361_pp_m151_subject_response = 2 } set_variable = { name = zg361_pp_m151_receipt_acknowledged value = 1 } set_variable = { name = zg361_pp_m151_disputed value = 1 } set_variable = { name = zg361_pp_m151_appeal_filed value = 1 } }
+					if = {
+						limit = { scope:zg361_pp_route = 2 }
+						set_variable = { name = zg361_pp_m151_coercion_attempted value = 1 }
+						set_variable = { name = zg361_pp_m151_procedural_debt value = 1 }
+						if = { limit = { var:zg361_pp_m151_disputed = 1 } set_variable = { name = zg361_pp_m151_suppressed_objection value = 1 } }
+					}
 
 				}
 

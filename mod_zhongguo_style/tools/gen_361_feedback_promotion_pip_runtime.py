@@ -130,55 +130,55 @@ def _m(
 
 
 MECHANISMS: tuple[MechanismSpec, ...] = (
-    _m(146, "t", "delivery_style", "直白档位 / 委婉话术制度", "Plain rating or softened wording", "直说冻结档位，并确认对方确实听懂。", "State the frozen rating plainly and record understanding.", "委婉表达，但保留同一档位并记录误解债。", "Use indirect wording, preserve the rating, and record misunderstanding debt.", 30, "反馈会和申诉时钟读取同一冻结档位"),
-    _m(147, "t", "polarity_template", "强制“一扬一抑”反馈模板", "Forced praise-and-critique template", "只写有冻结证据支撑的表扬或批评。", "Let frozen evidence determine praise and critique counts.", "硬凑一扬一抑，并标记无证据套话。", "Force both polarities and flag unsupported boilerplate.", 30, "反馈质量表消费证据链接与套话数"),
+    _m(146, "t", "delivery_style", "直报档位还是委婉转述", "State the rating or soften the wording", "直说冻结档位，并确认对方确实听懂。", "State the frozen rating plainly and record understanding.", "委婉表达，但保留同一档位并记录误解债。", "Use indirect wording, preserve the rating, and record misunderstanding debt.", 30, "反馈会和申诉时钟读取同一冻结档位"),
+    _m(147, "t", "polarity_template", "褒评与批评登记模板", "Praise-and-critique record", "按本案模板各登记一条褒评和批评，并关联冻结证据索引。", "Record one praise and one critique under the case template and link the frozen evidence index.", "不区分褒贬依据，登记两句无证据套话。", "Record two unsupported stock phrases without distinguishing their basis.", 30, "反馈质量表消费证据链接与套话数"),
     _m(148, "t", "meeting_order", "先讲证据还是先报结果", "Evidence first or rating first", "逐项确认事实，再宣布档位。", "Confirm each evidence item before announcing the rating.", "先报档位，但不得删改随后展示的证据。", "Announce the rating first while preserving the same evidence and disputes.", 30, "纪要保存步骤顺序、确认和异议"),
-    _m(149, "t", "bargain_terms", "绩效结果谈判包", "Performance-result bargain package", "书面冻结补偿条款、负责人和到期日；本轮低档不变。", "Freeze written terms, owner and due date without changing the current lower rating.", "只留口头保证，不得冒充已经履约。", "Record an oral assurance without pretending the debt is fulfilled.", 180, "个人谈判页核销实际付款回执"),
+    _m(149, "t", "bargain_terms", "低档结果后的补偿约定", "Compensation after a lower rating", "书面冻结补偿条款、负责人和到期日；本轮低档不变。", "Freeze written terms, owner and due date without changing the current lower rating.", "只留口头保证，不得冒充已经履约。", "Record an oral assurance without pretending the debt is fulfilled.", 180, "个人谈判页核销实际付款回执"),
     _m(150, "t", "sacrifice_promise", "“这次先委屈你”的补偿承诺", "A promise for this cycle's sacrifice", "建立有资金、有期限的非改档补偿义务。", "Open a funded, dated, non-rating compensation obligation.", "继续画饼，并公开它仍是未履约债。", "Make an oral promise and expose it as unfulfilled debt.", 365, "承诺时间线到期后结算履约或背约"),
-    _m(151, "t", "receipt_agreement", "签收不等于认同", "Receipt is not agreement", "把送达、认同、异议分别记录，保留申诉。", "Record delivery, agreement and objection separately; keep appeal available.", "把签收强写成认同，并产生程序债。", "Coerce receipt into agreement and post procedural debt.", (7, 90), "收据行、见证送达与申诉案卷分别消费"),
+    _m(151, "t", "receipt_agreement", "签收不等于认同", "Receipt is not agreement", "把送达、认同、异议分别记录，保留申诉。", "Record delivery, agreement, and objection separately; keep appeal available.", "企图把签收当作认同；认同仍不成立，并登记程序债。", "Attempt to treat receipt as agreement; agreement remains invalid and procedural debt is recorded.", (7, 90), "收据行、见证送达与申诉案卷分别消费"),
     _m(152, "t", "actionability_score", "反馈可行动性评分", "Feedback actionability score", "按具体、可控、期限、资源四项冻结评分。", "Freeze specificity, controllability, deadline and resource scores.", "只记满意度，模糊建议不得拿满分。", "Record sentiment only; vague advice cannot receive full actionability credit.", 365, "经理反馈质量表按收件人一次性追记"),
-    _m(153, "t", "action_item", "反馈后行动项闭环", "Post-feedback action closure", "建立唯一负责人、原始期限和验收证据。", "Open one action with an owner, original due date and acceptance evidence.", "允许改期或取消，但完整保留历史和理由。", "Allow change or cancellation while preserving history and reasons.", 90, "行动时间线只接受一个终态回执"),
-    _m(154, "t", "minutes_mode", "录音式完整纪要 / 摘要纪要", "Full minutes or summary minutes", "保存附证据引用的完整追加式纪要。", "Keep complete append-only minutes with evidence references.", "保存摘要，但必须保留结果与证据索引。", "Keep a summary while retaining result and evidence references.", 7, "申诉投影只读纪要版本和更正附录"),
+    _m(153, "t", "action_item", "反馈后行动项闭环", "Post-feedback action closure", "登记唯一负责人、原始期限和验收标准，等待后续证据。", "Record one owner, the original due date, and the acceptance standard, then await evidence.", "将期限改到一百二十日，并保留改期理由与原始期限。", "Move the deadline to day 120 while preserving the original date and the reason for change.", 90, "行动时间线只接受一个终态回执"),
+    _m(154, "t", "minutes_mode", "逐字完整纪要还是摘要纪要", "Verbatim or summary minutes", "保存附证据引用的完整追加式纪要。", "Keep complete append-only minutes with evidence references.", "保存摘要，但必须保留结果与证据索引。", "Keep a summary while retaining result and evidence references.", 7, "申诉投影只读纪要版本和更正附录"),
     _m(155, "t", "public_private_boundary", "公开表扬与私下批评边界", "Public praise and private criticism boundary", "只公开获准成绩，敏感反馈留在本人案卷。", "Publish approved achievements and keep sensitive feedback private.", "公开点名末位，并承担羞辱与报复成本。", "Name bottom performers publicly and incur shaming and retaliation costs.", 1, "团队公告与私人反馈使用不同字段投影"),
     _m(156, "t", "team_briefing", "团队结果说明会", "Team result briefing", "出榜后说明分布原则、共性问题和资源计划。", "Brief the distribution rule, common issues and resource plan after publication.", "不解释，让信息真空生成传言债。", "Skip the briefing and post information-vacuum debt.", 30, "政策面板读取说明会收据或流言风险"),
 
-    _m(157, "u", "nomination_access", "自荐权与主管提名权", "Self-nomination and manager nomination", "允许合资格者自荐，但绑定 sponsor 与主管意见。", "Allow eligible self-nomination with a sponsor and recorded manager opinion.", "主管独占入口，并记录反对或支持理由。", "Keep manager-only access and record the support or rejection reason.", 30, "提名队列生成一人一包的冻结案号"),
-    _m(158, "u", "nomination_quota", "主管提名额度", "Manager nomination quota", "把稀缺额度集中给有证据的候选并排序。", "Concentrate scarce slots on evidence-backed candidates and rank them.", "分散押边界包，辅导工时同步摊薄。", "Spread slots across boundary packets and dilute coaching hours.", 30, "额度账校验已用、归还与剩余恒等"),
+    _m(157, "u", "nomination_access", "自荐权与主管提名权", "Self-nomination and manager nomination", "允许合资格者自荐，但须写明担保人及主管意见。", "Allow eligible self-nomination with a named sponsor and recorded manager opinion.", "主管独占入口，并记录反对或支持理由。", "Keep manager-only access and record the support or rejection reason.", 30, "提名队列生成一人一包的冻结案号"),
+    _m(158, "u", "nomination_quota", "主管提名额度", "Manager nomination quota", "按书证口径把当前候选登记为首位，并核对额度总账。", "Rank the current candidate first on the documentary record and reconcile the quota ledger.", "按人情口径把当前候选登记为首位，并核对同一额度总账。", "Rank the current candidate first on a discretionary basis and reconcile the same quota ledger.", 30, "额度账校验已用、归还与剩余恒等"),
     _m(159, "u", "shelved_star", "雪藏明星不提名", "Shelving an eligible star", "先冻结接班计划，再给明星明确提名期限。", "Freeze a successor plan and a dated nomination path for the star.", "为保当期产出继续雪藏，并生成逾期人才债。", "Shelve the star for current output and post overdue talent debt.", 90, "逾期审计每周期只扣一次经理人才分"),
     _m(160, "u", "prescreen_rubric", "部门预审淘汰赛", "Department prescreen", "按材料、职级证据、战略匹配三维预审。", "Prescreen on packet completeness, level evidence and strategic fit.", "派系先筛人，但保留本轮淘汰理由。", "Use a political cut while preserving the rejection reason.", 30, "预审队列只把真实席位数量的包送进答辩"),
     _m(161, "u", "sham_competition", "“陪跑包”与虚假竞争", "Filler packets and sham competition", "只提交真愿意支持的候选。", "Submit only candidates the manager genuinely supports.", "放入陪跑包，计入准备工时和公平债。", "Insert a filler packet and charge its preparation hours and fairness debt.", 30, "经理公平信用和主推包合法性消费陪跑识别"),
     _m(162, "u", "tenure_exception", "资历门槛例外申请", "Tenure exception application", "先占破格额度并单独表决准入，再评能力。", "Reserve an exception slot and vote on admission before merit review.", "把普通表现包装成破格，并透支未来可信度。", "Package ordinary evidence as exceptional and spend future credibility.", 30, "破格额度账与后续能力评审保持分离"),
-    _m(163, "u", "observation_window", "晋升绩效观察窗", "Promotion observation window", "周期初冻结最近两轮，并给重组等事实附语境。", "Freeze the last two cycles up front and attach reorganization context.", "只挑最漂亮一轮，留下选窗审计差异。", "Cherry-pick the best cycle and retain the window audit diff.", 90, "预审只读取冻结窗口内的完整候选历史"),
-    _m(164, "u", "cross_team_evidence", "跨团队成果进入晋升包", "Cross-team evidence in the packet", "旧 owner 共签或独立复核后按贡献份额入包。", "Admit cross-team evidence after old-owner cosign or independent review with bounded shares.", "拿团队总成绩冒充个人影响，触发归因债。", "Claim the team total as personal impact and post attribution debt.", 90, "晋升包消费有来源的贡献份额而非团队总分"),
+    _m(163, "u", "observation_window", "晋升绩效观察窗", "Promotion observation window", "周期初冻结最近两轮，并补充重组等背景。", "Freeze the last two cycles up front and attach context such as a reorganization.", "只挑最漂亮一轮，留下选窗审计差异。", "Cherry-pick the best cycle and retain the window audit diff.", 90, "预审只读取冻结窗口内的完整候选历史"),
+    _m(164, "u", "cross_team_evidence", "跨团队成果进入晋升包", "Cross-team evidence in the packet", "由原负责人共签或独立复核后，按贡献份额入包。", "Admit cross-team evidence after the former owner's cosign or an independent review, using bounded contribution shares.", "拿团队总成绩冒充个人影响，触发归因债。", "Claim the team total as personal impact and post attribution debt.", 90, "晋升包消费有来源的贡献份额而非团队总分"),
     _m(165, "u", "next_level_trial", "“先干到下一级”试岗证据", "Next-level trial evidence", "同时冻结授权、补偿、期限和退出条件。", "Freeze authority, compensation, deadline and exit condition together.", "只加活不给权，并记录职级债。", "Add next-level work without authority and post level debt.", 90, "预审消费试岗验收回执，不改当期绩效"),
-    _m(166, "u", "packet_withdrawal", "候选主动撤包", "Candidate packet withdrawal", "预审前撤回，归还额度并只复用已验证材料。", "Withdraw before prescreen, return the slot and retain only verified artifacts.", "让候选包继续预审，失败理由照实归档。", "Advance the candidate packet to prescreen and preserve any failure reason.", 90, "下轮材料版本读取已验证工件与准备度风险"),
-    _m(167, "u", "sponsor_credit", "Sponsor 的晋升信用债", "Sponsor promotion credit", "按事实作有限背书，下一观察期再结算信用。", "Make a bounded factual endorsement and settle credit after observation.", "强力担保，失配时按同等强度折价。", "Guarantee strongly and accept an equal credibility discount on mismatch.", 365, "后续胜任观察只结算一次 sponsor 信用"),
+    _m(166, "u", "packet_withdrawal", "候选继续参评后的处理", "Handling a packet after the candidate continues", None, None, "让候选包继续预审，失败理由照实归档。", "Advance the candidate packet to prescreen and preserve any failure reason.", 90, "下轮材料版本读取已验证材料与准备度风险"),
+    _m(167, "u", "sponsor_credit", "提名担保人的信用债", "Nomination sponsor credit", "按事实作有限背书，下一观察期再结算信用。", "Make a bounded factual endorsement and settle credit after observation.", "强力担保，失配时按同等强度折价。", "Guarantee strongly and accept an equal credibility discount on mismatch.", 365, "后续胜任观察只结算一次担保人信用"),
     _m(168, "u", "manager_hit_rate", "经理提名命中率", "Manager nomination hit rate", "按难度加权通过与胜任，并计入无故漏提。", "Weight passage and later competence by difficulty and count omitted qualified staff.", "只报稳赢包，命中率旁列风险规避债。", "Nominate only sure wins and display risk-avoidance debt beside the hit rate.", 365, "上司下一轮辅导或收紧额度时消费成熟样本"),
 
-    _m(169, "v", "expertise_mix", "评委专业匹配", "Panel expertise matching", "冻结专业席与外部席权重，合计一百。", "Freeze expert and external weights that sum to one hundred.", "让熟悉团队的人占多数，并公开关系风险。", "Give familiar reviewers the majority and expose relationship risk.", 30, "答辩计分器按事前权重消费每席评分"),
-    _m(170, "v", "panel_selection", "随机评委与熟人评委", "Random and familiar panelists", "从跨部门池按冻结种子抽唯一评委。", "Draw unique panelists from the cross-unit pool with a frozen seed.", "接受团队推荐熟人，但候选不得指定多数。", "Accept some familiar nominees without letting the candidate appoint a majority.", 30, "复跑以同一 seed 得到同一无重复席位"),
-    _m(171, "v", "panel_recusal", "答辩评委利益回避", "Panel conflict recusal", "披露冲突并用同专业的清洁备选席替换。", "Disclose conflicts and replace each seat with a clean peer of the same kind.", "隐瞒冲突；发现后整包进入重审债。", "Hide conflicts and post full-packet re-review debt when found.", 30, "投票器只接受回避后的活跃评委集合"),
-    _m(172, "v", "decision_rule", "一票否决 / 多数票 / 平均分", "Veto, majority or trimmed mean", "投票前冻结规则；否决必须附可复核理由。", "Freeze the rule before voting and require a reviewable reason for every veto.", "临场改规则帮助目标候选，并留下规则漂移债。", "Change the rule midstream for a favored candidate and post rule-drift debt.", 30, "最终决定只消费冻结规则下的一人一票"),
-    _m(173, "v", "blind_live_review", "盲材料审查与现场答辩", "Blind packet and live defense", "先冻结去身份材料分，再实名现场提问。", "Freeze identity-blind packet scores before the named live defense.", "直接现场看关系，仍保留书面工件缺口。", "Review live with relationship anchors and retain the missing-artifact gap.", 30, "评委质量复盘比较不可变盲分与现场分"),
+    _m(169, "v", "expertise_mix", "评委专业匹配", "Panel expertise matching", "专业评委按六成、外部评委按四成计分。", "Weight subject-matter reviewers at 60% and external reviewers at 40%.", "专业评委按八成、外部评委按两成计分，并登记关系风险。", "Weight subject-matter reviewers at 80% and external reviewers at 20%, and record relationship risk.", 30, "答辩计分器按事前权重消费每席评分"),
+    _m(170, "v", "panel_selection", "固定席位与熟人评委", "Fixed seats and familiar panelists", "按冻结候选池的次序取前三名互不重复的评委。", "Take the first three distinct reviewers in the frozen pool order.", "在同样三席中登记一名熟悉候选的评委，但不得形成多数。", "Mark one of the same three seats as familiar with the candidate, without creating a majority.", 30, "复核时按同一候选池顺序得到同一组无重复席位"),
+    _m(171, "v", "panel_recusal", "答辩评委利益回避", "Panel conflict recusal", "披露冲突并改由同专业且无利益冲突的备选评委入席。", "Disclose the conflict and seat an alternate of the same specialty without a conflict of interest.", "隐瞒冲突；发现后整包进入重审债。", "Hide conflicts and post full-packet re-review debt when found.", 30, "投票器只接受回避后的活跃评委集合"),
+    _m(172, "v", "decision_rule", "一票否决 / 多数票 / 平均分", "Veto, majority, or trimmed mean", "采用去极值平均；红线否决必须附理由并复核。", "Use a trimmed mean; any red-line veto requires a reviewable reason.", "改为任一评委可以否决，并记录临场改规。", "Switch to a unilateral veto for every panelist and record the midstream rule change.", 30, "最终决定只消费冻结规则下的一人一票"),
+    _m(173, "v", "blind_live_review", "盲材料审查与现场答辩", "Blind packet and live defense", "先冻结去身份书面材料分，再实名现场提问。", "Freeze the identity-blind written-material score before the named live defense.", "凭现场印象与关系评审，书面材料缺口仍保留。", "Review from live impressions and relationships while retaining the written-material gap.", 30, "评委质量复盘比较不可变盲分与现场分"),
     _m(174, "v", "defense_time", "答辩时间预算", "Defense time budget", "六十分钟中保护二十分钟质询，其余用于陈述。", "Protect twenty of sixty minutes for questions and use the rest for presentation.", "让陈述占满大部分时间，但总时长仍守恒。", "Let the presentation consume most of the session while preserving the total duration.", 30, "答辩记录校验陈述加质询等于冻结总时长"),
-    _m(175, "v", "coaching_pool", "模拟答辩与辅导资源", "Mock-defense coaching pool", "从公共教练池按透明规则分配有限工时。", "Allocate finite hours from a transparent shared coaching pool.", "只辅导亲信，并把机会不均写进案卷。", "Coach favorites and record unequal opportunity evidence.", 30, "辅导账校验已分配工时不超过开放池"),
-    _m(176, "v", "individual_attribution", "团队成绩的个人归因质询", "Individual attribution of team results", "把候选与同伴贡献拆分到一百。", "Split candidate and peer contribution shares to exactly one hundred.", "把团队成绩全据为己有，生成抢功债。", "Claim the team result wholesale and post credit-grab debt.", 30, "评委只按冻结个人份额计算影响证据"),
+    _m(175, "v", "coaching_pool", "模拟答辩与辅导资源", "Mock-defense coaching pool", "将本案登记为获得十小时辅导。", "Record a ten-hour coaching allocation for this case.", "同样登记十小时辅导，但记入机会不均。", "Record the same ten coaching hours and mark unequal opportunity.", 30, "辅导账校验已分配工时不超过开放池"),
+    _m(176, "v", "individual_attribution", "团队成绩的个人归因质询", "Individual attribution of team results", "将候选与同伴贡献分别登记为四成和六成。", "Record candidate and peer contribution shares as 40% and 60%.", "把团队成绩全部归给候选，生成抢功债。", "Assign the whole team result to the candidate and post credit-grab debt.", 30, "评委只按冻结个人份额计算影响证据"),
     _m(177, "v", "scale_leverage", "项目规模与个人杠杆分离", "Project scale versus personal leverage", "分别冻结项目规模与个人杠杆。", "Freeze project scale and personal leverage as separate scores.", "用大项目光环替代个人杠杆，留下分离差值。", "Substitute project halo for personal leverage and retain the gap.", 30, "目标职级判定同时消费两个独立维度"),
-    _m(178, "v", "dual_evidence", "可复核工件与故事表达双证据", "Artifacts and narrative as dual evidence", "工件与叙事均过冻结门槛才进入投票。", "Require both artifacts and narrative to clear frozen thresholds before voting.", "只凭故事放行，缺工件则延期补齐。", "Advance on narrative alone and mark the missing-artifact deferral.", 30, "双门槛结果决定投票或补材料"),
-    _m(179, "v", "rejection_feedback", "失败答辩的具体反馈 owner", "Named owner for rejection feedback", "每条差距绑定一名实际评委和下一证据。", "Bind each gap and next evidence item to an actual panelist.", "写“再提升影响力”，空话扣评委质量。", "Write a vague improvement slogan and charge reviewer-quality debt.", 90, "下轮材料对照同一 gap，不得无故换口径"),
+    _m(178, "v", "dual_evidence", "可核书证与现场陈述双证据", "Written evidence and live defense", "书证与现场陈述均过冻结门槛才进入投票。", "Require both written evidence and the live defense to clear frozen thresholds before voting.", "现场陈述虽高，书证不足，暂缓投票并补材料。", "Defer the vote for missing written evidence despite a strong live defense.", 30, "双门槛结果决定投票或补材料"),
+    _m(179, "v", "rejection_feedback", "失败答辩的反馈责任人", "Named owner for rejection feedback", "每条具体差距绑定一名实际评委和下一份证据。", "Bind each specific gap and next evidence item to an actual panelist.", "只写“再提升影响力”，空话扣评委质量。", "Write only a vague improvement slogan and charge reviewer-quality debt.", 90, "下轮材料对照同一具体差距，不得无故换口径"),
     _m(180, "v", "retry_cooldown", "晋升冷却与材料刷新", "Promotion retry cooldown and refresh", "冷却一轮；指定差距完成可提前重开。", "Cool down for one cycle, with early retry after every frozen gap is closed.", "立即重复消耗评委，并累积评审拥塞。", "Retry immediately and accumulate panel congestion.", (90, 365), "重试只复用版本化旧材料并追加新影响"),
 
-    _m(181, "w", "triage_category", "能力、意愿、错岗三分诊", "Skill, will or role-mismatch triage", "暂记类别未查明，保留绩效结果且不转作错岗结论。", "Record the category as unresolved, preserve the performance result, and do not recast it as role mismatch.", "一律归为不愿做，生成误诊与申诉风险。", "Assume unwillingness and post misdiagnosis and appeal risk.", 30, "PIP 入口按唯一主类别选择训练、纪律或转岗"),
+    _m(181, "w", "triage_category", "能力、意愿与岗位匹配分类", "Skill, will, and role-fit classification", "暂记类别未查明，保留绩效结果且不转作错岗结论。", "Record the category as unresolved, preserve the performance result, and do not recast it as role mismatch.", "一律归为不愿做，生成误诊与申诉风险。", "Assume unwillingness and post misdiagnosis and appeal risk.", 30, "PIP 入口按唯一主类别选择训练、纪律或转岗"),
     _m(182, "w", "pip_evidence_gate", "PIP 启动证据门槛", "PIP evidence threshold", "只有冻结证据组合过线才正式开案。", "Open a formal PIP only after the frozen evidence combination meets threshold.", "看到 3.25 就自动开案，并记录误伤风险。", "Auto-start from a 3.25 rating and record false-positive risk.", 30, "启动门把红线违纪分流到独立纪律案"),
-    _m(183, "w", "pip_acknowledgement", "PIP 目标双签与拒签理由", "Dual-signature PIP goals", "目标、资源、期限双签后计时。", "Start the clock after dual signature on goals, resources and deadlines.", "保留拒签理由，交独立席判断合理性。", "Preserve refusal reasons for independent reasonableness review.", 30, "任务页区分送达、认同、拒签和一次修订"),
-    _m(184, "w", "pip_caseload", "经理的 PIP 承载量", "Manager PIP caseload", "预留经理工时，或增加导师与错峰容量。", "Reserve manager hours or add mentor and staggered capacity.", "超载开案，并将支持失败责任追记在经理名下。", "Overbook cases and charge support-failure liability to the manager's record.", 1, "容量面板按终态一次释放每案预留"),
-    _m(185, "w", "pip_midpoint", "PIP 中期检查", "PIP midpoint review", "只做一次中检，并允许一次有证据修正。", "Run one midpoint and allow one evidence-backed correction.", "跳过中检，随后不得倒造资源或目标更正。", "Skip the midpoint; later resource or goal corrections become invalid.", 180, "PIP 时间线消费进度、资源交付和目标有效性"),
+    _m(183, "w", "pip_acknowledgement", "PIP 目标双签与拒签理由", "Dual-signature PIP goals", "本人已接受或协商完成：按双签结果启动计时。", "The subject accepted or completed negotiation; start the clock from the dual-signed result.", "本人已经拒签：登记拒签理由，不按双签路径启动。", "The subject refused to sign; record the reason and do not start the dual-signature path.", 30, "任务页区分送达、认同、拒签和一次修订"),
+    _m(184, "w", "pip_caseload", "经理的 PIP 承载量", "Manager PIP caseload", "按既有工时与预算回执登记本案承载状态。", "Record case capacity from the existing hours-and-budget receipt.", "即使支持不足也登记本案，并保留直属上司的超载责任。", "Record the case even if support is short, preserving the manager's overload liability.", 1, "容量面板按终态一次释放每案预留"),
+    _m(185, "w", "pip_midpoint", "PIP 中期检查", "PIP midpoint review", "安排一次中期检查，并允许一次有证据修正。", "Schedule one midpoint review and allow one evidence-backed correction.", "安排跳过中检；此后不得倒造资源或目标更正。", "Schedule the midpoint to be skipped; later resource or goal corrections become invalid.", 180, "PIP 时间线消费进度、资源交付和目标有效性"),
     _m(186, "w", "goal_creep_lock", "PIP 目标膨胀锁", "PIP goal-creep lock", "加任务必须等量替换、延期或获紧急复核。", "Add work only with equal replacement, extension or emergency review.", "直接加码，并生成目标膨胀违规。", "Add workload directly and post a goal-creep violation.", 7, "变更账比较基线、当前工作量和补偿路线"),
     _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "维持既定毕业标准，等待独立席提交结算回执。", "Keep the established graduation standard and await the independent settlement receipt.", "申请程序复核，保留本人签字权且不预断毕业。", "Request procedural review while preserving the subject's signature and leaving graduation undecided.", 366, "毕业或失败只读取 B2 唯一结算回执，绝不直接写档位"),
     _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "在 365 日观察期内持续贴标签，并记录过度披露风险。", "Keep the label during the 365-day observation window and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
-    _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer or exit", None, None, "强制退出，并结算空缺、交接和补员成本。", "Force exit and settle vacancy, handover and replacement costs.", 30, "终局决定页只接受一个排他终态"),
-    _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "只向真实接收经理披露目标、支持、结果和本人陈述。", "Disclose goals, support, outcome and the subject statement only to the real receiving manager.", "贴粗糙标签，但不得编造细节或改旧档位。", "Apply a coarse label without inventing details or rewriting the old rating.", 30, "转岗包按 ACL 投影最小字段"),
-    _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "登记完整的退出成本模型。", "Record the complete exit-cost model.", "登记零成本口径，并留下隐瞒债。", "Record a zero-cost presentation and leave concealment debt.", 30, "团队成本表和经理记分卡消费同一净额"),
+    _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer, or exit", None, None, "强制退出；直属上司支付十金离案补偿。", "Force an exit; the manager pays 10 gold in separation compensation.", 30, "终局决定页只接受一个排他终态"),
+    _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "本人同意：只向真实接收经理披露目标、支持、结果和本人陈述。", "With the subject's consent, disclose goals, support, outcome, and the personal statement only to the real receiving manager.", "本人拒绝附言：只交付目标、支持与结果，不附本人陈述。", "The subject withheld the statement; deliver only goals, support, and outcome.", 30, "转岗包按访问边界投影最小字段"),
+    _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "登记退出补偿与团队成本估算。", "Record exit compensation and the estimated team costs.", "将团队成本登记为零，并留下十点隐瞒债。", "Record zero team cost and leave ten points of concealment debt.", 30, "团队成本表和经理记分卡消费同一净额"),
 )
 MECHANISM_BY_ID = {mechanism.mechanism_id: mechanism for mechanism in MECHANISMS}
 EXPECTED_IDS = tuple(range(146, 192))
@@ -561,8 +561,11 @@ def validate_specs() -> None:
         for mechanism in MECHANISMS
         if mechanism.a_cn is None or mechanism.a_en is None
     }
-    if split_a_ids != {189}:
-        raise ValueError("only #189 owns split route-A labels without a generic A key")
+    if split_a_ids != {166, 189}:
+        raise ValueError(
+            "only #166's subject-owned withdrawal and #189's split terminal fork "
+            "omit a generic manager A key"
+        )
     if any(
         (mechanism.a_cn is None) != (mechanism.a_en is None)
         for mechanism in MECHANISMS
@@ -1122,11 +1125,12 @@ if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_unde
 set_variable = {{ name = {p}_receipt_serial value = var:zg361_pp_t_result_case }}
 set_variable = {{ name = {p}_receipt_revision value = var:zg361_case_t_revision }}
 set_variable = {{ name = {p}_evidence_hash_consumed value = var:zg361_pp_t_frozen_evidence_hash }}
-set_variable = {{ name = {p}_supported_praise_n value = 1 }}
-set_variable = {{ name = {p}_supported_critique_n value = 1 }}
 set_variable = {{ name = {p}_unsupported_sentence_n value = 0 }}
-set_variable = {{ name = {p}_quality_credit value = 2 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_supported_praise_n value = 0 }} set_variable = {{ name = {p}_supported_critique_n value = 0 }} set_variable = {{ name = {p}_unsupported_sentence_n value = 2 }} set_variable = {{ name = {p}_quality_credit value = 0 }} }}''',
+set_variable = {{ name = {p}_recorded_praise_n value = 1 }}
+set_variable = {{ name = {p}_recorded_critique_n value = 1 }}
+set_variable = {{ name = {p}_item_level_support_proven value = 0 }}
+set_variable = {{ name = {p}_quality_credit value = 1 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_recorded_praise_n value = 0 }} set_variable = {{ name = {p}_recorded_critique_n value = 0 }} set_variable = {{ name = {p}_unsupported_sentence_n value = 2 }} set_variable = {{ name = {p}_quality_credit value = 0 }} }}''',
         148: f'''set_variable = {{ name = {p}_evidence_snapshot value = var:zg361_pp_t_frozen_evidence_hash }}
 set_variable = {{ name = {p}_rating_snapshot value = var:zg361_pp_t_frozen_grade }}
 set_variable = {{ name = {p}_step_order value = 1 }}
@@ -1158,9 +1162,14 @@ set_variable = {{ name = {p}_appeal_due_days value = 90 }}
 set_variable = {{ name = {p}_grade_at_delivery value = var:zg361_pp_t_frozen_grade }}
 set_variable = {{ name = {p}_non_aggravation_grade value = var:zg361_pp_t_frozen_grade }}
 set_variable = {{ name = {p}_non_aggravation_ok value = 1 }}
-if = {{ limit = {{ var:{p}_subject_response = 1 }} set_variable = {{ name = {p}_agreed value = 1 }} }}
-else_if = {{ limit = {{ var:{p}_subject_response = 2 }} set_variable = {{ name = {p}_disputed value = 1 }} set_variable = {{ name = {p}_appeal_filed value = 1 }} }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_suppressed_objection value = 1 }} set_variable = {{ name = {p}_procedural_debt value = 1 }} }}''',
+if = {{ limit = {{ var:{p}_subject_response = 1 }} set_variable = {{ name = {p}_receipt_acknowledged value = 1 }} }}
+else_if = {{ limit = {{ var:{p}_subject_response = 2 }} set_variable = {{ name = {p}_receipt_acknowledged value = 1 }} set_variable = {{ name = {p}_disputed value = 1 }} set_variable = {{ name = {p}_appeal_filed value = 1 }} }}
+if = {{
+\tlimit = {{ scope:zg361_pp_route = 2 }}
+\tset_variable = {{ name = {p}_coercion_attempted value = 1 }}
+\tset_variable = {{ name = {p}_procedural_debt value = 1 }}
+\tif = {{ limit = {{ var:{p}_disputed = 1 }} set_variable = {{ name = {p}_suppressed_objection value = 1 }} }}
+}}''',
         152: f'''set_variable = {{ name = {p}_specificity value = 25 }}
 set_variable = {{ name = {p}_controllability value = 25 }}
 set_variable = {{ name = {p}_deadline_quality value = 25 }}
@@ -1645,15 +1654,20 @@ set_variable = {{ name = {p}_vacancy_id_snapshot value = var:zg361_pp_w_transfer
 set_variable = {{ name = {p}_goal_snapshot value = var:zg361_b2_pip_case }}
 set_variable = {{ name = {p}_support_snapshot value = var:zg361_b2_pip_support_reserved }}
 set_variable = {{ name = {p}_completion_snapshot value = var:zg361_b2_pip_state }}
-set_variable = {{ name = {p}_subject_statement_snapshot value = var:{p}_subject_statement_code }}
+set_variable = {{ name = {p}_subject_statement_snapshot value = 0 }}
 set_variable = {{ name = {p}_subject_statement_receiver value = var:{p}_acl_receiver }}
-set_variable = {{ name = {p}_disclosed_fields value = 4 }}
+set_variable = {{ name = {p}_disclosed_fields value = 3 }}
 set_variable = {{ name = {p}_private_ids_excluded value = 1 }}
 set_variable = {{ name = {p}_old_rating_snapshot value = var:zg361_pp_w_non_aggravation_grade }}
 set_variable = {{ name = {p}_old_rating_unchanged value = 1 }}
 set_variable = {{ name = {p}_acl_pass value = 0 }}
 set_variable = {{ name = {p}_stigma_risk value = 0 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_stigma_risk value = 1 }} }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_subject_statement_withheld value = 1 }} }}
+if = {{
+\tlimit = {{ var:{p}_subject_response = 1 }}
+\tset_variable = {{ name = {p}_subject_statement_snapshot value = var:{p}_subject_statement_code }}
+\tset_variable = {{ name = {p}_disclosed_fields value = 4 }}
+}}
 zg361_career_hc_accept_pp_transfer_request_effect = yes
 set_variable = {{ name = {p}_external_request_status value = var:zg361_transfer_vacancy_status }}
 set_variable = {{ name = {p}_external_request_red_code value = var:zg361_transfer_adapter_red_code }}
@@ -1677,7 +1691,12 @@ if = {{
 \t\tset_variable = {{ name = zg361_pp_received_transfer_goal value = scope:zg361_pp_m190_disclosure_subject.var:{p}_goal_snapshot }}
 \t\tset_variable = {{ name = zg361_pp_received_transfer_support value = scope:zg361_pp_m190_disclosure_subject.var:{p}_support_snapshot }}
 \t\tset_variable = {{ name = zg361_pp_received_transfer_completion value = scope:zg361_pp_m190_disclosure_subject.var:{p}_completion_snapshot }}
-\t\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:{p}_subject_statement_snapshot }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement_included value = 0 }}
+\t\tif = {{
+\t\t\tlimit = {{ scope:zg361_pp_m190_disclosure_subject.var:{p}_subject_response = 1 }}
+\t\t\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:{p}_subject_statement_snapshot }}
+\t\t\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement_included value = 1 }}
+\t\t}}
 \t}}
 }}''',
         191: f'''set_variable = {{ name = {p}_terminal_code_consumed value = var:zg361_pp_m189_terminal_code }}
@@ -3318,6 +3337,26 @@ def render_player_event(mechanism: MechanismSpec) -> str:
 \t\t\ttriggered_desc = {{ trigger = {{ scope:zg361_pp_prompt_subject = {{ var:{frozen} = 1 }} }} desc = zg361pp.grade.325 }}
 \t\t}}
 \t}}'''
+    if mechanism.mechanism_id == 189:
+        desc = '''{
+\t\tfirst_valid = {
+\t\t\ttriggered_desc = {
+\t\t\t\ttrigger = {
+\t\t\t\t\tscope:zg361_pp_prompt_subject = {
+\t\t\t\t\t\tvar:zg361_pp_m181_primary_category = 3
+\t\t\t\t\t\tvar:zg361_pp_w_real_vacancy = 1
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t\tdesc = zg361pp.189.desc.transfer
+\t\t\t}
+\t\t\tdesc = zg361pp.189.desc
+\t\t}
+\t\tfirst_valid = {
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+\t\t}
+\t}'''
     nxt = next_in_stage(mechanism.mechanism_id)
     chain = ""
     if nxt is not None:
@@ -3329,7 +3368,25 @@ def render_player_event(mechanism: MechanismSpec) -> str:
     route_rows: tuple[tuple[int, str, str], ...] = (
         (1, "a", ""), (2, "b", ""), (3, "c", "")
     )
-    if mechanism.mechanism_id == 189:
+    if mechanism.mechanism_id == 166:
+        # A withdrawal is executed by the subject-owned response event.  This
+        # manager card exists only after the subject chose to continue, so it
+        # must not expose an impossible second withdrawal button.
+        route_rows = ((2, "b", ""), (3, "c", ""))
+    elif mechanism.mechanism_id == 183:
+        # B2 owns the subject response: 1=accept, 2=negotiate-and-sign,
+        # 3=refuse.  Manager actions must match that immutable receipt.
+        route_rows = (
+            (
+                1,
+                "a",
+                "OR = { var:zg361_b2_pip_subject_response = 1 "
+                "var:zg361_b2_pip_subject_response = 2 }",
+            ),
+            (2, "b", "var:zg361_b2_pip_subject_response = 3"),
+            (3, "c", ""),
+        )
+    elif mechanism.mechanism_id == 189:
         route_rows = (
             (
                 1,
@@ -3344,6 +3401,15 @@ def render_player_event(mechanism: MechanismSpec) -> str:
                 "var:zg361_pp_w_real_vacancy = 1 } }",
             ),
             (2, "b", ""),
+            (3, "c", ""),
+        )
+    elif mechanism.mechanism_id == 190:
+        # A personal statement may be delivered only with the subject's
+        # explicit consent.  A refusal still permits the three non-statement
+        # transfer fields required to complete the actual transfer.
+        route_rows = (
+            (1, "a", "var:zg361_pp_m190_subject_response = 1"),
+            (2, "b", "var:zg361_pp_m190_subject_response = 2"),
             (3, "c", ""),
         )
     for route, letter, extra_guard in route_rows:
@@ -3788,7 +3854,12 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\t\t\t\tvar:zg361_pp_received_transfer_goal = root.var:{p}_goal_snapshot
 \t\t\t\t\t\t\tvar:zg361_pp_received_transfer_support = root.var:{p}_support_snapshot
 \t\t\t\t\t\t\tvar:zg361_pp_received_transfer_completion = root.var:{p}_completion_snapshot
-\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_subject_statement = root.var:{p}_subject_statement_snapshot
+\t\t\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\t\t\tlimit = {{ root.var:{p}_subject_response = 1 }}
+\t\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_subject_statement_included = 1
+\t\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_subject_statement = root.var:{p}_subject_statement_snapshot
+\t\t\t\t\t\t\t}}
+\t\t\t\t\t\t\ttrigger_else = {{ var:zg361_pp_received_transfer_subject_statement_included = 0 }}
 \t\t\t\t\t\t}}
 \t\t\t\t\t\tvar:zg361_transfer_vacancy_status = 2
 \t\t\t\t\t\tvar:zg361_transfer_vacancy_active = 1
@@ -3961,7 +4032,7 @@ def escape_loc(value: str) -> str:
 
 PP_SCENES: dict[int, tuple[str, str]] = {
     146: ("冻结档位已经送到当事人手里，案卷还缺一份确认其是否真正听懂结论的回执。", "The frozen grade has reached the subject, but the file still lacks a receipt confirming whether the conclusion was understood."),
-    147: ("本轮证据索引已经封存，反馈稿中哪些褒贬有证据支撑仍未登记。", "This cycle's evidence index is sealed, but the file does not yet identify which praise or criticism is supported."),
+    147: ("本轮证据索引已经封存，反馈稿尚未登记褒评、批评条目及其索引关联。", "This cycle's evidence index is sealed, but the feedback draft does not yet record its praise, critique, or index link."),
     148: ("档位与证据均已冻结，面谈纪要尚未记录二者的出示次序及当事人的异议。", "The grade and evidence are frozen, while the meeting record still lacks their presentation order and the subject's objections."),
     149: ("本轮较低档位不会因协商改变，案卷仍缺补偿责任人、到期日和履约状态。", "The lower grade will not change through bargaining; the file still lacks a compensation owner, due date, and fulfillment status."),
     150: ("当事人的本轮让步已经记入案卷，但所谓日后补偿尚无书面义务和到期状态。", "The subject's sacrifice is on file, but the promised future compensation has no written obligation or due status."),
@@ -3989,7 +4060,7 @@ PP_SCENES: dict[int, tuple[str, str]] = {
     172: ("三名在席评委已经冻结，投票所采用的规则和权重仍未写入本案。", "Three active panelists are frozen, while the voting rule and weights remain unset."),
     173: ("评委与候选已经确定，书面材料分和现场陈述分尚未形成可区分的记录。", "Panelists and candidate are identified, but packet and live-defense scores have not yet been separated."),
     174: ("答辩尚未开始，陈述与质询各自占用多少时间仍只是待登记的规则。", "The defense has not begun; presentation and questions remain policy allocations rather than elapsed time."),
-    175: ("案卷没有实际辅导工时回执，只能登记从共享辅导池分配的政策额度。", "The file has no actual coaching-hours receipt; the proceeding can only record a policy allocation from the shared pool."),
+    175: ("共享辅导池有十小时可记入本案，但当前案卷还未说明分配口径。", "The shared coaching pool has ten hours available for this case, but the allocation basis remains unset."),
     176: ("团队成果已经进入候选材料，个人与同伴各占多少贡献仍是待复核的归因模型。", "A team result is in the packet, but candidate and peer contribution shares remain an attribution model for review."),
     177: ("项目规模已经进入陈述，候选本人的杠杆贡献尚未与项目光环分开记录。", "Project scale is in the presentation, but the candidate's leverage has not yet been separated from the project's halo."),
     178: ("书面材料与现场陈述都已进入评审，是否满足投票门槛仍待本案结算。", "The packet and live defense are both under review; voting eligibility remains unsettled."),
@@ -4000,12 +4071,12 @@ PP_SCENES: dict[int, tuple[str, str]] = {
     183: ("目标、支持资源与期限已经送给当事人，本人签收、异议或拒签回执已经进入本案。", "Goals, support, and deadline were served to the subject, whose acknowledgment, objection, or refusal receipt is now in the file."),
     184: ("支持资源回执已经冻结，直属上司能否承载本案取决于已登记的工时和预算，而非口头承诺。", "The support receipt is frozen; manager capacity depends on recorded hours and budget, not an oral assurance."),
     185: ("本案进入中点前，尚无完成中检或修正目标与资源的回执。", "Before the case reaches its midpoint, no receipt yet proves a review or a correction to goals and resources."),
-    186: ("案卷没有外部工作量清单；基准十项、替换两项等数字仅是本案采用的政策模型。", "The file has no external workload list; figures such as a ten-item baseline and two-item replacement are only this case's policy model."),
+    186: ("本案暂按十项基准工作量登记；后续任务是等量替换还是直接加码，仍待裁定。", "This case currently records a ten-item baseline; whether later tasks replace existing work or simply add to it remains undecided."),
     187: ("中检回执与工作量基线已经就位，毕业或失败仍必须等待唯一结算回执。", "The midpoint receipt and workload baseline are present, but graduation or failure must wait for the unique settlement receipt."),
     188: ("只有已经毕业的案卷才进入观察；当前没有后续周期的同类复发事实。", "Only a graduated case enters observation, and no same-category relapse fact exists for a later cycle yet."),
     189: ("最终裁决已经给出毕业失败或同类复发回执；现有证据没有证明错岗，真实空缺也不能替代该证明。", "Final adjudication has produced a failure or same-category relapse receipt; current evidence does not prove role mismatch, and a real vacancy cannot substitute for that proof."),
     190: ("真实转岗、接收上司与当事人的披露回应已经进入案卷；承办者只能据此确定交付范围。", "The real transfer, receiving manager, and subject's disclosure response are now in the file; the decision owner may determine the delivery scope only from those records."),
-    191: ("退出终态已经登记，但空缺、交接、加班和补员没有外部实际付款明细。", "The exit terminal is recorded, but no external payment breakdown exists for vacancy, handover, overtime, or replacement."),
+    191: ("退出终态已经登记，团队尚未核算空缺、交接、加班和补员四项预计成本。", "The exit is recorded, but estimated vacancy, handover, overtime, and replacement costs have not yet been totaled."),
 }
 
 
@@ -4052,6 +4123,49 @@ COMPLETION_COPY: dict[str, tuple[str, str, str, str]] = {
 }
 
 
+TOOLTIP_DETAILS: dict[tuple[int, int], tuple[str, str]] = {
+    (147, 1): ("登记一条褒评和一条批评，并关联本轮冻结证据索引；不据此声称两条内容已经逐项获证。", "Records one praise and one critique and links this cycle's frozen evidence index; it does not claim item-level proof for either sentence."),
+    (151, 1): ("签收、认同与异议按本人回执分栏保存；签收本身不会写成认同。", "Receipt, agreement, and objection remain separate according to the subject's response; receipt alone never becomes agreement."),
+    (151, 2): ("认同仍为零，并登记强写认同的企图与程序债；本人已提出的异议和申诉不会被抹去。", "Agreement remains zero; the coercion attempt and procedural debt are recorded without erasing any objection or appeal."),
+    (152, 1): ("具体性、可控性、期限与资源各记二十五分，总分一百。", "Specificity, controllability, deadline, and resources each score 25, for a total of 100."),
+    (152, 2): ("四项依次记五分、五分、零分、零分，总分十分。", "The four dimensions score 5, 5, 0, and 0, for a total of 10."),
+    (153, 1): ("原期限与当前期限均为九十日；验收证据仍须等待后续回执。", "The original and current deadlines are both day 90; acceptance evidence still awaits a later receipt."),
+    (153, 2): ("保留九十日原期限，将当前期限改为一百二十日，并登记一次改期理由。", "Preserves the original day-90 deadline, moves the current deadline to day 120, and records one reason for revision."),
+    (160, 1): ("材料、职级证据、战略匹配各记八十分，总分二百四十，达到一百八十分门槛。", "Packet, level evidence, and strategic fit each score 80; total 240 clears the 180 threshold."),
+    (160, 2): ("政治筛选后的总分记一百二十，未达到一百八十分门槛。", "The political screen records a total of 120, below the 180 threshold."),
+    (164, 1): ("候选贡献记四成，同伴贡献记六成，总和一百。", "Candidate contribution is 40% and peer contribution is 60%, totaling 100%."),
+    (164, 2): ("候选贡献记十成、同伴贡献记零，并登记归因债。", "Candidate contribution is recorded as 100% and peer contribution as zero, with attribution debt."),
+    (169, 1): ("专业评委权重六成，外部评委权重四成。", "Subject-matter reviewers carry 60% and external reviewers 40%."),
+    (169, 2): ("专业评委权重八成，外部评委权重两成，并登记关系风险。", "Subject-matter reviewers carry 80% and external reviewers 20%, with relationship risk recorded."),
+    (170, 1): ("从冻结候选池依次取前三席；三人必须互不重复。", "Takes the first three seats in frozen pool order; all three must be distinct."),
+    (170, 2): ("仍取同样三席，其中一席记为熟人席；熟人席不构成多数。", "Uses the same three seats, marks one as familiar, and keeps familiar seats below a majority."),
+    (172, 1): ("裁决规则记为去极值平均；任何红线否决仍须附可复核理由。", "Records the trimmed-mean rule; any red-line veto still requires a reviewable reason."),
+    (172, 2): ("裁决规则改为任一评委可否决，并登记一次临场改规。", "Changes the rule to a unilateral veto for every panelist and records one midstream rule change."),
+    (174, 1): ("总时长六十分钟：陈述四十分钟，质询二十分钟。", "Total 60 minutes: 40 for presentation and 20 for questions."),
+    (174, 2): ("总时长六十分钟：陈述五十五分钟，质询五分钟。", "Total 60 minutes: 55 for presentation and 5 for questions."),
+    (175, 1): ("共享池开放十小时，本案分配十小时，余额为零。", "The shared pool opens with 10 hours; this case receives all 10, leaving zero."),
+    (175, 2): ("同样分配十小时，余额为零；另登记机会不均。", "Allocates the same 10 hours and leaves zero, while recording unequal opportunity."),
+    (176, 1): ("候选贡献四成，同伴贡献六成，总和一百。", "Candidate contribution is 40% and peer contribution is 60%, totaling 100%."),
+    (176, 2): ("候选贡献十成，同伴贡献为零，并登记抢功债。", "Candidate contribution is 100% and peer contribution zero, with credit-grab debt."),
+    (177, 1): ("项目规模九十五分、个人杠杆三十分，两项分开保存。", "Project scale is 95 and personal leverage 30; the dimensions remain separate."),
+    (177, 2): ("项目规模与个人杠杆都记九十五分，两项不再分开。", "Project scale and personal leverage are both 95 and no longer separated."),
+    (178, 1): ("书证八十分、现场陈述七十分；双门槛通过后才取得投票资格。", "Written evidence scores 80 and the live defense 70; passing both gates is required for voting eligibility."),
+    (178, 2): ("书证四十分、现场陈述九十五分；书证不足使投票暂缓。", "Written evidence scores 40 and the live defense 95; the written-evidence shortfall defers the vote."),
+    (183, 1): ("只在本人回执为接受或协商完成时出现；改进期三百六十五日。", "Appears only after acceptance or completed negotiation; the improvement period is 365 days."),
+    (183, 2): ("只在本人回执为拒签时出现；拒签本身不算改进失败。", "Appears only after refusal to sign; refusal itself is not an improvement failure."),
+    (184, 1): ("承载状态直接读取既有支持回执中的工时、预算与预留状态。", "Capacity reads the hours, budget, and reservation state from the existing support receipt."),
+    (184, 2): ("支持不足时保留超载责任；不会凭此补造导师、工时或预算。", "Any support shortfall preserves overload liability; no mentor, hours, or budget is fabricated."),
+    (185, 1): ("第一百八十日进行唯一一次中检；届时才读取进度与资源交付回执。", "The sole midpoint review occurs on day 180; progress and resource-delivery receipts are read then."),
+    (185, 2): ("第一百八十日登记跳过中检，此后目标或资源更正无效。", "Day 180 records the skipped midpoint; later goal or resource corrections are invalid."),
+    (186, 1): ("基准与当前工作量均为十项，另登记两项替换量；总工作量不增加。", "Baseline and current workload are both 10, with 2 replacement items recorded; total workload does not rise."),
+    (186, 2): ("当前工作量由十项增至十五项，替换量为零，并登记目标膨胀违规。", "Current workload rises from 10 to 15, replacement is zero, and a goal-creep violation is recorded."),
+    (190, 1): ("只在本人同意附言时出现；向真实接收上司交付目标、支持、结果与本人陈述四项。", "Appears only with consent to attach the statement; delivers goals, support, outcome, and the personal statement to the actual receiving manager."),
+    (190, 2): ("只在本人拒绝附言时出现；交付前三项，不生成、复制或传递本人陈述。", "Appears only when the subject withholds the statement; delivers the first three fields and neither creates nor transmits the personal statement."),
+    (191, 1): ("团队成本估算为三、二、零、五，合计十。", "Estimated team costs are 3, 2, 0, and 5, totaling 10."),
+    (191, 2): ("团队成本登记为零，同时登记十点隐瞒债；没有实际节省或付款。", "Records zero team cost and ten points of concealment debt; no savings or payment occurs."),
+}
+
+
 def option_tooltip(
     mechanism: MechanismSpec, route: int, action: str, chinese: bool
 ) -> str:
@@ -4059,36 +4173,28 @@ def option_tooltip(
         due_days = 180 if mechanism.mechanism_id in P2_DEFER_IDS else 90
         due = str(due_days)
     else:
-        due = "、".join(str(days) for days in mechanism.deadlines)
+        due = ("、" if chinese else " and ").join(
+            str(days) for days in mechanism.deadlines
+        )
     payment = ""
     if DUAL_COST_ROUTE_BY_ID.get(mechanism.mechanism_id) == route:
         payment = (
-            "执行时直属上司实际支付国库 5 与个人金币 5，当事人实际收到 10；这笔支付与其他政策模型数字分别记账。"
+            "直属上司实付公帑五金与私库五金，当事人实收十金。"
             if chinese
-            else "On execution, the manager actually pays treasury 5 and personal gold 5, and the subject actually receives 10; this payment is separate from all policy-model figures."
+            else "The manager pays 5 treasury and 5 personal gold, and the subject receives 10."
         )
-    if mechanism.mechanism_id == 191 and route == 1:
-        model = (
-            "成本拆分 3/2/0/5、合计 10 只是政策模拟，不是外部付款回执。"
-            if chinese
-            else "The 3/2/0/5 breakdown totaling 10 is a policy simulation, not an external payment receipt."
-        )
-    elif mechanism.mechanism_id == 191 and route == 2:
-        model = (
-            "零成本与 10 点隐瞒债均为本案模型值，不是实际节省或实际付款。"
-            if chinese
-            else "The zero-cost presentation and ten concealment-debt points are case-model values, not actual savings or payments."
-        )
-    else:
-        model = ""
+    detail_pair = TOOLTIP_DETAILS.get((mechanism.mechanism_id, route))
+    detail = detail_pair[0 if chinese else 1] if detail_pair else ""
     if chinese:
-        return (
-            f"{action} 登记立即生效；计划核验日：第 {due} 日。"
-            f"{payment}{model}未出现外部回执的数字只代表本案政策参数。"
-        )
+        if route == 3:
+            return f"本项暂缓；制度债在第 {due} 日到期。"
+        return f"本项立即入卷；第 {due} 日复核。{detail}{payment}"
+    if route == 3:
+        return f"This matter is deferred; its policy debt falls due on day {due}."
+    suffix = " ".join(part for part in (detail, payment) if part)
     return (
-        f"{action} The record takes effect immediately; scheduled review day: {due}. "
-        f"{payment}{model}Figures without an external receipt are case policy parameters only."
+        f"The decision enters the file immediately and is reviewed on day {due}."
+        + (f" {suffix}" if suffix else "")
     )
 
 
@@ -4167,9 +4273,9 @@ def localization_rows(language: str) -> list[str]:
             else ("Withdraw my promotion packet.", "Continue; let the manager handle the remaining procedure.")
         ),
         190: (
-            ("同意附上我的最小披露陈述。", "拒绝扩散本人陈述，只保留程序回执。")
+            ("同意附上我的最小披露陈述。", "拒绝附上本人陈述；只登记我的拒绝回执。")
             if chinese
-            else ("Attach my minimum-disclosure statement.", "Withhold my statement and retain only the procedural receipt.")
+            else ("Attach my minimum-disclosure statement.", "Withhold my statement; record only my refusal receipt.")
         ),
     }
     for mechanism_id, options in subject_response_rows.items():
@@ -4228,12 +4334,14 @@ def localization_rows(language: str) -> list[str]:
     )
     for mechanism in MECHANISMS:
         title = mechanism.title_cn if chinese else mechanism.title_en
-        due = "、".join(str(days) for days in mechanism.deadlines)
+        due = ("、" if chinese else " and ").join(
+            str(days) for days in mechanism.deadlines
+        )
         scene = PP_SCENES[mechanism.mechanism_id][0 if chinese else 1]
         desc = (
-            f"{scene}承办者是[zg361_pp_prompt_owner.GetShortUIName]，当事人是[zg361_pp_prompt_subject.GetShortUIName]。需要后续核验的回执计划在第 {due} 日到期；这只是本案期限，不表示结果已经发生。"
+            f"{scene}本案由[zg361_pp_prompt_owner.GetShortUIName]承办，[zg361_pp_prompt_subject.GetShortUIName]是当事人；第 {due} 日复核。"
             if chinese
-            else f"{scene} The decision owner is [zg361_pp_prompt_owner.GetShortUIName], and the subject is [zg361_pp_prompt_subject.GetShortUIName]. Any follow-up receipt is scheduled for day {due}; this is a case deadline, not a claim that the outcome already occurred."
+            else f"{scene} [zg361_pp_prompt_owner.GetShortUIName] handles the case for [zg361_pp_prompt_subject.GetShortUIName]; review is due on day {due}."
         )
         routes = (
             (mechanism.a_cn, mechanism.b_cn, mechanism.c_cn)
@@ -4269,18 +4377,20 @@ def localization_rows(language: str) -> list[str]:
         rows.extend(
             (
                 ' zg361pp.189.transfer:0 "凭独立错岗事实转入真实空缺。"',
-                ' zg361pp.189.second_pip:0 "没有错岗事实；开启有资源的二次改进。"',
-                ' zg361pp.189.transfer.tt:0 "仅当独立错岗事实与真实空缺同时存在时，才调往已冻结的接收上司门下。绩效档形成原因不能冒充错岗事实。"',
-                ' zg361pp.189.second_pip.tt:0 "现有案卷没有独立错岗事实，因此只开放一次有支持资源的二次改进计划；本轮档位不被改写。"',
+                ' zg361pp.189.second_pip:0 "没有错岗事实；登记一次二次改进。"',
+                ' zg361pp.189.transfer.tt:0 "仅当独立错岗事实与真实空缺同时存在时，才调往已冻结的接收上司门下。绩效档形成原因不能冒充错岗事实；第 30 日复核。"',
+                ' zg361pp.189.second_pip.tt:0 "现有案卷没有独立错岗事实，因此登记一次二次改进；本轮档位不被改写，第 30 日复核。"',
+                ' zg361pp.189.desc.transfer:0 "独立案卷已经确认岗位不匹配，且真实接收空缺仍然有效。本案由[zg361_pp_prompt_owner.GetShortUIName]承办，[zg361_pp_prompt_subject.GetShortUIName]是当事人；现在可以在调入该空缺与退出之间裁定，第 30 日复核。"',
             )
         )
     else:
         rows.extend(
             (
                 ' zg361pp.189.transfer:0 "Transfer on independent mismatch facts and a real vacancy."',
-                ' zg361pp.189.second_pip:0 "No mismatch fact; open a supported second improvement plan."',
-                ' zg361pp.189.transfer.tt:0 "Transfer to the frozen receiving manager only when an independent role-mismatch fact and a real vacancy both exist. A grade-adjustment reason cannot stand in for mismatch evidence."',
-                ' zg361pp.189.second_pip.tt:0 "The current file has no independent role-mismatch fact, so it permits only one supported second improvement plan; the current grade remains unchanged."',
+                ' zg361pp.189.second_pip:0 "No mismatch fact; record one second improvement plan."',
+                ' zg361pp.189.transfer.tt:0 "Transfer to the frozen receiving manager only when an independent role-mismatch fact and a real vacancy both exist. A grade-adjustment reason cannot stand in for mismatch evidence; review is due on day 30."',
+                ' zg361pp.189.second_pip.tt:0 "The current file has no independent role-mismatch fact, so it records one second improvement plan; the current grade remains unchanged and review is due on day 30."',
+                ' zg361pp.189.desc.transfer:0 "The independent file confirms role mismatch and the actual receiving vacancy remains open. [zg361_pp_prompt_owner.GetShortUIName] handles the case for [zg361_pp_prompt_subject.GetShortUIName]; transfer into that vacancy and exit are now available, with review due on day 30."',
             )
         )
     for domain_index, domain in enumerate(DOMAINS, start=1):

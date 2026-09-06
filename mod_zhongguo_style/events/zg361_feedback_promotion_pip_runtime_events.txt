@@ -1903,36 +1903,6 @@ zg361pp.166 = {
 		}
 	}
 	option = {
-			name = zg361pp.166.a
-			custom_tooltip = zg361pp.166.a.tt
-			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
-	var:zg361_pp_m157_packet_status = 1
-	var:zg361_pp_m157_packet_candidate = this
-	var:zg361_pp_m157_receipt_owner = var:zg361_case_u_owner
-	var:zg361_pp_m157_receipt_cycle = var:zg361_case_u_cycle_serial
-	var:zg361_pp_m157_receipt_case = var:zg361_case_u_case_serial
-	OR = {
-		var:zg361_pp_m157_nomination_slot_status = 1
-		var:zg361_pp_m157_nomination_slot_status = 2
-	}
-	var:zg361_pp_m166_withdraw_intent = 1
-	NOT = { has_variable = zg361_pp_m160_prescreen_pass }
-	var:zg361_pp_m157_nomination_slot_owner = var:zg361_case_u_owner
-	var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial
-	var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial } }
-			scope:zg361_pp_prompt_subject = {
-				zg361_pp_m166_manager_apply_effect = {
-					ROUTE = 1
-					TICKET_OWNER = scope:zg361_pp_prompt_owner
-					TICKET_SUBJECT = scope:zg361_pp_prompt_subject
-					TICKET_CYCLE = scope:zg361_pp_prompt_cycle
-					TICKET_CASE = scope:zg361_pp_prompt_case
-					TICKET_STATE = scope:zg361_pp_prompt_state
-				}
-			}
-
-		}
-	option = {
 			name = zg361pp.166.b
 			custom_tooltip = zg361pp.166.b.tt
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m157_packet_active = 1
@@ -3358,7 +3328,8 @@ zg361pp.183 = {
 	var:zg361_b2_pip_subject = this
 	var:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
 	var:zg361_b2_pip_case = var:zg361_case_w_case_serial
-	var:zg361_pp_m182_gate_status = 1 } }
+	var:zg361_pp_m182_gate_status = 1
+	OR = { var:zg361_b2_pip_subject_response = 1 var:zg361_b2_pip_subject_response = 2 } } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m183_manager_apply_effect = {
 					ROUTE = 1
@@ -3379,7 +3350,8 @@ zg361pp.183 = {
 	var:zg361_b2_pip_subject = this
 	var:zg361_b2_pip_cycle = var:zg361_case_w_cycle_serial
 	var:zg361_b2_pip_case = var:zg361_case_w_case_serial
-	var:zg361_pp_m182_gate_status = 1 } }
+	var:zg361_pp_m182_gate_status = 1
+	var:zg361_b2_pip_subject_response = 3 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m183_manager_apply_effect = {
 					ROUTE = 2
@@ -3866,7 +3838,18 @@ zg361pp.189 = {
 	theme = vassal
 	title = zg361pp.189.t
 	desc = {
-		desc = zg361pp.189.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:zg361_pp_prompt_subject = {
+						var:zg361_pp_m181_primary_category = 3
+						var:zg361_pp_w_real_vacancy = 1
+					}
+				}
+				desc = zg361pp.189.desc.transfer
+			}
+			desc = zg361pp.189.desc
+		}
 		first_valid = {
 			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
 			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
@@ -4098,7 +4081,8 @@ zg361pp.190 = {
 	var:zg361_pp_m189_receiving_manager = {
 		zg361_is_celestial_liege_trigger = yes
 		NOT = { this = root }
-	} } }
+	}
+	var:zg361_pp_m190_subject_response = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m190_manager_apply_effect = {
 					ROUTE = 1
@@ -4158,7 +4142,8 @@ zg361pp.190 = {
 	var:zg361_pp_m189_receiving_manager = {
 		zg361_is_celestial_liege_trigger = yes
 		NOT = { this = root }
-	} } }
+	}
+	var:zg361_pp_m190_subject_response = 2 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m190_manager_apply_effect = {
 					ROUTE = 2
@@ -6830,7 +6815,12 @@ zg361pp.2190 = {
 							var:zg361_pp_received_transfer_goal = root.var:zg361_pp_m190_goal_snapshot
 							var:zg361_pp_received_transfer_support = root.var:zg361_pp_m190_support_snapshot
 							var:zg361_pp_received_transfer_completion = root.var:zg361_pp_m190_completion_snapshot
-							var:zg361_pp_received_transfer_subject_statement = root.var:zg361_pp_m190_subject_statement_snapshot
+							trigger_if = {
+								limit = { root.var:zg361_pp_m190_subject_response = 1 }
+								var:zg361_pp_received_transfer_subject_statement_included = 1
+								var:zg361_pp_received_transfer_subject_statement = root.var:zg361_pp_m190_subject_statement_snapshot
+							}
+							trigger_else = { var:zg361_pp_received_transfer_subject_statement_included = 0 }
 						}
 						var:zg361_transfer_vacancy_status = 2
 						var:zg361_transfer_vacancy_active = 1

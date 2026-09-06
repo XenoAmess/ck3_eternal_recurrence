@@ -796,15 +796,20 @@ zg361_pp_m190_core_effect = {
 					set_variable = { name = zg361_pp_m190_goal_snapshot value = var:zg361_b2_pip_case }
 					set_variable = { name = zg361_pp_m190_support_snapshot value = var:zg361_b2_pip_support_reserved }
 					set_variable = { name = zg361_pp_m190_completion_snapshot value = var:zg361_b2_pip_state }
-					set_variable = { name = zg361_pp_m190_subject_statement_snapshot value = var:zg361_pp_m190_subject_statement_code }
+					set_variable = { name = zg361_pp_m190_subject_statement_snapshot value = 0 }
 					set_variable = { name = zg361_pp_m190_subject_statement_receiver value = var:zg361_pp_m190_acl_receiver }
-					set_variable = { name = zg361_pp_m190_disclosed_fields value = 4 }
+					set_variable = { name = zg361_pp_m190_disclosed_fields value = 3 }
 					set_variable = { name = zg361_pp_m190_private_ids_excluded value = 1 }
 					set_variable = { name = zg361_pp_m190_old_rating_snapshot value = var:zg361_pp_w_non_aggravation_grade }
 					set_variable = { name = zg361_pp_m190_old_rating_unchanged value = 1 }
 					set_variable = { name = zg361_pp_m190_acl_pass value = 0 }
 					set_variable = { name = zg361_pp_m190_stigma_risk value = 0 }
-					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m190_stigma_risk value = 1 } }
+					if = { limit = { scope:zg361_pp_route = 2 } set_variable = { name = zg361_pp_m190_subject_statement_withheld value = 1 } }
+					if = {
+						limit = { var:zg361_pp_m190_subject_response = 1 }
+						set_variable = { name = zg361_pp_m190_subject_statement_snapshot value = var:zg361_pp_m190_subject_statement_code }
+						set_variable = { name = zg361_pp_m190_disclosed_fields value = 4 }
+					}
 					zg361_career_hc_accept_pp_transfer_request_effect = yes
 					set_variable = { name = zg361_pp_m190_external_request_status value = var:zg361_transfer_vacancy_status }
 					set_variable = { name = zg361_pp_m190_external_request_red_code value = var:zg361_transfer_adapter_red_code }
@@ -828,7 +833,12 @@ zg361_pp_m190_core_effect = {
 							set_variable = { name = zg361_pp_received_transfer_goal value = scope:zg361_pp_m190_disclosure_subject.var:zg361_pp_m190_goal_snapshot }
 							set_variable = { name = zg361_pp_received_transfer_support value = scope:zg361_pp_m190_disclosure_subject.var:zg361_pp_m190_support_snapshot }
 							set_variable = { name = zg361_pp_received_transfer_completion value = scope:zg361_pp_m190_disclosure_subject.var:zg361_pp_m190_completion_snapshot }
-							set_variable = { name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:zg361_pp_m190_subject_statement_snapshot }
+							set_variable = { name = zg361_pp_received_transfer_subject_statement_included value = 0 }
+							if = {
+								limit = { scope:zg361_pp_m190_disclosure_subject.var:zg361_pp_m190_subject_response = 1 }
+								set_variable = { name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:zg361_pp_m190_subject_statement_snapshot }
+								set_variable = { name = zg361_pp_received_transfer_subject_statement_included value = 1 }
+							}
 						}
 					}
 

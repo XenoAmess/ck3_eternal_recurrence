@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 1_051_936)
+        self.assertEqual(len(historical), 1_053_021)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "4fe8ea6143bbc1532b2f9890ed0b6a5c32a5ea41fcb849c1bc99089b5c7f98ac",
+            "aa47969df504752690c74e31e693e2193773c6a7a458c096b17f48122ffabc44",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -748,7 +748,8 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         )
         for row in gen.MECHANISMS:
             block = effect_block(self.events, f"zg361pp.{row.mechanism_id}")
-            self.assertEqual(block.count("option = {"), 4 if row.mechanism_id == 189 else 3)
+            expected_options = 4 if row.mechanism_id == 189 else (2 if row.mechanism_id == 166 else 3)
+            self.assertEqual(block.count("option = {"), expected_options)
             self.assertNotIn("immediate = {", block)
             # Each selected option can schedule at most the one next card.
             for option in re.findall(r"option = \{.*?\n\t\}", block, re.DOTALL):
@@ -1269,8 +1270,20 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "zg361_pp_received_transfer_support",
             "zg361_pp_received_transfer_completion",
             "zg361_pp_received_transfer_subject_statement",
+            "zg361_pp_received_transfer_subject_statement_included value = 0",
+            "zg361_pp_received_transfer_subject_statement_included value = 1",
         ):
             self.assertIn(token, m190)
+        self.assertIn(
+            "limit = { var:zg361_pp_m190_subject_response = 1 }", m190
+        )
+        manager_event = effect_block(self.events, "zg361pp.190")
+        self.assertIn(
+            "var:zg361_pp_m190_subject_response = 1", manager_event
+        )
+        self.assertIn(
+            "var:zg361_pp_m190_subject_response = 2", manager_event
+        )
         self.assertIn(
             "limit = { has_variable = zg361_transfer_adapter_applied has_variable = zg361_transfer_vacancy_status }",
             m190,
@@ -1308,9 +1321,21 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_pp_m151_appeal_snapshot_grade", response)
         self.assertIn("var:zg361_result_grade >= var:zg361_pp_m151_appeal_snapshot_grade", appeal_audit)
         self.assertIn("zg361_pp_m151_appeal_closed_without_filing", appeal_audit)
+        self.assertNotIn("zg361_pp_m151_agreed value = 1", m151)
+        self.assertIn("zg361_pp_m151_receipt_acknowledged value = 1", m151)
+        self.assertIn("zg361_pp_m151_coercion_attempted value = 1", m151)
         forbidden = re.compile(r"(?:set|change)_variable\s*=\s*\{\s*name\s*=\s*zg361_result_grade\b")
         self.assertIsNone(forbidden.search(self.effects))
         self.assertIsNone(forbidden.search(self.events))
+
+    def test_pip_acknowledgement_options_match_the_subject_receipt(self) -> None:
+        event = effect_block(self.events, "zg361pp.183")
+        self.assertIn(
+            "OR = { var:zg361_b2_pip_subject_response = 1 "
+            "var:zg361_b2_pip_subject_response = 2 }",
+            event,
+        )
+        self.assertIn("var:zg361_b2_pip_subject_response = 3", event)
 
     def test_completion_cards_expose_route_and_w_terminal_outcome(self) -> None:
         for event_id in range(9001, 9005):
@@ -1406,7 +1431,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             letters = (
                 ("transfer", "second_pip", "b", "c")
                 if mid == 189
-                else ("a", "b", "c")
+                else (("b", "c") if mid == 166 else ("a", "b", "c"))
             )
             for letter in letters:
                 label = loc[f"zg361pp.{mid}.{letter}"]
@@ -1415,10 +1440,16 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 self.assertNotRegex(label, r"路线[甲乙丙]|按\s*[ABC]\s*(?:做|办|执行)")
                 self.assertNotRegex(label, r"^(?:按|选择)\s*[ABC甲乙丙]|^照做$")
                 self.assertNotIn(label, desc, f"{mid}.{letter}: body copies the decision")
+                self.assertNotIn(label, tooltip, f"{mid}.{letter}: tooltip repeats button")
+                self.assertNotRegex(
+                    tooltip,
+                    r"未出现外部回执|政策参数|计划核验日|本卡|玩家|结算器|回写",
+                    f"{mid}.{letter}: implementation-facing tooltip",
+                )
                 if mid == 189 and letter in {"transfer", "second_pip"}:
                     self.assertIn("错岗事实", tooltip)
                 else:
-                    self.assertIn("计划核验日", tooltip)
+                    self.assertRegex(tooltip, r"(?:立即入卷|暂缓)")
         self.assertEqual(len(descriptions), len(set(descriptions)))
 
         # Audit every visible PP body, not only the 46 manager cards.  A body
@@ -1439,7 +1470,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         event_body_keys = set(
             re.findall(r"\bdesc = (zg361pp\.[A-Za-z0-9_.]+)", self.events)
         )
-        self.assertEqual(len(event_body_keys), 77)
+        self.assertEqual(len(event_body_keys), 78)
         for key in event_body_keys:
             self.assertIn(key, loc)
             self.assertNotRegex(loc[key], r"^[。！？；：，、.?!;:,\[]", key)
@@ -1447,7 +1478,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         option_keys = set(
             re.findall(r"\bname = (zg361pp\.[A-Za-z0-9_.]+)", self.events)
         )
-        self.assertEqual(len(option_keys), 153)
+        self.assertEqual(len(option_keys), 152)
         for key in option_keys:
             self.assertIn(key, loc)
             self.assertNotRegex(
@@ -1482,6 +1513,11 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "title = zg361pp.5190.t", effect_block(self.events, "zg361pp.5190")
         )
         self.assertIn("披露回应已经进入案卷", loc["zg361pp.190.desc"])
+        self.assertIn("确认岗位不匹配", loc["zg361pp.189.desc.transfer"])
+        terminal = effect_block(self.events, "zg361pp.189")
+        self.assertIn("desc = zg361pp.189.desc.transfer", terminal)
+        self.assertIn("var:zg361_pp_m181_primary_category = 3", terminal)
+        self.assertIn("var:zg361_pp_w_real_vacancy = 1", terminal)
         self.assertIn("撤回权只属于", loc["zg361pp.5166.desc"])
         self.assertIn("本人陈述尚未附卷", loc["zg361pp.5190.desc"])
         self.assertNotIn("告身已经送达", loc["zg361pp.5151.desc"])
@@ -1524,7 +1560,11 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
     def test_all_manager_options_expose_cost_and_deadline_tooltips(self) -> None:
         for mechanism in gen.MECHANISMS:
             event = effect_block(self.events, f"zg361pp.{mechanism.mechanism_id}")
-            letters = ("transfer", "second_pip", "b", "c") if mechanism.mechanism_id == 189 else ("a", "b", "c")
+            letters = (
+                ("transfer", "second_pip", "b", "c")
+                if mechanism.mechanism_id == 189
+                else (("b", "c") if mechanism.mechanism_id == 166 else ("a", "b", "c"))
+            )
             for letter in letters:
                 self.assertIn(
                     f"custom_tooltip = zg361pp.{mechanism.mechanism_id}.{letter}.tt",
@@ -1540,10 +1580,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 re.MULTILINE,
             )
             self.assertIsNotNone(match)
-            self.assertIn("国库 5", match.group(1))
-            self.assertIn("个人金币 5", match.group(1))
-            self.assertIn("实际收到 10", match.group(1))
-        self.assertIn("成本拆分 3/2/0/5、合计 10 只是政策模拟", chinese)
+            self.assertIn("公帑五金", match.group(1))
+            self.assertIn("私库五金", match.group(1))
+            self.assertIn("实收十金", match.group(1))
+        self.assertIn("团队成本估算为三、二、零、五，合计十", chinese)
 
     def test_delivery_uses_readable_reason_text_and_completion_is_not_closed(self) -> None:
         event = effect_block(self.events, "zg361pp.5151")
@@ -1635,8 +1675,8 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
     def test_chinese_and_english_are_authored_and_seven_are_placeholders(self) -> None:
         english = text(MOD_ROOT / "localization" / "english" / "zg361_feedback_promotion_pip_l_english.yml")
         chinese = text(MOD_ROOT / "localization" / "simp_chinese" / "zg361_feedback_promotion_pip_l_simp_chinese.yml")
-        self.assertIn("Plain rating or softened wording", english)
-        self.assertIn("直白档位 / 委婉话术制度", chinese)
+        self.assertIn("State the rating or soften the wording", english)
+        self.assertIn("直报档位还是委婉转述", chinese)
         self.assertNotEqual(english.replace("l_english:", "", 1), chinese.replace("l_simp_chinese:", "", 1))
         for language in ("french", "german", "japanese", "korean", "polish", "russian", "spanish"):
             placeholder = text(
@@ -1650,10 +1690,17 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 english.replace("l_english:", "", 1),
             )
 
-    def test_split_189_route_has_no_dead_generic_a_localization(self) -> None:
-        mechanism = gen.MECHANISM_BY_ID[189]
-        self.assertIsNone(mechanism.a_cn)
-        self.assertIsNone(mechanism.a_en)
+    def test_subject_owned_166_and_split_189_have_no_dead_generic_a_localization(self) -> None:
+        for mid in (166, 189):
+            mechanism = gen.MECHANISM_BY_ID[mid]
+            self.assertIsNone(mechanism.a_cn)
+            self.assertIsNone(mechanism.a_en)
+
+        m166 = effect_block(self.events, "zg361pp.166")
+        self.assertNotIn("name = zg361pp.166.a", m166)
+        self.assertNotIn("custom_tooltip = zg361pp.166.a.tt", m166)
+        self.assertIn("name = zg361pp.166.b", m166)
+        self.assertIn("name = zg361pp.166.c", m166)
 
         event = effect_block(self.events, "zg361pp.189")
         self.assertNotIn("name = zg361pp.189.a", event)
@@ -1662,7 +1709,12 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertIn(f"name = zg361pp.189.{expected}", event)
             self.assertIn(f"custom_tooltip = zg361pp.189.{expected}.tt", event)
 
-        dead_keys = ("zg361pp.189.a", "zg361pp.189.a.tt")
+        dead_keys = (
+            "zg361pp.166.a",
+            "zg361pp.166.a.tt",
+            "zg361pp.189.a",
+            "zg361pp.189.a.tt",
+        )
         live_split_keys = (
             "zg361pp.189.transfer",
             "zg361pp.189.transfer.tt",
