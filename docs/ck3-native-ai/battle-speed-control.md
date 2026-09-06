@@ -233,7 +233,8 @@ A/B arm。若 speed 4 相比 speed 3 没有稳定吞吐收益，或其超调/负
 
 现有 PeekMessage rich mailbox 不能直接充当 running sentinel：running pump 会撤销 paused ownership proof。
 [implementation-confirmed] 当前 vertical slice 在 suspended startup 安装 final-stage detour；arm 只允许 paused map，复制
-player id、start/absolute-target date、requested speed/mode 与最多 64 个 subject ArmyID 的有界 fingerprint。hook 本身只会由
+player id、start/absolute-target date、requested speed/mode 与最多 64 个 subject ArmyID 的有界 fingerprint；仅
+`terminal` mode 可用 canonical `a-0` 明确请求不读取军队图的 date-only deadline sentinel。hook 本身只会由
 原生 daily final stage 在 application-main 调用，先执行 original 一次，再做固定内存/atomic 判定；它不分配、不运行 rich
 query。命中后调用原生 pause wrapper，并同时记录 final paused readback。既有 passive terminal journal/cursor 保持独立，
 只在停表后用于终局结果互证。
@@ -244,6 +245,10 @@ query。命中后调用原生 pause wrapper，并同时记录 final paused readb
 research-arm-tactical-daily-sentinel-v1-<start>-to-<absolute-target>-speed-<1..5>-mode-<decision|terminal>-a-<count>-<ArmyID...>
 research-query-tactical-daily-sentinel-v1
 ```
+
+`count=0` 只允许写成显式 `mode-terminal-a-0`；它保留 paused arm、逐日 `+24`、原生 pause wrapper 与零超调合同，
+但只以 absolute date、native auto-pause 或 infrastructure failure 触发。`decision` mode 和省略 mode 的旧 wire 仍要求
+`count>=1`，所有既有正数 ArmyID fingerprint 合同不变。
 
 `decision` 在 route target、contact/CombatID、retreat、roster、finalized、army/combat removal、native auto-pause
 或 absolute date 变化时停；`terminal` 即 `terminal_or_sentinel`，忽略普通 phase 与 winner 推进，允许 maneuver/main/pursuit

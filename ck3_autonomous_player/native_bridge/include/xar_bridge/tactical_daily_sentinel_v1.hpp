@@ -32,7 +32,8 @@ inline constexpr std::size_t kTacticalDailySentinelAbsoluteJumpBytesV1 = 14;
 inline constexpr std::size_t kTacticalDailySentinelMaximumArmiesV1 = 64;
 inline constexpr std::size_t kTacticalDailySentinelMaximumCombatsV1 = 64;
 // Longest canonical arm step: two positive int32 dates, speed, terminal mode,
-// a two-digit count, and 64 positive int32 ArmyIDs including delimiters.
+// a two-digit count, and 64 positive int32 ArmyIDs including delimiters.  A
+// terminal arm may use canonical `a-0` for a date-only deadline sentinel.
 inline constexpr std::size_t kTacticalDailySentinelMaximumArmStepBytesV1 =
     kTacticalDailySentinelArmPrefixV1.size() + 10U + 4U + 10U + 7U + 1U +
     6U + 8U + 3U + 2U +

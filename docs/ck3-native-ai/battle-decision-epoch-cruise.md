@@ -378,6 +378,10 @@ research-arm-tactical-daily-sentinel-v1-
 research-query-tactical-daily-sentinel-v1
 ```
 
+显式 `mode-terminal-a-0` 是 date-only deadline 变体：不冻结或读取 CUnit/CArmy/Combat 图，只保留逐日日期连续性、
+absolute target、native auto-pause、原生 pause wrapper 与 infrastructure fail-closed。`decision` mode 以及省略 mode
+的兼容 wire 仍拒绝零 watch；`count>=1` 的既有 terminal/decision fingerprint 语义不变。
+
 terminal mode 的 bounded fingerprint 包含 watched `CUnit -> CArmy`、move target、CombatID、retreat、active combat
 phase/day、winner/finalized 与双方 ordered ArmyID roster count/hash。它应忽略普通 phase/winner 变化，停在 date、army missing、
 route/contact/reopen/retreat、roster、finalized/removal、native auto-pause 或 infrastructure failure。

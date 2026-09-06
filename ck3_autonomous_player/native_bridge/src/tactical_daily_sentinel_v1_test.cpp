@@ -188,6 +188,14 @@ bool TestParser() {
       parsed.speed != 5 || parsed.army_count != 1 || parsed.army_ids[0] != 1) {
     return false;
   }
+  if (!ParseTacticalDailySentinelArmStepV1(
+          "research-arm-tactical-daily-sentinel-v1-1000-to-1024-speed-5-mode-"
+          "terminal-a-0",
+          parsed) ||
+      parsed.mode != TacticalDailySentinelModeV1::terminal_or_sentinel ||
+      parsed.speed != 5 || parsed.army_count != 0) {
+    return false;
+  }
   const auto long_arm_step = [](std::size_t army_count) {
     std::string step{kTacticalDailySentinelArmPrefixV1};
     step += "2000000000-to-2000001080-speed-5-mode-terminal-a-";
@@ -241,7 +249,62 @@ bool TestParser() {
          !ParseTacticalDailySentinelArmStepV1(
              "research-arm-tactical-daily-sentinel-v1-1000-to-1072-speed-5-"
              "mode-unknown-a-1-1",
+             parsed) &&
+         !ParseTacticalDailySentinelArmStepV1(
+             "research-arm-tactical-daily-sentinel-v1-1000-to-1024-speed-5-"
+             "mode-decision-a-0",
+             parsed) &&
+         !ParseTacticalDailySentinelArmStepV1(
+             "research-arm-tactical-daily-sentinel-v1-1000-to-1024-speed-5-a-"
+             "0",
+             parsed) &&
+         !ParseTacticalDailySentinelArmStepV1(
+             "research-arm-tactical-daily-sentinel-v1-1000-to-1024-speed-5-"
+             "mode-terminal-a-00",
              parsed);
+}
+
+bool TestDateOnlyTerminalDeadline() {
+  using namespace xar::ck3_11906;
+  WorldFixture world;
+  pause_calls = 0;
+  original_calls = 0;
+  pause_player_id = -1;
+  auto request = Request(5, 1'024);
+  request.mode = TacticalDailySentinelModeV1::terminal_or_sentinel;
+  request.army_count = 0;
+  request.army_ids[0] = 0;
+  if (!InitializeTacticalDailySentinelFixtureV1(
+          world.bindings, &SetPaused, &OriginalDailyFinalStage) ||
+      ArmTacticalDailySentinelV1(request) !=
+          TacticalDailySentinelArmStatusV1::armed) {
+    return false;
+  }
+  auto status = ReadTacticalDailySentinelStatusV1();
+  if (status.state != TacticalDailySentinelStateV1::armed ||
+      status.mode != TacticalDailySentinelModeV1::terminal_or_sentinel ||
+      status.army_count != 0 || status.combat_count != 0) {
+    return false;
+  }
+  Store(world.jomini, 0x20, std::uint8_t{0});
+  XarTacticalDailySentinelHookV1();
+  status = ReadTacticalDailySentinelStatusV1();
+  if (status.state != TacticalDailySentinelStateV1::triggered ||
+      status.trigger_flags != tactical_daily_trigger_date_deadline ||
+      status.trigger_date_raw != 1'024 || status.last_observed_date_raw != 1'024 ||
+      status.completed_daily_ticks != 1 || status.overshoot_days != 0 ||
+      status.signed_date_delta_from_target_raw != 0 ||
+      !status.pause_wrapper_called || !status.pause_observed ||
+      status.intermediate_pause_count != 0 || status.terminal_observed ||
+      status.abnormal || pause_calls != 1 || original_calls != 1 ||
+      pause_player_id != 7) {
+    return false;
+  }
+
+  auto invalid = request;
+  invalid.mode = TacticalDailySentinelModeV1::decision_epoch;
+  return ArmTacticalDailySentinelV1(invalid) ==
+         TacticalDailySentinelArmStatusV1::invalid_request;
 }
 
 bool TestGenerationBoundPausedCancelDisarmsAndAllowsNextArm() {
@@ -697,6 +760,10 @@ bool TestInstallAnchor() {
 int main() {
   if (!TestParser()) {
     std::cerr << "tactical daily sentinel parser fixture failed\n";
+    return 1;
+  }
+  if (!TestDateOnlyTerminalDeadline()) {
+    std::cerr << "tactical daily sentinel date-only terminal fixture failed\n";
     return 1;
   }
   if (!TestPausedRearmReplacesStaleArm()) {

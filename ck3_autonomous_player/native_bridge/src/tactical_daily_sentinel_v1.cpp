@@ -288,6 +288,19 @@ bool ParseCanonicalPositive(std::string_view token,
          parsed.ptr == token.data() + token.size() && output > 0;
 }
 
+bool ParseCanonicalNonNegative(std::string_view token,
+                               std::int32_t &output) noexcept {
+  output = -1;
+  if (token.empty() || token.front() < '0' || token.front() > '9' ||
+      (token.size() > 1 && token.front() == '0')) {
+    return false;
+  }
+  const auto parsed =
+      std::from_chars(token.data(), token.data() + token.size(), output);
+  return parsed.ec == std::errc{} &&
+         parsed.ptr == token.data() + token.size() && output >= 0;
+}
+
 bool InitializeRuntime(const Bindings &bindings, TacticalSetPausedV1 set_paused,
                        TacticalDailyOriginalV1 original) noexcept {
   if (!bindings.enabled || bindings.game_state_slot == nullptr ||
@@ -510,7 +523,7 @@ bool ParseTacticalDailySentinelArmStepV1(
   }
   std::size_t army_marker_index = 5;
   request.mode = TacticalDailySentinelModeV1::decision_epoch;
-  if (count >= 10 && tokens[5] == "mode") {
+  if (count >= 9 && tokens[5] == "mode") {
     if (tokens[6] == "decision") {
       request.mode = TacticalDailySentinelModeV1::decision_epoch;
     } else if (tokens[6] == "terminal") {
@@ -524,13 +537,15 @@ bool ParseTacticalDailySentinelArmStepV1(
   const auto army_count_index = army_marker_index + 1;
   const auto first_army_index = army_marker_index + 2;
   std::int32_t army_count = 0;
-  if (count < first_army_index + 1 || tokens[1] != "to" ||
+  if (count < first_army_index || tokens[1] != "to" ||
       tokens[3] != "speed" || tokens[army_marker_index] != "a" ||
       !ParseCanonicalPositive(tokens[0], request.starting_date_raw) ||
       !ParseCanonicalPositive(tokens[2], request.target_date_raw) ||
       !ParseCanonicalPositive(tokens[4], request.speed) ||
-      !ParseCanonicalPositive(tokens[army_count_index], army_count) ||
-      request.speed > 5 || army_count <= 0 ||
+      !ParseCanonicalNonNegative(tokens[army_count_index], army_count) ||
+      request.speed > 5 ||
+      (army_count == 0 && request.mode !=
+                                TacticalDailySentinelModeV1::terminal_or_sentinel) ||
       army_count >
           static_cast<std::int32_t>(kTacticalDailySentinelMaximumArmiesV1) ||
       count != first_army_index + static_cast<std::size_t>(army_count) ||
@@ -568,7 +583,9 @@ TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
   if (!g_runtime_available.load(std::memory_order_acquire)) {
     return TacticalDailySentinelArmStatusV1::unavailable;
   }
-  if (request.speed < 1 || request.speed > 5 || request.army_count == 0 ||
+  if (request.speed < 1 || request.speed > 5 ||
+      (request.army_count == 0 &&
+       request.mode != TacticalDailySentinelModeV1::terminal_or_sentinel) ||
       request.army_count > kTacticalDailySentinelMaximumArmiesV1 ||
       request.starting_date_raw <= 0 ||
       request.target_date_raw <= request.starting_date_raw ||
