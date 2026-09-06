@@ -128,14 +128,14 @@
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-011.json",
       "records": 40,
-      "sha256": "50d1476dc4f0d8e6eb72be493925cb5945993cc65785a8db7c832a44359e71e8"
+      "sha256": "1efed810e6cfb5221f61d10b28f265a3b836e9cd95b0dde3042903e26698e435"
     },
     {
       "bytes": 68918,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-012.json",
       "records": 40,
-      "sha256": "5b2c340784678501769a5b585abed174c68f5546048095a788ee92a7867a4227"
+      "sha256": "d49181c292fffae491c4b5e3c6393ccda9663ed831a09c582d8c66ec21125aa9"
     },
     {
       "bytes": 68917,
@@ -250,39 +250,39 @@
       "sha256": "283c5b4f39e48c2fa0f30d00b465dd6177bc56df003b56befe3104d46e0af929"
     },
     {
-      "bytes": 79694,
+      "bytes": 79736,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-013.json",
       "records": 180,
-      "sha256": "ce74b584f27a1c6b03b371eeab7d1ad79f5a0d785a710a466772644603841146"
+      "sha256": "679c54201be3f9795c948ece67b5b67fb66ead8cbe8060390e0f1771a4b1be5a"
     },
     {
-      "bytes": 82530,
+      "bytes": 82536,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-014.json",
       "records": 180,
-      "sha256": "725c389adacf629777d581e319e1c3a15559ea64f8ce5acfe830966835f111a7"
+      "sha256": "48016cd0f4059b30e5fcd05217801993c2edc338c9416b9ee486e9b93555d766"
     },
     {
-      "bytes": 82817,
+      "bytes": 82793,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-015.json",
       "records": 180,
-      "sha256": "abb16f981a9e9f376af9350a4a55da7db5702316943de2528dc97a86e843821b"
+      "sha256": "c22ed0e4124a13f2efe1acbb1fdf440a0e85295049c29de319b32ec6dbe7b856"
     },
     {
-      "bytes": 82289,
+      "bytes": 82268,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-016.json",
       "records": 180,
-      "sha256": "ee090303dc086bf0d3f7b47703735f95b9e13702e1453f00b368064c194b8a49"
+      "sha256": "4f526779b8aa45a105e7e5bfe4c9051291a28ddbc3bd2adbeb71a57153695d3a"
     },
     {
-      "bytes": 82346,
+      "bytes": 82436,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-017.json",
       "records": 180,
-      "sha256": "b900adc018cba1b5ab462760c0196beba4f28abbfe2896c555a0d5b4d256454c"
+      "sha256": "08ebe9c61435262748e261f8943ff1aafb7cdc0644abd66493446f0ecf57a6ab"
     },
     {
       "bytes": 82134,
@@ -1693,10 +1693,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 530567,
+        "bytes": 530660,
         "lines": 2932,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
-        "sha256": "f565d3f5706fdd1ab0200f04051dc1c55e2ccba3a8dea42be22bf939adb123fc"
+        "sha256": "46d67b38a695e90fb3ee3f728ab1e67fa533f77c929c952b3ebefda60cd22c1e"
       },
       {
         "authority": {
@@ -1843,9 +1843,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "690727253a099a19c9ff1e69ed0c957239499c4f",
+    "git_commit": "ae6ae85dec8007e4435f6fbe98748eec2f2b628f",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "f24b59b49ca114c88ae77708864704a754feda7805f2fd9f894a117908f2d5f8"
+    "input_digest_sha256": "9d943c18fd9dd7a82eb93de45fe76e4eeed2bebce8c95aedf5a0105f324522b7"
   },
   "summary": {
     "all_event_definitions": 1009,

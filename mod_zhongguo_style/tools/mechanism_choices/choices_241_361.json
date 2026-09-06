@@ -168,8 +168,8 @@
     "title_en": "Separate Vendor SLA from Individual Liability",
     "option_a_cn": "按合同能力、需求变更、供应商管理和执行失误逐层归因整改",
     "option_a_en": "Attribute remediation across contract capacity, requirement change, vendor management, and execution",
-    "option_b_cn": "延期即整体归咎外包方，并让甲方一线 owner 同步背 C",
-    "option_b_en": "Blame every delay on the vendor as a whole and make the internal frontline owner share the C",
+    "option_b_cn": "延期即整体归咎外包方，并让甲方一线责任人同步被列入末档",
+    "option_b_en": "Blame every delay on the vendor and give the client-side frontline owner the lowest rating",
     "profile": "external",
     "reference_choice": "a"
   },
@@ -546,8 +546,8 @@
     "title_en": "Good-Leaver and Bad-Leaver Classification",
     "option_a_cn": "按裁撤、调动、退休、跳槽与舞弊的冻结事实分别处理权益",
     "option_a_en": "Settle rights by frozen facts for redundancy, transfer, retirement, resignation, and fraud",
-    "option_b_cn": "将所有主动离任归为 Bad Leaver，统一没收未归属权益",
-    "option_b_en": "Classify every voluntary exit as bad leaver and forfeit all unvested rights",
+    "option_b_cn": "将所有主动离任归为有责离任，统一没收未归属权益",
+    "option_b_en": "Classify every voluntary departure as a culpable exit and forfeit all unvested rights",
     "profile": "compensation",
     "reference_choice": "a"
   },
@@ -601,8 +601,8 @@
   },
   "305": {
     "title_en": "Pre-Calibration Reorganization Quiet Period",
-    "option_a_cn": "截止日前禁止无危机重组，特批须上级承接名单并冻结旧 cohort",
-    "option_a_en": "Ban non-crisis reorgs before cutoff; require superior ownership and freeze the old cohort",
+    "option_a_cn": "截止日前禁止无危机重组，特批须上级承接名单并冻结原受评组",
+    "option_a_en": "Ban non-crisis reorgs before cutoff; require superior ownership and freeze the former review group",
     "option_b_cn": "允许校准前快速换组与汇报线，以重新分配配额压力",
     "option_b_en": "Allow last-minute team and reporting-line moves to redistribute quota pressure",
     "profile": "calibration",

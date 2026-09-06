@@ -829,6 +829,74 @@ def concise_choice_cn(choice: str, *, max_length: int) -> str:
             "先向主线提交改动；只有无法兼容的安全或性能要求获批后，才分叉并承担维护",
             "无法兼容的安全或性能要求才允许例外",
         ),
+        (
+            "用保守估计或人工凭证双签，真实数据到达后再逐项对账",
+            "保守估算或双签，真实数据到达后逐项对账",
+        ),
+        (
+            "同时冻结早期信号与最终结果；先暂记，待结果到期后再确认",
+            "冻结信号与结果；暂记，待结果到期再确认",
+        ),
+        (
+            "用连续区间计分并保留关键底线，期初写明各完成度对应分数",
+            "连续区间计分，期初写明各完成度对应分数",
+        ),
+        (
+            "让额外劳动在金币、可兑现调休、目标减免中三选一并记债",
+            "额外劳动三选一：金币、调休或减目标，并记债",
+        ),
+        (
+            "按合同能力、需求变更、供应商管理和执行失误逐层归因整改",
+            "按合同、需求、供应商管理及执行失误逐层归因整改",
+        ),
+        (
+            "延期即整体归咎外包方，并让甲方一线责任人同步被列入末档",
+            "延期归咎外包方，甲方责任人同步列入末档",
+        ),
+        (
+            "周期初冻结额外月俸属于固定、绩效还是酌情赏赐并分别记账",
+            "期初定额外月俸为固定、绩效或赏赐并分账",
+        ),
+        (
+            "入列本轮奖金名单即冻结按服务月、里程碑或周期门槛折算的公式",
+            "入列奖金名单即冻结服务月、里程碑或周期折算公式",
+        ),
+        (
+            "按薪俸区间位置、稀缺、欠账和留任风险分配总池，并逐项写明理由",
+            "按薪俸位置等分配调薪池，逐项写明理由",
+        ),
+        (
+            "优先补齐低于薪俸下限者；高于上限改发一次奖，区间外例外须设到期日",
+            "先补下限；超上限发一次奖；例外设到期日",
+        ),
+        (
+            "另开奖金计算、薪俸区间和欠款复核，算错只补钱不改榜",
+            "另审奖金、薪俸区间与欠款；算错补钱不改榜",
+        ),
+        (
+            "由受奖者知情选择期权、限制份额或现金，并写明各自主要风险",
+            "受奖者自选期权、限制份额或现金并知悉风险",
+        ),
+        (
+            "同时展示授予额、三档估值区间和当前可变现能力并定期重估",
+            "列明授予额、估值区间与可变现值并定期重估",
+        ),
+        (
+            "按裁撤、调动、退休、跳槽与舞弊的冻结事实分别处理权益",
+            "按裁撤、调动、退休、跳槽或舞弊分别结算权益",
+        ),
+        (
+            "保护一至两轮，按学习、试点和里程碑考核，到期毕业、转向或关闭",
+            "孵化团队保护一至两轮；到期毕业、转向或关闭",
+        ),
+        (
+            "明确两组精力与目标占比；给津贴、减目标或配副手，并设到期日",
+            "拆分两组精力与目标；加津贴、减目标或配副手并限期",
+        ),
+        (
+            "收益团队看收益质量，共享团队看节省、稳定和内部采用并分别答辩",
+            "收益团队看收益质量；共享团队看节省、稳定与采用",
+        ),
     ):
         clean = clean.replace(verbose, concise)
     if len(clean) <= max_length:
@@ -975,6 +1043,113 @@ def concise_choice_en(choice: str) -> str:
     """English counterpart of :func:`concise_choice_cn`."""
 
     clean = choice.rstrip(".!?; ")
+    for verbose, concise in (
+        (
+            "Use conservative estimates or dual-signed evidence and reconcile item by item once actual data arrives",
+            "Dual-sign estimates; reconcile actual data",
+        ),
+        (
+            "Freeze early signals and final outcomes together; keep credit provisional until the result matures",
+            "Freeze both; provisional until result matures",
+        ),
+        (
+            "Use continuous scoring with critical floors and publish the score for each completion level up front",
+            "Publish scores per completion level with floors",
+        ),
+        (
+            "Credit all future gains to the first owner while making the successor bear operations and delayed side effects alone",
+            "Credit first owner; successor bears operations and delays",
+        ),
+        (
+            "Let overtime choose exactly one of pay, usable leave, or target relief and ledger it",
+            "Pay, leave, or target relief for overtime; record debt",
+        ),
+        (
+            "Cap meeting hours; offset every new meeting and record its owner, agenda, and decision",
+            "Cap meeting hours; log offsets, owner, agenda, and decision",
+        ),
+        (
+            "Attribute remediation across contract capacity, requirement change, vendor management, and execution",
+            "Assign contract, demand, management and execution faults",
+        ),
+        (
+            "Put vendor staff into the formal employee review cohort and use their weaker status to fill the bottom",
+            "Put vendors in formal reviews; assign the lowest rating",
+        ),
+        (
+            "Blame every delay on the vendor and give the client-side frontline owner the lowest rating",
+            "Blame vendor delays; bottom-rate the client owner too",
+        ),
+        (
+            "Tie final payment to documentation, accompanied handover, practical acceptance, and an issue ledger",
+            "Final pay requires accompanied handover and acceptance",
+        ),
+        (
+            "Fast-track a familiar former employee and wipe prior low-rating records and conflicts",
+            "Fast-track rehire; erase low ratings and conflicts",
+        ),
+        (
+            "Classify the extra month upfront as fixed, performance, or discretionary and ledger separately",
+            "Classify extra-month pay and ledger each category",
+        ),
+        (
+            "On entry to the current bonus list, freeze the service-month, milestone, or full-cycle proration formula",
+            "Freeze proration upon entry to current bonus list",
+        ),
+        (
+            "Allocate the pool by pay-range position, scarcity, debt, and retention risk, with a written reason for each difference",
+            "Allocate by pay position; record each written reason",
+        ),
+        (
+            "Catch up pay below the range, use one-time awards above it, and set an expiry for every exception",
+            "Catch up low pay; bonus high pay; expire exceptions",
+        ),
+        (
+            "Open a separate bonus, pay-range, and arrears review; correct money without changing rank",
+            "Review bonus, pay range and arrears; repay errors only",
+        ),
+        (
+            "Concentrate the pool on the most visible top-rated performers to lock stars quickly",
+            "Focus awards on visible top-rated performers",
+        ),
+        (
+            "Let recipients knowingly choose options, restricted units, or cash, with each choice's principal risk recorded",
+            "Recipients choose options, units, or cash; state risks",
+        ),
+        (
+            "Show grant value, three valuation scenarios, and current liquidity with periodic revaluation",
+            "Show grant, valuation range, liquidity; revalue",
+        ),
+        (
+            "Settle rights by frozen facts for redundancy, transfer, retirement, resignation, and fraud",
+            "Settle rights by layoff/transfer/retirement/exit/fraud",
+        ),
+        (
+            "Cancel every unvested unit after one low rating without preserving the service portion",
+            "One low rating cancels all unvested units",
+        ),
+        (
+            "Assess headwind work through contained decline, managed contraction, and transformation or new-business milestones",
+            "Rate decline control and new-business milestones",
+        ),
+        (
+            "Protect one or two cycles, score learning and pilots, then graduate, pivot, or close",
+            "Protect incubators 1-2 cycles; then resolve them",
+        ),
+        (
+            "Split effort and targets between both teams; add pay, reduce goals, or appoint a deputy, with an expiry",
+            "Split two-team effort; add pay, relief, deputy, expiry",
+        ),
+        (
+            "Score revenue teams on quality-adjusted return and shared teams on savings, stability, and adoption",
+            "Score revenue quality; shared savings/stability/use",
+        ),
+        (
+            "Rotate reviews and manager visits, charging their time cost to the manager's workload",
+            "Rotate reviews and visits; charge manager workload",
+        ),
+    ):
+        clean = clean.replace(verbose, concise)
     if len(clean) <= 92:
         return clean
     action = clean.split(",", 1)[0]

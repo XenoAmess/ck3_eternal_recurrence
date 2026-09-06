@@ -25,13 +25,14 @@ AUDITED_IDS = (
     274, 276, 277, 280, 281, 283, 284, 285, 286, 287,
     288, 289, 290, 292, 297, 301, 302, 304, 306, 309,
 )
+SLICE_IDS = tuple(range(232, 312))
 
 # Each audited event has at least one exact player-facing repair anchored here.
 EXPECTED_CN: dict[int, dict[str, tuple[str, ...]]] = {
-    232: {"a": ("真实数据到达后再逐项对账",)},
+    232: {"a": ("真实数据到达后逐项对账",)},
     234: {
         "desc": ("两者矛盾时应启动校准并说明差异",),
-        "a": ("先暂记", "待结果到期后再确认"),
+        "a": ("暂记", "待结果到期再确认"),
     },
     235: {"desc": ("不能获得完整的最高档评价",)},
     236: {"a": ("期初写明各完成度对应分数",)},
@@ -55,7 +56,7 @@ EXPECTED_CN: dict[int, dict[str, tuple[str, ...]]] = {
         "b": ("清空原有低档记录与冲突",),
     },
     277: {"desc": ("先把现任压入低绩效并清退，再借机申请扩编",)},
-    280: {"a": ("入列本轮奖金名单", "冻结", "折算的公式")},
+    280: {"a": ("入列奖金名单", "冻结", "折算公式")},
     281: {"desc": ("管理者的承诺兑现信用",)},
     283: {
         "t": ("只升职责、不加俸的兑现期限",),
@@ -67,12 +68,12 @@ EXPECTED_CN: dict[int, dict[str, tuple[str, ...]]] = {
     },
     285: {
         "desc": ("同为最高档", "逐项写明理由"),
-        "a": ("薪俸区间位置", "逐项写明理由"),
+        "a": ("薪俸位置", "逐项写明理由"),
     },
     286: {
         "t": ("高于薪俸上限时冻结、低于下限时追补",),
         "desc": ("薪俸区间外的例外到期必须重审",),
-        "a": ("低于薪俸下限", "高于上限改发一次奖", "例外须设到期日"),
+        "a": ("补下限", "超上限发一次奖", "例外设到期日"),
     },
     287: {
         "t": ("薪酬保密、职级薪俸区间公开与匿名分布",),
@@ -82,11 +83,11 @@ EXPECTED_CN: dict[int, dict[str, tuple[str, ...]]] = {
     288: {"desc": ("持续处于较高档位的人才",)},
     289: {
         "desc": ("不能因此凭空改成最高档",),
-        "a": ("薪俸区间", "算错只补钱不改榜"),
+        "a": ("薪俸区间", "算错补钱不改榜"),
     },
     290: {"b": ("本轮最醒目的最高档者",)},
     292: {
-        "a": ("由受奖者知情选择", "期权、限制份额或现金", "各自主要风险"),
+        "a": ("受奖者自选", "期权、限制份额或现金", "知悉风险"),
     },
     297: {
         "desc": ("一次低档记录而全部没收",),
@@ -98,7 +99,7 @@ EXPECTED_CN: dict[int, dict[str, tuple[str, ...]]] = {
     306: {
         "t": ("临时代管两组时的精力与目标拆分",),
         "desc": ("代管两组成功体现统筹能力",),
-        "a": ("两组精力与目标占比", "给津贴、减目标或配副手", "设到期日"),
+        "a": ("拆分两组精力与目标", "加津贴、减目标或配副手", "限期"),
     },
     309: {
         "desc": ("增加述职机会", "边远团队的实际成果", "加剧人才流失"),
@@ -140,31 +141,42 @@ FORBIDDEN_CN: dict[int, tuple[str, ...]] = {
 }
 
 EXPECTED_EN: dict[str, tuple[str, ...]] = {
-    "zg361m.232.a": ("actual data", "item by item"),
+    "zg361m.232.a": ("Dual-sign estimates", "actual data"),
     "zg361m.234.a": ("provisional", "result matures"),
-    "zg361m.236.a": ("score for each completion level",),
-    "zg361m.241.b": ("first owner", "successor bear operations and delayed side effects"),
+    "zg361m.236.a": ("scores per completion level", "floors"),
+    "zg361m.241.b": ("first owner", "successor bears operations and delays"),
     "zg361m.249.a": ("owner, agenda, and decision",),
-    "zg361m.256.b": ("formal employee review cohort",),
+    "zg361m.256.b": ("vendors", "formal reviews", "lowest rating"),
     "zg361m.264.a": ("accompanied handover",),
     "zg361m.274.t": ("Candidate Counteroffer and Bidding Cap",),
-    "zg361m.276.b": ("prior low-rating records",),
-    "zg361m.280.a": ("current bonus list", "proration formula"),
+    "zg361m.276.b": ("low ratings", "conflicts"),
+    "zg361m.280.a": ("current bonus list", "proration"),
     "zg361m.283.t": ("Duties-Only Promotion",),
     "zg361m.284.t": ("Staged Pay Reduction",),
     "zg361m.285.a": ("written reason",),
     "zg361m.286.t": ("Pay Range",),
-    "zg361m.286.a": ("expiry for every exception",),
+    "zg361m.286.a": ("low pay", "high pay", "expire exceptions"),
     "zg361m.287.t": ("Published Grade Ranges",),
-    "zg361m.289.a": ("pay-range",),
+    "zg361m.289.a": ("pay range", "arrears", "repay errors"),
     "zg361m.290.b": ("top-rated performers",),
-    "zg361m.292.a": ("principal risk recorded",),
-    "zg361m.297.b": ("one low rating",),
+    "zg361m.292.a": ("Recipients choose", "options, units, or cash", "state risks"),
+    "zg361m.297.b": ("One low rating",),
     "zg361m.302.a": ("new-business milestones",),
     "zg361m.304.t": ("Dual Project and Functional Management",),
     "zg361m.306.t": ("Two-Team Acting Lead",),
-    "zg361m.306.a": ("reduce goals", "appoint a deputy", "expiry"),
-    "zg361m.309.a": ("manager's workload",),
+    "zg361m.306.a": ("two-team effort", "pay, relief, deputy, expiry"),
+    "zg361m.309.a": ("reviews and visits", "manager workload"),
+}
+
+FINAL_REREAD_CN: dict[str, tuple[str, ...]] = {
+    "zg361m.246.a": ("额外劳动", "金币、调休或减目标", "记债"),
+    "zg361m.259.a": ("合同", "需求", "供应商管理", "执行失误", "归因整改"),
+    "zg361m.259.b": ("外包方", "甲方责任人", "同步列入末档"),
+    "zg361m.279.a": ("额外月俸", "固定、绩效或赏赐", "分账"),
+    "zg361m.294.a": ("授予额", "估值区间", "可变现值", "定期重估"),
+    "zg361m.299.a": ("裁撤", "调动", "退休", "跳槽", "舞弊", "结算权益"),
+    "zg361m.303.a": ("孵化团队", "一至两轮", "到期毕业、转向或关闭"),
+    "zg361m.307.a": ("收益团队", "收益质量", "共享团队", "节省、稳定与采用"),
 }
 
 
@@ -198,19 +210,30 @@ class CopyAuditSlices011012Tests(unittest.TestCase):
         required = {
             "zg361m.241.b": ("未来收益", "首任责任人", "接任者", "运营", "延迟副作用"),
             "zg361m.249.a": ("会议工时上限", "抵消工时", "责任人", "议程", "结论"),
-            "zg361m.292.a": ("受奖者", "期权", "限制份额", "现金", "主要风险"),
-            "zg361m.306.a": ("两组", "精力", "目标", "津贴", "减目标", "副手", "到期日"),
+            "zg361m.292.a": ("受奖者", "期权", "限制份额", "现金", "风险"),
+            "zg361m.306.a": ("两组", "精力", "目标", "津贴", "减目标", "副手", "限期"),
         }
         for key, fragments in required.items():
             with self.subTest(key=key):
                 for fragment in fragments:
                     self.assertIn(fragment, self.chinese[key])
 
+    def test_final_reread_buttons_name_action_object_and_result_without_truncation(self) -> None:
+        for key, fragments in FINAL_REREAD_CN.items():
+            with self.subTest(key=key):
+                for fragment in fragments:
+                    self.assertIn(fragment, self.chinese[key])
+        for mechanism_id in SLICE_IDS:
+            for choice in ("a", "b", "c"):
+                key = f"zg361m.{mechanism_id}.{choice}"
+                with self.subTest(key=key):
+                    self.assertNotIn("…", self.chinese[key])
+
     def test_buttons_match_the_bound_choice_effects(self) -> None:
         events = (MOD_ROOT / "events" / "zg361_generated_mechanism_events.txt").read_text(
             encoding="utf-8-sig"
         )
-        for mechanism_id in AUDITED_IDS:
+        for mechanism_id in SLICE_IDS:
             mechanism = self.by_id[mechanism_id]
             self.assertIn(mechanism_id, LEDGER_ONLY_MECHANISM_IDS)
             for choice in ("a", "b"):
@@ -238,6 +261,7 @@ class CopyAuditSlices011012Tests(unittest.TestCase):
                 )
         for key, fragments in EXPECTED_EN.items():
             with self.subTest(key=key, language="english"):
+                self.assertNotIn("…", self.english[key])
                 for fragment in fragments:
                     self.assertIn(fragment, self.english[key])
         for language in (
