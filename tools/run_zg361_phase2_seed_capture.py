@@ -11,6 +11,8 @@ mutation remain MCP-only.
 from __future__ import annotations
 
 import argparse
+import copy
+from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 import hashlib
@@ -2149,12 +2151,27 @@ def recover_active_manager_cycle(
             runtime_diagnostic_probe=runtime_diagnostic_probe,
         )
     except module.PromotionProductionEntryError as error:
+        binding_failure = getattr(error, "evidence", None)
+        if isinstance(binding_failure, Mapping):
+            evidence["binding_failure"] = copy.deepcopy(dict(binding_failure))
+        manager_owner_terminal = (
+            isinstance(binding_failure, Mapping)
+            and binding_failure.get("one_life_terminal") is True
+            and binding_failure.get("one_life_terminal_reason")
+            == "played_character_changed"
+        )
+        classification = (
+            "SCENARIO_INVALID" if manager_owner_terminal else "RED"
+        )
         write_json(artifacts / "manager-cycle-recovery.json", evidence)
         raise SeedCaptureError(
             "active manager cycle did not reach a clean review boundary",
             {
                 "stage": "manager_cycle_recovery",
-                "result": "RED",
+                "result": classification,
+                "reason_code": (
+                    "manager-owner-terminal" if manager_owner_terminal else None
+                ),
                 "error": str(error),
                 "evidence": evidence,
             },

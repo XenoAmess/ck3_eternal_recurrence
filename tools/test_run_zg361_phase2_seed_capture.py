@@ -17,6 +17,11 @@ import threading
 import zipfile
 
 import run_zg361_phase2_seed_capture as capture
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[1] / "ck3_autonomous_player" / "src"),
+)
+import zg361_phase2_promotion_source_production_entry as production
 
 
 def require(condition: bool, message: str) -> None:
@@ -5020,6 +5025,71 @@ def test_r129_rejects_r119_r128_source_before_launch() -> None:
         )
 
 
+def test_manager_recovery_classifies_terminal_owner_without_rebinding() -> None:
+    terminal = {
+        "snapshot_id": "native:104",
+        "revision": 104,
+        "native_revision": 103,
+        "date_raw": 53149440,
+        "paused": False,
+        "speed": 5,
+        "map_ready": True,
+        "actual_player_character_id": 33001,
+        "expected_player_character_id": 32904,
+        "actual_connection_generation": 1,
+        "expected_connection_generation": 1,
+        "bridge_pid": 200604,
+        "one_life_terminal": True,
+        "one_life_terminal_reason": "played_character_changed",
+        "active_event": None,
+    }
+    original = production.enter_promotion_source_checkpoint_v1
+
+    def fail_terminal(*_args, **kwargs):
+        kwargs["evidence_out"]["observations"] = [
+            {"revision": 103, "date_raw": 53149368}
+        ]
+        raise production.PromotionBindingError(terminal)
+
+    production.enter_promotion_source_checkpoint_v1 = fail_terminal
+    try:
+        with tempfile.TemporaryDirectory() as raw:
+            artifacts = Path(raw)
+            try:
+                capture.recover_active_manager_cycle(
+                    object(),
+                    clean_source=Path(__file__).resolve().parents[1],
+                    artifacts=artifacts,
+                    timeout_seconds=1.0,
+                    clock=lambda: 0.0,
+                    sleeper=lambda _seconds: None,
+                )
+            except capture.SeedCaptureError as error:
+                require(
+                    error.evidence["result"] == "SCENARIO_INVALID"
+                    and error.evidence["reason_code"]
+                    == "manager-owner-terminal",
+                    f"terminal owner classification drifted: {error.evidence}",
+                )
+                require(
+                    error.evidence["evidence"]["binding_failure"] == terminal,
+                    "terminal binding frame was not retained",
+                )
+            else:
+                raise AssertionError("terminal owner crossing did not fail closed")
+            artifact = json.loads(
+                (artifacts / "manager-cycle-recovery.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            require(
+                artifact["binding_failure"] == terminal,
+                "terminal binding frame was not persisted",
+            )
+    finally:
+        production.enter_promotion_source_checkpoint_v1 = original
+
+
 def main() -> int:
     test_game_dir_resolution_prefers_steam_and_preserves_explicit()
     test_game_dir_resolution_never_falls_back_to_repository()
@@ -5085,6 +5155,7 @@ def main() -> int:
     test_seed_source_path_must_be_absolute()
     test_static_preflight_runs_optimized_seed_smokes()
     test_runner_import_guard_prevents_clean_source_bytecode()
+    test_manager_recovery_classifies_terminal_owner_without_rebinding()
     test_r129_transition_checkpoint_then_clean_manager_continuation()
     test_r129_rejects_r119_r128_source_before_launch()
     test_static_contract()

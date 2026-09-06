@@ -94,6 +94,68 @@ def _player_manager_seed_contract(seed_sha: str = "A" * 64) -> dict[str, object]
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_binding_accepts_revision_growth_without_rebinding(self) -> None:
+        snapshot = {
+            "snapshot_id": "native:47",
+            "revision": 47,
+            "native_revision": 46,
+            "date_raw": 53147112,
+            "paused": True,
+            "map_ready": True,
+            "played_character": {"character_id": 32904},
+            "diagnostics": {"connection_generation": 1, "bridge_pid": 1234},
+            "active_event": None,
+        }
+
+        observed, event = production._binding(
+            snapshot, player=32904, connection_generation=1
+        )
+
+        self.assertEqual(observed["revision"], 47)
+        self.assertIsNone(event)
+
+    def test_binding_failure_preserves_terminal_frame(self) -> None:
+        snapshot = {
+            "snapshot_id": "native:104",
+            "revision": 104,
+            "native_revision": 103,
+            "date_raw": 53149440,
+            "paused": False,
+            "speed": 5,
+            "map_ready": True,
+            "played_character": {"character_id": 33001},
+            "diagnostics": {"connection_generation": 1, "bridge_pid": 200604},
+            "one_life_terminal": True,
+            "one_life_terminal_reason": "played_character_changed",
+            "active_event": None,
+        }
+
+        with self.assertRaises(production.PromotionBindingError) as caught:
+            production._binding(
+                snapshot, player=32904, connection_generation=1
+            )
+
+        self.assertEqual(
+            caught.exception.evidence,
+            {
+                "snapshot_id": "native:104",
+                "revision": 104,
+                "native_revision": 103,
+                "date_raw": 53149440,
+                "paused": False,
+                "speed": 5,
+                "map_ready": True,
+                "actual_player_character_id": 33001,
+                "expected_player_character_id": 32904,
+                "actual_connection_generation": 1,
+                "expected_connection_generation": 1,
+                "bridge_pid": 200604,
+                "one_life_terminal": True,
+                "one_life_terminal_reason": "played_character_changed",
+                "active_event": None,
+            },
+        )
+
     def test_promotion_source_requires_typed_player_manager_seed(self) -> None:
         contract = _player_manager_seed_contract()
         self.assertEqual(

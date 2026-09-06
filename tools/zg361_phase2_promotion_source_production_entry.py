@@ -2462,6 +2462,16 @@ class PromotionProductionEntryError(RuntimeError):
     pass
 
 
+class PromotionBindingError(PromotionProductionEntryError):
+    """A compact, durable description of a rejected native frame binding."""
+
+    def __init__(self, evidence: Mapping[str, object]) -> None:
+        self.evidence = copy.deepcopy(dict(evidence))
+        super().__init__(
+            "promotion path crossed its played-owner/connection binding"
+        )
+
+
 class PromotionScenarioInvalidatingInterrupt(PromotionProductionEntryError):
     """A recognized vanilla modal whose only route invalidates the scenario."""
 
@@ -2772,8 +2782,35 @@ def _binding(
             and generation != connection_generation
         )
     ):
-        raise PromotionProductionEntryError(
-            "promotion path crossed its played-owner/connection binding"
+        active_event = value.get("active_event")
+        active_event_row = (
+            {
+                "event_instance_id": active_event.get("event_instance_id"),
+                "event_definition_key": active_event.get("event_definition_key"),
+            }
+            if isinstance(active_event, Mapping)
+            else None
+        )
+        raise PromotionBindingError(
+            {
+                "snapshot_id": value.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": value.get("native_revision"),
+                "date_raw": date_raw,
+                "paused": value.get("paused"),
+                "speed": value.get("speed"),
+                "map_ready": value.get("map_ready"),
+                "actual_player_character_id": actual_player,
+                "expected_player_character_id": player,
+                "actual_connection_generation": generation,
+                "expected_connection_generation": connection_generation,
+                "bridge_pid": diagnostics.get("bridge_pid"),
+                "one_life_terminal": value.get("one_life_terminal"),
+                "one_life_terminal_reason": value.get(
+                    "one_life_terminal_reason"
+                ),
+                "active_event": active_event_row,
+            }
         )
     event_binding = None
     if isinstance(value.get("active_event"), Mapping):
