@@ -16,6 +16,47 @@ _BIRTH_BOOLEAN_SCOPES = (
 MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "birth.3032": {
+        # CK3 1.19.0.6 father-side sickly-child notice. The mother-side event
+        # has already assigned sickly before this window; immediate only
+        # repeats that fact as a tooltip and the sole option is inert. R191
+        # observed it inheriting the same complete non-twin birth frame.
+        "date_raw": 53176080,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "father": 29037,
+            "real_father": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "child": (29037,),
+            "mother": (29037,),
+        },
+        "character_scope_differs_from": {
+            "child": ("father", "real_father", "mother"),
+            "mother": ("father", "real_father", "child"),
+        },
+        "scope_types": {
+            "child": "character",
+            "father": "character",
+            "real_father": "character",
+            "mother": "character",
+        },
+        "boolean_scopes": _BIRTH_BOOLEAN_SCOPES,
+        "saved_scope_name_sets": ((
+            "child",
+            "father",
+            "real_father",
+            "mother",
+            *_BIRTH_BOOLEAN_SCOPES,
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "birth.1003": {
         # CK3 1.19.0.6 father-side regular birth notice. Birth and the child's
         # default name already exist before this window. Its sole non-twin
