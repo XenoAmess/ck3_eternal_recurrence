@@ -44,7 +44,7 @@ zga_phase2_manager_seed_direct_manager_diagnostic_gui = {
 	scope = character
 	is_shown = {
 		is_ai = no
-		NOT = { has_character_flag = zga_phase2_manager_seed_direct_gates_logged }
+		NOT = { has_character_flag = zga_phase2_manager_seed_bootstrap_started }
 		NOT = {
 			AND = {
 				is_ai = no

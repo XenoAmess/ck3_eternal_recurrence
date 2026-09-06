@@ -12,8 +12,11 @@ zga_phase2_manager_seed_maybe_begin_effect = {
 			zg361_review_now_business_valid_trigger = yes
 			prestige >= 150
 			NOT = { has_character_flag = zga_phase2_manager_seed_bootstrap_started }
-			NOT = { has_character_flag = zga_phase2_manager_seed_handoff_pending }
 		}
+		# A failed zero-day handoff carrier may leave this acceptance-only flag
+		# behind while the real B1 continues. The direct retry has revalidated the
+		# complete business gate, so consume that stale fixture state here.
+		remove_character_flag = zga_phase2_manager_seed_handoff_pending
 		add_character_flag = zga_phase2_manager_seed_bootstrap_started
 		debug_log = "ZGAP2MANAGERSEED: load-safe manager eligibility observed"
 		trigger_event = zga_phase2_manager_seed.100
@@ -151,8 +154,11 @@ zga_phase2_manager_seed_log_direct_gates_effect = {
 			debug_log = "ZGAP2MANAGERSEED: direct gate direct_reviewable_vassal=PASS"
 		}
 		else = { debug_log = "ZGAP2MANAGERSEED: direct gate direct_reviewable_vassal=RED" }
-		zga_phase2_manager_seed_maybe_begin_effect = yes
 	}
+	# The diagnostic flag suppresses repeated log spam, not eligibility retries.
+	# R132 proved that a switched manager can legitimately remain inside the
+	# source B1 for hundreds of days before the clean review boundary exists.
+	zga_phase2_manager_seed_maybe_begin_effect = yes
 }
 
 # Generic post-switch failure diagnostics. The hidden .11 carrier calls this

@@ -1326,6 +1326,138 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 ),
             )
 
+    def test_manager_recovery_rebinds_identity_without_weakening_shape(self) -> None:
+        source = {
+            "root_character_id": 29037,
+            "character_scopes": {"owner": 29037, "subject": 56656},
+            "optional_character_scopes": {"optional_subject": 16780004},
+            "scope_types": {},
+            "optional_scope_types": {},
+            "unique_character_scope_excludes": {"subject": (29037, 32904)},
+            "option_count": 3,
+            "selected_option_number": 2,
+            "selected_native_option_index": 1,
+        }
+        rebound = production._manager_recovery_contract(
+            source, player=32904,
+        )
+        self.assertEqual(rebound["root_character_id"], 32904)
+        self.assertEqual(rebound["character_scopes"], {"owner": 32904})
+        self.assertEqual(rebound["scope_types"], {"subject": "character"})
+        self.assertEqual(
+            rebound["optional_scope_types"],
+            {"optional_subject": "character"},
+        )
+        self.assertEqual(
+            rebound["unique_character_scope_excludes"]["subject"],
+            (32904, 32904),
+        )
+        self.assertEqual(rebound["option_count"], 3)
+        self.assertEqual(rebound["selected_option_number"], 2)
+
+        batch = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361pp.9100"],
+            player=32904,
+            event_key="zg361pp.9100",
+        )
+        self.assertEqual(batch["selected_option_number"], 1)
+        self.assertEqual(batch["selected_native_option_index"], 0)
+
+        completion = production._manager_recovery_pp_contract(
+            "zg361pp.9001", player=32904, starting_date=53147016,
+        )
+        self.assertIsNotNone(completion)
+        assert completion is not None
+        self.assertEqual(completion["root_character_id"], 32904)
+        self.assertEqual(completion["option_count"], 1)
+        self.assertEqual(
+            completion["scope_types"],
+            {"zg361_pp_completion_subject": "character"},
+        )
+        self.assertIsNone(
+            production._manager_recovery_pp_contract(
+                "zg361pp.9100", player=32904, starting_date=53147016,
+            )
+        )
+
+    def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.date_raw = production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+                self.paused = True
+                self.clean = False
+                self.steps: list[str] = []
+
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "revision": 7,
+                    "date_raw": self.date_raw,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {"connection_generation": 9},
+                    "paused": self.paused,
+                    "speed": 5,
+                }
+
+            def query_zhongguo_promotion_source_progress_v1(
+                self, request_nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                widgets = [
+                    {"effective_visible": {"status": "available", "value": False}}
+                    for _ in range(5)
+                ]
+                if self.clean:
+                    widgets[1]["effective_visible"]["value"] = True
+                else:
+                    widgets[2]["effective_visible"]["value"] = True
+                return {
+                    "status": "available",
+                    "query_sequence": 1,
+                    "zhongguo_promotion_source_progress": {"widgets": widgets},
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.steps.append(step)
+                if step == "resume-map":
+                    self.paused = False
+                elif step == "pause-map":
+                    self.paused = True
+                return {"accepted": True, "status": "submitted"}
+
+        service = Service()
+        elapsed = [0.0]
+
+        def sleeper(seconds: float) -> None:
+            elapsed[0] += seconds
+            if not service.paused:
+                service.date_raw += 24
+                service.clean = True
+
+        result = production.enter_promotion_source_checkpoint_v1(
+            service,
+            timeout_seconds=5.0,
+            poll_interval_seconds=0.05,
+            stop_at_clean_review_boundary=True,
+            clock=lambda: elapsed[0],
+            sleeper=sleeper,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["readiness"], "paused-clean-review-boundary")
+        self.assertEqual(
+            result["clean_review_boundary"],
+            {
+                "revision": 7,
+                "date_raw": production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 24,
+                "review_now_eligible": True,
+                "b1_active": False,
+                "central_active": False,
+                "pp_active": False,
+            },
+        )
+        self.assertEqual(service.steps, ["resume-map", "pause-map"])
+
     def test_product_entry_uses_speed_five_and_pauses_before_progress_query(self) -> None:
         class Service:
             def __init__(self) -> None:

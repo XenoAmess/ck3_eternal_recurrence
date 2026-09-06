@@ -2116,6 +2116,55 @@ def load_runtime(config: CaptureConfig) -> RuntimeBindings:
     )
 
 
+def recover_active_manager_cycle(
+    service: Any,
+    *,
+    clean_source: Path,
+    artifacts: Path,
+    timeout_seconds: float,
+    clock: Callable[[], float],
+    sleeper: Callable[[float], None],
+    runtime_diagnostic_probe: Callable[[], str | None] | None = None,
+    clean_boundary_event_definition_key: str | None = None,
+) -> dict[str, Any]:
+    """Drain the real active product cycle to its first clean review frame."""
+
+    module = importlib.import_module(
+        "zg361_phase2_promotion_source_production_entry"
+    )
+    _require_module_origin(module, clean_source)
+    evidence: dict[str, Any] = {}
+    try:
+        result = module.enter_promotion_source_checkpoint_v1(
+            service,
+            timeout_seconds=timeout_seconds,
+            poll_interval_seconds=0.05,
+            stop_at_clean_review_boundary=True,
+            clean_boundary_event_definition_key=(
+                clean_boundary_event_definition_key
+            ),
+            clock=clock,
+            sleeper=sleeper,
+            evidence_out=evidence,
+            runtime_diagnostic_probe=runtime_diagnostic_probe,
+        )
+    except module.PromotionProductionEntryError as error:
+        write_json(artifacts / "manager-cycle-recovery.json", evidence)
+        raise SeedCaptureError(
+            "active manager cycle did not reach a clean review boundary",
+            {
+                "stage": "manager_cycle_recovery",
+                "result": "RED",
+                "error": str(error),
+                "evidence": evidence,
+            },
+        ) from error
+    if not isinstance(result, dict):
+        raise SeedCaptureError("manager cycle recovery returned no evidence")
+    write_json(artifacts / "manager-cycle-recovery.json", result)
+    return result
+
+
 def _positive_revision(snapshot: dict[str, Any]) -> int:
     revision = snapshot.get("revision")
     if not isinstance(revision, int) or isinstance(revision, bool) or revision <= 0:
@@ -5255,6 +5304,8 @@ def run_capture(
         "candidate": None,
         "manager_transition_checkpoint": None,
         "manager_transition_checkpoint_prelaunch": None,
+        "manager_cycle_recovery": None,
+        "manager_cycle_runtime_diagnostic_baseline": None,
         "keyboard_watchdog": None,
         "cleanup": None,
         "driver_closed": None,
@@ -5744,6 +5795,32 @@ def run_capture(
         report["loader_error_log_scan"] = loader_error_scan
         if loader_error_scan.get("result") != "GREEN":
             raise SeedCaptureError("loader error.log scan returned non-GREEN")
+        runtime_diagnostic_probe: Callable[[], str | None] | None = None
+        project_diagnostic_offsets = getattr(
+            zgrun, "project_diagnostic_offsets", None
+        )
+        runtime_project_diagnostics = getattr(
+            zgrun, "runtime_project_diagnostics", None
+        )
+        if callable(project_diagnostic_offsets) and callable(
+            runtime_project_diagnostics
+        ):
+            runtime_diagnostic_baseline = project_diagnostic_offsets(
+                config.profile_dir
+            )
+            report["manager_cycle_runtime_diagnostic_baseline"] = dict(
+                runtime_diagnostic_baseline
+            )
+
+            def probe_manager_cycle_runtime_diagnostics() -> str | None:
+                blocking, _warnings = runtime_project_diagnostics(
+                    config.profile_dir, runtime_diagnostic_baseline
+                )
+                return blocking[0] if blocking else None
+
+            runtime_diagnostic_probe = (
+                probe_manager_cycle_runtime_diagnostics
+            )
 
         manager_route: dict[str, Any] | None = None
         direct_source_snapshot: dict[str, Any] | None = None
@@ -5821,6 +5898,50 @@ def run_capture(
                     sleeper=active_runtime.sleep,
                 )
             )
+        if checkpoint_continuation_route:
+            report["manager_cycle_recovery"] = recover_active_manager_cycle(
+                service,
+                clean_source=config.clean_source,
+                artifacts=artifacts,
+                timeout_seconds=config.event_timeout_seconds,
+                clock=active_runtime.clock,
+                sleeper=active_runtime.sleep,
+                runtime_diagnostic_probe=runtime_diagnostic_probe,
+                clean_boundary_event_definition_key=(
+                    config.seed_event_definition_key
+                ),
+            )
+            clean_boundary = report["manager_cycle_recovery"].get(
+                "clean_review_boundary"
+            )
+            clean_boundary_date_raw = (
+                clean_boundary.get("date_raw")
+                if isinstance(clean_boundary, dict)
+                else None
+            )
+            if (
+                isinstance(clean_boundary_date_raw, bool)
+                or not isinstance(clean_boundary_date_raw, int)
+                or clean_boundary_date_raw <= 0
+                or not isinstance(clean_boundary, dict)
+                or clean_boundary.get("review_now_eligible") is not True
+                or any(
+                    clean_boundary.get(name) is not False
+                    for name in ("b1_active", "central_active", "pp_active")
+                )
+            ):
+                raise SeedCaptureError(
+                    "manager cycle recovery returned no clean business boundary"
+                )
+            manager_route["recovered_boundary_date_raw"] = (
+                clean_boundary_date_raw
+            )
+            manager_route["maximum_date_raw"] = clean_boundary_date_raw
+            report["manager_transition_contract"] = manager_route
+            write_json(
+                artifacts / "manager-entry-route-contract.json", manager_route
+            )
+
         entry_snapshot = wait_for_bootstrap_event(
             service,
             artifacts,
@@ -5833,15 +5954,19 @@ def run_capture(
             required_date_raw=None,
             source_save_sha256=observed_save_sha,
             maximum_date_raw=(
-                manager_route.get(
+                manager_route["recovered_boundary_date_raw"]
+                if checkpoint_continuation_route
+                else manager_route.get(
                     "maximum_date_raw", manager_route["completion_date_raw"]
                 )
                 if manager_route is not None
                 else None
             ),
             expected_event_date_raw=(
-                manager_route["completion_date_raw"]
-                if manager_route is not None and not checkpoint_continuation_route
+                manager_route["recovered_boundary_date_raw"]
+                if checkpoint_continuation_route
+                else manager_route["completion_date_raw"]
+                if manager_route is not None
                 else None
             ),
             allow_known_prebootstrap_drains=not manager_no_pip_route,
@@ -5879,7 +6004,9 @@ def run_capture(
                 else 0.0
             ),
             post_activation_checkpoint_capture=transition_checkpoint_callback,
-            initial_paused_event_settle_seconds=0.0,
+            initial_paused_event_settle_seconds=(
+                1.0 if checkpoint_continuation_route else 0.0
+            ),
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,
@@ -6004,7 +6131,10 @@ def run_capture(
                 else manager_route["source_character_id"]
             )
             source_date_raw = manager_route["source_date_raw"]
-            completion_date_raw = manager_route["completion_date_raw"]
+            completion_date_raw = manager_route.get(
+                "recovered_boundary_date_raw",
+                manager_route["completion_date_raw"],
+            )
             observed_date_raw = event_snapshot.get("date_raw")
             binding_stage = (
                 "active_manager_transition_checkpoint_final_binding"

@@ -128,7 +128,7 @@ def main() -> int:
     )
     assert (
         "NOT = { has_character_flag = "
-        "zga_phase2_manager_seed_direct_gates_logged }" in direct_gui
+        "zga_phase2_manager_seed_bootstrap_started }" in direct_gui
     )
     assert "zga_phase2_manager_seed_log_direct_gates_effect = yes" in direct_gui
     direct_gui_basic_gate = direct_gui[
@@ -343,11 +343,18 @@ def main() -> int:
     )
     assert "trigger_event = zga_phase2_manager_seed.100" in carrier
     assert "set_player_character =" not in carrier
-    for manager_entry_gate in (effects, on_actions):
-        assert (
-            "NOT = { has_character_flag = "
-            "zga_phase2_manager_seed_handoff_pending }" in manager_entry_gate
-        )
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_handoff_pending }" in on_actions
+    )
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_handoff_pending }" not in direct_branch
+    )
+    assert (
+        "remove_character_flag = zga_phase2_manager_seed_handoff_pending"
+        in direct_branch
+    )
     for retry_gate in (effects, scripted_gui):
         assert (
             "NOT = { has_character_flag = "

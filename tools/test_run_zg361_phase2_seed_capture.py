@@ -4907,17 +4907,44 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
         continuation_service.date_raw = 53147040
         continuation_service.speed = 5
         continuation_service.event_state = "continuation_pending"
+        original_recovery = capture.recover_active_manager_cycle
+
+        def fake_recovery(
+            service: FakeService, **_kwargs: object
+        ) -> dict[str, object]:
+            continuation_calls.append("manager-cycle-recovery")
+            service.date_raw += 240
+            service.event_state = "final"
+            service.paused = True
+            return {
+                "schema_version": 1,
+                "kind": "zg361_phase2_promotion_source_production_entry",
+                "result": "GREEN",
+                "readiness": "paused-clean-review-boundary",
+                "clean_review_boundary": {
+                    "date_raw": service.date_raw,
+                    "review_now_eligible": True,
+                    "b1_active": False,
+                    "central_active": False,
+                    "pp_active": False,
+                },
+            }
+
+        capture.recover_active_manager_cycle = fake_recovery
         continuation_attempt = fixture.root / "continuation" / "attempt"
         continuation_artifacts = fixture.root / "continuation" / "artifacts"
-        final = capture.run_capture(
-            replace(
-                fixture.config(seed_purpose=purpose),
-                attempt_dir=continuation_attempt,
-                artifacts_dir=continuation_artifacts,
-                manager_transition_checkpoint_receipt=receipt_path,
-            ),
-            runtime=continuation_runtime,
-        )
+        try:
+            final = capture.run_capture(
+                replace(
+                    fixture.config(seed_purpose=purpose),
+                    attempt_dir=continuation_attempt,
+                    artifacts_dir=continuation_artifacts,
+                    manager_transition_checkpoint_receipt=receipt_path,
+                ),
+                runtime=continuation_runtime,
+            )
+        finally:
+            capture.recover_active_manager_cycle = original_recovery
         require(final["result"] == "GREEN", f"clean continuation RED: {final}")
         require(
             final["manager_entry_mode"]
@@ -4929,14 +4956,16 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
             "clean continuation bypassed a final manager gate",
         )
         require(
-            final["manager_entry_event"]["date_raw"] == 53147064
+            final["manager_entry_event"]["date_raw"] == 53147280
+            and final["manager_cycle_recovery"]["readiness"]
+            == "paused-clean-review-boundary"
             and final["manager_transition_contract"]["maximum_date_raw"]
-            == 53147064,
-            "clean continuation escaped its one-day five-speed window",
+            == 53147280,
+            "clean continuation did not bind the recovered business boundary",
         )
         require(
             not any(call.startswith("select-event-option:3") for call in continuation_calls)
-            and "execute:resume-map" in continuation_calls
+            and "manager-cycle-recovery" in continuation_calls
             and "seed-capture-mcp" in continuation_calls
             and "candidate-materialize" in continuation_calls,
             f"continuation replayed PIP or skipped final capture: {continuation_calls}",

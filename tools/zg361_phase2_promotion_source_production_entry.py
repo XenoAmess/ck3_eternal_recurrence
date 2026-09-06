@@ -2901,6 +2901,116 @@ def _timeline_contract_for_window(
     return bound
 
 
+def _manager_recovery_contract(
+    contract: Mapping[str, object], *, player: int,
+    event_key: str | None = None,
+) -> dict[str, object]:
+    """Rebind a reviewed interrupt shape to the switched human manager.
+
+    The normal production-entry contracts freeze the original seed's exact
+    character IDs because those drains are product evidence. Manager-cycle
+    recovery has a narrower purpose: preserve the switched player and drain
+    the already-running product cycle without claiming those incidental cards
+    as acceptance evidence. It therefore retains the event/date/option/scope
+    shape while replacing old-world non-root character IDs with required
+    character types.
+    """
+
+    rebound = copy.deepcopy(dict(contract))
+    original_root = rebound.get("root_character_id")
+    rebound["root_character_id"] = player
+    scope_types_value = rebound.get("scope_types")
+    scope_types = (
+        dict(scope_types_value)
+        if isinstance(scope_types_value, Mapping)
+        else {}
+    )
+    character_scopes_value = rebound.get("character_scopes")
+    character_scopes = (
+        dict(character_scopes_value)
+        if isinstance(character_scopes_value, Mapping)
+        else {}
+    )
+    rebound_character_scopes: dict[str, object] = {}
+    for name, expected in character_scopes.items():
+        if expected == original_root:
+            rebound_character_scopes[str(name)] = player
+        else:
+            scope_types.setdefault(str(name), "character")
+    rebound["character_scopes"] = rebound_character_scopes
+    rebound["scope_types"] = scope_types
+
+    optional_scope_types_value = rebound.get("optional_scope_types")
+    optional_scope_types = (
+        dict(optional_scope_types_value)
+        if isinstance(optional_scope_types_value, Mapping)
+        else {}
+    )
+    optional_characters = rebound.get("optional_character_scopes")
+    if isinstance(optional_characters, Mapping):
+        for name in optional_characters:
+            optional_scope_types.setdefault(str(name), "character")
+        rebound["optional_character_scopes"] = {}
+    rebound["optional_scope_types"] = optional_scope_types
+    excludes_value = rebound.get("unique_character_scope_excludes")
+    if isinstance(excludes_value, Mapping):
+        rebound["unique_character_scope_excludes"] = {
+            str(name): tuple(
+                player if value == original_root else value
+                for value in values
+            )
+            for name, values in excludes_value.items()
+            if isinstance(values, tuple)
+        }
+    if event_key == "zg361pp.9100":
+        # Recovery needs the shortest real product closure, not the itemized
+        # route deliberately used by promotion-source capture.
+        rebound["selected_option_number"] = 1
+        rebound["selected_native_option_index"] = 0
+    rebound["manager_recovery_only"] = True
+    return rebound
+
+
+def _manager_recovery_pp_contract(
+    event_key: str, *, player: int, starting_date: int,
+) -> dict[str, object] | None:
+    """Return the minimal authored option shape for a PP card being drained."""
+
+    try:
+        event_number = int(event_key.removeprefix("zg361pp."))
+    except ValueError:
+        return None
+    if 146 <= event_number <= 191:
+        option_count = 3
+    elif 9001 <= event_number <= 9004:
+        option_count = 1
+    else:
+        return None
+    scope_types = (
+        {"zg361_pp_completion_subject": "character"}
+        if 9001 <= event_number <= 9004
+        else {}
+    )
+    return {
+        "date_raw": starting_date,
+        "date_policy": "manager-recovery-product-window",
+        "date_raw_range": (
+            starting_date,
+            starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
+        ),
+        "root_character_id": player,
+        "character_scopes": {},
+        "scope_types": scope_types,
+        "boolean_scopes": (),
+        "option_count": option_count,
+        "native_option_indices": tuple(range(option_count)),
+        "max_occurrences": 1,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "manager_recovery_only": True,
+    }
+
+
 def _contract_date_matches(
     value: object, contract: Mapping[str, object]
 ) -> bool:
@@ -3503,6 +3613,8 @@ def enter_promotion_source_checkpoint_v1(
     *,
     timeout_seconds: float = 300.0,
     poll_interval_seconds: float = 0.05,
+    stop_at_clean_review_boundary: bool = False,
+    clean_boundary_event_definition_key: str | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     evidence_out: dict[str, object] | None = None,
@@ -3559,6 +3671,7 @@ def enter_promotion_source_checkpoint_v1(
         "initial_known_interrupt": None,
         "zg361_6_retain_wait": None,
         "seed_invalid": None,
+        "clean_review_boundary": None,
     })
     if runtime_diagnostic_probe is not None:
         diagnostic = runtime_diagnostic_probe()
@@ -3572,14 +3685,29 @@ def enter_promotion_source_checkpoint_v1(
             f"{MAX_ADVANCE_DAYS}-day product observation bound before this "
             "retained-client reconnect"
         )
+    initial_clean_boundary_event = False
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
-        if key == M147:
+        if key == M147 and not stop_at_clean_review_boundary:
             evidence["result"] = "GREEN"
             evidence["readiness"] = "paused-real-zg361pp.147"
             evidence["target_binding"] = initial_event
             return evidence
-        if key not in KNOWN_TIMELINE_INTERRUPTS:
+        if (
+            stop_at_clean_review_boundary
+            and key == clean_boundary_event_definition_key
+        ):
+            initial_clean_boundary_event = True
+        elif (
+            key not in KNOWN_TIMELINE_INTERRUPTS
+            and not (
+                stop_at_clean_review_boundary
+                and _manager_recovery_pp_contract(
+                    key, player=player, starting_date=timeline_origin_date,
+                )
+                is not None
+            )
+        ):
             raise PromotionProductionEntryError(
                 f"promotion entry started on unexpected event {key!r}"
             )
@@ -3642,14 +3770,34 @@ def enter_promotion_source_checkpoint_v1(
             f"reason={unavailable_reason!r}; "
             f"unavailable_widgets={unavailable_widgets!r}"
         )
+    initial_progress_observation = _compact_progress_observation(
+        before,
+        date_raw=int(initial["date_raw"]),
+        revision=int(initial["revision"]),
+    )
+    evidence["initial_progress_observation"] = copy.deepcopy(
+        initial_progress_observation
+    )
     if (
-        initial_event is None
-        and not any(widget_visible(progress, index) for index in (2, 3, 4))
+        (initial_event is None or initial_clean_boundary_event)
+        and not any(
+            initial_progress_observation[name]
+            for name in ("b1_active", "central_active", "pp_active")
+        )
     ):
-        if not widget_visible(progress, 1):
+        if initial_progress_observation["review_now_eligible"] is not True:
             raise PromotionProductionEntryError(
                 "real review-now product action is not eligible on this seed"
             )
+        if stop_at_clean_review_boundary:
+            evidence["result"] = "GREEN"
+            evidence["readiness"] = "paused-clean-review-boundary"
+            evidence["clean_review_boundary"] = copy.deepcopy(
+                initial_progress_observation
+            )
+            if initial_clean_boundary_event:
+                evidence["target_binding"] = copy.deepcopy(initial_event)
+            return evidence
         _activate_review_now_from_progress(
             service,
             source_progress=before,
@@ -3817,6 +3965,21 @@ def enter_promotion_source_checkpoint_v1(
             )
             progress_observations.append(progress_observation)
             last_progress_date_raw = date_raw
+            if (
+                stop_at_clean_review_boundary
+                and event is None
+                and progress_observation["review_now_eligible"] is True
+                and not any(
+                    progress_observation[name]
+                    for name in ("b1_active", "central_active", "pp_active")
+                )
+            ):
+                evidence["result"] = "GREEN"
+                evidence["readiness"] = "paused-clean-review-boundary"
+                evidence["clean_review_boundary"] = copy.deepcopy(
+                    progress_observation
+                )
+                return evidence
             if post_interrupt_progress_due and event is None:
                 post_interrupt_progress_due = False
                 active_witness = any(
@@ -3855,7 +4018,37 @@ def enter_promotion_source_checkpoint_v1(
             continue
         if event is not None:
             key, event_query = _event_definition(service, event, sleeper=sleeper)
-            if key == M147:
+            if (
+                stop_at_clean_review_boundary
+                and key == clean_boundary_event_definition_key
+            ):
+                progress_observations = evidence["progress_observations"]
+                assert isinstance(progress_observations, list)
+                latest_progress = (
+                    progress_observations[-1]
+                    if progress_observations
+                    else evidence.get("initial_progress_observation")
+                )
+                if not (
+                    isinstance(latest_progress, Mapping)
+                    and latest_progress.get("date_raw") == date_raw
+                    and latest_progress.get("review_now_eligible") is True
+                    and not any(
+                        latest_progress.get(name) is True
+                        for name in ("b1_active", "central_active", "pp_active")
+                    )
+                ):
+                    raise PromotionProductionEntryError(
+                        "manager seed modal appeared outside a clean review boundary"
+                    )
+                evidence["result"] = "GREEN"
+                evidence["readiness"] = "paused-clean-review-boundary"
+                evidence["clean_review_boundary"] = copy.deepcopy(
+                    dict(latest_progress)
+                )
+                evidence["target_binding"] = copy.deepcopy(event)
+                return evidence
+            if key == M147 and not stop_at_clean_review_boundary:
                 m146_date = evidence.get("m146_date_raw")
                 if not isinstance(m146_date, int) or date_raw < m146_date + HOURS_PER_DAY:
                     raise PromotionProductionEntryError(
@@ -3866,6 +4059,15 @@ def enter_promotion_source_checkpoint_v1(
                 evidence["target_binding"] = event
                 return evidence
             contract = KNOWN_TIMELINE_INTERRUPTS.get(key)
+            if stop_at_clean_review_boundary:
+                if contract is not None:
+                    contract = _manager_recovery_contract(
+                        contract, player=player, event_key=key,
+                    )
+                else:
+                    contract = _manager_recovery_pp_contract(
+                        key, player=player, starting_date=timeline_origin_date,
+                    )
             drains = evidence["timeline_interrupt_drains"]
             assert isinstance(drains, list)
             if contract is not None:
