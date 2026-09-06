@@ -7512,9 +7512,6 @@ window = {
 								hbox = { layoutpolicy_horizontal = expanding spacing = 12
 									text_single = { text = "zg361_ledger_configured" default_format = "#weak" align = nobaseline }
 									text_single = { raw_text = "[GetPlayer.MakeScope.Var('zg361_mechanism_configured_n').GetValue|0] / 361" default_format = "#high" align = nobaseline }
-									expand = {}
-									text_single = { text = "zg361_ledger_checksum" default_format = "#weak" align = nobaseline }
-									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_mechanism_checksum').GetValue|0]" default_format = "#high" align = nobaseline }
 								}
 								divider_light = { layoutpolicy_horizontal = expanding }
 								text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_ledger_explainer" default_format = "#weak" using = Font_Size_Medium }

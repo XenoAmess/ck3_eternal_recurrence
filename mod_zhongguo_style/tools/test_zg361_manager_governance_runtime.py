@@ -213,11 +213,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        # R66 changes only distribution's five manager-side references.
-        self.assertEqual(len(historical_bytes), 386_790)
+        # The generated payload includes the independent-Jingcha refusal branch.
+        self.assertEqual(len(historical_bytes), 387_417)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "8a85269c6765c7dec588e36035db09bb1fa8d971ad17f9c815c556313bea5355",
+            "95383f7fea0ccbab524d654c385ac89f66e3ddb17bb02ef7791679102692d1e7",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -874,6 +874,26 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         kpi_evidence = top_level_block(self.values, "zg361_kpi_jingcha_evidence_value")
         self.assertIn("var:zg361_skipped_jingcha_superior = liege", kpi_evidence)
         self.assertIn("subtract = zg361_skipped_jingcha_kpi_malus_value", kpi_evidence)
+
+    def test_independent_jingcha_refusal_pays_prestige_and_clears_mandate(self) -> None:
+        adapter = top_level_block(
+            self.effects, "zg361_mg_refuse_jingcha_exact_effect"
+        )
+        independent = adapter.split("else_if = {", 1)[1].split(
+            "else = { zg361_mg_set_red_effect", 1
+        )[0]
+        self.assertIn("has_variable = zg361_jingcha_pending", independent)
+        self.assertIn("has_variable = zg361_jingcha_mandate_year", independent)
+        self.assertIn(
+            "NOT = { has_variable = zg361_jingcha_mandate_superior }", independent
+        )
+        self.assertIn(
+            "subtract = zg361_independent_refusal_prestige_cost_value", independent
+        )
+        self.assertIn("zg361_clear_jingcha_mandate_effect = yes", independent)
+        self.assertIn("no self-review", independent)
+        self.assertNotIn("zg361_mg_refusal_owner", independent)
+        self.assertNotIn("zg361_skipped_jingcha_superior", independent)
 
     def test_player_manager_window_shows_the_score_and_reasons(self) -> None:
         event = top_level_block(self.events, "zg361mg.120")

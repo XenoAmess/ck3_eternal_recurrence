@@ -299,6 +299,10 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 1,
                 action_probe_target,
             )
+        # The mechanism checksum is an internal aggregate with no player-facing
+        # decision meaning; the product ledger must not expose it as a raw row.
+        self.assertNotIn("zg361_ledger_checksum", gui)
+        self.assertNotIn("Var('zg361_mechanism_checksum')", gui)
         self.assertEqual(gui.count('name = "zg361_scoreboard_detail_panel"'), 1)
         for page in DETAIL_PAGES:
             self.assertEqual(

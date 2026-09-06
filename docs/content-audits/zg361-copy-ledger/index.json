@@ -166,18 +166,18 @@
       "sha256": "7492cab0dcf7d4579dc391bd6bf39147aa586d7cc2084028396c24d05d931588"
     },
     {
-      "bytes": 65938,
+      "bytes": 66715,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-001.json",
       "records": 180,
-      "sha256": "3d40005350ef87b36a2969aeff0289d99dd9a245d7a280271e304150790d2be4"
+      "sha256": "c013204c1a92c9c4aaec9b96f396671ed83d927ca5a743b388c85cfda0fa1c3e"
     },
     {
-      "bytes": 59645,
+      "bytes": 59725,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-002.json",
       "records": 180,
-      "sha256": "4c1f00d796f9c9b0eac1b4d8ba24a2d298efcd2a4111767c59c1139713834de0"
+      "sha256": "dd1d7fc8d69e9380973c9c751dcc3fe9de844c9fa68264612bc4e0d8c1527457"
     },
     {
       "bytes": 63247,
@@ -1667,10 +1667,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 22089,
+        "bytes": 22946,
         "lines": 237,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
-        "sha256": "294211d29cc84a77654f1678534c814b55bfd9ce65e1ed66a45b21abca195c51"
+        "sha256": "4690569e9fd00d5515130c3e4448b4df86388a4cad6757f3b5c8d384e844fba8"
       },
       {
         "authority": {
@@ -1843,9 +1843,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "3b6c4e855f65781e4fc3d9421acb031a54fd4738",
+    "git_commit": "0b238145a0492342cfdb96def261b011322d6580",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "5d842b17b59bd674b5ea3d9dcec1c2b6ecfd001528447ee6dbbd64f90e5ec1ae"
+    "input_digest_sha256": "209d6f79f4921f66656e0a1c094f729cc26eee222d570b77a44b5cad152cd250"
   },
   "summary": {
     "all_event_definitions": 1009,

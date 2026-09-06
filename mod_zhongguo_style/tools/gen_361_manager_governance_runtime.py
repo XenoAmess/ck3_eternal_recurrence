@@ -1486,9 +1486,12 @@ zg361_mg_clear_red_effect = {{
 {render_collective_cost_effects()}
 
 # The existing Jingcha is free/default-mandatory.  Its explicit player-refusal
-# option calls this product effect directly.  Freeze the mandate business token
-# before lifecycle cleanup, then apply exactly one -25 opinion instance and one
-# eligible-reviewer -50 next-review reason.
+# option calls this product effect directly.  A subject with a saved superior
+# freezes the mandate business token before lifecycle cleanup, then receives
+# exactly one -25 opinion instance and one eligible-reviewer -50 next-review
+# reason.  An independent top liege has no manager-governance owner: it pays
+# the established 200-Prestige refusal cost and clears the mandate without
+# fabricating a self-review receipt.
 zg361_mg_refuse_jingcha_exact_effect = {{
 	if = {{
 		limit = {{
@@ -1532,6 +1535,19 @@ zg361_mg_refuse_jingcha_exact_effect = {{
 		set_variable = {{ name = zg361_mg_refusal_status value = 1 }}
 		zg361_clear_jingcha_mandate_effect = yes
 		debug_log = "ZG361MG: exact Jingcha refusal recorded (-25 opinion, -50 next review)"
+	}}
+	else_if = {{
+		limit = {{
+			has_variable = zg361_jingcha_pending
+			has_variable = zg361_jingcha_mandate_year
+			NOT = {{ has_variable = zg361_jingcha_mandate_superior }}
+		}}
+		add_prestige = {{
+			value = 0
+			subtract = zg361_independent_refusal_prestige_cost_value
+		}}
+		zg361_clear_jingcha_mandate_effect = yes
+		debug_log = "ZG361MG: independent top liege refused Jingcha (-200 prestige, no self-review)"
 	}}
 	else = {{ zg361_mg_set_red_effect = {{ CODE = 4 MECHANISM = 32 }} }}
 }}
