@@ -1,0 +1,159 @@
+{
+  "schema": "xar.ck3.open_kaishek_current_companion_compatibility_audit.v1",
+  "status": "GREEN_STATIC",
+  "audited_at": "2026-09-06T20:38:10+08:00",
+  "root": {
+    "canonical_commit": "6b104f21d0cb800260f86f26b131354c2276f468",
+    "comparison_base": "a05b94e545fc6074fa2ffae2ffa76e34d9990d62",
+    "ck3_started": false
+  },
+  "open_kaishek": {
+    "initial_commit": "4c1f6867ff168f476a30a7b13220a8c2e0aa3294",
+    "upstream_before_sync": "89abe057ddcf047f14167e2b0357082680128f42",
+    "current_commit": "38cb39926b7a6acf2590c713ef07eb53f68c3646",
+    "origin_main": "38cb39926b7a6acf2590c713ef07eb53f68c3646",
+    "clean": true,
+    "branch": "main",
+    "only_local_branch": true,
+    "only_remote_branch": true,
+    "jar_bytes": 362749,
+    "jar_sha256": "e77f54c2b427dd41109b5bc245eb10eb9232f219a0ed73f513a5322e89db407b"
+  },
+  "branch_reconciliation": {
+    "merged_unique_branches": [],
+    "deleted_patch_equivalent_local": [
+      "feat/cli-batch-replay@1e4c432",
+      "feat/zg361-appeal-replay@308d2ba"
+    ],
+    "deleted_ancestor_local": [
+      "sync/b2-lazy-trigger-ee4fab9@37cab82",
+      "sync/b3-explicit-and-audit-20260904@b10b762",
+      "sync/b7-promotion-20260904@270f8f5",
+      "sync/g2-cleanup-dispatch-20260904@3c4e698",
+      "sync/g2-cleanup-receipt-20260904@1ca6a45",
+      "sync/g2-expiry-20260904@1394dca",
+      "sync/g2-production-leaf-0b0fbc0@320398b",
+      "sync/g2-production-leaf-live-20260904@fadbb64",
+      "sync/g2-war-loss-candidate-20260904@a541646",
+      "sync/promotion-candidate-switch-20260904@6b9e9c2"
+    ],
+    "deleted_stale_remote_tracking": [
+      "local/runtime-cli-20260901@7d32431"
+    ],
+    "deleted_remote": [
+      "feat/cli-batch-replay",
+      "sync/b2-lazy-trigger-ee4fab9",
+      "sync/b3-explicit-and-audit-20260904",
+      "sync/g2-cleanup-dispatch-20260904",
+      "sync/g2-production-leaf-0b0fbc0",
+      "sync/g2-production-leaf-live-20260904",
+      "sync/promotion-candidate-switch-20260904"
+    ],
+    "removed_clean_branch_worktrees": [
+      "Z:\\ck3_mod_rewrite\\.worktrees\\kaishek-cli-batch-20260901",
+      "Z:\\workspace\\_open_kaishek_b2_lazy_ee4fab9",
+      "Z:\\workspace\\open_kaishek_t2_b7_20260904",
+      "Z:\\workspace\\open_kaishek_t2_cleanup_receipt_20260904",
+      "Z:\\workspace\\open_kaishek_t2_g2_0b0fbc0",
+      "Z:\\workspace\\open_kaishek_t2_g2_expiry_20260904",
+      "Z:\\workspace\\open_kaishek_t2_g2_live_20260904",
+      "Z:\\workspace\\open_kaishek_t2_g2_war_loss_20260904"
+    ],
+    "retained_clean_detached_worktrees": [
+      "Z:\\workspace\\_open-kaishek-cultural-parameter-20260902@e92b94f",
+      "Z:\\workspace\\_open-kaishek-next-accolade-20260902@759199b",
+      "Z:\\workspace\\_open_kaishek_b306_build@b306a95",
+      "Z:\\workspace\\open_kaishek_preflight@aecb14f",
+      "Z:\\workspace\\open_kaishek_preflight-20260902@b306a95"
+    ]
+  },
+  "compatibility": {
+    "career_hc_workforce": {
+      "open_kaishek_change_required": true,
+      "capability_id_changed": false,
+      "request_or_response_schema_changed": false,
+      "invariants_changed": false,
+      "root_abi_sha256": "ad1cc96a8bb6f3736d5dd69e9b4525ed33a54abab72a5f6c6863a1a08f383496",
+      "root_source_contract_sha256": "35bfa513acf0d209bf32c26c563698722df8dce03733dac005e2e56e2df076e0",
+      "change_reason": "default-OFF private candidate metadata plus formal-runner registration and purpose-based effect output paths",
+      "production_advertisement_promoted": false,
+      "runtime_certification_promoted": false
+    },
+    "g2_source_specific_live_adapter": {
+      "open_kaishek_change_required": false,
+      "manifest_sha256": "7e8b41980d112d40450cb830b54a09ace8a7b9499340afd5a96ede112ca4386b",
+      "status": "static-ready-live-command-default-off",
+      "live_executed": false,
+      "public_capability_added": false,
+      "source_specific_loss_ready": false,
+      "comparison_input_ready": false,
+      "three_way_comparison_ready": false,
+      "decision_ready": false,
+      "automatic_surrender_ready": false
+    },
+    "g2_policy_providers": {
+      "open_kaishek_change_required": false,
+      "owner_budget_provider_sha256": "e9d6e48570939eda4f7fd0a91062faa58adeb1e5ddbb59f8eeaf3cdd45c5df85",
+      "white_peace_contract_sha256": "4f14ef293de8fe8a29b42507ea5eb531475a96ef1a06220e7e4b570db4b09a66",
+      "white_peace_provider_sha256": "fc9e3e0566aeda64338448dbe328eeb27f90833cd9536c2d19a1571655f14ee5",
+      "reason": "Python comparison-policy inputs do not define open_kaishek parser, IR, runtime, CLI, or public transport commands"
+    },
+    "latest_transition_identity_delta": {
+      "root_commit": "6b104f21d0cb800260f86f26b131354c2276f468",
+      "open_kaishek_change_required": false,
+      "reason": "acceptance generator/runner identity handling only; no ck3_autonomous_player API file changed"
+    }
+  },
+  "verification": {
+    "open_maven_reactor": {
+      "status": "BUILD SUCCESS",
+      "tests": 156,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "open_domain_tests": {
+      "passed": 8,
+      "failed": 0
+    },
+    "open_domain_validator": "PASS",
+    "open_cli_smoke": "PASS",
+    "main_product_corpus": {
+      "files": 54,
+      "parsed": 54,
+      "errors": 0,
+      "bytes": 2217794,
+      "sha256": "bf36f9e2e8c1cbf1880f4231029bb66a81e66e97684ca877397056b30b633ab5"
+    },
+    "zhongguo_product_corpus": {
+      "files": 827,
+      "parsed": 827,
+      "errors": 0,
+      "bytes": 23460956,
+      "sha256": "a45aa985afc53e3535f22589aef1bfa773aec73a81ea62ae386251ae1e176b78"
+    },
+    "root_focused_tests": {
+      "passed": 63,
+      "subtests_passed": 24,
+      "failed": 0
+    },
+    "root_compatibility_verifier": "GREEN_STATIC",
+    "harness_attempt": {
+      "initial_result": "59 passed, 4 harness failures",
+      "reason": "isolated Git worktree omitted the ignored read-only CK3 reference tree",
+      "resolution": "temporary validated junction to the existing read-only reference tree; removed after rerun",
+      "final_result": "63 passed, 24 subtests passed"
+    }
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "paradox_opcode_added": false,
+    "parser_vocabulary_added": false,
+    "public_capability_added": false,
+    "readiness_promoted": false,
+    "known_full_validator_coverage_red_retained": true,
+    "gen_034_resolved": false
+  }
+}
