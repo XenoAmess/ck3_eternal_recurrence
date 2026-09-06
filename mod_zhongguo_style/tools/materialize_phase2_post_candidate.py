@@ -246,9 +246,15 @@ def _storyboard(
     for reprise in cut.reprises:
         reprises_by_boundary.setdefault(reprise.after_chapter_id, []).append(reprise)
     rows: list[tuple[str, float, list[float]]] = []
+    director_targets = dict(cut.chapter_target_seconds)
+    timing_basis = (
+        "director-target-timeline"
+        if director_targets and cut.director_target_seconds is not None
+        else "measured-narration-fallback"
+    )
     reprise_sequence = 0
     for chapter_id in cut.editorial_chapter_order:
-        duration = narration_durations[chapter_id]
+        duration = director_targets.get(chapter_id, narration_durations[chapter_id])
         rows.append((chapter_id, duration, []))
         for reprise in reprises_by_boundary.get(chapter_id, []):
             reprise_sequence += 1
@@ -282,6 +288,12 @@ def _storyboard(
         )
         cursor = end
     return {
+        "timing_basis": timing_basis,
+        "nominal_duration_seconds": float(round(Decimal(str(nominal)), 6)),
+        "candidate_duration_seconds": float(
+            round(Decimal(str(deliverable_duration)), 6)
+        ),
+        "timeline_scale": float(round(scale, 9)),
         "chapters": chapters,
         "boundary_seconds": [row["end_seconds"] for row in chapters[:-1]],
     }

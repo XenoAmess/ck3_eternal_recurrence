@@ -266,3 +266,16 @@ target、authoring promotion/media/TTS/build/materializer 共 `148/148`，普通
 每个 gameplay 章的机器槽位为 `15s context + remainder action + 15s result_readability`。只有最后的 result 槽绑定当前 canonical
 clean hold；前两槽必须在 8/8 原片到齐后由 source reviewer 从连续 raw take 选择真实 timecode。规划代码和测试没有启动 CK3、TTS 或
 FFmpeg，也没有把当前 0/8 改写为已有素材。完整时间码与后续接线边界见 `phase2-dual-cut-production.md`。
+
+2026-09-07 复核发现 post-candidate `final-storyboard.json` 仍按短旁白时长比例分配章节，和上述 director target 不一致；这会使未来
+9 分钟候选的 review 抽帧与 evidence sampling 落错章节。materializer 现改用每个 cut 的 director target 权重，候选总时长有小幅媒体
+偏差时只做全局等比缩放，并显式记录 timing basis 与 scale。该修复由纯媒体替身测试覆盖，没有启动 CK3，也没有生成或宣称真实素材。
+
+同轮重新 fetch 宣传工具并确认 `HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`、工作树 clean；工具自身
+`263/263` 测试通过（另有 2 项按设计 skip）。随后生成两份 2026-09-07 环境预检：人物版 SHA-256
+`C0DC595094A8B6524F6EB7E41D48AFF7BB8C8273D0C642A7EEE823481795CBDF`，制度版 SHA-256
+`287D14828DF6F44617E7EA7E71E7ACC4DCA24C47005FA9FC88548A7D93762B16`；均保存于
+`Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260907-0030`，分别有效至 `2026-09-07T16:28:32Z` 与
+`2026-09-07T16:28:36Z`。两份 environment preflight
+为 GREEN，但 final readiness 均继续为 `RED [footage_pending, publish_target_pending]`，execution attestation 中 CK3、TTS、FFmpeg encode、
+字幕媒体、workdir 和 candidate 全为 false。

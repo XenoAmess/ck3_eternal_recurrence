@@ -79,7 +79,7 @@ class PostCandidateMaterializerTests(unittest.TestCase):
                 media_type="audio/mpeg",
             )
         candidate = root / "inputs" / cut.deliverable_relative_path.name
-        candidate.write_bytes(b"exact candidate bytes")
+        candidate.write_bytes(f"exact candidate bytes {cut_id}".encode("utf-8"))
         preserve_artifact(
             run_path,
             candidate,
@@ -116,6 +116,11 @@ class PostCandidateMaterializerTests(unittest.TestCase):
         del audit_directory, command_runner
         target = Path(path).resolve()
         is_video = target.suffix.casefold() == ".mp4"
+        video_duration = (
+            "580"
+            if is_video and b"institution-led" in target.read_bytes()
+            else "570"
+        )
         streams = (
             [
                 {
@@ -124,7 +129,7 @@ class PostCandidateMaterializerTests(unittest.TestCase):
                     "codec_name": "h264",
                     "width": 1920,
                     "height": 1080,
-                    "duration": "24",
+                    "duration": video_duration,
                     "avg_frame_rate": "30/1",
                 },
                 {
@@ -133,7 +138,7 @@ class PostCandidateMaterializerTests(unittest.TestCase):
                     "codec_name": "aac",
                     "sample_rate": "48000",
                     "channels": 2,
-                    "duration": "24",
+                    "duration": video_duration,
                 },
             ]
             if is_video
@@ -155,7 +160,7 @@ class PostCandidateMaterializerTests(unittest.TestCase):
                     "format": {
                         "filename": str(target),
                         "size": str(target.stat().st_size),
-                        "duration": "24" if is_video else "2",
+                        "duration": video_duration if is_video else "2",
                         "format_name": "mov,mp4" if is_video else "mp3",
                     },
                 }
@@ -229,6 +234,18 @@ class PostCandidateMaterializerTests(unittest.TestCase):
                 storyboard = json.loads(Path(paths["storyboard"]).read_text(encoding="utf-8"))
                 expected_count = 12 if cut_id == "institution-led" else 10
                 self.assertEqual(expected_count, len(storyboard["chapters"]))
+                self.assertEqual(
+                    "director-target-timeline", storyboard["timing_basis"]
+                )
+                self.assertEqual(
+                    cut.director_target_seconds,
+                    storyboard["nominal_duration_seconds"],
+                )
+                self.assertEqual(1.0, storyboard["timeline_scale"])
+                self.assertEqual(
+                    cut.director_target_seconds,
+                    storyboard["chapters"][-1]["end_seconds"],
+                )
                 if cut_id == "institution-led":
                     ids = [row["id"] for row in storyboard["chapters"]]
                     self.assertEqual(
@@ -241,6 +258,24 @@ class PostCandidateMaterializerTests(unittest.TestCase):
                     self.assertEqual(
                         2.0,
                         reprise["end_seconds"] - reprise["start_seconds"],
+                    )
+                    self.assertEqual(398.0, reprise["start_seconds"])
+                    self.assertEqual(400.0, reprise["end_seconds"])
+                    self.assertEqual(
+                        560.0,
+                        next(
+                            row
+                            for row in storyboard["chapters"]
+                            if row["id"] == "phase2_finale"
+                        )["start_seconds"],
+                    )
+                else:
+                    self.assertEqual(
+                        [0.0, 35.0, 105.0, 160.0],
+                        [
+                            row["start_seconds"]
+                            for row in storyboard["chapters"][:4]
+                        ],
                     )
 
                 review_template = json.loads(

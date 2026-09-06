@@ -102,6 +102,14 @@ clean hold 来凑时长。旁白建议从本章 `+0.8s` 起叠放；当前公式
 因此，结构映射已经闭合，但素材事实没有被提前闭合：当前 builder 仍只按实际旁白长度组段；须待 8/8 原片到齐、source review 给出
 context/action 的真实 timecodes 后，才能把这些槽位接入长片剪辑并生成 09:30 / 09:40 候选。
 
+post-candidate materializer 的 `final-storyboard.json` 使用同一组 director target 作为章节权重，不再按十条短旁白的时长比例猜测
+章节边界。候选恰为 09:30 / 09:40 时，storyboard 与上表逐秒一致；候选因实测媒体尾帧产生小幅偏差时，只对整条目标时间线作
+统一比例缩放，并在 storyboard 记录 `timing_basis`、nominal/candidate duration 与 `timeline_scale`。这样 review 抽帧、evidence sampling
+和后续导出前的人工检查不会在长片上落入错误章节。
+
+导出预检仍必须在真实 candidate、自动审计 artifact 与 release state 齐备后运行；0/8 阶段只能验证确定性的 policy/命令模板，不能让
+`xar-promo export --validate-only` 在缺少候选时伪造 GREEN。
+
 ## 无媒体校验
 
 ```powershell
