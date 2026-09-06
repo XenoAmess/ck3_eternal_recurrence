@@ -61,6 +61,53 @@ py tools/test_zg361_phase2_manager_seed_bootstrap.py
 py -O tools/test_zg361_phase2_manager_seed_bootstrap.py
 ```
 
+## R119 player-manager 实机尝试（2026-09-06）
+
+`ab4eca2dc28f26b9b98852fc2dced1b7c8d2bfed` 建立了上述专用 manager fixture、请求合同与
+物化器。第一轮 `Z:\p2r119_seed_live1` 仍以历史 player-subject checkpoint 为输入；在该输入被
+离线证据排除出 manager-seed 候选后，CK3 PID `134408` 被人工中止。其现存 progress 只到
+`303 database nodes / fatal=0 / event_wait_authorized=false`，没有最终 runner report、manager
+事件、checkpoint 或候选合同，因此不得把这轮中止运行写成 seed 或验收结果。
+
+`e760d63f0c507b7dc4be9d56fefe792bb201fbe1` 随后把请求合同切换到
+`桑干节度使，XenoAmess_918_10_28.ck3`（26,325,927 bytes，SHA-256
+`bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74`）。离线 gamestate 证明
+played CharacterID `37884` 存活、有地、为天朝统治者，威望 `7436.75919`，且有三名直属存活、
+有地、天朝属臣；但同一证据也证明它是**五人联机存档**。因此 local player 能否恢复到该角色、
+`zg361_on` 是否生效以及 `zga_phase2_manager_seed.1` 是否出现仍是 live-only 事实，离线合格不等于
+`ready=true`。
+
+正式轮次的冻结边界如下：
+
+- commit：`e760d63f0c507b7dc4be9d56fefe792bb201fbe1`；source ZIP SHA-256
+  `322eb22f9deb776e50cc677537ae47703eb3fd3e1292e202dac1832f26039b7b`；clean source tree
+  `af4c5271e99b286d914d24572276261cdd7c8feea1099cae420c2b2b7a9f5276`；
+- attempt/artifacts：`Z:\p2m119` / `Z:\p2m119_a`；projection
+  `phase2-full-release-r119-e760d63`；
+- product：1,031 files / 31,183,422 bytes，tree
+  `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1`，projection manifest
+  SHA-256 `0f30b7ba332df2029ca7acf9180b56d4c5df740074fd1922702f1a56438eeb4c`；
+- manager fixture tree：`2eb194c61ad1f781e05f8035e873305735a19e50d5288dd00ae8e54159ad4cf2`；
+- Frontend warmup PID `131864`；正式 CK3 PID `89284`，restart count `0`。
+
+正式 run 的 loader 为 `GREEN / 54.117s / 303 nodes / fatal=0`。其后 native-readiness 在事件
+捕获之前超时：main-thread mailbox 未安装/未 ready，main-thread executor 未启用，application-state
+pointers 不可用，`played_character=null`，故未取得要求的 paused application-main frame。最终
+`scenario_verdict=RED / seed_verdict=RED`；没有执行 manager fixture 事件、产品动作或 candidate
+物化。本轮只能定性为**场景/native-readiness RED，不是产品 RED**，也不证明完整迁移树存在业务故障。
+
+受管 cleanup 为 GREEN，CK3 最终清空；source/runtime/external dependency before/after 均 unchanged。
+`runner-report.json` SHA-256 为
+`c7ba9ac391d337d9e6a378326b869158d16567a2117ab51f2b7aca86b5ed24c9`；
+`01_loader_native_readiness.json` 为
+`e436ad24e0c625c8153949553694359544cd3dd15ecefe5661533cc7cf7658e1`；
+`09_phase2_native_session_cleanup.json` 为
+`90ec9ec1115ba57c6f0ff3d052a964a5ee9409b62095eb2ed233cac09c5b77b8`。
+
+因此当前 manager 合同仍必须保持 `blocked_live_capture_required / ready=false`。下一次尝试必须使用
+能稳定恢复唯一本地玩家角色并进入 paused application-main 的输入；在唯一 manager fixture 事件、typed
+manager/subject、close ACK 与 checkpoint 全部同轮取得前，不得物化或提升合同。
+
 状态（2026-09-04 07:46，Asia/Shanghai）：仓库中的权威机器合同
 `tools/zg361_phase2_seed_contract.json` 已由 r9 实机候选提升为 `status=ready / ready=true`。
 这只证明 canonical paused seed、五个 typed selector 与 exact checkpoint 已生成；四域 provider
