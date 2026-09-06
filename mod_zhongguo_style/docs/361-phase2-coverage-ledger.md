@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R146 管理者存档续接增量（不改变逐号等级）
+## R131–R147 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -411,7 +411,14 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   seed event 可通过，任何日期增长立即暂停并 RED。R146 manager recovery / runner SHA-256 分别为
   `b45240e26ad519dd5b88fa65224b54f732b26cd3c9cf323653314d4be3dc24f1` /
   `689918bf9a7388f8e2f73e0cc7e8fdb396a0b9cac2f6e03710267e7f71588865`。
-- 以上 R131–R146 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R147 预检继续 GREEN，并以单一 CK3 PID `102676`、玩家 `32904`、默认 5 速推进 active B1；在到达 clean
+  boundary 前于 `date_raw=53148288` 捕获新原版 `stress_threshold.2202`，因此同日 GUI pulse 尚未执行。原版
+  1.19.0.6 源码与 native event context 证明 root/character_to_yell_at 均为玩家、stress_character 为 `26849`；
+  无 rival 时只显示 native option 1，且该路线只降低玩家 stress。runner 现以两个 typed character scope 和完整
+  一-of-二选项形状绑定该精确中断。R147 manager recovery / runner SHA-256 分别为
+  `0b943d913fc51dc74b6eb6a379a1aa69da58073d72d9096837cbdb9362cec283` /
+  `0270ffa7d4ee397e8eba9ad6d1489794aa8e26c9b273c6ce492ab87ce6216ecf`。
+- 以上 R131–R147 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 

@@ -311,6 +311,54 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             drift_checks["scope:governor_joining:matches_any"]
         )
 
+    def test_boiling_anger_response_uses_only_visible_stress_relief(self) -> None:
+        event_key = "stress_threshold.2202"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=14,
+            date_raw=53148288,
+            player=32904,
+            scopes=[
+                _scope("stress_character", "character", 26849),
+                _scope("character_to_yell_at", "character", 32904),
+            ],
+            native_option_indices=(1,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53148288,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 14},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(
+            contract["character_scopes"]["character_to_yell_at"],
+            32904,
+        )
+        self.assertEqual(contract["scope_types"]["stress_character"], "character")
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["options"][0]["native_option_index"] = 0
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53148288,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 14},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

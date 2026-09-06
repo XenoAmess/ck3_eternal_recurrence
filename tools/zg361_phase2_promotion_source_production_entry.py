@@ -274,6 +274,39 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "stress_threshold.2202": {
+        # CK3 1.19.0.6 response to another character's boiling-anger mental
+        # break. R147 observed the played manager as the yelled-at root and
+        # no pre-existing rival scope, so authored option 1 was hidden and the
+        # sole rendered button mapped to native option index 1. The immediate
+        # block is inert without rival; this remaining route only reduces the
+        # player's stress. Bind both typed character scopes and the complete
+        # one-of-two option shape before selecting that source-authored route.
+        "date_raw": 53148288,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "character_to_yell_at": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "stress_character": (29037,),
+        },
+        "scope_types": {
+            "stress_character": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "stress_character",
+            "character_to_yell_at",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 1,
+        "snapshot_option_count": 2,
+        "native_option_indices": (1,),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices
