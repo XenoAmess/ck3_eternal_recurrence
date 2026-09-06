@@ -1,8 +1,8 @@
 ﻿l_french:
- zg361ip.result.ok:0 "Seal this finding in the record"
+ zg361ip.result.ok:0 "Archive this case; count its finding in the next review."
  zg361ip.190.t:0 "The Incident's Aftermath"
- zg361ip.190.desc:0 "This incident is over. Who stood watch, how grave the failure became, when each turn occurred, and who owns the remedies have all been established. The assessed official's gains and failures in the response will accompany the next review."
+ zg361ip.190.desc:0 "The incident response is closed. For the response handled by [zg361_ip_result_subject.GetShortUIName], the watch, severity, turning points, and remedy owners are now identified; the next review will count that official's credit and fault."
  zg361ip.290.t:0 "Old Burdens Brought to Account"
- zg361ip.290.desc:0 "The allotted term for clearing old burdens has ended. Repeated labor, accrued obligations, protected repair time, acceptance standards, retired duties, and the departing official's handoff now bear named responsibility; the next review will judge whether the burden was truly reduced."
+ zg361ip.290.desc:0 "The old-burden work has reached its verification date. Repeated labor, accrued obligations, repair time, acceptance thresholds, and the handoff attributed to [zg361_ip_result_subject.GetShortUIName] now have accountable owners; the next review will judge whether that official truly reduced the burden."
  zg361ip.390.t:0 "The Shared Foundation Divided Fairly"
- zg361ip.390.desc:0 "This cycle's work on the shared foundation is finished. Adoption, migration burdens, common costs, credited contributions, and responsibility for wider failures now stand in separate accounts; no party may hide its own gain or loss inside the common result."
+ zg361ip.390.desc:0 "The shared-foundation work is closed. Adoption, migration responsibility, common costs, credited contributions, and wider failures tied to [zg361_ip_result_subject.GetShortUIName] now stand in separate accounts; the next review will charge only that official's own gains and losses."

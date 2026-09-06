@@ -1795,6 +1795,94 @@ second_effect = { value = 2 }
             self.assertEqual(expected, set(mapping), language)
         self.assertNotEqual(rows["english"], rows["simp_chinese"])
 
+    def test_45a_every_visible_chinese_card_has_scene_copy_and_action_buttons(self) -> None:
+        """Keep N-01/N-02 closed across all player-visible copy variants."""
+
+        chinese = loc_rows(
+            MOD_ROOT
+            / "localization"
+            / "simp_chinese"
+            / "zg361_workforce_endgame_l_simp_chinese.yml"
+        )
+        bodies: list[tuple[str, str, str]] = []
+        buttons: list[tuple[str, str]] = []
+        for mid in sorted(EXPECTED_IDS):
+            prefix = f"zg361we.{mid}"
+            bodies.append((f"#{mid}", chinese[f"{prefix}.t"], chinese[f"{prefix}.desc"]))
+            buttons.extend((f"#{mid}.{letter}", chinese[f"{prefix}.{letter}"]) for letter in "abc")
+        for step in (1, 2, 3):
+            prefix = f"zg361we.handoff.{step}"
+            for role in ("subject", "owner"):
+                bodies.append(
+                    (
+                        f"handoff-{step}-{role}",
+                        chinese[f"{prefix}.t"],
+                        chinese[f"{prefix}.{role}.desc"],
+                    )
+                )
+                buttons.extend(
+                    (f"handoff-{step}-{role}-{outcome}", chinese[f"{prefix}.{role}.{outcome}"])
+                    for outcome in ("complete", "refuse")
+                )
+
+        self.assertEqual(46, len(bodies))
+        self.assertEqual(132, len(buttons))
+        leading_punctuation = tuple("。！？；：，、,.!?;:")
+        empty_or_generic_body = (
+            "案卷来到",
+            "当前需要你回应",
+            "请作选择",
+            "请选择",
+            "按A",
+            "按B",
+            "按 A",
+            "按 B",
+            "路线A",
+            "路线B",
+            "路线 A",
+            "路线 B",
+            "方案A",
+            "方案B",
+            "方案 A",
+            "方案 B",
+            "选项A",
+            "选项B",
+            "选项 A",
+            "选项 B",
+        )
+        generic_button = re.compile(
+            r"^\s*(?:(?:按|选|选择|采用)\s*)?"
+            r"[ABCＡＢＣ甲乙丙一二三]"
+            r"(?:项|路|方案|路线)?(?:做|执行|处理|推进)?\s*$"
+        )
+        dynamic_token = re.compile(r"\[[^]]+\]")
+
+        for identity, title, body in bodies:
+            with self.subTest(body=identity):
+                self.assertTrue(body.strip())
+                self.assertFalse(body.startswith(leading_punctuation))
+                self.assertFalse(body.lstrip().startswith("["), "正文不能从可能为空的动态字段起句")
+                self.assertNotEqual(title.strip(), body.strip())
+                self.assertFalse(body.startswith(title), "正文不能以逐字复述标题开场")
+                self.assertGreaterEqual(
+                    len(dynamic_token.sub("", body)),
+                    30,
+                    "正文必须交代足以理解裁决的具体场景",
+                )
+                for phrase in empty_or_generic_body:
+                    self.assertNotIn(phrase, body)
+
+        for identity, label in buttons:
+            with self.subTest(button=identity):
+                self.assertTrue(label.strip())
+                self.assertIsNone(generic_button.fullmatch(label), "按钮必须独立说明动作或代价")
+
+        for mid in sorted(EXPECTED_IDS):
+            body = chinese[f"zg361we.{mid}.desc"]
+            for letter in "abc":
+                label = chinese[f"zg361we.{mid}.{letter}"]
+                self.assertNotIn(label, body, f"#{mid} 正文不应代替 {letter.upper()} 按钮列出处置")
+
     def test_46_seven_languages_are_exact_english_placeholders(self) -> None:
         english = loc_rows(MOD_ROOT / "localization" / "english" / "zg361_workforce_endgame_l_english.yml")
         for language in ("french", "german", "japanese", "korean", "polish", "russian", "spanish"):

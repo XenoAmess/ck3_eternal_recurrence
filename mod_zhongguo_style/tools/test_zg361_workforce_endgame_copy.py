@@ -50,8 +50,12 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
                 self.assertFalse(spec.desc_cn.startswith(("[", *PUNCTUATION_OPENERS)))
                 self.assertFalse(spec.desc_en.startswith(("[", *PUNCTUATION_OPENERS)))
                 for desc in (spec.desc_cn, spec.desc_en):
-                    self.assertIn(f"[scope:{gen.PREFIX}_{spec.domain}_owner.GetShortUIName]", desc)
-                    self.assertIn(f"[scope:{gen.PREFIX}_{spec.domain}_subject.GetShortUIName]", desc)
+                    owner = f"{gen.PREFIX}_{spec.domain}_owner"
+                    subject = f"{gen.PREFIX}_{spec.domain}_subject"
+                    self.assertIn(f"[{owner}.GetShortUIName]", desc)
+                    self.assertIn(f"[{subject}.GetShortUIName]", desc)
+                    self.assertNotIn(f"[scope:{owner}.GetShortUIName]", desc)
+                    self.assertNotIn(f"[scope:{subject}.GetShortUIName]", desc)
 
     def test_body_neither_repeats_title_nor_leaks_choices(self) -> None:
         for spec in gen.MECHANISMS:

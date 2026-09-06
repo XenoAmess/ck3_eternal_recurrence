@@ -129,7 +129,7 @@ class IncidentGovernanceCentralCopyTest(unittest.TestCase):
     def test_all_four_buttons_name_short_concrete_actions(self) -> None:
         rows = family_rows("simp_chinese")
         expected = {
-            "zg361ip.result.ok": "将这份结论封入簿册",
+            "zg361ip.result.ok": "归档此案；下轮据此核算功过。",
             "zg361mg.120.a": "归档本轮评定与现有依据。",
             "zg361mg.220.a": "归档本轮复核，照所列事项续办。",
             "zg361_p2c_summary_ack": "办结与未办，分别记清。",
@@ -155,7 +155,10 @@ class IncidentGovernanceCentralCopyTest(unittest.TestCase):
         english = family_rows("english")
         for family in BODY_KEYS:
             self.assertEqual(set(chinese[family]), set(english[family]))
-        self.assertEqual("Seal this finding in the record", english["incident"]["zg361ip.result.ok"])
+        self.assertEqual(
+            "Archive this case; count its finding in the next review.",
+            english["incident"]["zg361ip.result.ok"],
+        )
         self.assertEqual(
             "Archive this cycle's finding and its surviving grounds.",
             english["governance"]["zg361mg.120.a"],

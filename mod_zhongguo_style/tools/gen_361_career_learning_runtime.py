@@ -2144,7 +2144,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
             (
                 ("zg361_cl_digest_title", "本轮人才安排已经登记"),
                 ("zg361_cl_digest_desc", "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。"),
-                ("zg361_cl_digest_ack", "收下案卷，照章续办。"),
+                ("zg361_cl_digest_ack", "收存本轮人才案回执；不新增付款或期限。"),
             )
         )
     else:
@@ -2174,7 +2174,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                     318: "递交求调文书，用去一次名额",
                     319: "拒绝挽留，启动三十日调任",
                     321: "收下名帖；公帑支四金、主官私库支二金",
-                    333: "留下任职，以所学履行培训旧约",
+                    333: "留下任职至旧约履清，不触发十八金追偿",
                 }.get(row.mechanism_id, route_a) if chinese else {
                     314: "Accept the transfer; the office pays 15 gold and the manager pays 5",
                     315: "Begin the ninety-day trial under the 40/60 credit split",
@@ -2184,11 +2184,11 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                     333: "Remain in service and discharge the training bond",
                 }.get(row.mechanism_id, route_a)),
                 (f"zg361_cl_m{row.mechanism_id:03d}_route_b", {
-                    314: "谢绝调任，仍守本职且考课不改档",
-                    315: "终止试任，按约回任且不记低档",
+                    314: "谢绝调任：不领取二十金，仍守本职且考课不改档",
+                    315: "终止九十日试任，按约回原职且不记低档",
                     318: "暂不递交，保留这次求调名额",
                     319: "接受挽留；若九十日未兑现，按失约追责",
-                    321: "退回名帖，终止往来且保留昔日案卷",
+                    321: "退回名帖：不支六金，终止往来且保留昔日案卷",
                     333: "提前离任，九十日后归还十八金",
                 }.get(row.mechanism_id, route_b) if chinese else {
                     314: "Decline the transfer, keep the present post and rating",

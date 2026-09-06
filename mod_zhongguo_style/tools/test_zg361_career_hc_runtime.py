@@ -1189,6 +1189,10 @@ class CareerHcRuntimeTests(unittest.TestCase):
             MOD_ROOT / "localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml"
         ).read_text(encoding="utf-8-sig")
         self.assertIn("晋升材料已过初核", chinese)
+        self.assertIn("直接改变去留的二十二项仍会逐项呈报", chinese)
+        self.assertNotIn("具名人员的二十二项", chinese)
+        self.assertIn("候选人的履历、绩效记录与担保意见已经收齐", chinese)
+        self.assertNotIn("候选材料已经送齐", chinese)
         self.assertNotIn("上一项职业与编制回执已把", chinese)
         self.assertNotIn("路线甲、乙", chinese)
         self.assertNotIn("业务对象", chinese)
@@ -1199,8 +1203,8 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertNotIn("original card", english.lower())
         self.assertIn("Each will retain its own formal record", english)
         for exact in (
-            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.a:0 "以可追溯证据为准，统一办理二十二项常规案；条件不足者单独呈报。"',
-            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.b:0 "以执行速度为先，统一办理二十二项常规案；条件不足者单独呈报。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.a:0 "二十二项常规案一律依可追溯证据办理；条件不足者单独呈报。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.b:0 "二十二项常规案一律从权办理，优先照顾关系与眼前速度；条件不足者单独呈报。"',
             f'zg361ch.{generator.BATCH_CHOICE_EVENT}.c:0 "搁置二十二项常规案，每案记下一笔下周期制度债。"',
             f'zg361ch.{generator.BATCH_CHOICE_EVENT}.d:0 "全部四十四项逐案呈报，由我分别裁决。"',
         ):
@@ -1337,10 +1341,12 @@ class CareerHcRuntimeTests(unittest.TestCase):
         expected = {
             21: ("按奖金与调薪矩阵兑现薪酬", "Pay compensation under the bonus and salary-adjustment matrix."),
             25: ("支付反邀约款，但只给口头留任承诺", "Pay for a counteroffer but give only an oral retention promise."),
+            93: ("强留管理岗，若再失败便降回专家岗", "Forced or demoted."),
             95: ("复审通过，维持本期管理权限", "Pass the review and retain this cycle's management authority."),
             101: ("按一名资深、两名普通与学徒梯队占用编制", "Use staffing for one senior, two regular and one apprentice tier."),
             104: ("同时补入新人和成熟人才", "Hire both newcomers and experienced candidates."),
             109: ("向全体人员公开高潜标签", "Disclose the high-potential label to everyone."),
+            112: ("加价反邀约，不留书面承诺", "Reactive counteroffer."),
             114: ("支付安抚款，同时阻止本次人才转出", "Pay a retention award and block this talent transfer."),
             121: ("不经试任，直接交付大团队", "Skip the trial and assign a large team immediately."),
             126: ("仅按绩效高低决定处置", "Decide the action from performance alone."),

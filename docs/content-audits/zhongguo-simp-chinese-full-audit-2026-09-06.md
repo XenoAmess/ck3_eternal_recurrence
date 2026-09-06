@@ -493,3 +493,35 @@ R110 全程使用默认 **5 速**，没有 OCR；失效谱系审计完毕后已�
 修复后验收。当前状态为 **R110 loader GREEN / gameplay seed invalid / 四域修复 STATIC GREEN / LIVE PENDING**；
 下一步必须由 **R111 fresh product** 重新验证 303/303 loader、上述 41,958 条签名归零，并从仍有地且具备资格的
 玩家谱系完成晋升链与文案实机验收。
+
+### 17.5 最终文案复审改为宽并发后的追补整改
+
+用户再次指出“正文替按钮做决定”和“正文以孤立标点起句”属于可并行清理的问题后，调度改为八个互不覆盖的
+文件族并发：PP、Career/HC、CP/P3、Workforce、Career Learning/Compensation、B1/B2/core、
+Incident/Manager/Central、361 mechanisms。各包只修改自己的权威生成源、生成产物与专项测试；共享的全量
+discovery、根级校验、release 构建和 CK3 启动继续串行。该轮没有沿用第 17 节的“59/59 已闭合”结论，而是
+重新逐 key 复读最终简中成品，追回并闭合以下漏项：
+
+- Career/HC：6 个 key；批量办理口径不再掩盖“关系优先”，并消除“材料已送齐却让按钮再次提交”、
+  “强留或降级”等矛盾或不确定动作。
+- Career Learning：5 个按钮；补清只收存回执、不新增付款/期限，以及 20 金、6 金、90 日和 18 金追偿边界。
+- Incident：3 段正文补入真实受评人和下一轮利害，1 个归档按钮补入下一轮核算后果；交叉复核曾拦截一处
+  `[scope:<saved>.GetShortUIName]` 错误回流，最终使用已由 R116 实机证明正确的
+  `[<saved>.GetShortUIName]`。
+- Credit/Project 与 Phase3 Metrics Delivery：74 条生成文案；删除产品没有记录的“亲自签字/同意/回应”，
+  把小时、槽位、份额、释放/保留及主要代价落到按钮，删除 P3.343 并不存在的“跟进债”。
+- 361 mechanisms：9 段正文删除路线/选择元叙述；722 个 A/B 按钮补入对应真实账本的主要收益和成本，
+  361 个 C 按钮及 361 个 C tooltip 明示“制度债 +3、行政负担 -1”。
+- PP、Workforce、Compensation、B1/B2/core、Manager/Governance 与 Central 逐卡复读没有发现新的
+  N-01/N-02 产品文案；Workforce 仍新增 43 个可见事件、46 个正文变体和 132 个按钮的逐卡防回流门禁。
+
+本轮新增追补共 **1,542 个生成 key 行级闭合项**；不是把旧 59 簇重新计数。原 59 簇仍为 **59/59 静态闭合、
+未闭合 0**，新增追补项为 **1,542/1,542 静态闭合、未闭合 0**；动态布局和实际 scope 渲染仍保持
+**LIVE PENDING**，不得用静态结果冒充实机 GREEN。
+
+合并后的专项矩阵 normal/`-O` 全部 GREEN。第一次全量 discovery 为 1,740/1,780，并准确暴露 Workforce
+旧测试仍强制错误的 `[scope:<saved>.GetShortUIName]`；产品没有被改回错误语法，测试改为要求正确形并显式
+拒绝旧形。重跑后 normal 与 `-O` 均为 **1,780/1,780 GREEN**；`validate_local.py`、根级
+`tools/validate_static.py`、release deterministic `--check` 与 `git diff --check` 均 GREEN。effect 双边界仍为
+**713 files / 3,817 effects / target miss 0 / `>20` 0 / `>200 KiB` 0 / max 10 effects / max 130,221 bytes**。
+上述门禁完成前没有恢复 CK3 点击或启动。

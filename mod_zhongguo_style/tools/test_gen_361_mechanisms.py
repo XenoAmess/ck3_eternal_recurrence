@@ -13,10 +13,13 @@ import unittest
 
 from gen_361_mechanisms import (
     MOD_ROOT,
+    LEDGER_ONLY_MECHANISM_IDS,
+    choice_button_cn,
     effect_name,
     localization_values,
     naturalize_mechanism_chinese,
     outputs,
+    principal_ledger_changes_cn,
 )
 from zg361_mechanism_data import (
     ACCEPTANCE_FIELDS,
@@ -29,6 +32,7 @@ from zg361_mechanism_data import (
     mechanism_deltas,
 )
 from zg361_phase2_runtime_data import PHASE2_RUNTIME_SPECS
+from zg361_localization_style import normalize_player_chinese
 from zg361_readiness_data import (
     CUMULATIVE_COUNTS,
     READINESS_BY_ID,
@@ -281,7 +285,7 @@ class MechanismGenerationTests(unittest.TestCase):
             chinese,
         )
         self.assertIn(
-            'zg361m.18.a:0 "结算时冻结档位、名次、上司、理由（仅记账）。"',
+            'zg361m.18.a:0 "结算时冻结档位、名次、上司、理由；仅记账，证据+3、行政负担+2。"',
             chinese,
         )
         self.assertIn(
@@ -289,11 +293,11 @@ class MechanismGenerationTests(unittest.TestCase):
             chinese,
         )
         self.assertIn(
-            'zg361m.71.a:0 "穷尽私下沟通与正式申诉后，凭冻结证据实名公开并接受调解复核。"',
+            'zg361m.71.a:0 "穷尽私下沟通与正式申诉后，凭冻结证据实名公开并接受调解复核；证据+2、行政负担+2。"',
             chinese,
         )
         self.assertIn(
-            'zg361m.206.a:0 "为每笔赶工记录省时本金、维护利息、风险与责任人。"',
+            'zg361m.206.a:0 "为每笔赶工记录省时本金、维护利息、风险与责任人；技术债-3、交付-1。"',
             chinese,
         )
         self.assertIn(
@@ -301,7 +305,7 @@ class MechanismGenerationTests(unittest.TestCase):
             chinese,
         )
         self.assertIn(
-            'zg361m.18.c:0 "这项制度本局不再提案；记下一笔制度债"',
+            'zg361m.18.c:0 "搁置本局提案；制度债+3、行政负担-1"',
             chinese,
         )
         self.assertNotIn("决策：", chinese)
@@ -440,6 +444,15 @@ class MechanismGenerationTests(unittest.TestCase):
                     self.assertGreaterEqual(len(description.split(r"\n", 1)[0]), 24)
                     self.assertNotIn(title.casefold(), description.casefold())
                     self.assertIsNone(body_choice_meta.search(description))
+                    for route_meta in (
+                        "两条路线",
+                        "现状路线",
+                        "任何路线",
+                        "你必须决定",
+                        "选择写回",
+                        "选择后只能",
+                    ):
+                        self.assertNotIn(route_meta, description)
                     for choice in ("a", "b", "c"):
                         button = values[f"{prefix}.{choice}"]
                         button_core = re.sub(
@@ -451,6 +464,27 @@ class MechanismGenerationTests(unittest.TestCase):
                         self.assertNotIn(button_core.casefold(), description.casefold())
                         if language == "simp_chinese":
                             self.assertFalse(button_core.endswith("后"))
+
+                    if language == "simp_chinese":
+                        for choice in ("a", "b"):
+                            button = values[f"{prefix}.{choice}"]
+                            expected = principal_ledger_changes_cn(mechanism, choice)
+                            self.assertIn(expected, button)
+                            self.assertEqual(
+                                button.rstrip("。"),
+                                normalize_player_chinese(
+                                    choice_button_cn(
+                                        mechanism,
+                                        choice,
+                                        ledger_only=mechanism_id
+                                        in LEDGER_ONLY_MECHANISM_IDS,
+                                    )
+                                ),
+                            )
+                        self.assertIn("搁置本局提案", values[f"{prefix}.c"])
+                        self.assertIn("制度债+3、行政负担-1", values[f"{prefix}.c"])
+                        self.assertIn("制度债增加 3", values[f"{prefix}.c.tt"])
+                        self.assertIn("行政负担减少 1", values[f"{prefix}.c.tt"])
 
         chinese = localization_values(self.mechanisms, "simp_chinese")
         descriptions = [

@@ -2159,22 +2159,22 @@ def render_event_parts() -> dict[str, bytes]:
 
 def _loc_rows(language: str) -> dict[str, str]:
     english: dict[str, str] = {
-        "zg361ip.result.ok": "Seal this finding in the record",
+        "zg361ip.result.ok": "Archive this case; count its finding in the next review.",
         "zg361ip.190.t": "The Incident's Aftermath",
-        "zg361ip.190.desc": "This incident is over. Who stood watch, how grave the failure became, when each turn occurred, and who owns the remedies have all been established. The assessed official's gains and failures in the response will accompany the next review.",
+        "zg361ip.190.desc": "The incident response is closed. For the response handled by [zg361_ip_result_subject.GetShortUIName], the watch, severity, turning points, and remedy owners are now identified; the next review will count that official's credit and fault.",
         "zg361ip.290.t": "Old Burdens Brought to Account",
-        "zg361ip.290.desc": "The allotted term for clearing old burdens has ended. Repeated labor, accrued obligations, protected repair time, acceptance standards, retired duties, and the departing official's handoff now bear named responsibility; the next review will judge whether the burden was truly reduced.",
+        "zg361ip.290.desc": "The old-burden work has reached its verification date. Repeated labor, accrued obligations, repair time, acceptance thresholds, and the handoff attributed to [zg361_ip_result_subject.GetShortUIName] now have accountable owners; the next review will judge whether that official truly reduced the burden.",
         "zg361ip.390.t": "The Shared Foundation Divided Fairly",
-        "zg361ip.390.desc": "This cycle's work on the shared foundation is finished. Adoption, migration burdens, common costs, credited contributions, and responsibility for wider failures now stand in separate accounts; no party may hide its own gain or loss inside the common result.",
+        "zg361ip.390.desc": "The shared-foundation work is closed. Adoption, migration responsibility, common costs, credited contributions, and wider failures tied to [zg361_ip_result_subject.GetShortUIName] now stand in separate accounts; the next review will charge only that official's own gains and losses.",
     }
     chinese: dict[str, str] = {
-        "zg361ip.result.ok": "将这份结论封入簿册",
+        "zg361ip.result.ok": "归档此案；下轮据此核算功过。",
         "zg361ip.190.t": "事故余波入册",
-        "zg361ip.190.desc": "本轮事故已经收尾。谁在值守、事态有多重、何时发生转折、补救交给谁，都已逐项核清；受评官员在处置中留下的得失，将随下一轮考核一并呈报。",
+        "zg361ip.190.desc": "事故处置已经结案。在[zg361_ip_result_subject.GetShortUIName]经手的事故响应中，值守人、事态轻重、转折时点与补救责任均已逐项核清；此人应得的功过将随下一轮考核呈报。",
         "zg361ip.290.t": "积弊清理到期",
-        "zg361ip.290.desc": "本轮清理旧务的期限已经届满。反复耗费的人力、累积的债务、留出的偿还时间、验收门槛与离岗交接都有了落款；下一轮复核将据此判断积弊是否真的减轻。",
+        "zg361ip.290.desc": "旧务整治已经到了核验日。[zg361_ip_result_subject.GetShortUIName]名下反复耗费的人力、累积债务、偿还期限、验收门槛与离岗交接均有落款；下一轮考核将据此判断此人是否真正减轻积弊。",
         "zg361ip.390.t": "共享底座各归其账",
-        "zg361ip.390.desc": "共享底座的本轮改造已经收尾。哪些团队采用、谁承担迁移、共同花费多少、贡献如何分配以及故障牵连到谁，均已各自记账；任何一方都不能再拿总成绩遮去自己的得失。",
+        "zg361ip.390.desc": "共享底座的改造已经结案。与[zg361_ip_result_subject.GetShortUIName]有关的采用范围、迁移责任、共同花费、贡献归属与故障牵连均已分别记账；下一轮考核只按此人应负的得失入账。",
     }
     return chinese if language == "simp_chinese" else english
 

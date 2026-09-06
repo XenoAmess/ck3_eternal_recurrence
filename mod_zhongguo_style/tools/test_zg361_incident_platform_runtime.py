@@ -884,6 +884,32 @@ class GeneratedFileTests(unittest.TestCase):
             if language not in {"english", "simp_chinese"}:
                 self.assertEqual(rows, english)
 
+    def test_player_copy_names_the_subject_and_keeps_choice_in_button(self) -> None:
+        subject = "[zg361_ip_result_subject.GetShortUIName]"
+        punctuation = tuple("。！？，；：.!?,;:)]}）】》〉」』”’…")
+        choice_meta = ("A/B", "路线甲", "路线乙", "按A", "按 A", "按钮")
+        for language in ("simp_chinese", "english"):
+            rows = gen._loc_rows(language)
+            for domain in gen.DOMAINS:
+                body = rows[f"zg361ip.{domain.result_event}.desc"].lstrip()
+                title = rows[f"zg361ip.{domain.result_event}.t"]
+                with self.subTest(language=language, event=domain.result_event):
+                    self.assertTrue(body)
+                    self.assertFalse(body.startswith(("[", *punctuation)))
+                    self.assertIn(subject, body)
+                    self.assertNotIn("[scope:zg361_ip_result_subject", body)
+                    self.assertNotIn(title, body)
+                    for token in choice_meta:
+                        self.assertNotIn(token, body)
+        self.assertEqual(
+            "归档此案；下轮据此核算功过。",
+            gen._loc_rows("simp_chinese")["zg361ip.result.ok"],
+        )
+        self.assertEqual(
+            "Archive this case; count its finding in the next review.",
+            gen._loc_rows("english")["zg361ip.result.ok"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

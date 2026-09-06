@@ -63,6 +63,26 @@ LEDGER_ONLY_MECHANISM_IDS = frozenset(
      *range(229, 345), *range(355, 358), 360, 361)
 )
 
+LEDGER_LABELS_CN = {
+    "evidence": "证据",
+    "trust": "信任",
+    "admin_load": "行政负担",
+    "appeal_risk": "申诉风险",
+    "delivery": "交付",
+    "stability": "稳定",
+    "tech_debt": "技术债",
+    "data_quality": "数据质量",
+    "burnout": "倦怠",
+    "talent": "人才",
+    "hc_pressure": "编制压力",
+    "pay_debt": "薪酬债",
+    "policy_debt": "制度债",
+    "budget_pressure": "预算压力",
+}
+POSITIVE_LEDGERS = frozenset(
+    {"evidence", "trust", "delivery", "stability", "data_quality", "talent"}
+)
+
 
 def script_text(body: str) -> bytes:
     return BOM + (GENERATED_HEADER + body.rstrip() + "\n").encode("utf-8")
@@ -600,6 +620,42 @@ def naturalize_mechanism_chinese(text: str) -> str:
             "穷尽私下沟通和正式申诉后，允许附冻结证据的实名长文进入受控复核，并投入调解与事实核查",
             "穷尽私下沟通与正式申诉后，凭冻结证据实名公开并接受调解复核",
         ),
+        (
+            "激进目标提高 3.75 与“高潜”上限但失败风险更高；保守目标容易完成但不能只靠完成率获得头档",
+            "目标强度同时改变高潜上限、失败风险与完成难度；完成率本身不足以换取头档",
+        ),
+        (
+            "玩家真正做“为什么是他，不是别人”的人事决定",
+            "边界人选的档位将牵动实际任免",
+        ),
+        (
+            "不再把所有明星都逼成经理；两条路线待遇可相当，但管理权、风险和考核表不同",
+            "明星不必一律转任经理；管理线与专家线待遇可以相当，但权责、风险和考核表不同",
+        ),
+        (
+            "玩家必须决定是否容忍能打但破坏协作的人",
+            "能打却破坏协作的人正在逼迫组织表态",
+        ),
+        (
+            "重做容易成为宏大晋升项目也可能烂尾，渐进收益小却稳定；现状路线把节省资源换成持续利息",
+            "重做可能成为宏大晋升项目，也可能烂尾；渐进改造收益较小但稳定，维持现状则会积累持续利息",
+        ),
+        (
+            "中央全包鼓励采用也掩盖浪费，分摊促节制却诱发绕平台；任何路线都保持总体国库守恒",
+            "中央全包鼓励采用也掩盖浪费，分摊促节制却诱发绕平台；无论如何裁定，总体国库都必须守恒",
+        ),
+        (
+            "降门槛缩短空岗却提高试用失败和导师成本，坚持门槛则让现团队继续超负荷；选择写回 HC 判断",
+            "降门槛缩短空岗却提高试用失败和导师成本，坚持门槛则让现团队继续超负荷；最终裁定会进入下一轮编制判断",
+        ),
+        (
+            "冒险型人才可能押注组织增长，保守者换确定性；选择不改变原绩效，也不能由经理强迫接“纸面财富”",
+            "冒险型人才可能押注组织增长，保守者更看重确定性；个人偏好不改变原绩效，经理也不能强迫其接受“纸面财富”",
+        ),
+        (
+            "换份额缓解当前国库并增加留任，也把未来波动转给个人；选择后只能按既定退出规则处理",
+            "换份额缓解当前国库并增加留任，也把未来波动转给个人；裁定一经写入，只能按既定退出规则处理",
+        ),
         ("风险和责任 owner", "风险与责任人"),
         ("责任责任人", "责任人"),
         ("编号 发奖", "编号发奖"),
@@ -739,9 +795,68 @@ def concise_choice_cn(choice: str, *, max_length: int) -> str:
             consequence = f"风险{tail}"
         break
     if not consequence:
-        return action if len(action) < len(clean) else clean
+        candidate = action if len(action) < len(clean) else clean
+        return fit_choice_action_cn(candidate, max_length=max_length)
     summary = f"{action}；{consequence}" if consequence else action
-    return summary if len(summary) < len(clean) else clean
+    candidate = summary if len(summary) < len(clean) else clean
+    return fit_choice_action_cn(candidate, max_length=max_length)
+
+
+def fit_choice_action_cn(action: str, *, max_length: int) -> str:
+    """Fit one concrete action without moving its choice back into the body."""
+
+    clean = action.rstrip("。！？；，、 ")
+    if len(clean) <= max_length:
+        return clean
+    for delimiter in ("；", "，"):
+        clause = clean.split(delimiter, 1)[0].rstrip("。！？；，、 ")
+        if 6 <= len(clause) <= max_length:
+            return clause
+    return clean[: max_length - 1].rstrip("。！？；，、 ") + "…"
+
+
+def principal_ledger_changes_cn(mechanism: Mechanism, choice: str) -> str:
+    """Expose the largest benefit and cost actually written by one choice."""
+
+    deltas = mechanism_deltas(mechanism, choice)
+
+    def is_benefit(item: tuple[str, int]) -> bool:
+        ledger, delta = item
+        return (ledger in POSITIVE_LEDGERS and delta > 0) or (
+            ledger not in POSITIVE_LEDGERS and delta < 0
+        )
+
+    ranked = list(deltas.items())
+    benefits = [item for item in ranked if is_benefit(item)]
+    costs = [item for item in ranked if not is_benefit(item)]
+
+    def largest(items: list[tuple[str, int]]) -> tuple[str, int] | None:
+        if not items:
+            return None
+        return max(items, key=lambda item: abs(item[1]))
+
+    selected = [item for item in (largest(benefits), largest(costs)) if item]
+    if len(selected) < 2:
+        for item in sorted(ranked, key=lambda item: abs(item[1]), reverse=True):
+            if item not in selected:
+                selected.append(item)
+            if len(selected) == 2:
+                break
+    return "、".join(
+        f"{LEDGER_LABELS_CN[ledger]}{delta:+d}" for ledger, delta in selected
+    )
+
+
+def choice_button_cn(
+    mechanism: Mechanism, choice: str, *, ledger_only: bool, max_length: int = 49
+) -> str:
+    """Render action plus ledger result within 50 glyphs after punctuation."""
+
+    source = mechanism.option_a_cn if choice == "a" else mechanism.option_b_cn
+    ledger = principal_ledger_changes_cn(mechanism, choice)
+    tail = f"；{'仅记账，' if ledger_only else ''}{ledger}"
+    action = concise_choice_cn(source, max_length=max_length - len(tail))
+    return f"{action}{tail}"
 
 
 def concise_choice_en(choice: str) -> str:
@@ -859,17 +974,17 @@ def localization_values(
             desc = player_facing_mechanism_context_cn(mechanism)
             if ledger_only:
                 desc += "\\n\\n这项裁定只记入组织账簿；没有具体案卷时，不会据此发放款项，也不会办理任命、招募、调岗或退款。"
-                option_a = f"{concise_choice_cn(mechanism.option_a_cn, max_length=34)}（仅记账）"
-                option_b = f"{concise_choice_cn(mechanism.option_b_cn, max_length=34)}（仅记账）"
+                option_a = choice_button_cn(mechanism, "a", ledger_only=True)
+                option_b = choice_button_cn(mechanism, "b", ledger_only=True)
                 tooltip_a = f"{complete_sentence_cn(mechanism.option_a_cn)}这项裁定只记入组织账簿；没有具体案卷时，不会据此办理款项、人事或职位变动。"
                 tooltip_b = f"{complete_sentence_cn(mechanism.option_b_cn)}这项裁定只记入组织账簿；没有具体案卷时，不会据此办理款项、人事或职位变动。"
             else:
-                option_a = concise_choice_cn(mechanism.option_a_cn, max_length=40)
-                option_b = concise_choice_cn(mechanism.option_b_cn, max_length=40)
+                option_a = choice_button_cn(mechanism, "a", ledger_only=False)
+                option_b = choice_button_cn(mechanism, "b", ledger_only=False)
                 tooltip_a = complete_sentence_cn(mechanism.option_a_cn)
                 tooltip_b = complete_sentence_cn(mechanism.option_b_cn)
-            option_c = "这项制度本局不再提案；记下一笔制度债"
-            tooltip_c = "关闭本局内的这项提案；它不会自动再次出现，并会增加一笔制度债。"
+            option_c = "搁置本局提案；制度债+3、行政负担-1"
+            tooltip_c = "关闭本局内的这项提案；它不会自动再次出现，组织账本的制度债增加 3，行政负担减少 1。"
         else:
             title = f"#{mechanism.id:03d} · {mechanism.title_en}"
             desc = (

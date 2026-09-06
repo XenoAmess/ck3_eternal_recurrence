@@ -811,8 +811,19 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         # The D+300 breach remains the pre-existing automatic failure path;
         # this test's new contract is the player's explicit option caller.
         self.assertIn("zg361_refuse_jingcha_effect = yes", deadline)
-        self.assertIn("limit = { is_ai = yes }", self.jingcha_mandate)
-        self.assertIn("AI jingcha duty entered the background performance season", self.jingcha_mandate)
+        annual = top_level_block(
+            self.jingcha_mandate, "zg361_jingcha_annual_dispatch_effect"
+        )
+        issue_now = top_level_block(
+            self.jingcha_mandate, "zg361_issue_jingcha_mandate_now_effect"
+        )
+        self.assertIn("is_ai = no", annual)
+        self.assertIn("is_ai = no", issue_now)
+        self.assertNotIn("limit = { is_ai = yes }", issue_now)
+        self.assertNotIn(
+            "AI jingcha duty entered the background performance season",
+            self.jingcha_mandate,
+        )
         self.assertIn(
             "var:zg361_jingcha_mandate_superior = { is_alive = yes }",
             self.jingcha_mandate,

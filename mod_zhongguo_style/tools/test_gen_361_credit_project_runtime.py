@@ -1141,6 +1141,44 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
                     self.assertNotIn(route, desc_en)
         self.assertEqual(len(descriptions_cn), len(gen.MECHANISMS))
 
+    def test_resource_and_ownership_buttons_name_action_and_major_consequence(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"
+        )
+        expected_tokens = {
+            (26, "a"): ("二十小时交付", "二十三小时容量"),
+            (26, "b"): ("十五小时交付", "二十二小时容量"),
+            (31, "a"): ("二十点恩主信用", "五点可见度", "不增加交付产出"),
+            (31, "b"): ("三十点恩主信用", "动用十点", "十点可见度", "不增加交付产出"),
+            (55, "a"): ("一个阅读席位", "五点可见度"),
+            (55, "b"): ("两个阅读席位", "十点可见度"),
+            (58, "a"): ("只送直属上司", "暂不计入已阅读"),
+            (58, "b"): ("直属与越级上司", "暂不计入已阅读"),
+            (59, "a"): ("剩余损失降至五", "诚信记录增加一点"),
+            (59, "b"): ("保留九点损失", "诚信记录不增加"),
+            (61, "a"): ("短事实汇报制度", "一小时容量"),
+            (61, "b"): ("长叙事汇报制度", "四小时容量"),
+            (64, "a"): ("未来责任转给继任者", "旧案仍归原上司"),
+            (64, "b"): ("未来责任暂不转移",),
+            (65, "a"): ("两名旧部", "八名原团队成员"),
+            (65, "b"): ("三名旧部", "七名原团队成员", "任人唯亲审计"),
+            (66, "a"): ("释放全部剩余容量", "保留已验证功劳"),
+            (66, "b"): ("暂不释放容量", "不改写个人功劳"),
+            (68, "a"): ("一个保护周期", "绩效改进计划", "不占本期名额"),
+            (68, "b"): ("一个保护周期", "不携带绩效改进计划", "不占本期名额"),
+            (129, "a"): ("保留两周期资格", "本期不授予"),
+            (129, "b"): ("占用唯一槽位", "本期立即授予", "资格保留两周期"),
+        }
+        for (mid, letter), tokens in expected_tokens.items():
+            value = chinese[f"zg361cp.{mid}.{letter}"]
+            with self.subTest(mid=mid, letter=letter):
+                for token in tokens:
+                    self.assertIn(token, value)
+
+        for mid in (27, 57, 64):
+            with self.subTest(mid=mid, field="desc"):
+                self.assertNotRegex(chinese[f"zg361cp.{mid}.desc"], r"亲自签字|亲自表示同意")
+
     def test_localization_keysets_match_and_seven_languages_are_english_placeholders(self) -> None:
         paths = {
             language: MOD_ROOT / "localization" / language / f"zg361_credit_project_l_{language}.yml"
