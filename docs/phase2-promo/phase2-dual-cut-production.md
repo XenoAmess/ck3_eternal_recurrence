@@ -110,6 +110,13 @@ post-candidate materializer 的 `final-storyboard.json` 使用同一组 director
 导出预检仍必须在真实 candidate、自动审计 artifact 与 release state 齐备后运行；0/8 阶段只能验证确定性的 policy/命令模板，不能让
 `xar-promo export --validate-only` 在缺少候选时伪造 GREEN。
 
+runbook 的 `source_footage_human_review_1x.receipt_template` 同时给出 promotion 实际消费的
+`zg361_phase2_source_review_receipt` 待填模板。它在 0/8 时固定为 `result=PENDING`、`decision=pending`、
+`template_only=true`、`is_signoff=false`，并为八个 gameplay 章各列一个 context 和 action 原片选择槽，共 16 槽；每槽的目标成片
+timecode 已填写，但 raw capture、原片起止时间、实取时长和 review result 都保持空值。8/8 到齐后把该对象复制到声明的
+`source-review-receipt.template.json`，绑定真实 intake 和原片字节，再由具名审核人完整 1× 审阅后另存正式 receipt；不得直接修改
+runbook 或把 `planned_cue_ids` 当作 `approved_cue_ids`。
+
 ## 无媒体校验
 
 ```powershell

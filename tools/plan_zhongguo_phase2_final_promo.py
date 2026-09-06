@@ -485,6 +485,88 @@ def _editorial_timeline_plan(
     }
 
 
+def _source_review_receipt_template(
+    *,
+    cut: Phase2PromoCut,
+    project_record: Mapping[str, object],
+    authoring_record: Mapping[str, object],
+    authoring_claims: object,
+    editorial_timeline: Mapping[str, object],
+) -> dict[str, object]:
+    """Return an explicitly pending template for the later human receipt."""
+
+    claim_rows = authoring_claims if isinstance(authoring_claims, list) else []
+    planned_cue_ids = [
+        str(cue.get("id"))
+        for row in claim_rows
+        if isinstance(row, Mapping)
+        for cue in [row.get("cue")]
+        if isinstance(cue, Mapping) and isinstance(cue.get("id"), str)
+    ]
+    chapter_rows = editorial_timeline.get("chapters")
+    chapter_rows = chapter_rows if isinstance(chapter_rows, list) else []
+    windows: list[dict[str, object]] = []
+    for chapter in chapter_rows:
+        if not isinstance(chapter, Mapping) or chapter.get("chapter_type") != "ck3_clean_span":
+            continue
+        slots = chapter.get("visual_slots")
+        slots = slots if isinstance(slots, list) else []
+        for slot in slots:
+            if not isinstance(slot, Mapping) or slot.get("role") not in {
+                "context",
+                "action",
+            }:
+                continue
+            windows.append(
+                {
+                    "chapter_id": chapter.get("chapter_id"),
+                    "role": slot.get("role"),
+                    "producer_key": slot.get("producer_key"),
+                    "target_timeline": {
+                        "start_seconds": slot.get("start_seconds"),
+                        "end_seconds": slot.get("end_seconds"),
+                        "duration_seconds": slot.get("duration_seconds"),
+                    },
+                    "source_selection": {
+                        "raw_capture": None,
+                        "start_seconds": None,
+                        "end_seconds": None,
+                        "duration_seconds": None,
+                        "review_result": "pending",
+                    },
+                }
+            )
+    return {
+        "schema_version": 1,
+        "kind": "zg361_phase2_source_review_receipt",
+        "result": "PENDING",
+        "decision": "pending",
+        "cut_id": cut.cut_id,
+        "playback_speed": 1,
+        "full_duration_reviewed": False,
+        "reviewer": None,
+        "reviewed_at": None,
+        "all_claims_supported": False,
+        "planned_cue_ids": planned_cue_ids,
+        "approved_cue_ids": [],
+        "template_only": True,
+        "is_signoff": False,
+        "project_config": dict(project_record),
+        "authoring_ledger": dict(authoring_record),
+        "footage_intake": None,
+        "editorial_source_windows": windows,
+        "canonical_result_windows": (
+            "bind automatically from the GREEN intake clean spans; do not "
+            "replace context/action selections with repeated clean holds"
+        ),
+        "instantiation": (
+            "copy this object after 8/8 intake; bind the exact intake record, "
+            "fill all 16 raw-capture windows, record the named 1x human review, "
+            "and only then set result/decision/approval/template/signoff fields"
+        ),
+    }
+
+
 def build_runbook(
     *,
     project_config: Path,
@@ -654,6 +736,9 @@ def build_runbook(
     promoted_config = authoring_attempt / config.name
     footage_intake_report = authoring_attempt / "footage-intake.json"
     source_review_receipt = authoring_attempt / "source-review-receipt.json"
+    source_review_receipt_template = (
+        authoring_attempt / "source-review-receipt.template.json"
+    )
     promotion_receipt = authoring_attempt / "authoring-promotion-receipt.json"
     tts_prime_receipt = authoring_attempt / "tts-cache-prime-receipt.json"
     media_receipt = authoring_attempt / "media-preflight.json"
@@ -675,6 +760,17 @@ def build_runbook(
         post_candidate_root / "human-reviews" / "final-candidate-pass.json"
     )
     release_export_policy = post_candidate_root / "release-export-policy.json"
+    project_record = project.get("record")
+    authoring_record = authoring.get("record")
+    source_review_template = _source_review_receipt_template(
+        cut=cut,
+        project_record=(project_record if isinstance(project_record, Mapping) else {}),
+        authoring_record=(
+            authoring_record if isinstance(authoring_record, Mapping) else {}
+        ),
+        authoring_claims=authoring.get("claims"),
+        editorial_timeline=editorial_timeline,
+    )
     cli_prefix = [str(python.resolve()), "-m", "xar_promo.cli"]
     media_arg = str(media_receipt)
     media_preflight_command = [
@@ -726,6 +822,8 @@ def build_runbook(
             "human_pause": True,
             "gate": "named human watches all eight raw spans completely at 1x and writes the cut-specific source-review receipt at the declared path; confirms every promoted cue is supported; historical characters only; no fixture/test UI; no crop, mask, or redaction",
             "receipt_path": str(source_review_receipt),
+            "receipt_template_path": str(source_review_receipt_template),
+            "receipt_template": source_review_template,
         },
         {
             "ordinal": 4,
@@ -925,6 +1023,9 @@ def build_runbook(
             "authoring_attempt": str(authoring_attempt),
             "footage_intake_report": str(footage_intake_report),
             "source_review_receipt": str(source_review_receipt),
+            "source_review_receipt_template": str(
+                source_review_receipt_template
+            ),
             "promoted_project_config": str(promoted_config),
             "authoring_promotion_receipt": str(promotion_receipt),
             "tts_cache_prime_receipt": str(tts_prime_receipt),

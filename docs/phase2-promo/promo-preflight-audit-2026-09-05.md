@@ -279,3 +279,10 @@ FFmpeg，也没有把当前 0/8 改写为已有素材。完整时间码与后续
 `2026-09-07T16:28:36Z`。两份 environment preflight
 为 GREEN，但 final readiness 均继续为 `RED [footage_pending, publish_target_pending]`，execution attestation 中 CK3、TTS、FFmpeg encode、
 字幕媒体、workdir 和 candidate 全为 false。
+
+planner 同时补齐了 promotion 所需 source-review receipt 的待填结构和 16 个 context/action 原片时间码槽；所有 source 字段仍为 null，
+状态固定为 `PENDING/template_only`。0/8 实跑输出位于
+`Z:\ck3_mod_rewrite\_runtime\phase2-promo-editorial-plan-20260907-0045`：人物版 runbook SHA-256
+`9ED8B6DE0D13CEE6CF3F6FCEA37340C082830DCD5253E3A32266D0C342ECAB8E`，制度版 SHA-256
+`6E7E36F3FE20714961F656DD276E8C4F61F57558667C9C77A959DA9D034F9A76`；两者均按预期返回
+`RED [footage_pending]`，不是 source-review sign-off。

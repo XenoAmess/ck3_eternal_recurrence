@@ -207,6 +207,50 @@ class FinalPromoRunbookTests(unittest.TestCase):
                 [step["ordinal"] for step in runbook["ordered_steps"]],
                 list(range(1, 15)),
             )
+            source_review = next(
+                step
+                for step in runbook["ordered_steps"]
+                if step["id"] == "source_footage_human_review_1x"
+            )
+            template = source_review["receipt_template"]
+            self.assertEqual(
+                runbook["planned_paths"]["source_review_receipt_template"],
+                source_review["receipt_template_path"],
+            )
+            self.assertEqual("zg361_phase2_source_review_receipt", template["kind"])
+            self.assertEqual("PENDING", template["result"])
+            self.assertEqual("pending", template["decision"])
+            self.assertEqual(runbook["cut"]["id"], template["cut_id"])
+            self.assertTrue(template["template_only"])
+            self.assertFalse(template["is_signoff"])
+            self.assertFalse(template["full_duration_reviewed"])
+            self.assertFalse(template["all_claims_supported"])
+            self.assertIsNone(template["reviewer"])
+            self.assertIsNone(template["reviewed_at"])
+            self.assertIsNone(template["footage_intake"])
+            self.assertEqual([], template["approved_cue_ids"])
+            self.assertEqual(10, len(template["planned_cue_ids"]))
+            self.assertEqual(16, len(template["editorial_source_windows"]))
+            self.assertEqual(
+                {"context", "action"},
+                {
+                    row["role"]
+                    for row in template["editorial_source_windows"]
+                },
+            )
+            self.assertTrue(
+                all(
+                    row["source_selection"]
+                    == {
+                        "raw_capture": None,
+                        "start_seconds": None,
+                        "end_seconds": None,
+                        "duration_seconds": None,
+                        "review_result": "pending",
+                    }
+                    for row in template["editorial_source_windows"]
+                )
+            )
             signoff = next(
                 step
                 for step in runbook["ordered_steps"]
