@@ -564,6 +564,58 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 2,
     },
+    "ep1_flavor.2040": {
+        # CK3 1.19.0.6 exotic-arms delivery. The R183 frame has no eligible
+        # player artifact to trade, so authored option 1 is hidden and the
+        # rendered buttons map to native indices 1/2. Authored option 2 spends
+        # major gold and transfers the generated blade; authored option 3 is
+        # the terminal refusal and adds no gameplay effect. Bind the complete
+        # eleven-scope frame, including the generated merchant/blade lineage,
+        # before selecting that least-disruptive terminal route.
+        "date_raw": 53174184,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "exotic_blade_holder": 34092,
+            "exotic_arms_target": 32904,
+            "owner": 34092,
+            "foreign_merchant": 65791,
+        },
+        "scope_types": {
+            "exotic_blade_holder": "character",
+            "exotic_arms_target": "character",
+            "owner": "character",
+            "weapon_type": "flag",
+            "random_quality_bonus": "value",
+            "quality": "value",
+            "wealth": "value",
+            "newly_created_artifact": "artifact",
+            "merchant_county": "landed_title",
+            "foreign_merchant": "character",
+            "exotic_blade": "artifact",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "exotic_blade_holder",
+            "exotic_arms_target",
+            "owner",
+            "weapon_type",
+            "random_quality_bonus",
+            "quality",
+            "wealth",
+            "newly_created_artifact",
+            "merchant_county",
+            "foreign_merchant",
+            "exotic_blade",
+        ),),
+        "saved_scope_count": 11,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
     "epidemic_events.1100": {
         # CK3 1.19.0.6 outbreak notification. Its immediate block has already
         # recorded the notified epidemic and installed county-side outbreak

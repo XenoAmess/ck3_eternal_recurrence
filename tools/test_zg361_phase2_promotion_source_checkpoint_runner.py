@@ -5368,5 +5368,95 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(report["gameplay_green_claimed"])
 
 
+    def test_ep1_flavor_2040_binds_r183_exotic_blade_refusal(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "ep1_flavor.2040"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 65,
+            "date_raw": 53174184,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("exotic_blade_holder", "character", 34092),
+                scope("exotic_arms_target", "character", 32904),
+                scope("owner", "character", 34092),
+                scope("weapon_type", "flag"),
+                scope("random_quality_bonus", "value"),
+                scope("quality", "value"),
+                scope("wealth", "value"),
+                scope("newly_created_artifact", "artifact"),
+                scope("merchant_county", "landed_title"),
+                scope("foreign_merchant", "character", 65791),
+                scope("exotic_blade", "artifact"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_option_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_option_index in enumerate((1, 2))
+            ],
+        }
+        snapshot = {
+            "date_raw": 53174184,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 65}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(scope("unreviewed", "value"))
+        self.assertFalse(checks_for(extra_scope)["saved_scope_count"])
+
+        wrong_holder = copy.deepcopy(context)
+        wrong_holder["saved_scopes"][0] = scope(
+            "exotic_blade_holder", "character", 34093
+        )
+        self.assertFalse(checks_for(wrong_holder)["scope:exotic_blade_holder"])
+
+        purchase_only_shape = copy.deepcopy(context)
+        purchase_only_shape["options"] = purchase_only_shape["options"][:1]
+        self.assertFalse(checks_for(purchase_only_shape)["authored_options_exact"])
+
+
 if __name__ == "__main__":
     unittest.main()
