@@ -39,7 +39,76 @@ def _nonhuman_reward_scopes() -> list[dict[str, object]]:
     ]
 
 
+def _resource_reward_scopes(resource_type: str) -> list[dict[str, object]]:
+    return [
+        _scope("actor", "character", 30502),
+        _scope("recipient", "character", 32904),
+        _scope("secondary_actor", "character", unavailable_character=True),
+        _scope("secondary_recipient", "character", unavailable_character=True),
+        _scope("intermediary", "character", unavailable_character=True),
+        *[
+            _scope(f"{size}_{resource_type}_tribute", "boolean")
+            for size in ("small", "adequate", "excessive")
+        ],
+        _scope("tribute_mission_target", "character", 32904),
+        _scope("tributary_scope", "character", 30502),
+        _scope("overlord_scope", "character", 32904),
+        _scope("receiving_character", "character", 32904),
+        _scope("opinion_of_tributary", "value"),
+        _scope("tribute_reward_type_treasury", "value"),
+        _scope("saved_innovation", "culture_innovation"),
+        _scope("decided_on_treasury_reward", "flag"),
+    ]
+
+
 class ManagerRecoveryTributeInterruptTests(unittest.TestCase):
+    def test_resource_reward_routes_use_exact_typed_scope_variants(self) -> None:
+        event_key = "tribute_mission.1005"
+        contract = _manager_contract(event_key, player=32904)
+        for resource_type in ("gold", "herd"):
+            with self.subTest(resource_type=resource_type):
+                context = _context(
+                    event_key=event_key,
+                    instance_id=65,
+                    date_raw=53168208,
+                    player=32904,
+                    scopes=_resource_reward_scopes(resource_type),
+                    native_option_indices=(0, 1, 2, 3, 5, 6),
+                )
+                checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": 53168208,
+                        "active_event": {"option_count": 7},
+                    },
+                    event={"event_instance_id": 65},
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
+
+        drifted = _context(
+            event_key=event_key,
+            instance_id=65,
+            date_raw=53168208,
+            player=32904,
+            scopes=_resource_reward_scopes("gold"),
+            native_option_indices=(0, 1, 2, 3, 5, 6),
+        )
+        drifted["saved_scopes"][3] = _scope(
+            "secondary_recipient", "character", 30502
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53168208, "active_event": {"option_count": 7}},
+            event={"event_instance_id": 65},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drift_checks["scope:secondary_recipient:unavailable_character"]
+        )
+
     def test_nonhuman_reward_uses_exact_direct_scope_variant(self) -> None:
         event_key = "tribute_mission.1005"
         contract = _manager_contract(event_key, player=32904)

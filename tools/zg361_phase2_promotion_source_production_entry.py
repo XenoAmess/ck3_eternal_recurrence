@@ -48,6 +48,9 @@ from zg361_phase2_promotion_manager_tgp_interaction_contracts import (
 from zg361_phase2_promotion_manager_tgp_ministry_contracts import (
     MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_manager_tribute_contracts import (
+    MANAGER_TRIBUTE_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -595,202 +598,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 2),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 1,
-    },
-    "tribute_mission.1002": {
-        # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
-        # tribute: authored option 3 was hidden, leaving native indices
-        # 0/1/3. Options 1 and 2 install the character in the played ruler's
-        # court; option 4 declines that character and changes no product
-        # state. The event still advances to its vanilla reward decision,
-        # which must be reviewed under its own exact contract when observed.
-        "date_raw": 53150160,
-        "date_policy": "product-observation-window",
-        "root_character_id": 29037,
-        "character_scopes": {
-            "recipient": 29037,
-            "tribute_mission_target": 29037,
-            "overlord_scope": 29037,
-            "receiving_character": 29037,
-        },
-        "unique_character_scope_excludes": {
-            "actor": (29037,),
-            "secondary_recipient": (29037,),
-            "tributary_scope": (29037,),
-            "concubine_character": (29037,),
-            "human_tribute": (29037,),
-        },
-        "character_scope_matches_any": {
-            "tributary_scope": ("actor",),
-            "secondary_recipient": (
-                "concubine_character",
-                "human_tribute",
-            ),
-            "concubine_character": (
-                "secondary_recipient",
-                "human_tribute",
-            ),
-            "human_tribute": (
-                "secondary_recipient",
-                "concubine_character",
-            ),
-        },
-        "unavailable_character_scopes": (
-            "secondary_actor",
-            "intermediary",
-        ),
-        "scope_types": {
-            "opinion_of_tributary": "value",
-            "tribute_reward_type_treasury": "value",
-            "saved_innovation": "culture_innovation",
-        },
-        "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "actor",
-            "recipient",
-            "secondary_actor",
-            "secondary_recipient",
-            "intermediary",
-            "tribute_mission_target",
-            "tributary_scope",
-            "overlord_scope",
-            "receiving_character",
-            "opinion_of_tributary",
-            "concubine_character",
-            "human_tribute",
-            "tribute_reward_type_treasury",
-            "saved_innovation",
-        ),),
-        "saved_scope_count": 14,
-        "option_count": 3,
-        "snapshot_option_count": 4,
-        "native_option_indices": (0, 1, 3),
-        "selected_option_number": 4,
-        "selected_native_option_index": 3,
-        "max_occurrences": 1,
-    },
-    "tribute_mission.1005": {
-        # Reward decision after either a human-tribute route or the direct
-        # non-human tribute route. Native option 4 (monk) is hidden in the
-        # reviewed frames.
-        # Options 0-3 spend player resources or install stronger rewards;
-        # option 6 rejects the entire mission and adds a -50 opinion change.
-        # Native option 5 is the least disruptive valid completion: it grants
-        # generic legitimacy to the AI tributary without a player resource
-        # cost, then lets the source-authored arrival cleanup finish.
-        "date_raw": 53150184,
-        "date_policy": "product-observation-window",
-        "root_character_id": 29037,
-        "character_scopes": {
-            "recipient": 29037,
-            "tribute_mission_target": 29037,
-            "overlord_scope": 29037,
-            "receiving_character": 29037,
-        },
-        "unique_character_scope_excludes": {
-            "actor": (29037,),
-            "secondary_recipient": (29037,),
-            "tributary_scope": (29037,),
-            "human_tribute": (29037,),
-        },
-        "character_scope_matches_any": {
-            "tributary_scope": ("actor",),
-            "secondary_recipient": (
-                "concubine_character",
-                "human_tribute",
-            ),
-            "human_tribute": (
-                "secondary_recipient",
-                "concubine_character",
-            ),
-        },
-        "unavailable_character_scopes": (
-            "secondary_actor",
-            "intermediary",
-        ),
-        "scope_types": {
-            "opinion_of_tributary": "value",
-            "tribute_reward_type_treasury": "value",
-            "saved_innovation": "culture_innovation",
-            "decided_on_treasury_reward": "flag",
-        },
-        "optional_scope_types": {
-            "concubine_character": "character",
-            "rejected_concubine": "flag",
-        },
-        "boolean_scopes": (),
-        "saved_scope_name_sets": (
-            (
-                "actor",
-                "recipient",
-                "secondary_actor",
-                "secondary_recipient",
-                "intermediary",
-                "tribute_mission_target",
-                "tributary_scope",
-                "overlord_scope",
-                "receiving_character",
-                "opinion_of_tributary",
-                "concubine_character",
-                "human_tribute",
-                "tribute_reward_type_treasury",
-                "saved_innovation",
-                "rejected_concubine",
-                "decided_on_treasury_reward",
-            ),
-            (
-                "actor",
-                "recipient",
-                "secondary_actor",
-                "secondary_recipient",
-                "intermediary",
-                "tribute_mission_target",
-                "tributary_scope",
-                "overlord_scope",
-                "receiving_character",
-                "opinion_of_tributary",
-                "human_tribute",
-                "tribute_reward_type_treasury",
-                "saved_innovation",
-                "decided_on_treasury_reward",
-            ),
-        ),
-        # R155 reached .1005 directly from a non-human tribute route.  The
-        # source only creates human_tribute/concubine_character for the
-        # concubine/eunuch paths, so retain the stronger alias checks for the
-        # two reviewed human shapes above and bind the direct path through an
-        # exact scope-name variant instead of weakening the base contract.
-        "scope_variants": ({
-            "saved_scope_names": (
-                "actor",
-                "recipient",
-                "secondary_actor",
-                "secondary_recipient",
-                "intermediary",
-                "tribute_mission_target",
-                "tributary_scope",
-                "overlord_scope",
-                "receiving_character",
-                "opinion_of_tributary",
-                "tribute_reward_type_treasury",
-                "saved_innovation",
-                "decided_on_treasury_reward",
-            ),
-            "unique_character_scope_excludes": {
-                "actor": (29037,),
-                "secondary_recipient": (29037,),
-                "tributary_scope": (29037,),
-            },
-            "character_scope_matches_any": {
-                "tributary_scope": ("actor",),
-            },
-            "saved_scope_count": 13,
-        },),
-        "option_count": 6,
-        "snapshot_option_count": 7,
-        "native_option_indices": (0, 1, 2, 3, 5, 6),
-        "selected_option_number": 6,
-        "selected_native_option_index": 5,
         "max_occurrences": 1,
     },
     "ep3_interactions_events.0630": {
@@ -3138,6 +2945,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_DEBATE_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_PETITION_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TRIBUTE_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):
