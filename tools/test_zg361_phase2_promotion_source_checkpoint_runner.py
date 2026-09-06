@@ -1649,6 +1649,29 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertTrue(all(inherited_checks.values()), inherited_checks)
 
+        retirement_law = {
+            **context,
+            "current_event_instance_id": 21,
+            "date_raw": 53156928,
+            "saved_scopes": [
+                character_scope("petitioner", 28664),
+                generic_scope("actors_movement", "situation_participant_group"),
+                character_scope("hegemon", 32904),
+                character_scope("petition_recipient", 32904),
+                generic_scope("decrease_law", "boolean"),
+            ],
+        }
+        retirement_law_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53156928, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 21},
+            context=retirement_law,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(
+            all(retirement_law_checks.values()), retirement_law_checks
+        )
+
     def test_administrative_confirmation_interrupt_uses_terminal_refusal(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

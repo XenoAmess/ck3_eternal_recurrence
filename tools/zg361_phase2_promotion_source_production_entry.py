@@ -341,6 +341,27 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         ),),
         "saved_scope_count": 7,
         "scope_variants": ({
+            # A retirement-law petition carries the requested direction as a
+            # boolean and has no province/movement-member recipients.  R164
+            # observed this exact five-scope shape for decrease_law.
+            "saved_scope_names": (
+                "petitioner",
+                "actors_movement",
+                "hegemon",
+                "petition_recipient",
+                "decrease_law",
+            ),
+            "saved_scope_count": 5,
+            "scope_types": {
+                "petitioner": "character",
+                "actors_movement": "situation_participant_group",
+            },
+            "boolean_scopes": ("decrease_law",),
+            "unique_character_scope_excludes": {
+                "petitioner": (29037,),
+            },
+            "character_scope_matches_any": {},
+        }, {
             # A later movement petition can retain both the disciple and
             # house participant selected by its source situation.  Neither is
             # consumed by option 3, but bind their exact names and character
