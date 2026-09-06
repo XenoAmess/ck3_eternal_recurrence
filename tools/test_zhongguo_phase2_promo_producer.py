@@ -22,6 +22,7 @@ if str(TOOLS) not in sys.path:
 
 from zhongguo_phase2_promo_producer import (
     PHASE2_PROMO_CAPTURE_SPAN_MAP,
+    PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS,
     Phase2PromoProducerContractError,
     Phase2PromoProducerError,
     Phase2PromoProducerUnavailable,
@@ -45,6 +46,7 @@ class _Recorder:
         self.contract = _Contract(contract)
         self.calls: list[str] = []
         self.clean_labels: list[str] = []
+        self.clean_holds: list[tuple[str, float]] = []
 
     def resolve_reviewed_subject(self, history_id: str) -> None:
         self.calls.append(f"resolve:{history_id}")
@@ -52,9 +54,10 @@ class _Recorder:
     def start(self) -> None:
         self.calls.append("start")
 
-    def clean_hold(self, label: str, *_args: object, **_kwargs: object) -> None:
+    def clean_hold(self, label: str, *_args: object, **kwargs: object) -> None:
         self.calls.append("clean_hold")
         self.clean_labels.append(label)
+        self.clean_holds.append((label, float(kwargs["seconds"])))
 
     def stop(self) -> None:
         self.calls.append("stop")
@@ -529,6 +532,13 @@ class Phase2PromoProducerScaffoldTests(unittest.TestCase):
         self.assertEqual(
             recorder.clean_labels,
             [chapter_id for chapter_id, _ in PHASE2_PROMO_CAPTURE_SPAN_MAP],
+        )
+        self.assertEqual(
+            recorder.clean_holds,
+            [
+                (chapter_id, PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS)
+                for chapter_id, _ in PHASE2_PROMO_CAPTURE_SPAN_MAP
+            ],
         )
         self.assertEqual(
             recorder.calls,

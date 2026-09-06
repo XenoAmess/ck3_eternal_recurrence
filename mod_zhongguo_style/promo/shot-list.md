@@ -57,8 +57,26 @@ runner 捕获，不得继续写进正式 manifest 或旁白角标**。六张图�
 
 producer 必须在 timeline 写入 `capture_mode=zhongguo-361-phase2`、version `1`、固定
 producer id 和完整 `span_map`；二期 preset 会拒绝缺字段、乱序、额外旧 span 或 legacy
-capture。当前视觉 hook 尚未注册，入口会在启动 CK3 前明确 RED；因此这里记录的是待施工
-接口，不是八段实机素材或 `production-live` 证据。
+capture。默认 composite driver 现已拥有八个 visual handler，但这只说明入口已接线；当前仍没有
+任何通过 intake 的二期实机 span，因此这里记录的是拍摄合同，不是八段实机素材或
+`production-live` 证据。
+
+### 当前可执行的镜头时长基线
+
+候选 builder 将每章的一条旁白直接绑定到同名 clean span，并在旁白长于 span 时明确 RED。
+两份当前 authoring ledger 按 builder 的同一草稿估算式计算，人物版十章约 `94.190 s`，制度群像版
+十章约 `92.524 s`，后者另有两段各 `2.0 s` 的无旁白回切，故当前机器可执行时间线约为
+`94.190 s` 与 `96.524 s`。八个 gameplay cue 的最大草稿时长为 `11.038 s`。
+
+managed producer 的默认 clean hold 因此固定为每段 `15.0 s`，给当前最长草稿旁白留下约
+`3.962 s` 余量。它发生在 handler 已证明 surface 与 postcondition GREEN 之后；原始 MKV 仍保留
+此前的动作过程，但 builder 的正式同名 clean span 是这段结果画面。真人 source review 必须按实际
+画面决定旁白是否还能成立，不能把 raw recording 中未进入 clean 边界的动作冒充已入片。
+
+这项 `15.0 s` 基线只防止已知的 `2.5 s span < 7.705–11.038 s cue` 构建失败，不会把素材
+从 `0/8` 提升为 live，也没有解决两份导演稿的 `09:30` 目标与当前约 `01:34–01:37` authoring
+时间线之间的内容差距。该差距必须在真实素材审阅后通过修改导演目标或另行扩写经审阅旁白来闭合；
+本轮不预写选择，也不生成占位镜头。
 
 ## 没有独立实录的章节
 

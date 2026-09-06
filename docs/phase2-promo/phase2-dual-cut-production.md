@@ -95,7 +95,7 @@ legacy 名称，以免审阅者无法判断正在签哪一个版本。
 
 ## 8/8 素材到齐后的真实媒体命令链
 
-下面两条链彼此独立；它们只共享已经通过 intake 的八段原始素材和内容寻址 TTS cache。`<...>` 必须替换为真实路径或刚刚打印出的真实哈希，不能使用占位内容执行。两条链都必须先让宣传工具完成 fresh fetch/fast-forward，并设置 `XAR_PROMO_SOURCE`，确保 Python 和后续 `xar-promo` 命令读取的是同一份最新源码。
+下面两条链彼此独立；它们只共享已经通过 intake 的八段原始素材和内容寻址 TTS cache。`<...>` 必须替换为真实路径或刚刚打印出的真实哈希，不能使用占位内容执行。两条链都必须先让宣传工具完成 fresh fetch/fast-forward，并同时设置 `XAR_PROMO_SOURCE` 与指向同一 checkout `src` 的 `PYTHONPATH`，确保项目 wrapper 和后续直接 `xar-promo` 命令读取的是同一份最新源码。当前共享 venv 的安装元数据仍可能指向旧版，不能只设置前者便声称直接 CLI 已绑定最新源码。
 
 ### 人物线版本
 
@@ -109,6 +109,7 @@ $TtsCache = '<SHARED_CONTENT_ADDRESSED_TTS_CACHE>'
 $Work = '<NEW_CHARACTER_WORK_DIR>'
 $Authoring = "$Work-authoring"
 $env:XAR_PROMO_SOURCE = $Promo
+$env:PYTHONPATH = (Join-Path $Promo 'src')
 
 git -C $Promo fetch origin
 git -C $Promo merge --ff-only origin/main
@@ -178,6 +179,7 @@ $TtsCache = '<SHARED_CONTENT_ADDRESSED_TTS_CACHE>'
 $Work = '<NEW_INSTITUTION_WORK_DIR>'
 $Authoring = "$Work-authoring"
 $env:XAR_PROMO_SOURCE = $Promo
+$env:PYTHONPATH = (Join-Path $Promo 'src')
 
 git -C $Promo fetch origin
 git -C $Promo merge --ff-only origin/main

@@ -4,7 +4,7 @@
 
 ## 当前结论
 
-- 宣传工具 fresh checkout：`Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903`。
+- 宣传工具当前可写 checkout：`Z:\workspace\xar_promo_toolchain`。
 - 已核对 `HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净。
 - 在该 checkout 下复跑完整工具测试：`263` 项通过、`2` 项跳过。
 - 双版交付队列报告：`Z:\ck3_mod_rewrite\_root-promo-split-20260902\_runtime\promo-inventory-20260903\delivery-queue-20260903-1236.json`，SHA-256 `4C7369DFBA31BF407EB42C8B3D46963E42153691D1BBCC4615F17B60FC129723`。
@@ -59,7 +59,7 @@
 下面命令只读检查宣传工具版本和工作树，不拉取、不修改工具 checkout，也不会启动 CK3：
 
 ```powershell
-$ZgPromo = 'Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903'
+$ZgPromo = 'Z:\workspace\xar_promo_toolchain'
 $ZgToolHead = (& git -c "safe.directory=$ZgPromo" -C $ZgPromo rev-parse HEAD).Trim()
 $ZgToolOrigin = (& git -c "safe.directory=$ZgPromo" -C $ZgPromo rev-parse origin/main).Trim()
 $ZgToolDirty = (& git -c "safe.directory=$ZgPromo" -C $ZgPromo status --porcelain)
@@ -70,6 +70,7 @@ if ($ZgToolHead -ne '57c42fca13ea459432c1caf76e069a1fbccf602c') {
 }
 
 $env:XAR_PROMO_SOURCE = $ZgPromo
+$env:PYTHONPATH = (Join-Path $ZgPromo 'src')
 $ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
 & $ZgPython -m unittest discover `
   -s (Join-Path $ZgPromo 'tests') -q
@@ -160,7 +161,9 @@ $ZgIntake = '<NEW_INTAKE_REPORT_JSON>'
 ```powershell
 $ZgRepo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
 $ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$env:XAR_PROMO_SOURCE = 'Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903'
+$ZgPromo = 'Z:\workspace\xar_promo_toolchain'
+$env:XAR_PROMO_SOURCE = $ZgPromo
+$env:PYTHONPATH = (Join-Path $ZgPromo 'src')
 $ZgCapture = '<GREEN_CAPTURE_ROOT>'
 $ZgIntake = '<GREEN_INTAKE_REPORT_JSON>'
 $ZgToolHead = '57c42fca13ea459432c1caf76e069a1fbccf602c'
@@ -281,4 +284,4 @@ $ZgInstMediaSha = (Get-FileHash -Algorithm SHA256 $ZgInstMedia).Hash
 
 ## 本次静态核验
 
-在不启动 CK3 的前提下，本轮相关测试共 `50/50` 通过：queue `4/4`、footage intake `12/12`、双 cut completion `9/9`、authoring ledger `12/12`、media preflight `5/5`、authoring promotion `3/3`、runbook planner `5/5`；fresh promo-tool checkout 另有 `263 passed, 2 skipped`。`git diff --check` 和 Python 编译检查也通过。media preflight 测试使用 `XAR_PROMO_SOURCE=Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903`，避免误读未安装的全局包。
+在不启动 CK3 的前提下，本轮相关测试共 `50/50` 通过：queue `4/4`、footage intake `12/12`、双 cut completion `9/9`、authoring ledger `12/12`、media preflight `5/5`、authoring promotion `3/3`、runbook planner `5/5`；宣传工具 checkout 另有 `263 passed, 2 skipped`。`git diff --check` 和 Python 编译检查也通过。media preflight 与直接 CLI 必须同时使用 `XAR_PROMO_SOURCE=Z:\workspace\xar_promo_toolchain` 和 `PYTHONPATH=Z:\workspace\xar_promo_toolchain\src`，避免误读共享 venv 中仍可能存在的旧安装元数据。

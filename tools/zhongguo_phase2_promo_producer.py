@@ -29,6 +29,12 @@ PHASE2_PROMO_CAPTURE_CONTRACT_VERSION: Final = 1
 PHASE2_PROMO_CAPTURE_PRODUCER_ID: Final = (
     "zhongguo-361-phase2-visual-producer-v1"
 )
+# The candidate builder binds one narration cue to each clean gameplay span and
+# rejects a cue that is longer than its source span.  The current two authoring
+# cuts have an 11.038-second maximum draft cue, so the managed recorder keeps a
+# small, deterministic margin instead of retaining the historical 2.5-second
+# evidence-only hold.
+PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS: Final = 15.0
 PHASE2_PROMO_CLEAN_SPANS: Final = (
     "phase2_fact_quota_calibration",
     "phase2_receipt_appeal_pip",
@@ -893,7 +899,7 @@ def make_eight_span_phase2_choreography(
     visual_primitives: Mapping[str, Phase2PromoVisualPrimitive] | None = None,
     *,
     reviewed_history_id: str,
-    hold_seconds: float = 2.5,
+    hold_seconds: float = PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS,
     span_driver_factory: Phase2SpanDriverFactory | None = None,
 ) -> Choreography:
     """Adapt the visual primitive registry to the shared eight-span executor."""
@@ -1055,7 +1061,7 @@ def make_managed_phase2_promo_capture_producer(
     visual_primitives: Mapping[str, Phase2PromoVisualPrimitive] | None = None,
     reviewed_history_id: str,
     error_factory: ProducerErrorFactory | None = None,
-    hold_seconds: float = 2.5,
+    hold_seconds: float = PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS,
     span_driver_factory: Phase2SpanDriverFactory | None = None,
 ) -> Phase2PromoProducerScaffold:
     """Build the concrete managed-runtime/eight-span producer adapter."""
@@ -1145,6 +1151,7 @@ __all__ = [
     "PHASE2_PROMO_CAPTURE_PRODUCER_ID",
     "PHASE2_PROMO_CAPTURE_SPAN_MAP",
     "PHASE2_PROMO_CLEAN_SPANS",
+    "PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS",
     "Phase2PromoCaptureContext",
     "Phase2PromoProducerContractError",
     "Phase2PromoProducerError",
