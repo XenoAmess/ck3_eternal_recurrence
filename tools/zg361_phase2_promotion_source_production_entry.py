@@ -569,6 +569,36 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
         "max_occurrences": 1,
     },
+    "adultery.0002": {
+        # CK3 1.19.0.6 spouse-suspicion event. Confrontation opens a new event
+        # chain, investigation runs a duel, and spying mutates the spymaster's
+        # council task. Authored option 4 does nothing and is the only bounded
+        # terminal route without those state changes.
+        "date_raw": 53169888,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "spouse": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "lover_spouse": (29037,),
+        },
+        "scope_types": {
+            "lover_spouse": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "spouse",
+            "lover_spouse",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (0, 2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "max_occurrences": 1,
+    },
     "tgp_interaction_event.0015": {
         # CK3 1.19.0.6 notification sent to a military governor after another
         # governor has been ordered into the recipient's wars. The interaction
