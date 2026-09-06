@@ -1328,15 +1328,19 @@ class CompensationRuntimeTests(unittest.TestCase):
         for route in (1, 2, 3):
             self.assertEqual(player_card.count(f"ROUTE = {route}"), 14)
         for key, domain_number, state in generator.PORTFOLIO_STAGES:
-            domain = key.rstrip("12345")
             for route in (1, 2, 3):
                 with self.subTest(stage=key, route=route):
+                    expected_trigger = generator.portfolio_option_trigger(
+                        key, domain_number, state, route
+                    )
+                    trigger_pattern = r"\s+".join(
+                        re.escape(token) for token in expected_trigger.split()
+                    )
                     option_pattern = re.compile(
                         rf"option\s*=\s*\{{\s*"
                         rf"name\s*=\s*zg361comp\.1\.{key}\.r{route}\s*"
                         rf"trigger\s*=\s*\{{\s*"
-                        rf"var:zg361_comp_portfolio_domain\s*=\s*{domain_number}\s*"
-                        rf"var:zg361_comp_portfolio_stage\s*=\s*{state}\s*\}}\s*"
+                        rf"{trigger_pattern}\s*\}}\s*"
                         rf"zg361_comp_portfolio_apply_stage_effect\s*=\s*\{{\s*"
                         rf"ROUTE\s*=\s*{route}\s*\}}\s*\}}",
                         re.DOTALL,
@@ -1356,7 +1360,8 @@ class CompensationRuntimeTests(unittest.TestCase):
             if "title =" in source and "zg361_comp_portfolio_apply_stage_effect" in source:
                 titled_portfolio_cards.append(event_name)
         self.assertEqual(titled_portfolio_cards, ["zg361comp.1"])
-        self.assertEqual(player_card.count("var:zg361_comp_portfolio_subject = {"), 1)
+        # One event-level alive guard plus the two AF5 resource gates.
+        self.assertEqual(player_card.count("var:zg361_comp_portfolio_subject = {"), 3)
         self.assertIn(
             "limit = { has_variable = zg361_comp_portfolio_subject }", player_card
         )
@@ -1386,6 +1391,42 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertIn(f"scope:zg361_comp_notify_domain = {domain_number}", notifier)
             self.assertIn(f"var:zg361_case_{domain}_owner", notifier)
         self.assertEqual(notifier.count("zg361_comp_portfolio_refresh_effect = yes"), 3)
+
+    def test_af5_visible_routes_match_m300_executable_guards(self) -> None:
+        # M299 classifies the departure for every route and adds no separate
+        # resource gate.  M300 therefore owns the AF5 option availability.
+        self.assertEqual(generator.behavior_guard(299), "")
+        self.assertEqual(generator.finance_guard(299, "af"), "")
+        m300_core = top_level_block(self.effects, "zg361_comp_m300_core_effect")
+
+        af5_route1 = generator.portfolio_option_trigger("af5", 3, 5, 1)
+        af5_route2 = generator.portfolio_option_trigger("af5", 3, 5, 2)
+        af5_route3 = generator.portfolio_option_trigger("af5", 3, 5, 3)
+        for trigger in (af5_route1, af5_route2):
+            self.assertIn("var:zg361_comp_af_vested_units >= 10", trigger)
+        for token in (
+            "has_treasury = yes",
+            "treasury >= 7",
+            "gold >= 3",
+            "var:zg361_comp_af_treasury_available >= 7",
+            "var:zg361_comp_af_personal_available >= 3",
+            "has_variable = zg361_comp_m300_buyback_treasury_status",
+            "var:zg361_comp_m300_buyback_treasury_status = 0",
+            "var:zg361_comp_af_queue_tail = var:zg361_comp_af_queue_head",
+        ):
+            self.assertIn(token, m300_core)
+            self.assertIn(token, af5_route1)
+            self.assertNotIn(token, af5_route2)
+            self.assertNotIn(token, af5_route3)
+        self.assertIn("NOT = { scope:zg361_comp_route = 3 }", m300_core)
+        self.assertNotIn("var:zg361_comp_af_vested_units", af5_route3)
+        self.assertEqual(
+            af5_route3,
+            "var:zg361_comp_portfolio_domain = 3\n"
+            "var:zg361_comp_portfolio_stage = 5",
+        )
+        with self.assertRaises(ValueError):
+            generator.portfolio_option_trigger("af5", 3, 5, 4)
 
     def test_portfolio_async_entries_drop_a_dead_or_invalid_subject_before_dereference(self) -> None:
         cleanup = top_level_block(

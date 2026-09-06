@@ -404,21 +404,24 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
 
-    def test_compensation_card_binds_42_authored_slots_to_3_visible_routes(self) -> None:
+    def test_compensation_card_keeps_42_authored_slots_and_terminates_af5(self) -> None:
         event_key = "zg361comp.1"
         contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS[event_key],
             starting_date=53157768,
         )
-        for stage_index in range(14):
-            option_start = stage_index * 3
-            context = {
+
+        def context_for(
+            *, stage_index: int, native_option_indices: tuple[int, ...],
+            instance_id: int,
+        ) -> dict[str, object]:
+            return {
                 "schema": "current-event-window-context-v1",
                 "schema_version": 1,
                 "status": "available",
                 "window_match_count": 1,
                 "event_definition_key": event_key,
-                "current_event_instance_id": 49 + stage_index,
+                "current_event_instance_id": instance_id,
                 "date_raw": 53157768 + stage_index * 24,
                 "root_scope": {
                     "status": "available",
@@ -433,15 +436,28 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 "options": [
                     {
                         "rendered_index": index,
-                        "native_option_index": option_start + index,
+                        "native_option_index": native_option_index,
                         "shown": True,
                         "enabled": True,
                         "fallback": False,
                         "cancel": False,
                     }
-                    for index in range(3)
+                    for index, native_option_index in enumerate(
+                        native_option_indices
+                    )
                 ],
             }
+
+        # L1-L4, AE1-AE5 and AF1-AF4 retain route 1.
+        for stage_index in range(13):
+            native_option_indices = tuple(
+                range(stage_index * 3, stage_index * 3 + 3)
+            )
+            context = context_for(
+                stage_index=stage_index,
+                native_option_indices=native_option_indices,
+                instance_id=49 + stage_index,
+            )
             checks = production._known_interrupt_checks(
                 snapshot={
                     "date_raw": context["date_raw"],
@@ -454,6 +470,110 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
 
             self.assertTrue(all(checks.values()), (stage_index, checks))
+            effective = production._option_contract_for_context(
+                context["options"], contract
+            )
+            self.assertEqual(effective["snapshot_option_count"], 42)
+            self.assertEqual(
+                effective["selected_option_number"], stage_index * 3 + 1
+            )
+            self.assertEqual(
+                effective["selected_native_option_index"], stage_index * 3
+            )
+
+        # AF5 route 3 is authored option 42/native index 41.  It remains the
+        # deterministic terminal route as resource gating projects 3, 2 or 1
+        # visible choices from the unchanged 42-slot authored event.
+        for variant_index, native_option_indices in enumerate(
+            ((39, 40, 41), (40, 41), (41,))
+        ):
+            with self.subTest(
+                af5_visible=len(native_option_indices),
+                native_option_indices=native_option_indices,
+            ):
+                instance_id = 80 + variant_index
+                context = context_for(
+                    stage_index=13,
+                    native_option_indices=native_option_indices,
+                    instance_id=instance_id,
+                )
+                snapshot = {
+                    "date_raw": context["date_raw"],
+                    "active_event": {"option_count": 42},
+                }
+                event = {"event_instance_id": instance_id}
+                checks = production._known_interrupt_checks(
+                    snapshot=snapshot,
+                    event=event,
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
+                effective = production._option_contract_for_context(
+                    context["options"], contract
+                )
+                self.assertEqual(effective["snapshot_option_count"], 42)
+                self.assertEqual(
+                    effective["option_count"], len(native_option_indices)
+                )
+                self.assertEqual(effective["selected_option_number"], 42)
+                self.assertEqual(effective["selected_native_option_index"], 41)
+
+                class Service:
+                    def snapshot(self) -> dict[str, object]:
+                        return {
+                            "snapshot_id": f"native:{instance_id}",
+                            "revision": 900 + instance_id,
+                            "native_revision": instance_id,
+                            "date_raw": context["date_raw"],
+                            "map_ready": True,
+                            "paused": True,
+                            "played_character": {"character_id": 29037},
+                            "diagnostics": {"connection_generation": 9},
+                            "active_event": {
+                                "instance_id": instance_id,
+                                "option_count": 42,
+                            },
+                        }
+
+                    def select_event_option(
+                        self, option_number: int, *, event_instance_id: int,
+                        expected_revision: int,
+                    ) -> dict[str, object]:
+                        self.submission = (
+                            option_number, event_instance_id, expected_revision,
+                        )
+                        return {
+                            "accepted": True,
+                            "status": "submitted",
+                            "option_number": option_number,
+                            "option_index": 41,
+                            "event_selection": {
+                                "postcondition_verified": True,
+                                "old_event_instance_id": event_instance_id,
+                                "new_event_instance_id": None,
+                                "selected_option_number": option_number,
+                                "selected_native_option_index": 41,
+                            },
+                        }
+
+                service = Service()
+                drain = production._drain_known_timeline_interrupt(
+                    service,
+                    snapshot=snapshot,
+                    event=event,
+                    query={"current_event_window_context": context},
+                    event_key=event_key,
+                    contract=contract,
+                    player=29037,
+                    connection_generation=9,
+                )
+                self.assertEqual(
+                    service.submission, (42, instance_id, 900 + instance_id)
+                )
+                self.assertEqual(drain["result"], "GREEN")
+                self.assertTrue(all(drain["selection_checks"].values()))
 
     def test_pp_portfolio_mode_card_is_a_known_interrupt(self) -> None:
         event_key = "zg361pp.9100"

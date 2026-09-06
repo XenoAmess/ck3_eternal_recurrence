@@ -95,6 +95,26 @@ stage 1 为 4 处、stage 2 为 3 处。相关 compensation 仍维持用途分�
 top-level effects，单文件最大 9 个，超过 10 或 20 的文件均为 0。静态 GREEN 只算
 static-ready；必须由 fresh exact-tree CK3 在 AF 卡显示期间把上述 6 条旧签名归零后，才可升级 live。
 
+### R192：可见 option 必须镜像同卡全部下游 effect 的业务前置（2026-09-07）
+
+CK3 1.19.0.6 在 compensation AF stage 5 实测了“部分提交后循环”。可见事件
+`zg361comp.1` 的 AF5 route 1（原生 option 40）只用 portfolio domain/stage 决定是否显示，点击后却在
+`zg361_comp_portfolio_apply_stage_effect` 中依次调用 M299、M300；M300 另有已归属份额、资金与队列等
+业务前置。R192 保留 PID 运行的 debug 日志从诊断记录的 reconnect offset `1529207` 到 artifact 收口，
+只出现 1 次 `ZG361COMP: consumed mechanism 299`（07:46:02，debug.log:15736），没有任何
+`consumed mechanism 300`。同时
+`Z:\p2r192promo_resume\03_promotion_source_production_entry.json` 记录 event instance 85–97 在连续游戏日
+13 次选择 option 40：每次原生选择本身均 GREEN，但 stage 5 仍未完成，refresh 又安排同一张卡。
+这证明 M299 已提交、M300 未成功消费，随后可见 selector 重复进入同一路线；没有运行时脚本错误并不代表
+该组合业务动作具有事务性。至于 M300 guard 中究竟是哪一项为 false，本轮没有字段级观测，不能从日志
+继续猜测。
+
+修复规则是：一个可见 option 若顺序调用多个 effect，option 的 `trigger`/`allow` 必须在首个写操作前
+镜像该路线**所有**下游 effect 的业务合法性，最好复用同一个聚合 scripted trigger；不能只检查
+domain/stage，再让后段 effect 各自安静 no-op。若业务允许分步提交，则必须显式保存阶段游标，并让下一张
+卡只恢复尚未消费的步骤，不能继续展示会重复选择同一路线的整包 option。静态测试应逐路线比较可见门与
+下游 guard，并锁定 refresh 不会在“前段 consumed、后段未 consumed”时无界重开。2026-09-07 R192 实测。
+
 ## 教程课程 / 全局存储
 
 | 现象 | 原因 | 解法 |

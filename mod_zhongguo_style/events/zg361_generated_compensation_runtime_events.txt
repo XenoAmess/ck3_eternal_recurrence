@@ -624,6 +624,22 @@ zg361comp.1 = {
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 5
+            var:zg361_comp_portfolio_subject = {
+                var:zg361_comp_af_vested_units >= 10
+                var:zg361_case_af_owner = {
+                    has_treasury = yes
+                    treasury >= 7
+                    gold >= 3
+                    var:zg361_comp_af_queue_tail = var:zg361_comp_af_queue_head
+                }
+                var:zg361_comp_af_treasury_available >= 7
+                var:zg361_comp_af_personal_available >= 3
+                trigger_if = {
+                    limit = { has_variable = zg361_comp_m300_buyback_treasury_status }
+                    var:zg361_comp_m300_buyback_treasury_status = 0
+                }
+                trigger_else = { always = yes }
+            }
         }
         zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
     }
@@ -632,6 +648,9 @@ zg361comp.1 = {
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 5
+            var:zg361_comp_portfolio_subject = {
+                var:zg361_comp_af_vested_units >= 10
+            }
         }
         zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
     }

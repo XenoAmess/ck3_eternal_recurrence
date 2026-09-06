@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import textwrap
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -2799,6 +2800,47 @@ def render_deadline_event(prefix: str, consumer: str) -> str:
 }}'''
 
 
+def portfolio_option_trigger(
+    key: str, domain_number: int, state: int, route: int
+) -> str:
+    """Render the visible option gate for one portfolio route.
+
+    AF5 routes 1 and 2 both ask M300 to open a ten-unit buyback.  Keep those
+    buttons disabled when M300's real business/finance guard cannot execute,
+    instead of accepting a click that only consumes M299 and reopens AF5.
+    Route 3 requests no buyback and therefore has no resource gate.
+    """
+
+    if route not in {1, 2, 3}:
+        raise ValueError(f"portfolio route must be 1, 2, or 3: {route}")
+    base = f'''var:zg361_comp_portfolio_domain = {domain_number}
+var:zg361_comp_portfolio_stage = {state}'''
+    if key != "af5" or route == 3:
+        return base
+    if route == 2:
+        return base + r'''
+var:zg361_comp_portfolio_subject = {
+    var:zg361_comp_af_vested_units >= 10
+}'''
+    return base + r'''
+var:zg361_comp_portfolio_subject = {
+    var:zg361_comp_af_vested_units >= 10
+    var:zg361_case_af_owner = {
+        has_treasury = yes
+        treasury >= 7
+        gold >= 3
+        var:zg361_comp_af_queue_tail = var:zg361_comp_af_queue_head
+    }
+    var:zg361_comp_af_treasury_available >= 7
+    var:zg361_comp_af_personal_available >= 3
+    trigger_if = {
+        limit = { has_variable = zg361_comp_m300_buyback_treasury_status }
+        var:zg361_comp_m300_buyback_treasury_status = 0
+    }
+    trigger_else = { always = yes }
+}'''
+
+
 def render_events() -> bytes:
     hidden = [
         render_deadline_event("l_deferred", "zg361_comp_l_consume_deferred_effect"),
@@ -2815,8 +2857,7 @@ def render_events() -> bytes:
         f'''    option = {{
         name = zg361comp.1.{key}.r{route}
         trigger = {{
-            var:zg361_comp_portfolio_domain = {domain_number}
-            var:zg361_comp_portfolio_stage = {state}
+{textwrap.indent(portfolio_option_trigger(key, domain_number, state, route), "            ")}
         }}
         zg361_comp_portfolio_apply_stage_effect = {{ ROUTE = {route} }}
     }}'''
