@@ -376,6 +376,15 @@ class ChineseCopyQualityTest(unittest.TestCase):
             and option_family(key) is not None
         }
         cls.event_groups = read_event_localization_groups()
+        cls.actual_event_options = {
+            key: cls.entries[key]
+            for key in {
+                option_key
+                for group in cls.event_groups
+                for option_key in group.option_keys
+            }
+            if key in cls.entries
+        }
 
     def test_01_gate_covers_all_requested_copy_families(self) -> None:
         expected = {
@@ -398,8 +407,10 @@ class ChineseCopyQualityTest(unittest.TestCase):
         self.assertGreater(len(self.bodies), 100)
         self.assertGreater(len(self.options), 1_700)
         self.assertGreater(len(self.event_groups), 600)
+        self.assertGreater(len(self.actual_event_options), 1_500)
         self.assertIn("zg361comp.1.l1", self.bodies)
         self.assertIn("zg361comp.1.l1.r1", self.options)
+        self.assertIn("zg361.3.a", self.actual_event_options)
 
     def test_02_body_never_starts_with_punctuation_or_dynamic_expression(self) -> None:
         failures: list[str] = []
@@ -517,6 +528,20 @@ class ChineseCopyQualityTest(unittest.TestCase):
         ]
         self.assertFalse(failures, format_failures(failures))
 
+    def test_06b_actual_event_options_never_start_with_punctuation(self) -> None:
+        failures: list[str] = []
+        for entry in self.actual_event_options.values():
+            visible = leading_visible_text(entry.value)
+            if not visible:
+                failures.append(f"{entry.location} empty event option")
+                continue
+            if visible[0] in OPENING_PUNCTUATION:
+                failures.append(
+                    f"{entry.location} starts with punctuation {visible[0]!r}: "
+                    f"{entry.value!r}"
+                )
+        self.assertFalse(failures, format_failures(failures))
+
     def test_07_option_literal_lengths_fit_popup_family_limits(self) -> None:
         failures: list[str] = []
         counts: dict[str, int] = {}
@@ -607,6 +632,7 @@ class ChineseCopyQualityHelperTest(unittest.TestCase):
         )
         self.assertEqual(leading_visible_text("#high 。正文#!"), "。正文#!")
         self.assertEqual(leading_visible_text("#P [subject.GetName]到任#!"), "[subject.GetName]到任#!")
+        self.assertEqual(leading_visible_text("@gold_icon! ……继续"), "……继续")
 
     def test_choice_meta_copy_patterns_cover_live_failure_shapes(self) -> None:
         for bad_body in (

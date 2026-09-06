@@ -93,7 +93,7 @@
  zg361.2.a:0 "谢主君栽培！"
  zg361.3.t:0 "上司考定：3.5 · 符合预期"
  zg361.3.desc:0 "本轮考绩已经定档；考核人为 [zg361_reviewing_superior.GetShortUIName]。\n\n你的绩效：3.5（符合预期）\n绩效指标：[TopScope.GetValue('zg361_result_kpi')|0]　同组位次：第 [TopScope.GetValue('zg361_result_rank')|0] 名 / 共 [TopScope.GetValue('zg361_result_cohort_n')|0] 人\n\n你正常完成了当前职级要求，表现符合预期。"
- zg361.3.a:0 "……继续努力。"
+ zg361.3.a:0 "守住本分，来年再进一步。"
  zg361.4.t:0 "上司考定：3.25 · 待改进"
  zg361.4.desc:0 "本轮考绩已经定档；考核人为 [zg361_reviewing_superior.GetShortUIName]。\n\n你的绩效：3.25（待改进）\n绩效指标：[TopScope.GetValue('zg361_result_kpi')|0]　同组位次：第 [TopScope.GetValue('zg361_result_rank')|0] 名 / 共 [TopScope.GetValue('zg361_result_cohort_n')|0] 人\n\n你低于当前岗位预期，四重清算开始：地方国库（若有）扣50、个人金币扣25、制度支持时贤能扣60，并在有俸禄时将一年俸禄削减25%。绩效改进计划已经启动——再来一次，就是末位淘汰。"
  zg361.4.a:0 "认命。（压力减小）"

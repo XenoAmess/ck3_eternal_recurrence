@@ -93,7 +93,7 @@
  zg361.2.a:0 "Thank you for your guidance, my liege!"
  zg361.3.t:0 "Superior's Rating: 3.5 · Meets Expectations"
  zg361.3.desc:0 "This review has reached a final rating; the reviewer is [zg361_reviewing_superior.GetShortUIName].\n\nYour grade: 3.5 (meets expectations)\nPerformance score: [TopScope.GetValue('zg361_result_kpi')|0]   Cohort rank: [TopScope.GetValue('zg361_result_rank')|0] of [TopScope.GetValue('zg361_result_cohort_n')|0]\n\nYou completed the work expected of your current rank."
- zg361.3.a:0 "...Keeping it up."
+ zg361.3.a:0 "Hold steady, then aim higher next year."
  zg361.4.t:0 "Superior's Rating: 3.25 · Needs Improvement"
  zg361.4.desc:0 "This review has reached a final rating; the reviewer is [zg361_reviewing_superior.GetShortUIName].\n\nYour grade: 3.25 (needs improvement)\nPerformance score: [TopScope.GetValue('zg361_result_kpi')|0]   Cohort rank: [TopScope.GetValue('zg361_result_rank')|0] of [TopScope.GetValue('zg361_result_cohort_n')|0]\n\nYou are below the bar for your post. Fourfold settlement applies: 50 from the local treasury when present, 25 personal gold, 60 merit where supported, and a 25% salary cut for one year where applicable. A Performance Improvement Plan begins; one more 3.25 means bottom-tier elimination."
  zg361.4.a:0 "Accept it. (Stress reduced)"
