@@ -11,8 +11,14 @@ zg361_review_now_bridge_gui = {
 	effect = {
 		if = {
 			limit = { has_character_flag = zg361_review_now_pending }
-			remove_character_flag = zg361_review_now_pending
-			zg361_b1_open_cycle_effect = yes
+			if = {
+				limit = { NOT = { zg361_b1_serial_dependents_active_trigger = yes } }
+				remove_character_flag = zg361_review_now_pending
+				zg361_b1_open_cycle_effect = yes
+			}
+			else = {
+				debug_log = "ZG361: review-now bridge retained pending request behind active serial consumer"
+			}
 		}
 	}
 }

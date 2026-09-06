@@ -486,7 +486,67 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_p2c_terminal_state value = 4", abort)
         self.assertNotIn("ordered_vassal", abort)
 
-    def test_new_cycle_aborts_old_active_tuple_before_reinitializing(self) -> None:
+    def test_summary_ack_consumes_deferred_annual_b1_after_terminal(self) -> None:
+        for effect_name in (
+            "zg361_p2c_abort_stale_effect",
+            "zg361_p2c_finish_effect",
+            "zg361_p2c_suspend_external_effect",
+        ):
+            with self.subTest(effect=effect_name):
+                terminal = block(self.effects, effect_name)
+                inactive = terminal.index(
+                    "set_variable = { name = zg361_p2c_active value = 0 }"
+                )
+                summary = terminal.index("zg361_p2c_queue_summary_effect = yes")
+                self.assertLess(inactive, summary)
+                self.assertNotIn(
+                    "zg361_consume_pending_annual_jingcha_effect = yes", terminal
+                )
+
+        summary_event = block(self.events, "zg361p2c.2")
+        acknowledged = summary_event.index(
+            "remove_variable = zg361_p2c_summary_pending"
+        )
+        consume = summary_event.index(
+            "zg361_consume_pending_annual_jingcha_effect = yes"
+        )
+        self.assertLess(acknowledged, consume)
+        self.assertEqual(
+            summary_event.count(
+                "zg361_consume_pending_annual_jingcha_effect = yes"
+            ),
+            1,
+        )
+
+        # Normal finish is reachable only after stage 3 has accepted the same
+        # cycle's complete marker plus all four subject domain receipts and the
+        # pump has subsequently crossed every remaining stage.  A player PP
+        # completion card may still own its standalone queue lock; the shared
+        # busy trigger tested by B1 then leaves the pending request to .42.
+        stage3 = block(
+            self.effects, "zg361_p2c_stage_03_feedback_promotion_pip_effect"
+        )
+        stage3_complete = stage3.index(
+            "var:zg361_pp_portfolio_complete_cycle = var:zg361_p2c_cycle"
+        )
+        stage3_advance = stage3.index(
+            "zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_03_status }"
+        )
+        self.assertLess(stage3_complete, stage3_advance)
+        for domain in "tuvw":
+            receipt = stage3.index(
+                f"var:zg361_pp_{domain}_portfolio_done_cycle = root.var:zg361_p2c_cycle"
+            )
+            self.assertLess(receipt, stage3_advance)
+        pump = block(self.effects, "zg361_p2c_pump_effect")
+        self.assertLess(
+            pump.index("var:zg361_p2c_stage = 3"),
+            pump.index(
+                "limit = { var:zg361_p2c_stage >= 12 } zg361_p2c_finish_effect = yes"
+            ),
+        )
+
+    def test_unexpected_external_new_cycle_still_aborts_before_reinitializing(self) -> None:
         hook = block(self.effects, "zg361_p2c_on_review_published_effect")
         abort = hook.index("zg361_p2c_abort_stale_effect = { CODE = 9101 }")
         initialize = hook.index("set_variable = { name = zg361_p2c_started_cycle")

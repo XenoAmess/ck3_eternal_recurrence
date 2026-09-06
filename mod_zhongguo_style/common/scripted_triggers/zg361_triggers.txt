@@ -23,6 +23,7 @@ zg361_review_now_business_valid_trigger = {
 	# The production opener already rejects an active B1 cycle from D0.
 	NOT = { has_character_flag = zg361_b1_cycle_active }
 	NOT = { has_character_flag = zg361_review_in_progress }
+	NOT = { zg361_b1_serial_dependents_active_trigger = yes }
 	trigger_if = {
 		limit = { has_variable = zg361_last_settled_year }
 		NOT = { var:zg361_last_settled_year = current_year }
@@ -30,6 +31,32 @@ zg361_review_now_business_valid_trigger = {
 	any_vassal = {
 		count >= 1
 		zg361_is_reviewable_vassal_trigger = yes
+	}
+}
+
+# A new annual B1 season must not rotate the manager cycle/case serial while
+# an older B1 or a serial consumer still owns the published tuple.  Central
+# normally covers every phase-two child package; the PP queue is listed
+# separately because it also has a public standalone opener.
+zg361_b1_serial_dependents_active_trigger = {
+	OR = {
+		has_character_flag = zg361_b1_cycle_active
+		has_character_flag = zg361_review_in_progress
+		trigger_if = {
+			limit = { has_variable = zg361_p2c_summary_pending }
+			var:zg361_p2c_summary_pending = 1
+		}
+		trigger_else = { always = no }
+		trigger_if = {
+			limit = { has_variable = zg361_p2c_active }
+			var:zg361_p2c_active = 1
+		}
+		trigger_else = { always = no }
+		trigger_if = {
+			limit = { has_variable = zg361_pp_portfolio_queue_active }
+			var:zg361_pp_portfolio_queue_active = 1
+		}
+		trigger_else = { always = no }
 	}
 }
 

@@ -38,6 +38,7 @@ zg361p2c.2 = {
     option = {
         name = zg361_p2c_summary_ack
         remove_variable = zg361_p2c_summary_pending
+        zg361_consume_pending_annual_jingcha_effect = yes
     }
 }
 

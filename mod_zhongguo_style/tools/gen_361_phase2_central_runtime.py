@@ -37,8 +37,10 @@ EFFECT_HARD_LIMIT_EXCEPTIONS: Final[dict[str, tuple[str, str]]] = {}
 LEGACY_EVENT_FILENAME = "zg361_phase2_central_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_phase2_central_*_events.txt"
-HISTORICAL_EVENT_BYTES = 20_619
-HISTORICAL_EVENT_SHA256 = "A783F51175E214754E9DDE1223AB6B2D4D9C898802AFA47BD82DD192E977AD8A"
+# R117: the terminal summary ACK consumes the deferred annual request only
+# after clearing the old UI lane; event inventory and grouping stay unchanged.
+HISTORICAL_EVENT_BYTES = 20_677
+HISTORICAL_EVENT_SHA256 = "1D031B61A549448404F3D197A4F48646852F97CA4C02F0093AD568C8C00704F0"
 HISTORICAL_EVENT_COUNT = 7
 EVENT_TARGET_MAX = 10
 
@@ -2738,6 +2740,7 @@ zg361p2c.2 = {
     option = {
         name = zg361_p2c_summary_ack
         remove_variable = zg361_p2c_summary_pending
+        zg361_consume_pending_annual_jingcha_effect = yes
     }
 }
 
@@ -3228,7 +3231,7 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
   runner-up、把 `candidate_active_case` 和 owner flight 切到新案并清两个 pending。`m266_hc_receipt` 与 reserved 数量保持
   原值，不重跑 #266、不 reserve/release HC。Central 只在下一帧核对完整 durable result 后消费 source；中断重入只修复
   未完成的 consume/verify。route B 仍只走 remediation release，route C 只退役 source/debt，二者都不调用本 producer。
-- 新一轮 B1 公示若撞上旧中央案，会先把旧 immutable tuple 记为 typed RED，给旧摘要 D+1 ACK 窗口，再在 D+2 精确初始化新案；禁止原地覆盖或清掉旧摘要。
+- 年度 B1 请求在旧 B1、Central、terminal summary 或 standalone PP 仍持有 serial tuple/UI lane 时先合并为一枚 player-only pending request；Central finish/abort/suspend 只排旧摘要，玩家 ACK 先清 `summary_pending` 再消费 annual pending 并开新 B1，隐藏 D+2 票据只作可靠兜底。正常年度轮换不再制造旧中央案 stale RED，也不会在旧摘要当日叠发京察。若外部入口绕过年度互斥而发布了更新周期，原有 9101 typed RED 与 D+2 精确重初始化仍作为故障恢复，禁止原地覆盖或清掉旧摘要。
 - P3、Credit/Project 与 Workforce 的 D+1 域切换空档只轮询同一 portfolio tuple，不会误判 RED。
 - 3.25 state 1/2 以及 Workforce status 5 都记录 external wait，绝不伪装 success。manager 的 status 5 会先调用
   `zg361_b2_submit_completed_al_receipts_effect`：它只读取 B1 #357 与 B2 #358/#359 已由真实 consumer 发布的来源票据，中央不能

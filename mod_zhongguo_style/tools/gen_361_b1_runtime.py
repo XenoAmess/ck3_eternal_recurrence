@@ -9257,12 +9257,56 @@ zg361b1.201 = {
 	}
 }
 
-# Common-superior season synchronization. The delayed character event resets
-# ROOT to each sibling manager; the cycle-open guard makes replays harmless.
+# Common-superior season synchronization.  A sibling may still own its prior
+# serial tuple when the bank schedules this event; coalesce that collision into
+# one per-character retry ticket instead of rotating the live tuple.
 zg361b1.90 = {
 	type = character_event
 	hidden = yes
-	immediate = { zg361_b1_open_cycle_effect = yes }
+	immediate = {
+		if = {
+			limit = { zg361_b1_serial_dependents_active_trigger = yes }
+			if = {
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_b1_sibling_open_pending }
+						var:zg361_b1_sibling_open_pending != 1
+					}
+					trigger_else = { always = yes }
+				}
+				set_variable = { name = zg361_b1_sibling_open_pending value = 1 }
+				trigger_event = { id = zg361b1.91 days = 2 }
+			}
+		}
+		else = {
+			remove_variable = zg361_b1_sibling_open_pending
+			zg361_b1_open_cycle_effect = yes
+		}
+	}
+}
+
+# Unique retry owner for a coalesced common-superior request.  Clearing the
+# marker before opening makes stale delayed copies strict no-ops.
+zg361b1.91 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		trigger_if = {
+			limit = { has_variable = zg361_b1_sibling_open_pending }
+			var:zg361_b1_sibling_open_pending = 1
+		}
+		trigger_else = { always = no }
+	}
+	immediate = {
+		if = {
+			limit = { zg361_b1_serial_dependents_active_trigger = yes }
+			trigger_event = { id = zg361b1.91 days = 2 }
+		}
+		else = {
+			remove_variable = zg361_b1_sibling_open_pending
+			zg361_b1_open_cycle_effect = yes
+		}
+	}
 }
 
 # D+180: check-in and one evidence-backed target reset.

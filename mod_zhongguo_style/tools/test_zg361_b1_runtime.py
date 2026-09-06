@@ -110,6 +110,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         cls.jingcha = read(
             "common/scripted_effects/zg361_jingcha_mandate_effects.txt"
         )
+        cls.jingcha_events = read("events/zg361_jingcha_events.txt")
+        cls.scripted_guis = read(
+            "common/scripted_guis/zg361_scoreboard_guis.txt"
+        )
         cls.activity = read("common/activities/activity_types/zg361_jingcha.txt")
         cls.interactions = read(
             "common/character_interactions/zg361_interactions.txt"
@@ -1662,15 +1666,123 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("max = 10 min = -10", self.effects)
 
     def test_jingcha_opens_cycle_and_no_longer_instantly_settles(self) -> None:
-        issue = self.jingcha.split("zg361_issue_jingcha_mandate_effect = {", 1)[1]
-        self.assertIn("zg361_b1_open_cycle_effect = yes", issue)
-        self.assertNotIn("zg361_run_review_effect = yes", issue)
+        issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
+        issue_now = top_level_block(
+            self.jingcha, "zg361_issue_jingcha_mandate_now_effect"
+        )
+        self.assertNotIn("zg361_b1_open_cycle_effect = yes", issue)
+        self.assertIn("zg361_issue_jingcha_mandate_now_effect = yes", issue)
+        self.assertIn("zg361_b1_open_cycle_effect = yes", issue_now)
+        self.assertNotIn("zg361_run_review_effect = yes", issue_now)
         on_complete = self.activity.split("on_complete = {", 1)[1].split(
             "###################", 1
         )[0]
         self.assertIn("zg361_clear_jingcha_mandate_effect = yes", on_complete)
         self.assertNotIn("zg361_run_review_effect = yes", on_complete)
         self.assertIn("zg361_run_review_effect = yes", self.events)
+
+    def test_annual_b1_request_is_deferred_without_rotating_a_busy_tuple(self) -> None:
+        busy = top_level_block(
+            self.triggers, "zg361_b1_serial_dependents_active_trigger"
+        )
+        for token in (
+            "has_character_flag = zg361_b1_cycle_active",
+            "has_character_flag = zg361_review_in_progress",
+            "has_variable = zg361_p2c_active",
+            "var:zg361_p2c_active = 1",
+            "has_variable = zg361_p2c_summary_pending",
+            "var:zg361_p2c_summary_pending = 1",
+            "has_variable = zg361_pp_portfolio_queue_active",
+            "var:zg361_pp_portfolio_queue_active = 1",
+        ):
+            self.assertIn(token, busy)
+        self.assertEqual(busy.count("trigger_else = { always = no }"), 3)
+
+        issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
+        pending = issue.index(
+            "set_variable = { name = zg361_jingcha_annual_request_pending value = 1 }"
+        )
+        ticket = issue.index("trigger_event = { id = zg361.42 days = 2 }")
+        direct = issue.index("zg361_issue_jingcha_mandate_now_effect = yes")
+        self.assertLess(pending, ticket)
+        self.assertLess(ticket, direct)
+        self.assertEqual(issue.count("trigger_event = { id = zg361.42 days = 2 }"), 1)
+        self.assertIn("var:zg361_jingcha_annual_request_pending != 1", issue)
+        self.assertIn("trigger_else = { always = yes }", issue)
+        self.assertIn("limit = { is_ai = no }", issue)
+
+    def test_deferred_annual_ticket_is_player_only_and_exactly_once(self) -> None:
+        consume = top_level_block(
+            self.jingcha, "zg361_consume_pending_annual_jingcha_effect"
+        )
+        clear = consume.index("remove_variable = zg361_jingcha_annual_request_pending")
+        issue = consume.index("zg361_issue_jingcha_mandate_now_effect = yes")
+        self.assertLess(clear, issue)
+        for token in (
+            "is_ai = no",
+            "is_alive = yes",
+            "has_game_rule = zg361_on",
+            "zg361_is_celestial_liege_trigger = yes",
+            "var:zg361_jingcha_annual_request_pending = 1",
+        ):
+            self.assertIn(token, consume)
+        self.assertIn("NOT = { zg361_b1_serial_dependents_active_trigger = yes }", consume)
+        retired = consume.index(
+            'debug_log = "ZG361: deferred annual B1 request retired after eligibility loss"'
+        )
+        self.assertLess(consume.index("is_alive = no"), retired)
+        self.assertLess(consume.index("NOT = { has_game_rule = zg361_on }"), retired)
+
+        retry = top_level_block(self.jingcha_events, "zg361.42")
+        self.assertIn("hidden = yes", retry)
+        self.assertIn("is_ai = no", retry)
+        self.assertIn("var:zg361_jingcha_annual_request_pending = 1", retry)
+        self.assertEqual(retry.count("trigger_event = { id = zg361.42 days = 2 }"), 1)
+        self.assertEqual(
+            retry.count("zg361_consume_pending_annual_jingcha_effect = yes"), 1
+        )
+        self.assertNotIn("remove_variable = zg361_jingcha_annual_request_pending", retry)
+
+    def test_review_now_rechecks_serial_busy_state_before_direct_open(self) -> None:
+        validity = top_level_block(
+            self.triggers, "zg361_review_now_business_valid_trigger"
+        )
+        self.assertIn(
+            "NOT = { zg361_b1_serial_dependents_active_trigger = yes }", validity
+        )
+        bridge = top_level_block(self.scripted_guis, "zg361_review_now_bridge_gui")
+        busy = bridge.index(
+            "NOT = { zg361_b1_serial_dependents_active_trigger = yes }"
+        )
+        clear = bridge.index("remove_character_flag = zg361_review_now_pending")
+        opened = bridge.index("zg361_b1_open_cycle_effect = yes")
+        self.assertLess(busy, clear)
+        self.assertLess(clear, opened)
+        self.assertIn(
+            "review-now bridge retained pending request behind active serial consumer",
+            bridge,
+        )
+
+    def test_common_superior_sibling_open_is_coalesced_while_serial_busy(self) -> None:
+        first = top_level_block(self.events, "zg361b1.90")
+        retry = top_level_block(self.events, "zg361b1.91")
+        self.assertIn("zg361_b1_serial_dependents_active_trigger = yes", first)
+        self.assertIn("var:zg361_b1_sibling_open_pending != 1", first)
+        self.assertEqual(first.count("trigger_event = { id = zg361b1.91 days = 2 }"), 1)
+        self.assertLess(
+            first.index("remove_variable = zg361_b1_sibling_open_pending"),
+            first.index("zg361_b1_open_cycle_effect = yes"),
+        )
+        self.assertIn("var:zg361_b1_sibling_open_pending = 1", retry)
+        self.assertIn("zg361_b1_serial_dependents_active_trigger = yes", retry)
+        self.assertEqual(retry.count("trigger_event = { id = zg361b1.91 days = 2 }"), 1)
+        self.assertLess(
+            retry.index("remove_variable = zg361_b1_sibling_open_pending"),
+            retry.index("zg361_b1_open_cycle_effect = yes"),
+        )
+        annual = top_level_block(self.core, "zg361_annual_review_effect")
+        self.assertEqual(annual.count("zg361_issue_jingcha_mandate_effect = yes"), 2)
+        self.assertNotIn("zg361_b1_open_cycle_effect = yes", annual)
 
     def test_peer_records_are_bounded_sealed_and_consumed(self) -> None:
         self.assertIn("zg361_b1_peer_submission_actor_trigger", self.triggers)

@@ -20,11 +20,11 @@ zg361_annual_review_effect = {
 			if = {
 				limit = { var:zg361_review_counter >= 3 }
 				set_variable = { name = zg361_review_counter value = 0 }
-				zg361_b1_open_cycle_effect = yes
+				zg361_issue_jingcha_mandate_effect = yes
 			}
 		}
 		else = {
-			zg361_b1_open_cycle_effect = yes
+			zg361_issue_jingcha_mandate_effect = yes
 		}
 	}
 }

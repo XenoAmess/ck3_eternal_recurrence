@@ -72,3 +72,35 @@ zg361.41 = {
 		}
 	}
 }
+
+# A single player-only retry ticket owns the deferred annual request.  While a
+# serial consumer remains active it reschedules only itself; Central terminal
+# hooks may consume the request earlier, making the old ticket fail its trigger.
+zg361.42 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		is_ai = no
+		trigger_if = {
+			limit = { has_variable = zg361_jingcha_annual_request_pending }
+			var:zg361_jingcha_annual_request_pending = 1
+		}
+		trigger_else = { always = no }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				is_alive = yes
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				zg361_b1_serial_dependents_active_trigger = yes
+			}
+			trigger_event = { id = zg361.42 days = 2 }
+		}
+		else_if = {
+			limit = { always = yes }
+			zg361_consume_pending_annual_jingcha_effect = yes
+		}
+	}
+}
