@@ -1,0 +1,16 @@
+﻿zga_phase2_manager_seed_bootstrap_bridge_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		is_alive = yes
+		is_landed = yes
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		zg361_review_now_business_valid_trigger = yes
+		prestige >= 150
+		NOT = { has_character_flag = zga_phase2_manager_seed_bootstrap_started }
+	}
+	effect = {
+		zga_phase2_manager_seed_maybe_begin_effect = yes
+	}
+}

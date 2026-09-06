@@ -10,9 +10,9 @@ zga_phase2_seed.100 = {
 	}
 }
 
-# Root is the player's real AI celestial liege. Calling shipped public effects
-# here preserves their manager-root semantics. No title, character, relation,
-# receipt, history or provider output is manufactured by this fixture.
+# Root is the player's real AI celestial liege. The legacy player-subject seed
+# may expose typed owner/subject identities, but no product effect may run
+# from this AI root. The chain only returns to the played subject.
 zga_phase2_seed.101 = {
 	type = character_event
 	hidden = yes
@@ -32,18 +32,6 @@ zga_phase2_seed.101 = {
 					liege = root
 					zg361_is_reviewable_vassal_trigger = yes
 				}
-			}
-			# B1: open the shipped manager cycle over real direct subjects.
-			zg361_b1_open_cycle_effect = yes
-			# Incident: take one real X applicability observation. The current
-			# mixed X/Y/Z terminal acceptance contract is intentionally not forged.
-			zg361_ip_open_x_case_effect = {
-				SUBJECT = scope:zga_phase2_seed_player
-			}
-			# Workforce: exercise only the shipped public entry. It can proceed
-			# only if genuine HC and prior product receipts already exist.
-			zg361_we_open_portfolio_effect = {
-				SUBJECT = scope:zga_phase2_seed_player
 			}
 			scope:zga_phase2_seed_player = {
 				trigger_event = zga_phase2_seed.102

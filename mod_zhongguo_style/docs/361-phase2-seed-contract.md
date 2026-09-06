@@ -1,5 +1,66 @@
 # 361 二期 MCP-only 存档种子合同
 
+## R119：按玩家角色拆分种子用途
+
+2026-09-06 起，`tools/zg361_phase2_seed_contract.json` 及其已冻结 save 只表示
+**player-subject** 种子，不再作为 promotion-source 的 player-manager 前缀。历史 r9
+artifact 曾由 acceptance-only fixture 在 AI 上司 root 调用产品 effect；这是历史证据事实，
+不再是可重复的 capture 入口。当前 `tools/fixtures/zg361_phase2_seed_bootstrap/` 已删除该
+AI-root 的全部产品 effect 调用，旧合同/save 本身保持不变。
+
+独立的 player-manager 输入合同、fixture 与物化器分别为：
+
+- `tools/zg361_phase2_manager_seed_contract.json`；
+- `tools/fixtures/zg361_phase2_manager_seed_bootstrap/`；
+- `tools/zg361_phase2_manager_seed_bootstrap.py`。
+
+player-manager fixture 只有在同一 played root 同时满足以下条件时才打开
+`zga_phase2_manager_seed.1`：`is_ai=no`、存活、有地、满足
+`zg361_is_celestial_liege_trigger`、规则 `zg361_on` 已启用、至少一名现有直属
+`zg361_is_reviewable_vassal_trigger` 属臣、B1/Central/PP 均不 active、
+`zg361_review_now_business_valid_trigger=yes` 且威望至少 150。可见事件只保存
+`zga_phase2_manager_owner` 与 `zga_phase2_manager_subject` 两个 typed character scope；
+fixture 不调用 B1，不写 `zg361_*` 变量或产品 receipt。这里的窄事实由冻结 fixture 字节与
+静态测试证明；不再对整个 seed 体系作笼统的“绝不改变关系”承诺。
+
+仓库中的 manager 合同目前明确为
+`blocked_live_capture_required / ready=false`。其中引用的旧 checkpoint 只是候选输入，不能
+证明玩家已经满足 manager 门。只有实机出现上述唯一事件，MCP 在同一 paused frame 读取
+played manager 与真实直属 subject、关闭唯一选项并 `save-checkpoint` 后，才能由物化器生成
+`kind=zg361_phase2_player_manager_paused_seed / ready=true` 的候选。该候选仍只证明
+promotion-source 的干净入口，不证明后续 B1/Central/PP 或 `zg361pp.147` 已完成。
+
+实机捕获入口复用同一个受管 runner；在原有完整 capture 命令中加入
+`--seed-purpose player-manager` 即会自动选择 manager fixture、request contract、精确事件
+`zga_phase2_manager_seed.1` 与 manager 物化器。未提供该参数时仍保持历史
+`player-subject` 默认行为。manager 事件未出现或出现其他事件时，runner 必须保留
+`scenario_verdict=RED / seed_verdict=RED`，不得生成候选。
+
+若已经单独取得四份 MCP JSON，也可用以下命令离线物化新的候选（本命令不启动 CK3）：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" "tools\zg361_phase2_manager_seed_bootstrap.py" `
+  --event-context "<run>\event-context.json" `
+  --paused-snapshot "<run>\paused-snapshot.json" `
+  --event-close "<run>\event-close.json" `
+  --checkpoint-response "<run>\save-checkpoint.json" `
+  --profile "<isolated-profile>" `
+  --output-dir "<new-empty-run-dir>" `
+  --base-contract "tools\zg361_phase2_manager_seed_contract.json" `
+  --source-git-commit "<40-hex-commit>" `
+  --product-tree-sha256 "<64-hex-product-tree>" `
+  --fixture-tree-sha256 "<64-hex-manager-fixture-tree>"
+```
+
+专项静态门同时执行普通与 `-O` smoke：
+
+```powershell
+py tools/test_zg361_phase2_manager_seed_fixture.py
+py -O tools/test_zg361_phase2_manager_seed_fixture.py
+py tools/test_zg361_phase2_manager_seed_bootstrap.py
+py -O tools/test_zg361_phase2_manager_seed_bootstrap.py
+```
+
 状态（2026-09-04 07:46，Asia/Shanghai）：仓库中的权威机器合同
 `tools/zg361_phase2_seed_contract.json` 已由 r9 实机候选提升为 `status=ready / ready=true`。
 这只证明 canonical paused seed、五个 typed selector 与 exact checkpoint 已生成；四域 provider
@@ -24,7 +85,8 @@
   `date_raw=53146920`，玩家 `han_6875 / CharacterID 29037`，paused/map-ready。
 - 五个 typed saved scopes：B2、Incident、Workforce、AI-owned owner 均为 `32904`；
   AI-owned subject 为玩家 `29037`。bootstrap activation、B1 season opened、selector ready、selector
-  closed 四个 marker 均恰好一次；event close postcondition 与 typed save ACK 均通过。
+  closed 四个 marker 均恰好一次；event close postcondition 与 typed save ACK 均通过。这里的
+  B1 season marker 是旧 r9 历史 artifact，不授权新 capture 再由 AI owner 开 B1。
 - candidate report/evidence index/candidate contract SHA-256 分别为
   `1d493ffbcaf61695e98993619258f9b1fde1b6f133e7311aa89eba3302a96c0e`、
   `740af84b9e996064634a546b95ea27090c75aee41c6193dffbce474eada10fed`、
@@ -95,8 +157,8 @@ selector：B2、Incident、Workforce 三个 received-self owner，以及 AI-owne
 `tools/fixtures/zg361_acceptance/` 分离，只有 seed-generation acceptance 可以挂载，
 发布构建和宣传运行时永远不能加载。它没有 decision 或可点击 GUI；唯一 GUI 是注册到
 `scripted_widgets` 的 `1×1` 全透明自动 load bridge，在 `GetPlayer` 对旧存档有效后调用同一条
-幂等 bootstrap 链。它没有角色/头衔/关系创建命令，也不直接写任何 `zg361_*` 产品变量、
-receipt 或 Workforce history。
+幂等 bootstrap 链。当前冻结 fixture 不直接写任何 `zg361_*` 产品变量、receipt 或
+Workforce history；其选择到的 character scope 必须由 typed MCP 原样记录，不能从注释推导。
 seed-generation profile 应把此树单独复制到既有外层 mod ID
 `zga_acceptance_fixture.mod` 的目标目录；不得与普通 acceptance fixture 同时合并，且
 candidate runtime 中记录的是本专用树的实际 SHA-256。
@@ -104,8 +166,8 @@ candidate runtime 中记录的是本专用树的实际 SHA-256。
 流程如下：
 
 1. 从旧存档继续，fixture 只接受真实历史玩家 `han_6875` 与其现存直属 AI 天朝上司。
-2. 在 manager-root 隐藏事件中调用 shipped B1、Incident X、Workforce public entry；
-   若旧存档确有真实已交付 3.25 result，则在 player-root 隐藏事件中调用 shipped B2
+2. manager-root 隐藏事件只把控制权返回玩家，不得从 AI root 调用 B1、Incident 或
+   Workforce 产品 effect；若旧存档确有真实已交付 3.25 result，则在 player-root 隐藏事件中调用 shipped B2
    adapters。缺少前置事实时 shipped effect 自行 no-op，fixture 不补造输出。
 3. 打开唯一可见事件 `zga_phase2_seed.1`。该事件保存：
    `zga_phase2_b2_owner`、`zga_phase2_incident_owner`、

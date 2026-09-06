@@ -48,6 +48,26 @@ EXPECTED_ENABLED_MODS = (
     "mod/zg361_acceptance.mod",
     "mod/zga_acceptance_fixture.mod",
 )
+DEFAULT_SEED_PURPOSE = "player-subject"
+MANAGER_SEED_PURPOSE = "player-manager"
+SEED_PURPOSE_SPECS = {
+    DEFAULT_SEED_PURPOSE: {
+        "fixture_directory": "zg361_phase2_seed_bootstrap",
+        "contract_filename": "zg361_phase2_seed_contract.json",
+        "contract_kind": "zg361_phase2_paused_seed",
+        "materializer_module": "zg361_phase2_seed_bootstrap",
+        "event_definition_key": "zga_phase2_seed.1",
+        "fixture_kind": "acceptance-only phase2 player-subject seed bootstrap",
+    },
+    MANAGER_SEED_PURPOSE: {
+        "fixture_directory": "zg361_phase2_manager_seed_bootstrap",
+        "contract_filename": "zg361_phase2_manager_seed_contract.json",
+        "contract_kind": "zg361_phase2_player_manager_seed_request",
+        "materializer_module": "zg361_phase2_manager_seed_bootstrap",
+        "event_definition_key": "zga_phase2_manager_seed.1",
+        "fixture_kind": "acceptance-only phase2 player-manager seed bootstrap",
+    },
+}
 # These are the four generated B2 providers that produced the 93 first-use
 # optional-variable diagnostics in the explicit-AND seed refresh.  A full
 # cumulative B3+ seed run must never mount an older copy while claiming a
@@ -60,7 +80,12 @@ CRITICAL_B2_PRODUCT_PATHS = (
     "common/scripted_effects/zg361_b2_072_access_audit_effects.txt",
     "common/scripted_effects/zg361_b2_081_projection_access_effects.txt",
 )
-SEED_EVENT_DEFINITION_KEY = "zga_phase2_seed.1"
+SEED_EVENT_DEFINITION_KEY = str(
+    SEED_PURPOSE_SPECS[DEFAULT_SEED_PURPOSE]["event_definition_key"]
+)
+MANAGER_SEED_EVENT_DEFINITION_KEY = str(
+    SEED_PURPOSE_SPECS[MANAGER_SEED_PURPOSE]["event_definition_key"]
+)
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
         "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733"
@@ -338,6 +363,7 @@ class CaptureConfig:
     bridge_dll: Path
     bridge_injector: Path
     pipe_name: str
+    seed_purpose: str = DEFAULT_SEED_PURPOSE
     seed_contract: Path | None = None
     loader_timeout_seconds: float = DEFAULT_LOADER_TIMEOUT_SECONDS
     native_readiness_timeout_seconds: float = (
@@ -392,6 +418,13 @@ class CaptureConfig:
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
+        purpose = self.seed_purpose.strip().lower()
+        spec = SEED_PURPOSE_SPECS.get(purpose)
+        if spec is None:
+            raise SeedCaptureError(
+                "seed purpose must be one of: "
+                + ", ".join(sorted(SEED_PURPOSE_SPECS))
+            )
         return replace(
             self,
             clean_source=clean_source,
@@ -402,10 +435,11 @@ class CaptureConfig:
             game_dir=self.game_dir.resolve(),
             bridge_dll=self.bridge_dll.resolve(),
             bridge_injector=self.bridge_injector.resolve(),
+            seed_purpose=purpose,
             seed_contract=(
                 self.seed_contract.resolve()
                 if self.seed_contract is not None
-                else clean_source / "tools" / "zg361_phase2_seed_contract.json"
+                else clean_source / "tools" / str(spec["contract_filename"])
             ),
             acceptance_observer_manifest=(
                 self.acceptance_observer_manifest.resolve()
@@ -454,12 +488,29 @@ class CaptureConfig:
 
     @property
     def fixture_source(self) -> Path:
+        spec = SEED_PURPOSE_SPECS[self.seed_purpose]
         return (
             self.clean_source
             / "tools"
             / "fixtures"
-            / "zg361_phase2_seed_bootstrap"
+            / str(spec["fixture_directory"])
         )
+
+    @property
+    def expected_seed_contract_kind(self) -> str:
+        return str(SEED_PURPOSE_SPECS[self.seed_purpose]["contract_kind"])
+
+    @property
+    def materializer_module(self) -> str:
+        return str(SEED_PURPOSE_SPECS[self.seed_purpose]["materializer_module"])
+
+    @property
+    def seed_event_definition_key(self) -> str:
+        return str(SEED_PURPOSE_SPECS[self.seed_purpose]["event_definition_key"])
+
+    @property
+    def fixture_kind(self) -> str:
+        return str(SEED_PURPOSE_SPECS[self.seed_purpose]["fixture_kind"])
 
     @property
     def game_executable(self) -> Path:
@@ -1950,7 +2001,7 @@ def load_runtime(config: CaptureConfig) -> RuntimeBindings:
     module_names = (
         "run_acceptance",
         "run_zhongguo_acceptance",
-        "zg361_phase2_seed_bootstrap",
+        config.materializer_module,
         "zg361_phase2_loader_stage",
     )
     for name in module_names:
@@ -1959,7 +2010,7 @@ def load_runtime(config: CaptureConfig) -> RuntimeBindings:
             _require_module_origin(existing, config.clean_source)
     acceptance = importlib.import_module("run_acceptance")
     zgrun = importlib.import_module("run_zhongguo_acceptance")
-    seed = importlib.import_module("zg361_phase2_seed_bootstrap")
+    seed = importlib.import_module(config.materializer_module)
     loader = importlib.import_module("zg361_phase2_loader_stage")
     driver_module = importlib.import_module("xar_autoplayer.bridge.native_driver")
     service_module = importlib.import_module("xar_autoplayer.bridge.service")
@@ -2460,6 +2511,7 @@ def wait_for_bootstrap_event(
     bridge_unavailable_error: type[BaseException],
     pre_submission_revision_mismatch_error: type[BaseException] | None = None,
     timeout_seconds: float,
+    expected_event_definition_key: str = SEED_EVENT_DEFINITION_KEY,
     source_save_sha256: str | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -2568,7 +2620,7 @@ def wait_for_bootstrap_event(
                 if isinstance(context, dict)
                 else None
             )
-            if key != SEED_EVENT_DEFINITION_KEY:
+            if key != expected_event_definition_key:
                 if isinstance(context, dict) and key not in drained_pre_bootstrap_events:
                     if key == KNOWN_PRE_BOOTSTRAP_EVENT["event_definition_key"]:
                         expected = KNOWN_PRE_BOOTSTRAP_EVENT
@@ -2652,7 +2704,7 @@ def wait_for_bootstrap_event(
                         continue
                 evidence = {
                     "state": "unexpected_visible_event",
-                    "expected_event_definition_key": SEED_EVENT_DEFINITION_KEY,
+                    "expected_event_definition_key": expected_event_definition_key,
                     "observed_event_definition_key": key,
                     "event_instance_id": event_id,
                     "drained_pre_bootstrap_events": drained_pre_bootstrap_events,
@@ -2750,7 +2802,7 @@ def wait_for_bootstrap_event(
     }
     append_jsonl(evidence_path, evidence)
     raise SeedCaptureError(
-        f"timed out before exact {SEED_EVENT_DEFINITION_KEY}", evidence
+        f"timed out before exact {expected_event_definition_key}", evidence
     )
 
 
@@ -2929,6 +2981,9 @@ def _preflight_setup_failure(
             "status": "preflight-blocked",
             "ok": False,
             "readiness_scope": "frozen_inputs_and_projection_only",
+            "seed_purpose": config.seed_purpose,
+            "seed_contract_kind": "unknown",
+            "expected_seed_contract_kind": config.expected_seed_contract_kind,
             "seed_ready": False,
             "seed_contract_status": "unknown",
             "started_at_utc": utc_now(),
@@ -2981,6 +3036,12 @@ def _run_seed_static_preflight(
 ) -> dict[str, Any]:
     """Run the seed-specific offline gates without invoking CK3 or desktop IO."""
 
+    if config.seed_purpose == MANAGER_SEED_PURPOSE:
+        bootstrap_test = "test_zg361_phase2_manager_seed_bootstrap.py"
+        fixture_test = "test_zg361_phase2_manager_seed_fixture.py"
+    else:
+        bootstrap_test = "test_zg361_phase2_seed_bootstrap.py"
+        fixture_test = "test_zg361_phase2_seed_fixture.py"
     commands = (
         ("validate_static", config.clean_source / "tools" / "validate_static.py", False),
         (
@@ -3000,22 +3061,22 @@ def _run_seed_static_preflight(
         ),
         (
             "seed_bootstrap_test",
-            config.clean_source / "tools" / "test_zg361_phase2_seed_bootstrap.py",
+            config.clean_source / "tools" / bootstrap_test,
             False,
         ),
         (
             "seed_bootstrap_test_optimized",
-            config.clean_source / "tools" / "test_zg361_phase2_seed_bootstrap.py",
+            config.clean_source / "tools" / bootstrap_test,
             True,
         ),
         (
             "seed_fixture_test",
-            config.clean_source / "tools" / "test_zg361_phase2_seed_fixture.py",
+            config.clean_source / "tools" / fixture_test,
             False,
         ),
         (
             "seed_fixture_test_optimized",
-            config.clean_source / "tools" / "test_zg361_phase2_seed_fixture.py",
+            config.clean_source / "tools" / fixture_test,
             True,
         ),
         (
@@ -3034,6 +3095,9 @@ def _run_seed_static_preflight(
         for name, path, _optimized in commands
         if not path.is_file()
     ]
+    missing_paths = sorted(
+        {str(path) for _name, path, _optimized in commands if not path.is_file()}
+    )
     if missing:
         # The tiny fake runtimes used by the CK3-free unit tests intentionally
         # contain only the minimum fixture files.  They still exercise the
@@ -3047,6 +3111,7 @@ def _run_seed_static_preflight(
                 else "required seed-specific offline gate scripts are missing"
             ),
             "missing_scripts": missing,
+            "missing_paths": missing_paths,
             "commands": [],
         }
         write_json(artifacts / "static-preflight.json", evidence)
@@ -3172,6 +3237,9 @@ def run_preflight(
         "status": "checking",
         "ok": False,
         "readiness_scope": "frozen_inputs_and_projection_only",
+        "seed_purpose": config.seed_purpose,
+        "seed_contract_kind": None,
+        "expected_seed_contract_kind": config.expected_seed_contract_kind,
         "seed_ready": False,
         "seed_contract_status": None,
         "started_at_utc": utc_now(),
@@ -3324,6 +3392,21 @@ def run_preflight(
         report["checks"]["critical_b2_product_byte_equivalence"] = "GREEN"
 
         base_contract = json.loads(config.seed_contract.read_text(encoding="utf-8"))
+        if not isinstance(base_contract, dict):
+            raise SeedCaptureError("seed contract root is not an object")
+        report["seed_contract_kind"] = base_contract.get("kind")
+        if (
+            config.seed_purpose == MANAGER_SEED_PURPOSE
+            and report["seed_contract_kind"] != config.expected_seed_contract_kind
+        ):
+            raise SeedCaptureError(
+                "seed contract kind does not match seed purpose",
+                {
+                    "seed_purpose": config.seed_purpose,
+                    "expected_contract_kind": config.expected_seed_contract_kind,
+                    "observed_contract_kind": report["seed_contract_kind"],
+                },
+            )
         report["seed_contract_status"] = base_contract.get("status")
         source_row = base_contract.get("source")
         if not isinstance(source_row, dict):
@@ -3845,7 +3928,14 @@ def run_capture(
         "image_used": False,
         "coordinates_used": False,
         "test_decision_used": False,
-        "fixture_kind": "acceptance-only phase2 seed bootstrap",
+        "kind": "zg361_phase2_seed_capture",
+        "seed_purpose": config.seed_purpose,
+        "seed_contract_kind": None,
+        "expected_seed_contract_kind": config.expected_seed_contract_kind,
+        "expected_event_definition_key": config.seed_event_definition_key,
+        "fixture_kind": config.fixture_kind,
+        "scenario_verdict": "RED",
+        "seed_verdict": "RED",
         "timeouts": {
             "binding_seconds": config.binding_timeout_seconds,
             "loader_seconds": config.loader_timeout_seconds,
@@ -3976,6 +4066,21 @@ def run_capture(
         seed = active_runtime.seed
 
         base_contract = json.loads(config.seed_contract.read_text(encoding="utf-8"))
+        if not isinstance(base_contract, dict):
+            raise SeedCaptureError("seed contract root is not an object")
+        report["seed_contract_kind"] = base_contract.get("kind")
+        if (
+            config.seed_purpose == MANAGER_SEED_PURPOSE
+            and report["seed_contract_kind"] != config.expected_seed_contract_kind
+        ):
+            raise SeedCaptureError(
+                "seed contract kind does not match seed purpose",
+                {
+                    "seed_purpose": config.seed_purpose,
+                    "expected_contract_kind": config.expected_seed_contract_kind,
+                    "observed_contract_kind": report["seed_contract_kind"],
+                },
+            )
         source_row = base_contract.get("source")
         if not isinstance(source_row, dict):
             raise SeedCaptureError("seed contract source is not an object")
@@ -4336,6 +4441,7 @@ def run_capture(
                 active_runtime.pre_submission_revision_mismatch_error
             ),
             timeout_seconds=config.event_timeout_seconds,
+            expected_event_definition_key=config.seed_event_definition_key,
             source_save_sha256=observed_save_sha,
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,
@@ -4344,7 +4450,7 @@ def run_capture(
         write_json(artifacts / "bootstrap-event-snapshot.json", event_snapshot)
         report["bootstrap_event"] = {
             "result": "GREEN",
-            "event_definition_key": SEED_EVENT_DEFINITION_KEY,
+            "event_definition_key": config.seed_event_definition_key,
             "date_raw": event_snapshot.get("date_raw"),
             "revision": event_snapshot.get("revision"),
         }
@@ -4352,34 +4458,50 @@ def run_capture(
         candidate_dir = artifacts / "candidate"
         capture_result = seed.capture_mcp_evidence(service, capture_dir)
         report["capture"] = capture_result
-        matrix = capture_result.get("domain_query_matrix")
-        if not isinstance(matrix, dict):
-            raise SeedCaptureError("seed capture did not return a domain query matrix")
-        probes = provider_probe(service, matrix, artifacts)
-        report["provider_probes"] = probes
-        candidate = seed.materialize_candidate(
-            event_context_path=Path(capture_result["event_context_path"]),
-            paused_snapshot_path=Path(capture_result["paused_snapshot_path"]),
-            event_close_path=Path(capture_result["event_close_path"]),
-            checkpoint_response_path=Path(
+        materialize_kwargs: dict[str, Any] = {
+            "event_context_path": Path(capture_result["event_context_path"]),
+            "paused_snapshot_path": Path(capture_result["paused_snapshot_path"]),
+            "event_close_path": Path(capture_result["event_close_path"]),
+            "checkpoint_response_path": Path(
                 capture_result["checkpoint_response_path"]
             ),
-            profile=config.profile_dir,
-            output_dir=candidate_dir,
-            base_contract_path=config.seed_contract,
-            source_git_commit=config.frozen_git_sha,
-            product_tree_sha256=initial_runtime_tree_sha256["product"],
-            fixture_tree_sha256=initial_runtime_tree_sha256["fixture"],
-            provider_probes_path=artifacts / "provider-probes.json",
-        )
+            "profile": config.profile_dir,
+            "output_dir": candidate_dir,
+            "base_contract_path": config.seed_contract,
+            "source_git_commit": config.frozen_git_sha,
+            "product_tree_sha256": initial_runtime_tree_sha256["product"],
+            "fixture_tree_sha256": initial_runtime_tree_sha256["fixture"],
+        }
+        if config.seed_purpose == MANAGER_SEED_PURPOSE:
+            report["provider_probes"] = {
+                "result": "NOT_APPLICABLE",
+                "reason": "player-manager seed proves entry eligibility only",
+            }
+        else:
+            matrix = capture_result.get("domain_query_matrix")
+            if not isinstance(matrix, dict):
+                raise SeedCaptureError("seed capture did not return a domain query matrix")
+            probes = provider_probe(service, matrix, artifacts)
+            report["provider_probes"] = probes
+            materialize_kwargs["provider_probes_path"] = (
+                artifacts / "provider-probes.json"
+            )
+        candidate = seed.materialize_candidate(**materialize_kwargs)
         report["candidate"] = candidate
         report["result"] = "GREEN"
+        report["scenario_verdict"] = "GREEN"
+        report["seed_verdict"] = "GREEN"
         report["live_verdict"] = "paused_seed_ready"
-        report["provider_baseline_verdict"] = (
-            "ready_provider_matrix_captured"
-            if candidate.get("provider_baseline_ready") is True
-            else "blocked_provider_matrix_captured"
-        )
+        if config.seed_purpose == MANAGER_SEED_PURPOSE:
+            report["provider_baseline_verdict"] = (
+                "not_applicable_player_manager_seed"
+            )
+        else:
+            report["provider_baseline_verdict"] = (
+                "ready_provider_matrix_captured"
+                if candidate.get("provider_baseline_ready") is True
+                else "blocked_provider_matrix_captured"
+            )
     except BaseException as error:
         report["failure_reason"] = f"{type(error).__name__}: {error}"
         report["traceback"] = traceback.format_exc()
@@ -4607,6 +4729,15 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         ),
     )
     parser.add_argument("--pipe", required=True)
+    parser.add_argument(
+        "--seed-purpose",
+        choices=tuple(SEED_PURPOSE_SPECS),
+        default=DEFAULT_SEED_PURPOSE,
+        help=(
+            "seed role to capture; player-subject preserves the historical "
+            "default, while player-manager mounts the dedicated manager fixture"
+        ),
+    )
     parser.add_argument("--seed-contract", type=Path)
     parser.add_argument(
         "--product-projection",
@@ -4720,6 +4851,7 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         bridge_dll=args.bridge_dll,
         bridge_injector=args.injector,
         pipe_name=args.pipe,
+        seed_purpose=args.seed_purpose,
         bridge_bundle_manifest=args.bridge_bundle_manifest,
         product_projection=args.product_projection,
         product_projection_manifest=args.product_projection_manifest,

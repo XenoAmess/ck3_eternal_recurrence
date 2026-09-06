@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 from contextlib import ExitStack
 import ctypes
 from ctypes import wintypes
@@ -291,6 +292,8 @@ import promo_real_character_contract as real_characters
 # writable profile durable but outside the repository/protected real profile.
 RUNS_ROOT = ROOT.parent / f"{ROOT.name}_process_assets" / "zg361" / "runs"
 PHASE2_SEED_CONTRACT_PATH = ROOT / "tools" / "zg361_phase2_seed_contract.json"
+PHASE2_PLAYER_MANAGER_SEED_KIND = "zg361_phase2_player_manager_paused_seed"
+PHASE2_PLAYER_MANAGER_SEED_PURPOSE = "player-manager"
 EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
@@ -4494,9 +4497,23 @@ def load_phase2_seed_contract(
             )
         return value
 
+    manager_seed = contract.get("kind") == PHASE2_PLAYER_MANAGER_SEED_KIND
     exact_object(
         contract,
-        {
+        ({
+            "schema_version",
+            "kind",
+            "status",
+            "ready",
+            "blocker",
+            "source",
+            "provenance",
+            "runtime",
+            "saved_state",
+            "install",
+            "manager_entry",
+            "seed_purpose",
+        } if manager_seed else {
             "schema_version",
             "kind",
             "status",
@@ -4508,7 +4525,7 @@ def load_phase2_seed_contract(
             "saved_state",
             "install",
             "domain_query_matrix",
-        },
+        }),
         "root",
     )
     source = exact_object(
@@ -4568,24 +4585,29 @@ def load_phase2_seed_contract(
         },
         "install",
     )
-    domain_query_matrix = exact_object(
-        contract.get("domain_query_matrix"),
-        {
-            "schema_version",
-            "b2_pip_owner_character_id",
-            "incident_owner_character_id",
-            "workforce_owner_character_id",
-            "ai_owned_case_owner_character_id",
-            "ai_owned_case_subject_character_id",
-        },
-        "domain_query_matrix",
-    )
+    domain_query_matrix: dict[str, object] | None = None
+    if not manager_seed:
+        domain_query_matrix = exact_object(
+            contract.get("domain_query_matrix"),
+            {
+                "schema_version",
+                "b2_pip_owner_character_id",
+                "incident_owner_character_id",
+                "workforce_owner_character_id",
+                "ai_owned_case_owner_character_id",
+                "ai_owned_case_subject_character_id",
+            },
+            "domain_query_matrix",
+        )
     status = contract.get("status")
     ready = contract.get("ready")
     if (
         contract.get("schema_version") != 1
         or isinstance(contract.get("schema_version"), bool)
-        or contract.get("kind") != "zg361_phase2_paused_seed"
+        or contract.get("kind") not in {
+            "zg361_phase2_paused_seed",
+            PHASE2_PLAYER_MANAGER_SEED_KIND,
+        }
         or status
         not in {
             "ready",
@@ -4675,8 +4697,19 @@ def load_phase2_seed_contract(
         or not isinstance(character_id, int)
         or isinstance(character_id, bool)
         or character_id <= 0
-        or saved_state.get("player_history_id")
-        != PHASE2_SEED_PLAYER_HISTORY_ID
+        or (
+            manager_seed
+            and saved_state.get("player_history_id") is not None
+            and (
+                not isinstance(saved_state.get("player_history_id"), str)
+                or not saved_state.get("player_history_id")
+            )
+        )
+        or (
+            not manager_seed
+            and saved_state.get("player_history_id")
+            != PHASE2_SEED_PLAYER_HISTORY_ID
+        )
         or saved_state.get("played_character_alive") is not True
         or saved_state.get("paused_on_load") is not True
         or saved_state.get("map_ready") is not True
@@ -4692,6 +4725,10 @@ def load_phase2_seed_contract(
         raise acceptance.RunnerError(
             "phase-two seed contract install slots/launch mode are invalid"
         )
+    if manager_seed:
+        validate_phase2_promotion_source_seed_contract(contract)
+        return contract
+    assert domain_query_matrix is not None
     if domain_query_matrix.get("schema_version") != 1:
         raise acceptance.RunnerError(
             "phase-two seed contract domain_query_matrix schema is invalid"
@@ -4735,6 +4772,120 @@ def load_phase2_seed_contract(
             "phase-two seed contract AI-owned owner and subject are identical"
         )
     return contract
+
+
+def validate_phase2_promotion_source_seed_contract(
+    contract: Mapping[str, object],
+    *,
+    source_report: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    """Require a typed player-manager seed for promotion-source acceptance."""
+
+    manager_entry_value = contract.get("manager_entry")
+    manager_entry = (
+        manager_entry_value
+        if isinstance(manager_entry_value, Mapping)
+        else {}
+    )
+    saved_state_value = contract.get("saved_state")
+    saved_state = (
+        saved_state_value if isinstance(saved_state_value, Mapping) else {}
+    )
+
+    def positive_int(value: object) -> bool:
+        return (
+            isinstance(value, int)
+            and not isinstance(value, bool)
+            and 1 <= value <= 2**31 - 1
+        )
+
+    manager_id = manager_entry.get("manager_character_id")
+    subject_id = manager_entry.get("reviewable_subject_character_id")
+    expected_entry_fields = {
+        "schema_version",
+        "manager_character_id",
+        "reviewable_subject_character_id",
+        "manager_scope",
+        "subject_scope",
+        "human",
+        "alive",
+        "landed",
+        "celestial_liege",
+        "game_rule_enabled",
+        "existing_direct_reviewable_vassal_count_minimum",
+        "b1_active",
+        "central_active",
+        "pp_active",
+        "review_now_eligible",
+    }
+    checks = {
+        "kind": contract.get("kind") == PHASE2_PLAYER_MANAGER_SEED_KIND,
+        "seed_purpose": contract.get("seed_purpose")
+        == PHASE2_PLAYER_MANAGER_SEED_PURPOSE,
+        "ready": contract.get("ready") is True,
+        "status": contract.get("status") == "ready",
+        "manager_entry_fields": set(manager_entry) == expected_entry_fields,
+        "manager_entry_schema": manager_entry.get("schema_version") == 1,
+        "manager_character_id": positive_int(manager_id),
+        "subject_character_id": positive_int(subject_id),
+        "manager_is_played_character": manager_id
+        == saved_state.get("played_character_id"),
+        "subject_differs_from_manager": subject_id != manager_id,
+        "manager_scope": manager_entry.get("manager_scope")
+        == "zga_phase2_manager_owner",
+        "subject_scope": manager_entry.get("subject_scope")
+        == "zga_phase2_manager_subject",
+        "manager_human": manager_entry.get("human") is True,
+        "manager_alive": manager_entry.get("alive") is True,
+        "manager_landed": manager_entry.get("landed") is True,
+        "manager_celestial_liege": manager_entry.get("celestial_liege") is True,
+        "game_rule_enabled": manager_entry.get("game_rule_enabled") is True,
+        "reviewable_vassal_present": positive_int(
+            manager_entry.get("existing_direct_reviewable_vassal_count_minimum")
+        ),
+        "b1_inactive": manager_entry.get("b1_active") is False,
+        "central_inactive": manager_entry.get("central_active") is False,
+        "pp_inactive": manager_entry.get("pp_active") is False,
+        "review_now_eligible": manager_entry.get("review_now_eligible") is True,
+    }
+    history_id = saved_state.get("player_history_id")
+    checks["player_history_id_nullable"] = history_id is None or (
+        isinstance(history_id, str) and bool(history_id)
+    )
+    provenance_value = contract.get("provenance")
+    provenance = (
+        provenance_value if isinstance(provenance_value, Mapping) else {}
+    )
+    for field in (
+        "fixture_opened_product_b1",
+        "product_receipts_written_by_fixture",
+        "fixture_writes_product_receipts",
+    ):
+        if field in provenance:
+            checks[f"provenance_{field}_false"] = provenance.get(field) is False
+    if source_report is not None:
+        checks.update({
+            "source_report_green": source_report.get("result") == "GREEN",
+            "source_report_manager_entry_matches": source_report.get(
+                "typed_manager_entry"
+            )
+            == dict(manager_entry),
+            "source_report_fixture_did_not_open_b1": source_report.get(
+                "fixture_opened_product_b1"
+            )
+            is False,
+            "source_report_fixture_wrote_no_product_receipts": source_report.get(
+                "product_receipts_written_by_fixture"
+            )
+            is False,
+        })
+    failed = sorted(name for name, passed in checks.items() if passed is not True)
+    if failed:
+        raise acceptance.RunnerError(
+            "promotion-source requires a ready typed player-manager seed: "
+            + ", ".join(failed)
+        )
+    return copy.deepcopy(dict(contract))
 
 
 def install_phase2_seed(
@@ -5051,6 +5202,108 @@ def install_phase2_seed(
             "continue_slot_absent": not continue_save.exists(),
             "last_save_slot_absent": not last_save.exists(),
         }
+        if contract.get("kind") == PHASE2_PLAYER_MANAGER_SEED_KIND:
+            validate_phase2_promotion_source_seed_contract(
+                contract, source_report=source_report
+            )
+            manager_snapshot_value = source_report.get("paused_snapshot")
+            manager_snapshot = (
+                manager_snapshot_value
+                if isinstance(manager_snapshot_value, Mapping)
+                else {}
+            )
+            manager_player_value = manager_snapshot.get("played_character")
+            manager_player = (
+                manager_player_value
+                if isinstance(manager_player_value, Mapping)
+                else {}
+            )
+            manager_close_value = source_report.get("event_close")
+            manager_close = (
+                manager_close_value
+                if isinstance(manager_close_value, Mapping)
+                else {}
+            )
+            manager_checkpoint_value = source_report.get("checkpoint")
+            manager_checkpoint = (
+                manager_checkpoint_value
+                if isinstance(manager_checkpoint_value, Mapping)
+                else {}
+            )
+            manager_trees_value = source_report.get("runtime_tree_sha256")
+            manager_trees = (
+                manager_trees_value
+                if isinstance(manager_trees_value, Mapping)
+                else {}
+            )
+            for legacy_check in (
+                "source_profile_matches_report",
+                "source_report_game_version_matches",
+                "source_report_executable_matches",
+                "source_report_enabled_mod_ids_match",
+                "source_product_tree_provenance_matches",
+                "source_fixture_tree_provenance_matches",
+                "source_runtime_trees_were_stable",
+                "source_real_history_id_matches",
+                "source_real_character_id_matches",
+                "source_real_character_was_alive",
+                "source_native_snapshot_was_paused_map",
+                "source_native_snapshot_date_matches",
+                "source_real_character_bootstrap_attested",
+            ):
+                checks.pop(legacy_check, None)
+            checks.update({
+                "source_report_green": source_report.get("result") == "GREEN",
+                "source_manager_entry_matches": source_report.get(
+                    "typed_manager_entry"
+                )
+                == contract.get("manager_entry"),
+                "source_manager_character_id_matches": manager_player.get(
+                    "character_id"
+                )
+                == contract["saved_state"].get("played_character_id"),
+                "source_manager_was_alive": manager_player.get("alive") is True,
+                "source_manager_snapshot_was_paused_map": manager_snapshot.get(
+                    "paused"
+                )
+                is True
+                and manager_snapshot.get("map_ready") is True,
+                "source_manager_snapshot_date_matches": manager_snapshot.get(
+                    "date_raw"
+                )
+                == contract["saved_state"].get("date_raw"),
+                "source_manager_event_closed": manager_close.get("step")
+                == "select-event-option-1"
+                and manager_close.get("postcondition_verified") is True,
+                "source_manager_checkpoint_matches": manager_checkpoint.get(
+                    "status"
+                )
+                == "saved"
+                and manager_checkpoint.get("path") == str(source_save)
+                and manager_checkpoint.get("size")
+                == source_contract.get("bytes")
+                and manager_checkpoint.get("sha256")
+                == source_contract.get("sha256")
+                and manager_checkpoint.get("date_raw")
+                == contract["saved_state"].get("date_raw")
+                and manager_checkpoint.get("episode_character_id")
+                == contract["saved_state"].get("played_character_id"),
+                "source_manager_product_tree_provenance_matches": (
+                    manager_trees.get("product")
+                    == runtime_contract.get("source_product_tree_sha256")
+                ),
+                "source_manager_fixture_tree_provenance_matches": (
+                    manager_trees.get("fixture")
+                    == runtime_contract.get("source_fixture_tree_sha256")
+                ),
+                "source_manager_fixture_did_not_open_product_b1": (
+                    source_report.get("fixture_opened_product_b1") is False
+                ),
+                "source_manager_fixture_wrote_no_product_receipts": (
+                    source_report.get("product_receipts_written_by_fixture")
+                    is False
+                ),
+            })
         evidence["source"] = {
             "profile": str(source_profile),
             "path": str(source_save),
@@ -5163,10 +5416,13 @@ def preflight_phase2_seed_contract(
     product_source: Path | None = None,
     product_projection: str = "broad",
     product_projection_manifest: Path | None = None,
+    promotion_source: bool = False,
 ) -> dict[str, object]:
     """Validate the contract and optionally dry-install it without CK3."""
 
     contract = load_phase2_seed_contract(contract_path)
+    if promotion_source:
+        validate_phase2_promotion_source_seed_contract(contract)
     if contract.get("ready") is not True:
         blocker = str(contract.get("blocker") or "unspecified seed blocker")
         raise acceptance.RunnerError(
@@ -19392,6 +19648,13 @@ def run_cell(
                     raise acceptance.RunnerError(
                         "phase-two runtime requires a GREEN ready seed install evidence"
                     )
+            if phase2_promotion_source_capture_live:
+                manager_contract = phase2_seed_install_evidence.get("contract")
+                if not isinstance(manager_contract, Mapping):
+                    raise acceptance.RunnerError(
+                        "promotion-source seed install lacks its contract"
+                    )
+                validate_phase2_promotion_source_seed_contract(manager_contract)
         native_driver = NativeHeadlessGameplayDriver(
             native_bridge.pipe_name,
             state_dir=spec.state_dir,
@@ -21241,6 +21504,7 @@ def main(
                 product_projection_manifest=(
                     phase2_product_projection_manifest_path
                 ),
+                promotion_source=phase2_promotion_source_capture_live,
             )
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
         return 0

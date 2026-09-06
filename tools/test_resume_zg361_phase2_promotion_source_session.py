@@ -51,6 +51,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import resume_zg361_phase2_promotion_source_session as client  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as entry  # noqa: E402
+import run_zhongguo_acceptance as runner  # noqa: E402
 
 
 PREFIX = b"[11:00:00][I][unit.cpp:1]: source client boundary\n"
@@ -60,6 +61,37 @@ PROJECT_ERROR = (
     b"[11:01:00][E][pdx_data_localize.cpp:146]: Data error in loc string "
     b"'zg361ch.m001.desc'\n"
 )
+
+
+def _player_manager_seed_contract() -> dict[str, object]:
+    return {
+        "kind": runner.PHASE2_PLAYER_MANAGER_SEED_KIND,
+        "seed_purpose": runner.PHASE2_PLAYER_MANAGER_SEED_PURPOSE,
+        "ready": True,
+        "status": "ready",
+        "source": {"sha256": "a" * 64},
+        "saved_state": {
+            "played_character_id": 29037,
+            "player_history_id": None,
+        },
+        "manager_entry": {
+            "schema_version": 1,
+            "manager_character_id": 29037,
+            "reviewable_subject_character_id": 32904,
+            "manager_scope": "zga_phase2_manager_owner",
+            "subject_scope": "zga_phase2_manager_subject",
+            "human": True,
+            "alive": True,
+            "landed": True,
+            "celestial_liege": True,
+            "game_rule_enabled": True,
+            "existing_direct_reviewable_vassal_count_minimum": 1,
+            "b1_active": False,
+            "central_active": False,
+            "pp_active": False,
+            "review_now_eligible": True,
+        },
+    }
 
 
 class _Driver:
@@ -97,11 +129,7 @@ class RetainedRuntimeDiagnosticTests(unittest.TestCase):
             json.dumps(
                 {
                     "result": "GREEN",
-                    "contract": {
-                        "ready": True,
-                        "status": "ready",
-                        "source": {"sha256": "a" * 64},
-                    },
+                    "contract": _player_manager_seed_contract(),
                 }
             ),
             encoding="utf-8",

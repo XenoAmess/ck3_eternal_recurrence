@@ -60,7 +60,127 @@ from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
 )
 
 
+def _player_manager_seed_contract(seed_sha: str = "A" * 64) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "kind": runner.PHASE2_PLAYER_MANAGER_SEED_KIND,
+        "seed_purpose": runner.PHASE2_PLAYER_MANAGER_SEED_PURPOSE,
+        "status": "ready",
+        "ready": True,
+        "blocker": "",
+        "source": {"sha256": seed_sha},
+        "saved_state": {
+            "played_character_id": 55001,
+            "player_history_id": None,
+        },
+        "manager_entry": {
+            "schema_version": 1,
+            "manager_character_id": 55001,
+            "reviewable_subject_character_id": 44001,
+            "manager_scope": "zga_phase2_manager_owner",
+            "subject_scope": "zga_phase2_manager_subject",
+            "human": True,
+            "alive": True,
+            "landed": True,
+            "celestial_liege": True,
+            "game_rule_enabled": True,
+            "existing_direct_reviewable_vassal_count_minimum": 1,
+            "b1_active": False,
+            "central_active": False,
+            "pp_active": False,
+            "review_now_eligible": True,
+        },
+    }
+
+
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_promotion_source_requires_typed_player_manager_seed(self) -> None:
+        contract = _player_manager_seed_contract()
+        self.assertEqual(
+            runner.validate_phase2_promotion_source_seed_contract(contract),
+            contract,
+        )
+        self.assertIsNone(contract["saved_state"]["player_history_id"])
+
+        full_manager_contract = runner.load_phase2_seed_contract()
+        full_manager_contract["kind"] = runner.PHASE2_PLAYER_MANAGER_SEED_KIND
+        full_manager_contract["seed_purpose"] = (
+            runner.PHASE2_PLAYER_MANAGER_SEED_PURPOSE
+        )
+        full_manager_contract["manager_entry"] = copy.deepcopy(
+            contract["manager_entry"]
+        )
+        full_manager_contract["saved_state"]["played_character_id"] = 55001
+        full_manager_contract["saved_state"]["player_history_id"] = None
+        del full_manager_contract["domain_query_matrix"]
+        with tempfile.TemporaryDirectory() as temporary:
+            manager_path = Path(temporary) / "manager-seed.json"
+            manager_path.write_text(
+                json.dumps(full_manager_contract), encoding="utf-8"
+            )
+            self.assertEqual(
+                runner.load_phase2_seed_contract(manager_path),
+                full_manager_contract,
+            )
+
+        old_player_subject = {
+            "kind": "zg361_phase2_paused_seed",
+            "status": "ready",
+            "ready": True,
+            "saved_state": {
+                "played_character_id": 29037,
+                "player_history_id": "han_6875",
+            },
+        }
+        with self.assertRaisesRegex(
+            runner.acceptance.RunnerError,
+            "ready typed player-manager seed: .*kind",
+        ):
+            runner.validate_phase2_promotion_source_seed_contract(
+                old_player_subject
+            )
+
+        same_subject = copy.deepcopy(contract)
+        same_subject["manager_entry"]["reviewable_subject_character_id"] = 55001
+        with self.assertRaisesRegex(
+            runner.acceptance.RunnerError, "subject_differs_from_manager"
+        ):
+            runner.validate_phase2_promotion_source_seed_contract(same_subject)
+
+        fixture_mutated_product = copy.deepcopy(contract)
+        fixture_mutated_product["provenance"] = {
+            "fixture_opened_product_b1": True,
+            "product_receipts_written_by_fixture": False,
+        }
+        with self.assertRaisesRegex(
+            runner.acceptance.RunnerError,
+            "provenance_fixture_opened_product_b1_false",
+        ):
+            runner.validate_phase2_promotion_source_seed_contract(
+                fixture_mutated_product
+            )
+
+        source_report = {
+            "result": "GREEN",
+            "typed_manager_entry": copy.deepcopy(contract["manager_entry"]),
+            "fixture_opened_product_b1": False,
+            "product_receipts_written_by_fixture": False,
+        }
+        self.assertEqual(
+            runner.validate_phase2_promotion_source_seed_contract(
+                contract, source_report=source_report
+            ),
+            contract,
+        )
+        source_report["product_receipts_written_by_fixture"] = True
+        with self.assertRaisesRegex(
+            runner.acceptance.RunnerError,
+            "source_report_fixture_wrote_no_product_receipts",
+        ):
+            runner.validate_phase2_promotion_source_seed_contract(
+                contract, source_report=source_report
+            )
+
     def test_career_hc_portfolio_mode_card_is_a_known_interrupt(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None
@@ -712,11 +832,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             (cell / "00_phase2_seed_install.json").write_text(
                 json.dumps({
                     "result": "GREEN",
-                    "contract": {
-                        "ready": True,
-                        "status": "ready",
-                        "source": {"sha256": "A" * 64},
-                    },
+                    "contract": _player_manager_seed_contract(),
                 }),
                 encoding="utf-8",
             )
@@ -4268,11 +4384,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         diagnostic_dedupe: bool = False,
     ) -> None:
         seed_sha = "A" * 64
-        seed_contract = {
-            "status": "ready",
-            "ready": True,
-            "source": {"sha256": seed_sha},
-        }
+        seed_contract = _player_manager_seed_contract(seed_sha)
         seed_install = {"result": "GREEN", "contract": seed_contract}
         binding = {"bridge_pid": 4321, "connection_generation": 1}
         loader_gate = {

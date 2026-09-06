@@ -1,0 +1,73 @@
+﻿namespace = zga_phase2_manager_seed
+
+# Root is the live human player. Eligibility is checked again immediately
+# before selecting one already-existing direct reviewable vassal.
+zga_phase2_manager_seed.100 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				is_alive = yes
+				is_landed = yes
+				zg361_is_celestial_liege_trigger = yes
+				has_game_rule = zg361_on
+				zg361_review_now_business_valid_trigger = yes
+				prestige >= 150
+				NOT = { has_character_flag = zg361_b1_cycle_active }
+				NOT = { has_character_flag = zg361_review_in_progress }
+				trigger_if = {
+					limit = { has_variable = zg361_p2c_active }
+					var:zg361_p2c_active != 1
+				}
+				trigger_else = { always = yes }
+				trigger_if = {
+					limit = { has_variable = zg361_pp_portfolio_queue_active }
+					var:zg361_pp_portfolio_queue_active != 1
+				}
+				trigger_else = { always = yes }
+				any_vassal = {
+					count >= 1
+					zg361_is_reviewable_vassal_trigger = yes
+				}
+			}
+			save_scope_as = zga_phase2_manager_owner
+			ordered_vassal = {
+				limit = {
+					zg361_is_reviewable_vassal_trigger = yes
+					liege = root
+				}
+				order_by = age
+				position = 0
+				save_scope_as = zga_phase2_manager_subject
+			}
+			trigger_event = zga_phase2_manager_seed.1
+		}
+		else = {
+			debug_log = "ZGAP2MANAGERSEED: RED player-manager seed preconditions unavailable"
+		}
+	}
+}
+
+# The only visible fixture card. Its existence proves that the frozen fixture
+# gates passed; MCP captures the played manager and selected real vassal.
+zga_phase2_manager_seed.1 = {
+	type = character_event
+	theme = stewardship
+	title = zga_phase2_manager_seed.1.t
+	desc = zga_phase2_manager_seed.1.desc
+	left_portrait = root
+	right_portrait = scope:zga_phase2_manager_subject
+
+	immediate = {
+		save_scope_as = zga_phase2_manager_owner
+		debug_log = "ZGAP2MANAGERSEED: typed player-manager capture window ready"
+	}
+
+	option = {
+		name = zga_phase2_manager_seed.1.a
+		debug_log = "ZGAP2MANAGERSEED: typed player-manager capture window closed"
+	}
+}

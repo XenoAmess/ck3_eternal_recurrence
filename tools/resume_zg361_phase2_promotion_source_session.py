@@ -112,6 +112,10 @@ def validate_retained_session_inputs(
         raise RetainedSessionError(
             "retained session inputs failed: " + ", ".join(failed)
         )
+    try:
+        zhongguo_runner.validate_phase2_promotion_source_seed_contract(contract)
+    except zhongguo_runner.acceptance.RunnerError as error:
+        raise RetainedSessionError(str(error)) from error
     return {
         "retention_path": str(retention_path.resolve()),
         "retention": retention,

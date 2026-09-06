@@ -75,8 +75,13 @@ class FakeDriver:
 
 
 class FakeService:
-    def __init__(self, calls: list[str]) -> None:
+    def __init__(
+        self,
+        calls: list[str],
+        event_definition_key: str = capture.SEED_EVENT_DEFINITION_KEY,
+    ) -> None:
         self.calls = calls
+        self.event_definition_key = event_definition_key
 
     def snapshot(self) -> dict[str, object]:
         return {
@@ -116,7 +121,7 @@ class FakeService:
         self.calls.append("event-context")
         return {
             "current_event_window_context": {
-                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+                "event_definition_key": self.event_definition_key
             }
         }
 
@@ -316,8 +321,13 @@ class FakeZhongguoRunner:
 
 
 class FakeSeed:
-    def __init__(self, calls: list[str]) -> None:
+    def __init__(
+        self,
+        calls: list[str],
+        seed_purpose: str = capture.DEFAULT_SEED_PURPOSE,
+    ) -> None:
         self.calls = calls
+        self.seed_purpose = seed_purpose
         self.materialize_kwargs: dict[str, object] | None = None
 
     def capture_mcp_evidence(
@@ -333,17 +343,24 @@ class FakeSeed:
         }
         for path in files.values():
             capture.write_json(path, {"result": "GREEN"})
-        return {
+        result: dict[str, object] = {
             **{name: str(path) for name, path in files.items()},
-            "domain_query_matrix": {
+        }
+        if self.seed_purpose == capture.DEFAULT_SEED_PURPOSE:
+            result["domain_query_matrix"] = {
                 "schema_version": 1,
                 "b2_pip_owner_character_id": 9200,
                 "incident_owner_character_id": 9200,
                 "workforce_owner_character_id": 9200,
                 "ai_owned_case_owner_character_id": 9200,
                 "ai_owned_case_subject_character_id": 9001,
-            },
-        }
+            }
+        else:
+            result["manager_entry"] = {
+                "manager_character_id": 9001,
+                "reviewable_subject_character_id": 9002,
+            }
+        return result
 
     def materialize_candidate(self, **kwargs: object) -> dict[str, object]:
         self.calls.append("candidate-materialize")
@@ -351,11 +368,13 @@ class FakeSeed:
         output = Path(kwargs["output_dir"])
         output.mkdir(parents=True)
         capture.write_json(output / "seed-contract.json", {"ready": True})
-        return {
+        result: dict[str, object] = {
             "result": "GREEN",
             "ready": True,
-            "provider_baseline_ready": True,
         }
+        if self.seed_purpose == capture.DEFAULT_SEED_PURPOSE:
+            result["provider_baseline_ready"] = True
+        return result
 
 
 class FakeBridgeUnavailableError(RuntimeError):
@@ -403,8 +422,20 @@ class Fixture:
         (seed_fixture / "descriptor.mod").write_text(
             "name=fixture\n", encoding="utf-8"
         )
+        manager_fixture = (
+            self.clean
+            / "tools"
+            / "fixtures"
+            / "zg361_phase2_manager_seed_bootstrap"
+        )
+        manager_fixture.mkdir(parents=True)
+        (manager_fixture / "descriptor.mod").write_text(
+            "name=manager-fixture\n", encoding="utf-8"
+        )
         self.old_save.write_bytes(b"frozen-real-save")
         contract = {
+            "kind": "zg361_phase2_paused_seed",
+            "status": "ready",
             "source": {
                 "absolute_save": str(self.old_save),
                 "sha256": sha256(self.old_save),
@@ -413,6 +444,18 @@ class Fixture:
         contract_path = self.clean / "tools" / "zg361_phase2_seed_contract.json"
         contract_path.parent.mkdir(parents=True, exist_ok=True)
         contract_path.write_text(json.dumps(contract), encoding="utf-8")
+        manager_contract = {
+            "kind": "zg361_phase2_player_manager_seed_request",
+            "seed_purpose": "player-manager",
+            "status": "blocked_live_capture_required",
+            "source": dict(contract["source"]),
+        }
+        manager_contract_path = (
+            self.clean / "tools" / "zg361_phase2_manager_seed_contract.json"
+        )
+        manager_contract_path.write_text(
+            json.dumps(manager_contract), encoding="utf-8"
+        )
         executable = self.game / "binaries" / "ck3.exe"
         rules = self.game / "game" / "common" / "game_rules" / "00_game_rules.txt"
         executable.parent.mkdir(parents=True)
@@ -433,7 +476,9 @@ class Fixture:
             ):
                 archive.write(path, path.relative_to(self.clean).as_posix())
 
-    def config(self) -> capture.CaptureConfig:
+    def config(
+        self, seed_purpose: str = capture.DEFAULT_SEED_PURPOSE
+    ) -> capture.CaptureConfig:
         return capture.CaptureConfig(
             clean_source=self.clean,
             attempt_dir=self.attempt,
@@ -444,6 +489,7 @@ class Fixture:
             bridge_dll=self.dll,
             bridge_injector=self.injector,
             pipe_name=self.pipe,
+            seed_purpose=seed_purpose,
             loader_timeout_seconds=60.0,
             native_readiness_timeout_seconds=13.0,
             event_timeout_seconds=14.0,
@@ -458,15 +504,33 @@ class Fixture:
         *,
         parser_red: bool = False,
         process_exit: bool = False,
+        seed_purpose: str = capture.DEFAULT_SEED_PURPOSE,
+        event_definition_key: str | None = None,
     ) -> capture.RuntimeBindings:
         acceptance = FakeAcceptance(self.game / "binaries" / "ck3.exe", calls)
         zgrun = FakeZhongguoRunner(
-            self.clean / "tools" / "fixtures" / "zg361_phase2_seed_bootstrap",
+            self.clean
+            / "tools"
+            / "fixtures"
+            / str(
+                capture.SEED_PURPOSE_SPECS[seed_purpose]["fixture_directory"]
+            ),
             self.game / "binaries" / "ck3.exe",
             calls,
             process_exit=process_exit,
         )
-        service = FakeService(calls)
+        service = FakeService(
+            calls,
+            event_definition_key=(
+                event_definition_key
+                if event_definition_key is not None
+                else str(
+                    capture.SEED_PURPOSE_SPECS[seed_purpose][
+                        "event_definition_key"
+                    ]
+                )
+            ),
+        )
 
         def driver_factory(*_args: object, **_kwargs: object) -> FakeDriver:
             calls.append("driver-open")
@@ -556,7 +620,7 @@ class Fixture:
         return capture.RuntimeBindings(
             acceptance=acceptance,
             zgrun=zgrun,
-            seed=FakeSeed(calls),
+            seed=FakeSeed(calls, seed_purpose),
             driver_factory=driver_factory,
             service_factory=lambda _driver: service,
             bridge_unavailable_error=FakeBridgeUnavailableError,
@@ -1061,6 +1125,11 @@ def test_green_capture() -> None:
         runtime = fixture.runtime(calls)
         report = capture.run_capture(fixture.config(), runtime=runtime)
         require(report["result"] == "GREEN", f"fake capture RED: {report}")
+        require(
+            report["seed_purpose"] == "player-subject"
+            and report["seed_contract_kind"] == "zg361_phase2_paused_seed",
+            "historical default seed purpose/contract kind drifted",
+        )
         require(report["mcp_only"] is True, "capture lost MCP-only boundary")
         require(
             report["ocr_used"] is True and report["image_used"] is True,
@@ -1221,6 +1290,143 @@ def test_green_capture() -> None:
             rows(fixture.artifacts / "bootstrap-event-wait.jsonl")[-1]["state"]
             == "bootstrap_event_ready",
             "event waiter lacks a GREEN append-only terminal",
+        )
+
+
+def test_player_manager_capture_routes_fixture_event_and_materializer() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(calls, seed_purpose=purpose)
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        require(report["result"] == "GREEN", f"manager fake capture RED: {report}")
+        require(
+            report["seed_purpose"] == purpose
+            and report["seed_contract_kind"]
+            == "zg361_phase2_player_manager_seed_request",
+            "manager report did not bind purpose and request contract kind",
+        )
+        require(
+            report["expected_event_definition_key"]
+            == capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+            and report["bootstrap_event"]["event_definition_key"]
+            == capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            "manager runner did not wait for the exact manager fixture event",
+        )
+        require(
+            report["fixture_kind"]
+            == "acceptance-only phase2 player-manager seed bootstrap",
+            "manager fixture kind was not reported",
+        )
+        require(
+            report["scenario_verdict"] == "GREEN"
+            and report["seed_verdict"] == "GREEN"
+            and report["provider_probes"]["result"] == "NOT_APPLICABLE"
+            and report["provider_baseline_verdict"]
+            == "not_applicable_player_manager_seed",
+            "manager seed result was confused with the player-subject provider matrix",
+        )
+        require(
+            not any(call.startswith("provider:") for call in calls),
+            "manager seed capture queried player-subject product providers",
+        )
+        seed = runtime.seed
+        require(isinstance(seed, FakeSeed), "manager fake seed binding drifted")
+        require(
+            seed.materialize_kwargs is not None
+            and "provider_probes_path" not in seed.materialize_kwargs,
+            "manager materializer received a forged player-subject provider receipt",
+        )
+        mounted_fixture = Path(report["bootstrap"]["targets"]["fixture"])
+        require(
+            (mounted_fixture / "descriptor.mod").read_text(encoding="utf-8")
+            == "name=manager-fixture\n",
+            "manager capture mounted the historical player-subject fixture",
+        )
+
+
+def test_player_manager_wrong_event_is_scenario_and_seed_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            event_definition_key=capture.SEED_EVENT_DEFINITION_KEY,
+        )
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        require(report["result"] == "RED", "wrong manager event false-GREENed")
+        require(
+            report["scenario_verdict"] == "RED"
+            and report["seed_verdict"] == "RED",
+            "missing manager event did not remain scenario/seed RED",
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            isinstance(evidence, dict)
+            and evidence.get("state") == "unexpected_visible_event"
+            and evidence.get("expected_event_definition_key")
+            == capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+            and evidence.get("observed_event_definition_key")
+            == capture.SEED_EVENT_DEFINITION_KEY,
+            "manager wrong-event evidence was not exact",
+        )
+        require(
+            "seed-capture-mcp" not in calls and "candidate-materialize" not in calls,
+            "manager RED reached evidence capture/materialization",
+        )
+
+
+def test_player_manager_preflight_reports_purpose_and_contract_kind() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        report = capture.run_preflight(
+            fixture.config(seed_purpose=purpose),
+            runtime=fixture.runtime(calls, seed_purpose=purpose),
+            _allow_fixture_static_skip=True,
+        )
+        require(report["result"] == "GREEN", f"manager preflight RED: {report}")
+        require(
+            report["seed_purpose"] == purpose
+            and report["seed_contract_kind"]
+            == "zg361_phase2_player_manager_seed_request"
+            and report["expected_seed_contract_kind"]
+            == "zg361_phase2_player_manager_seed_request"
+            and report["seed_contract_status"]
+            == "blocked_live_capture_required",
+            "manager preflight did not distinguish purpose/request contract",
+        )
+        require(
+            report["seed_ready"] is False
+            and report["readiness_scope"]
+            == "frozen_inputs_and_projection_only",
+            "manager preflight falsely claimed a captured seed",
+        )
+        static_row = report["static_preflight"]
+        require(
+            static_row["result"] == "SKIPPED"
+            and "seed_bootstrap_test" in static_row["missing_scripts"]
+            and any(
+                str(path).endswith(
+                    "test_zg361_phase2_manager_seed_bootstrap.py"
+                )
+                for path in static_row["missing_paths"]
+            )
+            and any(
+                str(path).endswith(
+                    "test_zg361_phase2_manager_seed_fixture.py"
+                )
+                for path in static_row["missing_paths"]
+            ),
+            "manager preflight did not select the manager-specific static gates",
         )
 
 
@@ -2703,6 +2909,12 @@ def test_cli_validation_and_artifact_preservation() -> None:
         ).resolved()
         require(parsed.clean_source == fixture.clean.resolve(), "CLI source drifted")
         require(parsed.pipe_name == fixture.pipe, "CLI explicit pipe drifted")
+        require(
+            parsed.seed_purpose == capture.DEFAULT_SEED_PURPOSE
+            and parsed.seed_contract
+            == (fixture.clean / "tools" / "zg361_phase2_seed_contract.json").resolve(),
+            "CLI default no longer preserves player-subject behavior",
+        )
         require(parsed.loader_timeout_seconds == 60.0, "CLI timeout drifted")
         require(parsed.product_projection == "broad", "default product projection drifted")
         projection_manifest = fixture.root / "cli-projection.json"
@@ -2754,6 +2966,34 @@ def test_cli_validation_and_artifact_preservation() -> None:
         )
         require(parsed_preflight.preflight_only is True,
                 "--preflight-only CLI flag was not preserved")
+        parsed_manager = capture.parse_args(
+            [
+                "--clean-source", str(fixture.clean),
+                "--attempt-dir", str(fixture.attempt / "manager-attempt"),
+                "--artifacts-dir", str(fixture.attempt / "manager-attempt" / "artifacts"),
+                "--source-zip", str(fixture.source_zip),
+                "--git-sha", fixture.git_sha,
+                "--game-dir", str(fixture.game),
+                "--bridge-dll", str(fixture.dll),
+                "--injector", str(fixture.injector),
+                "--pipe", fixture.pipe,
+                "--seed-purpose", "player-manager",
+            ]
+        ).resolved()
+        require(
+            parsed_manager.seed_purpose == capture.MANAGER_SEED_PURPOSE
+            and parsed_manager.fixture_source.name
+            == "zg361_phase2_manager_seed_bootstrap"
+            and parsed_manager.seed_contract
+            == (
+                fixture.clean
+                / "tools"
+                / "zg361_phase2_manager_seed_contract.json"
+            ).resolve()
+            and parsed_manager.materializer_module
+            == "zg361_phase2_manager_seed_bootstrap",
+            "--seed-purpose player-manager did not select the dedicated inputs",
+        )
         capture.validate_config(parsed)
         for label, invalid_timing in (
             ("NaN", float("nan")),
@@ -3487,6 +3727,7 @@ def test_static_contract() -> None:
         "--product-projection-manifest",
         "--product-source",
         "--pipe",
+        "--seed-purpose",
         "--preflight-only",
         "--list-domain-observer-gate",
         "--acceptance-observer-manifest",
@@ -3541,6 +3782,9 @@ def main() -> int:
     test_real_phase2_frontend_first_option_validation()
     test_real_phase2_frontend_first_binding_uses_first_mcp_generation()
     test_green_capture()
+    test_player_manager_capture_routes_fixture_event_and_materializer()
+    test_player_manager_wrong_event_is_scenario_and_seed_red()
+    test_player_manager_preflight_reports_purpose_and_contract_kind()
     test_parser_red_cleanup()
     test_native_session_process_exit_cleanup()
     test_exact_known_predecessor_is_drained_once()

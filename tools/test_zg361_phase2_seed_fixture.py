@@ -122,9 +122,11 @@ def main() -> int:
     manager = top_level_block(events, "zga_phase2_seed.101")
     assert "is_ai = yes" in manager
     assert "liege = root" in manager
-    assert "zg361_b1_open_cycle_effect = yes" in manager
-    assert "zg361_ip_open_x_case_effect = {" in manager
-    assert "zg361_we_open_portfolio_effect = {" in manager
+    assert "zg361_b1_open_cycle_effect = yes" not in fixture_text
+    assert "zg361_ip_open_x_case_effect = {" not in fixture_text
+    assert "zg361_we_open_portfolio_effect = {" not in fixture_text
+    assert "scope:zga_phase2_seed_player = {" in manager
+    assert "trigger_event = zga_phase2_seed.102" in manager
     subject = top_level_block(events, "zga_phase2_seed.102")
     assert "zg361_b2_on_result_frozen_effect = yes" in subject
     assert "var:zg361_result_case_state = 2" in subject
@@ -176,9 +178,10 @@ def main() -> int:
         "gui/zga_phase2_seed_bridge.gui = zga_phase2_seed_bridge_window"
     )
 
-    # Only shipped entry points may write product state. The external fixture
-    # cannot manufacture characters, titles, relations, output variables,
-    # receipts, or rolling Workforce history.
+    # The external fixture cannot manufacture characters, titles, output
+    # variables, receipts, or rolling Workforce history. Relationship claims
+    # remain narrower: this test proves only that no relation-writing command
+    # is present in this exact frozen fixture tree.
     for token in (
         "create_character",
         "create_title",
