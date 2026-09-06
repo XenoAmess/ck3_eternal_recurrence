@@ -249,6 +249,10 @@ zg361_b1_resolve_pending_subject_effect = {
 			var:zg361_b1_pending_state = 1
 			has_variable = zg361_b1_pending_verifier
 			var:zg361_b1_pending_verifier = var:zg361_b1_case_owner
+			# The case owner is stored as a weak Character reference.  A pending
+			# deadline can fire after that manager has become unavailable; never
+			# enter manager-owned counters/publication from such a reference.
+			var:zg361_b1_case_owner = { is_alive = yes }
 			var:zg361_b1_case_state = 7
 			var:zg361_b1_case_active = 1
 			var:zg361_b1_recusal_active = 0
@@ -382,6 +386,45 @@ zg361_b1_resolve_pending_subject_effect = {
 				}
 			}
 		}
+	}
+	else_if = {
+		limit = {
+			var:zg361_b1_pending_state = 1
+			has_variable = zg361_b1_pending_verifier
+			var:zg361_b1_pending_verifier = var:zg361_b1_case_owner
+			var:zg361_b1_case_state = 7
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_recusal_active = 0
+		}
+		# The manager-owned case can no longer settle or publish.  Cancel only
+		# this live subject-local object and release its still-live reserved peer;
+		# do not invent manager counters on an unavailable Character scope.
+		if = {
+			limit = { has_variable = zg361_b1_pending_fallback_subject }
+			var:zg361_b1_pending_fallback_subject = {
+				if = {
+					limit = { is_alive = yes }
+					if = {
+						limit = {
+							trigger_if = {
+								limit = { has_variable = zg361_b1_pending_reservation_state }
+								var:zg361_b1_pending_reservation_state = 1
+								has_variable = zg361_b1_pending_reserved_for_subject
+								var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_subject
+							}
+							trigger_else = { always = no }
+						}
+						set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
+						remove_variable = zg361_b1_pending_reserved_for_subject
+					}
+				}
+			}
+		}
+		set_variable = { name = zg361_b1_pending_object_state value = 5 }
+		set_variable = { name = zg361_b1_pending_state value = 5 }
+		set_variable = { name = zg361_b1_pending_cancel_reason value = 2 }
+		set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
+		debug_log = "ZG361B1: pending object cancelled because manager is unavailable"
 	}
 }
 

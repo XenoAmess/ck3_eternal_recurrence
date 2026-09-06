@@ -3715,6 +3715,38 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "change_variable = { name = zg361_b1_quota_book_version add = 1 }",
             resolve,
         )
+        # R111 live evidence: a subject deadline may fire after its weak manager
+        # reference can no longer own variables.  The availability guard must
+        # precede every manager scope write/publication, and the fallback path
+        # cancels only the subject-local object without fabricating count state.
+        owner_guard = "var:zg361_b1_case_owner = { is_alive = yes }"
+        self.assertIn(owner_guard, resolve)
+        self.assertLess(
+            resolve.index(owner_guard),
+            resolve.index(
+                "change_variable = { name = zg361_b1_pending_committed_top add = 1 }"
+            ),
+        )
+        self.assertLess(
+            resolve.index(owner_guard),
+            resolve.index("zg361_b1_refresh_individual_publications_effect = yes"),
+        )
+        self.assertIn("name = zg361_b1_pending_object_state value = 5", resolve)
+        self.assertIn("name = zg361_b1_pending_state value = 5", resolve)
+        self.assertIn("name = zg361_b1_pending_cancel_reason value = 2", resolve)
+        self.assertIn(
+            "pending object cancelled because manager is unavailable", resolve
+        )
+        unavailable = resolve[
+            resolve.index(
+                "# The manager-owned case can no longer settle or publish."
+            ) :
+        ]
+        self.assertNotIn("zg361_b1_pending_open_n", unavailable)
+        self.assertNotIn("zg361_b1_local_publish_drift_n", unavailable)
+        self.assertNotIn(
+            "zg361_b1_refresh_individual_publications_effect", unavailable
+        )
         self.assertNotIn("add_prestige = 25", resolve)
         failure = resolve.split("else = {", 1)[1]
         self.assertEqual(
@@ -3733,7 +3765,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         # The reserved peer is stored as a weak Character variable.  Both
         # success and failure predicates must reject an unavailable peer in an
         # outer branch before either predicate reads its variables.
-        self.assertEqual(resolve.count("limit = { is_alive = yes }"), 2)
+        self.assertEqual(resolve.count("limit = { is_alive = yes }"), 3)
         continuation = top_level_block(self.events, "zg361b1.123")
         self.assertIn("var:zg361_b1_pending_open_n = 0", continuation)
         self.assertIn("var:zg361_b1_case_active = 1", continuation)

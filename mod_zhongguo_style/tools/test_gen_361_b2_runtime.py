@@ -362,6 +362,83 @@ class B2CK3RuntimeTests(unittest.TestCase):
             self.assertIn("7日后见证送达", rows[f"zg361b2.160.c.{action}"])
         self.assertNotIn("第 157 项", self.loc_zh)
 
+    def test_visible_prompt_localization_uses_typed_event_roots_and_persistent_owners(self) -> None:
+        # Scheduled-event saved scopes remain valid trigger inputs, but the
+        # localization data parser needs an explicitly typed ROOT/Var path.
+        cases = {
+            40: (
+                "zg361_b2_pip_prompt_subject",
+                "zg361_b2_pip_owner",
+                "zg361_b2_pip_prompt_owner",
+                True,
+            ),
+            50: (
+                "zg361_b2_escalation_subject",
+                "zg361_b2_case_owner",
+                "zg361_b2_escalation_owner",
+                True,
+            ),
+            60: (
+                "zg361_b2_exit_offer_subject",
+                "zg361_b2_case_owner",
+                "zg361_b2_exit_offer_owner",
+                False,
+            ),
+            110: (
+                "zg361_b2_disposition_subject",
+                "zg361_b2_pip_owner",
+                "zg361_b2_disposition_owner",
+                True,
+            ),
+            131: (
+                "zg361_b2_redelivery_prompt_subject",
+                "zg361_b2_redelivery_owner",
+                "zg361_b2_redelivery_prompt_owner",
+                True,
+            ),
+            160: (
+                "zg361_b2_separate_prompt_subject",
+                "zg361_b2_separate_notice_owner",
+                "zg361_b2_separate_prompt_owner",
+                True,
+            ),
+        }
+
+        for event_id, (subject_scope, owner_var, owner_scope, _shows_subject) in cases.items():
+            with self.subTest(event=event_id, contract="event context"):
+                event = top_level_block(self.events, f"zg361b2.{event_id}")
+                self.assertIn(f"this = scope:{subject_scope}", event)
+                self.assertIn(f"var:{owner_var} = scope:{owner_scope}", event)
+
+        localizations = {
+            "english": self.loc_en,
+            "simp_chinese": self.loc_zh,
+            **self.placeholders,
+        }
+        for language, localization in localizations.items():
+            with self.subTest(language=language, contract="no untyped path"):
+                self.assertNotIn("[ROOT.GetShortUIName]", localization)
+                self.assertNotRegex(
+                    localization,
+                    r"\[scope:[^\]]+\.GetShortUIName\]",
+                )
+
+            for event_id, (_subject_scope, owner_var, _owner_scope, shows_subject) in cases.items():
+                with self.subTest(language=language, event=event_id):
+                    row = next(
+                        line
+                        for line in localization.splitlines()
+                        if line.lstrip().startswith(f"zg361b2.{event_id}.desc:0")
+                    )
+                    self.assertEqual(
+                        row.count("[ROOT.Char.GetShortUIName]"),
+                        1 if shows_subject else 0,
+                    )
+                    self.assertIn(
+                        f"[ROOT.MakeScope.Var('{owner_var}').Char.GetShortUIName]",
+                        row,
+                    )
+
     def test_player_localization_never_exposes_b2_internal_stage_name(self) -> None:
         for language, localization in (
             ("english", self.loc_en),
