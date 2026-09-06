@@ -261,7 +261,7 @@ class Phase2VisualHandlerTests(unittest.TestCase):
                 "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
             ),
             PROJECTS_HANDLER: (
-                "mod_zhongguo_style/events/zg361_credit_project_runtime_events.txt",
+                "mod_zhongguo_style/events/zg361_credit_project_e_case_events.txt",
                 "mod_zhongguo_style/events/zg361_phase3_metrics_delivery_runtime_events.txt",
             ),
         }

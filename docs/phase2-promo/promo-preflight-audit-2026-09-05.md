@@ -187,16 +187,17 @@ export manifest 都由既有后处理链产生；当前不填假路径或假 app
 
 ### 正式录制前需要处理的真实接入差距
 
-1. **clean 区间与旁白/动作画面尚未对齐。** 当前 producer 默认 `hold_seconds=2.5`；
+1. **clean 区间仍只覆盖结果画面。** producer 当前默认 `hold_seconds=15.0`；
    `run_phase2_capture_choreography` 在业务动作和 postcondition 检查以后才调用
    `recorder.clean_hold`，后者只把最终 clean hold 包在 begin/end marks 内。
    因此原始长录像里即使录到了动作，最终 clean span 也未必包含它。不能假定 8/8
    业务 GREEN 就已满足上述多个前后画面的 claims。
-2. **当前没有足够的逐段时长预算。** builder 在 `build_phase2_promo_video.py` 中明确拒绝
-   `chapter narration duration > clean span duration`。2.5 秒是 hold 参数，不是实际
-   span 精确时长（还包括终帧检查开销）；本轮没有 live timeline，故不宣称必然 RED。
-   但当前两版八条 gameplay cue 的 draft 估算约为 7.705–11.038 秒，不能依赖检查开销
-   偶然把镜头拖长。最终录制须按较长一版的旁白与可见动作需求规划完整 clean 范围。
+2. **当前短旁白的逐段时长预算已闭合。** builder 在 `build_phase2_promo_video.py` 中明确拒绝
+   `chapter narration duration > clean span duration`。当前两版八条 gameplay cue 的 draft
+   估算为 7.705–11.038 秒；提交 `a104071c4e7da8ac1551f421f61b9d8985339c7b`
+   将 managed producer 默认 clean hold 提高到 15.0 秒，并由纯测试锁定八段均使用该值。
+   这给当前最长 draft 约 3.962 秒余量；真实 TTS 若仍超过 15 秒，builder 会按既有规则 RED，
+   不能把草稿估算冒充最终音频时长。
 3. **短 cue 与长导演目标不一致。** 按 builder 已有 `_draft_duration` 公式
    `max(2.5, 0.8 + 非空白字符数 / 4.2)`，人物版 10 条共 `94.190 s`，制度版
    `92.524 s`，后者另有 4 秒回切；这不是 TTS 实测，更不是 8–12 分钟成片。
@@ -208,10 +209,39 @@ export manifest 都由既有后处理链产生；当前不填假路径或假 app
 
 ### 可以立即做与素材到齐后的用时
 
-无需 CK3/媒体即可继续：补一份明确区分一期旧分镜与二期权威的当前 shot-list；按两版
-较长 cue 制定每段“起始画面 → 动作 → 结果 → 可读停留”的拍摄预算；将上面精确输入作为
-主线交接清单；在不预写实机结论的前提下对齐导演时长与 draft 旁白。现有 IDs、命令链、
-review 模板和 run 身份已齐，不需要再造一套工具或重复生成缺素材 runbook。
+在本轮“不改 CK3 runner”的边界内，非 CK3 接线工作现已完成：当前 shot-list 已明确区分一期
+历史镜头与二期八段合同，15 秒结果画面预算已进入 producer 和纯测试；现有 IDs、命令链、review
+模板和 run 身份齐全，不需要再造一套工具或重复生成缺素材 runbook。仍有两项不能在本工作包内
+冒充闭合：clean span 只覆盖 postcondition 结果画面，必须由真实 source review 判定是否够用，否则
+需要后续修改 runner 的录制边界；`09:30/09:40` 导演目标与约 `94–97 s` 当前 authoring 时间线
+之间仍需创作选择。本轮不擅自扩写旁白或收窄目标。
+
+## 2026-09-06 23:00 媒体环境刷新
+
+宣传工具再次执行 `fetch origin main --prune` 与 fast-forward-only 合并，结果为 already up to
+date；工作树 clean，`HEAD == origin/main == 57c42fca13ea459432c1caf76e069a1fbccf602c`。
+明确设置 `XAR_PROMO_SOURCE=Z:\workspace\xar_promo_toolchain` 与同 checkout 的 `src`
+`PYTHONPATH` 后，两版媒体环境预检均 GREEN：
+
+- 人物版：`Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260906-230024\media-environment-character.json`，
+  SHA-256 `D203208794522ED37E5819572F48CAE05CE90CE4D82CC0A2E4D89D26B8A1C52F`，
+  有效至 `2026-09-07T15:00:27+00:00`；
+- 制度群像版：`Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260906-230024\media-environment-institution.json`，
+  SHA-256 `31C01F69030844FDF1D8A1EE649D3E44589C60AC4F373E0257178B2EA40C47B6`，
+  有效至 `2026-09-07T15:00:31+00:00`。
+
+两份 receipt 的 `capture_root=null`、span 数为 0，`ck3_started`、TTS、字幕媒体、FFmpeg encode、
+workdir 和 candidate attestation 全为 false；因此环境为 GREEN，但 final readiness 仍诚实保持
+`RED / footage_pending + publish_target_pending`。它们是 draft 环境证据，不得替代 8/8 intake
+后绑定 promoted project 与真实 capture 的 fresh media receipt。
+
+同轮全量非 CK3 宣传测试首次发现 visual-handler 测试仍读取已经用途拆分退役的
+`zg361_credit_project_runtime_events.txt`。产品定义本身已位于
+`zg361_credit_project_e_case_events.txt`，运行时 handler 只绑定事件 key、没有读取旧路径；因此这是
+宣传静态测试的路径漂移，不是产品或 CK3 RED。测试改为读取当前 owner 后，delivery queue、intake、
+dual/final completion、planner、producer、runner plumbing、choreography、visual handlers、publish
+target、authoring promotion/media/TTS/build/materializer 共 `148/148`，普通与 `-O` 模式均 GREEN。
+这轮测试使用纯替身 PID/bridge 文本，没有启动真实 CK3。
 
 从**真正可剪辑且已 intake GREEN 的 8/8**起算，若旁白/镜头时长已对齐、两版并行、
 所需具名审阅者即时可用且没有返工，计划估算如下（不是本机实测吞吐）：
