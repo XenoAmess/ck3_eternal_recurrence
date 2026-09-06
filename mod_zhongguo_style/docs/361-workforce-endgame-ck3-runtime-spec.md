@@ -64,7 +64,7 @@ MCP query 或考核榜 typed action（固定四实例/current-player ACL 的只�
 
 2026-09-06 helper 重构后，当前生成器输出 340 个唯一顶层 effect 和 98 个用途分片。除四个超大 M360
 owner 被抽取为 helper 外，其余历史 block 仍按冻结 source rank 投影；新 public entry 保留旧外部 effect 名称，
-其内部预检、校验、清理和业务写入顺序由定向回归冻结。98 片合计 `3,773,955 B`，
+其内部预检、校验、清理和业务写入顺序由定向回归冻结。98 片合计 `3,772,204 B`，
 单片最小 `511 B`、最大 `130,221 B`。所有文件均为 1–10 个
 effect，effect 数量分布为
 `{1:32, 2:16, 3:7, 4:17, 5:2, 6:7, 7:3, 8:13, 10:1}`，当前 over-10、over-20、超过
@@ -129,9 +129,17 @@ effect 名称和外部调用接口不变，内部 helper 调用顺序由回归�
 3,813 个顶层 effect、最大 `130,221 B`。这些证据把 helper 重构提升到 static-ready；拆分后的 CK3
 loader 与业务路径仍须实机回归，不得由静态结果冒充 live。
 
+R109 在冻结产品树 `Z:\p2r109` 首次实机加载上述 helper 重构时给出产品 RED：`debug.log` 共记录
+7 条 `Scripted effect should have no arguments`，归并后是 2 个唯一 helper。无参 cleanup 被 003f/004d
+以四参数块调用；route-B validation step 2 同样没有任何 `$TICKET_*$` 占位符，却收到四个参数。生成器
+现从目标 helper definition 推导实际消费的 ticket 占位符：非空时只传完全匹配的 named args，为空时
+生成裸 `= yes`。全 helper/call-site 静态合同同时覆盖日志没有点名的 A 路线与其余 helper，避免按错误样本
+逐点补丁。修复后 runtime 普通模式与 `-O` 各 `123/123` GREEN、generator current、全局 boundary
+仍为 713/3,813/max `130,221 B`；该修复在下一轮 CK3 loader 归零前仍是 static-ready。
+
 用途分片 manifest 按文件名排序，每行严格为
 `filename<TAB>bytes<TAB>effect_count<TAB>uppercase_sha256<LF>`；当前 manifest SHA-256 为
-`41F49F0D2EC0FF395116A17F30DD115675316F624C6A1462FFB11C009D8FAE31`（98 个 effect 分片）。整体
+`ACB66DC9964A348D6537898C55F4ECFC37C187BAFCF034CAB74089CDCE038D1A`（98 个 effect 分片）。整体
 readiness 仍是 `ck3-script-static-ready-not-live`，不得据此写成任何 live 等级。
 
 ### Event 文件边界合同

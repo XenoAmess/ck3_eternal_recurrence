@@ -206,9 +206,6 @@ zg361_we_m360_route_a_effect = {
 			set_variable = { name = zg361_we_m360_object_due_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
 			zg361_we_m360_route_a_business_effect = {
 				TICKET_OWNER = $TICKET_OWNER$
-				TICKET_SUBJECT = $TICKET_SUBJECT$
-				TICKET_CYCLE = $TICKET_CYCLE$
-				TICKET_CASE = $TICKET_CASE$
 			}
 			set_variable = { name = zg361_we_m360_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_m360_write_subject value = $TICKET_SUBJECT$ }

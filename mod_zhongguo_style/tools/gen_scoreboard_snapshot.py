@@ -1849,6 +1849,15 @@ def render_effects() -> bytes:
 
 
 TOP_LEVEL_EFFECT_RE = re.compile(r"(?m)^([a-z0-9_]+_effect) = \{")
+SCRIPTED_EFFECT_CALL_RE = re.compile(
+    r"(?m)^[ \t]+(?P<name>[a-z0-9_]+_effect)[ \t]*=[ \t]*(?P<form>yes|\{)"
+)
+SCRIPTED_EFFECT_PARAMETER_RE = re.compile(
+    r"\$(?P<name>[A-Za-z0-9_]+)(?:\|[^$]*)?\$"
+)
+SCRIPTED_EFFECT_ARGUMENT_RE = re.compile(
+    r"(?m)^[ \t]+(?P<name>[A-Z][A-Z0-9_]*)[ \t]*="
+)
 
 
 def render_effect_blocks() -> tuple[tuple[str, str], ...]:
@@ -1867,6 +1876,80 @@ def render_effect_blocks() -> tuple[tuple[str, str], ...]:
         end = matches[index + 1].start() if index + 1 < len(matches) else len(body)
         blocks.append((match.group(1), body[start:end]))
     return tuple(blocks)
+
+
+def _braced_call_text(source: str, opening_brace: int) -> str:
+    """Return one invocation block, ignoring braces in comments and strings."""
+
+    depth = 0
+    quoted = False
+    escaped = False
+    commented = False
+    for index in range(opening_brace, len(source)):
+        character = source[index]
+        if commented:
+            if character == "\n":
+                commented = False
+            continue
+        if quoted:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == '"':
+                quoted = False
+            continue
+        if character == "#":
+            commented = True
+        elif character == '"':
+            quoted = True
+        elif character == "{":
+            depth += 1
+        elif character == "}":
+            depth -= 1
+            if depth == 0:
+                return source[opening_brace : index + 1]
+    raise ValueError("unterminated scripted-effect call block")
+
+
+def validate_scoreboard_effect_call_arguments(
+    blocks: tuple[tuple[str, str], ...],
+) -> None:
+    """Reject CK3 calls whose argument form disagrees with helper placeholders."""
+
+    definitions = {name: body for name, body in blocks}
+    parameters = {
+        name: frozenset(
+            SCRIPTED_EFFECT_PARAMETER_RE.findall(
+                "\n".join(line.split("#", 1)[0] for line in body.splitlines())
+            )
+        )
+        for name, body in definitions.items()
+    }
+    source = "".join(body for _name, body in blocks)
+    for call in SCRIPTED_EFFECT_CALL_RE.finditer(source):
+        name = call.group("name")
+        if name not in definitions:
+            continue
+        expected = parameters[name]
+        if call.group("form") == "yes":
+            if expected:
+                raise ValueError(
+                    f"scoreboard helper {name} requires arguments {sorted(expected)} "
+                    "but is called with = yes"
+                )
+            continue
+        call_body = _braced_call_text(source, call.end() - 1)
+        provided = frozenset(SCRIPTED_EFFECT_ARGUMENT_RE.findall(call_body))
+        if not expected:
+            raise ValueError(
+                f"scoreboard helper {name} has no parameters and must be called with = yes"
+            )
+        if provided != expected:
+            raise ValueError(
+                f"scoreboard helper {name} expects {sorted(expected)} but call provides "
+                f"{sorted(provided)}"
+            )
 
 
 def scoreboard_effect_purpose(effect_name: str) -> str:
@@ -1915,9 +1998,11 @@ def scoreboard_effect_label(effect_name: str) -> str:
 def render_effect_shards() -> dict[Path, bytes]:
     """Pack purpose-ordered effects into <=200 KiB generated source shards."""
 
+    blocks = render_effect_blocks()
+    validate_scoreboard_effect_call_arguments(blocks)
     groups: list[list[tuple[str, str]]] = []
     current: list[tuple[str, str]] = []
-    for block in render_effect_blocks():
+    for block in blocks:
         candidate = current + [block]
         candidate_body = "".join(text for _name, text in candidate)
         candidate_size = len(BOM) + len((HEADER + candidate_body).encode("utf-8"))

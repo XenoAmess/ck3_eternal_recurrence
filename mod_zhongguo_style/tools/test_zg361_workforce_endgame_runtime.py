@@ -111,6 +111,30 @@ def block(text: str, name: str) -> str:
         raise AssertionError(f"missing top-level block {name}") from error
 
 
+def nested_scripted_effect_calls(text: str, effect_name: str) -> tuple[str | None, ...]:
+    """Return named-argument bodies, or ``None`` for bare ``= yes`` calls."""
+
+    calls: list[str | None] = []
+    pattern = re.compile(rf"\b{re.escape(effect_name)}\s*=\s*(yes|\{{)")
+    for match in pattern.finditer(text):
+        if match.group(1) == "yes":
+            calls.append(None)
+            continue
+        start = match.end() - 1
+        depth = 0
+        for index in range(start, len(text)):
+            if text[index] == "{":
+                depth += 1
+            elif text[index] == "}":
+                depth -= 1
+                if depth == 0:
+                    calls.append(text[start + 1:index])
+                    break
+        else:
+            raise AssertionError(f"unterminated call to {effect_name}")
+    return tuple(calls)
+
+
 def m360_route_bundle(text: str, letter: str) -> str:
     names = (
         f"zg361_we_m360_route_{letter}_validate_collective_effect",
@@ -605,6 +629,65 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                     route.index(f"zg361_we_m360_route_{letter}_business_effect"),
                     route.index("zg361_case_kernel_record_operation_effect"),
                 )
+
+    def test_04d6_m360_helper_calls_match_consumed_ticket_placeholders(self) -> None:
+        helper_names = {
+            "zg361_we_m360_materialize_validate_ticket_effect",
+            "zg361_we_m360_materialize_validate_cohort_1_effect",
+            "zg361_we_m360_materialize_validate_cohort_2_effect",
+            "zg361_we_m360_materialize_validate_cohort_3_effect",
+            "zg361_we_m360_materialize_validate_identity_uniqueness_effect",
+            "zg361_we_m360_materialize_cleanup_effect",
+            "zg361_we_m360_materialize_route_a_writes_effect",
+            "zg361_we_m360_materialize_route_b_writes_effect",
+            "zg361_we_m360_route_a_business_effect",
+            "zg361_we_m360_route_b_business_effect",
+            *gen._collective_validation_names(1),
+            *gen._collective_validation_names(2),
+        }
+        ticket_arguments = set(gen.M360_TICKET_ARGUMENTS)
+        blocks = block_map(self.effects)
+        observed_calls: dict[str, list[str | None]] = {
+            name: [] for name in helper_names
+        }
+        for helper_name in helper_names:
+            target = blocks[helper_name]
+            consumed = set(
+                re.findall(r"\$(TICKET_(?:OWNER|SUBJECT|CYCLE|CASE))\$", target)
+            )
+            self.assertLessEqual(consumed, ticket_arguments)
+            for caller_name, caller in blocks.items():
+                if caller_name == helper_name:
+                    continue
+                for arguments in nested_scripted_effect_calls(caller, helper_name):
+                    observed_calls[helper_name].append(arguments)
+                    if arguments is None:
+                        self.assertFalse(
+                            consumed,
+                            f"{caller_name} calls parameterized {helper_name} bare",
+                        )
+                    else:
+                        supplied = set(
+                            re.findall(
+                                r"\b(TICKET_(?:OWNER|SUBJECT|CYCLE|CASE))\s*=",
+                                arguments,
+                            )
+                        )
+                        self.assertTrue(
+                            consumed,
+                            f"{caller_name} passes arguments to parameterless {helper_name}",
+                        )
+                        self.assertEqual(
+                            consumed,
+                            supplied,
+                            f"{caller_name} argument mismatch for {helper_name}",
+                        )
+        self.assertTrue(all(observed_calls.values()))
+        for bare_helper in (
+            "zg361_we_m360_materialize_cleanup_effect",
+            "zg361_we_m360_route_b_validate_collective_step_2_effect",
+        ):
+            self.assertTrue(all(call is None for call in observed_calls[bare_helper]))
 
     def test_04f_b2_workforce_closure_is_exact_whole_shard_union(self) -> None:
         closure = set(gen.B2_EFFECT_CLOSURE_NAMES)

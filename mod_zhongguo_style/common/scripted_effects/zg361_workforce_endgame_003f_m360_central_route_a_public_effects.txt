@@ -87,39 +87,22 @@ zg361_we_materialize_m360_route_a_from_central_effect = {
 	}
 	zg361_we_m360_materialize_validate_cohort_1_effect = {
 		TICKET_OWNER = $TICKET_OWNER$
-		TICKET_SUBJECT = $TICKET_SUBJECT$
-		TICKET_CYCLE = $TICKET_CYCLE$
-		TICKET_CASE = $TICKET_CASE$
 	}
 	zg361_we_m360_materialize_validate_cohort_2_effect = {
 		TICKET_OWNER = $TICKET_OWNER$
-		TICKET_SUBJECT = $TICKET_SUBJECT$
-		TICKET_CYCLE = $TICKET_CYCLE$
-		TICKET_CASE = $TICKET_CASE$
 	}
 	zg361_we_m360_materialize_validate_cohort_3_effect = {
 		TICKET_OWNER = $TICKET_OWNER$
-		TICKET_SUBJECT = $TICKET_SUBJECT$
-		TICKET_CYCLE = $TICKET_CYCLE$
-		TICKET_CASE = $TICKET_CASE$
 	}
 	zg361_we_m360_materialize_validate_identity_uniqueness_effect = {
 		TICKET_OWNER = $TICKET_OWNER$
-		TICKET_SUBJECT = $TICKET_SUBJECT$
-		TICKET_CYCLE = $TICKET_CYCLE$
-		TICKET_CASE = $TICKET_CASE$
 	}
 	if = {
 		limit = {
 			has_variable = zg361_we_m360_materialize_preflight_valid
 			var:zg361_we_m360_materialize_preflight_valid = 1
 		}
-		zg361_we_m360_materialize_cleanup_effect = {
-			TICKET_OWNER = $TICKET_OWNER$
-			TICKET_SUBJECT = $TICKET_SUBJECT$
-			TICKET_CYCLE = $TICKET_CYCLE$
-			TICKET_CASE = $TICKET_CASE$
-		}
+		zg361_we_m360_materialize_cleanup_effect = yes
 		zg361_we_m360_materialize_route_a_writes_effect = {
 			TICKET_OWNER = $TICKET_OWNER$
 			TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -184,20 +167,17 @@ zg361_we_materialize_m360_route_a_from_central_effect = {
 		# Do not expose the draft as committed until all three MG managers and
 		# the owner trust book pass the same global preflight used by the route.
 		zg361_we_m360_route_a_validate_collective_effect = {
-			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
-			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
 		}
 		if = {
 			limit = { has_variable = zg361_we_m360_route_a_collective_valid var:zg361_we_m360_route_a_collective_valid = 1 }
 			set_variable = { name = zg361_we_adapter_status value = 1 }
 		}
 		else = {
-			zg361_we_m360_materialize_cleanup_effect = {
-				TICKET_OWNER = $TICKET_OWNER$
-				TICKET_SUBJECT = $TICKET_SUBJECT$
-				TICKET_CYCLE = $TICKET_CYCLE$
-				TICKET_CASE = $TICKET_CASE$
-			}
+			zg361_we_m360_materialize_cleanup_effect = yes
 			set_variable = { name = zg361_we_m360_event_queued value = 0 }
 			set_variable = { name = zg361_we_adapter_status value = 4 }
 			set_variable = { name = zg361_we_adapter_blocked_reason value = 3605 }
@@ -205,8 +185,10 @@ zg361_we_materialize_m360_route_a_from_central_effect = {
 	}
 	else = {
 		zg361_we_m360_route_a_validate_collective_effect = {
-			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
-			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+			TICKET_OWNER = $TICKET_OWNER$
+			TICKET_SUBJECT = $TICKET_SUBJECT$
+			TICKET_CYCLE = $TICKET_CYCLE$
+			TICKET_CASE = $TICKET_CASE$
 		}
 		if = {
 			limit = { $TICKET_SUBJECT$ = this has_variable = zg361_we_m360_route_a_collective_valid var:zg361_we_m360_route_a_collective_valid = 1 }

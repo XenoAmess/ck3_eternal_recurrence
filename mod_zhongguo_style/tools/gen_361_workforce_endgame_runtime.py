@@ -30,8 +30,8 @@ READINESS = "ck3-script-static-ready-not-live"
 LEGACY_EFFECT_FILENAME = "zg361_workforce_endgame_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_workforce_endgame_*_effects.txt"
-HISTORICAL_EFFECT_BYTES = 3_769_304
-HISTORICAL_EFFECT_SHA256 = "1549162C93AA3622A5417E8CAFFE21A2FFE8AF37380A04D2256A69E539D383CC"
+HISTORICAL_EFFECT_BYTES = 3_767_553
+HISTORICAL_EFFECT_SHA256 = "77888DE50FD45DAEB6ECA185648FA02B32AC811269D3ABADBF990DD13367C739"
 HISTORICAL_EFFECT_COUNT = 340
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -1298,13 +1298,21 @@ def _ordered_line_chunks(
     return tuple(chunks)
 
 
-def _m360_ticket_call(effect_name: str) -> str:
-    return f"""{effect_name} = {{
-	TICKET_OWNER = $TICKET_OWNER$
-	TICKET_SUBJECT = $TICKET_SUBJECT$
-	TICKET_CYCLE = $TICKET_CYCLE$
-	TICKET_CASE = $TICKET_CASE$
-}}"""
+M360_TICKET_ARGUMENTS = ("TICKET_OWNER", "TICKET_SUBJECT", "TICKET_CYCLE", "TICKET_CASE")
+
+
+def _m360_ticket_call(effect_name: str, target_definition: str) -> str:
+    """Pass exactly the ticket placeholders consumed by one scripted-effect helper."""
+
+    consumed = tuple(
+        argument
+        for argument in M360_TICKET_ARGUMENTS
+        if f"${argument}$" in target_definition
+    )
+    if not consumed:
+        return f"{effect_name} = yes"
+    arguments = "\n".join(f"\t{argument} = ${argument}$" for argument in consumed)
+    return f"{effect_name} = {{\n{arguments}\n}}"
 
 
 def _sticky_validation_effect(
@@ -1335,7 +1343,7 @@ def _collective_validation_names(choice: int) -> tuple[str, ...]:
     )
 
 
-def _render_collective_validation_helpers(choice: int) -> str:
+def _collective_validation_helper_blocks(choice: int) -> tuple[str, ...]:
     letter = "a" if choice == 1 else "b"
     chunks = _ordered_line_chunks(_collective_external_checks(choice))
     status_name = f"{PREFIX}_m360_route_{letter}_collective_valid"
@@ -1344,15 +1352,22 @@ def _render_collective_validation_helpers(choice: int) -> str:
         for index in range(1, len(chunks) + 1)
     )
     wrapper_name = f"{PREFIX}_m360_route_{letter}_validate_collective_effect"
-    wrapper = f"""{wrapper_name} = {{
-	set_variable = {{ name = {status_name} value = 1 }}
-{indent(chr(10).join(_m360_ticket_call(name) for name in step_names))}
-}}"""
     steps = tuple(
         _sticky_validation_effect(name, status_name, chunk)
         for name, chunk in zip(step_names, chunks, strict=True)
     )
-    return "\n\n".join((wrapper, *steps))
+    wrapper = f"""{wrapper_name} = {{
+	set_variable = {{ name = {status_name} value = 1 }}
+{indent(chr(10).join(
+    _m360_ticket_call(name, step)
+    for name, step in zip(step_names, steps, strict=True)
+))}
+}}"""
+    return (wrapper, *steps)
+
+
+def _render_collective_validation_helpers(choice: int) -> str:
+    return "\n\n".join(_collective_validation_helper_blocks(choice))
 
 
 def _render_collective_business_helper(choice: int) -> str:
@@ -2389,7 +2404,13 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             lines += [f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[356]} days = 90 }}"]
     elif mid == 360:
         letter = "a" if choice == 1 else "b"
-        lines.append(_m360_ticket_call(f"{PREFIX}_m360_route_{letter}_business_effect"))
+        business_helper = _render_collective_business_helper(choice)
+        lines.append(
+            _m360_ticket_call(
+                f"{PREFIX}_m360_route_{letter}_business_effect",
+                business_helper,
+            )
+        )
     elif mid == 361:
         lines += _charter_business_writes(choice)
         if choice == 1:
@@ -3307,10 +3328,12 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
         if choice in (1, 2):
             value_prelude += indent(_collective_persistent_prelude()) + "\n"
             letter = "a" if choice == 1 else "b"
+            validation_wrapper = _collective_validation_helper_blocks(choice)[0]
             value_prelude += (
                 indent(
                     _m360_ticket_call(
-                        f"{PREFIX}_m360_route_{letter}_validate_collective_effect"
+                        f"{PREFIX}_m360_route_{letter}_validate_collective_effect",
+                        validation_wrapper,
                     )
                 )
                 + "\n"
@@ -6074,6 +6097,14 @@ def render_collective_producer() -> str:
             ],
         ),
     ]
+    materialize_preflight_calls = tuple(
+        _m360_ticket_call(name, helper)
+        for name, helper in zip(
+            materialize_preflight_names,
+            materialize_preflight_helpers,
+            strict=True,
+        )
+    )
     cleanup_helper = f"""{PREFIX}_m360_materialize_cleanup_effect = {{
 {indent(chr(10).join(cleanup))}
 }}"""
@@ -6169,6 +6200,8 @@ def render_collective_producer() -> str:
 }}"""
         validate_name = f"{PREFIX}_m360_route_{letter}_validate_collective_effect"
         validate_status = f"{PREFIX}_m360_route_{letter}_collective_valid"
+        validate_helper = _collective_validation_helper_blocks(choice)[0]
+        validate_call = _m360_ticket_call(validate_name, validate_helper)
         public_entry = f"""# Route {letter.upper()} materializes only product-owned Central/B1 facts.
 {PREFIX}_materialize_m360_route_{letter}_from_central_effect = {{
 	remove_variable = {PREFIX}_adapter_status
@@ -6180,37 +6213,31 @@ def render_collective_producer() -> str:
 {indent(_central_m360_quota_prelude())}
 {indent(_collective_persistent_prelude())}
 	set_variable = {{ name = {materialize_preflight_status} value = 1 }}
-{indent(chr(10).join(_m360_ticket_call(name) for name in materialize_preflight_names))}
+{indent(chr(10).join(materialize_preflight_calls))}
 	if = {{
 		limit = {{
 			has_variable = {materialize_preflight_status}
 			var:{materialize_preflight_status} = 1
 		}}
-{indent(_m360_ticket_call(f'{PREFIX}_m360_materialize_cleanup_effect'), 2)}
-{indent(_m360_ticket_call(writes_helper_name), 2)}
+{indent(_m360_ticket_call(f'{PREFIX}_m360_materialize_cleanup_effect', cleanup_helper), 2)}
+{indent(_m360_ticket_call(writes_helper_name, writes_helper), 2)}
 {indent(_collective_persistent_prelude(), 2)}
 		# Do not expose the draft as committed until all three MG managers and
 		# the owner trust book pass the same global preflight used by the route.
-		{validate_name} = {{
-			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
-			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
-		}}
+{indent(validate_call, 2)}
 		if = {{
 			limit = {{ has_variable = {validate_status} var:{validate_status} = 1 }}
 			set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 		}}
 		else = {{
-{indent(_m360_ticket_call(f'{PREFIX}_m360_materialize_cleanup_effect'), 3)}
+{indent(_m360_ticket_call(f'{PREFIX}_m360_materialize_cleanup_effect', cleanup_helper), 3)}
 			set_variable = {{ name = {PREFIX}_m360_event_queued value = 0 }}
 			set_variable = {{ name = {PREFIX}_adapter_status value = 4 }}
 			set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = {3604 + choice} }}
 		}}
 	}}
 	else = {{
-		{validate_name} = {{
-			TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
-			TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
-		}}
+{indent(validate_call, 2)}
 		if = {{
 			limit = {{ $TICKET_SUBJECT$ = this has_variable = {validate_status} var:{validate_status} = 1 }}
 			set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}

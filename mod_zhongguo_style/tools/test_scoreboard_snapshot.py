@@ -71,6 +71,7 @@ from gen_scoreboard_snapshot import (
     received_case_fields,
     row_gui,
     scoreboard_effect_purpose,
+    validate_scoreboard_effect_call_arguments,
 )
 
 
@@ -939,6 +940,36 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_checked_in_tree_does_not_restore_legacy_effect_bundle(self) -> None:
         self.assertFalse(LEGACY_EFFECT_BUNDLE.exists())
+
+    def test_scoreboard_helpers_have_exact_argument_call_forms(self) -> None:
+        blocks = render_effect_blocks()
+        validate_scoreboard_effect_call_arguments(blocks)
+
+        needless_argument = tuple(
+            (
+                name,
+                body.replace(
+                    "zg361_clear_scoreboard_detail_effect = yes",
+                    "zg361_clear_scoreboard_detail_effect = {\n\t\tUNUSED = 1\n\t}",
+                    1,
+                ),
+            )
+            for name, body in blocks
+        )
+        with self.assertRaisesRegex(ValueError, "has no parameters"):
+            validate_scoreboard_effect_call_arguments(needless_argument)
+
+        missing_argument = tuple(
+            (
+                name,
+                body + "\nset_variable = { name = injected value = $REQUIRED$ }\n"
+                if name == "zg361_clear_scoreboard_detail_effect"
+                else body,
+            )
+            for name, body in blocks
+        )
+        with self.assertRaisesRegex(ValueError, "requires arguments"):
+            validate_scoreboard_effect_call_arguments(missing_argument)
 
     def test_detail_selection_is_cleared_by_publication_and_navigation(self) -> None:
         rendered = outputs()

@@ -10,12 +10,7 @@ zg361_we_m360_route_b_validate_collective_effect = {
 		TICKET_CYCLE = $TICKET_CYCLE$
 		TICKET_CASE = $TICKET_CASE$
 	}
-	zg361_we_m360_route_b_validate_collective_step_2_effect = {
-		TICKET_OWNER = $TICKET_OWNER$
-		TICKET_SUBJECT = $TICKET_SUBJECT$
-		TICKET_CYCLE = $TICKET_CYCLE$
-		TICKET_CASE = $TICKET_CASE$
-	}
+	zg361_we_m360_route_b_validate_collective_step_2_effect = yes
 }
 
 zg361_we_m360_route_b_validate_collective_step_1_effect = {

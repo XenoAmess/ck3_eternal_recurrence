@@ -437,3 +437,23 @@ max 130,221 bytes**。旧 owner 的 active consumer 也已同步迁移：scorebo
 Incident CMake source-contract 改读四个新片，Workforce 两个 preflight 与 source-contract fixture 改读新的
 business/public 片；历史 hash-bound artifact 保留原路径，只作为历史证据。该门禁及测试夹具隔离规则已经写入
 `docs/testing-workflow.md`。
+
+### 17.3 R109 实机 RED 与 Workforce 参数精确修复
+
+R109 fresh product 在默认 5 速下完成了 **303/303** 个 loader node，但 `debug.log` 出现 **7 条错误、归并为
+2 个唯一 helper 签名**，因此本轮明确记为产品 loader RED。错误均为 `Scripted effect should have no arguments`：
+无参 `zg361_we_m360_materialize_cleanup_effect` 与无参
+`zg361_we_m360_route_b_validate_collective_step_2_effect` 被机械传入四个 ticket 参数。本轮未进入 gameplay，
+全程未使用 OCR；发现 loader RED 后通过 managed stop 正常回收进程，不能把 303/303 单独写成实机 GREEN。
+
+根因是 Workforce 生成器原先把 `TICKET_OWNER / TICKET_SUBJECT / TICKET_CYCLE / TICKET_CASE` 无条件转发给
+所有新 helper，而 CK3 只接受被 callee 正文以 `$ARG$` 实际消费的参数。修复后，生成器直接从每个 helper
+definition 推导实际占位符集合：有参数时只传完全匹配的 named args，无参数时生成裸 `helper = yes`；静态合同
+覆盖全部 16 个新 helper 及其所有调用点，不是只对日志中的两个样本打补丁。该改动只校正调用 ABI，没有改变
+Workforce 的业务顺序、写入和玩家文案。
+
+修复后静态结果：Workforce runtime 普通模式与 `-O` 各 **123/123 GREEN**，boundary 普通模式与 `-O`
+各 **6/6 GREEN**，generator `--check`、B4/B6 回归与 `git diff --check` 均 GREEN；全局 effect 边界仍为
+**713 files / 3,813 effects / `>10` 0 / `>20` 0 / `>200 KiB` 0 / max 10 effects / max 130,221 bytes**。
+因此当前结论是 **R109 LIVE RED 已定位，参数修复 STATIC GREEN，修复后 LIVE PENDING**；必须由下一次 fresh CK3
+loader 将这两类签名归零后，才恢复后续 gameplay 文案验收。
