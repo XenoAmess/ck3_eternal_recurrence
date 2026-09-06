@@ -33,6 +33,7 @@ from zg361_phase2_promotion_source_checkpoint_capture import (  # noqa: E402
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     enter_promotion_source_checkpoint_v1,
 )
+import run_zhongguo_acceptance as zhongguo_runner  # noqa: E402
 
 
 class RetainedSessionError(RuntimeError):
@@ -41,6 +42,7 @@ class RetainedSessionError(RuntimeError):
 
 RECONNECT_TIMEOUT_SECONDS = 30.0
 RECONNECT_POLL_SECONDS = 0.05
+_RETAINED_RUNTIME_LOG_NAMES = ("error.log", "debug.log")
 
 
 def _read_object(path: Path, label: str) -> dict[str, object]:
@@ -283,6 +285,130 @@ def retained_pid_lineage_evidence(
     }
 
 
+def source_cold_runtime_diagnostic_offsets(
+    *,
+    source_run_cell: Path,
+    profile_dir: Path,
+) -> tuple[dict[str, int], dict[str, object]]:
+    """Recover the source client's final log ends before retained gameplay.
+
+    The owning runner freezes ``final_error.log`` and ``final_debug.log``
+    before it hands a healthy CK3 process to a replacement client.  Taking a
+    fresh baseline from the still-running profile here would discard every
+    diagnostic written between that handoff and this client's reconnect.
+    """
+
+    current_offsets = zhongguo_runner.project_diagnostic_offsets(profile_dir)
+    offsets = dict(current_offsets)
+    sources: dict[str, str] = {}
+    for name in _RETAINED_RUNTIME_LOG_NAMES:
+        frozen = source_run_cell / f"final_{name}"
+        if not frozen.is_file():
+            raise RetainedSessionError(
+                f"source cold {name} snapshot is missing: {frozen}"
+            )
+        offsets[name] = frozen.stat().st_size
+        sources[name] = str(frozen.resolve())
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "GREEN",
+        "scope": "retained_source_cold_runtime_diagnostic_offsets",
+        "source_run_cell": str(source_run_cell.resolve()),
+        "profile_dir": str(profile_dir.resolve()),
+        "offsets": dict(offsets),
+        "source_snapshots": sources,
+        "reconnect_observed_offsets": {
+            name: int(current_offsets.get(name, 0))
+            if name != "debug.log"
+            else (
+                (profile_dir / "logs" / name).stat().st_size
+                if (profile_dir / "logs" / name).is_file()
+                else 0
+            )
+            for name in _RETAINED_RUNTIME_LOG_NAMES
+        },
+    }
+    return offsets, evidence
+
+
+def _runtime_debug_project_diagnostics(
+    profile_dir: Path,
+    start_offset: int,
+) -> tuple[list[str], list[str]]:
+    """Scan error-level project records present only in ``debug.log``."""
+
+    path = profile_dir / "logs" / "debug.log"
+    lines = zhongguo_runner._read_log_suffix(path, start_offset)
+    records = zhongguo_runner._coalesce_localization_error_chains(
+        zhongguo_runner._split_log_records(lines)
+    )
+    blocking: list[str] = []
+    warnings: list[str] = []
+    for index, record in enumerate(records):
+        nonempty = [line.strip() for line in record if line.strip()]
+        if not nonempty or "][E][" not in nonempty[0]:
+            continue
+        lowered = "\n".join(nonempty).lower()
+        nearby = "\n".join(
+            line
+            for adjacent in records[max(0, index - 1) : index + 2]
+            for line in adjacent
+        ).lower()
+        attributed = any(
+            token in lowered for token in zhongguo_runner.PROJECT_TOKENS
+        )
+        duplicate = any(
+            pattern in lowered for pattern in zhongguo_runner.DUPLICATE_PATTERNS
+        )
+        rendered = "debug.log: " + "\n".join(nonempty)
+        if (
+            attributed
+            and zhongguo_runner._is_phase2_static_liveness_warning(nonempty[0])
+        ):
+            warnings.append(rendered)
+        elif attributed or (
+            duplicate
+            and any(
+                token in nearby for token in zhongguo_runner.PROJECT_TOKENS
+            )
+        ):
+            blocking.append(rendered)
+    return list(dict.fromkeys(blocking)), list(dict.fromkeys(warnings))
+
+
+def _deduplicate_cross_log_diagnostics(values: list[str]) -> list[str]:
+    """Collapse the same CK3 record mirrored by error.log and debug.log."""
+
+    unique: list[str] = []
+    identities: set[str] = set()
+    for value in values:
+        _log_name, separator, payload = value.partition(": ")
+        identity = payload if separator else value
+        if identity in identities:
+            continue
+        identities.add(identity)
+        unique.append(value)
+    return unique
+
+
+def retained_runtime_project_diagnostics(
+    profile_dir: Path,
+    source_cold_offsets: Mapping[str, int],
+) -> tuple[list[str], list[str]]:
+    """Return product diagnostics appended after the source-client handoff."""
+
+    blocking, warnings = zhongguo_runner.runtime_project_diagnostics(
+        profile_dir, source_cold_offsets
+    )
+    debug_blocking, debug_warnings = _runtime_debug_project_diagnostics(
+        profile_dir, int(source_cold_offsets.get("debug.log", 0))
+    )
+    return (
+        _deduplicate_cross_log_diagnostics(blocking + debug_blocking),
+        _deduplicate_cross_log_diagnostics(warnings + debug_warnings),
+    )
+
+
 def run(
     *,
     state_dir: Path,
@@ -321,10 +447,57 @@ def run(
         "input_checks": inputs["checks"],
         "entry": None,
         "capture": None,
+        "runtime_diagnostics": None,
         "error_reason": None,
     }
     driver: NativeHeadlessGameplayDriver | None = None
+    runtime_diagnostic_probe = None
     try:
+        profile_dir = state_dir / "profile"
+        diagnostic_offsets, diagnostic_evidence = (
+            source_cold_runtime_diagnostic_offsets(
+                source_run_cell=source_run_cell,
+                profile_dir=profile_dir,
+            )
+        )
+        diagnostic_evidence.update(
+            result="GREEN",
+            scan_count=0,
+            blocking_diagnostics=[],
+            observed_nonblocking_engine_warnings=[],
+            blocking_diagnostic_count=0,
+            observed_nonblocking_engine_warning_count=0,
+        )
+        report["runtime_diagnostics"] = diagnostic_evidence
+
+        def probe_retained_runtime_diagnostics() -> str | None:
+            blocking, warnings = retained_runtime_project_diagnostics(
+                profile_dir, diagnostic_offsets
+            )
+            diagnostic_evidence["scan_count"] = (
+                int(diagnostic_evidence["scan_count"]) + 1
+            )
+            diagnostic_evidence["blocking_diagnostics"] = blocking
+            diagnostic_evidence[
+                "observed_nonblocking_engine_warnings"
+            ] = warnings
+            diagnostic_evidence["blocking_diagnostic_count"] = len(blocking)
+            diagnostic_evidence[
+                "observed_nonblocking_engine_warning_count"
+            ] = len(warnings)
+            diagnostic_evidence["result"] = "RED" if blocking else "GREEN"
+            _write(
+                artifacts / "02_retained_runtime_diagnostics.json",
+                diagnostic_evidence,
+            )
+            if not blocking:
+                return None
+            return (
+                f"{len(blocking)} product runtime diagnostic(s) detected; "
+                f"first: {blocking[0]}"
+            )
+
+        runtime_diagnostic_probe = probe_retained_runtime_diagnostics
         driver = NativeHeadlessGameplayDriver(
             pipe_name,
             state_dir=state_dir,
@@ -394,10 +567,16 @@ def run(
                 service,
                 timeout_seconds=timeout_seconds,
                 evidence_out=entry,
+                runtime_diagnostic_probe=runtime_diagnostic_probe,
             )
         finally:
             _write(artifacts / "03_promotion_source_production_entry.json", entry)
             report["entry"] = entry
+        terminal_entry_diagnostic = runtime_diagnostic_probe()
+        if terminal_entry_diagnostic is not None:
+            raise RetainedSessionError(
+                "product runtime diagnostic: " + terminal_entry_diagnostic
+            )
         current_capabilities = service.capabilities()
         current_diagnostics = current_capabilities.get("diagnostics")
         if not isinstance(current_diagnostics, Mapping):
@@ -458,6 +637,21 @@ def run(
     except BaseException as error:
         report["error_reason"] = f"{type(error).__name__}: {error}"
     finally:
+        if runtime_diagnostic_probe is not None:
+            try:
+                terminal_diagnostic = runtime_diagnostic_probe()
+            except BaseException as diagnostic_error:
+                report["runtime_diagnostic_scan_error"] = (
+                    f"{type(diagnostic_error).__name__}: {diagnostic_error}"
+                )
+                report["result"] = "RED"
+            else:
+                if terminal_diagnostic is not None:
+                    report["error_reason"] = (
+                        "RetainedSessionError: product runtime diagnostic: "
+                        + terminal_diagnostic
+                    )
+                    report["result"] = "RED"
         if driver is not None:
             try:
                 driver.close()
