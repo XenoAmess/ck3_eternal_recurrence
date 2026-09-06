@@ -40,6 +40,7 @@ BODY_CHOICE_META_RE = re.compile(
     r"(?:写明|列明|说明|展示)[^。！？；]{0,12}"
     r"(?:动作|选择|处理|后果)"
     r"|(?:下方|以下)[^。！？；]{0,8}按钮"
+    r"|(?:下列|上述)\s*(?:选项|按钮)"
     r"|按钮及说明"
     r")",
     re.IGNORECASE,
@@ -614,6 +615,8 @@ class ChineseCopyQualityHelperTest(unittest.TestCase):
             "按钮上写明本项实际处理。",
             "具体操作、代价和条件均写在下方按钮及说明中。",
             "按A做，后续再说。",
+            "下列选项只记录你的判断。",
+            "上述选项已经列明处置。",
         ):
             with self.subTest(bad_body=bad_body):
                 self.assertIsNotNone(BODY_CHOICE_META_RE.search(bad_body))

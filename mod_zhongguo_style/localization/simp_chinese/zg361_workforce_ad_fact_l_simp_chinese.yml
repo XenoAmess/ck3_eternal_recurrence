@@ -4,7 +4,7 @@
  zg361wad.referral.submit:0 "提交我的内推，并公开关系"
  zg361wad.referral.decline:0 "这份内推不是我提交的"
  zg361wad.vote.t:0 "封存你自己的面试票"
- zg361wad.vote.desc:0 "候选人 [zg361_wad_panel_subject_scope.GetShortUIName] 正在接受三席独立评议，你是当前执笔的评委。案前现有材料只能核对候选人与当前评委的实名身份，并未附上面试题目、回答、评分表或独立证明材料。下列选项只记录你的面试判断，不代表案卷已经拥有充分证据。"
+ zg361wad.vote.desc:0 "候选人 [zg361_wad_panel_subject_scope.GetShortUIName] 正在接受三席独立评议，你是当前执笔的评委。案前现有材料只能核对候选人与当前评委的实名身份，并未附上面试题目、回答、评分表或独立证明材料。你的这一票将写入三席合议记录，并直接影响候选人能否进入下一道录用环节。"
  zg361wad.vote.a:0 "我的判断：建议推进录用"
  zg361wad.vote.b:0 "我的判断：暂缓并继续审查"
  zg361wad.vote.c:0 "我的判断：不建议推进"
