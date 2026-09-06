@@ -11,6 +11,7 @@ the final localization key and file instead of only naming the producer.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from pathlib import Path
 import re
 import unittest
@@ -52,6 +53,7 @@ GENERIC_OPTION_RE = re.compile(
     r"|路线\s*[甲乙丙ＡＢＣABC]"
     r"|登记\s*路线\s*[甲乙丙ＡＢＣABC]\s*倾向"
     r"|按\s*(?:证据|政治)\s*办"
+    r"|^(?:照办|接受安排|继续|就这样)[。！!…]*$"
     r")",
     re.IGNORECASE,
 )
@@ -168,6 +170,14 @@ class LocEntry:
         return f"{self.path.name}:{self.line}:{self.key}"
 
 
+@dataclass(frozen=True)
+class EventLocGroup:
+    event_key: str
+    title_keys: tuple[str, ...]
+    body_keys: tuple[str, ...]
+    option_keys: tuple[str, ...]
+
+
 def read_final_chinese() -> dict[str, LocEntry]:
     entries: dict[str, LocEntry] = {}
     for path in sorted(LOC_ROOT.glob("*.yml")):
@@ -216,6 +226,70 @@ def read_event_loc_references(field: str) -> set[str]:
     return references
 
 
+def _script_code(row: str) -> str:
+    """Remove comments and quoted strings before counting script braces."""
+
+    result: list[str] = []
+    quoted = False
+    escaped = False
+    for character in row:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == '"':
+                quoted = False
+            continue
+        if character == '"':
+            quoted = True
+            continue
+        if character == "#":
+            break
+        result.append(character)
+    return "".join(result)
+
+
+def read_event_localization_groups() -> tuple[EventLocGroup, ...]:
+    """Bind copy through actual event fields, including semantic key suffixes."""
+
+    event_start = re.compile(r"^\s*(zg361[\w.]+)\s*=\s*{")
+    field_ref = re.compile(
+        r"(?<![\w])(?P<field>title|desc|name)\s*=\s*(?P<key>zg361[\w.]+)\b"
+    )
+    groups: list[EventLocGroup] = []
+    for path in sorted(EVENT_ROOT.glob("*.txt")):
+        event_key: str | None = None
+        depth = 0
+        fields: dict[str, list[str]] = {"title": [], "desc": [], "name": []}
+        for row in path.read_text(encoding="utf-8-sig").splitlines():
+            code = _script_code(row)
+            if event_key is None:
+                match = event_start.match(code)
+                if match is None:
+                    continue
+                event_key = match.group(1)
+                depth = code.count("{") - code.count("}")
+            else:
+                for match in field_ref.finditer(code):
+                    fields[match.group("field")].append(match.group("key"))
+                depth += code.count("{") - code.count("}")
+            if event_key is not None and depth == 0:
+                groups.append(
+                    EventLocGroup(
+                        event_key=event_key,
+                        title_keys=tuple(dict.fromkeys(fields["title"])),
+                        body_keys=tuple(dict.fromkeys(fields["desc"])),
+                        option_keys=tuple(dict.fromkeys(fields["name"])),
+                    )
+                )
+                event_key = None
+                fields = {"title": [], "desc": [], "name": []}
+        if event_key is not None:
+            raise AssertionError(f"unterminated event block in {path}: {event_key}")
+    return tuple(groups)
+
+
 def strip_ck3_markup(value: str) -> str:
     """Return literal player-visible prose for comparisons and length gates."""
 
@@ -225,6 +299,22 @@ def strip_ck3_markup(value: str) -> str:
     value = re.sub(r"@[A-Za-z0-9_./-]+!", "", value)
     value = re.sub(r"#[A-Za-z0-9_]+\s*|#!", "", value)
     return re.sub(r"\s+", " ", value).strip()
+
+
+def leading_visible_text(value: str) -> str:
+    """Strip leading CK3 style/icon markup while preserving dynamic expressions."""
+
+    remaining = value.lstrip()
+    leading_markup = re.compile(r"^(?:#[A-Za-z_]+\s*|#!\s*|@[A-Za-z0-9_./-]+!\s*)")
+    while (match := leading_markup.match(remaining)) is not None:
+        remaining = remaining[match.end() :].lstrip()
+    return remaining
+
+
+def comparison_text(value: str) -> str:
+    """Normalize visible prose for copied-title similarity checks."""
+
+    return re.sub(r"[^\u3400-\u9fffA-Za-z0-9]+", "", strip_ck3_markup(value))
 
 
 def title_candidates_for(desc_key: str) -> tuple[str, ...]:
@@ -284,6 +374,7 @@ class ChineseCopyQualityTest(unittest.TestCase):
             if (OPTION_KEY_RE.search(key) or key in event_options)
             and option_family(key) is not None
         }
+        cls.event_groups = read_event_localization_groups()
 
     def test_01_gate_covers_all_requested_copy_families(self) -> None:
         expected = {
@@ -305,13 +396,14 @@ class ChineseCopyQualityTest(unittest.TestCase):
         self.assertIn("other zg361 event", actual)
         self.assertGreater(len(self.bodies), 100)
         self.assertGreater(len(self.options), 1_700)
+        self.assertGreater(len(self.event_groups), 600)
         self.assertIn("zg361comp.1.l1", self.bodies)
         self.assertIn("zg361comp.1.l1.r1", self.options)
 
     def test_02_body_never_starts_with_punctuation_or_dynamic_expression(self) -> None:
         failures: list[str] = []
         for entry in self.bodies.values():
-            raw = entry.value.lstrip()
+            raw = leading_visible_text(entry.value)
             if not raw:
                 failures.append(f"{entry.location} empty body")
                 continue
@@ -346,6 +438,30 @@ class ChineseCopyQualityTest(unittest.TestCase):
                     break
         self.assertFalse(failures, format_failures(failures))
 
+    def test_03b_actual_event_bodies_do_not_paraphrase_their_titles(self) -> None:
+        failures: list[str] = []
+        for group in self.event_groups:
+            for title_key in group.title_keys:
+                title_entry = self.entries.get(title_key)
+                if title_entry is None:
+                    continue
+                title = comparison_text(title_entry.value)
+                if len(title) < 4:
+                    continue
+                for body_key in group.body_keys:
+                    body_entry = self.entries.get(body_key)
+                    if body_entry is None:
+                        continue
+                    body = comparison_text(body_entry.value)
+                    similarity = SequenceMatcher(None, title, body).ratio()
+                    if title in body or similarity >= 0.50:
+                        failures.append(
+                            f"{body_entry.location} event {group.event_key} repeats/paraphrases "
+                            f"{title_key} at {similarity:.3f}: {title_entry.value!r} -> "
+                            f"{body_entry.value!r}"
+                        )
+        self.assertFalse(failures, format_failures(failures))
+
     def test_04_body_never_enumerates_abstract_routes_or_button_instructions(self) -> None:
         failures = [
             f"{entry.location} contains choice meta-copy "
@@ -371,6 +487,23 @@ class ChineseCopyQualityTest(unittest.TestCase):
                         f"{desc.location} duplicates option {option.key}: "
                         f"{option_text!r}"
                     )
+        self.assertFalse(failures, format_failures(failures))
+
+    def test_05b_actual_event_bodies_never_duplicate_bound_options(self) -> None:
+        failures: list[str] = []
+        for group in self.event_groups:
+            bodies = [self.entries[key] for key in group.body_keys if key in self.entries]
+            options = [self.entries[key] for key in group.option_keys if key in self.entries]
+            for option in options:
+                option_text = strip_ck3_markup(option.value).rstrip("。！？”")
+                if len(option_text) < 6:
+                    continue
+                for body in bodies:
+                    if option_text in strip_ck3_markup(body.value):
+                        failures.append(
+                            f"{body.location} event {group.event_key} duplicates bound "
+                            f"option {option.key}: {option_text!r}"
+                        )
         self.assertFalse(failures, format_failures(failures))
 
     def test_06_options_name_actions_instead_of_abstract_branches(self) -> None:
@@ -428,7 +561,10 @@ class ChineseCopyQualityTest(unittest.TestCase):
             f"{entry.location} uses vague confirm label {entry.value!r}"
             for entry in self.entries.values()
             if entry.key.endswith("_confirm")
-            and strip_ck3_markup(entry.value) in VAGUE_DECISION_CONFIRM_LABELS
+            and (
+                strip_ck3_markup(entry.value) in VAGUE_DECISION_CONFIRM_LABELS
+                or GENERIC_OPTION_RE.search(strip_ck3_markup(entry.value)) is not None
+            )
         ]
         self.assertFalse(failures, format_failures(failures))
 
@@ -468,6 +604,8 @@ class ChineseCopyQualityHelperTest(unittest.TestCase):
             ),
             "落笔",
         )
+        self.assertEqual(leading_visible_text("#high 。正文#!"), "。正文#!")
+        self.assertEqual(leading_visible_text("#P [subject.GetName]到任#!"), "[subject.GetName]到任#!")
 
     def test_choice_meta_copy_patterns_cover_live_failure_shapes(self) -> None:
         for bad_body in (
