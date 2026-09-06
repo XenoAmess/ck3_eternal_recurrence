@@ -1771,3 +1771,17 @@ acceptance fixture 的延迟 gate，使用已证明会在载入执行的 diagnos
 date-only sentinel 仍作为唯一日界 carrier：它在 daily final-stage 之后暂停，因此目标日的隐藏 scheduled event
 有机会先执行；runner 无需增加第二个 sentinel，更不得因为同一帧安静就重启 CK3。任何 fixture 或 mod/runtime
 挂载字节改变仍要求下一轮冷启动；仅 Python 断言或证据格式改变时继续遵守“同一健康 CK3 会话复用”规则。
+
+### R154：原版随机事件只按实机形状签约，不按 namespace 放行（2026-09-07）
+
+R154 在冻结 commit `04d3c959ad8b160abeabccf9bc122eef0ae66b1c`、同一 CK3 PID、默认 5 速下恢复
+active B1，于 `date_raw=53150712` 遇到原版 `tgp_movement_events.0050`。runner 在未知事件边界暂停且没有
+发送选择；native current-event context 证明 root 是玩家 `32904`，saved scopes 恰为
+`my_movement:situation_participant_group` 与 `new_elder:character 27275`，没有 `old_elder`。原版三个 authored
+option 因此只显示 native indices `(0, 2)`。
+
+exact-build 1.19.0.6 源码审计表明，native 0 会建立永久 elder/disciple 关系并增加 merit；native 2 只调用
+`gain_appropriate_lifestyle_major_xp_effect` 并结算 trait-dependent stress，无随机后续。验收器只在事件 ID、
+玩家 root、两个 typed scope、三-of-二按钮映射、观察窗口和单次出现上限同时吻合时，选择 authored option 3 /
+native 2。该合同放在新的 `test_zg361_phase2_manager_recovery_tgp_interrupts.py`，不继续扩张已有 10 场景文件；
+未知 TGP 事件仍然 RED，绝不按 namespace 自动确认。

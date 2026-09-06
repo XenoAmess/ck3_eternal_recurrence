@@ -229,6 +229,38 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "tgp_movement_events.0050": {
+        # CK3 1.19.0.6 merit elder invitation. R154 had no old_elder scope,
+        # so authored option 2 was hidden and the two rendered buttons mapped
+        # to native indices 0/2. Option 0 installs a new elder relation and
+        # changes merit; native option 2 is terminal and only grants the
+        # source-authored lifestyle XP plus trait-dependent stress relief.
+        # Bind the movement group, generated elder and complete two-of-three
+        # option projection before taking that least invasive route.
+        "date_raw": 53150712,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "new_elder": (29037,),
+        },
+        "scope_types": {
+            "my_movement": "situation_participant_group",
+            "new_elder": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "my_movement",
+            "new_elder",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
     "tgp_movement_events.0150": {
         # CK3 1.19.0.6 Shinto-monk visit. The diplomat-only alliance route is
         # hidden in the R152 manager frame, leaving authored native options

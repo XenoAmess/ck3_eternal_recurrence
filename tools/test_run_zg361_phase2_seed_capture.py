@@ -4842,6 +4842,7 @@ def test_static_preflight_runs_optimized_seed_smokes() -> None:
             "test_zg361_phase2_seed_bootstrap.py",
             "test_zg361_phase2_seed_fixture.py",
             "test_zg361_phase2_manager_recovery_interrupts.py",
+            "test_zg361_phase2_manager_recovery_tgp_interrupts.py",
             "test_run_zg361_phase2_seed_capture.py",
         )
         tools_dir = fixture.clean / "tools"
@@ -4876,7 +4877,7 @@ def test_static_preflight_runs_optimized_seed_smokes() -> None:
             evidence["result"] == "GREEN",
             "seed preflight smoke matrix unexpectedly failed",
         )
-        require(len(calls) == 12, "seed preflight command count drifted")
+        require(len(calls) == 14, "seed preflight command count drifted")
         optimized = {
             Path(command[-1]).name
             for command, _kwargs in calls
