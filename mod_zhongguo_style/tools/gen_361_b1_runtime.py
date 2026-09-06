@@ -1984,6 +1984,7 @@ zg361_b1_open_cycle_effect = {
 	}
 	if = {
 		limit = {
+			is_ai = no
 			has_game_rule = zg361_on
 			zg361_is_celestial_liege_trigger = yes
 			NOT = { has_character_flag = zg361_b1_cycle_active }
@@ -2095,6 +2096,10 @@ zg361_b1_open_cycle_effect = {
 		if = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			clear_variable_list = zg361_b1_subjects
+		}
+		if = {
+			limit = { has_variable_list = zg361_b1_subject_candidates }
+			clear_variable_list = zg361_b1_subject_candidates
 		}
 		every_vassal = {
 			limit = { zg361_is_reviewable_vassal_trigger = yes }
@@ -3278,6 +3283,7 @@ zg361_b1_register_common_superior_bank_effect = {
 					set_variable = { name = zg361_b1_pool_n value = 0 }
 					every_vassal = {
 						limit = {
+							is_ai = no
 							zg361_is_celestial_liege_trigger = yes
 							any_vassal = {
 								count >= 1
@@ -9263,24 +9269,38 @@ zg361b1.201 = {
 zg361b1.90 = {
 	type = character_event
 	hidden = yes
+	trigger = {
+		is_ai = no
+		is_alive = yes
+	}
 	immediate = {
 		if = {
-			limit = { zg361_b1_serial_dependents_active_trigger = yes }
+			limit = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+			}
 			if = {
-				limit = {
-					trigger_if = {
-						limit = { has_variable = zg361_b1_sibling_open_pending }
-						var:zg361_b1_sibling_open_pending != 1
+				limit = { zg361_b1_serial_dependents_active_trigger = yes }
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_b1_sibling_open_pending }
+							var:zg361_b1_sibling_open_pending != 1
+						}
+						trigger_else = { always = yes }
 					}
-					trigger_else = { always = yes }
+					set_variable = { name = zg361_b1_sibling_open_pending value = 1 }
+					trigger_event = { id = zg361b1.91 days = 2 }
 				}
-				set_variable = { name = zg361_b1_sibling_open_pending value = 1 }
-				trigger_event = { id = zg361b1.91 days = 2 }
+			}
+			else = {
+				remove_variable = zg361_b1_sibling_open_pending
+				zg361_b1_open_cycle_effect = yes
 			}
 		}
 		else = {
 			remove_variable = zg361_b1_sibling_open_pending
-			zg361_b1_open_cycle_effect = yes
+			debug_log = "ZG361B1: ineligible sibling season synchronization retired"
 		}
 	}
 }
@@ -9291,20 +9311,41 @@ zg361b1.91 = {
 	type = character_event
 	hidden = yes
 	trigger = {
-		trigger_if = {
-			limit = { has_variable = zg361_b1_sibling_open_pending }
-			var:zg361_b1_sibling_open_pending = 1
-		}
-		trigger_else = { always = no }
+		is_ai = no
+		is_alive = yes
 	}
 	immediate = {
 		if = {
-			limit = { zg361_b1_serial_dependents_active_trigger = yes }
-			trigger_event = { id = zg361b1.91 days = 2 }
+			limit = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_b1_sibling_open_pending }
+						var:zg361_b1_sibling_open_pending = 1
+					}
+					trigger_else = { always = no }
+					zg361_b1_serial_dependents_active_trigger = yes
+				}
+				trigger_event = { id = zg361b1.91 days = 2 }
+			}
+			else_if = {
+				limit = {
+					trigger_if = {
+						limit = { has_variable = zg361_b1_sibling_open_pending }
+						var:zg361_b1_sibling_open_pending = 1
+					}
+					trigger_else = { always = no }
+				}
+				remove_variable = zg361_b1_sibling_open_pending
+				zg361_b1_open_cycle_effect = yes
+			}
 		}
 		else = {
 			remove_variable = zg361_b1_sibling_open_pending
-			zg361_b1_open_cycle_effect = yes
+			debug_log = "ZG361B1: deferred sibling synchronization retired after eligibility loss"
 		}
 	}
 }

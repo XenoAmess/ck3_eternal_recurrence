@@ -1208,6 +1208,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "set_variable = { name = zg361_b1_bank_runtime_schema value = 2 }",
             register,
         )
+        expected_manager_loop = register.split("every_vassal = {", 1)[1].split(
+            "save_scope_as = zg361_b1_bank_ticket_owner", 1
+        )[0]
+        self.assertIn("is_ai = no", expected_manager_loop)
         self.assertIn("trigger_event = { id = zg361b1.110 days = 335 }", register)
 
     def test_140_reorg_routes_have_one_complete_replay_safe_owner_object(self) -> None:
@@ -1666,10 +1670,22 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("max = 10 min = -10", self.effects)
 
     def test_jingcha_opens_cycle_and_no_longer_instantly_settles(self) -> None:
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        self.assertIn("is_ai = no", open_cycle)
+        self.assertLess(
+            open_cycle.index("is_ai = no"),
+            open_cycle.index("zg361_is_celestial_liege_trigger = yes"),
+        )
+        dispatch = top_level_block(
+            self.jingcha, "zg361_jingcha_annual_dispatch_effect"
+        )
+        self.assertIn("is_ai = no", dispatch)
         issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
         issue_now = top_level_block(
             self.jingcha, "zg361_issue_jingcha_mandate_now_effect"
         )
+        self.assertIn("limit = { is_ai = no }", issue_now)
+        self.assertNotIn("AI jingcha duty entered", issue_now)
         self.assertNotIn("zg361_b1_open_cycle_effect = yes", issue)
         self.assertIn("zg361_issue_jingcha_mandate_now_effect = yes", issue)
         self.assertIn("zg361_b1_open_cycle_effect = yes", issue_now)
@@ -1766,12 +1782,27 @@ class B1RuntimeFoundationTests(unittest.TestCase):
     def test_common_superior_sibling_open_is_coalesced_while_serial_busy(self) -> None:
         first = top_level_block(self.events, "zg361b1.90")
         retry = top_level_block(self.events, "zg361b1.91")
+        self.assertIn("is_ai = no", first)
+        self.assertIn("is_alive = yes", first)
+        self.assertIn("has_game_rule = zg361_on", first)
+        self.assertLess(
+            first.index("zg361_is_celestial_liege_trigger = yes"),
+            first.index("zg361_b1_serial_dependents_active_trigger = yes"),
+        )
         self.assertIn("zg361_b1_serial_dependents_active_trigger = yes", first)
         self.assertIn("var:zg361_b1_sibling_open_pending != 1", first)
         self.assertEqual(first.count("trigger_event = { id = zg361b1.91 days = 2 }"), 1)
         self.assertLess(
             first.index("remove_variable = zg361_b1_sibling_open_pending"),
             first.index("zg361_b1_open_cycle_effect = yes"),
+        )
+        self.assertIn("ineligible sibling season synchronization retired", first)
+        self.assertIn("is_ai = no", retry)
+        self.assertIn("is_alive = yes", retry)
+        self.assertIn("has_game_rule = zg361_on", retry)
+        self.assertLess(
+            retry.index("zg361_is_celestial_liege_trigger = yes"),
+            retry.index("zg361_b1_serial_dependents_active_trigger = yes"),
         )
         self.assertIn("var:zg361_b1_sibling_open_pending = 1", retry)
         self.assertIn("zg361_b1_serial_dependents_active_trigger = yes", retry)
@@ -1780,7 +1811,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             retry.index("remove_variable = zg361_b1_sibling_open_pending"),
             retry.index("zg361_b1_open_cycle_effect = yes"),
         )
+        self.assertIn(
+            "deferred sibling synchronization retired after eligibility loss", retry
+        )
         annual = top_level_block(self.core, "zg361_annual_review_effect")
+        self.assertIn("is_ai = no", annual)
         self.assertEqual(annual.count("zg361_issue_jingcha_mandate_effect = yes"), 2)
         self.assertNotIn("zg361_b1_open_cycle_effect = yes", annual)
 
@@ -3561,9 +3596,13 @@ class B1RuntimeFoundationTests(unittest.TestCase):
     def test_departed_subject_is_not_carried_into_the_next_cycle(self) -> None:
         open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
         clear = open_cycle.index("clear_variable_list = zg361_b1_subjects")
-        rebuild = open_cycle.index("every_vassal = {", clear)
+        clear_candidates = open_cycle.index(
+            "clear_variable_list = zg361_b1_subject_candidates", clear
+        )
+        rebuild = open_cycle.index("every_vassal = {", clear_candidates)
         initialize = open_cycle.index("zg361_b1_initialize_subject_case_effect = yes", rebuild)
-        self.assertLess(clear, rebuild)
+        self.assertLess(clear, clear_candidates)
+        self.assertLess(clear_candidates, rebuild)
         self.assertLess(rebuild, initialize)
 
         published = top_level_block(

@@ -58,6 +58,7 @@ zg361_b1_register_common_superior_bank_effect = {
 					set_variable = { name = zg361_b1_pool_n value = 0 }
 					every_vassal = {
 						limit = {
+							is_ai = no
 							zg361_is_celestial_liege_trigger = yes
 							any_vassal = {
 								count >= 1

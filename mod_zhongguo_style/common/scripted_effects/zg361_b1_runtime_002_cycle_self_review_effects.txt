@@ -23,6 +23,7 @@ zg361_b1_open_cycle_effect = {
 	}
 	if = {
 		limit = {
+			is_ai = no
 			has_game_rule = zg361_on
 			zg361_is_celestial_liege_trigger = yes
 			NOT = { has_character_flag = zg361_b1_cycle_active }
@@ -134,6 +135,10 @@ zg361_b1_open_cycle_effect = {
 		if = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			clear_variable_list = zg361_b1_subjects
+		}
+		if = {
+			limit = { has_variable_list = zg361_b1_subject_candidates }
+			clear_variable_list = zg361_b1_subject_candidates
 		}
 		every_vassal = {
 			limit = { zg361_is_reviewable_vassal_trigger = yes }
