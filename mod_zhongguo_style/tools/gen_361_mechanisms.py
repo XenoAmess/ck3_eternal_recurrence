@@ -2307,9 +2307,28 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
             "- The same load also exposed one fixture-contamination error: the seed retained `zga_phase2_manager_seed_survivability_modifier`, which correctly does not exist in the product-only tree. The fixture close option now removes that temporary modifier before saving, and the manager candidate now writes the full-tree domain query matrix from the typed manager/subject identities.",
             "- A fresh current-source MSVC candidate with only the promotion/compensation provider enabled was built at `Z:\\b3probe-msvc6`; all 94 native tests are GREEN. Its DLL SHA-256 is `cea3a3810fd872d2ca318bafad04fe0e082aaa5fe6f6cea485be7b7510c3ac6f`. The split-aware result-case source-contract test now reads `zg361_core_result_delivery_effects.txt`, not the removed monolith.",
             "- R158 report / capability gate / retention SHA-256: `7c6b8da98835b9041293f95b977be46910cf4dfff049877da609d1c61a41e0ec` / `56794ec7c82adc2d2a15d7a3258503c17f2355a58ab0eff44f44bee5616c2862` / `973d82230b9cb235965dd3005203d9e91d4abe524b0a546ecc0f8d402f8c9b56`. Full-tree gameplay did not execute, so no per-ID readiness is raised.",
+            "",
+            "## R159 clean manager seed (upstream-only GREEN; no readiness change)",
+            "",
+            "- R159 froze `8a0482cdafd3110514fbede8ef3150ef0fef7218`; projection `phase2-full-release-r159-8a0482c` retained the 1,031-file product tree SHA-256 `196e557e06ffa09ef488c819168f16237f5466089ab0d8087ac3f977398e4205`. The no-launch preflight was GREEN; its receipt SHA-256 is `33add54a5ad4c01a3c375c13debaca56cb32699c6bb6ade178f4c8607ef63ef3`.",
+            "- At default speed 5 with MCP-only gameplay, the clean carrier bound player/manager `32904` and direct subject `26347`, removed the acceptance-only survivability modifier before save, and emitted the full-tree domain query matrix. The immutable save SHA-256 is `cb08fce64ced7f3540b68c067aeb6c81bd740a03b92f6fd416cf03c6d0a669ec`.",
+            "- Runner / candidate / cleanup SHA-256: `0247fc2130e02b5e45c5099b9ff8b39acc1f62964ca0d74d87670689fdcc5e4f` / `bad92e689fedf460f5e194e55ae1d56be881d0d83ac091113593150182131033` / `3030ed9d87f3bf0399492673f95fcf065859419015abc46ecf837903132e2928`. Cleanup was GREEN with final PID `34736`, generation 1, restart count 0 and an empty CK3 inventory.",
+            "- This closes only the player-manager seed and promotion upstream input. It does not provide B3's two-layer AI manager topology, execute a scoreboard action, capture `.147`, or run the full tree; therefore no B3, scoreboard, promotion or full-tree readiness is raised.",
+            "",
+            "## R160 promotion review-action dispatch RED (no readiness change)",
+            "",
+            "- R160 froze `bf314be42b62b69c87c8825bf473286bf524a79b`; source ZIP SHA-256 is `3a31b71c537588da5ffdc6fb967236fb008211d7828235284ea6976addf694a0`. The runner schema now accepts the manager seed's `domain_query_matrix`; the byte-identical current runner (SHA-256 `9a4a7ccd4db4b1d9bcd9a5979435c662d52c24ffb52255ba2f15bda181584457`) passed no-launch preflight after the frozen export's missing ignored game-directory junction caused an environment-only preflight RED.",
+            "- The live progress query proved `review_now_eligible=true` with B1, Central and PP all inactive. The subsequent review-now call returned `accepted=false`, `status=unavailable`, `rejection_reason=action_dispatch_rejected` and `production_capability_advertised=false`; no pending ACK existed, and no ACK is treated as a business postcondition.",
+            "- Consequently R160 did not enter B1 or capture `zg361pp.147`. The product runtime tree remained unchanged before/after at `196e557e06ffa09ef488c819168f16237f5466089ab0d8087ac3f977398e4205`, so this is a native action-dispatch/harness RED rather than a product-state RED.",
+            "- PID `126732`, generation 1, paused `date_raw=53154120` was retained healthy for reconnect. Outer report / live cell / promotion entry / retention SHA-256: `e028186c7fb4124223b65f1bd36338d84fec8a91abd45377737d45e84d40f061` / `ee9b52175b59b2362611b63dd15dd6c3448e096a00b0a25b00872f93d48f7207` / `44fa4c7762007f8491903c68c371c17e7845d6a480b043f7c885b7f7c1ad8756` / `35362e2573583e37777ce5d6d2bc9d01d8ecaa5561e0a1b309230b0c337ecb71`.",
+            "",
+            "## B3 current live boundary",
+            "",
+            "- B3 remains `static-ready-live-pending`. The native manager-to-subordinate typed selector transport, capability/query flag and runner default provider binding are wired; provider wiring is complete and is not the remaining gate.",
+            "- Still missing are a real paused two-layer topology (`player -> AI manager -> that manager's subordinate`), an actual B3 action, and provider-observed joined postconditions for F032 and F035. R159's player-manager seed does not supply that topology, and neither R159 nor R160 raises B3 readiness.",
         ]
     )
-    return BOM + ("\n".join(lines)).encode("utf-8")
+    return BOM + ("\n".join(lines) + "\n").encode("utf-8")
 
 
 def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:

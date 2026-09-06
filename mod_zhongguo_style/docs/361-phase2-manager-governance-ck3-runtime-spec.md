@@ -2,9 +2,9 @@
 
 ## Readiness boundary
 
-- Readiness: `static-ready`
-- MCP evidence: 首次启动只取得 loader/material RED 与 cleanup GREEN；没有业务 snapshot
-- CK3 live evidence: `RED only`，未进入 paused gameplay
+- Readiness: `static-ready-live-pending`
+- MCP evidence: native manager→subordinate typed selector transport、capability/query flag 与 runner 默认 provider binding 已接线；尚未取得真实两层 AI manager→subordinate 可用选择结果、B3 action 或 F032/F035 provider-observed postcondition
+- CK3 live evidence: `RED only`；现存失败只证明更早的 loader/material 闭包，尚无可提升 B3 readiness 的 paused gameplay artifact
 - 目标编号：`032–036` 与 `345–354`，共 15 项。
 - 明确不含：`312–333`；该段属于职业/学习子包，不得由本运行时抢占。
 - 本规格证明的是确定生成、产品脚本、状态/收据/期限/资源合同与 L0 静态测试。它不是 fixture-live、production-live 或发版签核。
@@ -323,10 +323,11 @@ L0 批量覆盖 15 项的 A/B/C、每项一个原子 negative、exact duplicate�
 
 正式 `run_zhongguo_acceptance.py` 已注册
 `manager_governance_gameplay_action_and_postcondition_matrix` 并接入 B3 action-cell handler；manager snapshot capability/query flag
-也属于 full Phase2 capability profile。当前 native typed selector 尚未绑定，registry 与 handler 因而固定输出
-`provider_pending / static-ready`：`gameplay_action_executed=false`、`action_cell_invoked=false`、
-`action_ack_is_business_postcondition=false`，且没有 provider postcondition 时绝不进入 GREEN。focused B2 capability profile
-仍只要求原来的 B2 子集，不会被 B3 缺口阻断。未来 selector 必须提供 provider-observed 的“AI 直属经理 + 该经理直属下属”
-身份，随后 handler 才调用 action cell；action cell 又必须观察 B1 新 receipt 与 B3 F035/F032 joined postcondition，ACK 不能替代查询结果。
+也属于 full Phase2 capability profile。native typed selector 的 transport、capability/query flag 与 runner 默认 provider binding
+现已接线，因此 B3 不再是 `provider_pending`，而是 `live-pending`。剩余门槛是让 selector 在真实 paused game state
+返回 provider-observed 的“AI 直属经理 + 该经理直属下属”两层身份，随后实际调用 action cell，并由 provider 查询观察
+B1 新 receipt 与 B3 F035/F032 joined postcondition；action ACK 不能替代业务查询结果。取得这些 artifact 前，
+`gameplay_action_executed` / `action_cell_invoked` / provider-observed postcondition 仍不得写成 GREEN。focused B2 capability profile
+仍只要求原来的 B2 子集，不会被 B3 缺口阻断。
 
-下一步通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、F032 下一轮 component-8 一次结算、F035 下一轮真实 bottom slots、346/347/354 pending→settled/discarded、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。没有这批 paused snapshot 与日志之前，状态保持 `static-ready`。
+下一步通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、F032 下一轮 component-8 一次结算、F035 下一轮真实 bottom slots、346/347/354 pending→settled/discarded、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。至少取得真实两层 AI manager→subordinate pair、实际 action，以及 F032/F035 provider-observed artifact 前，状态保持 `static-ready-live-pending`。
