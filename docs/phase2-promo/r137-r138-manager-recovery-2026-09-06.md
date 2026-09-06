@@ -1,4 +1,4 @@
-# R137–R138 管理周期恢复取证（2026-09-06）
+# R137–R139 管理周期恢复取证（2026-09-06）
 
 ## R137：第二次 owner terminal
 
@@ -22,3 +22,12 @@
 ## 健康保护门禁
 
 R138 没有发生角色死亡，所以用户授权的“三次连续角色死亡后添加健康值与 buff”仍未满足。当前已确认的同类 owner terminal 是 R133 与 R137 两次；R134 启动超时、R135/R136/R138 随机事件阻塞均不计入死亡次数。
+
+## R139：贡礼回报的第二个 scope 集合
+
+- R139 的 `tribute_mission.1005` 仍为相同 7 个 authored slots、相同可见 native indices `0,1,2,3,5,6`；按钮契约没有漂移。
+- 本轮没有 `concubine_character` 与 `rejected_concubine` 两个临时 scope，其余 14 个 scope 名称、类型、别名关系全部匹配 R138。
+- 验收契约将 R138 的 16 项和 R139 的 14 项登记为仅有的两个完整名称集合；`concubine_character`/`rejected_concubine` 若出现仍必须分别为 character/flag。其他缺项、增项、类型或按钮映射变化继续 fail closed。
+- `Z:\p2m139_a\manager-cycle-recovery.json` SHA-256：`739E2D1F5B0DBA9C877D465E29C620E13EB457CD16A77F5030EF0CC63F6B64E6`
+- `Z:\p2m139_a\runner-report.json` SHA-256：`758B64240F8D8085EF6C7C61586CDF360A03509235F147DA8FA9F2E098F8B537`
+- R139 是已知事件严格形状 RED，不是 owner terminal，不累计健康保护次数。

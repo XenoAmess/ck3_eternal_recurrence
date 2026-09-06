@@ -233,8 +233,26 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 6)
         self.assertEqual(contract["selected_native_option_index"], 5)
 
+        compact = copy.deepcopy(context)
+        compact["saved_scopes"] = [
+            row
+            for row in compact["saved_scopes"]
+            if row["name"] not in {"concubine_character", "rejected_concubine"}
+        ]
+        compact_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150400,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 15},
+            context={**compact, "date_raw": 53150400},
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(compact_checks.values()), compact_checks)
+
         drifted = copy.deepcopy(context)
-        drifted["options"][4]["native_option_index"] = 4
+        drifted["saved_scopes"] = drifted["saved_scopes"][:-1]
         drift_checks = production._known_interrupt_checks(
             snapshot={
                 "date_raw": 53150184,
@@ -245,7 +263,7 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             event_key=event_key,
             contract=contract,
         )
-        self.assertFalse(drift_checks["authored_options_exact"])
+        self.assertFalse(drift_checks["saved_scope_names_exact"])
 
 
 if __name__ == "__main__":
