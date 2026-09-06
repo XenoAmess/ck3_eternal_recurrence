@@ -102,7 +102,7 @@ def main() -> int:
         assert manager_gate in on_actions
         assert manager_gate in effects
     assert "duration = 0.5" in bridge
-    assert bridge.count("duration = 0.5") == 1
+    assert bridge.count("duration = 0.5") == 2
     assert (
         "GetScriptedGui('zga_phase2_manager_seed_bootstrap_bridge_gui')"
         in bridge
@@ -122,7 +122,99 @@ def main() -> int:
     ):
         assert terminal_signal in scripted_gui
         assert terminal_signal in effects
-    handoff_branch = effects[effects.index("\telse_if = {") :]
+    direct_gui = top_level_block(
+        scripted_gui,
+        "zga_phase2_manager_seed_direct_manager_diagnostic_gui",
+    )
+    assert "this = character:han_6875" in direct_gui
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_direct_gates_logged }" in direct_gui
+    )
+    assert "zga_phase2_manager_seed_log_direct_gates_effect = yes" in direct_gui
+    direct_gui_basic_gate = direct_gui[
+        : direct_gui.index("\n\t\tNOT = {\n\t\t\tAND = {")
+    ]
+    for final_gate in (
+        "zg361_is_celestial_liege_trigger = yes",
+        "zg361_review_now_business_valid_trigger = yes",
+        "prestige >= 150",
+        "has_character_flag = zg361_b1_cycle_active",
+        "has_character_flag = zg361_review_in_progress",
+        "has_variable = zg361_p2c_active",
+        "has_variable = zg361_pp_portfolio_queue_active",
+        "any_vassal = {",
+    ):
+        assert final_gate not in direct_gui_basic_gate
+    assert (
+        "GetScriptedGui('zga_phase2_manager_seed_direct_manager_diagnostic_gui')"
+        in bridge
+    )
+    diagnostic = top_level_block(
+        effects,
+        "zga_phase2_manager_seed_log_direct_gates_effect",
+    )
+    assert diagnostic.count(
+        "add_character_flag = zga_phase2_manager_seed_direct_gates_logged"
+    ) == 1
+    assert (
+        "NOT = { has_character_flag = "
+        "zga_phase2_manager_seed_direct_gates_logged }" in diagnostic
+    )
+    diagnostic_flag_tokens = set(
+        re.findall(
+            r"(?:has_character_flag|add_character_flag)\s*=\s*"
+            r"(zga_phase2_manager_seed_direct_[a-z_]+)",
+            payload,
+        )
+    )
+    assert diagnostic_flag_tokens == {
+        "zga_phase2_manager_seed_direct_gates_logged"
+    }
+    diagnostic_gates = {
+        "celestial": "zg361_is_celestial_liege_trigger = yes",
+        "review_now": "zg361_review_now_business_valid_trigger = yes",
+        "prestige_150": "prestige >= 150",
+        "b1_inactive": "NOT = { has_character_flag = zg361_b1_cycle_active }",
+        "review_in_progress_inactive": (
+            "NOT = { has_character_flag = zg361_review_in_progress }"
+        ),
+        "p2c_inactive": "var:zg361_p2c_active != 1",
+        "pp_inactive": "var:zg361_pp_portfolio_queue_active != 1",
+        "direct_reviewable_vassal": "any_vassal = {",
+    }
+    for gate_name, gate_expression in diagnostic_gates.items():
+        assert gate_expression in diagnostic
+        assert (
+            f'ZGAP2MANAGERSEED: direct gate {gate_name}=PASS' in diagnostic
+        )
+        assert f'ZGAP2MANAGERSEED: direct gate {gate_name}=RED' in diagnostic
+    assert "count >= 1" in diagnostic
+    assert "zg361_is_reviewable_vassal_trigger = yes" in diagnostic
+    assert "liege = root" in diagnostic
+    assert diagnostic.rindex(
+        "zga_phase2_manager_seed_maybe_begin_effect = yes"
+    ) > diagnostic.rindex(
+        "ZGAP2MANAGERSEED: direct gate direct_reviewable_vassal=RED"
+    )
+    fixture_effect_keys = re.findall(
+        r"(?m)^(zga_phase2_manager_seed_[a-z0-9_]+_effect)\s*=\s*\{",
+        effects,
+    )
+    assert len(fixture_effect_keys) == 2
+    for effect_file in (FIXTURE / "common" / "scripted_effects").glob("*.txt"):
+        effect_file_payload = text(effect_file)
+        effect_file_keys = re.findall(
+            r"(?m)^[a-z0-9_]+_effect\s*=\s*\{",
+            effect_file_payload,
+        )
+        assert 1 <= len(effect_file_keys) <= 10, effect_file
+    maybe_begin_for_handoff = top_level_block(
+        effects, "zga_phase2_manager_seed_maybe_begin_effect"
+    )
+    handoff_branch = maybe_begin_for_handoff[
+        maybe_begin_for_handoff.index("\telse_if = {") :
+    ]
     assert "zg361_review_now_business_valid_trigger = yes" not in handoff_branch
     assert "prestige >= 150" not in handoff_branch
     assert "\non_game_start = {" not in on_actions
@@ -262,11 +354,11 @@ def main() -> int:
     assert contract["status"] == "blocked_live_capture_required"
     assert contract["ready"] is False
     assert contract["source"]["sha256"] == (
-        "63a390a73fbc66c4339b3f3979e77c25ef18289299dd1514f54ef1f8db3d99c8"
+        "4ff4217e4536702b9c516fc6c39a2e4592a0bba87236eb1ec958210599cf42d3"
     )
-    assert contract["source"]["bytes"] == 79528933
+    assert contract["source"]["bytes"] == 78149043
     assert contract["source"]["absolute_save"] == (
-        "Z:\\b3r108_native_state\\profile\\save games\\autosave.ck3"
+        "Z:\\b3r107_native_state\\profile\\save games\\autosave.ck3"
     )
     assert contract["saved_state"]["date_raw"] is None
     assert contract["saved_state"]["played_character_id"] == 29037
@@ -274,7 +366,7 @@ def main() -> int:
     assert transition == {
         "handoff_mode": "direct_already_player_manager",
         "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-        "activation_surface": "on_game_start_after_lobby_direct_manager",
+        "activation_surface": "load_safe_gui_direct_manager",
         "entry_event_definition_key": "zga_phase2_manager_seed.1",
         "source_character_id": 29037,
         "target_character_id": 29037,

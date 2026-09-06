@@ -3254,7 +3254,7 @@ def _manager_direct_entry_contract(
 ) -> dict[str, Any]:
     """Validate a source whose played character is already the manager.
 
-    The R108 autosave has exact file and played-character provenance, but no
+    The frozen autosave has exact file and played-character provenance, but no
     independent offline proof of its reload date.  The first paused typed MCP
     snapshot therefore binds the source date later in ``run_capture``; this
     static route contract must not guess one from the preceding live session.
@@ -3307,9 +3307,9 @@ def _manager_direct_entry_contract(
         "trigger_effect_matches": (
             transition.get("trigger_effect_key") == MANAGER_SEED_PREEMPTIVE_EFFECT
         ),
-        "direct_on_game_start_activation": (
+        "load_safe_gui_activation": (
             transition.get("activation_surface")
-            == "on_game_start_after_lobby_direct_manager"
+            == "load_safe_gui_direct_manager"
         ),
         "final_event_matches": (
             transition.get("entry_event_definition_key")

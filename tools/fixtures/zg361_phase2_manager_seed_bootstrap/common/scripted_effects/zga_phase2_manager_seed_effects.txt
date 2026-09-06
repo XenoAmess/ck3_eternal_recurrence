@@ -61,3 +61,76 @@ zga_phase2_manager_seed_maybe_begin_effect = {
 		}
 	}
 }
+
+# The frozen direct source already plays han_6875 as the manager. This
+# acceptance-only probe is independent of the lobby-only on_action carrier:
+# the invisible GUI records each final-entry gate exactly once and then
+# delegates to the same typed entry effect above.
+zga_phase2_manager_seed_log_direct_gates_effect = {
+	if = {
+		limit = {
+			this = character:han_6875
+			NOT = { has_character_flag = zga_phase2_manager_seed_direct_gates_logged }
+		}
+		add_character_flag = zga_phase2_manager_seed_direct_gates_logged
+		if = {
+			limit = { zg361_is_celestial_liege_trigger = yes }
+			debug_log = "ZGAP2MANAGERSEED: direct gate celestial=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate celestial=RED" }
+		if = {
+			limit = { zg361_review_now_business_valid_trigger = yes }
+			debug_log = "ZGAP2MANAGERSEED: direct gate review_now=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate review_now=RED" }
+		if = {
+			limit = { prestige >= 150 }
+			debug_log = "ZGAP2MANAGERSEED: direct gate prestige_150=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate prestige_150=RED" }
+		if = {
+			limit = { NOT = { has_character_flag = zg361_b1_cycle_active } }
+			debug_log = "ZGAP2MANAGERSEED: direct gate b1_inactive=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate b1_inactive=RED" }
+		if = {
+			limit = { NOT = { has_character_flag = zg361_review_in_progress } }
+			debug_log = "ZGAP2MANAGERSEED: direct gate review_in_progress_inactive=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate review_in_progress_inactive=RED" }
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_p2c_active }
+					var:zg361_p2c_active != 1
+				}
+				trigger_else = { always = yes }
+			}
+			debug_log = "ZGAP2MANAGERSEED: direct gate p2c_inactive=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate p2c_inactive=RED" }
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_pp_portfolio_queue_active }
+					var:zg361_pp_portfolio_queue_active != 1
+				}
+				trigger_else = { always = yes }
+			}
+			debug_log = "ZGAP2MANAGERSEED: direct gate pp_inactive=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate pp_inactive=RED" }
+		if = {
+			limit = {
+				any_vassal = {
+					count >= 1
+					zg361_is_reviewable_vassal_trigger = yes
+					liege = root
+				}
+			}
+			debug_log = "ZGAP2MANAGERSEED: direct gate direct_reviewable_vassal=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate direct_reviewable_vassal=RED" }
+		zga_phase2_manager_seed_maybe_begin_effect = yes
+	}
+}

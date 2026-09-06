@@ -34,3 +34,45 @@
 		zga_phase2_manager_seed_maybe_begin_effect = yes
 	}
 }
+
+# Direct already-player-manager fallback for the frozen source. Excluding
+# the complete retained PIP witness keeps the existing subject handoff route
+# authoritative when the older R123 source is used.
+zga_phase2_manager_seed_direct_manager_diagnostic_gui = {
+	scope = character
+	is_shown = {
+		this = character:han_6875
+		NOT = { has_character_flag = zga_phase2_manager_seed_direct_gates_logged }
+		NOT = {
+			AND = {
+				is_ai = no
+				is_alive = yes
+				is_landed = yes
+				has_game_rule = zg361_on
+				zg361_is_reviewable_vassal_trigger = yes
+				NOT = { has_character_flag = zga_phase2_manager_seed_handoff_started }
+				has_variable = zg361_b2_m015_state
+				var:zg361_b2_m015_state = 5
+				has_variable = zg361_b2_m015_object_active
+				var:zg361_b2_m015_object_active = 0
+				has_variable = zg361_b2_m015_object_consumed
+				var:zg361_b2_m015_object_consumed = 1
+				has_variable = zg361_b2_m015_object_subject
+				var:zg361_b2_m015_object_subject = this
+				has_variable = zg361_b2_m015_object_owner
+				var:zg361_b2_m015_object_owner = liege
+				has_variable = zg361_b2_pip_subject_response
+				var:zg361_b2_pip_subject_response = 3
+				liege = {
+					is_ai = yes
+					is_alive = yes
+					is_landed = yes
+					zg361_is_celestial_liege_trigger = yes
+				}
+			}
+		}
+	}
+	effect = {
+		zga_phase2_manager_seed_log_direct_gates_effect = yes
+	}
+}

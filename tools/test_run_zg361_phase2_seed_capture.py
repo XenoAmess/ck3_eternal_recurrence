@@ -620,7 +620,7 @@ class Fixture:
         contract["player_transition_contract"] = {
             "handoff_mode": capture.MANAGER_DIRECT_ENTRY_MODE,
             "trigger_effect_key": capture.MANAGER_SEED_PREEMPTIVE_EFFECT,
-            "activation_surface": "on_game_start_after_lobby_direct_manager",
+            "activation_surface": "load_safe_gui_direct_manager",
             "entry_event_definition_key": (
                 capture.MANAGER_SEED_EVENT_DEFINITION_KEY
             ),

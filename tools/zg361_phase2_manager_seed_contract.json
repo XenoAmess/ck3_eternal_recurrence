@@ -4,22 +4,22 @@
   "seed_purpose": "player-manager",
   "status": "blocked_live_capture_required",
   "ready": false,
-  "blocker": "The R108 autosave has an exact file hash and already-played manager CharacterID 29037, but no independent offline proof of its reload date or first visible event. A fresh run must bind the first paused typed snapshot without input, reject any pre-existing visible event, revalidate manager eligibility through the fixture's direct on_game_start_after_lobby branch, and capture zga_phase2_manager_seed.1 before this contract can become ready.",
+  "blocker": "The R107 autosave has an exact file hash and already-played manager CharacterID 29037, but no independent offline proof of its reload date or first visible event. A fresh run must bind the first paused typed snapshot without input, reject any pre-existing visible event, revalidate manager eligibility through the fixture's load-safe direct-manager GUI carrier, and capture zga_phase2_manager_seed.1 before this contract can become ready.",
   "source": {
-    "profile": "Z:\\b3r108_native_state\\profile",
+    "profile": "Z:\\b3r107_native_state\\profile",
     "relative_save": "save games/autosave.ck3",
-    "absolute_save": "Z:\\b3r108_native_state\\profile\\save games\\autosave.ck3",
-    "bytes": 79528933,
-    "sha256": "63a390a73fbc66c4339b3f3979e77c25ef18289299dd1514f54ef1f8db3d99c8",
-    "last_write_time_utc": "2026-09-05T23:57:08.7598065Z",
-    "last_write_time_ns": 1788652628759806500
+    "absolute_save": "Z:\\b3r107_native_state\\profile\\save games\\autosave.ck3",
+    "bytes": 78149043,
+    "sha256": "4ff4217e4536702b9c516fc6c39a2e4592a0bba87236eb1ec958210599cf42d3",
+    "last_write_time_utc": "2026-09-05T22:23:15.2889893Z",
+    "last_write_time_ns": 1788646995288989300
   },
   "provenance": {
-    "source_run": "Z:\\b3r108",
-    "source_git_commit": "63f3a40bd335492193b1275c819fdc60eb1d8a01",
+    "source_run": "Z:\\b3r107",
+    "source_git_commit": "275ee651564263bec5298959d5d516f307891d54",
     "limitations": [
-      "R108's retained native session proves that CharacterID 29037 was the played manager and that the source file was written under the frozen R108 product, but it does not independently prove which date or event appears when this autosave is reloaded.",
-      "The preceding live session later observed date_raw 53169216 and zg361pp.149. Those facts are provenance only and are not used as the autosave's expected reload date or as permission to drain that event.",
+      "R107's retained native session proves that CharacterID 29037 was the played manager and that the source file was written under the frozen phase2-full-release-r107-275ee65 product, but it does not independently prove which date or event appears when this autosave is reloaded.",
+      "The retained R107 session later attached at date_raw 53157144 and encountered product events including zg361ch.25 and a recurring zg361.1. Those facts are provenance only and are not used as the autosave's expected reload date or as permission to drain either event.",
       "The first paused typed MCP snapshot in the fresh capture is the authoritative source date. The final fixture event must appear at that same date; otherwise the run is RED and no candidate becomes ready.",
       "Any visible event before zga_phase2_manager_seed.1, including ep3_interactions_events.0630, is rejected before gameplay input. The direct route never selects a PIP option and never executes set_player_character.",
       "The fixture does not call product B1, clear existing product state, create characters/titles/relationships or write any product receipt.",
@@ -33,7 +33,7 @@
       "mod/zg361_acceptance.mod",
       "mod/zga_acceptance_fixture.mod"
     ],
-    "source_product_tree_sha256": "367970a68336692e51ba77132bdc274d5aefa564774dcdd222c1a99e3c1af487",
+    "source_product_tree_sha256": "309f14cbd47dae5653171a8b70c0ee834799bec28d48f467e0ec000443709aa2",
     "source_fixture_tree_sha256": null
   },
   "saved_state": {
@@ -52,7 +52,7 @@
   "player_transition_contract": {
     "handoff_mode": "direct_already_player_manager",
     "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-    "activation_surface": "on_game_start_after_lobby_direct_manager",
+    "activation_surface": "load_safe_gui_direct_manager",
     "entry_event_definition_key": "zga_phase2_manager_seed.1",
     "source_character_id": 29037,
     "target_character_id": 29037,
