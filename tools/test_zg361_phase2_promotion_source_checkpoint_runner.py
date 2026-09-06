@@ -1872,6 +1872,80 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
+    def test_befriend_success_interrupt_uses_gentle_rejection(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None,
+        ) -> dict[str, object]:
+            identity: dict[str, object]
+            if character_id is None:
+                identity = {
+                    "status": "unavailable",
+                    "reason": "generic_scope_payload_identity_not_closed",
+                }
+            else:
+                identity = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": identity,
+                },
+            }
+
+        event_key = "befriend_outcome.0002"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53163240,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 25,
+            "date_raw": 53164584,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("scheme", "scheme"),
+                scope("owner", "character", 31210),
+                scope("artifact", "artifact"),
+                scope("target", "character", 32904),
+                scope("scheme_successful", "flag"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_index in enumerate((0, 2, 3))
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53164584, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 25},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
     def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
         class Service:
             def __init__(self) -> None:
