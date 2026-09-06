@@ -3915,6 +3915,34 @@ def _manager_recovery_pp_contract(
     }
 
 
+def _resolve_timeline_interrupt_contract(
+    event_key: str,
+    *,
+    player: int,
+    starting_date: int,
+    stop_at_clean_review_boundary: bool,
+) -> dict[str, object] | None:
+    """Keep reviewed vanilla contracts when manager recovery is active.
+
+    PP fallback contracts are only for generated ``zg361pp`` cards absent
+    from the exact interrupt table.  They must not replace a known vanilla
+    contract after that contract has already been rebound to the manager.
+    """
+
+    contract = KNOWN_TIMELINE_INTERRUPTS.get(event_key)
+    if contract is not None and contract.get("root_character_id") != player:
+        contract = _manager_recovery_contract(
+            contract, player=player, event_key=event_key,
+        )
+    if contract is None and stop_at_clean_review_boundary:
+        contract = _manager_recovery_pp_contract(
+            event_key, player=player, starting_date=starting_date,
+        )
+    if contract is None:
+        return None
+    return _timeline_contract_for_window(contract, starting_date=starting_date)
+
+
 def _contract_date_matches(
     value: object, contract: Mapping[str, object]
 ) -> bool:
@@ -5020,32 +5048,15 @@ def enter_promotion_source_checkpoint_v1(
                 evidence["readiness"] = "paused-real-zg361pp.147"
                 evidence["target_binding"] = event
                 return evidence
-            contract = KNOWN_TIMELINE_INTERRUPTS.get(key)
-            if (
-                contract is not None
-                and contract.get("root_character_id") != player
-            ):
-                contract = _manager_recovery_contract(
-                    contract, player=player, event_key=key,
-                )
-            if stop_at_clean_review_boundary:
-                if (
-                    contract is not None
-                    and contract.get("root_character_id") != player
-                ):
-                    contract = _manager_recovery_contract(
-                        contract, player=player, event_key=key,
-                    )
-                else:
-                    contract = _manager_recovery_pp_contract(
-                        key, player=player, starting_date=timeline_origin_date,
-                    )
+            contract = _resolve_timeline_interrupt_contract(
+                key,
+                player=player,
+                starting_date=timeline_origin_date,
+                stop_at_clean_review_boundary=stop_at_clean_review_boundary,
+            )
             drains = evidence["timeline_interrupt_drains"]
             assert isinstance(drains, list)
             if contract is not None:
-                contract = _timeline_contract_for_window(
-                    contract, starting_date=timeline_origin_date,
-                )
                 occurrence_count = sum(
                     isinstance(row, Mapping)
                     and row.get("event_definition_key") == key

@@ -113,6 +113,40 @@ def _human_tribute_scopes() -> list[dict[str, object]]:
 
 
 class ManagerRecoveryInterruptTests(unittest.TestCase):
+    def test_clean_boundary_recovery_keeps_known_vanilla_contract(self) -> None:
+        contract = production._resolve_timeline_interrupt_contract(
+            "tribute_mission.1002",
+            player=32904,
+            starting_date=53147016,
+            stop_at_clean_review_boundary=True,
+        )
+
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertEqual(contract["root_character_id"], 32904)
+        self.assertTrue(contract["manager_recovery_only"])
+        self.assertEqual(contract["selected_native_option_index"], 3)
+        self.assertEqual(contract["saved_scope_count"], 14)
+
+        pp_fallback = production._resolve_timeline_interrupt_contract(
+            "zg361pp.146",
+            player=32904,
+            starting_date=53147016,
+            stop_at_clean_review_boundary=True,
+        )
+        self.assertIsNotNone(pp_fallback)
+        assert pp_fallback is not None
+        self.assertEqual(pp_fallback["selected_native_option_index"], 0)
+
+        self.assertIsNone(
+            production._resolve_timeline_interrupt_contract(
+                "unreviewed_vanilla.1",
+                player=32904,
+                starting_date=53147016,
+                stop_at_clean_review_boundary=True,
+            )
+        )
+
     def test_nonfounder_culture_notification_selects_other_acknowledgement(
         self,
     ) -> None:
