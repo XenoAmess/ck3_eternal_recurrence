@@ -235,7 +235,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 4)
         self.assertEqual(contract["selected_native_option_index"], 3)
 
-    def test_governor_removal_letter_binds_dynamic_nonplayer_actor(self) -> None:
+    def test_governor_removal_letter_invalidates_scenario_without_click(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
                 "name": name,
@@ -332,6 +332,55 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         player_actor["saved_scopes"][0] = character_scope("actor", 29037)
         self.assertFalse(
             checks_for(player_actor)["scope:actor:unique_third_party"]
+        )
+
+        class NoMutationService:
+            def snapshot(self) -> dict[str, object]:
+                raise AssertionError("scenario-invalidating event must stay paused")
+
+            def select_event_option(self, *_args: object, **_kwargs: object) -> None:
+                raise AssertionError("scenario-invalidating event must not be clicked")
+
+        with self.assertRaises(
+            production.PromotionScenarioInvalidatingInterrupt
+        ) as raised:
+            production._drain_known_timeline_interrupt(
+                NoMutationService(),
+                snapshot=snapshot,
+                event=event,
+                query={"current_event_window_context": context},
+                event_key=event_key,
+                contract=contract,
+                player=29037,
+                connection_generation=9,
+            )
+        invalidation = raised.exception.evidence
+        self.assertEqual(
+            invalidation,
+            {
+                "classification": "scenario-invalidating-interrupt",
+                "handling": "fail-closed-no-selection",
+                "product_result": "NOT_EVALUATED",
+                "product_red": False,
+                "event_definition_key": event_key,
+                "date_raw": 53164992,
+                "event_instance_id": 23,
+                "reason_code": (
+                    "governor_resignation_title_transfer_breaks_manager_roster"
+                ),
+                "reason": (
+                    "the event's only enabled option executes "
+                    "governor_resignation_title_transfer_effect and removes the "
+                    "played manager's governor position/direct-vassal roster"
+                ),
+                "invalidated_precondition": (
+                    "stable_player_manager_governor_position_and_direct_vassal_roster"
+                ),
+                "actor_character_id": 36354,
+                "recipient_character_id": 29037,
+                "identity_checks": checks,
+                "selection_attempted": False,
+            },
         )
 
     def test_new_governorship_notice_binds_dynamic_previous_holder_alias(self) -> None:

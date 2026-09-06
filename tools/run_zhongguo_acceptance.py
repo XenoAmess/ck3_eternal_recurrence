@@ -135,6 +135,7 @@ from zg361_phase2_promotion_source_checkpoint_capture import (
     capture_promotion_source_checkpoint_v2,
 )
 from zg361_phase2_promotion_source_production_entry import (
+    PromotionScenarioInvalidatingInterrupt,
     enter_promotion_source_checkpoint_v1,
 )
 from zg361_phase2_loader_stage import (
@@ -19676,6 +19677,18 @@ def run_cell(
                         promotion_runtime_diagnostic_probe
                     ),
                 )
+            except PromotionScenarioInvalidatingInterrupt as error:
+                promotion_entry.update(
+                    result="SCENARIO_INVALID",
+                    readiness="scenario-invalid-manager-roster-precondition",
+                    product_result="NOT_EVALUATED",
+                    product_red=False,
+                    scenario_invalidating_interrupt=copy.deepcopy(
+                        error.evidence
+                    ),
+                    error_reason=f"{type(error).__name__}: {error}",
+                )
+                raise
             except Exception as error:
                 promotion_entry.update(
                     result="RED", error_reason=f"{type(error).__name__}: {error}"

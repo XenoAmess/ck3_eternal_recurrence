@@ -143,6 +143,23 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
         # not a no-op acknowledgement of a previously completed title change.
+        # Selecting it removes the played manager's governor position and
+        # invalidates the stable manager/direct-vassal roster required by this
+        # acceptance scenario.  Recognize the exact frame, preserve it paused,
+        # and classify the scenario as invalid instead of mutating gameplay or
+        # reporting a product RED.
+        "handling_policy": "scenario-invalidating-fail-closed",
+        "scenario_invalidation_reason_code": (
+            "governor_resignation_title_transfer_breaks_manager_roster"
+        ),
+        "scenario_invalidation_reason": (
+            "the event's only enabled option executes "
+            "governor_resignation_title_transfer_effect and removes the "
+            "played manager's governor position/direct-vassal roster"
+        ),
+        "invalidated_precondition": (
+            "stable_player_manager_governor_position_and_direct_vassal_roster"
+        ),
         # Three generic interaction slots retain their names/type after the
         # referenced characters have gone stale; bind that exact degraded
         # identity shape instead of fabricating character IDs.
@@ -2445,6 +2462,18 @@ class PromotionProductionEntryError(RuntimeError):
     pass
 
 
+class PromotionScenarioInvalidatingInterrupt(PromotionProductionEntryError):
+    """A recognized vanilla modal whose only route invalidates the scenario."""
+
+    def __init__(self, evidence: Mapping[str, object]) -> None:
+        self.evidence = copy.deepcopy(dict(evidence))
+        super().__init__(
+            "promotion scenario invalidated by fail-closed interrupt "
+            f"{self.evidence.get('event_definition_key')!r}: "
+            f"{self.evidence.get('reason_code')!r}"
+        )
+
+
 def _accepted(value: object, step: str) -> dict[str, object]:
     result = copy.deepcopy(dict(value)) if isinstance(value, Mapping) else {}
     status = result.get("status")
@@ -3334,6 +3363,42 @@ def _drain_known_timeline_interrupt(
             f"{diagnostic}"
         )
 
+    if contract.get("handling_policy") == "scenario-invalidating-fail-closed":
+        scopes_value = context.get("saved_scopes")
+        scopes = scopes_value if isinstance(scopes_value, list) else []
+
+        def one_character_id(name: str) -> int | None:
+            ids = {
+                character_id
+                for row_value in scopes
+                if isinstance(row_value, Mapping)
+                and row_value.get("name") == name
+                and (
+                    character_id := _typed_character_id(row_value.get("scope"))
+                )
+                is not None
+            }
+            return next(iter(ids)) if len(ids) == 1 else None
+
+        raise PromotionScenarioInvalidatingInterrupt({
+            "classification": "scenario-invalidating-interrupt",
+            "handling": "fail-closed-no-selection",
+            "product_result": "NOT_EVALUATED",
+            "product_red": False,
+            "event_definition_key": event_key,
+            "date_raw": snapshot.get("date_raw"),
+            "event_instance_id": event.get("event_instance_id"),
+            "reason_code": contract.get("scenario_invalidation_reason_code"),
+            "reason": contract.get("scenario_invalidation_reason"),
+            "invalidated_precondition": contract.get(
+                "invalidated_precondition"
+            ),
+            "actor_character_id": one_character_id("actor"),
+            "recipient_character_id": one_character_id("recipient"),
+            "identity_checks": checks,
+            "selection_attempted": False,
+        })
+
     options_value = context.get("options")
     options = options_value if isinstance(options_value, list) else []
     effective_contract = _option_contract_for_context(options, contract)
@@ -3903,8 +3968,8 @@ def enter_promotion_source_checkpoint_v1(
                     if poll_interval_seconds:
                         sleeper(poll_interval_seconds)
                     continue
-                drains.append(
-                    _drain_known_timeline_interrupt(
+                try:
+                    drained = _drain_known_timeline_interrupt(
                         service,
                         snapshot=snapshot,
                         event=event,
@@ -3914,7 +3979,18 @@ def enter_promotion_source_checkpoint_v1(
                         player=player,
                         connection_generation=generation,
                     )
-                )
+                except PromotionScenarioInvalidatingInterrupt as error:
+                    evidence["result"] = "SCENARIO_INVALID"
+                    evidence["readiness"] = (
+                        "scenario-invalid-manager-roster-precondition"
+                    )
+                    evidence["product_result"] = "NOT_EVALUATED"
+                    evidence["product_red"] = False
+                    evidence["scenario_invalidating_interrupt"] = (
+                        copy.deepcopy(error.evidence)
+                    )
+                    raise
+                drains.append(drained)
                 if key == "zg361.6":
                     selection = drains[-1].get("selection")
                     if not (
@@ -4018,6 +4094,7 @@ __all__ = [
     "POST_PUBLICATION_OBSERVATION_DAYS",
     "PRODUCT_CYCLE_OPPORTUNITIES",
     "PromotionProductionEntryError",
+    "PromotionScenarioInvalidatingInterrupt",
     "PromotionProductionEntryService",
     "enter_promotion_source_checkpoint_v1",
 ]
