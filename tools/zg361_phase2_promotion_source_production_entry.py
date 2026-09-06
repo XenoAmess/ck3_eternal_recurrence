@@ -40,8 +40,15 @@ B1_AUTHORED_ADVANCE_DAYS = 400
 # authored B1 window.  Preserve that bound and add a separate, finite window
 # for the D+2 central pumps and player-visible stage-3 source event.
 POST_PUBLICATION_OBSERVATION_DAYS = 150
+PRODUCT_CYCLE_OPPORTUNITIES = 2
+# R116 proved that the first Central portfolio can finish while a second real
+# player B1 cycle is already active.  A one-cycle absolute cap stopped only 25
+# days into that second cycle.  Keep one canonical absolute deadline, rather
+# than granting time per retained client, but cover two complete finite
+# B1 -> post-publication opportunities from the immutable seed.
 MAX_ADVANCE_DAYS = (
-    B1_AUTHORED_ADVANCE_DAYS + POST_PUBLICATION_OBSERVATION_DAYS
+    PRODUCT_CYCLE_OPPORTUNITIES
+    * (B1_AUTHORED_ADVANCE_DAYS + POST_PUBLICATION_OBSERVATION_DAYS)
 )
 HOURS_PER_DAY = 24
 # Native bridge snapshots publish on a 250 ms heartbeat. A just-submitted
@@ -598,8 +605,8 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
     },
     "zg361.40": {
-        # Product Jingcha mandate at D+161 and again one exact year later
-        # inside the 550-day observation window.  The legal default opens the
+        # Product Jingcha mandate at D+161 and on later exact yearly pulses
+        # inside the finite product observation window.  The legal default opens the
         # activity planner and schedules its hidden compliance deadline 300
         # days later.  Refusal would write manager-governance facts and a
         # next-review KPI penalty, so it is not neutral for this capture
@@ -609,7 +616,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "date_policy": "yearly-pulse-in-observation-window",
         "date_raw_anchor": 53150880,
         "date_period_hours": 8760,
-        "max_occurrences": 2,
+        # A two-cycle 1,100-day window contains the exact D+161, D+526 and
+        # D+891 pulses.  No fourth pulse fits before the absolute deadline.
+        "max_occurrences": 3,
         "root_character_id": 29037,
         "character_scopes": {},
         "boolean_scopes": (),
@@ -3392,6 +3401,7 @@ def enter_promotion_source_checkpoint_v1(
         "timeline_origin_date_raw": timeline_origin_date,
         "absolute_end_date_raw": absolute_end_date,
         "advance_bound": {
+            "cycle_opportunities": PRODUCT_CYCLE_OPPORTUNITIES,
             "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
             "post_publication_observation_days": (
                 POST_PUBLICATION_OBSERVATION_DAYS
@@ -3426,8 +3436,9 @@ def enter_promotion_source_checkpoint_v1(
             )
     if starting_date > absolute_end_date:
         raise PromotionProductionEntryError(
-            "promotion path already exceeded its absolute 550-day product "
-            "observation bound before this retained-client reconnect"
+            "promotion path already exceeded its absolute "
+            f"{MAX_ADVANCE_DAYS}-day product observation bound before this "
+            "retained-client reconnect"
         )
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
@@ -3536,9 +3547,10 @@ def enter_promotion_source_checkpoint_v1(
         date_raw = int(snapshot["date_raw"])
         if date_raw > absolute_end_date:
             raise PromotionProductionEntryError(
-                "promotion path exceeded its 550-day product observation "
-                "bound (400-day authored B1 window plus 150-day "
-                "post-publication window)"
+                "promotion path exceeded its "
+                f"{MAX_ADVANCE_DAYS}-day product observation bound "
+                f"({PRODUCT_CYCLE_OPPORTUNITIES} complete 400-day authored "
+                "B1 plus 150-day post-publication opportunities)"
             )
         if zg361_6_wait_state is not None:
             active_event = snapshot.get("active_event")
@@ -3608,9 +3620,10 @@ def enter_promotion_source_checkpoint_v1(
             date_raw = int(snapshot["date_raw"])
             if date_raw > absolute_end_date:
                 raise PromotionProductionEntryError(
-                    "promotion path exceeded its 550-day product observation "
-                    "bound (400-day authored B1 window plus 150-day "
-                    "post-publication window)"
+                    "promotion path exceeded its "
+                    f"{MAX_ADVANCE_DAYS}-day product observation bound "
+                    f"({PRODUCT_CYCLE_OPPORTUNITIES} complete 400-day "
+                    "authored B1 plus 150-day post-publication opportunities)"
                 )
             if snapshot.get("paused") is not True:
                 if poll_interval_seconds:
@@ -3936,6 +3949,7 @@ __all__ = [
     "MAX_PRE_SUBMISSION_REBIND_ATTEMPTS",
     "PAUSED_PROGRESS_SETTLE_SECONDS",
     "POST_PUBLICATION_OBSERVATION_DAYS",
+    "PRODUCT_CYCLE_OPPORTUNITIES",
     "PromotionProductionEntryError",
     "PromotionProductionEntryService",
     "enter_promotion_source_checkpoint_v1",

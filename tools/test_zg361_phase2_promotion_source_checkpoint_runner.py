@@ -1078,12 +1078,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(service.steps, ["set-speed-5", "resume-map"])
         self.assertEqual(service.selections, [])
 
-    def test_product_timeline_bound_is_anchored_to_canonical_seed(self) -> None:
+    def test_product_timeline_bound_covers_two_cycles_from_canonical_seed(self) -> None:
         reconnect_date = production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 500 * 24
         contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS["zg361.6"],
             starting_date=production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
         )
+        self.assertEqual(production.PRODUCT_CYCLE_OPPORTUNITIES, 2)
+        self.assertEqual(production.MAX_ADVANCE_DAYS, 1100)
         self.assertEqual(
             contract["date_raw_range"],
             (
@@ -1093,6 +1095,30 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             ),
         )
         self.assertNotEqual(contract["date_raw_range"][0], reconnect_date)
+
+        # R116's second player B1 became visible at D+525.  The old D+550
+        # deadline stopped only 25 days into that authored cycle.  The fixed
+        # canonical deadline covers its complete B1 plus post-publication
+        # opportunity without deriving any new budget from reconnect_date.
+        r116_second_cycle_active_date = 53159616
+        old_single_cycle_end = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+            + (
+                production.B1_AUTHORED_ADVANCE_DAYS
+                + production.POST_PUBLICATION_OBSERVATION_DAYS
+            )
+            * production.HOURS_PER_DAY
+        )
+        self.assertLess(r116_second_cycle_active_date, old_single_cycle_end)
+        self.assertGreaterEqual(
+            contract["date_raw_range"][1],
+            r116_second_cycle_active_date
+            + (
+                production.B1_AUTHORED_ADVANCE_DAYS
+                + production.POST_PUBLICATION_OBSERVATION_DAYS
+            )
+            * production.HOURS_PER_DAY,
+        )
 
         service = SimpleNamespace(snapshot=lambda: {
             "map_ready": True,
@@ -2370,7 +2396,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(checks["saved_scope_names_exact"])
 
         out_of_window = copy.deepcopy(context)
-        out_of_window["date_raw"] = 53160240
+        out_of_window["date_raw"] = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+            + (production.MAX_ADVANCE_DAYS + 1) * production.HOURS_PER_DAY
+        )
         checks = checks_for(out_of_window)
         self.assertFalse(checks["context_date_raw"])
 
@@ -2778,9 +2807,12 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_native_option_index"], 3)
 
         outside = copy.deepcopy(context)
-        outside["date_raw"] = 53160240
+        outside["date_raw"] = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+            + (production.MAX_ADVANCE_DAYS + 1) * production.HOURS_PER_DAY
+        )
         outside_snapshot = copy.deepcopy(snapshot)
-        outside_snapshot["date_raw"] = 53160240
+        outside_snapshot["date_raw"] = outside["date_raw"]
         checks = production._known_interrupt_checks(
             snapshot=outside_snapshot,
             event=event,
