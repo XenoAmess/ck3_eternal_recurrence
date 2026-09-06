@@ -161,6 +161,11 @@ The current maximum payload is 1 MiB. Frame types are `hello`, `heartbeat`,
 `state_snapshot`, `execute_step`, `command_result`, `ping`, and `pong`.
 `hello.capabilities` is authoritative. Non-matching executables advertise only
 bridge identity, heartbeat, and ping; they never expose game reads/actions.
+`hello.connection_generation` is the worker-owned positive generation for the
+current pipe connection. Clients must adopt that value instead of counting
+hello frames locally, because a new client can reconnect to a retained CK3
+process after the worker has already advanced beyond generation one. Python
+keeps the local-count fallback only for older protocol-v1 DLLs that omit it.
 
 Exact-build read-only capability
 `game.command.query-zhongguo-case-snapshot-v1` accepts the fixed native step

@@ -33,7 +33,63 @@ class NativeAdapterProtocolCompatibilityTests(unittest.TestCase):
             ["bridge.identity", "bridge.heartbeat"],
         )
         self.assertTrue(capabilities["diagnostics"]["connected"])
+        self.assertEqual(
+            capabilities["diagnostics"]["connection_generation"], 1
+        )
         self.assertEqual(capabilities["action_steps"], [])
+
+    def test_native_hello_generation_survives_new_client_reconnect(self) -> None:
+        first_client = NativeProtocolState(r"\\.\pipe\retained-fixture")
+        second_client = NativeProtocolState(r"\\.\pipe\retained-fixture")
+
+        first_client.ingest(
+            {
+                "type": "hello",
+                "protocol_version": 1,
+                "bridge_version": "0.1.0",
+                "pid": 101,
+                "session_generation": 0,
+                "connection_generation": 1,
+                "capabilities": ["bridge.identity"],
+            }
+        )
+        second_client.ingest(
+            {
+                "type": "hello",
+                "protocol_version": 1,
+                "bridge_version": "0.1.0",
+                "pid": 101,
+                "session_generation": 0,
+                "connection_generation": 2,
+                "capabilities": ["bridge.identity"],
+            }
+        )
+
+        self.assertEqual(
+            first_client.diagnostics()["connection_generation"], 1
+        )
+        self.assertEqual(
+            second_client.diagnostics()["connection_generation"], 2
+        )
+
+    def test_malformed_native_hello_generation_is_rejected(self) -> None:
+        for value in (True, 0, -1, 2**64, "2"):
+            with self.subTest(value=value):
+                state = NativeProtocolState(r"\\.\pipe\bad-generation")
+                with self.assertRaisesRegex(
+                    ValueError, "native bridge hello is malformed"
+                ):
+                    state.ingest(
+                        {
+                            "type": "hello",
+                            "protocol_version": 1,
+                            "bridge_version": "0.1.0",
+                            "pid": 101,
+                            "session_generation": 0,
+                            "connection_generation": value,
+                            "capabilities": ["bridge.identity"],
+                        }
+                    )
 
     def test_adapter_metadata_extends_v1_without_changing_semantics(self) -> None:
         state = NativeProtocolState(r"\\.\pipe\adapter-fixture")

@@ -1559,17 +1559,21 @@ bool TestSourceContract(int argc, char **argv) {
   const auto iat_install = bridge.find(
       "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(");
   const auto connected_session = bridge.find("void RunConnectedSession(");
+  const auto hello_connection_generation = bridge.find(
+      "\\\"connection_generation\\\":");
   const auto hello_publish = bridge.find(
-      "WriteFrame(pipe, HelloFrame(game))", connected_session);
+      "HelloFrame(game, state.connection_generation)", connected_session);
   const auto readiness_observer = bridge.find(
       "&mailbox_lifetime", hello_publish);
   if (lifetime_constructor == std::string::npos ||
       maybe_install == std::string::npos || iat_install == std::string::npos ||
       connected_session == std::string::npos ||
+      hello_connection_generation == std::string::npos ||
       hello_publish == std::string::npos ||
       readiness_observer == std::string::npos ||
       !(lifetime_constructor < maybe_install && maybe_install < iat_install) ||
-      !(connected_session < hello_publish &&
+      !(hello_connection_generation < connected_session &&
+        connected_session < hello_publish &&
         hello_publish < readiness_observer)) {
     std::fprintf(stderr, "mailbox lifetime ordering contract failed\n");
     return false;

@@ -278,7 +278,8 @@ struct SnapshotPublishDiagnostics {
   std::size_t payload_bytes = 0;
 };
 
-std::string HelloFrame(const xar::game::GameAdapter &game) {
+std::string HelloFrame(const xar::game::GameAdapter &game,
+                       std::uint64_t connection_generation) {
   const auto &descriptor = game.descriptor();
   std::string result =
       "{\"type\":\"hello\",\"protocol_version\":1,\"bridge_version\":\"";
@@ -286,7 +287,9 @@ std::string HelloFrame(const xar::game::GameAdapter &game) {
   result += "\",\"pid\":";
   result += Number(GetCurrentProcessId());
   result +=
-      ",\"session_generation\":0,\"architecture\":\"x86_64-windows-msvc\","
+      ",\"session_generation\":0,\"connection_generation\":";
+  result += Number(connection_generation);
+  result += ",\"architecture\":\"x86_64-windows-msvc\","
       "\"expected_ck3_version\":";
   AppendJsonString(result, descriptor.game_version);
   result += ",\"expected_ck3_sha256\":";
@@ -4703,7 +4706,8 @@ void RunConnectedSession(
   ++state.connection_generation;
   state.checkpoint_submission.save_name =
       game.descriptor().checkpoint_save_name;
-  if (!xar::bridge::WriteFrame(pipe, HelloFrame(game))) {
+  if (!xar::bridge::WriteFrame(
+          pipe, HelloFrame(game, state.connection_generation))) {
     return;
   }
 

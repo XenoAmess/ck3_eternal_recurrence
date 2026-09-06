@@ -612,15 +612,43 @@ class NativeProtocolState:
             if frame_type == "hello":
                 pid = frame.get("pid")
                 capabilities = frame.get("capabilities")
+                native_connection_generation = frame.get(
+                    "connection_generation"
+                )
                 if (
                     isinstance(pid, bool)
                     or not isinstance(pid, int)
                     or pid <= 0
                     or not isinstance(capabilities, list)
+                    or (
+                        native_connection_generation is not None
+                        and (
+                            isinstance(native_connection_generation, bool)
+                            or not isinstance(
+                                native_connection_generation, int
+                            )
+                            or not 1
+                            <= native_connection_generation
+                            <= 2**64 - 1
+                        )
+                    )
                 ):
                     raise ValueError("native bridge hello is malformed")
                 self._connected = True
-                self._connection_generation += 1
+                if native_connection_generation is None:
+                    # Protocol-v1 DLLs predating the native generation field
+                    # remain usable.  Their process-local reconnect identity
+                    # can only be approximated by counting hello frames seen
+                    # by this Python state object.
+                    self._connection_generation += 1
+                else:
+                    # The worker owns the authoritative generation counter.
+                    # A newly constructed client may be reconnecting to a
+                    # retained CK3 process and therefore must not restart it
+                    # from one locally.
+                    self._connection_generation = (
+                        native_connection_generation
+                    )
                 self._hello = dict(frame)
                 self._last_heartbeat = None
                 self._last_pong = None

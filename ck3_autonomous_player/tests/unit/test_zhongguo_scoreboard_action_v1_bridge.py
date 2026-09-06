@@ -217,6 +217,7 @@ class ZhongguoScoreboardActionV1ServiceTests(unittest.TestCase):
                 "bridge_version": ZHONGGUO_SCOREBOARD_STATE_V1_BRIDGE_VERSION,
                 "pid": 6868,
                 "session_generation": 0,
+                "connection_generation": CONNECTION_GENERATION,
                 "game_version": ZHONGGUO_SCOREBOARD_STATE_V1_GAME_VERSION,
                 "expected_ck3_version": (
                     ZHONGGUO_SCOREBOARD_STATE_V1_GAME_VERSION
@@ -308,6 +309,9 @@ class ZhongguoScoreboardActionV1ServiceTests(unittest.TestCase):
         )
         self.assertEqual(
             sent["expected_public_revision"], snapshot["revision"]
+        )
+        self.assertEqual(
+            sent["expected_connection_generation"], CONNECTION_GENERATION
         )
         self.assertFalse(result["accepted"])
         capabilities = driver.capabilities()
