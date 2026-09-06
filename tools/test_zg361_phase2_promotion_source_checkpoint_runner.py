@@ -2685,8 +2685,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             extended_cycle_names,
             extended_later_cycle_names,
             retained_seed_pending_names,
+            watchdog_recovery_names,
         ) = contract["saved_scope_name_sets"]
         character_names = {
+            "zg361_b1_calibration_watchdog_owner": 29037,
             "zg361_b1_bank_ticket_owner": 32904,
             "zg361_b1_ticket_owner": 29037,
             "zg361_b1_oversight_ticket_owner": 29037,
@@ -2748,6 +2750,22 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         retained_seed_pending_checks = checks_for(retained_seed_pending_names)
         self.assertTrue(
             all(retained_seed_pending_checks.values()), retained_seed_pending_checks
+        )
+        watchdog_recovery_checks = checks_for(watchdog_recovery_names)
+        self.assertTrue(
+            all(watchdog_recovery_checks.values()), watchdog_recovery_checks
+        )
+        self.assertIn(
+            "scope:zg361_b1_calibration_watchdog_owner:optional",
+            watchdog_recovery_checks,
+        )
+        self.assertIn(
+            "scope:zg361_b1_calibration_watchdog_cycle:optional_type",
+            watchdog_recovery_checks,
+        )
+        self.assertIn(
+            "scope:zg361_b1_calibration_watchdog_case:optional_type",
+            watchdog_recovery_checks,
         )
         self.assertNotIn(
             "scope:zg361_b1_bank_ticket_owner:unique_third_party",

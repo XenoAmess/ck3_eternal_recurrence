@@ -1980,19 +1980,22 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # calls were still alive. A later annual summary retained that same
         # extended stack after the bank tuple expired. R118 also exposed the
         # pending-continuation stack after B2/notice expiry while retaining the
-        # immutable seed-player scope. Bind all five exact observed name sets;
-        # the
+        # immutable seed-player scope. R181 observed the same summary after the
+        # D+340 calibration watchdog fired; that stack retains the watchdog's
+        # exact manager/cycle/case tuple while the older generic ticket has
+        # expired. Bind all six exact observed name sets; the
         # summary itself consumes none of those inherited outer tuples.
         "date_raw": 53156448,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
-            "zg361_b1_ticket_owner": 29037,
             "zg361_b1_oversight_ticket_owner": 29037,
             "zg361_b1_reopen_ticket_owner": 29037,
         },
         "optional_character_scopes": {
             "zga_phase2_seed_player": 29037,
+            "zg361_b1_ticket_owner": 29037,
+            "zg361_b1_calibration_watchdog_owner": 29037,
         },
         "unique_character_scope_excludes": {
             "zg361_b1_reopen_ticket_subject": (29037,),
@@ -2000,9 +2003,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "scope_types": {
             name: "value"
             for name in (
-                "zg361_b1_ticket_cycle",
-                "zg361_b1_ticket_case",
-                "zg361_b1_ticket_state",
                 "zg361_b1_oversight_ticket_cycle",
                 "zg361_b1_oversight_ticket_case",
                 "zg361_b1_oversight_ticket_state",
@@ -2019,6 +2019,13 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_n_325",
                 "zg361_n_elim",
             )
+        },
+        "optional_scope_types": {
+            "zg361_b1_ticket_cycle": "value",
+            "zg361_b1_ticket_case": "value",
+            "zg361_b1_ticket_state": "value",
+            "zg361_b1_calibration_watchdog_cycle": "value",
+            "zg361_b1_calibration_watchdog_case": "value",
         },
         "saved_scope_name_sets": (
             (
@@ -2188,6 +2195,41 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "zg361_n_35",
                 "zg361_n_325",
                 "zg361_n_elim",
+            ),
+            (
+                "zg361_b1_calibration_watchdog_owner",
+                "zg361_b1_calibration_watchdog_cycle",
+                "zg361_b1_calibration_watchdog_case",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_reopen_ticket_subject",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_b1_reopen_ticket_cycle",
+                "zg361_b1_reopen_ticket_case",
+                "zg361_b1_reopen_ticket_state",
+                "zg361_b1_reopen_ticket_object",
+                "zg361_b1_reopen_ticket_route",
+                "zg361_b1_reopen_ticket_hash",
+                "zg361_b1_reopen_ticket_reward_hash",
+                "zg361_b1_reopen_ticket_book_version",
+                "zg361_b2_pip_review_candidate",
+                "zg361_b2_support_mentor",
+                "zg361_b2_pip_deadline_owner",
+                "zg361_b2_pip_deadline_subject",
+                "zg361_b2_pip_deadline_cycle",
+                "zg361_b2_pip_deadline_case",
+                "zg361_b2_pip_deadline_state",
+                "zg361_n_375",
+                "zg361_n_35",
+                "zg361_n_325",
+                "zg361_n_elim",
+                "zg361_notice_deadline_owner",
+                "zg361_notice_deadline_subject",
+                "zg361_notice_deadline_cycle",
+                "zg361_notice_deadline_case",
+                "zg361_notice_deadline_state",
             ),
         ),
         "boolean_scopes": (),
