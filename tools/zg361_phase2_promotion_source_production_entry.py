@@ -54,10 +54,12 @@ M147 = "zg361pp.147"
 # grant the same CK3 process another full authored observation window.
 PRODUCT_TIMELINE_ORIGIN_DATE_RAW = 53147016
 B1_AUTHORED_ADVANCE_DAYS = 400
-# R54 first proved that a real player publication can occur at the end of the
-# authored B1 window.  Preserve that bound and add a separate, finite window
-# for the D+2 central pumps and player-visible stage-3 source event.
-POST_PUBLICATION_OBSERVATION_DAYS = 150
+# R182 proved that the post-publication path is not a short D+2 handoff.  The
+# fixed acceptance route must naturally cross Compensation L's D+365 deferred
+# journal and AF's D+365 cliff plus eleven D+30 cadence ticks before Central
+# can reach the player-visible PP source event.  Keep one finite tail from the
+# canonical seed; do not renew it on retained-client reconnects.
+POST_PUBLICATION_OBSERVATION_DAYS = 1100
 PRODUCT_CYCLE_OPPORTUNITIES = 2
 # R116 proved that the first Central portfolio can finish while a second real
 # player B1 cycle is already active.  A one-cycle absolute cap stopped only 25
@@ -65,8 +67,8 @@ PRODUCT_CYCLE_OPPORTUNITIES = 2
 # than granting time per retained client, but cover two complete finite
 # B1 -> post-publication opportunities from the immutable seed.
 MAX_ADVANCE_DAYS = (
-    PRODUCT_CYCLE_OPPORTUNITIES
-    * (B1_AUTHORED_ADVANCE_DAYS + POST_PUBLICATION_OBSERVATION_DAYS)
+    PRODUCT_CYCLE_OPPORTUNITIES * B1_AUTHORED_ADVANCE_DAYS
+    + POST_PUBLICATION_OBSERVATION_DAYS
 )
 HOURS_PER_DAY = 24
 # Native bridge snapshots publish on a 250 ms heartbeat. A just-submitted
@@ -4711,8 +4713,10 @@ def enter_promotion_source_checkpoint_v1(
             raise PromotionProductionEntryError(
                 "promotion path exceeded its "
                 f"{MAX_ADVANCE_DAYS}-day product observation bound "
-                f"({PRODUCT_CYCLE_OPPORTUNITIES} complete 400-day authored "
-                "B1 plus 150-day post-publication opportunities)"
+                f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
+                f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 opportunities "
+                f"plus one {POST_PUBLICATION_OBSERVATION_DAYS}-day "
+                "post-publication critical-path tail)"
             )
         if zg361_6_wait_state is not None:
             active_event = snapshot.get("active_event")
@@ -4784,8 +4788,11 @@ def enter_promotion_source_checkpoint_v1(
                 raise PromotionProductionEntryError(
                     "promotion path exceeded its "
                     f"{MAX_ADVANCE_DAYS}-day product observation bound "
-                    f"({PRODUCT_CYCLE_OPPORTUNITIES} complete 400-day "
-                    "authored B1 plus 150-day post-publication opportunities)"
+                    f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
+                    f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
+                    f"opportunities plus one "
+                    f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
+                    "post-publication critical-path tail)"
                 )
             if snapshot.get("paused") is not True:
                 if poll_interval_seconds:

@@ -1408,7 +1408,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             starting_date=production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
         )
         self.assertEqual(production.PRODUCT_CYCLE_OPPORTUNITIES, 2)
-        self.assertEqual(production.MAX_ADVANCE_DAYS, 1100)
+        self.assertEqual(production.POST_PUBLICATION_OBSERVATION_DAYS, 1100)
+        self.assertEqual(production.MAX_ADVANCE_DAYS, 1900)
         self.assertEqual(
             contract["date_raw_range"],
             (
@@ -1419,28 +1420,27 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertNotEqual(contract["date_raw_range"][0], reconnect_date)
 
-        # R116's second player B1 became visible at D+525.  The old D+550
-        # deadline stopped only 25 days into that authored cycle.  The fixed
-        # canonical deadline covers its complete B1 plus post-publication
-        # opportunity without deriving any new budget from reconnect_date.
+        # R116's second player B1 became visible at D+525.  The canonical
+        # deadline covers that complete authored cycle without deriving any
+        # new budget from reconnect_date.
         r116_second_cycle_active_date = 53159616
-        old_single_cycle_end = (
-            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
-            + (
-                production.B1_AUTHORED_ADVANCE_DAYS
-                + production.POST_PUBLICATION_OBSERVATION_DAYS
-            )
-            * production.HOURS_PER_DAY
-        )
-        self.assertLess(r116_second_cycle_active_date, old_single_cycle_end)
         self.assertGreaterEqual(
             contract["date_raw_range"][1],
             r116_second_cycle_active_date
-            + (
-                production.B1_AUTHORED_ADVANCE_DAYS
-                + production.POST_PUBLICATION_OBSERVATION_DAYS
-            )
+            + production.B1_AUTHORED_ADVANCE_DAYS
             * production.HOURS_PER_DAY,
+        )
+
+        # R182 reached L stage 4 at this exact frame.  Its authored D+365
+        # settlement fell 34 days beyond the former D+1100 cap.  The new cap
+        # covers that deadline and the later AF D+365 + eleven D+30 cadence
+        # critical path, with a finite 60-day event/pump margin.
+        r182_l_stage4_open_date = 53165472
+        fixed_post_stage_tail_days = 365 + 365 + 11 * 30 + 60
+        self.assertGreaterEqual(
+            contract["date_raw_range"][1],
+            r182_l_stage4_open_date
+            + fixed_post_stage_tail_days * production.HOURS_PER_DAY,
         )
 
         service = SimpleNamespace(snapshot=lambda: {
