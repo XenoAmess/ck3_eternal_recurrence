@@ -39,6 +39,9 @@ from zg361_phase2_promotion_manager_death_contracts import (
 from zg361_phase2_promotion_manager_tgp_petition_contracts import (
     MANAGER_TGP_PETITION_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_manager_tgp_interaction_contracts import (
+    MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -495,51 +498,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
-        "max_occurrences": 1,
-    },
-    "tgp_interaction_event.0015": {
-        # CK3 1.19.0.6 notification sent to a military governor after another
-        # governor has been ordered into the recipient's wars. The interaction
-        # has already added the joining governor before this letter opens; the
-        # event immediate and sole option only display custom tooltips and add
-        # no further gameplay mutation. Bind the complete seven-scope frame
-        # before acknowledging the only authored route.
-        "date_raw": 53156904,
-        "date_policy": "product-observation-window",
-        "root_character_id": 29037,
-        "character_scopes": {
-            "recipient": 29037,
-            "governor_at_war": 29037,
-        },
-        "unique_character_scope_excludes": {
-            "actor": (29037,),
-            "secondary_recipient": (29037,),
-            "governor_joining": (29037,),
-        },
-        "character_scope_matches_any": {
-            "secondary_recipient": ("governor_joining",),
-            "governor_joining": ("secondary_recipient",),
-        },
-        "unavailable_character_scopes": (
-            "secondary_actor",
-            "intermediary",
-        ),
-        "scope_types": {},
-        "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "actor",
-            "recipient",
-            "secondary_actor",
-            "secondary_recipient",
-            "intermediary",
-            "governor_at_war",
-            "governor_joining",
-        ),),
-        "saved_scope_count": 7,
-        "option_count": 1,
-        "native_option_indices": (0,),
-        "selected_option_number": 1,
-        "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
     "stress_threshold.2202": {
@@ -3160,6 +3118,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_IMPERIAL_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_HEALTH_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_DEATH_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_PETITION_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):
