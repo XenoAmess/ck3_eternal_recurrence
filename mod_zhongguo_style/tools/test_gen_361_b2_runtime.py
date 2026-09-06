@@ -342,6 +342,12 @@ class B2CK3RuntimeTests(unittest.TestCase):
         # The event body states what happened. Route-specific action and cost
         # belong to the option that actually executes them.
         self.assertNotIn("这里另行决定", rows["zg361b2.50.desc"])
+        self.assertEqual(rows["zg361b2.50.t"], "申诉驳回后的最后举证")
+        self.assertIn("私下沟通与正式申诉也已用尽", rows["zg361b2.50.desc"])
+        self.assertIn("任何质疑都必须绑定下列冻结记录", rows["zg361b2.50.desc"])
+        self.assertNotIn("复核已经驳回本次申诉", rows["zg361b2.50.desc"])
+        self.assertIn("公开证据包", rows["zg361b2.50.a"])
+        self.assertIn("匿名提交受保护报告", rows["zg361b2.50.b"])
         self.assertNotIn("你可以消耗", rows["zg361b2.130.desc"])
         self.assertNotIn("提出异议会暂停", rows["zg361b2.160.desc"])
         self.assertNotIn("若本案采用", rows["zg361b2.40.desc"])
@@ -491,7 +497,8 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "zg361_result_cohort_n_frozen",
         ):
             self.assertIn(field, self.loc_zh)
-        self.assertIn("复核已经驳回本次申诉", self.loc_zh)
+        self.assertIn("私下沟通与正式申诉也已用尽", self.loc_zh)
+        self.assertNotIn("复核已经驳回本次申诉", self.loc_zh)
 
     def test_separate_case_requires_and_displays_exact_new_low_result(self) -> None:
         freeze = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")

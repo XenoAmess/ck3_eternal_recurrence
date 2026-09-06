@@ -1415,8 +1415,8 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         title_body_pairs = [
             ("zg361pp.9100.t", "zg361pp.9100.desc"),
             ("zg361pp.5151.t", "zg361pp.5151.desc"),
-            ("zg361pp.166.t", "zg361pp.5166.desc"),
-            ("zg361pp.190.t", "zg361pp.5190.desc"),
+            ("zg361pp.5166.t", "zg361pp.5166.desc"),
+            ("zg361pp.5190.t", "zg361pp.5190.desc"),
             *((f"zg361pp.{mid}.t", f"zg361pp.{mid}.desc") for mid in range(146, 192)),
             *((f"zg361pp.{mid}.t", f"zg361pp.{mid}.desc") for mid in range(9001, 9005)),
         ]
@@ -1425,6 +1425,18 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
 
         self.assertIn("送达回执与申诉时钟已经进入案卷", loc["zg361pp.151.desc"])
         self.assertIn("候选本人已经选择继续参评", loc["zg361pp.166.desc"])
+        self.assertEqual(
+            loc["zg361pp.5166.t"], "晋升包：请本人决定是否继续参评"
+        )
+        self.assertEqual(loc["zg361pp.5190.t"], "调任案卷：是否附上本人陈述")
+        self.assertNotEqual(loc["zg361pp.166.t"], loc["zg361pp.5166.t"])
+        self.assertNotEqual(loc["zg361pp.190.t"], loc["zg361pp.5190.t"])
+        self.assertIn(
+            "title = zg361pp.5166.t", effect_block(self.events, "zg361pp.5166")
+        )
+        self.assertIn(
+            "title = zg361pp.5190.t", effect_block(self.events, "zg361pp.5190")
+        )
         self.assertIn("披露回应已经进入案卷", loc["zg361pp.190.desc"])
         self.assertIn("撤回权只属于", loc["zg361pp.5166.desc"])
         self.assertIn("本人陈述尚未附卷", loc["zg361pp.5190.desc"])

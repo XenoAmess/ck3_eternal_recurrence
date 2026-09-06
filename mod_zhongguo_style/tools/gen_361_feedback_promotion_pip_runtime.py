@@ -3415,7 +3415,9 @@ def render_subject_response_event(mechanism: MechanismSpec) -> str:
 \t}'''
     elif mechanism.mechanism_id in {166, 190}:
         # The manager event and the subject-response event freeze different
-        # saved-scope families; sharing their body would render empty names.
+        # saved-scope families and ask different questions.  Sharing either
+        # the title or body would misstate who is deciding what.
+        title = f"zg361pp.{event_id}.t"
         desc = f"zg361pp.{event_id}.desc"
     return f'''# {mechanism.mechanism_id:03d}: the assessed official, never the manager,
 # owns this response. AI subjects use the same effect silently at the queue.
@@ -4165,14 +4167,18 @@ def localization_rows(language: str) -> list[str]:
     if chinese:
         rows.extend(
             (
+                ' zg361pp.5166.t:0 "晋升包：请本人决定是否继续参评"',
                 " zg361pp.5166.desc:0 \"晋升包尚未进入预审，撤回权只属于[zg361_pp_subject_prompt_subject.GetShortUIName]；[zg361_pp_subject_prompt_owner.GetShortUIName]只能接收本人回执，不能代写意愿。\"",
+                ' zg361pp.5190.t:0 "调任案卷：是否附上本人陈述"',
                 " zg361pp.5190.desc:0 \"调任案卷已经锁定接收上司与披露边界。[zg361_pp_subject_prompt_subject.GetShortUIName]的本人陈述尚未附卷；[zg361_pp_subject_prompt_owner.GetShortUIName]无权代写或扩大披露。\"",
             )
         )
     else:
         rows.extend(
             (
+                ' zg361pp.5166.t:0 "Promotion Packet: Decide Whether to Continue"',
                 " zg361pp.5166.desc:0 \"The promotion packet has not entered prescreen, and the right to withdraw belongs only to [zg361_pp_subject_prompt_subject.GetShortUIName]; [zg361_pp_subject_prompt_owner.GetShortUIName] may receive the subject's receipt but cannot author the subject's intent.\"",
+                ' zg361pp.5190.t:0 "Transfer File: Attach a Personal Statement?"',
                 " zg361pp.5190.desc:0 \"The transfer file has fixed the receiving manager and disclosure boundary. [zg361_pp_subject_prompt_subject.GetShortUIName]'s personal statement is not yet attached; [zg361_pp_subject_prompt_owner.GetShortUIName] may neither author it nor broaden disclosure.\"",
             )
         )
