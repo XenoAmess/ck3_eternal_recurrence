@@ -45,7 +45,11 @@ SHA-256，并完整声明：
 - continue/surrender 的保守 utility interval 与 hard-budget breaches。
 
 当前仓库没有生产该证书的 provider。战分和战争时长只是必须 hash-bind 的模型输入，
-不是替代证书的投降阈值。
+不是替代证书的投降阈值。2026-09-06 的施工审计进一步确认：当前只有 strict consumer，
+没有 campaign-level production producer；v3 hypothetical combat fixture 与 100,000 次
+research-only fixed-contact 输出都明确不可用于 planner。因而本项暂不新增 schema wrapper，
+生产入口与重开条件见
+[g2-campaign-provider-go-no-go-2026-09-06.md](g2-campaign-provider-go-no-go-2026-09-06.md)。
 
 ### Owner budget profile
 
@@ -114,7 +118,8 @@ action-bound loss provider 时，这三项继续为 false。新核心没有 `300
   paused/live shape evidence；passive callsite postprocessor 已有静态 intake，可在 GREEN、
   两处 return 稳定相等且 manifest/source/session identity 全匹配时复用现有 truce v1，
   但当前没有该 GREEN live artifact，因此本项仍 unavailable；
-- `raiktor-campaign-dominance-certificate-provider-v1` unavailable；
+- `raiktor-campaign-dominance-certificate-provider-v1` 经施工审计为 NO-GO：当前没有 production
+  producer，不实现 synthetic/external JSON wrapper，certificate 继续 unavailable；
 - `raiktor-owner-budget-profile-provider-v1` 实现 static-ready，但无 owner-approved source，
   当前 profile instance unavailable；
 - `raiktor-white-peace-comparison-provider-v1` 实现 static-ready，但 terms/utility/campaign/owner
@@ -132,10 +137,12 @@ automatic_surrender_ready = false
 GEN-034 = unresolved
 ```
 
-后续最小路径是先补上述只读 provider、剩余 aggregate public wire，并完成 truce
-`evaluated_days` 的 paused/live shape probe，再把静态 recommendation 接入 typed
-termination submit gate；最后在一次 CK3 启动里完成双查询、唯一 submit、六域
-postcondition、postwar checkpoint。不得用 OCR 或重复跑局替代缺失 provider。
+后续最小路径不是先空造 campaign provider，而是先取得它所要求的 production producer：
+planner-usable encounter forecast、同帧 campaign state/finance/ETA 和 owner-approved valuation。
+与此同时只推进已有明确生产入口的剩余 aggregate/live 工作；输入闭合后再把静态
+recommendation 接入 typed termination submit gate。最后在一次 CK3 启动里完成双查询、
+唯一 submit、六域 postcondition、postwar checkpoint。不得用 OCR、测试 fixture 或重复跑局
+替代缺失 producer。
 
 ## 离线验收
 
