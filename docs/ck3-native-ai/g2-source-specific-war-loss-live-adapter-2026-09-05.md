@@ -88,6 +88,23 @@ already-running exclusive Phase2 CK3 process. This command neither started,
 attached to nor terminated that process; it is occupancy evidence, not G2
 live evidence.
 
+### 2026-09-06 current-main revalidation
+
+The same `--verify-only` command was rerun from `master@74a2cb2` after the
+Phase2 copy-audit merge. It again returned
+`READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`; every manifest-pinned source,
+runner, DLL, injector, capture executable, game executable and bookmark hash
+matched. The before/after process inventories were byte-for-byte equal. No
+CK3 process was started, attached, focused, injected into or terminated.
+
+The fresh receipt is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-source-live-adapter-static-20260906\preflight-current-master-r1.json`,
+6,691 bytes, SHA-256
+`59392C6E7ED3612B34BEAD6DD9C145D61A261747610831F2D99EC29211BC6F38`.
+This only proves that the already frozen live command remains executable from
+the current integration head. It does not promote source-specific loss,
+comparison, decision, action or `GEN-034` readiness.
+
 After the coordinator grants an exclusive CK3 slot, the concrete default-OFF
 command is:
 
