@@ -539,8 +539,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "max_occurrences": 1,
     },
     "tribute_mission.1005": {
-        # Follow-up reward decision after R138's strict rejection of the
-        # human tribute. Native option 4 (monk) is hidden in this frame.
+        # Reward decision after either a human-tribute route or the direct
+        # non-human tribute route. Native option 4 (monk) is hidden in the
+        # reviewed frames.
         # Options 0-3 spend player resources or install stronger rewards;
         # option 6 rejects the entire mission and adds a -50 opinion change.
         # Native option 5 is the least disruptive valid completion: it grants
@@ -623,6 +624,37 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "decided_on_treasury_reward",
             ),
         ),
+        # R155 reached .1005 directly from a non-human tribute route.  The
+        # source only creates human_tribute/concubine_character for the
+        # concubine/eunuch paths, so retain the stronger alias checks for the
+        # two reviewed human shapes above and bind the direct path through an
+        # exact scope-name variant instead of weakening the base contract.
+        "scope_variants": ({
+            "saved_scope_names": (
+                "actor",
+                "recipient",
+                "secondary_actor",
+                "secondary_recipient",
+                "intermediary",
+                "tribute_mission_target",
+                "tributary_scope",
+                "overlord_scope",
+                "receiving_character",
+                "opinion_of_tributary",
+                "tribute_reward_type_treasury",
+                "saved_innovation",
+                "decided_on_treasury_reward",
+            ),
+            "unique_character_scope_excludes": {
+                "actor": (29037,),
+                "secondary_recipient": (29037,),
+                "tributary_scope": (29037,),
+            },
+            "character_scope_matches_any": {
+                "tributary_scope": ("actor",),
+            },
+            "saved_scope_count": 13,
+        },),
         "option_count": 6,
         "snapshot_option_count": 7,
         "native_option_indices": (0, 1, 2, 3, 5, 6),
@@ -3490,6 +3522,28 @@ def _manager_recovery_contract(
             for name, values in excludes_value.items()
             if isinstance(values, tuple)
         }
+    scope_variants_value = rebound.get("scope_variants")
+    if isinstance(scope_variants_value, tuple):
+        rebound_variants: list[object] = []
+        for variant_value in scope_variants_value:
+            if not isinstance(variant_value, Mapping):
+                rebound_variants.append(variant_value)
+                continue
+            variant = copy.deepcopy(dict(variant_value))
+            variant_excludes_value = variant.get(
+                "unique_character_scope_excludes"
+            )
+            if isinstance(variant_excludes_value, Mapping):
+                variant["unique_character_scope_excludes"] = {
+                    str(name): tuple(
+                        player if value == original_root else value
+                        for value in values
+                    )
+                    for name, values in variant_excludes_value.items()
+                    if isinstance(values, tuple)
+                }
+            rebound_variants.append(variant)
+        rebound["scope_variants"] = tuple(rebound_variants)
     if event_key == "zg361pp.9100":
         # Recovery needs the shortest real product closure, not the itemized
         # route deliberately used by promotion-source capture.
@@ -3598,6 +3652,42 @@ def _option_contract_for_context(
     return contract
 
 
+def _scope_contract_for_context(
+    scopes: list[object], contract: Mapping[str, object]
+) -> Mapping[str, object]:
+    """Resolve a source-reviewed contract for an exact saved-scope shape."""
+
+    variants_value = contract.get("scope_variants")
+    variants = variants_value if isinstance(variants_value, tuple) else ()
+    if not variants:
+        return contract
+    actual_names = [
+        row_value.get("name")
+        for row_value in scopes
+        if isinstance(row_value, Mapping)
+        and isinstance(row_value.get("name"), str)
+    ]
+    if len(actual_names) != len(scopes) or len(set(actual_names)) != len(
+        actual_names
+    ):
+        return contract
+    for variant_value in variants:
+        if not isinstance(variant_value, Mapping):
+            continue
+        expected_names_value = variant_value.get("saved_scope_names")
+        expected_names = (
+            expected_names_value
+            if isinstance(expected_names_value, tuple)
+            else ()
+        )
+        if expected_names and set(actual_names) == set(expected_names):
+            resolved = {**contract, **variant_value}
+            resolved.pop("saved_scope_names", None)
+            resolved["saved_scope_name_sets"] = (expected_names,)
+            return resolved
+    return contract
+
+
 def _known_interrupt_checks(
     *,
     snapshot: Mapping[str, object],
@@ -3608,7 +3698,13 @@ def _known_interrupt_checks(
 ) -> dict[str, bool]:
     options_value = context.get("options")
     options = options_value if isinstance(options_value, list) else []
-    effective_contract = _option_contract_for_context(options, contract)
+    scopes_value = context.get("saved_scopes")
+    scopes = scopes_value if isinstance(scopes_value, list) else []
+    effective_contract = _option_contract_for_context(
+        options,
+        _scope_contract_for_context(scopes, contract),
+    )
+    contract = effective_contract
     option_count = effective_contract["option_count"]
     snapshot_option_count = effective_contract.get(
         "snapshot_option_count", option_count
@@ -3671,9 +3767,6 @@ def _known_interrupt_checks(
             len(native_option_indices) == option_count
             and tuple(actual_native_option_indices) == native_option_indices
         )
-
-    scopes_value = context.get("saved_scopes")
-    scopes = scopes_value if isinstance(scopes_value, list) else []
 
     def character_ids(name: str) -> set[int]:
         return {

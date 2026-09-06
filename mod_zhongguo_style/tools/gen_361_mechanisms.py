@@ -2273,7 +2273,19 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
             f"| {mechanism_id:03d} | {mechanism.title_cn} | `{record.level.key}` | "
             f"`{record.package}` | {evidence} | {record.note} |"
         )
-    lines.append("")
+    lines.extend(
+        [
+            "",
+            "## R155 exact non-human tribute interrupt (no readiness change)",
+            "",
+            "- R155 froze commit `8810c3f82d8af4c9a41858c47c6529be01cfc9fb`; no-launch preflight and loader 303/303 with fatal=0 were GREEN.",
+            "- At default speed 5, manager `32904` paused at `date_raw=53150352` on vanilla `tribute_mission.1005` before any option was sent.",
+            "- Native context bound event instance `14`, exactly 13 saved scopes, and visible/native options `(0, 1, 2, 3, 5, 6)` from seven authored options. The frame omitted all human-tribute scopes, which exact-build source review proved is a valid direct non-human tribute route.",
+            "- The acceptance contract now resolves this exact scope-name shape as an isolated variant; existing human-tribute alias checks remain strict. On an exact match only, it retains authored option 6 / native index 5 as the least disruptive source-reviewed route.",
+            "- Manager / runner / cleanup SHA-256: `24f899863d69eb2f1e4dbb2fb7428793275adb01bd3cc0e5ad1381ec33048a9a` / `023b5881012c4170fd0e338d3740d5f926d65f2031434aeed33f21e8363435cd` / `6f8f9934f317c20fa5aa2dd62fc4b674899bf3beca977aeb3490c40c95fc6b54`. Cleanup was GREEN with no CK3 process remaining.",
+            "- R155 did not reach the clean review boundary or daily carrier, so the manager seed and full-tree acceptance remain incomplete and no per-ID readiness is raised.",
+        ]
+    )
     return BOM + ("\n".join(lines)).encode("utf-8")
 
 

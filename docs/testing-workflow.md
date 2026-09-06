@@ -1785,3 +1785,18 @@ exact-build 1.19.0.6 源码审计表明，native 0 会建立永久 elder/discipl
 玩家 root、两个 typed scope、三-of-二按钮映射、观察窗口和单次出现上限同时吻合时，选择 authored option 3 /
 native 2。该合同放在新的 `test_zg361_phase2_manager_recovery_tgp_interrupts.py`，不继续扩张已有 10 场景文件；
 未知 TGP 事件仍然 RED，绝不按 namespace 自动确认。
+
+### R155：同一事件的合法作用域分支必须独立精确签约（2026-09-07）
+
+R155 在默认 5 速恢复管理者 B1 时，于 `date_raw=53150352` 严格停在原版
+`tribute_mission.1005`，未发送选择。native current-event context 绑定玩家 root `32904`、事件实例
+`14`、13 个 saved scope，并证明不存在 `human_tribute`、`concubine_character` 或
+`rejected_concubine`；可见按钮与 native indices 精确为 `(0, 1, 2, 3, 5, 6)`，authored snapshot
+仍有 7 项。原版源码证明这是从非人物贡品直接进入奖励决议的合法形态，而不是运行时漂移。
+
+验收器不得为此全局放松已验过的人物贡品别名关系。正确做法是先用 exact saved-scope name set
+选择独立 scope variant：该 variant 仍绑定四个玩家作用域、`tributary_scope == actor`、三个非玩家角色、
+两个 identity-unavailable 角色作用域、四个非人物类型及 13-scope 精确计数；既有人物贡品形态继续使用原合同。
+只有作用域 variant 与完整按钮投影同时吻合时，才选择源码审计确认的最小副作用路线 authored option 6 /
+native index 5。对应回归放在独立的
+`test_zg361_phase2_manager_recovery_tribute_interrupts.py`，普通与 `-O` 均必须进入 no-launch preflight。
