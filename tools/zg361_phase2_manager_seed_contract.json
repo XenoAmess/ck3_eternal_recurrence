@@ -4,41 +4,39 @@
   "seed_purpose": "player-manager",
   "status": "blocked_live_capture_required",
   "ready": false,
-  "blocker": "R119 manager fixture and materializer are static-ready; a fresh MCP checkpoint is required.",
+  "blocker": "R119 manager fixture and materializer are static-ready; the offline-qualified player-manager save still requires a fresh MCP checkpoint.",
   "source": {
-    "profile": "Z:\\p2y\\r2\\native-state\\profile",
-    "relative_save": "save games/xar_checkpoint.ck3",
-    "absolute_save": "Z:\\p2y\\r2\\native-state\\profile\\save games\\xar_checkpoint.ck3",
-    "bytes": 57377787,
-    "sha256": "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9",
-    "last_write_time_utc": "2026-09-04T14:42:39.677129Z",
-    "last_write_time_ns": 1788532959677128500
+    "profile": "C:\\Users\\xenoa\\Documents\\Paradox Interactive\\Crusader Kings III",
+    "relative_save": "save games/桑干节度使，XenoAmess_918_10_28.ck3",
+    "absolute_save": "C:\\Users\\xenoa\\Documents\\Paradox Interactive\\Crusader Kings III\\save games\\桑干节度使，XenoAmess_918_10_28.ck3",
+    "bytes": 26325927,
+    "sha256": "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74",
+    "last_write_time_utc": "2026-08-19T16:05:36.8547325Z",
+    "last_write_time_ns": 1787155536854732500
   },
   "provenance": {
-    "source_contract": "tools/zg361_phase2_seed_contract.json",
-    "source_git_commit": "218026a65d61db0a4c0d5248a2a68d3a4f42ce4e",
+    "source_contract": "offline player-manager save audit 2026-09-06",
+    "source_git_commit": null,
     "limitations": [
-      "This request reuses the immutable player-subject checkpoint only as an input candidate; it does not claim that the played character is manager-eligible.",
+      "Offline gamestate evidence identifies played CharacterID 37884 as an alive landed celestial ruler with prestige 7436.75919 and three direct alive landed celestial vassals.",
+      "The save is a five-player multiplayer save; local-player restoration, the zg361_on default and the dedicated fixture event remain live-only facts.",
       "The player-manager contract becomes ready only after the dedicated fixture event and typed checkpoint are captured from the same frozen runtime."
     ]
   },
   "runtime": {
     "game_version": "1.19.0.6",
     "executable_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
-    "enabled_mods": [
-      "mod/zg361_acceptance.mod",
-      "mod/zga_acceptance_fixture.mod"
-    ],
-    "source_product_tree_sha256": "9e75d8e55bbbf5170da3b40c8411dafc7387cf2a8b0f51c2f06c71b0856ee723",
+    "enabled_mods": [],
+    "source_product_tree_sha256": null,
     "source_fixture_tree_sha256": null
   },
   "saved_state": {
-    "date_raw": 53147016,
-    "played_character_id": 29037,
-    "player_history_id": "han_6875",
+    "date_raw": null,
+    "played_character_id": 37884,
+    "player_history_id": null,
     "played_character_alive": true,
-    "paused_on_load": true,
-    "map_ready": true
+    "paused_on_load": null,
+    "map_ready": null
   },
   "install": {
     "continue_save_relative_path": "save games/autosave.ck3",
