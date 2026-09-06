@@ -195,6 +195,71 @@ class PlayerCopySemanticTests(unittest.TestCase):
         self.assertNotIn("上司的初步判断", chinese)
         self.assertNotIn("Your Manager's Initial Judgment", english)
 
+    def test_core_and_quota_bodies_do_not_reannounce_their_titles(self) -> None:
+        rendered = b1_outputs()
+        generated_chinese = rendered[
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_b1_l_simp_chinese.yml"
+        ].decode("utf-8-sig")
+        generated_english = rendered[
+            MOD_ROOT / "localization" / "english" / "zg361_b1_l_english.yml"
+        ].decode("utf-8-sig")
+        core_chinese = (
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"
+        ).read_text(encoding="utf-8-sig")
+        core_english = (
+            MOD_ROOT / "localization" / "english" / "zg361_l_english.yml"
+        ).read_text(encoding="utf-8-sig")
+
+        self.assertIn(
+            'setting_zg361_off_desc:0 "直属官员不会进入新的 361 考核周期，也不会因本制度获得档位、奖惩或末位处置。"',
+            core_chinese,
+        )
+        self.assertNotIn('setting_zg361_off_desc:0 "关闭绩效考核系统。"', core_chinese)
+        self.assertIn(
+            'setting_zg361_off_desc:0 "Direct officials enter no new 361 review cycle',
+            core_english,
+        )
+        self.assertIn(
+            'zg361b1.126.desc:0 "即使同组还有待决案卷，你的最终档位也不再延后；',
+            generated_chinese,
+        )
+        self.assertNotIn("榜上已经列出你的最终档位。", generated_chinese)
+        self.assertIn(
+            'zg361b1.126.desc:0 "Other pending cases no longer hold back your final rating;',
+            generated_english,
+        )
+        self.assertNotIn("The board now shows your final rating.", generated_english)
+
+    def test_core_multi_choice_buttons_state_each_action_without_branch_codes(self) -> None:
+        chinese = (
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"
+        ).read_text(encoding="utf-8-sig")
+        expected_labels = {
+            "zg361.4.b": ("申诉", "150 影响力"),
+            "zg361.4.c": ("摆烂", "明年考核-10"),
+            "zg361.4.d": ("奋发", "明年考核+10"),
+            "zg361.5.a": ("依律处置", "夺爵、致仕或降岗"),
+            "zg361.5.b": ("全部降岗留用", "-100威望"),
+            "zg361.5.c": ("再观察一年", "-50 威望"),
+            "zg361.6.a": ("申诉", "花费200影响力"),
+            "zg361.6.b": ("上下打点", "花费300金币"),
+            "zg361.6.c": ("致仕", "体面退场"),
+            "zg361.6.d": ("起兵", "独立派系"),
+            "zg361.10.a": ("张榜公示",),
+            "zg361.10.b": ("抬一个人", "互换"),
+            "zg361.10.c": ("踩一个人", "打进3.25"),
+            "zg361.30.a": ("维持现状", "不另立观察案"),
+            "zg361.30.b": ("严惩野狗", "小白兔致仕"),
+        }
+        for key, required in expected_labels.items():
+            match = re.search(rf'^ {re.escape(key)}:0 "([^"]+)"$', chinese, re.MULTILINE)
+            self.assertIsNotNone(match, key)
+            label = match.group(1)
+            with self.subTest(key=key):
+                self.assertFalse(re.fullmatch(r"(?:按\s*[ABCＡＢＣ]\s*(?:做|办)?|路线[甲乙丙]|接受安排|继续)[。！]?$", label))
+                for token in required:
+                    self.assertIn(token, label)
+
 
 if __name__ == "__main__":
     unittest.main()

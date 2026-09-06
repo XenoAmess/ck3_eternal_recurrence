@@ -4,7 +4,7 @@
  setting_zg361_on:0 "开启"
  setting_zg361_on_desc:0 "天朝制公爵及以上领主定期考核直属在任官员，按361强制分布分出3.75/3.5/3.25；伯爵与男爵只被考核。"
  setting_zg361_off:0 "关闭"
- setting_zg361_off_desc:0 "关闭绩效考核系统。"
+ setting_zg361_off_desc:0 "直属官员不会进入新的 361 考核周期，也不会因本制度获得档位、奖惩或末位处置。"
  rule_zg361_frequency:0 "考核周期"
  setting_zg361_freq_yearly:0 "年度考核"
  setting_zg361_freq_yearly_desc:0 "每年一次绩效季。"

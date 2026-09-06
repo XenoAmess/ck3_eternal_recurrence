@@ -4,7 +4,7 @@
  setting_zg361_on:0 "Enabled"
  setting_zg361_on_desc:0 "Celestial rulers of duke tier or above review their direct incumbent officials, sorting them into 3.75 / 3.5 / 3.25; counts and barons are reviewed but do not run reviews."
  setting_zg361_off:0 "Disabled"
- setting_zg361_off_desc:0 "Disables the performance review system."
+ setting_zg361_off_desc:0 "Direct officials enter no new 361 review cycle and receive no rating, consequence, or bottom-tier disposition from this system."
  rule_zg361_frequency:0 "Review Cycle"
  setting_zg361_freq_yearly:0 "Annual Review"
  setting_zg361_freq_yearly_desc:0 "One performance season every year."

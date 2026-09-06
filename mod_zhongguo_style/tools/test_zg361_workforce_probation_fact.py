@@ -511,6 +511,21 @@ class WorkforceProbationFactTests(unittest.TestCase):
             self.assertIn(key, chinese)
         for required in ("达到了岗位要求", "岗位不匹配", "自然流失", "任职变动"):
             self.assertIn(required, chinese)
+        self.assertIn(
+            'zg361wpf.2.desc:0 "你的试任期已经结束。官署正用实际任职结果复核当初的录用判断。"',
+            chinese,
+        )
+        self.assertIn(
+            'zg361wpf.2.a:0 "记下任职结局与后续复核归属。"',
+            chinese,
+        )
+        self.assertNotIn("这次任命如今有了一份经过核对的后续结论", chinese)
+        self.assertNotIn("我已经看明白了", chinese)
+        self.assertIn(
+            "Your probationary term has ended. The office is now testing the original appointment judgment",
+            english,
+        )
+        self.assertIn("Record the outcome and its follow-up review.", english)
         for forbidden in (
             "第 269 项",
             "消费同一结局",

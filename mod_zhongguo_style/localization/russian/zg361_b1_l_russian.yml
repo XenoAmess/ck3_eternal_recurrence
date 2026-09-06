@@ -12,7 +12,7 @@
  zg361b1.201.a:0 "Accept it with no calibration adjustment."
  zg361b1.201.b:0 "Check current results; adjust calibration by at most 10 points."
  zg361b1.126.t:0 "Your Rating Has Been Posted"
- zg361b1.126.desc:0 "The board now shows your final rating. Other pending cases no longer hold yours back; this is revision [ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] of your case. Rewards and penalties will still be applied at formal settlement, and no other official's pending case is disclosed here."
+ zg361b1.126.desc:0 "Other pending cases no longer hold back your final rating; this is revision [ROOT.Char.MakeScope.Var('zg361_b1_local_publish_revision').GetValue|0] of your case. Rewards and penalties will still be applied at formal settlement, and no other official's pending case is disclosed here."
  zg361b1.126.grade_375:0 "Current posted rating: #P 3.75#!."
  zg361b1.126.grade_35:0 "Current posted rating: #V 3.5#!."
  zg361b1.126.grade_325:0 "Current posted rating: #N 3.25#!."
