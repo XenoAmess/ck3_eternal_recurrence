@@ -1,6 +1,6 @@
 ﻿l_simp_chinese:
  zg361cp.batch.t:0 "本轮办案方式"
- zg361cp.batch.desc:0 "本轮项目案卷已经归集：[zg361_cp_e_subject.GetShortUIName]是当事人，[zg361_cp_e_owner.GetShortUIName]将作裁决。其中十一项属于常规登记，其余十六项涉及付款、回应、期限、去留或结算，仍须逐案审理。当前未清制度债为[scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]笔。"
+ zg361cp.batch.desc:0 "本轮项目案卷已经归集：[zg361_cp_e_subject.GetShortUIName]是当事人，[zg361_cp_e_owner.GetShortUIName]将作裁决。其中十一项属于常规登记，其余十六项涉及付款、回应、期限、去留或结算，仍须逐案审理。当前未清制度债为[zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]笔。"
  zg361cp.batch.a:0 "证据优先统一办理十一案；条件不足则逐案呈报。"
  zg361cp.batch.b:0 "速度优先统一办理十一案；条件不足则逐案呈报。"
  zg361cp.batch.c:0 "关闭十一项常规案，各记一笔制度债。"

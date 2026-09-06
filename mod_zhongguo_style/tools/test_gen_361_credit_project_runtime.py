@@ -1064,12 +1064,16 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
 
 
 class LocalizationAndBoundaryTests(unittest.TestCase):
-    def test_saved_scope_character_localization_uses_exact_ck3_expression(self) -> None:
-        stale = re.compile(r"\[scope:[A-Za-z0-9_]+\.GetShortUIName\]")
+    def test_saved_scope_localization_uses_exact_ck3_expressions(self) -> None:
         expected = {
             "[zg361_cp_e_subject.GetShortUIName]",
             "[zg361_cp_e_owner.GetShortUIName]",
+            "[zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]",
         }
+        for source_copy in (gen.BATCH_COPY_CN, gen.BATCH_COPY_EN):
+            self.assertNotIn("[scope:", source_copy["desc"])
+            for expression in expected:
+                self.assertEqual(source_copy["desc"].count(expression), 1)
         for language in gen.LANGUAGES:
             path = (
                 MOD_ROOT
@@ -1079,7 +1083,7 @@ class LocalizationAndBoundaryTests(unittest.TestCase):
             )
             text = read(path)
             with self.subTest(language=language):
-                self.assertIsNone(stale.search(text))
+                self.assertNotIn("[scope:", text)
                 for expression in expected:
                     self.assertEqual(text.count(expression), 1)
 
