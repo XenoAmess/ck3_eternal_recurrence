@@ -1337,6 +1337,8 @@ def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
         "可核验证据：`Z:\\\\b3r111`–`Z:\\\\b3r116` 的 `evidence-index.json`、`report.json`、",
         "`cell/02_loader_error_scan.json`、`cell/03_loader_gate.json`、`cell/final_error.log`；以及 `Z:\\\\p2r111`–`Z:\\\\p2r116`",
         "的 `phase2-product-projection.json` 与 `p.manifest.json`。",
+        "R116 续跑证据：`Z:\\\\b3r116_resume1\\report.json`、`03_promotion_source_production_entry.json`，以及",
+        "`Z:\\\\b3r116_native_state\\profile\\logs\\error.log` / `debug.log` 的 11:46–11:47 运行时增量。",
         "",
         "## R107 基线完整产品验收快照（不改变逐号等级）",
         "",
