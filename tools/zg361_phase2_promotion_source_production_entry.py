@@ -1168,17 +1168,25 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # options 1 and 3 are enabled; option 1 is the sole path that can retain
         # the player's career, while option 3 deterministically steps down all
         # landed titles. Bind the sparse native option map and choose option 1.
-        # This trigger and choice read character state, not saved scopes, so the
-        # 42 inherited names are constrained only as an exact seed-window set.
+        # This trigger and choice read character state, not saved scopes. R110
+        # observed the completed self-review and shadow-response tickets on
+        # this descendant frame, while the older bank ticket had expired; bind
+        # those 48 inherited names as the exact current product-window set.
         "date_raw": 53159136,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {},
         "saved_scope_name_sets": ((
-            "zg361_b1_bank_ticket_owner",
-            "zg361_b1_bank_ticket_season",
-            "zg361_b1_bank_ticket_case",
-            "zg361_b1_bank_ticket_state",
+            "zg361_b1_self_ticket_owner",
+            "zg361_b1_self_ticket_subject",
+            "zg361_b1_self_ticket_cycle",
+            "zg361_b1_self_ticket_case",
+            "zg361_b1_self_ticket_state",
+            "zg361_b1_shadow_ticket_owner",
+            "zg361_b1_shadow_ticket_subject",
+            "zg361_b1_shadow_ticket_cycle",
+            "zg361_b1_shadow_ticket_case",
+            "zg361_b1_shadow_ticket_state",
             "zg361_b1_ticket_owner",
             "zg361_b1_ticket_cycle",
             "zg361_b1_ticket_case",

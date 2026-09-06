@@ -1750,6 +1750,21 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             starting_date=53147016,
         )
         names = contract["saved_scope_name_sets"][0]
+        self_and_shadow_ticket_names = {
+            f"zg361_b1_{ticket}_ticket_{field}"
+            for ticket, fields in (
+                ("self", ("owner", "subject", "cycle", "case", "state")),
+                ("shadow", ("owner", "subject", "cycle", "case", "state")),
+            )
+            for field in fields
+        }
+        expired_bank_ticket_names = {
+            f"zg361_b1_bank_ticket_{field}"
+            for field in ("owner", "season", "case", "state")
+        }
+        self.assertEqual(len(names), 48)
+        self.assertTrue(self_and_shadow_ticket_names.issubset(names))
+        self.assertTrue(expired_bank_ticket_names.isdisjoint(names))
         context = {
             "schema": "current-event-window-context-v1",
             "schema_version": 1,
@@ -1805,6 +1820,18 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             {"name": "unrelated_scope", "scope": {"status": "available"}}
         )
         checks = checks_for(extra_scope)
+        self.assertFalse(checks["saved_scope_names_exact"])
+
+        stale_bank_shape = copy.deepcopy(context)
+        stale_bank_shape["saved_scopes"] = [
+            row
+            for row in stale_bank_shape["saved_scopes"]
+            if row["name"] not in self_and_shadow_ticket_names
+        ] + [
+            {"name": name, "scope": {"status": "available", "type_key": "unknown"}}
+            for name in sorted(expired_bank_ticket_names)
+        ]
+        checks = checks_for(stale_bank_shape)
         self.assertFalse(checks["saved_scope_names_exact"])
 
     def test_second_mechanism_card_uses_reference_charter_choice(self) -> None:
