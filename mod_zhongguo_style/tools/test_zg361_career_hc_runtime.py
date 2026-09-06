@@ -1306,6 +1306,30 @@ class CareerHcRuntimeTests(unittest.TestCase):
                 for option in options:
                     self.assertNotIn(option, body)
 
+    def test_completion_buttons_name_each_domain_archive_action(self) -> None:
+        chinese = localization_map(CHINESE_LOC_PATH)
+        english = localization_map(
+            MOD_ROOT / "localization/english/zg361_career_hc_l_english.yml"
+        )
+        chinese_options = [chinese[f"zg361ch.{event_id}.a"] for event_id in range(901, 907)]
+        english_options = [english[f"zg361ch.{event_id}.a"] for event_id in range(901, 907)]
+        self.assertEqual(6, len(set(chinese_options)))
+        self.assertEqual(6, len(set(english_options)))
+        self.assertNotIn("归档。下轮再见。", chinese_options)
+        self.assertNotIn("File the receipt.", english_options)
+        for option in chinese_options:
+            self.assertTrue(option.startswith("收存"))
+            self.assertIn("案卷", option)
+        for domain, event_id in zip(generator.DOMAINS, range(901, 907), strict=True):
+            self.assertEqual(
+                generator.COMPLETION_COPY_CN[domain.key][2],
+                chinese[f"zg361ch.{event_id}.a"],
+            )
+            self.assertEqual(
+                generator.COMPLETION_OPTION_EN[domain.key],
+                english[f"zg361ch.{event_id}.a"],
+            )
+
     def test_every_numbered_chinese_button_states_its_own_action(self) -> None:
         rows = localization_map(CHINESE_LOC_PATH)
         generic = {

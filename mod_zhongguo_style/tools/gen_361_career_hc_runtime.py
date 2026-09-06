@@ -217,12 +217,45 @@ CASE_CONTEXT_CN = {
 }
 
 COMPLETION_COPY_CN = {
-    "d": ("职业安排办理完毕", "晋升、调任、留任与相关钱账已经分别归档；尚在期限内的安排会按到期日继续结算。"),
-    "m": ("职级路径办理完毕", "专业与管理路径、过渡职级和破格名额已经落定；本轮不会再改写这些选择。"),
-    "n": ("编制处置办理完毕", "保留、占用、回收与补岗责任已经写入各自名额；下一轮将沿用本次结论。"),
-    "o": ("继任盘点办理完毕", "关键岗位、候选准备度与知识移交已经归档；未到期的试任和留任条件仍会继续履行。"),
-    "p": ("内部流动办理完毕", "应聘、放人、爬坡、补岗与带教责任已经分开登记；后续只按各自期限结算。"),
-    "q": ("管理复审办理完毕", "试任、权重、下属反馈、继任与授权记录已经写入本轮管理评价。"),
+    "d": (
+        "职业安排办理完毕",
+        "晋升、调任、留任与相关钱账已经分别归档；尚在期限内的安排会按到期日继续结算。",
+        "收存职业安排案卷，按已定期限继续结算。",
+    ),
+    "m": (
+        "职级路径办理完毕",
+        "专业与管理路径、过渡职级和破格名额已经落定；本轮不会再改写这些选择。",
+        "收存职级路径案卷，本轮不再改动。",
+    ),
+    "n": (
+        "编制处置办理完毕",
+        "保留、占用、回收与补岗责任已经写入各自名额；下一轮将沿用本次结论。",
+        "收存编制处置案卷，下轮沿用本次结论。",
+    ),
+    "o": (
+        "继任盘点办理完毕",
+        "关键岗位、候选准备度与知识移交已经归档；未到期的试任和留任条件仍会继续履行。",
+        "收存继任盘点案卷，继续履行未到期安排。",
+    ),
+    "p": (
+        "内部流动办理完毕",
+        "应聘、放人、爬坡、补岗与带教责任已经分开登记；后续只按各自期限结算。",
+        "收存内部流动案卷，按各项期限继续结算。",
+    ),
+    "q": (
+        "管理复审办理完毕",
+        "试任、权重、下属反馈、继任与授权记录已经写入本轮管理评价。",
+        "收存管理复审案卷，记入本轮评价。",
+    ),
+}
+
+COMPLETION_OPTION_EN = {
+    "d": "File the career-arrangement record and settle each dated obligation on schedule.",
+    "m": "File the career-path record without reopening this cycle's decisions.",
+    "n": "File the staffing record and carry these decisions into the next cycle.",
+    "o": "File the succession record and keep the open dated arrangements in force.",
+    "p": "File the internal-mobility record and settle each item on its own deadline.",
+    "q": "File the management-review record in this cycle's evaluation.",
 }
 
 TITLE_OVERRIDE_CN = {119: "招聘质量追责"}
@@ -405,6 +438,10 @@ def validate_specs() -> None:
         raise ValueError("career/HC player-facing case context coverage drifted")
     if set(COMPLETION_COPY_CN) != set(DOMAIN_ORDER):
         raise ValueError("career/HC completion copy coverage drifted")
+    if set(COMPLETION_OPTION_EN) != set(DOMAIN_ORDER):
+        raise ValueError("career/HC English completion option coverage drifted")
+    if any(len(copy) != 3 for copy in COMPLETION_COPY_CN.values()):
+        raise ValueError("career/HC Chinese completion copy must include title, body and action")
     for overrides in (
         TITLE_OVERRIDE_CN,
         TITLE_OVERRIDE_EN,
@@ -2755,7 +2792,7 @@ def localization_rows(language: str) -> list[str]:
         event_id = 900 + domain_index
         title = f"{domain.title_en} decisions recorded" if english else COMPLETION_COPY_CN[domain.key][0]
         desc = "The decisions in this career domain are recorded; open dated obligations will continue to settle on their own deadlines." if english else COMPLETION_COPY_CN[domain.key][1]
-        option = "File the receipt." if english else "归档。下轮再见。"
+        option = COMPLETION_OPTION_EN[domain.key] if english else COMPLETION_COPY_CN[domain.key][2]
         rows.extend(
             (
                 f' zg361ch.{event_id}.t:0 "{title}"',
