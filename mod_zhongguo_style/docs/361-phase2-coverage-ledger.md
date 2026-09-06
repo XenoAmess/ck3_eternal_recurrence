@@ -11,16 +11,16 @@
 
 ## 简体中文文案审计闭合状态（不改变逐号等级）
 
-- 可复验 sidecar：`docs/content-audits/zg361-copy-ledger/index.json`，提交 `7778b678e103eb5c2ba52b153e40898c6ad839de`；其输入快照提交为
+- 可复验 sidecar：`docs/content-audits/zg361-copy-ledger/index.json`，提交 `c66a1efae11117c21db383d8992b9ccfac85d9cd`；其输入快照提交为
   `6db27bea4293445ef757e6c49c1c51d338e92355`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。
-- 当前绑定 635 个 visible events、4999 个最终简中 key；
+- 当前绑定 626 个 visible events、4999 个最终简中 key；
   `machine_failures=0`、`user_named_static_open_items=0`、
   `machine_checks_status=pass`。用户点名的句首标点、标题/正文无价值复写、
   正文替按钮罗列选择以及抽象按钮标签等已知静态问题均为 0 个未闭合项。
 - sidecar 总状态仍为 `review`，因为机器规则不会冒充人工语境判断；
   `live_render_validation_status=pending`。动态插值、实机排版和最终游戏内措辞仍为
   **LIVE PENDING**，本节不能声称文案实机 GREEN，也不提升任何逐号 readiness。
-- 边界：确定性静态检查和用户点名的静态文案问题已经闭合。sidecar 仍将语境类人工判断保持为 review，不用规则结果冒充文案质量。动态插值、实机排版和最终游戏内措辞仍为 LIVE PENDING，本快照不据此声称实机 GREEN。
+- 边界：确定性机器检查和用户点名的两类模式当前没有规则命中；但随后完成的 626 张可见事件逐卡人工审计又发现按钮与 effect 冲突、主体/因果错误、内部术语及无价值 tooltip，文案状态已重新打开为 RED，正在按分片整改。动态插值、实机排版和最终游戏内措辞仍为 LIVE PENDING；人工静态未修项关闭前不得恢复 CK3 实机。
 
 ## R111–R118 增量全量候选验收记录（不改变逐号等级）
 

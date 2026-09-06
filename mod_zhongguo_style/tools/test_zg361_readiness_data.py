@@ -190,7 +190,7 @@ class ReadinessDataTests(unittest.TestCase):
 
         self.assertEqual(
             audit.sidecar_commit,
-            "7778b678e103eb5c2ba52b153e40898c6ad839de",
+            "c66a1efae11117c21db383d8992b9ccfac85d9cd",
         )
         self.assertEqual(
             sidecar["source_snapshot"]["git_commit"],
@@ -219,13 +219,14 @@ class ReadinessDataTests(unittest.TestCase):
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
         self.assertIn("简体中文文案审计闭合状态", ledger)
         self.assertIn(audit.sidecar_index, ledger)
-        self.assertIn("635 个 visible events", ledger)
+        self.assertIn("626 个 visible events", ledger)
         self.assertIn("4999 个最终简中 key", ledger)
         self.assertIn("machine_failures=0", ledger)
         self.assertIn("user_named_static_open_items=0", ledger)
         self.assertIn("live_render_validation_status=pending", ledger)
         self.assertIn("LIVE PENDING", ledger)
         self.assertIn("不能声称文案实机 GREEN", ledger)
+        self.assertIn("文案状态已重新打开为 RED", ledger)
 
     def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}

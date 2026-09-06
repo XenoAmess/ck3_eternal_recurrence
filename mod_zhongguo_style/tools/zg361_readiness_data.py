@@ -178,9 +178,9 @@ LIVE_BOUNDARY: Final = (
 
 CHINESE_COPY_AUDIT: Final = ChineseCopyAuditSnapshot(
     sidecar_index="docs/content-audits/zg361-copy-ledger/index.json",
-    sidecar_commit="7778b678e103eb5c2ba52b153e40898c6ad839de",
+    sidecar_commit="c66a1efae11117c21db383d8992b9ccfac85d9cd",
     source_snapshot_git_commit="6db27bea4293445ef757e6c49c1c51d338e92355",
-    visible_events=635,
+    visible_events=626,
     final_zh_keys=4999,
     machine_failures=0,
     user_named_static_open_items=0,
@@ -188,9 +188,10 @@ CHINESE_COPY_AUDIT: Final = ChineseCopyAuditSnapshot(
     machine_checks_status="pass",
     live_render_validation_status="pending",
     boundary=(
-        "确定性静态检查和用户点名的静态文案问题已经闭合。sidecar 仍将语境类人工判断"
-        "保持为 review，不用规则结果冒充文案质量。动态插值、实机排版和最终游戏内措辞仍为 "
-        "LIVE PENDING，本快照不据此声称实机 GREEN。"
+        "确定性机器检查和用户点名的两类模式当前没有规则命中；但随后完成的 626 张可见事件"
+        "逐卡人工审计又发现按钮与 effect 冲突、主体/因果错误、内部术语及无价值 tooltip，"
+        "文案状态已重新打开为 RED，正在按分片整改。动态插值、实机排版和最终游戏内措辞仍为 "
+        "LIVE PENDING；人工静态未修项关闭前不得恢复 CK3 实机。"
     ),
 )
 
