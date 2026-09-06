@@ -4181,7 +4181,7 @@ def localization_rows(language: str) -> list[str]:
             (
                 ' zg361pp.5151.t:0 "绩效反馈送达：请本人确认收件"',
                 " zg361pp.5151.desc:0 \"案卷同时封存了本轮档位、理由与证据索引，交接双方为[scope:zg361_pp_subject_prompt_owner.GetShortUIName]与[scope:zg361_pp_subject_prompt_subject.GetShortUIName]。申诉时限为 90 日；签收只证明材料到手，不表示认可其中结论。\"",
-                " zg361pp.5151.evidence:0 \"冻结证据摘要：绩效指标 [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0]，队列名次 [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0]，案卷证据 [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。\"",
+                " zg361pp.5151.evidence:0 \"冻结证据摘要：绩效指标 [ROOT.Var('zg361_pp_t_frozen_kpi').GetValue|0]，队列名次 [ROOT.Var('zg361_pp_t_frozen_rank').GetValue|0]，案卷证据 [ROOT.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。\"",
             )
         )
     else:
@@ -4189,7 +4189,7 @@ def localization_rows(language: str) -> list[str]:
             (
                 ' zg361pp.5151.t:0 "Performance Feedback Served: Confirm Receipt"',
                 " zg361pp.5151.desc:0 \"The file seals this cycle's grade, reason, and evidence index, with [scope:zg361_pp_subject_prompt_owner.GetShortUIName] and [scope:zg361_pp_subject_prompt_subject.GetShortUIName] recorded as the two parties to delivery. The appeal window is 90 days; receipt proves only that the materials arrived, not agreement with their conclusion.\"",
-                " zg361pp.5151.evidence:0 \"Frozen evidence summary: performance indicator [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items.\"",
+                " zg361pp.5151.evidence:0 \"Frozen evidence summary: performance indicator [ROOT.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items.\"",
             )
         )
     for reason_code, reason_text in RESULT_REASON_TEXT.items():

@@ -1500,6 +1500,33 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertNotIn("三六一案卷已结", chinese)
         self.assertIn("本轮选择已录入", chinese)
 
+    def test_numeric_localization_uses_character_root_variable_values(self) -> None:
+        expected_variables = (
+            "zg361_pp_t_frozen_kpi",
+            "zg361_pp_t_frozen_rank",
+            "zg361_pp_t_evidence_component_count",
+        )
+        for language in gen.LANGUAGES:
+            source = text(
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_feedback_promotion_pip_l_{language}.yml"
+            )
+            self.assertNotRegex(
+                source,
+                r"ROOT(?:\.Char)?\.MakeScope\.Var\('[^']+'\)\.GetValue",
+                language,
+            )
+            for variable in expected_variables:
+                self.assertIn(
+                    f"[ROOT.Var('{variable}').GetValue|0]",
+                    source,
+                    language,
+                )
+        generated = "\n".join(gen.localization_rows("english"))
+        self.assertEqual(generated.count("[ROOT.Var('"), len(expected_variables))
+
     def test_events_and_effects_have_balanced_braces(self) -> None:
         self.assertEqual(self.effects.count("{"), self.effects.count("}"))
         self.assertEqual(self.events.count("{"), self.events.count("}"))

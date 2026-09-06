@@ -430,9 +430,18 @@ class B2CK3RuntimeTests(unittest.TestCase):
                     "[ROOT.Var('zg361_b2_separate_reviewer').Char.GetShortUIName]",
                     localization,
                 )
-                # Numeric values use the distinct, live-proven value path.
+                # Character ROOT exposes numeric variables directly; the R115
+                # exact-build run proved that MakeScope is not a Character link.
+                self.assertNotRegex(
+                    localization,
+                    r"\[ROOT(?:\.Char)?\.MakeScope\.Var\('[^']+'\)\.GetValue",
+                )
                 self.assertIn(
-                    "[ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]",
+                    "[ROOT.Var('zg361_result_kpi_frozen').GetValue|0]",
+                    localization,
+                )
+                self.assertIn(
+                    "[ROOT.Var('zg361_b2_retaliation_new_fact_case').GetValue|0]",
                     localization,
                 )
 

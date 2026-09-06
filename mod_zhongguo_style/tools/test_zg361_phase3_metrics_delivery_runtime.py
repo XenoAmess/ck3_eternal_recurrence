@@ -1200,6 +1200,21 @@ class GeneratorContractTests(unittest.TestCase):
                 self.assertEqual(rows["english"][f"zg361p3.{mid}.c.tt"], gen.DEFER_TOOLTIP_EN)
                 self.assertEqual(rows["simp_chinese"][f"zg361p3.{mid}.c.tt"], gen.DEFER_TOOLTIP_CN)
 
+    def test_character_root_numeric_localization_uses_direct_variable_path(self) -> None:
+        expected = "[ROOT.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0]"
+        forbidden = re.compile(r"ROOT(?:\.Char)?\.MakeScope\.Var\(")
+        for language in gen.LANGUAGES:
+            path = (
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_phase3_metrics_delivery_l_{language}.yml"
+            )
+            text = read(path)
+            with self.subTest(language=language):
+                self.assertIsNone(forbidden.search(text))
+                self.assertEqual(text.count(expected), 14)
+
     def test_player_copy_separates_case_context_from_decision_buttons(self) -> None:
         chinese = loc_rows(
             MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"

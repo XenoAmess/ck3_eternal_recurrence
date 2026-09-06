@@ -2585,8 +2585,8 @@ def esc(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
-PLAYER_DEBT_STATUS_CN = "本轮已经登记制度债 [ROOT.MakeScope.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] 笔。"
-PLAYER_DEBT_STATUS_EN = "This portfolio has recorded [ROOT.MakeScope.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
+PLAYER_DEBT_STATUS_CN = "本轮已经登记制度债 [ROOT.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] 笔。"
+PLAYER_DEBT_STATUS_EN = "This portfolio has recorded [ROOT.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
 PLAYER_MODE_CN = {
     "t": "本轮办案方式",
     "desc": (

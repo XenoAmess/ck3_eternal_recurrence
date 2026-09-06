@@ -29,7 +29,7 @@
  zg361pp.5190.desc:0 "The transfer file has fixed the receiving manager and disclosure boundary. [scope:zg361_pp_subject_prompt_subject.GetShortUIName]'s personal statement is not yet attached; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may neither author it nor broaden disclosure."
  zg361pp.5151.t:0 "Performance Feedback Served: Confirm Receipt"
  zg361pp.5151.desc:0 "The file seals this cycle's grade, reason, and evidence index, with [scope:zg361_pp_subject_prompt_owner.GetShortUIName] and [scope:zg361_pp_subject_prompt_subject.GetShortUIName] recorded as the two parties to delivery. The appeal window is 90 days; receipt proves only that the materials arrived, not agreement with their conclusion."
- zg361pp.5151.evidence:0 "Frozen evidence summary: performance indicator [ROOT.MakeScope.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.MakeScope.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.MakeScope.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items."
+ zg361pp.5151.evidence:0 "Frozen evidence summary: performance indicator [ROOT.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items."
  zg361pp.5151.reason.0:0 "The evidence band and final band agree; no calibration or quota adjustment occurred."
  zg361pp.5151.reason.1:0 "A calibration swap moved the subject out of the 3.75 band."
  zg361pp.5151.reason.2:0 "A calibration swap moved the subject into the 3.75 band."
