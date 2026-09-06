@@ -80,6 +80,7 @@ class FakeService:
         calls: list[str],
         event_definition_key: str = capture.SEED_EVENT_DEFINITION_KEY,
         manager_pip_route: bool = False,
+        checkpoint_path: Path | None = None,
     ) -> None:
         self.calls = calls
         self.event_definition_key = event_definition_key
@@ -88,6 +89,8 @@ class FakeService:
         self.played_character_id = 9001
         self.revision = 7
         self.paused = True
+        self.speed = 1
+        self.checkpoint_path = checkpoint_path
         self.date_raw = (
             capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"]
             if manager_pip_route
@@ -101,11 +104,13 @@ class FakeService:
             "date_raw": self.date_raw,
             "paused": self.paused,
             "map_ready": True,
-            "speed": 1,
+            "speed": self.speed,
             "played_character": {"character_id": self.played_character_id},
             "active_event": (
                 {"source": "native", "instance_id": 30, "option_count": 3}
                 if self.event_state == "pip"
+                else None
+                if self.event_state == "continuation_pending"
                 else {"instance_id": 44, "option_count": 1}
             ),
             "diagnostics": {
@@ -130,7 +135,37 @@ class FakeService:
         self.calls.append(f"execute:{step}")
         if step == "pause-map":
             self.paused = True
+        elif step.startswith("set-speed-"):
+            self.speed = int(step.rsplit("-", 1)[1])
+        elif step == "resume-map":
+            if self.event_state == "continuation_pending":
+                self.event_state = "final"
+                self.date_raw += 24
+                self.revision += 1
+                self.paused = True
+            else:
+                self.paused = False
         return {"accepted": True}
+
+    def save_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
+        self.calls.append("save-checkpoint")
+        require(expected_revision == self.revision, "save used stale revision")
+        require(self.checkpoint_path is not None, "fake checkpoint path is absent")
+        self.checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+        self.checkpoint_path.write_bytes(b"SAV0101" + b"r129-transition")
+        digest = sha256(self.checkpoint_path)
+        return {
+            "accepted": True,
+            "checkpoint": {
+                "status": "saved",
+                "path": str(self.checkpoint_path.resolve()),
+                "size": self.checkpoint_path.stat().st_size,
+                "sha256": digest,
+                "date_raw": self.date_raw,
+                "episode_character_id": self.played_character_id,
+                "strategy": "fake-unit",
+            },
+        }
 
     def query_current_event_window_context_v1(
         self, event_id: int, **_kwargs: object
@@ -590,6 +625,15 @@ class Fixture:
                 "fixture_calls_product_b1": False,
                 "fixture_writes_product_receipts": False,
             },
+            "transition_checkpoint_contract": {
+                "kind": capture.MANAGER_TRANSITION_CHECKPOINT_KIND,
+                "final_seed_ready": False,
+                "clears_product_state": False,
+                "writes_product_receipt": False,
+                "continuation_maximum_date_raw": 53147064,
+                "continuation_timeline_speed": 5,
+                "continuation_forbids_unregistered_event_drains": True,
+            },
         }
         manager_contract_path = (
             self.clean / "tools" / "zg361_phase2_manager_seed_contract.json"
@@ -726,6 +770,7 @@ class Fixture:
                     and event_definition_key is None
                 )
             ),
+            checkpoint_path=self.root / "fake-native-checkpoint.ck3",
         )
 
         def driver_factory(*_args: object, **_kwargs: object) -> FakeDriver:
@@ -3993,6 +4038,28 @@ def test_cli_validation_and_artifact_preservation() -> None:
             == "zg361_phase2_manager_seed_bootstrap",
             "--seed-purpose player-manager did not select the dedicated inputs",
         )
+        transition_receipt = fixture.root / "transition-receipt.json"
+        transition_receipt.write_text("{}", encoding="utf-8")
+        parsed_transition = capture.parse_args(
+            [
+                "--clean-source", str(fixture.clean),
+                "--attempt-dir", str(fixture.attempt / "transition-attempt"),
+                "--artifacts-dir", str(fixture.attempt / "transition-artifacts"),
+                "--source-zip", str(fixture.source_zip),
+                "--git-sha", fixture.git_sha,
+                "--game-dir", str(fixture.game),
+                "--bridge-dll", str(fixture.dll),
+                "--injector", str(fixture.injector),
+                "--pipe", fixture.pipe,
+                "--seed-purpose", "player-manager",
+                "--manager-transition-checkpoint-receipt", str(transition_receipt),
+            ]
+        ).resolved()
+        require(
+            parsed_transition.manager_transition_checkpoint_receipt
+            == transition_receipt.resolve(),
+            "manager transition receipt CLI path drifted",
+        )
         capture.validate_config(parsed)
         for label, invalid_timing in (
             ("NaN", float("nan")),
@@ -4727,6 +4794,8 @@ def test_static_contract() -> None:
         "--product-source",
         "--pipe",
         "--seed-purpose",
+        "--manager-transition-checkpoint-capture",
+        "--manager-transition-checkpoint-receipt",
         "--preflight-only",
         "--list-domain-observer-gate",
         "--acceptance-observer-manifest",
@@ -4766,6 +4835,145 @@ def test_static_contract() -> None:
     require("keyDown(" not in source, "runner injects a desktop key")
     require("keyUp(" not in source, "runner injects a desktop key")
     require("Z:\\" not in source, "runner retained a machine-specific hardcoded path")
+
+
+def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        purpose = capture.MANAGER_SEED_PURPOSE
+        capture_calls: list[str] = []
+        capture_runtime = fixture.runtime(capture_calls, seed_purpose=purpose)
+        transition_service = capture_runtime.service_factory(None)
+        require(isinstance(transition_service, FakeService), "transition fake drifted")
+        transition_service.speed = 5
+        first = capture.run_capture(
+            replace(
+                fixture.config(seed_purpose=purpose),
+                manager_transition_checkpoint_capture=True,
+            ),
+            runtime=capture_runtime,
+        )
+        require(
+            first["result"] == "TRANSITION_CHECKPOINT_READY"
+            and first["scenario_verdict"] == "INTERMEDIATE_GREEN"
+            and first["seed_verdict"] == "RED"
+            and first["final_seed_ready"] is False,
+            f"transition checkpoint forged a final result: {first}",
+        )
+        receipt = first["manager_transition_checkpoint"]
+        require(
+            receipt["kind"] == capture.MANAGER_TRANSITION_CHECKPOINT_KIND
+            and receipt["played_character_id"] == 9002
+            and receipt["date_raw"] == 53147040
+            and receipt["paused"] is True
+            and receipt["timeline_speed"] == 5
+            and receipt["product_state_cleared"] is False
+            and receipt["product_receipt_written"] is False,
+            f"transition receipt drifted: {receipt}",
+        )
+        require(
+            "save-checkpoint" in capture_calls
+            and "seed-capture-mcp" not in capture_calls
+            and "candidate-materialize" not in capture_calls,
+            f"transition phase crossed the final seed gate: {capture_calls}",
+        )
+        receipt_path = fixture.artifacts / "manager-transition-checkpoint-receipt.json"
+        require(receipt_path.is_file(), "transition receipt was not persisted")
+
+        continuation_calls: list[str] = []
+        continuation_runtime = fixture.runtime(
+            continuation_calls,
+            seed_purpose=purpose,
+            manager_pip_route=False,
+        )
+        continuation_service = continuation_runtime.service_factory(None)
+        require(isinstance(continuation_service, FakeService), "continuation fake drifted")
+        continuation_service.played_character_id = 9002
+        continuation_service.date_raw = 53147040
+        continuation_service.speed = 5
+        continuation_service.event_state = "continuation_pending"
+        continuation_attempt = fixture.root / "continuation" / "attempt"
+        continuation_artifacts = fixture.root / "continuation" / "artifacts"
+        final = capture.run_capture(
+            replace(
+                fixture.config(seed_purpose=purpose),
+                attempt_dir=continuation_attempt,
+                artifacts_dir=continuation_artifacts,
+                manager_transition_checkpoint_receipt=receipt_path,
+            ),
+            runtime=continuation_runtime,
+        )
+        require(final["result"] == "GREEN", f"clean continuation RED: {final}")
+        require(
+            final["manager_entry_mode"]
+            == "active-manager-transition-checkpoint-continuation"
+            and final["manager_transition_contract"]["handoff_mode"]
+            == capture.MANAGER_TRANSITION_CONTINUATION_MODE
+            and final["manager_direct_final_binding"]["result"] == "GREEN"
+            and final["manager_direct_candidate_identity"]["result"] == "GREEN",
+            "clean continuation bypassed a final manager gate",
+        )
+        require(
+            final["manager_entry_event"]["date_raw"] == 53147064
+            and final["manager_transition_contract"]["maximum_date_raw"]
+            == 53147064,
+            "clean continuation escaped its one-day five-speed window",
+        )
+        require(
+            not any(call.startswith("select-event-option:3") for call in continuation_calls)
+            and "execute:resume-map" in continuation_calls
+            and "seed-capture-mcp" in continuation_calls
+            and "candidate-materialize" in continuation_calls,
+            f"continuation replayed PIP or skipped final capture: {continuation_calls}",
+        )
+
+
+def test_r129_rejects_r119_r128_source_before_launch() -> None:
+    digest = "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74"
+    try:
+        capture._enforce_allowed_manager_source_save(digest)
+    except capture.SeedCaptureError as error:
+        require(
+            error.evidence == {
+                "stage": "manager_source_save_prelaunch",
+                "result": "RED",
+                "source_save_sha256": digest,
+                "rejected_attempts": ["R119", "R128"],
+            },
+            f"rejected source evidence drifted: {error.evidence}",
+        )
+    else:
+        raise AssertionError("known R119/R128 source passed the prelaunch gate")
+
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        calls: list[str] = []
+        runtime = fixture.runtime(
+            calls, seed_purpose=capture.MANAGER_SEED_PURPOSE
+        )
+        original = capture._enforce_allowed_manager_source_save
+        capture._enforce_allowed_manager_source_save = lambda _observed: original(
+            digest
+        )
+        try:
+            report = capture.run_capture(
+                fixture.config(seed_purpose=capture.MANAGER_SEED_PURPOSE),
+                runtime=runtime,
+            )
+        finally:
+            capture._enforce_allowed_manager_source_save = original
+        require(
+            report["result"] == "RED"
+            and report["failure_evidence"]["stage"]
+            == "manager_source_save_prelaunch",
+            "known source rejection was not persisted as typed RED",
+        )
+        require(
+            "bootstrap" not in calls
+            and "supervisor-start" not in calls
+            and "driver-open" not in calls,
+            f"known source rejection crossed the native launch boundary: {calls}",
+        )
 
 
 def main() -> int:
@@ -4833,6 +5041,8 @@ def main() -> int:
     test_seed_source_path_must_be_absolute()
     test_static_preflight_runs_optimized_seed_smokes()
     test_runner_import_guard_prevents_clean_source_bytecode()
+    test_r129_transition_checkpoint_then_clean_manager_continuation()
+    test_r129_rejects_r119_r128_source_before_launch()
     test_static_contract()
     print("GREEN: reusable phase-two seed capture is MCP-only and bounded")
     return 0

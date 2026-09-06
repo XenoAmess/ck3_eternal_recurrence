@@ -406,47 +406,55 @@ def main() -> int:
     assert contract["status"] == "blocked_live_capture_required"
     assert contract["ready"] is False
     assert contract["source"]["sha256"] == (
-        "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74"
+        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9"
     )
-    assert contract["source"]["bytes"] == 26325927
+    assert contract["source"]["bytes"] == 57377787
     assert contract["source"]["absolute_save"] == (
-        "Z:\\p2m119\\native-state\\profile\\save games\\phase2_manager_seed.ck3"
+        "Z:\\p2y\\r2\\native-state\\profile\\save games\\xar_checkpoint.ck3"
     )
-    assert contract["saved_state"]["date_raw"] is None
-    assert contract["saved_state"]["played_character_id"] == 37884
-    assert contract["saved_state"]["player_history_id"] is None
+    assert contract["saved_state"]["date_raw"] == 53147016
+    assert contract["saved_state"]["played_character_id"] == 29037
+    assert contract["saved_state"]["player_history_id"] == "han_6875"
     transition = contract["player_transition_contract"]
-    assert transition == {
-        "handoff_mode": "direct_already_player_manager",
-        "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-        "activation_surface": "load_safe_gui_direct_manager",
-        "entry_event_definition_key": "zga_phase2_manager_seed.1",
-        "source_character_id": 37884,
-        "target_character_id": 37884,
-        "target_source": "hash_bound_already_played_character",
-        "owner_scope": "zga_phase2_manager_owner",
-        "subject_scope": "zga_phase2_manager_subject",
-        "source_date_binding": "first_paused_typed_snapshot",
-        "allowed_prebootstrap_event_definition_keys": [],
-        "requires_exact_activation_event_drain": False,
-        "requires_final_event_at_bound_source_date": True,
-        "forbids_other_prebootstrap_event_drains": True,
-        "forbids_any_prebootstrap_event_input": True,
-        "timeline_speed": 5,
-        "timeline_speed_only_if_advancement_required": True,
-        "destructive_later_event_definition_key": "ep3_interactions_events.0630",
-        "requires_destructive_event_zero_input_red": True,
-        "requires_source_save_hash_match": True,
-        "requires_source_saved_player_identity": True,
-        "requires_typed_final_player": True,
-        "requires_manager_entry_revalidation": True,
-        "requires_final_manager_entry_identity_match": True,
-        "fixture_set_player_character_count": 0,
-        "fixture_creates_character": False,
-        "fixture_creates_title": False,
-        "fixture_creates_relationship": False,
-        "fixture_calls_product_b1": False,
-        "fixture_writes_product_receipts": False,
+    assert transition["handoff_mode"] == "post_exact_pip_load_gui"
+    assert transition["source_character_id"] == 29037
+    assert transition["target_character_id"] == 32904
+    assert transition["completion_date_raw"] == 53147040
+    assert transition["allowed_prebootstrap_event_definition_keys"] == [
+        "zg361b2.40"
+    ]
+    assert transition["activation_event_selected_option_number"] == 3
+    assert transition["activation_event_selected_native_option_index"] == 2
+    assert transition["forbids_timeline_resume_after_activation_event_drain"] is True
+    assert transition["timeline_speed"] == 5
+    assert transition["fixture_set_player_character_count"] == 1
+    assert transition["fixture_creates_character"] is False
+    assert transition["fixture_creates_title"] is False
+    assert transition["fixture_creates_relationship"] is False
+    assert transition["fixture_calls_product_b1"] is False
+    assert transition["fixture_writes_product_receipts"] is False
+    checkpoint = contract["transition_checkpoint_contract"]
+    assert checkpoint == {
+        "kind": "zg361_phase2_active_manager_transition_checkpoint",
+        "capture_cli": "--manager-transition-checkpoint-capture",
+        "continuation_cli": "--manager-transition-checkpoint-receipt",
+        "capture_on_first_typed_target_frame": True,
+        "requires_same_native_pid_and_connection_generation": True,
+        "requires_paused": True,
+        "requires_map_ready": True,
+        "requires_exact_completion_date": True,
+        "requires_timeline_speed": 5,
+        "requires_checkpoint_byte_hash": True,
+        "clean_process_continuation": True,
+        "continuation_maximum_date_raw": 53147064,
+        "continuation_timeline_speed": 5,
+        "continuation_forbids_unregistered_event_drains": True,
+        "final_seed_ready": False,
+        "clears_product_state": False,
+        "writes_product_receipt": False,
+        "rejected_source_save_sha256s": [
+            "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74"
+        ],
     }
     entry = contract["manager_entry_contract"]
     assert entry == {

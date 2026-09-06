@@ -92,6 +92,17 @@ MANAGER_SEED_SUBJECT_SCOPE = "zga_phase2_manager_subject"
 MANAGER_SEED_PREEMPTIVE_EFFECT = "zga_phase2_manager_seed_maybe_begin_effect"
 MANAGER_POST_PIP_HANDOFF_MODE = "post_exact_pip_load_gui"
 MANAGER_DIRECT_ENTRY_MODE = "direct_already_player_manager"
+MANAGER_TRANSITION_CONTINUATION_MODE = "active_manager_transition_checkpoint"
+MANAGER_TRANSITION_CHECKPOINT_KIND = (
+    "zg361_phase2_active_manager_transition_checkpoint"
+)
+REJECTED_MANAGER_SOURCE_SAVE_SHA256S = frozenset(
+    {
+        # R119 was copied forward into R128.  Both attempts proved this exact
+        # five-player save is not an admissible manager route source.
+        "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74",
+    }
+)
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
         "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733"
@@ -437,6 +448,12 @@ class CaptureConfig:
     product_projection: str = "broad"
     product_projection_manifest: Path | None = None
     product_source_override: Path | None = None
+    # R129 splits the post-PIP player switch from final manager capture.  The
+    # first process may freeze an intermediate, real CK3 checkpoint; a fresh
+    # process can consume only its hash-bound receipt and must still pass the
+    # unchanged final event/candidate gates.
+    manager_transition_checkpoint_capture: bool = False
+    manager_transition_checkpoint_receipt: Path | None = None
 
     def resolved(self) -> "CaptureConfig":
         clean_source = self.clean_source.resolve()
@@ -490,6 +507,11 @@ class CaptureConfig:
                 else None
             ),
             frontend_first_load_save_name=self.frontend_first_load_save_name,
+            manager_transition_checkpoint_receipt=(
+                self.manager_transition_checkpoint_receipt.resolve()
+                if self.manager_transition_checkpoint_receipt is not None
+                else None
+            ),
         )
 
     @property
@@ -1759,6 +1781,28 @@ def validate_config(config: CaptureConfig) -> None:
         config.product_source_override, Path
     ):
         raise SeedCaptureError("product source override path is malformed")
+    if (
+        config.manager_transition_checkpoint_capture
+        and config.manager_transition_checkpoint_receipt is not None
+    ):
+        raise SeedCaptureError(
+            "manager transition checkpoint capture and continuation are mutually exclusive"
+        )
+    if (
+        config.manager_transition_checkpoint_capture
+        or config.manager_transition_checkpoint_receipt is not None
+    ) and config.seed_purpose != MANAGER_SEED_PURPOSE:
+        raise SeedCaptureError(
+            "manager transition checkpoint options require player-manager purpose"
+        )
+    if (
+        config.manager_transition_checkpoint_receipt is not None
+        and not config.manager_transition_checkpoint_receipt.is_file()
+    ):
+        raise SeedCaptureError(
+            "manager transition checkpoint receipt is missing: "
+            f"{config.manager_transition_checkpoint_receipt}"
+        )
     if _is_relative_to(config.attempt_dir, config.clean_source):
         raise SeedCaptureError("attempt directory must be outside the clean source")
     if _is_relative_to(config.artifacts_dir, config.clean_source):
@@ -2077,6 +2121,275 @@ def _positive_revision(snapshot: dict[str, Any]) -> int:
     if not isinstance(revision, int) or isinstance(revision, bool) or revision <= 0:
         raise SeedCaptureError("MCP snapshot lacks a positive public revision")
     return revision
+
+
+def _snapshot_played_character_id(snapshot: dict[str, Any]) -> int | None:
+    played = snapshot.get("played_character")
+    character_id = played.get("character_id") if isinstance(played, dict) else None
+    if (
+        isinstance(character_id, int)
+        and not isinstance(character_id, bool)
+        and character_id > 0
+    ):
+        return character_id
+    return None
+
+
+def _enforce_allowed_manager_source_save(source_save_sha256: str) -> None:
+    digest = source_save_sha256.lower()
+    if digest in REJECTED_MANAGER_SOURCE_SAVE_SHA256S:
+        raise SeedCaptureError(
+            "known R119/R128 manager source save is forbidden before launch",
+            {
+                "stage": "manager_source_save_prelaunch",
+                "result": "RED",
+                "source_save_sha256": digest,
+                "rejected_attempts": ["R119", "R128"],
+            },
+        )
+
+
+def _validate_transition_checkpoint_receipt(
+    receipt_path: Path,
+    *,
+    base_contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate an R129 transition seam before any native launch."""
+
+    try:
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise SeedCaptureError(
+            "manager transition checkpoint receipt is unreadable"
+        ) from error
+    source = base_contract.get("source")
+    transition = base_contract.get("player_transition_contract")
+    checkpoint = receipt.get("checkpoint") if isinstance(receipt, dict) else None
+    if not all(isinstance(row, dict) for row in (source, transition, checkpoint)):
+        raise SeedCaptureError("manager transition checkpoint receipt is malformed")
+    raw_path = checkpoint.get("path")
+    checkpoint_path = (
+        Path(raw_path).resolve()
+        if isinstance(raw_path, str) and Path(raw_path).is_absolute()
+        else None
+    )
+    expected_sha = str(checkpoint.get("sha256", "")).lower()
+    checks = {
+        "schema": receipt.get("schema_version") == 1,
+        "kind": receipt.get("kind") == MANAGER_TRANSITION_CHECKPOINT_KIND,
+        "result": receipt.get("result") == "GREEN",
+        "intermediate_only": receipt.get("final_seed_ready") is False,
+        "original_source_hash": (
+            receipt.get("original_source_save_sha256") == source.get("sha256")
+        ),
+        "original_source_not_rejected": (
+            str(receipt.get("original_source_save_sha256", "")).lower()
+            not in REJECTED_MANAGER_SOURCE_SAVE_SHA256S
+        ),
+        "route_mode": receipt.get("handoff_mode") == MANAGER_POST_PIP_HANDOFF_MODE,
+        "target_player": (
+            receipt.get("played_character_id")
+            == transition.get("target_character_id")
+        ),
+        "exact_date": (
+            receipt.get("date_raw") == transition.get("completion_date_raw")
+        ),
+        "checkpoint_date": (
+            checkpoint.get("date_raw") == transition.get("completion_date_raw")
+        ),
+        "checkpoint_episode_character": (
+            checkpoint.get("episode_character_id")
+            in (None, transition.get("target_character_id"))
+        ),
+        "paused": receipt.get("paused") is True,
+        "map_ready": receipt.get("map_ready") is True,
+        "timeline_speed_five": receipt.get("timeline_speed") == 5,
+        "capture_session_typed": (
+            isinstance(receipt.get("bridge_pid"), int)
+            and not isinstance(receipt.get("bridge_pid"), bool)
+            and receipt.get("bridge_pid") > 0
+            and isinstance(receipt.get("connection_generation"), int)
+            and not isinstance(receipt.get("connection_generation"), bool)
+            and receipt.get("connection_generation") > 0
+        ),
+        "no_product_state_clear": receipt.get("product_state_cleared") is False,
+        "no_product_receipt": receipt.get("product_receipt_written") is False,
+        "checkpoint_path": checkpoint_path is not None and checkpoint_path.is_file(),
+        "checkpoint_size": (
+            checkpoint_path is not None
+            and checkpoint_path.is_file()
+            and checkpoint.get("size") == checkpoint_path.stat().st_size
+            and isinstance(checkpoint.get("size"), int)
+            and not isinstance(checkpoint.get("size"), bool)
+            and checkpoint.get("size") > 0
+        ),
+        "checkpoint_hash": (
+            checkpoint_path is not None
+            and checkpoint_path.is_file()
+            and re.fullmatch(r"[0-9a-f]{64}", expected_sha) is not None
+            and sha256_file(checkpoint_path).lower() == expected_sha
+        ),
+        "checkpoint_not_rejected_source": (
+            expected_sha not in REJECTED_MANAGER_SOURCE_SAVE_SHA256S
+        ),
+    }
+    failed = [name for name, passed in checks.items() if passed is not True]
+    evidence = {
+        "schema_version": 1,
+        "stage": "manager_transition_checkpoint_prelaunch",
+        "result": "GREEN" if not failed else "RED",
+        "receipt_path": str(receipt_path),
+        "checkpoint_path": str(checkpoint_path) if checkpoint_path else None,
+        "checkpoint_sha256": expected_sha or None,
+        "checks": checks,
+        "failed_checks": failed,
+    }
+    if failed:
+        raise SeedCaptureError(
+            "manager transition checkpoint receipt failed closed", evidence
+        )
+    return {**evidence, "receipt": receipt, "checkpoint": checkpoint}
+
+
+def _capture_active_manager_transition_checkpoint(
+    service: Any,
+    artifacts: Path,
+    *,
+    route: dict[str, Any],
+    original_source_save_sha256: str,
+    binding: dict[str, Any],
+    timeout_seconds: float,
+    clock: Callable[[], float],
+    sleeper: Callable[[float], None],
+) -> dict[str, Any]:
+    """Freeze the first paused typed frame after the fixture player switch."""
+
+    target_id = route.get("target_character_id")
+    completion_date = route.get("completion_date_raw")
+    if (
+        isinstance(target_id, bool)
+        or not isinstance(target_id, int)
+        or target_id <= 0
+        or isinstance(completion_date, bool)
+        or not isinstance(completion_date, int)
+        or completion_date <= 0
+    ):
+        raise SeedCaptureError("manager transition checkpoint route is malformed")
+    started = clock()
+    last_snapshot: dict[str, Any] | None = None
+    while clock() < started + timeout_seconds:
+        snapshot = service.snapshot()
+        if not isinstance(snapshot, dict):
+            raise SeedCaptureError("manager transition snapshot is not an object")
+        last_snapshot = snapshot
+        date_raw = snapshot.get("date_raw")
+        if date_raw != completion_date:
+            raise SeedCaptureError(
+                "manager transition left the exact completion date before checkpoint",
+                {
+                    "stage": "manager_transition_checkpoint_capture",
+                    "expected_date_raw": completion_date,
+                    "observed_date_raw": date_raw,
+                },
+            )
+        if snapshot.get("paused") is not True:
+            service.execute_step(
+                "pause-map", expected_revision=_positive_revision(snapshot)
+            )
+            sleeper(0.05)
+            continue
+        played_id = _snapshot_played_character_id(snapshot)
+        if snapshot.get("map_ready") is not True or played_id != target_id:
+            sleeper(0.05)
+            continue
+        if snapshot.get("speed") != 5:
+            raise SeedCaptureError(
+                "manager transition checkpoint did not retain default speed five",
+                {
+                    "stage": "manager_transition_checkpoint_capture",
+                    "expected_speed": 5,
+                    "observed_speed": snapshot.get("speed"),
+                },
+            )
+        diagnostics = snapshot.get("diagnostics")
+        diagnostics = diagnostics if isinstance(diagnostics, dict) else {}
+        same_session = (
+            diagnostics.get("bridge_pid") == binding.get("bridge_pid")
+            and diagnostics.get("connection_generation")
+            == binding.get("connection_generation")
+        )
+        if not same_session:
+            raise SeedCaptureError(
+                "manager transition checkpoint lost native session lineage"
+            )
+        revision = _positive_revision(snapshot)
+        save = service.save_checkpoint(expected_revision=revision)
+        checkpoint = save.get("checkpoint", save) if isinstance(save, dict) else None
+        raw_checkpoint_path = (
+            checkpoint.get("path") if isinstance(checkpoint, dict) else None
+        )
+        if (
+            not isinstance(checkpoint, dict)
+            or checkpoint.get("status") != "saved"
+            or not isinstance(raw_checkpoint_path, str)
+        ):
+            raise SeedCaptureError("transition save-checkpoint did not materialize")
+        checkpoint_path = Path(raw_checkpoint_path).resolve()
+        declared_sha = str(checkpoint.get("sha256", "")).lower()
+        if (
+            not checkpoint_path.is_file()
+            or checkpoint.get("date_raw") != completion_date
+            or checkpoint.get("episode_character_id") not in (None, target_id)
+            or checkpoint.get("size") != checkpoint_path.stat().st_size
+            or re.fullmatch(r"[0-9a-f]{64}", declared_sha) is None
+            or sha256_file(checkpoint_path).lower() != declared_sha
+        ):
+            raise SeedCaptureError(
+                "transition save-checkpoint bytes or typed identity drifted"
+            )
+        archive = artifacts / "manager-transition-checkpoint.ck3"
+        shutil.copy2(checkpoint_path, archive)
+        archived_sha = sha256_file(archive).lower()
+        if archived_sha != declared_sha or archive.stat().st_size != checkpoint.get("size"):
+            raise SeedCaptureError("transition checkpoint archive copy drifted")
+        write_json(artifacts / "manager-transition-checkpoint-snapshot.json", snapshot)
+        write_json(artifacts / "manager-transition-save-response.json", save)
+        receipt = {
+            "schema_version": 1,
+            "kind": MANAGER_TRANSITION_CHECKPOINT_KIND,
+            "result": "GREEN",
+            "final_seed_ready": False,
+            "handoff_mode": MANAGER_POST_PIP_HANDOFF_MODE,
+            "original_source_save_sha256": original_source_save_sha256,
+            "played_character_id": target_id,
+            "date_raw": completion_date,
+            "paused": True,
+            "map_ready": True,
+            "timeline_speed": snapshot.get("speed"),
+            "bridge_pid": binding.get("bridge_pid"),
+            "connection_generation": binding.get("connection_generation"),
+            "product_state_cleared": False,
+            "product_receipt_written": False,
+            "checkpoint": {
+                "path": str(archive.resolve()),
+                "size": archive.stat().st_size,
+                "sha256": archived_sha,
+                "date_raw": checkpoint.get("date_raw"),
+                "episode_character_id": checkpoint.get("episode_character_id"),
+                "strategy": checkpoint.get("strategy"),
+            },
+        }
+        write_json(artifacts / "manager-transition-checkpoint-receipt.json", receipt)
+        return receipt
+    raise SeedCaptureError(
+        "typed active manager did not appear before transition checkpoint deadline",
+        {
+            "stage": "manager_transition_checkpoint_capture",
+            "expected_character_id": target_id,
+            "expected_date_raw": completion_date,
+            "last_snapshot": last_snapshot,
+        },
+    )
 
 
 def _typed_character_id(scope: object) -> int | None:
@@ -2545,6 +2858,8 @@ def wait_for_bootstrap_event(
     known_b2_pip_source_save_sha256s: tuple[str, ...] | None = None,
     post_activation_event_definition_key: str | None = None,
     post_activation_paused_settle_seconds: float = 0.0,
+    post_activation_checkpoint_capture: Callable[[], dict[str, Any]] | None = None,
+    initial_paused_event_settle_seconds: float = 0.0,
     timeline_speed: int = 1,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -2608,6 +2923,19 @@ def wait_for_bootstrap_event(
         or not post_activation_event_definition_key
     ):
         raise ValueError("post-activation event key must be a non-empty string")
+    if (
+        post_activation_checkpoint_capture is not None
+        and post_activation_event_definition_key is None
+    ):
+        raise ValueError(
+            "post-activation checkpoint capture requires an activation event key"
+        )
+    if (
+        isinstance(initial_paused_event_settle_seconds, bool)
+        or not math.isfinite(float(initial_paused_event_settle_seconds))
+        or initial_paused_event_settle_seconds < 0
+    ):
+        raise ValueError("initial paused event settle must be finite and non-negative")
     if isinstance(timeline_speed, bool) or timeline_speed not in range(1, 6):
         raise ValueError("bootstrap timeline speed must be an integer from 1 to 5")
     started = clock()
@@ -2629,6 +2957,11 @@ def wait_for_bootstrap_event(
     resumed = False
     drained_pre_bootstrap_events: list[str] = []
     post_activation_settle_deadline: float | None = None
+    initial_paused_settle_deadline = (
+        started + initial_paused_event_settle_seconds
+        if initial_paused_event_settle_seconds > 0
+        else None
+    )
     while clock() < deadline:
         now = clock()
         try:
@@ -2883,6 +3216,15 @@ def wait_for_bootstrap_event(
                         )
                         drained_pre_bootstrap_events.append(key)
                         if key == post_activation_event_definition_key:
+                            if post_activation_checkpoint_capture is not None:
+                                receipt = post_activation_checkpoint_capture()
+                                return {
+                                    "_manager_transition_checkpoint_only": True,
+                                    "transition_checkpoint_receipt": receipt,
+                                    "drained_pre_bootstrap_events": list(
+                                        drained_pre_bootstrap_events
+                                    ),
+                                }
                             post_activation_settle_deadline = min(
                                 deadline,
                                 clock() + post_activation_paused_settle_seconds,
@@ -2992,6 +3334,31 @@ def wait_for_bootstrap_event(
                     append_jsonl(evidence_path, evidence)
                     raise SeedCaptureError(
                         "post-activation GUI did not materialize the exact seed event while paused",
+                        evidence,
+                    )
+            elif initial_paused_settle_deadline is not None:
+                if snapshot.get("paused") is not True:
+                    timeline_step = "pause-map"
+                elif clock() < initial_paused_settle_deadline:
+                    sleeper(0.1)
+                    continue
+                else:
+                    evidence = {
+                        "schema_version": 1,
+                        "state": "manager_continuation_gui_settle_timeout",
+                        "result": "RED",
+                        "expected_event_definition_key": (
+                            expected_event_definition_key
+                        ),
+                        "date_raw": snapshot.get("date_raw"),
+                        "paused": snapshot.get("paused"),
+                        "active_event": active,
+                        "settle_seconds": initial_paused_event_settle_seconds,
+                        "timeline_resumed": False,
+                    }
+                    append_jsonl(evidence_path, evidence)
+                    raise SeedCaptureError(
+                        "clean manager continuation did not materialize the exact seed event while paused",
                         evidence,
                     )
             elif snapshot.get("speed") != timeline_speed:
@@ -3400,6 +3767,91 @@ def _manager_direct_entry_contract(
     if failed_checks:
         raise SeedCaptureError(
             "manager direct-entry contract failed closed", evidence
+        )
+    return evidence
+
+
+def _manager_checkpoint_continuation_contract(
+    base_contract: dict[str, Any],
+    receipt_validation: dict[str, Any],
+    observed_save_sha256: str,
+) -> dict[str, Any]:
+    """Derive a clean-process manager route from a real transition receipt."""
+
+    receipt = receipt_validation.get("receipt")
+    checkpoint = receipt_validation.get("checkpoint")
+    transition = base_contract.get("player_transition_contract")
+    checkpoint_contract = base_contract.get("transition_checkpoint_contract")
+    if not all(
+        isinstance(row, dict)
+        for row in (receipt, checkpoint, transition, checkpoint_contract)
+    ):
+        raise SeedCaptureError("manager checkpoint continuation is malformed")
+    target_id = transition.get("target_character_id")
+    completion_date = transition.get("completion_date_raw")
+    maximum_date = checkpoint_contract.get("continuation_maximum_date_raw")
+    checks = {
+        "checkpoint_hash_matches_loaded_save": (
+            str(checkpoint.get("sha256", "")).lower()
+            == observed_save_sha256.lower()
+        ),
+        "target_player_bound": receipt.get("played_character_id") == target_id,
+        "completion_date_bound": receipt.get("date_raw") == completion_date,
+        "paused_transition": receipt.get("paused") is True,
+        "strict_final_event_retained": (
+            transition.get("post_switch_event_definition_key")
+            == MANAGER_SEED_EVENT_DEFINITION_KEY
+            and transition.get("requires_final_manager_entry_identity_match") is True
+            and transition.get("requires_post_switch_manager_revalidation") is True
+        ),
+        "transition_contract_is_intermediate_only": (
+            checkpoint_contract.get("kind")
+            == MANAGER_TRANSITION_CHECKPOINT_KIND
+            and checkpoint_contract.get("final_seed_ready") is False
+            and checkpoint_contract.get("clears_product_state") is False
+            and checkpoint_contract.get("writes_product_receipt") is False
+        ),
+        "no_product_state_clear": receipt.get("product_state_cleared") is False,
+        "no_product_receipt": receipt.get("product_receipt_written") is False,
+        "timeline_speed_is_five": transition.get("timeline_speed") == 5,
+        "bounded_one_day_continuation": (
+            isinstance(completion_date, int)
+            and not isinstance(completion_date, bool)
+            and maximum_date == completion_date + 24
+            and checkpoint_contract.get("continuation_timeline_speed") == 5
+            and checkpoint_contract.get(
+                "continuation_forbids_unregistered_event_drains"
+            )
+            is True
+        ),
+    }
+    failed = [name for name, passed in checks.items() if passed is not True]
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed else "RED",
+        "stage": "active_manager_transition_checkpoint_continuation_contract",
+        "handoff_mode": MANAGER_TRANSITION_CONTINUATION_MODE,
+        "source_save_sha256": observed_save_sha256,
+        "original_source_save_sha256": receipt.get(
+            "original_source_save_sha256"
+        ),
+        "source_date_raw": completion_date,
+        "completion_date_raw": completion_date,
+        "source_character_id": target_id,
+        "target_character_id": target_id,
+        "allowed_prebootstrap_event_definition_keys": [],
+        "activation_event_definition_key": None,
+        "activation_event_selected_option_number": None,
+        "post_activation_event_definition_key": None,
+        "post_activation_paused_settle_seconds": 0.0,
+        "timeline_speed": 5,
+        "maximum_date_raw": maximum_date,
+        "checks": checks,
+        "failed_checks": failed,
+    }
+    if failed:
+        raise SeedCaptureError(
+            "manager checkpoint continuation contract failed closed", evidence
         )
     return evidence
 
@@ -4079,6 +4531,7 @@ def run_preflight(
         "source_identity": None,
         "critical_b2_product_byte_equivalence": None,
         "external_dependencies": None,
+        "manager_transition_checkpoint_prelaunch": None,
         "bootstrap": None,
         "profile_settings": {
             "result": "NOT_RUN",
@@ -4193,14 +4646,27 @@ def run_preflight(
         source_row = base_contract.get("source")
         if not isinstance(source_row, dict):
             raise SeedCaptureError("seed contract source is not an object")
-        raw_old_save = source_row.get("absolute_save")
+        if config.manager_transition_checkpoint_receipt is not None:
+            transition_prelaunch = _validate_transition_checkpoint_receipt(
+                config.manager_transition_checkpoint_receipt,
+                base_contract=base_contract,
+            )
+            report["manager_transition_checkpoint_prelaunch"] = {
+                key: value
+                for key, value in transition_prelaunch.items()
+                if key not in {"receipt", "checkpoint"}
+            }
+            raw_old_save = transition_prelaunch["checkpoint"].get("path")
+            expected_save_sha = transition_prelaunch["checkpoint"].get("sha256")
+        else:
+            raw_old_save = source_row.get("absolute_save")
+            expected_save_sha = source_row.get("sha256")
         if not isinstance(raw_old_save, str) or not raw_old_save:
             raise SeedCaptureError("seed contract absolute_save is missing")
         old_save_path = Path(raw_old_save)
         if not old_save_path.is_absolute():
             raise SeedCaptureError("seed contract absolute_save must be absolute")
         old_save = old_save_path.resolve()
-        expected_save_sha = source_row.get("sha256")
         if not old_save.is_file():
             raise SeedCaptureError(f"old real seed source is missing: {old_save}")
         observed_save_sha = sha256_file(old_save)
@@ -4208,6 +4674,8 @@ def run_preflight(
             raise SeedCaptureError(
                 f"old real seed source hash drifted: {observed_save_sha}"
             )
+        if config.seed_purpose == MANAGER_SEED_PURPOSE:
+            _enforce_allowed_manager_source_save(observed_save_sha)
 
         dependency_paths = {
             "source_zip": config.source_zip,
@@ -4747,6 +5215,8 @@ def run_capture(
         "native_observer": None,
         "provider_probes": None,
         "candidate": None,
+        "manager_transition_checkpoint": None,
+        "manager_transition_checkpoint_prelaunch": None,
         "keyboard_watchdog": None,
         "cleanup": None,
         "driver_closed": None,
@@ -4866,14 +5336,34 @@ def run_capture(
         source_row = base_contract.get("source")
         if not isinstance(source_row, dict):
             raise SeedCaptureError("seed contract source is not an object")
-        raw_old_save = source_row.get("absolute_save")
+        manager_transition_checkpoint_prelaunch: dict[str, Any] | None = None
+        if config.manager_transition_checkpoint_receipt is not None:
+            manager_transition_checkpoint_prelaunch = (
+                _validate_transition_checkpoint_receipt(
+                    config.manager_transition_checkpoint_receipt,
+                    base_contract=base_contract,
+                )
+            )
+            report["manager_transition_checkpoint_prelaunch"] = {
+                key: value
+                for key, value in manager_transition_checkpoint_prelaunch.items()
+                if key not in {"receipt", "checkpoint"}
+            }
+            raw_old_save = manager_transition_checkpoint_prelaunch[
+                "checkpoint"
+            ].get("path")
+            expected_save_sha = manager_transition_checkpoint_prelaunch[
+                "checkpoint"
+            ].get("sha256")
+        else:
+            raw_old_save = source_row.get("absolute_save")
+            expected_save_sha = source_row.get("sha256")
         if not isinstance(raw_old_save, str) or not raw_old_save:
             raise SeedCaptureError("seed contract absolute_save is missing")
         old_save_path = Path(raw_old_save)
         if not old_save_path.is_absolute():
             raise SeedCaptureError("seed contract absolute_save must be absolute")
         old_save = old_save_path.resolve()
-        expected_save_sha = source_row.get("sha256")
         if not old_save.is_file():
             raise SeedCaptureError(f"old real seed source is missing: {old_save}")
         observed_save_sha = sha256_file(old_save)
@@ -4881,6 +5371,8 @@ def run_capture(
             raise SeedCaptureError(
                 f"old real seed source hash drifted: {observed_save_sha}"
             )
+        if config.seed_purpose == MANAGER_SEED_PURPOSE:
+            _enforce_allowed_manager_source_save(observed_save_sha)
         dependency_paths = {
             "source_zip": config.source_zip,
             "old_save": old_save,
@@ -5218,9 +5710,16 @@ def run_capture(
         manager_route: dict[str, Any] | None = None
         direct_source_snapshot: dict[str, Any] | None = None
         if config.seed_purpose == MANAGER_SEED_PURPOSE:
-            manager_route = _manager_seed_entry_route_contract(
-                base_contract, observed_save_sha
-            )
+            if manager_transition_checkpoint_prelaunch is not None:
+                manager_route = _manager_checkpoint_continuation_contract(
+                    base_contract,
+                    manager_transition_checkpoint_prelaunch,
+                    observed_save_sha,
+                )
+            else:
+                manager_route = _manager_seed_entry_route_contract(
+                    base_contract, observed_save_sha
+                )
             report["manager_transition_contract"] = manager_route
             write_json(
                 artifacts / "manager-entry-route-contract.json",
@@ -5247,10 +5746,43 @@ def run_capture(
                     artifacts / "manager-entry-route-contract.json",
                     manager_route,
                 )
+            if (
+                config.manager_transition_checkpoint_capture
+                and manager_route["handoff_mode"] != MANAGER_POST_PIP_HANDOFF_MODE
+            ):
+                raise SeedCaptureError(
+                    "transition checkpoint capture requires the post-PIP handoff route"
+                )
         direct_manager_route = (
             manager_route is not None
             and manager_route["handoff_mode"] == MANAGER_DIRECT_ENTRY_MODE
         )
+        checkpoint_continuation_route = (
+            manager_route is not None
+            and manager_route["handoff_mode"]
+            == MANAGER_TRANSITION_CONTINUATION_MODE
+        )
+        manager_no_pip_route = direct_manager_route or checkpoint_continuation_route
+        transition_checkpoint_callback: Callable[[], dict[str, Any]] | None = None
+        if (
+            config.manager_transition_checkpoint_capture
+            and manager_route is not None
+            and binding is not None
+        ):
+            transition_checkpoint_callback = lambda: (
+                _capture_active_manager_transition_checkpoint(
+                    service,
+                    artifacts,
+                    route=manager_route,
+                    original_source_save_sha256=observed_save_sha,
+                    binding=binding,
+                    timeout_seconds=manager_route[
+                        "post_activation_paused_settle_seconds"
+                    ],
+                    clock=active_runtime.clock,
+                    sleeper=active_runtime.sleep,
+                )
+            )
         entry_snapshot = wait_for_bootstrap_event(
             service,
             artifacts,
@@ -5260,18 +5792,21 @@ def run_capture(
             ),
             timeout_seconds=config.event_timeout_seconds,
             expected_event_definition_key=config.seed_event_definition_key,
+            required_date_raw=None,
             source_save_sha256=observed_save_sha,
             maximum_date_raw=(
-                manager_route["completion_date_raw"]
+                manager_route.get(
+                    "maximum_date_raw", manager_route["completion_date_raw"]
+                )
                 if manager_route is not None
                 else None
             ),
             expected_event_date_raw=(
                 manager_route["completion_date_raw"]
-                if manager_route is not None
+                if manager_route is not None and not checkpoint_continuation_route
                 else None
             ),
-            allow_known_prebootstrap_drains=not direct_manager_route,
+            allow_known_prebootstrap_drains=not manager_no_pip_route,
             known_prebootstrap_drain_allowlist=(
                 tuple(
                     manager_route[
@@ -5283,36 +5818,51 @@ def run_capture(
             ),
             known_b2_pip_option_number=(
                 manager_route["activation_event_selected_option_number"]
-                if manager_route is not None and not direct_manager_route
+                if manager_route is not None and not manager_no_pip_route
                 else None
             ),
             known_b2_pip_source_save_sha256s=(
                 (observed_save_sha,)
-                if manager_route is not None and not direct_manager_route
+                if manager_route is not None and not manager_no_pip_route
                 else None
             ),
             post_activation_event_definition_key=(
                 manager_route[
                     "post_activation_event_definition_key"
                 ]
-                if manager_route is not None and not direct_manager_route
+                if manager_route is not None and not manager_no_pip_route
                 else None
             ),
             post_activation_paused_settle_seconds=(
                 manager_route[
                     "post_activation_paused_settle_seconds"
                 ]
-                if manager_route is not None and not direct_manager_route
+                if manager_route is not None and not manager_no_pip_route
                 else 0.0
             ),
+            post_activation_checkpoint_capture=transition_checkpoint_callback,
+            initial_paused_event_settle_seconds=0.0,
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,
             logger=runner_log,
         )
+        if entry_snapshot.get("_manager_transition_checkpoint_only") is True:
+            receipt = entry_snapshot.get("transition_checkpoint_receipt")
+            if not isinstance(receipt, dict) or receipt.get("result") != "GREEN":
+                raise SeedCaptureError(
+                    "manager transition checkpoint callback returned no GREEN receipt"
+                )
+            report["manager_transition_checkpoint"] = receipt
+            report["result"] = "TRANSITION_CHECKPOINT_READY"
+            report["scenario_verdict"] = "INTERMEDIATE_GREEN"
+            report["seed_verdict"] = "RED"
+            report["live_verdict"] = "active_manager_transition_checkpoint_ready"
+            report["final_seed_ready"] = False
+            return report
         event_snapshot = entry_snapshot
         if config.seed_purpose == MANAGER_SEED_PURPOSE:
-            if direct_manager_route:
+            if manager_no_pip_route:
                 pip_drain_path = (
                     artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
                 )
@@ -5326,7 +5876,11 @@ def run_capture(
                             "path": str(pip_drain_path),
                         },
                     )
-                report["manager_entry_mode"] = "direct-already-player-manager"
+                report["manager_entry_mode"] = (
+                    "active-manager-transition-checkpoint-continuation"
+                    if checkpoint_continuation_route
+                    else "direct-already-player-manager"
+                )
             else:
                 pip_drain_path = (
                     artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
@@ -5408,19 +5962,23 @@ def run_capture(
             expected_manager_id = manager_route["target_character_id"]
             expected_subject_id = (
                 None
-                if direct_manager_route
+                if manager_no_pip_route
                 else manager_route["source_character_id"]
             )
             source_date_raw = manager_route["source_date_raw"]
             completion_date_raw = manager_route["completion_date_raw"]
             observed_date_raw = event_snapshot.get("date_raw")
             binding_stage = (
-                "direct_already_player_manager_final_binding"
+                "active_manager_transition_checkpoint_final_binding"
+                if checkpoint_continuation_route
+                else "direct_already_player_manager_final_binding"
                 if direct_manager_route
                 else "post_exact_pip_player_transition"
             )
             handoff_mode = (
-                MANAGER_DIRECT_ENTRY_MODE
+                MANAGER_TRANSITION_CONTINUATION_MODE
+                if checkpoint_continuation_route
+                else MANAGER_DIRECT_ENTRY_MODE
                 if direct_manager_route
                 else MANAGER_POST_PIP_HANDOFF_MODE
             )
@@ -5462,14 +6020,21 @@ def run_capture(
                     ),
                     "subject_matches_typed_handoff_subject": (
                         final_subject_id != expected_manager_id
-                        if direct_manager_route
+                        if manager_no_pip_route
                         else final_subject_id == expected_subject_id
                     ),
                     "played_character_matches_target_manager": (
                         captured_played_id == expected_manager_id
                     ),
                     "event_at_exact_completion_date": (
-                        observed_date_raw == completion_date_raw
+                        completion_date_raw <= observed_date_raw
+                        <= manager_route.get(
+                            "maximum_date_raw", completion_date_raw
+                        )
+                        if checkpoint_continuation_route
+                        and isinstance(observed_date_raw, int)
+                        and not isinstance(observed_date_raw, bool)
+                        else observed_date_raw == completion_date_raw
                     ),
                 },
             }
@@ -5481,10 +6046,15 @@ def run_capture(
             final_binding_evidence["failed_checks"] = failed_checks
             if failed_checks:
                 final_binding_evidence["result"] = "RED"
-            if direct_manager_route:
+            if manager_no_pip_route:
                 report["manager_direct_final_binding"] = final_binding_evidence
                 write_json(
-                    artifacts / "manager-direct-final-binding.json",
+                    artifacts
+                    / (
+                        "manager-transition-checkpoint-final-binding.json"
+                        if checkpoint_continuation_route
+                        else "manager-direct-final-binding.json"
+                    ),
                     final_binding_evidence,
                 )
             else:
@@ -5532,7 +6102,7 @@ def run_capture(
         if not isinstance(candidate, dict):
             raise SeedCaptureError("seed materializer returned a non-object")
         report["candidate"] = candidate
-        if direct_manager_route and manager_route is not None:
+        if manager_no_pip_route and manager_route is not None:
             direct_candidate_identity = _validate_direct_manager_candidate(
                 candidate,
                 capture_result,
@@ -5733,28 +6303,50 @@ def run_capture(
                             f"{type(error).__name__}: {error}"
                         )
                         _flip_red(report, str(dependency_row["after_hash_error"]))
-        if report.get("result") == "GREEN":
+        if report.get("result") in {"GREEN", "TRANSITION_CHECKPOINT_READY"}:
+            successful_phase = report.get("result")
             cleanup_row = report.get("cleanup")
             if not isinstance(cleanup_row, dict) or cleanup_row.get(
                 "result"
             ) != "GREEN":
-                _flip_red(report, "GREEN capture lacks native cleanup proof")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks native cleanup proof",
+                )
             if report.get("driver_closed") is not True:
-                _flip_red(report, "GREEN capture lacks driver-close proof")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks driver-close proof",
+                )
             if report.get("runtime_unchanged") is not True:
-                _flip_red(report, "GREEN capture lacks runtime immutability proof")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks runtime immutability proof",
+                )
             if report.get("clean_source_unchanged") is not True:
-                _flip_red(report, "GREEN capture lacks clean-source immutability proof")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks clean-source immutability proof",
+                )
             dependency_row = report.get("external_dependencies")
             if not isinstance(dependency_row, dict) or dependency_row.get(
                 "unchanged"
             ) is not True:
-                _flip_red(report, "GREEN capture lacks dependency immutability proof")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks dependency immutability proof",
+                )
             if not config.native_observer_only and len(green_keyboard_rows) < 1:
-                _flip_red(report, "GREEN capture lacks a US English HKL attestation")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks a US English HKL attestation",
+                )
             logs_row = report.get("logs_copy")
             if not isinstance(logs_row, dict) or not logs_row.get("files"):
-                _flip_red(report, "GREEN capture lacks copied CK3 logs")
+                _flip_red(
+                    report,
+                    f"{successful_phase} capture lacks copied CK3 logs",
+                )
         report["finished_at_utc"] = utc_now()
         write_json(artifacts / "runner-report.json", report)
     return report
@@ -5796,6 +6388,22 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         ),
     )
     parser.add_argument("--seed-contract", type=Path)
+    parser.add_argument(
+        "--manager-transition-checkpoint-capture",
+        action="store_true",
+        help=(
+            "after the exact manager PIP handoff, save a real intermediate "
+            "active-manager checkpoint and stop before final seed claims"
+        ),
+    )
+    parser.add_argument(
+        "--manager-transition-checkpoint-receipt",
+        type=Path,
+        help=(
+            "start a clean manager continuation from a previously validated "
+            "R129 transition-checkpoint receipt"
+        ),
+    )
     parser.add_argument(
         "--product-projection",
         default="broad",
@@ -5932,6 +6540,12 @@ def parse_args(argv: list[str] | None = None) -> CaptureConfig:
         profile_settings_template=args.profile_settings_template,
         frontend_first_load_save_name=args.frontend_first_load_save_name,
         frontend_first_timeout_seconds=args.frontend_first_timeout_seconds,
+        manager_transition_checkpoint_capture=(
+            args.manager_transition_checkpoint_capture
+        ),
+        manager_transition_checkpoint_receipt=(
+            args.manager_transition_checkpoint_receipt
+        ),
     )
 
 
@@ -5950,7 +6564,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"seed capture preflight failed: {type(error).__name__}: {error}")
         return 2
     print(json.dumps(report, ensure_ascii=False, indent=2), flush=True)
-    return 0 if report.get("result") == "GREEN" else 2
+    return (
+        0
+        if report.get("result") in {"GREEN", "TRANSITION_CHECKPOINT_READY"}
+        else 2
+    )
 
 
 if __name__ == "__main__":
