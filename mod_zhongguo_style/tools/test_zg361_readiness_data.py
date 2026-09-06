@@ -23,6 +23,7 @@ from zg361_readiness_data import (
     LATEST_PRODUCT_ACCEPTANCE,
     LEVELS,
     READINESS_BY_ID,
+    RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS,
     ReadinessLevel,
     format_ranges,
     ids_at_least,
@@ -105,7 +106,7 @@ class ReadinessDataTests(unittest.TestCase):
             "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_latest_product_snapshot_records_r107_without_promoting_ids(self) -> None:
+    def test_product_snapshots_record_r107_baseline_and_recent_reds_without_promoting_ids(self) -> None:
         snapshot = LATEST_PRODUCT_ACCEPTANCE
         self.assertEqual(snapshot.run_id, "R107")
         self.assertEqual(snapshot.result, "RED")
@@ -127,8 +128,18 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(EXCLUSIVE_COUNTS["ck3-live"], 4)
 
         ledger = self.rendered[self.ledger_path].decode("utf-8-sig")
-        self.assertIn("最新完整产品验收快照", ledger)
+        self.assertIn("R111–R114 增量全量候选验收记录", ledger)
+        self.assertEqual(
+            tuple(attempt.run_id for attempt in RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS),
+            ("R111", "R112", "R113", "R114"),
+        )
+        self.assertTrue(
+            all(attempt.verified_file_count == 1031 for attempt in RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS)
+        )
+        self.assertIn("R107 基线完整产品验收快照", ledger)
         self.assertIn("`R107`", ledger)
+        self.assertIn("`R114`", ledger)
+        self.assertIn("d54d3beb0dcf26a3831b6b0441e92dbba28a56aca8e77fae770c01416f208aa5", ledger)
         self.assertIn("937 files", ledger)
         self.assertIn("918 游戏日", ledger)
         self.assertIn("221 次 native/MCP 观测", ledger)

@@ -118,6 +118,21 @@ class ProductAcceptanceSnapshot:
     boundary: str
 
 
+@dataclass(frozen=True, slots=True)
+class ProductAcceptanceAttempt:
+    """Bounded recent whole-product attempt that did not promote per-ID readiness."""
+
+    run_id: str
+    observed_at: str
+    product_commit: str
+    projection: str
+    verified_file_count: int
+    product_tree_sha256: str
+    release_manifest_sha256: str
+    loader_and_result: str
+    closure_boundary: str
+
+
 CENTRAL_WIRING_BOUNDARY: Final = (
     "central-wired records committed hook reachability only; it does not prove "
     "complete per-ID semantics, a complete player-visible loop, or CK3 live acceptance"
@@ -142,6 +157,84 @@ CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY: Final = (
 LIVE_BOUNDARY: Final = (
     "ck3-live means bounded fixture-live evidence for the named slice; no mechanism "
     "is promoted here to production-live or full semantic completion"
+)
+
+RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS: Final = (
+    ProductAcceptanceAttempt(
+        run_id="R111",
+        observed_at="2026-09-06 09:54 Asia/Shanghai",
+        product_commit="807f08d0c74bbd6126431c677d8cbb32a10417f0",
+        projection="phase2-full-release-r111-807f08d",
+        verified_file_count=1031,
+        product_tree_sha256="c865244335ed6a749d07e62527f0772bb3fd913ccea2a6888f00e680e7e23674",
+        release_manifest_sha256="326bf1a5a9940b09627387f2b3b09c70b26f1f1eeb44ab129fc3c6745def7196",
+        loader_and_result=(
+            "loader 303/303 GREEN；产品 RED 同时落在两族：B1 weak/dead manager 的 "
+            "pending-subject resolver，以及 `zg361b2.40.desc` 的 Character / saved-scope "
+            "本地化链。550 游戏日观察上限被更早的产品 RED 覆盖，不能据此判断性能或扩大时限。"
+        ),
+        closure_boundary=(
+            "B1 终止/释放语义及 R111 的原始 loc 签名由 "
+            "`3c005e45b6a6b6c1442a3903052a582bab48970d` 修改；R112 未重现 B1 旧族，"
+            "但暴露了替代 loc 链的新错误，所以此处不把本地化记为 live GREEN。"
+        ),
+    ),
+    ProductAcceptanceAttempt(
+        run_id="R112",
+        observed_at="2026-09-06 10:20 Asia/Shanghai",
+        product_commit="3c005e45b6a6b6c1442a3903052a582bab48970d",
+        projection="phase2-full-release-r112-3c005e4",
+        verified_file_count=1031,
+        product_tree_sha256="f467ac90703ad0323f6608da6562becb0bf2bbcde15ebd176c11ced7569d435c",
+        release_manifest_sha256="92810fd470936c5dda05b3b2b7c66565610b6620a8dc0a6a8c41596b512c648d",
+        loader_and_result=(
+            "loader 303/303 GREEN；产品 RED：Character ROOT 上的 "
+            "`ROOT.MakeScope.Var(...).Char.GetShortUIName` 无法 promote，"
+            "`zg361b2.40.desc` 转换失败。"
+        ),
+        closure_boundary=(
+            "B2、compensation、workforce AD 的同签名生成源由 "
+            "`a9320a71b4d0e636dbcd99e8e496994f26490656` 统一改为 Character 合法路径；"
+            "R113 未重现 R112 loc 签名。"
+        ),
+    ),
+    ProductAcceptanceAttempt(
+        run_id="R113",
+        observed_at="2026-09-06 10:34 Asia/Shanghai",
+        product_commit="a9320a71b4d0e636dbcd99e8e496994f26490656",
+        projection="phase2-full-release-r113-a9320a7",
+        verified_file_count=1031,
+        product_tree_sha256="f99500645dc14e056ac40d77dabf6d23c97a0951479db09bead7d634dbe08342",
+        release_manifest_sha256="bf83bd1b4219f1bce2e213c4baf1733fd8ac1299a951a36f1435a46d288af679",
+        loader_and_result=(
+            "loader 303/303 GREEN；产品 RED：`zg361b1.123` 的 queued continuation 在 roster "
+            "行缺少 `zg361_b1_case_owner` 时仍进入冻结配额复核，触发变量读取与比较错误。"
+        ),
+        closure_boundary=(
+            "stale continuation 的业务终止与 list-row owner guard 由 "
+            "`f6cf65378158669e35e493ba8466685f1ace0e1d` 修复；R114 在出现下一族 RED 前"
+            "未重现 R113 签名。"
+        ),
+    ),
+    ProductAcceptanceAttempt(
+        run_id="R114",
+        observed_at="2026-09-06 10:54 Asia/Shanghai",
+        product_commit="f6cf65378158669e35e493ba8466685f1ace0e1d",
+        projection="phase2-full-release-r114-f6cf653",
+        verified_file_count=1031,
+        product_tree_sha256="d54d3beb0dcf26a3831b6b0441e92dbba28a56aca8e77fae770c01416f208aa5",
+        release_manifest_sha256="bbd86499307e9a1499b1ade628334ed9219e4d097d2d4db54cbbc23f010eb191",
+        loader_and_result=(
+            "loader 303/303 GREEN；产品 RED：`zg361comp.2` 对 weak Character subject 执行 "
+            "`has_variable`，且 portfolio refresh 继续裸比较不可用 `var`，分别落在 "
+            "`zg361_compensation_07b_portfolio_apply_stage_effects.txt` 与 "
+            "`07c_portfolio_refresh_effects.txt`。"
+        ),
+        closure_boundary=(
+            "**未闭合。** 下一轮必须先修 compensation 生成源、生成结果与回归，再以改变后的"
+            "产品树 fresh 启动；R114 不构成完整迁移树 GREEN，也不提升任何逐号证据层。"
+        ),
+    ),
 )
 
 LATEST_PRODUCT_ACCEPTANCE: Final = ProductAcceptanceSnapshot(
@@ -597,7 +690,9 @@ __all__ = [
     "LIVE_BOUNDARY",
     "LATEST_PRODUCT_ACCEPTANCE",
     "MECHANISM_COUNT",
+    "ProductAcceptanceAttempt",
     "ProductAcceptanceSnapshot",
+    "RECENT_PRODUCT_ACCEPTANCE_ATTEMPTS",
     "READINESS_BY_ID",
     "ReadinessClaim",
     "ReadinessLevel",
