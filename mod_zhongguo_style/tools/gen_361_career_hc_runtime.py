@@ -127,7 +127,10 @@ ROUTE_LABELS_CN = {
     23: ("完成编制答辩且不借用名额", "以紧急名义借用下一周期名额"),
     24: ("安排下一周期转岗", "阻止本次内部流动"),
     25: ("发出书面留任邀约", "支付反邀约款，但只给口头留任承诺"),
-    92: ("保持专业与管理双通道分离", "把明星专家直接转为管理者"),
+    92: (
+        "保持专业与管理双通道分离",
+        "登记为管理通道；本人具备天朝公爵级管理资格时才授予管理权限",
+    ),
     93: ("让失败经理回到专家岗", "暂留管理岗，并登记下一周期复审"),
     94: ("授予有边界的微职级", "只给半级头衔而不补权责"),
     95: ("复审通过，维持本期管理权限", "复审不通过，撤销本期管理权限"),
@@ -298,6 +301,10 @@ CASE_CONTEXT_OVERRIDE_EN = {
     ),
 }
 ROUTE_LABELS_OVERRIDE_EN = {
+    92: (
+        "Keep the professional and management tracks separate.",
+        "Record the management track; grant authority only if the official personally qualifies as a Celestial duke-level manager.",
+    ),
     21: (
         "Pay compensation under the bonus and salary-adjustment matrix.",
         "Concentrate the same budget in a single cash award.",

@@ -4338,6 +4338,7 @@ zg361b2.60 = {
 	option = {
 		name = zg361b2.60.a
 		trigger = {
+			var:zg361_b2_m075_route = 1
 			var:zg361_b2_case_owner = {
 				government_has_flag = government_has_treasury
 				treasury >= 50
@@ -4596,12 +4597,10 @@ zg361b2.110 = {
 			var:zg361_b2_m017_first_low_restricted = 0
 			var:zg361_b2_m074_state = 1
 			var:zg361_b2_m074_redundancy_eligible = 1
-			OR = {
-				var:zg361_b2_m074_route = 2
-				var:zg361_b2_m074_owner = {
-					government_has_flag = government_has_treasury
-					treasury >= 50
-				}
+			var:zg361_b2_m074_route = 1
+			var:zg361_b2_m074_owner = {
+				government_has_flag = government_has_treasury
+				treasury >= 50
 			}
 		}
 		zg361_b2_m074_accept_redundancy_effect = yes
@@ -5283,12 +5282,12 @@ l_english:
  zg361b2.50.b:0 "File anonymously: protection requires current policy approval and at least eight frozen fields; shelving records debt, otherwise lose 50 prestige."
  zg361b2.50.c:0 "Defer escalation and record the debt."
  zg361b2.60.t:0 "A Neutral Departure"
- zg361b2.60.desc:0 "A funded voluntary departure agreement has arrived. [ROOT.Var('zg361_b2_case_owner').Char.GetShortUIName] is responsible for its treasury payment; the agreement does not alter the rejected appeal or rewrite its evidence."
+ zg361b2.60.desc:0 "A departure agreement has arrived. Only a file eligible for funding by [ROOT.Var('zg361_b2_case_owner').Char.GetShortUIName] offers the exact 50-gold compensation; other routes offer no compensation. The agreement does not alter the rejected appeal or rewrite its evidence."
  zg361b2.60.a:0 "Accept: step down, debit 50 from the owner's treasury, and receive exactly 50 personal gold."
  zg361b2.60.b:0 "Remain under the ordinary process."
  zg361b2.110.t:0 "PIP Disposition"
- zg361b2.110.desc:0 "Official: [ROOT.Char.GetShortUIName]. Manager: [ROOT.Var('zg361_b2_pip_owner').Char.GetShortUIName]. The 365-day improvement period closed without graduation. The manager has placed four negotiated dispositions before you; none takes effect without your acceptance, and an active appeal safeguard still suspends execution."
- zg361b2.110.a:0 "Request and accept one final cycle of support."
+ zg361b2.110.desc:0 "Official: [ROOT.Char.GetShortUIName]. Manager: [ROOT.Var('zg361_b2_pip_owner').Char.GetShortUIName]. The 365-day improvement period closed without graduation. The manager has placed the eligible negotiated dispositions before you; none takes effect without your acceptance, and an active appeal safeguard still suspends execution."
+ zg361b2.110.a:0 "Accept one final 365-day extension of the improvement plan."
  zg361b2.110.b:0 "Waive immediate contest and accept demotion with retention."
  zg361b2.110.c:0 "Petition for and accept an orderly retirement."
  zg361b2.110.d:0 "Accept funded neutral redundancy: step down and receive exactly 50 gold from the owner's treasury."
@@ -5379,12 +5378,12 @@ l_simp_chinese:
  zg361b2.50.b:0 "匿名提交：制度允许且冻结材料至少八项时受保护；搁置只记债，否则损失 50 威望。"
  zg361b2.50.c:0 "暂不升级，但记下一笔政策债。"
  zg361b2.60.t:0 "中性离任"
- zg361b2.60.desc:0 "一份已有资金保障的自愿离任文书送到了你手中。[ROOT.Var('zg361_b2_case_owner').Char.GetShortUIName]负责从国库出资；这份文书不会改变被驳回的申诉，也不会改写原有证据。"
+ zg361b2.60.desc:0 "一份离任文书送到了你手中。只有案卷具备由[ROOT.Var('zg361_b2_case_owner').Char.GetShortUIName]出资的补偿资格时，才会提供恰好 50 金币；其他路线没有补偿。这份文书不会改变被驳回的申诉，也不会改写原有证据。"
  zg361b2.60.a:0 "接受：卸任，由责任人国库支出 50，你本人恰好收到 50 金币。"
  zg361b2.60.b:0 "留下，继续走普通程序。"
  zg361b2.110.t:0 "改进期处置"
- zg361b2.110.desc:0 "受评官员：[ROOT.Char.GetShortUIName]；直属上司：[ROOT.Var('zg361_b2_pip_owner').Char.GetShortUIName]。365 日改进期已经结束，但尚未达到结案标准。上司把四份可协商的处置书摆在你面前；未经你接受便不能生效，仍在生效的申诉保护也会继续暂缓执行。"
- zg361b2.110.a:0 "申请并接受最后一个周期的支持。"
+ zg361b2.110.desc:0 "受评官员：[ROOT.Char.GetShortUIName]；直属上司：[ROOT.Var('zg361_b2_pip_owner').Char.GetShortUIName]。365 日改进期已经结束，但尚未达到结案标准。上司把当前符合条件的可协商处置书摆在你面前；未经你接受便不能生效，仍在生效的申诉保护也会继续暂缓执行。"
+ zg361b2.110.a:0 "接受把改进计划再延长 365 日。"
  zg361b2.110.b:0 "放弃立即争议，接受降岗留任。"
  zg361b2.110.c:0 "请求并接受有序致仕。"
  zg361b2.110.d:0 "接受有资金保障的中性裁撤：卸任，并从责任人国库恰好领取 50 金币。"

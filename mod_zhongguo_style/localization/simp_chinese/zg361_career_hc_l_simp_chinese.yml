@@ -61,7 +61,7 @@
  zg361ch.m092.name:0 "专业 / 管理双通道"
  zg361ch.m092.desc:0 "当事人 [zg361_ch_m_event_subject.GetShortUIName]；裁决者 [zg361_ch_m_event_owner.GetShortUIName]。当事人的专业贡献已经达到进阶门槛，但管理职责尚未接受检验；专业进阶与转任管理的依据彼此冲突。本项最迟在 90 日内结算。"
  zg361ch.m092.a:0 "保持专业与管理双通道分离"
- zg361ch.m092.b:0 "把明星专家直接转为管理者"
+ zg361ch.m092.b:0 "登记为管理通道；本人具备天朝公爵级管理资格时才授予管理权限"
  zg361ch.m092.c:0 "搁置本项，记下周期制度债；本局不再提案。"
  zg361ch.m093.name:0 "失败经理回归专家岗"
  zg361ch.m093.desc:0 "当事人 [zg361_ch_m_event_subject.GetShortUIName]；裁决者 [zg361_ch_m_event_owner.GetShortUIName]。现任管理者未能完成管理职责，专业能力却仍有价值；本阶段要为其确定可继续承担的岗位。本项最迟在 90 日内结算。"

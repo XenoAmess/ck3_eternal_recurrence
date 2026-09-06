@@ -967,6 +967,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
     def test_route_specific_copy_has_route_specific_business_state(self) -> None:
         expected = {
             24: ("transfer_effective_cycle value = 0", "transfer_blocked value = 1"),
+            92: ("zg361_is_celestial_liege_trigger = yes", "management_authority value = 1"),
             93: ("returned_to_expert value = 0", "manager_retry_cycle value = 0"),
             94: ("micro_authority_bound value = 1", "micro_compensation_bound value = 1"),
             95: ("management_authority value = 0",),
@@ -1398,6 +1399,10 @@ class CareerHcRuntimeTests(unittest.TestCase):
             MOD_ROOT / "localization/english/zg361_career_hc_l_english.yml"
         )
         expected = {
+            92: (
+                "本人具备天朝公爵级管理资格时才授予管理权限",
+                "grant authority only if the official personally qualifies as a Celestial duke-level manager.",
+            ),
             21: ("按奖金与调薪矩阵兑现薪酬", "Pay compensation under the bonus and salary-adjustment matrix."),
             25: ("支付反邀约款，但只给口头留任承诺", "Pay for a counteroffer but give only an oral retention promise."),
             93: ("暂留管理岗，并登记下一周期复审", "Retain the manager for now and record a review next cycle."),

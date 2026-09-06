@@ -360,7 +360,11 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("-15 证据", rows["zg361b2.40.c"])
         self.assertIn("损失 50 威望", rows["zg361b2.50.a"])
         self.assertIn("责任人另损失 25 威望", rows["zg361b2.50.a"])
+        self.assertIn("其他路线没有补偿", rows["zg361b2.60.desc"])
         self.assertIn("恰好收到 50 金币", rows["zg361b2.60.a"])
+        self.assertIn("延长 365 日", rows["zg361b2.110.a"])
+        self.assertNotIn("周期的支持", rows["zg361b2.110.a"])
+        self.assertNotIn("四份", rows["zg361b2.110.desc"])
         self.assertIn("新3.25", rows["zg361b2.131.a"])
         self.assertIn("90日申诉期", rows["zg361b2.131.a"])
         self.assertIn("立即申诉", rows["zg361b2.131.b"])
@@ -739,6 +743,8 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_streak_bottom >= 2", event)
         self.assertIn("var:zg361_streak_bottom >= 3", event)
         self.assertIn("zg361_b2_m017_disposition_receipt", event)
+        self.assertIn("var:zg361_b2_m074_route = 1", event)
+        self.assertNotIn("var:zg361_b2_m074_route = 2", event)
 
     def test_ai_elimination_treats_missing_annual_rank_as_no_rank_bonus(self) -> None:
         elimination = top_level_block(self.core, "zg361_ai_elimination_effect")
@@ -778,6 +784,7 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect = yes",
             offer,
         )
+        self.assertIn("var:zg361_b2_m075_route = 1", offer)
         self.assertNotIn("zg361_b2_m075_accept_exit_offer_effect = yes", offer)
         self.assertIn("force_step_down_landed_titles = yes", accept)
 

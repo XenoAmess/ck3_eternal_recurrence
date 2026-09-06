@@ -102,6 +102,7 @@ zg361b2.60 = {
 	option = {
 		name = zg361b2.60.a
 		trigger = {
+			var:zg361_b2_m075_route = 1
 			var:zg361_b2_case_owner = {
 				government_has_flag = government_has_treasury
 				treasury >= 50
@@ -360,12 +361,10 @@ zg361b2.110 = {
 			var:zg361_b2_m017_first_low_restricted = 0
 			var:zg361_b2_m074_state = 1
 			var:zg361_b2_m074_redundancy_eligible = 1
-			OR = {
-				var:zg361_b2_m074_route = 2
-				var:zg361_b2_m074_owner = {
-					government_has_flag = government_has_treasury
-					treasury >= 50
-				}
+			var:zg361_b2_m074_route = 1
+			var:zg361_b2_m074_owner = {
+				government_has_flag = government_has_treasury
+				treasury >= 50
 			}
 		}
 		zg361_b2_m074_accept_redundancy_effect = yes
