@@ -9,7 +9,7 @@
  zg361wad.vote.b:0 "My judgment: hold for further review"
  zg361wad.vote.c:0 "My judgment: do not advance"
  zg361wad.offer.t:0 "The Offer Is Yours to Answer"
- zg361wad.offer.desc:0 "An appointment document has arrived. [ROOT.MakeScope.Var('zg361_wad_offer_source_owner').Char.GetShortUIName] submitted it without stating compensation, scope of authority, or relocation terms. Without those clauses you cannot knowingly accept it. Record the condition blocking appointment so the manager can issue a complete proposal."
+ zg361wad.offer.desc:0 "An appointment document has arrived. [ROOT.Var('zg361_wad_offer_source_owner').Char.GetShortUIName] submitted it without stating compensation, scope of authority, or relocation terms. Without those clauses you cannot knowingly accept it. Record the condition blocking appointment so the manager can issue a complete proposal."
  zg361wad.offer.refuse_pay:0 "Refuse: compensation is inadequate"
  zg361wad.offer.refuse_role:0 "Refuse: the role or authority is wrong"
  zg361wad.offer.refuse_move:0 "Refuse: relocation or reporting terms are unacceptable"

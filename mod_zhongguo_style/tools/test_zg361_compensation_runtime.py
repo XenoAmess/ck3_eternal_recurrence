@@ -1437,7 +1437,7 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertEqual(len(chinese_option_values), 42)
         self.assertTrue(all("route A" not in value and "route B" not in value and "route C" not in value for value in english_option_values))
         self.assertTrue(all("按A" not in value and "按B" not in value and "按C" not in value and "路线" not in value for value in chinese_option_values))
-        subject_projection = "ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName"
+        subject_projection = "ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName"
         self.assertTrue(all(subject_projection in value for value in english_option_values))
         self.assertTrue(all(subject_projection in value for value in chinese_option_values))
         self.assertTrue(all("Compensation Docket" not in value for value in english_stage_values))
@@ -1618,7 +1618,7 @@ class CompensationRuntimeTests(unittest.TestCase):
             with self.subTest(self_contained_stage_option=key):
                 value = chinese_values[key]
                 self.assertIn(
-                    "ROOT.MakeScope.Var('zg361_comp_portfolio_subject').Char.GetShortUIName",
+                    "ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName",
                     value,
                 )
                 self.assertRegex(value, financial_result_terms)
@@ -1640,6 +1640,61 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("否则两项均为零", chinese_values["zg361comp.1.af1.r3"])
         self.assertIn("否则均为零", chinese_values["zg361comp.1.af2.r1"])
         self.assertIn("没收未归属、保留已归属", chinese_values["zg361comp.1.af5.r3"])
+
+    def test_character_localization_variables_use_direct_root_var_projection(self) -> None:
+        character_variable = "zg361_comp_portfolio_subject"
+        expected_keys = {
+            *(
+                f"zg361comp.1.{stage}"
+                for stage, _domain_number, _state in generator.PORTFOLIO_STAGES
+            ),
+            *(
+                f"zg361comp.1.{stage}.r{route}"
+                for stage, _domain_number, _state in generator.PORTFOLIO_STAGES
+                for route in (1, 2, 3)
+            ),
+        }
+        forbidden_projection = re.compile(
+            r"ROOT\.MakeScope\.Var\('[^']+'\)\.Char(?:\.[A-Za-z0-9_]+)*"
+        )
+        direct_projection = (
+            f"ROOT.Var('{character_variable}').Char.GetShortUIName"
+        )
+
+        generator_source = Path(generator.__file__).read_text(encoding="utf-8-sig")
+        self.assertEqual(forbidden_projection.findall(generator_source), [])
+
+        localization_outputs = {
+            path: payload
+            for path, payload in generator.outputs().items()
+            if path.suffix == ".yml"
+        }
+        self.assertEqual(len(localization_outputs), 9)
+        for path, payload in localization_outputs.items():
+            with self.subTest(path=path.relative_to(MOD_ROOT)):
+                source = payload.decode("utf-8-sig")
+                self.assertEqual(forbidden_projection.findall(source), [])
+                projected_keys = {
+                    match.group(1)
+                    for match in re.finditer(
+                        rf'^\s+([^\s:]+):0\s+"[^"\r\n]*'
+                        rf'{re.escape(direct_projection)}',
+                        source,
+                        re.MULTILINE,
+                    )
+                }
+                self.assertEqual(projected_keys, expected_keys)
+                self.assertEqual(source.count(direct_projection), 56)
+
+        for variable in (
+            "zg361_comp_bonus_total",
+            "zg361_comp_ae_statement_payable",
+            "zg361_comp_af_total_units",
+        ):
+            self.assertIn(
+                f"ROOT.MakeScope.Var('{variable}').GetValue",
+                generator.render_english_localization().decode("utf-8-sig"),
+            )
 
     def test_runtime_claims_only_static_ready_without_live_evidence(self) -> None:
         header = "\n".join(self.effects.splitlines()[:8]).lower()

@@ -9,7 +9,7 @@
  zg361wad.vote.b:0 "我的判断：暂缓并继续审查"
  zg361wad.vote.c:0 "我的判断：不建议推进"
  zg361wad.offer.t:0 "这份录用邀约只能由你回答"
- zg361wad.offer.desc:0 "任命文书已经送达。[ROOT.MakeScope.Var('zg361_wad_offer_source_owner').Char.GetShortUIName] 提交的方案没有列明报酬、职权范围或调任条件。缺少这些条款时，你无法在知情的前提下接受；只能如实标出阻止任命的原因，交由上司重新拟定完整提议。"
+ zg361wad.offer.desc:0 "任命文书已经送达。[ROOT.Var('zg361_wad_offer_source_owner').Char.GetShortUIName] 提交的方案没有列明报酬、职权范围或调任条件。缺少这些条款时，你无法在知情的前提下接受；只能如实标出阻止任命的原因，交由上司重新拟定完整提议。"
  zg361wad.offer.refuse_pay:0 "拒绝：报酬不足"
  zg361wad.offer.refuse_role:0 "拒绝：岗位或权限不符"
  zg361wad.offer.refuse_move:0 "拒绝：调动或报到条件不可接受"

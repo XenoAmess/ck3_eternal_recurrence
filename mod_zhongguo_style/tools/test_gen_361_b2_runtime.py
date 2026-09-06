@@ -422,6 +422,19 @@ class B2CK3RuntimeTests(unittest.TestCase):
                     localization,
                     r"\[scope:[^\]]+\.GetShortUIName\]",
                 )
+                self.assertNotRegex(
+                    localization,
+                    r"\[ROOT\.MakeScope\.Var\('[^']+'\)\.Char\.",
+                )
+                self.assertIn(
+                    "[ROOT.Var('zg361_b2_separate_reviewer').Char.GetShortUIName]",
+                    localization,
+                )
+                # Numeric values use the distinct, live-proven value path.
+                self.assertIn(
+                    "[ROOT.MakeScope.Var('zg361_result_kpi_frozen').GetValue|0]",
+                    localization,
+                )
 
             for event_id, (_subject_scope, owner_var, _owner_scope, shows_subject) in cases.items():
                 with self.subTest(language=language, event=event_id):
@@ -435,7 +448,7 @@ class B2CK3RuntimeTests(unittest.TestCase):
                         1 if shows_subject else 0,
                     )
                     self.assertIn(
-                        f"[ROOT.MakeScope.Var('{owner_var}').Char.GetShortUIName]",
+                        f"[ROOT.Var('{owner_var}').Char.GetShortUIName]",
                         row,
                     )
 

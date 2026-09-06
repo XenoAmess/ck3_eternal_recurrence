@@ -411,6 +411,18 @@ class WorkforceAdFactRuntimeTests(unittest.TestCase):
             if language not in ("english", "simp_chinese"):
                 self.assertEqual(gen.render_localization("english").split(b"\n", 1)[1], path.read_bytes().split(b"\n", 1)[1])
 
+    def test_character_variables_use_direct_root_var_localization_path(self) -> None:
+        expected = "[ROOT.Var('zg361_wad_offer_source_owner').Char.GetShortUIName]"
+        forbidden = re.compile(
+            r"ROOT(?:\.Char)?\.MakeScope\.Var\('[^']+'\)\.Char(?:\.|\])"
+        )
+        self.assertIn(expected, gen.LOCALIZATION_EN["offer.desc"])
+        self.assertIn(expected, gen.LOCALIZATION_CN["offer.desc"])
+        for language in gen.LANGUAGES:
+            rendered = gen.render_localization(language).decode("utf-8-sig")
+            self.assertIn(expected, rendered, language)
+            self.assertEqual([], forbidden.findall(rendered), language)
+
     def test_player_copy_states_available_facts_and_keeps_actions_on_buttons(self) -> None:
         zh = gen.LOCALIZATION_CN
         en = gen.LOCALIZATION_EN
