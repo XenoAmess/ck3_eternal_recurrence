@@ -1275,12 +1275,19 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertEqual(english["zg361p3.336.t"], "Ready to Begin?")
         self.assertIn("既有案卷的署名责任仍由原任承担", chinese["zg361p3.310.desc"])
         self.assertIn("原责任人与接任者", chinese["zg361p3.310.desc"])
+        self.assertEqual(
+            chinese["zg361p3.310.a"], "在旧案补记接任者，原责任仍归原任。"
+        )
         self.assertNotIn(
             chinese["zg361p3.310.a"].rstrip("。"), chinese["zg361p3.310.desc"]
         )
         self.assertIn(
             "authorship of each existing case remains attached to its original author",
             english["zg361p3.310.desc"],
+        )
+        self.assertEqual(
+            english["zg361p3.310.a"],
+            "Add the successor to the old case without changing its original owner.",
         )
         self.assertIn("另立交接记录", chinese["zg361p3.310.b"])
         self.assertIn("核清新旧目标的贡献", chinese["zg361p3.311.b"])

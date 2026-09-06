@@ -139,7 +139,7 @@
  zg361p3.309.c.tt:0 "No business action is taken. One next-cycle policy debt is recorded, and this item will not be proposed again automatically."
  zg361p3.310.t:0 "Old Ratings, New Org"
  zg361p3.310.desc:0 "The reporting line has changed, but authorship of each existing case remains attached to its original author. The old file does not yet identify both that author and the successor now responsible. This portfolio has recorded [ROOT.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
- zg361p3.310.a:0 "Keep the old case under the former owner."
+ zg361p3.310.a:0 "Add the successor to the old case without changing its original owner."
  zg361p3.310.b:0 "Create a transfer record naming both former owner and successor."
  zg361p3.310.c:0 "Close this item and record policy debt."
  zg361p3.310.c.tt:0 "No business action is taken. One next-cycle policy debt is recorded, and this item will not be proposed again automatically."
