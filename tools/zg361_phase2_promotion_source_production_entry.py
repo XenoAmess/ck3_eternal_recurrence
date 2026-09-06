@@ -340,28 +340,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "province_change_recipient",
         ),),
         "saved_scope_count": 7,
-        "scope_variants": ({
-            # A retirement-law petition carries the requested direction as a
-            # boolean and has no province/movement-member recipients.  R164
-            # observed this exact five-scope shape for decrease_law.
+        "scope_variants": tuple({
+            # Exact-build ai_movement_petition_change_laws_decision saves one
+            # of these four boolean direction scopes and no province/member
+            # recipients. R164 observed decrease_law; R166 observed
+            # decrease_army_law. The other two names are siblings in the same
+            # frozen CK3 1.19.0.6 random_list and have identical event shape.
             "saved_scope_names": (
                 "petitioner",
                 "actors_movement",
                 "hegemon",
                 "petition_recipient",
-                "decrease_law",
+                direction_scope,
             ),
             "saved_scope_count": 5,
             "scope_types": {
                 "petitioner": "character",
                 "actors_movement": "situation_participant_group",
             },
-            "boolean_scopes": ("decrease_law",),
+            "boolean_scopes": (direction_scope,),
             "unique_character_scope_excludes": {
                 "petitioner": (29037,),
             },
             "character_scope_matches_any": {},
-        }, {
+        } for direction_scope in (
+            "increase_law",
+            "decrease_law",
+            "increase_army_law",
+            "decrease_army_law",
+        )) + ({
             # A later movement petition can retain both the disciple and
             # house participant selected by its source situation.  Neither is
             # consumed by option 3, but bind their exact names and character

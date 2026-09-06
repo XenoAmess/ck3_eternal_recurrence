@@ -930,7 +930,28 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
 - Consequently R160 did not enter B1 or capture `zg361pp.147`. The product runtime tree remained unchanged before/after at `196e557e06ffa09ef488c819168f16237f5466089ab0d8087ac3f977398e4205`, so this is a native action-dispatch/harness RED rather than a product-state RED.
 - PID `126732`, generation 1, paused `date_raw=53154120` was retained healthy for reconnect. Outer report / live cell / promotion entry / retention SHA-256: `e028186c7fb4124223b65f1bd36338d84fec8a91abd45377737d45e84d40f061` / `ee9b52175b59b2362611b63dd15dd6c3448e096a00b0a25b00872f93d48f7207` / `44fa4c7762007f8491903c68c371c17e7845d6a480b043f7c885b7f7c1ad8756` / `35362e2573583e37777ce5d6d2bc9d01d8ecaa5561e0a1b309230b0c337ecb71`.
 
+## R161–R162 promotion entry recovery (no readiness change)
+
+- R161 was startup-only evidence. One frontend-first warm-up timed out despite a responsive authenticated frontend window, and one direct-load attempt stopped at the loader/native-readiness timeout. Neither attempt entered product gameplay, so neither is a product RED or a live-readiness result.
+- R162 used the repaired native review-action dispatcher and reached a real B1-active product state for player `32904`. Reconnect then exposed two harness defects: a client-local connection-generation comparison and an over-constrained known `zg361.40` date/root binding. Both were corrected without changing the frozen mod tree.
+- The retained R162 session subsequently drained `zg361.40` but terminated when the played character died. That is a scenario-invalid one-life outcome, not a product runtime diagnostic. Runtime blocking diagnostics remained zero, but the promotion source and complete tree were not reached.
+- Evidence: `Z:\p2r161promo_a`, `Z:\p2r161promo_b`, `Z:\p2r162promo_a`, and `Z:\p2r162promo_resume1`–`resume3`. No per-ID readiness is raised.
+
+## R163 Jingcha self-opinion product RED (no readiness change)
+
+- R163 froze commit `e761b97` as projection `phase2-full-release-r163-e761b97`; its 1,031-file source/product tree SHA-256 was `79c9af2552a14141ea52cee470c713927cfff8433dfec20b4da4b4629353d6d2`, projection manifest SHA-256 `d589f4514b712098a5a4780815e8944ee57b2b69a82d1f46c2c8c7297f45354d`, and release manifest SHA-256 `9a630472921ea4d76701b35a0eaa81632d7ae0fab4c28cc5151f38d02e62c5c1`.
+- One retained PID drained exact vanilla `tgp_decision_events.0101` and `ep3_decisions_event.2001` variants at speed 5. The run then produced a real product diagnostic: `zg361_refuse_jingcha_effect` attempted to add the player's opinion of themself because the mandate-superior alias could resolve to the player.
+- Commit `7b01124` now requires a live, non-self superior and routes missing/dead/self aliases through the independent prestige-only refusal path. Generator output and focused manager tests agree; `zg361_jingcha_mandate_effects.txt` contains seven top-level effects and remains within the mandatory purpose-shard boundary.
+- Evidence: `Z:\p2r163promo_a` and `Z:\p2r163promo_resume1`–`resume4`. R163 is a product RED and does not raise readiness.
+
+## R164 post-fix B1 natural-cycle advance (scenario invalid; no readiness change)
+
+- R164 froze the fixed product at commit `7b01124` as `phase2-full-release-r164-7b01124`: 1,031 files, source/product tree SHA-256 `e9f093a2dbba3120f7a06ff65e08b5aa9c0a438d5fd8a582a22ec62dbf63a99d`, projection manifest SHA-256 `9c9c84f828d5ccc795d4f43454f4bc3e5b6061cd97bff8dfdb829386dfb367d8`, and release manifest SHA-256 `5baf6520fbe5601cce098fec0f3148af795f8d0e977506d5699674ec1d2d208c`.
+- The same CK3 PID `191336` was retained across eight reconnect clients with `launch_performed=false` and `restart_performed=false`. At default speed 5 it drained product `zg361.40`, two exact retirement/movement petition shapes, `ep3_decisions_event.2001`, treasury budget, imperial debate, befriend outcome, spouse suspicion, and another product `zg361.40`; every observed increment kept product runtime blocking diagnostics at zero.
+- B1 remained active through `date_raw=53170248`, about 105 game days before its authored 400-day review point. The played ruler then died on 1069-09-05 and CK3 entered the one-life succession screen. The run is scenario-invalid, not product RED; no generic successor rebind was used and the promotion source/full tree remain incomplete.
+- Evidence: `Z:\p2r164promo_a` and `Z:\p2r164promo_resume1`–`resume8`; the aborted death-screen client is `Z:\p2r164promo_resume9`. No per-ID readiness is raised.
+
 ## B3 current live boundary
 
 - B3 remains `static-ready-live-pending`. The native manager-to-subordinate typed selector transport, capability/query flag and runner default provider binding are wired; provider wiring is complete and is not the remaining gate.
-- Still missing are a real paused two-layer topology (`player -> AI manager -> that manager's subordinate`), an actual B3 action, and provider-observed joined postconditions for F032 and F035. R159's player-manager seed does not supply that topology, and neither R159 nor R160 raises B3 readiness.
+- Still missing are a real paused two-layer topology (`player -> AI manager -> that manager's subordinate`), an actual B3 action, and provider-observed joined postconditions for F032 and F035. R159's player-manager seed does not supply that topology, and R160–R164 do not raise B3 readiness.
