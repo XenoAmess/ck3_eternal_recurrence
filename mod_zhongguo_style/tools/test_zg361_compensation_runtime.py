@@ -321,10 +321,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 623_178)
+        self.assertEqual(len(historical_bytes), 623_878)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "8b14aaa0071f726074dc1b61a28e066e7b7d839b2e6e76eaa1e354c43c273bdb",
+            "4c77553ec78851fdada5fb039144e45fdc35e4bb9806f84eb473b42a76a38d52",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -862,6 +862,34 @@ class CompensationRuntimeTests(unittest.TestCase):
             "a real frozen 3.50 result must remain ineligible",
         )
         self.assertTrue(eligible_from_frozen_result(3))
+
+    def test_af_m290_eligibility_reads_are_guarded_for_tooltip_evaluation(self) -> None:
+        all_effects = self.effects
+        reads = tuple(re.finditer(
+            r"var:zg361_comp_m290_eligible\s*=\s*1", all_effects
+        ))
+        self.assertEqual(len(reads), 7)
+        self.assertEqual(
+            self.effect_parts[
+                "zg361_compensation_17_af_stage_01_effects.txt"
+            ].count("var:zg361_comp_m290_eligible = 1"),
+            4,
+        )
+        self.assertEqual(
+            self.effect_parts[
+                "zg361_compensation_18_af_stage_02_effects.txt"
+            ].count("var:zg361_comp_m290_eligible = 1"),
+            3,
+        )
+        guard = "has_variable = zg361_comp_m290_eligible"
+        for match in reads:
+            nearby_prefix = all_effects[max(0, match.start() - 180) : match.start()]
+            self.assertIn(
+                guard,
+                nearby_prefix,
+                "every AF eligibility comparison must be protected because CK3 "
+                "evaluates future option effects while building tooltips",
+            )
 
     def test_ae_and_af_consume_the_same_frozen_actual_result(self) -> None:
         ae_open = top_level_block(self.effects, "zg361_comp_open_ae_case_effect")

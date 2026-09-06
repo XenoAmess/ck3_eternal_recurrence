@@ -376,7 +376,7 @@ zg361_comp_m291_consume_effect = {
         set_variable = { name = zg361_comp_m291_grant_measure value = var:zg361_comp_m291_route }
             set_variable = { name = zg361_comp_af_grant_base_units value = 0 }
             if = {
-                limit = { var:zg361_comp_m290_eligible = 1 }
+                limit = { trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 set_variable = { name = zg361_comp_af_grant_base_units value = 100 }
                 if = { limit = { var:zg361_comp_m291_route = 2 } set_variable = { name = zg361_comp_af_grant_base_units value = 80 } }
                 else_if = { limit = { var:zg361_comp_m291_route = 3 } set_variable = { name = zg361_comp_af_grant_base_units value = 0 } }
@@ -482,7 +482,7 @@ zg361_comp_m292_core_effect = {
             var:zg361_comp_m292_receipt_active = 0
 
             trigger_if = {
-                limit = { scope:zg361_comp_route = 3 var:zg361_comp_m290_eligible = 1 }
+                limit = { scope:zg361_comp_route = 3 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 var:zg361_case_af_owner = {
                     has_treasury = yes
                     treasury >= 7
@@ -527,7 +527,7 @@ zg361_comp_m292_core_effect = {
         if = {
             limit = { var:zg361_case_kernel_applied = 1 }
             if = {
-                limit = { scope:zg361_comp_route = 3 var:zg361_comp_m290_eligible = 1 }
+                limit = { scope:zg361_comp_route = 3 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 zg361_comp_af_pay_cash_alternative_effect = yes
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }
@@ -605,7 +605,7 @@ zg361_comp_m292_consume_effect = {
             set_variable = { name = zg361_comp_m292_cash_alternative value = 0 }
             set_variable = { name = zg361_comp_m292_can_expire_worthless value = 0 }
             if = {
-                limit = { var:zg361_comp_m290_eligible = 1 }
+                limit = { trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 if = { limit = { var:zg361_comp_m292_route = 1 } set_variable = { name = zg361_comp_m292_can_expire_worthless value = 1 } }
                 else_if = {
                     limit = { var:zg361_comp_m292_route = 3 }

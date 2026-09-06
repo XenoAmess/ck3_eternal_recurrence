@@ -779,7 +779,7 @@ def special_payload(mechanism_id: int) -> str:
         291: f'''set_variable = {{ name = {p}_grant_measure value = var:{p}_route }}
             set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }}
             if = {{
-                limit = {{ var:zg361_comp_m290_eligible = 1 }}
+                limit = {{ trigger_if = {{ limit = {{ has_variable = zg361_comp_m290_eligible }} var:zg361_comp_m290_eligible = 1 }} trigger_else = {{ always = no }} }}
                 set_variable = {{ name = zg361_comp_af_grant_base_units value = 100 }}
                 if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = zg361_comp_af_grant_base_units value = 80 }} }}
                 else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }} }}
@@ -789,7 +789,7 @@ def special_payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_cash_alternative value = 0 }}
             set_variable = {{ name = {p}_can_expire_worthless value = 0 }}
             if = {{
-                limit = {{ var:zg361_comp_m290_eligible = 1 }}
+                limit = {{ trigger_if = {{ limit = {{ has_variable = zg361_comp_m290_eligible }} var:zg361_comp_m290_eligible = 1 }} trigger_else = {{ always = no }} }}
                 if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_can_expire_worthless value = 1 }} }}
                 else_if = {{
                     limit = {{ var:{p}_route = 3 }}
@@ -802,7 +802,7 @@ def special_payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_converted_cash value = 0 }}
             set_variable = {{ name = zg361_comp_af_conversion_units value = 0 }}
             set_variable = {{ name = {p}_cash_remaining value = 0 }}
-            if = {{ limit = {{ var:{p}_route = 1 var:zg361_comp_m290_eligible = 1 }}
+            if = {{ limit = {{ var:{p}_route = 1 trigger_if = {{ limit = {{ has_variable = zg361_comp_m290_eligible }} var:zg361_comp_m290_eligible = 1 }} trigger_else = {{ always = no }} }}
                 set_variable = {{ name = {p}_voluntary value = 1 }}
                 set_variable = {{ name = {p}_converted_cash value = 4 }}
                 set_variable = {{ name = zg361_comp_af_conversion_units value = 4 }}
@@ -961,7 +961,7 @@ def finance_guard(mechanism_id: int, domain: str) -> str:
             trigger_else = {{ always = yes }}'''
     if mechanism_id == 293:
         return f'''trigger_if = {{
-                limit = {{ scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }}
+                limit = {{ scope:zg361_comp_route = 1 trigger_if = {{ limit = {{ has_variable = zg361_comp_m290_eligible }} var:zg361_comp_m290_eligible = 1 }} trigger_else = {{ always = no }} }}
                 var:{row["owner"]} = {{ has_treasury = yes treasury >= 4 gold >= 2 }}
                 var:zg361_comp_af_treasury_available >= 4
                 var:zg361_comp_af_personal_available >= 2
@@ -980,7 +980,7 @@ def finance_guard(mechanism_id: int, domain: str) -> str:
     fixed: dict[int, tuple[str, int, int, str]] = {
         282: ("scope:zg361_comp_route = 1", 3, 1, "zg361_comp_m282_pay_treasury_status"),
         289: ("scope:zg361_comp_route = 1", 3, 1, "zg361_comp_m289_pay_treasury_status"),
-        292: ("scope:zg361_comp_route = 3 var:zg361_comp_m290_eligible = 1", 7, 3, "zg361_comp_m292_cash_treasury_status"),
+        292: ("scope:zg361_comp_route = 3 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no }", 7, 3, "zg361_comp_m292_cash_treasury_status"),
         300: ("scope:zg361_comp_route = 1", 7, 3, "zg361_comp_m300_buyback_treasury_status"),
     }
     if mechanism_id in fixed:
@@ -1100,12 +1100,12 @@ def finance_apply(mechanism_id: int) -> str:
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }''',
         292: '''if = {
-                limit = { scope:zg361_comp_route = 3 var:zg361_comp_m290_eligible = 1 }
+                limit = { scope:zg361_comp_route = 3 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 zg361_comp_af_pay_cash_alternative_effect = yes
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }''',
         293: '''if = {
-                limit = { scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }
+                limit = { scope:zg361_comp_route = 1 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 zg361_comp_af_pay_conversion_remainder_effect = yes
             }
             else_if = {

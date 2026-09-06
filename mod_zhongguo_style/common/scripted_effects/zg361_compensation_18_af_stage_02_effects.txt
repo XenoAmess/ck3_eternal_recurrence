@@ -60,7 +60,7 @@ zg361_comp_m293_core_effect = {
             var:zg361_comp_m293_receipt_active = 0
 
             trigger_if = {
-                limit = { scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }
+                limit = { scope:zg361_comp_route = 1 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 var:zg361_case_af_owner = { has_treasury = yes treasury >= 4 gold >= 2 }
                 var:zg361_comp_af_treasury_available >= 4
                 var:zg361_comp_af_personal_available >= 2
@@ -106,7 +106,7 @@ zg361_comp_m293_core_effect = {
         if = {
             limit = { var:zg361_case_kernel_applied = 1 }
             if = {
-                limit = { scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }
+                limit = { scope:zg361_comp_route = 1 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 zg361_comp_af_pay_conversion_remainder_effect = yes
             }
             else_if = {
@@ -188,7 +188,7 @@ zg361_comp_m293_consume_effect = {
             set_variable = { name = zg361_comp_m293_converted_cash value = 0 }
             set_variable = { name = zg361_comp_af_conversion_units value = 0 }
             set_variable = { name = zg361_comp_m293_cash_remaining value = 0 }
-            if = { limit = { var:zg361_comp_m293_route = 1 var:zg361_comp_m290_eligible = 1 }
+            if = { limit = { var:zg361_comp_m293_route = 1 trigger_if = { limit = { has_variable = zg361_comp_m290_eligible } var:zg361_comp_m290_eligible = 1 } trigger_else = { always = no } }
                 set_variable = { name = zg361_comp_m293_voluntary value = 1 }
                 set_variable = { name = zg361_comp_m293_converted_cash value = 4 }
                 set_variable = { name = zg361_comp_af_conversion_units value = 4 }

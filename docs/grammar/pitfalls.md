@@ -80,6 +80,21 @@
 | GUI 明明在 `MakeScope.Var(...)` 读镜像表头，加载仍报 `Variable '<name>' is set but is never used` | CK3 的游戏脚本变量用途分析不把 GUI/本地化读取算作脚本消费 | 变量确实只用于 UI 时，仍在实际可达的 effect/trigger 中做有意义的一次校验或组合；无用遥测则直接删掉。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
 | `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
 
+### R184：同卡前序写入不能作为 tooltip 的变量前置条件（2026-09-07）
+
+CK3 1.19.0.6 在 AF stage 1 的单张 `zg361comp.1` 卡上构建选项说明时，会沿
+`portfolio_apply_stage -> m292_manager_apply -> m292_core` 预求值后续 effect，但不会把同卡
+前序 m290 consumer 对 `zg361_comp_m290_eligible` 的写入视为已提交。因此 m292 的两处裸比较各产生
+fetch-variable、unset-scope、invalid-left 三联错误，共 6 条。实机证据为
+`Z:\p2r184promo_resume\02_retained_runtime_diagnostics.json`；这属于产品 RED，不是 runner RED。
+
+修复规则是：所有依赖同卡前序写入的 7 处 eligibility 读取，都必须使用真正惰性的
+`trigger_if = { limit = { has_variable = ... } var:... = 1 }` 与 `trigger_else = { always = no }`；
+不能用同级 `has_variable` 假装短路，也不能靠开案时预设派生业务结果掩盖顺序。生成器回归固定
+stage 1 为 4 处、stage 2 为 3 处。相关 compensation 仍维持用途分片：29 个 effect 文件、149 个
+top-level effects，单文件最大 9 个，超过 10 或 20 的文件均为 0。静态 GREEN 只算
+static-ready；必须由 fresh exact-tree CK3 在 AF 卡显示期间把上述 6 条旧签名归零后，才可升级 live。
+
 ## 教程课程 / 全局存储
 
 | 现象 | 原因 | 解法 |
