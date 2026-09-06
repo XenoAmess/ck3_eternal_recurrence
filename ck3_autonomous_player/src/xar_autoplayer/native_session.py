@@ -188,10 +188,11 @@ def _frontend_log_signals(payload: bytes | str) -> dict[str, bool]:
     """Extract the append-only signals used by the frontend-first warm-up.
 
     The idler line is the historical success marker.  Some no-bridge starts
-    reach the menu without emitting that line, however, so the fallback uses
-    two independent log milestones and then authenticates the live window.
-    Keeping this parser pure makes the fallback easy to test without a game
-    process and avoids treating a partial/malformed log as ready.
+    reach the menu without emitting that line or the history marker, however.
+    The frontend-GUI completion line only arms the fallback: the caller must
+    still authenticate the exact live process and its responsive CK3 window.
+    Keeping this parser pure makes that boundary easy to test without a game
+    process and avoids treating a partial/malformed log as accepted evidence.
     """
 
     if isinstance(payload, bytes):
@@ -205,7 +206,7 @@ def _frontend_log_signals(payload: bytes | str) -> dict[str, bool]:
         "idler_marker": idler_seen,
         "history_end": history_end_seen,
         "frontend_gui_complete": frontend_gui_complete,
-        "fallback_ready": history_end_seen and frontend_gui_complete,
+        "fallback_ready": frontend_gui_complete,
     }
 
 
@@ -589,10 +590,11 @@ def _wait_for_frontend_marker(
 
     ``launch`` clears the isolated ``debug.log`` before creating CK3, so a
     marker observed here belongs to this warm-up process.  The historical
-    ``Setting idler 'Frontend'`` marker remains the fast path.  On no-bridge
-    starts that reach the menu without that line, the fallback requires both
-    the history and frontend-GUI completion lines plus an authenticated,
-    responsive CK3 window.  The helper never sends gameplay input.
+    ``Setting idler 'Frontend'`` marker remains the fast path.  On no-save,
+    no-bridge warm-up starts that reach the menu without that line (and may
+    also omit the history marker), the frontend-GUI completion line permits a
+    fallback only after the exact CK3 process and its responsive window are
+    authenticated.  The helper never sends gameplay input.
     """
 
     started = time.monotonic()

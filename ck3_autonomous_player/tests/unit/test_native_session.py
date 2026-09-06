@@ -206,7 +206,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         write_mock.assert_called_once()
         sleeper.assert_not_called()
 
-    def test_frontend_log_signals_accept_bytes_and_require_both_fallback_lines(
+    def test_frontend_log_signals_accept_bytes_and_gui_arms_fallback(
         self,
     ) -> None:
         history_only = (
@@ -219,11 +219,10 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertFalse(signals["frontend_gui_complete"])
         self.assertFalse(signals["fallback_ready"])
 
-        complete = (
-            history_only.decode("utf-8")
-            + 'Loading of "gui/frontend_main.gui" is complete\n'
-        )
-        signals = _frontend_log_signals(complete)
+        gui_only = 'Loading of "gui/frontend_main.gui" is complete\n'
+        signals = _frontend_log_signals(gui_only)
+        self.assertFalse(signals["history_end"])
+        self.assertTrue(signals["frontend_gui_complete"])
         self.assertTrue(signals["fallback_ready"])
 
         fast_path = _frontend_log_signals(
@@ -232,13 +231,12 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertTrue(fast_path["idler_marker"])
         self.assertTrue(fast_path["fallback_ready"] is False)
 
-    def test_frontend_wait_fallback_authenticates_window_after_log_milestones(
+    def test_frontend_wait_fallback_authenticates_window_after_gui_marker(
         self,
     ) -> None:
         log_path = self.spec.profile_dir / "logs" / "debug.log"
         log_path.parent.mkdir(parents=True)
         log_path.write_text(
-            "End loading of history\n"
             'Loading of "gui/frontend_main.gui" is complete\n',
             encoding="utf-8",
         )
@@ -281,7 +279,6 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         log_path = self.spec.profile_dir / "logs" / "debug.log"
         log_path.parent.mkdir(parents=True)
         log_path.write_text(
-            "End loading of history\n"
             'Loading of "gui/frontend_main.gui" is complete\n',
             encoding="utf-8",
         )
@@ -304,6 +301,36 @@ class NativeSessionLifecycleTests(unittest.TestCase):
                 poll_interval_seconds=0.001,
                 stop_event=None,
             )
+
+    def test_frontend_wait_keeps_idler_marker_as_unconditional_fast_path(
+        self,
+    ) -> None:
+        log_path = self.spec.profile_dir / "logs" / "debug.log"
+        log_path.parent.mkdir(parents=True)
+        log_path.write_text(
+            f"{NATIVE_SESSION_FRONTEND_MARKER} with NO init options\n",
+            encoding="utf-8",
+        )
+        process = mock.Mock()
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        with mock.patch(
+            "xar_autoplayer.native_session._authenticated_frontend_window"
+        ) as authenticate:
+            evidence = _wait_for_frontend_marker(
+                handle,
+                SimpleNamespace(
+                    profile_dir=self.spec.profile_dir,
+                    game_exe=self.spec.game_exe,
+                ),
+                timeout_seconds=1.0,
+                poll_interval_seconds=0.001,
+                stop_event=None,
+            )
+
+        authenticate.assert_not_called()
+        self.assertTrue(evidence["seen"])
+        self.assertEqual(evidence["mode"], "idler-marker")
 
     def test_episode_seed_preflight_binds_metadata_to_exact_bytes(self) -> None:
         payload = b"immutable next episode seed"
