@@ -990,6 +990,32 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         ):
             production.enter_promotion_source_checkpoint_v1(service)
 
+    def test_runtime_product_error_preempts_absolute_timeline_bound(self) -> None:
+        service = SimpleNamespace(snapshot=lambda: {
+            "map_ready": True,
+            "revision": 1,
+            "date_raw": (
+                production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+                + production.MAX_ADVANCE_DAYS * production.HOURS_PER_DAY
+                + 1
+            ),
+            "played_character": {"character_id": 29037},
+            "diagnostics": {"connection_generation": 9},
+            "paused": True,
+            "speed": 5,
+        })
+
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "product runtime diagnostic: .*zg361_b1_runtime",
+        ):
+            production.enter_promotion_source_checkpoint_v1(
+                service,
+                runtime_diagnostic_probe=lambda: (
+                    "error.log: Script system error in zg361_b1_runtime"
+                ),
+            )
+
     def test_product_entry_uses_speed_five_and_pauses_before_progress_query(self) -> None:
         class Service:
             def __init__(self) -> None:
@@ -4022,6 +4048,9 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         entry.assert_called_once()
         self.assertEqual(entry.call_args.kwargs["timeout_seconds"], 12.5)
+        self.assertTrue(
+            callable(entry.call_args.kwargs["runtime_diagnostic_probe"])
+        )
         self.assertEqual(retained["observations"], [{"date_raw": 53157024, "active_event": True}])
         if entry_error:
             capture.assert_not_called()

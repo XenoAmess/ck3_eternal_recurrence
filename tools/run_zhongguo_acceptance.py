@@ -23,7 +23,7 @@ import time
 import traceback
 import unicodedata
 import uuid
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 
 import run_acceptance as acceptance
@@ -5699,24 +5699,133 @@ def _is_phase2_static_liveness_warning(line: str) -> bool:
     )
 
 
-def project_diagnostics(
+_PROJECT_DIAGNOSTIC_LOG_NAMES = (
+    "error.log",
+    "game.log",
+    "gui_warnings.log",
+    "database_conflicts.log",
+)
+_LOG_RECORD_HEADER = re.compile(
+    r"^(?:\[[^\]]+\])?\[[A-Z]\]\[[^\]]+\]:"
+)
+_LOG_TIMESTAMP = re.compile(r"^(\[[^\]]+\])\[[A-Z]\]\[")
+
+
+def _split_log_records(lines: Sequence[str]) -> list[list[str]]:
+    """Keep each engine error header, detail, and call stack in one record."""
+
+    records: list[list[str]] = []
+    current: list[str] = []
+    for line in lines:
+        if _LOG_RECORD_HEADER.match(line):
+            if current:
+                records.append(current)
+            current = [line]
+        elif current:
+            current.append(line)
+    if current:
+        records.append(current)
+    return records
+
+
+def _record_timestamp(record: Sequence[str]) -> str | None:
+    if not record:
+        return None
+    match = _LOG_TIMESTAMP.match(record[0])
+    return match.group(1) if match is not None else None
+
+
+def _coalesce_localization_error_chains(
+    records: Sequence[Sequence[str]],
+) -> list[list[str]]:
+    """Bind a localization data error to its preceding factory errors."""
+
+    coalesced: list[list[str]] = []
+    index = 0
+    while index < len(records):
+        record = list(records[index])
+        header = record[0].lower() if record else ""
+        if "pdx_data_factory.cpp:" not in header:
+            coalesced.append(record)
+            index += 1
+            continue
+        timestamp = _record_timestamp(record)
+        chain = [record]
+        cursor = index + 1
+        while cursor < len(records):
+            candidate = list(records[cursor])
+            candidate_header = candidate[0].lower() if candidate else ""
+            if _record_timestamp(candidate) != timestamp:
+                break
+            if "pdx_data_factory.cpp:" in candidate_header:
+                chain.append(candidate)
+                cursor += 1
+                continue
+            if "pdx_data_localize.cpp:" in candidate_header:
+                chain.append(candidate)
+                cursor += 1
+            break
+        joined = "\n".join(line for item in chain for line in item).lower()
+        if (
+            len(chain) > 1
+            and "pdx_data_localize.cpp:" in joined
+            and "data error in loc string" in joined
+        ):
+            coalesced.append([line for item in chain for line in item])
+            index = cursor
+        else:
+            coalesced.append(record)
+            index += 1
+    return coalesced
+
+
+def _read_log_suffix(path: Path, start_offset: int) -> list[str]:
+    if not path.is_file():
+        return []
+    size = path.stat().st_size
+    effective_offset = start_offset if 0 <= start_offset <= size else 0
+    with path.open("rb") as handle:
+        handle.seek(effective_offset)
+        payload = handle.read()
+    return payload.decode("utf-8", errors="ignore").splitlines()
+
+
+def project_diagnostic_offsets(userdir: Path) -> dict[str, int]:
+    """Freeze the current log ends before a long-running gameplay operation."""
+
+    return {
+        name: (userdir / "logs" / name).stat().st_size
+        if (userdir / "logs" / name).is_file()
+        else 0
+        for name in _PROJECT_DIAGNOSTIC_LOG_NAMES
+    }
+
+
+def _scan_project_diagnostics(
     userdir: Path,
-    artifacts: Path,
-    stem: str,
     *,
-    allow_phase2_static_liveness_warnings: bool = False,
+    allow_phase2_static_liveness_warnings: bool,
+    start_offsets: Mapping[str, int] | None = None,
 ) -> tuple[list[str], list[str]]:
     blocking: list[str] = []
     observed_engine_warnings: list[str] = []
-    for name in ("error.log", "game.log", "gui_warnings.log", "database_conflicts.log"):
+    for name in _PROJECT_DIAGNOSTIC_LOG_NAMES:
         path = userdir / "logs" / name
-        if not path.is_file():
-            continue
-        shutil.copy2(path, artifacts / f"{stem}_{name}")
-        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
-        for index, line in enumerate(lines):
-            lowered = line.lower()
-            context = " ".join(lines[max(0, index - 2) : index + 3]).lower()
+        lines = _read_log_suffix(
+            path,
+            int(start_offsets.get(name, 0)) if start_offsets is not None else 0,
+        )
+        records = _coalesce_localization_error_chains(_split_log_records(lines))
+        for index, record in enumerate(records):
+            nonempty = [line.strip() for line in record if line.strip()]
+            if not nonempty:
+                continue
+            lowered = "\n".join(nonempty).lower()
+            nearby = "\n".join(
+                line
+                for adjacent in records[max(0, index - 1) : index + 2]
+                for line in adjacent
+            ).lower()
             attributed = any(token in lowered for token in PROJECT_TOKENS)
             duplicate = any(pattern in lowered for pattern in DUPLICATE_PATTERNS)
             dynastic_cycle_stepdown_warning = (
@@ -5725,24 +5834,58 @@ def project_diagnostics(
                 and "attempted to remove" in lowered
                 and "dynastic_cycle" in lowered
             )
+            rendered = f"{name}: " + "\n".join(nonempty)
             if dynastic_cycle_stepdown_warning:
-                observed_engine_warnings.append(f"{name}: {line.strip()}")
+                observed_engine_warnings.append(rendered)
             elif (
                 allow_phase2_static_liveness_warnings
                 and attributed
-                and _is_phase2_static_liveness_warning(line)
+                and _is_phase2_static_liveness_warning(nonempty[0])
             ):
-                observed_engine_warnings.append(f"{name}: {line.strip()}")
+                observed_engine_warnings.append(rendered)
             elif attributed or (
-                duplicate and any(token in context for token in PROJECT_TOKENS)
+                duplicate and any(token in nearby for token in PROJECT_TOKENS)
             ):
-                blocking.append(f"{name}: {line.strip()}")
+                blocking.append(rendered)
     return (
         list(dict.fromkeys(line for line in blocking if line.strip())),
         list(
             dict.fromkeys(
                 line for line in observed_engine_warnings if line.strip()
             )
+        ),
+    )
+
+
+def runtime_project_diagnostics(
+    userdir: Path,
+    start_offsets: Mapping[str, int],
+) -> tuple[list[str], list[str]]:
+    """Scan only records appended after the caller's frozen loader baseline."""
+
+    return _scan_project_diagnostics(
+        userdir,
+        allow_phase2_static_liveness_warnings=True,
+        start_offsets=start_offsets,
+    )
+
+
+def project_diagnostics(
+    userdir: Path,
+    artifacts: Path,
+    stem: str,
+    *,
+    allow_phase2_static_liveness_warnings: bool = False,
+) -> tuple[list[str], list[str]]:
+    for name in _PROJECT_DIAGNOSTIC_LOG_NAMES:
+        path = userdir / "logs" / name
+        if not path.is_file():
+            continue
+        shutil.copy2(path, artifacts / f"{stem}_{name}")
+    return _scan_project_diagnostics(
+        userdir,
+        allow_phase2_static_liveness_warnings=(
+            allow_phase2_static_liveness_warnings
         ),
     )
 
@@ -19187,6 +19330,7 @@ def run_cell(
     phase2_seed_install_evidence: dict[str, object] | None = phase2_seed_install
     phase2_promo_producer_error: dict[str, object] | None = None
     phase2_b2_lifecycle: Phase2B2MatrixLifecycle | None = None
+    phase2_runtime_diagnostic_baseline: dict[str, int] | None = None
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
@@ -19343,6 +19487,10 @@ def run_cell(
                     "loader gate returned an invalid mount inventory"
                 )
             mount_order = [str(item) for item in mount_inventory]
+            if phase2_promotion_source_capture_live:
+                phase2_runtime_diagnostic_baseline = (
+                    project_diagnostic_offsets(userdir)
+                )
         if not loader_smoke and not phase2_runtime_mode:
             acceptance.wait_for_ocr_text(
             "新游戏",
@@ -19491,6 +19639,17 @@ def run_cell(
                 "generic_character_rebind_used": False,
             }
             promotion_entry: dict[str, object] = {}
+            if phase2_runtime_diagnostic_baseline is None:
+                raise acceptance.RunnerError(
+                    "promotion source capture lacks its loader diagnostic baseline"
+                )
+
+            def promotion_runtime_diagnostic_probe() -> str | None:
+                blocking, _warnings = runtime_project_diagnostics(
+                    userdir, phase2_runtime_diagnostic_baseline
+                )
+                return blocking[0] if blocking else None
+
             try:
                 enter_promotion_source_checkpoint_v1(
                     title_navigation_service,
@@ -19498,6 +19657,9 @@ def run_cell(
                         phase2_promotion_source_capture_timeout_seconds
                     ),
                     evidence_out=promotion_entry,
+                    runtime_diagnostic_probe=(
+                        promotion_runtime_diagnostic_probe
+                    ),
                 )
             except Exception as error:
                 promotion_entry.update(

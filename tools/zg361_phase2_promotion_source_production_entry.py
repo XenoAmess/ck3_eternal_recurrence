@@ -3342,6 +3342,7 @@ def enter_promotion_source_checkpoint_v1(
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     evidence_out: dict[str, object] | None = None,
+    runtime_diagnostic_probe: Callable[[], str | None] | None = None,
 ) -> dict[str, object]:
     """Open player B1, advance to .146, choose option 1, stop on D+1 .147."""
     if timeout_seconds <= 0 or poll_interval_seconds < 0:
@@ -3394,6 +3395,12 @@ def enter_promotion_source_checkpoint_v1(
         "zg361_6_retain_wait": None,
         "seed_invalid": None,
     })
+    if runtime_diagnostic_probe is not None:
+        diagnostic = runtime_diagnostic_probe()
+        if diagnostic:
+            raise PromotionProductionEntryError(
+                f"product runtime diagnostic: {diagnostic}"
+            )
     if starting_date > absolute_end_date:
         raise PromotionProductionEntryError(
             "promotion path already exceeded its absolute 550-day product "
@@ -3497,6 +3504,12 @@ def enter_promotion_source_checkpoint_v1(
             service.snapshot(), player=player,
             connection_generation=generation,
         )
+        if runtime_diagnostic_probe is not None:
+            diagnostic = runtime_diagnostic_probe()
+            if diagnostic:
+                raise PromotionProductionEntryError(
+                    f"product runtime diagnostic: {diagnostic}"
+                )
         date_raw = int(snapshot["date_raw"])
         if date_raw > absolute_end_date:
             raise PromotionProductionEntryError(
@@ -3880,6 +3893,12 @@ def enter_promotion_source_checkpoint_v1(
             )
         if poll_interval_seconds:
             sleeper(poll_interval_seconds)
+    if runtime_diagnostic_probe is not None:
+        diagnostic = runtime_diagnostic_probe()
+        if diagnostic:
+            raise PromotionProductionEntryError(
+                f"product runtime diagnostic: {diagnostic}"
+            )
     raise PromotionProductionEntryError(
         "timed out before paused real zg361pp.147"
     )

@@ -1451,6 +1451,81 @@ class Phase2DiagnosticClassificationTests(unittest.TestCase):
         self.assertEqual(warnings, [])
         self.assertEqual(len(blocking), 1)
 
+    def test_project_diagnostics_attributes_complete_engine_error_blocks(self) -> None:
+        lines = [
+            "[09:58:48][E][pdx_data_factory.cpp:1437]: Could not find data "
+            "system function 'GetShortUIName' in 'ROOT.GetShortUIName'.",
+            "[09:58:48][E][pdx_data_factory.cpp:1052]: Failed converting "
+            "statement for 'ROOT.GetShortUIName'",
+            "[09:58:48][E][pdx_data_factory.cpp:1364]: Failed to find type "
+            "'scope:zg361_b2_pip_prompt_owner'",
+            "[09:58:48][E][pdx_data_localize.cpp:146]: Data error in loc "
+            "string 'zg361b2.40.desc'",
+            "[09:59:42][E][jomini_script_system.cpp:303]: Script system error!",
+            "  Error: Event target link 'var' returned an unset scope",
+            "  Script location: file: common/scripted_effects/"
+            "zg361_b1_runtime_007_pending_reopen_effects.txt line: 375",
+            "    file: events/zg361_b1_runtime_events.txt line: 420 "
+            "(zg361b1.121:immediate)",
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            logs = root / "profile" / "logs"
+            artifacts = root / "artifacts"
+            logs.mkdir(parents=True)
+            artifacts.mkdir()
+            (logs / "error.log").write_text(
+                "\n".join(lines) + "\n", encoding="utf-8"
+            )
+
+            blocking, warnings = capture.project_diagnostics(
+                root / "profile",
+                artifacts,
+                "blocks",
+                allow_phase2_static_liveness_warnings=True,
+            )
+
+        self.assertEqual(warnings, [])
+        self.assertEqual(len(blocking), 2)
+        self.assertIn("ROOT.GetShortUIName", blocking[0])
+        self.assertIn("zg361b2.40.desc", blocking[0])
+        self.assertIn("Script system error!", blocking[1])
+        self.assertIn("Event target link 'var'", blocking[1])
+        self.assertIn("zg361b1.121", blocking[1])
+
+    def test_runtime_diagnostics_exclude_loader_baseline_and_find_append(self) -> None:
+        baseline = (
+            "[09:57:54][E][jomini_effect.cpp:1145]: Variable "
+            "'zg361_loader_only' is set but is never used.\n"
+        )
+        appended = (
+            "[09:58:48][E][pdx_data_factory.cpp:1437]: Could not find data "
+            "system function 'GetShortUIName' in 'ROOT.GetShortUIName'.\n"
+            "[09:58:48][E][pdx_data_factory.cpp:1052]: Failed converting "
+            "statement for 'ROOT.GetShortUIName'\n"
+            "[09:58:48][E][pdx_data_localize.cpp:146]: Data error in loc "
+            "string 'zg361b2.40.desc'\n"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            logs = root / "profile" / "logs"
+            logs.mkdir(parents=True)
+            error_log = logs / "error.log"
+            error_log.write_text(baseline, encoding="utf-8")
+            offsets = capture.project_diagnostic_offsets(root / "profile")
+            with error_log.open("a", encoding="utf-8") as handle:
+                handle.write(appended)
+
+            blocking, warnings = capture.runtime_project_diagnostics(
+                root / "profile", offsets
+            )
+
+        self.assertEqual(warnings, [])
+        self.assertEqual(len(blocking), 1)
+        self.assertNotIn("zg361_loader_only", blocking[0])
+        self.assertIn("ROOT.GetShortUIName", blocking[0])
+        self.assertIn("zg361b2.40.desc", blocking[0])
+
 
 if __name__ == "__main__":
     unittest.main()
