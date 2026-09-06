@@ -42,6 +42,9 @@ from zg361_phase2_promotion_manager_tgp_petition_contracts import (
 from zg361_phase2_promotion_manager_tgp_interaction_contracts import (
     MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_manager_tgp_ministry_contracts import (
+    MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -342,38 +345,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "saved_scope_count": 2,
         "option_count": 2,
         "native_option_indices": (0, 1),
-        "selected_option_number": 2,
-        "selected_native_option_index": 1,
-        "max_occurrences": 1,
-    },
-    "tgp_china_ministry.0100": {
-        # CK3 1.19.0.6 treasury-budget renewal for the top liege. Option 1
-        # opens the explicit budget picker and option 3 enacts the steward's
-        # preferred budget. Option 2 keeps the existing allocation and is the
-        # only terminal route that does not choose a new budget policy. R164
-        # observed the salary preference marker saved as the played ruler.
-        "date_raw": 53163168,
-        "date_policy": "product-observation-window",
-        "root_character_id": 29037,
-        "character_scopes": {
-            "treasury_ruler": 29037,
-            "salary_budget": 29037,
-        },
-        "unique_character_scope_excludes": {
-            "steward": (29037,),
-        },
-        "scope_types": {
-            "steward": "character",
-        },
-        "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "treasury_ruler",
-            "steward",
-            "salary_budget",
-        ),),
-        "saved_scope_count": 3,
-        "option_count": 3,
-        "native_option_indices": (0, 1, 2),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
         "max_occurrences": 1,
@@ -3119,6 +3090,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_HEALTH_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_DEATH_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_PETITION_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):
@@ -3709,6 +3681,22 @@ def _manager_recovery_contract(
                 rebound_variants.append(variant_value)
                 continue
             variant = copy.deepcopy(dict(variant_value))
+            variant_scope_types_value = variant.get("scope_types")
+            variant_scope_types = (
+                dict(variant_scope_types_value)
+                if isinstance(variant_scope_types_value, Mapping)
+                else {}
+            )
+            variant_character_scopes_value = variant.get("character_scopes")
+            if isinstance(variant_character_scopes_value, Mapping):
+                variant_character_scopes: dict[str, object] = {}
+                for name, expected in variant_character_scopes_value.items():
+                    if expected == original_root:
+                        variant_character_scopes[str(name)] = player
+                    else:
+                        variant_scope_types.setdefault(str(name), "character")
+                variant["character_scopes"] = variant_character_scopes
+            variant["scope_types"] = variant_scope_types
             variant_excludes_value = variant.get(
                 "unique_character_scope_excludes"
             )

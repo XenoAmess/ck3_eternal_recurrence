@@ -22,6 +22,45 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
+    def test_military_budget_renewal_keeps_current_allocation(self) -> None:
+        event_key = "tgp_china_ministry.0100"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=31,
+            date_raw=53163168,
+            player=32904,
+            scopes=[
+                _scope("treasury_ruler", "character", 32904),
+                _scope("steward", "character", 28080),
+                _scope("military_budget", "character", 32904),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53163168,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 31},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        military_variant = next(
+            variant
+            for variant in contract["scope_variants"]
+            if "military_budget" in variant["saved_scope_names"]
+        )
+        self.assertEqual(
+            military_variant["character_scopes"],
+            {"treasury_ruler": 32904, "military_budget": 32904},
+        )
+
     def test_repeatable_military_aid_notice_uses_only_acknowledgement(self) -> None:
         event_key = "tgp_interaction_event.0015"
         contract = _manager_contract(event_key, player=32904)
