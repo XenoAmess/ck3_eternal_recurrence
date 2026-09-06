@@ -30,6 +30,18 @@ fail-closed 合取入口：
 `observed_surrender_outcome_unavailable` 混入决策 blocker；显式提供却不合格时仍由既有严格 normalizer
 拒绝或报告 source-attribution blocker。
 
+## Hash-bound 文件入口
+
+`prepare_g2_three_way_exit_file_intake.py` 将同一合取开放为离线 manifest runner。manifest 对
+candidate、surrender terms、campaign certificate、owner budget source、white-peace terms、utility
+evaluation 和可选历史 outcome 分别绑定路径与精确 SHA-256；相对路径只相对于 manifest 所在目录解析。
+文件缺省必须显式为 `null`，这会得到正常的 `evidence_required` 结果，而不是加载默认 fixture。
+
+成功处理会原子写入一份结果 JSON，保留 manifest/input 路径与哈希、完整 intake 结果以及固定的
+`ck3_started_or_attached=false`、`bridge_queried=false`、`mutation_commands=[]`、
+`action_ready=false` 边界。manifest/输入哈希漂移、字段集合漂移、坏 UTF-8/JSON 或覆盖已有输出都会
+直接失败。即使完整 synthetic manifest 得到静态赢家，这个 runner 也不会升级 production readiness。
+
 ## 当前结果
 
 仓库仍没有 owner-approved budget source、production campaign certificate、同帧 Raiktor
@@ -43,6 +55,7 @@ source-specific same-lifecycle adapter；非 CK3 侧等待 owner source 与真�
 
 ## 离线验收
 
-focused tests 覆盖缺输入、完整绑定、draft owner、stale utility SHA、source-specific 后处理接线与
-兼容 policy 输出；normal 与 `python -O` 均通过。相关 owner/white-peace/three-way/source-specific
-intake 回归也在同一矩阵中复跑。本包没有 CK3 进程、MCP query、mutation 或 readiness promotion。
+focused tests 覆盖缺输入、完整绑定、draft owner、stale utility SHA、source-specific 后处理接线、
+兼容 policy 输出、完整/缺项 file manifest、哈希漂移与输出覆盖保护；normal 与 `python -O` 均通过。
+相关 owner/white-peace/three-way/source-specific intake 回归也在同一矩阵中复跑。本包没有 CK3 进程、
+MCP query、mutation 或 readiness promotion。
