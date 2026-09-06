@@ -255,6 +255,14 @@ def main() -> int:
         assert contract["saved_state"]["played_character_id"] == 55001
         assert contract["saved_state"]["player_history_id"] is None
         assert contract["manager_entry"] == capture["manager_entry"]
+        assert contract["domain_query_matrix"] == {
+            "schema_version": 1,
+            "b2_pip_owner_character_id": 55001,
+            "incident_owner_character_id": 55001,
+            "workforce_owner_character_id": 55001,
+            "ai_owned_case_owner_character_id": 55001,
+            "ai_owned_case_subject_character_id": 44001,
+        }
         report = json.loads(Path(result["report_path"]).read_text(encoding="utf-8"))
         assert report["product_receipts_written_by_fixture"] is False
         assert report["fixture_opened_product_b1"] is False

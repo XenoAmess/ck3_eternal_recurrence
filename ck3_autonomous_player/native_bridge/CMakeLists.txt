@@ -1905,7 +1905,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/zhongguo_result_case_snapshot_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/zhongguo_result_case_snapshot_v1_source_contract.json
-      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_effects.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_core_result_delivery_effects.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/events/zg361_events.txt
   )
 

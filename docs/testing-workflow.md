@@ -1814,3 +1814,23 @@ RED，不是产品或 carrier RED。
 日期，并禁止再运行 date sentinel；只有 clean boundary 没有 seed target 时，才允许一次 `+24` 的 native
 date-only sentinel。target binding 存在但任一字段漂移时仍 fail closed。R156 退出时 supervisor 已按既有清理合同
 回收 PID，因此 R157 需要重新装载 checkpoint；这不是同一健康会话内按场景重启。
+
+### R157–R158：canonical manager seed 与 product-only 去污（2026-09-07）
+
+R157 在冻结 `e3f525c`、正式 1,031 文件产品投影和默认 5 速下，于同一帧接受
+`zga_phase2_manager_seed.1`；typed event 将玩家/管理者绑定为 CharacterID `32904`，把已存在的直属
+可审阅对象绑定为 `26347`。保存出的 canonical checkpoint SHA-256 为
+`7B1706AB93482B0FEC624A5BEBED393445A031DDA0E4DF691F229B8E8A0F89F2`，runner 与 cleanup 均 GREEN，
+且 restart count 为 0。这一结果只闭合 full-tree 的 player-manager seed 前置，不等于业务树已经 GREEN。
+
+R158 首次把该 seed 装入 product-only full-tree；seed install、native readiness 与产品挂载通过，但 gameplay
+前的 capability gate 精确拒绝了默认 OFF 的 promotion/compensation provider。健康 PID `129672` 被保留以供
+审计，确认 DLL 不能通过 Python reconnect 热升级后，再由 native-session 队列受管停止。该轮同时在 loader
+日志发现 seed 保留了 acceptance-only `zga_phase2_manager_seed_survivability_modifier`。fixture 的可见 seed
+选项必须在保存前移除该 1100 天临时存活保护；正式产品不得为了兼容测试存档而定义 fixture modifier。
+manager seed materializer 还必须从同一 typed event 写入完整 `domain_query_matrix`：四个 owner 都是当前玩家
+manager，AI-owned subject 是已绑定直属对象。缺任一字段时 full-tree 必须在业务动作前 RED。
+
+当前源码使用 promotion/compensation candidate=ON 的 fresh MSVC build；其 94/94 CTest 必须 GREEN。
+effect 拆分后，native result-case source-contract 必须直接指向用途分片
+`zg361_core_result_delivery_effects.txt`，禁止重新引入或依赖已删除的 `zg361_effects.txt` 聚合文件。

@@ -357,6 +357,12 @@ def main() -> int:
     )
     assert "health = 10" in survivability_modifier
     assert "epidemic_resistance = 100" in survivability_modifier
+
+    seed_event = top_level_block(events, "zga_phase2_manager_seed.1")
+    assert (
+        "remove_character_modifier = "
+        "zga_phase2_manager_seed_survivability_modifier"
+    ) in seed_event
     retry_arm = top_level_block(
         effects, "zga_phase2_manager_seed_arm_daily_retry_effect"
     )

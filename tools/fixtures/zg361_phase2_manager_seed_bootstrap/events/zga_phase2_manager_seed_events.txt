@@ -167,6 +167,11 @@ zga_phase2_manager_seed.1 = {
 
 	option = {
 		name = zga_phase2_manager_seed.1.a
+		# The health buffer only protects the bounded fixture search.  Strip it
+		# before the runner saves the product-only canonical seed, otherwise the
+		# next load would retain a modifier key that correctly does not exist in
+		# the release product.
+		remove_character_modifier = zga_phase2_manager_seed_survivability_modifier
 		debug_log = "ZGAP2MANAGERSEED: typed player-manager capture window closed"
 	}
 }

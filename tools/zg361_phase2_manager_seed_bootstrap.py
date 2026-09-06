@@ -406,6 +406,20 @@ def materialize_candidate(
             "paused_on_load": True,
             "map_ready": True,
         },
+        # Full-tree acceptance starts from the captured human manager.  Its
+        # already-existing direct reviewable vassal is the subject for the
+        # AI-owned and manager-governance cells; every owner-facing domain is
+        # intentionally bound to the same played manager.
+        "domain_query_matrix": {
+            "schema_version": 1,
+            "b2_pip_owner_character_id": capture["played_character_id"],
+            "incident_owner_character_id": capture["played_character_id"],
+            "workforce_owner_character_id": capture["played_character_id"],
+            "ai_owned_case_owner_character_id": capture["played_character_id"],
+            "ai_owned_case_subject_character_id": capture["manager_entry"][
+                "reviewable_subject_character_id"
+            ],
+        },
         "install": {
             "continue_save_relative_path": "save games/autosave.ck3",
             "last_save_relative_path": "last_save.ck3",
