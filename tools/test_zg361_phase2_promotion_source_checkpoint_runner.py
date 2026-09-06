@@ -489,6 +489,125 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(production._contract_date_matches(53168424, contract))
         self.assertFalse(production._contract_date_matches(53159640, contract))
 
+    def test_value_track_card_selects_bounded_option_and_closes(self) -> None:
+        def scope(name: str, type_key: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": type_key},
+            }
+
+        event_key = "zg361.30"
+        date_raw = 53156880
+        instance_id = 21
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": instance_id,
+            "date_raw": date_raw,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            "saved_scopes": [
+                # R116 carried live review/PIP call-stack scopes here.  They
+                # are inherited context, not inputs consumed by zg361.30.
+                scope("zg361_b1_ticket_cycle", "value"),
+                scope("zg361_n_dog", "value"),
+                scope("zg361_n_rabbit", "value"),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {
+            "date_raw": date_raw,
+            "active_event": {"option_count": 2},
+        }
+        event = {"event_instance_id": instance_id}
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        class Service:
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "snapshot_id": "native:374",
+                    "revision": 375,
+                    "native_revision": 374,
+                    "date_raw": date_raw,
+                    "map_ready": True,
+                    "paused": True,
+                    "played_character": {"character_id": 29037},
+                    "diagnostics": {"connection_generation": 9},
+                    "active_event": {
+                        "instance_id": instance_id,
+                        "option_count": 2,
+                    },
+                }
+
+            def select_event_option(
+                self, option_number: int, *, event_instance_id: int,
+                expected_revision: int,
+            ) -> dict[str, object]:
+                self.submission = (
+                    option_number, event_instance_id, expected_revision,
+                )
+                return {
+                    "accepted": True,
+                    "status": "submitted",
+                    "option_number": option_number,
+                    "option_index": 0,
+                    "event_selection": {
+                        "postcondition_verified": True,
+                        "old_event_instance_id": event_instance_id,
+                        "new_event_instance_id": None,
+                        "selected_option_number": option_number,
+                        "selected_native_option_index": 0,
+                    },
+                }
+
+        service = Service()
+        drain = production._drain_known_timeline_interrupt(
+            service,
+            snapshot=snapshot,
+            event=event,
+            query={"current_event_window_context": context},
+            event_key=event_key,
+            contract=contract,
+            player=29037,
+            connection_generation=9,
+        )
+        self.assertEqual(service.submission, (1, instance_id, 375))
+        self.assertEqual(drain["result"], "GREEN")
+        self.assertTrue(all(drain["selection_checks"].values()))
+
     def test_find_secrets_interrupt_allows_the_three_live_observed_deliveries(self) -> None:
         contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS["spymaster_task.0381"],

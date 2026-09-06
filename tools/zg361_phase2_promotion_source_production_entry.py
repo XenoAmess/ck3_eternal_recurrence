@@ -574,6 +574,29 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 4,
         "selected_native_option_index": 3,
     },
+    "zg361.30": {
+        # Player-liege value-track card authored three days after annual
+        # review publication whenever that cycle contains a wild-dog or
+        # rabbit row.  Option 2 changes prestige/merit, starts PIP state and
+        # can force title holders to step down.  Option 1 is the bounded
+        # continuation: it only applies the authored merciful-opinion result
+        # to current-cycle rabbit rows, leaving promotion-source state alone.
+        # R116 observed this exact two-option frame at D+411 while Central was
+        # active.  Bind the two event-local count values but permit inherited
+        # review/PIP call-stack scopes, which the event does not consume.
+        "date_raw": 53156880,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "scope_types": {
+            "zg361_n_dog": "value",
+            "zg361_n_rabbit": "value",
+        },
+        "boolean_scopes": (),
+        "option_count": 2,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "zg361.40": {
         # Product Jingcha mandate at D+161 and again one exact year later
         # inside the 550-day observation window.  The legal default opens the
