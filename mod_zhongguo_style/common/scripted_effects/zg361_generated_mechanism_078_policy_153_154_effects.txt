@@ -85,7 +85,7 @@ zg361_mechanism_153_ai_effect = {
 	}
 }
 
-# 154 录音式完整纪要 / 摘要纪要
+# 154 逐项完整纪要 / 摘要纪要
 zg361_mechanism_154_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_154_choice } }

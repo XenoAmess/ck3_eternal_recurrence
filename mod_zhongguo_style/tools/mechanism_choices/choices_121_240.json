@@ -297,7 +297,7 @@
     "reference_choice": "a"
   },
   "154": {
-    "title_en": "Full Transcript Versus Summary Minutes",
+    "title_en": "Itemized Versus Summary Minutes",
     "option_a_cn": "复杂案件保存逐项完整纪要，并由双方校正后签认",
     "option_a_en": "Keep itemized minutes for complex cases and obtain corrected sign-off from both sides",
     "option_b_cn": "只记录档位和主管结论，以最少留痕快速结案",
@@ -336,8 +336,8 @@
     "title_en": "Manager Nomination Quota",
     "option_a_cn": "给少量提名额并要求排序、理由与未使用额度归还",
     "option_a_en": "Issue a small quota with ranking, rationale, and return of unused slots",
-    "option_b_cn": "把全部名额押给一名主推者，并用弱包占满余位",
-    "option_b_en": "Concentrate every slot on one favorite and fill the rest with weak packets",
+    "option_b_cn": "把核心辅导和游说资源押给一名主推者，其余提名照常竞争",
+    "option_b_en": "Concentrate coaching and advocacy on one favorite while other nominees still compete",
     "profile": "promotion",
     "reference_choice": "a"
   },
@@ -372,15 +372,15 @@
     "title_en": "Tenure-Requirement Exception",
     "option_a_cn": "占用有限破格额，先独立审准入再审目标级能力",
     "option_a_en": "Use a limited exception slot and separate eligibility review from capability review",
-    "option_b_cn": "在同一轮投票中为强 sponsor 的人直接豁免资历",
-    "option_b_en": "Waive tenure inside the final vote for a candidate with a powerful sponsor",
+    "option_b_cn": "在同一轮投票中，直接豁免有强势提名担保人的候选人资历",
+    "option_b_en": "Waive tenure inside the final vote for a candidate backed by a powerful nominator",
     "profile": "promotion",
     "reference_choice": "a"
   },
   "163": {
     "title_en": "Promotion Performance Window",
-    "option_a_cn": "期初冻结两轮或本级完整履历，并统一标注重组语境",
-    "option_a_en": "Freeze a two-cycle or full-level record and annotate reorganizations consistently",
+    "option_a_cn": "期初冻结候选人最近两轮履历，或其在现级别的完整履历，并统一标注重组语境",
+    "option_a_en": "Freeze either each candidate's latest two cycles or their full current-level record, and annotate reorganizations consistently",
     "option_b_cn": "只取最近最强一轮，快速奖励已经显露的上升势头",
     "option_b_en": "Use only the strongest recent cycle to reward visible momentum quickly",
     "profile": "promotion",
@@ -459,7 +459,7 @@
     "reference_choice": "a"
   },
   "172": {
-    "title_en": "Veto, Majority Vote, or Average Score",
+    "title_en": "Panel Voting Rules",
     "option_a_cn": "普通项用去极值平均，红线否决须附理由并复核",
     "option_a_en": "Use trimmed averages normally and require reviewable reasons for red-line vetoes",
     "option_b_cn": "授权任一评委一票否决，以最快速度守住晋升门槛",
@@ -540,7 +540,7 @@
     "reference_choice": "a"
   },
   "181": {
-    "title_en": "Capability, Willingness, and Role-Fit Triage",
+    "title_en": "Capability, Willingness, Target, and Role-Fit Triage",
     "option_a_cn": "先分清能力、意愿、目标失真与错岗，再匹配处置",
     "option_a_en": "Diagnose capability, willingness, target validity, and role fit before intervention",
     "option_b_cn": "见一次低档就按意愿不足启动纪律型 PIP",
@@ -639,7 +639,7 @@
     "reference_choice": "a"
   },
   "192": {
-    "title_en": "On-Call Rotation",
+    "title_en": "Capability-Tiered On-Call Rotation",
     "option_a_cn": "按能力分层轮值并允许留痕换班，同时培训后备",
     "option_a_en": "Use competency-tiered rotation with recorded swaps and backup training",
     "option_b_cn": "把急务长期交给固定英雄，换取最快稳定响应",
@@ -648,7 +648,7 @@
     "reference_choice": "a"
   },
   "193": {
-    "title_en": "On-Call Pay or Compensatory Time",
+    "title_en": "On-Call Compensation",
     "option_a_cn": "按值守时数混合发金币与调休，并设个人年度上限",
     "option_a_en": "Mix cash and compensatory time by duty hours under an annual personal cap",
     "option_b_cn": "把值守列为岗位义务，不另付钱也不减下期任务",
@@ -703,8 +703,8 @@
   },
   "199": {
     "title_en": "Credit for Prevention When Nothing Breaks",
-    "option_a_cn": "对被采纳防护设观察期，以后续无事故发有限延迟功",
-    "option_a_en": "Observe adopted safeguards and grant capped delayed credit after an incident-free period",
+    "option_a_cn": "先冻结防护措施、风险基线与观察期，期满按风险降幅授予有限功劳",
+    "option_a_en": "Freeze safeguards, the risk baseline, and the observation window, then grant capped credit for measured risk reduction",
     "option_b_cn": "只奖励真实事故中的可见救火，不给未发生风险计功",
     "option_b_en": "Reward only visible response to real incidents and give no credit for non-events",
     "profile": "incident",
@@ -712,8 +712,8 @@
   },
   "200": {
     "title_en": "Temporary Emergency Authority",
-    "option_a_cn": "授予限时、限范围的越权权限，并保留命令日志与事后复核",
-    "option_a_en": "Grant time- and scope-limited emergency powers with command logs and after-action review",
+    "option_a_cn": "授予超出日常职权的限时、限范围应急处置权，并保留命令日志与事后复核",
+    "option_a_en": "Grant time- and scope-limited emergency powers beyond ordinary authority, with command logs and after-action review",
     "option_b_cn": "危机期间开放全面越权，先恢复再补审批",
     "option_b_en": "Allow unrestricted overrides during the crisis and seek approval after recovery",
     "profile": "incident",
@@ -784,7 +784,7 @@
   },
   "208": {
     "title_en": "Incremental Repair Versus Full Rewrite",
-    "option_a_cn": "按风险分段修补并设可量化退出线，逐步替换旧务",
+    "option_a_cn": "按风险分段修补并设可量化退出线，逐步替换旧系统",
     "option_a_en": "Repair by risk segment with measurable exit gates and gradual replacement",
     "option_b_cn": "宣布全面重做并冻结旧系统演进，押注一次性切换",
     "option_b_en": "Freeze legacy evolution and bet on a single big-bang rewrite",
@@ -838,19 +838,19 @@
   },
   "214": {
     "title_en": "Coverage Numbers Versus Real Quality",
-    "option_a_cn": "围绕高风险场景做深测，并用真实事故反校验证选择",
-    "option_a_en": "Test deeply around documented risks and recalibrate selection from real incidents",
+    "option_a_cn": "围绕已记录的高风险场景做深测，再用后续真实事故检验场景选择是否合理",
+    "option_a_en": "Test deeply around documented risks, then use subsequent real incidents to check whether scenario selection was sound",
     "option_b_cn": "设检查数量和覆盖率硬线，月底集中补齐数字",
     "option_b_en": "Set hard test-count and coverage targets and fill the numbers at month end",
     "profile": "technology",
     "reference_choice": "a"
   },
   "215": {
-    "title_en": "Retiring Legacy Processes as Delivery",
+    "title_en": "Retiring Legacy Systems as Delivery",
     "option_a_cn": "先迁移剩余用户、开放必要性申诉，再验收退役节省",
     "option_a_en": "Migrate remaining users, hear necessity appeals, and verify savings before retirement",
-    "option_b_cn": "立即关闭低使用旧务，把释放 HC 当期计入交付",
-    "option_b_en": "Shut down low-use legacy services immediately and book the freed HC now",
+    "option_b_cn": "立即关闭低使用旧系统，把释放 HC 当期计入交付",
+    "option_b_en": "Shut down low-use legacy systems immediately and book the freed HC now",
     "profile": "technology",
     "reference_choice": "a"
   },
@@ -883,8 +883,8 @@
   },
   "219": {
     "title_en": "Adoption Count, Usage Depth, and Savings",
-    "option_a_cn": "至少绑定一个真实节省结果和一个反指标，再看接入深度",
-    "option_a_en": "Require one real savings outcome and one counter-metric before judging usage depth",
+    "option_a_cn": "至少绑定真实节省结果和防止浅接入刷数的约束指标，再看使用深度",
+    "option_a_en": "Require real savings and an anti-gaming metric against shallow adoption before judging usage depth",
     "option_b_cn": "以接入团队数为主指标，集中推动大量浅接入",
     "option_b_en": "Use connected-team count as the main target and drive broad shallow adoption",
     "profile": "platform",
@@ -919,8 +919,8 @@
   },
   "223": {
     "title_en": "Duplicate-Solution Scan",
-    "option_a_cn": "立项前检索复用、贡献改造与差异例外并留审批证据",
-    "option_a_en": "Search for reuse, upstream contribution, and documented exceptions before approval",
+    "option_a_cn": "先查能否复用；需改造就回馈原方案；关键差异另行申请例外",
+    "option_a_en": "Check reuse, contribute changes upstream, and request exceptions only for critical differences",
     "option_b_cn": "为关键项目快速批准自建，避免等待共享方案协调",
     "option_b_en": "Approve a bespoke build for critical work rather than wait for shared coordination",
     "profile": "platform",
@@ -937,8 +937,8 @@
   },
   "225": {
     "title_en": "Not-Invented-Here and Legitimate Forks",
-    "option_a_cn": "先向主线提交改动，只有硬差异获批才分叉并自负维护",
-    "option_a_en": "Contribute upstream first and fork only for approved hard requirements with owned maintenance",
+    "option_a_cn": "先向主线提交改动；只有无法兼容的安全或性能要求获批后，才分叉并承担维护",
+    "option_a_en": "Contribute upstream first; fork with owned maintenance only for approved, incompatible safety or performance requirements",
     "option_b_cn": "为本地速度立即分叉，之后再决定是否回馈主线",
     "option_b_en": "Fork immediately for local speed and decide about upstreaming later",
     "profile": "platform",
@@ -963,7 +963,7 @@
     "reference_choice": "a"
   },
   "228": {
-    "title_en": "Blast-Radius Accountability for Platform Incidents",
+    "title_en": "Accountability for Shared-Platform Incidents",
     "option_a_cn": "区分平台根因、用户违规和强推决策，并允许本地降级止损",
     "option_a_en": "Separate platform causes, user violations, and mandate decisions while allowing local degradation",
     "option_b_cn": "强撑统一平台并把损失归给未按规范使用的各团队",

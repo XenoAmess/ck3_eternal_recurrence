@@ -4,7 +4,7 @@
 
 
 
-# 193 值守津贴 / 调休二选一
+# 193 值守补偿办法
 zg361_mechanism_193_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_193_choice } }

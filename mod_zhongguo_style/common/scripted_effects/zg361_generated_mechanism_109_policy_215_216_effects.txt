@@ -4,7 +4,7 @@
 
 
 
-# 215 退役旧制度也算交付
+# 215 退役旧系统也算交付
 zg361_mechanism_215_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_215_choice } }

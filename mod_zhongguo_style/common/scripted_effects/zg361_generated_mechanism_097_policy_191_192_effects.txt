@@ -85,7 +85,7 @@ zg361_mechanism_191_ai_effect = {
 	}
 }
 
-# 192 急务值守轮盘
+# 192 能力分层急务轮值
 zg361_mechanism_192_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_192_choice } }

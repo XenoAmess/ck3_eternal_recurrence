@@ -12,10 +12,13 @@ import tempfile
 import unittest
 
 from gen_361_mechanisms import (
+    FULL_LEDGER_TOOLTIP_MECHANISM_IDS,
     MOD_ROOT,
     LEDGER_ONLY_MECHANISM_IDS,
     choice_button_cn,
     effect_name,
+    full_ledger_changes_cn,
+    full_ledger_changes_en,
     localization_values,
     naturalize_mechanism_chinese,
     outputs,
@@ -512,6 +515,92 @@ class MechanismGenerationTests(unittest.TestCase):
                     naturalize_mechanism_chinese(mechanism.decision_cn),
                     description,
                 )
+
+    def test_192_228_tooltips_add_complete_ledger_and_case_boundary(self) -> None:
+        self.assertEqual(FULL_LEDGER_TOOLTIP_MECHANISM_IDS, frozenset(range(192, 229)))
+        mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
+        chinese = localization_values(self.mechanisms, "simp_chinese")
+        english = localization_values(self.mechanisms, "english")
+        placeholder = localization_values(self.mechanisms, "german")
+        reviewed = 0
+        for mechanism_id in FULL_LEDGER_TOOLTIP_MECHANISM_IDS:
+            mechanism = mechanisms_by_id[mechanism_id]
+            for choice in ("a", "b"):
+                reviewed += 1
+                key = f"zg361m.{mechanism_id}.{choice}.tt"
+                source_cn = naturalize_mechanism_chinese(
+                    mechanism.option_a_cn if choice == "a" else mechanism.option_b_cn
+                ).rstrip("。！？；")
+                source_en = (
+                    mechanism.option_a_en if choice == "a" else mechanism.option_b_en
+                ).rstrip(".!?; ")
+                with self.subTest(mechanism=mechanism_id, choice=choice):
+                    self.assertGreater(len(mechanism_deltas(mechanism, choice)), 2)
+                    self.assertNotIn(source_cn, chinese[key])
+                    self.assertNotIn(source_en, english[key])
+                    self.assertIn(full_ledger_changes_cn(mechanism, choice), chinese[key])
+                    self.assertIn(full_ledger_changes_en(mechanism, choice), english[key])
+                    self.assertIn("只设定今后案卷的制度规则", chinese[key])
+                    self.assertIn("without an opened case", english[key])
+                    self.assertEqual(placeholder[key], english[key])
+        self.assertEqual(reviewed, 74)
+
+    def test_events_009_010_manual_copy_findings_stay_closed(self) -> None:
+        chinese = localization_values(self.mechanisms, "simp_chinese")
+        expected_snippets = {
+            "zg361m.154.t": "逐项完整纪要",
+            "zg361m.158.b": "核心辅导和游说资源",
+            "zg361m.161.desc": "陪跑安排若得逞",
+            "zg361m.162.b": "有强势提名担保人的候选人",
+            "zg361m.163.a.tt": "候选人最近两轮履历，或其在现级别的完整履历",
+            "zg361m.172.t": "评委投票规则",
+            "zg361m.178.desc": "只具备其中一项证据",
+            "zg361m.181.t": "能力、意愿、目标与岗职四向诊断",
+            "zg361m.186.desc": "目标锁变成永久免疫",
+            "zg361m.191.desc": "完成必要交接后的合理退出",
+            "zg361m.192.t": "能力分层急务轮值",
+            "zg361m.193.t": "值守补偿办法",
+            "zg361m.199.a": "风险基线与观察期",
+            "zg361m.200.a": "超出日常职权",
+            "zg361m.205.t": "重复运维工时比例上限",
+            "zg361m.208.a": "逐步替换旧系统",
+            "zg361m.209.desc": "耗用国库资金",
+            "zg361m.214.a": "检验场景选择是否合理",
+            "zg361m.215.t": "退役旧系统也算交付",
+            "zg361m.219.desc": "少量客群的深度使用",
+            "zg361m.219.a": "防止浅接入刷数的约束指标",
+            "zg361m.223.a": "需改造就回馈原方案；关键差异另行申请例外",
+            "zg361m.224.desc": "选定一个主方案可释放维护成本",
+            "zg361m.225.a": "无法兼容的安全或性能要求",
+            "zg361m.228.t": "共享平台事故的波及范围与责任",
+        }
+        for key, snippet in expected_snippets.items():
+            with self.subTest(key=key):
+                self.assertIn(snippet, chinese[key])
+
+        joined = "\n".join(chinese.values())
+        for stale_copy in (
+            "录音式完整纪要",
+            "陪跑成功能",
+            "强提名担保人的人",
+            "两轮或本级完整履历",
+            "只强一项的候选",
+            "目标锁变永久免疫",
+            "真实健康退出",
+            "急务值守轮盘",
+            "值守津贴 / 调休二选一",
+            "重复运维（重复运维）",
+            "但花国库",
+            "反校验证选择",
+            "退役旧制度也算交付",
+            "深度少客群",
+            "检索复用、贡献改造与差异例外",
+            "选一释放维护成本",
+            "只有硬差异获批",
+            "中台事故的爆炸半径责任",
+        ):
+            with self.subTest(stale_copy=stale_copy):
+                self.assertNotIn(stale_copy, joined)
 
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"

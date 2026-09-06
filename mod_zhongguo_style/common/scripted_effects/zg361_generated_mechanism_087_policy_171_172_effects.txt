@@ -85,7 +85,7 @@ zg361_mechanism_171_ai_effect = {
 	}
 }
 
-# 172 一票否决 / 多数票 / 平均分
+# 172 评委投票规则
 zg361_mechanism_172_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_172_choice } }

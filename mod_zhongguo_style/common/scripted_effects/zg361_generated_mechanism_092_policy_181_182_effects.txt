@@ -4,7 +4,7 @@
 
 
 
-# 181 能力、意愿、错岗三分诊
+# 181 能力、意愿、目标与岗职四向诊断
 zg361_mechanism_181_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_181_choice } }

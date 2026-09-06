@@ -64,6 +64,12 @@ LEDGER_ONLY_MECHANISM_IDS = frozenset(
      *range(229, 345), *range(355, 358), 360, 361)
 )
 
+# These policy cards already have typed consumers, but opening the catalogue
+# card itself still only records the ruling and its organizational-ledger
+# deltas.  Their tooltips therefore expose every immediate delta and the case
+# boundary instead of repeating the action already visible on the button.
+FULL_LEDGER_TOOLTIP_MECHANISM_IDS = frozenset(range(192, 229))
+
 LEDGER_LABELS_CN = {
     "evidence": "证据",
     "trust": "信任",
@@ -79,6 +85,22 @@ LEDGER_LABELS_CN = {
     "pay_debt": "薪酬债",
     "policy_debt": "制度债",
     "budget_pressure": "预算压力",
+}
+LEDGER_LABELS_EN = {
+    "evidence": "evidence",
+    "trust": "trust",
+    "admin_load": "administrative load",
+    "appeal_risk": "appeal risk",
+    "delivery": "delivery",
+    "stability": "stability",
+    "tech_debt": "technical debt",
+    "data_quality": "data quality",
+    "burnout": "burnout",
+    "talent": "talent health",
+    "hc_pressure": "headcount pressure",
+    "pay_debt": "pay debt",
+    "policy_debt": "policy debt",
+    "budget_pressure": "budget pressure",
 }
 POSITIVE_LEDGERS = frozenset(
     {"evidence", "trust", "delivery", "stability", "data_quality", "talent"}
@@ -848,6 +870,43 @@ def principal_ledger_changes_cn(mechanism: Mechanism, choice: str) -> str:
     )
 
 
+def full_ledger_changes_cn(mechanism: Mechanism, choice: str) -> str:
+    """Expose every organizational-ledger delta written by one choice."""
+
+    return "、".join(
+        f"{LEDGER_LABELS_CN[ledger]}{delta:+d}"
+        for ledger, delta in mechanism_deltas(mechanism, choice).items()
+    )
+
+
+def full_ledger_changes_en(mechanism: Mechanism, choice: str) -> str:
+    """English counterpart of :func:`full_ledger_changes_cn`."""
+
+    return ", ".join(
+        f"{LEDGER_LABELS_EN[ledger]} {delta:+d}"
+        for ledger, delta in mechanism_deltas(mechanism, choice).items()
+    )
+
+
+def full_ledger_tooltip_cn(mechanism: Mechanism, choice: str) -> str:
+    """Explain policy-card effects without duplicating the button action."""
+
+    return (
+        f"本次评审立即调整组织账簿：{full_ledger_changes_cn(mechanism, choice)}。"
+        "它只设定今后案卷的制度规则；未立案时，不会自行发放款项或办理人事、职位与业务变动。"
+    )
+
+
+def full_ledger_tooltip_en(mechanism: Mechanism, choice: str) -> str:
+    """English counterpart of :func:`full_ledger_tooltip_cn`."""
+
+    return (
+        "This review immediately changes the organizational ledger: "
+        f"{full_ledger_changes_en(mechanism, choice)}. "
+        "It sets policy for future cases; without an opened case, it does not itself issue payments or execute personnel, position, or business actions."
+    )
+
+
 def choice_button_cn(
     mechanism: Mechanism, choice: str, *, ledger_only: bool, max_length: int = 49
 ) -> str:
@@ -982,8 +1041,12 @@ def localization_values(
             else:
                 option_a = choice_button_cn(mechanism, "a", ledger_only=False)
                 option_b = choice_button_cn(mechanism, "b", ledger_only=False)
-                tooltip_a = complete_sentence_cn(mechanism.option_a_cn)
-                tooltip_b = complete_sentence_cn(mechanism.option_b_cn)
+                if mechanism.id in FULL_LEDGER_TOOLTIP_MECHANISM_IDS:
+                    tooltip_a = full_ledger_tooltip_cn(mechanism, "a")
+                    tooltip_b = full_ledger_tooltip_cn(mechanism, "b")
+                else:
+                    tooltip_a = complete_sentence_cn(mechanism.option_a_cn)
+                    tooltip_b = complete_sentence_cn(mechanism.option_b_cn)
             option_c = "搁置本局提案；制度债+3、行政负担-1"
             tooltip_c = "关闭本局内的这项提案；它不会自动再次出现，组织账本的制度债增加 3，行政负担减少 1。"
         else:
@@ -1001,8 +1064,12 @@ def localization_values(
             else:
                 option_a = concise_choice_en(mechanism.option_a_en)
                 option_b = concise_choice_en(mechanism.option_b_en)
-                tooltip_a = complete_sentence_en(mechanism.option_a_en)
-                tooltip_b = complete_sentence_en(mechanism.option_b_en)
+                if mechanism.id in FULL_LEDGER_TOOLTIP_MECHANISM_IDS:
+                    tooltip_a = full_ledger_tooltip_en(mechanism, "a")
+                    tooltip_b = full_ledger_tooltip_en(mechanism, "b")
+                else:
+                    tooltip_a = complete_sentence_en(mechanism.option_a_en)
+                    tooltip_b = complete_sentence_en(mechanism.option_b_en)
             option_c = "Close this policy for the campaign and record one policy debt"
             tooltip_c = "Close this proposal for the current campaign. It will not return automatically, and one policy debt is recorded."
         values.update(

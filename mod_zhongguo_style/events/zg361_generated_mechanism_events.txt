@@ -7498,7 +7498,7 @@ zg361m.153 = {
 	}
 }
 
-# 154 录音式完整纪要 / 摘要纪要
+# 154 逐项完整纪要 / 摘要纪要
 zg361m.154 = {
 	type = character_event
 	theme = crown
@@ -8380,7 +8380,7 @@ zg361m.171 = {
 	}
 }
 
-# 172 一票否决 / 多数票 / 平均分
+# 172 评委投票规则
 zg361m.172 = {
 	type = character_event
 	theme = crown
@@ -8821,7 +8821,7 @@ zg361m.180 = {
 	}
 }
 
-# 181 能力、意愿、错岗三分诊
+# 181 能力、意愿、目标与岗职四向诊断
 zg361m.181 = {
 	type = character_event
 	theme = crown
@@ -9360,7 +9360,7 @@ zg361m.191 = {
 	}
 }
 
-# 192 急务值守轮盘
+# 192 能力分层急务轮值
 zg361m.192 = {
 	type = character_event
 	theme = crown
@@ -9409,7 +9409,7 @@ zg361m.192 = {
 	}
 }
 
-# 193 值守津贴 / 调休二选一
+# 193 值守补偿办法
 zg361m.193 = {
 	type = character_event
 	theme = crown
@@ -9997,7 +9997,7 @@ zg361m.204 = {
 	}
 }
 
-# 205 重复运维（toil）比例上限
+# 205 重复运维工时比例上限
 zg361m.205 = {
 	type = character_event
 	theme = crown
@@ -10487,7 +10487,7 @@ zg361m.214 = {
 	}
 }
 
-# 215 退役旧制度也算交付
+# 215 退役旧系统也算交付
 zg361m.215 = {
 	type = character_event
 	theme = crown
@@ -11124,7 +11124,7 @@ zg361m.227 = {
 	}
 }
 
-# 228 中台事故的爆炸半径责任
+# 228 共享平台事故的波及范围与责任
 zg361m.228 = {
 	type = character_event
 	theme = crown

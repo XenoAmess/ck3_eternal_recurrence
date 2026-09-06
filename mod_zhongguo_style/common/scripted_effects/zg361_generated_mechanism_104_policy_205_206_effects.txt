@@ -4,7 +4,7 @@
 
 
 
-# 205 重复运维（toil）比例上限
+# 205 重复运维工时比例上限
 zg361_mechanism_205_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_205_choice } }

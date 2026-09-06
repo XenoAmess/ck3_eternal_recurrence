@@ -85,7 +85,7 @@ zg361_mechanism_227_ai_effect = {
 	}
 }
 
-# 228 中台事故的爆炸半径责任
+# 228 共享平台事故的波及范围与责任
 zg361_mechanism_228_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_228_choice } }
