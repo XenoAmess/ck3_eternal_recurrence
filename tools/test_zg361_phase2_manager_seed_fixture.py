@@ -90,6 +90,9 @@ def main() -> int:
         assert gate in on_actions
         assert gate in effects
         assert gate in scripted_gui
+    assert "on_game_start = {" in on_actions
+    assert "on_game_start_after_lobby = {" in on_actions
+    assert on_actions.count("zga_phase2_manager_seed_on_game_start") == 3
     opener = top_level_block(events, "zga_phase2_manager_seed.100")
     for gate in (
         "NOT = { has_character_flag = zg361_b1_cycle_active }",
@@ -105,25 +108,24 @@ def main() -> int:
         "save_scope_as = zga_phase2_manager_subject",
     ):
         assert gate in opener
-    handoff = top_level_block(events, "zga_phase2_manager_seed.10")
-    assert "hidden = yes" not in handoff
-    assert "theme = stewardship" in handoff
-    assert len(re.findall(r"(?m)^\s*option\s*=\s*\{", handoff)) == 1
-    assert handoff.count("set_player_character =") == 1
-    assert (
-        "set_player_character = scope:zga_phase2_manager_owner" in handoff
+    assert "zga_phase2_manager_seed.10 = {" not in events
+    assert "zga_phase2_manager_seed.10." not in payload
+    assert effects.count("set_player_character =") == 1
+    assert "set_player_character = scope:zga_phase2_manager_owner" in effects
+    assert "add_character_flag = zga_phase2_manager_seed_handoff_pending" in effects
+    assert effects.index("save_scope_as = zga_phase2_manager_subject") < effects.index(
+        "set_player_character = scope:zga_phase2_manager_owner"
     )
-    assert "this = scope:zga_phase2_manager_subject" in handoff
-    assert "liege = { this = scope:zga_phase2_manager_owner }" in handoff
-    assert "is_ai = yes" in handoff
-    assert "zg361_review_now_business_valid_trigger = yes" in handoff
+    assert effects.index("save_scope_as = zga_phase2_manager_owner") < effects.index(
+        "set_player_character = scope:zga_phase2_manager_owner"
+    )
     assert (
         "trigger_event = { id = zga_phase2_manager_seed.11 days = 0 }"
-        in handoff
+        in effects
     )
-    assert handoff.index(
+    assert effects.index(
         "set_player_character = scope:zga_phase2_manager_owner"
-    ) < handoff.index(
+    ) < effects.index(
         "trigger_event = { id = zga_phase2_manager_seed.11 days = 0 }"
     )
     carrier = top_level_block(events, "zga_phase2_manager_seed.11")
@@ -134,8 +136,31 @@ def main() -> int:
     assert "is_ai = yes" in carrier
     assert "liege = root" in carrier
     assert "zg361_review_now_business_valid_trigger = yes" in carrier
+    assert "has_character_flag = zga_phase2_manager_seed_handoff_pending" in carrier
+    assert "remove_character_flag = zga_phase2_manager_seed_handoff_pending" in carrier
+    assert carrier.count(
+        "remove_character_flag = zga_phase2_manager_seed_handoff_pending"
+    ) == 1
+    assert carrier.index(
+        "remove_character_flag = zga_phase2_manager_seed_handoff_pending"
+    ) < carrier.index("trigger_event = zga_phase2_manager_seed.100")
+    failure_branch = carrier.index(
+        'debug_log = "ZGAP2MANAGERSEED: RED post-switch manager binding unavailable"'
+    )
+    assert carrier.index(
+        "remove_character_flag = zga_phase2_manager_seed_handoff_pending"
+    ) < failure_branch
+    assert (
+        "remove_character_flag = zga_phase2_manager_seed_handoff_pending"
+        not in carrier[failure_branch:]
+    )
     assert "trigger_event = zga_phase2_manager_seed.100" in carrier
     assert "set_player_character =" not in carrier
+    for manager_entry_gate in (effects, scripted_gui, on_actions):
+        assert (
+            "NOT = { has_character_flag = "
+            "zga_phase2_manager_seed_handoff_pending }" in manager_entry_gate
+        )
     final_event = top_level_block(events, "zga_phase2_manager_seed.1")
     assert "hidden = yes" not in final_event
     assert "theme = stewardship" in final_event
@@ -194,7 +219,9 @@ def main() -> int:
     assert contract["saved_state"]["played_character_id"] == 29037
     transition = contract["player_transition_contract"]
     assert transition == {
-        "event_definition_key": "zga_phase2_manager_seed.10",
+        "handoff_mode": "preemptive_load_hook",
+        "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
+        "preemptive_hooks": ["on_game_start", "load_safe_scripted_gui"],
         "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
         "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
         "hidden_carrier_delay_days": 0,
@@ -203,8 +230,16 @@ def main() -> int:
         "target_source": "existing_immediate_liege_saved_by_fixture",
         "owner_scope": "zga_phase2_manager_owner",
         "subject_scope": "zga_phase2_manager_subject",
-        "requires_unique_enabled_option": True,
-        "requires_revision_increase": True,
+        "preempts_queued_visible_events": True,
+        "requires_completion_at_source_date": True,
+        "forbids_prebootstrap_event_drain": True,
+        "timeline_speed": 5,
+        "first_known_later_event_definition_key": "zg361b2.40",
+        "first_known_later_event_date_raw": 53147040,
+        "destructive_later_event_definition_key": "ep3_interactions_events.0630",
+        "destructive_later_event_date_raw": 53147256,
+        "requires_source_save_hash_match": True,
+        "requires_source_saved_player_identity": True,
         "requires_date_unchanged": True,
         "requires_typed_post_switch_player": True,
         "requires_post_switch_manager_revalidation": True,

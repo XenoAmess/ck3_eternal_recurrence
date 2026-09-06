@@ -4,7 +4,7 @@
   "seed_purpose": "player-manager",
   "status": "blocked_live_capture_required",
   "ready": false,
-  "blocker": "The single-player checkpoint is a typed player-subject source only. A fresh run must prove the visible 29037-to-existing-liege handoff, revalidate manager eligibility after the switch, and capture zga_phase2_manager_seed.1 before this contract can become ready.",
+  "blocker": "The single-player checkpoint is a typed player-subject source only. A fresh run must prove the preemptive load-time 29037-to-existing-liege handoff against the immutable source hash, revalidate manager eligibility after the switch, and capture zga_phase2_manager_seed.1 before this contract can become ready.",
   "source": {
     "profile": "Z:\\p2y\\r2\\native-state\\profile",
     "relative_save": "save games/xar_checkpoint.ck3",
@@ -48,7 +48,12 @@
     "launch_mode": "native_session_continue_last_save"
   },
   "player_transition_contract": {
-    "event_definition_key": "zga_phase2_manager_seed.10",
+    "handoff_mode": "preemptive_load_hook",
+    "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
+    "preemptive_hooks": [
+      "on_game_start",
+      "load_safe_scripted_gui"
+    ],
     "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
     "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
     "hidden_carrier_delay_days": 0,
@@ -57,8 +62,16 @@
     "target_source": "existing_immediate_liege_saved_by_fixture",
     "owner_scope": "zga_phase2_manager_owner",
     "subject_scope": "zga_phase2_manager_subject",
-    "requires_unique_enabled_option": true,
-    "requires_revision_increase": true,
+    "preempts_queued_visible_events": true,
+    "requires_completion_at_source_date": true,
+    "forbids_prebootstrap_event_drain": true,
+    "timeline_speed": 5,
+    "first_known_later_event_definition_key": "zg361b2.40",
+    "first_known_later_event_date_raw": 53147040,
+    "destructive_later_event_definition_key": "ep3_interactions_events.0630",
+    "destructive_later_event_date_raw": 53147256,
+    "requires_source_save_hash_match": true,
+    "requires_source_saved_player_identity": true,
     "requires_date_unchanged": true,
     "requires_typed_post_switch_player": true,
     "requires_post_switch_manager_revalidation": true,

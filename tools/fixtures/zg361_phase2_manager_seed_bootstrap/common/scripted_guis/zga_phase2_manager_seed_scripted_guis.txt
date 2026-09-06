@@ -11,6 +11,7 @@
 				zg361_review_now_business_valid_trigger = yes
 				prestige >= 150
 				NOT = { has_character_flag = zga_phase2_manager_seed_bootstrap_started }
+				NOT = { has_character_flag = zga_phase2_manager_seed_handoff_pending }
 			}
 			AND = {
 				zg361_is_reviewable_vassal_trigger = yes

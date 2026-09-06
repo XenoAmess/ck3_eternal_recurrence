@@ -12,6 +12,7 @@ zga_phase2_manager_seed_maybe_begin_effect = {
 			zg361_review_now_business_valid_trigger = yes
 			prestige >= 150
 			NOT = { has_character_flag = zga_phase2_manager_seed_bootstrap_started }
+			NOT = { has_character_flag = zga_phase2_manager_seed_handoff_pending }
 		}
 		add_character_flag = zga_phase2_manager_seed_bootstrap_started
 		debug_log = "ZGAP2MANAGERSEED: load-safe manager eligibility observed"
@@ -46,8 +47,16 @@ zga_phase2_manager_seed_maybe_begin_effect = {
 		}
 		add_character_flag = zga_phase2_manager_seed_handoff_started
 		save_scope_as = zga_phase2_manager_subject
-		liege = { save_scope_as = zga_phase2_manager_owner }
-		debug_log = "ZGAP2MANAGERSEED: typed subject-to-manager handoff ready"
-		trigger_event = zga_phase2_manager_seed.10
+		liege = {
+			save_scope_as = zga_phase2_manager_owner
+			# Keep the manager-side GUI fallback idle until the hidden carrier
+			# has revalidated the transition on a later engine turn.
+			add_character_flag = zga_phase2_manager_seed_handoff_pending
+		}
+		debug_log = "ZGAP2MANAGERSEED: preemptive typed subject-to-manager handoff"
+		set_player_character = scope:zga_phase2_manager_owner
+		scope:zga_phase2_manager_owner = {
+			trigger_event = { id = zga_phase2_manager_seed.11 days = 0 }
+		}
 	}
 }

@@ -2,6 +2,3 @@
  zga_phase2_manager_seed.1.t:0 "Phase-two player-manager seed capture"
  zga_phase2_manager_seed.1.desc:0 "This acceptance-only window binds the eligible played manager and one existing direct reviewable vassal for a typed MCP checkpoint."
  zga_phase2_manager_seed.1.a:0 "Capture the manager seed and close."
- zga_phase2_manager_seed.10.t:0 "Hand control to the existing manager"
- zga_phase2_manager_seed.10.desc:0 "The current character and their existing eligible liege are bound as typed MCP scopes before control changes. No title or relationship is created."
- zga_phase2_manager_seed.10.a:0 "Continue as the existing manager."

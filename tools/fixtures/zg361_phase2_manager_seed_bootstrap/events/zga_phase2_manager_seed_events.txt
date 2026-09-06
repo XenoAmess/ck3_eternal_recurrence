@@ -75,62 +75,11 @@ zga_phase2_manager_seed.100 = {
 	}
 }
 
-# Visible typed subject -> existing manager handoff. MCP must inspect root and
-# both saved CharacterIDs before selecting the sole option. The fixture does
-# not accept a caller-provided target and changes no title or relationship.
-zga_phase2_manager_seed.10 = {
-	type = character_event
-	theme = stewardship
-	title = zga_phase2_manager_seed.10.t
-	desc = zga_phase2_manager_seed.10.desc
-	left_portrait = root
-	right_portrait = scope:zga_phase2_manager_owner
-	trigger = {
-		is_ai = no
-		is_alive = yes
-		is_landed = yes
-		this = scope:zga_phase2_manager_subject
-		has_character_flag = zga_phase2_manager_seed_handoff_started
-		has_game_rule = zg361_on
-		zg361_is_reviewable_vassal_trigger = yes
-		liege = { this = scope:zga_phase2_manager_owner }
-		scope:zga_phase2_manager_owner = {
-			is_ai = yes
-			is_alive = yes
-			is_landed = yes
-			zg361_is_celestial_liege_trigger = yes
-			zg361_review_now_business_valid_trigger = yes
-			prestige >= 150
-			NOT = { has_character_flag = zg361_b1_cycle_active }
-			NOT = { has_character_flag = zg361_review_in_progress }
-			trigger_if = {
-				limit = { has_variable = zg361_p2c_active }
-				var:zg361_p2c_active != 1
-			}
-			trigger_else = { always = yes }
-			trigger_if = {
-				limit = { has_variable = zg361_pp_portfolio_queue_active }
-				var:zg361_pp_portfolio_queue_active != 1
-			}
-			trigger_else = { always = yes }
-		}
-	}
-	immediate = {
-		save_scope_as = zga_phase2_manager_subject
-		liege = { save_scope_as = zga_phase2_manager_owner }
-	}
-	option = {
-		name = zga_phase2_manager_seed.10.a
-		set_player_character = scope:zga_phase2_manager_owner
-		scope:zga_phase2_manager_owner = {
-			trigger_event = { id = zga_phase2_manager_seed.11 days = 0 }
-		}
-	}
-}
-
-# Hidden post-switch carrier. A zero-day scheduled event avoids relying on
-# same-effect player-state recomputation: root must now be the human manager,
-# while the former player must be the same existing direct AI vassal.
+# Hidden post-switch carrier. The load hook or load-safe scripted GUI has
+# already switched control before any queued visible event can invalidate the
+# old subject. A zero-day scheduled event avoids relying on same-effect
+# player-state recomputation: root must now be the human manager, while the
+# former player must be the same existing direct AI vassal.
 zga_phase2_manager_seed.11 = {
 	type = character_event
 	hidden = yes
@@ -141,6 +90,7 @@ zga_phase2_manager_seed.11 = {
 				is_alive = yes
 				is_landed = yes
 				this = scope:zga_phase2_manager_owner
+				has_character_flag = zga_phase2_manager_seed_handoff_pending
 				zg361_is_celestial_liege_trigger = yes
 				has_game_rule = zg361_on
 				zg361_review_now_business_valid_trigger = yes
@@ -166,6 +116,7 @@ zga_phase2_manager_seed.11 = {
 					liege = root
 				}
 			}
+			remove_character_flag = zga_phase2_manager_seed_handoff_pending
 			debug_log = "ZGAP2MANAGERSEED: post-switch manager binding verified"
 			trigger_event = zga_phase2_manager_seed.100
 		}

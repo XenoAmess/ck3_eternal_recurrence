@@ -2,6 +2,3 @@
  zga_phase2_manager_seed.1.t:0 "二期玩家管理者种子捕获"
  zga_phase2_manager_seed.1.desc:0 "此验收窗口用于将合格的玩家管理者与一名现有直属受评属臣绑定到 MCP 类型化存档证据。"
  zga_phase2_manager_seed.1.a:0 "记录管理者种子并关闭。"
- zga_phase2_manager_seed.10.t:0 "切换到现有管理者"
- zga_phase2_manager_seed.10.desc:0 "切换前，MCP 会把当前角色及其现有合格上司绑定为类型化作用域；此过程不会创建头衔或关系。"
- zga_phase2_manager_seed.10.a:0 "以现有管理者继续。"
