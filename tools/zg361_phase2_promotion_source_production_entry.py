@@ -363,6 +363,39 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "epidemic_events.1100": {
+        # CK3 1.19.0.6 outbreak notification. Its immediate block has already
+        # recorded the notified epidemic and installed county-side outbreak
+        # effects before the modal opens. In R151 the manager had no court
+        # physician, so authored option 2 was hidden and the rendered buttons
+        # mapped to native indices 0 and 2. Native option 2 starts a physician
+        # search and a later health-event chain; option 0 only applies the
+        # source-authored -2 governor trait XP when eligible. Select option 0
+        # as the smallest unrelated mutation, after binding all three typed
+        # saved scopes and the complete resource-dependent option shape.
+        "date_raw": 53148360,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "scope_types": {
+            "epidemic": "epidemic",
+            "province": "province",
+            "infected_county": "landed_title",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "province",
+            "infected_county",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices

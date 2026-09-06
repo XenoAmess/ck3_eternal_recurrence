@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R149 管理者存档续接增量（不改变逐号等级）
+## R131–R151 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -436,7 +436,18 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `a472986e3cac07b67012f008347e4e4a7f766d483df9e76ecc2b5fdb343ea588` /
   `7d8f30386f1d2f2cc6a4a087f08310bd8cd8971c193938bf68a7389bc8ba5ddc`。本轮 loader 正常，
   没有新的加载性能 RED，故不新增产品 effect 拆分；既有用途分组和每文件数量上限继续强制执行。
-- 以上 R131–R149 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R151 首次使用含最终 Workforce/Endgame 文案复审修复的 1,031-file 正式产品投影；no-launch preflight
+  GREEN，实机 loader 303/303、fatal=0。管理者 `32904` 在 5 速恢复 active B1 时于
+  `date_raw=53148360` 遇到原版 `epidemic_events.1100` 疫情出现通知。typed context 证明 root 仍存活，
+  saved scopes 恰为 epidemic/province/infected_county 三种类型；原生定义有三个选项，但本帧只显示
+  native indices 0/2 两个按钮。native 2 会开启御医搜索及后续 health 事件链，native 0 只保留原版
+  条件性的 -2 governor trait XP，因此 runner 以最小副作用选择 native 0；任何 scope/按钮漂移仍 fail-closed。
+  R151 manager recovery / runner / cleanup SHA-256 分别为
+  `38f2be0a6c9eadbbbb098e31fa6d9b4b66d1726c62e6afdfc9b0071bced45c0c` /
+  `a1cedc38887c32e14e5052169bb47ea2ce18ed639b7c67ebd1a7f122d5b7de62` /
+  `fbaa96b71d450d0a927b4bd97b212cc754796ee6d28b4f9c616638333d97937d`。本轮未到 clean boundary，
+  未产出 seed；cleanup GREEN、restart_count=0、最终 CK3 inventory 为空。这是新增的严格中断合同，不是产品 RED。
+- 以上 R131–R151 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 

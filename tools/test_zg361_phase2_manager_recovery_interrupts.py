@@ -410,6 +410,50 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:real_father:matches_any"])
 
+    def test_epidemic_notice_avoids_physician_followup_chain(self) -> None:
+        event_key = "epidemic_events.1100"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=14,
+            date_raw=53148360,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("province", "province"),
+                _scope("infected_county", "landed_title"),
+            ],
+            native_option_indices=(0, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53148360,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 14},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["options"][1]["native_option_index"] = 1
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53148360,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 14},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
