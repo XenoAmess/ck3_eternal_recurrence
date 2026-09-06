@@ -72,7 +72,11 @@ def provide_raiktor_three_way_exit_intake(
             *assessment["owner_blockers"],
             *assessment["white_peace_blockers"],
             *assessment["white_peace_budget_blockers"],
-            *assessment["observed_surrender_outcome"]["blockers"],
+            *(
+                assessment["observed_surrender_outcome"]["blockers"]
+                if observed_surrender_outcome_value is not None
+                else []
+            ),
         ]
     )
     return {

@@ -144,7 +144,6 @@ class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
                 "campaign_dominance_certificate_unavailable",
                 "white_peace_utility_evaluation_unavailable",
                 "white_peace_comparison_certificate_unavailable",
-                "observed_surrender_outcome_unavailable",
             ],
         )
 
@@ -172,6 +171,7 @@ class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
         self.assertFalse(result["production_recommendation_ready"])
         self.assertFalse(result["action_ready"])
         self.assertIsNone(result["action_literal"])
+        self.assertEqual(result["blockers"], [])
 
     def test_draft_owner_never_reaches_comparison(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

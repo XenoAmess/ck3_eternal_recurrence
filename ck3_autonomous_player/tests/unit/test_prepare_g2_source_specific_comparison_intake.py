@@ -228,6 +228,23 @@ class G2SourceSpecificComparisonIntakeTests(unittest.TestCase):
             self.assertEqual(
                 result["remaining_providers"], INTAKE.REMAINING_PROVIDERS
             )
+            composed = result["three_way_intake_result"]
+            self.assertEqual(
+                composed["schema"],
+                "xar.ck3.raiktor_three_way_exit_intake.v1",
+            )
+            self.assertEqual(composed["status"], "evidence_required")
+            self.assertFalse(composed["action_ready"])
+            self.assertIsNone(composed["action_literal"])
+            self.assertEqual(
+                composed["assessment"], result["three_way_policy_result"]
+            )
+            self.assertEqual(
+                composed["assessment"]["observed_surrender_outcome"][
+                    "status"
+                ],
+                "source_specific_outcome_observed",
+            )
 
             with self.assertRaisesRegex(INTAKE.IntakeError, "hash differs"):
                 INTAKE.run_intake(

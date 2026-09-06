@@ -36,6 +36,9 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_policy import (  # noqa: E
     WHITE_PEACE_PROVIDER,
     assess_raiktor_three_way_exit,
 )
+from xar_autoplayer.simulation.raiktor_three_way_exit_intake import (  # noqa: E402
+    provide_raiktor_three_way_exit_intake,
+)
 
 
 REPORT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_run.v1"
@@ -489,14 +492,16 @@ def run_intake(
     projection, validation = build_observed_surrender_outcome(
         report, report_sha256=actual_hash
     )
-    policy = assess_raiktor_three_way_exit(
-        None,
-        None,
-        None,
-        None,
-        None,
+    three_way_intake = provide_raiktor_three_way_exit_intake(
+        candidate_value=None,
+        surrender_terms_value=None,
+        campaign_value=None,
+        owner_budget_source_path=None,
+        white_peace_observation_value=None,
+        white_peace_utility_evaluation_value=None,
         observed_surrender_outcome_value=projection,
     )
+    policy = _object(three_way_intake.get("assessment"), "policy result")
     observed = _object(
         policy.get("observed_surrender_outcome"), "policy observation"
     )
@@ -517,6 +522,10 @@ def run_intake(
         or policy.get("recommended_outcome") is not None
         or policy.get("action_ready") is not False
         or policy.get("automatic_surrender_ready") is not False
+        or three_way_intake.get("status") != "evidence_required"
+        or three_way_intake.get("production_recommendation_ready") is not False
+        or three_way_intake.get("action_ready") is not False
+        or three_way_intake.get("action_literal") is not None
     ):
         raise IntakeError("three-way policy did not preserve provider gaps")
 
@@ -528,6 +537,7 @@ def run_intake(
         "source_report_sha256": actual_hash,
         "validation": validation,
         "observed_surrender_outcome": projection,
+        "three_way_intake_result": three_way_intake,
         "three_way_policy_result": policy,
         "closed_gap": "source-specific live outcome is policy-consumable",
         "remaining_providers": list(REMAINING_PROVIDERS),

@@ -20,6 +20,16 @@ fail-closed 合取入口：
 合同的消费入口。它不新增 campaign producer，不把 synthetic fixture 包装成 production evidence，
 也不查询、启动或修改 CK3。
 
+现有 `prepare_g2_source_specific_comparison_intake.py` 已改为经过这条统一入口：验证后的
+`observed_surrender_outcome` 先进入 intake，再从 `assessment` 取得原三方 policy 结果；输出同时保留
+`three_way_intake_result` 与兼容字段 `three_way_policy_result`。因此未来真实 lifecycle 后处理不再需要
+调用方手工拆接 provider，同时仍一次性列出 campaign、owner 与 white-peace 缺项。
+
+历史 outcome 是可选的校准证据，不是三方 pre-action comparison 的必要输入。未提供它时，intake
+继续在 `inputs` 中如实标记 `observed_surrender_outcome_supplied=false`，但不再把
+`observed_surrender_outcome_unavailable` 混入决策 blocker；显式提供却不合格时仍由既有严格 normalizer
+拒绝或报告 source-attribution blocker。
+
 ## 当前结果
 
 仓库仍没有 owner-approved budget source、production campaign certificate、同帧 Raiktor
@@ -33,6 +43,6 @@ source-specific same-lifecycle adapter；非 CK3 侧等待 owner source 与真�
 
 ## 离线验收
 
-新增 4 项 focused tests，覆盖缺输入、完整绑定、draft owner 和 stale utility SHA；normal 与
-`python -O` 均通过。相关 owner/white-peace/three-way/source-specific intake 回归也在同一矩阵中
-复跑。本包没有 CK3 进程、MCP query、mutation 或 readiness promotion。
+focused tests 覆盖缺输入、完整绑定、draft owner、stale utility SHA、source-specific 后处理接线与
+兼容 policy 输出；normal 与 `python -O` 均通过。相关 owner/white-peace/three-way/source-specific
+intake 回归也在同一矩阵中复跑。本包没有 CK3 进程、MCP query、mutation 或 readiness promotion。

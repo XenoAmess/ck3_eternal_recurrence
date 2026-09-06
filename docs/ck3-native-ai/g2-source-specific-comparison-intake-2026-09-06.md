@@ -32,6 +32,13 @@ continues to carry `source_specific_attribution_ready=false`; source identity
 belongs to the separate six-execution join and cannot be inferred from generic
 cleanup.
 
+The postprocessor now sends that validated projection through the unified
+`raiktor-three-way-exit-intake-provider-v1`. Its output retains both the full
+`three_way_intake_result` and the existing `three_way_policy_result`
+compatibility field. This removes manual provider composition while keeping
+campaign, owner-budget and white-peace inputs explicitly unavailable and all
+production/action gates false.
+
 ## No-launch boundary
 
 The adapter reads a caller-supplied report whose SHA-256 must be provided
