@@ -398,7 +398,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
-        "max_occurrences": 1,
+        # R163 and R164 both observed two independent movement petitions in
+        # one bounded natural-cycle wait. Keep the allowance evidence-bound.
+        "max_occurrences": 2,
     },
     "ep3_decisions_event.2001": {
         # CK3 1.19.0.6 administrative-vassal confirmation request.  Option 1
