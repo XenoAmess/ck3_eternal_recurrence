@@ -91,6 +91,7 @@ class FakeService:
         self.paused = True
         self.speed = 1
         self.checkpoint_path = checkpoint_path
+        self.checkpoint_episode_character_id: int | None = None
         self.date_raw = (
             capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"]
             if manager_pip_route
@@ -162,7 +163,11 @@ class FakeService:
                 "size": self.checkpoint_path.stat().st_size,
                 "sha256": digest,
                 "date_raw": self.date_raw,
-                "episode_character_id": self.played_character_id,
+                "episode_character_id": (
+                    self.played_character_id
+                    if self.checkpoint_episode_character_id is None
+                    else self.checkpoint_episode_character_id
+                ),
                 "strategy": "fake-unit",
             },
         }
@@ -4846,6 +4851,9 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
         transition_service = capture_runtime.service_factory(None)
         require(isinstance(transition_service, FakeService), "transition fake drifted")
         transition_service.speed = 5
+        # The live native driver freezes this as the session-origin player even
+        # after the fixture changes the current typed player to 9002.
+        transition_service.checkpoint_episode_character_id = 9001
         first = capture.run_capture(
             replace(
                 fixture.config(seed_purpose=purpose),
@@ -4870,6 +4878,13 @@ def test_r129_transition_checkpoint_then_clean_manager_continuation() -> None:
             and receipt["product_state_cleared"] is False
             and receipt["product_receipt_written"] is False,
             f"transition receipt drifted: {receipt}",
+        )
+        require(
+            receipt["checkpoint"]["episode_character_id"] == 9001
+            and receipt["checkpoint"]["typed_played_character_id"] == 9002
+            and receipt["checkpoint"]["episode_character_id_semantics"]
+            == "native_session_origin",
+            f"transition receipt confused session and live identities: {receipt}",
         )
         require(
             "save-checkpoint" in capture_calls

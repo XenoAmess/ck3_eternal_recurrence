@@ -1739,3 +1739,18 @@ R95 主报告 SHA-256 为
 `E73E0F847FD233B6FFF55D8A5DB12E502576F6A84E984109C20DED97C042E5B0`）与
 `Z:\b3r95_resume6\03_promotion_source_production_entry.json`（SHA-256
 `0E87E74C5749808F8DAA40CA48205129A5B133915FC1CC0023A049687247AE40`）。
+
+### R130：存档回执的 episode identity 是会话起点，不是切换后的当前玩家（2026-09-06）
+
+R130 在 commit `74a2cb2` 的 1031-file 正式投影上完成 303/303 loader、fatal=0、项目错误匹配 0，
+并通过 native current-event context 精确选择 `zg361b2.40` option 3。选择后的同一暂停帧已经由 typed
+snapshot 证明当前玩家从 CharacterID `29037` 切换为管理者 CharacterID `32904`；随即生成的
+57,501,797-byte checkpoint 也通过路径、日期、大小和 SHA-256 字节检查。然而 native driver 的
+`checkpoint.episode_character_id` 仍为 `29037`，因为该字段在连接建立时冻结，用于标识 episode/session
+起点，不会因 fixture 切换当前玩家而重写。把它要求为 `32904` 会制造 harness RED。
+
+验收工具现在明确拆开两类身份：即时 snapshot 的 `played_character` 才证明保存时当前玩家；checkpoint
+回执中的 `episode_character_id` 只允许为空、原会话玩家或当前玩家，并作为 session-origin 元数据保留。
+保存响应和即时 typed snapshot 在任何严格检查失败前先落盘；跨进程 continuation 仍必须重新加载存档，
+独立证明当前玩家为目标管理者，不能靠放宽 episode 元数据跳过最终身份门。R130 因旧断言记为 harness RED，
+不提升逐号 readiness；其产品、fixture 和 clean source 前后哈希不变，cleanup GREEN、restart_count=0。

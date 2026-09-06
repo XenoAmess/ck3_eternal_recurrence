@@ -2199,7 +2199,15 @@ def _validate_transition_checkpoint_receipt(
         ),
         "checkpoint_episode_character": (
             checkpoint.get("episode_character_id")
-            in (None, transition.get("target_character_id"))
+            in (
+                None,
+                transition.get("source_character_id"),
+                transition.get("target_character_id"),
+            )
+        ),
+        "checkpoint_typed_played_character": (
+            checkpoint.get("typed_played_character_id")
+            == transition.get("target_character_id")
         ),
         "paused": receipt.get("paused") is True,
         "map_ready": receipt.get("map_ready") is True,
@@ -2264,9 +2272,15 @@ def _capture_active_manager_transition_checkpoint(
 ) -> dict[str, Any]:
     """Freeze the first paused typed frame after the fixture player switch."""
 
+    source_id = route.get("source_character_id")
     target_id = route.get("target_character_id")
     completion_date = route.get("completion_date_raw")
     if (
+        isinstance(source_id, bool)
+        or not isinstance(source_id, int)
+        or source_id <= 0
+        or source_id == target_id
+        or
         isinstance(target_id, bool)
         or not isinstance(target_id, int)
         or target_id <= 0
@@ -2336,24 +2350,46 @@ def _capture_active_manager_transition_checkpoint(
             raise SeedCaptureError("transition save-checkpoint did not materialize")
         checkpoint_path = Path(raw_checkpoint_path).resolve()
         declared_sha = str(checkpoint.get("sha256", "")).lower()
-        if (
-            not checkpoint_path.is_file()
-            or checkpoint.get("date_raw") != completion_date
-            or checkpoint.get("episode_character_id") not in (None, target_id)
-            or checkpoint.get("size") != checkpoint_path.stat().st_size
-            or re.fullmatch(r"[0-9a-f]{64}", declared_sha) is None
-            or sha256_file(checkpoint_path).lower() != declared_sha
-        ):
+        write_json(artifacts / "manager-transition-checkpoint-snapshot.json", snapshot)
+        write_json(artifacts / "manager-transition-save-response.json", save)
+        checkpoint_episode_id = checkpoint.get("episode_character_id")
+        checkpoint_checks = {
+            "checkpoint_path": checkpoint_path.is_file(),
+            "checkpoint_date": checkpoint.get("date_raw") == completion_date,
+            # The native driver binds episode_character_id when the connection
+            # starts.  A fixture player switch changes the live typed player,
+            # but intentionally does not rewrite that session-lineage field.
+            "checkpoint_session_episode_identity": checkpoint_episode_id
+            in (None, source_id, target_id),
+            "typed_snapshot_player": played_id == target_id,
+            "checkpoint_size": checkpoint_path.is_file()
+            and checkpoint.get("size") == checkpoint_path.stat().st_size,
+            "checkpoint_sha_shape": re.fullmatch(r"[0-9a-f]{64}", declared_sha)
+            is not None,
+            "checkpoint_sha": checkpoint_path.is_file()
+            and re.fullmatch(r"[0-9a-f]{64}", declared_sha) is not None
+            and sha256_file(checkpoint_path).lower() == declared_sha,
+        }
+        failed_checkpoint_checks = [
+            name for name, passed in checkpoint_checks.items() if passed is not True
+        ]
+        if failed_checkpoint_checks:
             raise SeedCaptureError(
-                "transition save-checkpoint bytes or typed identity drifted"
+                "transition save-checkpoint bytes or typed identity drifted",
+                {
+                    "stage": "manager_transition_checkpoint_capture",
+                    "checks": checkpoint_checks,
+                    "failed_checks": failed_checkpoint_checks,
+                    "source_character_id": source_id,
+                    "typed_played_character_id": played_id,
+                    "checkpoint_episode_character_id": checkpoint_episode_id,
+                },
             )
         archive = artifacts / "manager-transition-checkpoint.ck3"
         shutil.copy2(checkpoint_path, archive)
         archived_sha = sha256_file(archive).lower()
         if archived_sha != declared_sha or archive.stat().st_size != checkpoint.get("size"):
             raise SeedCaptureError("transition checkpoint archive copy drifted")
-        write_json(artifacts / "manager-transition-checkpoint-snapshot.json", snapshot)
-        write_json(artifacts / "manager-transition-save-response.json", save)
         receipt = {
             "schema_version": 1,
             "kind": MANAGER_TRANSITION_CHECKPOINT_KIND,
@@ -2376,6 +2412,8 @@ def _capture_active_manager_transition_checkpoint(
                 "sha256": archived_sha,
                 "date_raw": checkpoint.get("date_raw"),
                 "episode_character_id": checkpoint.get("episode_character_id"),
+                "typed_played_character_id": played_id,
+                "episode_character_id_semantics": "native_session_origin",
                 "strategy": checkpoint.get("strategy"),
             },
         }
