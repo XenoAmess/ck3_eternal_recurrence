@@ -117,6 +117,10 @@ timecode 已填写，但 raw capture、原片起止时间、实取时长和 revi
 `source-review-receipt.template.json`，绑定真实 intake 和原片字节，再由具名审核人完整 1× 审阅后另存正式 receipt；不得直接修改
 runbook 或把 `planned_cue_ids` 当作 `approved_cue_ids`。
 
+authoring promotion 会逐项强制核对这 16 个槽：顺序必须与该 cut 的八个 gameplay 章一致，context/action 必须分别绑定 intake
+已经核验的同一份 raw recording 字节、填写有限且自洽的起止时间，并由审核人逐槽标为 `approved`；同一章的 context 与 action
+不得复用完全相同的原片区间。漏槽、乱序、原片哈希漂移、空时间码或重复 hold 都会阻止 promotion，待填模板本身不能充当签署回执。
+
 ## 无媒体校验
 
 ```powershell

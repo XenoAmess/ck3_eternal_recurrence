@@ -18,9 +18,13 @@ PROMO = promotion.REPOSITORY_ROOT / "mod_zhongguo_style" / "promo"
 
 class ReviewedAuthoringPromotionTests(unittest.TestCase):
     def _inputs(self, root: Path):
+        root.mkdir(parents=True, exist_ok=True)
         project = PROMO / "phase2-promo-character-project.json"
         ledger = PROMO / "phase2-authoring-character-claims.json"
         intake = root / "footage-intake.json"
+        raw_capture = root / "phase2-source.mkv"
+        raw_capture.write_bytes(b"test-only-source-recording")
+        raw_record = promotion._record(raw_capture)
         intake.write_text(
             json.dumps(
                 {
@@ -28,6 +32,7 @@ class ReviewedAuthoringPromotionTests(unittest.TestCase):
                     "kind": "zg361_phase2_footage_intake",
                     "result": "GREEN",
                     "reason_code": None,
+                    "files": {"raw_recording": raw_record},
                 }
             ),
             encoding="utf-8",
@@ -36,6 +41,39 @@ class ReviewedAuthoringPromotionTests(unittest.TestCase):
         materialized = promotion.materialize_ledger(ledger, materialized_errors)
         self.assertEqual([], materialized_errors)
         cue_ids = [row["cue"]["id"] for row in materialized["chapters"]]
+        cut = promotion.cut_for_config_name(project.name)
+        producer_by_span = {
+            scenario.span_id: scenario.producer_key
+            for scenario in promotion.PHASE2_CAPTURE_SCENARIOS
+        }
+        source_windows = []
+        source_second = 0.0
+        target_second = 0.0
+        for chapter_id in cut.editorial_chapter_order:
+            if chapter_id not in producer_by_span:
+                continue
+            for role in ("context", "action"):
+                source_windows.append(
+                    {
+                        "chapter_id": chapter_id,
+                        "role": role,
+                        "producer_key": producer_by_span[chapter_id],
+                        "target_timeline": {
+                            "start_seconds": target_second,
+                            "end_seconds": target_second + 2.0,
+                            "duration_seconds": 2.0,
+                        },
+                        "source_selection": {
+                            "raw_capture": raw_record,
+                            "start_seconds": source_second,
+                            "end_seconds": source_second + 2.0,
+                            "duration_seconds": 2.0,
+                            "review_result": "approved",
+                        },
+                    }
+                )
+                target_second += 2.0
+                source_second += 2.0
         review = root / "source-review.json"
         review.write_text(
             json.dumps(
@@ -56,6 +94,7 @@ class ReviewedAuthoringPromotionTests(unittest.TestCase):
                     "project_config": promotion._record(project),
                     "authoring_ledger": promotion._record(ledger),
                     "footage_intake": promotion._record(intake),
+                    "editorial_source_windows": source_windows,
                 }
             ),
             encoding="utf-8",
@@ -123,6 +162,65 @@ class ReviewedAuthoringPromotionTests(unittest.TestCase):
             payload["decision"] = "pending"
             review.write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaisesRegex(promotion.PromotionError, "explicit GREEN approval"):
+                promotion.build_promoted_project(
+                    project_config=project,
+                    authoring_ledger=ledger,
+                    footage_intake_report=intake,
+                    source_review_receipt=review,
+                )
+
+    def test_source_windows_are_mandatory_and_byte_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            project, ledger, intake, review = self._inputs(root)
+            payload = json.loads(review.read_text(encoding="utf-8"))
+            payload["editorial_source_windows"] = payload[
+                "editorial_source_windows"
+            ][:-1]
+            review.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(
+                promotion.PromotionError, "incomplete, reordered"
+            ):
+                promotion.build_promoted_project(
+                    project_config=project,
+                    authoring_ledger=ledger,
+                    footage_intake_report=intake,
+                    source_review_receipt=review,
+                )
+
+            project, ledger, intake, review = self._inputs(root / "second")
+            payload = json.loads(review.read_text(encoding="utf-8"))
+            payload["editorial_source_windows"][0]["source_selection"][
+                "raw_capture"
+            ]["sha256"] = "0" * 64
+            review.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(promotion.PromotionError, "SHA-256 drifted"):
+                promotion.build_promoted_project(
+                    project_config=project,
+                    authoring_ledger=ledger,
+                    footage_intake_report=intake,
+                    source_review_receipt=review,
+                )
+
+    def test_context_and_action_cannot_reuse_the_same_hold(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            project, ledger, intake, review = self._inputs(root)
+            payload = json.loads(review.read_text(encoding="utf-8"))
+            windows = payload["editorial_source_windows"]
+            windows[1]["source_selection"].update(
+                {
+                    "start_seconds": windows[0]["source_selection"]["start_seconds"],
+                    "end_seconds": windows[0]["source_selection"]["end_seconds"],
+                    "duration_seconds": windows[0]["source_selection"][
+                        "duration_seconds"
+                    ],
+                }
+            )
+            review.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(
+                promotion.PromotionError, "must be distinct"
+            ):
                 promotion.build_promoted_project(
                     project_config=project,
                     authoring_ledger=ledger,

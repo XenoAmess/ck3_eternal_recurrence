@@ -13,6 +13,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -24,7 +25,13 @@ REPOSITORY_TOOLS = REPOSITORY_ROOT / "tools"
 if str(REPOSITORY_TOOLS) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_TOOLS))
 
-from zhongguo_phase2_promo_cuts import cut_for_config_name  # noqa: E402
+from zhongguo_phase2_capture_choreography import (  # noqa: E402
+    PHASE2_CAPTURE_SCENARIOS,
+)
+from zhongguo_phase2_promo_cuts import (  # noqa: E402
+    Phase2PromoCut,
+    cut_for_config_name,
+)
 
 from validate_phase2_authoring_claims import (  # noqa: E402
     materialize_ledger,
@@ -105,20 +112,105 @@ def _segment_id(chapter_id: str, cue_id: str) -> str:
     return result
 
 
+def _finite_number(value: object) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(float(value))
+    )
+
+
+def _reviewed_source_windows(
+    value: object,
+    *,
+    cut: Phase2PromoCut,
+    raw_recording: Mapping[str, object],
+) -> None:
+    """Require two real, byte-bound source selections for every gameplay span."""
+
+    if not isinstance(value, list):
+        raise PromotionError("source review lacks editorial source windows")
+    producer_by_span = {
+        scenario.span_id: scenario.producer_key
+        for scenario in PHASE2_CAPTURE_SCENARIOS
+    }
+    expected = [
+        (chapter_id, role, producer_by_span[chapter_id])
+        for chapter_id in cut.editorial_chapter_order
+        if chapter_id in producer_by_span
+        for role in ("context", "action")
+    ]
+    observed: list[tuple[object, object, object]] = []
+    selected_ranges: dict[str, list[tuple[float, float]]] = {}
+    for row in value:
+        if not isinstance(row, Mapping):
+            raise PromotionError("source review window is not an object")
+        chapter_id = row.get("chapter_id")
+        observed.append((chapter_id, row.get("role"), row.get("producer_key")))
+        target = row.get("target_timeline")
+        selected = row.get("source_selection")
+        if not isinstance(target, Mapping) or not isinstance(selected, Mapping):
+            raise PromotionError("source review window lacks timeline selection")
+        for label, timing in (("target", target), ("source", selected)):
+            start = timing.get("start_seconds")
+            end = timing.get("end_seconds")
+            duration = timing.get("duration_seconds")
+            if not all(_finite_number(item) for item in (start, end, duration)):
+                raise PromotionError(
+                    f"source review {label} window has invalid timecodes"
+                )
+            assert isinstance(start, (int, float))
+            assert isinstance(end, (int, float))
+            assert isinstance(duration, (int, float))
+            if (
+                float(start) < 0
+                or float(end) <= float(start)
+                or float(duration) <= 0
+                or not math.isclose(
+                    float(end) - float(start),
+                    float(duration),
+                    rel_tol=0.0,
+                    abs_tol=0.001,
+                )
+            ):
+                raise PromotionError(
+                    f"source review {label} window timecodes are inconsistent"
+                )
+        if selected.get("review_result") != "approved":
+            raise PromotionError("source review window is not explicitly approved")
+        _bound(selected.get("raw_capture"), raw_recording, "raw_capture")
+        if isinstance(chapter_id, str):
+            selected_ranges.setdefault(chapter_id, []).append(
+                (
+                    float(selected["start_seconds"]),
+                    float(selected["end_seconds"]),
+                )
+            )
+    if observed != expected:
+        raise PromotionError(
+            "source review windows are incomplete, reordered, or bound to the wrong producer"
+        )
+    if any(len(ranges) != 2 or ranges[0] == ranges[1] for ranges in selected_ranges.values()):
+        raise PromotionError(
+            "source review context/action selections must be distinct for every span"
+        )
+
+
 def _validate_review(
     receipt: Mapping[str, object],
     *,
-    cut_id: str,
+    cut: Phase2PromoCut,
     project_record: Mapping[str, object],
     ledger_record: Mapping[str, object],
     intake_record: Mapping[str, object],
+    raw_recording: Mapping[str, object],
     cue_ids: Sequence[str],
 ) -> None:
     if receipt.get("schema_version") != 1 or receipt.get("kind") != SOURCE_REVIEW_KIND:
         raise PromotionError("source review receipt header is invalid")
     if receipt.get("result") != "GREEN" or receipt.get("decision") != "approved":
         raise PromotionError("source review receipt is not an explicit GREEN approval")
-    if receipt.get("cut_id") != cut_id:
+    if receipt.get("cut_id") != cut.cut_id:
         raise PromotionError("source review receipt belongs to another editorial cut")
     if receipt.get("playback_speed") != 1 or receipt.get("full_duration_reviewed") is not True:
         raise PromotionError("source review must attest complete 1x playback")
@@ -135,6 +227,11 @@ def _validate_review(
     _bound(receipt.get("project_config"), project_record, "project_config")
     _bound(receipt.get("authoring_ledger"), ledger_record, "authoring_ledger")
     _bound(receipt.get("footage_intake"), intake_record, "footage_intake")
+    _reviewed_source_windows(
+        receipt.get("editorial_source_windows"),
+        cut=cut,
+        raw_recording=raw_recording,
+    )
 
 
 def build_promoted_project(
@@ -167,6 +264,15 @@ def build_promoted_project(
         or intake.get("reason_code") is not None
     ):
         raise PromotionError("footage intake report is not a GREEN eight-span receipt")
+    intake_files = intake.get("files")
+    raw_recording = (
+        intake_files.get("raw_recording")
+        if isinstance(intake_files, Mapping)
+        and isinstance(intake_files.get("raw_recording"), Mapping)
+        else None
+    )
+    if raw_recording is None:
+        raise PromotionError("footage intake report lacks the verified raw recording")
     chapters = ledger.get("chapters")
     project_chapters = project.get("chapters")
     if not isinstance(chapters, list) or not isinstance(project_chapters, list):
@@ -191,10 +297,11 @@ def build_promoted_project(
     intake_record = _record(footage_intake_report)
     _validate_review(
         receipt,
-        cut_id=cut.cut_id,
+        cut=cut,
         project_record=project_record,
         ledger_record=ledger_record,
         intake_record=intake_record,
+        raw_recording=raw_recording,
         cue_ids=cue_ids,
     )
 
