@@ -1630,6 +1630,29 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_native_option_index"], 2)
         self.assertEqual(contract["max_occurrences"], 2)
 
+        for province_scope in (
+            "province_metropolitan",
+            "province_industrial",
+            "province_military",
+            "province_protectorate",
+        ):
+            with self.subTest(province_scope=province_scope):
+                province_change = copy.deepcopy(context)
+                province_change["saved_scopes"][4] = generic_scope(
+                    province_scope, "boolean"
+                )
+                province_checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": 53156928,
+                        "active_event": {"option_count": 3},
+                    },
+                    event={"event_instance_id": 18},
+                    context=province_change,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(province_checks.values()), province_checks)
+
         house_and_other = copy.deepcopy(context)
         house_and_other["saved_scopes"].insert(
             -1, character_scope("house_movement_member", 27183)
@@ -1688,6 +1711,19 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             contract=contract,
         )
         self.assertTrue(all(inherited_checks.values()), inherited_checks)
+
+        drifted_province = copy.deepcopy(context)
+        drifted_province["saved_scopes"][4] = generic_scope(
+            "province_unknown", "boolean"
+        )
+        drifted_province_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53156928, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 18},
+            context=drifted_province,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drifted_province_checks["saved_scope_names_exact"])
 
         for direction_scope in (
             "increase_law",

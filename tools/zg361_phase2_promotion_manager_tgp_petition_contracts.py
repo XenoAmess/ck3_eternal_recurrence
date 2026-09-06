@@ -13,6 +13,55 @@ _LAW_DIRECTION_SCOPES = (
     "decrease_army_law",
 )
 
+_PROVINCE_TYPE_SCOPES = (
+    "province_metropolitan",
+    "province_industrial",
+    "province_military",
+    "province_protectorate",
+)
+
+_PROVINCE_MEMBER_SHAPES = (
+    ("other_movement_member",),
+    ("house_movement_member", "other_movement_member"),
+    (
+        "other_movement_member",
+        "house_movement_member",
+        "disciple_movement_member",
+    ),
+)
+
+
+def _province_petition_scope_variant(
+    province_scope: str, member_scopes: tuple[str, ...]
+) -> dict[str, object]:
+    """Return one exact source-authored province-petition scope shape."""
+
+    character_scopes = (*member_scopes, "province_change_recipient")
+    return {
+        "saved_scope_names": (
+            "petitioner",
+            "actors_movement",
+            "hegemon",
+            "petition_recipient",
+            province_scope,
+            *character_scopes,
+        ),
+        "saved_scope_count": 5 + len(character_scopes),
+        "scope_types": {
+            "petitioner": "character",
+            "actors_movement": "situation_participant_group",
+            **{name: "character" for name in character_scopes},
+        },
+        "boolean_scopes": (province_scope,),
+        "unique_character_scope_excludes": {
+            "petitioner": (29037,),
+            **{name: (29037,) for name in character_scopes},
+        },
+        "character_scope_matches_any": {
+            "province_change_recipient": member_scopes,
+        },
+    }
+
 
 MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
@@ -75,84 +124,14 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
             "boolean_scopes": (direction_scope,),
             "unique_character_scope_excludes": {"petitioner": (29037,)},
             "character_scope_matches_any": {},
-        } for direction_scope in _LAW_DIRECTION_SCOPES) + (
-            {
-                # R175 observed the source-authored house branch without a
-                # disciple, selecting the house member. R185 observed the
-                # same exact eight-scope shape after source option .0100.d
-                # selected the distinct other member. The recipient must be
-                # one of those two visible source-authored candidates.
-                "saved_scope_names": (
-                    "petitioner",
-                    "actors_movement",
-                    "hegemon",
-                    "petition_recipient",
-                    "province_metropolitan",
-                    "house_movement_member",
-                    "other_movement_member",
-                    "province_change_recipient",
-                ),
-                "saved_scope_count": 8,
-                "scope_types": {
-                    "petitioner": "character",
-                    "actors_movement": "situation_participant_group",
-                    "house_movement_member": "character",
-                    "other_movement_member": "character",
-                    "province_change_recipient": "character",
-                },
-                "unique_character_scope_excludes": {
-                    "petitioner": (29037,),
-                    "house_movement_member": (29037,),
-                    "other_movement_member": (29037,),
-                    "province_change_recipient": (29037,),
-                },
-                "character_scope_matches_any": {
-                    "province_change_recipient": (
-                        "house_movement_member",
-                        "other_movement_member",
-                    ),
-                },
-            },
-            {
-                # A later petition can retain both disciple and house source
-                # candidates. The recipient must equal one of the three exact
-                # source-authored candidates; no arbitrary inherited scope is
-                # accepted.
-                "saved_scope_names": (
-                    "petitioner",
-                    "actors_movement",
-                    "hegemon",
-                    "petition_recipient",
-                    "province_metropolitan",
-                    "other_movement_member",
-                    "house_movement_member",
-                    "disciple_movement_member",
-                    "province_change_recipient",
-                ),
-                "saved_scope_count": 9,
-                "scope_types": {
-                    "petitioner": "character",
-                    "actors_movement": "situation_participant_group",
-                    "other_movement_member": "character",
-                    "house_movement_member": "character",
-                    "disciple_movement_member": "character",
-                    "province_change_recipient": "character",
-                },
-                "unique_character_scope_excludes": {
-                    "petitioner": (29037,),
-                    "other_movement_member": (29037,),
-                    "house_movement_member": (29037,),
-                    "disciple_movement_member": (29037,),
-                    "province_change_recipient": (29037,),
-                },
-                "character_scope_matches_any": {
-                    "province_change_recipient": (
-                        "house_movement_member",
-                        "disciple_movement_member",
-                        "other_movement_member",
-                    ),
-                },
-            },
+        } for direction_scope in _LAW_DIRECTION_SCOPES) + tuple(
+            # Exact-build source .0100 exposes four province-type branches.
+            # R175/R185 observed house/other recipient selection and R186
+            # observed the industrial sibling. Enumerate the source-authored
+            # cross product while retaining exact names and recipient identity.
+            _province_petition_scope_variant(province_scope, member_scopes)
+            for province_scope in _PROVINCE_TYPE_SCOPES
+            for member_scopes in _PROVINCE_MEMBER_SHAPES
         ),
         "option_count": 3,
         "native_option_indices": (0, 1, 2),
