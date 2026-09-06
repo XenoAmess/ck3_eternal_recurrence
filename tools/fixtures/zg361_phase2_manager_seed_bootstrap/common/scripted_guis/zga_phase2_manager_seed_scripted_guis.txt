@@ -35,13 +35,15 @@
 	}
 }
 
-# Direct already-player-manager fallback for the frozen source. Excluding
-# the complete retained PIP witness keeps the existing subject handoff route
-# authoritative when the older R123 source is used.
+# Direct already-player-manager route for the hash-bound contract target. The
+# GUI root is GetPlayer, so the fixture can stay generic across real saves;
+# the runner rejects any typed local player other than the contracted identity
+# before this GUI is allowed to count as evidence. Excluding the complete
+# retained PIP witness keeps the legacy subject handoff route authoritative.
 zga_phase2_manager_seed_direct_manager_diagnostic_gui = {
 	scope = character
 	is_shown = {
-		this = character:han_6875
+		is_ai = no
 		NOT = { has_character_flag = zga_phase2_manager_seed_direct_gates_logged }
 		NOT = {
 			AND = {

@@ -62,22 +62,42 @@ zga_phase2_manager_seed_maybe_begin_effect = {
 	}
 }
 
-# The frozen direct source already plays han_6875 as the manager. This
-# acceptance-only probe is independent of the lobby-only on_action carrier:
-# the invisible GUI records each final-entry gate exactly once and then
-# delegates to the same typed entry effect above.
+# The direct source already plays the contract's target manager. This generic
+# current-human-player probe is independent of the lobby-only on_action
+# carrier: the runner binds its GetPlayer root to the exact contracted native
+# CharacterID before the invisible GUI records each gate exactly once.
 zga_phase2_manager_seed_log_direct_gates_effect = {
 	if = {
 		limit = {
-			this = character:han_6875
+			is_ai = no
 			NOT = { has_character_flag = zga_phase2_manager_seed_direct_gates_logged }
 		}
 		add_character_flag = zga_phase2_manager_seed_direct_gates_logged
+		if = {
+			limit = { is_ai = no }
+			debug_log = "ZGAP2MANAGERSEED: direct gate human=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate human=RED" }
+		if = {
+			limit = { is_alive = yes }
+			debug_log = "ZGAP2MANAGERSEED: direct gate alive=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate alive=RED" }
+		if = {
+			limit = { is_landed = yes }
+			debug_log = "ZGAP2MANAGERSEED: direct gate landed=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate landed=RED" }
 		if = {
 			limit = { zg361_is_celestial_liege_trigger = yes }
 			debug_log = "ZGAP2MANAGERSEED: direct gate celestial=PASS"
 		}
 		else = { debug_log = "ZGAP2MANAGERSEED: direct gate celestial=RED" }
+		if = {
+			limit = { has_game_rule = zg361_on }
+			debug_log = "ZGAP2MANAGERSEED: direct gate game_rule=PASS"
+		}
+		else = { debug_log = "ZGAP2MANAGERSEED: direct gate game_rule=RED" }
 		if = {
 			limit = { zg361_review_now_business_valid_trigger = yes }
 			debug_log = "ZGAP2MANAGERSEED: direct gate review_now=PASS"

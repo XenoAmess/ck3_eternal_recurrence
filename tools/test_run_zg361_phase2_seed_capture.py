@@ -1671,6 +1671,42 @@ def test_direct_player_manager_wrong_played_id_is_zero_input_red() -> None:
         )
 
 
+def test_direct_player_manager_missing_typed_player_is_zero_input_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        fixture.use_direct_manager_contract()
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            manager_pip_route=False,
+        )
+        service = runtime.service_factory(None)
+        require(isinstance(service, FakeService), "direct player fake drifted")
+        service.played_character_id = None
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            report["result"] == "RED"
+            and isinstance(evidence, dict)
+            and evidence.get("stage")
+            == "direct_manager_first_paused_typed_snapshot"
+            and evidence.get("observed_played_character_id") is None
+            and evidence.get("failed_checks")
+            == ["played_character_matches_frozen_manager"],
+            f"missing typed direct player did not fail at first frame: {evidence}",
+        )
+        require(
+            not any(call.startswith("execute:") for call in calls)
+            and not any(call.startswith("select-event-option:") for call in calls)
+            and "seed-capture-mcp" not in calls,
+            f"missing typed direct player crossed the zero-input boundary: {calls}",
+        )
+
+
 def test_direct_player_manager_self_subject_is_red_before_materialize() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))

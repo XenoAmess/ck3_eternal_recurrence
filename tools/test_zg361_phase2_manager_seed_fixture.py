@@ -126,7 +126,6 @@ def main() -> int:
         scripted_gui,
         "zga_phase2_manager_seed_direct_manager_diagnostic_gui",
     )
-    assert "this = character:han_6875" in direct_gui
     assert (
         "NOT = { has_character_flag = "
         "zga_phase2_manager_seed_direct_gates_logged }" in direct_gui
@@ -135,6 +134,8 @@ def main() -> int:
     direct_gui_basic_gate = direct_gui[
         : direct_gui.index("\n\t\tNOT = {\n\t\t\tAND = {")
     ]
+    assert "is_ai = no" in direct_gui_basic_gate
+    assert "this = character:han_6875" not in direct_gui_basic_gate
     for final_gate in (
         "zg361_is_celestial_liege_trigger = yes",
         "zg361_review_now_business_valid_trigger = yes",
@@ -172,7 +173,11 @@ def main() -> int:
         "zga_phase2_manager_seed_direct_gates_logged"
     }
     diagnostic_gates = {
+        "human": "is_ai = no",
+        "alive": "is_alive = yes",
+        "landed": "is_landed = yes",
         "celestial": "zg361_is_celestial_liege_trigger = yes",
+        "game_rule": "has_game_rule = zg361_on",
         "review_now": "zg361_review_now_business_valid_trigger = yes",
         "prestige_150": "prestige >= 150",
         "b1_inactive": "NOT = { has_character_flag = zg361_b1_cycle_active }",
@@ -401,53 +406,42 @@ def main() -> int:
     assert contract["status"] == "blocked_live_capture_required"
     assert contract["ready"] is False
     assert contract["source"]["sha256"] == (
-        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9"
+        "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74"
     )
-    assert contract["source"]["bytes"] == 57377787
+    assert contract["source"]["bytes"] == 26325927
     assert contract["source"]["absolute_save"] == (
-        "Z:\\p2y\\r2\\native-state\\profile\\save games\\xar_checkpoint.ck3"
+        "Z:\\p2m119\\native-state\\profile\\save games\\phase2_manager_seed.ck3"
     )
-    assert contract["saved_state"]["date_raw"] == 53147016
-    assert contract["saved_state"]["played_character_id"] == 29037
+    assert contract["saved_state"]["date_raw"] is None
+    assert contract["saved_state"]["played_character_id"] == 37884
+    assert contract["saved_state"]["player_history_id"] is None
     transition = contract["player_transition_contract"]
     assert transition == {
-        "handoff_mode": "post_exact_pip_load_gui",
+        "handoff_mode": "direct_already_player_manager",
         "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-        "activation_surface": "load_safe_scripted_gui_terminal_pip_retry",
-        "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
-        "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
-        "hidden_carrier_delay_days": 0,
-        "source_character_id": 29037,
-        "target_character_id": 32904,
-        "target_source": "existing_immediate_liege_saved_by_fixture",
+        "activation_surface": "load_safe_gui_direct_manager",
+        "entry_event_definition_key": "zga_phase2_manager_seed.1",
+        "source_character_id": 37884,
+        "target_character_id": 37884,
+        "target_source": "hash_bound_already_played_character",
         "owner_scope": "zga_phase2_manager_owner",
         "subject_scope": "zga_phase2_manager_subject",
-        "completion_date_raw": 53147040,
-        "allowed_prebootstrap_event_definition_keys": ["zg361b2.40"],
-        "activation_event_definition_key": "zg361b2.40",
-        "activation_event_date_raw": 53147040,
-        "activation_event_selected_option_number": 3,
-        "activation_event_selected_native_option_index": 2,
-        "activation_event_outcome": "refuse",
-        "activation_signal_variable": "zg361_b2_m015_state",
-        "activation_signal_preselection_value": 1,
-        "activation_signal_value": 5,
-        "fixture_gui_retry_duration_seconds": 0.5,
-        "post_activation_paused_settle_seconds": 5.0,
-        "forbids_timeline_resume_after_activation_event_drain": True,
-        "requires_exact_activation_event_drain": True,
-        "requires_completion_at_exact_date": True,
+        "source_date_binding": "first_paused_typed_snapshot",
+        "allowed_prebootstrap_event_definition_keys": [],
+        "requires_exact_activation_event_drain": False,
+        "requires_final_event_at_bound_source_date": True,
         "forbids_other_prebootstrap_event_drains": True,
-        "preempts_destructive_later_event": True,
+        "forbids_any_prebootstrap_event_input": True,
         "timeline_speed": 5,
+        "timeline_speed_only_if_advancement_required": True,
         "destructive_later_event_definition_key": "ep3_interactions_events.0630",
-        "destructive_later_event_date_raw": 53147256,
+        "requires_destructive_event_zero_input_red": True,
         "requires_source_save_hash_match": True,
         "requires_source_saved_player_identity": True,
-        "requires_typed_post_switch_player": True,
-        "requires_post_switch_manager_revalidation": True,
+        "requires_typed_final_player": True,
+        "requires_manager_entry_revalidation": True,
         "requires_final_manager_entry_identity_match": True,
-        "fixture_set_player_character_count": 1,
+        "fixture_set_player_character_count": 0,
         "fixture_creates_character": False,
         "fixture_creates_title": False,
         "fixture_creates_relationship": False,
