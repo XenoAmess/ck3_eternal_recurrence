@@ -3331,6 +3331,93 @@ def test_manager_post_activation_gui_timeout_never_resumes_map() -> None:
         )
 
 
+def test_clean_manager_continuation_uses_one_same_date_activation_pulse() -> None:
+    class CleanBoundaryPulseService:
+        def __init__(self) -> None:
+            self.revision = 90
+            self.event_ready = False
+            self.steps: list[str] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "snapshot_id": f"native:{self.revision}",
+                "revision": self.revision,
+                "native_revision": self.revision,
+                "date_raw": 53154144,
+                "paused": True,
+                "speed": 5,
+                "map_ready": True,
+                "played_character": {"character_id": 32904},
+                "active_event": (
+                    {"source": "native", "instance_id": 91, "option_count": 1}
+                    if self.event_ready
+                    else None
+                ),
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            require(expected_revision == self.revision, "pulse revision drifted")
+            require(step == "resume-map", f"unexpected pulse step: {step}")
+            self.steps.append(step)
+            self.revision += 1
+            self.event_ready = True
+            return {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+            }
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            require(event_instance_id == 91, "pulse event instance drifted")
+            require(expected_revision == self.revision, "pulse query revision drifted")
+            return {
+                "current_event_window_context": {
+                    "event_definition_key": capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+                }
+            }
+
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = CleanBoundaryPulseService()
+        fake_time = FakeTime()
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            expected_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            maximum_date_raw=53154144,
+            expected_event_date_raw=53154144,
+            allow_known_prebootstrap_drains=False,
+            initial_paused_event_settle_seconds=0.2,
+            initial_paused_activation_pulse=True,
+            timeline_speed=5,
+            clock=fake_time.clock,
+            sleeper=fake_time.sleep,
+        )
+        require(
+            snapshot["date_raw"] == 53154144
+            and snapshot["active_event"]["instance_id"] == 91,
+            f"same-date activation pulse lost its event: {snapshot}",
+        )
+        require(service.steps == ["resume-map"], "activation pulse was not unique")
+        wait_rows = rows(artifacts / "bootstrap-event-wait.jsonl")
+        require(
+            any(
+                row.get("state")
+                == "manager_continuation_activation_pulse_started"
+                and row.get("same_date_required") is True
+                and row.get("timeline_speed") == 5
+                for row in wait_rows
+            ),
+            "same-date activation pulse lacks typed evidence",
+        )
+
+
 def test_b2_pip_prebootstrap_identity_drift_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as raw:
         service = KnownB2PipPrebootstrapService(
@@ -5127,6 +5214,7 @@ def main() -> int:
     test_manager_b2_pip_route_uses_refuse_option_only()
     test_manager_post_activation_gui_settles_while_paused()
     test_manager_post_activation_gui_timeout_never_resumes_map()
+    test_clean_manager_continuation_uses_one_same_date_activation_pulse()
     test_b2_pip_prebootstrap_identity_drift_fails_closed()
     test_exact_vanilla_no_secrets_event_keeps_current_task()
     test_r120_source_hash_is_exactly_authorized_for_b2_sequence()

@@ -2964,6 +2964,7 @@ def wait_for_bootstrap_event(
     post_activation_paused_settle_seconds: float = 0.0,
     post_activation_checkpoint_capture: Callable[[], dict[str, Any]] | None = None,
     initial_paused_event_settle_seconds: float = 0.0,
+    initial_paused_activation_pulse: bool = False,
     timeline_speed: int = 1,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -3040,6 +3041,17 @@ def wait_for_bootstrap_event(
         or initial_paused_event_settle_seconds < 0
     ):
         raise ValueError("initial paused event settle must be finite and non-negative")
+    if not isinstance(initial_paused_activation_pulse, bool):
+        raise ValueError("initial paused activation pulse must be boolean")
+    if initial_paused_activation_pulse and (
+        initial_paused_event_settle_seconds <= 0
+        or maximum_date_raw is None
+        or expected_event_date_raw != maximum_date_raw
+    ):
+        raise ValueError(
+            "initial paused activation pulse requires a positive settle and "
+            "one exact maximum/expected event date"
+        )
     if isinstance(timeline_speed, bool) or timeline_speed not in range(1, 6):
         raise ValueError("bootstrap timeline speed must be an integer from 1 to 5")
     started = clock()
@@ -3066,6 +3078,7 @@ def wait_for_bootstrap_event(
         if initial_paused_event_settle_seconds > 0
         else None
     )
+    initial_activation_pulse_started = False
     while clock() < deadline:
         now = clock()
         try:
@@ -3446,6 +3459,34 @@ def wait_for_bootstrap_event(
                 elif clock() < initial_paused_settle_deadline:
                     sleeper(0.1)
                     continue
+                elif (
+                    initial_paused_activation_pulse
+                    and not initial_activation_pulse_started
+                ):
+                    initial_activation_pulse_started = True
+                    initial_paused_settle_deadline = None
+                    sequence += 1
+                    append_jsonl(
+                        evidence_path,
+                        {
+                            "schema_version": 1,
+                            "sequence": sequence,
+                            "elapsed_seconds": round(
+                                max(0.0, clock() - started), 3
+                            ),
+                            "state": "manager_continuation_activation_pulse_started",
+                            "result": "PENDING",
+                            "expected_event_definition_key": (
+                                expected_event_definition_key
+                            ),
+                            "date_raw": snapshot.get("date_raw"),
+                            "maximum_date_raw": maximum_date_raw,
+                            "expected_event_date_raw": expected_event_date_raw,
+                            "timeline_speed": timeline_speed,
+                            "same_date_required": True,
+                        },
+                    )
+                    timeline_step = "resume-map"
                 else:
                     evidence = {
                         "schema_version": 1,
@@ -6038,6 +6079,7 @@ def run_capture(
             initial_paused_event_settle_seconds=(
                 1.0 if checkpoint_continuation_route else 0.0
             ),
+            initial_paused_activation_pulse=checkpoint_continuation_route,
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,
             sleeper=active_runtime.sleep,

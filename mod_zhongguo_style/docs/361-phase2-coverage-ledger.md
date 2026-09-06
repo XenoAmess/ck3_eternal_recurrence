@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R145 管理者存档续接增量（不改变逐号等级）
+## R131–R146 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -405,7 +405,13 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   state 激活。R145 manager recovery / runner SHA-256 分别为
   `9020bc625d53197a198cac99b1fa8f8740cec20fc1ae1d7e7d19038cfc6c15e4` /
   `3155bfda21bd6e241e076ea59309432e1ab960e0bce9f7428a96b8cf6b2f0b4a`。
-- 以上 R131–R145 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R146 的 loaded-fixture modifier 栅栏仍未让纯暂停等待执行 seed GUI；runner 再次在 `date_raw=53154144`
+  得到 clean boundary 后等待 1 秒并 RED。连续实机把剩余边界收窄为 invisible scripted GUI 需要运行帧；R147
+  runner 将发送一次 speed-5 `resume-map` activation pulse，但 maximum/expected date 均锁定 clean date，只有同日
+  seed event 可通过，任何日期增长立即暂停并 RED。R146 manager recovery / runner SHA-256 分别为
+  `b45240e26ad519dd5b88fa65224b54f732b26cd3c9cf323653314d4be3dc24f1` /
+  `689918bf9a7388f8e2f73e0cc7e8fdb396a0b9cac2f6e03710267e7f71588865`。
+- 以上 R131–R146 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 
