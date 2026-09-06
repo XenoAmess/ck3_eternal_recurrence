@@ -255,3 +255,14 @@ target、authoring promotion/media/TTS/build/materializer 共 `148/148`，普通
 该估计不从当前 registry 状态起算，不包含缺失镜头补拍、实机故障修复或等待人工的未知时间。
 外部上传目标与平台处理也不计入本地导出工期；没有真实发布回执时，不把本地 export 写成
 现有 completion gate 所定义的 `COMPLETE`。
+
+## 2026-09-06 23:48 长片结构映射增量
+
+此前记录的 `94–97s` 短 authoring 时间线与 `09:30/09:40` 导演目标差距，现已在 no-media planner 的
+`editorial_plan.long_form_timeline` 中逐章映射：人物版总计精确 `570.000s`；制度群像版主章 `576.000s` 加两次各 `2.000s`
+静音回切，总计精确 `580.000s`。现有短 builder 估算仍是人物版 `94.190s`、制度版含回切 `96.524s`；对应的真实视觉扩展量为
+`475.810s` 与 `483.476s`。
+
+每个 gameplay 章的机器槽位为 `15s context + remainder action + 15s result_readability`。只有最后的 result 槽绑定当前 canonical
+clean hold；前两槽必须在 8/8 原片到齐后由 source reviewer 从连续 raw take 选择真实 timecode。规划代码和测试没有启动 CK3、TTS 或
+FFmpeg，也没有把当前 0/8 改写为已有素材。完整时间码与后续接线边界见 `phase2-dual-cut-production.md`。

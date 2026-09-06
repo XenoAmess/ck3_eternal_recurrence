@@ -57,6 +57,52 @@ class Phase2PromoCut:
     deliverable_relative_path: Path
     editorial_chapter_order: tuple[str, ...]
     reprises: tuple[Phase2PromoReprise, ...] = ()
+    director_treatment_name: str | None = None
+    director_target_seconds: float | None = None
+    chapter_target_seconds: tuple[tuple[str, float], ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.director_target_seconds is None:
+            if self.chapter_target_seconds:
+                raise ValueError(
+                    "chapter_target_seconds requires director_target_seconds"
+                )
+            return
+        if (
+            isinstance(self.director_target_seconds, bool)
+            or not isinstance(self.director_target_seconds, (int, float))
+            or not math.isfinite(float(self.director_target_seconds))
+            or self.director_target_seconds <= 0
+        ):
+            raise ValueError("director_target_seconds must be finite and positive")
+        target_ids = tuple(chapter_id for chapter_id, _ in self.chapter_target_seconds)
+        if target_ids != self.editorial_chapter_order:
+            raise ValueError(
+                "chapter_target_seconds must exactly follow editorial_chapter_order"
+            )
+        for chapter_id, duration_seconds in self.chapter_target_seconds:
+            if (
+                isinstance(duration_seconds, bool)
+                or not isinstance(duration_seconds, (int, float))
+                or not math.isfinite(float(duration_seconds))
+                or duration_seconds <= 0
+            ):
+                raise ValueError(
+                    f"chapter {chapter_id!r} target duration must be finite and positive"
+                )
+        timeline_seconds = sum(
+            duration_seconds for _, duration_seconds in self.chapter_target_seconds
+        ) + sum(reprise.duration_seconds for reprise in self.reprises)
+        if not math.isclose(
+            timeline_seconds,
+            float(self.director_target_seconds),
+            rel_tol=0.0,
+            abs_tol=1e-9,
+        ):
+            raise ValueError(
+                f"cut {self.cut_id!r} chapter/reprise timeline totals "
+                f"{timeline_seconds}, expected {self.director_target_seconds}"
+            )
 
 
 CANONICAL_CHAPTER_ORDER = (
@@ -81,6 +127,20 @@ CHARACTER_CUT = Phase2PromoCut(
     deliverable_artifact_id="zhongguo-361-phase2-character-led-video",
     deliverable_relative_path=Path("deliverable/zhongguo-361-phase2-character-led.mp4"),
     editorial_chapter_order=CANONICAL_CHAPTER_ORDER,
+    director_treatment_name="phase2-character-director-treatment.md",
+    director_target_seconds=570.0,
+    chapter_target_seconds=(
+        ("phase2_minimal_recap", 35.0),
+        ("phase2_fact_quota_calibration", 70.0),
+        ("phase2_receipt_appeal_pip", 55.0),
+        ("phase2_manager_governance", 55.0),
+        ("phase2_promotion_compensation", 60.0),
+        ("phase2_hc_workforce", 55.0),
+        ("phase2_projects_metrics", 60.0),
+        ("phase2_incidents_operations", 60.0),
+        ("phase2_cross_cycle_endgame", 75.0),
+        ("phase2_finale", 45.0),
+    ),
 )
 
 INSTITUTION_CUT = Phase2PromoCut(
@@ -113,6 +173,22 @@ INSTITUTION_CUT = Phase2PromoCut(
             after_chapter_id="phase2_cross_cycle_endgame",
             duration_seconds=2.0,
         ),
+    ),
+    director_treatment_name="phase2-institution-director-treatment.md",
+    director_target_seconds=580.0,
+    chapter_target_seconds=(
+        # Scene 1 is 00:00-01:20 and contains the 15-second cold open.
+        ("phase2_minimal_recap", 15.0),
+        ("phase2_fact_quota_calibration", 65.0),
+        ("phase2_manager_governance", 50.0),
+        ("phase2_receipt_appeal_pip", 50.0),
+        ("phase2_promotion_compensation", 65.0),
+        ("phase2_hc_workforce", 65.0),
+        # Two silent 2-second reprises complete scenes 6 and 8 respectively.
+        ("phase2_projects_metrics", 88.0),
+        ("phase2_incidents_operations", 80.0),
+        ("phase2_cross_cycle_endgame", 78.0),
+        ("phase2_finale", 20.0),
     ),
 )
 

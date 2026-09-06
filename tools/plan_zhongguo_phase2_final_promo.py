@@ -27,7 +27,10 @@ from zhongguo_phase2_final_promo_completion import (
     validate_final_promo_completion,
 )
 from zhongguo_phase2_publish_target import validate_publish_target_authority
-from zhongguo_phase2_promo_cuts import cut_for_config_name
+from zhongguo_phase2_promo_cuts import Phase2PromoCut, cut_for_config_name
+from zhongguo_phase2_promo_producer import (
+    PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -244,6 +247,244 @@ def _authoring_ledger_gate(path: Path) -> tuple[dict[str, object], list[str]]:
     }, ([] if ready else ["authoring_claim_ledger_invalid"])
 
 
+def _timecode(seconds: float) -> str:
+    milliseconds = round(seconds * 1000)
+    minutes, remainder = divmod(milliseconds, 60_000)
+    whole_seconds, remainder_milliseconds = divmod(remainder, 1000)
+    return f"{minutes:02d}:{whole_seconds:02d}.{remainder_milliseconds:03d}"
+
+
+def _draft_narration_seconds(text: str) -> float:
+    """Mirror the builder's authoring-only estimate, never an audio probe."""
+
+    visible = sum(not character.isspace() for character in text)
+    return max(2.5, 0.8 + visible / 4.2)
+
+
+def _editorial_timeline_plan(
+    cut: Phase2PromoCut,
+    authoring_claims: object,
+    footage: Mapping[str, object],
+) -> dict[str, object]:
+    """Map a short authoring overlay onto the exact long-form director clock.
+
+    The plan allocates time but deliberately does not upgrade evidence.  The
+    context/action windows still need timecodes chosen from reviewed raw takes;
+    only the final result slot maps to the producer's canonical clean hold.
+    """
+
+    if not cut.chapter_target_seconds or cut.director_target_seconds is None:
+        return {
+            "status": "not-defined-for-legacy-single-cut",
+            "director_treatment": None,
+            "execution_attestation": {
+                "ck3_started": False,
+                "media_generated": False,
+                "raw_take_timecodes_selected": False,
+                "evidence_promoted": False,
+            },
+        }
+
+    rows = authoring_claims if isinstance(authoring_claims, list) else []
+    by_id = {
+        str(row.get("id")): row
+        for row in rows
+        if isinstance(row, Mapping) and isinstance(row.get("id"), str)
+    }
+    target_by_id = dict(cut.chapter_target_seconds)
+    span_rows = footage.get("spans")
+    span_rows = span_rows if isinstance(span_rows, list) else []
+    verified_span_ids = {
+        str(row.get("span_id"))
+        for row in span_rows
+        if isinstance(row, Mapping)
+        and row.get("clean_gate_green") is True
+        and row.get("postcondition_green") is True
+    }
+    if footage.get("result") != "GREEN":
+        verified_span_ids.clear()
+    producer_by_id = {
+        scenario.span_id: scenario.producer_key
+        for scenario in PHASE2_CAPTURE_SCENARIOS
+    }
+    reprise_by_boundary: dict[str, list[object]] = {}
+    for reprise in cut.reprises:
+        reprise_by_boundary.setdefault(reprise.after_chapter_id, []).append(reprise)
+
+    cursor = 0.0
+    chapters: list[dict[str, object]] = []
+    timeline_segments: list[dict[str, object]] = []
+    draft_narration_total = 0.0
+    for chapter_id in cut.editorial_chapter_order:
+        row = by_id.get(chapter_id, {})
+        cue = row.get("cue") if isinstance(row, Mapping) else None
+        cue = cue if isinstance(cue, Mapping) else {}
+        narration = cue.get("narration_zh_cn")
+        narration = narration if isinstance(narration, str) else ""
+        narration_seconds = _draft_narration_seconds(narration)
+        draft_narration_total += narration_seconds
+        target_seconds = float(target_by_id[chapter_id])
+        chapter_start = cursor
+        chapter_end = chapter_start + target_seconds
+        chapter_type = row.get("type") if isinstance(row, Mapping) else None
+        if chapter_type == "ck3_clean_span":
+            result_seconds = min(
+                PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS, target_seconds
+            )
+            context_seconds = min(15.0, target_seconds - result_seconds)
+            action_seconds = target_seconds - context_seconds - result_seconds
+            slot_specs = (
+                (
+                    "context",
+                    context_seconds,
+                    "reviewed_raw_take_pre_action",
+                    "footage_pending"
+                    if chapter_id not in verified_span_ids
+                    else "source_review_timecodes_pending",
+                ),
+                (
+                    "action",
+                    action_seconds,
+                    "reviewed_raw_take_action_to_postcondition",
+                    "footage_pending"
+                    if chapter_id not in verified_span_ids
+                    else "source_review_timecodes_pending",
+                ),
+                (
+                    "result_readability",
+                    result_seconds,
+                    "canonical_clean_span",
+                    "footage_pending"
+                    if chapter_id not in verified_span_ids
+                    else "verified_clean_span_available",
+                ),
+            )
+        else:
+            slot_specs = (
+                (
+                    "generated_sequence",
+                    target_seconds,
+                    "future_generated_card",
+                    "generation_pending",
+                ),
+            )
+
+        slot_cursor = chapter_start
+        visual_slots: list[dict[str, object]] = []
+        for role, duration_seconds, source_kind, source_state in slot_specs:
+            slot_end = slot_cursor + duration_seconds
+            visual_slots.append(
+                {
+                    "role": role,
+                    "start_seconds": round(slot_cursor, 3),
+                    "end_seconds": round(slot_end, 3),
+                    "timecode": f"{_timecode(slot_cursor)}-{_timecode(slot_end)}",
+                    "duration_seconds": round(duration_seconds, 3),
+                    "source_kind": source_kind,
+                    "source_state": source_state,
+                    "source_chapter_id": chapter_id,
+                    "producer_key": producer_by_id.get(chapter_id),
+                    "new_evidence_claim": False,
+                }
+            )
+            slot_cursor = slot_end
+        chapter_plan = {
+            "chapter_id": chapter_id,
+            "chapter_type": chapter_type,
+            "start_seconds": round(chapter_start, 3),
+            "end_seconds": round(chapter_end, 3),
+            "timecode": f"{_timecode(chapter_start)}-{_timecode(chapter_end)}",
+            "director_target_seconds": round(target_seconds, 3),
+            "draft_narration": {
+                "cue_id": cue.get("id"),
+                "estimated_seconds": round(narration_seconds, 3),
+                "estimate_only_not_ffprobe": True,
+                "release_usable": cue.get("release_usable") is True,
+                "suggested_start_seconds": round(chapter_start + 0.8, 3),
+            },
+            "visual_without_current_draft_narration_seconds": round(
+                target_seconds - narration_seconds, 3
+            ),
+            "visual_slots": visual_slots,
+        }
+        chapters.append(chapter_plan)
+        timeline_segments.append(
+            {
+                "kind": "chapter",
+                "chapter_id": chapter_id,
+                "start_seconds": round(chapter_start, 3),
+                "end_seconds": round(chapter_end, 3),
+                "duration_seconds": round(target_seconds, 3),
+            }
+        )
+        cursor = chapter_end
+        for reprise in reprise_by_boundary.get(chapter_id, []):
+            reprise_end = cursor + reprise.duration_seconds
+            timeline_segments.append(
+                {
+                    "kind": "silent_reprise",
+                    "source_chapter_id": reprise.source_chapter_id,
+                    "after_chapter_id": reprise.after_chapter_id,
+                    "start_seconds": round(cursor, 3),
+                    "end_seconds": round(reprise_end, 3),
+                    "timecode": f"{_timecode(cursor)}-{_timecode(reprise_end)}",
+                    "duration_seconds": reprise.duration_seconds,
+                    "source_state": (
+                        "footage_pending"
+                        if reprise.source_chapter_id not in verified_span_ids
+                        else "source_review_timecodes_pending"
+                    ),
+                    "new_evidence_claim": False,
+                }
+            )
+            cursor = reprise_end
+
+    reprise_seconds = round(
+        sum(reprise.duration_seconds for reprise in cut.reprises), 3
+    )
+    draft_narration_total = round(draft_narration_total, 3)
+    current_builder_estimate = round(draft_narration_total + reprise_seconds, 3)
+    target_seconds = float(cut.director_target_seconds or 0.0)
+    return {
+        "director_treatment": cut.director_treatment_name,
+        "director_target_seconds": target_seconds,
+        "director_target_timecode": _timecode(target_seconds),
+        "mapped_timeline_seconds": round(cursor, 3),
+        "draft_narration_estimate_seconds": draft_narration_total,
+        "silent_reprise_seconds": reprise_seconds,
+        "current_builder_estimate_seconds": current_builder_estimate,
+        "mapped_visual_extension_seconds": round(
+            target_seconds - current_builder_estimate, 3
+        ),
+        "verified_canonical_span_count": len(verified_span_ids),
+        "required_canonical_span_count": len(PHASE2_CAPTURE_SCENARIOS),
+        "source_status": (
+            "verified-spans-awaiting-raw-window-review"
+            if len(verified_span_ids) == len(PHASE2_CAPTURE_SCENARIOS)
+            else f"footage-pending-{len(verified_span_ids)}-of-{len(PHASE2_CAPTURE_SCENARIOS)}"
+        ),
+        "allocation_policy": {
+            "gameplay_context_seconds": 15.0,
+            "gameplay_result_seconds": PHASE2_PROMO_DEFAULT_CLEAN_HOLD_SECONDS,
+            "gameplay_action_seconds": "chapter remainder",
+            "narration": "overlay at chapter + 0.8s; estimate only until ffprobe",
+            "raw_window_boundary": (
+                "context/action slots require reviewer-selected timecodes from the "
+                "continuous raw take; the canonical clean span alone proves only "
+                "the result-readability slot"
+            ),
+        },
+        "chapters": chapters,
+        "timeline_segments": timeline_segments,
+        "execution_attestation": {
+            "ck3_started": False,
+            "media_generated": False,
+            "raw_take_timecodes_selected": False,
+            "evidence_promoted": False,
+        },
+    }
+
+
 def build_runbook(
     *,
     project_config: Path,
@@ -280,6 +521,11 @@ def build_runbook(
     footage_ready = footage["result"] == "GREEN"
     if not footage_ready:
         blockers.insert(0, "footage_pending")
+    editorial_timeline = _editorial_timeline_plan(
+        cut,
+        authoring.get("claims"),
+        footage,
+    )
 
     publish_target = validate_publish_target_authority(publish_target_authority)
     if publish_target["result"] != "GREEN":
@@ -607,6 +853,7 @@ def build_runbook(
                 for reprise in cut.reprises
             ],
             "capture_order_changed": False,
+            "long_form_timeline": editorial_timeline,
         },
         "execution_attestation": {"commands_executed": False, "ck3_started": False, "tts_generated": False, "subtitle_media_generated": False, "ffmpeg_started": False, "candidate_generated": False},
         "project": project,

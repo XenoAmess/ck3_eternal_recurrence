@@ -52,6 +52,56 @@ evidence path 与 cannot-claim 规则全部从 `phase2-authoring-claims.json` �
 当前两份项目仍保持全部章节 `planned`、`cues=[]`、`artifact_ids=[]`；两份 cut ledger 的所有 cue 仍为
 `release_usable=false`。这表示剧本已经落盘，但真实镜头尚未到齐，不能称作 candidate、live、release-ready、exported 或 published。
 
+## 09:30 / 09:40 可执行时间槽
+
+`plan_zhongguo_phase2_final_promo.py` 的 `editorial_plan.long_form_timeline` 现在把导演目标、短旁白估算和素材槽位放在同一份
+机器可读 runbook 中。它不是新的完成门，也不生成媒体；其作用是让 source reviewer 和剪辑者拿到精确的目标时间码，并避免继续把
+约 94–97 秒的短 builder 时间线误当作 9 分钟导演稿。
+
+人物版严格映射为：
+
+| chapter | 目标时间码 | 秒数 |
+|---|---:|---:|
+| `phase2_minimal_recap` | `00:00–00:35` | 35 |
+| `phase2_fact_quota_calibration` | `00:35–01:45` | 70 |
+| `phase2_receipt_appeal_pip` | `01:45–02:40` | 55 |
+| `phase2_manager_governance` | `02:40–03:35` | 55 |
+| `phase2_promotion_compensation` | `03:35–04:35` | 60 |
+| `phase2_hc_workforce` | `04:35–05:30` | 55 |
+| `phase2_projects_metrics` | `05:30–06:30` | 60 |
+| `phase2_incidents_operations` | `06:30–07:30` | 60 |
+| `phase2_cross_cycle_endgame` | `07:30–08:45` | 75 |
+| `phase2_finale` | `08:45–09:30` | 45 |
+
+制度群像版把三幕八场展开为后台十章，并把既有两次静音回切计入 09:40，而不是额外叠加到目标之外：
+
+| chapter / 回切 | 目标时间码 | 秒数 |
+|---|---:|---:|
+| `phase2_minimal_recap` | `00:00–00:15` | 15 |
+| `phase2_fact_quota_calibration` | `00:15–01:20` | 65 |
+| `phase2_manager_governance` | `01:20–02:10` | 50 |
+| `phase2_receipt_appeal_pip` | `02:10–03:00` | 50 |
+| `phase2_promotion_compensation` | `03:00–04:05` | 65 |
+| `phase2_hc_workforce` | `04:05–05:10` | 65 |
+| `phase2_projects_metrics` | `05:10–06:38` | 88 |
+| receipt/PIP 静音回切 | `06:38–06:40` | 2 |
+| `phase2_incidents_operations` | `06:40–08:00` | 80 |
+| `phase2_cross_cycle_endgame` | `08:00–09:18` | 78 |
+| manager 静音回切 | `09:18–09:20` | 2 |
+| `phase2_finale` | `09:20–09:40` | 20 |
+
+每个 gameplay 主段先分成 `15s context + chapter remainder action + 15s result_readability`。最后 15 秒才绑定 managed producer
+的 canonical clean span；context/action 必须由具名 source reviewer 从同一次连续 raw take 中选择真实时间码，不能复制、冻结或循环
+clean hold 来凑时长。旁白建议从本章 `+0.8s` 起叠放；当前公式只作 authoring estimate，最终仍以 Xiaoxiao 音频的 ffprobe 时长为准。
+
+按当前 ledger，人物版短旁白估算为 `94.190s`，还需编排 `475.810s` 真实视觉；制度版旁白估算为 `92.524s`，加两次回切后
+当前短 builder 估算为 `96.524s`，还需编排 `483.476s` 真实视觉。0/8 intake 时所有 gameplay 槽保持
+`footage-pending-0-of-8`；即使 8/8 intake GREEN，context/action 也先保持 `source_review_timecodes_pending`，只有 clean result 槽可直接标为
+`verified_clean_span_available`。
+
+因此，结构映射已经闭合，但素材事实没有被提前闭合：当前 builder 仍只按实际旁白长度组段；须待 8/8 原片到齐、source review 给出
+context/action 的真实 timecodes 后，才能把这些槽位接入长片剪辑并生成 09:30 / 09:40 候选。
+
 ## 无媒体校验
 
 ```powershell

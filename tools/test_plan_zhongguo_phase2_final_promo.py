@@ -160,6 +160,45 @@ class FinalPromoRunbookTests(unittest.TestCase):
                 for reprise in institution["editorial_plan"]["reprises"]
             )
         )
+        character_timeline = character["editorial_plan"]["long_form_timeline"]
+        institution_timeline = institution["editorial_plan"]["long_form_timeline"]
+        self.assertEqual(character_timeline["director_target_timecode"], "09:30.000")
+        self.assertEqual(character_timeline["mapped_timeline_seconds"], 570.0)
+        self.assertEqual(character_timeline["draft_narration_estimate_seconds"], 94.19)
+        self.assertEqual(character_timeline["current_builder_estimate_seconds"], 94.19)
+        self.assertEqual(character_timeline["mapped_visual_extension_seconds"], 475.81)
+        self.assertEqual(institution_timeline["director_target_timecode"], "09:40.000")
+        self.assertEqual(institution_timeline["mapped_timeline_seconds"], 580.0)
+        self.assertEqual(institution_timeline["draft_narration_estimate_seconds"], 92.524)
+        self.assertEqual(institution_timeline["silent_reprise_seconds"], 4.0)
+        self.assertEqual(institution_timeline["current_builder_estimate_seconds"], 96.524)
+        self.assertEqual(institution_timeline["mapped_visual_extension_seconds"], 483.476)
+        for timeline in (character_timeline, institution_timeline):
+            self.assertEqual(timeline["verified_canonical_span_count"], 0)
+            self.assertEqual(timeline["required_canonical_span_count"], 8)
+            self.assertEqual(timeline["source_status"], "footage-pending-0-of-8")
+            self.assertFalse(timeline["execution_attestation"]["ck3_started"])
+            self.assertFalse(timeline["execution_attestation"]["media_generated"])
+            for chapter in timeline["chapters"]:
+                self.assertAlmostEqual(
+                    sum(slot["duration_seconds"] for slot in chapter["visual_slots"]),
+                    chapter["director_target_seconds"],
+                )
+        institution_reprises = [
+            segment
+            for segment in institution_timeline["timeline_segments"]
+            if segment["kind"] == "silent_reprise"
+        ]
+        self.assertEqual(
+            [segment["timecode"] for segment in institution_reprises],
+            ["06:38.000-06:40.000", "09:18.000-09:20.000"],
+        )
+        institution_finale = next(
+            chapter
+            for chapter in institution_timeline["chapters"]
+            if chapter["chapter_id"] == "phase2_finale"
+        )
+        self.assertEqual(institution_finale["timecode"], "09:20.000-09:40.000")
         for runbook, cut_name in (
             (character, "character"),
             (institution, "institution"),
