@@ -1913,6 +1913,50 @@ second_effect = { value = 2 }
                 label = chinese[f"zg361we.{mid}.{letter}"]
                 self.assertNotIn(label, body, f"#{mid} 正文不应代替 {letter.upper()} 按钮列出处置")
 
+    def test_45b_copy_matches_visible_routes_costs_and_business_writes(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT
+            / "localization"
+            / "simp_chinese"
+            / "zg361_workforce_endgame_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT
+            / "localization"
+            / "english"
+            / "zg361_workforce_endgame_l_english.yml"
+        )
+        expected_cn = {
+            "zg361we.245.a.tt": ("5 日", "下一道裁定", "15 金币", "5 日调休"),
+            "zg361we.248.a.tt": ("3 个周期", "扣 5 分", "不新增编制", "不调整目标"),
+            "zg361we.248.b.tt": ("3 个周期", "扣 10 分", "不新增编制", "不调整目标"),
+            "zg361we.249.a.tt": ("6 小时", "会议工时", "冻结议程"),
+            "zg361we.249.b.tt": ("12 小时", "会议工时", "冻结议程"),
+            "zg361we.250.a.tt": ("3 名与会者", "1 人", "证据"),
+            "zg361we.250.b.tt": ("3 名与会者", "3 人", "不要求贡献证据"),
+            "zg361we.253.b.tt": ("拒绝申诉修复", "记作失职", "不直接改写绩效档位"),
+            "zg361we.256.b.tt": ("挤出 1 名正式受评者", "不直接改写任何绩效档位"),
+            "zg361we.258.a.tt": ("下调 20 点", "不改写正式绩效档位"),
+            "zg361we.261.a.tt": ("深度记为 3", "标为无环", "不记录差价"),
+            "zg361we.263.b.tt": ("下一周期", "自动转为返岗选择", "不会无限续延"),
+            "zg361we.265.a.tt": ("2 项既有证据", "追回 5 金币"),
+            "zg361we.266.b.tt": ("预留 1 个正式名额", "门槛降至 60", "紧急度记为 4"),
+            "zg361we.268.b.tt": ("上限放宽至 100", "不安排训练", "不暂停任何人资格"),
+            "zg361we.272.a.tt": ("预留 10 金币", "职级 5", "跨团队复核", "下一周期结束"),
+            "zg361we.272.b.tt": ("预留 10 金币", "职级 6", "不作跨团队复核", "下一周期结束"),
+            "zg361we.274.desc": ("已书面接受", "任命回执仍未落定"),
+        }
+        for key, fragments in expected_cn.items():
+            with self.subTest(language="simp_chinese", key=key):
+                for fragment in fragments:
+                    self.assertIn(fragment, chinese[key])
+        self.assertNotIn("必须决定是否", chinese["zg361we.274.desc"])
+        self.assertNotIn("无限", chinese["zg361we.263.b"])
+        self.assertNotIn("设硬配额", chinese["zg361we.268.b"])
+        self.assertIn("accepted the sole fair counteroffer", english["zg361we.274.desc"])
+        self.assertIn("Reserve 10 gold", english["zg361we.272.a.tt"])
+        self.assertIn("instead of renewing indefinitely", english["zg361we.263.b.tt"])
+
     def test_46_seven_languages_are_exact_english_placeholders(self) -> None:
         english = loc_rows(MOD_ROOT / "localization" / "english" / "zg361_workforce_endgame_l_english.yml")
         for language in ("french", "german", "japanese", "korean", "polish", "russian", "spanish"):
