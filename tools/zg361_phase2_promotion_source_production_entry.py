@@ -239,6 +239,83 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 3,
         "max_occurrences": 1,
     },
+    "tribute_mission.1005": {
+        # Follow-up reward decision after R138's strict rejection of the
+        # human tribute. Native option 4 (monk) is hidden in this frame.
+        # Options 0-3 spend player resources or install stronger rewards;
+        # option 6 rejects the entire mission and adds a -50 opinion change.
+        # Native option 5 is the least disruptive valid completion: it grants
+        # generic legitimacy to the AI tributary without a player resource
+        # cost, then lets the source-authored arrival cleanup finish.
+        "date_raw": 53150184,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "recipient": 29037,
+            "tribute_mission_target": 29037,
+            "overlord_scope": 29037,
+            "receiving_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (29037,),
+            "secondary_recipient": (29037,),
+            "tributary_scope": (29037,),
+            "concubine_character": (29037,),
+            "human_tribute": (29037,),
+        },
+        "character_scope_matches_any": {
+            "tributary_scope": ("actor",),
+            "secondary_recipient": (
+                "concubine_character",
+                "human_tribute",
+            ),
+            "concubine_character": (
+                "secondary_recipient",
+                "human_tribute",
+            ),
+            "human_tribute": (
+                "secondary_recipient",
+                "concubine_character",
+            ),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "intermediary",
+        ),
+        "scope_types": {
+            "opinion_of_tributary": "value",
+            "tribute_reward_type_treasury": "value",
+            "saved_innovation": "culture_innovation",
+            "rejected_concubine": "flag",
+            "decided_on_treasury_reward": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+            "tribute_mission_target",
+            "tributary_scope",
+            "overlord_scope",
+            "receiving_character",
+            "opinion_of_tributary",
+            "concubine_character",
+            "human_tribute",
+            "tribute_reward_type_treasury",
+            "saved_innovation",
+            "rejected_concubine",
+            "decided_on_treasury_reward",
+        ),),
+        "saved_scope_count": 16,
+        "option_count": 6,
+        "snapshot_option_count": 7,
+        "native_option_indices": (0, 1, 2, 3, 5, 6),
+        "selected_option_number": 6,
+        "selected_native_option_index": 5,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is

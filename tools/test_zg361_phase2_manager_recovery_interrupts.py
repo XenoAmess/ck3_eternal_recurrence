@@ -93,6 +93,25 @@ def _manager_contract(event_key: str, *, player: int) -> dict[str, object]:
     )
 
 
+def _human_tribute_scopes() -> list[dict[str, object]]:
+    return [
+        _scope("actor", "character", 34077),
+        _scope("recipient", "character", 32904),
+        _scope("secondary_actor", "character", unavailable_character=True),
+        _scope("secondary_recipient", "character", 54393),
+        _scope("intermediary", "character", unavailable_character=True),
+        _scope("tribute_mission_target", "character", 32904),
+        _scope("tributary_scope", "character", 34077),
+        _scope("overlord_scope", "character", 32904),
+        _scope("receiving_character", "character", 32904),
+        _scope("opinion_of_tributary", "value"),
+        _scope("concubine_character", "character", 54393),
+        _scope("human_tribute", "character", 54393),
+        _scope("tribute_reward_type_treasury", "value"),
+        _scope("saved_innovation", "culture_innovation"),
+    ]
+
+
 class ManagerRecoveryInterruptTests(unittest.TestCase):
     def test_nonfounder_culture_notification_selects_other_acknowledgement(
         self,
@@ -151,30 +170,7 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             instance_id=14,
             date_raw=53150160,
             player=32904,
-            scopes=[
-                _scope("actor", "character", 34077),
-                _scope("recipient", "character", 32904),
-                _scope(
-                    "secondary_actor",
-                    "character",
-                    unavailable_character=True,
-                ),
-                _scope("secondary_recipient", "character", 54393),
-                _scope(
-                    "intermediary",
-                    "character",
-                    unavailable_character=True,
-                ),
-                _scope("tribute_mission_target", "character", 32904),
-                _scope("tributary_scope", "character", 34077),
-                _scope("overlord_scope", "character", 32904),
-                _scope("receiving_character", "character", 32904),
-                _scope("opinion_of_tributary", "value"),
-                _scope("concubine_character", "character", 54393),
-                _scope("human_tribute", "character", 54393),
-                _scope("tribute_reward_type_treasury", "value"),
-                _scope("saved_innovation", "culture_innovation"),
-            ],
+            scopes=_human_tribute_scopes(),
             native_option_indices=(0, 1, 3),
         )
         checks = production._known_interrupt_checks(
@@ -206,6 +202,50 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["saved_scope_names_exact"])
         self.assertFalse(drift_checks["saved_scope_count"])
+
+    def test_tribute_reward_uses_no_player_resource_cost_route(self) -> None:
+        event_key = "tribute_mission.1005"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=15,
+            date_raw=53150184,
+            player=32904,
+            scopes=[
+                *_human_tribute_scopes(),
+                _scope("rejected_concubine", "flag"),
+                _scope("decided_on_treasury_reward", "flag"),
+            ],
+            native_option_indices=(0, 1, 2, 3, 5, 6),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150184,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 15},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 6)
+        self.assertEqual(contract["selected_native_option_index"], 5)
+
+        drifted = copy.deepcopy(context)
+        drifted["options"][4]["native_option_index"] = 4
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53150184,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 15},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
 
 
 if __name__ == "__main__":
