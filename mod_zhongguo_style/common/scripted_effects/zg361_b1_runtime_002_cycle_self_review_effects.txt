@@ -182,6 +182,14 @@ zg361_b1_open_cycle_effect = {
 
 		if = {
 			limit = { var:zg361_b1_subject_n >= 1 }
+			# The common-superior close hands each manager to .111 as soon as all
+			# books arrive, or by its D+335 deadline. Keep an independent D+340
+			# ticket so a lost close callback cannot strand this exact cycle in
+			# quota-complete state 6.
+			save_scope_as = zg361_b1_calibration_watchdog_owner
+			save_scope_value_as = { name = zg361_b1_calibration_watchdog_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_calibration_watchdog_case value = var:zg361_b1_manager_case_serial }
+			trigger_event = { id = zg361b1.112 days = 340 }
 			zg361_b1_register_common_superior_bank_effect = yes
 			save_scope_as = zg361_b1_ticket_owner
 			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }

@@ -2143,6 +2143,14 @@ zg361_b1_open_cycle_effect = {
 
 		if = {
 			limit = { var:zg361_b1_subject_n >= 1 }
+			# The common-superior close hands each manager to .111 as soon as all
+			# books arrive, or by its D+335 deadline. Keep an independent D+340
+			# ticket so a lost close callback cannot strand this exact cycle in
+			# quota-complete state 6.
+			save_scope_as = zg361_b1_calibration_watchdog_owner
+			save_scope_value_as = { name = zg361_b1_calibration_watchdog_cycle value = var:zg361_b1_manager_cycle_serial }
+			save_scope_value_as = { name = zg361_b1_calibration_watchdog_case value = var:zg361_b1_manager_case_serial }
+			trigger_event = { id = zg361b1.112 days = 340 }
 			zg361_b1_register_common_superior_bank_effect = yes
 			save_scope_as = zg361_b1_ticket_owner
 			save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_manager_cycle_serial }
@@ -9658,6 +9666,37 @@ zg361b1.111 = {
 			else = { debug_log = "ZG361B1: stale manager-calibration ticket ignored" }
 		}
 		else = { debug_log = "ZG361B1: incomplete manager-calibration ticket ignored" }
+	}
+}
+
+# Manager-owned quota/calibration seam watchdog. The normal common-superior
+# callback arrives after early close or, at the latest, on D+336 and moves the
+# manager out of state 6. This independent D+340 ticket is therefore a strict
+# no-op unless that single callback was lost.
+zg361b1.112 = {
+	type = character_event
+	hidden = yes
+	trigger = { is_alive = yes }
+	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
+		if = {
+			limit = {
+				exists = scope:zg361_b1_calibration_watchdog_owner
+				this = scope:zg361_b1_calibration_watchdog_owner
+				is_ai = no
+				has_character_flag = zg361_b1_cycle_active
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+				has_variable = zg361_b1_calibration_finalized
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_calibration_watchdog_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_calibration_watchdog_case
+				var:zg361_b1_cycle_state = 6
+				var:zg361_b1_calibration_finalized = 0
+			}
+			zg361_b1_open_calibration_effect = yes
+			debug_log = "ZG361B1: manager calibration seam recovered by D340 watchdog"
+		}
 	}
 }
 

@@ -332,12 +332,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertNotRegex(opener, r"name = zg361_b1_(?:cycle|case)_serial\b")
         self.assertLess(initialize.index(call), initialize.index("name = zg361_b1_cycle_serial"))
         self.assertIn("limit = { has_character_flag = zg361_b1_cycle_active }", initialize)
-        for event_id in (100, 101, 102, 103, 110, 111, 122, 123, 124, 125):
+        for event_id in (100, 101, 102, 103, 110, 111, 112, 122, 123, 124, 125):
             event = top_level_block(self.events, f"zg361b1.{event_id}")
             self.assertIn("immediate = {\n\t\t" + call, event)
         for event_id in (121, 200, 201, 126):
             self.assertNotIn(call, top_level_block(self.events, f"zg361b1.{event_id}"))
-        for event_id in (100, 101, 102, 103, 111, 122, 123, 124, 125):
+        for event_id in (100, 101, 102, 103, 111, 112, 122, 123, 124, 125):
             event = top_level_block(self.events, f"zg361b1.{event_id}")
             for field in ("cycle", "case"):
                 self.assertIn(f"has_variable = zg361_b1_manager_{field}_serial", event)
@@ -539,6 +539,22 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("id = zg361b1.101 days = 60", self.events)
         self.assertIn("id = zg361b1.102 days = 60", self.events)
         self.assertIn("id = zg361b1.103 days = 30", self.effects)
+
+        watchdog = top_level_block(self.events, "zg361b1.112")
+        opener = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        self.assertIn("id = zg361b1.112 days = 340", opener)
+        for token in (
+            "zg361_b1_calibration_watchdog_owner",
+            "zg361_b1_calibration_watchdog_cycle",
+            "zg361_b1_calibration_watchdog_case",
+        ):
+            self.assertIn(token, opener)
+            self.assertIn(token, watchdog)
+        self.assertIn("has_character_flag = zg361_b1_cycle_active", watchdog)
+        self.assertIn("var:zg361_b1_cycle_state = 6", watchdog)
+        self.assertIn("var:zg361_b1_calibration_finalized = 0", watchdog)
+        self.assertIn("zg361_b1_open_calibration_effect = yes", watchdog)
+        self.assertNotIn("else =", watchdog)
 
     def test_player_self_review_has_three_guarded_routes_and_ai_fallback(self) -> None:
         event = top_level_block(self.events, "zg361b1.200")
@@ -2908,6 +2924,19 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("this = scope:zg361_b1_ticket_owner", manager_event)
         self.assertIn("var:zg361_b1_cycle_state = 6", manager_event)
         self.assertIn("zg361_b1_open_calibration_effect = yes", manager_event)
+        watchdog_event = top_level_block(self.events, "zg361b1.112")
+        self.assertIn("trigger = { is_alive = yes }", watchdog_event)
+        self.assertIn("this = scope:zg361_b1_calibration_watchdog_owner", watchdog_event)
+        self.assertIn(
+            "var:zg361_b1_manager_cycle_serial = scope:zg361_b1_calibration_watchdog_cycle",
+            watchdog_event,
+        )
+        self.assertIn(
+            "var:zg361_b1_manager_case_serial = scope:zg361_b1_calibration_watchdog_case",
+            watchdog_event,
+        )
+        self.assertIn("manager calibration seam recovered by D340 watchdog", watchdog_event)
+        self.assertNotIn("zg361_b1_ready_managers", watchdog_event)
 
         local = top_level_block(self.effects, "zg361_b1_rebuild_local_quota_effect")
         common = top_level_block(

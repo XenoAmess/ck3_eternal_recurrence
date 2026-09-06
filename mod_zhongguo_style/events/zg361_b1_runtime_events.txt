@@ -446,6 +446,37 @@ zg361b1.111 = {
 	}
 }
 
+# Manager-owned quota/calibration seam watchdog. The normal common-superior
+# callback arrives after early close or, at the latest, on D+336 and moves the
+# manager out of state 6. This independent D+340 ticket is therefore a strict
+# no-op unless that single callback was lost.
+zg361b1.112 = {
+	type = character_event
+	hidden = yes
+	trigger = { is_alive = yes }
+	immediate = {
+		zg361_b1_migrate_manager_identity_effect = yes
+		if = {
+			limit = {
+				exists = scope:zg361_b1_calibration_watchdog_owner
+				this = scope:zg361_b1_calibration_watchdog_owner
+				is_ai = no
+				has_character_flag = zg361_b1_cycle_active
+				has_variable = zg361_b1_manager_cycle_serial
+				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+				has_variable = zg361_b1_calibration_finalized
+				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_calibration_watchdog_cycle
+				var:zg361_b1_manager_case_serial = scope:zg361_b1_calibration_watchdog_case
+				var:zg361_b1_cycle_state = 6
+				var:zg361_b1_calibration_finalized = 0
+			}
+			zg361_b1_open_calibration_effect = yes
+			debug_log = "ZG361B1: manager calibration seam recovered by D340 watchdog"
+		}
+	}
+}
+
 # Per-subject pending deadline. The shared kernel consumes the frozen
 # owner/subject/cycle/case/state ticket before the domain resolver can write.
 zg361b1.121 = {
