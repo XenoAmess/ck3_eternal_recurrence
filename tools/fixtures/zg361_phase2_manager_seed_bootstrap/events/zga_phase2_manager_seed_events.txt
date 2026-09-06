@@ -167,11 +167,18 @@ zga_phase2_manager_seed.1 = {
 
 	option = {
 		name = zga_phase2_manager_seed.1.a
-		# The health buffer only protects the bounded fixture search.  Strip it
-		# before the runner saves the product-only canonical seed, otherwise the
-		# next load would retain a modifier key that correctly does not exist in
-		# the release product.
+		# Strip the fixture-only search buffer before saving because the release
+		# product correctly does not define that key. After three promotion-tree
+		# attempts ended with the bound ruler's natural death, persist exact-build
+		# vanilla survivability instead: immortal prevents another natural-death
+		# terminal and feast_good_food_modifier supplies an explicit health value.
 		remove_character_modifier = zga_phase2_manager_seed_survivability_modifier
+		add_trait = immortal
+		add_character_modifier = {
+			modifier = feast_good_food_modifier
+			days = 1100
+		}
+		debug_log = "ZGAP2MANAGERSEED: canonical survivability trait=immortal modifier=feast_good_food_modifier health=1 days=1100"
 		debug_log = "ZGAP2MANAGERSEED: typed player-manager capture window closed"
 	}
 }

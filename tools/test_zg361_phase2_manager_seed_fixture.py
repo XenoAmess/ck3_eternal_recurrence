@@ -363,6 +363,14 @@ def main() -> int:
         "remove_character_modifier = "
         "zga_phase2_manager_seed_survivability_modifier"
     ) in seed_event
+    assert "add_trait = immortal" in seed_event
+    assert seed_event.count("add_character_modifier = {") == 1
+    assert "modifier = feast_good_food_modifier" in seed_event
+    assert "days = 1100" in seed_event
+    assert (
+        "canonical survivability trait=immortal "
+        "modifier=feast_good_food_modifier health=1 days=1100"
+    ) in seed_event
     retry_arm = top_level_block(
         effects, "zga_phase2_manager_seed_arm_daily_retry_effect"
     )
