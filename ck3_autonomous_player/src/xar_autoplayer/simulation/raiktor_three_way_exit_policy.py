@@ -758,6 +758,14 @@ def normalize_raiktor_owner_budget_profile(
     return _normalize_owner_budget(value)
 
 
+def normalize_raiktor_white_peace_comparison_certificate(
+    value: object,
+) -> dict[str, object]:
+    """Validate the white-peace certificate consumed by this policy."""
+
+    return _normalize_white_peace(value)
+
+
 def _owner_blockers(owner: dict[str, object]) -> list[str]:
     return (
         []

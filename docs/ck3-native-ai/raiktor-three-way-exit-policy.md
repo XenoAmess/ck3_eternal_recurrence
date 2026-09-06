@@ -73,8 +73,10 @@ terms、campaign certificate 与 owner budget 的 SHA-256，并在相同 paused 
 - completeness、model risk、hard-budget breach 与 producer provenance。
 
 只读到“白和按钮可点”或 acceptance raw 为正不够；final typed response 和实际条款仍须
-由 provider 发布。当前这个 provider 也不存在，所以真实 checkpoint 返回
-`white_peace_comparison_certificate_unavailable`。
+由 provider 发布。四输入 comparison provider 已 static-ready，但当前没有完整同帧 Raiktor
+white-peace terms observation、owner utility evaluation、campaign certificate 与可用 owner profile，
+所以真实 checkpoint 仍返回 `white_peace_comparison_certificate_unavailable`。合取合同见
+[g2-raiktor-white-peace-comparison-provider-2026-09-06.md](g2-raiktor-white-peace-comparison-provider-2026-09-06.md)。
 
 ## 选择规则
 
@@ -115,7 +117,8 @@ action-bound loss provider 时，这三项继续为 false。新核心没有 `300
 - `raiktor-campaign-dominance-certificate-provider-v1` unavailable；
 - `raiktor-owner-budget-profile-provider-v1` 实现 static-ready，但无 owner-approved source，
   当前 profile instance unavailable；
-- `raiktor-white-peace-comparison-provider-v1` unavailable。
+- `raiktor-white-peace-comparison-provider-v1` 实现 static-ready，但 terms/utility/campaign/owner
+  输入未闭合，当前 comparison instance unavailable。
 
 所以当前仍是：
 

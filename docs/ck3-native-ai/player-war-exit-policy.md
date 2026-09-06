@@ -548,3 +548,19 @@ native-driver + gameplay/MCP normal / `-O` 各 `426/426` GREEN 覆盖。Characte
 同一 `native:3 / revision=4 / native_revision=3 / date_raw=53223936` 做完两次正式 MCP query，payload 一致；report SHA-256 为
 `1187D0BD129DA9188B7EBC0C389B035B5C4B1383CE1FF4895481678BCB4371E5`。因此四域输入可写 production-live primitive，
 但仍不得把它冒充六域 `decision_ready`，也不得把 observed terms 当成 continue-vs-surrender 的自动选择。
+
+### 2026-09-06 Raiktor white-peace comparison provider 边界
+
+[static-confirmed / provider static-ready / live inputs pending] 本轮按 exact build 重新核对
+`00_event_war.txt` SHA-256
+`BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707`。
+`raiktor_claim_cb.on_white_peace` 仍明确包含 weak claim 强化、attacker `-5F` prestige、
+claimant 分离时的 conditional favor hook、truce、PoW、ally contribution、stress 与 LAAMP payout。
+因此 attacker-defeat 六域不能改标签后复用，脚本中“没有 baseline gold transfer”也不能冒充同帧
+actual primary resource observation。
+
+新的 comparison provider 只合取完整同帧 white-peace terms observation、campaign certificate、
+owner-authored budget profile 与显式 owner-utility evaluation；frame 和四组 canonical SHA 任一不一致即
+返回 typed evidence blocker，certificate 保持 `null`。当前没有前两项真实 provider output，也没有
+owner-approved 数值或 utility artifact，所以本节不提升 recommendation/action/GEN-034。完整输入合同见
+[g2-raiktor-white-peace-comparison-provider-2026-09-06.md](g2-raiktor-white-peace-comparison-provider-2026-09-06.md)。

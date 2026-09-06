@@ -510,6 +510,14 @@ def normalize_raiktor_owner_budget_limits(
     return _normalize_limits(value)
 
 
+def normalize_raiktor_campaign_certificate(
+    value: object,
+) -> dict[str, object]:
+    """Validate one campaign certificate without making a recommendation."""
+
+    return _normalize_campaign(value)
+
+
 def _normalize_campaign(value: object) -> dict[str, object]:
     item = _exact_dict(value, _CAMPAIGN_KEYS, "campaign")
     if item["schema_version"] != 1:
@@ -811,5 +819,6 @@ __all__ = [
     "POLICY_VERSION",
     "assess_raiktor_continue_vs_surrender",
     "canonical_policy_input_sha256",
+    "normalize_raiktor_campaign_certificate",
     "normalize_raiktor_owner_budget_limits",
 ]
