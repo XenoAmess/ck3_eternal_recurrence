@@ -102,6 +102,24 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 3,
         "selected_native_option_index": 2,
     },
+    "bp1_yearly.5725": {
+        # Vanilla Khutulun matchmaking invitation.  Exact CK3 1.19.0.6 source
+        # gives option 1 a seven-day follow-up chain, while option 2 ends the
+        # encounter immediately with only matchmaker opinion/stress effects.
+        # Bind both generated character scopes and select the terminal branch
+        # so this unrelated yearly story cannot occupy the Phase-2 timeline.
+        "date_raw": 53147520,
+        "root_character_id": 29037,
+        "character_scopes": {
+            "matchmaker_courtier": 31003,
+            "khutulun": 16779972,
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
     "bp1_yearly.9007": {
         # Independent vanilla doppelganger encounter.  Visible option 1 adds
         # the generated character to court and creates a follow-up story;

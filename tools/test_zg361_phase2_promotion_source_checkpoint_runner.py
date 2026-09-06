@@ -2892,6 +2892,81 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_bp1_5725_binds_both_characters_and_selects_terminal_branch(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "bp1_yearly.5725",
+            "current_event_instance_id": 14,
+            "date_raw": 53147520,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 29037,
+                },
+            },
+            "saved_scopes": [
+                character_scope("matchmaker_courtier", 31003),
+                character_scope("khutulun", 16779972),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        snapshot = {"date_raw": 53147520, "active_event": {"option_count": 2}}
+        event = {"event_instance_id": 14}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS["bp1_yearly.5725"]
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="bp1_yearly.5725",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        wrong_khutulun = copy.deepcopy(context)
+        wrong_khutulun["saved_scopes"][1]["scope"]["typed_identity"][
+            "character_id"
+        ] = 16779973
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_khutulun,
+            event_key="bp1_yearly.5725",
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:khutulun"])
+
     def test_health_7500_accepts_only_the_source_proven_single_option_frame(self) -> None:
         context = {
             "schema": "current-event-window-context-v1",
