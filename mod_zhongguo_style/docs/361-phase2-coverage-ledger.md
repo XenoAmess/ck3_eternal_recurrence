@@ -353,7 +353,7 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `ed05751f065e64c64cbce63783948d256d1aa041db1b33743dd70ed09b5fdaaf`、relay
   `d40551d330e16bfdaf62194811c723edb9e13205376e177ff5f38cc4f905d712`。
 
-## R131–R147 管理者存档续接增量（不改变逐号等级）
+## R131–R148 管理者存档续接增量（不改变逐号等级）
 
 - R131 修正 session-origin 与即时玩家身份的语义后，成功生成并重新加载管理者 transition checkpoint；
   checkpoint SHA-256 为 `6e85cc496b67b04b4b33ae4cd17416bdd9a735155f3a7179222bda6f351905f6`，
@@ -418,7 +418,14 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   一-of-二选项形状绑定该精确中断。R147 manager recovery / runner SHA-256 分别为
   `0b943d913fc51dc74b6eb6a379a1aa69da58073d72d9096837cbdb9362cec283` /
   `0270ffa7d4ee397e8eba9ad6d1489794aa8e26c9b273c6ce492ab87ce6216ecf`。
-- 以上 R131–R147 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
+- R148 精确处理朝贡事件对后继续推进，在 `date_raw=53154408` 捕获原版宗族命名通知 `birth.1010`；
+  active B1 尚未结束，因此同日 GUI pulse 仍未执行。原版 1.19.0.6 源码证明出生与默认姓名已经成立，
+  immediate 只保存配偶 scope，唯一 option 0 无玩法 effect；runner 绑定 child/father/real_father/mother/
+  spouse_of_mother 的 typed 家庭关系、三个 boolean birth flags 及完整八-scope 集合后才允许确认，且不操作
+  naming widget。R148 manager recovery / runner SHA-256 分别为
+  `e6633aa9c9a9661484268371609e49a405099d951ce8ffda078c1559445de581` /
+  `97fbbe9d0e229220b59b01066fe7027fef323027a24c61c7e6b9897d51b0e8bd`。
+- 以上 R131–R148 均未完成最终 player-manager seed，更未完成完整迁移树全量验收；因此本节只更新
   验收进展和 blocker 边界，不提升 361 个条目的逐号 readiness。玩法状态/事件/按钮均由 MCP/native
   取证；报告中的 OCR/image 仅用于非玩法 legal-consent/front-end gate。
 

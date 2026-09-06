@@ -307,6 +307,62 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "birth.1010": {
+        # CK3 1.19.0.6 dynasty-host naming notice. The birth and default name
+        # already exist before this window; its sole authored option has no
+        # gameplay effect. R148 observed one child, three parent/spouse scopes
+        # resolving to the expected family identities and three typed boolean
+        # birth flags. Bind that complete eight-scope frame before dismissing
+        # the sole acknowledgement; the runner never operates the name widget.
+        "date_raw": 53154408,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "child": (29037,),
+            "father": (29037,),
+            "real_father": (29037,),
+            "mother": (29037,),
+            "spouse_of_mother": (29037,),
+        },
+        "character_scope_matches_any": {
+            "father": ("real_father", "spouse_of_mother"),
+            "real_father": ("father", "spouse_of_mother"),
+            "spouse_of_mother": ("father", "real_father"),
+        },
+        "character_scope_differs_from": {
+            "child": ("father", "real_father", "mother", "spouse_of_mother"),
+            "mother": ("father", "real_father", "spouse_of_mother"),
+        },
+        "scope_types": {
+            "child": "character",
+            "father": "character",
+            "real_father": "character",
+            "mother": "character",
+            "spouse_of_mother": "character",
+        },
+        "boolean_scopes": (
+            "is_bastard",
+            "is_child_of_concubine",
+            "matrilineal",
+        ),
+        "saved_scope_name_sets": ((
+            "child",
+            "father",
+            "real_father",
+            "mother",
+            "is_bastard",
+            "is_child_of_concubine",
+            "matrilineal",
+            "spouse_of_mother",
+        ),),
+        "saved_scope_count": 8,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices

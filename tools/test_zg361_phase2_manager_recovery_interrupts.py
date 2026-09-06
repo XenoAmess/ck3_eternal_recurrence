@@ -359,6 +359,57 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_dynasty_birth_notice_only_acknowledges_bound_family(self) -> None:
+        event_key = "birth.1010"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=16,
+            date_raw=53154408,
+            player=32904,
+            scopes=[
+                _scope("child", "character", 16790642),
+                _scope("father", "character", 36354),
+                _scope("real_father", "character", 36354),
+                _scope("mother", "character", 35997),
+                _scope("is_bastard", "boolean"),
+                _scope("is_child_of_concubine", "boolean"),
+                _scope("matrilineal", "boolean"),
+                _scope("spouse_of_mother", "character", 36354),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53154408,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 16},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][2] = _scope(
+            "real_father", "character", 36355
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53154408,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 16},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:real_father:matches_any"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
