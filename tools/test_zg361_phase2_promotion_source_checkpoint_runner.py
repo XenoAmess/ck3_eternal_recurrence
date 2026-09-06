@@ -156,6 +156,98 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             },
         )
 
+    def test_manager_recovery_drains_exact_nonfounder_culture_notification(
+        self,
+    ) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            payload: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+                "typed_identity": (
+                    {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    }
+                    if character_id is not None
+                    else {
+                        "status": "unavailable",
+                        "reason": "generic_scope_payload_identity_not_closed",
+                    }
+                ),
+            }
+            return {"name": name, "scope": payload}
+
+        event_key = "culture_notification.1111"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53147016,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 14,
+            "date_raw": 53148048,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("founder", "character", 35761),
+                scope("parent_culture_1", "culture"),
+                scope("new_culture", "culture"),
+                scope("parent_1", "culture"),
+                scope("ethos", "flag"),
+            ],
+            "options": [
+                {
+                    "rendered_index": 0,
+                    "native_option_index": 1,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53148048,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 14},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["root_character_id"], 32904)
+        self.assertEqual(contract["scope_types"]["founder"], "character")
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["options"][0]["native_option_index"] = 0
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53148048,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 14},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_promotion_source_requires_typed_player_manager_seed(self) -> None:
         contract = _player_manager_seed_contract()
         self.assertEqual(

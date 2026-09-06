@@ -139,6 +139,34 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 3,
         "selected_native_option_index": 2,
     },
+    "culture_notification.1111": {
+        # CK3 1.19.0.6 culture divergence notification. Its two authored
+        # options are mutually exclusive founder/non-founder acknowledgements;
+        # both contain only the same custom tooltip and no gameplay effect.
+        # R135 observed the played manager as a non-founder, so exactly one
+        # rendered button mapped to native option index 1. Bind the complete
+        # five-scope frame before dismissing that acknowledgement.
+        "date_raw": 53148048,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "founder": 35761,
+        },
+        "scope_types": {
+            "parent_culture_1": "culture",
+            "new_culture": "culture",
+            "parent_1": "culture",
+            "ethos": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 5,
+        "option_count": 1,
+        "snapshot_option_count": 2,
+        "native_option_indices": (1,),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
