@@ -24,22 +24,6 @@
       "kind": "live_render_validation",
       "reason": "static source binding cannot validate dynamic scopes, rendered layout, or in-game wording",
       "status": "pending"
-    },
-    {
-      "count": 9,
-      "kind": "authority_source_not_unique",
-      "source_paths": [
-        "mod_zhongguo_style/events/zg361_events.txt",
-        "mod_zhongguo_style/events/zg361_generated_mechanism_events.txt",
-        "mod_zhongguo_style/events/zg361_jingcha_events.txt",
-        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_appointment_fact_l_simp_chinese.yml",
-        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_attribution_fact_l_simp_chinese.yml",
-        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_exit_fact_l_simp_chinese.yml",
-        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_normal_exit_fact_l_simp_chinese.yml",
-        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml",
-        "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_rehire_fact_l_simp_chinese.yml"
-      ],
-      "status": "review"
     }
   ],
   "schema_version": 1,
@@ -545,9 +529,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/events/zg361_events.txt"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 24092,
         "lines": 678,
@@ -591,8 +577,8 @@
             "mod_zhongguo_style/tools/mechanism_choices/choices_241_361.json"
           ],
           "declaration": "tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json",
-          "method": "generated_file_header",
-          "status": "review"
+          "method": "generated_file_header_multi_source",
+          "status": "pass"
         },
         "bytes": 416048,
         "lines": 17691,
@@ -769,9 +755,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/events/zg361_jingcha_events.txt"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 2698,
         "lines": 106,
@@ -1733,9 +1721,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_appointment_fact_l_simp_chinese.yml"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 255,
         "lines": 3,
@@ -1744,9 +1734,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_attribution_fact_l_simp_chinese.yml"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 1107,
         "lines": 6,
@@ -1768,9 +1760,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_exit_fact_l_simp_chinese.yml"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 280,
         "lines": 3,
@@ -1779,9 +1773,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_normal_exit_fact_l_simp_chinese.yml"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 463,
         "lines": 4,
@@ -1790,9 +1786,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 1002,
         "lines": 10,
@@ -1801,9 +1799,11 @@
       },
       {
         "authority": {
-          "candidates": [],
-          "method": "no_unique_authority",
-          "status": "review"
+          "candidates": [
+            "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_rehire_fact_l_simp_chinese.yml"
+          ],
+          "method": "hand_authored_source",
+          "status": "pass"
         },
         "bytes": 297,
         "lines": 4,
@@ -1864,7 +1864,7 @@
     "final_localization_keys": 4999,
     "hidden_events": 374,
     "machine_failure_count": 0,
-    "manual_review_open_count": 645,
+    "manual_review_open_count": 636,
     "visible_description_bindings": 844,
     "visible_events": 635,
     "visible_option_bindings": 1856,

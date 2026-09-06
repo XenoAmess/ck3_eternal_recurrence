@@ -82,7 +82,14 @@ class CopyAuditLedgerTest(unittest.TestCase):
                 self.assertEqual(
                     hashlib.sha256(path.read_bytes()).hexdigest(), item["sha256"]
                 )
-                self.assertIn(item["authority"]["status"], {"pass", "review"})
+                self.assertEqual(item["authority"]["status"], "pass")
+
+        authority_review = [
+            item
+            for item in self.index["open_items"]
+            if item["kind"] == "authority_source_not_unique"
+        ]
+        self.assertEqual(authority_review, [])
 
 
 if __name__ == "__main__":

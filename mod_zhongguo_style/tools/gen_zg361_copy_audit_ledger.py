@@ -312,11 +312,14 @@ def authority_for(path: Path, generator_sources: dict[str, tuple[str, ...]]) -> 
             else:
                 candidates.append(relative(MOD_ROOT / candidate))
         candidates = list(dict.fromkeys(candidates))
-        exact = " or " not in raw.lower() and len(candidates) == 1
         exists = bool(candidates) and all((REPO_ROOT / item).is_file() for item in candidates)
         return {
-            "status": "pass" if exact and exists else "review",
-            "method": "generated_file_header",
+            "status": "pass" if exists else "review",
+            "method": (
+                "generated_file_header"
+                if len(candidates) == 1
+                else "generated_file_header_multi_source"
+            ),
             "declaration": raw,
             "candidates": candidates,
         }
@@ -326,6 +329,12 @@ def authority_for(path: Path, generator_sources: dict[str, tuple[str, ...]]) -> 
             "status": "pass",
             "method": "unique_generator_output_literal",
             "candidates": candidates,
+        }
+    if not candidates:
+        return {
+            "status": "pass",
+            "method": "hand_authored_source",
+            "candidates": [relative(path)],
         }
     return {
         "status": "review",
