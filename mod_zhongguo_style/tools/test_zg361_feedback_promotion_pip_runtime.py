@@ -1367,14 +1367,22 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 desc,
                 r"当前需要你回应|你只是在决定|下方按钮|按钮及说明|本卡|玩家|结算器|回写",
             )
-            for letter in "abc":
+            letters = (
+                ("transfer", "second_pip", "b", "c")
+                if mid == 189
+                else ("a", "b", "c")
+            )
+            for letter in letters:
                 label = loc[f"zg361pp.{mid}.{letter}"]
                 tooltip = loc[f"zg361pp.{mid}.{letter}.tt"]
                 self.assertLessEqual(len(label), 40, f"{mid}.{letter}: overlong label")
                 self.assertNotRegex(label, r"路线[甲乙丙]|按\s*[ABC]\s*(?:做|办|执行)")
                 self.assertNotRegex(label, r"^(?:按|选择)\s*[ABC甲乙丙]|^照做$")
                 self.assertNotIn(label, desc, f"{mid}.{letter}: body copies the decision")
-                self.assertIn("计划核验日", tooltip)
+                if mid == 189 and letter in {"transfer", "second_pip"}:
+                    self.assertIn("错岗事实", tooltip)
+                else:
+                    self.assertIn("计划核验日", tooltip)
         self.assertEqual(len(descriptions), len(set(descriptions)))
 
         # Audit every visible PP body, not only the 46 manager cards.  A body
@@ -1605,6 +1613,38 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 placeholder.replace(f"l_{language}:", "", 1),
                 english.replace("l_english:", "", 1),
             )
+
+    def test_split_189_route_has_no_dead_generic_a_localization(self) -> None:
+        mechanism = gen.MECHANISM_BY_ID[189]
+        self.assertIsNone(mechanism.a_cn)
+        self.assertIsNone(mechanism.a_en)
+
+        event = effect_block(self.events, "zg361pp.189")
+        self.assertNotIn("name = zg361pp.189.a", event)
+        self.assertNotIn("custom_tooltip = zg361pp.189.a.tt", event)
+        for expected in ("transfer", "second_pip", "b", "c"):
+            self.assertIn(f"name = zg361pp.189.{expected}", event)
+            self.assertIn(f"custom_tooltip = zg361pp.189.{expected}.tt", event)
+
+        dead_keys = ("zg361pp.189.a", "zg361pp.189.a.tt")
+        live_split_keys = (
+            "zg361pp.189.transfer",
+            "zg361pp.189.transfer.tt",
+            "zg361pp.189.second_pip",
+            "zg361pp.189.second_pip.tt",
+        )
+        for language in gen.LANGUAGES:
+            source = text(
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_feedback_promotion_pip_l_{language}.yml"
+            )
+            keys = set(
+                re.findall(r"^\s+([^\s:]+):\d+\s+\"", source, re.MULTILINE)
+            )
+            self.assertTrue(set(dead_keys).isdisjoint(keys), language)
+            self.assertTrue(set(live_split_keys) <= keys, language)
 
     def test_generator_is_deterministic_and_all_nine_loc_keysets_match(self) -> None:
         first = gen.outputs()

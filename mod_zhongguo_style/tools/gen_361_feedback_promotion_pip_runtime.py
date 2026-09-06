@@ -54,8 +54,11 @@ class MechanismSpec:
     field: str
     title_cn: str
     title_en: str
-    a_cn: str
-    a_en: str
+    # A route may split into independently authored, mutually exclusive UI
+    # actions.  In that case no generic A label exists and both fields are
+    # None; emitting a fallback key would create dead, misleading copy.
+    a_cn: str | None
+    a_en: str | None
     b_cn: str
     b_en: str
     c_cn: str
@@ -101,8 +104,8 @@ def _m(
     field: str,
     title_cn: str,
     title_en: str,
-    a_cn: str,
-    a_en: str,
+    a_cn: str | None,
+    a_en: str | None,
     b_cn: str,
     b_en: str,
     deadlines: int | tuple[int, ...],
@@ -173,7 +176,7 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
     _m(186, "w", "goal_creep_lock", "PIP 目标膨胀锁", "PIP goal-creep lock", "加任务必须等量替换、延期或获紧急复核。", "Add work only with equal replacement, extension or emergency review.", "直接加码，并生成目标膨胀违规。", "Add workload directly and post a goal-creep violation.", 7, "变更账比较基线、当前工作量和补偿路线"),
     _m(187, "w", "graduation_gate", "PIP 毕业标准", "PIP graduation gate", "维持既定毕业标准，等待独立席提交结算回执。", "Keep the established graduation standard and await the independent settlement receipt.", "申请程序复核，保留本人签字权且不预断毕业。", "Request procedural review while preserving the subject's signature and leaving graduation undecided.", 366, "毕业或失败只读取 B2 唯一结算回执，绝不直接写档位"),
     _m(188, "w", "relapse_window", "毕业后的复发观察期", "Post-graduation relapse window", "只观察一个周期，且仅同类问题升级。", "Observe exactly one cycle and escalate only the same problem category.", "在 365 日观察期内持续贴标签，并记录过度披露风险。", "Keep the label during the 365-day observation window and record overbreadth risk.", 365, "观察标记到期一次；新问题必须另开案"),
-    _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer or exit", "按支持、错岗和真实空缺只选一条合法路线。", "Choose one legal route from support sufficiency, role mismatch and real vacancy.", "强制退出，并结算空缺、交接和补员成本。", "Force exit and settle vacancy, handover and replacement costs.", 30, "终局决定页只接受一个排他终态"),
+    _m(189, "w", "terminal_fork", "二次 PIP / 调岗 / 退出三岔口", "Second PIP, transfer or exit", None, None, "强制退出，并结算空缺、交接和补员成本。", "Force exit and settle vacancy, handover and replacement costs.", 30, "终局决定页只接受一个排他终态"),
     _m(190, "w", "transfer_disclosure", "PIP 随转岗披露的最小范围", "Minimum PIP transfer disclosure", "只向真实接收经理披露目标、支持、结果和本人陈述。", "Disclose goals, support, outcome and the subject statement only to the real receiving manager.", "贴粗糙标签，但不得编造细节或改旧档位。", "Apply a coarse label without inventing details or rewriting the old rating.", 30, "转岗包按 ACL 投影最小字段"),
     _m(191, "w", "exit_cost_statement", "PIP 退出后的团队成本单", "Team cost statement after PIP exit", "登记完整的退出成本模型。", "Record the complete exit-cost model.", "登记零成本口径，并留下隐瞒债。", "Record a zero-cost presentation and leave concealment debt.", 30, "团队成本表和经理记分卡消费同一净额"),
 )
@@ -553,6 +556,18 @@ def validate_specs() -> None:
         raise ValueError("response-only reset field without subject response")
     if set(PP_SCENES) != set(EXPECTED_IDS):
         raise ValueError("every player-facing PP card needs one authored scene")
+    split_a_ids = {
+        mechanism.mechanism_id
+        for mechanism in MECHANISMS
+        if mechanism.a_cn is None or mechanism.a_en is None
+    }
+    if split_a_ids != {189}:
+        raise ValueError("only #189 owns split route-A labels without a generic A key")
+    if any(
+        (mechanism.a_cn is None) != (mechanism.a_en is None)
+        for mechanism in MECHANISMS
+    ):
+        raise ValueError("split route-A localization must match across authored languages")
     if set(RESULT_REASON_TEXT) != set(range(11)):
         raise ValueError("result delivery needs readable reason text for codes 0--10")
     if READINESS != "static-ready":
@@ -4225,18 +4240,31 @@ def localization_rows(language: str) -> list[str]:
             if chinese
             else (mechanism.a_en, mechanism.b_en, mechanism.c_en)
         )
-        rows.extend(
+        mechanism_rows = [
+            f' zg361pp.{mechanism.mechanism_id}.t:0 "{escape_loc(title)}"',
+            f' zg361pp.{mechanism.mechanism_id}.desc:0 "{escape_loc(desc)}"',
+        ]
+        if routes[0] is not None:
+            mechanism_rows.append(
+                f' zg361pp.{mechanism.mechanism_id}.a:0 "{escape_loc(routes[0])}"'
+            )
+        mechanism_rows.extend(
             (
-                f' zg361pp.{mechanism.mechanism_id}.t:0 "{escape_loc(title)}"',
-                f' zg361pp.{mechanism.mechanism_id}.desc:0 "{escape_loc(desc)}"',
-                f' zg361pp.{mechanism.mechanism_id}.a:0 "{escape_loc(routes[0])}"',
                 f' zg361pp.{mechanism.mechanism_id}.b:0 "{escape_loc(routes[1])}"',
                 f' zg361pp.{mechanism.mechanism_id}.c:0 "{escape_loc(routes[2])}"',
-                f' zg361pp.{mechanism.mechanism_id}.a.tt:0 "{escape_loc(option_tooltip(mechanism, 1, routes[0], chinese))}"',
+            )
+        )
+        if routes[0] is not None:
+            mechanism_rows.append(
+                f' zg361pp.{mechanism.mechanism_id}.a.tt:0 "{escape_loc(option_tooltip(mechanism, 1, routes[0], chinese))}"'
+            )
+        mechanism_rows.extend(
+            (
                 f' zg361pp.{mechanism.mechanism_id}.b.tt:0 "{escape_loc(option_tooltip(mechanism, 2, routes[1], chinese))}"',
                 f' zg361pp.{mechanism.mechanism_id}.c.tt:0 "{escape_loc(option_tooltip(mechanism, 3, routes[2], chinese))}"',
             )
         )
+        rows.extend(mechanism_rows)
     if chinese:
         rows.extend(
             (
