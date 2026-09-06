@@ -151,18 +151,25 @@ bool DispatchEnvironmentIsExact(
              environment.module_base + kZhongguoButtonBaseSlot13Rva;
 }
 
-bool ResolveGuiContext(
+bool ResolveGuiDispatchContext(
     const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
     void *&context) noexcept {
   context = nullptr;
   void *first = nullptr;
   void *second = nullptr;
   void *third = nullptr;
-  return ReadBytes(environment.gui_global_slot, &first, sizeof(first)) &&
-         ReadValue(first, kZhongguoGuiChainFirstOffset, second) &&
-         ReadValue(second, kZhongguoGuiChainSecondOffset, third) &&
-         ReadValue(third, kZhongguoGuiContextOffset, context) &&
-         context != nullptr;
+  // Widget +0xD8, the modal receiver vector, and the shortcut manager all
+  // belong to this third object.  The object at third +0x3D0 is the
+  // owner-lookup host used by the read-only tree resolver; it is not the GUI
+  // dispatch context accepted by CPdxGuiShortcutManager.
+  if (!ReadBytes(environment.gui_global_slot, &first, sizeof(first)) ||
+      !ReadValue(first, kZhongguoGuiChainFirstOffset, second) ||
+      !ReadValue(second, kZhongguoGuiChainSecondOffset, third) ||
+      third == nullptr) {
+    return false;
+  }
+  context = third;
+  return true;
 }
 
 bool CallStrictDescendant(
@@ -431,7 +438,7 @@ bool DispatchZhongguoScoreboardActionNativeV1(
     void *slot13 = nullptr;
     void *slot10 = nullptr;
     std::uint8_t flags = 0;
-    if (!ResolveGuiContext(*environment, context) ||
+    if (!ResolveGuiDispatchContext(*environment, context) ||
         !ReadValue(context, kZhongguoGuiShortcutManagerOffset, manager) ||
         manager == nullptr || !ReadValue(manager, 0, manager_context) ||
         manager_context != context ||

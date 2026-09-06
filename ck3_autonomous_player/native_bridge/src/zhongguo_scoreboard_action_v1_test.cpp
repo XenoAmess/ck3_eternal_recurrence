@@ -1,4 +1,5 @@
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
+#include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 
 #include <array>
 #include <cstddef>
@@ -132,13 +133,16 @@ void PrepareNativeDispatchFixture(NativeDispatchFixture &fixture) {
         second);
   Store(fixture.second, xar::ck3_11906::kZhongguoGuiChainSecondOffset,
         third);
+  // The action dispatcher terminates at the third object.  Its +0x3D0 value
+  // is a distinct owner-lookup host used by the state reader and must never be
+  // mistaken for the widget/shortcut dispatch context.
   Store(fixture.third, xar::ck3_11906::kZhongguoGuiContextOffset, context);
-  fixture.manager.context = context;
+  fixture.manager.context = third;
   fixture.manager.fixture = &fixture;
   void *manager = &fixture.manager;
-  Store(fixture.context, xar::ck3_11906::kZhongguoGuiShortcutManagerOffset,
+  Store(fixture.third, xar::ck3_11906::kZhongguoGuiShortcutManagerOffset,
         manager);
-  void *target_context = context;
+  void *target_context = third;
   Store(fixture.target, xar::ck3_11906::kZhongguoWidgetGuiContextOffset,
         target_context);
   fixture.target_vtable[13] = reinterpret_cast<void *>(&Slot13Marker);
@@ -452,6 +456,21 @@ int main() {
                    native.saw_empty_cstring && native.saw_target,
                "exact dispatcher must ACK invocation even when the borrowed "
                "native handled boolean is false");
+  native.returned_native_handled = true;
+  native_handled = false;
+  const auto review_now_invoked =
+      xar::ck3_11906::DispatchZhongguoReviewNowActionNativeV1(
+          &native_environment,
+          "zg361_promotion_source_review_now_action",
+          "zg361_promotion_source_review_now_action",
+          PointerValue(reinterpret_cast<std::uintptr_t>(native.target.data())),
+          PointerValue(reinterpret_cast<std::uintptr_t>(
+              native.target_vtable.data())),
+          native_handled);
+  ok &= Expect(review_now_invoked && native_handled && native.calls == 2 &&
+                   native.saw_empty_cstring && native.saw_target,
+               "review-now must dispatch through the widget +0xD8 host, not "
+               "the distinct owner-lookup host at dispatch +0x3D0");
   const std::uint8_t hidden =
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   Store(native.target, xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset,
@@ -467,7 +486,7 @@ int main() {
           PointerValue(reinterpret_cast<std::uintptr_t>(
               native.target_vtable.data())),
           native_handled) &&
-          !native_handled && native.calls == 1,
+          !native_handled && native.calls == 2,
       "exact dispatcher must reject the cached effective-hidden gate before "
       "calling CPdxGuiShortcutManager");
   return ok ? 0 : 1;
