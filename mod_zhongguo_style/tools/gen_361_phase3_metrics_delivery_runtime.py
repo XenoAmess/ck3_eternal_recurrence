@@ -2590,7 +2590,7 @@ PLAYER_DEBT_STATUS_EN = "This portfolio has recorded [ROOT.Var('zg361_p3_player_
 PLAYER_MODE_CN = {
     "t": "本轮办案方式",
     "desc": (
-        "当事人 [scope:zg361_p3_aa_subject.GetShortUIName] 的指标、改组与交付案已经立卷。"
+        "当事人 [zg361_p3_aa_subject.GetShortUIName] 的指标、改组与交付案已经立卷。"
         "全案共三十五项：二十二项常规案可以统一口径办理，十三项涉及资源、人物去留或最终结算，必须单独呈报。"
         "统一办理仍为每项保留正式案卷、期限与回执。"
         + PLAYER_DEBT_STATUS_CN
@@ -2604,7 +2604,7 @@ PLAYER_MODE_EN = {
     "t": "How This Portfolio Will Be Heard",
     "desc": (
         "The metrics, reorganization, and delivery portfolio for "
-        "[scope:zg361_p3_aa_subject.GetShortUIName] is open. It contains thirty-five items: "
+        "[zg361_p3_aa_subject.GetShortUIName] is open. It contains thirty-five items: "
         "twenty-two routine matters can follow one common standard, while thirteen matters "
         "involving resources, people, or final settlement must be presented individually. "
         "Common handling still preserves a formal file, deadline, and receipt for every matter. "

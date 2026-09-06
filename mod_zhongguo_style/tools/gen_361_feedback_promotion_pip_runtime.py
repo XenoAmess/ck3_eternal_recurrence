@@ -4165,22 +4165,22 @@ def localization_rows(language: str) -> list[str]:
     if chinese:
         rows.extend(
             (
-                " zg361pp.5166.desc:0 \"晋升包尚未进入预审，撤回权只属于[scope:zg361_pp_subject_prompt_subject.GetShortUIName]；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]只能接收本人回执，不能代写意愿。\"",
-                " zg361pp.5190.desc:0 \"调任案卷已经锁定接收上司与披露边界。[scope:zg361_pp_subject_prompt_subject.GetShortUIName]的本人陈述尚未附卷；[scope:zg361_pp_subject_prompt_owner.GetShortUIName]无权代写或扩大披露。\"",
+                " zg361pp.5166.desc:0 \"晋升包尚未进入预审，撤回权只属于[zg361_pp_subject_prompt_subject.GetShortUIName]；[zg361_pp_subject_prompt_owner.GetShortUIName]只能接收本人回执，不能代写意愿。\"",
+                " zg361pp.5190.desc:0 \"调任案卷已经锁定接收上司与披露边界。[zg361_pp_subject_prompt_subject.GetShortUIName]的本人陈述尚未附卷；[zg361_pp_subject_prompt_owner.GetShortUIName]无权代写或扩大披露。\"",
             )
         )
     else:
         rows.extend(
             (
-                " zg361pp.5166.desc:0 \"The promotion packet has not entered prescreen, and the right to withdraw belongs only to [scope:zg361_pp_subject_prompt_subject.GetShortUIName]; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may receive the subject's receipt but cannot author the subject's intent.\"",
-                " zg361pp.5190.desc:0 \"The transfer file has fixed the receiving manager and disclosure boundary. [scope:zg361_pp_subject_prompt_subject.GetShortUIName]'s personal statement is not yet attached; [scope:zg361_pp_subject_prompt_owner.GetShortUIName] may neither author it nor broaden disclosure.\"",
+                " zg361pp.5166.desc:0 \"The promotion packet has not entered prescreen, and the right to withdraw belongs only to [zg361_pp_subject_prompt_subject.GetShortUIName]; [zg361_pp_subject_prompt_owner.GetShortUIName] may receive the subject's receipt but cannot author the subject's intent.\"",
+                " zg361pp.5190.desc:0 \"The transfer file has fixed the receiving manager and disclosure boundary. [zg361_pp_subject_prompt_subject.GetShortUIName]'s personal statement is not yet attached; [zg361_pp_subject_prompt_owner.GetShortUIName] may neither author it nor broaden disclosure.\"",
             )
         )
     if chinese:
         rows.extend(
             (
                 ' zg361pp.5151.t:0 "绩效反馈送达：请本人确认收件"',
-                " zg361pp.5151.desc:0 \"案卷同时封存了本轮档位、理由与证据索引，交接双方为[scope:zg361_pp_subject_prompt_owner.GetShortUIName]与[scope:zg361_pp_subject_prompt_subject.GetShortUIName]。申诉时限为 90 日；签收只证明材料到手，不表示认可其中结论。\"",
+                " zg361pp.5151.desc:0 \"案卷同时封存了本轮档位、理由与证据索引，交接双方为[zg361_pp_subject_prompt_owner.GetShortUIName]与[zg361_pp_subject_prompt_subject.GetShortUIName]。申诉时限为 90 日；签收只证明材料到手，不表示认可其中结论。\"",
                 " zg361pp.5151.evidence:0 \"冻结证据摘要：绩效指标 [ROOT.Var('zg361_pp_t_frozen_kpi').GetValue|0]，队列名次 [ROOT.Var('zg361_pp_t_frozen_rank').GetValue|0]，案卷证据 [ROOT.Var('zg361_pp_t_evidence_component_count').GetValue|0] 项。\"",
             )
         )
@@ -4188,7 +4188,7 @@ def localization_rows(language: str) -> list[str]:
         rows.extend(
             (
                 ' zg361pp.5151.t:0 "Performance Feedback Served: Confirm Receipt"',
-                " zg361pp.5151.desc:0 \"The file seals this cycle's grade, reason, and evidence index, with [scope:zg361_pp_subject_prompt_owner.GetShortUIName] and [scope:zg361_pp_subject_prompt_subject.GetShortUIName] recorded as the two parties to delivery. The appeal window is 90 days; receipt proves only that the materials arrived, not agreement with their conclusion.\"",
+                " zg361pp.5151.desc:0 \"The file seals this cycle's grade, reason, and evidence index, with [zg361_pp_subject_prompt_owner.GetShortUIName] and [zg361_pp_subject_prompt_subject.GetShortUIName] recorded as the two parties to delivery. The appeal window is 90 days; receipt proves only that the materials arrived, not agreement with their conclusion.\"",
                 " zg361pp.5151.evidence:0 \"Frozen evidence summary: performance indicator [ROOT.Var('zg361_pp_t_frozen_kpi').GetValue|0], queue rank [ROOT.Var('zg361_pp_t_frozen_rank').GetValue|0], and [ROOT.Var('zg361_pp_t_evidence_component_count').GetValue|0] evidence items.\"",
             )
         )
@@ -4210,9 +4210,9 @@ def localization_rows(language: str) -> list[str]:
         due = "、".join(str(days) for days in mechanism.deadlines)
         scene = PP_SCENES[mechanism.mechanism_id][0 if chinese else 1]
         desc = (
-            f"{scene}承办者是[scope:zg361_pp_prompt_owner.GetShortUIName]，当事人是[scope:zg361_pp_prompt_subject.GetShortUIName]。需要后续核验的回执计划在第 {due} 日到期；这只是本案期限，不表示结果已经发生。"
+            f"{scene}承办者是[zg361_pp_prompt_owner.GetShortUIName]，当事人是[zg361_pp_prompt_subject.GetShortUIName]。需要后续核验的回执计划在第 {due} 日到期；这只是本案期限，不表示结果已经发生。"
             if chinese
-            else f"{scene} The decision owner is [scope:zg361_pp_prompt_owner.GetShortUIName], and the subject is [scope:zg361_pp_prompt_subject.GetShortUIName]. Any follow-up receipt is scheduled for day {due}; this is a case deadline, not a claim that the outcome already occurred."
+            else f"{scene} The decision owner is [zg361_pp_prompt_owner.GetShortUIName], and the subject is [zg361_pp_prompt_subject.GetShortUIName]. Any follow-up receipt is scheduled for day {due}; this is a case deadline, not a claim that the outcome already occurred."
         )
         routes = (
             (mechanism.a_cn, mechanism.b_cn, mechanism.c_cn)

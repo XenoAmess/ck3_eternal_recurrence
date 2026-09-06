@@ -89,6 +89,24 @@ ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
     r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
     r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
 )
+LEGACY_SAVED_SCOPE_SHORT_NAME_LOC = re.compile(
+    r"\[scope:(?P<name>[A-Za-z0-9_{}]+)\.GetShortUIName\]"
+)
+SAVED_SCOPE_SHORT_NAME_LOC = re.compile(
+    r"\[(?P<name>[A-Za-z0-9_{}]+)\.GetShortUIName\]"
+)
+EXPECTED_SAVED_SCOPE_SHORT_NAME_COUNTS = {
+    "zg361_we_ab_owner": 12,
+    "zg361_we_ab_subject": 12,
+    "zg361_we_ac_owner": 12,
+    "zg361_we_ac_subject": 12,
+    "zg361_we_ad_owner": 12,
+    "zg361_we_ad_subject": 12,
+    "zg361_we_al_owner": 4,
+    "zg361_we_al_subject": 4,
+    "zg361_we_m264_handoff_owner_scope": 3,
+    "zg361_we_m264_handoff_subject_scope": 6,
+}
 
 
 def read(path: Path) -> str:
@@ -1783,6 +1801,39 @@ second_effect = { value = 2 }
             path = MOD_ROOT / "localization" / language / f"zg361_workforce_endgame_l_{language}.yml"
             self.assertEqual(f"l_{language}:", read(path).splitlines()[0])
             self.assertEqual(english, loc_rows(path))
+
+    def test_46a_saved_scope_short_names_use_exact_ck3_loc_syntax(self) -> None:
+        generator_source = read(Path(gen.__file__))
+        self.assertIsNone(LEGACY_SAVED_SCOPE_SHORT_NAME_LOC.search(generator_source))
+        self.assertNotIn(".Char.GetShortUIName]", generator_source)
+        generator_counts: dict[str, int] = {}
+        for match in SAVED_SCOPE_SHORT_NAME_LOC.finditer(generator_source):
+            name = match.group("name")
+            generator_counts[name] = generator_counts.get(name, 0) + 1
+        self.assertEqual(
+            {
+                **{
+                    name: count * 2
+                    for name, count in EXPECTED_SAVED_SCOPE_SHORT_NAME_COUNTS.items()
+                    if "m264_handoff" not in name
+                },
+                "{PREFIX}_m264_handoff_owner_scope": 6,
+                "{PREFIX}_m264_handoff_subject_scope": 12,
+            },
+            generator_counts,
+        )
+
+        for language in gen.LANGUAGES:
+            path = MOD_ROOT / "localization" / language / f"zg361_workforce_endgame_l_{language}.yml"
+            text = read(path)
+            with self.subTest(language=language):
+                self.assertIsNone(LEGACY_SAVED_SCOPE_SHORT_NAME_LOC.search(text))
+                self.assertNotIn(".Char.GetShortUIName]", text)
+                actual_counts: dict[str, int] = {}
+                for match in SAVED_SCOPE_SHORT_NAME_LOC.finditer(text):
+                    name = match.group("name")
+                    actual_counts[name] = actual_counts.get(name, 0) + 1
+                self.assertEqual(EXPECTED_SAVED_SCOPE_SHORT_NAME_COUNTS, actual_counts)
 
     def test_47_spec_maps_40_ids_and_keeps_static_boundary(self) -> None:
         ids = [int(mid) for mid in re.findall(r"\| (?:AB|AC|AD|AL) \| (\d{3}) \|", self.spec_text)]

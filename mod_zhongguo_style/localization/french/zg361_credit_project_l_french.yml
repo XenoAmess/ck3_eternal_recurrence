@@ -1,6 +1,6 @@
 ﻿l_french:
  zg361cp.batch.t:0 "Method for This Portfolio"
- zg361cp.batch.desc:0 "This project portfolio is assembled: [scope:zg361_cp_e_subject.GetShortUIName] is the subject, and [scope:zg361_cp_e_owner.GetShortUIName] will decide it. Eleven entries are routine records; the other sixteen involve payment, response, deadlines, personnel disposition, or settlement and still require individual judgment. Existing unresolved policy debt: [scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]."
+ zg361cp.batch.desc:0 "This project portfolio is assembled: [zg361_cp_e_subject.GetShortUIName] is the subject, and [zg361_cp_e_owner.GetShortUIName] will decide it. Eleven entries are routine records; the other sixteen involve payment, response, deadlines, personnel disposition, or settlement and still require individual judgment. Existing unresolved policy debt: [scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]."
  zg361cp.batch.a:0 "Resolve eleven routine cases by evidence; present any failed preflight separately."
  zg361cp.batch.b:0 "Resolve eleven routine cases for speed; present any failed preflight separately."
  zg361cp.batch.c:0 "Close eleven routine cases and record one policy debt for each."

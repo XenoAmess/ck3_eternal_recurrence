@@ -1,6 +1,6 @@
 ﻿l_korean:
  zg361p3.9000.t:0 "How This Portfolio Will Be Heard"
- zg361p3.9000.desc:0 "The metrics, reorganization, and delivery portfolio for [scope:zg361_p3_aa_subject.GetShortUIName] is open. It contains thirty-five items: twenty-two routine matters can follow one common standard, while thirteen matters involving resources, people, or final settlement must be presented individually. Common handling still preserves a formal file, deadline, and receipt for every matter. This portfolio has recorded [ROOT.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
+ zg361p3.9000.desc:0 "The metrics, reorganization, and delivery portfolio for [zg361_p3_aa_subject.GetShortUIName] is open. It contains thirty-five items: twenty-two routine matters can follow one common standard, while thirteen matters involving resources, people, or final settlement must be presented individually. Common handling still preserves a formal file, deadline, and receipt for every matter. This portfolio has recorded [ROOT.Var('zg361_p3_player_policy_debt_disclosed_n').GetValue|0] policy debts so far."
  zg361p3.9000.a:0 "Resolve twenty-two routine matters by evidence; present any failed preflight separately."
  zg361p3.9000.b:0 "Resolve twenty-two routine matters for delivery; present any failed preflight separately."
  zg361p3.9000.c:0 "Defer twenty-two routine matters and record one next-cycle policy debt for each."

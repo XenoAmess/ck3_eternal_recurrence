@@ -1064,6 +1064,25 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
 
 
 class LocalizationAndBoundaryTests(unittest.TestCase):
+    def test_saved_scope_character_localization_uses_exact_ck3_expression(self) -> None:
+        stale = re.compile(r"\[scope:[A-Za-z0-9_]+\.GetShortUIName\]")
+        expected = {
+            "[zg361_cp_e_subject.GetShortUIName]",
+            "[zg361_cp_e_owner.GetShortUIName]",
+        }
+        for language in gen.LANGUAGES:
+            path = (
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_credit_project_l_{language}.yml"
+            )
+            text = read(path)
+            with self.subTest(language=language):
+                self.assertIsNone(stale.search(text))
+                for expression in expected:
+                    self.assertEqual(text.count(expression), 1)
+
     def test_batch_entry_copy_discloses_scope_popup_boundary_and_cumulative_debt(self) -> None:
         chinese = loc_rows(
             MOD_ROOT / "localization" / "simp_chinese" / "zg361_credit_project_l_simp_chinese.yml"

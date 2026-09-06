@@ -730,12 +730,16 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
 
             manager_copy = loc[f"zg361pp.{mid}.desc"]
             subject_copy = loc[f"zg361pp.{5000 + mid}.desc"]
-            self.assertIn("scope:zg361_pp_prompt_owner", manager_copy)
-            self.assertIn("scope:zg361_pp_prompt_subject", manager_copy)
-            self.assertNotIn("scope:zg361_pp_subject_prompt_", manager_copy)
-            self.assertIn("scope:zg361_pp_subject_prompt_owner", subject_copy)
-            self.assertIn("scope:zg361_pp_subject_prompt_subject", subject_copy)
-            self.assertNotIn("scope:zg361_pp_prompt_", subject_copy)
+            self.assertIn("[zg361_pp_prompt_owner.GetShortUIName]", manager_copy)
+            self.assertIn("[zg361_pp_prompt_subject.GetShortUIName]", manager_copy)
+            self.assertNotIn("[zg361_pp_subject_prompt_", manager_copy)
+            self.assertIn(
+                "[zg361_pp_subject_prompt_owner.GetShortUIName]", subject_copy
+            )
+            self.assertIn(
+                "[zg361_pp_subject_prompt_subject.GetShortUIName]", subject_copy
+            )
+            self.assertNotIn("[zg361_pp_prompt_", subject_copy)
 
     def test_visible_decisions_form_a_single_option_driven_queue(self) -> None:
         self.assertEqual(
@@ -1526,6 +1530,40 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 )
         generated = "\n".join(gen.localization_rows("english"))
         self.assertEqual(generated.count("[ROOT.Var('"), len(expected_variables))
+
+    def test_character_saved_scope_localization_uses_direct_saved_scope_names(self) -> None:
+        expected_saved_scopes = (
+            "zg361_pp_prompt_owner",
+            "zg361_pp_prompt_subject",
+            "zg361_pp_subject_prompt_owner",
+            "zg361_pp_subject_prompt_subject",
+        )
+        for language in gen.LANGUAGES:
+            source = text(
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_feedback_promotion_pip_l_{language}.yml"
+            )
+            self.assertNotRegex(
+                source,
+                r"\[scope:[A-Za-z0-9_]+(?:\.Char)?\.GetShortUIName\]",
+                language,
+            )
+            for saved_scope in expected_saved_scopes:
+                self.assertIn(
+                    f"[{saved_scope}.GetShortUIName]",
+                    source,
+                    language,
+                )
+                self.assertNotIn(
+                    f"[{saved_scope}.Char.GetShortUIName]",
+                    source,
+                    language,
+                )
+
+        generated = "\n".join(gen.localization_rows("english"))
+        self.assertNotIn("[scope:", generated)
 
     def test_events_and_effects_have_balanced_braces(self) -> None:
         self.assertEqual(self.effects.count("{"), self.effects.count("}"))

@@ -1215,6 +1215,21 @@ class GeneratorContractTests(unittest.TestCase):
                 self.assertIsNone(forbidden.search(text))
                 self.assertEqual(text.count(expected), 14)
 
+    def test_saved_scope_character_localization_uses_direct_scope_name(self) -> None:
+        expected = "[zg361_p3_aa_subject.GetShortUIName]"
+        forbidden = re.compile(r"\[scope:[A-Za-z0-9_]+\.GetShortUIName\]")
+        for language in gen.LANGUAGES:
+            path = (
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_phase3_metrics_delivery_l_{language}.yml"
+            )
+            text = read(path)
+            with self.subTest(language=language):
+                self.assertIsNone(forbidden.search(text))
+                self.assertEqual(text.count(expected), 1)
+
     def test_player_copy_separates_case_context_from_decision_buttons(self) -> None:
         chinese = loc_rows(
             MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"

@@ -2059,7 +2059,7 @@ def esc(text: str) -> str:
 
 BATCH_COPY_CN = {
     "t": "本轮办案方式",
-    "desc": "本轮项目案卷已经归集：[scope:zg361_cp_e_subject.GetShortUIName]是当事人，[scope:zg361_cp_e_owner.GetShortUIName]将作裁决。其中十一项属于常规登记，其余十六项涉及付款、回应、期限、去留或结算，仍须逐案审理。当前未清制度债为[scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]笔。",
+    "desc": "本轮项目案卷已经归集：[zg361_cp_e_subject.GetShortUIName]是当事人，[zg361_cp_e_owner.GetShortUIName]将作裁决。其中十一项属于常规登记，其余十六项涉及付款、回应、期限、去留或结算，仍须逐案审理。当前未清制度债为[scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0]笔。",
     "a": "证据优先统一办理十一案；条件不足则逐案呈报。",
     "b": "速度优先统一办理十一案；条件不足则逐案呈报。",
     "c": "关闭十一项常规案，各记一笔制度债。",
@@ -2068,7 +2068,7 @@ BATCH_COPY_CN = {
 }
 BATCH_COPY_EN = {
     "t": "Method for This Portfolio",
-    "desc": "This project portfolio is assembled: [scope:zg361_cp_e_subject.GetShortUIName] is the subject, and [scope:zg361_cp_e_owner.GetShortUIName] will decide it. Eleven entries are routine records; the other sixteen involve payment, response, deadlines, personnel disposition, or settlement and still require individual judgment. Existing unresolved policy debt: [scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0].",
+    "desc": "This project portfolio is assembled: [zg361_cp_e_subject.GetShortUIName] is the subject, and [zg361_cp_e_owner.GetShortUIName] will decide it. Eleven entries are routine records; the other sixteen involve payment, response, deadlines, personnel disposition, or settlement and still require individual judgment. Existing unresolved policy debt: [scope:zg361_cp_e_subject.MakeScope.Var('zg361_cp_policy_debt_open_n').GetValue|0].",
     "a": "Resolve eleven routine cases by evidence; present any failed preflight separately.",
     "b": "Resolve eleven routine cases for speed; present any failed preflight separately.",
     "c": "Close eleven routine cases and record one policy debt for each.",
