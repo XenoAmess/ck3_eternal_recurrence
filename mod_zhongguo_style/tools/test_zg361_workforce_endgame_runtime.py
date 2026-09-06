@@ -1804,8 +1804,8 @@ second_effect = { value = 2 }
             for key in (
                 f"zg361we.{mid}.t",
                 f"zg361we.{mid}.desc",
-                *(f"zg361we.{mid}.{letter}" for letter in "abc"),
-                *(f"zg361we.{mid}.{letter}.tt" for letter in "abc"),
+                *(f"zg361we.{mid}.{letter}" for letter in ("a" if mid == 274 else "abc")),
+                *(f"zg361we.{mid}.{letter}.tt" for letter in ("a" if mid == 274 else "abc")),
             )
         }
         expected.update(
@@ -1839,7 +1839,11 @@ second_effect = { value = 2 }
         for mid in sorted(EXPECTED_IDS):
             prefix = f"zg361we.{mid}"
             bodies.append((f"#{mid}", chinese[f"{prefix}.t"], chinese[f"{prefix}.desc"]))
-            buttons.extend((f"#{mid}.{letter}", chinese[f"{prefix}.{letter}"]) for letter in "abc")
+            visible_letters = "a" if mid == 274 else "abc"
+            buttons.extend(
+                (f"#{mid}.{letter}", chinese[f"{prefix}.{letter}"])
+                for letter in visible_letters
+            )
         for step in (1, 2, 3):
             prefix = f"zg361we.handoff.{step}"
             for role in ("subject", "owner"):
@@ -1856,7 +1860,7 @@ second_effect = { value = 2 }
                 )
 
         self.assertEqual(46, len(bodies))
-        self.assertEqual(132, len(buttons))
+        self.assertEqual(130, len(buttons))
         leading_punctuation = tuple("。！？；：，、,.!?;:")
         empty_or_generic_body = (
             "案卷来到",
@@ -1909,7 +1913,7 @@ second_effect = { value = 2 }
 
         for mid in sorted(EXPECTED_IDS):
             body = chinese[f"zg361we.{mid}.desc"]
-            for letter in "abc":
+            for letter in ("a" if mid == 274 else "abc"):
                 label = chinese[f"zg361we.{mid}.{letter}"]
                 self.assertNotIn(label, body, f"#{mid} 正文不应代替 {letter.upper()} 按钮列出处置")
 

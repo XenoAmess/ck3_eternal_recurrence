@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "language": "simp_chinese",
+  "review_completed_at": "2026-09-06T19:39:49+08:00",
+  "source_input_digest_sha256": "e7638ad17b06b79965fc65cc39c223816d6853d7b846d48f226d670704c5aa7e",
+  "reviewed_visible_events": 626,
+  "review_method": "Every visible event card was reread against its final title, body, bound options, tooltips, event script, and authoritative effect or business-ledger consumer. A second hash-bound reread followed the first repair pass.",
+  "reviewed_event_shards": [
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-001.json",
+      "records": 40,
+      "sha256": "6a0296b8248fcf4b6fcb8b6425268b40aa9278a13d660ac31e5c85c989d8ba18"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
+      "records": 40,
+      "sha256": "5604cebb423d84fae13860d5e455f745a021999451412d537a47707ba65bce61"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-003.json",
+      "records": 40,
+      "sha256": "5758ef9b94a022d5af469ab1caec55f2c094b7da44190ef0e0fee3d2ba9797e7"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-004.json",
+      "records": 40,
+      "sha256": "1f3adddd9a8fe55bf1c63c24ef922fb933175f69b63928be367a9d76e8b07d94"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
+      "records": 40,
+      "sha256": "dc2c0db15ad4cf5233be2403f3d88f1da75a356a3908920739e02fc92b48b96a"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-006.json",
+      "records": 40,
+      "sha256": "2585a151bd818afb44f49e99504b231ab2e4d8834786679ce315b00904fcd64a"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-007.json",
+      "records": 40,
+      "sha256": "712b12c58aa28f10f1ed6c3ebc9151c1f46beed5165ff2f677961fbab90b71ab"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-008.json",
+      "records": 40,
+      "sha256": "3e6b733d6ee7d022a412e2223e9d0345e500d457e34dadd9dfffba89b900b3f0"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-009.json",
+      "records": 40,
+      "sha256": "b950090fb1abf3b121fa9fff9963b3c203a958d76203e377cc8494d5ac1ae4cf"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-010.json",
+      "records": 40,
+      "sha256": "57907e456f02fe33c33163eca0db90c7f96a0f794a1096bf34192bee09c417e3"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-011.json",
+      "records": 40,
+      "sha256": "ad31715719b8c54d78398bff3d3a8ba141a1a7d9447b318ff3b5fc18d97a293c"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-012.json",
+      "records": 40,
+      "sha256": "efe84798a26de486c3e2f6535c7098708cff00b3aff0d47a166b0c7f6cfe94f4"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-013.json",
+      "records": 40,
+      "sha256": "fdd12e8f993fa2ee556f2ba61b587e542ba5965391bdcf7faf0f217e7d7af67d"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-014.json",
+      "records": 40,
+      "sha256": "5bbad16f39cca12dae33f01b5e398f314d6c7787ecab9a6e114529d691dbe864"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
+      "records": 40,
+      "sha256": "bec43dd7bce0f3c83107a308ca43765eb0ab31081d0e40466a371357ab6b64a9"
+    },
+    {
+      "path": "docs/content-audits/zg361-copy-ledger/events/events-016.json",
+      "records": 26,
+      "sha256": "03da335cf099d52c40e8d0ee44b994a2919854d6f4644ca3eea4070a846413fd"
+    }
+  ],
+  "final_reread_closure": [
+    {
+      "shards": "001-002",
+      "records": 80,
+      "findings_fixed": 4,
+      "unfixed": 0
+    },
+    {
+      "shards": "003-004",
+      "records": 80,
+      "findings_fixed": 5,
+      "unfixed": 0
+    },
+    {
+      "shards": "005-006",
+      "records": 80,
+      "findings_fixed": 1,
+      "unfixed": 0
+    },
+    {
+      "shards": "007-008",
+      "records": 80,
+      "findings_fixed": 7,
+      "unfixed": 0
+    },
+    {
+      "shards": "009-010",
+      "records": 80,
+      "findings_fixed": 0,
+      "unfixed": 0
+    },
+    {
+      "shards": "011-012",
+      "records": 80,
+      "findings_fixed": 9,
+      "unfixed": 0
+    },
+    {
+      "shards": "013-014",
+      "records": 80,
+      "findings_fixed": 1,
+      "unfixed": 0
+    },
+    {
+      "shards": "015-016",
+      "records": 66,
+      "findings_fixed": 14,
+      "unfixed": 0
+    }
+  ],
+  "non_event_review": {
+    "status": "pass",
+    "decisions": "7/7",
+    "interactions": "6/6",
+    "jingcha_entry_localization": "22/22",
+    "gui_surfaces": "5/5",
+    "final_reread_findings_fixed": 1,
+    "unfixed": 0,
+    "evidence_commit": "690727253a099a19c9ff1e69ed0c957239499c4f"
+  },
+  "live_render_validation_status": "pending",
+  "boundary": "Static human semantic review is complete. Dynamic scope interpolation, rendered layout, and in-game context remain CK3 live acceptance work and are not claimed by this manifest."
+}

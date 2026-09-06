@@ -146,6 +146,7 @@ class ChineseCopyAuditSnapshot:
     user_named_static_open_items: int
     ledger_status: str
     machine_checks_status: str
+    human_semantic_review_status: str
     live_render_validation_status: str
     boundary: str
 
@@ -179,19 +180,20 @@ LIVE_BOUNDARY: Final = (
 CHINESE_COPY_AUDIT: Final = ChineseCopyAuditSnapshot(
     sidecar_index="docs/content-audits/zg361-copy-ledger/index.json",
     sidecar_commit="c66a1efae11117c21db383d8992b9ccfac85d9cd",
-    source_snapshot_git_commit="6db27bea4293445ef757e6c49c1c51d338e92355",
+    source_snapshot_git_commit="8995b37dd6cbe7af2592767d93deca455756add4",
     visible_events=626,
-    final_zh_keys=4999,
+    final_zh_keys=4994,
     machine_failures=0,
     user_named_static_open_items=0,
-    ledger_status="review",
+    ledger_status="pass",
     machine_checks_status="pass",
+    human_semantic_review_status="pass",
     live_render_validation_status="pending",
     boundary=(
-        "确定性机器检查和用户点名的两类模式当前没有规则命中；但随后完成的 626 张可见事件"
-        "逐卡人工审计又发现按钮与 effect 冲突、主体/因果错误、内部术语及无价值 tooltip，"
-        "文案状态已重新打开为 RED，正在按分片整改。动态插值、实机排版和最终游戏内措辞仍为 "
-        "LIVE PENDING；人工静态未修项关闭前不得恢复 CK3 实机。"
+        "626 张可见事件已逐卡复读并与最终 title、desc、按钮、tooltip、event 及 effect/业务账簿消费端"
+        "对齐；16 个事件分片由独立人工复审清单逐哈希绑定，非事件决议、互动、京察入口与 GUI 也已复核，"
+        "静态未修项为 0。动态插值、实机排版和最终游戏内语境仍为 LIVE PENDING；后者必须由 CK3 实机验收，"
+        "不能由静态审计冒充。"
     ),
 )
 

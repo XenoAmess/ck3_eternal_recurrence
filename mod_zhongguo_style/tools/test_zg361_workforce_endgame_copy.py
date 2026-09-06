@@ -116,9 +116,13 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
             text = gen.render_localization(language).decode("utf-8-sig")
             for spec in gen.MECHANISMS:
                 self.assertIn(f" {gen.NAMESPACE}.{spec.mid}.desc:0", text)
-                for letter in "abc":
+                visible_letters = "a" if spec.mid == 274 else "abc"
+                for letter in visible_letters:
                     self.assertIn(f" {gen.NAMESPACE}.{spec.mid}.{letter}:0", text)
                     self.assertIn(f" {gen.NAMESPACE}.{spec.mid}.{letter}.tt:0", text)
+                if spec.mid == 274:
+                    self.assertNotIn(f" {gen.NAMESPACE}.274.b:0", text)
+                    self.assertNotIn(f" {gen.NAMESPACE}.274.c:0", text)
 
     def test_audited_tooltips_state_only_real_consequences(self) -> None:
         rows = localization_rows("simp_chinese")
@@ -211,7 +215,7 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
         main_buttons = {
             f"zg361we.{mid}.{letter}"
             for mid in gen.EXPECTED_MECHANISM_IDS
-            for letter in "abc"
+            for letter in ("a" if mid == 274 else "abc")
         }
         handoff_buttons = {
             f"zg361we.handoff.{step}.{viewer}.{outcome}"
@@ -220,7 +224,7 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
             for outcome in ("complete", "refuse")
         }
         button_keys = main_buttons | handoff_buttons
-        self.assertEqual(132, len(button_keys))
+        self.assertEqual(130, len(button_keys))
         self.assertTrue(button_keys.issubset(rows))
         for key in sorted(button_keys):
             label = rows[key]
@@ -230,7 +234,7 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
                 self.assertNotRegex(label, r"(?:路线[甲乙ABC]|按\s*[ABC]\s*(?:做|办|执行)?)")
         for mid in gen.EXPECTED_MECHANISM_IDS:
             body = rows[f"zg361we.{mid}.desc"]
-            for letter in "abc":
+            for letter in ("a" if mid == 274 else "abc"):
                 label = rows[f"zg361we.{mid}.{letter}"]
                 if len(label) >= 6:
                     self.assertNotIn(label, body, (mid, letter))
@@ -256,6 +260,8 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
         chinese = localization_rows("simp_chinese")
         english = localization_rows("english")
         for mid in gen.EXPECTED_MECHANISM_IDS:
+            if mid == 274:
+                continue
             cn = chinese[f"zg361we.{mid}.c.tt"]
             en = english[f"zg361we.{mid}.c.tt"]
             with self.subTest(mid=mid):

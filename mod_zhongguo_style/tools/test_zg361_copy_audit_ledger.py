@@ -55,17 +55,24 @@ class CopyAuditLedgerTest(unittest.TestCase):
         self.assertEqual(self.index["summary"]["visible_events"], 626)
         self.assertEqual(self.index["summary"]["hidden_events"], 383)
 
-    def test_human_semantic_judgment_is_not_auto_promoted(self) -> None:
-        self.assertEqual(self.index["ledger_status"], "review")
-        self.assertEqual(self.index["human_semantic_review_status"], "review")
+    def test_human_semantic_judgment_requires_exact_review_manifest(self) -> None:
+        self.assertEqual(self.index["ledger_status"], "pass")
+        self.assertEqual(self.index["human_semantic_review_status"], "pass")
         self.assertEqual(self.index["live_render_validation_status"], "pending")
+        evidence = self.index["human_review_evidence"]
+        self.assertEqual(evidence["status"], "pass")
+        self.assertEqual(evidence["reviewed_event_shards"], 16)
+        self.assertEqual(
+            evidence["reviewed_visible_events"],
+            self.index["summary"]["visible_events"],
+        )
         manual = [
             item
             for item in self.index["open_items"]
             if item["kind"] == "manual_semantic_review"
         ]
-        self.assertEqual(len(manual), 1)
-        self.assertEqual(manual[0]["count"], self.index["summary"]["visible_events"])
+        self.assertEqual(manual, [])
+        self.assertEqual(self.index["summary"]["manual_review_open_count"], 0)
 
     def test_shards_are_bounded_and_match_index_hashes(self) -> None:
         self.assertGreater(len(self.index["shards"]), 20)

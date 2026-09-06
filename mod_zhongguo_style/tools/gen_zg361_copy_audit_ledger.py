@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """Generate a reproducible ledger for final Simplified Chinese event copy.
 
-The ledger binds the bytes CK3 loads to visible event definitions.  Machine
-checks are deliberately separate from the open human semantic review: a clean
-regex result is not presented as proof that a scene is logical or well written.
+The ledger binds the bytes CK3 loads to visible event definitions. Machine
+checks never promote semantic review by themselves; a separate human-review
+manifest must bind every event shard by exact hash before the ledger can pass.
 """
 
 from __future__ import annotations
@@ -27,6 +27,7 @@ EVENT_ROOT = MOD_ROOT / "events"
 LOC_ROOT = MOD_ROOT / "localization" / "simp_chinese"
 OUTPUT_ROOT = REPO_ROOT / "docs" / "content-audits" / "zg361-copy-ledger"
 INDEX_PATH = OUTPUT_ROOT / "index.json"
+HUMAN_REVIEW_PATH = REPO_ROOT / "docs" / "content-audits" / "zg361-copy-human-review.json"
 
 SCHEMA_VERSION = 1
 EVENT_CHUNK_SIZE = 40
@@ -107,6 +108,65 @@ def stable_json(payload: object, *, pretty: bool = False) -> bytes:
     return (json.dumps(payload, ensure_ascii=False, sort_keys=True, **options) + "\n").encode(
         "utf-8"
     )
+
+
+def human_review_evidence(
+    shard_index: list[dict[str, object]],
+    *,
+    visible_events: int,
+    input_digest: str,
+) -> dict[str, object]:
+    evidence: dict[str, object] = {
+        "path": relative(HUMAN_REVIEW_PATH),
+        "status": "review",
+        "reviewed_event_shards": 0,
+        "reviewed_visible_events": 0,
+    }
+    if not HUMAN_REVIEW_PATH.is_file():
+        evidence["reason"] = "human-review manifest is missing"
+        return evidence
+    try:
+        payload = json.loads(HUMAN_REVIEW_PATH.read_text(encoding="utf-8"))
+        reviewed = {
+            str(item["path"]): (int(item["records"]), str(item["sha256"]).lower())
+            for item in payload["reviewed_event_shards"]
+        }
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+        evidence["reason"] = f"invalid human-review manifest: {error}"
+        return evidence
+
+    current = {
+        str(item["path"]): (int(item["records"]), str(item["sha256"]).lower())
+        for item in shard_index
+        if item["kind"] == "events"
+    }
+    errors: list[str] = []
+    if payload.get("schema_version") != 1:
+        errors.append("schema_version must be 1")
+    if payload.get("status") != "pass":
+        errors.append("manifest status is not pass")
+    if payload.get("language") != "simp_chinese":
+        errors.append("manifest language is not simp_chinese")
+    if payload.get("source_input_digest_sha256") != input_digest:
+        errors.append("source input digest changed after review")
+    if payload.get("reviewed_visible_events") != visible_events:
+        errors.append("visible event count changed after review")
+    if reviewed != current:
+        errors.append("event shard hashes changed after review")
+
+    evidence.update(
+        {
+            "manifest_sha256": sha256_bytes(HUMAN_REVIEW_PATH.read_bytes()),
+            "reviewed_event_shards": len(reviewed),
+            "reviewed_visible_events": sum(records for records, _ in reviewed.values()),
+        }
+    )
+    if errors:
+        evidence["reason"] = "; ".join(errors)
+        return evidence
+    evidence["status"] = "pass"
+    evidence["reviewed_visible_events"] = visible_events
+    return evidence
 
 
 def unique(values: Iterable[str]) -> tuple[str, ...]:
@@ -546,10 +606,6 @@ def build_outputs() -> tuple[dict[Path, bytes], dict[str, object]]:
                 "status": status(option_loc_items),
                 "items": option_loc_items,
             },
-            "manual_semantic_review": {
-                "status": "review",
-                "reason": "context, causal logic, voice, and useful information require human review",
-            },
         }
         for check_name, check in checks.items():
             note(check_name, str(check["status"]))
@@ -650,14 +706,13 @@ def build_outputs() -> tuple[dict[Path, bytes], dict[str, object]]:
                 }
             )
 
+    human_review = human_review_evidence(
+        shard_index,
+        visible_events=len(visible),
+        input_digest=input_digest,
+    )
+    human_review_status = str(human_review["status"])
     review_open_items: list[dict[str, object]] = [
-        {
-            "kind": "manual_semantic_review",
-            "status": "review",
-            "count": len(visible),
-            "reason": "machine checks do not prove that scene context, causality, voice, or information value is sound",
-            "records": "event shards",
-        },
         {
             "kind": "live_render_validation",
             "status": "pending",
@@ -665,6 +720,20 @@ def build_outputs() -> tuple[dict[Path, bytes], dict[str, object]]:
             "reason": "static source binding cannot validate dynamic scopes, rendered layout, or in-game wording",
         },
     ]
+    if human_review_status != "pass":
+        review_open_items.insert(
+            0,
+            {
+                "kind": "manual_semantic_review",
+                "status": "review",
+                "count": len(visible),
+                "reason": human_review.get(
+                    "reason",
+                    "event shard hashes have not been bound by completed human review",
+                ),
+                "records": "event shards",
+            },
+        )
     if option_like_review:
         review_open_items.append(
             {
@@ -696,7 +765,8 @@ def build_outputs() -> tuple[dict[Path, bytes], dict[str, object]]:
         "visible_description_bindings": sum(len(event.descriptions) for event in visible),
         "visible_option_bindings": sum(len(event.options) for event in visible),
         "machine_failure_count": len(machine_failures),
-        "manual_review_open_count": sum(int(item["count"]) for item in review_open_items),
+        "manual_review_open_count": 0 if human_review_status == "pass" else len(visible),
+        "open_item_count": sum(int(item["count"]) for item in review_open_items),
         "check_status_counts": check_counts,
         "dead_option_loc": {
             "status": dead_option_status,
@@ -707,10 +777,13 @@ def build_outputs() -> tuple[dict[Path, bytes], dict[str, object]]:
     }
     index = {
         "schema_version": SCHEMA_VERSION,
-        "ledger_status": "fail" if machine_failures else "review",
+        "ledger_status": (
+            "fail" if machine_failures else "pass" if human_review_status == "pass" else "review"
+        ),
         "machine_checks_status": "fail" if machine_failures else "pass",
-        "human_semantic_review_status": "review",
+        "human_semantic_review_status": human_review_status,
         "live_render_validation_status": "pending",
+        "human_review_evidence": human_review,
         "scope": {
             "language": "simp_chinese",
             "event_visibility_rule": "event definition without direct hidden = yes",
@@ -784,7 +857,7 @@ def main(argv: list[str] | None = None) -> int:
         f"{index['ledger_status'].upper()}: {summary['visible_events']} visible events, "
         f"{summary['final_localization_keys']} final loc keys, "
         f"{summary['machine_failure_count']} machine failures; "
-        "human semantic review remains open"
+        f"human semantic review {index['human_semantic_review_status']}"
     )
     return 1 if index["machine_checks_status"] == "fail" else 0
 

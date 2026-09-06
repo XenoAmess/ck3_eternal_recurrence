@@ -6,43 +6,24 @@
     "stripped_opening_punctuation": "first visible character after CK3 style/icon markup",
     "title_similarity_contains": "literal normalized containment fails; similarity >= 0.50 remains review"
   },
-  "human_semantic_review_status": "review",
-  "ledger_status": "review",
+  "human_review_evidence": {
+    "manifest_sha256": "7608f993bfaae31a4c9358a13b373a24aab2901dd74329481677c30818d79f32",
+    "path": "docs/content-audits/zg361-copy-human-review.json",
+    "reviewed_event_shards": 16,
+    "reviewed_visible_events": 626,
+    "status": "pass"
+  },
+  "human_semantic_review_status": "pass",
+  "ledger_status": "pass",
   "live_render_validation_status": "pending",
   "machine_checks_status": "pass",
   "machine_failures": [],
   "open_items": [
     {
-      "count": 626,
-      "kind": "manual_semantic_review",
-      "reason": "machine checks do not prove that scene context, causality, voice, or information value is sound",
-      "records": "event shards",
-      "status": "review"
-    },
-    {
       "count": 1,
       "kind": "live_render_validation",
       "reason": "static source binding cannot validate dynamic scopes, rendered layout, or in-game wording",
       "status": "pending"
-    },
-    {
-      "count": 2,
-      "items": [
-        {
-          "key": "zg361we.274.b",
-          "reason": "option-like localization is not bound by an event option; another UI surface may own it",
-          "source": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml:262",
-          "status": "review"
-        },
-        {
-          "key": "zg361we.274.c",
-          "reason": "option-like localization is not bound by an event option; another UI surface may own it",
-          "source": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml:264",
-          "status": "review"
-        }
-      ],
-      "kind": "unbound_option_like_localization",
-      "status": "review"
     }
   ],
   "schema_version": 1,
@@ -54,116 +35,116 @@
   },
   "shards": [
     {
-      "bytes": 90167,
+      "bytes": 84967,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-001.json",
       "records": 40,
-      "sha256": "62875c5dca464fef0deadc84a52427faae69fef905ee8913f0dfaed76f9aae50"
+      "sha256": "6a0296b8248fcf4b6fcb8b6425268b40aa9278a13d660ac31e5c85c989d8ba18"
     },
     {
-      "bytes": 67129,
+      "bytes": 61929,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
       "records": 40,
-      "sha256": "725290037d4bdd8123239dfdbfdf32caa6ca1355a09a762f5fe880a2bbc554e4"
+      "sha256": "5604cebb423d84fae13860d5e455f745a021999451412d537a47707ba65bce61"
     },
     {
-      "bytes": 91501,
+      "bytes": 86301,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-003.json",
       "records": 40,
-      "sha256": "24a25f559b276fc03889c272ff4a1b700d576130809d8a00d10c008bf0715132"
+      "sha256": "5758ef9b94a022d5af469ab1caec55f2c094b7da44190ef0e0fee3d2ba9797e7"
     },
     {
-      "bytes": 90983,
+      "bytes": 85783,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-004.json",
       "records": 40,
-      "sha256": "b302249a25ad0e1f6babc25e452af130e012a54487537296bcde824a76ba8d2a"
+      "sha256": "1f3adddd9a8fe55bf1c63c24ef922fb933175f69b63928be367a9d76e8b07d94"
     },
     {
-      "bytes": 87057,
+      "bytes": 81857,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
       "records": 40,
-      "sha256": "29cb4f9ef9ff84590fcb041ed4b7f2494c5bdbbbc5d13b9af891ffe8332512d4"
+      "sha256": "dc2c0db15ad4cf5233be2403f3d88f1da75a356a3908920739e02fc92b48b96a"
     },
     {
-      "bytes": 68235,
+      "bytes": 63035,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-006.json",
       "records": 40,
-      "sha256": "91c38f29cd819bb25e06937a6d41a4d9136d156c1e9a94c804978585fe7eabce"
+      "sha256": "2585a151bd818afb44f49e99504b231ab2e4d8834786679ce315b00904fcd64a"
     },
     {
-      "bytes": 68432,
+      "bytes": 63232,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-007.json",
       "records": 40,
-      "sha256": "bad86b90d7b08388ab9b01c54931ae64c0c5f84f63c4a50006a0eba845d0fc37"
+      "sha256": "712b12c58aa28f10f1ed6c3ebc9151c1f46beed5165ff2f677961fbab90b71ab"
     },
     {
-      "bytes": 68877,
+      "bytes": 63677,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-008.json",
       "records": 40,
-      "sha256": "a12f0826e8a2d16c3eee719ec694b32de9623b6c5ec3b1935f98a0bd961465ba"
+      "sha256": "3e6b733d6ee7d022a412e2223e9d0345e500d457e34dadd9dfffba89b900b3f0"
     },
     {
-      "bytes": 68870,
+      "bytes": 63670,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-009.json",
       "records": 40,
-      "sha256": "32d11c435e434708f774cda7204b553ccea878cafa76993dfb689843375b7f5f"
+      "sha256": "b950090fb1abf3b121fa9fff9963b3c203a958d76203e377cc8494d5ac1ae4cf"
     },
     {
-      "bytes": 68905,
+      "bytes": 63705,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-010.json",
       "records": 40,
-      "sha256": "28a1a455160f0646b7bd088596d111274b9c4d842fc70d34013bca2fdc89df19"
+      "sha256": "57907e456f02fe33c33163eca0db90c7f96a0f794a1096bf34192bee09c417e3"
     },
     {
-      "bytes": 68907,
+      "bytes": 63707,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-011.json",
       "records": 40,
-      "sha256": "1efed810e6cfb5221f61d10b28f265a3b836e9cd95b0dde3042903e26698e435"
+      "sha256": "ad31715719b8c54d78398bff3d3a8ba141a1a7d9447b318ff3b5fc18d97a293c"
     },
     {
-      "bytes": 68918,
+      "bytes": 63718,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-012.json",
       "records": 40,
-      "sha256": "d49181c292fffae491c4b5e3c6393ccda9663ed831a09c582d8c66ec21125aa9"
+      "sha256": "efe84798a26de486c3e2f6535c7098708cff00b3aff0d47a166b0c7f6cfe94f4"
     },
     {
-      "bytes": 68917,
+      "bytes": 63717,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-013.json",
       "records": 40,
-      "sha256": "89fa4395ad910a0dbc22034e5efee67931468b765a5a34579f54211b8217d580"
+      "sha256": "fdd12e8f993fa2ee556f2ba61b587e542ba5965391bdcf7faf0f217e7d7af67d"
     },
     {
-      "bytes": 69786,
+      "bytes": 64586,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-014.json",
       "records": 40,
-      "sha256": "f6aa4118df0cc9830bafb65a1887fa69d40ab0903d45fd1bc88cb071ac5a1106"
+      "sha256": "5bbad16f39cca12dae33f01b5e398f314d6c7787ecab9a6e114529d691dbe864"
     },
     {
-      "bytes": 70866,
+      "bytes": 65666,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
       "records": 40,
-      "sha256": "5e9d8d906392f2acec2c8de90b10e377fb6f71a4dfcbc64982c5ecf25c0238ad"
+      "sha256": "bec43dd7bce0f3c83107a308ca43765eb0ab31081d0e40466a371357ab6b64a9"
     },
     {
-      "bytes": 51568,
+      "bytes": 48188,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-016.json",
       "records": 26,
-      "sha256": "7492cab0dcf7d4579dc391bd6bf39147aa586d7cc2084028396c24d05d931588"
+      "sha256": "03da335cf099d52c40e8d0ee44b994a2919854d6f4644ca3eea4070a846413fd"
     },
     {
       "bytes": 66934,
@@ -341,25 +322,25 @@
       "sha256": "f680e46bec0d28ad885793904352111a04a0dd9740bce75de4dd64616e574d08"
     },
     {
-      "bytes": 72753,
+      "bytes": 72847,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-026.json",
       "records": 180,
-      "sha256": "9a52ed2d513ad364ebb9cd36d0c017ce0a3df3bdb5a493efa0d5350469abeae1"
+      "sha256": "8d876ac90953d1658b018e8f62524bdc591d3a327680ce146342627c9472cdee"
     },
     {
-      "bytes": 69184,
+      "bytes": 69545,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-027.json",
       "records": 180,
-      "sha256": "1bbd0e390d3e359a34189e9ff1a05e55b0055198213751aeeab6f2fc16bdeb96"
+      "sha256": "5358ebb2dd9ab090bf9023215eaa10c8d7d43b4bb5a4887c88db7c5df74163bf"
     },
     {
-      "bytes": 55696,
+      "bytes": 54326,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-028.json",
-      "records": 138,
-      "sha256": "cadcb7c2c2605999d09a2e0f12bbfb46e7b9d828e86f7c6a02096d4cc551c120"
+      "records": 134,
+      "sha256": "2fdea6743532d0cfa6e556873ada06aded21c723f21266d0677a554871d43510"
     }
   ],
   "source_snapshot": {
@@ -1772,10 +1753,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 37412,
-        "lines": 342,
+        "bytes": 37549,
+        "lines": 338,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
-        "sha256": "74bf5e47647eb471b2623031ce8aea584b943c07bfb643e38203c4abc76a679c"
+        "sha256": "dc63d242aaa522b1691a6fa201d0d7c5818239d915806c4221d639fbf38d0152"
       },
       {
         "authority": {
@@ -1843,9 +1824,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "499a9a39e11175e4bf747a14585a5fb3f10e300c",
+    "git_commit": "8995b37dd6cbe7af2592767d93deca455756add4",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "9c15371dea3bfce70db2a051e7781c1898bb65725516cf143e842ed6613cb609"
+    "input_digest_sha256": "e7638ad17b06b79965fc65cc39c223816d6853d7b846d48f226d670704c5aa7e"
   },
   "summary": {
     "all_event_definitions": 1009,
@@ -1859,9 +1840,6 @@
       "generic_option": {
         "pass": 626
       },
-      "manual_semantic_review": {
-        "review": 626
-      },
       "stripped_opening_punctuation": {
         "pass": 626
       },
@@ -1872,13 +1850,14 @@
     "dead_option_loc": {
       "bound_visible_option_count": 1845,
       "missing_visible_option_count": 0,
-      "status": "review",
-      "unbound_option_like_review_count": 2
+      "status": "pass",
+      "unbound_option_like_review_count": 0
     },
-    "final_localization_keys": 4998,
+    "final_localization_keys": 4994,
     "hidden_events": 383,
     "machine_failure_count": 0,
-    "manual_review_open_count": 629,
+    "manual_review_open_count": 0,
+    "open_item_count": 1,
     "visible_description_bindings": 845,
     "visible_events": 626,
     "visible_option_bindings": 1853,
