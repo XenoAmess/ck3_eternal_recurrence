@@ -9,7 +9,25 @@
 - `ck3-live means bounded fixture-live evidence for the named slice; no mechanism is promoted here to production-live or full semantic completion`。
 - #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。
 
-## 最新完整产品验收快照（不改变逐号等级）
+## R111–R114 增量全量候选验收记录（不改变逐号等级）
+
+四轮均使用独立冻结的 release-identical 产品树、原生 MCP-only 驱动和串行 CK3 启动门禁；`ocr_used=false`、
+`image_used=false`、`coordinates_used=false`。验收时间轴默认使用 `set-speed-5` 快进，仅在有界事件捕获窗口按 runner
+合同降速。各轮 loader 均完成 303/303 database nodes，项目归属 loader match 为 0；这只证明加载门 GREEN，不能覆盖随后
+发生的产品运行时 RED，也不能声称全量验收 GREEN。
+
+| 轮次 | 精确产品身份 | loader / 运行结果 | 已修与下一轮边界 |
+|---|---|---|---|
+| `R111` · `2026-09-06 09:54 Asia/Shanghai` | commit `807f08d0c74bbd6126431c677d8cbb32a10417f0` · projection `phase2-full-release-r111-807f08d` · 1031 files · source tree `c865244335ed6a749d07e62527f0772bb3fd913ccea2a6888f00e680e7e23674` · manifest file SHA-256 `326bf1a5a9940b09627387f2b3b09c70b26f1f1eeb44ab129fc3c6745def7196` | loader 303/303 GREEN；产品 RED 同时落在两族：B1 weak/dead manager 的 pending-subject resolver，以及 `zg361b2.40.desc` 的 Character / saved-scope 本地化链。550 游戏日观察上限被更早的产品 RED 覆盖，不能据此判断性能或扩大时限。 | B1 终止/释放语义及 R111 的原始 loc 签名由 `3c005e45b6a6b6c1442a3903052a582bab48970d` 修改；R112 未重现 B1 旧族，但暴露了替代 loc 链的新错误，所以此处不把本地化记为 live GREEN。 |
+| `R112` · `2026-09-06 10:20 Asia/Shanghai` | commit `3c005e45b6a6b6c1442a3903052a582bab48970d` · projection `phase2-full-release-r112-3c005e4` · 1031 files · source tree `f467ac90703ad0323f6608da6562becb0bf2bbcde15ebd176c11ced7569d435c` · manifest file SHA-256 `92810fd470936c5dda05b3b2b7c66565610b6620a8dc0a6a8c41596b512c648d` | loader 303/303 GREEN；产品 RED：Character ROOT 上的 `ROOT.MakeScope.Var(...).Char.GetShortUIName` 无法 promote，`zg361b2.40.desc` 转换失败。 | B2、compensation、workforce AD 的同签名生成源由 `a9320a71b4d0e636dbcd99e8e496994f26490656` 统一改为 Character 合法路径；R113 未重现 R112 loc 签名。 |
+| `R113` · `2026-09-06 10:34 Asia/Shanghai` | commit `a9320a71b4d0e636dbcd99e8e496994f26490656` · projection `phase2-full-release-r113-a9320a7` · 1031 files · source tree `f99500645dc14e056ac40d77dabf6d23c97a0951479db09bead7d634dbe08342` · manifest file SHA-256 `bf83bd1b4219f1bce2e213c4baf1733fd8ac1299a951a36f1435a46d288af679` | loader 303/303 GREEN；产品 RED：`zg361b1.123` 的 queued continuation 在 roster 行缺少 `zg361_b1_case_owner` 时仍进入冻结配额复核，触发变量读取与比较错误。 | stale continuation 的业务终止与 list-row owner guard 由 `f6cf65378158669e35e493ba8466685f1ace0e1d` 修复；R114 在出现下一族 RED 前未重现 R113 签名。 |
+| `R114` · `2026-09-06 10:54 Asia/Shanghai` | commit `f6cf65378158669e35e493ba8466685f1ace0e1d` · projection `phase2-full-release-r114-f6cf653` · 1031 files · source tree `d54d3beb0dcf26a3831b6b0441e92dbba28a56aca8e77fae770c01416f208aa5` · manifest file SHA-256 `bbd86499307e9a1499b1ade628334ed9219e4d097d2d4db54cbbc23f010eb191` | loader 303/303 GREEN；产品 RED：`zg361comp.2` 对 weak Character subject 执行 `has_variable`，且 portfolio refresh 继续裸比较不可用 `var`，分别落在 `zg361_compensation_07b_portfolio_apply_stage_effects.txt` 与 `07c_portfolio_refresh_effects.txt`。 | **未闭合。** 下一轮必须先修 compensation 生成源、生成结果与回归，再以改变后的产品树 fresh 启动；R114 不构成完整迁移树 GREEN，也不提升任何逐号证据层。 |
+
+可核验证据：`Z:\\b3r111`–`Z:\\b3r114` 的 `evidence-index.json`、`report.json`、
+`cell/02_loader_error_scan.json`、`cell/03_loader_gate.json`、`cell/final_error.log`；以及 `Z:\\p2r111`–`Z:\\p2r114`
+的 `phase2-product-projection.json` 与 `p.manifest.json`。
+
+## R107 基线完整产品验收快照（不改变逐号等级）
 
 | 项 | 实证 |
 |---|---|
