@@ -144,6 +144,11 @@ recommendation 接入 typed termination submit gate。最后在一次 CK3 启动
 唯一 submit、六域 postcondition、postwar checkpoint。不得用 OCR、测试 fixture 或重复跑局
 替代缺失 producer。
 
+2026-09-07 已增加
+[统一 fail-closed intake](g2-three-way-exit-intake-2026-09-07.md)，将 owner source provider、
+white-peace provider 和本策略接成一个纯离线调用入口。它只消除了未来真实产物消费时的手工拼接，
+不产生任何缺失 provider，也固定保持 production/action 门关闭；上述真实 blocker 和后续路径不变。
+
 ## 离线验收
 
 ```powershell
