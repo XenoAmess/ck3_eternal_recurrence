@@ -7,7 +7,7 @@
     "title_similarity_contains": "literal normalized containment fails; similarity >= 0.50 remains review"
   },
   "human_review_evidence": {
-    "manifest_sha256": "7608f993bfaae31a4c9358a13b373a24aab2901dd74329481677c30818d79f32",
+    "manifest_sha256": "14484aeff627988e35a3f1ee53f774159e92b8e94236c616521ceb3243b8a913",
     "path": "docs/content-audits/zg361-copy-human-review.json",
     "reviewed_event_shards": 16,
     "reviewed_visible_events": 626,
@@ -322,18 +322,18 @@
       "sha256": "f680e46bec0d28ad885793904352111a04a0dd9740bce75de4dd64616e574d08"
     },
     {
-      "bytes": 72847,
+      "bytes": 72853,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-026.json",
       "records": 180,
-      "sha256": "8d876ac90953d1658b018e8f62524bdc591d3a327680ce146342627c9472cdee"
+      "sha256": "149b927662958da0e9e40de9b08b1a21164cbef0a082f3f0a8b0ac892d506d34"
     },
     {
-      "bytes": 69545,
+      "bytes": 69593,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-027.json",
       "records": 180,
-      "sha256": "5358ebb2dd9ab090bf9023215eaa10c8d7d43b4bb5a4887c88db7c5df74163bf"
+      "sha256": "07b4dfffd5daf27870838ba0bdc353e2776546cd89aeba8bf50eebf6e244f0c5"
     },
     {
       "bytes": 54326,
@@ -1753,10 +1753,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 37549,
+        "bytes": 37603,
         "lines": 338,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
-        "sha256": "dc63d242aaa522b1691a6fa201d0d7c5818239d915806c4221d639fbf38d0152"
+        "sha256": "51f05ed34f5dbab9966327b244374a595be96e60b383e888d54335fa2ee7a839"
       },
       {
         "authority": {
@@ -1824,9 +1824,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "8995b37dd6cbe7af2592767d93deca455756add4",
+    "git_commit": "74a2cb258d4ce4ac37401bf4689266bd2089e6ee",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "e7638ad17b06b79965fc65cc39c223816d6853d7b846d48f226d670704c5aa7e"
+    "input_digest_sha256": "b8a4a08cefec9b0d8d32ad054e3f62db3dcf71351031c470cb4666f001bfc70c"
   },
   "summary": {
     "all_event_definitions": 1009,

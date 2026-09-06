@@ -3,7 +3,7 @@
   "status": "pass",
   "language": "simp_chinese",
   "review_completed_at": "2026-09-06T19:39:49+08:00",
-  "source_input_digest_sha256": "e7638ad17b06b79965fc65cc39c223816d6853d7b846d48f226d670704c5aa7e",
+  "source_input_digest_sha256": "b8a4a08cefec9b0d8d32ad054e3f62db3dcf71351031c470cb4666f001bfc70c",
   "reviewed_visible_events": 626,
   "review_method": "Every visible event card was reread against its final title, body, bound options, tooltips, event script, and authoritative effect or business-ledger consumer. A second hash-bound reread followed the first repair pass.",
   "reviewed_event_shards": [
@@ -147,6 +147,18 @@
     "final_reread_findings_fixed": 1,
     "unfixed": 0,
     "evidence_commit": "690727253a099a19c9ff1e69ed0c957239499c4f"
+  },
+  "latest_review_binding": {
+    "reviewed_at": "2026-09-06T19:34:09+08:00",
+    "evidence_commit": "7e9c70da16b4796d5fae0efefd6880981442ac60",
+    "localization_shards": [
+      "localization-026",
+      "localization-027"
+    ],
+    "records": 66,
+    "findings_fixed": 14,
+    "unfixed": 0,
+    "reason": "Bind the final reviewed workforce/endgame copy after its generated Chinese and English sources were merged into master. Event definitions and reviewed event-shard hashes are unchanged."
   },
   "live_render_validation_status": "pending",
   "boundary": "Static human semantic review is complete. Dynamic scope interpolation, rendered layout, and in-game context remain CK3 live acceptance work and are not claimed by this manifest."

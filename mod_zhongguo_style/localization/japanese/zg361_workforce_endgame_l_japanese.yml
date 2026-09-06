@@ -49,7 +49,7 @@
  zg361we.247.c.tt:0 "This ruling remains unresolved. No business record is created, one policy debt falls due next cycle, and this matter will not be proposed again during the current campaign."
  zg361we.248.t:0 "Manager Liability for Chronic Understaffing"
  zg361we.248.desc:0 "A long vacancy is still being spread across [zg361_we_ab_subject.GetShortUIName]'s team while its original target remains intact. [zg361_we_ab_owner.GetShortUIName] must account for the overload at today's close before delivery figures hide the capacity gap again."
- zg361we.248.a:0 "Record 3 shortages and deduct 5 manager points"
+ zg361we.248.a:0 "Record three understaffed cycles with lighter manager liability"
  zg361we.248.a.tt:0 "Record three understaffed cycles and reduce the manager score by 5; this card neither adds headcount nor changes the target"
  zg361we.248.b:0 "Keep the target and double manager liability"
  zg361we.248.b.tt:0 "Record three understaffed cycles and reduce the manager score by 10; this card neither adds headcount nor changes the target"
