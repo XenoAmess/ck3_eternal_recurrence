@@ -30,6 +30,9 @@ from zg361_phase2_promotion_career_learning_contracts import (
 from zg361_phase2_promotion_manager_imperial_contracts import (
     MANAGER_IMPERIAL_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_manager_health_contracts import (
+    MANAGER_HEALTH_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -3269,6 +3272,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(COMPENSATION_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(CENTRAL_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(CAREER_LEARNING_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_IMPERIAL_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_HEALTH_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):
