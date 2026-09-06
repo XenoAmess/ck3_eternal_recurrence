@@ -175,8 +175,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(keys_by_part[5][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
         all_keys = tuple(key for part in keys_by_part for key in part)
-        self.assertEqual(len(all_keys), 79)
-        self.assertEqual(len(set(all_keys)), 79)
+        self.assertEqual(len(all_keys), 80)
+        self.assertEqual(len(set(all_keys)), 80)
 
         observed_blocks = []
         for relative in B1_EFFECT_FILES:
@@ -3767,12 +3767,65 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         # outer branch before either predicate reads its variables.
         self.assertEqual(resolve.count("limit = { is_alive = yes }"), 3)
         continuation = top_level_block(self.events, "zg361b1.123")
+        self.assertIn("trigger = { is_alive = yes }", continuation)
+        self.assertIn("has_variable = zg361_b1_pending_open_n", continuation)
         self.assertIn("var:zg361_b1_pending_open_n = 0", continuation)
         self.assertIn("var:zg361_b1_case_active = 1", continuation)
         self.assertIn("var:zg361_b1_roster_included = 1", continuation)
+        self.assertIn("has_variable = zg361_b1_case_owner", continuation)
+        self.assertLess(
+            continuation.index("has_variable = zg361_b1_case_owner"),
+            continuation.index(
+                "var:zg361_b1_case_owner = scope:zg361_b1_pending_continue_owner"
+            ),
+        )
+        self.assertLess(
+            continuation.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            continuation.index("zg361_b1_prepare_reopen_gate_effect = yes"),
+        )
+        self.assertEqual(
+            continuation.count(
+                "zg361_b1_retire_unavailable_pending_continuation_effect = yes"
+            ),
+            2,
+        )
         self.assertIn("stale pending continuation ticket ignored", continuation)
 
+        retire = top_level_block(
+            self.effects,
+            "zg361_b1_retire_unavailable_pending_continuation_effect",
+        )
+        self.assertIn("zg361_b1_prune_unavailable_subjects_effect = yes", retire)
+        self.assertIn("has_variable = zg361_b1_case_owner", retire)
+        self.assertLess(
+            retire.index("has_variable = zg361_b1_case_owner"),
+            retire.index(
+                "var:zg361_b1_case_owner = scope:zg361_b1_pending_retire_manager"
+            ),
+        )
+        self.assertIn("name = zg361_b1_case_state value = 8", retire)
+        self.assertIn("name = zg361_b1_case_active value = 0", retire)
+        self.assertIn("name = zg361_b1_rewards_issued value = 0", retire)
+        self.assertIn("name = zg361_b1_pending_rewards_committed value = 0", retire)
+        self.assertIn("remove_character_flag = zg361_b1_cycle_active", retire)
+        self.assertIn("retired without settlement", retire)
+
+        verify = top_level_block(
+            self.effects, "zg361_b1_verify_frozen_quota_conservation_effect"
+        )
+        self.assertIn("trigger_if = {", verify)
+        self.assertIn("has_variable = zg361_b1_case_owner", verify)
+        self.assertLess(
+            verify.index("has_variable = zg361_b1_case_owner"),
+            verify.index("var:zg361_b1_case_owner = root"),
+        )
+
         watchdog = top_level_block(self.events, "zg361b1.125")
+        self.assertIn("trigger = { is_alive = yes }", watchdog)
+        self.assertLess(
+            watchdog.index("trigger = { is_alive = yes }"),
+            watchdog.index("zg361_b1_migrate_manager_identity_effect = yes"),
+        )
         safe_branch = watchdog.index("limit = { is_alive = yes }")
         self.assertLess(
             safe_branch,
@@ -3785,6 +3838,22 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         # One guard protects the watched subject list row; the second protects
         # that row's independently weak fallback Character variable.
         self.assertGreaterEqual(watchdog.count("limit = { is_alive = yes }"), 2)
+        watchdog_refresh = watchdog.index(
+            "zg361_b1_refresh_individual_publications_effect = yes"
+        )
+        watchdog_prune_result = watchdog.index(
+            "limit = { var:zg361_b1_roster_pruned_n = 0 }"
+        )
+        watchdog_prepare = watchdog.index(
+            "zg361_b1_prepare_reopen_gate_effect = yes"
+        )
+        self.assertLess(watchdog_refresh, watchdog_prune_result)
+        self.assertLess(watchdog_prune_result, watchdog_prepare)
+        self.assertIn(
+            "zg361_b1_retire_unavailable_pending_continuation_effect = yes",
+            watchdog,
+        )
+        self.assertIn("stale pending watchdog ticket ignored", watchdog)
 
     def test_pending_publishes_stable_subjects_then_revises_each_resolved_row(self) -> None:
         initialize = top_level_block(

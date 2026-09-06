@@ -24,7 +24,7 @@ EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
 EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
-EFFECT_BLOCK_COUNTS = (42, 37)
+EFFECT_BLOCK_COUNTS = (42, 38)
 LEGACY_EFFECT_PATHS = (
     EFFECTS_DIR / "zg361_b1_runtime_effects.txt",
     EFFECTS_DIR / "zg361_b1_runtime_effects_part2.txt",
@@ -6639,6 +6639,51 @@ zg361_b1_resolve_pending_subject_effect = {
 	}
 }
 
+# A queued continuation cannot safely reseal a frozen quota book after either
+# its selected subject or another roster row becomes unavailable.  Retire the
+# manager-owned cycle without publication or rewards; surviving exact case
+# tuples are closed locally, while malformed/unavailable weak rows are never
+# dereferenced.
+zg361_b1_retire_unavailable_pending_continuation_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
+	save_temporary_scope_as = zg361_b1_pending_retire_manager
+	every_in_list = {
+		variable = zg361_b1_subjects
+		if = {
+			limit = {
+				is_alive = yes
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_case_active
+					}
+					var:zg361_b1_case_owner = scope:zg361_b1_pending_retire_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_retire_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_pending_retire_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_active = 1
+				}
+				trigger_else = { always = no }
+			}
+			set_variable = { name = zg361_b1_case_state value = 8 }
+			set_variable = { name = zg361_b1_case_active value = 0 }
+			set_variable = { name = zg361_b1_roster_included value = 0 }
+		}
+	}
+	if = { limit = { has_variable_list = zg361_b1_processing_subjects } clear_variable_list = zg361_b1_processing_subjects }
+	if = { limit = { has_variable_list = zg361_b1_subjects } clear_variable_list = zg361_b1_subjects }
+	set_variable = { name = zg361_b1_cycle_state value = 8 }
+	set_variable = { name = zg361_b1_rewards_issued value = 0 }
+	set_variable = { name = zg361_b1_pending_rewards_committed value = 0 }
+	remove_character_flag = zg361_review_in_progress
+	remove_character_flag = zg361_b1_cycle_active
+	debug_log = "ZG361B1: unavailable pending continuation retired without settlement"
+}
+
 zg361_b1_verify_frozen_quota_conservation_effect = {
 	set_variable = { name = zg361_b1_quota_conservation_valid value = 0 }
 	set_variable = { name = zg361_b1_quota_recount_top value = 0 }
@@ -6647,10 +6692,20 @@ zg361_b1_verify_frozen_quota_conservation_effect = {
 	every_in_list = {
 		variable = zg361_b1_processing_subjects
 		limit = {
-			var:zg361_b1_case_owner = root
-			var:zg361_b1_case_state = 7
-			var:zg361_b1_case_active = 1
-			var:zg361_b1_roster_included = 1
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_case_active
+					has_variable = zg361_b1_roster_included
+					has_variable = zg361_pending_grade
+				}
+				var:zg361_b1_case_owner = root
+				var:zg361_b1_case_state = 7
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+			}
+			trigger_else = { always = no }
 		}
 		if = { limit = { var:zg361_pending_grade = 3 } root = { change_variable = { name = zg361_b1_quota_recount_top add = 1 } } }
 		else_if = { limit = { var:zg361_pending_grade = 1 } root = { change_variable = { name = zg361_b1_quota_recount_bottom add = 1 } } }
@@ -9777,6 +9832,8 @@ zg361b1.122 = {
 zg361b1.123 = {
 	type = character_event
 	hidden = yes
+	# The manager-rooted callback may itself outlive its weak Character root.
+	trigger = { is_alive = yes }
 	immediate = {
 		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
@@ -9784,6 +9841,8 @@ zg361b1.123 = {
 				exists = scope:zg361_b1_pending_continue_owner
 				has_variable = zg361_b1_manager_cycle_serial
 				has_variable = zg361_b1_manager_case_serial
+				has_variable = zg361_b1_cycle_state
+				has_variable = zg361_b1_pending_open_n
 				exists = scope:zg361_b1_pending_continue_subject
 				this = scope:zg361_b1_pending_continue_owner
 				var:zg361_b1_manager_cycle_serial = scope:zg361_b1_pending_continue_cycle
@@ -9791,18 +9850,42 @@ zg361b1.123 = {
 				var:zg361_b1_cycle_state = scope:zg361_b1_pending_continue_state
 				var:zg361_b1_cycle_state = 7
 				var:zg361_b1_pending_open_n = 0
-				scope:zg361_b1_pending_continue_subject = {
-					var:zg361_b1_case_owner = scope:zg361_b1_pending_continue_owner
-					var:zg361_b1_case_subject = this
-					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_continue_cycle
-					var:zg361_b1_case_serial = scope:zg361_b1_pending_continue_case
-					var:zg361_b1_case_state = 7
-					var:zg361_b1_case_active = 1
-					var:zg361_b1_roster_included = 1
-					OR = { var:zg361_b1_pending_state = 2 var:zg361_b1_pending_state = 3 }
-				}
 			}
-			zg361_b1_prepare_reopen_gate_effect = yes
+			if = {
+				limit = {
+					scope:zg361_b1_pending_continue_subject = {
+						is_alive = yes
+						trigger_if = {
+							limit = {
+								has_variable = zg361_b1_case_owner
+								has_variable = zg361_b1_case_subject
+								has_variable = zg361_b1_cycle_serial
+								has_variable = zg361_b1_case_serial
+								has_variable = zg361_b1_case_state
+								has_variable = zg361_b1_case_active
+								has_variable = zg361_b1_roster_included
+								has_variable = zg361_b1_pending_state
+							}
+							var:zg361_b1_case_owner = scope:zg361_b1_pending_continue_owner
+							var:zg361_b1_case_subject = this
+							var:zg361_b1_cycle_serial = scope:zg361_b1_pending_continue_cycle
+							var:zg361_b1_case_serial = scope:zg361_b1_pending_continue_case
+							var:zg361_b1_case_state = 7
+							var:zg361_b1_case_active = 1
+							var:zg361_b1_roster_included = 1
+							OR = { var:zg361_b1_pending_state = 2 var:zg361_b1_pending_state = 3 }
+						}
+						trigger_else = { always = no }
+					}
+				}
+				zg361_b1_prune_unavailable_subjects_effect = yes
+				if = {
+					limit = { var:zg361_b1_roster_pruned_n = 0 }
+					zg361_b1_prepare_reopen_gate_effect = yes
+				}
+				else = { zg361_b1_retire_unavailable_pending_continuation_effect = yes }
+			}
+			else = { zg361_b1_retire_unavailable_pending_continuation_effect = yes }
 		}
 		else = { debug_log = "ZG361B1: stale pending continuation ticket ignored" }
 	}
@@ -9853,6 +9936,9 @@ zg361b1.124 = {
 zg361b1.125 = {
 	type = character_event
 	hidden = yes
+	# The independent watchdog is also manager-rooted and may outlive that weak
+	# Character.  An unavailable owner has no live case left to mutate.
+	trigger = { is_alive = yes }
 	immediate = {
 		zg361_b1_migrate_manager_identity_effect = yes
 		if = {
@@ -9926,7 +10012,11 @@ zg361b1.125 = {
 			}
 			set_variable = { name = zg361_b1_local_publish_update_kind value = 2 }
 			zg361_b1_refresh_individual_publications_effect = yes
-			zg361_b1_prepare_reopen_gate_effect = yes
+			if = {
+				limit = { var:zg361_b1_roster_pruned_n = 0 }
+				zg361_b1_prepare_reopen_gate_effect = yes
+			}
+			else = { zg361_b1_retire_unavailable_pending_continuation_effect = yes }
 		}
 		else = { debug_log = "ZG361B1: stale pending watchdog ticket ignored" }
 	}
@@ -10420,6 +10510,7 @@ B1_EFFECT_PURPOSES = (
         (
             "zg361_b1_open_pending_slots_effect",
             "zg361_b1_resolve_pending_subject_effect",
+            "zg361_b1_retire_unavailable_pending_continuation_effect",
             "zg361_b1_verify_frozen_quota_conservation_effect",
             "zg361_b1_prepare_reopen_gate_effect",
             "zg361_b1_materialize_reopen_a_self_safe_effect",
