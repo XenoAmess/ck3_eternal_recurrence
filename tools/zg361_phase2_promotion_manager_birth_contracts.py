@@ -53,6 +53,7 @@ MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
         ),),
         "saved_scope_count": 7,
         "option_count": 1,
+        "snapshot_option_count": 2,
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,

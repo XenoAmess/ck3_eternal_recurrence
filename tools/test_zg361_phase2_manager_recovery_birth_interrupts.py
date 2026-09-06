@@ -42,7 +42,7 @@ class ManagerRecoveryBirthInterruptTests(unittest.TestCase):
             native_option_indices=(0,),
         )
         checks = production._known_interrupt_checks(
-            snapshot={"date_raw": 53175528, "active_event": {"option_count": 1}},
+            snapshot={"date_raw": 53175528, "active_event": {"option_count": 2}},
             event={"event_instance_id": 79},
             context=context,
             event_key=event_key,
@@ -58,7 +58,7 @@ class ManagerRecoveryBirthInterruptTests(unittest.TestCase):
             "real_father", "character", 32798
         )
         drift_checks = production._known_interrupt_checks(
-            snapshot={"date_raw": 53175528, "active_event": {"option_count": 1}},
+            snapshot={"date_raw": 53175528, "active_event": {"option_count": 2}},
             event={"event_instance_id": 79},
             context=drifted,
             event_key=event_key,
