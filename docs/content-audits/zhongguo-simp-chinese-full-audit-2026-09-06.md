@@ -576,8 +576,8 @@ discovery、根级校验、release 构建和 CK3 启动继续串行。该轮没�
 这里的“静态未闭合 0”只表示上述已编码规则没有失败，不能外推为“全部中文语义已由机器证明合理”。账本明确保留：
 
 - `human_semantic_review_status = review`：635 个事件分片仍需人工判断处境、因果、人物口吻和信息价值；
-- 9 个源文件的权威生成入口不能唯一解析，状态为 `authority_source_not_unique / review`；这不是当前文案失败，
-  但在把修改追溯性称为完全闭合前仍需补齐唯一权威声明；
+- 提交 `b3a131a` 已把 9 个源文件区分为“手写文件自身为权威源”与“文件头明确声明多个共同权威输入”，
+  并逐一验证候选存在；`authority_source_not_unique` 未闭合项现为 **0**；
 - `live_render_validation_status = pending`：动态人物名与数值插值、条件文本、换行/截断、字体排版，以及窗口出现时
   是否与真实剧情上下文自然一致，都保持 **LIVE PENDING**。
 
