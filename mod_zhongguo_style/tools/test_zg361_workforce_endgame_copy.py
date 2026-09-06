@@ -18,7 +18,9 @@ import gen_361_workforce_endgame_runtime as gen
 PUNCTUATION_OPENERS = tuple("。！？，；：.!?,;:)]}）】》〉」』”’…")
 CHINESE_TEMPLATE_TERMS = ("A/B", "路线甲", "路线乙", "业务对象", "案卷责任人", "按A", "按 A")
 ENGLISH_TEMPLATE_TERMS = ("route A", "route B", "business object", "Case owner", "buttons")
-FORBIDDEN_TECHNICAL_CN = ("回写", "本卡", "玩家", "结算器", "运行时纵切", "脚本")
+FORBIDDEN_TECHNICAL_CN = (
+    "回写", "本卡", "玩家", "结算器", "运行时纵切", "脚本", "背 C", "旧 3.25",
+)
 FORBIDDEN_HANDOFF_TITLE_CN = ("PPT", "系统")
 FORBIDDEN_HANDOFF_TITLE_EN = ("Slides", "System")
 
@@ -215,6 +217,23 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
                 self.assertNotIn("””", cn)
         for mid in (244, 273, 360):
             self.assertNotRegex(chinese[f"zg361we.{mid}.c.tt"], r"[“”][^“”]*[“”][^“”]*[“”]")
+
+    def test_overtime_card_names_only_the_two_executable_settlements(self) -> None:
+        chinese = localization_rows("simp_chinese")
+        english = localization_rows("english")
+        self.assertEqual("额外工时如何兑现", chinese["zg361we.246.t"])
+        self.assertEqual("支付 15 金币结清五日工时", chinese["zg361we.246.a"])
+        self.assertEqual("记入 5 日未来调休", chinese["zg361we.246.b"])
+        self.assertNotIn("目标减免", chinese["zg361we.246.desc"])
+        self.assertNotIn("三选一", chinese["zg361we.246.a.tt"])
+        self.assertEqual("How Extra Hours Are Settled", english["zg361we.246.t"])
+
+        route_a = gen.render_route_effect(gen.by_id()[246], 1)
+        route_b = gen.render_route_effect(gen.by_id()[246], 2)
+        self.assertIn("remove_short_term_gold = 15", route_a)
+        self.assertIn("m246_compensation_route value = 1", route_a)
+        self.assertIn("m246_compensation_route value = 2", route_b)
+        self.assertIn("leave_bank add = 5", route_b)
 
 
 if __name__ == "__main__":

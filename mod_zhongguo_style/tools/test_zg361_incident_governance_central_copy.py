@@ -168,6 +168,16 @@ class IncidentGovernanceCentralCopyTest(unittest.TestCase):
             english["governance"]["zg361mg.220.a"],
         )
 
+    def test_incident_receipts_name_the_subject_and_next_review_stake(self) -> None:
+        rows = family_rows("simp_chinese")["incident"]
+        for event_id in (190, 290, 390):
+            body = rows[f"zg361ip.{event_id}.desc"]
+            with self.subTest(event_id=event_id):
+                self.assertIn("[zg361_ip_result_subject.GetShortUIName]", body)
+                self.assertIn("下一轮考核", body)
+                self.assertNotRegex(body, r"(?:接受安排|按证据办|按政治办|按\s*[A-C甲乙]\s*(?:做|办|执行)?)")
+        self.assertEqual("归档此案；下轮据此核算功过。", rows["zg361ip.result.ok"])
+
 
 if __name__ == "__main__":
     unittest.main()

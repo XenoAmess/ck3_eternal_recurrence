@@ -2280,6 +2280,26 @@ def validate_source_data() -> None:
             raise ValueError(f"mechanism {mechanism_id} lacks a per-ID business consumer")
     if any(not domain.ids_for_stage(stage) for domain in DOMAINS for stage in range(1, domain.transitions + 1)):
         raise ValueError("every shared stage must own at least one numbered operation")
+    chinese = _loc_rows("simp_chinese")
+    punctuation_openers = tuple("。！？，；：.!?,;:)]}）】》〉」』”’…")
+    forbidden_choice_meta = (
+        "A/B", "路线甲", "路线乙", "按A", "按 A", "接受安排", "按证据办", "按政治办",
+    )
+    for event_id in (190, 290, 390):
+        title = chinese[f"zg361ip.{event_id}.t"]
+        body = chinese[f"zg361ip.{event_id}.desc"].lstrip()
+        if body.startswith(("[", *punctuation_openers)):
+            raise ValueError(f"incident {event_id} Chinese body begins with punctuation or a dynamic prefix")
+        if title in body:
+            raise ValueError(f"incident {event_id} Chinese body repeats its title")
+        if "[zg361_ip_result_subject.GetShortUIName]" not in body:
+            raise ValueError(f"incident {event_id} Chinese body omits the bound subject")
+        if "下一轮考核" not in body:
+            raise ValueError(f"incident {event_id} Chinese body omits the next-review stake")
+        if any(token in body for token in forbidden_choice_meta):
+            raise ValueError(f"incident {event_id} Chinese body leaks a choice or placeholder label")
+    if chinese["zg361ip.result.ok"] != "归档此案；下轮据此核算功过。":
+        raise ValueError("incident archive button must name its action and next-review consequence")
 
 
 def main() -> None:

@@ -65,8 +65,8 @@ RETIRED_EFFECT_PATHS = tuple(
 LEGACY_EVENT_FILENAME = "zg361_workforce_endgame_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_workforce_endgame_event_*_events.txt"
-HISTORICAL_EVENT_BYTES = 175_334
-HISTORICAL_EVENT_SHA256 = "686B09226545460F6729DA37D48FE57AE6521A48A9768C2ED6B5291C2C775BD0"
+HISTORICAL_EVENT_BYTES = 175_324
+HISTORICAL_EVENT_SHA256 = "244D1B827F29E3F968EA1B69F8A74F818235AF590DDB3924861EFBBFF431B9E0"
 HISTORICAL_EVENT_COUNT = 149
 EVENT_TARGET_MAX = 10
 EVENT_HARD_MAX = 20
@@ -380,7 +380,7 @@ SCENE_CN = {
     243: "深夜送到 [zg361_we_ab_subject.GetShortUIName] 手里的消息没有标明紧急程度，值守名册也无人可查。[zg361_we_ab_owner.GetShortUIName] 必须在下一封夜讯发出前立下回复边界，现有容量与值守账会随之结算。",
     244: "一项临时冲刺正在向 [zg361_we_ab_subject.GetShortUIName] 征集额外工时，但报名、奖励和拒绝豁免都没有落纸。[zg361_we_ab_owner.GetShortUIName] 若今天不裁定，这次动员就会在容量与金币账上留下说不清的缺口。",
     245: "关账将近，[zg361_we_ab_subject.GetShortUIName] 已在原期限下做出多笔额外工时，却找不到事前批准或事后补录。[zg361_we_ab_owner.GetShortUIName] 必须处理这些申报，否则加班记录会与实际负荷彻底脱节。",
-    246: "上一批额外工时已经记到 [zg361_we_ab_subject.GetShortUIName] 名下，兑现方式却仍是一句口头承诺。[zg361_we_ab_owner.GetShortUIName] 今天要结清这笔劳动；金币、调休与目标账都在等待同一份结算记录。",
+    246: "上一批额外工时已经记到 [zg361_we_ab_subject.GetShortUIName] 名下，兑现方式却仍是一句口头承诺。[zg361_we_ab_owner.GetShortUIName] 若不在今天留下正式结算，五日劳动便会继续悬在账外。",
     247: "危机令下达后，[zg361_we_ab_subject.GetShortUIName] 所在团队已连续赶工，命令上却没有终止日和复盘人。[zg361_we_ab_owner.GetShortUIName] 必须在下一轮开始前补齐边界；一年后的复核只认今天留下的冲刺记录。",
     248: "一个长期空缺正由 [zg361_we_ab_subject.GetShortUIName] 的团队持续分摊，原有目标从未缩减。[zg361_we_ab_owner.GetShortUIName] 今天封账时必须说明这段超载由谁承担，否则容量缺口会继续被交付数字遮住。",
     249: "本轮工时核对时，[zg361_we_ab_subject.GetShortUIName] 参加的例会不断增加，留给实际工作的时间已经被挤压，若干会议甚至没有议程与结论。[zg361_we_ab_owner.GetShortUIName] 必须在下一批邀请发出前结清会议工时。",
@@ -423,7 +423,7 @@ SCENE_EN = {
     243: "A late-night message reached [zg361_we_ab_subject.GetShortUIName] without an urgency mark, and no duty roster could be found. [zg361_we_ab_owner.GetShortUIName] must set the response boundary before the next night message; the capacity and on-call books close with this ruling.",
     244: "A temporary sprint is asking [zg361_we_ab_subject.GetShortUIName] for extra hours, but enrollment, reward, and protection for declining were never written down. [zg361_we_ab_owner.GetShortUIName] must rule today or leave an unexplained gap in the capacity and gold books.",
     245: "As the books close, [zg361_we_ab_subject.GetShortUIName] has accumulated several extra shifts under an unchanged deadline, with neither prior approval nor a later filing. [zg361_we_ab_owner.GetShortUIName] must settle those claims or the overtime record will cease to reflect the load.",
-    246: "The last batch of extra labor is already charged to [zg361_we_ab_subject.GetShortUIName], but its compensation remains an oral promise. [zg361_we_ab_owner.GetShortUIName] must settle it today; the gold, leave, and target books all await the same record.",
+    246: "The last batch of extra labor is already charged to [zg361_we_ab_subject.GetShortUIName], but its compensation remains an oral promise. Unless [zg361_we_ab_owner.GetShortUIName] records a formal settlement today, five days of work will remain outside the accounts.",
     247: "Since the emergency order, [zg361_we_ab_subject.GetShortUIName]'s team has worked without an end date or named reviewer. [zg361_we_ab_owner.GetShortUIName] must define the boundary before the next cycle; the review one year from now will recognize only the sprint record made today.",
     248: "A long vacancy is still being spread across [zg361_we_ab_subject.GetShortUIName]'s team while its original target remains intact. [zg361_we_ab_owner.GetShortUIName] must account for the overload at today's close before delivery figures hide the capacity gap again.",
     249: "Recurring meetings have taken an increasing share of [zg361_we_ab_subject.GetShortUIName]'s cycle, and several had neither agenda nor recorded decision. [zg361_we_ab_owner.GetShortUIName] must settle the meeting-time account before the next invitations go out.",
@@ -466,7 +466,7 @@ BUTTON_CN = {
     243: ("划定紧急分级与值守边界", "要求全员夜间限时回复"),
     244: ("书面自愿报名", "全组默认参与"),
     245: ("补录并兑现额外工时", "不准申报，维持原期限"),
-    246: ("兑现金币、调休或目标减免", "只发未来调休"),
+    246: ("支付 15 金币结清五日工时", "记入 5 日未来调休"),
     247: ("写明冲刺期限并到期复盘", "以危机名义无限动员"),
     248: ("减目标并补足容量", "维持目标，由团队填坑"),
     249: ("设下会议时长上限", "允许随时召集长会"),
@@ -509,7 +509,7 @@ BUTTON_EN = {
     243: ("Set urgency and duty boundaries", "Require prompt replies from everyone"),
     244: ("Take written voluntary enrollment", "Enroll the whole team by default"),
     245: ("Record and compensate extra hours", "Reject claims and keep the deadline"),
-    246: ("Settle in gold, leave, or target relief", "Promise future leave only"),
+    246: ("Pay 15 gold for the five days", "Record five days of future leave"),
     247: ("Set an end date and review", "Mobilize indefinitely as a crisis"),
     248: ("Reduce scope and restore capacity", "Keep targets and let the team cover"),
     249: ("Cap meeting time", "Allow long meetings on demand"),
@@ -548,12 +548,23 @@ BUTTON_EN = {
 }
 
 
-TITLE_OVERRIDE_CN = {269: "面试判断的延迟追责"}
-TITLE_OVERRIDE_EN = {269: "Delayed Accountability for Interview Judgments"}
+TITLE_OVERRIDE_CN = {
+    246: "额外工时如何兑现",
+    269: "面试判断的延迟追责",
+    360: "经理集体拒绝末位硬切",
+}
+TITLE_OVERRIDE_EN = {
+    246: "How Extra Hours Are Settled",
+    269: "Delayed Accountability for Interview Judgments",
+}
 DETAIL_OVERRIDE_CN = {
+    (246, 1): "立即支付 15 金币，结清本案登记的 5 日额外工时",
+    (259, 2): "延期即整体归咎外包方，并让甲方一线责任人同步承担末位处分",
     (269, 1): "数轮后核对胜任、错配与流失证据，把结果追记到各证据维度对应的面试官名下",
+    (276, 2): "凭旧关系快速免试回聘，并清空旧绩效档位与冲突记录",
 }
 DETAIL_OVERRIDE_EN = {
+    (246, 1): "Pay 15 gold now and settle the five days of extra work recorded in this case",
     (269, 1): "After several cycles, compare competence, mismatch, and attrition evidence, then attribute each result to the interviewer responsible for that evidence dimension",
 }
 
@@ -636,6 +647,9 @@ def validate_specs() -> None:
         raise ValueError("every workforce/endgame card needs a unique player-facing scene")
     forbidden_cn = ("A/B", "路线甲", "路线乙", "业务对象", "案卷责任人")
     forbidden_en = ("route A", "route B", "business object", "Case owner")
+    placeholder_buttons_cn = {
+        "按A做", "按 A 做", "按甲做", "按乙做", "按证据办", "按政治办", "接受安排", "继续",
+    }
     for mid in sorted(expected):
         if SCENE_CN[mid].startswith(("。", "，", "；", "：", ".", ",", ";", ":")):
             raise ValueError(f"mechanism {mid} Chinese scene begins with punctuation")
@@ -645,6 +659,19 @@ def validate_specs() -> None:
             raise ValueError(f"mechanism {mid} English scene leaks a template or implementation term")
         if any(not label.strip() for label in (*BUTTON_CN[mid], *BUTTON_EN[mid])):
             raise ValueError(f"mechanism {mid} has an empty action label")
+        if title_cn := TITLE_OVERRIDE_CN.get(mid, MECHANISM_BINDINGS[mid].title_cn):
+            if title_cn in SCENE_CN[mid]:
+                raise ValueError(f"mechanism {mid} Chinese scene repeats its title")
+        if len(set(BUTTON_CN[mid])) != 2 or len(set(BUTTON_EN[mid])) != 2:
+            raise ValueError(f"mechanism {mid} must expose two distinct product actions")
+        if any(label.strip() in placeholder_buttons_cn for label in BUTTON_CN[mid]):
+            raise ValueError(f"mechanism {mid} uses a placeholder instead of a Chinese action")
+        if any(len(label) >= 6 and label in SCENE_CN[mid] for label in BUTTON_CN[mid]):
+            raise ValueError(f"mechanism {mid} Chinese scene copies an action button")
+    if TITLE_OVERRIDE_CN.get(246) != "额外工时如何兑现":
+        raise ValueError("mechanism 246 title must not advertise a nonexistent third product route")
+    if BUTTON_CN[246] != ("支付 15 金币结清五日工时", "记入 5 日未来调休"):
+        raise ValueError("mechanism 246 buttons must name the two executable settlements")
     if {mid for order in DOMAIN_ORDER.values() for mid in order} != expected:
         raise ValueError("portfolio order must touch every ID once")
     if len({spec.field for spec in MECHANISMS}) != len(MECHANISMS):
