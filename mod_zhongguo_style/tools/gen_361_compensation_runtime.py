@@ -227,7 +227,10 @@ EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ),
     (
         "zg361_compensation_07e_portfolio_closure_effects.txt",
-        ("zg361_comp_portfolio_case_closed_effect",),
+        (
+            "zg361_comp_portfolio_drop_stale_subject_effect",
+            "zg361_comp_portfolio_case_closed_effect",
+        ),
     ),
     ("zg361_compensation_08_l_stage_01_effects.txt", mechanism_effect_names(82, 83, 84)),
     ("zg361_compensation_09_l_stage_02_effects.txt", mechanism_effect_names(85, 86)),
@@ -2484,9 +2487,88 @@ def render_portfolio_helpers() -> str:
         )
     dispatch = "\n    ".join(portfolio_domain_dispatch(domain) for domain in DOMAINS)
     pending = "\n        ".join(portfolio_pending_trigger(domain) for domain in DOMAINS)
+    stage_projection = []
+    for domain_number, domain in enumerate(DOMAINS, start=1):
+        state_branches = []
+        for state in range(1, len(domain.stages) + 1):
+            keyword = "if" if state == 1 else "else_if"
+            state_branches.append(
+                f'''{keyword} = {{
+                    limit = {{ var:zg361_case_{domain.key}_state = {state} }}
+                    root = {{ set_variable = {{ name = zg361_comp_portfolio_stage value = {state} }} }}
+                }}'''
+            )
+        stage_projection.append(
+            f'''if = {{
+                limit = {{ var:zg361_comp_portfolio_domain = {domain_number} }}
+                var:zg361_comp_portfolio_subject = {{
+                    {chr(10).join(state_branches)}
+                }}
+            }}'''
+        )
+    stage_projection_source = "\n            ".join(stage_projection)
+    notify_owner_branches = []
+    closure_owner_branches = []
+    for domain_number, domain in enumerate(DOMAINS, start=1):
+        keyword = "if" if domain_number == 1 else "else_if"
+        notify_owner_branches.append(
+            f'''{keyword} = {{
+        limit = {{ scope:zg361_comp_notify_domain = {domain_number} }}
+        if = {{
+            limit = {{ has_variable = zg361_case_{domain.key}_owner }}
+            if = {{
+                limit = {{ var:zg361_case_{domain.key}_owner = {{ is_alive = yes }} }}
+                var:zg361_case_{domain.key}_owner = {{
+                    zg361_comp_portfolio_drop_stale_subject_effect = yes
+                    if = {{
+                        limit = {{ has_character_flag = zg361_comp_portfolio_active }}
+                        if = {{
+                            limit = {{ has_variable = zg361_comp_portfolio_subject }}
+                            if = {{
+                                limit = {{ var:zg361_comp_portfolio_subject = scope:zg361_comp_notify_subject }}
+                                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
+                                zg361_comp_portfolio_refresh_effect = yes
+                            }}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+    }}'''
+        )
+        closure_owner_branches.append(
+            f'''{keyword} = {{
+        limit = {{ scope:zg361_comp_closed_domain = {domain_number} }}
+        if = {{
+            limit = {{ has_variable = zg361_case_{domain.key}_owner }}
+            if = {{
+                limit = {{ var:zg361_case_{domain.key}_owner = {{ is_alive = yes }} }}
+                var:zg361_case_{domain.key}_owner = {{
+                    zg361_comp_portfolio_drop_stale_subject_effect = yes
+                    if = {{
+                        limit = {{ has_character_flag = zg361_comp_portfolio_active }}
+                        if = {{
+                            limit = {{ has_variable = zg361_comp_portfolio_subject }}
+                            if = {{
+                                limit = {{ var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject }}
+                                remove_character_flag = zg361_comp_portfolio_active
+                                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
+                                change_variable = {{ name = zg361_comp_portfolio_domain add = 1 }}
+                                trigger_event = {{ id = zg361comp.3 days = 1 }}
+                            }}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+    }}'''
+        )
+    notify_owner_source = "\n    ".join(notify_owner_branches)
+    closure_owner_source = "\n    ".join(closure_owner_branches)
     return f'''# Manager-scope portfolio adapter.  It owns one selected subject and one
 # L/AE/AF case at a time; no numbered mechanism opens its own visible window.
 zg361_comp_portfolio_open_next_effect = {{
+    zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {{
         limit = {{
             has_game_rule = zg361_on
@@ -2518,6 +2600,7 @@ zg361_comp_portfolio_open_next_effect = {{
             remove_variable = zg361_comp_portfolio_result_grade
             remove_variable = zg361_comp_portfolio_result_rating
             remove_variable = zg361_comp_portfolio_result_snapshot_applied
+            remove_variable = zg361_comp_portfolio_stage
             ordered_vassal = {{
                 limit = {{
                     zg361_is_reviewable_vassal_trigger = yes
@@ -2600,6 +2683,7 @@ zg361_comp_portfolio_open_next_effect = {{
         else_if = {{
             limit = {{ var:zg361_comp_portfolio_domain > 3 }}
             remove_variable = zg361_comp_portfolio_subject
+            remove_variable = zg361_comp_portfolio_stage
             remove_variable = zg361_comp_portfolio_domain
             set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
             set_variable = {{ name = zg361_comp_portfolio_completed_cycle value = var:zg361_review_serial }}
@@ -2609,6 +2693,7 @@ zg361_comp_portfolio_open_next_effect = {{
 
 zg361_comp_portfolio_apply_stage_effect = {{
     save_temporary_scope_value_as = {{ name = zg361_comp_portfolio_route value = $ROUTE$ }}
+    zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {{
         limit = {{
             zg361_is_celestial_liege_trigger = yes
@@ -2627,21 +2712,27 @@ zg361_comp_portfolio_apply_stage_effect = {{
 }}
 
 zg361_comp_portfolio_refresh_effect = {{
+    zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {{
         limit = {{
             has_character_flag = zg361_comp_portfolio_active
             has_variable = zg361_comp_portfolio_subject
+        }}
+        if = {{
+            limit = {{
             OR = {{
                 {pending}
             }}
             var:zg361_comp_portfolio_visible_pending = 0
+            }}
+            {stage_projection_source}
+            set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 1 }}
+            if = {{
+                limit = {{ is_ai = yes }}
+                trigger_event = {{ id = zg361comp.2 days = 1 }}
+            }}
+            else = {{ trigger_event = {{ id = zg361comp.1 days = 1 }} }}
         }}
-        set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 1 }}
-        if = {{
-            limit = {{ is_ai = yes }}
-            trigger_event = {{ id = zg361comp.2 days = 1 }}
-        }}
-        else = {{ trigger_event = {{ id = zg361comp.1 days = 1 }} }}
     }}
 }}
 
@@ -2650,46 +2741,37 @@ zg361_comp_portfolio_refresh_effect = {{
 zg361_comp_portfolio_notify_owner_effect = {{
     save_scope_as = zg361_comp_notify_subject
     save_temporary_scope_value_as = {{ name = zg361_comp_notify_domain value = $DOMAIN$ }}
+    {notify_owner_source}
+}}
+
+# A queued portfolio event may outlive its selected subject.  Drop that
+# manager-side snapshot before any nested variable read; a dead/invalid
+# Character scope cannot safely answer has_variable, and no subject-side
+# completion or financial receipt may be fabricated after that boundary.
+zg361_comp_portfolio_drop_stale_subject_effect = {{
     if = {{
-        limit = {{ scope:zg361_comp_notify_domain = 1 has_variable = zg361_case_l_owner }}
-        var:zg361_case_l_owner = {{
+        limit = {{ has_variable = zg361_comp_portfolio_subject }}
+        if = {{
+            limit = {{ NOT = {{ var:zg361_comp_portfolio_subject = {{ is_alive = yes }} }} }}
+            remove_character_flag = zg361_comp_portfolio_active
+            remove_variable = zg361_comp_portfolio_cycle
+            remove_variable = zg361_comp_portfolio_subject
+            remove_variable = zg361_comp_portfolio_result_owner
+            remove_variable = zg361_comp_portfolio_result_subject
+            remove_variable = zg361_comp_portfolio_result_cycle
+            remove_variable = zg361_comp_portfolio_result_case
+            remove_variable = zg361_comp_portfolio_result_state
+            remove_variable = zg361_comp_portfolio_result_grade
+            remove_variable = zg361_comp_portfolio_result_rating
+            remove_variable = zg361_comp_portfolio_result_snapshot_applied
+            remove_variable = zg361_comp_portfolio_stage
+            remove_variable = zg361_comp_portfolio_domain
+            set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
             if = {{
-                limit = {{
-                    has_character_flag = zg361_comp_portfolio_active
-                    has_variable = zg361_comp_portfolio_subject
-                    var:zg361_comp_portfolio_subject = scope:zg361_comp_notify_subject
-                }}
-                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
-                zg361_comp_portfolio_refresh_effect = yes
+                limit = {{ has_variable = zg361_review_serial }}
+                set_variable = {{ name = zg361_comp_portfolio_completed_cycle value = var:zg361_review_serial }}
             }}
-        }}
-    }}
-    else_if = {{
-        limit = {{ scope:zg361_comp_notify_domain = 2 has_variable = zg361_case_ae_owner }}
-        var:zg361_case_ae_owner = {{
-            if = {{
-                limit = {{
-                    has_character_flag = zg361_comp_portfolio_active
-                    has_variable = zg361_comp_portfolio_subject
-                    var:zg361_comp_portfolio_subject = scope:zg361_comp_notify_subject
-                }}
-                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
-                zg361_comp_portfolio_refresh_effect = yes
-            }}
-        }}
-    }}
-    else_if = {{
-        limit = {{ scope:zg361_comp_notify_domain = 3 has_variable = zg361_case_af_owner }}
-        var:zg361_case_af_owner = {{
-            if = {{
-                limit = {{
-                    has_character_flag = zg361_comp_portfolio_active
-                    has_variable = zg361_comp_portfolio_subject
-                    var:zg361_comp_portfolio_subject = scope:zg361_comp_notify_subject
-                }}
-                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
-                zg361_comp_portfolio_refresh_effect = yes
-            }}
+            debug_log = "ZG361COMP: dropped stale portfolio subject"
         }}
     }}
 }}
@@ -2697,52 +2779,7 @@ zg361_comp_portfolio_notify_owner_effect = {{
 zg361_comp_portfolio_case_closed_effect = {{
     save_scope_as = zg361_comp_closed_subject
     save_temporary_scope_value_as = {{ name = zg361_comp_closed_domain value = $DOMAIN$ }}
-    if = {{
-        limit = {{ scope:zg361_comp_closed_domain = 1 has_variable = zg361_case_l_owner }}
-        var:zg361_case_l_owner = {{
-            if = {{
-                limit = {{
-                    has_character_flag = zg361_comp_portfolio_active
-                    has_variable = zg361_comp_portfolio_subject
-                    var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject
-                }}
-                remove_character_flag = zg361_comp_portfolio_active
-                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
-                change_variable = {{ name = zg361_comp_portfolio_domain add = 1 }}
-                trigger_event = {{ id = zg361comp.3 days = 1 }}
-            }}
-        }}
-    }}
-    else_if = {{
-        limit = {{ scope:zg361_comp_closed_domain = 2 has_variable = zg361_case_ae_owner }}
-        var:zg361_case_ae_owner = {{
-            if = {{
-                limit = {{
-                    has_character_flag = zg361_comp_portfolio_active
-                    var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject
-                }}
-                remove_character_flag = zg361_comp_portfolio_active
-                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
-                change_variable = {{ name = zg361_comp_portfolio_domain add = 1 }}
-                trigger_event = {{ id = zg361comp.3 days = 1 }}
-            }}
-        }}
-    }}
-    else_if = {{
-        limit = {{ scope:zg361_comp_closed_domain = 3 has_variable = zg361_case_af_owner }}
-        var:zg361_case_af_owner = {{
-            if = {{
-                limit = {{
-                    has_character_flag = zg361_comp_portfolio_active
-                    var:zg361_comp_portfolio_subject = scope:zg361_comp_closed_subject
-                }}
-                remove_character_flag = zg361_comp_portfolio_active
-                set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
-                change_variable = {{ name = zg361_comp_portfolio_domain add = 1 }}
-                trigger_event = {{ id = zg361comp.3 days = 1 }}
-            }}
-        }}
-    }}
+    {closure_owner_source}
 }}'''
 
 
@@ -2779,12 +2816,16 @@ def render_events() -> bytes:
         name = zg361comp.1.{key}.r{route}
         trigger = {{
             var:zg361_comp_portfolio_domain = {domain_number}
-            var:zg361_comp_portfolio_subject = {{ var:zg361_case_{key.rstrip("12345")}_state = {state} }}
+            var:zg361_comp_portfolio_stage = {state}
         }}
         zg361_comp_portfolio_apply_stage_effect = {{ ROUTE = {route} }}
     }}'''
         for key, domain_number, state in PORTFOLIO_STAGES
         for route in (1, 2, 3)
+    )
+    portfolio_descriptions = "\n".join(
+        f'''            triggered_desc = {{ trigger = {{ var:zg361_comp_portfolio_domain = {domain_number} var:zg361_comp_portfolio_stage = {state} }} desc = zg361comp.1.{key} }}'''
+        for key, domain_number, state in PORTFOLIO_STAGES
     )
     visible = r'''zg361comp.1 = {
     type = character_event
@@ -2792,20 +2833,7 @@ def render_events() -> bytes:
     title = zg361comp.1.t
     desc = {
         first_valid = {
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 1 } } desc = zg361comp.1.l1 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 2 } } desc = zg361comp.1.l2 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 3 } } desc = zg361comp.1.l3 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 4 } } desc = zg361comp.1.l4 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 1 } } desc = zg361comp.1.ae1 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 2 } } desc = zg361comp.1.ae2 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 3 } } desc = zg361comp.1.ae3 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 4 } } desc = zg361comp.1.ae4 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 5 } } desc = zg361comp.1.ae5 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 1 } } desc = zg361comp.1.af1 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 2 } } desc = zg361comp.1.af2 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 3 } } desc = zg361comp.1.af3 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 4 } } desc = zg361comp.1.af4 }
-            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 5 } } desc = zg361comp.1.af5 }
+__ZG361_COMP_PORTFOLIO_DESCRIPTIONS__
             desc = zg361comp.1.desc
         }
     }
@@ -2813,7 +2841,13 @@ def render_events() -> bytes:
         is_ai = no
         zg361_is_celestial_liege_trigger = yes
         has_character_flag = zg361_comp_portfolio_active
+        has_variable = zg361_comp_portfolio_stage
         var:zg361_comp_portfolio_visible_pending = 1
+        trigger_if = {
+            limit = { has_variable = zg361_comp_portfolio_subject }
+            var:zg361_comp_portfolio_subject = { is_alive = yes }
+        }
+        trigger_else = { always = no }
     }
     immediate = { set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 } }
 __ZG361_COMP_PORTFOLIO_OPTIONS__
@@ -2911,7 +2945,9 @@ zg361comp.904 = {
 	}
     trigger = { is_ai = no }
     option = { name = zg361comp.904.a }
-}'''.replace("__ZG361_COMP_PORTFOLIO_OPTIONS__", portfolio_options)
+}'''.replace(
+    "__ZG361_COMP_PORTFOLIO_DESCRIPTIONS__", portfolio_descriptions
+).replace("__ZG361_COMP_PORTFOLIO_OPTIONS__", portfolio_options)
     return generated("namespace = zg361comp\n\n" + "\n\n".join(hidden) + "\n\n" + visible)
 
 
@@ -3015,9 +3051,9 @@ def render_effect_parts() -> dict[str, bytes]:
 
     if len(EFFECT_GROUPS) != 29:
         raise ValueError("compensation runtime must remain split into 29 purpose files")
-    if len(historical_names) != 148 or len(set(historical_names)) != 148:
+    if len(historical_names) != 149 or len(set(historical_names)) != 149:
         raise ValueError(
-            "compensation historical render must contain 148 unique effects"
+            "compensation historical render must contain 149 unique effects"
         )
     if configured_names != historical_names:
         missing = sorted(set(historical_names) - set(configured_names))

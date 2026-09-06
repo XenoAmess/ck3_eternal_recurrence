@@ -3,6 +3,7 @@
 # Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
 
 zg361_comp_portfolio_open_next_effect = {
+    zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {
         limit = {
             has_game_rule = zg361_on
@@ -34,6 +35,7 @@ zg361_comp_portfolio_open_next_effect = {
             remove_variable = zg361_comp_portfolio_result_grade
             remove_variable = zg361_comp_portfolio_result_rating
             remove_variable = zg361_comp_portfolio_result_snapshot_applied
+            remove_variable = zg361_comp_portfolio_stage
             ordered_vassal = {
                 limit = {
                     zg361_is_reviewable_vassal_trigger = yes
@@ -127,6 +129,7 @@ if = {
         else_if = {
             limit = { var:zg361_comp_portfolio_domain > 3 }
             remove_variable = zg361_comp_portfolio_subject
+            remove_variable = zg361_comp_portfolio_stage
             remove_variable = zg361_comp_portfolio_domain
             set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
             set_variable = { name = zg361_comp_portfolio_completed_cycle value = var:zg361_review_serial }

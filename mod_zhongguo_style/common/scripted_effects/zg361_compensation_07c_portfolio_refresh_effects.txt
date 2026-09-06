@@ -3,10 +3,14 @@
 # Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
 
 zg361_comp_portfolio_refresh_effect = {
+    zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {
         limit = {
             has_character_flag = zg361_comp_portfolio_active
             has_variable = zg361_comp_portfolio_subject
+        }
+        if = {
+            limit = {
             OR = {
                 AND = {
             var:zg361_comp_portfolio_domain = 1
@@ -147,12 +151,84 @@ AND = {
         }
             }
             var:zg361_comp_portfolio_visible_pending = 0
+            }
+            if = {
+                limit = { var:zg361_comp_portfolio_domain = 1 }
+                var:zg361_comp_portfolio_subject = {
+                    if = {
+                    limit = { var:zg361_case_l_state = 1 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_l_state = 2 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_l_state = 3 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_l_state = 4 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
+                }
+                }
+            }
+            if = {
+                limit = { var:zg361_comp_portfolio_domain = 2 }
+                var:zg361_comp_portfolio_subject = {
+                    if = {
+                    limit = { var:zg361_case_ae_state = 1 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_ae_state = 2 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_ae_state = 3 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_ae_state = 4 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_ae_state = 5 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 5 } }
+                }
+                }
+            }
+            if = {
+                limit = { var:zg361_comp_portfolio_domain = 3 }
+                var:zg361_comp_portfolio_subject = {
+                    if = {
+                    limit = { var:zg361_case_af_state = 1 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_af_state = 2 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_af_state = 3 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_af_state = 4 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
+                }
+else_if = {
+                    limit = { var:zg361_case_af_state = 5 }
+                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 5 } }
+                }
+                }
+            }
+            set_variable = { name = zg361_comp_portfolio_visible_pending value = 1 }
+            if = {
+                limit = { is_ai = yes }
+                trigger_event = { id = zg361comp.2 days = 1 }
+            }
+            else = { trigger_event = { id = zg361comp.1 days = 1 } }
         }
-        set_variable = { name = zg361_comp_portfolio_visible_pending value = 1 }
-        if = {
-            limit = { is_ai = yes }
-            trigger_event = { id = zg361comp.2 days = 1 }
-        }
-        else = { trigger_event = { id = zg361comp.1 days = 1 } }
     }
 }

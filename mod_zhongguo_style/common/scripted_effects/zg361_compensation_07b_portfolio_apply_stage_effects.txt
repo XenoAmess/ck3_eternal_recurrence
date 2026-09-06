@@ -4,6 +4,7 @@
 
 zg361_comp_portfolio_apply_stage_effect = {
     save_temporary_scope_value_as = { name = zg361_comp_portfolio_route value = $ROUTE$ }
+    zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {
         limit = {
             zg361_is_celestial_liege_trigger = yes

@@ -312,16 +312,19 @@ class CompensationRuntimeTests(unittest.TestCase):
                 ),
                 (
                     "zg361_compensation_07e_portfolio_closure_effects.txt",
-                    ("zg361_comp_portfolio_case_closed_effect",),
+                    (
+                        "zg361_comp_portfolio_drop_stale_subject_effect",
+                        "zg361_comp_portfolio_case_closed_effect",
+                    ),
                 ),
             ),
         )
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 615_166)
+        self.assertEqual(len(historical_bytes), 623_178)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "224ad5b7d76cde7225022b2dfc7b34d1400a9bce5e8b3b0426c0a36953c30086",
+            "8b14aaa0071f726074dc1b61a28e066e7b7d839b2e6e76eaa1e354c43c273bdb",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -331,8 +334,8 @@ class CompensationRuntimeTests(unittest.TestCase):
         configured_names = [
             name for _filename, names in generator.EFFECT_GROUPS for name in names
         ]
-        self.assertEqual(len(historical_names), 148)
-        self.assertEqual(len(set(historical_names)), 148)
+        self.assertEqual(len(historical_names), 149)
+        self.assertEqual(len(set(historical_names)), 149)
         self.assertEqual(configured_names, historical_names)
 
         for filename, expected_names in generator.EFFECT_GROUPS:
@@ -1305,8 +1308,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                         rf"name\s*=\s*zg361comp\.1\.{key}\.r{route}\s*"
                         rf"trigger\s*=\s*\{{\s*"
                         rf"var:zg361_comp_portfolio_domain\s*=\s*{domain_number}\s*"
-                        rf"var:zg361_comp_portfolio_subject\s*=\s*\{{\s*"
-                        rf"var:zg361_case_{domain}_state\s*=\s*{state}\s*\}}\s*\}}\s*"
+                        rf"var:zg361_comp_portfolio_stage\s*=\s*{state}\s*\}}\s*"
                         rf"zg361_comp_portfolio_apply_stage_effect\s*=\s*\{{\s*"
                         rf"ROUTE\s*=\s*{route}\s*\}}\s*\}}",
                         re.DOTALL,
@@ -1326,6 +1328,14 @@ class CompensationRuntimeTests(unittest.TestCase):
             if "title =" in source and "zg361_comp_portfolio_apply_stage_effect" in source:
                 titled_portfolio_cards.append(event_name)
         self.assertEqual(titled_portfolio_cards, ["zg361comp.1"])
+        self.assertEqual(player_card.count("var:zg361_comp_portfolio_subject = {"), 1)
+        self.assertIn(
+            "limit = { has_variable = zg361_comp_portfolio_subject }", player_card
+        )
+        self.assertIn(
+            "var:zg361_comp_portfolio_subject = { is_alive = yes }", player_card
+        )
+        self.assertEqual(player_card.count("var:zg361_comp_portfolio_stage ="), 56)
 
         for mechanism_id in generator.EXPECTED_IDS:
             event_name = f"zg361comp.{mechanism_id}"
@@ -1348,6 +1358,103 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertIn(f"scope:zg361_comp_notify_domain = {domain_number}", notifier)
             self.assertIn(f"var:zg361_case_{domain}_owner", notifier)
         self.assertEqual(notifier.count("zg361_comp_portfolio_refresh_effect = yes"), 3)
+
+    def test_portfolio_async_entries_drop_a_dead_or_invalid_subject_before_dereference(self) -> None:
+        cleanup = top_level_block(
+            self.effects, "zg361_comp_portfolio_drop_stale_subject_effect"
+        )
+        self.assertIn("has_variable = zg361_comp_portfolio_subject", cleanup)
+        self.assertRegex(
+            cleanup,
+            r"if\s*=\s*\{\s*limit\s*=\s*\{\s*"
+            r"has_variable\s*=\s*zg361_comp_portfolio_subject\s*\}\s*"
+            r"if\s*=\s*\{\s*limit\s*=\s*\{\s*NOT\s*=\s*\{\s*"
+            r"var:zg361_comp_portfolio_subject\s*=\s*\{\s*is_alive\s*=\s*yes",
+        )
+        self.assertIn("remove_character_flag = zg361_comp_portfolio_active", cleanup)
+        for field in (
+            "cycle",
+            "subject",
+            "result_owner",
+            "result_subject",
+            "result_cycle",
+            "result_case",
+            "result_state",
+            "result_grade",
+            "result_rating",
+            "result_snapshot_applied",
+            "domain",
+        ):
+            with self.subTest(cleaned_manager_field=field):
+                self.assertIn(f"remove_variable = zg361_comp_portfolio_{field}", cleanup)
+        self.assertIn(
+            "name = zg361_comp_portfolio_completed_cycle value = var:zg361_review_serial",
+            cleanup,
+        )
+        self.assertNotIn("change_variable =", cleanup)
+
+        for effect_name in (
+            "zg361_comp_portfolio_open_next_effect",
+            "zg361_comp_portfolio_apply_stage_effect",
+            "zg361_comp_portfolio_refresh_effect",
+        ):
+            with self.subTest(async_entry=effect_name):
+                entry = top_level_block(self.effects, effect_name)
+                self.assertIn(
+                    "zg361_comp_portfolio_drop_stale_subject_effect = yes", entry
+                )
+                self.assertLess(
+                    entry.index("zg361_comp_portfolio_drop_stale_subject_effect = yes"),
+                    entry.index("var:zg361_comp_portfolio_subject = {"),
+                )
+
+        refresh = top_level_block(
+            self.effects, "zg361_comp_portfolio_refresh_effect"
+        )
+        self.assertRegex(
+            refresh,
+            r"has_variable\s*=\s*zg361_comp_portfolio_subject\s*\}\s*"
+            r"if\s*=\s*\{\s*limit\s*=\s*\{\s*OR\s*=",
+        )
+        for domain, domain_number, max_state in (("l", 1, 4), ("ae", 2, 5), ("af", 3, 5)):
+            for state in range(1, max_state + 1):
+                with self.subTest(projected_domain=domain, projected_state=state):
+                    self.assertIn(
+                        f"var:zg361_case_{domain}_state = {state}", refresh
+                    )
+                    self.assertIn(
+                        f"name = zg361_comp_portfolio_stage value = {state}", refresh
+                    )
+
+        for effect_name, saved_subject in (
+            ("zg361_comp_portfolio_notify_owner_effect", "zg361_comp_notify_subject"),
+            ("zg361_comp_portfolio_case_closed_effect", "zg361_comp_closed_subject"),
+        ):
+            owner_adapter = top_level_block(self.effects, effect_name)
+            self.assertEqual(
+                owner_adapter.count(
+                    "zg361_comp_portfolio_drop_stale_subject_effect = yes"
+                ),
+                3,
+            )
+            for domain in ("l", "ae", "af"):
+                with self.subTest(owner_adapter=effect_name, domain=domain):
+                    self.assertRegex(
+                        owner_adapter,
+                        rf"has_variable\s*=\s*zg361_case_{domain}_owner\s*\}}\s*"
+                        rf"if\s*=\s*\{{\s*limit\s*=\s*\{{\s*"
+                        rf"var:zg361_case_{domain}_owner\s*=\s*\{{\s*is_alive\s*=\s*yes",
+                    )
+            self.assertEqual(
+                owner_adapter.count("has_variable = zg361_comp_portfolio_subject"),
+                3,
+            )
+            self.assertEqual(
+                owner_adapter.count(
+                    f"var:zg361_comp_portfolio_subject = scope:{saved_subject}"
+                ),
+                3,
+            )
 
     def test_background_ae_subject_files_an_executable_appeal_and_finance_flags_are_total(self) -> None:
         """R96: route A must close AE stage 5 without unset tooltip reads."""
