@@ -1328,6 +1328,42 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         ):
             self.assertIn(key, w)
 
+    def test_v_and_w_completion_titles_name_the_actual_subject(self) -> None:
+        subject = "[zg361_pp_completion_subject.GetShortUIName]"
+        expected = {
+            "simp_chinese": {
+                "zg361pp.9003.t": f"本轮选择已录入：{subject}的晋升答辩与评委政治",
+                "zg361pp.9004.t": f"本轮选择已录入：{subject}的绩效改进计划启动、毕业与复发",
+            },
+            "english": {
+                "zg361pp.9003.t": f"Cycle Choices Recorded for {subject}: Promotion panels and review politics",
+                "zg361pp.9004.t": f"Cycle Choices Recorded for {subject}: PIP initiation, graduation and relapse",
+            },
+        }
+        for language, titles in expected.items():
+            loc = "\n".join(gen.localization_rows(language))
+            for key, value in titles.items():
+                with self.subTest(language=language, key=key):
+                    self.assertIn(f' {key}:0 "{value}"', loc)
+
+        english_payload = gen.render_localization("english")
+        for language in (
+            "french",
+            "german",
+            "japanese",
+            "korean",
+            "polish",
+            "russian",
+            "spanish",
+        ):
+            with self.subTest(language=language):
+                self.assertEqual(
+                    gen.render_localization(language).replace(
+                        f"l_{language}:".encode(), b"l_english:", 1
+                    ),
+                    english_payload,
+                )
+
     def test_grade_reason_never_manufactures_role_mismatch(self) -> None:
         m181 = effect_block(self.effects, "zg361_pp_m181_core_effect")
         for token in (

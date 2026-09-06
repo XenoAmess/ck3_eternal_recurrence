@@ -54,7 +54,7 @@
     "reference_choice": "a"
   },
   "7": {
-    "title_en": "Back-to-Back 360 Review Invitations",
+    "title_en": "Independently Submitted 360 Review Invitations",
     "option_a_cn": "只邀请有真实协作的少数评价者，要求具体案例并交叉核验，承担邀评与去重工时。",
     "option_a_en": "Invite a small set of genuine collaborators, require concrete cases, and cross-check them, paying the administrative cost of solicitation and deduplication.",
     "option_b_cn": "广撒邀评并立刻按高低票加权，迅速放大声量，却给互抬、报复和模板灌水留下空间。",
@@ -108,7 +108,7 @@
     "reference_choice": "a"
   },
   "13": {
-    "title_en": "Transparent, Tiered, or Black-Box Publication",
+    "title_en": "Tiered Disclosure or Black-Box Notice",
     "option_a_cn": "向本人开放冻结理由和申诉路径，向团队公开档位与汇总口径，并为敏感互评建立权限隔离。",
     "option_a_en": "Give each subject frozen reasons and an appeal path, publish ratings and aggregate rules to the team, and administer access controls for sensitive peer feedback.",
     "option_b_cn": "只口头告知本人最终档位并封闭理由，能压低公开冲突，却把猜忌、向上管理和申诉推高。",
@@ -126,7 +126,7 @@
     "reference_choice": "a"
   },
   "15": {
-    "title_en": "PIP Improvement Charter",
+    "title_en": "Performance Improvement Charter",
     "option_a_cn": "与当事人协商其权限内的可验证里程碑、支持与复盘点，花资源换一次真正可完成的改进机会。",
     "option_a_en": "Negotiate verifiable milestones, support, and checkpoints within the subject's authority, spending resources on a genuinely achievable improvement chance.",
     "option_b_cn": "直接下达高压里程碑和硬期限，并把拒绝记为重大负面证据，见效快但更像预设退出。",
@@ -163,8 +163,8 @@
   },
   "19": {
     "title_en": "Promotion Eligibility Gates",
-    "option_a_cn": "逐项核验连续高绩效、价值观、PIP、任职年限和合法空缺后才允许提包，承担候选审查成本。",
-    "option_a_en": "Verify sustained high performance, values, PIP status, tenure, and a lawful vacancy before opening a promotion case, accepting candidate-review cost.",
+    "option_a_cn": "逐项核验连续高绩效、价值观、PIP、任职年限和合法空缺后才允许提交晋升案卷，承担候选审查成本。",
+    "option_a_en": "Verify sustained high performance, values, PIP status, tenure, and a lawful vacancy before submitting a promotion case, accepting candidate-review cost.",
     "option_b_cn": "由 sponsor 对本轮明星跳过部分门槛直接提名，迅速留人，却可能制造空心晋升和旧账争议。",
     "option_b_en": "Let a sponsor nominate this cycle's star past some gates to retain them quickly, risking hollow promotion and disputes over prior history.",
     "profile": "promotion",
@@ -201,8 +201,8 @@
     "title_en": "HC Defense and Team Return on Investment",
     "option_a_cn": "用目标完成、翻案、流失和财政效率答辩 HC，并登记承诺供下轮回写，承担年度复核工时。",
     "option_a_en": "Defend HC with goal delivery, reversals, attrition, and fiscal efficiency and record commitments for next-cycle review, accepting annual review work.",
-    "option_b_cn": "凭紧急故事和关系当场借调或加编，马上解压，却在未兑现时放大 HC 信用与倦怠风险。",
-    "option_b_en": "Borrow or add capacity immediately from urgency and relationships, relieving pressure now while magnifying HC-credit and burnout risk if promises fail.",
+    "option_b_cn": "凭紧急故事和关系当场借调或加编，马上解压，却在未兑现时透支编制信用，并提高倦怠风险。",
+    "option_b_en": "Borrow or add capacity immediately from urgency and relationships, relieving pressure now while exhausting headcount credibility and increasing burnout risk if promises fail.",
     "profile": "hc",
     "reference_choice": "a"
   },
@@ -216,11 +216,11 @@
     "reference_choice": "a"
   },
   "25": {
-    "title_en": "Poaching High Performers and Counteroffers",
+    "title_en": "Poaching High Performers and Retention Counteroffers",
     "option_a_cn": "只对有合法空缺且晋升停滞的连续头档发有成本的书面邀请，并让原上司用真实职位或加俸回应。",
     "option_a_en": "Make costed written offers only to sustained top performers with stalled advancement and a lawful vacancy, requiring the old manager to answer with a real role or pay.",
-    "option_b_cn": "广挖可见明星并用晋升口头承诺抢人，迅速补强，却推高薪酬、空心承诺和团队报复。",
-    "option_b_en": "Raid visible stars with verbal promotion promises to strengthen quickly, driving pay inflation, hollow commitments, and inter-team retaliation.",
+    "option_b_cn": "广挖可见明星并用晋升口头承诺抢人，迅速补强，却推高薪酬、空心承诺和跨团队报复。",
+    "option_b_en": "Raid visible stars with verbal promotion promises to strengthen quickly, driving pay inflation, hollow commitments, and cross-team retaliation.",
     "profile": "promotion",
     "reference_choice": "c"
   },
@@ -235,8 +235,8 @@
   },
   "27": {
     "title_en": "Cross-Unit Contribution Ledger",
-    "option_a_cn": "为联合项目冻结 owner、主责、协作者、救火者与 blocker，按唯一成果总量分摊并接受维护成本。",
-    "option_a_en": "Freeze owner, lead, collaborator, rescuer, and blocker roles for joint work and divide one capped outcome pool, accepting ledger maintenance cost.",
+    "option_a_cn": "为联合项目冻结成果归口人、主责者、协作者、救火者与阻塞责任人，按唯一成果总量分摊并接受维护成本。",
+    "option_a_en": "Freeze outcome owner, accountable lead, collaborator, rescuer, and blocking-party roles for joint work and divide one capped outcome pool, accepting ledger maintenance cost.",
     "option_b_cn": "由项目 owner 独占结果，其他人靠事后口供争取份额，结算迅速却鼓励截功和重复申报。",
     "option_b_en": "Let the project owner claim the result and leave others to argue afterward, settling fast while encouraging credit capture and duplicate claims.",
     "profile": "governance",
@@ -271,8 +271,8 @@
   },
   "31": {
     "title_en": "Sponsor Network",
-    "option_a_cn": "允许恩主把候选送上讨论桌，但必须披露关系、限期背书并保留硬证据门槛。",
-    "option_a_en": "Let sponsors bring candidates to the table only with disclosed ties, expiring endorsements, and intact hard-evidence gates.",
+    "option_a_cn": "允许恩主把候选送入评议名单，但必须披露关系、限期背书并保留硬证据门槛。",
+    "option_a_en": "Let sponsors add candidates to the review slate only with disclosed ties, expiring endorsements, and intact hard-evidence gates.",
     "option_b_cn": "让恩主直接插队晋升、HC 或复核，迅速动员权力，却把组织押在人脉与恩主存亡上。",
     "option_b_en": "Let patrons jump promotion, HC, or review queues directly, mobilizing power fast while tying the organization to connections and patron survival.",
     "profile": "promotion",
@@ -282,17 +282,17 @@
     "title_en": "The Manager's Own Team Performance",
     "option_a_cn": "用上一轮冻结的目标、京察、翻案、PIP、留才与 HC 数据考核经理，承担跨周期记账成本。",
     "option_a_en": "Assess managers on prior-cycle frozen goals, Jingcha, reversals, PIP, retention, and HC, accepting the cost of cross-cycle accounting.",
-    "option_b_cn": "只看本轮团队排名并对拒办、低档和流失立即重罚，执行有力，却把孙级个案递归成经理罪责。",
-    "option_b_en": "Judge only the current team rank and punish skipped reviews, low ratings, and attrition immediately, enforcing hard while recursively blaming managers for grandchildren's cases.",
+    "option_b_cn": "只看本轮团队排名并对拒办、低档和流失立即重罚，执行有力，却把下属的个案层层归罪于经理。",
+    "option_b_en": "Judge only the current team rank and punish skipped reviews, low ratings, and attrition immediately, enforcing hard while cascading blame for subordinates' individual cases onto managers.",
     "profile": "assessment",
     "reference_choice": "a"
   },
   "33": {
-    "title_en": "Manager Archetypes and Explainable Reason Codes",
-    "option_a_cn": "为数据派、护犊型等偏好建立稳定权重和理由码，并用硬证据上限约束，承担解释维护成本。",
-    "option_a_en": "Give data-driven, protective, and other manager styles stable weights and reason codes bounded by hard evidence, accepting explanation maintenance cost.",
-    "option_b_cn": "允许上司性格和关系直接压过边界证据以快速处置，人物更强烈，却让同案不同判难以复核。",
-    "option_b_en": "Let personality and relationships override boundary evidence for fast disposition, producing vivid rulers while making like cases irreproducible.",
+    "title_en": "Manager Archetypes and Explainable Rulings",
+    "option_a_cn": "为数据派、护犊型等偏好建立稳定权重和裁定理由，并用硬证据上限约束，承担解释维护成本。",
+    "option_a_en": "Give data-driven, protective, and other manager styles stable weights and explainable ruling grounds bounded by hard evidence, accepting explanation maintenance cost.",
+    "option_b_cn": "允许上司性格和关系直接压过边界证据以快速处置，上司个人意志更鲜明，却让同案不同判难以复核。",
+    "option_b_en": "Let personality and relationships override boundary evidence for fast disposition, making the superior's personal will more visible while leaving like cases irreproducible.",
     "profile": "governance",
     "reference_choice": "a"
   },
@@ -306,7 +306,7 @@
     "reference_choice": "a"
   },
   "35": {
-    "title_en": "Strict, Relaxed, or Hybrid 361",
+    "title_en": "Strict 361 or Hybrid Thresholds",
     "option_a_cn": "采用绝对达标线加横向排名的混合制，保留分布信号但为全员达标者减轻末位处分，并承担双重校验。",
     "option_a_en": "Use a hybrid of absolute thresholds and relative ranking, retaining distribution while softening bottom sanctions for true passers and paying for dual validation.",
     "option_b_cn": "严格执行 3-6-1 并强制填满末位，制度最清晰、出榜最快，却在全员优秀时也制造牺牲者。",
@@ -360,7 +360,7 @@
     "reference_choice": "a"
   },
   "41": {
-    "title_en": "Protect, Include, or Sacrifice Newcomers",
+    "title_en": "First-Cycle Newcomer Protection and Bottom-Tier Risk",
     "option_a_cn": "首轮把新人从配额中保护出来，另设爬坡目标、导师和次轮纳入日期，承担培养与老员配额压力。",
     "option_a_en": "Protect newcomers from the first-cycle quota, set ramp goals, a mentor, and a fixed inclusion date, accepting development cost and pressure on established staff.",
     "option_b_cn": "新人立即完整参评并优先承担末位，最快填满 C 档，却伤害导师成绩、招募口碑和新人留存。",
@@ -372,8 +372,8 @@
     "title_en": "Rotating the C Across Cycles",
     "option_a_cn": "跨周期抽查固定轮转模式，重建个人证据并调解补偿承诺，花复核工时恢复评级区分度。",
     "option_a_en": "Audit fixed rotation patterns across cycles, rebuild individual evidence, and mediate compensation promises, spending review effort to restore differentiation.",
-    "option_b_cn": "发现疑似轮流背 C 就整组降权并立即拆约，迅速震慑合谋，却可能误伤真实波动并激化毁约怨恨。",
-    "option_b_en": "Down-weight the whole group and break the pact as soon as rotation is suspected, deterring collusion quickly while risking false positives and betrayal resentment.",
+    "option_b_cn": "发现疑似轮流背 C 就下调整组互评权重并立即拆约，迅速震慑合谋，却可能误伤真实波动并激化毁约怨恨。",
+    "option_b_en": "Lower the whole group's peer-review weight and break the pact as soon as rotation is suspected, deterring collusion quickly while risking false positives and betrayal resentment.",
     "profile": "calibration",
     "reference_choice": "c"
   },
@@ -396,7 +396,7 @@
     "reference_choice": "a"
   },
   "45": {
-    "title_en": "No-Surprises Feedback Debt",
+    "title_en": "Unwarned Low Ratings and Feedback Debt",
     "option_a_cn": "问题出现即记录事实、辅导和下属回应，并在终评前复查改进，承担持续反馈与确认工时。",
     "option_a_en": "Record the fact, coaching, and employee response when a problem appears and review improvement before the final rating, accepting continuous feedback work.",
     "option_b_cn": "年终首次亮出 3.25 并以结果硬压接受，迅速结束难谈话，却显著增加翻案和经理反馈债。",
@@ -433,8 +433,8 @@
   },
   "49": {
     "title_en": "Sealed Submission Deadline",
-    "option_a_cn": "互评背靠背封存，迟交仅能用一次信用申请监督补交，并记录补交对证据完整性的影响。",
-    "option_a_en": "Seal peer reviews back-to-back and allow one supervised late submission paid with credibility, recording its effect on evidence completeness.",
+    "option_a_cn": "互评分别提交、统一封存，迟交仅能用一次信用申请监督补交，并记录补交对证据完整性的影响。",
+    "option_a_en": "Submit peer reviews independently and seal them together, allowing one supervised late submission paid with credibility and recording its effect on evidence completeness.",
     "option_b_cn": "截止即永久关门、迟交全部作废，执行最干脆，却可能让真实协作无人作证并诱发抢在截止前串供。",
     "option_b_en": "Close permanently at the deadline and void every late review, enforcing cleanly while leaving real collaboration unsupported and encouraging pre-deadline coordination.",
     "profile": "calibration",
@@ -442,8 +442,8 @@
   },
   "50": {
     "title_en": "Mutual Praise Pacts and Betrayal",
-    "option_a_cn": "用互惠相关性筛查评价对，再抽取共同项目证据核验，承担反串谋分析与听证成本。",
-    "option_a_en": "Screen rater pairs for reciprocal correlation and sample shared-project evidence, accepting anti-collusion analysis and hearing costs.",
+    "option_a_cn": "用互惠相关性筛查异常互评关系，再抽取共同项目证据核验，承担反串谋分析与听证成本。",
+    "option_a_en": "Screen anomalous peer-review relationships for reciprocal correlation and sample shared-project evidence, accepting anti-collusion analysis and hearing costs.",
     "option_b_cn": "对疑似互抬者立即双双降权或奖励先揭发者，迅速破盟，却刺激抢先背叛和虚假举报。",
     "option_b_en": "Immediately down-weight suspected mutual boosters or reward the first accuser, breaking pacts fast while encouraging preemptive betrayal and false reports.",
     "profile": "calibration",
@@ -459,7 +459,7 @@
     "reference_choice": "a"
   },
   "52": {
-    "title_en": "Preserve the Shape, Not Just the Mean",
+    "title_en": "Preserve the Rating Distribution, Not Just the Mean",
     "option_a_cn": "保存各来源分布与两极结构，对上下评价冲突另开追问，承担更多分析而不把差异压成均分。",
     "option_a_en": "Preserve source distributions and polarization and investigate upward-downward conflicts separately, accepting more analysis instead of flattening them into a mean.",
     "option_b_cn": "把所有互评取一个均分直接入榜，比较最迅速，却把可靠协作者和对上不对下者混为一类。",
@@ -541,26 +541,26 @@
   },
   "61": {
     "title_en": "Short Briefs and Long Narrative Reports",
-    "option_a_cn": "统一一页事实卡并为复杂协作链接附录，只让异常进入长叙事，承担模板和材料索引维护。",
-    "option_a_en": "Standardize a one-page fact card with linked annexes for complex collaboration and reserve long narratives for exceptions, accepting template and index upkeep.",
+    "option_a_cn": "统一一页事实卡，复杂协作另附索引与附录，只让异常进入长叙事，承担模板和材料索引维护。",
+    "option_a_en": "Standardize a one-page fact card, add separate indexes and annexes for complex collaboration, and reserve long narratives for exceptions, accepting template and index upkeep.",
     "option_b_cn": "要求所有人交完整叙事材料以便上司一次掌握背景，短期详尽，却奖励文胆并扩大形式主义工时。",
     "option_b_en": "Require full narrative reports so the superior can absorb context at once, gaining detail now while rewarding prose skill and expanding ceremonial workload.",
     "profile": "workload",
     "reference_choice": "a"
   },
   "62": {
-    "title_en": "Solid-Line and Dotted-Line Goal Conflict",
+    "title_en": "Goal Conflict Between Direct and Project Superiors",
     "option_a_cn": "触发冲突即让两位上司联合裁定优先级、责任和证据归属，承担协调延迟但给官员单一可执行口径。",
     "option_a_en": "When goals conflict, have both superiors jointly rule on priority, responsibility, and evidence ownership, accepting delay for one executable direction.",
-    "option_b_cn": "强令官员服从实线上司并忽略虚线交付，指挥立刻清晰，却留下项目差评和跨部门关系债。",
-    "option_b_en": "Order the officer to obey the solid-line superior and ignore dotted-line delivery, clarifying command immediately while creating project criticism and cross-unit debt.",
+    "option_b_cn": "强令官员服从直属上司并暂停项目上司的交付要求，指挥立刻清晰，却留下项目差评和跨部门关系债。",
+    "option_b_en": "Order the officer to obey the direct superior and suspend the project superior's delivery request, clarifying command immediately while creating project criticism and cross-unit debt.",
     "profile": "organization",
     "reference_choice": "a"
   },
   "63": {
     "title_en": "Cycle-Opening Weight Contract",
-    "option_a_cn": "周期初双签评分权重、交付边界和危机改权条件，承担谈判与版本维护成本。",
-    "option_a_en": "Have both superiors sign rating weights, delivery boundaries, and crisis-change conditions at cycle start, accepting negotiation and version-maintenance cost.",
+    "option_a_cn": "周期初双签评分权重、交付边界和危机时调整权重的条件，承担谈判与版本维护成本。",
+    "option_a_en": "Have both superiors sign rating weights, delivery boundaries, and conditions for crisis-time weight changes at cycle start, accepting negotiation and version-maintenance cost.",
     "option_b_cn": "允许更强势上司在年终重写权重以保重点结果，迅速解决冲突，却让员工两头承诺并伤害管理质量。",
     "option_b_en": "Let the stronger superior rewrite weights at year end to protect priority results, resolving conflict fast while encouraging double promises and damaging management quality.",
     "profile": "governance",
@@ -576,7 +576,7 @@
     "reference_choice": "a"
   },
   "65": {
-    "title_en": "Parachute Manager and Loyalist Package",
+    "title_en": "Parachute Manager and Accompanying Loyalists",
     "option_a_cn": "允许空降主管带少量有明确职责的亲信，同时审计机会分配、留任和知识交接，承担过渡双轨成本。",
     "option_a_en": "Allow a parachute manager a small, role-defined loyalist team while auditing opportunity, retention, and knowledge transfer, accepting dual-track transition cost.",
     "option_b_cn": "全面洗牌并以旧部替换原团队，迅速统一执行，却制造空岗、裙带审计和组织记忆断层。",

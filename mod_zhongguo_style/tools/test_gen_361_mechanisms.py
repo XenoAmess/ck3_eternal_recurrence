@@ -16,6 +16,7 @@ from gen_361_mechanisms import (
     MOD_ROOT,
     LEDGER_ONLY_MECHANISM_IDS,
     choice_button_cn,
+    choice_button_en,
     effect_name,
     full_ledger_changes_cn,
     full_ledger_changes_en,
@@ -386,28 +387,16 @@ class MechanismGenerationTests(unittest.TestCase):
             'zg361m.1.desc:0 "高低分必须附具体事例；申诉、绩效改进计划和晋升包复用同一份冻结证据，杜绝让下一年的现值改写旧案。"',
             chinese,
         )
-        self.assertIn(
-            'zg361m.18.a:0 "结算时冻结档位、名次、上司、理由；仅记账，证据+3、行政负担+2。"',
-            chinese,
-        )
-        self.assertIn(
-            'zg361m.18.a.tt:0 "结算时冻结档位、名次、上司、理由，以及国库、个人金币、贤能三笔即时罚没与一年俸禄减成，逐项标记支付、退款和止扣状态。这项裁定只记入组织账簿；没有具体案卷时，不会据此办理款项、人事或职位变动。"',
-            chinese,
-        )
-        self.assertIn(
-            'zg361m.71.a:0 "穷尽私下沟通与正式申诉后，凭冻结证据实名公开并接受调解复核；证据+2、行政负担+2。"',
-            chinese,
-        )
-        self.assertIn(
-            'zg361m.206.a:0 "为每笔赶工记录省时本金、维护利息、风险与责任人；技术债-3、交付-1。"',
-            chinese,
-        )
+        for key in ("zg361m.18.a", "zg361m.71.a", "zg361m.206.a"):
+            self.assertIn(f'{key}:0 "', chinese)
+        self.assertIn("主要账簿变动：", chinese)
+        self.assertIn("完整账簿变动：", chinese)
         self.assertIn(
             'zg361m.347.t:0 "第347号 · 经理人工调整额度"',
             chinese,
         )
         self.assertIn(
-            'zg361m.18.c:0 "搁置本局提案；制度债+3、行政负担-1"',
+            'zg361m.18.c:0 "搁置本局提案；主要账簿变动：行政负担-1、制度债+3"',
             chinese,
         )
         self.assertNotIn("决策：", chinese)
@@ -462,16 +451,11 @@ class MechanismGenerationTests(unittest.TestCase):
             with self.subTest(raw_grade_phrase=raw_grade_phrase):
                 self.assertNotIn(raw_grade_phrase, chinese)
         self.assertIsNone(re.search(r"(?<![A-Za-z])live(?![A-Za-z])", chinese))
+        self.assertIn('zg361m.18.a:0 "', english)
+        self.assertIn("main ledger changes:", english)
+        self.assertIn("Full ledger changes:", english)
         self.assertIn(
-            'zg361m.18.a:0 "Freeze rating; marking every payment, refund, and termination separately (ledger only)"',
-            english,
-        )
-        self.assertIn(
-            'zg361m.18.a.tt:0 "Freeze rating, rank, superior, reasons, the three immediate treasury, personal-gold, and merit charges, and the one-year salary cut at settlement, marking every payment, refund, and termination separately. This item updates only the organizational ledger and does not execute a concrete business action."',
-            english,
-        )
-        self.assertIn(
-            'zg361m.18.c:0 "Close this policy for the campaign and record one policy debt"',
+            'zg361m.18.c:0 "Shelve this policy; main ledger changes: administrative load-1, policy debt+3"',
             english,
         )
         self.assertNotIn("Record route A preference", english)
@@ -584,9 +568,151 @@ class MechanismGenerationTests(unittest.TestCase):
                                 ),
                             )
                         self.assertIn("搁置本局提案", values[f"{prefix}.c"])
-                        self.assertIn("制度债+3、行政负担-1", values[f"{prefix}.c"])
-                        self.assertIn("制度债增加 3", values[f"{prefix}.c.tt"])
-                        self.assertIn("行政负担减少 1", values[f"{prefix}.c.tt"])
+                        self.assertIn("主要账簿变动：", values[f"{prefix}.c"])
+
+    def test_every_route_exposes_principal_and_exact_full_ledger_deltas(self) -> None:
+        languages = (
+            "simp_chinese",
+            "english",
+            "french",
+            "german",
+            "japanese",
+            "korean",
+            "polish",
+            "russian",
+            "spanish",
+        )
+        for language in languages:
+            values = localization_values(self.mechanisms, language)
+            for mechanism in self.mechanisms:
+                for choice in ("a", "b", "c"):
+                    prefix = f"zg361m.{mechanism.id}.{choice}"
+                    with self.subTest(
+                        language=language, mechanism=mechanism.id, choice=choice
+                    ):
+                        if language == "simp_chinese":
+                            self.assertIn("主要账簿变动：", values[prefix])
+                            self.assertIn(
+                                f"完整账簿变动：{full_ledger_changes_cn(mechanism, choice)}。",
+                                values[f"{prefix}.tt"],
+                            )
+                            if choice in ("a", "b"):
+                                self.assertEqual(
+                                    values[prefix].rstrip("。"),
+                                    normalize_player_chinese(
+                                        choice_button_cn(
+                                            mechanism,
+                                            choice,
+                                            ledger_only=mechanism.id
+                                            in LEDGER_ONLY_MECHANISM_IDS,
+                                        )
+                                    ),
+                                )
+                        else:
+                            self.assertIn("main ledger changes:", values[prefix])
+                            self.assertIn(
+                                f"Full ledger changes: {full_ledger_changes_en(mechanism, choice)}.",
+                                values[f"{prefix}.tt"],
+                            )
+                            if choice in ("a", "b"):
+                                self.assertEqual(
+                                    values[prefix],
+                                    choice_button_en(
+                                        mechanism,
+                                        choice,
+                                        ledger_only=mechanism.id
+                                        in LEDGER_ONLY_MECHANISM_IDS,
+                                    ),
+                                )
+
+    def test_manual_audit_005_006_copy_fixes_are_closed(self) -> None:
+        chinese = localization_values(self.mechanisms, "simp_chinese")
+        english = localization_values(self.mechanisms, "english")
+        exact_cn = {
+            "zg361m.7.t": "独立提交的 360 邀评",
+            "zg361m.13.t": "分层公开与黑箱告知",
+            "zg361m.15.t": "绩效改进任务书",
+            "zg361m.25.t": "高绩效人才被挖与加码挽留",
+            "zg361m.33.t": "管理者画像与可解释裁定理由",
+            "zg361m.35.t": "严格 361 与混合门槛",
+            "zg361m.41.t": "新人首轮保护与末档风险",
+            "zg361m.45.t": "无预警低评与反馈欠账",
+            "zg361m.52.t": "保留评价分布，不只看均分",
+            "zg361m.62.t": "直属上司与项目上司的目标冲突",
+            "zg361m.65.t": "空降主管与随任亲信",
+        }
+        exact_en = {
+            "zg361m.7.t": "Independently Submitted 360 Review Invitations",
+            "zg361m.13.t": "Tiered Disclosure or Black-Box Notice",
+            "zg361m.15.t": "Performance Improvement Charter",
+            "zg361m.25.t": "Poaching High Performers and Retention Counteroffers",
+            "zg361m.33.t": "Manager Archetypes and Explainable Rulings",
+            "zg361m.35.t": "Strict 361 or Hybrid Thresholds",
+            "zg361m.41.t": "First-Cycle Newcomer Protection and Bottom-Tier Risk",
+            "zg361m.45.t": "Unwarned Low Ratings and Feedback Debt",
+            "zg361m.52.t": "Preserve the Rating Distribution, Not Just the Mean",
+            "zg361m.62.t": "Goal Conflict Between Direct and Project Superiors",
+            "zg361m.65.t": "Parachute Manager and Accompanying Loyalists",
+        }
+        for key, expected in exact_cn.items():
+            self.assertTrue(chinese[key].endswith(expected), (key, chinese[key]))
+        for key, expected in exact_en.items():
+            self.assertTrue(english[key].endswith(expected), (key, english[key]))
+
+        required_cn = {
+            "zg361m.19.a.tt": "提交晋升案卷",
+            "zg361m.23.desc": "夸大预期收益",
+            "zg361m.23.b.tt": "透支编制信用，并提高倦怠风险",
+            "zg361m.25.b.tt": "跨团队报复",
+            "zg361m.27.desc": "独立提交的 360 互评",
+            "zg361m.27.a.tt": "成果归口人、主责者、协作者、救火者与阻塞责任人",
+            "zg361m.31.desc": "进入评议名单",
+            "zg361m.31.a.tt": "送入评议名单",
+            "zg361m.32.b.tt": "把下属的个案层层归罪于经理",
+            "zg361m.33.a.tt": "裁定理由",
+            "zg361m.33.b.tt": "上司个人意志更鲜明",
+            "zg361m.35.desc": "强制分布可以提高人才密度，也会制造内耗与牺牲者",
+            "zg361m.40.desc": "离任者垫档",
+            "zg361m.42.b.tt": "下调整组互评权重",
+            "zg361m.49.a.tt": "互评分别提交、统一封存",
+            "zg361m.50.a.tt": "筛查异常互评关系",
+            "zg361m.54.desc": "迫使所有人把工时耗在汇报上，反而压低真实产出",
+            "zg361m.56.desc": "如实让功",
+            "zg361m.61.a.tt": "复杂协作另附索引与附录",
+            "zg361m.62.b.tt": "服从直属上司并暂停项目上司的交付要求",
+            "zg361m.63.a.tt": "危机时调整权重的条件",
+            "zg361m.68.desc": "可信参考",
+        }
+        for key, expected in required_cn.items():
+            self.assertIn(expected, chinese[key], (key, chinese[key]))
+
+        forbidden = (
+            "背靠背 360 邀评",
+            "给背靠背 360",
+            "PIP 改进任务书",
+            "提包",
+            "夸大成功",
+            "推高薪酬、空心承诺和团队报复",
+            "讨论桌",
+            "理由码",
+            "人物更强烈",
+            "死人头",
+            "整组降权",
+            "不得惊讶",
+            "互评背靠背封存",
+            "筛查评价对",
+            "评价形状",
+            "汇报均衡",
+            "正确让功",
+            "实线上司",
+            "虚线交付",
+            "危机改权条件",
+            "旧部包",
+            "可信先验",
+        )
+        joined = "\n".join(chinese[f"zg361m.{i}.{suffix}"] for i in range(1, 72) for suffix in ("t", "desc", "a", "b", "a.tt", "b.tt"))
+        for phrase in forbidden:
+            self.assertNotIn(phrase, joined)
 
         chinese = localization_values(self.mechanisms, "simp_chinese")
         descriptions = [

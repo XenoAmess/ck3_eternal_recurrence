@@ -295,7 +295,7 @@ zg361m.6 = {
 	}
 }
 
-# 007 背靠背 360 邀评
+# 007 独立提交的 360 邀评
 zg361m.7 = {
 	type = character_event
 	theme = crown
@@ -589,7 +589,7 @@ zg361m.12 = {
 	}
 }
 
-# 013 透明 / 半透明 / 黑箱公示制度
+# 013 分层公开与黑箱告知
 zg361m.13 = {
 	type = character_event
 	theme = crown
@@ -687,7 +687,7 @@ zg361m.14 = {
 	}
 }
 
-# 015 PIP 改进任务书
+# 015 绩效改进任务书
 zg361m.15 = {
 	type = character_event
 	theme = crown
@@ -1177,7 +1177,7 @@ zg361m.24 = {
 	}
 }
 
-# 025 高绩效人才被挖与反 offer
+# 025 高绩效人才被挖与加码挽留
 zg361m.25 = {
 	type = character_event
 	theme = crown
@@ -1569,7 +1569,7 @@ zg361m.32 = {
 	}
 }
 
-# 033 管理者画像与可解释理由码
+# 033 管理者画像与可解释裁定理由
 zg361m.33 = {
 	type = character_event
 	theme = crown
@@ -1667,7 +1667,7 @@ zg361m.34 = {
 	}
 }
 
-# 035 严格 361 / 松绑 361 / 混合门槛
+# 035 严格 361 与混合门槛
 zg361m.35 = {
 	type = character_event
 	theme = crown
@@ -1961,7 +1961,7 @@ zg361m.40 = {
 	}
 }
 
-# 041 新人保护、参评与献祭三路线
+# 041 新人首轮保护与末档风险
 zg361m.41 = {
 	type = character_event
 	theme = crown
@@ -2157,7 +2157,7 @@ zg361m.44 = {
 	}
 }
 
-# 045 “不得惊讶”反馈债
+# 045 无预警低评与反馈欠账
 zg361m.45 = {
 	type = character_event
 	theme = crown
@@ -2500,7 +2500,7 @@ zg361m.51 = {
 	}
 }
 
-# 052 保留评价形状，不只看均分
+# 052 保留评价分布，不只看均分
 zg361m.52 = {
 	type = character_event
 	theme = crown
@@ -2990,7 +2990,7 @@ zg361m.61 = {
 	}
 }
 
-# 062 实线与虚线目标冲突
+# 062 直属上司与项目上司的目标冲突
 zg361m.62 = {
 	type = character_event
 	theme = crown
@@ -3137,7 +3137,7 @@ zg361m.64 = {
 	}
 }
 
-# 065 空降主管与旧部包
+# 065 空降主管与随任亲信
 zg361m.65 = {
 	type = character_event
 	theme = crown

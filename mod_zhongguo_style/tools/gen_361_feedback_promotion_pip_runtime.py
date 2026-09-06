@@ -4285,7 +4285,19 @@ def localization_rows(language: str) -> list[str]:
         )
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 9000 + domain_index
-        title = f"本轮选择已录入：{domain.title_cn}" if chinese else f"Cycle Choices Recorded: {domain.title_en}"
+        if domain.key in {"v", "w"}:
+            completion_subject = "[zg361_pp_completion_subject.GetShortUIName]"
+            title = (
+                f"本轮选择已录入：{completion_subject}的{domain.title_cn}"
+                if chinese
+                else f"Cycle Choices Recorded for {completion_subject}: {domain.title_en}"
+            )
+        else:
+            title = (
+                f"本轮选择已录入：{domain.title_cn}"
+                if chinese
+                else f"Cycle Choices Recorded: {domain.title_en}"
+            )
         completion = COMPLETION_COPY[domain.key]
         desc = completion[0 if chinese else 1]
         option = completion[2 if chinese else 3]

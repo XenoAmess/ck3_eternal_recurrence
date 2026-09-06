@@ -4,7 +4,7 @@
 
 
 
-# 015 PIP 改进任务书
+# 015 绩效改进任务书
 zg361_mechanism_015_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_015_choice } }

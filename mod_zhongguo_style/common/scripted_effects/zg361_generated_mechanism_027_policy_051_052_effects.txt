@@ -85,7 +85,7 @@ zg361_mechanism_051_ai_effect = {
 	}
 }
 
-# 052 保留评价形状，不只看均分
+# 052 保留评价分布，不只看均分
 zg361_mechanism_052_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_052_choice } }

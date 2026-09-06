@@ -85,7 +85,7 @@ zg361_mechanism_061_ai_effect = {
 	}
 }
 
-# 062 实线与虚线目标冲突
+# 062 直属上司与项目上司的目标冲突
 zg361_mechanism_062_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_062_choice } }

@@ -1573,8 +1573,8 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("职责先加、俸额未跟", chinese_by_key["zg361comp.1.ae3.r1"])
         self.assertIn("下轮复核到期", chinese_by_key["zg361comp.1.ae3.r1"])
         self.assertIn("第二轮复核到期", chinese_by_key["zg361comp.1.ae3.r2"])
-        self.assertIn("both portions vest", english_by_key["zg361comp.1.af4.r1"])
-        self.assertIn("两者同归", chinese_by_key["zg361comp.1.af4.r1"])
+        self.assertIn("both portions follow the same vesting schedule", english_by_key["zg361comp.1.af4.r1"])
+        self.assertIn("服务份额与绩效份额各记五成，并按同一进度归属", chinese_by_key["zg361comp.1.af4.r1"])
         self.assertIn("only service units vest", english_by_key["zg361comp.1.af4.r2"])
         self.assertIn("绩效继续冻结", chinese_by_key["zg361comp.1.af4.r2"])
         self.assertIn("vest them on the service schedule", english_by_key["zg361comp.1.af4.r3"])
@@ -1648,6 +1648,67 @@ class CompensationRuntimeTests(unittest.TestCase):
             ):
                 self.assertIn(f" {key}:0 ", source)
             self.assertNotIn("named_peer_salary", source)
+
+    def test_reviewed_compensation_option_copy_is_exact_in_cn_en_and_placeholders(self) -> None:
+        subject = "[ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]"
+        expected_english = {
+            "zg361comp.1.l3.r2": (
+                f"Grant {subject} the matching authority now while preserving the "
+                "existing above-band pay; add no raise and create no payment deadline."
+            ),
+            "zg361comp.1.ae4.r3": (
+                f"Grant {subject} a one-cycle pay-band exception; add and pay 0, "
+                "and publish only the anonymous distribution."
+            ),
+            "zg361comp.1.af4.r1": (
+                f"Split {subject}'s units 50/50 between service and performance; "
+                "both portions follow the same vesting schedule. After the first "
+                "vesting, submit departure classification; move 0 cash."
+            ),
+        }
+        expected_chinese = {
+            "zg361comp.1.l3.r2": (
+                f"现在按现有薪带外待遇授予 {subject} 相应权责；本次不再加俸，不设付款期限。"
+            ),
+            "zg361comp.1.ae4.r3": (
+                f"现在准许 {subject} 薪带外例外一轮；新增与支付均为零，只公布匿名分布。"
+            ),
+            "zg361comp.1.af4.r1": (
+                f"为 {subject} 服务份额与绩效份额各记五成，并按同一进度归属。"
+                "首次归属后报离任分类，现金为零。"
+            ),
+        }
+
+        def option_values(payload: bytes) -> dict[str, str]:
+            return {
+                match.group(1): match.group(2)
+                for match in re.finditer(
+                    r'^\s+(zg361comp\.1\.(?:l3\.r2|ae4\.r3|af4\.r1)):0\s+"(.*)"$',
+                    payload.decode("utf-8-sig"),
+                    re.MULTILINE,
+                )
+            }
+
+        self.assertEqual(option_values(generator.render_english_localization()), expected_english)
+        self.assertEqual(option_values(generator.render_simp_chinese_localization()), expected_chinese)
+        for language in (
+            "french",
+            "german",
+            "japanese",
+            "korean",
+            "polish",
+            "russian",
+            "spanish",
+        ):
+            with self.subTest(english_placeholder=language):
+                self.assertEqual(
+                    option_values(generator.render_placeholder_localization(language)),
+                    expected_english,
+                )
+
+        chinese = generator.render_simp_chinese_localization().decode("utf-8-sig")
+        for rejected in ("按带上待遇", " 带外例外一轮", "每个归属日两者同归"):
+            self.assertNotIn(rejected, chinese)
 
     def test_every_visible_compensation_key_separates_case_body_from_action_button(self) -> None:
         english = generator.render_english_localization().decode("utf-8-sig")

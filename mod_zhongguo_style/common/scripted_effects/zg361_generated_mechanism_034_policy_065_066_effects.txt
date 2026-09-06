@@ -4,7 +4,7 @@
 
 
 
-# 065 空降主管与旧部包
+# 065 空降主管与随任亲信
 zg361_mechanism_065_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_065_choice } }

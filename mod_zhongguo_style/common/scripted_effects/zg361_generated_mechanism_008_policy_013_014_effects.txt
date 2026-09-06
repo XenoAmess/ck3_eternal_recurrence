@@ -4,7 +4,7 @@
 
 
 
-# 013 透明 / 半透明 / 黑箱公示制度
+# 013 分层公开与黑箱告知
 zg361_mechanism_013_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_013_choice } }

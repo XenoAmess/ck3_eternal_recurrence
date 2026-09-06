@@ -4,7 +4,7 @@
 
 
 
-# 041 新人保护、参评与献祭三路线
+# 041 新人首轮保护与末档风险
 zg361_mechanism_041_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_041_choice } }

@@ -4,7 +4,7 @@
 
 
 
-# 033 管理者画像与可解释理由码
+# 033 管理者画像与可解释裁定理由
 zg361_mechanism_033_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_033_choice } }

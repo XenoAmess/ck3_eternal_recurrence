@@ -4,7 +4,7 @@
 
 
 
-# 025 高绩效人才被挖与反 offer
+# 025 高绩效人才被挖与加码挽留
 zg361_mechanism_025_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_025_choice } }

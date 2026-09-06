@@ -4,7 +4,7 @@
 
 
 
-# 045 “不得惊讶”反馈债
+# 045 无预警低评与反馈欠账
 zg361_mechanism_045_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_045_choice } }

@@ -4,7 +4,7 @@
 
 
 
-# 007 背靠背 360 邀评
+# 007 独立提交的 360 邀评
 zg361_mechanism_007_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_007_choice } }

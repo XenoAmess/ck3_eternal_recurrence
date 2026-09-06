@@ -4,7 +4,7 @@
 
 
 
-# 035 严格 361 / 松绑 361 / 混合门槛
+# 035 严格 361 与混合门槛
 zg361_mechanism_035_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_035_choice } }
