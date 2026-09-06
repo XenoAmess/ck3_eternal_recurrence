@@ -4,7 +4,7 @@
 
 
 
-# 347 经理人工 Override 预算
+# 347 经理人工调整额度
 zg361_mechanism_347_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_347_choice } }

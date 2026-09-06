@@ -4,7 +4,7 @@
 
 
 
-# 333 高价培训服务承诺
+# 333 高价培训的留任与返还约定
 zg361_mechanism_333_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_333_choice } }

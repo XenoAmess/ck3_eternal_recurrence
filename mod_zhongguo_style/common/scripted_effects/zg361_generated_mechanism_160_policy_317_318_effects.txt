@@ -85,7 +85,7 @@ zg361_mechanism_317_ai_effect = {
 	}
 }
 
-# 318 转岗申请频率与占位费
+# 318 转岗申请频次与名额占用
 zg361_mechanism_318_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_318_choice } }

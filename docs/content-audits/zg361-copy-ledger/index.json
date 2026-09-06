@@ -138,25 +138,25 @@
       "sha256": "5b2c340784678501769a5b585abed174c68f5546048095a788ee92a7867a4227"
     },
     {
-      "bytes": 68919,
+      "bytes": 68917,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-013.json",
       "records": 40,
-      "sha256": "3b2a2ee161048455beec69de8aceeb755146a17abde3bd092bbc0872e20b2e8f"
+      "sha256": "89fa4395ad910a0dbc22034e5efee67931468b765a5a34579f54211b8217d580"
     },
     {
-      "bytes": 69787,
+      "bytes": 69786,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-014.json",
       "records": 40,
-      "sha256": "8e00f2b6db547ba3c0981db2b7d9884278025ab7fcc882cb4194fcd58084d99c"
+      "sha256": "f6aa4118df0cc9830bafb65a1887fa69d40ab0903d45fd1bc88cb071ac5a1106"
     },
     {
       "bytes": 70866,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
       "records": 40,
-      "sha256": "9b0017c6c286d011fe63f14af1344c19a85e560a50180488a5163d0f65a01d8c"
+      "sha256": "2e4b824de62789a69b28c4cadf49a4484dd73fadfcde3438a5c3da87c7a1f888"
     },
     {
       "bytes": 51568,
@@ -278,25 +278,25 @@
       "sha256": "ee090303dc086bf0d3f7b47703735f95b9e13702e1453f00b368064c194b8a49"
     },
     {
-      "bytes": 82222,
+      "bytes": 82346,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-017.json",
       "records": 180,
-      "sha256": "6c2d0d8b9510bec4ca420fc3eb9d05e8d3b90c57f11ecfd37ae80619d3b95883"
+      "sha256": "b900adc018cba1b5ab462760c0196beba4f28abbfe2896c555a0d5b4d256454c"
     },
     {
-      "bytes": 81885,
+      "bytes": 82134,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-018.json",
       "records": 180,
-      "sha256": "2890a666303275a9ccd8ad9e2bde8a227c8ca0094833b8af92a52012a6ff0e5c"
+      "sha256": "449377df72dbb0d397d9de839fdee244e79920992a68f471289d0206a5b24842"
     },
     {
-      "bytes": 80300,
+      "bytes": 80531,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-019.json",
       "records": 180,
-      "sha256": "bdcfc76cede6b1784923cbde2e34256a42e529b197eb94dd90fdcadc71f02eb9"
+      "sha256": "04d546e6517a425a3c415a31523ba535dbb99447791211e1850ed6fef74be8c2"
     },
     {
       "bytes": 82386,
@@ -320,11 +320,11 @@
       "sha256": "7f3ee82a2a7f83abb7e0fb341d076303a575fd617c9ebd3074876aa7875f02d1"
     },
     {
-      "bytes": 69231,
+      "bytes": 69429,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-023.json",
       "records": 180,
-      "sha256": "3d5c14887b602f04a83507171dbdf3706d23d120e7821197da9b6f2569b826cd"
+      "sha256": "b2f7faf8846ae9d8d53bfce3e08c7d8f5df3d16f837ca25f9311206f5e2521c3"
     },
     {
       "bytes": 76725,
@@ -599,10 +599,10 @@
           "method": "generated_file_header_multi_source",
           "status": "pass"
         },
-        "bytes": 416085,
+        "bytes": 416104,
         "lines": 17691,
         "path": "mod_zhongguo_style/events/zg361_generated_mechanism_events.txt",
-        "sha256": "9b1b9559d21da4b8b2d17a8474b428bfd7302e3d07e184a5019ce8a63d44bf93"
+        "sha256": "4c3218381f6f8b81c7775e471e50596f2fa7150477141f617d91414611e9f100"
       },
       {
         "authority": {
@@ -1693,10 +1693,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 530036,
+        "bytes": 530640,
         "lines": 2932,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
-        "sha256": "cf752498a1a04514a4dbadee041f8cc9c3950a0a3ef9e3421cae88221ee19a64"
+        "sha256": "126ea54a729138920940e9efc6ff8e1942437e082ec3544f10ef1104b8abd093"
       },
       {
         "authority": {
@@ -1720,10 +1720,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 19707,
+        "bytes": 19905,
         "lines": 217,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_phase3_metrics_delivery_l_simp_chinese.yml",
-        "sha256": "337de2e71bd170e9982e473b67b39cdada053bef15803c1cad726798bc7c5904"
+        "sha256": "4e5c62431e64d1e0694c0a06d28143b256cf9f52d361ff782f5dbf1ba5e8937e"
       },
       {
         "authority": {
@@ -1843,9 +1843,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "4806e8d74a1b1c43daaa6ae694516ff004c998fb",
+    "git_commit": "7341ecb6ba45c8dd2a8994d8859f8b991f3cefce",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "d38909102ac05a345a13bc149663a5b06a6e444cad99ffaed0c68c0a9aa0943d"
+    "input_digest_sha256": "5aad171b0399603be84e078e8b2c58f465b9b29e60159d39f2429658da93b2f0"
   },
   "summary": {
     "all_event_definitions": 1009,

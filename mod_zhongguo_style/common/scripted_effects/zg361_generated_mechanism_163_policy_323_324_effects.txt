@@ -85,7 +85,7 @@ zg361_mechanism_323_ai_effect = {
 	}
 }
 
-# 324 结课 / 应用 / 业务结果三阶段
+# 324 结课、应用与业务结果三阶段
 zg361_mechanism_324_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_324_choice } }

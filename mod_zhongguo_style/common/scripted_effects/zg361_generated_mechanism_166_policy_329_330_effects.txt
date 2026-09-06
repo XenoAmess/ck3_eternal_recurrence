@@ -85,7 +85,7 @@ zg361_mechanism_329_ai_effect = {
 	}
 }
 
-# 330 衰退业务再技能化
+# 330 衰退业务人员转训
 zg361_mechanism_330_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_330_choice } }

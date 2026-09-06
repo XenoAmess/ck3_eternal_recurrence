@@ -4,7 +4,7 @@
 
 
 
-# 355 高绩效目标棘轮
+# 355 高绩效者的目标自动加码
 zg361_mechanism_355_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_355_choice } }

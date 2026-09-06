@@ -1273,7 +1273,15 @@ class GeneratorContractTests(unittest.TestCase):
         )
         self.assertEqual(chinese["zg361p3.336.t"], "开工条件尚未齐备")
         self.assertEqual(english["zg361p3.336.t"], "Ready to Begin?")
+        self.assertIn("既有案卷的署名责任仍由原任承担", chinese["zg361p3.310.desc"])
         self.assertIn("原责任人与接任者", chinese["zg361p3.310.desc"])
+        self.assertNotIn(
+            chinese["zg361p3.310.a"].rstrip("。"), chinese["zg361p3.310.desc"]
+        )
+        self.assertIn(
+            "authorship of each existing case remains attached to its original author",
+            english["zg361p3.310.desc"],
+        )
         self.assertIn("另立交接记录", chinese["zg361p3.310.b"])
         self.assertIn("核清新旧目标的贡献", chinese["zg361p3.311.b"])
         for key in ("zg361p3.310.desc", "zg361p3.310.b", "zg361p3.311.b"):
@@ -1293,12 +1301,16 @@ class GeneratorContractTests(unittest.TestCase):
             (234, "b"): ("各五成", "进入校准"),
             (235, "a"): ("各五成", "不得获最高功劳"),
             (235, "b"): ("主指标六成", "质量护栏四成", "承担护栏失守"),
+            (236, "a"): ("连续计分", "避免阈值附近", "骤然归零"),
+            (236, "b"): ("保留达标阈值", "按接近程度", "部分得分"),
             (237, "a"): ("三百六十五日", "完整时间窗"),
             (237, "b"): ("三百六十五日完整窗", "九十日精选窗"),
             (238, "a"): ("声量一成", "已验证价值七成", "追回一成功劳"),
             (238, "b"): ("声量三成", "已验证价值五成", "追回三成功劳"),
             (239, "a"): ("学习证据七成功劳", "业务交付仍记失败"),
             (239, "b"): ("学习证据四成功劳", "业务交付分账"),
+            (240, "a"): ("这批样本", "独占分配", "当前实验"),
+            (240, "b"): ("独立复核人签字", "样本划分给两项实验"),
             (241, "a"): ("建设者五成", "运营者三成", "继任者两成", "功劳与成本"),
             (241, "b"): ("建设者三成三", "继任者三成四", "功劳与成本"),
             (301, "a"): ("扣除三十分继承势能", "个人功劳记九十分"),
@@ -1335,6 +1347,28 @@ class GeneratorContractTests(unittest.TestCase):
             with self.subTest(mid=mid, letter=letter):
                 for token in tokens:
                     self.assertIn(token, value)
+
+        reviewed_keys = (
+            "zg361p3.236.a", "zg361p3.236.b", "zg361p3.237.a",
+            "zg361p3.239.desc", "zg361p3.239.a", "zg361p3.240.desc",
+            "zg361p3.240.a", "zg361p3.240.b",
+        )
+        reviewed_copy = "\n".join(chinese[key] for key in reviewed_keys)
+        for forbidden in ("预注册", "样本槽", "占用一个槽", "签字切分"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, reviewed_copy)
+
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_phase3_metrics_delivery_l_english.yml"
+        )
+        self.assertIn("near-threshold results do not collapse to zero", english["zg361p3.236.a"])
+        self.assertIn("recorded before the review began", english["zg361p3.237.a"])
+        self.assertIn("rules recorded in advance", english["zg361p3.239.desc"])
+        self.assertIn("independent reviewer sign off", english["zg361p3.240.b"])
+        reviewed_english = "\n".join(english[key] for key in reviewed_keys).lower()
+        for forbidden in ("preregister", "sample slot", "partition one slot"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, reviewed_english)
 
         self.assertNotIn("亲自回应", chinese["zg361p3.304.desc"])
 

@@ -85,7 +85,7 @@ zg361_mechanism_335_ai_effect = {
 	}
 }
 
-# 336 需求准入完成定义
+# 336 需求受理门槛
 zg361_mechanism_336_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_336_choice } }

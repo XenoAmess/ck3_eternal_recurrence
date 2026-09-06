@@ -4,7 +4,7 @@
 
 
 
-# 319 原团队一次反 Offer 后必须放人
+# 319 原团队仅可提出一次挽留方案
 zg361_mechanism_319_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_319_choice } }

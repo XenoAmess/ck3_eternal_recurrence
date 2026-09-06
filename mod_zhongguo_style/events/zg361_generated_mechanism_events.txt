@@ -15436,7 +15436,7 @@ zg361m.315 = {
 	}
 }
 
-# 316 转岗薪酬带映射
+# 316 转岗薪酬区间衔接
 zg361m.316 = {
 	type = character_event
 	theme = crown
@@ -15534,7 +15534,7 @@ zg361m.317 = {
 	}
 }
 
-# 318 转岗申请频率与占位费
+# 318 转岗申请频次与名额占用
 zg361m.318 = {
 	type = character_event
 	theme = crown
@@ -15583,7 +15583,7 @@ zg361m.318 = {
 	}
 }
 
-# 319 原团队一次反 Offer 后必须放人
+# 319 原团队仅可提出一次挽留方案
 zg361m.319 = {
 	type = character_event
 	theme = crown
@@ -15828,7 +15828,7 @@ zg361m.323 = {
 	}
 }
 
-# 324 结课 / 应用 / 业务结果三阶段
+# 324 结课、应用与业务结果三阶段
 zg361m.324 = {
 	type = character_event
 	theme = crown
@@ -16122,7 +16122,7 @@ zg361m.329 = {
 	}
 }
 
-# 330 衰退业务再技能化
+# 330 衰退业务人员转训
 zg361m.330 = {
 	type = character_event
 	theme = crown
@@ -16269,7 +16269,7 @@ zg361m.332 = {
 	}
 }
 
-# 333 高价培训服务承诺
+# 333 高价培训的留任与返还约定
 zg361m.333 = {
 	type = character_event
 	theme = crown
@@ -16416,7 +16416,7 @@ zg361m.335 = {
 	}
 }
 
-# 336 需求准入完成定义
+# 336 需求受理门槛
 zg361m.336 = {
 	type = character_event
 	theme = crown
@@ -16955,7 +16955,7 @@ zg361m.346 = {
 	}
 }
 
-# 347 经理人工 Override 预算
+# 347 经理人工调整额度
 zg361m.347 = {
 	type = character_event
 	theme = crown
@@ -17347,7 +17347,7 @@ zg361m.354 = {
 	}
 }
 
-# 355 高绩效目标棘轮
+# 355 高绩效者的目标自动加码
 zg361m.355 = {
 	type = character_event
 	theme = crown
@@ -17543,7 +17543,7 @@ zg361m.358 = {
 	}
 }
 
-# 359 翻案后的配额回流与连环送达
+# 359 翻案后的名额返还与重新送达
 zg361m.359 = {
 	type = character_event
 	theme = crown

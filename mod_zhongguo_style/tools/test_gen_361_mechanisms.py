@@ -495,6 +495,112 @@ class MechanismGenerationTests(unittest.TestCase):
                     self.assertEqual(len(title_lines), 361)
                     self.assertFalse(any(':0 "#' in line for line in title_lines))
 
+    def test_events_312_to_361_use_plain_player_facing_policy_copy(self) -> None:
+        chinese = localization_values(self.mechanisms, "simp_chinese")
+        expected_tokens = {
+            "zg361m.312.a.tt": ("薪酬区间", "内部公示期"),
+            "zg361m.314.desc": ("迁居与安置成本",),
+            "zg361m.315.desc": ("试岗失败后返岗", "不应自动判为未达标"),
+            "zg361m.316.t": ("薪酬区间衔接",),
+            "zg361m.316.b": ("新岗位薪酬区间", "重新核定全部薪俸"),
+            "zg361m.318.t": ("申请频次", "名额占用"),
+            "zg361m.318.a": ("高潜力人选", "不占正式名额"),
+            "zg361m.319.t": ("一次挽留方案",),
+            "zg361m.319.a": ("可兑现的挽留方案",),
+            "zg361m.324.t": ("结课、应用与业务结果",),
+            "zg361m.324.desc": ("刷课时、刷证书的漏洞",),
+            "zg361m.328.desc": ("跨组评判尺度的一致性",),
+            "zg361m.328.b": ("所有工时",),
+            "zg361m.330.t": ("衰退业务人员转训",),
+            "zg361m.330.desc": ("仍具潜力的人才",),
+            "zg361m.331.desc": ("创新项目储备",),
+            "zg361m.331.a": ("学习工时",),
+            "zg361m.333.t": ("留任与返还约定",),
+            "zg361m.333.desc": ("返还义务能保护培训投入",),
+            "zg361m.334.desc": ("加重提名人的责任", "没有门路的项目"),
+            "zg361m.334.b": ("有权势的提名人",),
+            "zg361m.335.desc": ("未使用的急件名额",),
+            "zg361m.335.a": ("预留少量急件名额",),
+            "zg361m.336.t": ("需求受理门槛",),
+            "zg361m.339.desc": ("工期报得过分宽松", "没有说明原因的超时"),
+            "zg361m.339.a": ("故意虚增工期",),
+            "zg361m.340.b": ("更多尾部延期",),
+            "zg361m.345.desc": ("考核通知在短期内接连出现",),
+            "zg361m.346.desc": ("正式考核中只结算一次",),
+            "zg361m.346.a": ("年末只结算一次",),
+            "zg361m.347.a.tt": ("只准少量调整", "事后核验准确性"),
+            "zg361m.349.desc": ("耗审计人力",),
+            "zg361m.351.desc": ("事先登记的规则和结果",),
+            "zg361m.351.a.tt": ("事先登记规则", "决定是否推广"),
+            "zg361m.352.a": ("附换算说明", "从新一轮重新记账"),
+            "zg361m.354.a": ("复核审计",),
+            "zg361m.355.t": ("目标自动加码",),
+            "zg361m.355.desc": ("过度加码目标", "压低上报产出"),
+            "zg361m.356.desc": ("限制目标自动加码",),
+            "zg361m.356.a": ("限制目标自动加码",),
+            "zg361m.358.desc": ("申诉不应加重原处理", "新发生的造假仍须另案追究"),
+            "zg361m.359.t": ("名额返还与重新送达",),
+            "zg361m.359.a.tt": ("档位边缘的受评者", "重新送达"),
+            "zg361m.359.b.tt": ("档位边缘的受评者", "不向受影响者重新送达"),
+            "zg361m.360.desc": ("高档人才比例", "伤害管理层信任"),
+            "zg361m.360.a.tt": ("责任记入组织账簿",),
+            "zg361m.360.b.tt": ("守住高档人才比例",),
+            "zg361m.361.a.tt": ("人员信任和福祉",),
+            "zg361m.361.b.tt": ("守住高档人才比例",),
+        }
+        for key, tokens in expected_tokens.items():
+            with self.subTest(key=key):
+                for token in tokens:
+                    self.assertIn(token, chinese[key])
+
+        reviewed_copy = "\n".join(chinese[key] for key in expected_tokens)
+        for internal_or_broken in (
+            "免费瞬移", "3.25", "岗位带宽", "占位费", "高潜一次", "不占槽",
+            "反录用邀约", "结课 / 应用", "所有容量", "健康人才", "创新管线",
+            "提名担保人债", "未用槽", "急件槽", "准入完成定义", "故意留水",
+            "交付尾差", "事件风暴", "正式周期消费", "调整点", "命中率",
+            "组织容量", "预注册", "可比映射", "元审计", "目标棘轮", "重棘轮",
+            "违法免疫", "边界人", "连环程序", "人才密度叙事", "组织温度",
+        ):
+            with self.subTest(forbidden=internal_or_broken):
+                self.assertNotIn(internal_or_broken, reviewed_copy)
+
+        english = localization_values(self.mechanisms, "english")
+        english_tokens = {
+            "zg361m.316.t": ("Pay-Range Alignment",),
+            "zg361m.318.t": ("Application Frequency and Quota Use",),
+            "zg361m.318.a.tt": ("outside the quota",),
+            "zg361m.319.t": ("Retention Offer",),
+            "zg361m.333.t": ("Retention and Repayment Terms",),
+            "zg361m.336.t": ("Demand Intake Requirements",),
+            "zg361m.346.a.tt": ("count it only once at year-end",),
+            "zg361m.347.t": ("Limit on Manual Manager Adjustments",),
+            "zg361m.347.a.tt": ("verify accuracy later",),
+            "zg361m.351.a.tt": ("Record rules, control groups, and end dates", "agreed results"),
+            "zg361m.352.a.tt": ("conversion note", "fresh record"),
+            "zg361m.354.a": ("independent follow-up audit",),
+            "zg361m.355.t": ("Automatic Target Increases",),
+            "zg361m.356.a.tt": ("limit automatic target increases",),
+            "zg361m.359.t": ("Returning Quota and Renotifying",),
+            "zg361m.359.b.tt": ("without notifying the people affected",),
+            "zg361m.360.a.tt": ("record their responsibility in the organizational ledger",),
+            "zg361m.360.b.tt": ("target share of top-rated talent",),
+            "zg361m.361.a.tt": ("staff trust, and well-being",),
+            "zg361m.361.b.tt": ("target share of top-rated talent",),
+        }
+        for key, tokens in english_tokens.items():
+            with self.subTest(key=key):
+                for token in tokens:
+                    self.assertIn(token, english[key])
+        reviewed_english = "\n".join(english[key] for key in english_tokens).lower()
+        for internal_or_broken in (
+            "pay-band mapping", "slot cost", "counteroffer", "definition of ready",
+            "manager override budget", "preregister", "meta-audit", "target ratchet",
+            "quota reflow", "talent-density narrative", "management-score cost",
+        ):
+            with self.subTest(forbidden=internal_or_broken):
+                self.assertNotIn(internal_or_broken, reviewed_english)
+
     def test_every_policy_surface_has_self_contained_copy(self) -> None:
         opening_punctuation = tuple("。！？；：，、,.!?;:)]}）】》〉」』”’…—-·/／")
         dynamic_openers = tuple("[$@")

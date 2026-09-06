@@ -666,8 +666,8 @@
   },
   "312": {
     "title_en": "Full Internal Job Posting",
-    "option_a_cn": "所有合资格者可见空岗、汇报线、薪酬带和目标，内部期后再外招",
-    "option_a_en": "Publish openings, reporting lines, bands, and goals to all eligible staff before external hiring",
+    "option_a_cn": "所有合资格者可见空岗、汇报线、薪酬区间和目标，内部公示期后再外招",
+    "option_a_en": "Publish openings, reporting lines, pay ranges, and goals to all eligible staff before external hiring",
     "option_b_cn": "空岗只在经理圈流转，由熟悉的人选快速补位",
     "option_b_en": "Circulate openings only among managers and fill quickly through familiar candidates",
     "profile": "organization",
@@ -701,11 +701,11 @@
     "reference_choice": "a"
   },
   "316": {
-    "title_en": "Pay-Band Mapping on Transfer",
+    "title_en": "Pay-Range Alignment on Transfer",
     "option_a_cn": "专业薪级与岗位津贴分开，保薪或分期调整并在申请前公开",
     "option_a_en": "Separate professional pay from role premium and publish preservation or phased adjustment upfront",
-    "option_b_cn": "到岗即按新岗位带宽重定全部薪俸，消除过渡例外",
-    "option_b_en": "Reset all pay to the new role band on arrival and eliminate transition exceptions",
+    "option_b_cn": "到岗即按新岗位薪酬区间重新核定全部薪俸，消除过渡例外",
+    "option_b_en": "Reset all pay to the new role's pay range on arrival and eliminate transition exceptions",
     "profile": "compensation",
     "reference_choice": "a"
   },
@@ -719,18 +719,18 @@
     "reference_choice": "a"
   },
   "318": {
-    "title_en": "Transfer Application Frequency and Slot Cost",
-    "option_a_cn": "每轮有限正式申请，另给高潜一次不占槽的探索面谈并约束拖延",
-    "option_a_en": "Limit formal applications, add one no-slot exploration for high potential, and police delay",
+    "title_en": "Transfer Application Frequency and Quota Use",
+    "option_a_cn": "每轮限正式申请；高潜力人选可额外面谈且不占正式名额",
+    "option_a_en": "Limit formal applications; give high-potential candidates one extra interview outside the quota",
     "option_b_cn": "每轮只准一次正式申请，错过或撤回即封闭本轮流动",
     "option_b_en": "Allow only one formal application per cycle; withdrawal or failure closes mobility",
     "profile": "organization",
     "reference_choice": "a"
   },
   "319": {
-    "title_en": "One Counteroffer Before Mandatory Release",
-    "option_a_cn": "原团队仅可给一次可交付方案，本人拒绝后按冻结时限交接放人",
-    "option_a_en": "Permit one deliverable counteroffer, then require a timed handover after rejection",
+    "title_en": "One Retention Offer Before Mandatory Release",
+    "option_a_cn": "原团队仅可提出一次可兑现的挽留方案，本人拒绝后按冻结时限交接放人",
+    "option_a_en": "Permit one deliverable retention offer, then require a timed handover after rejection",
     "option_b_cn": "允许原经理连续加码并延迟交接，直到关键工作补齐",
     "option_b_en": "Allow repeated counteroffers and delayed release until critical work is backfilled",
     "profile": "organization",
@@ -812,8 +812,8 @@
     "title_en": "Professional Community Contribution",
     "option_a_cn": "预留跨组工时维护标准、案例和评审，并把成果带回原团队",
     "option_a_en": "Reserve cross-team time for standards, cases, and reviews with explicit local return",
-    "option_b_cn": "经理限制共同体参与，要求所有容量优先本组短期项目",
-    "option_b_en": "Restrict community work and reserve all capacity for the manager's near-term projects",
+    "option_b_cn": "经理限制共同体参与，要求所有工时优先本组短期项目",
+    "option_b_en": "Restrict community work and reserve all working time for the manager's near-term projects",
     "profile": "learning",
     "reference_choice": "c"
   },
@@ -837,8 +837,8 @@
   },
   "331": {
     "title_en": "Protected Learning Time",
-    "option_a_cn": "每轮冻结少量学习容量，真危机挪用须写明补回日期",
-    "option_a_en": "Reserve a small learning capacity each cycle and date any emergency payback",
+    "option_a_cn": "每轮预留少量学习工时，真危机挪用须写明补回日期",
+    "option_a_en": "Reserve a small amount of learning time each cycle and set a date to restore any time taken for an emergency",
     "option_b_cn": "学习只准放在项目空档，交付吃紧时可永久取消",
     "option_b_en": "Allow learning only between projects and cancel it whenever delivery tightens",
     "profile": "learning",
@@ -854,7 +854,7 @@
     "reference_choice": "a"
   },
   "333": {
-    "title_en": "Service Commitment for Expensive Training",
+    "title_en": "Retention and Repayment Terms for Expensive Training",
     "option_a_cn": "按月递减培训返还义务，组织裁撤豁免并以真实应用验收收益",
     "option_a_en": "Taper repayment monthly, waive organization-led exits, and validate benefit through application",
     "option_b_cn": "培训后离任一律全额追索，以硬绑定保护投入",
@@ -866,22 +866,22 @@
     "title_en": "Unified Demand Intake with Source Labels",
     "option_a_cn": "所有需求标来源进入统一队列，被拒事项也保留价值 owner",
     "option_a_en": "Route every sourced request through one queue and retain value ownership even when rejected",
-    "option_b_cn": "允许高权 sponsor 私聊插单，以关系优先迅速启动事项",
-    "option_b_en": "Allow powerful sponsors to insert private requests and start work immediately",
+    "option_b_cn": "允许有权势的提名人私聊插单，以关系优先迅速启动事项",
+    "option_b_en": "Allow powerful nominators to insert private requests and start work immediately",
     "profile": "delivery",
     "reference_choice": "a"
   },
   "335": {
     "title_en": "Emergency Request Budget",
-    "option_a_cn": "预留少量急件槽，超额须延旧目标、补资源或由插单者签取舍",
-    "option_a_en": "Reserve a few urgent slots; excess requests must trade scope, resources, or signed ownership",
+    "option_a_cn": "预留少量急件名额，超额须延旧目标、补资源或由插单者签字取舍",
+    "option_a_en": "Reserve limited capacity for urgent work; excess requests must trade scope, resources, or signed ownership",
     "option_b_cn": "紧急需求可随时挤掉原目标，以即时响应优先处理年底债务",
     "option_b_en": "Let urgent work displace committed goals at any time and handle the debt later",
     "profile": "delivery",
     "reference_choice": "a"
   },
   "336": {
-    "title_en": "Definition of Ready for Demand Admission",
+    "title_en": "Demand Intake Requirements",
     "option_a_cn": "缺受益人、验收、边界或依赖时退回补充，或只批小额探索",
     "option_a_en": "Return requests missing beneficiary, acceptance, scope, or dependencies, or fund discovery only",
     "option_b_cn": "高层可将模糊需求直接压成正式承诺，用执行团队边做边澄清",
@@ -909,7 +909,7 @@
   },
   "339": {
     "title_en": "Estimate Calibration Instead of On-Time Rewards",
-    "option_a_cn": "分解复杂度误判、故意留水和外部阻塞，按逐轮变准奖励估算",
+    "option_a_cn": "分开记录复杂度误判、故意虚增工期和外部阻塞，奖励逐轮变准的估算",
     "option_a_en": "Separate complexity error, padding, and blockers, rewarding estimates that improve over cycles",
     "option_b_cn": "只奖是否准时，鼓励所有人报足缓冲以保证兑现",
     "option_b_en": "Reward on-time delivery alone, encouraging enough padding to guarantee the date",
@@ -920,8 +920,8 @@
     "title_en": "Work-in-Progress Limit",
     "option_a_cn": "每人只承诺少量在制项目，临时超限须审批并记录容量代价",
     "option_a_en": "Limit concurrent commitments per person and approve temporary excess with capacity cost",
-    "option_b_cn": "允许多项目并开，以可见忙碌和抢先启动换取交付尾差",
-    "option_b_en": "Open many projects at once, trading completion for visible activity and early starts",
+    "option_b_cn": "允许多项目并开，以可见忙碌和抢先启动换取更多尾部延期",
+    "option_b_en": "Open many projects at once, trading completed work for visible activity, early starts, and more late finishes",
     "profile": "workload",
     "reference_choice": "a"
   },
@@ -972,17 +972,17 @@
   },
   "346": {
     "title_en": "Material Performance Signals Outside the Cycle",
-    "option_a_cn": "重大功过即时记一次性信号，只调奖励、调查或目标，年末消费一次",
-    "option_a_en": "Record a one-use off-cycle signal for reward, inquiry, or goal change and consume it once",
+    "option_a_cn": "重大功过即时记录，只调整奖励、调查或目标，年末只结算一次",
+    "option_a_en": "Record major performance outside the cycle for a reward, inquiry, or goal change, and count it only once at year-end",
     "option_b_cn": "重大事件立即重跑整组排名，以最快反映最新表现",
     "option_b_en": "Rerun the whole cohort immediately after a major event to reflect the latest performance",
     "profile": "assessment",
     "reference_choice": "a"
   },
   "347": {
-    "title_en": "Manager Override Budget",
-    "option_a_cn": "每位经理仅有少量调整点，点名受益者、承担者、理由并回写命中率",
-    "option_a_en": "Give managers few override points naming beneficiary, bearer, reason, and later accuracy",
+    "title_en": "Limit on Manual Manager Adjustments",
+    "option_a_cn": "每位经理只准少量调整；须写明受益者、承担者和理由，事后核验准确性",
+    "option_a_en": "Limit manager adjustments; name affected people and reasons, then verify accuracy later",
     "option_b_cn": "允许经理按整体判断自由改榜，以快速纠正算法不懂的人情",
     "option_b_en": "Let managers freely rewrite rankings to correct algorithmic blind spots immediately",
     "profile": "calibration",
@@ -1017,8 +1017,8 @@
   },
   "351": {
     "title_en": "Regional Policy Pilot",
-    "option_a_cn": "少数公爵领预注册规则、对照组和结束日，再按冻结结果扩张",
-    "option_a_en": "Preregister rules, controls, and end dates in a few duchies before evidence-based expansion",
+    "option_a_cn": "在少数公爵领事先登记规则、对照组和结束日，再按约定结果决定是否推广",
+    "option_a_en": "Record rules, control groups, and end dates in a few duchies before the pilot, then expand only if the agreed results support it",
     "option_b_cn": "全境立即切换新规则，以统一执行快速获得大样本",
     "option_b_en": "Switch the whole realm immediately for uniform enforcement and a large sample",
     "profile": "governance",
@@ -1026,8 +1026,8 @@
   },
   "352": {
     "title_en": "Mapping Legacy Records Across Policy Versions",
-    "option_a_cn": "保留旧制原值并附可比映射，或从新轮另起序列",
-    "option_a_en": "Preserve legacy values with a comparison mapping or start a separate new sequence",
+    "option_a_cn": "保留旧制原值并附换算说明，或从新一轮重新记账",
+    "option_a_en": "Preserve the original values with a conversion note, or begin a fresh record with the new cycle",
     "option_b_cn": "按最新公式静默重算全部历史，使报表立即统一",
     "option_b_en": "Silently recompute all history under the latest formula for instant uniformity",
     "profile": "governance",
@@ -1044,15 +1044,15 @@
   },
   "354": {
     "title_en": "Gaming the Fairness Metric",
-    "option_a_cn": "元审计抽查原始申诉、流失与退出事实，奖励主动暴露并修复问题",
-    "option_a_en": "Meta-audit raw appeals, attrition, and exits, rewarding disclosure and repair",
+    "option_a_cn": "复核审计抽查原始申诉、流失与退出事实，奖励主动暴露并修复问题",
+    "option_a_en": "Use an independent follow-up audit to sample raw appeals, attrition, and exits, rewarding disclosure and repair",
     "option_b_cn": "把低翻案率和低流失设硬指标，要求经理迅速压平坏数据",
     "option_b_en": "Set low overturn and attrition rates as hard targets and make managers flatten bad data",
     "profile": "governance",
     "reference_choice": "a"
   },
   "355": {
-    "title_en": "High-Performer Target Ratchet",
+    "title_en": "Automatic Target Increases for High Performers",
     "option_a_cn": "区分可复制能力与偶然红利，限制目标增幅并同步资源或权力",
     "option_a_en": "Separate repeatable ability from windfall, cap target growth, and add resources or authority",
     "option_b_cn": "以上轮峰值直接设新底线，以持续加压榨取更高产出",
@@ -1062,8 +1062,8 @@
   },
   "356": {
     "title_en": "Good-News Hoarding and Cutoff Arbitrage",
-    "option_a_cn": "按真实完成时点核对成果并限制目标棘轮，鼓励立即上报",
-    "option_a_en": "Audit actual completion timestamps and restrain ratchets so full results are reported promptly",
+    "option_a_cn": "按真实完成时点核对成果并限制目标自动加码，鼓励立即上报",
+    "option_a_en": "Audit actual completion timestamps and limit automatic target increases so full results are reported promptly",
     "option_b_cn": "只按截止日入账并持续抬目标，让官员自行平滑两轮产出",
     "option_b_en": "Book only at cutoff and keep ratcheting targets, leaving officials to smooth output",
     "profile": "endgame",
@@ -1088,29 +1088,29 @@
     "reference_choice": "a"
   },
   "359": {
-    "title_en": "Quota Reflow and Renotice After an Overturn",
-    "option_a_cn": "使用预留名额或重审边界人，凡受影响者均重新送达并允许申诉",
-    "option_a_en": "Use reserve quota or review boundary cases, renotifying every affected official with appeal rights",
-    "option_b_cn": "暗中把边界人降档以立即补回配额，不重开连环程序",
-    "option_b_en": "Quietly downgrade a boundary case to restore quota without reopening the chain",
+    "title_en": "Returning Quota and Renotifying After an Overturn",
+    "option_a_cn": "使用预留名额或重审档位边缘的受评者，凡受影响者均重新送达并允许申诉",
+    "option_a_en": "Use reserve quota or review officials at the rating boundary, renotifying every affected official with appeal rights",
+    "option_b_cn": "暗中把档位边缘的受评者降档以立即补回配额，不向受影响者重新送达",
+    "option_b_en": "Quietly downgrade an official at the rating boundary to restore quota without notifying the people affected",
     "profile": "calibration",
     "reference_choice": "a"
   },
   "360": {
     "title_en": "Collective Manager Refusal to Force a C",
-    "option_a_cn": "经理联合申请有证据的例外或公开改革，并承担管理分代价",
-    "option_a_en": "Let managers jointly seek an evidenced exception or public reform at a management-score cost",
-    "option_b_cn": "命令各经理单独硬切末位，以组织强制力守住人才密度叙事",
-    "option_b_en": "Order each manager to force a bottom rating and preserve the talent-density narrative",
+    "option_a_cn": "经理联合申请有证据的例外或公开改革，并把责任记入组织账簿",
+    "option_a_en": "Let managers jointly seek an evidenced exception or public reform and record their responsibility in the organizational ledger",
+    "option_b_cn": "命令各经理单独硬切末位，以组织强制力守住高档人才比例",
+    "option_b_en": "Order each manager to force a bottom rating and preserve the target share of top-rated talent",
     "profile": "endgame",
     "reference_choice": "c"
   },
   "361": {
     "title_en": "The 361 Performance Charter",
-    "option_a_cn": "锁定证据公平、长期创新与组织温度优先的可修订宪章，并持续十年审计",
-    "option_a_en": "Adopt a revisable charter prioritizing evidence, long-term innovation, and organizational health with ten-year audits",
-    "option_b_cn": "锁定强制竞争与即时交付优先的硬宪章，用高压换人才密度",
-    "option_b_en": "Adopt a hard charter prioritizing forced competition and immediate delivery for talent density",
+    "option_a_cn": "锁定证据公平、长期创新与人员信任和福祉优先的可修订宪章，并持续十年审计",
+    "option_a_en": "Adopt a revisable charter prioritizing evidence, long-term innovation, staff trust, and well-being with ten-year audits",
+    "option_b_cn": "锁定强制竞争与即时交付优先的硬宪章，用高压守住高档人才比例",
+    "option_b_en": "Adopt a hard charter prioritizing forced competition and immediate delivery to preserve the target share of top-rated talent",
     "profile": "endgame",
     "reference_choice": "a"
   }

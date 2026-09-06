@@ -85,7 +85,7 @@ zg361_mechanism_315_ai_effect = {
 	}
 }
 
-# 316 转岗薪酬带映射
+# 316 转岗薪酬区间衔接
 zg361_mechanism_316_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_316_choice } }

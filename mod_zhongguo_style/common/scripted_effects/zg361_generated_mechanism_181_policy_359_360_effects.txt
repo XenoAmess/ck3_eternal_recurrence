@@ -4,7 +4,7 @@
 
 
 
-# 359 翻案后的配额回流与连环送达
+# 359 翻案后的名额返还与重新送达
 zg361_mechanism_359_choice_a_effect = {
 	if = {
 		limit = { NOT = { has_variable = zg361_mechanism_359_choice } }
