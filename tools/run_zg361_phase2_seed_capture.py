@@ -4418,6 +4418,20 @@ def _run_seed_static_preflight(
             True,
         ),
         (
+            "manager_recovery_interrupt_test",
+            config.clean_source
+            / "tools"
+            / "test_zg361_phase2_manager_recovery_interrupts.py",
+            False,
+        ),
+        (
+            "manager_recovery_interrupt_test_optimized",
+            config.clean_source
+            / "tools"
+            / "test_zg361_phase2_manager_recovery_interrupts.py",
+            True,
+        ),
+        (
             "seed_capture_test",
             config.clean_source / "tools" / "test_run_zg361_phase2_seed_capture.py",
             False,
