@@ -867,14 +867,20 @@ second_effect = { value = 2 }
         self.assertTrue(all(0 <= suffix < 10000 for suffix in references))
         self.assertEqual(set(), references - definitions)
 
-    def test_08_every_id_has_consumer_three_routes_and_player_event(self) -> None:
+    def test_08_every_id_has_consumer_routes_and_reachable_player_choices(self) -> None:
         for mid in sorted(EXPECTED_IDS):
             with self.subTest(mid=mid):
                 self.assertIn(f"zg361_we_m{mid}_consume_effect = {{", self.effects)
                 self.assertIn(f"zg361we.{mid} = {{", self.events)
                 for letter in "abc":
                     self.assertIn(f"zg361_we_m{mid}_route_{letter}_effect = {{", self.effects)
-                    self.assertIn(f"name = zg361we.{mid}.{letter}", block(self.events, f"zg361we.{mid}"))
+                event = block(self.events, f"zg361we.{mid}")
+                visible_letters = "a" if mid == 274 else "abc"
+                for letter in visible_letters:
+                    self.assertIn(f"name = zg361we.{mid}.{letter}", event)
+                if mid == 274:
+                    self.assertNotIn("name = zg361we.274.b", event)
+                    self.assertNotIn("name = zg361we.274.c", event)
 
     def test_09_definition_counts_are_exact(self) -> None:
         effect_names = tuple(name for name, _ in gen.top_level_effect_blocks(self.effects))
@@ -899,12 +905,13 @@ second_effect = { value = 2 }
         self.assertEqual(EXPECTED_IDS, {int(mid) for mid in consumers})
         self.assertEqual(EXPECTED_IDS, {int(mid) for mid in visible if int(mid) in EXPECTED_IDS})
 
-    def test_10_each_visible_event_is_player_only_and_exactly_three_options(self) -> None:
+    def test_10_each_visible_event_is_player_only_and_only_shows_reachable_options(self) -> None:
         for spec in gen.MECHANISMS:
             event = block(self.events, f"zg361we.{spec.mid}")
             with self.subTest(mid=spec.mid):
                 self.assertIn("is_ai = no", event)
-                self.assertEqual(3, event.count("\n\toption = {"))
+                expected_options = 1 if spec.mid == 274 else 3
+                self.assertEqual(expected_options, event.count("\n\toption = {"))
                 self.assertIn(f"EXPECTED_STATE = {spec.state}", event)
 
     def test_11_events_freeze_owner_subject_cycle_case(self) -> None:
@@ -1101,7 +1108,10 @@ second_effect = { value = 2 }
 \t\t\t\tTICKET_CASE = scope:zg361_we_{spec.domain}_case
 \t\t\t\tTICKET_STATE = {spec.state}
 \t\t\t}}"""
-            self.assertIn(expected_player_call, event, spec.mid)
+            if spec.mid == 274:
+                self.assertNotIn(expected_player_call, event, spec.mid)
+            else:
+                self.assertIn(expected_player_call, event, spec.mid)
 
             route_c = block(self.effects, f"zg361_we_m{spec.mid}_route_c_effect")
             self.assertIn(
@@ -1109,7 +1119,7 @@ second_effect = { value = 2 }
                 route_c,
                 spec.mid,
             )
-            bound_calls += 2
+            bound_calls += 1 if spec.mid == 274 else 2
 
         call_pattern = re.compile(
             r"(?m)^[ \t]+zg361_we_m(\d+)_route_c_effect = \{$"
@@ -1118,16 +1128,19 @@ second_effect = { value = 2 }
         player_call_ids = [int(mid) for mid in call_pattern.findall(self.events)]
         expected_ids = sorted(EXPECTED_IDS)
         self.assertEqual(expected_ids, sorted(timeout_call_ids))
-        self.assertEqual(expected_ids, sorted(player_call_ids))
-        self.assertEqual(80, bound_calls)
-        self.assertEqual(80, len(timeout_call_ids) + len(player_call_ids))
+        self.assertEqual(sorted(EXPECTED_IDS - {274}), sorted(player_call_ids))
+        self.assertEqual(79, bound_calls)
+        self.assertEqual(79, len(timeout_call_ids) + len(player_call_ids))
 
         all_route_c_rows: list[tuple[Path, str]] = []
         for path in MOD_ROOT.rglob("*.txt"):
             for line in read(path).splitlines():
                 if re.match(r"^\s*zg361_we_m\d+_route_c_effect = \{$", line):
                     all_route_c_rows.append((path, line))
-        self.assertEqual(120, len(all_route_c_rows))
+        # #274's visible event is reachable only after acceptance, so its
+        # refusal/defer routes remain available to deadline/source adapters
+        # but are deliberately absent from the player event.
+        self.assertEqual(119, len(all_route_c_rows))
         expected_route_c_paths = {
             path.resolve()
             for path in EVENT_PATHS
@@ -1179,7 +1192,9 @@ second_effect = { value = 2 }
         self.assertIn("zg361_we_queue_m274_appointment_ack_effect", accepted)
         self.assertNotIn("zg361_we_m275_route_a_effect", accepted)
         self.assertNotIn("id = zg361we.269", accepted)
-        self.assertIn("id = zg361we.275", accepted)
+        self.assertNotIn("id = zg361we.275", accepted)
+        self.assertNotIn("name = zg361we.274.b", accepted)
+        self.assertNotIn("name = zg361we.274.c", accepted)
         refused = block(self.events, "zg361we.275")
         self.assertIn("m275_refusal = 1", refused)
         self.assertIn("zg361_we_m269_route_a_effect", refused)
@@ -1472,13 +1487,28 @@ second_effect = { value = 2 }
 
     def test_28_ac_shadow_and_formal_hc_conversion_is_future_one_shot(self) -> None:
         contract = block(self.effects, "zg361_we_m254_route_a_effect")
+        contract_without_scope_cut = block(self.effects, "zg361_we_m254_route_b_effect")
         conversion = block(self.effects, "zg361_we_m257_route_a_effect")
+        nomination = block(self.effects, "zg361_we_m257_route_b_effect")
         future = block(self.effects, "zg361_we_m257_future_consume_effect")
         self.assertIn("shadow_hc_available add = -1", contract)
         self.assertIn("m254_formal_hc_touched value = 0", contract)
+        self.assertIn("m254_scope_reduction_policy value = 1", contract)
+        self.assertIn("m254_hc_bypass_requested value = 0", contract)
+        self.assertIn("m254_scope_reduction_policy value = 0", contract_without_scope_cut)
+        self.assertIn("m254_hc_bypass_requested value = 1", contract_without_scope_cut)
+        self.assertIn("m254_sunset_enforced value = 1", contract)
+        self.assertIn("m254_sunset_enforced value = 1", contract_without_scope_cut)
         self.assertIn("zg361_ch_hc_available add = -1", conversion)
         self.assertIn("zg361_ch_hc_reserved add = 1", conversion)
+        self.assertIn("m257_conversion_policy value = 1", conversion)
+        self.assertIn("m257_uniform_gate_required value = 1", conversion)
+        self.assertIn("m257_manager_nomination value = 0", conversion)
+        self.assertIn("m257_conversion_policy value = 2", nomination)
+        self.assertIn("m257_uniform_gate_required value = 0", nomination)
+        self.assertIn("m257_manager_nomination value = 1", nomination)
         self.assertIn("days = 365", conversion)
+        self.assertIn("m257_conversion_policy = var:zg361_we_m257_receipt_choice", future)
         self.assertIn("zg361_ch_hc_reserved add = -1", future)
         self.assertIn("zg361_ch_hc_occupied add = 1", future)
 

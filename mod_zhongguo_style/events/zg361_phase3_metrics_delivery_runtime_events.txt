@@ -3219,7 +3219,7 @@ zg361p3.335 = {
 	}
 }
 
-# #336 — Definition of Ready
+# #336 — Ready to Begin?
 zg361p3.336 = {
 	type = character_event
 	theme = stewardship

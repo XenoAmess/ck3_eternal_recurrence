@@ -526,6 +526,11 @@ class WorkforceProbationFactTests(unittest.TestCase):
             english,
         )
         self.assertIn("Record the outcome and its follow-up review.", english)
+        quality_rows = generator.localization_rows("simp_chinese")[3:7]
+        self.assertEqual(4, len(quality_rows))
+        for row in quality_rows:
+            self.assertIn("你", row)
+            self.assertNotIn("当事人", row)
         for forbidden in (
             "第 269 项",
             "消费同一结局",

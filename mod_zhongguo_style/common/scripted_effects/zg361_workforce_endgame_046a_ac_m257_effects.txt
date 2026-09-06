@@ -291,6 +291,9 @@ zg361_we_m257_route_a_effect = {
 			set_variable = { name = zg361_we_m257_conversion_official value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m257_recruitment_ref value = $TICKET_CASE$ }
 			set_variable = { name = zg361_we_m257_effective_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_we_m257_conversion_policy value = 1 }
+			set_variable = { name = zg361_we_m257_uniform_gate_required value = 1 }
+			set_variable = { name = zg361_we_m257_manager_nomination value = 0 }
 			set_variable = { name = zg361_we_formal_hc_pending value = 1 }
 			set_variable = { name = zg361_we_formal_hc_pending_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_formal_hc_pending_case value = $TICKET_CASE$ }
@@ -687,6 +690,9 @@ zg361_we_m257_route_b_effect = {
 			set_variable = { name = zg361_we_m257_conversion_official value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m257_recruitment_ref value = $TICKET_CASE$ }
 			set_variable = { name = zg361_we_m257_effective_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
+			set_variable = { name = zg361_we_m257_conversion_policy value = 2 }
+			set_variable = { name = zg361_we_m257_uniform_gate_required value = 0 }
+			set_variable = { name = zg361_we_m257_manager_nomination value = 1 }
 			set_variable = { name = zg361_we_formal_hc_pending value = 1 }
 			set_variable = { name = zg361_we_formal_hc_pending_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_formal_hc_pending_case value = $TICKET_CASE$ }

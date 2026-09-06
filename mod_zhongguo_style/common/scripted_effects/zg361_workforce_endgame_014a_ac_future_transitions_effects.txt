@@ -31,6 +31,14 @@ zg361_we_m257_future_consume_effect = {
 			trigger_else = { always = no }
 			has_variable = zg361_we_m257_conversion_pending
 			var:zg361_we_m257_conversion_pending = 1
+			has_variable = zg361_we_m257_conversion_policy
+			has_variable = zg361_we_m257_uniform_gate_required
+			has_variable = zg361_we_m257_manager_nomination
+			var:zg361_we_m257_conversion_policy = var:zg361_we_m257_receipt_choice
+			OR = {
+				AND = { var:zg361_we_m257_receipt_choice = 1 var:zg361_we_m257_uniform_gate_required = 1 var:zg361_we_m257_manager_nomination = 0 }
+				AND = { var:zg361_we_m257_receipt_choice = 2 var:zg361_we_m257_uniform_gate_required = 0 var:zg361_we_m257_manager_nomination = 1 }
+			}
 			has_variable = zg361_we_formal_hc_pending
 			var:zg361_we_formal_hc_pending = 1
 			var:zg361_we_formal_hc_pending_owner = var:zg361_we_m257_write_owner

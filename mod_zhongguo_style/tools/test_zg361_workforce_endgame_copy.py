@@ -100,12 +100,16 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
     def test_events_bind_one_tooltip_to_every_choice(self) -> None:
         events = gen.render_events().decode("utf-8-sig")
         for spec in gen.MECHANISMS:
-            for letter in "abc":
+            visible_letters = "a" if spec.mid == 274 else "abc"
+            for letter in visible_letters:
                 with self.subTest(mid=spec.mid, letter=letter):
                     self.assertEqual(
                         1,
                         events.count(f"custom_tooltip = {gen.NAMESPACE}.{spec.mid}.{letter}.tt"),
                     )
+            if spec.mid == 274:
+                self.assertNotIn(f"custom_tooltip = {gen.NAMESPACE}.274.b.tt", events)
+                self.assertNotIn(f"custom_tooltip = {gen.NAMESPACE}.274.c.tt", events)
 
     def test_generated_localization_has_labels_and_tooltips_in_both_languages(self) -> None:
         for language in ("simp_chinese", "english"):
@@ -115,6 +119,52 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
                 for letter in "abc":
                     self.assertIn(f" {gen.NAMESPACE}.{spec.mid}.{letter}:0", text)
                     self.assertIn(f" {gen.NAMESPACE}.{spec.mid}.{letter}.tt:0", text)
+
+    def test_audited_tooltips_state_only_real_consequences(self) -> None:
+        rows = localization_rows("simp_chinese")
+        expected_tokens = {
+            "zg361we.244.a.tt": ("5 日工时", "10 金币"),
+            "zg361we.247.b.tt": ("一年", "不设中途复盘"),
+            "zg361we.254.a.tt": ("缩减目标", "20 金币", "下一周期到期"),
+            "zg361we.254.b.tt": ("维持原目标", "绕过正式编制审查", "下一周期到期"),
+            "zg361we.255.a.tt": ("混合方案", "全周期成本 100"),
+            "zg361we.257.a.tt": ("公开统一门槛", "下一周期再完成转正"),
+            "zg361we.257.b.tt": ("经理提名", "下一周期再完成转正"),
+            "zg361we.259.b.tt": ("供应商合同账", "不处分甲方一线人员"),
+            "zg361we.262.b.tt": ("接收方单独定档", "借出方不记功"),
+            "zg361we.267.b.tt": ("支付此前预留的 5 金币内推奖",),
+            "zg361we.271.b.tt": ("预留 5 金币", "封票时才支付"),
+            "zg361we.274.a.tt": ("候选已接受", "共支付 15 金币", "正式名额转为在岗"),
+            "zg361we.276.b.tt": ("旧绩效档位", "完整保留"),
+            "zg361we.277.b.tt": ("名额仍转入冻结", "不会增加可招聘名额或立即招人"),
+            "zg361we.355.a.tt": ("新目标定为 120", "预留 10 金币", "下一周期"),
+            "zg361we.356.b.tt": ("申报顺延一轮", "真实完成周期", "撤销重复信用"),
+            "zg361we.361.a.tt": ("支付 5 金币", "10 治理工时"),
+            "zg361we.361.b.tt": ("支付 10 金币", "10 治理工时"),
+        }
+        for key, tokens in expected_tokens.items():
+            with self.subTest(key=key):
+                for token in tokens:
+                    self.assertIn(token, rows[key])
+        self.assertNotIn("无限期", rows["zg361we.247.b.tt"])
+        self.assertNotIn("清除", rows["zg361we.276.b.tt"])
+        self.assertNotIn("自动补岗", rows["zg361we.277.b.tt"])
+        self.assertNotIn("抬高下一轮目标", rows["zg361we.356.b.tt"])
+
+    def test_audited_subject_roles_and_handoff_evidence_are_explicit(self) -> None:
+        rows = localization_rows("simp_chinese")
+        role_tokens = {
+            254: "外包人员 [zg361_we_ac_subject.GetShortUIName]",
+            256: "外部执行者 [zg361_we_ac_subject.GetShortUIName]",
+            257: "外部成员 [zg361_we_ac_subject.GetShortUIName]",
+            261: "实际执行者 [zg361_we_ac_subject.GetShortUIName]",
+            264: "供应商 [zg361_we_ac_subject.GetShortUIName]",
+            266: "候选人 [zg361_we_ad_subject.GetShortUIName]",
+        }
+        for mid, token in role_tokens.items():
+            self.assertIn(token, rows[f"zg361we.{mid}.desc"])
+        self.assertIn("案头文书尚待核验", rows["zg361we.handoff.1.owner.desc"])
+        self.assertIn("案卷尚未确认", rows["zg361we.handoff.3.owner.desc"])
 
     def test_third_handoff_title_is_world_facing(self) -> None:
         chinese = gen.render_localization("simp_chinese").decode("utf-8-sig")

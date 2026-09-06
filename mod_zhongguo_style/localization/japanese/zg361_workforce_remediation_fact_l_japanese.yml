@@ -1,6 +1,6 @@
 ﻿l_japanese:
  zg361workforceremediationfact.1.t:0 "The Refused Position Remains Held"
- zg361workforceremediationfact.1.desc:0 "The file shows that [zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer thirty days ago. It preserves the refusal category, but contains neither the original clause, a revised clause, nor a candidate verification. The available facts therefore cannot support a completion finding."
+ zg361workforceremediationfact.1.desc:0 "The file shows that [zg361_workforce_remediation_fact_ticket_subject.GetShortUIName] refused the offer yesterday. It preserves the refusal category, but contains neither the original clause, a revised clause, nor a candidate verification. The available facts therefore cannot support a completion finding."
  zg361workforceremediationfact.1.fail:0 "Keep the position held: correction is not evidenced"
  zg361workforceremediationfact.1.reason_pay:0 "Recorded refusal category: inadequate compensation. No original and revised compensation clauses are available for comparison."
  zg361workforceremediationfact.1.reason_role:0 "Recorded refusal category: role or authority mismatch. No original and revised authority clauses are available for comparison."

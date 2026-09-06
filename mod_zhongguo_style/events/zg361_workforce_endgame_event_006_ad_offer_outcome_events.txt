@@ -53,39 +53,6 @@ zg361we.274 = {
 			}
 		}
 	}
-	option = {
-		name = zg361we.274.b
-		custom_tooltip = zg361we.274.b.tt
-		scope:zg361_we_ad_subject = {
-			zg361_we_m274_route_b_effect = {
-				TICKET_OWNER = scope:zg361_we_ad_owner
-				TICKET_SUBJECT = scope:zg361_we_ad_subject
-				TICKET_CYCLE = scope:zg361_we_ad_cycle
-				TICKET_CASE = scope:zg361_we_ad_case
-			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 } }
-			trigger_event = { id = zg361we.275 }
-		}
-	}
-	option = {
-		name = zg361we.274.c
-		custom_tooltip = zg361we.274.c.tt
-		scope:zg361_we_ad_subject = {
-			zg361_we_m274_route_c_effect = {
-				TICKET_OWNER = scope:zg361_we_ad_owner
-				TICKET_SUBJECT = scope:zg361_we_ad_subject
-				TICKET_CYCLE = scope:zg361_we_ad_cycle
-				TICKET_CASE = scope:zg361_we_ad_case
-				TICKET_STATE = 4
-			}
-		}
-		if = {
-			limit = { scope:zg361_we_ad_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 } }
-			trigger_event = { id = zg361we.275 }
-		}
-	}
 }
 
 zg361we.275 = {

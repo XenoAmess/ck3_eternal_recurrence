@@ -24,6 +24,25 @@
       "kind": "live_render_validation",
       "reason": "static source binding cannot validate dynamic scopes, rendered layout, or in-game wording",
       "status": "pending"
+    },
+    {
+      "count": 2,
+      "items": [
+        {
+          "key": "zg361we.274.b",
+          "reason": "option-like localization is not bound by an event option; another UI surface may own it",
+          "source": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml:262",
+          "status": "review"
+        },
+        {
+          "key": "zg361we.274.c",
+          "reason": "option-like localization is not bound by an event option; another UI surface may own it",
+          "source": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml:264",
+          "status": "review"
+        }
+      ],
+      "kind": "unbound_option_like_localization",
+      "status": "review"
     }
   ],
   "schema_version": 1,
@@ -133,18 +152,18 @@
       "sha256": "8e00f2b6db547ba3c0981db2b7d9884278025ab7fcc882cb4194fcd58084d99c"
     },
     {
-      "bytes": 70857,
+      "bytes": 70866,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-015.json",
       "records": 40,
-      "sha256": "e4942a018fd8e448f598cd13deab69d5e5a966fbe91790cb37fa30df47b34f82"
+      "sha256": "9b0017c6c286d011fe63f14af1344c19a85e560a50180488a5163d0f65a01d8c"
     },
     {
-      "bytes": 52002,
+      "bytes": 51568,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-016.json",
       "records": 26,
-      "sha256": "be2656914df5a28babaea22677f2161cf565d5669a088d4c0adc80e6a9e0e169"
+      "sha256": "7492cab0dcf7d4579dc391bd6bf39147aa586d7cc2084028396c24d05d931588"
     },
     {
       "bytes": 65938,
@@ -301,11 +320,11 @@
       "sha256": "7f3ee82a2a7f83abb7e0fb341d076303a575fd617c9ebd3074876aa7875f02d1"
     },
     {
-      "bytes": 69189,
+      "bytes": 69231,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-023.json",
       "records": 180,
-      "sha256": "6ce63952635c952cfce1f8e1e36b2574b431a86a447e5c026210acee8fab26b7"
+      "sha256": "3d5c14887b602f04a83507171dbdf3706d23d120e7821197da9b6f2569b826cd"
     },
     {
       "bytes": 76725,
@@ -322,25 +341,25 @@
       "sha256": "7b9513ccd44b89b3ed7d461bc6498cdec1f357378ac23e2eb363554901858d9a"
     },
     {
-      "bytes": 75525,
+      "bytes": 75587,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-026.json",
       "records": 180,
-      "sha256": "458ee88f747c294fb86d3da3bcd354399f02ac44b9ff7c81c64d0c734ad75f90"
+      "sha256": "7c383f00d6178e0f72e08cf6ec7684391d759e02eb9c33ce1f02a1534eaaedbd"
     },
     {
-      "bytes": 68981,
+      "bytes": 69197,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-027.json",
       "records": 180,
-      "sha256": "f052b6f71540ebfa3e9e6f2237c2daa8affba1d8e3d40e96aecbe111b12f4d01"
+      "sha256": "94173273001457ee6eb66ba0e1624d9237db369239c28b03518ce316d9fd9b09"
     },
     {
-      "bytes": 55783,
+      "bytes": 56102,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-028.json",
       "records": 139,
-      "sha256": "02854f035923ab9f38ad51dffb6ca48c337df0579c2cb59259bb77e40b56296b"
+      "sha256": "a6349ece77c6c9f328bc438957c59d81257a40291722903a374672b613e396ee"
     }
   ],
   "source_snapshot": {
@@ -831,10 +850,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 142406,
+        "bytes": 142402,
         "lines": 4453,
         "path": "mod_zhongguo_style/events/zg361_phase3_metrics_delivery_runtime_events.txt",
-        "sha256": "21823732db862632004412d7c864ca2364ea0e91759237d75764ff3a438d0f9b"
+        "sha256": "0e0a8644c33d2a8c0efbbb66b1682f18984b62e8e2b031550d574c0713419d43"
       },
       {
         "authority": {
@@ -971,10 +990,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 11007,
-        "lines": 294,
+        "bytes": 9990,
+        "lines": 261,
         "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_006_ad_offer_outcome_events.txt",
-        "sha256": "618eddbc17efdd3055792d3b3d4c5ad56d8347ead7c05cf40dfcc5e38bb87b1b"
+        "sha256": "00a4be5ecaf0aae02c193dfea0a358167b75eeccb8e3a04097d9281f38562602"
       },
       {
         "authority": {
@@ -1701,10 +1720,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 19665,
+        "bytes": 19707,
         "lines": 217,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_phase3_metrics_delivery_l_simp_chinese.yml",
-        "sha256": "895329fbf871b2c1bfb51017326a9e91a3932f9c19c680b05e4c0d0c509c8494"
+        "sha256": "337de2e71bd170e9982e473b67b39cdada053bef15803c1cad726798bc7c5904"
       },
       {
         "authority": {
@@ -1753,10 +1772,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 36823,
+        "bytes": 37453,
         "lines": 342,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
-        "sha256": "af48a045153ef0a416643d9bc9507b33e528b3e05216178a13f3036e43e56447"
+        "sha256": "2842ba2aadbe3fa5dfad7f86300e051408ccce43e6badc08e904ed45fc4fa8a0"
       },
       {
         "authority": {
@@ -1792,10 +1811,10 @@
           "method": "hand_authored_source",
           "status": "pass"
         },
-        "bytes": 1002,
+        "bytes": 999,
         "lines": 10,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_probation_fact_l_simp_chinese.yml",
-        "sha256": "76b75fa563976280b1c5b4f2ad9531bc6ea854303aa7eeb4d043ba5991c0af84"
+        "sha256": "efc20e067c23fb45881706917e9ac62095ddf3d5494e231a6d5aef71bb0d608a"
       },
       {
         "authority": {
@@ -1805,10 +1824,10 @@
           "method": "hand_authored_source",
           "status": "pass"
         },
-        "bytes": 297,
+        "bytes": 316,
         "lines": 4,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_rehire_fact_l_simp_chinese.yml",
-        "sha256": "30d74e514c7b5614314dc84f55cc3f6191c610589da2bb2bb56845e587546a54"
+        "sha256": "f0d98267400bbc920c8e4ce75f5ee1747c541484aa22905399f208e00a6bfa9e"
       },
       {
         "authority": {
@@ -1818,15 +1837,15 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 1076,
+        "bytes": 1069,
         "lines": 8,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_remediation_fact_l_simp_chinese.yml",
-        "sha256": "b75ac0f8f61e7324ff6f40750918266b2572fd543864ab0087d71116fc2cdaa0"
+        "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "26bccf5a8bff6461e3736bf9ee870a5cdc78c36f",
+    "git_commit": "ea24770a8e76eff62974b839e470206d4cb72bfe",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "55676d009d67cbc46e586376b87edae1082d660c3b96330bf88e9a9ce5bafaa7"
+    "input_digest_sha256": "0cf44d10e57e4c319922dbfe69dfabe5dfeeadfbe90a4de15149b9a17cb46171"
   },
   "summary": {
     "all_event_definitions": 1009,
@@ -1851,18 +1870,18 @@
       }
     },
     "dead_option_loc": {
-      "bound_visible_option_count": 1848,
+      "bound_visible_option_count": 1846,
       "missing_visible_option_count": 0,
-      "status": "pass",
-      "unbound_option_like_review_count": 0
+      "status": "review",
+      "unbound_option_like_review_count": 2
     },
     "final_localization_keys": 4999,
     "hidden_events": 383,
     "machine_failure_count": 0,
-    "manual_review_open_count": 627,
+    "manual_review_open_count": 629,
     "visible_description_bindings": 844,
     "visible_events": 626,
-    "visible_option_bindings": 1856,
+    "visible_option_bindings": 1854,
     "visible_title_bindings": 626
   }
 }

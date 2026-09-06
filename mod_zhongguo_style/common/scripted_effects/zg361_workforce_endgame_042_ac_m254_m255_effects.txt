@@ -263,6 +263,9 @@ zg361_we_m254_route_a_effect = {
 			set_variable = { name = zg361_we_m254_start_cycle value = $TICKET_CYCLE$ }
 			set_variable = { name = zg361_we_m254_sunset_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
 			set_variable = { name = zg361_we_m254_formal_hc_touched value = 0 }
+			set_variable = { name = zg361_we_m254_scope_reduction_policy value = 1 }
+			set_variable = { name = zg361_we_m254_hc_bypass_requested value = 0 }
+			set_variable = { name = zg361_we_m254_sunset_enforced value = 1 }
 			set_variable = { name = zg361_we_m254_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_m254_write_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m254_write_cycle value = $TICKET_CYCLE$ }
@@ -592,6 +595,9 @@ zg361_we_m254_route_b_effect = {
 			set_variable = { name = zg361_we_m254_start_cycle value = $TICKET_CYCLE$ }
 			set_variable = { name = zg361_we_m254_sunset_cycle value = { value = $TICKET_CYCLE$ add = 1 } }
 			set_variable = { name = zg361_we_m254_formal_hc_touched value = 0 }
+			set_variable = { name = zg361_we_m254_scope_reduction_policy value = 0 }
+			set_variable = { name = zg361_we_m254_hc_bypass_requested value = 1 }
+			set_variable = { name = zg361_we_m254_sunset_enforced value = 1 }
 			set_variable = { name = zg361_we_m254_write_owner value = $TICKET_OWNER$ }
 			set_variable = { name = zg361_we_m254_write_subject value = $TICKET_SUBJECT$ }
 			set_variable = { name = zg361_we_m254_write_cycle value = $TICKET_CYCLE$ }

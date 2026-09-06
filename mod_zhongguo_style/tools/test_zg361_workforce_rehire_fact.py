@@ -490,7 +490,8 @@ class WorkforceRehireFactTests(unittest.TestCase):
         for key in ("zg361wrf.1.t:0", "zg361wrf.1.desc:0", "zg361wrf.1.a:0"):
             self.assertIn(key, english)
             self.assertIn(key, chinese)
-        self.assertIn("旧 3.25", chinese)
+        self.assertIn("原先的末档考核结论", chinese)
+        self.assertNotIn("旧 3.25", chinese)
         self.assertIn("later real performance evidence", english)
         for language in generator.LANGUAGES[2:]:
             text = (

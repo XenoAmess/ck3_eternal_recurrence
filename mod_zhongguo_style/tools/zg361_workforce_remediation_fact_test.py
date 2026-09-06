@@ -478,6 +478,10 @@ class WorkforceRemediationFactTests(unittest.TestCase):
         english_values = bodies["english"].splitlines()[1:]
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             self.assertEqual(bodies[language].splitlines()[1:], english_values)
+        self.assertIn("yesterday", gen.ENGLISH["desc"])
+        self.assertIn("昨日", gen.CHINESE["desc"])
+        self.assertNotIn("thirty days", gen.ENGLISH["desc"])
+        self.assertNotIn("30 日前", gen.CHINESE["desc"])
 
     def test_12a_saved_scope_localization_uses_direct_name_path(self) -> None:
         forbidden_saved_scope = re.compile(

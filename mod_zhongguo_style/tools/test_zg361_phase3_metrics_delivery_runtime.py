@@ -1264,6 +1264,22 @@ class GeneratorContractTests(unittest.TestCase):
                     self.assertNotIn(route, desc_en)
         self.assertEqual(len(descriptions_cn), len(gen.MECHANISMS))
 
+    def test_reorg_and_admission_copy_uses_world_facing_terms(self) -> None:
+        chinese = loc_rows(
+            MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"
+        )
+        english = loc_rows(
+            MOD_ROOT / "localization" / "english" / "zg361_phase3_metrics_delivery_l_english.yml"
+        )
+        self.assertEqual(chinese["zg361p3.336.t"], "开工条件尚未齐备")
+        self.assertEqual(english["zg361p3.336.t"], "Ready to Begin?")
+        self.assertIn("原责任人与接任者", chinese["zg361p3.310.desc"])
+        self.assertIn("另立交接记录", chinese["zg361p3.310.b"])
+        self.assertIn("核清新旧目标的贡献", chinese["zg361p3.311.b"])
+        for key in ("zg361p3.310.desc", "zg361p3.310.b", "zg361p3.311.b"):
+            for forbidden in ("映射", "桥接"):
+                self.assertNotIn(forbidden, chinese[key])
+
     def test_resource_and_attribution_buttons_name_action_and_major_consequence(self) -> None:
         chinese = loc_rows(
             MOD_ROOT / "localization" / "simp_chinese" / "zg361_phase3_metrics_delivery_l_simp_chinese.yml"
