@@ -90,6 +90,8 @@ MANAGER_SEED_HANDOFF_CARRIER_EVENT_DEFINITION_KEY = "zga_phase2_manager_seed.11"
 MANAGER_SEED_OWNER_SCOPE = "zga_phase2_manager_owner"
 MANAGER_SEED_SUBJECT_SCOPE = "zga_phase2_manager_subject"
 MANAGER_SEED_PREEMPTIVE_EFFECT = "zga_phase2_manager_seed_maybe_begin_effect"
+MANAGER_POST_PIP_HANDOFF_MODE = "post_exact_pip_load_gui"
+MANAGER_DIRECT_ENTRY_MODE = "direct_already_player_manager"
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
         "bfc73fd9e7e80145cdf39aabc66bc2d731881122adab0cc0ba675fa07d1e6733"
@@ -3216,6 +3218,7 @@ def _manager_preemptive_transition_contract(
         "schema_version": 1,
         "result": "GREEN" if not failed_checks else "RED",
         "stage": "post_exact_pip_player_transition_contract",
+        "handoff_mode": MANAGER_POST_PIP_HANDOFF_MODE,
         "source_save_sha256": observed_save_sha256,
         "source_date_raw": source_date_raw,
         "completion_date_raw": completion_date_raw,
@@ -3242,6 +3245,345 @@ def _manager_preemptive_transition_contract(
     if failed_checks:
         raise SeedCaptureError(
             "manager post-PIP transition contract failed closed", evidence
+        )
+    return evidence
+
+
+def _manager_direct_entry_contract(
+    base_contract: dict[str, Any], observed_save_sha256: str
+) -> dict[str, Any]:
+    """Validate a source whose played character is already the manager.
+
+    The R108 autosave has exact file and played-character provenance, but no
+    independent offline proof of its reload date.  The first paused typed MCP
+    snapshot therefore binds the source date later in ``run_capture``; this
+    static route contract must not guess one from the preceding live session.
+    """
+
+    transition = base_contract.get("player_transition_contract")
+    saved_state = base_contract.get("saved_state")
+    source = base_contract.get("source")
+    if not all(isinstance(row, dict) for row in (transition, saved_state, source)):
+        raise SeedCaptureError("manager direct-entry contract is malformed")
+
+    def positive_contract_int(value: Any, label: str) -> int:
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise SeedCaptureError(f"{label} is not a positive integer")
+        return value
+
+    source_character_id = positive_contract_int(
+        transition.get("source_character_id"),
+        "manager direct source CharacterID",
+    )
+    target_character_id = positive_contract_int(
+        transition.get("target_character_id"),
+        "manager direct target CharacterID",
+    )
+    allowed_prebootstrap_events = transition.get(
+        "allowed_prebootstrap_event_definition_keys"
+    )
+    forbidden_pip_fields = (
+        "activation_event_definition_key",
+        "activation_event_date_raw",
+        "activation_event_selected_option_number",
+        "activation_event_selected_native_option_index",
+        "activation_event_outcome",
+        "activation_signal_variable",
+        "activation_signal_preselection_value",
+        "activation_signal_value",
+        "post_activation_paused_settle_seconds",
+        "hidden_carrier_event_definition_key",
+    )
+    checks = {
+        "source_save_sha_matches": source.get("sha256") == observed_save_sha256,
+        "source_saved_player_matches": (
+            saved_state.get("played_character_id") == source_character_id
+        ),
+        "source_date_is_live_bound": saved_state.get("date_raw") is None,
+        "already_player_manager": source_character_id == target_character_id,
+        "direct_entry_mode": (
+            transition.get("handoff_mode") == MANAGER_DIRECT_ENTRY_MODE
+        ),
+        "trigger_effect_matches": (
+            transition.get("trigger_effect_key") == MANAGER_SEED_PREEMPTIVE_EFFECT
+        ),
+        "direct_on_game_start_activation": (
+            transition.get("activation_surface")
+            == "on_game_start_after_lobby_direct_manager"
+        ),
+        "final_event_matches": (
+            transition.get("entry_event_definition_key")
+            == MANAGER_SEED_EVENT_DEFINITION_KEY
+        ),
+        "first_paused_snapshot_binds_date": (
+            transition.get("source_date_binding")
+            == "first_paused_typed_snapshot"
+        ),
+        "no_prebootstrap_allowlist": allowed_prebootstrap_events == [],
+        "no_activation_drain": (
+            transition.get("requires_exact_activation_event_drain") is False
+        ),
+        "all_prebootstrap_input_forbidden": (
+            transition.get("forbids_any_prebootstrap_event_input") is True
+            and transition.get("forbids_other_prebootstrap_event_drains") is True
+        ),
+        "final_event_bound_to_source_frame": (
+            transition.get("requires_final_event_at_bound_source_date") is True
+        ),
+        "timeline_speed_is_five": transition.get("timeline_speed") == 5,
+        "speed_only_for_required_advancement": (
+            transition.get("timeline_speed_only_if_advancement_required") is True
+        ),
+        "destructive_event_zero_input_red": (
+            transition.get("destructive_later_event_definition_key")
+            == "ep3_interactions_events.0630"
+            and transition.get("requires_destructive_event_zero_input_red") is True
+        ),
+        "source_hash_required": (
+            transition.get("requires_source_save_hash_match") is True
+        ),
+        "source_player_required": (
+            transition.get("requires_source_saved_player_identity") is True
+        ),
+        "typed_final_player_required": (
+            transition.get("requires_typed_final_player") is True
+        ),
+        "manager_revalidation_required": (
+            transition.get("requires_manager_entry_revalidation") is True
+        ),
+        "final_identity_match_required": (
+            transition.get("requires_final_manager_entry_identity_match") is True
+        ),
+        "no_fixture_switch_on_direct_route": (
+            transition.get("fixture_set_player_character_count") == 0
+        ),
+        "pip_contract_absent": all(
+            field not in transition for field in forbidden_pip_fields
+        ),
+        "no_fixture_character_creation": (
+            transition.get("fixture_creates_character") is False
+        ),
+        "no_fixture_title_creation": (
+            transition.get("fixture_creates_title") is False
+        ),
+        "no_fixture_relationship_creation": (
+            transition.get("fixture_creates_relationship") is False
+        ),
+        "no_product_b1_call": (
+            transition.get("fixture_calls_product_b1") is False
+        ),
+        "no_product_receipt_write": (
+            transition.get("fixture_writes_product_receipts") is False
+        ),
+    }
+    failed_checks = [name for name, passed in checks.items() if passed is not True]
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed_checks else "RED",
+        "stage": "direct_already_player_manager_contract",
+        "handoff_mode": MANAGER_DIRECT_ENTRY_MODE,
+        "source_save_sha256": observed_save_sha256,
+        "source_date_raw": None,
+        "completion_date_raw": None,
+        "source_date_binding": transition.get("source_date_binding"),
+        "source_character_id": source_character_id,
+        "target_character_id": target_character_id,
+        "allowed_prebootstrap_event_definition_keys": (
+            allowed_prebootstrap_events
+        ),
+        "activation_event_selected_option_number": None,
+        "post_activation_event_definition_key": None,
+        "post_activation_paused_settle_seconds": 0.0,
+        "checks": checks,
+        "failed_checks": failed_checks,
+    }
+    if failed_checks:
+        raise SeedCaptureError(
+            "manager direct-entry contract failed closed", evidence
+        )
+    return evidence
+
+
+def _manager_seed_entry_route_contract(
+    base_contract: dict[str, Any], observed_save_sha256: str
+) -> dict[str, Any]:
+    """Dispatch the canonical direct route or retained legacy PIP route."""
+
+    transition = base_contract.get("player_transition_contract")
+    if not isinstance(transition, dict):
+        raise SeedCaptureError("manager entry route contract is malformed")
+    mode = transition.get("handoff_mode")
+    if mode == MANAGER_DIRECT_ENTRY_MODE:
+        return _manager_direct_entry_contract(base_contract, observed_save_sha256)
+    if mode == MANAGER_POST_PIP_HANDOFF_MODE:
+        return _manager_preemptive_transition_contract(
+            base_contract, observed_save_sha256
+        )
+    raise SeedCaptureError(f"unsupported manager entry route: {mode!r}")
+
+
+def _bind_direct_manager_source_snapshot(
+    service: Any,
+    route: dict[str, Any],
+    artifacts: Path,
+) -> dict[str, Any]:
+    """Freeze the first paused typed frame without sending gameplay input."""
+
+    snapshot = service.snapshot()
+    if not isinstance(snapshot, dict):
+        raise SeedCaptureError("direct manager source snapshot is not an object")
+    played = snapshot.get("played_character")
+    played_character_id = (
+        played.get("character_id") if isinstance(played, dict) else None
+    )
+    date_raw = snapshot.get("date_raw")
+    revision = snapshot.get("revision")
+    expected_manager_id = route.get("target_character_id")
+    checks = {
+        "map_ready": snapshot.get("map_ready") is True,
+        "paused": snapshot.get("paused") is True,
+        "date_is_positive_integer": (
+            isinstance(date_raw, int)
+            and not isinstance(date_raw, bool)
+            and date_raw > 0
+        ),
+        "revision_is_positive_integer": (
+            isinstance(revision, int)
+            and not isinstance(revision, bool)
+            and revision > 0
+        ),
+        "played_character_matches_frozen_manager": (
+            played_character_id == expected_manager_id
+        ),
+    }
+    failed_checks = [name for name, passed in checks.items() if passed is not True]
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed_checks else "RED",
+        "stage": "direct_manager_first_paused_typed_snapshot",
+        "source_date_binding": "first_paused_typed_snapshot",
+        "date_raw": date_raw,
+        "revision": revision,
+        "expected_manager_character_id": expected_manager_id,
+        "observed_played_character_id": played_character_id,
+        "active_event": snapshot.get("active_event"),
+        "gameplay_input_sent": False,
+        "checks": checks,
+        "failed_checks": failed_checks,
+    }
+    write_json(artifacts / "manager-direct-source-snapshot.json", evidence)
+    if failed_checks:
+        raise SeedCaptureError(
+            "direct manager source was not a paused typed frame", evidence
+        )
+    return evidence
+
+
+def _validate_direct_manager_candidate(
+    candidate: dict[str, Any],
+    capture_result: dict[str, Any],
+    expected_manager_id: int,
+) -> dict[str, Any]:
+    """Require the materialized contract to retain the final typed pair."""
+
+    typed_entry = capture_result.get("manager_entry")
+    typed_manager_id = (
+        typed_entry.get("manager_character_id")
+        if isinstance(typed_entry, dict)
+        else None
+    )
+    typed_subject_id = (
+        typed_entry.get("reviewable_subject_character_id")
+        if isinstance(typed_entry, dict)
+        else None
+    )
+    raw_contract_path = candidate.get("contract_path")
+    contract_path = (
+        Path(raw_contract_path).resolve()
+        if isinstance(raw_contract_path, str) and raw_contract_path
+        else None
+    )
+    contract: dict[str, Any] | None = None
+    if contract_path is not None and contract_path.is_file():
+        payload = json.loads(contract_path.read_text(encoding="utf-8"))
+        if isinstance(payload, dict):
+            contract = payload
+    contract_saved = contract.get("saved_state") if isinstance(contract, dict) else None
+    contract_entry = contract.get("manager_entry") if isinstance(contract, dict) else None
+    contract_manager_id = (
+        contract_entry.get("manager_character_id")
+        if isinstance(contract_entry, dict)
+        else None
+    )
+    contract_subject_id = (
+        contract_entry.get("reviewable_subject_character_id")
+        if isinstance(contract_entry, dict)
+        else None
+    )
+    checks = {
+        "candidate_result_green": candidate.get("result") == "GREEN",
+        "candidate_ready": candidate.get("ready") is True,
+        "candidate_played_manager_exact": (
+            candidate.get("played_character_id") == expected_manager_id
+        ),
+        "candidate_manager_exact": (
+            isinstance(candidate.get("manager_entry"), dict)
+            and candidate["manager_entry"].get("manager_character_id")
+            == expected_manager_id
+        ),
+        "candidate_subject_matches_typed_event": (
+            isinstance(candidate.get("manager_entry"), dict)
+            and candidate["manager_entry"].get(
+                "reviewable_subject_character_id"
+            )
+            == typed_subject_id
+        ),
+        "contract_path_is_file": contract is not None,
+        "contract_kind_ready": (
+            isinstance(contract, dict)
+            and contract.get("kind") == "zg361_phase2_player_manager_paused_seed"
+            and contract.get("ready") is True
+        ),
+        "contract_saved_player_exact": (
+            isinstance(contract_saved, dict)
+            and contract_saved.get("played_character_id") == expected_manager_id
+        ),
+        "contract_manager_exact": contract_manager_id == typed_manager_id,
+        "contract_subject_matches_typed_event": (
+            contract_subject_id == typed_subject_id
+        ),
+    }
+    failed_checks = [name for name, passed in checks.items() if passed is not True]
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed_checks else "RED",
+        "stage": "direct_manager_candidate_identity",
+        "expected_manager_character_id": expected_manager_id,
+        "typed_manager_character_id": typed_manager_id,
+        "typed_subject_character_id": typed_subject_id,
+        "candidate_contract_path": (
+            str(contract_path) if contract_path is not None else None
+        ),
+        "candidate_manager_character_id": (
+            candidate.get("manager_entry", {}).get("manager_character_id")
+            if isinstance(candidate.get("manager_entry"), dict)
+            else None
+        ),
+        "candidate_subject_character_id": (
+            candidate.get("manager_entry", {}).get(
+                "reviewable_subject_character_id"
+            )
+            if isinstance(candidate.get("manager_entry"), dict)
+            else None
+        ),
+        "contract_manager_character_id": contract_manager_id,
+        "contract_subject_character_id": contract_subject_id,
+        "checks": checks,
+        "failed_checks": failed_checks,
+    }
+    if failed_checks:
+        raise SeedCaptureError(
+            "direct manager candidate lost the final typed identity", evidence
         )
     return evidence
 
@@ -4873,16 +5215,42 @@ def run_capture(
         if loader_error_scan.get("result") != "GREEN":
             raise SeedCaptureError("loader error.log scan returned non-GREEN")
 
-        preemptive_transition: dict[str, Any] | None = None
+        manager_route: dict[str, Any] | None = None
+        direct_source_snapshot: dict[str, Any] | None = None
         if config.seed_purpose == MANAGER_SEED_PURPOSE:
-            preemptive_transition = _manager_preemptive_transition_contract(
+            manager_route = _manager_seed_entry_route_contract(
                 base_contract, observed_save_sha
             )
-            report["manager_transition_contract"] = preemptive_transition
+            report["manager_transition_contract"] = manager_route
             write_json(
-                artifacts / "manager-preemptive-transition-contract.json",
-                preemptive_transition,
+                artifacts / "manager-entry-route-contract.json",
+                manager_route,
             )
+            if manager_route["handoff_mode"] == MANAGER_POST_PIP_HANDOFF_MODE:
+                write_json(
+                    artifacts / "manager-preemptive-transition-contract.json",
+                    manager_route,
+                )
+            else:
+                direct_source_snapshot = _bind_direct_manager_source_snapshot(
+                    service, manager_route, artifacts
+                )
+                manager_route["source_date_raw"] = direct_source_snapshot[
+                    "date_raw"
+                ]
+                manager_route["completion_date_raw"] = direct_source_snapshot[
+                    "date_raw"
+                ]
+                report["manager_transition_contract"] = manager_route
+                report["manager_direct_source_snapshot"] = direct_source_snapshot
+                write_json(
+                    artifacts / "manager-entry-route-contract.json",
+                    manager_route,
+                )
+        direct_manager_route = (
+            manager_route is not None
+            and manager_route["handoff_mode"] == MANAGER_DIRECT_ENTRY_MODE
+        )
         entry_snapshot = wait_for_bootstrap_event(
             service,
             artifacts,
@@ -4894,45 +5262,47 @@ def run_capture(
             expected_event_definition_key=config.seed_event_definition_key,
             source_save_sha256=observed_save_sha,
             maximum_date_raw=(
-                preemptive_transition["completion_date_raw"]
-                if preemptive_transition is not None
+                manager_route["completion_date_raw"]
+                if manager_route is not None
                 else None
             ),
             expected_event_date_raw=(
-                preemptive_transition["completion_date_raw"]
-                if preemptive_transition is not None
+                manager_route["completion_date_raw"]
+                if manager_route is not None
                 else None
             ),
-            allow_known_prebootstrap_drains=True,
+            allow_known_prebootstrap_drains=not direct_manager_route,
             known_prebootstrap_drain_allowlist=(
                 tuple(
-                    preemptive_transition[
+                    manager_route[
                         "allowed_prebootstrap_event_definition_keys"
                     ]
                 )
-                if preemptive_transition is not None
+                if manager_route is not None
                 else None
             ),
             known_b2_pip_option_number=(
-                preemptive_transition["activation_event_selected_option_number"]
-                if preemptive_transition is not None
+                manager_route["activation_event_selected_option_number"]
+                if manager_route is not None and not direct_manager_route
                 else None
             ),
             known_b2_pip_source_save_sha256s=(
-                (observed_save_sha,) if preemptive_transition is not None else None
+                (observed_save_sha,)
+                if manager_route is not None and not direct_manager_route
+                else None
             ),
             post_activation_event_definition_key=(
-                preemptive_transition[
+                manager_route[
                     "post_activation_event_definition_key"
                 ]
-                if preemptive_transition is not None
+                if manager_route is not None and not direct_manager_route
                 else None
             ),
             post_activation_paused_settle_seconds=(
-                preemptive_transition[
+                manager_route[
                     "post_activation_paused_settle_seconds"
                 ]
-                if preemptive_transition is not None
+                if manager_route is not None and not direct_manager_route
                 else 0.0
             ),
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
@@ -4942,50 +5312,68 @@ def run_capture(
         )
         event_snapshot = entry_snapshot
         if config.seed_purpose == MANAGER_SEED_PURPOSE:
-            pip_drain_path = (
-                artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
-            )
-            pip_drain = (
-                json.loads(pip_drain_path.read_text(encoding="utf-8"))
-                if pip_drain_path.is_file()
-                else None
-            )
-            pip_drain_checks = {
-                "artifact_present": isinstance(pip_drain, dict),
-                "result_green": (
-                    isinstance(pip_drain, dict)
-                    and pip_drain.get("result") == "GREEN"
-                ),
-                "event_exact": (
-                    isinstance(pip_drain, dict)
-                    and pip_drain.get("event_definition_key")
-                    == preemptive_transition["activation_event_definition_key"]
-                ),
-                "refuse_option_three": (
-                    isinstance(pip_drain, dict)
-                    and isinstance(pip_drain.get("selection"), dict)
-                    and pip_drain["selection"].get("option_number") == 3
-                    and pip_drain["selection"].get("option_index") == 2
-                ),
-            }
-            if not all(pip_drain_checks.values()):
-                raise SeedCaptureError(
-                    "manager handoff did not follow the exact PIP refusal route",
-                    {
-                        "schema_version": 1,
-                        "state": "manager_exact_pip_drain_missing",
-                        "result": "RED",
-                        "checks": pip_drain_checks,
-                        "drain": pip_drain,
-                    },
+            if direct_manager_route:
+                pip_drain_path = (
+                    artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
                 )
-            report["manager_activation_event_drain"] = pip_drain
+                if pip_drain_path.exists():
+                    raise SeedCaptureError(
+                        "direct manager route unexpectedly produced a PIP drain",
+                        {
+                            "schema_version": 1,
+                            "state": "direct_manager_forbidden_pip_drain",
+                            "result": "RED",
+                            "path": str(pip_drain_path),
+                        },
+                    )
+                report["manager_entry_mode"] = "direct-already-player-manager"
+            else:
+                pip_drain_path = (
+                    artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
+                )
+                pip_drain = (
+                    json.loads(pip_drain_path.read_text(encoding="utf-8"))
+                    if pip_drain_path.is_file()
+                    else None
+                )
+                pip_drain_checks = {
+                    "artifact_present": isinstance(pip_drain, dict),
+                    "result_green": (
+                        isinstance(pip_drain, dict)
+                        and pip_drain.get("result") == "GREEN"
+                    ),
+                    "event_exact": (
+                        isinstance(pip_drain, dict)
+                        and pip_drain.get("event_definition_key")
+                        == manager_route["activation_event_definition_key"]
+                    ),
+                    "refuse_option_three": (
+                        isinstance(pip_drain, dict)
+                        and isinstance(pip_drain.get("selection"), dict)
+                        and pip_drain["selection"].get("option_number") == 3
+                        and pip_drain["selection"].get("option_index") == 2
+                    ),
+                }
+                if not all(pip_drain_checks.values()):
+                    raise SeedCaptureError(
+                        "manager handoff did not follow the exact PIP refusal route",
+                        {
+                            "schema_version": 1,
+                            "state": "manager_exact_pip_drain_missing",
+                            "result": "RED",
+                            "checks": pip_drain_checks,
+                            "drain": pip_drain,
+                        },
+                    )
+                report["manager_activation_event_drain"] = pip_drain
+                report["manager_entry_mode"] = (
+                    "post-exact-pip-load-gui-handoff"
+                )
             report["manager_entry_event"] = {
                 "event_definition_key": config.seed_event_definition_key,
                 "date_raw": entry_snapshot.get("date_raw"),
                 "revision": _positive_revision(entry_snapshot),
             }
-            report["manager_entry_mode"] = "post-exact-pip-load-gui-handoff"
             write_json(
                 artifacts / "manager-entry-event-snapshot.json",
                 entry_snapshot,
@@ -5003,7 +5391,7 @@ def run_capture(
         report["capture"] = capture_result
         if (
             config.seed_purpose == MANAGER_SEED_PURPOSE
-            and preemptive_transition is not None
+            and manager_route is not None
         ):
             final_entry = capture_result.get("manager_entry")
             final_manager_id = (
@@ -5017,16 +5405,30 @@ def run_capture(
                 else None
             )
             captured_played_id = capture_result.get("played_character_id")
-            expected_manager_id = preemptive_transition["target_character_id"]
-            expected_subject_id = preemptive_transition["source_character_id"]
-            source_date_raw = preemptive_transition["source_date_raw"]
-            completion_date_raw = preemptive_transition["completion_date_raw"]
+            expected_manager_id = manager_route["target_character_id"]
+            expected_subject_id = (
+                None
+                if direct_manager_route
+                else manager_route["source_character_id"]
+            )
+            source_date_raw = manager_route["source_date_raw"]
+            completion_date_raw = manager_route["completion_date_raw"]
             observed_date_raw = event_snapshot.get("date_raw")
+            binding_stage = (
+                "direct_already_player_manager_final_binding"
+                if direct_manager_route
+                else "post_exact_pip_player_transition"
+            )
+            handoff_mode = (
+                MANAGER_DIRECT_ENTRY_MODE
+                if direct_manager_route
+                else MANAGER_POST_PIP_HANDOFF_MODE
+            )
             final_binding_evidence = {
                 "schema_version": 1,
                 "result": "GREEN",
-                "stage": "post_exact_pip_player_transition",
-                "handoff_mode": "post_exact_pip_load_gui",
+                "stage": binding_stage,
+                "handoff_mode": handoff_mode,
                 "trigger_effect_key": MANAGER_SEED_PREEMPTIVE_EFFECT,
                 "source_save_sha256": observed_save_sha,
                 "source_date_raw": source_date_raw,
@@ -5059,7 +5461,9 @@ def run_capture(
                         final_manager_id == expected_manager_id
                     ),
                     "subject_matches_typed_handoff_subject": (
-                        final_subject_id == expected_subject_id
+                        final_subject_id != expected_manager_id
+                        if direct_manager_route
+                        else final_subject_id == expected_subject_id
                     ),
                     "played_character_matches_target_manager": (
                         captured_played_id == expected_manager_id
@@ -5077,16 +5481,23 @@ def run_capture(
             final_binding_evidence["failed_checks"] = failed_checks
             if failed_checks:
                 final_binding_evidence["result"] = "RED"
-            report["manager_player_transition"] = final_binding_evidence
-            report["manager_handoff_final_binding"] = final_binding_evidence
-            write_json(
-                artifacts / "manager-preemptive-player-transition.json",
-                final_binding_evidence,
-            )
+            if direct_manager_route:
+                report["manager_direct_final_binding"] = final_binding_evidence
+                write_json(
+                    artifacts / "manager-direct-final-binding.json",
+                    final_binding_evidence,
+                )
+            else:
+                report["manager_player_transition"] = final_binding_evidence
+                report["manager_handoff_final_binding"] = final_binding_evidence
+                write_json(
+                    artifacts / "manager-preemptive-player-transition.json",
+                    final_binding_evidence,
+                )
             if failed_checks:
                 raise SeedCaptureError(
-                    "post-PIP manager transition differs from the hash-bound "
-                    "source player, exact completion date, or final typed event",
+                    "manager entry differs from the hash-bound source player, "
+                    "bound source date, or final typed event",
                     final_binding_evidence,
                 )
         materialize_kwargs: dict[str, Any] = {
@@ -5118,7 +5529,22 @@ def run_capture(
                 artifacts / "provider-probes.json"
             )
         candidate = seed.materialize_candidate(**materialize_kwargs)
+        if not isinstance(candidate, dict):
+            raise SeedCaptureError("seed materializer returned a non-object")
         report["candidate"] = candidate
+        if direct_manager_route and manager_route is not None:
+            direct_candidate_identity = _validate_direct_manager_candidate(
+                candidate,
+                capture_result,
+                manager_route["target_character_id"],
+            )
+            report["manager_direct_candidate_identity"] = (
+                direct_candidate_identity
+            )
+            write_json(
+                artifacts / "manager-direct-candidate-identity.json",
+                direct_candidate_identity,
+            )
         report["result"] = "GREEN"
         report["scenario_verdict"] = "GREEN"
         report["seed_verdict"] = "GREEN"

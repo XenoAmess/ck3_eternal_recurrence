@@ -381,6 +381,8 @@ class FakeSeed:
         self.seed_purpose = seed_purpose
         self.materialize_kwargs: dict[str, object] | None = None
         self.manager_entry_override: dict[str, object] | None = None
+        self.candidate_entry_override: dict[str, object] | None = None
+        self.last_capture_result: dict[str, object] | None = None
 
     def capture_mcp_evidence(
         self, service: object, output: Path
@@ -420,6 +422,7 @@ class FakeSeed:
                     ),
                 }
             )
+        self.last_capture_result = result
         return result
 
     def materialize_candidate(self, **kwargs: object) -> dict[str, object]:
@@ -427,13 +430,39 @@ class FakeSeed:
         self.materialize_kwargs = dict(kwargs)
         output = Path(kwargs["output_dir"])
         output.mkdir(parents=True)
-        capture.write_json(output / "seed-contract.json", {"ready": True})
+        contract_path = output / "seed-contract.json"
         result: dict[str, object] = {
             "result": "GREEN",
             "ready": True,
+            "contract_path": str(contract_path),
         }
         if self.seed_purpose == capture.DEFAULT_SEED_PURPOSE:
+            capture.write_json(contract_path, {"ready": True})
             result["provider_baseline_ready"] = True
+        else:
+            require(
+                isinstance(self.last_capture_result, dict),
+                "manager candidate lacks typed capture input",
+            )
+            typed_entry = self.last_capture_result.get("manager_entry")
+            require(isinstance(typed_entry, dict), "manager typed entry is absent")
+            candidate_entry = (
+                dict(self.candidate_entry_override)
+                if self.candidate_entry_override is not None
+                else dict(typed_entry)
+            )
+            played_id = self.last_capture_result.get("played_character_id")
+            capture.write_json(
+                contract_path,
+                {
+                    "kind": "zg361_phase2_player_manager_paused_seed",
+                    "ready": True,
+                    "saved_state": {"played_character_id": played_id},
+                    "manager_entry": candidate_entry,
+                },
+            )
+            result["played_character_id"] = played_id
+            result["manager_entry"] = candidate_entry
         return result
 
 
@@ -581,6 +610,52 @@ class Fixture:
         self.attempt.mkdir(parents=True)
         self.rebuild_source_zip()
 
+    def use_direct_manager_contract(self) -> None:
+        path = self.clean / "tools" / "zg361_phase2_manager_seed_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        contract["saved_state"] = {
+            "date_raw": None,
+            "played_character_id": 9001,
+        }
+        contract["player_transition_contract"] = {
+            "handoff_mode": capture.MANAGER_DIRECT_ENTRY_MODE,
+            "trigger_effect_key": capture.MANAGER_SEED_PREEMPTIVE_EFFECT,
+            "activation_surface": "on_game_start_after_lobby_direct_manager",
+            "entry_event_definition_key": (
+                capture.MANAGER_SEED_EVENT_DEFINITION_KEY
+            ),
+            "source_character_id": 9001,
+            "target_character_id": 9001,
+            "target_source": "already_played_character",
+            "owner_scope": capture.MANAGER_SEED_OWNER_SCOPE,
+            "subject_scope": capture.MANAGER_SEED_SUBJECT_SCOPE,
+            "source_date_binding": "first_paused_typed_snapshot",
+            "allowed_prebootstrap_event_definition_keys": [],
+            "requires_exact_activation_event_drain": False,
+            "requires_final_event_at_bound_source_date": True,
+            "forbids_other_prebootstrap_event_drains": True,
+            "forbids_any_prebootstrap_event_input": True,
+            "timeline_speed": 5,
+            "timeline_speed_only_if_advancement_required": True,
+            "destructive_later_event_definition_key": (
+                "ep3_interactions_events.0630"
+            ),
+            "requires_destructive_event_zero_input_red": True,
+            "requires_source_save_hash_match": True,
+            "requires_source_saved_player_identity": True,
+            "requires_typed_final_player": True,
+            "requires_manager_entry_revalidation": True,
+            "requires_final_manager_entry_identity_match": True,
+            "fixture_set_player_character_count": 0,
+            "fixture_creates_character": False,
+            "fixture_creates_title": False,
+            "fixture_creates_relationship": False,
+            "fixture_calls_product_b1": False,
+            "fixture_writes_product_receipts": False,
+        }
+        path.write_text(json.dumps(contract), encoding="utf-8")
+        self.rebuild_source_zip()
+
     def rebuild_source_zip(self) -> None:
         with zipfile.ZipFile(self.source_zip, "w", zipfile.ZIP_DEFLATED) as archive:
             for path in sorted(
@@ -618,6 +693,7 @@ class Fixture:
         process_exit: bool = False,
         seed_purpose: str = capture.DEFAULT_SEED_PURPOSE,
         event_definition_key: str | None = None,
+        manager_pip_route: bool | None = None,
     ) -> capture.RuntimeBindings:
         acceptance = FakeAcceptance(self.game / "binaries" / "ck3.exe", calls)
         zgrun = FakeZhongguoRunner(
@@ -643,8 +719,12 @@ class Fixture:
                 )
             ),
             manager_pip_route=(
-                seed_purpose == capture.MANAGER_SEED_PURPOSE
-                and event_definition_key is None
+                manager_pip_route
+                if manager_pip_route is not None
+                else (
+                    seed_purpose == capture.MANAGER_SEED_PURPOSE
+                    and event_definition_key is None
+                )
             ),
         )
 
@@ -1464,6 +1544,204 @@ def test_player_manager_capture_routes_fixture_event_and_materializer() -> None:
         )
 
 
+def test_direct_player_manager_first_frame_capture_is_zero_input() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        fixture.use_direct_manager_contract()
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            manager_pip_route=False,
+        )
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        require(report["result"] == "GREEN", f"direct manager RED: {report}")
+        require(
+            report["manager_entry_mode"] == "direct-already-player-manager",
+            "direct source was reported as a player handoff",
+        )
+        source = report["manager_direct_source_snapshot"]
+        require(
+            source["result"] == "GREEN"
+            and source["date_raw"] == 777
+            and source["observed_played_character_id"] == 9001
+            and source["gameplay_input_sent"] is False,
+            f"first paused typed source was not bound exactly: {source}",
+        )
+        binding = report["manager_direct_final_binding"]
+        require(
+            binding["result"] == "GREEN"
+            and binding["observed_manager_character_id"] == 9001
+            and binding["observed_played_character_id"] == 9001
+            and binding["observed_reviewable_subject_character_id"] == 9002
+            and binding["observed_date_raw"] == 777
+            and binding["failed_checks"] == [],
+            f"direct final typed pair drifted: {binding}",
+        )
+        candidate = report["manager_direct_candidate_identity"]
+        require(
+            candidate["result"] == "GREEN"
+            and candidate["typed_manager_character_id"] == 9001
+            and candidate["typed_subject_character_id"] == 9002
+            and candidate["failed_checks"] == [],
+            f"direct candidate identity drifted: {candidate}",
+        )
+        require(
+            not any(call.startswith("execute:") for call in calls)
+            and not any(call.startswith("select-event-option:") for call in calls),
+            f"first-frame direct event sent unnecessary input: {calls}",
+        )
+        require(
+            not (fixture.artifacts / "known-pre-bootstrap-b2-pip-event-drain.json").exists()
+            and "manager_activation_event_drain" not in report
+            and "manager_player_transition" not in report,
+            "direct manager capture emitted legacy PIP evidence",
+        )
+
+
+def test_direct_player_manager_destructive_first_frame_is_zero_input_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        fixture.use_direct_manager_contract()
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            event_definition_key="ep3_interactions_events.0630",
+            manager_pip_route=False,
+        )
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            report["result"] == "RED"
+            and isinstance(evidence, dict)
+            and evidence.get("state") == "unexpected_visible_event"
+            and evidence.get("observed_event_definition_key")
+            == "ep3_interactions_events.0630"
+            and evidence.get("drained_pre_bootstrap_events") == [],
+            f"direct destructive first frame was not exact RED: {evidence}",
+        )
+        require(
+            not any(call.startswith("execute:") for call in calls)
+            and not any(call.startswith("select-event-option:") for call in calls)
+            and "seed-capture-mcp" not in calls
+            and "candidate-materialize" not in calls,
+            f"destructive first frame crossed the zero-input boundary: {calls}",
+        )
+
+
+def test_direct_player_manager_wrong_played_id_is_zero_input_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        fixture.use_direct_manager_contract()
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            manager_pip_route=False,
+        )
+        service = runtime.service_factory(None)
+        require(isinstance(service, FakeService), "direct player fake drifted")
+        service.played_character_id = 9003
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            report["result"] == "RED"
+            and isinstance(evidence, dict)
+            and evidence.get("stage")
+            == "direct_manager_first_paused_typed_snapshot"
+            and evidence.get("failed_checks")
+            == ["played_character_matches_frozen_manager"],
+            f"wrong direct player did not fail at the first frame: {evidence}",
+        )
+        require(
+            not any(call.startswith("execute:") for call in calls)
+            and not any(call.startswith("select-event-option:") for call in calls)
+            and "seed-capture-mcp" not in calls,
+            f"wrong direct player crossed the zero-input boundary: {calls}",
+        )
+
+
+def test_direct_player_manager_self_subject_is_red_before_materialize() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        fixture.use_direct_manager_contract()
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            manager_pip_route=False,
+        )
+        seed = runtime.seed
+        require(isinstance(seed, FakeSeed), "direct subject fake drifted")
+        seed.manager_entry_override = {
+            "manager_character_id": 9001,
+            "reviewable_subject_character_id": 9001,
+        }
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            report["result"] == "RED"
+            and isinstance(evidence, dict)
+            and evidence.get("stage")
+            == "direct_already_player_manager_final_binding"
+            and evidence.get("failed_checks")
+            == ["subject_matches_typed_handoff_subject"],
+            f"self-subject direct capture false-GREENed: {evidence}",
+        )
+        require(
+            "seed-capture-mcp" in calls and "candidate-materialize" not in calls,
+            "self-subject direct capture crossed materialization",
+        )
+
+
+def test_direct_player_manager_candidate_identity_drift_is_red() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = Fixture(Path(raw))
+        fixture.use_direct_manager_contract()
+        calls: list[str] = []
+        purpose = capture.MANAGER_SEED_PURPOSE
+        runtime = fixture.runtime(
+            calls,
+            seed_purpose=purpose,
+            manager_pip_route=False,
+        )
+        seed = runtime.seed
+        require(isinstance(seed, FakeSeed), "direct candidate fake drifted")
+        seed.candidate_entry_override = {
+            "manager_character_id": 9001,
+            "reviewable_subject_character_id": 9003,
+        }
+        report = capture.run_capture(
+            fixture.config(seed_purpose=purpose), runtime=runtime
+        )
+        evidence = report.get("failure_evidence")
+        require(
+            report["result"] == "RED"
+            and isinstance(evidence, dict)
+            and evidence.get("stage") == "direct_manager_candidate_identity"
+            and "candidate_subject_matches_typed_event"
+            in evidence.get("failed_checks", []),
+            f"direct candidate drift false-GREENed: {evidence}",
+        )
+        require(
+            "candidate-materialize" in calls,
+            "candidate drift test did not cross the intended materializer boundary",
+        )
+
+
 def test_player_manager_post_exact_pip_handoff_proves_final_event() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
@@ -1774,8 +2052,8 @@ def test_player_manager_same_date_grace_uses_speed_five() -> None:
             expected_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
             maximum_date_raw=777,
             expected_event_date_raw=777,
-            allow_known_prebootstrap_drains=True,
-            known_prebootstrap_drain_allowlist=("zg361b2.40",),
+            allow_known_prebootstrap_drains=False,
+            known_prebootstrap_drain_allowlist=(),
             timeline_speed=5,
             clock=FakeTime().clock,
             sleeper=lambda _seconds: None,
@@ -4468,6 +4746,11 @@ def main() -> int:
     test_real_phase2_frontend_first_binding_uses_first_mcp_generation()
     test_green_capture()
     test_player_manager_capture_routes_fixture_event_and_materializer()
+    test_direct_player_manager_first_frame_capture_is_zero_input()
+    test_direct_player_manager_destructive_first_frame_is_zero_input_red()
+    test_direct_player_manager_wrong_played_id_is_zero_input_red()
+    test_direct_player_manager_self_subject_is_red_before_materialize()
+    test_direct_player_manager_candidate_identity_drift_is_red()
     test_player_manager_post_exact_pip_handoff_proves_final_event()
     test_player_manager_handoff_rejects_final_subject_identity_drift()
     test_player_manager_preemptive_handoff_rejects_later_date()

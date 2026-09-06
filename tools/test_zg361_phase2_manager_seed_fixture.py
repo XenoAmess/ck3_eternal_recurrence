@@ -145,6 +145,14 @@ def main() -> int:
         assert gate in opener
     assert "zga_phase2_manager_seed.10 = {" not in events
     assert "zga_phase2_manager_seed.10." not in payload
+    maybe_begin = top_level_block(
+        effects, "zga_phase2_manager_seed_maybe_begin_effect"
+    )
+    direct_branch = maybe_begin[: maybe_begin.index("\n\telse_if = {")]
+    assert "zg361_is_celestial_liege_trigger = yes" in direct_branch
+    assert "zg361_review_now_business_valid_trigger = yes" in direct_branch
+    assert "trigger_event = zga_phase2_manager_seed.100" in direct_branch
+    assert "set_player_character =" not in direct_branch
     assert effects.count("set_player_character =") == 1
     assert "set_player_character = scope:zga_phase2_manager_owner" in effects
     assert "add_character_flag = zga_phase2_manager_seed_handoff_pending" in effects
@@ -254,48 +262,41 @@ def main() -> int:
     assert contract["status"] == "blocked_live_capture_required"
     assert contract["ready"] is False
     assert contract["source"]["sha256"] == (
-        "8e6ceb97e97cd6b9185ebbcce38b42fc087e0b800cd5e321037c9f29a79e45b9"
+        "63a390a73fbc66c4339b3f3979e77c25ef18289299dd1514f54ef1f8db3d99c8"
     )
+    assert contract["source"]["bytes"] == 79528933
+    assert contract["source"]["absolute_save"] == (
+        "Z:\\b3r108_native_state\\profile\\save games\\autosave.ck3"
+    )
+    assert contract["saved_state"]["date_raw"] is None
     assert contract["saved_state"]["played_character_id"] == 29037
     transition = contract["player_transition_contract"]
     assert transition == {
-        "handoff_mode": "post_exact_pip_load_gui",
+        "handoff_mode": "direct_already_player_manager",
         "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-        "activation_surface": "load_safe_scripted_gui_terminal_pip_retry",
-        "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
-        "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
-        "hidden_carrier_delay_days": 0,
+        "activation_surface": "on_game_start_after_lobby_direct_manager",
+        "entry_event_definition_key": "zga_phase2_manager_seed.1",
         "source_character_id": 29037,
-        "target_character_id": 32904,
-        "target_source": "existing_immediate_liege_saved_by_fixture",
+        "target_character_id": 29037,
+        "target_source": "already_played_character",
         "owner_scope": "zga_phase2_manager_owner",
         "subject_scope": "zga_phase2_manager_subject",
-        "completion_date_raw": 53147040,
-        "allowed_prebootstrap_event_definition_keys": ["zg361b2.40"],
-        "activation_event_definition_key": "zg361b2.40",
-        "activation_event_date_raw": 53147040,
-        "activation_event_selected_option_number": 3,
-        "activation_event_selected_native_option_index": 2,
-        "activation_event_outcome": "refuse",
-        "activation_signal_variable": "zg361_b2_m015_state",
-        "activation_signal_preselection_value": 1,
-        "activation_signal_value": 5,
-        "fixture_gui_retry_duration_seconds": 0.5,
-        "post_activation_paused_settle_seconds": 5.0,
-        "forbids_timeline_resume_after_activation_event_drain": True,
-        "requires_exact_activation_event_drain": True,
-        "requires_completion_at_exact_date": True,
+        "source_date_binding": "first_paused_typed_snapshot",
+        "allowed_prebootstrap_event_definition_keys": [],
+        "requires_exact_activation_event_drain": False,
+        "requires_final_event_at_bound_source_date": True,
         "forbids_other_prebootstrap_event_drains": True,
-        "preempts_destructive_later_event": True,
+        "forbids_any_prebootstrap_event_input": True,
         "timeline_speed": 5,
+        "timeline_speed_only_if_advancement_required": True,
         "destructive_later_event_definition_key": "ep3_interactions_events.0630",
-        "destructive_later_event_date_raw": 53147256,
+        "requires_destructive_event_zero_input_red": True,
         "requires_source_save_hash_match": True,
         "requires_source_saved_player_identity": True,
-        "requires_typed_post_switch_player": True,
-        "requires_post_switch_manager_revalidation": True,
+        "requires_typed_final_player": True,
+        "requires_manager_entry_revalidation": True,
         "requires_final_manager_entry_identity_match": True,
-        "fixture_set_player_character_count": 1,
+        "fixture_set_player_character_count": 0,
         "fixture_creates_character": False,
         "fixture_creates_title": False,
         "fixture_creates_relationship": False,
