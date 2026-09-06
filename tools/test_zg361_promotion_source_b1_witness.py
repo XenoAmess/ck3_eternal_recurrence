@@ -200,11 +200,23 @@ class B1WitnessSourceTests(unittest.TestCase):
             owner.variables["zg361_b1_cycle_state"] = state
             self.assertFalse(shown(self.witness, owner))
 
-    def test_active_gate_matches_opener_and_both_action_paths_use_it(self) -> None:
+    def test_active_and_same_year_gates_match_opener_and_both_action_paths_use_it(self) -> None:
         opened = block(read_b1_effects(), "zg361_b1_open_cycle_effect")
+        opened_after_legacy_recovery = opened.split(
+            "zg361_b1_recover_legacy_active_cycle_effect = yes", 1
+        )[1]
+        opener_gate = block(opened_after_legacy_recovery, "limit")
         active_gate = "NOT = { has_character_flag = zg361_b1_cycle_active }"
-        self.assertIn(active_gate, block(opened, "limit"))
+        self.assertIn(active_gate, opener_gate)
         self.assertIn(active_gate, self.business)
+        same_year_gate = re.compile(
+            r"trigger_if\s*=\s*\{\s*"
+            r"limit\s*=\s*\{\s*has_variable\s*=\s*zg361_b1_cycle_open_year\s*\}\s*"
+            r"NOT\s*=\s*\{\s*var:zg361_b1_cycle_open_year\s*=\s*current_year\s*\}\s*"
+            r"\}\s*trigger_else\s*=\s*\{\s*always\s*=\s*yes\s*\}"
+        )
+        self.assertRegex(opener_gate, same_year_gate)
+        self.assertRegex(self.business, same_year_gate)
         gate = "NOT = {" + block(self.business, "NOT") + "}"
         self.assertFalse(shown(gate, opened_owner_projection()))
         self.assertTrue(shown(gate, OwnerProjection()))

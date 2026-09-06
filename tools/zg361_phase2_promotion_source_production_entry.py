@@ -3506,6 +3506,15 @@ def _manager_recovery_contract(
     rebound["character_scopes"] = rebound_character_scopes
     rebound["scope_types"] = scope_types
 
+    if event_key == "zg361.40":
+        # A newly switched human manager can receive the one-day Jingcha
+        # mandate after the canonical seed's original annual anchor.  The
+        # product still owns the exact event/root/options, but the old
+        # character's calendar congruence is not the new manager's identity.
+        rebound["date_policy"] = "manager-recovery-product-window"
+        rebound.pop("date_raw_anchor", None)
+        rebound.pop("date_period_hours", None)
+
     optional_scope_types_value = rebound.get("optional_scope_types")
     optional_scope_types = (
         dict(optional_scope_types_value)
@@ -4240,6 +4249,7 @@ def enter_promotion_source_checkpoint_v1(
     *,
     timeout_seconds: float = 300.0,
     poll_interval_seconds: float = 0.05,
+    prefer_natural_cycle: bool = False,
     stop_at_clean_review_boundary: bool = False,
     clean_boundary_event_definition_key: str | None = None,
     clock: Callable[[], float] = time.monotonic,
@@ -4282,6 +4292,8 @@ def enter_promotion_source_checkpoint_v1(
         "paused_progress_settle_seconds": PAUSED_PROGRESS_SETTLE_SECONDS,
         "review_action": None,
         "review_action_postcondition": None,
+        "prefer_natural_cycle": prefer_natural_cycle,
+        "natural_cycle_wait": None,
         "m146_option1_submission": None,
         "m146_date_raw": None,
         "timeline_interrupt_drains": [],
@@ -4412,10 +4424,6 @@ def enter_promotion_source_checkpoint_v1(
             for name in ("b1_active", "central_active", "pp_active")
         )
     ):
-        if initial_progress_observation["review_now_eligible"] is not True:
-            raise PromotionProductionEntryError(
-                "real review-now product action is not eligible on this seed"
-            )
         if stop_at_clean_review_boundary:
             evidence["result"] = "GREEN"
             evidence["readiness"] = "paused-clean-review-boundary"
@@ -4425,16 +4433,28 @@ def enter_promotion_source_checkpoint_v1(
             if initial_clean_boundary_event:
                 evidence["target_binding"] = copy.deepcopy(initial_event)
             return evidence
-        _activate_review_now_from_progress(
-            service,
-            source_progress=before,
-            source_revision=int(initial["revision"]),
-            player=player,
-            connection_generation=generation,
-            evidence=evidence,
-            nonce="promo.entry.review",
-            sleeper=sleeper,
-        )
+        if prefer_natural_cycle:
+            evidence["natural_cycle_wait"] = {
+                "starting_date_raw": starting_date,
+                "reason": "caller_requested_product_annual_pulse",
+                "initial_progress": copy.deepcopy(initial_progress_observation),
+                "state_mutation_submitted": False,
+            }
+        else:
+            if initial_progress_observation["review_now_eligible"] is not True:
+                raise PromotionProductionEntryError(
+                    "real review-now product action is not eligible on this seed"
+                )
+            _activate_review_now_from_progress(
+                service,
+                source_progress=before,
+                source_revision=int(initial["revision"]),
+                player=player,
+                connection_generation=generation,
+                evidence=evidence,
+                nonce="promo.entry.review",
+                sleeper=sleeper,
+            )
 
     deadline = clock() + timeout_seconds
     last_progress_date_raw = starting_date
@@ -4615,7 +4635,10 @@ def enter_promotion_source_checkpoint_v1(
                     for name in ("b1_active", "central_active", "pp_active")
                 )
                 if not active_witness:
-                    if _post_interrupt_seed_is_invalid(progress_observation):
+                    if (
+                        not prefer_natural_cycle
+                        and _post_interrupt_seed_is_invalid(progress_observation)
+                    ):
                         evidence["seed_invalid"] = {
                             "date_raw": date_raw,
                             "reason": (
@@ -4629,7 +4652,10 @@ def enter_promotion_source_checkpoint_v1(
                             "active B1/Central/PP witness and review-now is not "
                             "eligible"
                         )
-                    if evidence.get("review_action") is None:
+                    if (
+                        not prefer_natural_cycle
+                        and evidence.get("review_action") is None
+                    ):
                         _activate_review_now_from_progress(
                             service,
                             source_progress=progress_query,
@@ -4688,8 +4714,18 @@ def enter_promotion_source_checkpoint_v1(
                 evidence["target_binding"] = event
                 return evidence
             contract = KNOWN_TIMELINE_INTERRUPTS.get(key)
+            if (
+                contract is not None
+                and contract.get("root_character_id") != player
+            ):
+                contract = _manager_recovery_contract(
+                    contract, player=player, event_key=key,
+                )
             if stop_at_clean_review_boundary:
-                if contract is not None:
+                if (
+                    contract is not None
+                    and contract.get("root_character_id") != player
+                ):
                     contract = _manager_recovery_contract(
                         contract, player=player, event_key=key,
                     )

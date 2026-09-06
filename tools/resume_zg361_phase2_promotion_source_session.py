@@ -422,6 +422,7 @@ def run(
     artifacts: Path,
     timeout_seconds: float,
     stop_session_after: bool = False,
+    prefer_natural_cycle: bool = False,
 ) -> dict[str, object]:
     if timeout_seconds <= 0:
         raise RetainedSessionError("timeout must be positive")
@@ -447,6 +448,7 @@ def run(
         "launch_performed": False,
         "restart_performed": False,
         "session_stop_requested": stop_session_after,
+        "prefer_natural_cycle": prefer_natural_cycle,
         "source_run_cell": str(source_run_cell),
         "retention": copy.deepcopy(retention),
         "input_checks": inputs["checks"],
@@ -571,6 +573,7 @@ def run(
             enter_promotion_source_checkpoint_v1(
                 service,
                 timeout_seconds=timeout_seconds,
+                prefer_natural_cycle=prefer_natural_cycle,
                 evidence_out=entry,
                 runtime_diagnostic_probe=runtime_diagnostic_probe,
             )
@@ -697,6 +700,14 @@ def main() -> int:
     parser.add_argument("--artifacts-dir", type=Path, required=True)
     parser.add_argument("--timeout-seconds", type=float, default=1800.0)
     parser.add_argument("--stop-session-after", action="store_true")
+    parser.add_argument(
+        "--prefer-natural-cycle",
+        action="store_true",
+        help=(
+            "skip review-now and wait for the product annual pulse; used to "
+            "continue a retained same-year session without restarting CK3"
+        ),
+    )
     args = parser.parse_args()
     report = run(
         state_dir=args.state_dir,
@@ -705,6 +716,7 @@ def main() -> int:
         artifacts=args.artifacts_dir,
         timeout_seconds=args.timeout_seconds,
         stop_session_after=args.stop_session_after,
+        prefer_natural_cycle=args.prefer_natural_cycle,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report.get("result") == "GREEN" else 1

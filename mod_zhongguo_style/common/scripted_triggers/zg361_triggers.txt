@@ -23,6 +23,11 @@ zg361_review_now_business_valid_trigger = {
 	# The production opener already rejects an active B1 cycle from D0.
 	NOT = { has_character_flag = zg361_b1_cycle_active }
 	NOT = { has_character_flag = zg361_review_in_progress }
+	trigger_if = {
+		limit = { has_variable = zg361_b1_cycle_open_year }
+		NOT = { var:zg361_b1_cycle_open_year = current_year }
+	}
+	trigger_else = { always = yes }
 	NOT = { zg361_b1_serial_dependents_active_trigger = yes }
 	trigger_if = {
 		limit = { has_variable = zg361_last_settled_year }

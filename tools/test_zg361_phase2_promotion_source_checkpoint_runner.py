@@ -1513,6 +1513,18 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(rebound["option_count"], 3)
         self.assertEqual(rebound["selected_option_number"], 2)
 
+        jingcha = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.40"],
+            player=32904,
+            event_key="zg361.40",
+        )
+        self.assertEqual(jingcha["root_character_id"], 32904)
+        self.assertEqual(
+            jingcha["date_policy"], "manager-recovery-product-window"
+        )
+        self.assertNotIn("date_raw_anchor", jingcha)
+        self.assertNotIn("date_period_hours", jingcha)
+
         batch = production._manager_recovery_contract(
             production.KNOWN_TIMELINE_INTERRUPTS["zg361pp.9100"],
             player=32904,
