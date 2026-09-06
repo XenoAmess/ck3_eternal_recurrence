@@ -3530,9 +3530,12 @@ def _compact_progress_observation(
 
 def _post_interrupt_seed_is_invalid(
     observation: Mapping[str, object],
+    *,
+    stop_at_clean_review_boundary: bool = False,
 ) -> bool:
     return (
-        not any(
+        not stop_at_clean_review_boundary
+        and not any(
             observation.get(name) is True
             for name in ("b1_active", "central_active", "pp_active")
         )
@@ -4645,6 +4648,7 @@ def enter_promotion_source_checkpoint_v1(
         "initial_known_interrupt": None,
         "zg361_6_retain_wait": None,
         "seed_invalid": None,
+        "annual_cooldown_wait": None,
         "clean_review_boundary": None,
     })
     if runtime_diagnostic_probe is not None:
@@ -4759,7 +4763,10 @@ def enter_promotion_source_checkpoint_v1(
             for name in ("b1_active", "central_active", "pp_active")
         )
     ):
-        if stop_at_clean_review_boundary:
+        if (
+            stop_at_clean_review_boundary
+            and initial_progress_observation["review_now_eligible"] is True
+        ):
             evidence["result"] = "GREEN"
             evidence["readiness"] = "paused-clean-review-boundary"
             evidence["clean_review_boundary"] = copy.deepcopy(
@@ -4768,7 +4775,13 @@ def enter_promotion_source_checkpoint_v1(
             if initial_clean_boundary_event:
                 evidence["target_binding"] = copy.deepcopy(initial_event)
             return evidence
-        if prefer_natural_cycle:
+        if stop_at_clean_review_boundary:
+            evidence["annual_cooldown_wait"] = {
+                "starting_date_raw": starting_date,
+                "reason": "same-year-review-gate-after-completed-product-cycle",
+                "state_mutation_submitted": False,
+            }
+        elif prefer_natural_cycle:
             evidence["natural_cycle_wait"] = {
                 "starting_date_raw": starting_date,
                 "reason": "caller_requested_product_annual_pulse",
@@ -4971,8 +4984,25 @@ def enter_promotion_source_checkpoint_v1(
                 )
                 if not active_witness:
                     if (
+                        stop_at_clean_review_boundary
+                        and progress_observation["review_now_eligible"] is not True
+                        and evidence.get("annual_cooldown_wait") is None
+                    ):
+                        evidence["annual_cooldown_wait"] = {
+                            "starting_date_raw": date_raw,
+                            "reason": (
+                                "same-year-review-gate-after-completed-product-cycle"
+                            ),
+                            "state_mutation_submitted": False,
+                        }
+                    if (
                         not prefer_natural_cycle
-                        and _post_interrupt_seed_is_invalid(progress_observation)
+                        and _post_interrupt_seed_is_invalid(
+                            progress_observation,
+                            stop_at_clean_review_boundary=(
+                                stop_at_clean_review_boundary
+                            ),
+                        )
                     ):
                         evidence["seed_invalid"] = {
                             "date_raw": date_raw,
@@ -4989,6 +5019,7 @@ def enter_promotion_source_checkpoint_v1(
                         )
                     if (
                         not prefer_natural_cycle
+                        and not stop_at_clean_review_boundary
                         and evidence.get("review_action") is None
                     ):
                         _activate_review_now_from_progress(

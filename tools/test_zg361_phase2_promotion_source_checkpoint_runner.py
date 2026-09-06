@@ -2272,6 +2272,11 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "pp_active": False,
         }
         self.assertTrue(production._post_interrupt_seed_is_invalid(inactive))
+        self.assertFalse(
+            production._post_interrupt_seed_is_invalid(
+                inactive, stop_at_clean_review_boundary=True
+            )
+        )
         for witness in (
             "review_now_eligible", "b1_active", "central_active", "pp_active"
         ):
