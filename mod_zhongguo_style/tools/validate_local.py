@@ -13,7 +13,9 @@ Checks (plain rule / code hygiene only, scoped to this mod directory):
      simp_chinese and english yml.
   6. Player localization contains no naked ``#`` followed by a digit, which
      CK3 interprets as the start of a formatting marker and may swallow.
-  7. Runtime regression guards for the decision GUI bridge, appeal settlement,
+  7. Event localization never reuses the script-only ``scope:`` prefix for a
+     named data object; saved scopes are referenced as ``[name.Get...]``.
+  8. Runtime regression guards for the decision GUI bridge, appeal settlement,
      and scoreboard registration/data publication.
 
 Exit code 0 = GREEN, 1 = RED.
@@ -249,9 +251,17 @@ def parse_yml_keys(path: Path) -> list[str]:
         )
         if m:
             keys.append(m.group(1))
-            if re.search(r"#[0-9]", m.group(2)):
+            value = m.group(2)
+            if re.search(r"#[0-9]", value):
                 err(
                     "unsafe naked numeric localization marker "
+                    f"{path.relative_to(MOD_ROOT)}:{lineno}: {m.group(1)}"
+                )
+            if re.search(r"\[\s*scope:[A-Za-z0-9_]+\.", value):
+                err(
+                    "invalid saved-scope localization path; event localization "
+                    "uses '[name.Get...]', without the script-only 'scope:' "
+                    "prefix: "
                     f"{path.relative_to(MOD_ROOT)}:{lineno}: {m.group(1)}"
                 )
         else:
