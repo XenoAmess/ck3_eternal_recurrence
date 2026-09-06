@@ -31,6 +31,7 @@ from zg361_phase2_promotion_source_checkpoint_capture import (  # noqa: E402
     capture_promotion_source_checkpoint_v2,
 )
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
+    PromotionBindingError,
     PromotionScenarioInvalidatingInterrupt,
     enter_promotion_source_checkpoint_v1,
 )
@@ -642,6 +643,11 @@ def run(
         if capture.get("result") != "GREEN":
             raise RetainedSessionError("promotion source checkpoint capture returned RED")
         report["result"] = "GREEN"
+    except PromotionBindingError as error:
+        report.update(
+            promotion_binding_failure=copy.deepcopy(error.evidence),
+            error_reason=f"{type(error).__name__}: {error}",
+        )
     except PromotionScenarioInvalidatingInterrupt as error:
         report.update(
             result="SCENARIO_INVALID",

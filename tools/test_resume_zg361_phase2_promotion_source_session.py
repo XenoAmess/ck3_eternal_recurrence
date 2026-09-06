@@ -319,6 +319,76 @@ class RetainedRuntimeDiagnosticTests(unittest.TestCase):
         self.assertNotIn("550-day", report["error_reason"])
         self.assertEqual(persisted["blocking_diagnostic_count"], 1)
 
+    def test_binding_failure_report_preserves_rejected_frame(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state, cell, pipe = self._arrange_source(root)
+            for name in ("error.log", "debug.log"):
+                (state / "profile" / "logs" / name).write_bytes(PREFIX)
+            artifacts = root / "artifacts"
+            snapshot = {
+                "snapshot_id": "native:116",
+                "native_revision": 116,
+                "revision": 1,
+                "date_raw": entry.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+                "map_ready": True,
+                "paused": True,
+                "speed": 5,
+                "played_character": {"character_id": 29037},
+                "diagnostics": {"connection_generation": 1},
+            }
+            capabilities = {
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": 361116,
+                    "connection_generation": 1,
+                }
+            }
+            service = types.SimpleNamespace(
+                snapshot=lambda: dict(snapshot),
+                capabilities=lambda: dict(capabilities),
+            )
+            rejected = {
+                "snapshot_id": "native:117",
+                "map_ready": False,
+                "actual_player_character_id": None,
+                "expected_player_character_id": 29037,
+                "actual_connection_generation": 1,
+                "expected_connection_generation": 1,
+            }
+            with (
+                mock.patch.object(client, "NativeHeadlessGameplayDriver", _Driver),
+                mock.patch.object(
+                    client, "GameplayBridgeService", return_value=service
+                ),
+                mock.patch.object(
+                    client,
+                    "wait_for_retained_session_reconnect",
+                    return_value=(capabilities, snapshot),
+                ),
+                mock.patch.object(
+                    client,
+                    "retained_pid_lineage_evidence",
+                    return_value={"result": "GREEN", "restart_count": 0},
+                ),
+                mock.patch.object(
+                    client,
+                    "enter_promotion_source_checkpoint_v1",
+                    side_effect=entry.PromotionBindingError(rejected),
+                ),
+            ):
+                report = client.run(
+                    state_dir=state,
+                    pipe_name=pipe,
+                    source_run_cell=cell,
+                    artifacts=artifacts,
+                    timeout_seconds=1.0,
+                )
+
+        self.assertEqual(report["result"], "RED")
+        self.assertEqual(report["promotion_binding_failure"], rejected)
+        self.assertIn("PromotionBindingError", report["error_reason"])
+
 
 if __name__ == "__main__":
     unittest.main()
