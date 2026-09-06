@@ -899,10 +899,10 @@ PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
     "loaded_feature_manifest",
 )
 # Provider readiness and gameplay completion are separate gates.  Every frozen
-# read-only provider belongs to the capability preflight below; the missing
-# named-widget action and product mutations stay explicit in
-# ``PHASE2_MISSING_GAMEPLAY_ACTION_CELLS`` so they cannot make an observation
-# cell GREEN claim that the whole phase-two batch is complete.
+# read-only provider belongs to the capability preflight below; every gameplay
+# action stays explicit in ``PHASE2_MISSING_GAMEPLAY_ACTION_CELLS`` until its
+# provider-observed product evidence exists, so an observation cell cannot
+# make a whole-batch GREEN claim.
 PHASE2_UNFROZEN_REQUIREMENTS: dict[str, str] = {}
 # The runner-side map-entry path is now wired through a strict seed contract.
 # Immutable source/provenance drift remains a pre-launch RED.  A source-tree
@@ -1020,11 +1020,244 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
         "gameplay_action_complete": False,
     },
 }
-PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
+PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS = (
+    "incident_xyz_gameplay_action_and_postcondition_matrix",
+    "b2_pip_gameplay_action_and_postcondition_matrix",
+    "ai_owned_case_gameplay_action_and_postcondition_matrix",
+    "workforce_collective_gameplay_action_and_postcondition_matrix",
     "promotion_compensation_gameplay_action_and_postcondition_matrix",
     "manager_governance_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
 )
+PHASE2_REQUIRED_OBSERVATION_ONLY_CELLS = tuple(
+    cell_id
+    for cell_id, registration in PHASE2_DOMAIN_CELL_REGISTRY.items()
+    if registration.get("observation_only") is True
+)
+# Backward-compatible public name: before a live run every required gameplay
+# action is missing evidence.  The scenario recomputes this list after each
+# cell instead of treating static runner wiring as acceptance completion.
+PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
+    PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS
+)
+
+
+def _phase2_scoreboard_action_complete(value: object) -> bool:
+    return bool(
+        isinstance(value, Mapping)
+        and value.get("result") == "GREEN"
+        and value.get("gameplay_action_complete") is True
+        and value.get("candidate_batch_complete") is True
+        and value.get("all_postconditions_verified") is True
+        and value.get("all_expected_acl_denials_verified") is True
+        and value.get("per_surface_single_session_binding_verified") is True
+        and value.get("cross_surface_clean_restart_verified") is True
+        and value.get("production_capability_advertised") is True
+        and value.get("promotion_eligible") is True
+        and isinstance(value.get("provider_observed_postcondition"), Mapping)
+        and value["provider_observed_postcondition"].get("provider_observed")
+        is True
+        and value.get("action_ack_is_business_postcondition") is False
+    )
+
+
+def _phase2_gameplay_action_evidence_complete(
+    evidence: Mapping[str, object], cell_id: str
+) -> bool:
+    if cell_id == "incident_xyz_gameplay_action_and_postcondition_matrix":
+        value = evidence.get("incident_gameplay_action_cell")
+        checks = value.get("checks") if isinstance(value, Mapping) else None
+        required_checks = {
+            "entry_event_identity_bound",
+            "entry_option_materialized",
+            "ack_not_used_as_result",
+            "xyz_terminal_same_frame_ready",
+            "xyz_profile_probe_receipts_frozen",
+            "xyz_mixed_na_incident_matrix",
+            "wrong_owner_acl_typed_red",
+        }
+        return bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and isinstance(checks, Mapping)
+            and all(checks.get(key) is True for key in required_checks)
+        )
+    if cell_id == "b2_pip_gameplay_action_and_postcondition_matrix":
+        value = evidence.get("b2_pip_gameplay_action_cell")
+        return bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and value.get("postcondition_query_green") is True
+            and value.get("ack_is_postcondition") is False
+            and isinstance(value.get("postcondition"), Mapping)
+        )
+    if cell_id == "ai_owned_case_gameplay_action_and_postcondition_matrix":
+        value = evidence.get("ai_owned_case_gameplay_action_cell")
+        return bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and value.get("gameplay_action_complete") is True
+            and value.get("background_business_complete") is True
+            and value.get("action_ack_is_business_postcondition") is False
+        )
+    if cell_id == "workforce_collective_gameplay_action_and_postcondition_matrix":
+        value = evidence.get("workforce_collective_gameplay_action_cell")
+        checks = value.get("checks") if isinstance(value, Mapping) else None
+        session = (
+            value.get("session_lineage")
+            if isinstance(value, Mapping)
+            else None
+        )
+        return bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and value.get("stage") == "complete_and_baseline_restored"
+            and isinstance(checks, Mapping)
+            and checks
+            and all(check is True for check in checks.values())
+            and isinstance(session, Mapping)
+            and session.get("result") == "GREEN"
+            and session.get("baseline_restored") is True
+        )
+    if cell_id == "promotion_compensation_gameplay_action_and_postcondition_matrix":
+        value = evidence.get("promotion_compensation_gameplay_action_cell")
+        postcondition = (
+            value.get("business_postcondition")
+            if isinstance(value, Mapping)
+            else None
+        )
+        return bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and value.get("mcp_only") is True
+            and value.get("action_ack_is_business_postcondition") is False
+            and isinstance(postcondition, Mapping)
+            and postcondition.get("result") == "GREEN"
+            and postcondition.get("provider_observed") is True
+        )
+    if cell_id == "manager_governance_gameplay_action_and_postcondition_matrix":
+        value = evidence.get("manager_governance_gameplay_action_cell")
+        postcondition = (
+            value.get("provider_observed_postcondition")
+            if isinstance(value, Mapping)
+            else None
+        )
+        runner_checks = (
+            value.get("runner_checks") if isinstance(value, Mapping) else None
+        )
+        return bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and value.get("gameplay_action_complete") is True
+            and value.get("action_ack_is_business_postcondition") is False
+            and isinstance(postcondition, Mapping)
+            and postcondition.get("status") == "available"
+            and isinstance(postcondition.get("readiness"), Mapping)
+            and postcondition["readiness"].get("ready") is True
+            and isinstance(runner_checks, Mapping)
+            and runner_checks
+            and all(check is True for check in runner_checks.values())
+        )
+    if cell_id == "scoreboard_named_widget_action_and_postcondition_matrix":
+        return _phase2_scoreboard_action_complete(
+            evidence.get("scoreboard_gameplay_action_cell")
+        )
+    return False
+
+
+def _phase2_full_tree_completion_gate(
+    evidence: Mapping[str, object],
+) -> dict[str, object]:
+    """Require an exact, duplicate-free set of live action and query proofs."""
+
+    raw_actions = evidence.get("completed_gameplay_action_cells")
+    completed_actions = (
+        [value for value in raw_actions if isinstance(value, str)]
+        if isinstance(raw_actions, list)
+        else []
+    )
+    raw_observations = evidence.get("completed_observation_only_cells")
+    completed_observations = (
+        [value for value in raw_observations if isinstance(value, str)]
+        if isinstance(raw_observations, list)
+        else []
+    )
+    required_actions = list(PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS)
+    required_observations = list(PHASE2_REQUIRED_OBSERVATION_ONLY_CELLS)
+    missing_actions = [
+        value for value in required_actions if value not in completed_actions
+    ]
+    missing_observations = [
+        value
+        for value in required_observations
+        if value not in completed_observations
+    ]
+    duplicate_actions = sorted(
+        {
+            value
+            for value in completed_actions
+            if completed_actions.count(value) > 1
+        }
+    )
+    duplicate_observations = sorted(
+        {
+            value
+            for value in completed_observations
+            if completed_observations.count(value) > 1
+        }
+    )
+    unknown_actions = sorted(set(completed_actions) - set(required_actions))
+    unknown_observations = sorted(
+        set(completed_observations) - set(required_observations)
+    )
+    unimplemented = _phase2_unimplemented_domain_cells()
+    restore_consistency = evidence.get("domain_restore_consistency")
+    incomplete_action_evidence = [
+        value
+        for value in required_actions
+        if not _phase2_gameplay_action_evidence_complete(evidence, value)
+    ]
+    checks = {
+        "mcp_only": evidence.get("mcp_only") is True,
+        "no_ocr_or_coordinate_fallback": (
+            evidence.get("ocr_used") is False
+            and evidence.get("image_used") is False
+            and evidence.get("coordinates_used") is False
+        ),
+        "exact_gameplay_action_set": not missing_actions
+        and not duplicate_actions
+        and not unknown_actions
+        and len(completed_actions) == len(required_actions),
+        "all_gameplay_action_evidence_green": not incomplete_action_evidence,
+        "exact_observation_only_set": not missing_observations
+        and not duplicate_observations
+        and not unknown_observations
+        and len(completed_observations) == len(required_observations),
+        "domain_restore_consistency_green": isinstance(
+            restore_consistency, Mapping
+        )
+        and restore_consistency.get("result") == "GREEN",
+        "no_unimplemented_domain_cells": not unimplemented,
+    }
+    result = "GREEN" if all(checks.values()) else "RED"
+    return {
+        "schema_version": 1,
+        "kind": "zg361_phase2_full_tree_exact_completion_gate",
+        "result": result,
+        "required_gameplay_action_cells": required_actions,
+        "completed_gameplay_action_cells": completed_actions,
+        "missing_gameplay_action_cells": missing_actions,
+        "duplicate_gameplay_action_cells": duplicate_actions,
+        "unknown_gameplay_action_cells": unknown_actions,
+        "incomplete_gameplay_action_evidence": incomplete_action_evidence,
+        "required_observation_only_cells": required_observations,
+        "completed_observation_only_cells": completed_observations,
+        "missing_observation_only_cells": missing_observations,
+        "duplicate_observation_only_cells": duplicate_observations,
+        "unknown_observation_only_cells": unknown_observations,
+        "unimplemented_domain_cells": unimplemented,
+        "checks": checks,
+    }
 
 
 def log(message: str) -> None:
@@ -18785,10 +19018,14 @@ def run_phase2_live_scenario(
         "post_restore_domain_queries": None,
         "domain_restore_consistency": None,
         "completed_observation_only_cells": [],
+        "missing_observation_only_cells": list(
+            PHASE2_REQUIRED_OBSERVATION_ONLY_CELLS
+        ),
         "missing_gameplay_action_cells": list(
             PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
         ),
         "unimplemented_domain_cells": _phase2_unimplemented_domain_cells(),
+        "full_tree_completion_gate": None,
         "failure_reason": None,
     }
     write_json(evidence_path, evidence)
@@ -19018,7 +19255,10 @@ def run_phase2_live_scenario(
             typed_selector_provider=manager_selector_provider,
         )
         evidence["manager_governance_gameplay_action_cell"] = manager_action
-        if manager_action.get("result") == "GREEN":
+        if (
+            manager_action.get("result") == "GREEN"
+            and manager_action.get("gameplay_action_complete") is True
+        ):
             evidence["completed_gameplay_action_cells"].append(
                 "manager_governance_gameplay_action_and_postcondition_matrix"
             )
@@ -19035,7 +19275,7 @@ def run_phase2_live_scenario(
             artifacts,
         )
         evidence["scoreboard_gameplay_action_cell"] = scoreboard_action
-        if scoreboard_action.get("result") == "GREEN":
+        if _phase2_scoreboard_action_complete(scoreboard_action):
             evidence["completed_gameplay_action_cells"].append(
                 "scoreboard_named_widget_action_and_postcondition_matrix"
             )
@@ -19131,7 +19371,15 @@ def run_phase2_live_scenario(
         evidence["workforce_collective_gameplay_action_cell"] = (
             workforce_action
         )
-        if workforce_action.get("result") == "GREEN":
+        workforce_checks = workforce_action.get("checks")
+        if (
+            workforce_action.get("result") == "GREEN"
+            and workforce_action.get("stage")
+            == "complete_and_baseline_restored"
+            and isinstance(workforce_checks, Mapping)
+            and bool(workforce_checks)
+            and all(value is True for value in workforce_checks.values())
+        ):
             evidence["completed_gameplay_action_cells"].append(
                 "workforce_collective_gameplay_action_and_postcondition_matrix"
             )
@@ -19171,20 +19419,27 @@ def run_phase2_live_scenario(
             ]
             write_json(evidence_path, evidence)
 
-        # Keep the full-tree completion gate RED until every remaining domain
-        # has its own provider-observed product evidence.  The promotion cell
-        # above is counted only after restoring the registered real .147 source
-        # and observing its compensation postcondition; its command ACK alone
-        # is never counted as business proof.
-        raise acceptance.RunnerError(
-            "phase-two MCP matrix RED: promotion/compensation is now wired "
-            "through its registered real zg361pp.147 checkpoint and typed "
-            "postcondition provider, but B3 manager governance remains "
-            "provider-pending until its typed AI manager selector is bound, "
-            "while the scoreboard "
-            "named-widget action/postcondition handler is static-wired but "
-            "live-pending on its product-surface checkpoints/preparer"
+        completion_gate = _phase2_full_tree_completion_gate(evidence)
+        evidence["full_tree_completion_gate"] = completion_gate
+        evidence["missing_gameplay_action_cells"] = list(
+            completion_gate["missing_gameplay_action_cells"]
         )
+        evidence["missing_observation_only_cells"] = list(
+            completion_gate["missing_observation_only_cells"]
+        )
+        if completion_gate.get("result") != "GREEN":
+            raise acceptance.RunnerError(
+                "phase-two MCP matrix exact completion gate RED: "
+                f"missing_actions={completion_gate['missing_gameplay_action_cells']!r}; "
+                f"missing_observations={completion_gate['missing_observation_only_cells']!r}; "
+                f"unimplemented={completion_gate['unimplemented_domain_cells']!r}"
+            )
+        evidence["result"] = "GREEN"
+        evidence["phase2_acceptance_complete"] = True
+        evidence["gameplay_green_claimed"] = True
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
     except BaseException as error:
         incident_path = artifacts / (
             "05_phase2_incident_xyz_gameplay_action_cell.json"
@@ -19396,30 +19651,7 @@ def run_phase2_live_scenario(
                     )
                     completed = evidence["completed_gameplay_action_cells"]
                     if (
-                        scoreboard_value.get("result") == "GREEN"
-                        and scoreboard_value.get("candidate_batch_complete")
-                        is True
-                        and scoreboard_value.get(
-                            "all_postconditions_verified"
-                        )
-                        is True
-                        and scoreboard_value.get(
-                            "all_expected_acl_denials_verified"
-                        )
-                        is True
-                        and scoreboard_value.get(
-                            "per_surface_single_session_binding_verified"
-                        )
-                        is True
-                        and scoreboard_value.get(
-                            "cross_surface_clean_restart_verified"
-                        )
-                        is True
-                        and scoreboard_value.get(
-                            "production_capability_advertised"
-                        )
-                        is True
-                        and scoreboard_value.get("promotion_eligible") is True
+                        _phase2_scoreboard_action_complete(scoreboard_value)
                         and isinstance(completed, list)
                         and (
                             "scoreboard_named_widget_action_and_postcondition_matrix"
@@ -19439,6 +19671,14 @@ def run_phase2_live_scenario(
                         ]
             except (OSError, ValueError, json.JSONDecodeError):
                 pass
+        completion_gate = _phase2_full_tree_completion_gate(evidence)
+        evidence["full_tree_completion_gate"] = completion_gate
+        evidence["missing_gameplay_action_cells"] = list(
+            completion_gate["missing_gameplay_action_cells"]
+        )
+        evidence["missing_observation_only_cells"] = list(
+            completion_gate["missing_observation_only_cells"]
+        )
         lineage_path = artifacts / "06_phase2_save_restore_lineage.json"
         if lineage_path.is_file():
             try:

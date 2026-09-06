@@ -3705,6 +3705,10 @@ def main() -> int:
         ]
         assert capture._phase2_unimplemented_domain_cells() == []
         assert capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS == (
+            "incident_xyz_gameplay_action_and_postcondition_matrix",
+            "b2_pip_gameplay_action_and_postcondition_matrix",
+            "ai_owned_case_gameplay_action_and_postcondition_matrix",
+            "workforce_collective_gameplay_action_and_postcondition_matrix",
             "promotion_compensation_gameplay_action_and_postcondition_matrix",
             "manager_governance_gameplay_action_and_postcondition_matrix",
             "scoreboard_named_widget_action_and_postcondition_matrix",
@@ -5047,9 +5051,12 @@ def main() -> int:
             "ai_owned_case_matrix",
         ]
         assert wired_scenario["unimplemented_domain_cells"] == []
-        assert wired_scenario["missing_gameplay_action_cells"] == list(
-            capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
-        )
+        assert wired_scenario["missing_gameplay_action_cells"] == [
+            "workforce_collective_gameplay_action_and_postcondition_matrix",
+            "promotion_compensation_gameplay_action_and_postcondition_matrix",
+            "manager_governance_gameplay_action_and_postcondition_matrix",
+            "scoreboard_named_widget_action_and_postcondition_matrix",
+        ]
         assert (
             "incident_xyz_gameplay_action_and_postcondition_matrix"
             not in wired_scenario["missing_gameplay_action_cells"]
