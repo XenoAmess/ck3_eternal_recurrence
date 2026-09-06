@@ -1,0 +1,8 @@
+﻿# Acceptance-only survivability for the hash-bound R131 manager source.
+# This file is mounted only by run_zg361_phase2_seed_capture.py and is never
+# projected by a production or release builder.
+zga_phase2_manager_seed_survivability_modifier = {
+	icon = health_positive
+	health = 10
+	epidemic_resistance = 100
+}

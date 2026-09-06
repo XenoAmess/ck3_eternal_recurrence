@@ -2,3 +2,5 @@
  zga_phase2_manager_seed.1.t:0 "Phase-two player-manager seed capture"
  zga_phase2_manager_seed.1.desc:0 "This acceptance-only window binds the eligible played manager and one existing direct reviewable vassal for a typed MCP checkpoint."
  zga_phase2_manager_seed.1.a:0 "Capture the manager seed and close."
+ zga_phase2_manager_seed_survivability_modifier:0 "Acceptance Survivability"
+ zga_phase2_manager_seed_survivability_modifier_desc:0 "Acceptance-only health protection for the bounded player-manager capture."

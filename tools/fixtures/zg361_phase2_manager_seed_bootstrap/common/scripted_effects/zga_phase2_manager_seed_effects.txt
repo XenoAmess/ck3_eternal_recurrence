@@ -69,7 +69,29 @@ zga_phase2_manager_seed_maybe_begin_effect = {
 # current-human-player probe is independent of the lobby-only on_action
 # carrier: the runner binds its GetPlayer root to the exact contracted native
 # CharacterID before the invisible GUI records each gate exactly once.
+zga_phase2_manager_seed_apply_survivability_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			is_alive = yes
+			NOT = {
+				has_character_modifier = zga_phase2_manager_seed_survivability_modifier
+			}
+		}
+		# Acceptance-only mitigation authorized after R133, R137 and R143 all
+		# reached the same native death-terminal before this B1 could close.
+		# The 1100-day duration exactly matches the runner's bounded recovery
+		# horizon; it neither enters the product tree nor survives beyond it.
+		add_character_modifier = {
+			modifier = zga_phase2_manager_seed_survivability_modifier
+			days = 1100
+		}
+		debug_log = "ZGAP2MANAGERSEED: acceptance survivability health=10 epidemic_resistance=100 days=1100"
+	}
+}
+
 zga_phase2_manager_seed_log_direct_gates_effect = {
+	zga_phase2_manager_seed_apply_survivability_effect = yes
 	if = {
 		limit = {
 			is_ai = no

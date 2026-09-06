@@ -84,6 +84,12 @@ def main() -> int:
         / "scripted_widgets"
         / "zga_phase2_manager_seed_scripted_widgets.txt"
     )
+    modifiers = text(
+        FIXTURE
+        / "common"
+        / "modifiers"
+        / "zga_phase2_manager_seed_modifiers.txt"
+    )
 
     for gate in (
         "is_ai = no",
@@ -285,7 +291,7 @@ def main() -> int:
         r"(?m)^(zga_phase2_manager_seed_[a-z0-9_]+_effect)\s*=\s*\{",
         effects,
     )
-    assert len(fixture_effect_keys) == 3
+    assert len(fixture_effect_keys) == 4
     for effect_file in (FIXTURE / "common" / "scripted_effects").glob("*.txt"):
         effect_file_payload = text(effect_file)
         effect_file_keys = re.findall(
@@ -329,6 +335,26 @@ def main() -> int:
     assert "zg361_review_now_business_valid_trigger = yes" in direct_branch
     assert "trigger_event = zga_phase2_manager_seed.100" in direct_branch
     assert "set_player_character =" not in direct_branch
+    survivability = top_level_block(
+        effects, "zga_phase2_manager_seed_apply_survivability_effect"
+    )
+    assert "is_ai = no" in survivability
+    assert "is_alive = yes" in survivability
+    assert (
+        "has_character_modifier = "
+        "zga_phase2_manager_seed_survivability_modifier" in survivability
+    )
+    assert survivability.count("add_character_modifier = {") == 1
+    assert "days = 1100" in survivability
+    assert "health=10 epidemic_resistance=100 days=1100" in survivability
+    assert (
+        "zga_phase2_manager_seed_apply_survivability_effect = yes" in diagnostic
+    )
+    survivability_modifier = top_level_block(
+        modifiers, "zga_phase2_manager_seed_survivability_modifier"
+    )
+    assert "health = 10" in survivability_modifier
+    assert "epidemic_resistance = 100" in survivability_modifier
     assert effects.count("set_player_character =") == 1
     assert "set_player_character = scope:zga_phase2_manager_owner" in effects
     assert "add_character_flag = zga_phase2_manager_seed_handoff_pending" in effects
