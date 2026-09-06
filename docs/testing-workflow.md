@@ -1655,6 +1655,13 @@ exact build 改变、保留门任一健康检查失败，或者场景需要一�
 均不属于重启理由。最终交付仍需一次明确的受控 stop/cleanup receipt；中途
 `RETAINED` 是可重连生命周期状态，不得冒充 cleanup GREEN。
 
+任何存档候选占用 CK3 串行启动槽前，必须先计算 source-save SHA-256，并在日报、周报、coverage ledger
+和既有 live artifact 中检索同一 SHA。若它已经以相同依赖版本产生相同 readiness/identity RED，则该输入
+直接静态拒绝；只有负责该失败的游戏、bridge、runner 恢复路径或存档内容发生可证明的因果变化时才允许复试。
+报告时间较旧、重新冻结相同字节或更换 run 编号都不构成新实验。2026-09-06 的 R128 复用了 R119 的
+`bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74`，并再次得到
+`played_character=null` / mailbox 未安装，正是这条启动前去重门禁所要阻止的浪费。
+
 R93 首次把这条策略跑通。新的 Python pipe server 必须异步等待 DLL 再连接，直到收到
 `hello` 且首个 snapshot 为 `map_ready=true`；刚创建 server 时的空 capability 不是 CK3
 死亡证据。`connection_generation` 是单个 Python endpoint 的本地代数，跨 client 不比较
