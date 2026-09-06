@@ -42,6 +42,13 @@ evaluation 和可选历史 outcome 分别绑定路径与精确 SHA-256；相对�
 `action_ready=false` 边界。manifest/输入哈希漂移、字段集合漂移、坏 UTF-8/JSON 或覆盖已有输出都会
 直接失败。即使完整 synthetic manifest 得到静态赢家，这个 runner 也不会升级 production readiness。
 
+`observed_surrender_outcome` 文件项现在可直接绑定完整的
+`xar.ck3.g2_source_specific_comparison_intake.v1` 后处理 envelope，无需调用方手工抽字段。runner 会先
+验证 envelope 的完整字段集、source report SHA、三项 remaining provider、source-specific readiness、
+全部 false 的 decision/action/GEN-034 边界，以及嵌套 intake/policy/projection 一致性，再提取已验证的
+outcome。任何 readiness 过报或嵌套结果漂移都会使整个文件 intake 失败；原始
+`raiktor-observed-surrender-outcome-v1` 对象仍保持兼容。
+
 ## 当前结果
 
 仓库仍没有 owner-approved budget source、production campaign certificate、同帧 Raiktor
@@ -56,6 +63,7 @@ source-specific same-lifecycle adapter；非 CK3 侧等待 owner source 与真�
 ## 离线验收
 
 focused tests 覆盖缺输入、完整绑定、draft owner、stale utility SHA、source-specific 后处理接线、
-兼容 policy 输出、完整/缺项 file manifest、哈希漂移与输出覆盖保护；normal 与 `python -O` 均通过。
+兼容 policy 输出、完整/缺项 file manifest、哈希漂移、输出覆盖保护、完整 source-specific envelope
+直连与 envelope readiness 过报拒绝；normal 与 `python -O` 均通过。
 相关 owner/white-peace/three-way/source-specific intake 回归也在同一矩阵中复跑。本包没有 CK3 进程、
 MCP query、mutation 或 readiness promotion。

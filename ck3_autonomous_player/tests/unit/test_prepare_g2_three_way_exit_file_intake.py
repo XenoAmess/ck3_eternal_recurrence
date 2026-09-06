@@ -11,6 +11,10 @@ from test_raiktor_three_way_exit_intake import (
     _complete_inputs,
     _write_owner,
 )
+from test_prepare_g2_source_specific_comparison_intake import (
+    INTAKE as SOURCE_INTAKE,
+    _report as _source_specific_report,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -185,6 +189,76 @@ class G2ThreeWayExitFileIntakeTests(unittest.TestCase):
                 INTAKE.run_file_intake(
                     manifest,
                     root / "malformed.json",
+                    expected_manifest_sha256=digest,
+                )
+
+    def test_complete_source_specific_envelope_is_consumed_directly(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest, _ = _manifest(root, complete=True)
+            report_path = root / "source-report.json"
+            report_sha = _write_json(report_path, _source_specific_report())
+            source_output = root / "source-intake.json"
+            source_result = SOURCE_INTAKE.run_intake(
+                report_path,
+                source_output,
+                expected_report_sha256=report_sha,
+            )
+            manifest_value = json.loads(manifest.read_text(encoding="utf-8"))
+            manifest_value["inputs"]["observed_surrender_outcome"] = (
+                _binding(source_output)
+            )
+            digest = _write_json(manifest, manifest_value)
+
+            result = INTAKE.run_file_intake(
+                manifest,
+                root / "result.json",
+                expected_manifest_sha256=digest,
+            )
+
+            observed = result["intake_result"]["assessment"][
+                "observed_surrender_outcome"
+            ]
+            self.assertEqual(
+                observed["status"], "source_specific_outcome_observed"
+            )
+            self.assertTrue(observed["comparison_input_ready"])
+            self.assertEqual(observed["blockers"], [])
+            self.assertEqual(
+                observed["normalized"],
+                source_result["observed_surrender_outcome"],
+            )
+            self.assertFalse(result["boundaries"]["action_ready"])
+
+    def test_source_specific_envelope_overclaim_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest, _ = _manifest(root, complete=False)
+            report_path = root / "source-report.json"
+            report_sha = _write_json(report_path, _source_specific_report())
+            source_output = root / "source-intake.json"
+            source_result = SOURCE_INTAKE.run_intake(
+                report_path,
+                source_output,
+                expected_report_sha256=report_sha,
+            )
+            source_result["boundaries"]["decision_ready"] = True
+            _write_json(source_output, source_result)
+            manifest_value = json.loads(manifest.read_text(encoding="utf-8"))
+            manifest_value["inputs"]["observed_surrender_outcome"] = (
+                _binding(source_output)
+            )
+            digest = _write_json(manifest, manifest_value)
+
+            with self.assertRaisesRegex(
+                INTAKE.FileIntakeError,
+                "source-specific intake boundary drifted",
+            ):
+                INTAKE.run_file_intake(
+                    manifest,
+                    root / "result.json",
                     expected_manifest_sha256=digest,
                 )
 

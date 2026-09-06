@@ -25,6 +25,17 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_intake import (  # noqa: E
 
 MANIFEST_CONTRACT = "raiktor-three-way-exit-file-intake-manifest-v1"
 OUTPUT_SCHEMA = "xar.ck3.g2_three_way_exit_file_intake.v1"
+SOURCE_SPECIFIC_INTAKE_SCHEMA = (
+    "xar.ck3.g2_source_specific_comparison_intake.v1"
+)
+SOURCE_SPECIFIC_INTAKE_STATUS = (
+    "GREEN_STATIC_SOURCE_SPECIFIC_COMPARISON_INTAKE"
+)
+SOURCE_SPECIFIC_REMAINING_PROVIDERS = [
+    "campaign-dominance-certificate",
+    "owner-authored-budget-profile",
+    "same-frame-white-peace-comparison-certificate",
+]
 _INPUT_NAMES = (
     "candidate",
     "surrender_terms",
@@ -87,6 +98,9 @@ def run_file_intake(
         and owner_binding.get("supplied") is True
         else None
     )
+    observed_surrender_outcome = _extract_observed_surrender_outcome(
+        values["observed_surrender_outcome"]
+    )
     intake = provide_raiktor_three_way_exit_intake(
         candidate_value=values["candidate"],
         surrender_terms_value=values["surrender_terms"],
@@ -98,9 +112,7 @@ def run_file_intake(
         white_peace_utility_evaluation_value=values[
             "white_peace_utility_evaluation"
         ],
-        observed_surrender_outcome_value=values[
-            "observed_surrender_outcome"
-        ],
+        observed_surrender_outcome_value=observed_surrender_outcome,
     )
     output = {
         "schema": OUTPUT_SCHEMA,
@@ -155,6 +167,70 @@ def _load_bound_input(
         "path": str(path),
         "sha256": actual_sha,
     }
+
+
+def _extract_observed_surrender_outcome(value: object) -> object:
+    """Accept a raw outcome or the complete source-specific intake envelope."""
+
+    if not isinstance(value, dict) or value.get("schema") != (
+        SOURCE_SPECIFIC_INTAKE_SCHEMA
+    ):
+        return value
+    expected_keys = {
+        "schema",
+        "status",
+        "ok",
+        "source_report",
+        "source_report_sha256",
+        "validation",
+        "observed_surrender_outcome",
+        "three_way_intake_result",
+        "three_way_policy_result",
+        "closed_gap",
+        "remaining_providers",
+        "boundaries",
+    }
+    if set(value) != expected_keys:
+        raise FileIntakeError("source-specific intake keys drifted")
+    boundaries = value.get("boundaries")
+    expected_boundaries = {
+        "ck3_started_or_attached": False,
+        "source_specific_loss_comparison_ready": True,
+        "three_way_comparison_ready": False,
+        "public_readiness_promoted": False,
+        "action_readiness_promoted": False,
+        "decision_ready": False,
+        "automatic_surrender_ready": False,
+        "gen034_closed": False,
+    }
+    projection = value.get("observed_surrender_outcome")
+    composed = value.get("three_way_intake_result")
+    policy = value.get("three_way_policy_result")
+    policy_observed = (
+        policy.get("observed_surrender_outcome")
+        if isinstance(policy, dict)
+        else None
+    )
+    if (
+        value.get("status") != SOURCE_SPECIFIC_INTAKE_STATUS
+        or value.get("ok") is not True
+        or value.get("remaining_providers")
+        != SOURCE_SPECIFIC_REMAINING_PROVIDERS
+        or boundaries != expected_boundaries
+        or not isinstance(projection, dict)
+        or projection.get("source_report_sha256")
+        != value.get("source_report_sha256")
+        or not isinstance(composed, dict)
+        or composed.get("assessment") != policy
+        or composed.get("production_recommendation_ready") is not False
+        or composed.get("action_ready") is not False
+        or composed.get("action_literal") is not None
+        or not isinstance(policy, dict)
+        or not isinstance(policy_observed, dict)
+        or policy_observed.get("normalized") != projection
+    ):
+        raise FileIntakeError("source-specific intake boundary drifted")
+    return projection
 
 
 def _read_bytes(path: Path, name: str) -> bytes:
