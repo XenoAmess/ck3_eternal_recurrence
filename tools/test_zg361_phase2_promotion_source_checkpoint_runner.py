@@ -1637,6 +1637,9 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         inherited["saved_scopes"].insert(
             -1, character_scope("disciple_movement_member", 27184)
         )
+        inherited["saved_scopes"][-1] = character_scope(
+            "province_change_recipient", 27183
+        )
         inherited_checks = production._known_interrupt_checks(
             snapshot={"date_raw": 53158008, "active_event": {"option_count": 3}},
             event={"event_instance_id": 20},

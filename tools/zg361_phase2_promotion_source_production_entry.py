@@ -393,6 +393,17 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "disciple_movement_member": (29037,),
                 "province_change_recipient": (29037,),
             },
+            # tgp_decision_events.0100 lets the petitioner choose any one of
+            # the house, disciple or other movement members as the province
+            # recipient. R164 observed the house member while a distinct
+            # other member remained in the inherited frame.
+            "character_scope_matches_any": {
+                "province_change_recipient": (
+                    "house_movement_member",
+                    "disciple_movement_member",
+                    "other_movement_member",
+                ),
+            },
         },),
         "option_count": 3,
         "native_option_indices": (0, 1, 2),
