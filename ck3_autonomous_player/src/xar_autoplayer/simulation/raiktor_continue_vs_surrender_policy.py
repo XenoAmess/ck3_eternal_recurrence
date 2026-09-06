@@ -497,6 +497,19 @@ def _normalize_limits(value: object) -> dict[str, object]:
     }
 
 
+def normalize_raiktor_owner_budget_limits(
+    value: object,
+) -> dict[str, object]:
+    """Validate and normalize one explicitly authored pairwise budget.
+
+    The public wrapper lets profile providers reuse the policy's exact numeric
+    and identity rules instead of maintaining a second, drifting validator.
+    It does not supply defaults or promote production readiness.
+    """
+
+    return _normalize_limits(value)
+
+
 def _normalize_campaign(value: object) -> dict[str, object]:
     item = _exact_dict(value, _CAMPAIGN_KEYS, "campaign")
     if item["schema_version"] != 1:
@@ -798,4 +811,5 @@ __all__ = [
     "POLICY_VERSION",
     "assess_raiktor_continue_vs_surrender",
     "canonical_policy_input_sha256",
+    "normalize_raiktor_owner_budget_limits",
 ]

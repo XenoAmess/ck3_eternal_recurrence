@@ -54,9 +54,11 @@ SHA-256 与 production eligibility。它复用 pairwise limits，并另外冻结
 允许的 gold transfer、prestige loss、removed claims、favor hook 与 truce days。外层
 profile identity 必须与内嵌 pairwise limits 完全一致。
 
-当前没有 owner-approved profile provider，因此真实 checkpoint 返回
-`owner_budget_profile_unavailable`。测试里的数值全部标为 synthetic/do-not-ship；核心
-没有默认阈值，也不会从玩家余额、战分或历史行为猜 owner 偏好。
+owner-authored file provider 已完成静态实现，但当前仓库没有 owner-approved source artifact，
+因此真实 checkpoint 仍返回 `owner_budget_profile_unavailable`。测试里的数值全部标为
+synthetic/do-not-ship；核心和 provider 都没有默认阈值，也不会从玩家余额、战分或历史行为猜
+owner 偏好。provider 合同与审批边界见
+[g2-owner-budget-profile-provider-2026-09-06.md](g2-owner-budget-profile-provider-2026-09-06.md)。
 
 ### White-peace comparison certificate
 
@@ -111,7 +113,8 @@ action-bound loss provider 时，这三项继续为 false。新核心没有 `300
   两处 return 稳定相等且 manifest/source/session identity 全匹配时复用现有 truce v1，
   但当前没有该 GREEN live artifact，因此本项仍 unavailable；
 - `raiktor-campaign-dominance-certificate-provider-v1` unavailable；
-- `raiktor-owner-budget-profile-provider-v1` unavailable；
+- `raiktor-owner-budget-profile-provider-v1` 实现 static-ready，但无 owner-approved source，
+  当前 profile instance unavailable；
 - `raiktor-white-peace-comparison-provider-v1` unavailable。
 
 所以当前仍是：

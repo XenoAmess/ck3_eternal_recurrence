@@ -19,6 +19,7 @@ import re
 from xar_autoplayer.simulation.raiktor_continue_vs_surrender_policy import (
     assess_raiktor_continue_vs_surrender,
     canonical_policy_input_sha256,
+    normalize_raiktor_owner_budget_limits,
 )
 
 
@@ -55,19 +56,6 @@ _WHITE_LIMIT_KEYS = {
     "maximum_claims_removed",
     "allow_favor_hook",
     "maximum_truce_days",
-}
-_PAIRWISE_LIMIT_KEYS = {
-    "schema_version",
-    "profile_id",
-    "profile_provenance",
-    "profile_production_eligible",
-    "maximum_surrender_gold_transfer_raw",
-    "maximum_surrender_prestige_loss_raw",
-    "maximum_surrender_claims_removed",
-    "allow_surrender_favor_hook",
-    "maximum_surrender_truce_days",
-    "maximum_continue_tail_loss_raw",
-    "minimum_switch_margin_raw",
 }
 _WHITE_KEYS = {
     "schema_version",
@@ -712,8 +700,8 @@ def _normalize_owner_budget(value: object) -> dict[str, object]:
     production_eligible = _strict_bool(
         item["profile_production_eligible"], "profile_production_eligible"
     )
-    pairwise = _exact_dict(
-        item["pairwise_limits"], _PAIRWISE_LIMIT_KEYS, "pairwise_limits"
+    pairwise = normalize_raiktor_owner_budget_limits(
+        item["pairwise_limits"]
     )
     if (
         pairwise["schema_version"] != 1
@@ -760,6 +748,14 @@ def _normalize_owner_budget(value: object) -> dict[str, object]:
         "pairwise_limits": dict(pairwise),
         "white_peace_limits": white,
     }
+
+
+def normalize_raiktor_owner_budget_profile(
+    value: object,
+) -> dict[str, object]:
+    """Validate the profile contract consumed by the three-way policy."""
+
+    return _normalize_owner_budget(value)
 
 
 def _owner_blockers(owner: dict[str, object]) -> list[str]:
