@@ -2784,20 +2784,20 @@ def localization_rows(language: str) -> list[str]:
         )
         if english and mechanism_id in CASE_CONTEXT_OVERRIDE_EN:
             desc = (
-                f"Official [scope:{scopes['subject']}.GetShortUIName] now requires a ruling from "
-                f"[scope:{scopes['owner']}.GetShortUIName]. "
+                f"Official [{scopes['subject']}.GetShortUIName] now requires a ruling from "
+                f"[{scopes['owner']}.GetShortUIName]. "
                 f"{CASE_CONTEXT_OVERRIDE_EN[mechanism_id]}"
             )
         elif english:
             desc = (
-                f"Official [scope:{scopes['subject']}.GetShortUIName] now requires a ruling from "
-                f"[scope:{scopes['owner']}.GetShortUIName]. The prior career step is complete; this ruling records "
+                f"Official [{scopes['subject']}.GetShortUIName] now requires a ruling from "
+                f"[{scopes['owner']}.GetShortUIName]. The prior career step is complete; this ruling records "
                 f"{object_names_en} and any open stage settles within {deadline} days."
             )
         else:
             desc = (
-                f"当事人 [scope:{scopes['subject']}.GetShortUIName]；裁决者 "
-                f"[scope:{scopes['owner']}.GetShortUIName]。"
+                f"当事人 [{scopes['subject']}.GetShortUIName]；裁决者 "
+                f"[{scopes['owner']}.GetShortUIName]。"
                 f"{CASE_CONTEXT_CN[mechanism_id]}本项最迟在 {deadline} 日内结算。"
             )
         route_a_cn, route_b_cn = ROUTE_LABELS_CN[mechanism_id]

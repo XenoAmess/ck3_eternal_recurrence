@@ -1385,6 +1385,51 @@ class CareerHcRuntimeTests(unittest.TestCase):
                     english,
                 )
 
+    def test_all_nine_languages_use_localization_saved_scope_names_for_characters(self) -> None:
+        languages = (
+            "english",
+            "simp_chinese",
+            "french",
+            "german",
+            "japanese",
+            "korean",
+            "polish",
+            "russian",
+            "spanish",
+        )
+        invalid_scope_prefix = re.compile(
+            r"\[scope:zg361_ch_[dmnopq]_event_(?:owner|subject)\.GetShortUIName\]"
+        )
+        valid_saved_scope = re.compile(
+            r"\[zg361_ch_[dmnopq]_event_(?:owner|subject)\.GetShortUIName\]"
+        )
+        for language in languages:
+            path = (
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_career_hc_l_{language}.yml"
+            )
+            text = path.read_text(encoding="utf-8-sig")
+            rows = localization_map(path)
+            with self.subTest(language=language, residue="scope-prefix"):
+                self.assertEqual(invalid_scope_prefix.findall(text), [])
+                self.assertEqual(len(valid_saved_scope.findall(text)), 88)
+            for mechanism_id in generator.EXPECTED_IDS:
+                scopes = generator.event_scope_names(
+                    generator.DOMAIN_BY_ID[mechanism_id].key
+                )
+                body = rows[f"zg361ch.m{mechanism_id:03d}.desc"]
+                with self.subTest(language=language, mechanism=mechanism_id):
+                    self.assertIn(
+                        f"[{scopes['subject']}.GetShortUIName]",
+                        body,
+                    )
+                    self.assertIn(
+                        f"[{scopes['owner']}.GetShortUIName]",
+                        body,
+                    )
+
     def test_no_religion_or_unrelated_top_level_system_is_introduced(self) -> None:
         lowered = self.effects.lower()
         for forbidden in (
