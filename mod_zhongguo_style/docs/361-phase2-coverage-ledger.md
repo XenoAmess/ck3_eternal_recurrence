@@ -134,6 +134,44 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `2aa007f5d12d15d22535ff38000b3c04b942b903c030b3c39cba2cf3b8eececb`、relay
   `ad58c138c07dc45fabbba899498e03d32b2705c7e64ae885251b3f03336ded9f`。
 
+## R123 专用管理者 seed 的 PIP 拒绝路线 RED（不改变逐号等级）
+
+- `2026-09-06 15:43–15:47 Asia/Shanghai` 对冻结 commit
+  `550d9ef1f12ee1fae8113b6a9d867ba5c7a3a147` 执行 exact-PIP-refusal player-manager seed 捕获。首次无启动预检
+  `Z:\\p2m123_pre_a\\preflight.json` 因 pipe name 不符合唯一格式而 harness RED，未跨越 CK3 启动边界；修正后第二次预检
+  `Z:\\p2m123_pre2_a\\preflight.json` 为 GREEN，同样未启动 CK3。冻结源 ZIP/源码树 SHA-256 为
+  `228513b2b10567c86fd288773d3b0ef49516f091cd28a3017eab43eb716b6508` /
+  `abc320466dd660106b6261300df64ec17ae467d60d328225600be557de2de4dc`。
+- live 完成 loader 303/303、fatal=0、项目 loader blocking diagnostics=0，并达到 paused
+  application-main/native readiness GREEN。玩法事件识别与 option 选择仅使用 MCP/native；顶层 OCR/image
+  只用于非玩法的 legal-consent gate，coordinates=false。runner 以 5 速到达精确日期 `53147040`，
+  对 `zg361b2.40` 的 source/event/root/manager/subject/options 身份合同全部验真，并成功选择 authored
+  option 3/native index 2；该 exact PIP-refusal drain 操作本身为 GREEN。
+- drain 之后，`53147040` 的重复 paused snapshot 均无 active event，CK3 debug/error log 中
+  `ZGAP2MANAGERSEED` marker 数为零。恢复 5 速后日期到达 `53147136`，已越过合同硬上限 `53147040`，
+  仍未达到 `zga_phase2_manager_seed.10/.11/.1`。runner 在 manager handoff 和候选合同生成前 fail-closed，
+  candidate absent。结论是 **scenario/harness RED，不是产品 RED**，也不提升逐号 readiness。
+- production projection 为 `phase2-full-release-r123-550d9ef`，1,031 files / 31,183,422 bytes，产品树
+  `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1`，projection manifest SHA-256
+  `e0272b2307cfc40a25e635053403fc8ad532298a0b4b85ce83188ba44a7b7eec`，release manifest / ZIP SHA-256
+  分别为 `a94e9e6b72182a538c79ba45c1d53424bf2feef6e245a19933c1bfbc1681630c` /
+  `12ebe06039167f1ac968916de56a4100a0281e933df112a7e2e1e2f60d8735b6`。关键 B2 产品字节等价检查 GREEN；
+  runtime product/fixture 结束后仍分别为 `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1` /
+  `8cfa3a3cb30afe411bc802503383b76d6adadf14678198fa469b014b97974666`，外部依赖未变，源码 before/after
+  manifest 文件 SHA-256 均为 `3a25e3077f1603fece951732bcdafe94648622970fa588fe09c4f5bfcf2371f7`。
+- managed cleanup GREEN，restart_count=0：Frontend warmup PID `93696` 与 final PID `182168` 均已回收，
+  final CK3 inventory 为空。主要证据 SHA-256：首次/第二次 preflight
+  `6344b2884899546fa21ea90390e804ebcc2cbf81130c7daabb1d70047f83cedd` /
+  `7d3de1995b02cbc42f2d1a3c36900f24f8c1205226940b21d01e901392cb7af9`、runner report
+  `c1b129b57fbd1bc185836386c7a9e5f6eeb6ad95c609e7f950b2f6e3c870a241`、native readiness
+  `8f6d73bf7a7717ac24dce40102a5a046728135cce773e6a3da5df4704555f72a`、loader scan
+  `6d64a6f1b55ef89641b3752345ada59593f01e81203cdf966285cde481ffece2`、transition contract
+  `864f84ef520ead5bd73e516d43243c22badc32b8f391b64273b4550b3bb083ed`、exact option-3 drain
+  `dd0639f98842223a145c3fcd8d25343f2ffee99c3f77bfe38169057227a1521b`、bootstrap wait
+  `d41b4cb91b89fa4c30a464fb2564a6bda3ee5b5d716f231b0bd583c14502779e`、cleanup
+  `e33a55f61f14bac05146f682de3f4f78e6e4c8b579046bdebbf4984470d3f40c`、relay
+  `731a09fbab60347aae753425cd942fe7de1a31ab7785208f3a8d6dc5cd7bc6b4`。
+
 ## R107 基线完整产品验收快照（不改变逐号等级）
 
 | 项 | 实证 |
