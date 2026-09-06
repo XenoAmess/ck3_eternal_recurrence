@@ -235,6 +235,47 @@ class WorkforceEndgameCopyTest(unittest.TestCase):
         self.assertIn("m246_compensation_route value = 2", route_b)
         self.assertIn("leave_bank add = 5", route_b)
 
+    def test_contract_type_card_buttons_match_each_executable_effect(self) -> None:
+        chinese = localization_rows("simp_chinese")
+        english = localization_rows("english")
+
+        self.assertEqual(
+            "锁定补位合同类型、责任归属与变更规则",
+            chinese["zg361we.260.a"],
+        )
+        self.assertEqual(
+            "沿用补位合同类型，不冻结责任与变更规则",
+            chinese["zg361we.260.b"],
+        )
+        self.assertIn("立即冻结合同类型、责任归属与变更规则", chinese["zg361we.260.a.tt"])
+        self.assertIn("不冻结责任归属与变更规则", chinese["zg361we.260.b.tt"])
+        self.assertEqual(
+            "Lock contract type, ownership, and change rules",
+            english["zg361we.260.a"],
+        )
+        self.assertEqual(
+            "Keep contract type; leave ownership/change open",
+            english["zg361we.260.b"],
+        )
+
+        spec = gen.by_id()[260]
+        route_a = gen.render_route_effect(spec, 1)
+        route_b = gen.render_route_effect(spec, 2)
+        route_c = gen.render_route_effect(spec, 3)
+        inherited_type = (
+            "set_variable = { name = zg361_we_m260_contract_type "
+            "value = var:zg361_we_m254_contract_type }"
+        )
+        self.assertIn(inherited_type, route_a)
+        self.assertIn("m260_ownership_frozen value = 1", route_a)
+        self.assertIn("m260_change_rule_frozen value = 1", route_a)
+        self.assertIn(inherited_type, route_b)
+        self.assertIn("m260_ownership_frozen value = 0", route_b)
+        self.assertIn("m260_change_rule_frozen value = 0", route_b)
+        self.assertNotIn(inherited_type, route_c)
+        self.assertIn("m260_debt_open value = 1", route_c)
+        self.assertIn("m260_debt_due_cycle", route_c)
+
 
 if __name__ == "__main__":
     unittest.main()

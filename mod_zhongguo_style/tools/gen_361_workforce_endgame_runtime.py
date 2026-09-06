@@ -480,7 +480,7 @@ BUTTON_CN = {
     257: ("预留公开转正通道", "由经理直接点名转正"),
     258: ("补齐权限或下调目标", "权限不变，结果照压"),
     259: ("分层核定违约责任", "逾期一律归咎外包"),
-    260: ("按需求选择合同", "统一签死价硬期限"),
+    260: ("锁定补位合同类型、责任归属与变更规则", "沿用补位合同类型，不冻结责任与变更规则"),
     261: ("披露真实执行链", "允许供应商自由转包"),
     262: ("借出与借入双方分别记账", "由接收方单方定档"),
     263: ("保障到期返岗选择", "继续无限期借调"),
@@ -523,7 +523,7 @@ BUTTON_EN = {
     257: ("Reserve an open conversion channel", "Let the manager nominate directly"),
     258: ("Restore access or lower the target", "Keep access and enforce the result"),
     259: ("Attribute the breach by layer", "Blame the supplier for every delay"),
-    260: ("Match the contract to demand", "Use a fixed result and hard deadline"),
+    260: ("Lock contract type, ownership, and change rules", "Keep contract type; leave ownership/change open"),
     261: ("Disclose the executor chain", "Allow unrestricted subcontracting"),
     262: ("Record both sides separately", "Let the host rate alone"),
     263: ("Guarantee a return choice", "Extend the temporary loan indefinitely"),
@@ -560,11 +560,15 @@ TITLE_OVERRIDE_EN = {
 DETAIL_OVERRIDE_CN = {
     (246, 1): "立即支付 15 金币，结清本案登记的 5 日额外工时",
     (259, 2): "延期即整体归咎外包方，并让甲方一线责任人同步承担末位处分",
+    (260, 1): "沿用已开立的补位合同类型，并立即冻结合同类型、责任归属与变更规则",
+    (260, 2): "沿用已开立的补位合同类型，但不冻结责任归属与变更规则，后续变化仍无书面边界",
     (269, 1): "数轮后核对胜任、错配与流失证据，把结果追记到各证据维度对应的面试官名下",
     (276, 2): "凭旧关系快速免试回聘，并清空旧绩效档位与冲突记录",
 }
 DETAIL_OVERRIDE_EN = {
     (246, 1): "Pay 15 gold now and settle the five days of extra work recorded in this case",
+    (260, 1): "Keep the opened staffing contract type and immediately freeze its type, ownership, and change rules",
+    (260, 2): "Keep the opened staffing contract type but leave ownership and change rules unfrozen, so later changes still lack a written boundary",
     (269, 1): "After several cycles, compare competence, mismatch, and attrition evidence, then attribute each result to the interviewer responsible for that evidence dimension",
 }
 
