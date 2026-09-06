@@ -728,8 +728,26 @@ class MechanismGenerationTests(unittest.TestCase):
                                         choice,
                                         ledger_only=mechanism.id
                                         in LEDGER_ONLY_MECHANISM_IDS,
-                                    ),
-                                )
+                                ),
+                            )
+
+    def test_audit_005_006_tooltips_match_actual_choice_effect_deltas(self) -> None:
+        for mechanism in self.mechanisms[:71]:
+            for choice in ("a", "b", "c"):
+                name = effect_name(mechanism.id, choice)
+                start = self.effects.index(f"{name} = {{")
+                end = self.effects.index("\n}\n", start) + 2
+                block = self.effects[start:end]
+                pairs = re.findall(
+                    r"change_variable = \{ name = zg361_org_(\w+) add = (-?\d+) \}",
+                    block,
+                )
+                with self.subTest(mechanism=mechanism.id, choice=choice):
+                    self.assertEqual(len(pairs), len(set(key for key, _value in pairs)))
+                    self.assertEqual(
+                        {key: int(value) for key, value in pairs},
+                        mechanism_deltas(mechanism, choice),
+                    )
 
     def test_manual_audit_005_006_copy_fixes_are_closed(self) -> None:
         chinese = localization_values(self.mechanisms, "simp_chinese")
@@ -767,6 +785,7 @@ class MechanismGenerationTests(unittest.TestCase):
 
         required_cn = {
             "zg361m.19.a.tt": "提交晋升案卷",
+            "zg361m.24.a": "约定交接与补岗",
             "zg361m.23.desc": "夸大预期收益",
             "zg361m.23.b.tt": "透支编制信用，并提高倦怠风险",
             "zg361m.25.b.tt": "跨团队报复",
@@ -815,6 +834,7 @@ class MechanismGenerationTests(unittest.TestCase):
             "危机改权条件",
             "旧部包",
             "可信先验",
+            "back…",
         )
         joined = "\n".join(chinese[f"zg361m.{i}.{suffix}"] for i in range(1, 72) for suffix in ("t", "desc", "a", "b", "a.tt", "b.tt"))
         for phrase in forbidden:
