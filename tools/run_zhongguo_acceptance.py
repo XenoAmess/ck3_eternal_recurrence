@@ -4513,6 +4513,7 @@ def load_phase2_seed_contract(
             "install",
             "manager_entry",
             "seed_purpose",
+            "domain_query_matrix",
         } if manager_seed else {
             "schema_version",
             "kind",
@@ -4585,20 +4586,18 @@ def load_phase2_seed_contract(
         },
         "install",
     )
-    domain_query_matrix: dict[str, object] | None = None
-    if not manager_seed:
-        domain_query_matrix = exact_object(
-            contract.get("domain_query_matrix"),
-            {
-                "schema_version",
-                "b2_pip_owner_character_id",
-                "incident_owner_character_id",
-                "workforce_owner_character_id",
-                "ai_owned_case_owner_character_id",
-                "ai_owned_case_subject_character_id",
-            },
-            "domain_query_matrix",
-        )
+    domain_query_matrix = exact_object(
+        contract.get("domain_query_matrix"),
+        {
+            "schema_version",
+            "b2_pip_owner_character_id",
+            "incident_owner_character_id",
+            "workforce_owner_character_id",
+            "ai_owned_case_owner_character_id",
+            "ai_owned_case_subject_character_id",
+        },
+        "domain_query_matrix",
+    )
     status = contract.get("status")
     ready = contract.get("ready")
     if (
@@ -4728,7 +4727,6 @@ def load_phase2_seed_contract(
     if manager_seed:
         validate_phase2_promotion_source_seed_contract(contract)
         return contract
-    assert domain_query_matrix is not None
     if domain_query_matrix.get("schema_version") != 1:
         raise acceptance.RunnerError(
             "phase-two seed contract domain_query_matrix schema is invalid"
@@ -18549,6 +18547,189 @@ def run_phase2_b3_manager_governance_live_scenario(
         ) from error
 
 
+def run_phase2_full_tree_promotion_compensation_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+    seed_contract: Mapping[str, object],
+    source_checkpoint_registry: Mapping[str, object] | None,
+) -> dict[str, object]:
+    """Restore the registered real .147 source and run the existing action cell."""
+
+    evidence_path = artifacts / (
+        "09_phase2_promotion_compensation_full_tree_cell.json"
+    )
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "kind": "zg361_phase2_full_tree_promotion_compensation_cell",
+        "result": "RED",
+        "cell_id": (
+            "promotion_compensation_gameplay_action_and_postcondition_matrix"
+        ),
+        "source_checkpoint_registry_used": isinstance(
+            source_checkpoint_registry, Mapping
+        ),
+        "source_checkpoint_preflight": None,
+        "source_checkpoint_restore": None,
+        "restored_source_binding": None,
+        "restored_source_event_identity": None,
+        "action_cell": None,
+        "mcp_only": True,
+        "ocr_used": False,
+        "coordinates_used": False,
+        "fixture_used": False,
+        "console_used": False,
+        "action_ack_is_business_postcondition": False,
+        "checks": {},
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        restore_method = getattr(
+            service, "restore_phase2_span_source_checkpoint_v1", None
+        )
+        restore_readiness = getattr(
+            service,
+            "phase2_span_source_checkpoint_restore_available_v1",
+            None,
+        )
+        if not (
+            callable(restore_method)
+            and (
+                not callable(restore_readiness)
+                or restore_readiness() is True
+            )
+        ):
+            raise acceptance.RunnerError(
+                "phase-two promotion checkpoint restore provider is unavailable"
+            )
+
+        def restore(entry: Phase2SourceCheckpoint) -> Mapping[str, object]:
+            assert callable(restore_method)
+            return restore_method(
+                checkpoint_path=str(entry.path),
+                expected_checkpoint_bytes=entry.bytes,
+                expected_checkpoint_sha256=entry.sha256,
+                expected_save_lineage_id=entry.save_lineage_id,
+                expected_event_definition_key=(
+                    entry.source_event_definition_key
+                ),
+                expected_owner_character_id=entry.owner_character_id,
+                expected_player_character_id=entry.player_character_id,
+                expected_date_raw=entry.date_raw,
+                allow_generic_character_rebind=False,
+                allow_fixture=False,
+                allow_console=False,
+            )
+
+        provider = Phase2SourceCheckpointProvider(
+            (
+                source_checkpoint_registry
+                if isinstance(source_checkpoint_registry, Mapping)
+                else None
+            ),
+            restore_registered_checkpoint=restore,
+            expected_seed_lineage_id=_phase2_seed_lineage_id(seed_contract),
+        )
+        evidence["source_checkpoint_preflight"] = provider.preflight()
+        plan = phase2_event_sequence_plan(PROMOTION_HANDLER)
+        restored = provider.restore(plan)
+        evidence["source_checkpoint_restore"] = restored
+
+        restored_snapshot = service.snapshot()
+        if not isinstance(restored_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two promotion restored source snapshot is not an object"
+            )
+        restored_binding = _phase2_paused_binding(
+            restored_snapshot,
+            label="phase-two promotion restored .147 source",
+        )
+        restored_identity = query_event_definition_identity(
+            service, restored_snapshot
+        )
+        evidence["restored_source_binding"] = restored_binding
+        evidence["restored_source_event_identity"] = restored_identity
+        expected = restored.get("expected")
+        expected = expected if isinstance(expected, Mapping) else {}
+        checks = {
+            "canonical_promotion_plan": (
+                plan.source_event == PROMOTION_COMPENSATION_SOURCE_EVENT
+                == "zg361pp.147"
+            ),
+            "registered_source_restored": (
+                restored.get("result") == "GREEN"
+                and restored.get("handler") == PROMOTION_HANDLER
+                and restored.get("fixture_used") is False
+                and restored.get("console_used") is False
+                and restored.get("generic_character_rebind_used") is False
+            ),
+            "restored_event_definition_exact": (
+                expected.get("event_definition_key")
+                == PROMOTION_COMPENSATION_SOURCE_EVENT
+                and restored_identity.get("event_definition_key")
+                == PROMOTION_COMPENSATION_SOURCE_EVENT
+            ),
+            "restored_player_exact": (
+                restored_binding["player_character_id"]
+                == expected.get("player_character_id")
+            ),
+            "restored_date_exact": (
+                restored_binding["date_raw"] == expected.get("date_raw")
+            ),
+            "tracked_pid_preserved": (
+                restored_binding["bridge_pid"] == tracked_ck3_pid
+            ),
+        }
+        evidence["checks"] = checks
+        failed = [name for name, passed in checks.items() if passed is not True]
+        if failed:
+            raise acceptance.RunnerError(
+                "phase-two promotion registered .147 restore RED: "
+                + ", ".join(failed)
+            )
+
+        action_cell = run_promotion_compensation_gameplay_action_cell(
+            service,
+            advance_to_result=_phase2_promotion_compensation_advance_to_result,
+        )
+        evidence["action_cell"] = action_cell
+        if not (
+            action_cell.get("result") == "GREEN"
+            and action_cell.get("mcp_only") is True
+            and action_cell.get("action_ack_is_business_postcondition") is False
+            and isinstance(action_cell.get("business_postcondition"), Mapping)
+            and action_cell["business_postcondition"].get("result") == "GREEN"
+            and action_cell["business_postcondition"].get("provider_observed")
+            is True
+        ):
+            raise acceptance.RunnerError(
+                "phase-two promotion action cell lacks provider-observed GREEN"
+            )
+        evidence["result"] = "GREEN"
+        evidence["failure_reason"] = None
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        nested_evidence = getattr(error, "evidence", None)
+        if isinstance(nested_evidence, Mapping):
+            evidence["action_cell"] = copy.deepcopy(dict(nested_evidence))
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        if isinstance(error, Phase2SourceCheckpointError):
+            raise acceptance.RunnerError(
+                "phase-two promotion source checkpoint RED "
+                f"[{error.reason_code}]"
+            ) from error
+        raise acceptance.RunnerError(
+            f"phase-two promotion full-tree cell failed: {error}"
+        ) from error
+
+
 def run_phase2_live_scenario(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -18557,6 +18738,7 @@ def run_phase2_live_scenario(
     seed_contract: dict[str, object],
     userdir: Path | None = None,
     bootstrap: dict[str, object] | None = None,
+    source_checkpoint_registry: Mapping[str, object] | None = None,
     b3_manager_typed_selector_provider: (
         Callable[[GameplayBridgeService], Mapping[str, object]] | None
     ) = None,
@@ -18590,6 +18772,9 @@ def run_phase2_live_scenario(
         "ai_owned_case_gameplay_action_cell": None,
         "manager_governance_gameplay_action_cell": None,
         "workforce_collective_gameplay_action_cell": None,
+        "promotion_compensation_gameplay_action_cell": None,
+        "promotion_source_checkpoint_restore": None,
+        "source_checkpoint_registry_used": False,
         "scoreboard_gameplay_action_cell": None,
         "scoreboard_surface_checkpoint_preflight": None,
         "post_incident_paused_binding": None,
@@ -18958,17 +19143,45 @@ def run_phase2_live_scenario(
             ]
             write_json(evidence_path, evidence)
 
-        # Promotion/compensation and scoreboard action handlers are wired.
-        # The remaining RED includes their intentionally unadvertised native
-        # capabilities and missing real product checkpoints; an ACK is never
-        # counted as either business postcondition.
+        promotion_action = run_phase2_full_tree_promotion_compensation_cell(
+            service,
+            artifacts,
+            tracked_ck3_pid=tracked_ck3_pid,
+            seed_contract=seed_contract,
+            source_checkpoint_registry=source_checkpoint_registry,
+        )
+        evidence["promotion_compensation_gameplay_action_cell"] = (
+            promotion_action.get("action_cell")
+        )
+        evidence["promotion_source_checkpoint_restore"] = (
+            promotion_action.get("source_checkpoint_restore")
+        )
+        evidence["source_checkpoint_registry_used"] = (
+            promotion_action.get("source_checkpoint_registry_used") is True
+        )
+        if promotion_action.get("result") == "GREEN":
+            evidence["completed_gameplay_action_cells"].append(
+                "promotion_compensation_gameplay_action_and_postcondition_matrix"
+            )
+            evidence["missing_gameplay_action_cells"] = [
+                value
+                for value in evidence["missing_gameplay_action_cells"]
+                if value
+                != "promotion_compensation_gameplay_action_and_postcondition_matrix"
+            ]
+            write_json(evidence_path, evidence)
+
+        # Keep the full-tree completion gate RED until every remaining domain
+        # has its own provider-observed product evidence.  The promotion cell
+        # above is counted only after restoring the registered real .147 source
+        # and observing its compensation postcondition; its command ACK alone
+        # is never counted as business proof.
         raise acceptance.RunnerError(
-            "phase-two MCP matrix RED: Incident, B2, and AI-owned gameplay "
-            "actions and B2/Incident/Workforce/AI-owned observations passed, "
-            "but promotion/compensation remains live-pending until a real "
-            "zg361pp.147 checkpoint and the default-off provider are live, "
-            "B3 manager governance remains provider-pending until its typed "
-            "AI manager selector is bound, while the scoreboard "
+            "phase-two MCP matrix RED: promotion/compensation is now wired "
+            "through its registered real zg361pp.147 checkpoint and typed "
+            "postcondition provider, but B3 manager governance remains "
+            "provider-pending until its typed AI manager selector is bound, "
+            "while the scoreboard "
             "named-widget action/postcondition handler is static-wired but "
             "live-pending on its product-surface checkpoints/preparer"
         )
@@ -19111,6 +19324,45 @@ def run_phase2_live_scenario(
                             ]
                             if value
                             != "workforce_collective_gameplay_action_and_postcondition_matrix"
+                        ]
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
+        promotion_path = artifacts / (
+            "09_phase2_promotion_compensation_full_tree_cell.json"
+        )
+        if promotion_path.is_file():
+            try:
+                promotion_value = json.loads(
+                    promotion_path.read_text(encoding="utf-8")
+                )
+                if isinstance(promotion_value, dict):
+                    evidence["promotion_compensation_gameplay_action_cell"] = (
+                        promotion_value.get("action_cell")
+                    )
+                    evidence["promotion_source_checkpoint_restore"] = (
+                        promotion_value.get("source_checkpoint_restore")
+                    )
+                    evidence["source_checkpoint_registry_used"] = (
+                        promotion_value.get("source_checkpoint_registry_used")
+                        is True
+                    )
+                    completed = evidence["completed_gameplay_action_cells"]
+                    if (
+                        promotion_value.get("result") == "GREEN"
+                        and isinstance(completed, list)
+                        and (
+                            "promotion_compensation_gameplay_action_and_postcondition_matrix"
+                            not in completed
+                        )
+                    ):
+                        completed.append(
+                            "promotion_compensation_gameplay_action_and_postcondition_matrix"
+                        )
+                        evidence["missing_gameplay_action_cells"] = [
+                            value
+                            for value in evidence["missing_gameplay_action_cells"]
+                            if value
+                            != "promotion_compensation_gameplay_action_and_postcondition_matrix"
                         ]
             except (OSError, ValueError, json.JSONDecodeError):
                 pass
@@ -20236,6 +20488,9 @@ def run_cell(
                 ),
                 userdir=userdir,
                 bootstrap=bootstrap,
+                source_checkpoint_registry=(
+                    phase2_source_checkpoint_registry
+                ),
                 scoreboard_surface_checkpoint_registry=(
                     phase2_scoreboard_surface_checkpoint_registry
                 ),

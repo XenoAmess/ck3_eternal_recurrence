@@ -174,7 +174,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         full_manager_contract["saved_state"]["played_character_id"] = 55001
         full_manager_contract["saved_state"]["player_history_id"] = None
-        del full_manager_contract["domain_query_matrix"]
+        full_manager_contract["domain_query_matrix"] = {
+            "schema_version": 1,
+            "b2_pip_owner_character_id": 55001,
+            "incident_owner_character_id": 55001,
+            "workforce_owner_character_id": 55001,
+            "ai_owned_case_owner_character_id": 55001,
+            "ai_owned_case_subject_character_id": 55002,
+        }
         with tempfile.TemporaryDirectory() as temporary:
             manager_path = Path(temporary) / "manager-seed.json"
             manager_path.write_text(
