@@ -1956,6 +1956,43 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
+        unexpected = copy.deepcopy(context)
+        unexpected["current_event_instance_id"] = 64
+        unexpected["date_raw"] = 53166672
+        unexpected["saved_scopes"] = [
+            scope("activity", "activity"),
+            scope("host", "character", 29501),
+            scope("province", "province"),
+            scope("debate_opponent", "character", 29501),
+            scope("debate_contender", "character", 29501),
+            scope("debate_winner", "character", 29501),
+            scope("debate_loser", "character", 29628),
+            scope("debate_unexpected_win", "character", 29501),
+        ]
+        unexpected_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53166672, "active_event": {"option_count": 2}},
+            event={"event_instance_id": 64},
+            context=unexpected,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(unexpected_checks.values()), unexpected_checks)
+
+        drifted_unexpected = copy.deepcopy(unexpected)
+        drifted_unexpected["saved_scopes"][-1] = scope(
+            "debate_unexpected_win", "character", 29628
+        )
+        drifted_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53166672, "active_event": {"option_count": 2}},
+            event={"event_instance_id": 64},
+            context=drifted_unexpected,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drifted_checks["scope:debate_unexpected_win:matches_any"]
+        )
+
     def test_befriend_success_interrupt_uses_gentle_rejection(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None,
