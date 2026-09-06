@@ -4,7 +4,7 @@
   "seed_purpose": "player-manager",
   "status": "blocked_live_capture_required",
   "ready": false,
-  "blocker": "The single-player checkpoint is a typed player-subject source only. A fresh run must prove the preemptive load-time 29037-to-existing-liege handoff against the immutable source hash, revalidate manager eligibility after the switch, and capture zga_phase2_manager_seed.1 before this contract can become ready.",
+  "blocker": "The single-player checkpoint is a typed player-subject source only. A fresh run must refuse the exact pending zg361b2.40 event with option 3, prove the same-date 29037-to-existing-liege handoff against the immutable source hash, revalidate manager eligibility after the switch, and capture zga_phase2_manager_seed.1 before this contract can become ready.",
   "source": {
     "profile": "Z:\\p2y\\r2\\native-state\\profile",
     "relative_save": "save games/xar_checkpoint.ck3",
@@ -19,8 +19,10 @@
     "source_git_commit": "218026a65d61db0a4c0d5248a2a68d3a4f42ce4e",
     "limitations": [
       "The checkpoint is a proven single-player paused map with played CharacterID 29037; typed seed evidence binds its existing immediate liege as CharacterID 32904.",
-      "The source checkpoint does not itself prove CharacterID 32904 is currently review-now eligible. The handoff event remains unavailable unless the existing liege passes the full live manager gate without fixture-created characters, titles or relationships.",
+      "The source date has one exact pending zg361b2.40 prompt. The manager-only route must select refusal option 3 so that the business object becomes terminal; the ordinary player-subject runner retains option 1.",
+      "The source checkpoint does not itself prove CharacterID 32904 becomes review-now eligible after that refusal. The handoff event remains unavailable unless the existing liege passes the full live manager gate without fixture-created characters, titles or relationships at date_raw 53147040.",
       "The fixture changes only played-character identity. It does not call product B1, clear existing product state or write any product receipt.",
+      "Any event other than the exact zg361b2.40 prompt is rejected before input. The run must stop RED before ep3_interactions_events.0630 or any date after 53147040.",
       "The player-manager contract becomes ready only after the dedicated fixture event and typed checkpoint are captured from the same frozen runtime."
     ]
   },
@@ -48,12 +50,9 @@
     "launch_mode": "native_session_continue_last_save"
   },
   "player_transition_contract": {
-    "handoff_mode": "preemptive_load_hook",
+    "handoff_mode": "post_exact_pip_load_gui",
     "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-    "preemptive_hooks": [
-      "on_game_start",
-      "load_safe_scripted_gui"
-    ],
+    "activation_surface": "load_safe_scripted_gui_false_to_true",
     "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
     "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
     "hidden_carrier_delay_days": 0,
@@ -62,17 +61,24 @@
     "target_source": "existing_immediate_liege_saved_by_fixture",
     "owner_scope": "zga_phase2_manager_owner",
     "subject_scope": "zga_phase2_manager_subject",
-    "preempts_queued_visible_events": true,
-    "requires_completion_at_source_date": true,
-    "forbids_prebootstrap_event_drain": true,
+    "completion_date_raw": 53147040,
+    "allowed_prebootstrap_event_definition_keys": [
+      "zg361b2.40"
+    ],
+    "activation_event_definition_key": "zg361b2.40",
+    "activation_event_date_raw": 53147040,
+    "activation_event_selected_option_number": 3,
+    "activation_event_selected_native_option_index": 2,
+    "activation_event_outcome": "refuse",
+    "requires_exact_activation_event_drain": true,
+    "requires_completion_at_exact_date": true,
+    "forbids_other_prebootstrap_event_drains": true,
+    "preempts_destructive_later_event": true,
     "timeline_speed": 5,
-    "first_known_later_event_definition_key": "zg361b2.40",
-    "first_known_later_event_date_raw": 53147040,
     "destructive_later_event_definition_key": "ep3_interactions_events.0630",
     "destructive_later_event_date_raw": 53147256,
     "requires_source_save_hash_match": true,
     "requires_source_saved_player_identity": true,
-    "requires_date_unchanged": true,
     "requires_typed_post_switch_player": true,
     "requires_post_switch_manager_revalidation": true,
     "requires_final_manager_entry_identity_match": true,

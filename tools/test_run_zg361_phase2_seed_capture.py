@@ -79,12 +79,19 @@ class FakeService:
         self,
         calls: list[str],
         event_definition_key: str = capture.SEED_EVENT_DEFINITION_KEY,
+        manager_pip_route: bool = False,
     ) -> None:
         self.calls = calls
         self.event_definition_key = event_definition_key
+        self.manager_pip_route = manager_pip_route
+        self.event_state = "pip" if manager_pip_route else "final"
         self.played_character_id = 9001
         self.revision = 7
-        self.date_raw = 777
+        self.date_raw = (
+            capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"]
+            if manager_pip_route
+            else 777
+        )
 
     def snapshot(self) -> dict[str, object]:
         return {
@@ -95,7 +102,11 @@ class FakeService:
             "map_ready": True,
             "speed": 1,
             "played_character": {"character_id": self.played_character_id},
-            "active_event": {"instance_id": 44, "option_count": 1},
+            "active_event": (
+                {"source": "native", "instance_id": 30, "option_count": 3}
+                if self.event_state == "pip"
+                else {"instance_id": 44, "option_count": 1}
+            ),
             "diagnostics": {
                 "bridge_pid": 4321,
                 "connection_generation": 1,
@@ -119,13 +130,47 @@ class FakeService:
         return {"accepted": True}
 
     def query_current_event_window_context_v1(
-        self, _event_id: int, **_kwargs: object
+        self, event_id: int, **_kwargs: object
     ) -> dict[str, object]:
         self.calls.append("event-context")
+        if self.event_state == "pip":
+            require(event_id == 30, "manager fake queried wrong PIP instance")
+            return {"current_event_window_context": _known_b2_pip_context()}
         return {
             "current_event_window_context": {
                 "event_definition_key": self.event_definition_key
             }
+        }
+
+    def select_event_option(
+        self,
+        option_number: int,
+        *,
+        event_instance_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        self.calls.append(f"select-event-option:{option_number}")
+        require(self.event_state == "pip", "manager fake selected final event")
+        require(event_instance_id == 30, "manager fake selected wrong PIP instance")
+        require(expected_revision == self.revision, "manager fake used stale revision")
+        require(option_number == 3, "manager route did not refuse the PIP")
+        self.event_state = "final"
+        self.revision += 1
+        if self.played_character_id == 9001:
+            self.played_character_id = 9002
+        return {
+            "step": "select-event-option-3",
+            "accepted": True,
+            "status": "submitted",
+            "option_number": 3,
+            "option_index": 2,
+            "event_selection": {
+                "postcondition_verified": True,
+                "old_event_instance_id": 30,
+                "new_event_instance_id": 44,
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
         }
 
     def query_loaded_feature_manifest_v1(
@@ -462,12 +507,13 @@ class Fixture:
             "status": "blocked_live_capture_required",
             "source": dict(contract["source"]),
             "saved_state": {
-                "date_raw": 777,
+                "date_raw": 53147016,
                 "played_character_id": 9001,
             },
             "player_transition_contract": {
-                "handoff_mode": "preemptive_load_hook",
+                "handoff_mode": "post_exact_pip_load_gui",
                 "trigger_effect_key": capture.MANAGER_SEED_PREEMPTIVE_EFFECT,
+                "activation_surface": "load_safe_scripted_gui_false_to_true",
                 "hidden_carrier_event_definition_key": (
                     capture.MANAGER_SEED_HANDOFF_CARRIER_EVENT_DEFINITION_KEY
                 ),
@@ -476,19 +522,24 @@ class Fixture:
                 ),
                 "source_character_id": 9001,
                 "target_character_id": 9002,
-                "preempts_queued_visible_events": True,
-                "requires_completion_at_source_date": True,
-                "forbids_prebootstrap_event_drain": True,
+                "completion_date_raw": 53147040,
+                "allowed_prebootstrap_event_definition_keys": ["zg361b2.40"],
+                "activation_event_definition_key": "zg361b2.40",
+                "activation_event_date_raw": 53147040,
+                "activation_event_selected_option_number": 3,
+                "activation_event_selected_native_option_index": 2,
+                "activation_event_outcome": "refuse",
+                "requires_exact_activation_event_drain": True,
+                "requires_completion_at_exact_date": True,
+                "forbids_other_prebootstrap_event_drains": True,
+                "preempts_destructive_later_event": True,
                 "timeline_speed": 5,
-                "first_known_later_event_definition_key": "zg361b2.40",
-                "first_known_later_event_date_raw": 778,
                 "destructive_later_event_definition_key": (
                     "ep3_interactions_events.0630"
                 ),
-                "destructive_later_event_date_raw": 779,
+                "destructive_later_event_date_raw": 53147256,
                 "requires_source_save_hash_match": True,
                 "requires_source_saved_player_identity": True,
-                "requires_date_unchanged": True,
                 "requires_typed_post_switch_player": True,
                 "requires_post_switch_manager_revalidation": True,
                 "requires_final_manager_entry_identity_match": True,
@@ -580,12 +631,11 @@ class Fixture:
                     ]
                 )
             ),
+            manager_pip_route=(
+                seed_purpose == capture.MANAGER_SEED_PURPOSE
+                and event_definition_key is None
+            ),
         )
-        if seed_purpose == capture.MANAGER_SEED_PURPOSE:
-            # The acceptance-only load hook has already moved control from
-            # the immutable source player (9001) to its existing liege (9002)
-            # before the first bridge-visible paused snapshot.
-            service.played_character_id = 9002
 
         def driver_factory(*_args: object, **_kwargs: object) -> FakeDriver:
             calls.append("driver-open")
@@ -1403,7 +1453,7 @@ def test_player_manager_capture_routes_fixture_event_and_materializer() -> None:
         )
 
 
-def test_player_manager_preemptive_load_handoff_proves_final_event() -> None:
+def test_player_manager_post_exact_pip_handoff_proves_final_event() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
         calls: list[str] = []
@@ -1414,16 +1464,16 @@ def test_player_manager_preemptive_load_handoff_proves_final_event() -> None:
         )
         require(report["result"] == "GREEN", f"manager handoff RED: {report}")
         require(
-            report["manager_entry_mode"] == "preemptive-load-handoff",
-            "manager handoff was not reported as the preemptive load route",
+            report["manager_entry_mode"] == "post-exact-pip-load-gui-handoff",
+            "manager handoff was not reported as the post-PIP GUI route",
         )
         require(
             report["manager_entry_event"] == {
                 "event_definition_key": capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
-                "date_raw": 777,
-                "revision": 7,
+                "date_raw": 53147040,
+                "revision": 8,
             },
-            "manager entry did not preserve the exact source-date .1 checkpoint",
+            "manager entry did not preserve the exact post-PIP .1 checkpoint",
         )
         transition = report["manager_player_transition"]
         require(
@@ -1433,10 +1483,11 @@ def test_player_manager_preemptive_load_handoff_proves_final_event() -> None:
             and transition["observed_played_character_id"] == 9002
             and transition["observed_manager_character_id"] == 9002
             and transition["observed_reviewable_subject_character_id"] == 9001
-            and transition["source_date_raw"] == 777
-            and transition["observed_date_raw"] == 777
+            and transition["source_date_raw"] == 53147016
+            and transition["completion_date_raw"] == 53147040
+            and transition["observed_date_raw"] == 53147040
             and transition["failed_checks"] == [],
-            "source hash + final typed event did not prove the preemptive rebind",
+            "source hash + final typed event did not prove the post-PIP rebind",
         )
         require(
             report["manager_handoff_final_binding"]["result"] == "GREEN"
@@ -1452,15 +1503,15 @@ def test_player_manager_preemptive_load_handoff_proves_final_event() -> None:
         require(
             report["bootstrap_event"]["event_definition_key"]
             == capture.MANAGER_SEED_EVENT_DEFINITION_KEY
-            and report["bootstrap_event"]["revision"] == 7
-            and report["bootstrap_event"]["date_raw"] == 777,
-            "capture did not stop on the source-date .1 manager event",
+            and report["bootstrap_event"]["revision"] == 8
+            and report["bootstrap_event"]["date_raw"] == 53147040,
+            "capture did not stop on the exact post-PIP .1 manager event",
         )
         require(
             "typed-player-transition" not in calls
             and calls.index("seed-capture-mcp")
             < calls.index("candidate-materialize"),
-            f"runner tried to defer the load-time handoff to MCP: {calls}",
+            f"runner crossed an unauthorized player-transition boundary: {calls}",
         )
         require(
             not any(call.startswith("provider:") for call in calls),
@@ -1482,6 +1533,15 @@ def test_player_manager_preemptive_load_handoff_proves_final_event() -> None:
         require(
             ready_keys == [capture.MANAGER_SEED_EVENT_DEFINITION_KEY],
             f"manager waiter did not accept only the final fixture event: {ready_keys}",
+        )
+        require(
+            report["manager_activation_event_drain"]["selection"]["option_number"]
+            == 3
+            and report["manager_activation_event_drain"]["selection"][
+                "option_index"
+            ]
+            == 2,
+            "manager route did not refuse the exact PIP with option three",
         )
 
 
@@ -1512,7 +1572,7 @@ def test_player_manager_handoff_rejects_final_subject_identity_drift() -> None:
         evidence = report.get("failure_evidence")
         require(
             isinstance(evidence, dict)
-            and evidence.get("stage") == "preemptive_load_player_transition"
+            and evidence.get("stage") == "post_exact_pip_player_transition"
             and evidence.get("result") == "RED"
             and evidence.get("expected_manager_character_id") == 9002
             and evidence.get("observed_manager_character_id") == 9002
@@ -1538,7 +1598,7 @@ def test_player_manager_preemptive_handoff_rejects_later_date() -> None:
         runtime = fixture.runtime(calls, seed_purpose=purpose)
         service = runtime.service_factory(None)
         require(isinstance(service, FakeService), "manager date fake drifted")
-        service.date_raw = 778
+        service.date_raw = 53147064
         report = capture.run_capture(
             fixture.config(seed_purpose=purpose), runtime=runtime
         )
@@ -1546,10 +1606,9 @@ def test_player_manager_preemptive_handoff_rejects_later_date() -> None:
         evidence = report.get("failure_evidence")
         require(
             isinstance(evidence, dict)
-            and evidence.get("state") == "required_bootstrap_date_missed"
-            and evidence.get("required_date_raw") == 777
-            and evidence.get("observed_date_raw") == 778
-            and evidence.get("known_visible_event_drain_allowed") is False,
+            and evidence.get("state") == "maximum_bootstrap_date_exceeded"
+            and evidence.get("maximum_date_raw") == 53147040
+            and evidence.get("observed_date_raw") == 53147064,
             f"later-date rejection evidence is not exact: {evidence}",
         )
         require(
@@ -1589,7 +1648,7 @@ def test_player_manager_preemptive_handoff_rejects_wrong_played_manager() -> Non
         require("candidate-materialize" not in calls, "wrong player materialized")
 
 
-def test_player_manager_preemptive_handoff_never_drains_existing_pip() -> None:
+def test_player_manager_handoff_never_drains_destructive_later_event() -> None:
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
         calls: list[str] = []
@@ -1597,30 +1656,29 @@ def test_player_manager_preemptive_handoff_never_drains_existing_pip() -> None:
         runtime = fixture.runtime(
             calls,
             seed_purpose=purpose,
-            event_definition_key=(
-                capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["event_definition_key"]
-            ),
+            event_definition_key="ep3_interactions_events.0630",
         )
         report = capture.run_capture(
             fixture.config(seed_purpose=purpose), runtime=runtime
         )
-        require(report["result"] == "RED", "manager PIP interruption false-GREENed")
+        require(report["result"] == "RED", "destructive event false-GREENed")
         evidence = report.get("failure_evidence")
         require(
             isinstance(evidence, dict)
             and evidence.get("state") == "unexpected_visible_event"
-            and evidence.get("observed_event_definition_key") == "zg361b2.40"
+            and evidence.get("observed_event_definition_key")
+            == "ep3_interactions_events.0630"
             and evidence.get("drained_pre_bootstrap_events") == [],
-            f"manager PIP was not rejected before drain: {evidence}",
+            f"destructive event was not rejected before input: {evidence}",
         )
         require(
             not any(call.startswith("execute:") for call in calls)
             and "seed-capture-mcp" not in calls,
-            f"manager PIP interruption received gameplay input: {calls}",
+            f"destructive event received gameplay input: {calls}",
         )
 
 
-def test_player_manager_source_date_wait_uses_speed_five() -> None:
+def test_player_manager_same_date_grace_uses_speed_five() -> None:
     class SourceDateCarrierService:
         def __init__(self) -> None:
             self.revision = 1
@@ -1655,7 +1713,7 @@ def test_player_manager_source_date_wait_uses_speed_five() -> None:
             elif step == "pause-map":
                 self.paused = True
             else:
-                raise AssertionError(f"unexpected source-date step: {step}")
+                raise AssertionError(f"unexpected same-date grace step: {step}")
 
         def query_current_event_window_context_v1(
             self, _event_id: int, **_kwargs: object
@@ -1674,16 +1732,18 @@ def test_player_manager_source_date_wait_uses_speed_five() -> None:
             bridge_unavailable_error=FakeBridgeUnavailableError,
             timeout_seconds=2.0,
             expected_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
-            required_date_raw=777,
-            allow_known_prebootstrap_drains=False,
+            maximum_date_raw=777,
+            expected_event_date_raw=777,
+            allow_known_prebootstrap_drains=True,
+            known_prebootstrap_drain_allowlist=("zg361b2.40",),
             timeline_speed=5,
             clock=FakeTime().clock,
             sleeper=lambda _seconds: None,
         )
-        require(snapshot["date_raw"] == 777, "speed-5 wait advanced the source date")
+        require(snapshot["date_raw"] == 777, "speed-5 grace advanced past its date")
         require(
             service.steps == ["set-speed-5", "resume-map", "pause-map"],
-            f"manager source-date waiter did not use speed 5: {service.steps}",
+            f"manager same-date grace did not use speed 5: {service.steps}",
         )
 
 
@@ -2208,10 +2268,18 @@ def _known_b2_pip_context(
 
 
 class KnownB2PipPrebootstrapService:
-    def __init__(self, *, prompt_owner_character_id: int = 32904) -> None:
+    def __init__(
+        self,
+        *,
+        prompt_owner_character_id: int = 32904,
+        selected_option_number: int = 1,
+        final_event_definition_key: str = capture.SEED_EVENT_DEFINITION_KEY,
+    ) -> None:
         self.state = "pip"
         self.revision = 7
         self.prompt_owner_character_id = prompt_owner_character_id
+        self.selected_option_number = selected_option_number
+        self.final_event_definition_key = final_event_definition_key
         self.selections: list[tuple[int, int, int]] = []
 
     def snapshot(self) -> dict[str, object]:
@@ -2243,7 +2311,7 @@ class KnownB2PipPrebootstrapService:
         require(event_instance_id == 31, "wrong seed instance queried")
         return {
             "current_event_window_context": {
-                "event_definition_key": capture.SEED_EVENT_DEFINITION_KEY
+                "event_definition_key": self.final_event_definition_key
             }
         }
 
@@ -2258,21 +2326,24 @@ class KnownB2PipPrebootstrapService:
             (option_number, event_instance_id, expected_revision)
         )
         require(self.state == "pip", "PIP event selected twice")
-        require(option_number == 1, "PIP accept option drifted")
+        require(
+            option_number == self.selected_option_number,
+            "PIP selected option drifted",
+        )
         self.state = "seed"
         self.revision += 1
         return {
-            "step": "select-event-option-1",
+            "step": f"select-event-option-{option_number}",
             "accepted": True,
             "status": "submitted",
-            "option_number": 1,
-            "option_index": 0,
+            "option_number": option_number,
+            "option_index": option_number - 1,
             "event_selection": {
                 "postcondition_verified": True,
                 "old_event_instance_id": 30,
                 "new_event_instance_id": 31,
-                "selected_option_number": 1,
-                "selected_native_option_index": 0,
+                "selected_option_number": option_number,
+                "selected_native_option_index": option_number - 1,
             },
         }
 
@@ -2665,6 +2736,54 @@ def test_exact_b2_pip_prebootstrap_event_uses_accept_option() -> None:
             all(drain["identity_checks"].values())
             and all(drain["selection_checks"].values()),
             "B2 PIP drain did not retain every identity and ACK gate",
+        )
+
+
+def test_manager_b2_pip_route_uses_refuse_option_only() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        artifacts = Path(raw)
+        service = KnownB2PipPrebootstrapService(
+            selected_option_number=3,
+            final_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+        )
+        snapshot = capture.wait_for_bootstrap_event(
+            service,
+            artifacts,
+            bridge_unavailable_error=FakeBridgeUnavailableError,
+            timeout_seconds=10.0,
+            expected_event_definition_key=capture.MANAGER_SEED_EVENT_DEFINITION_KEY,
+            source_save_sha256=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                "source_save_sha256"
+            ],
+            maximum_date_raw=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"],
+            expected_event_date_raw=capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
+                "date_raw"
+            ],
+            known_prebootstrap_drain_allowlist=("zg361b2.40",),
+            known_b2_pip_option_number=3,
+            timeline_speed=5,
+            clock=FakeTime().clock,
+            sleeper=lambda _seconds: None,
+        )
+        require(
+            snapshot["date_raw"]
+            == capture.KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["date_raw"],
+            "manager event did not remain on the exact PIP date",
+        )
+        require(
+            service.selections == [(3, 30, 7)],
+            "manager route did not use refusal option three exactly once",
+        )
+        drain = json.loads(
+            (
+                artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
+            ).read_text(encoding="utf-8")
+        )
+        require(
+            drain["selection"]["option_number"] == 3
+            and drain["selection"]["option_index"] == 2
+            and all(drain["selection_checks"].values()),
+            "manager PIP refusal lost its exact native option proof",
         )
 
 
@@ -4174,12 +4293,12 @@ def main() -> int:
     test_real_phase2_frontend_first_binding_uses_first_mcp_generation()
     test_green_capture()
     test_player_manager_capture_routes_fixture_event_and_materializer()
-    test_player_manager_preemptive_load_handoff_proves_final_event()
+    test_player_manager_post_exact_pip_handoff_proves_final_event()
     test_player_manager_handoff_rejects_final_subject_identity_drift()
     test_player_manager_preemptive_handoff_rejects_later_date()
     test_player_manager_preemptive_handoff_rejects_wrong_played_manager()
-    test_player_manager_preemptive_handoff_never_drains_existing_pip()
-    test_player_manager_source_date_wait_uses_speed_five()
+    test_player_manager_handoff_never_drains_destructive_later_event()
+    test_player_manager_same_date_grace_uses_speed_five()
     test_player_manager_wrong_event_is_scenario_and_seed_red()
     test_player_manager_preflight_reports_purpose_and_contract_kind()
     test_parser_red_cleanup()
@@ -4188,6 +4307,7 @@ def main() -> int:
     test_calculated_event_id_is_observed_but_not_an_identity_gate()
     test_exact_vanilla_prebootstrap_event_uses_option_two()
     test_exact_b2_pip_prebootstrap_event_uses_accept_option()
+    test_manager_b2_pip_route_uses_refuse_option_only()
     test_b2_pip_prebootstrap_identity_drift_fails_closed()
     test_exact_vanilla_no_secrets_event_keeps_current_task()
     test_r120_source_hash_is_exactly_authorized_for_b2_sequence()

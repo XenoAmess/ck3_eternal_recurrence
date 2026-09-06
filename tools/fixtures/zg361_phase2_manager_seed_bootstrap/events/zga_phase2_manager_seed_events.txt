@@ -75,9 +75,10 @@ zga_phase2_manager_seed.100 = {
 	}
 }
 
-# Hidden post-switch carrier. The load hook or load-safe scripted GUI has
-# already switched control before any queued visible event can invalidate the
-# old subject. A zero-day scheduled event avoids relying on same-effect
+# Hidden post-switch carrier. The load-safe scripted GUI switches control
+# immediately after the exact pending B2 PIP makes the subject reviewable and
+# before any later destructive event can invalidate it. A zero-day scheduled
+# event avoids relying on same-effect
 # player-state recomputation: root must now be the human manager, while the
 # former player must be the same existing direct AI vassal.
 zga_phase2_manager_seed.11 = {

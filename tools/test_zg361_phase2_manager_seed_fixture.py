@@ -90,9 +90,9 @@ def main() -> int:
         assert gate in on_actions
         assert gate in effects
         assert gate in scripted_gui
-    assert "on_game_start = {" in on_actions
+    assert "\non_game_start = {" not in on_actions
     assert "on_game_start_after_lobby = {" in on_actions
-    assert on_actions.count("zga_phase2_manager_seed_on_game_start") == 3
+    assert on_actions.count("zga_phase2_manager_seed_on_game_start") == 2
     opener = top_level_block(events, "zga_phase2_manager_seed.100")
     for gate in (
         "NOT = { has_character_flag = zg361_b1_cycle_active }",
@@ -219,9 +219,9 @@ def main() -> int:
     assert contract["saved_state"]["played_character_id"] == 29037
     transition = contract["player_transition_contract"]
     assert transition == {
-        "handoff_mode": "preemptive_load_hook",
+        "handoff_mode": "post_exact_pip_load_gui",
         "trigger_effect_key": "zga_phase2_manager_seed_maybe_begin_effect",
-        "preemptive_hooks": ["on_game_start", "load_safe_scripted_gui"],
+        "activation_surface": "load_safe_scripted_gui_false_to_true",
         "hidden_carrier_event_definition_key": "zga_phase2_manager_seed.11",
         "post_switch_event_definition_key": "zga_phase2_manager_seed.1",
         "hidden_carrier_delay_days": 0,
@@ -230,17 +230,22 @@ def main() -> int:
         "target_source": "existing_immediate_liege_saved_by_fixture",
         "owner_scope": "zga_phase2_manager_owner",
         "subject_scope": "zga_phase2_manager_subject",
-        "preempts_queued_visible_events": True,
-        "requires_completion_at_source_date": True,
-        "forbids_prebootstrap_event_drain": True,
+        "completion_date_raw": 53147040,
+        "allowed_prebootstrap_event_definition_keys": ["zg361b2.40"],
+        "activation_event_definition_key": "zg361b2.40",
+        "activation_event_date_raw": 53147040,
+        "activation_event_selected_option_number": 3,
+        "activation_event_selected_native_option_index": 2,
+        "activation_event_outcome": "refuse",
+        "requires_exact_activation_event_drain": True,
+        "requires_completion_at_exact_date": True,
+        "forbids_other_prebootstrap_event_drains": True,
+        "preempts_destructive_later_event": True,
         "timeline_speed": 5,
-        "first_known_later_event_definition_key": "zg361b2.40",
-        "first_known_later_event_date_raw": 53147040,
         "destructive_later_event_definition_key": "ep3_interactions_events.0630",
         "destructive_later_event_date_raw": 53147256,
         "requires_source_save_hash_match": True,
         "requires_source_saved_player_identity": True,
-        "requires_date_unchanged": True,
         "requires_typed_post_switch_player": True,
         "requires_post_switch_manager_revalidation": True,
         "requires_final_manager_entry_identity_match": True,

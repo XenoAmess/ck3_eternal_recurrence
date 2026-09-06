@@ -102,6 +102,38 @@ R118 证据：`Z:\\b3r118\evidence-index.json`、`report.json`、`cell/02_loader
   `5d91ec292e216edec6ac0b0985ae1f2af979a648f1235e8b2e9514bc15158ca2`、relay
   `fed8d98503928cabbfc9079d1a019aa8ad7c1a6c911194012a7af36301bc709e`。
 
+## R122 专用管理者 seed 的不可变日期 RED（不改变逐号等级）
+
+- `2026-09-06 15:19–15:23 Asia/Shanghai` 对冻结 commit
+  `30ad33788f949729f5412688b39603ccdf5c2bfa` 执行 preemptive player-manager seed 捕获。预检
+  `Z:\\p2m122_pre_a\\preflight.json` 为 GREEN 且未启动 CK3；冻结源 ZIP SHA-256 为
+  `08fdb70659a3a7718866252b525ee5d78201eda0c2ebcc014faf07659bca28f7`，源码树为
+  `3893e981ed607d8104487da0744865651ff9bded29a7d93bf00519e373344f96`。
+- live 完成 loader 303/303、fatal=0、项目 loader diagnostics=0，并达到 paused application-main/native
+  readiness GREEN。不可变源日期 `53147016` 的重复 paused snapshot（包括前两次检查）均无 active event，
+  CK3 debug/error log 中也没有 `ZGAP2MANAGERSEED` 标记；因此 preemptive handoff 没有在源日期执行。runner 随后按
+  合同以 5 速 resume，至 `53147040` 才看到首个稍后事件 `zg361b2.40`。required-date 门立即 fail-closed，
+  `known_visible_event_drain_allowed=false`；全程零事件选择、零 drain，manager handoff/final seed 未到达，
+  candidate absent。结论是 **scenario/harness RED，不是产品 RED**，也不提升逐号 readiness。
+- production projection 为 `phase2-full-release-r122-30ad337`，1,031 files / 31,183,422 bytes，产品树
+  `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1`，projection manifest SHA-256
+  `ef8f00e27f0a8c2998a77030b4a8af36bfeb4846cf7b4903dd535b9c66364814`，release manifest / ZIP SHA-256
+  分别为 `c2fb8f13fcf9ae296b4fbd3228e5358a6282307c26f4261f47b9cfa07b190c06` /
+  `12ebe06039167f1ac968916de56a4100a0281e933df112a7e2e1e2f60d8735b6`。关键 B2 产品字节等价检查 GREEN；
+  runtime product/fixture 结束后仍分别为 `55a08b950cb3fabd5628913a191214d60b2f8b973c72a4788fd8769536a35db1` /
+  `72accc5a975482790932714481cf3879604abdf83031ab3214b92eeff03f33d2`，外部依赖未变，源码 before/after
+  manifest 文件 SHA-256 均为 `54e1dcb2e42b4a0ee8c329a8260615058125ad1d0a4279100a63083893d71474`。
+- managed cleanup GREEN，restart_count=0：Frontend warmup PID `101784` 与 final PID `177256` 均已回收，
+  final CK3 inventory 为空。主要证据 SHA-256：preflight
+  `5a97b9a9b50058ccf1aa0a3f2ec1acf1d96b6ab42d52f116ac3154a4360bd728`、runner report
+  `720f9dc6b6a45e2a2ebfbb62046cb812812e8886a18dc89a2f856f5b7605eb60`、native readiness
+  `61c6134802e2f04f8b4253ab3a1a91bb6adc2aec05c344a2e5a78dbeb015679c`、loader scan
+  `7d136c5f75b6e7c17ded971cd1bb07c7218c3ef3ffaad8e9dda8d56ba0fcd931`、preemptive contract
+  `e837b96ea421f48cb181b4765c7c0a81f41b6c4c3c6fcf442bf8e186586df8b0`、bootstrap wait
+  `be504ddb5b688bb073b2b737ffaac7d5b34668df14849ac8eefbbc3a5e327c1f`、cleanup
+  `2aa007f5d12d15d22535ff38000b3c04b942b903c030b3c39cba2cf3b8eececb`、relay
+  `ad58c138c07dc45fabbba899498e03d32b2705c7e64ae885251b3f03336ded9f`。
+
 ## R107 基线完整产品验收快照（不改变逐号等级）
 
 | 项 | 实证 |

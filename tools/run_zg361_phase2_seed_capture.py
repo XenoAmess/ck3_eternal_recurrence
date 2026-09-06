@@ -2535,7 +2535,12 @@ def wait_for_bootstrap_event(
     additional_expected_event_definition_keys: tuple[str, ...] = (),
     source_save_sha256: str | None = None,
     required_date_raw: int | None = None,
+    maximum_date_raw: int | None = None,
+    expected_event_date_raw: int | None = None,
     allow_known_prebootstrap_drains: bool = True,
+    known_prebootstrap_drain_allowlist: tuple[str, ...] | None = None,
+    known_b2_pip_option_number: int | None = None,
+    known_b2_pip_source_save_sha256s: tuple[str, ...] | None = None,
     timeline_speed: int = 1,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
@@ -2551,6 +2556,37 @@ def wait_for_bootstrap_event(
         or required_date_raw <= 0
     ):
         raise ValueError("required bootstrap date_raw must be a positive integer")
+    for value, label in (
+        (maximum_date_raw, "maximum bootstrap date_raw"),
+        (expected_event_date_raw, "expected event date_raw"),
+    ):
+        if value is not None and (
+            isinstance(value, bool) or not isinstance(value, int) or value <= 0
+        ):
+            raise ValueError(f"{label} must be a positive integer")
+    if known_prebootstrap_drain_allowlist is not None and (
+        any(
+            not isinstance(key, str) or not key
+            for key in known_prebootstrap_drain_allowlist
+        )
+        or len(set(known_prebootstrap_drain_allowlist))
+        != len(known_prebootstrap_drain_allowlist)
+    ):
+        raise ValueError("known pre-bootstrap drain allowlist must be unique strings")
+    if known_b2_pip_option_number is not None and (
+        isinstance(known_b2_pip_option_number, bool)
+        or known_b2_pip_option_number not in (1, 2, 3)
+    ):
+        raise ValueError("known B2 PIP option number must be 1, 2, or 3")
+    if known_b2_pip_source_save_sha256s is not None and (
+        any(
+            not isinstance(digest, str) or len(digest) != 64
+            for digest in known_b2_pip_source_save_sha256s
+        )
+        or len(set(known_b2_pip_source_save_sha256s))
+        != len(known_b2_pip_source_save_sha256s)
+    ):
+        raise ValueError("known B2 PIP source hashes must be unique SHA-256 strings")
     if isinstance(timeline_speed, bool) or timeline_speed not in range(1, 6):
         raise ValueError("bootstrap timeline speed must be an integer from 1 to 5")
     started = clock()
@@ -2634,6 +2670,30 @@ def wait_for_bootstrap_event(
                 "bootstrap event did not appear at the immutable source date",
                 evidence,
             )
+        if (
+            maximum_date_raw is not None
+            and (
+                isinstance(snapshot.get("date_raw"), bool)
+                or not isinstance(snapshot.get("date_raw"), int)
+                or snapshot.get("date_raw") > maximum_date_raw
+            )
+        ):
+            evidence = {
+                "schema_version": 1,
+                "state": "maximum_bootstrap_date_exceeded",
+                "result": "RED",
+                "expected_event_definition_key": expected_event_definition_key,
+                "maximum_date_raw": maximum_date_raw,
+                "observed_date_raw": snapshot.get("date_raw"),
+                "active_event": active,
+                "known_prebootstrap_drain_allowlist": list(
+                    known_prebootstrap_drain_allowlist or ()
+                ),
+            }
+            append_jsonl(evidence_path, evidence)
+            raise SeedCaptureError(
+                "bootstrap event missed the last safe source date", evidence
+            )
         if isinstance(active, dict):
             revision = _positive_revision(snapshot)
             if snapshot.get("paused") is not True:
@@ -2689,6 +2749,10 @@ def wait_for_bootstrap_event(
                     allow_known_prebootstrap_drains
                     and isinstance(context, dict)
                     and key not in drained_pre_bootstrap_events
+                    and (
+                        known_prebootstrap_drain_allowlist is None
+                        or key in known_prebootstrap_drain_allowlist
+                    )
                 ):
                     if key == KNOWN_PRE_BOOTSTRAP_EVENT["event_definition_key"]:
                         expected = KNOWN_PRE_BOOTSTRAP_EVENT
@@ -2719,7 +2783,14 @@ def wait_for_bootstrap_event(
                     elif key == KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT[
                         "event_definition_key"
                     ]:
-                        expected = KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT
+                        expected = dict(KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT)
+                        if known_b2_pip_option_number is not None:
+                            expected["selected_option_number"] = (
+                                known_b2_pip_option_number
+                            )
+                            expected["selected_native_option_index"] = (
+                                known_b2_pip_option_number - 1
+                            )
                         identity_checks = (
                             _known_pre_bootstrap_b2_pip_event_checks(
                                 source_save_sha256=source_save_sha256,
@@ -2728,6 +2799,11 @@ def wait_for_bootstrap_event(
                                 event_instance_id=event_id,
                             )
                         )
+                        if known_b2_pip_source_save_sha256s is not None:
+                            identity_checks["source_save_sha256"] = (
+                                source_save_sha256
+                                in known_b2_pip_source_save_sha256s
+                            )
                         artifact_name = (
                             "known-pre-bootstrap-b2-pip-event-drain.json"
                         )
@@ -2779,10 +2855,31 @@ def wait_for_bootstrap_event(
                     "observed_event_definition_key": key,
                     "event_instance_id": event_id,
                     "drained_pre_bootstrap_events": drained_pre_bootstrap_events,
+                    "known_prebootstrap_drain_allowlist": list(
+                        known_prebootstrap_drain_allowlist or ()
+                    ),
                 }
                 append_jsonl(evidence_path, evidence)
                 raise SeedCaptureError(
                     f"unexpected visible event before bootstrap: {key!r}", evidence
+                )
+            if (
+                expected_event_date_raw is not None
+                and snapshot.get("date_raw") != expected_event_date_raw
+            ):
+                evidence = {
+                    "schema_version": 1,
+                    "state": "bootstrap_event_wrong_date",
+                    "result": "RED",
+                    "expected_event_definition_key": expected_event_definition_key,
+                    "expected_event_date_raw": expected_event_date_raw,
+                    "observed_date_raw": snapshot.get("date_raw"),
+                    "event_instance_id": event_id,
+                    "drained_pre_bootstrap_events": drained_pre_bootstrap_events,
+                }
+                append_jsonl(evidence_path, evidence)
+                raise SeedCaptureError(
+                    "bootstrap event appeared outside its exact safe date", evidence
                 )
             terminal = {
                 "schema_version": 1,
@@ -2880,13 +2977,7 @@ def wait_for_bootstrap_event(
 def _manager_preemptive_transition_contract(
     base_contract: dict[str, Any], observed_save_sha256: str
 ) -> dict[str, Any]:
-    """Bind the pre-load player identity to the final typed manager event.
-
-    The fixture switches during load, before the bridge can observe a paused
-    application snapshot.  Therefore the immutable source-save hash and its
-    saved played-character identity are the before-state, while the final
-    fixture event supplies the independently typed after-state.
-    """
+    """Bind the source player to the post-PIP typed manager event."""
 
     transition = base_contract.get("player_transition_contract")
     saved_state = base_contract.get("saved_state")
@@ -2909,13 +3000,21 @@ def _manager_preemptive_transition_contract(
     source_date_raw = positive_contract_int(
         saved_state.get("date_raw"), "manager source date_raw"
     )
+    completion_date_raw = positive_contract_int(
+        transition.get("completion_date_raw"), "manager completion date_raw"
+    )
+    allowed_prebootstrap_events = transition.get(
+        "allowed_prebootstrap_event_definition_keys"
+    )
     checks = {
         "source_save_sha_matches": source.get("sha256") == observed_save_sha256,
         "source_saved_player_matches": (
             saved_state.get("played_character_id") == source_character_id
         ),
         "distinct_transition_endpoints": source_character_id != target_character_id,
-        "preemptive_mode": transition.get("handoff_mode") == "preemptive_load_hook",
+        "post_exact_pip_mode": (
+            transition.get("handoff_mode") == "post_exact_pip_load_gui"
+        ),
         "trigger_effect_matches": (
             transition.get("trigger_effect_key") == MANAGER_SEED_PREEMPTIVE_EFFECT
         ),
@@ -2927,36 +3026,49 @@ def _manager_preemptive_transition_contract(
             transition.get("post_switch_event_definition_key")
             == MANAGER_SEED_EVENT_DEFINITION_KEY
         ),
-        "preempts_queued_visible_events": (
-            transition.get("preempts_queued_visible_events") is True
+        "load_safe_gui_activation": (
+            transition.get("activation_surface")
+            == "load_safe_scripted_gui_false_to_true"
         ),
-        "completion_at_source_date_required": (
-            transition.get("requires_completion_at_source_date") is True
+        "activation_event_exact": (
+            transition.get("activation_event_definition_key")
+            == KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["event_definition_key"]
+            and transition.get("activation_event_date_raw")
+            == completion_date_raw
+            and transition.get("activation_event_selected_option_number") == 3
+            and transition.get("activation_event_selected_native_option_index")
+            == 2
+            and transition.get("activation_event_outcome") == "refuse"
         ),
-        "prebootstrap_event_drain_forbidden": (
-            transition.get("forbids_prebootstrap_event_drain") is True
+        "only_activation_event_allowed": (
+            allowed_prebootstrap_events
+            == [KNOWN_PRE_BOOTSTRAP_B2_PIP_EVENT["event_definition_key"]]
+        ),
+        "exact_activation_drain_required": (
+            transition.get("requires_exact_activation_event_drain") is True
+        ),
+        "completion_at_exact_date_required": (
+            transition.get("requires_completion_at_exact_date") is True
+        ),
+        "other_prebootstrap_drains_forbidden": (
+            transition.get("forbids_other_prebootstrap_event_drains") is True
         ),
         "timeline_speed_is_five": transition.get("timeline_speed") == 5,
-        "first_later_event_is_after_source_date": (
-            transition.get("first_known_later_event_definition_key")
-            == "zg361b2.40"
-            and transition.get("first_known_later_event_date_raw", 0)
-            > source_date_raw
+        "completion_is_exact_pip_date": (
+            completion_date_raw > source_date_raw
         ),
-        "destructive_event_is_after_source_date": (
+        "destructive_event_is_after_completion": (
             transition.get("destructive_later_event_definition_key")
             == "ep3_interactions_events.0630"
             and transition.get("destructive_later_event_date_raw", 0)
-            > source_date_raw
+            > completion_date_raw
+            and transition.get("preempts_destructive_later_event") is True
         ),
         "source_hash_required": (
             transition.get("requires_source_save_hash_match") is True
         ),
         "source_player_required": (
             transition.get("requires_source_saved_player_identity") is True
-        ),
-        "date_unchanged_required": (
-            transition.get("requires_date_unchanged") is True
         ),
         "post_switch_typed_player_required": (
             transition.get("requires_typed_post_switch_player") is True
@@ -2990,17 +3102,27 @@ def _manager_preemptive_transition_contract(
     evidence = {
         "schema_version": 1,
         "result": "GREEN" if not failed_checks else "RED",
-        "stage": "preemptive_load_player_transition_contract",
+        "stage": "post_exact_pip_player_transition_contract",
         "source_save_sha256": observed_save_sha256,
         "source_date_raw": source_date_raw,
+        "completion_date_raw": completion_date_raw,
         "source_character_id": source_character_id,
         "target_character_id": target_character_id,
+        "allowed_prebootstrap_event_definition_keys": (
+            allowed_prebootstrap_events
+        ),
+        "activation_event_definition_key": transition.get(
+            "activation_event_definition_key"
+        ),
+        "activation_event_selected_option_number": transition.get(
+            "activation_event_selected_option_number"
+        ),
         "checks": checks,
         "failed_checks": failed_checks,
     }
     if failed_checks:
         raise SeedCaptureError(
-            "manager preemptive transition contract failed closed", evidence
+            "manager post-PIP transition contract failed closed", evidence
         )
     return evidence
 
@@ -4652,13 +4774,33 @@ def run_capture(
             timeout_seconds=config.event_timeout_seconds,
             expected_event_definition_key=config.seed_event_definition_key,
             source_save_sha256=observed_save_sha,
-            required_date_raw=(
-                preemptive_transition["source_date_raw"]
+            maximum_date_raw=(
+                preemptive_transition["completion_date_raw"]
                 if preemptive_transition is not None
                 else None
             ),
-            allow_known_prebootstrap_drains=(
-                config.seed_purpose != MANAGER_SEED_PURPOSE
+            expected_event_date_raw=(
+                preemptive_transition["completion_date_raw"]
+                if preemptive_transition is not None
+                else None
+            ),
+            allow_known_prebootstrap_drains=True,
+            known_prebootstrap_drain_allowlist=(
+                tuple(
+                    preemptive_transition[
+                        "allowed_prebootstrap_event_definition_keys"
+                    ]
+                )
+                if preemptive_transition is not None
+                else None
+            ),
+            known_b2_pip_option_number=(
+                preemptive_transition["activation_event_selected_option_number"]
+                if preemptive_transition is not None
+                else None
+            ),
+            known_b2_pip_source_save_sha256s=(
+                (observed_save_sha,) if preemptive_transition is not None else None
             ),
             timeline_speed=(5 if config.seed_purpose == MANAGER_SEED_PURPOSE else 1),
             clock=active_runtime.clock,
@@ -4667,12 +4809,50 @@ def run_capture(
         )
         event_snapshot = entry_snapshot
         if config.seed_purpose == MANAGER_SEED_PURPOSE:
+            pip_drain_path = (
+                artifacts / "known-pre-bootstrap-b2-pip-event-drain.json"
+            )
+            pip_drain = (
+                json.loads(pip_drain_path.read_text(encoding="utf-8"))
+                if pip_drain_path.is_file()
+                else None
+            )
+            pip_drain_checks = {
+                "artifact_present": isinstance(pip_drain, dict),
+                "result_green": (
+                    isinstance(pip_drain, dict)
+                    and pip_drain.get("result") == "GREEN"
+                ),
+                "event_exact": (
+                    isinstance(pip_drain, dict)
+                    and pip_drain.get("event_definition_key")
+                    == preemptive_transition["activation_event_definition_key"]
+                ),
+                "refuse_option_three": (
+                    isinstance(pip_drain, dict)
+                    and isinstance(pip_drain.get("selection"), dict)
+                    and pip_drain["selection"].get("option_number") == 3
+                    and pip_drain["selection"].get("option_index") == 2
+                ),
+            }
+            if not all(pip_drain_checks.values()):
+                raise SeedCaptureError(
+                    "manager handoff did not follow the exact PIP refusal route",
+                    {
+                        "schema_version": 1,
+                        "state": "manager_exact_pip_drain_missing",
+                        "result": "RED",
+                        "checks": pip_drain_checks,
+                        "drain": pip_drain,
+                    },
+                )
+            report["manager_activation_event_drain"] = pip_drain
             report["manager_entry_event"] = {
                 "event_definition_key": config.seed_event_definition_key,
                 "date_raw": entry_snapshot.get("date_raw"),
                 "revision": _positive_revision(entry_snapshot),
             }
-            report["manager_entry_mode"] = "preemptive-load-handoff"
+            report["manager_entry_mode"] = "post-exact-pip-load-gui-handoff"
             write_json(
                 artifacts / "manager-entry-event-snapshot.json",
                 entry_snapshot,
@@ -4707,15 +4887,17 @@ def run_capture(
             expected_manager_id = preemptive_transition["target_character_id"]
             expected_subject_id = preemptive_transition["source_character_id"]
             source_date_raw = preemptive_transition["source_date_raw"]
+            completion_date_raw = preemptive_transition["completion_date_raw"]
             observed_date_raw = event_snapshot.get("date_raw")
             final_binding_evidence = {
                 "schema_version": 1,
                 "result": "GREEN",
-                "stage": "preemptive_load_player_transition",
-                "handoff_mode": "preemptive_load_hook",
+                "stage": "post_exact_pip_player_transition",
+                "handoff_mode": "post_exact_pip_load_gui",
                 "trigger_effect_key": MANAGER_SEED_PREEMPTIVE_EFFECT,
                 "source_save_sha256": observed_save_sha,
                 "source_date_raw": source_date_raw,
+                "completion_date_raw": completion_date_raw,
                 "observed_date_raw": observed_date_raw,
                 "source_character_id": expected_subject_id,
                 "target_character_id": expected_manager_id,
@@ -4749,8 +4931,8 @@ def run_capture(
                     "played_character_matches_target_manager": (
                         captured_played_id == expected_manager_id
                     ),
-                    "date_unchanged_from_source_save": (
-                        observed_date_raw == source_date_raw
+                    "event_at_exact_completion_date": (
+                        observed_date_raw == completion_date_raw
                     ),
                 },
             }
@@ -4770,8 +4952,8 @@ def run_capture(
             )
             if failed_checks:
                 raise SeedCaptureError(
-                    "preemptive manager transition differs from the hash-bound "
-                    "source player/date or final typed manager event",
+                    "post-PIP manager transition differs from the hash-bound "
+                    "source player, exact completion date, or final typed event",
                     final_binding_evidence,
                 )
         materialize_kwargs: dict[str, Any] = {

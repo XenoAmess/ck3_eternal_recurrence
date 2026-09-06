@@ -1,13 +1,4 @@
 ﻿# Acceptance-only player-manager seed generator. Never mounted by release.
-# The empty-scope load hook runs before queued visible character events. The
-# after-lobby hook remains as the new-game equivalent; both call one
-# idempotent effect, and the load-safe scripted GUI is the final fallback.
-on_game_start = {
-	on_actions = {
-		zga_phase2_manager_seed_on_game_start
-	}
-}
-
 on_game_start_after_lobby = {
 	on_actions = {
 		zga_phase2_manager_seed_on_game_start
