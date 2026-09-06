@@ -229,6 +229,51 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "tgp_interaction_event.0015": {
+        # CK3 1.19.0.6 notification sent to a military governor after another
+        # governor has been ordered into the recipient's wars. The interaction
+        # has already added the joining governor before this letter opens; the
+        # event immediate and sole option only display custom tooltips and add
+        # no further gameplay mutation. Bind the complete seven-scope frame
+        # before acknowledging the only authored route.
+        "date_raw": 53156904,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "recipient": 29037,
+            "governor_at_war": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (29037,),
+            "secondary_recipient": (29037,),
+            "governor_joining": (29037,),
+        },
+        "character_scope_matches_any": {
+            "secondary_recipient": ("governor_joining",),
+            "governor_joining": ("secondary_recipient",),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "intermediary",
+        ),
+        "scope_types": {},
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+            "governor_at_war",
+            "governor_joining",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices

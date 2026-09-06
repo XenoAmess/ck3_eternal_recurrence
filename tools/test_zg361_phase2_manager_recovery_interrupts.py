@@ -257,6 +257,60 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_military_aid_letter_acknowledges_exact_governor_pair(self) -> None:
+        event_key = "tgp_interaction_event.0015"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=16,
+            date_raw=53156904,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 30987),
+                _scope("recipient", "character", 32904),
+                _scope("secondary_actor", "character", unavailable_character=True),
+                _scope("secondary_recipient", "character", 28664),
+                _scope("intermediary", "character", unavailable_character=True),
+                _scope("governor_at_war", "character", 32904),
+                _scope("governor_joining", "character", 28664),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53156904,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 16},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"]["recipient"], 32904)
+        self.assertEqual(contract["character_scopes"]["governor_at_war"], 32904)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][-1] = _scope(
+            "governor_joining", "character", 28665
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53156904,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 16},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drift_checks["scope:governor_joining:matches_any"]
+        )
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
