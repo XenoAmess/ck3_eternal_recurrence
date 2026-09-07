@@ -69,6 +69,9 @@ from zg361_phase2_promotion_manager_befriend_contracts import (
 from zg361_phase2_promotion_manager_annual_summary_contracts import (
     MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_manager_elimination_contracts import (
+    MANAGER_ELIMINATION_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -1620,87 +1623,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
-    "zg361.6": {
-        # Player-only last elimination appeal. Option 1 is only a 40% chance to
-        # retain the career and therefore cannot be a production-path action.
-        # Keep the modal open and advance the same CK3 process until authored
-        # option 2 (300 gold, deterministic demotion/retention) is enabled.
-        # This trigger and choice read character state, not saved scopes. R110
-        # observed the completed self-review and shadow-response tickets on
-        # this descendant frame, while the older bank ticket had expired; bind
-        # those 48 inherited names as the exact current product-window set.
-        "date_raw": 53159136,
-        "date_policy": "product-observation-window",
-        "root_character_id": 29037,
-        "character_scopes": {},
-        "saved_scope_name_sets": ((
-            "zg361_b1_self_ticket_owner",
-            "zg361_b1_self_ticket_subject",
-            "zg361_b1_self_ticket_cycle",
-            "zg361_b1_self_ticket_case",
-            "zg361_b1_self_ticket_state",
-            "zg361_b1_shadow_ticket_owner",
-            "zg361_b1_shadow_ticket_subject",
-            "zg361_b1_shadow_ticket_cycle",
-            "zg361_b1_shadow_ticket_case",
-            "zg361_b1_shadow_ticket_state",
-            "zg361_b1_ticket_owner",
-            "zg361_b1_ticket_cycle",
-            "zg361_b1_ticket_case",
-            "zg361_b1_ticket_state",
-            "zg361_b1_oversight_ticket_owner",
-            "zg361_b1_oversight_ticket_cycle",
-            "zg361_b1_oversight_ticket_case",
-            "zg361_b1_oversight_ticket_state",
-            "zg361_b1_pending_continue_owner",
-            "zg361_b1_pending_continue_subject",
-            "zg361_b1_pending_continue_cycle",
-            "zg361_b1_pending_continue_case",
-            "zg361_b1_pending_continue_state",
-            "zg361_b1_reopen_ticket_subject",
-            "zg361_b1_reopen_ticket_owner",
-            "zg361_b1_reopen_ticket_cycle",
-            "zg361_b1_reopen_ticket_case",
-            "zg361_b1_reopen_ticket_state",
-            "zg361_b1_reopen_ticket_object",
-            "zg361_b1_reopen_ticket_route",
-            "zg361_b1_reopen_ticket_hash",
-            "zg361_b1_reopen_ticket_reward_hash",
-            "zg361_b1_reopen_ticket_book_version",
-            "zg361_notice_prompt_owner",
-            "zg361_notice_prompt_subject",
-            "zg361_notice_prompt_cycle",
-            "zg361_notice_prompt_case",
-            "zg361_notice_prompt_state",
-            "zg361_reviewing_superior",
-            "zg361_notice_kpi",
-            "zg361_notice_rank",
-            "zg361_notice_cohort",
-            "zg361_notice_absolute_grade",
-            "zg361_notice_deadline_owner",
-            "zg361_notice_deadline_subject",
-            "zg361_notice_deadline_cycle",
-            "zg361_notice_deadline_case",
-            "zg361_notice_deadline_state",
-        ),),
-        "boolean_scopes": (),
-        "option_count": 3,
-        "snapshot_option_count": 4,
-        "native_option_indices": (0, 1, 2),
-        "selected_option_number": 2,
-        "selected_native_option_index": 1,
-        "option_variants": (
-            {
-                "option_count": 2,
-                "native_option_indices": (0, 2),
-                "selection_deferred": True,
-            },
-            {
-                "option_count": 3,
-                "native_option_indices": (0, 1, 2),
-            },
-        ),
-    },
     "zg361pp.9100": {
         # R108's player portfolio-mode card precedes the PP numbered windows.
         # The selected mode is stored on the player and the event consumes no
@@ -2320,6 +2242,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_NICKNAME_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_SPYMASTER_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_BEFRIEND_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ELIMINATION_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):
