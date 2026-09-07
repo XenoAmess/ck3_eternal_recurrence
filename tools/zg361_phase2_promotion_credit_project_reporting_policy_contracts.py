@@ -223,4 +223,29 @@ CREDIT_PROJECT_REPORTING_POLICY_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.59": {
+        # R223 reached risk timing. Routes A/B both consume the risk write,
+        # increment both object versions, advance I state 3 -> 4, and schedule
+        # .55 D+1. A leaves five loss and adds one integrity; B leaves nine
+        # loss with no integrity gain, while C opens defer/debt. A minimizes
+        # business harm and preserves the full I tree.
+        "date_raw": 53187288,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
