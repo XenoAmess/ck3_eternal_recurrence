@@ -29,6 +29,7 @@ from test_raiktor_three_way_exit_policy import (
     _complete_campaign,
     _white_peace,
 )
+from test_raiktor_surrender_session_binding_contract import _bound
 
 
 def _write_owner(directory: str, *, approved: bool = True) -> Path:
@@ -127,6 +128,23 @@ def _provide(
 
 
 class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
+    def test_outcome_only_intake_does_not_invent_execution_inputs(self) -> None:
+        result = provide_raiktor_three_way_exit_intake(
+            candidate_value=None,
+            surrender_terms_value=None,
+            campaign_value=None,
+            owner_budget_source_path=None,
+            white_peace_observation_value=None,
+            white_peace_utility_evaluation_value=None,
+        )
+
+        self.assertIsNone(result["surrender_execution_readiness"])
+        self.assertFalse(
+            result["inputs"]["surrender_aggregate_session_binding_supplied"]
+        )
+        self.assertFalse(result["action_ready"])
+        self.assertIsNone(result["action_literal"])
+
     def test_missing_sources_report_one_fail_closed_intake(self) -> None:
         result = _provide(owner_path=None)
 
@@ -146,6 +164,14 @@ class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
                 "white_peace_comparison_certificate_unavailable",
             ],
         )
+        execution = result["surrender_execution_readiness"]
+        self.assertEqual(execution["status"], "blocked")
+        self.assertIn(
+            "three_way_static_surrender_recommendation_required",
+            execution["decision"]["blockers"],
+        )
+        self.assertFalse(execution["action"]["ready"])
+        self.assertIsNone(execution["action"]["literal"])
 
     def test_complete_bound_inputs_publish_static_recommendation_only(
         self,
@@ -172,6 +198,44 @@ class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
         self.assertFalse(result["action_ready"])
         self.assertIsNone(result["action_literal"])
         self.assertEqual(result["blockers"], [])
+        execution = result["surrender_execution_readiness"]
+        self.assertEqual(
+            execution["decision"]["recommended_outcome"], "white_peace"
+        )
+        self.assertFalse(execution["decision"]["ready"])
+        self.assertFalse(execution["action"]["ready"])
+        self.assertFalse(execution["postcondition"]["ready"])
+
+    def test_exact_session_binding_reaches_execution_projection_only(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            owner_path = _write_owner(directory)
+            candidate, terms, campaign, observation, utility = (
+                _complete_inputs(owner_path)
+            )
+            result = provide_raiktor_three_way_exit_intake(
+                candidate_value=candidate,
+                surrender_terms_value=terms,
+                campaign_value=campaign,
+                owner_budget_source_path=owner_path,
+                white_peace_observation_value=observation,
+                white_peace_utility_evaluation_value=utility,
+                surrender_aggregate_session_binding_value=_bound(),
+            )
+
+        execution = result["surrender_execution_readiness"]
+        self.assertTrue(
+            result["inputs"]["surrender_aggregate_session_binding_supplied"]
+        )
+        self.assertTrue(execution["terms"]["session_provenance_ready"])
+        self.assertNotIn(
+            "six_domain_session_provenance_not_bound",
+            execution["terms"]["blockers"],
+        )
+        self.assertFalse(result["action_ready"])
+        self.assertFalse(execution["action"]["ready"])
+        self.assertIsNone(execution["action"]["literal"])
 
     def test_draft_owner_never_reaches_comparison(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

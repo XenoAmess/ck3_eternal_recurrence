@@ -277,6 +277,14 @@ This package added no native reader, RVA/RTTI work, or mutation. At this static
 stage the binding was not production-live; the later paused acceptance below
 closes only that session-binding evidence gap.
 
+The unified `raiktor-three-way-exit-intake-provider-v1` now publishes this
+existing execution projection beside its three-way assessment. A supplied
+exact aggregate session binding is forwarded only to this projection; it does
+not promote the intake's production recommendation, action literal, submit
+capability, cooldown or postcondition gates. Outcome-only historical adapters
+without candidate/terms expose no execution projection rather than inventing
+those inputs.
+
 ## 2026-09-02 public query wiring
 
 [static-ready; read-only; no CK3 launch] The existing

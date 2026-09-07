@@ -76,3 +76,9 @@ hash-bound 文件入口现在也可直接绑定这份完整 R3 generic postwar e
 `observed_surrender_outcome`。入口验证 receipt/outer checks、嵌套 intake/policy 一致性、source report SHA
 绑定、remaining provider 和全部 false 的 readiness 边界后才提取 projection；提取后的 generic outcome 仍返回
 `source_specific_war_loss_attribution_unavailable`，不会被提升为 source-specific loss。
+
+统一入口现也调用既有 `raiktor-surrender-execution-policy-v1`，把三方 assessment、同一 candidate 与 six-domain
+surrender terms 投影为独立 `surrender_execution_readiness`。可选的 aggregate session binding 只能关闭
+`six_domain_session_provenance_not_bound`；typed submit、pending/cooldown、persisted expiry、source-specific cleanup
+与八项 action-boundary postcondition 仍由原执行合同保持关闭。candidate/terms 未提供的历史 outcome-only adapter 返回
+`surrender_execution_readiness=null`，不会伪造执行输入；顶层 `action_ready=false/action_literal=null` 恒不变。

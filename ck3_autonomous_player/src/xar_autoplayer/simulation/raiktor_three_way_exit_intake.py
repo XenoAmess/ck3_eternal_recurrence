@@ -13,6 +13,9 @@ from pathlib import Path
 from xar_autoplayer.simulation.raiktor_owner_budget_profile_provider import (
     provide_raiktor_owner_budget_profile,
 )
+from xar_autoplayer.simulation.raiktor_surrender_execution_policy import (
+    project_raiktor_surrender_execution_readiness,
+)
 from xar_autoplayer.simulation.raiktor_three_way_exit_policy import (
     assess_raiktor_three_way_exit,
 )
@@ -34,6 +37,7 @@ def provide_raiktor_three_way_exit_intake(
     white_peace_observation_value: object | None,
     white_peace_utility_evaluation_value: object | None,
     observed_surrender_outcome_value: object | None = None,
+    surrender_aggregate_session_binding_value: object | None = None,
 ) -> dict[str, object]:
     """Return one composed static assessment and all typed provider blockers."""
 
@@ -59,6 +63,17 @@ def provide_raiktor_three_way_exit_intake(
         owner_budget,
         white_peace,
         observed_surrender_outcome_value,
+    )
+    surrender_execution = (
+        project_raiktor_surrender_execution_readiness(
+            assessment,
+            candidate_value,
+            surrender_terms_value,
+            surrender_aggregate_session_binding_value,
+        )
+        if isinstance(candidate_value, dict)
+        and isinstance(surrender_terms_value, dict)
+        else None
     )
 
     blockers = _ordered_unique(
@@ -103,6 +118,9 @@ def provide_raiktor_three_way_exit_intake(
             "observed_surrender_outcome_supplied": (
                 observed_surrender_outcome_value is not None
             ),
+            "surrender_aggregate_session_binding_supplied": (
+                surrender_aggregate_session_binding_value is not None
+            ),
         },
         "static_recommendation_ready": assessment[
             "static_recommendation_ready"
@@ -117,11 +135,13 @@ def provide_raiktor_three_way_exit_intake(
             "white_peace_comparison": white_provider,
         },
         "assessment": assessment,
+        "surrender_execution_readiness": surrender_execution,
         "boundaries": [
             "offline_side_effect_free_composition_only",
             "no_default_owner_budget_or_utility_values",
             "missing_evidence_remains_typed_and_unavailable",
             "static_recommendation_does_not_authorize_an_action",
+            "execution_projection_never_enables_submit_or_postcondition",
             "provider_does_not_start_query_or_mutate_ck3",
         ],
     }
