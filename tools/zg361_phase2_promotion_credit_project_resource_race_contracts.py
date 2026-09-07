@@ -214,4 +214,29 @@ CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 2,
         "selected_native_option_index": 1,
     },
+    "zg361cp.29": {
+        # R217 reached metric packaging. Route A records short gain/net 10 with
+        # no delayed cost; route B raises short gain to 20 and net to 12 but
+        # creates delayed cost 8. Route C opens defer/debt. A is the minimum
+        # side-effect audited package; it closes E at state 5/active 0 and the
+        # D+1 hidden .9001 edge launches the itemized I-domain tree.
+        "date_raw": 53187144,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
