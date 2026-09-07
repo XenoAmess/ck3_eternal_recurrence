@@ -58,7 +58,12 @@ def _province_petition_scope_variant(
             **{name: (29037,) for name in character_scopes},
         },
         "character_scope_matches_any": {
-            "province_change_recipient": member_scopes,
+            # .0100 option A writes the petitioner's own scope into
+            # ``province_change``; options B-D write one of the selected
+            # movement members. .0101 then materializes that exact stored
+            # value as ``province_change_recipient``. Bind the complete
+            # authored alias set rather than requiring a movement member.
+            "province_change_recipient": ("petitioner", *member_scopes),
         },
     }
 
@@ -126,9 +131,10 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
             "character_scope_matches_any": {},
         } for direction_scope in _LAW_DIRECTION_SCOPES) + tuple(
             # Exact-build source .0100 exposes four province-type branches.
-            # R175/R185 observed house/other recipient selection and R186
-            # observed the industrial sibling. Enumerate the source-authored
-            # cross product while retaining exact names and recipient identity.
+            # R175/R185 observed house/other recipient selection, R186
+            # observed the industrial sibling, and R289 observed option A's
+            # petitioner-self recipient. Enumerate the source-authored cross
+            # product while retaining exact names and recipient identity.
             _province_petition_scope_variant(province_scope, member_scopes)
             for province_scope in _PROVINCE_TYPE_SCOPES
             for member_scopes in _PROVINCE_MEMBER_SHAPES

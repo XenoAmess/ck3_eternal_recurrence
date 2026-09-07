@@ -1960,6 +1960,26 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertTrue(all(house_and_other_checks.values()), house_and_other_checks)
 
+        petitioner_recipient = copy.deepcopy(context)
+        petitioner_recipient["saved_scopes"][-1] = character_scope(
+            "province_change_recipient", 28664
+        )
+        petitioner_recipient_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53158008, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 20},
+            context={
+                **petitioner_recipient,
+                "current_event_instance_id": 20,
+                "date_raw": 53158008,
+            },
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(
+            all(petitioner_recipient_checks.values()),
+            petitioner_recipient_checks,
+        )
+
         unrelated_recipient = copy.deepcopy(house_and_other)
         unrelated_recipient["saved_scopes"][-1] = character_scope(
             "province_change_recipient", 27199
