@@ -59,6 +59,35 @@ MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
         ),),
         "saved_scope_count": 7,
         "scope_variants": ({
+            # A regular result has no upset marker. The host is one of the
+            # two authored participants and may be either calculated winner
+            # or loser. R194 observed host/opponent/contender/winner=29501
+            # and loser=28667; the earlier live frame observed host=loser.
+            "saved_scope_names": (
+                "activity",
+                "host",
+                "province",
+                "debate_opponent",
+                "debate_contender",
+                "debate_loser",
+                "debate_winner",
+            ),
+            "saved_scope_count": 7,
+            "scope_types": {
+                "activity": "activity",
+                "host": "character",
+                "province": "province",
+                "debate_opponent": "character",
+                "debate_contender": "character",
+                "debate_loser": "character",
+                "debate_winner": "character",
+            },
+            "character_scope_matches_any": {
+                "host": ("debate_winner", "debate_loser"),
+                "debate_opponent": ("host",),
+                "debate_contender": ("host",),
+            },
+        }, {
             # debate_determine_outcome_effect saves this character scope only
             # when the score produces an upset. The event runs that effect in
             # the host/contender scope, so the marker equals the host; the host

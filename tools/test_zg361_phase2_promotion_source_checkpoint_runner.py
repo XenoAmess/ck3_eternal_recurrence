@@ -2076,6 +2076,35 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
+        host_wins = copy.deepcopy(context)
+        host_wins["current_event_instance_id"] = 66
+        host_wins["date_raw"] = 53166768
+        host_wins["saved_scopes"] = [
+            scope("activity", "activity"),
+            scope("host", "character", 29501),
+            scope("province", "province"),
+            scope("debate_opponent", "character", 29501),
+            scope("debate_contender", "character", 29501),
+            scope("debate_loser", "character", 28667),
+            scope("debate_winner", "character", 29501),
+        ]
+        host_wins_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53166768,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 66},
+            context=host_wins,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(host_wins_checks.values()), host_wins_checks)
+        self.assertTrue(host_wins_checks["scope:host:matches_any"])
+        self.assertTrue(host_wins_checks["scope:debate_winner:differs_from"])
+        self.assertNotIn(
+            "scope:debate_loser:matches_any", host_wins_checks,
+        )
+
         unexpected = copy.deepcopy(context)
         unexpected["current_event_instance_id"] = 64
         unexpected["date_raw"] = 53166672
