@@ -730,8 +730,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # and manager roster at selection time. Refusal preserves the current
         # titles and roster while handing the resulting war to the existing
         # gameplay state surface, so it is the only admissible route for this
-        # bounded product observation. Bind the faction, target, leader and
-        # both title scopes before sending that exact refusal.
+        # bounded product observation. setup_populist_leader_effect creates a
+        # dynamic new_title only when the selected peasant leader has no
+        # primary title, so bind either exact source-authored scope shape
+        # before sending that refusal.
         "date_raw": 53229048,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -747,15 +749,27 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "target_title": "landed_title",
             "peasant_leader": "character",
         },
+        "optional_scope_types": {
+            "new_title": "landed_title",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "faction",
-            "peasant_county",
-            "faction_target",
-            "target_title",
-            "peasant_leader",
-        ),),
-        "saved_scope_count": 5,
+        "saved_scope_name_sets": (
+            (
+                "faction",
+                "peasant_county",
+                "faction_target",
+                "target_title",
+                "peasant_leader",
+            ),
+            (
+                "faction",
+                "peasant_county",
+                "faction_target",
+                "target_title",
+                "peasant_leader",
+                "new_title",
+            ),
+        ),
         "option_count": 2,
         "snapshot_option_count": 4,
         "native_option_indices": (2, 3),

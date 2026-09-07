@@ -948,6 +948,42 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_native_option_index"], 3)
         self.assertEqual(contract["max_occurrences"], 1)
 
+        new_leader_context = copy.deepcopy(context)
+        new_leader_context["current_event_instance_id"] = 223
+        new_leader_context["date_raw"] = 53239560
+        new_leader_context["saved_scopes"].append(
+            _scope("new_title", "landed_title")
+        )
+        new_leader_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53239560,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 223},
+            context=new_leader_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(new_leader_checks.values()), new_leader_checks)
+
+        invalid_new_title = copy.deepcopy(new_leader_context)
+        invalid_new_title["saved_scopes"][-1] = _scope(
+            "new_title", "character", 70343
+        )
+        invalid_new_title_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53239560,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 223},
+            context=invalid_new_title,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            invalid_new_title_checks["scope:new_title:optional_type"]
+        )
+
         drifted = copy.deepcopy(context)
         drifted["saved_scopes"][4] = _scope(
             "peasant_leader", "character", 32904
