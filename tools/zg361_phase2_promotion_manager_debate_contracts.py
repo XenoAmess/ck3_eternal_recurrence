@@ -60,9 +60,13 @@ MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
         "saved_scope_count": 7,
         "scope_variants": ({
             # A regular result has no upset marker. The host is one of the
-            # two authored participants and may be either calculated winner
-            # or loser. R194 observed host/opponent/contender/winner=29501
-            # and loser=28667; the earlier live frame observed host=loser.
+            # two event-window participants: debate_event.5110 immediately
+            # rebinds debate_contender from host and set_opponent_scope_effect
+            # rebinds debate_opponent from host for a top-liege recipient.
+            # The calculated winner and loser instead come from the activity's
+            # durable debate_contender/challenged_movement_leader variables,
+            # so they need not include this delivery-window host.  R194 saw
+            # host=winner while R288 saw host distinct from both outcomes.
             "saved_scope_names": (
                 "activity",
                 "host",
@@ -83,15 +87,16 @@ MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
                 "debate_winner": "character",
             },
             "character_scope_matches_any": {
-                "host": ("debate_winner", "debate_loser"),
+                "host": ("debate_opponent", "debate_contender"),
                 "debate_opponent": ("host",),
                 "debate_contender": ("host",),
             },
         }, {
             # debate_determine_outcome_effect saves this character scope only
             # when the score produces an upset. The event runs that effect in
-            # the host/contender scope, so the marker equals the host; the host
-            # is then exactly one of the calculated winner or loser.
+            # the host/contender scope, so the marker equals the host.  As in
+            # the regular variant, the activity's durable outcome pair may be
+            # distinct from that delivery-window host.
             "saved_scope_names": (
                 "activity",
                 "host",
