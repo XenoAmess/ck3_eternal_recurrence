@@ -22,6 +22,78 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
+    def test_safe_treatment_success_binds_exact_acknowledgement(self) -> None:
+        event_key = "health.3103"
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+        context = _context(
+            event_key=event_key,
+            instance_id=86,
+            date_raw=53177016,
+            player=32904,
+            scopes=[
+                _scope("sick_character", "character", 32904),
+                _scope("disease_type", "flag"),
+                _scope("high_skill_option", "character", 49718),
+                _scope("low_skill_option", "character", 36369),
+                _scope("physician", "character", 49718),
+                _scope("background_terrain_scope", "province"),
+                _scope("treatment_picker", "character", 32904),
+                _scope("treatment", "flag"),
+                _scope("outcome", "flag"),
+                _scope("portrait", "character", 49718),
+            ],
+            native_option_indices=(0,),
+        )
+        snapshot = {
+            "date_raw": 53177016,
+            "active_event": {"option_count": 1},
+        }
+        event = {"event_instance_id": 86}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_portrait = copy.deepcopy(context)
+        wrong_portrait["saved_scopes"][-1] = _scope(
+            "portrait", "character", 36369
+        )
+        portrait_checks = checks_for(wrong_portrait)
+        self.assertFalse(portrait_checks["scope:portrait"])
+        self.assertFalse(portrait_checks["scope:portrait:matches_any"])
+
+        wrong_picker = copy.deepcopy(context)
+        wrong_picker["saved_scopes"][6] = _scope(
+            "treatment_picker", "character", 49718
+        )
+        self.assertFalse(checks_for(wrong_picker)["scope:treatment_picker"])
+
+        wrong_outcome_type = copy.deepcopy(context)
+        wrong_outcome_type["saved_scopes"][8]["scope"]["type_key"] = "value"
+        self.assertFalse(
+            checks_for(wrong_outcome_type)["scope:outcome:type"]
+        )
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][0]["native_option_index"] = 1
+        self.assertFalse(checks_for(wrong_projection)["authored_options_exact"])
+
+        missing_alias = copy.deepcopy(context)
+        missing_alias["saved_scopes"][-1]["name"] = "result_portrait"
+        alias_checks = checks_for(missing_alias)
+        self.assertFalse(alias_checks["scope:portrait"])
+        self.assertFalse(alias_checks["saved_scope_names_exact"])
+
     def test_new_physician_uses_exact_safe_treatment_branch(self) -> None:
         event_key = "health.3101"
         contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]

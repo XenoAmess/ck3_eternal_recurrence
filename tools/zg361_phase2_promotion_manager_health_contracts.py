@@ -173,6 +173,59 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "health.3103": {
+        # R199 exact safe-treatment success result opened by health.3101.
+        # Vanilla applies treatment modifiers and informs relatives in the
+        # immediate block before this window is presented; its sole authored
+        # option is only an acknowledgement. The hired physician, preceding
+        # high-skill candidate, and result portrait must remain one character,
+        # while the patient and treatment picker both remain the played root.
+        "date_raw": 53177016,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "sick_character": 32904,
+            "high_skill_option": 49718,
+            "low_skill_option": 36369,
+            "physician": 49718,
+            "treatment_picker": 32904,
+            "portrait": 49718,
+        },
+        "character_scope_matches_any": {
+            "physician": ("high_skill_option", "portrait"),
+            "high_skill_option": ("physician", "portrait"),
+            "portrait": ("physician", "high_skill_option"),
+        },
+        "character_scope_differs_from": {
+            "high_skill_option": ("sick_character", "low_skill_option"),
+            "low_skill_option": ("sick_character", "high_skill_option"),
+        },
+        "scope_types": {
+            "disease_type": "flag",
+            "background_terrain_scope": "province",
+            "treatment": "flag",
+            "outcome": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "sick_character",
+            "disease_type",
+            "high_skill_option",
+            "low_skill_option",
+            "physician",
+            "background_terrain_scope",
+            "treatment_picker",
+            "treatment",
+            "outcome",
+            "portrait",
+        ),),
+        "saved_scope_count": 10,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "health.3104": {
         # Vanilla safe-treatment failure opened immediately by health.1001's
         # conservative treatment branch. The treatment outcome and modifiers
