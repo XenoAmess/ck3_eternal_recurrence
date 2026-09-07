@@ -24,6 +24,7 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_intake import (  # noqa: E
 
 
 MANIFEST_CONTRACT = "raiktor-three-way-exit-file-intake-manifest-v1"
+MANIFEST_CONTRACT_V2 = "raiktor-three-way-exit-file-intake-manifest-v2"
 OUTPUT_SCHEMA = "xar.ck3.g2_three_way_exit_file_intake.v1"
 SOURCE_SPECIFIC_INTAKE_SCHEMA = (
     "xar.ck3.g2_source_specific_comparison_intake.v1"
@@ -50,6 +51,7 @@ _INPUT_NAMES = (
     "white_peace_utility_evaluation",
     "observed_surrender_outcome",
 )
+_INPUT_NAMES_V2 = (*_INPUT_NAMES, "surrender_aggregate_session_binding")
 _SHA256_RE = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -78,18 +80,23 @@ def run_file_intake(
     manifest = _json_object(manifest_bytes, "manifest")
     if set(manifest) != {"schema_version", "contract", "inputs"}:
         raise FileIntakeError("manifest keys drifted")
-    if (
-        manifest.get("schema_version") != 1
-        or manifest.get("contract") != MANIFEST_CONTRACT
-    ):
+    manifest_identity = (
+        manifest.get("schema_version"),
+        manifest.get("contract"),
+    )
+    if manifest_identity == (1, MANIFEST_CONTRACT):
+        input_names = _INPUT_NAMES
+    elif manifest_identity == (2, MANIFEST_CONTRACT_V2):
+        input_names = _INPUT_NAMES_V2
+    else:
         raise FileIntakeError("manifest identity drifted")
     inputs = manifest.get("inputs")
-    if not isinstance(inputs, dict) or set(inputs) != set(_INPUT_NAMES):
+    if not isinstance(inputs, dict) or set(inputs) != set(input_names):
         raise FileIntakeError("manifest input names drifted")
 
     values: dict[str, object | None] = {}
     bindings: dict[str, object] = {}
-    for name in _INPUT_NAMES:
+    for name in input_names:
         value, binding = _load_bound_input(
             inputs[name], manifest_path.parent, name
         )
@@ -118,6 +125,9 @@ def run_file_intake(
             "white_peace_utility_evaluation"
         ],
         observed_surrender_outcome_value=observed_surrender_outcome,
+        surrender_aggregate_session_binding_value=values.get(
+            "surrender_aggregate_session_binding"
+        ),
     )
     output = {
         "schema": OUTPUT_SCHEMA,

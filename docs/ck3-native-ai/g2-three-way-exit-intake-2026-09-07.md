@@ -82,3 +82,8 @@ surrender terms 投影为独立 `surrender_execution_readiness`。可选的 aggr
 `six_domain_session_provenance_not_bound`；typed submit、pending/cooldown、persisted expiry、source-specific cleanup
 与八项 action-boundary postcondition 仍由原执行合同保持关闭。candidate/terms 未提供的历史 outcome-only adapter 返回
 `surrender_execution_readiness=null`，不会伪造执行输入；顶层 `action_ready=false/action_literal=null` 恒不变。
+
+hash-bound runner 保留原 `raiktor-three-way-exit-file-intake-manifest-v1`，并新增显式 v2 合同；v2 只增加
+`surrender_aggregate_session_binding` 路径与 SHA-256 绑定。完整 fixture 证明该输入可令 execution projection 的
+`session_provenance_ready=true`，但 `action.ready=false`、`postcondition.ready=false` 与 literal `null` 不变。
+v1 manifest 的输入集合和行为保持兼容；声明 v2 却缺少 session input 会直接作为 manifest shape RED。

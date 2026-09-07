@@ -21,6 +21,7 @@ from test_prepare_g2_postwar_comparison_intake import (
     _expected as _postwar_expected,
     _report as _postwar_report,
 )
+from test_raiktor_surrender_session_binding_contract import _bound
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -60,7 +61,7 @@ def _binding(path: Path) -> dict[str, object]:
 
 
 def _manifest(
-    root: Path, *, complete: bool
+    root: Path, *, complete: bool, bind_session: bool = False
 ) -> tuple[Path, str]:
     owner_path = _write_owner(str(root))
     candidate, terms, campaign, observation, utility = _complete_inputs(
@@ -80,6 +81,12 @@ def _manifest(
         entries[name] = _binding(path)
     entries["owner_budget_source"] = _binding(owner_path)
     entries["observed_surrender_outcome"] = None
+    if bind_session:
+        binding_path = root / "surrender_aggregate_session_binding.json"
+        _write_json(binding_path, _bound())
+        entries["surrender_aggregate_session_binding"] = _binding(
+            binding_path
+        )
     if not complete:
         for name in (
             "campaign_certificate",
@@ -89,8 +96,12 @@ def _manifest(
         ):
             entries[name] = None
     manifest = {
-        "schema_version": 1,
-        "contract": INTAKE.MANIFEST_CONTRACT,
+        "schema_version": 2 if bind_session else 1,
+        "contract": (
+            INTAKE.MANIFEST_CONTRACT_V2
+            if bind_session
+            else INTAKE.MANIFEST_CONTRACT
+        ),
         "inputs": entries,
     }
     path = root / "manifest.json"
@@ -145,6 +156,57 @@ def _generic_postwar_envelope() -> dict[str, object]:
 
 
 class G2ThreeWayExitFileIntakeTests(unittest.TestCase):
+    def test_v2_manifest_binds_session_to_execution_projection_only(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest, digest = _manifest(
+                root, complete=True, bind_session=True
+            )
+
+            result = INTAKE.run_file_intake(
+                manifest,
+                root / "result.json",
+                expected_manifest_sha256=digest,
+            )
+
+            execution = result["intake_result"][
+                "surrender_execution_readiness"
+            ]
+            self.assertTrue(
+                result["input_bindings"][
+                    "surrender_aggregate_session_binding"
+                ]["supplied"]
+            )
+            self.assertTrue(execution["terms"]["session_provenance_ready"])
+            self.assertNotIn(
+                "six_domain_session_provenance_not_bound",
+                execution["terms"]["blockers"],
+            )
+            self.assertFalse(result["boundaries"]["action_ready"])
+            self.assertFalse(execution["action"]["ready"])
+            self.assertFalse(execution["postcondition"]["ready"])
+            self.assertIsNone(execution["action"]["literal"])
+
+    def test_v2_manifest_requires_exact_session_input_set(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest, _ = _manifest(root, complete=True)
+            value = json.loads(manifest.read_text(encoding="utf-8"))
+            value["schema_version"] = 2
+            value["contract"] = INTAKE.MANIFEST_CONTRACT_V2
+            digest = _write_json(manifest, value)
+
+            with self.assertRaisesRegex(
+                INTAKE.FileIntakeError, "manifest input names drifted"
+            ):
+                INTAKE.run_file_intake(
+                    manifest,
+                    root / "result.json",
+                    expected_manifest_sha256=digest,
+                )
+
     def test_complete_hash_bound_manifest_writes_static_result(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -167,6 +229,17 @@ class G2ThreeWayExitFileIntakeTests(unittest.TestCase):
                 "white_peace",
             )
             self.assertEqual(result["intake_result"]["blockers"], [])
+            self.assertFalse(
+                result["intake_result"]["inputs"][
+                    "surrender_aggregate_session_binding_supplied"
+                ]
+            )
+            execution = result["intake_result"][
+                "surrender_execution_readiness"
+            ]
+            self.assertFalse(
+                execution["terms"]["session_provenance_ready"]
+            )
             self.assertFalse(result["boundaries"]["action_ready"])
             self.assertEqual(result["boundaries"]["mutation_commands"], [])
 
