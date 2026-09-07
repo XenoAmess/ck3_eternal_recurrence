@@ -57,6 +57,9 @@ import resume_zg361_phase2_promotion_source_session as retained_client  # noqa: 
 import zg361_phase2_promotion_manager_befriend_contracts as befriend_contracts  # noqa: E402
 import zg361_phase2_promotion_manager_health_contracts as health_contracts  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
+from zg361_phase2_promotion_manager_annual_summary_contracts import (  # noqa: E402
+    MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_manager_health_aging_contracts import (  # noqa: E402
     MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS,
 )
@@ -3006,6 +3009,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             extended_later_cycle_names,
             retained_seed_pending_names,
             watchdog_recovery_names,
+            central_active_names,
         ) = contract["saved_scope_name_sets"]
         character_names = {
             "zg361_b1_calibration_watchdog_owner": 29037,
@@ -3075,6 +3079,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(
             all(watchdog_recovery_checks.values()), watchdog_recovery_checks
         )
+        central_active_checks = checks_for(central_active_names)
+        self.assertTrue(all(central_active_checks.values()), central_active_checks)
         self.assertIn(
             "scope:zg361_b1_calibration_watchdog_owner:optional",
             watchdog_recovery_checks,
@@ -3100,9 +3106,22 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             later_cycle_checks,
         )
 
-        extra_names = extended_later_cycle_names + ("unrelated_scope",)
+        missing_central_name_checks = checks_for(central_active_names[:-1])
+        self.assertFalse(
+            missing_central_name_checks["saved_scope_names_exact"]
+        )
+        extra_names = central_active_names + ("unrelated_scope",)
         extra_checks = checks_for(extra_names)
         self.assertFalse(extra_checks["saved_scope_names_exact"])
+
+        self.assertEqual(
+            set(MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS),
+            {"zg361.1"},
+        )
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361.1"],
+            MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS["zg361.1"],
+        )
 
     def test_bonus_salary_matrix_accepts_funded_and_defer_only_options(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
