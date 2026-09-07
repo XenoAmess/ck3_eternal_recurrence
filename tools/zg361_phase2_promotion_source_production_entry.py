@@ -1076,6 +1076,54 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.2052": {
+        # CK3 1.19.0.6 hostile-scheme proposal. Native option 0 exposes the
+        # selected scheme, upgrades the eunuch story and upsets its owner.
+        # Native option 1 leaves the hostile scheme untouched and applies only
+        # the authored story downgrade/opinion/stress result. Choose that
+        # narrower terminal route after binding the exact no-target frame and
+        # proving the scheme owner is neither the player nor the eunuch.
+        "date_raw": 53236512,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+            "scheme_owner": (32904,),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("scheme_owner",),
+            "scheme_owner": ("eunuch",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "rival": "character",
+            "scheme": "scheme",
+            "scheme_owner": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "rival",
+            "scheme",
+            "scheme_owner",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_story_cycle_admin_eunuch.2021": {
         # CK3 1.19.0.6 eunuch-family governorship request. Native option 0
         # transfers a title or changes its appointment investment, mutates

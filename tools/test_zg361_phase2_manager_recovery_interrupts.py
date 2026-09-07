@@ -1372,6 +1372,57 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:secret_owner:differs_from"])
 
+    def test_eunuch_scheme_proposal_preserves_hidden_scheme(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.2052"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=229,
+            date_raw=53236512,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("rival", "character", 16844822),
+                _scope("scheme", "scheme"),
+                _scope("scheme_owner", "character", 29573),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        owner_is_eunuch = copy.deepcopy(context)
+        owner_is_eunuch["saved_scopes"][6] = _scope(
+            "scheme_owner", "character", 31801
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=owner_is_eunuch,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:eunuch:differs_from"])
+        self.assertFalse(drift_checks["scope:scheme_owner:differs_from"])
+
     def test_eunuch_governorship_request_preserves_title_roster(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.2021"
         contract = _manager_contract(event_key, player=32904)
