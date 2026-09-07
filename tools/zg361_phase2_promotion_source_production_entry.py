@@ -53,6 +53,9 @@ from zg361_phase3_metrics_delivery_aj_contracts import (
 from zg361_phase2_promotion_vanilla_secret_interrupt_contracts import (
     VANILLA_SECRET_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_vanilla_natural_disaster_interrupt_contracts import (
+    VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_pp_bargaining_contracts import (
     PP_BARGAINING_TIMELINE_CONTRACTS,
 )
@@ -131,7 +134,11 @@ B1_AUTHORED_ADVANCE_DAYS = 400
 # journal and AF's D+365 cliff plus eleven D+30 cadence ticks before Central
 # can reach the player-visible PP source event.  Keep one finite tail from the
 # canonical seed; do not renew it on retained-client reconnects.
-POST_PUBLICATION_OBSERVATION_DAYS = 1100
+# R245 reached the healthy stage-nine tail after 1,962 days, proving that the
+# original 1,900-day whole-product window could reject the retained session
+# before the source-authored stage-nine through stage-eleven chain completed.
+# Keep a finite two-cycle bound while allowing that long tail to finish.
+POST_PUBLICATION_OBSERVATION_DAYS = 4200
 PRODUCT_CYCLE_OPPORTUNITIES = 2
 # R116 proved that the first Central portfolio can finish while a second real
 # player B1 cycle is already active.  A one-cycle absolute cap stopped only 25
@@ -147,10 +154,7 @@ HOURS_PER_DAY = 24
 # pause can become visible to Python before the next heartbeat has replaced
 # every cached Snapshot field used by the query's direct-read equality gate.
 PAUSED_PROGRESS_SETTLE_SECONDS = 0.35
-# R244 observed four consecutive, input-free revision rejections while a
-# speed-5 map naturally advanced.  Keep the exact revision gate, but allow a
-# second four-attempt window for the idempotent control to bind a quiet frame.
-MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 8
+MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 4
 ZG361_6_RETAIN_WAIT_DAYS = 365
 ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS = 10.0
 _TRANSIENT_PROGRESS_BINDING_ERRORS = (
@@ -2292,6 +2296,9 @@ KNOWN_TIMELINE_INTERRUPTS.update(
     PHASE3_METRICS_DELIVERY_AJ_TIMELINE_CONTRACTS
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SECRET_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(
+    VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS
+)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_BARGAINING_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_RECEIPT_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_ACTION_ITEM_TIMELINE_CONTRACTS)
@@ -2319,7 +2326,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ELIMINATION_TIMELINE_CONTRACTS)
 class PromotionProductionEntryService(Protocol):
     def snapshot(self) -> dict[str, object]: ...
     def execute_step(
-        self, step: str, *, expected_revision: int
+        self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]: ...
     def query_zhongguo_promotion_source_progress_v1(
         self, request_nonce: str, *, expected_revision: int
@@ -2435,6 +2442,34 @@ def _map_control_from_latest_binding(
                 "error": f"{type(error).__name__}: {error}",
                 "request_submitted": False,
             })
+    if step == "pause-map":
+        # R244/R246 proved that speed five can publish a new revision between
+        # every Python snapshot and submission indefinitely.  The exact-build
+        # native pause handler fresh-reads CK3 and is idempotent; unlike an
+        # event choice, it does not consume the wire expected_revision.  Use
+        # that narrow primitive only after every strict, input-free retry was
+        # rejected, and retain the fallback in the audit trail.
+        snapshot, _ = _binding(
+            service.snapshot(),
+            player=player,
+            connection_generation=connection_generation,
+        )
+        if snapshot.get("paused") is True:
+            return None
+        fallback_revision = int(snapshot["revision"])
+        result = _accepted(
+            service.execute_step(step, expected_revision=None),
+            step,
+        )
+        rebind_audit.append({
+            "step": step,
+            "attempt": "native-fresh-idempotent-fallback",
+            "stale_revision": fallback_revision,
+            "request_submitted": True,
+            "binding_mode": "exact-build-native-fresh-idempotent-pause",
+            "ack_status": result.get("status"),
+        })
+        return result
     assert last_error is not None
     raise last_error
 

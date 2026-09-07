@@ -1353,12 +1353,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(audit[0]["stale_revision"], 118)
         self.assertFalse(audit[0]["request_submitted"])
 
-    def test_pause_rebind_survives_r244_four_revision_burst(self) -> None:
+    def test_pause_rebind_uses_native_fresh_fallback_after_four_mismatches(
+        self,
+    ) -> None:
         class Service:
             def __init__(self) -> None:
                 self.snapshot_revisions = iter((70, 72, 75, 78, 81))
                 self.current_revision = 0
-                self.attempted_revisions: list[int] = []
+                self.attempted_revisions: list[int | None] = []
 
             def snapshot(self) -> dict[str, object]:
                 self.current_revision = next(self.snapshot_revisions)
@@ -1373,20 +1375,24 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 }
 
             def execute_step(
-                self, step: str, *, expected_revision: int
+                self, step: str, *, expected_revision: int | None
             ) -> dict[str, object]:
                 if step != "pause-map":
                     raise AssertionError(f"unexpected step: {step}")
+                self.attempted_revisions.append(expected_revision)
+                if expected_revision is None:
+                    if len(self.attempted_revisions) != 5:
+                        raise AssertionError("pause fallback ran before strict retries")
+                    return {"accepted": True, "status": "already_paused"}
                 if expected_revision != self.current_revision:
                     raise AssertionError("revision gate was weakened")
-                self.attempted_revisions.append(expected_revision)
                 if len(self.attempted_revisions) <= 4:
                     current = (71, 74, 76, 80)[len(self.attempted_revisions) - 1]
                     raise production.PreSubmissionRevisionMismatchError(
                         "native gameplay revision mismatch: "
                         f"expected {expected_revision}, current {current}"
                     )
-                return {"accepted": True, "status": "submitted"}
+                raise AssertionError("strict retry budget unexpectedly exceeded four")
 
         service = Service()
         audit: list[dict[str, object]] = []
@@ -1398,11 +1404,83 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             rebind_audit=audit,
         )
 
-        self.assertEqual(result, {"accepted": True, "status": "submitted"})
-        self.assertEqual(service.attempted_revisions, [70, 72, 75, 78, 81])
-        self.assertEqual([item["attempt"] for item in audit], [1, 2, 3, 4])
+        self.assertEqual(result, {"accepted": True, "status": "already_paused"})
+        self.assertEqual(service.attempted_revisions, [70, 72, 75, 78, None])
+        self.assertEqual(
+            [item["attempt"] for item in audit[:4]], [1, 2, 3, 4]
+        )
         self.assertTrue(all(item["step"] == "pause-map" for item in audit))
-        self.assertTrue(all(item["request_submitted"] is False for item in audit))
+        self.assertTrue(
+            all(item["request_submitted"] is False for item in audit[:4])
+        )
+        self.assertEqual(
+            audit[4],
+            {
+                "step": "pause-map",
+                "attempt": "native-fresh-idempotent-fallback",
+                "stale_revision": 81,
+                "request_submitted": True,
+                "binding_mode": "exact-build-native-fresh-idempotent-pause",
+                "ack_status": "already_paused",
+            },
+        )
+
+    def test_non_pause_map_controls_never_use_unbound_fallback(self) -> None:
+        class Service:
+            def __init__(self, step: str) -> None:
+                self.step = step
+                self.snapshot_revisions = iter((10, 12, 14, 16))
+                self.current_revision = 0
+                self.attempted_revisions: list[int | None] = []
+
+            def snapshot(self) -> dict[str, object]:
+                self.current_revision = next(self.snapshot_revisions)
+                return {
+                    "map_ready": True,
+                    "revision": self.current_revision,
+                    "date_raw": 53191392,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {"connection_generation": 56},
+                    "paused": True,
+                    "speed": 1,
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int | None
+            ) -> dict[str, object]:
+                if step != self.step:
+                    raise AssertionError(f"unexpected step: {step}")
+                if expected_revision != self.current_revision:
+                    raise AssertionError("non-pause control lost its revision gate")
+                self.attempted_revisions.append(expected_revision)
+                raise production.PreSubmissionRevisionMismatchError(
+                    "native gameplay revision mismatch: "
+                    f"expected {expected_revision}, current {expected_revision + 1}"
+                )
+
+        for step in ("resume-map", "set-speed-5"):
+            with self.subTest(step=step):
+                service = Service(step)
+                audit: list[dict[str, object]] = []
+                with self.assertRaisesRegex(
+                    production.PreSubmissionRevisionMismatchError,
+                    "expected 16, current 17",
+                ):
+                    production._map_control_from_latest_binding(
+                        service,
+                        step=step,
+                        player=32904,
+                        connection_generation=56,
+                        rebind_audit=audit,
+                    )
+                self.assertEqual(service.attempted_revisions, [10, 12, 14, 16])
+                self.assertNotIn(None, service.attempted_revisions)
+                self.assertEqual(
+                    [item["attempt"] for item in audit], [1, 2, 3, 4]
+                )
+                self.assertTrue(
+                    all(item["request_submitted"] is False for item in audit)
+                )
 
     def test_zg361_6_modal_wait_controls_only_the_same_pid_and_event(self) -> None:
         class Service:
@@ -1580,15 +1658,15 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(service.steps, ["set-speed-5", "resume-map"])
         self.assertEqual(service.selections, [])
 
-    def test_product_timeline_bound_covers_two_cycles_from_canonical_seed(self) -> None:
+    def test_product_timeline_bound_covers_long_tail_from_canonical_seed(self) -> None:
         reconnect_date = production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 500 * 24
         contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS["zg361.6"],
             starting_date=production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
         )
         self.assertEqual(production.PRODUCT_CYCLE_OPPORTUNITIES, 2)
-        self.assertEqual(production.POST_PUBLICATION_OBSERVATION_DAYS, 1100)
-        self.assertEqual(production.MAX_ADVANCE_DAYS, 1900)
+        self.assertEqual(production.POST_PUBLICATION_OBSERVATION_DAYS, 4200)
+        self.assertEqual(production.MAX_ADVANCE_DAYS, 5000)
         self.assertEqual(
             contract["date_raw_range"],
             (
@@ -1598,6 +1676,25 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             ),
         )
         self.assertNotEqual(contract["date_raw_range"][0], reconnect_date)
+        self.assertNotEqual(
+            contract["date_raw_range"][1],
+            reconnect_date
+            + production.MAX_ADVANCE_DAYS * production.HOURS_PER_DAY,
+        )
+
+        # R245 crossed the former finite D+1900 boundary and remained healthy
+        # at D+1962 in the source-authored stage-nine tail.  The replacement
+        # bound contains that frame without renewing from a retained reconnect.
+        former_absolute_end_date = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 1900 * 24
+        )
+        r245_stage_nine_tail_date = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 1962 * 24
+        )
+        self.assertLess(former_absolute_end_date, r245_stage_nine_tail_date)
+        self.assertGreaterEqual(
+            contract["date_raw_range"][1], r245_stage_nine_tail_date
+        )
 
         # R116's second player B1 became visible at D+525.  The canonical
         # deadline covers that complete authored cycle without deriving any
