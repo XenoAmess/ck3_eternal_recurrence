@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Final
 
 
-_ZG361PP_149_SAVED_SCOPE_NAMES: Final = (
+_PP_BARGAINING_SAVED_SCOPE_NAMES: Final = (
     "zg361_b1_calibration_watchdog_owner",
     "zg361_b1_calibration_watchdog_cycle",
     "zg361_b1_calibration_watchdog_case",
@@ -57,7 +57,7 @@ _ZG361PP_149_SAVED_SCOPE_NAMES: Final = (
     "zg361_pp_prompt_mechanism",
 )
 
-_ZG361PP_149_CHARACTER_SCOPES: Final = {
+_PP_BARGAINING_CHARACTER_SCOPES: Final = {
     "zg361_b1_calibration_watchdog_owner": 32904,
     "zg361_b1_oversight_ticket_owner": 32904,
     "zg361_b1_reopen_ticket_subject": 45031,
@@ -93,13 +93,38 @@ PP_BARGAINING_TIMELINE_CONTRACTS: Final[
         "date_raw": 53186856,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
-        "character_scopes": _ZG361PP_149_CHARACTER_SCOPES,
+        "character_scopes": _PP_BARGAINING_CHARACTER_SCOPES,
         "scope_types": {
             name: "value"
-            for name in _ZG361PP_149_SAVED_SCOPE_NAMES
-            if name not in _ZG361PP_149_CHARACTER_SCOPES
+            for name in _PP_BARGAINING_SAVED_SCOPE_NAMES
+            if name not in _PP_BARGAINING_CHARACTER_SCOPES
         },
-        "saved_scope_name_sets": (_ZG361PP_149_SAVED_SCOPE_NAMES,),
+        "saved_scope_name_sets": (_PP_BARGAINING_SAVED_SCOPE_NAMES,),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+    },
+    "zg361pp.150": {
+        # R206 reached T-domain stage 02's sacrifice-compensation prompt.
+        # The exact live frame retained the same 48 saved names and seventeen
+        # character aliases as the immediately preceding bargaining prompt.
+        # Routes 1/2 reserve or settle all three capacity ledgers, create a
+        # compensation obligation, and route 1 additionally transfers gold.
+        # Route 3 records policy debt only, consumes the prompt, and dispatches
+        # the next card without mutating case revision or resource ledgers.
+        "date_raw": 53186880,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _PP_BARGAINING_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _PP_BARGAINING_SAVED_SCOPE_NAMES
+            if name not in _PP_BARGAINING_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (_PP_BARGAINING_SAVED_SCOPE_NAMES,),
         "boolean_scopes": (),
         "option_count": 3,
         "snapshot_option_count": 3,
