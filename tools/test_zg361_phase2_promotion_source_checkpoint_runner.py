@@ -54,6 +54,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import run_zhongguo_acceptance as runner  # noqa: E402
 import resume_zg361_phase2_promotion_source_session as retained_client  # noqa: E402
+import zg361_phase2_promotion_manager_health_contracts as health_contracts  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
     _enter_common_run_cell_patches,
@@ -4115,6 +4116,27 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_health_interrupts_are_owned_by_dedicated_contract_module(self) -> None:
+        expected = {
+            "health.7000",
+            "health.7200",
+            "health.7400",
+            "health.7500",
+            "health.2201",
+            "health.1001",
+            "health.3104",
+            "health.1101",
+            "health.1006",
+        }
+        self.assertEqual(
+            set(health_contracts.MANAGER_HEALTH_TIMELINE_CONTRACTS), expected
+        )
+        for event_key in expected:
+            self.assertIs(
+                production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+                health_contracts.MANAGER_HEALTH_TIMELINE_CONTRACTS[event_key],
+            )
+
     def test_bp1_5725_binds_both_characters_and_selects_terminal_branch(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
@@ -4382,6 +4404,83 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         wrong_scope_type = copy.deepcopy(context)
         wrong_scope_type["saved_scopes"][-1]["scope"]["type_key"] = "value"
         self.assertFalse(checks_for(wrong_scope_type)["scope:disease_type:type"])
+
+        # R196 reached the same authored diagnosis after manager succession,
+        # but with no court physician. Vanilla then renders only native option
+        # 0 (start the physician-search flow) and native option 6 (decline
+        # treatment). Bind that exact scope/option projection and choose the
+        # survival-preserving search route; do not generalize the namespace or
+        # accept a physician-bearing frame under this variant.
+        rebound = production._manager_recovery_contract(
+            contract, player=32904, event_key=event_key
+        )
+        rebound = production._timeline_contract_for_window(
+            rebound, starting_date=53168112
+        )
+        no_physician_context = {
+            **copy.deepcopy(context),
+            "current_event_instance_id": 83,
+            "date_raw": 53176776,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("sick_character", "character", 32904),
+                scope("disease_type", "flag"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((0, 6))
+            ],
+        }
+        no_physician_snapshot = {
+            "date_raw": 53176776,
+            "active_event": {"option_count": 7},
+        }
+        no_physician_event = {"event_instance_id": 83}
+        no_physician_checks = production._known_interrupt_checks(
+            snapshot=no_physician_snapshot,
+            event=no_physician_event,
+            context=no_physician_context,
+            event_key=event_key,
+            contract=rebound,
+        )
+        self.assertTrue(all(no_physician_checks.values()), no_physician_checks)
+        effective = production._option_contract_for_context(
+            no_physician_context["options"], rebound
+        )
+        self.assertEqual(effective["selected_option_number"], 1)
+        self.assertEqual(effective["selected_native_option_index"], 0)
+
+        unexpected_physician = copy.deepcopy(no_physician_context)
+        unexpected_physician["saved_scopes"].insert(
+            0, scope("physician", "character", 56656)
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot=no_physician_snapshot,
+            event=no_physician_event,
+            context=unexpected_physician,
+            event_key=event_key,
+            contract=rebound,
+        )
+        self.assertFalse(drift_checks["saved_scope_names_exact"])
+        self.assertFalse(drift_checks["saved_scope_count"])
+
+        wrong_no_physician_projection = copy.deepcopy(no_physician_context)
+        wrong_no_physician_projection["options"][-1]["native_option_index"] = 5
+        drift_checks = production._known_interrupt_checks(
+            snapshot=no_physician_snapshot,
+            event=no_physician_event,
+            context=wrong_no_physician_projection,
+            event_key=event_key,
+            contract=rebound,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
 
     def test_health_3104_binds_safe_treatment_failure_acknowledgement(self) -> None:
         def scope(
