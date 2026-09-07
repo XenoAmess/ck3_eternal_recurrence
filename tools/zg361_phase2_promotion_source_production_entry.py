@@ -1173,6 +1173,49 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.5010": {
+        # CK3 1.19.0.6 upset-family node. Its immediate block has already
+        # selected a dynamic family rival, installed the eunuch rivalry and
+        # stored that character in the story's upset-courtiers list. Native
+        # option 0 adds only authored opinion/stress; native option 1 also
+        # downgrades the eunuch story. Choose option 0 to avoid that extra
+        # durable story mutation after binding both non-player parties.
+        "date_raw": 53230152,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("rival",),
+            "rival": ("eunuch",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "rival": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "rival",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
