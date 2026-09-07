@@ -266,4 +266,29 @@ CREDIT_PROJECT_MATRIX_HANDOFF_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.68": {
+        # R233 reached portable history. Route A requests carrying PIP and may
+        # do so when the authored guard permits; B preserves the historical
+        # owner and manager mapping without carrying PIP; C opens defer/debt.
+        # B is the sole deterministic minimum route that retains history. It
+        # closes J 4 -> 5, then .9003 launches R and .9331 restores visible .131.
+        "date_raw": 53187504,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_MATRIX_HANDOFF_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_MATRIX_HANDOFF_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_MATRIX_HANDOFF_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_MATRIX_HANDOFF_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
 }
