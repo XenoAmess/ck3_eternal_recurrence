@@ -40,13 +40,17 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
         # D installs a 25-year modifier, and both A/B alter appointment
         # investment.  Authored option C is the bounded terminal route: it
         # only transfers minor influence in opposite directions and schedules
-        # no follow-up event, hook, modifier, or appointment mutation.
+        # no follow-up event, hook, modifier, or appointment mutation. The
+        # .2210 caller saves its dynamic root as vassal before sending .2211
+        # to the liege, so bind that source relation instead of one seed ID.
         "date_raw": 53206512,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
         "character_scopes": {
             "liege": 32904,
-            "vassal": 27275,
+        },
+        "unique_character_scope_excludes": {
+            "vassal": (32904,),
         },
         "scope_types": {
             "potential_title": "landed_title",

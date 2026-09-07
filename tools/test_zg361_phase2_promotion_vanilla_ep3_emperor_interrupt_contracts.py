@@ -134,10 +134,11 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         )
 
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["character_scopes"], {
-            "liege": 32904,
-            "vassal": 27275,
-        })
+        self.assertEqual(contract["character_scopes"], {"liege": 32904})
+        self.assertEqual(
+            contract["unique_character_scope_excludes"],
+            {"vassal": (32904,)},
+        )
         self.assertEqual(contract["saved_scope_count"], 3)
         self.assertEqual(contract["snapshot_option_count"], 4)
         self.assertEqual(contract["native_option_indices"], (1, 2, 3))
@@ -157,9 +158,9 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         variants.append((wrong_date, "context_date_raw"))
         wrong_vassal = copy.deepcopy(context)
         wrong_vassal["saved_scopes"][2] = _scope(
-            "vassal", "character", 27276
+            "vassal", "character", 32904
         )
-        variants.append((wrong_vassal, "scope:vassal"))
+        variants.append((wrong_vassal, "scope:vassal:unique_third_party"))
         wrong_title_type = copy.deepcopy(context)
         wrong_title_type["saved_scopes"][0] = _scope(
             "potential_title", "province"
@@ -271,8 +272,16 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertEqual(
             _sha256(chinese_source), SIMP_CHINESE_LOCALIZATION_SHA256
         )
+        source_text = event_source.read_text(encoding="utf-8-sig")
+        caller_block = _extract_block(
+            source_text,
+            "ep3_emperor_yearly.2210 =",
+        )
+        caller_immediate = _extract_block(caller_block, "\timmediate =")
+        self.assertIn("liege = { save_scope_as = liege }", caller_immediate)
+        self.assertIn("root = { save_scope_as = vassal }", caller_immediate)
         event_block = _extract_block(
-            event_source.read_text(encoding="utf-8-sig"),
+            source_text,
             "ep3_emperor_yearly.2211 =",
         )
         self.assertEqual(
