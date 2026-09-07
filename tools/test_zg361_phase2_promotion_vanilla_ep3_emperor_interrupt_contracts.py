@@ -16,6 +16,12 @@ REPORT = Path("Z:/p2r250promo_resume/report.json")
 REPORT_SHA256 = (
     "E7EE5D62BF4998F1C082849CC9602C8DA4D9796E6396F1C640145F4BEE0A1061"
 )
+R287_REPORT = Path(
+    "Z:/ck3_mod_rewrite/_runtime/p2r287restore/report.json"
+)
+R287_REPORT_SHA256 = (
+    "3FF264C2B90A15027258E042566408F03B69115CB38A6B0153FC6A582A0879B3"
+)
 EVENT_SOURCE_SHA256 = (
     "5B59252EF885BB605529B1AE76964A03BA447255DB77951CDBF2CB2AE267BDCD"
 )
@@ -65,6 +71,24 @@ def _ck3_source(relative_path: str) -> Path | None:
 
 
 class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
+    def _r287_frame(self) -> tuple[
+        dict[str, object], dict[str, object], dict[str, object]
+    ]:
+        context = _context(
+            event_key="ep3_emperor_yearly.2170",
+            instance_id=204,
+            date_raw=53205336,
+            player=32904,
+            scopes=[_scope("our_county", "landed_title")],
+            native_option_indices=(0, 1),
+        )
+        snapshot = {
+            "date_raw": 53205336,
+            "active_event": {"option_count": 2},
+        }
+        event = {"event_instance_id": 204}
+        return snapshot, event, context
+
     def _r250_frame(self) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:
@@ -159,6 +183,68 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
                 )
                 self.assertFalse(checks[failed_check])
 
+    def test_r287_report_and_exact_county_frame_select_route_a(self) -> None:
+        if R287_REPORT.is_file():
+            self.assertEqual(_sha256(R287_REPORT), R287_REPORT_SHA256)
+
+        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
+            "ep3_emperor_yearly.2170"
+        ]
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS[
+                "ep3_emperor_yearly.2170"
+            ],
+            contract,
+        )
+        snapshot, event, context = self._r287_frame()
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="ep3_emperor_yearly.2170",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["scope_types"], {
+            "our_county": "landed_title",
+        })
+        self.assertEqual(contract["saved_scope_count"], 1)
+        self.assertEqual(contract["native_option_indices"], (0, 1))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["max_occurrences"], 1)
+
+    def test_r287_frame_rejects_scope_and_option_drift(self) -> None:
+        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
+            "ep3_emperor_yearly.2170"
+        ]
+        snapshot, event, context = self._r287_frame()
+
+        variants = []
+        wrong_scope_type = copy.deepcopy(context)
+        wrong_scope_type["saved_scopes"][0] = _scope(
+            "our_county", "province"
+        )
+        variants.append((wrong_scope_type, "scope:our_county:type"))
+        missing_scope = copy.deepcopy(context)
+        missing_scope["saved_scopes"] = []
+        variants.append((missing_scope, "saved_scope_names_exact"))
+        option_drift = copy.deepcopy(context)
+        option_drift["options"][1]["native_option_index"] = 2
+        variants.append((option_drift, "authored_options_exact"))
+
+        for changed_context, failed_check in variants:
+            with self.subTest(check=failed_check):
+                checks = production._known_interrupt_checks(
+                    snapshot=snapshot,
+                    event=event,
+                    context=changed_context,
+                    event_key="ep3_emperor_yearly.2170",
+                    contract=contract,
+                )
+                self.assertFalse(checks[failed_check])
+
     def test_ck3_11906_route_c_is_the_bounded_terminal_option(self) -> None:
         event_source = _ck3_source(
             "events/dlc/ep3/ep3_emperor_yearly_2.txt"
@@ -231,10 +317,49 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
             chinese,
         )
 
+    def test_ck3_11906_route_a_avoids_the_efficiency_flag(self) -> None:
+        event_source = _ck3_source(
+            "events/dlc/ep3/ep3_emperor_yearly_2.txt"
+        )
+        if event_source is None:
+            self.skipTest("CK3 1.19.0.6 source is not present on this machine")
+
+        self.assertEqual(_sha256(event_source), EVENT_SOURCE_SHA256)
+        event_block = _extract_block(
+            event_source.read_text(encoding="utf-8-sig"),
+            "ep3_emperor_yearly.2170 =",
+        )
+        self.assertEqual(
+            re.findall(
+                r"(?m)^\t\tname = (ep3_emperor_yearly\.2170\.[ab])$",
+                event_block,
+            ),
+            [
+                "ep3_emperor_yearly.2170.a",
+                "ep3_emperor_yearly.2170.b",
+            ],
+        )
+        route_a_start = event_block.index("\toption =")
+        route_a = _extract_block(event_block[route_a_start:], "\toption =")
+        route_b_start = event_block.index(
+            "\toption =", route_a_start + len(route_a)
+        )
+        route_b = _extract_block(event_block[route_b_start:], "\toption =")
+
+        self.assertIn("ep3_tunnels_encouraged_county_modifier", route_a)
+        self.assertIn("change_influence = major_influence_gain", route_a)
+        self.assertNotIn("add_character_flag", route_a)
+        self.assertNotIn("trigger_event", route_a)
+        self.assertIn("ep3_population_control_county_modifier", route_b)
+        self.assertIn("flag = ep3_2170_success", route_b)
+
     def test_contract_is_registered_without_inline_copy(self) -> None:
         production_source = (
             ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
         ).read_text(encoding="utf-8")
+        self.assertNotIn(
+            '    "ep3_emperor_yearly.2170": {', production_source
+        )
         self.assertNotIn(
             '    "ep3_emperor_yearly.2211": {', production_source
         )

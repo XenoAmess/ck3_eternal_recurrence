@@ -9,6 +9,30 @@ from typing import Final
 VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "ep3_emperor_yearly.2170": {
+        # CK3 1.19.0.6 low-control county response. Both authored routes
+        # install a 50-year county modifier, so there is no inert dismissal.
+        # Route B additionally installs a 25-year character flag that raises
+        # governor efficiency by five points. Route A avoids that persistent
+        # cross-system character state and only adds influence when the
+        # current government exposes that resource. R287 observed the exact
+        # one-title/two-option frame on the switched manager lineage.
+        "date_raw": 53205336,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "scope_types": {
+            "our_county": "landed_title",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": (("our_county",),),
+        "saved_scope_count": 1,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_emperor_yearly.2211": {
         # CK3 1.19.0.6 response to a vassal's claimed appointment prophecy.
         # Authored option A is hidden in the R250 frame, leaving B/D/C at
