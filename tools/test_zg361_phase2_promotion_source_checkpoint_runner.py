@@ -56,6 +56,9 @@ import run_zhongguo_acceptance as runner  # noqa: E402
 import resume_zg361_phase2_promotion_source_session as retained_client  # noqa: E402
 import zg361_phase2_promotion_manager_health_contracts as health_contracts  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
+from zg361_phase2_promotion_manager_health_aging_contracts import (  # noqa: E402
+    MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS,
+)
 from test_zhongguo_phase2_promo_runner_plumbing import (  # noqa: E402
     _enter_common_run_cell_patches,
 )
@@ -4117,22 +4120,35 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(checks["saved_scope_count"])
 
     def test_health_interrupts_are_owned_by_dedicated_contract_module(self) -> None:
-        expected = {
+        aging_expected = {
             "health.7000",
             "health.7200",
             "health.7400",
             "health.7500",
+        }
+        treatment_expected = {
             "health.2201",
             "health.1001",
             "health.3001",
+            "health.3101",
             "health.3104",
             "health.1101",
             "health.1006",
         }
         self.assertEqual(
-            set(health_contracts.MANAGER_HEALTH_TIMELINE_CONTRACTS), expected
+            set(MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS),
+            aging_expected,
         )
-        for event_key in expected:
+        self.assertEqual(
+            set(health_contracts.MANAGER_HEALTH_TIMELINE_CONTRACTS),
+            treatment_expected,
+        )
+        for event_key in aging_expected:
+            self.assertIs(
+                production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+                MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS[event_key],
+            )
+        for event_key in treatment_expected:
             self.assertIs(
                 production.KNOWN_TIMELINE_INTERRUPTS[event_key],
                 health_contracts.MANAGER_HEALTH_TIMELINE_CONTRACTS[event_key],

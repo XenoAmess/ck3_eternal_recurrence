@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source-reviewed health manager-recovery interrupt contracts."""
+"""Source-reviewed disease and treatment manager interrupt contracts."""
 
 from __future__ import annotations
 
@@ -7,62 +7,6 @@ from typing import Final
 
 
 MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
-    "health.7000": {
-        # Vanilla onset of infirmity.  Exact CK3 1.19.0.6 source and the R117
-        # native event context both expose one unavoidable acknowledgement:
-        # no saved scopes, one rendered/native option, and an infirm trait
-        # indicator.  There is no alternate branch to optimize.
-        "date_raw": 53152296,
-        "root_character_id": 29037,
-        "character_scopes": {},
-        "boolean_scopes": (),
-        "saved_scope_count": 0,
-        "option_count": 1,
-        "selected_option_number": 1,
-        "selected_native_option_index": 0,
-    },
-    "health.7200": {
-        # Vanilla yearly-health onset of withering mind.  The event has no
-        # saved scopes and exposes one mandatory acknowledgement whose sole
-        # scripted effect adds the indicated withering_mind trait.  There is
-        # no alternative branch to prefer; bind the complete one-option frame
-        # before acknowledging it.
-        "date_raw": 53152296,
-        "root_character_id": 29037,
-        "character_scopes": {},
-        "boolean_scopes": (),
-        "saved_scope_count": 0,
-        "option_count": 1,
-        "selected_option_number": 1,
-        "selected_native_option_index": 0,
-    },
-    "health.7400": {
-        # Vanilla yearly-health onset of faltering heart. The event has no
-        # saved scopes and one unavoidable acknowledgement whose sole effect
-        # adds the indicated trait. Bind the complete R103 one-option frame.
-        "date_raw": 53190360,
-        "root_character_id": 29037,
-        "character_scopes": {},
-        "boolean_scopes": (),
-        "saved_scope_count": 0,
-        "option_count": 1,
-        "selected_option_number": 1,
-        "selected_native_option_index": 0,
-    },
-    "health.7500": {
-        # Vanilla yearly-health onset of fragile bones. Like health.7200, the
-        # event has no saved scopes and one unavoidable acknowledgement. Its
-        # sole scripted effect adds fragile_bones, so there is no alternative
-        # branch to optimize; bind the complete one-option frame first.
-        "date_raw": 53152296,
-        "root_character_id": 29037,
-        "character_scopes": {},
-        "boolean_scopes": (),
-        "saved_scope_count": 0,
-        "option_count": 1,
-        "selected_option_number": 1,
-        "selected_native_option_index": 0,
-    },
     "health.2201": {
         # Vanilla disease notice for someone whose health matters to root.
         # This exact live projection exposes authored options 6 and 7 because
@@ -184,6 +128,50 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (1, 2, 4),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
+    },
+    "health.3101": {
+        # R198 exact treatment picker opened immediately after health.3001
+        # hired the high-skill candidate. Vanilla authors safe, risky, mystic,
+        # and no-treatment branches; the physician is not a mystic here, so
+        # native 2 is hidden and the rendered projection is 0/1/3. The
+        # physician alias must resolve to the exact high-skill candidate from
+        # the preceding search. Select native 0's safe treatment to preserve
+        # the sick acceptance owner without the risky branch's harsher range.
+        "date_raw": 53177016,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "sick_character": 32904,
+            "high_skill_option": 49718,
+            "low_skill_option": 36369,
+            "physician": 49718,
+        },
+        "character_scope_matches_any": {
+            "physician": ("high_skill_option",),
+        },
+        "character_scope_differs_from": {
+            "high_skill_option": ("sick_character", "low_skill_option"),
+            "low_skill_option": ("sick_character", "high_skill_option"),
+        },
+        "scope_types": {
+            "disease_type": "flag",
+            "background_terrain_scope": "province",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "sick_character",
+            "disease_type",
+            "high_skill_option",
+            "low_skill_option",
+            "physician",
+            "background_terrain_scope",
+        ),),
+        "saved_scope_count": 6,
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (0, 1, 3),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
     },
     "health.3104": {
         # Vanilla safe-treatment failure opened immediately by health.1001's
