@@ -328,4 +328,3 @@ MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 0,
     },
 }
-
