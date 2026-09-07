@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "contract": "raiktor-owner-exit-utility-model-source-v1",
+  "approval": {
+    "status": "draft",
+    "approved_by": null,
+    "approved_at_utc": null
+  },
+  "model_id": null,
+  "model_version": null,
+  "utility_unit": "owner_utility_q100000",
+  "budget_profile_binding": {
+    "profile_id": null,
+    "profile_source_sha256": null
+  },
+  "domain_coefficients_q100000": {
+    "primary_gold_transfer_raw": null,
+    "attacker_prestige_delta_raw": null,
+    "declared_claim_removed_count": null,
+    "favor_hook_applied": null,
+    "truce_day_count": null,
+    "pow_release_count": null,
+    "title_holder_change_count": null,
+    "hostage_transfer_count": null,
+    "war_bound_soldier_loss_count": null
+  },
+  "nonlinear_policy": {
+    "rule_id": null,
+    "parameters_raw": null
+  },
+  "uncertainty_policy": {
+    "rule_id": null,
+    "parameters_raw": null
+  },
+  "tail_risk_policy": {
+    "rule_id": null,
+    "parameters_raw": null
+  }
+}

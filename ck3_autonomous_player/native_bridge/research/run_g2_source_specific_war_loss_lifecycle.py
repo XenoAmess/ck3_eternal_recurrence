@@ -47,6 +47,8 @@ MANIFEST_SCHEMA = "xar.ck3.g2_source_specific_war_loss_lifecycle_manifest.v1"
 PREFLIGHT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_lifecycle_preflight.v1"
 JOIN_SCHEMA = "xar.ck3.g2_source_specific_war_loss_join.v1"
 EXPECTED_STATUS = "GREEN_STATIC_SOURCE_SPECIFIC_LIFECYCLE_RUNNER"
+EXPECTED_LIVE_WAR_ID = 50_331_699
+CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 
 
 class LifecycleContractError(ValueError):
@@ -78,6 +80,185 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def _played_character_id(snapshot: dict[str, object]) -> int | None:
+    direct = snapshot.get("played_character_id")
+    if isinstance(direct, int) and not isinstance(direct, bool):
+        return direct
+    played = snapshot.get("played_character")
+    if isinstance(played, dict):
+        nested = played.get("character_id")
+        if isinstance(nested, int) and not isinstance(nested, bool):
+            return nested
+    return None
+
+
+def _active_war_ids(snapshot: dict[str, object]) -> set[int]:
+    rows = snapshot.get("active_wars")
+    if not isinstance(rows, list):
+        return set()
+    return {
+        value
+        for row in rows
+        if isinstance(row, dict)
+        and isinstance((value := row.get("war_id")), int)
+        and not isinstance(value, bool)
+    }
+
+
+def create_pre_mutation_checkpoint(
+    driver: Any,
+    ticket: dict[str, object],
+) -> dict[str, object]:
+    """Materialize and bind the exact paused source frame before surrender."""
+    war_id = _integer(ticket.get("war_id"), "ticket WarID", minimum=1)
+    if war_id != EXPECTED_LIVE_WAR_ID:
+        raise LifecycleContractError(
+            f"checkpoint WarID {war_id} != expected {EXPECTED_LIVE_WAR_ID}"
+        )
+    revision = _integer(ticket.get("source_revision"), "source revision")
+    execute = getattr(driver, "execute_step", None)
+    if not callable(execute):
+        raise LifecycleContractError("durable checkpoint gameplay step is unavailable")
+    save_dir_value = getattr(driver, "save_dir", None)
+    if save_dir_value is None:
+        raise LifecycleContractError("durable checkpoint save_dir is unavailable")
+    expected_path = (Path(save_dir_value).resolve() / CHECKPOINT_FILENAME).resolve()
+
+    result = execute("save-checkpoint", expected_revision=revision)
+    if not isinstance(result, dict):
+        raise LifecycleContractError("durable checkpoint result is malformed")
+    checkpoint = _object(result.get("checkpoint"), "durable checkpoint")
+    materialization = _object(
+        result.get("materialization"), "checkpoint materialization"
+    )
+    checkpoint_path = Path(str(checkpoint.get("path", ""))).resolve()
+    digest = _sha256_text(checkpoint.get("sha256"), "checkpoint SHA-256")
+    size = _integer(checkpoint.get("size"), "checkpoint size", minimum=1)
+    if (
+        checkpoint.get("status") != "saved"
+        or checkpoint.get("name") != CHECKPOINT_FILENAME
+        or checkpoint_path != expected_path
+        or materialization.get("available") is not True
+        or not checkpoint_path.is_file()
+        or checkpoint_path.stat().st_size != size
+        or _sha256_file(checkpoint_path) != digest
+        or checkpoint.get("date_raw") != ticket.get("date_raw")
+        or checkpoint.get("episode_character_id") != ticket.get("character_id")
+        or checkpoint.get("episode_run_id") != ticket.get("source_episode_run_id")
+    ):
+        raise LifecycleContractError("durable checkpoint materialization is not exact")
+
+    diagnostics = getattr(driver, "diagnostics", None)
+    take_snapshot = getattr(driver, "take_snapshot", None)
+    if not callable(diagnostics) or not callable(take_snapshot):
+        raise LifecycleContractError("post-checkpoint frame inspection is unavailable")
+    observed_diagnostics = _object(diagnostics(), "post-checkpoint diagnostics")
+    observed_snapshot = _object(take_snapshot(), "post-checkpoint snapshot")
+    frame_checks = {
+        "same_pid": observed_diagnostics.get("bridge_pid")
+        == ticket.get("source_ck3_pid"),
+        "same_connection": observed_diagnostics.get("connection_generation")
+        == ticket.get("source_connection_generation"),
+        "same_snapshot": observed_snapshot.get("snapshot_id")
+        == ticket.get("source_snapshot_id"),
+        "same_revision": observed_snapshot.get("revision")
+        == ticket.get("source_revision"),
+        "same_native_revision": observed_snapshot.get("native_revision")
+        == ticket.get("source_native_revision"),
+        "same_date": observed_snapshot.get("date_raw") == ticket.get("date_raw"),
+        "same_episode": observed_snapshot.get("episode_run_id")
+        == ticket.get("source_episode_run_id"),
+        "same_character": _played_character_id(observed_snapshot)
+        == ticket.get("character_id"),
+        "paused": observed_snapshot.get("paused") is True,
+        "war_still_active": war_id in _active_war_ids(observed_snapshot),
+    }
+    if not all(frame_checks.values()):
+        raise LifecycleContractError(
+            f"post-checkpoint source frame drifted: {frame_checks}"
+        )
+
+    binding_body = {
+        "schema": "xar.ck3.g2_source_specific_pre_mutation_checkpoint.v1",
+        "retention_ticket_id": ticket.get("retention_ticket_id"),
+        "source_set_sha256": ticket.get("source_set_sha256"),
+        "checkpoint": {
+            "path": str(checkpoint_path),
+            "name": CHECKPOINT_FILENAME,
+            "size": size,
+            "sha256": digest,
+            "date_raw": checkpoint.get("date_raw"),
+        },
+        "frame": {
+            "ck3_pid": ticket.get("source_ck3_pid"),
+            "connection_generation": ticket.get("source_connection_generation"),
+            "episode_run_id": ticket.get("source_episode_run_id"),
+            "character_id": ticket.get("character_id"),
+            "war_id": war_id,
+            "snapshot_id": ticket.get("source_snapshot_id"),
+            "revision": ticket.get("source_revision"),
+            "native_revision": ticket.get("source_native_revision"),
+            "date_raw": ticket.get("date_raw"),
+            "paused": True,
+        },
+        "frame_checks": frame_checks,
+    }
+    binding = copy.deepcopy(binding_body)
+    binding["binding_sha256"] = retention._sha256_json(binding_body)
+    ticket["pre_mutation_checkpoint"] = copy.deepcopy(binding)
+    ticket["pre_mutation_checkpoint_sha256"] = binding["binding_sha256"]
+    ticket["termination_action_bound"] = True
+    return binding
+
+
+def _pre_mutation_checkpoint_checks(
+    ticket: dict[str, object],
+) -> dict[str, bool]:
+    value = ticket.get("pre_mutation_checkpoint")
+    if not isinstance(value, dict):
+        return {"present": False}
+    binding = copy.deepcopy(value)
+    declared_binding_sha = binding.pop("binding_sha256", None)
+    checkpoint = binding.get("checkpoint")
+    frame = binding.get("frame")
+    if not isinstance(checkpoint, dict) or not isinstance(frame, dict):
+        return {"present": True, "shape": False}
+    try:
+        checkpoint_sha = _sha256_text(
+            checkpoint.get("sha256"), "checkpoint SHA-256"
+        )
+        checkpoint_size = _integer(
+            checkpoint.get("size"), "checkpoint size", minimum=1
+        )
+    except LifecycleContractError:
+        return {"present": True, "shape": False}
+    return {
+        "present": True,
+        "shape": binding.get("schema")
+        == "xar.ck3.g2_source_specific_pre_mutation_checkpoint.v1",
+        "hash_bound": declared_binding_sha == retention._sha256_json(binding)
+        and ticket.get("pre_mutation_checkpoint_sha256") == declared_binding_sha,
+        "ticket_bound": binding.get("retention_ticket_id")
+        == ticket.get("retention_ticket_id")
+        and binding.get("source_set_sha256") == ticket.get("source_set_sha256"),
+        "materialized": checkpoint.get("name") == CHECKPOINT_FILENAME
+        and checkpoint_size > 0
+        and bool(checkpoint_sha),
+        "same_frame": frame.get("ck3_pid") == ticket.get("source_ck3_pid")
+        and frame.get("connection_generation")
+        == ticket.get("source_connection_generation")
+        and frame.get("episode_run_id") == ticket.get("source_episode_run_id")
+        and frame.get("character_id") == ticket.get("character_id")
+        and frame.get("war_id") == ticket.get("war_id")
+        and frame.get("snapshot_id") == ticket.get("source_snapshot_id")
+        and frame.get("revision") == ticket.get("source_revision")
+        and frame.get("native_revision") == ticket.get("source_native_revision")
+        and frame.get("date_raw") == ticket.get("date_raw")
+        and frame.get("paused") is True,
+        "action_bound": ticket.get("termination_action_bound") is True,
+    }
 
 
 def _resolve(path_value: object, *, repo_root: Path) -> Path:
@@ -309,6 +490,7 @@ def build_source_specific_loss_join(
     cleanup = _object(post.get("war_bound_cleanup"), "receipt cleanup")
     source_set = _object(normalized_source.get("source_set"), "source_set")
     expected_action = f"surrender-war-{ticket['war_id']}"
+    checkpoint_checks = _pre_mutation_checkpoint_checks(ticket)
     checks = {
         "sequence_green": sequence.get("ok") is True,
         "ticket_green": validation.get("ok") is True,
@@ -332,6 +514,8 @@ def build_source_specific_loss_join(
             post.get("truce_expiry"), "receipt expiry"
         ).get("source")
         == retention.EXPECTED_EXPIRY_SOURCE,
+        "durable_pre_mutation_checkpoint": bool(checkpoint_checks)
+        and all(checkpoint_checks.values()),
     }
     if not all(checks.values()):
         raise LifecycleContractError(f"source-specific lifecycle join failed: {checks}")
@@ -361,6 +545,7 @@ def build_source_specific_loss_join(
             "proven_surrender_boundary_loss": current,
         },
         "checks": checks,
+        "pre_mutation_checkpoint_checks": checkpoint_checks,
         "readiness": {
             "private_live_evidence_classified": True,
             "action_bound_current_ready": True,
@@ -386,6 +571,7 @@ async def run_same_lifecycle_sequence(
     source_capture: dict[str, object],
     capture_sha256: str,
     expected_character_id: int,
+    expected_war_id: int,
     expected_date_raw: int,
     postwar_timeout: float,
 ) -> dict[str, object]:
@@ -397,6 +583,10 @@ async def run_same_lifecycle_sequence(
         _object(normalized_source["source_set"], "source_set")["war_id"],
         "source WarID",
     )
+    if expected_war_id != EXPECTED_LIVE_WAR_ID or war_id != expected_war_id:
+        raise LifecycleContractError(
+            f"source WarID {war_id} != explicit expected WarID {expected_war_id}"
+        )
     pre_sequence = await terms._run_mcp_sequence(
         driver,
         war_id=war_id,
@@ -404,6 +594,7 @@ async def run_same_lifecycle_sequence(
         expected_date_raw=expected_date_raw,
     )
     ticket, handoff = build_source_bound_ticket(normalized_source, pre_sequence)
+    checkpoint = create_pre_mutation_checkpoint(driver, ticket)
     sequence = await postwar._continue_private_sequence(
         driver,
         war_id=war_id,
@@ -419,6 +610,7 @@ async def run_same_lifecycle_sequence(
         "source_normalization": normalized_source,
         "handoff": handoff,
         "retention_ticket": ticket,
+        "pre_mutation_checkpoint": checkpoint,
         "sequence": sequence,
         "source_specific_loss_join": joined,
         "mutation_commands": sequence.get("mutation_commands"),

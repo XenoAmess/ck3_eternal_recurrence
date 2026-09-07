@@ -298,6 +298,21 @@ EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
+PARTICLE2_STARTUP_SHADER_BUNDLE = (
+    ("game", "cw/particle2.shader", "9F25E03134E24EF0490EA0E1537BFE5BF070FF9CE567678CC636A18FAA84F075"),
+    ("game", "cw/particle2.fxh", "5388B201A41F8606195DC48BFD7F784DC7E18DB3BF1F25AEF91C68FE56E9F35D"),
+    ("game", "jomini/jomini_fog.fxh", "D77842C81E8896EFB7BDBECBE8A10C9A3C9B2E2CC3AC378F069863CECFF0AF72"),
+    ("game", "jomini/jomini_fog_of_war.fxh", "8D6DD77ECA2C20AEB4F5C13975603ADBFC7010548C7B52464F41C55AB45D882F"),
+    ("game", "cw/camera.fxh", "C1B8FC8B61C08CA73A0B8F48EF85680B9973F1253E9549464370AD21F7275684"),
+    ("clausewitz", "cw/random.fxh", "20FF4A25C9860028AD4AE9688AAFE97DF79BA1B69563C03F7797F25853C6865D"),
+    ("clausewitz", "cw/pdxterrain.fxh", "DEDCD87D156B19B00958844D7734D21EE1A0B22C98D27657827CE6FAE166C696"),
+    ("jomini", "jomini/jomini.fxh", "8377A1E9D2D9E732449F22E0FBC21B787A42CFD69AB272922239CE4BD3DA6026"),
+    ("clausewitz", "cw/heightmap.fxh", "231B687443A2DC4D9B7C8606DA9CF65EF43B0CE1AB53CCD7F5F6BEC6B576E3E7"),
+    ("clausewitz", "cw/utility.fxh", "ABD382499457D6616597E41647983B982A44AEA7A0A3392927693827201CAB1B"),
+    ("clausewitz", "cw/upscale_utils.fxh", "A48DCA74818B4B69E020B0CE5567BD9EC87527CB686871C0F069849A98C62079"),
+    ("clausewitz", "cw/defines_common.fxh", "CAAC6CB12CE9FD820C35581076A642538F822CB86CE27148B4E55E2A167781EC"),
+    ("clausewitz", "cw/defines_hlsl.fxh", "A92B73EE9969B2C61BA83C86D705C95D5E264641D758BDBAD13D241A4DF04374"),
+)
 NATIVE_BRIDGE_MODE = "native-headless"
 NATIVE_TITLE_COMMAND_TIMEOUT_S = 30.0
 NATIVE_TITLE_READINESS_TIMEOUT_S = 60.0
@@ -4596,11 +4611,96 @@ def canonical_workshop_descriptor(
     return candidates.pop()
 
 
+def project_particle2_startup_shader_bundle(
+    userdir: Path,
+    game_dir: Path = ROOT / "Crusader Kings III",
+) -> dict[str, object]:
+    """Project the exact startup shader closure into one isolated profile.
+
+    R272/R273 proved that CK3's early ParticleTexture factory can observe only
+    the writable ``-userdir`` mount before the normal engine roots are ready.
+    The explicit include closure alone still failed; adding Clausewitz's two
+    implicit HLSL prelude files made both active shader stages and the factory
+    non-null.  This projection is harness-only and never enters mod staging.
+    """
+
+    profile = Path(userdir).resolve()
+    exact_game = Path(game_dir).resolve()
+    executable = exact_game / "binaries" / "ck3.exe"
+    if not executable.is_file():
+        return {
+            "schema_version": 1,
+            "result": "OFFLINE_UNAVAILABLE",
+            "reason": "exact CK3 installation is absent",
+            "projected": False,
+            "files": [],
+        }
+    if isolated.sha256_file(executable).lower() != EXPECTED_EXE_SHA256:
+        raise acceptance.RunnerError(
+            "particle2 startup shader projection requires the exact CK3 executable"
+        )
+
+    projection_plan: list[tuple[str, str, str, Path, Path]] = []
+    for layer, logical_path, expected_sha256 in PARTICLE2_STARTUP_SHADER_BUNDLE:
+        source = exact_game / layer / "gfx" / "FX" / Path(logical_path)
+        if not source.is_file():
+            raise acceptance.RunnerError(
+                f"particle2 startup shader source is missing: {source}"
+            )
+        source_sha256 = isolated.sha256_file(source).upper()
+        if source_sha256 != expected_sha256:
+            raise acceptance.RunnerError(
+                "particle2 startup shader source fingerprint differs: "
+                f"{source}"
+            )
+        target = profile / "gfx" / "FX" / Path(logical_path)
+        if not isolated.is_relative_to(target.resolve(), profile):
+            raise acceptance.RunnerError(
+                "particle2 startup shader target escaped the isolated profile"
+            )
+        if target.exists():
+            raise acceptance.RunnerError(
+                f"particle2 startup shader target already exists: {target}"
+            )
+        projection_plan.append(
+            (layer, logical_path, expected_sha256, source, target)
+        )
+
+    rows: list[dict[str, object]] = []
+    for layer, logical_path, expected_sha256, source, target in projection_plan:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        if isolated.sha256_file(target).upper() != expected_sha256:
+            raise acceptance.RunnerError(
+                f"particle2 startup shader copy differs: {target}"
+            )
+        rows.append(
+            {
+                "layer": layer,
+                "logical_path": f"gfx/FX/{logical_path}",
+                "source": str(source),
+                "target": str(target),
+                "bytes": target.stat().st_size,
+                "sha256": expected_sha256,
+            }
+        )
+    return {
+        "schema_version": 1,
+        "result": "GREEN_STATIC",
+        "reason": "exact R273 startup shader closure projected",
+        "projected": True,
+        "harness_only": True,
+        "release_staging_affected": False,
+        "files": rows,
+    }
+
+
 def bootstrap_userdir(
     userdir: Path,
     product_source: Path = SOURCE,
     workshop_manifest: Path | None = None,
     *,
+    game_dir: Path = ROOT / "Crusader Kings III",
     include_acceptance_fixture: bool = True,
     product_projection: str = "broad",
     product_projection_manifest: Path | None = None,
@@ -4621,6 +4721,11 @@ def bootstrap_userdir(
         userdir / "player" / "game_rules",
     ):
         path.mkdir(parents=True, exist_ok=True)
+
+    startup_shader_projection = project_particle2_startup_shader_bundle(
+        userdir,
+        game_dir=game_dir,
+    )
 
     product = userdir / "mod-content" / "zhongguo_361"
     product.mkdir(parents=True)
@@ -4705,6 +4810,7 @@ def bootstrap_userdir(
         },
         "enabled_mods": enabled_mods,
         "manifest": manifest,
+        "particle2_startup_shader_projection": startup_shader_projection,
     }
 
 
@@ -6727,6 +6833,8 @@ def start_phase2_native_session_supervisor(
     frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
+    frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    startup_slot0_probe_output: Path | None = None,
 ) -> dict[str, object]:
     """Start the production pure-native lifecycle owner for phase two only."""
 
@@ -6735,6 +6843,13 @@ def start_phase2_native_session_supervisor(
         frontend_first_timeout_seconds,
         phase2_runtime_mode=True,
     )
+    if (
+        frontend_first_warmup_bridge is not None
+        and frontend_first_load_save_name is None
+    ):
+        raise acceptance.RunnerError(
+            "frontend-first warm-up bridge requires a frontend-first load save"
+        )
 
     stop_event = threading.Event()
     session_done = threading.Event()
@@ -6750,6 +6865,14 @@ def start_phase2_native_session_supervisor(
                         frontend_first_timeout_seconds
                     ),
                 }
+                if frontend_first_warmup_bridge is not None:
+                    native_session_options["frontend_first_warmup_bridge"] = (
+                        frontend_first_warmup_bridge
+                    )
+            if startup_slot0_probe_output is not None:
+                native_session_options["startup_slot0_probe_output"] = (
+                    startup_slot0_probe_output
+                )
             session_state["report"] = native_session(
                 spec,
                 timeout_seconds=PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
@@ -6789,6 +6912,21 @@ def start_phase2_native_session_supervisor(
             else None
         ),
         "frontend_first_enabled": frontend_first_load_save_name is not None,
+        "frontend_first_warmup_bridge": (
+            {
+                "mode": frontend_first_warmup_bridge.mode,
+                "pipe_name": frontend_first_warmup_bridge.pipe_name,
+                "dll_path": str(frontend_first_warmup_bridge.dll_path),
+                "injector_path": str(frontend_first_warmup_bridge.injector_path),
+            }
+            if frontend_first_warmup_bridge is not None
+            else None
+        ),
+        "startup_slot0_probe_output": (
+            str(startup_slot0_probe_output.resolve())
+            if startup_slot0_probe_output is not None
+            else None
+        ),
         "frontend_first_evidence_path": (
             str(
                 (
@@ -7024,6 +7162,54 @@ def wait_for_phase2_native_session_binding(
         raise acceptance.RunnerError(
             f"phase-two native_session binding failed: {error}"
         ) from error
+
+
+def phase2_native_session_terminal_probe(
+    supervisor: Mapping[str, object],
+    *,
+    tracked_ck3_pid: int,
+) -> dict[str, object] | None:
+    """Return a typed terminal snapshot once the managed CK3 owner finishes.
+
+    Missing loader logs are deliberately not evidence of process death.  This
+    probe reads only the managed supervisor's publication boundary, where the
+    native-session report/error is written before ``session_done`` is set.
+    """
+
+    if (
+        isinstance(tracked_ck3_pid, bool)
+        or not isinstance(tracked_ck3_pid, int)
+        or tracked_ck3_pid <= 0
+    ):
+        raise ValueError("tracked phase-two CK3 PID must be positive")
+    session_done = supervisor.get("session_done")
+    session_state = supervisor.get("session_state")
+    session_thread = supervisor.get("session_thread")
+    if not (
+        isinstance(session_done, threading.Event)
+        and isinstance(session_state, dict)
+        and isinstance(session_thread, threading.Thread)
+    ):
+        raise ValueError("phase-two supervisor handle is malformed")
+    if not session_done.is_set():
+        return None
+
+    report_value = session_state.get("report")
+    report = report_value if isinstance(report_value, dict) else None
+    if report is not None:
+        report_pid = report.get("pid")
+        if report_pid != tracked_ck3_pid:
+            raise acceptance.RunnerError(
+                "phase-two terminal native_session PID differs from loader "
+                f"binding: {report_pid!r} != {tracked_ck3_pid}"
+            )
+    return {
+        "terminal": True,
+        "tracked_ck3_pid": tracked_ck3_pid,
+        "session_thread_alive": session_thread.is_alive(),
+        "session_report": report,
+        "session_error": session_state.get("error"),
+    }
 
 
 class Phase2B2MatrixLifecycle:
@@ -7519,6 +7705,118 @@ def prove_phase2_native_session_cleanup(
         if isinstance(final_diagnostics_value, dict)
         else {}
     )
+    terminal_value = report.get("terminal")
+    terminal = terminal_value if isinstance(terminal_value, dict) else {}
+    if (
+        terminal.get("type") == "native_session_terminal"
+        and terminal.get("state") == "frontend_warmup_process_exit"
+        and terminal.get("pre_binding") is True
+    ):
+        frontend_value = report.get("frontend_first_warmup")
+        frontend = frontend_value if isinstance(frontend_value, dict) else {}
+        warmup_pid = terminal.get("warmup_pid")
+        shutdown = report.get("shutdown")
+        checks: dict[str, bool] = {
+            "supervisor_stopped": supervisor_stopped is True,
+            "session_error_absent": session_error is None,
+            "session_report_object": isinstance(session_report, dict),
+            "session_kind": report.get("kind")
+            == "ck3_native_headless_session",
+            "session_mode": report.get("mode") == NATIVE_BRIDGE_MODE,
+            "session_pipe": report.get("pipe") == expected_pipe,
+            "session_report_red": report.get("ok") is False,
+            "session_exit_reason_process_exit": report.get("exit_reason")
+            == "process_exit",
+            "session_process_exit_code_nonzero": isinstance(
+                report.get("process_exit_code"), int
+            )
+            and not isinstance(report.get("process_exit_code"), bool)
+            and report.get("process_exit_code") != 0,
+            "terminal_stage_frontend_warmup": terminal.get("stage")
+            == "frontend_warmup",
+            "terminal_pre_binding": terminal.get("pre_binding") is True,
+            "terminal_error_present": isinstance(terminal.get("error"), str)
+            and bool(terminal.get("error")),
+            "warmup_pid_positive": isinstance(warmup_pid, int)
+            and not isinstance(warmup_pid, bool)
+            and warmup_pid > 0,
+            "warmup_pid_matches_report": report.get("pid") == warmup_pid,
+            "warmup_pid_matches_frontend_evidence": frontend.get("warmup_pid")
+            == warmup_pid,
+            "warmup_exit_code_matches_report": frontend.get(
+                "warmup_process_exit_code"
+            )
+            == report.get("process_exit_code")
+            == terminal.get("process_exit_code"),
+            "frontend_evidence_failed": frontend.get("status") == "failed",
+            "frontend_final_pid_absent": frontend.get("final_pid") is None,
+            "initial_binding_absent": initial_pid is None
+            and initial_generation is None,
+            "restore_not_expected": restore_expected is False,
+            "restart_count_zero": report.get("restart_count") == 0,
+            "restart_shutdowns_empty": not restart_shutdowns,
+            "final_capabilities_object": isinstance(final_capabilities, dict),
+            "final_capabilities_disconnected": final_diagnostics.get(
+                "connected"
+            )
+            is False,
+            "final_capabilities_pid_absent": final_diagnostics.get(
+                "bridge_pid"
+            )
+            is None,
+            "terminal_cleanup_proven": terminal.get("cleanup_proven") is True,
+            "terminal_tree_gone": terminal.get("tree_gone") is True,
+        }
+        checks.update(
+            _phase2_shutdown_checks(
+                shutdown,
+                expected_pid=(
+                    warmup_pid
+                    if isinstance(warmup_pid, int)
+                    and not isinstance(warmup_pid, bool)
+                    else None
+                ),
+                prefix="warmup_pid_shutdown",
+            )
+        )
+        failed = [
+            label for label, passed in checks.items() if passed is not True
+        ]
+        evidence = {
+            "schema_version": 1,
+            "result": "GREEN" if not failed else "RED",
+            "scope": "phase2_managed_native_session_cleanup",
+            "acceptance_scope": "cleanup_only",
+            "session_result": "RED",
+            "crash_accepted_as_success": False,
+            "mcp_only": True,
+            "pre_binding_terminal": True,
+            "restore_expected": restore_expected,
+            "initial_pid": initial_pid,
+            "initial_generation": initial_generation,
+            "expected_pipe": expected_pipe,
+            "warmup_pid": warmup_pid,
+            "warmup_process_exit_code": terminal.get("process_exit_code"),
+            "final_capabilities": (
+                final_capabilities
+                if isinstance(final_capabilities, dict)
+                else None
+            ),
+            "checks": checks,
+            "failed_checks": failed,
+            "session_error": session_error,
+            "session_report": report,
+            "failure_reason": (
+                None
+                if not failed
+                else "phase-two native_session pre-binding cleanup RED: "
+                + ", ".join(failed)
+            ),
+        }
+        write_json(evidence_path, evidence)
+        if failed:
+            raise acceptance.RunnerError(str(evidence["failure_reason"]))
+        return evidence
     pid_lineage_value = lineage_projection.get("pid_lineage")
     pid_lineage = (
         pid_lineage_value if isinstance(pid_lineage_value, list) else []
@@ -13395,6 +13693,7 @@ def run_loader_gate(
     tracked_ck3_pid: int,
     phase2_live_batch: bool,
     managed_restore_supervisor: bool = False,
+    native_session_supervisor: Mapping[str, object] | None = None,
     phase2_promotion_source_capture_live: bool = False,
     phase2_promo_capture: bool = False,
     phase2_b2_same_checkpoint: bool = False,
@@ -13460,12 +13759,27 @@ def run_loader_gate(
     write_json(evidence_path, evidence)
 
     try:
+        native_session_probe: Callable[
+            [], dict[str, object] | None
+        ] | None = None
+        if native_session_supervisor is not None:
+            native_session_probe = lambda: phase2_native_session_terminal_probe(
+                native_session_supervisor,
+                tracked_ck3_pid=tracked_ck3_pid,
+            )
         if managed_phase2:
             try:
+                loader_stage_options: dict[str, object] = {
+                    "timeout_seconds": NATIVE_LOADER_READINESS_TIMEOUT_S,
+                }
+                if native_session_probe is not None:
+                    loader_stage_options["native_session_probe"] = (
+                        native_session_probe
+                    )
                 loader_stage = wait_for_phase2_seed_loader_stage(
                     userdir / "logs",
                     artifacts / "01_phase2_loader_stage_progress.jsonl",
-                    timeout_seconds=NATIVE_LOADER_READINESS_TIMEOUT_S,
+                    **loader_stage_options,
                 )
             except LoaderStageError as error:
                 evidence["append_only_loader_stage"] = error.evidence
@@ -20288,6 +20602,7 @@ def run_cell(
                 tracked_ck3_pid=tracked_ck3_pid,
                 phase2_live_batch=phase2_live_batch,
                 managed_restore_supervisor=phase2_supervisor is not None,
+                native_session_supervisor=phase2_supervisor,
                 phase2_promotion_source_capture_live=(
                     phase2_promotion_source_capture_live
                 ),

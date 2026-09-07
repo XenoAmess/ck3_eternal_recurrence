@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ck3-1.19.0.6-raiktor-same-frame-white-peace-comparison-v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "provider_schema": "xar.ck3.raiktor_same_frame_white_peace_comparator.v1",
+  "comparison_contract": "raiktor-same-frame-white-peace-comparison-v1",
+  "synthetic_fixture_only": true,
+  "do_not_ship_as_live_evidence": true,
+  "inputs": {
+    "source": "xar.ck3.g2_source_specific_pre_mutation_checkpoint.v1",
+    "white_peace": "raiktor-white-peace-terms-observation-v1",
+    "surrender": "ck3-1.19.0.6-native-raiktor-surrender-six-domain-v1"
+  },
+  "exact_frame_binding": {
+    "source_is_snapshot_anchor": true,
+    "required_equal_fields": [
+      "snapshot_id",
+      "revision",
+      "native_revision",
+      "WarID"
+    ],
+    "surrender_snapshot_id_binding": "transitive through the exact white-peace frame and evaluated_surrender_terms_sha256",
+    "additional_equal_fields": [
+      "date_raw",
+      "CK3 PID",
+      "primary attacker",
+      "full coarse Raiktor frame"
+    ],
+    "all_inputs_paused": true
+  },
+  "comparison_fields": [
+    "declared target titles",
+    "claim disposition",
+    "primary gold transfer",
+    "attacker prestige delta",
+    "truce evaluated days",
+    "prisoner release pairs",
+    "favor hook application",
+    "hostage variant observation boundary"
+  ],
+  "hard_boundaries": {
+    "static_terms_comparison_only": true,
+    "owner_utility_compared": false,
+    "preferred_outcome": null,
+    "production_live": false,
+    "production_recommendation_ready": false,
+    "action_ready": false,
+    "action_literal": null,
+    "automatic_surrender_ready": false,
+    "gen034_closed": false,
+    "starts_or_attaches_ck3": false,
+    "queries_bridge": false,
+    "mutation_commands": []
+  },
+  "current_live_gate": [
+    "one production source checkpoint for WarID 50331699",
+    "one complete white-peace observation on that exact paused source frame",
+    "one complete surrender six-domain aggregate hash-bound by that observation",
+    "owner-approved white-peace utility model remains separate and required before any outcome preference"
+  ]
+}

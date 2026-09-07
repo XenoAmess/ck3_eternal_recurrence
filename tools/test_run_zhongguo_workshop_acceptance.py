@@ -44,6 +44,115 @@ ITEM_ID = "4000000001"
 
 
 class WorkshopRuntimeTests(unittest.TestCase):
+    def build_fake_exact_game(self, root: Path) -> Path:
+        game = root / "game"
+        executable = game / "binaries" / "ck3.exe"
+        executable.parent.mkdir(parents=True)
+        executable.write_bytes(b"exact-exe")
+        for layer, logical_path, expected_sha256 in (
+            acceptance.PARTICLE2_STARTUP_SHADER_BUNDLE
+        ):
+            source = game / layer / "gfx" / "FX" / logical_path
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_bytes(expected_sha256.encode("ascii"))
+        return game
+
+    @staticmethod
+    def fake_exact_shader_sha256(path: Path) -> str:
+        payload = Path(path).read_bytes()
+        if payload == b"exact-exe":
+            return acceptance.EXPECTED_EXE_SHA256
+        try:
+            marker = payload.decode("ascii")
+        except UnicodeDecodeError:
+            return "0" * 64
+        if len(marker) == 64 and all(
+            character in "0123456789ABCDEF" for character in marker
+        ):
+            return marker
+        return "0" * 64
+
+    def test_particle2_startup_shader_projection_is_offline_without_game(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            profile = root / "profile"
+            result = acceptance.project_particle2_startup_shader_bundle(
+                profile,
+                game_dir=root / "absent-game",
+            )
+
+            self.assertEqual(result["result"], "OFFLINE_UNAVAILABLE")
+            self.assertFalse(result["projected"])
+            self.assertFalse((profile / "gfx").exists())
+
+    def test_particle2_startup_shader_projection_copies_exact_bundle(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            game = self.build_fake_exact_game(root)
+            profile = root / "profile"
+            with mock.patch.object(
+                acceptance.isolated,
+                "sha256_file",
+                side_effect=self.fake_exact_shader_sha256,
+            ):
+                result = acceptance.project_particle2_startup_shader_bundle(
+                    profile,
+                    game_dir=game,
+                )
+
+            self.assertEqual(result["result"], "GREEN_STATIC")
+            self.assertTrue(result["projected"])
+            self.assertEqual(
+                len(result["files"]),
+                len(acceptance.PARTICLE2_STARTUP_SHADER_BUNDLE),
+            )
+            for _layer, logical_path, expected_sha256 in (
+                acceptance.PARTICLE2_STARTUP_SHADER_BUNDLE
+            ):
+                self.assertEqual(
+                    (profile / "gfx" / "FX" / logical_path).read_bytes(),
+                    expected_sha256.encode("ascii"),
+                )
+
+    def test_particle2_startup_shader_projection_rejects_exe_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            game = root / "game"
+            executable = game / "binaries" / "ck3.exe"
+            executable.parent.mkdir(parents=True)
+            executable.write_bytes(b"drift")
+
+            with self.assertRaisesRegex(Exception, "exact CK3 executable"):
+                acceptance.project_particle2_startup_shader_bundle(
+                    root / "profile",
+                    game_dir=game,
+                )
+
+    def test_particle2_shader_drift_leaves_no_partial_projection(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            game = self.build_fake_exact_game(root)
+            layer, logical_path, _expected_sha256 = (
+                acceptance.PARTICLE2_STARTUP_SHADER_BUNDLE[-1]
+            )
+            (game / layer / "gfx" / "FX" / logical_path).write_bytes(b"drift")
+            profile = root / "profile"
+
+            with (
+                mock.patch.object(
+                    acceptance.isolated,
+                    "sha256_file",
+                    side_effect=self.fake_exact_shader_sha256,
+                ),
+                self.assertRaisesRegex(Exception, "fingerprint differs"),
+            ):
+                acceptance.project_particle2_startup_shader_bundle(
+                    profile,
+                    game_dir=game,
+                )
+
+            self.assertFalse((profile / "gfx").exists())
+
     def test_terminal_profile_disables_china_tutorial_prompt(self) -> None:
         settings = acceptance.terminal.render_settings()
         self.assertIn(

@@ -7,12 +7,14 @@ import hashlib
 import importlib.machinery
 import importlib.util
 import json
+from dataclasses import replace
 from pathlib import Path
 import sys
 import tempfile
 import threading
 import types
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -107,9 +109,19 @@ class _Driver:
 
 
 class _Service:
+    def __init__(self, *, checkpoint_failure: bool = False) -> None:
+        self.checkpoint_failure = checkpoint_failure
+        self.save_dir: Path | None = None
+        self.save_calls = 0
+
     def capabilities(self) -> dict[str, object]:
         return {
             "mode": runner.NATIVE_BRIDGE_MODE,
+            "backend_id": "native-headless",
+            "visual_fallback": False,
+            "bridge_capabilities": ["game.command.save-checkpoint"],
+            "action_steps": ["save-checkpoint"],
+            "checkpoint_materialization": {"configured": True},
             "diagnostics": {
                 "connected": True,
                 "bridge_pid": 361247,
@@ -121,10 +133,45 @@ class _Service:
         return {
             "snapshot_id": "native:247",
             "revision": 248,
+            "native_revision": 247,
             "date_raw": 53204688,
             "paused": True,
             "map_ready": True,
             "played_character": {"character_id": 32904},
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": 361247,
+                "connection_generation": 1,
+            },
+            "active_event": {"instance_id": 204, "option_count": 1},
+        }
+
+    def save_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
+        self.save_calls += 1
+        if expected_revision != 248:
+            raise AssertionError("unexpected checkpoint revision")
+        if self.checkpoint_failure:
+            raise RuntimeError("mock checkpoint materialization failed")
+        if self.save_dir is None:
+            raise AssertionError("mock save directory was not configured")
+        path = self.save_dir / "xar_checkpoint.ck3"
+        payload = b"durable-recovery-unknown-event"
+        path.write_bytes(payload)
+        return {
+            "accepted": True,
+            "status": "submitted",
+            "checkpoint": {
+                "status": "saved",
+                "path": str(path.resolve()),
+                "size": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "date_raw": 53204688,
+                "episode_character_id": 32904,
+                "episode_run_id": "native-32904-recovery-unit",
+                "history_index": 1,
+                "strategy": "native-autosave-command-v1",
+            },
+            "materialization": {"available": True},
         }
 
 
@@ -133,13 +180,30 @@ class RecoveryHarness:
         self,
         *,
         unknown_interrupt: bool = False,
+        checkpoint_failure: bool = False,
         end_on_driver_close: bool = False,
+        startup_shader_projection: object = None,
     ) -> None:
         self.unknown_interrupt = unknown_interrupt
-        self.service = _Service()
+        self.service = _Service(checkpoint_failure=checkpoint_failure)
         self.started = False
+        self.start_calls: list[tuple[tuple[object, ...], dict[str, object]]] = []
         self.stopped = False
         self.process_checks: list[str] = []
+        self.loader_calls: list[
+            tuple[tuple[object, ...], dict[str, object]]
+        ] = []
+        self.bootstrap_calls: list[
+            tuple[tuple[object, ...], dict[str, object]]
+        ] = []
+        self.startup_shader_projection = (
+            {
+                "result": "GREEN_STATIC",
+                "projected": True,
+            }
+            if startup_shader_projection is None
+            else startup_shader_projection
+        )
         self.supervisor = {
             "session_done": threading.Event(),
             "session_state": {"report": None, "error": None},
@@ -163,8 +227,10 @@ class RecoveryHarness:
         return False
 
     def bootstrap(self, profile: Path, *args: object, **kwargs: object) -> dict[str, object]:
+        self.bootstrap_calls.append(((profile, *args), dict(kwargs)))
         for relative in ("logs", "save games", "mod", "mod-content/zhongguo_361"):
             (profile / relative).mkdir(parents=True, exist_ok=True)
+        self.service.save_dir = profile / "save games"
         (profile / "logs" / "error.log").write_text("loader clean\n", encoding="utf-8")
         (profile / "logs" / "debug.log").write_text("loader clean\n", encoding="utf-8")
         return {
@@ -172,18 +238,19 @@ class RecoveryHarness:
             "targets": {"product": profile / "mod-content" / "zhongguo_361"},
             "tree_sha256": {"product": "b" * 64},
             "manifest": {"projection": {"name": "current-full-tree"}},
+            "particle2_startup_shader_projection": self.startup_shader_projection,
         }
 
     def start(self, *args: object, **kwargs: object) -> dict[str, object]:
         self.started = True
-        if kwargs.get("frontend_first_load_save_name") != "autosave":
-            raise AssertionError("recovery did not use frontend-first autosave")
+        self.start_calls.append((args, dict(kwargs)))
         return self.supervisor
 
     def wait_binding(self, *args: object, **kwargs: object) -> dict[str, object]:
         return {"bridge_pid": 361247, "connection_generation": 1}
 
     def loader(self, *args: object, **kwargs: object) -> dict[str, object]:
+        self.loader_calls.append((args, dict(kwargs)))
         if kwargs.get("phase2_promotion_source_capture_live") is not True:
             raise AssertionError("focused promotion loader gate was not selected")
         return {"result": "GREEN", "same_pid_gameplay_continuation_authorized": True}
@@ -200,8 +267,32 @@ class RecoveryHarness:
             }
         )
         if self.unknown_interrupt:
+            snapshot = self.service.snapshot()
             evidence["unexpected_event"] = {
-                "event_definition_key": "natural_disaster.9999"
+                "event_definition_key": "natural_disaster.9999",
+                "snapshot": snapshot,
+                "event": {
+                    "snapshot_id": snapshot["snapshot_id"],
+                    "revision": snapshot["revision"],
+                    "native_revision": snapshot["native_revision"],
+                    "date_raw": snapshot["date_raw"],
+                    "player_character_id": 32904,
+                    "connection_generation": 1,
+                    "event_instance_id": 204,
+                    "event_option_count": 1,
+                },
+                "query": {
+                    "status": "available",
+                    "current_event_window_context": {
+                        "event_definition_key": "natural_disaster.9999"
+                    },
+                    "binding": {
+                        "snapshot_id": snapshot["snapshot_id"],
+                        "revision": snapshot["revision"],
+                        "native_revision": snapshot["native_revision"],
+                        "event_instance_id": 204,
+                    },
+                },
             }
             raise recovery.PromotionProductionEntryError("unknown interrupt")
         return dict(evidence)
@@ -212,12 +303,16 @@ class RecoveryHarness:
         return {"result": "GREEN"}
 
     def bindings(self) -> recovery.RuntimeBindings:
-        bridge = types.SimpleNamespace(
-            mode=runner.NATIVE_BRIDGE_MODE,
-            pipe_name=r"\\.\pipe\xar_ck3_bridge_zg361_" + "1" * 32,
-            dll_path=Path("bridge.dll"),
-            injector_path=Path("injector.exe"),
-        )
+        def resolve_bridge(
+            dll: Path, injector: Path, pipe: str
+        ) -> types.SimpleNamespace:
+            return types.SimpleNamespace(
+                mode=runner.NATIVE_BRIDGE_MODE,
+                pipe_name=pipe,
+                dll_path=dll,
+                injector_path=injector,
+            )
+
         return recovery.RuntimeBindings(
             process_running=self.process_running,
             verify_game=lambda path: {
@@ -231,12 +326,14 @@ class RecoveryHarness:
             make_spec=lambda state, game: types.SimpleNamespace(
                 state_dir=state, profile_dir=state / "profile", game_dir=game
             ),
-            resolve_bridge=lambda dll, injector, pipe: bridge,
+            resolve_bridge=resolve_bridge,
             bridge_identity=lambda value: {
                 "mode": value.mode,
                 "pipe_name": value.pipe_name,
                 "dll_path": str(value.dll_path),
+                "dll_sha256": _sha256(value.dll_path),
                 "injector_path": str(value.injector_path),
+                "injector_sha256": _sha256(value.injector_path),
             },
             driver_factory=lambda *args, **kwargs: self.driver,
             service_factory=lambda driver: self.service,
@@ -249,6 +346,163 @@ class RecoveryHarness:
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_managed_loader_probe_ignores_missing_logs_until_session_done(
+        self,
+    ) -> None:
+        supervisor = {
+            "session_done": threading.Event(),
+            "session_state": {"report": None, "error": None},
+            "session_thread": threading.Thread(target=lambda: None),
+        }
+
+        self.assertIsNone(
+            runner.phase2_native_session_terminal_probe(
+                supervisor,
+                tracked_ck3_pid=361247,
+            )
+        )
+
+    def test_managed_loader_gate_failfasts_on_typed_process_exit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "artifacts"
+            userdir = root / "profile"
+            artifacts.mkdir()
+            (userdir / "logs").mkdir(parents=True)
+            session_done = threading.Event()
+            session_done.set()
+            session_report = {
+                "format_version": 1,
+                "kind": "ck3_native_headless_session",
+                "pid": 361247,
+                "exit_reason": "process_exit",
+                "process_exit_code": 1,
+                "ok": False,
+            }
+            supervisor = {
+                "session_done": session_done,
+                "session_state": {
+                    "report": session_report,
+                    "error": None,
+                },
+                "session_thread": threading.Thread(target=lambda: None),
+            }
+
+            with self.assertRaisesRegex(
+                runner.acceptance.RunnerError,
+                "native_session_process_exit",
+            ):
+                runner.run_loader_gate(
+                    _Service(),
+                    artifacts,
+                    userdir,
+                    {},
+                    tracked_ck3_pid=361247,
+                    phase2_live_batch=False,
+                    managed_restore_supervisor=True,
+                    native_session_supervisor=supervisor,
+                    phase2_promotion_source_capture_live=True,
+                )
+
+            gate = json.loads(
+                (artifacts / "03_loader_gate.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            terminal = gate["append_only_loader_stage"]
+            self.assertEqual(terminal["state"], "native_session_process_exit")
+            self.assertEqual(terminal["process_exit_code"], 1)
+            self.assertTrue(terminal["process_exit_nonzero"])
+            self.assertEqual(
+                terminal["native_session"]["session_report"],
+                session_report,
+            )
+            rows = [
+                json.loads(line)
+                for line in (
+                    artifacts / "01_phase2_loader_stage_progress.jsonl"
+                ).read_text(encoding="utf-8").splitlines()
+            ]
+            self.assertEqual(rows[-1]["state"], "native_session_process_exit")
+
+    def test_phase2_supervisor_forwards_independent_warmup_bridge(self) -> None:
+        final_bridge = runner.NativeBridgeLaunchConfig(
+            mode=runner.NATIVE_BRIDGE_MODE,
+            pipe_name=r"\\.\pipe\xar_ck3_bridge_zg361_" + "1" * 32,
+            dll_path=Path("final.dll"),
+            injector_path=Path("final.exe"),
+        )
+        warmup_bridge = runner.NativeBridgeLaunchConfig(
+            mode=runner.NATIVE_BRIDGE_MODE,
+            pipe_name=r"\\.\pipe\xar_ck3_bridge_zg361_" + "2" * 32,
+            dll_path=Path("warmup.dll"),
+            injector_path=Path("warmup.exe"),
+        )
+        probe_output = Path("state") / "diagnostics" / "slot0.json"
+        with mock.patch.object(
+            runner, "native_session", return_value={"result": "stopped"}
+        ) as native_session_call:
+            supervisor = runner.start_phase2_native_session_supervisor(
+                types.SimpleNamespace(state_dir=Path("state")),
+                final_bridge,
+                frontend_first_load_save_name="autosave",
+                frontend_first_timeout_seconds=7.0,
+                frontend_first_warmup_bridge=warmup_bridge,
+                startup_slot0_probe_output=probe_output,
+            )
+            supervisor["session_thread"].join(timeout=1.0)
+
+        self.assertTrue(supervisor["session_done"].is_set())
+        keywords = native_session_call.call_args.kwargs
+        self.assertIs(keywords["native_bridge"], final_bridge)
+        self.assertIs(
+            keywords["frontend_first_warmup_bridge"], warmup_bridge
+        )
+        self.assertEqual(keywords["frontend_first_load_save_name"], "autosave")
+        self.assertEqual(keywords["startup_slot0_probe_output"], probe_output)
+        self.assertEqual(
+            supervisor["startup_slot0_probe_output"],
+            str(probe_output.resolve()),
+        )
+        self.assertFalse(keywords["cold_start_checkpoint"])
+
+    def test_tasklist_denial_uses_exact_toolhelp_fallback(self) -> None:
+        denied = types.SimpleNamespace(
+            returncode=1,
+            stdout="",
+            stderr="ERROR: Access is denied",
+        )
+        with (
+            mock.patch.object(recovery.subprocess, "run", return_value=denied),
+            mock.patch.object(
+                recovery,
+                "_process_image_is_running_toolhelp",
+                return_value=True,
+            ) as fallback,
+        ):
+            self.assertTrue(recovery.process_image_is_running("ck3.exe"))
+        fallback.assert_called_once_with("ck3.exe")
+
+    def test_tasklist_and_toolhelp_failure_remains_fail_closed(self) -> None:
+        denied = types.SimpleNamespace(
+            returncode=1,
+            stdout="",
+            stderr="ERROR: Access is denied",
+        )
+        with (
+            mock.patch.object(recovery.subprocess, "run", return_value=denied),
+            mock.patch.object(
+                recovery,
+                "_process_image_is_running_toolhelp",
+                side_effect=OSError(5, "Access is denied"),
+            ),
+        ):
+            with self.assertRaisesRegex(
+                recovery.RecoveryError,
+                "could not prove empty process slot",
+            ):
+                recovery.process_image_is_running("ck3.exe")
+
     def _arrange(self, root: Path) -> tuple[recovery.RecoveryConfig, Path]:
         source_profile = root / "source-profile"
         save_dir = source_profile / "save games"
@@ -301,6 +555,176 @@ class RecoveryTests(unittest.TestCase):
             source_save,
         )
 
+    def _cli_arguments(self, config: recovery.RecoveryConfig) -> list[str]:
+        return [
+            "--source-profile",
+            str(config.source_profile),
+            "--source-save",
+            str(config.source_save),
+            "--expected-source-save-sha256",
+            config.expected_source_save_sha256,
+            "--source-run-cell",
+            str(config.source_run_cell),
+            "--state-dir",
+            str(config.state_dir),
+            "--artifacts-dir",
+            str(config.artifacts_dir),
+            "--product-source",
+            str(config.product_source),
+            "--product-projection",
+            config.product_projection,
+            "--product-projection-manifest",
+            str(config.product_projection_manifest),
+            "--game-dir",
+            str(config.game_dir),
+            "--bridge-dll",
+            str(config.bridge_dll),
+            "--bridge-injector",
+            str(config.bridge_injector),
+            "--bridge-pipe",
+            config.bridge_pipe,
+        ]
+
+    def test_startup_mode_cli_defaults_and_fail_closed_choices(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _source_save = self._arrange(Path(temporary))
+            arguments = self._cli_arguments(config)
+
+            parsed = recovery.parse_args(arguments)
+            self.assertEqual(
+                parsed.startup_mode,
+                recovery.STARTUP_MODE_FRONTEND_FIRST,
+            )
+            self.assertIsNone(parsed.startup_slot0_probe_output)
+            probe_output = config.artifacts_dir / "diagnostics" / "slot0.json"
+            parsed = recovery.parse_args(
+                arguments
+                + ["--startup-slot0-probe-output", str(probe_output)]
+            )
+            self.assertEqual(parsed.startup_slot0_probe_output, probe_output)
+            parsed = recovery.parse_args(
+                arguments
+                + [
+                    "--startup-mode",
+                    recovery.STARTUP_MODE_CONTINUE_LAST_SAVE,
+                ]
+            )
+            self.assertEqual(
+                parsed.startup_mode,
+                recovery.STARTUP_MODE_CONTINUE_LAST_SAVE,
+            )
+            warmup_dll = Path(temporary) / "warmup.dll"
+            warmup_injector = Path(temporary) / "warmup-injector.exe"
+            warmup_arguments = [
+                "--startup-mode",
+                recovery.STARTUP_MODE_BRIDGE_FRONTEND_FIRST,
+                "--warmup-bridge-dll",
+                str(warmup_dll),
+                "--warmup-bridge-injector",
+                str(warmup_injector),
+                "--warmup-bridge-pipe",
+                r"\\.\pipe\xar_ck3_bridge_zg361_" + "2" * 32,
+                "--expected-warmup-bridge-dll-sha256",
+                "a" * 64,
+                "--expected-warmup-bridge-injector-sha256",
+                "b" * 64,
+            ]
+            parsed = recovery.parse_args(arguments + warmup_arguments)
+            self.assertEqual(
+                parsed.startup_mode,
+                recovery.STARTUP_MODE_BRIDGE_FRONTEND_FIRST,
+            )
+            self.assertEqual(parsed.warmup_bridge_dll, warmup_dll)
+            with self.assertRaises(SystemExit) as raised:
+                recovery.parse_args(arguments + ["--startup-mode", "automatic"])
+            self.assertEqual(raised.exception.code, 2)
+
+    def test_invalid_programmatic_startup_mode_fails_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _source_save = self._arrange(Path(temporary))
+            harness = RecoveryHarness()
+            with self.assertRaisesRegex(recovery.RecoveryError, "startup mode"):
+                recovery.run(
+                    replace(config, startup_mode="automatic"),
+                    runtime=harness.bindings(),
+                )
+            self.assertFalse(harness.started)
+
+    def test_startup_slot0_probe_rejects_path_outside_fresh_run_roots(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, _source_save = self._arrange(root)
+            harness = RecoveryHarness()
+            with self.assertRaisesRegex(
+                recovery.RecoveryError,
+                "must be inside the fresh state or artifacts directory",
+            ):
+                recovery.run(
+                    replace(
+                        config,
+                        startup_slot0_probe_output=root / "outside.json",
+                    ),
+                    runtime=harness.bindings(),
+                )
+            self.assertFalse(harness.started)
+
+    def test_startup_slot0_probe_rechecks_new_target_immediately_prelaunch(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, _source_save = self._arrange(root)
+            harness = RecoveryHarness()
+            # report.json is absent at the initial fresh-root gate, then the
+            # recovery creates it before the exact startup contract is frozen.
+            report = recovery.run(
+                replace(
+                    config,
+                    startup_slot0_probe_output=(
+                        config.artifacts_dir / "report.json"
+                    ),
+                ),
+                runtime=harness.bindings(),
+            )
+            self.assertEqual(report["result"], "RED")
+            self.assertIn(
+                "must not exist before launch", report["failure_reason"]
+            )
+            self.assertFalse(harness.started)
+
+    def test_startup_slot0_probe_forwards_fresh_artifact_and_freezes_evidence(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, _source_save = self._arrange(root)
+            output = config.artifacts_dir / "diagnostics" / "slot0.json"
+            config = replace(config, startup_slot0_probe_output=output)
+            harness = RecoveryHarness()
+            report = recovery.run(config, runtime=harness.bindings())
+
+            self.assertEqual(report["result"], "GREEN")
+            _args, start_keywords = harness.start_calls[0]
+            self.assertEqual(
+                start_keywords["startup_slot0_probe_output"], output.resolve()
+            )
+            probe = report["startup"]["prelaunch_boundary"][
+                "startup_slot0_probe"
+            ]
+            self.assertTrue(probe["enabled"])
+            self.assertEqual(probe["contained_by"], "artifacts_dir")
+            self.assertEqual(probe["output_path"], str(output.resolve()))
+            self.assertTrue(probe["target_absent"])
+            self.assertTrue(probe["temporary_target_absent"])
+            supervisor_call = report["startup"]["supervisor_call"]
+            self.assertTrue(
+                supervisor_call["startup_slot0_probe_output_passed"]
+            )
+            self.assertEqual(
+                supervisor_call["startup_slot0_probe_output"],
+                str(output.resolve()),
+            )
+
     def test_green_recovery_retains_resume_compatible_managed_session(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             config, source_save = self._arrange(Path(temporary))
@@ -310,6 +734,41 @@ class RecoveryTests(unittest.TestCase):
             self.assertEqual(report["result"], "GREEN")
             self.assertTrue(report["session_retained_for_resume_client"])
             self.assertTrue(harness.started)
+            _loader_args, loader_keywords = harness.loader_calls[0]
+            self.assertIs(
+                loader_keywords["native_session_supervisor"],
+                harness.supervisor,
+            )
+            _bootstrap_args, bootstrap_keywords = harness.bootstrap_calls[0]
+            self.assertEqual(bootstrap_keywords["game_dir"], config.game_dir.resolve())
+            _args, start_keywords = harness.start_calls[0]
+            self.assertEqual(
+                start_keywords,
+                {
+                    "frontend_first_load_save_name": "autosave",
+                    "frontend_first_timeout_seconds": 1.0,
+                },
+            )
+            self.assertEqual(
+                report["startup"]["mode"],
+                recovery.STARTUP_MODE_FRONTEND_FIRST,
+            )
+            self.assertFalse(
+                report["startup"]["supervisor_call"][
+                    "cold_start_checkpoint_argument_passed"
+                ]
+            )
+            self.assertTrue(
+                report["startup"]["native_session_contract"][
+                    "suspended_pre_resume_bridge_injection"
+                ]
+            )
+            self.assertEqual(
+                report["startup"]["native_session_contract"][
+                    "bridge_injection_target"
+                ],
+                "final-save-load-process",
+            )
             self.assertFalse(harness.stopped)
             self.assertTrue(harness.driver.closed)
             self.assertEqual(
@@ -332,6 +791,167 @@ class RecoveryTests(unittest.TestCase):
                 harness.process_checks.count(config.bridge_injector.name), 2
             )
 
+    def test_startup_shader_projection_failure_is_red_without_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _source_save = self._arrange(Path(temporary))
+            harness = RecoveryHarness(
+                startup_shader_projection={
+                    "result": "OFFLINE_UNAVAILABLE",
+                    "projected": False,
+                }
+            )
+            report = recovery.run(config, runtime=harness.bindings())
+
+            self.assertEqual(report["result"], "RED")
+            self.assertIn(
+                "projection was not GREEN_STATIC",
+                report["failure_reason"],
+            )
+            self.assertFalse(harness.started)
+
+    def test_continue_last_save_omits_frontend_and_cold_checkpoint_arguments(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _source_save = self._arrange(Path(temporary))
+            config = replace(
+                config,
+                startup_mode=recovery.STARTUP_MODE_CONTINUE_LAST_SAVE,
+            )
+            harness = RecoveryHarness()
+            report = recovery.run(config, runtime=harness.bindings())
+
+            self.assertEqual(report["result"], "GREEN")
+            self.assertEqual(len(harness.start_calls), 1)
+            _args, start_keywords = harness.start_calls[0]
+            self.assertEqual(start_keywords, {})
+            startup = report["startup"]
+            self.assertEqual(
+                startup["mode"], recovery.STARTUP_MODE_CONTINUE_LAST_SAVE
+            )
+            self.assertTrue(
+                startup["native_session_contract"]["continue_last_save"]
+            )
+            self.assertFalse(
+                startup["native_session_contract"]["cold_start_checkpoint"]
+            )
+            self.assertTrue(
+                startup["native_session_contract"][
+                    "suspended_pre_resume_bridge_injection"
+                ]
+            )
+            self.assertEqual(
+                startup["native_session_contract"]["bridge_injection_target"],
+                "initial-continue-last-save-process",
+            )
+            self.assertTrue(
+                startup["prelaunch_boundary"]["last_save"][
+                    "byte_copy_of_autosave"
+                ]
+            )
+
+    def test_bridge_frontend_first_hash_preflights_and_forwards_two_bridges(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, _source_save = self._arrange(root)
+            warmup_dll = root / "freeze165b" / "xar_ck3_bridge.dll"
+            warmup_injector = (
+                root / "freeze165b" / "xar_ck3_bridge_injector.exe"
+            )
+            warmup_dll.parent.mkdir()
+            warmup_dll.write_bytes(b"freeze165b-dll")
+            warmup_injector.write_bytes(b"freeze165b-injector")
+            warmup_pipe = r"\\.\pipe\xar_ck3_bridge_zg361_" + "2" * 32
+            config = replace(
+                config,
+                startup_mode=recovery.STARTUP_MODE_BRIDGE_FRONTEND_FIRST,
+                warmup_bridge_dll=warmup_dll,
+                warmup_bridge_injector=warmup_injector,
+                warmup_bridge_pipe=warmup_pipe,
+                expected_warmup_bridge_dll_sha256=_sha256(warmup_dll),
+                expected_warmup_bridge_injector_sha256=_sha256(warmup_injector),
+            )
+            harness = RecoveryHarness()
+            report = recovery.run(config, runtime=harness.bindings())
+
+            self.assertEqual(report["result"], "GREEN")
+            _args, start_keywords = harness.start_calls[0]
+            self.assertEqual(
+                set(start_keywords),
+                {
+                    "frontend_first_load_save_name",
+                    "frontend_first_timeout_seconds",
+                    "frontend_first_warmup_bridge",
+                },
+            )
+            warmup_bridge = start_keywords["frontend_first_warmup_bridge"]
+            self.assertEqual(warmup_bridge.pipe_name, warmup_pipe)
+            self.assertEqual(warmup_bridge.dll_path, warmup_dll.resolve())
+            startup = report["startup"]
+            self.assertTrue(
+                startup["native_session_contract"]["warmup_bridge_injection"]
+            )
+            self.assertEqual(
+                startup["native_session_contract"]["warmup_bridge"][
+                    "dll_sha256"
+                ],
+                _sha256(warmup_dll),
+            )
+            self.assertEqual(
+                startup["native_session_contract"]["final_save_load_bridge"][
+                    "dll_sha256"
+                ],
+                _sha256(config.bridge_dll),
+            )
+
+    def test_bridge_frontend_first_rejects_hash_drift_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, _source_save = self._arrange(root)
+            warmup_dll = root / "warmup.dll"
+            warmup_injector = root / "warmup-injector.exe"
+            warmup_dll.write_bytes(b"dll")
+            warmup_injector.write_bytes(b"injector")
+            config = replace(
+                config,
+                startup_mode=recovery.STARTUP_MODE_BRIDGE_FRONTEND_FIRST,
+                warmup_bridge_dll=warmup_dll,
+                warmup_bridge_injector=warmup_injector,
+                warmup_bridge_pipe=(
+                    r"\\.\pipe\xar_ck3_bridge_zg361_" + "2" * 32
+                ),
+                expected_warmup_bridge_dll_sha256="0" * 64,
+                expected_warmup_bridge_injector_sha256=_sha256(warmup_injector),
+            )
+            harness = RecoveryHarness()
+            with self.assertRaisesRegex(recovery.RecoveryError, "SHA-256 mismatch"):
+                recovery.run(config, runtime=harness.bindings())
+            self.assertFalse(harness.started)
+
+    def test_bridge_frontend_first_rejects_final_pipe_reuse_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config, _source_save = self._arrange(root)
+            warmup_dll = root / "warmup.dll"
+            warmup_injector = root / "warmup-injector.exe"
+            warmup_dll.write_bytes(b"dll")
+            warmup_injector.write_bytes(b"injector")
+            config = replace(
+                config,
+                startup_mode=recovery.STARTUP_MODE_BRIDGE_FRONTEND_FIRST,
+                warmup_bridge_dll=warmup_dll,
+                warmup_bridge_injector=warmup_injector,
+                warmup_bridge_pipe=config.bridge_pipe.upper(),
+                expected_warmup_bridge_dll_sha256=_sha256(warmup_dll),
+                expected_warmup_bridge_injector_sha256=_sha256(warmup_injector),
+            )
+            harness = RecoveryHarness()
+            with self.assertRaisesRegex(recovery.RecoveryError, "must be distinct"):
+                recovery.run(config, runtime=harness.bindings())
+            self.assertFalse(harness.started)
+
     def test_fail_closed_unknown_interrupt_is_retained_without_gameplay_fallback(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             config, _source_save = self._arrange(Path(temporary))
@@ -340,9 +960,19 @@ class RecoveryTests(unittest.TestCase):
 
             self.assertEqual(report["result"], "RED")
             self.assertTrue(report["unknown_interrupt_retention"])
+            self.assertTrue(report["unexpected_event_durable_recovery_ready"])
             self.assertTrue(report["session_retained_for_resume_client"])
             self.assertFalse(harness.stopped)
             self.assertTrue(harness.driver.closed)
+            self.assertEqual(harness.service.save_calls, 1)
+            self.assertTrue(
+                (
+                    config.state_dir
+                    / "profile"
+                    / "save games"
+                    / "xar_checkpoint.ck3"
+                ).is_file()
+            )
             self.assertTrue(report["mcp_only"])
             self.assertFalse(report["ocr_used"])
             self.assertFalse(report["coordinates_used"])
@@ -353,10 +983,42 @@ class RecoveryTests(unittest.TestCase):
                 )
             )
             self.assertEqual(retention["result"], "RETAINED")
+            self.assertTrue(retention["durable_recovery_ready"])
             self.assertEqual(
                 retention["reason"],
                 "fail_closed_unknown_interrupt_recovery_boundary",
             )
+
+    def test_checkpoint_failure_retains_healthy_unknown_event_without_durable_claim(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _source_save = self._arrange(Path(temporary))
+            harness = RecoveryHarness(
+                unknown_interrupt=True,
+                checkpoint_failure=True,
+            )
+            report = recovery.run(config, runtime=harness.bindings())
+
+            self.assertEqual(report["result"], "RED")
+            self.assertTrue(report["unknown_interrupt_retention"])
+            self.assertFalse(report["unexpected_event_durable_recovery_ready"])
+            self.assertTrue(report["session_retained_for_resume_client"])
+            self.assertFalse(harness.stopped)
+            self.assertTrue(harness.driver.closed)
+            self.assertEqual(harness.service.save_calls, 1)
+            checkpoint = report["unexpected_event_durable_checkpoint"]
+            self.assertEqual(checkpoint["result"], "RED")
+            self.assertFalse(checkpoint["durable_recovery_ready"])
+            self.assertIn("mock checkpoint", checkpoint["failure_reason"])
+            retention = json.loads(
+                (
+                    config.artifacts_dir
+                    / "09_phase2_native_session_retained.json"
+                ).read_text(encoding="utf-8-sig")
+            )
+            self.assertEqual(retention["result"], "RETAINED")
+            self.assertFalse(retention["durable_recovery_ready"])
 
     def test_supervisor_exit_during_driver_close_revokes_retention_sidecar(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

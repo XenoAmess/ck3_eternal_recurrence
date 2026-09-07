@@ -1834,3 +1834,173 @@ manager，AI-owned subject 是已绑定直属对象。缺任一字段时 full-tr
 当前源码使用 promotion/compensation candidate=ON 的 fresh MSVC build；其 94/94 CTest 必须 GREEN。
 effect 拆分后，native result-case source-contract 必须直接指向用途分片
 `zg361_core_result_delivery_effects.txt`，禁止重新引入或依赖已删除的 `zg361_effects.txt` 聚合文件。
+
+### R251 late-save recovery 的重复 pre-Frontend 启动崩溃（2026-09-07）
+
+R251 从已冻结的 83,449,160 bytes late autosave 进行 source-immutable fresh recovery。第一次实际启动使用系统临时目录中的全新隔离 profile，完整复制 `pdx_settings.txt`、account、DLC 和 4,944 文件 / 215,620,408 bytes DX11 shadercache；第二次按既有冷启动复验规则只改用更短的全新 userdir。两轮的产品投影、存档哈希与 launch 前双空槽门禁均 GREEN。
+
+两轮都在无 bridge 的 Frontend warm-up 中、任何 debug log/loader/save load 之前退出。crash bundle 均为 `C0000005` at VA `0x00007FF6FC2FBD89`，minidump 中 CK3 image base 为 `0x00007FF6FA550000`，即既有 `ck3+0x1DABD89` 启动签名。两个 report SHA-256 分别为 `325F18550571D0B6ED4A5AD44C66BEF1026A5F86194C24A9FBC2FEDAD099DD5A` 和 `3DCC64B237C0382466C61D61F73C0441FC69B58246265C94B3BDDBA4FC7817AD`；最终 CK3/injector inventory 为空。
+
+因此同一 direct-launch 形态不得继续循环复验。该结果只标记 startup/harness RED，不得外推为产品、loader、存档或业务场景 RED；恢复前已冻结的 R248–R250 exact GREEN 仍有效，但 live paused frame 已丢失。只有执行上下文发生有证据的改变时，才能创建新的 CK3 启动工作包。
+
+### R252：Default desktop 上的 direct `continue-last-save`（2026-09-07）
+
+R252 的差异输入是：用固定 child 的 Default-desktop relay 把 recovery 放到 `WinSta0\Default`，跳过无 bridge Frontend warm-up，并由 native session 对初始 `-continuelastsave` 进程执行 suspended pre-resume bridge injection。relay 默认仅写 no-launch preflight，只有显式 `--execute` 才创建 child；R252 调用必须精确固定为 `continue-last-save`。relay 后续只为 R253 审计模式显式扩展 `bridge-frontend-first`，普通 `frontend-first` 仍在创建 child 前拒绝。
+
+实机中 generation 1 bridge 已连接 PID `171184`，但 CK3 在 loader/save/gameplay 前以 code 1 退出；minidump 将异常重新绑定为 exact `ck3+0x1DABD89 / C0000005`。因此 Default desktop 和提前 bridge 连接均不足以解除该启动故障。此形态同样不得循环重试；下一启动工作包必须改变有实证意义的启动输入或编排，并继续使用 fresh repo-external state/artifacts、冻结 save/product/bridge、launch 前后空进程槽和受管 Job/watchdog 清理。任何此类启动 RED 都不得计入业务场景覆盖。
+
+### R253：独立 freeze165b bridge-backed Frontend warm-up（2026-09-07）
+
+`bridge-frontend-first` 是 opt-in 双桥诊断形态：warm-up bridge 的 DLL、injector、pipe 和两项预期 SHA-256 必须完整显式传入；其 pipe 必须与 final bridge 不同。warm-up 只负责到达 Frontend marker，随后其 managed process/lifecycle 必须证明清理；只有之后，final bridge 才能用同一 hash-bound autosave 启动最终存档进程。默认两种 startup mode 行为不变，参数不完整、hash 漂移或 pipe 复用都必须在 launch 前 fail-closed。
+
+R253 复用 Sep-03 曾到达 Frontend 的 freeze165b bridge bundle，运行在 `WinSta0\Default` 与完整 warm profile 上。唯一 execute 的 warm-up PID `42716` 仍在 1.411 秒内、debug log/loader/save/gameplay 前以 code 1 退出；final bridge 没有启动，也未发送玩法输入。异常 VA 与 R252 完全相同，为 `0x00007FF7D823BD89`，即既有 exact `ck3+0x1DABD89 / C0000005`。最终 CK3/injector inventory 为空。
+
+因此该结果只排除“把历史 bridge bundle 放进当前 warm-profile/Default-desktop choreography 即可恢复 Frontend”的假设，分类为 startup/harness RED。不得增加 scene/readiness 计数，不得外推为产品故障，也不得原样重试。下一启动形态必须先用既有 artifact 解释 Sep-03 Frontend GREEN 与 R253 RED 的具体输入差异。
+
+### R254-Z：同一双桥 choreography 的 backing-volume A/B（2026-09-07）
+
+Sep-03 freeze165b 与 R248 的同质成功对照都使用 Z: userdir，而 R251–R253 都使用 C: Temp；R251b 已证明仅缩短路径不足。因此 R254-Z 只把 fresh mutable envelope 移到 Z:，保持 source profile、product、autosave、game copy、Default desktop、warm-up/final bridge 与时序不变。no-launch preflight SHA-256 为 `B9081CB2232DFC99A4A2017B1FCE0DFDCBD6C672C6AEF503D0325DF7C5294E64`。
+
+唯一 execute 的 warm-up PID `166664` 在 1.361 秒内、debug log/loader/save/gameplay 前退出；final bridge 未启动且没有玩法输入。异常继续为 VA `0x00007FF7D823BD89` / exact `ck3+0x1DABD89 / C0000005`，最终进程槽为空。由此只能判定 Z: backing volume 不是充分恢复条件；该形态不得重试，scene/readiness 不变。
+
+### R255-Z：无 bridge Frontend warm-up + Z: 缺失单元（2026-09-07）
+
+R255-Z 保持 p2r193 warm profile、R248 full product、同一 autosave 与 current final bridge，采用 fresh Z: userdir 和无 bridge Frontend warm-up。它补齐 R251 C:/no-bridge 与 R254-Z Z:/bridge 之间的 2×2 最后一格。命令中的 warm-up bridge 五项参数必须全部省略；final pipe 必须精确匹配 `\\.\pipe\xar_ck3_bridge_zg361_<32 lowercase hex>`。首次错误 pipe 后缀在输入验证时拒绝、未启动 CK3，不计 live attempt。
+
+唯一 execute 启动 warm-up PID `143132`，在 `1.311` 秒内、任何 debug log/loader/save/gameplay 证据前以 code `1` 退出；current final bridge 从未启动，玩法输入为零。异常 VA `0x00007FF7D823BD89`，继续绑定既有 exact `ck3+0x1DABD89 / C0000005`。report、exception 与 minidump SHA-256 为 `5BD27572B78BF3B281608B45726399B824BEB9A209FE6A2C9926F08DE751B201`、`4422784DE31B1EC7CBED40F1471FDFF44F4C42C8CEF424E2F45F2C24A44AC50A`、`32EB5D32D5DAC9F77998146AFFB3F3FA1634518E485F5C9A480A31699CA92FF1`；事后 CK3/injector 槽为空。
+
+该结果只排除 Z:/no-bridge 是充分恢复条件；它是 startup/harness RED，不是 product/scenario RED，不增加场景或 readiness，且不得原样重试。后续 CK3 启动必须先给出 Sep-03/R248 GREEN 与 R251–R255 RED 之间尚未执行且有 artifact 支撑的确定输入差异。
+
+当前唯一满足该条件的候选是 Z: 根目录短 userdir：R248 GREEN 使用 `Z:\p2r248restore_state\profile`，R255 RED 仍位于 `Z:\ck3_mod_rewrite\_runtime\...\profile`；R251b 只排除了 C: 短路径。下一轮必须把 state/artifacts 放入新的 `Z:\p2r256restore_state` / `Z:\p2r256restore`，其他输入与 R255 相同。若这两个精确根目录不可写或不新鲜，则启动前 NO-GO，不得改测无 artifact 支撑的变量。
+
+六份 R251a/b–R255 minidump 的 exact-build 反汇编进一步证明它们是同一直接故障。fault RVA 均为 `0x1DABD89`，指令为 `movsxd rdi,dword ptr [r14+0x4c]`，`R14=0x1f8`，ExceptionInformation 读取地址均为 `0x244`。函数边界是 `0x1DABD50..0x1DABEBE`；它从 `module+0x570F908` 取得有效 manager，再从 `[manager+0xA8]` 取得 null slot0，随后对 null 加 `0x1f8` 并解引用。caller `0x1D8DF60..0x1D8E184` 首先以 index 0 调用，因此六轮都在第一项崩溃。无 PDB/source 时不得猜测内部类名；下一项有效观测是 exact-build 只读记录 manager/slot0 从进程恢复到首次进入该函数的时序，并与 GREEN 对照。null guard 只能作为防崩实验，不能冒充恢复初始化语义。
+
+进一步的 writer/xref 扫描证明 slot0 不是发布后异步补齐。manager 构造路径 `0x356626D -> 0x3999800` 在把对象写入 global `0x570F908` 前同步构建 `+0x68..+0xE0` 两组八项表；slot0 writer 是 `0x39C70A1 -> 0x3A88920` 后的 `0x39C70B8: mov [r14+0xA8],rax`。相关字符串为 `particle2_client`、`particle2_internal`、`NPdxParticle2Internal::SEffectData`、`ParticleTexture` 与 `gfx/FX/cw/particle2.shader`。factory 返回 null 会被明确写入 slot0，消费 wrapper 随后无条件调用且无 ready/null gate；所以“再等一会”没有静态依据。诊断应继续区分 factory 的 source lookup、variant lookup 与 backend creation null exit，或在消费入口做 exact-build 有界 containment；不得把延时或裸 null guard写成语义修复。
+
+factory `0x3A88920 -> 0x3A88750 -> 0x3A866D0` 只有四类正常 null 出口：graphics global `module+0x570FC60` 为零；source lookup `0x3AAE920` 返回空；variant lookup `0x3AADFE0` 在 effect table 无精确 `ParticleTexture`；或 backend creation `0x3A8E080` 输出空。安装树 clausewitz/jomini/game 三份 `gfx/FX/cw/particle2.shader` 均存在并声明 `Effect ParticleTexture`。p2r193 与 R252–R255 shadercache 逐文件相同：`4,908` files / `213,198,746` bytes / tree SHA-256 `373B8C7638616431ED6D59670D6ECD914D71A349E2E4C05F23A24A4187ACB202`，PS/VS 各 `2,454` 文件且 bin/scache 成对；settings SHA `592AB6C6...F5244` 也一致。R251a 更直接复用了 R248 GREEN 后 `4,944` files / tree `3ECF366D...B35A` 的缓存仍同样崩溃，故不得把清 cache、补 lane 或改 DX11 设置当作修复。下一观测先只读绑定 graphics global；若非零，再用函数级观测区分 source/variant/backend。
+
+### R257：startup slot0 probe 首次实机为附着竞态 RED（2026-09-07）
+
+R257 保持 R255 的 Z: 仓库嵌套 userdir、无 bridge Frontend warm-up与全部 hash-bound 产品输入，只增加 default-off、exact-build、只读的 startup slot0/graphics-global probe；因此它是诊断 attempt，不是新的 recovery 形态，也不增加场景计数。CK3 PID `212584` 仍在 1.312 秒、debug/loader/save/gameplay 前命中同一 VA `0x00007FF7D823BD89`，final bridge 未启动，事后槽为空。
+
+probe 在进程恢复后第一次 `CreateToolhelp32Snapshot(module)` 遇到 Windows error `299` (`ERROR_PARTIAL_COPY`)，未取得 module base，`sample_count=0`、`capture_ok=false`。这只证明 module discovery 需要对刚恢复进程的明确瞬态 `ERROR_BAD_LENGTH/ERROR_PARTIAL_COPY` 做有界重试；不能据此判断 graphics global、source、variant 或 backend。report/probe/exception/minidump SHA-256 为 `99FFF31D043E8458B0DB28C87339540F377B04243537E89EA1AC180A9F3EBB0E`、`7B09CBD7F803A2FCAEF6E5445755E5F81D87528023B9140F7C856FD361FA3ADE`、`2D7C3244BDC326B160D5BFA1EC6D303F298780FDB0C03054CD987325B96BAF7E`、`3FAE6781BA2F9ECE21DF8ACEA04B0BB761FE96C0E8AF0F76E8898FDB1B1B6150`。只允许修复该探针竞态后做一次 R258 诊断复验；持续错误或零样本仍 fail-closed。
+
+### R258：graphics global 非零、slot0 全程为零（2026-09-07）
+
+probe 只对 WinError `24/299` 做 1.0 秒 / 5 ms 的有界 module-discovery 重试，并在每次前检查进程退出；模块/native/recovery normal/`-O` 分别各 `9/9`、`3/3`、`16/16` GREEN。R258 复用 R257 的全部启动输入，只验证该 harness 修复。PID `135392` 的 probe `capture_ok=true`：module discovery 首次成功；root 与 graphics global 各成功读取 `252` 次，slot0 成功读取 `109` 次，零错误。graphics global 在全局 timeline `12.538463s` 首次非零，manager 在 `12.681426s` 首次非零；此后 slot0 的末值仍为 `0`，从未观测到非零，进程于 `13.254901s` exit code `1`。CK3 marker 口径仍为约 1.361 秒 pre-log crash，final bridge 未启动。
+
+该结果排除了 factory 第一类“graphics global 为零”，并再次证明 manager 发布后 slot0 已被同步写成 null；但普通内存采样不能证明 source/variant/backend 哪个调用分支先返回零。report/probe/exception/minidump SHA-256 为 `63FB0671138DB5D1E73E6F9C77E58FF409D083BCF06270236E11FDEA63B38361`、`2C1E8B8C977400425F1901B15E14A878A4CAE27ED11EFE0F588C36D4D50DA334`、`DA59C0DDF5811780EBF69D97CB778B9546CC4F1F6CF4E4B8F6C6EF8F5A02AF98`、`DC2BFC0FB1B33FC5D9A6D1C59941525D66EED359A082EF1702AA684FE202A5EB`。R258 是诊断 evidence GREEN + startup RED，不增加场景/readiness；下一步只允许函数级只读观测 source/variant/backend，不再重跑同一 probe。
+
+### G2 GEN-034 concrete adapter 的 CIM fallback 与启动 RED（2026-09-07）
+
+修前 r2 的 ordinary CK3 进程已经启动，但 concrete operation 的三处 target identity 仍直调 CIM；当前桌面 `Get-CimInstance Access denied` 后，runner 未能识别唯一目标并回收进程。该实证故障的最小修复是统一复用 CIM→Toolhelp32 inventory，再用 `QueryFullProcessImageNameW` 补 executable path，并严格验证唯一 PID、进程名、路径与 EXE SHA；查询失败继续 fail-closed。focused adapter normal/`-O` 各 `14/14` GREEN。
+
+修后 r3 no-launch 依赖/暖资产全 GREEN，但 CK3 PID `62524` 在创建任何日志/窗口与 observer attach 前再次命中 `C0000005` at `0x00007FF7D823BD89`；随后 `BringWindowToTop` 的 invalid handle 只是进程先崩溃的次生现象。cleanup GREEN 且 final inventory 为空。没有 source-specific observation、checkpoint 或 surrender，因此 T1 readiness 不变。不要为次生 foreground 错误增加重试；只有 startup/environment 输入出现实证差异时才允许新的 live attempt。
+
+### R259–R261：精确 ParticleTexture factory 分支与 debugger cleanup 边界（2026-09-07）
+
+R259 用 private exact-build DR0 debugger 首次绑定 caller `0x39C70A1`、26-byte `gfx/FX/cw/particle2.shader` 与 15-byte `ParticleTexture`。PID `196808` 的 graphics global 非零，source output 与 final output 均为 `0`，故有效观测分类为 `source-lookup-null`；artifact `Z:\ck3_mod_rewrite\_runtime\p2r259diag-artifacts\particle2-factory-capture.json` 的 SHA-256 为 `0E269C37BDE80380AA66AA8D41D68C2933C4AEB699B20E0393026A08A71629BA`。但 `DebugActiveProcessStop` 返回 Win32 error 5；尽管 debug registers 已清、capture event 已 continue 且进程成功回收，v1 完整工具 verdict 仍为 RED。
+
+R260 是 attach 编排的中间构建 RED：PID `92400` 未被该构建认可为 resumed，未观察 tuple 或任何 factory step。artifact SHA-256 为 `405C36A1E5A1A309ABC1BB32CE08E15E0B09A156B99827F5402D8295A364515E`。其 `unexpected suspend count 2` 反向确认正确冻结值应为 `2`：一个 `CREATE_SUSPENDED` 计数加一个 outstanding attach debug-event 计数。R260 不提供 source/variant/backend 结论。
+
+R261 使用修正后的 attach count，再次在 PID `140924` 独立观察到同一 exact tuple、非零 graphics global、零 source output 与零 final output，仍分类为 `source-lookup-null`；artifact SHA-256 为 `229A98C02B9BDB63053D31824FFAAA29575B2C8F4E6594E08A58EDBD28B7DE6C`。detach 仍以 error 5 失败，所以该轮也是有效分支观测 + cleanup gate RED，不得写成完整工具 GREEN。三轮均 `input_sent=false`，没有 bridge/map/mailbox/save/gameplay readiness；R258 profile 内已有 crash bundle 不能重复归因给 R259–R261。场景与 readiness 计数保持不变。
+
+同一 v1 detach 路径不再重复。v2 静态合同继续沿同一 target thread，从 source entry `0x3AAE920` 进入，在 `0x3AAE9A8` 读取 lookup/population helper 的 `[RSI]` output；仅当其为零时在 `0x3AAE9C1` 读取 fallback resolver 的 raw `RAX`，再与 outer source `0x3A86761` 和 caller return `0x39C70A6` 交叉核验。成功后明确执行 `terminate-after-capture`，独立记录 capture/cleanup/exit kind，并将全部 product evidence 固定为 false；`GREEN_DIAGNOSTIC` 只表示 exact-build 调试观测完整，不计入 CK3 live 或场景验收。
+
+### R262–R263：fallback resolver null 的一次性闭合（2026-09-07）
+
+R262 首次执行 v2，七个同线程 checkpoint 全部命中：graphics global 非零；`0x3AAE9A8` 的 lookup/population helper output `[RSI]=0`；`0x3AAE9C1` 的 fallback resolver raw `RAX=0`；outer source 与 final output 仍均为零。因此 `capture_status=complete-valid`、`source_detail_classification=source-resolver-null`。但收到并 continue `EXIT_PROCESS_DEBUG_EVENT` 后，零等待句柄检查先于最终 signal，误落入 `cleanup_forced=true`；总 verdict 保持 RED。artifact SHA-256 为 `0E66C3500764B11F5E41973C8B893D5F3869FA6FAD6498D214C5DE945353CB42`。这是已实证 cleanup wait 竞态，不改变 resolver 结论。
+
+R263 只把 exit-event 后的句柄等待放宽到已有的 5 秒清理界限，其他 state、EXE、tuple 与断点合同不变。probe SHA-256 `748938B059EDA60AFB8C7C7B0265305482EC4BF08E3A1E6772DF586258EE9E70`；PID `194756` 在约 `1.73s` 内依次命中 entry、graphics、source-entry、helper-result、resolver-result、outer-source 与 caller-return。artifact `Z:\ck3_mod_rewrite\_runtime\p2r263diag-artifacts\particle2-source-detail-capture.json` SHA-256 为 `87A7213F9B632B96FDD8A28434918B49EE7BBCF801486F3F8DCBB23D250D0C58`，结果为 `GREEN_DIAGNOSTIC / source-resolver-null`；debug registers 已清、capture event 已 continue、intentional termination 的 exit event 与 process signal 均闭合，`cleanup_forced=false`，事后 CK3/probe 槽为零。
+
+R263 只关闭“source-null 内部是 helper 后 fallback resolver 仍返回空”这一诊断分支。它没有证明物理文件缺失、VFS provenance、cache 损坏或 loader 原因，也没有 bridge/map/mailbox/query/gameplay input。不得据此清 cache、替换资源或启用 containment；下一步只能先反汇编 resolver 的正常 null 分支并冻结最小只读观测字段。scene/readiness 不变。
+
+### R264–R265：resolver 规范化与搜索边界（2026-09-07）
+
+R264 使用 probe SHA-256 `227CDB851BC58208BD7685ED52BCBCC85DE6C50671ADC913DE1EB788C9D656A9`，把同一 target thread 继续向 `0x3BE2340` 内部收窄。PID `159248` 观察到请求总缓冲长度 `27`、非 locked mode、未使用 heap，规范化成功且文本仍精确为 `gfx/FX/cw/particle2.shader`；list head 非零，但 search output、source resolver output、outer source 与 final output 全部为零。artifact `Z:\ck3_mod_rewrite\_runtime\p2r264diag-artifacts\particle2-resolver-detail-capture.json` SHA-256 为 `B1677D1CC015C15E63B370E76A29549D8C1202F9A8B02926DE5E2FCA88C7C32F`。
+
+R265 用同一 probe 对另一路径下字节相同的 exact-build EXE 复验；PID `169736` 得到相同的长度、mode、stack buffer、规范化文本、非零 list head 及全零 search/source/final 结果。artifact `Z:\ck3_mod_rewrite\_runtime\p2r265diag-artifacts\particle2-resolver-detail-capture.json` SHA-256 为 `21C985201824ABA45BF4845502CB47801E372506C751485A05C6E951B8027D93`。这两轮只排除“输入在规范化前已损坏”，不把 list head 的存在写成资源已注册。
+
+### R266–R268：唯一 resolver candidate 到 backend read（2026-09-07）
+
+R266 的 probe SHA-256 为 `F974682AF7A8CFC61B71A551EB6FF4593C053A4691296B826C145CD45619BA77`。PID `71632` 把 list walk 冻结为一个 candidate：空 prefix、`next_address=0`，primary 与 secondary result 都为 `0`，所以未进入 final candidate branch；source 和 final 仍为零。artifact `Z:\ck3_mod_rewrite\_runtime\p2r266diag-artifacts\particle2-resolver-candidates-capture.json` SHA-256 为 `825DEEF2F9CD6B7D9C37B39DCF09B75FD3F495849CB1FBFFB396DCE7447DA986`。
+
+R267 的 probe SHA-256 为 `9710AD3A1D0A9D6167109FF7D0C774167B6D9DBABC670B6074E0963AF394177F`。PID `87188` 进一步记录 candidate backend object、dispatch table、RVA `0x3BFDC60` callback，以及 secondary state `f9=0 / fa=0`；callback 和 secondary 返回仍都为零。artifact `Z:\ck3_mod_rewrite\_runtime\p2r267diag-artifacts\particle2-secondary-capture.json` SHA-256 为 `B63A0224B3DF9244937E21A30B902F9419786C1A6C5CAE325B668C9BF08CA0AE`。
+
+R268 复用更深一层 probe，SHA-256 `6EF81E91401A75C3C1DAD5A3BC8085E638B4F9E3DFF69E88F0633B93C16F12FF`。PID `90140` 在 callback 内观察到 backend root `Z:/ck3_mod_rewrite/_runtime/p2r267diag-state/profile\`、requested text `gfx/FX/cw/particle2.shader`，两者组成的精确路径为 `Z:\ck3_mod_rewrite\_runtime\p2r267diag-state\profile\gfx\FX\cw\particle2.shader`，backend read result 为 `0`，随后 callback/secondary/search/source/final 均为零。artifact `Z:\ck3_mod_rewrite\_runtime\p2r268diag-artifacts\particle2-backend-path-capture.json` SHA-256 为 `A30DE8C7D09D7214015D0BD3326D00FB363AA59F9D5CD4EC6EE09FD57F9426DD`。该结论只绑定这次 direct diagnostic 的唯一 candidate 及其 userdir backend；不外推为 CK3 所有 VFS 路径或正常 launcher 都只会读 userdir。
+
+### R269–R271：隔离 userdir overlay 与 backend-creation-null（2026-09-07）
+
+R269 只在隔离 diagnostic userdir 的上述精确路径放入 game-layer `particle2.shader`；文件为 `4,329` bytes，SHA-256 `9F25E03134E24EF0490EA0E1537BFE5BF070FF9CE567678CC636A18FAA84F075`，未改仓库或安装树。PID `97608` 的 source cache/output 随即非零，exact `ParticleTexture` variant 也非零，首个 null 出口后移到 `backend-creation-null`。artifact `Z:\ck3_mod_rewrite\_runtime\p2r269diag-artifacts\particle2-single-file-overlay-capture.json` SHA-256 为 `DEEA6C82E76B8A5DBC1CD5488C7A093B2A8B3F8CCCB451BAB41140F2BB4C659A`。这是隔离的因果诊断，不是产品资源补丁或可发布修复。
+
+R270 在同一隔离 profile 中把 overlay 扩成主 shader 及其当前最小 include closure，共 `11` 个文件；PID `202708` 仍为 source/variant 非零、backend/final 为零。artifact `Z:\ck3_mod_rewrite\_runtime\p2r270diag-artifacts\particle2-minimal-include-overlay-capture.json` SHA-256 为 `25AE4EE9B1ADD868EDB656A823172510A16FCB193AFB30AD46F965273C34A3D7`。因此“只缺这个最小 include closure”不足以解释 backend null；不继续扩大 overlay 来冒充正常 VFS 初始化。
+
+R271 的 probe SHA-256 为 `41580D1B8D02EB7F59C347C4325EC8D474B4276D9E5F1438FF3880CE771541A6`。PID `56452` 在 source/variant 均非零后进入 backend `0x3A8E080`；config 和 device object 非零，backend cache result 为零，通过 dispatch table 选中的 RVA `0x3AD4C30` vcall 亦把 output wrapper 留为零，outer backend 与 final output 随后为零。artifact `Z:\ck3_mod_rewrite\_runtime\p2r271diag-artifacts\particle2-backend-detail-capture.json` SHA-256 为 `3A230624A5DDF5BDC71B9CA11941DB096964BF0BCA4ABB97318F6B48A79A7FC5`。当前最小后续诊断入口是该 exact vcall 内部的正常 null 分支，而不是继续猜测 shader cache、更换 DX11 设置或将 null guard 写成修复。
+
+R264–R271 八轮均使用 exact CK3 EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，结果字段均为 `GREEN_DIAGNOSTIC`、`capture_status=complete-valid`、`cleanup_status=diagnostic-termination-clean`和 `process_exit_kind=diagnostic-termination`。这只表示 exact-build 调试观测链及意图性回收闭合：每轮 `input_sent=false`，`bridge_connected/map_ready/mailbox_ready/readiness_promoted=false`，query 和 gameplay input 计数都为 `0`。故它们不计入 CK3 product live、场景覆盖、loader/save/gameplay 验收或 T0 readiness，也不能把“诊断结果 GREEN”写成“CK3 正常继续运行”。
+
+### R272–R273：ParticleTexture backend null 到 13 文件启动 shader 投影（2026-09-07）
+
+R272 复用 exact vcall 内部观测版 probe（SHA-256 `359CA19FA71F234CC317EA9DB1E04A0489708F0280CF8DBDC92C7D44841770F9`），没有改变 R270 的 11 文件隔离 overlay。PID `14816` 中 source cache、source output 与 `ParticleTexture` variant 均非零；backend config/device 也非零，但第一个 active stage `VertexParticle` 的 HLSL generation 返回 false，initializer 随后返回 false，backend callback/vcall、outer backend 与 caller final output 全部为零。故因果分类从 R271 的笼统 `backend-creation-null` 收窄为 `backend-hlsl-generation-null`，而不是 shader cache miss 或 device-null。artifact `Z:\ck3_mod_rewrite\_runtime\p2r272diag-artifacts\particle2-initializer-detail-capture.json` 为 `7,002` bytes，SHA-256 `C528AA12E463543AE2BF81CF46201109DEDFE65F0978C235678033D2DF0D840D`。
+
+R273 保持同一 exact EXE、probe、userdir、11 个显式文件与断点合同，只补入 Clausewitz 在 HLSL 生成阶段隐式注入的 `cw/defines_common.fxh` 和 `cw/defines_hlsl.fxh`。PID `147896` 中 `VertexParticle` 与 `PixelTexture` 两个 active stage 都变为 `hlsl_ok=true`；两次 shader cache lookup 虽仍为零，但 shader vcall、getter 与 stage output 均非零，initializer、backend callback/vcall、outer backend 和 caller final output 也全部非零，分类为 `all-nonnull / backend-initializer-success`。这组单变量差异证明：对该 exact-build direct-startup harness，R272 的首个 backend null 是 11 文件显式 closure 缺少两份隐式 HLSL prelude 所致；它不证明正常 launcher/VFS 的全局资源规则，也不构成 mod 资源修复。artifact `Z:\ck3_mod_rewrite\_runtime\p2r273diag-artifacts\particle2-implicit-defines-overlay-capture.json` 为 `13,577` bytes，SHA-256 `06328E125181343AF5D9F69D4644EBDCDFDF052970BD964A56FA0E012A024A5D`。
+
+13 文件 bundle 固定如下；`game`、`clausewitz`、`jomini` 表示只读来源层，目标一律折叠到一次性 `<userdir>/gfx/FX/<logical-path>`。前 11 项是显式 shader/include closure，末 2 项是 R273 闭合的隐式 prelude：
+
+| 类别 | 来源层与 logical path | SHA-256 |
+|---|---|---|
+| 显式 | `game:cw/particle2.shader` | `9F25E03134E24EF0490EA0E1537BFE5BF070FF9CE567678CC636A18FAA84F075` |
+| 显式 | `game:cw/particle2.fxh` | `5388B201A41F8606195DC48BFD7F784DC7E18DB3BF1F25AEF91C68FE56E9F35D` |
+| 显式 | `game:jomini/jomini_fog.fxh` | `D77842C81E8896EFB7BDBECBE8A10C9A3C9B2E2CC3AC378F069863CECFF0AF72` |
+| 显式 | `game:jomini/jomini_fog_of_war.fxh` | `8D6DD77ECA2C20AEB4F5C13975603ADBFC7010548C7B52464F41C55AB45D882F` |
+| 显式 | `game:cw/camera.fxh` | `C1B8FC8B61C08CA73A0B8F48EF85680B9973F1253E9549464370AD21F7275684` |
+| 显式 | `clausewitz:cw/random.fxh` | `20FF4A25C9860028AD4AE9688AAFE97DF79BA1B69563C03F7797F25853C6865D` |
+| 显式 | `clausewitz:cw/pdxterrain.fxh` | `DEDCD87D156B19B00958844D7734D21EE1A0B22C98D27657827CE6FAE166C696` |
+| 显式 | `jomini:jomini/jomini.fxh` | `8377A1E9D2D9E732449F22E0FBC21B787A42CFD69AB272922239CE4BD3DA6026` |
+| 显式 | `clausewitz:cw/heightmap.fxh` | `231B687443A2DC4D9B7C8606DA9CF65EF43B0CE1AB53CCD7F5F6BEC6B576E3E7` |
+| 显式 | `clausewitz:cw/utility.fxh` | `ABD382499457D6616597E41647983B982A44AEA7A0A3392927693827201CAB1B` |
+| 显式 | `clausewitz:cw/upscale_utils.fxh` | `A48DCA74818B4B69E020B0CE5567BD9EC87527CB686871C0F069849A98C62079` |
+| 隐式 | `clausewitz:cw/defines_common.fxh` | `CAAC6CB12CE9FD820C35581076A642538F822CB86CE27148B4E55E2A167781EC` |
+| 隐式 | `clausewitz:cw/defines_hlsl.fxh` | `A92B73EE9969B2C61BA83C86D705C95D5E264641D758BDBAD13D241A4DF04374` |
+
+该 bundle 只能由 `tools/run_zhongguo_acceptance.py::project_particle2_startup_shader_bundle` 在 `bootstrap_userdir` 中投影到本轮隔离 profile。入口先要求 CK3 EXE SHA-256 精确为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，再逐项校验来源哈希、拒绝 target 越出 profile 或覆盖已有文件，并在复制后复核哈希；receipt 必须记录 `result=GREEN_STATIC`、`projected=true`、`harness_only=true`、`release_staging_affected=false` 及 13 个文件明细。它不得写入 `mod-content/zhongguo_361`、任何 mod 源树/Workshop cache，也不得进入 `build_release.py` 的 staging、manifest 或 ZIP；一旦进入 release staging，应视为投影边界破坏，而不是产品内容。
+
+R272/R273 均是 `GREEN_DIAGNOSTIC`、`capture_status=complete-valid`、`cleanup_status=diagnostic-termination-clean`、`process_exit_kind=diagnostic-termination`；两轮均 `input_sent=false`，`bridge_connected/map_ready/mailbox_ready/readiness_promoted=false`，query/gameplay input 计数为 `0`。R273 的 `all-nonnull` 只关闭启动 factory 的诊断分支：进程随后按约定被意图性终止，没有正常 native continuation、loader、存档、地图或 gameplay 证据。因此这两轮、13 文件投影及其 `GREEN_STATIC` receipt 都不得计入 CK3 product live、任何已测场景、场景覆盖百分比或 T0 readiness；只有后续正式 launcher 在未污染 release staging 的前提下产出的独立 live artifact 才能改变这些计数。
+
+### R274：13 文件投影越过 Particle2 后的 DX11 successor（2026-09-07）
+
+R274 是 R273 之后第一次正式 relay continuation。no-launch preflight `Z:\ck3_mod_rewrite\_runtime\p2r274relay\preflight.json` 为 `READY_TO_RUN`（SHA-256 `C6AD369D060FB646509A42DAA338CC263AFC43C9FB2DF42B2CE60985E171AEEA`）；唯一 execute 的 `execution.json` 为 RED、child exit `1`（SHA-256 `DAAF183871AD1958583B195FA5DB019722CE565B4A503D471E33EFDAB7725275`）。13 文件 profile-local bundle 使 CK3 PID `89336` 越过旧 `ck3+0x1DABD89` / read `0x244` 的 Particle2 null-slot，bridge generation `1` 也已连接；约 `1.3s` 后，进程在 map/mailbox、loader database node、save/gameplay 与玩法输入前命中新 `C0000005`：VA `0x00007FF6BE4CAE5F`，即 exact `ck3+0x3B0AE5F`，read address `0x90C`。dump 中 outer render-context 非零且 `[outer+0x1938] bit0=true`，但 `[outer+0x1940]` shader-state child / `R14` 为零，故准确分类是新的 DX11 pre-draw binding fault，而不是 Particle2、Frontend 或 loader GREEN。
+
+R274 recovery report `Z:\ck3_mod_rewrite\_runtime\p2r274restore\report.json` 为 RED（SHA-256 `A25E7A5DB702262FED20CE0EDEC101ED1AA17F4EBC6F39CB91D259E37FA0A16F`）；`03_loader_gate.json` 为 `no_loader_terminal / database nodes=0 / gameplay not run`（SHA-256 `2A6865C8208950ABD43AD511290CEE7415CC0EDF1CC034E55E9B4D519D348325`）。crash bundle 的 `exception.txt` / `minidump.dmp` SHA-256 为 `558A8003241842FECEE1C9775CC16D88FB43814AC5BE41C494C64C88736355B3` / `E5005A73A62905335F918851A87E87A007FF63D9F9E3C1CE97DD5BC512982C0F`。受管回收虽已证明 Job active processes `2->0`、`tree_gone=true`、`cleanup_proven=true`、最终 inventory empty，但只认证清理，不改变 session RED；父会话或 loader 的长等待时长也不得冒充 CK3 生存时间。
+
+### R275–R276：六 guard 越过 DX11 后的 cold-map VFS 闭环（2026-09-07）
+
+R275 保持同一 13 文件 harness-only 投影，并在 primary thread resume 前注入 exact-build six-guard candidate：DLL SHA-256 `CB7E0B0989CEA3D8B799915A57C80801DE0626A90D3EAA74C8D9EAA1395EB950`，injector SHA-256 `550FC2C5655868A40D0F309DA60C0D52213C0BA05D89C09105A1A8D87B5FDC2D`。唯一 `continue-last-save` PID `115468` 越过 Particle2 与 R274 `ck3+0x3B0AE5F`，随后在所有产品 readiness 前命中历史 exact `ck3+0x3BE33A9`（VA `0x00007FF6BE5A33A9`）cold-map VFS `C0000005`。dump 恢复出的六个 startup guard 均 `installed=true / failure=0`：particle2 producer/consumer 未抑制，DX11 draw `suppressed_count=1`，localize-current-root `native_miss_count=5`，widget-null-flag 与 RBX-null-call 各抑制一次；这只证明本 build 的六项 guard 确实安装并越过前序 fault，不证明其为产品修复。
+
+同一 dump 也闭合了 default-OFF、只读 cold-map observer：`installed=1 / installed_mask=7 / failure_flags=0`。constructor snapshot 的 path `length=0`；post-move snapshot 为 tag `1`、payload `VFSOpen Error:  not found`；poll snapshot 仍是 `state=0 / aux_state=0 / variant_tag=1`，随后把字符串前八字节 `VFSOpen ` 当作对象指针传入 `0x3BE3360` 并在 `0x3BE33A9` 失败。故已证链为“真实 map-loader/CMap `+0x18` 为空 → VFS open 产生 tag-1 error variant → move 后 poll 状态仍为零 → 错误文本被当作对象”，不是 `default.map` 物理文件不存在。R275 `execution.json` / recovery report / session-start / exception / minidump 的 SHA-256 分别为 `6FA7A5C600EF3F8A768B56FC851BEFF62F44710C48FA743CCD91C458D80DFD75`、`042DC1E0E8BC0BCA1D85DE530B4E099FB0BF52E9B75B953356F370CA7AAA38E9`、`C99D75B195453AB2A8DAEDF14272A644ED34919CF748D5B4B7157A29F9DDCAC4`、`5E36173202EDA97641B5A25004ED3EA9788FD3F08F7C850356572220158223E0`、`B3911F7C1846279E2DBF3A0D5F1C9FBE80275FDF16C5CC8E4CE1A53AE042677F`。
+
+R276 只把相同 13 文件投影与相同 guarded candidate 改走 `bridge-frontend-first`。guarded warm-up PID `56652` 在 Frontend marker、debug log、map/mailbox 前再次命中 exact `ck3+0x3BE33A9`；warm-up evidence 为 `status=failed / marker seen=false / log_bytes=0`，为 autosave 准备的 final process/bridge 从未启动。因此这是同一 VFS 结果的第二种编排复现，不是 final binding、存档恢复或 gameplay。report / session-start / formal cleanup / session state / warm-up / exception / minidump 的 SHA-256 分别为 `FD50EEB07DDBC3C7897082A0A67D5F6ACAFBBF9E8A6A5957FEE6800DA9DBECA9`、`28D02C15388005C1525AAB4868FE35C786808A5788750B92CD6A0FD4966A87A5`、`984498177CD3810E19A54B7A7366C6381770A489815AB56140FAE3C210E9D0FA`、`308C214BA24DC2283CE8AA5530683E4AFBA0BAA6A836EDD91525DD558C46B7E5`、`206476EF40EC75A710DE1FA4AD8DFD1BEE78E64CD9C0639F0EDF797A1370181B`、`F182D0EB087846D0133464A75B4FC8E3BB737E567BD5D73A8542EC5A050E97B6`、`2BC1DA1629EC2F057F2AACFAAB8866D9F3D182B3A56B327B049A7F3E647C7DEE`。事后 inventory 虽为零，R276 formal cleanup 仍须为 RED，因为 pre-binding failure 没有 initial binding/generation/session report，不能用实时空槽替代受管 shutdown proof。
+
+### R277–R278：no-bridge warm-up 与 cleanup-only GREEN（2026-09-07）
+
+R277 是配置 RED、不是 CK3 launch：选择 `bridge-frontend-first` 却没有提供完整 warm-up bridge DLL/injector/pipe/expected-SHA bundle，child preflight 在创建 CK3 及 state/artifact 目录前以 exit `2` fail-closed。relay `ck3_launch_attempted=true` 只是“已调用 child”的粗粒度意图，不能覆盖 child 没有创建游戏进程的事实。preflight / execution artifact SHA-256 为 `3025501906039A2B96F6510C418C77AD03514FD245220B879A56F084C287E997` / `FF1852B808F78820B7D654A6AF8B241DC8894E68ACE9E3628E27BD493291EA02`；R277 不计实机 attempt。
+
+R278 使用正确 no-bridge Frontend warm-up：`native_bridge_mode=disabled`，warm-up 只有 fresh profile 与 13 文件投影，正式 bridge 只留给本应后续启动的 final autosave process。唯一 warm-up PID `151976` 在 `2.169s`、Frontend marker/debug log/map/mailbox 前以 code `1` 命中 exact R274 `ck3+0x3B0AE5F`；final process/bridge 从未启动。因此 no-bridge warm-up 重复的是 DX11 startup RED，而不是 R275 的 six-guard/VFS 后继，也不是产品恢复。
+
+R278 新 typed terminal 如实记录 `frontend_warmup_process_exit / frontend_warmup / pre_binding=true / warmup_pid=151976 / exit=1 / cleanup_proven=true / tree_gone=true`。native session 与总 report 均保持 RED，`crash_accepted_as_success=false`；只有 `09_phase2_native_session_cleanup.json` 为 `GREEN / acceptance_scope=cleanup_only / session_result=RED`，表示 supervisor、Job、global inventory、watchdog/control files 与 contract-error 清理项闭合。report / session-start / cleanup / session state / warm-up / exception / minidump 的 SHA-256 分别为 `D25DC41B5B5986EE87675A7E8753BC56821B3C0D05E9863D928F5BDC22034E6C`、`2657EE81AD1369448214C55284BF018694B18050439C881D915D6F44BDD66110`、`6B37594D5270315B814897CF7B3CA5BE62C914039791B52D95E56BB03FBA1764`、`A18F8A3A31745ADF41C86108A7C27EACD9C6CEA27207A2ACA4B34C045D9A559A`、`68C77909F4783D888B67B1FBCEFD884BB17E1C1B5E438897CE744E92B645C373`、`4DDE8E042BE63F459D2234AF017388EFC17D79EA6C33FD1E0914056308916802`、`B1EA380B8004D4D645F235D350DC993F8016EDD895AC5E1594A046683AD2435D`。cleanup-only GREEN 绝不提升 startup、session 或产品 verdict。
+
+R279 仅把同一 no-bridge warm-up 的 disposable state/profile 缩短为 `Z:\ck3_mod_rewrite\s279\profile`，其余输入保持 R278 形态。PID `57688` 仍在 `2.067s`、Frontend/debug log/map/mailbox 前命中 `ck3+0x3B0AE5F`，final process 未启动；短 Z 路径不是恢复条件，不再继续同类路径长度 A/B。report / session-start / cleanup / session state / warm-up / exception / minidump 的 SHA-256 分别为 `4742B12ED6135A1CA93B109B990A0C14A933176E400705011BC52D96F06E11C4`、`A5FE1DFD8B4F5DC5822414431EBE892A12643733C7CA6BA4E30FA0A30832DA1C`、`F22D08C98BB51E94956CBB603DE9D26226642D67E7099EED0307443B8E3C4EA5`、`03187B0D99EEF12A56C2B3258A87CFAFB522F258544D336F2F953B43DE8A8B58`、`0763E32574FF7AFF1DDA1A6AF6CFF9162B4496488B0840AD2B2A27195CC5403C`、`B8E7C8476D7D057E38A76023714A823A658555711C97BF6A922D87DCC61122E8`、`1BFB693AFC0447FC8EF5FC8BA7941FBBC19DEEF7CEA5E17201C46B639CE53DBA`。
+
+R275 dump 与 exact-build xref 随后闭合了 named-path 表的上游：表对象基址是 `module+0x5764698`，R275 的 singleton bucket、零 count/mask/max-probe 是构造完成后的真实空表；运行期唯一生产者是 `pdx_paths` parser。启动任务 callback `0x3B96A10` 依次查询 `paths.settings` 与 `paths_checksummed.settings`，成功后调用 parser `0x3B96510`，assignment 在 `0x3B96897` 进入唯一 insert。二进制 token tuple 与文件第一行直接证明 `id 0x583 = map_data`；前者有 30 个、后者有 8 个非空 assignment，且 `map_data` 是第二文件第一项。故零 count 只剩“任务尚未进入 / 两次 lookup 均空 / parser 无有效 assignment 到 insert”三类；仅缺第二文件不足以解释全表为空。
+
+R274–R279 均没有新增事件动作/postcondition、loader database node、paused snapshot、存档恢复或 gameplay；R277 甚至没有启动 CK3。它们不计入 scene、逐 ID、full-tree、stage、readiness 或进度百分比，T0-P2 继续锁定。同一 `0x3B0AE5F` / `0x3BE33A9` shape 不原样重跑；现有证据也不授权第七 guard、跳过 `0x3BE3360`/poll、重解释 tag `1`，或把安装树已有的 `paths*.settings` / `game/map_data/default.map` 盲拷进 userdir、mod 或 release staging。下一次排他启动必须把两组 exact-build、default-OFF、只读观测合并成一次 transaction：一组绑定 resolver `0x3B96C70` 与 `CMap+0x18` move 写前/写后；另一组绑定 `pdx_paths` task 进入、两次 lookup、parser source 与 `0x583` insert 前后表状态，再以 cold-map constructor/move/poll 作下游交叉核验。所有 observer 都只能记录，不能重入 loader/parser、改表、改分支或增设 guard。
+
+### R280：`pdx_paths` 双 lookup NULL 的直接证据（2026-09-07）
+
+R280 将上述两组 observer 与 cold-map observer 合并进同一个 default-OFF exact-build DLL。为使早期崩溃仍可取证，bridge 必须用 `/Z7` 编译并以 `/INCREMENTAL:NO /DEBUG:FULL /OPT:REF /OPT:ICF /MAP:<exact-map>` 链接，且必须保留与实际注入 DLL 同次生成的 PDB/MAP。该 build 的 DLL / injector / PDB / MAP SHA-256 为 `50794254F851A78E0AC5522E91F6B7A37A54EA6FD523F92898D28B9D9E0747A4` / `B878A07046EFCBD54EB641DCBD61232D0F20375AEC31CFDF9202000C33A7AF58` / `78482CA06009022D08FD5F0C10317577578E20D14D5DB94974BE22FEAD5BCD27` / `F377BBE7A4E7A42E7D780C199F62B9F743700F5E1194D56677B83EA8A7F4E07D`，focused CTest `5/5` GREEN。MSVC MAP 中三组 private state RVA 为 `0x6A2518 / 0x6A26C0 / 0x6A3B28`。
+
+唯一一次 Default-desktop `continue-last-save` 运行绑定 PID `91980`、generation `1`，在 `16.143s`、所有 loader database node、日志、map/mailbox、save continuation 与玩法输入前以 code `1` 命中 exact `ck3+0x3BE33A9 / C0000005`。受管 shutdown 为 `job 1→0 / tree_gone / cleanup_proven / watchdog absent / control files absent / zero contract errors`，最终 CK3/injector inventory 为空。preflight / execution / report / session-start / loader gate / session-state SHA-256 为 `46CA98289F073F54C7606B79DC672610AAC0B1D6005D8B803EFBD734F852B95D` / `BAC230D1707ED80BD8882EE69E5E9D4C06419B70D2C515FC9F609A5F88E9BB83` / `9230A6ABB2A27E74211360555A973AC623A6063B21D8A257D11C26711672A2A2` / `7C2333FA216FE60738251675FF29E1EBF498CC70841527783C1470FC19687D74` / `A9B03B9974ED9E6D47A0C78A9C9210BEC2DBD012C11E0DD908DC84FA3109694A` / `D00DC4FA295C4F4B60E6652B9B6CEADF8B34EFDBA408B04C90A343942E1BAE84`。
+
+离线提取器以 dump ModuleList、同 build MAP RVA 与原始 state bytes 一次解码三 observer；报告 SHA-256 为 `0E95E67496F86285394D78CCFD10F45A84152482247D812EBA1446E9A597C4F6`，对应 minidump SHA-256 `8CAD7C1D200E565BA69AF3F07C4F28C93A694B743527071EFF5EA993EBEBB296`。producer `installed=true / installed_mask=31 / failure=0`；task 进入一次，TID `41812`；两个 settings lookup 均 `pre=1 / return=1 / raw=0 / null=true`；三个 parser 与 insert 计数均为零；task table count/mask/max-probe 均为零且无 read fault。named-path consumer resolver/move 计数仍为零，cold-map 则再次记录空 ctor、tag-1 error variant 和 state-0 poll。由此可以直接判定：`pdx_paths` task 并非未运行，parser 也不是吞掉了 assignment；而是两个 lookup 都返回 NULL，导致 parser 根本未调用、`0x583=map_data` 从未入表。
+
+R280 不授权把物理存在的 settings 文件复制到 userdir/mod/staging，不授权 patch lookup 或新增 guard；下一步只能先逆向 `0x3BE2340` 的 exact ABI、输入与 NULL 早退，以及在 `pdx_paths` 之前应完成的 VFS 初始化。R280 仍是 startup/harness RED，不改变任何 product、scene、stage 或宣传媒体计数。

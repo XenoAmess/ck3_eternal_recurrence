@@ -526,3 +526,134 @@ pre-soldier, proven-loss, action and automatic gates remain false. This audit
 is neither a new live attempt nor authorization to repeat the old live. Its
 artifacts are under
 `artifacts/g2/2026-09-03/generic-war-bound-normal-desktop-audit-20260903T041200/`.
+
+## R275 cold-map observer dump closure (2026-09-07)
+
+[production launch / startup RED / diagnostic only] R275 reproduces the
+historical fault exactly: CK3 is based at `0x00007FF6BA9C0000`, the exception
+VA is `0x00007FF6BE5A33A9` (`ck3+0x3BE33A9`), and the instruction remains
+`cmp byte ptr [rcx+8],0`. `RCX=RBX=0x206E65704F534656` again decodes to
+`VFSOpen `, the exception record again reports a read of
+`0xFFFFFFFFFFFFFFFF`, and `RSP+0x38` contains return RVA `0x3B55D8B`.
+
+The six startup-guard states recovered from the dump are all installed with
+`failure=0`: particle2 producer has `suppressed_count=0`,
+`suppressed_index_mask=0`, `last_suppressed_index=0xFFFFFFFF`; particle2
+consumer has `suppressed_count=0`, `missing_slot_mask=0`; DX11 draw has
+`suppressed_count=1`; localize-current-root has `native_miss_count=5`;
+widget-null-flag and RBX-null-call each have `suppressed_count=1`.
+
+The read-only cold-map observer is `installed=1`, `installed_mask=7`,
+`failure_flags=0`. Its one constructor snapshot records descriptor
+`0x000000D586BFFBF0`, data `0x0000023E8FE08988`, `length=0`, `flag=0`, and
+`word0=0`. Its one post-move snapshot records destination
+`0x0000023E960DC438`, `tag=1`, payload `0x0000023E8FB64F40`, `length=25`,
+`capacity=143`, and leading words `VFSOpen ` / `Error:  `. Its one poll
+snapshot records object `0x0000023E960DC400`, `state=0`, `aux_state=0`,
+`variant_tag=1`, and the same payload, length, capacity and leading words.
+The payload bytes are exactly `VFSOpen Error:  not found`; `/default.map` is
+also present next to the captured empty constructor-data buffer.
+
+This closes the previously inferred sequence with direct observer state:
+empty constructor input -> tag-1 error variant -> poll state still zero ->
+text prefix passed as an object pointer -> the same fault. It is neither a
+new scenario nor a readiness increment, and it does not justify another
+guard. The next minimum diagnostic is a read-only observation of named-path
+resolver `0x3B96C70`, binding id `0x583` before `0x20753E0`/
+`0x3B55A40`; the resolver/published-root difference should be A/B-tested
+without skipping the poll or faulting callee. The R275 minidump SHA-256 is
+`B3911F7C1846279E2DBF3A0D5F1C9FBE80275FDF16C5CC8E4CE1A53AE042677F`.
+
+### Exact resolver and `CMap+0x18` writer correction
+
+Exact-build disassembly corrects the earlier placement of id `0x583` in the
+constructor. `0x331F123`/`0x331F128` resolves that id only to format the
+constant `default.map` through `%s/%s`; the formatted string is assigned to
+`CMap+0x38`. Before that call, `0x331F0C4` through `0x331F0D6` independently
+initializes the SSO string at `CMap+0x18` to empty (`length=0`,
+`capacity=15`). Therefore `0x331F123` is not the writer that can explain the
+empty path consumed by `0x20753E0`.
+
+The authoritative `CMap+0x18` publication chain is the `0x331F7C0`
+dispatcher branch selected by tag `R8D=0x6C2`. It selects an empty static
+string when `[argument+0x1EC]==0`, otherwise the source at
+`[argument+0x1E0]`; `0x331F9D2` first copies that source to `CMap+0x18`.
+`0x331F9DF` then calls helper `0x3320A60` with a temporary destination and
+`CMap+0x18` as its source. Inside the helper, `0x3320A7D` loads
+`ECX=0x583` and `0x3320A82` calls resolver `0x3B96C70`; the helper formats
+the resolved prefix and source through `%s/%s` and returns the temporary
+string in `RAX`. Finally `0x331F9EA` calls move-assignment `0x7E6C00` with
+`RCX=CMap+0x18` and `RDX=RAX`, which is the exact final write consumed by
+`0x20753E0`.
+
+The resolver ABI is narrow: entry `ECX` is the 32-bit id, and return `RAX`
+is either null or a pointer to the resolver's 32-byte SSO descriptor
+(`length` at `+0x10`, `capacity` at `+0x18`); callers use `0x7F7E10` as the
+null fallback.
+
+The existing R275 dump also contains the complete resolver table state.
+Registry global `module+0x57646A0` is at `0x00007FF6C01246A0`; its row pointer
+is `0x00007FF6C00C4990` (`module+0x5704990`), mask at `+0x0C` is zero, and
+maximum probe distance at `+0x10` is zero. Applying `0x3B96C70`'s four-byte
+little-endian FNV-1a sequence to id `0x583` gives hash `0xC0242C1D`, hence
+candidate row `row_pointer + (hash & mask) * 48 = 0x00007FF6C00C4990`.
+That 48-byte candidate is all zero: its control/probe byte at `+0x04` is zero
+and stored id at `+0x08` is zero. Because control zero is below the initial
+search distance one, resolution falls through to the end sentinel at
+`0x00007FF6C00C49C0` (`module+0x57049C0`), whose control byte is `0xFF`.
+The sentinel equals `row_pointer + (mask + max_probe + 1) * 48`, so the final
+`cmove` returns null. This is an absent row, not a present row containing an
+empty string; the zero bytes at candidate `+0x10` are therefore not a valid
+MSVC string descriptor. All registry, candidate and sentinel bytes required
+for this conclusion are present in the dump, with no memory-read failure.
+
+The next minimum default-OFF observer should therefore use two
+read-only points: **A**, wrap only the direct call at `0x3320A82` and record
+thread/sequence, id, raw return pointer, null state, SSO length/capacity and
+resolved bytes while returning the original `RAX`; **B**, wrap the
+move-assignment call at `0x331F9EA` and record the same thread/sequence,
+`CMap` pointer, temporary source, and the pre/post `CMap+0x18` SSO snapshot.
+This A+B correlation observes the resolver-to-published-path edge without
+adding a guard, selecting a branch, or mutating the path.
+
+### Exact `pdx_paths` producer chain
+
+Further exact-build xref analysis closes the producer side of the same table.
+The registry object actually begins at `module+0x5764698`; its bucket pointer,
+count, mask and maximum probe distance are at `+0x08`, `+0x10`, `+0x14` and
+`+0x18`.  The CRT initializer at `0x7D8AE0..0x7D8B2D` obtains the singleton
+sentinel at `module+0x5704990`, stores it as the bucket pointer, and zeroes the
+count, mask and maximum probe distance.  R275 therefore captured a valid
+constructed-empty table, not uninitialized storage.
+
+The only runtime producer found by the complete registry xref set is parser
+`0x3B96510..0x3B96A0B`; there is no runtime clear/reset writer before the
+process-exit destructor.  Early initialization constructs a startup task list
+at `0x7E8458`; its third task is named `pdx_paths` and synchronously invokes
+loader callback `0x3B96A10..0x3B96C66`.  That callback queries
+`paths.settings` at `0x3B96A4E` and `paths_checksummed.settings` at
+`0x3B96B62`, then calls the parser at `0x3B96B36` and `0x3B96C40` for the
+successful lookups.  Parsed assignments reach the sole insert call at
+`0x3B96897`, targeting registry base `module+0x5764698`; the insert routine at
+`0x253A9F0..0x253AD5F` increments count at `0x253AABC`.
+
+The id/value identity is binary-direct evidence rather than a name inferred
+from the consumer.  The compile-time tuple at `.rdata+0x42BCE60` contains id
+`0x583` and a pointer to the exact string `map_data`; the first line of
+`game/paths_checksummed.settings` is `map_data = "map_data"`.  That file has
+eight non-empty assignments and `paths.settings` has thirty, so a normal run
+should populate about thirty rows before the checksummed parser immediately
+encounters `0x583`, and about thirty-eight rows after both inputs.  A table
+that is still the zero-count sentinel at the R275 consumer can therefore be
+explained only by one of three still-live branches: the snapshot preceded the
+`pdx_paths` task; both lookups failed; or parsing ran without any valid
+assignment reaching insert.  Missing only the checksummed file is not enough,
+because the first parser would already have made the table non-empty.
+
+This new evidence changes the next capture from consumer-only confirmation to
+one combined default-OFF, records-only transaction.  In addition to the
+resolver/root A+B points above, it must record the post-prologue task entry,
+both lookup returns, the shared parser entry classified by source, and the
+`0x583` insert before/after table state.  It must not call the loader or parser
+out of sequence, inject a row, copy the settings files into user data, or add
+another startup guard.

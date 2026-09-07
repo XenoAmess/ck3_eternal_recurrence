@@ -389,6 +389,95 @@ class RetainedRuntimeDiagnosticTests(unittest.TestCase):
         self.assertEqual(report["promotion_binding_failure"], rejected)
         self.assertIn("PromotionBindingError", report["error_reason"])
 
+    def test_unknown_interrupt_attempts_durable_checkpoint_before_client_close(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state, cell, pipe = self._arrange_source(root)
+            for name in ("error.log", "debug.log"):
+                (state / "profile" / "logs" / name).write_bytes(PREFIX)
+            artifacts = root / "artifacts"
+            snapshot = {
+                "snapshot_id": "native:116",
+                "native_revision": 116,
+                "revision": 1,
+                "date_raw": entry.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+                "map_ready": True,
+                "paused": True,
+                "speed": 5,
+                "played_character": {"character_id": 29037},
+                "diagnostics": {"connection_generation": 1},
+            }
+            capabilities = {
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": 361116,
+                    "connection_generation": 1,
+                }
+            }
+            service = types.SimpleNamespace(
+                snapshot=lambda: dict(snapshot),
+                capabilities=lambda: dict(capabilities),
+            )
+            unexpected = {"event_definition_key": "natural_disaster.9999"}
+
+            def unknown_event(*args: object, **kwargs: object) -> None:
+                kwargs["evidence_out"]["unexpected_event"] = unexpected
+                raise entry.PromotionProductionEntryError("unknown interrupt")
+
+            durable = {
+                "result": "GREEN",
+                "durable_recovery_ready": True,
+            }
+            with (
+                mock.patch.object(client, "NativeHeadlessGameplayDriver", _Driver),
+                mock.patch.object(
+                    client, "GameplayBridgeService", return_value=service
+                ),
+                mock.patch.object(
+                    client,
+                    "wait_for_retained_session_reconnect",
+                    return_value=(capabilities, snapshot),
+                ),
+                mock.patch.object(
+                    client,
+                    "retained_pid_lineage_evidence",
+                    return_value={"result": "GREEN", "restart_count": 0},
+                ),
+                mock.patch.object(
+                    client,
+                    "enter_promotion_source_checkpoint_v1",
+                    side_effect=unknown_event,
+                ),
+                mock.patch.object(
+                    client,
+                    "attempt_unexpected_event_durable_checkpoint",
+                    return_value=durable,
+                ) as checkpoint,
+            ):
+                report = client.run(
+                    state_dir=state,
+                    pipe_name=pipe,
+                    source_run_cell=cell,
+                    artifacts=artifacts,
+                    timeout_seconds=1.0,
+                )
+
+        self.assertEqual(report["result"], "RED")
+        self.assertTrue(report["unknown_interrupt_retention"])
+        self.assertTrue(report["unexpected_event_durable_recovery_ready"])
+        self.assertEqual(report["unexpected_event_durable_checkpoint"], durable)
+        checkpoint.assert_called_once_with(
+            service,
+            state_dir=state.resolve(),
+            unexpected_event=unexpected,
+            artifact_path=(
+                artifacts.resolve()
+                / "05_unexpected_event_durable_checkpoint.json"
+            ),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

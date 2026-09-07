@@ -4393,6 +4393,129 @@ def main() -> int:
         assert single_pid_cleanup["result"] == "GREEN"
         assert single_pid_cleanup["restore_expected"] is False
 
+        warmup_terminal_report = {
+            "kind": "ck3_native_headless_session",
+            "mode": "native-headless",
+            "pipe": supervisor_pipe,
+            "pid": 56652,
+            "exit_reason": "process_exit",
+            "process_exit_code": 1,
+            "shutdown": phase2_shutdown(56652),
+            "restart_count": 0,
+            "restart_shutdowns": [],
+            "frontend_first_warmup": {
+                "status": "failed",
+                "warmup_pid": 56652,
+                "warmup_process_exit_code": 1,
+            },
+            "terminal": {
+                "type": "native_session_terminal",
+                "state": "frontend_warmup_process_exit",
+                "stage": "frontend_warmup",
+                "pre_binding": True,
+                "warmup_pid": 56652,
+                "process_exit_code": 1,
+                "cleanup_proven": True,
+                "tree_gone": True,
+                "error": "AgentError: warm-up exited before Frontend",
+            },
+            "error": "AgentError: warm-up exited before Frontend",
+            "ok": False,
+        }
+        disconnected_capabilities = {
+            "diagnostics": {
+                "connected": False,
+                "bridge_pid": None,
+                "connection_generation": 0,
+            }
+        }
+        warmup_cleanup_artifacts = (
+            temporary_root / "phase2-prebinding-warmup-cleanup-green"
+        )
+        warmup_cleanup_artifacts.mkdir()
+        warmup_cleanup = capture.prove_phase2_native_session_cleanup(
+            copy.deepcopy(warmup_terminal_report),
+            warmup_cleanup_artifacts,
+            initial_pid=None,
+            initial_generation=None,
+            expected_pipe=supervisor_pipe,
+            scenario_evidence={},
+            final_capabilities=copy.deepcopy(disconnected_capabilities),
+            session_error=None,
+            supervisor_stopped=True,
+        )
+        if warmup_cleanup["result"] != "GREEN":
+            raise AssertionError(warmup_cleanup)
+        if warmup_cleanup["session_result"] != "RED":
+            raise AssertionError("warm-up crash was mislabeled as session success")
+        if warmup_cleanup["crash_accepted_as_success"] is not False:
+            raise AssertionError("warm-up crash was accepted as gameplay success")
+        if warmup_cleanup["checks"]["warmup_pid_shutdown_cleanup_proven"] is not True:
+            raise AssertionError("warm-up cleanup proof was not verified")
+
+        published_artifacts = (
+            temporary_root / "phase2-prebinding-warmup-published"
+        )
+        published_artifacts.mkdir()
+        with mock.patch.object(
+            capture,
+            "native_session",
+            return_value=copy.deepcopy(warmup_terminal_report),
+        ):
+            published_supervisor = (
+                capture.start_phase2_native_session_supervisor(
+                    SimpleNamespace(state_dir=temporary_root / "supervisor-state"),
+                    native_config,
+                    frontend_first_load_save_name="autosave",
+                )
+            )
+            published_thread = published_supervisor["session_thread"]
+            published_thread.join(timeout=1.0)
+            published_state = published_supervisor["session_state"]
+            if published_thread.is_alive():
+                raise AssertionError("typed terminal supervisor did not finish")
+            if published_state["error"] is not None:
+                raise AssertionError(published_state["error"])
+            if published_state["report"]["terminal"]["warmup_pid"] != 56652:
+                raise AssertionError("typed warm-up terminal report was not published")
+            published_cleanup = capture.stop_phase2_native_session_supervisor(
+                published_supervisor,
+                published_artifacts,
+                initial_pid=None,
+                initial_generation=None,
+                expected_pipe=supervisor_pipe,
+                scenario_evidence={},
+                final_capabilities=copy.deepcopy(disconnected_capabilities),
+            )
+        if published_cleanup["result"] != "GREEN":
+            raise AssertionError(published_cleanup)
+        if published_cleanup["session_result"] != "RED":
+            raise AssertionError("published crash report lost its RED outcome")
+
+        unproven_warmup_report = copy.deepcopy(warmup_terminal_report)
+        unproven_warmup_report["shutdown"]["cleanup_proven"] = False
+        unproven_artifacts = (
+            temporary_root / "phase2-prebinding-warmup-cleanup-red"
+        )
+        unproven_artifacts.mkdir()
+        try:
+            capture.prove_phase2_native_session_cleanup(
+                unproven_warmup_report,
+                unproven_artifacts,
+                initial_pid=None,
+                initial_generation=None,
+                expected_pipe=supervisor_pipe,
+                scenario_evidence={},
+                final_capabilities=copy.deepcopy(disconnected_capabilities),
+                session_error=None,
+                supervisor_stopped=True,
+            )
+        except capture.acceptance.RunnerError as error:
+            if "warmup_pid_shutdown_cleanup_proven" not in str(error):
+                raise AssertionError(str(error)) from error
+        else:
+            raise AssertionError("unproven warm-up cleanup was accepted")
+
         fake_supervisor_artifacts = temporary_root / "phase2-fake-supervisor-green"
         fake_supervisor_artifacts.mkdir()
         fake_supervisor_entered = threading.Event()

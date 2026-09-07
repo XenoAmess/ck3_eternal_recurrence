@@ -1,0 +1,31 @@
+{
+  "schema": "xar.pdx_paths_583_producer_observer_v1.source_contract.v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "required_source_tokens": [
+    "kPdxPaths583TaskPatchRvaV1",
+    "kPdxPaths583PathsLookupCallRvaV1",
+    "kPdxPaths583ChecksummedLookupCallRvaV1",
+    "kPdxPaths583ParserPatchRvaV1",
+    "kPdxPaths583InsertCallRvaV1",
+    "kPdxPaths583MapRvaV1",
+    "kPdxPaths583NamedPathIdV1",
+    "key_583_insert_pre_count",
+    "key_583_insert_post_count",
+    "result_pair_null",
+    "result_read_fault",
+    "id_583_present",
+    "primary_thread_suspended_proven"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1",
+    "pdx_paths_583_producer_observer_v1",
+    "InstallPdxPaths583ProducerObserverV1"
+  ],
+  "forbidden_public_tokens": [
+    "pdx_paths_583_producer_v1"
+  ]
+}

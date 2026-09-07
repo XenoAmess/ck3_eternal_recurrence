@@ -6,6 +6,8 @@
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
+#include "xar_bridge/named_path_583_root_observer_v1.hpp"
+#include "xar_bridge/pdx_paths_583_producer_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
 #include "xar_bridge/g2_truce_native_callsite_observer_v1.hpp"
@@ -98,6 +100,16 @@ constexpr bool kColdMapVfsObserverEnabledV1 = true;
 #else
 constexpr bool kColdMapVfsObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1)
+constexpr bool kNamedPath583RootObserverEnabledV1 = true;
+#else
+constexpr bool kNamedPath583RootObserverEnabledV1 = false;
+#endif
+#if defined(XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1)
+constexpr bool kPdxPaths583ProducerObserverEnabledV1 = true;
+#else
+constexpr bool kPdxPaths583ProducerObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
 constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
 #else
@@ -150,6 +162,10 @@ static_assert(!kStartupRbxNullCallGuardEnabledV1 ||
               kStartupWidgetNullFlagCallGuardEnabledV1);
 static_assert(!kColdMapVfsObserverEnabledV1 ||
               kStartupRbxNullCallGuardEnabledV1);
+static_assert(!kNamedPath583RootObserverEnabledV1 ||
+              kColdMapVfsObserverEnabledV1);
+static_assert(!kPdxPaths583ProducerObserverEnabledV1 ||
+              kNamedPath583RootObserverEnabledV1);
 static_assert(!(kPhase2PostCallObserverEnabledV1 &&
                 kPhase2PostCallListIdentityObserverEnabledV1));
 
@@ -180,6 +196,10 @@ static xar::bridge::StartupWidgetNullFlagCallGuardV1State
 static xar::bridge::StartupRbxNullCallGuardV1State
     g_startup_rbx_null_call_guard_v1{};
 static xar::bridge::ColdMapVfsObserverV1State g_cold_map_vfs_observer_v1{};
+static xar::bridge::NamedPath583RootObserverV1State
+    g_named_path_583_root_observer_v1{};
+static xar::bridge::PdxPaths583ProducerObserverV1State
+    g_pdx_paths_583_producer_observer_v1{};
 static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
 static xar::bridge::Phase2PostCallObserverV1State
@@ -248,6 +268,54 @@ void AppendJsonString(std::string &result, std::string_view value) {
     }
   }
   result += '"';
+}
+
+void AppendNamedPath583String(
+    std::string &result, std::string_view name,
+    const xar::bridge::NamedPath583StringDiagnosticsV1 &value) {
+  result += ",\"";
+  result += name;
+  result += "\":{\"object\":";
+  result += Number(value.object);
+  result += ",\"effective_data\":";
+  result += Number(value.effective_data);
+  result += ",\"length\":";
+  result += Number(value.length);
+  result += ",\"capacity\":";
+  result += Number(value.capacity);
+  result += ",\"word0\":";
+  result += Number(value.word0);
+  result += ",\"word1\":";
+  result += Number(value.word1);
+  result += ",\"null_result\":";
+  result += value.null_result ? "true" : "false";
+  result += ",\"read_fault\":";
+  result += value.read_fault ? "true" : "false";
+  result += '}';
+}
+
+void AppendPdxPaths583Table(
+    std::string &result, std::string_view name,
+    const xar::bridge::PdxPaths583TableDiagnosticsV1 &value) {
+  result += ",\"";
+  result += name;
+  result += "\":{\"map\":";
+  result += Number(value.map);
+  result += ",\"rows\":";
+  result += Number(value.rows);
+  result += ",\"count\":";
+  result += Number(value.count);
+  result += ",\"mask\":";
+  result += Number(value.mask);
+  result += ",\"max_probe\":";
+  result += Number(value.max_probe);
+  result += ",\"id_583_present\":";
+  result += value.id_583_present ? "true" : "false";
+  result += ",\"id_583_row\":";
+  result += Number(value.id_583_row);
+  result += ",\"read_fault\":";
+  result += value.read_fault ? "true" : "false";
+  result += '}';
 }
 
 std::string IdentityFrame() {
@@ -342,6 +410,16 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadColdMapVfsObserverV1Diagnostics(
           g_cold_map_vfs_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1)
+  const auto named_path_583_root_observer =
+      xar::bridge::ReadNamedPath583RootObserverV1Diagnostics(
+          g_named_path_583_root_observer_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1)
+  const auto pdx_paths_583_producer_observer =
+      xar::bridge::ReadPdxPaths583ProducerObserverV1Diagnostics(
+          g_pdx_paths_583_producer_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   const auto phase2_completion_observer =
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(
@@ -399,6 +477,10 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += kStartupRbxNullCallGuardEnabledV1 ? "true" : "false";
   result += ",\"cold_map_vfs_observer_enabled\":";
   result += kColdMapVfsObserverEnabledV1 ? "true" : "false";
+  result += ",\"named_path_583_root_observer_enabled\":";
+  result += kNamedPath583RootObserverEnabledV1 ? "true" : "false";
+  result += ",\"pdx_paths_583_producer_observer_enabled\":";
+  result += kPdxPaths583ProducerObserverEnabledV1 ? "true" : "false";
   result += ",\"g2_truce_preview_entry_observer_enabled\":";
   result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
@@ -550,6 +632,103 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   XAR_APPEND_COLD_MAP_VFS_FIELD(poll_word0);
   XAR_APPEND_COLD_MAP_VFS_FIELD(poll_word1);
 #undef XAR_APPEND_COLD_MAP_VFS_FIELD
+#endif
+#if defined(XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1)
+  result += "},\"named_path_583_root_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"guard\":false";
+  result += ",\"installed\":";
+  result += named_path_583_root_observer.installed ? "true" : "false";
+#define XAR_APPEND_NAMED_PATH_583_FIELD(name) \
+  result += ",\"" #name "\":";                 \
+  result += Number(named_path_583_root_observer.name)
+  XAR_APPEND_NAMED_PATH_583_FIELD(installed_mask);
+  XAR_APPEND_NAMED_PATH_583_FIELD(failure_flags);
+  XAR_APPEND_NAMED_PATH_583_FIELD(resolver_count);
+  XAR_APPEND_NAMED_PATH_583_FIELD(move_pre_count);
+  XAR_APPEND_NAMED_PATH_583_FIELD(move_post_count);
+  XAR_APPEND_NAMED_PATH_583_FIELD(correlation_miss_count);
+  XAR_APPEND_NAMED_PATH_583_FIELD(sequence);
+  XAR_APPEND_NAMED_PATH_583_FIELD(thread_id);
+  result += ",\"move_pre_seen\":";
+  result += named_path_583_root_observer.move_pre_seen ? "true" : "false";
+  result += ",\"move_post_seen\":";
+  result += named_path_583_root_observer.move_post_seen ? "true" : "false";
+  XAR_APPEND_NAMED_PATH_583_FIELD(move_result);
+#undef XAR_APPEND_NAMED_PATH_583_FIELD
+  AppendNamedPath583String(result, "resolver",
+                           named_path_583_root_observer.resolver);
+  AppendNamedPath583String(result, "temporary_before",
+                           named_path_583_root_observer.temporary_before);
+  AppendNamedPath583String(result, "root_before",
+                           named_path_583_root_observer.root_before);
+  AppendNamedPath583String(result, "temporary_after",
+                           named_path_583_root_observer.temporary_after);
+  AppendNamedPath583String(result, "root_after",
+                           named_path_583_root_observer.root_after);
+#endif
+#if defined(XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1)
+  result += "},\"pdx_paths_583_producer_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"guard\":false";
+  result += ",\"public_capability\":false,\"installed\":";
+  result += pdx_paths_583_producer_observer.installed ? "true" : "false";
+#define XAR_APPEND_PDX_PATHS_583_FIELD(name) \
+  result += ",\"" #name "\":";              \
+  result += Number(pdx_paths_583_producer_observer.name)
+  XAR_APPEND_PDX_PATHS_583_FIELD(installed_mask);
+  XAR_APPEND_PDX_PATHS_583_FIELD(failure_flags);
+  XAR_APPEND_PDX_PATHS_583_FIELD(task_enter_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(task_thread_id);
+  XAR_APPEND_PDX_PATHS_583_FIELD(task_sequence);
+  XAR_APPEND_PDX_PATHS_583_FIELD(paths_parser_enter_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(checksummed_parser_enter_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(other_parser_enter_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(parser_source);
+  XAR_APPEND_PDX_PATHS_583_FIELD(parser_thread_id);
+  XAR_APPEND_PDX_PATHS_583_FIELD(parser_sequence);
+  XAR_APPEND_PDX_PATHS_583_FIELD(insert_call_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(key_583_insert_pre_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(key_583_insert_post_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(key_read_fault_count);
+  XAR_APPEND_PDX_PATHS_583_FIELD(last_key);
+  XAR_APPEND_PDX_PATHS_583_FIELD(last_hash);
+  XAR_APPEND_PDX_PATHS_583_FIELD(insert_thread_id);
+  XAR_APPEND_PDX_PATHS_583_FIELD(insert_sequence);
+  XAR_APPEND_PDX_PATHS_583_FIELD(rhs_string);
+  XAR_APPEND_PDX_PATHS_583_FIELD(result_pair);
+  XAR_APPEND_PDX_PATHS_583_FIELD(native_result);
+  XAR_APPEND_PDX_PATHS_583_FIELD(result_row);
+#undef XAR_APPEND_PDX_PATHS_583_FIELD
+  result += ",\"result_inserted\":";
+  result += pdx_paths_583_producer_observer.result_inserted ? "true" : "false";
+  result += ",\"result_pair_null\":";
+  result += pdx_paths_583_producer_observer.result_pair_null ? "true" : "false";
+  result += ",\"result_read_fault\":";
+  result += pdx_paths_583_producer_observer.result_read_fault ? "true" : "false";
+#define XAR_APPEND_PDX_PATHS_583_LOOKUP(name)                           \
+  result += ",\"" #name "\":{";                                      \
+  result += "\"pre_count\":" + Number(                               \
+      pdx_paths_583_producer_observer.name.pre_count);                 \
+  result += ",\"return_count\":" + Number(                            \
+      pdx_paths_583_producer_observer.name.return_count);              \
+  result += ",\"raw_result\":" + Number(                              \
+      pdx_paths_583_producer_observer.name.raw_result);                \
+  result += ",\"null_result\":";                                      \
+  result += pdx_paths_583_producer_observer.name.null_result           \
+      ? "true" : "false";                                             \
+  result += ",\"thread_id\":" + Number(                               \
+      pdx_paths_583_producer_observer.name.thread_id);                 \
+  result += ",\"sequence\":" + Number(                                \
+      pdx_paths_583_producer_observer.name.sequence);                  \
+  result += '}'
+  XAR_APPEND_PDX_PATHS_583_LOOKUP(paths_lookup);
+  XAR_APPEND_PDX_PATHS_583_LOOKUP(checksummed_lookup);
+#undef XAR_APPEND_PDX_PATHS_583_LOOKUP
+  AppendPdxPaths583Table(result, "task_table",
+                         pdx_paths_583_producer_observer.task_table);
+  AppendPdxPaths583Table(result, "table_before",
+                         pdx_paths_583_producer_observer.table_before);
+  AppendPdxPaths583Table(result, "table_after",
+                         pdx_paths_583_producer_observer.table_after);
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   result += "},\"phase2_completion_observer_v1\":{";
@@ -10145,6 +10324,39 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallColdMapVfsObserverV1(
             g_cold_map_vfs_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kNamedPath583RootObserverEnabledV1) {
+    xar::bridge::NamedPath583RootObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallNamedPath583RootObserverV1(
+            g_named_path_583_root_observer_v1, environment)) {
+      // Both observers are installed while the primary thread is suspended.
+      // This observer owns two all-or-none caller-local hooks; unwind the
+      // immediately preceding compatible observer if its transaction fails.
+      (void)xar::bridge::UninstallColdMapVfsObserverV1(
+          g_cold_map_vfs_observer_v1);
+      return FALSE;
+    }
+  }
+  if (kPdxPaths583ProducerObserverEnabledV1) {
+    xar::bridge::PdxPaths583ProducerObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPdxPaths583ProducerObserverV1(
+            g_pdx_paths_583_producer_observer_v1, environment)) {
+      // Keep the three requested observer transactions atomic before the
+      // primary CK3 thread resumes.
+      (void)xar::bridge::UninstallNamedPath583RootObserverV1(
+          g_named_path_583_root_observer_v1);
+      (void)xar::bridge::UninstallColdMapVfsObserverV1(
+          g_cold_map_vfs_observer_v1);
       return FALSE;
     }
   }

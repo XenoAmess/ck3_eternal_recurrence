@@ -185,6 +185,7 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
             RUNNER.run_exclusive_outer_owner(
                 operations,
                 expected_character_id=CHARACTER_ID,
+                expected_war_id=WAR_ID,
                 expected_date_raw=DATE_RAW,
                 postwar_timeout=1.0,
                 continuation=continuation,
@@ -226,6 +227,38 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
         self.assertEqual(result["ownership"]["final_cleanup_calls"], 1)
         self.assertTrue(result["observer_handoff"]["breakpoint_restored"])
         self.assertFalse(result["observer_handoff"]["process_terminated"])
+
+    def test_default_continuation_receives_explicit_expected_war_id(self) -> None:
+        operations = FakeOperations()
+        received: dict[str, object] = {}
+
+        async def default_continuation(
+            driver: object, **kwargs: object
+        ) -> dict[str, object]:
+            received["driver"] = driver
+            received.update(kwargs)
+            return _lifecycle_result()
+
+        with mock.patch.object(
+            RUNNER.lifecycle,
+            "run_same_lifecycle_sequence",
+            side_effect=default_continuation,
+        ) as default_call:
+            result = asyncio.run(
+                RUNNER.run_exclusive_outer_owner(
+                    operations,
+                    expected_character_id=CHARACTER_ID,
+                    expected_war_id=WAR_ID,
+                    expected_date_raw=DATE_RAW,
+                    postwar_timeout=1.0,
+                )
+            )
+
+        default_call.assert_awaited_once()
+        self.assertIs(received["driver"], operations.driver)
+        self.assertEqual(received["expected_war_id"], WAR_ID)
+        self.assertEqual(received["expected_character_id"], CHARACTER_ID)
+        self.assertTrue(result["ok"])
 
     def test_unsafe_observer_handoff_is_no_go_before_bridge_and_cleans_once(self) -> None:
         capture = _source_capture()
@@ -353,6 +386,9 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
                     "live_adapter_implemented": False,
                     "standalone_capture_runner_used_as_inner_phase": False,
                     "final_cleanup_owner": "outer-owner",
+                },
+                "ownership_contract": {
+                    "expected_war_id_forwarded_to_lifecycle": True,
                 },
                 "boundaries": {
                     "live_executed": False,

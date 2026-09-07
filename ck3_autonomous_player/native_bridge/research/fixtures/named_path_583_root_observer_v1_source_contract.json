@@ -1,0 +1,58 @@
+{
+  "schema": "xar.named_path_583_root_observer_v1.source_contract.v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "anchors": {
+    "resolver_call_rva": "0x3320A82",
+    "resolver_target_rva": "0x3B96C70",
+    "resolver_anchor_hex": "E8 E9 61 87 00",
+    "move_patch_rva": "0x331F9E4",
+    "move_call_rva": "0x331F9EA",
+    "move_target_rva": "0x7E6C00",
+    "move_continue_rva": "0x331F9EF",
+    "move_anchor_hex": "48 8B D0 48 8B CF E8 11 72 4C FD"
+  },
+  "required_source_tokens": [
+    "kNamedPath583ResolverCallRvaV1",
+    "kNamedPath583ResolverTargetRvaV1",
+    "kNamedPath583MovePatchRvaV1",
+    "kNamedPath583MoveTargetRvaV1",
+    "CurrentThreadIdFast",
+    "__readgsdword(0x48)",
+    "CaptureString",
+    "RecordNamedPath583ResolverV1",
+    "RecordNamedPath583MovePreV1",
+    "RecordNamedPath583MovePostV1",
+    "InstallNamedPath583RootObserverV1",
+    "UninstallNamedPath583RootObserverV1"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1",
+    "InstallNamedPath583RootObserverV1",
+    "named_path_583_root_observer_v1",
+    "private_build",
+    "read_only"
+  ],
+  "offline_cases": [
+    "default-OFF and exact-build rejection",
+    "primary-thread-suspended rejection",
+    "production override rejection",
+    "both exact anchors validated before allocation",
+    "one near RX allocation serves both rel32 caller-local hooks",
+    "second patch failure restores the first patch",
+    "null resolver is null_result=true and read_fault=false",
+    "resolver, formatted temporary, and root before/after share thread id and sequence",
+    "SSO and indirect string storage capture length, capacity, effective data, and first 16 bytes",
+    "observer records only and replays resolver/move calls exactly once",
+    "heartbeat publishes private read-only diagnostics"
+  ],
+  "default_policy": {
+    "installed_by_default": false,
+    "installation_owner": "XarCk3BridgePrepareStartup suspended-startup transaction",
+    "compatible_observer": "cold_map_vfs_observer_v1",
+    "not_a_guard": true
+  }
+}

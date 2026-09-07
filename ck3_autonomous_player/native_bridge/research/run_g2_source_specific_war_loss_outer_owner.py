@@ -177,9 +177,8 @@ async def run_exclusive_outer_owner(
     expected_character_id: int,
     expected_date_raw: int,
     postwar_timeout: float,
-    continuation: Callable[..., Awaitable[dict[str, object]]] = (
-        lifecycle.run_same_lifecycle_sequence
-    ),
+    expected_war_id: int = lifecycle.EXPECTED_LIVE_WAR_ID,
+    continuation: Callable[..., Awaitable[dict[str, object]]] | None = None,
 ) -> dict[str, object]:
     """Compose one caller-supplied process owner around the lifecycle seam.
 
@@ -189,6 +188,12 @@ async def run_exclusive_outer_owner(
     """
     if expected_character_id <= 0 or expected_date_raw < 0 or postwar_timeout <= 0:
         raise OuterOwnerContractError("outer owner arguments are invalid")
+    expected_war_id = _positive_integer(expected_war_id, "expected WarID")
+    lifecycle_continuation = (
+        lifecycle.run_same_lifecycle_sequence
+        if continuation is None
+        else continuation
+    )
 
     trace: list[str] = []
     exclusive_token: object | None = None
@@ -244,11 +249,12 @@ async def run_exclusive_outer_owner(
         bridge_binding = _validate_bridge_binding(binding_value, expected_pid=pid)
         trace.append("bridge-attached-to-capture-pid")
 
-        lifecycle_value = await continuation(
+        lifecycle_value = await lifecycle_continuation(
             driver,
             source_capture=_object(observer_value, "observer handoff")["capture"],
             capture_sha256=capture_sha256,
             expected_character_id=expected_character_id,
+            expected_war_id=expected_war_id,
             expected_date_raw=expected_date_raw,
             postwar_timeout=postwar_timeout,
         )
@@ -357,6 +363,9 @@ def run_no_launch_preflight(
     )
     boundaries = _object(manifest.get("boundaries"), "manifest boundaries")
     composition = _object(manifest.get("composition"), "manifest composition")
+    ownership = _object(
+        manifest.get("ownership_contract"), "manifest ownership contract"
+    )
     if (
         manifest.get("schema") != MANIFEST_SCHEMA
         or manifest.get("status") != "static-ready-no-launch"
@@ -365,6 +374,7 @@ def run_no_launch_preflight(
         or composition.get("live_adapter_implemented") is not False
         or composition.get("standalone_capture_runner_used_as_inner_phase") is not False
         or composition.get("final_cleanup_owner") != "outer-owner"
+        or ownership.get("expected_war_id_forwarded_to_lifecycle") is not True
         or any(value is not False for value in boundaries.values() if isinstance(value, bool))
     ):
         raise OuterOwnerContractError("manifest static/no-launch boundary drifted")

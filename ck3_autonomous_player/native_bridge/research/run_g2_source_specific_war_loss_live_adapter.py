@@ -17,6 +17,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 import copy
+import ctypes
+from ctypes import wintypes
 from dataclasses import dataclass
 import hashlib
 import json
@@ -24,6 +26,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import time
 from typing import Any, Callable
 import uuid
@@ -54,12 +57,22 @@ MANIFEST_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1"
 PREFLIGHT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_preflight.v1"
 REPORT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_run.v1"
 PREFLIGHT_STATUS = "READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE"
+STARTUP_PROFILE_ASSETS_SCHEMA = "xar.ck3.startup_profile_assets.v1"
 TARGET_EVENT = "bookmark.1071.a"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_g2_source_"
+EXPECTED_LIVE_WAR_ID = 50_331_699
 
 
 class LiveAdapterError(ValueError):
     """A concrete process/UI/observer/bridge ownership gate failed."""
+
+
+class StartupProfileAssetsError(LiveAdapterError):
+    """The explicit settings/warm-cache pair was rejected before CK3 launch."""
+
+    def __init__(self, message: str, evidence: dict[str, object]) -> None:
+        super().__init__(message)
+        self.evidence = evidence
 
 
 def _object(value: object, name: str) -> dict[str, object]:
@@ -102,6 +115,23 @@ def _resolve(path_value: object, *, repo_root: Path) -> Path:
     return path.resolve()
 
 
+def _require_external_runtime_paths(artifact_dir: Path, userdir: Path) -> None:
+    repository = REPOSITORY_ROOT.resolve()
+    artifact = artifact_dir.resolve()
+    profile = userdir.resolve()
+    if artifact.is_relative_to(repository) or profile.is_relative_to(repository):
+        raise LiveAdapterError(
+            "artifact-dir and userdir must be outside the repository"
+        )
+    if artifact == profile or artifact.is_relative_to(profile) or profile.is_relative_to(artifact):
+        raise LiveAdapterError("artifact-dir and userdir must not overlap")
+    system_temp = Path(tempfile.gettempdir()).resolve()
+    if not system_temp.is_dir():
+        raise LiveAdapterError("system temporary directory is unavailable")
+    source_ui.require_fresh_attempt_directory(artifact)
+    source_ui.require_fresh_userdir(profile)
+
+
 def _write_json_atomic(path: Path, payload: dict[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
@@ -118,6 +148,133 @@ def _ck3_rows(inventory: list[dict[str, object]]) -> list[dict[str, object]]:
         for row in inventory
         if str(row.get("Name", "")).casefold() == "ck3.exe"
     ]
+
+
+def _query_process_image_path(pid: int) -> str:
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel32.OpenProcess.restype = wintypes.HANDLE
+    kernel32.QueryFullProcessImageNameW.argtypes = [
+        wintypes.HANDLE,
+        wintypes.DWORD,
+        wintypes.LPWSTR,
+        ctypes.POINTER(wintypes.DWORD),
+    ]
+    kernel32.QueryFullProcessImageNameW.restype = wintypes.BOOL
+    kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel32.CloseHandle.restype = wintypes.BOOL
+    process = kernel32.OpenProcess(0x1000, False, pid)
+    if not process:
+        raise OSError(ctypes.get_last_error(), f"OpenProcess failed for PID {pid}")
+    try:
+        size = wintypes.DWORD(32_768)
+        buffer = ctypes.create_unicode_buffer(size.value)
+        if not kernel32.QueryFullProcessImageNameW(
+            process, 0, buffer, ctypes.byref(size)
+        ):
+            raise OSError(
+                ctypes.get_last_error(),
+                f"QueryFullProcessImageNameW failed for PID {pid}",
+            )
+        return buffer.value
+    finally:
+        kernel32.CloseHandle(process)
+
+
+def _toolhelp_process_inventory() -> list[dict[str, object]]:
+    """Read the process inventory when WMI is denied by the managed desktop."""
+
+    class ProcessEntry32W(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_size_t),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", wintypes.LONG),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", wintypes.WCHAR * 260),
+        ]
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    kernel32.Process32FirstW.argtypes = [
+        wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32FirstW.restype = wintypes.BOOL
+    kernel32.Process32NextW.argtypes = [
+        wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32NextW.restype = wintypes.BOOL
+    snapshot = kernel32.CreateToolhelp32Snapshot(0x00000002, 0)
+    if snapshot in (None, wintypes.HANDLE(-1).value):
+        raise OSError(ctypes.get_last_error(), "process snapshot unavailable")
+    rows: list[dict[str, object]] = []
+    try:
+        entry = ProcessEntry32W()
+        entry.dwSize = ctypes.sizeof(entry)
+        available = bool(kernel32.Process32FirstW(snapshot, ctypes.byref(entry)))
+        while available:
+            pid = int(entry.th32ProcessID)
+            name = str(entry.szExeFile)
+            executable_path: str | None = None
+            if name.casefold() == "ck3.exe":
+                try:
+                    executable_path = _query_process_image_path(pid)
+                except OSError:
+                    # Preserve the row so exact-PID discovery remains visible;
+                    # the caller-local identity gate rejects a missing path.
+                    executable_path = None
+            rows.append(
+                {
+                    "ProcessId": pid,
+                    "ParentProcessId": int(entry.th32ParentProcessID),
+                    "Name": name,
+                    "ExecutablePath": executable_path,
+                    "InventorySource": "toolhelp32",
+                }
+            )
+            available = bool(
+                kernel32.Process32NextW(snapshot, ctypes.byref(entry))
+            )
+    finally:
+        kernel32.CloseHandle(snapshot)
+
+    by_pid = {int(row["ProcessId"]): row for row in rows}
+    exempt = {os.getpid()}
+    cursor = os.getpid()
+    while cursor in by_pid:
+        parent = int(by_pid[cursor]["ParentProcessId"])
+        parent_row = by_pid.get(parent)
+        if parent_row is None or str(parent_row["Name"]).casefold() not in {
+            "python.exe",
+            "pythonw.exe",
+        }:
+            break
+        exempt.add(parent)
+        cursor = parent
+    observed_names = {"ck3.exe", "python.exe", "pythonw.exe"}
+    return sorted(
+        (
+            row
+            for row in rows
+            if int(row["ProcessId"]) not in exempt
+            and str(row["Name"]).casefold() in observed_names
+        ),
+        key=lambda row: (str(row["Name"]).casefold(), int(row["ProcessId"])),
+    )
+
+
+def _process_inventory() -> list[dict[str, object]]:
+    try:
+        return source_ui.process_inventory()
+    except (OSError, RuntimeError, subprocess.SubprocessError):
+        return _toolhelp_process_inventory()
 
 
 @dataclass(frozen=True)
@@ -140,6 +297,130 @@ class AdapterTimeouts:
     observer_timeout_ms: int
     post_selection_seconds: float
     bridge_attach_seconds: float
+
+
+@dataclass(frozen=True)
+class _ProfileSettingsConfig:
+    """Narrow adapter for the already-proven Phase2 profile asset gate."""
+
+    profile_dir: Path
+    profile_settings_template: Path | None
+
+
+def _profile_settings_guard() -> Any:
+    # This module already owns the byte-bound full-settings and warm DX11
+    # shader-cache contract.  Import lazily so ordinary manifest inspection
+    # does not load the much larger Phase2 runner.
+    import run_zg361_phase2_seed_capture as guard  # pylint: disable=import-error
+
+    return guard
+
+
+def _startup_profile_assets_receipt(
+    evidence: dict[str, object],
+    *,
+    status: str,
+    error: str | None = None,
+) -> dict[str, object]:
+    source_cache = evidence.get("cache_source_manifest")
+    destination_cache = evidence.get("cache_destination_manifest")
+    return {
+        "schema": STARTUP_PROFILE_ASSETS_SCHEMA,
+        "status": status,
+        "profile_ready": evidence.get("profile_ready") is True,
+        "error": error,
+        "settings": {
+            "source": evidence.get("source"),
+            "source_sha256": evidence.get("source_sha256"),
+            "source_bytes": evidence.get("source_bytes"),
+            "destination": evidence.get("destination"),
+            "destination_sha256": evidence.get("destination_sha256"),
+            "destination_bytes": evidence.get("destination_bytes"),
+        },
+        "shadercache": {
+            "source": evidence.get("cache_source"),
+            "destination": evidence.get("destination_cache"),
+            "source_manifest": copy.deepcopy(source_cache),
+            "destination_manifest": copy.deepcopy(destination_cache),
+            "tree_sha256": (
+                destination_cache.get("tree_sha256")
+                if isinstance(destination_cache, dict)
+                else None
+            ),
+            "file_count": (
+                destination_cache.get("file_count")
+                if isinstance(destination_cache, dict)
+                else None
+            ),
+            "bytes": (
+                destination_cache.get("bytes")
+                if isinstance(destination_cache, dict)
+                else None
+            ),
+        },
+    }
+
+
+def inspect_startup_profile_settings_template(
+    profile_settings_template: Path,
+) -> dict[str, object]:
+    """Validate the explicit source pair without creating an isolated profile."""
+
+    template = profile_settings_template.expanduser().resolve()
+    guard = _profile_settings_guard()
+    if not template.is_file() or not guard._settings_file_is_full(template):
+        raise LiveAdapterError(
+            "profile-settings-template is missing or not a full CK3 settings file: "
+            f"{template}"
+        )
+    cache = guard._warm_shadercache_manifest(template.parent / "shadercache")
+    if cache.get("ready") is not True:
+        raise LiveAdapterError(
+            "profile-settings-template lacks a complete warm shadercache sibling: "
+            f"{cache.get('failure_reason')}"
+        )
+    return {
+        "status": "ready-source-pair",
+        "settings": {
+            "path": str(template),
+            "sha256": _sha256_file(template),
+            "bytes": template.stat().st_size,
+        },
+        "shadercache": copy.deepcopy(cache),
+    }
+
+
+def prepare_startup_profile_assets(
+    userdir: Path,
+    profile_settings_template: Path,
+) -> dict[str, object]:
+    """Copy and byte-verify the explicit settings/cache pair before Popen."""
+
+    guard = _profile_settings_guard()
+    config = _ProfileSettingsConfig(
+        profile_dir=userdir.expanduser().resolve(),
+        profile_settings_template=profile_settings_template.expanduser().resolve(),
+    )
+    try:
+        evidence = guard.prepare_profile_settings(config)
+    except guard.SeedCaptureError as error:
+        raw = error.evidence if isinstance(error.evidence, dict) else {}
+        receipt = _startup_profile_assets_receipt(
+            raw,
+            status="BLOCKED",
+            error=f"{type(error).__name__}: {error}",
+        )
+        raise StartupProfileAssetsError(str(error), receipt) from error
+    if evidence.get("profile_ready") is not True:
+        receipt = _startup_profile_assets_receipt(
+            evidence,
+            status="BLOCKED",
+            error="profile asset helper returned without profile_ready=true",
+        )
+        raise StartupProfileAssetsError(
+            "startup profile assets are not ready", receipt
+        )
+    return _startup_profile_assets_receipt(evidence, status="GREEN")
 
 
 def _load_manifest(
@@ -168,6 +449,8 @@ def _load_manifest(
         or composition.get("expected_date_bound_from_bridge_snapshot") is not True
         or composition.get("timeline_speed") != 5
         or composition.get("standalone_capture_runner_main_reused") is not False
+        or composition.get("startup_profile_asset_gate_integrated") is not True
+        or composition.get("launch_fail_closed") is not True
     ):
         raise LiveAdapterError("live-adapter composition drifted")
 
@@ -187,6 +470,7 @@ def _load_manifest(
         "game_executable",
         "bookmark_events",
         "run_acceptance",
+        "profile_settings_guard",
     }
     checked: dict[str, dict[str, object]] = {}
     for name in sorted(required):
@@ -280,7 +564,9 @@ def run_no_launch_preflight(
     output_path: Path,
     *,
     repo_root: Path = REPOSITORY_ROOT,
-    process_inventory: Callable[[], list[dict[str, object]]] = source_ui.process_inventory,
+    process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
+    profile_settings_template: Path | None = None,
+    inspect_profile_settings_template: bool = False,
 ) -> dict[str, object]:
     if output_path.exists():
         raise LiveAdapterError(f"output path already exists: {output_path}")
@@ -291,6 +577,31 @@ def run_no_launch_preflight(
     after = copy.deepcopy(process_inventory())
     if before != after:
         raise LiveAdapterError("process inventory changed during no-launch preflight")
+    profile_template = (
+        profile_settings_template.expanduser().resolve()
+        if profile_settings_template is not None
+        else None
+    )
+    profile_template_evidence: dict[str, object] = {
+        "required": True,
+        "selected": profile_template is not None,
+        "path": str(profile_template) if profile_template is not None else None,
+        "inspection": "deferred-to-live-copy",
+    }
+    if inspect_profile_settings_template:
+        if profile_template is None:
+            raise LiveAdapterError(
+                "profile-settings-template is required for startup preflight"
+            )
+        profile_template_evidence = {
+            "required": True,
+            "selected": True,
+            "path": str(profile_template),
+            "inspection": "validated-without-copy",
+            "source_pair": inspect_startup_profile_settings_template(
+                profile_template
+            ),
+        }
     report = {
         "schema": PREFLIGHT_SCHEMA,
         "status": PREFLIGHT_STATUS,
@@ -298,9 +609,13 @@ def run_no_launch_preflight(
         "dependencies": checked,
         "process_inventory_before": before,
         "process_inventory_after": after,
+        "startup_profile_template": profile_template_evidence,
         "live_command": {
             "available": True,
             "default_off": True,
+            "startup_profile_asset_gate": True,
+            "profile_settings_template_required": True,
+            "asset_failure_blocks_before_popen": True,
             "exclusive_slot_required": True,
             "same_pid_required": True,
             "timeline_speed": 5,
@@ -337,7 +652,8 @@ class ConcreteLiveOperations:
         timeouts: AdapterTimeouts,
         artifact_dir: Path,
         userdir: Path,
-        process_inventory: Callable[[], list[dict[str, object]]] = source_ui.process_inventory,
+        profile_settings_template: Path | None = None,
+        process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
         popen: Callable[..., Any] = subprocess.Popen,
         run_process: Callable[..., Any] = subprocess.run,
         driver_factory: Callable[..., Any] = NativeHeadlessGameplayDriver,
@@ -346,6 +662,11 @@ class ConcreteLiveOperations:
         self.timeouts = timeouts
         self.artifact_dir = artifact_dir.resolve()
         self.userdir = userdir.resolve()
+        self.profile_settings_template = (
+            profile_settings_template.expanduser().resolve()
+            if profile_settings_template is not None
+            else None
+        )
         self.ui_dir = self.artifact_dir / "ui"
         self.state_dir = self.artifact_dir / "native-state"
         self.process_inventory = process_inventory
@@ -364,6 +685,7 @@ class ConcreteLiveOperations:
         self._legal_acceptances: list[dict[str, object]] = []
         self._legal_classifications: list[dict[str, object]] = []
         self._cleanup_receipt: dict[str, object] | None = None
+        self._startup_profile_assets: dict[str, object] | None = None
         self._release_called = False
 
     def _load_visual_dependencies(self) -> None:
@@ -376,6 +698,41 @@ class ConcreteLiveOperations:
         self._acceptance = acceptance
         self._pyautogui = pyautogui
         self._image_grab = ImageGrab
+
+    def _validate_owned_ck3(self, pid: int) -> dict[str, object]:
+        rows = self.process_inventory()
+        ck3_rows = _ck3_rows(rows)
+        matches = [
+            row
+            for row in ck3_rows
+            if row.get("ProcessId") == pid
+        ]
+        if len(matches) != 1 or len(ck3_rows) != 1:
+            raise LiveAdapterError(
+                f"expected one CK3 process at PID {pid}, observed {ck3_rows}"
+            )
+        path_value = matches[0].get("ExecutablePath")
+        if not isinstance(path_value, str) or not path_value.strip():
+            raise LiveAdapterError(
+                f"PID {pid} executable path is unavailable from process inventory"
+            )
+        actual_executable = Path(path_value).resolve()
+        if actual_executable != self.paths.game_executable.resolve():
+            raise LiveAdapterError(
+                f"PID {pid} executable path mismatch: {actual_executable}"
+            )
+        actual_sha256 = _sha256_file(actual_executable)
+        if actual_sha256 != EXPECTED_EXE_SHA256:
+            raise LiveAdapterError(
+                f"PID {pid} executable hash mismatch: {actual_sha256}"
+            )
+        return {
+            "pid": pid,
+            "name": "ck3.exe",
+            "executable_path": str(actual_executable),
+            "executable_sha256": actual_sha256,
+            "inventory_source": matches[0].get("InventorySource", "cim"),
+        }
 
     async def acquire_exclusive_launch(self) -> object:
         if self._lock_context is not None:
@@ -392,6 +749,37 @@ class ConcreteLiveOperations:
             raise LiveAdapterError("CK3 process inventory is not empty before launch")
         self.artifact_dir.mkdir(parents=True, exist_ok=False)
         self.ui_dir.mkdir(parents=True, exist_ok=False)
+        if self.profile_settings_template is None:
+            self._startup_profile_assets = {
+                "schema": STARTUP_PROFILE_ASSETS_SCHEMA,
+                "status": "BLOCKED",
+                "profile_ready": False,
+                "error": "profile-settings-template was not supplied",
+            }
+            _write_json_atomic(
+                self.artifact_dir / "startup-profile-assets.json",
+                self._startup_profile_assets,
+            )
+            raise LiveAdapterError(
+                "profile-settings-template is required before CK3 launch"
+            )
+        try:
+            self._startup_profile_assets = prepare_startup_profile_assets(
+                self.userdir, self.profile_settings_template
+            )
+        except StartupProfileAssetsError as error:
+            self._startup_profile_assets = copy.deepcopy(error.evidence)
+            _write_json_atomic(
+                self.artifact_dir / "startup-profile-assets.json",
+                self._startup_profile_assets,
+            )
+            raise LiveAdapterError(
+                f"startup profile asset gate blocked CK3 launch: {error}"
+            ) from error
+        _write_json_atomic(
+            self.artifact_dir / "startup-profile-assets.json",
+            self._startup_profile_assets,
+        )
         command = [
             str(self.paths.game_executable),
             "-gdpr-compliant",
@@ -408,7 +796,7 @@ class ConcreteLiveOperations:
         last_error: BaseException | None = None
         while time.monotonic() < deadline and self._process.poll() is None:
             try:
-                source_ui.validate_running_ck3(pid, self.paths.game_executable)
+                self._validate_owned_ck3(pid)
                 break
             except BaseException as error:  # exact typed terminal retained below
                 last_error = error
@@ -431,6 +819,9 @@ class ConcreteLiveOperations:
             "exclusive_slot": True,
             "cleanup_owner": "outer-owner",
             "command": command,
+            "startup_profile_assets": copy.deepcopy(
+                self._startup_profile_assets
+            ),
         }
 
     def _terminate_unhanded_launch(self, pid: int) -> str | None:
@@ -481,7 +872,7 @@ class ConcreteLiveOperations:
             list(self.timeouts.main_menu_stage_seconds),
             self._stage_artifacts,
         )
-        source_ui.validate_running_ck3(pid, self.paths.game_executable)
+        self._validate_owned_ck3(pid)
 
         capture_path = self.artifact_dir / "capture.json"
         arm_path = self.artifact_dir / "action-arm.txt"
@@ -638,7 +1029,7 @@ class ConcreteLiveOperations:
         if self._process is None or self._process.poll() is not None:
             return False
         try:
-            source_ui.validate_running_ck3(pid, self.paths.game_executable)
+            self._validate_owned_ck3(pid)
         except BaseException:
             return False
         return True
@@ -755,6 +1146,7 @@ class ConcreteLiveOperations:
             source_capture=source_capture,
             capture_sha256=capture_sha256,
             expected_character_id=expected_character_id,
+            expected_war_id=EXPECTED_LIVE_WAR_ID,
             expected_date_raw=observed_date_raw,
             postwar_timeout=postwar_timeout,
         )
@@ -825,9 +1217,27 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--preflight-output", type=Path, required=True)
-    parser.add_argument("--artifact-dir", type=Path)
-    parser.add_argument("--userdir", type=Path)
+    parser.add_argument(
+        "--artifact-dir",
+        type=Path,
+        help="fresh external artifact directory (system temp recommended)",
+    )
+    parser.add_argument(
+        "--userdir",
+        type=Path,
+        help="fresh external isolated profile (system temp recommended)",
+    )
+    parser.add_argument(
+        "--profile-settings-template",
+        type=Path,
+        required=True,
+        help=(
+            "explicit full pdx_settings.txt whose sibling shadercache is copied "
+            "and byte-verified before CK3 launch"
+        ),
+    )
     parser.add_argument("--expected-character-id", type=int)
+    parser.add_argument("--expected-war-id", type=int, required=True)
     parser.add_argument("--postwar-timeout", type=float, default=45.0)
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--authorize-private-live", action="store_true")
@@ -839,7 +1249,16 @@ def main(argv: list[str] | None = None) -> int:
     report: dict[str, object] | None = None
     operations: ConcreteLiveOperations | None = None
     try:
-        preflight = run_no_launch_preflight(args.manifest, args.preflight_output)
+        if args.expected_war_id != EXPECTED_LIVE_WAR_ID:
+            raise LiveAdapterError(
+                f"expected-war-id must be exactly {EXPECTED_LIVE_WAR_ID}"
+            )
+        preflight = run_no_launch_preflight(
+            args.manifest,
+            args.preflight_output,
+            profile_settings_template=args.profile_settings_template,
+            inspect_profile_settings_template=args.verify_only,
+        )
         if args.verify_only:
             print(json.dumps(preflight, ensure_ascii=False, indent=2))
             return 0
@@ -847,6 +1266,7 @@ def main(argv: list[str] | None = None) -> int:
             raise LiveAdapterError("private live command remains default-OFF")
         if args.artifact_dir is None or args.userdir is None:
             raise LiveAdapterError("live run requires artifact-dir and userdir")
+        _require_external_runtime_paths(args.artifact_dir, args.userdir)
         character_id = _positive_integer(
             args.expected_character_id, "expected character ID"
         )
@@ -858,6 +1278,7 @@ def main(argv: list[str] | None = None) -> int:
             timeouts=timeouts,
             artifact_dir=args.artifact_dir,
             userdir=args.userdir,
+            profile_settings_template=args.profile_settings_template,
         )
         result = asyncio.run(
             outer.run_exclusive_outer_owner(
@@ -872,6 +1293,9 @@ def main(argv: list[str] | None = None) -> int:
             "schema": REPORT_SCHEMA,
             "status": "GREEN" if result.get("ok") is True else "RED",
             "preflight": preflight,
+            "startup_profile_assets": copy.deepcopy(
+                operations._startup_profile_assets
+            ),
             "outer_owner": result,
             "cleanup": copy.deepcopy(operations._cleanup_receipt),
             "boundaries": {
@@ -891,6 +1315,11 @@ def main(argv: list[str] | None = None) -> int:
             "error": f"{type(error).__name__}: {error}",
             "cleanup": (
                 copy.deepcopy(operations._cleanup_receipt)
+                if operations is not None
+                else None
+            ),
+            "startup_profile_assets": (
+                copy.deepcopy(operations._startup_profile_assets)
                 if operations is not None
                 else None
             ),

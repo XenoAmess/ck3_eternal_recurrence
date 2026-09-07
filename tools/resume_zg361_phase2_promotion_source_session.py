@@ -32,8 +32,12 @@ from zg361_phase2_promotion_source_checkpoint_capture import (  # noqa: E402
 )
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     PromotionBindingError,
+    PromotionProductionEntryError,
     PromotionScenarioInvalidatingInterrupt,
     enter_promotion_source_checkpoint_v1,
+)
+from zg361_phase2_unexpected_event_durable_checkpoint import (  # noqa: E402
+    attempt_unexpected_event_durable_checkpoint,
 )
 import run_zhongguo_acceptance as zhongguo_runner  # noqa: E402
 
@@ -455,6 +459,9 @@ def run(
         "input_checks": inputs["checks"],
         "entry": None,
         "capture": None,
+        "unknown_interrupt_retention": False,
+        "unexpected_event_durable_checkpoint": None,
+        "unexpected_event_durable_recovery_ready": False,
         "runtime_diagnostics": None,
         "error_reason": None,
     }
@@ -656,6 +663,25 @@ def run(
             scenario_invalidating_interrupt=copy.deepcopy(error.evidence),
             error_reason=f"{type(error).__name__}: {error}",
         )
+    except PromotionProductionEntryError as error:
+        report["error_reason"] = f"{type(error).__name__}: {error}"
+        entry_value = report.get("entry")
+        entry_evidence = entry_value if isinstance(entry_value, Mapping) else {}
+        unexpected = entry_evidence.get("unexpected_event")
+        if isinstance(unexpected, Mapping) and driver is not None:
+            report["unknown_interrupt_retention"] = True
+            durable_checkpoint = attempt_unexpected_event_durable_checkpoint(
+                service,
+                state_dir=state_dir,
+                unexpected_event=unexpected,
+                artifact_path=(
+                    artifacts / "05_unexpected_event_durable_checkpoint.json"
+                ),
+            )
+            report["unexpected_event_durable_checkpoint"] = durable_checkpoint
+            report["unexpected_event_durable_recovery_ready"] = (
+                durable_checkpoint.get("durable_recovery_ready") is True
+            )
     except BaseException as error:
         report["error_reason"] = f"{type(error).__name__}: {error}"
     finally:

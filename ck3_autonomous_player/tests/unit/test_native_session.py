@@ -72,6 +72,11 @@ class NativeSessionModeTests(unittest.TestCase):
             ].default,
             NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS,
         )
+        self.assertIsNone(
+            inspect.signature(native_session).parameters[
+                "frontend_first_warmup_bridge"
+            ].default
+        )
 
     def test_explicit_profile_verification_opt_out_reaches_locked_owner(
         self,
@@ -494,7 +499,15 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertEqual(warmup["load_save_name"], "last_save")
         self.assertEqual(
             warmup["warmup_bridge"],
-            {"mode": "disabled", "dll_injection": False, "mcp": False},
+            {
+                "mode": "disabled",
+                "pipe": None,
+                "dll_path": None,
+                "injector_path": None,
+                "dll_injection": False,
+                "mcp": False,
+                "same_pipe_as_final": False,
+            },
         )
         self.assertEqual(warmup["final_launch"]["native_bridge_mode"], "native-headless")
         self.assertEqual(report["restart_count"], 0)
@@ -518,6 +531,189 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertTrue(
             any('"type": "native_session_ready"' in line for line in lines)
         )
+
+    def test_frontend_first_warmup_can_use_independent_native_bridge(self) -> None:
+        process_one = mock.Mock(pid=5801)
+        process_one.poll.return_value = None
+        process_two = mock.Mock(pid=5802)
+        process_two.poll.return_value = None
+        first_handle = SimpleNamespace(process=process_one)
+        second_handle = SimpleNamespace(process=process_two)
+        final_bridge = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-final-test",
+            dll_path=Path("final-bridge.dll"),
+            injector_path=Path("final-injector.exe"),
+        )
+        warmup_bridge = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-warmup-test",
+            dll_path=Path("freeze165b-bridge.dll"),
+            injector_path=Path("freeze165b-injector.exe"),
+        )
+        save_path = self.spec.profile_dir / "save games" / "autosave.ck3"
+        save_path.parent.mkdir(parents=True)
+        save_path.write_bytes(b"bridge-backed frontend-first save")
+        shutdown = {"ok": True, "contract_errors": []}
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch",
+            side_effect=(first_handle, second_handle),
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked",
+            side_effect=(shutdown, shutdown),
+        ), mock.patch(
+            "xar_autoplayer.native_session._wait_for_frontend_marker",
+            return_value={"seen": True, "marker": NATIVE_SESSION_FRONTEND_MARKER},
+        ), mock.patch(
+            "xar_autoplayer.native_session._process_windows_minimized",
+            return_value=None,
+        ):
+            report = _native_session_locked(
+                self.spec,
+                final_bridge,
+                5.0,
+                input_stream=io.StringIO("stop\n"),
+                output_stream=io.StringIO(),
+                poll_interval_seconds=0.001,
+                verify_prepared_profile=False,
+                frontend_first_load_save_name="autosave",
+                frontend_first_timeout_seconds=1.0,
+                frontend_first_warmup_bridge=warmup_bridge,
+            )
+
+        self.assertEqual(
+            launch_mock.call_args_list,
+            [
+                mock.call(
+                    self.spec,
+                    native_bridge=warmup_bridge,
+                    verify_prepared_profile=False,
+                ),
+                mock.call(
+                    self.spec,
+                    native_bridge=final_bridge,
+                    load_save_name="autosave",
+                    verify_prepared_profile=False,
+                ),
+            ],
+        )
+        evidence = report["frontend_first_warmup"]
+        self.assertTrue(evidence["warmup_bridge"]["dll_injection"])
+        self.assertEqual(
+            evidence["warmup_bridge"]["pipe"], warmup_bridge.pipe_name
+        )
+        self.assertEqual(evidence["final_bridge"]["pipe"], final_bridge.pipe_name)
+        self.assertTrue(evidence["warmup_bridge_lifecycle_cleared"])
+        self.assertFalse(evidence["warmup_bridge_pipe_reuse_authorized"])
+
+    def test_frontend_warmup_exit_returns_typed_red_cleanup_report(self) -> None:
+        process = mock.Mock(pid=6801)
+        process.poll.return_value = 1
+        handle = SimpleNamespace(process=process)
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\frontend-exit-test",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        save_path = self.spec.profile_dir / "save games" / "autosave.ck3"
+        save_path.parent.mkdir(parents=True)
+        save_path.write_bytes(b"frontend warmup process-exit save")
+        shutdown = {
+            "ck3_pid": 6801,
+            "ok": True,
+            "cleanup_proven": True,
+            "tree_gone": True,
+            "contract_errors": [],
+        }
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked", return_value=shutdown
+        ) as stop_mock, mock.patch(
+            "xar_autoplayer.native_session._wait_for_frontend_marker",
+            side_effect=AgentError("warm-up CK3 exited before frontend evidence"),
+        ):
+            report = _native_session_locked(
+                self.spec,
+                config,
+                5.0,
+                input_stream=None,
+                output_stream=None,
+                poll_interval_seconds=0.001,
+                verify_prepared_profile=False,
+                frontend_first_load_save_name="autosave",
+                frontend_first_timeout_seconds=1.0,
+            )
+
+        launch_mock.assert_called_once()
+        stop_mock.assert_called_once_with(handle, require_running=False)
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["exit_reason"], "process_exit")
+        self.assertEqual(report["process_exit_code"], 1)
+        self.assertEqual(report["pid"], 6801)
+        terminal = report["terminal"]
+        self.assertEqual(terminal["type"], "native_session_terminal")
+        self.assertEqual(terminal["state"], "frontend_warmup_process_exit")
+        self.assertTrue(terminal["pre_binding"])
+        self.assertEqual(terminal["warmup_pid"], 6801)
+        self.assertEqual(terminal["process_exit_code"], 1)
+        self.assertTrue(terminal["cleanup_proven"])
+        self.assertTrue(terminal["tree_gone"])
+        warmup = report["frontend_first_warmup"]
+        self.assertEqual(warmup["status"], "failed")
+        self.assertEqual(warmup["warmup_process_exit_code"], 1)
+        self.assertEqual(warmup["terminal"], terminal)
+        self.assertNotIn("final_pid", warmup)
+
+    def test_warmup_bridge_without_frontend_first_fails_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            final_bridge = _config(root)
+            warmup_root = root / "warmup"
+            warmup_root.mkdir()
+            warmup_bridge = _config(warmup_root)
+            with mock.patch(
+                "xar_autoplayer.native_session.launch"
+            ) as launch_mock, self.assertRaisesRegex(
+                AgentError, "requires a frontend-first load save"
+            ):
+                native_session(
+                    self.spec,
+                    timeout_seconds=1.0,
+                    native_bridge=final_bridge,
+                    frontend_first_warmup_bridge=warmup_bridge,
+                )
+            launch_mock.assert_not_called()
+
+    def test_frontend_first_warmup_rejects_final_pipe_reuse_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            final_bridge = _config(root)
+            warmup_root = root / "warmup"
+            warmup_root.mkdir()
+            warmup_bridge = _config(warmup_root)
+            warmup_bridge = NativeBridgeLaunchConfig(
+                mode=warmup_bridge.mode,
+                pipe_name=final_bridge.pipe_name,
+                dll_path=warmup_bridge.dll_path,
+                injector_path=warmup_bridge.injector_path,
+            )
+            with mock.patch(
+                "xar_autoplayer.native_session.launch"
+            ) as launch_mock, self.assertRaisesRegex(
+                AgentError, "must use a pipe distinct"
+            ):
+                native_session(
+                    self.spec,
+                    timeout_seconds=1.0,
+                    native_bridge=final_bridge,
+                    frontend_first_load_save_name="autosave",
+                    frontend_first_warmup_bridge=warmup_bridge,
+                )
+            launch_mock.assert_not_called()
 
     def test_frontend_first_rejects_missing_target_before_launch(self) -> None:
         config = NativeBridgeLaunchConfig(

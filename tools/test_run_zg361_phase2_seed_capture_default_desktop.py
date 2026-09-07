@@ -20,8 +20,16 @@ relay = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = relay
 SPEC.loader.exec_module(relay)
 
+import default_desktop_process as desktop_process  # noqa: E402
+
 
 class DefaultDesktopRelayTest(unittest.TestCase):
+    def test_reuses_shared_win32_process_primitive(self) -> None:
+        self.assertIs(
+            relay.execute_on_default_desktop,
+            desktop_process.execute_on_default_desktop,
+        )
+
     def test_preflight_is_no_launch_and_preserves_runner(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

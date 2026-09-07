@@ -37,6 +37,11 @@ from .runtime import (
     utc_now,
     validate_native_bridge_launch_config,
 )
+from .startup_slot0_probe import (
+    StartupSlot0ProbeController,
+    StartupSlot0ProbePlan,
+    prepare_startup_slot0_probe,
+)
 
 
 PURE_NATIVE_MODE = "native-headless"
@@ -719,6 +724,8 @@ def native_session(
     frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
+    frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    startup_slot0_probe_output: Path | None = None,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
     if (
@@ -747,6 +754,18 @@ def native_session(
             raise AgentError(
                 "frontend-first warm-up timeout must be finite and positive"
             )
+    if (
+        frontend_first_warmup_bridge is not None
+        and frontend_first_load_save_name is None
+    ):
+        raise AgentError(
+            "frontend-first warm-up bridge requires a frontend-first load save"
+        )
+    startup_slot0_probe_plan = (
+        prepare_startup_slot0_probe(spec.game_exe, startup_slot0_probe_output)
+        if startup_slot0_probe_output is not None
+        else None
+    )
 
     config = (
         native_bridge_launch_config_from_environment()
@@ -759,6 +778,20 @@ def native_session(
             "native-session requires --bridge-mode native-headless; "
             f"selected mode is {selected!r}"
         )
+    warmup_bridge = None
+    if frontend_first_warmup_bridge is not None:
+        warmup_bridge = validate_native_bridge_launch_config(
+            frontend_first_warmup_bridge
+        )
+        if warmup_bridge.mode != PURE_NATIVE_MODE:
+            raise AgentError(
+                "frontend-first warm-up bridge requires native-headless mode"
+            )
+        if warmup_bridge.pipe_name.casefold() == config.pipe_name.casefold():
+            raise AgentError(
+                "frontend-first warm-up bridge must use a pipe distinct from "
+                "the final bridge"
+            )
 
     ensure_state_path_safe(spec.state_dir)
     with exclusive_launch_lock(spec.game_exe):
@@ -777,6 +810,8 @@ def native_session(
                 frontend_first_timeout_seconds=float(
                     frontend_first_timeout_seconds
                 ),
+                frontend_first_warmup_bridge=warmup_bridge,
+                startup_slot0_probe_plan=startup_slot0_probe_plan,
             )
 
 
@@ -795,6 +830,8 @@ def _native_session_locked(
     frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
     ),
+    frontend_first_warmup_bridge: NativeBridgeLaunchConfig | None = None,
+    startup_slot0_probe_plan: StartupSlot0ProbePlan | None = None,
 ) -> dict[str, object]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -807,8 +844,11 @@ def _native_session_locked(
     restart_shutdowns: list[dict[str, object]] = []
     restart_count = 0
     last_pid: int | None = None
+    lifecycle_stage = "prelaunch"
     last_known_window_minimized: bool | None = None
     next_window_state_sample = started
+    startup_slot0_probe: StartupSlot0ProbeController | None = None
+    startup_slot0_probe_report: dict[str, object] | None = None
     queue = PersistentSessionQueue(
         spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME,
         supported_commands=(
@@ -836,6 +876,19 @@ def _native_session_locked(
         raise AgentError(
             "frontend-first warm-up cannot combine with a cold checkpoint"
         )
+    if frontend_first_warmup_bridge is not None and frontend_first_target is None:
+        raise AgentError(
+            "frontend-first warm-up bridge requires a frontend-first load save"
+        )
+    if (
+        frontend_first_warmup_bridge is not None
+        and frontend_first_warmup_bridge.pipe_name.casefold()
+        == config.pipe_name.casefold()
+    ):
+        raise AgentError(
+            "frontend-first warm-up bridge must use a pipe distinct from "
+            "the final bridge"
+        )
     if frontend_first_target is not None and (
         isinstance(frontend_first_timeout_seconds, bool)
         or not isinstance(frontend_first_timeout_seconds, (int, float))
@@ -847,6 +900,11 @@ def _native_session_locked(
         )
     frontend_first_warmup: dict[str, object] | None = None
     if frontend_first_target is not None:
+        warmup_pipe = (
+            frontend_first_warmup_bridge.pipe_name
+            if frontend_first_warmup_bridge is not None
+            else None
+        )
         frontend_first_warmup = {
             "enabled": True,
             "status": "starting",
@@ -857,15 +915,48 @@ def _native_session_locked(
             "timeout_seconds": float(frontend_first_timeout_seconds),
             "evidence_path": str(_frontend_first_evidence_path(spec).resolve()),
             "warmup_bridge": {
-                "mode": NATIVE_BRIDGE_DISABLED,
-                "dll_injection": False,
-                "mcp": False,
+                "mode": (
+                    frontend_first_warmup_bridge.mode
+                    if frontend_first_warmup_bridge is not None
+                    else NATIVE_BRIDGE_DISABLED
+                ),
+                "pipe": warmup_pipe,
+                "dll_path": (
+                    str(frontend_first_warmup_bridge.dll_path)
+                    if frontend_first_warmup_bridge is not None
+                    else None
+                ),
+                "injector_path": (
+                    str(frontend_first_warmup_bridge.injector_path)
+                    if frontend_first_warmup_bridge is not None
+                    else None
+                ),
+                "dll_injection": frontend_first_warmup_bridge is not None,
+                "mcp": frontend_first_warmup_bridge is not None,
+                "same_pipe_as_final": (
+                    warmup_pipe == config.pipe_name
+                    if warmup_pipe is not None
+                    else False
+                ),
+            },
+            "final_bridge": {
+                "mode": config.mode,
+                "pipe": config.pipe_name,
+                "dll_path": str(config.dll_path),
+                "injector_path": str(config.injector_path),
+                "dll_injection": True,
+                "load_save_name": frontend_first_target["load_save_name"],
             },
             "initial_launch": {
                 "continue_last_save": False,
                 "load_save_name": None,
-                "native_bridge_mode": NATIVE_BRIDGE_DISABLED,
-                "dll_injection": False,
+                "native_bridge_mode": (
+                    frontend_first_warmup_bridge.mode
+                    if frontend_first_warmup_bridge is not None
+                    else NATIVE_BRIDGE_DISABLED
+                ),
+                "pipe": warmup_pipe,
+                "dll_injection": frontend_first_warmup_bridge is not None,
             },
         }
         _write_frontend_first_evidence(spec, frontend_first_warmup)
@@ -889,7 +980,7 @@ def _native_session_locked(
             initial_launch_options["verify_prepared_profile"] = False
         if frontend_first_warmup is None:
             handle = launch(spec, **initial_launch_options)
-        else:
+        elif frontend_first_warmup_bridge is None:
             # The clean Frontend warm-up is intentionally a no-bridge control:
             # current evidence shows that bridge injection is not needed to
             # establish the marker and must not contaminate this diagnostic
@@ -905,8 +996,32 @@ def _native_session_locked(
                         if key != "native_bridge"
                     },
                 )
+        else:
+            # This opt-in diagnostic shape uses an independently frozen bridge
+            # for the Frontend process.  The warm-up process is stopped and
+            # proven gone before the current final bridge loads the save.
+            handle = launch(
+                spec,
+                native_bridge=frontend_first_warmup_bridge,
+                **{
+                    key: value
+                    for key, value in initial_launch_options.items()
+                    if key != "native_bridge"
+                },
+            )
         pid = int(handle.process.pid)
         last_pid = pid
+        if startup_slot0_probe_plan is not None:
+            startup_slot0_probe = startup_slot0_probe_plan.start(
+                pid,
+                launch_role=(
+                    "initial"
+                    if frontend_first_warmup is None
+                    else "frontend_warmup"
+                ),
+                timeline_origin_monotonic=started,
+                timeline_origin_at=started_wall,
+            )
         if frontend_first_warmup is None:
             _emit(
                 output_stream,
@@ -920,6 +1035,7 @@ def _native_session_locked(
                 },
             )
         else:
+            lifecycle_stage = "frontend_warmup"
             frontend_first_warmup["status"] = "frontend_launch_started"
             frontend_first_warmup["warmup_pid"] = pid
             frontend_first_warmup["warmup_started_at"] = utc_now()
@@ -930,7 +1046,11 @@ def _native_session_locked(
                     "type": "native_session_frontend_first_warmup_started",
                     "pid": pid,
                     "mode": PURE_NATIVE_MODE,
-                    "pipe": config.pipe_name,
+                    "pipe": (
+                        frontend_first_warmup_bridge.pipe_name
+                        if frontend_first_warmup_bridge is not None
+                        else None
+                    ),
                     "load_save_name": frontend_first_target[
                         "load_save_name"
                     ],
@@ -952,11 +1072,20 @@ def _native_session_locked(
             frontend_first_warmup["frontend_seen_at"] = utc_now()
             _write_frontend_first_evidence(spec, frontend_first_warmup)
 
-            # Stop the clean Frontend process before selecting the save.  This
+            # Stop the Frontend process before selecting the save.  This
             # is a distinct warm-up, not a gameplay restore, so it must not
             # increment the managed save/restore restart_count.
             warmup_shutdown = stop_tracked(handle, require_running=False)
             handle = None
+            if startup_slot0_probe is not None:
+                startup_slot0_probe_report = startup_slot0_probe.finish()
+                startup_slot0_probe = None
+                if startup_slot0_probe_report.get("capture_ok") is not True:
+                    raise AgentError(
+                        "startup slot0 probe did not produce a complete "
+                        "read-only capture: "
+                        f"{startup_slot0_probe_report.get('status')!r}"
+                    )
             frontend_first_warmup["warmup_shutdown"] = warmup_shutdown
             if warmup_shutdown.get("ok") is not True:
                 frontend_first_warmup["status"] = "warmup_shutdown_failed"
@@ -968,6 +1097,8 @@ def _native_session_locked(
                         for item in warmup_shutdown.get("contract_errors", [])
                     )
                 )
+            frontend_first_warmup["warmup_bridge_lifecycle_cleared"] = True
+            frontend_first_warmup["warmup_bridge_pipe_reuse_authorized"] = False
 
             # Re-bind the exact save immediately before the second launch.
             # The seed runner copies its immutable source before this point;
@@ -1237,6 +1368,11 @@ def _native_session_locked(
         exit_reason = "keyboard_interrupt"
     except BaseException as error:
         primary_error = error
+        if handle is not None:
+            observed_exit_code = handle.process.poll()
+            if observed_exit_code is not None:
+                process_exit_code = int(observed_exit_code)
+                exit_reason = "process_exit"
         if frontend_first_warmup is not None:
             frontend_first_warmup["status"] = "failed"
             frontend_first_warmup["failure_reason"] = (
@@ -1267,8 +1403,55 @@ def _native_session_locked(
             except BaseException as error:
                 if primary_error is None:
                     primary_error = error
+        if startup_slot0_probe is not None:
+            startup_slot0_probe_report = startup_slot0_probe.finish()
+            startup_slot0_probe = None
+            if (
+                startup_slot0_probe_report.get("capture_ok") is not True
+                and primary_error is None
+            ):
+                primary_error = AgentError(
+                    "startup slot0 probe did not produce a complete read-only "
+                    "capture: "
+                    f"{startup_slot0_probe_report.get('status')!r}"
+                )
 
     elapsed = round(max(0.0, time.monotonic() - started), 3)
+    pre_binding_warmup_exit = bool(
+        primary_error is not None
+        and lifecycle_stage == "frontend_warmup"
+        and last_pid is not None
+        and process_exit_code is not None
+        and frontend_first_warmup is not None
+        and frontend_first_warmup.get("final_pid") is None
+    )
+    terminal: dict[str, object] | None = None
+    if pre_binding_warmup_exit:
+        terminal = {
+            "type": "native_session_terminal",
+            "state": "frontend_warmup_process_exit",
+            "stage": "frontend_warmup",
+            "pre_binding": True,
+            "warmup_pid": last_pid,
+            "process_exit_code": process_exit_code,
+            "cleanup_proven": (
+                isinstance(shutdown, dict)
+                and shutdown.get("cleanup_proven") is True
+            ),
+            "tree_gone": (
+                isinstance(shutdown, dict)
+                and shutdown.get("tree_gone") is True
+            ),
+            "error": f"{type(primary_error).__name__}: {primary_error}",
+        }
+        frontend_first_warmup["warmup_process_exit_code"] = process_exit_code
+        frontend_first_warmup["terminal"] = terminal
+        try:
+            _write_frontend_first_evidence(spec, frontend_first_warmup)
+        except BaseException as evidence_error:
+            frontend_first_warmup["evidence_write_error"] = (
+                f"{type(evidence_error).__name__}: {evidence_error}"
+            )
     report: dict[str, object] = {
         "format_version": 1,
         "kind": "ck3_native_headless_session",
@@ -1285,6 +1468,13 @@ def _native_session_locked(
         "restart_shutdowns": restart_shutdowns,
         "cold_start_checkpoint": initial_checkpoint,
         "frontend_first_warmup": frontend_first_warmup,
+        "startup_slot0_probe": startup_slot0_probe_report,
+        "terminal": terminal,
+        "error": (
+            f"{type(primary_error).__name__}: {primary_error}"
+            if primary_error is not None
+            else None
+        ),
         "ok": (
             primary_error is None
             and (shutdown is None or shutdown.get("ok") is True)
@@ -1294,7 +1484,7 @@ def _native_session_locked(
             )
         ),
     }
-    if primary_error is not None:
+    if primary_error is not None and not pre_binding_warmup_exit:
         raise AgentError(
             "native-session failed after "
             f"{elapsed:.3f}s ({exit_reason}): {primary_error}"

@@ -20,7 +20,7 @@
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
   },
   "sha256": {
-    "runner": "6633C1A235C95EF6C972E937BD391FF48F71D6ABF4D079D2B1C9A16B5D09D708",
+    "runner": "D087B4944925EB8BAF9169BCFF31F26DDCF8E20848F5104C6CAE365EFC071ED0",
     "source_capture_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A",
     "source_contract": "4118D077CFC56D3E2BBD39F6EC64949EF0A007CA1287AB8117CD2FBEEA37AA7E",
@@ -41,11 +41,14 @@
     "observer_must_restore_breakpoint_and_detach_before_bridge": true,
     "same_ck3_pid_from_capture_through_receipt": true,
     "same_full_generation_war_id_required": true,
+    "expected_war_id": 50331699,
     "exact_persistent_current_army_generation_join_required": true,
     "same_bridge_connection_generation_for_current_action_post": true,
     "same_episode_for_current_action_post": true,
     "paused_dual_current_query_required": true,
     "one_surrender_mutation_required": true,
+    "durable_pre_mutation_checkpoint_required": true,
+    "checkpoint_hash_and_same_paused_frame_binding_required": true,
     "destroyed_exact_generation_cleanup_required": true,
     "two_equal_persisted_expiry_reads_required": true,
     "final_managed_cleanup_required": true

@@ -1,0 +1,83 @@
+{
+  "schema": "xar.pdx_paths_583_producer_observer_v1.abi.v1",
+  "status": "static-ready-no-launch",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "producer": {
+    "task_name": "pdx_paths",
+    "task_callback_rva": "0x3B96A10",
+    "paths_literal_rva": "0x4558570",
+    "checksummed_literal_rva": "0x45584B0",
+    "lookup_target_rva": "0x3BE2340",
+    "parser_rva": "0x3B96510",
+    "insert_target_rva": "0x253A9F0",
+    "map_rva": "0x5764698",
+    "named_path_id": "0x583",
+    "named_path_hash": "0xC0242C1D"
+  },
+  "hooks": [
+    {
+      "name": "task_post_prologue",
+      "patch_rva": "0x3B96A2E",
+      "continue_rva": "0x3B96A33",
+      "anchor_hex": "48 89 7C 24 30",
+      "branch": "JMP"
+    },
+    {
+      "name": "paths_lookup_call",
+      "patch_rva": "0x3B96A4E",
+      "target_rva": "0x3BE2340",
+      "anchor_hex": "E8 ED B8 04 00",
+      "branch": "CALL"
+    },
+    {
+      "name": "checksummed_lookup_call",
+      "patch_rva": "0x3B96B62",
+      "target_rva": "0x3BE2340",
+      "anchor_hex": "E8 D9 B7 04 00",
+      "branch": "CALL"
+    },
+    {
+      "name": "parser_post_prologue",
+      "patch_rva": "0x3B96531",
+      "continue_rva": "0x3B96536",
+      "anchor_hex": "48 89 4C 24 60",
+      "branch": "JMP"
+    },
+    {
+      "name": "id_insert_call",
+      "patch_rva": "0x3B96897",
+      "target_rva": "0x253A9F0",
+      "anchor_hex": "E8 54 41 9A FE",
+      "branch": "CALL",
+      "registers": "RCX=map,RDX=result_pair,R8D=hash,R9=key_pointer",
+      "rhs_stack_contract": "caller [RSP+0x28] is the sixth argument; call-shim entry [RSP+0x30]; callee reads [RBP+0x58]"
+    }
+  ],
+  "map_layout": {
+    "rows": "+0x08",
+    "count_u32": "+0x10",
+    "mask_u32": "+0x14",
+    "max_probe_u8": "+0x18",
+    "row_stride": 48,
+    "row_control_u8": "+0x04",
+    "row_key_u32": "+0x08"
+  },
+  "policy": {
+    "cmake_option": "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1",
+    "default_enabled": false,
+    "exact_build_only": true,
+    "initial_suspended_install": true,
+    "physical_patches": 5,
+    "single_near_rx_allocation": true,
+    "all_or_none": true,
+    "read_only": true,
+    "guard": false,
+    "public_capability": false,
+    "fast_path_allocation_mutex_or_syscall": false,
+    "requires": "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1"
+  }
+}

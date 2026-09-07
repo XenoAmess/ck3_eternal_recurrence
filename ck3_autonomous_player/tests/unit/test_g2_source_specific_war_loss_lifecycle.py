@@ -250,6 +250,42 @@ def _pre_sequence() -> dict[str, object]:
     }
 
 
+class _CheckpointDriver:
+    def __init__(self, save_dir: Path, *, fail: bool = False) -> None:
+        self.save_dir = save_dir
+        self.save_dir.mkdir(parents=True, exist_ok=True)
+        self.fail = fail
+        self.calls: list[tuple[str, int | None]] = []
+
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        self.calls.append((step, expected_revision))
+        if self.fail:
+            raise RuntimeError("fixture checkpoint failure")
+        checkpoint_path = self.save_dir / RUNNER.CHECKPOINT_FILENAME
+        checkpoint_path.write_bytes(b"g2-source-specific-checkpoint")
+        return {
+            "checkpoint": {
+                "status": "saved",
+                "path": str(checkpoint_path.resolve()),
+                "name": RUNNER.CHECKPOINT_FILENAME,
+                "size": checkpoint_path.stat().st_size,
+                "sha256": _sha256(checkpoint_path),
+                "date_raw": DATE_RAW,
+                "episode_character_id": ATTACKER_ID,
+                "episode_run_id": "native-29829-fixture",
+            },
+            "materialization": {"available": True},
+        }
+
+    def diagnostics(self) -> dict[str, object]:
+        return {"bridge_pid": PID, "connection_generation": 1}
+
+    def take_snapshot(self) -> dict[str, object]:
+        return _snapshot()
+
+
 def _receipt(ticket: dict[str, object]) -> dict[str, object]:
     action = f"surrender-war-{WAR_ID}"
     generations = deepcopy(ticket["frozen_generations"])
@@ -377,6 +413,10 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
     def test_full_receipt_promotes_only_private_source_loss_input(self) -> None:
         normalized = self._normalized()
         ticket, _ = RUNNER.build_source_bound_ticket(normalized, _pre_sequence())
+        with tempfile.TemporaryDirectory() as temporary:
+            RUNNER.create_pre_mutation_checkpoint(
+                _CheckpointDriver(Path(temporary) / "save games"), ticket
+            )
         receipt = _receipt(ticket)
         sequence = {
             "ok": True,
@@ -398,7 +438,6 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
         self.assertEqual(len(joined["remaining_providers"]), 3)
 
     def test_async_composition_reuses_one_driver_and_existing_continuation(self) -> None:
-        driver = object()
         pre = _pre_sequence()
         seen: list[tuple[str, object]] = []
 
@@ -417,25 +456,92 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
                 "postwar_receipt": _receipt(ticket),
             }
 
-        with (
-            mock.patch.object(RUNNER.terms, "_run_mcp_sequence", query),
-            mock.patch.object(
-                RUNNER.postwar, "_continue_private_sequence", continue_sequence
-            ),
-        ):
-            result = asyncio.run(
-                RUNNER.run_same_lifecycle_sequence(
-                    driver,
-                    source_capture=_source_capture(),
-                    capture_sha256="A" * 64,
-                    expected_character_id=ATTACKER_ID,
-                    expected_date_raw=DATE_RAW,
-                    postwar_timeout=1.0,
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = _CheckpointDriver(Path(temporary) / "save games")
+            with (
+                mock.patch.object(RUNNER.terms, "_run_mcp_sequence", query),
+                mock.patch.object(
+                    RUNNER.postwar, "_continue_private_sequence", continue_sequence
+                ),
+            ):
+                result = asyncio.run(
+                    RUNNER.run_same_lifecycle_sequence(
+                        driver,
+                        source_capture=_source_capture(),
+                        capture_sha256="A" * 64,
+                        expected_character_id=ATTACKER_ID,
+                        expected_war_id=WAR_ID,
+                        expected_date_raw=DATE_RAW,
+                        postwar_timeout=1.0,
+                    )
                 )
-            )
         self.assertTrue(result["ok"])
         self.assertEqual(seen, [("query", driver), ("continue", driver)])
+        self.assertEqual(driver.calls, [("save-checkpoint", 91)])
+        self.assertTrue(
+            result["retention_ticket"]["termination_action_bound"]
+        )
+        self.assertRegex(
+            result["pre_mutation_checkpoint"]["binding_sha256"],
+            r"^[0-9A-F]{64}$",
+        )
         self.assertEqual(result["mutation_commands"], [f"surrender-war-{WAR_ID}"])
+
+    def test_checkpoint_failure_prevents_surrender_continuation(self) -> None:
+        calls: list[str] = []
+
+        async def query(_driver: object, **_kwargs: object) -> dict[str, object]:
+            calls.append("query")
+            return _pre_sequence()
+
+        async def continue_sequence(
+            _driver: object, **_kwargs: object
+        ) -> dict[str, object]:
+            calls.append("surrender")
+            raise AssertionError("surrender continuation must not run")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = _CheckpointDriver(
+                Path(temporary) / "save games", fail=True
+            )
+            with (
+                mock.patch.object(RUNNER.terms, "_run_mcp_sequence", query),
+                mock.patch.object(
+                    RUNNER.postwar, "_continue_private_sequence", continue_sequence
+                ),
+                self.assertRaisesRegex(RuntimeError, "checkpoint failure"),
+            ):
+                asyncio.run(
+                    RUNNER.run_same_lifecycle_sequence(
+                        driver,
+                        source_capture=_source_capture(),
+                        capture_sha256="A" * 64,
+                        expected_character_id=ATTACKER_ID,
+                        expected_war_id=WAR_ID,
+                        expected_date_raw=DATE_RAW,
+                        postwar_timeout=1.0,
+                    )
+                )
+        self.assertEqual(calls, ["query"])
+
+    def test_wrong_explicit_war_id_fails_before_query_or_mutation(self) -> None:
+        query = mock.AsyncMock()
+        with mock.patch.object(RUNNER.terms, "_run_mcp_sequence", query):
+            with self.assertRaisesRegex(
+                RUNNER.LifecycleContractError, "explicit expected WarID"
+            ):
+                asyncio.run(
+                    RUNNER.run_same_lifecycle_sequence(
+                        object(),
+                        source_capture=_source_capture(),
+                        capture_sha256="A" * 64,
+                        expected_character_id=ATTACKER_ID,
+                        expected_war_id=WAR_ID + 1,
+                        expected_date_raw=DATE_RAW,
+                        postwar_timeout=1.0,
+                    )
+                )
+        query.assert_not_awaited()
 
     def test_no_launch_manifest_and_preflight_are_honest(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))

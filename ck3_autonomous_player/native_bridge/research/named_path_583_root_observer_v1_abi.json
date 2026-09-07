@@ -1,0 +1,56 @@
+{
+  "schema": "xar.named_path_583_root_observer_v1.abi.v1",
+  "status": "static-ready-no-launch",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "caller_local_chain": {
+    "dispatcher_named_path_id": "0x6C2",
+    "root_destination": "CMap+0x18",
+    "format_helper_call_rva": "0x331F9DF",
+    "format_helper_rva": "0x3320A60",
+    "named_path_id": "0x583",
+    "resolver_call_rva": "0x3320A82",
+    "resolver_rva": "0x3B96C70",
+    "move_patch_rva": "0x331F9E4",
+    "move_call_rva": "0x331F9EA",
+    "move_rva": "0x7E6C00",
+    "move_continue_rva": "0x331F9EF"
+  },
+  "hooks": [
+    {
+      "name": "resolver_call_shim",
+      "patch_rva": "0x3320A82",
+      "patch_bytes": 5,
+      "anchor_hex": "E8 E9 61 87 00",
+      "behavior": "call original resolver once, record returned RAX string object, restore RAX, return to 0x3320A87"
+    },
+    {
+      "name": "root_move_wrapper",
+      "patch_rva": "0x331F9E4",
+      "patch_bytes": 11,
+      "anchor_hex": "48 8B D0 48 8B CF E8 11 72 4C FD",
+      "behavior": "record formatted temporary and CMap+0x18 before, replay original move-assign once, record both after, preserve move return RAX, continue at 0x331F9EF"
+    }
+  ],
+  "string_layout": {
+    "length_offset": "0x10",
+    "capacity_offset": "0x18",
+    "sso_capacity_threshold": "0x10",
+    "capture": "object, effective data, length, capacity, first 16 data bytes, null_result, read_fault"
+  },
+  "policy": {
+    "cmake_option": "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1",
+    "default_enabled": false,
+    "exact_build_only": true,
+    "initial_suspended_install": true,
+    "all_or_none": true,
+    "read_only": true,
+    "guard": false,
+    "changes_return_or_branch": false,
+    "fast_path_allocation_mutex_or_syscall": false,
+    "coexists_with": "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1"
+  }
+}

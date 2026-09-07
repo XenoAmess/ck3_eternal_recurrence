@@ -18,13 +18,14 @@
     "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt",
-    "run_acceptance": "tools/run_acceptance.py"
+    "run_acceptance": "tools/run_acceptance.py",
+    "profile_settings_guard": "tools/run_zg361_phase2_seed_capture.py"
   },
   "sha256": {
-    "adapter": "4922AD1E4D57AC5E202E61D192848D4ED37753AC174A29676D15BE1FE2BE92CB",
-    "outer_owner_runner": "341D1A589B1430866DD9B918BB2A000D94440A41CC90CF35F3E2BE2BE07B9CBB",
-    "outer_owner_manifest": "4CE004CBD3FBDD8F1ECB1E01D376492399C1C55C48917CBAF4156DC4D6A3E07A",
-    "lifecycle_runner": "6633C1A235C95EF6C972E937BD391FF48F71D6ABF4D079D2B1C9A16B5D09D708",
+    "adapter": "24C835E6637ED2CF0099704064F99F3F5C2635ED1FC7CB73870C93BA7C28A630",
+    "outer_owner_runner": "B79E2E6D38830DEF3C0A89EC196A55B62336791D6DDFDECDE07480C5DA9D2918",
+    "outer_owner_manifest": "5407F24947BE4293E69376722D630638C400AE708157EFB416219583B3193723",
+    "lifecycle_runner": "D087B4944925EB8BAF9169BCFF31F26DDCF8E20848F5104C6CAE365EFC071ED0",
     "source_ui_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A",
     "source_contract": "4118D077CFC56D3E2BBD39F6EC64949EF0A007CA1287AB8117CD2FBEEA37AA7E",
@@ -33,7 +34,8 @@
     "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF",
-    "run_acceptance": "CD5098E0E9CA793D98FE2DF6C44ADB6AE1D15F66033C7553B9255E2640BB7CE8"
+    "run_acceptance": "CD5098E0E9CA793D98FE2DF6C44ADB6AE1D15F66033C7553B9255E2640BB7CE8",
+    "profile_settings_guard": "044B8F909EC06F66028B58ED9BD074FA26C6A7526868BAAA900BBEC3CB93007B"
   },
   "timeouts": {
     "process_discovery_seconds": 30,
@@ -57,7 +59,9 @@
     "timeline_speed": 5,
     "standalone_capture_runner_main_reused": false,
     "source_ui_helpers_reused": true,
-    "mcp_state_truth_after_attach": true
+    "mcp_state_truth_after_attach": true,
+    "startup_profile_asset_gate_integrated": true,
+    "launch_fail_closed": true
   },
   "ocr_boundary": {
     "used": true,
@@ -68,11 +72,28 @@
   },
   "live_admission": {
     "command_available": true,
+    "profile_settings_template_required": true,
+    "warm_shadercache_required": true,
+    "profile_asset_failure_blocks_before_popen": true,
+    "profile_asset_evidence_required": true,
+    "profile_asset_evidence_fields": [
+      "settings.source_sha256",
+      "settings.source_bytes",
+      "settings.destination_sha256",
+      "settings.destination_bytes",
+      "shadercache.tree_sha256",
+      "shadercache.file_count",
+      "shadercache.bytes"
+    ],
     "authorize_private_live_flag_required": true,
     "exclusive_ck3_slot_required": true,
     "fresh_artifact_directory_required": true,
     "fresh_isolated_userdir_required": true,
     "expected_character_id_required": true,
+    "expected_war_id_required": true,
+    "expected_war_id": 50331699,
+    "durable_pre_mutation_checkpoint_required": true,
+    "checkpoint_must_bind_same_paused_frame": true,
     "expected_date_raw_required": false,
     "expected_date_raw_source": "same-PID paused bridge snapshot after natural event",
     "one_surrender_mutation_only": true

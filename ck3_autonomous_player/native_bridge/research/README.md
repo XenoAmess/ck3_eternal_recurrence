@@ -257,6 +257,260 @@ the original fault recurs, the next bounded diagnostic is a one-shot tuple-
 specific observation for `gfx/FX/cw/particle2.shader` plus `ParticleColor`, not
 another global total.
 
+### Tuple-specific ParticleTexture factory debugger
+
+[static-ready, 2026-09-07] The later repeated startup fault was reduced to the
+slot-zero request at caller RVA `0x39C70A1`, source
+`gfx/FX/cw/particle2.shader`, and variant `ParticleTexture`. The private
+`particle2_factory_debug_capture.cpp` sidecar is not linked into the bridge and
+does not change its ABI. It creates the process suspended, attaches through
+`DebugActiveProcess`, and resumes the primary thread only after the initial
+DR0 is installed. At that attach event `ResumeThread` must report the frozen
+count `2`: one explicit `CREATE_SUSPENDED` count and one debugger-event count;
+the later `ContinueDebugEvent` releases the latter. Any other count is RED.
+This attach model is required because a process born under
+the debug creation flag returned access-denied from `DebugActiveProcessStop`
+during R259 cleanup. The sidecar admits only CK3 `1.19.0.6`, executable SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+and nine frozen instruction anchors. It uses one per-thread DR0 execute
+breakpoint, not a code patch, DLL injection, detour, or gameplay input.
+
+The target call is accepted only when `RCX=RBP-0x68`, `RDX` is the exact
+26-byte source view, `R8` is the exact 15-byte variant view, and `R14` is the
+manager. The same thread is then followed through graphics-global RVA
+`0x3A86700`, nested source entry `0x3AAE920`, the lookup/population helper
+result predicate `0x3AAE9A8`, the fallback resolver result predicate
+`0x3AAE9C1` when the first helper leaves the output null, source result RVA
+`0x3A86761`, variant result RVA `0x3A867A8`, backend result RVA `0x3A867E4`,
+and the outer continuation `0x39C70A6` before the native slot write. At
+`0x3AAE9A8` the result is `[RSI]`; helper `RAX` is only the output-slot
+address. At `0x3AAE9C1`, `RAX` is the fallback resolver's raw result. The
+sidecar classifies only
+`graphics-global-null`, `source-lookup-null`, `variant-lookup-null`,
+`backend-creation-null`, or a fully consistent `all-nonnull`; every partial,
+out-of-order, identity-drifted, or unknown path is RED.
+
+After a complete observation, every known live thread must have DR0-DR3,
+DR6, and DR7 cleared and the outstanding debug event must be continued. Schema
+v2 then intentionally terminates the isolated diagnostic process and requires
+the exit event plus final process signal. It records capture, cleanup, and exit
+kind separately, includes the running probe's SHA-256, and hard-codes all
+product-evidence fields false. It does not call `DebugActiveProcessStop` or
+claim native continuation. The JSON sidecar requires a fresh path that exists
+before launch and is committed through `FlushFileBuffers` plus
+`MoveFileExW(..., MOVEFILE_WRITE_THROUGH)`. This is a debugger observation,
+not a zero-intrusion claim, gameplay acceptance, containment, or repair.
+
+Build and offline verification:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File research/build_particle2_factory_debug_capture.ps1
+research/build-particle2-factory-debug-capture/particle2_factory_debug_capture.exe --self-test
+py -m unittest tests.unit.test_particle2_factory_debug_capture -v
+```
+
+The CMake/CTest target is
+`xar_ck3_native_bridge_particle2_factory_debug_capture_self_test`. A live run
+requires explicit `--exe`, isolated `--userdir`, fresh `--output`, and optional
+`--timeout-ms`; no default invocation launches CK3.
+
+[diagnostic-live / cleanup RED, 2026-09-07] R259 and R261 independently bound
+the exact tuple and observed non-null graphics global, null source output, and
+null final output, classifying the factory result as `source-lookup-null`.
+Their artifact SHA-256 values are
+`0E269C37BDE80380AA66AA8D41D68C2933C4AEB699B20E0393026A08A71629BA`
+and `229A98C02B9BDB63053D31824FFAAA29575B2C8F4E6594E08A58EDBD28B7DE6C`.
+Both v1 runs cleared debug registers and continued the capture event, but
+`DebugActiveProcessStop` returned Win32 error 5; forced reclamation succeeded,
+so the observations are retained while the complete v1 tool verdict remains
+RED. R260 stopped before resume because an intermediate build expected the
+wrong attach suspend count; it supplies no tuple or factory evidence. None of
+these runs reached bridge, map, mailbox, save, or gameplay readiness, and they
+do not change scene/readiness counts. Schema v2 is static-ready to distinguish
+the nested lookup/population helper from its fallback resolver under an
+explicit terminate-after-capture policy; it is not yet runtime evidence.
+
+[diagnostic-live, 2026-09-07] R262 completed all seven nested checkpoints and
+classified `source-resolver-null`, but its zero-wait process-handle check raced
+the already continued `EXIT_PROCESS_DEBUG_EVENT`; capture was complete while
+cleanup was conservatively RED. Artifact SHA-256 is
+`0E66C3500764B11F5E41973C8B893D5F3869FA6FAD6498D214C5DE945353CB42`.
+R263 changed only that evidenced wait: after the exit event it permits up to
+five seconds for the process handle to signal. With probe SHA-256
+`748938B059EDA60AFB8C7C7B0265305482EC4BF08E3A1E6772DF586258EE9E70`,
+the exact tuple again produced null `[RSI]` at `0x3AAE9A8`, null fallback
+resolver `RAX` at `0x3AAE9C1`, null outer source output, and null final output.
+The artifact is `GREEN_DIAGNOSTIC`, `capture_status=complete-valid`,
+`cleanup_status=diagnostic-termination-clean`, and
+`process_exit_kind=diagnostic-termination`; its SHA-256 is
+`87A7213F9B632B96FDD8A28434918B49EE7BBCF801486F3F8DCBB23D250D0C58`.
+All product-evidence fields remain false. This closes the source sub-branch as
+fallback resolver null, but does not identify a missing file, repair startup,
+or increase gameplay readiness.
+
+[diagnostic-live, 2026-09-07] R264 extended the same tuple recorder through
+resolver RVA `0x3BE2340`. The normalized 26-byte request remained exactly
+`gfx/FX/cw/particle2.shader`, its inline 27-byte buffer was valid, the resolver
+list head was non-null, and the search result was null. R264 used the
+`Crusader Kings III` junction below the split worktree; R265 repeated the same
+capture through canonical
+`Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe`. Both used probe
+SHA-256
+`227CDB851BC58208BD7685ED52BCBCC85DE6C50671ADC913DE1EB788C9D656A9`
+and returned `resolver-candidates-all-reject`, so the junction spelling is not
+an explanation for this lookup result. The private artifacts are:
+
+```text
+Z:\ck3_mod_rewrite\_runtime\p2r264diag-artifacts\particle2-resolver-detail-capture.json  B1677D1CC015C15E63B370E76A29549D8C1202F9A8B02926DE5E2FCA88C7C32F
+Z:\ck3_mod_rewrite\_runtime\p2r265diag-artifacts\particle2-resolver-detail-capture.json  21C985201824ABA45BF4845502CB47801E372506C751485A05C6E951B8027D93
+```
+
+R266, with probe SHA-256
+`F974682AF7A8CFC61B71A551EB6FF4593C053A4691296B826C145CD45619BA77`,
+enumerated exactly one resolver candidate for this request. Its prefix was
+empty, `next_address` was null, and both primary and secondary predicates
+returned zero. R267, with probe SHA-256
+`9710AD3A1D0A9D6167109FF7D0C774167B6D9DBABC670B6074E0963AF394177F`,
+captured that candidate's non-null backend object, dispatch table RVA
+`0x406D2F0`, callback RVA `0x3BFDC60`, and callback result zero. Exact-build
+static inspection identifies this dispatch table by its embedded PhysFS
+`Non-archive, direct filesystem I/O` description; the callback concatenates
+the backend root and requested logical path, normalizes path separators, and
+reaches the imported wide-character file-attribute query. R268 used probe
+SHA-256
+`6EF81E91401A75C3C1DAD5A3BC8085E638B4F9E3DFF69E88F0633B93C16F12FF`
+to capture the actual operands: backend root
+`Z:/ck3_mod_rewrite/_runtime/p2r267diag-state/profile\`, requested text
+`gfx/FX/cw/particle2.shader`, and combined physical path
+`Z:\ck3_mod_rewrite\_runtime\p2r267diag-state\profile\gfx\FX\cw\particle2.shader`.
+That physical lookup returned zero. The corresponding artifacts are:
+
+```text
+Z:\ck3_mod_rewrite\_runtime\p2r266diag-artifacts\particle2-resolver-candidates-capture.json  825DEEF2F9CD6B7D9C37B39DCF09B75FD3F495849CB1FBFFB396DCE7447DA986
+Z:\ck3_mod_rewrite\_runtime\p2r267diag-artifacts\particle2-secondary-capture.json            B63A0224B3DF9244937E21A30B902F9419786C1A6C5CAE325B668C9BF08CA0AE
+Z:\ck3_mod_rewrite\_runtime\p2r268diag-artifacts\particle2-backend-path-capture.json         A30DE8C7D09D7214015D0BD3326D00FB363AA59F9D5CD4EC6EE09FD57F9426DD
+```
+
+[diagnostic-live A/B, 2026-09-07] Before R269, the exact game-layer source was
+copied to
+`Z:\ck3_mod_rewrite\_runtime\p2r267diag-state\profile\gfx\FX\cw\particle2.shader`:
+4,329 bytes, SHA-256
+`9F25E03134E24EF0490EA0E1537BFE5BF070FF9CE567678CC636A18FAA84F075`.
+With no other shader overlay added, the same tuple then produced a non-null
+source, a non-null `ParticleTexture` variant, and a null backend result. This
+moved the classification from `source-resolver-null` to
+`backend-creation-null`; it proves that this userdir overlay is sufficient to
+bypass the earlier direct-filesystem miss, not that it repairs backend
+creation. R269's artifact is:
+
+```text
+Z:\ck3_mod_rewrite\_runtime\p2r269diag-artifacts\particle2-single-file-overlay-capture.json  DEEA6C82E76B8A5DBC1CD5488C7A093B2A8B3F8CCCB451BAB41140F2BB4C659A
+```
+
+R270 then copied the entire active include closure to that same
+`profile\gfx\FX` overlay. The effective physical sources were the game layer
+for the shader, `particle2.fxh`, `camera.fxh`, and both fog files; the Jomini
+layer for `jomini.fxh`; and the Clausewitz layer for the remaining five files.
+The copied logical-path manifest was:
+
+```text
+cw/particle2.shader                 9F25E03134E24EF0490EA0E1537BFE5BF070FF9CE567678CC636A18FAA84F075
+cw/particle2.fxh                    5388B201A41F8606195DC48BFD7F784DC7E18DB3BF1F25AEF91C68FE56E9F35D
+cw/camera.fxh                       C1B8FC8B61C08CA73A0B8F48EF85680B9973F1253E9549464370AD21F7275684
+jomini/jomini_fog.fxh               D77842C81E8896EFB7BDBECBE8A10C9A3C9B2E2CC3AC378F069863CECFF0AF72
+jomini/jomini_fog_of_war.fxh        8D6DD77ECA2C20AEB4F5C13975603ADBFC7010548C7B52464F41C55AB45D882F
+cw/random.fxh                       20FF4A25C9860028AD4AE9688AAFE97DF79BA1B69563C03F7797F25853C6865D
+cw/pdxterrain.fxh                   DEDCD87D156B19B00958844D7734D21EE1A0B22C98D27657827CE6FAE166C696
+jomini/jomini.fxh                   8377A1E9D2D9E732449F22E0FBC21B787A42CFD69AB272922239CE4BD3DA6026
+cw/heightmap.fxh                    231B687443A2DC4D9B7C8606DA9CF65EF43B0CE1AB53CCD7F5F6BEC6B576E3E7
+cw/utility.fxh                      ABD382499457D6616597E41647983B982A44AEA7A0A3392927693827201CAB1B
+cw/upscale_utils.fxh                A48DCA74818B4B69E020B0CE5567BD9EC87527CB686871C0F069849A98C62079
+```
+
+All copied hashes matched their physical sources. R270 again observed the
+source and variant non-null and the backend null, excluding a missing physical
+lane in this shader's active include closure as the explanation for the
+remaining result. Its artifact SHA-256 is
+`25AE4EE9B1ADD868EDB656A823172510A16FCB193AFB30AD46F965273C34A3D7`
+at
+`Z:\ck3_mod_rewrite\_runtime\p2r270diag-artifacts\particle2-minimal-include-overlay-capture.json`.
+
+[diagnostic-live, 2026-09-07] R271 followed the now-reachable backend helper
+with probe SHA-256
+`41580D1B8D02EB7F59C347C4325EC8D474B4276D9E5F1438FF3880CE771541A6`.
+At helper RVA `0x3A8E080`, source and variant identity were preserved and the
+graphics-device object was non-null. The backend cache result at RVA
+`0x3A8E0C9` was null; the subsequent device virtual call through callback RVA
+`0x3AD4C30` also returned null at RVA `0x3A8E0ED`, leaving the outer backend
+and final output null. Its private artifact is:
+
+```text
+Z:\ck3_mod_rewrite\_runtime\p2r271diag-artifacts\particle2-backend-detail-capture.json  3A230624A5DDF5BDC71B9CA11941DB096964BF0BCA4ABB97318F6B48A79A7FC5
+```
+
+Every R264-R271 capture is `GREEN_DIAGNOSTIC` only, uses intentional
+terminate-after-capture cleanup, sends no gameplay input, and records bridge,
+map, mailbox, query count, gameplay-input count, and readiness promotion as
+false or zero. These artifacts neither continue CK3 to startup readiness nor
+add a tested scene. They do not prove shader-cache corruption, settings or
+backend-input drift, a successful backend object, containment, or repair. R271
+narrows the live failure to a backend cache miss followed by a null device
+virtual-call result; the reason for that null return remains unproven.
+
+[diagnostic-live A/B, 2026-09-07] Schema v3 probe SHA-256
+`359CA19FA71F234CC317EA9DB1E04A0489708F0280CF8DBDC92C7D44841770F9`
+then followed the backend initializer's per-stage HLSL path. R272 retained the
+R270 overlay and observed its first active stage, `VertexParticle`, but HLSL
+generation returned false; no shader-cache result or shader-device call was
+reached. The artifact is:
+
+```text
+Z:\ck3_mod_rewrite\_runtime\p2r272diag-artifacts\particle2-initializer-detail-capture.json  C528AA12E463543AE2BF81CF46201109DEDFE65F0978C235678033D2DF0D840D
+```
+
+Exact-build static inspection identified two HLSL-generator inputs that are
+not members of a shader's explicit `Includes` closure. Both virtual paths were
+absent from the R272 userdir overlay and have a single physical source in the
+Clausewitz layer:
+
+```text
+gfx/FX/cw/defines_common.fxh  880 bytes   CAAC6CB12CE9FD820C35581076A642538F822CB86CE27148B4E55E2A167781EC
+gfx/FX/cw/defines_hlsl.fxh    8074 bytes  A92B73EE9969B2C61BA83C86D705C95D5E264641D758BDBAD13D241A4DF04374
+```
+
+Their canonical physical paths are respectively
+`Z:\ck3_mod_rewrite\Crusader Kings III\clausewitz\gfx\FX\cw\defines_common.fxh`
+and
+`Z:\ck3_mod_rewrite\Crusader Kings III\clausewitz\gfx\FX\cw\defines_hlsl.fxh`.
+The first supplies `FixProjectionAndMul`, called by `VertexParticle`; the
+second supplies the DX11 HLSL macro and semantic definitions. The executable
+hard-codes both virtual paths beside the HLSL builder's
+`Failed to load Macros/Defines at: %s` path. Neither file contains another
+`Includes` block.
+
+R273 added exactly those two files, preserving the paths and hashes above, to
+the existing userdir overlay. The same v3 probe then classified the exact
+tuple `all-nonnull`. Exactly two stages were active: `VertexParticle` and
+`PixelTexture`. Each generated HLSL successfully; each initial shader-cache
+lookup returned null; each subsequent shader-device virtual call and getter
+returned the same non-null shader object for that stage. Stages 2 through 8
+were empty and inactive. The backend initializer returned true, its callback,
+outer backend, and final factory outputs were all non-null. The artifact is:
+
+```text
+Z:\ck3_mod_rewrite\_runtime\p2r273diag-artifacts\particle2-implicit-defines-overlay-capture.json  06328E125181343AF5D9F69D4644EBDCDFDF052970BD964A56FA0E012A024A5D
+```
+
+This paired A/B proves that the two-file implicit-defines overlay is sufficient
+to recover construction of this one `particle2.shader` / `ParticleTexture`
+factory tuple on top of the R270 closure. It does not distinguish which of the
+two files was individually necessary, repair the underlying mount provenance,
+or prove that native startup continues after the slot write. R272 and R273 are
+intentional terminate-after-capture diagnostics with no gameplay input and
+all bridge, map, mailbox, query, gameplay-input, and readiness evidence false
+or zero. `all-nonnull` therefore adds no tested scene and does not promote
+startup, gameplay, or autonomous-player readiness.
+
 [live-confirmed production value path, 2026-08-26] The default-OFF production12
 DLL `D48A45CA043F91A2E0927BC620694EF854B946A8D6A267B68E580F9696C48702`,
 same-tree injector

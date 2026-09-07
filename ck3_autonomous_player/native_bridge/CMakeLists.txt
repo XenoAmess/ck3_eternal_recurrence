@@ -66,6 +66,18 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1
+  "Observe the exact-build named-path 0x583 resolver and CMap root move chain"
+  OFF
+)
+
+option(
+  XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1
+  "Observe the exact-build private pdx_paths lookup/parser/0x583 producer chain"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1
   "Enable the read-only scoreboard production-evidence candidate without advertising production capability"
   OFF
@@ -221,6 +233,8 @@ target_compile_definitions(xar_bridge_injector PUBLIC
 
 add_library(xar_ck3_bridge SHARED
   src/cold_map_vfs_observer_v1.cpp
+  src/named_path_583_root_observer_v1.cpp
+  src/pdx_paths_583_producer_observer_v1.cpp
   src/actual_contact_scope_v1_mailbox.cpp
   src/battle_control_snapshot_v1_mailbox.cpp
   src/battle_reinforcement_assignment_v1_mailbox.cpp
@@ -363,6 +377,29 @@ if(XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1)
     XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
     XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1=1
     XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1)
+  # Caller-local successor observer for the R275 chain. It coexists with the
+  # cold-map VFS observer and records only the 0x583 resolver/root assignment.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+    XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1=1
+    XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1)
+  # Private read-only producer observer. The named-path and cold-map
+  # downstream observers remain enabled for the same exact-build correlation.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+    XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1=1
+    XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1=1
+    XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1)
@@ -530,6 +567,7 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  find_package(Python3 COMPONENTS Interpreter REQUIRED)
   if(XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1)
     add_test(
       NAME xar_ck3_native_bridge_raiktor_war_bound_private_capture_v1
@@ -2488,6 +2526,28 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
+  add_executable(xar_ck3_particle2_factory_debug_capture
+    research/particle2_factory_debug_capture.cpp
+  )
+  target_compile_definitions(
+    xar_ck3_particle2_factory_debug_capture PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  target_link_libraries(
+    xar_ck3_particle2_factory_debug_capture PRIVATE bcrypt)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_particle2_factory_debug_capture PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_particle2_factory_debug_capture_self_test
+    COMMAND xar_ck3_particle2_factory_debug_capture --self-test
+  )
+
   add_executable(xar_ck3_startup_particle2_null_guard_v1_test
     src/startup_particle2_null_guard_v1.cpp
     src/startup_particle2_null_guard_v1_test.cpp
@@ -2814,6 +2874,58 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_cold_map_vfs_observer_v1
     COMMAND xar_ck3_cold_map_vfs_observer_v1_test
+  )
+
+  add_executable(xar_ck3_named_path_583_root_observer_v1_test
+    src/named_path_583_root_observer_v1.cpp
+    src/named_path_583_root_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_named_path_583_root_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_named_path_583_root_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_named_path_583_root_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_named_path_583_root_observer_v1
+    COMMAND xar_ck3_named_path_583_root_observer_v1_test
+  )
+  add_test(
+    NAME xar_ck3_native_bridge_named_path_583_root_observer_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_named_path_583_root_observer_v1_source_contract.py
+      --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+  )
+
+  add_executable(xar_ck3_pdx_paths_583_producer_observer_v1_test
+    src/pdx_paths_583_producer_observer_v1.cpp
+    src/pdx_paths_583_producer_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_pdx_paths_583_producer_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_pdx_paths_583_producer_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_pdx_paths_583_producer_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_pdx_paths_583_producer_observer_v1
+    COMMAND xar_ck3_pdx_paths_583_producer_observer_v1_test
+  )
+  add_test(
+    NAME xar_ck3_native_bridge_pdx_paths_583_producer_observer_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_pdx_paths_583_producer_observer_v1_source_contract.py
+      --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
   )
 
   add_test(
