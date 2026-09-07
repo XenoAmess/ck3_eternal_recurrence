@@ -135,7 +135,10 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
         # Vanilla fallback for a discovered secret not covered by a more
         # specific flavor event. The secret already exists before the window;
         # its sole option reveals that exact secret to root. R195 observed the
-        # complete ten-scope task frame and the only authored option.
+        # complete ten-scope task frame and the only authored option. R201
+        # then delivered two independently exact instances in the same client
+        # at dates 53178192 and 53178912. Permit those two task outcomes while
+        # retaining a finite third-occurrence boundary.
         "date_raw": 53168112,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -188,6 +191,6 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 1,
+        "max_occurrences": 2,
     },
 }

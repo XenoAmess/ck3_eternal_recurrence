@@ -246,7 +246,56 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["saved_scope_count"], 10)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
-        self.assertEqual(contract["max_occurrences"], 1)
+        self.assertEqual(contract["max_occurrences"], 2)
+
+        first_repeat = copy.deepcopy(context)
+        first_repeat["current_event_instance_id"] = 91
+        first_repeat["date_raw"] = 53178192
+        first_repeat_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53178192,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 91},
+            context=first_repeat,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(first_repeat_checks.values()), first_repeat_checks)
+
+        second = copy.deepcopy(context)
+        second["current_event_instance_id"] = 92
+        second["date_raw"] = 53178912
+        second["saved_scopes"][8] = _scope(
+            "secret_holder", "character", 28677,
+        )
+        second_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53178912,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 92},
+            context=second,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(second_checks.values()), second_checks)
+
+        completed = [
+            {"event_definition_key": event_key, "event_instance_id": 91},
+            {"event_definition_key": event_key, "event_instance_id": 92},
+        ]
+        max_occurrences = int(contract["max_occurrences"])
+
+        def next_occurrence_allowed(rows: list[dict[str, object]]) -> bool:
+            occurrence_count = sum(
+                row.get("event_definition_key") == event_key for row in rows
+            )
+            return occurrence_count < max_occurrences
+
+        self.assertTrue(next_occurrence_allowed([]))
+        self.assertTrue(next_occurrence_allowed(completed[:1]))
+        self.assertFalse(next_occurrence_allowed(completed))
 
         drifted = copy.deepcopy(context)
         drifted["saved_scopes"][5] = _scope(
