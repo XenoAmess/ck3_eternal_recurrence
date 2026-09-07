@@ -2024,3 +2024,15 @@ R282 复用现有 default-OFF observer，将 D2 与 producer identity、completi
 `continue-last-save` 没有在 300 秒界限内进入 Load Save/In Game，runner 因 `frontend_without_load_save` RED 收口；受管停止 `cleanup_proven/tree_gone`，最终进程槽为空。report / loader gate / cleanup / session-state SHA-256 为 `AA3CCCB0CD4BBB2D9991E039B9C09E03A39EDF9D380C985486E9A14E37DA69C9` / `12B44A2C8BE9F44D4BD42CEAFB24B5C4654C469735D462F3A6FBAC50C207EE4A` / `41CF181776F0F506E534924C3E1150764715FC7886CE13819A9C73A38499033B` / `CFB7E8C4B7DD5DD2D965F9809F86C476B642F7EA18CD37EE29AF380882FAAB5E`。下一次不得原样重复 auto-continue；现有 runner 的 `bridge-frontend-first` 是已审计的 distinct shape：warm-up 只证明 Frontend，随后由 final process 显式加载 basename `autosave`，两次启动必须继续串行且各自受管回收。
 
 首次 R283 编排在 child 输入校验处因 warm-up pipe 后缀含非十六进制字符而立即 RED；state/artifact 未创建、CK3 未启动、进程槽保持为空。该实证暴露外层 Default-desktop relay 的 no-launch preflight 没有复核显式 pipe 格式。relay 现对 `--bridge-pipe` 与 `--warmup-bridge-pipe` 的已提供值执行同一 `32 lowercase hex` 合同，normal/`-O` 回归各 `7/7` GREEN；只有该修复提交后生成的新 preflight 才能授权 R283 实机。
+
+### R283：bridge-frontend-first 恢复 late save 与同 PID 续接（2026-09-08）
+
+R283b 使用合法且互异的 32 位小写十六进制 warm-up/final pipe。warm-up PID `199476` 在 `10.723s` 达到 authenticated responsive Frontend 后完整释放；final PID `145824` 显式载入 basename `autosave`，loader `303/303`、fatal `0`，`03_loader_gate.json` 为 `GREEN / load_save`。随后 native bridge 返回 paused/map-ready/mailbox，玩家为 `32904`，初始日期 `53199480`。runner 先处理已登记的 `debate_event.5110` 与 `ep3_decisions_event.2001`，再在未知 `birth.3035` 前按合同保存 checkpoint。
+
+checkpoint 位于 isolated profile 的 `save games/xar_checkpoint.ck3`，大小 `84,875,343` bytes、SHA-256 `6B5AE12D615A2664D0C36C4B09604350978B26683CAFAC2BC2F402287DC920AD`。保存请求本身会发布新的 native/public snapshot revision，因此 checkpoint helper 不得要求保存后的 revision 与保存前逐值相等；它仍须比较日期、PID、generation、玩家、event instance 与 option count，并在任一业务身份漂移时 RED。原版 `birth.3034/.3035` 证明该中断只有一个 enabled inert option；精确合同与 checkpoint 回归合计 `31/31` GREEN。
+
+R283c 通过同一 PID `145824` 的 generation `2` reconnect（restart count `0`）继续，依次验证 `birth.3035`、`birth.1010` 与产品 `zg361p2c.2` 的旧 instance 前进/关闭。随后 runtime diagnostics 捕获 `4038` 条同源 B1 错误：`zg361p2c.2 -> zg361_jingcha_accept_mandate_effect -> zg361_b1_open_cycle_effect` 将 live vassal 先写入 temporary list，再由 `ordered_in_list` 返回不支持变量写入的 `weak Character`。这属于产品 RED，不是 runner、checkpoint 或 startup RED。
+
+修复必须落在生成源：先由 `every_vassal` 用 `zg361_is_reviewable_vassal_trigger` 计数并封顶 80，再由 live `ordered_vassal` 以相同资格、`order_by = primary_title.tier`、`max = var:zg361_b1_subject_n` 初始化 subject case 和 durable roster；不得手改 GENERATED effect。生成器 `--check`、B1 `75/75` 与 `validate_local.py` 只认证 static-ready。fresh R284 必须从当前 HEAD 重新 materialize product projection、复用同一 source save lineage，并要求 R283 的 B1 variable-write 签名归零；旧 PID 的已污染状态不能作为修复验收。
+
+R283b report / loader gate / R283c report SHA-256 分别为 `FF18E81196E55791A9A21CB80E37421B66E63F1D52D76714CEBB11C6AB8BF72E`、`3C2215672B3D5E4B5F2625016ECAE20D872C61B1DA78E48A9F8B3D51B9AFF380`、`2876E02BA8103420D7DE9C7E67A616B7D41ECAC81D28D60D941C0ADB9B9BB449`。PID `145824` 最终经 native-session file queue 停止，relay 完成清理，最终 `ck3=0 / xar_ck3_bridge_injector=0`。本轮没有 business scene 或 full-tree stage 增量，T0-P2 继续锁定。

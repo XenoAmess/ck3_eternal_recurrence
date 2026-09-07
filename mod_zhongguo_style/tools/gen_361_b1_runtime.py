@@ -2097,17 +2097,14 @@ zg361_b1_open_cycle_effect = {
 			limit = { has_variable_list = zg361_b1_subjects }
 			clear_variable_list = zg361_b1_subjects
 		}
-		if = {
-			limit = { has_variable_list = zg361_b1_subject_candidates }
-			clear_variable_list = zg361_b1_subject_candidates
-		}
+		set_variable = { name = zg361_b1_subject_n value = 0 }
 		every_vassal = {
 			limit = { zg361_is_reviewable_vassal_trigger = yes }
-			add_to_list = zg361_b1_subject_candidates
+			root = { change_variable = { name = zg361_b1_subject_n add = 1 } }
 		}
-		set_variable = {
-			name = zg361_b1_subject_n
-			value = { value = list_size:zg361_b1_subject_candidates max = 80 }
+		if = {
+			limit = { var:zg361_b1_subject_n > 80 }
+			set_variable = { name = zg361_b1_subject_n value = 80 }
 		}
 		# Stable round-robin start advances by one frozen roster position each
 		# cycle. Unlike a simple forward/reverse flip, every position eventually
@@ -2125,10 +2122,13 @@ zg361_b1_open_cycle_effect = {
 			set_variable = { name = zg361_b1_agenda_rotation_start value = 1 }
 		}
 		set_variable = { name = zg361_b1_roster_order_cursor value = 0 }
-		ordered_in_list = {
-			list = zg361_b1_subject_candidates
+		# Iterate the live vassal database directly. R283 proved the temporary
+		# candidate list could return weak Character rows that still passed
+		# is_alive/is_landed but rejected every variable write in initialization.
+		ordered_vassal = {
+			limit = { zg361_is_reviewable_vassal_trigger = yes }
 			order_by = primary_title.tier
-			max = { value = list_size:zg361_b1_subject_candidates max = 80 }
+			max = var:zg361_b1_subject_n
 			zg361_b1_initialize_subject_case_effect = yes
 			root = { change_variable = { name = zg361_b1_roster_order_cursor add = 1 } }
 			set_variable = { name = zg361_b1_roster_frozen_order value = root.var:zg361_b1_roster_order_cursor }

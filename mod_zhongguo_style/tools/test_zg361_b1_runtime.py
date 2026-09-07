@@ -3625,14 +3625,23 @@ class B1RuntimeFoundationTests(unittest.TestCase):
     def test_departed_subject_is_not_carried_into_the_next_cycle(self) -> None:
         open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
         clear = open_cycle.index("clear_variable_list = zg361_b1_subjects")
-        clear_candidates = open_cycle.index(
-            "clear_variable_list = zg361_b1_subject_candidates", clear
+        count_reset = open_cycle.index(
+            "name = zg361_b1_subject_n value = 0", clear
         )
-        rebuild = open_cycle.index("every_vassal = {", clear_candidates)
-        initialize = open_cycle.index("zg361_b1_initialize_subject_case_effect = yes", rebuild)
-        self.assertLess(clear, clear_candidates)
-        self.assertLess(clear_candidates, rebuild)
-        self.assertLess(rebuild, initialize)
+        rebuild = open_cycle.index("every_vassal = {", count_reset)
+        ordered = open_cycle.index("ordered_vassal = {", rebuild)
+        initialize = open_cycle.index(
+            "zg361_b1_initialize_subject_case_effect = yes", ordered
+        )
+        self.assertLess(clear, count_reset)
+        self.assertLess(count_reset, rebuild)
+        self.assertLess(rebuild, ordered)
+        self.assertLess(ordered, initialize)
+        self.assertNotIn("zg361_b1_subject_candidates", open_cycle)
+        self.assertIn("max = var:zg361_b1_subject_n", open_cycle)
+        self.assertEqual(
+            open_cycle.count("zg361_is_reviewable_vassal_trigger = yes"), 2
+        )
 
         published = top_level_block(
             self.effects, "zg361_b1_mark_published_effect"
