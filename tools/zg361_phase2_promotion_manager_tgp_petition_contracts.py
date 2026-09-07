@@ -23,6 +23,7 @@ _PROVINCE_TYPE_SCOPES = (
 _PROVINCE_MEMBER_SHAPES = (
     ("other_movement_member",),
     ("house_movement_member", "other_movement_member"),
+    ("disciple_movement_member", "other_movement_member"),
     (
         "other_movement_member",
         "house_movement_member",
@@ -132,9 +133,11 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
         } for direction_scope in _LAW_DIRECTION_SCOPES) + tuple(
             # Exact-build source .0100 exposes four province-type branches.
             # R175/R185 observed house/other recipient selection, R186
-            # observed the industrial sibling, and R289 observed option A's
-            # petitioner-self recipient. Enumerate the source-authored cross
-            # product while retaining exact names and recipient identity.
+            # observed the industrial sibling, and R289 observed both option
+            # A's petitioner-self recipient and the independently valid
+            # disciple+other/no-house participant shape. Enumerate the
+            # source-authored cross product while retaining exact names and
+            # recipient identity.
             _province_petition_scope_variant(province_scope, member_scopes)
             for province_scope in _PROVINCE_TYPE_SCOPES
             for member_scopes in _PROVINCE_MEMBER_SHAPES
