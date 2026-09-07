@@ -37,4 +37,27 @@ CREDIT_PROJECT_STOP_LOSS_POSTMORTEM_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.133": {
+        # R239 reached the terminal postmortem after route A released retained
+        # capacity. Route A records system causes and learning actions without
+        # assigning named liability; B adds named liability and C opens debt.
+        # Choose A to advance R 5 -> 6, close the case and finalize the
+        # conserved portfolio without scheduling another event.
+        "date_raw": 53187648,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": CREDIT_PROJECT_R_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in CREDIT_PROJECT_R_SAVED_SCOPE_NAMES
+            if name not in CREDIT_PROJECT_R_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (CREDIT_PROJECT_R_SAVED_SCOPE_NAMES,),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
