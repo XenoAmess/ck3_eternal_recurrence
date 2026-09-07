@@ -469,9 +469,14 @@ zg361.5 = {
 
 	option = { # 依律处置：复用 AI 裁决逻辑
 		name = zg361.5.a
-		every_vassal = {
-			limit = { zg361_is_elimination_candidate_trigger = yes }
-			zg361_ai_elimination_effect = yes
+		# The purge score is action-local scratch state. CK3 tooltip building
+		# does not commit the leading set_variable before reading later score
+		# gates, so keep the real batch adjudication out of speculative preview.
+		hidden_effect = {
+			every_vassal = {
+				limit = { zg361_is_elimination_candidate_trigger = yes }
+				zg361_ai_elimination_effect = yes
+			}
 		}
 	}
 

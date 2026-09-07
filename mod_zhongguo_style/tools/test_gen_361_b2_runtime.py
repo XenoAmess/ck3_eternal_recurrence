@@ -761,6 +761,25 @@ class B2CK3RuntimeTests(unittest.TestCase):
             r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
         )
 
+    def test_player_elimination_keeps_scratch_state_out_of_tooltips(self) -> None:
+        dispatcher = top_level_block(
+            self.core, "zg361_process_elimination_effect"
+        )
+        event = top_level_block(self.core_events, "zg361.5")
+        self.assertRegex(
+            dispatcher,
+            r"hidden_effect\s*=\s*\{\s*"
+            r"trigger_event\s*=\s*\{\s*id\s*=\s*zg361\.5\s+days\s*=\s*2\s*\}",
+        )
+        option_a = event.split("name = zg361.5.a", 1)[1].split(
+            "name = zg361.5.b", 1
+        )[0]
+        self.assertRegex(
+            option_a,
+            r"hidden_effect\s*=\s*\{\s*every_vassal\s*=\s*\{[\s\S]*?"
+            r"zg361_ai_elimination_effect\s*=\s*yes",
+        )
+
     def test_075_route_c_cannot_open_a_ghost_exit_offer(self) -> None:
         escalation = top_level_block(
             self.effects, "zg361_b2_m071_open_escalation_effect"

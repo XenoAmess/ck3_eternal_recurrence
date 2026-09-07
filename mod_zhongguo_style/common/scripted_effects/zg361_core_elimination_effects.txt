@@ -24,7 +24,12 @@ zg361_process_elimination_effect = {
 		}
 		else = {
 			# 玩家皇帝：弹末位淘汰处置事件（总览 zg361.1 之后）
-			trigger_event = { id = zg361.5 days = 2 }
+			# The upstream annual option is rendered before this delayed event
+			# exists. Do not make tooltip construction speculatively execute the
+			# target event's scratch-count immediate block.
+			hidden_effect = {
+				trigger_event = { id = zg361.5 days = 2 }
+			}
 		}
 	}
 }
