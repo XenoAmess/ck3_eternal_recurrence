@@ -1422,6 +1422,56 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:title_heir:differs_from"])
 
+    def test_eunuch_rival_opener_only_acknowledges_immediate_result(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.3010"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=218,
+            date_raw=53229168,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("origin_liege", "character", 32904),
+                _scope("origin", "landed_title"),
+                _scope("rival", "character", 16844822),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229168,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 218},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        same_rival = copy.deepcopy(context)
+        same_rival["saved_scopes"][6] = _scope(
+            "rival", "character", 31801
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229168,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 218},
+            context=same_rival,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:rival:differs_from"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

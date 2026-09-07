@@ -1126,6 +1126,53 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.3010": {
+        # CK3 1.19.0.6 eunuch-rival story node. The immediate block creates
+        # or recruits the dynamic rival, stores it on the story and installs
+        # the rivalry before the modal opens. Its sole option contains only
+        # show_as_tooltip for that already-applied relation. Bind the complete
+        # source-authored frame before acknowledging it.
+        "date_raw": 53229168,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+            "origin_liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("rival",),
+            "rival": ("eunuch",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "origin_liege": "character",
+            "origin": "landed_title",
+            "rival": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "origin_liege",
+            "origin",
+            "rival",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
