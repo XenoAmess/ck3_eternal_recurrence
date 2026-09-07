@@ -1296,6 +1296,59 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.3001": {
+        # CK3 1.19.0.6 eunuch-student node. Before the modal opens, the
+        # immediate block has already selected/created and recruited the
+        # student, installed the mentor relation, granted two skill points and
+        # stored the student on the story. The sole authored option is empty.
+        # Bind the complete frame, including the observed origin-liege alias,
+        # then acknowledge the already-applied result.
+        "date_raw": 53243184,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+            "origin_liege": (32904,),
+            "student": (32904,),
+        },
+        "character_scope_matches_any": {
+            "origin_liege": ("eunuch",),
+        },
+        "character_scope_differs_from": {
+            "student": ("eunuch", "rival"),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "rival": "character",
+            "origin_liege": "character",
+            "origin": "landed_title",
+            "student": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "rival",
+            "origin_liege",
+            "origin",
+            "student",
+        ),),
+        "saved_scope_count": 8,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_story_cycle_admin_eunuch.5010": {
         # CK3 1.19.0.6 upset-family node. Its immediate block has already
         # selected a dynamic family rival, installed the eunuch rivalry and

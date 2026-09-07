@@ -1551,6 +1551,57 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:title_heir:differs_from"])
 
+    def test_eunuch_student_story_node_acknowledges_immediate_setup(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.3001"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=236,
+            date_raw=53243184,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("rival", "character", 16844822),
+                _scope("origin_liege", "character", 31801),
+                _scope("origin", "landed_title"),
+                _scope("student", "character", 69909),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243184,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 236},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        origin_liege_drift = copy.deepcopy(context)
+        origin_liege_drift["saved_scopes"][5] = _scope(
+            "origin_liege", "character", 31802
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243184,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 236},
+            context=origin_liege_drift,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:origin_liege:matches_any"])
+
     def test_eunuch_rival_opener_only_acknowledges_immediate_result(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.3010"
         contract = _manager_contract(event_key, player=32904)
