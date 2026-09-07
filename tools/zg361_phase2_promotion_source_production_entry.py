@@ -508,16 +508,27 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # rendered buttons map to native indices 1/2. Authored option 2 spends
         # major gold and transfers the generated blade; authored option 3 is
         # the terminal refusal and adds no gameplay effect. Bind the complete
-        # eleven-scope frame, including the generated merchant/blade lineage,
-        # before selecting that least-disruptive terminal route.
+        # eleven-scope frame, including the source-defined holder/owner and
+        # generated merchant lineage, before selecting that least-disruptive
+        # terminal route. R286 proved the R183 holder and merchant IDs were
+        # allocator output, while their relationships stayed exact.
         "date_raw": 53174184,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
         "character_scopes": {
-            "exotic_blade_holder": 34092,
             "exotic_arms_target": 32904,
-            "owner": 34092,
-            "foreign_merchant": 65791,
+        },
+        "character_scope_matches_any": {
+            "exotic_blade_holder": ("owner",),
+            "owner": ("exotic_blade_holder",),
+        },
+        "character_scope_differs_from": {
+            "exotic_blade_holder": (
+                "exotic_arms_target", "foreign_merchant",
+            ),
+            "foreign_merchant": (
+                "exotic_blade_holder", "exotic_arms_target", "owner",
+            ),
         },
         "scope_types": {
             "exotic_blade_holder": "character",

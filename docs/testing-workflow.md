@@ -2058,3 +2058,13 @@ warm-up PID `76624` 在 11.003 秒到达 authenticated Frontend 后完整回收�
 同一 client 在 `53211192` 再次交付 `debate_event.5110`。旧合同的 `max_occurrences=1` 先于第二次 identity check fail-closed，所以该轮属于 harness occurrence RED，不能声称产品 agenda 修复已 live 验收。现只把上限扩到两次实机已见投递，继续沿用源码审阅后的 option 2/native 1 与 scope variants；第三次仍 fail-closed。R286 必须先让第二次完整 exact checks GREEN，再评估 R284 的 11 条产品签名。
 
 R285 report / loader gate / relay execution SHA-256 分别为 `97743C6DDAF7ED4398CF094C1C6EF9EF80B22FE779BCB85C3C83FB3ABB9336EC` / `6631296D73467E6D4C36C4630EF8C97C9D72B9FC600E72E3DAEE788B2120DB83` / `578377A7846C1298F58FC578C5AE423E8F078C18D9202E2E84CA044CAB1F7547`。final cleanup `cleanup_proven/tree_gone`，最终进程槽为空。
+
+### R286：exotic-arms 动态角色关系合同（2026-09-08）
+
+R286 绑定 `bacde5a`；产品 tree 仍为 `A2956F699EF91612C5B79534BF9AA01B15EF07FCECBE4E58601E65CE57E4598D`，projection / release manifest / ZIP SHA-256 为 `55D514F5807726D39C404BBE8701074C0D045A364D43061BF9E561F7EC3F8FA0` / `EBA2AE353C94569B1FF382F176F4C8C84BAB0F77DFF0B432B89E2BD515687B3A` / `87F14C40B2246FE9750525BC88B3781B3E8CEFF25CBD734D7B15BE391612E96B`。1,031 files verify GREEN；no-launch preflight `41C80CA167A96123A5719492A6CD81B33059646214CF8E92A2304A7D8FE37762` READY。
+
+final PID `199412` 获得 loader `303/303`、fatal `0`、Load Save、paused/map/mailbox，exact 关闭 `debate_event.5110` `202/53203368`、`ep3_decisions_event.2001` `203/53203440`、`tgp_movement_events.0070` `204/53205336`。下一事件 `ep1_flavor.2040` 于 `53206056` 只有 `exotic_blade_holder`、`owner`、`foreign_merchant` 三项 identity check 为 false；event/root/date、11 个 scope 的名称/类型/数量及 rendered/native option shape 均通过。
+
+原版 `events/dlc/ep1/ep1_flavor_events.txt` SHA-256 `CC4CD67B77F9FA7B83E3B7A5534045F0DBFC1E724C53182E19ED7884BAD10924` 明确由 `.2041` caller 保存 `exotic_blade_holder`，artifact 创建时 owner 取该 holder，target 为随后收到 `.2040` 的角色，foreign merchant 则在本次链路动态创建。故 R183 的三个非玩家数值 ID 不是跨重放合同；替代合同要求 holder=owner、target=当前玩家、holder/owner 与 target/merchant 不同、merchant 与三个角色均不同，并继续保留原有 type/name/count/option 约束。
+
+R286 report / loader / entry / cleanup / relay SHA-256 分别为 `BC26E32BF2B64D76D187AA1F1041203A6D9C12D15D10739F9AB67638498243E1` / `733D09E3B22F3E67E01538E93EAA14C7512AA8DE75C9E77D59A86A32AF3CE44A` / `A91325573004F710D490355A47763E1BFA8BAAD41AD86E311C47F5F1EC1D81E6` / `C697EBD18F7A685EFA041CB9162BAC92622F396CB63984BAFF53068EB3B493AD` / `5A9667BE98AF600D231BAA160DE0B2693BAF3D7859C3A4C0BF5B0B5179CDF412`。cleanup 后实时 CK3/injector 槽为空；此轮仍为 harness RED，不能计作 agenda live 归零。

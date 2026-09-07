@@ -6128,11 +6128,33 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         extra_scope["saved_scopes"].append(scope("unreviewed", "value"))
         self.assertFalse(checks_for(extra_scope)["saved_scope_count"])
 
-        wrong_holder = copy.deepcopy(context)
-        wrong_holder["saved_scopes"][0] = scope(
-            "exotic_blade_holder", "character", 34093
+        rerolled_lineage = copy.deepcopy(context)
+        rerolled_lineage["saved_scopes"][0] = scope(
+            "exotic_blade_holder", "character", 54123
         )
-        self.assertFalse(checks_for(wrong_holder)["scope:exotic_blade_holder"])
+        rerolled_lineage["saved_scopes"][2] = scope(
+            "owner", "character", 54123
+        )
+        rerolled_lineage["saved_scopes"][9] = scope(
+            "foreign_merchant", "character", 78123
+        )
+        self.assertTrue(all(checks_for(rerolled_lineage).values()))
+
+        wrong_owner = copy.deepcopy(rerolled_lineage)
+        wrong_owner["saved_scopes"][2] = scope(
+            "owner", "character", 54124
+        )
+        self.assertFalse(
+            checks_for(wrong_owner)["scope:owner:matches_any"]
+        )
+
+        reused_merchant = copy.deepcopy(rerolled_lineage)
+        reused_merchant["saved_scopes"][9] = scope(
+            "foreign_merchant", "character", 54123
+        )
+        self.assertFalse(
+            checks_for(reused_merchant)["scope:foreign_merchant:differs_from"]
+        )
 
         purchase_only_shape = copy.deepcopy(context)
         purchase_only_shape["options"] = purchase_only_shape["options"][:1]
