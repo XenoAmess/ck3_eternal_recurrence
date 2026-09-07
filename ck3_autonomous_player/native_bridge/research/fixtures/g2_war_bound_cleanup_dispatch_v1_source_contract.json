@@ -4,7 +4,7 @@
   "game_version": "1.19.0.6",
   "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "candidate_base_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
-  "current_canonical_source_commit": "549076fe4bd99ce401cac27411cebd7f004c5425",
+  "current_canonical_source_commit": "804ef3dfb5194eedc73e93b3ccf54ad226336130",
   "default_enabled": false,
   "cmake_options": {
     "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": true,
@@ -15,7 +15,7 @@
   "source_files": [
     {
       "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
-      "sha256": "0F871589014C9FE3F0D93AA8072AD830A2AB10D9BCAD64FE5F9138AD5FA6063E"
+      "sha256": "540B00F59117B2C30DA19E85C7899C42A7DC0BE2EA28A2F708850C7CE099B52F"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_adapter.hpp",
@@ -27,7 +27,7 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
-      "sha256": "EFE8992173718B8CA4071F32698690FEEFD42FF867C81A0CB417BC11BE939C82"
+      "sha256": "57F2EECD5CC4C7BB609BADF67FDF3D0378EA317FC3B9A3D0F4D95BD69484F019"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp",
@@ -43,7 +43,7 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
-      "sha256": "8085974A9B7B82C1C02A3EE1A73277E5FD6A69CFCE282443FE6945C1FFD0348B"
+      "sha256": "33F3C33A1FAA61148B9FA93830ED7EFF09CCD74BC34B0A10E8553E1F4FBA016D"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",

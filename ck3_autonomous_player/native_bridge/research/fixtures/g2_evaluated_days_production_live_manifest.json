@@ -53,7 +53,7 @@
     "ck3_autonomous_player/native_bridge/src/g2_truce_preview_entry_observer_v1_test.cpp": "16F1D209C12D1CA2F260DB983DC296F19325196AF32ECF81ED4F56FDE31AD418",
     "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_truce_v1_source_contract.json": "DF720CD33D3606634378A5CFF20D77227B82A35265269789BDE4A51CFF988E0D",
     "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_surrender_six_domain_v1_source_contract.json": "C83DE7B0176935E9BBA69C7FBC29E28282735F0F0977218CF7E941E3969D9D1C",
-    "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json": "1BBE816F242D09C5F4E91DE873A65AFB1634797568A26E64FA3C338FCBB1D0E9",
+    "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_continue_vs_surrender_policy_v1_contract.json": "6D56575B488B650CACD3A305B82D259903DD631DCA095E659B29BDE48190DFAC",
     "ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py": "5B92FA22E33DE415327FF85A78DE0C69CD7C611AC8F5A818726C268804496242",
     "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py": "F33B6BE0045D882FF9A8877AC3CF5596BF05B53240062B67D0E06AD7E2D0E4BB",
     "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_truce_probe.py": "2BD5CA2DF151FF0C42EB3C00AE3CB2A59A9E669D81B47183A457D9958DB6B64E",

@@ -9,12 +9,12 @@
   "frozen_inputs": [
     {
       "path": "docs/ck3-native-ai/war-termination.md",
-      "sha256": "1D2499B3DF114ECD2B8F4BB5C3693FFF4439E7D0214B0E238F31ECC0B9D2EEE5",
+      "sha256": "BF20D739FB1742FF66A061A837D466D5CD56C5BDD2DD4C8FB32751E5E3149D85",
       "semantic_contract": "exact-build options, original AI termination tree, Raiktor terms and six-domain readiness boundaries"
     },
     {
       "path": "docs/ck3-native-ai/player-war-exit-policy.md",
-      "sha256": "9B02C8AB70413954618E38A7E35A200D8954405A8440A3F7890DE014B91DC3BA",
+      "sha256": "0F1F7065EAB1388A06C150B09A2C01A2BB8E999BFEFF57CFE4460DAB9E7D5DC8",
       "semantic_contract": "continue and surrender require complete campaign evidence, explicit loss budgets and robust risk-adjusted utility comparison"
     },
     {
