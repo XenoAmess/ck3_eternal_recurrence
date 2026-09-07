@@ -149,4 +149,29 @@ CREDIT_PROJECT_REPORTING_POLICY_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.56": {
+        # R220 reached forwarded credit. Route A records forwarding with zero
+        # source/manager deltas and preserves the report's 7000/2000/1000
+        # shares. Route B permanently transfers 500 bps from subject to
+        # manager; route C opens defer/debt. A advances I state 2 -> 3 and the
+        # D+1 hidden .9257 edge preserves the itemized .57 continuation.
+        "date_raw": 53187216,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
