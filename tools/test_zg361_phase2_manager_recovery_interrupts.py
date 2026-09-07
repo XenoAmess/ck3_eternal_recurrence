@@ -816,6 +816,34 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
     def test_epidemic_notice_avoids_physician_followup_chain(self) -> None:
         event_key = "epidemic_events.1100"
         contract = _manager_contract(event_key, player=32904)
+        for native_indices in ((0, 1), (0, 2)):
+            with self.subTest(native_indices=native_indices):
+                context = _context(
+                    event_key=event_key,
+                    instance_id=14,
+                    date_raw=53148360,
+                    player=32904,
+                    scopes=[
+                        _scope("epidemic", "epidemic"),
+                        _scope("province", "province"),
+                        _scope("infected_county", "landed_title"),
+                    ],
+                    native_option_indices=native_indices,
+                )
+                checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": 53148360,
+                        "active_event": {"option_count": 3},
+                    },
+                    event={"event_instance_id": 14},
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
         context = _context(
             event_key=event_key,
             instance_id=14,
@@ -828,23 +856,8 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             ],
             native_option_indices=(0, 2),
         )
-        checks = production._known_interrupt_checks(
-            snapshot={
-                "date_raw": 53148360,
-                "active_event": {"option_count": 3},
-            },
-            event={"event_instance_id": 14},
-            context=context,
-            event_key=event_key,
-            contract=contract,
-        )
-
-        self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["selected_option_number"], 1)
-        self.assertEqual(contract["selected_native_option_index"], 0)
-
         drifted = copy.deepcopy(context)
-        drifted["options"][1]["native_option_index"] = 1
+        drifted["options"][1]["native_option_index"] = 3
         drift_checks = production._known_interrupt_checks(
             snapshot={
                 "date_raw": 53148360,

@@ -645,12 +645,13 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # CK3 1.19.0.6 outbreak notification. Its immediate block has already
         # recorded the notified epidemic and installed county-side outbreak
         # effects before the modal opens. In R151 the manager had no court
-        # physician, so authored option 2 was hidden and the rendered buttons
-        # mapped to native indices 0 and 2. Native option 2 starts a physician
-        # search and a later health-event chain; option 0 only applies the
-        # source-authored -2 governor trait XP when eligible. Select option 0
-        # as the smallest unrelated mutation, after binding all three typed
-        # saved scopes and the complete resource-dependent option shape.
+        # physician, so the rendered buttons mapped to native indices 0/2; in
+        # R289 the manager had a physician and they mapped to 0/1 instead.
+        # Native options 1/2 both start a later physician/health event chain;
+        # option 0 only applies the source-authored -2 governor trait XP when
+        # eligible. Select option 0 as the smallest unrelated mutation, after
+        # binding all three typed saved scopes and either exact mutually
+        # exclusive physician-dependent option projection.
         "date_raw": 53148360,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -672,6 +673,20 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 2),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 1),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 2),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+        ),
         "max_occurrences": 1,
     },
     "ep3_interactions_events.0630": {
