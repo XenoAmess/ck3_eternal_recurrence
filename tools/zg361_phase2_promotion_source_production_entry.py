@@ -147,7 +147,10 @@ HOURS_PER_DAY = 24
 # pause can become visible to Python before the next heartbeat has replaced
 # every cached Snapshot field used by the query's direct-read equality gate.
 PAUSED_PROGRESS_SETTLE_SECONDS = 0.35
-MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 4
+# R244 observed four consecutive, input-free revision rejections while a
+# speed-5 map naturally advanced.  Keep the exact revision gate, but allow a
+# second four-attempt window for the idempotent control to bind a quiet frame.
+MAX_PRE_SUBMISSION_REBIND_ATTEMPTS = 8
 ZG361_6_RETAIN_WAIT_DAYS = 365
 ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS = 10.0
 _TRANSIENT_PROGRESS_BINDING_ERRORS = (

@@ -1353,6 +1353,57 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(audit[0]["stale_revision"], 118)
         self.assertFalse(audit[0]["request_submitted"])
 
+    def test_pause_rebind_survives_r244_four_revision_burst(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.snapshot_revisions = iter((70, 72, 75, 78, 81))
+                self.current_revision = 0
+                self.attempted_revisions: list[int] = []
+
+            def snapshot(self) -> dict[str, object]:
+                self.current_revision = next(self.snapshot_revisions)
+                return {
+                    "map_ready": True,
+                    "revision": self.current_revision,
+                    "date_raw": 53191392,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {"connection_generation": 56},
+                    "paused": False,
+                    "speed": 5,
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                if step != "pause-map":
+                    raise AssertionError(f"unexpected step: {step}")
+                if expected_revision != self.current_revision:
+                    raise AssertionError("revision gate was weakened")
+                self.attempted_revisions.append(expected_revision)
+                if len(self.attempted_revisions) <= 4:
+                    current = (71, 74, 76, 80)[len(self.attempted_revisions) - 1]
+                    raise production.PreSubmissionRevisionMismatchError(
+                        "native gameplay revision mismatch: "
+                        f"expected {expected_revision}, current {current}"
+                    )
+                return {"accepted": True, "status": "submitted"}
+
+        service = Service()
+        audit: list[dict[str, object]] = []
+        result = production._map_control_from_latest_binding(
+            service,
+            step="pause-map",
+            player=32904,
+            connection_generation=56,
+            rebind_audit=audit,
+        )
+
+        self.assertEqual(result, {"accepted": True, "status": "submitted"})
+        self.assertEqual(service.attempted_revisions, [70, 72, 75, 78, 81])
+        self.assertEqual([item["attempt"] for item in audit], [1, 2, 3, 4])
+        self.assertTrue(all(item["step"] == "pause-map" for item in audit))
+        self.assertTrue(all(item["request_submitted"] is False for item in audit))
+
     def test_zg361_6_modal_wait_controls_only_the_same_pid_and_event(self) -> None:
         class Service:
             def __init__(self) -> None:
