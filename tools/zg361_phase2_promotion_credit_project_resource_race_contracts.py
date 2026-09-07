@@ -138,4 +138,30 @@ CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.27": {
+        # R214 reached signed contribution allocation. Routes A/B create the
+        # same complete business record, but A protects the subject's work at
+        # 7000/2000/1000 subject/manager/cross basis points versus B's
+        # 5000/3000/2000. Route C creates portfolio defer/debt and suppresses
+        # the later itemized A/B tree. Route A is the least appropriative
+        # deterministic mutation and mode 4 continues via hidden .9231 to .31.
+        "date_raw": 53187072,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
