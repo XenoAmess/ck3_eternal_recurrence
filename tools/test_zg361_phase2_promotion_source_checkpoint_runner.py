@@ -3202,6 +3202,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             retained_seed_pending_names,
             watchdog_recovery_names,
             central_active_names,
+            cross_domain_active_names,
         ) = contract["saved_scope_name_sets"]
         character_names = {
             "zg361_b1_calibration_watchdog_owner": 29037,
@@ -3211,6 +3212,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "zg361_b1_reopen_ticket_subject": 45214,
             "zg361_b1_reopen_ticket_owner": 29037,
             "zga_phase2_seed_player": 29037,
+            "zg361_cp_e_active_manager": 29037,
+            "zg361_cp_e_cross_reviewer": 32904,
+            "zg361_cp_e_historical_owner": 29037,
+            "zg361_cp_e_owner": 29037,
+            "zg361_cp_e_subject": 45214,
+            "zg361_cp_e_successor_manager": 32904,
+            "zg361_p3_aa_owner": 29037,
+            "zg361_p3_aa_subject": 45214,
         }
 
         def context_for(names: tuple[str, ...]) -> dict[str, object]:
@@ -3273,6 +3282,16 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         central_active_checks = checks_for(central_active_names)
         self.assertTrue(all(central_active_checks.values()), central_active_checks)
+        cross_domain_active_checks = checks_for(cross_domain_active_names)
+        self.assertTrue(
+            all(cross_domain_active_checks.values()), cross_domain_active_checks
+        )
+        self.assertTrue(
+            cross_domain_active_checks["scope:zg361_cp_e_owner:optional_type"]
+        )
+        self.assertTrue(
+            cross_domain_active_checks["scope:zg361_p3_aa_case:optional_type"]
+        )
         self.assertIn(
             "scope:zg361_b1_calibration_watchdog_owner:optional",
             watchdog_recovery_checks,
@@ -3305,6 +3324,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         extra_names = central_active_names + ("unrelated_scope",)
         extra_checks = checks_for(extra_names)
         self.assertFalse(extra_checks["saved_scope_names_exact"])
+        missing_cross_domain_checks = checks_for(cross_domain_active_names[:-1])
+        self.assertFalse(
+            missing_cross_domain_checks["saved_scope_names_exact"]
+        )
 
         self.assertEqual(
             set(MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS),
