@@ -1767,6 +1767,64 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_eunuch_seduction_plot_avoids_duel_and_triple_imprisonment(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.4010"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=237,
+            date_raw=53243328,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("student", "character", 69909),
+                _scope("rival", "character", 16844822),
+                _scope("spouse", "character", 32797),
+                _scope("seducer", "character", 31440),
+                _scope("had_sex_root_character", "character", 31440),
+                _scope("had_sex_with_effect_partner", "character", 32797),
+                _scope("new_memory", "character_memory"),
+                _scope("secret", "secret"),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243328,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 237},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        had_sex_alias_drift = copy.deepcopy(context)
+        had_sex_alias_drift["saved_scopes"][8] = _scope(
+            "had_sex_root_character", "character", 31441
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243328,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 237},
+            context=had_sex_alias_drift,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:seducer:matches_any"])
+        self.assertFalse(
+            drift_checks["scope:had_sex_root_character:matches_any"]
+        )
+
     def test_eunuch_puppet_heir_binds_distinct_current_heir(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.5020"
         contract = _manager_contract(event_key, player=32904)

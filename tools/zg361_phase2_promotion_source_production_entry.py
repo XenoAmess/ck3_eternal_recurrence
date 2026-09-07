@@ -1445,6 +1445,77 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.4010": {
+        # CK3 1.19.0.6 seduction/murder-plot node. Its immediate block has
+        # already selected the spouse and eunuch-family seducer and may already
+        # have installed their lover relation or placed them in a murder
+        # scheme. Native option 0 runs an intrigue duel, while native option 1
+        # imprisons all three characters and adds major tyranny. Native option
+        # 2 only applies the authored prestige/stress cost. Bind both immediate
+        # had-sex aliases, the generated memory/secret and the full story frame
+        # before taking that narrow terminal route.
+        "date_raw": 53243328,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "student": (32904,),
+            "rival": (32904,),
+            "spouse": (32904,),
+            "seducer": (32904,),
+            "had_sex_root_character": (32904,),
+            "had_sex_with_effect_partner": (32904,),
+        },
+        "character_scope_matches_any": {
+            "seducer": ("had_sex_root_character",),
+            "had_sex_root_character": ("seducer",),
+            "spouse": ("had_sex_with_effect_partner",),
+            "had_sex_with_effect_partner": ("spouse",),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("spouse", "seducer"),
+            "spouse": ("eunuch", "seducer"),
+            "seducer": ("eunuch", "spouse"),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "student": "character",
+            "rival": "character",
+            "spouse": "character",
+            "seducer": "character",
+            "had_sex_root_character": "character",
+            "had_sex_with_effect_partner": "character",
+            "new_memory": "character_memory",
+            "secret": "secret",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "student",
+            "rival",
+            "spouse",
+            "seducer",
+            "had_sex_root_character",
+            "had_sex_with_effect_partner",
+            "new_memory",
+            "secret",
+        ),),
+        "saved_scope_count": 12,
+        "option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
     "ep3_story_cycle_admin_eunuch.5020": {
         # CK3 1.19.0.6 puppet-heir node. The immediate block has already made
         # the selected close-family puppet a friend of the eunuch and stored
