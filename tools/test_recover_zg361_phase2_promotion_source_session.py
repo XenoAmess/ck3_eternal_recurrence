@@ -180,11 +180,13 @@ class RecoveryHarness:
         self,
         *,
         unknown_interrupt: bool = False,
+        known_contract_drift: bool = False,
         checkpoint_failure: bool = False,
         end_on_driver_close: bool = False,
         startup_shader_projection: object = None,
     ) -> None:
         self.unknown_interrupt = unknown_interrupt
+        self.known_contract_drift = known_contract_drift
         self.service = _Service(checkpoint_failure=checkpoint_failure)
         self.started = False
         self.start_calls: list[tuple[tuple[object, ...], dict[str, object]]] = []
@@ -261,7 +263,11 @@ class RecoveryHarness:
         evidence = kwargs["evidence_out"]
         evidence.update(
             {
-                "result": "RED" if self.unknown_interrupt else "GREEN",
+                "result": (
+                    "RED"
+                    if self.unknown_interrupt or self.known_contract_drift
+                    else "GREEN"
+                ),
                 "timeline_origin_date_raw": recovery.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
                 "player_character_id": 32904,
             }
@@ -295,6 +301,18 @@ class RecoveryHarness:
                 },
             }
             raise recovery.PromotionProductionEntryError("unknown interrupt")
+        if self.known_contract_drift:
+            raise recovery.PromotionKnownInterruptContractError(
+                {
+                    "classification": "known-interrupt-contract-drift",
+                    "event_definition_key": "ep1_flavor.2040",
+                    "date_raw": 53206056,
+                    "event_instance_id": 205,
+                    "failed_checks": ["scope:foreign_merchant"],
+                    "selection_attempted": False,
+                },
+                "known promotion-timeline interrupt drifted",
+            )
         return dict(evidence)
 
     def stop(self, *args: object, **kwargs: object) -> dict[str, object]:
@@ -1019,6 +1037,36 @@ class RecoveryTests(unittest.TestCase):
             )
             self.assertEqual(retention["result"], "RETAINED")
             self.assertFalse(retention["durable_recovery_ready"])
+
+    def test_input_free_known_contract_drift_retains_healthy_session(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            config, _source_save = self._arrange(Path(temporary))
+            harness = RecoveryHarness(known_contract_drift=True)
+            report = recovery.run(config, runtime=harness.bindings())
+
+            self.assertEqual(report["result"], "RED")
+            self.assertTrue(report["known_interrupt_contract_retention"])
+            self.assertFalse(report["unknown_interrupt_retention"])
+            self.assertTrue(report["session_retained_for_resume_client"])
+            self.assertFalse(harness.stopped)
+            self.assertTrue(harness.driver.closed)
+            self.assertEqual(harness.service.save_calls, 0)
+            failure = report["entry"]["known_interrupt_contract_failure"]
+            self.assertEqual(
+                failure["classification"], "known-interrupt-contract-drift"
+            )
+            self.assertFalse(failure["selection_attempted"])
+            retention = json.loads(
+                (
+                    config.artifacts_dir
+                    / "09_phase2_native_session_retained.json"
+                ).read_text(encoding="utf-8-sig")
+            )
+            self.assertEqual(retention["result"], "RETAINED")
+            self.assertEqual(
+                retention["reason"],
+                "fail_closed_known_interrupt_contract_recovery_boundary",
+            )
 
     def test_supervisor_exit_during_driver_close_revokes_retention_sidecar(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

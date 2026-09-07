@@ -2067,4 +2067,6 @@ final PID `199412` 获得 loader `303/303`、fatal `0`、Load Save、paused/map/
 
 原版 `events/dlc/ep1/ep1_flavor_events.txt` SHA-256 `CC4CD67B77F9FA7B83E3B7A5534045F0DBFC1E724C53182E19ED7884BAD10924` 明确由 `.2041` caller 保存 `exotic_blade_holder`，artifact 创建时 owner 取该 holder，target 为随后收到 `.2040` 的角色，foreign merchant 则在本次链路动态创建。故 R183 的三个非玩家数值 ID 不是跨重放合同；替代合同要求 holder=owner、target=当前玩家、holder/owner 与 target/merchant 不同、merchant 与三个角色均不同，并继续保留原有 type/name/count/option 约束。
 
+R285/R286 还证明：已知事件 occurrence/identity 在任何选择前 fail-closed 时，直接清理健康 PID 会令下一次 fresh 启动重新随机化时间线，显著妨碍同一首错的修复验证。recovery 现用专用 `PromotionKnownInterruptContractError` 只标记 occurrence-bound 或 identity-check 两类明确 `selection_attempted=false` 的失败；它们写出完整 snapshot/event/query/failed-check evidence，并在 map/bridge/PID 健康门通过后保留 session 供原 resume client 连接。选择前 revision 漂移、选择后 postcondition 失败、产品 runtime diagnostic 等其他 RED 仍不进入该分支。
+
 R286 report / loader / entry / cleanup / relay SHA-256 分别为 `BC26E32BF2B64D76D187AA1F1041203A6D9C12D15D10739F9AB67638498243E1` / `733D09E3B22F3E67E01538E93EAA14C7512AA8DE75C9E77D59A86A32AF3CE44A` / `A91325573004F710D490355A47763E1BFA8BAAD41AD86E311C47F5F1EC1D81E6` / `C697EBD18F7A685EFA041CB9162BAC92622F396CB63984BAFF53068EB3B493AD` / `5A9667BE98AF600D231BAA160DE0B2693BAF3D7859C3A4C0BF5B0B5179CDF412`。cleanup 后实时 CK3/injector 槽为空；此轮仍为 harness RED，不能计作 agenda live 归零。

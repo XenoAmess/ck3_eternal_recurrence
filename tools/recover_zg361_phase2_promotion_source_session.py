@@ -43,6 +43,7 @@ from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.environment import make_spec, write_json_atomic  # noqa: E402
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+    PromotionKnownInterruptContractError,
     PromotionProductionEntryError,
     enter_promotion_source_checkpoint_v1,
 )
@@ -863,6 +864,7 @@ def run(
         "loader_gate": None,
         "entry": None,
         "entry_error": None,
+        "known_interrupt_contract_retention": False,
         "unknown_interrupt_retention": False,
         "unexpected_event_durable_checkpoint": None,
         "unexpected_event_durable_recovery_ready": False,
@@ -1026,6 +1028,17 @@ def run(
             entry_evidence = entry_result
             retain_eligible = True
             report["result"] = "GREEN"
+        except PromotionKnownInterruptContractError as error:
+            report["entry_error"] = f"{type(error).__name__}: {error}"
+            entry_evidence["known_interrupt_contract_failure"] = (
+                copy.deepcopy(error.evidence)
+            )
+            retain_eligible = (
+                error.evidence.get("selection_attempted") is False
+            )
+            report["known_interrupt_contract_retention"] = retain_eligible
+            if not retain_eligible:
+                raise
         except PromotionProductionEntryError as error:
             report["entry_error"] = f"{type(error).__name__}: {error}"
             unknown = entry_evidence.get("unexpected_event")
@@ -1069,7 +1082,11 @@ def run(
             reason=(
                 "entry_green_recovery_boundary"
                 if report["result"] == "GREEN"
-                else "fail_closed_unknown_interrupt_recovery_boundary"
+                else (
+                    "fail_closed_known_interrupt_contract_recovery_boundary"
+                    if report["known_interrupt_contract_retention"] is True
+                    else "fail_closed_unknown_interrupt_recovery_boundary"
+                )
             ),
         )
         if report["unknown_interrupt_retention"] is True:

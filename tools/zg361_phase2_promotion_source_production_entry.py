@@ -2381,6 +2381,16 @@ class PromotionBindingError(PromotionProductionEntryError):
         )
 
 
+class PromotionKnownInterruptContractError(PromotionProductionEntryError):
+    """An input-free known-event mismatch that a new client can repair."""
+
+    def __init__(
+        self, evidence: Mapping[str, object], message: str,
+    ) -> None:
+        self.evidence = copy.deepcopy(dict(evidence))
+        super().__init__(message)
+
+
 class PromotionScenarioInvalidatingInterrupt(PromotionProductionEntryError):
     """A recognized vanilla modal whose only route invalidates the scenario."""
 
@@ -3565,9 +3575,21 @@ def _drain_known_timeline_interrupt(
                 "allowed_saved_scope_name_sets="
                 f"{[sorted(names) for names in expected_scope_name_sets]!r}"
             )
-        raise PromotionProductionEntryError(
-            f"known promotion-timeline interrupt {event_key!r} drifted: {failed!r}"
-            f"{diagnostic}"
+        raise PromotionKnownInterruptContractError(
+            {
+                "classification": "known-interrupt-contract-drift",
+                "event_definition_key": event_key,
+                "date_raw": snapshot.get("date_raw"),
+                "event_instance_id": event.get("event_instance_id"),
+                "failed_checks": failed,
+                "identity_checks": copy.deepcopy(checks),
+                "snapshot": copy.deepcopy(dict(snapshot)),
+                "event": copy.deepcopy(dict(event)),
+                "query": copy.deepcopy(dict(query)),
+                "selection_attempted": False,
+            },
+            f"known promotion-timeline interrupt {event_key!r} drifted: "
+            f"{failed!r}{diagnostic}",
         )
 
     if contract.get("handling_policy") == "scenario-invalidating-fail-closed":
@@ -4223,9 +4245,21 @@ def enter_promotion_source_checkpoint_v1(
                 )
                 max_occurrences = int(contract.get("max_occurrences", 1))
                 if occurrence_count >= max_occurrences:
-                    raise PromotionProductionEntryError(
+                    raise PromotionKnownInterruptContractError(
+                        {
+                            "classification": "known-interrupt-occurrence-bound",
+                            "event_definition_key": key,
+                            "date_raw": snapshot.get("date_raw"),
+                            "event_instance_id": event.get("event_instance_id"),
+                            "occurrence_count": occurrence_count,
+                            "max_occurrences": max_occurrences,
+                            "snapshot": copy.deepcopy(dict(snapshot)),
+                            "event": copy.deepcopy(dict(event)),
+                            "query": copy.deepcopy(dict(event_query)),
+                            "selection_attempted": False,
+                        },
                         "known promotion-timeline interrupt exceeded its "
-                        f"occurrence bound: {key!r}"
+                        f"occurrence bound: {key!r}",
                     )
                 if key == "zg361.6" and not _zg361_6_retain_option_ready(
                     event_query
