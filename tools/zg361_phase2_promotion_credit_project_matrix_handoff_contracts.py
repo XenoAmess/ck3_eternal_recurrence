@@ -140,4 +140,29 @@ CREDIT_PROJECT_MATRIX_HANDOFF_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.62": {
+        # R227 reached the recorded matrix choice. Route A records chosen
+        # route 1 with zero integrity delta; B records joint route 3 and adds
+        # one integrity, while C opens defer/debt. A/B both consume the write,
+        # increment the project version, retain J state 2, and use hidden
+        # .9265 D+1 to continue to .65. A has the fewest additional writes.
+        "date_raw": 53187384,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_MATRIX_HANDOFF_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_MATRIX_HANDOFF_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_MATRIX_HANDOFF_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_MATRIX_HANDOFF_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
