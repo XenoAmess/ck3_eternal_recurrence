@@ -71,15 +71,23 @@ def _scope(
 
 
 class VanillaSecretInterruptContractTests(unittest.TestCase):
-    def _r231_frame(self) -> tuple[
+    def _frame(self, *, secret_owner_id: int = 28093) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:
         contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
         character_scopes = contract["character_scopes"]
         scope_types = contract["scope_types"]
+        dynamic_character_scopes = {
+            "secret_owner": secret_owner_id,
+            "secret_exposer": secret_owner_id,
+            "embezzler": secret_owner_id,
+            "local_secret_owner": secret_owner_id,
+        }
         scopes = [
             _scope(name, "character", character_scopes[name])
             if name in character_scopes
+            else _scope(name, "character", dynamic_character_scopes[name])
+            if name in dynamic_character_scopes
             else _scope(name, scope_types[name])
             for name in contract["saved_scope_name_sets"][0]
         ]
@@ -122,7 +130,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             production.KNOWN_TIMELINE_INTERRUPTS["secrets.0122"],
             contract,
         )
-        snapshot, event, context = self._r231_frame()
+        snapshot, event, context = self._frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
             event=event,
@@ -137,9 +145,25 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
 
+    def test_r290_dynamic_secret_owner_aliases_select_authored_forgive(self) -> None:
+        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
+        snapshot, event, context = self._frame(secret_owner_id=27275)
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="secrets.0122",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertTrue(checks["scope:secret_owner:unique_third_party"])
+        self.assertTrue(checks["scope:embezzler:matches_any"])
+        self.assertTrue(checks["scope:local_secret_owner:matches_any"])
+
     def test_r231_frame_rejects_date_scope_alias_and_option_drift(self) -> None:
         contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
-        snapshot, event, context = self._r231_frame()
+        snapshot, event, context = self._frame()
 
         variants = []
         wrong_date = copy.deepcopy(context)
@@ -161,7 +185,14 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             for row in alias_drift["saved_scopes"]
             if row["name"] == "secret_owner"
         )["scope"]["typed_identity"]["character_id"] = 32904
-        variants.append((alias_drift, "scope:secret_owner"))
+        variants.append((alias_drift, "scope:secret_owner:unique_third_party"))
+        derived_alias_drift = copy.deepcopy(context)
+        next(
+            row
+            for row in derived_alias_drift["saved_scopes"]
+            if row["name"] == "embezzler"
+        )["scope"]["typed_identity"]["character_id"] = 30123
+        variants.append((derived_alias_drift, "scope:embezzler:matches_any"))
         option_drift = copy.deepcopy(context)
         option_drift["options"][1]["native_option_index"] = 3
         variants.append((option_drift, "authored_options_exact"))
