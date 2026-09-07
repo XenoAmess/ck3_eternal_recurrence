@@ -162,8 +162,13 @@ class PromotionSourceChoreographyForensicsTests(unittest.TestCase):
         self.assertIn("var:zg361_pp_t_operation_capacity_available >= 1", lifecycle)
         self.assertIn("var:zg361_pp_t_capacity_hours_available >= 1", lifecycle)
         self.assertEqual(m146.count("var:zg361_pp_m146_consumed = 1"), 3)
+        # All three event options now re-enter the purpose-sharded stage
+        # dispatcher; that authoritative shard owns the D+1 m147 ticket.
         self.assertEqual(
-            m146.count("trigger_event = { id = zg361pp.147 days = 1 }"), 3
+            m146.count("zg361_pp_dispatch_t_stage_01_effect = yes"), 3
+        )
+        self.assertIn(
+            "trigger_event = { id = zg361pp.147 days = 1 }", t_stage
         )
         for suffix in ("a", "b", "c"):
             self.assertIn(f"name = zg361pp.147.{suffix}", m147)
