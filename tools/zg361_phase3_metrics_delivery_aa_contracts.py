@@ -89,6 +89,59 @@ PHASE3_METRICS_DELIVERY_AA_CHARACTER_SCOPES: Final = {
     "zg361_p3_aa_subject": 26505,
 }
 
+PHASE3_METRICS_DELIVERY_AA_ITEMIZED_SCHEDULE: Final = (
+    ("zg361p3.229", 53187744),
+    ("zg361p3.230", 53187768),
+    ("zg361p3.231", 53187792),
+    ("zg361p3.232", 53187816),
+    ("zg361p3.233", 53187840),
+    ("zg361p3.234", 53187864),
+    ("zg361p3.235", 53187888),
+    ("zg361p3.236", 53187912),
+    ("zg361p3.237", 53187936),
+    ("zg361p3.240", 53187960),
+    ("zg361p3.238", 53187984),
+    ("zg361p3.239", 53188008),
+    ("zg361p3.241", 53188032),
+)
+
+PHASE3_METRICS_DELIVERY_AA_STAGE_BARRIERS: Final = (
+    (230, 1),
+    (233, 2),
+    (237, 3),
+    (240, 4),
+    (239, 5),
+    (241, 6),
+)
+
+PHASE3_METRICS_DELIVERY_AA_ROUTE_VECTOR: Final = tuple(
+    (event_key, 1, 0)
+    for event_key, _date_raw in PHASE3_METRICS_DELIVERY_AA_ITEMIZED_SCHEDULE
+)
+
+
+def _itemized_contract(date_raw: int) -> dict[str, object]:
+    return {
+        "date_raw": date_raw,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": PHASE3_METRICS_DELIVERY_AA_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in PHASE3_METRICS_DELIVERY_AA_SAVED_SCOPE_NAMES
+            if name not in PHASE3_METRICS_DELIVERY_AA_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            PHASE3_METRICS_DELIVERY_AA_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    }
+
 
 PHASE3_METRICS_DELIVERY_AA_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
@@ -115,5 +168,12 @@ PHASE3_METRICS_DELIVERY_AA_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+    },
+    # .229 is frozen from the R241 live frame. The remaining dates are the
+    # source-proven static schedule: itemized mode queues each next card at
+    # D+1. They deliberately do not claim or bind future event instances.
+    **{
+        event_key: _itemized_contract(date_raw)
+        for event_key, date_raw in PHASE3_METRICS_DELIVERY_AA_ITEMIZED_SCHEDULE
     },
 }
