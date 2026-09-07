@@ -870,6 +870,51 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_epidemic_scapegoat_response_slows_witch_trials(self) -> None:
+        event_key = "epidemic_events.1060"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=212,
+            date_raw=53225568,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("story_scope", "story"),
+            ],
+            native_option_indices=(1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53225568,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 212},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(contract["max_occurrences"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][2] = _scope("story_scope", "situation")
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53225568,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 212},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:story_scope:type"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

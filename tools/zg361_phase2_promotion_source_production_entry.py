@@ -689,6 +689,39 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         ),
         "max_occurrences": 1,
     },
+    "epidemic_events.1060": {
+        # CK3 1.19.0.6 plague-scapegoat response. The immediate block has
+        # already created the plague-witch-hunt story before the modal opens.
+        # Native option 0 is hidden unless the player has very high piety. In
+        # the observed manager frame the complete rendered projection is
+        # therefore native options 1/2. Both install a ten-year county
+        # modifier, but option 1 permits rampant witch trials while option 2
+        # explicitly slows them and starts no additional event. Bind the two
+        # epidemic aliases plus the source-created story before selecting the
+        # deterministic option 2 route.
+        "date_raw": 53225568,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "scope_types": {
+            "epidemic": "epidemic",
+            "epidemic_scope": "epidemic",
+            "story_scope": "story",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "epidemic_scope",
+            "story_scope",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
