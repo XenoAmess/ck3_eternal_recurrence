@@ -892,15 +892,14 @@ def record_operation(mechanism: MechanismSpec, state: int) -> str:
 \t}}
 }}
 else = {{
-\t# Route C is a policy-debt receipt, not a disguised business mutation.  It
-\t# deliberately does not call record_operation and therefore cannot change
-\t# the case revision, last operation, resource ledger, or typed payload.
+\t# Route C is a policy-debt receipt.  The full guard matched the ticket, so
+\t# copy the local tuple: nested scope parameters do not persist reliably.
 \tset_variable = {{ name = zg361_case_kernel_applied value = 1 }}
-\tset_variable = {{ name = {p}_receipt_owner value = $TICKET_OWNER$ }}
-\tset_variable = {{ name = {p}_receipt_subject value = $TICKET_SUBJECT$ }}
-\tset_variable = {{ name = {p}_receipt_cycle value = $TICKET_CYCLE$ }}
-\tset_variable = {{ name = {p}_receipt_case value = $TICKET_CASE$ }}
-\tset_variable = {{ name = {p}_receipt_state value = $TICKET_STATE$ }}
+\tset_variable = {{ name = {p}_receipt_owner value = var:{row["owner"]} }}
+\tset_variable = {{ name = {p}_receipt_subject value = this }}
+\tset_variable = {{ name = {p}_receipt_cycle value = var:{row["cycle"]} }}
+\tset_variable = {{ name = {p}_receipt_case value = var:{row["case"]} }}
+\tset_variable = {{ name = {p}_receipt_state value = var:{row["state"]} }}
 \tset_variable = {{ name = {p}_receipt_route value = 3 }}
 }}'''
 

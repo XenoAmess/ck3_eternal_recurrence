@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 1_053_021)
+        self.assertEqual(len(historical), 1_051_089)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "aa47969df504752690c74e31e693e2193773c6a7a458c096b17f48122ffabc44",
+            "06389c5aa26a8349c7b8d24c4dbfcd9319458fc2a0084e2bc59caa1c30ee4c57",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -220,6 +220,30 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             payload = f"zg361_pp_m{mid:03d}_{row.field}"
             writes = re.findall(rf"name = {re.escape(payload)}(?=\s)", block)
             self.assertEqual(len(writes), 2, f"{mid}: C/default payload write leaked")
+
+    def test_c_route_receipt_uses_guarded_local_case_tuple(self) -> None:
+        # CK3 does not reliably materialize nested scope-valued $TICKET_*$
+        # arguments as set_variable values.  After the full guard accepts the
+        # ticket, Route C must copy the authoritative tuple from the case.
+        for row in gen.MECHANISMS:
+            mid = row.mechanism_id
+            domain = row.domain
+            block = effect_block(self.effects, f"zg361_pp_m{mid:03d}_core_effect")
+            expected = (
+                f"name = zg361_pp_m{mid:03d}_receipt_owner value = var:zg361_case_{domain}_owner",
+                f"name = zg361_pp_m{mid:03d}_receipt_subject value = this",
+                f"name = zg361_pp_m{mid:03d}_receipt_cycle value = var:zg361_case_{domain}_cycle_serial",
+                f"name = zg361_pp_m{mid:03d}_receipt_case value = var:zg361_case_{domain}_case_serial",
+                f"name = zg361_pp_m{mid:03d}_receipt_state value = var:zg361_case_{domain}_state",
+            )
+            for token in expected:
+                self.assertIn(token, block, f"{mid}: Route C does not persist {token}")
+            for suffix in ("owner", "subject", "cycle", "case", "state"):
+                self.assertNotIn(
+                    f"name = zg361_pp_m{mid:03d}_receipt_{suffix} value = $TICKET_",
+                    block,
+                    f"{mid}: Route C still persists a nested ticket parameter",
+                )
 
     def test_p1_p2_defer_deadlines_are_exact(self) -> None:
         for row in gen.MECHANISMS:

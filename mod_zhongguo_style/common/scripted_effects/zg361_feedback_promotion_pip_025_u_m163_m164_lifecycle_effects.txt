@@ -129,15 +129,14 @@ zg361_pp_m163_core_effect = {
 			}
 		}
 		else = {
-			# Route C is a policy-debt receipt, not a disguised business mutation.  It
-			# deliberately does not call record_operation and therefore cannot change
-			# the case revision, last operation, resource ledger, or typed payload.
+			# Route C is a policy-debt receipt.  The full guard matched the ticket, so
+			# copy the local tuple: nested scope parameters do not persist reliably.
 			set_variable = { name = zg361_case_kernel_applied value = 1 }
-			set_variable = { name = zg361_pp_m163_receipt_owner value = $TICKET_OWNER$ }
-			set_variable = { name = zg361_pp_m163_receipt_subject value = $TICKET_SUBJECT$ }
-			set_variable = { name = zg361_pp_m163_receipt_cycle value = $TICKET_CYCLE$ }
-			set_variable = { name = zg361_pp_m163_receipt_case value = $TICKET_CASE$ }
-			set_variable = { name = zg361_pp_m163_receipt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_pp_m163_receipt_owner value = var:zg361_case_u_owner }
+			set_variable = { name = zg361_pp_m163_receipt_subject value = this }
+			set_variable = { name = zg361_pp_m163_receipt_cycle value = var:zg361_case_u_cycle_serial }
+			set_variable = { name = zg361_pp_m163_receipt_case value = var:zg361_case_u_case_serial }
+			set_variable = { name = zg361_pp_m163_receipt_state value = var:zg361_case_u_state }
 			set_variable = { name = zg361_pp_m163_receipt_route value = 3 }
 		}
 		if = {
@@ -437,15 +436,14 @@ zg361_pp_m164_core_effect = {
 			}
 		}
 		else = {
-			# Route C is a policy-debt receipt, not a disguised business mutation.  It
-			# deliberately does not call record_operation and therefore cannot change
-			# the case revision, last operation, resource ledger, or typed payload.
+			# Route C is a policy-debt receipt.  The full guard matched the ticket, so
+			# copy the local tuple: nested scope parameters do not persist reliably.
 			set_variable = { name = zg361_case_kernel_applied value = 1 }
-			set_variable = { name = zg361_pp_m164_receipt_owner value = $TICKET_OWNER$ }
-			set_variable = { name = zg361_pp_m164_receipt_subject value = $TICKET_SUBJECT$ }
-			set_variable = { name = zg361_pp_m164_receipt_cycle value = $TICKET_CYCLE$ }
-			set_variable = { name = zg361_pp_m164_receipt_case value = $TICKET_CASE$ }
-			set_variable = { name = zg361_pp_m164_receipt_state value = $TICKET_STATE$ }
+			set_variable = { name = zg361_pp_m164_receipt_owner value = var:zg361_case_u_owner }
+			set_variable = { name = zg361_pp_m164_receipt_subject value = this }
+			set_variable = { name = zg361_pp_m164_receipt_cycle value = var:zg361_case_u_cycle_serial }
+			set_variable = { name = zg361_pp_m164_receipt_case value = var:zg361_case_u_case_serial }
+			set_variable = { name = zg361_pp_m164_receipt_state value = var:zg361_case_u_state }
 			set_variable = { name = zg361_pp_m164_receipt_route value = 3 }
 		}
 		if = {
