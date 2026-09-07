@@ -458,13 +458,21 @@ zg361.5 = {
 	desc = zg361.5.desc
 
 	immediate = {
-		set_variable = { name = zg361_tmp_elim_n value = 0 }
-		every_vassal = {
-			limit = { zg361_is_elimination_candidate_trigger = yes }
-			root = { change_variable = { name = zg361_tmp_elim_n add = 1 } }
+		# The event immediate is also traversed while CK3 builds its visible
+		# description. Speculative traversal does not commit a set/change pair,
+		# so calculate the count as one pure script-value expression instead of
+		# reading action-local scratch state later in the same block.
+		save_scope_value_as = {
+			name = zg361_n_elim
+			value = {
+				value = 0
+				every_vassal = {
+					limit = { zg361_is_elimination_candidate_trigger = yes }
+					add = 1
+				}
+				min = 0
+			}
 		}
-		save_scope_value_as = { name = zg361_n_elim value = var:zg361_tmp_elim_n }
-		remove_variable = zg361_tmp_elim_n
 	}
 
 	option = { # 依律处置：复用 AI 裁决逻辑

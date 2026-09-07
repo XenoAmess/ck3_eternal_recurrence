@@ -779,6 +779,17 @@ class B2CK3RuntimeTests(unittest.TestCase):
             r"hidden_effect\s*=\s*\{\s*every_vassal\s*=\s*\{[\s\S]*?"
             r"zg361_ai_elimination_effect\s*=\s*yes",
         )
+        immediate = event.split("immediate = {", 1)[1].split(
+            "option = {", 1
+        )[0]
+        self.assertNotIn("zg361_tmp_elim_n", immediate)
+        self.assertRegex(
+            immediate,
+            r"save_scope_value_as\s*=\s*\{\s*name\s*=\s*zg361_n_elim\s*"
+            r"value\s*=\s*\{\s*value\s*=\s*0\s*every_vassal\s*=\s*\{\s*"
+            r"limit\s*=\s*\{\s*zg361_is_elimination_candidate_trigger\s*=\s*yes\s*\}\s*"
+            r"add\s*=\s*1\s*\}\s*min\s*=\s*0",
+        )
 
     def test_075_route_c_cannot_open_a_ghost_exit_offer(self) -> None:
         escalation = top_level_block(
