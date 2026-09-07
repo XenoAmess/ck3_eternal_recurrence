@@ -4124,6 +4124,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "health.7500",
             "health.2201",
             "health.1001",
+            "health.3001",
             "health.3104",
             "health.1101",
             "health.1006",

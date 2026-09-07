@@ -148,6 +148,43 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
             "selected_native_option_index": 0,
         },),
     },
+    "health.3001": {
+        # R197 exact delayed physician-search result opened by health.1001's
+        # no-physician route. Vanilla authored five branches, but this frame
+        # has only the high-skill candidate, low-skill candidate, and decline
+        # branches visible (native 1/2/4). Both candidate aliases are exact
+        # live character scopes. Native 1 hires the high-skill candidate and
+        # is the strongest source-authored route for preserving the sick
+        # acceptance owner; native 4 would leave that owner untreated.
+        "date_raw": 53176968,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "sick_character": 32904,
+            "high_skill_option": 49718,
+            "low_skill_option": 36369,
+        },
+        "character_scope_differs_from": {
+            "high_skill_option": ("sick_character", "low_skill_option"),
+            "low_skill_option": ("sick_character", "high_skill_option"),
+        },
+        "scope_types": {
+            "disease_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "sick_character",
+            "disease_type",
+            "high_skill_option",
+            "low_skill_option",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 3,
+        "snapshot_option_count": 5,
+        "native_option_indices": (1, 2, 4),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
     "health.3104": {
         # Vanilla safe-treatment failure opened immediately by health.1001's
         # conservative treatment branch. The treatment outcome and modifiers
