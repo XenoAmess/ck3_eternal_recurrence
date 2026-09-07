@@ -2,28 +2,66 @@
 
 本文冻结当前 `ActiveEvent` 内嵌 `EventTargetScope` 的 root token、named-target vector 与已经实现的
 `query-current-event-window-context-v1` production wire。它回答“值在哪里、如何在 owning thread 原子复制、类型名如何
-稳定解析、哪一种 payload 已有 decoder，以及 wire 怎样诚实表达未闭合 payload”。production wire 已通过静态构建和测试；
-尚未实机读取的 current-event scope 仍不得写成 live 能力。
+稳定解析、哪一种 payload 已有 decoder，以及 wire 怎样诚实表达未闭合 payload”。production wire 已通过静态构建和测试，
+并已在 R193–R207 的 exact-build retained product session 中读取多组真实 root/named scopes。该证据只升级已观察帧的
+Character identity 与完整 named/type inventory，不升级非 Character payload、跨进程稳定性或事件语义。
 
 ## 版本、范围与 readiness
 
 - 游戏版本：`1.19.0.6`
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
 - 机器合同：[`event_window_context_1_19_0_6_abi.json`](../../ck3_autonomous_player/native_bridge/research/event_window_context_1_19_0_6_abi.json)
-- 证据等级：**production wire/static-ready；current-event scope live=false**
+- 证据等级：**production wire/static-ready + observed product frames production-live；generic/fresh-cold breadth pending**
 - 已静态闭合：`ActiveEvent+0x00` zero-offset scope、root generic token、`+0x18/+0x24` named vector、
   `0x18` row、稳定 named key、generic type key、type `4` CharacterID payload decoder、完整 named-row inventory wire、
   C++ serializer/mailbox 以及 Python strict contract。
-- 尚未闭合：paused current-event root/named artifact，以及所有非 Character payload identity。
-- `current_event_scope_product_static_ready=true`、`current_event_scope_wire_ready=true`；
-  `current_event_scope_live_ready=false`、`stable_scopes_ready=false`、
+- 已有 live：R193–R207 同一 exact-build product PID 的 paused current-event root、完整 named-row inventory、stable
+  name/type key，以及所有 type `4` CharacterID 的 generation-validated identity。
+- 尚未闭合：所有非 Character payload identity、跨 fresh process/checkpoint 的通用重验、未观察 event type 的覆盖范围与
+  完整事件 effect/utility 语义。
+- `current_event_scope_product_static_ready=true`、`current_event_scope_wire_ready=true`；观察到的 product frame 可记为
+  `observed_frame_scope_live_ready=true`，但 `generic_fresh_cold_scope_live_ready=false`、
   `semantic_decision_ready=false`。
 
-这里的 `wire_ready=true` 只表示 exact-build reader、DTO、serializer、mailbox、Python contract 与离线测试已经闭合；它不表示
-CK3 paused artifact 已 GREEN。旧的 event-window/indicator live artifact 没有 scope 值，不能用于提升 scope readiness。
+这里的 `wire_ready=true` 仍只表示 exact-build reader、DTO、serializer、mailbox、Python contract 与离线测试闭合；
+R193–R207 artifact 才提供 paused scope live 证据。该证据来自一个 retained product session，不能外推成所有事件类型、
+fresh-cold 稳定性、value payload decoder 或 semantic decision readiness。
 
 本专题是 generic、非宗教事件观测。没有研究或推导 faith、doctrine、tenet、fervor、改宗、宗教改革、holy order
 或 holy-war 专用语义；稳定 type key 也不得被用来展开这些域。
+
+## R193–R207 exact-build product live evidence
+
+R193 以 1,031 文件正式天朝二期投影 fresh launch PID `44264`；R194–R207 均 reconnect 同一 PID，没有游戏重启。
+这段会话把原先仅有静态接线的 scope reader 提升为 observed-frame production-live：
+
+| 边界 | paused scope 证据 | 诚实结论 |
+|---|---|---|
+| R200 `health.1101`, instance `90` | root 为 played CharacterID `32904`；saved inventory 恰为 `sick_character` 与 `disease_type`，没有 `physician` | 证明 exact inventory 能区分缺失 alias；不解码 `disease_type` payload |
+| R203 `zg361.1` | 46 个完整 named rows，混合 calibration/oversight/reopen、B2/P2C/compensation/CH-D 与数值状态 | shape drift 被准确拒绝，未因大 inventory 放宽为 wildcard |
+| R204/R205 | `zg361.5` 有 43 rows（15 Character、28 value）；`zg361pp.149` 有 48 rows（17 Character、31 value） | Character alias 均做 full-generation identity；value 只发布 type key |
+| R206 `zg361pp.150`, instance `129` | `date_raw=53186880`，同样 48 rows（17 Character、31 value），native option `0/1/2` | `root_scope_ready=true`、`saved_scopes_ready=true`；effect preview/semantic decision 仍 false |
+| R207 `zg361pp.151`, instance `130` | `date_raw=53186904`，53 rows（19 Character、34 value），新增五个 `zg361_pp_subject_prompt_*` aliases | 当前 typed RED 帧；没有 exact contract/选择，不是 PP completion |
+
+R207 还对 `.150` 提供了 scope-bound selection lifecycle：所有 identity/name/type 检查为 true，authored option `3` /
+native index `2` 提交后，snapshot `native:933 -> native:934`、revision `2 -> 3`，旧 instance `129` 消失，
+`event_selection.status=event_instance_advanced`。这证明该 observed frame 的查询和后置链，不靠 ACK 推断状态。
+
+- R206 report SHA-256：`5DA38B3F05D92722BCCB685D538F4F02D9C5FC0468F162FA4B7F33CFD5BC651D`。
+- R207 report：`Z:\p2r207promo_resume\report.json`，SHA-256
+  `BC1EB388686709C0E9FC9CB2438D77423BCDDA9E6118E5073268EE0C3515C80C`。
+- 两轮均绑定 CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；R207 为 connection generation `19`。
+
+```mermaid
+flowchart LR
+    A["[static-confirmed] ActiveEvent scope ABI"] --> W["[static-ready] owning-thread production wire"]
+    W --> R["[live-confirmed] R193-R207 retained paused frames"]
+    R --> C["[live-confirmed] CharacterID aliases + complete named/type inventory"]
+    C -. "non-Character payload decoder 未闭合" .-> V["[unknown] value/title/other typed identity"]
+    C -. "尚无 fresh-cold 对照" .-> F["[unknown] generic cross-process breadth"]
+    C -. "完整 effect/utility 不在 scope vector 中" .-> S["[unknown] semantic decision readiness"]
+```
 
 ## zero-offset scope 的三路证明
 
@@ -114,10 +152,10 @@ serializer 在 `0x253BD60` 读取 `[row+0x00]`，经 `0x3B971A0 → 0x3B97090` �
 - generic dispatcher `0x33299E0` 与 Character resolver `0x201AD30` 静态证明该分支；
 - 发布前须经 Character storage generation lookup，并要求 `CCharacter+0x18` 回读完整同一 ID。
 
-这只是 **character payload identity 与 production wire static-ready**。当前 event fixture 没有实读 root/named type-4 token，
-所以不是 current-event scope live；type `4` 以外的 payload 一律保持
+这条 decoder 已在 R193–R207 observed product frames 中实读 root/named type-4 token，因此
+**Character payload identity 与 observed-frame production wire** 具备 scoped live 证据；type `4` 以外的 payload 仍一律保持
 `typed_identity={status: unavailable, reason: generic_scope_payload_identity_not_closed}`。reader 不读取这些 token 的
-`+0x08`，不得把它猜成 CharacterID、TitleID 或任意指针。
+`+0x08`，不得把它猜成 CharacterID、TitleID 或任意指针。该 retained-session 证据也不替代 generic fresh-cold 对照。
 
 ## 已实现的 production wire
 
@@ -176,8 +214,9 @@ production reader 在现有 application-main mailbox callback 内执行：
 5. DTO/mailbox 只携带整数、owned strings/vectors 和 typed status，不携带 token payload、native string、registry、Character
    或 ActiveEvent 指针。
 
-因此 production static 能力不是“把 schema 的 null 改成对象”，而是 exact-build locator、两套名称域、Character generation
-校验、双观察和 strict wire 一起闭合。当前仍缺的是这条路径的 paused live artifact。
+因此 production 能力不是“把 schema 的 null 改成对象”，而是 exact-build locator、两套名称域、Character generation
+校验、双观察和 strict wire 一起闭合。R193–R207 已提供 paused observed-frame artifact；当前仍缺的是 generic/fresh-cold
+覆盖、非 Character payload decoder 与完整 semantic preview，而不是重复证明同一 retained frame 能返回 rows。
 
 ## 完整 `.pdata` 证据
 
@@ -198,7 +237,7 @@ production reader 在现有 application-main mailbox callback 内执行：
 | generic type-name resolver | `0x3B58970..0x3B58A94` | `54E7EAF6...FAB4` |
 | Character target resolver | `0x201AD30..0x201ADB2` | `092646A8...19E7` |
 
-## 已实现路径与下一项 live gate
+## 已实现路径与剩余 live gate
 
 production static 已按下面的顺序实现：
 
@@ -208,9 +247,10 @@ production static 已按下面的顺序实现：
 3. named key 与 generic type key 均做 bounds、fallback、bounded string 和 exact round-trip；
 4. 仅为 type `4` 发布 generation-validated CharacterID；其它 payload 显式 unavailable；
 
-下一项 gate 是用 generic、非宗教、带 root 与 named Character scope 的 paused seed/checkpoint/fresh-cold fixture 实机验收。
-live artifact 未 GREEN 前，`current_event_scope_live_ready` 与 `stable_scopes_ready` 必须保持 false；production wire 中的
-`root_scope_ready/saved_scopes_ready` 是单帧 typed-copy readiness，不能冒充 live readiness。
+observed product frame 的 live gate 已由 R193–R207 关闭。剩余 gate 是用 generic、非宗教、带 root 与 named Character scope 的
+paused seed/checkpoint/fresh-cold fixture 做跨进程复验，并仅在真实决策需要时继续闭合相应非 Character payload decoder。
+production wire 中的 `root_scope_ready/saved_scopes_ready` 仍只是单帧 typed-copy readiness；它们不能冒充跨进程 breadth、
+完整 payload coverage 或 semantic decision readiness。
 
 该切片不会调用 trigger、effect、option selector 或 RNG，也不会执行事件选项。
 
@@ -242,6 +282,6 @@ root slot 全为空。default-off bridge 随后也在同一 RVA 崩溃，所以 
 save、DLC/VFS 指纹、显示设置与核心 runner 配置未发现其它确定差异。这只把“execution token/desktop”确定为当前最有价值的
 A/B 边界，尚不能在没有复跑的情况下宣称因果已证明。
 
-因此下一项 live gate 是在 `xenoa` 的正常交互 PowerShell / `WinSta0\\Default` 中，原样复跑上述 a860702 default-off
-acceptance。当前 `current_event_scope_live_ready=false` 保持不变；不会通过启用 startup guard、伪造资源或把命令 ACK 写成
-scope 观测来绕过该 gate。等待外部 A/B 期间，主线继续实现已经完成原生树前置的最小事件选择策略。
+这两次 2026-08-27 startup RED 继续作为历史失败证据保留，但“scope capability 未触达”的当时结论已由 R193–R207
+真实 product session supersede；不能再用它声称 current-event scope 全局 live=false。仍未完成的是同一 reader 的 generic
+fresh-cold 对照和非 Character payload breadth。后续也不会通过 startup guard、伪造资源或动作 ACK 扩大 live 结论。
