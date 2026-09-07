@@ -986,6 +986,50 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.1001": {
+        # CK3 1.19.0.6 administrative-eunuch story opener. Its immediate
+        # block has already employed and upgraded the dynamic eunuch and
+        # granted the starting influence bonus before the modal is shown.
+        # Native option 0 additionally replaces/grants the chief-eunuch court
+        # position and changes opinion; native option 1 has no effect. Bind
+        # the generated story lineage and choose the terminal no-op route so
+        # this incidental story does not mutate the manager's court roster.
+        "date_raw": 53219664,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+        },
+        "character_scope_matches_any": {
+            "candidate": ("eunuch",),
+        },
+        "scope_types": {
+            "eunuch": "character",
+            "origin": "landed_title",
+            "story": "story",
+            "liege": "character",
+            "candidate": "character",
+            "modifier_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "eunuch",
+            "origin",
+            "story",
+            "liege",
+            "candidate",
+            "modifier_type",
+        ),),
+        "saved_scope_count": 6,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is

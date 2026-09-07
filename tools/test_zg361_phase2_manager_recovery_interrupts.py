@@ -1274,6 +1274,55 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(merged_checks["scope:spymaster:differs_from"])
 
+    def test_eunuch_story_opener_avoids_court_position_mutation(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.1001"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=209,
+            date_raw=53219664,
+            player=32904,
+            scopes=[
+                _scope("eunuch", "character", 31801),
+                _scope("origin", "landed_title"),
+                _scope("story", "story"),
+                _scope("liege", "character", 32904),
+                _scope("candidate", "character", 31801),
+                _scope("modifier_type", "flag"),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53219664,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 209},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        mismatched_candidate = copy.deepcopy(context)
+        mismatched_candidate["saved_scopes"][4] = _scope(
+            "candidate", "character", 31802
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53219664,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 209},
+            context=mismatched_candidate,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:candidate:matches_any"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
