@@ -1,0 +1,44 @@
+{
+  "schema": "xar.vfs_mount_lifecycle_observer_v1.source_contract.v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "required_source_tokens": [
+    "kVfsMountLifecycleCoreInitCallRvaV1",
+    "kVfsMountLifecyclePublisherEntryRvaV1",
+    "kVfsMountLifecyclePublisherReturnRvaV1",
+    "kVfsMountLifecycleSettingsLookupRvaV1",
+    "kVfsMountLifecycleManagerRvaV1",
+    "kVfsMountLifecyclePublisherSlotsV1 = 64",
+    "kVfsMountLifecycleObserverInstalledByDefaultV1 = false",
+    "RecordVfsCoreInitReturnV1",
+    "RecordVfsMountPublisherEnterV1",
+    "RecordVfsMountPublisherReturnV1",
+    "RecordVfsSettingsLookupV1",
+    "publisher_correlation_miss_count",
+    "lookup_classification_fault_count",
+    "primary_thread_suspended_proven"
+  ],
+  "required_integration_tokens": [
+    "src/vfs_mount_lifecycle_observer_v1.cpp",
+    "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1=1",
+    "#include \"xar_bridge/vfs_mount_lifecycle_observer_v1.hpp\"",
+    "kVfsMountLifecycleObserverEnabledV1",
+    "g_vfs_mount_lifecycle_observer_v1",
+    "ReadVfsMountLifecycleObserverV1Diagnostics",
+    "},\\\"vfs_mount_lifecycle_observer_v1\\\":{",
+    "InstallVfsMountLifecycleObserverV1",
+    "UninstallPdxPaths583ProducerObserverV1"
+  ],
+  "forbidden_hook_path_tokens": [
+    "GetCurrentThreadId",
+    "QueryPerformanceCounter",
+    "std::mutex",
+    "std::vector",
+    "std::string",
+    "malloc",
+    "new "
+  ]
+}

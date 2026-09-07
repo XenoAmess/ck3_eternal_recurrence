@@ -84,6 +84,85 @@ class ExtractBridgeObserverStateTests(unittest.TestCase):
         self.assertEqual(decoded["last_hash"], "0xC0242C1D")
         self.assertTrue(decoded["table_after"]["id_583_present"])
 
+    def test_vfs_mount_lifecycle_decoder_uses_frozen_x64_layout(self) -> None:
+        state = bytearray(0x33F8)
+        struct.pack_into("<III", state, 0, 1, 0x0F, 0)
+        struct.pack_into("<Q", state, 0x10, 17)
+        struct.pack_into("<QIIQ", state, 0x18, 1, 1, 42, 9)
+        struct.pack_into("<QQII", state, 0x30, 0x1000, 0x2000, 1, 0)
+        for offset, value in zip(
+            range(0x48, 0x88, 8), (2, 2, 1, 1, 0, 0, 14, 17)
+        ):
+            struct.pack_into("<Q", state, offset, value)
+
+        slot = 0x88 + 3 * 0xC8
+        struct.pack_into("<QQQ", state, slot, 4, 14, 15)
+        struct.pack_into("<IIII", state, slot + 0x18, 42, 42, 1, 1)
+        struct.pack_into("<QQI", state, slot + 0x28, 0xAAAA, 0xBBBB, 1)
+        path = slot + 0x40
+        struct.pack_into("<QIIII", state, path, 0x3000, 4, 1, 0, 0)
+        state[path + 0x18 : path + 0x1C] = b"game"
+        struct.pack_into("<QQII", state, slot + 0x98, 0x1000, 0x2000, 1, 0)
+        struct.pack_into("<QQII", state, slot + 0xB0, 0x1000, 0x4000, 1, 0)
+
+        paths = 0x3288
+        struct.pack_into(
+            "<QQQIIIIQ", state, paths,
+            1, 0x5000, 0x5010, 14, 0, 42, 0, 16
+        )
+        struct.pack_into("<QQII", state, paths + 0x30, 0x1000, 0x4000, 1, 0)
+        checksummed = 0x32D0
+        struct.pack_into(
+            "<QQQIIIIQ", state, checksummed,
+            1, 0x6000, 0x6010, 26, 1, 42, 0, 17
+        )
+        struct.pack_into(
+            "<QQII", state, checksummed + 0x30, 0x1000, 0x4000, 1, 0
+        )
+        struct.pack_into("<Q", state, 0x3318, 3)
+        runtime_values = (
+            0x140000000,
+            0x143B5C410,
+            0x143BE18C5,
+            0x143BE1A0C,
+            0x143BE23A4,
+            0x14585FA30,
+        )
+        for index, value in enumerate(runtime_values):
+            struct.pack_into("<Q", state, 0x3320 + index * 8, value)
+        for index, patch_size in enumerate((5, 5, 5, 8)):
+            hook = 0x3350 + index * 0x20
+            struct.pack_into("<QQ", state, hook, 0x140000000 + index, patch_size)
+            state[hook + 0x10 : hook + 0x18] = bytes([index + 1]) * 8
+            state[hook + 0x18 : hook + 0x20] = bytes([0xE8 + index]) * 8
+        struct.pack_into("<QQQQQ", state, 0x33D0, 1, 2, 3, 4, 5)
+
+        decoded = MODULE.decode_vfs_mount_lifecycle(bytes(state))
+        self.assertTrue(decoded["installed"])
+        self.assertEqual(decoded["installed_mask"], 0x0F)
+        self.assertEqual(decoded["next_sequence"], 17)
+        self.assertEqual(decoded["core_init"]["raw_al"], 1)
+        self.assertEqual(decoded["core_init"]["manager"]["head"],
+                         "0x0000000000002000")
+        self.assertEqual(decoded["publisher"]["entry_count"], 2)
+        self.assertEqual(len(decoded["publisher"]["slots"]), 1)
+        self.assertEqual(decoded["publisher"]["slots"][0]["index"], 3)
+        self.assertEqual(
+            decoded["publisher"]["slots"][0]["path"]["preview_text"], "game"
+        )
+        self.assertEqual(
+            decoded["publisher"]["slots"][0]["manager_after"]["head"],
+            "0x0000000000004000",
+        )
+        self.assertEqual(decoded["paths_lookup"]["path_length"], 14)
+        self.assertEqual(decoded["checksummed_lookup"]["path_length"], 26)
+        self.assertEqual(decoded["lookup_classification_fault_count"], 3)
+        self.assertEqual(decoded["hooks"][3]["patch_size"], 8)
+        self.assertEqual(decoded["manager_address"], "0x000000014585FA30")
+        self.assertEqual(
+            MODULE.OBSERVERS["vfs_mount_lifecycle_observer_v1"][1], 0x33F8
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

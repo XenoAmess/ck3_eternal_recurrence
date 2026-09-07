@@ -8,6 +8,7 @@
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
 #include "xar_bridge/named_path_583_root_observer_v1.hpp"
 #include "xar_bridge/pdx_paths_583_producer_observer_v1.hpp"
+#include "xar_bridge/vfs_mount_lifecycle_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
 #include "xar_bridge/g2_truce_native_callsite_observer_v1.hpp"
@@ -110,6 +111,11 @@ constexpr bool kPdxPaths583ProducerObserverEnabledV1 = true;
 #else
 constexpr bool kPdxPaths583ProducerObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1)
+constexpr bool kVfsMountLifecycleObserverEnabledV1 = true;
+#else
+constexpr bool kVfsMountLifecycleObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
 constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
 #else
@@ -166,6 +172,8 @@ static_assert(!kNamedPath583RootObserverEnabledV1 ||
               kColdMapVfsObserverEnabledV1);
 static_assert(!kPdxPaths583ProducerObserverEnabledV1 ||
               kNamedPath583RootObserverEnabledV1);
+static_assert(!kVfsMountLifecycleObserverEnabledV1 ||
+              kPdxPaths583ProducerObserverEnabledV1);
 static_assert(!(kPhase2PostCallObserverEnabledV1 &&
                 kPhase2PostCallListIdentityObserverEnabledV1));
 
@@ -200,6 +208,8 @@ static xar::bridge::NamedPath583RootObserverV1State
     g_named_path_583_root_observer_v1{};
 static xar::bridge::PdxPaths583ProducerObserverV1State
     g_pdx_paths_583_producer_observer_v1{};
+static xar::bridge::VfsMountLifecycleObserverV1State
+    g_vfs_mount_lifecycle_observer_v1{};
 static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
 static xar::bridge::Phase2PostCallObserverV1State
@@ -318,6 +328,73 @@ void AppendPdxPaths583Table(
   result += '}';
 }
 
+void AppendVfsMountManager(
+    std::string &result, std::string_view name,
+    const xar::bridge::VfsMountManagerDiagnosticsV1 &value) {
+  result += ",\"";
+  result += name;
+  result += "\":{\"manager\":";
+  result += Number(value.manager);
+  result += ",\"head\":";
+  result += Number(value.head);
+  result += ",\"ready_flag\":";
+  result += Number(value.ready_flag);
+  result += ",\"read_fault\":";
+  result += value.read_fault ? "true" : "false";
+  result += '}';
+}
+
+void AppendVfsMountPath(
+    std::string &result, std::string_view name,
+    const xar::bridge::VfsMountPathDiagnosticsV1 &value) {
+  result += ",\"";
+  result += name;
+  result += "\":{\"pointer\":";
+  result += Number(value.pointer);
+  result += ",\"preview_length\":";
+  const auto preview_length =
+      std::min<std::size_t>(value.preview_length, value.preview.size());
+  result += Number(preview_length);
+  result += ",\"terminated\":";
+  result += value.terminated ? "true" : "false";
+  result += ",\"null_pointer\":";
+  result += value.null_pointer ? "true" : "false";
+  result += ",\"read_fault\":";
+  result += value.read_fault ? "true" : "false";
+  result += ",\"preview\":";
+  AppendJsonString(
+      result,
+      std::string_view(
+          reinterpret_cast<const char *>(value.preview.data()),
+          preview_length));
+  result += '}';
+}
+
+void AppendVfsSettingsLookup(
+    std::string &result, std::string_view name,
+    const xar::bridge::VfsSettingsLookupDiagnosticsV1 &value) {
+  result += ",\"";
+  result += name;
+  result += "\":{\"count\":";
+  result += Number(value.count);
+  result += ",\"path_view\":";
+  result += Number(value.path_view);
+  result += ",\"path_data\":";
+  result += Number(value.path_data);
+  result += ",\"path_length\":";
+  result += Number(value.path_length);
+  result += ",\"path_flag\":";
+  result += Number(value.path_flag);
+  result += ",\"thread_id\":";
+  result += Number(value.thread_id);
+  result += ",\"read_fault\":";
+  result += value.read_fault ? "true" : "false";
+  result += ",\"sequence\":";
+  result += Number(value.sequence);
+  AppendVfsMountManager(result, "manager", value.manager);
+  result += '}';
+}
+
 std::string IdentityFrame() {
   const auto &descriptor = xar::game::PreferredAdapterDescriptor();
   std::string result =
@@ -420,6 +497,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadPdxPaths583ProducerObserverV1Diagnostics(
           g_pdx_paths_583_producer_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1)
+  const auto vfs_mount_lifecycle_observer =
+      xar::bridge::ReadVfsMountLifecycleObserverV1Diagnostics(
+          g_vfs_mount_lifecycle_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   const auto phase2_completion_observer =
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(
@@ -481,6 +563,8 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += kNamedPath583RootObserverEnabledV1 ? "true" : "false";
   result += ",\"pdx_paths_583_producer_observer_enabled\":";
   result += kPdxPaths583ProducerObserverEnabledV1 ? "true" : "false";
+  result += ",\"vfs_mount_lifecycle_observer_enabled\":";
+  result += kVfsMountLifecycleObserverEnabledV1 ? "true" : "false";
   result += ",\"g2_truce_preview_entry_observer_enabled\":";
   result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
@@ -729,6 +813,63 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
                          pdx_paths_583_producer_observer.table_before);
   AppendPdxPaths583Table(result, "table_after",
                          pdx_paths_583_producer_observer.table_after);
+#endif
+#if defined(XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1)
+  result += "},\"vfs_mount_lifecycle_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"guard\":false";
+  result += ",\"public_capability\":false,\"installed\":";
+  result += vfs_mount_lifecycle_observer.installed ? "true" : "false";
+#define XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(name) \
+  result += ",\"" #name "\":";                    \
+  result += Number(vfs_mount_lifecycle_observer.name)
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(installed_mask);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(failure_flags);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(next_sequence);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(core_init_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(core_init_raw_al);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(core_init_thread_id);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(core_init_sequence);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(publisher_entry_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(publisher_return_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(publisher_success_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(publisher_failure_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(publisher_correlation_miss_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(publisher_slot_overwrite_count);
+  XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD(lookup_classification_fault_count);
+#undef XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD
+  AppendVfsMountManager(result, "core_init_manager",
+                        vfs_mount_lifecycle_observer.core_init_manager);
+  result += ",\"latest_publisher\":{\"ordinal\":";
+  result += Number(vfs_mount_lifecycle_observer.latest_publisher.ordinal);
+#define XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(name) \
+  result += ",\"" #name "\":";                  \
+  result += Number(vfs_mount_lifecycle_observer.latest_publisher.name)
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(entry_sequence);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(return_sequence);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(entry_thread_id);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(return_thread_id);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(raw_result);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(raw_rcx);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(backend);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(insert_mode);
+#undef XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD
+  result += ",\"return_seen\":";
+  result += vfs_mount_lifecycle_observer.latest_publisher.return_seen
+                ? "true"
+                : "false";
+  AppendVfsMountPath(result, "path",
+                     vfs_mount_lifecycle_observer.latest_publisher.path);
+  AppendVfsMountManager(
+      result, "manager_before",
+      vfs_mount_lifecycle_observer.latest_publisher.manager_before);
+  AppendVfsMountManager(
+      result, "manager_after",
+      vfs_mount_lifecycle_observer.latest_publisher.manager_after);
+  result += '}';
+  AppendVfsSettingsLookup(result, "paths_lookup",
+                          vfs_mount_lifecycle_observer.paths_lookup);
+  AppendVfsSettingsLookup(result, "checksummed_lookup",
+                          vfs_mount_lifecycle_observer.checksummed_lookup);
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   result += "},\"phase2_completion_observer_v1\":{";
@@ -10353,6 +10494,25 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             g_pdx_paths_583_producer_observer_v1, environment)) {
       // Keep the three requested observer transactions atomic before the
       // primary CK3 thread resumes.
+      (void)xar::bridge::UninstallNamedPath583RootObserverV1(
+          g_named_path_583_root_observer_v1);
+      (void)xar::bridge::UninstallColdMapVfsObserverV1(
+          g_cold_map_vfs_observer_v1);
+      return FALSE;
+    }
+  }
+  if (kVfsMountLifecycleObserverEnabledV1) {
+    xar::bridge::VfsMountLifecycleObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallVfsMountLifecycleObserverV1(
+            g_vfs_mount_lifecycle_observer_v1, environment)) {
+      // The private R281 observer set is installed before CK3 resumes. If the
+      // successor transaction fails, restore every earlier compatible hook.
+      (void)xar::bridge::UninstallPdxPaths583ProducerObserverV1(
+          g_pdx_paths_583_producer_observer_v1);
       (void)xar::bridge::UninstallNamedPath583RootObserverV1(
           g_named_path_583_root_observer_v1);
       (void)xar::bridge::UninstallColdMapVfsObserverV1(

@@ -339,6 +339,138 @@ def decode_pdx_paths(data: bytes) -> dict[str, object]:
     }
 
 
+def _vfs_manager_observation(data: bytes, offset: int) -> dict[str, object]:
+    return {
+        "manager": f"0x{_u64(data, offset):016X}",
+        "head": f"0x{_u64(data, offset + 0x08):016X}",
+        "ready_flag": _u32(data, offset + 0x10),
+        "read_fault": bool(_u32(data, offset + 0x14)),
+    }
+
+
+def _vfs_path_observation(data: bytes, offset: int) -> dict[str, object]:
+    preview_length = _u32(data, offset + 0x08)
+    bounded_length = min(preview_length, 64)
+    preview = data[offset + 0x18 : offset + 0x18 + 64]
+    return {
+        "pointer": f"0x{_u64(data, offset):016X}",
+        "preview_length": preview_length,
+        "terminated": bool(_u32(data, offset + 0x0C)),
+        "null_pointer": bool(_u32(data, offset + 0x10)),
+        "read_fault": bool(_u32(data, offset + 0x14)),
+        "preview_hex": preview[:bounded_length].hex().upper(),
+        "preview_text": preview[:bounded_length].decode("utf-8", errors="replace"),
+    }
+
+
+def _vfs_publisher_slot(
+    data: bytes, offset: int, index: int
+) -> dict[str, object]:
+    return {
+        "index": index,
+        "published_ordinal": _u64(data, offset),
+        "entry_sequence": _u64(data, offset + 0x08),
+        "return_sequence": _u64(data, offset + 0x10),
+        "entry_thread_id": _u32(data, offset + 0x18),
+        "return_thread_id": _u32(data, offset + 0x1C),
+        "return_seen": bool(_u32(data, offset + 0x20)),
+        "raw_result": _u32(data, offset + 0x24),
+        "raw_rcx": f"0x{_u64(data, offset + 0x28):016X}",
+        "backend": f"0x{_u64(data, offset + 0x30):016X}",
+        "insert_mode": _u32(data, offset + 0x38),
+        "path": _vfs_path_observation(data, offset + 0x40),
+        "manager_before": _vfs_manager_observation(data, offset + 0x98),
+        "manager_after": _vfs_manager_observation(data, offset + 0xB0),
+    }
+
+
+def _vfs_lookup_observation(data: bytes, offset: int) -> dict[str, object]:
+    return {
+        "count": _u64(data, offset),
+        "path_view": f"0x{_u64(data, offset + 0x08):016X}",
+        "path_data": f"0x{_u64(data, offset + 0x10):016X}",
+        "path_length": _u32(data, offset + 0x18),
+        "path_flag": _u32(data, offset + 0x1C),
+        "thread_id": _u32(data, offset + 0x20),
+        "read_fault": bool(_u32(data, offset + 0x24)),
+        "sequence": _u64(data, offset + 0x28),
+        "manager": _vfs_manager_observation(data, offset + 0x30),
+    }
+
+
+def decode_vfs_mount_lifecycle(data: bytes) -> dict[str, object]:
+    expected_size = 0x33F8
+    if len(data) < expected_size:
+        raise ValueError(
+            f"VFS mount lifecycle state is 0x{len(data):X} bytes; "
+            f"expected at least 0x{expected_size:X}"
+        )
+    publisher_slots: list[dict[str, object]] = []
+    for index in range(64):
+        offset = 0x88 + index * 0xC8
+        published_ordinal = _u64(data, offset)
+        entry_sequence = _u64(data, offset + 0x08)
+        return_sequence = _u64(data, offset + 0x10)
+        if not (published_ordinal or entry_sequence or return_sequence):
+            continue
+        publisher_slots.append(_vfs_publisher_slot(data, offset, index))
+
+    hooks: list[dict[str, object]] = []
+    for index in range(4):
+        offset = 0x3350 + index * 0x20
+        hooks.append(
+            {
+                "index": index,
+                "patch_target": f"0x{_u64(data, offset):016X}",
+                "patch_size": _u64(data, offset + 0x08),
+                "original_hex": data[offset + 0x10 : offset + 0x18].hex().upper(),
+                "installed_patch_hex": data[
+                    offset + 0x18 : offset + 0x20
+                ].hex().upper(),
+            }
+        )
+
+    return {
+        "installed": bool(_u32(data, 0)),
+        "installed_mask": _u32(data, 4),
+        "failure_flags": _u32(data, 8),
+        "next_sequence": _u64(data, 0x10),
+        "core_init": {
+            "count": _u64(data, 0x18),
+            "raw_al": _u32(data, 0x20),
+            "thread_id": _u32(data, 0x24),
+            "sequence": _u64(data, 0x28),
+            "manager": _vfs_manager_observation(data, 0x30),
+        },
+        "publisher": {
+            "entry_count": _u64(data, 0x48),
+            "return_count": _u64(data, 0x50),
+            "success_count": _u64(data, 0x58),
+            "failure_count": _u64(data, 0x60),
+            "correlation_miss_count": _u64(data, 0x68),
+            "slot_overwrite_count": _u64(data, 0x70),
+            "last_entry_sequence": _u64(data, 0x78),
+            "last_return_sequence": _u64(data, 0x80),
+            "slots": publisher_slots,
+        },
+        "paths_lookup": _vfs_lookup_observation(data, 0x3288),
+        "checksummed_lookup": _vfs_lookup_observation(data, 0x32D0),
+        "lookup_classification_fault_count": _u64(data, 0x3318),
+        "module_base": f"0x{_u64(data, 0x3320):016X}",
+        "core_init_target": f"0x{_u64(data, 0x3328):016X}",
+        "publisher_entry_continue": f"0x{_u64(data, 0x3330):016X}",
+        "publisher_return_continue": f"0x{_u64(data, 0x3338):016X}",
+        "settings_lookup_continue": f"0x{_u64(data, 0x3340):016X}",
+        "manager_address": f"0x{_u64(data, 0x3348):016X}",
+        "hooks": hooks,
+        "stub_allocation": f"0x{_u64(data, 0x33D0):016X}",
+        "memory_context": f"0x{_u64(data, 0x33D8):016X}",
+        "virtual_free": f"0x{_u64(data, 0x33E0):016X}",
+        "virtual_protect": f"0x{_u64(data, 0x33E8):016X}",
+        "flush_instruction_cache": f"0x{_u64(data, 0x33F0):016X}",
+    }
+
+
 ObserverDecoder = Callable[[bytes], dict[str, object]]
 
 
@@ -357,6 +489,11 @@ OBSERVERS: dict[str, tuple[str, int, ObserverDecoder]] = {
         "g_pdx_paths_583_producer_observer_v1",
         0x290,
         decode_pdx_paths,
+    ),
+    "vfs_mount_lifecycle_observer_v1": (
+        "g_vfs_mount_lifecycle_observer_v1",
+        0x33F8,
+        decode_vfs_mount_lifecycle,
     ),
 }
 

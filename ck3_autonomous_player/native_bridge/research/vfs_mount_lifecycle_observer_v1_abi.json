@@ -1,0 +1,99 @@
+{
+  "schema": "xar.vfs_mount_lifecycle_observer_v1.abi.v1",
+  "status": "static-ready-no-launch",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "manager": {
+    "singleton_getter_rva": "0x3BDED80",
+    "static_object_rva": "0x585FA30",
+    "head_offset": "0x08",
+    "ready_flag_offset": "0xFA"
+  },
+  "path_view": {
+    "size": 16,
+    "data_offset": "0x00",
+    "length_i32_offset": "0x08",
+    "flag_u8_offset": "0x0C",
+    "paths_settings_length": 14,
+    "checksummed_settings_length": 26
+  },
+  "hooks": [
+    {
+      "name": "core_init_call_return",
+      "patch_rva": "0x07E7136",
+      "target_rva": "0x3B5C410",
+      "semantic_return_rva": "0x07E713B",
+      "patch_size": 5,
+      "anchor_hex": "E8 D5 52 37 03",
+      "branch": "CALL"
+    },
+    {
+      "name": "mount_publisher_entry",
+      "patch_rva": "0x3BE18C0",
+      "continue_rva": "0x3BE18C5",
+      "patch_size": 5,
+      "anchor_hex": "48 89 5C 24 08",
+      "branch": "JMP",
+      "registers": "RCX=raw input,RDX=mount C string,R8=backend override,R9D=insert mode"
+    },
+    {
+      "name": "mount_publisher_return",
+      "patch_rva": "0x3BE1A07",
+      "continue_rva": "0x3BE1A0C",
+      "patch_size": 5,
+      "anchor_hex": "4C 8D 5C 24 50",
+      "branch": "JMP",
+      "registers": "EAX=raw publisher result"
+    },
+    {
+      "name": "filtered_settings_lookup",
+      "patch_rva": "0x3BE239C",
+      "continue_rva": "0x3BE23A4",
+      "patch_size": 8,
+      "anchor_hex": "48 63 4E 08 48 8B 53 38",
+      "branch": "JMP plus three NOP bytes",
+      "registers": "RSI=PathView16 pointer,RBX=manager+8"
+    }
+  ],
+  "state": {
+    "publisher_slots": 64,
+    "path_preview_bytes": 64,
+    "ordering": "one observer-local monotonically increasing sequence across publisher entry/return, core return, and matched settings lookups",
+    "publisher_correlation": "latest unreturned slot for the same TID",
+    "lookup_filter": [
+      "paths.settings",
+      "paths_checksummed.settings"
+    ]
+  },
+  "msvc_x64_layout": {
+    "state_size": "0x33F8",
+    "core_init_offset": "0x18",
+    "publisher_slots_offset": "0x88",
+    "publisher_slot_size": "0xC8",
+    "publisher_slot_count": 64,
+    "paths_lookup_offset": "0x3288",
+    "checksummed_lookup_offset": "0x32D0",
+    "lookup_classification_fault_count_offset": "0x3318",
+    "module_base_offset": "0x3320",
+    "hooks_offset": "0x3350",
+    "hook_size": "0x20",
+    "stub_allocation_offset": "0x33D0"
+  },
+  "policy": {
+    "cmake_option": "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1",
+    "default_enabled": false,
+    "exact_build_only": true,
+    "initial_suspended_install": true,
+    "physical_patches": 4,
+    "single_near_rx_allocation": true,
+    "all_or_none": true,
+    "read_only": true,
+    "guard": false,
+    "public_capability": false,
+    "hook_path_allocation_mutex_qpc_or_win32_tid": false,
+    "requires": "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1"
+  }
+}
