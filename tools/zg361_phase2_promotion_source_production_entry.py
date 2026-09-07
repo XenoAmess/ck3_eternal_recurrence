@@ -763,6 +763,45 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 3,
         "max_occurrences": 1,
     },
+    "char_interaction.0370": {
+        # CK3 1.19.0.6 cease-paying-tribute notification. Its immediate block
+        # has already ended the actor's tributary relation before this letter
+        # opens. The retaliation route (native option 1) is hidden in the
+        # observed frame because can_retaliate_trigger is false; that same
+        # condition also makes the optional legitimacy loss in native option
+        # 0 inert. Bind the sender/recipient and the exact three unavailable
+        # generic interaction slots before acknowledging the sole rendered
+        # no-op option.
+        "date_raw": 53229720,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "recipient": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (32904,),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 1,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is

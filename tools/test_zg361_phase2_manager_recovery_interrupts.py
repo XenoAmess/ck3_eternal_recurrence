@@ -966,6 +966,65 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             drift_checks["scope:peasant_leader:unique_third_party"]
         )
 
+    def test_ceased_tributary_notification_uses_inert_acknowledgement(self) -> None:
+        event_key = "char_interaction.0370"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=215,
+            date_raw=53229720,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 35923),
+                _scope("recipient", "character", 32904),
+                _scope(
+                    "secondary_actor", "character",
+                    unavailable_character=True,
+                ),
+                _scope(
+                    "secondary_recipient", "character",
+                    unavailable_character=True,
+                ),
+                _scope(
+                    "intermediary", "character",
+                    unavailable_character=True,
+                ),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229720,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 215},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][2] = _scope(
+            "secondary_actor", "character", 36354
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229720,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 215},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drift_checks["scope:secondary_actor:unavailable_character"]
+        )
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
