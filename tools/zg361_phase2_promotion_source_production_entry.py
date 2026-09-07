@@ -1030,6 +1030,52 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.2051": {
+        # CK3 1.19.0.6 eunuch-story secret proposal. The immediate block may
+        # already reveal the selected secret to the eunuch. Native option 0
+        # also reveals it to the player, upgrades the eunuch story and harms
+        # the dynamic owner's opinion. Native option 1 does not reveal the
+        # secret to the player or start a follow-up event; it only applies the
+        # authored downgrade/opinion/stress result. Bind the exact no-target
+        # secret frame before choosing that narrower terminal route.
+        "date_raw": 53223312,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "secret_owner": (32904,),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("secret_owner",),
+            "secret_owner": ("eunuch",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "secret": "secret",
+            "secret_owner": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "secret",
+            "secret_owner",
+        ),),
+        "saved_scope_count": 6,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
