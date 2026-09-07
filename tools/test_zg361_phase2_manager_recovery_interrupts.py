@@ -948,6 +948,31 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_native_option_index"], 3)
         self.assertEqual(contract["max_occurrences"], 1)
 
+        conversion_visible = copy.deepcopy(context)
+        conversion_visible["current_event_instance_id"] = 232
+        conversion_visible["date_raw"] = 53237880
+        conversion_visible["options"] = _context(
+            event_key=event_key,
+            instance_id=232,
+            date_raw=53237880,
+            player=32904,
+            scopes=[],
+            native_option_indices=(0, 2, 3),
+        )["options"]
+        conversion_visible_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53237880,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 232},
+            context=conversion_visible,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(
+            all(conversion_visible_checks.values()), conversion_visible_checks
+        )
+
         new_leader_context = copy.deepcopy(context)
         new_leader_context["current_event_instance_id"] = 223
         new_leader_context["date_raw"] = 53239560

@@ -723,17 +723,16 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "max_occurrences": 1,
     },
     "faction_demand.1001": {
-        # CK3 1.19.0.6 populist ultimatum. The observed manager frame hides
-        # both conversion routes and exposes only native option 2 (immediate
-        # independence/title transfer) and native option 3 (refuse and start
-        # the faction war). Immediate surrender can destroy the stable realm
-        # and manager roster at selection time. Refusal preserves the current
-        # titles and roster while handing the resulting war to the existing
-        # gameplay state surface, so it is the only admissible route for this
-        # bounded product observation. setup_populist_leader_effect creates a
-        # dynamic new_title only when the selected peasant leader has no
-        # primary title, so bind either exact source-authored scope shape
-        # before sending that refusal.
+        # CK3 1.19.0.6 populist ultimatum. Native option 0 (culture/faith
+        # conversion) may be visible when the 30-percent realm thresholds and
+        # non-State-Faith gate pass; native option 1 is a distinct State Faith
+        # route. Native option 2 immediately grants independence/transfers
+        # titles, while native option 3 refuses and starts the faction war.
+        # Conversion and immediate surrender both destroy invariants used by
+        # this bounded manager observation. Refusal preserves the current
+        # titles and roster while handing the war to the existing gameplay
+        # state surface. Bind either observed rendered-option projection and
+        # either exact source-authored saved-scope shape before refusing.
         "date_raw": 53229048,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -775,6 +774,20 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (2, 3),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 2, 3),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+        ),
         "max_occurrences": 1,
     },
     "char_interaction.0370": {
