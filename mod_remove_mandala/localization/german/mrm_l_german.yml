@@ -1,0 +1,6 @@
+﻿l_german:
+ rule_mrm_remove_mandala:0 "Mandala-Säuberung"
+ setting_mrm_enabled:0 "Das falsche Mandala säubern"
+ setting_mrm_enabled_desc:0 "Diejenigen, die sich im Diesseits zu Göttern erheben, jagen einem hohlen Traum nach. Entferne den falschen Heiligenschein und gib der Welt die Wahrheit zurück."
+ setting_mrm_disabled:0 "Mandala-Herrschaft bewahren"
+ setting_mrm_disabled_desc:0 "Mandala-Regierungen und Tempelzitadellen bleiben den ursprünglichen Spielregeln unterworfen."

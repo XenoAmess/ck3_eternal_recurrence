@@ -1,0 +1,6 @@
+﻿l_simp_chinese:
+ rule_mrm_remove_mandala:0 "肃清曼荼罗伪信"
+ setting_mrm_enabled:0 "肃清曼荼罗伪信"
+ setting_mrm_enabled_desc:0 "妄图在人间封神者，终归是幻梦一场。去剥离那层虚妄的光晕，还世界以真实。"
+ setting_mrm_disabled:0 "保留曼荼罗制"
+ setting_mrm_disabled_desc:0 "曼荼罗制与寺庙城寨将继续遵循原版规则。"

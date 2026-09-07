@@ -1,0 +1,6 @@
+﻿l_english:
+ rule_mrm_remove_mandala:0 "Mandala Purge"
+ setting_mrm_enabled:0 "Purge the False Mandala"
+ setting_mrm_enabled_desc:0 "Those who would make themselves gods in the mortal realm are chasing a hollow dream. Strip away the false halo, and return the world to truth."
+ setting_mrm_disabled:0 "Preserve Mandala Rule"
+ setting_mrm_disabled_desc:0 "Mandala governments and Temple Citadels remain governed by the original game rules."

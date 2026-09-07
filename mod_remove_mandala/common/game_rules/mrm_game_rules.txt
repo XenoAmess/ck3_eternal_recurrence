@@ -1,0 +1,10 @@
+﻿mrm_remove_mandala = {
+	categories = {
+		game_modes
+	}
+
+	default = mrm_enabled
+
+	mrm_enabled = { }
+	mrm_disabled = { }
+}

@@ -1,0 +1,142 @@
+﻿namespace = mrma
+
+mrma.1 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:mrma_player_ruler = {
+					has_government = wanua_government
+				}
+			}
+			debug_log = "MRMA: TEST PASS day_one_ruler_wanua"
+		}
+		else = {
+			debug_log = "MRMA: TEST FAIL day_one_ruler_wanua"
+		}
+	}
+}
+
+mrma.2 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:mrma_holding_province = {
+					has_holding_type = castle_holding
+				}
+			}
+			debug_log = "MRMA: TEST PASS day_two_holding_castle"
+		}
+		else = {
+			debug_log = "MRMA: TEST FAIL day_two_holding_castle"
+		}
+		random_ruler = {
+			limit = {
+				is_ai = yes
+				is_independent_ruler = yes
+				government_has_flag = government_is_feudal
+			}
+			set_global_variable = {
+				name = mrma_ai_ruler
+				value = this
+			}
+			change_government = mandala_government
+		}
+		trigger_event = { id = mrma.5 days = 1 }
+	}
+}
+
+mrma.5 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:mrma_ai_ruler = {
+					has_government = wanua_government
+				}
+			}
+			debug_log = "MRMA: TEST PASS ai_conversion_redirected"
+		}
+		else = {
+			debug_log = "MRMA: TEST FAIL ai_conversion_redirected"
+		}
+		global_var:mrma_player_ruler = {
+			change_government = mandala_government
+		}
+		global_var:mrma_holding_province = {
+			set_holding_type = temple_citadel_holding
+		}
+		# Exercise the exact recurring dispatchers without spending an entire
+		# wall-clock year in the live harness. Static validation separately binds
+		# them to months=1 and yearly_global_pulse in production.
+		trigger_event = { on_action = mrm_monthly_dispatch days = 1 }
+		trigger_event = { id = mrma.3 days = 2 }
+		trigger_event = { on_action = mrm_yearly_dispatch days = 3 }
+		trigger_event = { id = mrma.4 days = 4 }
+	}
+}
+
+mrma.3 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:mrma_player_ruler = {
+					has_government = wanua_government
+				}
+				NOT = {
+					any_ruler = {
+						government_has_flag = government_is_mandala
+					}
+				}
+			}
+			debug_log = "MRMA: TEST PASS monthly_ruler_zero"
+		}
+		else = {
+			debug_log = "MRMA: TEST FAIL monthly_ruler_zero"
+		}
+	}
+}
+
+mrma.4 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:mrma_holding_province = {
+					has_holding_type = castle_holding
+				}
+				NOT = {
+					any_province = {
+						has_holding_type = temple_citadel_holding
+					}
+				}
+			}
+			debug_log = "MRMA: TEST PASS yearly_holding_zero"
+			debug_log = "MRMA: TEST DONE source-live"
+			global_var:mrma_player_ruler = {
+				trigger_event = mrma.900
+			}
+		}
+		else = {
+			debug_log = "MRMA: TEST FAIL yearly_holding_zero"
+		}
+	}
+}
+
+mrma.900 = {
+	type = character_event
+	title = mrma_acceptance_title
+	desc = mrma_acceptance_desc
+	theme = realm
+
+	option = {
+		name = mrma_acceptance_option
+	}
+}

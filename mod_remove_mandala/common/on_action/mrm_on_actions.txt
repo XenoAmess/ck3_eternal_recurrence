@@ -1,0 +1,69 @@
+﻿on_game_start_after_lobby = {
+	on_actions = {
+		mrm_start_dispatch
+	}
+}
+
+yearly_global_pulse = {
+	on_actions = {
+		mrm_yearly_dispatch
+	}
+}
+
+on_government_change = {
+	on_actions = {
+		mrm_government_redirect_dispatch
+	}
+}
+
+mrm_start_dispatch = {
+	trigger = {
+		has_game_rule = mrm_enabled
+	}
+	effect = {
+		trigger_event = { id = mrm.1 }
+		trigger_event = { id = mrm.2 days = 1 }
+		trigger_event = { id = mrm.4 }
+		trigger_event = { id = mrm.5 days = 2 }
+		if = {
+			limit = {
+				NOT = { has_global_variable = mrm_monthly_loop_started }
+			}
+			set_global_variable = mrm_monthly_loop_started
+			trigger_event = { on_action = mrm_monthly_dispatch months = 1 }
+		}
+	}
+}
+
+mrm_monthly_dispatch = {
+	trigger = {
+		has_game_rule = mrm_enabled
+	}
+	events = {
+		mrm.3
+	}
+	effect = {
+		trigger_event = { on_action = mrm_monthly_dispatch months = 1 }
+	}
+}
+
+mrm_yearly_dispatch = {
+	trigger = {
+		has_game_rule = mrm_enabled
+	}
+	events = {
+		mrm.6
+	}
+}
+
+mrm_government_redirect_dispatch = {
+	trigger = {
+		has_game_rule = mrm_enabled
+		is_ai = yes
+		government_has_flag = government_is_mandala
+	}
+	effect = {
+		mandala_nuke_mandala_decrees_effect = yes
+		change_government = wanua_government
+	}
+}

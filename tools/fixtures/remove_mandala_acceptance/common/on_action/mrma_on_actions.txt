@@ -1,0 +1,57 @@
+﻿on_game_start_after_lobby = {
+	on_actions = {
+		mrma_start
+	}
+}
+
+mrma_start = {
+	trigger = {
+		has_game_rule = mrm_enabled
+	}
+	effect = {
+		if = {
+			limit = {
+				any_ruler = {
+					government_has_flag = government_is_mandala
+				}
+			}
+			debug_log = "MRMA: TEST FAIL start_ruler_zero"
+		}
+		else = {
+			debug_log = "MRMA: TEST PASS start_ruler_zero"
+		}
+		if = {
+			limit = {
+				any_province = {
+					has_holding_type = temple_citadel_holding
+				}
+			}
+			debug_log = "MRMA: TEST FAIL start_holding_zero"
+		}
+		else = {
+			debug_log = "MRMA: TEST PASS start_holding_zero"
+		}
+		debug_log = "MRMA: TEST BEGIN source-live"
+		random_player = {
+			set_global_variable = {
+				name = mrma_player_ruler
+				value = this
+			}
+			change_government = mandala_government
+		}
+		random_province = {
+			limit = {
+				has_holding_type = castle_holding
+			}
+			set_global_variable = {
+				name = mrma_holding_province
+				value = this
+			}
+			set_holding_type = temple_citadel_holding
+		}
+		trigger_event = { id = mrma.1 days = 1 }
+		# Verify the product's day-two event on the following day, after all
+		# same-date on_action queues have drained.
+		trigger_event = { id = mrma.2 days = 3 }
+	}
+}

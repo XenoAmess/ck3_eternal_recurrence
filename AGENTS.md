@@ -4,6 +4,7 @@
 
 - `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 源目录；正式发布只使用 `build_release.py` 生成的 staging
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
+- `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图、日报、周报、月报与日/周计划会入口；能力状态必须回链原生专题与实机证据
@@ -43,6 +44,8 @@ py tools/compose_decision_art.py                            # 三张决议源图
 py tools/compose_vivhite_key_art.py                         # 白绮主视觉 → 独立版 640×640 thumbnail
 py tools/compose_ox_here_key_art.py                         # 牛来主视觉 → 640×640、低于 1 MB thumbnail
 py tools/compose_ox_here_workshop_media.py --artifacts <run> # 牛来 GREEN 实机截图 → 四张低于 2 MB JPEG
+py tools/compose_remove_mandala_key_art.py                  # 肃清曼荼罗主视觉 → 640×640、低于 1 MB thumbnail
+py tools/compose_remove_mandala_workshop_media.py --artifacts <run> # GREEN 实机截图 → 两张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py mod_zhongguo_style/tools/gen_361_mechanisms.py           # 361 目录、领域合同与制度卡
 py mod_zhongguo_style/tools/gen_361_b1_runtime.py           # B1 跨周期绩效季与共同上司 barrier
@@ -51,9 +54,11 @@ py tools/build_release.py --check                           # 临时双构建，
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
 py tools/build_vivhite_release.py --check                   # 白绮独立版临时双构建
 py tools/build_vivhite_release.py                           # 生成独立 staging、manifest 与 ZIP
+py tools/build_remove_mandala_release.py --check            # 肃清曼荼罗临时双构建
+py tools/build_remove_mandala_release.py                    # 生成 15 文件 staging、manifest 与 ZIP
 ```
 
-八套脚本生成器及两套素材投影工具，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
+上述脚本生成器与素材投影工具中，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
 再运行 `gen_scoring.py` 与 `gen_score_preview.py`；奖池条目改 `tools/pools_data.py`
 （数据表）再跑 gen_pools.py；权威表 `docs/blessing-curse-pools.md` 由它导出。
 计分生成器产出 `common/scripted_effects/xar_generated_scoring_effects.txt` 与

@@ -1,0 +1,49 @@
+﻿namespace = mrm
+
+mrm.1 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		mrm_sweep_rulers_effect = yes
+	}
+}
+
+mrm.2 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		mrm_sweep_rulers_effect = yes
+	}
+}
+
+mrm.3 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		mrm_sweep_rulers_effect = yes
+	}
+}
+
+mrm.4 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		mrm_sweep_holdings_effect = yes
+	}
+}
+
+mrm.5 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		mrm_sweep_holdings_effect = yes
+	}
+}
+
+mrm.6 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		mrm_sweep_holdings_effect = yes
+	}
+}

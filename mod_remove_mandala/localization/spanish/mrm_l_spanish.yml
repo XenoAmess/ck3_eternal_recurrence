@@ -1,0 +1,6 @@
+﻿l_spanish:
+ rule_mrm_remove_mandala:0 "Purga del Mandala"
+ setting_mrm_enabled:0 "Erradicar el falso Mandala"
+ setting_mrm_enabled_desc:0 "Quienes se alzan como dioses en el reino mortal persiguen un sueño vacío. Arranca el aura falsa y devuelve al mundo su verdad."
+ setting_mrm_disabled:0 "Preservar el Mandala"
+ setting_mrm_disabled_desc:0 "Los gobiernos Mandala y las ciudadelas del templo se rigen por las reglas originales del juego."

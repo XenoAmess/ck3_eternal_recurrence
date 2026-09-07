@@ -1,0 +1,43 @@
+[h1]Mandala Purge / 肃清曼荼罗伪信[/h1]
+
+[b]Those who would make gods of themselves in the mortal realm are chasing a dream. Strip away the false halo and return the world to what is real.[/b]
+[b]妄图在人间封神者，终归是幻梦一场。去剥离那层虚妄的光晕，还世界以真实。[/b]
+
+Version 1.0.0 · CK3 1.19.0.6 · Mandala/Wanua game content required
+
+[h1]One Rule, Enabled by Default / 一条规则，默认开启[/h1]
+
+The game rule “Mandala Purge” is enabled by default. Disable it before starting if you want vanilla Mandala governments and Temple Citadels to remain untouched.
+游戏规则【肃清曼荼罗伪信】默认开启。如果希望保留原版曼荼罗制与寺庙城寨，请在开局前将它关闭。
+
+[h1]What It Does / 效果[/h1]
+
+[list]
+[*]Every Mandala ruler becomes Wanua at game start, after one day, and every month. / 所有曼荼罗制统治者在开局、开局后一日及每月被转为村社制。
+[*]Every Temple Citadel becomes a Castle at game start, after two days, and every year. / 所有寺庙城寨在开局、开局后二日及每年被转为城堡。
+[*]Any successful AI transition into Mandala is intercepted immediately and redirected to Wanua, covering vanilla decisions, events and scripted effects through their common government-change hook. / AI 通过原版决议、事件或脚本效果成功转入曼荼罗制时，会由统一的政体变更钩子立即改为村社制。
+[/list]
+
+Changing a holding type can remove buildings that are incompatible with a Castle. This is expected CK3 behavior.
+改变地产类型可能移除与城堡不兼容的建筑，这是 CK3 的正常行为。
+
+[h1]Verification / 验收[/h1]
+
+The release was tested in an isolated, non-debug CK3 session. The live fixture verified the start, delayed, recurring, global-zero, and AI-redirect paths, while keeping the fixture out of the 15-file Workshop build.
+正式版本使用隔离、非调试的 CK3 实机会话验收，覆盖开局、延迟、周期、全图归零与 AI 转制拦截；测试夹具不进入 15 文件工坊构建。
+
+[h1]Localization / 本地化[/h1]
+
+English / 简体中文 / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
+
+The seven additional release languages were generated as MiniMax-M3 candidates and reviewed and corrected for meaning, terminology and CK3 formatting. This is model-led review, not native-speaker certification.
+七种新增发布语言先由 MiniMax-M3 产出候选，再逐条审核并修正语义、术语与 CK3 格式；这是模型代行的发布审核，不冒充母语译者认证。
+
+[h1]Compatibility / 兼容性[/h1]
+
+Requires CK3 1.19.0.6 and the game content that defines Mandala/Wanua governments and Temple Citadels. A new single-player game is recommended. Mods that replace the same government, holding, game-rule, event or on-action keys are not guaranteed compatible.
+需要 CK3 1.19.0.6，以及提供曼荼罗制、村社制和寺庙城寨的游戏内容。推荐新开单人存档；若其他 mod 覆盖同名政体、地产、规则、事件或 on_action 键，不保证兼容。
+
+[h1]Source / 源码[/h1]
+
+https://github.com/XenoAmess/ck3_eternal_recurrence

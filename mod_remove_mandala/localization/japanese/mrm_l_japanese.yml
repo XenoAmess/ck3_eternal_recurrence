@@ -1,0 +1,6 @@
+﻿l_japanese:
+ rule_mrm_remove_mandala:0 "曼荼羅の粛清"
+ setting_mrm_enabled:0 "偽りの曼荼羅を粛清する"
+ setting_mrm_enabled_desc:0 "現世で自ら神になろうとする者は、所詮、儚い夢を追うにすぎない。その虚ろな後光を剥ぎ取り、世界に真実を取り戻せ。"
+ setting_mrm_disabled:0 "曼荼羅制を保つ"
+ setting_mrm_disabled_desc:0 "曼荼羅制および寺院城塞は、引き続き本来のゲームルールに従って運営される。"

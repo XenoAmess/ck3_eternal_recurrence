@@ -1,0 +1,6 @@
+﻿l_korean:
+ rule_mrm_remove_mandala:0 "만다라 숙청"
+ setting_mrm_enabled:0 "거짓된 만다라를 숙청하라"
+ setting_mrm_enabled_desc:0 "속세에서 스스로 신이 되려는 자들은 헛된 꿈을 좇을 뿐이다. 그 허망한 후광을 벗겨 내고 세계에 진실을 되돌리라."
+ setting_mrm_disabled:0 "만다라 통치 유지"
+ setting_mrm_disabled_desc:0 "만다라 정부와 사원 요새는 원래 게임 규칙에 따라 유지됩니다."

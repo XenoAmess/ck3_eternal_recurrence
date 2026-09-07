@@ -1,0 +1,6 @@
+﻿l_french:
+ rule_mrm_remove_mandala:0 "Purge du Mandala"
+ setting_mrm_enabled:0 "Purger le faux Mandala"
+ setting_mrm_enabled_desc:0 "Ceux qui se veulent dieux en ce monde mortel poursuivent un rêve creux. Dépouillez le faux halo et rendez au monde sa vérité."
+ setting_mrm_disabled:0 "Préserver le Mandala"
+ setting_mrm_disabled_desc:0 "Les gouvernements Mandala et les citadelles-temples restent régis par les règles originales du jeu."

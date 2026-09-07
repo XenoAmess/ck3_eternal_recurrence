@@ -1,0 +1,18 @@
+﻿mrm_sweep_rulers_effect = {
+	every_ruler = {
+		limit = {
+			has_government = mandala_government
+		}
+		mandala_nuke_mandala_decrees_effect = yes
+		change_government = wanua_government
+	}
+}
+
+mrm_sweep_holdings_effect = {
+	every_province = {
+		limit = {
+			has_holding_type = temple_citadel_holding
+		}
+		set_holding_type = castle_holding
+	}
+}

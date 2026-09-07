@@ -1,0 +1,6 @@
+﻿l_polish:
+ rule_mrm_remove_mandala:0 "Zwalczanie mandali"
+ setting_mrm_enabled:0 "Zwalcz fałszywą mandalę"
+ setting_mrm_enabled_desc:0 "Ci, którzy chcieliby uczynić się bogami w świecie śmiertelników, gonią za pustym marzeniem. Zdejmij fałszywą aureolę i przywróć światu prawdę."
+ setting_mrm_disabled:0 "Zachowaj rządy mandali"
+ setting_mrm_disabled_desc:0 "Rządy mandali i świątynne cytadele pozostają pod władzą pierwotnych zasad gry."
