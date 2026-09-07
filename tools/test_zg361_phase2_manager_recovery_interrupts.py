@@ -147,6 +147,67 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             )
         )
 
+    def test_random_bad_nickname_uses_only_visible_authored_option(self) -> None:
+        event_key = "lifestyle_nicknames.1000"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=24,
+            date_raw=53158896,
+            player=32904,
+            scopes=[
+                _scope("possible_conqueror", "character", 32904),
+                _scope("toggle_null_result", "boolean"),
+                _scope("nickname_root_scope", "character", 32904),
+                _scope("had_nick_the_mad", "boolean"),
+                _scope("nickname_getter", "character", 32904),
+                _scope("informer", "character", 28314),
+            ],
+            native_option_indices=(1,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53158896,
+                "active_event": {"option_count": 6},
+            },
+            event={"event_instance_id": 24},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(
+            contract["character_scopes"],
+            {
+                "possible_conqueror": 32904,
+                "nickname_root_scope": 32904,
+                "nickname_getter": 32904,
+            },
+        )
+        self.assertEqual(contract["snapshot_option_count"], 6)
+        self.assertEqual(contract["native_option_indices"], (1,))
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["max_occurrences"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"] = drifted["saved_scopes"][:-1]
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53158896,
+                "active_event": {"option_count": 6},
+            },
+            event={"event_instance_id": 24},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:informer:type"])
+        self.assertFalse(drift_checks["scope:informer:unique_third_party"])
+        self.assertFalse(drift_checks["saved_scope_names_exact"])
+        self.assertFalse(drift_checks["saved_scope_count"])
+
     def test_nonfounder_culture_notification_selects_other_acknowledgement(
         self,
     ) -> None:
