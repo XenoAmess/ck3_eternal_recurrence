@@ -1025,6 +1025,52 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             drift_checks["scope:secondary_actor:unavailable_character"]
         )
 
+    def test_epidemic_alms_proposal_avoids_disease_roll(self) -> None:
+        event_key = "physician_epidemic_events.1040"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=222,
+            date_raw=53237808,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("physician", "character", 49718),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53237808,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 222},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][2] = _scope(
+            "physician", "character", 32904
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53237808,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 222},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:physician:unique_third_party"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
