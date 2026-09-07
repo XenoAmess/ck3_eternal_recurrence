@@ -154,4 +154,29 @@ CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.129": {
+        # R235 reached the promotion queue. Route A queues the subject without
+        # awarding a promotion or changing the free/used slot counters; route
+        # B consumes a free slot and awards immediately, while C opens debt.
+        # Choose A to preserve capacity. R remains at state 2 and hidden .9334
+        # restores visible .134 D+1.
+        "date_raw": 53187552,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
