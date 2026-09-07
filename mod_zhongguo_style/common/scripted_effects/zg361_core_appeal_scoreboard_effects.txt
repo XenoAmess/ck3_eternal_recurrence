@@ -156,14 +156,26 @@ zg361_publish_scoreboard_effect = {
 	set_variable = { name = zg361_scoreboard_managed_35_n value = var:zg361_last_35_n }
 	set_variable = { name = zg361_scoreboard_managed_325_n value = var:zg361_last_325_n }
 	save_temporary_scope_as = zg361_scoreboard_source
+	set_variable = { name = zg361_scoreboard_slot_cursor value = 0 }
 
 	if = {
 		limit = {
 			has_character_flag = zg361_b1_cycle_active
 			has_variable_list = zg361_b1_subjects
 		}
-		every_in_list = {
-			variable = zg361_b1_subjects
+		# Do not stage these rows through an add_to_list scratch list. R287
+		# proved that a second publish in the same delayed event chain can see
+		# an earlier scratch entry after that Character has become a weak scope;
+		# order_by then reads zg361_kpi from a scope with no variable storage.
+		# The durable roster was pruned immediately before settlement, so order
+		# that exact list directly and keep the full case identity filter here.
+		ordered_in_list = {
+			list = zg361_b1_subjects
+			order_by = var:zg361_kpi
+			max = {
+				value = list_size:zg361_b1_subjects
+				max = 80
+			}
 			limit = {
 				has_variable = zg361_b1_case_owner
 				has_variable = zg361_b1_cycle_serial
@@ -179,11 +191,14 @@ zg361_publish_scoreboard_effect = {
 				var:zg361_last_review_serial = root.var:zg361_review_serial
 				has_variable = zg361_last_grade
 			}
-			add_to_list = zg361_scoreboard_candidates
+			root = { change_variable = { name = zg361_scoreboard_slot_cursor add = 1 } }
+			zg361_write_managed_scoreboard_slot_effect = yes
 		}
 	}
 	else = {
-		every_vassal = {
+		ordered_vassal = {
+			order_by = var:zg361_kpi
+			max = 80
 			limit = {
 				has_variable = zg361_last_reviewer
 				var:zg361_last_reviewer = root
@@ -191,22 +206,9 @@ zg361_publish_scoreboard_effect = {
 				var:zg361_last_review_serial = root.var:zg361_review_serial
 				has_variable = zg361_last_grade
 			}
-			add_to_list = zg361_scoreboard_candidates
+			root = { change_variable = { name = zg361_scoreboard_slot_cursor add = 1 } }
+			zg361_write_managed_scoreboard_slot_effect = yes
 		}
-	}
-	set_variable = { name = zg361_scoreboard_slot_cursor value = 0 }
-	ordered_in_list = {
-		list = zg361_scoreboard_candidates
-		order_by = var:zg361_kpi
-		# 固定槽只保存前 80 名；表头另存 shown/full，绝不把截断列表冒充全员。
-		# tooltip 预演不提交前面的 add_to_list；动态取 min(list_size, 80)，
-		# 避免空预演列表与正常少于 80 人队列触发 range-bounds error。
-		max = {
-			value = list_size:zg361_scoreboard_candidates
-			max = 80
-		}
-		root = { change_variable = { name = zg361_scoreboard_slot_cursor add = 1 } }
-		zg361_write_managed_scoreboard_slot_effect = yes
 	}
 	remove_variable = zg361_scoreboard_slot_cursor
 

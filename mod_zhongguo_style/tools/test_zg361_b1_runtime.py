@@ -3629,8 +3629,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("zg361_b1_apply_departed_grade_effect = yes", b1_settle)
 
         publish = top_level_block(self.core, "zg361_publish_scoreboard_effect")
-        self.assertEqual(publish.count("variable = zg361_b1_subjects"), 2)
-        self.assertIn("add_to_list = zg361_scoreboard_candidates", publish)
+        self.assertEqual(publish.count("variable = zg361_b1_subjects"), 1)
+        self.assertNotIn("zg361_scoreboard_candidates", publish)
+        self.assertIn("list = zg361_b1_subjects", publish)
+        self.assertIn("ordered_vassal = {", publish)
         self.assertIn("add_to_list = zg361_scoreboard_recipients", publish)
         self.assertIn("var:zg361_b1_roster_included = 1", publish)
 

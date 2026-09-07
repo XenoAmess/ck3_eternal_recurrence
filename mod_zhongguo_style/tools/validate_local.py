@@ -557,14 +557,16 @@ def check_runtime_invariants() -> None:
         err("scoreboard shown count must clamp in one tooltip-safe assignment")
     if not re.search(
         r"ordered_in_list\s*=\s*\{.*?"
-        r"list\s*=\s*zg361_scoreboard_candidates.*?"
+        r"list\s*=\s*zg361_b1_subjects.*?"
         r"max\s*=\s*\{\s*"
-        r"value\s*=\s*list_size:zg361_scoreboard_candidates\s+"
+        r"value\s*=\s*list_size:zg361_b1_subjects\s+"
         r"max\s*=\s*80\s*\}",
         effects,
         re.S,
     ):
         err("scoreboard ordered list must cap against its live list size")
+    if "zg361_scoreboard_candidates" in effects:
+        err("scoreboard must not retain a weak temporary candidate list")
     if "var:zg361_scoreboard_managed_shown_n > 80" in effects:
         err("scoreboard tooltip must not read a variable just written in the same effect")
     if len(re.findall(r"zg361_sb_[mr]_\d{2}_available_gui\s*=\s*\{", slot_guis)) != 160:
