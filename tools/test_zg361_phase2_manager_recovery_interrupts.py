@@ -1209,6 +1209,71 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:owner:unique_third_party"])
 
+    def test_hostile_scheme_discovery_binds_dynamic_court_parties(self) -> None:
+        event_key = "hostile_scheme_discovery.2001"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=207,
+            date_raw=53216088,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 29583),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 37960),
+                _scope("spymaster", "character", 30434),
+                _scope("discovery_chance", "value"),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53216088,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 207},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        owner_is_player = copy.deepcopy(context)
+        owner_is_player["saved_scopes"][1] = _scope(
+            "owner", "character", 32904
+        )
+        owner_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53216088,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 207},
+            context=owner_is_player,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(owner_checks["scope:owner:unique_third_party"])
+
+        merged_parties = copy.deepcopy(context)
+        merged_parties["saved_scopes"][4] = _scope(
+            "spymaster", "character", 37960
+        )
+        merged_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53216088,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 207},
+            context=merged_parties,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(merged_checks["scope:spymaster:differs_from"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

@@ -939,6 +939,53 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "hostile_scheme_discovery.2001": {
+        # CK3 1.19.0.6 notification that a hostile scheme at another
+        # character in the player's court has gained a discovery breach.
+        # The sole authored option exposes that already-discovered scheme and
+        # notifies its dynamic owner; there is no acknowledgement-only or
+        # alternate route. Bind the source-authored scheme/owner/target/
+        # spymaster frame, the generic artifact slot and discovery value
+        # before selecting that required route. The dynamic characters must
+        # remain distinct non-player parties in this observed lineage.
+        "date_raw": 53216088,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "owner": (32904,),
+            "target": (32904,),
+            "spymaster": (32904,),
+        },
+        "character_scope_differs_from": {
+            "owner": ("target", "spymaster"),
+            "target": ("owner", "spymaster"),
+            "spymaster": ("owner", "target"),
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "owner": "character",
+            "artifact": "artifact",
+            "target": "character",
+            "spymaster": "character",
+            "discovery_chance": "value",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "scheme",
+            "owner",
+            "artifact",
+            "target",
+            "spymaster",
+            "discovery_chance",
+        ),),
+        "saved_scope_count": 6,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
