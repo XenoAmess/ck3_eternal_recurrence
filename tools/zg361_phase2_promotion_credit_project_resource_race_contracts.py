@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exact credit/project resource-race timeline interrupt contracts."""
+"""Exact credit/project E-domain resource timeline interrupt contracts."""
 
 from __future__ import annotations
 
@@ -94,6 +94,32 @@ CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS: Final[
         # defer/debt and disables later itemized A/B business routes. Route A
         # is the smallest deterministic mutation that preserves full-tree.
         "date_raw": 53187024,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
+    "zg361cp.26": {
+        # R213 reached the itemized effort-ledger decision. Route A protects
+        # delivery with 20 delivery, 2 reporting, and 1 relationship hour;
+        # route B spends one fewer hour but creates substantially more
+        # reporting, relationship, and visibility side effects. Route C sets
+        # portfolio-wide defer/debt and disables later itemized A/B business
+        # routes. Route A preserves the subject-led project and full tree.
+        "date_raw": 53187048,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
         "character_scopes": _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES,

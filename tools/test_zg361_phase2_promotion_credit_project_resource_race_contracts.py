@@ -112,9 +112,42 @@ class CreditProjectResourceRaceContractTests(unittest.TestCase):
         event = {"event_instance_id": 135}
         return snapshot, event, context
 
+    def _r213_frame(self) -> tuple[
+        dict[str, object], dict[str, object], dict[str, object]
+    ]:
+        contract = race.CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS[
+            "zg361cp.26"
+        ]
+        character_scopes = contract["character_scopes"]
+        saved_names = contract["saved_scope_name_sets"][0]
+        scopes = [
+            _character_scope(name, character_scopes[name])
+            if name in character_scopes
+            else _value_scope(name)
+            for name in saved_names
+        ]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361cp.26",
+            "current_event_instance_id": 136,
+            "date_raw": 53187048,
+            "root_scope": _character_scope("root", 32904)["scope"],
+            "saved_scopes": scopes,
+            "options": [_option(index, index) for index in range(3)],
+        }
+        snapshot = {
+            "date_raw": 53187048,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 136}
+        return snapshot, event, context
+
     def test_r212_exact_frame_selects_subject_led_project(self) -> None:
         contracts = race.CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS
-        self.assertEqual(set(contracts), {"zg361cp.30"})
+        self.assertEqual(set(contracts), {"zg361cp.30", "zg361cp.26"})
         contract = contracts["zg361cp.30"]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS["zg361cp.30"],
@@ -184,6 +217,87 @@ class CreditProjectResourceRaceContractTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(alias_checks["scope:zg361_cp_e_subject"])
+
+    def test_r213_exact_frame_selects_delivery_first_effort_ledger(self) -> None:
+        contract = race.CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS[
+            "zg361cp.26"
+        ]
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361cp.26"],
+            contract,
+        )
+        snapshot, event, context = self._r213_frame()
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="zg361cp.26",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(len(contract["saved_scope_name_sets"][0]), 50)
+        self.assertEqual(len(contract["character_scopes"]), 21)
+        self.assertEqual(len(contract["scope_types"]), 29)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+    def test_r213_frame_rejects_date_scope_and_alias_drift(self) -> None:
+        contract = race.CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS[
+            "zg361cp.26"
+        ]
+        snapshot, event, context = self._r213_frame()
+
+        wrong_date = copy.deepcopy(context)
+        wrong_date["date_raw"] = 53187024
+        date_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_date,
+            event_key="zg361cp.26",
+            contract=contract,
+        )
+        self.assertFalse(date_checks["context_date_raw"])
+
+        missing_value = copy.deepcopy(context)
+        missing_value["saved_scopes"] = [
+            row
+            for row in missing_value["saved_scopes"]
+            if row["name"] != "zg361_cp_e_case"
+        ]
+        scope_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=missing_value,
+            event_key="zg361cp.26",
+            contract=contract,
+        )
+        self.assertFalse(scope_checks["scope:zg361_cp_e_case:type"])
+        self.assertFalse(scope_checks["saved_scope_names_exact"])
+
+        alias_drift = copy.deepcopy(context)
+        subject = next(
+            row
+            for row in alias_drift["saved_scopes"]
+            if row["name"] == "zg361_cp_e_subject"
+        )
+        subject["scope"]["typed_identity"]["character_id"] = 26347
+        alias_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=alias_drift,
+            event_key="zg361cp.26",
+            contract=contract,
+        )
+        self.assertFalse(alias_checks["scope:zg361_cp_e_subject"])
+
+    def test_effort_ledger_contract_is_not_inlined_in_production_entry(
+        self,
+    ) -> None:
+        production_source = (
+            ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn('    "zg361cp.26": {', production_source)
 
     def test_contract_is_not_inlined_in_production_entry(self) -> None:
         production_source = (
