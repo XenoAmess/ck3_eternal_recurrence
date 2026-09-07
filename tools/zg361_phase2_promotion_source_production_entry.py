@@ -539,6 +539,45 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep1_flavor.0021": {
+        # CK3 1.19.0.6 royal-court language quarrel. Route A applies mutual
+        # dislike/cultural loss and adds a random diplomacy duel; route C
+        # applies the same negative court/culture effects plus a ten-year
+        # character modifier. Route B has no random duel or durable modifier
+        # and confines the unrelated event to positive court opinions,
+        # friendship progress, cultural acceptance and trait-dependent stress.
+        # Bind the rival title, the generated rival/nitpicker relationship and
+        # all three rendered options before taking that non-random route.
+        "date_raw": 53215344,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "rival_monarch": (32904,),
+            "nitpicker": (32904,),
+        },
+        "character_scope_differs_from": {
+            "rival_monarch": ("nitpicker",),
+            "nitpicker": ("rival_monarch",),
+        },
+        "scope_types": {
+            "rival_realm": "landed_title",
+            "rival_monarch": "character",
+            "nitpicker": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "rival_realm",
+            "rival_monarch",
+            "nitpicker",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep1_flavor.2040": {
         # CK3 1.19.0.6 exotic-arms delivery. The R183 frame has no eligible
         # player artifact to trade, so authored option 1 is hidden and the

@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -91,6 +93,20 @@ def _manager_contract(event_key: str, *, player: int) -> dict[str, object]:
         contract,
         starting_date=53147016,
     )
+
+
+def _extract_block(source: str, header: str) -> str:
+    header_index = source.index(header)
+    open_index = source.index("{", header_index + len(header))
+    depth = 0
+    for index in range(open_index, len(source)):
+        if source[index] == "{":
+            depth += 1
+        elif source[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return source[header_index:index + 1]
+    raise AssertionError(f"unterminated source block: {header}")
 
 
 def _human_tribute_scopes() -> list[dict[str, object]]:
@@ -555,6 +571,93 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["authored_options_exact"])
+
+    def test_ep1_language_quarrel_binds_r289_frame_and_positive_route(self) -> None:
+        event_key = "ep1_flavor.0021"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=205,
+            date_raw=53215344,
+            player=32904,
+            scopes=[
+                _scope("rival_realm", "landed_title"),
+                _scope("rival_monarch", "character", 36310),
+                _scope("nitpicker", "character", 37929),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53215344,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 205},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["saved_scope_count"], 3)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][2] = _scope(
+            "nitpicker", "character", 36310
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53215344,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 205},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:rival_monarch:differs_from"])
+        self.assertFalse(drift_checks["scope:nitpicker:differs_from"])
+
+    def test_ck3_11906_ep1_language_route_b_avoids_duel_and_modifier(self) -> None:
+        event_source = (
+            ROOT
+            / "Crusader Kings III"
+            / "game"
+            / "events"
+            / "dlc"
+            / "ep1"
+            / "ep1_flavor_events.txt"
+        )
+        if not event_source.is_file():
+            self.skipTest("CK3 1.19.0.6 source is not present on this machine")
+        self.assertEqual(
+            hashlib.sha256(event_source.read_bytes()).hexdigest().upper(),
+            "CC4CD67B77F9FA7B83E3B7A5534045F0DBFC1E724C53182E19ED7884BAD10924",
+        )
+        event_block = _extract_block(
+            event_source.read_text(encoding="utf-8-sig"),
+            "ep1_flavor.0021 =",
+        )
+        self.assertEqual(
+            re.findall(
+                r"(?m)^\t\tname = (ep1_flavor\.0021\.[abc])$",
+                event_block,
+            ),
+            [
+                "ep1_flavor.0021.a",
+                "ep1_flavor.0021.b",
+                "ep1_flavor.0021.c",
+            ],
+        )
+        route_b_start = event_block.index("\toption =", event_block.index("\toption =") + 1)
+        route_b = _extract_block(event_block[route_b_start:], "\toption =")
+        self.assertIn("progress_towards_friend_effect", route_b)
+        self.assertIn("minor_cultural_acceptance_gain", route_b)
+        self.assertNotIn("\t\tduel =", route_b)
+        self.assertNotIn("add_character_modifier", route_b)
+        self.assertNotIn("trigger_event", route_b)
 
     def test_military_aid_letter_acknowledges_exact_governor_pair(self) -> None:
         event_key = "tgp_interaction_event.0015"
