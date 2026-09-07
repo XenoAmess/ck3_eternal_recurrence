@@ -6,11 +6,12 @@ from __future__ import annotations
 from typing import Final
 
 
-_LAW_DIRECTION_SCOPES = (
+_NON_PROVINCE_BOOLEAN_SCOPES = (
     "increase_law",
     "decrease_law",
     "increase_army_law",
     "decrease_army_law",
+    "hold_examinations",
 )
 
 _PROVINCE_TYPE_SCOPES = (
@@ -112,9 +113,10 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
         ),),
         "saved_scope_count": 7,
         "scope_variants": tuple({
-            # The exact-build law decision saves one boolean direction scope
-            # and no province/member recipients. R164/R166 observed two of
-            # these source-authored siblings; all four have the same shape.
+            # Exact-build law and examination decisions save one boolean
+            # branch scope and no province/member recipients. R164/R166
+            # observed two law siblings; R291 observed the source-authored
+            # hold_examinations sibling with the same five-scope shape.
             "saved_scope_names": (
                 "petitioner",
                 "actors_movement",
@@ -130,7 +132,7 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
             "boolean_scopes": (direction_scope,),
             "unique_character_scope_excludes": {"petitioner": (29037,)},
             "character_scope_matches_any": {},
-        } for direction_scope in _LAW_DIRECTION_SCOPES) + tuple(
+        } for direction_scope in _NON_PROVINCE_BOOLEAN_SCOPES) + tuple(
             # Exact-build source .0100 exposes four province-type branches.
             # R175/R185 observed house/other recipient selection, R186
             # observed the industrial sibling, and R289 observed both option

@@ -189,6 +189,54 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
                 )
                 self.assertTrue(all(checks.values()), checks)
 
+    def test_examination_petition_uses_compact_boolean_scope_variant(self) -> None:
+        event_key = "tgp_decision_events.0101"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=220,
+            date_raw=53229288,
+            player=32904,
+            scopes=[
+                _scope("petitioner", "character", 27275),
+                _scope("actors_movement", "situation_participant_group"),
+                _scope("hegemon", "character", 32904),
+                _scope("petition_recipient", "character", 32904),
+                _scope("hold_examinations", "boolean"),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229288,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 220},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        wrong_branch = copy.deepcopy(context)
+        wrong_branch["saved_scopes"][4] = _scope(
+            "hold_examinations", "flag"
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229288,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 220},
+            context=wrong_branch,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:hold_examinations"])
+
     def test_elder_invitation_uses_terminal_study_route(self) -> None:
         event_key = "tgp_movement_events.0050"
         contract = _manager_contract(event_key, player=32904)
