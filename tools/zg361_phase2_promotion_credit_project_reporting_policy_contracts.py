@@ -273,4 +273,29 @@ CREDIT_PROJECT_REPORTING_POLICY_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.60": {
+        # R225 reached idea ownership arbitration. Route A keeps the subject
+        # as idea owner and upholds theft; B transfers ownership to the cross
+        # reviewer, while C opens defer/debt. A/B both consume the arbitration,
+        # increment object versions, close I at state 5, and schedule hidden
+        # .9002 D+1 to open J. A preserves ownership and the full tree.
+        "date_raw": 53187336,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
