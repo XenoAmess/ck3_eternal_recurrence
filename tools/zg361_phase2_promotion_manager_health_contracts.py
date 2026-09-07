@@ -274,10 +274,33 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
             "disease_type": "flag",
         },
         "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "physician",
+            "sick_character",
+            "disease_type",
+        ),),
         "saved_scope_count": 3,
         "option_count": 1,
+        "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "scope_variants": ({
+            # R200 exact manager-recovery frame after the newly hired court
+            # physician ceased to be retained in this recovery notification.
+            # The illness has already been removed in immediate; the same
+            # single acknowledgement remains safe to submit. Accept this only
+            # for the exact two-scope projection and explicitly clear the
+            # physician uniqueness requirement inherited from the base frame.
+            "saved_scope_names": (
+                "sick_character",
+                "disease_type",
+            ),
+            "scope_types": {
+                "disease_type": "flag",
+            },
+            "unique_character_scope_excludes": {},
+            "saved_scope_count": 2,
+        },),
     },
     "health.1006": {
         # Vanilla consumption diagnosis.  The disease is applied in immediate
