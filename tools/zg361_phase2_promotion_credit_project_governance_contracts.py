@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Final
 
 
-_CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES: Final = (
+CREDIT_PROJECT_R_SAVED_SCOPE_NAMES: Final = (
     "zg361_b1_calibration_watchdog_owner",
     "zg361_b1_calibration_watchdog_cycle",
     "zg361_b1_calibration_watchdog_case",
@@ -83,7 +83,7 @@ _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES: Final = (
     "zg361_cp_r_case",
 )
 
-_CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES: Final = {
+CREDIT_PROJECT_R_CHARACTER_SCOPES: Final = {
     "zg361_b1_calibration_watchdog_owner": 32904,
     "zg361_b1_oversight_ticket_owner": 32904,
     "zg361_b1_reopen_ticket_subject": 45031,
@@ -138,14 +138,14 @@ CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS: Final[
         "date_raw": 53187528,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
-        "character_scopes": _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES,
+        "character_scopes": CREDIT_PROJECT_R_CHARACTER_SCOPES,
         "scope_types": {
             name: "value"
-            for name in _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES
-            if name not in _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES
+            for name in CREDIT_PROJECT_R_SAVED_SCOPE_NAMES
+            if name not in CREDIT_PROJECT_R_CHARACTER_SCOPES
         },
         "saved_scope_name_sets": (
-            _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES,
+            CREDIT_PROJECT_R_SAVED_SCOPE_NAMES,
         ),
         "boolean_scopes": (),
         "option_count": 3,
@@ -163,14 +163,14 @@ CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS: Final[
         "date_raw": 53187552,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
-        "character_scopes": _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES,
+        "character_scopes": CREDIT_PROJECT_R_CHARACTER_SCOPES,
         "scope_types": {
             name: "value"
-            for name in _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES
-            if name not in _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES
+            for name in CREDIT_PROJECT_R_SAVED_SCOPE_NAMES
+            if name not in CREDIT_PROJECT_R_CHARACTER_SCOPES
         },
         "saved_scope_name_sets": (
-            _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES,
+            CREDIT_PROJECT_R_SAVED_SCOPE_NAMES,
         ),
         "boolean_scopes": (),
         "option_count": 3,
@@ -188,14 +188,14 @@ CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS: Final[
         "date_raw": 53187576,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
-        "character_scopes": _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES,
+        "character_scopes": CREDIT_PROJECT_R_CHARACTER_SCOPES,
         "scope_types": {
             name: "value"
-            for name in _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES
-            if name not in _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES
+            for name in CREDIT_PROJECT_R_SAVED_SCOPE_NAMES
+            if name not in CREDIT_PROJECT_R_CHARACTER_SCOPES
         },
         "saved_scope_name_sets": (
-            _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES,
+            CREDIT_PROJECT_R_SAVED_SCOPE_NAMES,
         ),
         "boolean_scopes": (),
         "option_count": 3,
@@ -212,14 +212,14 @@ CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS: Final[
         "date_raw": 53187600,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
-        "character_scopes": _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES,
+        "character_scopes": CREDIT_PROJECT_R_CHARACTER_SCOPES,
         "scope_types": {
             name: "value"
-            for name in _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES
-            if name not in _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES
+            for name in CREDIT_PROJECT_R_SAVED_SCOPE_NAMES
+            if name not in CREDIT_PROJECT_R_CHARACTER_SCOPES
         },
         "saved_scope_name_sets": (
-            _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES,
+            CREDIT_PROJECT_R_SAVED_SCOPE_NAMES,
         ),
         "boolean_scopes": (),
         "option_count": 3,
