@@ -198,4 +198,29 @@ CREDIT_PROJECT_REPORTING_POLICY_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.58": {
+        # R222 reached report routing. Routes A/B both consume the frozen
+        # report, increment both object versions, and schedule .59 D+1. A
+        # routes the report to one direct owner recipient; B adds the
+        # successor manager as a second recipient, while C opens defer/debt.
+        # A is the minimum complete route and preserves the full I tree.
+        "date_raw": 53187264,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
