@@ -722,6 +722,47 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
         "max_occurrences": 1,
     },
+    "faction_demand.1001": {
+        # CK3 1.19.0.6 populist ultimatum. The observed manager frame hides
+        # both conversion routes and exposes only native option 2 (immediate
+        # independence/title transfer) and native option 3 (refuse and start
+        # the faction war). Immediate surrender can destroy the stable realm
+        # and manager roster at selection time. Refusal preserves the current
+        # titles and roster while handing the resulting war to the existing
+        # gameplay state surface, so it is the only admissible route for this
+        # bounded product observation. Bind the faction, target, leader and
+        # both title scopes before sending that exact refusal.
+        "date_raw": 53229048,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "faction_target": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "peasant_leader": (32904,),
+        },
+        "scope_types": {
+            "faction": "faction",
+            "peasant_county": "landed_title",
+            "target_title": "landed_title",
+            "peasant_leader": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "faction",
+            "peasant_county",
+            "faction_target",
+            "target_title",
+            "peasant_leader",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "snapshot_option_count": 4,
+        "native_option_indices": (2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
