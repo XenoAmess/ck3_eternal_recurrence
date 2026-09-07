@@ -22,6 +22,41 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryBirthInterruptTests(unittest.TestCase):
+    def test_sickly_child_recovery_notice_only_acknowledges_bound_child(self) -> None:
+        event_key = "birth.3035"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=204,
+            date_raw=53208048,
+            player=32904,
+            scopes=[_scope("child", "character", 67046)],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53208048, "active_event": {"option_count": 1}},
+            event={"event_instance_id": 204},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["max_occurrences"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][0] = _scope("child", "character", 32904)
+        drift_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53208048, "active_event": {"option_count": 1}},
+            event={"event_instance_id": 204},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:child:unique_third_party"])
+
     def test_sickly_child_followup_only_acknowledges_bound_family(self) -> None:
         event_key = "birth.3032"
         contract = _manager_contract(event_key, player=32904)

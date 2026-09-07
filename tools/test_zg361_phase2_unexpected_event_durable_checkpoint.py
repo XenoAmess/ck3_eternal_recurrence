@@ -109,6 +109,10 @@ class FakeService:
         path.parent.mkdir(parents=True, exist_ok=True)
         payload = b"durable-unexpected-event-checkpoint"
         path.write_bytes(payload)
+        native_revision = int(self.current["native_revision"]) + 1
+        self.current["native_revision"] = native_revision
+        self.current["snapshot_id"] = f"native:{native_revision}"
+        self.current["revision"] = int(self.current["revision"]) + 1
         if self.drift_after_save:
             self.current["active_event"] = {"instance_id": INSTANCE + 1, "option_count": 1}
         return {
@@ -148,7 +152,9 @@ class UnexpectedEventDurableCheckpointTests(unittest.TestCase):
             self.assertTrue(result["live_retention_may_continue"])
             self.assertEqual(service.save_calls, 1)
             self.assertEqual(service.expected_revisions, [43])
-            self.assertEqual(result["pre_save_binding"], result["post_save_binding"])
+            self.assertEqual(result["post_save_binding"]["snapshot_id"], "native:277")
+            self.assertEqual(result["post_save_binding"]["revision"], 44)
+            self.assertEqual(result["post_save_binding"]["event_instance_id"], INSTANCE)
             self.assertTrue(Path(result["recovery_input"]["source_save"]).is_file())
             persisted = json.loads(artifact.read_text(encoding="utf-8-sig"))
             self.assertEqual(persisted["result"], "GREEN")

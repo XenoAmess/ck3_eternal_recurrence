@@ -36,6 +36,11 @@ _SAME_FRAME_FIELDS = (
     "event_instance_id",
     "event_option_count",
 )
+_SAME_MODAL_FIELDS = tuple(
+    name
+    for name in _SAME_FRAME_FIELDS
+    if name not in {"snapshot_id", "revision", "native_revision"}
+)
 
 
 class UnexpectedEventCheckpointService(Protocol):
@@ -181,6 +186,17 @@ def _unexpected_binding(value: object) -> tuple[str, dict[str, object]]:
 
 def _same_frame(expected: Mapping[str, object], observed: Mapping[str, object]) -> bool:
     return all(expected.get(name) == observed.get(name) for name in _SAME_FRAME_FIELDS)
+
+
+def _same_modal(expected: Mapping[str, object], observed: Mapping[str, object]) -> bool:
+    """Compare durable gameplay identity across a publishing command.
+
+    save-checkpoint publishes a fresh native snapshot even when the paused
+    event itself is unchanged. Revisions must stay exact before submission,
+    while the post-save check binds the durable modal identity instead.
+    """
+
+    return all(expected.get(name) == observed.get(name) for name in _SAME_MODAL_FIELDS)
 
 
 def _checkpoint_receipt(
@@ -335,7 +351,7 @@ def attempt_unexpected_event_durable_checkpoint(
         )
         after = _snapshot_binding(service.snapshot(), after_capabilities)
         evidence["post_save_binding"] = after
-        if not _same_frame(before, after):
+        if not _same_modal(before, after):
             raise ValueError(
                 "unexpected event changed while durable checkpoint materialized"
             )

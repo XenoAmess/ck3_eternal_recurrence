@@ -16,6 +16,31 @@ _BIRTH_BOOLEAN_SCOPES = (
 MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "birth.3035": {
+        # CK3 1.19.0.6 parent-side sickly-child recovery notice. birth.3034
+        # has already removed sickly from scope:child before it notifies the
+        # parents; this window only repeats that result as a tooltip and its
+        # sole option is inert. R283 observed the played parent as root with
+        # one distinct child scope and native option index 0.
+        "date_raw": 53208048,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "child": (32904,),
+        },
+        "scope_types": {
+            "child": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": (("child",),),
+        "saved_scope_count": 1,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "birth.3032": {
         # CK3 1.19.0.6 father-side sickly-child notice. The mother-side event
         # has already assigned sickly before this window; immediate only
