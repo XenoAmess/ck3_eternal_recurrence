@@ -204,4 +204,28 @@ CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.130": {
+        # R237 reached talent transfer. Route A records a successful transfer
+        # with no wrong-role evidence and outcome 3; B records wrong-role
+        # evidence and outcome 1, while C opens defer/debt. Choose A as the
+        # lighter successful result. It advances R 3 -> 4 and schedules .132.
+        "date_raw": 53187600,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_GOVERNANCE_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_GOVERNANCE_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }

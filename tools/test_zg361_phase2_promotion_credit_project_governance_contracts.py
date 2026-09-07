@@ -178,11 +178,49 @@ class CreditProjectGovernanceContractTests(unittest.TestCase):
         event = {"event_instance_id": 159}
         return snapshot, event, context
 
+    def _r237_frame(self) -> tuple[
+        dict[str, object], dict[str, object], dict[str, object]
+    ]:
+        contract = governance.CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS[
+            "zg361cp.130"
+        ]
+        character_scopes = contract["character_scopes"]
+        saved_names = contract["saved_scope_name_sets"][0]
+        scopes = [
+            _character_scope(name, character_scopes[name])
+            if name in character_scopes
+            else _value_scope(name)
+            for name in saved_names
+        ]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361cp.130",
+            "current_event_instance_id": 160,
+            "date_raw": 53187600,
+            "root_scope": _character_scope("root", 32904)["scope"],
+            "saved_scopes": scopes,
+            "options": [_option(index) for index in range(3)],
+        }
+        snapshot = {
+            "date_raw": 53187600,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 160}
+        return snapshot, event, context
+
     def test_r234_exact_frame_selects_project_track_one(self) -> None:
         contracts = governance.CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS
         self.assertEqual(
             set(contracts),
-            {"zg361cp.131", "zg361cp.129", "zg361cp.134"},
+            {
+                "zg361cp.131",
+                "zg361cp.129",
+                "zg361cp.134",
+                "zg361cp.130",
+            },
         )
         contract = contracts["zg361cp.131"]
         self.assertIs(
@@ -426,6 +464,87 @@ class CreditProjectGovernanceContractTests(unittest.TestCase):
             ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
         ).read_text(encoding="utf-8")
         self.assertNotIn('    "zg361cp.134": {', production_source)
+
+    def test_r237_exact_frame_selects_clean_talent_transfer(self) -> None:
+        contract = governance.CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS[
+            "zg361cp.130"
+        ]
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS["zg361cp.130"],
+            contract,
+        )
+        snapshot, event, context = self._r237_frame()
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="zg361cp.130",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(len(contract["saved_scope_name_sets"][0]), 74)
+        self.assertEqual(len(contract["character_scopes"]), 39)
+        self.assertEqual(len(contract["scope_types"]), 35)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+    def test_r237_frame_rejects_date_scope_and_alias_drift(self) -> None:
+        contract = governance.CREDIT_PROJECT_GOVERNANCE_TIMELINE_CONTRACTS[
+            "zg361cp.130"
+        ]
+        snapshot, event, context = self._r237_frame()
+
+        wrong_date = copy.deepcopy(context)
+        wrong_date["date_raw"] = 53187576
+        date_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_date,
+            event_key="zg361cp.130",
+            contract=contract,
+        )
+        self.assertFalse(date_checks["context_date_raw"])
+
+        missing_value = copy.deepcopy(context)
+        missing_value["saved_scopes"] = [
+            row
+            for row in missing_value["saved_scopes"]
+            if row["name"] != "zg361_cp_r_case"
+        ]
+        scope_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=missing_value,
+            event_key="zg361cp.130",
+            contract=contract,
+        )
+        self.assertFalse(scope_checks["scope:zg361_cp_r_case:type"])
+        self.assertFalse(scope_checks["saved_scope_names_exact"])
+
+        alias_drift = copy.deepcopy(context)
+        subject = next(
+            row
+            for row in alias_drift["saved_scopes"]
+            if row["name"] == "zg361_cp_r_subject"
+        )
+        subject["scope"]["typed_identity"]["character_id"] = 26347
+        alias_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=alias_drift,
+            event_key="zg361cp.130",
+            contract=contract,
+        )
+        self.assertFalse(alias_checks["scope:zg361_cp_r_subject"])
+
+    def test_talent_transfer_contract_is_not_inlined_in_production_entry(
+        self,
+    ) -> None:
+        production_source = (
+            ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn('    "zg361cp.130": {', production_source)
 
 
 if __name__ == "__main__":
