@@ -1448,6 +1448,59 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertFalse(drift_checks["scope:eunuch:differs_from"])
         self.assertFalse(drift_checks["scope:scheme_owner:differs_from"])
 
+    def test_eunuch_family_council_petition_preserves_council_roster(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.2041"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=233,
+            date_raw=53239224,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("rival", "character", 16844822),
+                _scope("petition_liege", "character", 32904),
+                _scope("councillor", "character", 35159),
+                _scope("petition_vassal", "character", 35159),
+                _scope("second_party", "character", 29346),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53239224,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 233},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        alias_drift = copy.deepcopy(context)
+        alias_drift["saved_scopes"][7] = _scope(
+            "petition_vassal", "character", 35160
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53239224,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 233},
+            context=alias_drift,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:councillor:matches_any"])
+        self.assertFalse(drift_checks["scope:petition_vassal:matches_any"])
+
     def test_eunuch_governorship_request_preserves_title_roster(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.2021"
         contract = _manager_contract(event_key, player=32904)

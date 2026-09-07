@@ -1137,6 +1137,68 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.2041": {
+        # CK3 1.19.0.6 eunuch-family council-seat petition. The immediate
+        # block has already selected/recruited the family candidate and saved
+        # both the candidate and any incumbent councillor. Native option 0
+        # fires the incumbent, assigns the family candidate, blocks firing
+        # them and upgrades the eunuch story. Native option 1 leaves the
+        # council roster intact and applies only the authored downgrade plus
+        # opinion/stress. Bind the candidate alias and incumbent before taking
+        # that narrower refusal route.
+        "date_raw": 53239224,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+            "petition_liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+            "councillor": (32904,),
+            "petition_vassal": (32904,),
+            "second_party": (32904,),
+        },
+        "character_scope_matches_any": {
+            "councillor": ("petition_vassal",),
+            "petition_vassal": ("councillor",),
+        },
+        "character_scope_differs_from": {
+            "councillor": ("eunuch", "second_party"),
+            "petition_vassal": ("eunuch", "second_party"),
+            "second_party": ("councillor", "petition_vassal"),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "rival": "character",
+            "petition_liege": "character",
+            "councillor": "character",
+            "petition_vassal": "character",
+            "second_party": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "rival",
+            "petition_liege",
+            "councillor",
+            "petition_vassal",
+            "second_party",
+        ),),
+        "saved_scope_count": 9,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_story_cycle_admin_eunuch.2021": {
         # CK3 1.19.0.6 eunuch-family governorship request. Native option 0
         # transfers a title or changes its appointment investment, mutates
