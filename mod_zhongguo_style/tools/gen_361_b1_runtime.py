@@ -5326,6 +5326,11 @@ zg361_b1_build_agenda_and_attention_effect = {
 	save_temporary_scope_as = zg361_b1_agenda_manager
 	every_in_list = {
 		variable = zg361_b1_subjects
+		# R284 proved that copying eligible rows through a temporary
+		# `add_to_list` candidate list can strip the variables required by the
+		# immediately following ordered walk. Give every live durable roster row
+		# a low sentinel first; eligible rows overwrite it with their real key.
+		set_variable = { name = zg361_b1_agenda_sort_key value = -1000000000 }
 		if = {
 			limit = {
 				has_variable = zg361_b1_case_owner
@@ -5386,7 +5391,6 @@ zg361_b1_build_agenda_and_attention_effect = {
 				limit = { var:zg361_b1_late_evidence_magnitude < 0 }
 				set_variable = { name = zg361_b1_late_evidence_magnitude value = { value = var:zg361_b1_late_evidence_magnitude multiply = -1 } }
 			}
-			add_to_list = zg361_b1_agenda_candidates
 			root = {
 				change_variable = { name = zg361_b1_processing_n add = 1 }
 				if = { limit = { var:zg361_b1_m137_mode != 3 } change_variable = { name = zg361_b1_agenda_n add = 1 } }
@@ -5399,7 +5403,7 @@ zg361_b1_build_agenda_and_attention_effect = {
 	set_variable = { name = zg361_b1_agenda_remaining_bottom_cursor value = var:zg361_pending_325_n }
 	set_variable = { name = zg361_b1_agenda_hash value = { value = var:zg361_b1_manager_case_serial multiply = 1000 } }
 	ordered_in_list = {
-		list = zg361_b1_agenda_candidates
+		variable = zg361_b1_subjects
 		order_by = var:zg361_b1_agenda_sort_key
 		max = { value = var:zg361_b1_processing_n max = 80 }
 		check_range_bounds = no

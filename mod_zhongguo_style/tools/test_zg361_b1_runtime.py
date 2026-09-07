@@ -1038,6 +1038,18 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             build,
         )
         self.assertIn("order_by = var:zg361_b1_agenda_sort_key", build)
+        sentinel = build.index(
+            "name = zg361_b1_agenda_sort_key value = -1000000000"
+        )
+        eligibility = build.index("has_variable = zg361_pending_grade", sentinel)
+        ordered = build.index("ordered_in_list = {", eligibility)
+        self.assertLess(sentinel, eligibility)
+        self.assertLess(eligibility, ordered)
+        self.assertIn(
+            "variable = zg361_b1_subjects",
+            build[ordered:ordered + 300],
+        )
+        self.assertNotIn("zg361_b1_agenda_candidates", build)
 
         # Attention is the gameplay consumer: only reviewed items enter the
         # pending/milestone consumer. The finalizer closes reviewed and skipped
