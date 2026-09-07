@@ -1075,6 +1075,20 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
+    def test_imperial_debate_allows_the_two_live_observed_deliveries(self) -> None:
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["debate_event.5110"],
+            starting_date=53199480,
+        )
+        self.assertEqual(contract["max_occurrences"], 2)
+        for date_raw in (53203368, 53211192):
+            with self.subTest(date_raw=date_raw):
+                self.assertTrue(
+                    production._contract_date_matches(date_raw, contract)
+                )
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
     def test_random_interrupt_dates_rebind_but_authored_anchor_stays_exact(self) -> None:
         random_contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS[

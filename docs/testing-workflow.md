@@ -2048,3 +2048,13 @@ strict boundary 为 `chancellor_task.1002`，instance `207`、date `53209248`、
 继续自然推进到 `zg361b1.124:immediate` 后，增量 runtime scan 得到 11 条 blocking diagnostics：`zg361_b1_runtime_005_huddle_agenda_effects.txt:977–979` 的 temporary `zg361_b1_agenda_candidates` 在 `order_by` 读取不到刚写入的 `zg361_b1_agenda_sort_key`，后续 1003/1004/1036 又读取到缺失 `zg361_pending_grade`。修复只改生成源：已 prune 的 durable roster 每行先设置 `-1000000000` sentinel，eligible row 覆盖真实 key并增加 processing count，ordered walk 直接遍历 durable roster、`max` 使用该 count；不得继续通过 `add_to_list` 复制 Character rows。生成器 `--check`、B1 `75/75` 与 `validate_local.py` 仅认证 static-ready；fresh R285 必须将上述 11 条精确签名归零。
 
 R284 initial report / loader gate / resume1 / relay execution SHA-256 分别为 `FD684169835F1A4FDAD7AA6250379F09973C7655ABE26F29E37572FD96A21FEC`、`AC5864A6632672C8A93BB3FA52D7BD245D63CF3D333368467B1BE983C2D14041`、`2944B00D68DABE5586C1CB139EC51C9BC122E23EA1B78ED92B1C1391CDC7B85E`、`5B9EB8F1B6021DCAD519F9BB50650A5CBCD34FE004CB6544A5A6477A65031438`。PID 已通过 native-session queue 停止，relay 返回产品 RED，最终 CK3/injector 槽为空。该轮不增加 scene/stage/宣传计数。
+
+### R285：第二次 imperial-debate occurrence bound（2026-09-08）
+
+R285 从 `3f42df2` 构建 1,031-file fresh release-identical product；tree / projection manifest / release manifest / ZIP SHA-256 为 `A2956F699EF91612C5B79534BF9AA01B15EF07FCECBE4E58601E65CE57E4598D` / `8EB01E14183FC3CC9EA39AB266CDF40C821D8A0CBFA039F0D15137874332D373` / `40499BA08399E3BACABC832F4D640E21F60DF21AA08CB82237D96828480CC056` / `87F14C40B2246FE9750525BC88B3781B3E8CEFF25CBD734D7B15BE391612E96B`。逐文件 verify GREEN；no-launch preflight SHA-256 `09F1E1648B1ED951759942B4E33AAD7A0E91AC86F8547C2F96CBB1B38730E977`，前后 CK3/injector 为 0。
+
+warm-up PID `76624` 在 11.003 秒到达 authenticated Frontend 后完整回收；final PID `63200` 获得 loader `303/303`、fatal `0`、Load Save、paused/map/mailbox，并 exact 关闭 `debate_event.5110` instance `202` / date `53203368`、`ep3_decisions_event.2001` instance `203` / `53203440` 与 `birth.3035` instance `204` / `53206920`。
+
+同一 client 在 `53211192` 再次交付 `debate_event.5110`。旧合同的 `max_occurrences=1` 先于第二次 identity check fail-closed，所以该轮属于 harness occurrence RED，不能声称产品 agenda 修复已 live 验收。现只把上限扩到两次实机已见投递，继续沿用源码审阅后的 option 2/native 1 与 scope variants；第三次仍 fail-closed。R286 必须先让第二次完整 exact checks GREEN，再评估 R284 的 11 条产品签名。
+
+R285 report / loader gate / relay execution SHA-256 分别为 `97743C6DDAF7ED4398CF094C1C6EF9EF80B22FE779BCB85C3C83FB3ABB9336EC` / `6631296D73467E6D4C36C4630EF8C97C9D72B9FC600E72E3DAEE788B2120DB83` / `578377A7846C1298F58FC578C5AE423E8F078C18D9202E2E84CA044CAB1F7547`。final cleanup `cleanup_proven/tree_gone`，最终进程槽为空。
