@@ -189,4 +189,29 @@ CREDIT_PROJECT_RESOURCE_RACE_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.28": {
+        # R216 reached credit-claim audit. Route A permanently moves 500 bps
+        # from subject to manager. Route B records the same proposed transfer,
+        # then audits it back so the final 7000/2000/1000 allocation is intact.
+        # Route C opens defer/debt. B is the minimum net business disturbance,
+        # advances E state 3 -> 4, and preserves the itemized .29 continuation.
+        "date_raw": 53187120,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_RESOURCE_RACE_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_RESOURCE_RACE_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
 }
