@@ -125,4 +125,28 @@ CREDIT_PROJECT_REPORTING_POLICY_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "zg361cp.54": {
+        # R219 exposes only native routes 0 and 2 because .61 policy 1 hides
+        # native route 1. The first rendered/authored-visible option remains
+        # native 0: it creates the one-hour report, spends one capacity point,
+        # advances I state 1 -> 2, then D+1 .9256 restores itemized .56.
+        "date_raw": 53187192,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_REPORTING_POLICY_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_REPORTING_POLICY_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
