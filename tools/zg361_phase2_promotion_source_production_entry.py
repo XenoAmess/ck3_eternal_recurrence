@@ -1269,6 +1269,55 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.5020": {
+        # CK3 1.19.0.6 puppet-heir node. The immediate block has already made
+        # the selected close-family puppet a friend of the eunuch and stored
+        # it on the story. The sole option then grants the ten-year puppet
+        # modifier and increases that character's appointment investment.
+        # There is no decline route, so acknowledge only the exact source-
+        # authored frame while proving the puppet is not the current heir.
+        "date_raw": 53235120,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+            "current_heir": (32904,),
+            "puppet": (32904,),
+        },
+        "character_scope_differs_from": {
+            "current_heir": ("puppet",),
+            "puppet": ("current_heir",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "rival": "character",
+            "current_heir": "character",
+            "puppet": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "rival",
+            "current_heir",
+            "puppet",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is

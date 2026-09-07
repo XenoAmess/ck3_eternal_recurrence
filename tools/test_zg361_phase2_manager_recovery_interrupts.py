@@ -1587,6 +1587,57 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_eunuch_puppet_heir_binds_distinct_current_heir(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.5020"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=226,
+            date_raw=53235120,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("rival", "character", 16844822),
+                _scope("current_heir", "character", 36354),
+                _scope("puppet", "character", 37810),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53235120,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 226},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        current_heir_reused = copy.deepcopy(context)
+        current_heir_reused["saved_scopes"][6] = _scope(
+            "puppet", "character", 36354
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53235120,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 226},
+            context=current_heir_reused,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:current_heir:differs_from"])
+        self.assertFalse(drift_checks["scope:puppet:differs_from"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
