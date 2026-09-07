@@ -1216,6 +1216,59 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.4000": {
+        # CK3 1.19.0.6 spouse-accusation node. In the observed source shape,
+        # native option 1 is hidden because the player does not already know a
+        # qualifying lover secret, leaving native options 0 and 2 rendered.
+        # Native option 2 imprisons both the spouse and alleged cuckolder and
+        # adds tyranny. Choose native option 0's intrigue investigation: it may
+        # reveal the actual secret (or report innocence/failure), but avoids
+        # the unconditional double imprisonment and tyranny mutation. Bind the
+        # complete seven-scope frame and the authored hidden-option gap first.
+        "date_raw": 53232552,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "rival": (32904,),
+            "spouse": (32904,),
+            "cuckolder": (32904,),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("spouse", "cuckolder"),
+            "spouse": ("eunuch", "cuckolder"),
+            "cuckolder": ("eunuch", "spouse"),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "rival": "character",
+            "spouse": "character",
+            "cuckolder": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "rival",
+            "spouse",
+            "cuckolder",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is

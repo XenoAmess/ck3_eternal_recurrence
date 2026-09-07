@@ -1520,6 +1520,73 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:rival:unique_third_party"])
 
+    def test_eunuch_spouse_accusation_avoids_double_imprisonment(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.4000"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=223,
+            date_raw=53232552,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("rival", "character", 16844822),
+                _scope("spouse", "character", 32797),
+                _scope("cuckolder", "character", 30581),
+            ],
+            native_option_indices=(0, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53232552,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 223},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["snapshot_option_count"], 3)
+        self.assertEqual(contract["native_option_indices"], (0, 2))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        same_accused_party = copy.deepcopy(context)
+        same_accused_party["saved_scopes"][6] = _scope(
+            "cuckolder", "character", 32797
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53232552,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 223},
+            context=same_accused_party,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:spouse:differs_from"])
+        self.assertFalse(drift_checks["scope:cuckolder:differs_from"])
+
+        visible_option_drift = copy.deepcopy(context)
+        visible_option_drift["options"][1]["native_option_index"] = 1
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53232552,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 223},
+            context=visible_option_drift,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
