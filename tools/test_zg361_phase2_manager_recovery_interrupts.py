@@ -458,6 +458,60 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_family_subsidy_uses_terminal_hidden_option_route(self) -> None:
+        event_key = "tgp_movement_events.0080"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=206,
+            date_raw=53205336,
+            player=32904,
+            scopes=[
+                _scope("root_scope", "character", 32904),
+                _scope("my_movement", "situation_participant_group"),
+                _scope("family_member", "character", 31137),
+            ],
+            native_option_indices=(1, 2, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53205336,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 206},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"]["root_scope"], 32904)
+        self.assertEqual(
+            contract["scope_types"]["my_movement"],
+            "situation_participant_group",
+        )
+        self.assertEqual(contract["scope_types"]["family_member"], "character")
+        self.assertEqual(contract["snapshot_option_count"], 4)
+        self.assertEqual(contract["native_option_indices"], (1, 2, 3))
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][2] = _scope(
+            "family_member", "character", 32904
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53205336,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 206},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:family_member:unique_third_party"])
+
     def test_shinto_visitor_uses_deterministic_welcome_route(self) -> None:
         event_key = "tgp_movement_events.0150"
         contract = _manager_contract(event_key, player=32904)

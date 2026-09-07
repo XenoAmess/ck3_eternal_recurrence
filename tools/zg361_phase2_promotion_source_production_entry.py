@@ -337,6 +337,43 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "tgp_movement_events.0080": {
+        # CK3 1.19.0.6 celestial family-subsidy request.  The played manager
+        # is not in the conservative movement in R288, so native option 0 is
+        # hidden and the three rendered choices map exactly to 1/2/3.  The
+        # first two visible routes transfer family gold and either install a
+        # durable estate modifier or mutate movement influence/power.  Native
+        # option 3 ends the event without those estate or movement mutations,
+        # confining the result to authored friendship/stress and conditional
+        # opinion/resource effects.  Bind the generated family member and the
+        # complete hidden-option projection before taking that terminal route.
+        "date_raw": 53205336,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "root_scope": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "family_member": (29037,),
+        },
+        "scope_types": {
+            "my_movement": "situation_participant_group",
+            "family_member": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "root_scope",
+            "my_movement",
+            "family_member",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (1, 2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "max_occurrences": 1,
+    },
     "tgp_movement_events.0050": {
         # CK3 1.19.0.6 merit elder invitation. R154 had no old_elder scope,
         # so authored option 2 was hidden and the two rendered buttons mapped
