@@ -208,6 +208,63 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertFalse(drift_checks["saved_scope_names_exact"])
         self.assertFalse(drift_checks["saved_scope_count"])
 
+    def test_fallback_secret_discovery_reveals_only_bound_secret(self) -> None:
+        event_key = "spymaster_task.0359"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=69,
+            date_raw=53168112,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 29889),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 28667),
+                _scope("councillor_liege", "character", 32904),
+                _scope("target_character", "character", 28667),
+                _scope("councillor", "character", 29889),
+                _scope("active_councillor", "character", 29889),
+                _scope("secret_holder", "character", 29503),
+                _scope("secret_to_reveal", "secret"),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53168112,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 69},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"], {"councillor_liege": 32904})
+        self.assertEqual(contract["saved_scope_count"], 10)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["max_occurrences"], 1)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][5] = _scope(
+            "target_character", "character", 29503,
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53168112,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 69},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:target:matches_any"])
+        self.assertFalse(drift_checks["scope:target_character:matches_any"])
+
     def test_nonfounder_culture_notification_selects_other_acknowledgement(
         self,
     ) -> None:
