@@ -1107,6 +1107,60 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:physician:unique_third_party"])
 
+    def test_herbal_sachet_offer_buys_nothing(self) -> None:
+        event_key = "epidemic_events.5009"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=231,
+            date_raw=53254032,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("merchant", "character", 63643),
+                _scope("flower_species", "flag"),
+                _scope("owner", "character", 63643),
+                _scope("creator", "character", 63643),
+                _scope("random_quality_bonus", "value"),
+                _scope("quality", "value"),
+                _scope("wealth", "value"),
+                _scope("location", "province"),
+                _scope("newly_created_artifact", "artifact"),
+            ],
+            native_option_indices=(1, 2, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53254032,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 231},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][5] = _scope(
+            "creator", "character", 63644
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53254032,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 231},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:creator:matches_any"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

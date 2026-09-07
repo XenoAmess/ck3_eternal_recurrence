@@ -849,6 +849,59 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "epidemic_events.5009": {
+        # CK3 1.19.0.6 plague-market herbal-sachet offer. Native routes 0/1
+        # transfer the generated artifact, spend gold and install long-lived
+        # modifiers; native 2 still installs the protection modifier. Native
+        # 3 buys nothing and only applies trait-dependent stress before the
+        # merchant cleanup shared by every route. Bind the generated artifact
+        # metadata and merchant/owner/creator identity before selecting it.
+        "date_raw": 53254032,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "merchant": (32904,),
+        },
+        "character_scope_matches_any": {
+            "owner": ("merchant",),
+            "creator": ("merchant",),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "epidemic_scope": "epidemic",
+            "merchant": "character",
+            "flower_species": "flag",
+            "owner": "character",
+            "creator": "character",
+            "random_quality_bonus": "value",
+            "quality": "value",
+            "wealth": "value",
+            "location": "province",
+            "newly_created_artifact": "artifact",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "epidemic_scope",
+            "merchant",
+            "flower_species",
+            "owner",
+            "creator",
+            "random_quality_bonus",
+            "quality",
+            "wealth",
+            "location",
+            "newly_created_artifact",
+        ),),
+        "saved_scope_count": 11,
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (1, 2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
