@@ -1076,6 +1076,56 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.2021": {
+        # CK3 1.19.0.6 eunuch-family governorship request. Native option 0
+        # transfers a title or changes its appointment investment, mutates
+        # the title heir's opinion and adds a five-year family-boon flag.
+        # Native option 1 performs none of those roster/title changes and has
+        # no follow-up event; it only applies the story downgrade plus
+        # opinion/stress. Bind the selected family member, title and explicit
+        # non-root heir before taking that narrower refusal route.
+        "date_raw": 53227128,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "governor": (32904,),
+            "title_heir": (32904,),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("governor", "title_heir"),
+            "governor": ("eunuch", "title_heir"),
+            "title_heir": ("eunuch", "governor"),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "governor": "character",
+            "title": "landed_title",
+            "title_heir": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "governor",
+            "title",
+            "title_heir",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is

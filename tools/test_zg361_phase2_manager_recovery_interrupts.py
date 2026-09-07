@@ -1372,6 +1372,56 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:secret_owner:differs_from"])
 
+    def test_eunuch_governorship_request_preserves_title_roster(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.2021"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=216,
+            date_raw=53227128,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("governor", "character", 31440),
+                _scope("title", "landed_title"),
+                _scope("title_heir", "character", 30938),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53227128,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 216},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        reused_heir = copy.deepcopy(context)
+        reused_heir["saved_scopes"][6] = _scope(
+            "title_heir", "character", 31440
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53227128,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 216},
+            context=reused_heir,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:title_heir:differs_from"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)
