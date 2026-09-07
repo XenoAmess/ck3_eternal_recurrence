@@ -241,4 +241,29 @@ CREDIT_PROJECT_MATRIX_HANDOFF_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 2,
         "selected_native_option_index": 1,
     },
+    "zg361cp.67": {
+        # R232 resumed the already-queued duplicate-role card after a same-day
+        # vanilla interrupt. Routes A/B have the same write footprint, but A
+        # retains responsibility on the existing subject while B transfers it
+        # to the cross reviewer; C opens defer/debt. A keeps J state 4 and the
+        # established ownership, then schedules hidden .9268 -> visible .68.
+        "date_raw": 53187480,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": _CREDIT_PROJECT_MATRIX_HANDOFF_CHARACTER_SCOPES,
+        "scope_types": {
+            name: "value"
+            for name in _CREDIT_PROJECT_MATRIX_HANDOFF_SAVED_SCOPE_NAMES
+            if name not in _CREDIT_PROJECT_MATRIX_HANDOFF_CHARACTER_SCOPES
+        },
+        "saved_scope_name_sets": (
+            _CREDIT_PROJECT_MATRIX_HANDOFF_SAVED_SCOPE_NAMES,
+        ),
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
