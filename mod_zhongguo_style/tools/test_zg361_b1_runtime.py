@@ -179,8 +179,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(keys_by_part[5][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
         all_keys = tuple(key for part in keys_by_part for key in part)
-        self.assertEqual(len(all_keys), 80)
-        self.assertEqual(len(set(all_keys)), 80)
+        self.assertEqual(len(all_keys), 81)
+        self.assertEqual(len(set(all_keys)), 81)
 
         observed_blocks = []
         for relative in B1_EFFECT_FILES:
@@ -3248,17 +3248,37 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertEqual(
             open_calibration.count(
-                "zg361_b1_prune_unavailable_subjects_effect = yes"
+                "zg361_b1_reconcile_pre_calibration_quota_effect = yes"
             ),
             1,
         )
+        reconcile = top_level_block(
+            self.effects, "zg361_b1_reconcile_pre_calibration_quota_effect"
+        )
+        for token in (
+            "zg361_b1_prune_unavailable_subjects_effect = yes",
+            "name = zg361_b1_pre_calibration_valid_n value = 0",
+            "name = zg361_b1_pre_calibration_expected_n",
+            "NOT = { var:zg361_b1_pre_calibration_valid_n = var:zg361_b1_pre_calibration_expected_n }",
+            "NOT = { var:zg361_b1_pre_calibration_top_n = var:zg361_pending_375_n }",
+            "NOT = { var:zg361_b1_pre_calibration_middle_n = var:zg361_pending_35_n }",
+            "NOT = { var:zg361_b1_pre_calibration_bottom_n = var:zg361_pending_325_n }",
+            "name = zg361_b1_pre_calibration_pool_fallback value = var:zg361_b1_quota_pool_membership",
+            "name = zg361_b1_quota_pool_membership value = 0",
+            "zg361_b1_rebuild_local_quota_effect = yes",
+            "name = zg361_b1_pre_calibration_reconcile_receipt_serial value = var:zg361_b1_manager_case_serial",
+            'debug_log = "ZG361B1: pre-calibration quota drift rebuilt from exact live case tuples"',
+        ):
+            self.assertIn(token, reconcile)
+        self.assertLess(
+            reconcile.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            reconcile.index("variable = zg361_b1_subjects"),
+        )
         self.assertLess(
             open_calibration.index(
-                "zg361_b1_prune_unavailable_subjects_effect = yes"
+                "zg361_b1_reconcile_pre_calibration_quota_effect = yes"
             ),
-            open_calibration.index(
-                "zg361_b1_freeze_conflict_recusals_effect = yes"
-            ),
+            open_calibration.index("zg361_b1_freeze_conflict_recusals_effect = yes"),
         )
 
         reopen_resolver = top_level_block(

@@ -24,7 +24,7 @@ EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
 EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
-EFFECT_BLOCK_COUNTS = (42, 38)
+EFFECT_BLOCK_COUNTS = (42, 39)
 LEGACY_EFFECT_PATHS = (
     EFFECTS_DIR / "zg361_b1_runtime_effects.txt",
     EFFECTS_DIR / "zg361_b1_runtime_effects_part2.txt",
@@ -8188,6 +8188,65 @@ zg361_b1_freeze_band_order_effect = {
 	}
 }
 
+# A bank-close receipt can remain structurally present even when one durable
+# roster row no longer matches the manager's exact state-5 case tuple.  R289
+# observed 26 frozen quota slots but only 25 valid calibration rows, which left
+# the later conservation gate permanently open.  Recount the exact tuple before
+# changing any subject to state 7.  Only a mismatch abandons the historical
+# pooled allocation and rebuilds this manager's current local book; an intact
+# local or pooled book remains byte-for-byte untouched.
+zg361_b1_reconcile_pre_calibration_quota_effect = {
+	zg361_b1_prune_unavailable_subjects_effect = yes
+	set_variable = { name = zg361_b1_pre_calibration_valid_n value = 0 }
+	set_variable = { name = zg361_b1_pre_calibration_top_n value = 0 }
+	set_variable = { name = zg361_b1_pre_calibration_middle_n value = 0 }
+	set_variable = { name = zg361_b1_pre_calibration_bottom_n value = 0 }
+	save_temporary_scope_as = zg361_b1_pre_calibration_manager
+	every_in_list = {
+		variable = zg361_b1_subjects
+		limit = {
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_case_subject
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_case_active
+			has_variable = zg361_b1_roster_included
+			has_variable = zg361_pending_grade
+			has_variable = zg361_b1_calibration_score
+			var:zg361_b1_case_owner = scope:zg361_b1_pre_calibration_manager
+			var:zg361_b1_case_subject = this
+			var:zg361_b1_cycle_serial = scope:zg361_b1_pre_calibration_manager.var:zg361_b1_manager_cycle_serial
+			var:zg361_b1_case_serial = scope:zg361_b1_pre_calibration_manager.var:zg361_b1_manager_case_serial
+			var:zg361_b1_case_state = 5
+			var:zg361_b1_case_active = 1
+			var:zg361_b1_roster_included = 1
+		}
+		root = { change_variable = { name = zg361_b1_pre_calibration_valid_n add = 1 } }
+		if = { limit = { var:zg361_pending_grade = 3 } root = { change_variable = { name = zg361_b1_pre_calibration_top_n add = 1 } } }
+		else_if = { limit = { var:zg361_pending_grade = 1 } root = { change_variable = { name = zg361_b1_pre_calibration_bottom_n add = 1 } } }
+		else = { root = { change_variable = { name = zg361_b1_pre_calibration_middle_n add = 1 } } }
+	}
+	set_variable = { name = zg361_b1_pre_calibration_expected_n value = { value = var:zg361_pending_375_n add = var:zg361_pending_35_n add = var:zg361_pending_325_n } }
+	set_variable = { name = zg361_b1_pre_calibration_quota_mismatch value = 0 }
+	if = {
+		limit = {
+			OR = {
+				NOT = { var:zg361_b1_pre_calibration_valid_n = var:zg361_b1_pre_calibration_expected_n }
+				NOT = { var:zg361_b1_pre_calibration_top_n = var:zg361_pending_375_n }
+				NOT = { var:zg361_b1_pre_calibration_middle_n = var:zg361_pending_35_n }
+				NOT = { var:zg361_b1_pre_calibration_bottom_n = var:zg361_pending_325_n }
+			}
+		}
+		set_variable = { name = zg361_b1_pre_calibration_quota_mismatch value = 1 }
+		set_variable = { name = zg361_b1_pre_calibration_pool_fallback value = var:zg361_b1_quota_pool_membership }
+		set_variable = { name = zg361_b1_quota_pool_membership value = 0 }
+		zg361_b1_rebuild_local_quota_effect = yes
+		set_variable = { name = zg361_b1_pre_calibration_reconcile_receipt_serial value = var:zg361_b1_manager_case_serial }
+		debug_log = "ZG361B1: pre-calibration quota drift rebuilt from exact live case tuples"
+	}
+}
+
 zg361_b1_open_calibration_effect = {
 	if = {
 		limit = { var:zg361_b1_cycle_state = 6 var:zg361_b1_calibration_finalized = 0 }
@@ -8207,11 +8266,9 @@ zg361_b1_open_calibration_effect = {
 		set_variable = { name = zg361_b1_calibration_swap_used value = 0 }
 		set_variable = { name = zg361_b1_bottom_protection_used value = 0 }
 		set_variable = { name = zg361_b1_calibration_quick_close_blocked value = 0 }
-		# The common-superior allocation delay can outlive a frozen subject.
-		# R103 proved that a stale weak Character survives in the variable list
-		# but cannot expose case variables. Rebuild both lists before the first
-		# calibration consumer reads any subject-owned field.
-		zg361_b1_prune_unavailable_subjects_effect = yes
+		# Reconcile the bank-close counts against the exact live state-5 tuples
+		# before the first calibration consumer reads any subject-owned field.
+		zg361_b1_reconcile_pre_calibration_quota_effect = yes
 		zg361_b1_freeze_conflict_recusals_effect = yes
 		zg361_b1_apply_recusal_replacement_reviews_effect = yes
 		zg361_b1_apply_atomic_calibration_swap_effect = yes
@@ -10663,6 +10720,7 @@ B1_EFFECT_PURPOSES = (
             "zg361_b1_apply_bottom_protection_effect",
             "zg361_b1_prepare_skip_level_return_effect",
             "zg361_b1_freeze_band_order_effect",
+            "zg361_b1_reconcile_pre_calibration_quota_effect",
             "zg361_b1_open_calibration_effect",
             "zg361_b1_mark_published_effect",
         ),
