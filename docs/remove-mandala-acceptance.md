@@ -1,6 +1,6 @@
 # Mandala Purge v1.0.0 Acceptance Report
 
-Status: **GREEN for source release candidate and real CK3 runtime**
+Status: **GREEN — v1.0.0 published to Steam Workshop, real CK3 runtime and fresh subscription cache verified**
 
 Date: 2026-09-08 (Asia/Shanghai)
 
@@ -47,7 +47,21 @@ All required marker assertions passed and no `MRMA: TEST FAIL` appeared:
 | `tools/build_remove_mandala_release.py --check` | GREEN: deterministic two-build manifest and ZIP |
 | Python compile, `git diff --check`, repository credential-pattern scan | GREEN |
 
-The provisional reproducibility hashes before the release commit/tag were manifest `81b1e81f7e2ea8f113e94b35cca9a0d39c52de1a6df3b66c7e0e466df074bfcd` and ZIP `04cda5dc095cc329edbd21a71eda533bd3005fddf979721af63d7b4c8f5b90d9`. The formal tag-bound hashes are recorded in the release changelog only after the Workshop upload succeeds.
+The provisional reproducibility hashes before the release commit/tag were manifest `81b1e81f7e2ea8f113e94b35cca9a0d39c52de1a6df3b66c7e0e466df074bfcd` and ZIP `04cda5dc095cc329edbd21a71eda533bd3005fddf979721af63d7b4c8f5b90d9`.
+
+The formal release was built from commit `9de69ce592cad20e85ba73798af1247c2b2ff532` and annotated tag `remove-mandala-v1.0.0`. Its Workshop-ID-bound manifest SHA-256 is `ec4733c2aa0d800fc01c5c7592e41512f43cf15271adeca41ec268eb6a4b9d1e`; its deterministic ZIP SHA-256 remains `04cda5dc095cc329edbd21a71eda533bd3005fddf979721af63d7b4c8f5b90d9`. Official GitHub Actions runs `34161447567` (master) and `34161470955` (tag) both completed successfully.
+
+## Steam Workshop publication and subscription-cache result
+
+- Workshop item: [`3797711947`](https://steamcommunity.com/sharedfiles/filedetails/?id=3797711947)
+- Publication time: 2026-09-08 (Asia/Shanghai)
+- Steam public details API: `result=1`, `visibility=0` (public), exact bilingual title, file size `777270`, description length `2430`
+- Public page: thematic thumbnail, full bilingual BBCode description, and both real-game screenshots visible in the intended order
+- Fresh subscribed cache: `D:\Program Files (x86)\Steam\steamapps\workshop\content\1158310\3797711947`
+- Cache verification: `tools/build_remove_mandala_release.py --verify ... --workshop-cache` GREEN, exactly 15/15 files and no unexpected file
+- Post-upload rebuild: inner `dist/mod_remove_mandala/descriptor.mod` restored without `remote_file_id`; the canonical ID remains only in the external launcher descriptor
+
+The permanent initial-baseline changelog is [`release-changelogs/remove-mandala/1.0.0.md`](release-changelogs/remove-mandala/1.0.0.md).
 
 ## Offline preflight boundary
 

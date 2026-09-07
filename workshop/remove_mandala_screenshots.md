@@ -25,4 +25,9 @@ Recommended captions:
 
 ## Publication evidence
 
-The Workshop item ID, public Steam CDN URLs, anonymous response dimensions/bytes/hashes, and public media-strip order are appended here only after actual upload and verification. Until then, the files above are tracked release media, not a publication claim.
+- Workshop item: [`3797711947`](https://steamcommunity.com/sharedfiles/filedetails/?id=3797711947)
+- Published publicly: 2026-09-08 (Asia/Shanghai)
+- Uploaded through the owner page in ledger order: `01_live_acceptance_full.jpg`, then `02_live_acceptance_event.jpg`
+- Owner-page verification: both thumbnails were visible; selecting each displayed the corresponding full-map/event view in the media strip
+- Steam public details API verification: `result=1`, `visibility=0`, exact title `Mandala Purge — 肃清曼荼罗伪信`, published payload size `777270`
+- The owner page did not expose stable public CDN URLs in its management UI. Publication is therefore bound by item ID, visible media order, the tracked exact source hashes above, and the fresh 15-file subscribed-cache verification in the acceptance report; no CDN hash is invented.
