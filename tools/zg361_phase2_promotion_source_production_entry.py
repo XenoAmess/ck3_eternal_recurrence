@@ -44,6 +44,9 @@ from zg361_phase2_promotion_credit_project_stop_loss_postmortem_contracts import
 from zg361_phase3_metrics_delivery_aa_contracts import (
     PHASE3_METRICS_DELIVERY_AA_TIMELINE_CONTRACTS,
 )
+from zg361_phase3_metrics_delivery_ag_contracts import (
+    PHASE3_METRICS_DELIVERY_AG_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_vanilla_secret_interrupt_contracts import (
     VANILLA_SECRET_TIMELINE_CONTRACTS,
 )
@@ -2275,6 +2278,9 @@ KNOWN_TIMELINE_INTERRUPTS.update(
 )
 KNOWN_TIMELINE_INTERRUPTS.update(
     PHASE3_METRICS_DELIVERY_AA_TIMELINE_CONTRACTS
+)
+KNOWN_TIMELINE_INTERRUPTS.update(
+    PHASE3_METRICS_DELIVERY_AG_TIMELINE_CONTRACTS
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SECRET_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_BARGAINING_TIMELINE_CONTRACTS)
