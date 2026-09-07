@@ -19891,6 +19891,70 @@ def copy_logs(userdir: Path, artifacts: Path) -> None:
         shutil.copy2(path, artifacts / f"final_{path.name}")
 
 
+def revalidate_phase2_session_retention_before_report(
+    report: dict[str, object],
+    supervisor: Mapping[str, object] | None,
+    artifacts: Path,
+) -> None:
+    """Withdraw a stale retained-session claim immediately before reporting."""
+
+    retention = report.get("phase2_session_retention")
+    if not isinstance(retention, dict) or retention.get("result") != "RETAINED":
+        return
+    if not isinstance(supervisor, Mapping):
+        return
+    session_done = supervisor.get("session_done")
+    session_state = supervisor.get("session_state")
+    if not isinstance(session_done, threading.Event) or not session_done.is_set():
+        return
+
+    state = session_state if isinstance(session_state, Mapping) else {}
+    session_error = state.get("error")
+    session_report = state.get("report")
+    checks = retention.get("checks")
+    if isinstance(checks, dict):
+        checks["supervisor_still_running"] = False
+        retention["failed_checks"] = [
+            name for name, passed in checks.items() if passed is not True
+        ]
+    retention.update(
+        {
+            "result": "RED",
+            "reason": "retained_session_ended_before_final_report",
+            "process_restart_required": True,
+            "reconnect_authorized": False,
+            "retention_lost_before_report": True,
+            "session_error": session_error,
+            "session_report": session_report,
+        }
+    )
+
+    native_cleanup = report.get("native_cleanup")
+    if isinstance(native_cleanup, dict):
+        native_cleanup.update(
+            {
+                "result": "RED",
+                "reconnect_authorized": False,
+                "retention_lost_before_report": True,
+                "session_error": session_error,
+                "session_report": session_report,
+                "retention": retention,
+            }
+        )
+
+    report.update(
+        {
+            "retention_lost_before_report": True,
+            "retention_session_error": session_error,
+            "retention_session_report": session_report,
+        }
+    )
+    write_json(
+        artifacts / "09_phase2_native_session_retained.json",
+        retention,
+    )
+
+
 def run_cell(
     artifacts: Path,
     userdir: Path,
@@ -21346,6 +21410,7 @@ def run_cell(
         "retain_healthy_phase2_session_on_red": (
             retain_healthy_phase2_session_on_red
         ),
+        "retention_lost_before_report": False,
         "phase2_session_retention": phase2_session_retention,
         "phase2_promo_capture": phase2_promo_capture,
         "phase2_b2_same_checkpoint": phase2_b2_same_checkpoint,
@@ -21543,6 +21608,11 @@ def run_cell(
             ),
         },
     }
+    revalidate_phase2_session_retention_before_report(
+        report,
+        phase2_supervisor,
+        artifacts,
+    )
     write_json(artifacts / "report.json", report)
     return report
 

@@ -5767,6 +5767,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
     def test_run_cell_retains_healthy_session_on_harness_red(self) -> None:
         self._run_cell_case(entry_error=True, retain_session=True)
 
+    def test_run_cell_withdraws_retention_lost_before_final_report(self) -> None:
+        self._run_cell_case(
+            entry_error=True,
+            retain_session=True,
+            session_ends_before_report=True,
+        )
+
     def test_run_cell_deduplicates_primary_product_runtime_diagnostic(self) -> None:
         self._run_cell_case(entry_error=True, diagnostic_dedupe=True)
 
@@ -5776,6 +5783,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         entry_error: bool,
         retain_session: bool = False,
         diagnostic_dedupe: bool = False,
+        session_ends_before_report: bool = False,
     ) -> None:
         seed_sha = "A" * 64
         seed_contract = _player_manager_seed_contract(seed_sha)
@@ -5801,8 +5809,29 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             state_dir = root / "state"
             userdir = state_dir / "profile"
             bridge = SimpleNamespace(pipe_name=r"\\.\pipe\promotion-source-unit")
+            session_done = threading.Event()
+            session_state: dict[str, object] = {
+                "report": None,
+                "error": None,
+            }
             with ExitStack() as stack:
                 _enter_common_run_cell_patches(stack, root)
+                if session_ends_before_report:
+                    def end_session_before_report(*_args, **_kwargs) -> None:
+                        session_state["report"] = {
+                            "result": "RED",
+                            "error_reason": "managed CK3 process exited",
+                        }
+                        session_state["error"] = "process exited before handoff"
+                        session_done.set()
+
+                    stack.enter_context(
+                        mock.patch.object(
+                            runner,
+                            "copy_logs",
+                            side_effect=end_session_before_report,
+                        )
+                    )
                 duplicate_diagnostic = (
                     "error.log: complete zg361 product runtime diagnostic block"
                 )
@@ -5827,7 +5856,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                         "start_phase2_native_session_supervisor",
                         return_value={
                             "kind": "fake-supervisor",
-                            "session_done": threading.Event(),
+                            "session_done": session_done,
+                            "session_state": session_state,
                         },
                     )
                 )
@@ -5908,6 +5938,17 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 retained = json.loads(
                     (root / "artifacts" / "03_promotion_source_production_entry.json").read_text(encoding="utf-8")
                 )
+                retained_artifact = (
+                    json.loads(
+                        (
+                            root
+                            / "artifacts"
+                            / "09_phase2_native_session_retained.json"
+                        ).read_text(encoding="utf-8")
+                    )
+                    if retain_session
+                    else None
+                )
 
         forbidden_launch.assert_not_called()
         gate.assert_called_once()
@@ -5937,12 +5978,38 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             if retain_session:
                 stop.assert_not_called()
                 retention = report["phase2_session_retention"]
-                self.assertEqual(retention["result"], "RETAINED")
-                self.assertTrue(retention["reconnect_authorized"])
-                self.assertFalse(
-                    retention["process_restart_required"]
-                )
-                self.assertEqual(report["native_cleanup"]["result"], "RETAINED")
+                if session_ends_before_report:
+                    self.assertEqual(retention["result"], "RED")
+                    self.assertFalse(retention["reconnect_authorized"])
+                    self.assertTrue(retention["process_restart_required"])
+                    self.assertTrue(retention["retention_lost_before_report"])
+                    self.assertEqual(
+                        retention["session_error"],
+                        "process exited before handoff",
+                    )
+                    self.assertEqual(
+                        retention["session_report"]["result"], "RED"
+                    )
+                    self.assertEqual(retained_artifact, retention)
+                    self.assertTrue(report["retention_lost_before_report"])
+                    self.assertEqual(report["native_cleanup"]["result"], "RED")
+                    self.assertFalse(
+                        report["native_cleanup"]["reconnect_authorized"]
+                    )
+                    self.assertTrue(
+                        report["native_cleanup"][
+                            "retention_lost_before_report"
+                        ]
+                    )
+                else:
+                    self.assertEqual(retention["result"], "RETAINED")
+                    self.assertTrue(retention["reconnect_authorized"])
+                    self.assertFalse(retention["process_restart_required"])
+                    self.assertEqual(retained_artifact, retention)
+                    self.assertFalse(report["retention_lost_before_report"])
+                    self.assertEqual(
+                        report["native_cleanup"]["result"], "RETAINED"
+                    )
             else:
                 stop.assert_called_once()
             return
