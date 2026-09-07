@@ -62,7 +62,7 @@ pins the adapter and every executable/source dependency. Important hashes:
 | Input | SHA-256 |
 | --- | --- |
 | adapter | `4922AD1E4D57AC5E202E61D192848D4ED37753AC174A29676D15BE1FE2BE92CB` |
-| manifest | `7E8B41980D112D40450CB830B54A09ACE8A7B9499340AFD5A96EDE112CA4386B` |
+| manifest | `D888FA2DF6839C5A424D9947EE7BCE746ABF930E45B2384169DD23488ABB5FB0` |
 | source capture executable | `B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72` |
 | bridge DLL | `4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B` |
 | bridge injector | `43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D` |
@@ -104,6 +104,29 @@ The fresh receipt is
 This only proves that the already frozen live command remains executable from
 the current integration head. It does not promote source-specific loss,
 comparison, decision, action or `GEN-034` readiness.
+
+### 2026-09-07 post-`1f5e310` no-launch refresh
+
+After the source-contract hash repair landed at `1f5e310`, the same
+`--verify-only` entry was rerun from `master@5ffbc1d`. The report is
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-source-live-adapter-static-20260907\preflight-master-5ffbc1d-r4.json`,
+7,067 bytes, SHA-256
+`6BB2090ADEB83D99906F5D88682CF602A69BD48E14EAA12F98C4F2592EA2CCC6`.
+It returned `READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE` and bound the current
+manifest SHA-256
+`D888FA2DF6839C5A424D9947EE7BCE746ABF930E45B2384169DD23488ABB5FB0`.
+
+The before/after process inventories were identical and retained the already
+running CK3 PID `44264`; this command did not start, attach to, focus, inject
+into or terminate CK3. The occupied process is proof that a later live run
+still requires an exclusive empty slot, not source-specific live evidence.
+
+No additional offline implementation can remove the remaining decision gate:
+the campaign and white-peace utility producers still require production/owner
+inputs. The typed `surrender-war-N` submit and private postwar receipt already
+exist in the frozen lifecycle runner; promoting that submit into the public
+policy before production recommendation, pending/cooldown and full
+postconditions are available would not unlock an authorized decision.
 
 After the coordinator grants an exclusive CK3 slot, the concrete default-OFF
 command is:
