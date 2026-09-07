@@ -63,6 +63,9 @@ from zg361_phase2_promotion_manager_nickname_contracts import (
 from zg361_phase2_promotion_manager_spymaster_contracts import (
     MANAGER_SPYMASTER_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_manager_befriend_contracts import (
+    MANAGER_BEFRIEND_TIMELINE_CONTRACTS,
+)
 
 
 M146 = "zg361pp.146"
@@ -367,43 +370,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
-    },
-    "befriend_outcome.0002": {
-        # CK3 1.19.0.6 target-side befriend outcome. The R164 frame is a
-        # critical success, exposing authored options 1/3/4. Authored option
-        # 1 creates a friendship and option 4 applies the critical rejection;
-        # authored option 3 is the terminal gentle rejection, avoiding the
-        # durable friend relation and the harsher critical-failure outcome.
-        "date_raw": 53164584,
-        "date_policy": "product-observation-window",
-        "root_character_id": 29037,
-        "character_scopes": {
-            "target": 29037,
-        },
-        "unique_character_scope_excludes": {
-            "owner": (29037,),
-        },
-        "scope_types": {
-            "scheme": "scheme",
-            "owner": "character",
-            "artifact": "artifact",
-            "scheme_successful": "flag",
-        },
-        "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "scheme",
-            "owner",
-            "artifact",
-            "target",
-            "scheme_successful",
-        ),),
-        "saved_scope_count": 5,
-        "option_count": 3,
-        "snapshot_option_count": 4,
-        "native_option_indices": (0, 2, 3),
-        "selected_option_number": 3,
-        "selected_native_option_index": 2,
         "max_occurrences": 1,
     },
     "adultery.0002": {
@@ -2617,6 +2583,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_TRIBUTE_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_NICKNAME_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_SPYMASTER_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_BEFRIEND_TIMELINE_CONTRACTS)
 
 
 class PromotionProductionEntryService(Protocol):

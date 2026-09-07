@@ -54,6 +54,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import run_zhongguo_acceptance as runner  # noqa: E402
 import resume_zg361_phase2_promotion_source_session as retained_client  # noqa: E402
+import zg361_phase2_promotion_manager_befriend_contracts as befriend_contracts  # noqa: E402
 import zg361_phase2_promotion_manager_health_contracts as health_contracts  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 from zg361_phase2_promotion_manager_health_aging_contracts import (  # noqa: E402
@@ -2146,7 +2147,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             drifted_checks["scope:debate_unexpected_win:matches_any"]
         )
 
-    def test_befriend_success_interrupt_uses_gentle_rejection(self) -> None:
+    def test_befriend_outcome_variants_use_gentle_rejection(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None,
         ) -> dict[str, object]:
@@ -2172,6 +2173,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             }
 
         event_key = "befriend_outcome.0002"
+        self.assertEqual(
+            set(befriend_contracts.MANAGER_BEFRIEND_TIMELINE_CONTRACTS),
+            {event_key},
+        )
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            befriend_contracts.MANAGER_BEFRIEND_TIMELINE_CONTRACTS[event_key],
+        )
         contract = production._manager_recovery_contract(
             production.KNOWN_TIMELINE_INTERRUPTS[event_key],
             player=32904,
@@ -2219,6 +2228,55 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
+
+        failure = copy.deepcopy(context)
+        failure["current_event_instance_id"] = 93
+        failure["date_raw"] = 53180064
+        failure["saved_scopes"][-1] = scope("scheme_failed", "flag")
+        failure["options"] = [
+            {
+                "rendered_index": rendered_index,
+                "native_option_index": native_index,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+            for rendered_index, native_index in enumerate((1, 2, 3))
+        ]
+        failure_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53180064, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 93},
+            context=failure,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(failure_checks.values()), failure_checks)
+
+        mismatched_flag = copy.deepcopy(failure)
+        mismatched_flag["saved_scopes"][-1] = scope(
+            "scheme_successful", "flag",
+        )
+        mismatched_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53180064, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 93},
+            context=mismatched_flag,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(mismatched_checks["scope:scheme_failed:type"])
+        self.assertFalse(mismatched_checks["saved_scope_names_exact"])
+
+        drifted_options = copy.deepcopy(failure)
+        drifted_options["options"][0]["native_option_index"] = 4
+        drifted_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53180064, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 93},
+            context=drifted_options,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drifted_checks["authored_options_exact"])
 
     def test_adultery_suspicion_interrupt_does_nothing(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
