@@ -169,6 +169,27 @@ class PromotionRecoveryDefaultDesktopRelayTest(unittest.TestCase):
             self.assertEqual(payload["result"], "READY_TO_RUN")
             self.assertEqual(payload["startup_mode"], "bridge-frontend-first")
 
+    def test_invalid_warmup_pipe_fails_before_child_creation(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            python, _recovery = self._arrange(root)
+            argv = self._argv(root, python)
+            argv[-1] = "bridge-frontend-first"
+            argv[-2:-2] = [
+                "--warmup-bridge-pipe",
+                r"\\.\pipe\xar_ck3_bridge_zg361_w283w283w283w283w283w283w28328",
+            ]
+            with mock.patch.object(
+                relay,
+                "execute_on_default_desktop",
+                side_effect=AssertionError("invalid pipe must not create a child"),
+            ) as execute:
+                self.assertEqual(relay.main(argv), 2)
+            execute.assert_not_called()
+            payload = json.loads((root / "relay.json").read_text(encoding="utf-8"))
+            self.assertEqual(payload["result"], "RED")
+            self.assertIn("32 lowercase hex", payload["error"])
+
     def test_plain_frontend_first_mode_fails_before_child_creation(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

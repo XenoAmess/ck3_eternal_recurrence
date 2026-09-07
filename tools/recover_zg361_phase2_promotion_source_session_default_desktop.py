@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import sys
 from typing import Sequence
 
@@ -29,6 +30,9 @@ RECOVERY_RELATIVE_PATH = Path(
 ALLOWED_STARTUP_MODES = (
     "continue-last-save",
     "bridge-frontend-first",
+)
+BRIDGE_PIPE_PATTERN = re.compile(
+    r"^\\\\\.\\pipe\\xar_ck3_bridge_zg361_[0-9a-f]{32}$"
 )
 
 
@@ -84,6 +88,23 @@ def resolve_inputs(
             "Default-desktop late-save recovery requires --startup-mode "
             + " or ".join(ALLOWED_STARTUP_MODES)
         )
+    for option in ("--bridge-pipe", "--warmup-bridge-pipe"):
+        positions = [
+            index for index, value in enumerate(arguments) if value == option
+        ]
+        if len(positions) > 1:
+            raise ValueError(f"at most one {option} argument is allowed")
+        if not positions:
+            continue
+        position = positions[0]
+        if position + 1 >= len(arguments):
+            raise ValueError(f"{option} requires a value")
+        pipe_name = arguments[position + 1]
+        if BRIDGE_PIPE_PATTERN.fullmatch(pipe_name) is None:
+            raise ValueError(
+                f"{option} must be a run-unique "
+                r"\\.\pipe\xar_ck3_bridge_zg361_<32 lowercase hex> name"
+            )
     return python_path, recovery, arguments, startup_mode
 
 
