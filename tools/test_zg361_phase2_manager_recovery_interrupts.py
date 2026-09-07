@@ -1161,6 +1161,54 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:creator:matches_any"])
 
+    def test_language_learning_response_avoids_rival_progress(self) -> None:
+        event_key = "learn_language_outcome.1001"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=232,
+            date_raw=53257296,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 62813),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 32904),
+                _scope("scheme_successful", "boolean"),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53257296,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 232},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][1] = _scope(
+            "owner", "character", 32904
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53257296,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 232},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:owner:unique_third_party"])
+
     def test_concubine_tribute_declines_person_without_court_mutation(self) -> None:
         event_key = "tribute_mission.1002"
         contract = _manager_contract(event_key, player=32904)

@@ -902,6 +902,43 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 3,
         "max_occurrences": 1,
     },
+    "learn_language_outcome.1001": {
+        # CK3 1.19.0.6 response after another character successfully learns
+        # the player's language. Both routes alter mutual opinion/progress;
+        # native 0 creates positive respect/friend progress, while native 1
+        # creates insult/rival progress plus player prestige. Neither starts
+        # a follow-up event, so take the non-hostile positive response after
+        # binding the completed scheme, dynamic owner and played target.
+        "date_raw": 53257296,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "target": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "owner": (32904,),
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "owner": "character",
+            "artifact": "artifact",
+            "target": "character",
+        },
+        "boolean_scopes": ("scheme_successful",),
+        "saved_scope_name_sets": ((
+            "scheme",
+            "owner",
+            "artifact",
+            "target",
+            "scheme_successful",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_interactions_events.0630": {
         # Vanilla governor-removal letter with one option. IMPORTANT: that
         # option executes governor_resignation_title_transfer_effect; it is
