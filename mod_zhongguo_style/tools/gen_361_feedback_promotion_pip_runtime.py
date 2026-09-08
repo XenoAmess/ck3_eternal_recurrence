@@ -2701,16 +2701,26 @@ trigger_else = {{ always = yes }}'''
     return f'''zg361_pp_m{mechanism.mechanism_id:03d}_consume_effect = {{
 \tif = {{
 \t\tlimit = {{
-\t\t\t{indent(full_guard(mechanism.domain, state, f"var:{p}_receipt_owner", f"var:{p}_receipt_subject", f"var:{p}_receipt_cycle", f"var:{p}_receipt_case", f"var:{p}_receipt_state"), 3).lstrip()}
-\t\t\tvar:{p}_receipt_active = 1
-\t\t\tvar:{p}_consumed = 0
-\t\t\thas_variable = {p}_route
-\t\t\t{indent(consumer_guard, 3).lstrip()}
 \t\t\ttrigger_if = {{
-\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
-\t\t\t\thas_variable = {p}_{mechanism.field}
+\t\t\t\tlimit = {{
+\t\t\t\t\thas_variable = {p}_receipt_owner
+\t\t\t\t\thas_variable = {p}_receipt_subject
+\t\t\t\t\thas_variable = {p}_receipt_cycle
+\t\t\t\t\thas_variable = {p}_receipt_case
+\t\t\t\t\thas_variable = {p}_receipt_state
+\t\t\t\t}}
+\t\t\t\t{indent(full_guard(mechanism.domain, state, f"var:{p}_receipt_owner", f"var:{p}_receipt_subject", f"var:{p}_receipt_cycle", f"var:{p}_receipt_case", f"var:{p}_receipt_state"), 4).lstrip()}
+\t\t\t\tvar:{p}_receipt_active = 1
+\t\t\t\tvar:{p}_consumed = 0
+\t\t\t\thas_variable = {p}_route
+\t\t\t\t{indent(consumer_guard, 4).lstrip()}
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\t\thas_variable = {p}_{mechanism.field}
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{ always = yes }}
 \t\t\t}}
-\t\t\ttrigger_else = {{ always = yes }}
+\t\t\ttrigger_else = {{ always = no }}
 \t\t}}
 \t\tset_variable = {{ name = {p}_consumed value = 1 }}
 \t\tset_variable = {{ name = {p}_consumer_revision value = var:zg361_case_{mechanism.domain}_revision }}

@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 1_051_089)
+        self.assertEqual(len(historical), 1_066_734)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "06389c5aa26a8349c7b8d24c4dbfcd9319458fc2a0084e2bc59caa1c30ee4c57",
+            "c97dd6c886468bff4fc822eec096bc7eead413e76eadcb548d955a00fd9b644e",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -181,6 +181,20 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 self.assertIn(token, block, f"{mid}: missing {token}")
             for suffix in ("owner", "subject", "cycle", "case", "state"):
                 self.assertIn(f"zg361_pp_m{mid:03d}_object_{suffix}", block)
+
+    def test_consumer_receipt_reads_are_behind_one_existence_gate(self) -> None:
+        for row in gen.MECHANISMS:
+            mid = row.mechanism_id
+            block = effect_block(self.effects, f"zg361_pp_m{mid:03d}_consume_effect")
+            guard_at = block.index("zg361_case_kernel_full_guard_trigger")
+            for suffix in ("owner", "subject", "cycle", "case", "state"):
+                existence = f"has_variable = zg361_pp_m{mid:03d}_receipt_{suffix}"
+                read = f"EXPECTED_{suffix.upper()} = var:zg361_pp_m{mid:03d}_receipt_{suffix}"
+                self.assertIn(existence, block)
+                self.assertIn(read, block)
+                self.assertLess(block.index(existence), guard_at)
+                self.assertGreater(block.index(read), guard_at)
+            self.assertIn("trigger_else = { always = no }", block)
 
     def test_m147_publishes_result_case_serial_and_post_record_revision(self) -> None:
         core = effect_block(self.effects, "zg361_pp_m147_core_effect")

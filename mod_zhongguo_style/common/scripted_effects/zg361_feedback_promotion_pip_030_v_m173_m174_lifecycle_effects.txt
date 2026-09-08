@@ -294,28 +294,38 @@ zg361_pp_m173_core_effect = {
 zg361_pp_m173_consume_effect = {
 	if = {
 		limit = {
-			zg361_case_kernel_full_guard_trigger = {
-				OWNER_VAR = zg361_case_v_owner
-				SUBJECT_VAR = zg361_case_v_subject
-				CYCLE_VAR = zg361_case_v_cycle_serial
-				CASE_VAR = zg361_case_v_case_serial
-				STATE_VAR = zg361_case_v_state
-				ACTIVE_VAR = zg361_case_v_active
-				EXPECTED_OWNER = var:zg361_pp_m173_receipt_owner
-				EXPECTED_SUBJECT = var:zg361_pp_m173_receipt_subject
-				EXPECTED_CYCLE = var:zg361_pp_m173_receipt_cycle
-				EXPECTED_CASE = var:zg361_pp_m173_receipt_case
-				EXPECTED_STATE = var:zg361_pp_m173_receipt_state
-			}
-			var:zg361_pp_m173_receipt_active = 1
-			var:zg361_pp_m173_consumed = 0
-			has_variable = zg361_pp_m173_route
-			always = yes
 			trigger_if = {
-				limit = { NOT = { var:zg361_pp_m173_route = 3 } }
-				has_variable = zg361_pp_m173_blind_live_review
+				limit = {
+					has_variable = zg361_pp_m173_receipt_owner
+					has_variable = zg361_pp_m173_receipt_subject
+					has_variable = zg361_pp_m173_receipt_cycle
+					has_variable = zg361_pp_m173_receipt_case
+					has_variable = zg361_pp_m173_receipt_state
+				}
+				zg361_case_kernel_full_guard_trigger = {
+					OWNER_VAR = zg361_case_v_owner
+					SUBJECT_VAR = zg361_case_v_subject
+					CYCLE_VAR = zg361_case_v_cycle_serial
+					CASE_VAR = zg361_case_v_case_serial
+					STATE_VAR = zg361_case_v_state
+					ACTIVE_VAR = zg361_case_v_active
+					EXPECTED_OWNER = var:zg361_pp_m173_receipt_owner
+					EXPECTED_SUBJECT = var:zg361_pp_m173_receipt_subject
+					EXPECTED_CYCLE = var:zg361_pp_m173_receipt_cycle
+					EXPECTED_CASE = var:zg361_pp_m173_receipt_case
+					EXPECTED_STATE = var:zg361_pp_m173_receipt_state
+				}
+				var:zg361_pp_m173_receipt_active = 1
+				var:zg361_pp_m173_consumed = 0
+				has_variable = zg361_pp_m173_route
+				always = yes
+				trigger_if = {
+					limit = { NOT = { var:zg361_pp_m173_route = 3 } }
+					has_variable = zg361_pp_m173_blind_live_review
+				}
+				trigger_else = { always = yes }
 			}
-			trigger_else = { always = yes }
+			trigger_else = { always = no }
 		}
 		set_variable = { name = zg361_pp_m173_consumed value = 1 }
 		set_variable = { name = zg361_pp_m173_consumer_revision value = var:zg361_case_v_revision }
@@ -645,28 +655,38 @@ zg361_pp_m174_core_effect = {
 zg361_pp_m174_consume_effect = {
 	if = {
 		limit = {
-			zg361_case_kernel_full_guard_trigger = {
-				OWNER_VAR = zg361_case_v_owner
-				SUBJECT_VAR = zg361_case_v_subject
-				CYCLE_VAR = zg361_case_v_cycle_serial
-				CASE_VAR = zg361_case_v_case_serial
-				STATE_VAR = zg361_case_v_state
-				ACTIVE_VAR = zg361_case_v_active
-				EXPECTED_OWNER = var:zg361_pp_m174_receipt_owner
-				EXPECTED_SUBJECT = var:zg361_pp_m174_receipt_subject
-				EXPECTED_CYCLE = var:zg361_pp_m174_receipt_cycle
-				EXPECTED_CASE = var:zg361_pp_m174_receipt_case
-				EXPECTED_STATE = var:zg361_pp_m174_receipt_state
-			}
-			var:zg361_pp_m174_receipt_active = 1
-			var:zg361_pp_m174_consumed = 0
-			has_variable = zg361_pp_m174_route
-			always = yes
 			trigger_if = {
-				limit = { NOT = { var:zg361_pp_m174_route = 3 } }
-				has_variable = zg361_pp_m174_defense_time
+				limit = {
+					has_variable = zg361_pp_m174_receipt_owner
+					has_variable = zg361_pp_m174_receipt_subject
+					has_variable = zg361_pp_m174_receipt_cycle
+					has_variable = zg361_pp_m174_receipt_case
+					has_variable = zg361_pp_m174_receipt_state
+				}
+				zg361_case_kernel_full_guard_trigger = {
+					OWNER_VAR = zg361_case_v_owner
+					SUBJECT_VAR = zg361_case_v_subject
+					CYCLE_VAR = zg361_case_v_cycle_serial
+					CASE_VAR = zg361_case_v_case_serial
+					STATE_VAR = zg361_case_v_state
+					ACTIVE_VAR = zg361_case_v_active
+					EXPECTED_OWNER = var:zg361_pp_m174_receipt_owner
+					EXPECTED_SUBJECT = var:zg361_pp_m174_receipt_subject
+					EXPECTED_CYCLE = var:zg361_pp_m174_receipt_cycle
+					EXPECTED_CASE = var:zg361_pp_m174_receipt_case
+					EXPECTED_STATE = var:zg361_pp_m174_receipt_state
+				}
+				var:zg361_pp_m174_receipt_active = 1
+				var:zg361_pp_m174_consumed = 0
+				has_variable = zg361_pp_m174_route
+				always = yes
+				trigger_if = {
+					limit = { NOT = { var:zg361_pp_m174_route = 3 } }
+					has_variable = zg361_pp_m174_defense_time
+				}
+				trigger_else = { always = yes }
 			}
-			trigger_else = { always = yes }
+			trigger_else = { always = no }
 		}
 		set_variable = { name = zg361_pp_m174_consumed value = 1 }
 		set_variable = { name = zg361_pp_m174_consumer_revision value = var:zg361_case_v_revision }
