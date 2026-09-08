@@ -11,6 +11,9 @@ import run_xenoamess_quality_of_life_acceptance as xqol
 
 
 class ProductOuterDescriptorTests(unittest.TestCase):
+    def test_boot_timeout_allows_slow_local_machine_startup(self) -> None:
+        self.assertEqual(xqol.BOOT_TIMEOUT_S, 30 * 60)
+
     def test_workshop_identity_is_recorded_but_not_loaded_in_isolated_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

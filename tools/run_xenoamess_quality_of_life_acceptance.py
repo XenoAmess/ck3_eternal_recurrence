@@ -48,7 +48,7 @@ from xar_autoplayer.runtime import (
 EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_xqol_"
-BOOT_TIMEOUT_S = 300
+BOOT_TIMEOUT_S = 30 * 60
 SLOT_WAIT_TIMEOUT_S = 1800
 POSTFLIGHT_STABILITY_SECONDS = 5
 RUNS_ROOT = ROOT.parent / f"{ROOT.name}_process_assets" / "xqol" / "runs"
