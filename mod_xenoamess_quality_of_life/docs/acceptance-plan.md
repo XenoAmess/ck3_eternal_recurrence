@@ -16,7 +16,7 @@
 3. 三份原版 appointment 文件只允许五处受控插入；去掉插入块后逐字节等于 1.19.0.6 原版。
 4. 五种 appointment type 均命中追加扣分；AI/关闭分支不命中。
 5. 禁转标志的设置、所有权与清理对称；`on_vassal_change` 和 yearly 自愈均存在。
-6. 英中 key 集合一致；其余七语言按日常开发策略使用英文占位并明确不宣称完成翻译。
+6. 九语言 key 集合一致；法、德、日、韩、波、俄、西不得保留英文占位，且所有 CK3 格式 token 与英文基准逐 key 一致。
 7. 640×640 `thumbnail.png` 小于 1 MiB；release staging 与 ZIP 可复现。
 
 ## L1 启动与加载

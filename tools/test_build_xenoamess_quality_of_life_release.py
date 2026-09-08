@@ -114,6 +114,36 @@ class XqolReleaseTests(unittest.TestCase):
                 with self.subTest(old=old), self.assertRaisesRegex(ValueError, "must not reuse"):
                     self.build(root, source, parent=old, workshop_item_id=old)
 
+    def test_formal_localization_gate_rejects_placeholders_and_token_drift(self):
+        with self.fixture() as (_, source):
+            for language in release.LOCALIZATION_LANGUAGES:
+                value = (
+                    "Source #P enabled#!"
+                    if language == "english"
+                    else f"Translated {language} #P enabled#!"
+                )
+                path = source / "localization" / language / f"xqol_l_{language}.yml"
+                path.write_bytes(
+                    codecs.BOM_UTF8
+                    + f'l_{language}:\n line:0 "{value}"\n'.encode("utf-8")
+                )
+            self.assertEqual([], release.release_localization_errors(source))
+
+            french = source / "localization/french/xqol_l_french.yml"
+            french.write_bytes(
+                codecs.BOM_UTF8 + b'l_french:\n line:0 "Source #P enabled#!"\n'
+            )
+            self.assertTrue(
+                any("English placeholder" in error for error in release.release_localization_errors(source))
+            )
+
+            french.write_bytes(
+                codecs.BOM_UTF8 + b'l_french:\n line:0 "Traduction enabled"\n'
+            )
+            self.assertTrue(
+                any("formatting tokens" in error for error in release.release_localization_errors(source))
+            )
+
     def test_item_id_normalization_and_workshop_descriptor_exception_are_strict(self):
         with self.fixture() as (root, source):
             staging, manifest, _, details = self.build(root, source, workshop_item_id=WORKSHOP_ID)

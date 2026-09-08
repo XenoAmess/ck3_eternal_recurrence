@@ -65,6 +65,20 @@ FORBIDDEN_WORKSHOP_ITEM_IDS = frozenset({"3784706360", "3787304042"})
 FULL_GIT_SHA = re.compile(r"[0-9a-f]{40}")
 SEMANTIC_VERSION = re.compile(r"\d+\.\d+\.\d+")
 WORKSHOP_ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
+LOCALIZATION_ENTRY = re.compile(r'^ ([^:\s]+):\d+ "((?:[^"\\]|\\.)*)"$')
+LOCALIZATION_LANGUAGES = (
+    "english",
+    "french",
+    "german",
+    "japanese",
+    "korean",
+    "polish",
+    "russian",
+    "simp_chinese",
+    "spanish",
+)
+LOCALIZATION_SOURCE_LANGUAGES = frozenset({"english", "simp_chinese"})
+LOCALIZATION_PROTECTED_TOKEN = re.compile(r"#[A-Za-z0-9_]+|#!")
 
 
 def _allowed_directories(files: frozenset[str]) -> frozenset[str]:
@@ -157,6 +171,68 @@ def release_source_errors(source: Path, *, allow_source_only_files: bool = True)
         for old_id in FORBIDDEN_WORKSHOP_ITEM_IDS:
             if old_id in text:
                 errors.append(f"existing Workshop item ID {old_id} is forbidden: {relative}")
+    return errors
+
+
+def _localization_entries(path: Path, language: str) -> dict[str, str]:
+    data = Path(path).read_bytes()
+    if not data.startswith(b"\xef\xbb\xbf"):
+        raise ValueError(f"localization lacks UTF-8 BOM: {path}")
+    lines = data.decode("utf-8-sig").splitlines()
+    if not lines or lines[0] != f"l_{language}:":
+        raise ValueError(f"localization header mismatch: {path}")
+    result: dict[str, str] = {}
+    for line_number, line in enumerate(lines[1:], 2):
+        if not line or line.lstrip().startswith("#"):
+            continue
+        match = LOCALIZATION_ENTRY.fullmatch(line)
+        if match is None:
+            raise ValueError(f"malformed localization line: {path}:{line_number}")
+        key, value = match.groups()
+        if key in result:
+            raise ValueError(f"duplicate localization key: {path}:{line_number}: {key}")
+        result[key] = value
+    if not result:
+        raise ValueError(f"localization has no entries: {path}")
+    return result
+
+
+def release_localization_errors(source: Path) -> list[str]:
+    """Require translated target-language values for a formal release."""
+
+    source = Path(source)
+    matrix: dict[str, dict[str, str]] = {}
+    errors: list[str] = []
+    for language in LOCALIZATION_LANGUAGES:
+        path = source / "localization" / language / f"xqol_l_{language}.yml"
+        try:
+            matrix[language] = _localization_entries(path, language)
+        except (OSError, UnicodeError, ValueError) as error:
+            errors.append(str(error))
+    english = matrix.get("english")
+    if english is None:
+        return errors
+    for language, values in matrix.items():
+        if set(values) != set(english):
+            missing = sorted(set(english) - set(values))
+            extra = sorted(set(values) - set(english))
+            errors.append(
+                f"{language} localization key mismatch: missing={missing}, extra={extra}"
+            )
+            continue
+        for key, value in values.items():
+            if not value.strip():
+                errors.append(f"{language} localization is empty: {key}")
+            if sorted(LOCALIZATION_PROTECTED_TOKEN.findall(value)) != sorted(
+                LOCALIZATION_PROTECTED_TOKEN.findall(english[key])
+            ):
+                errors.append(f"{language} localization changes CK3 formatting tokens: {key}")
+        if language not in LOCALIZATION_SOURCE_LANGUAGES:
+            placeholders = sorted(key for key, value in values.items() if value == english[key])
+            if placeholders:
+                errors.append(
+                    f"{language} still contains English placeholder values: {placeholders}"
+                )
     return errors
 
 
@@ -404,6 +480,13 @@ def main(argv: list[str] | None = None) -> int:
             result = check_reproducible(args.source, args.workshop_item_id)
             print(f"Reproducibility source: {args.source.resolve()}\nFiles: {result['file_count']}\nManifest SHA-256: {result['manifest_sha256']}\nZIP SHA-256: {result['zip_sha256']}")
             return 0
+        if args.release:
+            localization_errors = release_localization_errors(args.source)
+            if localization_errors:
+                raise ValueError(
+                    "formal release localization is incomplete:\n"
+                    + "\n".join(localization_errors)
+                )
         identity = release_identity(args.source) if args.release else {"git_sha": _require_full_revision(git_sha()), "mod_version": descriptor_version(args.source), "git_tag": None}
         staging, manifest, archive, details = build_release(args.source, args.output, revision=identity["git_sha"], version=identity["mod_version"], workshop_item_id=args.workshop_item_id, versioned_sidecars=args.release, git_tag=identity["git_tag"])
     except (OSError, ValueError, zipfile.BadZipFile) as error:

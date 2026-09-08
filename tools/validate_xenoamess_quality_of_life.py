@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -102,7 +103,7 @@ def check_appointment_overrides(errors: list[str]) -> None:
         errors.append(f"expected five appointment insertions, got {total_blocks}")
 
 
-def check_localization(errors: list[str]) -> None:
+def check_localization(errors: list[str], *, release_localization: bool = False) -> None:
     contents: dict[str, str] = {}
     keys: dict[str, set[str]] = {}
     for language in LANGUAGES:
@@ -131,10 +132,8 @@ def check_localization(errors: list[str]) -> None:
     missing = required_keys - keys["english"]
     if missing:
         errors.append(f"required localization keys missing: {sorted(missing)}")
-    english_body = contents["english"].splitlines()[1:]
-    for language in set(LANGUAGES) - {"english", "simp_chinese"}:
-        if contents.get(language, "").splitlines()[1:] != english_body:
-            errors.append(f"daily-development placeholder must equal English: {language}")
+    if release_localization:
+        errors.extend(release.release_localization_errors(MOD))
 
 
 def check_scripts(errors: list[str]) -> None:
@@ -187,7 +186,7 @@ def check_scripts(errors: list[str]) -> None:
 def check_assets_and_descriptor(errors: list[str]) -> None:
     descriptor = read_utf8(MOD / "descriptor.mod")
     for token in (
-        'version="1.0.0"',
+        'version="1.0.1"',
         'name="XenoAmess 的生活质量"',
         'picture="thumbnail.png"',
         'supported_version="1.19.0.6"',
@@ -207,7 +206,14 @@ def check_assets_and_descriptor(errors: list[str]) -> None:
             errors.append(f"vanilla decision art missing: {picture}")
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--release-localization",
+        action="store_true",
+        help="reject English placeholders in all seven target languages",
+    )
+    args = parser.parse_args(argv)
     errors = release.release_source_errors(MOD)
     runtime_text = [
         path
@@ -219,7 +225,7 @@ def main() -> int:
         if not has_utf8_bom(path):
             errors.append(f"runtime text lacks UTF-8 BOM: {path.relative_to(MOD)}")
     check_appointment_overrides(errors)
-    check_localization(errors)
+    check_localization(errors, release_localization=args.release_localization)
     check_scripts(errors)
     check_assets_and_descriptor(errors)
     if errors:
@@ -233,6 +239,7 @@ def main() -> int:
         "Appointment types: 5\n"
         "Controlled vanilla override files: 3\n"
         "Localization structures: 9\n"
+        f"Release localization: {'GREEN' if args.release_localization else 'not requested'}\n"
         f"Thumbnail bytes: {(MOD / 'thumbnail.png').stat().st_size}"
     )
     return 0
