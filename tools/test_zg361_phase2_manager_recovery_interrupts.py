@@ -185,10 +185,32 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(
             route_c_only_projection["native_option_indices"], (2,)
         )
+        self.assertEqual(
+            route_c_only_projection["snapshot_option_counts"], (1, 3)
+        )
         self.assertEqual(route_c_only_projection["selected_option_number"], 3)
         self.assertEqual(
             route_c_only_projection["selected_native_option_index"], 2
         )
+        route_c_context = _context(
+            event_key="zg361pp.179",
+            instance_id=295,
+            date_raw=53147016,
+            player=32904,
+            scopes=[],
+            native_option_indices=(2,),
+        )
+        route_c_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53147016,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 295},
+            context=route_c_context,
+            event_key="zg361pp.179",
+            contract=known_pp,
+        )
+        self.assertTrue(all(route_c_checks.values()), route_c_checks)
         reordered_projection = production._option_contract_for_context(
             [
                 {"native_option_index": 2},

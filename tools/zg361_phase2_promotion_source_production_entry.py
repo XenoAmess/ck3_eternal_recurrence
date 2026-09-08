@@ -4038,6 +4038,9 @@ def _manager_recovery_pp_contract(
             {
                 "option_count": len(indices),
                 "native_option_indices": indices,
+                "snapshot_option_counts": tuple(
+                    dict.fromkeys((len(indices), option_count))
+                ),
                 "selected_option_number": indices[0] + 1,
                 "selected_native_option_index": indices[0],
             }
@@ -4232,6 +4235,14 @@ def _known_interrupt_checks(
     snapshot_option_count = effective_contract.get(
         "snapshot_option_count", option_count
     )
+    snapshot_option_counts_value = effective_contract.get(
+        "snapshot_option_counts"
+    )
+    snapshot_option_counts = (
+        snapshot_option_counts_value
+        if isinstance(snapshot_option_counts_value, tuple)
+        else (snapshot_option_count,)
+    )
     actual_native_option_indices: list[object] = []
     authored_options_exact = len(options) == option_count
     if authored_options_exact:
@@ -4336,7 +4347,7 @@ def _known_interrupt_checks(
             if isinstance(snapshot.get("active_event"), Mapping)
             else None
         )
-        == snapshot_option_count,
+        in snapshot_option_counts,
         "authored_options_exact": authored_options_exact,
         "selected_option_mapping": (
             effective_contract.get("selection_deferred") is True
