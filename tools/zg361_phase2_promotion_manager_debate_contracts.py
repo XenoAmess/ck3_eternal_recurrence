@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed imperial-debate manager interrupt contracts."""
 
 from __future__ import annotations
@@ -137,9 +137,11 @@ MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        # R285 observed two independently delivered result windows; R327 then
-        # reached a third at 53215920 while Central remained active.  Keep the
-        # bound finite at the three deliveries now observed on this lineage.
-        "max_occurrences": 3,
+        # This event is source-bounded to once per debate activity, not once
+        # per campaign. R285/R327/R355 observed four independent activities
+        # delivering it during one bounded product timeline. Keep the exact
+        # identity and option checks on every delivery, while the runner's
+        # existing product observation horizon bounds total progression.
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

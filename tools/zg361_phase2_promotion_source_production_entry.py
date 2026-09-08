@@ -4366,6 +4366,7 @@ def _manager_recovery_authored_event_contract(
         "selected_option_number",
         "selected_native_option_index",
         "selection_deferred",
+        "occurrence_policy",
         "max_occurrences",
     ):
         if name in contract:
@@ -5745,8 +5746,19 @@ def enter_promotion_source_checkpoint_v1(
                     and row.get("event_definition_key") == key
                     for row in drains
                 )
-                max_occurrences = int(contract.get("max_occurrences", 1))
-                if occurrence_count >= max_occurrences:
+                occurrence_policy = contract.get(
+                    "occurrence_policy", "finite"
+                )
+                max_occurrences = (
+                    None
+                    if occurrence_policy
+                    == "repeatable-within-product-observation-window"
+                    else int(contract.get("max_occurrences", 1))
+                )
+                if (
+                    max_occurrences is not None
+                    and occurrence_count >= max_occurrences
+                ):
                     raise PromotionKnownInterruptContractError(
                         {
                             "classification": "known-interrupt-occurrence-bound",
