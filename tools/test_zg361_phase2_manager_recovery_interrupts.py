@@ -227,6 +227,22 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             reordered_projection["native_option_indices"], (0, 1, 2)
         )
 
+        credit_project = production._resolve_timeline_interrupt_contract(
+            "zg361cp.30",
+            player=32904,
+            starting_date=53246664,
+            stop_at_clean_review_boundary=True,
+        )
+        self.assertIsNotNone(credit_project)
+        assert credit_project is not None
+        self.assertTrue(credit_project["manager_recovery_only"])
+        self.assertEqual(credit_project["character_scopes"], {})
+        self.assertEqual(credit_project["scope_types"], {})
+        self.assertNotIn("saved_scope_name_sets", credit_project)
+        self.assertEqual(credit_project["option_count"], 3)
+        self.assertEqual(credit_project["selected_option_number"], 1)
+        self.assertEqual(credit_project["selected_native_option_index"], 0)
+
         self.assertIsNone(
             production._resolve_timeline_interrupt_contract(
                 "unreviewed_vanilla.1",

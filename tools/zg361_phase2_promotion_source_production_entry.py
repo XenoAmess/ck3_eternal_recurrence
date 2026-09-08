@@ -4085,6 +4085,45 @@ def _manager_recovery_pp_contract(
     }
 
 
+def _manager_recovery_authored_event_contract(
+    contract: Mapping[str, object],
+    *,
+    player: int,
+    starting_date: int,
+) -> dict[str, object]:
+    """Keep authored choice semantics while dropping stale checkpoint actors."""
+
+    minimal: dict[str, object] = {
+        "date_raw": starting_date,
+        "date_policy": "manager-recovery-product-window",
+        "date_raw_range": (
+            starting_date,
+            starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
+        ),
+        "root_character_id": player,
+        "character_scopes": {},
+        "scope_types": {},
+        "boolean_scopes": (),
+        "manager_recovery_only": True,
+    }
+    for name in (
+        "option_count",
+        "snapshot_option_count",
+        "snapshot_option_counts",
+        "native_option_indices",
+        "native_option_prefix_range",
+        "native_option_suffix",
+        "option_variants",
+        "selected_option_number",
+        "selected_native_option_index",
+        "selection_deferred",
+        "max_occurrences",
+    ):
+        if name in contract:
+            minimal[name] = copy.deepcopy(contract[name])
+    return minimal
+
+
 def _resolve_timeline_interrupt_contract(
     event_key: str,
     *,
@@ -4110,7 +4149,17 @@ def _resolve_timeline_interrupt_contract(
     )
     if contract is None:
         contract = KNOWN_TIMELINE_INTERRUPTS.get(event_key)
-    if contract is not None and contract.get("root_character_id") != player:
+    if (
+        contract is not None
+        and stop_at_clean_review_boundary
+        and event_key.startswith(("zg361cp.", "zg361p3."))
+    ):
+        contract = _manager_recovery_authored_event_contract(
+            contract,
+            player=player,
+            starting_date=starting_date,
+        )
+    elif contract is not None and contract.get("root_character_id") != player:
         contract = _manager_recovery_contract(
             contract, player=player, event_key=event_key,
         )
