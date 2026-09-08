@@ -2243,6 +2243,82 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             holder_checks["scope:old_holder:optional_differs_from"]
         )
 
+    def test_eunuch_council_demand_preserves_council_roster(self) -> None:
+        event_key = "ep3_story_cycle_admin_eunuch.2040"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=378,
+            date_raw=53258328,
+            player=32904,
+            scopes=[
+                _scope("story", "story"),
+                _scope("emperor", "character", 32904),
+                _scope("eunuch", "character", 31801),
+                _scope("admin_title", "landed_title"),
+                _scope("student", "character", 33596937),
+                _scope("rival", "character", 16834604),
+                _scope("petition_liege", "character", 32904),
+                _scope("petition_vassal", "character", 31801),
+                _scope("second_party", "character", 29346),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53258328,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 378},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 16)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        empty_seat = copy.deepcopy(context)
+        empty_seat["saved_scopes"] = [
+            scope
+            for scope in empty_seat["saved_scopes"]
+            if scope["name"] != "second_party"
+        ]
+        empty_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53258328,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 378},
+            context=empty_seat,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(empty_checks.values()), empty_checks)
+
+        alias_drift = copy.deepcopy(context)
+        alias_drift["saved_scopes"][7] = _scope(
+            "petition_vassal", "character", 31802
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53258328,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 378},
+            context=alias_drift,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:eunuch:matches_any"])
+        self.assertFalse(drift_checks["scope:petition_vassal:matches_any"])
+
     def test_eunuch_family_council_petition_preserves_council_roster(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.2041"
         contract = _manager_contract(event_key, player=32904)

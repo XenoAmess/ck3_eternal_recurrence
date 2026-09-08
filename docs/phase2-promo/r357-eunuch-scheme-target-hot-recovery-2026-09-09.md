@@ -352,3 +352,29 @@ hook 或监禁状态。
   `6735D1B19E907F6737888626C0D4F048A66D677333A588098ED79B4D3696FEBD`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第十三次 RED：宦官本人索要议席
+
+第十二次 `retry` 热加载提交 `c9aeb0cdfe037ac0f3ad583db5428c12065e28c8` 后，同一 PID
+`159264` 推进到此前未登记的 `ep3_story_cycle_admin_eunuch.2040`、event instance
+`378`、`date_raw=53258328`，因此在选择前按未知事件 fail-closed。MCP 读取的九项
+scope 为 `story/emperor/eunuch/admin_title/student/rival/petition_liege/`
+`petition_vassal/second_party`：petition liege 与玩家同一，petition vassal 与宦官
+`31801` 同一，现任议员 second party 为 `29346`；两个 native options 均可用。
+
+原版 immediate 固定把 root 保存为 `petition_liege`、把宦官保存为
+`petition_vassal`，再按其能力选择最合适的议席；仅当该席已有现任时才保存
+`second_party`。native option 0 会开除现任、任命并保护宦官，还升级 story；native
+option 1 不改议会阵容，仅执行 story downgrade、意见和特质相关 stress。合同因此
+选择 native 1，并以六项基础 scope 加 shared story 的 `protege/student/rival` 与
+可选现任展开 16 个精确集合；别名、非玩家和现任互异关系继续 fail-closed。事件
+cooldown 为五年，产品窗口内可重复。
+
+- 第十三次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-13.json`；
+- park SHA-256：
+  `59E127745B231794097265A94199EA774C61EEC2801523F6E59177A63AEF2941`；
+- 第十三次 RED report 快照：25,869,382 bytes，SHA-256
+  `0F5C39423FB748A9D2736CA6AD74D34623AD18C0084573268B0E258BC27207A6`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

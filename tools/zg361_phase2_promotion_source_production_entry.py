@@ -1588,6 +1588,69 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "ep3_story_cycle_admin_eunuch.2040": {
+        # CK3 1.19.0.6 eunuch council-seat demand. The immediate block has
+        # already bound the player as petition liege, the eunuch as petition
+        # vassal and, only when the selected seat is occupied, its incumbent
+        # as second_party. Native option 0 fires that incumbent, installs and
+        # protects the eunuch, and upgrades the story. Native option 1 keeps
+        # the council roster intact and only applies the authored downgrade,
+        # opinion and stress. Bind the finite shared-story/incumbent envelope
+        # before taking the narrower refusal route.
+        "date_raw": 53258328,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+            "petition_liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "petition_vassal": (32904,),
+        },
+        "optional_unique_character_scope_excludes": {
+            "second_party": (32904,),
+        },
+        "character_scope_matches_any": {
+            "eunuch": ("petition_vassal",),
+            "petition_vassal": ("eunuch",),
+        },
+        "optional_character_scope_differs_from": {
+            "second_party": ("eunuch", "petition_vassal"),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "petition_liege": "character",
+            "petition_vassal": "character",
+        },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
+            "second_party": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": _optional_scope_name_sets(
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "petition_liege",
+                "petition_vassal",
+            ),
+            ("protege", "student", "rival", "second_party"),
+        ),
+        "saved_scope_counts": (6, 7, 8, 9, 10),
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "ep3_story_cycle_admin_eunuch.2041": {
         # CK3 1.19.0.6 eunuch-family council-seat petition. The immediate
         # block has already selected/recruited the family candidate and saved
