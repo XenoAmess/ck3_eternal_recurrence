@@ -22,6 +22,44 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
+    def test_military_aid_request_uses_saved_governor_resolution(self) -> None:
+        event_key = "tgp_interaction_event.0010"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=276,
+            date_raw=53245584,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 29253),
+                _scope("recipient", "character", 32904),
+                _scope("secondary_actor", "character", unavailable_character=True),
+                _scope(
+                    "secondary_recipient", "character", unavailable_character=True
+                ),
+                _scope("intermediary", "character", unavailable_character=True),
+                _scope("hook", "boolean"),
+                _scope("dominant_family", "boolean"),
+                _scope("joining_governor", "character", 32536),
+            ],
+            native_option_indices=(1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53245584,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 276},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["snapshot_option_count"], 3)
+
     def test_military_budget_renewal_keeps_current_allocation(self) -> None:
         event_key = "tgp_china_ministry.0100"
         contract = _manager_contract(event_key, player=32904)

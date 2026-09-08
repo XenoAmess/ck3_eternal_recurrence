@@ -9,6 +9,53 @@ from typing import Final
 MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "tgp_interaction_event.0010": {
+        # Request-military-aid letter received by the player.  Exact 1.19.0.6
+        # source (tgp_interaction_events.txt:110-237) authors three options;
+        # the live R295 frame hides option A because its war-join trigger is
+        # false, leaving native indices 1 and 2.  Option B is the AI-default
+        # bounded resolution: it assigns the already-saved joining governor
+        # and sends the response to the requester.  Option C opens another
+        # interaction window, so it is unsuitable for a modal-drain client.
+        "date_raw": 53245584,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "recipient": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (32904,),
+            "joining_governor": (32904,),
+        },
+        "character_scope_differs_from": {
+            "actor": ("joining_governor",),
+            "joining_governor": ("actor",),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),
+        "scope_types": {},
+        "boolean_scopes": ("hook", "dominant_family"),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+            "hook",
+            "dominant_family",
+            "joining_governor",
+        ),),
+        "saved_scope_count": 8,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 2,
+    },
     "tgp_interaction_event.0015": {
         # Notification sent after another governor has already been added to
         # the recipient's wars. Immediate and option only show tooltips; the
