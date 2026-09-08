@@ -83,6 +83,33 @@ _CREDIT_PROJECT_PORTFOLIO_CHARACTER_SCOPES: Final = {
     "zg361_cp_e_historical_owner": 32904,
 }
 
+_R296_CREDIT_PROJECT_PORTFOLIO_SAVED_SCOPE_NAMES: Final = (
+    *_CREDIT_PROJECT_PORTFOLIO_SAVED_SCOPE_NAMES,
+    "zg361_p3_aa_owner",
+    "zg361_p3_aa_subject",
+    "zg361_p3_aa_cycle",
+    "zg361_p3_aa_case",
+    "zg361_pp_prompt_subject",
+    "zg361_pp_prompt_owner",
+    "zg361_pp_prompt_cycle",
+    "zg361_pp_prompt_case",
+    "zg361_pp_prompt_state",
+    "zg361_pp_prompt_mechanism",
+)
+
+_R296_CREDIT_PROJECT_PORTFOLIO_CHARACTER_SCOPES: Final = {
+    **_CREDIT_PROJECT_PORTFOLIO_CHARACTER_SCOPES,
+    "zg361_b2_pip_deadline_subject": 29747,
+    "zg361_notice_deadline_subject": 29747,
+    "zg361_ch_d_event_subject": 30938,
+    "zg361_cp_e_subject": 30938,
+    "zg361_cp_e_cross_reviewer": 28288,
+    "zg361_p3_aa_owner": 32904,
+    "zg361_p3_aa_subject": 26505,
+    "zg361_pp_prompt_subject": 30938,
+    "zg361_pp_prompt_owner": 32904,
+}
+
 
 CREDIT_PROJECT_PORTFOLIO_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
@@ -102,6 +129,21 @@ CREDIT_PROJECT_PORTFOLIO_TIMELINE_CONTRACTS: Final[
             if name not in _CREDIT_PROJECT_PORTFOLIO_CHARACTER_SCOPES
         },
         "saved_scope_name_sets": (_CREDIT_PROJECT_PORTFOLIO_SAVED_SCOPE_NAMES,),
+        # R296 resumed the later canonical manager timeline after the V-domain
+        # close.  The same card legitimately carries the next P3 and prompt
+        # tickets and newly selected case actors; retain that exact 60-scope
+        # shape as an additional source-reviewed variant.
+        "scope_variants": (
+            {
+                "saved_scope_names": _R296_CREDIT_PROJECT_PORTFOLIO_SAVED_SCOPE_NAMES,
+                "character_scopes": _R296_CREDIT_PROJECT_PORTFOLIO_CHARACTER_SCOPES,
+                "scope_types": {
+                    name: "value"
+                    for name in _R296_CREDIT_PROJECT_PORTFOLIO_SAVED_SCOPE_NAMES
+                    if name not in _R296_CREDIT_PROJECT_PORTFOLIO_CHARACTER_SCOPES
+                },
+            },
+        ),
         "boolean_scopes": (),
         "option_count": 4,
         "snapshot_option_count": 4,

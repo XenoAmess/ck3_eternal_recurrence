@@ -185,6 +185,47 @@ class CreditProjectPortfolioContractTests(unittest.TestCase):
         )
         self.assertFalse(alias_checks["scope:zg361_cp_e_subject"])
 
+    def test_r296_later_manager_scope_variant_is_exact(self) -> None:
+        base = portfolio.CREDIT_PROJECT_PORTFOLIO_TIMELINE_CONTRACTS[
+            "zg361cp.9050"
+        ]
+        variant = base["scope_variants"][0]
+        scopes = [
+            _character_scope(name, variant["character_scopes"][name])
+            if name in variant["character_scopes"]
+            else _value_scope(name)
+            for name in variant["saved_scope_names"]
+        ]
+        contract = production._timeline_contract_for_window(
+            base, starting_date=53246664
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361cp.9050",
+            "current_event_instance_id": 311,
+            "date_raw": 53246664,
+            "root_scope": _character_scope("root", 32904)["scope"],
+            "saved_scopes": scopes,
+            "options": [_option(index, index) for index in range(4)],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53246664,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 311},
+            context=context,
+            event_key="zg361cp.9050",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(len(variant["saved_scope_names"]), 60)
+        self.assertEqual(len(variant["character_scopes"]), 25)
+
     def test_contract_is_not_inlined_in_production_entry(self) -> None:
         production_source = (
             ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
