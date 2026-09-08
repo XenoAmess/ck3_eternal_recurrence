@@ -25,6 +25,7 @@ from zg361_phase2_projects_metrics_source_checkpoint import (  # noqa: E402
     LIVE_MODE,
     REGISTRY_KIND,
     ProjectsMetricsSourceCheckpointError,
+    _wait_for_managed_reconnect,
     capture_projects_metrics_source_checkpoint_live,
     observe_cp26_route_ui_live,
     validate_projects_metrics_source_checkpoint_registry,
@@ -329,6 +330,27 @@ def write_ui_receipt(path: Path, *, route: str = "A") -> dict[str, object]:
 
 
 class ProjectsMetricsSourceCheckpointTests(unittest.TestCase):
+    def test_retained_cli_waits_for_the_replacement_pipe_connection(self) -> None:
+        class ReconnectingService:
+            def __init__(self):
+                self.capability_calls = 0
+
+            def capabilities(self):
+                self.capability_calls += 1
+                return {
+                    "diagnostics": {
+                        "connected": self.capability_calls >= 2,
+                    }
+                }
+
+            @staticmethod
+            def snapshot():
+                return {"map_ready": True}
+
+        service = ReconnectingService()
+        _wait_for_managed_reconnect(service, timeout_seconds=0.2)
+        self.assertEqual(service.capability_calls, 2)
+
     def test_ui_observation_accepts_only_real_cp26_route_a_or_b(self) -> None:
         service = UiService()
         receipt = observe_cp26_route_ui_live(

@@ -354,6 +354,99 @@ class ProductSwitchCharacterTests(unittest.TestCase):
             self.assertFalse(receipt["business_postcondition_observed"])
             self.assertFalse(receipt["caller_coordinate_used"])
 
+    def test_desktop_driver_accepts_direct_map_surface_and_scan_code_keys(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+
+            class Image:
+                def save(self, path):
+                    Path(path).write_bytes(b"screen")
+
+            class Gui:
+                @staticmethod
+                def GetForegroundWindow():
+                    return 99
+
+                @staticmethod
+                def GetWindowText(_hwnd):
+                    return "Crusader Kings III"
+
+                @staticmethod
+                def GetClientRect(_hwnd):
+                    return (0, 0, 1600, 900)
+
+                @staticmethod
+                def ClientToScreen(_hwnd, point):
+                    return (point[0] + 50, point[1] + 25)
+
+            class Process:
+                @staticmethod
+                def GetWindowThreadProcessId(_hwnd):
+                    return (1, 4242)
+
+            class Win32Con:
+                KEYEVENTF_KEYUP = 2
+
+            class Win32Api:
+                def __init__(self, outer):
+                    self.outer = outer
+
+                def keybd_event(self, virtual_key, _scan, flags, _extra):
+                    if flags == 0:
+                        self.outer.keys.append(virtual_key)
+                        self.outer.stage = {
+                            0x1B: "pause",
+                            0x33: "direct",
+                            0x0D: "complete",
+                        }[virtual_key]
+
+            class Desktop:
+                def __init__(self):
+                    self.stage = "gameplay"
+                    self.keys = []
+                    self.clicks = []
+                    self.win32gui = Gui()
+                    self.win32process = Process()
+                    self.win32con = Win32Con()
+                    self.win32api = Win32Api(self)
+                    self.ImageGrab = self
+
+                @staticmethod
+                def focus_ck3():
+                    return True
+
+                @staticmethod
+                def grab():
+                    return Image()
+
+                def ocr_box_results(self, _image, _region):
+                    text = {
+                        "pause": "Switch Character",
+                        "direct": "Your Character",
+                    }.get(self.stage)
+                    return [{"text": text}] if text is not None else []
+
+                def deliberate_click(self, point, label):
+                    self.clicks.append((point, label))
+                    self.stage = "selected"
+
+            desktop = Desktop()
+            receipt = DesktopSwitchCharacterUiDriver(
+                desktop, timeout_seconds=0.5, poll_interval_seconds=0
+            ).switch_to_centered_title(
+                expected_ck3_pid=4242,
+                evidence_directory=root,
+            )
+            self.assertEqual(desktop.keys, [0x1B, 0x33, 0x0D])
+            self.assertEqual(desktop.clicks[0][0], (850, 475))
+            self.assertTrue(receipt["direct_map_surface"])
+            self.assertTrue(
+                all(
+                    row["input_backend"] == "win32-keybd-event"
+                    for row in receipt["key_submissions"]
+                )
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

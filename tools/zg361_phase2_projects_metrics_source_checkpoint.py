@@ -20,6 +20,7 @@ from pathlib import Path
 import re
 import shutil
 import sys
+import time
 from typing import Final, Mapping, Protocol
 
 
@@ -32,6 +33,7 @@ from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
+from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
 from zg361_phase2_projects_metrics_action_cell import (  # noqa: E402
     preflight_projects_metrics_gameplay_action_cell,
 )
@@ -47,6 +49,8 @@ READINESS: Final = "static-ready-live-pending"
 LIVE_MODE: Final = "managed-real-ck3"
 _SHA256 = re.compile(r"[0-9A-Fa-f]{64}\Z")
 _GIT_SHA = re.compile(r"[0-9A-Fa-f]{40}\Z")
+_RECONNECT_TIMEOUT_SECONDS: Final = 30.0
+_RECONNECT_POLL_SECONDS: Final = 0.05
 
 
 class ProjectsMetricsCheckpointService(Protocol):
@@ -937,6 +941,46 @@ def _load_json(path: Path, label: str) -> dict[str, object]:
     return value
 
 
+def _wait_for_managed_reconnect(
+    service: GameplayBridgeService,
+    *,
+    timeout_seconds: float = _RECONNECT_TIMEOUT_SECONDS,
+) -> None:
+    """Wait for the retained DLL client before touching the live frame.
+
+    A replacement pipe server starts disconnected while the injected DLL
+    asynchronously notices that the previous client closed.  Treating that
+    brief hand-off as a dead session makes the two explicit CLI operations
+    unreliable even though the retained CK3 process is healthy.
+    """
+
+    if timeout_seconds <= 0:
+        raise ValueError("reconnect timeout must be positive")
+    deadline = time.monotonic() + timeout_seconds
+    last_diagnostics: object = None
+    while time.monotonic() < deadline:
+        capabilities = service.capabilities()
+        diagnostics = (
+            capabilities.get("diagnostics")
+            if isinstance(capabilities, Mapping)
+            else None
+        )
+        last_diagnostics = copy.deepcopy(diagnostics)
+        if isinstance(diagnostics, Mapping) and diagnostics.get("connected") is True:
+            try:
+                snapshot = service.snapshot()
+            except BridgeUnavailableError:
+                snapshot = None
+            if isinstance(snapshot, Mapping) and snapshot.get("map_ready") is True:
+                return
+        time.sleep(_RECONNECT_POLL_SECONDS)
+    _fail(
+        "managed_session_reconnect_timeout",
+        timeout_seconds=timeout_seconds,
+        diagnostics=last_diagnostics,
+    )
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -980,6 +1024,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     service = GameplayBridgeService(driver)
     try:
+        _wait_for_managed_reconnect(service)
         if args.operation == "observe-ui":
             result = observe_cp26_route_ui_live(
                 service,

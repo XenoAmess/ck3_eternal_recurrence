@@ -19,11 +19,24 @@ class DesktopSwitchCharacterUiDriver:
     _FULL_SCREEN: Final = (0.0, 0.0, 1.0, 1.0)
     _SURFACE_TOKENS: Final = {
         "pause_switch": ("Switch Character", "切换角色"),
-        "any_ruler": ("Play as any Ruler", "任一统治者"),
+        "any_ruler": (
+            "Play as any Ruler",
+            "任一统治者",
+            "Your Character",
+            "你的角色",
+            "Random Character",
+            "随机角色",
+        ),
         "select_on_map": (
             "Choose a Character on the Map",
             "选择地图上的一个角色",
         ),
+    }
+    _DIRECT_KEYS: Final = {
+        "escape": (0x1B, 0x01),
+        "3": (0x33, 0x04),
+        "tab": (0x09, 0x0F),
+        "enter": (0x0D, 0x1C),
     }
 
     def __init__(
@@ -153,11 +166,25 @@ class DesktopSwitchCharacterUiDriver:
 
     def _press(self, key: str, *, expected_pid: int) -> dict[str, object]:
         _hwnd, foreground_pid = self._foreground(expected_pid)
-        self.desktop.pyautogui.press(key)
+        direct = self._DIRECT_KEYS.get(key)
+        win32api = getattr(self.desktop, "win32api", None)
+        win32con = getattr(self.desktop, "win32con", None)
+        keybd_event = getattr(win32api, "keybd_event", None)
+        key_up = getattr(win32con, "KEYEVENTF_KEYUP", None)
+        if direct is not None and callable(keybd_event) and isinstance(key_up, int):
+            virtual_key, scan_code = direct
+            keybd_event(virtual_key, scan_code, 0, 0)
+            time.sleep(0.05)
+            keybd_event(virtual_key, scan_code, key_up, 0)
+            input_backend = "win32-keybd-event"
+        else:
+            self.desktop.pyautogui.press(key)
+            input_backend = "pyautogui-fallback"
         return {
             "submitted": True,
             "key": key.upper(),
             "foreground_pid": foreground_pid,
+            "input_backend": input_backend,
         }
 
     def _click_client_center(
@@ -223,19 +250,43 @@ class DesktopSwitchCharacterUiDriver:
             expected_pid=expected_ck3_pid,
             evidence_directory=evidence_directory,
         )
-        actions.append(self._press("tab", expected_pid=expected_ck3_pid))
-        select_on_map = self._observe_surface(
-            "select_on_map",
-            expected_pid=expected_ck3_pid,
-            evidence_directory=evidence_directory,
+        direct_tokens = tuple(
+            value.casefold()
+            for value in (
+                "Your Character",
+                "你的角色",
+                "Random Character",
+                "随机角色",
+            )
         )
-        click = self._click_client_center(expected_pid=expected_ck3_pid)
-        selected = self._wait_surface_absent(
-            "select_on_map",
-            expected_pid=expected_ck3_pid,
-            evidence_directory=evidence_directory,
-        )
-        actions.append(self._press("enter", expected_pid=expected_ck3_pid))
+        matched = str(any_ruler.get("matched_text", "")).casefold()
+        direct_map_surface = any(token in matched for token in direct_tokens)
+        if direct_map_surface:
+            select_on_map = {
+                **any_ruler,
+                "surface": "direct_switch_character_map",
+            }
+            click = self._click_client_center(expected_pid=expected_ck3_pid)
+            actions.append(self._press("enter", expected_pid=expected_ck3_pid))
+            selected = self._wait_surface_absent(
+                "any_ruler",
+                expected_pid=expected_ck3_pid,
+                evidence_directory=evidence_directory,
+            )
+        else:
+            actions.append(self._press("tab", expected_pid=expected_ck3_pid))
+            select_on_map = self._observe_surface(
+                "select_on_map",
+                expected_pid=expected_ck3_pid,
+                evidence_directory=evidence_directory,
+            )
+            click = self._click_client_center(expected_pid=expected_ck3_pid)
+            selected = self._wait_surface_absent(
+                "select_on_map",
+                expected_pid=expected_ck3_pid,
+                evidence_directory=evidence_directory,
+            )
+            actions.append(self._press("enter", expected_pid=expected_ck3_pid))
         return {
             "schema_version": 1,
             "kind": "zg361_phase2_official_switch_character_ui_submission_v1",
@@ -243,6 +294,7 @@ class DesktopSwitchCharacterUiDriver:
             "transition_mode": PRODUCTION_SUBJECT_TRANSITION_MODE,
             "expected_ck3_pid": expected_ck3_pid,
             "official_ui_switch_submitted": True,
+            "direct_map_surface": direct_map_surface,
             "native_title_center_click": True,
             "caller_coordinate_used": False,
             "fixture_used": False,
