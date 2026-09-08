@@ -1657,8 +1657,11 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # immediate block has already selected/created and recruited the
         # student, installed the mentor relation, granted two skill points and
         # stored the student on the story. The sole authored option is empty.
-        # Bind the complete frame, including the observed origin-liege alias,
-        # then acknowledge the already-applied result.
+        # The origin helper runs only when a new student must be created. In
+        # that branch origin_liege is either the eunuch-scope fallback or a
+        # dynamic neighboring top-liege owner, and origin accompanies it.
+        # Bind the exact create/existing-student frames, then acknowledge the
+        # already-applied result.
         "date_raw": 53243184,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1667,38 +1670,47 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "unique_character_scope_excludes": {
             "eunuch": (32904,),
-            "rival": (32904,),
-            "origin_liege": (32904,),
             "student": (32904,),
         },
-        "character_scope_matches_any": {
-            "origin_liege": ("eunuch",),
+        "optional_unique_character_scope_excludes": {
+            "rival": (32904,),
+            "origin_liege": (32904,),
         },
         "character_scope_differs_from": {
-            "student": ("eunuch", "rival"),
+            "student": ("eunuch",),
+        },
+        "optional_character_scope_differs_from": {
+            "rival": ("eunuch",),
         },
         "scope_types": {
             "story": "story",
             "emperor": "character",
             "eunuch": "character",
             "admin_title": "landed_title",
+            "student": "character",
+        },
+        "optional_scope_types": {
+            "protege": "character",
             "rival": "character",
             "origin_liege": "character",
             "origin": "landed_title",
-            "student": "character",
         },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "rival",
-            "origin_liege",
-            "origin",
-            "student",
-        ),),
-        "saved_scope_count": 8,
+        "saved_scope_name_sets": tuple(
+            names + origin_names
+            for names in _optional_scope_name_sets(
+                (
+                    "story",
+                    "emperor",
+                    "eunuch",
+                    "admin_title",
+                    "student",
+                ),
+                ("protege", "rival"),
+            )
+            for origin_names in ((), ("origin_liege", "origin"))
+        ),
+        "saved_scope_counts": (5, 6, 7, 8, 9),
         "option_count": 1,
         "native_option_indices": (0,),
         "selected_option_number": 1,

@@ -140,3 +140,31 @@ rival 存在时仍不得等于玩家或 eunuch。原版没有为 `.2051` 定义�
 - 第四次 RED report 快照：11,787,076 bytes，SHA-256
   `D06B0EDE8B730B3B2E15AE7B476D75C582FE429C142CE37513B2C6E842E962C8`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`，不需要重启 CK3。
+
+## 同会话第五次 RED：学生创建的动态 origin owner
+
+第四次 `retry` 热加载提交
+`d616ac346e33c33fb3a6c93334b897fc0cc85c6f` 后，同一 PID `159264` 进入
+`ep3_story_cycle_admin_eunuch.3001`、event instance `357`、
+`date_raw=53233872`。完整八项 scope 中，origin liege 为动态角色 `30921`、
+student 为 `33596937`，而旧合同只接受 origin liege 与 eunuch `31801` 同一；
+唯一失败项为 `scope:origin_liege:matches_any`，选择尚未发生。
+
+源码确认 `.3001` 先尝试现有 close-family/courtier 学生；只有两者均不存在时，
+才在 `scope:eunuch` 内调用 origin helper 并创建新学生。此时 helper 的 fallback
+是 eunuch，自身 50% 随机成功分支则是动态相邻顶级领主 realm owner。因此合同
+不再冻结 origin liege 的具体 ID，只要求其为非玩家 character；并把
+`origin_liege/origin` 建模为成对出现的创建分支，绝不接受只出现其中一个。
+`protege/rival` 是 shared story 的独立可选项，连同有/无 origin pair 形成八个
+精确名称集合。student 始终为 character、不得等于玩家或 eunuch。
+
+`.3001` immediate 已设置 employer/mentor、增加两点技能并把 student 写回
+story；唯一 option 为空确认按钮。本修复没有修改选择路线。
+
+- 第五次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-5.json`；
+- park SHA-256：
+  `B50BF8C0CAD7CFF175E9FC981065D320CB93079FAC286DB484236A7912090E62`；
+- 第五次 RED report 快照：11,866,743 bytes，SHA-256
+  `2289414BE7CDA9C2E401AC70B4AF5897E281FB15DA8D81A43F38180DFEB3A8F4`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`，继续同 PID 热重试。

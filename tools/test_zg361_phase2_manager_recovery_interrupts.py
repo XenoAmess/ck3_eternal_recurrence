@@ -2241,22 +2241,57 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 8)
 
-        origin_liege_drift = copy.deepcopy(context)
-        origin_liege_drift["saved_scopes"][5] = _scope(
-            "origin_liege", "character", 31802
+        neighboring_origin = copy.deepcopy(context)
+        neighboring_origin["saved_scopes"][5] = _scope(
+            "origin_liege", "character", 30921
         )
-        drift_checks = production._known_interrupt_checks(
+        neighboring_checks = production._known_interrupt_checks(
             snapshot={
                 "date_raw": 53243184,
                 "active_event": {"option_count": 1},
             },
             event={"event_instance_id": 236},
-            context=origin_liege_drift,
+            context=neighboring_origin,
             event_key=event_key,
             contract=contract,
         )
-        self.assertFalse(drift_checks["scope:origin_liege:matches_any"])
+        self.assertTrue(all(neighboring_checks.values()), neighboring_checks)
+
+        existing_student = copy.deepcopy(context)
+        existing_student["saved_scopes"] = [
+            row
+            for row in existing_student["saved_scopes"]
+            if row["name"] not in ("origin_liege", "origin")
+        ]
+        existing_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243184,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 236},
+            context=existing_student,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(existing_checks.values()), existing_checks)
+
+        half_origin = copy.deepcopy(context)
+        half_origin["saved_scopes"] = [
+            row for row in half_origin["saved_scopes"] if row["name"] != "origin"
+        ]
+        half_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243184,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 236},
+            context=half_origin,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(half_checks["saved_scope_names_exact"])
 
     def test_eunuch_rival_opener_only_acknowledges_immediate_result(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.3010"
