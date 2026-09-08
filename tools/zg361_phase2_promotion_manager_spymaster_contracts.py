@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed Find Secrets manager interrupt contracts."""
 
 from __future__ import annotations
@@ -164,8 +164,12 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
         # its sole option reveals that exact secret to root. R195 observed the
         # complete ten-scope task frame and the only authored option. R201
         # then delivered two independently exact instances in the same client
-        # at dates 53178192 and 53178912. Permit those two task outcomes while
-        # retaining a finite third-occurrence boundary.
+        # at dates 53178192 and 53178912, and R355 delivered another exact
+        # instance at date 53239344. Vanilla selects this fallback afresh from
+        # task_find_secrets_reveal_selection whenever a completed Find Secrets
+        # outcome is not covered by a more specific event. It is repeatable per
+        # task outcome, not campaign-global; retain the bounded product window
+        # while validating every delivered instance independently.
         "date_raw": 53168112,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -218,6 +222,6 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

@@ -51,3 +51,22 @@ runner-only 修复重启 CK3。若 paused frame、PID/connection 或 event insta
 
 最终 live continuation、source registry 与 cleanup 字段将在同一 R355 会话完成后
 补入本页。
+
+## 同会话第二次合同 RED：查找秘密兜底
+
+热恢复越过辩论事件后，同一 CK3 PID、connection generation 和暂停恢复链在
+`date_raw=53239344` 遇到 `spymaster_task.0359` 的下一次精确投递。旧合同仅因
+此前 R201 实见两次而设置 `max_occurrences=2`，因此在选择按钮前以
+`known-interrupt-occurrence-bound` 保留 RED。
+
+CK3 1.19.0.6 原版 `councillor_on_actions.txt` 将 `.0359` 放在
+`task_find_secrets_reveal_selection` 的 `first_valid` 末位：每当一次 Find Secrets
+任务发现的秘密没有更具体事件可用时，它都会作为兜底重新投递。事件定义的唯一
+option 只对本次 `secret_to_reveal` 执行 `reveal_to = root`，不存在整局两次上限。
+
+因此该合同同样改为
+`occurrence_policy=repeatable-within-product-observation-window`。这不放宽任何
+事件形状或选择条件：完整十 scope、角色别名/互异关系、root、唯一 native option
+与 event-instance-advanced 后置条件仍逐次验证；总运行仍受 5,000 日产品观察窗
+限制。该修复属于外部 Python 合同变更，将继续在 PID `69176` 上热重载，不重启
+CK3。

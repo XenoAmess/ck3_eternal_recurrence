@@ -419,7 +419,7 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertFalse(drift_checks["saved_scope_names_exact"])
         self.assertFalse(drift_checks["saved_scope_count"])
 
-    def test_fallback_secret_discovery_reveals_only_bound_secret(self) -> None:
+    def test_fallback_secret_discovery_is_repeatable_per_task_outcome(self) -> None:
         event_key = "spymaster_task.0359"
         contract = _manager_contract(event_key, player=32904)
         context = _context(
@@ -457,7 +457,11 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["saved_scope_count"], 10)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
-        self.assertEqual(contract["max_occurrences"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
 
         first_repeat = copy.deepcopy(context)
         first_repeat["current_event_instance_id"] = 91
@@ -491,22 +495,6 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertTrue(all(second_checks.values()), second_checks)
-
-        completed = [
-            {"event_definition_key": event_key, "event_instance_id": 91},
-            {"event_definition_key": event_key, "event_instance_id": 92},
-        ]
-        max_occurrences = int(contract["max_occurrences"])
-
-        def next_occurrence_allowed(rows: list[dict[str, object]]) -> bool:
-            occurrence_count = sum(
-                row.get("event_definition_key") == event_key for row in rows
-            )
-            return occurrence_count < max_occurrences
-
-        self.assertTrue(next_occurrence_allowed([]))
-        self.assertTrue(next_occurrence_allowed(completed[:1]))
-        self.assertFalse(next_occurrence_allowed(completed))
 
         drifted = copy.deepcopy(context)
         drifted["saved_scopes"][5] = _scope(
