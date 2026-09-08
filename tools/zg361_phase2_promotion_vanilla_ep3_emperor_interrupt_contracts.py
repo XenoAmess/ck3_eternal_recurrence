@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Exact vanilla Roads-to-Power emperor interrupts on the promotion timeline."""
 
 from __future__ import annotations
@@ -36,13 +36,19 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
     "ep3_emperor_yearly.2211": {
         # CK3 1.19.0.6 response to a vassal's claimed appointment prophecy.
         # Authored option A is hidden in the R250 frame, leaving B/D/C at
-        # native indices 1/2/3.  B creates a favor hook (or grants influence),
-        # D installs a 25-year modifier, and both A/B alter appointment
-        # investment.  Authored option C is the bounded terminal route: it
-        # only transfers minor influence in opposite directions and schedules
-        # no follow-up event, hook, modifier, or appointment mutation. The
-        # .2210 caller saves its dynamic root as vassal before sending .2211
-        # to the liege, so bind that source relation instead of one seed ID.
+        # native indices 1/2/3. R355 has A and D hidden, leaving B/C at 1/3.
+        # Those are the two exact vanilla projections for the observed ruler:
+        # A/B depend on personality/superstition, while D additionally admits
+        # a faith mismatch with the requesting vassal. B creates a favor hook
+        # (or grants influence), D installs a 25-year modifier, and both A/B
+        # alter appointment investment. Authored option C is the bounded
+        # terminal route: it only transfers minor influence in opposite
+        # directions and schedules no follow-up event, hook, modifier, or
+        # appointment mutation. The .2210 caller saves its dynamic root as
+        # vassal before sending .2211 to the liege, so bind that source
+        # relation instead of one seed ID. Since independent vassals enter
+        # .2210 through the vanilla yearly pool and own its cooldown, multiple
+        # requests to the same liege remain valid within the product window.
         "date_raw": 53206512,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -69,6 +75,20 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (1, 2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
-        "max_occurrences": 1,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "native_option_indices": (1, 2, 3),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+            {
+                "option_count": 2,
+                "native_option_indices": (1, 3),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

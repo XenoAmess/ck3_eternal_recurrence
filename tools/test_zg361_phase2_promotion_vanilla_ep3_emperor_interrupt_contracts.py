@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Focused tests for the exact vanilla EP3 emperor interrupt contract."""
 
 from __future__ import annotations
@@ -111,6 +111,28 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         event = {"event_instance_id": 206}
         return snapshot, event, context
 
+    def _r355_frame(self) -> tuple[
+        dict[str, object], dict[str, object], dict[str, object]
+    ]:
+        context = _context(
+            event_key="ep3_emperor_yearly.2211",
+            instance_id=364,
+            date_raw=53243544,
+            player=32904,
+            scopes=[
+                _scope("potential_title", "landed_title"),
+                _scope("liege", "character", 32904),
+                _scope("vassal", "character", 30987),
+            ],
+            native_option_indices=(1, 3),
+        )
+        snapshot = {
+            "date_raw": 53243544,
+            "active_event": {"option_count": 4},
+        }
+        event = {"event_instance_id": 364}
+        return snapshot, event, context
+
     def test_r250_report_digest_and_exact_frame_select_bounded_route(self) -> None:
         if REPORT.is_file():
             self.assertEqual(_sha256(REPORT), REPORT_SHA256)
@@ -144,7 +166,36 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertEqual(contract["native_option_indices"], (1, 2, 3))
         self.assertEqual(contract["selected_option_number"], 4)
         self.assertEqual(contract["selected_native_option_index"], 3)
-        self.assertEqual(contract["max_occurrences"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+    def test_r355_two_option_frame_selects_same_terminal_route(self) -> None:
+        source_contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
+            "ep3_emperor_yearly.2211"
+        ]
+        contract = production._timeline_contract_for_window(
+            source_contract,
+            starting_date=53147016,
+        )
+        snapshot, event, context = self._r355_frame()
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="ep3_emperor_yearly.2211",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._option_contract_for_context(
+            context["options"], contract
+        )
+        self.assertEqual(effective["native_option_indices"], (1, 3))
+        self.assertEqual(effective["selected_option_number"], 4)
+        self.assertEqual(effective["selected_native_option_index"], 3)
 
     def test_r250_frame_rejects_date_scope_and_option_drift(self) -> None:
         contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[

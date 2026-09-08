@@ -70,3 +70,24 @@ option 只对本次 `secret_to_reveal` 执行 `reveal_to = root`，不存在整�
 与 event-instance-advanced 后置条件仍逐次验证；总运行仍受 5,000 日产品观察窗
 限制。该修复属于外部 Python 合同变更，将继续在 PID `69176` 上热重载，不重启
 CK3。
+
+## 同会话第三次合同 RED：预兆回复投影
+
+第二次热恢复继续前进后，PID `69176` 在 `date_raw=53243544`、event instance
+`364` 暂停于 `ep3_emperor_yearly.2211`。MCP 的 exact current-event 查询确认：
+
+- root / liege：`32904`；动态 vassal：`30987`；
+- scope 名称和类型仍精确为 `potential_title/liege/vassal`；
+- 本次实际显示 native options `(1, 3)`，即原版 B/C；
+- 既有 R250 投影为 `(1, 2, 3)`，即 B/D/C；
+- 选择尚未发生，C 仍为 native 3 / authored 4 的最小副作用终止路线。
+
+原版 A、B、D 分别带互有关联的性格/迷信条件，D 还可由请求附庸与玩家的信仰
+差异显示；C 无 trigger、始终可见。因此合同只增加源码允许且实机冻结的第二种
+精确投影 `(1, 3)`，不接受任意子集。`.2210` 位于 administrative yearly 池，
+25 年 cooldown 属于发起请求的附庸；不同附庸仍可在同一产品观察窗向玩家发送
+`.2211`，所以 occurrence 也改为按产品时间窗可重复。此处不新增通用宗教观测或
+策略，只消费原生已计算的选项投影。
+
+该变更仍只涉及外部 Python 合同和测试；保留同一 paused event，提交后热重载，
+不重启 CK3。
