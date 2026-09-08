@@ -4,9 +4,26 @@
 from __future__ import annotations
 
 import copy
+import importlib
+import sys
 import time
 from collections.abc import Callable, Mapping
 from typing import Protocol
+
+
+# The live recovery wrapper reloads this entry module while CK3 remains
+# paused on the same event. Contract shards imported below are separate
+# modules, so Python would otherwise retain their pre-fix objects in
+# sys.modules. Refresh already-loaded data-only shards before rebinding the
+# exported mappings; a cold first import has nothing to refresh.
+for _module_name, _module in tuple(sys.modules.items()):
+    _module_leaf = _module_name.rsplit(".", 1)[-1]
+    if (
+        _module_leaf.startswith("zg361_phase")
+        and _module_leaf.endswith("_contracts")
+        and _module is not None
+    ):
+        importlib.reload(_module)
 
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,

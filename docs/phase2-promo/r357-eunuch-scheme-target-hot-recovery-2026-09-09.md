@@ -227,28 +227,28 @@ eunuch/rival 关系均通过；旧合同只接受基础五项，因合法继承�
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
 
-## 同会话第十次 RED：目标角色持有自己的秘密
+## 同会话第八次 RED：傀儡继承人继承完整 story 角色
 
-第九次 `retry` 热加载提交 `fec2e27b3c71ef0f4e79d2a4d1e2691eb894fa2c` 后，同一 PID
-`159264` 推进到 `spymaster_task.0359`、event instance `371`、
-`date_raw=53254608`。十项 scope 名称、类型、唯一按钮和所有 task alias 均通过；
-实际 `target=target_character=secret_holder=29628`，旧合同额外要求 secret holder
-与 target 互异，导致两项关系检查 RED。选择尚未发生。
+第七次 `retry` 热加载提交 `980b2d07017afc0fbd551d3ae6366236fbd3ebdc` 后，同一 PID
+`159264` 推进到 `ep3_story_cycle_admin_eunuch.5020`、event instance `366`、
+`date_raw=53246016`。本帧八项 scope 为
+`story/emperor/eunuch/admin_title/student/rival/current_heir/puppet`；失败仍仅为
+旧合同把 `rival` 冻结为必有、且没有接收 `student`，选择尚未发生。
 
-原版 Find Secrets 先在 `target_character` 的本人、廷臣、宾客和直属封臣中汇总可发现
-秘密，再直接把被选秘密的 `secret_owner` 保存为 `secret_holder`。因此当目标角色本人
-持有被选秘密时，secret holder 与 target 相同完全合法；`.0359` 本身只要求
-`secret_to_reveal` 存在，唯一 option 将该秘密揭示给玩家。最小修复删除不存在于原版
-定义的 target/secret-holder 互异假设，同时保留 target 与 target_character 同一、
-owner/councillor/active_councillor 同一及 spymaster 与另外两方互异。重复事件的窗口
-策略和唯一确认按钮不变。
+原版 `.5020` 的 trigger 明确要求 story 中不存在 `protege` 和既有 `puppet`；因此
+shared save effect 在这里不会产生 `protege`，但 `student/rival` 均可独立存在。
+immediate 另固定保存当前继承人，并从玩家近亲中选出一个不是当前继承人的 `puppet`，
+建立其与宦官的友谊后写回 story。合同据此把六项事件自身 scope 设为必有，把
+`student/rival` 设为两个有限可选项，展开四个精确集合；current heir / puppet
+互异与非玩家约束保持不变。唯一 native option 会赋予 puppet 修正并提高任命投资，
+原版没有无副作用退出路线，故只在完整验帧后确认。
 
-- 第十次 park：
-  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-10.json`；
+- 第八次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-8.json`；
 - park SHA-256：
-  `BCB20CF842FD4C621B1D8F6609D1D341AE3BEA0C1E2479511385C0944A525AAC`；
-- 第十次 RED report 快照：12,507,516 bytes，SHA-256
-  `08E40F0B2ACF6E92CC1B23B42C1999A166CAA4560FF7663B7FAD585498D984CD`；
+  `A10E2E0E056DFF0A95EA4A0E9FB1F20530194CA0C05D809508FD863148C6C9A9`；
+- 第八次 RED report 快照：12,265,308 bytes，SHA-256
+  `58ABE2C984C374003DA85765315BF8848976A95702FC72CBAEF07C7E37B1E808`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
 
@@ -284,27 +284,43 @@ scope 缺席即通过，存在时必须分别等于 seducer/spouse。原路线�
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
 
-## 同会话第八次 RED：傀儡继承人继承完整 story 角色
+## 同会话第十次 RED：目标角色持有自己的秘密
 
-第七次 `retry` 热加载提交 `980b2d07017afc0fbd551d3ae6366236fbd3ebdc` 后，同一 PID
-`159264` 推进到 `ep3_story_cycle_admin_eunuch.5020`、event instance `366`、
-`date_raw=53246016`。本帧八项 scope 为
-`story/emperor/eunuch/admin_title/student/rival/current_heir/puppet`；失败仍仅为
-旧合同把 `rival` 冻结为必有、且没有接收 `student`，选择尚未发生。
+第九次 `retry` 热加载提交 `fec2e27b3c71ef0f4e79d2a4d1e2691eb894fa2c` 后，同一 PID
+`159264` 推进到 `spymaster_task.0359`、event instance `371`、
+`date_raw=53254608`。十项 scope 名称、类型、唯一按钮和所有 task alias 均通过；
+实际 `target=target_character=secret_holder=29628`，旧合同额外要求 secret holder
+与 target 互异，导致两项关系检查 RED。选择尚未发生。
 
-原版 `.5020` 的 trigger 明确要求 story 中不存在 `protege` 和既有 `puppet`；因此
-shared save effect 在这里不会产生 `protege`，但 `student/rival` 均可独立存在。
-immediate 另固定保存当前继承人，并从玩家近亲中选出一个不是当前继承人的 `puppet`，
-建立其与宦官的友谊后写回 story。合同据此把六项事件自身 scope 设为必有，把
-`student/rival` 设为两个有限可选项，展开四个精确集合；current heir / puppet
-互异与非玩家约束保持不变。唯一 native option 会赋予 puppet 修正并提高任命投资，
-原版没有无副作用退出路线，故只在完整验帧后确认。
+原版 Find Secrets 先在 `target_character` 的本人、廷臣、宾客和直属封臣中汇总可发现
+秘密，再直接把被选秘密的 `secret_owner` 保存为 `secret_holder`。因此当目标角色本人
+持有被选秘密时，secret holder 与 target 相同完全合法；`.0359` 本身只要求
+`secret_to_reveal` 存在，唯一 option 将该秘密揭示给玩家。最小修复删除不存在于原版
+定义的 target/secret-holder 互异假设，同时保留 target 与 target_character 同一、
+owner/councillor/active_councillor 同一及 spymaster 与另外两方互异。重复事件的窗口
+策略和唯一确认按钮不变。
 
-- 第八次 park：
-  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-8.json`；
+- 第十次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-10.json`；
 - park SHA-256：
-  `A10E2E0E056DFF0A95EA4A0E9FB1F20530194CA0C05D809508FD863148C6C9A9`；
-- 第八次 RED report 快照：12,265,308 bytes，SHA-256
-  `58ABE2C984C374003DA85765315BF8848976A95702FC72CBAEF07C7E37B1E808`；
+  `BCB20CF842FD4C621B1D8F6609D1D341AE3BEA0C1E2479511385C0944A525AAC`；
+- 第十次 RED report 快照：12,507,516 bytes，SHA-256
+  `08E40F0B2ACF6E92CC1B23B42C1999A166CAA4560FF7663B7FAD585498D984CD`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+第一次加载上述提交后，同一事件仍返回旧的两项关系 RED。证据确认 CK3 PID、event
+instance 和完整事件帧均未变化；原因是 live wrapper 只 reload 主 production-entry
+模块，而 `.0359` 合同位于独立 spymaster shard，Python 的 `sys.modules` 仍缓存旧
+shard 对象。该问题不要求、也不应通过重启 CK3 处理。production-entry 现会在重载
+自身时先刷新已经加载的 `zg361_phase*_contracts` 数据分片，再重新汇总合同映射，
+从而让任意合同分片修改都能在原暂停帧传递热生效。
+
+- 第十一次 park 仍为 PID `159264`、event instance `371`：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-11.json`；
+- park SHA-256：
+  `0C84EAD74A230BE073338506DF79CB32EE6304314CDCA3A675FC54AD760069CC`；
+- 缓存 RED report 快照：12,567,012 bytes，SHA-256
+  `AA0AA50BFAF184E77538416AA9B6BF0C79FBFBEEAB30D8648063CF00DDF5087C`；
+- 再次驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`。
