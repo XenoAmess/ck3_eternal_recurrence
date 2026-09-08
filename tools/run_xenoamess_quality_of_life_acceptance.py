@@ -225,7 +225,7 @@ def render_presets() -> str:
     )
 
 
-def bootstrap_userdir(userdir: Path) -> dict[str, object]:
+def bootstrap_userdir(userdir: Path, source_root: Path = SOURCE) -> dict[str, object]:
     for path in (
         userdir / "mod",
         userdir / "mod-content/product",
@@ -238,7 +238,9 @@ def bootstrap_userdir(userdir: Path) -> dict[str, object]:
     product = userdir / "mod-content/product"
     fixture = userdir / "mod-content/fixture"
     for relative in sorted(release.RUNTIME_FILES):
-        source = SOURCE / relative
+        source = source_root / relative
+        if not source.is_file():
+            raise acceptance.RunnerError(f"product source is missing runtime file: {source}")
         destination = product / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
@@ -404,7 +406,13 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     }
 
 
-def run_cell(artifacts: Path, state_dir: Path, config: NativeBridgeLaunchConfig, keep_userdir: bool) -> dict[str, object]:
+def run_cell(
+    artifacts: Path,
+    state_dir: Path,
+    config: NativeBridgeLaunchConfig,
+    keep_userdir: bool,
+    source_root: Path = SOURCE,
+) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
@@ -412,11 +420,11 @@ def run_cell(artifacts: Path, state_dir: Path, config: NativeBridgeLaunchConfig,
     userdir = state_dir / "profile"
     userdir.mkdir(parents=True)
     acceptance.configure_runtime_userdir(userdir)
-    bootstrap = bootstrap_userdir(userdir)
+    bootstrap = bootstrap_userdir(userdir, source_root)
     spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)
     if spec.profile_dir.resolve() != userdir.resolve():
         raise acceptance.RunnerError("native state profile differs from isolated userdir")
-    source_before = isolated.tree_snapshot(SOURCE)
+    source_before = isolated.tree_snapshot(source_root)
     process = None
     session = None
     driver = None
@@ -495,7 +503,7 @@ def run_cell(artifacts: Path, state_dir: Path, config: NativeBridgeLaunchConfig,
                     shutil.copy2(path, artifacts / f"final_all_{path.name}")
 
     runtime_unchanged = all(isolated.tree_snapshot(path) == bootstrap["snapshots"][key] for key, path in bootstrap["targets"].items())
-    source_unchanged = isolated.tree_snapshot(SOURCE) == source_before
+    source_unchanged = isolated.tree_snapshot(source_root) == source_before
     if result == "GREEN" and (not runtime_unchanged or not source_unchanged):
         result = "RED"
         error_reason = "CK3 rewrote the isolated runtime or product source"
@@ -517,6 +525,7 @@ def run_cell(artifacts: Path, state_dir: Path, config: NativeBridgeLaunchConfig,
         "enabled_mods": bootstrap["enabled_mods"],
         "mount_order": mount_order,
         "runtime_tree_sha256": bootstrap["tree_sha256"],
+        "product_source": str(source_root),
         "runtime_unchanged": runtime_unchanged,
         "source_unchanged": source_unchanged,
         "mcp_readiness": readiness,
@@ -546,13 +555,16 @@ def main(args: argparse.Namespace) -> int:
     else:
         artifacts = RUNS_ROOT / f"zqa_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
     state_dir = artifacts.with_name(artifacts.name + "_native_state")
+    source_root = Path(args.source).expanduser().resolve() if args.source else SOURCE.resolve()
+    if not source_root.is_dir():
+        raise acceptance.RunnerError(f"product source directory is missing: {source_root}")
     steam_root = terminal.steam_userdata_root()
     workshop_roots = isolated.steam_workshop_app_roots(steam_root)
     isolated.registered_workshop_targets(workshop_roots)
     isolated.ensure_test_paths_safe((artifacts, state_dir), steam_root, workshop_roots)
     protected_before = isolated.protected_snapshot(steam_root)
     artifacts.mkdir(parents=True)
-    report = run_cell(artifacts / "cell", state_dir, config, args.keep_userdir)
+    report = run_cell(artifacts / "cell", state_dir, config, args.keep_userdir, source_root)
     protected_unchanged = False
     error_reason = report["error_reason"]
     result = report["result"]
@@ -583,6 +595,10 @@ def main(args: argparse.Namespace) -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--artifacts-dir")
+    parser.add_argument(
+        "--source",
+        help="runtime product root; use a strict-verified fresh Workshop cache for L3",
+    )
     parser.add_argument("--keep-userdir", action="store_true")
     parser.add_argument("--preflight", action="store_true")
     parser.add_argument("--bridge-dll")

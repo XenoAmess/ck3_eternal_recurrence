@@ -21,4 +21,4 @@ py tools/build_xenoamess_quality_of_life_release.py --check
 py tools/build_xenoamess_quality_of_life_release.py
 ```
 
-验收协议与执行记录分别见 `docs/acceptance-plan.md` 和 `docs/acceptance-report.md`。Steam 工坊正文的 canonical BBCode 位于仓库根目录 `workshop/xenoamess_quality_of_life_description.bbcode`。
+验收协议与执行记录分别见 `docs/acceptance-plan.md` 和 `docs/acceptance-report.md`。Steam 工坊正文的 canonical BBCode 位于仓库根目录 `workshop/xenoamess_quality_of_life_description.bbcode`；跨机器首发步骤见 `docs/xqol-workshop-publication-handoff.md`。
