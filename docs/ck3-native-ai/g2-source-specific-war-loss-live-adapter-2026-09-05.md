@@ -61,8 +61,8 @@ pins the adapter and every executable/source dependency. Important hashes:
 
 | Input | SHA-256 |
 | --- | --- |
-| adapter | `4922AD1E4D57AC5E202E61D192848D4ED37753AC174A29676D15BE1FE2BE92CB` |
-| manifest | `D888FA2DF6839C5A424D9947EE7BCE746ABF930E45B2384169DD23488ABB5FB0` |
+| adapter | `480BD5AC20AA50A3A439E0F0AC50DF722B360580558F865E8CBCDB601599A23C` |
+| manifest | `58F9677E0CE03829D80063A14C7450028A68A8C1AFDDFA7A09F7F28BCA9D77AE` |
 | source capture executable | `B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72` |
 | bridge DLL | `4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B` |
 | bridge injector | `43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D` |
@@ -75,6 +75,9 @@ The no-launch command is:
   "ck3_autonomous_player\native_bridge\research\run_g2_source_specific_war_loss_live_adapter.py" `
   --manifest "ck3_autonomous_player\native_bridge\research\fixtures\g2_source_specific_war_loss_live_adapter_v1_manifest.json" `
   --preflight-output "<fresh-output>" `
+  --profile-settings-template "<known-good-profile>\pdx_settings.txt" `
+  --game-root "<CK3-install-root>" `
+  --expected-war-id 50331699 `
   --verify-only
 ```
 
@@ -128,6 +131,33 @@ exist in the frozen lifecycle runner; promoting that submit into the public
 policy before production recommendation, pending/cooldown and full
 postconditions are available would not unlock an authorized decision.
 
+### 2026-09-09 isolated-worktree game source binding
+
+The adapter now accepts an explicit `--game-root` for a CK3 installation that
+contains `binaries/ck3.exe` and `game/events/bookmark_events.txt`. Callers may
+instead provide either file independently through `--game-executable` and
+`--bookmark-events`; a direct file argument takes precedence over
+`--game-root`. These options change only path resolution. Every selected file
+must still match the SHA-256 frozen in the manifest, and `ck3.exe` must also
+match the exact `1.19.0.6` executable identity.
+
+A no-launch run from isolated worktree
+`_root-rebase-r345-20260909@2121dc6` used
+`--game-root "Z:\ck3_mod_rewrite\Crusader Kings III"` and returned
+`READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`. All 14 manifest dependencies
+matched; the executable and bookmark rows record
+`path_source=explicit-game-root`, and the report records
+`exact_hashes_verified=true`. Process inventory was identical before and
+after, including the CK3 process already owned by the concurrent T0 run; this
+command did not start, attach, focus, inject into, stop or mutate that process.
+
+Receipt:
+`Z:\ck3_mod_rewrite_process_assets\zg361\g2-explicit-game-path-no-launch-20260909\preflight-origin-master-2121dc6.json`,
+8,291 bytes, SHA-256
+`11B66665FDE1F095CCD72C47B9D4B8A987AD87E2A3B27E3F099D7D821CC73233`.
+This closes only the isolated-worktree preflight path gap; all live/readiness
+fields remain unchanged.
+
 After the coordinator grants an exclusive CK3 slot, the concrete default-OFF
 command is:
 
@@ -138,7 +168,10 @@ command is:
   --preflight-output "<fresh-attempt>\preflight.json" `
   --artifact-dir "<fresh-attempt>\artifacts" `
   --userdir "<fresh-empty-userdir>" `
+  --profile-settings-template "<known-good-profile>\pdx_settings.txt" `
+  --game-root "<CK3-install-root>" `
   --expected-character-id 29829 `
+  --expected-war-id 50331699 `
   --postwar-timeout 45 `
   --authorize-private-live
 ```

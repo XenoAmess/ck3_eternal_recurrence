@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -136,6 +137,66 @@ def _write_profile_settings_template(root: Path) -> Path:
     return template
 
 
+def _installed_game_root() -> Path:
+    candidates = (
+        ADAPTER.REPOSITORY_ROOT / "Crusader Kings III",
+        ADAPTER.REPOSITORY_ROOT.parent / "Crusader Kings III",
+    )
+    for candidate in candidates:
+        if (
+            (candidate / "binaries" / "ck3.exe").is_file()
+            and (candidate / "game" / "events" / "bookmark_events.txt").is_file()
+        ):
+            return candidate
+    return candidates[0]
+
+
+def _sha256(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest().upper()
+
+
+def _write_self_contained_manifest(
+    root: Path,
+) -> tuple[Path, Path, Path, Path, str]:
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    dependencies = root / "dependencies"
+    dependencies.mkdir()
+    for name in manifest["paths"]:
+        if name in {"game_executable", "bookmark_events"}:
+            manifest["paths"][name] = str(root / "manifest-missing" / name)
+            continue
+        payload = f"dependency:{name}".encode("utf-8")
+        path = dependencies / f"{name}.bin"
+        path.write_bytes(payload)
+        manifest["paths"][name] = str(path)
+        manifest["sha256"][name] = _sha256(payload)
+
+    game_root = root / "installed-game"
+    game_executable = game_root / "binaries" / "ck3.exe"
+    bookmark_events = game_root / "game" / "events" / "bookmark_events.txt"
+    game_executable.parent.mkdir(parents=True)
+    bookmark_events.parent.mkdir(parents=True)
+    game_payload = b"exact-build-game-executable"
+    bookmark_payload = b"exact-bookmark-events-source"
+    game_executable.write_bytes(game_payload)
+    bookmark_events.write_bytes(bookmark_payload)
+    manifest["sha256"]["game_executable"] = _sha256(game_payload)
+    manifest["sha256"]["bookmark_events"] = _sha256(bookmark_payload)
+
+    manifest_path = root / "manifest.json"
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return (
+        manifest_path,
+        game_root,
+        game_executable,
+        bookmark_events,
+        _sha256(game_payload),
+    )
+
+
 class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
     def test_inventory_falls_back_to_toolhelp_when_wmi_is_denied(self) -> None:
         fallback = [{"Name": "ck3.exe", "ProcessId": PID}]
@@ -200,6 +261,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 process_inventory=unchanged_inventory,
                 profile_settings_template=template,
                 inspect_profile_settings_template=True,
+                game_root=_installed_game_root(),
             )
             self.assertEqual(calls, 2)
             self.assertEqual(report["process_inventory_before"], inventory)
@@ -226,7 +288,9 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             self.assertEqual(json.loads(output.read_text(encoding="utf-8")), report)
 
     def test_manifest_pins_concrete_same_pid_composition(self) -> None:
-        manifest, paths, timeouts, checked = ADAPTER._load_manifest(MANIFEST)
+        manifest, paths, timeouts, checked = ADAPTER._load_manifest(
+            MANIFEST, game_root=_installed_game_root()
+        )
         composition = manifest["composition"]
         self.assertTrue(composition["concrete_live_adapter_implemented"])
         self.assertTrue(composition["observer_detach_before_bridge"])
@@ -240,6 +304,96 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertEqual(timeouts.observer_timeout_ms, 1_200_000)
         self.assertEqual(paths.game_executable.name, "ck3.exe")
         self.assertIn("adapter", checked)
+
+    def test_explicit_game_root_yields_a_complete_exact_hash_preflight(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (
+                manifest_path,
+                game_root,
+                game_executable,
+                bookmark_events,
+                expected_game_sha256,
+            ) = _write_self_contained_manifest(root)
+            output = root / "preflight.json"
+            template = _write_profile_settings_template(root)
+            with mock.patch.object(
+                ADAPTER, "EXPECTED_EXE_SHA256", expected_game_sha256
+            ):
+                report = ADAPTER.run_no_launch_preflight(
+                    manifest_path,
+                    output,
+                    repo_root=root,
+                    process_inventory=lambda: [],
+                    profile_settings_template=template,
+                    inspect_profile_settings_template=True,
+                    game_root=game_root,
+                )
+
+        self.assertEqual(len(report["dependencies"]), 14)
+        self.assertTrue(report["game_source_binding"]["exact_hashes_verified"])
+        self.assertEqual(
+            report["dependencies"]["game_executable"]["path"],
+            str(game_executable.resolve()),
+        )
+        self.assertEqual(
+            report["dependencies"]["bookmark_events"]["path"],
+            str(bookmark_events.resolve()),
+        )
+        self.assertEqual(
+            report["dependencies"]["game_executable"]["path_source"],
+            "explicit-game-root",
+        )
+        self.assertEqual(
+            report["dependencies"]["bookmark_events"]["path_source"],
+            "explicit-game-root",
+        )
+
+    def test_explicit_files_override_game_root_but_cannot_bypass_hashes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (
+                manifest_path,
+                _game_root,
+                game_executable,
+                bookmark_events,
+                expected_game_sha256,
+            ) = _write_self_contained_manifest(root)
+            unavailable_root = root / "unavailable-game-root"
+            with mock.patch.object(
+                ADAPTER, "EXPECTED_EXE_SHA256", expected_game_sha256
+            ):
+                _manifest, paths, _timeouts, checked = ADAPTER._load_manifest(
+                    manifest_path,
+                    repo_root=root,
+                    game_root=unavailable_root,
+                    game_executable=game_executable,
+                    bookmark_events=bookmark_events,
+                )
+                bad_executable = root / "wrong-ck3.exe"
+                bad_executable.write_bytes(b"wrong-build")
+                with self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "manifest dependency drifted: game_executable",
+                ):
+                    ADAPTER._load_manifest(
+                        manifest_path,
+                        repo_root=root,
+                        game_root=unavailable_root,
+                        game_executable=bad_executable,
+                        bookmark_events=bookmark_events,
+                    )
+
+        self.assertEqual(paths.game_executable, game_executable.resolve())
+        self.assertEqual(paths.bookmark_events, bookmark_events.resolve())
+        self.assertEqual(
+            checked["game_executable"]["path_source"],
+            "explicit-game-executable",
+        )
+        self.assertEqual(
+            checked["bookmark_events"]["path_source"],
+            "explicit-bookmark-events",
+        )
 
     def test_profile_asset_failure_blocks_before_popen_and_writes_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -498,6 +652,24 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             ]
         )
         self.assertEqual(parsed.expected_war_id, ADAPTER.EXPECTED_LIVE_WAR_ID)
+        explicit_game_root = Path("explicit-game")
+        explicit_game_executable = Path("explicit-ck3.exe")
+        explicit_bookmark_events = Path("explicit-bookmark-events.txt")
+        parsed = parser.parse_args(
+            [
+                "--manifest", str(MANIFEST),
+                "--preflight-output", "preflight.json",
+                "--profile-settings-template", "pdx_settings.txt",
+                "--expected-war-id", str(ADAPTER.EXPECTED_LIVE_WAR_ID),
+                "--game-root", str(explicit_game_root),
+                "--game-executable", str(explicit_game_executable),
+                "--bookmark-events", str(explicit_bookmark_events),
+                "--verify-only",
+            ]
+        )
+        self.assertEqual(parsed.game_root, explicit_game_root)
+        self.assertEqual(parsed.game_executable, explicit_game_executable)
+        self.assertEqual(parsed.bookmark_events, explicit_bookmark_events)
         with self.assertRaisesRegex(
             ADAPTER.LiveAdapterError, "outside the repository"
         ):

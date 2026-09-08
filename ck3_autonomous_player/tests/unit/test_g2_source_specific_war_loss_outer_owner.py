@@ -42,6 +42,24 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
 
+def _frozen_dependency_path(name: str, value: object) -> Path:
+    path = Path(str(value))
+    if path.is_absolute():
+        return path
+    worktree_path = ROOT.parent / path
+    if worktree_path.is_file() or name not in {
+        "game_executable",
+        "bookmark_events",
+    }:
+        return worktree_path
+    installed_game_root = ROOT.parent.parent / "Crusader Kings III"
+    return (
+        installed_game_root / "binaries" / "ck3.exe"
+        if name == "game_executable"
+        else installed_game_root / "game" / "events" / "bookmark_events.txt"
+    )
+
+
 def _source_capture() -> dict[str, object]:
     executions: list[dict[str, object]] = []
     for index in range(6):
@@ -416,9 +434,8 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
         self.assertTrue(report["observer_source_proof"]["attach_branch_detaches"])
         self.assertFalse(report["boundaries"]["ck3_started_or_attached"])
         for name, value in manifest["paths"].items():
-            path = Path(value)
-            if not path.is_absolute():
-                path = ROOT.parent / path
+            path = _frozen_dependency_path(name, value)
+            if not Path(str(value)).is_absolute():
                 self.assertEqual(_sha256(path), manifest["sha256"][name])
             else:
                 self.assertRegex(manifest["sha256"][name], r"^[0-9A-F]{64}$")

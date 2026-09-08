@@ -115,6 +115,37 @@ def _resolve(path_value: object, *, repo_root: Path) -> Path:
     return path.resolve()
 
 
+def _resolve_runtime_dependency(
+    name: str,
+    manifest_value: object,
+    *,
+    repo_root: Path,
+    game_root: Path | None,
+    game_executable: Path | None,
+    bookmark_events: Path | None,
+) -> tuple[Path, str]:
+    if name == "game_executable":
+        if game_executable is not None:
+            return game_executable.expanduser().resolve(), "explicit-game-executable"
+        if game_root is not None:
+            return (
+                game_root.expanduser().resolve() / "binaries" / "ck3.exe",
+                "explicit-game-root",
+            )
+    if name == "bookmark_events":
+        if bookmark_events is not None:
+            return bookmark_events.expanduser().resolve(), "explicit-bookmark-events"
+        if game_root is not None:
+            return (
+                game_root.expanduser().resolve()
+                / "game"
+                / "events"
+                / "bookmark_events.txt",
+                "explicit-game-root",
+            )
+    return _resolve(manifest_value, repo_root=repo_root), "manifest"
+
+
 def _require_external_runtime_paths(artifact_dir: Path, userdir: Path) -> None:
     repository = REPOSITORY_ROOT.resolve()
     artifact = artifact_dir.resolve()
@@ -427,6 +458,9 @@ def _load_manifest(
     manifest_path: Path,
     *,
     repo_root: Path = REPOSITORY_ROOT,
+    game_root: Path | None = None,
+    game_executable: Path | None = None,
+    bookmark_events: Path | None = None,
 ) -> tuple[dict[str, object], AdapterPaths, AdapterTimeouts, dict[str, dict[str, object]]]:
     manifest = _object(
         json.loads(manifest_path.read_text(encoding="utf-8-sig")), "manifest"
@@ -476,7 +510,14 @@ def _load_manifest(
     for name in sorted(required):
         if name not in paths or name not in hashes:
             raise LiveAdapterError(f"manifest dependency is missing: {name}")
-        path = _resolve(paths[name], repo_root=repo_root)
+        path, path_source = _resolve_runtime_dependency(
+            name,
+            paths[name],
+            repo_root=repo_root,
+            game_root=game_root,
+            game_executable=game_executable,
+            bookmark_events=bookmark_events,
+        )
         expected = _sha256_text(hashes[name], f"{name} SHA-256")
         if not path.is_file():
             raise LiveAdapterError(f"manifest dependency is absent: {path}")
@@ -487,6 +528,7 @@ def _load_manifest(
             )
         checked[name] = {
             "path": str(path),
+            "path_source": path_source,
             "size": path.stat().st_size,
             "sha256": actual,
         }
@@ -567,11 +609,18 @@ def run_no_launch_preflight(
     process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
     profile_settings_template: Path | None = None,
     inspect_profile_settings_template: bool = False,
+    game_root: Path | None = None,
+    game_executable: Path | None = None,
+    bookmark_events: Path | None = None,
 ) -> dict[str, object]:
     if output_path.exists():
         raise LiveAdapterError(f"output path already exists: {output_path}")
     manifest, _paths, timeouts, checked = _load_manifest(
-        manifest_path, repo_root=repo_root
+        manifest_path,
+        repo_root=repo_root,
+        game_root=game_root,
+        game_executable=game_executable,
+        bookmark_events=bookmark_events,
     )
     before = copy.deepcopy(process_inventory())
     after = copy.deepcopy(process_inventory())
@@ -607,6 +656,16 @@ def run_no_launch_preflight(
         "status": PREFLIGHT_STATUS,
         "manifest_sha256": _sha256_file(manifest_path),
         "dependencies": checked,
+        "game_source_binding": {
+            "game_root": (
+                str(game_root.expanduser().resolve())
+                if game_root is not None
+                else None
+            ),
+            "game_executable": copy.deepcopy(checked["game_executable"]),
+            "bookmark_events": copy.deepcopy(checked["bookmark_events"]),
+            "exact_hashes_verified": True,
+        },
         "process_inventory_before": before,
         "process_inventory_after": after,
         "startup_profile_template": profile_template_evidence,
@@ -1236,6 +1295,30 @@ def _parser() -> argparse.ArgumentParser:
             "and byte-verified before CK3 launch"
         ),
     )
+    parser.add_argument(
+        "--game-root",
+        type=Path,
+        help=(
+            "explicit CK3 installation root containing binaries/ and game/; "
+            "its files remain subject to manifest SHA-256 checks"
+        ),
+    )
+    parser.add_argument(
+        "--game-executable",
+        type=Path,
+        help=(
+            "explicit ck3.exe override; takes precedence over --game-root and "
+            "must match the manifest SHA-256"
+        ),
+    )
+    parser.add_argument(
+        "--bookmark-events",
+        type=Path,
+        help=(
+            "explicit bookmark_events.txt override; takes precedence over "
+            "--game-root and must match the manifest SHA-256"
+        ),
+    )
     parser.add_argument("--expected-character-id", type=int)
     parser.add_argument("--expected-war-id", type=int, required=True)
     parser.add_argument("--postwar-timeout", type=float, default=45.0)
@@ -1258,6 +1341,9 @@ def main(argv: list[str] | None = None) -> int:
             args.preflight_output,
             profile_settings_template=args.profile_settings_template,
             inspect_profile_settings_template=args.verify_only,
+            game_root=args.game_root,
+            game_executable=args.game_executable,
+            bookmark_events=args.bookmark_events,
         )
         if args.verify_only:
             print(json.dumps(preflight, ensure_ascii=False, indent=2))
@@ -1272,7 +1358,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         if args.postwar_timeout <= 0 or args.postwar_timeout > 120:
             raise LiveAdapterError("postwar timeout must be in (0, 120]")
-        _manifest, paths, timeouts, _checked = _load_manifest(args.manifest)
+        _manifest, paths, timeouts, _checked = _load_manifest(
+            args.manifest,
+            game_root=args.game_root,
+            game_executable=args.game_executable,
+            bookmark_events=args.bookmark_events,
+        )
         operations = ConcreteLiveOperations(
             paths=paths,
             timeouts=timeouts,
