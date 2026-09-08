@@ -762,6 +762,7 @@ class CrossCycleEndgameSourceCaptureTests(unittest.TestCase):
             )
             self.assertEqual(receipt["result"], "GREEN")
             self.assertEqual(receipt["readiness"], "live-pending")
+            self.assertTrue(receipt["source_checkpoint_captured"])
             self.assertFalse(receipt["phase2_complete"])
             self.assertGreaterEqual(service.snapshot_calls, 4)
             self.assertEqual(service.save_calls, 1)
