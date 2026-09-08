@@ -200,3 +200,26 @@ native 2，并绑定完整四-scope 和稀疏 option 投影。不同灾害 situa
 该 warning，occurrence 只受产品观察窗限制。
 
 该修复仍不触碰 CK3 已加载文件；完成静态验证与推送后在 PID `69176` 上热续。
+
+## 同会话第十次合同 RED：辩论替补领袖与意外胜利 scope 栈
+
+洪水 warning 热通过后，同一 PID 在 `date_raw=53256192`、event instance `502`
+再次进入 `debate_event.5110`。MCP 保留的暂停帧包含十个精确 scope：既有
+`activity/host/province/debate_contender/debate_opponent/debate_loser/`
+`debate_winner`，以及 `current_empowered_movement`、
+`challenged_movement_leader` 和 `debate_unexpected_win`。本帧
+`host/contender/opponent/loser/unexpected_win` 均为 `28784`，替补
+`challenged_movement_leader` 与最终 winner 均为 `30177`；两个按钮仍精确映射
+authored/native `(0,0)`、`(1,1)`，选择尚未发生。
+
+原版 `set_opponent_scope_effect` 在活动先前保存的挑战领袖死亡时，会从当前 host
+重新调用 `set_debate_target_effect`。favor debate 分支由此保存当前获扶持的
+movement participant group，并选出可参加本次活动的替补领袖；随后的
+`debate_determine_outcome_effect` 在领袖反向获胜时，把 challenger 保存为 winner、
+host/contender 保存为 loser，并把执行作用域保存为 unexpected-win 标记。这正好
+解释实帧的两组角色别名和三个新增 scope。
+
+合同只新增这一组完整十-scope variant，固定全部类型与两组角色等价关系，不把
+三个字段各自放宽成可选，也不接受任意超集。继续选择确认源码计算结果的 authored
+2 / native 1。改动只在 CK3 进程外的合同、测试与文档；静态验证和推送后仍在同一
+PID、同一暂停事件上热重载，不重启游戏。

@@ -2477,6 +2477,58 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             drifted_checks["scope:debate_unexpected_win:matches_any"]
         )
 
+        replacement_leader_upset = copy.deepcopy(context)
+        replacement_leader_upset["current_event_instance_id"] = 502
+        replacement_leader_upset["date_raw"] = 53256192
+        replacement_leader_upset["saved_scopes"] = [
+            scope("activity", "activity"),
+            scope("host", "character", 28784),
+            scope("province", "province"),
+            scope("debate_contender", "character", 28784),
+            scope("current_empowered_movement", "situation_participant_group"),
+            scope("challenged_movement_leader", "character", 30177),
+            scope("debate_opponent", "character", 28784),
+            scope("debate_loser", "character", 28784),
+            scope("debate_winner", "character", 30177),
+            scope("debate_unexpected_win", "character", 28784),
+        ]
+        replacement_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53256192,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 502},
+            context=replacement_leader_upset,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(replacement_checks.values()), replacement_checks)
+        self.assertTrue(
+            replacement_checks[
+                "scope:challenged_movement_leader:matches_any"
+            ]
+        )
+
+        drifted_replacement = copy.deepcopy(replacement_leader_upset)
+        drifted_replacement["saved_scopes"][4] = scope(
+            "current_empowered_movement", "character", 30177
+        )
+        drifted_replacement_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53256192,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 502},
+            context=drifted_replacement,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drifted_replacement_checks[
+                "scope:current_empowered_movement:type"
+            ]
+        )
+
     def test_befriend_outcome_variants_use_gentle_rejection(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None,
