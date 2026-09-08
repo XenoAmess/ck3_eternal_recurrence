@@ -54,3 +54,35 @@ instance 与 event definition，再接受外部 `retry`；单次 Ctrl+C 会被�
 静态合同在 normal 与 `python -O` 下验证四个合法组合，并验证 target 指向
 玩家或 eunuch 时 fail-closed。提交并推送后在上述同一事件实例上发送 `retry`，
 只热加载外部 Python 合同。
+
+## 同会话第二次 RED：宦官索要宫廷职位
+
+第一次 `retry` 已在 PID `159264`、connection generation `1` 上热加载提交
+`4f273757d97a1e06ca4bca076ab90456832aafc0`，通过 `.2052` 后自然推进到
+`ep3_story_cycle_admin_eunuch.2060`、event instance `346`、
+`date_raw=53225016`。本帧仍在同一进程，选择尚未发生；完整六项 scope 为：
+
+`story/emperor/eunuch/admin_title/candidate/liege`
+
+其中 emperor / liege 都是玩家 `32904`，eunuch / candidate 都是 `31801`。
+原版 `court_position_generator_effect` 明确把调用者保存为 candidate、把 employer
+保存为 liege；shared story effect 的 `protege/student/rival` 各自可选，生成器
+找到现任时还会独立保存 `old_holder`。因此新合同把六项设为必选、四项设为有限
+可选，展开为 16 个精确名称集合；任何未知额外 scope 仍 fail-closed。
+
+native option 0 会执行 `court_position_generator_assignment_effect`，实际任命
+eunuch 并可能罢免 old holder；native option 1 不任命，只执行原版 story
+downgrade、意见与 trait-dependent stress。合同选择 native 1，并要求 candidate
+与 eunuch 同一、liege 与玩家同一，若有 old holder 则不得与 candidate 同一。
+
+`.2060` 原版 cooldown 是五年，不是整局一次；7190 日产品观察窗可跨越多次
+冷却，故 occurrence 使用 `repeatable-within-product-observation-window`，每次
+仍重新验证完整帧。
+
+- 第二次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-2.json`；
+- park SHA-256：
+  `ED2783F1B147F69C45012EB5AB65677907B670BD15913854C24022FA86B9C997`；
+- 第二次 RED report 快照：23,058,717 bytes，SHA-256
+  `FEE8B6660F0556E647B259A70C2D9D2204BE38C44DC024273A7C2BF82EB64529`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`，同 PID 热重试获准。

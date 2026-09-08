@@ -207,6 +207,22 @@ _TRANSIENT_PROGRESS_BINDING_ERRORS = (
     "promotion source progress is not bound to the requested frame",
 )
 
+
+def _optional_scope_name_sets(
+    required: tuple[str, ...], optional: tuple[str, ...]
+) -> tuple[tuple[str, ...], ...]:
+    """Expand one finite optional-scope envelope to exact name sets."""
+
+    return tuple(
+        required
+        + tuple(
+            name
+            for index, name in enumerate(optional)
+            if mask & (1 << index)
+        )
+        for mask in range(1 << len(optional))
+    )
+
 # Source-reviewed, player-visible Workforce events on the non-debt route from
 # Central stage 11 through the cross-cycle endgame.  The generated product
 # gives every ordinary card three authored routes, except the one-option
@@ -1408,6 +1424,64 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 2,
         "selected_native_option_index": 1,
         "max_occurrences": 1,
+    },
+    "ep3_story_cycle_admin_eunuch.2060": {
+        # CK3 1.19.0.6 court-position demand from the story eunuch. Native
+        # option 0 assigns the generated position and can remove its existing
+        # holder. Native option 1 refuses the demand and applies only the
+        # authored story downgrade, opinion and stress result. The shared
+        # story effect independently carries protege/student/rival when they
+        # exist, while the position generator independently saves old_holder.
+        # Bind the finite optional envelope and choose the refusing route.
+        "date_raw": 53225016,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+            "liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+        },
+        "character_scope_matches_any": {
+            "candidate": ("eunuch",),
+            "eunuch": ("candidate",),
+        },
+        "optional_character_scope_differs_from": {
+            "old_holder": ("candidate",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "candidate": "character",
+            "liege": "character",
+        },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
+            "old_holder": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": _optional_scope_name_sets(
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "candidate",
+                "liege",
+            ),
+            ("protege", "student", "rival", "old_holder"),
+        ),
+        "saved_scope_counts": (6, 7, 8, 9, 10),
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.2041": {
         # CK3 1.19.0.6 eunuch-family council-seat petition. The immediate
