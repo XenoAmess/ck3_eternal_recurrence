@@ -209,14 +209,20 @@ bool ValidateCharacter(
   return ResolveCharacterNative(environment, access, character_id);
 }
 
-bool ResolveVariableIdentifier(
+enum class ResolveVariableIdentifierResult {
+  resolved,
+  identifier_absent,
+  unavailable,
+};
+
+ResolveVariableIdentifierResult ResolveVariableIdentifier(
     const ZhongguoProjectsMetricsNativeEnvironmentV1 &environment,
     std::string_view key, std::int32_t &identifier) noexcept {
   void *const table = environment.variable_identifier_table();
   if (table == nullptr || key.empty() ||
       key.size() >
           static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max())) {
-    return false;
+    return ResolveVariableIdentifierResult::unavailable;
   }
   const ZhongguoNativeStringView32V1 view{
       key.data(), static_cast<std::int32_t>(key.size()), 0};
@@ -224,11 +230,13 @@ bool ResolveVariableIdentifier(
   if (environment.variable_identifier_lookup(table, &identifier, &view) ==
           nullptr ||
       identifier < 0) {
-    return false;
+    return ResolveVariableIdentifierResult::identifier_absent;
   }
   const auto *const name =
       environment.variable_identifier_name(table, identifier);
-  return name != nullptr && *name == key;
+  return name != nullptr && *name == key
+             ? ResolveVariableIdentifierResult::resolved
+             : ResolveVariableIdentifierResult::unavailable;
 }
 
 bool FindVariableValue(const ZhongguoProjectsMetricsAccessV1 &access,
@@ -260,17 +268,34 @@ bool FindVariableValue(const ZhongguoProjectsMetricsAccessV1 &access,
   return true;
 }
 
-bool ReadAllowlistedVariableNative(
+enum class ReadAllowlistedVariableResult {
+  read,
+  identifier_absent,
+  unavailable,
+};
+
+ReadAllowlistedVariableResult ReadAllowlistedVariableNative(
     const ZhongguoProjectsMetricsNativeEnvironmentV1 &environment,
     const ZhongguoProjectsMetricsAccessV1 &access,
     std::int32_t character_id, std::string_view key,
     ZhongguoProjectsMetricsRawVariableV1 &output) noexcept {
   std::int32_t identifier = -1;
-  if (!ResolveVariableIdentifier(environment, key, identifier)) return false;
+  const auto identifier_result =
+      ResolveVariableIdentifier(environment, key, identifier);
+  if (identifier_result ==
+      ResolveVariableIdentifierResult::identifier_absent) {
+    output = {};
+    return ReadAllowlistedVariableResult::identifier_absent;
+  }
+  if (identifier_result != ResolveVariableIdentifierResult::resolved) {
+    return ReadAllowlistedVariableResult::unavailable;
+  }
   const ZhongguoEventTarget16V1 target{4, {}, character_id};
   void *const context = environment.variable_context_for_scope(&target);
   return context != nullptr &&
-         FindVariableValue(access, context, identifier, output);
+                 FindVariableValue(access, context, identifier, output)
+             ? ReadAllowlistedVariableResult::read
+             : ReadAllowlistedVariableResult::unavailable;
 }
 
 bool ReadAllowlistedRows(
@@ -282,15 +307,24 @@ bool ReadAllowlistedRows(
        ++index) {
     const auto key =
         kZhongguoProjectsMetricsPostconditionV1VariableAllowlist[index];
-    const bool read = environment.offline_fixture_function_overrides
-                          ? access.read_allowlisted_variable != nullptr &&
-                                access.read_allowlisted_variable(
-                                    access.context, character_id, key,
-                                    output[index])
-                          : ReadAllowlistedVariableNative(
-                                environment, access, character_id, key,
-                                output[index]);
-    if (!read) return false;
+    const auto result = environment.offline_fixture_function_overrides
+                            ? (access.read_allowlisted_variable != nullptr &&
+                                       access.read_allowlisted_variable(
+                                           access.context, character_id, key,
+                                           output[index])
+                                   ? ReadAllowlistedVariableResult::read
+                                   : ReadAllowlistedVariableResult::
+                                         identifier_absent)
+                            : ReadAllowlistedVariableNative(
+                                  environment, access, character_id, key,
+                                  output[index]);
+    if (result == ReadAllowlistedVariableResult::read) continue;
+    if (result == ReadAllowlistedVariableResult::identifier_absent &&
+        index == cp_pending_player_event) {
+      output[index] = {};
+      continue;
+    }
+    return false;
   }
   return true;
 }

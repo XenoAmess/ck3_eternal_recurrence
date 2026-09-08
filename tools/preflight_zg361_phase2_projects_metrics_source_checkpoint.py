@@ -96,15 +96,31 @@ def _contract_ready(value: Mapping[str, object]) -> bool:
         and isinstance(required, Mapping)
         and required.get("single_player") is True
         and required.get("product_only_mount") is True
-        and required.get("played_character_role") == "project_subject"
+        and required.get("played_character_role")
+        == "initial_project_owner_then_native_switched_project_subject"
         and required.get("owner_role") == "distinct_ai_project_owner"
         and required.get("paused") is True
         and required.get("map_ready") is True
         and required.get("active_player_event") is False
+        and required.get("native_player_switch_postcondition_required") is True
+        and required.get(
+            "native_player_switch_preserves_date_pid_and_connection_generation"
+        )
+        is True
         and required.get("cp26_route_allowlist") == ["A", "B"]
+        and required.get("maximum_ui_to_checkpoint_delay_days") == 10
         and required.get("cp26_contribution_receipt_prepared") is True
         and required.get("provider_checkpoint_state")
         == "cp26_ready_p3_absent"
+        and required.get("open_portfolio_pending_player_event")
+        == "provider-observed positive integer, or variable_absent only when the exact legacy product never registered zg361_cp_pending_player_event"
+        and required.get("legacy_optional_identifier")
+        == "zg361_cp_pending_player_event"
+        and required.get("legacy_optional_identifier_source_git_commit")
+        == "73fc9a1463567a43ba618ff2376b7dc3c9fe82cd"
+        and required.get("legacy_optional_identifier_product_tree_sha256")
+        == "FBC162A55130CB7F8B6BAFBE443DA9A06589B475B5C225FA9C2BE3C2DBCEF80B"
+        and required.get("all_other_provider_identifiers_fail_closed") is True
         and required.get("p3_initializer_run") is False
         and isinstance(registry, Mapping)
         and registry.get("schema_version") == capture.REGISTRY_SCHEMA_VERSION
@@ -116,13 +132,11 @@ def _contract_ready(value: Mapping[str, object]) -> bool:
         and evidence.get("provider_result_identity_must_be_absent") is True
         and all(
             evidence.get(name) is False
-            for name in (
-                "fixture_used",
-                "console_used",
-                "test_decision_used",
-                "generic_character_rebind_used",
-            )
+            for name in ("fixture_used", "console_used", "test_decision_used")
         )
+        and evidence.get("generic_character_rebind_used") is True
+        and evidence.get("generic_character_rebind_authority")
+        == "native game.command.set-played-character-v1-N with same-paused-date postcondition receipt"
         and isinstance(entrypoints, Mapping)
         and entrypoints
         == {
@@ -142,6 +156,7 @@ def _service_surface_ready() -> bool:
     checkpoint_methods = (
         "capabilities",
         "snapshot",
+        "set_player_character_v1",
         "query_zhongguo_projects_metrics_postcondition_v1",
         "save_checkpoint",
     )
@@ -215,12 +230,16 @@ def _provider_write_provenance_ready() -> bool:
     ]
     return bool(
         abi.get("allowlist_id")
-        == "zg361-cp26-direct-p3m229-lineage-v2"
-        and len(allowlist) == 40
-        and len(direct) == 15
+        == "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3"
+        and len(allowlist) == 49
+        and len(direct) == 24
         and "zg361_p3_portfolio_cycle" in allowlist
         and "# GENERATED FILE" in product
-        and all(name in product for name in direct)
+        and all(
+            name in product
+            for name in direct
+            if name.startswith("zg361_cp_m26_")
+        )
     )
 
 
@@ -267,12 +286,15 @@ def audit_projects_metrics_source_checkpoint_capture(
         "capture_requires_cp26_ready_p3_absent": (
             '"cp26_ready_p3_absent"' in module_source
             and '"cp26_provider_source_not_ready"' in module_source
+            and '"cp26_pending_player_event_invalid"' in module_source
         ),
-        "capture_requires_played_subject_distinct_owner_event_free": all(
+        "capture_requires_owner_to_subject_native_switch_event_free": all(
             token in module_source
             for token in (
                 'require_event=False',
+                '"owner_played_source_binding_required"',
                 '"owner_must_be_distinct_ai"',
+                '"initial_played_character_is_owner": True',
                 '"played_character_is_subject": True',
                 '"no_active_player_event": True',
             )
@@ -281,6 +303,7 @@ def audit_projects_metrics_source_checkpoint_capture(
             token in module_source
             for token in (
                 'f"{stem}.ui-receipt.json"',
+                'f"{stem}.player-switch-receipt.json"',
                 'f"{stem}.provider-receipt.json"',
                 '"sha256": ui_sha',
                 '"sha256": provider_sha',
@@ -310,7 +333,7 @@ def audit_projects_metrics_source_checkpoint_capture(
                 '"fixture_used": False',
                 '"console_used": False',
                 '"test_decision_used": False',
-                '"generic_character_rebind_used": False',
+                '"generic_character_rebind_used": True',
             )
         ),
         "preflight_does_not_start_or_attach": True,
@@ -331,8 +354,10 @@ def audit_projects_metrics_source_checkpoint_capture(
         "live_proof_claimed": False,
         "next_live_entry": (
             "observe-ui on real owner-visible zg361cp.26 route A/B, then "
-            "capture-checkpoint on the same-lineage played-subject, "
-            "event-free, direct-CP26-ready/current-cycle-P3-absent paused frame"
+            "within ten game days reach a same-lineage owner-played event-free "
+            "frame without P3; capture first proves direct-CP26-ready/current-"
+            "cycle-P3-absent with an explicit subject, then owns the native "
+            "owner-to-subject switch and save"
         ),
     }
 

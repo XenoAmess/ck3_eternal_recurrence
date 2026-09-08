@@ -1,6 +1,8 @@
 # 天朝二期宣传片业务 postcondition 合同
 
-状态：**static/fixture-ready；未产生 live 证据，不提升任何 readiness。**
+状态：**mixed live**。R303 已取得 projects/metrics private-candidate provider 的真实 paused GREEN，R313 已捕获其
+schema-2 source checkpoint；promotion/projects source registry 当前 `2/4 incomplete`。默认 capability 边界不变，其他 span
+仍不得由 fixture 或 ACK 提升 readiness，footage 仍为 `0/8`。
 
 这份合同补的是“画面里发生的业务结果”，不是按钮有没有按下、命令有没有 ACK、revision 有没有跳。实现位于
 `tools/zhongguo_phase2_business_postconditions.py`，正例 fixture 位于
@@ -48,8 +50,8 @@ return proof
 | handler | adapter 状态 | 当前真实输入 | 结论 |
 |---|---|---|---|
 | scoreboard/calibration | 已实现 | verified scoreboard source/action/later artifact + `zg361.1` current-event query | action 必须为 `open`、production capability advertised、independent postcondition verified；event 与 later query 的 snapshot/public/native binding 及 played root 必须一致 |
-| promotion/compensation | adapter、固定 native provider、serializer/schema、mailbox、driver/service/MCP 与独立 action cell 已实现；默认不广告 | source/result current-event query + default-off 业务 query；没有 paused live 响应 | `game.command.query-zhongguo-promotion-compensation-postcondition-v1` 已完成 shared wiring，但 `production_live_ready=false`，仍须真实 `.147` checkpoint 与 `.comp.1` 结果帧验收 |
-| projects/metrics | adapter 已实现；独立 native provider 与共享接线 static/fixture-ready | source/result current-event query；业务 query 的 reader/serializer/schema、mailbox 第 24 槽、bridge、driver/service/MCP 已实现，默认 adapter 不广告且没有 live 响应 | `game.command.query-zhongguo-projects-metrics-postcondition-v1` 已有 fixed allowlist 与 default-off 共享接线；在 paused live 验收前仍明确 fail-closed |
+| promotion/compensation | adapter、固定 native provider、serializer/schema、mailbox、driver/service/MCP 与独立 action cell 已实现；默认不广告 | R294b 已捕获真实 `.147` schema-2 source checkpoint；下游 `.comp.1` 业务 provider 响应仍待独立 live 闭合 | source registry 的 promotion 项为 `1/1`，不把 source checkpoint 单独冒充完整 compensation postcondition；`production_live_ready=false` 不变 |
+| projects/metrics | adapter 与独立 native provider/shared wiring 已实现；private candidate 已实机验证，默认仍不广告 | R303 真实 paused provider/action-cell 后置条件 GREEN；R313 真实 `.26` Route A source checkpoint GREEN，provider 状态为 `cp26_ready_p3_absent` | source registry 的 projects 项为 `1/1`；R303 report SHA-256 `926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01`，R313 registry SHA-256 `7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`；default `production_live_ready=false` 不变 |
 | cross-cycle endgame | 已实现 | source/result current-event query + action 前后 `query-zhongguo-workforce-collective-snapshot-v1` | 从已验证 `al_case`、`route_c_debt.due_cycle_serial` 与 `charter_gate.prepared_charter_id/adopted_cycle_serial/effective_cycle_serial` 构造，不增加任意变量读取 |
 
 scoreboard 和 endgame 的“已实现”仅表示 adapter 能消费现有 provider；在取得真实输入并通过一次 live 前仍是 static/fixture-ready。
@@ -61,8 +63,11 @@ generation 与 player identity；缺字段或伪装成 fixture backend 都 fail-
 1. `query-zhongguo-promotion-compensation-postcondition-v1` 的固定 provider/shared wiring 已实现；下一步从真实 paused
    `zg361pp.147` checkpoint 提交 option 1，等待 `zg361comp.1`，并保留 source/result identity、frozen case、m147 choice
    receipt 与 posted compensation receipt 的同 connection live 响应。四者必须含相同 owner/subject/cycle/case。
-2. `query-zhongguo-projects-metrics-postcondition-v1`：独立 reader/serializer/schema 已实现，固定读取一个 allowlisted project case，返回 source/result identity、contribution
-   receipt ID/revision/value、metrics 对同一 receipt ID/revision 的回链、metrics revision/dictionary key；所有业务组绑定同一个 owner/subject/cycle/case。共享 mailbox 第 24 槽、bridge handler/result frame/query counter、driver/service/MCP 已按 default-off 接线；source/result event snapshot wrapper 与 paused live artifact 仍是缺口，故当前仍不得产出生产 GREEN。
+2. `query-zhongguo-projects-metrics-postcondition-v1` 已由 R303 在真实 paused frame 闭合：固定读取同一 allowlisted project
+   case，并证明 contribution receipt ID/revision/value 被 metrics 以同一 ID/revision 回链。R313 又在 P3 initializer 未运行时以直接
+   CP 字段捕获 `.26` source checkpoint，checkpoint SHA-256 为
+   `72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B`。剩余边界是正式 runner/default adapter 集成与素材
+   intake，不是重复获取 private-candidate provider live；在默认开关改变前仍不得宣称默认 production capability。
 
 两项都应采用 product-shaped closed projection，不开放 caller-selected 任意变量名；native unavailable 必须返回具体 reason，不能返回空值加
 `ready=true`。
@@ -83,10 +88,11 @@ compensation、projects identity/receipt 漂移、endgame carried-cycle/default-
 
 - promotion：`zg361_pp_m147_receipt_owner/subject/cycle/case/state/route` 是选择 receipt 的权威候选；compensation 仍需从
   `zg361comp.1` 对应 portfolio case 的原生只读投影取得，不能把 `zg361_comp_portfolio_cycle` 单独冒充完整 case identity。
-- projects：CP #026 A/B 现在真实签发 `zg361_cp_m26_contribution_receipt_id/revision`；Phase 3 初始化器按当前 owner/subject/cycle 冻结其四元身份、receipt 与 value，#229 A/B 再把同一 ID/revision 回链到 metrics。固定 24 字段 native projection 与共享 bridge 第 24 槽已完成 static/fixture 验证；live paused artifact 与 source/result event wrapper binding 仍是下一入口。
+- projects：CP #026 A/B 真实签发 `zg361_cp_m26_contribution_receipt_id/revision`；Phase 3 初始化器按当前 owner/subject/cycle 冻结其四元身份、receipt 与 value，#229 A/B 再把同一 ID/revision 回链到 metrics。49 字段 v3 allowlist 同时覆盖 CP portfolio/direct source 与 P3 source/result；R303 已闭合结果后置条件，R313 已闭合 P3-absent source capture。默认 adapter 与 footage intake 仍未完成。
 - endgame：现有 Workforce collective provider 已有 route-C debt、rolling history 和 charter lifecycle；真实 packet builder 应从其已验证响应
   取 debt/history/charter cycle，而不是重新读取任意变量。
 - scoreboard：现有 scoreboard state provider 提供 `observed_state_revision`、semantic fingerprint 与 widget visibility；还必须同时保留
   `zg361.1` current-event-window identity，二者绑定同一个 result native revision。
 
-这些入口只是下一步施工指向，不是已经取得的 live observation。
+promotion、scoreboard 与 endgame 条目仍只是施工指向；projects 条目已有上述 R303/R313 live observation，但不因此提升其他
+handler、默认 capability 或 `0/8` footage。

@@ -15,6 +15,8 @@
   [`docs/testing-workflow.md`](../testing-workflow.md)
 - 当前 promotion 长链实机取证：
   [`b1-r66-manager-subject-fix-2026-09-05.md`](b1-r66-manager-subject-fix-2026-09-05.md)
+- 当前 projects/metrics provider 实机闭环：
+  [`r300-r303-credit-project-resume-projects-metrics-live-2026-09-08.md`](r300-r303-credit-project-resume-projects-metrics-live-2026-09-08.md)
 - 四类 registry 与八段素材边界：
   [`final-promo-non-ck3-prep-audit-2026-09-04.md`](final-promo-non-ck3-prep-audit-2026-09-04.md)
 
@@ -48,7 +50,7 @@
 | `P2-B3-001` | 管理者/制度 | 上一轮团队快照、京察、校准、PIP/申诉/留任聚合 | 同轮递归、manager/subject 混同、AI 非授权入口即 RED | `LIVE_PARTIAL`：R100 的 548 日窗口中 R99 死亡上司 opinion 签名归零；整域仍待全量长测 |
 | `P2-B4-001` | 晋升/职级/现金 | 资格至任命/失败冷却，HC/奖金预留释放，欠付补发守恒 | 失败不释放、跨案串账、玩家/owner 错位即 RED | `LIVE_PARTIAL`：R100 的 548 日窗口中 R99 compensation 与 receipt-revision 签名归零；整域仍待全量长测 |
 | `P2-B5-001` | HC/继任/流动/学习 | 真实空缺、候选、现任、backfill、代理、保护期、递延功赏 | 旧案/读档/换上司身份漂移即 RED | `STATIC_GREEN / live pending` |
-| `P2-B6-001` | 项目/指标/重组 | 项目贡献与版本、指标分母/窗口、WIP、上线→采用→价值 | 止损自动记差绩效、分母漂移、项目 owner 错绑即 RED | `STATIC_GREEN / live pending` |
+| `P2-B6-001` | 项目/指标/重组 | 项目贡献与版本、指标分母/窗口、WIP、上线→采用→价值 | 止损自动记差绩效、分母漂移、项目 owner 错绑即 RED | `LIVE_PARTIAL`：R303 已取得 CP #026 receipt 到 P3 #229 metrics 的真实 paused provider 后置条件 GREEN；R313 已冻结对应 CP26 source checkpoint。默认 adapter 仍关闭，且这不等于 B6 全域或完整上线→采用→价值链 GREEN |
 | `P2-B7-001` | 事故/运营 | 缺编→工时→外包/招聘→事故→复盘→质量回写长链 | 虚构角色/职位/领地、资金或 HC 不守恒即 RED | `STATIC_GREEN / live pending` |
 | `P2-B8-001` | 三周期终局 | 目标棘轮、配额回流、经理拒背 C、宪章只改未来默认 | 跨周期身份漂移、追溯改账即 RED | `STATIC_GREEN / live pending` |
 
@@ -75,11 +77,11 @@
 
 | Case ID | 交付条件 | 当前计数/状态 |
 |---|---|---|
-| `P2-REG-001` | promotion `.147` checkpoint + 独立 postcondition，同 lineage/owner/cycle/case | `0/1` |
-| `P2-REG-002` | projects `.26` source + `.229` postcondition | `0/1` |
+| `P2-REG-001` | promotion `.147` schema-2 source checkpoint；下游 compensation 业务 postcondition 另按 span 门验收 | `1/1`，`LIVE_GREEN`：R294b 已捕获；checkpoint SHA-256 `D4F625C84E900966E0B70CA8FD65CD33D63205B479A3CBC15BC0DF4B02B319F0` |
+| `P2-REG-002` | projects `.26` schema-2 source checkpoint；以独立 `.229` provider postcondition 互证同一 contribution receipt | `1/1`，`LIVE_GREEN`：R313 source capture + R303 provider postcondition；R313 checkpoint SHA-256 `72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B` |
 | `P2-REG-003` | incident `.50` + `.190/.290/.390` instance transitions | `0/1` |
 | `P2-REG-004` | cross-cycle `.356` + owner `.361` + subject Workforce state | `0/1` |
-| `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `0/4`，`NOT_RUN` |
+| `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `2/4`，`LIVE_PARTIAL / incomplete`：R313 two-of-four artifact SHA-256 `8128750541EE7683EAB5CAD83CFDAF11FCCE47F8017019E3B5541A76F1AD603A`；仍缺 incident/operations 与 cross-cycle/endgame |
 | `P2-FULL-001` | B1–B8 production projection 一次启动、共享表面抽样、三周期长测、release staging | `NOT_RUN`；不得用 focused GREEN 代替 |
 | `P2-R74-ERR` | 已实证的产品运行时错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `LIVE_RED -> STATIC_GREEN / R102 pending`：R101 证明单用 live `list_size` 仍不能覆盖迭代内过滤；两个 filtered walk 的范围检查修复需 fresh 同类窗口归零 |
 | `P2-CAP-001` | 八个 canonical gameplay spans 均通过 source intake | `0/8` |

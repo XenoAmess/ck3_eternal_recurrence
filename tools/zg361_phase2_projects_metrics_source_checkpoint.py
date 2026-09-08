@@ -3,11 +3,11 @@
 
 The module has no launcher and no state preparer.  Its two explicit live
 operations attach to a caller-owned managed session: first observe/select route
-A or B on the real ``zg361cp.26`` surface, then (after the caller has reached a
-played-subject, event-free product state in the same lineage) query the native
-provider and save that state.  The selection acknowledgement is retained as UI
-transport evidence only; the source contribution provider is the business
-state proof.
+A or B on the real ``zg361cp.26`` surface, then attach at an event-free
+owner-played frame, query the bound subject through the native provider, use
+the native played-character MCP to switch to that subject, and save it.  The selection and
+switch acknowledgements are retained as transport evidence only; the source
+contribution provider is the business state proof.
 """
 
 from __future__ import annotations
@@ -34,8 +34,8 @@ from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
-from zg361_phase2_projects_metrics_action_cell import (  # noqa: E402
-    preflight_projects_metrics_gameplay_action_cell,
+from xar_autoplayer.bridge.zhongguo_projects_metrics_postcondition_contract import (  # noqa: E402
+    QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY,
 )
 
 
@@ -51,6 +51,12 @@ _SHA256 = re.compile(r"[0-9A-Fa-f]{64}\Z")
 _GIT_SHA = re.compile(r"[0-9A-Fa-f]{40}\Z")
 _RECONNECT_TIMEOUT_SECONDS: Final = 30.0
 _RECONNECT_POLL_SECONDS: Final = 0.05
+_LEGACY_PENDING_CURSOR_SOURCE_COMMIT: Final = (
+    "73fc9a1463567a43ba618ff2376b7dc3c9fe82cd"
+)
+_LEGACY_PENDING_CURSOR_PRODUCT_TREE_SHA256: Final = (
+    "FBC162A55130CB7F8B6BAFBE443DA9A06589B475B5C225FA9C2BE3C2DBCEF80B"
+)
 
 
 class ProjectsMetricsCheckpointService(Protocol):
@@ -58,12 +64,20 @@ class ProjectsMetricsCheckpointService(Protocol):
 
     def snapshot(self) -> dict[str, object]: ...
 
+    def set_player_character_v1(
+        self,
+        character_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]: ...
+
     def query_zhongguo_projects_metrics_postcondition_v1(
         self,
         request_nonce: str,
         *,
         expected_revision: int,
         owner_character_id: int,
+        subject_character_id: int | None = None,
     ) -> dict[str, object]: ...
 
     def save_checkpoint(
@@ -418,7 +432,7 @@ def _load_ui_receipt(
     *,
     lineage: Mapping[str, object],
     owner: int,
-    subject: int,
+    subject: int | None,
 ) -> tuple[dict[str, object], bytes, str]:
     source = path.expanduser().resolve()
     try:
@@ -446,7 +460,13 @@ def _load_ui_receipt(
         and receipt.get("native_option_index")
         == int(receipt.get("option_number", 0)) - 1
         and receipt.get("owner_character_id") == owner
-        and receipt.get("subject_character_id") == subject
+        and isinstance(receipt.get("subject_character_id"), int)
+        and not isinstance(receipt.get("subject_character_id"), bool)
+        and int(receipt.get("subject_character_id")) > 0
+        and (
+            subject is None
+            or receipt.get("subject_character_id") == subject
+        )
         and receipt.get("seed_lineage_id") == lineage.get("seed_lineage_id")
         and receipt.get("capture_lineage_id")
         == lineage.get("capture_lineage_id")
@@ -475,6 +495,332 @@ def _load_ui_receipt(
     return receipt, raw, hashlib.sha256(raw).hexdigest().upper()
 
 
+def _player_switch_receipt(
+    value: object,
+    *,
+    owner: int,
+    subject: int,
+    before: Mapping[str, object],
+    after: Mapping[str, object],
+    lineage: Mapping[str, object],
+) -> dict[str, object]:
+    receipt = dict(value) if isinstance(value, Mapping) else {}
+    before_revision = receipt.get("before_revision")
+    valid = (
+        receipt.get("schema_version") == 1
+        and receipt.get("accepted") is True
+        and receipt.get("status") == "switched"
+        and receipt.get("backend_id") == "native-headless"
+        and receipt.get("step") == f"set-played-character-v1-{subject}"
+        and receipt.get("from_character_id") == owner
+        and receipt.get("to_character_id") == subject
+        and receipt.get("prior_episode_character_id") == owner
+        and receipt.get("episode_character_id") == subject
+        and receipt.get("paused") is True
+        and receipt.get("map_ready") is True
+        and receipt.get("postcondition_verified") is True
+        and receipt.get("episode_rebind_performed") is True
+        and receipt.get("one_life_terminal_cleared") is True
+        and receipt.get("date_raw") == before.get("date_raw")
+        and receipt.get("after_revision") == after.get("revision")
+        and receipt.get("native_revision") == after.get("native_revision")
+        and isinstance(before_revision, int)
+        and not isinstance(before_revision, bool)
+        and before_revision == before.get("revision")
+        and isinstance(after.get("revision"), int)
+        and int(before_revision) < int(after["revision"])
+        and before.get("player_character_id") == owner
+        and after.get("player_character_id") == subject
+        and before.get("date_raw") == after.get("date_raw")
+        and before.get("bridge_pid") == after.get("bridge_pid")
+        and before.get("connection_generation")
+        == after.get("connection_generation")
+        and before.get("active_event_instance_id") is None
+        and after.get("active_event_instance_id") is None
+    )
+    if not valid:
+        _fail(
+            "player_switch_receipt_invalid",
+            owner_character_id=owner,
+            subject_character_id=subject,
+            before=dict(before),
+            after=dict(after),
+            receipt=receipt,
+        )
+    return {
+        "schema_version": 1,
+        "kind": "zg361_projects_metrics_player_switch_receipt",
+        "result": "GREEN",
+        "evidence_class": "real_ck3",
+        "state_origin": "managed_product",
+        "seed_lineage_id": lineage["seed_lineage_id"],
+        "capture_lineage_id": lineage["capture_lineage_id"],
+        "product_tree_sha256": str(lineage["product_tree_sha256"]).upper(),
+        "owner_character_id": owner,
+        "subject_character_id": subject,
+        "date_raw": int(after["date_raw"]),
+        "before_binding": copy.deepcopy(dict(before)),
+        "after_binding": copy.deepcopy(dict(after)),
+        "native_receipt": receipt,
+        "generic_character_rebind_used": True,
+        "provider_observed": True,
+    }
+
+
+def _provider_integer(group: object, key: str, label: str) -> int:
+    container = dict(group) if isinstance(group, Mapping) else {}
+    field = container.get(key)
+    if not (
+        isinstance(field, Mapping)
+        and field.get("status") == "available"
+        and field.get("unavailable_reason") is None
+        and isinstance(field.get("value"), int)
+        and not isinstance(field.get("value"), bool)
+    ):
+        _fail(
+            "cp26_provider_integer_unavailable",
+            label=label,
+            key=key,
+            field=field,
+        )
+    return int(field["value"])
+
+
+def _legacy_pending_cursor_compatibility(
+    lineage: Mapping[str, object],
+) -> bool:
+    return bool(
+        str(lineage.get("source_git_commit", "")).lower()
+        == _LEGACY_PENDING_CURSOR_SOURCE_COMMIT.lower()
+        and str(lineage.get("product_tree_sha256", "")).upper()
+        == _LEGACY_PENDING_CURSOR_PRODUCT_TREE_SHA256
+        and str(lineage.get("runtime_product_tree_sha256", "")).upper()
+        == _LEGACY_PENDING_CURSOR_PRODUCT_TREE_SHA256
+    )
+
+
+def _provider_pending_player_event(
+    field: object,
+    *,
+    allow_legacy_absent: bool,
+) -> dict[str, object]:
+    """Normalize the open-portfolio cursor across the exact product seam."""
+
+    pending = dict(field) if isinstance(field, Mapping) else {}
+    if (
+        pending.get("status") == "available"
+        and pending.get("unavailable_reason") is None
+        and isinstance(pending.get("value"), int)
+        and not isinstance(pending.get("value"), bool)
+        and int(pending["value"]) > 0
+    ):
+        return {
+            "status": "available",
+            "value": int(pending["value"]),
+            "unavailable_reason": None,
+        }
+    if (
+        allow_legacy_absent
+        and pending.get("status") == "unavailable"
+        and pending.get("value") is None
+        and pending.get("unavailable_reason") == "variable_absent"
+    ):
+        return {
+            "status": "unavailable",
+            "value": None,
+            "unavailable_reason": "variable_absent",
+        }
+    _fail(
+        "cp26_pending_player_event_invalid",
+        pending_player_event=pending,
+    )
+
+
+def _provider_identity(group: object, label: str) -> tuple[int, int, int, int]:
+    return (
+        _positive(
+            _provider_integer(group, "owner_character_id", label),
+            f"{label}.owner_character_id",
+        ),
+        _positive(
+            _provider_integer(group, "subject_character_id", label),
+            f"{label}.subject_character_id",
+        ),
+        _positive(
+            _provider_integer(group, "cycle_serial", label),
+            f"{label}.cycle_serial",
+        ),
+        _positive(
+            _provider_integer(group, "case_serial", label),
+            f"{label}.case_serial",
+        ),
+    )
+
+
+def _source_checkpoint_from_provider(
+    value: object,
+    *,
+    binding: Mapping[str, object],
+    owner: int,
+    subject: int,
+    allow_legacy_pending_absent: bool = False,
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Validate the open-portfolio CP26 source without the action-cell gate."""
+
+    response = dict(value) if isinstance(value, Mapping) else {}
+    provider_player = binding.get("player_character_id")
+    provider_binding = response.get("binding")
+    readiness = response.get("readiness")
+    payload = response.get("projects_metrics")
+    portfolio = response.get("credit_project_portfolio")
+    valid_envelope = (
+        response.get("schema_version") == 1
+        and response.get("status") == "available"
+        and response.get("capability")
+        == QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
+        and response.get("case_kind")
+        == "zhongguo.projects-metrics.project-correlation"
+        and response.get("source_backend_id") == "native-headless"
+        and response.get("unavailable_reason") is None
+        and response.get("requested_owner_character_id") == owner
+        and response.get("requested_subject_character_id") == subject
+        and response.get("snapshot_revision") == binding.get("native_revision")
+        and response.get("date_raw") == binding.get("date_raw")
+        and response.get("paused") is True
+        and provider_player in {owner, subject}
+        and response.get("player_character_id") == provider_player
+        and response.get("checkpoint_state") == "cp26_ready_p3_absent"
+        and isinstance(provider_binding, Mapping)
+        and isinstance(readiness, Mapping)
+        and isinstance(payload, Mapping)
+        and isinstance(portfolio, Mapping)
+    )
+    if not valid_envelope:
+        _fail(
+            "cp26_provider_source_not_ready",
+            owner_character_id=owner,
+            subject_character_id=subject,
+            binding=dict(binding),
+            provider_response=response,
+        )
+    assert isinstance(provider_binding, Mapping)
+    expected_binding = {
+        "snapshot_id": binding["snapshot_id"],
+        "revision": binding["revision"],
+        "native_revision": binding["native_revision"],
+        "connection_generation": binding["connection_generation"],
+        "date_raw": binding["date_raw"],
+        "paused": True,
+        "player_character_id": provider_player,
+        "subject_character_id": subject,
+        "owner_character_id": owner,
+        "expected_revision": binding["revision"],
+    }
+    for key, expected in expected_binding.items():
+        if provider_binding.get(key) != expected:
+            _fail(
+                "provider_query_crossed_source_frame",
+                key=key,
+                expected=expected,
+                observed=provider_binding.get(key),
+            )
+    assert isinstance(readiness, Mapping)
+    if not (
+        readiness.get("player_subject_binding_ready")
+        is (provider_player == subject)
+        and all(
+            readiness.get(key) is True
+            for key in (
+                "owner_binding_ready",
+                "portfolio_observed",
+                "source_identity_ready",
+                "contribution_ready",
+                "same_frame_ready",
+            )
+        )
+        and all(
+            readiness.get(key) is False
+            for key in (
+                "portfolio_closed",
+                "result_identity_ready",
+                "metrics_ready",
+                "same_project_case_identity",
+                "receipt_lineage_ready",
+                "result_operation_committed",
+                "ready",
+            )
+        )
+    ):
+        _fail(
+            "cp26_provider_source_not_ready",
+            readiness=dict(readiness),
+        )
+    assert isinstance(portfolio, Mapping)
+    pending = _provider_pending_player_event(
+        portfolio.get("pending_player_event"),
+        allow_legacy_absent=allow_legacy_pending_absent,
+    )
+    if not (
+        portfolio.get("provider_observed") is True
+        and _provider_integer(portfolio, "closed", "credit_project_portfolio")
+        == 0
+    ):
+        _fail(
+            "cp26_open_portfolio_invalid",
+            credit_project_portfolio=dict(portfolio),
+        )
+    source_identity = _provider_identity(
+        response.get("source_identity"), "source_identity"
+    )
+    assert isinstance(payload, Mapping)
+    payload_identity = _provider_identity(
+        payload.get("source_identity"), "projects_metrics.source_identity"
+    )
+    contribution = payload.get("contribution")
+    contribution_identity = _provider_identity(
+        contribution.get("identity") if isinstance(contribution, Mapping) else None,
+        "projects_metrics.contribution.identity",
+    )
+    if not (
+        source_identity == payload_identity == contribution_identity
+        and source_identity[0] == owner
+        and source_identity[1] == subject
+        and isinstance(contribution, Mapping)
+        and contribution.get("provider_observed") is True
+        and _provider_integer(
+            portfolio, "cycle_serial", "credit_project_portfolio"
+        )
+        == source_identity[2]
+    ):
+        _fail(
+            "cp26_provider_identity_mismatch",
+            source_identity=source_identity,
+            payload_identity=payload_identity,
+            contribution_identity=contribution_identity,
+        )
+    source = {
+        "owner_character_id": source_identity[0],
+        "subject_character_id": source_identity[1],
+        "cycle_serial": source_identity[2],
+        "case_serial": source_identity[3],
+        "contribution_receipt_id": _positive(
+            _provider_integer(contribution, "receipt_id", "contribution"),
+            "contribution.receipt_id",
+        ),
+        "contribution_receipt_revision": _positive(
+            _provider_integer(
+                contribution, "receipt_revision", "contribution"
+            ),
+            "contribution.receipt_revision",
+        ),
+        "contribution_value": _provider_integer(
+            contribution, "value", "contribution"
+        ),
+        "pending_player_event": pending,
+    }
+    return source, response
+
+
 def capture_projects_metrics_source_checkpoint_live(
     service: ProjectsMetricsCheckpointService,
     *,
@@ -485,85 +831,95 @@ def capture_projects_metrics_source_checkpoint_live(
     registry_path: Path,
     live_mode: str,
 ) -> dict[str, object]:
-    """Freeze a provider-proven CP26/P3-pending product checkpoint."""
+    """Switch owner to subject and freeze a provider-proven CP26 checkpoint."""
 
     if live_mode != LIVE_MODE:
         _fail("explicit_live_mode_required", observed=live_mode)
     owner = _positive(owner_character_id, "owner_character_id")
     lineage = _lineage(capture_lineage)
-    initial_snapshot = service.snapshot()
-    initial = _managed_binding(initial_snapshot, require_event=False)
-    subject = int(initial["player_character_id"])
+    owner_snapshot = service.snapshot()
+    owner_binding = _managed_binding(owner_snapshot, require_event=False)
+    if owner_binding["player_character_id"] != owner:
+        _fail(
+            "owner_played_source_binding_required",
+            owner_character_id=owner,
+            player_character_id=owner_binding["player_character_id"],
+        )
+    ui_receipt, ui_bytes, ui_sha = _load_ui_receipt(
+        ui_receipt_path,
+        lineage=lineage,
+        owner=owner,
+        subject=None,
+    )
+    subject = _positive(
+        ui_receipt.get("subject_character_id"), "subject_character_id"
+    )
     if owner == subject:
         _fail(
             "owner_must_be_distinct_ai",
             owner_character_id=owner,
             subject_character_id=subject,
         )
-    ui_receipt, ui_bytes, ui_sha = _load_ui_receipt(
-        ui_receipt_path,
-        lineage=lineage,
+    ui_date_raw = ui_receipt.get("date_raw")
+    capture_delay_raw = (
+        int(owner_binding["date_raw"]) - int(ui_date_raw)
+        if isinstance(ui_date_raw, int) and not isinstance(ui_date_raw, bool)
+        else None
+    )
+    capture_delay_days = (
+        capture_delay_raw // 24
+        if isinstance(capture_delay_raw, int) and capture_delay_raw % 24 == 0
+        else None
+    )
+    if not (
+        isinstance(capture_delay_days, int)
+        and 0 <= capture_delay_days <= 10
+    ):
+        _fail(
+            "cp26_ui_receipt_date_mismatch",
+            ui_date_raw=ui_date_raw,
+            source_date_raw=owner_binding["date_raw"],
+            maximum_capture_delay_days=10,
+        )
+    provider_value = service.query_zhongguo_projects_metrics_postcondition_v1(
+        "zg361.projects.metrics.source.capture.pre",
+        expected_revision=int(owner_binding["revision"]),
+        owner_character_id=owner,
+        subject_character_id=subject,
+    )
+    source, provider = _source_checkpoint_from_provider(
+        provider_value,
+        binding=owner_binding,
         owner=owner,
         subject=subject,
+        allow_legacy_pending_absent=_legacy_pending_cursor_compatibility(
+            lineage
+        ),
     )
-
-    preflight = preflight_projects_metrics_gameplay_action_cell(
-        service,
-        owner_character_id=owner,
-        request_nonce_prefix="zg361.projects.metrics.source.capture",
-    )
-    preflight_binding = preflight.get("binding")
-    source = preflight.get("source_checkpoint")
-    provider = preflight.get("provider_response")
-    valid_preflight = (
-        preflight.get("result") == "READY"
-        and preflight.get("ready_to_run") is True
-        and preflight.get("checkpoint_mode") == "cp26_ready_p3_absent"
-        and isinstance(preflight_binding, Mapping)
-        and isinstance(source, Mapping)
-        and isinstance(provider, Mapping)
-        and provider.get("checkpoint_state") == "cp26_ready_p3_absent"
-        and source.get("owner_character_id") == owner
-        and source.get("subject_character_id") == subject
-        and isinstance(source.get("cycle_serial"), int)
-        and not isinstance(source.get("cycle_serial"), bool)
-        and int(source.get("cycle_serial")) > 0
-        and isinstance(source.get("case_serial"), int)
-        and not isinstance(source.get("case_serial"), bool)
-        and int(source.get("case_serial")) > 0
-        and isinstance(source.get("contribution_receipt_id"), int)
-        and int(source.get("contribution_receipt_id")) > 0
-        and isinstance(source.get("contribution_receipt_revision"), int)
-        and int(source.get("contribution_receipt_revision")) > 0
-        and preflight.get("gameplay_action_executed") is False
-        and preflight.get("action_ack_is_business_postcondition") is False
-    )
-    if not valid_preflight:
-        _fail("cp26_provider_source_not_ready", preflight=preflight)
-    for key in (
-        "snapshot_id",
-        "revision",
-        "native_revision",
-        "date_raw",
-        "player_character_id",
-        "connection_generation",
-        "active_event_instance_id",
-    ):
-        if initial.get(key) != preflight_binding.get(key):
-            _fail(
-                "provider_query_crossed_source_frame",
-                key=key,
-                initial=initial,
-                preflight_binding=preflight_binding,
-            )
     after_query_snapshot = service.snapshot()
     after_query = _managed_binding(after_query_snapshot, require_event=False)
-    if not _same_frame(initial, after_query):
+    if not _same_frame(owner_binding, after_query):
         _fail(
             "provider_query_crossed_source_frame",
-            initial=initial,
+            initial=owner_binding,
             after_query=after_query,
         )
+    switch_result = service.set_player_character_v1(
+        subject,
+        expected_revision=int(owner_binding["revision"]),
+    )
+    initial_snapshot = service.snapshot()
+    initial = _managed_binding(initial_snapshot, require_event=False)
+    switch_receipt = _player_switch_receipt(
+        switch_result,
+        owner=owner,
+        subject=subject,
+        before=owner_binding,
+        after=initial,
+        lineage=lineage,
+    )
+    switch_bytes = _json_bytes(switch_receipt)
+    switch_sha = hashlib.sha256(switch_bytes).hexdigest().upper()
 
     save = getattr(service, "save_checkpoint", None)
     if not callable(save):
@@ -615,8 +971,12 @@ def capture_projects_metrics_source_checkpoint_live(
     stem = f"01-{SPAN_ID}-{expected_sha[:16].lower()}"
     checkpoint_target = root / f"{stem}.ck3"
     ui_target = root / f"{stem}.ui-receipt.json"
+    switch_target = root / f"{stem}.player-switch-receipt.json"
     provider_target = root / f"{stem}.provider-receipt.json"
-    if any(path.exists() for path in (checkpoint_target, ui_target, provider_target)):
+    if any(
+        path.exists()
+        for path in (checkpoint_target, ui_target, switch_target, provider_target)
+    ):
         _fail(
             "source_checkpoint_archive_collision",
             paths=[str(checkpoint_target), str(ui_target), str(provider_target)],
@@ -633,6 +993,11 @@ def capture_projects_metrics_source_checkpoint_live(
         )
     _write_exclusive(
         ui_target, ui_bytes, "source_checkpoint_ui_receipt_archive_collision"
+    )
+    _write_exclusive(
+        switch_target,
+        switch_bytes,
+        "source_checkpoint_player_switch_receipt_archive_collision",
     )
     provider_bytes = _json_bytes(dict(provider))
     _write_exclusive(
@@ -657,10 +1022,17 @@ def capture_projects_metrics_source_checkpoint_live(
         "checkpoint_sha256": expected_sha,
         "save_lineage_id": lineage["seed_lineage_id"],
         "cp26_route": ui_receipt["route"],
+        "cp26_ui_date_raw": int(ui_date_raw),
+        "cp26_capture_delay_days": capture_delay_days,
         "cp26_ui_receipt": {
             "path": str(ui_target),
             "bytes": len(ui_bytes),
             "sha256": ui_sha,
+        },
+        "player_switch_receipt": {
+            "path": str(switch_target),
+            "bytes": len(switch_bytes),
+            "sha256": switch_sha,
         },
         "projects_metrics_provider_receipt": {
             "path": str(provider_target),
@@ -668,8 +1040,10 @@ def capture_projects_metrics_source_checkpoint_live(
             "sha256": provider_sha,
         },
         "provider_checkpoint_state": "cp26_ready_p3_absent",
+        "pending_player_event": copy.deepcopy(source["pending_player_event"]),
         "p3_initializer_not_run": True,
         "action_ack_is_business_postcondition": False,
+        "generic_character_rebind_used": True,
     }
 
     entry = {
@@ -687,6 +1061,7 @@ def capture_projects_metrics_source_checkpoint_live(
             source["contribution_receipt_revision"]
         ),
         "contribution_value": int(source["contribution_value"]),
+        "pending_player_event": copy.deepcopy(source["pending_player_event"]),
         "date_raw": int(initial["date_raw"]),
         "checkpoint": {
             "path": str(checkpoint_target),
@@ -694,13 +1069,20 @@ def capture_projects_metrics_source_checkpoint_live(
             "sha256": expected_sha,
             "save_lineage_id": lineage["seed_lineage_id"],
         },
-        "source_snapshot_binding": initial,
+        "source_snapshot_binding": owner_binding,
+        "checkpoint_snapshot_binding": initial,
         "post_save_snapshot_binding": post_save,
         "ui_receipt": {
             "path": str(ui_target),
             "bytes": len(ui_bytes),
             "sha256": ui_sha,
             "payload": ui_receipt,
+        },
+        "player_switch_receipt": {
+            "path": str(switch_target),
+            "bytes": len(switch_bytes),
+            "sha256": switch_sha,
+            "payload": switch_receipt,
         },
         "provider_receipt": {
             "path": str(provider_target),
@@ -711,6 +1093,8 @@ def capture_projects_metrics_source_checkpoint_live(
         "source_receipt": source_receipt,
         "native_save_receipt": copy.deepcopy(dict(save_result)),
         "capture_checks": {
+            "initial_played_character_is_owner": True,
+            "provider_queried_while_owner_played": True,
             "played_character_is_subject": True,
             "owner_is_distinct": True,
             "owner_is_ai_by_product_checkpoint_contract": True,
@@ -722,6 +1106,8 @@ def capture_projects_metrics_source_checkpoint_live(
             "provider_state_is_cp26_ready_p3_absent": True,
             "checkpoint_bytes_sha256_verified": True,
             "ui_provider_lineage_joined": True,
+            "native_player_switch_receipt_verified": True,
+            "native_player_switch_preserved_date_pid_and_generation": True,
             "action_ack_used_as_business_state": False,
         },
     }
@@ -735,7 +1121,7 @@ def capture_projects_metrics_source_checkpoint_live(
         "fixture_used": False,
         "console_used": False,
         "test_decision_used": False,
-        "generic_character_rebind_used": False,
+        "generic_character_rebind_used": True,
         "action_ack_is_business_postcondition": False,
         "provider_observed_business_state": True,
         "seed_lineage_id": lineage["seed_lineage_id"],
@@ -755,7 +1141,7 @@ def validate_projects_metrics_source_checkpoint_registry(
     *,
     expected_seed_lineage_id: str | None = None,
 ) -> dict[str, object]:
-    """Re-hash a schema-2 registry and both retained observation receipts."""
+    """Re-hash a schema-2 registry and all retained observation receipts."""
 
     registry = dict(value) if isinstance(value, Mapping) else {}
     rows = registry.get("entries")
@@ -770,7 +1156,7 @@ def validate_projects_metrics_source_checkpoint_registry(
         and registry.get("fixture_used") is False
         and registry.get("console_used") is False
         and registry.get("test_decision_used") is False
-        and registry.get("generic_character_rebind_used") is False
+        and registry.get("generic_character_rebind_used") is True
         and registry.get("action_ack_is_business_postcondition") is False
         and registry.get("provider_observed_business_state") is True
         and registry.get("seed_lineage_id") == lineage.get("seed_lineage_id")
@@ -788,11 +1174,13 @@ def validate_projects_metrics_source_checkpoint_registry(
     entry = dict(rows[0])
     checkpoint = entry.get("checkpoint")
     ui = entry.get("ui_receipt")
+    switch = entry.get("player_switch_receipt")
     provider = entry.get("provider_receipt")
     source_receipt = entry.get("source_receipt")
     checks = entry.get("capture_checks")
     checkpoint = dict(checkpoint) if isinstance(checkpoint, Mapping) else {}
     ui = dict(ui) if isinstance(ui, Mapping) else {}
+    switch = dict(switch) if isinstance(switch, Mapping) else {}
     provider = dict(provider) if isinstance(provider, Mapping) else {}
     source_receipt = (
         dict(source_receipt) if isinstance(source_receipt, Mapping) else {}
@@ -815,14 +1203,51 @@ def validate_projects_metrics_source_checkpoint_registry(
 
     checkpoint_valid = locator_valid(checkpoint)
     ui_valid = locator_valid(ui)
+    switch_valid = locator_valid(switch)
     provider_valid = locator_valid(provider)
     ui_payload = ui.get("payload")
+    switch_payload = switch.get("payload")
     provider_payload = provider.get("payload")
     serialized_provider_matches = bool(
         isinstance(provider_payload, Mapping)
         and hashlib.sha256(_json_bytes(dict(provider_payload))).hexdigest().upper()
         == str(provider.get("sha256", "")).upper()
     )
+    provider_open_source_valid = False
+    if isinstance(provider_payload, Mapping):
+        try:
+            provider_source, _ = _source_checkpoint_from_provider(
+                provider_payload,
+                binding=(
+                    entry.get("source_snapshot_binding")
+                    if isinstance(entry.get("source_snapshot_binding"), Mapping)
+                    else {}
+                ),
+                owner=_positive(
+                    entry.get("owner_character_id"), "owner_character_id"
+                ),
+                subject=_positive(
+                    entry.get("subject_character_id"), "subject_character_id"
+                ),
+                allow_legacy_pending_absent=(
+                    _legacy_pending_cursor_compatibility(lineage)
+                ),
+            )
+            provider_open_source_valid = all(
+                provider_source.get(key) == entry.get(key)
+                for key in (
+                    "owner_character_id",
+                    "subject_character_id",
+                    "cycle_serial",
+                    "case_serial",
+                    "contribution_receipt_id",
+                    "contribution_receipt_revision",
+                    "contribution_value",
+                    "pending_player_event",
+                )
+            )
+        except ProjectsMetricsSourceCheckpointError:
+            provider_open_source_valid = False
     ui_payload_matches = False
     if ui_valid and isinstance(ui_payload, Mapping):
         try:
@@ -832,6 +1257,90 @@ def validate_projects_metrics_source_checkpoint_registry(
             ui_payload_matches = ui_file_value == dict(ui_payload)
         except (OSError, UnicodeError, json.JSONDecodeError):
             ui_payload_matches = False
+    switch_payload_matches = False
+    if switch_valid and isinstance(switch_payload, Mapping):
+        try:
+            switch_file_value = json.loads(
+                Path(str(switch["path"])).read_text(encoding="utf-8-sig")
+            )
+            switch_payload_matches = switch_file_value == dict(switch_payload)
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            switch_payload_matches = False
+    switch_native = (
+        switch_payload.get("native_receipt")
+        if isinstance(switch_payload, Mapping)
+        else None
+    )
+    switch_before = (
+        switch_payload.get("before_binding")
+        if isinstance(switch_payload, Mapping)
+        else None
+    )
+    switch_after = (
+        switch_payload.get("after_binding")
+        if isinstance(switch_payload, Mapping)
+        else None
+    )
+    switch_payload_valid = bool(
+        isinstance(switch_payload, Mapping)
+        and switch_payload.get("schema_version") == 1
+        and switch_payload.get("kind")
+        == "zg361_projects_metrics_player_switch_receipt"
+        and switch_payload.get("result") == "GREEN"
+        and switch_payload.get("evidence_class") == "real_ck3"
+        and switch_payload.get("state_origin") == "managed_product"
+        and switch_payload.get("seed_lineage_id")
+        == registry.get("seed_lineage_id")
+        and switch_payload.get("capture_lineage_id")
+        == lineage.get("capture_lineage_id")
+        and str(switch_payload.get("product_tree_sha256", "")).upper()
+        == str(lineage.get("product_tree_sha256", "")).upper()
+        and switch_payload.get("owner_character_id")
+        == entry.get("owner_character_id")
+        and switch_payload.get("subject_character_id")
+        == entry.get("subject_character_id")
+        and switch_payload.get("date_raw") == entry.get("date_raw")
+        and switch_payload.get("generic_character_rebind_used") is True
+        and switch_payload.get("provider_observed") is True
+        and isinstance(switch_before, Mapping)
+        and switch_before.get("player_character_id")
+        == entry.get("owner_character_id")
+        and switch_before.get("active_event_instance_id") is None
+        and isinstance(switch_after, Mapping)
+        and switch_after.get("player_character_id")
+        == entry.get("subject_character_id")
+        and switch_after.get("active_event_instance_id") is None
+        and switch_before.get("date_raw") == switch_after.get("date_raw")
+        and switch_after.get("date_raw") == entry.get("date_raw")
+        and switch_before.get("bridge_pid") == switch_after.get("bridge_pid")
+        and switch_before.get("connection_generation")
+        == switch_after.get("connection_generation")
+        and isinstance(switch_native, Mapping)
+        and switch_native.get("schema_version") == 1
+        and switch_native.get("accepted") is True
+        and switch_native.get("status") == "switched"
+        and switch_native.get("backend_id") == "native-headless"
+        and switch_native.get("step")
+        == f"set-played-character-v1-{entry.get('subject_character_id')}"
+        and switch_native.get("from_character_id")
+        == entry.get("owner_character_id")
+        and switch_native.get("to_character_id")
+        == entry.get("subject_character_id")
+        and switch_native.get("prior_episode_character_id")
+        == entry.get("owner_character_id")
+        and switch_native.get("episode_character_id")
+        == entry.get("subject_character_id")
+        and switch_native.get("date_raw") == entry.get("date_raw")
+        and switch_native.get("before_revision") == switch_before.get("revision")
+        and switch_native.get("after_revision") == switch_after.get("revision")
+        and switch_native.get("native_revision")
+        == switch_after.get("native_revision")
+        and switch_native.get("paused") is True
+        and switch_native.get("map_ready") is True
+        and switch_native.get("postcondition_verified") is True
+        and switch_native.get("episode_rebind_performed") is True
+        and switch_native.get("one_life_terminal_cleared") is True
+    )
     checks_valid = bool(
         isinstance(checks, Mapping)
         and checks.get("action_ack_used_as_business_state") is False
@@ -860,8 +1369,12 @@ def validate_projects_metrics_source_checkpoint_registry(
         and checkpoint_valid
         and ui_valid
         and ui_payload_matches
+        and switch_valid
+        and switch_payload_matches
+        and switch_payload_valid
         and provider_valid
         and serialized_provider_matches
+        and provider_open_source_valid
         and isinstance(ui_payload, Mapping)
         and ui_payload.get("route") == entry.get("route")
         and ui_payload.get("owner_character_id")
@@ -890,8 +1403,18 @@ def validate_projects_metrics_source_checkpoint_registry(
         and source_receipt.get("save_lineage_id")
         == registry.get("seed_lineage_id")
         and source_receipt.get("cp26_route") == entry.get("route")
+        and source_receipt.get("cp26_ui_date_raw")
+        == ui_payload.get("date_raw")
+        and isinstance(source_receipt.get("cp26_capture_delay_days"), int)
+        and 0 <= int(source_receipt["cp26_capture_delay_days"]) <= 10
+        and isinstance(entry.get("date_raw"), int)
+        and isinstance(ui_payload.get("date_raw"), int)
+        and int(entry["date_raw"]) - int(ui_payload["date_raw"])
+        == int(source_receipt["cp26_capture_delay_days"]) * 24
         and source_receipt.get("cp26_ui_receipt")
         == {key: ui.get(key) for key in ("path", "bytes", "sha256")}
+        and source_receipt.get("player_switch_receipt")
+        == {key: switch.get(key) for key in ("path", "bytes", "sha256")}
         and source_receipt.get("projects_metrics_provider_receipt")
         == {
             key: provider.get(key) for key in ("path", "bytes", "sha256")
@@ -899,7 +1422,10 @@ def validate_projects_metrics_source_checkpoint_registry(
         and source_receipt.get("p3_initializer_not_run") is True
         and source_receipt.get("provider_checkpoint_state")
         == "cp26_ready_p3_absent"
+        and source_receipt.get("pending_player_event")
+        == entry.get("pending_player_event")
         and source_receipt.get("action_ack_is_business_postcondition") is False
+        and source_receipt.get("generic_character_rebind_used") is True
         and checks_valid
     )
     if not entry_valid:
@@ -908,8 +1434,12 @@ def validate_projects_metrics_source_checkpoint_registry(
             checkpoint_valid=checkpoint_valid,
             ui_valid=ui_valid,
             ui_payload_matches=ui_payload_matches,
+            switch_valid=switch_valid,
+            switch_payload_matches=switch_payload_matches,
+            switch_payload_valid=switch_payload_valid,
             provider_valid=provider_valid,
             serialized_provider_matches=serialized_provider_matches,
+            provider_open_source_valid=provider_open_source_valid,
             checks_valid=checks_valid,
             entry=entry,
         )
@@ -926,6 +1456,7 @@ def validate_projects_metrics_source_checkpoint_registry(
         "route": entry["route"],
         "provider_observed_business_state": True,
         "action_ack_is_business_postcondition": False,
+        "generic_character_rebind_used": True,
     }
 
 

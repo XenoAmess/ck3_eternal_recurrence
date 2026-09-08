@@ -9,6 +9,27 @@
 [`phase2-acceptance-case-index.md`](phase2-acceptance-case-index.md)；361 项批次权威定义仍以
 `mod_zhongguo_style/docs/361-phase2-full-implementation-program.md` 为准。
 
+## 当前 projects/metrics 与 source registry 增量（2026-09-08）
+
+R303 已在 CK3 `1.19.0.6` 的真实 paused frame 完成 projects/metrics provider 后置条件：owner `32904`、subject
+`30938`、cycle/case `4/2`，CP #026 contribution receipt `1` / revision `3` / value `1` 被 P3 #229 metrics revision
+`2`、dictionary `metric_dictionary_subject_v1` 明确回链。report 位于
+`Z:\ck3_mod_rewrite\_runtime\p2r303projectsmetrics\report.json`，SHA-256 为
+`926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01`。这是 private candidate 的 live GREEN；默认
+CK3 adapter 仍不广告该 capability，`production_live_ready=false` 不变。
+
+R313 随后从真实 `zg361cp.26` Route A lineage 捕获 schema-2 projects source checkpoint。provider 在 owner 仍为当前玩家时
+以显式 subject 读到 `checkpoint_state=cp26_ready_p3_absent`，再由 native set-player 在同一 raw date `53246712` 把玩家切至
+subject 并原生保存；checkpoint 为 `89,548,228` bytes，SHA-256
+`72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B`。R313 report SHA-256 为
+`9225D94ABCA8E47AFF0D2CBB3BE51785E28F5C0781F412F4B1D917B13046E76F`，projects registry SHA-256 为
+`7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`；cleanup GREEN，原始 source checkpoint 未改变。
+
+因此 source registry 当前为 promotion `1/1`、projects `1/1`、合计 `2/4 incomplete`；仍缺 incidents/operations 与
+cross-cycle/endgame。two-of-four artifact SHA-256 为
+`8128750541EE7683EAB5CAD83CFDAF11FCCE47F8017019E3B5541A76F1AD603A`。registry checkpoint 是取证输入，不是成片素材；
+真实 footage 仍为 `0/8`、两条 MP4 仍为 `0/2`，T0-P2 继续 `LOCKED`。
+
 这里是天朝二期两条正式宣传片路线的权威导演文档入口。用户已明确要求：**两个版本都保留、都制作、都分别交付成片。**二者不存在“主方案/废案”或“长版/短版”的从属关系。
 
 ## 当前实机门（2026-09-04 12:49）
@@ -72,11 +93,12 @@ cleanup GREEN。这是 material/call-graph closure RED，不是文件大小因�
 `docs/` 保存两版的导演稿、生产合同、审片模板和状态索引；大体积 MP4 按项目约定落在外部
 `artifacts/demos/YYYY-MM-DD/`（并在本页登记路径、时长、编码和 SHA-256），不把成片二进制塞进 Git。
 
-## 交付进度（2026-09-04）
+## 交付进度（2026-09-08）
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | r20 seed GREEN；r22 outer/cell/scenario/matrix 全 GREEN，B2 focused gate COMPLETE / `production-live primitive`，但 full Phase2 claim=false；B2 为 25 files / 152 effects / max 9，B3 为 7 files / 43 effects / max 10 | 推进 B3 typed selector/provider，再闭合后续业务与 8-span | 不预写全量 ETA；以 B3 provider 与后续素材阶段为准 |
+| 二期产品代码与发布树 | T0 `50%`；strict scene `4/361`、full-tree definition `106/626`、stage `8/11`。R303 projects/metrics private provider GREEN，R313 projects source GREEN；source registry `2/4 incomplete`，default capability 边界不变 | 捕获 incidents/operations、cross-cycle/endgame 两项 source，再闭合完整回归与 8-span | 不预写全量 ETA；以剩余两项 registry 与素材阶段为准 |
+| Canonical source registry | promotion `1/1`、projects `1/1`；合计 `2/4 incomplete` | `capture_incidents_operations` → `capture_cross_cycle_endgame` → 四项整体不可变性复核 | 两项均需各自真实业务帧；不把 registry 计作 footage |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |

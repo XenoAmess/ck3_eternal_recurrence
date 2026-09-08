@@ -21,14 +21,23 @@
   "required_checkpoint": {
     "single_player": true,
     "product_only_mount": true,
-    "played_character_role": "project_subject",
+    "played_character_role": "initial_project_owner_then_native_switched_project_subject",
+    "provider_observation_role": "project_owner_with_explicit_project_subject",
     "owner_role": "distinct_ai_project_owner",
     "paused": true,
     "map_ready": true,
     "active_player_event": false,
+    "native_player_switch_postcondition_required": true,
+    "native_player_switch_preserves_date_pid_and_connection_generation": true,
     "cp26_route_allowlist": ["A", "B"],
+    "maximum_ui_to_checkpoint_delay_days": 10,
     "cp26_contribution_receipt_prepared": true,
     "provider_checkpoint_state": "cp26_ready_p3_absent",
+    "open_portfolio_pending_player_event": "provider-observed positive integer, or variable_absent only when the exact legacy product never registered zg361_cp_pending_player_event",
+    "legacy_optional_identifier": "zg361_cp_pending_player_event",
+    "legacy_optional_identifier_source_git_commit": "73fc9a1463567a43ba618ff2376b7dc3c9fe82cd",
+    "legacy_optional_identifier_product_tree_sha256": "FBC162A55130CB7F8B6BAFBE443DA9A06589B475B5C225FA9C2BE3C2DBCEF80B",
+    "all_other_provider_identifiers_fail_closed": true,
     "p3_initializer_run": false,
     "cycle_serial": "provider-observed positive integer",
     "case_serial": "provider-observed positive integer"
@@ -42,9 +51,11 @@
       "seed_and_capture_lineage",
       "exact_product_only_mount_and_tree",
       "cp26_ui_receipt_bytes_sha256_payload",
+      "native_player_switch_receipt_bytes_sha256_payload",
       "provider_receipt_bytes_sha256_payload",
       "native_save_receipt",
-      "owner_subject_cycle_case_and_contribution_receipt"
+      "owner_subject_cycle_case_and_contribution_receipt",
+      "open_portfolio_pending_player_event_typed_state"
     ],
     "exclusive_write": true,
     "canonical_schema2_compatibility": "the sole entry includes the exact source_receipt/checkpoint fields consumed by zhongguo_phase2_source_checkpoint_registry.py and can occupy capture_projects_metrics in the four-entry manifest"
@@ -56,12 +67,15 @@
     "fixture_used": false,
     "console_used": false,
     "test_decision_used": false,
-    "generic_character_rebind_used": false
+    "generic_character_rebind_used": true,
+    "generic_character_rebind_authority": "native game.command.set-played-character-v1-N with same-paused-date postcondition receipt"
   },
   "live_sequence": [
     "owner-visible real zg361cp.26 UI observation and route A/B submission",
-    "caller reaches same-lineage played-subject event-free managed product state",
-    "provider proves direct CP26 contribution source-ready and current-cycle P3 initializer absent",
+    "caller may advance at most ten game days and resolve intervening product events only until an event-free provider-readable frame is reached; P3 must remain absent",
+    "provider proves the open portfolio, direct CP26 contribution source-ready, and current-cycle P3 initializer absent while the bound owner remains played",
+    "capture calls native set-player-character-v1-N to move from the bound owner to the same-lineage subject and retains the exact switch receipt",
+    "capture reaches same-lineage played-subject event-free managed product state at the same date",
     "native save materializes bytes at the same date and binding",
     "checkpoint plus exact UI/provider receipts are archived and schema-2 registry is written"
   ],

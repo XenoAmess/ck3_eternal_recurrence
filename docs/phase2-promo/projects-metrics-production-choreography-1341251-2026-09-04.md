@@ -1,5 +1,21 @@
 # Projects/metrics production choreography audit（`1341251`）
 
+> **Superseded 注记（2026-09-08）**：下文“不可达/不能同时成立”的结论是 commit `1341251` 的历史离线审计，原文保留
+> 作为当时 graph 与接口缺口的证据，不再代表当前 canonical。后续产品已把同一 immutable central cycle 调整为 Credit/Project
+> stage 7、Metrics/Delivery stage 8，provider v3 也直接读取 CP portfolio/CP26 source，而不再借 P3 projection 代读。
+>
+> R303 已在 exact CK3 `1.19.0.6` 上取得同一 CP26 receipt 到 committed P3 #229 metrics 的 paused provider GREEN；report
+> SHA-256 为 `926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01`。R313 又在 raw date
+> `53246712` 取得 `checkpoint_state=cp26_ready_p3_absent` 的 `.26` Route A source capture，并冻结 checkpoint SHA-256
+> `72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B`；projects registry SHA-256 为
+> `7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`。因此 projects registry 当前为 `1/1`，与
+> promotion `1/1` 合计 `2/4 incomplete`；footage 仍为 `0/8`。
+>
+> R313 明确记录 `generic_character_rebind_used=true`：受管 native set-player 在同一 date/PID/generation 将 owner 切换至
+> subject，并以独立 receipt 验证。它 supersede 下文对当前 capture 的“generic rebind 明确禁止/不可能”判断，但不把该私有
+> 候选变成默认 production capability，也不授权 fixture、console、test decision 或手改变量；默认 adapter 仍关闭，
+> `production_live_ready=false` 不变。
+
 ## 结论：当前 production graph 不可达
 
 在 `1341251dd028b68adf5a4adeb497c94acf3a9471` 上，不存在一条健康、无 fixture/console/test-decision 的 production 路径，能够同时得到：

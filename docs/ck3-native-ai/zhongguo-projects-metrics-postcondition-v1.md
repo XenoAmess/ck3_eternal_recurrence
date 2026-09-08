@@ -1,6 +1,6 @@
 # 天朝项目贡献到指标结果只读观测 v1
 
-状态：**private-candidate-live-validated-not-default**。共享 mailbox/bridge/Python/MCP 已完成接线；R303 在 exact build 上取得真实 paused GREEN，但默认 CK3 adapter 仍关闭该候选，尚非默认 production capability。
+状态：**private-candidate-live-validated-and-source-captured-not-default**。共享 mailbox/bridge/Python/MCP 已完成接线；R303 在 exact build 上取得真实 paused provider GREEN，R313 又取得 schema-2 projects source checkpoint，但默认 CK3 adapter 仍关闭该候选，尚非默认 production capability。
 
 能力名：`game.command.query-zhongguo-projects-metrics-postcondition-v1`。它只回答一个窄问题：CP #026 的真实贡献 receipt，是否被 Phase 3 #229 的指标结果以相同 ID 与 revision 明确回链，而且 source、result、contribution、metrics 是否属于同一 manager/subject/cycle/project case。
 
@@ -57,6 +57,20 @@ stage 7→8 与 effect 文件边界取证、当时尚未执行的 CK3 命令，�
 
 R303 权威实机 artifact 为 `Z:\ck3_mod_rewrite\_runtime\p2r303projectsmetrics\report.json`，SHA-256 `926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01`。在 raw date `53247312`、owner `32904`、subject `30938`、cycle `4` 上，provider 先于 owner-played paused frame 读到 portfolio closed、final case `2`、final state `6`、conservation `1` 与 pending player event absent；随后 native set-player 在同一 raw date 切换至 subject，action cell 仅执行一次 `life-advance`，最终读到 contribution receipt ID `1`、receipt revision `3`、value `1`、metrics revision `2`、dictionary `metric_dictionary_subject_v1`，并以 `same_cp26_receipt_consumed_by_committed_p3m229_result` 结束。session cleanup GREEN，源 checkpoint 哈希保持不变。
 
+R313 在同一 CP26 lineage 的 raw date `53246712` 捕获 `.26` Route A source：provider 在 owner `32904` 仍为 played
+character 时，以显式 subject `30938` 读到 contribution receipt `1` / revision `3` / value `1` 和
+`checkpoint_state=cp26_ready_p3_absent`；此时 `portfolio_closed=false`、P3 source/result 不存在，符合 source checkpoint 而非结果
+postcondition 的合同。随后 native set-player 在不改变 date、PID 或 connection generation 的情况下切至 subject，再保存
+`89,548,228` bytes checkpoint，SHA-256
+`72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B`。R313 report SHA-256 为
+`9225D94ABCA8E47AFF0D2CBB3BE51785E28F5C0781F412F4B1D917B13046E76F`，schema-2 projects registry SHA-256 为
+`7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`；cleanup GREEN，原始 source checkpoint 哈希未变。
+
+R313 capture 明确记录 `generic_character_rebind_used=true`，这是本次受管 native set-player 取证事实，不是默认 adapter
+能力声明，也不授权 fixture、console 或手工变量改写。promotion 与 projects 两项合并后的 two-of-four artifact SHA-256 为
+`8128750541EE7683EAB5CAD83CFDAF11FCCE47F8017019E3B5541A76F1AD603A`；canonical registry 仍为 `2/4 incomplete`，footage
+仍为 `0/8`。
+
 中央 production choreography 已把同一不可变 cycle 的 Credit/Project producer 固定为 stage 7、Metrics/Delivery consumer 固定为 stage 8；P3 opener 只能在 CP portfolio 同周期闭合后运行。生成器分片仍为 10 个 whole-file purpose shards、每文件最多 9 个 effect，无 `>20` 例外。
 
-共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。R303 已闭合 private candidate 的 exact-build paused live 验收；默认 CK3 adapter 仍不广告该 capability，所以 `production_live_ready=false` 保持不变。下一步是让 `capture_projects_metrics` 生成 schema-2 canonical source-checkpoint registry 条目，再根据正式 runner 集成结果决定是否把候选开关转成默认；在此之前不得把“私有候选实机 GREEN”扩大成默认 production capability、可见事件取证或完整跨周期闭环。
+共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。R303 已闭合 private candidate 的 exact-build paused live 验收，R313 已闭合 `capture_projects_metrics` schema-2 source entry；默认 CK3 adapter 仍不广告该 capability，所以 `production_live_ready=false` 保持不变。下一步是完成剩余 incident/operations 与 cross-cycle/endgame source entry，并根据正式 runner 集成结果决定是否把候选开关转成默认；在此之前不得把“私有候选实机 GREEN”扩大成默认 production capability、八段素材或完整跨周期闭环。

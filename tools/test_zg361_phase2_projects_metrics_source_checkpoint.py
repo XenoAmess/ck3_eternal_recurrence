@@ -53,6 +53,14 @@ def unavailable() -> dict[str, object]:
     }
 
 
+def variable_absent() -> dict[str, object]:
+    return {
+        "status": "unavailable",
+        "value": None,
+        "unavailable_reason": "variable_absent",
+    }
+
+
 def identity(*, ready: bool = True) -> dict[str, object]:
     field = available if ready else lambda _value: unavailable()
     return {
@@ -85,6 +93,16 @@ def lineage() -> dict[str, object]:
     }
 
 
+def legacy_lineage() -> dict[str, object]:
+    value = lineage()
+    value["source_git_commit"] = "73fc9a1463567a43ba618ff2376b7dc3c9fe82cd"
+    value["product_tree_sha256"] = (
+        "FBC162A55130CB7F8B6BAFBE443DA9A06589B475B5C225FA9C2BE3C2DBCEF80B"
+    )
+    value["runtime_product_tree_sha256"] = value["product_tree_sha256"]
+    return value
+
+
 def subject_snapshot(*, active_event: bool = False) -> dict[str, object]:
     return {
         "snapshot_id": "native:70",
@@ -101,7 +119,11 @@ def subject_snapshot(*, active_event: bool = False) -> dict[str, object]:
     }
 
 
-def provider_response(*, result_ready: bool = False) -> dict[str, object]:
+def provider_response(
+    *,
+    result_ready: bool = False,
+    legacy_pending_absent: bool = False,
+) -> dict[str, object]:
     source = identity()
     result = identity(ready=result_ready)
     pending = available if result_ready else lambda _value: unavailable()
@@ -111,17 +133,34 @@ def provider_response(*, result_ready: bool = False) -> dict[str, object]:
         "capability": QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY,
         "case_kind": "zhongguo.projects-metrics.project-correlation",
         "request_nonce": "zg361.projects.metrics.source.capture.pre",
-        "snapshot_revision": 70,
+        "snapshot_revision": 69,
         "date_raw": DATE_RAW,
         "paused": True,
-        "player_character_id": SUBJECT,
+        "player_character_id": OWNER,
         "requested_owner_character_id": OWNER,
+        "requested_subject_character_id": SUBJECT,
         "checkpoint_state": (
             "p3_result_committed"
             if result_ready
             else "cp26_ready_p3_absent"
         ),
         "source_identity": copy.deepcopy(source),
+        "credit_project_portfolio": {
+            "closed": available(0),
+            "cycle_serial": available(CYCLE),
+            "final_owner_character_id": variable_absent(),
+            "final_subject_character_id": variable_absent(),
+            "final_cycle_serial": variable_absent(),
+            "final_case_serial": variable_absent(),
+            "final_state": variable_absent(),
+            "final_conservation_ok": variable_absent(),
+            "pending_player_event": (
+                variable_absent()
+                if legacy_pending_absent
+                else available(9231)
+            ),
+            "provider_observed": True,
+        },
         "result_identity": copy.deepcopy(result),
         "projects_metrics": {
             "source_identity": copy.deepcopy(source),
@@ -145,8 +184,10 @@ def provider_response(*, result_ready: bool = False) -> dict[str, object]:
             },
         },
         "readiness": {
-            "player_subject_binding_ready": True,
+            "player_subject_binding_ready": False,
             "owner_binding_ready": True,
+            "portfolio_observed": True,
+            "portfolio_closed": False,
             "source_identity_ready": True,
             "result_identity_ready": result_ready,
             "contribution_ready": True,
@@ -162,16 +203,16 @@ def provider_response(*, result_ready: bool = False) -> dict[str, object]:
         "unavailable_reason": None,
         "binding": {
             "request_nonce": "zg361.projects.metrics.source.capture.pre",
-            "snapshot_id": "native:70",
-            "revision": 20,
-            "native_revision": 70,
+            "snapshot_id": "native:69",
+            "revision": 19,
+            "native_revision": 69,
             "connection_generation": 4,
             "date_raw": DATE_RAW,
             "paused": True,
-            "player_character_id": SUBJECT,
+            "player_character_id": OWNER,
             "subject_character_id": SUBJECT,
             "owner_character_id": OWNER,
-            "expected_revision": 20,
+            "expected_revision": 19,
         },
     }
 
@@ -258,12 +299,17 @@ class CheckpointService:
         result_ready: bool = False,
         source_absent: bool = False,
         active_event: bool = False,
+        switch_from_character_id: int = OWNER,
+        legacy_pending_absent: bool = False,
     ) -> None:
         self.checkpoint_path = checkpoint_path.resolve()
         self.checkpoint_path.write_bytes(b"managed-real-product-checkpoint")
         self.result_ready = result_ready
         self.source_absent = source_absent
         self.active_event = active_event
+        self.switch_from_character_id = switch_from_character_id
+        self.legacy_pending_absent = legacy_pending_absent
+        self.switched = False
         self.saved: list[int | None] = []
 
     def capabilities(self) -> dict[str, object]:
@@ -275,7 +321,43 @@ class CheckpointService:
         }
 
     def snapshot(self) -> dict[str, object]:
-        return subject_snapshot(active_event=self.active_event)
+        value = subject_snapshot(active_event=self.active_event)
+        if not self.switched:
+            value["snapshot_id"] = "native:69"
+            value["revision"] = 19
+            value["native_revision"] = 69
+            value["played_character"] = {"character_id": OWNER}
+        return value
+
+    def set_player_character_v1(
+        self,
+        character_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        if character_id != SUBJECT or expected_revision != 19:
+            raise ValueError("fixture switch request drifted")
+        self.switched = True
+        return {
+            "schema_version": 1,
+            "accepted": True,
+            "status": "switched",
+            "backend_id": "native-headless",
+            "step": f"set-played-character-v1-{SUBJECT}",
+            "from_character_id": self.switch_from_character_id,
+            "to_character_id": SUBJECT,
+            "prior_episode_character_id": OWNER,
+            "episode_character_id": SUBJECT,
+            "before_revision": 19,
+            "after_revision": 20,
+            "native_revision": 70,
+            "date_raw": DATE_RAW,
+            "paused": True,
+            "map_ready": True,
+            "postcondition_verified": True,
+            "episode_rebind_performed": True,
+            "one_life_terminal_cleared": True,
+        }
 
     def query_zhongguo_projects_metrics_postcondition_v1(
         self,
@@ -283,8 +365,16 @@ class CheckpointService:
         *,
         expected_revision: int,
         owner_character_id: int,
+        subject_character_id: int | None = None,
     ) -> dict[str, object]:
-        value = provider_response(result_ready=self.result_ready)
+        if subject_character_id != SUBJECT:
+            raise ValueError("fixture requires the explicit project subject")
+        if expected_revision != 19 or self.switched:
+            raise ValueError("fixture provider must be queried on the owner frame")
+        value = provider_response(
+            result_ready=self.result_ready,
+            legacy_pending_absent=self.legacy_pending_absent,
+        )
         value["request_nonce"] = request_nonce
         value["binding"]["request_nonce"] = request_nonce
         if self.source_absent:
@@ -314,11 +404,17 @@ class CheckpointService:
         }
 
 
-def write_ui_receipt(path: Path, *, route: str = "A") -> dict[str, object]:
+def write_ui_receipt(
+    path: Path,
+    *,
+    route: str = "A",
+    capture_lineage: dict[str, object] | None = None,
+) -> dict[str, object]:
+    bound_lineage = capture_lineage or lineage()
     receipt = observe_cp26_route_ui_live(
         UiService(),
         route=route,
-        capture_lineage=lineage(),
+        capture_lineage=bound_lineage,
         live_mode=LIVE_MODE,
     )
     path.write_text(
@@ -397,12 +493,14 @@ class ProjectsMetricsSourceCheckpointTests(unittest.TestCase):
             self.assertEqual(registry["registry_kind"], REGISTRY_KIND)
             self.assertTrue(registry["provider_observed_business_state"])
             self.assertFalse(registry["action_ack_is_business_postcondition"])
+            self.assertTrue(registry["generic_character_rebind_used"])
             entry = registry["entries"][0]
             self.assertEqual(entry["player_character_id"], SUBJECT)
             self.assertNotEqual(entry["owner_character_id"], SUBJECT)
             self.assertEqual(entry["cycle_serial"], CYCLE)
             self.assertEqual(entry["case_serial"], CASE)
             self.assertEqual(entry["contribution_receipt_id"], RECEIPT_ID)
+            self.assertEqual(entry["pending_player_event"], available(9231))
             self.assertEqual(
                 entry["source_receipt"]["event_definition_key"], "zg361cp.26"
             )
@@ -416,6 +514,9 @@ class ProjectsMetricsSourceCheckpointTests(unittest.TestCase):
             )
             self.assertTrue(Path(entry["checkpoint"]["path"]).is_file())
             self.assertTrue(Path(entry["ui_receipt"]["path"]).is_file())
+            self.assertTrue(
+                Path(entry["player_switch_receipt"]["path"]).is_file()
+            )
             self.assertTrue(Path(entry["provider_receipt"]["path"]).is_file())
             self.assertEqual(service.saved, [20])
             summary = validate_projects_metrics_source_checkpoint_registry(
@@ -424,6 +525,58 @@ class ProjectsMetricsSourceCheckpointTests(unittest.TestCase):
             )
             self.assertEqual(summary["result"], "GREEN")
             self.assertTrue(summary["provider_observed_business_state"])
+            self.assertTrue(summary["generic_character_rebind_used"])
+
+    def test_capture_accepts_exact_legacy_absent_pending_cursor(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            ui_path = root / "ui.json"
+            bound_lineage = legacy_lineage()
+            write_ui_receipt(ui_path, capture_lineage=bound_lineage)
+            registry_path = root / "registry.json"
+            registry = capture_projects_metrics_source_checkpoint_live(
+                CheckpointService(
+                    root / "native.ck3", legacy_pending_absent=True
+                ),
+                owner_character_id=OWNER,
+                capture_lineage=bound_lineage,
+                ui_receipt_path=ui_path,
+                checkpoint_root=root / "frozen",
+                registry_path=registry_path,
+                live_mode=LIVE_MODE,
+            )
+            self.assertEqual(
+                registry["entries"][0]["pending_player_event"],
+                variable_absent(),
+            )
+            summary = validate_projects_metrics_source_checkpoint_registry(
+                json.loads(registry_path.read_text(encoding="utf-8"))
+            )
+            self.assertEqual(summary["result"], "GREEN")
+
+    def test_current_product_rejects_an_absent_pending_cursor(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            ui_path = root / "ui.json"
+            write_ui_receipt(ui_path)
+            service = CheckpointService(
+                root / "native.ck3", legacy_pending_absent=True
+            )
+            with self.assertRaises(ProjectsMetricsSourceCheckpointError) as raised:
+                capture_projects_metrics_source_checkpoint_live(
+                    service,
+                    owner_character_id=OWNER,
+                    capture_lineage=lineage(),
+                    ui_receipt_path=ui_path,
+                    checkpoint_root=root / "frozen",
+                    registry_path=root / "registry.json",
+                    live_mode=LIVE_MODE,
+                )
+            self.assertEqual(
+                raised.exception.reason_code,
+                "cp26_pending_player_event_invalid",
+            )
+            self.assertEqual(service.saved, [])
 
     def test_capture_rejects_absent_or_committed_source_and_active_event(self) -> None:
         for kwargs in (
@@ -512,6 +665,31 @@ class ProjectsMetricsSourceCheckpointTests(unittest.TestCase):
                 raised.exception.reason_code,
                 "source_checkpoint_registry_entry_invalid",
             )
+
+    def test_capture_rejects_unbound_native_player_switch_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            ui_path = root / "ui.json"
+            write_ui_receipt(ui_path)
+            service = CheckpointService(
+                root / "native.ck3",
+                switch_from_character_id=SUBJECT,
+            )
+            with self.assertRaises(ProjectsMetricsSourceCheckpointError) as raised:
+                capture_projects_metrics_source_checkpoint_live(
+                    service,
+                    owner_character_id=OWNER,
+                    capture_lineage=lineage(),
+                    ui_receipt_path=ui_path,
+                    checkpoint_root=root / "frozen",
+                    registry_path=root / "registry.json",
+                    live_mode=LIVE_MODE,
+                )
+            self.assertEqual(
+                raised.exception.reason_code,
+                "player_switch_receipt_invalid",
+            )
+            self.assertEqual(service.saved, [])
 
     def test_static_preflight_is_green_and_performs_no_live_work(self) -> None:
         report = audit_projects_metrics_source_checkpoint_capture()

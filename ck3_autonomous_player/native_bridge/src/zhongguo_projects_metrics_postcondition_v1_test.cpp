@@ -20,6 +20,7 @@ struct Fixture {
   bool drift = false;
   std::uint32_t reads = 0;
   std::unordered_set<std::int32_t> characters{100, 200};
+  std::unordered_set<std::string> missing_identifiers;
   std::unordered_map<std::string, ZhongguoProjectsMetricsRawVariableV1>
       variables;
   std::vector<std::string> requested_keys;
@@ -58,6 +59,7 @@ bool ReadVariable(void *opaque, std::int32_t character_id,
   }
   fixture.requested_keys.emplace_back(key);
   ++fixture.reads;
+  if (fixture.missing_identifiers.contains(std::string(key))) return false;
   const auto found = fixture.variables.find(std::string(key));
   output = found == fixture.variables.end()
                ? ZhongguoProjectsMetricsRawVariableV1{}
@@ -328,6 +330,35 @@ bool TestTypedUnavailableAndDrift() {
          output.unavailable_reason == "requires_application_main";
 }
 
+bool TestOnlyPendingCursorIdentifierMayBeAbsent() {
+  constexpr std::string_view optional_key =
+      "zg361_cp_pending_player_event";
+  xar::game::ZhongguoProjectsMetricsPostconditionV1 output{};
+
+  Fixture missing_pending_cursor;
+  Populate(missing_pending_cursor);
+  missing_pending_cursor.missing_identifiers.emplace(optional_key);
+  if (!Read(missing_pending_cursor, output) || !output.readiness.ready ||
+      output.credit_project_portfolio.pending_player_event.available ||
+      output.credit_project_portfolio.pending_player_event
+              .unavailable_reason != "variable_absent") {
+    return false;
+  }
+
+  for (const auto key : xar::ck3_11906::
+           kZhongguoProjectsMetricsPostconditionV1VariableAllowlist) {
+    if (key == optional_key) continue;
+    Fixture missing_required_identifier;
+    Populate(missing_required_identifier);
+    missing_required_identifier.missing_identifiers.emplace(key);
+    if (Read(missing_required_identifier, output) ||
+        output.unavailable_reason != "variable_context_unavailable") {
+      return false;
+    }
+  }
+  return true;
+}
+
 } // namespace
 
 int main() {
@@ -335,7 +366,8 @@ int main() {
                   TestCheckpointStates() &&
                   TestOwnerPlayedCanReadExplicitSubjectClosure() &&
                   TestLineageAndIdentityFailClosed() &&
-                  TestTypedUnavailableAndDrift();
+                  TestTypedUnavailableAndDrift() &&
+                  TestOnlyPendingCursorIdentifierMayBeAbsent();
   if (!ok) {
     std::cerr << "zhongguo projects/metrics postcondition fixture failed\n";
     return 1;
