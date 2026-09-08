@@ -7,6 +7,25 @@ from typing import Final
 
 
 MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+    "health.7100": {
+        # CK3 1.19.0.6 infirm-health pulse. Immediate only freezes the
+        # one-time flag; the sole authored option necessarily adds depressed_1.
+        # R320 observed the exact played manager, empty saved-scope frame and
+        # one enabled acknowledgement. No alternative branch exists, so bind
+        # that complete shape and continue the character-bound product path.
+        "date_raw": 53160264,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "scope_types": {},
+        "boolean_scopes": (),
+        "saved_scope_count": 0,
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "health.2201": {
         # Vanilla disease notice for someone whose health matters to root.
         # This exact live projection exposes authored options 6 and 7 because

@@ -9,6 +9,33 @@ from typing import Final
 MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "spymaster_task.3001": {
+        # CK3 1.19.0.6 Find Secrets side effect. Option 1 preserves the
+        # current Spymaster task and confines the outcome to authored
+        # prestige/opinion plus the target's notification. Option 2 stops the
+        # task and would mutate the continuing product timeline. R319 observed
+        # the exact manager, councillor and target tuple with both buttons.
+        "date_raw": 53161632,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "councillor": 27963,
+            "councillor_liege": 29037,
+            "target_character": 27051,
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "councillor",
+            "councillor_liege",
+            "target_character",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "spymaster_task.0381": {
         # Independent vanilla Find Secrets hook opportunity. Option 1 spends
         # gold and fabricates a hook; option 2 only grants the one typed third

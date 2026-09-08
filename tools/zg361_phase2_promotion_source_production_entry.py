@@ -53,6 +53,9 @@ from zg361_phase3_metrics_delivery_aj_contracts import (
 from zg361_phase2_promotion_vanilla_secret_interrupt_contracts import (
     VANILLA_SECRET_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_vanilla_intrigue_temptation_interrupt_contracts import (
+    VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_vanilla_natural_disaster_interrupt_contracts import (
     VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS,
 )
@@ -273,6 +276,33 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (1,),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
+    "intrigue_scheming.1202": {
+        # CK3 1.19.0.6 hired-spy follow-up. The temporary spy is created in
+        # immediate. Option 1 removes that generated courtier and grants only
+        # minor intrigue-lifestyle XP; options 2/3 respectively retain the
+        # spy with a decade-long county modifier or kill them for dread/XP.
+        # R316 observed the exact root, quarter value, generated spy and dense
+        # three-option frame. Take the terminal, least-durable option 1.
+        "date_raw": 53156712,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "hired_spy": (29037, 32904),
+        },
+        "scope_types": {
+            "quarter": "value",
+            "hired_spy": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": (("quarter", "hired_spy"),),
+        "saved_scope_count": 2,
+        "option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
     "chancellor_task.1102": {
@@ -3326,6 +3356,9 @@ KNOWN_TIMELINE_INTERRUPTS.update(
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SECRET_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(
+    VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS
+)
+KNOWN_TIMELINE_INTERRUPTS.update(
     VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS)
@@ -4166,6 +4199,52 @@ def _resolve_timeline_interrupt_contract(
     if contract is None:
         return None
     return _timeline_contract_for_window(contract, starting_date=starting_date)
+
+
+def _manager_recovery_occurrence_contract(
+    event_key: str,
+    contract: Mapping[str, object],
+    *,
+    occurrence_count: int,
+) -> dict[str, object]:
+    """Bind occurrence-sensitive cards to their current rendered projection.
+
+    A route-1 compensation stage may remain pending and reopen on the next
+    cadence tick; R317 demonstrated fourteen repeats of the first visible
+    stage. Manager recovery does not collect portfolio evidence, so it takes
+    route 3 for every exact visible stage. R318 proved that route 3 advanced
+    the repeated first stage to the next authored 3/4/5 projection. Preserve
+    the global authored indices and choose the last index in every reviewed
+    projection, including resource-gated AF5.
+    """
+
+    bound = copy.deepcopy(dict(contract))
+    if event_key != "zg361comp.1":
+        return bound
+    if occurrence_count < 0 or occurrence_count >= 14:
+        raise ValueError("compensation occurrence is outside the 14-card portfolio")
+    bound["manager_recovery_portfolio_ordinal"] = occurrence_count + 1
+    variants_value = bound.get("option_variants")
+    variants = variants_value if isinstance(variants_value, tuple) else ()
+    route_three_variants: list[dict[str, object]] = []
+    for variant_value in variants:
+        variant = variant_value if isinstance(variant_value, Mapping) else {}
+        indices_value = variant.get("native_option_indices")
+        indices = indices_value if isinstance(indices_value, tuple) else ()
+        if not indices:
+            continue
+        selected_native_index = int(indices[-1])
+        route_three_variants.append({
+            **copy.deepcopy(dict(variant)),
+            "selected_option_number": selected_native_index + 1,
+            "selected_native_option_index": selected_native_index,
+        })
+    if not route_three_variants:
+        raise ValueError("compensation contract lacks reviewed option variants")
+    bound["option_variants"] = tuple(route_three_variants)
+    bound["selected_option_number"] = 3
+    bound["selected_native_option_index"] = 2
+    return bound
 
 
 def _contract_date_matches(
@@ -5399,6 +5478,12 @@ def enter_promotion_source_checkpoint_v1(
                         },
                         "known promotion-timeline interrupt exceeded its "
                         f"occurrence bound: {key!r}",
+                    )
+                if stop_at_clean_review_boundary:
+                    contract = _manager_recovery_occurrence_contract(
+                        key,
+                        contract,
+                        occurrence_count=occurrence_count,
                     )
                 if key == "zg361.6" and not _zg361_6_retain_option_ready(
                     event_query

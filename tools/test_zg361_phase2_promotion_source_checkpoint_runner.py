@@ -614,6 +614,52 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.assertEqual(drain["result"], "GREEN")
                 self.assertTrue(all(drain["selection_checks"].values()))
 
+    def test_manager_recovery_compensation_uses_dense_visible_indices(self) -> None:
+        event_key = "zg361comp.1"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53155680,
+        )
+        for occurrence_count in (0, 12, 13):
+            recovery = production._manager_recovery_occurrence_contract(
+                event_key,
+                contract,
+                occurrence_count=occurrence_count,
+            )
+            self.assertEqual(
+                recovery["manager_recovery_portfolio_ordinal"],
+                occurrence_count + 1,
+            )
+            first_variant = recovery["option_variants"][0]
+            self.assertEqual(first_variant["native_option_indices"], (0, 1, 2))
+            self.assertEqual(first_variant["selected_option_number"], 3)
+            self.assertEqual(first_variant["selected_native_option_index"], 2)
+
+        recovery = production._manager_recovery_occurrence_contract(
+            event_key, contract, occurrence_count=0,
+        )
+        self.assertEqual(
+            tuple(
+                (
+                    row["native_option_indices"],
+                    row["selected_option_number"],
+                    row["selected_native_option_index"],
+                )
+                for row in recovery["option_variants"][-3:]
+            ),
+            (
+                ((39, 40, 41), 42, 41),
+                ((40, 41), 42, 41),
+                ((41,), 42, 41),
+            ),
+        )
+        with self.assertRaisesRegex(ValueError, "14-card portfolio"):
+            production._manager_recovery_occurrence_contract(
+                event_key,
+                contract,
+                occurrence_count=14,
+            )
+
     def test_pp_portfolio_mode_card_is_a_known_interrupt(self) -> None:
         event_key = "zg361pp.9100"
         context = {
@@ -3267,6 +3313,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         (
             first_cycle_names,
+            retained_seed_extended_names,
             later_cycle_names,
             extended_cycle_names,
             extended_later_cycle_names,
@@ -3343,6 +3390,11 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(
             all(extended_later_cycle_checks.values()), extended_later_cycle_checks
         )
+        retained_seed_extended_checks = checks_for(retained_seed_extended_names)
+        self.assertTrue(
+            all(retained_seed_extended_checks.values()),
+            retained_seed_extended_checks,
+        )
         retained_seed_pending_checks = checks_for(retained_seed_pending_names)
         self.assertTrue(
             all(retained_seed_pending_checks.values()), retained_seed_pending_checks
@@ -3408,6 +3460,154 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             production.KNOWN_TIMELINE_INTERRUPTS["zg361.1"],
             MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS["zg361.1"],
         )
+
+    def test_hired_spy_followup_uses_exact_terminal_option_one(self) -> None:
+        def character_scope(character_id: int) -> dict[str, object]:
+            return {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                },
+            }
+
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS["intrigue_scheming.1202"],
+            starting_date=53155680,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "intrigue_scheming.1202",
+            "current_event_instance_id": 30,
+            "date_raw": 53156712,
+            "root_scope": character_scope(29037),
+            "saved_scopes": [
+                {
+                    "name": "quarter",
+                    "scope": {"status": "available", "type_key": "value"},
+                },
+                {"name": "hired_spy", "scope": character_scope(16795302)},
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53156712, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 30}
+
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="intrigue_scheming.1202",
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_spy = copy.deepcopy(context)
+        wrong_spy["saved_scopes"][1]["scope"] = character_scope(29037)
+        wrong_spy_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_spy,
+            event_key="intrigue_scheming.1202",
+            contract=contract,
+        )
+        self.assertFalse(wrong_spy_checks["scope:hired_spy:unique_third_party"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append({
+            "name": "unreviewed",
+            "scope": {"status": "available", "type_key": "value"},
+        })
+        extra_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra_scope,
+            event_key="intrigue_scheming.1202",
+            contract=contract,
+        )
+        self.assertFalse(extra_checks["saved_scope_names_exact"])
+
+    def test_spymaster_snooping_side_effect_preserves_current_task(self) -> None:
+        def character_scope(character_id: int) -> dict[str, object]:
+            return {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                },
+            }
+
+        event_key = "spymaster_task.3001"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53155680,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 29,
+            "date_raw": 53161632,
+            "root_scope": character_scope(29037),
+            "saved_scopes": [
+                {"name": "councillor", "scope": character_scope(27963)},
+                {"name": "councillor_liege", "scope": character_scope(29037)},
+                {"name": "target_character", "scope": character_scope(27051)},
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53161632, "active_event": {"option_count": 2}},
+            event={"event_instance_id": 29},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_target = copy.deepcopy(context)
+        wrong_target["saved_scopes"][2]["scope"] = character_scope(27052)
+        wrong_target_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53161632, "active_event": {"option_count": 2}},
+            event={"event_instance_id": 29},
+            context=wrong_target,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(wrong_target_checks["scope:target_character"])
 
     def test_bonus_salary_matrix_accepts_funded_and_defer_only_options(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
@@ -4597,6 +4797,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "health.7500",
         }
         treatment_expected = {
+            "health.7100",
             "health.2201",
             "health.1001",
             "health.3001",
