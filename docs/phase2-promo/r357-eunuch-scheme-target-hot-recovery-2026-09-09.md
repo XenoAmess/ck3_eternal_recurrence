@@ -201,3 +201,28 @@ native option 1。该原版事件是五年 cooldown，不是整局一次，故 o
   `process_restart_required=false`，允许继续同 PID 热重试；
 - manager recovery 分片 normal / `python -O` 各 `45/45`（含一个环境 skip），
   promotion source checkpoint runner normal / `python -O` 各 `83/83` GREEN。
+
+## 同会话第七次 RED：家族争执继承 student
+
+第六次 `retry` 热加载提交 `3cf22a5344e0fab461f04c98959390e9d460917a` 后，同一 PID
+`159264` 推进到 `ep3_story_cycle_admin_eunuch.5010`、event instance `364`、
+`date_raw=53243880`。本帧六项 scope 为
+`story/emperor/eunuch/admin_title/student/rival`。事件、root、两项 native option、
+eunuch/rival 关系均通过；旧合同只接受基础五项，因合法继承的 `student` 在名称和数量
+检查上 RED，选择仍未发生。
+
+原版 `.5010` 先调用 shared story save effect，故 `protege` 与 `student` 都可能独立
+存在；随后从玩家近亲或配偶中重新选择并保存必有的 `rival`，建立其与宦官的 rival
+关系并写回 story。因此最小修复只把 `protege/student` 加入有限可选集合，展开四个
+精确名称组合，未知超集仍拒绝。原路线继续选择 native option 0：它只添加意见和可能
+的 stress，避免 native option 1 额外降低宦官 story。事件原版 cooldown 为五年，
+7190 日产品观察窗内可再次发生，occurrence 同步改为窗口内可重复且每次完整验帧。
+
+- 第七次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-7.json`；
+- park SHA-256：
+  `E452B7ACCFFC205CD618C55D27BEE3FE0EC387871334F609318A887602FE32EB`；
+- 第七次 RED report 快照：12,159,332 bytes，SHA-256
+  `A4AC597E025DB71FE80E01041C9A9D0BC0EC999CE5B077BF6ADB11E183A9A07C`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

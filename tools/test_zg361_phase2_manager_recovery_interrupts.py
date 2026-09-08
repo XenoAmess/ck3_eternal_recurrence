@@ -2478,8 +2478,8 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         contract = _manager_contract(event_key, player=32904)
         context = _context(
             event_key=event_key,
-            instance_id=222,
-            date_raw=53230152,
+            instance_id=364,
+            date_raw=53243880,
             player=32904,
             scopes=[
                 _scope("story", "story"),
@@ -2492,10 +2492,10 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53230152,
+                "date_raw": 53243880,
                 "active_event": {"option_count": 2},
             },
-            event={"event_instance_id": 222},
+            event={"event_instance_id": 364},
             context=context,
             event_key=event_key,
             contract=contract,
@@ -2504,6 +2504,30 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 4)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        retained_story_roles = copy.deepcopy(context)
+        retained_story_roles["saved_scopes"].extend(
+            [
+                _scope("protege", "character", 33001),
+                _scope("student", "character", 33596937),
+            ]
+        )
+        retained_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53243880,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 364},
+            context=retained_story_roles,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(retained_checks.values()), retained_checks)
 
         player_rival = copy.deepcopy(context)
         player_rival["saved_scopes"][4] = _scope(
@@ -2511,10 +2535,10 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         drift_checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53230152,
+                "date_raw": 53243880,
                 "active_event": {"option_count": 2},
             },
-            event={"event_instance_id": 222},
+            event={"event_instance_id": 364},
             context=player_rival,
             event_key=event_key,
             contract=contract,
