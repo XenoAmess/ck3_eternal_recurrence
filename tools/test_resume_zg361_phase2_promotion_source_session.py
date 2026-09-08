@@ -103,6 +103,11 @@ class _Driver:
 
 
 class RetainedRuntimeDiagnosticTests(unittest.TestCase):
+    def test_capture_lineage_uses_canonical_managed_session_kind(self) -> None:
+        source = Path(client.__file__).read_text(encoding="utf-8")
+        self.assertIn('"session_kind": "managed_product_session",', source)
+        self.assertNotIn("managed_product_session_retained_reconnect", source)
+
     def _arrange_source(self, root: Path) -> tuple[Path, Path, str]:
         state = root / "state"
         profile = state / "profile"

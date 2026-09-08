@@ -620,7 +620,7 @@ def run(
         capture_lineage = {
             "seed_lineage_id": seed_lineage_id,
             "evidence_class": "real_ck3",
-            "session_kind": "managed_product_session_retained_reconnect",
+            "session_kind": "managed_product_session",
             "product_only_runtime": True,
             "tracked_ck3_pid": current_diagnostics.get("bridge_pid"),
             "connection_generation": current_diagnostics.get(
