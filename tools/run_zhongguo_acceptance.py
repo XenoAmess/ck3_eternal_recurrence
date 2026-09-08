@@ -7691,15 +7691,7 @@ def phase2_restore_queue_required(scenario_evidence: object) -> bool:
 def _phase2_expected_session_lineage(
     scenario_evidence: object,
 ) -> dict[str, object]:
-    """Project the base restore plus every recorded Workforce restart.
-
-    The original phase-two transaction owns the first two PID/generation
-    entries.  The optional Workforce fixture starts on that second binding
-    and records its activation, A/B/C, final, or failure-recovery restores.
-    Keeping the duplicate join binding explicit in the source evidence makes
-    the concatenation auditable while the returned full lineage contains it
-    only once.
-    """
+    """Project every formal-live restore in its actual execution order."""
 
     scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
     base_value = scenario.get("save_restore_lineage")
@@ -7710,6 +7702,77 @@ def _phase2_expected_session_lineage(
     base_generations = (
         list(base_generation_value)
         if isinstance(base_generation_value, list)
+        else []
+    )
+
+    def lifecycle_record(
+        label: str, value: object
+    ) -> dict[str, object] | None:
+        lifecycle = value if isinstance(value, dict) else {}
+        required = (
+            "previous_pid",
+            "pid",
+            "previous_connection_generation",
+            "connection_generation",
+        )
+        if not all(
+            isinstance(lifecycle.get(key), int)
+            and not isinstance(lifecycle.get(key), bool)
+            and lifecycle.get(key, 0) > 0
+            for key in required
+        ):
+            return None
+        return {
+            "label": label,
+            "before": {
+                "bridge_pid": lifecycle["previous_pid"],
+                "connection_generation": lifecycle[
+                    "previous_connection_generation"
+                ],
+            },
+            "after": {
+                "bridge_pid": lifecycle["pid"],
+                "connection_generation": lifecycle["connection_generation"],
+            },
+            "lifecycle": dict(lifecycle),
+        }
+
+    scoreboard_value = scenario.get("scoreboard_gameplay_action_cell")
+    scoreboard = scoreboard_value if isinstance(scoreboard_value, dict) else {}
+    surface_matrix_value = scoreboard.get("surface_matrix")
+    surface_matrix = (
+        surface_matrix_value if isinstance(surface_matrix_value, dict) else {}
+    )
+    scoreboard_records: list[dict[str, object]] = []
+    for surface_id in ("managed-capable", "received-only"):
+        surface_value = surface_matrix.get(surface_id)
+        surface = surface_value if isinstance(surface_value, dict) else {}
+        preparation_value = surface.get("preparation")
+        preparation = (
+            preparation_value if isinstance(preparation_value, dict) else {}
+        )
+        record = lifecycle_record(
+            f"scoreboard:{surface_id}", preparation.get("lifecycle")
+        )
+        if record is not None:
+            scoreboard_records.append(record)
+    scoreboard_pids = (
+        [scoreboard_records[0]["before"]["bridge_pid"]]
+        + [record["after"]["bridge_pid"] for record in scoreboard_records]
+        if scoreboard_records
+        else []
+    )
+    scoreboard_generations = (
+        [
+            scoreboard_records[0]["before"][
+                "connection_generation"
+            ]
+        ]
+        + [
+            record["after"]["connection_generation"]
+            for record in scoreboard_records
+        ]
+        if scoreboard_records
         else []
     )
 
@@ -7737,8 +7800,79 @@ def _phase2_expected_session_lineage(
         if isinstance(workforce_generation_value, list)
         else []
     )
+    workforce_restore_records_value = workforce_lineage.get("restore_records")
+    workforce_restore_records = (
+        list(workforce_restore_records_value)
+        if isinstance(workforce_restore_records_value, list)
+        else []
+    )
+
+    promotion_value = scenario.get("promotion_source_checkpoint_restore")
+    promotion = promotion_value if isinstance(promotion_value, dict) else {}
+    promotion_receipt_value = promotion.get("restore_receipt")
+    promotion_receipt = (
+        promotion_receipt_value
+        if isinstance(promotion_receipt_value, dict)
+        else {}
+    )
+    promotion_record = lifecycle_record(
+        "promotion:zg361pp.147", promotion_receipt.get("lifecycle")
+    )
+    promotion_records = [promotion_record] if promotion_record is not None else []
+    promotion_pids = (
+        [
+            promotion_record["before"]["bridge_pid"],
+            promotion_record["after"]["bridge_pid"],
+        ]
+        if promotion_record is not None
+        else []
+    )
+    promotion_generations = (
+        [
+            promotion_record["before"]["connection_generation"],
+            promotion_record["after"]["connection_generation"],
+        ]
+        if promotion_record is not None
+        else []
+    )
+
+    segments = (
+        ("base", base_pids, base_generations),
+        ("scoreboard", scoreboard_pids, scoreboard_generations),
+        ("workforce", workforce_pids, workforce_generations),
+        ("promotion", promotion_pids, promotion_generations),
+    )
+    full_pids: list[object] = []
+    full_generations: list[object] = []
+    joins: dict[str, bool] = {}
+    recorded_segments: list[str] = []
+    for name, segment_pids, segment_generations in segments:
+        recorded = bool(segment_pids or segment_generations)
+        if not recorded:
+            joins[name] = True
+            continue
+        recorded_segments.append(name)
+        if not full_pids and not full_generations:
+            full_pids.extend(segment_pids)
+            full_generations.extend(segment_generations)
+            joins[name] = True
+            continue
+        join_matches = bool(
+            full_pids
+            and full_generations
+            and segment_pids
+            and segment_generations
+            and segment_pids[0] == full_pids[-1]
+            and segment_generations[0] == full_generations[-1]
+        )
+        joins[name] = join_matches
+        # Retain every claimed post-restore binding even when the join is
+        # malformed, so liveness and cleanup expose the exact drift.
+        full_pids.extend(segment_pids[1:])
+        full_generations.extend(segment_generations[1:])
+
     workforce_recorded = bool(workforce_pids or workforce_generations)
-    join_matches = bool(
+    workforce_joins_base = bool(
         base_pids
         and base_generations
         and workforce_pids
@@ -7746,16 +7880,47 @@ def _phase2_expected_session_lineage(
         and workforce_pids[0] == base_pids[-1]
         and workforce_generations[0] == base_generations[-1]
     )
-    full_pids = list(base_pids)
-    full_generations = list(base_generations)
-    if workforce_recorded:
-        # Append even when the join is malformed.  The explicit join check
-        # below will make cleanup/liveness RED, while retaining every claimed
-        # retired process in the diagnostic projection.
-        full_pids.extend(workforce_pids[1:])
-        full_generations.extend(workforce_generations[1:])
+    additional_restore_records = [
+        *scoreboard_records,
+        *workforce_restore_records,
+        *promotion_records,
+    ]
+    base_count = len(base_pids)
+    additional_records_match_lineage = bool(
+        base_count
+        and len(full_pids) == len(full_generations)
+        and len(additional_restore_records) == len(full_pids) - base_count
+        and all(
+            isinstance(record, dict)
+            and isinstance(record.get("before"), dict)
+            and isinstance(record.get("after"), dict)
+            and isinstance(record.get("lifecycle"), dict)
+            and record["before"].get("bridge_pid")
+            == full_pids[index + base_count - 1]
+            and record["after"].get("bridge_pid")
+            == full_pids[index + base_count]
+            and record["before"].get("connection_generation")
+            == full_generations[index + base_count - 1]
+            and record["after"].get("connection_generation")
+            == full_generations[index + base_count]
+            and record["lifecycle"].get("previous_pid")
+            == full_pids[index + base_count - 1]
+            and record["lifecycle"].get("pid")
+            == full_pids[index + base_count]
+            and record["lifecycle"].get("previous_connection_generation")
+            == full_generations[index + base_count - 1]
+            and record["lifecycle"].get("connection_generation")
+            == full_generations[index + base_count]
+            and record["lifecycle"].get("lifecycle_intent") == "restore"
+            for index, record in enumerate(additional_restore_records)
+        )
+    )
     return {
         "base": base,
+        "scoreboard_cell": scoreboard,
+        "scoreboard_restore_records": scoreboard_records,
+        "scoreboard_pid_lineage": scoreboard_pids,
+        "scoreboard_connection_generation_lineage": scoreboard_generations,
         "workforce_cell": workforce,
         "workforce_lineage": workforce_lineage,
         "base_pid_lineage": base_pids,
@@ -7764,7 +7929,18 @@ def _phase2_expected_session_lineage(
         "workforce_connection_generation_lineage": workforce_generations,
         "workforce_recorded": workforce_recorded,
         "workforce_join_matches_base_final": (
-            join_matches if workforce_recorded else True
+            workforce_joins_base if workforce_recorded else True
+        ),
+        "promotion_source_checkpoint_restore": promotion,
+        "promotion_restore_records": promotion_records,
+        "promotion_pid_lineage": promotion_pids,
+        "promotion_connection_generation_lineage": promotion_generations,
+        "recorded_segments": recorded_segments,
+        "segment_joins_previous_final": joins,
+        "all_recorded_lineage_joins_match": all(joins.values()),
+        "additional_restore_records": additional_restore_records,
+        "additional_restore_records_match_full_lineage": (
+            additional_records_match_lineage
         ),
         "pid_lineage": full_pids,
         "connection_generation_lineage": full_generations,
@@ -7783,7 +7959,7 @@ def prove_phase2_native_session_cleanup(
     session_error: object = None,
     supervisor_stopped: bool,
 ) -> dict[str, object]:
-    """Prove every managed PID from the base and optional Workforce restores."""
+    """Prove every managed PID from every formal-live restore stage."""
 
     evidence_path = artifacts / "09_phase2_native_session_cleanup.json"
     report = session_report if isinstance(session_report, dict) else {}
@@ -8070,15 +8246,9 @@ def prove_phase2_native_session_cleanup(
                 )
             )
         else:
-            workforce_lineage_value = lineage_projection.get(
-                "workforce_lineage"
+            restore_records_value = lineage_projection.get(
+                "additional_restore_records"
             )
-            workforce_lineage = (
-                workforce_lineage_value
-                if isinstance(workforce_lineage_value, dict)
-                else {}
-            )
-            restore_records_value = workforce_lineage.get("restore_records")
             restore_records = (
                 restore_records_value
                 if isinstance(restore_records_value, list)
@@ -8124,17 +8294,27 @@ def prove_phase2_native_session_cleanup(
                     == pid_lineage[index + base_count - 1]
                     and row["lifecycle"].get("pid")
                     == pid_lineage[index + base_count]
+                    and row["lifecycle"].get(
+                        "previous_connection_generation"
+                    )
+                    == generation_lineage[index + base_count - 1]
+                    and row["lifecycle"].get("connection_generation")
+                    == generation_lineage[index + base_count]
+                    and row["lifecycle"].get("lifecycle_intent") == "restore"
                     for index, row in enumerate(restore_records)
                 )
             )
             checks.update(
                 {
-                    "workforce_restart_lineage_recorded": (
-                        lineage_projection.get("workforce_recorded") is True
-                    ),
-                    "workforce_join_matches_base_final": (
+                    "all_recorded_lineage_joins_match": (
                         lineage_projection.get(
-                            "workforce_join_matches_base_final"
+                            "all_recorded_lineage_joins_match"
+                        )
+                        is True
+                    ),
+                    "additional_restore_records_match_full_lineage": (
+                        lineage_projection.get(
+                            "additional_restore_records_match_full_lineage"
                         )
                         is True
                     ),
@@ -8171,6 +8351,10 @@ def prove_phase2_native_session_cleanup(
                         "pid"
                     )
                     == expected_final_pid,
+                    "additional_restore_lifecycle_chain_exact": lifecycle_chain,
+                    # Compatibility alias for existing focused Workforce
+                    # evidence.  The underlying check now covers scoreboard,
+                    # Workforce, and promotion restores in execution order.
                     "workforce_restore_lifecycle_chain_exact": lifecycle_chain,
                 }
             )
@@ -13584,9 +13768,15 @@ def phase2_native_session_liveness_gate(
                     generation_lineage[0] + len(generation_lineage),
                 )
             ),
-            "workforce_join_matches_base_final": (
+            "all_recorded_lineage_joins_match": (
                 lineage_projection.get(
-                    "workforce_join_matches_base_final"
+                    "all_recorded_lineage_joins_match"
+                )
+                is True
+            ),
+            "additional_restore_records_match_full_lineage": (
+                lineage_projection.get(
+                    "additional_restore_records_match_full_lineage"
                 )
                 is True
             ),
@@ -19283,7 +19473,9 @@ def run_phase2_full_tree_promotion_compensation_cell(
         ),
         "source_checkpoint_preflight": None,
         "source_checkpoint_restore": None,
+        "pre_restore_binding": None,
         "restored_source_binding": None,
+        "restore_lifecycle": None,
         "restored_source_event_identity": None,
         "action_cell": None,
         "mcp_only": True,
@@ -19350,6 +19542,16 @@ def run_phase2_full_tree_promotion_compensation_cell(
         )
         evidence["source_checkpoint_preflight"] = provider.preflight()
         plan = phase2_event_sequence_plan(PROMOTION_HANDLER)
+        pre_restore_snapshot = service.snapshot()
+        if not isinstance(pre_restore_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two promotion pre-restore snapshot is not an object"
+            )
+        pre_restore_binding = _phase2_paused_binding(
+            pre_restore_snapshot,
+            label="phase-two promotion pre-restore binding",
+        )
+        evidence["pre_restore_binding"] = pre_restore_binding
         restored = provider.restore(plan)
         evidence["source_checkpoint_restore"] = restored
 
@@ -19369,6 +19571,15 @@ def run_phase2_full_tree_promotion_compensation_cell(
         evidence["restored_source_event_identity"] = restored_identity
         expected = restored.get("expected")
         expected = expected if isinstance(expected, Mapping) else {}
+        restore_receipt_value = restored.get("restore_receipt")
+        restore_receipt = (
+            restore_receipt_value
+            if isinstance(restore_receipt_value, Mapping)
+            else {}
+        )
+        lifecycle_value = restore_receipt.get("lifecycle")
+        lifecycle = lifecycle_value if isinstance(lifecycle_value, Mapping) else {}
+        evidence["restore_lifecycle"] = dict(lifecycle)
         checks = {
             "canonical_promotion_plan": (
                 plan.source_event == PROMOTION_COMPENSATION_SOURCE_EVENT
@@ -19394,8 +19605,32 @@ def run_phase2_full_tree_promotion_compensation_cell(
             "restored_date_exact": (
                 restored_binding["date_raw"] == expected.get("date_raw")
             ),
-            "tracked_pid_preserved": (
-                restored_binding["bridge_pid"] == tracked_ck3_pid
+            "tracked_initial_pid_valid": (
+                isinstance(tracked_ck3_pid, int)
+                and not isinstance(tracked_ck3_pid, bool)
+                and tracked_ck3_pid > 0
+            ),
+            "restore_lifecycle_intent": (
+                lifecycle.get("lifecycle_intent") == "restore"
+            ),
+            "restore_lifecycle_previous_binding_matches": (
+                lifecycle.get("previous_pid")
+                == pre_restore_binding["bridge_pid"]
+                and lifecycle.get("previous_connection_generation")
+                == pre_restore_binding["connection_generation"]
+            ),
+            "restore_lifecycle_new_binding_matches": (
+                lifecycle.get("pid") == restored_binding["bridge_pid"]
+                and lifecycle.get("connection_generation")
+                == restored_binding["connection_generation"]
+            ),
+            "restore_pid_advanced": (
+                restored_binding["bridge_pid"]
+                != pre_restore_binding["bridge_pid"]
+            ),
+            "restore_generation_advanced_once": (
+                restored_binding["connection_generation"]
+                == pre_restore_binding["connection_generation"] + 1
             ),
         }
         evidence["checks"] = checks

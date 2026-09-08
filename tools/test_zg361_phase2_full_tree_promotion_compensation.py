@@ -24,8 +24,16 @@ from test_zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
 
 
 class _RestoreService:
-    def __init__(self, *, pid: int = 4321) -> None:
+    def __init__(
+        self,
+        *,
+        pid: int = 4321,
+        restored_pid: int = 5432,
+        generation: int = 2,
+    ) -> None:
         self.pid = pid
+        self.restored_pid = restored_pid
+        self.generation = generation
         self.restore_calls: list[dict[str, object]] = []
 
     @staticmethod
@@ -36,6 +44,10 @@ class _RestoreService:
         self, **kwargs: object
     ) -> dict[str, object]:
         self.restore_calls.append(dict(kwargs))
+        previous_pid = self.pid
+        previous_generation = self.generation
+        self.pid = self.restored_pid
+        self.generation += 1
         return {
             "result": "GREEN",
             "provider_observed": True,
@@ -48,6 +60,14 @@ class _RestoreService:
             "fixture_used": False,
             "console_used": False,
             "generic_character_rebind_used": False,
+            "lifecycle": {
+                "lifecycle_intent": "restore",
+                "request_id": "promotion-restore-unit",
+                "previous_pid": previous_pid,
+                "pid": self.pid,
+                "previous_connection_generation": previous_generation,
+                "connection_generation": self.generation,
+            },
         }
 
     def snapshot(self) -> dict[str, object]:
@@ -62,7 +82,7 @@ class _RestoreService:
             "active_event": {"instance_id": 14701, "option_count": 2},
             "diagnostics": {
                 "bridge_pid": self.pid,
-                "connection_generation": 3,
+                "connection_generation": self.generation,
             },
         }
 
@@ -152,6 +172,14 @@ class FullTreePromotionCompensationTests(unittest.TestCase):
             self.assertEqual(evidence["result"], "GREEN")
             self.assertTrue(evidence["source_checkpoint_registry_used"])
             self.assertTrue(all(evidence["checks"].values()))
+            self.assertEqual(evidence["pre_restore_binding"]["bridge_pid"], 4321)
+            self.assertEqual(
+                evidence["restored_source_binding"]["bridge_pid"], 5432
+            )
+            self.assertEqual(
+                evidence["restore_lifecycle"]["previous_pid"], 4321
+            )
+            self.assertEqual(evidence["restore_lifecycle"]["pid"], 5432)
             self.assertEqual(
                 evidence["restored_source_event_identity"][
                     "event_definition_key"
@@ -175,6 +203,46 @@ class FullTreePromotionCompensationTests(unittest.TestCase):
                 ).read_text(encoding="utf-8")
             )
             self.assertEqual(artifact, evidence)
+
+    def test_same_pid_fake_restore_is_rejected_before_action(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "artifacts"
+            artifacts.mkdir()
+            registry_root = root / "registry"
+            registry_root.mkdir()
+            registry = _registry(registry_root)
+            service = _RestoreService(pid=4321, restored_pid=4321)
+
+            with (
+                mock.patch.object(
+                    capture,
+                    "_phase2_seed_lineage_id",
+                    return_value="seed-lineage-unit",
+                ),
+                mock.patch.object(
+                    capture, "run_promotion_compensation_gameplay_action_cell"
+                ) as action,
+            ):
+                with self.assertRaises(capture.acceptance.RunnerError) as raised:
+                    capture.run_phase2_full_tree_promotion_compensation_cell(
+                        service,  # type: ignore[arg-type]
+                        artifacts,
+                        tracked_ck3_pid=4321,
+                        seed_contract={},
+                        source_checkpoint_registry=registry,
+                    )
+
+            self.assertIn("restore_pid_advanced", str(raised.exception))
+            action.assert_not_called()
+            artifact = json.loads(
+                (
+                    artifacts
+                    / "09_phase2_promotion_compensation_full_tree_cell.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(artifact["result"], "RED")
+            self.assertFalse(artifact["checks"]["restore_pid_advanced"])
 
     def test_missing_registry_is_typed_red_and_never_calls_action(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
