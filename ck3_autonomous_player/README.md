@@ -256,6 +256,11 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
+Codex 的按 Windows 用户 MCP 安装、stdio 注册、独立 pipe/state/userdir 和 no-launch doctor 统一走
+`py ck3_autonomous_player\codex_mcp_setup.py plan|setup|doctor`；完整交接见
+[跨账户/跨机器 MCP 配置](../docs/ck3-portable-codex-mcp-setup.md)。该入口复用现有
+`ck3_set_played_character_v1`，不会启动 CK3，也不会复制第二套换人 provider。
+
 `native-auto-run` 是单进程 ownership 入口：它先建立 named pipe，再启动受管 CK3，会在 exact-build、默认关闭启动探针、
 paused map、episode identity 与 main-thread mailbox 全部就绪后有界执行 planner。查询与玩法回合分账；每三个确实返回
 `postcondition` 且产生语义变化的推进回合自动物化并核验 checkpoint，回合上限结束时也保存尚未落盘的可见进度。
