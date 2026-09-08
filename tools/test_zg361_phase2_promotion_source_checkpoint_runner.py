@@ -3959,6 +3959,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         names = variant["saved_scope_names"]
         characters = {
             **variant["character_scopes"],
+            "zg361_b1_reopen_ticket_subject": 45031,
             "zg361_b2_support_mentor": 30434,
             "zg361_b2_pip_deadline_subject": 29747,
             "zg361_notice_deadline_subject": 29747,
