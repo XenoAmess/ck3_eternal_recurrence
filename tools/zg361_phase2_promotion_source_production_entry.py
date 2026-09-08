@@ -1600,13 +1600,15 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # or recruits the dynamic rival, stores it on the story and installs
         # the rivalry before the modal opens. Its sole option contains only
         # show_as_tooltip for that already-applied relation. Bind the complete
-        # source-authored frame before acknowledging it.
+        # source-authored frame before acknowledging it. The origin helper
+        # chooses either a neighboring top-liege realm owner or root as its
+        # origin_liege; only its character type is visible through this bridge.
+        # The shared story frame can independently retain protege/student.
         "date_raw": 53229168,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
         "character_scopes": {
             "emperor": 32904,
-            "origin_liege": 32904,
         },
         "unique_character_scope_excludes": {
             "eunuch": (32904,),
@@ -1625,17 +1627,24 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "origin": "landed_title",
             "rival": "character",
         },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "origin_liege",
-            "origin",
-            "rival",
-        ),),
-        "saved_scope_count": 7,
+        "saved_scope_name_sets": _optional_scope_name_sets(
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "origin_liege",
+                "origin",
+                "rival",
+            ),
+            ("protege", "student"),
+        ),
+        "saved_scope_counts": (7, 8, 9),
         "option_count": 1,
         "native_option_indices": (0,),
         "selected_option_number": 1,

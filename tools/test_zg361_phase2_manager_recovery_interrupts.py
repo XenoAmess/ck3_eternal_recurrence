@@ -2247,6 +2247,42 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 4)
+
+        dynamic_origin_liege = copy.deepcopy(context)
+        dynamic_origin_liege["saved_scopes"][4] = _scope(
+            "origin_liege", "character", 32922
+        )
+        dynamic_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229168,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 218},
+            context=dynamic_origin_liege,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(dynamic_checks.values()), dynamic_checks)
+
+        retained_story_roles = copy.deepcopy(dynamic_origin_liege)
+        retained_story_roles["saved_scopes"].extend(
+            [
+                _scope("protege", "character", 33001),
+                _scope("student", "character", 33002),
+            ]
+        )
+        retained_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53229168,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 218},
+            context=retained_story_roles,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(retained_checks.values()), retained_checks)
 
         same_rival = copy.deepcopy(context)
         same_rival["saved_scopes"][6] = _scope(

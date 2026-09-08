@@ -86,3 +86,31 @@ downgrade、意见与 trait-dependent stress。合同选择 native 1，并要求
 - 第二次 RED report 快照：23,058,717 bytes，SHA-256
   `FEE8B6660F0556E647B259A70C2D9D2204BE38C44DC024273A7C2BF82EB64529`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`，同 PID 热重试获准。
+
+## 同会话第三次 RED：动态出身领主
+
+第二次 `retry` 热加载提交
+`00569d72652b1d55a31ed2a4356984077139ee21` 后，同一 PID `159264` 推进到
+`ep3_story_cycle_admin_eunuch.3010`、event instance `351`、
+`date_raw=53228184`。唯一失败项是旧合同把 `origin_liege` 固定为玩家
+`32904`，而本帧真实值为 `32922`；其余完整七项 scope、玩家 root、eunuch /
+rival 互异和唯一 native option 0 均通过，选择尚未发生。
+
+原版 `ep3_story_cycle_admin_eunuch_save_origin_effect` 有两条明确路线：50%
+从相邻顶级领主领地选择 realm owner；未选到时才把当前 root 保存为
+`origin_liege`。因此固定玩家 ID 是旧实见值污染，不是原版不变量。当前 native
+bridge 没有发布“相邻顶级领主”关系查询，合同能诚实绑定的是 character 类型、
+精确名称集合及其余人物关系；不能把不可观测关系伪装成已验证。
+
+同时，shared story effect 可独立保留 `protege/student`。合同现接受基础七项
+加这两项的四个精确组合，未知超集仍拒绝。`.3010` 的 immediate 已选择/创建
+rival、写入 story 并建立 rivalry；唯一 option 只是 `show_as_tooltip`，因此确认
+按钮不增加业务状态。
+
+- 第三次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-3.json`；
+- park SHA-256：
+  `9F80CB9B6E36ED6F45E07B06BDB109988C49CF4F71990B32862AAE1BD2684AE8`；
+- 第三次 RED report 快照：11,632,234 bytes，SHA-256
+  `0BCF8FBDF72B5F93D731D21B0FC362FA0C7A6AC8AC612EFCC0ACA1C2223A31F3`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`，继续只做同 PID 热重试。
