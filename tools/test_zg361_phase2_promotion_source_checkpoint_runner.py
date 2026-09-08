@@ -102,6 +102,23 @@ def _player_manager_seed_contract(seed_sha: str = "A" * 64) -> dict[str, object]
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_initial_m146_is_the_valid_paused_product_target(self) -> None:
+        common = {
+            "player": 32904,
+            "timeline_origin_date": production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW,
+            "stop_at_clean_review_boundary": False,
+            "clean_boundary_event_definition_key": None,
+        }
+        self.assertTrue(
+            production._initial_event_is_supported(production.M146, **common)
+        )
+        self.assertTrue(
+            production._initial_event_is_supported("zg361.5", **common)
+        )
+        self.assertFalse(
+            production._initial_event_is_supported("unowned.999", **common)
+        )
+
     def test_review_now_waits_for_heartbeat_before_product_postcondition(
         self,
     ) -> None:

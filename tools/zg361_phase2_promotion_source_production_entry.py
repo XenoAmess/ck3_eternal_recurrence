@@ -4694,6 +4694,30 @@ def _drain_known_timeline_interrupt(
     }
 
 
+def _initial_event_is_supported(
+    key: str,
+    *,
+    player: int,
+    timeline_origin_date: int,
+    stop_at_clean_review_boundary: bool,
+    clean_boundary_event_definition_key: str | None,
+) -> bool:
+    if key == M146 or key in KNOWN_TIMELINE_INTERRUPTS:
+        return True
+    if not stop_at_clean_review_boundary:
+        return False
+    if key == clean_boundary_event_definition_key:
+        return True
+    return (
+        _manager_recovery_pp_contract(
+            key,
+            player=player,
+            starting_date=timeline_origin_date,
+        )
+        is not None
+    )
+
+
 def enter_promotion_source_checkpoint_v1(
     service: PromotionProductionEntryService,
     *,
@@ -4788,15 +4812,14 @@ def enter_promotion_source_checkpoint_v1(
             and key == clean_boundary_event_definition_key
         ):
             initial_clean_boundary_event = True
-        elif (
-            key not in KNOWN_TIMELINE_INTERRUPTS
-            and not (
-                stop_at_clean_review_boundary
-                and _manager_recovery_pp_contract(
-                    key, player=player, starting_date=timeline_origin_date,
-                )
-                is not None
-            )
+        elif not _initial_event_is_supported(
+            key,
+            player=player,
+            timeline_origin_date=timeline_origin_date,
+            stop_at_clean_review_boundary=stop_at_clean_review_boundary,
+            clean_boundary_event_definition_key=(
+                clean_boundary_event_definition_key
+            ),
         ):
             raise PromotionProductionEntryError(
                 f"promotion entry started on unexpected event {key!r}"
