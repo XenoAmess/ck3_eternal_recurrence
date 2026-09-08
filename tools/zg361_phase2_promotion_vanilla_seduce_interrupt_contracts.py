@@ -19,9 +19,15 @@ VANILLA_SEDUCE_TIMELINE_CONTRACTS: Final[
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
         "character_scopes": {
-            "owner": 30320,
-            "target": 37337,
             "target_liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "owner": (32904,),
+            "target": (32904,),
+        },
+        "character_scope_differs_from": {
+            "owner": ("target", "target_liege"),
+            "target": ("owner", "target_liege"),
         },
         "scope_types": {
             "scheme": "scheme",

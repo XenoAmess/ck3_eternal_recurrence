@@ -2328,39 +2328,67 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             production.KNOWN_TIMELINE_INTERRUPTS[event_key],
             starting_date=53199480,
         )
-        context = _context(
-            event_key=event_key,
-            instance_id=208,
-            date_raw=53215752,
-            player=32904,
-            scopes=[
-                _scope("scheme", "scheme"),
-                _scope("owner", "character", 30320),
-                _scope("artifact", "artifact"),
-                _scope("target", "character", 37337),
-                _scope("ignore_cheating_error_check", "boolean"),
-                _scope("discovery_chance", "value"),
-                _scope("scheme_discovered", "boolean"),
-                _scope("target_liege", "character", 32904),
-            ],
-            native_option_indices=(0,),
+        contexts = (
+            _context(
+                event_key=event_key,
+                instance_id=208,
+                date_raw=53215752,
+                player=32904,
+                scopes=[
+                    _scope("scheme", "scheme"),
+                    _scope("owner", "character", 30320),
+                    _scope("artifact", "artifact"),
+                    _scope("target", "character", 37337),
+                    _scope("ignore_cheating_error_check", "boolean"),
+                    _scope("discovery_chance", "value"),
+                    _scope("scheme_discovered", "boolean"),
+                    _scope("target_liege", "character", 32904),
+                ],
+                native_option_indices=(0,),
+            ),
+            _context(
+                event_key=event_key,
+                instance_id=342,
+                date_raw=53217600,
+                player=32904,
+                scopes=[
+                    _scope("scheme", "scheme"),
+                    _scope("owner", "character", 28443),
+                    _scope("artifact", "artifact"),
+                    _scope("target", "character", 34991),
+                    _scope("ignore_cheating_error_check", "boolean"),
+                    _scope("discovery_chance", "value"),
+                    _scope("scheme_discovered", "boolean"),
+                    _scope("target_liege", "character", 32904),
+                ],
+                native_option_indices=(0,),
+            ),
         )
-        checks = production._known_interrupt_checks(
-            snapshot={
-                "date_raw": 53215752,
-                "active_event": {"option_count": 1},
-            },
-            event={"event_instance_id": 208},
-            context=context,
-            event_key=event_key,
-            contract=contract,
-        )
+        for context in contexts:
+            with self.subTest(instance_id=context["current_event_instance_id"]):
+                checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": context["date_raw"],
+                        "active_event": {"option_count": 1},
+                    },
+                    event={
+                        "event_instance_id": context[
+                            "current_event_instance_id"
+                        ]
+                    },
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
 
-        self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["character_scopes"], {"target_liege": 32904}
+        )
 
-        drifted = copy.deepcopy(context)
+        drifted = copy.deepcopy(contexts[1])
         drifted["saved_scopes"][7] = _scope(
             "target_liege", "character", 30320
         )
@@ -2375,6 +2403,22 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["scope:target_liege"])
+
+        drifted = copy.deepcopy(contexts[1])
+        drifted["saved_scopes"][3] = _scope(
+            "target", "character", 28443
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53217600,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 342},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:owner:differs_from"])
 
 
 if __name__ == "__main__":
