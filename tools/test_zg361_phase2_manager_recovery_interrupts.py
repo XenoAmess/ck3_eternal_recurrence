@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Purpose-split contracts for incidental manager-cycle event drains."""
 
 from __future__ import annotations
@@ -2259,6 +2259,75 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["saved_scope_names_exact"])
         self.assertFalse(drift_checks["saved_scope_count"])
+
+    def test_eunuch_tribute_declines_person_without_court_mutation(self) -> None:
+        event_key = "tribute_mission.1002"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=225,
+            date_raw=53231832,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 34162),
+                _scope("recipient", "character", 32904),
+                _scope(
+                    "secondary_actor",
+                    "character",
+                    unavailable_character=True,
+                ),
+                _scope("secondary_recipient", "character", 35197),
+                _scope(
+                    "intermediary",
+                    "character",
+                    unavailable_character=True,
+                ),
+                _scope("tribute_mission_target", "character", 32904),
+                _scope("tributary_scope", "character", 34162),
+                _scope("overlord_scope", "character", 32904),
+                _scope("receiving_character", "character", 32904),
+                _scope("opinion_of_tributary", "value"),
+                _scope("eunuch_character", "character", 35197),
+                _scope("human_tribute", "character", 35197),
+                _scope("tribute_reward_type_treasury", "value"),
+                _scope("saved_innovation", "culture_innovation"),
+            ],
+            native_option_indices=(0, 2, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53231832,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 225},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+        wrong_branch_options = copy.deepcopy(context)
+        wrong_branch_options["options"] = [
+            {**row, "native_option_index": native}
+            for row, native in zip(
+                wrong_branch_options["options"],
+                (0, 1, 3),
+            )
+        ]
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53231832,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 225},
+            context=wrong_branch_options,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
 
     def test_tribute_reward_uses_no_player_resource_cost_route(self) -> None:
         event_key = "tribute_mission.1005"

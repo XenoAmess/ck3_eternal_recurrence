@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed tribute-mission manager interrupt contracts."""
 
 from __future__ import annotations
@@ -54,10 +54,11 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
     "tribute_mission.1002": {
         # CK3 1.19.0.6 human-tribute receipt. R136 observed a concubine
         # tribute: authored option 3 was hidden, leaving native indices
-        # 0/1/3. Options 1 and 2 install the character in the played ruler's
-        # court; option 4 declines that character and changes no product
-        # state. The event still advances to its vanilla reward decision,
-        # which must be reviewed under its own exact contract when observed.
+        # 0/1/3. R354 observed the source-defined eunuch branch: authored
+        # option 2 was hidden, leaving 0/2/3. The final authored option
+        # declines either character and changes no product state. The event
+        # still advances to its vanilla reward decision, which must be
+        # reviewed under its own exact contract when observed.
         "date_raw": 53150160,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -115,6 +116,68 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
             "tribute_reward_type_treasury",
             "saved_innovation",
         ),),
+        "scope_variants": (
+            {
+                "saved_scope_names": (
+                    "actor",
+                    "recipient",
+                    "secondary_actor",
+                    "secondary_recipient",
+                    "intermediary",
+                    "tribute_mission_target",
+                    "tributary_scope",
+                    "overlord_scope",
+                    "receiving_character",
+                    "opinion_of_tributary",
+                    "concubine_character",
+                    "human_tribute",
+                    "tribute_reward_type_treasury",
+                    "saved_innovation",
+                ),
+                "native_option_indices": (0, 1, 3),
+            },
+            {
+                "saved_scope_names": (
+                    "actor",
+                    "recipient",
+                    "secondary_actor",
+                    "secondary_recipient",
+                    "intermediary",
+                    "tribute_mission_target",
+                    "tributary_scope",
+                    "overlord_scope",
+                    "receiving_character",
+                    "opinion_of_tributary",
+                    "eunuch_character",
+                    "human_tribute",
+                    "tribute_reward_type_treasury",
+                    "saved_innovation",
+                ),
+                "unique_character_scope_excludes": {
+                    "actor": (29037,),
+                    "secondary_recipient": (29037,),
+                    "tributary_scope": (29037,),
+                    "eunuch_character": (29037,),
+                    "human_tribute": (29037,),
+                },
+                "character_scope_matches_any": {
+                    "tributary_scope": ("actor",),
+                    "secondary_recipient": (
+                        "eunuch_character",
+                        "human_tribute",
+                    ),
+                    "eunuch_character": (
+                        "secondary_recipient",
+                        "human_tribute",
+                    ),
+                    "human_tribute": (
+                        "secondary_recipient",
+                        "eunuch_character",
+                    ),
+                },
+                "native_option_indices": (0, 2, 3),
+            },
+        ),
         "saved_scope_count": 14,
         "option_count": 3,
         "snapshot_option_count": 4,
