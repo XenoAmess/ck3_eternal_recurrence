@@ -3151,6 +3151,43 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native played-character rebind lost its postcondition"
             )
+        with self._episode_identity_lock:
+            prior_episode_character_id = self._episode_character_id
+            episode_run_id = self._episode_run_id
+            episode_rebind_performed = self._episode_character_id != target
+            if episode_rebind_performed:
+                # This command is an explicit operator context switch, not an
+                # autonomous one-life terminal. Keep the save/run lineage but
+                # move its active identity to the character CK3 just confirmed.
+                # Character-scoped read caches must not cross that boundary.
+                self._episode_character_id = target
+                self._episode_binding_state = "active_operator_rebind"
+                self._driver_state_restore_kind = "operator_played_character_rebind"
+                self._declarable_wars = []
+                self._declaration_query_sequence = None
+                self._army_strength_query = None
+                self._combat_simulation_inputs_query = None
+                self._combat_simulation_inputs_v3_query = None
+                self._battle_control_snapshot_v1_query = None
+                self._active_combat_retreat_v1_token = None
+                self._war_entry_assessments_query = None
+                self._war_termination_options = {}
+                self._war_termination_terms = {}
+                self._war_termination_exit_terms = {}
+                self._arrange_marriage_choices = []
+                self._arrange_marriage_query_sequence = None
+        if episode_rebind_performed:
+            self._persist_driver_state()
+        rebound = self.take_snapshot()
+        if not (
+            rebound.get("episode_character_id") == target
+            and rebound.get("episode_run_id") == episode_run_id
+            and rebound.get("one_life_terminal") is False
+            and rebound.get("one_life_terminal_reason") is None
+        ):
+            raise BridgeUnavailableError(
+                "native played-character rebind did not update the driver episode"
+            )
         return {
             "schema_version": 1,
             "step": step,
@@ -3165,6 +3202,11 @@ class NativeHeadlessGameplayDriver:
             "paused": True,
             "map_ready": True,
             "postcondition_verified": True,
+            "prior_episode_character_id": prior_episode_character_id,
+            "episode_character_id": target,
+            "episode_run_id": episode_run_id,
+            "episode_rebind_performed": episode_rebind_performed,
+            "one_life_terminal_cleared": True,
             "backend_id": "native-headless",
         }
 

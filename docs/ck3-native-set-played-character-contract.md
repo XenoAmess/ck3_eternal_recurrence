@@ -37,6 +37,13 @@ are typed rejections: `target_not_found`, `target_dead`,
 `target_controlled`, `requires_paused`, `map_not_ready`, `state_changed`,
 `postcondition_failed`, `submission_failed`, or `unavailable`.
 
+After CK3 confirms the switch, the driver atomically rebinds the active
+one-life episode identity to the requested CharacterID, preserves the existing
+save/run lineage, invalidates all character-scoped query caches, and persists
+the new identity. This prevents an explicit operator switch from being
+misclassified as the autonomous `played_character_changed` terminal and lets
+subsequent bounded MCP actions continue from the same paused save.
+
 ## Portability boundary
 
 The MCP/Python surface is machine-independent. Native RVAs and the event ABI

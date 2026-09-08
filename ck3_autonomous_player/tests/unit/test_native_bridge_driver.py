@@ -54,6 +54,9 @@ from xar_autoplayer.bridge.native_driver import (
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
+from xar_autoplayer.bridge.set_played_character_contract import (
+    SET_PLAYED_CHARACTER_V1_CAPABILITY,
+)
 from xar_autoplayer.bridge.war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     BATTLE_TERMINAL_CRUISE_STEP,
@@ -2918,6 +2921,85 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 }
             ],
         )
+
+    def test_explicit_player_rebind_updates_episode_and_persists_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                {
+                    **_hello(
+                        "game.state.snapshot",
+                        "game.state.played-character",
+                        SET_PLAYED_CHARACTER_V1_CAPABILITY,
+                    ),
+                    "expected_ck3_version": "1.19.0.6",
+                    "expected_ck3_sha256": (
+                        "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+                    ),
+                    "ck3_build_match": True,
+                    "game_adapter_status": "ready",
+                }
+            )
+            endpoint.publish(
+                _snapshot(
+                    19,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            before = driver.take_snapshot()
+            before_run_id = before["episode_run_id"]
+
+            def answer(frame: dict[str, object]) -> None:
+                if frame.get("type") != "execute_step":
+                    return
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {
+                            "step": frame["step"],
+                            "accepted": True,
+                            "status": "switched",
+                        },
+                    }
+                )
+                endpoint.publish(
+                    _snapshot(
+                        20,
+                        played_character={"character_id": 909, "alive": True},
+                    )
+                )
+
+            endpoint.send_hook = answer
+            result = driver.set_player_character_v1(
+                909, expected_revision=int(before["revision"])
+            )
+            after = driver.take_snapshot()
+            persisted = json.loads(
+                (state_dir / "native-session" / "driver-state.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+
+            self.assertTrue(result["episode_rebind_performed"])
+            self.assertTrue(result["one_life_terminal_cleared"])
+            self.assertEqual(result["prior_episode_character_id"], 707)
+            self.assertEqual(result["episode_character_id"], 909)
+            self.assertEqual(result["episode_run_id"], before_run_id)
+            self.assertEqual(after["episode_character_id"], 909)
+            self.assertEqual(after["episode_run_id"], before_run_id)
+            self.assertFalse(after["one_life_terminal"])
+            self.assertIsNone(after["one_life_terminal_reason"])
+            self.assertEqual(persisted["episode_character_id"], 909)
+            self.assertEqual(persisted["episode_run_id"], before_run_id)
 
     def test_daemon_restart_restores_episode_and_command_history(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
