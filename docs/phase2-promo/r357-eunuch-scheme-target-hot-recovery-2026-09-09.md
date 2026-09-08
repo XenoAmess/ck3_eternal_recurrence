@@ -226,3 +226,28 @@ eunuch/rival 关系均通过；旧合同只接受基础五项，因合法继承�
   `A4AC597E025DB71FE80E01041C9A9D0BC0EC999CE5B077BF6ADB11E183A9A07C`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第八次 RED：傀儡继承人继承完整 story 角色
+
+第七次 `retry` 热加载提交 `980b2d07017afc0fbd551d3ae6366236fbd3ebdc` 后，同一 PID
+`159264` 推进到 `ep3_story_cycle_admin_eunuch.5020`、event instance `366`、
+`date_raw=53246016`。本帧八项 scope 为
+`story/emperor/eunuch/admin_title/student/rival/current_heir/puppet`；失败仍仅为
+旧合同把 `rival` 冻结为必有、且没有接收 `student`，选择尚未发生。
+
+原版 `.5020` 的 trigger 明确要求 story 中不存在 `protege` 和既有 `puppet`；因此
+shared save effect 在这里不会产生 `protege`，但 `student/rival` 均可独立存在。
+immediate 另固定保存当前继承人，并从玩家近亲中选出一个不是当前继承人的 `puppet`，
+建立其与宦官的友谊后写回 story。合同据此把六项事件自身 scope 设为必有，把
+`student/rival` 设为两个有限可选项，展开四个精确集合；current heir / puppet
+互异与非玩家约束保持不变。唯一 native option 会赋予 puppet 修正并提高任命投资，
+原版没有无副作用退出路线，故只在完整验帧后确认。
+
+- 第八次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-8.json`；
+- park SHA-256：
+  `A10E2E0E056DFF0A95EA4A0E9FB1F20530194CA0C05D809508FD863148C6C9A9`；
+- 第八次 RED report 快照：12,265,308 bytes，SHA-256
+  `58ABE2C984C374003DA85765315BF8848976A95702FC72CBAEF07C7E37B1E808`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

@@ -2675,14 +2675,15 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         contract = _manager_contract(event_key, player=32904)
         context = _context(
             event_key=event_key,
-            instance_id=226,
-            date_raw=53235120,
+            instance_id=366,
+            date_raw=53246016,
             player=32904,
             scopes=[
                 _scope("story", "story"),
                 _scope("emperor", "character", 32904),
                 _scope("eunuch", "character", 31801),
                 _scope("admin_title", "landed_title"),
+                _scope("student", "character", 33596937),
                 _scope("rival", "character", 16844822),
                 _scope("current_heir", "character", 36354),
                 _scope("puppet", "character", 37810),
@@ -2691,10 +2692,10 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53235120,
+                "date_raw": 53246016,
                 "active_event": {"option_count": 1},
             },
-            event={"event_instance_id": 226},
+            event={"event_instance_id": 366},
             context=context,
             event_key=event_key,
             contract=contract,
@@ -2703,17 +2704,36 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 4)
+
+        no_story_roles = copy.deepcopy(context)
+        no_story_roles["saved_scopes"] = [
+            scope
+            for scope in no_story_roles["saved_scopes"]
+            if scope["name"] not in {"student", "rival"}
+        ]
+        no_roles_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53246016,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 366},
+            context=no_story_roles,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(no_roles_checks.values()), no_roles_checks)
 
         current_heir_reused = copy.deepcopy(context)
-        current_heir_reused["saved_scopes"][6] = _scope(
+        current_heir_reused["saved_scopes"][7] = _scope(
             "puppet", "character", 36354
         )
         drift_checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53235120,
+                "date_raw": 53246016,
                 "active_event": {"option_count": 1},
             },
-            event={"event_instance_id": 226},
+            event={"event_instance_id": 366},
             context=current_heir_reused,
             event_key=event_key,
             contract=contract,
