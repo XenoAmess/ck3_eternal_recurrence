@@ -22,6 +22,64 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryCourtInterruptTests(unittest.TestCase):
+    def test_university_scholar_declines_exact_arrival_frame(self) -> None:
+        event_key = "major_decisions.2011"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=277,
+            date_raw=53215344,
+            player=32904,
+            scopes=[_scope("new_courtier", "character", 16842782)],
+            native_option_indices=(0, 1),
+        )
+
+        def checks_for(
+            candidate: dict[str, object], *, snapshot_count: int = 2,
+        ) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53215344,
+                    "active_event": {"option_count": snapshot_count},
+                },
+                event={"event_instance_id": 277},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        player_courtier = copy.deepcopy(context)
+        player_courtier["saved_scopes"][0] = _scope(
+            "new_courtier", "character", 32904
+        )
+        self.assertFalse(checks_for(player_courtier)[
+            "scope:new_courtier:unique_third_party"
+        ])
+
+        wrong_type = copy.deepcopy(context)
+        wrong_type["saved_scopes"][0]["scope"]["type_key"] = "landed_title"
+        self.assertFalse(checks_for(wrong_type)["scope:new_courtier:type"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(
+            _scope("unexpected_scope", "character", 16842783)
+        )
+        self.assertFalse(checks_for(extra_scope)["saved_scope_names_exact"])
+
+        wrong_native = copy.deepcopy(context)
+        wrong_native["options"][0]["native_option_index"] = 1
+        wrong_native["options"][1]["native_option_index"] = 0
+        self.assertFalse(checks_for(wrong_native)["authored_options_exact"])
+
+        self.assertFalse(checks_for(context, snapshot_count=3)[
+            "snapshot_option_count"
+        ])
+
     def test_court_mockery_binds_only_visible_authored_route(self) -> None:
         event_key = "court_yearly.6030"
         contract = _manager_contract(event_key, player=32904)
