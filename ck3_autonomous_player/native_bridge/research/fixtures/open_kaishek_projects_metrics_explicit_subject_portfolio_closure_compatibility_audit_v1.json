@@ -1,0 +1,154 @@
+{
+  "schema": "xar.ck3.open_kaishek_projects_metrics_explicit_subject_portfolio_closure_compatibility_audit.v1",
+  "status": "SYNCED",
+  "audited_at": "2026-09-08T14:58:00+08:00",
+  "root": {
+    "candidate_base_commit": "45024edf723a75502728f8f07b345f4271697cfe",
+    "candidate_state": "committed-projects-metrics-explicit-subject-portfolio-closure",
+    "capability_id": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
+    "schema_version": 1,
+    "source_contract_sha256": "bea30b47cee6fdc66c04e48a42ebf5ac0115c62a8ea34698fcd0428530f4649a",
+    "abi_sha256": "1624d793b9461dbf6d08c64f60219f3567bc9fdf2805afe94c60f6aaf4deac6c",
+    "public_schema_sha256": "44f0429e8b5ab46db38611a9779198cefd97b0fe435c0c847f3cb57674732380",
+    "python_contract_sha256": "b2dba9ee76457d0ec72bd87464eec145618e76482bb77d4b6687a03c88a60436"
+  },
+  "open_kaishek": {
+    "commit": "d1c0362c1883c1c9ef66d4e5fc9e7c208fb1ba34",
+    "origin_main": "d1c0362c1883c1c9ef66d4e5fc9e7c208fb1ba34",
+    "clean": true,
+    "profile_id": "ck3-1.19.0.6-zg361-business-postconditions-v1",
+    "profile_source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionProfile.java",
+    "fixture_source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoProjectsMetricsPostconditionFixture.java",
+    "profile_source_sha256": "2abf2af260c93a4e1c589c67b7ca3bc1f86150929fff18cca553874b7f72a31a",
+    "fixture_source_sha256": "26be2c8777e90f84b9670a326564463e5f3061a2e99377f990fdae316987c140",
+    "pinned_root_commit": "45024edf723a75502728f8f07b345f4271697cfe",
+    "pinned_source_contract_sha256": "bea30b47cee6fdc66c04e48a42ebf5ac0115c62a8ea34698fcd0428530f4649a",
+    "pinned_abi_sha256": "1624d793b9461dbf6d08c64f60219f3567bc9fdf2805afe94c60f6aaf4deac6c",
+    "pinned_public_schema_sha256": "44f0429e8b5ab46db38611a9779198cefd97b0fe435c0c847f3cb57674732380",
+    "pinned_python_contract_sha256": "b2dba9ee76457d0ec72bd87464eec145618e76482bb77d4b6687a03c88a60436",
+    "pinned_allowlist_id": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
+    "pinned_allowlist_count": 49,
+    "fixture_covers_explicit_subject": true,
+    "fixture_covers_portfolio_closure": true
+  },
+  "projects_metrics_delta": {
+    "open_kaishek_change_required": false,
+    "classification": "same-capability-public-contract-extension",
+    "capability_id_changed": false,
+    "schema_version_changed": false,
+    "mcp_method_changed": false,
+    "mcp_parameter_additive_optional": true,
+    "legacy_mcp_calls_default_subject_to_paused_player": true,
+    "native_wire_shape_changed": true,
+    "native_subject_field_required": true,
+    "native_step_shape_before": "query-zhongguo-projects-metrics-postcondition-v1-OWNER-NONCE_HEX",
+    "native_step_shape_after": "query-zhongguo-projects-metrics-postcondition-v1-OWNER-SUBJECT-NONCE_HEX",
+    "response_required_shape_changed": true,
+    "new_required_top_level_fields": [
+      "requested_subject_character_id",
+      "credit_project_portfolio"
+    ],
+    "new_required_portfolio_fields": [
+      "closed",
+      "cycle_serial",
+      "final_owner_character_id",
+      "final_subject_character_id",
+      "final_cycle_serial",
+      "final_case_serial",
+      "final_state",
+      "final_conservation_ok",
+      "pending_player_event",
+      "provider_observed"
+    ],
+    "new_required_readiness_fields": [
+      "portfolio_observed",
+      "portfolio_closed"
+    ],
+    "subject_acl_before": "paused-played-character-only",
+    "subject_acl_after": "explicit-project-subject-while-paused-player-is-owner-or-subject",
+    "third_party_subject_read_bounded_to_paused_owner": true,
+    "allowlist_id_before": "zg361-cp26-direct-p3m229-lineage-v2",
+    "allowlist_id_after": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
+    "allowlist_count_before": 40,
+    "allowlist_count_after": 49,
+    "new_allowlist_fields": [
+      "zg361_cp_portfolio_closed",
+      "zg361_cp_portfolio_cycle",
+      "zg361_cp_final_owner",
+      "zg361_cp_final_subject",
+      "zg361_cp_final_cycle",
+      "zg361_cp_final_case",
+      "zg361_cp_final_state",
+      "zg361_cp_final_conservation_ok",
+      "zg361_cp_pending_player_event"
+    ],
+    "new_invariants": [
+      "provider_reads_explicit_subject_portfolio_closure_while_paused_player_is_bound_owner_or_subject",
+      "portfolio_closure_requires_final_tuple_conservation_and_no_pending_player_event",
+      "provider_reads_only_the_explicit_project_subject_scope"
+    ],
+    "parser_vocabulary_change_required": false,
+    "ir_change_required": false,
+    "runtime_handler_change_required": false,
+    "new_action_added": false,
+    "default_candidate_enabled": false,
+    "native_live_certification_promoted": false,
+    "production_live_promoted": false
+  },
+  "required_open_kaishek_delta": {
+    "completed": true,
+    "profile_metadata_and_descriptor": [
+      "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionProfile.java",
+      "kaishek-zg361-profile/src/test/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionProfileTest.java"
+    ],
+    "fixture_and_preflight_coverage": [
+      "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoProjectsMetricsPostconditionFixture.java",
+      "kaishek-zg361-profile/src/test/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionFixtureTest.java",
+      "kaishek-cli/src/test/java/com/xenoamess/kaishek/cli/KaishekCliSmokeTest.java"
+    ],
+    "documentation": [
+      "docs/zg361-business-postconditions.md",
+      "docs/offline-preflight.md"
+    ],
+    "minimum_profile_updates": [
+      "replace the root commit and four contract hashes after the root candidate is committed",
+      "replace allowlist v2/40 with v3/49",
+      "publish the explicit-subject request and portfolio-closure response fields and invariants",
+      "extend the static fixture so its GREEN result covers the nine closure variables"
+    ],
+    "rebase_only": true,
+    "merge_forbidden": true
+  },
+  "g2": {
+    "semantic_change_required": false,
+    "profile_change_required": false,
+    "capability_change_required": false,
+    "fixture_change_required": false,
+    "current_exact_open_kaishek_pin": "d1c0362c1883c1c9ef66d4e5fc9e7c208fb1ba34",
+    "pin_update_required_now": false,
+    "pin_update_required_after_open_kaishek_sync_commit": false,
+    "reason": "The projects/metrics capability remains independent of the G2 truce profile; the repository-wide exact checkout pin now names the synchronized companion commit."
+  },
+  "verification": {
+    "root_contract_commit": "45024edf723a75502728f8f07b345f4271697cfe",
+    "root_blob_hashes_match_open_kaishek_profile": true,
+    "open_kaishek_clean_package": "BUILD_SUCCESS_12_MODULES_ZG361_53_TESTS_0_FAILURES_0_ERRORS",
+    "open_kaishek_cli_smoke": "PASS",
+    "open_kaishek_projects_fixture_preflight": "GREEN_PARSER_VALIDATOR_0_DIAGNOSTICS",
+    "open_kaishek_projects_fixture_ir_runtime": "SKIPPED_UNCERTIFIED_BUSINESS_POSTCONDITION_FIXTURE",
+    "open_kaishek_diff_check": "PASS",
+    "open_kaishek_head_origin_main_clean": "PASS_D1C0362",
+    "g2_cross_repository_verifier": "GREEN_STATIC",
+    "compatibility_audit_unittest": "5_PASS"
+  },
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "save_mutated": false,
+    "mutation_sent": false,
+    "g2_readiness_promoted": false,
+    "projects_metrics_live_certified": false,
+    "external_repository_modified_by_this_audit": true,
+    "exact_pin_preemptively_advanced": false
+  }
+}

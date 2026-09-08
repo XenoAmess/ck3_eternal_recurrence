@@ -6,7 +6,7 @@
     "module": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
     "capability_id": "game.command.query-g2-truce-evaluated-days-v1",
     "profile_id": "ck3-1.19.0.6-g2-truce-evaluator-v1",
-    "open_kaishek_commit": "33d690234d8217422978ee642055ab1b13e44c76"
+    "open_kaishek_commit": "d1c0362c1883c1c9ef66d4e5fc9e7c208fb1ba34"
   },
   "open_kaishek": {
     "default_root": "Z:\\workspace\\open_kaishek",
@@ -87,12 +87,12 @@
   "projects_metrics_delta": {
     "source": "kaishek-zg361-profile/src/main/java/com/xenoamess/kaishek/zg361/ZhongguoBusinessPostconditionProfile.java",
     "capability_id": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
-    "root_commit": "953634265ebf298cec3f2cf3065060e577dc8d17",
-    "root_source_contract_sha256": "362e9e88ff0a2ac8a7ec5cd396959a7200ed9f4f6d8519c953fe1798b903f0f2",
-    "root_abi_sha256": "c0135b790089de3807ae2139431c3cd1df3867d61408e36cd64df17b5dc4fadd",
-    "root_schema_sha256": "3763b17f937d4c36c5643a41d54ccd449cd23a8f5f94cddb4a4edbed7bbdbfd4",
-    "root_python_contract_sha256": "468d4ce43a28606148290b00b715f04dc33ba7f5bf95299949afe37b66b37195",
-    "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
+    "root_commit": "45024edf723a75502728f8f07b345f4271697cfe",
+    "root_source_contract_sha256": "bea30b47cee6fdc66c04e48a42ebf5ac0115c62a8ea34698fcd0428530f4649a",
+    "root_abi_sha256": "1624d793b9461dbf6d08c64f60219f3567bc9fdf2805afe94c60f6aaf4deac6c",
+    "root_schema_sha256": "44f0429e8b5ab46db38611a9779198cefd97b0fe435c0c847f3cb57674732380",
+    "root_python_contract_sha256": "b2dba9ee76457d0ec72bd87464eec145618e76482bb77d4b6687a03c88a60436",
+    "allowlist_id": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
     "checkpoint_state_required": true,
     "checkpoint_state_field": "checkpoint_state",
     "checkpoint_absent_invariant": "cp26_ready_p3_absent_exposes_no_p3_result",
