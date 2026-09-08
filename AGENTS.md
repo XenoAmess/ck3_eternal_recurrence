@@ -209,6 +209,13 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 ## Git 约定
 
+### Codex 跨任务通知
+
+- 每个独立 Codex 任务使用 `D:\workspace\.codex-task-bus\bin\codex_task_bus.py` 登记并轮询状态；完整协议与命令见
+  `docs/codex-task-bus.md`。任务开始先 `register`、`poll --ack`、`list`，状态变化和共享资源取得/释放时写 `status`，长任务每
+  15 分钟 `heartbeat`，完成时写 `done`。
+- Git push、Workshop 外部写入和 CK3 启动前必须再 `poll --ack`；通知只用于协作，不替代 `fetch + rebase`、既有排他锁或用户授权。
+
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
 - **本项目严禁 merge，只允许 rebase。** 禁止执行 `git merge`、会产生 merge commit 的 `git pull`，以及任何其他合并提交；同步远端必须先 `git fetch`，再以 `git rebase origin/master`（或等效的 `git pull --rebase`）线性重放本地提交，复测后仅作普通 fast-forward push。遇到并发推送或冲突也必须继续走 rebase，不能用 merge 绕过。
