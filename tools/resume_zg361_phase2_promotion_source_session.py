@@ -428,6 +428,7 @@ def run(
     timeout_seconds: float,
     stop_session_after: bool = False,
     prefer_natural_cycle: bool = False,
+    pause_on_event_definition_key: str | None = None,
 ) -> dict[str, object]:
     if timeout_seconds <= 0:
         raise RetainedSessionError("timeout must be positive")
@@ -454,6 +455,8 @@ def run(
         "restart_performed": False,
         "session_stop_requested": stop_session_after,
         "prefer_natural_cycle": prefer_natural_cycle,
+        "pause_on_event_definition_key": pause_on_event_definition_key,
+        "target_pause_only": pause_on_event_definition_key is not None,
         "source_run_cell": str(source_run_cell),
         "retention": copy.deepcopy(retention),
         "input_checks": inputs["checks"],
@@ -582,6 +585,10 @@ def run(
                 service,
                 timeout_seconds=timeout_seconds,
                 prefer_natural_cycle=prefer_natural_cycle,
+                stop_at_clean_review_boundary=(
+                    pause_on_event_definition_key is not None
+                ),
+                pause_on_event_definition_key=pause_on_event_definition_key,
                 evidence_out=entry,
                 runtime_diagnostic_probe=runtime_diagnostic_probe,
             )
@@ -593,6 +600,15 @@ def run(
             raise RetainedSessionError(
                 "product runtime diagnostic: " + terminal_entry_diagnostic
             )
+        if pause_on_event_definition_key is not None:
+            report["target_pause"] = {
+                "event_definition_key": pause_on_event_definition_key,
+                "readiness": entry.get("readiness"),
+                "target_binding": copy.deepcopy(entry.get("target_binding")),
+                "snapshot": copy.deepcopy(dict(service.snapshot())),
+            }
+            report["result"] = "GREEN"
+            return report
         current_capabilities = service.capabilities()
         current_diagnostics = current_capabilities.get("diagnostics")
         if not isinstance(current_diagnostics, Mapping):
@@ -740,6 +756,13 @@ def main() -> int:
             "continue a retained same-year session without restarting CK3"
         ),
     )
+    parser.add_argument(
+        "--pause-on-event-definition-key",
+        help=(
+            "retain the live session paused on this exact event and skip the "
+            "promotion checkpoint capture"
+        ),
+    )
     args = parser.parse_args()
     report = run(
         state_dir=args.state_dir,
@@ -749,6 +772,7 @@ def main() -> int:
         timeout_seconds=args.timeout_seconds,
         stop_session_after=args.stop_session_after,
         prefer_natural_cycle=args.prefer_natural_cycle,
+        pause_on_event_definition_key=args.pause_on_event_definition_key,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report.get("result") == "GREEN" else 1
