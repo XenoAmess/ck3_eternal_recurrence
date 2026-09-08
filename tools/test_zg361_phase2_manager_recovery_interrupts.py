@@ -154,6 +154,19 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         assert pp_fallback is not None
         self.assertEqual(pp_fallback["selected_native_option_index"], 0)
 
+        known_pp = production._resolve_timeline_interrupt_contract(
+            "zg361pp.149",
+            player=32904,
+            starting_date=53147016,
+            stop_at_clean_review_boundary=True,
+        )
+        self.assertIsNotNone(known_pp)
+        assert known_pp is not None
+        self.assertTrue(known_pp["manager_recovery_only"])
+        self.assertNotIn("saved_scope_name_sets", known_pp)
+        self.assertEqual(known_pp["option_count"], 3)
+        self.assertEqual(known_pp["selected_native_option_index"], 0)
+
         self.assertIsNone(
             production._resolve_timeline_interrupt_contract(
                 "unreviewed_vanilla.1",

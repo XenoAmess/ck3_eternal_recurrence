@@ -4027,19 +4027,25 @@ def _resolve_timeline_interrupt_contract(
 ) -> dict[str, object] | None:
     """Keep reviewed vanilla contracts when manager recovery is active.
 
-    PP fallback contracts are only for generated ``zg361pp`` cards absent
-    from the exact interrupt table.  They must not replace a known vanilla
-    contract after that contract has already been rebound to the manager.
+    Generated ``zg361pp`` cards use the minimal manager-recovery shape even
+    when a stricter capture-route contract exists.  The recovery client only
+    needs their authored option count/index and must tolerate unrelated saved
+    scopes introduced by later product stages.  Reviewed vanilla contracts
+    still retain their exact scope and option checks.
     """
 
-    contract = KNOWN_TIMELINE_INTERRUPTS.get(event_key)
+    contract = (
+        _manager_recovery_pp_contract(
+            event_key, player=player, starting_date=starting_date,
+        )
+        if stop_at_clean_review_boundary
+        else None
+    )
+    if contract is None:
+        contract = KNOWN_TIMELINE_INTERRUPTS.get(event_key)
     if contract is not None and contract.get("root_character_id") != player:
         contract = _manager_recovery_contract(
             contract, player=player, event_key=event_key,
-        )
-    if contract is None and stop_at_clean_review_boundary:
-        contract = _manager_recovery_pp_contract(
-            event_key, player=player, starting_date=starting_date,
         )
     if contract is None:
         return None
