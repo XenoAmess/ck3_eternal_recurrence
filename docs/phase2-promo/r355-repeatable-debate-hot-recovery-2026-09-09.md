@@ -147,3 +147,22 @@ native 0，且选择尚未发生。完整 scope 栈共 11 项；其中 immediate
 
 该改动仍仅涉及 CK3 进程外的 Python 合同、测试与文档。事件保持暂停，提交后
 热重载同一进程并继续，不重启 CK3。
+
+## 同会话第七次合同 RED：部院预算请愿分支
+
+勾引发现事件热通过后，同一 PID 在 `date_raw=53248848`、event instance `408`
+暂停于 `tgp_decision_events.0101`。本帧 root、`hegemon` 与
+`petition_recipient` 均为玩家 `32904`，动态 `petitioner=29346`；完整 scope
+集合是 `petitioner/actors_movement/hegemon/petition_recipient/`
+`increase_budget_ministry`，三个 authored/native options 均为 `(0,1,2)`，尚未
+选择。旧合同只枚举了法律、考试和省制分支，因而把这个原版预算分支误报为漂移。
+
+CK3 1.19.0.6 的 movement-petition decision view 明确定义三个预算选择值
+`increase_budget_salary/ministry/military` 与两个退休法选择值
+`increase/decrease_retirement_law`；它们进入 `.0101` 时都继承同一种五-scope
+紧凑形状。修复只把这五个源码枚举值加入精确 `scope_variants`，仍固定选择拒绝
+请愿的 authored 3 / native 2，避免应用请求或打开还价链。独立角色可以重复发起
+请愿，原版没有整段产品时间线两次上限，因此 occurrence 改为受绝对产品观察窗
+约束的可重复；每次 event/root/scope/options 和选择后实例推进仍逐项检查。
+
+这里同样没有修改 CK3 已加载内容；提交后继续热重载 PID `69176`。

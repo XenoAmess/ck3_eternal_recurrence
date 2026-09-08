@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Purpose split for additional TGP manager-recovery interrupt contracts."""
 
 from __future__ import annotations
@@ -274,6 +274,66 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["scope:hold_examinations"])
+
+    def test_budget_petition_uses_exact_compact_boolean_scope_variant(self) -> None:
+        event_key = "tgp_decision_events.0101"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=408,
+            date_raw=53248848,
+            player=32904,
+            scopes=[
+                _scope("petitioner", "character", 29346),
+                _scope("actors_movement", "situation_participant_group"),
+                _scope("hegemon", "character", 32904),
+                _scope("petition_recipient", "character", 32904),
+                _scope("increase_budget_ministry", "boolean"),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53248848,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 408},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        for sibling_scope in (
+            "increase_budget_salary",
+            "increase_budget_military",
+            "increase_retirement_law",
+            "decrease_retirement_law",
+        ):
+            with self.subTest(sibling_scope=sibling_scope):
+                sibling = copy.deepcopy(context)
+                sibling["saved_scopes"][4] = _scope(
+                    sibling_scope, "boolean"
+                )
+                sibling_checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": 53248848,
+                        "active_event": {"option_count": 3},
+                    },
+                    event={"event_instance_id": 408},
+                    context=sibling,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(sibling_checks.values()), sibling_checks)
 
     def test_elder_invitation_uses_terminal_study_route(self) -> None:
         event_key = "tgp_movement_events.0050"

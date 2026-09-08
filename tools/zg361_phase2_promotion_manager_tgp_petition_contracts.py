@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed TGP movement-petition manager interrupt contracts."""
 
 from __future__ import annotations
@@ -12,6 +12,11 @@ _NON_PROVINCE_BOOLEAN_SCOPES = (
     "increase_army_law",
     "decrease_army_law",
     "hold_examinations",
+    "increase_budget_salary",
+    "increase_budget_ministry",
+    "increase_budget_military",
+    "increase_retirement_law",
+    "decrease_retirement_law",
 )
 
 _PROVINCE_TYPE_SCOPES = (
@@ -113,10 +118,13 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
         ),),
         "saved_scope_count": 7,
         "scope_variants": tuple({
-            # Exact-build law and examination decisions save one boolean
-            # branch scope and no province/member recipients. R164/R166
-            # observed two law siblings; R291 observed the source-authored
-            # hold_examinations sibling with the same five-scope shape.
+            # Exact-build law, examination, budget and retirement decisions
+            # save one boolean branch scope and no province/member recipients.
+            # R164/R166 observed two law siblings, R291 observed the
+            # hold_examinations sibling, and R355 observed
+            # increase_budget_ministry with the same five-scope shape. The
+            # remaining names are the exact selectable-item values from the
+            # same CK3 1.19.0.6 movement-petition decision view.
             "saved_scope_names": (
                 "petitioner",
                 "actors_movement",
@@ -148,8 +156,9 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
-        # R163/R164 observed two independent movement petitions in one bounded
-        # natural-cycle wait. Keep the allowance evidence-bound.
-        "max_occurrences": 2,
+        # Each independent character may make another movement petition; the
+        # vanilla source has no whole-product two-occurrence cap. Keep every
+        # delivery exact while bounding the run by the product window.
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
