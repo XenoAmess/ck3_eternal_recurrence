@@ -1,0 +1,1 @@
+﻿gui/zqa_bridge.gui = zqa_bridge_window

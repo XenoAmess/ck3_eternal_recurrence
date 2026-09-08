@@ -1,0 +1,35 @@
+﻿xqol_refresh_no_vassal_transfer_flags_effect = {
+	every_vassal_or_below = {
+		xqol_reconcile_character_transfer_guard_effect = yes
+	}
+}
+
+xqol_clear_no_vassal_transfer_flags_effect = {
+	every_vassal_or_below = {
+		limit = { has_character_flag = xqol_no_vassal_transfer_guard }
+		remove_character_flag = xqol_no_vassal_transfer_guard
+		remove_character_flag = ai_should_not_transfer
+	}
+}
+
+xqol_reconcile_character_transfer_guard_effect = {
+	if = {
+		limit = { xqol_should_guard_vassal_transfer_trigger = yes }
+		if = {
+			limit = { has_character_flag = xqol_no_vassal_transfer_guard }
+			# Repair the vanilla guard if another effect cleared it while ours is active.
+			add_character_flag = ai_should_not_transfer
+		}
+		else_if = {
+			limit = { NOT = { has_character_flag = ai_should_not_transfer } }
+			# Claim ownership only when the vanilla flag was not already present.
+			add_character_flag = xqol_no_vassal_transfer_guard
+			add_character_flag = ai_should_not_transfer
+		}
+	}
+	else_if = {
+		limit = { has_character_flag = xqol_no_vassal_transfer_guard }
+		remove_character_flag = xqol_no_vassal_transfer_guard
+		remove_character_flag = ai_should_not_transfer
+	}
+}

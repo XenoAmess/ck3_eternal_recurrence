@@ -1,0 +1,4 @@
+﻿xqol_quality_of_life = {
+	sort_order = 157
+	gui_tags = { big_button }
+}

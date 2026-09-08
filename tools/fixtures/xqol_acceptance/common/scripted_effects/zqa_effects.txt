@@ -1,0 +1,270 @@
+﻿# External exact-build fixture. None of this file enters release staging.
+
+zqa_initialize_effect = {
+	if = {
+		limit = { has_character_flag = zqa_initialize_pending }
+		remove_character_flag = zqa_initialize_pending
+		add_character_flag = zqa_fixture_initialized
+		debug_log = "ZQA: TEST BEGIN xqol"
+		character:han_8052 = { save_scope_as = zqa_song_emperor }
+		if = {
+			limit = {
+			exists = scope:zqa_song_emperor
+				scope:zqa_song_emperor = {
+					is_alive = yes
+					is_ai = yes
+					is_ruler = yes
+					has_title = title:h_china
+					is_independent_ruler = yes
+					has_government = celestial_government
+					any_vassal = { count >= 4 is_landed = yes }
+				}
+			}
+			debug_log = "ZQA: TEST PASS exact_build_song_emperor"
+			scope:zqa_song_emperor = {
+				random_vassal = {
+					limit = { is_landed = yes }
+					add_character_flag = zqa_preexisting_guard_subject
+					add_character_flag = ai_should_not_transfer
+				}
+				random_vassal = {
+					limit = {
+						is_landed = yes
+						NOT = { has_character_flag = zqa_preexisting_guard_subject }
+						primary_title = {
+							exists = current_heir
+						}
+					}
+					add_character_flag = zqa_removal_incumbent_subject
+					save_scope_as = zqa_vanilla_removal_incumbent
+					primary_title.current_heir = {
+						add_character_flag = zqa_removal_baseline_heir
+					}
+				}
+				random_vassal = {
+					limit = {
+						is_landed = yes
+						NOT = { has_character_flag = zqa_preexisting_guard_subject }
+						NOT = { has_character_flag = zqa_removal_incumbent_subject }
+						primary_title = { exists = current_heir }
+					}
+					add_character_flag = zqa_control_incumbent_subject
+					save_scope_as = zqa_vanilla_control_incumbent
+					primary_title.current_heir = {
+						add_character_flag = zqa_control_baseline_heir
+					}
+				}
+				add_character_flag = zqa_await_product_toggles
+			}
+			if = {
+				limit = {
+					exists = scope:zqa_vanilla_removal_incumbent
+					exists = scope:zqa_vanilla_control_incumbent
+				}
+				debug_log = "ZQA: TEST PASS vanilla_baseline_heirs_recorded"
+			}
+			else = { debug_log = "ZQA: TEST FAIL vanilla_baseline_heirs_recorded" }
+			set_player_character = scope:zqa_song_emperor
+			debug_log = "ZQA: TEST PASS switched_to_supported_player"
+		}
+		else = { debug_log = "ZQA: TEST FAIL exact_build_song_emperor" }
+	}
+}
+
+zqa_run_enabled_matrix_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_product_toggles }
+	remove_character_flag = zqa_await_product_toggles
+	if = {
+		limit = {
+			xqol_supported_player_trigger = yes
+			has_variable = xqol_auto_appoint_successors_enabled
+			has_variable = xqol_no_vassal_transfers_enabled
+		}
+		debug_log = "ZQA: TEST PASS product_enable_decisions"
+	}
+	else = { debug_log = "ZQA: TEST FAIL product_enable_decisions" }
+
+	random_vassal = {
+		limit = {
+			is_landed = yes
+			has_character_flag = zqa_preexisting_guard_subject
+		}
+		save_scope_as = zqa_preexisting_guard_subject
+	}
+	random_vassal = {
+		limit = {
+			is_landed = yes
+			NOT = { has_character_flag = zqa_preexisting_guard_subject }
+			NOT = { has_character_flag = zqa_removal_incumbent_subject }
+			NOT = { has_character_flag = zqa_control_incumbent_subject }
+		}
+		add_character_flag = zqa_owned_guard_subject
+		save_scope_as = zqa_owned_guard_subject
+		xqol_reconcile_character_transfer_guard_effect = yes
+	}
+	if = {
+		limit = {
+			exists = scope:zqa_preexisting_guard_subject
+			scope:zqa_preexisting_guard_subject = {
+				has_character_flag = ai_should_not_transfer
+				NOT = { has_character_flag = xqol_no_vassal_transfer_guard }
+			}
+			exists = scope:zqa_owned_guard_subject
+			scope:zqa_owned_guard_subject = {
+				has_character_flag = ai_should_not_transfer
+				has_character_flag = xqol_no_vassal_transfer_guard
+			}
+		}
+		debug_log = "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved"
+	}
+	else = { debug_log = "ZQA: TEST FAIL transfer_guard_enabled_and_preexisting_preserved" }
+
+	random_vassal = {
+		limit = {
+			has_character_flag = zqa_removal_incumbent_subject
+		}
+		save_scope_as = zqa_removal_incumbent
+		primary_title = { save_scope_as = zqa_removal_title }
+	}
+
+	if = {
+		limit = {
+			exists = scope:zqa_removal_title
+			scope:zqa_removal_title = {
+				exists = current_heir
+				NOT = { current_heir = root }
+				current_heir = { has_character_flag = zqa_removal_baseline_heir }
+			}
+		}
+		scope:zqa_removal_title.current_heir = { save_scope_as = zqa_removal_successor }
+		debug_log = "ZQA: TEST PASS enabled_highest_non_player_heir_selected"
+	}
+	else = { debug_log = "ZQA: TEST FAIL enabled_highest_non_player_heir_selected" }
+
+	if = {
+		limit = {
+			exists = scope:zqa_removal_incumbent
+			exists = scope:zqa_removal_successor
+		}
+		scope:zqa_removal_incumbent = { force_step_down_landed_titles = yes }
+		if = {
+			limit = {
+				scope:zqa_removal_title = {
+					holder = scope:zqa_removal_successor
+					NOT = { holder = root }
+				}
+			}
+			debug_log = "ZQA: TEST PASS removal_transferred_to_scored_heir"
+		}
+		else = { debug_log = "ZQA: TEST FAIL removal_transferred_to_scored_heir" }
+	}
+
+	random_vassal = {
+		limit = {
+			is_landed = yes
+			NOT = { has_character_flag = zqa_preexisting_guard_subject }
+			NOT = { has_character_flag = zqa_owned_guard_subject }
+			NOT = { has_character_flag = zqa_control_incumbent_subject }
+			primary_title = {
+				exists = current_heir
+				NOT = { current_heir = root }
+			}
+		}
+		save_scope_as = zqa_death_incumbent
+		primary_title = {
+			save_scope_as = zqa_death_title
+			current_heir = { save_scope_as = zqa_death_successor }
+		}
+	}
+	if = {
+		limit = {
+			exists = scope:zqa_death_incumbent
+			exists = scope:zqa_death_successor
+		}
+		set_variable = { name = zqa_death_title value = scope:zqa_death_title }
+		set_variable = { name = zqa_death_successor value = scope:zqa_death_successor }
+		add_character_flag = zqa_await_death_settlement
+		scope:zqa_death_incumbent = { death = { death_reason = death_natural_causes } }
+	}
+	else = { debug_log = "ZQA: TEST FAIL death_candidate_unavailable" }
+	}
+}
+
+zqa_verify_death_settlement_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_death_settlement }
+		remove_character_flag = zqa_await_death_settlement
+		if = {
+			limit = {
+				exists = var:zqa_death_title
+				exists = var:zqa_death_successor
+				var:zqa_death_title = {
+					holder = root.var:zqa_death_successor
+					NOT = { holder = root }
+				}
+			}
+			debug_log = "ZQA: TEST PASS death_transferred_to_scored_heir"
+		}
+		else = { debug_log = "ZQA: TEST FAIL death_transferred_to_scored_heir" }
+		remove_variable = zqa_death_title
+		remove_variable = zqa_death_successor
+		add_character_flag = zqa_await_product_disables
+		debug_log = "ZQA: TEST PASS ready_for_product_disable_decisions"
+	}
+}
+
+zqa_verify_disabled_matrix_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_product_disables }
+	remove_character_flag = zqa_await_product_disables
+	if = {
+		limit = {
+			NOT = { has_variable = xqol_auto_appoint_successors_enabled }
+			NOT = { has_variable = xqol_no_vassal_transfers_enabled }
+		}
+		debug_log = "ZQA: TEST PASS product_disable_decisions"
+	}
+	else = { debug_log = "ZQA: TEST FAIL product_disable_decisions" }
+	if = {
+		limit = {
+			any_vassal = {
+				has_character_flag = zqa_control_incumbent_subject
+				primary_title = {
+					current_heir = { has_character_flag = zqa_control_baseline_heir }
+				}
+			}
+		}
+		debug_log = "ZQA: TEST PASS disabled_vanilla_heir_restored"
+	}
+	else = { debug_log = "ZQA: TEST FAIL disabled_vanilla_heir_restored" }
+	if = {
+		limit = {
+			any_vassal = {
+				has_character_flag = zqa_owned_guard_subject
+				NOT = { has_character_flag = xqol_no_vassal_transfer_guard }
+				NOT = { has_character_flag = ai_should_not_transfer }
+			}
+			any_vassal = {
+				has_character_flag = zqa_preexisting_guard_subject
+				has_character_flag = ai_should_not_transfer
+				NOT = { has_character_flag = xqol_no_vassal_transfer_guard }
+			}
+		}
+		debug_log = "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved"
+	}
+	else = { debug_log = "ZQA: TEST FAIL transfer_guard_disabled_and_preexisting_preserved" }
+	every_vassal_or_below = {
+		remove_character_flag = zqa_owned_guard_subject
+		remove_character_flag = zqa_control_incumbent_subject
+		remove_character_flag = zqa_control_baseline_heir
+		remove_character_flag = zqa_removal_baseline_heir
+		if = {
+			limit = { has_character_flag = zqa_preexisting_guard_subject }
+			remove_character_flag = zqa_preexisting_guard_subject
+			remove_character_flag = ai_should_not_transfer
+		}
+	}
+	debug_log = "ZQA: TEST DONE xqol"
+	}
+}

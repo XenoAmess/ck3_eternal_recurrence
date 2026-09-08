@@ -1,0 +1,6 @@
+﻿l_english:
+ zqa_acceptance:0 "Quality of Life Live Acceptance"
+ zqa_initialize_decision:0 "Start Quality of Life Live Acceptance"
+ zqa_initialize_decision_desc:0 "Switch to the 1066 Song emperor and verify both product toggles against real administrative titles."
+ zqa_initialize_decision_tooltip:0 "Begin the isolated acceptance run."
+ zqa_initialize_decision_confirm:0 "Switch to the Song emperor"

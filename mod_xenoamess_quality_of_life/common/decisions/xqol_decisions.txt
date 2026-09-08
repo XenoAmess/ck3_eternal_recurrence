@@ -1,0 +1,85 @@
+﻿xqol_enable_auto_appointment_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 10
+	ai_check_interval = 0
+	desc = xqol_enable_auto_appointment_decision_desc
+	selection_tooltip = xqol_enable_auto_appointment_decision_tooltip
+
+	is_shown = {
+		xqol_supported_player_trigger = yes
+		NOT = { has_variable = xqol_auto_appoint_successors_enabled }
+	}
+	is_valid_showing_failures_only = { xqol_supported_player_trigger = yes }
+	effect = {
+		set_variable = xqol_auto_appoint_successors_enabled
+		custom_tooltip = xqol_auto_appointment_enabled_tt
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_disable_auto_appointment_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 11
+	ai_check_interval = 0
+	desc = xqol_disable_auto_appointment_decision_desc
+	selection_tooltip = xqol_disable_auto_appointment_decision_tooltip
+
+	is_shown = {
+		xqol_supported_player_trigger = yes
+		has_variable = xqol_auto_appoint_successors_enabled
+	}
+	is_valid_showing_failures_only = { xqol_supported_player_trigger = yes }
+	effect = {
+		remove_variable = xqol_auto_appoint_successors_enabled
+		custom_tooltip = xqol_auto_appointment_disabled_tt
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_enable_no_vassal_transfers_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 20
+	ai_check_interval = 0
+	desc = xqol_enable_no_vassal_transfers_decision_desc
+	selection_tooltip = xqol_enable_no_vassal_transfers_decision_tooltip
+
+	is_shown = {
+		xqol_supported_player_trigger = yes
+		NOT = { has_variable = xqol_no_vassal_transfers_enabled }
+	}
+	is_valid_showing_failures_only = { xqol_supported_player_trigger = yes }
+	effect = {
+		set_variable = xqol_no_vassal_transfers_enabled
+		xqol_refresh_no_vassal_transfer_flags_effect = yes
+		custom_tooltip = xqol_no_vassal_transfers_enabled_tt
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_disable_no_vassal_transfers_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 21
+	ai_check_interval = 0
+	desc = xqol_disable_no_vassal_transfers_decision_desc
+	selection_tooltip = xqol_disable_no_vassal_transfers_decision_tooltip
+
+	is_shown = {
+		xqol_supported_player_trigger = yes
+		has_variable = xqol_no_vassal_transfers_enabled
+	}
+	is_valid_showing_failures_only = { xqol_supported_player_trigger = yes }
+	effect = {
+		remove_variable = xqol_no_vassal_transfers_enabled
+		xqol_clear_no_vassal_transfer_flags_effect = yes
+		custom_tooltip = xqol_no_vassal_transfers_disabled_tt
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

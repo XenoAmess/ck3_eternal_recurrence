@@ -1,0 +1,49 @@
+[h1]XenoAmess 的生活质量[/h1]
+[h2]XenoAmess Quality of Life[/h2]
+
+[b]让行政头衔按原版分数找到最合适的下一任，也让下属别再把不想要的封臣往你手里塞。[/b]
+[b]Keep administrative succession merit-based, and stop subordinate rulers from pushing unwanted vassals up to you.[/b]
+
+Version 1.0.0 · CK3 1.19.0.6
+
+[h1]两个独立开关 / Two Independent Toggles[/h1]
+
+[list]
+[*][b]自动选择继任 / Automatic Appointments[/b]：开启后，行政制、贤能制与天朝制玩家本人不再成为下属行政官职的兜底候选。候选池、资格和继承分数仍全部使用原版；死亡或卸任时由最高分的其他合资格候选人接任。
+[*][b]别把封臣给我 / Do Not Give Me Vassals[/b]：开启后，下属行政统治者不会再通过原版 AI“授予封臣”逻辑把自己的法理封臣向上转给玩家。玩家主动转封不受影响。
+[/list]
+
+两个功能默认关闭，可在决议面板的【XenoAmess 的生活质量】分组中分别开启或关闭。关闭后恢复原版行为。
+Both features are off by default and can be toggled independently from the “XenoAmess Quality of Life” Decisions group. Disabling a feature restores vanilla behavior.
+
+[h1]适用范围 / Scope[/h1]
+
+[list]
+[*]仅限非 AI、独立的人类玩家 / Human, non-AI independent rulers only
+[*]行政制 / Administrative Government
+[*]贤能制 / Meritocratic Government
+[*]天朝制 / Celestial Government
+[/list]
+
+[h1]兼容性 / Compatibility[/h1]
+
+已在 CK3 1.19.0.6 的隔离、非 debug 实机会话中通过原生 MCP + 引擎夹具验收。推荐新开单人存档。
+Tested on CK3 1.19.0.6 in an isolated, non-debug live session using the native MCP bridge plus in-engine assertions. A new single-player game is recommended.
+
+自动继任功能会按相同相对路径覆盖原版的三份 appointment 文件，因此与改写下列文件的其他 mod 不兼容：
+Automatic appointments replace these three vanilla files at the same relative paths and are therefore incompatible with other mods that replace them:
+
+[list]
+[*]`common/succession_appointment/admin_governor.txt`
+[*]`common/succession_appointment/meritocratic_governor.txt`
+[*]`common/succession_appointment/celestial_governor.txt`
+[/list]
+
+[h1]本地化 / Localization[/h1]
+
+简体中文与 English 已完成。Français、Deutsch、日本語、한국어、Polski、Русский、Español 当前为英文占位，不冒充完成翻译。
+Simplified Chinese and English are complete. The other seven language slots currently use English placeholders and are not claimed as completed translations.
+
+[h1]源码 / Source[/h1]
+
+https://github.com/XenoAmess/ck3_eternal_recurrence
