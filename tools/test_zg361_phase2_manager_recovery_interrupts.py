@@ -166,6 +166,17 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertNotIn("saved_scope_name_sets", known_pp)
         self.assertEqual(known_pp["option_count"], 3)
         self.assertEqual(known_pp["selected_native_option_index"], 0)
+        two_option_projection = production._option_contract_for_context(
+            [
+                {"native_option_index": 0},
+                {"native_option_index": 1},
+            ],
+            known_pp,
+        )
+        self.assertEqual(two_option_projection["option_count"], 2)
+        self.assertEqual(
+            two_option_projection["native_option_indices"], (0, 1)
+        )
 
         self.assertIsNone(
             production._resolve_timeline_interrupt_contract(

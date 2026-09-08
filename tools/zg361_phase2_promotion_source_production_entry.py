@@ -4031,8 +4031,19 @@ def _manager_recovery_pp_contract(
         return None
     if 146 <= event_number <= 191:
         option_count = 3
+        option_variants: tuple[dict[str, object], ...] = (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 1),
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+            },
+        )
     elif 9001 <= event_number <= 9004:
         option_count = 1
+        option_variants = ()
     else:
         return None
     scope_types = (
@@ -4053,6 +4064,7 @@ def _manager_recovery_pp_contract(
         "boolean_scopes": (),
         "option_count": option_count,
         "native_option_indices": tuple(range(option_count)),
+        "option_variants": option_variants,
         "max_occurrences": 1,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
