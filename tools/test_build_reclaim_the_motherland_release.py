@@ -36,13 +36,17 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
 
     def test_exact_skeleton_inventory_and_readme_exclusion(self) -> None:
         staging, _, archive, manifest = self.build()
-        self.assertEqual(10, len(release.RUNTIME_FILES))
+        self.assertEqual(18, len(release.RUNTIME_FILES))
+        self.assertEqual(
+            9,
+            sum(path.startswith("localization/") for path in release.RUNTIME_FILES),
+        )
         self.assertEqual(
             [entry["path"] for entry in manifest["files"]],
             sorted(release.RUNTIME_FILES),
         )
         self.assertFalse((staging / "README.md").exists())
-        self.assertFalse((staging / "thumbnail.png").exists())
+        self.assertTrue((staging / "thumbnail.png").is_file())
         with zipfile.ZipFile(archive) as zipped:
             self.assertEqual(
                 zipped.namelist(),
@@ -100,6 +104,20 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
         for item_id in release.FORBIDDEN_WORKSHOP_ITEM_IDS:
             with self.subTest(item_id=item_id), self.assertRaises(ValueError):
                 release.normalize_workshop_item_id(item_id)
+
+    def test_release_localization_rejects_placeholders(self) -> None:
+        self.assertEqual([], release.release_localization_errors(self.source))
+        french = self.source / "localization/french/rmtm_l_french.yml"
+        english = self.source / "localization/english/rmtm_l_english.yml"
+        french.write_bytes(
+            english.read_bytes().replace(b"l_english:", b"l_french:", 1)
+        )
+        self.assertTrue(
+            any(
+                "English placeholder" in item
+                for item in release.release_localization_errors(self.source)
+            )
+        )
         for item_id in ("0", "01", "-1", "abc", str(2**64)):
             with self.subTest(item_id=item_id), self.assertRaises(ValueError):
                 release.normalize_workshop_item_id(item_id)

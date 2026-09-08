@@ -35,10 +35,20 @@ RUNTIME_FILES = frozenset(
         "common/scripted_triggers/rmtm_restoration_triggers.txt",
         "descriptor.mod",
         "localization/english/rmtm_l_english.yml",
+        "localization/french/rmtm_l_french.yml",
+        "localization/german/rmtm_l_german.yml",
+        "localization/japanese/rmtm_l_japanese.yml",
+        "localization/korean/rmtm_l_korean.yml",
+        "localization/polish/rmtm_l_polish.yml",
+        "localization/russian/rmtm_l_russian.yml",
         "localization/simp_chinese/rmtm_l_simp_chinese.yml",
+        "localization/spanish/rmtm_l_spanish.yml",
+        "thumbnail.png",
     }
 )
-SOURCE_ONLY_FILES = frozenset({"README.md"})
+SOURCE_ONLY_FILES = frozenset(
+    {"README.md", "docs/acceptance-plan.md", "docs/acceptance-report.md"}
+)
 FORBIDDEN_WORKSHOP_ITEM_IDS = frozenset(
     {
         "3784706360",
@@ -46,16 +56,31 @@ FORBIDDEN_WORKSHOP_ITEM_IDS = frozenset(
         "3790635143",
         "3792585972",
         "3797711947",
+        "3798133925",
     }
 )
 FULL_GIT_SHA = re.compile(r"[0-9a-f]{40}")
 SEMANTIC_VERSION = re.compile(r"\d+\.\d+\.\d+")
 WORKSHOP_ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
+LOCALIZATION_ENTRY = re.compile(r'^ ([^:\s]+):\d+ "((?:[^"\\]|\\.)*)"$')
+LOCALIZATION_LANGUAGES = (
+    "english",
+    "french",
+    "german",
+    "japanese",
+    "korean",
+    "polish",
+    "russian",
+    "simp_chinese",
+    "spanish",
+)
+LOCALIZATION_SOURCE_LANGUAGES = frozenset({"english", "simp_chinese"})
+LOCALIZATION_PROTECTED_TOKEN = re.compile(r"#[A-Za-z0-9_]+|#!")
 
 
-def _allowed_directories() -> frozenset[str]:
+def _allowed_directories(files: frozenset[str]) -> frozenset[str]:
     result: set[str] = set()
-    for relative in RUNTIME_FILES:
+    for relative in files:
         parent = PurePosixPath(relative).parent
         while parent != PurePosixPath("."):
             result.add(parent.as_posix())
@@ -63,7 +88,8 @@ def _allowed_directories() -> frozenset[str]:
     return frozenset(result)
 
 
-RUNTIME_DIRECTORIES = _allowed_directories()
+RUNTIME_DIRECTORIES = _allowed_directories(RUNTIME_FILES)
+SOURCE_DIRECTORIES = _allowed_directories(RUNTIME_FILES | SOURCE_ONLY_FILES)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -136,7 +162,10 @@ def release_source_errors(
     )
     errors.extend(
         f"directory outside exact runtime allowlist: {relative}/"
-        for relative in sorted(actual_directories - RUNTIME_DIRECTORIES)
+        for relative in sorted(
+            actual_directories
+            - (SOURCE_DIRECTORIES if allow_source_only_files else RUNTIME_DIRECTORIES)
+        )
     )
 
     for relative in sorted(actual_files & RUNTIME_FILES):
@@ -162,6 +191,76 @@ def release_source_errors(
                     errors.append(
                         f"existing Workshop item ID {item_id} is forbidden: {relative}"
                     )
+    return errors
+
+
+def _localization_entries(path: Path, language: str) -> dict[str, str]:
+    data = Path(path).read_bytes()
+    if not data.startswith(b"\xef\xbb\xbf"):
+        raise ValueError(f"localization lacks UTF-8 BOM: {path}")
+    lines = data.decode("utf-8-sig").splitlines()
+    if not lines or lines[0] != f"l_{language}:":
+        raise ValueError(f"localization header mismatch: {path}")
+    result: dict[str, str] = {}
+    for line_number, line in enumerate(lines[1:], 2):
+        if not line or line.lstrip().startswith("#"):
+            continue
+        match = LOCALIZATION_ENTRY.fullmatch(line)
+        if match is None:
+            raise ValueError(f"malformed localization line: {path}:{line_number}")
+        key, value = match.groups()
+        if key in result:
+            raise ValueError(f"duplicate localization key: {path}:{line_number}: {key}")
+        result[key] = value
+    if not result:
+        raise ValueError(f"localization has no entries: {path}")
+    return result
+
+
+def release_localization_errors(source: Path) -> list[str]:
+    """Require complete, translated localization for a formal release."""
+
+    matrix: dict[str, dict[str, str]] = {}
+    errors: list[str] = []
+    for language in LOCALIZATION_LANGUAGES:
+        path = (
+            Path(source)
+            / "localization"
+            / language
+            / f"rmtm_l_{language}.yml"
+        )
+        try:
+            matrix[language] = _localization_entries(path, language)
+        except (OSError, UnicodeError, ValueError) as error:
+            errors.append(str(error))
+    english = matrix.get("english")
+    if english is None:
+        return errors
+    for language, values in matrix.items():
+        if set(values) != set(english):
+            errors.append(
+                f"{language} localization key mismatch: "
+                f"missing={sorted(set(english) - set(values))}, "
+                f"extra={sorted(set(values) - set(english))}"
+            )
+            continue
+        for key, value in values.items():
+            if not value.strip():
+                errors.append(f"{language} localization is empty: {key}")
+            if sorted(LOCALIZATION_PROTECTED_TOKEN.findall(value)) != sorted(
+                LOCALIZATION_PROTECTED_TOKEN.findall(english[key])
+            ):
+                errors.append(
+                    f"{language} localization changes CK3 formatting tokens: {key}"
+                )
+        if language not in LOCALIZATION_SOURCE_LANGUAGES:
+            placeholders = sorted(
+                key for key, value in values.items() if value == english[key]
+            )
+            if placeholders:
+                errors.append(
+                    f"{language} still contains English placeholder values: {placeholders}"
+                )
     return errors
 
 
@@ -209,6 +308,12 @@ def release_identity(source: Path) -> dict[str, str]:
     tag = product_tag(version)
     if tag not in git_output("tag", "--points-at", "HEAD").splitlines():
         raise ValueError(f"formal release requires tag {tag} on HEAD")
+    localization_errors = release_localization_errors(source)
+    if localization_errors:
+        raise ValueError(
+            "formal release localization is incomplete:\n"
+            + "\n".join(localization_errors)
+        )
     return {"mod_version": version, "git_tag": tag, "git_sha": git_sha()}
 
 

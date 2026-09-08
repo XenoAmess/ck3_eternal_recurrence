@@ -8,14 +8,14 @@ import sys
 from pathlib import Path
 
 import build_reclaim_the_motherland_release as builder
+from PIL import Image
+
+import compose_reclaim_the_motherland_key_art as key_art
 
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / builder.PRODUCT_ID
-LANGUAGES = {
-    "english": "l_english",
-    "simp_chinese": "l_simp_chinese",
-}
+LANGUAGES = {language: f"l_{language}" for language in builder.LOCALIZATION_LANGUAGES}
 LOC_KEYS = frozenset(
     {
         "rule_rmtm_hegemon_fate",
@@ -89,13 +89,25 @@ def validate() -> list[str]:
         'version="0.1.0"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Reclaim the Motherland — 重整河山"\n'
+        'picture="thumbnail.png"\n'
         'supported_version="1.19.0.6"\n'
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     if descriptor != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the 0.1.0 contract")
-    if "picture=" in descriptor or (MOD / "thumbnail.png").exists():
-        errors.append("the product must not claim or ship uncreated key art")
+    thumbnail = MOD / "thumbnail.png"
+    if not thumbnail.is_file():
+        errors.append("thumbnail.png is missing")
+    else:
+        if thumbnail.stat().st_size >= 1_000_000:
+            errors.append("thumbnail.png must be smaller than 1,000,000 bytes")
+        with Image.open(thumbnail) as image:
+            if image.size != (640, 640) or image.format != "PNG":
+                errors.append(
+                    f"thumbnail must be a 640x640 PNG, got {image.size} {image.format}"
+                )
+        if thumbnail.read_bytes() != key_art.rendered_bytes():
+            errors.append("thumbnail.png is stale against generated key art")
 
     expected_runtime_files = frozenset(
         {
@@ -108,13 +120,23 @@ def validate() -> list[str]:
             "common/scripted_triggers/rmtm_restoration_triggers.txt",
             "descriptor.mod",
             "localization/english/rmtm_l_english.yml",
+            "localization/french/rmtm_l_french.yml",
+            "localization/german/rmtm_l_german.yml",
+            "localization/japanese/rmtm_l_japanese.yml",
+            "localization/korean/rmtm_l_korean.yml",
+            "localization/polish/rmtm_l_polish.yml",
+            "localization/russian/rmtm_l_russian.yml",
             "localization/simp_chinese/rmtm_l_simp_chinese.yml",
+            "localization/spanish/rmtm_l_spanish.yml",
+            "thumbnail.png",
         }
     )
     if builder.RUNTIME_FILES != expected_runtime_files:
-        errors.append("release allowlist is not the exact ten-file product inventory")
-    if builder.SOURCE_ONLY_FILES != frozenset({"README.md"}):
-        errors.append("README.md must be the only source-only product file")
+        errors.append("release allowlist is not the exact eighteen-file product inventory")
+    if builder.SOURCE_ONLY_FILES != frozenset(
+        {"README.md", "docs/acceptance-plan.md", "docs/acceptance-report.md"}
+    ):
+        errors.append("source-only product inventory mismatch")
 
     script_paths = sorted(
         relative for relative in builder.RUNTIME_FILES if relative.endswith(".txt")
@@ -282,6 +304,7 @@ def validate() -> list[str]:
             errors.append(f"English contract mismatch: {key}")
     if chinese and english and chinese == english:
         errors.append("Simplified Chinese localization must not be an English placeholder")
+    errors.extend(builder.release_localization_errors(MOD))
     return errors
 
 

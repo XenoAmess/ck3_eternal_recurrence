@@ -1,0 +1,48 @@
+﻿rqa_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_initialize_pending
+	}
+	effect = { rqa_initialize_effect = yes }
+}
+
+rqa_enter_chaos_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_chaos_pending
+	}
+	effect = { rqa_enter_chaos_effect = yes }
+}
+
+rqa_verify_chaos_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_waiting_for_chaos
+		NOT = { has_title = title:h_china }
+		rmtm_holds_restoration_hegemony_trigger = yes
+	}
+	effect = { rqa_verify_chaos_effect = yes }
+}
+
+rqa_prepare_threshold_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_threshold_pending
+	}
+	effect = { rqa_prepare_threshold_effect = yes }
+}
+
+rqa_verify_restoration_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_waiting_for_restoration
+		has_title = title:h_china
+		NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
+	}
+	effect = { rqa_verify_restoration_effect = yes }
+}

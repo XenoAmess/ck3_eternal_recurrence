@@ -1,0 +1,1 @@
+﻿gui/rqa_bridge.gui = rqa_bridge_window

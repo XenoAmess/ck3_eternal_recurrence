@@ -1,0 +1,56 @@
+﻿rqa_initialize_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = rqa_acceptance
+	sort_order = 1
+	ai_check_interval = 0
+	desc = rqa_initialize_decision_desc
+	selection_tooltip = rqa_initialize_decision_tooltip
+	is_shown = {
+		is_ai = no
+		NOT = { has_character_flag = rqa_fixture_initialized }
+		NOT = { has_character_flag = rqa_initialize_pending }
+	}
+	is_valid = { is_ai = no }
+	effect = { add_character_flag = rqa_initialize_pending }
+	ai_potential = { always = no }
+}
+
+rqa_enter_chaos_decision = {
+	picture = { reference = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_corruption.dds" }
+	decision_group_type = rqa_acceptance
+	sort_order = 2
+	ai_check_interval = 0
+	desc = rqa_enter_chaos_decision_desc
+	selection_tooltip = rqa_enter_chaos_decision_tooltip
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_ready_to_enter_chaos
+		NOT = { has_character_flag = rqa_chaos_pending }
+	}
+	is_valid = {
+		has_title = title:h_china
+		has_game_rule = rmtm_reclaim_the_motherland
+	}
+	effect = { add_character_flag = rqa_chaos_pending }
+	ai_potential = { always = no }
+}
+
+rqa_prepare_threshold_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = rqa_acceptance
+	sort_order = 3
+	ai_check_interval = 0
+	desc = rqa_prepare_threshold_decision_desc
+	selection_tooltip = rqa_prepare_threshold_decision_tooltip
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_ready_for_threshold
+		NOT = { has_character_flag = rqa_threshold_pending }
+	}
+	is_valid = {
+		rmtm_holds_restoration_hegemony_trigger = yes
+		is_independent_ruler = yes
+	}
+	effect = { add_character_flag = rqa_threshold_pending }
+	ai_potential = { always = no }
+}

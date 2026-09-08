@@ -1,0 +1,22 @@
+﻿rqa_controls_half_of_china_trigger = {
+	title:h_china = {
+		any_de_jure_county = {
+			percent >= 0.50
+			holder.top_liege = root
+		}
+	}
+}
+
+rqa_controls_claim_mandate_share_trigger = {
+	title:h_china = {
+		any_de_jure_county = {
+			percent >= claim_mandate_china_county_percentage_value
+			holder.top_liege = {
+				OR = {
+					this = root
+					is_tributary_of_suzerain_or_above = root
+				}
+			}
+		}
+	}
+}

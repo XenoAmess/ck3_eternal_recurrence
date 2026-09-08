@@ -1,0 +1,17 @@
+﻿namespace = rqa
+
+rqa.1 = {
+	type = character_event
+	title = rqa_after_chaos_title
+	desc = rqa_after_chaos_desc
+	theme = realm
+	option = { name = rqa_after_chaos_option }
+}
+
+rqa.2 = {
+	type = character_event
+	title = rqa_complete_title
+	desc = rqa_complete_desc
+	theme = realm
+	option = { name = rqa_complete_option }
+}

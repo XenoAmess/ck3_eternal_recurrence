@@ -1,0 +1,4 @@
+﻿rqa_acceptance = {
+	sort_order = 155
+	gui_tags = { big_button }
+}
