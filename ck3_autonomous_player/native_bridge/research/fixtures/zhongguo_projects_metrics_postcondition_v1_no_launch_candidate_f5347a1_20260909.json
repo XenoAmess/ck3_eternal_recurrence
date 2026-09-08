@@ -1,0 +1,93 @@
+{
+  "schema_version": 3,
+  "kind": "zg361_projects_metrics_no_launch_candidate",
+  "readiness": "static-ready-live-pending",
+  "source": {
+    "base_commit": "f5347a1e8aa7fcfad907ed0adff8c20df4e743d8",
+    "candidate_commit": "f5347a1e8aa7fcfad907ed0adff8c20df4e743d8",
+    "native_source_commit": "f5347a1e8aa7fcfad907ed0adff8c20df4e743d8",
+    "native_source_fingerprint_sha256": "EA953684330E17ADF12F351C16121E4495301D03E7ED4EBD9F10FE2FDDE6D764",
+    "native_source_file_count": 309,
+    "frozen_files": {
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt": "C214D4701B8B560C6D5D9CDC8147B8C6F986E55456297C34410C91D015E8F0E9",
+      "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp": "FC69D8F8D95710B8F8EF884B7E008FD12E0BE28FEE0617ABA44FE6907E1949CE",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_projects_metrics_postcondition_v1.hpp": "7C8F79BBDCB4E7238EA13BA94078EB36250A3B49B25E83469E3F0195435AF3D8",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1.cpp": "DD431B33977FD65F32E07A4ACA296D77CDDD0DD1C71DB0263C5C0FB627398D5B",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp": "99CFB584EA562D7DE30699E8840C96D559EC5415C2333F48EFFC349A8564D58D",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp": "C442813D459D9C1B9E714C17A40E8B92BF858F1EC189C082E1EE58A9CEE2076D",
+      "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json": "1624D793B9461DBF6D08C64F60219F3567BC9FDF2805AFE94C60F6AAF4DEAC6C",
+      "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json": "BEA30B47CEE6FDC66C04E48A42EBF5AC0115C62A8EA34698FCD0428530F4649A",
+      "tools/verify_zg361_projects_metrics_no_launch_candidate.py": "19ED4206AC2339783C918C197AB9A8348A5D83226D504B48A76E6B6923297EC6",
+      "tools/test_verify_zg361_projects_metrics_no_launch_candidate.py": "76F71934A15EC0F4E076A2CDE5C6DBBF8A37A676562833DA391CC3A6B676B912"
+    }
+  },
+  "build": {
+    "configuration": "Release",
+    "generator": "Ninja",
+    "compiler": "MSVC 19.51.36248.0",
+    "candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=ON",
+    "default_source_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1=OFF",
+    "artifact_directory": "Z:\\ck3_mod_rewrite\\_root-rebase-r345-20260909\\ck3_autonomous_player\\native_bridge\\build-pm6ee4",
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite\\_root-rebase-r345-20260909\\ck3_autonomous_player\\native_bridge\\build-pm6ee4\\xar_ck3_bridge.dll",
+      "bytes": 2447872,
+      "sha256": "1A149B3D558B9262BA4D342780FD7937D80564B35984B293C9E1FE7CDE277D8D"
+    },
+    "injector": {
+      "path": "Z:\\ck3_mod_rewrite\\_root-rebase-r345-20260909\\ck3_autonomous_player\\native_bridge\\build-pm6ee4\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "552175931682068D793459856E56E181D75D1181686231022CABADD5C5056FE2"
+    },
+    "capability_probe": {
+      "path": "Z:\\ck3_mod_rewrite\\_root-rebase-r345-20260909\\ck3_autonomous_player\\native_bridge\\build-pm6ee4\\xar_ck3_adapter_registry_test.exe",
+      "bytes": 776192,
+      "sha256": "90207AEE6B944BCA2F97D2DDD1033472DBBFF83C411A8761112EA65C53752C26",
+      "expected_capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1"
+    },
+    "cmake_cache_path": "Z:\\ck3_mod_rewrite\\_root-rebase-r345-20260909\\ck3_autonomous_player\\native_bridge\\build-pm6ee4\\CMakeCache.txt",
+    "cmake_cache_sha256": "44C0FAF27716EFE2509BDB5967F51BE67A3D194ECDD899B599C372E04040B0BB"
+  },
+  "tests": {
+    "focused_native": {
+      "result": "GREEN",
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "xar_ck3_native_bridge_adapter_registry",
+        "xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1",
+        "xar_ck3_native_bridge_zhongguo_projects_metrics_postcondition_v1_mailbox"
+      ]
+    },
+    "candidate_verifier_unit": {
+      "result": "GREEN",
+      "normal": "7 passed",
+      "optimized": "7 passed, 1 expected pytest -O warning"
+    }
+  },
+  "abi_contract": {
+    "status": "private_candidate_live_validated_not_default",
+    "allowlist_id": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
+    "allowlist_count": 49,
+    "production_live_ready": false,
+    "production_advertisement_promoted": false
+  },
+  "ck3_executable_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "ck3_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "event_binding": {
+    "facade": "bind_projects_metrics_event_snapshots_v1",
+    "source_event": "zg361cp.26",
+    "result_event": "zg361p3.229"
+  },
+  "live_attempt": {
+    "attempt_id": "projects-metrics-prelive-f5347a1-20260909",
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\projects-metrics-prelive-f5347a1-20260909\\live-attempt",
+    "status": "absent",
+    "started": false,
+    "consumed": false
+  },
+  "formal_runner_registry_modified": false,
+  "ck3_started": false,
+  "live_proof_claimed": false,
+  "action_ack_is_business_postcondition": false,
+  "production_advertisement_ready": false
+}

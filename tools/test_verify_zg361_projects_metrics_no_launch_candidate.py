@@ -10,8 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
 from verify_zg361_projects_metrics_no_launch_candidate import (  # noqa: E402
+    CHECKPOINT_ALLOWLIST_COUNT,
     CHECKPOINT_ALLOWLIST_ID,
     CHECKPOINT_STATES,
+    EXPECTED_ABI_STATUS,
     EXPECTED_BASE_COMMIT,
     EXPECTED_EXE_SHA256,
     EXPECTED_PRODUCTION_FIX_COMMIT,
@@ -242,6 +244,65 @@ def _upgrade_to_v2(manifest: Path, root: Path, tmp_path: Path) -> None:
     _write(manifest, json.dumps(payload))
 
 
+def _upgrade_to_v3(manifest: Path, root: Path, tmp_path: Path) -> None:
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
+    source_commit = "2" * 40
+    payload["schema_version"] = 3
+    payload["source"]["base_commit"] = source_commit
+    payload["source"]["candidate_commit"] = source_commit
+    payload["source"]["native_source_commit"] = source_commit
+    payload["ck3_executable_sha256"] = _sha(tmp_path / "ck3.exe")
+    probe = tmp_path / "build/xar_ck3_adapter_registry_test.exe"
+    _write(probe, b"candidate-capability-probe")
+    payload["build"]["capability_probe"] = {
+        "path": str(probe),
+        "sha256": _sha(probe),
+        "bytes": probe.stat().st_size,
+        "expected_capability": (
+            "game.command.query-zhongguo-projects-metrics-postcondition-v1"
+        ),
+    }
+    abi_path = root / (
+        "ck3_autonomous_player/native_bridge/research/"
+        "zhongguo_projects_metrics_postcondition_v1_abi.json"
+    )
+    abi = json.loads(abi_path.read_text(encoding="utf-8"))
+    abi.update({
+        "status": EXPECTED_ABI_STATUS,
+        "game_version": "1.19.0.6",
+        "executable_sha256": _sha(tmp_path / "ck3.exe"),
+        "allowlist_id": CHECKPOINT_ALLOWLIST_ID,
+        "allowlist": [
+            f"zg361_test_field_{index:02d}"
+            for index in range(CHECKPOINT_ALLOWLIST_COUNT)
+        ],
+    })
+    abi["private_candidate"].update({
+        "default": False,
+        "advertises_read_only_query_only_when_enabled": True,
+    })
+    _write(abi_path, json.dumps(abi))
+    source_contract_path = root / (
+        "ck3_autonomous_player/native_bridge/research/fixtures/"
+        "zhongguo_projects_metrics_postcondition_v1_source_contract.json"
+    )
+    source_contract = json.loads(
+        source_contract_path.read_text(encoding="utf-8")
+    )
+    source_contract.update({
+        "readiness": EXPECTED_ABI_STATUS,
+        "allowlist_id": CHECKPOINT_ALLOWLIST_ID,
+        "allowlist_count": CHECKPOINT_ALLOWLIST_COUNT,
+    })
+    _write(source_contract_path, json.dumps(source_contract))
+    fingerprint, file_count = _native_source_fingerprint(
+        root / "ck3_autonomous_player/native_bridge"
+    )
+    payload["source"]["native_source_fingerprint_sha256"] = fingerprint
+    payload["source"]["native_source_file_count"] = file_count
+    _write(manifest, json.dumps(payload))
+
+
 def test_candidate_verifier_green_and_never_creates_attempt(
     tmp_path: Path, monkeypatch,
 ) -> None:
@@ -354,4 +415,68 @@ def test_v2_candidate_rejects_reversed_stage_overfull_shard_and_execution(
         "checkpoint_state_v2_bound",
         "purpose_effect_shards_within_limit",
         "exact_ck3_command_frozen_not_executed",
+    }.issubset(report["failed_checks"])
+
+
+def test_v3_candidate_binds_current_tree_abi49_and_capability_probe(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    manifest, root = _fixture(tmp_path)
+    _upgrade_to_v3(manifest, root, tmp_path)
+    monkeypatch.setattr(
+        "verify_zg361_projects_metrics_no_launch_candidate.EXPECTED_EXE_SHA256",
+        _sha(tmp_path / "ck3.exe"),
+    )
+    monkeypatch.setattr(
+        "verify_zg361_projects_metrics_no_launch_candidate."
+        "_native_tree_matches_commit",
+        lambda _root, _commit: True,
+    )
+    monkeypatch.setattr(
+        "verify_zg361_projects_metrics_no_launch_candidate."
+        "_run_capability_probe",
+        lambda _path: {"returncode": 0, "stdout": "", "stderr": ""},
+    )
+    report = verify_projects_metrics_no_launch_candidate(
+        manifest, source_root=root, running_process_names=[]
+    )
+    assert report["result"] == "READY_TO_LIVE"
+    assert report["checks"]["current_native_tree_matches_candidate_commit"]
+    assert report["checks"]["abi_v3_allowlist_49_exact"]
+    assert report["checks"]["candidate_capability_advertised"]
+
+
+def test_v3_candidate_rejects_tree_allowlist_and_probe_drift(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    manifest, root = _fixture(tmp_path)
+    _upgrade_to_v3(manifest, root, tmp_path)
+    abi_path = root / (
+        "ck3_autonomous_player/native_bridge/research/"
+        "zhongguo_projects_metrics_postcondition_v1_abi.json"
+    )
+    abi = json.loads(abi_path.read_text(encoding="utf-8"))
+    abi["allowlist"].pop()
+    _write(abi_path, json.dumps(abi))
+    monkeypatch.setattr(
+        "verify_zg361_projects_metrics_no_launch_candidate.EXPECTED_EXE_SHA256",
+        _sha(tmp_path / "ck3.exe"),
+    )
+    monkeypatch.setattr(
+        "verify_zg361_projects_metrics_no_launch_candidate."
+        "_native_tree_matches_commit",
+        lambda _root, _commit: False,
+    )
+    monkeypatch.setattr(
+        "verify_zg361_projects_metrics_no_launch_candidate."
+        "_run_capability_probe",
+        lambda _path: {"returncode": 3, "stdout": "", "stderr": "drift"},
+    )
+    report = verify_projects_metrics_no_launch_candidate(
+        manifest, source_root=root, running_process_names=[]
+    )
+    assert {
+        "current_native_tree_matches_candidate_commit",
+        "abi_v3_allowlist_49_exact",
+        "candidate_capability_advertised",
     }.issubset(report["failed_checks"])

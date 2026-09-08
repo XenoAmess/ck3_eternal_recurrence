@@ -34,7 +34,10 @@ EXPECTED_EXE_SHA256 = (
 )
 SOURCE_EVENT = "zg361cp.26"
 RESULT_EVENT = "zg361p3.229"
-CHECKPOINT_ALLOWLIST_ID = "zg361-cp26-direct-p3m229-lineage-v2"
+CHECKPOINT_ALLOWLIST_ID = "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3"
+CHECKPOINT_ALLOWLIST_COUNT = 49
+EXPECTED_GAME_VERSION = "1.19.0.6"
+EXPECTED_ABI_STATUS = "private_candidate_live_validated_not_default"
 CHECKPOINT_STATES = [
     "cp26_ready_p3_absent",
     "p3_initialized_source_not_ready",
@@ -106,6 +109,44 @@ def _running_process_names() -> list[str]:
     ]
 
 
+def _native_tree_matches_commit(source_root: Path, commit: str) -> bool:
+    if re.fullmatch(r"[0-9a-f]{40}", commit) is None:
+        return False
+    completed = subprocess.run(
+        [
+            "git",
+            "diff",
+            "--quiet",
+            commit,
+            "--",
+            "ck3_autonomous_player/native_bridge",
+        ],
+        cwd=source_root,
+        check=False,
+        capture_output=True,
+    )
+    return completed.returncode == 0
+
+
+def _run_capability_probe(path: Path) -> dict[str, object]:
+    if not path.is_file():
+        return {"returncode": None, "stdout": "", "stderr": "missing"}
+    completed = subprocess.run(
+        [str(path)],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=30,
+    )
+    return {
+        "returncode": completed.returncode,
+        "stdout": completed.stdout,
+        "stderr": completed.stderr,
+    }
+
+
 def verify_projects_metrics_no_launch_candidate(
     manifest_path: Path,
     *,
@@ -117,6 +158,7 @@ def verify_projects_metrics_no_launch_candidate(
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest_schema = manifest.get("schema_version")
     v2_manifest = manifest_schema == 2
+    current_manifest = manifest_schema == 3
     source = _mapping(manifest.get("source"))
     build = _mapping(manifest.get("build"))
     attempt = _mapping(manifest.get("live_attempt"))
@@ -129,6 +171,7 @@ def verify_projects_metrics_no_launch_candidate(
     ck3_launch = _mapping(commands.get("ck3_launch"))
     bridge = _mapping(build.get("bridge"))
     injector = _mapping(build.get("injector"))
+    capability_probe = _mapping(build.get("capability_probe"))
     frozen_files = _mapping(source.get("frozen_files"))
 
     cmake_path = source_root / "ck3_autonomous_player/native_bridge/CMakeLists.txt"
@@ -190,6 +233,7 @@ def verify_projects_metrics_no_launch_candidate(
 
     bridge_path = Path(str(bridge.get("path", "")))
     injector_path = Path(str(injector.get("path", "")))
+    capability_probe_path = Path(str(capability_probe.get("path", "")))
     cache_path = Path(str(build.get("cmake_cache_path", "")))
     attempt_path = Path(str(attempt.get("path", "")))
     exe_path = Path(str(manifest.get("ck3_executable_path", "")))
@@ -201,6 +245,11 @@ def verify_projects_metrics_no_launch_candidate(
             else _running_process_names()
         )
     }
+    capability_probe_result = (
+        _run_capability_probe(capability_probe_path)
+        if current_manifest
+        else {}
+    )
 
     option_match = re.search(
         rf"option\(\s*{PRIVATE_SWITCH}\s*.*?\s+OFF\s*\)",
@@ -271,16 +320,32 @@ def verify_projects_metrics_no_launch_candidate(
     native_fingerprint, native_file_count = _native_source_fingerprint(
         source_root / "ck3_autonomous_player/native_bridge"
     )
+    abi_allowlist = abi.get("allowlist")
+    abi_allowlist_values = (
+        abi_allowlist if isinstance(abi_allowlist, list) else []
+    )
+    native_source_commit = str(source.get("native_source_commit", ""))
     checks = {
         "manifest_identity": (
-            manifest_schema in (1, 2)
+            manifest_schema in (1, 2, 3)
             and manifest.get("kind")
             == "zg361_projects_metrics_no_launch_candidate"
             and manifest.get("readiness") == "static-ready-live-pending"
         ),
-        "base_commit_exact": source.get("base_commit") == EXPECTED_BASE_COMMIT,
+        "base_commit_exact": (
+            source.get("base_commit") == (
+                native_source_commit if current_manifest else EXPECTED_BASE_COMMIT
+            )
+        ),
         "candidate_commit_pinned": bool(
             re.fullmatch(r"[0-9a-f]{40}", str(source.get("candidate_commit", "")))
+        ),
+        "current_native_tree_matches_candidate_commit": (
+            not current_manifest
+            or (
+                source.get("candidate_commit") == native_source_commit
+                and _native_tree_matches_commit(source_root, native_source_commit)
+            )
         ),
         "frozen_source_files_match": bool(frozen_file_checks)
         and all(frozen_file_checks.values()),
@@ -302,6 +367,20 @@ def verify_projects_metrics_no_launch_candidate(
             and _sha256(cache_path)
             == str(build.get("cmake_cache_sha256", "")).upper()
         ),
+        "candidate_capability_advertised": (
+            not current_manifest
+            or (
+                capability_probe_path.is_file()
+                and capability_probe_path.name
+                == "xar_ck3_adapter_registry_test.exe"
+                and _sha256(capability_probe_path)
+                == str(capability_probe.get("sha256", "")).upper()
+                and capability_probe_path.stat().st_size
+                == capability_probe.get("bytes")
+                and capability_probe.get("expected_capability") == CAPABILITY
+                and capability_probe_result.get("returncode") == 0
+            )
+        ),
         "paired_bridge_hash_matches": (
             bridge_path.is_file()
             and _sha256(bridge_path) == str(bridge.get("sha256", "")).upper()
@@ -316,10 +395,26 @@ def verify_projects_metrics_no_launch_candidate(
             and injector_path.name == "xar_ck3_bridge_injector.exe"
         ),
         "exact_ck3_executable_matches": (
-            exe_path.is_file() and _sha256(exe_path) == EXPECTED_EXE_SHA256
+            exe_path.is_file()
+            and _sha256(exe_path) == EXPECTED_EXE_SHA256
+            and (
+                not current_manifest
+                or (
+                    manifest.get("ck3_executable_sha256")
+                    == EXPECTED_EXE_SHA256
+                    and
+                    abi.get("game_version") == EXPECTED_GAME_VERSION
+                    and abi.get("executable_sha256") == EXPECTED_EXE_SHA256
+                )
+            )
         ),
         "abi_remains_not_live": (
-            abi.get("status") == "static_and_fixture_ready_not_live"
+            abi.get("status")
+            == (
+                EXPECTED_ABI_STATUS
+                if current_manifest
+                else "static_and_fixture_ready_not_live"
+            )
             and _mapping(abi.get("readiness")).get("production_live_ready")
             is False
             and _mapping(abi.get("private_candidate")).get(
@@ -327,11 +422,39 @@ def verify_projects_metrics_no_launch_candidate(
             )
             is False
         ),
+        "abi_v3_allowlist_49_exact": (
+            not current_manifest
+            or (
+                abi.get("allowlist_id") == CHECKPOINT_ALLOWLIST_ID
+                and len(abi_allowlist_values) == CHECKPOINT_ALLOWLIST_COUNT
+                and len(set(abi_allowlist_values)) == CHECKPOINT_ALLOWLIST_COUNT
+                and all(
+                    isinstance(value, str) and bool(value)
+                    for value in abi_allowlist_values
+                )
+                and source_contract.get("allowlist_id")
+                == CHECKPOINT_ALLOWLIST_ID
+                and source_contract.get("allowlist_count")
+                == CHECKPOINT_ALLOWLIST_COUNT
+                and source_contract.get("readiness") == EXPECTED_ABI_STATUS
+            )
+        ),
         "source_contract_candidate_only": (
             source_contract.get("shared_wiring")
             == "default_off_complete_not_advertised"
             and source_contract.get("private_candidate_switch")
             == PRIVATE_SWITCH
+            and (
+                not current_manifest
+                or (
+                    _mapping(abi.get("private_candidate")).get("default")
+                    is False
+                    and _mapping(abi.get("private_candidate")).get(
+                        "advertises_read_only_query_only_when_enabled"
+                    )
+                    is True
+                )
+            )
         ),
         "event_binding_reuses_existing_facade": (
             "def bind_projects_metrics_event_snapshots_v1(" in facade
@@ -449,6 +572,7 @@ def verify_projects_metrics_no_launch_candidate(
         "checks": checks,
         "frozen_file_checks": frozen_file_checks,
         "purpose_shard_checks": shard_checks,
+        "capability_probe": capability_probe_result,
         "failed_checks": failed,
         "bridge_sha256": (
             _sha256(bridge_path) if bridge_path.is_file() else None
