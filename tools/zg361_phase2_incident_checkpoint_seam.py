@@ -47,6 +47,7 @@ SPAN_ID: Final = "phase2_incidents_operations"
 PRODUCER_KEY: Final = "incidents-operations"
 HANDLER: Final = "capture_incidents_operations"
 _SHA256: Final = re.compile(r"^[0-9A-F]{64}$")
+_MAX_SWITCH_TO_CAPTURE_RAW: Final = 399 * 24
 _CAPTURE_CHECKS: Final = {
     "paused_map_ready_exact_event",
     "player_root_subject_bound",
@@ -55,6 +56,7 @@ _CAPTURE_CHECKS: Final = {
     "provider_ui_query_same_frame",
     "native_save_same_frame",
     "checkpoint_bytes_hash_bound",
+    "native_player_switch_receipt_verified",
     "action_ack_used_as_state_evidence",
 }
 _ACTION_CHECKS: Final = {
@@ -187,6 +189,34 @@ def _same_capture_binding(
     expected: Mapping[str, object], observed: Mapping[str, object]
 ) -> bool:
     return all(expected.get(key) == observed.get(key) for key in expected)
+
+
+def _same_post_save_binding(
+    expected: Mapping[str, object], observed: Mapping[str, object]
+) -> bool:
+    """Accept the native save's one-revision publication, but no frame drift."""
+
+    stable_keys = (
+        "date_raw",
+        "player_character_id",
+        "bridge_pid",
+        "connection_generation",
+        "paused",
+        "map_ready",
+        "event_instance_id",
+        "event_option_count",
+    )
+    return (
+        all(expected.get(key) == observed.get(key) for key in stable_keys)
+        and _nonnegative_int(expected.get("revision"))
+        and observed.get("revision") == int(expected["revision"]) + 1
+        and _positive_int(expected.get("native_revision"))
+        and observed.get("native_revision")
+        == int(expected["native_revision"]) + 1
+        and isinstance(expected.get("snapshot_id"), str)
+        and isinstance(observed.get("snapshot_id"), str)
+        and observed.get("snapshot_id") != expected.get("snapshot_id")
+    )
 
 
 def _event_context_contract(
@@ -328,7 +358,11 @@ def _validated_lineage(
         and lineage.get("ocr_used") is False
         and lineage.get("coordinates_used") is False
         and lineage.get("console_used") is False
-        and lineage.get("generic_character_rebind_used") is False
+        and lineage.get("generic_character_rebind_used") is True
+        and isinstance(
+            lineage.get("generic_character_rebind_authority"), str
+        )
+        and bool(lineage.get("generic_character_rebind_authority"))
     )
     if not valid:
         raise IncidentCheckpointSeamError(
@@ -427,6 +461,110 @@ def _binding_record_valid(value: object) -> bool:
     )
 
 
+def _player_switch_receipt_contract(
+    value: object,
+    *,
+    source_binding: Mapping[str, object],
+    seed_lineage_id: object,
+) -> dict[str, object]:
+    locator = deepcopy(dict(value)) if isinstance(value, Mapping) else {}
+    raw_path = locator.get("path")
+    path = Path(str(raw_path)).resolve() if isinstance(raw_path, str) else Path()
+    payload = locator.get("payload")
+    payload = deepcopy(dict(payload)) if isinstance(payload, Mapping) else {}
+    before = payload.get("before_binding")
+    before = dict(before) if isinstance(before, Mapping) else {}
+    after = payload.get("after_binding")
+    after = dict(after) if isinstance(after, Mapping) else {}
+    native = payload.get("native_receipt")
+    native = dict(native) if isinstance(native, Mapping) else {}
+    initial_player = payload.get("initial_player_character_id")
+    target_subject = payload.get("target_subject_character_id")
+    expected_bytes = locator.get("bytes")
+    expected_sha256 = str(locator.get("sha256", "")).upper()
+    serialized = None
+    if path.is_file():
+        try:
+            serialized = json.loads(path.read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            serialized = None
+    valid = (
+        isinstance(raw_path, str)
+        and Path(raw_path).is_absolute()
+        and path.is_file()
+        and _positive_int(expected_bytes)
+        and path.stat().st_size == expected_bytes
+        and _SHA256.fullmatch(expected_sha256) is not None
+        and incident_checkpoint_sha256(path) == expected_sha256
+        and serialized == payload
+        and payload.get("schema_version") == 1
+        and payload.get("kind")
+        == "zg361_phase2_incident_source_player_switch_receipt"
+        and payload.get("result") == "GREEN"
+        and payload.get("evidence_class") == "real_ck3"
+        and payload.get("state_origin") == "managed_product"
+        and payload.get("seed_lineage_id") == seed_lineage_id
+        and _positive_int(initial_player)
+        and _positive_int(target_subject)
+        and initial_player != target_subject
+        and target_subject == source_binding.get("player_character_id")
+        and isinstance(payload.get("date_raw"), int)
+        and not isinstance(payload.get("date_raw"), bool)
+        and isinstance(source_binding.get("date_raw"), int)
+        and int(source_binding["date_raw"]) >= int(payload["date_raw"])
+        and int(source_binding["date_raw"]) - int(payload["date_raw"])
+        <= _MAX_SWITCH_TO_CAPTURE_RAW
+        and payload.get("generic_character_rebind_used") is True
+        and isinstance(payload.get("generic_character_rebind_authority"), str)
+        and bool(payload.get("generic_character_rebind_authority"))
+        and payload.get("provider_observed") is True
+        and payload.get("action_ack_used_as_state_evidence") is False
+        and before.get("player_character_id") == initial_player
+        and after.get("player_character_id") == target_subject
+        and before.get("date_raw") == after.get("date_raw")
+        and after.get("date_raw") == payload.get("date_raw")
+        and before.get("bridge_pid") == after.get("bridge_pid")
+        and after.get("bridge_pid") == source_binding.get("bridge_pid")
+        and before.get("connection_generation")
+        == after.get("connection_generation")
+        and after.get("connection_generation")
+        == source_binding.get("connection_generation")
+        and before.get("paused") is True
+        and before.get("map_ready") is True
+        and after.get("paused") is True
+        and after.get("map_ready") is True
+        and before.get("active_event_instance_id") is None
+        and after.get("active_event_instance_id") is None
+        and native.get("schema_version") == 1
+        and native.get("accepted") is True
+        and native.get("status") == "switched"
+        and native.get("backend_id") == "native-headless"
+        and native.get("step") == f"set-played-character-v1-{target_subject}"
+        and native.get("from_character_id") == initial_player
+        and native.get("to_character_id") == target_subject
+        and native.get("prior_episode_character_id") == initial_player
+        and native.get("episode_character_id") == target_subject
+        and native.get("date_raw") == payload.get("date_raw")
+        and native.get("before_revision") == before.get("revision")
+        and native.get("after_revision") == after.get("revision")
+        and native.get("native_revision") == after.get("native_revision")
+        and native.get("paused") is True
+        and native.get("map_ready") is True
+        and native.get("postcondition_verified") is True
+        and native.get("episode_rebind_performed") is True
+        and native.get("one_life_terminal_cleared") is True
+    )
+    if not valid:
+        raise IncidentCheckpointSeamError(
+            "incident_source_player_switch_receipt_invalid",
+            {
+                "player_switch_receipt": locator,
+                "source_snapshot_binding": dict(source_binding),
+            },
+        )
+    return locator
+
+
 def validate_received_self_incident_checkpoint_receipt(
     value: object,
     *,
@@ -468,6 +606,15 @@ def validate_received_self_incident_checkpoint_receipt(
     owner = receipt.get("owner_character_id")
     player = receipt.get("player_character_id")
     subject = receipt.get("subject_character_id")
+    player_switch_receipt = (
+        _player_switch_receipt_contract(
+            receipt.get("player_switch_receipt"),
+            source_binding=before_map,
+            seed_lineage_id=seed_lineage_id,
+        )
+        if _binding_record_valid(before_map)
+        else {}
+    )
     event_contract = _event_context_contract(
         receipt.get("event_context_query"),
         snapshot_binding=before_map,
@@ -486,7 +633,11 @@ def validate_received_self_incident_checkpoint_receipt(
         and receipt.get("ocr_used") is False
         and receipt.get("coordinates_used") is False
         and receipt.get("console_used") is False
-        and receipt.get("generic_character_rebind_used") is False
+        and receipt.get("generic_character_rebind_used") is True
+        and isinstance(
+            receipt.get("generic_character_rebind_authority"), str
+        )
+        and bool(receipt.get("generic_character_rebind_authority"))
         and receipt.get("action_ack_used_as_state_evidence") is False
         and receipt.get("span_id") == SPAN_ID
         and receipt.get("producer_key") == PRODUCER_KEY
@@ -509,7 +660,7 @@ def validate_received_self_incident_checkpoint_receipt(
         and _binding_record_valid(after_query_map)
         and _binding_record_valid(after_save_map)
         and _same_capture_binding(before_map, after_query_map)
-        and _same_capture_binding(before_map, after_save_map)
+        and _same_post_save_binding(before_map, after_save_map)
         and event_contract.get("root_character_id") == player
         and event_contract.get("subject_character_id") == subject
         and event_contract.get("notice_owner_character_id") == owner
@@ -569,6 +720,11 @@ def validate_received_self_incident_checkpoint_receipt(
         },
         "seed_lineage_id": str(seed_lineage_id),
         "capture_lineage": lineage,
+        "generic_character_rebind_used": True,
+        "generic_character_rebind_authority": receipt[
+            "generic_character_rebind_authority"
+        ],
+        "player_switch_receipt": player_switch_receipt,
         "owner_character_id": int(owner),
         "player_character_id": int(player),
         "subject_character_id": int(subject),
@@ -608,6 +764,7 @@ def capture_current_received_self_incident_checkpoint_v1(
     receipt_path: Path,
     seed_lineage_id: str,
     capture_lineage: Mapping[str, object],
+    player_switch_receipt: Mapping[str, object],
 ) -> dict[str, object]:
     """Freeze the currently visible real ``zg361.50`` without staging it."""
 
@@ -621,6 +778,11 @@ def capture_current_received_self_incident_checkpoint_v1(
     try:
         before_snapshot = service.snapshot()
         before = _snapshot_binding(before_snapshot)
+        switch_receipt = _player_switch_receipt_contract(
+            player_switch_receipt,
+            source_binding=before,
+            seed_lineage_id=seed_lineage_id,
+        )
         event_query = service.query_current_event_window_context_v1(
             int(before["event_instance_id"]),
             expected_revision=int(before["revision"]),
@@ -641,7 +803,7 @@ def capture_current_received_self_incident_checkpoint_v1(
             save_result, snapshot_binding=before
         )
         after_save = _snapshot_binding(service.snapshot())
-        if not _same_capture_binding(before, after_save):
+        if not _same_post_save_binding(before, after_save):
             raise IncidentCheckpointSeamError(
                 "incident_source_save_crossed_binding",
                 {"before": before, "after_save": after_save},
@@ -702,7 +864,10 @@ def capture_current_received_self_incident_checkpoint_v1(
         "ocr_used": False,
         "coordinates_used": False,
         "console_used": False,
-        "generic_character_rebind_used": False,
+        "generic_character_rebind_used": True,
+        "generic_character_rebind_authority": lineage[
+            "generic_character_rebind_authority"
+        ],
         "action_ack_used_as_state_evidence": False,
         "span_id": SPAN_ID,
         "producer_key": PRODUCER_KEY,
@@ -720,6 +885,7 @@ def capture_current_received_self_incident_checkpoint_v1(
         "map_ready": True,
         "seed_lineage_id": seed_lineage_id,
         "capture_lineage": lineage,
+        "player_switch_receipt": switch_receipt,
         "source_snapshot_binding": before,
         "post_query_snapshot_binding": after_query,
         "post_save_snapshot_binding": after_save,
@@ -740,6 +906,7 @@ def capture_current_received_self_incident_checkpoint_v1(
             "provider_ui_query_same_frame": True,
             "native_save_same_frame": True,
             "checkpoint_bytes_hash_bound": True,
+            "native_player_switch_receipt_verified": True,
             "action_ack_used_as_state_evidence": False,
         },
     }

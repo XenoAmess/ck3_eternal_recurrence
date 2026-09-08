@@ -165,12 +165,15 @@ class IncidentSourceProductionChoreographyTests(unittest.TestCase):
     def test_reachability_and_no_fabricated_fix_are_explicit(self) -> None:
         reachability = CONTRACT["reachability"]
         self.assertTrue(reachability["production_graph_to_grade_settlement_intact"])
-        self.assertFalse(reachability["played_character_grade_325_observed"])
+        self.assertTrue(reachability["played_character_grade_325_observed"])
         self.assertFalse(reachability["played_character_grade_325_guaranteed"])
         self.assertEqual(
             reachability["status"],
-            "conditional-product-reachable-live-candidate-unproven",
+            "real-grade-observed-native-subject-switch-required",
         )
+        self.assertIsNone(reachability["blocking_unknown"])
+        self.assertEqual(reachability["observed_subject_character_id"], 29037)
+        self.assertEqual(reachability["observed_result_grade"], 1)
         self.assertFalse(reachability["product_defect_proven"])
         self.assertFalse(CONTRACT["production_fix"]["implemented"])
         self.assertEqual(
@@ -180,6 +183,14 @@ class IncidentSourceProductionChoreographyTests(unittest.TestCase):
         self.assertFalse(CONTRACT["no_launch"]["shared_runner_modified"])
         self.assertFalse(CONTRACT["no_launch"]["b3_artifact_modified"])
         self.assertTrue(CONTRACT["strict_target_capture"]["must_remain_unselected"])
+        target = CONTRACT["target_source"]
+        self.assertEqual(target["initial_player_character_id"], 32904)
+        self.assertEqual(target["target_subject_character_id"], 29037)
+        self.assertNotIn("notice_owner_character_id", target)
+        strict = CONTRACT["strict_target_capture"]
+        self.assertTrue(strict["native_player_switch_required"])
+        self.assertTrue(strict["generic_character_rebind_used"])
+        self.assertEqual(strict["maximum_switch_to_capture_days"], 399)
         forbidden = " ".join(CONTRACT["forbidden"])
         for token in ("fixture", "console", "rebind", "ACK", "synthetic"):
             self.assertIn(token, forbidden)

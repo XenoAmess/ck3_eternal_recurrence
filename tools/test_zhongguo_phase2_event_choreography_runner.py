@@ -27,11 +27,20 @@ from zhongguo_phase2_event_choreography import (  # noqa: E402
 from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
     CHECKPOINT_REQUIRED_HANDLERS,
     INCIDENT_STRICT_RECEIPT_FIELD,
+    LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
     SOURCE_CHECKPOINT_REGISTRY_KIND,
     SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
 )
+from test_zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
+    _registry as _schema3_checkpoint_registry,
+)
 from test_zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
     strict_incident_checkpoint,
+)
+from test_zg361_phase2_cross_cycle_endgame_source_capture import (  # noqa: E402
+    DATE_RAW as ENDGAME_DATE_RAW,
+    OWNER as ENDGAME_OWNER,
+    maturity_receipt_fields,
 )
 
 
@@ -93,6 +102,10 @@ def _checkpoint_registry(root: Path) -> dict[str, object]:
             owner = 9200 + index
             player = 9001
             date_raw = 800 + index
+            if handler == "capture_cross_cycle_endgame":
+                owner = ENDGAME_OWNER
+                player = ENDGAME_OWNER
+                date_raw = ENDGAME_DATE_RAW
         sha = hashlib.sha256(path.read_bytes()).hexdigest().upper()
         row = {
                 "span_id": plan.span_id,
@@ -136,9 +149,11 @@ def _checkpoint_registry(root: Path) -> dict[str, object]:
                     receipt_path.read_bytes()
                 ).hexdigest().upper(),
             }
+        if handler == "capture_cross_cycle_endgame":
+            row["source_receipt"].update(maturity_receipt_fields())
         entries.append(row)
     return {
-        "schema_version": SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+        "schema_version": LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
         "registry_kind": SOURCE_CHECKPOINT_REGISTRY_KIND,
         "result": "GREEN",
         "evidence_class": "real_ck3",
@@ -205,7 +220,172 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
             ]
         )
 
-    def test_formal_preflight_rejects_seed_owner_not_bound_to_strict_receipt(
+    def test_formal_preflight_accepts_schema3_multi_branch_registry(self) -> None:
+        class RestoreService(_Service):
+            def restore_phase2_span_source_checkpoint_v1(self, **_kwargs):
+                return {}
+
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _schema3_checkpoint_registry(
+                Path(temporary), multi_branch=True
+            )
+            incident = next(
+                row
+                for row in registry["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            runtime_snapshot = _snapshot()
+            runtime_snapshot["played_character"]["character_id"] = incident[
+                "player_character_id"
+            ]
+            context = SimpleNamespace(
+                seed_contract={},
+                source_checkpoint_registry=registry,
+                recorder=SimpleNamespace(
+                    phase2_capture_lineage={
+                        "seed_lineage_id": "different-runtime-seed"
+                    }
+                ),
+            )
+            result = capture._Phase2RealEventChoreographyService(
+                RestoreService()
+            ).preflight_source_checkpoints(
+                context, {"paused_snapshot": runtime_snapshot}
+            )
+
+        self.assertEqual(
+            result["schema_version"], SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["lineage_set_id"], registry["lineage_set_id"])
+        self.assertEqual(
+            result["handler_save_lineage_ids"][
+                "capture_incidents_operations"
+            ],
+            incident["save_lineage_id"],
+        )
+        self.assertEqual(
+            result["incident_runner_binding"]["owner_character_id"],
+            incident["owner_character_id"],
+        )
+
+    def test_formal_preflight_rejects_missing_schema3_lineage_set(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _schema3_checkpoint_registry(
+                Path(temporary), multi_branch=True
+            )
+            registry.pop("lineage_set_id")
+            context = SimpleNamespace(
+                source_checkpoint_registry=registry,
+                recorder=SimpleNamespace(
+                    phase2_capture_lineage={"seed_lineage_id": "unused"}
+                ),
+            )
+            with self.assertRaises(Phase2EventChoreographyError) as raised:
+                capture._Phase2RealEventChoreographyService(
+                    _Service()
+                ).preflight_source_checkpoints(context, {})
+
+        self.assertEqual(
+            raised.exception.reason_code, "source_checkpoint_preflight_red"
+        )
+        self.assertEqual(
+            raised.exception.evidence["upstream_reason_code"],
+            "source_checkpoint_registry_header_invalid",
+        )
+
+    def test_formal_preflight_rejects_wrong_schema3_lineage_set(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            registry = _schema3_checkpoint_registry(
+                Path(temporary), multi_branch=True
+            )
+            registry["lineage_set_id"] = (
+                "zg361-phase2-lineage-set-" + "0" * 64
+            )
+            context = SimpleNamespace(
+                source_checkpoint_registry=registry,
+                recorder=SimpleNamespace(
+                    phase2_capture_lineage={"seed_lineage_id": "unused"}
+                ),
+            )
+            with self.assertRaises(Phase2EventChoreographyError) as raised:
+                capture._Phase2RealEventChoreographyService(
+                    _Service()
+                ).preflight_source_checkpoints(context, {})
+
+        self.assertEqual(
+            raised.exception.reason_code, "source_checkpoint_preflight_red"
+        )
+        self.assertEqual(
+            raised.exception.evidence["upstream_reason_code"],
+            "source_checkpoint_registry_lineage_set_invalid",
+        )
+
+    def test_registered_schema3_source_restores_its_handler_lineage(self) -> None:
+        class RestoreService(_Service):
+            def restore_phase2_span_source_checkpoint_v1(self, **kwargs):
+                self.restore_kwargs = kwargs
+                return {
+                    "result": "GREEN",
+                    "provider_observed": True,
+                    "checkpoint_sha256": kwargs["expected_checkpoint_sha256"],
+                    "save_lineage_id": kwargs["expected_save_lineage_id"],
+                    "player_character_id": kwargs["expected_player_character_id"],
+                    "owner_character_id": kwargs["expected_owner_character_id"],
+                    "date_raw": kwargs["expected_date_raw"],
+                    "event_definition_key": kwargs[
+                        "expected_event_definition_key"
+                    ],
+                    "fixture_used": False,
+                    "console_used": False,
+                    "generic_character_rebind_used": False,
+                }
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            registry = _schema3_checkpoint_registry(root, multi_branch=True)
+            plan = phase2_event_sequence_plan(
+                "capture_promotion_compensation"
+            )
+            entry = next(
+                row for row in registry["entries"] if row["handler"] == plan.handler
+            )
+            service = RestoreService()
+            adapter = capture._Phase2RealEventChoreographyService(service)
+            context = SimpleNamespace(
+                source_checkpoint_registry=registry,
+                recorder=SimpleNamespace(
+                    phase2_capture_lineage={
+                        "seed_lineage_id": "different-runtime-seed"
+                    }
+                ),
+                artifacts=root,
+            )
+            with mock.patch.object(
+                adapter,
+                "_wait_event",
+                return_value={
+                    "binding": {
+                        "player_character_id": entry["player_character_id"],
+                        "date_raw": entry["date_raw"],
+                    }
+                },
+            ):
+                result = adapter.stage_span_source(
+                    plan, PHASE2_CAPTURE_SCENARIOS[3], context, {}
+                )
+
+        self.assertEqual(result["event_definition_key"], plan.source_event)
+        self.assertEqual(
+            service.restore_kwargs["expected_save_lineage_id"],
+            entry["save_lineage_id"],
+        )
+        self.assertNotEqual(
+            service.restore_kwargs["expected_save_lineage_id"],
+            "different-runtime-seed",
+        )
+
+    def test_formal_preflight_uses_strict_owner_not_stale_seed_selector(
         self,
     ) -> None:
         class RestoreService(_Service):
@@ -232,15 +412,22 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
                     phase2_capture_lineage={"seed_lineage_id": "seed-unit"}
                 ),
             )
-            with self.assertRaises(Phase2EventChoreographyError) as raised:
-                capture._Phase2RealEventChoreographyService(
-                    RestoreService()
-                ).preflight_source_checkpoints(
-                    context, {"paused_snapshot": runtime_snapshot}
-                )
+            result = capture._Phase2RealEventChoreographyService(
+                RestoreService()
+            ).preflight_source_checkpoints(
+                context, {"paused_snapshot": runtime_snapshot}
+            )
+        self.assertEqual(result["result"], "GREEN")
         self.assertEqual(
-            raised.exception.reason_code,
-            "incident_source_checkpoint_runner_binding_red",
+            result["incident_runner_binding"]["owner_character_id"],
+            incident["owner_character_id"],
+        )
+        self.assertNotEqual(
+            result["incident_runner_binding"]["owner_character_id"], 8199
+        )
+        self.assertEqual(
+            result["incident_runner_binding"]["owner_source"],
+            "zg361.50:zg361_notice_prompt_owner",
         )
 
     def test_incident_runner_rejects_ack_only_green_without_provider_proof(

@@ -11,8 +11,9 @@
     "checkpoint_position": "paused before option submission",
     "player_is_event_root_and_subject": true,
     "notice_owner_must_be_distinct": true,
-    "player_character_id": 29037,
-    "notice_owner_character_id": 32904
+    "initial_player_character_id": 32904,
+    "target_subject_character_id": 29037,
+    "notice_owner_binding": "dynamic typed zg361_notice_prompt_owner saved scope from exact zg361.50; never hard-coded"
   },
   "canonical_seed": {
     "contract": "tools/zg361_phase2_seed_contract.json",
@@ -177,15 +178,24 @@
     "player_root_subject_equal": true,
     "notice_owner_distinct": true,
     "provider_ui_same_frame": true,
+    "native_player_switch_required": true,
+    "native_player_switch_before_after_event_free": true,
+    "native_player_switch_preserves_date_pid_and_connection_generation": true,
+    "maximum_switch_to_capture_days": 399,
+    "generic_character_rebind_used": true,
     "checkpoint_bytes_sha256_date_seed_and_capture_lineage_required": true
   },
   "reachability": {
     "production_graph_to_grade_settlement_intact": true,
     "grade_325_schedules_target_after_days": 1,
-    "played_character_grade_325_observed": false,
+    "played_character_grade_325_observed": true,
     "played_character_grade_325_guaranteed": false,
-    "status": "conditional-product-reachable-live-candidate-unproven",
-    "blocking_unknown": "the seed exposes no cohort, frozen KPI/rank/newcomer/quota, pending-grade, or final-grade observation for played character 29037",
+    "observed_subject_character_id": 29037,
+    "observed_result_grade": 1,
+    "observed_absolute_grade": 1,
+    "observed_display_band": "3.25",
+    "status": "real-grade-observed-native-subject-switch-required",
+    "blocking_unknown": null,
     "product_defect_proven": false
   },
   "honest_terminal_red": [
@@ -201,7 +211,7 @@
   "forbidden": [
     "acceptance fixture mounted during continuation",
     "console command",
-    "generic character rebind",
+    "untyped or unverified character rebind",
     "OCR or coordinate input",
     "generic close-any-one-option-event behavior",
     "action ACK used as source or result evidence",

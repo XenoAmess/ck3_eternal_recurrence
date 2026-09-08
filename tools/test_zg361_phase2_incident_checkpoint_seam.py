@@ -38,6 +38,10 @@ from zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
     run_received_self_incident_checkpoint_action_cell,
     validate_received_self_incident_checkpoint_receipt,
 )
+from zg361_phase2_incident_source_capture_entry import (  # noqa: E402
+    GENERIC_REBIND_AUTHORITY,
+    PLAYER_SWITCH_RECEIPT_KIND,
+)
 import zg361_phase2_incidents_operations_preflight as preflight  # noqa: E402
 
 
@@ -52,7 +56,8 @@ def capture_lineage() -> dict[str, object]:
         "ocr_used": False,
         "coordinates_used": False,
         "console_used": False,
-        "generic_character_rebind_used": False,
+        "generic_character_rebind_used": True,
+        "generic_character_rebind_authority": GENERIC_REBIND_AUTHORITY,
     }
 
 
@@ -64,13 +69,14 @@ def _full_event_frame(
     date_raw: int,
     option_one_enabled: bool,
     notice_owner: int,
+    player_character_id: int = PLAYER,
 ) -> dict[str, object]:
     frame = event_frame()
     frame["snapshot_revision"] = native_revision
     frame["date_raw"] = date_raw
     frame["current_event_instance_id"] = event_instance_id
     frame["event_definition_key"] = event_key
-    frame["root_scope"] = event_scope(character_id=PLAYER)
+    frame["root_scope"] = event_scope(character_id=player_character_id)
     frame["saved_scopes"] = (
         [
             {
@@ -117,6 +123,9 @@ class CaptureAndActionService(FakeIncidentService):
         self.query_drift = False
         self.save_drift = False
         self.restore_ack_only = False
+        self.played_character_id = PLAYER
+        self.switch_target_event: str | None = None
+        self.switch_calls = 0
 
     def snapshot(self) -> dict[str, object]:
         value = super().snapshot()
@@ -124,7 +133,46 @@ class CaptureAndActionService(FakeIncidentService):
             "bridge_pid": self.pid,
             "connection_generation": self.connection_generation,
         }
+        value["played_character"]["character_id"] = self.played_character_id
         return value
+
+    def set_player_character_v1(
+        self,
+        character_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        if expected_revision != self.revision:
+            raise AssertionError("switch revision changed")
+        before_revision = self.revision
+        self.switch_calls += 1
+        prior = self.played_character_id
+        self.played_character_id = character_id
+        self.revision += 1
+        self.native_revision += 1
+        if self.switch_target_event is not None:
+            self.event_key = self.switch_target_event
+            self.event_instance_id = 100
+        return {
+            "schema_version": 1,
+            "accepted": True,
+            "status": "switched",
+            "backend_id": "native-headless",
+            "step": f"set-played-character-v1-{character_id}",
+            "from_character_id": prior,
+            "to_character_id": character_id,
+            "prior_episode_character_id": prior,
+            "episode_character_id": character_id,
+            "date_raw": self.date_raw,
+            "before_revision": before_revision,
+            "after_revision": self.revision,
+            "native_revision": self.native_revision,
+            "paused": True,
+            "map_ready": True,
+            "postcondition_verified": True,
+            "episode_rebind_performed": True,
+            "one_life_terminal_cleared": True,
+        }
 
     def query_current_event_window_context_v1(
         self, event_instance_id: int, *, expected_revision: int
@@ -143,6 +191,7 @@ class CaptureAndActionService(FakeIncidentService):
             date_raw=self.date_raw,
             option_one_enabled=self.option_one_enabled,
             notice_owner=self.notice_owner,
+            player_character_id=self.played_character_id,
         )
         result = {
             "status": "available",
@@ -189,11 +238,13 @@ class CaptureAndActionService(FakeIncidentService):
                 "size": self.save_path.stat().st_size,
                 "sha256": sha256,
                 "date_raw": self.date_raw,
-                "episode_character_id": PLAYER,
+                "episode_character_id": self.played_character_id,
                 "strategy": "native-autosave-command-v1",
             },
             "materialization": {"available": True},
         }
+        self.revision += 1
+        self.native_revision += 1
         if self.save_drift:
             self.revision += 1
             self.native_revision += 1
@@ -249,6 +300,89 @@ class CaptureAndActionService(FakeIncidentService):
         }
 
 
+def player_switch_locator(
+    root: Path,
+    service: CaptureAndActionService,
+    *,
+    label: str = "player-switch",
+    seed_lineage_id: str = SEED_LINEAGE_ID,
+) -> dict[str, object]:
+    switch_path = root / f"{label}-receipt.json"
+    switch_path.parent.mkdir(parents=True, exist_ok=True)
+    switch_payload = {
+        "schema_version": 1,
+        "kind": PLAYER_SWITCH_RECEIPT_KIND,
+        "result": "GREEN",
+        "evidence_class": "real_ck3",
+        "state_origin": "managed_product",
+        "seed_lineage_id": seed_lineage_id,
+        "initial_player_character_id": OWNER,
+        "target_subject_character_id": PLAYER,
+        "date_raw": service.date_raw,
+        "before_binding": {
+            "snapshot_id": "snapshot-9",
+            "revision": 9,
+            "native_revision": 99,
+            "date_raw": service.date_raw,
+            "player_character_id": OWNER,
+            "bridge_pid": service.pid,
+            "connection_generation": service.connection_generation,
+            "paused": True,
+            "map_ready": True,
+            "active_event_instance_id": None,
+            "active_event_option_count": None,
+        },
+        "after_binding": {
+            "snapshot_id": "snapshot-10",
+            "revision": 10,
+            "native_revision": 100,
+            "date_raw": service.date_raw,
+            "player_character_id": PLAYER,
+            "bridge_pid": service.pid,
+            "connection_generation": service.connection_generation,
+            "paused": True,
+            "map_ready": True,
+            "active_event_instance_id": None,
+            "active_event_option_count": None,
+        },
+        "native_receipt": {
+            "schema_version": 1,
+            "accepted": True,
+            "status": "switched",
+            "backend_id": "native-headless",
+            "step": f"set-played-character-v1-{PLAYER}",
+            "from_character_id": OWNER,
+            "to_character_id": PLAYER,
+            "prior_episode_character_id": OWNER,
+            "episode_character_id": PLAYER,
+            "date_raw": service.date_raw,
+            "before_revision": 9,
+            "after_revision": 10,
+            "native_revision": 100,
+            "paused": True,
+            "map_ready": True,
+            "postcondition_verified": True,
+            "episode_rebind_performed": True,
+            "one_life_terminal_cleared": True,
+        },
+        "generic_character_rebind_used": True,
+        "generic_character_rebind_authority": GENERIC_REBIND_AUTHORITY,
+        "provider_observed": True,
+        "action_ack_used_as_state_evidence": False,
+    }
+    switch_path.write_text(
+        json.dumps(switch_payload, ensure_ascii=False, indent=2, sort_keys=True)
+        + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "path": str(switch_path.resolve()),
+        "bytes": switch_path.stat().st_size,
+        "sha256": hashlib.sha256(switch_path.read_bytes()).hexdigest().upper(),
+        "payload": switch_payload,
+    }
+
+
 def capture(
     root: Path, service: CaptureAndActionService
 ) -> tuple[dict[str, object], Path]:
@@ -259,6 +393,7 @@ def capture(
         receipt_path=receipt_path,
         seed_lineage_id=SEED_LINEAGE_ID,
         capture_lineage=capture_lineage(),
+        player_switch_receipt=player_switch_locator(root, service),
     )
     return receipt, receipt_path
 
@@ -330,6 +465,14 @@ class IncidentCheckpointSeamTests(unittest.TestCase):
         self.assertTrue(receipt["provider_observed"])
         self.assertTrue(receipt["ui_state_verified"])
         self.assertFalse(receipt["action_ack_used_as_state_evidence"])
+        self.assertEqual(
+            receipt["post_save_snapshot_binding"]["revision"],
+            receipt["source_snapshot_binding"]["revision"] + 1,
+        )
+        self.assertEqual(
+            receipt["post_save_snapshot_binding"]["native_revision"],
+            receipt["source_snapshot_binding"]["native_revision"] + 1,
+        )
         self.assertEqual(validated["result"], "GREEN")
         self.assertEqual(report["status"], "READY_FOR_LIVE_RUN")
         self.assertEqual(report["readiness"], "static-ready-live-pending")
@@ -351,6 +494,9 @@ class IncidentCheckpointSeamTests(unittest.TestCase):
                         receipt_path=root / mutation / "receipt.json",
                         seed_lineage_id=SEED_LINEAGE_ID,
                         capture_lineage=capture_lineage(),
+                        player_switch_receipt=player_switch_locator(
+                            root / mutation, service, label="switch"
+                        ),
                     )
                 self.assertEqual(
                     raised.exception.reason_code,
@@ -370,6 +516,9 @@ class IncidentCheckpointSeamTests(unittest.TestCase):
                     receipt_path=root / "query.json",
                     seed_lineage_id=SEED_LINEAGE_ID,
                     capture_lineage=capture_lineage(),
+                    player_switch_receipt=player_switch_locator(
+                        root / "query-switch", query_drift
+                    ),
                 )
             self.assertEqual(
                 raised.exception.reason_code,
@@ -386,6 +535,9 @@ class IncidentCheckpointSeamTests(unittest.TestCase):
                     receipt_path=root / "save.json",
                     seed_lineage_id=SEED_LINEAGE_ID,
                     capture_lineage=capture_lineage(),
+                    player_switch_receipt=player_switch_locator(
+                        root / "save-switch", save_drift
+                    ),
                 )
             self.assertEqual(
                 raised.exception.reason_code,

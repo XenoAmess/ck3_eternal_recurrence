@@ -658,7 +658,7 @@ class CrossCycleEndgameActionCellTests(unittest.TestCase):
             "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
         )
         self.assertEqual(
-            len(contract["current_audit"]["why_live_pending"]), 4
+            len(contract["current_audit"]["why_live_pending"]), 5
         )
 
 

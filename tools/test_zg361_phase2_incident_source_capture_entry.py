@@ -21,7 +21,10 @@ from test_zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
     PLAYER,
 )
 from zg361_phase2_incident_source_capture_entry import (  # noqa: E402
+    INITIAL_PLAYER_CHARACTER_ID,
+    TARGET_SUBJECT_CHARACTER_ID,
     IncidentSourceCaptureEntryError,
+    produce_and_capture_incident_source_checkpoint,
     wait_for_and_capture_incident_source_checkpoint,
 )
 from zhongguo_phase2_event_choreography import (  # noqa: E402
@@ -48,6 +51,16 @@ def lineage() -> dict[str, object]:
     }
 
 
+def effective_lineage() -> dict[str, object]:
+    value = lineage()
+    value["generic_character_rebind_used"] = True
+    value["generic_character_rebind_authority"] = (
+        "native game.command.set-played-character-v1-N with same-paused-date "
+        "postcondition receipt"
+    )
+    return value
+
+
 def run_capture(
     root: Path,
     service: CaptureAndActionService,
@@ -56,6 +69,16 @@ def run_capture(
     clock: FakeClock | None = None,
 ) -> dict[str, object]:
     clock = clock or FakeClock()
+    pending_event = service.event_key
+    service.event_key = None
+    service.event_instance_id = None
+    service.played_character_id = INITIAL_PLAYER_CHARACTER_ID
+    if pending_event is not None:
+        def reveal_event() -> None:
+            service.event_key = pending_event
+            service.event_instance_id = 100
+
+        clock.on_sleep = reveal_event
     return wait_for_and_capture_incident_source_checkpoint(
         service,
         evidence_path=root / "capture.json",
@@ -287,8 +310,10 @@ class IncidentSourceCaptureEntryTests(unittest.TestCase):
             self.assertEqual(entry["schema_version"], 2)
             self.assertEqual(entry["source_event_definition_key"], "zg361.50")
             self.assertEqual(entry["seed_lineage_id"], SEED_LINEAGE_ID)
-            self.assertEqual(entry["capture_lineage"], lineage())
-            self.assertEqual(entry["player_character_id"], PLAYER)
+            self.assertEqual(entry["capture_lineage"], effective_lineage())
+            self.assertEqual(
+                entry["player_character_id"], TARGET_SUBJECT_CHARACTER_ID
+            )
             self.assertEqual(entry["owner_character_id"], service.notice_owner)
             self.assertNotEqual(
                 entry["owner_character_id"], entry["player_character_id"]
@@ -298,15 +323,38 @@ class IncidentSourceCaptureEntryTests(unittest.TestCase):
                     "action_ack_used_as_state_evidence"
                 ]
             )
-            self.assertEqual(evidence["player_character_id"], PLAYER)
-            self.assertEqual(evidence["subject_character_id"], PLAYER)
-            self.assertEqual(evidence["event_root_character_id"], PLAYER)
+            self.assertEqual(
+                evidence["player_character_id"], TARGET_SUBJECT_CHARACTER_ID
+            )
+            self.assertEqual(
+                evidence["subject_character_id"], TARGET_SUBJECT_CHARACTER_ID
+            )
+            self.assertEqual(
+                evidence["event_root_character_id"], TARGET_SUBJECT_CHARACTER_ID
+            )
             self.assertEqual(
                 evidence["notice_owner_character_id"], service.notice_owner
             )
             self.assertTrue(evidence["option_shown"])
             self.assertTrue(evidence["option_enabled"])
             self.assertTrue(evidence["provider_ui_same_frame"])
+            self.assertTrue(evidence["generic_character_rebind_used"])
+            self.assertEqual(
+                evidence["initial_player_character_id"],
+                INITIAL_PLAYER_CHARACTER_ID,
+            )
+            self.assertEqual(
+                evidence["target_subject_character_id"],
+                TARGET_SUBJECT_CHARACTER_ID,
+            )
+            switch = evidence["player_switch_receipt"]
+            self.assertTrue(Path(switch["path"]).is_file())
+            self.assertEqual(
+                hashlib.sha256(Path(switch["path"]).read_bytes())
+                .hexdigest()
+                .upper(),
+                switch["sha256"],
+            )
 
             builder = Phase2SourceCheckpointRegistryBuilder(
                 root / "registry-archive",
@@ -358,17 +406,129 @@ class IncidentSourceCaptureEntryTests(unittest.TestCase):
                     ]
                 ).is_file()
             )
+            authoritative = preflight.runner._phase2_incident_registry_binding(
+                {
+                    "seed_lineage_id": SEED_LINEAGE_ID,
+                    "entries": [formal],
+                },
+                expected_player_character_id=TARGET_SUBJECT_CHARACTER_ID,
+            )
+            self.assertEqual(
+                authoritative["owner_character_id"], service.notice_owner
+            )
+            self.assertNotEqual(
+                authoritative["owner_character_id"],
+                INITIAL_PLAYER_CHARACTER_ID,
+            )
+            self.assertEqual(
+                authoritative["owner_source"],
+                "zg361.50:zg361_notice_prompt_owner",
+            )
             live_preflight = preflight.run_preflight(
                 root / "capture.json", root / "registry-entry.json"
             )
             self.assertEqual(live_preflight["result"], "GREEN")
             self.assertTrue(live_preflight["live_gate_ready"])
 
+    def test_formal_entry_drives_real_product_target_before_capture(self) -> None:
+        class ProductEntryService(CaptureAndActionService):
+            def __init__(self, root: Path) -> None:
+                super().__init__(root)
+                self.event_key = None
+                self.event_instance_id = None
+                self.played_character_id = INITIAL_PLAYER_CHARACTER_ID
+                self.speed = 1
+                self.steps: list[str] = []
+
+            def query_zhongguo_promotion_source_progress_v1(
+                self, request_nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                if expected_revision != self.revision or not self.paused:
+                    raise AssertionError("progress query crossed its paused frame")
+                widgets = [
+                    {
+                        "effective_visible": {
+                            "status": "available",
+                            "value": False,
+                        }
+                    }
+                    for _ in range(5)
+                ]
+                widgets[2]["effective_visible"]["value"] = True
+                return {
+                    "status": "available",
+                    "query_sequence": 1,
+                    "zhongguo_promotion_source_progress": {
+                        "widgets": widgets
+                    },
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int | None
+            ) -> dict[str, object]:
+                if expected_revision != self.revision:
+                    raise AssertionError("map control crossed its revision")
+                self.steps.append(step)
+                if step == "set-speed-5":
+                    self.speed = 5
+                elif step == "resume-map":
+                    self.paused = False
+                elif step == "pause-map":
+                    self.paused = True
+                else:
+                    raise AssertionError(f"unexpected production step {step!r}")
+                return {"accepted": True, "status": "submitted"}
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = ProductEntryService(root)
+            clock = FakeClock()
+
+            def advance_product() -> None:
+                if service.paused or service.event_key is not None:
+                    return
+                service.date_raw += 24
+                service.revision += 1
+                service.native_revision += 1
+                service.event_key = "zg361.50"
+                service.event_instance_id = 701
+
+            clock.on_sleep = advance_product
+            production_evidence: dict[str, object] = {}
+            evidence = produce_and_capture_incident_source_checkpoint(
+                service,
+                evidence_path=root / "capture.json",
+                checkpoint_root=root / "checkpoints",
+                receipt_path=root / "strict-receipt.json",
+                registry_entry_path=root / "registry-entry.json",
+                seed_lineage_id=SEED_LINEAGE_ID,
+                capture_lineage=lineage(),
+                tracked_ck3_pid=service.pid,
+                production_evidence_out=production_evidence,
+                timeout_seconds=5.0,
+                poll_interval_seconds=0.1,
+                monotonic=clock.monotonic,
+                sleep=clock.sleep,
+            )
+            self.assertEqual(evidence["result"], "GREEN")
+            self.assertEqual(service.switch_calls, 1)
+            self.assertEqual(
+                production_evidence["readiness"], "paused-real-zg361.50"
+            )
+            self.assertEqual(
+                service.steps, ["set-speed-5", "resume-map", "pause-map"]
+            )
+            self.assertEqual(
+                evidence["date_raw"]
+                - evidence["player_switch_receipt"]["payload"]["date_raw"],
+                24,
+            )
+
     def test_visible_non_received_self_event_is_red_without_save(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             service = CaptureAndActionService(root)
-            service.notice_owner = PLAYER
+            service.notice_owner = TARGET_SUBJECT_CHARACTER_ID
             with self.assertRaises(IncidentSourceCaptureEntryError) as raised:
                 run_capture(root, service)
             self.assertEqual(
@@ -416,6 +576,9 @@ class IncidentSourceCaptureEntryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             service = CaptureAndActionService(root)
+            service.event_key = None
+            service.event_instance_id = None
+            service.played_character_id = INITIAL_PLAYER_CHARACTER_ID
             with self.assertRaises(IncidentSourceCaptureEntryError) as raised:
                 wait_for_and_capture_incident_source_checkpoint(
                     service,

@@ -153,10 +153,13 @@ class CrossCycleEndgameProductionChoreographyTests(unittest.TestCase):
         for token in (
             "zg361_b2_submit_completed_al_receipts_effect",
             "zg361_p2c_prepare_m360_source_effect",
-            "zg361_we_resume_m360_from_central_source_effect",
+            "zg361_p2c_schedule_m360_resume_effect",
             "zg361_p2c_schedule_pump_effect = { DAYS = 2 }",
         ):
             self.assertIn(token, stage11)
+        self.assertNotIn(
+            "zg361_we_resume_m360_from_central_source_effect", stage11
+        )
         for token in (
             "var:zg361_p2c_m360_source_cohort_count = 3",
             "var:zg361_p2c_m360_source_total_quota >= 1",

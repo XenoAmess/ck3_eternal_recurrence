@@ -17,15 +17,20 @@ from zg361_phase2_incident_checkpoint_seam import (
     validate_received_self_incident_checkpoint_receipt,
 )
 from zg361_phase2_incident_source_capture_entry import (
+    GENERIC_REBIND_AUTHORITY,
     LIVE_CAPTURE_KIND,
+    PLAYER_SWITCH_RECEIPT_KIND,
+    REGISTRY_CAPTURE_ENTRY_SCHEMA_VERSION,
     REGISTRY_CAPTURE_ENTRY_KIND,
     IncidentSourceCaptureEntryError,
     build_schema2_incident_registry_capture_entry,
+    produce_and_capture_incident_source_checkpoint,
+    switch_incident_source_subject_v1,
+    validate_incident_source_player_switch_receipt,
     wait_for_and_capture_incident_source_checkpoint,
 )
 from zhongguo_phase2_source_checkpoint_provider import (
     INCIDENT_STRICT_RECEIPT_FIELD,
-    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
 )
 
 
@@ -127,8 +132,26 @@ def _validate_live_artifacts(
             "action_ack_used_as_state_evidence"
         )
         is False,
+        "typed_native_player_switch_retained": report.get(
+            "generic_character_rebind_used"
+        )
+        is True
+        and report.get("generic_character_rebind_authority")
+        == GENERIC_REBIND_AUTHORITY
+        and entry.get("generic_character_rebind_used") is True
+        and entry.get("generic_character_rebind_authority")
+        == GENERIC_REBIND_AUTHORITY
+        and isinstance(report.get("player_switch_receipt"), Mapping)
+        and isinstance(
+            report["player_switch_receipt"].get("payload"), Mapping
+        )
+        and report["player_switch_receipt"]["payload"].get("kind")
+        == PLAYER_SWITCH_RECEIPT_KIND
+        and report.get("player_switch_receipt")
+        == entry.get("player_switch_receipt")
+        == summary.get("player_switch_receipt"),
         "registry_entry_schema2": entry.get("schema_version")
-        == SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+        == REGISTRY_CAPTURE_ENTRY_SCHEMA_VERSION,
         "registry_entry_kind": entry.get("kind")
         == REGISTRY_CAPTURE_ENTRY_KIND,
         "registry_entry_exact_projection": entry == projected,
@@ -164,6 +187,10 @@ def _validate_live_artifacts(
         == summary.get("subject_character_id"),
         "strict_notice_owner_distinct": summary.get("owner_character_id")
         != summary.get("player_character_id"),
+        "strict_generic_rebind_honest": summary.get(
+            "generic_character_rebind_used"
+        )
+        is True,
     }
     if not all(checks.values()):
         raise IncidentSourceCaptureEntryError(
@@ -178,6 +205,7 @@ def _validate_live_artifacts(
         "owner_character_id": summary["owner_character_id"],
         "player_character_id": summary["player_character_id"],
         "date_raw": summary["date_raw"],
+        "generic_character_rebind_used": True,
     }
 
 
@@ -189,6 +217,18 @@ def run_preflight(
     capture_source = inspect.getsource(
         wait_for_and_capture_incident_source_checkpoint
     )
+    production_capture_source = inspect.getsource(
+        produce_and_capture_incident_source_checkpoint
+    )
+    production_capture_offsets = [
+        production_capture_source.find(token)
+        for token in (
+            "switch_incident_source_subject_v1(",
+            "enter_promotion_source_checkpoint_v1(",
+            "wait_for_and_capture_incident_source_checkpoint(",
+        )
+    ]
+    switch_source = inspect.getsource(switch_incident_source_subject_v1)
     main_parameters = inspect.signature(runner.main).parameters
     cell_parameters = inspect.signature(runner.run_cell).parameters
     checks = {
@@ -198,16 +238,32 @@ def run_preflight(
             and '"--phase2-incident-source-checkpoint-capture"'
             in runner_source
         ),
-        "formal_runner_calls_capture": (
-            "wait_for_and_capture_incident_source_checkpoint("
+        "formal_runner_calls_production_capture": (
+            "produce_and_capture_incident_source_checkpoint("
             in runner_source
             and "focused_incident_source_capture=(" in runner_source
+        ),
+        "production_entry_precedes_read_only_capture": (
+            all(offset >= 0 for offset in production_capture_offsets)
+            and production_capture_offsets
+            == sorted(production_capture_offsets)
+            and "pause_on_event_definition_key=SOURCE_EVENT_DEFINITION_KEY"
+            in production_capture_source
+            and '"incident_source_production_target_unproven"'
+            in production_capture_source
         ),
         "managed_wait_capture_callable": callable(
             wait_for_and_capture_incident_source_checkpoint
         ),
+        "typed_native_switch_seam_callable": callable(
+            switch_incident_source_subject_v1
+        )
+        and callable(validate_incident_source_player_switch_receipt)
+        and "set_player_character_v1(" in switch_source
+        and "require_event_free=True" in switch_source
+        and '"generic_character_rebind_used": True' in switch_source,
         "schema2_registry_contract": (
-            SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION == 2
+            REGISTRY_CAPTURE_ENTRY_SCHEMA_VERSION == 2
         ),
         "product_only_runtime": (
             "or phase2_incident_source_checkpoint_capture" in runner_source
@@ -258,8 +314,10 @@ def run_preflight(
             "--phase2-frontend-first-load-save-name <REAL_PRODUCT_SAVE>",
         ],
         "capture_outputs": [
+            "cell/04_phase2_incident_source_production_entry.json",
             "cell/05_phase2_incident_source_checkpoint_capture.json",
             "cell/incident-source-checkpoint/strict-receipt.json",
+            "cell/incident-source-checkpoint/player-switch-receipt.json",
             "cell/incident-source-checkpoint/schema2-registry-entry.json",
             "cell/incident-source-checkpoint/checkpoints/*.ck3",
         ],

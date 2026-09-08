@@ -21,6 +21,10 @@ from zhongguo_phase2_event_choreography import (  # noqa: E402
 )
 from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
     CHECKPOINT_REQUIRED_HANDLERS,
+    LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+    MULTI_BRANCH_CAPTURE_LINEAGE_MODE,
+    PRODUCT_ONLY_MULTI_BRANCH_LINEAGE_KIND,
+    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
     Phase2SourceCheckpointProvider,
 )
 from zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
@@ -31,13 +35,28 @@ from zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
 )
 from test_zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
     CaptureAndActionService,
+    player_switch_locator,
+)
+from zg361_phase2_incident_source_capture_entry import (  # noqa: E402
+    GENERIC_REBIND_AUTHORITY,
 )
 from zg361_phase2_incident_checkpoint_seam import (  # noqa: E402
     capture_current_received_self_incident_checkpoint_v1,
 )
+from test_zg361_phase2_cross_cycle_endgame_source_capture import (  # noqa: E402
+    DATE_RAW as ENDGAME_DATE_RAW,
+    OWNER as ENDGAME_OWNER,
+    maturity_receipt_fields,
+)
 
 
 SEED_LINEAGE_ID = "phase2-seed-live-unit"
+MULTI_BRANCH_LINEAGES = {
+    "capture_promotion_compensation": "A400",
+    "capture_projects_metrics": "A400",
+    "capture_incidents_operations": "8E6C/R106",
+    "capture_cross_cycle_endgame": "ENDGAME-R356",
+}
 PLANS = {
     plan.handler: plan
     for plan in PHASE2_EVENT_SEQUENCE_PLANS
@@ -59,8 +78,9 @@ def source_receipt(
     player_character_id: int,
     date_raw: int,
     checkpoint_sha256: str,
+    save_lineage_id: str = SEED_LINEAGE_ID,
 ) -> dict[str, object]:
-    return {
+    receipt = {
         "result": "GREEN",
         "evidence_class": "real_ck3",
         "provider_observed": True,
@@ -73,8 +93,11 @@ def source_receipt(
         "player_character_id": player_character_id,
         "date_raw": date_raw,
         "checkpoint_sha256": checkpoint_sha256,
-        "save_lineage_id": SEED_LINEAGE_ID,
+        "save_lineage_id": save_lineage_id,
     }
+    if plan.handler == "capture_cross_cycle_endgame":
+        receipt.update(maturity_receipt_fields())
+    return receipt
 
 
 def strict_incident_checkpoint(
@@ -82,8 +105,9 @@ def strict_incident_checkpoint(
 ) -> tuple[dict[str, object], Path]:
     capture_root = root / "strict-incident-input"
     capture_root.mkdir(parents=True, exist_ok=True)
+    service = CaptureAndActionService(capture_root)
     receipt = capture_current_received_self_incident_checkpoint_v1(
-        CaptureAndActionService(capture_root),
+        service,
         checkpoint_root=capture_root / "checkpoints",
         receipt_path=capture_root / "receipt.json",
         seed_lineage_id=seed_lineage_id,
@@ -94,8 +118,14 @@ def strict_incident_checkpoint(
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
-            "generic_character_rebind_used": False,
+            "generic_character_rebind_used": True,
+            "generic_character_rebind_authority": GENERIC_REBIND_AUTHORITY,
         },
+        player_switch_receipt=player_switch_locator(
+            capture_root,
+            service,
+            seed_lineage_id=seed_lineage_id,
+        ),
     )
     checkpoint = receipt["checkpoint"]
     assert isinstance(checkpoint, dict)
@@ -109,10 +139,11 @@ def record_all(
     entries = []
     for ordinal, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
         plan = PLANS[handler]
+        save_lineage_id = builder.handler_save_lineage_ids[handler]
         strict_receipt = None
         if handler == "capture_incidents_operations":
             strict_receipt, source = strict_incident_checkpoint(
-                source_root, seed_lineage_id=SEED_LINEAGE_ID
+                source_root, seed_lineage_id=save_lineage_id
             )
             owner = int(strict_receipt["owner_character_id"])
             player = int(strict_receipt["player_character_id"])
@@ -125,6 +156,10 @@ def record_all(
             owner = 9100 + ordinal
             player = 9001
             date_raw = 720 + ordinal
+            if handler == "capture_cross_cycle_endgame":
+                owner = ENDGAME_OWNER
+                player = ENDGAME_OWNER
+                date_raw = ENDGAME_DATE_RAW
         sha256 = hashlib.sha256(source.read_bytes()).hexdigest().upper()
         entries.append(
             builder.record(
@@ -139,21 +174,53 @@ def record_all(
                     player_character_id=player,
                     date_raw=date_raw,
                     checkpoint_sha256=sha256,
+                    save_lineage_id=save_lineage_id,
                 ),
+                save_lineage_id=save_lineage_id,
                 strict_incident_source_checkpoint_receipt=strict_receipt,
             )
         )
     return entries
 
 
-def capture_manifest(root: Path) -> Path:
+def _lineage_set_id(entry_capture_lineages: list[dict[str, object]]) -> str:
+    payload = json.dumps(
+        [
+            {
+                "handler": row["handler"],
+                "seed_lineage_id": row["seed_lineage_id"],
+                **(
+                    {
+                        "capture_run_input_checkpoint_sha256": row[
+                            "capture_run_input_checkpoint"
+                        ]["sha256"]
+                    }
+                    if row["handler"] == "capture_incidents_operations"
+                    else {}
+                ),
+            }
+            for row in entry_capture_lineages
+        ],
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("ascii")
+    return "zg361-phase2-lineage-set-" + hashlib.sha256(payload).hexdigest()
+
+
+def capture_manifest(root: Path, *, multi_branch: bool = False) -> Path:
     entries = []
     for ordinal, handler in enumerate(CHECKPOINT_REQUIRED_HANDLERS, 1):
         plan = PLANS[handler]
+        save_lineage_id = (
+            MULTI_BRANCH_LINEAGES[handler]
+            if multi_branch
+            else SEED_LINEAGE_ID
+        )
         strict_receipt = None
         if handler == "capture_incidents_operations":
             strict_receipt, checkpoint = strict_incident_checkpoint(
-                root, seed_lineage_id=SEED_LINEAGE_ID
+                root, seed_lineage_id=save_lineage_id
             )
             owner = int(strict_receipt["owner_character_id"])
             player = int(strict_receipt["player_character_id"])
@@ -166,6 +233,10 @@ def capture_manifest(root: Path) -> Path:
             owner = 9200 + ordinal
             player = 9001
             date_raw = 820 + ordinal
+            if handler == "capture_cross_cycle_endgame":
+                owner = ENDGAME_OWNER
+                player = ENDGAME_OWNER
+                date_raw = ENDGAME_DATE_RAW
         sha256 = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
         row = {
                 "span_id": plan.span_id,
@@ -178,7 +249,7 @@ def capture_manifest(root: Path) -> Path:
                     "path": str(checkpoint.resolve()),
                     "bytes": checkpoint.stat().st_size,
                     "sha256": sha256,
-                    "save_lineage_id": SEED_LINEAGE_ID,
+                    "save_lineage_id": save_lineage_id,
                 },
                 "source_receipt": source_receipt(
                     plan=plan,
@@ -186,26 +257,72 @@ def capture_manifest(root: Path) -> Path:
                     player_character_id=player,
                     date_raw=date_raw,
                     checkpoint_sha256=sha256,
+                    save_lineage_id=save_lineage_id,
                 ),
             }
         if strict_receipt is not None:
             row["received_self_incident_checkpoint_receipt"] = strict_receipt
         entries.append(row)
+    if multi_branch:
+        capture_run_input_path = (root / "incident-run-input.ck3").resolve()
+        capture_run_input_path.write_bytes(b"incident-run-input")
+        capture_run_input = {
+            "path": str(capture_run_input_path),
+            "bytes": capture_run_input_path.stat().st_size,
+            "sha256": hashlib.sha256(
+                capture_run_input_path.read_bytes()
+            ).hexdigest().upper(),
+        }
+        entry_capture_lineages = [
+            {
+                "handler": handler,
+                "seed_lineage_id": MULTI_BRANCH_LINEAGES[handler],
+                "capture_lineage": {
+                    "seed_lineage_id": MULTI_BRANCH_LINEAGES[handler],
+                },
+                **(
+                    {"capture_run_input_checkpoint": capture_run_input}
+                    if handler == "capture_incidents_operations"
+                    else {}
+                ),
+            }
+            for handler in CHECKPOINT_REQUIRED_HANDLERS
+        ]
+        lineage_set_id = _lineage_set_id(entry_capture_lineages)
+        lineage_header = {
+            "lineage_set_id": lineage_set_id,
+            "capture_lineage": {
+                "schema_version": 2,
+                "kind": PRODUCT_ONLY_MULTI_BRANCH_LINEAGE_KIND,
+                "capture_lineage_mode": MULTI_BRANCH_CAPTURE_LINEAGE_MODE,
+                "lineage_set_id": lineage_set_id,
+                "evidence_class": "real_ck3",
+                "fixture_used": False,
+                "console_used": False,
+                "entry_capture_lineages": entry_capture_lineages,
+            },
+        }
+        schema_version = SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION
+    else:
+        lineage_header = {
+            "seed_lineage_id": SEED_LINEAGE_ID,
+            "capture_lineage": {
+                "seed_lineage_id": SEED_LINEAGE_ID,
+                "source": "bound-live-capture-receipts",
+            },
+        }
+        schema_version = LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION
     path = root / "capture-manifest.json"
     path.write_text(
         json.dumps(
             {
-                "schema_version": 2,
+                "schema_version": schema_version,
                 "kind": SOURCE_CHECKPOINT_CAPTURE_MANIFEST_KIND,
                 "result": "GREEN",
                 "evidence_class": "real_ck3",
                 "fixture_used": False,
                 "console_used": False,
-                "seed_lineage_id": SEED_LINEAGE_ID,
-                "capture_lineage": {
-                    "seed_lineage_id": SEED_LINEAGE_ID,
-                    "source": "bound-live-capture-receipts",
-                },
+                **lineage_header,
                 "entries": entries,
             },
             indent=2,
@@ -225,6 +342,52 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
                 "seed_lineage_id": SEED_LINEAGE_ID,
                 "source": "real_phase2_capture",
             },
+        )
+
+    def multi_branch_builder(
+        self, root: Path
+    ) -> tuple[Phase2SourceCheckpointRegistryBuilder, str]:
+        capture_run_input_path = (root / "incident-run-input.ck3").resolve()
+        capture_run_input_path.write_bytes(b"incident-run-input")
+        capture_run_input = {
+            "path": str(capture_run_input_path),
+            "bytes": capture_run_input_path.stat().st_size,
+            "sha256": hashlib.sha256(
+                capture_run_input_path.read_bytes()
+            ).hexdigest().upper(),
+        }
+        entry_capture_lineages = [
+            {
+                "handler": handler,
+                "seed_lineage_id": MULTI_BRANCH_LINEAGES[handler],
+                "capture_lineage": {
+                    "seed_lineage_id": MULTI_BRANCH_LINEAGES[handler],
+                },
+                **(
+                    {"capture_run_input_checkpoint": capture_run_input}
+                    if handler == "capture_incidents_operations"
+                    else {}
+                ),
+            }
+            for handler in CHECKPOINT_REQUIRED_HANDLERS
+        ]
+        lineage_set_id = _lineage_set_id(entry_capture_lineages)
+        return (
+            Phase2SourceCheckpointRegistryBuilder(
+                root / "frozen-v3",
+                lineage_set_id=lineage_set_id,
+                capture_lineage={
+                    "schema_version": 2,
+                    "kind": PRODUCT_ONLY_MULTI_BRANCH_LINEAGE_KIND,
+                    "capture_lineage_mode": MULTI_BRANCH_CAPTURE_LINEAGE_MODE,
+                    "lineage_set_id": lineage_set_id,
+                    "evidence_class": "real_ck3",
+                    "fixture_used": False,
+                    "console_used": False,
+                    "entry_capture_lineages": entry_capture_lineages,
+                },
+            ),
+            lineage_set_id,
         )
 
     def test_freezes_four_real_checkpoints_and_provider_accepts_registry(self) -> None:
@@ -289,6 +452,36 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
                 expected_seed_lineage_id=SEED_LINEAGE_ID,
             )
             self.assertEqual(provider.preflight()["result"], "GREEN")
+
+    def test_schema_v3_builder_freezes_per_handler_lineages(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            builder, lineage_set_id = self.multi_branch_builder(root)
+            record_all(builder, root)
+            registry = builder.finalize()
+            provider = Phase2SourceCheckpointProvider(
+                registry,
+                restore_registered_checkpoint=lambda _entry: {},
+                expected_lineage_set_id=lineage_set_id,
+            )
+            preflight = provider.preflight()
+        self.assertEqual(
+            registry["schema_version"],
+            SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+        )
+        self.assertNotIn("seed_lineage_id", registry)
+        self.assertEqual(registry["lineage_set_id"], lineage_set_id)
+        self.assertEqual(
+            {
+                row["handler"]: row["save_lineage_id"]
+                for row in registry["entries"]
+            },
+            MULTI_BRANCH_LINEAGES,
+        )
+        self.assertEqual(
+            preflight["handler_save_lineage_ids"],
+            MULTI_BRANCH_LINEAGES,
+        )
 
     def test_requires_canonical_handler_order(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -491,6 +684,83 @@ class Phase2SourceCheckpointRegistryBuilderTests(unittest.TestCase):
                     EXPECTED_SOURCE_EVENTS[handler],
                 )
                 self.assertTrue(entry.path.is_file())
+
+    def test_schema_v3_capture_manifest_archives_multi_branch_registry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root, multi_branch=True)
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            registry = build_registry_from_capture_manifest(
+                manifest,
+                checkpoint_root=root / "frozen",
+                registry_path=root / "registry.json",
+            )
+            provider = Phase2SourceCheckpointProvider(
+                registry,
+                restore_registered_checkpoint=lambda _entry: {},
+                expected_lineage_set_id=payload["lineage_set_id"],
+            )
+            preflight = provider.preflight()
+        self.assertEqual(
+            preflight["handler_save_lineage_ids"],
+            MULTI_BRANCH_LINEAGES,
+        )
+        self.assertNotIn("seed_lineage_id", registry)
+
+    def test_schema_v3_manifest_rejects_incident_a400_mislabel(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root, multi_branch=True)
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            incident = next(
+                row
+                for row in payload["entries"]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            incident["checkpoint"]["save_lineage_id"] = "A400"
+            incident["source_receipt"]["save_lineage_id"] = "A400"
+            manifest.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(
+                Phase2SourceCheckpointRegistryBuildError
+            ) as raised:
+                build_registry_from_capture_manifest(
+                    manifest,
+                    checkpoint_root=root / "frozen",
+                    registry_path=root / "registry.json",
+                )
+        self.assertEqual(
+            raised.exception.reason_code,
+            "source_checkpoint_capture_entry_invalid",
+        )
+
+    def test_schema_v3_manifest_rejects_malformed_incident_input_record(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = capture_manifest(root, multi_branch=True)
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            incident_lineage = next(
+                row
+                for row in payload["capture_lineage"][
+                    "entry_capture_lineages"
+                ]
+                if row["handler"] == "capture_incidents_operations"
+            )
+            del incident_lineage["capture_run_input_checkpoint"]["bytes"]
+            manifest.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(
+                Phase2SourceCheckpointRegistryBuildError
+            ) as raised:
+                build_registry_from_capture_manifest(
+                    manifest,
+                    checkpoint_root=root / "frozen",
+                    registry_path=root / "registry.json",
+                )
+        self.assertEqual(
+            raised.exception.reason_code,
+            "source_checkpoint_registry_lineage_set_invalid",
+        )
 
     def test_cli_builds_registry_from_existing_checkpoint_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

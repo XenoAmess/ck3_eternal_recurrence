@@ -165,12 +165,18 @@ def _positive_int32(value: object, label: str) -> int:
 
 
 def _paused_binding(
-    snapshot: object, *, expected_player: int | None, require_event: bool
+    snapshot: object,
+    *,
+    expected_player: int | None,
+    require_event: bool,
+    require_transport_binding: bool = False,
 ) -> dict[str, object]:
     if not isinstance(snapshot, Mapping):
         _fail("snapshot_not_an_object", snapshot=snapshot)
     played = snapshot.get("played_character")
     active = snapshot.get("active_event")
+    diagnostics = snapshot.get("diagnostics")
+    diagnostics = dict(diagnostics) if isinstance(diagnostics, Mapping) else {}
     player = (
         played.get("character_id") if isinstance(played, Mapping) else None
     )
@@ -184,6 +190,15 @@ def _paused_binding(
             active.get("instance_id") if isinstance(active, Mapping) else None
         ),
     }
+    if require_transport_binding:
+        binding.update(
+            {
+                "bridge_pid": diagnostics.get("bridge_pid"),
+                "connection_generation": diagnostics.get(
+                    "connection_generation"
+                ),
+            }
+        )
     valid = (
         snapshot.get("paused") is True
         and snapshot.get("map_ready") is True
@@ -206,6 +221,19 @@ def _paused_binding(
                 isinstance(binding["event_instance_id"], int)
                 and not isinstance(binding["event_instance_id"], bool)
                 and int(binding["event_instance_id"]) > 0
+            )
+        )
+        and (
+            not require_transport_binding
+            or (
+                isinstance(binding["bridge_pid"], int)
+                and not isinstance(binding["bridge_pid"], bool)
+                and 1 <= int(binding["bridge_pid"]) <= 2**31 - 1
+                and isinstance(binding["connection_generation"], int)
+                and not isinstance(binding["connection_generation"], bool)
+                and 1
+                <= int(binding["connection_generation"])
+                <= 2**64 - 1
             )
         )
     )

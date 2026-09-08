@@ -10,6 +10,7 @@ import ctypes
 from ctypes import wintypes
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+import hashlib
 import json
 import math
 import os
@@ -40,7 +41,11 @@ from zg361_phase2_product_projection import (
 from zg361_phase2_incident_source_capture_entry import (
     LIVE_CAPTURE_KIND as INCIDENT_SOURCE_LIVE_CAPTURE_KIND,
     IncidentSourceCaptureEntryError,
-    wait_for_and_capture_incident_source_checkpoint,
+    produce_and_capture_incident_source_checkpoint,
+)
+from zg361_phase2_incident_checkpoint_seam import (
+    IncidentCheckpointSeamError,
+    validate_received_self_incident_checkpoint_receipt,
 )
 
 
@@ -165,6 +170,7 @@ from zg361_phase2_cross_cycle_endgame_switch_ui_desktop import (
     DesktopSwitchCharacterUiDriver,
 )
 from zg361_phase2_cross_cycle_endgame_source_capture import (
+    MULTI_BRANCH_CAPTURE_SCHEMA_VERSION,
     EndgameSourceCaptureError,
     capture_cross_cycle_endgame_source_checkpoint_v1,
     preflight_endgame_source_capture_prefix,
@@ -272,6 +278,9 @@ from zhongguo_phase2_event_choreography import (
 )
 from zhongguo_phase2_source_checkpoint_provider import (
     CHECKPOINT_REQUIRED_HANDLERS,
+    INCIDENT_STRICT_RECEIPT_FIELD,
+    LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
     Phase2SourceCheckpoint,
     Phase2SourceCheckpointError,
     Phase2SourceCheckpointProvider,
@@ -1565,6 +1574,111 @@ def _phase2_scoreboard_modal_visible(
     return bool(visible["value"]), response
 
 
+def _phase2_incident_registry_binding(
+    registry_value: object,
+    *,
+    expected_player_character_id: int,
+) -> dict[str, object]:
+    """Read the Incident owner only from its validated ``zg361.50`` scopes."""
+
+    registry = dict(registry_value) if isinstance(registry_value, Mapping) else {}
+    entries = registry.get("entries")
+    rows = (
+        [
+            dict(row)
+            for row in entries
+            if isinstance(row, Mapping)
+            and row.get("handler") == "capture_incidents_operations"
+        ]
+        if isinstance(entries, list)
+        else []
+    )
+    if len(rows) != 1:
+        raise Phase2EventChoreographyError(
+            "incident_source_checkpoint_runner_binding_red",
+            {"incident_registry_entry_count": len(rows)},
+        )
+    row = rows[0]
+    strict = row.get(INCIDENT_STRICT_RECEIPT_FIELD)
+    strict = dict(strict) if isinstance(strict, Mapping) else {}
+    strict_payload = strict
+    raw_strict_path = strict.get("path")
+    if isinstance(raw_strict_path, str) and Path(raw_strict_path).is_absolute():
+        strict_path = Path(raw_strict_path).resolve()
+        try:
+            strict_bytes = strict_path.read_bytes()
+            strict_payload_value = json.loads(strict_bytes.decode("utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise Phase2EventChoreographyError(
+                "incident_source_checkpoint_runner_binding_red",
+                {"strict_receipt": strict, "message": str(error)},
+            ) from error
+        if not (
+            isinstance(strict_payload_value, dict)
+            and strict.get("bytes") == len(strict_bytes)
+            and str(strict.get("sha256", "")).upper()
+            == hashlib.sha256(strict_bytes).hexdigest().upper()
+        ):
+            raise Phase2EventChoreographyError(
+                "incident_source_checkpoint_runner_binding_red",
+                {"strict_receipt": strict, "locator_hash_valid": False},
+            )
+        strict_payload = strict_payload_value
+    seed_lineage_id = row.get(
+        "save_lineage_id", registry.get("seed_lineage_id")
+    )
+    try:
+        summary = validate_received_self_incident_checkpoint_receipt(
+            strict_payload,
+            expected_seed_lineage_id=(
+                str(seed_lineage_id)
+                if isinstance(seed_lineage_id, str)
+                else None
+            ),
+        )
+    except IncidentCheckpointSeamError as error:
+        raise Phase2EventChoreographyError(
+            "incident_source_checkpoint_runner_binding_red",
+            {
+                "upstream_reason_code": error.reason_code,
+                "upstream_evidence": error.evidence,
+            },
+        ) from error
+    owner = summary.get("owner_character_id")
+    player = summary.get("player_character_id")
+    valid = (
+        isinstance(owner, int)
+        and not isinstance(owner, bool)
+        and owner > 0
+        and isinstance(player, int)
+        and not isinstance(player, bool)
+        and player == expected_player_character_id
+        and owner != player
+        and row.get("owner_character_id") == owner
+        and row.get("player_character_id") == player
+        and row.get("date_raw") == summary.get("date_raw")
+        and row.get("checkpoint") == summary.get("checkpoint")
+    )
+    if not valid:
+        raise Phase2EventChoreographyError(
+            "incident_source_checkpoint_runner_binding_red",
+            {
+                "runtime_player_character_id": expected_player_character_id,
+                "registry_entry": row,
+                "strict_receipt_summary": summary,
+            },
+        )
+    return {
+        "result": "GREEN",
+        "owner_character_id": int(owner),
+        "player_character_id": int(player),
+        "subject_character_id": int(player),
+        "owner_source": "zg361.50:zg361_notice_prompt_owner",
+        "owner_distinct_from_player": True,
+        "strict_receipt_summary": summary,
+    }
+
+
 class _Phase2RealEventChoreographyService:
     """Bind cross-span choreography to real native MCP primitives only."""
 
@@ -1620,6 +1734,14 @@ class _Phase2RealEventChoreographyService:
             if isinstance(capture_lineage, Mapping)
             else None
         )
+        provider_identity = _phase2_source_checkpoint_provider_identity(
+            context.source_checkpoint_registry,
+            legacy_seed_lineage_id=(
+                str(expected_seed_lineage_id)
+                if isinstance(expected_seed_lineage_id, str)
+                else None
+            ),
+        )
         restore_available = self._source_checkpoint_restore_available()
         provider = Phase2SourceCheckpointProvider(
             (
@@ -1630,11 +1752,7 @@ class _Phase2RealEventChoreographyService:
             restore_registered_checkpoint=(
                 (lambda _entry: {}) if restore_available else None
             ),
-            expected_seed_lineage_id=(
-                str(expected_seed_lineage_id)
-                if isinstance(expected_seed_lineage_id, str)
-                else None
-            ),
+            **provider_identity,
         )
         try:
             preflight = provider.preflight()
@@ -1668,25 +1786,15 @@ class _Phase2RealEventChoreographyService:
         player_character_id = (
             played.get("character_id") if isinstance(played, Mapping) else None
         )
-        try:
-            owners = _phase2_domain_query_contract(
-                (
-                    dict(context.seed_contract)
-                    if isinstance(context.seed_contract, Mapping)
-                    else {}
-                ),
-                player_character_id=(
-                    int(player_character_id)
-                    if isinstance(player_character_id, int)
-                    and not isinstance(player_character_id, bool)
-                    else 0
-                ),
-            )
-        except acceptance.RunnerError as error:
-            raise Phase2EventChoreographyError(
-                "incident_source_checkpoint_runner_binding_red",
-                {"message": str(error)},
-            ) from error
+        authoritative = _phase2_incident_registry_binding(
+            context.source_checkpoint_registry,
+            expected_player_character_id=(
+                int(player_character_id)
+                if isinstance(player_character_id, int)
+                and not isinstance(player_character_id, bool)
+                else 0
+            ),
+        )
         if not (
             isinstance(incident_checkpoint, Mapping)
             and incident_checkpoint.get("readiness")
@@ -1696,7 +1804,7 @@ class _Phase2RealEventChoreographyService:
             and incident_checkpoint.get("subject_character_id")
             == player_character_id
             and incident_checkpoint.get("owner_character_id")
-            == owners["incident_owner_character_id"]
+            == authoritative["owner_character_id"]
             and incident_checkpoint.get("owner_character_id")
             != player_character_id
         ):
@@ -1704,8 +1812,8 @@ class _Phase2RealEventChoreographyService:
                 "incident_source_checkpoint_runner_binding_red",
                 {
                     "runtime_player_character_id": player_character_id,
-                    "seed_incident_owner_character_id": owners[
-                        "incident_owner_character_id"
+                    "authoritative_incident_owner_character_id": authoritative[
+                        "owner_character_id"
                     ],
                     "incident_checkpoint": incident_checkpoint,
                 },
@@ -1716,7 +1824,8 @@ class _Phase2RealEventChoreographyService:
             "source_event_definition_key": "zg361.50",
             "player_character_id": player_character_id,
             "subject_character_id": player_character_id,
-            "owner_character_id": owners["incident_owner_character_id"],
+            "owner_character_id": authoritative["owner_character_id"],
+            "owner_source": authoritative["owner_source"],
             "owner_distinct_from_player": True,
             "checkpoint_bytes_hash_lineage_bound": True,
             "provider_ui_receipt_bound": True,
@@ -1741,6 +1850,14 @@ class _Phase2RealEventChoreographyService:
             capture_lineage.get("seed_lineage_id")
             if isinstance(capture_lineage, Mapping)
             else None
+        )
+        provider_identity = _phase2_source_checkpoint_provider_identity(
+            registry if isinstance(registry, Mapping) else None,
+            legacy_seed_lineage_id=(
+                str(expected_seed_lineage_id)
+                if isinstance(expected_seed_lineage_id, str)
+                else None
+            ),
         )
         restore_method = getattr(
             self.service, "restore_phase2_span_source_checkpoint_v1", None
@@ -1774,11 +1891,7 @@ class _Phase2RealEventChoreographyService:
             restore_registered_checkpoint=(
                 restore if restore_available else None
             ),
-            expected_seed_lineage_id=(
-                str(expected_seed_lineage_id)
-                if isinstance(expected_seed_lineage_id, str)
-                else None
-            ),
+            **provider_identity,
         )
         try:
             restored = provider.restore(plan)
@@ -2126,10 +2239,16 @@ class _Phase2AcceptanceActionSpanDriver:
                 advance_to_result=_phase2_promotion_compensation_advance_to_result,
             )
         elif handler == "capture_incidents_operations":
+            authoritative = _phase2_incident_registry_binding(
+                context.source_checkpoint_registry,
+                expected_player_character_id=int(binding["player_character_id"]),
+            )
             evidence = run_phase2_incident_gameplay_action_cell(
                 self.service,
                 context.artifacts,
-                owner_character_id=owners["incident_owner_character_id"],
+                owner_character_id=int(
+                    authoritative["owner_character_id"]
+                ),
             )
         else:
             # The production-only seed must already contain the route.  This
@@ -9889,6 +10008,39 @@ def _phase2_seed_lineage_id(
             "scoreboard surface checkpoints require the exact seed SHA-256"
         )
     return f"zg361-phase2-seed-{sha256}"
+
+
+def _phase2_source_checkpoint_provider_identity(
+    registry: Mapping[str, object] | None,
+    *,
+    legacy_seed_lineage_id: str | None,
+) -> dict[str, str | None]:
+    """Select the independent identity expected by a v2/v3 registry."""
+
+    source = dict(registry) if isinstance(registry, Mapping) else {}
+    schema_version = source.get("schema_version")
+    if schema_version == SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION:
+        lineage_set_id = source.get("lineage_set_id")
+        return {
+            "expected_seed_lineage_id": None,
+            "expected_lineage_set_id": (
+                lineage_set_id
+                if isinstance(lineage_set_id, str) and lineage_set_id
+                else None
+            ),
+        }
+    if schema_version in (
+        None,
+        LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+    ):
+        return {
+            "expected_seed_lineage_id": legacy_seed_lineage_id,
+            "expected_lineage_set_id": None,
+        }
+    return {
+        "expected_seed_lineage_id": None,
+        "expected_lineage_set_id": None,
+    }
 
 
 def bind_phase2_scoreboard_surface_checkpoint_provider(
@@ -19189,7 +19341,12 @@ def run_phase2_full_tree_promotion_compensation_cell(
                 else None
             ),
             restore_registered_checkpoint=restore,
-            expected_seed_lineage_id=_phase2_seed_lineage_id(seed_contract),
+            **_phase2_source_checkpoint_provider_identity(
+                source_checkpoint_registry,
+                legacy_seed_lineage_id=_phase2_seed_lineage_id(
+                    seed_contract
+                ),
+            ),
         )
         evidence["source_checkpoint_preflight"] = provider.preflight()
         plan = phase2_event_sequence_plan(PROMOTION_HANDLER)
@@ -20980,8 +21137,18 @@ def run_cell(
                 }
             )
             source_output = artifacts / "incident-source-checkpoint"
+            incident_production_entry: dict[str, object] = {}
+
+            def incident_runtime_diagnostic_probe() -> str | None:
+                if phase2_runtime_diagnostic_baseline is None:
+                    return None
+                blocking, _warnings = runtime_project_diagnostics(
+                    userdir, phase2_runtime_diagnostic_baseline
+                )
+                return blocking[0] if blocking else None
+
             try:
-                evidence = wait_for_and_capture_incident_source_checkpoint(
+                evidence = produce_and_capture_incident_source_checkpoint(
                     title_navigation_service,
                     evidence_path=(
                         artifacts
@@ -20997,13 +21164,23 @@ def run_cell(
                     ),
                     capture_lineage=capture_lineage,
                     tracked_ck3_pid=tracked_ck3_pid,
+                    production_evidence_out=incident_production_entry,
                     timeout_seconds=PHASE2_INCIDENT_SOURCE_CAPTURE_TIMEOUT_S,
+                    runtime_diagnostic_probe=(
+                        incident_runtime_diagnostic_probe
+                    ),
                 )
             except IncidentSourceCaptureEntryError as error:
                 raise acceptance.RunnerError(
                     "focused Incident source checkpoint capture RED "
                     f"[{error.reason_code}]"
                 ) from error
+            finally:
+                write_json(
+                    artifacts
+                    / "04_phase2_incident_source_production_entry.json",
+                    incident_production_entry,
+                )
             if evidence.get("result") != "GREEN":
                 raise acceptance.RunnerError(
                     "focused Incident source checkpoint capture returned RED"
@@ -22230,19 +22407,43 @@ def main(
             raise acceptance.RunnerError(
                 "endgame source capture prefix must be a JSON object"
             )
-        seed_contract_for_prefix = load_phase2_seed_contract(
-            (
-                phase2_seed_contract_path
-                if phase2_seed_contract_path is not None
-                else PHASE2_SEED_CONTRACT_PATH
+        prefix_schema_version = loaded_prefix.get("schema_version")
+        if prefix_schema_version == MULTI_BRANCH_CAPTURE_SCHEMA_VERSION:
+            prefix_lineage_set_id = loaded_prefix.get("lineage_set_id")
+            prefix_identity = {
+                "expected_seed_lineage_id": None,
+                "expected_lineage_set_id": (
+                    str(prefix_lineage_set_id)
+                    if isinstance(prefix_lineage_set_id, str)
+                    else None
+                ),
+            }
+        elif (
+            prefix_schema_version
+            == LEGACY_SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION
+        ):
+            seed_contract_for_prefix = load_phase2_seed_contract(
+                (
+                    phase2_seed_contract_path
+                    if phase2_seed_contract_path is not None
+                    else PHASE2_SEED_CONTRACT_PATH
+                )
             )
-        )
+            prefix_identity = {
+                "expected_seed_lineage_id": _phase2_seed_lineage_id(
+                    seed_contract_for_prefix
+                ),
+                "expected_lineage_set_id": None,
+            }
+        else:
+            raise acceptance.RunnerError(
+                "unsupported endgame source capture prefix schema: "
+                f"{prefix_schema_version!r}"
+            )
         try:
             preflight_endgame_source_capture_prefix(
                 loaded_prefix,
-                expected_seed_lineage_id=_phase2_seed_lineage_id(
-                    seed_contract_for_prefix
-                ),
+                **prefix_identity,
             )
         except EndgameSourceCaptureError as error:
             raise acceptance.RunnerError(str(error)) from error
@@ -23133,9 +23334,10 @@ if __name__ == "__main__":
         "--phase2-incident-source-checkpoint-capture",
         action="store_true",
         help=(
-            "wait read-only in a managed product session for exact zg361.50, "
-            "then freeze its strict receipt and schema-2 registry entry; "
-            "does not execute gameplay or claim full Phase2"
+            "switch to the bound recipient, use the production timeline entry "
+            "to reach exact zg361.50, then freeze its strict receipt and "
+            "schema-2 registry entry without selecting the source option; "
+            "does not claim full Phase2"
         ),
     )
     parser.add_argument(
