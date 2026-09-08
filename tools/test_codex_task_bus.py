@@ -70,6 +70,38 @@ class TaskBusTests(unittest.TestCase):
             listing = invoke(*common, "list")
             self.assertEqual({task["task_id"] for task in listing["tasks"]}, {"alpha", "beta"})
 
+    def test_done_clears_stale_next_step_and_resources(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            common = ("--bus-dir", raw)
+            invoke(
+                *common,
+                "register",
+                "--task",
+                "alpha",
+                "--summary",
+                "build",
+                "--next-step",
+                "upload",
+                "--resource",
+                "CK3",
+            )
+
+            completed = invoke(
+                *common,
+                "status",
+                "--task",
+                "alpha",
+                "--state",
+                "done",
+                "--summary",
+                "published",
+            )
+
+            self.assertEqual(completed["task"]["state"], "done")
+            self.assertEqual(completed["task"]["next_step"], "")
+            self.assertEqual(completed["task"]["resources"], [])
+            self.assertEqual(completed["event"]["kind"], "completed")
+
 
 if __name__ == "__main__":
     unittest.main()

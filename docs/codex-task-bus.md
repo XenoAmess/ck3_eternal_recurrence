@@ -33,11 +33,12 @@ py $bus notify --task ck3-xqol-release-20260909 --to '*' --level warning `
 py $bus poll --task ck3-xqol-release-20260909 --ack
 py $bus list
 py $bus status --task ck3-xqol-release-20260909 --state done `
-  --summary 'Workshop 发布闭环完成' --next-step ''
+  --summary 'Workshop 发布闭环完成'
 ```
 
 `poll --ack` 只返回游标后的广播或定向事件，并原子推进游标；不带 `--ack` 可只读预览。
 `list` 默认把超过 15 分钟没有心跳且未完成的任务标为 `stale=true`，但不删除历史。
+`status --state done` 在未显式传入对应参数时会自动清空旧的 `next_step` 与 `resources`，表示该任务已经释放共享资源。
 
 ## 任务协作约定
 

@@ -227,15 +227,16 @@ def command_register(args: argparse.Namespace) -> None:
 
 
 def command_status(args: argparse.Namespace) -> None:
+    completed = args.state == "done"
     snapshot, event = update_task(
         args.bus_dir,
         args.task,
         state=args.state,
         summary=args.summary,
-        next_step=args.next_step,
+        next_step="" if completed and args.next_step is None else args.next_step,
         repo=args.repo,
-        resources=args.resource,
-        kind="completed" if args.state == "done" else "status",
+        resources=[] if completed and args.resource is None else args.resource,
+        kind="completed" if completed else "status",
     )
     print_result(task=snapshot, event=event)
 
