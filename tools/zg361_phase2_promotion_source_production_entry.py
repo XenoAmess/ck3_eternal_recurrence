@@ -1043,6 +1043,48 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "ep3_story_cycle_admin_eunuch.2050": {
+        # CK3 1.19.0.6 eunuch-story boon proposal. The immediate block has
+        # already selected the boon and any associated target. Option 1
+        # applies that external boon and upgrades the story; option 2 only
+        # applies the authored story downgrade/stress result. Bind the exact
+        # R295 no-target frame and choose option 2 so the incidental story
+        # cannot mutate taxes, succession, hooks or imprisonment state.
+        "date_raw": 53245848,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "student": "character",
+            "rival": "character",
+            "eunuch_boon": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "story",
+            "emperor",
+            "eunuch",
+            "admin_title",
+            "student",
+            "rival",
+            "eunuch_boon",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "max_occurrences": 1,
+    },
     "ep3_story_cycle_admin_eunuch.2051": {
         # CK3 1.19.0.6 eunuch-story secret proposal. The immediate block may
         # already reveal the selected secret to the eunuch. Native option 0
