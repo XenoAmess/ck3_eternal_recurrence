@@ -692,12 +692,14 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # rendered buttons map to native indices 1/2. Authored option 2 spends
         # major gold and transfers the generated blade; authored option 3 is
         # the terminal refusal and adds no gameplay effect. Bind the complete
-        # eleven-scope frame, including the source-defined holder/owner and
-        # generated merchant lineage, before selecting that least-disruptive
-        # terminal route. R286 proved the R183 holder and merchant IDs were
-        # allocator output, while their relationships stayed exact. R330
-        # observed the source-authored poor-quality branch: its artifact
-        # helper additionally saves the boolean ``exotic_blade_quality``.
+        # exact frame, including the source-defined holder/owner and generated
+        # merchant lineage, before selecting that least-disruptive terminal
+        # route. R286 proved the R183 holder and merchant IDs were allocator
+        # output, while their relationships stayed exact. R330 observed the
+        # source-authored poor-quality branch: its artifact helper additionally
+        # saves the boolean ``exotic_blade_quality``. R350 exercised the other
+        # source-authored artifact branch: the weapon/armor helpers save the
+        # mutually exclusive flags ``weapon_type`` and ``armor_type``.
         "date_raw": 53174184,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -720,7 +722,6 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "exotic_blade_holder": "character",
             "exotic_arms_target": "character",
             "owner": "character",
-            "weapon_type": "flag",
             "random_quality_bonus": "value",
             "quality": "value",
             "wealth": "value",
@@ -730,6 +731,8 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "exotic_blade": "artifact",
         },
         "optional_scope_types": {
+            "weapon_type": "flag",
+            "armor_type": "flag",
             "exotic_blade_quality": "boolean",
         },
         "boolean_scopes": (),
@@ -753,6 +756,33 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "exotic_blade_quality",
                 "owner",
                 "weapon_type",
+                "random_quality_bonus",
+                "quality",
+                "wealth",
+                "newly_created_artifact",
+                "merchant_county",
+                "foreign_merchant",
+                "exotic_blade",
+            ),
+            (
+                "exotic_blade_holder",
+                "exotic_arms_target",
+                "owner",
+                "armor_type",
+                "random_quality_bonus",
+                "quality",
+                "wealth",
+                "newly_created_artifact",
+                "merchant_county",
+                "foreign_merchant",
+                "exotic_blade",
+            ),
+            (
+                "exotic_blade_holder",
+                "exotic_arms_target",
+                "exotic_blade_quality",
+                "owner",
+                "armor_type",
                 "random_quality_bonus",
                 "quality",
                 "wealth",
