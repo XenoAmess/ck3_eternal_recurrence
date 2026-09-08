@@ -1,0 +1,7 @@
+﻿# Character scope. True when the character holds at least one surviving
+# dynamic Later-Dynasty hegemony created by this mod.
+rmtm_holds_restoration_hegemony_trigger = {
+	any_held_title = {
+		has_variable = rmtm_restoration_hegemony
+	}
+}

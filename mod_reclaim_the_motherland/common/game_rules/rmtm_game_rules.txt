@@ -1,0 +1,14 @@
+﻿# Reclaim the Motherland - fate of the Chinese Hegemon at the start of Chaos.
+
+rmtm_hegemon_fate = {
+	categories = {
+		game_modes
+		historicity
+	}
+
+	default = rmtm_reclaim_the_motherland
+
+	rmtm_reclaim_the_motherland = { }
+
+	rmtm_vanilla_shattering = { }
+}

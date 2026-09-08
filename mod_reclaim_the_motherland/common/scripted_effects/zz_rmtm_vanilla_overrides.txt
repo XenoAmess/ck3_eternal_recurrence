@@ -1,0 +1,12 @@
+﻿# Vanilla effects source SHA-256: 86574FB7CE246EF6D1B2741B211785D282AD39659E8771E0E5C714ACDC001782
+# Last-loaded override of the vanilla Chaos entry point. All upstream callers
+# keep using tgp_chaos_shattering_effect; only the selected game-rule branch changes.
+tgp_chaos_shattering_effect = {
+	if = {
+		limit = { has_game_rule = rmtm_reclaim_the_motherland }
+		rmtm_chaos_shattering_effect = yes
+	}
+	else = {
+		rmtm_vanilla_chaos_shattering_effect = yes
+	}
+}

@@ -1,0 +1,89 @@
+﻿### Claim the Mandate of Heaven - vanilla 1.19.0.6 plus the restoration lock. ###
+# Vanilla decision source SHA-256: FFC1CE8BC35DDCAFA29956E4DC4159EB295E10E17FD0881CE5DD558671206651
+# Vanilla threshold values SHA-256: D91DCDBF7038FAE3D8D71B9C4156B2B23744DE6F718A34DA26D1656BC48B7706
+situation_dynastic_cycle_claim_mandate_decision = {
+	decision_group_type = dynastic_cycle
+	title = situation_dynastic_cycle_claim_mandate_decision
+	desc = situation_dynastic_cycle_claim_mandate_decision_desc
+	selection_tooltip = situation_dynastic_cycle_claim_mandate_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+	sort_order = 80
+
+	cooldown = { years = 5 }
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes
+		exists = top_participant_group:dynastic_cycle #I am part of the dynastic cycle
+		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos } #The era is division
+		trigger_if = {
+			limit = { has_game_rule = rmtm_reclaim_the_motherland }
+			NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
+		}
+	}
+
+	is_valid = {
+		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos }
+		is_independent_ruler = yes
+		trigger_if = {
+			limit = { has_game_rule = rmtm_reclaim_the_motherland }
+			NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
+		}
+		custom_tooltip = {
+			text = claim_mandate_decision_county_percentage_tt
+			title:h_china = {
+				any_de_jure_county = {
+					percent >= claim_mandate_china_county_percentage_value
+					holder.top_liege = {
+						OR = {
+							this = root
+							is_tributary_of_suzerain_or_above = root
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		add_character_flag = {
+			flag = claimed_the_mandate_of_heaven
+			days = 3
+		}
+		#GoK stops really being GoK
+		gok_government_change_story_end_effect = yes
+		situation:dynastic_cycle = { save_scope_as = situation }
+		tgp_claim_mandate_of_heaven_effect = yes
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 36
+		empire = 3
+		hegemony = 12
+	}
+	ai_potential = {
+		situation:dynastic_cycle ?= { situation_current_phase = situation_dynastic_cycle_phase_chaos }
+		trigger_if = {
+			limit = { has_game_rule = rmtm_reclaim_the_motherland }
+			NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
+		}
+		NOT = {
+			any_owned_story = {
+				OR = {
+					story_type = story_mongol_invasion
+					story_type = story_greatest_of_khans
+				}
+			}
+		}
+	}
+	ai_will_do = { base = 10000 }
+}

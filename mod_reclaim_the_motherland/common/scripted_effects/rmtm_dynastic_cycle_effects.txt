@@ -1,0 +1,325 @@
+﻿##################################################
+# Reclaim the Motherland - custom Chaos shattering
+##################################################
+
+# Character scope: the current holder of h_china. The helper atomically replaces
+# h_china with a configured Later-Dynasty hegemony and leaves the created title in
+# scope:rmtm_restoration_hegemony_title for the caller.
+rmtm_create_restoration_hegemony_effect = {
+	save_scope_as = old_emperor_temp
+
+	create_dynamic_title = {
+		tier = hegemony
+		name = rmtm_restoration_hegemony_fallback_name
+		adj = rmtm_restoration_hegemony_fallback_name_adj
+	}
+	scope:new_title = {
+		save_scope_as = rmtm_restoration_hegemony_title
+		set_variable = {
+			name = rmtm_restoration_hegemony
+			value = yes
+		}
+		set_capital_county = scope:old_emperor_temp.capital_county
+		set_color_from_title = title:h_china
+		set_coa = title:h_china
+		set_delete_on_destroy = yes
+		set_no_automatic_claims = yes
+		set_definitive_form = yes
+		set_can_be_named_after_dynasty = no
+		set_can_use_nomadic_naming = no
+		set_always_follows_primary_heir = yes
+	}
+
+	# move_title_name_to freezes the current runtime dynasty name, including a
+	# player-authored name, instead of retaining a live reference to h_china.
+	title:h_china = {
+		move_title_name_to = scope:rmtm_restoration_hegemony_title
+		reset_title_name = yes
+	}
+	scope:rmtm_restoration_hegemony_title = {
+		set_title_prefix = rmtm_restoration_title_prefix
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = rmtm_restoration_title_change
+		add_claim_on_loss = no
+	}
+	scope:rmtm_restoration_hegemony_title = {
+		change_title_holder = {
+			holder = scope:old_emperor_temp
+			change = scope:rmtm_restoration_title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:rmtm_restoration_title_change
+
+	# The old emperor loses only the Chinese Hegemony. All counties, duchies,
+	# kingdoms and unrelated personal titles remain untouched.
+	destroy_title = title:h_china
+	set_primary_title_to = scope:rmtm_restoration_hegemony_title
+}
+
+# Character scope inherited from tgp_dynastic_cycle.0081.
+# Keeps the old emperor's personal titles and only their direct Pro-Hegemon
+# vassal trees. All other Chaos bookkeeping follows vanilla 1.19.0.6.
+rmtm_chaos_shattering_effect = {
+	hidden_effect = {
+		title:h_china = {
+			holder = { save_temporary_scope_as = old_emperor_temp }
+			# Reset imperial examination activity.
+			set_variable = {
+				name = years_since_imperial_examination
+				value = 0
+			}
+		}
+
+		# Freeze every Dynastic Cycle participant in the old emperor's realm before
+		# any title or liege changes. Vanilla downstream logic consumes this list.
+		situation:dynastic_cycle = {
+			every_situation_participant = {
+				limit = { top_liege = scope:old_emperor_temp }
+				add_to_list = former_vassals
+			}
+		}
+
+		# Only direct, landed Pro-Hegemon vassals keep their existing liege and
+		# subordinate realm tree. The frozen former_movement_member variable is the
+		# authoritative pre-Chaos movement identity.
+		scope:old_emperor_temp = {
+			every_vassal = {
+				limit = {
+					highest_held_title_tier >= tier_county
+					var:former_movement_member = {
+						participant_group_type = pro_hegemon_movement
+					}
+				}
+				add_to_list = rmtm_loyal_direct_vassals
+			}
+		}
+
+		# Replace h_china through the same helper exposed to the focused live probe.
+		scope:old_emperor_temp = {
+			rmtm_create_restoration_hegemony_effect = yes
+
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = chaos_change
+				add_claim_on_loss = yes
+			}
+			every_vassal = {
+				limit = {
+					highest_held_title_tier >= tier_county
+					NOT = { is_in_list = rmtm_loyal_direct_vassals }
+				}
+				becomes_independent = { change = scope:chaos_change }
+			}
+			resolve_title_and_vassal_change = scope:chaos_change
+		}
+
+		# Vanilla 1.19.0.6 Chaos processing resumes here. Loyal vassal trees are
+		# excluded only from the hierarchy-remake block below.
+		every_in_list = {
+			list = former_vassals
+			limit = {
+				# The former hegemon must retain every personal title other than
+				# h_china, even when the AI power thresholds would normally prune it.
+				this != scope:old_emperor_temp
+				is_landed = yes
+				is_ai = yes
+				OR = {
+					AND = {
+						highest_held_title_tier = tier_empire
+						var:movement_power_individual < high_movement_power_value
+					}
+					AND = {
+						highest_held_title_tier = tier_kingdom
+						var:movement_power_individual < decent_movement_power_value
+					}
+				}
+			}
+			tgp_fire_china_realm_name_event_for_vassals_effect = yes
+			every_held_title = {
+				limit = { tier > tier_duchy }
+				prev = { destroy_title = prev }
+			}
+		}
+		every_in_list = {
+			list = former_vassals
+			# Destroy any held minister title.
+			destroy_held_ministry_titles_effect = yes
+		}
+		every_in_list = {
+			list = former_vassals
+			# Let the former vassals of the hegemon become regular conquerors.
+			ai_chance_to_become_conqueror_effect = yes
+			# Put movement leaders and elders into a list.
+			if = {
+				limit = {
+					OR = {
+						num_of_relation_disciple > 0
+						has_variable = former_movement_leader
+					}
+					is_independent_ruler = yes
+					is_landed = yes
+				}
+				add_to_list = new_lieges
+			}
+		}
+		# Remake the hierarchy among realms which actually broke away. Members
+		# still under the old emperor belong to a preserved loyal direct-vassal tree.
+		every_in_list = {
+			list = new_lieges
+			save_scope_as = new_liege
+			every_in_list = {
+				list = former_vassals
+				limit = {
+					OR = {
+						scope:new_liege.var:former_movement_leader ?= var:former_movement_member
+						has_relation_elder = scope:new_liege
+					}
+					this != scope:new_liege
+					NOT = { top_liege = scope:old_emperor_temp }
+				}
+				save_scope_as = member
+				# If lower tier than the potential new liege and neighboring them (or
+				# another connected member), vassalize them.
+				if = {
+					limit = {
+						highest_held_title_tier < scope:new_liege.highest_held_title_tier
+						OR = {
+							primary_title ?= { is_neighbor_to_realm = scope:new_liege }
+							any_in_list = {
+								list = former_vassals
+								this != scope:new_liege
+								this != scope:member
+								primary_title ?= {
+									is_neighbor_to_realm = scope:new_liege
+									is_neighbor_to_realm = scope:member
+								}
+								is_tributary_of = scope:new_liege
+							}
+						}
+					}
+					create_title_and_vassal_change = {
+						type = swear_fealty
+						save_scope_as = elder_hierarchy_change
+						add_claim_on_loss = no
+					}
+					change_liege = {
+						liege = scope:new_liege
+						change = scope:elder_hierarchy_change
+					}
+					resolve_title_and_vassal_change = scope:elder_hierarchy_change
+					scope:new_liege = {
+						add_to_variable_list = {
+							name = chaos_new_vassals
+							target = scope:member
+						}
+					}
+				}
+				# Otherwise turn into a tributary.
+				else_if = {
+					limit = {
+						top_liege = scope:member
+						is_landed = yes
+					}
+					start_tributary_interaction_effect = {
+						TRIBUTARY = scope:member
+						SUZERAIN = scope:new_liege
+					}
+					scope:new_liege = {
+						add_to_variable_list = {
+							name = chaos_new_tributaries
+							target = scope:member
+						}
+					}
+				}
+			}
+		}
+		# Assign unlanded family heads to a suitable realm.
+		every_in_list = {
+			list = former_vassals
+			if = {
+				limit = {
+					any_held_title = { is_noble_family_title = yes }
+					is_landed = no
+					this = top_liege
+				}
+				create_title_and_vassal_change = {
+					type = swear_fealty
+					save_scope_as = unlanded_liege_change
+					add_claim_on_loss = no
+				}
+				# Save the top liege of the domicile's location when above county tier.
+				if = {
+					limit = {
+						domicile.domicile_location.county.holder.top_liege = {
+							highest_held_title_tier > tier_county
+						}
+					}
+					domicile.domicile_location.county.holder.top_liege = {
+						save_temporary_scope_as = unlanded_new_liege
+					}
+				}
+				# Otherwise try to find a neighboring ruler.
+				else_if = {
+					limit = {
+						domicile.domicile_location.county.holder = {
+							any_neighboring_top_liege_realm_owner = {
+								highest_held_title_tier > tier_county
+							}
+						}
+					}
+					domicile.domicile_location.county.holder = {
+						random_neighboring_top_liege_realm_owner = {
+							limit = { highest_held_title_tier > tier_county }
+							save_temporary_scope_as = unlanded_new_liege
+						}
+					}
+				}
+				change_liege = {
+					liege = scope:unlanded_new_liege
+					change = scope:unlanded_liege_change
+				}
+				resolve_title_and_vassal_change = scope:unlanded_liege_change
+			}
+		}
+		# Create the vanilla story which makes eligible characters pursue the Mandate.
+		situation:dynastic_cycle = {
+			every_situation_participant = {
+				if = {
+					limit = {
+						NOR = {
+							has_trait = conqueror
+							any_owned_story = { story_type = story_conqueror }
+							any_owned_story = { story_type = story_greatest_of_khans }
+							any_owned_story = { story_type = story_mongol_invasion }
+						}
+						is_landed = yes
+						highest_held_title_tier >= tier_duchy
+						is_tributary = no
+						is_adult = yes
+						is_incapable = no
+						trigger_if = {
+							limit = { NOT = { is_in_list = new_lieges } }
+							ai_has_cautious_personality = no
+							ai_boldness >= 0
+							ai_greed >= 0
+						}
+					}
+					create_story = story_take_mandate_of_heaven
+				}
+			}
+		}
+	}
+
+	# Intentionally no force_step_down_landed_titles: personal titles survive.
+	hidden_effect = {
+		situation:dynastic_cycle = {
+			every_situation_participant = {
+				remove_variable = movement_member
+				recalculate_participant_group = situation:dynastic_cycle
+			}
+		}
+	}
+}

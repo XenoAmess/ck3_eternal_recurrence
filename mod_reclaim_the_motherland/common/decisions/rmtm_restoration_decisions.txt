@@ -1,0 +1,95 @@
+﻿### Reclaim the Mandate as a surviving Later Dynasty. ###
+rmtm_claim_restoration_decision = {
+	decision_group_type = dynastic_cycle
+	title = rmtm_claim_restoration_decision
+	desc = rmtm_claim_restoration_decision_desc
+	selection_tooltip = rmtm_claim_restoration_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/event_story/tgp_dynastic_cycle_stability.dds"
+	sort_order = 79
+
+	cooldown = { years = 5 }
+
+	is_shown = {
+		has_tgp_dlc_trigger = yes
+		has_game_rule = rmtm_reclaim_the_motherland
+		rmtm_holds_restoration_hegemony_trigger = yes
+		exists = top_participant_group:dynastic_cycle
+		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos }
+	}
+
+	is_valid = {
+		has_game_rule = rmtm_reclaim_the_motherland
+		rmtm_holds_restoration_hegemony_trigger = yes
+		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos }
+		is_independent_ruler = yes
+		custom_tooltip = {
+			text = claim_mandate_decision_county_percentage_tt
+			title:h_china = {
+				any_de_jure_county = {
+					percent >= claim_mandate_china_county_percentage_value
+					holder.top_liege = {
+						OR = {
+							this = root
+							is_tributary_of_suzerain_or_above = root
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		save_scope_as = rmtm_restorer
+		every_held_title = {
+			limit = { has_variable = rmtm_restoration_hegemony }
+			add_to_list = rmtm_restoration_hegemonies
+		}
+		add_character_flag = {
+			flag = claimed_the_mandate_of_heaven
+			days = 3
+		}
+		#GoK stops really being GoK
+		gok_government_change_story_end_effect = yes
+		situation:dynastic_cycle = { save_scope_as = situation }
+		tgp_claim_mandate_of_heaven_effect = yes
+		every_in_list = {
+			list = rmtm_restoration_hegemonies
+			limit = {
+				exists = holder
+				holder = scope:rmtm_restorer
+				has_variable = rmtm_restoration_hegemony
+			}
+			scope:rmtm_restorer = { destroy_title = prev }
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 36
+		empire = 3
+		hegemony = 12
+	}
+	ai_potential = {
+		has_game_rule = rmtm_reclaim_the_motherland
+		rmtm_holds_restoration_hegemony_trigger = yes
+		situation:dynastic_cycle ?= { situation_current_phase = situation_dynastic_cycle_phase_chaos }
+		NOT = {
+			any_owned_story = {
+				OR = {
+					story_type = story_mongol_invasion
+					story_type = story_greatest_of_khans
+				}
+			}
+		}
+	}
+	ai_will_do = { base = 10000 }
+}

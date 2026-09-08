@@ -1,6 +1,6 @@
-# 重整河山：详细设计（待确认）
+# 重整河山：设计与实现说明
 
-状态：**仅完成设计，尚未编写或加载任何玩法脚本。** 这份文档是后续实现、测试与验收的约束。
+状态：**玩法脚本与独立构建链已实现并达到 static-ready；真实 CK3 全流程验收尚未完成。** 这份文档同时记录设计约束、当前实现与剩余实机门槛。
 
 ## 1. 产品目标
 
@@ -71,7 +71,7 @@
 3. 对新头衔设置本地化 prefix：简体中文为“后”，英文为“Later ”。
 4. 重置旧 `h_china` 的运行时名称，再销毁原霸权。
 
-这样目标是同时支持“后唐”“后宋”和玩家输入的任意朝号。`move_title_name_to + set_title_prefix` 两个 API 都存在，但这组组合在原版 TGP 脚本中没有直接样例，因此它是实现阶段的第一个最小实机探针：必须核对地图名、角色主头衔、决议文本、形容词和存档重载后的结果；组合没有通过前，不进入完整裂解实现。
+这样目标是同时支持“后唐”“后宋”和玩家输入的任意朝号。当前实现已经使用 `move_title_name_to + set_title_prefix`，但这组组合在原版 TGP 脚本中没有直接样例，因此仍是首个实机门槛：必须核对地图名、角色主头衔、决议文本、形容词和存档重载后的结果；在这项实机证据完成前，状态保持 static-ready。
 
 ## 5. 封臣保留算法
 
@@ -131,26 +131,26 @@
 
 代价是：任何同样覆写上述两个 key 的 mod 都存在加载顺序冲突。descriptor/Workshop 页面必须明确列出这一点。兼容副本会绑定下面的原版文件 SHA-256；升级 CK3 后只要 hash 变化，静态校验就要求人工审阅上游差异，不能悄悄继续使用旧逻辑。
 
-原版 `tgp_dynastic_cycle.0081/.0082` 的文本会错误声称旧天子“失去全部有地头衔”。实现时将给这条 tooltip 增加规则条件：新规则下改为“失去天命与中华霸权，但后朝仍拥故土及尊王之臣”；原版选项仍显示原文。只维护简体中文和英文，正式发布前再补齐其余七种语言。
+原版 `tgp_dynastic_cycle.0081/.0082` 的文本会错误声称旧天子“失去全部有地头衔”。当前中英实现把这条 tooltip 改成对两个规则分支都成立的中性描述，避免在新规则下显示错误结果，同时不新增第三个原版 event 覆写点。只维护简体中文和英文，正式发布前再补齐其余七种语言。
 
-## 8. 计划文件布局
+## 8. 实际文件布局
 
 ```text
 mod_reclaim_the_motherland/
-  README.md                                      # 本设计，source-only
-  descriptor.mod                                # 实现阶段创建；不含 remote_file_id
+  README.md                                      # 设计与实现说明，source-only
+  descriptor.mod                                # 不含 remote_file_id
   common/game_rules/rmtm_game_rules.txt
   common/decisions/rmtm_restoration_decisions.txt
   common/decisions/zz_rmtm_mandate_override.txt
   common/scripted_effects/rmtm_dynastic_cycle_effects.txt
+  common/scripted_effects/rmtm_vanilla_compat_effects.txt
   common/scripted_effects/zz_rmtm_vanilla_overrides.txt
   common/scripted_triggers/rmtm_restoration_triggers.txt
-  common/customizable_localization/rmtm_dynasty_names.txt
   localization/simp_chinese/rmtm_*.yml
   localization/english/rmtm_*.yml
 ```
 
-统一命名空间为 `rmtm`，验收专用命名空间为 `rmtma`，日志前缀为 `RMTM:`。发布构建后续使用独立 exact-allowlist builder；Workshop item ID 未创建前不虚构，也绝不把 `remote_file_id` 写入仓库内 descriptor。
+统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：10 个运行时文件进入 staging，README 不发布。Workshop item ID 未创建前不虚构，也绝不把 `remote_file_id` 写入仓库内 descriptor。
 
 ## 9. 实现与验收顺序
 
@@ -195,11 +195,33 @@ mod_reclaim_the_motherland/
 | `events/dlc/tgp/tgp_dynastic_cycle_events.txt` | `C9904AAA01ABC8583E67D07866FAE8EF89274708BDA3929498DDDB2F24FC2153` |
 | `common/landed_titles/02_china.txt` | `342F67E4D3E27A66B05A7257493A28C32AD8C0F9D9B314C0E18BDD8261165811` |
 
-## 11. 请确认的四个设计口径
+## 11. 已确认的四个设计口径
 
-如果没有异议，后续实现按以下四点执行：
+实现已经按以下四点执行：
 
 1. 新规则默认选择“重整河山”，同时保留一个完全原版的选项。
 2. 旧天子除 `h_china` 外保留所有个人领地与个人头衔；不继续执行原版的全头衔退位。
 3. “尊王派封臣”按直属封臣判断，并完整保留这些直属封臣原有的下级 realm 树，不跨级抽取间接尊王派。
 4. 别人先取得天命时不销毁后朝；后朝可跨王朝周期传承，并在未来群雄割据中复辟。
+
+## 12. 当前实现与验证证据
+
+2026-09-08 的实现状态为 **static-ready**：游戏规则、群雄割据分派、动态后朝、尊王派直属封臣保留、原“宣称天命”封锁、“宣称复辟”、中英本地化和 10 文件独立构建链均已落地。原版兼容副本绑定 CK3 `1.19.0.6` 的源文件哈希；旧天子还被显式排除在弱势王/帝头衔裁剪之外，确保除 `h_china` 外的个人头衔不会被该轮原版逻辑误删。
+
+`open_kaishek` 预验记录：
+
+- commit：`33d690234d8217422978ee642055ab1b13e44c76`；CLI JAR SHA-256：`CC42A0BBD4991095DEB4C8AF4142A4657D46D07D616B89643A9F2D7A1E4A3CD7`。
+- profile/version：parser-only corpus（当前没有覆盖本 mod 动态头衔、封臣变更和决议语义的 validator profile，因此 validator/IR/finite-runtime 为 `not-applicable`，不能代替 CK3 实机）。
+- CK3：`1.19.0.6`；EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+- corpus：`mod_reclaim_the_motherland/common/**/*.txt`，7 文件、23,239 bytes，SHA-256 `557650efdb8340d00d9550137cd8a498a30d2c323e68809e34054b2eae4e233b`。
+- 命令：`java -jar D:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar corpus --require-corpus D:\workspace\ck3_reclaim_the_motherland_design\mod_reclaim_the_motherland`。
+- 结果：7/7 parsed，0 errors，GREEN。
+
+最终静态验证：
+
+- `py tools/test_reclaim_the_motherland_contract.py`：11/11 GREEN。
+- `py tools/validate_reclaim_the_motherland_static.py`：GREEN；10 个运行时文件、2 种开发语言、14 个本地化键、7 个玩法脚本。
+- `py tools/test_build_reclaim_the_motherland_release.py`：9/9 GREEN。
+- `py tools/build_reclaim_the_motherland_release.py --check`：双构建可复现；运行时 ZIP SHA-256 `a134855d68f6df688a2ea21a07e349ab220e3a14b5f7e14418c83d66ec800363`。manifest 内嵌执行时 Git SHA，因此只以对应构建输出为准，不在源码中冻结自引用哈希。
+
+本轮没有启动或接管 CK3：当时已有其他响应中的游戏实例占用排他槽。动态朝号前缀、空法理与继承、真实尊王派封臣树、50%/51% 边界、完整复辟效果和存档重载仍必须按第 9 节取得真实游戏证据；在此之前不得把状态提升为 production-live 或 complete。
