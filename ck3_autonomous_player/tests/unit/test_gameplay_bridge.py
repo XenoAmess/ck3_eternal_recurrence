@@ -11662,6 +11662,8 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_zhongguo_workforce_collective_snapshot_v1",
                     "ck3_query_zhongguo_workforce_normal_exit_snapshot_v1",
                     "ck3_center_map_on_landed_title_v1",
+                    "ck3_set_played_character_v1",
+                    "ck3_probe_coat_of_arms_source_v1",
                     "ck3_query_loaded_feature_manifest_v1",
                     "ck3_query_pending_character_interaction_context_v1",
                     "ck3_query_current_event_window_context_v1",

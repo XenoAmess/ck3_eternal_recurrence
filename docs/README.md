@@ -16,6 +16,7 @@
 - [courtier-creator.md](courtier-creator.md) — 付费自定义廷臣 v2：七页生成目录、数值步进、动态来处、玩家隔离状态与原子扣金（CK3 1.19.0.6 实机 GREEN）
 - [autonomous-player-agent.md](autonomous-player-agent.md) — 已启动的长期工程：不作弊的 CK3 高分自主玩家、production 单 mod 隔离、视觉驱动、经验记忆与持续多局优化；实现位于 `ck3_autonomous_player/`
 - [ck3-local-api-mcp-feasibility.md](ck3-local-api-mcp-feasibility.md) — CK3 双后端与 MCP 高效模式：OCR/键鼠 baseline、日志/`run` 数据 Mod 桥、薄 DLL + named pipe、原生 command 逆向锚点与逐能力 hybrid 迁移路线
+- [ck3-coat-of-arms-clipboard-import-capability.md](ck3-coat-of-arms-clipboard-import-capability.md) — CK3 角色设计器纹章剪贴板的原生调用链、可导入 render-description 字段、非 effect 执行边界与未来 Web 编辑器合同
 - [ck3-native-version-adapters.md](ck3-native-version-adapters.md) — CK3 EXE 升级时的 native 失效语义、稳定 Game API/逐版本 ABI 边界、adapter registry、逐 capability 迁移与最小化实机验收契约
 - [ck3-native-title-map-navigation-contract.md](ck3-native-title-map-navigation-contract.md) — **CK3 1.19.0.6 fixture-live**：MCP 按 stable landed-title key 解析头衔并居中地图的输入、typed result、camera settled ACK、错误语义、零 OCR/键鼠 fallback 与实机证据边界
 - [ck3-native-ai/](ck3-native-ai/README.md) — CK3 1.19.0.6 原生 AI 决策树：军队控制、战斗预测与真实结算、宣战、白和/投降，以及对应的玩家 counter-policy；所有主题均含证据等级、版本边界和 Mermaid 图

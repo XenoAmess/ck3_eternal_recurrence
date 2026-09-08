@@ -221,6 +221,14 @@ from .set_played_character_contract import (
     SET_PLAYED_CHARACTER_V1_CAPABILITY,
     validate_character_id,
 )
+from .coat_of_arms_source_probe_contract import (
+    PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
+    coat_of_arms_source_frontend_binding_from_capabilities,
+    encode_coat_of_arms_source_v1,
+    normalize_coat_of_arms_source_v1_binding,
+    normalize_coat_of_arms_source_v1_result,
+    validate_coat_of_arms_source_probe_apply,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -5731,6 +5739,98 @@ class GameplayBridgeService:
             )
         return copy.deepcopy(result)
 
+    def probe_coat_of_arms_source_v1(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+    ) -> dict[str, object]:
+        """Probe source through CK3's typed engine path without planner use."""
+
+        encoded = encode_coat_of_arms_source_v1(source)
+        apply = validate_coat_of_arms_source_probe_apply(apply)
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        typed_probe = getattr(
+            self.driver, "probe_coat_of_arms_source_v1", None
+        )
+        if not (
+            isinstance(bridge_capabilities, list)
+            and PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY
+            in bridge_capabilities
+            and callable(typed_probe)
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: selected backend cannot probe "
+                "coat-of-arms source"
+            )
+        frontend = expected_revision == 0
+        if frontend:
+            try:
+                binding = (
+                    coat_of_arms_source_frontend_binding_from_capabilities(
+                        capabilities
+                    )
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "frontend coat-of-arms probe lacks an exact native "
+                    f"binding: {error}"
+                ) from error
+        else:
+            snapshot = self.snapshot()
+            try:
+                binding = _coat_of_arms_source_probe_binding(snapshot)
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"coat-of-arms probe lacks a complete binding: {error}"
+                ) from error
+            if binding["revision"] != expected_revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "coat-of-arms probe revision mismatch: expected "
+                    f"{expected_revision}, current {binding['revision']}"
+                )
+        result = typed_probe(
+            encoded.source,
+            expected_revision=expected_revision,
+            apply=apply,
+        )
+        try:
+            normalized = normalize_coat_of_arms_source_v1_result(
+                result,
+                expected_source=encoded,
+                expected_binding=binding,
+                expected_apply=apply,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms probe result is malformed: {error}"
+            ) from error
+        try:
+            current_binding = (
+                coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.capabilities()
+                )
+                if frontend
+                else _coat_of_arms_source_probe_binding(self.snapshot())
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms probe lost its session binding: {error}"
+            ) from error
+        if current_binding != binding:
+            raise BridgeUnavailableError(
+                "coat-of-arms probe crossed its revision binding"
+            )
+        return normalized
+
     def query_loaded_feature_manifest_v1(
         self,
         *,
@@ -8054,6 +8154,46 @@ def _title_map_navigation_binding(
             "date_raw": snapshot.get("date_raw"),
             "episode_run_id": snapshot.get("episode_run_id"),
             "connection_generation": connection_generation,
+        }
+    )
+
+
+def _coat_of_arms_source_probe_binding(
+    snapshot: object,
+) -> dict[str, object]:
+    if not isinstance(snapshot, dict):
+        raise ValueError("snapshot must be an object")
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    bridge_pid = (
+        diagnostics.get("bridge_pid")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    common = {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "connection_generation": connection_generation,
+        "bridge_pid": bridge_pid,
+    }
+    if (
+        snapshot.get("played_character") is None
+        and snapshot.get("episode_run_id") is None
+    ):
+        return normalize_coat_of_arms_source_v1_binding(
+            {"mode": "frontend_snapshot", **common}
+        )
+    return normalize_coat_of_arms_source_v1_binding(
+        {
+            "mode": "gameplay",
+            **common,
+            "episode_run_id": snapshot.get("episode_run_id"),
         }
     )
 

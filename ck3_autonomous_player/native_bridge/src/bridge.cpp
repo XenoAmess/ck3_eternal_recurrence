@@ -5,6 +5,7 @@
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
 #include "xar_bridge/named_path_583_root_observer_v1.hpp"
 #include "xar_bridge/pdx_paths_583_producer_observer_v1.hpp"
@@ -187,6 +188,8 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+static xar::ck3_11906::CoatOfArmsDesignerProbeHookStateV1
+    g_coat_of_arms_designer_probe_hook_v1{};
 static xar::ck3_11906::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_v1{};
 static xar::ck3_11906::TacticalDailySentinelDetourStateV1
@@ -622,6 +625,21 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += mailbox.executor_submission_enabled ? "true" : "false";
   result += ",\"ready\":";
   result += mailbox.ready ? "true" : "false";
+  result += "},\"coat_of_arms_designer_probe_v1\":{";
+  result += "\"installed\":";
+  result += g_coat_of_arms_designer_probe_hook_v1.installed.load(
+                std::memory_order_acquire)
+                ? "true"
+                : "false";
+  result += ",\"failure\":";
+  result += Number(g_coat_of_arms_designer_probe_hook_v1.failure_flags.load(
+      std::memory_order_acquire));
+  result += ",\"observed_calls\":";
+  result += Number(g_coat_of_arms_designer_probe_hook_v1.observed_calls.load(
+      std::memory_order_acquire));
+  result += ",\"executed_requests\":";
+  result += Number(g_coat_of_arms_designer_probe_hook_v1.executed_requests.load(
+      std::memory_order_acquire));
   result += "},\"startup_particle2_null_guard_v1\":{";
   result += "\"installed\":";
   result += startup_guard.installed ? "true" : "false";
@@ -4286,6 +4304,68 @@ std::string EventWindowContextResultFrame(
   return result;
 }
 
+std::string CoatOfArmsDesignerProbeResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::ck3_11906::CoatOfArmsDesignerProbeResultV1 &probe) {
+  std::string_view status = "unavailable";
+  if (probe.applied) {
+    status = "applied";
+  } else if (probe.detected && !probe.apply_requested) {
+    status = "detected";
+  } else if (!probe.detected &&
+             probe.reason == "engine_did_not_detect_coat_of_arms") {
+    status = "not_detected";
+  } else if (probe.detected && probe.apply_requested) {
+    status = "apply_failed";
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":"
+            "\"probe-coat-of-arms-source-v1\",\"accepted\":true,"
+            "\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"snapshot_revision\":" + Number(probe.snapshot_revision);
+  result += ",\"coat_of_arms_probe\":{\"schema\":";
+  AppendJsonString(result, "xar.ck3.coat-of-arms-designer-probe.v1");
+  result += ",\"schema_version\":1,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"date_raw\":" + SignedNumber(probe.date_raw);
+  result += ",\"source_bytes\":" + Number(probe.source_bytes);
+  result += ",\"designer_observed\":";
+  result += probe.designer_observed ? "true" : "false";
+  result += ",\"clipboard_written\":";
+  result += probe.clipboard_written ? "true" : "false";
+  result += ",\"clipboard_readback_matched\":";
+  result += probe.clipboard_readback_matched ? "true" : "false";
+  result += ",\"detected\":";
+  result += probe.detected ? "true" : "false";
+  result += ",\"apply_requested\":";
+  result += probe.apply_requested ? "true" : "false";
+  result += ",\"paste_invoked\":";
+  result += probe.paste_invoked ? "true" : "false";
+  result += ",\"applied\":";
+  result += probe.applied ? "true" : "false";
+  result += ",\"candidate_index\":" + Number(probe.candidate_index);
+  result += ",\"preview_coat_of_arms_handle\":" +
+            Number(probe.preview_coat_of_arms_handle);
+  result += ",\"active_coat_of_arms_index\":" +
+            Number(probe.active_coat_of_arms_index);
+  result += ",\"reason\":";
+  if (probe.reason.empty()) {
+    result += "null";
+  } else {
+    AppendJsonString(result, probe.reason);
+  }
+  result += ",\"provenance\":{\"backend_id\":";
+  AppendJsonString(result,
+                   xar::ck3_11906::kCoatOfArmsDesignerProbeV1BackendId);
+  result += "}},\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -4835,6 +4915,9 @@ public:
         &xar::ck3_11906::ExecuteSetPlayedCharacterMailboxV1;
     environment.permitted_executor_novemvigintary =
         &xar::ck3_11906::ExecuteZhongguoB1CycleSnapshotMailboxQueryV1;
+    xar::ck3_11906::InstallCoatOfArmsDesignerProbeHookV1(
+        g_coat_of_arms_designer_probe_hook_v1,
+        environment.module_base, environment.exact_build_admitted);
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -4958,6 +5041,53 @@ bool IsSimpleRequestId(std::string_view value) noexcept {
   return true;
 }
 
+bool DecodeBase64(std::string_view encoded, std::string &decoded,
+                  std::size_t maximum_bytes) noexcept {
+  decoded.clear();
+  if (encoded.size() % 4 != 0 ||
+      encoded.size() > ((maximum_bytes + 2U) / 3U) * 4U) {
+    return false;
+  }
+  const auto value = [](char character) noexcept -> std::int32_t {
+    if (character >= 'A' && character <= 'Z') return character - 'A';
+    if (character >= 'a' && character <= 'z') return character - 'a' + 26;
+    if (character >= '0' && character <= '9') return character - '0' + 52;
+    if (character == '+') return 62;
+    if (character == '/') return 63;
+    return -1;
+  };
+  try {
+    decoded.reserve((encoded.size() / 4U) * 3U);
+    for (std::size_t offset = 0; offset < encoded.size(); offset += 4U) {
+      const bool final = offset + 4U == encoded.size();
+      const bool pad2 = encoded[offset + 2] == '=';
+      const bool pad3 = encoded[offset + 3] == '=';
+      if ((!final && (pad2 || pad3)) || (pad2 && !pad3)) return false;
+      const auto a = value(encoded[offset]);
+      const auto b = value(encoded[offset + 1]);
+      const auto c = pad2 ? 0 : value(encoded[offset + 2]);
+      const auto d = pad3 ? 0 : value(encoded[offset + 3]);
+      if (a < 0 || b < 0 || c < 0 || d < 0 ||
+          (pad2 && (b & 0x0F) != 0) ||
+          (!pad2 && pad3 && (c & 0x03) != 0)) {
+        return false;
+      }
+      const auto bits = (static_cast<std::uint32_t>(a) << 18U) |
+                        (static_cast<std::uint32_t>(b) << 12U) |
+                        (static_cast<std::uint32_t>(c) << 6U) |
+                        static_cast<std::uint32_t>(d);
+      decoded.push_back(static_cast<char>((bits >> 16U) & 0xFFU));
+      if (!pad2) decoded.push_back(static_cast<char>((bits >> 8U) & 0xFFU));
+      if (!pad3) decoded.push_back(static_cast<char>(bits & 0xFFU));
+      if (decoded.size() > maximum_bytes) return false;
+    }
+  } catch (...) {
+    decoded.clear();
+    return false;
+  }
+  return true;
+}
+
 HANDLE ConnectToHost() noexcept {
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     HANDLE pipe = CreateFileW(g_pipe_name, GENERIC_READ | GENERIC_WRITE, 0,
@@ -5014,6 +5144,7 @@ struct WorkerState {
   std::uint64_t loaded_feature_manifest_query_sequence = 0;
   std::uint64_t pending_character_interaction_context_query_sequence = 0;
   std::uint64_t event_window_context_query_sequence = 0;
+  std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
@@ -5133,6 +5264,8 @@ void RunConnectedSession(
       state.pending_character_interaction_context_query_sequence;
   auto &event_window_context_query_sequence =
       state.event_window_context_query_sequence;
+  auto &coat_of_arms_designer_probe_query_sequence =
+      state.coat_of_arms_designer_probe_query_sequence;
   auto &army_strength_query_sequence =
       state.army_strength_query_sequence;
   auto &combat_inputs_query_sequence =
@@ -5172,6 +5305,8 @@ void RunConnectedSession(
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
+      xar::ck3_11906::RetryDeferredCoatOfArmsDesignerProbeHookV1(
+          g_coat_of_arms_designer_probe_hook_v1);
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
       if (connected && game.supports_snapshot()) {
@@ -8168,6 +8303,128 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main pending-interaction context result "
                       "was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step ==
+                   xar::ck3_11906::kCoatOfArmsDesignerProbeV1Step) {
+          std::uint64_t expected_revision = 0;
+          bool apply = false;
+          std::string source_base64;
+          std::string source;
+          constexpr std::size_t kMaximumEncodedSourceBytes =
+              ((xar::ck3_11906::kCoatOfArmsProbeMaximumSourceBytesV1 + 2U) /
+               3U) *
+              4U;
+          const bool request_valid =
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) &&
+              xar::bridge::JsonBooleanField(
+                  incoming.payload, "apply", apply) &&
+              xar::bridge::JsonStringField(
+                  incoming.payload, "source_base64", source_base64,
+                  kMaximumEncodedSourceBytes) &&
+              DecodeBase64(
+                  source_base64, source,
+                  xar::ck3_11906::kCoatOfArmsProbeMaximumSourceBytesV1) &&
+              !source.empty() &&
+              std::none_of(source.begin(), source.end(), [](char byte) {
+                return static_cast<unsigned char>(byte) >= 0x80U;
+              });
+          if (!request_valid) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "coat-of-arms source request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "coat-of-arms source snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            const bool gameplay_bound = state_revision != 0;
+            const bool starting_binding_stable =
+                gameplay_bound
+                    ? previous_snapshot.has_value() &&
+                          xar::game::ReadSnapshot(game, current_snapshot) &&
+                          current_snapshot == previous_snapshot.value()
+                    : !previous_snapshot.has_value();
+            if (!starting_binding_stable) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "coat-of-arms source snapshot changed"));
+            } else {
+              xar::ck3_11906::CoatOfArmsDesignerProbeRequestV1 query{};
+              query.expected_snapshot_revision = expected_revision;
+              query.date_raw = gameplay_bound ? current_snapshot.date_raw : 0;
+              query.source = std::move(source);
+              query.apply = apply;
+              const auto submit =
+                  xar::ck3_11906::TrySubmitCoatOfArmsDesignerProbeV1(
+                      g_coat_of_arms_designer_probe_hook_v1, query);
+              if (submit != xar::ck3_11906::
+                                CoatOfArmsDesignerProbeSubmitResultV1::
+                                    submitted) {
+                std::string_view error =
+                    "coat-of-arms designer probe is unavailable";
+                if (submit == xar::ck3_11906::
+                                  CoatOfArmsDesignerProbeSubmitResultV1::busy) {
+                  error = "coat-of-arms designer probe is busy";
+                } else if (submit == xar::ck3_11906::
+                                         CoatOfArmsDesignerProbeSubmitResultV1::
+                                             invalid_request) {
+                  error = "coat-of-arms designer probe request is invalid";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait =
+                    xar::ck3_11906::WaitForCoatOfArmsDesignerProbeV1(
+                        query,
+                        xar::ck3_11906::
+                            kCoatOfArmsDesignerProbeQueuedWaitBudgetMillisecondsV1);
+                while (wait == xar::ck3_11906::
+                                   CoatOfArmsDesignerProbeWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForCoatOfArmsDesignerProbeV1(
+                      query,
+                      xar::ck3_11906::
+                          kCoatOfArmsDesignerProbeExecutingWaitSliceMillisecondsV1);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                CoatOfArmsDesignerProbeWaitResultV1::completed &&
+                    (!gameplay_bound ||
+                     (xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot));
+                std::string response;
+                if (completion_snapshot_stable) {
+                  response = CoatOfArmsDesignerProbeResultFrame(
+                      request_id,
+                      coat_of_arms_designer_probe_query_sequence + 1,
+                      query.result);
+                  ++coat_of_arms_designer_probe_query_sequence;
+                } else {
+                  const auto error = xar::ck3_11906::
+                      CoatOfArmsDesignerProbeFailureMessageV1(wait);
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      wait != xar::ck3_11906::
+                                  CoatOfArmsDesignerProbeWaitResultV1::completed
+                          ? error
+                          : std::string_view{
+                                "coat-of-arms completion snapshot changed"});
+                }
+                if (!xar::ck3_11906::ReclaimCoatOfArmsDesignerProbeV1(
+                        g_coat_of_arms_designer_probe_hook_v1, query)) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "coat-of-arms designer result was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

@@ -9,6 +9,7 @@
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/event_window_context_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
@@ -385,6 +386,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
         ck3_11906::kPendingCharacterInteractionContextV1Capability;
   } else if (step == ck3_11906::kEventWindowContextV1Step) {
     capability = ck3_11906::kEventWindowContextV1Capability;
+  } else if (step == ck3_11906::kCoatOfArmsDesignerProbeV1Step) {
+    capability = ck3_11906::kCoatOfArmsDesignerProbeV1Capability;
   } else if (step == ck3_11906::kTitleMapNavigationV1Step) {
     capability = ck3_11906::kTitleMapNavigationV1Capability;
   } else if (ck3_11906::ParseSetPlayedCharacterV1Step(step).has_value()) {

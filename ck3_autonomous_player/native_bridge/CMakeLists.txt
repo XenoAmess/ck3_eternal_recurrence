@@ -254,6 +254,7 @@ add_library(xar_ck3_bridge SHARED
   src/campaign_root_context_v1_serializer.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
+  src/coat_of_arms_designer_probe_v1.cpp
   src/combat_phase_event_trace_detour_v1.cpp
   src/combat_phase_event_trace_managed_v1.cpp
   src/combat_phase_event_trace_ring_v1.cpp

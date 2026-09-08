@@ -545,6 +545,20 @@ def _ck3_set_played_character_v1(
     )
 
 
+def _ck3_probe_coat_of_arms_source_v1(
+    service: GameplayBridgeService,
+    source: str,
+    expected_revision: int,
+    apply: bool,
+) -> dict[str, object]:
+    """Probe one exact source through CK3 without planner or UI fallback."""
+    return service.probe_coat_of_arms_source_v1(
+        source,
+        expected_revision=expected_revision,
+        apply=apply,
+    )
+
+
 def _ck3_query_loaded_feature_manifest_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -1211,6 +1225,20 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_probe_coat_of_arms_source_v1(
+        source: str,
+        expected_revision: int,
+        apply: bool,
+    ) -> dict[str, object]:
+        """Probe UTF-8 coat-of-arms source through CK3's native engine path."""
+        return _ck3_probe_coat_of_arms_source_v1(
+            service,
+            source,
+            expected_revision,
+            apply,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1546,6 +1574,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_vanilla_event_source_provenance_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_probe_coat_of_arms_source_v1"
     )
     return server
 

@@ -41,6 +41,9 @@ bool JsonStringField(std::string_view json, std::string_view key,
 bool JsonUnsignedField(std::string_view json, std::string_view key,
                        std::uint64_t &output) noexcept;
 
+bool JsonBooleanField(std::string_view json, std::string_view key,
+                      bool &output) noexcept;
+
 // Non-blocking probe. A complete frame is consumed only when all of its bytes
 // are already available in the pipe.
 ReadResult TryReadFrame(HANDLE pipe) noexcept;

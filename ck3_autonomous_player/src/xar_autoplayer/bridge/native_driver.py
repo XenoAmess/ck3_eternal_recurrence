@@ -281,6 +281,16 @@ from .set_played_character_contract import (
     set_played_character_v1_step,
     validate_character_id,
 )
+from .coat_of_arms_source_probe_contract import (
+    PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
+    PROBE_COAT_OF_ARMS_SOURCE_V1_STEP,
+    coat_of_arms_source_frontend_binding_from_capabilities,
+    encode_coat_of_arms_source_v1,
+    normalize_coat_of_arms_source_v1_binding,
+    normalize_coat_of_arms_source_v1_result,
+    normalize_native_coat_of_arms_source_v1_result,
+    validate_coat_of_arms_source_probe_apply,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -3226,6 +3236,127 @@ class NativeHeadlessGameplayDriver:
             "backend_id": "native-headless",
         }
 
+    def probe_coat_of_arms_source_v1(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+    ) -> dict[str, object]:
+        """Pass exact UTF-8 source to the native engine probe as base64."""
+
+        encoded = encode_coat_of_arms_source_v1(source)
+        apply = validate_coat_of_arms_source_probe_apply(apply)
+        _validate_revision(expected_revision, "expected_revision")
+        frontend = expected_revision == 0
+        if frontend:
+            try:
+                binding = (
+                    coat_of_arms_source_frontend_binding_from_capabilities(
+                        self.capabilities()
+                    )
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "native frontend coat-of-arms probe lacks a binding: "
+                    f"{error}"
+                ) from error
+            expected_native_revision = 0
+            expected_date_raw = 0
+        else:
+            starting = self.take_snapshot()
+            try:
+                binding = _coat_of_arms_source_probe_binding_from_snapshot(
+                    starting
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native coat-of-arms probe lacks a binding: {error}"
+                ) from error
+            if binding["revision"] != expected_revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "native coat-of-arms probe revision mismatch: expected "
+                    f"{expected_revision}, current {binding['revision']}"
+                )
+            expected_native_revision = int(binding["native_revision"])
+            expected_date_raw = int(binding["date_raw"])
+        raw = self._execute_primitive_step(
+            PROBE_COAT_OF_ARMS_SOURCE_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
+            request_fields={
+                "source_base64": encoded.source_base64,
+                "apply": apply,
+            },
+            allow_frontend_revision_zero=frontend,
+        )
+        try:
+            native = normalize_native_coat_of_arms_source_v1_result(
+                raw,
+                expected_source=encoded,
+                expected_native_revision=expected_native_revision,
+                expected_date_raw=expected_date_raw,
+                expected_apply=apply,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms probe returned malformed data: {error}"
+            ) from error
+        try:
+            current_binding = (
+                coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.capabilities()
+                )
+                if frontend
+                else _coat_of_arms_source_probe_binding_from_snapshot(
+                    self.take_snapshot()
+                )
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms probe lost its binding: {error}"
+            ) from error
+        if current_binding != binding:
+            raise BridgeUnavailableError(
+                "native coat-of-arms probe crossed its revision binding"
+            )
+        try:
+            return normalize_coat_of_arms_source_v1_result(
+                {
+                    "schema": "coat-of-arms-source-probe-v1",
+                    "schema_version": 1,
+                    "step": PROBE_COAT_OF_ARMS_SOURCE_V1_STEP,
+                    "status": native["status"],
+                    "detected": native["detected"],
+                    "designer_observed": native["designer_observed"],
+                    "clipboard_written": native["clipboard_written"],
+                    "clipboard_readback_matched": native[
+                        "clipboard_readback_matched"
+                    ],
+                    "apply_requested": native["apply_requested"],
+                    "paste_invoked": native["paste_invoked"],
+                    "applied": native["applied"],
+                    "candidate_index": native["candidate_index"],
+                    "preview_coat_of_arms_handle": native[
+                        "preview_coat_of_arms_handle"
+                    ],
+                    "active_coat_of_arms_index": native[
+                        "active_coat_of_arms_index"
+                    ],
+                    "reason": native["reason"],
+                    "source_sha256": native["source_sha256"],
+                    "source_bytes": native["source_bytes"],
+                    "binding": binding,
+                },
+                expected_source=encoded,
+                expected_binding=binding,
+                expected_apply=apply,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms probe projection is malformed: {error}"
+            ) from error
+
     def _center_map_on_landed_title_v1_unrecorded(
         self,
         title_key: str,
@@ -3384,6 +3515,10 @@ class NativeHeadlessGameplayDriver:
         if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
             raise UnsupportedStepError(
                 "title-map navigation requires its typed driver method"
+            )
+        if step == PROBE_COAT_OF_ARMS_SOURCE_V1_STEP:
+            raise UnsupportedStepError(
+                "coat-of-arms probing requires its typed driver method"
             )
         life_advance_starting: dict[str, object] | None = None
         decision_epoch_target = parse_battle_decision_epoch_advance_step(step)
@@ -5256,6 +5391,7 @@ class NativeHeadlessGameplayDriver:
         request_fields: dict[str, object] | None = None,
         timeout_seconds: float | None = None,
         internal_semantic_snapshot: bool = False,
+        allow_frontend_revision_zero: bool = False,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
@@ -5276,11 +5412,21 @@ class NativeHeadlessGameplayDriver:
                 "native DLL does not advertise required capability "
                 f"{required_capability}"
             )
-        snapshot = (
-            self.take_internal_semantic_snapshot()
-            if internal_semantic_snapshot
-            else self.take_snapshot()
-        )
+        if allow_frontend_revision_zero:
+            if internal_semantic_snapshot or expected_revision != 0:
+                raise ValueError(
+                    "frontend native execution requires expected_revision=0"
+                )
+            coat_of_arms_source_frontend_binding_from_capabilities(
+                capabilities
+            )
+            snapshot = {"revision": 0, "native_revision": 0}
+        else:
+            snapshot = (
+                self.take_internal_semantic_snapshot()
+                if internal_semantic_snapshot
+                else self.take_snapshot()
+            )
         revision = int(snapshot["revision"])
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
@@ -14693,6 +14839,7 @@ class ConfiguredHybridFallbackDriver:
             QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
             ZHONGGUO_SCOREBOARD_ACTION_V1_TRANSPORT_CAPABILITY,
             ACTIVATE_ZHONGGUO_SCOREBOARD_V1_CAPABILITY,
+            PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
         ):
             if pure_native_capability not in native_bridge_capabilities:
                 bridge_capabilities.discard(pure_native_capability)
@@ -14932,6 +15079,134 @@ class ConfiguredHybridFallbackDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"hybrid title-map projection is malformed: {error}"
+            ) from error
+
+    def probe_coat_of_arms_source_v1(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+    ) -> dict[str, object]:
+        """Keep the byte-bounded source probe on the native backend only."""
+
+        encoded = encode_coat_of_arms_source_v1(source)
+        apply = validate_coat_of_arms_source_probe_apply(apply)
+        _validate_revision(expected_revision, "expected_revision")
+        native_bridge_capabilities = set(
+            _string_list(
+                self.native.capabilities().get("bridge_capabilities")
+            )
+        )
+        if (
+            PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY
+            not in native_bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: coat-of-arms probing is pure "
+                "native and will not use fallback"
+            )
+        if expected_revision == 0:
+            try:
+                binding = (
+                    coat_of_arms_source_frontend_binding_from_capabilities(
+                        self.native.capabilities()
+                    )
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "hybrid frontend coat-of-arms probe lacks a native "
+                    f"binding: {error}"
+                ) from error
+            result = self.native.probe_coat_of_arms_source_v1(
+                encoded.source,
+                expected_revision=0,
+                apply=apply,
+            )
+            try:
+                ending_binding = (
+                    coat_of_arms_source_frontend_binding_from_capabilities(
+                        self.native.capabilities()
+                    )
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "hybrid frontend coat-of-arms probe lost its native "
+                    f"binding: {error}"
+                ) from error
+            if ending_binding != binding:
+                raise BridgeUnavailableError(
+                    "hybrid frontend coat-of-arms probe crossed its native "
+                    "binding"
+                )
+            try:
+                return normalize_coat_of_arms_source_v1_result(
+                    {**result, "binding": binding},
+                    expected_source=encoded,
+                    expected_binding=binding,
+                    expected_apply=apply,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "hybrid frontend coat-of-arms projection is malformed: "
+                    f"{error}"
+                ) from error
+        starting = self.take_snapshot()
+        try:
+            binding = _coat_of_arms_source_probe_binding_from_snapshot(
+                starting
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"hybrid coat-of-arms probe lacks a binding: {error}"
+            ) from error
+        if binding["revision"] != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "hybrid coat-of-arms probe revision mismatch: expected "
+                f"{expected_revision}, current {binding['revision']}"
+            )
+        backend_revisions = starting.get("backend_revisions")
+        native_revision = (
+            backend_revisions.get("fast")
+            if isinstance(backend_revisions, dict)
+            else None
+        )
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or native_revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "hybrid coat-of-arms probe lacks the native public revision"
+            )
+        result = self.native.probe_coat_of_arms_source_v1(
+            encoded.source,
+            expected_revision=native_revision,
+            apply=apply,
+        )
+        ending = self.take_snapshot()
+        try:
+            ending_binding = _coat_of_arms_source_probe_binding_from_snapshot(
+                ending
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"hybrid coat-of-arms probe lost its binding: {error}"
+            ) from error
+        if ending_binding != binding:
+            raise BridgeUnavailableError(
+                "hybrid coat-of-arms probe crossed its revision binding"
+            )
+        try:
+            return normalize_coat_of_arms_source_v1_result(
+                {**result, "binding": binding},
+                expected_source=encoded,
+                expected_binding=binding,
+                expected_apply=apply,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"hybrid coat-of-arms probe projection is malformed: {error}"
             ) from error
 
     def query_pending_character_interaction_context_v1(
@@ -18679,6 +18954,46 @@ def _title_map_navigation_binding_from_snapshot(
     )
 
 
+def _coat_of_arms_source_probe_binding_from_snapshot(
+    snapshot: object,
+) -> dict[str, object]:
+    if not isinstance(snapshot, dict):
+        raise ValueError("snapshot must be an object")
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    bridge_pid = (
+        diagnostics.get("bridge_pid")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    common = {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "connection_generation": connection_generation,
+        "bridge_pid": bridge_pid,
+    }
+    if (
+        snapshot.get("played_character") is None
+        and snapshot.get("episode_run_id") is None
+    ):
+        return normalize_coat_of_arms_source_v1_binding(
+            {"mode": "frontend_snapshot", **common}
+        )
+    return normalize_coat_of_arms_source_v1_binding(
+        {
+            "mode": "gameplay",
+            **common,
+            "episode_run_id": snapshot.get("episode_run_id"),
+        }
+    )
+
+
 def _war_objective_capability_flags(
     capabilities: set[str],
 ) -> dict[str, bool]:
@@ -19248,6 +19563,10 @@ def _action_steps(
         if capability == SET_PLAYED_CHARACTER_V1_CAPABILITY:
             # Rebinding the human player is an explicit operator MCP action,
             # never an autonomous planner choice.
+            continue
+        if capability == PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY:
+            # Source is explicit, byte-bounded MCP input. Never advertise a
+            # parameterless native probe to the autonomous planner.
             continue
         if step == "select-event-option-N":
             expand_event_options = True

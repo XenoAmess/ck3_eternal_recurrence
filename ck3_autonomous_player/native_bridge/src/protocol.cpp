@@ -134,6 +134,36 @@ bool JsonUnsignedField(std::string_view json, std::string_view key,
   return true;
 }
 
+bool JsonBooleanField(std::string_view json, std::string_view key,
+                      bool &output) noexcept {
+  std::string needle = "\"";
+  needle += key;
+  needle += "\":";
+  const std::size_t begin = json.find(needle);
+  if (begin == std::string_view::npos)
+    return false;
+  std::size_t value_begin = begin + needle.size();
+  while (value_begin < json.size() &&
+         (json[value_begin] == ' ' || json[value_begin] == '\t' ||
+          json[value_begin] == '\r' || json[value_begin] == '\n')) {
+    ++value_begin;
+  }
+  const auto delimiter = [&json](std::size_t offset) noexcept {
+    return offset == json.size() || json[offset] == ',' ||
+           json[offset] == '}' || json[offset] == ' ' || json[offset] == '\t' ||
+           json[offset] == '\r' || json[offset] == '\n';
+  };
+  if (json.substr(value_begin, 4) == "true" && delimiter(value_begin + 4)) {
+    output = true;
+    return true;
+  }
+  if (json.substr(value_begin, 5) == "false" && delimiter(value_begin + 5)) {
+    output = false;
+    return true;
+  }
+  return false;
+}
+
 ReadResult TryReadFrame(HANDLE pipe) noexcept {
   if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
     return {ReadStatus::closed, {}, ERROR_INVALID_HANDLE};

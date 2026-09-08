@@ -82,6 +82,17 @@ bool TestUnsignedField() {
              "{\"expected_revision\":42x}", "expected_revision", value);
 }
 
+bool TestBooleanField() {
+  bool value = false;
+  return xar::bridge::JsonBooleanField("{\"apply\":true,\"tail\":0}", "apply",
+                                       value) &&
+         value &&
+         xar::bridge::JsonBooleanField("{\"apply\": false}", "apply", value) &&
+         !value &&
+         !xar::bridge::JsonBooleanField("{\"apply\":1}", "apply", value) &&
+         !xar::bridge::JsonBooleanField("{\"apply\":truex}", "apply", value);
+}
+
 } // namespace
 
 int main() {
@@ -89,7 +100,8 @@ int main() {
                  TestLongSentinelStep(
                      xar::ck3_11906::kTacticalDailySentinelMaximumArmiesV1) &&
                  TestMaximumSentinelBound() &&
-                 TestControlFieldsRemainAt128Bytes() && TestUnsignedField()
+                 TestControlFieldsRemainAt128Bytes() && TestUnsignedField() &&
+                 TestBooleanField()
              ? 0
              : 1;
 }
