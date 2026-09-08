@@ -189,9 +189,13 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
             "target_character": ("target",),
         },
         "character_scope_differs_from": {
+            # Find Secrets searches the target court, including secrets owned
+            # by the target character. The secret holder may therefore equal
+            # target/target_character; only the active spymaster must remain
+            # a different party in the reviewed task frame.
             "owner": ("target", "secret_holder"),
-            "target": ("owner", "secret_holder"),
-            "secret_holder": ("owner", "target"),
+            "target": ("owner",),
+            "secret_holder": ("owner",),
         },
         "scope_types": {
             "scheme": "scheme",

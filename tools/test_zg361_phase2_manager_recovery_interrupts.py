@@ -478,29 +478,29 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         contract = _manager_contract(event_key, player=32904)
         context = _context(
             event_key=event_key,
-            instance_id=69,
-            date_raw=53168112,
+            instance_id=371,
+            date_raw=53254608,
             player=32904,
             scopes=[
                 _scope("scheme", "scheme"),
-                _scope("owner", "character", 29889),
+                _scope("owner", "character", 27275),
                 _scope("artifact", "artifact"),
-                _scope("target", "character", 28667),
+                _scope("target", "character", 29628),
                 _scope("councillor_liege", "character", 32904),
-                _scope("target_character", "character", 28667),
-                _scope("councillor", "character", 29889),
-                _scope("active_councillor", "character", 29889),
-                _scope("secret_holder", "character", 29503),
+                _scope("target_character", "character", 29628),
+                _scope("councillor", "character", 27275),
+                _scope("active_councillor", "character", 27275),
+                _scope("secret_holder", "character", 29628),
                 _scope("secret_to_reveal", "secret"),
             ],
             native_option_indices=(0,),
         )
         checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53168112,
+                "date_raw": 53254608,
                 "active_event": {"option_count": 1},
             },
-            event={"event_instance_id": 69},
+            event={"event_instance_id": 371},
             context=context,
             event_key=event_key,
             contract=contract,
@@ -556,10 +556,10 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         drift_checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53168112,
+                "date_raw": 53254608,
                 "active_event": {"option_count": 1},
             },
-            event={"event_instance_id": 69},
+            event={"event_instance_id": 371},
             context=drifted,
             event_key=event_key,
             contract=contract,

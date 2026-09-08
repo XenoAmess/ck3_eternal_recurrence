@@ -227,6 +227,31 @@ eunuch/rival 关系均通过；旧合同只接受基础五项，因合法继承�
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
 
+## 同会话第十次 RED：目标角色持有自己的秘密
+
+第九次 `retry` 热加载提交 `fec2e27b3c71ef0f4e79d2a4d1e2691eb894fa2c` 后，同一 PID
+`159264` 推进到 `spymaster_task.0359`、event instance `371`、
+`date_raw=53254608`。十项 scope 名称、类型、唯一按钮和所有 task alias 均通过；
+实际 `target=target_character=secret_holder=29628`，旧合同额外要求 secret holder
+与 target 互异，导致两项关系检查 RED。选择尚未发生。
+
+原版 Find Secrets 先在 `target_character` 的本人、廷臣、宾客和直属封臣中汇总可发现
+秘密，再直接把被选秘密的 `secret_owner` 保存为 `secret_holder`。因此当目标角色本人
+持有被选秘密时，secret holder 与 target 相同完全合法；`.0359` 本身只要求
+`secret_to_reveal` 存在，唯一 option 将该秘密揭示给玩家。最小修复删除不存在于原版
+定义的 target/secret-holder 互异假设，同时保留 target 与 target_character 同一、
+owner/councillor/active_councillor 同一及 spymaster 与另外两方互异。重复事件的窗口
+策略和唯一确认按钮不变。
+
+- 第十次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-10.json`；
+- park SHA-256：
+  `BCB20CF842FD4C621B1D8F6609D1D341AE3BEA0C1E2479511385C0944A525AAC`；
+- 第十次 RED report 快照：12,507,516 bytes，SHA-256
+  `08E40F0B2ACF6E92CC1B23B42C1999A166CAA4560FF7663B7FAD585498D984CD`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
+
 ## 同会话第九次 RED：诱奸事件的 50% 随机分支未执行
 
 第八次 `retry` 热加载提交 `05707d1b7e70752e5291f6ed4e1e945cff18bff5` 后，同一 PID
