@@ -75,4 +75,38 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 0,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "natural_disaster.7021": {
+        # CK3 1.19.0.6 flood-warning pulse selected by
+        # natural_disaster_warning_events. Native option 0 adds stress and
+        # enters manage-from-home power sharing; native option 1 opens the
+        # isolation decision. Both are hidden once their gates fail. Native
+        # option 2 only renders the warning tooltip, while the event's common
+        # after block records that the first warning was received. R355 shows
+        # the exact first-warning projection with native options (0, 2), so
+        # choose terminal native2 and bind the complete flood scope stack.
+        "date_raw": 53255112,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "scope_types": {
+            "situation": "situation",
+            "situation_sub_region": "situation_sub_region",
+            "epicenter_county": "landed_title",
+            "river_region": "geographical_region",
+        },
+        "saved_scope_name_sets": ((
+            "situation",
+            "situation_sub_region",
+            "epicenter_county",
+            "river_region",
+        ),),
+        "saved_scope_count": 4,
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }

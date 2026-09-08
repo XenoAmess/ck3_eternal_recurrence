@@ -184,3 +184,19 @@ situation 保存该字段，非河流灾害不保存。因此合同新增且只�
 `natural_disaster_warning_tooltip_effect`。
 
 修复只改进程外合同、测试与文档，当前 CK3 实例继续热加载，不重启。
+
+## 同会话第九次合同 RED：洪水预警脉冲
+
+九-scope `.8001` 热通过后，同一灾害在 `date_raw=53255112`、event instance
+`499` 投递 `natural_disaster.7021`。实帧 root 为玩家 `32904`，完整 scope 为
+`situation/situation_sub_region/epicenter_county/river_region`；snapshot 有三个
+authored slot，实际显示 native `(0,2)`，选择尚未发生。
+
+原版 `natural_disaster_warning_events` 明确把 `.7021` 列为四种等权 warning
+事件之一。native 0 会增加压力并启用 manage-from-home 权力分享，native 1 会打开
+隔离家族决议；本帧 native 1 因 trigger 不满足而隐藏。native 2 只显示灾害提示，
+事件共用 after 随后记录已收到首次警告。因此最小合同精确选择 authored 3 /
+native 2，并绑定完整四-scope 和稀疏 option 投影。不同灾害 situation 可再次选择
+该 warning，occurrence 只受产品观察窗限制。
+
+该修复仍不触碰 CK3 已加载文件；完成静态验证与推送后在 PID `69176` 上热续。

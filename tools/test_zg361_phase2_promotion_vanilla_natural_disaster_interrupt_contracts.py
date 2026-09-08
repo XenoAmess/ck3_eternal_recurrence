@@ -160,7 +160,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
     def test_r247_exact_frame_selects_the_only_acknowledgement(self) -> None:
         self.assertEqual(
             set(disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS),
-            {"natural_disaster.8001"},
+            {"natural_disaster.8001", "natural_disaster.7021"},
         )
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
             "natural_disaster.8001"
@@ -225,6 +225,68 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["scope:river_region:type"])
+
+    def test_r355_river_warning_uses_terminal_native_option_two(self) -> None:
+        event_key = "natural_disaster.7021"
+        contract = production._timeline_contract_for_window(
+            disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[event_key],
+            starting_date=53199480,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 499,
+            "date_raw": 53255112,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                _scope("situation", "situation"),
+                _scope("situation_sub_region", "situation_sub_region"),
+                _scope("epicenter_county", "landed_title"),
+                _scope("river_region", "geographical_region"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((0, 2))
+            ],
+        }
+        snapshot = {
+            "date_raw": 53255112,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 499}
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["native_option_indices"], (0, 2))
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][1]["native_option_index"] = 1
+        drift_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_projection,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
 
     def test_r247_frame_rejects_scope_identity_type_and_option_drift(self) -> None:
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
@@ -303,6 +365,26 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             "option = { name = natural_disaster.8001.a "
             "natural_disaster_warning_tooltip_effect = yes }",
         )
+        river_warning_block = _extract_block(
+            event_source.read_text(encoding="utf-8-sig"),
+            "natural_disaster.7021 =",
+        )
+        self.assertEqual(
+            len(re.findall(r"(?m)^\toption\s*=\s*\{", river_warning_block)),
+            3,
+        )
+        remaining = river_warning_block
+        river_options = []
+        for _ in range(3):
+            option = _extract_block(remaining, "\toption =")
+            river_options.append(option)
+            remaining = remaining[remaining.index(option) + len(option):]
+        terminal_option = river_options[-1]
+        self.assertEqual(
+            " ".join(terminal_option.split()),
+            "option = { name = natural_disaster.7021.a "
+            "natural_disaster_warning_tooltip_effect = yes }",
+        )
 
         join_block = _extract_block(
             on_action_source.read_text(encoding="utf-8-sig"),
@@ -320,6 +402,22 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
                 "natural_disaster.8003",
             ],
         )
+        warning_block = _extract_block(
+            on_action_source.read_text(encoding="utf-8-sig"),
+            "natural_disaster_warning_events =",
+        )
+        self.assertEqual(
+            re.findall(
+                r"(?m)^\t\t100\s*=\s*(natural_disaster\.70[0-3]1)\b",
+                warning_block,
+            ),
+            [
+                "natural_disaster.7001",
+                "natural_disaster.7011",
+                "natural_disaster.7021",
+                "natural_disaster.7031",
+            ],
+        )
         base_scopes_block = _extract_block(
             scripted_effect_source.read_text(encoding="utf-8-sig"),
             "natural_disaster_save_base_scopes_effect =",
@@ -334,6 +432,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
         ).read_text(encoding="utf-8")
         self.assertNotIn('    "natural_disaster.8001": {', production_source)
+        self.assertNotIn('    "natural_disaster.7021": {', production_source)
         self.assertRegex(
             production_source,
             r"KNOWN_TIMELINE_INTERRUPTS\.update\(\s*"
