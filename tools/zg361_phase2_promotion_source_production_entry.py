@@ -4031,15 +4031,25 @@ def _manager_recovery_pp_contract(
         return None
     if 146 <= event_number <= 191:
         option_count = 3
-        option_variants: tuple[dict[str, object], ...] = (
+        # Each authored route has a business/resource trigger.  CK3 projects
+        # only the currently visible native slots, so recovery must accept any
+        # non-empty authored-order subset and click its first visible route.
+        option_variants: tuple[dict[str, object], ...] = tuple(
             {
-                "option_count": 2,
-                "native_option_indices": (0, 1),
-            },
-            {
-                "option_count": 3,
-                "native_option_indices": (0, 1, 2),
-            },
+                "option_count": len(indices),
+                "native_option_indices": indices,
+                "selected_option_number": indices[0] + 1,
+                "selected_native_option_index": indices[0],
+            }
+            for indices in (
+                (0,),
+                (1,),
+                (2,),
+                (0, 1),
+                (0, 2),
+                (1, 2),
+                (0, 1, 2),
+            )
         )
     elif 9001 <= event_number <= 9004:
         option_count = 1

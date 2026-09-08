@@ -177,6 +177,29 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(
             two_option_projection["native_option_indices"], (0, 1)
         )
+        route_c_only_projection = production._option_contract_for_context(
+            [{"native_option_index": 2}],
+            known_pp,
+        )
+        self.assertEqual(route_c_only_projection["option_count"], 1)
+        self.assertEqual(
+            route_c_only_projection["native_option_indices"], (2,)
+        )
+        self.assertEqual(route_c_only_projection["selected_option_number"], 3)
+        self.assertEqual(
+            route_c_only_projection["selected_native_option_index"], 2
+        )
+        reordered_projection = production._option_contract_for_context(
+            [
+                {"native_option_index": 2},
+                {"native_option_index": 0},
+            ],
+            known_pp,
+        )
+        self.assertEqual(reordered_projection["option_count"], 3)
+        self.assertEqual(
+            reordered_projection["native_option_indices"], (0, 1, 2)
+        )
 
         self.assertIsNone(
             production._resolve_timeline_interrupt_contract(
