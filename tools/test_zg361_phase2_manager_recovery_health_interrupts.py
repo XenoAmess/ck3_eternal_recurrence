@@ -22,6 +22,61 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
+    def test_minor_epidemic_request_uses_exact_relief_branch(self) -> None:
+        event_key = "epidemic_events.5001"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=210,
+            date_raw=53225904,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("epidemic_county", "landed_title"),
+                _scope("province_owner", "character", 67647),
+                _scope("courtier", "character", 37804),
+            ],
+            native_option_indices=(0, 1),
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53225904,
+                    "active_event": {"option_count": 2},
+                },
+                event={"event_instance_id": 210},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_county_type = copy.deepcopy(context)
+        wrong_county_type["saved_scopes"][2]["scope"]["type_key"] = "province"
+        self.assertFalse(
+            checks_for(wrong_county_type)["scope:epidemic_county:type"]
+        )
+
+        player_messenger = copy.deepcopy(context)
+        player_messenger["saved_scopes"][4] = _scope(
+            "courtier", "character", 32904
+        )
+        self.assertFalse(checks_for(player_messenger)[
+            "scope:courtier:unique_third_party"
+        ])
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][0]["native_option_index"] = 1
+        self.assertFalse(
+            checks_for(wrong_projection)["authored_options_exact"]
+        )
+
     def test_post_epidemic_recovery_uses_exact_no_spend_branch(
         self,
     ) -> None:

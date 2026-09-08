@@ -4848,6 +4848,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "health.1101",
             "health.1006",
             "epidemic_events.0110",
+            "epidemic_events.5001",
             "epidemic_events.1050",
         }
         self.assertEqual(

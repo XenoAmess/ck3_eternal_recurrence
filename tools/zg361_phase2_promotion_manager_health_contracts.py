@@ -422,6 +422,43 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_native_option_index": 2,
         "max_occurrences": 1,
     },
+    "epidemic_events.5001": {
+        # R337 exact minor-epidemic supply request. Both authored routes are
+        # terminal: native 0 spends minor gold, gains legitimacy, installs the
+        # positive supplies modifier and improves the messenger's opinion;
+        # native 1 installs the negative plight-ignored modifier. Bind both
+        # epidemic aliases, the affected county and the two source-selected
+        # character scopes before taking the source-authored relief route.
+        "date_raw": 53225904,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "courtier": (32904,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "epidemic_scope": "epidemic",
+            "epidemic_county": "landed_title",
+            "province_owner": "character",
+            "courtier": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "epidemic_scope",
+            "epidemic_county",
+            "province_owner",
+            "courtier",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "epidemic_events.1050": {
         # R293 exact plague-cult warning. Vanilla has already selected the
         # active epidemic and court chaplain before the window opens. Native
