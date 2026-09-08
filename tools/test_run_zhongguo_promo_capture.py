@@ -5521,6 +5521,37 @@ def main() -> int:
         )
         assert capture._loader_error_matches(r8_adjacent_vanilla_bytes) == []
 
+        r292_adjacent_vanilla_localization_bytes = (
+            b"[08:04:16][E] Variable 'zg361_b1_ready_managers' is set "
+            b"but is never used\n"
+            b"[08:04:16][E] List target 'zg361_b1_subjects' is used "
+            b"but is never set\n"
+            b"[08:04:18][E][pdx_locstring.cpp:93]: "
+            b"Key is missing localization: unrelated_vanilla_key\n"
+            b"[08:04:19][E][jomini_script_system.cpp:303]: "
+            b"Script system error!\n"
+            b"  Error: scope:owner trigger [ Failed context switch ]\n"
+            b"  Script location: file: common/scripted_modifiers/"
+            b"00_scheme_scripted_modifiers.txt line: 426\n"
+        )
+        assert (
+            capture._loader_error_matches(
+                r292_adjacent_vanilla_localization_bytes
+            )
+            == []
+        )
+        project_localization_bytes = (
+            b"[08:04:18][E][pdx_locstring.cpp:93]: "
+            b"Key is missing localization: zg361_missing_key\n"
+        )
+        project_localization_matches = capture._loader_error_matches(
+            project_localization_bytes
+        )
+        assert [
+            match["category"] for match in project_localization_matches
+        ] == ["localization"]
+        assert project_localization_matches[0]["project_attributed_line"] is True
+
         quiet_artifacts = temporary_root / "quiet-loader-artifacts"
         quiet_artifacts.mkdir()
         quiet_scan = capture.scan_loader_error_log(

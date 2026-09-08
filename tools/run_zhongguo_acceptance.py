@@ -13505,8 +13505,20 @@ def _loader_error_matches(payload: bytes) -> list[dict[str, object]]:
             for category, patterns in LOADER_ERROR_SIGNATURES.items()
             if any(pattern in lowered for pattern in patterns)
         ]
-        if categories and not attributed_context:
-            categories = []
+        # Missing-localization diagnostics are complete, single-line records.
+        # Do not let adjacent project usage warnings lend attribution to an
+        # unrelated vanilla localization key (observed in the R292 loader
+        # artifact). Parser/script records still need their following stack,
+        # so those categories continue to use the bounded context window.
+        categories = [
+            category
+            for category in categories
+            if (
+                attributed_line
+                if category == "localization"
+                else attributed_context
+            )
+        ]
         for category in categories:
             matches.append(
                 {
