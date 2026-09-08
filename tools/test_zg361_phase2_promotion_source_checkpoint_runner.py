@@ -3336,6 +3336,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             watchdog_recovery_names,
             central_active_names,
             cross_domain_active_names,
+            cross_domain_prompt_active_names,
         ) = contract["saved_scope_name_sets"]
         character_names = {
             "zg361_b1_calibration_watchdog_owner": 29037,
@@ -3353,6 +3354,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "zg361_cp_e_successor_manager": 32904,
             "zg361_p3_aa_owner": 29037,
             "zg361_p3_aa_subject": 45214,
+            "zg361_pp_prompt_owner": 29037,
+            "zg361_pp_prompt_subject": 45214,
         }
 
         def context_for(names: tuple[str, ...]) -> dict[str, object]:
@@ -3424,11 +3427,32 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(
             all(cross_domain_active_checks.values()), cross_domain_active_checks
         )
+        cross_domain_prompt_checks = checks_for(
+            cross_domain_prompt_active_names
+        )
+        self.assertTrue(
+            all(cross_domain_prompt_checks.values()),
+            cross_domain_prompt_checks,
+        )
         self.assertTrue(
             cross_domain_active_checks["scope:zg361_cp_e_owner:optional_type"]
         )
         self.assertTrue(
             cross_domain_active_checks["scope:zg361_p3_aa_case:optional_type"]
+        )
+        self.assertTrue(
+            cross_domain_prompt_checks[
+                "scope:zg361_pp_prompt_owner:optional_type"
+            ]
+        )
+        self.assertTrue(
+            cross_domain_prompt_checks[
+                "scope:zg361_pp_prompt_mechanism:optional_type"
+            ]
+        )
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
         )
         self.assertIn(
             "scope:zg361_b1_calibration_watchdog_owner:optional",
@@ -3466,6 +3490,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(
             missing_cross_domain_checks["saved_scope_names_exact"]
         )
+        missing_prompt_checks = checks_for(
+            cross_domain_prompt_active_names[:-1]
+        )
+        self.assertFalse(missing_prompt_checks["saved_scope_names_exact"])
 
         self.assertEqual(
             set(MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS),

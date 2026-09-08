@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed annual summary manager interrupt contract."""
 
 from __future__ import annotations
@@ -28,8 +28,10 @@ MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS: Final[
         # tuples still on the outer call stack. R288 reached the next annual
         # summary while the exact CP-E and P3-AA orchestration tuples were also
         # live. R315 observed the extended first-cycle stack while the immutable
-        # seed-player scope was retained. Bind all nine exact observed name
-        # sets; the summary itself consumes none of those inherited tuples.
+        # seed-player scope was retained. R355 then observed that same full
+        # cross-domain stack while the six-field promotion-prompt tuple was
+        # still live. Bind all ten exact observed name sets; the summary itself
+        # consumes none of those inherited tuples.
         "date_raw": 53156448,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -83,6 +85,12 @@ MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS: Final[
             "zg361_p3_aa_cycle": "value",
             "zg361_p3_aa_owner": "character",
             "zg361_p3_aa_subject": "character",
+            "zg361_pp_prompt_case": "value",
+            "zg361_pp_prompt_cycle": "value",
+            "zg361_pp_prompt_mechanism": "value",
+            "zg361_pp_prompt_owner": "character",
+            "zg361_pp_prompt_state": "value",
+            "zg361_pp_prompt_subject": "character",
         },
         "saved_scope_name_sets": (
             (
@@ -442,10 +450,77 @@ MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS: Final[
                 "zg361_p3_aa_owner",
                 "zg361_p3_aa_subject",
             ),
+            (
+                "zg361_b1_calibration_watchdog_case",
+                "zg361_b1_calibration_watchdog_cycle",
+                "zg361_b1_calibration_watchdog_owner",
+                "zg361_b1_oversight_ticket_case",
+                "zg361_b1_oversight_ticket_cycle",
+                "zg361_b1_oversight_ticket_owner",
+                "zg361_b1_oversight_ticket_state",
+                "zg361_b1_reopen_ticket_book_version",
+                "zg361_b1_reopen_ticket_case",
+                "zg361_b1_reopen_ticket_cycle",
+                "zg361_b1_reopen_ticket_hash",
+                "zg361_b1_reopen_ticket_object",
+                "zg361_b1_reopen_ticket_owner",
+                "zg361_b1_reopen_ticket_reward_hash",
+                "zg361_b1_reopen_ticket_route",
+                "zg361_b1_reopen_ticket_state",
+                "zg361_b1_reopen_ticket_subject",
+                "zg361_b2_pip_deadline_case",
+                "zg361_b2_pip_deadline_cycle",
+                "zg361_b2_pip_deadline_owner",
+                "zg361_b2_pip_deadline_state",
+                "zg361_b2_pip_deadline_subject",
+                "zg361_b2_pip_review_candidate",
+                "zg361_b2_support_mentor",
+                "zg361_ch_d_event_case",
+                "zg361_ch_d_event_cycle",
+                "zg361_ch_d_event_owner",
+                "zg361_ch_d_event_subject",
+                "zg361_comp_open_subject",
+                "zg361_comp_result_subject_scope",
+                "zg361_cp_e_active_manager",
+                "zg361_cp_e_case",
+                "zg361_cp_e_cross_reviewer",
+                "zg361_cp_e_cycle",
+                "zg361_cp_e_historical_owner",
+                "zg361_cp_e_owner",
+                "zg361_cp_e_subject",
+                "zg361_cp_e_successor_manager",
+                "zg361_n_325",
+                "zg361_n_35",
+                "zg361_n_375",
+                "zg361_n_elim",
+                "zg361_notice_deadline_case",
+                "zg361_notice_deadline_cycle",
+                "zg361_notice_deadline_owner",
+                "zg361_notice_deadline_state",
+                "zg361_notice_deadline_subject",
+                "zg361_p2c_summary_case",
+                "zg361_p2c_summary_cycle",
+                "zg361_p2c_ticket_case",
+                "zg361_p2c_ticket_cycle",
+                "zg361_p2c_ticket_identity",
+                "zg361_p2c_ticket_manager",
+                "zg361_p2c_ticket_stage",
+                "zg361_p3_aa_case",
+                "zg361_p3_aa_cycle",
+                "zg361_p3_aa_owner",
+                "zg361_p3_aa_subject",
+                "zg361_pp_prompt_case",
+                "zg361_pp_prompt_cycle",
+                "zg361_pp_prompt_mechanism",
+                "zg361_pp_prompt_owner",
+                "zg361_pp_prompt_state",
+                "zg361_pp_prompt_subject",
+            ),
         ),
         "boolean_scopes": (),
         "option_count": 1,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

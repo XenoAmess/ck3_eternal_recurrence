@@ -91,3 +91,20 @@ CK3。
 
 该变更仍只涉及外部 Python 合同和测试；保留同一 paused event，提交后热重载，
 不重启 CK3。
+
+## 同会话第四次合同 RED：年度总览跨域栈
+
+第三次热恢复越过原版预兆回复后，同一 PID 在 `date_raw=53247792`、event
+instance `366` 暂停于产品年度总览 `zg361.1`。MCP 查询证明 root 为 `32904`、
+唯一 authored/native option 均为 `0`，事件尚未选择；旧合同唯一失败项是
+`saved_scope_names_exact`。
+
+本次 64-scope 集合与既有 R288 full cross-domain 精确集合相比，唯一增量为
+`zg361_pp_prompt_owner/subject/cycle/case/state/mechanism` 六字段，类型分别为两个
+character 和四个 value。这是年度发布事件在晋升提示调用栈尚未退栈时合法继承的
+外层 scope；`zg361.1` 自身仍只复制四个已发布计数，唯一确认 option 没有 effect。
+
+合同只加入这一组精确名称集合及六个可选类型检查，不接受任意组合。由于该事件
+由每轮年度考核发布触发，occurrence 同样按 5,000 日产品观察窗可重复，每次仍
+核验完整 scope 集合和唯一按钮。修复仍只在外部 Python 合同层，继续热重载当前
+暂停实例，不重启 CK3。
