@@ -7,7 +7,7 @@
     "title_similarity_contains": "literal normalized containment fails; similarity >= 0.50 remains review"
   },
   "human_review_evidence": {
-    "manifest_sha256": "14484aeff627988e35a3f1ee53f774159e92b8e94236c616521ceb3243b8a913",
+    "manifest_sha256": "20cd7a091944bd224f8953dc486af274b03fde29e4ed68d8ce6be99d6d0fcc3d",
     "path": "docs/content-audits/zg361-copy-human-review.json",
     "reviewed_event_shards": 16,
     "reviewed_visible_events": 626,
@@ -39,21 +39,21 @@
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-001.json",
       "records": 40,
-      "sha256": "6a0296b8248fcf4b6fcb8b6425268b40aa9278a13d660ac31e5c85c989d8ba18"
+      "sha256": "290e33d611164219da236ce887bf996a3d27d51df92d8fa227e5a7ace495eb29"
     },
     {
       "bytes": 61929,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
       "records": 40,
-      "sha256": "5604cebb423d84fae13860d5e455f745a021999451412d537a47707ba65bce61"
+      "sha256": "a97d152209fb34b4860cbee9102cdf5e8a5cb263ef68b563fb578a2f370af779"
     },
     {
       "bytes": 86301,
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-003.json",
       "records": 40,
-      "sha256": "5758ef9b94a022d5af469ab1caec55f2c094b7da44190ef0e0fee3d2ba9797e7"
+      "sha256": "5d647588c133ea8594a6a147ba2036145afe1347d4a75f074f160b4fb3796698"
     },
     {
       "bytes": 85783,
@@ -67,7 +67,7 @@
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-005.json",
       "records": 40,
-      "sha256": "dc2c0db15ad4cf5233be2403f3d88f1da75a356a3908920739e02fc92b48b96a"
+      "sha256": "7e21844aa73405013c9e4c02681d3c3cddb9354b056c41d392938d649a1f51e7"
     },
     {
       "bytes": 63035,
@@ -322,18 +322,18 @@
       "sha256": "f680e46bec0d28ad885793904352111a04a0dd9740bce75de4dd64616e574d08"
     },
     {
-      "bytes": 72853,
+      "bytes": 72865,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-026.json",
       "records": 180,
-      "sha256": "149b927662958da0e9e40de9b08b1a21164cbef0a082f3f0a8b0ac892d506d34"
+      "sha256": "4fd33e205795f73516352a93eb42bbad08dee956c9899e537c47f4fe1c3749be"
     },
     {
-      "bytes": 69593,
+      "bytes": 69653,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-027.json",
       "records": 180,
-      "sha256": "07b4dfffd5daf27870838ba0bdc353e2776546cd89aeba8bf50eebf6e244f0c5"
+      "sha256": "6d3d6a3f4c70e2395a4b75860bfe63f827a2a511e56af258a64a62c521b74258"
     },
     {
       "bytes": 54326,
@@ -354,10 +354,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 38883,
-        "lines": 930,
+        "bytes": 40062,
+        "lines": 961,
         "path": "mod_zhongguo_style/events/zg361_b1_runtime_events.txt",
-        "sha256": "099239db33c1336712f2ce8554d8157bcbcf40813c2ec2c69a7749fe70f30d54"
+        "sha256": "dea8a36989f3b0cfc8153fd8151dd1bed30c27ecebd6673019abe4ce01346988"
       },
       {
         "authority": {
@@ -410,10 +410,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 2780,
-        "lines": 90,
+        "bytes": 2985,
+        "lines": 94,
         "path": "mod_zhongguo_style/events/zg361_credit_project_e_batch_events.txt",
-        "sha256": "8bcf7593dc2039f8bce4ce1629f435c9b81f91ff942381296695a8ccc0c1b675"
+        "sha256": "063357b7b6edf6323b8ff3c1afa9d2719d02305949568992652554f3411e9862"
       },
       {
         "authority": {
@@ -424,10 +424,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 18976,
-        "lines": 765,
+        "bytes": 21193,
+        "lines": 810,
         "path": "mod_zhongguo_style/events/zg361_credit_project_e_case_events.txt",
-        "sha256": "d8e603876802069dd8618a68604aaff4294acbfcef391d0aba9270ec18c5183c"
+        "sha256": "5451ed02c35c18ea4379049497aa0f80b8630a09ac6e36b2d6114a96120ac1b3"
       },
       {
         "authority": {
@@ -438,10 +438,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 10695,
-        "lines": 351,
+        "bytes": 11519,
+        "lines": 367,
         "path": "mod_zhongguo_style/events/zg361_credit_project_i_batch_events.txt",
-        "sha256": "66eae341647b2211afcf8ddbc191476724bcb80d44e2d5caac98dea09a8c340e"
+        "sha256": "e43d931dd15a9a87fc20167e54dd475fb74355f0ab13d39b61c4af0eccf9071f"
       },
       {
         "authority": {
@@ -452,10 +452,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 25272,
-        "lines": 1011,
+        "bytes": 28339,
+        "lines": 1072,
         "path": "mod_zhongguo_style/events/zg361_credit_project_i_case_events.txt",
-        "sha256": "70e0ddf479f20861ee2f0fb5b9f708b5f13309b462b1198864a9f910a5853f90"
+        "sha256": "cfb8250b9b819108aeaa9bb0f82ca1e875425cc38358e504f47013b96cd496b5"
       },
       {
         "authority": {
@@ -466,10 +466,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 10663,
-        "lines": 352,
+        "bytes": 11385,
+        "lines": 367,
         "path": "mod_zhongguo_style/events/zg361_credit_project_j_batch_events.txt",
-        "sha256": "cd63d6e922e701ffaa5cb72782549e83b10eb4b9f4e514e9692890d76acd1c1e"
+        "sha256": "5291eab71ad2be33d1cc0c83fc046b36e4b49fb3622bf61bbe3d63b0befdfba0"
       },
       {
         "authority": {
@@ -480,10 +480,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 21683,
-        "lines": 869,
+        "bytes": 24331,
+        "lines": 922,
         "path": "mod_zhongguo_style/events/zg361_credit_project_j_case_events.txt",
-        "sha256": "06dc4e1a00d895b856d2396998660a130b71619b364132d365d5dc3dc284dd34"
+        "sha256": "66ee09c514064edf38c2f26d2a2ebc6dd37514c70bb1c09bbfc9ac2efda9aeb0"
       },
       {
         "authority": {
@@ -494,10 +494,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 5058,
-        "lines": 166,
+        "bytes": 5675,
+        "lines": 190,
         "path": "mod_zhongguo_style/events/zg361_credit_project_portfolio_events.txt",
-        "sha256": "6f07569c146b1660f94ff91be8a7161163272159c6210f41d9d0a1c989a7bc46"
+        "sha256": "6a5c64acc9f1cc7a3cbe8288def8d87738acc9288e026f2231e6149d47f57cf1"
       },
       {
         "authority": {
@@ -508,10 +508,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 5429,
-        "lines": 177,
+        "bytes": 5841,
+        "lines": 185,
         "path": "mod_zhongguo_style/events/zg361_credit_project_r_batch_events.txt",
-        "sha256": "b08a8622ad7d7e594fb40c8cd478bd82be501c6ee205614bf027a5557fe0213d"
+        "sha256": "1be75669c5abc6ecc00c23c97a1f4f82603dee8974d7e874e4d0346c678c63a1"
       },
       {
         "authority": {
@@ -522,10 +522,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 18787,
-        "lines": 753,
+        "bytes": 21022,
+        "lines": 798,
         "path": "mod_zhongguo_style/events/zg361_credit_project_r_case_events.txt",
-        "sha256": "447f4a807ba9e0580c1fbfd9335635aef26f9b43ba6d0a91e8ef49a8f8783fb0"
+        "sha256": "dba98c51e0524c56941bf3db280358168262cdc1f330f6591962c5af7c0d7665"
       },
       {
         "authority": {
@@ -535,10 +535,10 @@
           "method": "hand_authored_source",
           "status": "pass"
         },
-        "bytes": 24092,
-        "lines": 678,
+        "bytes": 24501,
+        "lines": 691,
         "path": "mod_zhongguo_style/events/zg361_events.txt",
-        "sha256": "cf6d2461739b05ab2f24ba3396858535c9c320207db12d021f9cf10b95271b84"
+        "sha256": "804f84b9ddf17a1bfb8081719ecbac71356eab62ffa447c9ef8f2b1897d6bd4c"
       },
       {
         "authority": {
@@ -563,10 +563,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 28076,
-        "lines": 740,
+        "bytes": 28921,
+        "lines": 759,
         "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
-        "sha256": "cf1c8649291eb6a1142da2a2497820ddf488a7dd70366e84e8d91cdc0139d209"
+        "sha256": "2213fb321e3e6cb0c8365b99cc0b27cc15d73c9937d71b3e59fca7bb5a4d6b9a"
       },
       {
         "authority": {
@@ -1753,10 +1753,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 37603,
+        "bytes": 37675,
         "lines": 338,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_workforce_endgame_l_simp_chinese.yml",
-        "sha256": "51f05ed34f5dbab9966327b244374a595be96e60b383e888d54335fa2ee7a839"
+        "sha256": "28ae91b1b52e3e800e97c10aefc5a3cdc490bd685dafb93c426738a2d5981cde"
       },
       {
         "authority": {
@@ -1824,12 +1824,12 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "74a2cb258d4ce4ac37401bf4689266bd2089e6ee",
+    "git_commit": "754f215f78b85f072451c7cf0ed9efc97a079f58",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "b8a4a08cefec9b0d8d32ad054e3f62db3dcf71351031c470cb4666f001bfc70c"
+    "input_digest_sha256": "0f0d8d0a80f904e99c94266859b90048f6cc7e8f18fd48e3e49cba512e8f28df"
   },
   "summary": {
-    "all_event_definitions": 1009,
+    "all_event_definitions": 1010,
     "check_status_counts": {
       "body_choice_meta": {
         "pass": 626
@@ -1854,7 +1854,7 @@
       "unbound_option_like_review_count": 0
     },
     "final_localization_keys": 4994,
-    "hidden_events": 383,
+    "hidden_events": 384,
     "machine_failure_count": 0,
     "manual_review_open_count": 0,
     "open_item_count": 1,

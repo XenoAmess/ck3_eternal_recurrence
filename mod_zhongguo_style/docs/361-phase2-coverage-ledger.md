@@ -12,7 +12,7 @@
 ## 简体中文文案审计闭合状态（不改变逐号等级）
 
 - 可复验 sidecar：`docs/content-audits/zg361-copy-ledger/index.json`，提交 `c66a1efae11117c21db383d8992b9ccfac85d9cd`；其输入快照提交为
-  `8995b37dd6cbe7af2592767d93deca455756add4`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。
+  `754f215f78b85f072451c7cf0ed9efc97a079f58`。sidecar 逐文件冻结 SHA-256，并将最终简中文案反向绑定到实际可见事件。
 - 当前绑定 626 个 visible events、4994 个最终简中 key；
   `machine_failures=0`、`user_named_static_open_items=0`、
   `machine_checks_status=pass`。用户点名的句首标点、标题/正文无价值复写、
