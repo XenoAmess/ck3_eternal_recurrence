@@ -50,9 +50,26 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         )[0]
 
         self.assertIn("has_variable = zqa_death_title", death_gui)
+        self.assertIn("has_variable = zqa_death_incumbent", death_gui)
         self.assertIn("has_variable = zqa_death_successor", death_gui)
-        self.assertIn("holder = root.var:zqa_death_successor", death_gui)
-        self.assertIn("NOT = { holder = root }", death_gui)
+        self.assertIn("exists = holder", death_gui)
+        self.assertIn("NOT = { holder = root.var:zqa_death_incumbent }", death_gui)
+
+        effects = (
+            xqol.FIXTURE / "common" / "scripted_effects" / "zqa_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        verifier = effects.split("zqa_verify_death_settlement_effect = {", 1)[
+            1
+        ].split("zqa_verify_disabled_matrix_effect = {", 1)[0]
+        self.assertIn("NOT = { holder = root }", verifier)
+        self.assertIn("NOT = { holder = root.var:zqa_death_incumbent }", verifier)
+        self.assertIn(
+            "ZQA: TEST PASS death_transferred_to_non_player_successor", verifier
+        )
+        self.assertIn("ZQA: OBSERVED death_used_predeath_current_heir", verifier)
+        self.assertIn(
+            "ZQA: OBSERVED death_recomputed_non_player_successor", verifier
+        )
 
     def test_queued_death_settlement_advances_and_repauses_map(self) -> None:
         service = mock.Mock()

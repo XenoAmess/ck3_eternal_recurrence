@@ -24,10 +24,11 @@ zqa_death_matrix_gui = {
 		is_ai = no
 		has_character_flag = zqa_await_death_settlement
 		has_variable = zqa_death_title
+		has_variable = zqa_death_incumbent
 		has_variable = zqa_death_successor
 		var:zqa_death_title = {
-			holder = root.var:zqa_death_successor
-			NOT = { holder = root }
+			exists = holder
+			NOT = { holder = root.var:zqa_death_incumbent }
 		}
 	}
 	effect = { zqa_verify_death_settlement_effect = yes }

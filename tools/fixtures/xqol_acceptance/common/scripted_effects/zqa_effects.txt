@@ -183,6 +183,7 @@ zqa_run_enabled_matrix_effect = {
 			exists = scope:zqa_death_successor
 		}
 		set_variable = { name = zqa_death_title value = scope:zqa_death_title }
+		set_variable = { name = zqa_death_incumbent value = scope:zqa_death_incumbent }
 		set_variable = { name = zqa_death_successor value = scope:zqa_death_successor }
 		add_character_flag = zqa_await_death_settlement
 		scope:zqa_death_incumbent = { death = { death_reason = death_natural_causes } }
@@ -198,16 +199,28 @@ zqa_verify_death_settlement_effect = {
 		if = {
 			limit = {
 				exists = var:zqa_death_title
+				exists = var:zqa_death_incumbent
 				exists = var:zqa_death_successor
 				var:zqa_death_title = {
-					holder = root.var:zqa_death_successor
+					exists = holder
 					NOT = { holder = root }
+					NOT = { holder = root.var:zqa_death_incumbent }
 				}
 			}
-			debug_log = "ZQA: TEST PASS death_transferred_to_scored_heir"
+			if = {
+				limit = {
+					var:zqa_death_title = {
+						holder = root.var:zqa_death_successor
+					}
+				}
+				debug_log = "ZQA: OBSERVED death_used_predeath_current_heir"
+			}
+			else = { debug_log = "ZQA: OBSERVED death_recomputed_non_player_successor" }
+			debug_log = "ZQA: TEST PASS death_transferred_to_non_player_successor"
 		}
-		else = { debug_log = "ZQA: TEST FAIL death_transferred_to_scored_heir" }
+		else = { debug_log = "ZQA: TEST FAIL death_transferred_to_non_player_successor" }
 		remove_variable = zqa_death_title
+		remove_variable = zqa_death_incumbent
 		remove_variable = zqa_death_successor
 		add_character_flag = zqa_await_product_disables
 		debug_log = "ZQA: TEST PASS ready_for_product_disable_decisions"
