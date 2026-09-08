@@ -9,6 +9,51 @@ from typing import Final
 MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "ep3_emperor_yearly.8010": {
+        # R338 exact fake-letter prompt. Immediate creates the liar and puts
+        # them under the selected governor's house arrest; the engine helper
+        # carries the same character again as new_target. Authored option A
+        # only pays tiny gold to the governor and improves their opinion.
+        # The other routes add a new courtier/hook, transfer influence and
+        # imprison the liar under root, or execute them. Choose native 0 as
+        # the smallest terminal mutation after binding the alias identity.
+        "date_raw": 53205336,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "governor": (32904,),
+            "liar": (32904,),
+            "new_target": (32904,),
+        },
+        "character_scope_matches_any": {
+            "liar": ("new_target",),
+            "new_target": ("liar",),
+        },
+        "character_scope_differs_from": {
+            "governor": ("liar", "new_target"),
+            "liar": ("governor",),
+            "new_target": ("governor",),
+        },
+        "scope_types": {
+            "governor": "character",
+            "liar": "character",
+            "new_target": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "governor",
+            "liar",
+            "new_target",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 4,
+        "snapshot_option_count": 4,
+        "native_option_indices": (0, 1, 2, 3),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "ep3_emperor_yearly.8000": {
         # Options 1-3 each move manpower from one random governor county: that
         # county loses ten percent development (rounded up), receives the

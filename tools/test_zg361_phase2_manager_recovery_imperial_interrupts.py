@@ -46,6 +46,61 @@ def _capital_manpower_two_governor_scopes() -> list[dict[str, object]]:
 
 
 class ManagerRecoveryImperialInterruptTests(unittest.TestCase):
+    def test_fake_letter_uses_exact_reward_branch_and_alias(self) -> None:
+        event_key = "ep3_emperor_yearly.8010"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=204,
+            date_raw=53205336,
+            player=32904,
+            scopes=[
+                _scope("governor", "character", 26936),
+                _scope("liar", "character", 16841171),
+                _scope("new_target", "character", 16841171),
+            ],
+            native_option_indices=(0, 1, 2, 3),
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53205336,
+                    "active_event": {"option_count": 4},
+                },
+                event={"event_instance_id": 204},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        alias_drift = copy.deepcopy(context)
+        alias_drift["saved_scopes"][2] = _scope(
+            "new_target", "character", 16841172
+        )
+        alias_checks = checks_for(alias_drift)
+        self.assertFalse(alias_checks["scope:liar:matches_any"])
+        self.assertFalse(alias_checks["scope:new_target:matches_any"])
+
+        governor_is_liar = copy.deepcopy(context)
+        governor_is_liar["saved_scopes"][0] = _scope(
+            "governor", "character", 16841171
+        )
+        differs_checks = checks_for(governor_is_liar)
+        self.assertFalse(differs_checks["scope:governor:differs_from"])
+        self.assertFalse(differs_checks["scope:liar:differs_from"])
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][-1]["native_option_index"] = 4
+        self.assertFalse(
+            checks_for(wrong_projection)["authored_options_exact"]
+        )
+
     def test_capital_manpower_request_accepts_exact_two_governor_variant(
         self,
     ) -> None:
