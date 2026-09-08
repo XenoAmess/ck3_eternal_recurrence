@@ -31,7 +31,7 @@ int main() {
                "non-canonical step was accepted");
 
   constexpr std::string_view valid =
-      R"({"type":"execute_step","protocol_version":1,"request_id":"req-1","step":"query-zhongguo-projects-metrics-postcondition-v1","expected_revision":41,"owner_character_id":147,"request_nonce":"projects.41"})";
+      R"({"type":"execute_step","protocol_version":1,"request_id":"req-1","step":"query-zhongguo-projects-metrics-postcondition-v1","expected_revision":41,"owner_character_id":147,"subject_character_id":148,"request_nonce":"projects.41"})";
   ZhongguoProjectsMetricsPostconditionRequestV1 request{};
   std::int32_t owner = -1;
   ok &= Expect(ParseZhongguoProjectsMetricsPostconditionRequestV1(
@@ -39,11 +39,12 @@ int main() {
                "valid strict mailbox request was rejected");
   ok &= Expect(request.expected_snapshot_revision == 41 &&
                    request.owner_character_id == 147 &&
+                   request.subject_character_id == 148 &&
                    request.request_nonce == "projects.41" && owner == 147,
                "valid request fields changed during parsing");
 
   constexpr std::string_view extra =
-      R"({"type":"execute_step","protocol_version":1,"request_id":"req-1","step":"query-zhongguo-projects-metrics-postcondition-v1","expected_revision":41,"owner_character_id":147,"request_nonce":"projects.41","variable_name":"forbidden"})";
+      R"({"type":"execute_step","protocol_version":1,"request_id":"req-1","step":"query-zhongguo-projects-metrics-postcondition-v1","expected_revision":41,"owner_character_id":147,"subject_character_id":148,"request_nonce":"projects.41","variable_name":"forbidden"})";
   ok &= Expect(!ParseZhongguoProjectsMetricsPostconditionRequestV1(
                    extra, request, owner),
                "generic variable input was accepted");

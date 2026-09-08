@@ -983,6 +983,12 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         cp = block(self.effects, "zg361_p2c_stage_07_credit_project_effect")
         self.assertIn("var:zg361_p2c_stage_status = 1", cp)
         self.assertIn("var:zg361_cp_portfolio_closed = 0", cp)
+        recovery = "var:zg361_p2c_subject = { zg361_cp_resume_pending_player_event_effect = yes }"
+        self.assertEqual(cp.count(recovery), 2)
+        first_recovery = cp.index(recovery)
+        self.assertLess(first_recovery, cp.index("zg361_p2c_mark_lane_busy_effect = yes", first_recovery))
+        second_recovery = cp.index(recovery, first_recovery + 1)
+        self.assertLess(second_recovery, cp.index("zg361_p2c_mark_lane_busy_effect = yes", second_recovery))
         workforce = block(self.effects, "zg361_p2c_stage_11_workforce_endgame_effect")
         self.assertIn("var:zg361_p2c_stage_status = 1", workforce)
         self.assertIn("var:zg361_we_portfolio_closed = 0", workforce)

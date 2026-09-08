@@ -32,6 +32,13 @@ CP_PRODUCT = (
     / "scripted_effects"
     / "zg361_credit_project_m026_effort_ledger_effects.txt"
 )
+CP_LIFECYCLE = (
+    ROOT
+    / "mod_zhongguo_style"
+    / "common"
+    / "scripted_effects"
+    / "zg361_credit_project_portfolio_lifecycle_effects.txt"
+)
 P3_PRODUCTS = (
     ROOT
     / "mod_zhongguo_style"
@@ -56,7 +63,8 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
             "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
         )
         self.assertIn(contract["capability"], header)
-        self.assertEqual(len(contract["allowlist"]), 40)
+        self.assertEqual(len(contract["allowlist"]), 49)
+        self.assertIn("zg361_cp_portfolio_closed", contract["allowlist"])
         self.assertIn("zg361_cp_m26_receipt_owner", contract["allowlist"])
         self.assertIn("zg361_cp_m26_consumed_case", contract["allowlist"])
         self.assertIn("zg361_p3_portfolio_cycle", contract["allowlist"])
@@ -74,7 +82,10 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
 
     def test_cp26_a_b_mint_real_receipt_id_and_revision_only(self) -> None:
         generator = CP_GENERATOR.read_text(encoding="utf-8")
-        product = CP_PRODUCT.read_text(encoding="utf-8-sig")
+        product = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in (CP_PRODUCT, CP_LIFECYCLE)
+        )
         receipt_id_write = (
             "set_variable = { name = zg361_cp_m26_contribution_receipt_id "
             "value = var:zg361_cp_contribution_receipt_cursor }"
@@ -92,15 +103,18 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
     def test_direct_cp_provider_fields_have_generated_product_write_provenance(self) -> None:
         abi = json.loads(ABI.read_text(encoding="utf-8"))
         source_contract = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
-        product = CP_PRODUCT.read_text(encoding="utf-8-sig")
+        product = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for path in (CP_PRODUCT, CP_LIFECYCLE)
+        )
         direct_cp_fields = [
             name for name in abi["allowlist"] if name.startswith("zg361_cp_")
         ]
-        self.assertEqual(len(direct_cp_fields), 15)
-        self.assertEqual(source_contract["allowlist_count"], 40)
+        self.assertEqual(len(direct_cp_fields), 24)
+        self.assertEqual(source_contract["allowlist_count"], 49)
         self.assertEqual(
             source_contract["allowlist_id"],
-            "zg361-cp26-direct-p3m229-lineage-v2",
+            "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
         )
         self.assertIn("# GENERATED FILE", product)
         for variable in direct_cp_fields:
@@ -157,7 +171,10 @@ class ProjectsMetricsPostconditionContractTests(unittest.TestCase):
         source_contract = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
         self.assertIn("checkpoint_state", schema["required"])
         self.assertEqual(schema["properties"]["capability"]["const"], source_contract["capability"])
-        self.assertEqual(source_contract["readiness"], "static_and_fixture_ready_not_live")
+        self.assertEqual(
+            source_contract["readiness"],
+            "private_candidate_live_validated_not_default",
+        )
         self.assertEqual(
             source_contract["mailbox_fixed_slot"],
             "permitted_executor_quattuorvigintary",

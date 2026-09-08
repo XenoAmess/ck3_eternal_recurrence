@@ -23,7 +23,16 @@ constexpr std::size_t kStorageObjectOffset = 0x08;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
 
 enum VariableIndex : std::size_t {
-  cp_receipt_owner = 0,
+  cp_portfolio_closed = 0,
+  cp_portfolio_cycle,
+  cp_final_owner,
+  cp_final_subject,
+  cp_final_cycle,
+  cp_final_case,
+  cp_final_state,
+  cp_final_conservation_ok,
+  cp_pending_player_event,
+  cp_receipt_owner,
   cp_receipt_subject,
   cp_receipt_cycle,
   cp_receipt_case,
@@ -341,6 +350,18 @@ void MarkIdentityUnavailable(game::ZhongguoProjectsMetricsIdentityV1 &identity,
 
 void MarkAllUnavailable(game::ZhongguoProjectsMetricsPostconditionV1 &output,
                         std::string_view reason) {
+  SetUnavailable(output.credit_project_portfolio.closed, reason);
+  SetUnavailable(output.credit_project_portfolio.cycle_serial, reason);
+  SetUnavailable(output.credit_project_portfolio.final_owner_character_id,
+                 reason);
+  SetUnavailable(output.credit_project_portfolio.final_subject_character_id,
+                 reason);
+  SetUnavailable(output.credit_project_portfolio.final_cycle_serial, reason);
+  SetUnavailable(output.credit_project_portfolio.final_case_serial, reason);
+  SetUnavailable(output.credit_project_portfolio.final_state, reason);
+  SetUnavailable(output.credit_project_portfolio.final_conservation_ok,
+                 reason);
+  SetUnavailable(output.credit_project_portfolio.pending_player_event, reason);
   MarkIdentityUnavailable(output.source_identity, reason);
   MarkIdentityUnavailable(output.result_identity, reason);
   MarkIdentityUnavailable(output.contribution.identity, reason);
@@ -364,6 +385,7 @@ void InitializeEnvelope(
   output.request_nonce = request.request_nonce;
   output.snapshot_revision = request.expected_snapshot_revision;
   output.requested_owner_character_id = request.owner_character_id;
+  output.requested_subject_character_id = request.subject_character_id;
   output.checkpoint_state = "unavailable";
   if (frame != nullptr) {
     output.date_raw = frame->date_raw;
@@ -405,7 +427,9 @@ bool ValidNonce(std::string_view value) noexcept {
 bool ValidRequest(
     const ZhongguoProjectsMetricsPostconditionRequestV1 &request) noexcept {
   return request.expected_snapshot_revision > 0 &&
-         request.owner_character_id > 0 && ValidNonce(request.request_nonce);
+         request.owner_character_id > 0 && request.subject_character_id > 0 &&
+         request.owner_character_id != request.subject_character_id &&
+         ValidNonce(request.request_nonce);
 }
 
 bool IntegerInRange(const game::ZhongguoTypedIntegerV1 &field,
@@ -448,6 +472,7 @@ void CopyIdentity(const game::ZhongguoProjectsMetricsIdentityV1 &source,
 bool ComponentGate(
     const game::ZhongguoProjectsMetricsPostconditionReadinessV1 &value) {
   return value.player_subject_binding_ready && value.owner_binding_ready &&
+         value.portfolio_observed && value.portfolio_closed &&
          value.source_identity_ready && value.result_identity_ready &&
          value.contribution_ready && value.metrics_ready &&
          value.same_project_case_identity && value.receipt_lineage_ready &&
@@ -509,7 +534,8 @@ ReadZhongguoProjectsMetricsPostconditionV1(
     }
     if (!before.map_ready || !before.has_played_character ||
         !before.played_character_alive || before.played_character_id <= 0 ||
-        !ValidateCharacter(environment, access, before.played_character_id)) {
+        !ValidateCharacter(environment, access, before.played_character_id) ||
+        !ValidateCharacter(environment, access, request.subject_character_id)) {
       SetTopUnavailable(output, "map_not_ready");
       return game::ReadZhongguoProjectsMetricsPostconditionResultV1::
           unavailable;
@@ -517,9 +543,9 @@ ReadZhongguoProjectsMetricsPostconditionV1(
 
     RawRows first{};
     RawRows second{};
-    if (!ReadAllowlistedRows(environment, access, before.played_character_id,
+    if (!ReadAllowlistedRows(environment, access, request.subject_character_id,
                              first) ||
-        !ReadAllowlistedRows(environment, access, before.played_character_id,
+        !ReadAllowlistedRows(environment, access, request.subject_character_id,
                              second)) {
       SetTopUnavailable(output, "variable_context_unavailable");
       return game::ReadZhongguoProjectsMetricsPostconditionResultV1::
@@ -533,6 +559,25 @@ ReadZhongguoProjectsMetricsPostconditionV1(
           unavailable;
     }
     output.readiness.same_frame_ready = true;
+
+    DecodeInteger(first[cp_portfolio_closed],
+                  output.credit_project_portfolio.closed);
+    DecodeInteger(first[cp_portfolio_cycle],
+                  output.credit_project_portfolio.cycle_serial);
+    DecodeCharacter(environment, access, first[cp_final_owner],
+                    output.credit_project_portfolio.final_owner_character_id);
+    DecodeCharacter(environment, access, first[cp_final_subject],
+                    output.credit_project_portfolio.final_subject_character_id);
+    DecodeInteger(first[cp_final_cycle],
+                  output.credit_project_portfolio.final_cycle_serial);
+    DecodeInteger(first[cp_final_case],
+                  output.credit_project_portfolio.final_case_serial);
+    DecodeInteger(first[cp_final_state],
+                  output.credit_project_portfolio.final_state);
+    DecodeInteger(first[cp_final_conservation_ok],
+                  output.credit_project_portfolio.final_conservation_ok);
+    DecodeInteger(first[cp_pending_player_event],
+                  output.credit_project_portfolio.pending_player_event);
 
     if (!first[cp_receipt_owner].present) {
       SetTopUnavailable(output, "project_source_not_found", true);
@@ -573,7 +618,7 @@ ReadZhongguoProjectsMetricsPostconditionV1(
     DecodeInteger(first[cp_visible_provenance_case], cp_visible_case);
 
     const auto owner = request.owner_character_id;
-    const auto subject = before.played_character_id;
+    const auto subject = request.subject_character_id;
     const bool cp_source_ready =
         IdentityReady(output.source_identity, owner, subject) &&
         IntegerEquals(cp_state, 1) &&
@@ -655,10 +700,37 @@ ReadZhongguoProjectsMetricsPostconditionV1(
     }
 
     output.readiness.player_subject_binding_ready =
+        before.played_character_id == subject &&
         IntegerEquals(output.source_identity.subject_character_id, subject);
     output.readiness.owner_binding_ready =
         owner != subject &&
         IntegerEquals(output.source_identity.owner_character_id, owner);
+    output.readiness.portfolio_observed =
+        (IntegerEquals(output.credit_project_portfolio.closed, 0) ||
+         IntegerEquals(output.credit_project_portfolio.closed, 1)) &&
+        output.source_identity.cycle_serial.available &&
+        output.credit_project_portfolio.cycle_serial.value ==
+            output.source_identity.cycle_serial.value;
+    output.readiness.portfolio_closed =
+        output.readiness.portfolio_observed &&
+        IntegerEquals(output.credit_project_portfolio.closed, 1) &&
+        IntegerEquals(
+            output.credit_project_portfolio.final_owner_character_id, owner) &&
+        IntegerEquals(
+            output.credit_project_portfolio.final_subject_character_id,
+            subject) &&
+        output.credit_project_portfolio.final_cycle_serial.available &&
+        output.credit_project_portfolio.final_cycle_serial.value ==
+            output.source_identity.cycle_serial.value &&
+        IntegerInRange(output.credit_project_portfolio.final_case_serial, 1,
+                       std::numeric_limits<std::int32_t>::max()) &&
+        IntegerInRange(output.credit_project_portfolio.final_state, 1,
+                       std::numeric_limits<std::int32_t>::max()) &&
+        IntegerEquals(output.credit_project_portfolio.final_conservation_ok,
+                      1) &&
+        !output.credit_project_portfolio.pending_player_event.available &&
+        output.credit_project_portfolio.pending_player_event
+                .unavailable_reason == "variable_absent";
     output.readiness.source_identity_ready =
         IdentityReady(output.source_identity, owner, subject);
     output.readiness.result_identity_ready =

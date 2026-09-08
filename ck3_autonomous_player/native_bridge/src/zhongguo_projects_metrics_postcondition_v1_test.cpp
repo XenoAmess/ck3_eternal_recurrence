@@ -52,7 +52,7 @@ bool ReadVariable(void *opaque, std::int32_t character_id,
   auto &fixture = *static_cast<Fixture *>(opaque);
   const auto &allowlist = xar::ck3_11906::
       kZhongguoProjectsMetricsPostconditionV1VariableAllowlist;
-  if (character_id != fixture.frame.played_character_id ||
+  if (character_id != 100 ||
       std::find(allowlist.begin(), allowlist.end(), key) == allowlist.end()) {
     return false;
   }
@@ -87,8 +87,19 @@ xar::ck3_11906::ZhongguoProjectsMetricsAccessV1 Access(Fixture &fixture) {
 }
 
 xar::ck3_11906::ZhongguoProjectsMetricsPostconditionRequestV1 Request(
-    std::int32_t owner = 200) {
-  return {91, owner, "projects-metrics:91"};
+    std::int32_t owner = 200, std::int32_t subject = 100) {
+  return {91, owner, subject, "projects-metrics:91"};
+}
+
+void PopulatePortfolioClosed(Fixture &fixture) {
+  fixture.variables["zg361_cp_portfolio_closed"] = Number(1);
+  fixture.variables["zg361_cp_portfolio_cycle"] = Number(15);
+  fixture.variables["zg361_cp_final_owner"] = Character(200);
+  fixture.variables["zg361_cp_final_subject"] = Character(100);
+  fixture.variables["zg361_cp_final_cycle"] = Number(15);
+  fixture.variables["zg361_cp_final_case"] = Number(1'599);
+  fixture.variables["zg361_cp_final_state"] = Number(5);
+  fixture.variables["zg361_cp_final_conservation_ok"] = Number(1);
 }
 
 void PopulateCpSource(Fixture &fixture) {
@@ -152,6 +163,7 @@ void PopulateP3Result(Fixture &fixture) {
 }
 
 void Populate(Fixture &fixture) {
+  PopulatePortfolioClosed(fixture);
   PopulateCpSource(fixture);
   PopulateP3Source(fixture);
   PopulateP3Result(fixture);
@@ -174,6 +186,7 @@ bool TestGreenAndAllowlist() {
   if (!Read(fixture, output) || !output.readiness.ready ||
       output.checkpoint_state != "p3_result_committed" ||
       !output.readiness.same_project_case_identity ||
+      !output.readiness.portfolio_closed ||
       !output.readiness.receipt_lineage_ready ||
       *output.contribution.receipt_id.value != 26'001 ||
       *output.contribution.receipt_revision.value != 9 ||
@@ -198,6 +211,8 @@ bool TestGreenAndAllowlist() {
              std::string::npos &&
          serialized.find("\"checkpoint_state\":\"p3_result_committed\"") !=
              std::string::npos &&
+         serialized.find("\"credit_project_portfolio\":{") !=
+             std::string::npos &&
          std::any_of(fixture.requested_keys.begin(), fixture.requested_keys.end(),
                      [](const std::string &key) {
                        return key.starts_with("zg361_cp_");
@@ -211,6 +226,7 @@ bool TestGreenAndAllowlist() {
 bool TestCheckpointStates() {
   xar::game::ZhongguoProjectsMetricsPostconditionV1 output{};
   Fixture cp_only;
+  PopulatePortfolioClosed(cp_only);
   PopulateCpSource(cp_only);
   if (!Read(cp_only, output) ||
       output.checkpoint_state != "cp26_ready_p3_absent" ||
@@ -221,6 +237,7 @@ bool TestCheckpointStates() {
   }
 
   Fixture p3_source;
+  PopulatePortfolioClosed(p3_source);
   PopulateCpSource(p3_source);
   PopulateP3Source(p3_source);
   if (!Read(p3_source, output) ||
@@ -237,6 +254,20 @@ bool TestCheckpointStates() {
          output.checkpoint_state == "p3_initialized_source_not_ready" &&
          !output.readiness.same_project_case_identity &&
          !output.readiness.ready;
+}
+
+bool TestOwnerPlayedCanReadExplicitSubjectClosure() {
+  Fixture fixture;
+  fixture.frame.played_character_id = 200;
+  PopulatePortfolioClosed(fixture);
+  PopulateCpSource(fixture);
+  xar::game::ZhongguoProjectsMetricsPostconditionV1 output{};
+  return Read(fixture, output) && output.readiness.portfolio_observed &&
+         output.readiness.portfolio_closed &&
+         !output.readiness.player_subject_binding_ready &&
+         output.player_character_id == 200 &&
+         output.requested_subject_character_id == 100 &&
+         output.checkpoint_state == "cp26_ready_p3_absent";
 }
 
 bool TestLineageAndIdentityFailClosed() {
@@ -302,6 +333,7 @@ bool TestTypedUnavailableAndDrift() {
 int main() {
   const bool ok = TestGreenAndAllowlist() &&
                   TestCheckpointStates() &&
+                  TestOwnerPlayedCanReadExplicitSubjectClosure() &&
                   TestLineageAndIdentityFailClosed() &&
                   TestTypedUnavailableAndDrift();
   if (!ok) {

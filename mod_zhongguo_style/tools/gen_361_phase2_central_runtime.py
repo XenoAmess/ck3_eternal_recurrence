@@ -25,8 +25,8 @@ LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FI
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
 # R98: guard the stage-3 first-use completion read proven fatal to the PP
 # adapter in the R97 production CK3 log; grouping and order remain unchanged.
-HISTORICAL_EFFECT_BYTES = 137_077
-HISTORICAL_EFFECT_SHA256 = "531743D7A826D04C84FA92600B1D7C682A637925B77E1B52424152874D0E3A3D"
+HISTORICAL_EFFECT_BYTES = 137_249
+HISTORICAL_EFFECT_SHA256 = "0901D2B4496974EDB45380E2629B9C5E3B7833AD7DB27657BADD597AB8A7B452"
 HISTORICAL_EFFECT_COUNT = 33
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -1871,6 +1871,7 @@ zg361_p2c_stage_07_credit_project_effect = {
                 OR = { var:zg361_case_e_active = 1 var:zg361_case_i_active = 1 var:zg361_case_j_active = 1 var:zg361_case_r_active = 1 }
             }
         }
+        var:zg361_p2c_subject = { zg361_cp_resume_pending_player_event_effect = yes }
         zg361_p2c_mark_lane_busy_effect = yes
         zg361_p2c_schedule_pump_effect = { DAYS = 2 }
     }
@@ -1886,6 +1887,7 @@ zg361_p2c_stage_07_credit_project_effect = {
                 var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
             }
         }
+        var:zg361_p2c_subject = { zg361_cp_resume_pending_player_event_effect = yes }
         zg361_p2c_mark_lane_busy_effect = yes
         zg361_p2c_schedule_pump_effect = { DAYS = 2 }
     }

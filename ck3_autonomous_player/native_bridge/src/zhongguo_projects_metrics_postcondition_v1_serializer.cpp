@@ -125,6 +125,31 @@ bool AppendMetrics(std::string &output,
   return true;
 }
 
+bool AppendCreditProjectPortfolio(
+    std::string &output,
+    const game::ZhongguoCreditProjectPortfolioV1 &value) {
+  output += "{\"closed\":";
+  if (!AppendInteger(output, value.closed)) return false;
+  output += ",\"cycle_serial\":";
+  if (!AppendInteger(output, value.cycle_serial)) return false;
+  output += ",\"final_owner_character_id\":";
+  if (!AppendInteger(output, value.final_owner_character_id)) return false;
+  output += ",\"final_subject_character_id\":";
+  if (!AppendInteger(output, value.final_subject_character_id)) return false;
+  output += ",\"final_cycle_serial\":";
+  if (!AppendInteger(output, value.final_cycle_serial)) return false;
+  output += ",\"final_case_serial\":";
+  if (!AppendInteger(output, value.final_case_serial)) return false;
+  output += ",\"final_state\":";
+  if (!AppendInteger(output, value.final_state)) return false;
+  output += ",\"final_conservation_ok\":";
+  if (!AppendInteger(output, value.final_conservation_ok)) return false;
+  output += ",\"pending_player_event\":";
+  if (!AppendInteger(output, value.pending_player_event)) return false;
+  output += ",\"provider_observed\":true}";
+  return true;
+}
+
 void AppendReadiness(
     std::string &output,
     const game::ZhongguoProjectsMetricsPostconditionReadinessV1 &value) {
@@ -139,6 +164,8 @@ void AppendReadiness(
   flag("player_subject_binding_ready", value.player_subject_binding_ready,
        true);
   flag("owner_binding_ready", value.owner_binding_ready);
+  flag("portfolio_observed", value.portfolio_observed);
+  flag("portfolio_closed", value.portfolio_closed);
   flag("source_identity_ready", value.source_identity_ready);
   flag("result_identity_ready", value.result_identity_ready);
   flag("contribution_ready", value.contribution_ready);
@@ -176,6 +203,7 @@ std::string SerializeZhongguoProjectsMetricsPostconditionV1(
   if (snapshot.case_kind != kZhongguoProjectsMetricsPostconditionV1CaseKind ||
       snapshot.request_nonce.empty() || snapshot.snapshot_revision == 0 ||
       snapshot.requested_owner_character_id <= 0 ||
+      snapshot.requested_subject_character_id <= 0 ||
       snapshot.checkpoint_state.empty()) {
     return {};
   }
@@ -202,8 +230,15 @@ std::string SerializeZhongguoProjectsMetricsPostconditionV1(
   if (!AppendNumber(output, snapshot.player_character_id)) return {};
   output += ",\"requested_owner_character_id\":";
   if (!AppendNumber(output, snapshot.requested_owner_character_id)) return {};
+  output += ",\"requested_subject_character_id\":";
+  if (!AppendNumber(output, snapshot.requested_subject_character_id)) return {};
   output += ",\"checkpoint_state\":";
   AppendJsonString(output, snapshot.checkpoint_state);
+  output += ",\"credit_project_portfolio\":";
+  if (!AppendCreditProjectPortfolio(output,
+                                    snapshot.credit_project_portfolio)) {
+    return {};
+  }
   output += ",\"source_identity\":";
   if (!AppendIdentity(output, snapshot.source_identity)) return {};
   output += ",\"result_identity\":";

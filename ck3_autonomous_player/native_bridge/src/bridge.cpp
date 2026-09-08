@@ -5535,8 +5535,11 @@ void RunConnectedSession(
                 !current_snapshot.paused || !current_snapshot.map_ready ||
                 !current_snapshot.has_played_character ||
                 !current_snapshot.played_character_alive ||
-                current_snapshot.played_character_id ==
-                    requested_owner_character_id) {
+                request.subject_character_id == requested_owner_character_id ||
+                (current_snapshot.played_character_id !=
+                     requested_owner_character_id &&
+                 current_snapshot.played_character_id !=
+                     request.subject_character_id)) {
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(
                             request_id, step, false,

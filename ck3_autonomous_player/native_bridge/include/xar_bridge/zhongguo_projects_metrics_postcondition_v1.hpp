@@ -45,9 +45,26 @@ struct ZhongguoProjectsMetricsResultV1 {
                          const ZhongguoProjectsMetricsResultV1 &) = default;
 };
 
+struct ZhongguoCreditProjectPortfolioV1 {
+  ZhongguoTypedIntegerV1 closed;
+  ZhongguoTypedIntegerV1 cycle_serial;
+  ZhongguoTypedIntegerV1 final_owner_character_id;
+  ZhongguoTypedIntegerV1 final_subject_character_id;
+  ZhongguoTypedIntegerV1 final_cycle_serial;
+  ZhongguoTypedIntegerV1 final_case_serial;
+  ZhongguoTypedIntegerV1 final_state;
+  ZhongguoTypedIntegerV1 final_conservation_ok;
+  ZhongguoTypedIntegerV1 pending_player_event;
+
+  friend bool operator==(const ZhongguoCreditProjectPortfolioV1 &,
+                         const ZhongguoCreditProjectPortfolioV1 &) = default;
+};
+
 struct ZhongguoProjectsMetricsPostconditionReadinessV1 {
   bool player_subject_binding_ready = false;
   bool owner_binding_ready = false;
+  bool portfolio_observed = false;
+  bool portfolio_closed = false;
   bool source_identity_ready = false;
   bool result_identity_ready = false;
   bool contribution_ready = false;
@@ -73,7 +90,9 @@ struct ZhongguoProjectsMetricsPostconditionV1 {
   bool paused = false;
   std::int32_t player_character_id = -1;
   std::int32_t requested_owner_character_id = -1;
+  std::int32_t requested_subject_character_id = -1;
   std::string checkpoint_state;
+  ZhongguoCreditProjectPortfolioV1 credit_project_portfolio;
   ZhongguoProjectsMetricsIdentityV1 source_identity;
   ZhongguoProjectsMetricsIdentityV1 result_identity;
   ZhongguoProjectsContributionV1 contribution;
@@ -111,10 +130,19 @@ inline constexpr std::string_view
         "xar-autoplayer-zhongguo-projects-metrics-postcondition-v1";
 inline constexpr std::string_view
     kZhongguoProjectsMetricsPostconditionV1AllowlistId =
-        "zg361-cp26-direct-p3m229-lineage-v2";
+        "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3";
 
-inline constexpr std::array<std::string_view, 40>
+inline constexpr std::array<std::string_view, 49>
     kZhongguoProjectsMetricsPostconditionV1VariableAllowlist{
+        "zg361_cp_portfolio_closed",
+        "zg361_cp_portfolio_cycle",
+        "zg361_cp_final_owner",
+        "zg361_cp_final_subject",
+        "zg361_cp_final_cycle",
+        "zg361_cp_final_case",
+        "zg361_cp_final_state",
+        "zg361_cp_final_conservation_ok",
+        "zg361_cp_pending_player_event",
         "zg361_cp_m26_receipt_owner",
         "zg361_cp_m26_receipt_subject",
         "zg361_cp_m26_receipt_cycle",
@@ -166,6 +194,7 @@ using ZhongguoProjectsMetricsFrameV1 = game::ZhongguoCaseFrameV1;
 struct ZhongguoProjectsMetricsPostconditionRequestV1 {
   std::uint64_t expected_snapshot_revision = 0;
   std::int32_t owner_character_id = -1;
+  std::int32_t subject_character_id = -1;
   std::string request_nonce;
 };
 

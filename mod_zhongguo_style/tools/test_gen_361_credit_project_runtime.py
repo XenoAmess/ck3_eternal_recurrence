@@ -173,7 +173,7 @@ class RegistryAndGenerationTests(unittest.TestCase):
                 self.assertLessEqual(count, gen.EFFECT_HARD_MAX)
                 self.assertIn("# PURPOSE:", text)
             total += count
-        self.assertEqual(total, 156)
+        self.assertEqual(total, 158)
         self.assertEqual(max(len(top_level_effect_blocks(read(path))) for path in EFFECTS_PATHS), 8)
 
     def test_event_shards_are_purpose_split_with_at_most_ten_events_each(self) -> None:
@@ -192,10 +192,10 @@ class RegistryAndGenerationTests(unittest.TestCase):
 
     def test_shards_preserve_legacy_effect_bodies_and_order_exactly(self) -> None:
         legacy_bytes = gen.render_effects()
-        self.assertEqual(len(legacy_bytes), 1_308_567)
+        self.assertEqual(len(legacy_bytes), 1_324_489)
         self.assertEqual(
             hashlib.sha256(legacy_bytes).hexdigest(),
-            "b027429ff8e7a942f3f72b75ec58aa5db60f3ecab4db04e9b73114469343e2eb",
+            "78d05b4f9cc9356a6f1456f62cd40ec108a0c5a0ea2ac6246aa82326ac0bd77e",
         )
         legacy = legacy_bytes.decode("utf-8-sig")
         self.assertEqual(top_level_effect_blocks(read_effects()), top_level_effect_blocks(legacy))
@@ -379,6 +379,123 @@ class ReceiptAndConsumerTests(unittest.TestCase):
                         self.events,
                         rf"(?m)^zg361cp\.{gen.BATCH_DISPATCH_EVENT_BASE + mid} = \{{",
                     )
+
+    def test_every_player_edge_persists_cursor_before_dispatch(self) -> None:
+        batch = block(self.events, f"zg361cp.{gen.BATCH_MODE_EVENT}")
+        for letter in "abcd":
+            option = option_block(batch, f"zg361cp.batch.{letter}")
+            cursor = "set_variable = { name = zg361_cp_pending_player_event value = 30 }"
+            dispatch = "trigger_event = { id = zg361cp.30 days = 1 }"
+            self.assertLess(option.index(cursor), option.index(dispatch))
+
+        for domain, order in gen.DOMAIN_ORDER.items():
+            launch = block(self.effects, f"zg361_cp_{domain}_launch_effect")
+            first = gen.BATCH_MODE_EVENT if domain == "e" else gen.player_event_id(order[0])
+            with self.subTest(domain=domain, edge="launch"):
+                cursor = f"set_variable = {{ name = zg361_cp_pending_player_event value = {first} }}"
+                dispatch = f"trigger_event = {{ id = zg361cp.{first} }}"
+                self.assertLess(launch.index(cursor), launch.index(dispatch))
+
+            for index, mid in enumerate(order[:-1]):
+                target = gen.player_event_id(order[index + 1])
+                event = block(self.events, f"zg361cp.{mid}")
+                for letter in "abc":
+                    option = option_block(event, f"zg361cp.{mid}.{letter}")
+                    with self.subTest(mid=mid, route=letter):
+                        cursor = f"set_variable = {{ name = zg361_cp_pending_player_event value = {target} }}"
+                        dispatch = f"trigger_event = {{ id = zg361cp.{target} days = 1 }}"
+                        self.assertLess(option.index(cursor), option.index(dispatch))
+
+            for mid in gen.BATCHABLE_IDS & set(order[:-1]):
+                target = gen.player_event_id(order[order.index(mid) + 1])
+                dispatcher = block(self.events, f"zg361cp.{gen.player_event_id(mid)}")
+                with self.subTest(mid=mid, edge="batch"):
+                    cursor = f"set_variable = {{ name = zg361_cp_pending_player_event value = {target} }}"
+                    dispatch = f"trigger_event = {{ id = zg361cp.{target} days = 1 }}"
+                    self.assertLess(dispatcher.index(cursor), dispatcher.index(dispatch))
+
+            if gen.NEXT_DOMAIN[domain] is not None:
+                queue = gen.QUEUE_EVENTS[domain]
+                final = order[-1]
+                for letter in "abc":
+                    route = block(self.effects, f"zg361_cp_m{final}_route_{letter}_effect")
+                    with self.subTest(domain=domain, route=letter, edge="queue"):
+                        cursor = f"set_variable = {{ name = zg361_cp_pending_player_event value = {queue} }}"
+                        dispatch = f"trigger_event = {{ id = zg361cp.{queue} days = 1 }}"
+                        self.assertLess(route.index(cursor), route.index(dispatch))
+
+    def test_player_event_cursor_clears_only_after_exact_event_entry(self) -> None:
+        batch = block(self.events, f"zg361cp.{gen.BATCH_MODE_EVENT}")
+        self.assertIn(
+            f"zg361_cp_clear_pending_player_event_effect = {{ EVENT = {gen.BATCH_MODE_EVENT} }}",
+            batch,
+        )
+        for spec in gen.MECHANISMS:
+            event = block(self.events, f"zg361cp.{spec.mid}")
+            with self.subTest(mid=spec.mid, kind="card"):
+                self.assertIn(
+                    f"zg361_cp_clear_pending_player_event_effect = {{ EVENT = {spec.mid} }}",
+                    event,
+                )
+        for mid in gen.BATCHABLE_IDS:
+            event_id = gen.player_event_id(mid)
+            dispatcher = block(self.events, f"zg361cp.{event_id}")
+            with self.subTest(mid=mid, kind="dispatcher"):
+                self.assertLess(
+                    dispatcher.index(f"EXPECTED_STATE = {gen.by_id()[mid].state}"),
+                    dispatcher.index(
+                        f"zg361_cp_clear_pending_player_event_effect = {{ EVENT = {event_id} }}"
+                    ),
+                )
+        for domain, event_id in gen.QUEUE_EVENTS.items():
+            queue = block(self.events, f"zg361cp.{event_id}")
+            with self.subTest(domain=domain, kind="queue"):
+                self.assertIn(
+                    f"zg361_cp_clear_pending_player_event_effect = {{ EVENT = {event_id} }}",
+                    queue,
+                )
+
+    def test_resume_rebuilds_every_saved_tuple_and_migrates_only_exact_m26_gap(self) -> None:
+        resume = block(self.effects, "zg361_cp_resume_pending_player_event_effect")
+        clear = block(self.effects, "zg361_cp_clear_pending_player_event_effect")
+        self.assertIn("var:zg361_cp_pending_player_event = $EVENT$", clear)
+        self.assertIn("remove_variable = zg361_cp_pending_player_event", clear)
+        for domain in gen.DOMAIN_ORDER:
+            with self.subTest(domain=domain):
+                self.assertIn(
+                    f"var:zg361_case_{domain}_owner = {{ save_scope_as = zg361_cp_{domain}_owner }}",
+                    resume,
+                )
+                self.assertIn(f"save_scope_as = zg361_cp_{domain}_subject", resume)
+                self.assertIn(
+                    f"name = zg361_cp_{domain}_cycle value = var:zg361_case_{domain}_cycle_serial",
+                    resume,
+                )
+                self.assertIn(
+                    f"name = zg361_cp_{domain}_case value = var:zg361_case_{domain}_case_serial",
+                    resume,
+                )
+                for event_id in gen.pending_player_event_ids(domain):
+                    self.assertIn(
+                        f"scope:zg361_cp_{domain}_owner = {{ trigger_event = {{ id = zg361cp.{event_id} }} }}",
+                        resume,
+                    )
+
+        migration = resume[: resume.index("set_variable = { name = zg361_cp_pending_player_event value = 27 }")]
+        self.assertIn("NOT = { has_variable = zg361_cp_pending_player_event }", migration)
+        self.assertIn("var:zg361_case_e_owner = root", migration)
+        self.assertIn("var:zg361_case_e_subject = this", migration)
+        self.assertIn("var:zg361_case_e_state = 2", migration)
+        self.assertIn("RECEIPT_OWNER_VAR = zg361_cp_m26_receipt_owner", migration)
+        self.assertIn("RECEIPT_OWNER_VAR = zg361_cp_m27_receipt_owner", migration)
+        self.assertIn("EXPECTED_CYCLE = var:zg361_case_e_cycle_serial", migration)
+        self.assertIn("EXPECTED_CASE = var:zg361_case_e_case_serial", migration)
+        self.assertGreaterEqual(migration.count("zg361_case_kernel_receipt_is_current_trigger"), 6)
+
+        lifecycle = block(self.effects, "zg361_cp_initialize_portfolio_effect")
+        final = block(self.effects, "zg361_cp_finalize_portfolio_effect")
+        self.assertIn("remove_variable = zg361_cp_pending_player_event", lifecycle)
+        self.assertIn("remove_variable = zg361_cp_pending_player_event", final)
 
     def test_every_route_has_five_tuple_guard_and_six_field_receipt(self) -> None:
         for spec in gen.MECHANISMS:

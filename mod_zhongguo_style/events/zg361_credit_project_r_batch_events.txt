@@ -38,6 +38,9 @@ zg361cp.9331 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_r_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9331 }
+			}
 			if = {
 				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_r_subject = {
@@ -81,6 +84,7 @@ zg361cp.9331 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 129 } }
 				trigger_event = { id = zg361cp.129 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.131 } }
@@ -125,6 +129,9 @@ zg361cp.9334 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_r_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9334 }
+			}
 			if = {
 				limit = { scope:zg361_cp_r_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_r_subject = {
@@ -168,6 +175,7 @@ zg361cp.9334 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 130 } }
 				trigger_event = { id = zg361cp.130 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.134 } }

@@ -1,6 +1,6 @@
 # 天朝项目贡献到指标结果只读观测 v1
 
-状态：**static-ready / fixture-tested；共享 mailbox/bridge/Python/MCP 已按默认关闭方式接线，未运行 CK3，非 production-live。**
+状态：**private-candidate-live-validated-not-default**。共享 mailbox/bridge/Python/MCP 已完成接线；R303 在 exact build 上取得真实 paused GREEN，但默认 CK3 adapter 仍关闭该候选，尚非默认 production capability。
 
 能力名：`game.command.query-zhongguo-projects-metrics-postcondition-v1`。它只回答一个窄问题：CP #026 的真实贡献 receipt，是否被 Phase 3 #229 的指标结果以相同 ID 与 revision 明确回链，而且 source、result、contribution、metrics 是否属于同一 manager/subject/cycle/project case。
 
@@ -34,7 +34,7 @@ flowchart LR
 
 该 reader 复用已经冻结的 CK3 `1.19.0.6` 变量 ABI：EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，scope-variable context RVA `0x3329A40`、identifier table/lookup/name RVA `0x3B971A0/0x3B97020/0x3B97090`、character storage/fallback slot RVA `0x570C130/0x570C138`。完整机器可读合同位于 `ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json`。
 
-查询只读 played character scope，subject 永远来自同帧 `played_character_id`；caller 只能提供 request nonce、expected snapshot revision 与 owner filter。caller 不能选择 subject、变量名、receipt 或 dictionary key，也不能读取 owner/第三方角色 scope。固定 allowlist 恰好 40 个字段：15 个 CP #026 直接 receipt/consume/provenance 字段、1 个 P3 portfolio cycle 字段，以及原有 24 个 P3 source/result 投影字段。
+查询只读 caller 明确给出的 project subject scope；caller 提供 request nonce、expected snapshot revision、owner filter 与 subject character ID。paused player 必须是该项目的绑定 owner 或 subject，owner 必须与 subject 不同；provider 不读取 owner scope，也不允许选择变量名、receipt 或 dictionary key。固定 allowlist 恰好 49 个字段：9 个 CP portfolio closure/cursor 字段、15 个 CP #026 直接 receipt/consume/provenance 字段、1 个 P3 portfolio cycle 字段，以及 24 个 P3 source/result 投影字段。
 
 provider 在 application main thread、paused snapshot 上做两次完整 allowlist 读取；前后 frame 或原始行任一变化即返回 `state_changed`。它不保留引擎指针。CP #026 receipt owner 缺失返回 `project_source_not_found`；直接 CP 身份、A/B choice、receipt、consumed tuple 或 visible provenance 不闭合返回 `project_source_not_ready`。只有直接 CP source 闭合后才发布 available payload；后续 P3 字段缺失保持 typed unavailable，并由显式 checkpoint state 区分。
 
@@ -42,19 +42,21 @@ provider 在 application main thread、paused snapshot 上做两次完整 allowl
 
 `checkpoint_state` 有四个 available 状态：`cp26_ready_p3_absent` 表示直接 CP #026 A/B receipt 已闭合且同周期 P3 initializer 尚未运行；`p3_initialized_source_not_ready` 表示同周期 initializer 已出现但 copy 尚未闭合；`p3_source_ready_result_pending` 表示 copy 闭合而 #229 result 未提交；`p3_result_committed` 才允许最终 `ready=true`。顶层 unavailable 必须使用 `checkpoint_state=unavailable`。这使 source-checkpoint capture 不再依赖尚未运行的 P3 source 投影，也不使用 ACK、fixture 或 clone 冒充业务状态。
 
-最终 `ready=true` 同时要求：played subject 和 owner filter 正确；source/result/contribution/metrics 四组项目关联身份完整且逐项相等；contribution ID/revision/value 与 metrics revision/dictionary key 完整、范围合法；metrics 的 source receipt ID **及 revision** 都等于 contribution；#229 自身 consumed owner/subject/cycle/state/choice 与 visible value/provenance case 一致；双读同帧。
+最终 `ready=true` 同时要求：paused player 是绑定 owner 或显式 subject，owner filter 正确；CP portfolio 已闭合，final owner/subject/cycle 与当前项目一致，final case/state 为正、conservation 为 1 且不存在 pending player event；source/result/contribution/metrics 四组项目关联身份完整且逐项相等；contribution ID/revision/value 与 metrics revision/dictionary key 完整、范围合法；metrics 的 source receipt ID **及 revision** 都等于 contribution；#229 自身 consumed owner/subject/cycle/state/choice 与 visible value/provenance case 一致；双读同帧。
 
 注意：#229 的 AA kernel case identity 只用来证明 metrics operation 确实提交，它不替代 CP 项目关联身份，也不要求 AA case serial 等于 CP case serial。
 
 ## 当前证据和下一步
 
-当前已有权威生成器输出、生成器单测、独立 C++ fixture reader/serializer 测试、JSON schema、ABI/source contract 与 Python source-contract 测试。fixture 只证明闭合投影和负例逻辑，不证明 CK3 内存可读或事件可见。
+当前已有权威生成器输出、生成器单测、独立 C++ fixture reader/serializer 测试、JSON schema、ABI/source contract 与 Python source-contract 测试。fixture 证明闭合投影和负例逻辑；R303 另以真实 CK3 证明 exact-build 内存读取、显式 subject ACL、组合关闭、同暂停帧 owner→subject 切换，以及 CP #026 receipt 到 P3 #229 metrics 的业务回链。
 
-当前 canonical `5c54014` 的 fresh private build、schema-2 source-capture manifest、
-stage 7→8 与 effect 文件边界取证、精确但未执行的 CK3 命令，集中冻结在
+历史 canonical `5c54014` 的 fresh private build、schema-2 source-capture manifest、
+stage 7→8 与 effect 文件边界取证、当时尚未执行的 CK3 命令，集中冻结在
 [projects/metrics source-capture no-launch freeze](zhongguo-projects-metrics-source-capture-no-launch-5c54014-2026-09-04.md)。
-该候选仍只到 `static-ready-live-pending`，不会改变本页的 live/readiness 边界。
+该文是历史 no-launch 基线，不再代表当前 live/readiness 边界。
+
+R303 权威实机 artifact 为 `Z:\ck3_mod_rewrite\_runtime\p2r303projectsmetrics\report.json`，SHA-256 `926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01`。在 raw date `53247312`、owner `32904`、subject `30938`、cycle `4` 上，provider 先于 owner-played paused frame 读到 portfolio closed、final case `2`、final state `6`、conservation `1` 与 pending player event absent；随后 native set-player 在同一 raw date 切换至 subject，action cell 仅执行一次 `life-advance`，最终读到 contribution receipt ID `1`、receipt revision `3`、value `1`、metrics revision `2`、dictionary `metric_dictionary_subject_v1`，并以 `same_cp26_receipt_consumed_by_committed_p3m229_result` 结束。session cleanup GREEN，源 checkpoint 哈希保持不变。
 
 中央 production choreography 已把同一不可变 cycle 的 Credit/Project producer 固定为 stage 7、Metrics/Delivery consumer 固定为 stage 8；P3 opener 只能在 CP portfolio 同周期闭合后运行。生成器分片仍为 10 个 whole-file purpose shards、每文件最多 9 个 effect，无 `>20` 例外。
 
-共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。默认 CK3 adapter 仍不广告该 capability，因此没有 paused live 时会 fail-closed。下一步仍须在 exact build 上取得真实 `cp26_ready_p3_absent` paused response，再从该保存点执行有界时间推进并核对同一 receipt 的 `p3_result_committed`；在此之前不得写 `fixture-live`、`production-live primitive` 或生产 GREEN。
+共享 `CMakeLists.txt`、mailbox 第 24 固定槽 `permitted_executor_quattuorvigintary`、`bridge.cpp` handler/result frame/query counter、Python driver/service、MCP 与 facade 已接线。R303 已闭合 private candidate 的 exact-build paused live 验收；默认 CK3 adapter 仍不广告该 capability，所以 `production_live_ready=false` 保持不变。下一步是让 `capture_projects_metrics` 生成 schema-2 canonical source-checkpoint registry 条目，再根据正式 runner 集成结果决定是否把候选开关转成默认；在此之前不得把“私有候选实机 GREEN”扩大成默认 production capability、可见事件取证或完整跨周期闭环。

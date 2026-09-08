@@ -38,6 +38,9 @@ zg361cp.9231 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_e_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9231 }
+			}
 			if = {
 				limit = { scope:zg361_cp_e_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_e_subject = {
@@ -81,6 +84,7 @@ zg361cp.9231 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_e_subject = { set_variable = { name = zg361_cp_pending_player_event value = 28 } }
 				trigger_event = { id = zg361cp.28 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.31 } }

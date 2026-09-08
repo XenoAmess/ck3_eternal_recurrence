@@ -21,8 +21,15 @@ _TYPED_KEYS = {"status", "value", "unavailable_reason"}
 _IDENTITY_KEYS = {
     "owner_character_id", "subject_character_id", "cycle_serial", "case_serial"
 }
+_PORTFOLIO_KEYS = {
+    "closed", "cycle_serial", "final_owner_character_id",
+    "final_subject_character_id", "final_cycle_serial", "final_case_serial",
+    "final_state", "final_conservation_ok", "pending_player_event",
+    "provider_observed",
+}
 _READINESS_KEYS = {
     "player_subject_binding_ready", "owner_binding_ready",
+    "portfolio_observed", "portfolio_closed",
     "source_identity_ready", "result_identity_ready", "contribution_ready",
     "metrics_ready", "same_project_case_identity", "receipt_lineage_ready",
     "result_operation_committed", "same_frame_ready", "ready",
@@ -39,6 +46,7 @@ _CHECKPOINT_STATES = {
 @dataclass(frozen=True)
 class ZhongguoProjectsMetricsQueryV1:
     owner_character_id: int
+    subject_character_id: int
     request_nonce: str
 
 
@@ -55,13 +63,17 @@ def _nonce(value: object) -> str:
 
 
 def query_zhongguo_projects_metrics_v1_step(
-    owner_character_id: object, request_nonce: object
+    owner_character_id: object, subject_character_id: object,
+    request_nonce: object,
 ) -> str:
     owner = _positive(owner_character_id, "owner_character_id")
+    subject = _positive(subject_character_id, "subject_character_id")
+    if owner == subject:
+        raise ValueError("owner_character_id and subject_character_id must differ")
     nonce = _nonce(request_nonce)
     return (
         f"{QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP_PREFIX}"
-        f"{owner}-{nonce.encode('ascii').hex()}"
+        f"{owner}-{subject}-{nonce.encode('ascii').hex()}"
     )
 
 
@@ -74,18 +86,27 @@ def parse_query_zhongguo_projects_metrics_v1_step(
         return None
     parts = step.removeprefix(
         QUERY_ZHONGGUO_PROJECTS_METRICS_V1_STEP_PREFIX
-    ).split("-", 1)
-    if len(parts) != 2:
+    ).split("-", 2)
+    if len(parts) != 3:
         return None
     try:
         owner = int(parts[0], 10)
-        if str(owner) != parts[0] or not parts[1] or len(parts[1]) % 2:
+        subject = int(parts[1], 10)
+        if (
+            str(owner) != parts[0]
+            or str(subject) != parts[1]
+            or owner == subject
+            or not parts[2]
+            or len(parts[2]) % 2
+        ):
             return None
-        nonce = bytes.fromhex(parts[1]).decode("ascii")
-        if nonce.encode("ascii").hex() != parts[1]:
+        nonce = bytes.fromhex(parts[2]).decode("ascii")
+        if nonce.encode("ascii").hex() != parts[2]:
             return None
         return ZhongguoProjectsMetricsQueryV1(
-            _positive(owner, "owner_character_id"), _nonce(nonce)
+            _positive(owner, "owner_character_id"),
+            _positive(subject, "subject_character_id"),
+            _nonce(nonce),
         )
     except (UnicodeDecodeError, ValueError):
         return None
@@ -128,7 +149,9 @@ def normalize_native_zhongguo_projects_metrics_v1(
     keys = {
         "schema_version", "status", "capability", "case_kind",
         "request_nonce", "snapshot_revision", "date_raw", "paused",
-        "player_character_id", "requested_owner_character_id", "checkpoint_state",
+        "player_character_id", "requested_owner_character_id",
+        "requested_subject_character_id", "checkpoint_state",
+        "credit_project_portfolio",
         "source_identity", "result_identity", "projects_metrics",
         "readiness", "source_backend_id", "provenance", "unavailable_reason",
     }
@@ -148,9 +171,24 @@ def normalize_native_zhongguo_projects_metrics_v1(
         or frame["paused"] is not True
         or frame["player_character_id"] != expected_player_character_id
         or frame["requested_owner_character_id"] != expected_query.owner_character_id
-        or expected_query.owner_character_id == expected_player_character_id
+        or frame["requested_subject_character_id"] != expected_query.subject_character_id
+        or expected_query.owner_character_id == expected_query.subject_character_id
+        or expected_player_character_id not in {
+            expected_query.owner_character_id, expected_query.subject_character_id
+        }
     ):
         raise ValueError("paused owner/subject binding changed")
+    portfolio_raw = _exact(
+        frame["credit_project_portfolio"], _PORTFOLIO_KEYS,
+        "credit_project_portfolio",
+    )
+    if portfolio_raw["provider_observed"] is not True:
+        raise ValueError("credit project portfolio is not provider observed")
+    portfolio = {
+        key: _typed(portfolio_raw[key], f"credit_project_portfolio.{key}", int)
+        for key in _PORTFOLIO_KEYS - {"provider_observed"}
+    }
+    portfolio["provider_observed"] = True
     source = _identity(frame["source_identity"], "source_identity")
     result = _identity(frame["result_identity"], "result_identity")
     payload = _exact(
@@ -224,8 +262,8 @@ def normalize_native_zhongguo_projects_metrics_v1(
         ):
             raise ValueError("available provider has an unavailable reason")
         source_keys = (
-            "player_subject_binding_ready",
             "owner_binding_ready",
+            "portfolio_observed",
             "source_identity_ready",
             "contribution_ready",
             "same_frame_ready",
@@ -256,6 +294,7 @@ def normalize_native_zhongguo_projects_metrics_v1(
         raise ValueError("unavailable provider lacks reason/state")
     return {
         **frame,
+        "credit_project_portfolio": portfolio,
         "source_identity": source,
         "result_identity": result,
         "projects_metrics": {

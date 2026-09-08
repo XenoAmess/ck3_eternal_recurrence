@@ -1,9 +1,9 @@
 {
   "contract": "zhongguo_projects_metrics_postcondition_v1_source_contract",
-  "readiness": "static_and_fixture_ready_not_live",
+  "readiness": "private_candidate_live_validated_not_default",
   "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
-  "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
-  "allowlist_count": 40,
+  "allowlist_id": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
+  "allowlist_count": 49,
   "source_event": "zg361cp.26",
   "result_event": "zg361p3.229",
   "generated_sources": [
@@ -12,6 +12,7 @@
   ],
   "generated_outputs": [
     "mod_zhongguo_style/common/scripted_effects/zg361_credit_project_m026_effort_ledger_effects.txt",
+    "mod_zhongguo_style/common/scripted_effects/zg361_credit_project_portfolio_lifecycle_effects.txt",
     "mod_zhongguo_style/common/scripted_effects/zg361_phase3_portfolio_lifecycle_effects.txt",
     "mod_zhongguo_style/common/scripted_effects/zg361_phase3_aa_m229_metric_dictionary_owner_effects.txt"
   ],
@@ -19,17 +20,25 @@
     "cp26_a_b_only_mint_positive_monotonic_receipt_id",
     "cp26_receipt_revision_is_post_operation_case_e_revision",
     "provider_reads_cp26_receipt_and_consumed_provenance_directly_before_p3_initialization",
+    "provider_reads_explicit_subject_portfolio_closure_while_paused_player_is_bound_owner_or_subject",
+    "portfolio_closure_requires_final_tuple_conservation_and_no_pending_player_event",
     "current_cycle_p3_initializer_absence_is_distinguished_by_p3_portfolio_cycle",
     "phase3_initializer_requires_current_owner_subject_cycle",
     "m229_a_b_only_copy_same_receipt_id_and_revision",
     "route_c_never_mints_business_lineage",
-    "provider_reads_played_subject_scope_only",
+    "provider_reads_only_the_explicit_project_subject_scope",
     "source_result_contribution_metrics_share_project_correlation_identity",
     "metrics_backlinks_same_receipt_id_and_revision",
-    "fixture_is_not_production_live"
+    "fixture_is_not_production_live",
+    "r303_exact_build_private_candidate_proves_explicit_subject_portfolio_closure_and_cp26_to_p3m229_lineage"
   ],
   "mailbox_fixed_slot": "permitted_executor_quattuorvigintary",
   "shared_wiring": "default_off_complete_not_advertised",
   "private_candidate_switch": "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1",
-  "private_candidate_scope": "read_only_provider_advertisement_for_one_paused_live_attempt"
+  "private_candidate_scope": "read_only_provider_live_validated_on_exact_build_but_not_advertised_by_default",
+  "paused_live_artifact": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\p2r303projectsmetrics\\report.json",
+    "sha256": "926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01",
+    "result": "GREEN"
+  }
 }

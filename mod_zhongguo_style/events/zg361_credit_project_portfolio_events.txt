@@ -32,10 +32,16 @@ zg361cp.9050 = {
 			}
 		}
 	}
+	immediate = {
+		scope:zg361_cp_e_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 9050 }
+		}
+	}
 	option = {
 		name = zg361cp.batch.a
 		scope:zg361_cp_e_subject = {
 			set_variable = { name = zg361_cp_player_batch_mode value = 1 }
+			set_variable = { name = zg361_cp_pending_player_event value = 30 }
 		}
 		trigger_event = { id = zg361cp.30 days = 1 }
 	}
@@ -43,6 +49,7 @@ zg361cp.9050 = {
 		name = zg361cp.batch.b
 		scope:zg361_cp_e_subject = {
 			set_variable = { name = zg361_cp_player_batch_mode value = 2 }
+			set_variable = { name = zg361_cp_pending_player_event value = 30 }
 		}
 		trigger_event = { id = zg361cp.30 days = 1 }
 	}
@@ -51,6 +58,7 @@ zg361cp.9050 = {
 		custom_tooltip = zg361cp.batch.c.tt
 		scope:zg361_cp_e_subject = {
 			set_variable = { name = zg361_cp_player_batch_mode value = 3 }
+			set_variable = { name = zg361_cp_pending_player_event value = 30 }
 		}
 		trigger_event = { id = zg361cp.30 days = 1 }
 	}
@@ -58,6 +66,7 @@ zg361cp.9050 = {
 		name = zg361cp.batch.d
 		scope:zg361_cp_e_subject = {
 			set_variable = { name = zg361_cp_player_batch_mode value = 4 }
+			set_variable = { name = zg361_cp_pending_player_event value = 30 }
 		}
 		trigger_event = { id = zg361cp.30 days = 1 }
 	}
@@ -94,7 +103,12 @@ zg361cp.9001 = {
 			trigger_else = { always = no }
 		}
 	}
-	immediate = { scope:zg361_cp_e_subject = { zg361_cp_i_launch_effect = yes } }
+	immediate = {
+		scope:zg361_cp_e_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 9001 }
+			zg361_cp_i_launch_effect = yes
+		}
+	}
 }
 
 # D+1 hidden queue edge: I closed -> J opens.
@@ -128,7 +142,12 @@ zg361cp.9002 = {
 			trigger_else = { always = no }
 		}
 	}
-	immediate = { scope:zg361_cp_i_subject = { zg361_cp_j_launch_effect = yes } }
+	immediate = {
+		scope:zg361_cp_i_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 9002 }
+			zg361_cp_j_launch_effect = yes
+		}
+	}
 }
 
 # D+1 hidden queue edge: J closed -> R opens.
@@ -162,5 +181,10 @@ zg361cp.9003 = {
 			trigger_else = { always = no }
 		}
 	}
-	immediate = { scope:zg361_cp_j_subject = { zg361_cp_r_launch_effect = yes } }
+	immediate = {
+		scope:zg361_cp_j_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 9003 }
+			zg361_cp_r_launch_effect = yes
+		}
+	}
 }

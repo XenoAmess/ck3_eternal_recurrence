@@ -22,7 +22,7 @@ ADAPTER = (
 CMAKE = ROOT / "ck3_autonomous_player/native_bridge/CMakeLists.txt"
 SERVICE = ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py"
 CENTRAL = ROOT / "mod_zhongguo_style/tools/gen_361_phase2_central_runtime.py"
-CP_EVENTS = ROOT / "mod_zhongguo_style/events/zg361_credit_project_runtime_events.txt"
+CP_EVENTS = ROOT / "mod_zhongguo_style/events/zg361_credit_project_e_case_events.txt"
 P3_EVENTS = (
     ROOT
     / "mod_zhongguo_style/events/zg361_phase3_metrics_delivery_runtime_events.txt"
@@ -92,19 +92,19 @@ def audit_projects_metrics_action_cell_contract(
         == "zg361_phase2_projects_metrics_action_cell"
         and contract.get("span_id") == "phase2_projects_metrics"
         and contract.get("producer_key") == "projects-metrics",
-        "readiness_is_static_live_pending": contract.get("readiness")
-        == "static-ready-live-pending",
+        "readiness_is_private_candidate_live_validated": contract.get("readiness")
+        == "private-candidate-live-validated-not-default",
         "ack_explicitly_not_postcondition": contract.get(
             "query_action_postcondition", {}
         ).get("action_ack_is_business_postcondition")
         is False,
-        "provider_abi_static_not_live": abi.get("status")
-        == "static_and_fixture_ready_not_live"
+        "provider_abi_private_candidate_live_validated": abi.get("status")
+        == "private_candidate_live_validated_not_default"
         and abi.get("readiness", {}).get("production_live_ready") is False,
         "provider_direct_cp_prestate_is_fixed_allowlist": (
             abi.get("allowlist_id")
-            == "zg361-cp26-direct-p3m229-lineage-v2"
-            and len(abi.get("allowlist", [])) == 40
+            == "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3"
+            and len(abi.get("allowlist", [])) == 49
             and len(
                 [
                     name
@@ -112,7 +112,7 @@ def audit_projects_metrics_action_cell_contract(
                     if isinstance(name, str) and name.startswith("zg361_cp_")
                 ]
             )
-            == 15
+            == 24
             and "zg361_p3_portfolio_cycle" in abi.get("allowlist", [])
         ),
         "service_reuses_existing_provider": (
@@ -146,9 +146,12 @@ def audit_projects_metrics_action_cell_contract(
             "future_runner_integration", {}
         ).get("formal_registry_modified")
         is False,
-        "no_live_claim": contract.get("no_launch_boundary", {}).get(
+        "r303_live_artifact_recorded": contract.get("live_acceptance", {}).get(
             "live_proof_claimed"
         )
+        is True
+        and contract.get("live_acceptance", {}).get("result") == "GREEN"
+        and contract.get("live_acceptance", {}).get("default_adapter_promoted")
         is False,
     }
     failed = [name for name, passed in checks.items() if passed is not True]
@@ -156,7 +159,11 @@ def audit_projects_metrics_action_cell_contract(
         "schema_version": 1,
         "kind": "zg361_projects_metrics_action_cell_static_preflight",
         "result": "GREEN" if not failed else "RED",
-        "readiness": "static-ready-live-pending" if not failed else "research",
+        "readiness": (
+            "private-candidate-live-validated-not-default"
+            if not failed
+            else "research"
+        ),
         "checks": checks,
         "failed_checks": failed,
         "ck3_started": False,

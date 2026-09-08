@@ -147,6 +147,7 @@ zg361_p2c_stage_07_credit_project_effect = {
                 OR = { var:zg361_case_e_active = 1 var:zg361_case_i_active = 1 var:zg361_case_j_active = 1 var:zg361_case_r_active = 1 }
             }
         }
+        var:zg361_p2c_subject = { zg361_cp_resume_pending_player_event_effect = yes }
         zg361_p2c_mark_lane_busy_effect = yes
         zg361_p2c_schedule_pump_effect = { DAYS = 2 }
     }
@@ -162,6 +163,7 @@ zg361_p2c_stage_07_credit_project_effect = {
                 var:zg361_cp_portfolio_cycle = root.var:zg361_p2c_cycle
             }
         }
+        var:zg361_p2c_subject = { zg361_cp_resume_pending_player_event_effect = yes }
         zg361_p2c_mark_lane_busy_effect = yes
         zg361_p2c_schedule_pump_effect = { DAYS = 2 }
     }

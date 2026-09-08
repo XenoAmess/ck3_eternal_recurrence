@@ -30,7 +30,7 @@ from xar_autoplayer.bridge.zhongguo_projects_metrics_postcondition_contract impo
 )
 
 
-READINESS = "static-ready-live-pending"
+READINESS = "private-candidate-live-validated-not-default"
 CASE_KIND = "zhongguo.projects-metrics.project-correlation"
 MAX_ADVANCE_STEPS = 100
 MAX_ELAPSED_DAYS = 370
@@ -52,6 +52,7 @@ class ProjectsMetricsActionService(Protocol):
         *,
         expected_revision: int,
         owner_character_id: int,
+        subject_character_id: int | None = None,
     ) -> dict[str, object]: ...
 
 
@@ -108,13 +109,20 @@ def _positive_bound(value: object, label: str, maximum: int) -> int:
     return _integer(value, label, minimum=1, maximum=maximum)
 
 
-def _nonce(prefix: str, suffix: str, owner_character_id: int) -> str:
+def _nonce(
+    prefix: str,
+    suffix: str,
+    owner_character_id: int,
+    subject_character_id: int,
+) -> str:
     if not isinstance(prefix, str) or not prefix:
         raise ValueError("request_nonce_prefix must be non-empty")
     value = f"{prefix}.{suffix}"
     # Reuse the provider's canonical nonce validator rather than maintaining a
     # second grammar in this cell.
-    query_zhongguo_projects_metrics_v1_step(owner_character_id, value)
+    query_zhongguo_projects_metrics_v1_step(
+        owner_character_id, subject_character_id, value
+    )
     return value
 
 
@@ -301,6 +309,9 @@ def _source_checkpoint(
         or response.get("case_kind") != CASE_KIND
         or response.get("source_backend_id") != "native-headless"
         or response.get("unavailable_reason") is not None
+        or response.get("requested_owner_character_id") != owner_character_id
+        or response.get("requested_subject_character_id")
+        != binding["player_character_id"]
     ):
         raise ValueError(
             "provider did not expose an available projects source "
@@ -316,6 +327,8 @@ def _source_checkpoint(
         for key in (
             "player_subject_binding_ready",
             "owner_binding_ready",
+            "portfolio_observed",
+            "portfolio_closed",
             "source_identity_ready",
             "contribution_ready",
             "same_frame_ready",
@@ -326,6 +339,61 @@ def _source_checkpoint(
     if not isinstance(payload, Mapping):
         raise ValueError("provider projects_metrics payload is absent")
     source_identity = _identity(response.get("source_identity"), "source_identity")
+    portfolio = response.get("credit_project_portfolio")
+    if not isinstance(portfolio, Mapping):
+        raise ValueError("provider credit_project_portfolio payload is absent")
+    pending_player_event = portfolio.get("pending_player_event")
+    if not (
+        portfolio.get("provider_observed") is True
+        and _typed_integer(portfolio, "closed", "credit_project_portfolio") == 1
+        and _typed_integer(portfolio, "cycle_serial", "credit_project_portfolio")
+        == source_identity[2]
+        and _typed_integer(
+            portfolio,
+            "final_owner_character_id",
+            "credit_project_portfolio",
+        )
+        == source_identity[0]
+        and _typed_integer(
+            portfolio,
+            "final_subject_character_id",
+            "credit_project_portfolio",
+        )
+        == source_identity[1]
+        and _typed_integer(
+            portfolio,
+            "final_cycle_serial",
+            "credit_project_portfolio",
+        )
+        == source_identity[2]
+        and _integer(
+            _typed_integer(
+                portfolio, "final_case_serial", "credit_project_portfolio"
+            ),
+            "credit_project_portfolio.final_case_serial",
+            minimum=1,
+            maximum=2**63 - 1,
+        )
+        >= 1
+        and _integer(
+            _typed_integer(portfolio, "final_state", "credit_project_portfolio"),
+            "credit_project_portfolio.final_state",
+            minimum=1,
+            maximum=2**63 - 1,
+        )
+        >= 1
+        and _typed_integer(
+            portfolio,
+            "final_conservation_ok",
+            "credit_project_portfolio",
+        )
+        == 1
+        and isinstance(pending_player_event, Mapping)
+        and pending_player_event.get("status") == "unavailable"
+        and pending_player_event.get("value") is None
+        and pending_player_event.get("unavailable_reason") == "variable_absent"
+    ):
+        raise ValueError("credit project portfolio is not durably closed")
     payload_source_identity = _identity(
         payload.get("source_identity"), "projects_metrics.source_identity"
     )
@@ -403,6 +471,8 @@ def _require_committed_postcondition(
     required_readiness = (
         "player_subject_binding_ready",
         "owner_binding_ready",
+        "portfolio_observed",
+        "portfolio_closed",
         "source_identity_ready",
         "result_identity_ready",
         "contribution_ready",
@@ -492,7 +562,6 @@ def preflight_projects_metrics_gameplay_action_cell(
     """Read and classify the exact non-mutating live checkpoint."""
 
     owner = _positive_character_id(owner_character_id, "owner_character_id")
-    nonce = _nonce(request_nonce_prefix, "pre", owner)
     report: dict[str, object] = {
         "schema_version": 1,
         "kind": "zg361_projects_metrics_gameplay_action_preflight",
@@ -535,11 +604,16 @@ def preflight_projects_metrics_gameplay_action_cell(
         return red("player_visible_event_pending")
     if binding["player_character_id"] == owner:
         return red("owner_must_be_distinct_bounded_ai")
+    subject = _positive_character_id(
+        binding["player_character_id"], "subject_character_id"
+    )
+    nonce = _nonce(request_nonce_prefix, "pre", owner, subject)
     try:
         response = service.query_zhongguo_projects_metrics_postcondition_v1(
             nonce,
             expected_revision=int(binding["revision"]),
             owner_character_id=owner,
+            subject_character_id=subject,
         )
         report["provider_response"] = copy.deepcopy(response)
     except Exception as error:
@@ -587,8 +661,6 @@ def run_projects_metrics_gameplay_action_cell(
     days_bound = _positive_bound(
         max_elapsed_days, "max_elapsed_days", MAX_ELAPSED_DAYS
     )
-    # Validate the largest generated nonce before any action is attempted.
-    _nonce(request_nonce_prefix, f"d{steps_bound}", owner)
     preflight = preflight_projects_metrics_gameplay_action_cell(
         service,
         owner_character_id=owner,
@@ -664,6 +736,13 @@ def run_projects_metrics_gameplay_action_cell(
             maximum=2**63 - 1,
         ),
     )
+    # Validate the largest generated nonce before any action is attempted.
+    _nonce(
+        request_nonce_prefix,
+        f"d{steps_bound}",
+        owner,
+        baseline.subject_character_id,
+    )
     initial_date = int(binding["date_raw"])
     current_binding = dict(binding)
 
@@ -733,9 +812,15 @@ def run_projects_metrics_gameplay_action_cell(
 
         try:
             response = service.query_zhongguo_projects_metrics_postcondition_v1(
-                _nonce(request_nonce_prefix, f"d{ordinal}", owner),
+                _nonce(
+                    request_nonce_prefix,
+                    f"d{ordinal}",
+                    owner,
+                    baseline.subject_character_id,
+                ),
                 expected_revision=int(post_binding["revision"]),
                 owner_character_id=owner,
+                subject_character_id=baseline.subject_character_id,
             )
         except Exception as error:
             report["query_error_type"] = type(error).__name__

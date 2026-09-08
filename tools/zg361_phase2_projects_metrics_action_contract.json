@@ -3,7 +3,7 @@
   "kind": "zg361_phase2_projects_metrics_action_cell",
   "span_id": "phase2_projects_metrics",
   "producer_key": "projects-metrics",
-  "readiness": "static-ready-live-pending",
+  "readiness": "private-candidate-live-validated-not-default",
   "query_action_postcondition": {
     "pre_query": "query_zhongguo_projects_metrics_postcondition_v1",
     "action": "life-advance",
@@ -30,11 +30,12 @@
     "schema": "ck3_autonomous_player/schemas/zhongguo-projects-metrics-postcondition-v1.schema.json",
     "abi": "ck3_autonomous_player/native_bridge/research/zhongguo_projects_metrics_postcondition_v1_abi.json",
     "source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_postcondition_v1_source_contract.json",
-    "current_status": "static_and_fixture_ready_not_live",
+    "current_status": "private_candidate_live_validated_not_default",
     "currently_advertised_by_default_adapter": false
   },
   "exact_live_checkpoint": {
-    "played_character_role": "project_subject",
+    "restored_played_character_role": "project_owner",
+    "action_played_character_role": "project_subject_after_native_same_frame_switch",
     "owner_role": "distinct_bounded_ai_project_owner",
     "map_paused": true,
     "active_player_event": false,
@@ -42,7 +43,7 @@
     "provider_pre_state": "available with checkpoint_state cp26_ready_p3_absent from the direct CP26 receipt projection",
     "result_state": "zg361p3.229 has not yet committed its metrics result",
     "atomicity_note": "the provider observes CP26 directly before P3 initialization, then verifies the copied receipt and committed P3M229 result after bounded timeline advance",
-    "also_supported_pre_state": "none; the action cell requires the exact CP26-ready/P3-absent source checkpoint"
+    "also_supported_pre_state": "the explicit-subject provider may observe the same project subject while the paused player is either the bound owner or that subject; the action cell itself runs after switching to the subject"
   },
   "postcondition": {
     "later_paused_frame_required": true,
@@ -64,31 +65,26 @@
     "result_event": "zg361p3.229",
     "event_root_role": "project_owner",
     "same_cell_as_background_provider": false,
-    "reason": "both visible events require the non-AI played character to be owner, while provider v1 intentionally reads only the played subject under a distinct owner",
+    "reason": "both visible events require the non-AI played character to be owner; provider v1 can read the explicit project subject while the paused player is the bound owner or the subject, but the business action cell runs after switching to the subject",
     "future_visual_integration": "capture_projects_metrics remains a separate owner-visible source/result capture and must not be represented as this subject-bound business cell"
   },
   "known_live_gaps": [
     {
       "id": "provider-capability-withheld",
-      "blocking": true,
-      "evidence": "default 1.19.0.6 adapter does not advertise the provider until paused live acceptance exists"
+      "blocking": false,
+      "evidence": "R303 validates the private candidate on exact build; promotion into the default adapter remains a separate release decision"
     },
     {
-      "id": "cp26-prepared-p3-not-started-seed-missing",
+      "id": "canonical-projects-source-registry-entry-missing",
       "blocking": true,
-      "evidence": "no frozen save or fixture currently establishes an AI-owner/player-subject CP26 receipt before the P3 initializer copies it and performs P3M229"
-    },
-    {
-      "id": "no-live-postcondition-artifact",
-      "blocking": true,
-      "evidence": "no real paused provider response has yet proven the CP26 to P3M229 receipt lineage"
+      "evidence": "R303 proves the business cell, but capture_projects_metrics has not yet emitted its schema-2 canonical source-checkpoint registry entry"
     }
   ],
   "future_runner_integration": {
     "formal_registry_modified": false,
     "runner": "tools/run_zhongguo_promo_capture.py",
     "span_handler": "capture_projects_metrics",
-    "entrypoint": "after a production seed restores the CP26-prepared/P3-not-started subject checkpoint and before any visual owner-role switch",
+    "entrypoint": "restore the hash-bound post-CP26 owner-played checkpoint, query the explicit subject, switch owner to subject in the same paused frame, then run the bounded business cell before the separate owner-visible capture",
     "required_live_sequence": [
       "restore hash-bound checkpoint",
       "run non-mutating preflight",
@@ -97,11 +93,15 @@
       "run owner-visible source/result capture as a separate checkpoint"
     ]
   },
-  "no_launch_boundary": {
-    "ck3_started": false,
-    "gameplay_action_executed": false,
-    "business_postcondition_claimed": false,
-    "live_proof_claimed": false,
+  "live_acceptance": {
+    "artifact": "Z:\\ck3_mod_rewrite\\_runtime\\p2r303projectsmetrics\\report.json",
+    "sha256": "926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01",
+    "result": "GREEN",
+    "ck3_started": true,
+    "gameplay_action_executed": true,
+    "business_postcondition_claimed": true,
+    "live_proof_claimed": true,
+    "default_adapter_promoted": false,
     "formal_runner_registry_modified": false
   }
 }

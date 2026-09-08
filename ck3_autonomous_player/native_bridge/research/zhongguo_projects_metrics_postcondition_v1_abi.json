@@ -1,20 +1,20 @@
 {
   "contract": "zhongguo_projects_metrics_postcondition_v1",
-  "status": "static_and_fixture_ready_not_live",
+  "status": "private_candidate_live_validated_not_default",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.query-zhongguo-projects-metrics-postcondition-v1",
   "step": "query-zhongguo-projects-metrics-postcondition-v1",
   "case_kind": "zhongguo.projects-metrics.project-correlation",
-  "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
+  "allowlist_id": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
   "request": {
     "public_inputs": [
       "request_nonce",
       "expected_revision",
-      "owner_character_id"
+      "owner_character_id",
+      "subject_character_id"
     ],
     "forbidden_inputs": [
-      "subject_character_id",
       "variable_name",
       "receipt_id",
       "receipt_revision",
@@ -23,12 +23,13 @@
     ]
   },
   "subject_acl": {
-    "scope": "paused_played_character_only",
-    "subject_source": "same_frame_snapshot.played_character_id",
+    "scope": "explicit_project_subject_while_paused_player_is_owner_or_subject",
+    "subject_source": "request.subject_character_id",
     "owner_source": "zg361_cp_m26_receipt_owner",
-    "owner_filter": "actual_owner_equals_required_owner_and_differs_from_player",
+    "owner_filter": "actual_owner_equals_required_owner_and_differs_from_subject",
     "owner_scope_read": false,
-    "third_party_subject_read": false
+    "third_party_subject_read": true,
+    "third_party_subject_limit": "paused player must be the bound project owner"
   },
   "native_variable_abi": {
     "variable_context_for_scope_rva": "0x3329A40",
@@ -42,6 +43,15 @@
     "fixed_scale": 100000
   },
   "allowlist": [
+    "zg361_cp_portfolio_closed",
+    "zg361_cp_portfolio_cycle",
+    "zg361_cp_final_owner",
+    "zg361_cp_final_subject",
+    "zg361_cp_final_cycle",
+    "zg361_cp_final_case",
+    "zg361_cp_final_state",
+    "zg361_cp_final_conservation_ok",
+    "zg361_cp_pending_player_event",
     "zg361_cp_m26_receipt_owner",
     "zg361_cp_m26_receipt_subject",
     "zg361_cp_m26_receipt_cycle",
@@ -107,6 +117,8 @@
   },
   "readiness": {
     "checkpoint_state": "cp26_ready_p3_absent | p3_initialized_source_not_ready | p3_source_ready_result_pending | p3_result_committed",
+    "portfolio_observed": "closed_flag_and_portfolio_cycle_match_the_direct_cp26_source_cycle",
+    "portfolio_closed": "closed_flag_final_owner_subject_cycle_case_state_and_conservation_are_current_and_no_player_event_cursor_remains",
     "cp26_ready_p3_absent": "direct_cp26_a_or_b_receipt_is_committed_and_p3_portfolio_cycle_does_not_equal_the_cp_cycle",
     "same_project_case_identity": "source_result_contribution_metrics_four_tuple_bytewise_equal",
     "receipt_lineage_ready": "metrics_source_receipt_id_and_revision_equal_contribution_receipt_id_and_revision",
@@ -118,7 +130,15 @@
     "default": false,
     "advertises_read_only_query_only_when_enabled": true,
     "production_advertisement_promoted": false,
-    "paused_live_artifact": "absent"
+    "paused_live_artifact": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\p2r303projectsmetrics\\report.json",
+      "sha256": "926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01",
+      "result": "GREEN",
+      "exact_build": true,
+      "portfolio_closure_observed_while_player_was_owner": true,
+      "same_frame_owner_to_subject_switch_verified": true,
+      "cp26_to_p3m229_business_postcondition_verified": true
+    }
   },
   "typed_negatives": {
     "source_marker_absent": "cp26_receipt_owner_absent_yields_project_source_not_found",
@@ -128,7 +148,8 @@
     "missing_business_field": "available_with_component_readiness_false"
   },
   "unsupported_claims": [
-    "production_live_acceptance",
+    "default_production_advertisement",
+    "canonical_source_registry_capture",
     "event_visibility",
     "source_or_result_snapshot_id_binding",
     "arbitrary_project_or_variable_query",

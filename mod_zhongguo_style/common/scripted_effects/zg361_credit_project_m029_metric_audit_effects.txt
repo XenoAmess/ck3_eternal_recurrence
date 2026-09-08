@@ -243,7 +243,8 @@ zg361_cp_m29_route_a_effect = {
 				TICKET_CYCLE = $TICKET_CYCLE$
 				TICKET_CASE = $TICKET_CASE$
 			}
-			var:zg361_case_e_owner = {
+			set_variable = { name = zg361_cp_pending_player_event value = 9001 }
+var:zg361_case_e_owner = {
 	trigger_event = { id = zg361cp.9001 days = 1 }
 }
 		}
@@ -589,7 +590,8 @@ zg361_cp_m29_route_b_effect = {
 				TICKET_CYCLE = $TICKET_CYCLE$
 				TICKET_CASE = $TICKET_CASE$
 			}
-			var:zg361_case_e_owner = {
+			set_variable = { name = zg361_cp_pending_player_event value = 9001 }
+var:zg361_case_e_owner = {
 	trigger_event = { id = zg361cp.9001 days = 1 }
 }
 		}
@@ -925,7 +927,8 @@ zg361_cp_m29_route_c_effect = {
 				TICKET_CYCLE = $TICKET_CYCLE$
 				TICKET_CASE = $TICKET_CASE$
 			}
-			var:zg361_case_e_owner = {
+			set_variable = { name = zg361_cp_pending_player_event value = 9001 }
+var:zg361_case_e_owner = {
 	trigger_event = { id = zg361cp.9001 days = 1 }
 }
 		}

@@ -44,6 +44,14 @@ def unavailable() -> dict[str, object]:
     }
 
 
+def variable_absent() -> dict[str, object]:
+    return {
+        "status": "unavailable",
+        "value": None,
+        "unavailable_reason": "variable_absent",
+    }
+
+
 def identity(*, ready: bool = True) -> dict[str, object]:
     field = available if ready else lambda _value: unavailable()
     return {
@@ -74,6 +82,9 @@ def response(
     ready: bool,
     receipt_id: int = RECEIPT,
     source_owner: int = OWNER,
+    portfolio_closed: bool = True,
+    pending_cursor: bool = False,
+    portfolio_readiness_override: bool | None = None,
 ) -> dict[str, object]:
     source = identity()
     if source_owner != OWNER:
@@ -85,6 +96,12 @@ def response(
     readiness = {
         "player_subject_binding_ready": True,
         "owner_binding_ready": True,
+        "portfolio_observed": True,
+        "portfolio_closed": (
+            portfolio_closed and not pending_cursor
+            if portfolio_readiness_override is None
+            else portfolio_readiness_override
+        ),
         "source_identity_ready": True,
         "result_identity_ready": ready,
         "contribution_ready": True,
@@ -107,10 +124,25 @@ def response(
         "paused": True,
         "player_character_id": SUBJECT,
         "requested_owner_character_id": OWNER,
+        "requested_subject_character_id": SUBJECT,
         "checkpoint_state": (
             "p3_result_committed" if ready else "cp26_ready_p3_absent"
         ),
         "source_identity": source,
+        "credit_project_portfolio": {
+            "closed": available(1 if portfolio_closed else 0),
+            "cycle_serial": available(CYCLE),
+            "final_owner_character_id": available(OWNER),
+            "final_subject_character_id": available(SUBJECT),
+            "final_cycle_serial": available(CYCLE),
+            "final_case_serial": available(CASE),
+            "final_state": available(6),
+            "final_conservation_ok": available(1),
+            "pending_player_event": (
+                available(27) if pending_cursor else variable_absent()
+            ),
+            "provider_observed": True,
+        },
         "result_identity": result,
         "projects_metrics": {
             "source_identity": json.loads(json.dumps(source)),
@@ -171,6 +203,9 @@ class FakeService:
         drift_receipt: bool = False,
         active_event: bool = False,
         initial_source_absent: bool = False,
+        portfolio_closed: bool = True,
+        pending_cursor: bool = False,
+        portfolio_readiness_override: bool | None = None,
     ) -> None:
         self.advertise = advertise
         self.green_after = green_after
@@ -178,6 +213,9 @@ class FakeService:
         self.drift_receipt = drift_receipt
         self.active_event = active_event
         self.initial_source_absent = initial_source_absent
+        self.portfolio_closed = portfolio_closed
+        self.pending_cursor = pending_cursor
+        self.portfolio_readiness_override = portfolio_readiness_override
         self.index = 0
         self.queries: list[dict[str, object]] = []
         self.actions: list[dict[str, object]] = []
@@ -214,12 +252,14 @@ class FakeService:
         *,
         expected_revision: int,
         owner_character_id: int,
+        subject_character_id: int | None = None,
     ) -> dict[str, object]:
         self.queries.append(
             {
                 "request_nonce": request_nonce,
                 "expected_revision": expected_revision,
                 "owner_character_id": owner_character_id,
+                "subject_character_id": subject_character_id,
             }
         )
         is_ready = (
@@ -230,7 +270,14 @@ class FakeService:
         receipt_id = (
             RECEIPT + 1 if self.drift_receipt and self.index > 0 else RECEIPT
         )
-        return response(self.index, ready=is_ready, receipt_id=receipt_id)
+        return response(
+            self.index,
+            ready=is_ready,
+            receipt_id=receipt_id,
+            portfolio_closed=self.portfolio_closed,
+            pending_cursor=self.pending_cursor,
+            portfolio_readiness_override=self.portfolio_readiness_override,
+        )
 
 
 class ProjectsMetricsActionCellTests(unittest.TestCase):
@@ -283,6 +330,27 @@ class ProjectsMetricsActionCellTests(unittest.TestCase):
                 "zg361.projects.metrics.d2",
             ],
         )
+
+    def test_preflight_rejects_open_or_pending_credit_portfolio(self) -> None:
+        open_report = preflight_projects_metrics_gameplay_action_cell(
+            FakeService(portfolio_closed=False), owner_character_id=OWNER
+        )
+        self.assertEqual(open_report["result"], "RED")
+        self.assertEqual(open_report["reason_code"], "source_checkpoint_unavailable")
+        self.assertIn("not ready", open_report["query_error"])
+
+        pending_report = preflight_projects_metrics_gameplay_action_cell(
+            FakeService(
+                pending_cursor=True,
+                portfolio_readiness_override=True,
+            ),
+            owner_character_id=OWNER,
+        )
+        self.assertEqual(pending_report["result"], "RED")
+        self.assertEqual(
+            pending_report["reason_code"], "source_checkpoint_unavailable"
+        )
+        self.assertIn("durably closed", pending_report["query_error"])
 
     def test_capability_and_active_event_fail_preflight_without_action(self) -> None:
         unavailable_report = preflight_projects_metrics_gameplay_action_cell(
@@ -347,7 +415,10 @@ class ProjectsMetricsActionCellTests(unittest.TestCase):
     def test_static_preflight_records_current_live_gaps_without_claiming_live(self) -> None:
         report = audit_projects_metrics_action_cell_contract(ROOT)
         self.assertEqual(report["result"], "GREEN")
-        self.assertEqual(report["readiness"], "static-ready-live-pending")
+        self.assertEqual(
+            report["readiness"],
+            "private-candidate-live-validated-not-default",
+        )
         self.assertFalse(report["ck3_started"])
         self.assertFalse(report["live_proof_claimed"])
         self.assertTrue(all(report["checks"].values()))

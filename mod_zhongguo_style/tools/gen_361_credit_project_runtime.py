@@ -1124,7 +1124,8 @@ zg361_cp_consume_due_policy_debts_effect = {{
 def final_domain_action(domain: str) -> str:
     next_domain = NEXT_DOMAIN[domain]
     if next_domain:
-        return f"""var:zg361_case_{domain}_owner = {{
+        return f"""set_variable = {{ name = zg361_cp_pending_player_event value = {QUEUE_EVENTS[domain]} }}
+var:zg361_case_{domain}_owner = {{
 \ttrigger_event = {{ id = zg361cp.{QUEUE_EVENTS[domain]} days = 1 }}
 }}"""
     return "zg361_cp_finalize_portfolio_effect = yes"
@@ -1134,6 +1135,127 @@ def player_event_id(mid: int) -> int:
     """Return the hidden batch dispatcher or the original visible event."""
 
     return BATCH_DISPATCH_EVENT_BASE + mid if mid in BATCHABLE_IDS else mid
+
+
+def pending_player_event_ids(domain: str) -> tuple[int, ...]:
+    """Return every durable player edge owned by one domain."""
+
+    first = BATCH_MODE_EVENT if domain == "e" else player_event_id(DOMAIN_ORDER[domain][0])
+    ids = [first, *(player_event_id(mid) for mid in DOMAIN_ORDER[domain])]
+    if NEXT_DOMAIN[domain] is not None:
+        ids.append(QUEUE_EVENTS[domain])
+    return tuple(dict.fromkeys(ids))
+
+
+def current_case_receipts(spec: Mechanism) -> str:
+    """Render exact current-case receipt checks without relying on saved scopes."""
+
+    domain = spec.domain
+    return (
+        any_receipt(spec)
+        .replace("$TICKET_OWNER$", "root")
+        .replace("$TICKET_SUBJECT$", "this")
+        .replace("$TICKET_CYCLE$", f"var:zg361_case_{domain}_cycle_serial")
+        .replace("$TICKET_CASE$", f"var:zg361_case_{domain}_case_serial")
+    )
+
+
+def render_resume_domain(domain: str) -> str:
+    event_ids = pending_player_event_ids(domain)
+    event_filter = "\n".join(
+        f"\tvar:zg361_cp_pending_player_event = {event_id}" for event_id in event_ids
+    )
+    dispatch = "\n".join(
+        f"""{"if" if index == 0 else "else_if"} = {{
+\tlimit = {{ var:zg361_cp_pending_player_event = {event_id} }}
+\tscope:zg361_cp_{domain}_owner = {{ trigger_event = {{ id = zg361cp.{event_id} }} }}
+}}"""
+        for index, event_id in enumerate(event_ids)
+    )
+    return f"""if = {{
+\tlimit = {{
+\t\tOR = {{
+{event_filter}
+\t\t}}
+\t\thas_variable = zg361_case_{domain}_owner
+\t\thas_variable = zg361_case_{domain}_subject
+\t\thas_variable = zg361_case_{domain}_cycle_serial
+\t\thas_variable = zg361_case_{domain}_case_serial
+\t\tvar:zg361_case_{domain}_owner = root
+\t\tvar:zg361_case_{domain}_subject = this
+\t}}
+\tvar:zg361_case_{domain}_owner = {{ save_scope_as = zg361_cp_{domain}_owner }}
+\tsave_scope_as = zg361_cp_{domain}_subject
+\tvar:zg361_cp_cross_reviewer = {{ save_scope_as = zg361_cp_{domain}_cross_reviewer }}
+\tvar:zg361_cp_successor_manager = {{ save_scope_as = zg361_cp_{domain}_successor_manager }}
+\tvar:zg361_cp_active_manager = {{ save_scope_as = zg361_cp_{domain}_active_manager }}
+\tvar:zg361_cp_historical_owner = {{ save_scope_as = zg361_cp_{domain}_historical_owner }}
+\tsave_scope_value_as = {{ name = zg361_cp_{domain}_cycle value = var:zg361_case_{domain}_cycle_serial }}
+\tsave_scope_value_as = {{ name = zg361_cp_{domain}_case value = var:zg361_case_{domain}_case_serial }}
+{indent(dispatch)}
+}}"""
+
+
+def render_pending_player_event_effects() -> str:
+    m26 = by_id()[26]
+    m27 = by_id()[27]
+    domains = "\nelse_".join(render_resume_domain(domain) for domain in ("e", "i", "j", "r"))
+    return f"""# Clear only the exact edge that actually entered; a newer cursor is never consumed.
+zg361_cp_clear_pending_player_event_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = zg361_cp_pending_player_event
+\t\t\tvar:zg361_cp_pending_player_event = $EVENT$
+\t\t}}
+\t\tremove_variable = zg361_cp_pending_player_event
+\t}}
+}}
+
+# Recover a player D+1 edge from the persistent case tuple.  The first branch
+# is a narrow migration for the frozen post-.26 R296 checkpoint, which predates
+# the cursor but has an exact current .26 receipt and no current .27 receipt.
+zg361_cp_resume_pending_player_event_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\tNOT = {{ has_variable = zg361_cp_pending_player_event }}
+\t\t\thas_variable = zg361_cp_portfolio_closed
+\t\t\tvar:zg361_cp_portfolio_closed = 0
+\t\t\thas_variable = zg361_case_e_owner
+\t\t\thas_variable = zg361_case_e_subject
+\t\t\thas_variable = zg361_case_e_cycle_serial
+\t\t\thas_variable = zg361_case_e_case_serial
+\t\t\thas_variable = zg361_case_e_state
+\t\t\thas_variable = zg361_case_e_active
+\t\t\tvar:zg361_case_e_owner = root
+\t\t\tvar:zg361_case_e_subject = this
+\t\t\tvar:zg361_case_e_state = 2
+\t\t\tvar:zg361_case_e_active = 1
+{indent(current_case_receipts(m26), 3)}
+\t\t\tNOT = {{
+{indent(current_case_receipts(m27), 4)}
+\t\t\t}}
+\t\t}}
+\t\tset_variable = {{ name = zg361_cp_pending_player_event value = 27 }}
+\t\tdebug_log = "ZG361CP: inferred missing post-m26 player edge"
+\t}}
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = zg361_cp_pending_player_event
+\t\t\thas_variable = zg361_cp_portfolio_subject
+\t\t\thas_variable = zg361_cp_portfolio_cycle
+\t\t\thas_variable = zg361_cp_portfolio_closed
+\t\t\thas_variable = zg361_cp_cross_reviewer
+\t\t\thas_variable = zg361_cp_successor_manager
+\t\t\thas_variable = zg361_cp_active_manager
+\t\t\thas_variable = zg361_cp_historical_owner
+\t\t\tvar:zg361_cp_portfolio_subject = this
+\t\t\tvar:zg361_cp_portfolio_cycle = root.var:zg361_review_serial
+\t\t\tvar:zg361_cp_portfolio_closed = 0
+\t\t\troot = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }}
+\t\t}}
+{indent(domains, 2)}
+\t}}
+}}"""
 
 
 def render_route(spec: Mechanism, choice: int) -> str:
@@ -1360,6 +1482,7 @@ zg361_cp_{domain}_launch_effect = {{
 \t\t}}
 \t\telse_if = {{
 \t\t\tlimit = {{ root = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
+\t\t\tset_variable = {{ name = zg361_cp_pending_player_event value = {first_event} }}
 \t\t\tscope:zg361_cp_{domain}_owner = {{ trigger_event = {{ id = zg361cp.{first_event} }} }}
 \t\t}}
 \t}}
@@ -1370,6 +1493,7 @@ def render_portfolio_entries() -> str:
     return r'''# Freeze portfolio actors and finite books exactly once, then execute E -> I -> J -> R.
 zg361_cp_initialize_portfolio_effect = {
 	save_temporary_scope_as = zg361_cp_portfolio_subject_scope
+	remove_variable = zg361_cp_pending_player_event
 	set_variable = { name = zg361_cp_portfolio_subject value = this }
 	set_variable = { name = zg361_cp_portfolio_cycle value = root.var:zg361_review_serial }
 	root = { set_variable = { name = zg361_cp_manager_portfolio_cycle value = var:zg361_review_serial } }
@@ -1498,6 +1622,7 @@ zg361_cp_settle_deferred_portfolio_effect = {
 		set_variable = { name = zg361_cp_deferred_cleanup_status value = 2 }
 		set_variable = { name = zg361_cp_deferred_cleanup_settled_by value = root }
 		set_variable = { name = zg361_cp_deferred_cleanup_settled_cycle value = root.var:zg361_review_serial }
+		remove_variable = zg361_cp_pending_player_event
 	}
 	else_if = {
 		limit = {
@@ -1559,6 +1684,7 @@ zg361_cp_open_portfolio_effect = {
 }
 
 zg361_cp_finalize_portfolio_effect = {
+	remove_variable = zg361_cp_pending_player_event
 	set_variable = { name = zg361_cp_portfolio_closed value = 1 }
 	set_variable = { name = zg361_cp_final_owner value = var:zg361_case_r_owner }
 	set_variable = { name = zg361_cp_final_subject value = var:zg361_case_r_subject }
@@ -1624,6 +1750,7 @@ def render_effects() -> bytes:
         "# Public entry: zg361_cp_open_portfolio_effect = { SUBJECT = <direct vassal> }.\n"
         "# Stable status: 1=applied, 2=idempotent no-op, 3=stale no-op, 4=typed RED.",
         render_portfolio_entries(),
+        render_pending_player_event_effects(),
     ]
     sections.extend(render_due_debt_consumer(spec) for spec in MECHANISMS)
     sections.append(render_due_debt_aggregate())
@@ -1644,7 +1771,7 @@ def effect_shard_sections() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
         (
             "zg361_credit_project_portfolio_lifecycle_effects.txt",
             "portfolio lifecycle and public entry",
-            (render_portfolio_entries(),),
+            (render_portfolio_entries(), render_pending_player_event_effects()),
         ),
     ]
     for domain in ("e", "i", "j", "r"):
@@ -1754,6 +1881,7 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
 \t\t\t\ttrigger_else = {{ always = no }}
 \t\t\t}}
 \t\t}}
+\t\tscope:zg361_cp_{d}_subject = {{ set_variable = {{ name = zg361_cp_pending_player_event value = {next_event_id} }} }}
 \t\ttrigger_event = {{ id = zg361cp.{next_event_id} days = 1 }}
 \t}}"""
     option_trigger = ""
@@ -1832,6 +1960,7 @@ def render_batch_mode_option(letter: str, mode: int) -> str:
 \tname = zg361cp.batch.{letter}{tooltip}
 \tscope:zg361_cp_e_subject = {{
 \t\tset_variable = {{ name = zg361_cp_player_batch_mode value = {mode} }}
+\t\tset_variable = {{ name = zg361_cp_pending_player_event value = {DOMAIN_ORDER['e'][0]} }}
 \t}}
 \ttrigger_event = {{ id = zg361cp.{DOMAIN_ORDER['e'][0]} days = 1 }}
 }}"""
@@ -1851,6 +1980,11 @@ zg361cp.{BATCH_MODE_EVENT} = {{
 \tdesc = zg361cp.batch.desc
 \ttrigger = {{
 {indent(event_guard(spec), 2)}
+\t}}
+\timmediate = {{
+\t\tscope:zg361_cp_e_subject = {{
+\t\t\tzg361_cp_clear_pending_player_event_effect = {{ EVENT = {BATCH_MODE_EVENT} }}
+\t\t}}
 \t}}
 {indent(options)}
 }}"""
@@ -1899,6 +2033,7 @@ def render_batch_dispatch_event(spec: Mechanism, next_mid: int | None) -> str:
 \tlimit = {{
 {indent(applied_guard, 2)}
 \t}}
+\tscope:zg361_cp_{d}_subject = {{ set_variable = {{ name = zg361_cp_pending_player_event value = {player_event_id(next_mid)} }} }}
 \ttrigger_event = {{ id = zg361cp.{player_event_id(next_mid)} days = 1 }}
 }}
 else = {{ trigger_event = {{ id = zg361cp.{mid} }} }}"""
@@ -1925,6 +2060,9 @@ zg361cp.{player_event_id(mid)} = {{
 \t\t\t\t\tvar:zg361_cp_player_batch_mode >= 1
 \t\t\t\t\tvar:zg361_cp_player_batch_mode <= 3
 \t\t\t\t}}
+\t\t\t}}
+\t\t\tscope:zg361_cp_{d}_subject = {{
+\t\t\t\tzg361_cp_clear_pending_player_event_effect = {{ EVENT = {player_event_id(mid)} }}
 \t\t\t}}
 {indent(route_branches, 3)}
 {indent(outcome, 3)}
@@ -1971,7 +2109,12 @@ zg361cp.{event_id} = {{
 \t\t\ttrigger_else = {{ always = no }}
 \t\t}}
 \t}}
-\timmediate = {{ scope:zg361_cp_{domain}_subject = {{ zg361_cp_{next_domain}_launch_effect = yes }} }}
+\timmediate = {{
+\t\tscope:zg361_cp_{domain}_subject = {{
+\t\t\tzg361_cp_clear_pending_player_event_effect = {{ EVENT = {event_id} }}
+\t\t\tzg361_cp_{next_domain}_launch_effect = yes
+\t\t}}
+\t}}
 }}"""
 
 
@@ -1986,6 +2129,11 @@ zg361cp.{mid} = {{
 \tdesc = zg361cp.{mid}.desc
 \ttrigger = {{
 {indent(event_guard(spec), 2)}
+\t}}
+\timmediate = {{
+\t\tscope:zg361_cp_{spec.domain}_subject = {{
+\t\t\tzg361_cp_clear_pending_player_event_effect = {{ EVENT = {mid} }}
+\t\t}}
 \t}}
 {indent(options)}
 }}"""

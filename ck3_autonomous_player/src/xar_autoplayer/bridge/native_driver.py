@@ -9237,7 +9237,7 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        """Read one paused, played-subject projects/metrics receipt."""
+        """Read one paused explicit-subject projects/metrics receipt."""
         starting = self.take_snapshot()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
@@ -9296,6 +9296,7 @@ class NativeHeadlessGameplayDriver:
             ),
             request_fields={
                 "owner_character_id": query.owner_character_id,
+                "subject_character_id": query.subject_character_id,
                 "request_nonce": query.request_nonce,
             },
         )

@@ -6,6 +6,7 @@
 # Freeze portfolio actors and finite books exactly once, then execute E -> I -> J -> R.
 zg361_cp_initialize_portfolio_effect = {
 	save_temporary_scope_as = zg361_cp_portfolio_subject_scope
+	remove_variable = zg361_cp_pending_player_event
 	set_variable = { name = zg361_cp_portfolio_subject value = this }
 	set_variable = { name = zg361_cp_portfolio_cycle value = root.var:zg361_review_serial }
 	root = { set_variable = { name = zg361_cp_manager_portfolio_cycle value = var:zg361_review_serial } }
@@ -134,6 +135,7 @@ zg361_cp_settle_deferred_portfolio_effect = {
 		set_variable = { name = zg361_cp_deferred_cleanup_status value = 2 }
 		set_variable = { name = zg361_cp_deferred_cleanup_settled_by value = root }
 		set_variable = { name = zg361_cp_deferred_cleanup_settled_cycle value = root.var:zg361_review_serial }
+		remove_variable = zg361_cp_pending_player_event
 	}
 	else_if = {
 		limit = {
@@ -195,6 +197,7 @@ zg361_cp_open_portfolio_effect = {
 }
 
 zg361_cp_finalize_portfolio_effect = {
+	remove_variable = zg361_cp_pending_player_event
 	set_variable = { name = zg361_cp_portfolio_closed value = 1 }
 	set_variable = { name = zg361_cp_final_owner value = var:zg361_case_r_owner }
 	set_variable = { name = zg361_cp_final_subject value = var:zg361_case_r_subject }
@@ -242,4 +245,381 @@ zg361_cp_finalize_portfolio_effect = {
 		set_variable = { name = zg361_cp_final_conservation_ok value = 1 }
 	}
 	debug_log = "ZG361CP: credit/project portfolio closed static runtime"
+}
+
+# Clear only the exact edge that actually entered; a newer cursor is never consumed.
+zg361_cp_clear_pending_player_event_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_pending_player_event
+			var:zg361_cp_pending_player_event = $EVENT$
+		}
+		remove_variable = zg361_cp_pending_player_event
+	}
+}
+
+# Recover a player D+1 edge from the persistent case tuple.  The first branch
+# is a narrow migration for the frozen post-.26 R296 checkpoint, which predates
+# the cursor but has an exact current .26 receipt and no current .27 receipt.
+zg361_cp_resume_pending_player_event_effect = {
+	if = {
+		limit = {
+			NOT = { has_variable = zg361_cp_pending_player_event }
+			has_variable = zg361_cp_portfolio_closed
+			var:zg361_cp_portfolio_closed = 0
+			has_variable = zg361_case_e_owner
+			has_variable = zg361_case_e_subject
+			has_variable = zg361_case_e_cycle_serial
+			has_variable = zg361_case_e_case_serial
+			has_variable = zg361_case_e_state
+			has_variable = zg361_case_e_active
+			var:zg361_case_e_owner = root
+			var:zg361_case_e_subject = this
+			var:zg361_case_e_state = 2
+			var:zg361_case_e_active = 1
+			OR = {
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_cp_m26_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_cp_m26_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_cp_m26_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_cp_m26_receipt_case
+					RECEIPT_STATE_VAR = zg361_cp_m26_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_cp_m26_receipt_choice
+					EXPECTED_OWNER = root
+					EXPECTED_SUBJECT = this
+					EXPECTED_CYCLE = var:zg361_case_e_cycle_serial
+					EXPECTED_CASE = var:zg361_case_e_case_serial
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 1
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_cp_m26_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_cp_m26_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_cp_m26_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_cp_m26_receipt_case
+					RECEIPT_STATE_VAR = zg361_cp_m26_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_cp_m26_receipt_choice
+					EXPECTED_OWNER = root
+					EXPECTED_SUBJECT = this
+					EXPECTED_CYCLE = var:zg361_case_e_cycle_serial
+					EXPECTED_CASE = var:zg361_case_e_case_serial
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 2
+				}
+				zg361_case_kernel_receipt_is_current_trigger = {
+					RECEIPT_OWNER_VAR = zg361_cp_m26_receipt_owner
+					RECEIPT_SUBJECT_VAR = zg361_cp_m26_receipt_subject
+					RECEIPT_CYCLE_VAR = zg361_cp_m26_receipt_cycle
+					RECEIPT_CASE_VAR = zg361_cp_m26_receipt_case
+					RECEIPT_STATE_VAR = zg361_cp_m26_receipt_state
+					RECEIPT_CHOICE_VAR = zg361_cp_m26_receipt_choice
+					EXPECTED_OWNER = root
+					EXPECTED_SUBJECT = this
+					EXPECTED_CYCLE = var:zg361_case_e_cycle_serial
+					EXPECTED_CASE = var:zg361_case_e_case_serial
+					EXPECTED_STATE = 1
+					EXPECTED_CHOICE = 3
+				}
+			}
+			NOT = {
+				OR = {
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_cp_m27_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_cp_m27_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_cp_m27_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_cp_m27_receipt_case
+						RECEIPT_STATE_VAR = zg361_cp_m27_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_cp_m27_receipt_choice
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_e_cycle_serial
+						EXPECTED_CASE = var:zg361_case_e_case_serial
+						EXPECTED_STATE = 2
+						EXPECTED_CHOICE = 1
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_cp_m27_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_cp_m27_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_cp_m27_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_cp_m27_receipt_case
+						RECEIPT_STATE_VAR = zg361_cp_m27_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_cp_m27_receipt_choice
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_e_cycle_serial
+						EXPECTED_CASE = var:zg361_case_e_case_serial
+						EXPECTED_STATE = 2
+						EXPECTED_CHOICE = 2
+					}
+					zg361_case_kernel_receipt_is_current_trigger = {
+						RECEIPT_OWNER_VAR = zg361_cp_m27_receipt_owner
+						RECEIPT_SUBJECT_VAR = zg361_cp_m27_receipt_subject
+						RECEIPT_CYCLE_VAR = zg361_cp_m27_receipt_cycle
+						RECEIPT_CASE_VAR = zg361_cp_m27_receipt_case
+						RECEIPT_STATE_VAR = zg361_cp_m27_receipt_state
+						RECEIPT_CHOICE_VAR = zg361_cp_m27_receipt_choice
+						EXPECTED_OWNER = root
+						EXPECTED_SUBJECT = this
+						EXPECTED_CYCLE = var:zg361_case_e_cycle_serial
+						EXPECTED_CASE = var:zg361_case_e_case_serial
+						EXPECTED_STATE = 2
+						EXPECTED_CHOICE = 3
+					}
+				}
+			}
+		}
+		set_variable = { name = zg361_cp_pending_player_event value = 27 }
+		debug_log = "ZG361CP: inferred missing post-m26 player edge"
+	}
+	if = {
+		limit = {
+			has_variable = zg361_cp_pending_player_event
+			has_variable = zg361_cp_portfolio_subject
+			has_variable = zg361_cp_portfolio_cycle
+			has_variable = zg361_cp_portfolio_closed
+			has_variable = zg361_cp_cross_reviewer
+			has_variable = zg361_cp_successor_manager
+			has_variable = zg361_cp_active_manager
+			has_variable = zg361_cp_historical_owner
+			var:zg361_cp_portfolio_subject = this
+			var:zg361_cp_portfolio_cycle = root.var:zg361_review_serial
+			var:zg361_cp_portfolio_closed = 0
+			root = { is_ai = no zg361_is_celestial_liege_trigger = yes }
+		}
+		if = {
+			limit = {
+				OR = {
+			var:zg361_cp_pending_player_event = 9050
+			var:zg361_cp_pending_player_event = 30
+			var:zg361_cp_pending_player_event = 26
+			var:zg361_cp_pending_player_event = 27
+			var:zg361_cp_pending_player_event = 9231
+			var:zg361_cp_pending_player_event = 28
+			var:zg361_cp_pending_player_event = 29
+			var:zg361_cp_pending_player_event = 9001
+				}
+				has_variable = zg361_case_e_owner
+				has_variable = zg361_case_e_subject
+				has_variable = zg361_case_e_cycle_serial
+				has_variable = zg361_case_e_case_serial
+				var:zg361_case_e_owner = root
+				var:zg361_case_e_subject = this
+			}
+			var:zg361_case_e_owner = { save_scope_as = zg361_cp_e_owner }
+			save_scope_as = zg361_cp_e_subject
+			var:zg361_cp_cross_reviewer = { save_scope_as = zg361_cp_e_cross_reviewer }
+			var:zg361_cp_successor_manager = { save_scope_as = zg361_cp_e_successor_manager }
+			var:zg361_cp_active_manager = { save_scope_as = zg361_cp_e_active_manager }
+			var:zg361_cp_historical_owner = { save_scope_as = zg361_cp_e_historical_owner }
+			save_scope_value_as = { name = zg361_cp_e_cycle value = var:zg361_case_e_cycle_serial }
+			save_scope_value_as = { name = zg361_cp_e_case value = var:zg361_case_e_case_serial }
+			if = {
+				limit = { var:zg361_cp_pending_player_event = 9050 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.9050 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 30 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.30 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 26 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.26 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 27 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.27 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9231 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.9231 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 28 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.28 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 29 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.29 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9001 }
+				scope:zg361_cp_e_owner = { trigger_event = { id = zg361cp.9001 } }
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+			var:zg361_cp_pending_player_event = 9261
+			var:zg361_cp_pending_player_event = 54
+			var:zg361_cp_pending_player_event = 9256
+			var:zg361_cp_pending_player_event = 9257
+			var:zg361_cp_pending_player_event = 9258
+			var:zg361_cp_pending_player_event = 59
+			var:zg361_cp_pending_player_event = 55
+			var:zg361_cp_pending_player_event = 60
+			var:zg361_cp_pending_player_event = 9002
+				}
+				has_variable = zg361_case_i_owner
+				has_variable = zg361_case_i_subject
+				has_variable = zg361_case_i_cycle_serial
+				has_variable = zg361_case_i_case_serial
+				var:zg361_case_i_owner = root
+				var:zg361_case_i_subject = this
+			}
+			var:zg361_case_i_owner = { save_scope_as = zg361_cp_i_owner }
+			save_scope_as = zg361_cp_i_subject
+			var:zg361_cp_cross_reviewer = { save_scope_as = zg361_cp_i_cross_reviewer }
+			var:zg361_cp_successor_manager = { save_scope_as = zg361_cp_i_successor_manager }
+			var:zg361_cp_active_manager = { save_scope_as = zg361_cp_i_active_manager }
+			var:zg361_cp_historical_owner = { save_scope_as = zg361_cp_i_historical_owner }
+			save_scope_value_as = { name = zg361_cp_i_cycle value = var:zg361_case_i_cycle_serial }
+			save_scope_value_as = { name = zg361_cp_i_case value = var:zg361_case_i_case_serial }
+			if = {
+				limit = { var:zg361_cp_pending_player_event = 9261 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.9261 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 54 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.54 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9256 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.9256 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9257 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.9257 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9258 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.9258 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 59 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.59 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 55 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.55 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 60 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.60 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9002 }
+				scope:zg361_cp_i_owner = { trigger_event = { id = zg361cp.9002 } }
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+			var:zg361_cp_pending_player_event = 9263
+			var:zg361_cp_pending_player_event = 9262
+			var:zg361_cp_pending_player_event = 9265
+			var:zg361_cp_pending_player_event = 64
+			var:zg361_cp_pending_player_event = 66
+			var:zg361_cp_pending_player_event = 67
+			var:zg361_cp_pending_player_event = 9268
+			var:zg361_cp_pending_player_event = 9003
+				}
+				has_variable = zg361_case_j_owner
+				has_variable = zg361_case_j_subject
+				has_variable = zg361_case_j_cycle_serial
+				has_variable = zg361_case_j_case_serial
+				var:zg361_case_j_owner = root
+				var:zg361_case_j_subject = this
+			}
+			var:zg361_case_j_owner = { save_scope_as = zg361_cp_j_owner }
+			save_scope_as = zg361_cp_j_subject
+			var:zg361_cp_cross_reviewer = { save_scope_as = zg361_cp_j_cross_reviewer }
+			var:zg361_cp_successor_manager = { save_scope_as = zg361_cp_j_successor_manager }
+			var:zg361_cp_active_manager = { save_scope_as = zg361_cp_j_active_manager }
+			var:zg361_cp_historical_owner = { save_scope_as = zg361_cp_j_historical_owner }
+			save_scope_value_as = { name = zg361_cp_j_cycle value = var:zg361_case_j_cycle_serial }
+			save_scope_value_as = { name = zg361_cp_j_case value = var:zg361_case_j_case_serial }
+			if = {
+				limit = { var:zg361_cp_pending_player_event = 9263 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.9263 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9262 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.9262 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9265 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.9265 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 64 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.64 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 66 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.66 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 67 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.67 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9268 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.9268 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9003 }
+				scope:zg361_cp_j_owner = { trigger_event = { id = zg361cp.9003 } }
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+			var:zg361_cp_pending_player_event = 9331
+			var:zg361_cp_pending_player_event = 129
+			var:zg361_cp_pending_player_event = 9334
+			var:zg361_cp_pending_player_event = 130
+			var:zg361_cp_pending_player_event = 132
+			var:zg361_cp_pending_player_event = 133
+				}
+				has_variable = zg361_case_r_owner
+				has_variable = zg361_case_r_subject
+				has_variable = zg361_case_r_cycle_serial
+				has_variable = zg361_case_r_case_serial
+				var:zg361_case_r_owner = root
+				var:zg361_case_r_subject = this
+			}
+			var:zg361_case_r_owner = { save_scope_as = zg361_cp_r_owner }
+			save_scope_as = zg361_cp_r_subject
+			var:zg361_cp_cross_reviewer = { save_scope_as = zg361_cp_r_cross_reviewer }
+			var:zg361_cp_successor_manager = { save_scope_as = zg361_cp_r_successor_manager }
+			var:zg361_cp_active_manager = { save_scope_as = zg361_cp_r_active_manager }
+			var:zg361_cp_historical_owner = { save_scope_as = zg361_cp_r_historical_owner }
+			save_scope_value_as = { name = zg361_cp_r_cycle value = var:zg361_case_r_cycle_serial }
+			save_scope_value_as = { name = zg361_cp_r_case value = var:zg361_case_r_case_serial }
+			if = {
+				limit = { var:zg361_cp_pending_player_event = 9331 }
+				scope:zg361_cp_r_owner = { trigger_event = { id = zg361cp.9331 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 129 }
+				scope:zg361_cp_r_owner = { trigger_event = { id = zg361cp.129 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 9334 }
+				scope:zg361_cp_r_owner = { trigger_event = { id = zg361cp.9334 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 130 }
+				scope:zg361_cp_r_owner = { trigger_event = { id = zg361cp.130 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 132 }
+				scope:zg361_cp_r_owner = { trigger_event = { id = zg361cp.132 } }
+			}
+			else_if = {
+				limit = { var:zg361_cp_pending_player_event = 133 }
+				scope:zg361_cp_r_owner = { trigger_event = { id = zg361cp.133 } }
+			}
+		}
+	}
 }

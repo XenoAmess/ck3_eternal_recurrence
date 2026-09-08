@@ -32,6 +32,11 @@ zg361cp.131 = {
 			}
 		}
 	}
+	immediate = {
+		scope:zg361_cp_r_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 131 }
+		}
+	}
 	option = {
 		name = zg361cp.131.a
 
@@ -62,6 +67,7 @@ zg361cp.131 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 129 } }
 			trigger_event = { id = zg361cp.129 days = 1 }
 		}
 	}
@@ -95,6 +101,7 @@ zg361cp.131 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 129 } }
 			trigger_event = { id = zg361cp.129 days = 1 }
 		}
 	}
@@ -120,6 +127,7 @@ zg361cp.131 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 129 } }
 			trigger_event = { id = zg361cp.129 days = 1 }
 		}
 	}
@@ -153,6 +161,11 @@ zg361cp.129 = {
 				EXPECTED_CASE = scope:zg361_cp_r_case
 				EXPECTED_STATE = 2
 			}
+		}
+	}
+	immediate = {
+		scope:zg361_cp_r_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 129 }
 		}
 	}
 	option = {
@@ -191,6 +204,7 @@ zg361cp.129 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 9334 } }
 			trigger_event = { id = zg361cp.9334 days = 1 }
 		}
 	}
@@ -230,6 +244,7 @@ zg361cp.129 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 9334 } }
 			trigger_event = { id = zg361cp.9334 days = 1 }
 		}
 	}
@@ -255,6 +270,7 @@ zg361cp.129 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 9334 } }
 			trigger_event = { id = zg361cp.9334 days = 1 }
 		}
 	}
@@ -290,6 +306,11 @@ zg361cp.134 = {
 			}
 		}
 	}
+	immediate = {
+		scope:zg361_cp_r_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 134 }
+		}
+	}
 	option = {
 		name = zg361cp.134.a
 
@@ -320,6 +341,7 @@ zg361cp.134 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 130 } }
 			trigger_event = { id = zg361cp.130 days = 1 }
 		}
 	}
@@ -353,6 +375,7 @@ zg361cp.134 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 130 } }
 			trigger_event = { id = zg361cp.130 days = 1 }
 		}
 	}
@@ -378,6 +401,7 @@ zg361cp.134 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 130 } }
 			trigger_event = { id = zg361cp.130 days = 1 }
 		}
 	}
@@ -411,6 +435,11 @@ zg361cp.130 = {
 				EXPECTED_CASE = scope:zg361_cp_r_case
 				EXPECTED_STATE = 3
 			}
+		}
+	}
+	immediate = {
+		scope:zg361_cp_r_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 130 }
 		}
 	}
 	option = {
@@ -449,6 +478,7 @@ zg361cp.130 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 132 } }
 			trigger_event = { id = zg361cp.132 days = 1 }
 		}
 	}
@@ -488,6 +518,7 @@ zg361cp.130 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 132 } }
 			trigger_event = { id = zg361cp.132 days = 1 }
 		}
 	}
@@ -513,6 +544,7 @@ zg361cp.130 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 132 } }
 			trigger_event = { id = zg361cp.132 days = 1 }
 		}
 	}
@@ -546,6 +578,11 @@ zg361cp.132 = {
 				EXPECTED_CASE = scope:zg361_cp_r_case
 				EXPECTED_STATE = 4
 			}
+		}
+	}
+	immediate = {
+		scope:zg361_cp_r_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 132 }
 		}
 	}
 	option = {
@@ -584,6 +621,7 @@ zg361cp.132 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 133 } }
 			trigger_event = { id = zg361cp.133 days = 1 }
 		}
 	}
@@ -623,6 +661,7 @@ zg361cp.132 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 133 } }
 			trigger_event = { id = zg361cp.133 days = 1 }
 		}
 	}
@@ -648,6 +687,7 @@ zg361cp.132 = {
 					trigger_else = { always = no }
 				}
 			}
+			scope:zg361_cp_r_subject = { set_variable = { name = zg361_cp_pending_player_event value = 133 } }
 			trigger_event = { id = zg361cp.133 days = 1 }
 		}
 	}
@@ -681,6 +721,11 @@ zg361cp.133 = {
 				EXPECTED_CASE = scope:zg361_cp_r_case
 				EXPECTED_STATE = 5
 			}
+		}
+	}
+	immediate = {
+		scope:zg361_cp_r_subject = {
+			zg361_cp_clear_pending_player_event_effect = { EVENT = 133 }
 		}
 	}
 	option = {

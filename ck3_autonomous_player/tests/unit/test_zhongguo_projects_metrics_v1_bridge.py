@@ -47,11 +47,27 @@ def _unavailable_identity() -> dict[str, object]:
     )}
 
 
+def _portfolio() -> dict[str, object]:
+    return {
+        "closed": _typed(1),
+        "cycle_serial": _typed(9),
+        "final_owner_character_id": _typed(147),
+        "final_subject_character_id": _typed(361),
+        "final_cycle_serial": _typed(9),
+        "final_case_serial": _typed(133),
+        "final_state": _typed(5),
+        "final_conservation_ok": _typed(1),
+        "pending_player_event": _unavailable(),
+        "provider_observed": True,
+    }
+
+
 def _native_frame() -> dict[str, object]:
     readiness = {
         key: True
         for key in (
             "player_subject_binding_ready", "owner_binding_ready",
+            "portfolio_observed", "portfolio_closed",
             "source_identity_ready", "result_identity_ready",
             "contribution_ready", "metrics_ready",
             "same_project_case_identity", "receipt_lineage_ready",
@@ -70,7 +86,9 @@ def _native_frame() -> dict[str, object]:
         "paused": True,
         "player_character_id": 361,
         "requested_owner_character_id": 147,
+        "requested_subject_character_id": 361,
         "checkpoint_state": "p3_result_committed",
+        "credit_project_portfolio": _portfolio(),
         "source_identity": identity,
         "result_identity": _identity(),
         "projects_metrics": {
@@ -99,7 +117,7 @@ def _native_frame() -> dict[str, object]:
             "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
             "backend_id": "ck3-1.19.0.6-native-zhongguo-projects-metrics-postcondition-v1",
             "consumer_id": "xar-autoplayer-zhongguo-projects-metrics-postcondition-v1",
-            "allowlist_id": "zg361-cp26-direct-p3m229-lineage-v2",
+            "allowlist_id": "zg361-cp-portfolio-cp26-direct-p3m229-lineage-v3",
             "variable_context_for_scope_rva": "0x3329A40",
             "variable_identifier_table_rva": "0x3B971A0",
             "variable_identifier_lookup_rva": "0x3B97020",
@@ -112,9 +130,9 @@ def _native_frame() -> dict[str, object]:
 
 
 def test_step_round_trip_and_malformed_prefix_fail_closed() -> None:
-    step = query_zhongguo_projects_metrics_v1_step(147, "projects.26")
+    step = query_zhongguo_projects_metrics_v1_step(147, 361, "projects.26")
     assert parse_query_zhongguo_projects_metrics_v1_step(step) == (
-        ZhongguoProjectsMetricsQueryV1(147, "projects.26")
+        ZhongguoProjectsMetricsQueryV1(147, 361, "projects.26")
     )
     assert parse_query_zhongguo_projects_metrics_v1_step(step + "-extra") is None
 
@@ -122,7 +140,7 @@ def test_step_round_trip_and_malformed_prefix_fail_closed() -> None:
 def test_native_frame_normalizes_and_satisfies_json_schema() -> None:
     normalized = normalize_native_zhongguo_projects_metrics_v1(
         _native_frame(),
-        expected_query=ZhongguoProjectsMetricsQueryV1(147, "projects.26"),
+        expected_query=ZhongguoProjectsMetricsQueryV1(147, 361, "projects.26"),
         expected_snapshot_revision=51,
         expected_date_raw=800,
         expected_player_character_id=361,
@@ -150,6 +168,8 @@ def test_direct_cp26_ready_p3_absent_frame_normalizes_and_satisfies_schema() -> 
     frame["readiness"] = {
         "player_subject_binding_ready": True,
         "owner_binding_ready": True,
+        "portfolio_observed": True,
+        "portfolio_closed": True,
         "source_identity_ready": True,
         "result_identity_ready": False,
         "contribution_ready": True,
@@ -162,7 +182,7 @@ def test_direct_cp26_ready_p3_absent_frame_normalizes_and_satisfies_schema() -> 
     }
     normalized = normalize_native_zhongguo_projects_metrics_v1(
         frame,
-        expected_query=ZhongguoProjectsMetricsQueryV1(147, "projects.26"),
+        expected_query=ZhongguoProjectsMetricsQueryV1(147, 361, "projects.26"),
         expected_snapshot_revision=51,
         expected_date_raw=800,
         expected_player_character_id=361,
@@ -172,6 +192,40 @@ def test_direct_cp26_ready_p3_absent_frame_normalizes_and_satisfies_schema() -> 
         "postcondition-v1.schema.json"
     ).read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator(schema).validate(normalized)
+
+
+def test_owner_played_can_observe_explicit_subject_portfolio_closure() -> None:
+    frame = _native_frame()
+    frame["player_character_id"] = 147
+    frame["checkpoint_state"] = "cp26_ready_p3_absent"
+    frame["result_identity"] = _unavailable_identity()
+    frame["projects_metrics"]["result_identity"] = _unavailable_identity()
+    frame["projects_metrics"]["metrics_result"] = {
+        "identity": _unavailable_identity(),
+        "source_contribution_receipt_id": _unavailable(),
+        "source_contribution_receipt_revision": _unavailable(),
+        "metrics_revision": _unavailable(),
+        "dictionary_key": _unavailable(),
+        "provider_observed": True,
+    }
+    frame["readiness"].update({
+        "player_subject_binding_ready": False,
+        "result_identity_ready": False,
+        "metrics_ready": False,
+        "same_project_case_identity": False,
+        "receipt_lineage_ready": False,
+        "result_operation_committed": False,
+        "ready": False,
+    })
+    normalized = normalize_native_zhongguo_projects_metrics_v1(
+        frame,
+        expected_query=ZhongguoProjectsMetricsQueryV1(147, 361, "projects.26"),
+        expected_snapshot_revision=51,
+        expected_date_raw=800,
+        expected_player_character_id=147,
+    )
+    assert normalized["readiness"]["portfolio_closed"] is True
+    assert normalized["readiness"]["player_subject_binding_ready"] is False
 
 
 def test_facade_binds_source_result_and_connection_generation() -> None:
@@ -205,8 +259,8 @@ def test_default_adapter_does_not_advertise_before_paused_live() -> None:
 
 class OptimizedContractTests(unittest.TestCase):
     def test_step_schema_facade_and_default_off(self) -> None:
-        query = ZhongguoProjectsMetricsQueryV1(147, "projects.26")
-        step = query_zhongguo_projects_metrics_v1_step(147, "projects.26")
+        query = ZhongguoProjectsMetricsQueryV1(147, 361, "projects.26")
+        step = query_zhongguo_projects_metrics_v1_step(147, 361, "projects.26")
         self.assertEqual(parse_query_zhongguo_projects_metrics_v1_step(step), query)
         normalized = normalize_native_zhongguo_projects_metrics_v1(
             _native_frame(), expected_query=query,

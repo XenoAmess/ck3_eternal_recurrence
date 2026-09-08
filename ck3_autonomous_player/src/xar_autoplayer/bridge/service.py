@@ -3178,14 +3178,21 @@ class GameplayBridgeService:
         *,
         expected_revision: int,
         owner_character_id: int,
+        subject_character_id: int | None = None,
     ) -> dict[str, object]:
-        """Read the paused player's correlated projects/metrics receipt."""
+        """Read one explicit subject's correlated projects/metrics receipt."""
         if (
             isinstance(owner_character_id, bool)
             or not isinstance(owner_character_id, int)
             or not 1 <= owner_character_id <= 2**31 - 1
         ):
             raise ValueError("owner_character_id must be a positive int32")
+        if subject_character_id is not None and (
+            isinstance(subject_character_id, bool)
+            or not isinstance(subject_character_id, int)
+            or not 1 <= subject_character_id <= 2**31 - 1
+        ):
+            raise ValueError("subject_character_id must be a positive int32")
         if (
             isinstance(expected_revision, bool)
             or not isinstance(expected_revision, int)
@@ -3231,8 +3238,23 @@ class GameplayBridgeService:
                 "ZhongGuo projects/metrics query lacks one stable "
                 "paused player binding"
             )
+        selected_subject_character_id = (
+            player_character_id
+            if subject_character_id is None
+            else subject_character_id
+        )
+        if (
+            selected_subject_character_id == owner_character_id
+            or player_character_id not in {
+                owner_character_id, selected_subject_character_id
+            }
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo projects/metrics query requires the paused player "
+                "to be either its explicit owner or subject"
+            )
         step = query_zhongguo_projects_metrics_v1_step(
-            owner_character_id, request_nonce
+            owner_character_id, selected_subject_character_id, request_nonce
         )
         query = parse_query_zhongguo_projects_metrics_v1_step(step)
         if query is None:  # pragma: no cover - builder/parser invariant
@@ -3349,7 +3371,7 @@ class GameplayBridgeService:
                 "date_raw": date_raw,
                 "paused": True,
                 "player_character_id": player_character_id,
-                "subject_character_id": player_character_id,
+                "subject_character_id": selected_subject_character_id,
                 "owner_character_id": owner_character_id,
                 "expected_revision": expected_revision,
             },

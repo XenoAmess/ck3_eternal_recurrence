@@ -277,12 +277,14 @@ def _ck3_query_zhongguo_projects_metrics_postcondition_v1(
     request_nonce: str,
     expected_revision: int,
     owner_character_id: int,
+    subject_character_id: int | None = None,
 ) -> dict[str, object]:
     """Observe one project's contribution-to-metrics receipt lineage."""
     return service.query_zhongguo_projects_metrics_postcondition_v1(
         request_nonce,
         expected_revision=expected_revision,
         owner_character_id=owner_character_id,
+        subject_character_id=subject_character_id,
     )
 
 
@@ -928,6 +930,7 @@ def create_server(driver: GameplayBridgeDriver):
         request_nonce: str,
         expected_revision: int,
         owner_character_id: int,
+        subject_character_id: int | None = None,
     ) -> dict[str, object]:
         """Read one correlated contribution-to-metrics business receipt."""
         return _ck3_query_zhongguo_projects_metrics_postcondition_v1(
@@ -935,6 +938,7 @@ def create_server(driver: GameplayBridgeDriver):
             request_nonce,
             expected_revision,
             owner_character_id,
+            subject_character_id,
         )
 
     @server.tool()

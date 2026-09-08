@@ -38,6 +38,9 @@ zg361cp.9261 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_i_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9261 }
+			}
 			if = {
 				limit = { scope:zg361_cp_i_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_i_subject = {
@@ -81,6 +84,7 @@ zg361cp.9261 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_i_subject = { set_variable = { name = zg361_cp_pending_player_event value = 54 } }
 				trigger_event = { id = zg361cp.54 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.61 } }
@@ -125,6 +129,9 @@ zg361cp.9256 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_i_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9256 }
+			}
 			if = {
 				limit = { scope:zg361_cp_i_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_i_subject = {
@@ -168,6 +175,7 @@ zg361cp.9256 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_i_subject = { set_variable = { name = zg361_cp_pending_player_event value = 9257 } }
 				trigger_event = { id = zg361cp.9257 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.56 } }
@@ -212,6 +220,9 @@ zg361cp.9257 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_i_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9257 }
+			}
 			if = {
 				limit = { scope:zg361_cp_i_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_i_subject = {
@@ -255,6 +266,7 @@ zg361cp.9257 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_i_subject = { set_variable = { name = zg361_cp_pending_player_event value = 9258 } }
 				trigger_event = { id = zg361cp.9258 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.57 } }
@@ -299,6 +311,9 @@ zg361cp.9258 = {
 					var:zg361_cp_player_batch_mode <= 3
 				}
 			}
+			scope:zg361_cp_i_subject = {
+				zg361_cp_clear_pending_player_event_effect = { EVENT = 9258 }
+			}
 			if = {
 				limit = { scope:zg361_cp_i_subject = { var:zg361_cp_player_batch_mode = 1 } }
 				scope:zg361_cp_i_subject = {
@@ -342,6 +357,7 @@ zg361cp.9258 = {
 						trigger_else = { always = no }
 					}
 				}
+				scope:zg361_cp_i_subject = { set_variable = { name = zg361_cp_pending_player_event value = 59 } }
 				trigger_event = { id = zg361cp.59 days = 1 }
 			}
 			else = { trigger_event = { id = zg361cp.58 } }

@@ -149,9 +149,10 @@ bool SkipJsonValue(std::string_view json, std::size_t &cursor) noexcept {
 }
 
 bool HasExactControlFields(std::string_view json) noexcept {
-  constexpr std::array<std::string_view, 7> fields{
+  constexpr std::array<std::string_view, 8> fields{
       "type", "protocol_version", "request_id", "step",
-      "expected_revision", "owner_character_id", "request_nonce"};
+      "expected_revision", "owner_character_id", "subject_character_id",
+      "request_nonce"};
   std::uint32_t seen = 0;
   std::size_t cursor = 0;
   SkipWhitespace(json, cursor);
@@ -267,6 +268,7 @@ bool ParseZhongguoProjectsMetricsPostconditionRequestV1(
   std::uint64_t protocol = 0;
   std::uint64_t revision = 0;
   std::uint64_t owner = 0;
+  std::uint64_t subject = 0;
   std::string type;
   std::string request_id;
   std::string step;
@@ -277,18 +279,22 @@ bool ParseZhongguoProjectsMetricsPostconditionRequestV1(
       !ParseStringField(json, "step", step) ||
       !ParseUnsignedField(json, "expected_revision", revision) ||
       !ParseUnsignedField(json, "owner_character_id", owner) ||
+      !ParseUnsignedField(json, "subject_character_id", subject) ||
       !ParseStringField(json, "request_nonce", nonce) ||
       type != "execute_step" || protocol != 1 || request_id.empty() ||
       request_id.size() > 256 ||
       step != kZhongguoProjectsMetricsPostconditionV1Step ||
-      revision == 0 || owner == 0 ||
+      revision == 0 || owner == 0 || subject == 0 || owner == subject ||
       owner > static_cast<std::uint64_t>(
                   (std::numeric_limits<std::int32_t>::max)()) ||
+      subject > static_cast<std::uint64_t>(
+                    (std::numeric_limits<std::int32_t>::max)()) ||
       !ValidNonce(nonce)) {
     return false;
   }
   output.expected_snapshot_revision = revision;
   output.owner_character_id = static_cast<std::int32_t>(owner);
+  output.subject_character_id = static_cast<std::int32_t>(subject);
   output.request_nonce = std::move(nonce);
   requested_owner_character_id = static_cast<std::int32_t>(owner);
   return true;
@@ -349,6 +355,8 @@ bool ExecuteZhongguoProjectsMetricsMailboxQueryV1(
         query->result.request_nonce == query->request.request_nonce &&
         query->result.requested_owner_character_id ==
             query->requested_owner_character_id &&
+        query->result.requested_subject_character_id ==
+            query->request.subject_character_id &&
         query->result.player_character_id ==
             query->expected_snapshot.played_character_id) {
       query->completion =
