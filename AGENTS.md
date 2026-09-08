@@ -5,17 +5,18 @@
 - `XenoAmess_s_Eternal_Recurrence/` — CK3 mod 源目录；正式发布只使用 `build_release.py` 生成的 staging
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
 - `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
+- `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图、日报、周报、月报与日/周计划会入口；能力状态必须回链原生专题与实机证据
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
-- 原版 Steam 创意工坊物品 id：**3784706360**；白绮独立版 id：**3787304042**；“肃清曼荼罗伪信”独立版 id：**3797711947**。
+- 原版 Steam 创意工坊物品 id：**3784706360**；白绮独立版 id：**3787304042**；“肃清曼荼罗伪信”独立版 id：**3797711947**；“XenoAmess的体验优化”独立版 id：**3798133925**。
   `remote_file_id` 的 canonical 副本**只能留在各自用户目录外层 .mod，不能同步进仓库内层 descriptor.mod**。
   启动器在首次/更新上传成功时都会把该字段临时写进 staging 内层 descriptor 并原样发布；上传前预存该字段仍会导致
   "Mod descriptor validation failed"。上传后必须重建 staging，恢复无 ID 的正式树。
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图用 mod 根目录的 `thumbnail.png`
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
-- 原版工坊描述维护在 `workshop/description.bbcode`；README 全量图、工坊精简图和六张 Steam media strip 的来源、裁切和 commit-pinned GitHub raw URL 规则见 `workshop/main_screenshots.md`。白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。“肃清曼荼罗伪信”独立版维护在 `workshop/remove_mandala_description.bbcode`，两张实机图顺序与发布证据在 `workshop/remove_mandala_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
+- 原版工坊描述维护在 `workshop/description.bbcode`；README 全量图、工坊精简图和六张 Steam media strip 的来源、裁切和 commit-pinned GitHub raw URL 规则见 `workshop/main_screenshots.md`。白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。“肃清曼荼罗伪信”独立版维护在 `workshop/remove_mandala_description.bbcode`，两张实机图顺序与发布证据在 `workshop/remove_mandala_screenshots.md`。“XenoAmess的体验优化”独立版维护在 `workshop/xenoamess_quality_of_life_description.bbcode`。改完描述到对应物品页「编辑标题与描述」整段替换
 
 ## Steam 创意工坊发布 Changelog
 
