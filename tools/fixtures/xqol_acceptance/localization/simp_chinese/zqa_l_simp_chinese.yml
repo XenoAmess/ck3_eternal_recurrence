@@ -1,0 +1,6 @@
+﻿l_simp_chinese:
+ zqa_acceptance:0 "生活质量实机验收"
+ zqa_initialize_decision:0 "开始生活质量实机验收"
+ zqa_initialize_decision_desc:0 "切换到 1066 年宋帝，并用真实行政头衔验证两个产品开关。"
+ zqa_initialize_decision_tooltip:0 "开始隔离验收。"
+ zqa_initialize_decision_confirm:0 "切换至宋帝"

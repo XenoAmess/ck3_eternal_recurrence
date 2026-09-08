@@ -1,0 +1,4 @@
+﻿zqa_acceptance = {
+	sort_order = 154
+	gui_tags = { big_button }
+}

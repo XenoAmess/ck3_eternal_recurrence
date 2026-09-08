@@ -1,0 +1,16 @@
+﻿zqa_initialize_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zqa_acceptance
+	sort_order = 1
+	ai_check_interval = 0
+	desc = zqa_initialize_decision_desc
+	selection_tooltip = zqa_initialize_decision_tooltip
+	is_shown = {
+		is_ai = no
+		NOT = { has_character_flag = zqa_initialize_pending }
+		NOT = { has_character_flag = zqa_fixture_initialized }
+	}
+	is_valid = { is_ai = no }
+	effect = { add_character_flag = zqa_initialize_pending }
+	ai_potential = { always = no }
+}

@@ -1,0 +1,39 @@
+﻿zqa_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_initialize_pending
+	}
+	effect = { zqa_initialize_effect = yes }
+}
+
+zqa_enabled_matrix_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_product_toggles
+		has_variable = xqol_auto_appoint_successors_enabled
+		has_variable = xqol_no_vassal_transfers_enabled
+	}
+	effect = { zqa_run_enabled_matrix_effect = yes }
+}
+
+zqa_death_matrix_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_death_settlement
+	}
+	effect = { zqa_verify_death_settlement_effect = yes }
+}
+
+zqa_disabled_matrix_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_product_disables
+		NOT = { has_variable = xqol_auto_appoint_successors_enabled }
+		NOT = { has_variable = xqol_no_vassal_transfers_enabled }
+	}
+	effect = { zqa_verify_disabled_matrix_effect = yes }
+}

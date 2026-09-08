@@ -1,0 +1,22 @@
+﻿xqol_supported_player_trigger = {
+	is_ai = no
+	is_ruler = yes
+	top_liege = this
+	OR = {
+		has_government = administrative_government
+		has_government = meritocratic_government
+		has_government = celestial_government
+	}
+}
+
+xqol_should_guard_vassal_transfer_trigger = {
+	exists = liege
+	liege = {
+		government_allows = administrative
+		exists = top_liege
+		top_liege = {
+			xqol_supported_player_trigger = yes
+			has_variable = xqol_no_vassal_transfers_enabled
+		}
+	}
+}
