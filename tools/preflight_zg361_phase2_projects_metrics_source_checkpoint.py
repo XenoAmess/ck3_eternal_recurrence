@@ -27,7 +27,10 @@ CONTRACT_PATH = (
 )
 MODULE_PATH = ROOT / "tools" / "zg361_phase2_projects_metrics_source_checkpoint.py"
 CP26_EVENT_PATH = (
-    ROOT / "mod_zhongguo_style" / "events" / "zg361_credit_project_runtime_events.txt"
+    ROOT
+    / "mod_zhongguo_style"
+    / "events"
+    / "zg361_credit_project_e_case_events.txt"
 )
 P3_EVENT_PATH = (
     ROOT
