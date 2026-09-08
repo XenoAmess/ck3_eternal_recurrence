@@ -60,5 +60,44 @@ MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2, 3),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "scope_variants": ({
+            # R335 exact source-authored partial selection. The event trigger
+            # guarantees three governors somewhere in the realm, but the
+            # developed_governors list used by immediate can contain only two
+            # eligible distinct entries. Vanilla's three-iteration while then
+            # saves only pairs 1/2; option C (native 2) is hidden. Preserve the
+            # same native-0 route, which still avoids damaging root's capital.
+            "saved_scope_names": (
+                "suggestor",
+                "minimum_development",
+                "governor_1",
+                "county_1",
+                "governor_2",
+                "county_2",
+            ),
+            "unique_character_scope_excludes": {
+                "suggestor": (29037,),
+                "governor_1": (29037,),
+                "governor_2": (29037,),
+            },
+            "character_scope_differs_from": {
+                "governor_1": ("governor_2",),
+                "governor_2": ("governor_1",),
+            },
+            "scope_types": {
+                "suggestor": "character",
+                "minimum_development": "value",
+                "governor_1": "character",
+                "county_1": "landed_title",
+                "governor_2": "character",
+                "county_2": "landed_title",
+            },
+            "saved_scope_count": 6,
+            "option_count": 3,
+            "snapshot_option_count": 4,
+            "native_option_indices": (0, 1, 3),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        },),
     },
 }

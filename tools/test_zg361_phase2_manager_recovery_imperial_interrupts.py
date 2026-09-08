@@ -34,7 +34,73 @@ def _capital_manpower_scopes() -> list[dict[str, object]]:
     ]
 
 
+def _capital_manpower_two_governor_scopes() -> list[dict[str, object]]:
+    return [
+        _scope("suggestor", "character", 29346),
+        _scope("minimum_development", "value"),
+        _scope("governor_1", "character", 30938),
+        _scope("county_1", "landed_title"),
+        _scope("governor_2", "character", 29348),
+        _scope("county_2", "landed_title"),
+    ]
+
+
 class ManagerRecoveryImperialInterruptTests(unittest.TestCase):
+    def test_capital_manpower_request_accepts_exact_two_governor_variant(
+        self,
+    ) -> None:
+        event_key = "ep3_emperor_yearly.8000"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=343,
+            date_raw=53219640,
+            player=32904,
+            scopes=_capital_manpower_two_governor_scopes(),
+            native_option_indices=(0, 1, 3),
+        )
+
+        def checks_for(
+            candidate: dict[str, object], *, snapshot_count: int = 4,
+        ) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53219640,
+                    "active_event": {"option_count": snapshot_count},
+                },
+                event={"event_instance_id": 343},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._scope_contract_for_context(
+            context["saved_scopes"], contract
+        )
+        self.assertEqual(effective["saved_scope_count"], 6)
+        self.assertEqual(effective["native_option_indices"], (0, 1, 3))
+        self.assertEqual(effective["selected_native_option_index"], 0)
+
+        collapsed = copy.deepcopy(context)
+        collapsed["saved_scopes"][4] = _scope(
+            "governor_2", "character", 30938
+        )
+        collapsed_checks = checks_for(collapsed)
+        self.assertFalse(collapsed_checks["scope:governor_1:differs_from"])
+        self.assertFalse(collapsed_checks["scope:governor_2:differs_from"])
+
+        governor_three_visible = copy.deepcopy(context)
+        governor_three_visible["options"][2]["native_option_index"] = 2
+        self.assertFalse(
+            checks_for(governor_three_visible)["authored_options_exact"]
+        )
+
+        self.assertFalse(checks_for(context, snapshot_count=3)[
+            "snapshot_option_count"
+        ])
+
     def test_capital_manpower_request_preserves_player_capital(self) -> None:
         event_key = "ep3_emperor_yearly.8000"
         contract = _manager_contract(event_key, player=32904)
