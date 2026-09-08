@@ -168,3 +168,36 @@ story；唯一 option 为空确认按钮。本修复没有修改选择路线。
 - 第五次 RED report 快照：11,866,743 bytes，SHA-256
   `2289414BE7CDA9C2E401AC70B4AF5897E281FB15DA8D81A43F38180DFEB3A8F4`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`，继续同 PID 热重试。
+
+## 同会话第六次 RED：宦官家族成员索要宫廷职位
+
+第五次 `retry` 热加载提交 `217e9468a2abfd57d187c0523574676b3d6d0355` 后，同一 PID
+`159264` 推进到 `ep3_story_cycle_admin_eunuch.2061`、event instance `363`、
+`date_raw=53239872`。本帧九项 scope 为
+`story/emperor/eunuch/admin_title/student/rival/positioner/candidate/liege`；
+其中 `positioner=candidate=31440`，`emperor=liege=32904`。旧合同尚未收录该原版
+事件，故在选择前 fail-closed。
+
+原版 `.2061` 先调用 shared story save effect，再从宦官近亲中选择没有宫廷职位的
+`positioner`，把其雇主改成玩家，并在该角色 scope 中调用
+`court_position_generator_effect`。因此 `candidate` 必须与 `positioner` 同一，
+`liege` 必须与玩家同一；`protege/student/rival` 来自 shared story，`old_holder`
+来自职位生成器，四者均为彼此独立的有限可选 scope。合同以七项基础集合加四项可选
+集合展开 16 个精确名称集合，未知超集仍拒绝；若 `old_holder` 存在，则不得与
+`candidate` 同一。
+
+native option 0 会正式任命家族成员，并可能撤换旧任；native option 1 拒绝请求、
+降低 story 进度，并把该家族成员送回宦官家主宫廷或角色池。合同选择副作用更窄的
+native option 1。该原版事件是五年 cooldown，不是整局一次，故 occurrence 采用
+`repeatable-within-product-observation-window`。
+
+- 第六次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-6.json`；
+- park SHA-256：
+  `D6F95C7715FDEFDC31BA5611223441B22946CA91A278DF8D27D81BD3D620A7BB`；
+- 第六次 RED report 快照：24,294,999 bytes，SHA-256
+  `2FB72391FE930503BD037F3EA2E8E99AD3B6B5835A794E740EA41F72A9E4230E`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，允许继续同 PID 热重试；
+- manager recovery 分片 normal / `python -O` 各 `45/45`（含一个环境 skip），
+  promotion source checkpoint runner normal / `python -O` 各 `83/83` GREEN。

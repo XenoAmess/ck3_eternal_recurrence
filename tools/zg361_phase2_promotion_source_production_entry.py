@@ -1484,6 +1484,71 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "ep3_story_cycle_admin_eunuch.2061": {
+        # CK3 1.19.0.6 family court-position demand. The immediate block moves
+        # a dynamic close family member to the player's court and runs the
+        # same position generator as .2060. Native option 0 appoints that
+        # person and can remove an old holder. Native option 1 refuses, then
+        # returns the person to the eunuch's house head or the pool. Bind the
+        # exact family/candidate alias and finite shared-story envelope before
+        # taking that narrower refusal route.
+        "date_raw": 53239872,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "emperor": 32904,
+            "liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (32904,),
+            "positioner": (32904,),
+        },
+        "character_scope_matches_any": {
+            "candidate": ("positioner",),
+            "positioner": ("candidate",),
+        },
+        "character_scope_differs_from": {
+            "eunuch": ("positioner",),
+            "positioner": ("eunuch",),
+        },
+        "optional_character_scope_differs_from": {
+            "old_holder": ("candidate",),
+        },
+        "scope_types": {
+            "story": "story",
+            "emperor": "character",
+            "eunuch": "character",
+            "admin_title": "landed_title",
+            "positioner": "character",
+            "candidate": "character",
+            "liege": "character",
+        },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
+            "old_holder": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": _optional_scope_name_sets(
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "positioner",
+                "candidate",
+                "liege",
+            ),
+            ("protege", "student", "rival", "old_holder"),
+        ),
+        "saved_scope_counts": (7, 8, 9, 10, 11),
+        "option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "ep3_story_cycle_admin_eunuch.2041": {
         # CK3 1.19.0.6 eunuch-family council-seat petition. The immediate
         # block has already selected/recruited the family candidate and saved
