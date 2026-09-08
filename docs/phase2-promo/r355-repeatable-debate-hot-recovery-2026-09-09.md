@@ -92,6 +92,28 @@ CK3。
 该变更仍只涉及外部 Python 合同和测试；保留同一 paused event，提交后热重载，
 不重启 CK3。
 
+## 同会话第十二次合同 RED：重复军事援助请求的完整按钮投影
+
+恢复期通知热通过后，PID `69176` 在 `date_raw=53262744`、event instance `509`
+再次收到 `tgp_interaction_event.0010`。MCP 帧的 root / recipient 均为玩家
+`32904`，动态 requester `actor=32350`、`joining_governor=32536`，其余三个
+interaction character slot 保持 typed-unavailable；`hook` 与 `dominant_family`
+仍为 boolean。八个 scope 的形状与先前合同一致，但这次三个 authored/native
+options `(0,1,2)` 全部显示，而 R295 当时因 option A 的参战条件不满足，只显示
+`(1,2)`。旧合同还把两次实见误当成整段时间线的上限，因此在合同检查前先报次数
+超限。
+
+原版 `celestial_request_military_aid_interaction` 只有 30 日 interaction cooldown；
+AI 成功请求后设置的是一年 cooldown，并没有整局次数上限，而且不同 governor
+可以分别发起请求。事件源码的 option A 是否显示取决于当前参战合法性；option B
+始终使用已保存的 joining governor 加入 requester 的战争并回信，仍是两个投影中
+共同的 bounded route。最小修复因此只接受精确 `(1,2)` 与 `(0,1,2)` 两种源码
+投影，继续选 authored 2 / native 1，并把 occurrence 改为受产品观察窗约束的可
+重复；scope 和人物关系没有放宽。
+
+这些仍是 CK3 外部合同改动。验证、rebase 和 push 后继续热恢复实例 `509`，不
+重启游戏。
+
 ## 同会话第四次合同 RED：年度总览跨域栈
 
 第三次热恢复越过原版预兆回复后，同一 PID 在 `date_raw=53247792`、event

@@ -59,6 +59,56 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
         self.assertEqual(contract["snapshot_option_count"], 3)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        all_routes_context = _context(
+            event_key=event_key,
+            instance_id=509,
+            date_raw=53262744,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 32350),
+                _scope("recipient", "character", 32904),
+                _scope("secondary_actor", "character", unavailable_character=True),
+                _scope(
+                    "secondary_recipient", "character", unavailable_character=True
+                ),
+                _scope("intermediary", "character", unavailable_character=True),
+                _scope("hook", "boolean"),
+                _scope("dominant_family", "boolean"),
+                _scope("joining_governor", "character", 32536),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        all_routes_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53262744,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 509},
+            context=all_routes_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(all_routes_checks.values()), all_routes_checks)
+
+        wrong_order = copy.deepcopy(all_routes_context)
+        wrong_order["options"][1]["native_option_index"] = 2
+        wrong_order_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53262744,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 509},
+            context=wrong_order,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(wrong_order_checks["authored_options_exact"])
 
     def test_military_budget_renewal_keeps_current_allocation(self) -> None:
         event_key = "tgp_china_ministry.0100"
