@@ -173,5 +173,41 @@ MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
         "max_occurrences": 2,
+        "scope_variants": ({
+            # R341 observed the source-authored secret-birth frame with no
+            # resolvable assumed father: pregnancy_maintainance_effect carries
+            # new_secret, father remains an unavailable weak character, and
+            # birth.1010 cannot synthesize spouse_of_mother because neither a
+            # primary spouse nor an assumed child father exists. The sole
+            # option is still the same inert naming acknowledgement.
+            "saved_scope_names": (
+                "child",
+                "father",
+                "real_father",
+                "mother",
+                *_BIRTH_BOOLEAN_SCOPES,
+                "new_secret",
+            ),
+            "character_scopes": {},
+            "unavailable_character_scopes": ("father",),
+            "unique_character_scope_excludes": {
+                "child": (29037,),
+                "real_father": (29037,),
+                "mother": (29037,),
+            },
+            "character_scope_matches_any": {},
+            "character_scope_differs_from": {
+                "child": ("real_father", "mother"),
+                "mother": ("real_father", "child"),
+            },
+            "scope_types": {
+                "child": "character",
+                "father": "character",
+                "real_father": "character",
+                "mother": "character",
+                "new_secret": "secret",
+            },
+            "saved_scope_count": 8,
+        },),
     },
 }

@@ -1008,6 +1008,104 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:real_father:matches_any"])
 
+    def test_dynasty_birth_notice_accepts_bound_unmarried_secret_frame(self) -> None:
+        event_key = "birth.1010"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=209,
+            date_raw=53213208,
+            player=32904,
+            scopes=[
+                _scope("child", "character", 16842384),
+                _scope(
+                    "father",
+                    "character",
+                    unavailable_character=True,
+                ),
+                _scope("real_father", "character", 36350),
+                _scope("mother", "character", 37337),
+                _scope("is_bastard", "boolean"),
+                _scope("is_child_of_concubine", "boolean"),
+                _scope("matrilineal", "boolean"),
+                _scope("new_secret", "secret"),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53213208,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 209},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        variant = contract["scope_variants"][0]
+        self.assertEqual(variant["unavailable_character_scopes"], ("father",))
+        self.assertEqual(variant["scope_types"]["new_secret"], "secret")
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][1] = _scope("father", "character", 36350)
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53213208,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 209},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:father:unavailable_character"])
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][-1] = _scope("new_secret", "flag")
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53213208,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 209},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:new_secret:type"])
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"].pop()
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53213208,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 209},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["saved_scope_names_exact"])
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"].append(
+            _scope("spouse_of_mother", "character", 36350)
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53213208,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 209},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["saved_scope_names_exact"])
+
     def test_epidemic_notice_avoids_physician_followup_chain(self) -> None:
         event_key = "epidemic_events.1100"
         contract = _manager_contract(event_key, player=32904)
