@@ -100,9 +100,16 @@ class AcceptanceCoverageTests(unittest.TestCase):
             "run_ox_here_loc_smoke.py",
             "run_zhongguo_acceptance.py",
         ):
-            calls = _calls(_function(filename, "main"))
+            main = _function(filename, "main")
+            direct_preflight_calls = [
+                call
+                for call in ast.walk(main)
+                if isinstance(call, ast.Call)
+                and isinstance(call.func, ast.Name)
+                and call.func.id == "preflight"
+            ]
             self.assertEqual(
-                sum(name == "preflight" for _, name in calls),
+                len(direct_preflight_calls),
                 1,
                 f"{filename}.main must invoke its own preflight once",
             )
