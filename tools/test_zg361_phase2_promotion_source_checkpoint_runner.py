@@ -4467,6 +4467,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "health.3104",
             "health.1101",
             "health.1006",
+            "epidemic_events.1050",
         }
         self.assertEqual(
             set(MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS),
@@ -5070,6 +5071,85 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         wrong_scope_type = copy.deepcopy(context)
         wrong_scope_type["saved_scopes"][0]["scope"]["type_key"] = "flag"
         self.assertFalse(checks_for(wrong_scope_type)["scope:epidemic:type"])
+
+    def test_epidemic_1050_binds_plague_cult_containment_branch(self) -> None:
+        def scope(
+            name: str, type_key: str, character_id: int | None = None
+        ) -> dict[str, object]:
+            value: dict[str, object] = {
+                "status": "available",
+                "type_key": type_key,
+            }
+            if character_id is not None:
+                value["typed_identity"] = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {"name": name, "scope": value}
+
+        event_key = "epidemic_events.1050"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 238,
+            "date_raw": 53243952,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("epidemic", "epidemic"),
+                scope("epidemic_scope", "epidemic"),
+                scope("chaplain", "character", 29889),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53243952, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 238}
+        contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_chaplain = copy.deepcopy(context)
+        wrong_chaplain["saved_scopes"][-1] = scope(
+            "chaplain", "character", 32904
+        )
+        self.assertFalse(
+            checks_for(wrong_chaplain)["scope:chaplain:unique_third_party"]
+        )
+
+        wrong_epidemic_type = copy.deepcopy(context)
+        wrong_epidemic_type["saved_scopes"][1]["scope"]["type_key"] = "value"
+        self.assertFalse(
+            checks_for(wrong_epidemic_type)["scope:epidemic_scope:type"]
+        )
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][-1]["native_option_index"] = 3
+        self.assertFalse(checks_for(wrong_projection)["authored_options_exact"])
 
     def test_slander_reaction_accepts_both_source_boolean_shapes(self) -> None:
         def scope(

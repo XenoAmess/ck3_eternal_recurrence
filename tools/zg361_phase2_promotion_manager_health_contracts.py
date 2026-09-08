@@ -331,4 +331,38 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_option_number": 4,
         "selected_native_option_index": 3,
     },
+    "epidemic_events.1050": {
+        # R293 exact plague-cult warning. Vanilla has already selected the
+        # active epidemic and court chaplain before the window opens. Native
+        # option 0 deterministically suppresses the cult and reduces epidemic
+        # travel danger; native option 1 can fail into the cult modifier, and
+        # native option 2 always creates it. Bind the two epidemic scopes, the
+        # live chaplain, and the complete 0/1/2 projection before choosing the
+        # deterministic containment branch.
+        "date_raw": 53243952,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "chaplain": 29889,
+        },
+        "unique_character_scope_excludes": {
+            "chaplain": (32904,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "epidemic_scope": "epidemic",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "epidemic_scope",
+            "chaplain",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
 }
