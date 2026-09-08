@@ -372,6 +372,60 @@ def click_decision(title: str, confirm_label: str, artifacts: Path, stem: str) -
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
 
 
+def settle_queued_death_succession(
+    service: GameplayBridgeService,
+    stream: MarkerStream,
+    artifacts: Path,
+    timeout_s: float = 45,
+) -> dict[str, object]:
+    """Advance the paused map until CK3 applies its queued death title change."""
+
+    before = service.snapshot()
+    if before.get("paused") is not True:
+        raise acceptance.RunnerError("death-settlement precondition is not paused")
+    resume_ack = service.execute_step(
+        "resume-map", expected_revision=int(before["revision"])
+    )
+    wait_error: BaseException | None = None
+    try:
+        stream.wait("ZQA: TEST PASS ready_for_product_disable_decisions", timeout_s)
+    except BaseException as error:
+        wait_error = error
+
+    running = service.snapshot()
+    pause_ack: dict[str, object] | None = None
+    paused = running
+    if running.get("paused") is not True:
+        pause_ack = service.execute_step(
+            "pause-map", expected_revision=int(running["revision"])
+        )
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            paused = service.snapshot()
+            if paused.get("paused") is True:
+                break
+            time.sleep(0.1)
+        else:
+            raise acceptance.RunnerError("death-settlement map did not pause")
+
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if wait_error is None else "RED",
+        "reason": "advance paused simulation so CK3 can apply queued death succession",
+        "before": before,
+        "resume_ack": resume_ack,
+        "after_running": running,
+        "pause_ack": pause_ack,
+        "after_paused": paused,
+        "marker_observed": wait_error is None,
+        "error": None if wait_error is None else str(wait_error),
+    }
+    write_json(artifacts / "09_death_settlement_tick.json", evidence)
+    if wait_error is not None:
+        raise wait_error
+    return evidence
+
+
 def project_diagnostics(userdir: Path, artifacts: Path) -> list[str]:
     blocking: list[str] = []
     for name in ("error.log", "gui_warnings.log", "database_conflicts.log"):
@@ -398,7 +452,8 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
 
     click_decision("开启自动选择继任", "唯才是举", artifacts, "07_enable_appointment")
     click_decision("开启：别把封臣给我", "各安其位", artifacts, "08_enable_transfer_guard")
-    stream.wait("ZQA: TEST PASS ready_for_product_disable_decisions", 45)
+    stream.wait("ZQA: TEST PASS removal_transferred_to_scored_heir", 45)
+    death_settlement = settle_queued_death_succession(service, stream, artifacts)
     enabled = service.snapshot()
     write_json(artifacts / "09_mcp_enabled_matrix_complete.json", enabled)
     acceptance.ImageGrab.grab().save(artifacts / "09_enabled_matrix_complete.png")
@@ -420,7 +475,8 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     stream.validate()
     return {
         "mcp_first": True,
-        "mcp_controlled_operations": ["readiness", "snapshot-before", "snapshot-after-enable", "snapshot-final", "pause-map-if-needed"],
+        "mcp_controlled_operations": ["readiness", "snapshot-before", "resume-death-settlement", "pause-after-death-settlement", "snapshot-after-enable", "snapshot-final", "pause-map-if-needed"],
+        "death_settlement": death_settlement,
         "fixture_fallback_reason": "the current MCP schema does not expose CK3 succession appointment scores, character variables, or character flags",
         "fixture_engine_assertions": list(REQUIRED_MARKERS),
         "initial_snapshot_id": before.get("snapshot_id"),

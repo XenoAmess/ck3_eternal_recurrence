@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 import run_acceptance as acceptance
@@ -52,6 +53,37 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("has_variable = zqa_death_successor", death_gui)
         self.assertIn("holder = root.var:zqa_death_successor", death_gui)
         self.assertIn("NOT = { holder = root }", death_gui)
+
+    def test_queued_death_settlement_advances_and_repauses_map(self) -> None:
+        service = mock.Mock()
+        service.snapshot.side_effect = [
+            {"paused": True, "revision": 10, "date_raw": 100},
+            {"paused": False, "revision": 12, "date_raw": 101},
+            {"paused": True, "revision": 14, "date_raw": 101},
+        ]
+        service.execute_step.side_effect = [
+            {"accepted": True, "step": "resume-map"},
+            {"accepted": True, "step": "pause-map"},
+        ]
+        stream = mock.Mock()
+
+        with tempfile.TemporaryDirectory() as raw:
+            evidence = xqol.settle_queued_death_succession(
+                service, stream, Path(raw)
+            )
+
+        stream.wait.assert_called_once_with(
+            "ZQA: TEST PASS ready_for_product_disable_decisions", 45
+        )
+        self.assertEqual(
+            service.execute_step.call_args_list,
+            [
+                mock.call("resume-map", expected_revision=10),
+                mock.call("pause-map", expected_revision=12),
+            ],
+        )
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertTrue(evidence["after_paused"]["paused"])
 
 
 if __name__ == "__main__":
