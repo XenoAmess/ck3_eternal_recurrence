@@ -29,6 +29,10 @@ REPORT = Path("Z:/p2r248restore/report.json")
 REPORT_SHA256 = (
     "DAFADC56F489226BD5C4FBC57C9C236DB119FD54ED663B083ABCCBDBE3FF968D"
 )
+R352_REPORT = Path("Z:/ck3_mod_rewrite/_runtime/p2r352endgamesource/report.json")
+R352_REPORT_SHA256 = (
+    "152A102810E1F71CDB0DBB7B17E82BEC33B25BF6D168548CACAEFC6B1B1D0BB0"
+)
 EVENT_SOURCE_SHA256 = (
     "31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7"
 )
@@ -42,7 +46,10 @@ def _sha256(path: Path) -> str:
 
 
 def _extract_block(source: str, header: str) -> str:
-    header_index = source.index(header)
+    match = re.search(rf"(?m)^{re.escape(header)}", source)
+    if match is None:
+        raise AssertionError(f"source header not found: {header}")
+    header_index = match.start()
     open_index = source.index("{", header_index + len(header))
     depth = 0
     for index in range(open_index, len(source)):
@@ -136,7 +143,11 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
 
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["root_character_id"], 32904)
-        self.assertEqual(contract["character_scopes"], {"dead_character": 67046})
+        self.assertEqual(contract["character_scopes"], {})
+        self.assertEqual(
+            contract["unique_character_scope_excludes"],
+            {"dead_character": (32904,)},
+        )
         self.assertEqual(contract["saved_scope_count"], 4)
         self.assertEqual(contract["snapshot_option_count"], 4)
         self.assertEqual(contract["native_option_indices"], (3,))
@@ -168,11 +179,13 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
         event = {"event_instance_id": 202}
 
         variants = []
-        wrong_child = copy.deepcopy(context)
-        wrong_child["saved_scopes"][1] = _scope(
-            "dead_character", "character", 67047
+        root_as_dead_child = copy.deepcopy(context)
+        root_as_dead_child["saved_scopes"][1] = _scope(
+            "dead_character", "character", 32904
         )
-        variants.append((wrong_child, "scope:dead_character"))
+        variants.append(
+            (root_as_dead_child, "scope:dead_character:unique_third_party")
+        )
         wrong_memory_type = copy.deepcopy(context)
         wrong_memory_type["saved_scopes"][0] = _scope(
             "new_memory", "value"
@@ -196,7 +209,93 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
                 )
                 self.assertFalse(checks[failed_check])
 
-    def test_ck3_11906_minor_child_option_is_the_only_matching_route(self) -> None:
+    def test_r352_adult_loved_child_variant_matches_exact_live_frame(self) -> None:
+        contract = _manager_contract("death_management.1001", player=32904)
+        context = _context(
+            event_key="death_management.1001",
+            instance_id=215,
+            date_raw=53225400,
+            player=32904,
+            scopes=[
+                _scope("new_memory", "character_memory"),
+                _scope("dead_character", "character", 37337),
+                _scope("deceased_character_stress", "value"),
+                _scope("realm", "landed_title"),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53225400,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 215},
+            context=context,
+            event_key="death_management.1001",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._option_contract_for_context(
+            context["options"], contract
+        )
+        self.assertEqual(effective["native_option_indices"], (0,))
+        self.assertEqual(effective["selected_option_number"], 1)
+        self.assertEqual(effective["selected_native_option_index"], 0)
+
+        adult_neutral = copy.deepcopy(context)
+        adult_neutral["options"][0]["native_option_index"] = 1
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53225400,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 215},
+            context=adult_neutral,
+            event_key="death_management.1001",
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
+    def test_r352_report_preserves_pre_selection_contract_drift(self) -> None:
+        if not R352_REPORT.is_file():
+            self.skipTest("R352 report is not present on this machine")
+        self.assertEqual(_sha256(R352_REPORT), R352_REPORT_SHA256)
+        payload = json.loads(R352_REPORT.read_text(encoding="utf-8-sig"))
+        failure = payload["typed_failure"]
+        context = failure["query"]["current_event_window_context"]
+
+        self.assertEqual(failure["event_definition_key"], "death_management.1001")
+        self.assertEqual(failure["failed_checks"], [
+            "authored_options_exact",
+            "scope:dead_character",
+        ])
+        self.assertIs(failure["selection_attempted"], False)
+        self.assertEqual(
+            context["root_scope"]["typed_identity"]["character_id"], 32904
+        )
+        dead_scope = next(
+            row for row in context["saved_scopes"]
+            if row["name"] == "dead_character"
+        )
+        self.assertEqual(
+            dead_scope["scope"]["typed_identity"]["character_id"], 37337
+        )
+        self.assertEqual(
+            [row["native_option_index"] for row in context["options"]],
+            [0],
+        )
+
+        checks = production._known_interrupt_checks(
+            snapshot=failure["snapshot"],
+            event=failure["event"],
+            context=context,
+            event_key="death_management.1001",
+            contract=_manager_contract("death_management.1001", player=32904),
+        )
+        self.assertTrue(all(checks.values()), checks)
+
+    def test_ck3_11906_child_dispatch_and_observed_routes_match_source(self) -> None:
         event_source = _ck3_source(
             "events/death_events/death_management_events.txt"
         )
@@ -211,14 +310,44 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
         self.assertEqual(
             _sha256(localization_source), ENGLISH_LOCALIZATION_SHA256
         )
-        event_block = _extract_block(
-            event_source.read_text(encoding="utf-8-sig"),
-            "death_management.1001 =",
+        source = event_source.read_text(encoding="utf-8-sig")
+        death_dispatch = _extract_block(source, "death_management.0001 =")
+        normalized_dispatch = " ".join(death_dispatch.split())
+        for required in (
+            "save_scope_as = dead_character",
+            "every_parent = {",
+        ):
+            self.assertIn(required, normalized_dispatch)
+        notification_dispatch = _extract_block(
+            source, "death_management.0002 ="
         )
+        normalized_notification = " ".join(notification_dispatch.split())
+        for required in (
+            "any_child = { even_if_dead = yes this = scope:dead_character }",
+            "trigger_event = death_management.1001",
+        ):
+            self.assertIn(required, normalized_notification)
+
+        event_block = _extract_block(source, "death_management.1001 =")
         self.assertEqual(
             len(re.findall(r"(?m)^\toption\s*=\s*\{", event_block)),
             4,
         )
+        adult_loved_route = _extract_block(
+            event_block[event_block.index("#Good child"):],
+            "\toption =",
+        )
+        adult_loved_normalized = " ".join(adult_loved_route.split())
+        for required in (
+            "is_adult = yes",
+            "target = scope:dead_character",
+            "value >= 40",
+            "name = death_management.1001.a",
+            "base = medium_stress_impact_gain",
+            "TARGET = scope:dead_character",
+            "FLAG = child",
+        ):
+            self.assertIn(required, adult_loved_normalized)
         minor_route = _extract_block(
             event_block[event_block.index("#Little child..."):],
             "\toption =",

@@ -46,17 +46,21 @@ MANAGER_DEATH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
     },
     "death_management.1001": {
         # Vanilla child-death notification.  CK3 1.19.0.6 authors four
-        # mutually exclusive options: the first three require an adult child,
-        # while option 4 is the only route for a minor.  R248 observed exactly
-        # that minor-child shape.  The unavoidable route records the deceased
-        # child for a possible mental break and adds medium stress, reduced to
-        # minor stress only when ROOT already has at least ten children.
+        # mutually exclusive options: the first three require an adult child
+        # and split on ROOT's opinion of that child, while option 4 is the only
+        # route for a minor. R248 observed the minor-child/native-3 shape;
+        # R352 observed an adult child with opinion >= 40 and therefore only
+        # native 0. death_management.0001 dynamically carries the dying
+        # character into dead_character, then .0002 dispatches .1001 only from
+        # a parent for whom that character is a child, so bind the exact typed
+        # third-party role instead of one historical child's numeric ID. Both
+        # observed routes record the deceased child for a possible mental
+        # break and impose the source-authored stress effect; neither frame
+        # exposes a less disruptive alternative.
         "date_raw": 53201424,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
-        "character_scopes": {
-            "dead_character": 67046,
-        },
+        "character_scopes": {},
         "unique_character_scope_excludes": {
             "dead_character": (32904,),
         },
@@ -79,6 +83,13 @@ MANAGER_DEATH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (3,),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+        "option_variants": ({
+            "option_count": 1,
+            "snapshot_option_count": 4,
+            "native_option_indices": (0,),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        },),
         "max_occurrences": 1,
     },
 }
