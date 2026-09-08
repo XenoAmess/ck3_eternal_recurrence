@@ -211,15 +211,16 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
+- **本项目严禁 merge，只允许 rebase。** 禁止执行 `git merge`、会产生 merge commit 的 `git pull`，以及任何其他合并提交；同步远端必须先 `git fetch`，再以 `git rebase origin/master`（或等效的 `git pull --rebase`）线性重放本地提交，复测后仅作普通 fast-forward push。遇到并发推送或冲突也必须继续走 rebase，不能用 merge 绕过。
 - **工作包一次验证、立即交付。** 每个独立工作包只做一次与风险相称且必要的验证；验证通过或形成可复现的 RED 证据后，立即提交到主线并普通 fast-forward 推送，然后继续下一个工作包。除非出现改变结论的新证据或用户明确要求，不重复同一验证，也不把等待人工复核当作停工条件。
-- **少分支、快合主线。** 默认直接从最新 `origin/master` 工作；只有真实隔离、并发冲突或高风险 live 实验才创建短期分支。短期分支完成后尽快合入 `master`，CI 进入终态后立即删除 local/remote ref；不得为了保存过程、形式审查或“以后可能有用”长期保留游离开发分支。
+- **少分支、快回主线。** 默认直接从最新 `origin/master` 工作；只有真实隔离、并发冲突或高风险 live 实验才创建短期分支。短期分支完成后必须 rebase 到最新 `master` 并以 fast-forward 方式回到主线，CI 进入终态后立即删除 local/remote ref；不得为了保存过程、形式审查或“以后可能有用”长期保留游离开发分支。
 - **子进程 429 直接复用。** 子进程因服务端 `429` 中断时，先用原任务线程/工作树复用并继续执行，不把 429 当作任务失败或终止；必要时再把同一 bounded 工作包转移给本地执行或另一可用线程，并保留已取得的证据，禁止从头重复无变化的验证。
 - `origin/master` 是唯一集成真相，默认从最新 master 直接开发。只有具体隔离、真实并发或高风险 live 理由才建
   `wip/<topic>`；必要发布线才用 `release/<product>-<version>`。分支必须登记 reason/base/owner/acceptance/deadline，
-  成品及时合入，等待 exact master SHA 官方 CI GREEN 后删除 local + remote ref。
+  成品及时 rebase 到最新主线并 fast-forward 更新 `master`，等待 exact master SHA 官方 CI GREEN 后删除 local + remote ref。
 - **谨慎创建 Git 分支不等于限制 Agent 子线程。** 能按文件所有权、运行现场或依赖边界安全拆分的工作应主动使用多 Agent
   并行；各线程仍共同服务于 `master`，可在同一工作树修改互不重叠文件，或使用基于 exact master 的 detached worktree。
-  detached worktree 不是新分支；若产生提交，必须尽快回合 `master`，不得因此保留长期游离 ref。
+  detached worktree 不是新分支；若产生提交，必须尽快 rebase 到最新 `master` 并 fast-forward 更新主线，不得因此保留长期游离 ref。
 - 禁止 force-push。并发推送先 fetch/复核 remote master；远端移动时停止 push，rebase 到新 master、复测后普通 fast-forward push。
 - 冻结 evidence 使用 detached HEAD 与根目录 `.xar-frozen-evidence.json`；不得把历史 runtime clone 当开发线。仅当写 marker 会
   改变所有者已冻结的 dirty tree 时，才可用记录 exact HEAD/status/diff hash 的中央 machine-readable ledger 代替。删除 branch ref
