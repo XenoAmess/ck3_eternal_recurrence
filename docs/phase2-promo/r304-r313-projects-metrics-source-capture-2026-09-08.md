@@ -87,3 +87,5 @@ R313 cleanup 为 `GREEN`，failed checks 为空；唯一 PID lineage 为 `199252
 本轮只把 source evidence 从 `1/4` 推进到 `2/4`，所以既有项目口径保持不变：T0 `50%`、strict scene `4/361`、full-tree definition `106/626`、stage `8/11`、宣传 footage `0/8`、MP4 `0/2`。T1 仍为 `90%`，T2 current horizon 仍为 `100%`，总体仍为 `67.5%`；T0-P2 继续 `LOCKED`，最终宣传视频尚未开始。
 
 下一工作包按 canonical 顺序进入 `capture_incidents_operations`：先复用当前 schema-2 registry/assembler 合同与 native MCP 换人链建立 no-launch readiness，再串行取得真实 paused incidents/operations source frame，使 source registry 从 `2/4` 推进到 `3/4`。
+
+本工作包的实现、合同、测试与报告已由 commit `4eec135540f51ed2f51879a8aa49a0ae3bcf789f` 普通 fast-forward push 到 `origin/master`；同步流程仅使用 fetch/rebase，没有 merge 或 force-push。
