@@ -1,6 +1,7 @@
 #include "xar_bridge/protocol.hpp"
 
 #include <array>
+#include <charconv>
 #include <limits>
 #include <utility>
 #include <vector>
@@ -93,6 +94,43 @@ bool JsonStringField(std::string_view json, std::string_view key,
     return false;
   }
   output.assign(value);
+  return true;
+}
+
+bool JsonUnsignedField(std::string_view json, std::string_view key,
+                       std::uint64_t &output) noexcept {
+  std::string needle = "\"";
+  needle += key;
+  needle += "\":";
+  const std::size_t begin = json.find(needle);
+  if (begin == std::string_view::npos) {
+    return false;
+  }
+  std::size_t value_begin = begin + needle.size();
+  while (value_begin < json.size() &&
+         (json[value_begin] == ' ' || json[value_begin] == '\t' ||
+          json[value_begin] == '\r' || json[value_begin] == '\n')) {
+    ++value_begin;
+  }
+  std::size_t value_end = value_begin;
+  while (value_end < json.size() && json[value_end] >= '0' &&
+         json[value_end] <= '9') {
+    ++value_end;
+  }
+  if (value_end == value_begin ||
+      (value_end < json.size() && json[value_end] != ',' &&
+       json[value_end] != '}' && json[value_end] != ' ' &&
+       json[value_end] != '\t' && json[value_end] != '\r' &&
+       json[value_end] != '\n')) {
+    return false;
+  }
+  std::uint64_t parsed_value = 0;
+  const auto parsed = std::from_chars(json.data() + value_begin,
+                                      json.data() + value_end, parsed_value);
+  if (parsed.ec != std::errc{} || parsed.ptr != json.data() + value_end) {
+    return false;
+  }
+  output = parsed_value;
   return true;
 }
 

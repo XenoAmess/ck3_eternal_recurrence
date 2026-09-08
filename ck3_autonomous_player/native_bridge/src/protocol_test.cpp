@@ -70,6 +70,18 @@ bool TestControlFieldsRemainAt128Bytes() {
              xar::bridge::kMaximumControlStringBytes);
 }
 
+bool TestUnsignedField() {
+  std::uint64_t value = 0;
+  return xar::bridge::JsonUnsignedField(
+             "{\"expected_revision\":42,\"tail\":true}",
+             "expected_revision", value) &&
+         value == 42 &&
+         !xar::bridge::JsonUnsignedField(
+             "{\"expected_revision\":-1}", "expected_revision", value) &&
+         !xar::bridge::JsonUnsignedField(
+             "{\"expected_revision\":42x}", "expected_revision", value);
+}
+
 } // namespace
 
 int main() {
@@ -77,7 +89,7 @@ int main() {
                  TestLongSentinelStep(
                      xar::ck3_11906::kTacticalDailySentinelMaximumArmiesV1) &&
                  TestMaximumSentinelBound() &&
-                 TestControlFieldsRemainAt128Bytes()
+                 TestControlFieldsRemainAt128Bytes() && TestUnsignedField()
              ? 0
              : 1;
 }

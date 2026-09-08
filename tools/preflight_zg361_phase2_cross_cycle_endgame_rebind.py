@@ -143,7 +143,7 @@ def _contract_check(contract: Mapping[str, object]) -> bool:
         == "run_exact_build_cross_cycle_endgame_seam"
         and seam_contract.get("transition_fixture_id") == seam.TRANSITION_FIXTURE_ID
         and seam_contract.get("transition_event") == seam.TRANSITION_EVENT
-        and seam_contract.get("arbitrary_rebind_exposed") is False
+        and seam_contract.get("arbitrary_rebind_exposed") is True
         and seam_contract.get("arbitrary_variable_query_exposed") is False
         and seam_contract.get("business_state_fixture_used") is False
         and seam_contract.get("ack_or_visibility_can_green") is False
@@ -218,8 +218,8 @@ def build_preflight() -> dict[str, object]:
                     seam.run_exact_build_cross_cycle_endgame_seam
                 ).parameters
             ),
-            "no_public_generic_rebind_or_variable_reader_added": (
-                "def set_player_character_v1(" not in service_source
+            "public_generic_rebind_added_without_variable_reader": (
+                "def set_player_character_v1(" in service_source
                 and "def query_character_variable_v1(" not in service_source
                 and "def query_script_variable_v1(" not in service_source
             ),

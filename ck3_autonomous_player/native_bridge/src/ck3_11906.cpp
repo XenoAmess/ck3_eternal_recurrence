@@ -672,6 +672,8 @@ constexpr std::uintptr_t kValidCasusBelliConfigurationScratchRva =
     0x4FED598;
 constexpr std::uintptr_t kSubmitCommandRva = 0x0973E00;
 constexpr std::uintptr_t kGetLocalPlayerRva = 0x346B7C0;
+constexpr std::uintptr_t kHandleSetPlayedCharacterEventRva = 0x32AFED0;
+constexpr std::uintptr_t kSetPlayedCharacterEventVtableRva = 0x44BE8B8;
 constexpr std::uintptr_t kGetCurrentEventRva = 0x2706AD0;
 constexpr std::uintptr_t kIsPendingInteractionForCharacterRva = 0x1266BA0;
 constexpr std::uintptr_t kValidateReplyCharacterInteractionCommandRva =
@@ -1186,6 +1188,40 @@ struct PauseCommand {
   std::uint8_t paused = 0;
   std::array<std::byte, 3> payload_padding{};
 };
+
+struct SetPlayedCharacterEvent {
+  std::uintptr_t vtable = 0;
+  std::uint8_t event_type = 8;
+  std::array<std::byte, 15> header_padding{};
+  std::int32_t target_character_id = -1;
+  std::int32_t player_id = -1;
+  std::uint8_t remote = 0;
+  std::array<std::byte, 7> payload_padding{};
+};
+
+static_assert(sizeof(SetPlayedCharacterEvent) == 0x28);
+static_assert(offsetof(SetPlayedCharacterEvent, target_character_id) == 0x18);
+static_assert(offsetof(SetPlayedCharacterEvent, player_id) == 0x1C);
+static_assert(offsetof(SetPlayedCharacterEvent, remote) == 0x20);
+
+bool InvokeSetPlayedCharacterEvent(
+    HandleSetPlayedCharacterEvent handler,
+    SetPlayedCharacterEvent *event) noexcept {
+  if (handler == nullptr || event == nullptr) {
+    return false;
+  }
+#if defined(_MSC_VER)
+  __try {
+    handler(event);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  handler(event);
+  return true;
+#endif
+}
 
 struct SetSpeedCommand {
   std::uintptr_t primary_vtable = 0;
@@ -9472,6 +9508,11 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<SubmitCommand>(module + kSubmitCommandRva);
   result.get_local_player =
       reinterpret_cast<GetLocalPlayer>(module + kGetLocalPlayerRva);
+  result.handle_set_played_character_event =
+      reinterpret_cast<HandleSetPlayedCharacterEvent>(
+          module + kHandleSetPlayedCharacterEventRva);
+  result.set_played_character_event_vtable =
+      module + kSetPlayedCharacterEventVtableRva;
   result.get_current_event =
       reinterpret_cast<GetCurrentEvent>(module + kGetCurrentEventRva);
   result.is_pending_character_interaction_for_character =
@@ -10296,6 +10337,101 @@ ResumeSubmitResult SubmitResumeMap(const Bindings &bindings) noexcept {
   command.paused = 0;
   bindings.submit_command(bindings.command_manager, &command, 7);
   return ResumeSubmitResult::submitted;
+}
+
+SetPlayedCharacterResult SubmitSetPlayedCharacter(
+    const Bindings &bindings, std::int32_t target_character_id) noexcept {
+  if (!bindings.enabled || target_character_id <= 0 ||
+      bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.get_local_player == nullptr ||
+      bindings.handle_set_played_character_event == nullptr ||
+      bindings.set_played_character_event_vtable == 0) {
+    return SetPlayedCharacterResult::unavailable;
+  }
+
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before)) {
+    return SetPlayedCharacterResult::unavailable;
+  }
+  if (!before.paused) {
+    return SetPlayedCharacterResult::requires_paused;
+  }
+  if (!before.map_ready || !before.has_played_character ||
+      !before.played_character_alive) {
+    return SetPlayedCharacterResult::map_not_ready;
+  }
+  if (before.played_character_id == target_character_id) {
+    return SetPlayedCharacterResult::already_played;
+  }
+
+  void *const target = ResolveCharacter(bindings, target_character_id);
+  if (target == nullptr) {
+    return SetPlayedCharacterResult::target_not_found;
+  }
+  if (LoadAt<void *>(target, kCharacterDeathDataOffset) != nullptr) {
+    return SetPlayedCharacterResult::target_dead;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  void *const game_data = game_state == nullptr
+                              ? nullptr
+                              : LoadAt<void *>(game_state,
+                                               kGameStateGameDataOffset);
+  void *const jomini_state = *bindings.jomini_state_slot;
+  void *const local_player = jomini_state == nullptr
+                                 ? nullptr
+                                 : bindings.get_local_player(jomini_state);
+  if (game_data == nullptr || local_player == nullptr) {
+    return SetPlayedCharacterResult::unavailable;
+  }
+  const std::int32_t local_player_id =
+      LoadAt<std::int32_t>(local_player, kPlayerIdOffset);
+  if (local_player_id < 0) {
+    return SetPlayedCharacterResult::unavailable;
+  }
+
+  const auto *const manager = static_cast<const std::byte *>(game_data) +
+                              bindings.player_character_manager_offset;
+  void *const entries = LoadAt<void *>(manager,
+                                      kPlayerCharacterEntriesOffset);
+  const std::int32_t entry_count = LoadAt<std::int32_t>(
+      manager, kPlayerCharacterEntryCountOffset);
+  if (entries == nullptr || entry_count <= 0 ||
+      entry_count > kMaximumPlayerCharacterEntries) {
+    return SetPlayedCharacterResult::unavailable;
+  }
+  for (std::int32_t index = 0; index < entry_count; ++index) {
+    void *const entry = LoadAt<void *>(
+        entries, static_cast<std::size_t>(index) * sizeof(void *));
+    if (entry == nullptr ||
+        LoadAt<std::int32_t>(entry, kPlayerCharacterIdOffset) !=
+            target_character_id) {
+      continue;
+    }
+    if (LoadAt<std::int32_t>(entry, kPlayerCharacterPlayerIdOffset) !=
+        local_player_id) {
+      return SetPlayedCharacterResult::target_controlled;
+    }
+  }
+
+  SetPlayedCharacterEvent event{};
+  event.vtable = bindings.set_played_character_event_vtable;
+  event.target_character_id = target_character_id;
+  event.player_id = local_player_id;
+  if (!InvokeSetPlayedCharacterEvent(
+          bindings.handle_set_played_character_event, &event)) {
+    return SetPlayedCharacterResult::unavailable;
+  }
+
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || !after.paused ||
+      !after.map_ready || !after.has_played_character ||
+      !after.played_character_alive ||
+      after.played_character_id != target_character_id) {
+    return SetPlayedCharacterResult::postcondition_failed;
+  }
+  return SetPlayedCharacterResult::switched;
 }
 
 bool SubmitSetSpeed(const Bindings &bindings, std::int32_t speed) noexcept {

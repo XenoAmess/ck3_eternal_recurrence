@@ -210,6 +210,10 @@ from .title_map_navigation_contract import (
     normalize_title_map_navigation_v1_result,
     validate_landed_title_key,
 )
+from .set_played_character_contract import (
+    SET_PLAYED_CHARACTER_V1_CAPABILITY,
+    validate_character_id,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -5517,6 +5521,56 @@ class GameplayBridgeService:
                 "title-map navigation crossed its paused session binding"
             )
         return normalized
+
+    def set_player_character_v1(
+        self,
+        character_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Explicitly rebind the local player through the pure-native MCP."""
+        target = validate_character_id(character_id)
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+            or expected_revision > 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        typed_command = getattr(self.driver, "set_player_character_v1", None)
+        if not (
+            isinstance(bridge_capabilities, list)
+            and SET_PLAYED_CHARACTER_V1_CAPABILITY in bridge_capabilities
+            and callable(typed_command)
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: selected backend cannot rebind "
+                "the played character"
+            )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+            raise BridgeUnavailableError(
+                "played-character rebind requires a paused map-ready snapshot"
+            )
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "played-character rebind revision mismatch: expected "
+                f"{expected_revision}, current {snapshot.get('revision')}"
+            )
+        result = typed_command(target, expected_revision=expected_revision)
+        if not (
+            isinstance(result, dict)
+            and result.get("accepted") is True
+            and result.get("status") in {"switched", "already_played"}
+            and result.get("to_character_id") == target
+            and result.get("postcondition_verified") is True
+        ):
+            raise BridgeUnavailableError(
+                "played-character rebind returned a malformed postcondition"
+            )
+        return copy.deepcopy(result)
 
     def query_loaded_feature_manifest_v1(
         self,

@@ -282,6 +282,7 @@ add_library(xar_ck3_bridge SHARED
   src/phase2_wrapper_entry_observer_v1.cpp
   src/phase2_wrapper_consumer_edge_observer_v1.cpp
   src/route_contact_horizon_v1_mailbox.cpp
+  src/set_played_character_v1_mailbox.cpp
   src/raiktor_war_bound_regiment_v1.cpp
   src/raiktor_surrender_truce_v1.cpp
   src/raiktor_actual_truce_expiry_v1.cpp
@@ -703,6 +704,7 @@ if(BUILD_TESTING)
     src/game_adapter.cpp
     src/loaded_feature_manifest_v1.cpp
     src/loaded_feature_manifest_v1_mailbox.cpp
+    src/main_thread_query_mailbox_v1.cpp
     src/pending_character_interaction_context_v1.cpp
     src/pending_character_interaction_context_v1_mailbox.cpp
     src/ck3_11906_adapter.cpp
@@ -713,6 +715,7 @@ if(BUILD_TESTING)
     src/raiktor_actual_truce_expiry_v1.cpp
     src/combat_v3.cpp
     src/route_contact_horizon_v1_mailbox.cpp
+    src/set_played_character_v1_mailbox.cpp
     src/tactical_daily_sentinel_v1.cpp
     src/war_entry_assessments_v1.cpp
     src/zhongguo_case_snapshot_v1.cpp

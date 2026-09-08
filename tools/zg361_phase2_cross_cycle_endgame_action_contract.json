@@ -39,7 +39,7 @@
       "typed fixed owner-to-subject event",
       "received-self Workforce provider"
     ],
-    "arbitrary_rebind_exposed": false,
+    "arbitrary_rebind_exposed": true,
     "arbitrary_variable_query_exposed": false,
     "business_state_fixture_used": false,
     "ack_or_visibility_can_green": false
@@ -66,6 +66,7 @@
     "runner_dependency": "the formal runner still needs a proven managed implementation of the ordinary CK3 single-player Switch Character UI plus product-only checkpoint capture; this package does not add that UI primitive"
   },
   "service_contract": {
+    "played_character_rebind": "game.command.set-played-character-v1-N",
     "owner_event_query": "game.command.query-current-event-window-context-v1",
     "source_action": "game.command.select-event-option-N",
     "subject_business_query": "game.command.query-zhongguo-workforce-collective-snapshot-v1",
@@ -132,7 +133,8 @@
       "canonical real zg361we.356 source checkpoint is not yet registered",
       "real owner-visible zg361we.361 checkpoint has not yet produced a no-fixture product-only played-subject child checkpoint",
       "the ordinary CK3 single-player Switch Character UI has no managed exact-build live receipt yet",
-      "no real paused Workforce plus AI-owner provider artifact has passed the production branch of this cell"
+      "no real paused Workforce plus AI-owner provider artifact has passed the production branch of this cell",
+      "the new generic MCP rebind still needs an exact-build production receipt before it can replace historical UI/fixture evidence"
     ]
   },
   "no_launch_boundary": {

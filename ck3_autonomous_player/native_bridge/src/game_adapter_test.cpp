@@ -298,6 +298,8 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.center-map-on-landed-title-v1") ||
       !Contains(known.capabilities,
+                "game.command.set-played-character-v1-N") ||
+      !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v2-N") ||
       !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v3-N") ||
@@ -558,6 +560,10 @@ int main() {
       !exact_adapter->supports_step("center-map-on-landed-title-v1") ||
       exact_adapter->supports_step(
           "center-map-on-landed-title-v1-c_bianzhou") ||
+      !exact_adapter->supports_step("set-played-character-v1-30938") ||
+      exact_adapter->supports_step("set-played-character-v1-030938") ||
+      exact_adapter->supports_step("set-played-character-v1-0") ||
+      exact_adapter->supports_step("set-played-character-v1-2147483648") ||
       !exact_adapter->supports_step(
           "acknowledge-pending-character-interaction") ||
       !exact_adapter->supports_step(

@@ -22,6 +22,7 @@ inline constexpr char kCheckpointSaveName[] = "xar_checkpoint";
 using SubmitCommand = bool (*)(void *manager, void *command,
                                std::uint32_t channel_flags);
 using GetLocalPlayer = void *(*)(void *jomini_state);
+using HandleSetPlayedCharacterEvent = void (*)(void *event);
 using GetCurrentEvent = void *(*)(void *event_manager);
 using IsPendingCharacterInteractionForCharacter = bool (*)(
     void *pending_interaction, void *character);
@@ -315,6 +316,8 @@ struct Bindings {
   std::size_t declare_war_interaction_offset = 0;
   SubmitCommand submit_command = nullptr;
   GetLocalPlayer get_local_player = nullptr;
+  HandleSetPlayedCharacterEvent handle_set_played_character_event = nullptr;
+  std::uintptr_t set_played_character_event_vtable = 0;
   GetCurrentEvent get_current_event = nullptr;
   IsPendingCharacterInteractionForCharacter
       is_pending_character_interaction_for_character = nullptr;
@@ -490,6 +493,7 @@ using game::WarTerminationTermsSnapshot;
 using game::WarTerminationExitTermsSnapshot;
 using game::PauseSubmitResult;
 using game::ResumeSubmitResult;
+using game::SetPlayedCharacterResult;
 
 inline constexpr std::size_t kWarBoundRegimentCompositionRowCount = 7;
 
@@ -785,6 +789,12 @@ PauseSubmitResult SubmitPauseMap(const Bindings &bindings) noexcept;
 // freshly loaded headless map because changing the speed does not clear
 // Jomini's paused bit.
 ResumeSubmitResult SubmitResumeMap(const Bindings &bindings) noexcept;
+
+// Rebinds the local player through CK3's own set_player_character event
+// handler. This exact-build action is main-thread only and reports success
+// only after the player-character manager resolves the requested live target.
+SetPlayedCharacterResult SubmitSetPlayedCharacter(
+    const Bindings &bindings, std::int32_t target_character_id) noexcept;
 
 // Fixed public speeds 1..5 deliberately map to separate advertised gameplay
 // steps.  CK3's native CSetGameSpeedCommand payload is zero based (0..4).

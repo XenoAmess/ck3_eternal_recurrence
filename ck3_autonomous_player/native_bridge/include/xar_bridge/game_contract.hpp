@@ -898,6 +898,17 @@ struct Snapshot {
 
 enum class PauseSubmitResult { submitted, already_paused, unavailable };
 enum class ResumeSubmitResult { submitted, already_running, unavailable };
+enum class SetPlayedCharacterResult {
+  switched,
+  already_played,
+  target_not_found,
+  target_dead,
+  target_controlled,
+  requires_paused,
+  map_not_ready,
+  postcondition_failed,
+  unavailable,
+};
 enum class SelectEventOptionResult {
   submitted,
   no_active_event,

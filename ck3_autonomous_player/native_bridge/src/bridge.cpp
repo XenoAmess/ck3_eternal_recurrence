@@ -24,6 +24,7 @@
 #include "xar_bridge/phase2_wrapper_consumer_edge_observer_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#include "xar_bridge/set_played_character_v1_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 #include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
 #endif
@@ -4807,6 +4808,8 @@ public:
             ExecuteZhongguoCareerHcWorkforceMailboxQueryV1;
     environment.permitted_executor_septemvigintary =
         &xar::ck3_11906::ExecuteZhongguoPromotionSourceMailboxV1;
+    environment.permitted_executor_octovigintary =
+        &xar::ck3_11906::ExecuteSetPlayedCharacterMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -5259,6 +5262,63 @@ void RunConnectedSession(
                           request_id, step,
                           xar::ck3_11906::
                               ReadTacticalDailySentinelStatusV1()));
+          } else if (const auto target_character_id =
+                         xar::ck3_11906::ParseSetPlayedCharacterV1Step(step);
+                     target_character_id.has_value()) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "invalid_request"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "state_changed"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            const bool snapshot_read =
+                previous_snapshot.has_value() &&
+                xar::game::ReadSnapshot(game, current_snapshot) &&
+                current_snapshot == previous_snapshot.value();
+            if (!snapshot_read) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "state_changed"));
+            } else if (!current_snapshot.paused) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "requires_paused"));
+            } else if (!current_snapshot.map_ready) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "map_not_ready"));
+            } else {
+              xar::ck3_11906::SetPlayedCharacterMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.expected_snapshot = current_snapshot;
+              query.target_character_id = target_character_id.value();
+              const bool ran =
+                  xar::ck3_11906::RunSetPlayedCharacterMailboxV1(query);
+              const auto status =
+                  xar::ck3_11906::SetPlayedCharacterResultCodeV1(
+                      query.result);
+              const bool success =
+                  ran &&
+                  (query.result ==
+                       xar::game::SetPlayedCharacterResult::switched ||
+                   query.result == xar::game::SetPlayedCharacterResult::
+                                       already_played);
+              if (success && query.result ==
+                                 xar::game::SetPlayedCharacterResult::switched) {
+                previous_snapshot.reset();
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, success,
+                                           ran ? status : "submission_failed"));
+            }
+          }
           } else if (step == xar::ck3_11906::kTitleMapNavigationV1Step) {
           xar::ck3_11906::TitleMapNavigationRequestV1 request{};
           if (!xar::ck3_11906::ParseTitleMapNavigationRequestV1(

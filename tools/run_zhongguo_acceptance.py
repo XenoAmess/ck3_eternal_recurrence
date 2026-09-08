@@ -10649,7 +10649,7 @@ def preflight_phase2_workforce_m360_gameplay_action_cell(
             "select_event_option_method_available": callable(
                 getattr(service, "select_event_option", None)
             ),
-            "public_generic_character_rebind_remains_unavailable": not callable(
+            "public_generic_character_rebind_available": callable(
                 getattr(service, "set_player_character_v1", None)
             ),
             "dedicated_action_fixture_exact_scope_switch_available": (

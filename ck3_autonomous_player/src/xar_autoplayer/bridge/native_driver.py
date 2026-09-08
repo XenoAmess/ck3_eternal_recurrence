@@ -265,6 +265,14 @@ from .title_map_navigation_contract import (
     normalize_title_map_navigation_v1_result,
     validate_landed_title_key,
 )
+from .set_played_character_contract import (
+    SET_PLAYED_CHARACTER_V1_CAPABILITY,
+    SET_PLAYED_CHARACTER_V1_EXECUTABLE_SHA256,
+    SET_PLAYED_CHARACTER_V1_GAME_VERSION,
+    SET_PLAYED_CHARACTER_V1_REJECTION_CODES,
+    set_played_character_v1_step,
+    validate_character_id,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -3055,6 +3063,110 @@ class NativeHeadlessGameplayDriver:
             result=result,
         )
         return result
+
+    def set_player_character_v1(
+        self,
+        character_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Rebind the local player through CK3's owning-thread native event."""
+        target = validate_character_id(character_id)
+        _validate_revision(expected_revision, "expected_revision")
+        capabilities = self.capabilities()
+        if SET_PLAYED_CHARACTER_V1_CAPABILITY not in set(
+            _string_list(capabilities.get("bridge_capabilities"))
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: native DLL cannot rebind the "
+                "played character"
+            )
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True or starting.get("map_ready") is not True:
+            raise BridgeUnavailableError(
+                "native played-character rebind requires a paused map-ready snapshot"
+            )
+        if int(starting.get("revision", -1)) != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "native played-character rebind revision mismatch: expected "
+                f"{expected_revision}, current {starting.get('revision')}"
+            )
+        played = starting.get("played_character")
+        source_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        diagnostics = starting.get("diagnostics")
+        hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get("expected_ck3_sha256", hello.get("executable_sha256"))
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != SET_PLAYED_CHARACTER_V1_GAME_VERSION
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != SET_PLAYED_CHARACTER_V1_EXECUTABLE_SHA256
+        ):
+            raise BridgeUnavailableError(
+                "native played-character rebind requires the frozen exact build"
+            )
+        step = set_played_character_v1_step(target)
+        try:
+            raw = self._execute_primitive_step(
+                step,
+                expected_revision=expected_revision,
+                required_capability=SET_PLAYED_CHARACTER_V1_CAPABILITY,
+            )
+        except _NativeCommandRejectedError as error:
+            if error.native_error not in SET_PLAYED_CHARACTER_V1_REJECTION_CODES:
+                raise BridgeUnavailableError(
+                    "native played-character rebind returned an unknown rejection "
+                    f"code: {error.native_error}"
+                ) from error
+            raise
+        status = raw.get("status")
+        if status not in {"switched", "already_played"}:
+            raise BridgeUnavailableError(
+                "native played-character rebind returned malformed status"
+            )
+        ending = (
+            self.wait_for_change(expected_revision, timeout_seconds=5.0)
+            if status == "switched"
+            else self.take_snapshot()
+        )
+        ending_played = ending.get("played_character")
+        if not (
+            ending.get("paused") is True
+            and ending.get("map_ready") is True
+            and isinstance(ending_played, dict)
+            and ending_played.get("character_id") == target
+            and ending_played.get("alive") is True
+        ):
+            raise BridgeUnavailableError(
+                "native played-character rebind lost its postcondition"
+            )
+        return {
+            "schema_version": 1,
+            "step": step,
+            "accepted": True,
+            "status": status,
+            "from_character_id": source_character_id,
+            "to_character_id": target,
+            "before_revision": expected_revision,
+            "after_revision": ending.get("revision"),
+            "native_revision": ending.get("native_revision"),
+            "date_raw": ending.get("date_raw"),
+            "paused": True,
+            "map_ready": True,
+            "postcondition_verified": True,
+            "backend_id": "native-headless",
+        }
 
     def _center_map_on_landed_title_v1_unrecorded(
         self,
@@ -18779,6 +18891,10 @@ def _action_steps(
         if capability == CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY:
             # This parameterized presentation command is explicit-only.  Its
             # fixed semantic step must never enter planner/action-step space.
+            continue
+        if capability == SET_PLAYED_CHARACTER_V1_CAPABILITY:
+            # Rebinding the human player is an explicit operator MCP action,
+            # never an autonomous planner choice.
             continue
         if step == "select-event-option-N":
             expand_event_options = True

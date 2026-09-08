@@ -432,6 +432,18 @@ def _ck3_center_map_on_landed_title_v1(
     )
 
 
+def _ck3_set_played_character_v1(
+    service: GameplayBridgeService,
+    character_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Explicit operator action for rebinding to any valid living character."""
+    return service.set_player_character_v1(
+        character_id,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_loaded_feature_manifest_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -1072,6 +1084,18 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_set_played_character_v1(
+        character_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Switch the local player to any valid living CK3 character ID."""
+        return _ck3_set_played_character_v1(
+            service,
+            character_id,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1314,6 +1338,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_zhongguo_scoreboard_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_set_played_character_v1"
     )
     return server
 

@@ -333,6 +333,18 @@ bool ExecuteSexvigintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteSeptemvigintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecuteOctovigintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -1162,6 +1174,10 @@ bool TestMailboxStateMachine() {
   typed_environment.permitted_executor_quinquevigintary =
       &ExecuteQuinquevigintary;
   typed_environment.permitted_executor_sexvigintary = &ExecuteSexvigintary;
+  typed_environment.permitted_executor_septemvigintary =
+      &ExecuteSeptemvigintary;
+  typed_environment.permitted_executor_octovigintary =
+      &ExecuteOctovigintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1179,7 +1195,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 26> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 28> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1188,7 +1204,8 @@ bool TestMailboxStateMachine() {
       &ExecuteOctodenary, &ExecuteNovemdenary, &ExecuteVigintary,
       &ExecuteUnvigintary, &ExecuteDuovigintary, &ExecuteTrivigintary,
       &ExecuteQuattuorvigintary, &ExecuteQuinquevigintary,
-      &ExecuteSexvigintary};
+      &ExecuteSexvigintary, &ExecuteSeptemvigintary,
+      &ExecuteOctovigintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1329,7 +1346,7 @@ bool TestSourceContract(int argc, char **argv) {
       return false;
     }
   }
-  constexpr std::array<std::string_view, 69> contract_tokens{
+  constexpr std::array<std::string_view, 71> contract_tokens{
       "0x3FD2EE8", "USER32!PeekMessageW", "0x3CE41E0",
       "0x3CE421C", "0x3CE4222", "0x3CFE7AB", "0x3CD3600",
       "0x3CD366C", "0x3CD3763", "0x3CD3D84", "0x3CD40D6",
@@ -1360,6 +1377,8 @@ bool TestSourceContract(int argc, char **argv) {
       "ExecuteZhongguoWorkforceCollectiveSnapshotMailboxQueryV1",
       "ExecuteZhongguoAiOwnedCaseSnapshotMailboxQueryV1",
       "ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1",
+      "ExecuteZhongguoPromotionSourceMailboxV1",
+      "ExecuteSetPlayedCharacterMailboxV1",
   };
   for (const auto token : contract_tokens) {
     if (!Contains(abi, token) && !Contains(fixture, token) &&
@@ -1384,7 +1403,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 98> bridge_tokens{
+  constexpr std::array<std::string_view, 102> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1438,6 +1457,8 @@ bool TestSourceContract(int argc, char **argv) {
       "kZhongguoManagerGovernanceSnapshotV1Step",
       "ExecuteZhongguoCareerHcWorkforceMailboxQueryV1",
       "kZhongguoCareerHcWorkforcePostconditionV1Step",
+      "ExecuteZhongguoPromotionSourceMailboxV1",
+      "ExecuteSetPlayedCharacterMailboxV1",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",
       "request.expected_snapshot_revision != state_revision",
@@ -1474,6 +1495,8 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_quattuorvigintary",
       "permitted_executor_quinquevigintary",
       "permitted_executor_sexvigintary",
+      "permitted_executor_septemvigintary",
+      "permitted_executor_octovigintary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",
