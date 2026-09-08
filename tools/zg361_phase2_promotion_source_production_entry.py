@@ -1280,8 +1280,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # the dynamic owner's opinion. Native option 1 does not reveal the
         # secret to the player or start a follow-up event; it only applies the
         # authored downgrade/opinion/stress result. The native immediate block
-        # saves secret_target only when the selected secret has one. Bind the
-        # exact target/no-target variants before choosing that narrower route.
+        # saves secret_target only when the selected secret has one. The
+        # shared story frame independently carries protege/student/rival when
+        # those roles exist. Bind their finite optional envelope before
+        # choosing that narrower route.
         "date_raw": 53223312,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1294,10 +1296,14 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "optional_unique_character_scope_excludes": {
             "secret_target": (32904,),
+            "rival": (32904,),
         },
         "character_scope_differs_from": {
             "eunuch": ("secret_owner",),
             "secret_owner": ("eunuch",),
+        },
+        "optional_character_scope_differs_from": {
+            "rival": ("eunuch",),
         },
         "scope_types": {
             "story": "story",
@@ -1309,9 +1315,12 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "optional_scope_types": {
             "secret_target": "character",
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
         },
         "boolean_scopes": (),
-        "saved_scope_name_sets": (
+        "saved_scope_name_sets": _optional_scope_name_sets(
             (
                 "story",
                 "emperor",
@@ -1320,22 +1329,14 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "secret",
                 "secret_owner",
             ),
-            (
-                "story",
-                "emperor",
-                "eunuch",
-                "admin_title",
-                "secret",
-                "secret_owner",
-                "secret_target",
-            ),
+            ("protege", "student", "rival", "secret_target"),
         ),
-        "saved_scope_counts": (6, 7),
+        "saved_scope_counts": (6, 7, 8, 9, 10),
         "option_count": 2,
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.2052": {
         # CK3 1.19.0.6 hostile-scheme proposal. Native option 0 exposes the

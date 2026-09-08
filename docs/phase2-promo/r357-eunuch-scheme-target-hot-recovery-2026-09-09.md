@@ -114,3 +114,29 @@ rival、写入 story 并建立 rivalry；唯一 option 只是 `show_as_tooltip`�
 - 第三次 RED report 快照：11,632,234 bytes，SHA-256
   `0BCF8FBDF72B5F93D731D21B0FC362FA0C7A6AC8AC612EFCC0ACA1C2223A31F3`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`，继续只做同 PID 热重试。
+
+## 同会话第四次 RED：秘密事件继承 rival
+
+第三次 `retry` 热加载提交
+`11eb3afe5c1052b156dee7ed159d863bc9e1f062` 后，同一 PID `159264` 推进到
+下一次 `ep3_story_cycle_admin_eunuch.2051`、event instance `356`、
+`date_raw=53233344`。本次完整八项 scope 同时包含 shared story 的
+`rival=16834604` 与所选秘密的 `secret_target=35570`；secret owner 为
+`31257`。旧合同虽已接受有/无 secret target，却没有建模
+`protege/student/rival` 的合法继承，因此只在 scope 名称/数量上 RED，选择仍未
+发生。
+
+`.2051` 同样先调用 shared story save effect，再保存必有的 secret owner 与
+可选 secret target。合同现以基础六项加
+`protege/student/rival/secret_target` 四个有限可选项，展开 16 个精确集合；
+rival 存在时仍不得等于玩家或 eunuch。原版没有为 `.2051` 定义整局 occurrence
+上限，故不再把单次实见冻结成 `max_occurrences=1`，改由同一个 7190 日产品窗口
+限界，每次投递仍执行完整合同和选择后推进检查。
+
+- 第四次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-4.json`；
+- park SHA-256：
+  `DBBFDC9BCD3E6F19A3BEBAB761F175A17D8E899C9929AF752A0C798FCBC2EE64`；
+- 第四次 RED report 快照：11,787,076 bytes，SHA-256
+  `D06B0EDE8B730B3B2E15AE7B476D75C582FE429C142CE37513B2C6E842E962C8`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`，不需要重启 CK3。

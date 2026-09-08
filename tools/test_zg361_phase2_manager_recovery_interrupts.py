@@ -1715,11 +1715,16 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
-        self.assertEqual(contract["saved_scope_counts"], (6, 7))
+        self.assertEqual(contract["saved_scope_counts"], (6, 7, 8, 9, 10))
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 16)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
         switched_contract = _manager_contract(event_key, player=40000)
         self.assertEqual(
             switched_contract["optional_unique_character_scope_excludes"],
-            {"secret_target": (40000,)},
+            {"secret_target": (40000,), "rival": (40000,)},
         )
 
         targeted_secret = copy.deepcopy(context)
@@ -1737,6 +1742,45 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertTrue(all(targeted_checks.values()), targeted_checks)
+
+        all_optionals = copy.deepcopy(context)
+        all_optionals["saved_scopes"].extend(
+            [
+                _scope("protege", "character", 33001),
+                _scope("student", "character", 33002),
+                _scope("rival", "character", 16834604),
+                _scope("secret_target", "character", 62189),
+            ]
+        )
+        all_optional_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53223312,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 211},
+            context=all_optionals,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(all_optional_checks.values()), all_optional_checks)
+
+        eunuch_rival = copy.deepcopy(all_optionals)
+        eunuch_rival["saved_scopes"][8] = _scope(
+            "rival", "character", 31801
+        )
+        rival_drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53223312,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 211},
+            context=eunuch_rival,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            rival_drift_checks["scope:rival:optional_differs_from"]
+        )
 
         player_target = copy.deepcopy(targeted_secret)
         player_target["saved_scopes"][6] = _scope(
