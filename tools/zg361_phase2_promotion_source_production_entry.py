@@ -1253,8 +1253,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # already selected the boon and any associated target. Option 1
         # applies that external boon and upgrades the story; option 2 only
         # applies the authored story downgrade/stress result. Bind the exact
-        # R295 no-target frame and choose option 2 so the incidental story
-        # cannot mutate taxes, succession, hooks or imprisonment state.
+        # R295 no-target frame and the source-authored target branch shapes,
+        # then choose option 2 so the incidental story cannot mutate taxes,
+        # succession, hooks or imprisonment state.
         "date_raw": 53245848,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1264,31 +1265,52 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "unique_character_scope_excludes": {
             "eunuch": (32904,),
         },
+        "optional_unique_character_scope_excludes": {
+            "boon_victim": (32904,),
+            "boon_target": (32904,),
+        },
         "scope_types": {
             "story": "story",
             "emperor": "character",
             "eunuch": "character",
             "admin_title": "landed_title",
-            "student": "character",
-            "rival": "character",
             "eunuch_boon": "flag",
         },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
+            "boon_faction": "faction",
+            "boon_victim": "character",
+            "boon_title": "landed_title",
+            "boon_target": "character",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "student",
-            "rival",
-            "eunuch_boon",
-        ),),
-        "saved_scope_count": 7,
+        "saved_scope_name_sets": tuple(
+            names + boon_branch
+            for names in _optional_scope_name_sets(
+                (
+                    "story",
+                    "emperor",
+                    "eunuch",
+                    "admin_title",
+                    "eunuch_boon",
+                ),
+                ("protege", "student", "rival"),
+            )
+            for boon_branch in (
+                (),
+                ("boon_victim",),
+                ("boon_faction", "boon_victim"),
+                ("boon_title", "boon_victim", "boon_target"),
+            )
+        ),
+        "saved_scope_counts": (5, 6, 7, 8, 9, 10, 11),
         "option_count": 2,
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.2051": {
         # CK3 1.19.0.6 eunuch-story secret proposal. The immediate block may

@@ -1823,26 +1823,28 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         contract = _manager_contract(event_key, player=32904)
         context = _context(
             event_key=event_key,
-            instance_id=286,
-            date_raw=53245848,
+            instance_id=374,
+            date_raw=53255856,
             player=32904,
             scopes=[
                 _scope("story", "story"),
                 _scope("emperor", "character", 32904),
                 _scope("eunuch", "character", 31801),
                 _scope("admin_title", "landed_title"),
-                _scope("student", "character", 69909),
-                _scope("rival", "character", 16844822),
+                _scope("student", "character", 33596937),
+                _scope("rival", "character", 16834604),
+                _scope("boon_faction", "faction"),
+                _scope("boon_victim", "character", 16843415),
                 _scope("eunuch_boon", "flag"),
             ],
             native_option_indices=(0, 1),
         )
         checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53245848,
+                "date_raw": 53255856,
                 "active_event": {"option_count": 2},
             },
-            event={"event_instance_id": 286},
+            event={"event_instance_id": 374},
             context=context,
             event_key=event_key,
             contract=contract,
@@ -1851,6 +1853,49 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 32)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        no_target_branch = copy.deepcopy(context)
+        no_target_branch["saved_scopes"] = [
+            scope
+            for scope in no_target_branch["saved_scopes"]
+            if scope["name"] not in {"boon_faction", "boon_victim"}
+        ]
+        no_target_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53255856,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 374},
+            context=no_target_branch,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(no_target_checks.values()), no_target_checks)
+
+        candidacy_branch = copy.deepcopy(no_target_branch)
+        candidacy_branch["saved_scopes"].extend(
+            [
+                _scope("boon_title", "landed_title"),
+                _scope("boon_victim", "character", 16843415),
+                _scope("boon_target", "character", 36354),
+            ]
+        )
+        candidacy_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53255856,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 374},
+            context=candidacy_branch,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(candidacy_checks.values()), candidacy_checks)
 
         player_eunuch = copy.deepcopy(context)
         player_eunuch["saved_scopes"][2] = _scope(
@@ -1858,10 +1903,10 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         drift_checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53245848,
+                "date_raw": 53255856,
                 "active_event": {"option_count": 2},
             },
-            event={"event_instance_id": 286},
+            event={"event_instance_id": 374},
             context=player_eunuch,
             event_key=event_key,
             contract=contract,

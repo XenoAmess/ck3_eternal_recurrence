@@ -324,3 +324,31 @@ shard 对象。该问题不要求、也不应通过重启 CK3 处理。productio
   `AA0AA50BFAF184E77538416AA9B6BF0C79FBFBEEAB30D8648063CF00DDF5087C`；
 - 再次驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`。
+
+## 同会话第十二次 RED：恩惠提案的囚禁叛军分支
+
+第十一次 `retry` 热加载提交 `004c8d97f7a2bfe88ef4879adb7a9b302d978a4e` 后，分片修复
+在原 `.0359` 实例上生效；同一 PID `159264` 随后推进到
+`ep3_story_cycle_admin_eunuch.2050`、event instance `374`、
+`date_raw=53255856`。本帧九项 scope 为
+`story/emperor/eunuch/admin_title/student/rival/boon_faction/boon_victim/eunuch_boon`，
+其中 faction 类型已由 MCP 确认为 `faction`，victim 为角色 `16843415`。旧合同只冻结
+无目标 boon 帧，故仅名称和数量 RED；选择尚未发生。
+
+原版 `ep3_story_cycle_admin_eunuch_select_boon_effect` 有四类精确输出形状：debase、
+raise-taxes、influence 不保存目标；fabricate-hook 只保存 `boon_victim`；
+imprison-rebel 成对保存 `boon_faction/boon_victim`；candidacy 保存
+`boon_title/boon_victim/boon_target`。结合 shared story 独立可选的
+`protege/student/rival`，合同展开 32 个精确集合，未知或残缺组合仍 fail-closed。
+原版 `.2050` 没有 campaign-global occurrence 上限，故改为产品窗口内可重复。选择仍为
+native option 1：拒绝 boon，只承担 story downgrade/stress，避免修改税收、继承投资、
+hook 或监禁状态。
+
+- 第十二次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-12.json`；
+- park SHA-256：
+  `56C9BDB094FDD0209B5CDEBDD0791A71F7A3DCFA2CB12342F404E1D36F7270F7`；
+- 第十二次 RED report 快照：12,698,883 bytes，SHA-256
+  `6735D1B19E907F6737888626C0D4F048A66D677333A588098ED79B4D3696FEBD`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
