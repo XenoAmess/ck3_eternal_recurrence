@@ -1857,6 +1857,102 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["saved_scope_counts"], (6, 7, 8))
+
+        target_without_rival = copy.deepcopy(context)
+        target_without_rival["saved_scopes"] = [
+            row
+            for row in target_without_rival["saved_scopes"]
+            if row["name"] != "rival"
+        ]
+        target_without_rival["saved_scopes"].append(
+            _scope("scheme_target", "character", 32364)
+        )
+        target_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=target_without_rival,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(target_checks.values()), target_checks)
+
+        neither_optional = copy.deepcopy(target_without_rival)
+        neither_optional["saved_scopes"] = [
+            row
+            for row in neither_optional["saved_scopes"]
+            if row["name"] != "scheme_target"
+        ]
+        neither_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=neither_optional,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(neither_checks.values()), neither_checks)
+
+        both_optional = copy.deepcopy(context)
+        both_optional["saved_scopes"].append(
+            _scope("scheme_target", "character", 32364)
+        )
+        both_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=both_optional,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(both_checks.values()), both_checks)
+
+        eunuch_target = copy.deepcopy(target_without_rival)
+        eunuch_target["saved_scopes"][6] = _scope(
+            "scheme_target", "character", 31801
+        )
+        target_drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=eunuch_target,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            target_drift_checks[
+                "scope:scheme_target:optional_differs_from"
+            ]
+        )
+
+        player_target = copy.deepcopy(target_without_rival)
+        player_target["saved_scopes"][6] = _scope(
+            "scheme_target", "character", 32904
+        )
+        player_target_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53236512,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 229},
+            context=player_target,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            player_target_checks[
+                "scope:scheme_target:optional_unique_third_party"
+            ]
+        )
 
         owner_is_eunuch = copy.deepcopy(context)
         owner_is_eunuch["saved_scopes"][6] = _scope(

@@ -1326,8 +1326,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # selected scheme, upgrades the eunuch story and upsets its owner.
         # Native option 1 leaves the hostile scheme untouched and applies only
         # the authored story downgrade/opinion/stress result. Choose that
-        # narrower terminal route after binding the exact no-target frame and
-        # proving the scheme owner is neither the player nor the eunuch.
+        # narrower terminal route after binding the exact combinations of the
+        # story's optional rival and the scheme's optional defender target.
+        # Prove the owner is neither player nor eunuch, and any target is also
+        # neither player nor eunuch, before selecting it.
         "date_raw": 53236512,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1336,33 +1338,71 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "unique_character_scope_excludes": {
             "eunuch": (32904,),
-            "rival": (32904,),
             "scheme_owner": (32904,),
+        },
+        "optional_unique_character_scope_excludes": {
+            "rival": (32904,),
+            "scheme_target": (32904,),
         },
         "character_scope_differs_from": {
             "eunuch": ("scheme_owner",),
             "scheme_owner": ("eunuch",),
+        },
+        "optional_character_scope_differs_from": {
+            "scheme_target": ("eunuch",),
         },
         "scope_types": {
             "story": "story",
             "emperor": "character",
             "eunuch": "character",
             "admin_title": "landed_title",
-            "rival": "character",
             "scheme": "scheme",
             "scheme_owner": "character",
         },
+        "optional_scope_types": {
+            "rival": "character",
+            "scheme_target": "character",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "rival",
-            "scheme",
-            "scheme_owner",
-        ),),
-        "saved_scope_count": 7,
+        "saved_scope_name_sets": (
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "scheme",
+                "scheme_owner",
+            ),
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "rival",
+                "scheme",
+                "scheme_owner",
+            ),
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "scheme",
+                "scheme_owner",
+                "scheme_target",
+            ),
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "rival",
+                "scheme",
+                "scheme_owner",
+                "scheme_target",
+            ),
+        ),
+        "saved_scope_counts": (6, 7, 8),
         "option_count": 2,
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
@@ -4894,6 +4934,33 @@ def _known_interrupt_checks(
             len(ids) == 1
             and bool(other_ids)
             and all(len(values) == 1 and ids.isdisjoint(values) for values in other_ids)
+        )
+    optional_differs_from_value = contract.get(
+        "optional_character_scope_differs_from", {}
+    )
+    optional_differs_from = (
+        optional_differs_from_value
+        if isinstance(optional_differs_from_value, Mapping)
+        else {}
+    )
+    for name, other_names_value in optional_differs_from.items():
+        other_names = (
+            other_names_value if isinstance(other_names_value, tuple) else ()
+        )
+        ids = character_ids(str(name))
+        other_ids = [
+            character_ids(str(other_name)) for other_name in other_names
+        ]
+        checks[f"scope:{name}:optional_differs_from"] = (
+            not ids
+            or (
+                len(ids) == 1
+                and bool(other_ids)
+                and all(
+                    len(values) == 1 and ids.isdisjoint(values)
+                    for values in other_ids
+                )
+            )
         )
     for name in boolean_scopes:
         matches = [
