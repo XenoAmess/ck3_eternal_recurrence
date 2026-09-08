@@ -392,6 +392,36 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_option_number": 4,
         "selected_native_option_index": 3,
     },
+    "epidemic_events.0110": {
+        # R334 exact post-epidemic recovery prompt. The event authored three
+        # branches, but the capital-relocation branch (native 0) is absent
+        # from the rendered projection; only recovery spending (native 1)
+        # and neglect (native 2) are enabled. Native 1 spends campaign gold;
+        # native 2 neither relocates the capital nor starts a follow-up chain,
+        # and only applies weaker county recovery plus a possible miniscule
+        # legitimacy loss. Bind both engine-owned scopes and the exact 1/2
+        # projection before taking that bounded, non-religious route.
+        "date_raw": 53208120,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "scope_types": {
+            "epidemic": "epidemic",
+            "new_preferred_capital": "landed_title",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "new_preferred_capital",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
     "epidemic_events.1050": {
         # R293 exact plague-cult warning. Vanilla has already selected the
         # active epidemic and court chaplain before the window opens. Native

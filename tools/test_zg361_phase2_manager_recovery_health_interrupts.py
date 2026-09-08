@@ -22,6 +22,82 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
+    def test_post_epidemic_recovery_uses_exact_no_spend_branch(
+        self,
+    ) -> None:
+        event_key = "epidemic_events.0110"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=206,
+            date_raw=53208120,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("new_preferred_capital", "landed_title"),
+            ],
+            native_option_indices=(1, 2),
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53208120,
+                    "active_event": {"option_count": 3},
+                },
+                event={"event_instance_id": 206},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        wrong_scope_type = copy.deepcopy(context)
+        wrong_scope_type["saved_scopes"][1]["scope"]["type_key"] = "county"
+        self.assertFalse(
+            checks_for(wrong_scope_type)["scope:new_preferred_capital:type"]
+        )
+
+        missing_epidemic = copy.deepcopy(context)
+        missing_epidemic["saved_scopes"] = missing_epidemic["saved_scopes"][1:]
+        missing_checks = checks_for(missing_epidemic)
+        self.assertFalse(missing_checks["scope:epidemic:type"])
+        self.assertFalse(missing_checks["saved_scope_names_exact"])
+
+        relocation_visible = copy.deepcopy(context)
+        relocation_visible["options"].insert(
+            0,
+            {
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            },
+        )
+        relocation_visible["options"][1]["rendered_index"] = 1
+        relocation_visible["options"][2]["rendered_index"] = 2
+        self.assertFalse(
+            checks_for(relocation_visible)["authored_options_exact"]
+        )
+
+        wrong_snapshot_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53208120,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 206},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(wrong_snapshot_checks["snapshot_option_count"])
+
     def test_infirm_depression_pulse_binds_only_authored_option(self) -> None:
         event_key = "health.7100"
         contract = _manager_contract(event_key, player=29037)
