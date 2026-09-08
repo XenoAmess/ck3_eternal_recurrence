@@ -223,3 +223,20 @@ host/contender 保存为 loser，并把执行作用域保存为 unexpected-win �
 三个字段各自放宽成可选，也不接受任意超集。继续选择确认源码计算结果的 authored
 2 / native 1。改动只在 CK3 进程外的合同、测试与文档；静态验证和推送后仍在同一
 PID、同一暂停事件上热重载，不重启游戏。
+
+## 同会话第十一次合同 RED：洪水恢复期开始通知
+
+辩论替补领袖 variant 热通过后，PID `69176` 在 `date_raw=53256312`、event
+instance `503` 暂停于 `natural_disaster.6901`。MCP 查询确认 root 为玩家
+`32904`，完整上下文仍是上一场洪水的 `situation/situation_sub_region/`
+`epicenter_county/river_region` 四个 scope，唯一 authored/native option 为
+`1/0`，且选择尚未发生。
+
+CK3 1.19.0.6 原版 situation 定义在 recovery phase 的 `on_start` 中先调用
+`natural_disaster_save_base_scopes_effect`，再向 `affected_ruler` 组的每名参与者
+投递 `.6901`；事件 immediate 只通知参与封臣，唯一 option 是空确认。因此合同
+精确绑定四个 flood scope、玩家 root 和唯一 native 0。不同灾害各自进入恢复期时
+都可再次投递，occurrence 仍由产品观察窗限定，而非假定整局一次。
+
+该修复同样只修改进程外合同、测试与文档；推送后继续在事件实例 `503` 上热重载，
+不重启 CK3。

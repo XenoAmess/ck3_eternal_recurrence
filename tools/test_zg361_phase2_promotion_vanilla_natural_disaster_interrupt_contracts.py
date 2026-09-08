@@ -28,6 +28,9 @@ ON_ACTION_SOURCE_SHA256 = (
 SCRIPTED_EFFECT_SOURCE_SHA256 = (
     "48483CB13CF885203C43316C4990B684BC9D6ED5B5B3A664CCF228F59EAE44D7"
 )
+SITUATION_SOURCE_SHA256 = (
+    "158984B899B9A8AA2667B2F67581C2C1C087B48DB9D14A3D934A68AEC4720E18"
+)
 
 
 def _install_optional_desktop_stubs() -> None:
@@ -160,7 +163,11 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
     def test_r247_exact_frame_selects_the_only_acknowledgement(self) -> None:
         self.assertEqual(
             set(disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS),
-            {"natural_disaster.8001", "natural_disaster.7021"},
+            {
+                "natural_disaster.8001",
+                "natural_disaster.7021",
+                "natural_disaster.6901",
+            },
         )
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
             "natural_disaster.8001"
@@ -288,6 +295,69 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_r355_recovery_start_uses_empty_terminal_acknowledgement(self) -> None:
+        event_key = "natural_disaster.6901"
+        contract = production._timeline_contract_for_window(
+            disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[event_key],
+            starting_date=53199480,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 503,
+            "date_raw": 53256312,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                _scope("situation", "situation"),
+                _scope("situation_sub_region", "situation_sub_region"),
+                _scope("epicenter_county", "landed_title"),
+                _scope("river_region", "geographical_region"),
+            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+        snapshot = {
+            "date_raw": 53256312,
+            "active_event": {"option_count": 1},
+        }
+        event = {"event_instance_id": 503}
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["native_option_indices"], (0,))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        wrong_type = copy.deepcopy(context)
+        wrong_type["saved_scopes"][-1]["scope"]["type_key"] = "province"
+        drift_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_type,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:river_region:type"])
+
     def test_r247_frame_rejects_scope_identity_type_and_option_drift(self) -> None:
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
             "natural_disaster.8001"
@@ -340,10 +410,14 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         scripted_effect_source = _ck3_source(
             "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt"
         )
+        situation_source = _ck3_source(
+            "common/situation/situations/tgp_natural_disaster.txt"
+        )
         if (
             event_source is None
             or on_action_source is None
             or scripted_effect_source is None
+            or situation_source is None
         ):
             self.skipTest("CK3 1.19.0.6 source is not present on this machine")
 
@@ -352,6 +426,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         self.assertEqual(
             _sha256(scripted_effect_source), SCRIPTED_EFFECT_SOURCE_SHA256
         )
+        self.assertEqual(_sha256(situation_source), SITUATION_SOURCE_SHA256)
         event_block = _extract_block(
             event_source.read_text(encoding="utf-8-sig"),
             "natural_disaster.8001 =",
@@ -384,6 +459,19 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             " ".join(terminal_option.split()),
             "option = { name = natural_disaster.7021.a "
             "natural_disaster_warning_tooltip_effect = yes }",
+        )
+        recovery_start_block = _extract_block(
+            event_source.read_text(encoding="utf-8-sig"),
+            "natural_disaster.6901 =",
+        )
+        self.assertEqual(
+            len(re.findall(r"(?m)^\toption\s*=\s*\{", recovery_start_block)),
+            1,
+        )
+        recovery_option = _extract_block(recovery_start_block, "\toption =")
+        self.assertEqual(
+            " ".join(recovery_option.split()),
+            "option = { name = natural_disaster.6901.a }",
         )
 
         join_block = _extract_block(
@@ -426,6 +514,16 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             "var:river_region ?= { save_scope_as = river_region }",
             " ".join(base_scopes_block.split()),
         )
+        normalized_situation = " ".join(
+            situation_source.read_text(encoding="utf-8-sig").split()
+        )
+        self.assertIn(
+            "natural_disaster_save_base_scopes_effect = yes "
+            "scope:situation.situation_participant_group:affected_ruler = { "
+            "every_situation_group_participant = { trigger_event = "
+            "natural_disaster.6901 } } natural_disaster_insurance_effect = yes",
+            normalized_situation,
+        )
 
     def test_contract_is_registered_without_inline_copy(self) -> None:
         production_source = (
@@ -433,6 +531,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertNotIn('    "natural_disaster.8001": {', production_source)
         self.assertNotIn('    "natural_disaster.7021": {', production_source)
+        self.assertNotIn('    "natural_disaster.6901": {', production_source)
         self.assertRegex(
             production_source,
             r"KNOWN_TIMELINE_INTERRUPTS\.update\(\s*"

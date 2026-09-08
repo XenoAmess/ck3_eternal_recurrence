@@ -109,4 +109,36 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 2,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "natural_disaster.6901": {
+        # CK3 1.19.0.6 recovery-phase start notice for each independent
+        # affected ruler. natural_disaster_save_base_scopes_effect has already
+        # published the exact flood context before the situation dispatches
+        # this event. Its sole authored option is empty, so native0 is the
+        # unavoidable terminal acknowledgement. Independent disasters may
+        # legitimately deliver the event again within the bounded timeline.
+        "date_raw": 53256312,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "scope_types": {
+            "situation": "situation",
+            "situation_sub_region": "situation_sub_region",
+            "epicenter_county": "landed_title",
+            "river_region": "geographical_region",
+        },
+        "saved_scope_name_sets": ((
+            "situation",
+            "situation_sub_region",
+            "epicenter_county",
+            "river_region",
+        ),),
+        "saved_scope_count": 4,
+        "boolean_scopes": (),
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }
