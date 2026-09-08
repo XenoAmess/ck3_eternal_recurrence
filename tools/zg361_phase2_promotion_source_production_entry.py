@@ -1263,8 +1263,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # also reveals it to the player, upgrades the eunuch story and harms
         # the dynamic owner's opinion. Native option 1 does not reveal the
         # secret to the player or start a follow-up event; it only applies the
-        # authored downgrade/opinion/stress result. Bind the exact no-target
-        # secret frame before choosing that narrower terminal route.
+        # authored downgrade/opinion/stress result. The native immediate block
+        # saves secret_target only when the selected secret has one. Bind the
+        # exact target/no-target variants before choosing that narrower route.
         "date_raw": 53223312,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1274,6 +1275,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "unique_character_scope_excludes": {
             "eunuch": (32904,),
             "secret_owner": (32904,),
+        },
+        "optional_unique_character_scope_excludes": {
+            "secret_target": (32904,),
         },
         "character_scope_differs_from": {
             "eunuch": ("secret_owner",),
@@ -1287,16 +1291,30 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "secret": "secret",
             "secret_owner": "character",
         },
+        "optional_scope_types": {
+            "secret_target": "character",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "secret",
-            "secret_owner",
-        ),),
-        "saved_scope_count": 6,
+        "saved_scope_name_sets": (
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "secret",
+                "secret_owner",
+            ),
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "secret",
+                "secret_owner",
+                "secret_target",
+            ),
+        ),
+        "saved_scope_counts": (6, 7),
         "option_count": 2,
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
@@ -4154,6 +4172,18 @@ def _manager_recovery_contract(
             for name, values in excludes_value.items()
             if isinstance(values, tuple)
         }
+    optional_excludes_value = rebound.get(
+        "optional_unique_character_scope_excludes"
+    )
+    if isinstance(optional_excludes_value, Mapping):
+        rebound["optional_unique_character_scope_excludes"] = {
+            str(name): tuple(
+                player if value == original_root else value
+                for value in values
+            )
+            for name, values in optional_excludes_value.items()
+            if isinstance(values, tuple)
+        }
     scope_variants_value = rebound.get("scope_variants")
     if isinstance(scope_variants_value, tuple):
         rebound_variants: list[object] = []
@@ -4816,6 +4846,25 @@ def _known_interrupt_checks(
         checks[f"scope:{name}:unique_third_party"] = (
             len(ids) == 1 and ids.isdisjoint(excluded_character_ids)
         )
+    optional_excluded_scopes_value = contract.get(
+        "optional_unique_character_scope_excludes", {}
+    )
+    optional_excluded_scopes = (
+        optional_excluded_scopes_value
+        if isinstance(optional_excluded_scopes_value, Mapping)
+        else {}
+    )
+    for name, excluded_character_ids_value in optional_excluded_scopes.items():
+        ids = character_ids(str(name))
+        excluded_character_ids = (
+            set(excluded_character_ids_value)
+            if isinstance(excluded_character_ids_value, tuple)
+            else set()
+        )
+        checks[f"scope:{name}:optional_unique_third_party"] = (
+            not ids
+            or (len(ids) == 1 and ids.isdisjoint(excluded_character_ids))
+        )
     matches_any_value = contract.get("character_scope_matches_any", {})
     matches_any = (
         matches_any_value if isinstance(matches_any_value, Mapping) else {}
@@ -4918,6 +4967,12 @@ def _known_interrupt_checks(
     if "saved_scope_count" in contract:
         checks["saved_scope_count"] = (
             len(scopes) == contract["saved_scope_count"]
+        )
+    elif "saved_scope_counts" in contract:
+        saved_scope_counts = contract["saved_scope_counts"]
+        checks["saved_scope_count"] = (
+            isinstance(saved_scope_counts, tuple)
+            and len(scopes) in saved_scope_counts
         )
     return checks
 
