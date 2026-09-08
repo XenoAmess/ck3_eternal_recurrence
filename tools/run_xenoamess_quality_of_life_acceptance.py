@@ -71,6 +71,9 @@ REQUIRED_MARKERS = (
     "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved",
     "ZQA: TEST DONE xqol",
 )
+REMOTE_FILE_ID_LINE = re.compile(
+    r'(?m)^[ \t]*remote_file_id[ \t]*=[ \t]*"([0-9]+)"[ \t]*(?:\r?\n|$)'
+)
 
 
 def log(message: str) -> None:
@@ -225,6 +228,23 @@ def render_presets() -> str:
     )
 
 
+def write_product_outer_descriptor(inner: Path, outer: Path, target: Path) -> str | None:
+    """Render an isolated outer descriptor from source or Workshop-cache content."""
+    text = inner.read_text(encoding="utf-8-sig")
+    remote_key_lines = re.findall(r"(?im)^[ \t]*remote_file_id\b[^\r\n]*$", text)
+    remote_ids = REMOTE_FILE_ID_LINE.findall(text)
+    if remote_key_lines and len(remote_key_lines) != len(remote_ids):
+        raise acceptance.RunnerError(f"inner descriptor contains malformed remote_file_id: {inner}")
+    if len(remote_ids) > 1:
+        raise acceptance.RunnerError(f"inner descriptor contains multiple remote_file_id values: {inner}")
+    if re.search(r"(?m)^\s*path\s*=", text):
+        raise acceptance.RunnerError(f"inner descriptor already contains path=: {inner}")
+    sanitized = REMOTE_FILE_ID_LINE.sub("", text)
+    rendered = sanitized.rstrip("\r\n") + f'\npath="{target.as_posix()}"\n'
+    outer.write_bytes(rendered.encode("utf-8-sig"))
+    return remote_ids[0] if remote_ids else None
+
+
 def bootstrap_userdir(userdir: Path, source_root: Path = SOURCE) -> dict[str, object]:
     for path in (
         userdir / "mod",
@@ -246,7 +266,9 @@ def bootstrap_userdir(userdir: Path, source_root: Path = SOURCE) -> dict[str, ob
         shutil.copy2(source, destination)
     shutil.rmtree(fixture)
     shutil.copytree(FIXTURE, fixture)
-    isolated.write_outer_descriptor(product / "descriptor.mod", userdir / "mod" / PRODUCT_OUTER, product)
+    workshop_item_id = write_product_outer_descriptor(
+        product / "descriptor.mod", userdir / "mod" / PRODUCT_OUTER, product
+    )
     isolated.write_outer_descriptor(fixture / "descriptor.mod", userdir / "mod" / FIXTURE_OUTER, fixture)
     enabled_mods = [f"mod/{PRODUCT_OUTER}", f"mod/{FIXTURE_OUTER}"]
     (userdir / "tutorial.txt").write_text('last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n', encoding="utf-8")
@@ -260,6 +282,7 @@ def bootstrap_userdir(userdir: Path, source_root: Path = SOURCE) -> dict[str, ob
         "targets": targets,
         "snapshots": snapshots,
         "tree_sha256": {key: isolated.snapshot_digest(value) for key, value in snapshots.items()},
+        "workshop_item_id": workshop_item_id,
     }
 
 
@@ -526,6 +549,7 @@ def run_cell(
         "mount_order": mount_order,
         "runtime_tree_sha256": bootstrap["tree_sha256"],
         "product_source": str(source_root),
+        "workshop_item_id": bootstrap["workshop_item_id"],
         "runtime_unchanged": runtime_unchanged,
         "source_unchanged": source_unchanged,
         "mcp_readiness": readiness,
