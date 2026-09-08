@@ -111,7 +111,13 @@ zg361_pp_open_v_case_effect = {
 		}
 		zg361_case_v_open_effect = yes
 		if = {
-			limit = { var:zg361_case_kernel_applied = 1 }
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_case_kernel_applied }
+					var:zg361_case_kernel_applied = 1
+				}
+				trigger_else = { always = no }
+			}
 			# Freeze the manager's cycle-level choice on the case subject. AI
 			# managers retain the itemized sentinel and use their existing path.
 			if = {

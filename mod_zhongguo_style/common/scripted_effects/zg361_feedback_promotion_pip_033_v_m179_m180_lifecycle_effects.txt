@@ -124,7 +124,13 @@ zg361_pp_m179_core_effect = {
 			set_variable = { name = zg361_pp_m179_receipt_route value = 3 }
 		}
 		if = {
-			limit = { var:zg361_case_kernel_applied = 1 }
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_case_kernel_applied }
+					var:zg361_case_kernel_applied = 1
+				}
+				trigger_else = { always = no }
+			}
 			if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				zg361_case_kernel_reserve_transaction_effect = {
@@ -488,7 +494,13 @@ zg361_pp_m180_core_effect = {
 			set_variable = { name = zg361_pp_m180_receipt_route value = 3 }
 		}
 		if = {
-			limit = { var:zg361_case_kernel_applied = 1 }
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_case_kernel_applied }
+					var:zg361_case_kernel_applied = 1
+				}
+				trigger_else = { always = no }
+			}
 			if = {
 				limit = { NOT = { scope:zg361_pp_route = 3 } }
 				zg361_case_kernel_reserve_transaction_effect = {

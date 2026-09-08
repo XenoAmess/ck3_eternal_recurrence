@@ -71,10 +71,10 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical = gen.render_effects()
-        self.assertEqual(len(historical), 1_066_734)
+        self.assertEqual(len(historical), 1_073_034)
         self.assertEqual(
             hashlib.sha256(historical).hexdigest(),
-            "c97dd6c886468bff4fc822eec096bc7eead413e76eadcb548d955a00fd9b644e",
+            "4f64a3ad8a20077e99c99e7278b2a2e330ee21587298293f3d31e4b16c2ae59e",
         )
         source_blocks = gen.top_level_effect_blocks(historical)
         source_names = tuple(name for name, _block in source_blocks)
@@ -195,6 +195,18 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 self.assertLess(block.index(existence), guard_at)
                 self.assertGreater(block.index(read), guard_at)
             self.assertIn("trigger_else = { always = no }", block)
+
+    def test_core_applied_read_is_behind_lazy_existence_gate(self) -> None:
+        lazy_guard = """trigger_if = {
+\t\t\t\t\tlimit = { has_variable = zg361_case_kernel_applied }
+\t\t\t\t\tvar:zg361_case_kernel_applied = 1
+\t\t\t\t}
+\t\t\t\ttrigger_else = { always = no }"""
+        for row in gen.MECHANISMS:
+            block = effect_block(
+                self.effects, f"zg361_pp_m{row.mechanism_id:03d}_core_effect"
+            )
+            self.assertIn(lazy_guard, block, f"{row.mechanism_id}: eager applied read")
 
     def test_m147_publishes_result_case_serial_and_post_record_revision(self) -> None:
         core = effect_block(self.effects, "zg361_pp_m147_core_effect")

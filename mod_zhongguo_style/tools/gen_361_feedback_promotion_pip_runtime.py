@@ -2348,7 +2348,13 @@ zg361_pp_open_{domain.key}_case_effect = {{
 \t\t}}
 \t\tzg361_case_{domain.key}_open_effect = yes
 \t\tif = {{
-\t\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
+\t\t\tlimit = {{
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied }}
+\t\t\t\t\tvar:zg361_case_kernel_applied = 1
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t}}
 \t\t\t# Freeze the manager's cycle-level choice on the case subject. AI
 \t\t\t# managers retain the itemized sentinel and use their existing path.
 \t\t\tif = {{
@@ -2616,7 +2622,13 @@ zg361_pp_m{mechanism.mechanism_id:03d}_core_effect = {{
 \t\t}}
 \t\t{indent(record_operation(mechanism, state), 2).lstrip()}
 \t\tif = {{
-\t\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
+\t\t\tlimit = {{
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied }}
+\t\t\t\t\tvar:zg361_case_kernel_applied = 1
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t}}
 \t\t\tif = {{
 \t\t\t\tlimit = {{ NOT = {{ scope:zg361_pp_route = 3 }} }}
 \t\t\t\t{indent(transaction, 4).lstrip()}
