@@ -1761,7 +1761,10 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertEqual(production.PRODUCT_CYCLE_OPPORTUNITIES, 2)
         self.assertEqual(production.POST_PUBLICATION_OBSERVATION_DAYS, 4200)
-        self.assertEqual(production.MAX_ADVANCE_DAYS, 5000)
+        self.assertEqual(production.PRE_WORKFORCE_MAX_ADVANCE_DAYS, 5000)
+        self.assertEqual(production.ENDGAME_TARGET_WORKFORCE_CYCLES, 3)
+        self.assertEqual(production.WORKFORCE_CYCLE_OBSERVATION_DAYS, 730)
+        self.assertEqual(production.MAX_ADVANCE_DAYS, 7190)
         self.assertEqual(
             contract["date_raw_range"],
             (
@@ -1789,6 +1792,20 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertLess(former_absolute_end_date, r245_stage_nine_tail_date)
         self.assertGreaterEqual(
             contract["date_raw_range"][1], r245_stage_nine_tail_date
+        )
+
+        # R355 naturally opened the first Workforce AB case at D+4950. The
+        # third-source target needs three finite 730-day Workforce windows
+        # without granting a fresh budget to any retained-client reconnect.
+        r355_first_workforce_open_date = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 4950 * 24
+        )
+        self.assertGreaterEqual(
+            contract["date_raw_range"][1],
+            r355_first_workforce_open_date
+            + production.ENDGAME_TARGET_WORKFORCE_CYCLES
+            * production.WORKFORCE_CYCLE_OBSERVATION_DAYS
+            * production.HOURS_PER_DAY,
         )
 
         # R116's second player B1 became visible at D+525.  The canonical

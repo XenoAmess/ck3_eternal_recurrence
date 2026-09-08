@@ -175,9 +175,23 @@ PRODUCT_CYCLE_OPPORTUNITIES = 2
 # days into that second cycle.  Keep one canonical absolute deadline, rather
 # than granting time per retained client, but cover two complete finite
 # B1 -> post-publication opportunities from the immutable seed.
-MAX_ADVANCE_DAYS = (
+PRE_WORKFORCE_MAX_ADVANCE_DAYS = (
     PRODUCT_CYCLE_OPPORTUNITIES * B1_AUTHORED_ADVANCE_DAYS
     + POST_PUBLICATION_OBSERVATION_DAYS
+)
+# The cross-cycle source contract intentionally pauses on the third real
+# zg361we.356 occurrence. R355 reached the first Workforce AB entry at D+4950,
+# proving that the former D+5000 cap covered only the pre-Workforce critical
+# path. The exact-build endgame seam already bounds one natural Workforce
+# receipt/history opportunity to 730 days. Reserve three such finite windows
+# from the same canonical seed; retained-client reconnects still cannot renew
+# any part of the budget.
+WORKFORCE_CYCLE_OBSERVATION_DAYS = 730
+ENDGAME_TARGET_WORKFORCE_CYCLES = 3
+MAX_ADVANCE_DAYS = (
+    PRE_WORKFORCE_MAX_ADVANCE_DAYS
+    + ENDGAME_TARGET_WORKFORCE_CYCLES
+    * WORKFORCE_CYCLE_OBSERVATION_DAYS
 )
 HOURS_PER_DAY = 24
 # Native bridge snapshots publish on a 250 ms heartbeat. A just-submitted
@@ -5224,6 +5238,11 @@ def enter_promotion_source_checkpoint_v1(
     # The caller retains this same object even if a later interrupt raises.
     # R59/R61 lost their accumulated timeline because only success returned it.
     evidence: dict[str, object] = {} if evidence_out is None else evidence_out
+    retained_timeline_interrupt_drains = copy.deepcopy(
+        evidence.get("timeline_interrupt_drains")
+        if isinstance(evidence.get("timeline_interrupt_drains"), list)
+        else []
+    )
     evidence.update({
         "schema_version": 1,
         "kind": "zg361_phase2_promotion_source_production_entry",
@@ -5240,6 +5259,13 @@ def enter_promotion_source_checkpoint_v1(
             "post_publication_observation_days": (
                 POST_PUBLICATION_OBSERVATION_DAYS
             ),
+            "pre_workforce_total_days": PRE_WORKFORCE_MAX_ADVANCE_DAYS,
+            "endgame_target_workforce_cycles": (
+                ENDGAME_TARGET_WORKFORCE_CYCLES
+            ),
+            "workforce_cycle_observation_days": (
+                WORKFORCE_CYCLE_OBSERVATION_DAYS
+            ),
             "total_days": MAX_ADVANCE_DAYS,
         },
         "paused_progress_settle_seconds": PAUSED_PROGRESS_SETTLE_SECONDS,
@@ -5249,7 +5275,10 @@ def enter_promotion_source_checkpoint_v1(
         "natural_cycle_wait": None,
         "m146_option1_submission": None,
         "m146_date_raw": None,
-        "timeline_interrupt_drains": [],
+        "timeline_interrupt_drains": retained_timeline_interrupt_drains,
+        "retained_timeline_interrupt_drain_count": len(
+            retained_timeline_interrupt_drains
+        ),
         "unexpected_event": None,
         "target_binding": None,
         "action_ack_used_as_state_evidence": False,
@@ -5460,7 +5489,9 @@ def enter_promotion_source_checkpoint_v1(
                 f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
                 f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 opportunities "
                 f"plus one {POST_PUBLICATION_OBSERVATION_DAYS}-day "
-                "post-publication critical-path tail)"
+                "post-publication critical-path tail plus "
+                f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
+                f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce windows)"
             )
         if zg361_6_wait_state is not None:
             active_event = snapshot.get("active_event")
@@ -5536,7 +5567,10 @@ def enter_promotion_source_checkpoint_v1(
                     f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
                     f"opportunities plus one "
                     f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
-                    "post-publication critical-path tail)"
+                    "post-publication critical-path tail plus "
+                    f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
+                    f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce "
+                    "windows)"
                 )
             if snapshot.get("paused") is not True:
                 if poll_interval_seconds:

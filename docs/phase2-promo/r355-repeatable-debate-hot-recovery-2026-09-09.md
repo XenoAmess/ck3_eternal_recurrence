@@ -262,3 +262,22 @@ CK3 1.19.0.6 原版 situation 定义在 recovery phase 的 `on_start` 中先调�
 
 该修复同样只修改进程外合同、测试与文档；推送后继续在事件实例 `503` 上热重载，
 不重启 CK3。
+
+## 同会话边界 RED：5000 日只覆盖到首轮 Workforce 起点
+
+同一 CK3 PID `69176` 在 `date_raw=53265816`（canonical seed 的 D+4950）自然打开
+首轮 `zg361we.242`，并在同一暂停/热恢复链推进到 AC 段；原
+`MAX_ADVANCE_DAYS=5000` 随后于 `date_raw=53268288` 报有限时间边界 RED。该 RED
+没有修改游戏状态，也没有使 CK3、连接代次或当前事件实例失效，因此不重启 CK3。
+
+旧上限由两次 400 日 B1 opportunity 与 4200 日 pre-Workforce critical-path tail
+组成，只能证明到达 Workforce，不能容纳验收合同明确要求的第三次真实
+`zg361we.356`。现按已有 exact-build endgame seam 的单周期 730 日上限，保留原
+D+5000 前置预算并追加三个有限 Workforce 窗口：总上限为
+`5000 + 3*730 = 7190` 日，仍锚定 canonical seed，retained-client reconnect
+不会续杯。
+
+同时修正热恢复的证据连续性：调用方复用 `evidence_out` 时，已完成的
+`timeline_interrupt_drains` 必须保留。这样前两次 `.356` 在后续遇到新的已知事件
+RED 并热重载后仍计入第三次目标，且 stage-nine digest 与完整自然时间线不会因
+Python 调用边界丢失。该改动只在 CK3 进程外的 Python runner/contract 层生效。

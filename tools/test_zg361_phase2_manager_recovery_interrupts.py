@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import sys
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -234,6 +235,59 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
                 timeline_interrupt_drains=drains,
             )
         )
+
+    def test_hot_recovery_retains_prior_target_drains(self) -> None:
+        initial = {
+            "map_ready": True,
+            "revision": 2072,
+            "native_revision": 2071,
+            "snapshot_id": "native:2071",
+            "date_raw": 53268288,
+            "paused": True,
+            "played_character": {"character_id": 32904},
+            "diagnostics": {
+                "connection_generation": 1,
+                "bridge_pid": 69176,
+            },
+        }
+        target_binding = {
+            "event_instance_id": 531,
+            "revision": 2072,
+        }
+        retained_drains = [
+            {"event_definition_key": "zg361cl.390", "result": "GREEN"},
+            {"event_definition_key": "zg361we.356", "result": "GREEN"},
+            {"event_definition_key": "zg361we.356", "result": "GREEN"},
+        ]
+        evidence: dict[str, object] = {
+            "timeline_interrupt_drains": copy.deepcopy(retained_drains),
+        }
+        service = type("Service", (), {"snapshot": lambda self: initial})()
+
+        with (
+            mock.patch.object(
+                production,
+                "_binding",
+                return_value=(initial, target_binding),
+            ),
+            mock.patch.object(
+                production,
+                "_event_definition",
+                return_value=("zg361we.356", {"status": "available"}),
+            ),
+        ):
+            result = production.enter_promotion_source_checkpoint_v1(
+                service,
+                pause_on_event_definition_key="zg361we.356",
+                pause_on_event_occurrence=3,
+                evidence_out=evidence,
+            )
+
+        self.assertIs(result, evidence)
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["target_occurrence_index"], 3)
+        self.assertEqual(result["timeline_interrupt_drains"], retained_drains)
+        self.assertEqual(result["retained_timeline_interrupt_drain_count"], 3)
 
     def test_clean_boundary_recovery_keeps_known_vanilla_contract(self) -> None:
         contract = production._resolve_timeline_interrupt_contract(
