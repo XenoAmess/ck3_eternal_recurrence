@@ -550,8 +550,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # and trait-dependent stress, while avoiding a new blocking event
         # chain during the bounded Phase-2 observation window. R163 observed
         # the complete two-character/two-option letter frame. R329 then
-        # reached a second independent request at 53221296 on the bounded
-        # three-cycle endgame lineage; both still use this exact contract.
+        # reached a second independent request on the bounded three-cycle
+        # endgame lineage. R345 then observed three distinct confirmation
+        # vassals at 53204640, 53226000, and 53246304 in one replay; all use
+        # this exact terminal-refusal contract.
         "date_raw": 53157888,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -574,7 +576,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 2,
+        "max_occurrences": 3,
     },
     "adultery.0002": {
         # CK3 1.19.0.6 spouse-suspicion event. Confrontation opens a new event
