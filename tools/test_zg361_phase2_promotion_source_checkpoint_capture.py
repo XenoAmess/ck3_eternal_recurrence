@@ -226,6 +226,92 @@ class PromotionSourceCheckpointCaptureTests(unittest.TestCase):
         self.assertGreaterEqual(service.snapshot_calls, 5)
         self.assertFalse(service.selected)
 
+    def test_native_save_may_publish_a_new_revision_of_the_same_event(self) -> None:
+        class SavePublishingService(CaptureService):
+            def __init__(self, root: Path) -> None:
+                super().__init__(root)
+                self.save_published = False
+
+            def snapshot(self) -> dict[str, object]:
+                result = super().snapshot()
+                if self.save_published:
+                    result["snapshot_id"] = "native:8"
+                    result["revision"] += 1
+                    result["native_revision"] += 1
+                return result
+
+            def save_checkpoint(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                result = super().save_checkpoint(
+                    expected_revision=expected_revision
+                )
+                self.save_published = True
+                return result
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            result = capture_promotion_source_checkpoint_v2(
+                SavePublishingService(root),
+                checkpoint_root=root / "archive",
+                capture_artifact_path=root / "capture.json",
+                seed_lineage_id=SEED_LINEAGE_ID,
+                capture_lineage=_lineage(),
+                managed_product_session=_session(),
+                sleeper=lambda _seconds: None,
+            )
+
+        self.assertEqual(result["result"], "GREEN")
+        receipt = result["entries"][0]["source_receipt"]
+        self.assertEqual(
+            receipt["post_save_snapshot_binding"]["revision"],
+            receipt["source_snapshot_binding"]["revision"] + 1,
+        )
+
+    def test_native_save_revision_rebind_rejects_event_drift(self) -> None:
+        class SaveDriftingService(CaptureService):
+            def __init__(self, root: Path) -> None:
+                super().__init__(root)
+                self.save_published = False
+
+            def snapshot(self) -> dict[str, object]:
+                result = super().snapshot()
+                if self.save_published:
+                    result["snapshot_id"] = "native:8"
+                    result["revision"] += 1
+                    result["native_revision"] += 1
+                    result["active_event"]["instance_id"] += 1
+                return result
+
+            def save_checkpoint(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                result = super().save_checkpoint(
+                    expected_revision=expected_revision
+                )
+                self.save_published = True
+                return result
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with self.assertRaises(
+                PromotionSourceCheckpointCaptureError
+            ) as raised:
+                capture_promotion_source_checkpoint_v2(
+                    SaveDriftingService(root),
+                    checkpoint_root=root / "archive",
+                    capture_artifact_path=root / "capture.json",
+                    seed_lineage_id=SEED_LINEAGE_ID,
+                    capture_lineage=_lineage(),
+                    managed_product_session=_session(),
+                    sleeper=lambda _seconds: None,
+                )
+
+        self.assertEqual(
+            raised.exception.reason_code,
+            "promotion_source_save_crossed_frame",
+        )
+
     def test_disabled_option_fails_before_native_save(self) -> None:
         class DisabledOptionService(CaptureService):
             def query_current_event_window_context_v1(

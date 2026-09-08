@@ -79,6 +79,13 @@ _BINDING_FIELDS: Final = (
     "event_instance_id",
     "event_option_count",
 )
+_POST_SAVE_STABLE_FIELDS: Final = (
+    "date_raw",
+    "player_character_id",
+    "connection_generation",
+    "event_instance_id",
+    "event_option_count",
+)
 
 
 class PromotionSourceCaptureService(Protocol):
@@ -251,6 +258,30 @@ def _same_frame(
     expected: Mapping[str, object], observed: Mapping[str, object]
 ) -> bool:
     return all(expected.get(key) == observed.get(key) for key in _BINDING_FIELDS)
+
+
+def _same_event_after_save(
+    expected: Mapping[str, object], observed: Mapping[str, object]
+) -> bool:
+    if not all(
+        expected.get(key) == observed.get(key)
+        for key in _POST_SAVE_STABLE_FIELDS
+    ):
+        return False
+    for key in ("revision", "native_revision"):
+        before = expected.get(key)
+        after = observed.get(key)
+        if (
+            isinstance(before, bool)
+            or not isinstance(before, int)
+            or isinstance(after, bool)
+            or not isinstance(after, int)
+            or after < before
+        ):
+            return False
+    return isinstance(observed.get("snapshot_id"), str) and bool(
+        observed["snapshot_id"]
+    )
 
 
 def _saved_character_id(row: object) -> int | None:
@@ -448,7 +479,7 @@ def validate_promotion_source_capture_artifact_v2(
         and isinstance(post_query_binding, Mapping)
         and isinstance(post_save_binding, Mapping)
         and _same_frame(source_binding, post_query_binding)
-        and _same_frame(source_binding, post_save_binding)
+        and _same_event_after_save(source_binding, post_save_binding)
         and source_binding.get("player_character_id")
         == entry.get("player_character_id")
         and source_binding.get("date_raw") == entry.get("date_raw")
@@ -590,7 +621,7 @@ def capture_promotion_source_checkpoint_v2(
         require_event=True,
     )
     assert after_save is not None
-    if not _same_frame(source_binding, after_save):
+    if not _same_event_after_save(source_binding, after_save):
         raise PromotionSourceCheckpointCaptureError(
             "promotion_source_save_crossed_frame",
             {"source_binding": source_binding, "after_save": after_save},
