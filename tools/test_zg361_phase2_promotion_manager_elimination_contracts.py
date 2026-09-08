@@ -170,6 +170,115 @@ class ManagerEliminationContractTests(unittest.TestCase):
         )
         self.assertFalse(alias_checks["scope:zg361_ch_d_event_subject"])
 
+    def test_r293_r351_r353_late_variant_binds_dynamic_subjects(self) -> None:
+        contract = production._timeline_contract_for_window(
+            elimination.MANAGER_ELIMINATION_TIMELINE_CONTRACTS["zg361.5"],
+            starting_date=53199480,
+        )
+        variant = contract["scope_variants"][0]
+        names = variant["saved_scope_names"]
+
+        def context_for(
+            *, reopen_subject: int, mentor: int, pip_subject: int,
+            notice_subject: int,
+        ) -> dict[str, object]:
+            characters = {
+                **variant["character_scopes"],
+                "zg361_b1_reopen_ticket_subject": reopen_subject,
+                "zg361_b2_support_mentor": mentor,
+                "zg361_b2_pip_deadline_subject": pip_subject,
+                "zg361_notice_deadline_subject": notice_subject,
+            }
+            return {
+                "schema": "current-event-window-context-v1",
+                "schema_version": 1,
+                "status": "available",
+                "window_match_count": 1,
+                "event_definition_key": "zg361.5",
+                "current_event_instance_id": 216,
+                "date_raw": 53230200,
+                "root_scope": _character_scope("root", 32904)["scope"],
+                "saved_scopes": [
+                    _character_scope(name, characters[name])
+                    if name in characters
+                    else _value_scope(name)
+                    for name in names
+                ],
+                "options": [_option(index, index) for index in range(3)],
+            }
+
+        snapshot = {
+            "date_raw": 53230200,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 216}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key="zg361.5",
+                contract=contract,
+            )
+
+        for context in (
+            context_for(
+                reopen_subject=45031,
+                mentor=30434,
+                pip_subject=29747,
+                notice_subject=29747,
+            ),
+            context_for(
+                reopen_subject=45031,
+                mentor=30434,
+                pip_subject=29747,
+                notice_subject=28679,
+            ),
+            context_for(
+                reopen_subject=62223,
+                mentor=28303,
+                pip_subject=29747,
+                notice_subject=29747,
+            ),
+        ):
+            checks = checks_for(context)
+            self.assertTrue(all(checks.values()), checks)
+
+        player_reopen_subject = context_for(
+            reopen_subject=32904,
+            mentor=28303,
+            pip_subject=29747,
+            notice_subject=29747,
+        )
+        self.assertFalse(checks_for(player_reopen_subject)[
+            "scope:zg361_b1_reopen_ticket_subject:unique_third_party"
+        ])
+
+        mentor_reused_pip_subject = context_for(
+            reopen_subject=62223,
+            mentor=29747,
+            pip_subject=29747,
+            notice_subject=28679,
+        )
+        self.assertFalse(checks_for(mentor_reused_pip_subject)[
+            "scope:zg361_b2_support_mentor:differs_from"
+        ])
+
+        wrong_fixed_subject = context_for(
+            reopen_subject=62223,
+            mentor=28303,
+            pip_subject=29747,
+            notice_subject=29747,
+        )
+        index = names.index("zg361_cp_e_subject")
+        wrong_fixed_subject["saved_scopes"][index] = _character_scope(
+            "zg361_cp_e_subject", 26506
+        )
+        self.assertFalse(
+            checks_for(wrong_fixed_subject)["scope:zg361_cp_e_subject"]
+        )
+
     def test_module_owns_exactly_two_elimination_contracts(self) -> None:
         contracts = elimination.MANAGER_ELIMINATION_TIMELINE_CONTRACTS
         self.assertEqual(set(contracts), {"zg361.5", "zg361.6"})

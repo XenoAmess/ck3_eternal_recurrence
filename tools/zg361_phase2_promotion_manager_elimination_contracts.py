@@ -72,7 +72,6 @@ _ZG361_5_R293_SAVED_SCOPE_NAMES: Final = (
 _ZG361_5_R293_CHARACTER_SCOPES: Final = {
     "zg361_b1_calibration_watchdog_owner": 32904,
     "zg361_b1_oversight_ticket_owner": 32904,
-    "zg361_b1_reopen_ticket_subject": 45031,
     "zg361_b1_reopen_ticket_owner": 32904,
     "zg361_b2_pip_review_candidate": 27448,
     "zg361_b2_pip_deadline_owner": 32904,
@@ -93,6 +92,7 @@ _ZG361_5_R293_CHARACTER_SCOPES: Final = {
 }
 
 _ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES: Final = (
+    "zg361_b1_reopen_ticket_subject",
     "zg361_b2_support_mentor",
     "zg361_b2_pip_deadline_subject",
     "zg361_notice_deadline_subject",
@@ -175,11 +175,14 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
                 name: (32904,)
                 for name in _ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES
             },
-            # PIP and result-notice deadlines are independently scheduled for
-            # the subject active in each source effect. R293 happened to carry
-            # the same subject in both tokens; R351 proved the legal distinct
-            # shape. The support mentor belongs only to the PIP token and must
-            # differ from that PIP subject, not an unrelated notice subject.
+            # The B1 reopen subject is selected from each cycle's ordered
+            # processing roster; R293/R351 carried 45031 while R353 carried
+            # 62223. PIP and result-notice deadlines are independently
+            # scheduled for the subject active in each source effect. R293
+            # happened to carry the same subject in both tokens; R351 proved
+            # the legal distinct shape. The support mentor belongs only to the
+            # PIP token and must differ from that PIP subject, not an unrelated
+            # notice or B1 reopen subject.
             "character_scope_matches_any": {
                 "zg361_ch_d_event_subject": (
                     "zg361_cp_e_subject",
