@@ -2477,6 +2477,75 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:owner:differs_from"])
 
+    def test_seduce_discovery_binds_liege_and_complete_scope_stack(self) -> None:
+        event_key = "seduce_outcome.3901"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53199480,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=401,
+            date_raw=53248656,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 31496),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 37337),
+                _scope("ignore_cheating_error_check", "boolean"),
+                _scope("scheme_successful", "boolean"),
+                _scope("discovery_chance", "value"),
+                _scope("scheme_discovered", "boolean"),
+                _scope("target_liege", "character", 32904),
+                _scope("capital", "landed_title"),
+                _scope(
+                    "dummy_servant_gender",
+                    "character",
+                    unavailable_character=True,
+                ),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53248656,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 401},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"], {"target_liege": 32904})
+        self.assertEqual(contract["saved_scope_count"], 11)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][10] = _scope(
+            "dummy_servant_gender", "character", 31496
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53248656,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 401},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drift_checks["scope:dummy_servant_gender:unavailable_character"]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

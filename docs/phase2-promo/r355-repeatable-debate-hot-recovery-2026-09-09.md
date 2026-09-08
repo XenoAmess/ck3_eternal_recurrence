@@ -127,3 +127,23 @@ cross reviewer 合法变化为 `27928`；B1 reopen、PIP/notice 与 compensation
 
 该修复不改变 mod 文件或 CK3 内存，只更新外部验证合同；当前事件继续同 PID 热
 恢复。
+
+## 同会话第六次合同 RED：勾引成功被领主发现
+
+第五次热恢复后，PID `69176` 在 `date_raw=53248656`、event instance `401`
+暂停于原版 `seduce_outcome.3901`。MCP 查询确认 root / `target_liege` 均为玩家
+`32904`，动态 `owner=31496`、`target=37337`，唯一显示按钮为 authored 1 /
+native 0，且选择尚未发生。完整 scope 栈共 11 项；其中 immediate 创建的
+`dummy_servant_gender` 类型为 character，但 native bridge 不提供该临时 dummy
+的稳定角色 ID，因此合同精确要求其 typed identity 为 unavailable，而不是把它
+误当作任意普通角色。
+
+原版 `seduce_outcome.2900` 在成功勾引被发现后，把 `.3901` 投递给目标的领主；
+`.3901` 的唯一 option 对本次 `target` 执行
+`seduce_outcome_success_discovered_effect`，没有无副作用替代路线。合同因此只接受
+本次精确 root、11-scope 名称/类型/人物关系和唯一 native option。不同勾引计划
+可分别产生该通知，所以 occurrence 按有绝对 5,000 日上限的产品观察窗可重复，
+而非按当前实见次数设置整局上限。
+
+该改动仍仅涉及 CK3 进程外的 Python 合同、测试与文档。事件保持暂停，提交后
+热重载同一进程并继续，不重启 CK3。
