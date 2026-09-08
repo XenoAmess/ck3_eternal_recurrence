@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed player-manager elimination interrupt contracts."""
 
 from __future__ import annotations
@@ -97,6 +97,33 @@ _ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES: Final = (
     "zg361_b2_pip_deadline_subject",
     "zg361_notice_deadline_subject",
 )
+
+_ZG361_5_R355_SAVED_SCOPE_NAMES: Final = (
+    *_ZG361_5_R293_SAVED_SCOPE_NAMES[:-1],
+    "zg361_pp_prompt_owner",
+    "zg361_pp_prompt_subject",
+    "zg361_pp_prompt_cycle",
+    "zg361_pp_prompt_case",
+    "zg361_pp_prompt_state",
+    "zg361_pp_prompt_mechanism",
+    "zg361_n_elim",
+)
+
+_ZG361_5_R355_DYNAMIC_CHARACTER_SCOPE_NAMES: Final = (
+    *_ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES,
+    "zg361_ch_d_event_subject",
+    "zg361_cp_e_subject",
+    "zg361_cp_e_cross_reviewer",
+    "zg361_p3_aa_subject",
+    "zg361_pp_prompt_subject",
+)
+
+_ZG361_5_R355_CHARACTER_SCOPES: Final = {
+    name: character_id
+    for name, character_id in _ZG361_5_R293_CHARACTER_SCOPES.items()
+    if name not in _ZG361_5_R355_DYNAMIC_CHARACTER_SCOPE_NAMES
+}
+_ZG361_5_R355_CHARACTER_SCOPES["zg361_pp_prompt_owner"] = 32904
 
 
 MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
@@ -208,7 +235,62 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
                     "zg361_b2_pip_deadline_subject",
                 ),
             },
-        },),
+        }, {
+            # R355 retained the R293 cross-domain stack into the next annual
+            # elimination window while a promotion prompt was still live.
+            # CH-D, CP-E, P3 and the prompt all bind the same current subject;
+            # the subject and CP-E cross-reviewer are cycle-owned identities,
+            # not stable IDs from the older R293 fixture.
+            "saved_scope_names": _ZG361_5_R355_SAVED_SCOPE_NAMES,
+            "character_scopes": _ZG361_5_R355_CHARACTER_SCOPES,
+            "scope_types": {
+                name: "value"
+                for name in _ZG361_5_R355_SAVED_SCOPE_NAMES
+                if name not in _ZG361_5_R355_CHARACTER_SCOPES
+                and name not in _ZG361_5_R355_DYNAMIC_CHARACTER_SCOPE_NAMES
+            },
+            "unique_character_scope_excludes": {
+                name: (32904,)
+                for name in _ZG361_5_R355_DYNAMIC_CHARACTER_SCOPE_NAMES
+            },
+            "character_scope_matches_any": {
+                "zg361_ch_d_event_subject": (
+                    "zg361_cp_e_subject",
+                    "zg361_p3_aa_subject",
+                    "zg361_pp_prompt_subject",
+                ),
+                "zg361_cp_e_subject": (
+                    "zg361_ch_d_event_subject",
+                    "zg361_p3_aa_subject",
+                    "zg361_pp_prompt_subject",
+                ),
+                "zg361_p3_aa_subject": (
+                    "zg361_ch_d_event_subject",
+                    "zg361_cp_e_subject",
+                    "zg361_pp_prompt_subject",
+                ),
+                "zg361_pp_prompt_subject": (
+                    "zg361_ch_d_event_subject",
+                    "zg361_cp_e_subject",
+                    "zg361_p3_aa_subject",
+                ),
+                "zg361_comp_result_subject_scope": (
+                    "zg361_comp_open_subject",
+                ),
+                "zg361_comp_open_subject": (
+                    "zg361_comp_result_subject_scope",
+                ),
+            },
+            "character_scope_differs_from": {
+                "zg361_b2_support_mentor": (
+                    "zg361_b2_pip_deadline_subject",
+                ),
+                "zg361_cp_e_cross_reviewer": (
+                    "zg361_cp_e_subject",
+                ),
+            },
+        }),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "zg361.6": {
         # Player-only last elimination appeal. Option 1 is only a 40% chance to

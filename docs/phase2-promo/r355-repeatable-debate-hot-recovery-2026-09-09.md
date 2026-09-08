@@ -108,3 +108,22 @@ character 和四个 value。这是年度发布事件在晋升提示调用栈尚�
 由每轮年度考核发布触发，occurrence 同样按 5,000 日产品观察窗可重复，每次仍
 核验完整 scope 集合和唯一按钮。修复仍只在外部 Python 合同层，继续热重载当前
 暂停实例，不重启 CK3。
+
+## 同会话第五次合同 RED：年度淘汰动态主体
+
+年度总览确认后，同一 PID 在 `date_raw=53247816`、event instance `367` 进入
+`zg361.5`。MCP 查询确认 root `32904`、三个 authored/native options `(0,1,2)`
+完整且尚未选择。事件源码表明 immediate 仅新增 `zg361_n_elim`，其余均为外层
+状态；实际新栈等于既有 R293 cross-domain 集合加六个 `zg361_pp_prompt_*`
+字段，并只保留 `zg361_n_elim` 一个本事件计数。
+
+旧 R293 variant 把当时的 CH-D/CP-E/P3 subject `26505` 与 cross reviewer
+`27448` 冻结成跨周期身份。本次实机证明四条当前 subject 链一致为 `30938`，
+cross reviewer 合法变化为 `27928`；B1 reopen、PIP/notice 与 compensation 仍各自
+保持独立且内部一致的主体。新 R355 variant 因此精确绑定完整 61-scope 名称集，
+用 alias equality、与 root 互异及 reviewer/subject 互异来验证动态身份，而不接受
+任意字段或任意角色。年度淘汰每轮都可能发生，合同 occurrence 也改为在产品观察
+窗内可重复。
+
+该修复不改变 mod 文件或 CK3 内存，只更新外部验证合同；当前事件继续同 PID 热
+恢复。
