@@ -12,7 +12,9 @@ CAREER_LEARNING_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # work is complete before this card is queued. Its sole acknowledgement
         # only clears the digest-pending latch; it adds no payment, deadline,
         # transition, or follow-up event. Bind the complete live global-scope
-        # projection before allowing that terminal acknowledgement.
+        # projection before allowing that terminal acknowledgement. It makes
+        # no direct career/learning case transition; clearing the latch lets
+        # the existing Central pump advance stage nine afterward.
         "date_raw": 53221752,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
