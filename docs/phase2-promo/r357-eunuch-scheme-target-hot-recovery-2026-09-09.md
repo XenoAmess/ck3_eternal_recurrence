@@ -227,6 +227,38 @@ eunuch/rival 关系均通过；旧合同只接受基础五项，因合法继承�
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
 
+## 同会话第九次 RED：诱奸事件的 50% 随机分支未执行
+
+第八次 `retry` 热加载提交 `05707d1b7e70752e5291f6ed4e1e945cff18bff5` 后，同一 PID
+`159264` 推进到 `ep3_story_cycle_admin_eunuch.4010`、event instance `368`、
+`date_raw=53247768`。本帧八项 scope 为
+`story/emperor/eunuch/admin_title/student/rival/spouse/seducer`，角色 ID 分别确认
+student `33596937`、rival `16834604`、spouse `32797`、seducer `31440`。
+三个 native options `(0,1,2)` 与其余身份检查通过，选择尚未发生。
+
+旧合同来自另一真实帧，冻结了 50% hidden random 执行后的四项：
+`had_sex_root_character/had_sex_with_effect_partner/new_memory/secret`。原版定义表明
+这个 random 整块可能不执行；执行时 `had_sex_with_effect` 固定把前两项绑定到
+seducer/spouse，并生成性交记忆，随后保存 lover secret。当前真实帧正是合法的
+未执行分支，不是 CK3 或 MCP 状态损坏。
+
+最小修复保留两种已由原版定义与真实帧闭合的随机分支：四项全无，或四项成组存在；
+shared story 的 `protege/student/rival` 仍各自有限可选，共展开 16 个精确名称集合。
+为不在分支缺席时削弱旧帧的别名验证，合同检查器新增“可选 character alias”语义：
+scope 缺席即通过，存在时必须分别等于 seducer/spouse。原路线继续选择 native option
+2，只承担 prestige/stress，避免 native option 0 的 duel 与 native option 1 的三人
+监禁和 tyranny。该事件 cooldown 为 15 年，而产品窗约 19.7 年，occurrence 改为
+窗口内可重复且每次完整验帧。
+
+- 第九次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-9.json`；
+- park SHA-256：
+  `15DA239453F987FB898B3C6633CA4E8DD336763BD0857342BE4AD34BE281DBB7`；
+- 第九次 RED report 快照：12,364,226 bytes，SHA-256
+  `285CAFCD255EDF5FF789DD91E19CD310D4D96B04C7706B38EA409A39035C4B66`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
+
 ## 同会话第八次 RED：傀儡继承人继承完整 story 角色
 
 第七次 `retry` 热加载提交 `980b2d07017afc0fbd551d3ae6366236fbd3ebdc` 后，同一 PID

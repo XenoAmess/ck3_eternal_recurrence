@@ -1896,17 +1896,18 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "unique_character_scope_excludes": {
             "eunuch": (32904,),
-            "student": (32904,),
-            "rival": (32904,),
             "spouse": (32904,),
             "seducer": (32904,),
+        },
+        "optional_unique_character_scope_excludes": {
+            "protege": (32904,),
+            "student": (32904,),
+            "rival": (32904,),
             "had_sex_root_character": (32904,),
             "had_sex_with_effect_partner": (32904,),
         },
-        "character_scope_matches_any": {
-            "seducer": ("had_sex_root_character",),
+        "optional_character_scope_matches_any": {
             "had_sex_root_character": ("seducer",),
-            "spouse": ("had_sex_with_effect_partner",),
             "had_sex_with_effect_partner": ("spouse",),
         },
         "character_scope_differs_from": {
@@ -1919,36 +1920,48 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "emperor": "character",
             "eunuch": "character",
             "admin_title": "landed_title",
-            "student": "character",
-            "rival": "character",
             "spouse": "character",
             "seducer": "character",
+        },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
             "had_sex_root_character": "character",
             "had_sex_with_effect_partner": "character",
             "new_memory": "character_memory",
             "secret": "secret",
         },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "student",
-            "rival",
-            "spouse",
-            "seducer",
-            "had_sex_root_character",
-            "had_sex_with_effect_partner",
-            "new_memory",
-            "secret",
-        ),),
-        "saved_scope_count": 12,
+        "saved_scope_name_sets": tuple(
+            names + random_branch
+            for names in _optional_scope_name_sets(
+                (
+                    "story",
+                    "emperor",
+                    "eunuch",
+                    "admin_title",
+                    "spouse",
+                    "seducer",
+                ),
+                ("protege", "student", "rival"),
+            )
+            for random_branch in (
+                (),
+                (
+                    "had_sex_root_character",
+                    "had_sex_with_effect_partner",
+                    "new_memory",
+                    "secret",
+                ),
+            )
+        ),
+        "saved_scope_counts": (6, 7, 8, 9, 10, 11, 12, 13),
         "option_count": 3,
         "native_option_indices": (0, 1, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.5020": {
         # CK3 1.19.0.6 puppet-heir node. The immediate block has already made
@@ -5088,6 +5101,28 @@ def _known_interrupt_checks(
         checks[f"scope:{name}:matches_any"] = len(ids) == 1 and any(
             ids == character_ids(str(candidate_name))
             for candidate_name in candidate_names
+        )
+    optional_matches_any_value = contract.get(
+        "optional_character_scope_matches_any", {}
+    )
+    optional_matches_any = (
+        optional_matches_any_value
+        if isinstance(optional_matches_any_value, Mapping)
+        else {}
+    )
+    for name, candidate_names_value in optional_matches_any.items():
+        candidate_names = (
+            candidate_names_value
+            if isinstance(candidate_names_value, tuple)
+            else ()
+        )
+        ids = character_ids(str(name))
+        checks[f"scope:{name}:optional_matches_any"] = not ids or (
+            len(ids) == 1
+            and any(
+                ids == character_ids(str(candidate_name))
+                for candidate_name in candidate_names
+            )
         )
     differs_from_value = contract.get("character_scope_differs_from", {})
     differs_from = (
