@@ -20,6 +20,12 @@ def invoke(*arguments: str) -> dict[str, object]:
 
 
 class TaskBusTests(unittest.TestCase):
+    def test_install_copies_executable_and_documentation(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            result = invoke("--bus-dir", raw, "install")
+            self.assertTrue(Path(result["installed"]).is_file())
+            self.assertTrue(Path(result["documentation"]).is_file())
+
     def test_status_notification_and_incremental_ack(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

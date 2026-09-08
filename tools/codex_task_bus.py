@@ -326,7 +326,15 @@ def command_install(args: argparse.Namespace) -> None:
     destination = args.bus_dir / "bin" / "codex_task_bus.py"
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(Path(__file__).resolve(), destination)
-    print_result(installed=str(destination.resolve()), bus_dir=str(args.bus_dir.resolve()))
+    source_documentation = Path(__file__).resolve().parent.parent / "docs" / "codex-task-bus.md"
+    installed_documentation = args.bus_dir / "README.md"
+    if source_documentation.is_file():
+        shutil.copy2(source_documentation, installed_documentation)
+    print_result(
+        installed=str(destination.resolve()),
+        documentation=str(installed_documentation.resolve()) if installed_documentation.is_file() else None,
+        bus_dir=str(args.bus_dir.resolve()),
+    )
 
 
 def parser() -> argparse.ArgumentParser:
