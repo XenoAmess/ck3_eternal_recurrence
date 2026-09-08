@@ -90,6 +90,9 @@ MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
             "selected_option_number": 3,
             "selected_native_option_index": 2,
         }),
-        "max_occurrences": 1,
+        # R339 observed both source-authored outcomes in one long manager
+        # recovery: critical success at 53217360, then failure at 53227704,
+        # with distinct scheme owners and the exact reviewed projections.
+        "max_occurrences": 2,
     },
 }

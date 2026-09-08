@@ -1996,6 +1996,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
         self.assertEqual(contract["max_occurrences"], 2)
+        self.assertEqual(contract["max_occurrences"], 2)
 
         for province_scope in (
             "province_metropolitan",
