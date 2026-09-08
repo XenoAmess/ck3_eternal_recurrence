@@ -3687,6 +3687,113 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_names_exact"])
 
+    def test_player_elimination_r293_variant_binds_full_inherited_tuple(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        def value_scope(name: str) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {"status": "available", "type_key": "value"},
+            }
+
+        event_key = "zg361.5"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53243952,
+        )
+        variant = contract["scope_variants"][0]
+        names = variant["saved_scope_names"]
+        characters = variant["character_scopes"]
+        self.assertEqual(len(names), 55)
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 240,
+            "date_raw": 53244648,
+            "root_scope": character_scope("root", 32904)["scope"],
+            "saved_scopes": [
+                character_scope(name, characters[name])
+                if name in characters
+                else value_scope(name)
+                for name in names
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53244648, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 240}
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        resolved = production._scope_contract_for_context(
+            context["saved_scopes"], contract
+        )
+        self.assertEqual(resolved["selected_option_number"], 3)
+        self.assertEqual(resolved["selected_native_option_index"], 2)
+
+        wrong_subject = copy.deepcopy(context)
+        subject_index = names.index("zg361_cp_e_subject")
+        wrong_subject["saved_scopes"][subject_index] = character_scope(
+            "zg361_cp_e_subject", 26506
+        )
+        self.assertFalse(checks_for(wrong_subject)["scope:zg361_cp_e_subject"])
+
+        wrong_alias = copy.deepcopy(context)
+        cp_subject_index = names.index("zg361_cp_e_subject")
+        p3_subject_index = names.index("zg361_p3_aa_subject")
+        wrong_alias["saved_scopes"][cp_subject_index] = character_scope(
+            "zg361_cp_e_subject", 26506
+        )
+        wrong_alias["saved_scopes"][p3_subject_index] = character_scope(
+            "zg361_p3_aa_subject", 26506
+        )
+        self.assertFalse(
+            checks_for(wrong_alias)["scope:zg361_ch_d_event_subject:matches_any"]
+        )
+
+        missing_handoff = copy.deepcopy(context)
+        missing_handoff["saved_scopes"] = [
+            row
+            for row in missing_handoff["saved_scopes"]
+            if row["name"] != "zg361_cp_e_case"
+        ]
+        self.assertFalse(
+            checks_for(missing_handoff)["saved_scope_names_exact"]
+        )
+
     def test_player_elimination_appeal_binds_sparse_options_and_exact_names(self) -> None:
         def character_scope(character_id: int) -> dict[str, object]:
             return {

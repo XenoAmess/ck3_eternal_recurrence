@@ -52,6 +52,49 @@ _ZG361_5_SAVED_SCOPE_NAMES: Final = (
     "zg361_n_elim",
 )
 
+_ZG361_5_R293_SAVED_SCOPE_NAMES: Final = (
+    *_ZG361_5_SAVED_SCOPE_NAMES[:-1],
+    "zg361_cp_e_owner",
+    "zg361_cp_e_subject",
+    "zg361_cp_e_cross_reviewer",
+    "zg361_cp_e_successor_manager",
+    "zg361_cp_e_active_manager",
+    "zg361_cp_e_historical_owner",
+    "zg361_cp_e_cycle",
+    "zg361_cp_e_case",
+    "zg361_p3_aa_owner",
+    "zg361_p3_aa_subject",
+    "zg361_p3_aa_cycle",
+    "zg361_p3_aa_case",
+    "zg361_n_elim",
+)
+
+_ZG361_5_R293_CHARACTER_SCOPES: Final = {
+    "zg361_b1_calibration_watchdog_owner": 32904,
+    "zg361_b1_oversight_ticket_owner": 32904,
+    "zg361_b1_reopen_ticket_subject": 45031,
+    "zg361_b1_reopen_ticket_owner": 32904,
+    "zg361_b2_pip_review_candidate": 27448,
+    "zg361_b2_support_mentor": 30434,
+    "zg361_b2_pip_deadline_owner": 32904,
+    "zg361_b2_pip_deadline_subject": 29747,
+    "zg361_notice_deadline_owner": 32904,
+    "zg361_notice_deadline_subject": 29747,
+    "zg361_p2c_ticket_manager": 32904,
+    "zg361_ch_d_event_owner": 32904,
+    "zg361_ch_d_event_subject": 26505,
+    "zg361_comp_result_subject_scope": 26347,
+    "zg361_comp_open_subject": 26347,
+    "zg361_cp_e_owner": 32904,
+    "zg361_cp_e_subject": 26505,
+    "zg361_cp_e_cross_reviewer": 27448,
+    "zg361_cp_e_successor_manager": 32904,
+    "zg361_cp_e_active_manager": 32904,
+    "zg361_cp_e_historical_owner": 32904,
+    "zg361_p3_aa_owner": 32904,
+    "zg361_p3_aa_subject": 26505,
+}
+
 
 MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
@@ -110,6 +153,47 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
+        "scope_variants": ({
+            # R293 reached the same visible elimination event after the
+            # current B1 publication also left a career-project handoff and
+            # Phase3 AA tuple in outer event state. The event-owned
+            # zg361_n_elim value remains the final scope and the option shape
+            # is unchanged. Bind every inherited alias and the current live
+            # subject identities instead of weakening the older R204 shape.
+            "saved_scope_names": _ZG361_5_R293_SAVED_SCOPE_NAMES,
+            "character_scopes": _ZG361_5_R293_CHARACTER_SCOPES,
+            "scope_types": {
+                name: "value"
+                for name in _ZG361_5_R293_SAVED_SCOPE_NAMES
+                if name not in _ZG361_5_R293_CHARACTER_SCOPES
+            },
+            "character_scope_matches_any": {
+                "zg361_b2_pip_deadline_subject": (
+                    "zg361_notice_deadline_subject",
+                ),
+                "zg361_notice_deadline_subject": (
+                    "zg361_b2_pip_deadline_subject",
+                ),
+                "zg361_ch_d_event_subject": (
+                    "zg361_cp_e_subject",
+                    "zg361_p3_aa_subject",
+                ),
+                "zg361_cp_e_subject": (
+                    "zg361_ch_d_event_subject",
+                    "zg361_p3_aa_subject",
+                ),
+                "zg361_p3_aa_subject": (
+                    "zg361_ch_d_event_subject",
+                    "zg361_cp_e_subject",
+                ),
+                "zg361_comp_result_subject_scope": (
+                    "zg361_comp_open_subject",
+                ),
+                "zg361_comp_open_subject": (
+                    "zg361_comp_result_subject_scope",
+                ),
+            },
+        },),
     },
     "zg361.6": {
         # Player-only last elimination appeal. Option 1 is only a 40% chance to
