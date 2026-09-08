@@ -129,6 +129,38 @@ def _human_tribute_scopes() -> list[dict[str, object]]:
 
 
 class ManagerRecoveryInterruptTests(unittest.TestCase):
+    def test_central_summary_allows_two_observed_cycle_terminals(self) -> None:
+        event_key = "zg361p2c.2"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53199480,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertEqual(contract["option_count"], 1)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["max_occurrences"], 2)
+
+        completed = [
+            {"event_definition_key": event_key, "date_raw": 53201136},
+            {"event_definition_key": event_key, "date_raw": 53217456},
+        ]
+        max_occurrences = int(contract["max_occurrences"])
+
+        def next_occurrence_allowed(rows: list[dict[str, object]]) -> bool:
+            occurrence_count = sum(
+                row.get("event_definition_key") == event_key for row in rows
+            )
+            return occurrence_count < max_occurrences
+
+        self.assertTrue(next_occurrence_allowed([]))
+        self.assertTrue(next_occurrence_allowed(completed[:1]))
+        self.assertFalse(next_occurrence_allowed(completed))
+
     def test_late_pause_target_enables_pp_and_three_cycle_workforce_routes(
         self,
     ) -> None:
