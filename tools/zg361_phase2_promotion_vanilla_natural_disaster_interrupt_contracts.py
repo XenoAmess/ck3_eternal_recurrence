@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Exact vanilla natural-disaster interrupts observed on the promotion timeline."""
 
 from __future__ import annotations
@@ -17,6 +17,20 @@ _NATURAL_DISASTER_8001_SAVED_SCOPE_NAMES: Final = (
     "epicenter_county",
 )
 
+_NATURAL_DISASTER_8001_SCOPE_TYPES: Final = {
+    "situation": "situation",
+    "situation_sub_region": "situation_sub_region",
+    "situation_participant_group": "situation_participant_group",
+    "disaster_province": "province",
+    "great_project": "great_project",
+    "epicenter_county": "landed_title",
+}
+
+_NATURAL_DISASTER_8001_RIVER_SAVED_SCOPE_NAMES: Final = (
+    *_NATURAL_DISASTER_8001_SAVED_SCOPE_NAMES,
+    "river_region",
+)
+
 
 VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
@@ -25,9 +39,12 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         # CK3 1.19.0.6 warning-phase join event.  Its sole authored option
         # invokes only natural_disaster_warning_tooltip_effect, so native0 is
         # the unavoidable acknowledgement and adds no option-side mutation.
-        # R247 supplies one exact live occurrence.  Keep the occurrence cap at
-        # that evidence boundary; any later disaster needs an independently
-        # exact frame before the retained path may acknowledge it.
+        # R247 observed the eight-scope earthquake shape. R355 observed the
+        # exact flood sibling, where natural_disaster_save_base_scopes_effect
+        # adds river_region from the situation variable. Independent warning
+        # situations may legitimately send this event again, so recurrence is
+        # bounded by the product observation window rather than a whole-run
+        # occurrence count.
         "date_raw": 53204688,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -35,24 +52,27 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
             "ruler": 32904,
             "disaster_province_ruler": 32904,
         },
-        "scope_types": {
-            "situation": "situation",
-            "situation_sub_region": "situation_sub_region",
-            "situation_participant_group": "situation_participant_group",
-            "disaster_province": "province",
-            "great_project": "great_project",
-            "epicenter_county": "landed_title",
-        },
+        "scope_types": _NATURAL_DISASTER_8001_SCOPE_TYPES,
         "saved_scope_name_sets": (
             _NATURAL_DISASTER_8001_SAVED_SCOPE_NAMES,
         ),
         "saved_scope_count": 8,
+        "scope_variants": ({
+            "saved_scope_names": (
+                _NATURAL_DISASTER_8001_RIVER_SAVED_SCOPE_NAMES
+            ),
+            "saved_scope_count": 9,
+            "scope_types": {
+                **_NATURAL_DISASTER_8001_SCOPE_TYPES,
+                "river_region": "geographical_region",
+            },
+        },),
         "boolean_scopes": (),
         "option_count": 1,
         "snapshot_option_count": 1,
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

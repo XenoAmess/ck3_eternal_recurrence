@@ -166,3 +166,21 @@ CK3 1.19.0.6 的 movement-petition decision view 明确定义三个预算选择�
 约束的可重复；每次 event/root/scope/options 和选择后实例推进仍逐项检查。
 
 这里同样没有修改 CK3 已加载内容；提交后继续热重载 PID `69176`。
+
+## 同会话第八次合同 RED：洪水河流区域 scope
+
+预算请愿热通过后，PID `69176` 在 `date_raw=53254632`、event instance `498`
+暂停于第二次 `natural_disaster.8001`。root、`ruler`、
+`disaster_province_ruler` 均为玩家 `32904`，唯一 authored/native option 为
+`1/0`，尚未选择。与 R247 八-scope 帧相比，本次完整集合只多
+`river_region: geographical_region`，其余类型和身份完全一致。
+
+原版 `natural_disaster_save_base_scopes_effect` 明确对
+`scope:situation.var:river_region` 使用条件式 `save_scope_as=river_region`：洪水
+situation 保存该字段，非河流灾害不保存。因此合同新增且只新增精确的九-scope
+洪水 variant，八-scope 旧形状继续保留；缺字段、多字段或错误类型仍 fail-closed。
+`.8001` 是玩家加入每个独立灾害 warning phase 时的通知，原版没有整局一次上限，
+故 occurrence 改为受 5,000 日产品观察窗约束的可重复。唯一按钮仍只调用
+`natural_disaster_warning_tooltip_effect`。
+
+修复只改进程外合同、测试与文档，当前 CK3 实例继续热加载，不重启。

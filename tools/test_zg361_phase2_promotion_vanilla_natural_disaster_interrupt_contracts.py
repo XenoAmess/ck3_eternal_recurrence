@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Focused tests for the exact vanilla natural-disaster interrupt contract."""
 
 from __future__ import annotations
@@ -24,6 +24,9 @@ EVENT_SOURCE_SHA256 = (
 )
 ON_ACTION_SOURCE_SHA256 = (
     "7FA3F8BA729BAA8D4CE716F0DB88A19D8CE4D86C9BE441A6324759780E5F8D95"
+)
+SCRIPTED_EFFECT_SOURCE_SHA256 = (
+    "48483CB13CF885203C43316C4990B684BC9D6ED5B5B3A664CCF228F59EAE44D7"
 )
 
 
@@ -180,7 +183,48 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         self.assertEqual(contract["native_option_indices"], (0,))
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
-        self.assertEqual(contract["max_occurrences"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+    def test_r355_flood_frame_binds_exact_river_region_sibling(self) -> None:
+        contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
+            "natural_disaster.8001"
+        ]
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53199480
+        )
+        snapshot, event, context = self._r247_frame()
+        snapshot["date_raw"] = 53254632
+        event["event_instance_id"] = 498
+        context["current_event_instance_id"] = 498
+        context["date_raw"] = 53254632
+        context["saved_scopes"].append(
+            _scope("river_region", "geographical_region")
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key="natural_disaster.8001",
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(len(context["saved_scopes"]), 9)
+
+        wrong_type = copy.deepcopy(context)
+        wrong_type["saved_scopes"][-1]["scope"]["type_key"] = "province"
+        drift_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=wrong_type,
+            event_key="natural_disaster.8001",
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:river_region:type"])
 
     def test_r247_frame_rejects_scope_identity_type_and_option_drift(self) -> None:
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
@@ -231,11 +275,21 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         on_action_source = _ck3_source(
             "common/on_action/dlc/tgp/tgp_natural_disaster_on_actions.txt"
         )
-        if event_source is None or on_action_source is None:
+        scripted_effect_source = _ck3_source(
+            "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt"
+        )
+        if (
+            event_source is None
+            or on_action_source is None
+            or scripted_effect_source is None
+        ):
             self.skipTest("CK3 1.19.0.6 source is not present on this machine")
 
         self.assertEqual(_sha256(event_source), EVENT_SOURCE_SHA256)
         self.assertEqual(_sha256(on_action_source), ON_ACTION_SOURCE_SHA256)
+        self.assertEqual(
+            _sha256(scripted_effect_source), SCRIPTED_EFFECT_SOURCE_SHA256
+        )
         event_block = _extract_block(
             event_source.read_text(encoding="utf-8-sig"),
             "natural_disaster.8001 =",
@@ -265,6 +319,14 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
                 "natural_disaster.8002",
                 "natural_disaster.8003",
             ],
+        )
+        base_scopes_block = _extract_block(
+            scripted_effect_source.read_text(encoding="utf-8-sig"),
+            "natural_disaster_save_base_scopes_effect =",
+        )
+        self.assertIn(
+            "var:river_region ?= { save_scope_as = river_region }",
+            " ".join(base_scopes_block.split()),
         )
 
     def test_contract_is_registered_without_inline_copy(self) -> None:
