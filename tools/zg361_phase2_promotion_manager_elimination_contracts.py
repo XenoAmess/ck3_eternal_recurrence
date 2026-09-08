@@ -175,13 +175,12 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
                 name: (32904,)
                 for name in _ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES
             },
+            # PIP and result-notice deadlines are independently scheduled for
+            # the subject active in each source effect. R293 happened to carry
+            # the same subject in both tokens; R351 proved the legal distinct
+            # shape. The support mentor belongs only to the PIP token and must
+            # differ from that PIP subject, not an unrelated notice subject.
             "character_scope_matches_any": {
-                "zg361_b2_pip_deadline_subject": (
-                    "zg361_notice_deadline_subject",
-                ),
-                "zg361_notice_deadline_subject": (
-                    "zg361_b2_pip_deadline_subject",
-                ),
                 "zg361_ch_d_event_subject": (
                     "zg361_cp_e_subject",
                     "zg361_p3_aa_subject",
@@ -204,7 +203,6 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
             "character_scope_differs_from": {
                 "zg361_b2_support_mentor": (
                     "zg361_b2_pip_deadline_subject",
-                    "zg361_notice_deadline_subject",
                 ),
             },
         },),

@@ -3929,7 +3929,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         checks = checks_for(extra_scope)
         self.assertFalse(checks["saved_scope_names_exact"])
 
-    def test_player_elimination_r293_variant_binds_full_inherited_tuple(self) -> None:
+    def test_player_elimination_r293_r351_variants_bind_full_tuple(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {
                 "name": name,
@@ -4024,15 +4024,24 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         rerolled_checks = checks_for(rerolled_support)
         self.assertTrue(all(rerolled_checks.values()), rerolled_checks)
 
-        mismatched_deadline_subject = copy.deepcopy(rerolled_support)
+        independent_deadline_subject = copy.deepcopy(context)
         index = names.index("zg361_notice_deadline_subject")
-        mismatched_deadline_subject["saved_scopes"][index] = character_scope(
-            "zg361_notice_deadline_subject", 28787
+        independent_deadline_subject["saved_scopes"][index] = character_scope(
+            "zg361_notice_deadline_subject", 28679
         )
-        self.assertFalse(
-            checks_for(mismatched_deadline_subject)[
-                "scope:zg361_b2_pip_deadline_subject:matches_any"
-            ]
+        independent_checks = checks_for(independent_deadline_subject)
+        self.assertTrue(all(independent_checks.values()), independent_checks)
+
+        mentor_matches_unrelated_notice = copy.deepcopy(
+            independent_deadline_subject
+        )
+        index = names.index("zg361_b2_support_mentor")
+        mentor_matches_unrelated_notice["saved_scopes"][index] = (
+            character_scope("zg361_b2_support_mentor", 28679)
+        )
+        unrelated_notice_checks = checks_for(mentor_matches_unrelated_notice)
+        self.assertTrue(
+            all(unrelated_notice_checks.values()), unrelated_notice_checks
         )
 
         mentor_reused_subject = copy.deepcopy(rerolled_support)
