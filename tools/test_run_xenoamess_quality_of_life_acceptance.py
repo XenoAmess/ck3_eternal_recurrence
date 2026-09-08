@@ -11,7 +11,7 @@ import run_xenoamess_quality_of_life_acceptance as xqol
 
 
 class ProductOuterDescriptorTests(unittest.TestCase):
-    def test_workshop_identity_is_recorded_but_not_copied_to_outer_descriptor(self) -> None:
+    def test_workshop_identity_is_recorded_but_not_loaded_in_isolated_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             inner = root / "descriptor.mod"
@@ -23,7 +23,7 @@ class ProductOuterDescriptorTests(unittest.TestCase):
             item_id = xqol.write_product_outer_descriptor(inner, outer, target)
 
             self.assertEqual(item_id, "3798133925")
-            self.assertEqual(inner.read_text(encoding="utf-8-sig"), original)
+            self.assertEqual(inner.read_text(encoding="utf-8-sig"), 'name="XenoAmess的体验优化"\n')
             rendered = outer.read_text(encoding="utf-8-sig")
             self.assertNotIn("remote_file_id", rendered)
             self.assertIn(f'path="{target.as_posix()}"', rendered)

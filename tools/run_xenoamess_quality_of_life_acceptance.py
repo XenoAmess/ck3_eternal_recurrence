@@ -229,7 +229,7 @@ def render_presets() -> str:
 
 
 def write_product_outer_descriptor(inner: Path, outer: Path, target: Path) -> str | None:
-    """Render an isolated outer descriptor from source or Workshop-cache content."""
+    """Project source or Workshop-cache metadata into the isolated runtime."""
     text = inner.read_text(encoding="utf-8-sig")
     remote_key_lines = re.findall(r"(?im)^[ \t]*remote_file_id\b[^\r\n]*$", text)
     remote_ids = REMOTE_FILE_ID_LINE.findall(text)
@@ -240,6 +240,8 @@ def write_product_outer_descriptor(inner: Path, outer: Path, target: Path) -> st
     if re.search(r"(?m)^\s*path\s*=", text):
         raise acceptance.RunnerError(f"inner descriptor already contains path=: {inner}")
     sanitized = REMOTE_FILE_ID_LINE.sub("", text)
+    if sanitized != text:
+        inner.write_bytes(sanitized.encode("utf-8-sig"))
     rendered = sanitized.rstrip("\r\n") + f'\npath="{target.as_posix()}"\n'
     outer.write_bytes(rendered.encode("utf-8-sig"))
     return remote_ids[0] if remote_ids else None
