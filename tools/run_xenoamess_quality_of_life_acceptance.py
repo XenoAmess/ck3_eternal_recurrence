@@ -365,7 +365,7 @@ def project_diagnostics(userdir: Path, artifacts: Path) -> list[str]:
 def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts: Path) -> dict[str, object]:
     before = service.snapshot()
     write_json(artifacts / "05_mcp_before_fixture.json", before)
-    click_decision("开始生活质量实机验收", "切换至宋帝", artifacts, "05_initialize")
+    click_decision("开始体验优化实机验收", "切换至宋帝", artifacts, "05_initialize")
     stream.wait("ZQA: TEST PASS switched_to_supported_player")
     isolated.wait_for_gameplay_hud(artifacts)
     switched = service.snapshot()

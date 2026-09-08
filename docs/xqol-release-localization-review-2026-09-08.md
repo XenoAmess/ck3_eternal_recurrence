@@ -1,7 +1,7 @@
-# XQOL 1.0.1 发布本地化审阅
+# XQOL 1.0.2 发布本地化审阅
 
 执行日期：2026-09-08（Asia/Shanghai）
-产品：`mod_xenoamess_quality_of_life` 1.0.1
+产品：`mod_xenoamess_quality_of_life` 1.0.2
 基准语言：English、简体中文
 发布语言：English、Français、Deutsch、日本語、한국어、Polski、Русский、简体中文、Español
 

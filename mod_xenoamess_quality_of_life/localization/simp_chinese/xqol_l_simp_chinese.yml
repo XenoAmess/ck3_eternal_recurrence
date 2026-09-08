@@ -1,5 +1,5 @@
 ﻿l_simp_chinese:
- xqol_quality_of_life:0 "XenoAmess 的生活质量"
+ xqol_quality_of_life:0 "XenoAmess的体验优化"
  xqol_enable_auto_appointment_decision:0 "开启自动选择继任"
  xqol_enable_auto_appointment_decision_desc:0 "不再让君主本人充当下属行政官职的兜底继承人。各头衔仍使用原版行政制、贤能制或天朝制的候选资格与继承分数，并由其中分数最高者接任。"
  xqol_enable_auto_appointment_decision_tooltip:0 "行政制封臣死亡或卸任时，由原版继承分数最高的合资格候选人接任。"

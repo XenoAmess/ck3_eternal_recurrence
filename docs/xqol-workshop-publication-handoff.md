@@ -1,4 +1,4 @@
-# XenoAmess 的生活质量：Steam Workshop 首发交接
+# XenoAmess的体验优化：Steam Workshop 首发交接
 
 交接时间：2026-09-08（Asia/Shanghai）  
 产品：`mod_xenoamess_quality_of_life` 1.0.0  
@@ -59,7 +59,7 @@ version="1.0.0"
 tags={
 	"Gameplay"
 }
-name="XenoAmess 的生活质量"
+name="XenoAmess的体验优化"
 picture="thumbnail.png"
 supported_version="1.19.0.6"
 path="<推送机上的绝对 staging 路径，使用正斜杠>"
@@ -88,8 +88,8 @@ Start-Process 'steam://rungameid/1158310'
 ## 首次隐藏上传
 
 1. PDX Launcher → `Mod 库` → `上传 Mod`。
-2. 选择新的 `XenoAmess 的生活质量` 外层 descriptor；再次确认展示的内容路径是 Release staging，而不是仓库源目录。
-3. 标题使用 `XenoAmess 的生活质量 / Quality of Life`。
+2. 选择新的 `XenoAmess的体验优化` 外层 descriptor；再次确认展示的内容路径是 Release staging，而不是仓库源目录。
+3. 标题使用 `XenoAmess的体验优化 / Quality of Life`。
 4. 描述从 `workshop/xenoamess_quality_of_life_description.bbcode` 整段复制，并从输入控件回读确认，而不是只检查剪贴板。
 5. 标签选 `Gameplay`；首次提交保持**隐藏**，不要在 fresh-cache 验证前公开。
 6. 若 Steam 显示新的 Workshop Legal Agreement，停在协议页交给账号所有者本人处理；自动化不得代为接受。

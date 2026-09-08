@@ -1,15 +1,15 @@
 # 验收报告
 
 执行日期：2026-09-08（Asia/Shanghai）
-目标：XenoAmess 的生活质量 1.0.1 / CK3 1.19.0.6
+目标：XenoAmess的体验优化 1.0.2 / CK3 1.19.0.6
 
 ## 结论
 
 | 层级 | 结果 | 证据 |
 |---|---|---|
 | L0 静态、发布本地化、exact-byte、可复现构建 | GREEN | 发布本地化 validator、8 项 builder 单测、双构建 SHA |
-| L1 隔离加载、MCP readiness | GREEN（1.0.0 机制基线） | 最终 live artifact 的 `04_mcp_readiness.json`；1.0.1 复跑待补 |
-| L2 开关、死亡、卸任、禁转 flag | GREEN（1.0.0 机制基线） | 14 个必需引擎 marker 各一次；1.0.1 复跑待补 |
+| L1 隔离加载、MCP readiness | GREEN（1.0.0 机制基线） | 最终 live artifact 的 `04_mcp_readiness.json`；1.0.2 复跑待补 |
+| L2 开关、死亡、卸任、禁转 flag | GREEN（1.0.0 机制基线） | 14 个必需引擎 marker 各一次；1.0.2 复跑待补 |
 | L3 Steam fresh-cache | NOT RUN | 待首次 Workshop 上传取得 item ID 后执行 |
 
 ## L0
@@ -52,7 +52,7 @@
 | `cell/04_mcp_readiness.json` | `49d75bdb620dccd5dbe29908012f039c1e68eb980c3bc808942b19c1e87ff971` |
 | `cell/12_mcp_final_paused.json` | `6fd0860542fb11c4baee41d18b05504d2277bd506f5adaeb963df57e7465b2f2` |
 
-MCP 当前不发布 appointment score、角色变量或角色 flag，故这些字段按验收方案降级为 CK3 引擎内外部夹具断言；暂停、地图 readiness、前后 paused snapshot 与必要的 pause 操作仍由 MCP 完成。1.0.1 只改发布元数据、本地化及其构建门禁，但正式发布前仍将用 1.0.1 staging 复跑，不把本节冒充该版本的新实机证据。
+MCP 当前不发布 appointment score、角色变量或角色 flag，故这些字段按验收方案降级为 CK3 引擎内外部夹具断言；暂停、地图 readiness、前后 paused snapshot 与必要的 pause 操作仍由 MCP 完成。1.0.2 只改发布元数据、中文正式名、本地化及其构建门禁，但正式发布前仍将用 1.0.2 staging 复跑，不把本节冒充该版本的新实机证据。
 
 ## 保留的 RED 尝试
 

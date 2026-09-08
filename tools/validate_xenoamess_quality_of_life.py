@@ -186,8 +186,8 @@ def check_scripts(errors: list[str]) -> None:
 def check_assets_and_descriptor(errors: list[str]) -> None:
     descriptor = read_utf8(MOD / "descriptor.mod")
     for token in (
-        'version="1.0.1"',
-        'name="XenoAmess 的生活质量"',
+        'version="1.0.2"',
+        'name="XenoAmess的体验优化"',
         'picture="thumbnail.png"',
         'supported_version="1.19.0.6"',
     ):
