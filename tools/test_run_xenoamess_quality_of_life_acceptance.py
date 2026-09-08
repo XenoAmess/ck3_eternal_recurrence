@@ -40,6 +40,19 @@ class ProductOuterDescriptorTests(unittest.TestCase):
             with self.assertRaises(acceptance.RunnerError):
                 xqol.write_product_outer_descriptor(inner, root / "outer.mod", root / "product")
 
+    def test_death_verifier_waits_for_settled_title_holder(self) -> None:
+        fixture = (
+            xqol.FIXTURE / "common" / "scripted_guis" / "zqa_guis.txt"
+        ).read_text(encoding="utf-8-sig")
+        death_gui = fixture.split("zqa_death_matrix_gui = {", 1)[1].split(
+            "zqa_disabled_matrix_gui = {", 1
+        )[0]
+
+        self.assertIn("has_variable = zqa_death_title", death_gui)
+        self.assertIn("has_variable = zqa_death_successor", death_gui)
+        self.assertIn("holder = root.var:zqa_death_successor", death_gui)
+        self.assertIn("NOT = { holder = root }", death_gui)
+
 
 if __name__ == "__main__":
     unittest.main()
