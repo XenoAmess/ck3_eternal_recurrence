@@ -188,6 +188,10 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(
             route_c_only_projection["snapshot_option_counts"], (1, 3)
         )
+        self.assertEqual(
+            production._snapshot_option_counts(route_c_only_projection),
+            (1, 3),
+        )
         self.assertEqual(route_c_only_projection["selected_option_number"], 3)
         self.assertEqual(
             route_c_only_projection["selected_native_option_index"], 2

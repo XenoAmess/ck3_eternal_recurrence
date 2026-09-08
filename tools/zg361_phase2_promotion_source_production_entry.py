@@ -4178,6 +4178,15 @@ def _option_contract_for_context(
     return contract
 
 
+def _snapshot_option_counts(contract: Mapping[str, object]) -> tuple[object, ...]:
+    """Return the exact authored/rendered counts admitted by one projection."""
+
+    values = contract.get("snapshot_option_counts")
+    if isinstance(values, tuple):
+        return values
+    return (contract.get("snapshot_option_count", contract.get("option_count")),)
+
+
 def _scope_contract_for_context(
     scopes: list[object], contract: Mapping[str, object]
 ) -> Mapping[str, object]:
@@ -4232,17 +4241,7 @@ def _known_interrupt_checks(
     )
     contract = effective_contract
     option_count = effective_contract["option_count"]
-    snapshot_option_count = effective_contract.get(
-        "snapshot_option_count", option_count
-    )
-    snapshot_option_counts_value = effective_contract.get(
-        "snapshot_option_counts"
-    )
-    snapshot_option_counts = (
-        snapshot_option_counts_value
-        if isinstance(snapshot_option_counts_value, tuple)
-        else (snapshot_option_count,)
-    )
+    snapshot_option_counts = _snapshot_option_counts(effective_contract)
     actual_native_option_indices: list[object] = []
     authored_options_exact = len(options) == option_count
     if authored_options_exact:
@@ -4710,9 +4709,7 @@ def _drain_known_timeline_interrupt(
             if isinstance(selection_snapshot.get("active_event"), Mapping)
             else None
         )
-        == effective_contract.get(
-            "snapshot_option_count", effective_contract["option_count"]
-        ),
+        in _snapshot_option_counts(effective_contract),
     }
     if not all(pre_selection_checks.values()) or selection_event is None:
         failed = sorted(
