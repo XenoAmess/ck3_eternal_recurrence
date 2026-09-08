@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run isolated CK3 1.19.0.6 live acceptance for ZhongGuo 361 Style."""
 
 from __future__ import annotations
@@ -898,12 +898,21 @@ PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "active_event_state",
     "save_checkpoint",
     "current_event_context",
+    "pause_timeline",
+    "resume_timeline",
+    "fast_timeline_speed",
+    "event_option_action_ack",
+    "promotion_source_progress_transport",
+    "review_now_action_transport",
 )
 PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_QUERY_FLAG_LABELS = (
     "current_event_context",
 )
 PHASE2_ENDGAME_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
     "save_checkpoint",
+    "pause_timeline",
+    "resume_timeline",
+    "fast_timeline_speed",
 )
 PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",
@@ -11838,6 +11847,99 @@ def _phase2_promo_receipt_sources(
     return lineage, span_receipt_provider, seed_chain_provider
 
 
+def _phase2_endgame_natural_entry_contract(
+    value: Mapping[str, object],
+) -> dict[str, object]:
+    """Reduce the natural third-#356 entry to its formal lineage witness."""
+
+    target_event = "zg361we.356"
+    stage_nine_digest = "zg361cl.390"
+    raw_drains = value.get("timeline_interrupt_drains")
+    drains = (
+        [dict(row) for row in raw_drains if isinstance(row, Mapping)]
+        if isinstance(raw_drains, list)
+        else []
+    )
+    drained_events = [row.get("event_definition_key") for row in drains]
+    stage_nine_ordinals = [
+        index
+        for index, event_key in enumerate(drained_events, 1)
+        if event_key == stage_nine_digest
+    ]
+    prior_source_ordinals = [
+        index
+        for index, event_key in enumerate(drained_events, 1)
+        if event_key == target_event
+    ]
+    checks = {
+        "entry_call_completed": value.get("runner_call_completed") is True,
+        "production_entry_kind_exact": (
+            value.get("kind")
+            == "zg361_phase2_promotion_source_production_entry"
+        ),
+        "production_entry_green": value.get("result") == "GREEN",
+        "natural_cycle_requested": value.get("prefer_natural_cycle") is True,
+        "paused_on_exact_endgame_source": (
+            value.get("readiness") == "paused-real-zg361we.356"
+            and value.get("pause_on_event_definition_key") == target_event
+            and isinstance(value.get("target_binding"), Mapping)
+        ),
+        "third_source_occurrence_requested": (
+            value.get("pause_on_event_occurrence") == 3
+            and value.get("target_occurrence_index") == 3
+        ),
+        "no_fixture_console_or_generic_rebind": (
+            value.get("fixture_used") is False
+            and value.get("console_used") is False
+            and value.get("generic_character_rebind_used") is False
+        ),
+        "action_ack_not_state_evidence": (
+            value.get("action_ack_used_as_state_evidence") is False
+        ),
+        "all_drained_interrupts_green": (
+            bool(drains)
+            and len(drains) == len(raw_drains)
+            and all(row.get("result") == "GREEN" for row in drains)
+        ),
+        "stage_nine_digest_drained_once": len(stage_nine_ordinals) == 1,
+        "two_prior_endgame_sources_drained": len(prior_source_ordinals) == 2,
+        "stage_nine_precedes_prior_endgame_sources": (
+            len(stage_nine_ordinals) == 1
+            and len(prior_source_ordinals) == 2
+            and stage_nine_ordinals[0] < prior_source_ordinals[0]
+            and prior_source_ordinals[0] < prior_source_ordinals[1]
+        ),
+    }
+    result = "GREEN" if all(checks.values()) else "RED"
+    return {
+        "schema_version": 1,
+        "kind": "zg361_phase2_endgame_natural_source_entry_lineage",
+        "result": result,
+        "entry_kind": value.get("kind"),
+        "target_event_definition_key": target_event,
+        "pause_on_event_occurrence": value.get("pause_on_event_occurrence"),
+        "target_occurrence_index": value.get("target_occurrence_index"),
+        "prefer_natural_cycle": value.get("prefer_natural_cycle"),
+        "drain_count": len(drains),
+        "stage_nine_digest_drain_ordinal": (
+            stage_nine_ordinals[0] if len(stage_nine_ordinals) == 1 else None
+        ),
+        "prior_endgame_source_drain_ordinals": prior_source_ordinals,
+        "fixture_used": value.get("fixture_used"),
+        "console_used": value.get("console_used"),
+        "generic_character_rebind_used": value.get(
+            "generic_character_rebind_used"
+        ),
+        "action_ack_used_as_state_evidence": value.get(
+            "action_ack_used_as_state_evidence"
+        ),
+        "checks": checks,
+        "failed_checks": [
+            name for name, passed in checks.items() if passed is not True
+        ],
+    }
+
+
 def run_phase2_endgame_source_capture_scenario(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -11850,10 +11952,14 @@ def run_phase2_endgame_source_capture_scenario(
     runtime_identity: Mapping[str, object],
     game_version: str,
     executable_sha256: str,
+    production_entry_timeout_seconds: float = 300.0,
 ) -> dict[str, object]:
-    """Capture only the already-visible real #356 source; never act on it."""
+    """Naturally reach the third real #356 source, then capture without acting."""
 
     evidence_path = artifacts / "05_endgame_source_capture.json"
+    production_entry_path = (
+        artifacts / "04_phase2_endgame_source_production_entry.json"
+    )
     evidence: dict[str, object] = {
         "schema_version": 1,
         "kind": "zg361_phase2_cross_cycle_endgame_source_capture_run",
@@ -11864,10 +11970,45 @@ def run_phase2_endgame_source_capture_scenario(
         "fixture_used": False,
         "console_used": False,
         "action_ack_only": False,
+        "production_entry": None,
         "failure_reason": None,
     }
     write_json(evidence_path, evidence)
     try:
+        production_entry: dict[str, object] = {}
+        try:
+            enter_promotion_source_checkpoint_v1(
+                service,
+                timeout_seconds=production_entry_timeout_seconds,
+                prefer_natural_cycle=True,
+                pause_on_event_definition_key="zg361we.356",
+                pause_on_event_occurrence=3,
+                evidence_out=production_entry,
+            )
+            production_entry["runner_call_completed"] = True
+        except BaseException as error:
+            production_entry["runner_call_completed"] = False
+            production_entry["error_reason"] = (
+                f"{type(error).__name__}: {error}"
+            )
+            raise
+        finally:
+            entry_contract = _phase2_endgame_natural_entry_contract(
+                production_entry
+            )
+            production_entry["natural_entry_contract"] = entry_contract
+            evidence["production_entry"] = entry_contract
+            write_json(production_entry_path, production_entry)
+            write_json(evidence_path, evidence)
+        if entry_contract.get("result") != "GREEN":
+            failed = entry_contract.get("failed_checks")
+            raise acceptance.RunnerError(
+                "endgame natural production entry contract RED: "
+                + ", ".join(
+                    str(value) for value in failed
+                )
+            )
+
         lineage, _, _ = _phase2_promo_receipt_sources(
             service,
             artifacts,
@@ -11877,6 +12018,8 @@ def run_phase2_endgame_source_capture_scenario(
             game_version=game_version,
             executable_sha256=executable_sha256,
         )
+        lineage = dict(lineage)
+        lineage["endgame_production_entry"] = copy.deepcopy(entry_contract)
         captured = capture_cross_cycle_endgame_source_checkpoint_v1(
             service,
             prefix_manifest=prefix_manifest,
@@ -20693,6 +20836,7 @@ def run_cell(
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
     phase2_endgame_source_capture_live: bool = False,
+    phase2_endgame_production_entry_timeout_seconds: float = 300.0,
     phase2_endgame_source_capture_prefix: Mapping[str, object] | None = None,
     phase2_endgame_source_owner_character_id: int | None = None,
     phase2_endgame_source_date_raw: int | None = None,
@@ -20734,6 +20878,10 @@ def run_cell(
     if phase2_promotion_source_capture_timeout_seconds <= 0:
         raise acceptance.RunnerError(
             "promotion source capture timeout must be positive"
+        )
+    if phase2_endgame_production_entry_timeout_seconds <= 0:
+        raise acceptance.RunnerError(
+            "endgame production entry timeout must be positive"
         )
     if retain_healthy_phase2_session_on_red and not phase2_runtime_mode:
         raise acceptance.RunnerError(
@@ -21118,6 +21266,9 @@ def run_cell(
                 runtime_identity=runtime_identity,
                 game_version=game_version,
                 executable_sha256=executable_before,
+                production_entry_timeout_seconds=(
+                    phase2_endgame_production_entry_timeout_seconds
+                ),
             )
             if not (
                 evidence.get("result") == "GREEN"
@@ -22373,6 +22524,7 @@ def main(
     phase2_hc_workforce_route_b_live: bool = False,
     phase2_hc_workforce_route_b_capture_live: bool = False,
     phase2_endgame_source_capture_live: bool = False,
+    phase2_endgame_production_entry_timeout_seconds: float = 300.0,
     phase2_endgame_source_capture_prefix: str | None = None,
     phase2_endgame_source_owner_character_id: int | None = None,
     phase2_endgame_source_date_raw: int | None = None,
@@ -22438,6 +22590,10 @@ def main(
         or phase2_endgame_source_capture_live
         or phase2_incident_source_checkpoint_capture
     )
+    if phase2_endgame_production_entry_timeout_seconds <= 0:
+        raise acceptance.RunnerError(
+            "endgame production entry timeout must be positive"
+        )
     if not isinstance(phase2_product_projection, str):
         raise acceptance.RunnerError(
             "phase-two product projection must be a string"
@@ -22906,6 +23062,9 @@ def main(
         ),
         phase2_endgame_source_capture_live=(
             phase2_endgame_source_capture_live
+        ),
+        phase2_endgame_production_entry_timeout_seconds=(
+            phase2_endgame_production_entry_timeout_seconds
         ),
         phase2_endgame_source_capture_prefix=(
             endgame_source_capture_prefix_value
@@ -23595,9 +23754,19 @@ if __name__ == "__main__":
         "--phase2-endgame-source-capture-live",
         action="store_true",
         help=(
-            "wait in a managed product-only session for the exact owner-facing "
-            "zg361we.356 surface, save its real bytes, append the fourth source "
-            "receipt, and write the schema-2 registry; performs no event action"
+            "drive the managed product-only natural timeline through stage "
+            "nine to the third owner-facing zg361we.356 occurrence, save its "
+            "real bytes, append the fourth source receipt, and write the "
+            "schema-2 registry without selecting that third source"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-endgame-production-entry-timeout-seconds",
+        type=float,
+        default=300.0,
+        help=(
+            "bounded natural product-timeline wait before the third "
+            "zg361we.356 source capture"
         ),
     )
     parser.add_argument(
@@ -23752,6 +23921,9 @@ if __name__ == "__main__":
                 ),
                 phase2_endgame_source_capture_live=(
                     arguments.phase2_endgame_source_capture_live
+                ),
+                phase2_endgame_production_entry_timeout_seconds=(
+                    arguments.phase2_endgame_production_entry_timeout_seconds
                 ),
                 phase2_endgame_source_capture_prefix=(
                     arguments.phase2_endgame_source_capture_prefix
