@@ -137,9 +137,9 @@ MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        # R285 observed two independently delivered result windows in one
-        # fresh client at 53203368 and 53211192.  Keep the bound finite: the
-        # two live-observed deliveries are allowed and a third still stops.
-        "max_occurrences": 2,
+        # R285 observed two independently delivered result windows; R327 then
+        # reached a third at 53215920 while Central remained active.  Keep the
+        # bound finite at the three deliveries now observed on this lineage.
+        "max_occurrences": 3,
     },
 }

@@ -324,6 +324,52 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_movement_rival_uses_non_hostile_non_religious_power_route(
+        self,
+    ) -> None:
+        event_key = "tgp_movement_events.0060"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=343,
+            date_raw=53219640,
+            player=32904,
+            scopes=[
+                _scope("my_movement", "situation_participant_group"),
+                _scope("rival_movement", "situation_participant_group"),
+                _scope("rival", "character", 30340),
+            ],
+            native_option_indices=(1, 2, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53219640,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 343},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][0]["native_option_index"] = 0
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53219640,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 343},
+            context=wrong_projection,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1152,13 +1152,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
 
-    def test_imperial_debate_allows_the_two_live_observed_deliveries(self) -> None:
+    def test_imperial_debate_allows_the_three_live_observed_deliveries(self) -> None:
         contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS["debate_event.5110"],
             starting_date=53199480,
         )
-        self.assertEqual(contract["max_occurrences"], 2)
-        for date_raw in (53203368, 53211192):
+        self.assertEqual(contract["max_occurrences"], 3)
+        for date_raw in (53203368, 53211192, 53215920):
             with self.subTest(date_raw=date_raw):
                 self.assertTrue(
                     production._contract_date_matches(date_raw, contract)
@@ -2224,6 +2224,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["max_occurrences"], 2)
 
     def test_treasury_budget_interrupt_keeps_existing_allocation(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
@@ -3946,7 +3947,12 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         variant = contract["scope_variants"][0]
         names = variant["saved_scope_names"]
-        characters = variant["character_scopes"]
+        characters = {
+            **variant["character_scopes"],
+            "zg361_b2_support_mentor": 30434,
+            "zg361_b2_pip_deadline_subject": 29747,
+            "zg361_notice_deadline_subject": 29747,
+        }
         self.assertEqual(len(names), 55)
         context = {
             "schema": "current-event-window-context-v1",
@@ -3994,6 +4000,41 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertEqual(resolved["selected_option_number"], 3)
         self.assertEqual(resolved["selected_native_option_index"], 2)
+
+        rerolled_support = copy.deepcopy(context)
+        for name, character_id in {
+            "zg361_b2_support_mentor": 28671,
+            "zg361_b2_pip_deadline_subject": 28786,
+            "zg361_notice_deadline_subject": 28786,
+        }.items():
+            index = names.index(name)
+            rerolled_support["saved_scopes"][index] = character_scope(
+                name, character_id
+            )
+        rerolled_checks = checks_for(rerolled_support)
+        self.assertTrue(all(rerolled_checks.values()), rerolled_checks)
+
+        mismatched_deadline_subject = copy.deepcopy(rerolled_support)
+        index = names.index("zg361_notice_deadline_subject")
+        mismatched_deadline_subject["saved_scopes"][index] = character_scope(
+            "zg361_notice_deadline_subject", 28787
+        )
+        self.assertFalse(
+            checks_for(mismatched_deadline_subject)[
+                "scope:zg361_b2_pip_deadline_subject:matches_any"
+            ]
+        )
+
+        mentor_reused_subject = copy.deepcopy(rerolled_support)
+        index = names.index("zg361_b2_support_mentor")
+        mentor_reused_subject["saved_scopes"][index] = character_scope(
+            "zg361_b2_support_mentor", 28786
+        )
+        self.assertFalse(
+            checks_for(mentor_reused_subject)[
+                "scope:zg361_b2_support_mentor:differs_from"
+            ]
+        )
 
         wrong_subject = copy.deepcopy(context)
         subject_index = names.index("zg361_cp_e_subject")
@@ -6636,9 +6677,25 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
 
+        poor_quality = copy.deepcopy(context)
+        poor_quality["saved_scopes"].insert(
+            2, scope("exotic_blade_quality", "boolean")
+        )
+        self.assertTrue(all(checks_for(poor_quality).values()))
+
+        wrong_quality_type = copy.deepcopy(poor_quality)
+        wrong_quality_type["saved_scopes"][2] = scope(
+            "exotic_blade_quality", "value"
+        )
+        self.assertFalse(
+            checks_for(wrong_quality_type)[
+                "scope:exotic_blade_quality:optional_type"
+            ]
+        )
+
         extra_scope = copy.deepcopy(context)
         extra_scope["saved_scopes"].append(scope("unreviewed", "value"))
-        self.assertFalse(checks_for(extra_scope)["saved_scope_count"])
+        self.assertFalse(checks_for(extra_scope)["saved_scope_names_exact"])
 
         rerolled_lineage = copy.deepcopy(context)
         rerolled_lineage["saved_scopes"][0] = scope(

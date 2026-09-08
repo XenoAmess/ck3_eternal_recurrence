@@ -197,6 +197,58 @@ class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
         self.assertFalse(alias_checks["scope:portrait"])
         self.assertFalse(alias_checks["saved_scope_names_exact"])
 
+    def test_safe_treatment_success_accepts_existing_physician_carry(
+        self,
+    ) -> None:
+        event_key = "health.3103"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=210,
+            date_raw=53220576,
+            player=32904,
+            scopes=[
+                _scope("physician", "character", 49718),
+                _scope("sick_character", "character", 32904),
+                _scope("disease_type", "flag"),
+                _scope("treatment_picker", "character", 32904),
+                _scope("treatment", "flag"),
+                _scope("outcome", "flag"),
+                _scope("portrait", "character", 49718),
+                _scope("background_terrain_scope", "province"),
+            ],
+            native_option_indices=(0,),
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53220576,
+                    "active_event": {"option_count": 1},
+                },
+                event={"event_instance_id": 210},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._scope_contract_for_context(
+            context["saved_scopes"], contract
+        )
+        self.assertEqual(effective["saved_scope_count"], 8)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        wrong_portrait = copy.deepcopy(context)
+        wrong_portrait["saved_scopes"][6] = _scope(
+            "portrait", "character", 36369
+        )
+        drift_checks = checks_for(wrong_portrait)
+        self.assertFalse(drift_checks["scope:physician:matches_any"])
+        self.assertFalse(drift_checks["scope:portrait:matches_any"])
+
     def test_new_physician_uses_exact_safe_treatment_branch(self) -> None:
         event_key = "health.3101"
         contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]

@@ -244,6 +244,48 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "scope_variants": ({
+            # R332 entered the same safe-treatment success from an existing
+            # physician path, so the prior recruitment event's high/low
+            # candidate scopes were absent. The result event still authors
+            # only one acknowledgement. Bind the exact eight-scope carry,
+            # including physician == portrait and both player aliases.
+            "saved_scope_names": (
+                "physician",
+                "sick_character",
+                "disease_type",
+                "treatment_picker",
+                "treatment",
+                "outcome",
+                "portrait",
+                "background_terrain_scope",
+            ),
+            "character_scopes": {
+                "sick_character": 32904,
+                "treatment_picker": 32904,
+            },
+            "unique_character_scope_excludes": {
+                "physician": (32904,),
+                "portrait": (32904,),
+            },
+            "character_scope_matches_any": {
+                "physician": ("portrait",),
+                "portrait": ("physician",),
+            },
+            "character_scope_differs_from": {
+                "physician": ("sick_character", "treatment_picker"),
+                "portrait": ("sick_character", "treatment_picker"),
+            },
+            "scope_types": {
+                "physician": "character",
+                "disease_type": "flag",
+                "treatment": "flag",
+                "outcome": "flag",
+                "portrait": "character",
+                "background_terrain_scope": "province",
+            },
+            "saved_scope_count": 8,
+        },),
     },
     "health.3104": {
         # Vanilla safe-treatment failure opened immediately by health.1001's

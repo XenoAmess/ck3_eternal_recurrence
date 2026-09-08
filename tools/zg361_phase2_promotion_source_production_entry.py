@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-"""Drive the exact product path to paused ``zg361pp.147`` without CK3 launch."""
+"""Drive a bounded exact-product path to a requested paused event."""
 
 from __future__ import annotations
 
@@ -61,6 +61,9 @@ from zg361_phase2_promotion_vanilla_natural_disaster_interrupt_contracts import 
 )
 from zg361_phase2_promotion_vanilla_ep3_emperor_interrupt_contracts import (
     VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS,
+)
+from zg361_phase2_promotion_vanilla_seduce_interrupt_contracts import (
+    VANILLA_SEDUCE_TIMELINE_CONTRACTS,
 )
 from zg361_phase2_promotion_pp_bargaining_contracts import (
     PP_BARGAINING_TIMELINE_CONTRACTS,
@@ -174,6 +177,28 @@ _TRANSIENT_PROGRESS_BINDING_ERRORS = (
     "ZhongGuo promotion source progress binding changed or is not ready",
     "promotion source progress is not bound to the requested frame",
 )
+
+# Source-reviewed, player-visible Workforce events on the non-debt route from
+# Central stage 11 through the cross-cycle endgame.  The generated product
+# gives every ordinary card three authored routes, except the one-option
+# appointment acknowledgement.  M264 and its three handoff cards have
+# trigger-filtered projections handled explicitly below.  Repetition is
+# bounded to the three real Workforce cycles required by the endgame source.
+_MANAGER_RECOVERY_WORKFORCE_OPTION_COUNTS: dict[int, int] = {
+    **{event_id: 3 for event_id in range(242, 254)},
+    **{event_id: 3 for event_id in range(254, 274)},
+    274: 1,
+    275: 3,
+    276: 3,
+    277: 3,
+    355: 3,
+    356: 3,
+    360: 3,
+    361: 3,
+    5264: 4,
+    5265: 4,
+    5266: 4,
+}
 
 # These are not namespace-wide allowlists.  They are exact pending events
 # already proven on the immutable phase-two seed lineage.  Each contract binds
@@ -436,6 +461,40 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
         "max_occurrences": 1,
     },
+    "tgp_movement_events.0060": {
+        # CK3 1.19.0.6 celestial movement-rival event. R331 exposed native
+        # options 1/2/3 while the intrigue-focus-only option 0 was hidden.
+        # Native option 1 starts or strengthens a hostile scheme and reduces
+        # the rival movement; option 3 enters a faith-dependent branch. Native
+        # option 2 only grants the player's own movement a medium power gain,
+        # so it is the narrow non-religious, non-hostile continuation route.
+        # Bind both movement groups and the generated rival before selecting.
+        "date_raw": 53219640,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "rival": (32904,),
+        },
+        "scope_types": {
+            "my_movement": "situation_participant_group",
+            "rival_movement": "situation_participant_group",
+            "rival": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "my_movement",
+            "rival_movement",
+            "rival",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (1, 2, 3),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "max_occurrences": 1,
+    },
     "tgp_movement_events.0150": {
         # CK3 1.19.0.6 Shinto-monk visit. The diplomat-only alliance route is
         # hidden in the R152 manager frame, leaving authored native options
@@ -480,8 +539,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # the request immediately through the authored refusal effect.  The
         # refusal can change only this unrelated administrator relationship
         # and trait-dependent stress, while avoiding a new blocking event
-        # chain during the bounded Phase-2 observation window.  R163 observed
-        # the complete two-character/two-option letter frame.
+        # chain during the bounded Phase-2 observation window. R163 observed
+        # the complete two-character/two-option letter frame. R329 then
+        # reached a second independent request at 53221296 on the bounded
+        # three-cycle endgame lineage; both still use this exact contract.
         "date_raw": 53157888,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -504,7 +565,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "max_occurrences": 2,
     },
     "adultery.0002": {
         # CK3 1.19.0.6 spouse-suspicion event. Confrontation opens a new event
@@ -617,7 +678,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # eleven-scope frame, including the source-defined holder/owner and
         # generated merchant lineage, before selecting that least-disruptive
         # terminal route. R286 proved the R183 holder and merchant IDs were
-        # allocator output, while their relationships stayed exact.
+        # allocator output, while their relationships stayed exact. R330
+        # observed the source-authored poor-quality branch: its artifact
+        # helper additionally saves the boolean ``exotic_blade_quality``.
         "date_raw": 53174184,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -649,21 +712,39 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "foreign_merchant": "character",
             "exotic_blade": "artifact",
         },
+        "optional_scope_types": {
+            "exotic_blade_quality": "boolean",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "exotic_blade_holder",
-            "exotic_arms_target",
-            "owner",
-            "weapon_type",
-            "random_quality_bonus",
-            "quality",
-            "wealth",
-            "newly_created_artifact",
-            "merchant_county",
-            "foreign_merchant",
-            "exotic_blade",
-        ),),
-        "saved_scope_count": 11,
+        "saved_scope_name_sets": (
+            (
+                "exotic_blade_holder",
+                "exotic_arms_target",
+                "owner",
+                "weapon_type",
+                "random_quality_bonus",
+                "quality",
+                "wealth",
+                "newly_created_artifact",
+                "merchant_county",
+                "foreign_merchant",
+                "exotic_blade",
+            ),
+            (
+                "exotic_blade_holder",
+                "exotic_arms_target",
+                "exotic_blade_quality",
+                "owner",
+                "weapon_type",
+                "random_quality_bonus",
+                "quality",
+                "wealth",
+                "newly_created_artifact",
+                "merchant_county",
+                "foreign_merchant",
+                "exotic_blade",
+            ),
+        ),
         "option_count": 2,
         "snapshot_option_count": 3,
         "native_option_indices": (1, 2),
@@ -3362,6 +3443,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(
     VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SEDUCE_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_BARGAINING_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_RECEIPT_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(PP_ACTION_ITEM_TIMELINE_CONTRACTS)
@@ -4118,6 +4200,88 @@ def _manager_recovery_pp_contract(
     }
 
 
+def _manager_recovery_workforce_contract(
+    event_key: str, *, player: int, starting_date: int,
+) -> dict[str, object] | None:
+    """Return the reviewed non-debt route for one visible Workforce card."""
+
+    try:
+        event_number = int(event_key.removeprefix("zg361we."))
+    except ValueError:
+        return None
+    option_count = _MANAGER_RECOVERY_WORKFORCE_OPTION_COUNTS.get(event_number)
+    if option_count is None:
+        return None
+    option_variants: tuple[dict[str, object], ...] = ()
+    selected_option_number = 1
+    selected_native_option_index = 0
+    snapshot_option_counts: tuple[int, ...] | None = None
+    if event_number == 264:
+        # Route C is the debt fallback.  Admit only the two source-authored
+        # response projections that expose A or B alongside C, and select the
+        # first visible non-debt route.
+        option_variants = (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 2),
+                "snapshot_option_counts": (2, 3),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+            {
+                "option_count": 2,
+                "native_option_indices": (1, 2),
+                "snapshot_option_counts": (2, 3),
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+            },
+        )
+    elif event_number in (5264, 5265, 5266):
+        # Each handoff authors subject complete/refuse followed by owner
+        # complete/refuse.  Exactly one pair is rendered; always take the
+        # matching complete route.
+        option_variants = (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 1),
+                "snapshot_option_counts": (2, 4),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+            {
+                "option_count": 2,
+                "native_option_indices": (2, 3),
+                "snapshot_option_counts": (2, 4),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        )
+        snapshot_option_counts = (2, 4)
+    contract: dict[str, object] = {
+        "date_raw": starting_date,
+        "date_policy": "manager-recovery-product-window",
+        "date_raw_range": (
+            starting_date,
+            starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
+        ),
+        "root_character_id": player,
+        "character_scopes": {},
+        "scope_types": {},
+        "boolean_scopes": (),
+        "option_count": option_count,
+        "native_option_indices": tuple(range(option_count)),
+        "option_variants": option_variants,
+        "max_occurrences": 3,
+        "selected_option_number": selected_option_number,
+        "selected_native_option_index": selected_native_option_index,
+        "manager_recovery_only": True,
+        "workforce_three_cycle_route": "shortest-reviewed-non-debt",
+    }
+    if snapshot_option_counts is not None:
+        contract["snapshot_option_counts"] = snapshot_option_counts
+    return contract
+
+
 def _manager_recovery_authored_event_contract(
     contract: Mapping[str, object],
     *,
@@ -4163,6 +4327,7 @@ def _resolve_timeline_interrupt_contract(
     player: int,
     starting_date: int,
     stop_at_clean_review_boundary: bool,
+    continue_to_pause_target: bool = False,
 ) -> dict[str, object] | None:
     """Keep reviewed vanilla contracts when manager recovery is active.
 
@@ -4173,18 +4338,27 @@ def _resolve_timeline_interrupt_contract(
     still retain their exact scope and option checks.
     """
 
+    manager_recovery = (
+        stop_at_clean_review_boundary or continue_to_pause_target
+    )
     contract = (
         _manager_recovery_pp_contract(
             event_key, player=player, starting_date=starting_date,
         )
-        if stop_at_clean_review_boundary
+        if manager_recovery
         else None
     )
+    if contract is None and manager_recovery:
+        contract = _manager_recovery_workforce_contract(
+            event_key,
+            player=player,
+            starting_date=starting_date,
+        )
     if contract is None:
         contract = KNOWN_TIMELINE_INTERRUPTS.get(event_key)
     if (
         contract is not None
-        and stop_at_clean_review_boundary
+        and manager_recovery
         and event_key.startswith(("zg361cp.", "zg361p3."))
     ):
         contract = _manager_recovery_authored_event_contract(
@@ -4927,6 +5101,28 @@ def _initial_event_is_supported(
     )
 
 
+def _pause_target_occurrence_index(
+    event_key: str,
+    *,
+    pause_on_event_definition_key: str | None,
+    timeline_interrupt_drains: object,
+) -> int | None:
+    """Return this target event's one-based occurrence in the current run."""
+
+    if event_key != pause_on_event_definition_key:
+        return None
+    drains = (
+        timeline_interrupt_drains
+        if isinstance(timeline_interrupt_drains, list)
+        else []
+    )
+    return 1 + sum(
+        isinstance(row, Mapping)
+        and row.get("event_definition_key") == event_key
+        for row in drains
+    )
+
+
 def enter_promotion_source_checkpoint_v1(
     service: PromotionProductionEntryService,
     *,
@@ -4936,6 +5132,7 @@ def enter_promotion_source_checkpoint_v1(
     stop_at_clean_review_boundary: bool = False,
     clean_boundary_event_definition_key: str | None = None,
     pause_on_event_definition_key: str | None = None,
+    pause_on_event_occurrence: int = 1,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     evidence_out: dict[str, object] | None = None,
@@ -4950,6 +5147,19 @@ def enter_promotion_source_checkpoint_v1(
         and not any(character.isspace() for character in pause_on_event_definition_key)
     ):
         raise ValueError("pause target must be one non-empty event key")
+    if (
+        isinstance(pause_on_event_occurrence, bool)
+        or not isinstance(pause_on_event_occurrence, int)
+        or pause_on_event_occurrence <= 0
+        or (
+            pause_on_event_definition_key is None
+            and pause_on_event_occurrence != 1
+        )
+    ):
+        raise ValueError("pause target occurrence must be a positive integer")
+    continue_to_pause_target = (
+        pause_on_event_definition_key not in (None, M147)
+    )
     initial, initial_event = _binding(service.snapshot())
     player = int(initial["played_character"]["character_id"])
     generation = int(initial["diagnostics"]["connection_generation"])
@@ -5003,6 +5213,7 @@ def enter_promotion_source_checkpoint_v1(
         "annual_cooldown_wait": None,
         "clean_review_boundary": None,
         "pause_on_event_definition_key": pause_on_event_definition_key,
+        "pause_on_event_occurrence": pause_on_event_occurrence,
     })
     if runtime_diagnostic_probe is not None:
         diagnostic = runtime_diagnostic_probe()
@@ -5019,12 +5230,22 @@ def enter_promotion_source_checkpoint_v1(
     initial_clean_boundary_event = False
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
-        if key == pause_on_event_definition_key:
+        target_occurrence_index = _pause_target_occurrence_index(
+            key,
+            pause_on_event_definition_key=pause_on_event_definition_key,
+            timeline_interrupt_drains=evidence["timeline_interrupt_drains"],
+        )
+        if target_occurrence_index == pause_on_event_occurrence:
             evidence["result"] = "GREEN"
             evidence["readiness"] = f"paused-real-{key}"
             evidence["target_binding"] = initial_event
+            evidence["target_occurrence_index"] = target_occurrence_index
             return evidence
-        if key == M147 and not stop_at_clean_review_boundary:
+        if (
+            key == M147
+            and not stop_at_clean_review_boundary
+            and not continue_to_pause_target
+        ):
             evidence["result"] = "GREEN"
             evidence["readiness"] = "paused-real-zg361pp.147"
             evidence["target_binding"] = initial_event
@@ -5402,10 +5623,16 @@ def enter_promotion_source_checkpoint_v1(
             continue
         if event is not None:
             key, event_query = _event_definition(service, event, sleeper=sleeper)
-            if key == pause_on_event_definition_key:
+            target_occurrence_index = _pause_target_occurrence_index(
+                key,
+                pause_on_event_definition_key=pause_on_event_definition_key,
+                timeline_interrupt_drains=evidence["timeline_interrupt_drains"],
+            )
+            if target_occurrence_index == pause_on_event_occurrence:
                 evidence["result"] = "GREEN"
                 evidence["readiness"] = f"paused-real-{key}"
                 evidence["target_binding"] = copy.deepcopy(event)
+                evidence["target_occurrence_index"] = target_occurrence_index
                 return evidence
             if (
                 stop_at_clean_review_boundary
@@ -5437,7 +5664,11 @@ def enter_promotion_source_checkpoint_v1(
                 )
                 evidence["target_binding"] = copy.deepcopy(event)
                 return evidence
-            if key == M147 and not stop_at_clean_review_boundary:
+            if (
+                key == M147
+                and not stop_at_clean_review_boundary
+                and not continue_to_pause_target
+            ):
                 m146_date = evidence.get("m146_date_raw")
                 if not isinstance(m146_date, int) or date_raw < m146_date + HOURS_PER_DAY:
                     raise PromotionProductionEntryError(
@@ -5452,6 +5683,7 @@ def enter_promotion_source_checkpoint_v1(
                 player=player,
                 starting_date=timeline_origin_date,
                 stop_at_clean_review_boundary=stop_at_clean_review_boundary,
+                continue_to_pause_target=continue_to_pause_target,
             )
             drains = evidence["timeline_interrupt_drains"]
             assert isinstance(drains, list)
@@ -5680,8 +5912,14 @@ def enter_promotion_source_checkpoint_v1(
             raise PromotionProductionEntryError(
                 f"product runtime diagnostic: {diagnostic}"
             )
+    target_label = pause_on_event_definition_key or M147
+    target_suffix = (
+        f" occurrence {pause_on_event_occurrence}"
+        if pause_on_event_occurrence != 1
+        else ""
+    )
     raise PromotionProductionEntryError(
-        "timed out before paused real zg361pp.147"
+        f"timed out before paused real {target_label}{target_suffix}"
     )
 
 

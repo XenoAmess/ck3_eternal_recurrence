@@ -75,11 +75,8 @@ _ZG361_5_R293_CHARACTER_SCOPES: Final = {
     "zg361_b1_reopen_ticket_subject": 45031,
     "zg361_b1_reopen_ticket_owner": 32904,
     "zg361_b2_pip_review_candidate": 27448,
-    "zg361_b2_support_mentor": 30434,
     "zg361_b2_pip_deadline_owner": 32904,
-    "zg361_b2_pip_deadline_subject": 29747,
     "zg361_notice_deadline_owner": 32904,
-    "zg361_notice_deadline_subject": 29747,
     "zg361_p2c_ticket_manager": 32904,
     "zg361_ch_d_event_owner": 32904,
     "zg361_ch_d_event_subject": 26505,
@@ -94,6 +91,12 @@ _ZG361_5_R293_CHARACTER_SCOPES: Final = {
     "zg361_p3_aa_owner": 32904,
     "zg361_p3_aa_subject": 26505,
 }
+
+_ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES: Final = (
+    "zg361_b2_support_mentor",
+    "zg361_b2_pip_deadline_subject",
+    "zg361_notice_deadline_subject",
+)
 
 
 MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
@@ -166,6 +169,11 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
                 name: "value"
                 for name in _ZG361_5_R293_SAVED_SCOPE_NAMES
                 if name not in _ZG361_5_R293_CHARACTER_SCOPES
+                and name not in _ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES
+            },
+            "unique_character_scope_excludes": {
+                name: (32904,)
+                for name in _ZG361_5_R293_DYNAMIC_CHARACTER_SCOPE_NAMES
             },
             "character_scope_matches_any": {
                 "zg361_b2_pip_deadline_subject": (
@@ -191,6 +199,12 @@ MANAGER_ELIMINATION_TIMELINE_CONTRACTS: Final[
                 ),
                 "zg361_comp_open_subject": (
                     "zg361_comp_result_subject_scope",
+                ),
+            },
+            "character_scope_differs_from": {
+                "zg361_b2_support_mentor": (
+                    "zg361_b2_pip_deadline_subject",
+                    "zg361_notice_deadline_subject",
                 ),
             },
         },),

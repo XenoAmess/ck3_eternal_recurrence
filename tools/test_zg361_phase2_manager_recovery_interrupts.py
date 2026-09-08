@@ -129,6 +129,80 @@ def _human_tribute_scopes() -> list[dict[str, object]]:
 
 
 class ManagerRecoveryInterruptTests(unittest.TestCase):
+    def test_late_pause_target_enables_pp_and_three_cycle_workforce_routes(
+        self,
+    ) -> None:
+        pp = production._resolve_timeline_interrupt_contract(
+            "zg361pp.147",
+            player=32904,
+            starting_date=53147016,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(pp)
+        assert pp is not None
+        self.assertEqual(pp["selected_native_option_index"], 0)
+
+        workforce = production._resolve_timeline_interrupt_contract(
+            "zg361we.355",
+            player=32904,
+            starting_date=53147016,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(workforce)
+        assert workforce is not None
+        self.assertEqual(workforce["option_count"], 3)
+        self.assertEqual(workforce["selected_native_option_index"], 0)
+        self.assertEqual(workforce["max_occurrences"], 3)
+        self.assertEqual(
+            workforce["workforce_three_cycle_route"],
+            "shortest-reviewed-non-debt",
+        )
+
+        handoff = production._resolve_timeline_interrupt_contract(
+            "zg361we.5264",
+            player=32904,
+            starting_date=53147016,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(handoff)
+        assert handoff is not None
+        owner_projection = production._option_contract_for_context(
+            [
+                {"native_option_index": 2},
+                {"native_option_index": 3},
+            ],
+            handoff,
+        )
+        self.assertEqual(owner_projection["option_count"], 2)
+        self.assertEqual(owner_projection["selected_option_number"], 3)
+        self.assertEqual(owner_projection["selected_native_option_index"], 2)
+
+    def test_pause_target_occurrence_counts_only_prior_target_drains(self) -> None:
+        drains = [
+            {"event_definition_key": "zg361we.355"},
+            {"event_definition_key": "zg361we.356"},
+            {"event_definition_key": "zg361pp.147"},
+            {"event_definition_key": "zg361we.356"},
+        ]
+        self.assertEqual(
+            production._pause_target_occurrence_index(
+                "zg361we.356",
+                pause_on_event_definition_key="zg361we.356",
+                timeline_interrupt_drains=drains,
+            ),
+            3,
+        )
+        self.assertIsNone(
+            production._pause_target_occurrence_index(
+                "zg361we.355",
+                pause_on_event_definition_key="zg361we.356",
+                timeline_interrupt_drains=drains,
+            )
+        )
+
     def test_clean_boundary_recovery_keeps_known_vanilla_contract(self) -> None:
         contract = production._resolve_timeline_interrupt_contract(
             "tribute_mission.1002",
@@ -2117,6 +2191,60 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["saved_scope_names_exact"])
+
+    def test_seduce_outcome_binds_the_complete_mandatory_notification(self) -> None:
+        event_key = "seduce_outcome.4900"
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            starting_date=53199480,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=208,
+            date_raw=53215752,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 30320),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 37337),
+                _scope("ignore_cheating_error_check", "boolean"),
+                _scope("discovery_chance", "value"),
+                _scope("scheme_discovered", "boolean"),
+                _scope("target_liege", "character", 32904),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53215752,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 208},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][7] = _scope(
+            "target_liege", "character", 30320
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53215752,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 208},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:target_liege"])
 
 
 if __name__ == "__main__":
