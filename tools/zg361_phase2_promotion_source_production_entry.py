@@ -4701,7 +4701,10 @@ def _initial_event_is_supported(
     timeline_origin_date: int,
     stop_at_clean_review_boundary: bool,
     clean_boundary_event_definition_key: str | None,
+    pause_on_event_definition_key: str | None = None,
 ) -> bool:
+    if key == pause_on_event_definition_key:
+        return True
     if key == M146 or key in KNOWN_TIMELINE_INTERRUPTS:
         return True
     if not stop_at_clean_review_boundary:
@@ -4726,14 +4729,21 @@ def enter_promotion_source_checkpoint_v1(
     prefer_natural_cycle: bool = False,
     stop_at_clean_review_boundary: bool = False,
     clean_boundary_event_definition_key: str | None = None,
+    pause_on_event_definition_key: str | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     evidence_out: dict[str, object] | None = None,
     runtime_diagnostic_probe: Callable[[], str | None] | None = None,
 ) -> dict[str, object]:
-    """Open player B1, advance to .146, choose option 1, stop on D+1 .147."""
+    """Drive the product timeline and stop before the requested target."""
     if timeout_seconds <= 0 or poll_interval_seconds < 0:
         raise ValueError("promotion entry timing is invalid")
+    if pause_on_event_definition_key is not None and not (
+        isinstance(pause_on_event_definition_key, str)
+        and pause_on_event_definition_key.strip()
+        and not any(character.isspace() for character in pause_on_event_definition_key)
+    ):
+        raise ValueError("pause target must be one non-empty event key")
     initial, initial_event = _binding(service.snapshot())
     player = int(initial["played_character"]["character_id"])
     generation = int(initial["diagnostics"]["connection_generation"])
@@ -4786,6 +4796,7 @@ def enter_promotion_source_checkpoint_v1(
         "seed_invalid": None,
         "annual_cooldown_wait": None,
         "clean_review_boundary": None,
+        "pause_on_event_definition_key": pause_on_event_definition_key,
     })
     if runtime_diagnostic_probe is not None:
         diagnostic = runtime_diagnostic_probe()
@@ -4802,6 +4813,11 @@ def enter_promotion_source_checkpoint_v1(
     initial_clean_boundary_event = False
     if initial_event is not None:
         key, _ = _event_definition(service, initial_event, sleeper=sleeper)
+        if key == pause_on_event_definition_key:
+            evidence["result"] = "GREEN"
+            evidence["readiness"] = f"paused-real-{key}"
+            evidence["target_binding"] = initial_event
+            return evidence
         if key == M147 and not stop_at_clean_review_boundary:
             evidence["result"] = "GREEN"
             evidence["readiness"] = "paused-real-zg361pp.147"
@@ -4820,6 +4836,7 @@ def enter_promotion_source_checkpoint_v1(
             clean_boundary_event_definition_key=(
                 clean_boundary_event_definition_key
             ),
+            pause_on_event_definition_key=pause_on_event_definition_key,
         ):
             raise PromotionProductionEntryError(
                 f"promotion entry started on unexpected event {key!r}"
@@ -5179,6 +5196,11 @@ def enter_promotion_source_checkpoint_v1(
             continue
         if event is not None:
             key, event_query = _event_definition(service, event, sleeper=sleeper)
+            if key == pause_on_event_definition_key:
+                evidence["result"] = "GREEN"
+                evidence["readiness"] = f"paused-real-{key}"
+                evidence["target_binding"] = copy.deepcopy(event)
+                return evidence
             if (
                 stop_at_clean_review_boundary
                 and key == clean_boundary_event_definition_key

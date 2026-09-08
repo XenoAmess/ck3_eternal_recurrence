@@ -118,6 +118,20 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertFalse(
             production._initial_event_is_supported("unowned.999", **common)
         )
+        self.assertTrue(
+            production._initial_event_is_supported(
+                "zg361cp.26",
+                **common,
+                pause_on_event_definition_key="zg361cp.26",
+            )
+        )
+        self.assertFalse(
+            production._initial_event_is_supported(
+                "unowned.999",
+                **common,
+                pause_on_event_definition_key="zg361cp.26",
+            )
+        )
 
     def test_review_now_waits_for_heartbeat_before_product_postcondition(
         self,
