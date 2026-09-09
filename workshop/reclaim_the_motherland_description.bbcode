@@ -1,0 +1,60 @@
+[h1]Reclaim the Motherland / 重整河山[/h1]
+
+[b]The Mandate may be lost. The dynasty need not vanish with it.[/b]
+[b]天命可以失去，王朝不必随之湮灭。[/b]
+
+Version 0.1.0 · CK3 1.19.0.6 · All Under Heaven required
+
+[h1]A New Default Rule / 新增默认规则[/h1]
+
+The game rule “Fate of the Chinese Hegemon” offers two paths. “Reclaim the Motherland” is enabled by default; “Vanilla Shattering” preserves the original behavior.
+游戏规则【中华霸权统治者的命运】提供两条路线，默认启用【重整河山】；选择【群雄割据（原版）】即可恢复原版行为。
+
+[h1]When All Under Heaven Fractures / 群雄割据之时[/h1]
+
+[list]
+[*]The old ruler loses the Chinese Hegemony, but keeps personal lands and unrelated titles. / 旧天子失去中华霸权，但保留个人领地与其他个人头衔。
+[*]A new empty-de-jure Hegemony is created as “Later + old dynasty name”: for example, Later Song / 后宋. / 创建空法理的“后＋原朝号”霸权，例如【后宋】。
+[*]Only direct landed Pro-Hegemon vassals remain; each loyalist keeps their existing subordinate realm tree. / 仅保留直属有地尊王派封臣，且完整保留其原有下级封臣树。
+[*]Every other direct vassal breaks away and continues through vanilla Chaos reorganization. / 其他直属封臣脱离，并继续按原版群雄割据逻辑重组。
+[/list]
+
+[h1]Proclaim the Restoration / 宣称复辟[/h1]
+
+A Later-Dynasty holder cannot use the original “Claim the Mandate” decision. During Chaos, reclaim the same percentage of the Chinese Hegemony's de-jure counties required by vanilla—currently 51%, including qualifying tributary land—and “Proclaim the Restoration” becomes available.
+后朝持有者不能执行原版【宣称天命】。在群雄割据期间，收复与原版相同百分比的中华霸权法理伯爵领——当前为 51%，符合条件的朝贡国领地同样计入——即可执行【宣称复辟】。
+
+Restoration runs the complete vanilla Claim-the-Mandate effect, then destroys every Later-Dynasty Hegemony held by the restorer.
+复辟完整执行原版【宣称天命】效果，随后销毁复辟者持有的全部后朝霸权。
+
+[h1]Real CK3 Evidence / 真实游戏画面[/h1]
+
+[h3]Later Song survives with loyalist realms / 后宋与尊王派河山尚存[/h3]
+[img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bb0d2f7916f744e8e86e5975c769b1392d939512/workshop/reclaim_the_motherland_media/01_later_dynasty_live.jpg[/img]
+
+[h3]Restoration ready; Claim the Mandate locked / 宣称复辟可用，宣称天命锁定[/h3]
+[img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bb0d2f7916f744e8e86e5975c769b1392d939512/workshop/reclaim_the_motherland_media/02_restoration_decision_live.jpg[/img]
+
+[h3]Chinese Hegemony restored / 中华霸权复归[/h3]
+[img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bb0d2f7916f744e8e86e5975c769b1392d939512/workshop/reclaim_the_motherland_media/03_restored_hegemony_live.jpg[/img]
+
+[h1]Verification / 验收[/h1]
+
+The release uses a reproducible 28-file staging tree. An isolated MCP-first CK3 1.19.0.6 run verifies the real Chaos event, empty-de-jure Later title, loyalist realm tree, non-loyalist release, exact 50%/51% boundary, decision visibility, full vanilla restoration effect, and Later-title destruction. A fresh subscribed Workshop cache is rerun through the same matrix before release completion.
+正式版本使用可复现的 28 文件 staging。隔离的 MCP-first CK3 1.19.0.6 实机链验证真实群雄割据事件、空法理后朝、尊王派封臣树、非尊王派脱离、精确 50%/51% 边界、决议显示、完整原版复辟效果与后朝销毁；发布完成前还会对全新订阅缓存复跑同一矩阵。
+
+[h1]Localization / 本地化[/h1]
+
+English / 简体中文 / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
+
+The seven additional release languages were generated as MiniMax-M3 candidates and reviewed and corrected for meaning, terminology and CK3 formatting. This is model-led review, not native-speaker certification.
+七种新增发布语言先由 MiniMax-M3 产出候选，再逐条审核并修正语义、术语与 CK3 格式；这是模型代行的发布审核，不冒充母语译者认证。
+
+[h1]Compatibility / 兼容性[/h1]
+
+Requires CK3 1.19.0.6 and All Under Heaven. Start a new single-player game. This mod overrides exactly two vanilla keys: [code]tgp_chaos_shattering_effect[/code] and [code]situation_dynastic_cycle_claim_mandate_decision[/code]. Mods replacing either key may conflict by load order.
+需要 CK3 1.19.0.6 与《天下归心 / All Under Heaven》，推荐新开单人存档。本 mod 只覆写两个原版 key：[code]tgp_chaos_shattering_effect[/code] 与 [code]situation_dynastic_cycle_claim_mandate_decision[/code]；其他 mod 若覆写其中之一，可能发生加载顺序冲突。
+
+[h1]Source / 源码[/h1]
+
+https://github.com/XenoAmess/ck3_eternal_recurrence
