@@ -22,6 +22,93 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
+    def test_epidemic_treatment_failure_uses_exact_acknowledgement(self) -> None:
+        event_key = "health.3104"
+        contract = _manager_contract(event_key, player=32904)
+        scopes = [
+            _scope("epidemic", "epidemic"),
+            _scope("disease_type", "flag"),
+            _scope("physician", "character", 49718),
+            _scope("sick_character", "character", 32904),
+            _scope("new_memory", "character_memory"),
+            _scope("treatment_picker", "character", 32904),
+            _scope("treatment", "flag"),
+            _scope("outcome", "flag"),
+            _scope("portrait", "character", 49718),
+            _scope("background_terrain_scope", "province"),
+        ]
+        context = _context(
+            event_key=event_key,
+            instance_id=433,
+            date_raw=53331888,
+            player=32904,
+            scopes=scopes,
+            native_option_indices=(0,),
+        )
+
+        def checks_for(
+            candidate: dict[str, object],
+            *,
+            snapshot_option_count: int = 3,
+        ) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53331888,
+                    "active_event": {"option_count": snapshot_option_count},
+                },
+                event={"event_instance_id": 433},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        wrong_memory_type = copy.deepcopy(context)
+        wrong_memory_type["saved_scopes"][4]["scope"]["type_key"] = "flag"
+        self.assertFalse(
+            checks_for(wrong_memory_type)["scope:new_memory:type"]
+        )
+
+        missing_epidemic = copy.deepcopy(context)
+        missing_epidemic["saved_scopes"] = missing_epidemic["saved_scopes"][1:]
+        missing_checks = checks_for(missing_epidemic)
+        self.assertFalse(missing_checks["saved_scope_names_exact"])
+        self.assertFalse(missing_checks["saved_scope_count"])
+
+        wrong_portrait = copy.deepcopy(context)
+        wrong_portrait["saved_scopes"][8] = _scope(
+            "portrait", "character", 36369
+        )
+        self.assertFalse(
+            checks_for(wrong_portrait)["scope:physician:matches_any"]
+        )
+
+        wrong_picker = copy.deepcopy(context)
+        wrong_picker["saved_scopes"][5] = _scope(
+            "treatment_picker", "character", 49718
+        )
+        self.assertFalse(checks_for(wrong_picker)["scope:treatment_picker"])
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][0]["native_option_index"] = 1
+        self.assertFalse(
+            checks_for(wrong_projection)["authored_options_exact"]
+        )
+        self.assertFalse(
+            checks_for(context, snapshot_option_count=1)[
+                "snapshot_option_count"
+            ]
+        )
+
     def test_player_measles_uses_safe_treatment_once(self) -> None:
         event_key = "health.1015"
         contract = _manager_contract(event_key, player=32904)

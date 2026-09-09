@@ -488,6 +488,44 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "option_count": 3,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "option_variants": ({
+            # R369 entered the same failure result from the epidemic-aware
+            # measles treatment path. Vanilla retained epidemic/new_memory,
+            # while the punishment options were not available, leaving only
+            # native option 0. Couple that exact ten-scope carry to the
+            # one-button projection so neither shape is admitted separately.
+            "option_count": 1,
+            "snapshot_option_count": 3,
+            "native_option_indices": (0,),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "saved_scope_name_sets": ((
+                "epidemic",
+                "disease_type",
+                "physician",
+                "sick_character",
+                "new_memory",
+                "treatment_picker",
+                "treatment",
+                "outcome",
+                "portrait",
+                "background_terrain_scope",
+            ),),
+            "saved_scope_count": 10,
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "physician": "character",
+                "sick_character": "character",
+                "new_memory": "character_memory",
+                "treatment_picker": "character",
+                "treatment": "flag",
+                "outcome": "flag",
+                "portrait": "character",
+                "background_terrain_scope": "province",
+            },
+        },),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "health.1101": {
         # Vanilla recovery from generic illness. The immediate block has
