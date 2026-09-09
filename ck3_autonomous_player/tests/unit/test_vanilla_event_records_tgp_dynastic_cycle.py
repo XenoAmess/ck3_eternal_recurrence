@@ -9,7 +9,9 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
+sys.path.insert(0, str(ROOT / "tools"))
 
+import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 from xar_autoplayer.vanilla_events.records_tgp_dynastic_cycle import (  # noqa: E402
     PLAYER_SENTINEL,
     VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS,
@@ -24,6 +26,7 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 
 EVENT_KEY = "tgp_dynastic_cycle_events.0020"
 ADVANCEMENT_EVENT_KEY = "tgp_dynastic_cycle_events.0001"
+CHAOS_EVENT_KEY = "tgp_dynastic_cycle.0081"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -154,6 +157,197 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
         response["contract"]["native_option_indices"].append(99)
         fresh = query_vanilla_event_knowledge_v1(EVENT_KEY)
         self.assertEqual(fresh["contract"]["native_option_indices"], [1, 2])
+
+    def test_chaos_contract_is_portable_single_acknowledgement(self) -> None:
+        contract = VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS[
+            CHAOS_EVENT_KEY
+        ]
+
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertEqual(contract["character_scopes"], {
+            "huangdi": PLAYER_SENTINEL,
+        })
+        self.assertNotIn("date_raw", contract)
+        self.assertEqual(contract["saved_scope_count"], 9)
+        self.assertEqual(
+            set(contract["saved_scope_name_sets"][0]),
+            set(contract["scope_types"]),
+        )
+        self.assertEqual(contract["option_count"], 1)
+        self.assertEqual(contract["snapshot_option_count"], 1)
+        self.assertEqual(contract["native_option_indices"], (0,))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        materialized = materialize_vanilla_timeline_contract(contract, 32904)
+        self.assertEqual(materialized["root_character_id"], 32904)
+        self.assertEqual(materialized["character_scopes"], {"huangdi": 32904})
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+
+    def test_chaos_analysis_keeps_immediate_and_option_boundaries_clear(self) -> None:
+        analysis = VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS[CHAOS_EVENT_KEY]
+
+        self.assertEqual(analysis["exact_build"]["game_version"], "1.19.0.6")
+        self.assertIn("phase-transition", analysis["caller_semantics"])
+        self.assertIn("destroys", analysis["immediate_effect"])
+        self.assertIn("no scripted gameplay effect", analysis["option_semantics"][0])
+        self.assertIsNone(analysis["after_effect"])
+        self.assertIn("already happened", analysis["safe_option_rationale"])
+        self.assertIn("cannot avoid", analysis["irreversibility_boundary"])
+        for digest in analysis["source_sha256"].values():
+            self.assertRegex(digest, SHA256_PATTERN)
+
+    def test_chaos_r375_red_is_observation_only(self) -> None:
+        exemplar = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[
+            CHAOS_EVENT_KEY
+        ]["exemplars"][0]
+        contract = VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS[
+            CHAOS_EVENT_KEY
+        ]
+
+        self.assertEqual(exemplar["run"], "R375")
+        self.assertEqual(exemplar["kind"], "pre-selection-live-red")
+        self.assertEqual(exemplar["date_raw"], 53611224)
+        self.assertEqual(exemplar["event_instance_id"], 1058)
+        self.assertEqual(exemplar["root_character_id"], 32904)
+        self.assertEqual(exemplar["bridge_pid"], 180544)
+        self.assertEqual(exemplar["connection_generation"], 1)
+        self.assertEqual(exemplar["context_snapshot_id"], "native:426")
+        self.assertEqual(exemplar["context_native_revision"], 426)
+        self.assertEqual(exemplar["rendered_native_option_indices"], [0])
+        self.assertFalse(exemplar["selection_attempted"])
+        self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
+        self.assertRegex(exemplar["park_artifact_sha256"], SHA256_PATTERN)
+
+        contract_repr = repr(contract)
+        for observation_only in (
+            53611224,
+            1058,
+            32904,
+            50380128,
+            33601840,
+            71430,
+            73447,
+            16830863,
+            180544,
+            426,
+        ):
+            self.assertNotIn(str(observation_only), contract_repr)
+
+    def test_chaos_mcp_query_is_detached_and_exposes_red_evidence(self) -> None:
+        response = query_vanilla_event_knowledge_v1(CHAOS_EVENT_KEY)
+
+        self.assertEqual(response["status"], "available")
+        self.assertEqual(response["contract"]["native_option_indices"], [0])
+        self.assertEqual(
+            response["analysis"]["option_semantics"]["0"],
+            (
+                "sole acknowledgement; no scripted gameplay effect and only "
+                "the dynastic-cycle-end click sound"
+            ),
+        )
+        self.assertFalse(
+            response["observations"]["exemplars"][0]["selection_attempted"]
+        )
+        json.dumps(response, allow_nan=False)
+
+        response["contract"]["native_option_indices"].append(99)
+        response["observations"]["exemplars"][0]["selection_attempted"] = True
+        fresh = query_vanilla_event_knowledge_v1(CHAOS_EVENT_KEY)
+        self.assertEqual(fresh["contract"]["native_option_indices"], [0])
+        self.assertFalse(
+            fresh["observations"]["exemplars"][0]["selection_attempted"]
+        )
+
+    def test_chaos_r375_shape_passes_production_recovery_checks(self) -> None:
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[CHAOS_EVENT_KEY],
+            player=32904,
+            event_key=CHAOS_EVENT_KEY,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53600000,
+        )
+
+        def scope(
+            name: str,
+            type_key: str,
+            character_id: int | None = None,
+        ) -> dict[str, object]:
+            typed_identity: dict[str, object]
+            if character_id is None:
+                typed_identity = {
+                    "status": "unavailable",
+                    "reason": "generic_scope_payload_identity_not_closed",
+                }
+            else:
+                typed_identity = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": typed_identity,
+                },
+            }
+
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": CHAOS_EVENT_KEY,
+            "current_event_instance_id": 1058,
+            "date_raw": 53611224,
+            "root_scope": scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                scope("situation", "situation"),
+                scope("situation_sub_region", "situation_sub_region"),
+                scope("huangdi", "character", 32904),
+                scope("minister_should_lose_ministry_title", "character", 50380128),
+                scope("possible_conqueror", "character", 50380128),
+                scope("new_liege", "character", 33601840),
+                scope("member", "character", 71430),
+                scope("tributary_loc", "character", 73447),
+                scope("suzerain_loc", "character", 16830863),
+            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53611224,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 1058},
+            context=context,
+            event_key=CHAOS_EVENT_KEY,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
 
 
 if __name__ == "__main__":

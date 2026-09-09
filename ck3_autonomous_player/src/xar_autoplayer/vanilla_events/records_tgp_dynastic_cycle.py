@@ -110,6 +110,49 @@ VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS: Final[
         ),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "tgp_dynastic_cycle.0081": {
+        # The situation phase-transition caller has already executed the realm-
+        # shattering immediate block before this fullscreen acknowledgement is
+        # rendered.  The sole authored option is effect-free, so native0 is the
+        # only possible continuation and cannot alter or avoid those changes.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {
+            "huangdi": PLAYER_SENTINEL,
+        },
+        "scope_types": {
+            "situation": "situation",
+            "situation_sub_region": "situation_sub_region",
+            "huangdi": "character",
+            "minister_should_lose_ministry_title": "character",
+            "possible_conqueror": "character",
+            "new_liege": "character",
+            "member": "character",
+            "tributary_loc": "character",
+            "suzerain_loc": "character",
+        },
+        "saved_scope_name_sets": ((
+            "situation",
+            "situation_sub_region",
+            "huangdi",
+            "minister_should_lose_ministry_title",
+            "possible_conqueror",
+            "new_liege",
+            "member",
+            "tributary_loc",
+            "suzerain_loc",
+        ),),
+        "saved_scope_count": 9,
+        "boolean_scopes": (),
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        # The hook fires on every legal entry into Chaos.  A later phase re-entry
+        # is therefore a fresh valid occurrence, not contract drift.
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }
 
 
@@ -214,6 +257,74 @@ VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS: Final[
             "treasury-or-gold transfer; the immediate control loss is unavoidable"
         ),
     },
+    "tgp_dynastic_cycle.0081": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/dlc/tgp/tgp_dynastic_cycle_events.txt": (
+                "C9904AAA01ABC8583E67D07866FAE8EF89274708BDA3929498DDDB2F24FC2153"
+            ),
+            "common/situation/situations/tgp_dynastic_cycle.txt": (
+                "748F2AF8CBDF97E01182FEFADF0B975E62AECE57D09AB1515C02E112DB56FAEA"
+            ),
+            (
+                "common/scripted_effects/"
+                "10_dlc_tgp_dynastic_cycle_scripted_effects.txt"
+            ): (
+                "86574FB7CE246EF6D1B2741B211785D282AD39659E8771E0E5C714ACDC001782"
+            ),
+            "common/scripted_triggers/10_tgp_dynastic_cycle_triggers.txt": (
+                "8ECD76790D3908EE1E93FB46A25A1123A935F18A91E91352B1CAE7173DB23D5D"
+            ),
+            "common/scripted_triggers/00_scripted_triggers.txt": (
+                "490C3784EE1555A49F7A4ADC9BAABB8522485F1AF6E1C837961E299A88695B5E"
+            ),
+            (
+                "localization/simp_chinese/dlc/tgp/"
+                "dlc_tgp_situation_decision_events_l_simp_chinese.yml"
+            ): (
+                "6C48AFC2D30213A878B03F5D3FF0AD11A32188E241B3293D947ADB2120BB5836"
+            ),
+        },
+        "definition_lines": "1159-1227",
+        "caller_lines": "1831-1850",
+        "caller_semantics": (
+            "the situation phase-transition hook "
+            "situation_dynastic_cycle_phase_chaos.on_start resolves the holder "
+            "of h_china, saves that character as huangdi, and triggers this "
+            "event only when the dynastic-cycle top group is hegemon_ruler"
+        ),
+        "trigger_boundary": (
+            "the chaos-phase transition must not occur on the campaign start "
+            "date; this is a phase-transition notification, not a yearly event"
+        ),
+        "immediate_effect": (
+            "before the option is rendered, records interested players, runs "
+            "tgp_chaos_shattering_effect, destroys the old hegemon's empire "
+            "titles and remaining landed rule, releases or reorganizes former "
+            "vassals, clears ministry titles, seeds conqueror and mandate "
+            "stories, recalculates cycle participants, and queues .0082 for "
+            "other interested players"
+        ),
+        "option_semantics": {
+            0: (
+                "sole acknowledgement; no scripted gameplay effect and only "
+                "the dynastic-cycle-end click sound"
+            ),
+        },
+        "after_effect": None,
+        "safe_option_rationale": (
+            "native0 is the sole rendered route and adds no gameplay effect; "
+            "all realm shattering is unconditional immediate work that has "
+            "already happened before the player can acknowledge the card"
+        ),
+        "irreversibility_boundary": (
+            "the event contract can safely dismiss the modal but cannot avoid "
+            "or undo the phase-transition shattering already applied"
+        ),
+    },
 }
 
 
@@ -308,6 +419,55 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
                 "process_restart_required": False,
             },
         ],
+    },
+    "tgp_dynastic_cycle.0081": {
+        "exemplars": [{
+            "run": "R375",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/report.json"
+            ),
+            "artifact_sha256": (
+                "AC7207E23F9C55154C1A6C65738746E8A91879E3AA1C653528FDA5B84574AC68"
+            ),
+            "park_artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "hot-recovery-park-1.json"
+            ),
+            "park_artifact_sha256": (
+                "BC9ED32D243B861E7263FC303E6F3AD30570DA3DCEF77BFB27925C6421A9A112"
+            ),
+            "date_raw": 53611224,
+            "event_instance_id": 1058,
+            "root_character_id": 32904,
+            "bridge_pid": 180544,
+            "connection_generation": 1,
+            "context_query_sequence": 6,
+            "context_snapshot_id": "native:426",
+            "context_native_revision": 426,
+            "saved_character_ids": {
+                "huangdi": 32904,
+                "minister_should_lose_ministry_title": 50380128,
+                "possible_conqueror": 50380128,
+                "new_liege": 33601840,
+                "member": 71430,
+                "tributary_loc": 73447,
+                "suzerain_loc": 16830863,
+            },
+            "saved_scope_raw_types": {
+                "situation": 60,
+                "situation_sub_region": 62,
+                "huangdi": 4,
+                "minister_should_lose_ministry_title": 4,
+                "possible_conqueror": 4,
+                "new_liege": 4,
+                "member": 4,
+                "tributary_loc": 4,
+                "suzerain_loc": 4,
+            },
+            "rendered_native_option_indices": [0],
+            "selection_attempted": False,
+        }],
     },
 }
 
