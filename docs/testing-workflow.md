@@ -320,8 +320,8 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `165 contracts / 165 analysis / 15
-observation keys`；冻结迁移基线 `156 + 8 = 164` 与 embedded `79` 不变，`.1101` 是其后新增记录。正式 MCP `list/call` 已接通；production runtime 当前消费 `304` 条事件合同。`TGP0160`、
+当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `165 contracts / 165 analysis / 16
+observation keys`；`tgp_china_ministry.0100` 从旧 manager 条目抽为独立通用 owner，不新增 stable key；`.1101` 仍是上一轮唯一新增 key。embedded `79` 不变。正式 MCP `list/call` 已接通；production runtime 当前消费 `304` 条事件合同。`TGP0160`、
 `great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
 runner 的真实 drain/advance；`epidemic_events.1064` 也已同 PID 选择 reviewed native0 并完成 advance，R374 又将
 `natural_disaster.7031` authored3/native2、`ep3_story_cycle_admin_eunuch.1001` authored2/native1、`tribute_mission.1005` authored6/native5 与 `vassal_interaction.0040` authored1/native0 同 PID drain 并验证 instances `978`、`988`、`1007`、`1038` advance，合计九条
@@ -332,13 +332,15 @@ completed/success；R374 同 PID/generation 选择 authored1/native0，instance 
 `3bb5169ca2b81701a8ea49e9d842de36f39fd87b` 随后同样按 rebase-only 推送，Official Runner run `34404896747` /
 job `102645406781` 约 4 分 26 秒 completed/success、失败步骤为空；同一 PID/generation 选择 authored3/native2，
 instance `1050 -> null`、snapshot `native:1847 -> native:1848`、revision `1848 -> 1849`、postcondition GREEN，
-因此当前合计十二条。
+随后 `.1101` package commit `0880b4d579b92685be0696df5a5a32d701db5ed2` 推送并通过 Official Runner；同一
+PID/generation 选择 authored1/native0，instance `1055 -> null`、snapshot `native:2057 -> native:2058`、
+revision `2058 -> 2059`、postcondition GREEN，因此当前合计十三条。
 `stress_threshold.1721` 保留为真实 RED observation：reload
 已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
 合同由提交 `039a509`、`e6ab3d4` 收口。R374 的 `natural_disaster.7031`、`ep3_story_cycle_admin_eunuch.1001`、
 `tribute_mission.1005`、`vassal_interaction.0040`、`trait_specific.4001` observations 均保留其选择前 RED，后续 drains 已 GREEN；`.1005` 只在既有精确 variants 之外
-新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十二条实证切片，绝不表示 165 条都已实机验证；
-其余 `153` 条保持非 live。
+新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十三条实证切片，绝不表示 165 条都已实机验证；
+其余 `152` 条保持非 live。
 
 R374 随后在产品私有 `zg361p2c.2` 的第三次跨周期 summary 处 park4。该窗口由冻结 central tuple 失效后的 typed-RED
 terminal 触发；summary 本身的唯一选项仅清理 `summary_pending`。历史合同的 `max_occurrences=2` 是样本上限，不是生命周期
@@ -406,7 +408,57 @@ modifier 等代价，但避免拒绝立即开战；宗教只作附带边界。pa
 `78C84C846ED9D2F05AF153EC9302C4C3A85C645FD0B33316CD212B10E342C494` /
 `4E3B59B3EB6328939D2008BD2DD4138546C0224F76D62297D19415138DF577E6`。代码与双模式测试已完成；实际 MCP
 list/call available、三投影与 authored1/native0 JSON roundtrip GREEN，T2 为 `NO-CODE-CHANGE`；Python normal/`-O`
-各 `42/42`、open_kaishek `3/3` GREEN。仅 commit/rebase/push 与同 PID live retry 尚待。
+各 `42/42`、open_kaishek `3/3` GREEN。commit `0880b4d579b92685be0696df5a5a32d701db5ed2` 已按 rebase-only push，
+Official Runner run `34408112586` / job `102655870657` completed/success。R374 随后保持 PID `51852` / generation `1`
+选择 authored1/native0，old instance `1055 -> null`、snapshot `native:2057 -> native:2058`、revision
+`2058 -> 2059`、`postcondition_verified=true`，因此成为第十三条 production-live primitive；当前 165 条中
+non-live 为 `152`。
+
+`.1101` 选择后，CK3 前景实际显示 `tgp_china_ministry.0100`“宋国库”三选项窗口，但 native publisher 持续发布
+`paused=false / active_event=null`。runner 因此反复收到幂等 `pause-map=already_paused`，再从陈旧 snapshot 判定仍需暂停，
+形成可复现自旋。该项记为 harness/capability RED：画面可见不等于 native event context 已发布，ACK 也不等于 paused
+postcondition；截图不能补造 instance/date/root/scopes/option-state。后续仅为清开前景遮挡执行了一次 visual-coordinate
+fallback：按 source-reviewed safe route 选择 authored2/native1，再关闭宣战通知、activity detail、唯一选项胜利窗，并用
+Windows `SendInput` 发送空格。该路径不是 MCP，不得登记事件 live 或 MCP postcondition。冻结 driver 中 command `#3200`
+返回 `pause-map=submitted`，`#3201`--`#3355` 共 `155` 次返回 `already_paused`，旧 runner 仍未消费到新 paused frame。
+
+visual recovery RED sidecar
+`_runtime/p2r374-active-boundary-continuation-live/r374-visual-recovery-red-evidence.json` SHA-256 为
+`003875E75BB05A8CF74AF27760DDC311B9F504C3A9FA51F5E3FDBD01831AB4EC`，冻结 driver snapshot SHA-256 为
+`B83EFAAA2574ACCDEF533C5F2B8A38BAC20255237D18D32C35B87D3F42F48F43`；sidecar 明确
+`mcp_only=false / coordinates_used=true / send_input_used=true / production_live_credit=false`。测试报告必须保留这条 RED，
+不能因安全选项已由视觉兜底执行而删掉 native 同帧缺口。
+
+commit `ac6f63c` 已让 direct 幂等 map-control ACK 在同一命令 deadline 内等待真实 semantic 后置帧，矛盾时只提交一次并转换为
+wrapper 可捕获的 hot-recovery typed RED；既有总 deadline 已足够，无需另造循环次数门。该 Python 修复 normal/`-O` 与
+Official Runner run `34413044308` / job `102671610904` GREEN，但不伪造 paused 状态。
+
+native 根因是同一命令内的 snapshot 被读了两次：adapter 第一次读取已足以判定 `already_paused` / `already_running`，bridge
+却丢弃该帧并为 publish 立即做第二次全量读取；自动暂停边界的第二读可返回陈旧 `paused=false / active_event=null`。commit
+`9ccd3995418549b18f46190c3061ede5714c81e5` 已按 rebase-only push，把判定 ACK 的同一 snapshot 交给 timeline publisher，
+并在幂等 ACK 时强制发布。MSVC Release 定向 CTest `2/2` GREEN；新 DLL SHA-256 为
+`18787F7F7F0A9BAF85C7D6979AB8AD20C8CF80D553AA6CA8D2AB87CF18DB0840`。Official Runner run `34415670708` /
+static job `102679886593` completed/success，约 4 分 36 秒、失败步骤为空。因为 DLL 已变化，
+后续不能对旧 PID 做 Python-only 热恢复；必须受管重启后再验 native publisher。
+
+前景身份截图为 `_runtime/p2r374-active-boundary-continuation-live/park9-post-selection-ck3-screen.png`，SHA-256
+`B2E57E4B90EC82EBA96500B7D0B1F963A6EE46F521E4E5250C1A3BE113C7047B`。标题与三条选项文本精确匹配原版简中 localization，
+只能证明 `tgp_china_ministry.0100` UI identity。exact-build source SHA-256 为：event definition
+`87358436D60431BC80DA0376DD1BB2C47696EFCDE813148C69883768439980EE`、yearly caller
+`0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA`、budget effects
+`AEF36B884DC5E315DD5C655BC96012FF9FA8BB46BB0AF2C18FA878C890907747`、TGP triggers
+`8294C1D72ECC909428ABFBA27D6F10B127D796D2BEE350D1BB95024F36D60C99`、简中 localization
+`6AD38C15CAE1CD3EAC713EDBC1566C7D42D8CE3B94291139F976C439020F8210`。source-reviewed safe route 是
+authored2/native1“维持原有分配方案”。本轮已通过上述视觉兜底执行，但视觉输入不能替代可信同帧上下文，不能计 live。
+通用合同已由远端 commit `b51ccd9` 推送；它从既有 manager key 抽取，所以 contract/analysis 仍为 `165/165`，identity-only RED 只把 observation
+keys 增至 `16`，并不增加 production-live 计数。Python bounded no-spin 修复另由 commit `ac6f63c` rebase-only 推送；
+normal/`-O` driver 与 production-entry 定向测试均 GREEN，Official Runner 也已 GREEN。R375 恢复基线为 `autosave`
+`date_raw=53602440`、`144254384` bytes、SHA-256
+`2B683351CF79ADE9DD5A931090DE8E6AF1D4F57FD65FFAFBB3CF18B7436BD97E`。R374 report 的
+`target_progression.timeline_interrupt_drains` 共 `455` 条；按 `date_raw < 53602440` 严格裁切后保留 `453` 条，边界及
+之后的 `travel_danger_events.3002`、`debate_event.5110` 两条丢弃并重采。`.1101` 尚未写入该 ledger，故是额外第三个
+重放事件；总回放窗口约 `223` game days / `3` events。新 DLL 必须通过受管重启装载，重新取得
+native 同帧、MCP selection 与 advance 后才可提升 `.0100`。
 
 TGP0001 与 epidemic1064 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.5009` instance `871` 的第二次合法
 出现处 park12 动作前 RED 停住。原版定义有十年 cooldown 且无 one-shot；当前 RED 来自旧合同的单次上限，不是异常高频触发。
