@@ -34,8 +34,7 @@ EXPECTED_PRESET = "rmtm-96s-zh-v1"
 TOTAL_SECONDS = 96.0
 
 
-def _load_policy(config_path: Path) -> dict[str, Any]:
-    path = config_path.parent / "promo-policy.json"
+def _load_policy(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as source:
         value = json.load(source)
     if not isinstance(value, dict) or value.get("project_id") != EXPECTED_PROJECT:
@@ -204,7 +203,9 @@ def compose(
     if not isinstance(preset, Mapping) or preset.get("id") != EXPECTED_PRESET:
         raise ValueError("resolved preset does not match rmtm-96s-zh-v1")
 
-    policy = _load_policy(Path(config_path))
+    policy = _load_policy(
+        _artifact_path(run, run_path, "promo-policy-approved-v1")
+    )
     ids = policy["input_artifact_ids"]
     visual = _artifact_path(run, run_path, ids["visual_master"])
     narration = _artifact_path(run, run_path, ids["narration_master"])

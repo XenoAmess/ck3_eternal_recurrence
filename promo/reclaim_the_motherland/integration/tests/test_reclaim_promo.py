@@ -67,9 +67,11 @@ class ReclaimPromoTests(unittest.TestCase):
             visual = root / "visual.mp4"
             narration = root / "narration.wav"
             music = root / "music.wav"
+            policy = root / "promo-policy.json"
             visual.write_bytes(b"video")
             narration.write_bytes(b"narration")
             music.write_bytes(b"music")
+            policy.write_bytes(POLICY.read_bytes())
             config_bytes = CONFIG.read_bytes()
             run = RunManifest(
                 run_id="test-run",
@@ -90,6 +92,7 @@ class ReclaimPromoTests(unittest.TestCase):
                     _source(visual, "visual-master-a01", "video/mp4"),
                     _source(narration, "narration-master-a01", "audio/wav"),
                     _source(music, "bgm-a03-source", "audio/wav"),
+                    _source(policy, "promo-policy-approved-v1", "application/json"),
                 ),
                 audits=(),
                 signoffs=(),
