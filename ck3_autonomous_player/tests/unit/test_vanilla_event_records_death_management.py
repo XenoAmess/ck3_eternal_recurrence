@@ -16,11 +16,11 @@ from xar_autoplayer.vanilla_events import (  # noqa: E402
     DEFAULT_VANILLA_EVENT_OBSERVATIONS,
     DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
 )
-from xar_autoplayer.vanilla_events.records_trait_specific import (  # noqa: E402
+from xar_autoplayer.vanilla_events.records_death_management import (  # noqa: E402
     PLAYER_SENTINEL,
-    VANILLA_TRAIT_SPECIFIC_ANALYSIS,
-    VANILLA_TRAIT_SPECIFIC_OBSERVATIONS,
-    VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS,
+    VANILLA_DEATH_MANAGEMENT_ANALYSIS,
+    VANILLA_DEATH_MANAGEMENT_OBSERVATIONS,
+    VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     materialize_vanilla_timeline_contract,
@@ -29,8 +29,22 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 
 
-EVENT_KEY = "trait_specific.4001"
+EVENT_KEY = "death_management.1007"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
+
+
+def _generic_scope(name: str, type_key: str) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {
+            "status": "available",
+            "type_key": type_key,
+            "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed",
+            },
+        },
+    }
 
 
 def _character_scope(name: str, character_id: int) -> dict[str, object]:
@@ -48,43 +62,25 @@ def _character_scope(name: str, character_id: int) -> dict[str, object]:
     }
 
 
-def _secret_scope(name: str) -> dict[str, object]:
-    return {
-        "name": name,
-        "scope": {
-            "status": "available",
-            "type_key": "secret",
-            "typed_identity": {
-                "status": "unavailable",
-                "reason": "generic_scope_payload_identity_not_closed",
-            },
-        },
-    }
-
-
-class TraitSpecificEventRecordTests(unittest.TestCase):
-    def test_contract_is_portable_and_selects_non_conversion_route(self) -> None:
-        contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY]
+class DeathManagementEventRecordTests(unittest.TestCase):
+    def test_contract_is_portable_and_keeps_no_killer_shape_exact(self) -> None:
+        contract = VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY]
 
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
         self.assertNotIn("date_raw", contract)
         self.assertEqual(contract["unique_character_scope_excludes"], {
-            "created_witch": (PLAYER_SENTINEL,),
-            "witch": (PLAYER_SENTINEL,),
-        })
-        self.assertEqual(contract["character_scope_matches_any"], {
-            "created_witch": ("witch",),
-            "witch": ("created_witch",),
+            "dead_character": (PLAYER_SENTINEL,),
         })
         self.assertEqual(contract["scope_types"], {
-            "created_witch": "character",
-            "witch_secret": "secret",
-            "witch": "character",
+            "new_memory": "character_memory",
+            "dead_character": "character",
+            "deceased_character_stress": "value",
         })
         self.assertEqual(contract["saved_scope_count"], 3)
-        self.assertEqual(contract["native_option_indices"], (0, 1))
-        self.assertEqual(contract["selected_option_number"], 2)
-        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["native_option_indices"], (0,))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertNotIn("optional_scope_types", contract)
         self.assertEqual(
             contract["occurrence_policy"],
             "repeatable-within-product-observation-window",
@@ -94,57 +90,59 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         self.assertEqual(materialized["root_character_id"], 32904)
         self.assertEqual(
             materialized["unique_character_scope_excludes"],
-            {"created_witch": (32904,), "witch": (32904,)},
+            {"dead_character": (32904,)},
         )
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
 
-    def test_analysis_freezes_sources_and_complete_side_effect_boundary(self) -> None:
-        analysis = VANILLA_TRAIT_SPECIFIC_ANALYSIS[EVENT_KEY]
+    def test_analysis_freezes_sources_and_complete_effect_boundary(self) -> None:
+        analysis = VANILLA_DEATH_MANAGEMENT_ANALYSIS[EVENT_KEY]
 
-        self.assertEqual(analysis["definition_lines"], "584-717")
-        self.assertEqual(analysis["random_yearly_playable_pulse_lines"], "2522-2563")
-        self.assertEqual(analysis["on_yearly_pool_entry_line"], "3019")
-        self.assertIn("not a daily event", analysis["frequency_boundary"])
-        self.assertIn("same-culture, same-faith witch", analysis["immediate_effect"])
-        self.assertIn("learning plus one", analysis["option_semantics"][0])
-        self.assertIn("one hundred", analysis["option_semantics"][1])
-        self.assertIn(
-            "downstream player choices",
-            analysis["conversion_outcome_boundary"],
-        )
-        self.assertIn("owner-deferred", analysis["religion_scope_boundary"])
-        self.assertIsNone(analysis["after_effect"])
-        self.assertEqual(len(analysis["source_sha256"]), 11)
+        self.assertEqual(analysis["definition_lines"], "1948-2057")
+        self.assertEqual(analysis["heir_family_dispatch_lines"], "690-696")
+        self.assertEqual(analysis["close_family_memory_lines"], "966-984")
+        self.assertEqual(analysis["character_memory_abi_lines"], "58-70")
+        self.assertIn("saves it as new_memory", analysis["caller_semantics"])
+        self.assertIn("exactly twenty", analysis["option_semantics"][0])
+        self.assertIn("trait-dependent", analysis["option_semantics"][0])
+        self.assertIn("display-only", analysis["after_effect"])
+        self.assertIn("must remain RED", analysis["strict_shape_boundary"])
+        self.assertIn("independently", analysis["repeatability"])
+        self.assertIn("not a campaign", analysis["duplicate_blocker_boundary"])
+        self.assertIn("does not save", analysis["option_semantics"][0])
+        self.assertEqual(len(analysis["source_sha256"]), 6)
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r374_values_remain_observation_only(self) -> None:
-        exemplar, = VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY]["exemplars"]
-        contract_repr = repr(VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY])
+        exemplar, = VANILLA_DEATH_MANAGEMENT_OBSERVATIONS[EVENT_KEY][
+            "exemplars"
+        ]
+        contract_repr = repr(
+            VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY]
+        )
 
-        self.assertEqual(exemplar["event_instance_id"], 1040)
-        self.assertEqual(exemplar["date_raw"], 53583192)
+        self.assertEqual(exemplar["event_instance_id"], 1046)
+        self.assertEqual(exemplar["date_raw"], 53590464)
         self.assertEqual(exemplar["saved_character_ids"], {
-            "created_witch": 94245,
-            "witch": 94245,
+            "dead_character": 39246,
         })
         self.assertEqual(exemplar["saved_scope_raw_types"], {
-            "created_witch": 4,
-            "witch_secret": 7,
-            "witch": 4,
+            "new_memory": 34,
+            "dead_character": 4,
+            "deceased_character_stress": 1,
         })
-        self.assertEqual(exemplar["rendered_native_option_indices"], [0, 1])
+        self.assertEqual(exemplar["rendered_native_option_indices"], [0])
         self.assertFalse(exemplar["selection_attempted"])
         self.assertFalse(exemplar["process_restart_required"])
-        self.assertEqual(exemplar["snapshot_id"], "native:1669")
-        self.assertEqual(exemplar["revision"], 1670)
+        self.assertEqual(exemplar["snapshot_id"], "native:1779")
+        self.assertEqual(exemplar["revision"], 1780)
         for field in (
             "artifact_sha256",
             "park_artifact_sha256",
             "driver_state_artifact_sha256",
         ):
             self.assertRegex(exemplar[field], SHA256_PATTERN)
-        for observation_only in (1040, 53583192, 94245, 32904, 51852, 1669):
+        for observation_only in (1046, 53590464, 39246, 32904, 51852, 1779):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
@@ -154,17 +152,17 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 302)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
-            VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],
+            VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY],
         )
 
         response = query_vanilla_event_knowledge_v1(EVENT_KEY)
         self.assertEqual(response["status"], "available")
         self.assertEqual(response["contract"]["root_character_id"], "$player")
-        self.assertEqual(response["contract"]["native_option_indices"], [0, 1])
-        self.assertEqual(response["analysis"]["definition_lines"], "584-717")
+        self.assertEqual(response["contract"]["native_option_indices"], [0])
+        self.assertEqual(response["analysis"]["definition_lines"], "1948-2057")
         self.assertEqual(
             response["observations"]["exemplars"][0]["event_instance_id"],
-            1040,
+            1046,
         )
         json.dumps(response, allow_nan=False)
 
@@ -176,7 +174,7 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         )
         contract = production._timeline_contract_for_window(
             contract,
-            starting_date=53580000,
+            starting_date=53590000,
         )
         context = {
             "schema": "current-event-window-context-v1",
@@ -184,8 +182,8 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             "status": "available",
             "window_match_count": 1,
             "event_definition_key": EVENT_KEY,
-            "current_event_instance_id": 1040,
-            "date_raw": 53583192,
+            "current_event_instance_id": 1046,
+            "date_raw": 53590464,
             "root_scope": {
                 "status": "available",
                 "type_key": "character",
@@ -196,36 +194,33 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
                 },
             },
             "saved_scopes": [
-                _character_scope("created_witch", 94245),
-                _secret_scope("witch_secret"),
-                _character_scope("witch", 94245),
+                _generic_scope("new_memory", "character_memory"),
+                _character_scope("dead_character", 39246),
+                _generic_scope("deceased_character_stress", "value"),
             ],
-            "options": [
-                {
-                    "rendered_index": index,
-                    "native_option_index": index,
-                    "shown": True,
-                    "enabled": True,
-                    "fallback": False,
-                    "cancel": False,
-                }
-                for index in range(2)
-            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
         }
         checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53583192,
-                "active_event": {"option_count": 2},
+                "date_raw": 53590464,
+                "active_event": {"option_count": 1},
             },
-            event={"event_instance_id": 1040},
+            event={"event_instance_id": 1046},
             context=context,
             event_key=EVENT_KEY,
             contract=contract,
         )
 
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["selected_option_number"], 2)
-        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
 
 
 if __name__ == "__main__":

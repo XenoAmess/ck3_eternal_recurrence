@@ -320,16 +320,17 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `162 contracts / 162 analysis / 12
-observation keys`，正式 MCP `list/call` 已接通；production runtime 当前消费 `301` 条事件合同。`TGP0160`、
+当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `163 contracts / 163 analysis / 13
+observation keys`，正式 MCP `list/call` 已接通；production runtime 当前消费 `302` 条事件合同。`TGP0160`、
 `great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
 runner 的真实 drain/advance；`epidemic_events.1064` 也已同 PID 选择 reviewed native0 并完成 advance，R374 又将
 `natural_disaster.7031` authored3/native2、`ep3_story_cycle_admin_eunuch.1001` authored2/native1、`tribute_mission.1005` authored6/native5 与 `vassal_interaction.0040` authored1/native0 同 PID drain 并验证 instances `978`、`988`、`1007`、`1038` advance，合计九条
-`production-live primitive`。`stress_threshold.1721` 保留为真实 RED observation：reload
+`production-live primitive`；`.4001` 随后也以 authored2/native1 同 PID drain 并验证 instance `1040` advance，合计十条。
+`stress_threshold.1721` 保留为真实 RED observation：reload
 已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
 合同由提交 `039a509`、`e6ab3d4` 收口。R374 的 `natural_disaster.7031`、`ep3_story_cycle_admin_eunuch.1001`、
-`tribute_mission.1005`、`vassal_interaction.0040` observations 均保留其选择前 RED，后续 drains 已 GREEN；`.1005` 只在既有精确 variants 之外
-新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于九条实证切片，绝不表示 162 条都已实机验证。
+`tribute_mission.1005`、`vassal_interaction.0040`、`trait_specific.4001` observations 均保留其选择前 RED，后续 drains 已 GREEN；`.1005` 只在既有精确 variants 之外
+新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十条实证切片，绝不表示 163 条都已实机验证。
 
 R374 随后在产品私有 `zg361p2c.2` 的第三次跨周期 summary 处 park4。该窗口由冻结 central tuple 失效后的 typed-RED
 terminal 触发；summary 本身的唯一选项仅清理 `summary_pending`。历史合同的 `max_occurrences=2` 是样本上限，不是生命周期
@@ -349,14 +350,24 @@ PID `51852` / generation `1` 选择 authored1/native0，old/new instance `1038/n
 `created_witch=witch=94245` 与 `witch_secret` secret，两个 native options `(0,1)` 均 shown/enabled。当前
 `selection_attempted=false`。exact-build 定义与 yearly caller 已审阅：这是年度脉冲候选，不是每日事件；native0
 会给五年 reading modifier 并启动秘密女巫转化 scheme，native1 的直接效果仅为 `medium_piety_gain=100`。
-共享合同因此只接受实见三 scope shape，并选择 authored2/native1；当前 package 已通过 normal/`-O` 双模式静态回归，
-仍须在 push 后于同一 PID 提交并验证 instance advance，才可提升为第十条 production-live primitive。
+共享合同因此只接受实见三 scope shape，并选择 authored2/native1；package commit `75a611e` 已 push，Official Runner
+run `34398909398` / job `102625565721` completed/success。R374 在同一 PID `51852` / generation `1` 提交该选择，
+instance `1040 -> null`、snapshot `native:1669 -> native:1670`、revision `1670 -> 1671`、
+`postcondition_verified=true`，因此提升为第十条 production-live primitive。其后 #1041--#1045 均安全 drain。
+
+当前 park7 为 `death_management.1007` #1046 / date `53590464`。root/player 为 `32904`；严格无 killer shape
+包含 `new_memory` character_memory/raw34、`dead_character` character `39246`/raw4 与
+`deceased_character_stress` value/raw1。唯一 rendered/native `0/0` 选项 shown/enabled 且非 fallback/cancel；实机
+indicator 只显示不完整的 stress increase，preview 与 semantic readiness 均不可用。exact-build
+`on_death -> .0001 -> delayed .0002 -> .1007` 已审阅：唯一选项的完整 authored effect 是基础压力 `20`，最终值仍由通用压力系统修正，
+`after` 仅显示 tooltip。合同只接受当前无 killer 三 scope shape，选择 authored1/native0；未来 killer/known_killer 或
+无 `new_memory` 变体继续保留 RED。当前 `selection_attempted=false`，产品绝对截止前尚余 `1893` game days。
 
 TGP0001 与 epidemic1064 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.5009` instance `871` 的第二次合法
 出现处 park12 动作前 RED 停住。原版定义有十年 cooldown 且无 one-shot；当前 RED 来自旧合同的单次上限，不是异常高频触发。
 
 其余既有分析按原合同注释、docs 与 tests 做 migration-only 迁移；旧证据没有冻结 source hash 时明确保留
-`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `162/162` 的分析覆盖只证明知识可查询和迁移
+`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `163/163` 的分析覆盖只证明知识可查询和迁移
 无缺键，不替代逐事件 live evidence。
 
 同一当前快照下，T0 仍为 `50%`、canonical stage `8/11`，四类 source checkpoint 已完成 `3/4`，只缺

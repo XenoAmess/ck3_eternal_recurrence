@@ -80,9 +80,9 @@
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
-- [static-ready complete analysis + nine production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  已组合默认 `162 contracts / 162 analysis / 12 observation keys` 的 exact-build 原版事件表并发布离线
-  `ck3_query_vanilla_event_knowledge_v1`；production runtime 当前消费 `301` 条事件合同。R372 的 `TGP0160`、
+- [static-ready complete analysis + ten production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
+  已组合默认 `163 contracts / 163 analysis / 13 observation keys` 的 exact-build 原版事件表并发布离线
+  `ck3_query_vanilla_event_knowledge_v1`；production runtime 当前消费 `302` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
   primitive。`stress_threshold.1721` 保留真实 RED：reload 已生效，根因是提交阶段重新按 base contract 解析；补丁提交为
   `039a509`、`e6ab3d4`。`epidemic_events.1064` 随后以同 PID 选择 reviewed native0 并完成 advance，成为第五条
@@ -93,10 +93,11 @@
   产品私有 `.p2c.2` 的第三次合法 summary 已在同一 PID 热恢复，但上游 typed-RED cycle 仍按失败保留。
   `vassal_interaction.0040` 作为第十一个选择前 RED observation 迁移后，已在同一 PID 以 authored1/native0
   drain instance `1038` 并验证 advance，成为第九条 live primitive。当前 park6 的
-  `trait_specific.4001` instance `1040` 选择前 RED 已完成 exact-build 合同、analysis、observation 与 MCP/runtime
-  迁移；合同选择 authored2/native1，只接受实见三 scope shape。按钮尚未提交，因此仍不计作 live。
+  `trait_specific.4001` instance `1040` 选择前 RED 完成 exact-build 合同迁移后，已在同一 PID 以
+  authored2/native1 drain 并验证 advance，成为第十条 live primitive。当前 park7 的 `death_management.1007`
+  instance `1046` 选择前 RED 已迁移严格无 killer 三 scope shape；唯一 authored1/native0 尚未提交，因此仍不计作 live。
   两条 prebootstrap context profile 不混入扁平表；缺少既有 source hash 的旧分析只标 migration-only，不编造 hash。
-  上述状态不表示 162 条全部 live；
+  上述状态不表示 163 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
