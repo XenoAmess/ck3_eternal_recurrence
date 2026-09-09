@@ -180,7 +180,7 @@ sys.path.insert(0, str(root / "tools"))
 sys.path.insert(0, str(root / "ck3_autonomous_player" / "src"))
 
 import zg361_phase2_promotion_source_production_entry as production
-from xar_autoplayer.vanilla_events import records_embedded
+from xar_autoplayer.vanilla_events import records_embedded, records_tgp_dynastic_cycle
 
 event_key = "stress_threshold.1721"
 before = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
@@ -197,6 +197,19 @@ if no_confidant["selected_option_number"] != 11:
     raise SystemExit("wrong no-confidant authored option")
 if no_confidant["selected_native_option_index"] != 10:
     raise SystemExit("wrong no-confidant native option")
+
+# A live process may reload from an older module generation that predates the
+# initialization sentinel. Its existing contract mapping is the durable reload
+# signal in that deployment case.
+new_event_key = "tgp_dynastic_cycle_events.0001"
+production.KNOWN_TIMELINE_INTERRUPTS.pop(new_event_key, None)
+records_tgp_dynastic_cycle.VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS.pop(
+    new_event_key, None
+)
+del production._PRODUCTION_ENTRY_INITIALIZED
+reloaded = importlib.reload(production)
+if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
+    raise SystemExit("legacy-generation reload did not refresh new records")
 """
         command = [sys.executable]
         if not __debug__:

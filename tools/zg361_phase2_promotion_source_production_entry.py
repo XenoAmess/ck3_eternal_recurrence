@@ -67,7 +67,7 @@ def _reload_loaded_contract_modules() -> None:
 # canonical objects that another importer may already hold.
 _production_entry_was_initialized = globals().get(
     "_PRODUCTION_ENTRY_INITIALIZED", False
-)
+) or "KNOWN_TIMELINE_INTERRUPTS" in globals()
 if _production_entry_was_initialized:
     _reload_loaded_contract_modules()
 _PRODUCTION_ENTRY_INITIALIZED = True
