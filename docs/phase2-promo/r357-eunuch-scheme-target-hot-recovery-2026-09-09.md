@@ -540,3 +540,27 @@ option）。改动仅涉及外部 Python 合同、回归测试与报告，不修
   `BFEE9BA15382E7DF19ECA1A0C0E9CD5DFB8A15D5E69451CB795E66F5AB7765F2`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十次 RED：宦官家族议席请求再次发生
+
+第十九次 `retry` 热加载提交 `d8e79689b51c514c155c1578d6ac957396e57b56` 后，
+第二次 `adultery.0002` 在原 event instance `392` 上通过；同一 PID `159264`
+继续推进到已登记的 `ep3_story_cycle_admin_eunuch.2041`、event instance `393`、
+`date_raw=53277192`。证据账本此前已成功 drain 一次 `.2041`，旧
+`max_occurrences=1` 因而在本次完整合同检查和选择前 RED。
+
+原版 `.2041` 明确声明五年 event cooldown；冷却届满后，只要宦官 story、通用事件、
+议席请求与可用家族候选条件仍成立，就可以再次进入事件池。事件没有设置
+campaign-global one-shot flag，故第二次发生符合原版定义。最小修复仅把伪造的一次
+上限替换为产品观察窗口内可重复，保留 native option 1 的拒绝路线及已有 scope/
+alias/互异约束。改动只在外部 Python 合同、回归测试与报告，不触碰 CK3 已加载的
+mod 或 DLL，继续同 PID 热重试。
+
+- 第二十次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-20.json`；
+- park SHA-256：
+  `54025B214FAAFCCD47B0541B63156F6D8D141BF7D16F0D4CCDBA75D2AB4F8E32`；
+- 第二十次 RED report 快照：13,584,541 bytes，SHA-256
+  `7D047E961E182A7D48F0D89F0D82466F307EE7EF8721D447A63872705FC2F43D`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

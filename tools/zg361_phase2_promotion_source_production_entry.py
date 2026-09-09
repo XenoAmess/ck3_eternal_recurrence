@@ -1698,7 +1698,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # them and upgrades the eunuch story. Native option 1 leaves the
         # council roster intact and applies only the authored downgrade plus
         # opinion/stress. Bind the candidate alias and incumbent before taking
-        # that narrower refusal route.
+        # that narrower refusal route. Vanilla applies a five-year event
+        # cooldown rather than a campaign-global one-shot gate, so validate
+        # every occurrence inside the product observation window.
         "date_raw": 53239224,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1750,7 +1752,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.2021": {
         # CK3 1.19.0.6 eunuch-family governorship request. Native option 0
