@@ -27,23 +27,23 @@ VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS: Final[
         "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            "rival": [PLAYER_SENTINEL],
+            "rival": (PLAYER_SENTINEL,),
         },
         "scope_types": {
             "my_movement": "situation_participant_group",
             "rival": "character",
             "rival_movement": "situation_participant_group",
         },
-        "saved_scope_name_sets": [[
+        "saved_scope_name_sets": ((
             "my_movement",
             "rival",
             "rival_movement",
-        ]],
+        ),),
         "saved_scope_count": 3,
-        "boolean_scopes": [],
+        "boolean_scopes": (),
         "option_count": 3,
         "snapshot_option_count": 3,
-        "native_option_indices": [0, 1, 2],
+        "native_option_indices": (0, 1, 2),
         # Native 0 can create a mutual fifteen-year scheme block and native 1
         # pays gold before creating it.  Native 2 preserves both resources and
         # strategic freedom; its authored effect is minor intrigue lifestyle XP

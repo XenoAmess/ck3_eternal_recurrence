@@ -35,12 +35,12 @@ class TgpMovementEventRecordTests(unittest.TestCase):
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
         self.assertEqual(
             contract["unique_character_scope_excludes"],
-            {"rival": [PLAYER_SENTINEL]},
+            {"rival": (PLAYER_SENTINEL,)},
         )
         self.assertEqual(contract["character_scopes"], {})
         self.assertEqual(
             contract["saved_scope_name_sets"],
-            [["my_movement", "rival", "rival_movement"]],
+            (("my_movement", "rival", "rival_movement"),),
         )
         self.assertEqual(contract["saved_scope_count"], 3)
         self.assertEqual(
@@ -51,7 +51,7 @@ class TgpMovementEventRecordTests(unittest.TestCase):
                 "rival_movement": "situation_participant_group",
             },
         )
-        self.assertEqual(contract["boolean_scopes"], [])
+        self.assertEqual(contract["boolean_scopes"], ())
         json.dumps(contract, allow_nan=False)
 
     def test_contract_selects_the_non_blocking_third_option(self) -> None:
@@ -59,7 +59,7 @@ class TgpMovementEventRecordTests(unittest.TestCase):
 
         self.assertEqual(contract["option_count"], 3)
         self.assertEqual(contract["snapshot_option_count"], 3)
-        self.assertEqual(contract["native_option_indices"], [0, 1, 2])
+        self.assertEqual(contract["native_option_indices"], (0, 1, 2))
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
         self.assertEqual(
@@ -84,12 +84,18 @@ class TgpMovementEventRecordTests(unittest.TestCase):
         self.assertEqual(materialized["root_character_id"], 90210)
         self.assertEqual(
             materialized["unique_character_scope_excludes"],
-            {"rival": [90210]},
+            {"rival": (90210,)},
         )
+        self.assertEqual(
+            materialized["saved_scope_name_sets"],
+            (("my_movement", "rival", "rival_movement"),),
+        )
+        self.assertEqual(materialized["boolean_scopes"], ())
+        self.assertEqual(materialized["native_option_indices"], (0, 1, 2))
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
         self.assertEqual(
             contract["unique_character_scope_excludes"],
-            {"rival": [PLAYER_SENTINEL]},
+            {"rival": (PLAYER_SENTINEL,)},
         )
         json.dumps(materialized, allow_nan=False)
 
@@ -144,6 +150,16 @@ class TgpMovementEventRecordTests(unittest.TestCase):
         response = query_vanilla_event_knowledge_v1(EVENT_KEY)
 
         self.assertEqual(response["status"], "available")
+        self.assertEqual(
+            response["contract"]["unique_character_scope_excludes"],
+            {"rival": [PLAYER_SENTINEL]},
+        )
+        self.assertEqual(
+            response["contract"]["saved_scope_name_sets"],
+            [["my_movement", "rival", "rival_movement"]],
+        )
+        self.assertEqual(response["contract"]["boolean_scopes"], [])
+        self.assertEqual(response["contract"]["native_option_indices"], [0, 1, 2])
         self.assertEqual(
             response["analysis"]["option_semantics"],
             {
