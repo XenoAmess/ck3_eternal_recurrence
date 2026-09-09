@@ -327,6 +327,91 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
             )
             self.assertTrue(all(checks.values()), checks)
 
+    def test_career_hc_cycle_family_keeps_exact_contracts_when_repeated(
+        self,
+    ) -> None:
+        expected_keys = {
+            f"zg361ch.{event_id}"
+            for event_id in (
+                *range(19, 26),
+                *range(92, 129),
+                *range(901, 907),
+                950,
+            )
+        }
+        self.assertEqual(
+            production._MANAGER_RECOVERY_REPEATABLE_CAREER_HC_EVENTS,
+            expected_keys,
+        )
+        self.assertEqual(len(expected_keys), 51)
+
+        for event_key in sorted(expected_keys):
+            source_contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+            contract = production._resolve_timeline_interrupt_contract(
+                event_key,
+                player=32904,
+                starting_date=53447000,
+                absolute_end_date=53490000,
+                stop_at_clean_review_boundary=False,
+                continue_to_pause_target=True,
+            )
+            self.assertIsNotNone(contract, event_key)
+            assert contract is not None
+            with self.subTest(event_key=event_key):
+                self.assertEqual(
+                    contract["occurrence_policy"],
+                    "repeatable-within-product-observation-window",
+                )
+                self.assertNotIn("max_occurrences", contract)
+                for field in (
+                    "option_count",
+                    "selected_option_number",
+                    "selected_native_option_index",
+                    "option_variants",
+                ):
+                    if field in source_contract:
+                        self.assertEqual(contract[field], source_contract[field])
+
+        event_key = "zg361ch.21"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53447000,
+            absolute_end_date=53490000,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        assert contract is not None
+        context = _context(
+            event_key=event_key,
+            instance_id=877,
+            date_raw=53488536,
+            player=32904,
+            scopes=[
+                _scope("zg361_ch_d_event_owner", "character", 32904),
+                _scope("zg361_ch_d_event_subject", "character", 36160),
+                _scope("zg361_ch_d_event_cycle", "value"),
+                _scope("zg361_ch_d_event_case", "value"),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53488536,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 877},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        resolved = production._option_contract_for_context(
+            context["options"], contract,
+        )
+        self.assertEqual(resolved["selected_option_number"], 1)
+        self.assertEqual(resolved["selected_native_option_index"], 0)
+
     def test_value_track_card_repeats_with_exact_safe_route(self) -> None:
         event_key = "zg361.30"
         contract = production._resolve_timeline_interrupt_contract(

@@ -144,6 +144,15 @@ from zg361_phase2_promotion_manager_elimination_contracts import (
 
 M146 = "zg361pp.146"
 M147 = "zg361pp.147"
+_MANAGER_RECOVERY_REPEATABLE_CAREER_HC_EVENTS = frozenset(
+    f"zg361ch.{event_id}"
+    for event_id in (
+        *range(19, 26),
+        *range(92, 129),
+        *range(901, 907),
+        950,
+    )
+)
 # The managed product episode always starts from the immutable phase-two seed.
 # A retained Python client may reconnect much later, but reconnecting must not
 # grant the same CK3 process another full authored observation window.
@@ -2349,6 +2358,19 @@ def _resolve_timeline_interrupt_contract(
         contract = _manager_recovery_contract(
             contract, player=player, event_key=event_key,
         )
+    if (
+        contract is not None
+        and manager_recovery
+        and event_key in _MANAGER_RECOVERY_REPEATABLE_CAREER_HC_EVENTS
+    ):
+        # The generator opens a fresh D-Q portfolio for every new review
+        # serial. Keep each card's source-reviewed scopes, option variants and
+        # safe route, but do not mistake a later cycle for duplicate delivery.
+        contract = copy.deepcopy(dict(contract))
+        contract["occurrence_policy"] = (
+            "repeatable-within-product-observation-window"
+        )
+        contract.pop("max_occurrences", None)
     if contract is None:
         return None
     return _timeline_contract_for_window(
