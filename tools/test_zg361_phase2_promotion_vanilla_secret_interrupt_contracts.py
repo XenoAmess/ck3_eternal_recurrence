@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Focused tests for exact vanilla secret interrupt contracts."""
 
 from __future__ import annotations
@@ -144,6 +144,11 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         self.assertEqual(contract["native_option_indices"], (1, 2))
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
 
     def test_r290_dynamic_secret_owner_aliases_select_authored_forgive(self) -> None:
         contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]

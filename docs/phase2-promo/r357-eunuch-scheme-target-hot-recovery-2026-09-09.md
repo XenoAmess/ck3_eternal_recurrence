@@ -744,3 +744,27 @@ fail-closed。改动只涉及外部 Python 合同、测试和报告，不重启 
   `29B04A27A6ED01BA59926118432DF32C5EB769B2F784211C90E246B42EC0A664`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十八次 RED：第二个挪用国库秘密受害通知
+
+第二十七次 `retry` 热加载提交 `b4fd323450f0588f1404121b2133d36e1f661b77` 后，
+帝国首都人力请求在原 event instance `418` 上通过；同一 PID `159264` 随后推进到
+已登记的 `secrets.0122`、event instance `420`、`date_raw=53315904`。合同尚未
+进入 scope/按钮检查，因为账本已有一次成功 drain，旧 `max_occurrences=1` 先在选择前
+触发 RED。
+
+原版秘密公开链对每个独立的 `secret_siphoned_treasury` 运行：`secrets.0121` 通知
+秘密持有人，其唯一 option 再向 `secret_target` 触发 `.0122` 受害者事件。`.0122`
+没有 campaign-global one-shot 或 cooldown，出现次数由不同秘密的公开次数决定。
+最小修复因此只删除伪一次上限，改为产品观察窗口内可重复；既有十三项精确 scope、
+动态 embezzler 别名、按钮投影和 native option 2 宽恕路线全部保持，未知形状继续
+fail-closed。改动只涉及外部 Python 合同、测试和报告，不重启 CK3。
+
+- 第二十八次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-28.json`；
+- park SHA-256：
+  `D9461A3EE7B9CD0C70E2773005C34C9DAA6B564BCD902222C64B8338BC88696E`；
+- 第二十八次 RED report 快照：14,664,883 bytes，SHA-256
+  `29F6D2A9BC948D1B28E47829D78D821D48D50286B1E7A2557ADD43EE2AEADAD1`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

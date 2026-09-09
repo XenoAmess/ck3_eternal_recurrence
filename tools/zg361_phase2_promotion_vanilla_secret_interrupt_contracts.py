@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Exact vanilla secret interrupts observed on the promotion timeline."""
 
 from __future__ import annotations
@@ -42,7 +42,9 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # authored options B/C only: B imprisons the embezzler, while C
         # forgives them with a 20-opinion effect and trait-dependent stress.
         # Select authored C as the terminal route with the smallest unrelated
-        # realm mutation.
+        # realm mutation. Each independently exposed siphoned-treasury secret
+        # can notify its victim through 0121 -> 0122; vanilla has no global
+        # one-shot gate, so validate every later delivery with this same frame.
         "date_raw": 53187480,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -74,6 +76,6 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (1, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
