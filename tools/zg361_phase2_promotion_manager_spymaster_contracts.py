@@ -133,6 +133,101 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
+    "spymaster_task.0344": {
+        # Vanilla Find Secrets murder-secret notification. The secret holder
+        # and murder victim are fixed before the window opens. When no murder
+        # scheme targets the holder, native option 0 is the sole rendered
+        # acknowledgement and only reveals the secret. When such a scheme
+        # exists, native option 1 is exclusive, becomes the sole rendered
+        # button and additionally advances that already-running scheme. R357
+        # observed the latter projection, so bind both source-defined shapes
+        # while selecting the only authored button available in either one.
+        "date_raw": 53269008,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "councillor_liege": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "owner": (29037,),
+            "target": (29037,),
+            "secret_holder": (29037,),
+        },
+        "character_scope_matches_any": {
+            "owner": ("councillor", "active_councillor"),
+            "councillor": ("owner", "active_councillor"),
+            "active_councillor": ("owner", "councillor"),
+            "target": ("target_character",),
+            "target_character": ("target",),
+        },
+        "character_scope_differs_from": {
+            "owner": ("target", "secret_holder"),
+            "target": ("owner",),
+            "secret_holder": ("owner", "murder_target"),
+            "murder_target": ("secret_holder",),
+        },
+        "scope_types": {
+            "owner": "character",
+            "artifact": "artifact",
+            "target": "character",
+            "target_character": "character",
+            "councillor": "character",
+            "active_councillor": "character",
+            "secret_holder": "character",
+            "secret_to_reveal": "secret",
+            "murder_target": "character",
+        },
+        "optional_scope_types": {"scheme": "scheme"},
+        "boolean_scopes": (),
+        "saved_scope_name_sets": (
+            (
+                "owner",
+                "artifact",
+                "target",
+                "councillor_liege",
+                "target_character",
+                "councillor",
+                "active_councillor",
+                "secret_holder",
+                "secret_to_reveal",
+                "murder_target",
+            ),
+            (
+                "scheme",
+                "owner",
+                "artifact",
+                "target",
+                "councillor_liege",
+                "target_character",
+                "councillor",
+                "active_councillor",
+                "secret_holder",
+                "secret_to_reveal",
+                "murder_target",
+            ),
+        ),
+        "saved_scope_counts": (10, 11),
+        "option_count": 1,
+        "snapshot_option_count": 2,
+        "native_option_indices": (1,),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "option_variants": (
+            {
+                "option_count": 1,
+                "native_option_indices": (0,),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+            {
+                "option_count": 1,
+                "native_option_indices": (1,),
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "spymaster_task.0346": {
         # Vanilla Find Secrets lover-secret notification. Like .0342, the
         # discovery is already fixed when the window opens and exposes one

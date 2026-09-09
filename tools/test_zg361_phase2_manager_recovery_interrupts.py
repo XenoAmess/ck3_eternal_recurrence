@@ -473,6 +473,93 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertFalse(drift_checks["saved_scope_names_exact"])
         self.assertFalse(drift_checks["saved_scope_count"])
 
+    def test_murder_secret_discovery_binds_exclusive_scheme_projection(self) -> None:
+        event_key = "spymaster_task.0344"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=385,
+            date_raw=53269008,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 27275),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 29628),
+                _scope("councillor_liege", "character", 32904),
+                _scope("target_character", "character", 29628),
+                _scope("councillor", "character", 27275),
+                _scope("active_councillor", "character", 27275),
+                _scope("secret_holder", "character", 28903),
+                _scope("secret_to_reveal", "secret"),
+                _scope("murder_target", "character", 31013),
+            ],
+            native_option_indices=(1,),
+        )
+        snapshot = {
+            "date_raw": 53269008,
+            "active_event": {"option_count": 2},
+        }
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 385},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["saved_scope_counts"], (10, 11))
+        self.assertEqual(contract["snapshot_option_count"], 2)
+        current_projection = production._option_contract_for_context(
+            context["options"], contract
+        )
+        self.assertEqual(current_projection["selected_option_number"], 2)
+        self.assertEqual(current_projection["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        no_scheme = copy.deepcopy(context)
+        no_scheme["saved_scopes"] = no_scheme["saved_scopes"][1:]
+        no_scheme["options"] = _context(
+            event_key=event_key,
+            instance_id=385,
+            date_raw=53269008,
+            player=32904,
+            scopes=[],
+            native_option_indices=(0,),
+        )["options"]
+        no_scheme_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 385},
+            context=no_scheme,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(no_scheme_checks.values()), no_scheme_checks)
+        plain_projection = production._option_contract_for_context(
+            no_scheme["options"], contract
+        )
+        self.assertEqual(plain_projection["selected_option_number"], 1)
+        self.assertEqual(plain_projection["selected_native_option_index"], 0)
+
+        same_murderer_and_victim = copy.deepcopy(context)
+        same_murderer_and_victim["saved_scopes"][-1] = _scope(
+            "murder_target", "character", 28903
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 385},
+            context=same_murderer_and_victim,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drift_checks["scope:murder_target:differs_from"]
+        )
+
     def test_fallback_secret_discovery_is_repeatable_per_task_outcome(self) -> None:
         event_key = "spymaster_task.0359"
         contract = _manager_contract(event_key, player=32904)

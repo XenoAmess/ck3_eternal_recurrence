@@ -378,3 +378,37 @@ cooldown 为五年，产品窗口内可重复。
   `0F5C39423FB748A9D2736CA6AD74D34623AD18C0084573268B0E258BC27207A6`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第十四次 RED：间谍总管发现谋杀秘密
+
+第十三次 `retry` 热加载提交 `377006b36bc2ea4733cd0f64db330131d5098588` 后，同一 PID
+`159264` 推进到此前未登记的原版 `spymaster_task.0344`、event instance `385`、
+`date_raw=53269008`，因此在选择前按未知事件 fail-closed。MCP 读取到十一项 scope：
+`scheme/owner/artifact/target/councillor_liege/target_character/councillor/`
+`active_councillor/secret_holder/secret_to_reveal/murder_target`。其中
+owner/councillor/active councillor 同为 `27275`，target/target character 同为
+`29628`，秘密持有者为 `28903`，谋杀受害者为 `31013`；CK3 快照保留两个 authored
+options，但 `scheme` 存在使 native option 1 成为 exclusive，窗口只渲染该按钮。
+
+原版定义确认，这一变体只在发现 `secret_murder` 时触发，并从秘密本身保存
+`murder_target`。若没有针对秘密持有者的现存谋杀计谋，native option 0 是唯一可见
+确认按钮，只向玩家揭示既成秘密；若存在该计谋，原版只显示 exclusive native option
+1，它在揭示秘密后给该既有计谋增加进度。合同同时冻结这两个源码定义的精确投影，
+并分别选择当时唯一可见的 native 0 或 native 1；当前实机帧不存在可选择的无额外
+副作用按钮，不能伪造 native 0 可用。十项基础 scope 与可选 `scheme` 形成两个精确
+名称集合，谋杀者与受害者必须互异；事件由 Find Secrets 每次结果独立选择，故在产品
+观察窗口内可重复并逐帧完整验帧。
+
+这次改动仍只涉及 Python 合同、回归测试与报告，没有修改 CK3 已加载的 mod 或 DLL，
+因此明确不重启游戏；合同分片由 production entry 在原暂停帧热重载后继续生效。
+
+- 第十四次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-14.json`；
+- park SHA-256：
+  `AD32B1128682E9776C187A034CE888DB858278811A8D0B4C17B5ADC324C331BA`；
+- 第十四次 RED report 快照：26,284,348 bytes，SHA-256
+  `BDD1BA6C364C71AE0697066CA9B2F8E7CDE14037892992A215D543A3BF0C9D97`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`；
+- manager recovery 分片 normal / `python -O` 各 `47/47`（含一个环境 skip），
+  promotion source checkpoint runner normal / `python -O` 各 `83/83` GREEN。
