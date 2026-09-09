@@ -193,6 +193,44 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "health.1112": {
+        # CK3 1.19.0.6 played-character measles recovery. Disease removal,
+        # permanent measles immunity and treatment cleanup are all applied in
+        # immediate before this modal opens. The only authored option merely
+        # exposes those completed effects in a tooltip; the event's closing
+        # 5-percent blindness roll is unconditional and cannot be avoided by
+        # another route. Bind the exact epidemic treatment carry before the
+        # acknowledgement.
+        "date_raw": 53333688,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "sick_character": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (32904,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "physician": "character",
+            "sick_character": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "physician",
+            "sick_character",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
     "health.1001": {
         # Vanilla generic-illness diagnosis. The disease is applied in the
         # immediate block before the window opens, so no visible option can

@@ -940,6 +940,84 @@ class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
 
+    def test_played_character_measles_recovery_is_acknowledged(self) -> None:
+        event_key = "health.1112"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=436,
+            date_raw=53333688,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("disease_type", "flag"),
+                _scope("physician", "character", 49718),
+                _scope("sick_character", "character", 32904),
+            ],
+            native_option_indices=(0,),
+        )
+
+        def checks_for(
+            candidate: dict[str, object],
+            *,
+            snapshot_option_count: int = 1,
+        ) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53333688,
+                    "active_event": {"option_count": snapshot_option_count},
+                },
+                event={"event_instance_id": 436},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["max_occurrences"], 1)
+
+        wrong_patient = copy.deepcopy(context)
+        wrong_patient["saved_scopes"][3] = _scope(
+            "sick_character", "character", 49718
+        )
+        self.assertFalse(checks_for(wrong_patient)["scope:sick_character"])
+
+        physician_is_player = copy.deepcopy(context)
+        physician_is_player["saved_scopes"][2] = _scope(
+            "physician", "character", 32904
+        )
+        self.assertFalse(
+            checks_for(physician_is_player)[
+                "scope:physician:unique_third_party"
+            ]
+        )
+
+        missing_epidemic = copy.deepcopy(context)
+        missing_epidemic["saved_scopes"] = missing_epidemic["saved_scopes"][1:]
+        missing_checks = checks_for(missing_epidemic)
+        self.assertFalse(missing_checks["saved_scope_names_exact"])
+        self.assertFalse(missing_checks["saved_scope_count"])
+
+        wrong_epidemic_type = copy.deepcopy(context)
+        wrong_epidemic_type["saved_scopes"][0]["scope"]["type_key"] = "flag"
+        self.assertFalse(
+            checks_for(wrong_epidemic_type)["scope:epidemic:type"]
+        )
+
+        wrong_projection = copy.deepcopy(context)
+        wrong_projection["options"][0]["native_option_index"] = 1
+        self.assertFalse(
+            checks_for(wrong_projection)["authored_options_exact"]
+        )
+        self.assertFalse(
+            checks_for(context, snapshot_option_count=2)[
+                "snapshot_option_count"
+            ]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
