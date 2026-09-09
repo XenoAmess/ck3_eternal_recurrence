@@ -1,8 +1,10 @@
 """Record the existing MCP-first Reclaim acceptance run as immutable raw video.
 
 The underlying acceptance runner owns the CK3 launch slot and performs all game
-control.  This wrapper only waits for the real game window, records that window
-without a mouse cursor, and binds the recording timeline to the runner evidence.
+control.  This wrapper waits for the real game window, records the desktop without
+a mouse cursor, checks sampled frames are not black, and binds the recording
+timeline to the runner evidence.  Desktop capture is deliberate: Windows GDI
+window capture returns a valid but black stream for CK3's GPU-rendered surface.
 """
 
 from __future__ import annotations
@@ -16,6 +18,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+from PIL import Image, ImageStat
+
 
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -25,7 +29,7 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
-def ffmpeg_argv(ffmpeg: Path, window_title: str, output: Path) -> list[str]:
+def ffmpeg_argv(ffmpeg: Path, output: Path) -> list[str]:
     return [
         str(ffmpeg),
         "-hide_banner",
@@ -39,7 +43,7 @@ def ffmpeg_argv(ffmpeg: Path, window_title: str, output: Path) -> list[str]:
         "-draw_mouse",
         "0",
         "-i",
-        f"title={window_title}",
+        "desktop",
         "-an",
         "-c:v",
         "libx264",
@@ -53,6 +57,91 @@ def ffmpeg_argv(ffmpeg: Path, window_title: str, output: Path) -> list[str]:
         "30",
         str(output),
     ]
+
+
+def sample_argv(ffmpeg: Path, raw_video: Path, samples: Path) -> list[str]:
+    """Extract sparse, low-resolution frames for an honest visual-content check."""
+
+    return [
+        str(ffmpeg),
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-y",
+        "-i",
+        str(raw_video),
+        "-vf",
+        "fps=1/120,scale=320:-2",
+        "-frames:v",
+        "12",
+        str(samples / "sample-%02d.png"),
+    ]
+
+
+def assess_visual_samples(sample_paths: list[Path]) -> dict[str, object]:
+    rows: list[dict[str, object]] = []
+    non_black_hashes: set[str] = set()
+    for path in sample_paths:
+        with Image.open(path) as source:
+            grayscale = source.convert("L")
+            statistics = ImageStat.Stat(grayscale)
+            mean = float(statistics.mean[0])
+            standard_deviation = float(statistics.stddev[0])
+        digest = _sha256(path)
+        non_black = mean >= 3.0 and standard_deviation >= 2.0
+        if non_black:
+            non_black_hashes.add(digest)
+        rows.append(
+            {
+                "path": path.as_posix(),
+                "sha256": digest,
+                "luma_mean": round(mean, 3),
+                "luma_standard_deviation": round(standard_deviation, 3),
+                "non_black": non_black,
+            }
+        )
+    non_black_count = sum(bool(row["non_black"]) for row in rows)
+    result = (
+        "GREEN"
+        if len(rows) >= 2 and non_black_count >= 2 and len(non_black_hashes) >= 2
+        else "RED"
+    )
+    return {
+        "format_version": 1,
+        "kind": "reclaim-promo-capture-visual-validation",
+        "result": result,
+        "sample_count": len(rows),
+        "non_black_sample_count": non_black_count,
+        "distinct_non_black_sample_count": len(non_black_hashes),
+        "thresholds": {
+            "minimum_samples": 2,
+            "minimum_non_black_samples": 2,
+            "minimum_distinct_non_black_samples": 2,
+            "minimum_luma_mean": 3.0,
+            "minimum_luma_standard_deviation": 2.0,
+        },
+        "samples": rows,
+    }
+
+
+def validate_visual_capture(ffmpeg: Path, raw_video: Path, attempt: Path) -> dict[str, object]:
+    samples = attempt / "visual-validation"
+    samples.mkdir()
+    stdout_path = samples / "ffmpeg.stdout.txt"
+    stderr_path = samples / "ffmpeg.stderr.txt"
+    command = sample_argv(ffmpeg, raw_video, samples)
+    _write_json(samples / "ffmpeg-command.json", {"argv": command, "shell": False})
+    with stdout_path.open("x", encoding="utf-8") as stdout, stderr_path.open(
+        "x", encoding="utf-8"
+    ) as stderr:
+        completed = subprocess.run(command, stdout=stdout, stderr=stderr, text=True)
+    sample_paths = sorted(samples.glob("sample-*.png"))
+    result = assess_visual_samples(sample_paths)
+    result["ffmpeg_returncode"] = completed.returncode
+    if completed.returncode != 0:
+        result["result"] = "RED"
+    _write_json(samples / "report.json", result)
+    return result
 
 
 def acceptance_argv(args: argparse.Namespace, cell: Path) -> list[str]:
@@ -126,7 +215,7 @@ def record(args: argparse.Namespace) -> int:
         raise FileExistsError(f"capture attempt already exists: {attempt}")
     attempt.mkdir(parents=True)
     cell = attempt / "acceptance"
-    raw_video = attempt / "raw-ck3-window-a01.mkv"
+    raw_video = attempt / "raw-ck3-desktop.mkv"
     acceptance_stdout = (attempt / "acceptance.stdout.txt").open("x", encoding="utf-8")
     acceptance_stderr = (attempt / "acceptance.stderr.txt").open("x", encoding="utf-8")
     acceptance_command = acceptance_argv(args, cell)
@@ -149,10 +238,16 @@ def record(args: argparse.Namespace) -> int:
     wrapper_error: str | None = None
     try:
         window_title = wait_for_window(runner, args.window_title, args.window_timeout)
-        capture_command = ffmpeg_argv(args.ffmpeg.resolve(), window_title, raw_video)
+        capture_command = ffmpeg_argv(args.ffmpeg.resolve(), raw_video)
         _write_json(
             attempt / "ffmpeg-command.json",
-            {"argv": capture_command, "shell": False, "draw_mouse": False},
+            {
+                "argv": capture_command,
+                "shell": False,
+                "source": "desktop",
+                "draw_mouse": False,
+                "ck3_window_gate": window_title,
+            },
         )
         capture_started_at = datetime.now(timezone.utc)
         recorder = subprocess.Popen(
@@ -183,6 +278,19 @@ def record(args: argparse.Namespace) -> int:
 
     finished_at = datetime.now(timezone.utc)
     recorder_returncode = None if recorder is None else recorder.returncode
+    visual_validation: dict[str, object] | None = None
+    if raw_video.is_file() and recorder_returncode == 0:
+        try:
+            visual_validation = validate_visual_capture(
+                args.ffmpeg.resolve(), raw_video, attempt
+            )
+        except BaseException as error:
+            visual_validation = {
+                "format_version": 1,
+                "kind": "reclaim-promo-capture-visual-validation",
+                "result": "RED",
+                "error": f"{type(error).__name__}: {error}",
+            }
     timeline_rows: list[dict[str, object]] = []
     if capture_started_at is not None and cell.is_dir():
         for path in sorted(item for item in cell.rglob("*") if item.is_file()):
@@ -215,6 +323,8 @@ def record(args: argparse.Namespace) -> int:
         if runner_returncode == 0
         and recorder_returncode == 0
         and raw_video.is_file()
+        and visual_validation is not None
+        and visual_validation.get("result") == "GREEN"
         and wrapper_error is None
         else "RED",
         "wrapper_error": wrapper_error,
@@ -224,6 +334,7 @@ def record(args: argparse.Namespace) -> int:
         else capture_started_at.isoformat(),
         "finished_at_utc": finished_at.isoformat(),
         "window_title": window_title,
+        "capture_source": "desktop",
         "draw_mouse": False,
         "acceptance_returncode": runner_returncode,
         "ffmpeg_returncode": recorder_returncode,
@@ -236,6 +347,7 @@ def record(args: argparse.Namespace) -> int:
         },
         "acceptance_report": str(cell / "report.json"),
         "timeline": str(attempt / "capture-timeline.json"),
+        "visual_validation": visual_validation,
         "process_material_retained": True,
     }
     _write_json(attempt / "capture-report.json", report)

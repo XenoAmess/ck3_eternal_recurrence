@@ -7,7 +7,7 @@ name = "rmtm-promo-integration"
 version = "0.1.0"
 description = "Project integration for the Reclaim the Motherland promo"
 requires-python = ">=3.11"
-dependencies = ["xar-promo-toolchain==0.2.1"]
+dependencies = ["Pillow==12.3.0", "xar-promo-toolchain==0.2.1"]
 
 [project.entry-points."xar_promo.adapters"]
 rmtm-ck3-v1 = "rmtm_promo.components:adapter_factory"

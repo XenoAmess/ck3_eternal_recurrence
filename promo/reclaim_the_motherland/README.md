@@ -26,3 +26,8 @@ Every narration, capture, render, audit and review attempt uses a new directory
 under `D:\workspace\ck3_reclaim_promo_work`. Failed attempts and all process
 materials are retained. Automated audit is not human signoff; final MP4 bytes
 must be watched continuously at 1× before `signoff` and release export.
+
+CK3 recording is gated on the real game window but uses full-desktop GDI capture:
+direct GDI capture of CK3's GPU-rendered window can produce an all-black stream.
+Each attempt sparsely extracts and hashes frames after recording; fewer than two
+distinct non-black samples makes the attempt RED even when FFmpeg exits cleanly.
