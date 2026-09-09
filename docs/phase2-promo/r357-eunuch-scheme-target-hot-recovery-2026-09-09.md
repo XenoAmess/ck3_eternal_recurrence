@@ -412,3 +412,27 @@ options，但 `scheme` 存在使 native option 1 成为 exclusive，窗口只渲
   `process_restart_required=false`；
 - manager recovery 分片 normal / `python -O` 各 `47/47`（含一个环境 skip），
   promotion source checkpoint runner normal / `python -O` 各 `83/83` GREEN。
+
+## 同会话第十五次 RED：第二场独立瘟疫通知
+
+第十四次 `retry` 热加载提交 `c1683c470f13a77eb69c157d1dcefa2d4f3eda49` 后，
+`.0344` 在同一 PID `159264`、同一 event instance `385` 上通过并完成选择；游戏随后
+推进到 `epidemic_events.1100`、event instance `386`、`date_raw=53270136`。当前帧
+`epidemic/province/infected_county` 三项类型与 native `(0,1)` 投影均符合已有合同，
+但这是本轮第二次 `.1100`，旧 `max_occurrences=1` 在选择前触发 RED。
+
+原版 `06_dlc_ce1_epidemics_effects.txt` 会为不同疫情和受影响领地反复触发 `.1100`；
+事件自己的 `plagues_notified` variable list 只阻止同一玩家被同一场疫情重复通知，并不
+限制整局只能发生一次。旧上限把一条真实的 per-epidemic 去重规则误写成了 campaign-
+global 上限。最小修复删除该伪上限，改为产品观察窗口内可重复，并继续对每次事件的
+三项 scope、类型与 physician-dependent 按钮投影完整验帧；选择仍固定 native option
+0，避免启动医生后续链。修复只改外部 Python 合同、测试与报告，不要求重启 CK3。
+
+- 第十五次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-15.json`；
+- park SHA-256：
+  `8EC5FCFB688544852887D1DE99A44D10F89F1B8F857AC3C030E4D928E89C319F`；
+- 第十五次 RED report 快照：13,155,734 bytes，SHA-256
+  `E72B7D3632A399F2FD4024CC4DAB48A3091B5187D09FF3EA5243F72624C507B4`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

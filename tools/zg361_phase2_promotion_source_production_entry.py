@@ -856,7 +856,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # option 0 only applies the source-authored -2 governor trait XP when
         # eligible. Select option 0 as the smallest unrelated mutation, after
         # binding all three typed saved scopes and either exact mutually
-        # exclusive physician-dependent option projection.
+        # exclusive physician-dependent option projection. Vanilla invokes
+        # this once for each newly encountered epidemic and only suppresses
+        # repeat notices for the same epidemic, so multiple independently
+        # typed deliveries are valid inside the product observation window.
         "date_raw": 53148360,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -892,7 +895,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "selected_native_option_index": 0,
             },
         ),
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "epidemic_events.1060": {
         # CK3 1.19.0.6 plague-scapegoat response. The immediate block has
