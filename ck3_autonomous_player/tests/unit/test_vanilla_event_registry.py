@@ -73,7 +73,7 @@ def test_build_accepts_multiple_groups_and_deduplicates_identical_keys() -> None
 def test_package_import_registers_one_disjoint_default_catalog() -> None:
     expected_count = sum(len(group) for group in DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS)
 
-    assert expected_count == 156
+    assert expected_count == 157
     assert len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS) == expected_count
     assert VANILLA_EVENT_TIMELINE_CONTRACTS is (
         DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS

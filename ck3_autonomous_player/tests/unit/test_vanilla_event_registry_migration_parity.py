@@ -30,6 +30,9 @@ from xar_autoplayer.vanilla_events.records_manager_b import (  # noqa: E402
 from xar_autoplayer.vanilla_events.records_prebootstrap import (  # noqa: E402
     PREBOOTSTRAP_VANILLA_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_tgp_dynastic_cycle import (  # noqa: E402
+    VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_tgp_movement import (  # noqa: E402
     VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
 )
@@ -295,6 +298,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
             EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
             VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
+            VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
         )
         self.assertEqual(DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS, default_groups)
         key_memberships: defaultdict[str, list[int]] = defaultdict(list)
@@ -302,8 +306,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 156)
-        self.assertEqual(len(key_memberships), 156)
+        self.assertEqual(sum(map(len, default_groups)), 157)
+        self.assertEqual(len(key_memberships), 157)
         self.assertEqual(
             {
                 event_key: indexes
