@@ -320,13 +320,13 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-09）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `159 contracts / 159 analysis / 7
-observation keys`，正式 MCP `list/call` 已接通；production runtime 当前消费 `298` 条事件合同。`TGP0160`、
+当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `160 contracts / 160 analysis / 8
+observation keys`，正式 MCP `list/call` 已接通；production runtime 当前消费 `299` 条事件合同。`TGP0160`、
 `great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
 runner 的真实 drain/advance；`epidemic_events.1064` 也已同 PID 选择 reviewed native0 并完成 advance，合计五条
 `production-live primitive`。`stress_threshold.1721` 保留为真实 RED observation：reload
 已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
-合同由提交 `039a509`、`e6ab3d4` 收口。这里的 production-live 只属于五条实证切片，绝不表示 159 条都已实机验证。
+合同由提交 `039a509`、`e6ab3d4` 收口。R374 的 `natural_disaster.7031` 保留为动作前 RED observation；这里的 production-live 只属于五条实证切片，绝不表示 160 条都已实机验证。
 
 TGP0001 与 epidemic1064 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.5009` instance `871` 的第二次合法
 出现处 park12 动作前 RED 停住。原版定义有十年 cooldown 且无 one-shot；当前 RED 来自旧合同的单次上限，不是异常高频触发。

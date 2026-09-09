@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 
 from xar_autoplayer.vanilla_events.records_analysis_vanilla_shards import (  # noqa: E402
     VANILLA_SHARD_ANALYSIS,
+    VANILLA_SHARD_OBSERVATIONS,
 )
 from xar_autoplayer.vanilla_events.records_vanilla_shards import (  # noqa: E402
     VANILLA_SHARD_TIMELINE_CONTRACTS,
@@ -21,7 +22,7 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 )
 
 
-EXPECTED_KEY_COUNT = 19
+EXPECTED_KEY_COUNT = 20
 HASHED_EVENT_KEYS = {
     "tgp_dynastic_cycle.0091",
     "ep3_emperor_yearly.2170",
@@ -31,6 +32,7 @@ HASHED_EVENT_KEYS = {
     "intrigue_temptation.3020",
     "natural_disaster.8001",
     "natural_disaster.7021",
+    "natural_disaster.7031",
     "natural_disaster.6901",
     "travel_danger_events.3002",
 }
@@ -115,6 +117,30 @@ class VanillaEventShardAnalysisTests(unittest.TestCase):
                     "scope_variants",
                     VANILLA_SHARD_ANALYSIS[event_key]["scope_boundary"],
                 )
+
+    def test_r374_red_observation_is_json_safe_and_separate(self) -> None:
+        json.dumps(VANILLA_SHARD_OBSERVATIONS, allow_nan=False)
+        self.assertEqual(set(VANILLA_SHARD_OBSERVATIONS), {
+            "natural_disaster.7031"
+        })
+        exemplar = VANILLA_SHARD_OBSERVATIONS[
+            "natural_disaster.7031"
+        ]["exemplars"][0]
+        self.assertEqual(exemplar["run"], "R374")
+        self.assertEqual(exemplar["saved_scope_raw_types"], {
+            "situation": 60,
+            "situation_sub_region": 62,
+            "epicenter_county": 5,
+            "river_region": 54,
+        })
+        self.assertEqual(exemplar["rendered_native_option_indices"], [0, 2])
+        self.assertFalse(exemplar["selection_attempted"])
+        for field in (
+            "artifact_sha256",
+            "park_artifact_sha256",
+            "driver_state_artifact_sha256",
+        ):
+            self.assertRegex(exemplar[field], r"^[0-9A-F]{64}$")
 
 
 if __name__ == "__main__":

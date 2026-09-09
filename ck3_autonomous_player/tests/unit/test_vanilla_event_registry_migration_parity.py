@@ -58,7 +58,7 @@ PRODUCTION_ENTRY = (
 SEED_CAPTURE_ENTRY = ROOT / "tools" / "run_zg361_phase2_seed_capture.py"
 
 EXPECTED_BUCKET_COUNTS = {
-    "vanilla_shards": 19,
+    "vanilla_shards": 20,
     "manager_original": 57,
     "embedded_original": 79,
     "prebootstrap": 2,
@@ -312,8 +312,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 159)
-        self.assertEqual(len(key_memberships), 159)
+        self.assertEqual(sum(map(len, default_groups)), 160)
+        self.assertEqual(len(key_memberships), 160)
         self.assertEqual(
             {
                 event_key: indexes
@@ -401,7 +401,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             if len(bucket_names) > 1
         }
         self.assertEqual(actual_overlaps, EXPECTED_INTENTIONAL_OVERLAPS)
-        self.assertEqual(len(memberships), 155)
+        self.assertEqual(len(memberships), 156)
 
 
 if __name__ == "__main__":

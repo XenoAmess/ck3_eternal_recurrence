@@ -64,6 +64,13 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 import zg361_phase2_promotion_vanilla_natural_disaster_interrupt_contracts as disaster  # noqa: E402
+import xar_autoplayer.vanilla_events as shared_vanilla_events  # noqa: E402
+from xar_autoplayer.vanilla_events import (  # noqa: E402
+    records_analysis_vanilla_shards as shard_analysis_records,
+)
+from xar_autoplayer.vanilla_events import (  # noqa: E402
+    records_vanilla_shards as shard_records,
+)
 
 
 def _scope(
@@ -169,6 +176,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             {
                 "natural_disaster.8001",
                 "natural_disaster.7021",
+                "natural_disaster.7031",
                 "natural_disaster.6901",
                 "travel_danger_events.3002",
             },
@@ -236,6 +244,92 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["scope:river_region:type"])
+
+    def test_r374_great_storm_uses_terminal_native_option_two(self) -> None:
+        event_key = "natural_disaster.7031"
+        source_contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
+            event_key
+        ]
+        self.assertEqual(source_contract["root_character_id"], "$player")
+        self.assertNotIn("date_raw", source_contract)
+        contract = production._manager_recovery_contract(
+            source_contract,
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53490000,
+        )
+        snapshot = {
+            "date_raw": 53503392,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 978}
+        base_context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 978,
+            "date_raw": 53503392,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                _scope("situation", "situation"),
+                _scope("situation_sub_region", "situation_sub_region"),
+                _scope("epicenter_county", "landed_title"),
+                _scope("river_region", "geographical_region"),
+            ],
+        }
+
+        for native_indices in ((2,), (0, 2), (0, 1, 2)):
+            with self.subTest(native_indices=native_indices):
+                context = copy.deepcopy(base_context)
+                context["options"] = [
+                    {
+                        "rendered_index": rendered,
+                        "native_option_index": native,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                    for rendered, native in enumerate(native_indices)
+                ]
+                checks = production._known_interrupt_checks(
+                    snapshot=snapshot,
+                    event=event,
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
+                effective = production._interrupt_contract_for_context(
+                    context,
+                    contract,
+                )
+                self.assertEqual(effective["selected_option_number"], 3)
+                self.assertEqual(effective["selected_native_option_index"], 2)
+
+        exemplar = shard_analysis_records.VANILLA_SHARD_OBSERVATIONS[
+            event_key
+        ]["exemplars"][0]
+        self.assertEqual(exemplar["run"], "R374")
+        self.assertEqual(exemplar["event_instance_id"], 978)
+        self.assertEqual(exemplar["date_raw"], 53503392)
+        self.assertEqual(exemplar["rendered_native_option_indices"], [0, 2])
+        self.assertFalse(exemplar["selection_attempted"])
+        response = shared_vanilla_events.query_vanilla_event_knowledge_v1(
+            event_key
+        )
+        self.assertEqual(response["status"], "available")
+        self.assertEqual(response["contract"]["root_character_id"], "$player")
+        self.assertEqual(response["contract"]["native_option_indices"], [0, 2])
+        self.assertEqual(
+            response["observations"]["exemplars"][0]["event_instance_id"],
+            978,
+        )
 
     def test_r355_river_warning_uses_terminal_native_option_two(self) -> None:
         event_key = "natural_disaster.7021"
@@ -571,6 +665,27 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
             "option = { name = natural_disaster.7021.a "
             "natural_disaster_warning_tooltip_effect = yes }",
         )
+        storm_warning_block = _extract_block(
+            event_source.read_text(encoding="utf-8-sig"),
+            "natural_disaster.7031 =",
+        )
+        self.assertEqual(
+            len(re.findall(r"(?m)^\toption\s*=\s*\{", storm_warning_block)),
+            3,
+        )
+        storm_remaining = storm_warning_block
+        storm_options = []
+        for _ in range(3):
+            option = _extract_block(storm_remaining, "\toption =")
+            storm_options.append(option)
+            storm_remaining = storm_remaining[
+                storm_remaining.index(option) + len(option):
+            ]
+        self.assertEqual(
+            " ".join(storm_options[-1].split()),
+            "option = { name = natural_disaster.7031.a "
+            "natural_disaster_warning_tooltip_effect = yes }",
+        )
         recovery_start_block = _extract_block(
             event_source.read_text(encoding="utf-8-sig"),
             "natural_disaster.6901 =",
@@ -642,6 +757,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertNotIn('    "natural_disaster.8001": {', production_source)
         self.assertNotIn('    "natural_disaster.7021": {', production_source)
+        self.assertNotIn('    "natural_disaster.7031": {', production_source)
         self.assertNotIn('    "natural_disaster.6901": {', production_source)
         self.assertNotIn('    "travel_danger_events.3002": {', production_source)
         self.assertRegex(
@@ -656,6 +772,41 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         self.assertNotIn(
             "zg361_phase2_promotion_vanilla_natural_disaster_interrupt_contracts",
             production_source,
+        )
+
+    def test_production_hot_reload_refreshes_cached_shared_registry(self) -> None:
+        event_key = "natural_disaster.7031"
+        self.assertIn(event_key, production.KNOWN_TIMELINE_INTERRUPTS)
+
+        # Model the live R374 process, where these modules predate the new
+        # on-disk record and only the production entry is explicitly reloaded.
+        shard_records.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS.pop(event_key)
+        shard_records.VANILLA_SHARD_TIMELINE_CONTRACTS.pop(event_key)
+        shard_analysis_records.VANILLA_SHARD_ANALYSIS.pop(event_key)
+        shard_analysis_records.VANILLA_SHARD_OBSERVATIONS.pop(event_key)
+        shared_vanilla_events.DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS.pop(
+            event_key
+        )
+        shared_vanilla_events.DEFAULT_VANILLA_EVENT_ANALYSIS.pop(event_key)
+        shared_vanilla_events.DEFAULT_VANILLA_EVENT_OBSERVATIONS.pop(event_key)
+        self.assertNotIn(event_key, shard_records.VANILLA_SHARD_TIMELINE_CONTRACTS)
+
+        reloaded = importlib.reload(production)
+
+        self.assertIn(event_key, reloaded.KNOWN_TIMELINE_INTERRUPTS)
+        self.assertEqual(
+            reloaded.KNOWN_TIMELINE_INTERRUPTS[event_key][
+                "selected_native_option_index"
+            ],
+            2,
+        )
+        self.assertIn(
+            event_key,
+            shared_vanilla_events.DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
+        )
+        self.assertIn(
+            event_key,
+            shared_vanilla_events.DEFAULT_VANILLA_EVENT_OBSERVATIONS,
         )
 
 

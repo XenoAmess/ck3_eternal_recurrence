@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from .registry import PLAYER_SENTINEL
+
 
 # Migrated from tools/zg361_phase2_promotion_vanilla_accolade_interrupt_contracts.py.
 VANILLA_ACCOLADE_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
@@ -548,6 +550,58 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "natural_disaster.7031": {
+        # CK3 1.19.0.6 great-storm flood warning. This is source-identical to
+        # .7021 apart from presentation: native0 enters manage-from-home
+        # power sharing, native1 opens the isolation decision, and native2
+        # only renders the warning tooltip. The first two routes are
+        # trigger-dependent, so preserve every source-valid projection and
+        # always choose terminal native2. R374 observed the exact four-scope
+        # (0, 2) projection before any selection was attempted.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "scope_types": {
+            "situation": "situation",
+            "situation_sub_region": "situation_sub_region",
+            "epicenter_county": "landed_title",
+            "river_region": "geographical_region",
+        },
+        "saved_scope_name_sets": ((
+            "situation",
+            "situation_sub_region",
+            "epicenter_county",
+            "river_region",
+        ),),
+        "saved_scope_count": 4,
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "option_variants": (
+            {
+                "option_count": 1,
+                "native_option_indices": (2,),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "natural_disaster.6901": {

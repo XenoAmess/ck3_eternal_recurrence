@@ -195,6 +195,17 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "the common after block still records the first warning."
         ),
     },
+    "natural_disaster.7031": {
+        "migrated_from": (
+            "tools/zg361_phase2_promotion_vanilla_natural_disaster_"
+            "interrupt_contracts.py"
+        ),
+        "review_summary": (
+            "Great-storm flood warning: source-identical to .7021 apart "
+            "from presentation; selected native2 only renders the warning "
+            "tooltip and remains present in every source-valid projection."
+        ),
+    },
     "natural_disaster.6901": {
         "migrated_from": (
             "tools/zg361_phase2_promotion_vanilla_natural_disaster_"
@@ -299,6 +310,7 @@ _NATURAL_DISASTER_SOURCE_SHA256: Final[dict[str, str]] = {
 for _event_key in (
     "natural_disaster.8001",
     "natural_disaster.7021",
+    "natural_disaster.7031",
     "natural_disaster.6901",
 ):
     _REVIEW_ROWS[_event_key]["source_sha256"] = dict(
@@ -384,4 +396,49 @@ def _build_analysis() -> dict[str, dict[str, object]]:
 VANILLA_SHARD_ANALYSIS: Final[dict[str, dict[str, object]]] = _build_analysis()
 
 
-__all__ = ["VANILLA_SHARD_ANALYSIS"]
+VANILLA_SHARD_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "natural_disaster.7031": {
+        "exemplars": [{
+            "run": "R374",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "natural-disaster-7031-red-report.json"
+            ),
+            "artifact_sha256": (
+                "7B1DB1CB63CD309288FAA7774E122D74FE16E11CF3B0D6E51EB112949C21D4E9"
+            ),
+            "park_artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "hot-recovery-park-1.json"
+            ),
+            "park_artifact_sha256": (
+                "86F39D782D159FB58278726255E0862254C221E54882D2B0C8A69BACA964FE57"
+            ),
+            "driver_state_artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "driver-state-park-1-snapshot.json"
+            ),
+            "driver_state_artifact_sha256": (
+                "8A63BBB6A611508B782335B4384A6F95EC189A0D7353E5C3E21EC22F8940011D"
+            ),
+            "date_raw": 53503392,
+            "event_instance_id": 978,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "situation": 60,
+                "situation_sub_region": 62,
+                "epicenter_county": 5,
+                "river_region": 54,
+            },
+            "rendered_native_option_indices": [0, 2],
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 51852,
+            "process_restart_required": False,
+        }],
+    },
+}
+
+
+__all__ = ["VANILLA_SHARD_ANALYSIS", "VANILLA_SHARD_OBSERVATIONS"]
