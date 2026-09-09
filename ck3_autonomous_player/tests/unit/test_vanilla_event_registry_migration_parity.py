@@ -21,6 +21,9 @@ sys.path.insert(0, str(ROOT / "tools"))
 from xar_autoplayer.vanilla_events.records_embedded import (  # noqa: E402
     EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_epidemic import (  # noqa: E402
+    VANILLA_EPIDEMIC_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_manager_a import (  # noqa: E402
     MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
 )
@@ -297,6 +300,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
             MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
             EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
+            VANILLA_EPIDEMIC_TIMELINE_CONTRACTS,
             VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
             VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
         )
@@ -306,8 +310,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 158)
-        self.assertEqual(len(key_memberships), 158)
+        self.assertEqual(sum(map(len, default_groups)), 159)
+        self.assertEqual(len(key_memberships), 159)
         self.assertEqual(
             {
                 event_key: indexes

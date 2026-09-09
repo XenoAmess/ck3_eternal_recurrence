@@ -107,7 +107,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
         self.assertEqual(len(set(literal_keys)), 17)
         self.assertTrue(all(key.startswith("zg361") for key in literal_keys))
         self.assertEqual(_shared_aggregate_update_count(tree), 1)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 158)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 159)
 
 
 if __name__ == "__main__":

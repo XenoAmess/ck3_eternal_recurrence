@@ -320,14 +320,18 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-09）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `157 contracts / 157 analysis / 4
-observations`，正式 MCP `list/call` 已接通；production runtime 当前消费 `296` 条事件合同。四条 observation 中，
-`TGP0160`、`great_holy_war.0011` 与 `TGP0020` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
-runner 的真实 drain/advance，是首批 `production-live primitive`；`stress_threshold.1721` 只记录当前未选择 RED，合同热恢复
-尚未完成，不能提前写 GREEN。这里的 production-live 只属于这三条实证切片，绝不表示 157 条都已实机验证。
+当前状态（2026-09-09）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `159 contracts / 159 analysis / 6
+observation keys`，正式 MCP `list/call` 已接通；production runtime 当前消费 `298` 条事件合同。`TGP0160`、
+`great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
+runner 的真实 drain/advance，是四条 `production-live primitive`。`stress_threshold.1721` 保留为真实 RED observation：reload
+已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
+合同由提交 `039a509`、`e6ab3d4` 收口。这里的 production-live 只属于四条实证切片，绝不表示 159 条都已实机验证。
+
+TGP0001 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.1064` instance `867` 的 park11 动作前 RED 停住；该事件
+现已作为第六个 observation key 连同独立共享合同/analysis 登记，但热恢复尚未完成，不能写成 production-live。
 
 其余既有分析按原合同注释、docs 与 tests 做 migration-only 迁移；旧证据没有冻结 source hash 时明确保留
-`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `157/157` 的分析覆盖只证明知识可查询和迁移
+`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `159/159` 的分析覆盖只证明知识可查询和迁移
 无缺键，不替代逐事件 live evidence。
 
 同一当前快照下，T0 仍为 `50%`、canonical stage `8/11`，四类 source checkpoint 已完成 `3/4`，只缺
