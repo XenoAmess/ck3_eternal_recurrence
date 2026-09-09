@@ -77,6 +77,11 @@ POSTFLIGHT_STABILITY_SECONDS = 5
 RUNS_ROOT = ROOT.parent / f"{ROOT.name}_process_assets" / "reclaim" / "runs"
 PRODUCT_OUTER = "reclaim_acceptance.mod"
 FIXTURE_OUTER = "rqa_acceptance_fixture.mod"
+SONG_CAPITAL_TITLE_KEY = "b_kaifeng"
+# At the detailed-map zoom chosen by the native camera, CK3 may label the
+# exact Kaifeng anchor through its surrounding county rather than the barony.
+SONG_CAPITAL_REGION_VISIBLE_NAMES = ("开封", "汴州", "管城县")
+ITALY_MAP_LABELS = ("教宗", "教宗国", "意大利", "罗马", "那波利", "萨莱诺")
 PROJECT_TOKENS = (
     "mod_reclaim_the_motherland",
     "rmtm_",
@@ -542,6 +547,164 @@ def close_decisions_panel(artifacts: Path, stem: str) -> None:
     )
 
 
+def center_map_on_song_capital(
+    service: GameplayBridgeService, artifacts: Path
+) -> dict[str, object]:
+    """Center the native camera on Kaifeng and prove the visible map is China."""
+
+    before = service.snapshot()
+    if before.get("paused") is not True or before.get("map_ready") is not True:
+        raise acceptance.RunnerError(
+            "Song-capital navigation requires a paused, map-ready native snapshot"
+        )
+    revision = before.get("revision")
+    if isinstance(revision, bool) or not isinstance(revision, int):
+        raise acceptance.RunnerError(
+            "Song-capital navigation snapshot lacks a stable revision"
+        )
+    navigation = service.center_map_on_landed_title_v1(
+        SONG_CAPITAL_TITLE_KEY, expected_revision=revision
+    )
+    title = navigation.get("title")
+    camera = navigation.get("camera_center")
+    checks = {
+        "accepted": navigation.get("accepted") is True,
+        "exact_step": navigation.get("step") == "center-map-on-landed-title-v1",
+        "allowed_status": navigation.get("status")
+        in {"centered", "already_centered"},
+        "kaifeng_title": isinstance(title, dict)
+        and title.get("key") == SONG_CAPITAL_TITLE_KEY,
+        "title_bounds_center": isinstance(title, dict)
+        and title.get("anchor_kind") == "title_bounds_center",
+        "camera_settled": isinstance(camera, dict)
+        and camera.get("settled") is True,
+        "camera_postcondition": isinstance(camera, dict)
+        and camera.get("postcondition_verified") is True,
+        "camera_write_unblocked": isinstance(camera, dict)
+        and camera.get("target_write_blocked") is False,
+        "camera_current_target_equal": isinstance(camera, dict)
+        and camera.get("current_state") == camera.get("target_state"),
+    }
+    if not all(checks.values()):
+        write_json(
+            artifacts / "invalid_08_song_capital_navigation.json",
+            {
+                "schema_version": 1,
+                "result": "RED",
+                "checks": checks,
+                "native_navigation": navigation,
+            },
+        )
+        raise acceptance.RunnerError(
+            "native MCP did not settle the map camera on b_kaifeng"
+        )
+
+    acceptance.focus_ck3()
+    time.sleep(1.0)
+    image = acceptance.ImageGrab.grab()
+    rows = acceptance.ocr_box_results(image, acceptance.FULL_SCREEN_REGION)
+    normalized = [re.sub(r"\s+", "", str(row["text"])) for row in rows]
+    visible_capital_region_names = [
+        name
+        for name in SONG_CAPITAL_REGION_VISIBLE_NAMES
+        if any(name in value for value in normalized)
+    ]
+    visible_italy_labels = [
+        name for name in ITALY_MAP_LABELS if any(name in value for value in normalized)
+    ]
+    acceptance_copy_present = any("验收" in value for value in normalized)
+    visual_checks = {
+        "song_capital_region_name_visible": bool(visible_capital_region_names),
+        "italy_labels_absent": not visible_italy_labels,
+        "acceptance_copy_absent": not acceptance_copy_present,
+    }
+    image.save(artifacts / "08_song_capital_map.png")
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if all(visual_checks.values()) else "RED",
+        "mcp_tool": "ck3_center_map_on_landed_title_v1",
+        "expected_title_key": SONG_CAPITAL_TITLE_KEY,
+        "native_navigation": navigation,
+        "native_checks": checks,
+        "visual_checks": visual_checks,
+        "visible_capital_region_names": visible_capital_region_names,
+        "visible_italy_labels": visible_italy_labels,
+        "ocr_rows": rows,
+    }
+    write_json(artifacts / "08_song_capital_navigation.json", evidence)
+    if evidence["result"] != "GREEN":
+        image.save(artifacts / "invalid_08_song_capital_map.png")
+        raise acceptance.RunnerError(
+            "Song-capital storefront frame failed visual geography checks: "
+            f"capital_region={visible_capital_region_names}, "
+            f"Italy={visible_italy_labels}, "
+            f"acceptance_copy={acceptance_copy_present}"
+        )
+    return evidence
+
+
+def capture_later_dynasty_character_panel(artifacts: Path) -> list[dict[str, object]]:
+    """Capture the ordinary player character screen and require the Later title."""
+
+    acceptance.focus_ck3()
+    width, height = acceptance.pyautogui.size()
+    acceptance.deliberate_click(
+        (int(width * 0.035), int(height * 0.79)),
+        "player portrait for native Later-Dynasty character screen",
+    )
+    acceptance.wait_for_ocr_text(
+        "后宋",
+        acceptance.FULL_SCREEN_REGION,
+        30,
+        artifacts,
+        "08_later_dynasty_character_wait.png",
+        contains=True,
+        stable_hits=2,
+    )
+    acceptance.pyautogui.moveTo(int(width * 0.55), int(height * 0.90))
+    time.sleep(1.0)
+    image = acceptance.ImageGrab.grab()
+    fixture_text = acceptance.find_ocr_text(
+        image, "验收", acceptance.FULL_SCREEN_REGION, contains=True
+    )
+    if fixture_text is not None:
+        image.save(artifacts / "invalid_08_later_dynasty_character.png")
+        raise acceptance.RunnerError(
+            "native Later-Dynasty character capture contains acceptance-only copy"
+        )
+    rows = acceptance.ocr_box_results(image, acceptance.FULL_SCREEN_REGION)
+    normalized = [re.sub(r"\s+", "", str(row["text"])) for row in rows]
+    if not any("后宋" in value for value in normalized):
+        image.save(artifacts / "invalid_08_later_dynasty_character.png")
+        raise acceptance.RunnerError(
+            "native character capture does not render the expected Later Song title"
+        )
+    visible_italy_labels = [
+        name for name in ITALY_MAP_LABELS if any(name in value for value in normalized)
+    ]
+    if visible_italy_labels:
+        image.save(artifacts / "invalid_08_later_dynasty_character.png")
+        raise acceptance.RunnerError(
+            "native Later-Dynasty character frame still shows Italy labels: "
+            + ", ".join(visible_italy_labels)
+        )
+    image.save(artifacts / "08_later_dynasty_character.png")
+    write_json(
+        artifacts / "08_later_dynasty_character.json",
+        {
+            "schema_version": 1,
+            "result": "GREEN",
+            "expected_live_title_name": "后宋",
+            "acceptance_copy_absent": True,
+            "italy_labels_absent": True,
+            "ocr_rows": rows,
+        },
+    )
+    acceptance.pyautogui.press("esc")
+    time.sleep(1.0)
+    return rows
+
+
 def decision_visibility_evidence(artifacts: Path) -> dict[str, object]:
     isolated.ensure_decisions_panel(artifacts, "09_visibility")
     acceptance.wait_for_ocr_text(
@@ -748,9 +911,11 @@ def run_scenario(
     chaos_event_close = select_current_event_first_option(
         service, "tgp_dynastic_cycle.0081", artifacts, "07_close_vanilla_chaos"
     )
-    # Storefront evidence must show only UI a normal player can encounter. Capture
-    # the native primary-title banner before opening any acceptance-only fixture.
-    close_decisions_panel(artifacts, "08_later_dynasty_native_banner")
+    # Storefront evidence must show only UI a normal player can encounter. First
+    # settle the native camera on Kaifeng, then capture the ordinary character UI.
+    close_decisions_panel(artifacts, "08_before_song_capital_navigation")
+    song_capital_navigation = center_map_on_song_capital(service, artifacts)
+    later_native_rows = capture_later_dynasty_character_panel(artifacts)
     click_decision("查看后朝验收", "显明后朝", artifacts, "08_show_later_event")
     acceptance.wait_for_ocr_text(
         "后朝尚存",
@@ -821,6 +986,7 @@ def run_scenario(
             "pause-map-after-phase-transition-if-needed",
             "query-current-event-window-context-v1",
             "select-event-option-1",
+            "center-map-on-landed-title-v1:b_kaifeng",
             "snapshot-final",
             "pause-map-if-needed",
         ],
@@ -832,6 +998,8 @@ def run_scenario(
         "decision_visibility": visibility,
         "phase_transition_advance": phase_advance,
         "chaos_event_close": chaos_event_close,
+        "song_capital_navigation": song_capital_navigation,
+        "later_dynasty_native_ocr": later_native_rows,
         "later_dynasty_event_ocr": later_rows,
         "later_dynasty_event_close": later_event_close,
         "restoration_event_close": restoration_event_close,

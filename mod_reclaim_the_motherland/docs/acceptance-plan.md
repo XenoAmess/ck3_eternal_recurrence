@@ -39,10 +39,11 @@
 2. 先确认两个对照封臣分别处于尊王派与扩张派。精确存档书签可能从不带原版运动冻结 `on_end` 的阶段被测试夹具强制跳入群雄割据，因此夹具先按原版合同把当下真实 participant-group scope 写入 `former_movement_member`，再通过真实 `situation:dynastic_cycle.situation_top_sub_region.change_phase` 切换阶段；地图推进离开书签首日后显式触发原版 `tgp_dynastic_cycle.0081`，由该事件调用产品覆盖的 `tgp_chaos_shattering_effect`。
 3. 引擎断言旧天子失去 `h_china`，但仍有地、仍持有原个人伯爵领，获得一个 marker 正确、空法理、由本人持有的动态霸权；尊王派直属封臣及其下级 realm tree 保留，非尊王派直属封臣脱离。
 4. 在实机事件中显示动态后朝全名，保存截图，验证简中“后＋原朝号”的渲染结果。
-5. 把中华法理伯爵领隔离转移到控制角色，再逐郡转回：先证明控制比例 `>=50%` 且 `<` 原版 `claim_mandate_china_county_percentage_value` 时“宣称复辟”不满足；再转移到刚好首次满足原版门槛。
-6. 决议面板确认“宣称复辟”可见且可执行，并确认“宣称天命”对后朝持有者不可见；点击真实产品决议。
-7. 引擎断言完整原版复辟结果至少包含：玩家重新持有 `h_china`、三日 `claimed_the_mandate_of_heaven` flag 已写入；产品额外结果为全部本人后朝霸权销毁。
-8. 收集项目相关 `error.log`、`gui_warnings.log`、`database_conflicts.log`；项目解析/运行错误、重复 key、进程清理未证明、runtime/source 被改写任一项均为 RED。
+5. 关闭所有验收专用窗口后，通过原生 MCP `ck3_center_map_on_landed_title_v1` 将地图镜头定位到大宋首都 `b_kaifeng`（开封），并以相机 settled 回读为权威证据；随后保存无面板地图画面。详细地图层级可能以相邻的“管城县”标示这一区域，因此 OCR 辅证接受“开封”“汴州”或“管城县”，但不允许出现“教宗”“意大利”“罗马”“那波利”“萨莱诺”等意大利地名，也不允许出现“验收”字样。
+6. 把中华法理伯爵领隔离转移到控制角色，再逐郡转回：先证明控制比例 `>=50%` 且 `<` 原版 `claim_mandate_china_county_percentage_value` 时“宣称复辟”不满足；再转移到刚好首次满足原版门槛。
+7. 决议面板确认“宣称复辟”可见且可执行，并确认“宣称天命”对后朝持有者不可见；点击真实产品决议。
+8. 引擎断言完整原版复辟结果至少包含：玩家重新持有 `h_china`、三日 `claimed_the_mandate_of_heaven` flag 已写入；产品额外结果为全部本人后朝霸权销毁。
+9. 收集项目相关 `error.log`、`gui_warnings.log`、`database_conflicts.log`；项目解析/运行错误、重复 key、进程清理未证明、runtime/source 被改写任一项均为 RED。
 
 ## 4. L3 Workshop fresh-cache
 
@@ -52,7 +53,7 @@
 2. 删除本地订阅缓存后由 Steam 重新下载，确认是 fresh cache，而非上传 staging 的残留副本。
 3. `--verify --workshop-cache` 精确核对 28/28 文件；仅允许缓存内层 descriptor 追加一行正确的 `remote_file_id`。
 4. 对 strict-verified 的数字 cache leaf 再执行与 L1 相同的 MCP-first 实机矩阵。
-5. 核对公开 item 的标题、可见性、Gameplay 标签、640×640 preview 与仓库 BBCode；把最终 GREEN artifact 投影出的三张真实游戏截图按跟踪清单上传、排序并写入 BBCode，禁止用生成插画冒充实机证据。
+5. 核对公开 item 的标题、可见性、Gameplay 标签、640×640 preview 与仓库 BBCode；把最终 GREEN artifact 投影出的三张真实游戏截图按跟踪清单上传、排序并写入 BBCode。第一张画面的地图背景必须由上述 `b_kaifeng` MCP 定位证据约束在开封，不得出现意大利地名；禁止用生成插画冒充实机证据。
 6. 从精确 tag 重建正式 staging，恢复无 ID 的内层 descriptor；写入并 push initial-baseline changelog 后才可标记发布完成。
 
 ## 5. 报告与证据
