@@ -58,6 +58,10 @@ MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        # yearly_on_actions delivers this event every year and the source
+        # admits another player renewal after 96 months, or earlier when the
+        # treasury capacity/deficit branches require it.  It is therefore a
+        # renewable budget prompt, not a once-per-observation interrupt.
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
