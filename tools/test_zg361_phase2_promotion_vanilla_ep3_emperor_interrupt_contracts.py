@@ -521,7 +521,14 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertRegex(
             production_source,
             r"KNOWN_TIMELINE_INTERRUPTS\.update\("
-            r"VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS\)",
+            r"VANILLA_EVENT_TIMELINE_CONTRACTS\)",
+        )
+        self.assertNotIn(
+            "VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS", production_source
+        )
+        self.assertNotIn(
+            "zg361_phase2_promotion_vanilla_ep3_emperor_interrupt_contracts",
+            production_source,
         )
 
 

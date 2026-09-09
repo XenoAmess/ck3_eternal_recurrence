@@ -1,4 +1,4 @@
-"""Pure contract for the read-only Raiktor attacker-defeat truce primitive."""
+﻿"""Pure contract for the read-only Raiktor attacker-defeat truce primitive."""
 
 from __future__ import annotations
 
@@ -49,7 +49,7 @@ OPEN_KAISHEK_G2_CAPABILITY_ID: Final = (
 )
 OPEN_KAISHEK_G2_PROFILE_ID: Final = "ck3-1.19.0.6-g2-truce-evaluator-v1"
 OPEN_KAISHEK_G2_PROFILE_COMMIT: Final = (
-    "8b0d1598d7d702a3b093675343d5fd20ed2883a1"
+    "edcd1ba7c99e93ded6725709c5ddc7e02a2b8fe0"
 )
 
 

@@ -57,6 +57,9 @@ import resume_zg361_phase2_promotion_source_session as retained_client  # noqa: 
 import zg361_phase2_promotion_manager_befriend_contracts as befriend_contracts  # noqa: E402
 import zg361_phase2_promotion_manager_health_contracts as health_contracts  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
+from xar_autoplayer.vanilla_events import (  # noqa: E402
+    VANILLA_EVENT_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_manager_annual_summary_contracts import (  # noqa: E402
     MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS,
 )
@@ -2974,9 +2977,9 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             set(befriend_contracts.MANAGER_BEFRIEND_TIMELINE_CONTRACTS),
             {event_key},
         )
-        self.assertIs(
+        self.assertEqual(
             production.KNOWN_TIMELINE_INTERRUPTS[event_key],
-            befriend_contracts.MANAGER_BEFRIEND_TIMELINE_CONTRACTS[event_key],
+            VANILLA_EVENT_TIMELINE_CONTRACTS[event_key],
         )
         contract = production._manager_recovery_contract(
             production.KNOWN_TIMELINE_INTERRUPTS[event_key],
@@ -5879,14 +5882,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             treatment_expected,
         )
         for event_key in aging_expected:
-            self.assertIs(
+            self.assertEqual(
                 production.KNOWN_TIMELINE_INTERRUPTS[event_key],
-                MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS[event_key],
+                VANILLA_EVENT_TIMELINE_CONTRACTS[event_key],
             )
         for event_key in treatment_expected:
-            self.assertIs(
+            self.assertEqual(
                 production.KNOWN_TIMELINE_INTERRUPTS[event_key],
-                health_contracts.MANAGER_HEALTH_TIMELINE_CONTRACTS[event_key],
+                VANILLA_EVENT_TIMELINE_CONTRACTS[event_key],
             )
 
     def test_bp1_5725_binds_both_characters_and_selects_terminal_branch(self) -> None:

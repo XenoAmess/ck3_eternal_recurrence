@@ -1,4 +1,4 @@
-# CK3 自动游玩智能体：终极目标、当前能力与完整路线图
+﻿# CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
 ## 终极目标
 
@@ -124,6 +124,34 @@ r9 已在 exact CK3 `1.19.0.6` 生成 canonical paused seed：product `249 files
 matrix 仍 blocked：AI-owned case ready；Incident X ready 但 N/A；B2 PIP、Incident Y/Z 与 Workforce 尚缺真实业务状态。
 当前下一施工项是 product-only loaded-seed managed provider 与首个可见 OODA；不得重复 seed，也不得把 seed GREEN 写成
 8/8 footage 或完整 Phase2 loop。
+
+## 2026-09-09 天朝二期 P1 验收重基线
+
+项目所有者批准把 T0-P1 的完成门收敛为以下四项，四项都必须有当前候选对应的可核验证据：
+
+1. **完整 L0**：生成器、静态校验、BOM/本地化结构、玩家/AI 闸门、release allowlist、验收内容剥离及可复现构建全部 GREEN；
+2. **canonical 产品路径**：从正式 product-only 起点完成 B1–B8、Central stage 9–11、四类关键业务后置条件、checkpoint
+   save/restore、错误扫描与受管 cleanup，不用 fixture、控制台、OCR 或 ACK 冒充业务结果；
+3. **代表性高风险实机切片**：覆盖动态 root/scope、玩家与 AI 边界、跨周期/跨存档、关键资源和状态转换，以及代表性简中 UI；
+   只要求能证明风险最高的产品语义，不要求枚举所有合法随机组合；
+4. **真实遇到的 RED 闭环**：实机自然遇到新产品或原版事件形态时，保留 RED 与未选择证据，查 exact-build 定义，做最小修复，
+   再重跑同一边界；没有在 canonical 路径或代表切片中出现的理论变体，不得扩成发布前置。
+
+`strict 4/361` 与 `definitions 106/626` 继续作为覆盖债务/长期回归 backlog 指标保留；`361/361 static-ready` 继续说明业务内容
+已经静态接线。T0 完成不要求把前两项刷成 `361/361 live` 或 `626/626 sampled`，它们不得阻塞 P1 签收或 P2 解锁。
+
+自然遇到的原版事件分析不再只服务天朝 runner。每项 exact-build 定义、动态 scope/option 形状、最小安全选择及 live 变体证据都应
+沉淀为 CK3 自动玩家与其他 mod 可共同消费的共享 registry asset；完成 cutover 后，项目专用 runner 只引用或投影该资产，
+不重复维护互相漂移的私有结论。
+
+当前 cutover 状态为 **`static-ready / integrated-tested`，尚非 `production-live`**。共享 registry 已提供 156 条默认记录，MCP
+真实 `list/call` 已接通；production runtime 已接入 295 条共享记录且内容 hash 保持不变，17 个 literal 与 31 个 wrapper 已完成
+切换。vanilla focused 回归在 normal / `-O` 下各为 `36 passed, 68 subtests`，promotion checkpoint runner 为 `90/90`
+normal / `-O` GREEN；旧消费者复跑在 normal / `-O` 下也各为 `160 passed, 1 skipped, 61 subtests`。本批根仓提交仍待
+Git 收口后补 SHA；R372 的 TGP 帧仍只是 paused
+exemplar，尚未通过新 cutover 路径 retry，因此不得把上述静态/集成证据升级为 registry-backed production-live。T2
+`open_kaishek` 初始能力提交 `6b38d9c` 后，BOM source hash 重绑提交 `edcd1ba` 已推送，API 语义不变；父仓 pin verifier
+normal / `-O` GREEN。
 
 ## 2026-W35 最高优先级：先完整游玩一代人
 

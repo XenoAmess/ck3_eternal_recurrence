@@ -1,4 +1,4 @@
-"""Official MCP v2 server facade for replaceable CK3 gameplay drivers."""
+﻿"""Official MCP v2 server facade for replaceable CK3 gameplay drivers."""
 
 from __future__ import annotations
 
@@ -6,6 +6,8 @@ import argparse
 import importlib
 import os
 from pathlib import Path
+from xar_autoplayer.vanilla_events import query_vanilla_event_knowledge_v1
+
 from .driver import (
     DevelopmentReportDriver,
     GameplayBridgeDriver,
@@ -31,6 +33,17 @@ def _default_state_dir() -> Path:
     if not local:
         raise RuntimeError("LOCALAPPDATA or XAR_AUTOPLAYER_STATE_DIR is required")
     return Path(local) / "XarAutoplayer"
+
+
+def _ck3_query_vanilla_event_knowledge_v1(
+    event_definition_key: str,
+    ck3_build: str = "1.19.0.6",
+) -> dict[str, object]:
+    """Query frozen vanilla-event knowledge without a running CK3 process."""
+    return query_vanilla_event_knowledge_v1(
+        event_definition_key,
+        ck3_build=ck3_build,
+    )
 
 
 def load_driver(
@@ -1134,6 +1147,17 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_vanilla_event_knowledge_v1(
+        event_definition_key: str,
+        ck3_build: str = "1.19.0.6",
+    ) -> dict[str, object]:
+        """Read frozen source-reviewed event semantics without launching CK3."""
+        return _ck3_query_vanilla_event_knowledge_v1(
+            event_definition_key,
+            ck3_build=ck3_build,
+        )
+
+    @server.tool()
     def ck3_preview_active_combat_retreat_v1(
         selected_public_cunit_id: int,
         target_province_id: int,
@@ -1345,6 +1369,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_set_played_character_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_vanilla_event_knowledge_v1"
     )
     return server
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Focused tests for the R322 vanilla intrigue-temptation interrupt."""
 
 from __future__ import annotations
@@ -253,7 +253,14 @@ class VanillaIntrigueTemptationInterruptContractTests(unittest.TestCase):
         )
 
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["date_raw_range"], (53164440, 53284440))
+        self.assertEqual(
+            contract["date_raw_range"],
+            (
+                53164440,
+                53164440
+                + production.MAX_ADVANCE_DAYS * production.HOURS_PER_DAY,
+            ),
+        )
         self.assertEqual(contract["native_option_indices"], (0, 1))
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
@@ -338,7 +345,15 @@ class VanillaIntrigueTemptationInterruptContractTests(unittest.TestCase):
         self.assertRegex(
             production_source,
             r"KNOWN_TIMELINE_INTERRUPTS\.update\(\s*"
-            r"VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS\s*\)",
+            r"VANILLA_EVENT_TIMELINE_CONTRACTS\s*\)",
+        )
+        self.assertNotIn(
+            "VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS",
+            production_source,
+        )
+        self.assertNotIn(
+            "zg361_phase2_promotion_vanilla_intrigue_temptation_interrupt_contracts",
+            production_source,
         )
 
 

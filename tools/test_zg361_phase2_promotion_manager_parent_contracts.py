@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Focused tests for the exact vanilla parent-support interrupt."""
 
 from __future__ import annotations
@@ -228,7 +228,14 @@ class ManagerParentInterruptContractTests(unittest.TestCase):
         self.assertRegex(
             production_source,
             r"KNOWN_TIMELINE_INTERRUPTS\.update\(\s*"
-            r"MANAGER_PARENT_TIMELINE_CONTRACTS\s*\)",
+            r"VANILLA_EVENT_TIMELINE_CONTRACTS\s*\)",
+        )
+        self.assertNotIn(
+            "MANAGER_PARENT_TIMELINE_CONTRACTS", production_source
+        )
+        self.assertNotIn(
+            "zg361_phase2_promotion_manager_parent_contracts",
+            production_source,
         )
 
 

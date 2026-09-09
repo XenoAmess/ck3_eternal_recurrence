@@ -1,4 +1,4 @@
-# 实测工作流程（CK3 mod 调试）
+﻿# 实测工作流程（CK3 mod 调试）
 
 ## 启动与日志
 
@@ -300,6 +300,39 @@ probe；项目校验与 `--validate-only` 现在只在存在 `video_clip`（或�
 本机报告必须记录 JSON/JUnit、截图、runtime hash 和本次增量 `debug/error/gui_warnings`；发布 QA 引用具体 run ID，不把未运行的远端 CK3 状态写成 GREEN。GitHub tag artifact 只提供经过 L0 验证的候选 ZIP/manifest，不自动创建 GitHub Release 或上传 Steam。
 
 ### 覆盖边界（什么算验过、什么不算）
+
+#### 天朝二期 T0-P1 验收重基线（2026-09-09，owner-approved）
+
+T0-P1 的发布完成门只由四类证据组成：
+
+1. 当前候选通过完整 L0，包括生成器、静态校验、BOM/本地化结构、玩家/AI 闸门、release allowlist、acceptance 剥离和
+   deterministic build；
+2. product-only canonical 路径完整通过 B1–B8、Central stage 9–11、四类关键业务后置条件、checkpoint save/restore、
+   增量错误扫描和 managed cleanup；
+3. 对动态 identity/scope、玩家/AI 边界、跨周期/跨存档、关键资源与状态转换、代表性简中 UI 运行高风险实机切片；
+4. canonical 路径或上述切片中自然遇到的每个 RED 都保留未选择 artifact，查 exact-build 定义后做最小修复，并重跑同一边界。
+
+`strict 4/361` 与 `definitions 106/626` 是非阻塞覆盖 backlog，不是 P1 签收或 P2 解锁条件。保留历史计数用于观察覆盖增长，
+但不得把“尚余 357/520”换算成 T0 未完成量，也不得为了刷满分母主动制造额外 CK3 场景。未实际遇到的原版事件变体只进入
+backlog；真实遇到的变体则按上一条闭环。
+
+原版事件分析必须成为共享资产：exact-build source identity、动态 root/saved scopes、完整 option shape、选择语义和已见 live
+variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
+但不得复制一份会与共享定义漂移的私有原版结论。
+
+当前状态（2026-09-09）是 **`static-ready / integrated-tested`，尚非 `production-live`**：共享 registry 默认 156 条，MCP
+真实 `list/call` 已接通；production runtime 已消费 295 条共享记录且内容 hash 不变，17 个 literal 与 31 个 wrapper 已切换。
+vanilla focused 在 normal / `-O` 下各为 `36 passed, 68 subtests`，checkpoint runner `90/90` 均 GREEN。T2 `open_kaishek`
+初始能力提交 `6b38d9c` 后，BOM source hash 重绑提交 `edcd1ba` 已推送，API 语义不变；父仓 pin verifier normal / `-O`
+GREEN。本批根仓提交仍待 Git 收口后补 SHA。
+
+旧消费者复跑已在 normal / `-O` 下各取得 `160 passed, 1 skipped, 61 subtests`。尚未完成的门只剩新路径实机证明：R372 的
+TGP observation 仍是未选择的 paused exemplar，尚未用本次
+shared-registry cutover retry；因此当前没有 registry-backed production-live artifact，旧 R372 帧也不得回写为新路径 GREEN。
+
+production-live cutover 只有同时满足以下条件才可改为完成：共享资产通过 deterministic/focused L0；MCP 在 exact-build 绑定下返回同一条定义及
+live variant；production runner 实际从共享条目解析一个真实 encountered event，并继续验证 active instance、option submission 和
+独立后置状态；报告明确记录 registry identity/MCP receipt 且没有回退到重复私有定义。仅有 schema、文档、fixture 或 ACK 都不够。
 
 **验过的**：
 - 奖池全部 200 条目的**运行期执行**：自测在死前跑 `xar_test_sweep_effect`（生成器产出，
@@ -1555,7 +1588,7 @@ not add callback-side file I/O or a production detour merely to explain the
 current two-node timeout. The current bounded evidence is the typed parser
 replay above plus the static callback contract.
 
-### Pre-bootstrap 可见事件必须逐项登记，且不得缩短 seed 总等待
+### 实际遇到的 Pre-bootstrap 可见事件必须登记，且不得缩短 seed 总等待
 
 `Z:\p2o\a` 在同一冻结 checkpoint 上于第 77 个推进日遇到原版
 `spymaster_task.0381`。这类可见事件不能按 `spymaster_task.*`、原版 namespace
@@ -1563,6 +1596,11 @@ replay above plus the static callback contract.
 source-save SHA、日期、root、typed `character_to_hook` 与完整两项 option shape；
 选择原版中代价最低但仍有 `+30 grateful_opinion` 副作用的 option 2。其他事件或任一
 身份漂移仍在操作前 RED，错误 ACK 也不得通过。
+
+这里的“登记”只针对 canonical 路径中真实出现的帧，不要求预先遍历全部原版 definitions。登记结果必须进入共享的 CK3-agent /
+other-mod registry asset，至少绑定 exact build、原版 source identity、动态 scope/option 形状、选择语义和 live variant；当前
+seed waiter 的共享消费路径已达到 `static-ready / integrated-tested`。本段历史私有合同与尚未重试的 R372 TGP paused exemplar
+仍不得冒充 production-live cutover 证明。
 
 登记事件关闭后必须恢复时间线，并继续使用进入 waiter 时建立的原始 total deadline；
 不得另设五秒 post-drain 截止，也不得在每次事件后重置总时钟。证据文件按事件类型分开，

@@ -583,7 +583,14 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertNotIn('    "secrets.0122": {', production_source)
         self.assertIn(
-            "KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SECRET_TIMELINE_CONTRACTS)",
+            "KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_EVENT_TIMELINE_CONTRACTS)",
+            production_source,
+        )
+        self.assertNotIn(
+            "VANILLA_SECRET_TIMELINE_CONTRACTS", production_source
+        )
+        self.assertNotIn(
+            "zg361_phase2_promotion_vanilla_secret_interrupt_contracts",
             production_source,
         )
 
