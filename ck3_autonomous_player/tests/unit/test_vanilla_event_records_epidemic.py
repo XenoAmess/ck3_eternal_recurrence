@@ -16,6 +16,9 @@ from xar_autoplayer.vanilla_events import (  # noqa: E402
     DEFAULT_VANILLA_EVENT_OBSERVATIONS,
     DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_embedded import (  # noqa: E402
+    EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_epidemic import (  # noqa: E402
     PLAYER_SENTINEL,
     VANILLA_EPIDEMIC_ANALYSIS,
@@ -90,7 +93,7 @@ class EpidemicEventRecordTests(unittest.TestCase):
     def test_default_registry_mcp_and_production_runtime_include_record(self) -> None:
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 159)
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 159)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 6)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 7)
         self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 298)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
@@ -165,6 +168,33 @@ class EpidemicEventRecordTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+
+    def test_repeat_sachet_contract_is_portable_and_source_backed(self) -> None:
+        event_key = "epidemic_events.5009"
+        contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+        analysis = DEFAULT_VANILLA_EVENT_ANALYSIS[event_key]
+        exemplar = VANILLA_EPIDEMIC_OBSERVATIONS[event_key]["exemplars"][0]
+
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertNotIn("date_raw", contract)
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertEqual(len(contract["option_variants"]), 2)
+        self.assertTrue(
+            all(
+                variant["selected_native_option_index"] == 3
+                for variant in contract["option_variants"]
+            )
+        )
+        self.assertEqual(analysis["definition_lines"], "7112-7329")
+        self.assertIn("ten-year cooldown", analysis["repeatability"])
+        self.assertEqual(exemplar["event_instance_id"], 871)
+        self.assertEqual(exemplar["prior_green_occurrence"]["event_instance_id"], 612)
+        self.assertEqual(exemplar["elapsed_days_since_prior_occurrence"], 3733)
+        self.assertFalse(exemplar["selection_attempted"])
 
 
 if __name__ == "__main__":

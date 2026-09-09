@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from .registry import PLAYER_SENTINEL
+
 
 def _optional_scope_name_sets(
     required: tuple[str, ...], optional: tuple[str, ...]
@@ -1240,12 +1242,14 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # 3 buys nothing and only applies trait-dependent stress before the
         # merchant cleanup shared by every route. Bind the generated artifact
         # metadata and merchant/owner/creator identity before selecting it.
-        "date_raw": 53254032,
+        # R372 then observed a second legal delivery after the source-defined
+        # ten-year cooldown, so this reusable contract is repeatable rather
+        # than bound to the original campaign date or player ID.
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            "merchant": (32904,),
+            "merchant": (PLAYER_SENTINEL,),
         },
         "character_scope_matches_any": {
             "owner": ("merchant",),
@@ -1284,7 +1288,21 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (1, 2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
-        "max_occurrences": 1,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "native_option_indices": (1, 2, 3),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+            {
+                "option_count": 4,
+                "native_option_indices": (0, 1, 2, 3),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "learn_language_outcome.1001": {
         # CK3 1.19.0.6 response after another character successfully learns

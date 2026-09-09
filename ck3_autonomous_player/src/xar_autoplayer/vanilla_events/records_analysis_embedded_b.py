@@ -92,8 +92,8 @@ _VANILLA_EMBEDDED_B_ANALYSIS: dict[str, dict[str, object]] = {
         3,
         "Native 3 buys nothing and avoids the artifact transfer, gold payment, "
         "and long-lived protection modifiers of the purchase routes.",
-        "The legacy record binds one observed generated artifact and merchant "
-        "frame and caps that campaign lineage at one occurrence.",
+        "Exact source and two R372 deliveries prove a repeatable ten-year "
+        "cooldown rather than a one-occurrence campaign boundary.",
     ),
     "learn_language_outcome.1001": _record(
         "Response after another character successfully learns the player's language.",
@@ -402,6 +402,71 @@ def _finalize_analysis() -> dict[str, dict[str, object]]:
 VANILLA_EMBEDDED_B_ANALYSIS: Final[dict[str, dict[str, object]]] = (
     _finalize_analysis()
 )
+
+_epidemic_5009 = VANILLA_EMBEDDED_B_ANALYSIS["epidemic_events.5009"]
+_epidemic_5009["migrated_from"]["review_kind"] = (
+    "exact-build-original-definition-and-live-repeat-review"
+)
+_epidemic_5009["migrated_from"]["evidence"] = (
+    "exact definition, caller chain, and two R372 live deliveries"
+)
+_epidemic_5009["existing_boundaries"]["campaign_specific_binding_fields"] = []
+_epidemic_5009["existing_boundaries"]["notes"] = [
+    "Exact-build source and R372 repeat evidence supersede the legacy "
+    "one-occurrence campaign binding."
+]
+_epidemic_5009.update({
+    "source_sha256": {
+        "events/dlc/ce1/epidemic_events.txt": (
+            "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E"
+        ),
+        "common/on_action/ce1_on_actions.txt": (
+            "96B42FA1A542836171A2A608B7155A8A80D30B0D8F8D9742EBE8AFF231B85E16"
+        ),
+        "common/epidemics/00_epidemics.txt": (
+            "090607AC30E86817A709A6A8F5F2B5FC785AF11C352873B823CF2C3AA5A77E7F"
+        ),
+    },
+    "definition_lines": "7112-7329",
+    "caller_semantics": (
+        "the sole direct caller is epidemic_ongoing_events at weight 100; "
+        "each active vanilla epidemic invokes that pool monthly with a 95 "
+        "percent chance of no event"
+    ),
+    "frequency_boundary": (
+        "monthly eligibility is not daily delivery, and the event-local "
+        "ten-year cooldown prevents the same character receiving it again "
+        "before that interval"
+    ),
+    "trigger_boundary": (
+        "an available character whose sub-realm contains an infected province "
+        "held personally or within the source-defined capital-distance bound"
+    ),
+    "immediate_effect": (
+        "selects the epidemic, obtains or creates a dynamic merchant, and "
+        "creates a merchant-owned pressed-flower artifact with stress and "
+        "trash metadata before the choice"
+    ),
+    "option_semantics": {
+        "0": (
+            "trait-gated bulk purchase; transfers the artifact, pays tiny "
+            "gold, and adds overly_fragrant for fifteen years"
+        ),
+        "1": (
+            "transfers the artifact, pays tiny gold, and adds "
+            "sachet_protection for ten years"
+        ),
+        "2": "adds sachet_protection for ten years without buying the artifact",
+        "3": "buys nothing and applies only trait-dependent stress impact",
+    },
+    "after_effect": (
+        "silently removes the dynamic merchant after every authored route"
+    ),
+    "repeatability": (
+        "the event has a ten-year cooldown and no one-shot flag or variable; "
+        "R372 observed its second legal delivery about 10.23 years after the first"
+    ),
+})
 
 
 __all__ = ["EMBEDDED_B_EVENT_KEYS", "VANILLA_EMBEDDED_B_ANALYSIS"]

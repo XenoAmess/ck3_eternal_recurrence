@@ -178,6 +178,71 @@ VANILLA_EPIDEMIC_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "selection_attempted": False,
             "connection_generation": 1,
             "bridge_pid": 28772,
+        }, {
+            "run": "R372",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "driver-state-park-12-snapshot.json"
+            ),
+            "artifact_sha256": (
+                "9779F9DC345E08F550312B4FB77C45B711BBC6DB91B9591E027CB6601D322940"
+            ),
+            "event_instance_id": 867,
+            "driver_command_index": 2553,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 28772,
+            "process_restart_required": False,
+        }],
+    },
+    "epidemic_events.5009": {
+        "exemplars": [{
+            "run": "R372",
+            "kind": "repeat-occurrence-pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "epidemic-events-5009-repeat-red-report.json"
+            ),
+            "artifact_sha256": (
+                "E2CDBE9E37EA73DDFE30AD212618B20852C7CB04D9609A972F49C885D99F4802"
+            ),
+            "park_artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "hot-recovery-park-12.json"
+            ),
+            "park_artifact_sha256": (
+                "CB31FB25CE0E25AB59059123C215F5B9AAB635A4E22A496F146A14ECCFADE175"
+            ),
+            "driver_state_artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "driver-state-park-12-snapshot.json"
+            ),
+            "driver_state_artifact_sha256": (
+                "9779F9DC345E08F550312B4FB77C45B711BBC6DB91B9591E027CB6601D322940"
+            ),
+            "date_raw": 53487408,
+            "event_instance_id": 871,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "merchant": 16826033,
+                "owner": 16826033,
+                "creator": 16826033,
+            },
+            "rendered_native_option_indices": [1, 2, 3],
+            "selection_attempted": False,
+            "prior_green_occurrence": {
+                "date_raw": 53397816,
+                "event_instance_id": 612,
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+                "postcondition_verified": True,
+            },
+            "elapsed_days_since_prior_occurrence": 3733,
+            "connection_generation": 1,
+            "bridge_pid": 28772,
         }],
     },
 }

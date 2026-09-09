@@ -19,8 +19,10 @@ WORKTREE_ROOT = Path(__file__).resolve().parents[3]
 PRODUCTION_ENTRY = (
     WORKTREE_ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
 )
+# Updated when the exact-build .5009 repeat RED replaced its legacy one-shot
+# binding with the portable source-backed contract.
 EXPECTED_EMBEDDED_CANONICAL_SHA256 = (
-    "5911A4DD627E89705086530910FBA5342F1E18EA83922B570918D94EF5CE47E8"
+    "0962FB72B7D2F83AEA96CE21A96089EEFB82A8D504D884B4947EE302B52EFCFA"
 )
 
 

@@ -6,10 +6,10 @@
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
 - [static-ready] 默认扁平 registry 当前为 **159 个 unique vanilla event key**：19 个 vanilla shard、57 个 manager-original、79 个 embedded-original 合并为 155 个 unique key，再加独立的 `tgp_movement_events.0160`、`tgp_dynastic_cycle_events.0001`、`tgp_dynastic_cycle_events.0020` 与 `epidemic_events.1064`。该数量由 registry/migration 测试冻结；以后代码和测试同步调整时，以测试中的当前期望值为准。
-- [static-ready analysis / mixed live evidence] 当前同时发布 **159 条 analysis** 与 **6 个 observation keys**。159 条分析中，缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；`TGP0160`、`great_holy_war.0011`、`TGP0020`、`TGP0001` 已完成 production runner 的真实 drain/advance，`stress_threshold.1721` 与 `epidemic_events.1064` 保留为真实 RED observations。
+- [static-ready analysis / mixed live evidence] 当前同时发布 **159 条 analysis** 与 **7 个 observation keys**。159 条分析中，缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；`TGP0160`、`great_holy_war.0011`、`TGP0020`、`TGP0001` 与 `epidemic_events.1064` 已完成 production runner 的真实 drain/advance，`stress_threshold.1721` 与 `epidemic_events.5009` 的第二次合法出现保留为真实 RED observations。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读查询可以被静态消费者使用，不表示 159 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前组合 `298` 条事件合同；共享 registry 的 production-live 标签严格只落在上述四条已完成选择与 advance 的切片。TGP0001 同 PID 热恢复后，R372 已继续推进并在 `epidemic_events.1064` instance `867` 的 park11 动作前 RED 停住；`.1064` 已登记为第六个 observation key，但尚未完成热恢复。
+当前状态表示 registry、默认数据组合和只读查询可以被静态消费者使用，不表示 159 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前组合 `298` 条事件合同；共享 registry 的 production-live 标签严格只落在上述五条已完成选择与 advance 的切片。TGP0001 与 epidemic1064 均在同一 PID 热恢复后完成 reviewed selection；R372 继续推进并在第二次合法出现的 `epidemic_events.5009` instance `871` park12 动作前 RED 停住。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -69,9 +69,9 @@ v1 的 155 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-R372 的日期、instance 和人物 ID 不进入 timeline contract。当前 MCP v1 在同一个 knowledge envelope 中以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；所有 159 条记录已有 analysis，只有六条拥有 observation metadata。元数据可查询，但不会混入选择合同或被物化成当前人物约束。
+R372 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 在同一个 knowledge envelope 中以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；所有 159 条记录已有 analysis，只有七条拥有 observation metadata。元数据可查询，但不会混入选择合同或被物化成当前人物约束。
 
-R372 已在同一 PID/session 上把 `TGP0160`、`great_holy_war.0011`、`tgp_dynastic_cycle_events.0020` 与 `tgp_dynastic_cycle_events.0001` 从共享记录解析到真实 option submission，并验证旧 instance 消失或 advance，因此四条均为 `production-live primitive`。`stress_threshold.1721` observation 保留前一次真实 RED：共享模块 reload 实际已经生效，错误是 submission 阶段再次按 base contract 解析，导致提交了 base route；这不是 reload failure。最小修复与 TGP0001 合同由 `039a509`、`e6ab3d4` 两个提交收口。`epidemic_events.1064` 则保留当前 park11 的未选择 RED，等待同 PID 热恢复。四条 GREEN 不能外推为其余 155 条记录已经 live。
+R372 已在同一 PID/session 上把 `TGP0160`、`great_holy_war.0011`、`tgp_dynastic_cycle_events.0020`、`tgp_dynastic_cycle_events.0001` 与 `epidemic_events.1064` 从共享记录解析到真实 option submission，并验证旧 instance 消失或 advance，因此五条均为 `production-live primitive`。`stress_threshold.1721` observation 保留前一次真实 RED：共享模块 reload 实际已经生效，错误是 submission 阶段再次按 base contract 解析，导致提交了 base route；这不是 reload failure。`.5009` 的第一次交付曾真实 GREEN，当前第二次交付则证明旧 `max_occurrences=1` 错误；park12 仍停在动作前等待通用 repeatable 合同热恢复。五条 GREEN 不能外推为其余 154 条记录已经 live。
 
 批量迁移 analysis 的证据等级低于带 exact source hash 的逐条审阅：它只复用已有合同注释、历史 docs 和 tests。若旧证据没有保存 source hash，metadata 必须明确写 migration-only；不得为了让字段看起来齐全而事后猜测 hash。
 

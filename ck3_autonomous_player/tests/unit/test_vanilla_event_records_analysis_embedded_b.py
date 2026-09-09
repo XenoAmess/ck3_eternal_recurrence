@@ -57,11 +57,24 @@ class EmbeddedBAnalysisTests(unittest.TestCase):
                 )
                 self.assertTrue(analysis["review_summary"])
                 self.assertTrue(analysis["existing_boundaries"])
-                self.assertIn(
-                    "no new exhaustive vanilla-definition review",
-                    analysis["existing_boundaries"]["notes"][0],
-                )
-                self.assertNotIn("source_sha256", analysis)
+                if event_id == "epidemic_events.5009":
+                    self.assertEqual(
+                        analysis["migrated_from"]["review_kind"],
+                        "exact-build-original-definition-and-live-repeat-review",
+                    )
+                    self.assertTrue(analysis["source_sha256"])
+                    self.assertEqual(
+                        analysis["existing_boundaries"][
+                            "campaign_specific_binding_fields"
+                        ],
+                        [],
+                    )
+                else:
+                    self.assertIn(
+                        "no new exhaustive vanilla-definition review",
+                        analysis["existing_boundaries"]["notes"][0],
+                    )
+                    self.assertNotIn("source_sha256", analysis)
                 json.dumps(analysis, allow_nan=False)
 
     def test_safe_options_match_the_existing_contracts(self) -> None:

@@ -18,10 +18,11 @@ incidents/operations 纳入 schema-v3 多分支联合前缀，不能再沿用当
 T0 当前仍为 `50%`、canonical stage `8/11`；T0-P1 未签收，所以最终宣传片 T0-P2 继续硬锁定。`strict 4/361` 与
 `definitions 106/626` 是非阻塞发现 backlog，不是 P1 完成门，也不得换算为剩余工作百分比。
 
-共享原版事件资产当前为 `159 contracts / 159 analysis / 6 observation keys`，production runtime 为 `298`。R372 已在同一
+共享原版事件资产当前为 `159 contracts / 159 analysis / 7 observation keys`，production runtime 为 `298`。R372 已在同一
 PID 热恢复 TGP0001；此前 stress RED 的真实根因是提交阶段重新按 base contract 解析，而不是 reload 未生效，两个最小补丁
-提交为 `039a509`、`e6ab3d4`。长跑随后推进到 `epidemic_events.1064` instance `867`，并在 park11 动作前保留 RED；该事件
-已登记独立共享合同/analysis 与第六个 observation key，但热恢复尚未完成。该增量不改变 T0、stage、source 或 P2 门。
+提交为 `039a509`、`e6ab3d4`。长跑随后同 PID 热恢复 `epidemic_events.1064` instance `867` 并验证 advance，继续推进到
+`epidemic_events.5009` instance `871` 的第二次合法交付；当前 park12 RED 证明旧单次上限与原版十年 cooldown 冲突。
+该增量不改变 T0、stage、source 或 P2 门。
 
 R303 已在 CK3 `1.19.0.6` 的真实 paused frame 完成 projects/metrics provider 后置条件：owner `32904`、subject
 `30938`、cycle/case `4/2`，CP #026 contribution receipt `1` / revision `3` / value `1` 被 P3 #229 metrics revision

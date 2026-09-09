@@ -67,8 +67,10 @@ EXPECTED_INTENTIONAL_OVERLAPS = {
     "spymaster_task.0381": frozenset({"manager_original", "prebootstrap"}),
     "spymaster_task.0399": frozenset({"manager_original", "prebootstrap"}),
 }
+# Updated when the exact-build .5009 repeat RED replaced its legacy one-shot
+# binding with the portable source-backed contract.
 EXPECTED_EMBEDDED_CANONICAL_SHA256 = (
-    "5911A4DD627E89705086530910FBA5342F1E18EA83922B570918D94EF5CE47E8"
+    "0962FB72B7D2F83AEA96CE21A96089EEFB82A8D504D884B4947EE302B52EFCFA"
 )
 
 LEGACY_VANILLA_SOURCES = (
