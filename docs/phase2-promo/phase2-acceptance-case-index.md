@@ -1,6 +1,6 @@
 # 天朝二期验收用例索引
 
-状态：**滚动维护；主体内容已进入生产候选，但全量实机回归尚未完成**。
+状态：**滚动维护；T0 `50%`、canonical stage `8/11`、source `3/4`，P1 尚未签收，P2 `LOCKED`**。
 
 本文把分散在生成器测试、静态合同、CK3 runner、source registry 和宣传制作
 文档中的用例统一编址。它是执行索引，不替代各专题的字段级权威定义。
@@ -19,6 +19,8 @@
   [`r300-r303-credit-project-resume-projects-metrics-live-2026-09-08.md`](r300-r303-credit-project-resume-projects-metrics-live-2026-09-08.md)
 - 四类 registry 与八段素材边界：
   [`final-promo-non-ck3-prep-audit-2026-09-04.md`](final-promo-non-ck3-prep-audit-2026-09-04.md)
+- R326 incidents/operations 第三项 source checkpoint 与 schema-v3 三源前缀：
+  [`2026-09-08 日报的 R314–R326 证据`](../autonomous-agent-progress/daily/2026-09-08.md#r314r326-incidentsoperations-source-checkpoint-34)
 
 ## 状态口径
 
@@ -32,6 +34,25 @@
 | `BLOCKED` | 已保存 RED artifact；必须先修复该实际阻点 |
 
 通过数量不能换算为代码行覆盖率；项目当前没有 coverage.py/分支覆盖率报告。
+
+## T0-P1 四项验收门（2026-09-09 当前账本）
+
+| P1 gate | 当前证据 | 当前状态 | 真实剩余项 |
+|---|---|---|---|
+| 1. 当前候选完整 L0 | 生成器/static/release deterministic 门持续运行；`fb99dbd`、`a176cc1` 已恢复 Official Runner master CI，最新合同提交 `d0051ce` 的 Official Runner run `34368907153` / job `102524733797` 也是 `completed/success` | `GREEN_ON_LISTED_COMMITS / final-candidate-rerun-required` | P1 其它门闭合后的最终候选必须再跑同一完整 L0；旧成功不能替代最终字节 |
+| 2. Canonical product 关键链 | loader/recovery、B1–B8 多个 product slice 与 stage 1–8 已有真实证据；R326 把 source 推进到 `3/4` | `LIVE_PARTIAL / stage 8/11` | 完成 stage 9–11 与三次真实 Workforce 周期；冻结 `zg361we.356`、验证 owner `.361` 与 subject-side carried debt/default/charter；把 source 补至 `4/4` |
+| 3. 代表性高风险实机切片 | 动态 owner/subject、跨角色 checkpoint、玩家/AI 闸门、资源/receipt identity 与真实随机 RED 已有 live slices | `LIVE_PARTIAL` | 以 cross-cycle/endgame 同 lineage 覆盖剩余跨周期/跨存档高风险路径，并闭合下列尚未 GREEN 的业务 postconditions；不扩成 361/626 穷举 |
+| 4. 真实 encountered RED 闭环 | 每个长跑 RED 均先保存未选择 artifact，再做 exact-build 最小修复与同 PID 热恢复；`039a509`、`e6ab3d4`、`d0051ce` 等修复提交均已 push/CI success | `ACTIVE / path-not-yet-terminal` | 继续处理 canonical path 实际撞到的 RED，直到 stage 9–11、source 4/4 与关键后置条件结束时没有未闭合 RED；不主动制造未遇到场景 |
+
+R326 的当前 source receipt 是
+`Z:\ck3_mod_rewrite\_runtime\p2r326incidentsource\phase2-source-capture-three-of-four-v3.json`，SHA-256
+`0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`；incident checkpoint 为 `73,156,969` bytes，
+SHA-256 `5E9A7687AFAF104CB6B68759F2960BEF85A886EF1908382C50528A5D17BAC550`，原始输入 checkpoint hash 前后不变且 cleanup
+GREEN。当前四类 source 中 promotion、projects/metrics、incidents/operations 已完成，**唯一缺项是
+`capture_cross_cycle_endgame`**。
+
+`strict 4/361` 与 `definitions 106/626` 只保留为 discovery telemetry：它们不是上述四项 P1 gate，不是 P2 解锁条件，也
+不得换算为 T0 剩余百分比。P1 未完成期间，最终宣传视频与宣传工具本轮更新前置都保持硬锁；T0-P2 继续 `LOCKED`。
 
 ## 产品与批次用例
 
@@ -51,7 +72,7 @@
 | `P2-B4-001` | 晋升/职级/现金 | 资格至任命/失败冷却，HC/奖金预留释放，欠付补发守恒 | 失败不释放、跨案串账、玩家/owner 错位即 RED | `LIVE_PARTIAL`：R100 的 548 日窗口中 R99 compensation 与 receipt-revision 签名归零；整域仍待全量长测 |
 | `P2-B5-001` | HC/继任/流动/学习 | 真实空缺、候选、现任、backfill、代理、保护期、递延功赏 | 旧案/读档/换上司身份漂移即 RED | `STATIC_GREEN / live pending` |
 | `P2-B6-001` | 项目/指标/重组 | 项目贡献与版本、指标分母/窗口、WIP、上线→采用→价值 | 止损自动记差绩效、分母漂移、项目 owner 错绑即 RED | `LIVE_PARTIAL`：R303 已取得 CP #026 receipt 到 P3 #229 metrics 的真实 paused provider 后置条件 GREEN；R313 已冻结对应 CP26 source checkpoint。默认 adapter 仍关闭，且这不等于 B6 全域或完整上线→采用→价值链 GREEN |
-| `P2-B7-001` | 事故/运营 | 缺编→工时→外包/招聘→事故→复盘→质量回写长链 | 虚构角色/职位/领地、资金或 HC 不守恒即 RED | `STATIC_GREEN / live pending` |
+| `P2-B7-001` | 事故/运营 | 缺编→工时→外包/招聘→事故→复盘→质量回写长链 | 虚构角色/职位/领地、资金或 HC 不守恒即 RED | `LIVE_PARTIAL`：R326 已冻结真实 `.50` source checkpoint 与 strict receipt；`.190/.290/.390` 的动作后 transition/closure 和整域长链仍待闭合 |
 | `P2-B8-001` | 三周期终局 | 目标棘轮、配额回流、经理拒背 C、宪章只改未来默认 | 跨周期身份漂移、追溯改账即 RED | `STATIC_GREEN / live pending` |
 
 ## Promotion 长链随机事件合同
@@ -79,10 +100,10 @@
 |---|---|---|
 | `P2-REG-001` | promotion `.147` schema-2 source checkpoint；下游 compensation 业务 postcondition 另按 span 门验收 | `1/1`，`LIVE_GREEN`：R294b 已捕获；checkpoint SHA-256 `D4F625C84E900966E0B70CA8FD65CD33D63205B479A3CBC15BC0DF4B02B319F0` |
 | `P2-REG-002` | projects `.26` schema-2 source checkpoint；以独立 `.229` provider postcondition 互证同一 contribution receipt | `1/1`，`LIVE_GREEN`：R313 source capture + R303 provider postcondition；R313 checkpoint SHA-256 `72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B` |
-| `P2-REG-003` | incident `.50` + `.190/.290/.390` instance transitions | `0/1` |
+| `P2-REG-003` | incident `.50` schema-v3 source checkpoint + strict receipt；`.190/.290/.390` 下游业务 transition 另由 B7/postcondition 验收 | `1/1`，`LIVE_GREEN`：R326 checkpoint SHA-256 `5E9A7687AFAF104CB6B68759F2960BEF85A886EF1908382C50528A5D17BAC550` |
 | `P2-REG-004` | cross-cycle `.356` + owner `.361` + subject Workforce state | `0/1` |
-| `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `2/4`，`LIVE_PARTIAL / incomplete`：R313 two-of-four artifact SHA-256 `8128750541EE7683EAB5CAD83CFDAF11FCCE47F8017019E3B5541A76F1AD603A`；仍缺 incident/operations 与 cross-cycle/endgame |
-| `P2-FULL-001` | B1–B8 production projection 一次启动、共享表面抽样、三周期长测、release staging | `NOT_RUN`；不得用 focused GREEN 代替 |
+| `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `3/4`，`LIVE_PARTIAL / incomplete`：R326 three-of-four schema-v3 artifact SHA-256 `0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`；只缺 cross-cycle/endgame |
+| `P2-FULL-001` | B1–B8 production projection 一次启动、共享表面抽样、三周期长测、release staging | `LIVE_PARTIAL / stage 8/11`；stage 9–11、三周期成熟度与最终 release-identical 回归未完成，不得用 focused GREEN 代替 |
 | `P2-R74-ERR` | 已实证的产品运行时错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `LIVE_RED -> STATIC_GREEN / R102 pending`：R101 证明单用 live `list_size` 仍不能覆盖迭代内过滤；两个 filtered walk 的范围检查修复需 fresh 同类窗口归零 |
 | `P2-CAP-001` | 八个 canonical gameplay spans 均通过 source intake | `0/8` |
 | `P2-VIDEO-001` | 人物版完整 build、媒体抽检、双语字幕、安全区、全片审阅、SHA | `0/1` |

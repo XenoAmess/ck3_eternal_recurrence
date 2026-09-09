@@ -1,8 +1,9 @@
 # 天朝二期宣传片业务 postcondition 合同
 
-状态：**mixed live**。R303 已取得 projects/metrics private-candidate provider 的真实 paused GREEN，R313 已捕获其
-schema-2 source checkpoint；promotion/projects source registry 当前 `2/4 incomplete`。默认 capability 边界不变，其他 span
-仍不得由 fixture 或 ACK 提升 readiness，footage 仍为 `0/8`。
+状态：**mixed live；T0 `50%`、stage `8/11`、source `3/4`、P2 `LOCKED`**。R303 已取得 projects/metrics
+private-candidate provider 的真实 paused GREEN，R313 已捕获其 schema-2 source checkpoint；R326 又完成 incidents/operations
+真实 `.50` checkpoint 与 strict receipt，并生成 schema-v3 three-of-four 前缀。当前只缺 `capture_cross_cycle_endgame`。
+默认 capability 边界不变，其他 span 仍不得由 fixture 或 ACK 提升 readiness，footage 仍为 `0/8`。
 
 这份合同补的是“画面里发生的业务结果”，不是按钮有没有按下、命令有没有 ACK、revision 有没有跳。实现位于
 `tools/zhongguo_phase2_business_postconditions.py`，正例 fixture 位于
@@ -21,6 +22,25 @@ schema-2 source checkpoint；promotion/projects source registry 当前 `2/4 inco
 还要求 snapshot ID 改变、public revision 严格上升、native revision 严格上升。scoreboard 是 paused world 上的 provider-local UI 变化，允许
 public/native revision 不变，但必须由自己的 `observed_state_revision` 上升和 semantic fingerprint 改变作证。即便 revision 条件成立，只要
 evidence 是 ACK-only 或业务 identity/receipt/cycle 不成立，结果仍是 typed `RED`。
+
+### 四个强语义门的当前 receipt 状态
+
+| 门 | 当前状态 | P1 剩余 |
+|---|---|---|
+| fact/quota/calibration | `LIVE_PENDING` | 需要同一 paused lineage 上 identity-ready `zg361.1`、真实动作及 scoreboard provider revision/fingerprint 后置；ACK 或单独 revision 不算 |
+| promotion/compensation | `SOURCE_GREEN / POSTCONDITION_PENDING` | R294b `.147` source 已登记，但仍需 `.comp.1` 与 posted compensation receipt 的同 connection、同 case live 回读 |
+| projects/metrics | `LIVE_GREEN_PRIVATE_CANDIDATE` | R303 provider 后置与 R313 `.26` source 已闭合；最终 candidate 仍须保持默认 capability 边界并进入 canonical 回归 |
+| cross-cycle/endgame | `SOURCE_AND_POSTCONDITION_PENDING` | 完成 stage 9–11/三次 Workforce 周期，冻结 `.356`，再验证 owner `.361`、subject-side carried debt、charter/default 的下一周期生效 |
+
+这四个业务门属于 P1 canonical product gate 的关键后置条件，不改变 owner-approved 的总验收基线：最终候选完整 L0、canonical
+产品关键链、代表性高风险实机切片、以及真实 encountered RED 闭环。当前 R326 three-of-four artifact 为
+`Z:\ck3_mod_rewrite\_runtime\p2r326incidentsource\phase2-source-capture-three-of-four-v3.json`，SHA-256
+`0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`。Official Runner 已在 `fb99dbd`、`a176cc1`
+恢复 master success，最新已推送合同提交 `d0051ce` 的 run `34368907153` / job `102524733797` 亦为 success；这些 CI 回执只
+关闭各自静态候选，不替代上述 live 剩余项。
+
+`strict 4/361` 与 `definitions 106/626` 仅作非阻塞 backlog；它们不是四个业务后置门或 P1/P2 门。T0-P1 未签收，T0-P2
+继续 `LOCKED`。
 
 ## 接线边界
 

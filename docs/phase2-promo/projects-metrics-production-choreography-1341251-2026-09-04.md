@@ -8,8 +8,11 @@
 > SHA-256 为 `926BBD25076F69205B8AAA7CCC366AB470227BCBE174017B7E86C282862D7B01`。R313 又在 raw date
 > `53246712` 取得 `checkpoint_state=cp26_ready_p3_absent` 的 `.26` Route A source capture，并冻结 checkpoint SHA-256
 > `72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B`；projects registry SHA-256 为
-> `7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`。因此 projects registry 当前为 `1/1`，与
-> promotion `1/1` 合计 `2/4 incomplete`；footage 仍为 `0/8`。
+> `7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`。R313 时点 projects registry 为 `1/1`，与
+> promotion `1/1` 合计 `2/4`；该计数现在只作为历史基线。R326 已追加 incidents/operations 真实 `.50` source checkpoint，
+> 当前 canonical source 为 `3/4 incomplete`，three-of-four schema-v3 artifact SHA-256 为
+> `0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`，只缺 cross-cycle/endgame；footage 仍为 `0/8`，
+> T0 `50%`、stage `8/11`、T0-P2 `LOCKED`。
 >
 > R313 明确记录 `generic_character_rebind_used=true`：受管 native set-player 在同一 date/PID/generation 将 owner 切换至
 > subject，并以独立 receipt 验证。它 supersede 下文对当前 capture 的“generic rebind 明确禁止/不可能”判断，但不把该私有
