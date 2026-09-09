@@ -162,8 +162,8 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             knowledge["schema"], "xar.ck3.vanilla-event-knowledge"
         )
         self.assertEqual(knowledge["schema_version"], 1)
-        self.assertEqual(knowledge["current_contract_count"], 163)
-        self.assertEqual(knowledge["current_analysis_count"], 163)
+        self.assertEqual(knowledge["current_contract_count"], 164)
+        self.assertEqual(knowledge["current_analysis_count"], 164)
         self.assertEqual(
             knowledge["count_semantics"],
             "current-revision-data-fact-not-abi",
@@ -295,11 +295,11 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertTrue(report["native_session_assets_ready"])
         self.assertEqual(
             report["offline_vanilla_event_knowledge"]["contract_count"],
-            163,
+            164,
         )
         self.assertEqual(
             report["offline_vanilla_event_knowledge"]["analysis_count"],
-            163,
+            164,
         )
         self.assertFalse(report["launches_ck3"])
         self.assertEqual(len(runner.commands), 4)
@@ -353,7 +353,7 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             report["offline_vanilla_event_knowledge"][
                 "expected_current_analysis_count"
             ],
-            163,
+            164,
         )
 
     @unittest.skipUnless(
@@ -381,8 +381,8 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             )
         self.assertTrue(passed, detail)
         self.assertTrue(payload["tool_listed"])
-        self.assertEqual(payload["contract_count"], 163)
-        self.assertEqual(payload["analysis_count"], 163)
+        self.assertEqual(payload["contract_count"], 164)
+        self.assertEqual(payload["analysis_count"], 164)
         self.assertEqual(payload["query_status"], "available")
         self.assertTrue(payload["query_analysis_non_null"])
         self.assertFalse(payload["requires_ck3"])

@@ -2282,6 +2282,7 @@ def _manager_recovery_authored_event_contract(
         "snapshot_option_count",
         "snapshot_option_counts",
         "native_option_indices",
+        "disabled_native_option_indices",
         "native_option_prefix_range",
         "native_option_suffix",
         "option_variants",
@@ -2566,16 +2567,70 @@ def _known_interrupt_checks(
     contract = effective_contract
     option_count = effective_contract["option_count"]
     snapshot_option_counts = _snapshot_option_counts(effective_contract)
+    disabled_native_option_indices_value = effective_contract.get(
+        "disabled_native_option_indices", ()
+    )
+    disabled_native_option_indices_are_typed = (
+        isinstance(disabled_native_option_indices_value, tuple)
+        and all(
+            isinstance(value, int) and not isinstance(value, bool)
+            for value in disabled_native_option_indices_value
+        )
+    )
+    disabled_native_option_indices = (
+        disabled_native_option_indices_value
+        if disabled_native_option_indices_are_typed
+        else ()
+    )
+    native_option_indices_value = effective_contract.get(
+        "native_option_indices", tuple(range(int(option_count)))
+    )
+    native_option_indices = (
+        native_option_indices_value
+        if isinstance(native_option_indices_value, tuple)
+        else ()
+    )
+    strict_native_option_indices = frozenset(
+        value
+        for value in native_option_indices
+        if isinstance(value, int) and not isinstance(value, bool)
+    )
+    selected_native_option_index = effective_contract.get(
+        "selected_native_option_index"
+    )
+    disabled_native_option_indices_contract = (
+        disabled_native_option_indices_are_typed
+        and len(disabled_native_option_indices)
+        == len(set(disabled_native_option_indices))
+        and all(
+            value in strict_native_option_indices
+            for value in disabled_native_option_indices
+        )
+        and selected_native_option_index
+        not in disabled_native_option_indices
+    )
+    disabled_native_option_indices_set = set(
+        disabled_native_option_indices
+    )
     actual_native_option_indices: list[object] = []
     authored_options_exact = len(options) == option_count
     if authored_options_exact:
         for index, row_value in enumerate(options):
             row = row_value if isinstance(row_value, Mapping) else {}
-            actual_native_option_indices.append(row.get("native_option_index"))
+            native_option_index = row.get("native_option_index")
+            actual_native_option_indices.append(native_option_index)
+            expected_enabled = (
+                not (
+                    isinstance(native_option_index, int)
+                    and not isinstance(native_option_index, bool)
+                    and native_option_index
+                    in disabled_native_option_indices_set
+                )
+            )
             if not (
                 row.get("rendered_index") == index
                 and row.get("shown") is True
-                and row.get("enabled") is True
+                and row.get("enabled") is expected_enabled
                 and row.get("fallback") is False
                 and row.get("cancel") is False
             ):
@@ -2612,14 +2667,6 @@ def _known_interrupt_checks(
             and tuple(suffix) == native_option_suffix
         )
     elif authored_options_exact:
-        native_option_indices_value = effective_contract.get(
-            "native_option_indices", tuple(range(int(option_count)))
-        )
-        native_option_indices = (
-            native_option_indices_value
-            if isinstance(native_option_indices_value, tuple)
-            else ()
-        )
         authored_options_exact = (
             len(native_option_indices) == option_count
             and tuple(actual_native_option_indices) == native_option_indices
@@ -2671,6 +2718,9 @@ def _known_interrupt_checks(
             else None
         )
         in snapshot_option_counts,
+        "disabled_native_option_indices_contract": (
+            disabled_native_option_indices_contract
+        ),
         "authored_options_exact": authored_options_exact,
         "selected_option_mapping": (
             effective_contract.get("selection_deferred") is True

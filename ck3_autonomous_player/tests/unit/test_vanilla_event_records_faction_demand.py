@@ -16,11 +16,11 @@ from xar_autoplayer.vanilla_events import (  # noqa: E402
     DEFAULT_VANILLA_EVENT_OBSERVATIONS,
     DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
 )
-from xar_autoplayer.vanilla_events.records_death_management import (  # noqa: E402
+from xar_autoplayer.vanilla_events.records_faction_demand import (  # noqa: E402
     PLAYER_SENTINEL,
-    VANILLA_DEATH_MANAGEMENT_ANALYSIS,
-    VANILLA_DEATH_MANAGEMENT_OBSERVATIONS,
-    VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS,
+    VANILLA_FACTION_DEMAND_ANALYSIS,
+    VANILLA_FACTION_DEMAND_OBSERVATIONS,
+    VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     materialize_vanilla_timeline_contract,
@@ -29,7 +29,7 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 
 
-EVENT_KEY = "death_management.1007"
+EVENT_KEY = "faction_demand.2001"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -62,25 +62,25 @@ def _character_scope(name: str, character_id: int) -> dict[str, object]:
     }
 
 
-class DeathManagementEventRecordTests(unittest.TestCase):
-    def test_contract_is_portable_and_keeps_no_killer_shape_exact(self) -> None:
-        contract = VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY]
+class FactionDemandEventRecordTests(unittest.TestCase):
+    def test_contract_is_portable_and_selects_war_ooda_route(self) -> None:
+        contract = VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS[EVENT_KEY]
 
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
         self.assertNotIn("date_raw", contract)
+        self.assertEqual(contract["character_scopes"], {
+            "faction_target": PLAYER_SENTINEL,
+        })
         self.assertEqual(contract["unique_character_scope_excludes"], {
-            "dead_character": (PLAYER_SENTINEL,),
+            "faction_leader": (PLAYER_SENTINEL,),
+            "faction_claimant": (PLAYER_SENTINEL,),
         })
-        self.assertEqual(contract["scope_types"], {
-            "new_memory": "character_memory",
-            "dead_character": "character",
-            "deceased_character_stress": "value",
-        })
-        self.assertEqual(contract["saved_scope_count"], 3)
-        self.assertEqual(contract["native_option_indices"], (0,))
-        self.assertEqual(contract["selected_option_number"], 1)
-        self.assertEqual(contract["selected_native_option_index"], 0)
-        self.assertNotIn("optional_scope_types", contract)
+        self.assertNotIn("character_scope_differs_from", contract)
+        self.assertEqual(contract["saved_scope_count"], 5)
+        self.assertEqual(contract["native_option_indices"], (0, 1, 2))
+        self.assertEqual(contract["disabled_native_option_indices"], (1,))
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
         self.assertEqual(
             contract["occurrence_policy"],
             "repeatable-within-product-observation-window",
@@ -88,61 +88,69 @@ class DeathManagementEventRecordTests(unittest.TestCase):
 
         materialized = materialize_vanilla_timeline_contract(contract, 32904)
         self.assertEqual(materialized["root_character_id"], 32904)
+        self.assertEqual(materialized["character_scopes"], {
+            "faction_target": 32904,
+        })
         self.assertEqual(
             materialized["unique_character_scope_excludes"],
-            {"dead_character": (32904,)},
+            {"faction_leader": (32904,), "faction_claimant": (32904,)},
         )
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
 
-    def test_analysis_freezes_sources_and_complete_effect_boundary(self) -> None:
-        analysis = VANILLA_DEATH_MANAGEMENT_ANALYSIS[EVENT_KEY]
+    def test_analysis_freezes_sources_and_complete_decision_boundary(self) -> None:
+        analysis = VANILLA_FACTION_DEMAND_ANALYSIS[EVENT_KEY]
 
-        self.assertEqual(analysis["definition_lines"], "1948-2057")
-        self.assertEqual(analysis["heir_family_dispatch_lines"], "690-696")
-        self.assertEqual(analysis["close_family_memory_lines"], "966-984")
-        self.assertEqual(analysis["character_memory_abi_lines"], "58-70")
-        self.assertIn("saves it as new_memory", analysis["caller_semantics"])
-        self.assertIn("exactly twenty", analysis["option_semantics"][0])
-        self.assertIn("trait-dependent", analysis["option_semantics"][0])
-        self.assertIn("display-only", analysis["after_effect"])
-        self.assertIn("must remain RED", analysis["strict_shape_boundary"])
-        self.assertIn("independently", analysis["repeatability"])
-        self.assertIn("not a campaign", analysis["duplicate_blocker_boundary"])
-        self.assertIn("does not save", analysis["option_semantics"][0])
-        self.assertEqual(len(analysis["source_sha256"]), 6)
+        self.assertEqual(analysis["definition_lines"], "2039-2277")
+        self.assertEqual(analysis["demand_dispatch_lines"], "992-1026")
+        self.assertEqual(analysis["monthly_faction_abi_lines"], "136-143")
+        self.assertIn("five days", analysis["caller_semantics"])
+        self.assertIn("once per month", analysis["frequency_boundary"])
+        self.assertIn("ninety", analysis["frequency_boundary"])
+        self.assertIn("claimant title/vassal transfer", analysis["option_semantics"][0])
+        self.assertIn("shown but disabled", analysis["option_semantics"][1])
+        self.assertIn("starts", analysis["option_semantics"][2])
+        self.assertIn("war OODA", analysis["safe_option_rationale"])
+        self.assertIn("does not infer", analysis["religion_scope_boundary"])
+        self.assertIn("removes", analysis["after_effect"])
+        self.assertEqual(len(analysis["source_sha256"]), 11)
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r374_values_remain_observation_only(self) -> None:
-        exemplar, = VANILLA_DEATH_MANAGEMENT_OBSERVATIONS[EVENT_KEY][
-            "exemplars"
-        ]
+        exemplar, = VANILLA_FACTION_DEMAND_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(
-            VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY]
+            VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS[EVENT_KEY]
         )
 
-        self.assertEqual(exemplar["event_instance_id"], 1046)
-        self.assertEqual(exemplar["date_raw"], 53590464)
+        self.assertEqual(exemplar["event_instance_id"], 1050)
+        self.assertEqual(exemplar["date_raw"], 53595360)
         self.assertEqual(exemplar["saved_character_ids"], {
-            "dead_character": 39246,
+            "faction_leader": 50355542,
+            "faction_target": 32904,
+            "faction_claimant": 39232,
         })
         self.assertEqual(exemplar["saved_scope_raw_types"], {
-            "new_memory": 34,
-            "dead_character": 4,
-            "deceased_character_stress": 1,
+            "faction": 25,
+            "faction_leader": 4,
+            "faction_target": 4,
+            "faction_claimant": 4,
+            "faction_targeted_title": 5,
         })
-        self.assertEqual(exemplar["rendered_native_option_indices"], [0])
+        self.assertEqual(exemplar["rendered_native_option_indices"], [0, 1, 2])
+        self.assertEqual(exemplar["disabled_native_option_indices"], [1])
         self.assertFalse(exemplar["selection_attempted"])
         self.assertFalse(exemplar["process_restart_required"])
-        self.assertEqual(exemplar["snapshot_id"], "native:1779")
-        self.assertEqual(exemplar["revision"], 1780)
+        self.assertEqual(exemplar["snapshot_id"], "native:1847")
+        self.assertEqual(exemplar["revision"], 1848)
         for field in (
             "artifact_sha256",
             "park_artifact_sha256",
             "driver_state_artifact_sha256",
         ):
             self.assertRegex(exemplar[field], SHA256_PATTERN)
-        for observation_only in (1046, 53590464, 39246, 32904, 51852, 1779):
+        for observation_only in (
+            1050, 53595360, 50355542, 39232, 32904, 51852, 1847,
+        ):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
@@ -152,17 +160,21 @@ class DeathManagementEventRecordTests(unittest.TestCase):
         self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 303)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
-            VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY],
+            VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS[EVENT_KEY],
         )
 
         response = query_vanilla_event_knowledge_v1(EVENT_KEY)
         self.assertEqual(response["status"], "available")
         self.assertEqual(response["contract"]["root_character_id"], "$player")
-        self.assertEqual(response["contract"]["native_option_indices"], [0])
-        self.assertEqual(response["analysis"]["definition_lines"], "1948-2057")
+        self.assertEqual(response["contract"]["native_option_indices"], [0, 1, 2])
+        self.assertEqual(
+            response["contract"]["disabled_native_option_indices"],
+            [1],
+        )
+        self.assertEqual(response["analysis"]["definition_lines"], "2039-2277")
         self.assertEqual(
             response["observations"]["exemplars"][0]["event_instance_id"],
-            1046,
+            1050,
         )
         json.dumps(response, allow_nan=False)
 
@@ -182,8 +194,8 @@ class DeathManagementEventRecordTests(unittest.TestCase):
             "status": "available",
             "window_match_count": 1,
             "event_definition_key": EVENT_KEY,
-            "current_event_instance_id": 1046,
-            "date_raw": 53590464,
+            "current_event_instance_id": 1050,
+            "date_raw": 53595360,
             "root_scope": {
                 "status": "available",
                 "type_key": "character",
@@ -194,33 +206,38 @@ class DeathManagementEventRecordTests(unittest.TestCase):
                 },
             },
             "saved_scopes": [
-                _generic_scope("new_memory", "character_memory"),
-                _character_scope("dead_character", 39246),
-                _generic_scope("deceased_character_stress", "value"),
+                _generic_scope("faction", "faction"),
+                _character_scope("faction_leader", 50355542),
+                _character_scope("faction_target", 32904),
+                _character_scope("faction_claimant", 39232),
+                _generic_scope("faction_targeted_title", "landed_title"),
             ],
-            "options": [{
-                "rendered_index": 0,
-                "native_option_index": 0,
-                "shown": True,
-                "enabled": True,
-                "fallback": False,
-                "cancel": False,
-            }],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": index != 1,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
         }
         checks = production._known_interrupt_checks(
             snapshot={
-                "date_raw": 53590464,
-                "active_event": {"option_count": 1},
+                "date_raw": 53595360,
+                "active_event": {"option_count": 3},
             },
-            event={"event_instance_id": 1046},
+            event={"event_instance_id": 1050},
             context=context,
             event_key=EVENT_KEY,
             contract=contract,
         )
 
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["selected_option_number"], 1)
-        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
 
 
 if __name__ == "__main__":

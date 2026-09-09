@@ -18,7 +18,8 @@ incidents/operations 纳入 schema-v3 多分支联合前缀，不能再沿用当
 T0 当前仍为 `50%`、canonical stage `8/11`；T0-P1 未签收，所以最终宣传片 T0-P2 继续硬锁定。`strict 4/361` 与
 `definitions 106/626` 是非阻塞发现 backlog，不是 P1 完成门，也不得换算为剩余工作百分比。
 
-共享原版事件资产当前为 `163 contracts / 163 analysis / 13 observation keys`，production runtime 为 `302`。R372 已在同一
+共享原版事件资产本包为 `164 contracts / 164 analysis / 14 observation keys`，production runtime 为 `303`；迁移构成为
+legacy `156` + 独立 `8`，embedded bucket 仍为 `79`。R372 已在同一
 PID 热恢复 TGP0001；此前 stress RED 的真实根因是提交阶段重新按 base contract 解析，而不是 reload 未生效，两个最小补丁
 提交为 `039a509`、`e6ab3d4`。长跑随后同 PID 热恢复 `epidemic_events.1064` instance `867` 并验证 advance，继续推进到
 `epidemic_events.5009` instance `871` 的第二次合法交付；R374 随后将 `natural_disaster.7031` authored3/native2 同 PID drain 并验证 instance `978` advance，
@@ -32,10 +33,23 @@ commit `eeea8a6` 推送并通过 Official Runner；R374 在 PID `51852` / genera
 原版 `trait_specific.4001` #1040 的 exact-build yearly caller、直接/下游效果边界和实见三 scope shape 已由 commit
 `75a611e` 迁移并通过 Official Runner run `34398909398` / job `102625565721`。R374 同 PID/generation 选择
 authored2/native1，验证 instance `1040 -> null`、revision `1670 -> 1671`，成为第十条 production-live primitive；
-随后 #1041--#1045 安全 drain。当前长跑在原版 `death_management.1007` #1046 park7 选择前 RED 暂停；严格无 killer
+随后 #1041--#1045 安全 drain。原版 `death_management.1007` #1046 park7 的严格无 killer
 shape 为 `new_memory`/`dead_character`/`deceased_character_stress` 三 scope，唯一 authored1/native0 的完整直接效果为
-基础压力 20。该形状已迁移为最小共享合同，未来 killer/known_killer 或无 memory 变体仍须继续 RED。CK3 未重启，
-待本 package rebase/push 后原位热恢复并继续等待第三次 `.356`。
+基础压力 20。该形状已由 commit `c666335` 按 rebase-only 推送；Official Runner run `34401932801` / job
+`102635654978` completed/success。R374 保持 PID `51852` / generation `1`，选择 authored1/native0，验证 instance
+`1046 -> null`、snapshot `native:1779 -> native:1780`、revision `1780 -> 1781`、postcondition GREEN，成为第十一条
+production-live primitive。随后 `.0010` #1047 authored2/native1、`.5110` #1048 authored2/native1、`.1100` #1049
+authored1/native0 均安全 drain。
+
+当前长跑在原版 `faction_demand.2001` #1050 park8 选择前 RED 暂停：date `53595360`、player/root `32904`、snapshot
+`native:1847`、revision `1848`，五个 scope；native0 与 native2 enabled，native1 shown/disabled，selection 未尝试且
+无需进程重启。最小共享修复选择 authored3/native2 的拒绝路线，并增加通用 disabled-native 合同以区分“呈现但不可用”
+与真正的 shape mismatch；deadline `53635896`，尚余 `1689` game days。park8 report / driver-state / hot-recovery
+SHA-256 为 `AC7EF0A37844A7F0B252917DAB0922B77721F0CAE6FB2A7416BC0F4420BCF9CA` /
+`FDFD7C0B2AB7DF6DC936B9FC01D611F1F5425BA6E571CBB74942BF08A68A9F28` /
+`89B4F2F8F6ADD2243C0CAD803766EB6B82491D0EF8E3C3BCCC6B55E5BC41B561`。`.2001` 的双模式静态验收与实际 MCP
+查询已 GREEN，T2 判定 open_kaishek `NO-CODE-CHANGE`；该条仍尚未 live，待 commit/rebase/push 后在原 CK3
+PID/generation 原位热恢复，不因 Python 合同变化重启游戏。
 该增量不改变 T0、stage、source 或 P2 门。
 
 R303 已在 CK3 `1.19.0.6` 的真实 paused frame 完成 projects/metrics provider 后置条件：owner `32904`、subject

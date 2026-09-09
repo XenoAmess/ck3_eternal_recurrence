@@ -320,17 +320,21 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `163 contracts / 163 analysis / 13
-observation keys`，正式 MCP `list/call` 已接通；production runtime 当前消费 `302` 条事件合同。`TGP0160`、
+当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `164 contracts / 164 analysis / 14
+observation keys`（legacy `156` + 独立 `8`，embedded 仍为 `79`），正式 MCP `list/call` 已接通；production runtime 当前消费 `303` 条事件合同。`TGP0160`、
 `great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
 runner 的真实 drain/advance；`epidemic_events.1064` 也已同 PID 选择 reviewed native0 并完成 advance，R374 又将
 `natural_disaster.7031` authored3/native2、`ep3_story_cycle_admin_eunuch.1001` authored2/native1、`tribute_mission.1005` authored6/native5 与 `vassal_interaction.0040` authored1/native0 同 PID drain 并验证 instances `978`、`988`、`1007`、`1038` advance，合计九条
-`production-live primitive`；`.4001` 随后也以 authored2/native1 同 PID drain 并验证 instance `1040` advance，合计十条。
+`production-live primitive`；`.4001` 随后也以 authored2/native1 同 PID drain 并验证 instance `1040` advance。park7 的
+`.1007` package commit `c666335` 已按 rebase-only 推送，Official Runner run `34401932801` / job `102635654978`
+completed/success；R374 同 PID/generation 选择 authored1/native0，instance `1046 -> null`、snapshot
+`native:1779 -> native:1780`、revision `1780 -> 1781`、postcondition GREEN，因此当前合计十一条。
 `stress_threshold.1721` 保留为真实 RED observation：reload
 已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
 合同由提交 `039a509`、`e6ab3d4` 收口。R374 的 `natural_disaster.7031`、`ep3_story_cycle_admin_eunuch.1001`、
 `tribute_mission.1005`、`vassal_interaction.0040`、`trait_specific.4001` observations 均保留其选择前 RED，后续 drains 已 GREEN；`.1005` 只在既有精确 variants 之外
-新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十条实证切片，绝不表示 163 条都已实机验证。
+新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十一条实证切片，绝不表示 164 条都已实机验证；
+其余 `153` 条保持非 live。
 
 R374 随后在产品私有 `zg361p2c.2` 的第三次跨周期 summary 处 park4。该窗口由冻结 central tuple 失效后的 typed-RED
 terminal 触发；summary 本身的唯一选项仅清理 `summary_pending`。历史合同的 `max_occurrences=2` 是样本上限，不是生命周期
@@ -355,19 +359,38 @@ run `34398909398` / job `102625565721` completed/success。R374 在同一 PID `5
 instance `1040 -> null`、snapshot `native:1669 -> native:1670`、revision `1670 -> 1671`、
 `postcondition_verified=true`，因此提升为第十条 production-live primitive。其后 #1041--#1045 均安全 drain。
 
-当前 park7 为 `death_management.1007` #1046 / date `53590464`。root/player 为 `32904`；严格无 killer shape
+park7 为 `death_management.1007` #1046 / date `53590464`。root/player 为 `32904`；严格无 killer shape
 包含 `new_memory` character_memory/raw34、`dead_character` character `39246`/raw4 与
 `deceased_character_stress` value/raw1。唯一 rendered/native `0/0` 选项 shown/enabled 且非 fallback/cancel；实机
 indicator 只显示不完整的 stress increase，preview 与 semantic readiness 均不可用。exact-build
 `on_death -> .0001 -> delayed .0002 -> .1007` 已审阅：唯一选项的完整 authored effect 是基础压力 `20`，最终值仍由通用压力系统修正，
 `after` 仅显示 tooltip。合同只接受当前无 killer 三 scope shape，选择 authored1/native0；未来 killer/known_killer 或
-无 `new_memory` 变体继续保留 RED。当前 `selection_attempted=false`，产品绝对截止前尚余 `1893` game days。
+无 `new_memory` 变体继续保留 RED。该条现已按上述 commit/CI 收口并在原 PID/generation 热恢复 GREEN。其后
+`tgp_interaction_event.0010` #1047 authored2/native1、`debate_event.5110` #1048 authored2/native1 与
+`epidemic_events.1100` #1049 authored1/native0 均安全 drain。
+
+当前 park8 为 `faction_demand.2001` #1050 / date `53595360`：PID `51852` / generation `1`，root/player
+`32904`，snapshot `native:1847`、revision `1848`，paused、`selection_attempted=false`、
+`process_restart_required=false`。五个 scope 为 `faction` faction/raw25、`faction_leader` character
+`50355542`、`faction_target` character `32904`（等于 root/player）、`faction_claimant` character `39232` 与
+`faction_targeted_title` landed_title/raw5。三个 native rows 都 shown；native0/native2 enabled，native1 disabled。
+因此通用合同新增 `disabled_native_option_indices=(1,)`：已声明 disabled 的 row 必须保持 disabled，其他登记 row 必须
+enabled，且 selected native 不得属于 disabled 集合。安全路线为 authored3/native2 的拒绝：避免 native0 直接执行
+claimant faction war-win 结算，也不走 native1 的 co-emperor counter-offer，而是进入原版 claimant civil war，交由既有
+战争 OODA 继续处理。deadline `53635896`，尚余 `40536` 小时 / `1689` game days。
+
+park8 report / driver-state / hot-recovery SHA-256 为
+`AC7EF0A37844A7F0B252917DAB0922B77721F0CAE6FB2A7416BC0F4420BCF9CA` /
+`FDFD7C0B2AB7DF6DC936B9FC01D611F1F5425BA6E571CBB74942BF08A68A9F28` /
+`89B4F2F8F6ADD2243C0CAD803766EB6B82491D0EF8E3C3BCCC6B55E5BC41B561`。`.2001` 当前只是选择前 RED；
+双模式静态验收与实际 MCP 查询已 GREEN，T2 判定 open_kaishek `NO-CODE-CHANGE`。待 commit、rebase、push 后在原
+CK3 PID/generation 原位热重跑；Python 合同变化不触碰 DLL 或游戏文件，禁止为此无意义重启 CK3。
 
 TGP0001 与 epidemic1064 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.5009` instance `871` 的第二次合法
 出现处 park12 动作前 RED 停住。原版定义有十年 cooldown 且无 one-shot；当前 RED 来自旧合同的单次上限，不是异常高频触发。
 
 其余既有分析按原合同注释、docs 与 tests 做 migration-only 迁移；旧证据没有冻结 source hash 时明确保留
-`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `163/163` 的分析覆盖只证明知识可查询和迁移
+`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `164/164` 的分析覆盖只证明知识可查询和迁移
 无缺键，不替代逐事件 live evidence。
 
 同一当前快照下，T0 仍为 `50%`、canonical stage `8/11`，四类 source checkpoint 已完成 `3/4`，只缺

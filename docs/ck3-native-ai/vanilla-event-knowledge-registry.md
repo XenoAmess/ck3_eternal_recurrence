@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 默认扁平 registry 当前为 **163 个 unique vanilla event key**：20 个 vanilla shard、57 个 manager-original、79 个 embedded-original 合并为 156 个 unique key，再加独立的 `tgp_movement_events.0160`、`tgp_dynastic_cycle_events.0001`、`tgp_dynastic_cycle_events.0020`、`epidemic_events.1064`、`vassal_interaction.0040`、`trait_specific.4001` 与 `death_management.1007`。该数量由 registry/migration 测试冻结；以后代码和测试同步调整时，以测试中的当前期望值为准。
-- [static-ready analysis / mixed live evidence] 当前同时发布 **163 条 analysis** 与 **13 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；`TGP0160`、`great_holy_war.0011`、`TGP0020`、`TGP0001` 与 `epidemic_events.1064` 已完成 production runner 的真实 drain/advance，`stress_threshold.1721`、`epidemic_events.5009` 的第二次合法出现以及 R374 的 `natural_disaster.7031`、`ep3_story_cycle_admin_eunuch.1001`、`tribute_mission.1005`、`vassal_interaction.0040`、`trait_specific.4001`、`death_management.1007` 均保留真实 RED observations。
+- [static-ready] 本包默认扁平 registry 为 **164 个 unique vanilla event key**：20 个 vanilla shard、57 个 manager-original、79 个 embedded-original 合并为 156 个 unique key，再加八个独立记录：`tgp_movement_events.0160`、`tgp_dynastic_cycle_events.0001`、`tgp_dynastic_cycle_events.0020`、`epidemic_events.1064`、`vassal_interaction.0040`、`trait_specific.4001`、`death_management.1007` 与 `faction_demand.2001`。迁移公式为 `156 + 8 = 164`，embedded bucket 仍为 `79`；数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 本包同时发布 **164 条 analysis** 与 **14 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；`TGP0160`、`great_holy_war.0011`、`TGP0020`、`TGP0001`、`epidemic_events.1064` 及 R374 后续六个共享事件已完成 production runner 的真实 drain/advance。`stress_threshold.1721`、`epidemic_events.5009` 的第二次合法出现和已迁移条目的选择前 RED observations 均继续保留；当前第十四个 observation 是尚未选择的 `faction_demand.2001` park8。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读查询可以被静态消费者使用，不表示 163 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前组合 `302` 条事件合同；共享 registry 的 production-live 标签严格只落在十条已完成选择与 advance 的切片。TGP0001、epidemic1064、`.7031`、`.1001`、`.1005`、`.0040` 与 `.4001` 均在同一 PID 热恢复后完成 reviewed selection；后五者的 observations 保留选择前 RED，而 R374 随后的 drains 已 GREEN。park4/park5/park6 已闭合；当前 park7 的原版 `death_management.1007` 已完成选择前共享迁移，但尚未提交选择，不改变 T0 产品进度。
+当前状态表示 registry、默认数据组合和只读查询可以被静态消费者使用，不表示 164 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 本包组合 `303` 条事件合同；共享 registry 的 production-live 标签严格只落在十一条已完成选择与 advance 的切片。park7 的 `death_management.1007` 已在 R374 同一 PID `51852` / generation `1` 选择 authored1/native0，instance `1046 -> null`、snapshot `native:1779 -> native:1780`、revision `1780 -> 1781` 且 postcondition GREEN，成为第十一条。当前 park8 的 `faction_demand.2001` 仍为选择前 RED，不计作 live；因此十一条 GREEN 之外还有 `153` 条非 live 记录。该增量不改变 T0 产品进度。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -40,6 +40,7 @@ Registry v1 只支持：
 - `records_vassal_interaction.py`：自动接受的封臣头衔索取信件的通用合同、exact-build 分析与选择前观察；
 - `records_trait_specific.py`：按需登记的 trait-specific 原版事件合同、exact-build 调用/效果分析与实机观察；
 - `records_death_management.py`：按需登记的新 death-management 原版事件合同、exact-build 调用/效果分析与实机观察；
+- `records_faction_demand.py`：按需登记 claimant faction demand 的通用合同、exact-build 调用/效果分析与选择前实机观察；
 - `records_analysis_vanilla_shards.py`、`records_analysis_manager_*.py`、`records_analysis_embedded_*.py`：把已有结论迁移为默认 analysis；没有既有 source hash 的条目保持 migration-only；
 - `records_prebootstrap.py`：两条不进入默认扁平表的上下文 profile；
 - `registry.py`：构建、物化与只读查询实现。
@@ -57,6 +58,7 @@ Invariant contract 用来匹配和处理事件，典型字段包括：
 - root、named saved scope 的类型与相等/互异关系；
 - source-reviewed 的 scope/option projection variants；
 - authored native index、rendered option count 与选择映射；
+- source 明确呈现但当前不可选的 native row；`disabled_native_option_indices` 只允许声明 `native_option_indices` 的严格子集，选择目标不得落入该集合；
 - 日期/occurrence policy；
 - 用于有界 drain 的 `selected_option_number` 与 `selected_native_option_index`。
 
@@ -72,9 +74,13 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-R372/R374 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 在同一个 knowledge envelope 中以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；所有 163 条记录已有 analysis，只有十三条拥有 observation metadata。元数据可查询，但不会混入选择合同或被物化成当前人物约束。
+R372/R374 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 在同一个 knowledge envelope 中以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 164 条记录已有 analysis，十四条拥有 observation metadata。元数据可查询，但不会混入选择合同或被物化成当前人物约束。
 
-R372 已在同一 PID/session 上把 `TGP0160`、`great_holy_war.0011`、`tgp_dynastic_cycle_events.0020`、`tgp_dynastic_cycle_events.0001` 与 `epidemic_events.1064` 从共享记录解析到真实 option submission，并验证旧 instance 消失或 advance；R374 又把 `.7031` authored3/native2、`.1001` authored2/native1、`.1005` authored6/native5、`.0040` authored1/native0 与 `.4001` authored2/native1 依次同 PID drain 并验证 instances `978`、`988`、`1007`、`1038`、`1040` advance，因此十条均为 `production-live primitive`。`stress_threshold.1721` observation 保留前一次真实 RED：共享模块 reload 实际已经生效，错误是 submission 阶段再次按 base contract 解析，导致提交了 base route；这不是 reload failure。`.5009` 的第一次交付曾真实 GREEN，第二次交付则证明旧 `max_occurrences=1` 错误。`.7031`、`.1001`、`.1005`、`.0040`、`.4001` observations 保留的是选择前 RED，随后 live drains 已 GREEN；`.1005` 的通用合同只新增实测 rejected-eunuch 十六 scope shape，既有精确 variants 不变。`.0040` 合同仅接受 exact-build 审阅证明的 7-scope 信件 shape；`.4001` 只接受实见 create-witch+secret 3-scope shape。`.1007` 的选择前 observation 对应严格无 killer 的 heir-death 3-scope shape，尚不计入 live。十条 GREEN 不能外推为其余 153 条记录已经 live。
+R372 已在同一 PID/session 上把 `TGP0160`、`great_holy_war.0011`、`tgp_dynastic_cycle_events.0020`、`tgp_dynastic_cycle_events.0001` 与 `epidemic_events.1064` 从共享记录解析到真实 option submission，并验证旧 instance 消失或 advance；R374 又把 `.7031` authored3/native2、`.1001` authored2/native1、`.1005` authored6/native5、`.0040` authored1/native0、`.4001` authored2/native1 与 `.1007` authored1/native0 依次同 PID drain 并验证 instances `978`、`988`、`1007`、`1038`、`1040`、`1046` advance，因此十一条均为 `production-live primitive`。`.1007` 的动作后 snapshot `native:1779 -> native:1780`、revision `1780 -> 1781`，postcondition GREEN；随后 `.0010` #1047 authored2/native1、`.5110` #1048 authored2/native1、`.1100` #1049 authored1/native0 均安全 drain。`stress_threshold.1721` observation 保留前一次真实 RED：共享模块 reload 实际已经生效，错误是 submission 阶段再次按 base contract 解析，导致提交了 base route；这不是 reload failure。`.5009` 的第一次交付曾真实 GREEN，第二次交付则证明旧 `max_occurrences=1` 错误。选择前 RED observations 不因后续 GREEN 删除。
+
+当前 park8 为 `faction_demand.2001` #1050：PID `51852` / generation `1`、date `53595360`、root/player `32904`、snapshot `native:1847`、revision `1848`、paused，且 `selection_attempted=false`、`process_restart_required=false`。五个 scope 为 `faction` faction/raw25、`faction_leader` character `50355542`、`faction_target` character `32904`（等于玩家/root）、`faction_claimant` character `39232`、`faction_targeted_title` landed_title/raw5；native0 与 native2 shown/enabled，native1 shown/disabled。产品绝对 deadline `53635896`，尚余 `40536` 小时、即 `1689` game days。安全合同选择 authored3/native2 的拒绝路线：它保持当前头衔/法律/角色表不被投降路径直接改写，并进入原版 claimant civil war；native0 接受会执行 claimant faction war-win 共同结算，native1 是当前 disabled 的 co-emperor counter-offer，不作为安全确定路线。该条尚未选择，不能写作第十二条 live。
+
+`.2001` 的 exact-build analysis 冻结以下原版 source SHA-256：`events/factions/faction_demands.txt` = `B06241E67B6692F51FCFC6021E4DBE085C9E25A50B9CD08957CBCC9E25AEBEA9`；`common/factions/00_factions.txt` = `0A47171476811DD16EBD44A7335EAEBD17376FD87E41290F72B5C6785365B276`；`common/factions/_factions.info` = `FB47457AABE7C7DF78555B4DFBA74B8932DAE468C45EBB2D1381CADDC2B7E019`；`common/defines/00_defines.txt` = `C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807`；`common/scripted_modifiers/00_faction_modifiers.txt` = `CD3DAA9DA33C3DFD15934CA30C1B2D7381E0B3968337BF52A7CBC2F9F2237102`；`common/script_values/00_faction_values.txt` = `4EE4098080B8C4536E74B047801F8715DD5EB0BCDCBAC04A8E3BF563D6555932`；`common/on_action/faction_on_actions.txt` = `A4E3EDA2F31CB08D29DEAE1A1CDBD89256973A81FC1A1D4DF00D9CF5BBCB68FB`；`common/scripted_effects/00_faction_effects.txt` = `C8E0B3C57665F775973BC8559166CD1F6414471CA25017800777C3C6466DC5D3`；`common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt` = `DEE9D48221B49EF41490D04451ACD6DBFD4994A50EAD9D006F831F41A6247A83`；`common/scripted_effects/00_war_effects.txt` = `A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D`；`common/casus_belli_types/00_civil_war.txt` = `CFF84009E58F5D6386A6D7501CFF084CB206A542E7D0CFA221ED2CC050A9DA68`。park8 immutable report / driver-state / hot-recovery SHA-256 为 `AC7EF0A37844A7F0B252917DAB0922B77721F0CAE6FB2A7416BC0F4420BCF9CA` / `FDFD7C0B2AB7DF6DC936B9FC01D611F1F5425BA6E571CBB74942BF08A68A9F28` / `89B4F2F8F6ADD2243C0CAD803766EB6B82491D0EF8E3C3BCCC6B55E5BC41B561`。
 
 批量迁移 analysis 的证据等级低于带 exact source hash 的逐条审阅：它只复用已有合同注释、历史 docs 和 tests。若旧证据没有保存 source hash，metadata 必须明确写 migration-only；不得为了让字段看起来齐全而事后猜测 hash。
 
@@ -91,7 +97,7 @@ selected_native_option_index # 0-based CK3 authored index
 
 这里的 safe choice 只表示对既定用途的最小、有界 drain 路线，例如终止支线、避免新 follow-up 阻塞链、避免资源支付或保持当前任务；它不表示“最佳选项”“绝对无副作用”或完整 campaign utility。TGP0160 就明确记录：native 2 避免十五年 scheme block 和 gold transfer，但仍有少量 intrigue lifestyle XP 与 ambitious stress 影响。
 
-消费者选择前仍须从同一 paused revision 验证 event key/instance、root/scope shape、实际 `shown=true && enabled=true` 以及 native/rendered mapping；选择后须观察 event instance 消失或前进，以及用途需要的状态后置。Command ACK 不是完成证据。
+消费者选择前仍须从同一 paused revision 验证 event key/instance、root/scope shape、shown/enabled 以及 native/rendered mapping：合同声明在 `disabled_native_option_indices` 的 row 必须 `shown=true && enabled=false`，其余登记 row 必须 `shown=true && enabled=true`，且 selected native 不得属于 disabled 集合。选择后须观察 event instance 消失或前进，以及用途需要的状态后置。Command ACK 不是完成证据。
 
 若当前 projection 与合同不符、登记选项不可用或缺少满足当前用途的知识，消费者必须保留 paused RED，并按“查原版定义 → 最小修复 → 定向重跑”补记录。不得降级为 OCR 猜测、盲点第一个按钮，或把 `is_cancel_option` 当作无效果证明。
 
@@ -105,7 +111,7 @@ Registry 是离线静态数据，因此另一台机器只需取得同一仓库/p
 
 ### T0 天朝二期 validator
 
-T0 的 migration parity 测试逐 bucket 对照旧合同，并冻结 `20/57/79` 数量、156 个迁移 unique key，以及两条 prebootstrap 有意 overlap；再加 TGP0160、TGP0001、TGP0020、epidemic1064、vassal-interaction0040、trait-specific4001 与 death-management1007，默认合同与 analysis 均为 163。后续 T0 consumer 应按实际产品路径查询或物化所引用的记录，并继续用产品自己的 window、occurrence、source checkpoint 和业务后置条件验收。
+T0 的 migration parity 测试逐 bucket 对照旧合同，并冻结 `20/57/79` 数量、156 个迁移 unique key，以及两条 prebootstrap 有意 overlap；再加八个独立记录（含本包 `faction_demand.2001`），默认合同与 analysis 均为 164。后续 T0 consumer 应按实际产品路径查询或物化所引用的记录，并继续用产品自己的 window、occurrence、source checkpoint 和业务后置条件验收。
 
 共享 registry GREEN 只说明引用的原版中断知识可解析且与迁移基线一致；它不能提升 T0 stage、四类 source、full-tree 或媒体 readiness。Prebootstrap validator 必须显式选择对应 profile，不能从默认扁平 lookup 取得 seed-capture shape。
 
@@ -146,7 +152,7 @@ unavailable_reason = null
 ## Migration 与兼容
 
 - Schema 当前为 `xar.ck3.vanilla-event-knowledge` v1。消费者必须检查 schema version；未来破坏性字段语义变更应使用新版本，不能静默复用 v1。
-- 迁移测试保证 legacy buckets 逐值相等、默认合同与 analysis 均精确覆盖 163 key，并拒绝意外 duplicate/conflict；默认组合故意不加入两条 prebootstrap context profile。
+- 迁移测试保证 legacy buckets 逐值相等、默认合同与 analysis 均精确覆盖 164 key，并拒绝意外 duplicate/conflict；默认组合故意不加入两条 prebootstrap context profile。
 - `$player` materializer 只替换值完全等于 sentinel 的字段，不改写包含该字样的普通字符串，并返回独立副本。
 - 查询边界统一将 tuple 投影为 JSON array，从而允许原 Python consumer 保持旧合同类型，同时让 MCP 跨进程、跨机器稳定序列化。
 - 新 CK3 build、改变的原版 definition 或 mod override 都需要显式新证据；v1 不提供“相似版本大概兼容”的 fallback。
@@ -154,7 +160,7 @@ unavailable_reason = null
 
 ## 明确不是 `361/626` exhaustive gate
 
-默认 163 key 是当前按需积累的复用资产，不是覆盖率目标。Registry 不要求在继续 T0、运行其它 mod、CI 或发布前枚举全部 `361` 个场景或 `626` 个 definition。
+默认 164 key 是当前按需积累的复用资产，不是覆盖率目标。Registry 不要求在继续 T0、运行其它 mod、CI 或发布前枚举全部 `361` 个场景或 `626` 个 definition。
 
 - `known/total` 只可作为 discovery telemetry，不能换算产品完成百分比；
 - 未遇到、未引用的 definition 不进入发布或实机前置门；

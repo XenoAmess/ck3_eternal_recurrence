@@ -7758,6 +7758,136 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         purchase_only_shape["options"] = purchase_only_shape["options"][:1]
         self.assertFalse(checks_for(purchase_only_shape)["authored_options_exact"])
 
+    def test_visible_disabled_option_contract_is_exact_and_preserved(self) -> None:
+        event_key = "test.visible_disabled_option"
+        contract: dict[str, object] = {
+            "date_raw": 53174184,
+            "date_policy": "product-observation-window",
+            "root_character_id": 32904,
+            "character_scopes": {},
+            "scope_types": {},
+            "boolean_scopes": (),
+            "option_count": 3,
+            "native_option_indices": (0, 1, 2),
+            "disabled_native_option_indices": (1,),
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+        }
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 65,
+            "date_raw": 53174184,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 32904,
+                },
+            },
+            "saved_scopes": [],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_option_index,
+                    "shown": True,
+                    "enabled": native_option_index != 1,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_option_index in enumerate((0, 1, 2))
+            ],
+        }
+        snapshot = {
+            "date_raw": 53174184,
+            "active_event": {"option_count": 3},
+        }
+        event = {"event_instance_id": 65}
+
+        def checks_for(
+            candidate_context: dict[str, object],
+            candidate_contract: dict[str, object] = contract,
+        ) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot=snapshot,
+                event=event,
+                context=candidate_context,
+                event_key=event_key,
+                contract=candidate_contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+
+        rebound = production._manager_recovery_contract(
+            contract,
+            player=32904,
+            event_key=event_key,
+        )
+        self.assertEqual(rebound["disabled_native_option_indices"], (1,))
+        materialized = production._manager_recovery_authored_event_contract(
+            contract,
+            player=32904,
+            starting_date=53174184,
+        )
+        self.assertEqual(
+            materialized["disabled_native_option_indices"],
+            (1,),
+        )
+
+        unexpectedly_enabled = copy.deepcopy(context)
+        unexpectedly_enabled["options"][1]["enabled"] = True
+        self.assertFalse(
+            checks_for(unexpectedly_enabled)["authored_options_exact"]
+        )
+
+        for rendered_index in (0, 2):
+            with self.subTest(unexpectedly_disabled=rendered_index):
+                unexpectedly_disabled = copy.deepcopy(context)
+                unexpectedly_disabled["options"][rendered_index][
+                    "enabled"
+                ] = False
+                self.assertFalse(
+                    checks_for(unexpectedly_disabled)[
+                        "authored_options_exact"
+                    ]
+                )
+
+        selected_disabled = copy.deepcopy(contract)
+        selected_disabled["selected_option_number"] = 2
+        selected_disabled["selected_native_option_index"] = 1
+        selected_checks = checks_for(context, selected_disabled)
+        self.assertFalse(
+            selected_checks["disabled_native_option_indices_contract"]
+        )
+        self.assertFalse(all(selected_checks.values()))
+
+        for invalid_declaration in ((1, 1), (True,), (3,), [1]):
+            with self.subTest(invalid_declaration=invalid_declaration):
+                invalid_contract = copy.deepcopy(contract)
+                invalid_contract["disabled_native_option_indices"] = (
+                    invalid_declaration
+                )
+                invalid_checks = checks_for(context, invalid_contract)
+                self.assertFalse(
+                    invalid_checks[
+                        "disabled_native_option_indices_contract"
+                    ]
+                )
+
+        default_contract = copy.deepcopy(contract)
+        default_contract.pop("disabled_native_option_indices")
+        all_enabled = copy.deepcopy(context)
+        for option in all_enabled["options"]:
+            option["enabled"] = True
+        default_checks = checks_for(all_enabled, default_contract)
+        self.assertTrue(all(default_checks.values()), default_checks)
+
 
 if __name__ == "__main__":
     unittest.main()
