@@ -180,6 +180,7 @@ sys.path.insert(0, str(root / "tools"))
 sys.path.insert(0, str(root / "ck3_autonomous_player" / "src"))
 
 import zg361_phase2_promotion_source_production_entry as production
+import zg361_phase2_promotion_central_contracts as central
 import zg361_phase2_promotion_career_hc_contracts as career_hc
 from xar_autoplayer.vanilla_events import records_embedded, records_tgp_dynastic_cycle
 
@@ -187,9 +188,12 @@ event_key = "stress_threshold.1721"
 before = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
 product_event_key = "zg361ch.950"
 product_before = production.KNOWN_TIMELINE_INTERRUPTS[product_event_key]
+central_event_key = "zg361p2c.2"
+central_before = production.KNOWN_TIMELINE_INTERRUPTS[central_event_key]
 reloaded = importlib.reload(production)
 canonical = records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
 product_canonical = career_hc.CAREER_HC_TIMELINE_CONTRACTS[product_event_key]
+central_canonical = central.CENTRAL_TIMELINE_CONTRACTS[central_event_key]
 if reloaded is not production:
     raise SystemExit("production module identity changed")
 if production.KNOWN_TIMELINE_INTERRUPTS[event_key] is not canonical:
@@ -200,6 +204,14 @@ if production.KNOWN_TIMELINE_INTERRUPTS[product_event_key] is not product_canoni
     raise SystemExit("production contract is not the refreshed career/HC leaf")
 if product_canonical is product_before:
     raise SystemExit("reload retained the stale career/HC contract")
+if production.KNOWN_TIMELINE_INTERRUPTS[central_event_key] is not central_canonical:
+    raise SystemExit("production contract is not the refreshed central leaf")
+if central_canonical is central_before:
+    raise SystemExit("reload retained the stale central contract")
+if central_canonical.get("occurrence_policy") != (
+    "repeatable-within-product-observation-window"
+):
+    raise SystemExit("central summary did not retain repeatable policy")
 if product_canonical.get("occurrence_policy") != (
     "repeatable-within-product-observation-window"
 ):
@@ -243,12 +255,13 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
             ),
         )
 
-    def test_central_summary_allows_two_observed_cycle_terminals(self) -> None:
+    def test_central_summary_repeats_across_product_cycles(self) -> None:
         event_key = "zg361p2c.2"
         contract = production._resolve_timeline_interrupt_contract(
             event_key,
             player=32904,
-            starting_date=53199480,
+            starting_date=53391336,
+            absolute_end_date=53635896,
             stop_at_clean_review_boundary=False,
             continue_to_pause_target=True,
         )
@@ -257,23 +270,40 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
         self.assertEqual(contract["option_count"], 1)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
-        self.assertEqual(contract["max_occurrences"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
 
-        completed = [
-            {"event_definition_key": event_key, "date_raw": 53201136},
-            {"event_definition_key": event_key, "date_raw": 53217456},
-        ]
-        max_occurrences = int(contract["max_occurrences"])
-
-        def next_occurrence_allowed(rows: list[dict[str, object]]) -> bool:
-            occurrence_count = sum(
-                row.get("event_definition_key") == event_key for row in rows
-            )
-            return occurrence_count < max_occurrences
-
-        self.assertTrue(next_occurrence_allowed([]))
-        self.assertTrue(next_occurrence_allowed(completed[:1]))
-        self.assertFalse(next_occurrence_allowed(completed))
+        for instance_id, date_raw in (
+            (674, 53438688),
+            (859, 53479536),
+            (1035, 53578992),
+        ):
+            with self.subTest(instance_id=instance_id):
+                context = _context(
+                    event_key=event_key,
+                    instance_id=instance_id,
+                    date_raw=date_raw,
+                    player=32904,
+                    scopes=[
+                        _scope("zg361_p2c_summary_cycle", "value"),
+                        _scope("zg361_p2c_summary_case", "value"),
+                    ],
+                    native_option_indices=(0,),
+                )
+                checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": date_raw,
+                        "active_event": {"option_count": 1},
+                    },
+                    event={"event_instance_id": instance_id},
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
 
     def test_career_hc_portfolio_repeats_with_exact_safe_route(self) -> None:
         event_key = "zg361ch.950"

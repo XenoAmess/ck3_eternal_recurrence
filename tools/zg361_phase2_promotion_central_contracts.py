@@ -22,10 +22,10 @@ CENTRAL_TIMELINE_CONTRACTS: dict[str, dict[str, object]] = {
         "option_count": 1,
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        # R340 observed one summary for the inherited Central completion and
-        # a second after the next product cycle at 53217456. The current
-        # three-cycle source route must acknowledge both, while the sole
-        # authored option remains the exact summary_pending clear operation.
-        "max_occurrences": 2,
+        # Every new review cycle may finish, abort or suspend once and queue
+        # this summary. summary_pending prevents duplicates inside one cycle;
+        # the observation window, rather than an old sample count, bounds the
+        # recovery run. The sole option remains the exact pending clear.
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

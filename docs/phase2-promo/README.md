@@ -22,8 +22,10 @@ T0 当前仍为 `50%`、canonical stage `8/11`；T0-P1 未签收，所以最终�
 PID 热恢复 TGP0001；此前 stress RED 的真实根因是提交阶段重新按 base contract 解析，而不是 reload 未生效，两个最小补丁
 提交为 `039a509`、`e6ab3d4`。长跑随后同 PID 热恢复 `epidemic_events.1064` instance `867` 并验证 advance，继续推进到
 `epidemic_events.5009` instance `871` 的第二次合法交付；R374 随后将 `natural_disaster.7031` authored3/native2 同 PID drain 并验证 instance `978` advance，
-其选择前 RED observation 仍保留。R374 随后又将 `ep3_story_cycle_admin_eunuch.1001` authored2/native1 同 PID drain 并验证 instance `988` advance；
-当前 `tribute_mission.1005` instance `1007` 动作前 RED 已迁移为通用合同、analysis 与 observation。
+其选择前 RED observation 仍保留。R374 随后又将 `ep3_story_cycle_admin_eunuch.1001` authored2/native1 与
+`tribute_mission.1005` authored6/native5 同 PID drain，并分别验证 instances `988`、`1007` advance；三条动作前 RED
+observation 继续保留。当前长跑在产品私有 `zg361p2c.2` 第三次跨周期 summary 的旧 occurrence bound 处 park4；
+该 summary 来自 typed-RED terminal，合同修复不改变产品结果，只允许安全确认后继续等待第三次 `.356`。
 该增量不改变 T0、stage、source 或 P2 门。
 
 R303 已在 CK3 `1.19.0.6` 的真实 paused frame 完成 projects/metrics provider 后置条件：owner `32904`、subject
