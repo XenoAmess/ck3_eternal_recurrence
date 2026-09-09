@@ -18,8 +18,8 @@ incidents/operations 纳入 schema-v3 多分支联合前缀，不能再沿用当
 T0 当前仍为 `50%`、canonical stage `8/11`；T0-P1 未签收，所以最终宣传片 T0-P2 继续硬锁定。`strict 4/361` 与
 `definitions 106/626` 是非阻塞发现 backlog，不是 P1 完成门，也不得换算为剩余工作百分比。
 
-共享原版事件资产本包为 `164 contracts / 164 analysis / 14 observation keys`，production runtime 为 `303`；迁移构成为
-legacy `156` + 独立 `8`，embedded bucket 仍为 `79`。R372 已在同一
+共享原版事件资产本包为 `165 contracts / 165 analysis / 15 observation keys`，production runtime 为 `304`；冻结迁移基线
+`156 + 8 = 164` 与 embedded bucket `79` 不变，`.1101` 是其后新增记录。R372 已在同一
 PID 热恢复 TGP0001；此前 stress RED 的真实根因是提交阶段重新按 base contract 解析，而不是 reload 未生效，两个最小补丁
 提交为 `039a509`、`e6ab3d4`。长跑随后同 PID 热恢复 `epidemic_events.1064` instance `867` 并验证 advance，继续推进到
 `epidemic_events.5009` instance `871` 的第二次合法交付；R374 随后将 `natural_disaster.7031` authored3/native2 同 PID drain 并验证 instance `978` advance，
@@ -41,16 +41,31 @@ shape 为 `new_memory`/`dead_character`/`deceased_character_stress` 三 scope，
 production-live primitive。随后 `.0010` #1047 authored2/native1、`.5110` #1048 authored2/native1、`.1100` #1049
 authored1/native0 均安全 drain。
 
-当前长跑在原版 `faction_demand.2001` #1050 park8 选择前 RED 暂停：date `53595360`、player/root `32904`、snapshot
+park8 的原版 `faction_demand.2001` #1050 动作前为 date `53595360`、player/root `32904`、snapshot
 `native:1847`、revision `1848`，五个 scope；native0 与 native2 enabled，native1 shown/disabled，selection 未尝试且
 无需进程重启。最小共享修复选择 authored3/native2 的拒绝路线，并增加通用 disabled-native 合同以区分“呈现但不可用”
-与真正的 shape mismatch；deadline `53635896`，尚余 `1689` game days。park8 report / driver-state / hot-recovery
+与真正的 shape mismatch；动作前 deadline `53635896`，尚余 `1689` game days。park8 report / driver-state / hot-recovery
 SHA-256 为 `AC7EF0A37844A7F0B252917DAB0922B77721F0CAE6FB2A7416BC0F4420BCF9CA` /
 `FDFD7C0B2AB7DF6DC936B9FC01D611F1F5425BA6E571CBB74942BF08A68A9F28` /
 `89B4F2F8F6ADD2243C0CAD803766EB6B82491D0EF8E3C3BCCC6B55E5BC41B561`。`.2001` 的双模式静态验收与实际 MCP
-查询已 GREEN，T2 判定 open_kaishek `NO-CODE-CHANGE`；该条仍尚未 live，待 commit/rebase/push 后在原 CK3
-PID/generation 原位热恢复，不因 Python 合同变化重启游戏。
-该增量不改变 T0、stage、source 或 P2 门。
+查询 GREEN，T2 判定 open_kaishek `NO-CODE-CHANGE`；package commit
+`3bb5169ca2b81701a8ea49e9d842de36f39fd87b` 已按 rebase-only push，Official Runner run `34404896747` / job
+`102645406781` 约 4 分 26 秒 completed/success、失败步骤为空。R374 在原 PID `51852` / generation `1` 原位选择
+authored3/native2，instance `1050 -> null`、snapshot `native:1847 -> native:1848`、revision `1848 -> 1849`、
+postcondition GREEN，成为第十二条 production-live primitive。
+
+当前长跑在新的 `faction_demand.1101` #1055 park9 选择前 RED 暂停：date `53607792`、player/root `32904`、
+snapshot `native:2057`、revision `2058`，四个 scope；native0/native1 均 shown/enabled、非 fallback/cancel，
+selection 未尝试且无需进程重启。四个 scope 为 `faction` faction/raw25、`peasant_county` landed_title/raw5、
+`peasant_leader` character `33633057`/raw4 与 `new_title` landed_title/raw5。exact-build 可重复合同选择
+authored1/native0；eligible 月检普通约 50 个月、高不满加成约 7 个月，另有 90 eligible days 上界，不是 daily pulse。
+接受仍有 legitimacy、top-liege 县控制/十年 modifier 等代价，但避免拒绝立即开战；宗教只作附带边界。deadline
+`53635896`，尚余 `1171` game days。park9 report /
+driver-state / hot-recovery SHA-256 为 `BA39B64ACC3224E8F1F5D5C04719A04106430D7F2F2551DEC52CCEC514FC3AA6` /
+`78C84C846ED9D2F05AF153EC9302C4C3A85C645FD0B33316CD212B10E342C494` /
+`4E3B59B3EB6328939D2008BD2DD4138546C0224F76D62297D19415138DF577E6`。代码/双模式测试和实际 MCP list/call
+已 GREEN，T2 为 `NO-CODE-CHANGE`；Python normal/`-O` 各 `42/42`、open_kaishek `3/3` GREEN。仅
+commit/rebase/push 与同 PID live retry 尚待；live 仍为 12、non-live 为 153。该增量不改变 T0、stage、source 或 P2 门。
 
 R303 已在 CK3 `1.19.0.6` 的真实 paused frame 完成 projects/metrics provider 后置条件：owner `32904`、subject
 `30938`、cycle/case `4/2`，CP #026 contribution receipt `1` / revision `3` / value `1` 被 P3 #229 metrics revision

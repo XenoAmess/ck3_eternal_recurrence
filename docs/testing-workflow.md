@@ -320,20 +320,24 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `164 contracts / 164 analysis / 14
-observation keys`（legacy `156` + 独立 `8`，embedded 仍为 `79`），正式 MCP `list/call` 已接通；production runtime 当前消费 `303` 条事件合同。`TGP0160`、
+当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `165 contracts / 165 analysis / 15
+observation keys`；冻结迁移基线 `156 + 8 = 164` 与 embedded `79` 不变，`.1101` 是其后新增记录。正式 MCP `list/call` 已接通；production runtime 当前消费 `304` 条事件合同。`TGP0160`、
 `great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
 runner 的真实 drain/advance；`epidemic_events.1064` 也已同 PID 选择 reviewed native0 并完成 advance，R374 又将
 `natural_disaster.7031` authored3/native2、`ep3_story_cycle_admin_eunuch.1001` authored2/native1、`tribute_mission.1005` authored6/native5 与 `vassal_interaction.0040` authored1/native0 同 PID drain 并验证 instances `978`、`988`、`1007`、`1038` advance，合计九条
 `production-live primitive`；`.4001` 随后也以 authored2/native1 同 PID drain 并验证 instance `1040` advance。park7 的
 `.1007` package commit `c666335` 已按 rebase-only 推送，Official Runner run `34401932801` / job `102635654978`
 completed/success；R374 同 PID/generation 选择 authored1/native0，instance `1046 -> null`、snapshot
-`native:1779 -> native:1780`、revision `1780 -> 1781`、postcondition GREEN，因此当前合计十一条。
+`native:1779 -> native:1780`、revision `1780 -> 1781`、postcondition GREEN。`.2001` package commit
+`3bb5169ca2b81701a8ea49e9d842de36f39fd87b` 随后同样按 rebase-only 推送，Official Runner run `34404896747` /
+job `102645406781` 约 4 分 26 秒 completed/success、失败步骤为空；同一 PID/generation 选择 authored3/native2，
+instance `1050 -> null`、snapshot `native:1847 -> native:1848`、revision `1848 -> 1849`、postcondition GREEN，
+因此当前合计十二条。
 `stress_threshold.1721` 保留为真实 RED observation：reload
 已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
 合同由提交 `039a509`、`e6ab3d4` 收口。R374 的 `natural_disaster.7031`、`ep3_story_cycle_admin_eunuch.1001`、
 `tribute_mission.1005`、`vassal_interaction.0040`、`trait_specific.4001` observations 均保留其选择前 RED，后续 drains 已 GREEN；`.1005` 只在既有精确 variants 之外
-新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十一条实证切片，绝不表示 164 条都已实机验证；
+新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十二条实证切片，绝不表示 165 条都已实机验证；
 其余 `153` 条保持非 live。
 
 R374 随后在产品私有 `zg361p2c.2` 的第三次跨周期 summary 处 park4。该窗口由冻结 central tuple 失效后的 typed-RED
@@ -369,28 +373,46 @@ indicator 只显示不完整的 stress increase，preview 与 semantic readiness
 `tgp_interaction_event.0010` #1047 authored2/native1、`debate_event.5110` #1048 authored2/native1 与
 `epidemic_events.1100` #1049 authored1/native0 均安全 drain。
 
-当前 park8 为 `faction_demand.2001` #1050 / date `53595360`：PID `51852` / generation `1`，root/player
-`32904`，snapshot `native:1847`、revision `1848`，paused、`selection_attempted=false`、
+park8 的 `faction_demand.2001` #1050 / date `53595360`：PID `51852` / generation `1`，root/player
+`32904`，动作前 snapshot `native:1847`、revision `1848`，paused、`selection_attempted=false`、
 `process_restart_required=false`。五个 scope 为 `faction` faction/raw25、`faction_leader` character
 `50355542`、`faction_target` character `32904`（等于 root/player）、`faction_claimant` character `39232` 与
 `faction_targeted_title` landed_title/raw5。三个 native rows 都 shown；native0/native2 enabled，native1 disabled。
 因此通用合同新增 `disabled_native_option_indices=(1,)`：已声明 disabled 的 row 必须保持 disabled，其他登记 row 必须
 enabled，且 selected native 不得属于 disabled 集合。安全路线为 authored3/native2 的拒绝：避免 native0 直接执行
 claimant faction war-win 结算，也不走 native1 的 co-emperor counter-offer，而是进入原版 claimant civil war，交由既有
-战争 OODA 继续处理。deadline `53635896`，尚余 `40536` 小时 / `1689` game days。
+战争 OODA 继续处理。动作前 deadline `53635896`，尚余 `40536` 小时 / `1689` game days。
 
 park8 report / driver-state / hot-recovery SHA-256 为
 `AC7EF0A37844A7F0B252917DAB0922B77721F0CAE6FB2A7416BC0F4420BCF9CA` /
 `FDFD7C0B2AB7DF6DC936B9FC01D611F1F5425BA6E571CBB74942BF08A68A9F28` /
-`89B4F2F8F6ADD2243C0CAD803766EB6B82491D0EF8E3C3BCCC6B55E5BC41B561`。`.2001` 当前只是选择前 RED；
-双模式静态验收与实际 MCP 查询已 GREEN，T2 判定 open_kaishek `NO-CODE-CHANGE`。待 commit、rebase、push 后在原
-CK3 PID/generation 原位热重跑；Python 合同变化不触碰 DLL 或游戏文件，禁止为此无意义重启 CK3。
+`89B4F2F8F6ADD2243C0CAD803766EB6B82491D0EF8E3C3BCCC6B55E5BC41B561`。双模式静态验收与实际 MCP 查询
+GREEN、T2 判定 open_kaishek `NO-CODE-CHANGE` 后，commit `3bb5169ca2b81701a8ea49e9d842de36f39fd87b`
+已按 rebase-only push，并通过 Official Runner run `34404896747` / job `102645406781`（约 4 分 26 秒、失败步骤为空）。
+R374 未重启 CK3，在原 PID/generation 原位热重跑 `.2001`，选择 authored3/native2，instance `1050 -> null`、
+snapshot `native:1847 -> native:1848`、revision `1848 -> 1849`、`postcondition_verified=true`，成为第十二条 live。
+
+其后时间线继续安全 drain `ep3_decisions_event.2001` #1051 authored2/native1、`tgp_decision_events.0101` #1052
+authored3/native2、`travel_danger_events.3002` #1053 authored2/native1 与 `debate_event.5110` #1054
+authored2/native1。当前 park9 在新的 `faction_demand.1101` #1055 / date `53607792` 保留选择前 RED：PID
+`51852` / generation `1`、root/player `32904`、snapshot `native:2057`、revision `2058`、paused，且
+`selection_attempted=false`、`process_restart_required=false`。四个实见 scope 为 `faction` faction/raw25、
+`peasant_county` landed_title/raw5、`peasant_leader` character `33633057`/raw4 与 `new_title`
+landed_title/raw5；native0/native1 均 shown/enabled、非 fallback/cancel。产品绝对 deadline `53635896`，尚余
+`28104` 小时 / `1171` game days。exact-build 可重复合同选择 authored1/native0；eligible 月检普通约 50 个月、
+高不满加成约 7 个月，另有 90 eligible days 上界，并非每日事件。接受仍有 50 legitimacy、top-liege 县控制/十年
+modifier 等代价，但避免拒绝立即开战；宗教只作附带边界。park9 report / driver-state / hot-recovery SHA-256 为
+`BA39B64ACC3224E8F1F5D5C04719A04106430D7F2F2551DEC52CCEC514FC3AA6` /
+`78C84C846ED9D2F05AF153EC9302C4C3A85C645FD0B33316CD212B10E342C494` /
+`4E3B59B3EB6328939D2008BD2DD4138546C0224F76D62297D19415138DF577E6`。代码与双模式测试已完成；实际 MCP
+list/call available、三投影与 authored1/native0 JSON roundtrip GREEN，T2 为 `NO-CODE-CHANGE`；Python normal/`-O`
+各 `42/42`、open_kaishek `3/3` GREEN。仅 commit/rebase/push 与同 PID live retry 尚待。
 
 TGP0001 与 epidemic1064 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.5009` instance `871` 的第二次合法
 出现处 park12 动作前 RED 停住。原版定义有十年 cooldown 且无 one-shot；当前 RED 来自旧合同的单次上限，不是异常高频触发。
 
 其余既有分析按原合同注释、docs 与 tests 做 migration-only 迁移；旧证据没有冻结 source hash 时明确保留
-`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `164/164` 的分析覆盖只证明知识可查询和迁移
+`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `165/165` 的分析覆盖只证明知识可查询和迁移
 无缺键，不替代逐事件 live evidence。
 
 同一当前快照下，T0 仍为 `50%`、canonical stage `8/11`，四类 source checkpoint 已完成 `3/4`，只缺

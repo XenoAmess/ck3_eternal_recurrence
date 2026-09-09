@@ -19,6 +19,39 @@ from .registry import (
 VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "faction_demand.1101": {
+        # Accepting is the bounded product route: it avoids immediately
+        # starting a peasant war and leaves any later faction lifecycle to a
+        # fresh observation.  The two title scopes intentionally remain typed
+        # but identity-free because the bridge does not yet publish portable
+        # landed-title identities.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "peasant_leader": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "faction": "faction",
+            "peasant_county": "landed_title",
+            "peasant_leader": "character",
+            "new_title": "landed_title",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "faction",
+            "peasant_county",
+            "peasant_leader",
+            "new_title",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "faction_demand.2001": {
         # Refusal preserves the current title/law/roster state and hands the
         # source-authored claimant war to the dedicated war OODA loop.  Leader
@@ -63,6 +96,114 @@ VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS: Final[
 VANILLA_FACTION_DEMAND_ANALYSIS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "faction_demand.1101": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/factions/faction_demands.txt": (
+                "B06241E67B6692F51FCFC6021E4DBE085C9E25A50B9CD08957CBCC9E25AEBEA9"
+            ),
+            "common/factions/00_peasant_faction_new.txt": (
+                "3B54AA8E610EC8F767B86F33F75A7D90A64FA199B0AC1AE37D59A476B4EC04E2"
+            ),
+            "common/factions/_factions.info": (
+                "FB47457AABE7C7DF78555B4DFBA74B8932DAE468C45EBB2D1381CADDC2B7E019"
+            ),
+            "common/defines/00_defines.txt": (
+                "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
+            ),
+            "common/scripted_effects/00_faction_effects.txt": (
+                "C8E0B3C57665F775973BC8559166CD1F6414471CA25017800777C3C6466DC5D3"
+            ),
+            "common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt": (
+                "DEE9D48221B49EF41490D04451ACD6DBFD4994A50EAD9D006F831F41A6247A83"
+            ),
+            "common/script_values/00_faction_values.txt": (
+                "4EE4098080B8C4536E74B047801F8715DD5EB0BCDCBAC04A8E3BF563D6555932"
+            ),
+            "common/script_values/00_legitimacy_values.txt": (
+                "13E43166356B5DD99358F435330B03CB9BE95AB5913280318B01681186E23A2E"
+            ),
+            "common/casus_belli_types/00_peasant_war_new.txt": (
+                "3429D8884AA45F09291B807B6931D7FCAA629458ECCEE59AE2EA682D69F46AAF"
+            ),
+        },
+        "definition_lines": "1816-1925",
+        "peasant_faction_lines": "1-105, 107-162, 362-620, 626-732",
+        "demand_dispatch_lines": "69-105",
+        "monthly_faction_abi_lines": "136-143",
+        "faction_demand_define_lines": "1084-1088",
+        "enforced_effect_lines": "1617-1751",
+        "leader_setup_effect_lines": "2023-2117",
+        "army_spawn_effect_lines": "2119-2144",
+        "accept_legitimacy_effect_lines": "372-378",
+        "faction_war_legitimacy_effect_lines": "288-354",
+        "legitimacy_value_lines": "171-188",
+        "peasant_war_lines": "1-240",
+        "caller_semantics": (
+            "an eligible peasant faction saves itself, creates or reuses its "
+            "peasant leader and temporary duchy title, then synchronously "
+            "triggers this letter on the faction target"
+        ),
+        "frequency_boundary": (
+            "peasant-faction ai_demand_chance is checked once per month after "
+            "the source-defined discontent gate; it is normally enabled by any "
+            "county member but suppressed while the target hosts a coronation. "
+            "MAX_DEMAND_DELAY_DAYS guarantees a later update after at most "
+            "ninety eligible days, while the event defines no daily pulse, "
+            "cooldown, or campaign occurrence ceiling"
+        ),
+        "trigger_boundary": (
+            "the letter remains valid only while the saved faction and peasant "
+            "leader exist and the leader is still joined to that faction"
+        ),
+        "immediate_effect": None,
+        "option_semantics": {
+            0: (
+                "accepts the demand, applying the conditional minor legitimacy "
+                "loss of fifty. For a top-liege target it removes seventy-five "
+                "county control, applies peasant_war_lost_county_modifier for "
+                "ten years, cleans revolt modifiers, and destroys the faction; "
+                "a Dynastic Cycle demand against a lower liege instead promotes "
+                "the counties and leader into an escalated faction against the "
+                "top liege"
+            ),
+            1: (
+                "immediately starts the source-authored peasant war, removes "
+                "twenty-five control from every member county, and spawns its "
+                "county armies under the peasant leader; the peasant-war "
+                "declaration separately applies the conditional medium "
+                "legitimacy loss of one hundred"
+            ),
+        },
+        "after_effect": None,
+        "war_ooda_boundary": (
+            "the selected native option 0 does not start a war at this event "
+            "boundary; if a later escalated faction or another source starts "
+            "one, campaign observation and military choices belong to the "
+            "reusable war OODA capabilities"
+        ),
+        "religion_scope_boundary": (
+            "leader setup copies the peasant county's faith and a refused war "
+            "can later evaluate culture-faith struggle catalysts and Mandala "
+            "effects; those are source-authored setup or war side effects, not "
+            "a general faith-policy input for this event choice"
+        ),
+        "repeatability": (
+            "acceptance destroys or escalates the current faction and refusal "
+            "starts its war, but later peasant factions can independently press "
+            "the same demand because there is no event-global one-shot flag"
+        ),
+        "safe_option_rationale": (
+            "native option 0 is the bounded product route in the observed frame: "
+            "it avoids native1's immediate peasant war, army spawn, twenty-five "
+            "control loss, and additional one-hundred legitimacy loss. Its "
+            "source-authored enforcement or escalation remains explicit rather "
+            "than being mistaken for a universally cost-free choice"
+        ),
+    },
     "faction_demand.2001": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -192,6 +333,54 @@ VANILLA_FACTION_DEMAND_ANALYSIS: Final[
 VANILLA_FACTION_DEMAND_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "faction_demand.1101": {
+        "exemplars": [{
+            "run": "R374",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "faction-demand-1101-red-report.json"
+            ),
+            "artifact_sha256": (
+                "BA39B64ACC3224E8F1F5D5C04719A04106430D7F2F2551DEC52CCEC514FC3AA6"
+            ),
+            "park_artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "hot-recovery-park-9.json"
+            ),
+            "park_artifact_sha256": (
+                "4E3B59B3EB6328939D2008BD2DD4138546C0224F76D62297D19415138DF577E6"
+            ),
+            "driver_state_artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "driver-state-park-9-snapshot.json"
+            ),
+            "driver_state_artifact_sha256": (
+                "78C84C846ED9D2F05AF153EC9302C4C3A85C645FD0B33316CD212B10E342C494"
+            ),
+            "date_raw": 53607792,
+            "event_instance_id": 1055,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "peasant_leader": 33633057,
+            },
+            "saved_scope_raw_types": {
+                "faction": 25,
+                "peasant_county": 5,
+                "peasant_leader": 4,
+                "new_title": 5,
+            },
+            "rendered_native_option_indices": [0, 1],
+            "enabled_native_option_indices": [0, 1],
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 51852,
+            "snapshot_id": "native:2057",
+            "revision": 2058,
+            "remaining_game_days": 1171,
+            "process_restart_required": False,
+        }],
+    },
     "faction_demand.2001": {
         "exemplars": [{
             "run": "R374",
