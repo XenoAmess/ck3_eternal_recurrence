@@ -221,7 +221,7 @@ def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
         "workforce_cycle_observation_days": 730,
         "total_days": MAX_ADVANCE_DAYS,
     }
-    assert MAX_ADVANCE_DAYS == 7190
+    assert MAX_ADVANCE_DAYS == 10190
     assert service.selected == [1]
 
 
