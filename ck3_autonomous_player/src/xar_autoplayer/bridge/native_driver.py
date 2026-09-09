@@ -5288,6 +5288,7 @@ class NativeHeadlessGameplayDriver:
             if timeout_seconds is None
             else _positive_seconds(timeout_seconds, "timeout_seconds")
         )
+        command_deadline = time.monotonic() + command_timeout_seconds
         frame = self.state.wait_for_command_result(
             request_id, command_timeout_seconds
         )
@@ -5302,10 +5303,103 @@ class NativeHeadlessGameplayDriver:
             )
         result = frame.get("result")
         if isinstance(result, dict):
-            return {**result, "backend_id": "native-headless"}
+            projected = {**result, "backend_id": "native-headless"}
+            if not internal_semantic_snapshot:
+                return self._verify_idempotent_map_control_postcondition(
+                    step=step,
+                    starting_snapshot=snapshot,
+                    result=projected,
+                    deadline=command_deadline,
+                )
+            return projected
         return {
             "result": result,
             "backend_id": "native-headless",
+        }
+
+    def _verify_idempotent_map_control_postcondition(
+        self,
+        *,
+        step: str,
+        starting_snapshot: dict[str, object],
+        result: dict[str, object],
+        deadline: float,
+    ) -> dict[str, object]:
+        """Bind an idempotent map-control ACK to a real semantic frame.
+
+        The exact-build native handlers fresh-read CK3 before returning
+        ``already_paused`` or ``already_running`` and then force one snapshot
+        publication.  The ACK proves that the handler observed the target
+        state, but it must not manufacture Python state by itself.  Wait for
+        the forced semantic frame under one finite deadline so a stale cache
+        becomes a typed RED instead of making an outer production loop resend
+        the same idempotent command forever.
+
+        Composite timeline operations retain their existing bounded retry and
+        call this primitive with ``internal_semantic_snapshot=True``.
+        """
+
+        status = result.get("status")
+        target_paused = (
+            True
+            if (
+                result.get("step") == step
+                and result.get("accepted") is True
+                and step == "pause-map"
+                and status == "already_paused"
+            )
+            else False
+            if (
+                result.get("step") == step
+                and result.get("accepted") is True
+                and step == "resume-map"
+                and status == "already_running"
+            )
+            else None
+        )
+        if target_paused is None:
+            return result
+
+        current = self.take_internal_semantic_snapshot()
+        current = self._wait_for_life_advance_snapshot(
+            current,
+            lambda candidate: candidate.get("paused") is target_paused,
+            timeout_seconds=max(0.0, deadline - time.monotonic()),
+        )
+        postcondition = {
+            "status": (
+                "observed"
+                if current.get("paused") is target_paused
+                else "semantic_state_timeout"
+            ),
+            "ack_status": status,
+            "target_paused": target_paused,
+            "starting_snapshot_id": starting_snapshot.get("snapshot_id"),
+            "starting_revision": starting_snapshot.get("revision"),
+            "ending_snapshot_id": current.get("snapshot_id"),
+            "ending_revision": current.get("revision"),
+            "ending_native_revision": current.get("native_revision"),
+            "ending_date_raw": current.get("date_raw"),
+            "ending_paused": current.get("paused"),
+            "state_frame_rejections": _state_frame_rejection_summary(current),
+        }
+        verified = {
+            **result,
+            "map_control_postcondition": postcondition,
+        }
+        if current.get("paused") is not target_paused:
+            raise StepPostconditionError(
+                f"native {step} {status} ACK did not produce a semantic "
+                f"paused={str(target_paused).lower()} frame within the "
+                "command deadline",
+                step_result=verified,
+                selected_step=step,
+            )
+        return {
+            **verified,
+            "paused": target_paused,
+            "snapshot_id": current.get("snapshot_id"),
+            "revision": current.get("revision"),
         }
 
     def _execute_save_checkpoint(

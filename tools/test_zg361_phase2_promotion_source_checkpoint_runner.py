@@ -1535,6 +1535,81 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             },
         )
 
+    def test_pause_postcondition_red_enters_typed_hot_recovery_path(
+        self,
+    ) -> None:
+        step_result = {
+            "step": "pause-map",
+            "accepted": True,
+            "status": "already_paused",
+            "backend_id": "native-headless",
+            "map_control_postcondition": {
+                "status": "semantic_state_timeout",
+                "ack_status": "already_paused",
+                "target_paused": True,
+                "ending_snapshot_id": "native:2058",
+                "ending_revision": 2059,
+                "ending_native_revision": 2058,
+                "ending_date_raw": 53607792,
+                "ending_paused": False,
+            },
+        }
+
+        class Service:
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "revision": 2059,
+                    "date_raw": 53607792,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {"connection_generation": 1},
+                    "paused": False,
+                    "speed": 5,
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int | None
+            ) -> dict[str, object]:
+                if step != "pause-map" or expected_revision != 2059:
+                    raise AssertionError("postcondition fixture lost its binding")
+                raise production.StepPostconditionError(
+                    "already_paused ACK remained semantically running",
+                    step_result=copy.deepcopy(step_result),
+                    selected_step=step,
+                )
+
+        audit: list[dict[str, object]] = []
+        with self.assertRaises(
+            production.PromotionMapControlPostconditionError
+        ) as caught:
+            production._map_control_from_latest_binding(
+                Service(),
+                step="pause-map",
+                player=32904,
+                connection_generation=1,
+                rebind_audit=audit,
+            )
+
+        evidence = caught.exception.evidence
+        self.assertEqual(
+            evidence["classification"],
+            "map-control-semantic-postcondition",
+        )
+        self.assertFalse(evidence["selection_attempted"])
+        self.assertTrue(evidence["state_mutation_submitted"])
+        self.assertEqual(evidence["step_result"], step_result)
+        self.assertEqual(
+            audit,
+            [{
+                "step": "pause-map",
+                "attempt": 1,
+                "stale_revision": 2059,
+                "request_submitted": True,
+                "ack_status": "already_paused",
+                "semantic_postcondition": "semantic_state_timeout",
+            }],
+        )
+
     def test_non_pause_map_controls_never_use_unbound_fallback(self) -> None:
         class Service:
             def __init__(self, step: str) -> None:

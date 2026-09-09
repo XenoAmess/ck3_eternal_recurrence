@@ -75,6 +75,7 @@ _PRODUCTION_ENTRY_INITIALIZED = True
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
     PreSubmissionRevisionMismatchError,
+    StepPostconditionError,
 )
 from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import (
     verify_review_now_independent_postcondition_v1,
@@ -1420,6 +1421,17 @@ class PromotionScenarioInvalidatingInterrupt(PromotionProductionEntryError):
         )
 
 
+class PromotionMapControlPostconditionError(PromotionProductionEntryError):
+    """A submitted idempotent control whose semantic frame stayed stale."""
+
+    def __init__(self, evidence: Mapping[str, object]) -> None:
+        self.evidence = copy.deepcopy(dict(evidence))
+        super().__init__(
+            "promotion map-control ACK did not reach its semantic "
+            f"postcondition: {self.evidence.get('step')!r}"
+        )
+
+
 def _accepted(value: object, step: str) -> dict[str, object]:
     result = copy.deepcopy(dict(value)) if isinstance(value, Mapping) else {}
     status = result.get("status")
@@ -1460,6 +1472,41 @@ def _map_control_from_latest_binding(
     if step not in {"pause-map", "resume-map", "set-speed-5"}:
         raise ValueError(f"unsupported rebound map control: {step}")
 
+    def raise_postcondition(
+        error: StepPostconditionError,
+        *,
+        attempt: int | str,
+        submitted_revision: int | None,
+    ) -> None:
+        step_result = copy.deepcopy(error.step_result)
+        postcondition = step_result.get("map_control_postcondition")
+        postcondition = (
+            copy.deepcopy(postcondition)
+            if isinstance(postcondition, Mapping)
+            else {}
+        )
+        evidence = {
+            "classification": "map-control-semantic-postcondition",
+            "step": step,
+            "player_character_id": player,
+            "connection_generation": connection_generation,
+            "submitted_revision": submitted_revision,
+            "ack_status": postcondition.get("ack_status"),
+            "date_raw": postcondition.get("ending_date_raw"),
+            "selection_attempted": False,
+            "state_mutation_submitted": True,
+            "step_result": step_result,
+        }
+        rebind_audit.append({
+            "step": step,
+            "attempt": attempt,
+            "stale_revision": submitted_revision,
+            "request_submitted": True,
+            "ack_status": postcondition.get("ack_status"),
+            "semantic_postcondition": postcondition.get("status"),
+        })
+        raise PromotionMapControlPostconditionError(evidence) from error
+
     last_error: PreSubmissionRevisionMismatchError | None = None
     for attempt in range(1, MAX_PRE_SUBMISSION_REBIND_ATTEMPTS + 1):
         snapshot, event = _binding(
@@ -1482,6 +1529,12 @@ def _map_control_from_latest_binding(
             return _accepted(
                 service.execute_step(step, expected_revision=revision),
                 step,
+            )
+        except StepPostconditionError as error:
+            raise_postcondition(
+                error,
+                attempt=attempt,
+                submitted_revision=revision,
             )
         except PreSubmissionRevisionMismatchError as error:
             last_error = error
@@ -1507,10 +1560,17 @@ def _map_control_from_latest_binding(
         if snapshot.get("paused") is True:
             return None
         fallback_revision = int(snapshot["revision"])
-        result = _accepted(
-            service.execute_step(step, expected_revision=None),
-            step,
-        )
+        try:
+            result = _accepted(
+                service.execute_step(step, expected_revision=None),
+                step,
+            )
+        except StepPostconditionError as error:
+            raise_postcondition(
+                error,
+                attempt="native-fresh-idempotent-fallback",
+                submitted_revision=fallback_revision,
+            )
         rebind_audit.append({
             "step": step,
             "attempt": "native-fresh-idempotent-fallback",
@@ -4178,6 +4238,7 @@ __all__ = [
     "POST_PUBLICATION_OBSERVATION_DAYS",
     "PRODUCT_CYCLE_OPPORTUNITIES",
     "PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID",
+    "PromotionMapControlPostconditionError",
     "PromotionProductionEntryError",
     "PromotionScenarioInvalidatingInterrupt",
     "PromotionProductionEntryService",

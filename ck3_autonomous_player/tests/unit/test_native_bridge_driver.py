@@ -13833,6 +13833,122 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(after["native_revision"], before["native_revision"])
         self.assertEqual(after["snapshot_id"], before["snapshot_id"])
 
+    def test_direct_idempotent_map_control_ack_binds_semantic_state(self) -> None:
+        cases = (
+            ("pause-map", "already_paused", False, True),
+            ("resume-map", "already_running", True, False),
+        )
+        for step, status, starting_paused, ending_paused in cases:
+            with self.subTest(step=step):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                    command_timeout_seconds=0.1,
+                )
+                endpoint.publish(
+                    _hello("game.state.snapshot", f"game.command.{step}")
+                )
+                endpoint.publish(_snapshot(1, paused=starting_paused))
+                starting = driver.take_snapshot()
+
+                def answer(frame: dict[str, object]) -> None:
+                    if frame.get("type") != "execute_step":
+                        return
+                    endpoint.publish(
+                        {
+                            "type": "command_result",
+                            "protocol_version": 1,
+                            "request_id": frame["request_id"],
+                            "ok": True,
+                            "result": {
+                                "step": step,
+                                "accepted": True,
+                                "status": status,
+                            },
+                        }
+                    )
+                    endpoint.publish(_snapshot(2, paused=ending_paused))
+
+                endpoint.send_hook = answer
+                result = driver.execute_step(
+                    step, expected_revision=int(starting["revision"])
+                )
+
+                self.assertIs(result["paused"], ending_paused)
+                self.assertEqual(result["snapshot_id"], "native:2")
+                self.assertEqual(
+                    result["map_control_postcondition"]["status"],
+                    "observed",
+                )
+                self.assertIs(
+                    result["map_control_postcondition"]["target_paused"],
+                    ending_paused,
+                )
+
+    def test_direct_already_paused_ack_stops_on_stale_semantic_state(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(_snapshot(1, speed=5, paused=False))
+        starting = driver.take_snapshot()
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": "pause-map",
+                        "accepted": True,
+                        "status": "already_paused",
+                    },
+                }
+            )
+            # Reproduce the live contradiction: even the forced post-ACK
+            # semantic publication still reports the old running state.
+            endpoint.publish(_snapshot(2, speed=5, paused=False))
+
+        endpoint.send_hook = answer
+        with self.assertRaisesRegex(
+            StepPostconditionError,
+            "already_paused ACK did not produce a semantic paused=true frame",
+        ) as caught:
+            driver.execute_step(
+                "pause-map", expected_revision=int(starting["revision"])
+            )
+
+        postcondition = caught.exception.step_result[
+            "map_control_postcondition"
+        ]
+        self.assertEqual(postcondition["status"], "semantic_state_timeout")
+        self.assertFalse(postcondition["ending_paused"])
+        pause_frames = [
+            frame
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+            and frame.get("step") == "pause-map"
+        ]
+        self.assertEqual(len(pause_frames), 1)
+        history = driver._history_snapshot()
+        self.assertFalse(history[-1]["ok"])
+        self.assertEqual(
+            history[-1]["result"]["map_control_postcondition"]["status"],
+            "semantic_state_timeout",
+        )
+
     def test_error_frame_is_diagnostic_not_a_semantic_change(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
