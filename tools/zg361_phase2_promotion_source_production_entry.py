@@ -5173,6 +5173,7 @@ def _typed_character_id(value: object) -> int | None:
 
 def _timeline_contract_for_window(
     contract: Mapping[str, object], *, starting_date: int,
+    absolute_end_date: int | None = None,
 ) -> dict[str, object]:
     """Bind source-reviewed random deliveries to this run, not old RNG dates.
 
@@ -5184,8 +5185,15 @@ def _timeline_contract_for_window(
     """
     bound = dict(contract)
     if contract.get("date_policy") != "exact-authored-anchor":
+        window_end = (
+            starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY
+            if absolute_end_date is None
+            else absolute_end_date
+        )
+        if window_end < starting_date:
+            raise ValueError("timeline contract window ends before it starts")
         bound["date_raw_range"] = (
-            starting_date, starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
+            starting_date, window_end,
         )
     return bound
 
@@ -5574,6 +5582,7 @@ def _resolve_timeline_interrupt_contract(
     *,
     player: int,
     starting_date: int,
+    absolute_end_date: int | None = None,
     stop_at_clean_review_boundary: bool,
     continue_to_pause_target: bool = False,
 ) -> dict[str, object] | None:
@@ -5630,7 +5639,11 @@ def _resolve_timeline_interrupt_contract(
         )
     if contract is None:
         return None
-    return _timeline_contract_for_window(contract, starting_date=starting_date)
+    return _timeline_contract_for_window(
+        contract,
+        starting_date=starting_date,
+        absolute_end_date=absolute_end_date,
+    )
 
 
 def _manager_recovery_occurrence_contract(
@@ -6411,6 +6424,8 @@ def _initial_event_is_supported(
     *,
     player: int,
     timeline_origin_date: int,
+    window_start_date: int | None = None,
+    absolute_end_date: int | None = None,
     stop_at_clean_review_boundary: bool,
     clean_boundary_event_definition_key: str | None,
     pause_on_event_definition_key: str | None = None,
@@ -6428,7 +6443,12 @@ def _initial_event_is_supported(
     return _resolve_timeline_interrupt_contract(
         key,
         player=player,
-        starting_date=timeline_origin_date,
+        starting_date=(
+            timeline_origin_date
+            if window_start_date is None
+            else window_start_date
+        ),
+        absolute_end_date=absolute_end_date,
         stop_at_clean_review_boundary=stop_at_clean_review_boundary,
         continue_to_pause_target=(
             pause_on_event_definition_key not in (None, M147)
@@ -6499,13 +6519,25 @@ def enter_promotion_source_checkpoint_v1(
     player = int(initial["played_character"]["character_id"])
     generation = int(initial["diagnostics"]["connection_generation"])
     starting_date = int(initial["date_raw"])
-    timeline_origin_date = PRODUCT_TIMELINE_ORIGIN_DATE_RAW
-    absolute_end_date = (
-        timeline_origin_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY
-    )
     # The caller retains this same object even if a later interrupt raises.
     # R59/R61 lost their accumulated timeline because only success returned it.
     evidence: dict[str, object] = {} if evidence_out is None else evidence_out
+    retained_origin = evidence.get("timeline_origin_date_raw")
+    timeline_origin_date = (
+        retained_origin
+        if isinstance(retained_origin, int)
+        and not isinstance(retained_origin, bool)
+        else PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+    )
+    retained_end = evidence.get("absolute_end_date_raw")
+    absolute_end_date = (
+        retained_end
+        if isinstance(retained_end, int)
+        and not isinstance(retained_end, bool)
+        else timeline_origin_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY
+    )
+    if absolute_end_date < timeline_origin_date:
+        raise ValueError("retained product observation deadline predates origin")
     retained_timeline_interrupt_drains = copy.deepcopy(
         evidence.get("timeline_interrupt_drains")
         if isinstance(evidence.get("timeline_interrupt_drains"), list)
@@ -6617,6 +6649,8 @@ def enter_promotion_source_checkpoint_v1(
             key,
             player=player,
             timeline_origin_date=timeline_origin_date,
+            window_start_date=starting_date,
+            absolute_end_date=absolute_end_date,
             stop_at_clean_review_boundary=stop_at_clean_review_boundary,
             clean_boundary_event_definition_key=(
                 clean_boundary_event_definition_key
@@ -7068,7 +7102,8 @@ def enter_promotion_source_checkpoint_v1(
             contract = _resolve_timeline_interrupt_contract(
                 key,
                 player=player,
-                starting_date=timeline_origin_date,
+                starting_date=starting_date,
+                absolute_end_date=absolute_end_date,
                 stop_at_clean_review_boundary=stop_at_clean_review_boundary,
                 continue_to_pause_target=continue_to_pause_target,
             )

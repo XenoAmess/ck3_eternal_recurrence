@@ -1878,6 +1878,93 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "service_method_not_exposed",
         )
 
+    def test_restored_save_catchup_uses_loaded_lower_and_fixed_upper_bound(self) -> None:
+        loaded_date = 53_383_440
+        configured_origin = 53_391_336
+        absolute_end = (
+            configured_origin
+            + production.MAX_ADVANCE_DAYS * production.HOURS_PER_DAY
+        )
+        event_date = 53_385_312
+        for event_key in (
+            "ep3_decisions_event.2001",
+            "debate_event.5110",
+            "zg361we.356",
+        ):
+            with self.subTest(event_key=event_key):
+                contract = production._resolve_timeline_interrupt_contract(
+                    event_key,
+                    player=32904,
+                    starting_date=loaded_date,
+                    absolute_end_date=absolute_end,
+                    stop_at_clean_review_boundary=False,
+                    continue_to_pause_target=True,
+                )
+                self.assertIsNotNone(contract)
+                assert contract is not None
+                self.assertEqual(
+                    contract["date_raw_range"],
+                    (loaded_date, absolute_end),
+                )
+                for date_raw in (
+                    loaded_date,
+                    event_date,
+                    configured_origin,
+                    absolute_end,
+                ):
+                    self.assertTrue(
+                        production._contract_date_matches(date_raw, contract)
+                    )
+                self.assertFalse(
+                    production._contract_date_matches(loaded_date - 1, contract)
+                )
+                self.assertFalse(
+                    production._contract_date_matches(absolute_end + 1, contract)
+                )
+
+    def test_hot_retry_retains_configured_origin_and_absolute_deadline(self) -> None:
+        configured_origin = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 20_000
+        )
+        absolute_end = (
+            configured_origin
+            + production.MAX_ADVANCE_DAYS * production.HOURS_PER_DAY
+        )
+        evidence = {
+            "timeline_origin_date_raw": configured_origin,
+            "absolute_end_date_raw": absolute_end,
+        }
+        service = SimpleNamespace(
+            snapshot=lambda: {
+                "map_ready": True,
+                "revision": 1,
+                "date_raw": configured_origin - 24,
+                "played_character": {"character_id": 32904},
+                "diagnostics": {"connection_generation": 9},
+                "paused": True,
+                "speed": 5,
+                "active_event": None,
+            },
+            query_zhongguo_promotion_source_progress_v1=lambda *args, **kwargs: {
+                "status": "unavailable",
+                "zhongguo_promotion_source_progress": {
+                    "unavailable_reason": "unit-stop",
+                },
+            },
+        )
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "fixed promotion progress observer is unavailable",
+        ):
+            production.enter_promotion_source_checkpoint_v1(
+                service,
+                evidence_out=evidence,
+            )
+        self.assertEqual(
+            evidence["timeline_origin_date_raw"], configured_origin
+        )
+        self.assertEqual(evidence["absolute_end_date_raw"], absolute_end)
+
     def test_runtime_product_error_preempts_absolute_timeline_bound(self) -> None:
         service = SimpleNamespace(snapshot=lambda: {
             "map_ready": True,
