@@ -31,3 +31,8 @@ CK3 recording is gated on the real game window but uses full-desktop GDI capture
 direct GDI capture of CK3's GPU-rendered window can produce an all-black stream.
 Each attempt sparsely extracts and hashes frames after recording; fewer than two
 distinct non-black samples makes the attempt RED even when FFmpeg exits cleanly.
+
+`build_visual_master.py` consumes an attempt-specific shot manifest. Capture
+shots resolve against exact acceptance timeline events, while stills and every
+rendered chapter are SHA-256 bound in the build report. The script emits one
+silent 1920×1080/30fps, 96-second visual master for the native composer.
