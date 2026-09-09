@@ -2572,6 +2572,9 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         repeated_context = copy.deepcopy(context)
         repeated_context["current_event_instance_id"] = 393
         repeated_context["date_raw"] = 53277192
+        repeated_context["saved_scopes"].insert(
+            4, _scope("student", "character", 33596937)
+        )
         repeated_checks = production._known_interrupt_checks(
             snapshot={
                 "date_raw": 53277192,
@@ -2583,6 +2586,8 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertTrue(all(repeated_checks.values()), repeated_checks)
+        self.assertEqual(contract["saved_scope_counts"], (7, 8, 9, 10, 11))
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 16)
 
         alias_drift = copy.deepcopy(context)
         alias_drift["saved_scopes"][7] = _scope(

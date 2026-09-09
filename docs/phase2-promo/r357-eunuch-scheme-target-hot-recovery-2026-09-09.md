@@ -564,3 +564,30 @@ mod 或 DLL，继续同 PID 热重试。
   `7D047E961E182A7D48F0D89F0D82466F307EE7EF8721D447A63872705FC2F43D`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十一次 RED：家族议席请求继承 student
+
+第二十次 `retry` 热加载提交 `d7e1a85fd8fdb30cd30049c70b9508184e33de34` 后，
+`.2041` 的第二次发生已通过 occurrence gate；同一 PID、同一 event instance `393`
+随后在完整 scope gate 暴露下一层 RED。当前十项 scope 是
+`story/emperor/eunuch/admin_title/student/rival/petition_liege/councillor/`
+`petition_vassal/second_party`，旧合同只冻结了含 `rival/second_party` 的九项形状，
+因此合法 `student` 触发名称与数量 RED，选择仍未发生。
+
+原版 `.2041` 的 immediate 先调用共享
+`ep3_story_cycle_admin_eunuch_save_scopes_effect`；该 effect 从 story 独立恢复
+`protege/student/rival`，再由 `.2041` 保存 liege、家族候选及其
+`petition_vassal` 别名，而 `second_party` 只在对应议席已有任职者时出现。最小修复
+因此将七项必有 scope 与四项独立可选 scope 展开为 16 个精确名称集合、计数范围
+`7..11`；候选与别名、候选与宦官、可选 incumbent 的互异约束仍保留，未知超集继续
+fail-closed。按钮投影和 native option 1 均不改变。改动只涉及外部 Python 合同、
+测试和报告，不重启 CK3。
+
+- 第二十一次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-21.json`；
+- park SHA-256：
+  `DFE230E813D04312B0EC0B2D7D1D089668BEAF0F62B659074E859F289440507F`；
+- 第二十一次 RED report 快照：13,661,985 bytes，SHA-256
+  `90B13CD018DAA9ED618F9AABC291F2E285AA85D1D66DB84415A9F0FFAE73E625`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
