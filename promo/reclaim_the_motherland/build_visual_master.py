@@ -100,7 +100,10 @@ def resolve_capture_start(
 
 def _video_filter(crop_mode: str) -> str:
     if crop_mode == "left_gameplay":
-        return "setpts=PTS-STARTPTS,crop=1920:1080:0:180,fps=30,format=yuv420p"
+        return (
+            "setpts=PTS-STARTPTS,crop=1760:990:0:135,scale=1920:1080,"
+            "fps=30,format=yuv420p"
+        )
     if crop_mode != "full":
         raise ValueError(f"unsupported capture crop mode: {crop_mode!r}")
     return (

@@ -71,7 +71,8 @@ class BuildVisualMasterTests(unittest.TestCase):
     def test_left_gameplay_crop_excludes_acceptance_panel(self) -> None:
         self.assertEqual(
             _video_filter("left_gameplay"),
-            "setpts=PTS-STARTPTS,crop=1920:1080:0:180,fps=30,format=yuv420p",
+            "setpts=PTS-STARTPTS,crop=1760:990:0:135,scale=1920:1080,"
+            "fps=30,format=yuv420p",
         )
         with self.assertRaisesRegex(ValueError, "crop mode"):
             _video_filter("invented")
