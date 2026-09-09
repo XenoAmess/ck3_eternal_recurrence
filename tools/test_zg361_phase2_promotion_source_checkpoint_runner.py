@@ -2738,6 +2738,23 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 4)
         self.assertEqual(contract["selected_native_option_index"], 3)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        repeated_context = copy.deepcopy(context)
+        repeated_context["current_event_instance_id"] = 392
+        repeated_context["date_raw"] = 53275008
+        repeated_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53275008, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 392},
+            context=repeated_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(repeated_checks.values()), repeated_checks)
 
     def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
         class Service:

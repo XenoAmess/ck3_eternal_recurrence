@@ -512,3 +512,31 @@ CK3 暂停帧保持不变，不重启。
   `65B23BB070CB8AFDDB29DA20B207F15B7E0D2586F0C4CF5E707A58BF228B3753`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第十九次 RED：配偶疑心事件再次发生
+
+第十八次 `retry` 热加载提交 `409cbcd0ec5b644b41f7fc42cf7788e0e3eadc52` 后，
+`.2052` 的完整 scope 合同已在原 event instance `388` 上通过；同一 PID `159264`
+随后推进到已登记的 `adultery.0002`、event instance `392`、
+`date_raw=53275008`。本帧两项 character scope 与 native `(0,2,3)` 按钮投影均符合
+已有合同，但证据账本已有一次 `.0002` 成功 drain，旧 `max_occurrences=1` 因而在
+选择前 RED。
+
+原版 `adultery.0001` 是 `yearly_playable_pulse` 触发的隐藏选择器；它从玩家的有效
+配偶、侍妾或灵魂伴侣中挑选怀疑对象，再给被选对象添加五年的
+`was_recently_suspected_of_adultery` flag 以避免刷屏，随后触发 `.0002`。该 flag
+只对当前对象限时去重，原版没有 campaign-global one-shot gate；五年后同一对象
+可再次入选，其他有效对象也可独立被选中。因此第二次 `.0002` 是源码允许的真实
+事件，不是测试重复投递。最小修复删除伪造的一次上限，改为产品观察窗口内可重复
+并逐帧完整验帧；选择仍固定为无额外状态修改的 native option 3（第四个 authored
+option）。改动仅涉及外部 Python 合同、回归测试与报告，不修改 CK3 已加载的 mod
+或 DLL，所以保留原暂停帧并热重试，不重启游戏。
+
+- 第十九次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-19.json`；
+- park SHA-256：
+  `916FE52B1720C561157982B7ECB3FC88EAD8B44D32FA430D287ACF0A76AFD85D`；
+- 第十九次 RED report 快照：13,514,606 bytes，SHA-256
+  `BFEE9BA15382E7DF19ECA1A0C0E9CD5DFB8A15D5E69451CB795E66F5AB7765F2`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

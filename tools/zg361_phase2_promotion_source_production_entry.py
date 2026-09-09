@@ -635,7 +635,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # CK3 1.19.0.6 spouse-suspicion event. Confrontation opens a new event
         # chain, investigation runs a duel, and spying mutates the spymaster's
         # council task. Authored option 4 does nothing and is the only bounded
-        # terminal route without those state changes.
+        # terminal route without those state changes. The hidden yearly picker
+        # suppresses only the selected partner for five years; it has no
+        # campaign-global one-shot gate, so validate every occurrence.
         "date_raw": 53169888,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -659,7 +661,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "stress_threshold.2202": {
         # CK3 1.19.0.6 response to another character's boiling-anger mental
