@@ -171,6 +171,36 @@ def _run(command: list[str], stdout_path: Path, stderr_path: Path) -> None:
         raise RuntimeError(f"command failed ({completed.returncode}): {command}")
 
 
+def _concat_argv(ffmpeg: Path, segments: list[Path], output: Path) -> list[str]:
+    """Decode each independently encoded chapter before final concatenation.
+
+    Stream-copy concatenation leaves independent GOP decode timestamps in a form
+    that can seek correctly but replay later chapters out of story order.  An
+    explicit concat filter resets each chapter and creates one continuous GOP.
+    """
+
+    command = [str(ffmpeg), "-hide_banner", "-loglevel", "error", "-y"]
+    for segment in segments:
+        command.extend(["-i", str(segment)])
+    filters = [
+        f"[{index}:v]setpts=PTS-STARTPTS[v{index}]"
+        for index in range(len(segments))
+    ]
+    inputs = "".join(f"[v{index}]" for index in range(len(segments)))
+    filters.append(
+        f"{inputs}concat=n={len(segments)}:v=1:a=0,fps=30,format=yuv420p[v]"
+    )
+    command.extend(
+        [
+            "-filter_complex", ";".join(filters), "-map", "[v]", "-an", "-c:v",
+            "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
+            "-r", "30", "-t", "96.000", "-video_track_timescale", "90000",
+            "-movflags", "+faststart", str(output),
+        ]
+    )
+    return command
+
+
 def build(args: argparse.Namespace) -> int:
     attempt = args.attempt_directory.expanduser().resolve()
     if attempt.exists():
@@ -227,11 +257,7 @@ def build(args: argparse.Namespace) -> int:
         encoding="utf-8",
     )
     output = attempt / "visual-master-a01.mp4"
-    concat_command = [
-        str(ffmpeg), "-hide_banner", "-loglevel", "error", "-y", "-f", "concat",
-        "-safe", "0", "-i", str(concat_list), "-c", "copy", "-movflags", "+faststart",
-        str(output),
-    ]
+    concat_command = _concat_argv(ffmpeg, segment_paths, output)
     _write_json(logs / "concat.command.json", {"argv": concat_command, "shell": False})
     _run(concat_command, logs / "concat.stdout.txt", logs / "concat.stderr.txt")
 

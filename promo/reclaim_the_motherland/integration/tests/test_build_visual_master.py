@@ -11,6 +11,7 @@ sys.path.insert(0, str(PROMO))
 
 from build_visual_master import (  # noqa: E402
     EXPECTED_CHAPTERS,
+    _concat_argv,
     _video_filter,
     resolve_capture_start,
     validate_shot_manifest,
@@ -76,6 +77,14 @@ class BuildVisualMasterTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "crop mode"):
             _video_filter("invented")
+
+    def test_concat_decodes_each_chapter_into_one_timeline(self) -> None:
+        segments = [Path(f"segment-{index}.mp4") for index in range(10)]
+        argv = _concat_argv(Path("ffmpeg.exe"), segments, Path("master.mp4"))
+        filter_graph = argv[argv.index("-filter_complex") + 1]
+        self.assertIn("concat=n=10:v=1:a=0", filter_graph)
+        self.assertEqual(argv.count("-i"), 10)
+        self.assertNotIn("-c copy", " ".join(argv))
 
 
 if __name__ == "__main__":
