@@ -98,7 +98,11 @@ def resolve_capture_start(
     return max(0.0, float(matches[0]["seconds_from_capture_start"]) - lead_seconds)
 
 
-def _video_filter() -> str:
+def _video_filter(crop_mode: str) -> str:
+    if crop_mode == "left_gameplay":
+        return "crop=1920:1080:0:180,fps=30,format=yuv420p"
+    if crop_mode != "full":
+        raise ValueError(f"unsupported capture crop mode: {crop_mode!r}")
     return (
         "scale=1920:1080:force_original_aspect_ratio=increase,"
         "crop=1920:1080,fps=30,format=yuv420p"
@@ -136,7 +140,7 @@ def _segment_argv(
         command = [
             str(ffmpeg), "-hide_banner", "-loglevel", "error", "-y",
             "-ss", f"{start:.3f}", "-t", f"{duration:.3f}", "-i", str(source),
-            "-vf", _video_filter(),
+            "-vf", _video_filter(str(shot.get("crop_mode", "full"))),
         ]
     else:
         start = None
