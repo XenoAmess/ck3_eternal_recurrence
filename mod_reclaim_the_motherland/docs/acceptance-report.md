@@ -105,4 +105,4 @@ Workshop 页面复核：
 - 页面公开与三张缩略图证据：`reclaim/steam/public_page_final.png`，SHA-256 `f532f793a59fa9988823a97fa23c83f7258b6adbbcab6e4e9c81e27b3446405c`。
 - 必需 DLC 已勾选 `Crusader Kings III: All Under Heaven`；证据 `reclaim/steam/required_dlc_saved.png`，SHA-256 `642bc89e737550eebb095c64dad2ad57cbace8326160d06891a780be899509c6`。
 
-正式 tag、exact-tag 构建哈希和永久 initial-baseline changelog 在发布记录提交中回填；它们不改变上述已经上传并经 fresh-cache 验证的 28 个运行时文件。
+正式 tag 为 `reclaim-motherland-v0.1.1`，指向 commit `0337d6ae515ccbeb666ca49dcefaee6b7f860de8`。exact-tag canonical manifest SHA-256 为 `e75096427efa44c92e9aa71cab568531deaa01570dfc129f66098b1f3f1dea9e`，deterministic ZIP SHA-256 为 `b7096953d96ff2c5542fa7b18fc9a9a02536750969f9f5ef57a08bc65b96e962`；28/28 manifest verification GREEN。永久 initial-baseline changelog 位于 `docs/release-changelogs/reclaim-motherland/0.1.1.md`。
