@@ -436,3 +436,30 @@ global 上限。最小修复删除该伪上限，改为产品观察窗口内可�
   `E72B7D3632A399F2FD4024CC4DAB48A3091B5187D09FF3EA5243F72624C507B4`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第十六次 RED：草药师遭巫术指控
+
+第十五次 `retry` 热加载提交 `58e4d2c1e9f1b1941dd460cbd85362294c088584` 后，
+第二次 `.1100` 在同一 PID `159264` 上通过；游戏随即推进到此前未登记的原版
+`epidemic_events.5007`、event instance `387`、`date_raw=53270256`。MCP 精确读取
+`epidemic/epidemic_scope/herbalist/accuser` 四项 scope，草药师为 `49718`、指控者为
+`16834604`；三个 authored options 中当前只渲染 native `(1,2)`。
+
+原版 immediate 从当前瘟疫选出一名未拥有 witch trait 的草药师类廷臣，并另选一名
+不同的 AI 廷臣作指控者。native option 0 只在玩家自身具备草药师、神秘主义者、医师
+或园丁特质时显示；当前它不可用。native option 1 会给草药师增加 witch trait、合法
+监禁并改变意见；native option 2 只改变指控者意见，并在条件允许时把草药师设为潜在
+朋友，因此是当前可用的最小副作用路线。合同同时绑定 `(1,2)` 与 `(0,1,2)` 两种源码
+定义的精确按钮投影，均选择 native 2；不读取或扩展通用宗教决策。事件原版 cooldown
+为十年，故保留产品观察窗口内可重复、逐帧验帧语义。
+
+本修复仍只改外部 Python 合同、测试与报告，未修改游戏加载内容，不重启 CK3。
+
+- 第十六次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-16.json`；
+- park SHA-256：
+  `27D8640FA7D392231D31334EC1100BF24A71082020B512CA92BA034660C8ACEC`；
+- 第十六次 RED report 快照：26,573,238 bytes，SHA-256
+  `6CB66C7DCE49F9F73772D0D02A18115B0B0C6784D116390538512AA21F33F11B`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

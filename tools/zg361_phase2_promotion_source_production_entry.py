@@ -1070,6 +1070,61 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "max_occurrences": 1,
     },
+    "epidemic_events.5007": {
+        # CK3 1.19.0.6 plague-yearly accusation against a court herbalist.
+        # Native option 0 is visible only when root has a related lifestyle
+        # trait. Native option 1 brands the herbalist a witch and imprisons
+        # them; native option 2 only applies the authored opinion/stress and
+        # possible potential-friend relation, making it the least invasive
+        # available route in either exact projection. Bind the independently
+        # selected accuser and herbalist before taking that terminal route.
+        "date_raw": 53270256,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "herbalist": (32904,),
+            "accuser": (32904,),
+        },
+        "character_scope_differs_from": {
+            "herbalist": ("accuser",),
+            "accuser": ("herbalist",),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "epidemic_scope": "epidemic",
+            "herbalist": "character",
+            "accuser": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "epidemic_scope",
+            "herbalist",
+            "accuser",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (1, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "epidemic_events.5009": {
         # CK3 1.19.0.6 plague-market herbal-sachet offer. Native routes 0/1
         # transfer the generated artifact, spend gold and install long-lived

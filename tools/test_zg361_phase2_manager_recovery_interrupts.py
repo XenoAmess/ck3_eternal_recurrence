@@ -1582,6 +1582,73 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:physician:unique_third_party"])
 
+    def test_herbalist_accusation_avoids_imprisonment(self) -> None:
+        event_key = "epidemic_events.5007"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=387,
+            date_raw=53270256,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("herbalist", "character", 49718),
+                _scope("accuser", "character", 16834604),
+            ],
+            native_option_indices=(1, 2),
+        )
+        snapshot = {
+            "date_raw": 53270256,
+            "active_event": {"option_count": 3},
+        }
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 387},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        root_has_related_trait = copy.deepcopy(context)
+        root_has_related_trait["options"] = _context(
+            event_key=event_key,
+            instance_id=387,
+            date_raw=53270256,
+            player=32904,
+            scopes=[],
+            native_option_indices=(0, 1, 2),
+        )["options"]
+        trait_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 387},
+            context=root_has_related_trait,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(trait_checks.values()), trait_checks)
+
+        same_participant = copy.deepcopy(context)
+        same_participant["saved_scopes"][3] = _scope(
+            "accuser", "character", 49718
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 387},
+            context=same_participant,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:accuser:differs_from"])
+
     def test_herbal_sachet_offer_buys_nothing(self) -> None:
         event_key = "epidemic_events.5009"
         contract = _manager_contract(event_key, player=32904)
