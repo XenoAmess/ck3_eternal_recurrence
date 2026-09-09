@@ -100,11 +100,11 @@ def resolve_capture_start(
 
 def _video_filter(crop_mode: str) -> str:
     if crop_mode == "left_gameplay":
-        return "crop=1920:1080:0:180,fps=30,format=yuv420p"
+        return "setpts=PTS-STARTPTS,crop=1920:1080:0:180,fps=30,format=yuv420p"
     if crop_mode != "full":
         raise ValueError(f"unsupported capture crop mode: {crop_mode!r}")
     return (
-        "scale=1920:1080:force_original_aspect_ratio=increase,"
+        "setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,"
         "crop=1920:1080,fps=30,format=yuv420p"
     )
 
@@ -168,19 +168,6 @@ def _run(command: list[str], stdout_path: Path, stderr_path: Path) -> None:
         raise RuntimeError(f"command failed ({completed.returncode}): {command}")
 
 
-def _normalize_argv(ffmpeg: Path, intermediate: Path, output: Path) -> list[str]:
-    """Pad sub-frame concat rounding and emit an exact 96-second master."""
-
-    return [
-        str(ffmpeg), "-hide_banner", "-loglevel", "error", "-y", "-i",
-        str(intermediate), "-vf",
-        "tpad=stop_mode=clone:stop_duration=0.2,fps=30,trim=duration=96,setpts=PTS-STARTPTS",
-        "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt",
-        "yuv420p", "-r", "30", "-t", "96.000", "-video_track_timescale", "90000",
-        "-movflags", "+faststart", str(output),
-    ]
-
-
 def build(args: argparse.Namespace) -> int:
     attempt = args.attempt_directory.expanduser().resolve()
     if attempt.exists():
@@ -236,19 +223,14 @@ def build(args: argparse.Namespace) -> int:
         "".join(f"file '{path.as_posix().replace(chr(39), chr(39) * 2)}'\n" for path in segment_paths),
         encoding="utf-8",
     )
-    intermediate = attempt / "concat-intermediate.mp4"
+    output = attempt / "visual-master-a01.mp4"
     concat_command = [
         str(ffmpeg), "-hide_banner", "-loglevel", "error", "-y", "-f", "concat",
         "-safe", "0", "-i", str(concat_list), "-c", "copy", "-movflags", "+faststart",
-        str(intermediate),
+        str(output),
     ]
     _write_json(logs / "concat.command.json", {"argv": concat_command, "shell": False})
     _run(concat_command, logs / "concat.stdout.txt", logs / "concat.stderr.txt")
-
-    output = attempt / "visual-master-a01.mp4"
-    normalize_command = _normalize_argv(ffmpeg, intermediate, output)
-    _write_json(logs / "normalize.command.json", {"argv": normalize_command, "shell": False})
-    _run(normalize_command, logs / "normalize.stdout.txt", logs / "normalize.stderr.txt")
 
     probe_command = [
         str(ffprobe), "-v", "error", "-show_entries",
@@ -281,11 +263,6 @@ def build(args: argparse.Namespace) -> int:
         "capture_timeline": str(timeline_path),
         "capture_timeline_sha256": _sha256(timeline_path),
         "shots": report_rows,
-        "concat_intermediate": {
-            "path": str(intermediate),
-            "sha256": _sha256(intermediate),
-            "bytes": intermediate.stat().st_size,
-        },
         "output": {"path": str(output), "sha256": _sha256(output), "bytes": output.stat().st_size},
         "probe": probe_value,
         "process_material_retained": True,
