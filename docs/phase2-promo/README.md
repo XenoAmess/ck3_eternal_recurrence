@@ -9,7 +9,14 @@
 [`phase2-acceptance-case-index.md`](phase2-acceptance-case-index.md)；361 项批次权威定义仍以
 `mod_zhongguo_style/docs/361-phase2-full-implementation-program.md` 为准。
 
-## 当前 projects/metrics 与 source registry 增量（2026-09-08）
+## 当前 source registry 与 T0 门（2026-09-09）
+
+当前 canonical source registry 为 `3/4`：promotion/compensation、projects/metrics 与 incidents/operations 已有真实 paused
+source checkpoint，**只缺 `capture_cross_cycle_endgame`**。R303/R313 以下段落保留各自历史增量；R326 已把
+incidents/operations 纳入 schema-v3 多分支联合前缀，不能再沿用当时的 `2/4` 作为当前状态。
+
+T0 当前仍为 `50%`、canonical stage `8/11`；T0-P1 未签收，所以最终宣传片 T0-P2 继续硬锁定。`strict 4/361` 与
+`definitions 106/626` 是非阻塞发现 backlog，不是 P1 完成门，也不得换算为剩余工作百分比。
 
 R303 已在 CK3 `1.19.0.6` 的真实 paused frame 完成 projects/metrics provider 后置条件：owner `32904`、subject
 `30938`、cycle/case `4/2`，CP #026 contribution receipt `1` / revision `3` / value `1` 被 P3 #229 metrics revision
@@ -25,10 +32,10 @@ subject 并原生保存；checkpoint 为 `89,548,228` bytes，SHA-256
 `9225D94ABCA8E47AFF0D2CBB3BE51785E28F5C0781F412F4B1D917B13046E76F`，projects registry SHA-256 为
 `7F80326DA8B0EBBBCEE26DE21E2A55A6F74AAE989D567F9B8909BD1F7B3190DE`；cleanup GREEN，原始 source checkpoint 未改变。
 
-因此 source registry 当前为 promotion `1/1`、projects `1/1`、合计 `2/4 incomplete`；仍缺 incidents/operations 与
-cross-cycle/endgame。two-of-four artifact SHA-256 为
+以上是 R313 时点的历史 `2/4` 基线：当时 promotion `1/1`、projects `1/1`，two-of-four artifact SHA-256 为
 `8128750541EE7683EAB5CAD83CFDAF11FCCE47F8017019E3B5541A76F1AD603A`。registry checkpoint 是取证输入，不是成片素材；
-真实 footage 仍为 `0/8`、两条 MP4 仍为 `0/2`，T0-P2 继续 `LOCKED`。
+当前已由 R326 推进至 `3/4`，只缺 cross-cycle/endgame；真实 footage 仍为 `0/8`、两条 MP4 仍为 `0/2`，T0-P2 继续
+`LOCKED`。
 
 这里是天朝二期两条正式宣传片路线的权威导演文档入口。用户已明确要求：**两个版本都保留、都制作、都分别交付成片。**二者不存在“主方案/废案”或“长版/短版”的从属关系。
 
@@ -93,15 +100,15 @@ cleanup GREEN。这是 material/call-graph closure RED，不是文件大小因�
 `docs/` 保存两版的导演稿、生产合同、审片模板和状态索引；大体积 MP4 按项目约定落在外部
 `artifacts/demos/YYYY-MM-DD/`（并在本页登记路径、时长、编码和 SHA-256），不把成片二进制塞进 Git。
 
-## 交付进度（2026-09-08）
+## 交付进度（2026-09-09）
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | T0 `50%`；strict scene `4/361`、full-tree definition `106/626`、stage `8/11`。R303 projects/metrics private provider GREEN，R313 projects source GREEN；source registry `2/4 incomplete`，default capability 边界不变 | 捕获 incidents/operations、cross-cycle/endgame 两项 source，再闭合完整回归与 8-span | 不预写全量 ETA；以剩余两项 registry 与素材阶段为准 |
-| Canonical source registry | promotion `1/1`、projects `1/1`；合计 `2/4 incomplete` | `capture_incidents_operations` → `capture_cross_cycle_endgame` → 四项整体不可变性复核 | 两项均需各自真实业务帧；不把 registry 计作 footage |
+| 二期产品代码与发布树 | T0 `50%`、stage `8/11`；source registry `3/4`，只缺 cross-cycle/endgame。`4/361` 与 `106/626` 仅为非阻塞 backlog | 捕获 cross-cycle/endgame source，再闭合 stage 9–11、产品关键链与真实 RED 回归 | 不预写全量 ETA；以最后一项 source、stage 9–11 与关键链实证为准 |
+| Canonical source registry | promotion、projects/metrics、incidents/operations 各 `1/1`；合计 `3/4 incomplete` | `capture_cross_cycle_endgame` → 四项整体不可变性复核 | 仍需该真实业务帧；不把 registry 计作 footage |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
-| 宣传工具 | 可写 fresh clone 已完成 `git fetch origin main --prune`；HEAD 与 `origin/main` 均为 `57c42fca13ea459432c1caf76e069a1fbccf602c`，工作树干净 | 两版开始 TTS/渲染前复核同一 HEAD，并把该 checkout 注入 builder | 已满足更新门；正式渲染仍等待 8/8 clean spans |
+| 宣传工具 | 历史 fresh clone 曾冻结于 `57c42fca13ea459432c1caf76e069a1fbccf602c`；这只是历史准备证据，不算当前 P2 前置完成 | T0-P1 通过后才允许重新检查版本、rebase/pull 到远端 main 并验证，再把 fresh checkout 注入 builder | T0-P2 当前硬锁定，尚未进入本轮更新门 |
 | G2 / open_kaishek | 历史暂停已解除；default-production truce duration 已完成 paused same-frame 双查询并晋级 `production-live read-only primitive`，但 expiry/loss/decision/action 与 `GEN-034` 仍未就绪 | 继续补 actual expiry 与 proven war-bound loss 的只读观测；不得由 1825 天推导 expiry | 已完成本次 live 槽；后续仍需新的冻结候选与独占槽 |
 
 这里的“尚无 MP4”是刻意保留的事实状态，不是漏写路径：没有真实八段 CK3 素材、具名审阅和 fresh tool receipt 时，制作器会 fail-closed，不生成占位宣传片。

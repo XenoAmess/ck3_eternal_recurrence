@@ -320,17 +320,21 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-09）是 **`static-ready / integrated-tested`，尚非 `production-live`**：共享 registry 默认 156 条，MCP
-真实 `list/call` 已接通；production runtime 已消费 295 条共享记录且内容 hash 不变，17 个 literal 与 31 个 wrapper 已切换。
-vanilla focused 在 normal / `-O` 下各为 `36 passed, 68 subtests`，checkpoint runner `90/90` 均 GREEN。T2 `open_kaishek`
-初始能力提交 `6b38d9c` 后，BOM source hash 重绑提交 `edcd1ba` 已推送，API 语义不变；父仓 pin verifier normal / `-O`
-GREEN。本批根仓提交仍待 Git 收口后补 SHA。
+当前状态（2026-09-09）是 **共享资产完整、实机切片按条目分层**：默认 registry 为 `157 contracts / 157 analysis / 4
+observations`，正式 MCP `list/call` 已接通；production runtime 当前消费 `296` 条事件合同。四条 observation 中，
+`TGP0160`、`great_holy_war.0011` 与 `TGP0020` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
+runner 的真实 drain/advance，是首批 `production-live primitive`；`stress_threshold.1721` 只记录当前未选择 RED，合同热恢复
+尚未完成，不能提前写 GREEN。这里的 production-live 只属于这三条实证切片，绝不表示 157 条都已实机验证。
 
-旧消费者复跑已在 normal / `-O` 下各取得 `160 passed, 1 skipped, 61 subtests`。尚未完成的门只剩新路径实机证明：R372 的
-TGP observation 仍是未选择的 paused exemplar，尚未用本次
-shared-registry cutover retry；因此当前没有 registry-backed production-live artifact，旧 R372 帧也不得回写为新路径 GREEN。
+其余既有分析按原合同注释、docs 与 tests 做 migration-only 迁移；旧证据没有冻结 source hash 时明确保留
+`migration-only-no-new-full-definition-review` 边界，不补写或猜测 hash。合同 `157/157` 的分析覆盖只证明知识可查询和迁移
+无缺键，不替代逐事件 live evidence。
 
-production-live cutover 只有同时满足以下条件才可改为完成：共享资产通过 deterministic/focused L0；MCP 在 exact-build 绑定下返回同一条定义及
+同一当前快照下，T0 仍为 `50%`、canonical stage `8/11`，四类 source checkpoint 已完成 `3/4`，只缺
+`capture_cross_cycle_endgame`；T0-P1 尚未签收，T0-P2 因而继续 `LOCKED`。`strict 4/361` 与
+`definitions 106/626` 继续只作非阻塞 backlog，不换算为剩余完成量。
+
+单条记录的 production-live cutover 只有同时满足以下条件才可改为完成：共享资产通过 deterministic/focused L0；MCP 在 exact-build 绑定下返回同一条定义及
 live variant；production runner 实际从共享条目解析一个真实 encountered event，并继续验证 active instance、option submission 和
 独立后置状态；报告明确记录 registry identity/MCP receipt 且没有回退到重复私有定义。仅有 schema、文档、fixture 或 ACK 都不够。
 

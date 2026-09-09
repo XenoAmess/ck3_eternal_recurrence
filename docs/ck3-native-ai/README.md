@@ -80,8 +80,13 @@
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
-- [static-ready + read-only MCP] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  已组合默认 156-key exact-build 原版事件表并发布离线 `ck3_query_vanilla_event_knowledge_v1`；两条 prebootstrap context profile 不混入扁平表，TGP0160 已分离 timeline contract、原版分析和 R372 observation metadata。Registry 按需增长，`361/626` 全树覆盖不是 T0、其它 mod、CI 或发布门。
+- [static-ready complete analysis + three production-live primitives + one paused RED] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
+  已组合默认 `157 contracts / 157 analysis / 4 observations` 的 exact-build 原版事件表并发布离线
+  `ck3_query_vanilla_event_knowledge_v1`；production runtime 当前消费 `296` 条事件合同。R372 的 `TGP0160`、
+  `great_holy_war.0011`、`TGP0020` 已分别完成共享查询、真实选择与 advance，属于首批 production-live primitive；
+  `stress_threshold.1721` 目前只保留未选择 RED observation，热恢复仍待完成。两条 prebootstrap context profile 不混入
+  扁平表；缺少既有 source hash 的旧分析只标 migration-only，不编造 hash。上述状态不表示 157 条全部 live；
+  `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
   `arrange_marriage_interaction` 的 AI→玩家专用发送前接受树、五角色 redirect、marriage special 分类、六项 option 与
