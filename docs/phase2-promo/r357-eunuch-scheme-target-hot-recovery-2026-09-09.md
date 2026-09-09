@@ -667,3 +667,31 @@ native 2，把战争留在已有 gameplay state surface，而不直接改写 rea
   `54A61D3BC0DD71605BAB6F6E49A606F7CE12463356DCA2B6C5FF99C589551A95`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十五次 RED：情人秘密继承完整任务容器
+
+第二十四次 `retry` 热加载提交 `bacbf0742ca48ba0a4a8f85e2670df6f298e7a4f` 后，
+自由权派系最后通牒在原 event instance `408` 上通过；同一 PID `159264` 随后推进
+到已登记的 `spymaster_task.0346`、event instance `410`、
+`date_raw=53298480`。唯一 native option 0 与核心人物类型均匹配，但当前十一项 scope
+保留完整 `scheme/owner/artifact/target` 任务容器且不含旧合同要求的临时 boolean
+`having_find_secrets_event`，旧八项合同因此在选择前触发 count/boolean RED。
+
+原版 Find Secrets 完成块先临时保存 `having_find_secrets_event` 以阻止同一完成 tick
+再投递 hook/空结果事件；随后 `.0301` 选择一个 secret，把 holder 和 secret 传给
+`task_find_secrets_reveal_selection`，`.0346` 再从 lover secret 的 target 保存
+`lover`。该 boolean 是上游调度信号，不是 `.0346` 自身 trigger 或 option 所需状态；
+当前完整任务容器与 R62 的八项 transient frame 都来自这条源码链。最小修复冻结这
+两个已实证的精确形状：十一项当前形状与八项旧形状，未知混合/超集仍 fail-closed；
+同时绑定 owner/councillor、target/target_character 别名及 holder/lover 互异关系。
+唯一按钮仍只揭示已经选定的秘密。每次 Find Secrets 结果可独立发生，按产品窗口逐次
+验帧。改动仅涉及外部合同分片、测试与报告，不重启 CK3。
+
+- 第二十五次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-25.json`；
+- park SHA-256：
+  `06764EE518CB4BCA526D2A1982DC05D87528D637FC9976AAE7564542A95CD4FE`；
+- 第二十五次 RED report 快照：14,258,905 bytes，SHA-256
+  `BE20C54C138158A83D6A7E5E2852A0A33D018E8C9C75B99D0FAB7BB1CFF98281`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

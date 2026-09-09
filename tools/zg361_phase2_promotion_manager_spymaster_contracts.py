@@ -232,26 +232,110 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
         # Vanilla Find Secrets lover-secret notification. Like .0342, the
         # discovery is already fixed when the window opens and exposes one
         # acknowledgement, which reveals that exact secret to root.
-        # R62 delivered the same exact scope/option identity one day later;
-        # bind the observed Find Secrets cadence without changing semantics.
+        # R62 carried the upstream having_find_secrets_event boolean, while
+        # R357 retained the complete scheme/task container without that
+        # transient value. Bind both exact source-produced frames and reject
+        # every unreviewed mix; each discovered lover secret is independent.
         "date_raw": (53152896, 53152920),
         "date_raw_range": (53152896, 53152920),
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
         "character_scopes": {
-            "councillor": 27963,
             "councillor_liege": 29037,
-            "target_character": 27051,
-            "active_councillor": 27963,
-            "secret_holder": 27051,
-            "lover": 45267,
         },
-        "scope_types": {"secret_to_reveal": "secret"},
-        "boolean_scopes": ("having_find_secrets_event",),
-        "saved_scope_count": 8,
+        "unique_character_scope_excludes": {
+            "owner": (29037,),
+            "target": (29037,),
+            "secret_holder": (29037,),
+            "lover": (29037,),
+        },
+        "character_scope_matches_any": {
+            "owner": ("councillor", "active_councillor"),
+            "councillor": ("owner", "active_councillor"),
+            "active_councillor": ("owner", "councillor"),
+            "target": ("target_character",),
+            "target_character": ("target",),
+        },
+        "character_scope_differs_from": {
+            "owner": ("target", "secret_holder", "lover"),
+            "target": ("owner",),
+            "secret_holder": ("owner", "lover"),
+            "lover": ("owner", "secret_holder"),
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "owner": "character",
+            "artifact": "artifact",
+            "target": "character",
+            "target_character": "character",
+            "councillor": "character",
+            "active_councillor": "character",
+            "secret_holder": "character",
+            "secret_to_reveal": "secret",
+            "lover": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "scheme",
+            "owner",
+            "artifact",
+            "target",
+            "councillor_liege",
+            "target_character",
+            "councillor",
+            "active_councillor",
+            "secret_holder",
+            "secret_to_reveal",
+            "lover",
+        ),),
+        "saved_scope_count": 11,
         "option_count": 1,
+        "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+        "scope_variants": ({
+            "saved_scope_names": (
+                "councillor",
+                "councillor_liege",
+                "target_character",
+                "active_councillor",
+                "secret_holder",
+                "secret_to_reveal",
+                "lover",
+                "having_find_secrets_event",
+            ),
+            "character_scopes": {
+                "councillor_liege": 29037,
+            },
+            "unique_character_scope_excludes": {
+                "councillor": (29037,),
+                "target_character": (29037,),
+                "active_councillor": (29037,),
+                "secret_holder": (29037,),
+                "lover": (29037,),
+            },
+            "character_scope_matches_any": {
+                "councillor": ("active_councillor",),
+                "active_councillor": ("councillor",),
+            },
+            "character_scope_differs_from": {
+                "councillor": ("target_character", "secret_holder", "lover"),
+                "secret_holder": ("councillor", "lover"),
+                "lover": ("councillor", "secret_holder"),
+            },
+            "scope_types": {
+                "councillor": "character",
+                "councillor_liege": "character",
+                "target_character": "character",
+                "active_councillor": "character",
+                "secret_holder": "character",
+                "secret_to_reveal": "secret",
+                "lover": "character",
+            },
+            "boolean_scopes": ("having_find_secrets_event",),
+            "saved_scope_count": 8,
+        },),
     },
     "spymaster_task.0359": {
         # Vanilla fallback for a discovered secret not covered by a more

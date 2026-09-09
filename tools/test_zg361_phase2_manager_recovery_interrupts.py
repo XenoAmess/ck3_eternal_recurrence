@@ -560,6 +560,93 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             drift_checks["scope:murder_target:differs_from"]
         )
 
+    def test_lover_secret_discovery_accepts_complete_task_frame(self) -> None:
+        event_key = "spymaster_task.0346"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=410,
+            date_raw=53298480,
+            player=32904,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 30434),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 31130),
+                _scope("councillor_liege", "character", 32904),
+                _scope("target_character", "character", 31130),
+                _scope("councillor", "character", 30434),
+                _scope("active_councillor", "character", 30434),
+                _scope("secret_holder", "character", 33951),
+                _scope("secret_to_reveal", "secret"),
+                _scope("lover", "character", 48808),
+            ],
+            native_option_indices=(0,),
+        )
+        snapshot = {
+            "date_raw": 53298480,
+            "active_event": {"option_count": 1},
+        }
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 410},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["saved_scope_count"], 11)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        legacy_context = _context(
+            event_key=event_key,
+            instance_id=62,
+            date_raw=53152920,
+            player=32904,
+            scopes=[
+                _scope("councillor", "character", 27963),
+                _scope("councillor_liege", "character", 32904),
+                _scope("target_character", "character", 27051),
+                _scope("active_councillor", "character", 27963),
+                _scope("secret_holder", "character", 27051),
+                _scope("secret_to_reveal", "secret"),
+                _scope("lover", "character", 45267),
+                _scope("having_find_secrets_event", "boolean"),
+            ],
+            native_option_indices=(0,),
+        )
+        legacy_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53152920,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 62},
+            context=legacy_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(legacy_checks.values()), legacy_checks)
+
+        mixed_context = copy.deepcopy(context)
+        mixed_context["saved_scopes"].append(
+            _scope("having_find_secrets_event", "boolean")
+        )
+        mixed_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event={"event_instance_id": 410},
+            context=mixed_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(mixed_checks["saved_scope_names_exact"])
+        self.assertFalse(mixed_checks["saved_scope_count"])
+
     def test_fallback_secret_discovery_is_repeatable_per_task_outcome(self) -> None:
         event_key = "spymaster_task.0359"
         contract = _manager_contract(event_key, player=32904)
