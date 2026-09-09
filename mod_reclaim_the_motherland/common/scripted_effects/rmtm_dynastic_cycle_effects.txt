@@ -30,16 +30,6 @@ rmtm_create_restoration_hegemony_effect = {
 		set_always_follows_primary_heir = yes
 	}
 
-	# move_title_name_to freezes the current runtime dynasty name, including a
-	# player-authored name, instead of retaining a live reference to h_china.
-	title:h_china = {
-		move_title_name_to = scope:rmtm_restoration_hegemony_title
-		reset_title_name = yes
-	}
-	scope:rmtm_restoration_hegemony_title = {
-		set_title_prefix = rmtm_restoration_title_prefix
-	}
-
 	create_title_and_vassal_change = {
 		type = created
 		save_scope_as = rmtm_restoration_title_change
@@ -52,6 +42,18 @@ rmtm_create_restoration_hegemony_effect = {
 		}
 	}
 	resolve_title_and_vassal_change = scope:rmtm_restoration_title_change
+
+	# Naming must happen after the grant. The vanilla on_title_gain path moves a
+	# custom name from a newly granted Chinese title to an unnamed primary title;
+	# naming first would therefore leave the Later title blank while h_china is
+	# still primary. Moving the live dynasty name now also freezes player-authored
+	# names before h_china is reset and destroyed. The temporary fallback name is
+	# cleared first because move_title_name_to does not overwrite an existing
+	# custom title name.
+	scope:rmtm_restoration_hegemony_title = {
+		reset_title_name = yes
+	}
+	rmtm_freeze_restoration_hegemony_name_effect = yes
 
 	# The old emperor loses only the Chinese Hegemony. All counties, duchies,
 	# kingdoms and unrelated personal titles remain untouched.
@@ -87,8 +89,9 @@ rmtm_chaos_shattering_effect = {
 		# authoritative pre-Chaos movement identity.
 		scope:old_emperor_temp = {
 			every_vassal = {
-				limit = {
+			limit = {
 					highest_held_title_tier >= tier_county
+					exists = var:former_movement_member
 					var:former_movement_member = {
 						participant_group_type = pro_hegemon_movement
 					}

@@ -29,16 +29,34 @@ rqa_enter_chaos_decision = {
 	}
 	is_valid = {
 		has_title = title:h_china
-		has_game_rule = rmtm_reclaim_the_motherland
 	}
 	effect = { add_character_flag = rqa_chaos_pending }
+	ai_potential = { always = no }
+}
+
+rqa_show_after_chaos_event_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = rqa_acceptance
+	sort_order = 3
+	ai_check_interval = 0
+	desc = rqa_show_after_chaos_event_decision_desc
+	selection_tooltip = rqa_show_after_chaos_event_decision_tooltip
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_after_chaos_event_ready
+	}
+	is_valid = { rmtm_holds_restoration_hegemony_trigger = yes }
+	effect = {
+		remove_character_flag = rqa_after_chaos_event_ready
+		trigger_event = rqa.1
+	}
 	ai_potential = { always = no }
 }
 
 rqa_prepare_threshold_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
 	decision_group_type = rqa_acceptance
-	sort_order = 3
+	sort_order = 4
 	ai_check_interval = 0
 	desc = rqa_prepare_threshold_decision_desc
 	selection_tooltip = rqa_prepare_threshold_decision_tooltip

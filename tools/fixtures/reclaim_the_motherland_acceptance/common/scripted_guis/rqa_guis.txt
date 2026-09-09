@@ -27,6 +27,16 @@ rqa_verify_chaos_gui = {
 	effect = { rqa_verify_chaos_effect = yes }
 }
 
+rqa_dispatch_chaos_event_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_dispatch_chaos_event_pending
+		current_date_is_start_date_trigger = no
+	}
+	effect = { rqa_dispatch_chaos_event_effect = yes }
+}
+
 rqa_prepare_threshold_gui = {
 	scope = character
 	is_shown = {

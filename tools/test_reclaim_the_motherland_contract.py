@@ -23,10 +23,19 @@ MOD = ROOT / "mod_reclaim_the_motherland"
 
 RULES = MOD / "common/game_rules/rmtm_game_rules.txt"
 RESTORATION_DECISIONS = MOD / "common/decisions/rmtm_restoration_decisions.txt"
-MANDATE_OVERRIDE = MOD / "common/decisions/zz_rmtm_mandate_override.txt"
+MANDATE_OVERRIDE = (
+    MOD / "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt"
+)
 CUSTOM_EFFECTS = MOD / "common/scripted_effects/rmtm_dynastic_cycle_effects.txt"
+GENERATED_TITLE_NAMES = (
+    MOD / "common/scripted_effects/rmtm_generated_title_name_effects.txt"
+)
 SCRIPTED_EFFECTS_DIR = MOD / "common/scripted_effects"
 RESTORATION_TRIGGERS = MOD / "common/scripted_triggers/rmtm_restoration_triggers.txt"
+FIXTURE_EFFECTS = (
+    ROOT
+    / "tools/fixtures/reclaim_the_motherland_acceptance/common/scripted_effects/rqa_effects.txt"
+)
 
 RULE = "rmtm_hegemon_fate"
 RECLAIM_SETTING = "rmtm_reclaim_the_motherland"
@@ -309,11 +318,16 @@ def excludes_old_emperor(block: Block) -> bool:
 def without_approved_restoration_guards(block: Block) -> Block:
     kept: list[Entry] = []
     for entry in block.entries:
-        if (
-            entry.key == "trigger_if"
-            and isinstance(entry.value, Block)
-            and has_assignment(entry.value, "has_game_rule", RECLAIM_SETTING)
-            and denies_trigger(entry.value, RESTORATION_TRIGGER)
+        if isinstance(entry.value, Block) and (
+            (
+                entry.key == "trigger_if"
+                and has_assignment(entry.value, "has_game_rule", RECLAIM_SETTING)
+                and denies_trigger(entry.value, RESTORATION_TRIGGER)
+            )
+            or (
+                entry.key == "NOT"
+                and has_assignment(entry.value, RESTORATION_TRIGGER, "yes")
+            )
         ):
             continue
         value = (
@@ -386,6 +400,15 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertEqual(option_blocks, {RECLAIM_SETTING, VANILLA_SETTING})
         self.assertEqual(len(direct_entries(rule, RECLAIM_SETTING)), 1)
         self.assertEqual(len(direct_entries(rule, VANILLA_SETTING)), 1)
+
+    def test_live_fixture_samples_only_county_or_higher_direct_vassals(self) -> None:
+        text = FIXTURE_EFFECTS.read_text(encoding="utf-8-sig")
+        initialization = text.split("rqa_enter_chaos_effect", 1)[0]
+        self.assertGreaterEqual(
+            initialization.count("highest_held_title_tier >= tier_county"),
+            4,
+            "fixture actors must match the product's county-or-higher vassal contract",
+        )
 
     def test_shattering_dispatcher_routes_custom_and_vanilla_effects(self) -> None:
         effects = read_script_directory(SCRIPTED_EFFECTS_DIR)
@@ -535,16 +558,15 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         mandate = direct_block(mandate_file, VANILLA_DECISION)
         for section_name in ("is_shown", "is_valid"):
             section = direct_block(mandate, section_name)
-            conditional_guards = [
+            direct_guards = [
                 guard
-                for guard in descendant_blocks(section, "trigger_if")
-                if has_assignment(guard, "has_game_rule", RECLAIM_SETTING)
-                and denies_trigger(guard, RESTORATION_TRIGGER)
+                for guard in descendant_blocks(section, "NOT")
+                if has_assignment(guard, RESTORATION_TRIGGER, "yes")
             ]
             self.assertEqual(
-                len(conditional_guards),
+                len(direct_guards),
                 1,
-                f"{section_name} must hard-block marked rulers only under the custom game rule",
+                f"{section_name} must unconditionally hard-block marked rulers",
             )
 
     def test_custom_shattering_marks_title_and_never_forces_step_down(self) -> None:
@@ -575,6 +597,58 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             and has_assignment(block, "value", "yes")
         ]
         self.assertEqual(len(marker_setters), 1)
+        grant_resolved_index = block_statement_index(
+            creator.value,
+            lambda entry: entry.key == "resolve_title_and_vassal_change",
+        )
+        name_helper_index = block_statement_index(
+            creator.value,
+            lambda entry: entry.key
+            == "rmtm_freeze_restoration_hegemony_name_effect"
+            and entry.value == "yes",
+        )
+        self.assertLess(
+            grant_resolved_index,
+            name_helper_index,
+            "apply the frozen dynasty name only after the title-gain on-action",
+        )
+        generated_text, generated_file = read_script(GENERATED_TITLE_NAMES)
+        name_helper = direct_block(
+            generated_file, "rmtm_freeze_restoration_hegemony_name_effect"
+        )
+        self.assertEqual(generated_text.count("is_title_localization_key_used ="), 89)
+        self.assertIn("is_title_localization_key_used = dynn_title_song", generated_text)
+        self.assertIn("is_title_localization_key_used = dynn_title_tang", generated_text)
+        self.assertIn("set_title_name = rmtm_later_dynn_title_song", generated_text)
+        self.assertIn("set_title_name = rmtm_later_dynn_title_tang", generated_text)
+        self.assertTrue(
+            has_assignment(
+                name_helper,
+                "move_title_name_to",
+                "scope:rmtm_restoration_hegemony_title",
+            ),
+            "unlisted literal player-authored names need a move-title-name fallback",
+        )
+        self.assertTrue(
+            has_assignment(
+                name_helper, "set_title_prefix", "rmtm_restoration_title_prefix"
+            )
+        )
+        for language in (
+            "english", "french", "german", "japanese", "korean",
+            "polish", "russian", "simp_chinese", "spanish",
+        ):
+            localization = (
+                MOD
+                / "localization"
+                / language
+                / f"rmtm_generated_title_names_l_{language}.yml"
+            ).read_text(encoding="utf-8-sig")
+            self.assertIn(
+                'rmtm_later_dynn_title_song:0 '
+                '"$rmtm_restoration_title_prefix$$dynn_title_song$"',
+                localization,
+            )
 
         effects = read_script_directory(SCRIPTED_EFFECTS_DIR)
         vanilla = collection_block(effects, VANILLA_EFFECT)

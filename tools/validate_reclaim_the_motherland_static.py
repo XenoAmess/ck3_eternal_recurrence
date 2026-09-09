@@ -11,6 +11,7 @@ import build_reclaim_the_motherland_release as builder
 from PIL import Image
 
 import compose_reclaim_the_motherland_key_art as key_art
+import gen_reclaim_the_motherland_title_names as title_names
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,8 +32,10 @@ LOC_KEYS = frozenset(
         "rmtm_restoration_hegemony_fallback_name",
         "rmtm_restoration_hegemony_fallback_name_adj",
         "rmtm_claim_mandate_blocked_by_restoration_tt",
-        "dynastic_cycle_entered_chaos_hunagdi_tt",
     }
+)
+GENERATED_TITLE_LOC_KEYS = frozenset(
+    f"rmtm_later_{key}" for key in title_names.TITLE_KEYS
 )
 
 
@@ -112,27 +115,37 @@ def validate() -> list[str]:
     expected_runtime_files = frozenset(
         {
             "common/decisions/rmtm_restoration_decisions.txt",
-            "common/decisions/zz_rmtm_mandate_override.txt",
+            "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
             "common/game_rules/rmtm_game_rules.txt",
             "common/scripted_effects/rmtm_dynastic_cycle_effects.txt",
+            "common/scripted_effects/rmtm_generated_title_name_effects.txt",
             "common/scripted_effects/rmtm_vanilla_compat_effects.txt",
             "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
             "common/scripted_triggers/rmtm_restoration_triggers.txt",
             "descriptor.mod",
             "localization/english/rmtm_l_english.yml",
+            "localization/english/rmtm_generated_title_names_l_english.yml",
             "localization/french/rmtm_l_french.yml",
+            "localization/french/rmtm_generated_title_names_l_french.yml",
             "localization/german/rmtm_l_german.yml",
+            "localization/german/rmtm_generated_title_names_l_german.yml",
             "localization/japanese/rmtm_l_japanese.yml",
+            "localization/japanese/rmtm_generated_title_names_l_japanese.yml",
             "localization/korean/rmtm_l_korean.yml",
+            "localization/korean/rmtm_generated_title_names_l_korean.yml",
             "localization/polish/rmtm_l_polish.yml",
+            "localization/polish/rmtm_generated_title_names_l_polish.yml",
             "localization/russian/rmtm_l_russian.yml",
+            "localization/russian/rmtm_generated_title_names_l_russian.yml",
             "localization/simp_chinese/rmtm_l_simp_chinese.yml",
+            "localization/simp_chinese/rmtm_generated_title_names_l_simp_chinese.yml",
             "localization/spanish/rmtm_l_spanish.yml",
+            "localization/spanish/rmtm_generated_title_names_l_spanish.yml",
             "thumbnail.png",
         }
     )
     if builder.RUNTIME_FILES != expected_runtime_files:
-        errors.append("release allowlist is not the exact eighteen-file product inventory")
+        errors.append("release allowlist is not the exact twenty-eight-file product inventory")
     if builder.SOURCE_ONLY_FILES != frozenset(
         {"README.md", "docs/acceptance-plan.md", "docs/acceptance-report.md"}
     ):
@@ -176,6 +189,7 @@ def validate() -> list[str]:
         "rmtm_hegemon_fate",
         "rmtm_holds_restoration_hegemony_trigger",
         "rmtm_claim_restoration_decision",
+        "rmtm_freeze_restoration_hegemony_name_effect",
         "situation_dynastic_cycle_claim_mandate_decision",
         "rmtm_chaos_shattering_effect",
         "tgp_chaos_shattering_effect",
@@ -209,7 +223,7 @@ def validate() -> list[str]:
             errors.append(f"restoration decision contract missing: {fragment}")
 
     mandate_override = scripts.get(
-        "common/decisions/zz_rmtm_mandate_override.txt", ""
+        "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt", ""
     )
     if mandate_override.count(
         "NOT = { rmtm_holds_restoration_hegemony_trigger = yes }"
@@ -222,14 +236,31 @@ def validate() -> list[str]:
     custom_shattering = scripts.get(
         "common/scripted_effects/rmtm_dynastic_cycle_effects.txt", ""
     )
+    generated_title_names_path = (
+        MOD / "common/scripted_effects/rmtm_generated_title_name_effects.txt"
+    )
+    if (
+        generated_title_names_path.is_file()
+        and generated_title_names_path.read_bytes() != title_names.rendered_bytes()
+    ):
+        errors.append("generated Later-Dynasty title-name copier is stale")
+    for language in LANGUAGES:
+        generated_loc = title_names.localization_output(language)
+        if (
+            generated_loc.is_file()
+            and generated_loc.read_bytes()
+            != title_names.rendered_localization_bytes(language)
+        ):
+            errors.append(
+                f"generated Later-Dynasty title localization is stale: {language}"
+            )
     for fragment in (
         "participant_group_type = pro_hegemon_movement",
         "add_to_list = rmtm_loyal_direct_vassals",
         "create_dynamic_title = {",
         "tier = hegemony",
         "name = rmtm_restoration_hegemony",
-        "move_title_name_to = scope:rmtm_restoration_hegemony_title",
-        "set_title_prefix = rmtm_restoration_title_prefix",
+        "rmtm_freeze_restoration_hegemony_name_effect = yes",
         "destroy_title = title:h_china",
     ):
         if fragment not in custom_shattering:
@@ -251,26 +282,33 @@ def validate() -> list[str]:
 
     localized: dict[str, dict[str, str]] = {}
     for language, header in LANGUAGES.items():
-        relative = f"localization/{language}/rmtm_l_{language}.yml"
-        value = text(relative)
-        if not value.splitlines() or value.splitlines()[0] != f"{header}:":
-            errors.append(f"wrong localization header: {relative}")
-            continue
-        try:
-            entries = loc_entries(value)
-        except ValueError as error:
-            errors.append(f"{relative}: {error}")
-            continue
-        if set(entries) != LOC_KEYS:
-            errors.append(f"localization key inventory mismatch: {relative}")
+        entries: dict[str, str] = {}
+        relatives = (
+            f"localization/{language}/rmtm_l_{language}.yml",
+            f"localization/{language}/rmtm_generated_title_names_l_{language}.yml",
+        )
+        for relative in relatives:
+            value = text(relative)
+            if not value.splitlines() or value.splitlines()[0] != f"{header}:":
+                errors.append(f"wrong localization header: {relative}")
+                continue
+            try:
+                file_entries = loc_entries(value)
+            except ValueError as error:
+                errors.append(f"{relative}: {error}")
+                continue
+            duplicates = sorted(set(entries) & set(file_entries))
+            if duplicates:
+                errors.append(f"duplicate localization keys across files: {duplicates}")
+            entries.update(file_entries)
+        if set(entries) != LOC_KEYS | GENERATED_TITLE_LOC_KEYS:
+            errors.append(f"localization key inventory mismatch: {language}")
         if any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
-        allowed_vanilla_loc_overrides = {"dynastic_cycle_entered_chaos_hunagdi_tt"}
         invalid_namespace = sorted(
             key
             for key in entries
             if not key.startswith(("rmtm_", "rule_rmtm_", "setting_rmtm_"))
-            and key not in allowed_vanilla_loc_overrides
         )
         if invalid_namespace:
             errors.append(
@@ -286,7 +324,6 @@ def validate() -> list[str]:
         "setting_rmtm_vanilla_shattering": "群雄割据（原版）",
         "rmtm_claim_restoration_decision": "宣称复辟",
         "rmtm_restoration_title_prefix": "后",
-        "dynastic_cycle_entered_chaos_hunagdi_tt": "天子退位并失去天命，天下由此分崩。",
     }
     required_english = {
         "rule_rmtm_hegemon_fate": "Fate of the Chinese Hegemon",
@@ -294,7 +331,6 @@ def validate() -> list[str]:
         "setting_rmtm_vanilla_shattering": "Vanilla Shattering",
         "rmtm_claim_restoration_decision": "Proclaim the Restoration",
         "rmtm_restoration_title_prefix": "Later ",
-        "dynastic_cycle_entered_chaos_hunagdi_tt": "The emperor steps down and loses the Mandate, and All Under Heaven fractures.",
     }
     for key, expected in required_chinese.items():
         if chinese.get(key) != expected:
@@ -319,7 +355,7 @@ def main() -> int:
         "RECLAIM THE MOTHERLAND STATIC VALIDATION OK\n"
         f"Runtime files: {len(builder.RUNTIME_FILES)}\n"
         f"Languages: {len(LANGUAGES)}\n"
-        f"Localization keys: {len(LOC_KEYS)}\n"
+        f"Localization keys: {len(LOC_KEYS | GENERATED_TITLE_LOC_KEYS)}\n"
         f"Gameplay scripts: {sum(path.endswith('.txt') for path in builder.RUNTIME_FILES)}"
     )
     return 0

@@ -21,7 +21,6 @@ rmtm_claim_restoration_decision = {
 	}
 
 	is_valid = {
-		has_game_rule = rmtm_reclaim_the_motherland
 		rmtm_holds_restoration_hegemony_trigger = yes
 		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos }
 		is_independent_ruler = yes

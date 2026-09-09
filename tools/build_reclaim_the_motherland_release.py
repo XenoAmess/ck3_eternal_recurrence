@@ -27,22 +27,32 @@ MANIFEST_FORMAT_VERSION = 1
 RUNTIME_FILES = frozenset(
     {
         "common/decisions/rmtm_restoration_decisions.txt",
-        "common/decisions/zz_rmtm_mandate_override.txt",
+        "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
         "common/game_rules/rmtm_game_rules.txt",
         "common/scripted_effects/rmtm_dynastic_cycle_effects.txt",
+        "common/scripted_effects/rmtm_generated_title_name_effects.txt",
         "common/scripted_effects/rmtm_vanilla_compat_effects.txt",
         "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
         "common/scripted_triggers/rmtm_restoration_triggers.txt",
         "descriptor.mod",
         "localization/english/rmtm_l_english.yml",
+        "localization/english/rmtm_generated_title_names_l_english.yml",
         "localization/french/rmtm_l_french.yml",
+        "localization/french/rmtm_generated_title_names_l_french.yml",
         "localization/german/rmtm_l_german.yml",
+        "localization/german/rmtm_generated_title_names_l_german.yml",
         "localization/japanese/rmtm_l_japanese.yml",
+        "localization/japanese/rmtm_generated_title_names_l_japanese.yml",
         "localization/korean/rmtm_l_korean.yml",
+        "localization/korean/rmtm_generated_title_names_l_korean.yml",
         "localization/polish/rmtm_l_polish.yml",
+        "localization/polish/rmtm_generated_title_names_l_polish.yml",
         "localization/russian/rmtm_l_russian.yml",
+        "localization/russian/rmtm_generated_title_names_l_russian.yml",
         "localization/simp_chinese/rmtm_l_simp_chinese.yml",
+        "localization/simp_chinese/rmtm_generated_title_names_l_simp_chinese.yml",
         "localization/spanish/rmtm_l_spanish.yml",
+        "localization/spanish/rmtm_generated_title_names_l_spanish.yml",
         "thumbnail.png",
     }
 )
@@ -223,16 +233,22 @@ def release_localization_errors(source: Path) -> list[str]:
     matrix: dict[str, dict[str, str]] = {}
     errors: list[str] = []
     for language in LOCALIZATION_LANGUAGES:
-        path = (
-            Path(source)
-            / "localization"
-            / language
-            / f"rmtm_l_{language}.yml"
-        )
-        try:
-            matrix[language] = _localization_entries(path, language)
-        except (OSError, UnicodeError, ValueError) as error:
-            errors.append(str(error))
+        directory = Path(source) / "localization" / language
+        values: dict[str, str] = {}
+        for path in sorted(directory.glob("rmtm_*.yml")):
+            try:
+                entries = _localization_entries(path, language)
+            except (OSError, UnicodeError, ValueError) as error:
+                errors.append(str(error))
+                continue
+            duplicates = sorted(set(values) & set(entries))
+            if duplicates:
+                errors.append(f"duplicate localization keys across files: {duplicates}")
+            values.update(entries)
+        if not values:
+            errors.append(f"{language} localization has no RMTM entries")
+        else:
+            matrix[language] = values
     english = matrix.get("english")
     if english is None:
         return errors
@@ -255,7 +271,9 @@ def release_localization_errors(source: Path) -> list[str]:
                 )
         if language not in LOCALIZATION_SOURCE_LANGUAGES:
             placeholders = sorted(
-                key for key, value in values.items() if value == english[key]
+                key
+                for key, value in values.items()
+                if value == english[key] and not key.startswith("rmtm_later_dynn_title_")
             )
             if placeholders:
                 errors.append(

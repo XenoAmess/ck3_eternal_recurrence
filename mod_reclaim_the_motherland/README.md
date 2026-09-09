@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**玩法脚本与独立构建链已实现并达到 static-ready；真实 CK3 全流程验收尚未完成。** 这份文档同时记录设计约束、当前实现与剩余实机门槛。
+状态：**玩法、九语发布内容、独立构建链与源码树 MCP-first CK3 全流程均已通过；Workshop fresh-cache L3 待首次上传后执行。** 这份文档同时记录设计约束、当前实现与发布门槛。
 
 ## 1. 产品目标
 
@@ -64,14 +64,14 @@
 
 `h_china` 的“唐”“宋”等不是不同 title key，而是运行时的头衔名；玩家还可以自定义朝号。不能用一张“汉/唐/宋”枚举表，也不能让新头衔长期引用活的 `h_china` 名称，否则别人建立新朝后“后唐”可能漂移成“后宋”。
 
-拟采用的顺序是：
+当前实现采用以下顺序：
 
 1. 创建动态霸权，暂用兜底名称。
-2. 在销毁 `h_china` 前，用 `move_title_name_to` 把当时的实际朝号转移到新头衔。
-3. 对新头衔设置本地化 prefix：简体中文为“后”，英文为“Later ”。
-4. 重置旧 `h_china` 的运行时名称，再销毁原霸权。
+2. 对原版 89 个标准朝号逐一使用 `is_title_localization_key_used` 判断；匹配时把动态头衔名设置成生成的组合 key，例如 `$rmtm_restoration_title_prefix$$dynn_title_song$`，由当前语言直接渲染“后宋”“Later Song”等名称。
+3. 若玩家使用了枚举外的自定义朝号，则用 `move_title_name_to` 无损转移原文字，并使用引擎原生 title prefix 表达“后/Later”。
+4. 名称冻结发生在授予动态头衔并处理完 title-gain on-action 之后、销毁 `h_china` 之前；随后重置旧 `h_china` 的运行时名称。
 
-这样目标是同时支持“后唐”“后宋”和玩家输入的任意朝号。当前实现已经使用 `move_title_name_to + set_title_prefix`，但这组组合在原版 TGP 脚本中没有直接样例，因此仍是首个实机门槛：必须核对地图名、角色主头衔、决议文本、形容词和存档重载后的结果；在这项实机证据完成前，状态保持 static-ready。
+这避免了 `set_title_prefix` 不会改写 `GetNameNoTierNoTooltip` 所暴露的标准朝号缺前缀问题，同时保持任意玩家自定义朝号不丢失。89 个组合 key 由 `tools/gen_reclaim_the_motherland_title_names.py` 向九种发布语言确定性生成，禁止手改生成文件。
 
 ## 5. 封臣保留算法
 
@@ -131,7 +131,7 @@
 
 代价是：任何同样覆写上述两个 key 的 mod 都存在加载顺序冲突。descriptor/Workshop 页面必须明确列出这一点。兼容副本会绑定下面的原版文件 SHA-256；升级 CK3 后只要 hash 变化，静态校验就要求人工审阅上游差异，不能悄悄继续使用旧逻辑。
 
-原版 `tgp_dynastic_cycle.0081/.0082` 的文本会错误声称旧天子“失去全部有地头衔”。当前中英实现把这条 tooltip 改成对两个规则分支都成立的中性描述，避免在新规则下显示错误结果，同时不新增第三个原版 event 覆写点。只维护简体中文和英文，正式发布前再补齐其余七种语言。
+原版 `tgp_dynastic_cycle.0081/.0082` 的 tooltip 会继续沿用原版文字；本 mod 不覆盖原版本地化 key，避免加载时产生重复 key。玩家应以游戏规则说明、动态后朝头衔与新决议的实际结果为准。
 
 ## 8. 实际文件布局
 
@@ -141,16 +141,17 @@ mod_reclaim_the_motherland/
   descriptor.mod                                # 不含 remote_file_id
   common/game_rules/rmtm_game_rules.txt
   common/decisions/rmtm_restoration_decisions.txt
-  common/decisions/zz_rmtm_mandate_override.txt
+  common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt
   common/scripted_effects/rmtm_dynastic_cycle_effects.txt
+  common/scripted_effects/rmtm_generated_title_name_effects.txt
   common/scripted_effects/rmtm_vanilla_compat_effects.txt
   common/scripted_effects/zz_rmtm_vanilla_overrides.txt
   common/scripted_triggers/rmtm_restoration_triggers.txt
-  localization/simp_chinese/rmtm_*.yml
-  localization/english/rmtm_*.yml
+  localization/<九种语言>/rmtm_l_<语言>.yml
+  localization/<九种语言>/rmtm_generated_title_names_l_<语言>.yml
 ```
 
-统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：10 个运行时文件进入 staging，README 不发布。Workshop item ID 未创建前不虚构，也绝不把 `remote_file_id` 写入仓库内 descriptor。
+统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：28 个运行时文件进入 staging，README 不发布。Workshop item ID 未创建前不虚构，也绝不把 `remote_file_id` 写入仓库内 descriptor。
 
 ## 9. 实现与验收顺序
 
@@ -206,22 +207,24 @@ mod_reclaim_the_motherland/
 
 ## 12. 当前实现与验证证据
 
-2026-09-08 的实现状态为 **static-ready**：游戏规则、群雄割据分派、动态后朝、尊王派直属封臣保留、原“宣称天命”封锁、“宣称复辟”、中英本地化和 10 文件独立构建链均已落地。原版兼容副本绑定 CK3 `1.19.0.6` 的源文件哈希；旧天子还被显式排除在弱势王/帝头衔裁剪之外，确保除 `h_china` 外的个人头衔不会被该轮原版逻辑误删。
+2026-09-09 的实现状态为 **source production-live**：游戏规则、群雄割据分派、动态后朝、尊王派直属封臣保留、原“宣称天命”封锁、“宣称复辟”、九语发布本地化和 28 文件独立构建链均已落地。原版兼容副本绑定 CK3 `1.19.0.6` 的源文件哈希；旧天子还被显式排除在弱势王/帝头衔裁剪之外，确保除 `h_china` 外的个人头衔不会被该轮原版逻辑误删。
 
 `open_kaishek` 预验记录：
 
 - commit：`33d690234d8217422978ee642055ab1b13e44c76`；CLI JAR SHA-256：`CC42A0BBD4991095DEB4C8AF4142A4657D46D07D616B89643A9F2D7A1E4A3CD7`。
-- profile/version：parser-only corpus（当前没有覆盖本 mod 动态头衔、封臣变更和决议语义的 validator profile，因此 validator/IR/finite-runtime 为 `not-applicable`，不能代替 CK3 实机）。
+- profile/version：`ck3-1.19.0.6` parser-only root scan（当前没有覆盖本 mod 动态头衔、封臣变更和决议语义的 validator profile，因此命名 fixture、validator/IR/finite-runtime 为 `not-applicable / cli-red`，不能代替 CK3 实机）。
 - CK3：`1.19.0.6`；EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- corpus：`mod_reclaim_the_motherland/common/**/*.txt`，7 文件、23,239 bytes，SHA-256 `557650efdb8340d00d9550137cd8a498a30d2c323e68809e34054b2eae4e233b`。
-- 命令：`java -jar D:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar corpus --require-corpus D:\workspace\ck3_reclaim_the_motherland_design\mod_reclaim_the_motherland`。
-- 结果：7/7 parsed，0 errors，GREEN。
+- 产品 corpus：8 文件、41,347 bytes，root SHA-256 `92b0c6c4eb6f6fe6cf62006b9630e070339dd4a3dbdf6f0f7c5141d63f9982a0`；root parser 8/8 GREEN。
+- 外置验收夹具 corpus：8 文件、17,820 bytes，root SHA-256 `dc36c2fd401dff03f959edf5b1fd3aca33c230d226556f64db58930e0a5197f5`；root parser 8/8 GREEN。
+- 命名 fixture 不被当前 CLI 识别；报告保留这个边界并继续执行真实 CK3，没有把离线 parser 冒充机制验收。
 
 最终静态验证：
 
-- `py tools/test_reclaim_the_motherland_contract.py`：11/11 GREEN。
-- `py tools/validate_reclaim_the_motherland_static.py`：GREEN；10 个运行时文件、2 种开发语言、14 个本地化键、7 个玩法脚本。
-- `py tools/test_build_reclaim_the_motherland_release.py`：9/9 GREEN。
-- `py tools/build_reclaim_the_motherland_release.py --check`：双构建可复现；运行时 ZIP SHA-256 `a134855d68f6df688a2ea21a07e349ab220e3a14b5f7e14418c83d66ec800363`。manifest 内嵌执行时 Git SHA，因此只以对应构建输出为准，不在源码中冻结自引用哈希。
+- `py tools/test_reclaim_the_motherland_contract.py`：12/12 GREEN。
+- `py tools/validate_reclaim_the_motherland_static.py`：GREEN；28 个运行时文件、9 种发布语言、每种 102 个本地化键、8 个玩法脚本。
+- `py tools/test_build_reclaim_the_motherland_release.py`：10/10 GREEN。
+- `py tools/build_reclaim_the_motherland_release.py --check`：双构建可复现；开发快照 manifest SHA-256 `41ac174812e65725846bceeea084fcccf70b938aed3cbd3aeb4e4ab6e42388d8`，ZIP SHA-256 `cdbd601c44d578c39c2ba8a34c2fe372292f90b812ffb5af5acf8a2425282de1`。正式 tag 构建会因 manifest 内嵌 Git SHA 而取得自己的正式哈希。
 
-本轮没有启动或接管 CK3：当时已有其他响应中的游戏实例占用排他槽。动态朝号前缀、空法理与继承、真实尊王派封臣树、50%/51% 边界、完整复辟效果和存档重载仍必须按第 9 节取得真实游戏证据；在此之前不得把状态提升为 production-live 或 complete。
+源码树 L1 实机 run 为 `D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\runs\rqa_20260909_114834_32f85232`，有效 `cell/report.json` SHA-256 为 `9594029df6b161329e820bd98dfbc2d54fc6964d0252c44538b423f1f1dbeda6`。它通过 MCP readiness 和语义化事件选择完成 19/19 断言：真实阶段切换与原版群雄事件、后宋名称、空法理与个人领地、尊王派直属及下级树、非尊王派直属脱离、50% 不足与 51% 达标、复辟可见而天命不可见，以及完整原版天命效果＋后朝销毁。运行中 source/runtime 未改写，项目 diagnostics 为 0，保护存储未变化，原生进程树和隔离 userdir 均完成清理。
+
+完整 L0/L1 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`。首次 Workshop 上传后仍须从全新订阅缓存执行同矩阵 L3，严格核对 28/28 发布文件、页面 BBCode、thumbnail 与三张真实游戏截图；在 L3 和 initial-baseline changelog 入库前，产品不标记为完整发布。

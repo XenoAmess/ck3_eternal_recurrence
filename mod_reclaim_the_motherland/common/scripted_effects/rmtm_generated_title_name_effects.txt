@@ -1,0 +1,551 @@
+﻿# GENERATED FILE. Edit tools/gen_reclaim_the_motherland_title_names.py.
+# Vanilla TGP scripted-effects SHA-256: 86574FB7CE246EF6D1B2741B211785D282AD39659E8771E0E5C714ACDC001782
+# Character scope; h_china and scope:rmtm_restoration_hegemony_title exist.
+rmtm_freeze_restoration_hegemony_name_effect = {
+	if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_ba } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_ba
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_bao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_bao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_bi } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_bi
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_bo } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_bo
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_cai } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_cai
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_cao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_cao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_chen } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_chen
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_cheng } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_cheng
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_chu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_chu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_dai } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_dai
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_dao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_dao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_deng } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_deng
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_di } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_di
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_dian } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_dian
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_e } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_e
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_fu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_fu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_gan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_gan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_gui } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_gui
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_guo } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_guo
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_han } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_han
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_han_henan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_han_henan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_han_korea } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_han_korea
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_he } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_he
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_hua } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_hua
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_huai } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_huai
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_huang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_huang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_huo } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_huo
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_ji } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_ji
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_ji_hebei } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_ji_hebei
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_jiao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_jiao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_jin } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_jin
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_jing } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_jing
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_ju } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_ju
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_jurchen_jin } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_jurchen_jin
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_kang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_kang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_lai } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_lai
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_le } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_le
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_li } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_li
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_liang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_liang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_liang_west } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_liang_west
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_liao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_liao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_lu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_lu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_luo } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_luo
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_miao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_miao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_min } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_min
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_nan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_nan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_ou } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_ou
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_peng } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_peng
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_qi } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_qi
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_qi_guannei } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_qi_guannei
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_qian } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_qian
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_qin } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_qin
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_qiong } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_qiong
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_rui } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_rui
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_shang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_shang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_shen } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_shen
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_shu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_shu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_song } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_song
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_sui } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_sui
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_tan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_tan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_tang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_tang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_teng } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_teng
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_wei } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_wei
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_wey } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_wey
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_wu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_wu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_xi } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_xi
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_xia } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_xia
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_xiang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_xiang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_xing } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_xing
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_xu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_xu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_xu_shandong } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_xu_shandong
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yang } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yang
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yin } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yin
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_ying } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_ying
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yong } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yong
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_you } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_you
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yu } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yu
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yuan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yuan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yuan_ferghana } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yuan_ferghana
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yue } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yue
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_yue_2 } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_yue_2
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zhan } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zhan
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zhao } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zhao
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zhen } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zhen
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zheng } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zheng
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zhou } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zhou
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zhuang_li } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zhuang_li
+		}
+	}
+	else_if = {
+		limit = { title:h_china = { is_title_localization_key_used = dynn_title_zou } }
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_name = rmtm_later_dynn_title_zou
+		}
+	}
+	else = {
+		# Preserve a literal player-authored title name when no pinned vanilla key matches.
+		title:h_china = {
+			move_title_name_to = scope:rmtm_restoration_hegemony_title
+		}
+		# A literal player-authored name has no finite localization-key alias.
+		# CK3's native prefix field is the only lossless dynamic representation.
+		scope:rmtm_restoration_hegemony_title = {
+			set_title_prefix = rmtm_restoration_title_prefix
+		}
+	}
+	title:h_china = { reset_title_name = yes }
+}

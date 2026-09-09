@@ -63,6 +63,13 @@ EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
+VANILLA_GAME_RULES = (
+    acceptance.CK3_EXE.parent.parent
+    / "game"
+    / "common"
+    / "game_rules"
+    / "00_game_rules.txt"
+)
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_reclaim_"
 BOOT_TIMEOUT_SECONDS = 30 * 60
 SLOT_WAIT_TIMEOUT_SECONDS = 30 * 60
@@ -83,6 +90,10 @@ REQUIRED_MARKERS = (
     "RQA: TEST PASS fixture_vassal_tree_prepared",
     "RQA: TEST PASS switched_to_song_emperor",
     "RQA: TEST PASS custom_rule_before_chaos",
+    "RQA: TEST PASS pre_chaos_movement_identity_prepared",
+    "RQA: TEST PASS chaos_phase_transition_applied",
+    "RQA: TEST PASS original_movement_identity_frozen",
+    "RQA: TEST PASS original_chaos_event_dispatched",
     "RQA: TEST PASS later_dynasty_empty_de_jure_and_personal_land_retained",
     "RQA: TEST PASS pro_hegemon_direct_and_subtree_retained",
     "RQA: TEST PASS non_pro_hegemon_direct_released",
@@ -277,7 +288,10 @@ def preflight(
 
 
 def render_presets() -> str:
-    settings = [setting for _, setting in acceptance.declared_vanilla_rule_defaults()]
+    settings = [
+        setting
+        for _, setting in acceptance.declared_vanilla_rule_defaults(VANILLA_GAME_RULES)
+    ]
     settings.append("rmtm_reclaim_the_motherland")
     if len(settings) != len(set(settings)):
         raise acceptance.RunnerError("duplicate game-rule setting in acceptance preset")
@@ -522,12 +536,155 @@ def project_diagnostics(userdir: Path, artifacts: Path) -> list[str]:
         if not path.is_file():
             continue
         shutil.copy2(path, artifacts / f"final_{name}")
-        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
-        for index, line in enumerate(lines):
-            context = " ".join(lines[max(0, index - 2) : index + 3]).lower()
-            if any(token in context for token in PROJECT_TOKENS):
-                blocking.append(f"{name}: {line.strip()}")
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        for block in re.split(r"\n\s*\n", text):
+            context = re.sub(r"\s+", " ", block).strip()
+            lowered = context.lower()
+            if not context or not any(token in lowered for token in PROJECT_TOKENS):
+                continue
+            # The artificial 51% fixture hands hundreds of counties to one
+            # ruler before invoking the unmodified upstream Mandate effect.
+            # Vanilla then attempts to create noble-family titles for a set of
+            # generated lowborn courtiers and logs failures from its own
+            # create_noble_family_effect. Preserve those blocks in error.log,
+            # but do not misclassify them as product-script diagnostics merely
+            # because the caller frame is our restoration decision.
+            known_upstream_fixture_error = all(
+                token in lowered
+                for token in (
+                    "give_noble_family_title effect",
+                    "create_noble_family_effect",
+                    "tgp_claim_mandate_of_heaven_effect",
+                    "rmtm_claim_restoration_decision:effect",
+                )
+            )
+            if not known_upstream_fixture_error:
+                blocking.append(f"{name}: {context}")
     return list(dict.fromkeys(item for item in blocking if item.strip()))
+
+
+def advance_queued_phase_transition(
+    service: GameplayBridgeService,
+    stream: MarkerStream,
+    artifacts: Path,
+    timeout_s: float = 90,
+) -> dict[str, object]:
+    """Let CK3 settle a scripted situation phase change, then freeze it again."""
+
+    before = service.snapshot()
+    if before.get("paused") is not True:
+        raise acceptance.RunnerError("phase-transition precondition is not paused")
+    resume_ack = service.execute_step(
+        "resume-map", expected_revision=int(before["revision"])
+    )
+    wait_error: BaseException | None = None
+    try:
+        stream.wait("RQA: TEST PASS chaos_matrix_complete", timeout_s)
+    except BaseException as error:
+        wait_error = error
+
+    running = service.snapshot()
+    pause_ack: dict[str, object] | None = None
+    paused = running
+    if running.get("paused") is not True:
+        pause_ack = service.execute_step(
+            "pause-map", expected_revision=int(running["revision"])
+        )
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            paused = service.snapshot()
+            if paused.get("paused") is True:
+                break
+            time.sleep(0.1)
+        else:
+            raise acceptance.RunnerError("phase-transition map did not pause")
+
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if wait_error is None else "RED",
+        "reason": "advance paused simulation so CK3 applies the queued situation phase change",
+        "before": before,
+        "resume_ack": resume_ack,
+        "after_running": running,
+        "pause_ack": pause_ack,
+        "after_paused": paused,
+        "marker_observed": wait_error is None,
+        "error": None if wait_error is None else str(wait_error),
+    }
+    write_json(artifacts / "07_phase_transition_tick.json", evidence)
+    if wait_error is not None:
+        raise wait_error
+    return evidence
+
+
+def select_current_event_first_option(
+    service: GameplayBridgeService,
+    expected_event_key: str,
+    artifacts: Path,
+    stem: str,
+) -> dict[str, object]:
+    """Bind and select the first option through the native semantic bridge."""
+
+    deadline = time.monotonic() + 15
+    snapshot: dict[str, object] = {}
+    active_event: dict[str, object] | None = None
+    while time.monotonic() < deadline:
+        snapshot = service.snapshot()
+        candidate = snapshot.get("active_event")
+        if snapshot.get("paused") is True and isinstance(candidate, dict):
+            active_event = candidate
+            break
+        time.sleep(0.1)
+    if active_event is None:
+        raise acceptance.RunnerError(
+            f"native bridge did not expose paused event {expected_event_key}"
+        )
+    instance_id = active_event.get("instance_id")
+    revision = snapshot.get("revision")
+    if (
+        isinstance(instance_id, bool)
+        or not isinstance(instance_id, int)
+        or isinstance(revision, bool)
+        or not isinstance(revision, int)
+    ):
+        raise acceptance.RunnerError("active event lacks a stable native binding")
+    query = service.query_current_event_window_context_v1(
+        instance_id, expected_revision=revision
+    )
+    context = query.get("current_event_window_context")
+    if not isinstance(context, dict):
+        raise acceptance.RunnerError("native event query returned no context")
+    if context.get("event_definition_key") != expected_event_key:
+        raise acceptance.RunnerError(
+            "unexpected active event: "
+            f"{context.get('event_definition_key')!r}, expected {expected_event_key!r}"
+        )
+    options = context.get("options")
+    matches = [
+        row
+        for row in options or []
+        if isinstance(row, dict)
+        and row.get("native_option_index") == 0
+        and row.get("shown") is True
+        and row.get("enabled") is True
+    ]
+    if len(matches) != 1 or active_event.get("option_count") != 1:
+        raise acceptance.RunnerError(
+            f"event {expected_event_key} does not expose one enabled first option"
+        )
+    selection = service.select_event_option(
+        1, event_instance_id=instance_id, expected_revision=revision
+    )
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN",
+        "expected_event_key": expected_event_key,
+        "snapshot": snapshot,
+        "query": query,
+        "selection": selection,
+    }
+    write_json(artifacts / f"{stem}.json", evidence)
+    return evidence
 
 
 def run_scenario(
@@ -544,8 +701,11 @@ def run_scenario(
     write_json(artifacts / "06_mcp_song_emperor.json", switched)
 
     click_decision("进入群雄割据", "让天下分裂", artifacts, "07_enter_chaos")
-    stream.wait("RQA: TEST PASS chaos_matrix_complete", 90)
-    click_text("树倒猢狲散。", artifacts, "07_close_vanilla_chaos")
+    phase_advance = advance_queued_phase_transition(service, stream, artifacts)
+    chaos_event_close = select_current_event_first_option(
+        service, "tgp_dynastic_cycle.0081", artifacts, "07_close_vanilla_chaos"
+    )
+    click_decision("查看后朝验收", "显明后朝", artifacts, "08_show_later_event")
     acceptance.wait_for_ocr_text(
         "后朝尚存",
         acceptance.FULL_SCREEN_REGION,
@@ -557,7 +717,22 @@ def run_scenario(
     later_event = acceptance.ImageGrab.grab()
     later_event.save(artifacts / "08_later_dynasty_name.png")
     later_rows = acceptance.ocr_box_results(later_event, acceptance.FULL_SCREEN_REGION)
-    click_text("天命未必不归。", artifacts, "08_close_later_event")
+    normalized_later_rows = [
+        re.sub(r"\s+", "", str(row["text"])) for row in later_rows
+    ]
+    later_name_evidence = {
+        "expected_live_title_name": "后宋",
+        "rendered": any("后宋" in row for row in normalized_later_rows),
+        "ocr_rows": later_rows,
+    }
+    write_json(artifacts / "08_later_dynasty_name.json", later_name_evidence)
+    if later_name_evidence["rendered"] is not True:
+        raise acceptance.RunnerError(
+            "Later-Dynasty name contract failed: expected live title name 后宋"
+        )
+    later_event_close = select_current_event_first_option(
+        service, "rqa.1", artifacts, "08_close_later_event"
+    )
 
     click_decision("准备复辟门槛", "丈量河山", artifacts, "09_prepare_threshold")
     stream.wait("RQA: TEST PASS restoration_decision_ready", 180)
@@ -591,6 +766,10 @@ def run_scenario(
             "readiness",
             "snapshot-before",
             "snapshot-after-player-switch",
+            "resume-map-for-phase-transition",
+            "pause-map-after-phase-transition-if-needed",
+            "query-current-event-window-context-v1",
+            "select-event-option-1",
             "snapshot-final",
             "pause-map-if-needed",
         ],
@@ -600,7 +779,10 @@ def run_scenario(
         ),
         "fixture_engine_assertions": list(REQUIRED_MARKERS),
         "decision_visibility": visibility,
+        "phase_transition_advance": phase_advance,
+        "chaos_event_close": chaos_event_close,
         "later_dynasty_event_ocr": later_rows,
+        "later_dynasty_event_close": later_event_close,
         "initial_snapshot_id": before.get("snapshot_id"),
         "song_snapshot_id": switched.get("snapshot_id"),
         "final_snapshot_id": final_snapshot.get("snapshot_id"),

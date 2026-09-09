@@ -1,6 +1,8 @@
 ﻿# External exact-build fixture. This file never enters release staging.
 
 rqa_initialize_effect = {
+	if = {
+		limit = { has_character_flag = rqa_initialize_pending }
 	remove_character_flag = rqa_initialize_pending
 	add_character_flag = rqa_fixture_initialized
 	debug_log = "RQA: TEST BEGIN reclaim"
@@ -18,6 +20,7 @@ rqa_initialize_effect = {
 				any_vassal = {
 					count >= 2
 					is_landed = yes
+					highest_held_title_tier >= tier_county
 				}
 			}
 			exists = situation:dynastic_cycle
@@ -28,7 +31,10 @@ rqa_initialize_effect = {
 
 	scope:rqa_song_emperor = {
 		every_vassal = {
-			limit = { is_landed = yes }
+			limit = {
+				is_landed = yes
+				highest_held_title_tier >= tier_county
+			}
 			set_variable = {
 				name = movement_member
 				value = flag:expansion
@@ -37,6 +43,7 @@ rqa_initialize_effect = {
 		random_vassal = {
 			limit = {
 				is_landed = yes
+				highest_held_title_tier >= tier_county
 				any_vassal = { is_landed = yes }
 			}
 			save_scope_as = rqa_loyal_direct
@@ -52,6 +59,7 @@ rqa_initialize_effect = {
 		random_vassal = {
 			limit = {
 				is_landed = yes
+				highest_held_title_tier >= tier_county
 				this != scope:rqa_loyal_direct
 			}
 			save_scope_as = rqa_control_ruler
@@ -60,6 +68,7 @@ rqa_initialize_effect = {
 			limit = { is_landed = yes }
 			recalculate_participant_group = situation:dynastic_cycle
 		}
+		recalculate_participant_group = situation:dynastic_cycle
 		capital_county = { save_scope_as = rqa_personal_county }
 		set_variable = { name = rqa_loyal_direct value = scope:rqa_loyal_direct }
 		set_variable = { name = rqa_loyal_indirect value = scope:rqa_loyal_indirect }
@@ -71,17 +80,25 @@ rqa_initialize_effect = {
 		limit = {
 			exists = scope:rqa_loyal_direct
 			exists = scope:rqa_loyal_indirect
-			exists = scope:rqa_control_ruler
-			exists = scope:rqa_personal_county
-		}
+				exists = scope:rqa_control_ruler
+				exists = scope:rqa_personal_county
+				scope:rqa_song_emperor = {
+					top_participant_group:dynastic_cycle = {
+						participant_group_type = hegemon_ruler
+					}
+				}
+			}
 		debug_log = "RQA: TEST PASS fixture_vassal_tree_prepared"
 	}
 	else = { debug_log = "RQA: TEST FAIL fixture_vassal_tree_prepared" }
 	set_player_character = scope:rqa_song_emperor
 	debug_log = "RQA: TEST PASS switched_to_song_emperor"
+	}
 }
 
 rqa_enter_chaos_effect = {
+	if = {
+		limit = { has_character_flag = rqa_chaos_pending }
 	remove_character_flag = rqa_chaos_pending
 	remove_character_flag = rqa_ready_to_enter_chaos
 	add_character_flag = rqa_waiting_for_chaos
@@ -94,16 +111,102 @@ rqa_enter_chaos_effect = {
 			}
 		}
 		debug_log = "RQA: TEST PASS custom_rule_before_chaos"
-		situation:dynastic_cycle = {
-			change_phase = { phase = situation_dynastic_cycle_phase_chaos }
+		if = {
+			limit = {
+				situation:dynastic_cycle = {
+					exists = situation_participant_group:pro_hegemon_movement
+					exists = situation_participant_group:expansion_movement
+				}
+			}
+			situation:dynastic_cycle = {
+				situation_participant_group:pro_hegemon_movement = {
+					save_scope_as = rqa_loyal_movement
+				}
+				situation_participant_group:expansion_movement = {
+					save_scope_as = rqa_control_movement
+				}
+			}
+			debug_log = "RQA: TEST PASS pre_chaos_movement_identity_prepared"
 		}
+		else = { debug_log = "RQA: TEST FAIL pre_chaos_movement_identity_prepared" }
+		# Populate the full vanilla outgoing-phase contract for every current
+		# participant in the emperor's realm, including direct vassals which are not
+		# part of the two focused assertions below.
+		situation:dynastic_cycle = {
+			every_situation_participant = {
+				limit = { top_liege = root }
+				top_participant_group:dynastic_cycle = {
+					save_scope_as = rqa_current_movement
+				}
+				set_variable = {
+					name = former_movement_member
+					value = scope:rqa_current_movement
+				}
+			}
+		}
+		situation:dynastic_cycle = {
+			situation_top_sub_region = {
+				change_phase = { phase = situation_dynastic_cycle_phase_chaos }
+			}
+		}
+		if = {
+			limit = {
+				situation:dynastic_cycle = {
+					situation_current_phase = situation_dynastic_cycle_phase_chaos
+				}
+			}
+			debug_log = "RQA: TEST PASS chaos_phase_transition_applied"
+			# Organic instability-to-Chaos transitions create these variables in the
+			# outgoing phase's on_end. The exact bookmark may be forced from another
+			# phase, so bind the actors to the same named live group objects here.
+			var:rqa_loyal_direct = {
+				set_variable = {
+					name = former_movement_member
+					value = scope:rqa_loyal_movement
+				}
+			}
+			var:rqa_control_ruler = {
+				set_variable = {
+					name = former_movement_member
+					value = scope:rqa_control_movement
+				}
+			}
+			if = {
+				limit = {
+					exists = var:rqa_loyal_direct
+					var:rqa_loyal_direct.var:former_movement_member = {
+						participant_group_type = pro_hegemon_movement
+					}
+					exists = var:rqa_control_ruler
+					var:rqa_control_ruler.var:former_movement_member = {
+						participant_group_type = expansion_movement
+					}
+			}
+				debug_log = "RQA: TEST PASS original_movement_identity_frozen"
+				add_character_flag = rqa_dispatch_chaos_event_pending
+			}
+			else = { debug_log = "RQA: TEST FAIL original_movement_identity_frozen" }
+		}
+		else = { debug_log = "RQA: TEST FAIL chaos_phase_transition_applied" }
 	}
 	else = { debug_log = "RQA: TEST FAIL custom_rule_before_chaos" }
+	}
+}
+
+rqa_dispatch_chaos_event_effect = {
+	if = {
+		limit = { has_character_flag = rqa_dispatch_chaos_event_pending }
+		remove_character_flag = rqa_dispatch_chaos_event_pending
+		trigger_event = tgp_dynastic_cycle.0081
+		debug_log = "RQA: TEST PASS original_chaos_event_dispatched"
+	}
 }
 
 rqa_verify_chaos_effect = {
+	if = {
+		limit = { has_character_flag = rqa_waiting_for_chaos }
 	remove_character_flag = rqa_waiting_for_chaos
-	any_held_title = {
+	every_held_title = {
 		limit = { has_variable = rmtm_restoration_hegemony }
 		save_scope_as = rqa_later_title
 	}
@@ -113,6 +216,11 @@ rqa_verify_chaos_effect = {
 			is_landed = yes
 			is_independent_ruler = yes
 			NOT = { has_title = title:h_china }
+			exists = var:rqa_later_title
+			var:rqa_later_title = {
+				holder = root
+				has_variable = rmtm_restoration_hegemony
+			}
 			any_held_title = {
 				count = 1
 				has_variable = rmtm_restoration_hegemony
@@ -153,9 +261,10 @@ rqa_verify_chaos_effect = {
 		debug_log = "RQA: TEST PASS non_pro_hegemon_direct_released"
 	}
 	else = { debug_log = "RQA: TEST FAIL non_pro_hegemon_direct_released" }
+	add_character_flag = rqa_after_chaos_event_ready
 	add_character_flag = rqa_ready_for_threshold
 	debug_log = "RQA: TEST PASS chaos_matrix_complete"
-	trigger_event = rqa.1
+	}
 }
 
 rqa_transfer_county_to_control_effect = {
@@ -189,6 +298,8 @@ rqa_transfer_county_to_root_effect = {
 }
 
 rqa_prepare_threshold_effect = {
+	if = {
+		limit = { has_character_flag = rqa_threshold_pending }
 	remove_character_flag = rqa_threshold_pending
 	remove_character_flag = rqa_ready_for_threshold
 	if = {
@@ -212,13 +323,15 @@ rqa_prepare_threshold_effect = {
 			debug_log = "RQA: TEST PASS china_control_reset"
 		}
 		else = { debug_log = "RQA: TEST FAIL china_control_reset" }
-		title:h_china = {
-			every_de_jure_county = {
-				limit = {
-					root = { NOT = { rqa_controls_half_of_china_trigger = yes } }
+		while = {
+			limit = { NOT = { rqa_controls_half_of_china_trigger = yes } }
+			title:h_china = {
+				ordered_de_jure_county = {
+					limit = { NOT = { holder.top_liege = root } }
+					order_by = development_level
+					save_scope_as = rqa_county_to_transfer
+					root = { rqa_transfer_county_to_root_effect = yes }
 				}
-				save_scope_as = rqa_county_to_transfer
-				root = { rqa_transfer_county_to_root_effect = yes }
 			}
 		}
 		if = {
@@ -229,13 +342,15 @@ rqa_prepare_threshold_effect = {
 			debug_log = "RQA: TEST PASS fifty_percent_below_claim_threshold"
 		}
 		else = { debug_log = "RQA: TEST FAIL fifty_percent_below_claim_threshold" }
-		title:h_china = {
-			every_de_jure_county = {
-				limit = {
-					root = { NOT = { rqa_controls_claim_mandate_share_trigger = yes } }
+		while = {
+			limit = { NOT = { rqa_controls_claim_mandate_share_trigger = yes } }
+			title:h_china = {
+				ordered_de_jure_county = {
+					limit = { NOT = { holder.top_liege = root } }
+					order_by = development_level
+					save_scope_as = rqa_county_to_transfer
+					root = { rqa_transfer_county_to_root_effect = yes }
 				}
-				save_scope_as = rqa_county_to_transfer
-				root = { rqa_transfer_county_to_root_effect = yes }
 			}
 		}
 		if = {
@@ -247,9 +362,12 @@ rqa_prepare_threshold_effect = {
 		else = { debug_log = "RQA: TEST FAIL original_fifty_one_percent_threshold_reached" }
 	}
 	else = { debug_log = "RQA: TEST FAIL threshold_preconditions" }
+	}
 }
 
 rqa_verify_restoration_effect = {
+	if = {
+		limit = { has_character_flag = rqa_waiting_for_restoration }
 	remove_character_flag = rqa_waiting_for_restoration
 	if = {
 		limit = {
@@ -263,4 +381,5 @@ rqa_verify_restoration_effect = {
 		trigger_event = rqa.2
 	}
 	else = { debug_log = "RQA: TEST FAIL original_mandate_effect_plus_later_title_destroyed" }
+	}
 }

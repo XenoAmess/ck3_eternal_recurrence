@@ -1,4 +1,5 @@
 ﻿### Claim the Mandate of Heaven - vanilla 1.19.0.6 plus the restoration lock. ###
+# Loaded beside and after the original nested TGP decision file.
 # Vanilla decision source SHA-256: FFC1CE8BC35DDCAFA29956E4DC4159EB295E10E17FD0881CE5DD558671206651
 # Vanilla threshold values SHA-256: D91DCDBF7038FAE3D8D71B9C4156B2B23744DE6F718A34DA26D1656BC48B7706
 situation_dynastic_cycle_claim_mandate_decision = {
@@ -18,19 +19,13 @@ situation_dynastic_cycle_claim_mandate_decision = {
 		has_tgp_dlc_trigger = yes
 		exists = top_participant_group:dynastic_cycle #I am part of the dynastic cycle
 		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos } #The era is division
-		trigger_if = {
-			limit = { has_game_rule = rmtm_reclaim_the_motherland }
-			NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
-		}
+		NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
 	}
 
 	is_valid = {
 		situation:dynastic_cycle = { situation_current_phase = situation_dynastic_cycle_phase_chaos }
 		is_independent_ruler = yes
-		trigger_if = {
-			limit = { has_game_rule = rmtm_reclaim_the_motherland }
-			NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
-		}
+		NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
 		custom_tooltip = {
 			text = claim_mandate_decision_county_percentage_tt
 			title:h_china = {
@@ -72,10 +67,7 @@ situation_dynastic_cycle_claim_mandate_decision = {
 	}
 	ai_potential = {
 		situation:dynastic_cycle ?= { situation_current_phase = situation_dynastic_cycle_phase_chaos }
-		trigger_if = {
-			limit = { has_game_rule = rmtm_reclaim_the_motherland }
-			NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
-		}
+		NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
 		NOT = {
 			any_owned_story = {
 				OR = {
