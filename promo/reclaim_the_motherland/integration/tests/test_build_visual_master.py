@@ -11,6 +11,7 @@ sys.path.insert(0, str(PROMO))
 
 from build_visual_master import (  # noqa: E402
     EXPECTED_CHAPTERS,
+    _normalize_argv,
     _video_filter,
     resolve_capture_start,
     validate_shot_manifest,
@@ -75,6 +76,13 @@ class BuildVisualMasterTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "crop mode"):
             _video_filter("invented")
+
+    def test_normalization_pads_concat_rounding_to_exact_contract(self) -> None:
+        argv = _normalize_argv(
+            Path("ffmpeg.exe"), Path("intermediate.mp4"), Path("master.mp4")
+        )
+        self.assertIn("tpad=stop_mode=clone:stop_duration=0.2", argv[argv.index("-vf") + 1])
+        self.assertEqual(argv[argv.index("-t") + 1], "96.000")
 
 
 if __name__ == "__main__":
