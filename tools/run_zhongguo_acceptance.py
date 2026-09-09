@@ -7979,6 +7979,7 @@ def prove_phase2_native_session_cleanup(
     final_capabilities: object,
     session_error: object = None,
     supervisor_stopped: bool,
+    managed_stop_requested: bool = False,
 ) -> dict[str, object]:
     """Prove every managed PID from every formal-live restore stage."""
 
@@ -8155,6 +8156,34 @@ def prove_phase2_native_session_cleanup(
         if restore_expected and generation_lineage
         else initial_generation
     )
+    final_capabilities_connected = final_diagnostics.get("connected") is True
+    final_capabilities_disconnected = (
+        final_diagnostics.get("connected") is False
+    )
+    final_capabilities_identity_matches = (
+        final_diagnostics.get("bridge_pid") == expected_final_pid
+        and final_diagnostics.get("connection_generation")
+        == expected_final_generation
+    )
+    terminal_shutdown_checks = _phase2_shutdown_checks(
+        report.get("shutdown"),
+        expected_pid=(
+            expected_final_pid
+            if isinstance(expected_final_pid, int)
+            and not isinstance(expected_final_pid, bool)
+            else None
+        ),
+        prefix="managed_stop_terminal",
+    )
+    managed_stop_disconnect_proven = (
+        managed_stop_requested is True
+        and report.get("ok") is True
+        and report.get("exit_reason") == "stop"
+        and report.get("process_exit_code") in (None, 0)
+        and final_capabilities_disconnected
+        and final_capabilities_identity_matches
+        and all(terminal_shutdown_checks.values())
+    )
     timeout_cleanup = (
         report.get("ok") is True and report.get("exit_reason") == "timeout"
     )
@@ -8196,15 +8225,19 @@ def prove_phase2_native_session_cleanup(
     else:
         checks.update(
             {
+                "managed_stop_requested_if_disconnected": (
+                    final_capabilities_connected
+                    or managed_stop_requested is True
+                ),
                 "session_exit_reason_stop": report.get("exit_reason") == "stop",
                 "session_process_exit_code_clean": report.get(
                     "process_exit_code"
                 )
                 in (None, 0),
-                "final_capabilities_connected": final_diagnostics.get(
-                    "connected"
-                )
-                is True,
+                "final_capabilities_connected_or_managed_disconnect": (
+                    final_capabilities_connected
+                    or managed_stop_disconnect_proven
+                ),
                 "final_capabilities_pid_matches": final_diagnostics.get(
                     "bridge_pid"
                 )
@@ -8480,6 +8513,12 @@ def prove_phase2_native_session_cleanup(
         "final_capabilities": (
             final_capabilities if isinstance(final_capabilities, dict) else None
         ),
+        "final_capabilities_terminal_state": {
+            "connected": final_capabilities_connected,
+            "disconnected": final_capabilities_disconnected,
+            "identity_matches": final_capabilities_identity_matches,
+            "managed_stop_disconnect_proven": managed_stop_disconnect_proven,
+        },
         "checks": checks,
         "failed_checks": failed,
         "session_error": session_error,
@@ -8545,6 +8584,7 @@ def stop_phase2_native_session_supervisor(
         final_capabilities=final_capabilities,
         session_error=session_state.get("error"),
         supervisor_stopped=supervisor_stopped,
+        managed_stop_requested=True,
     )
 
 

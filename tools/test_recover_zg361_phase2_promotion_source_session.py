@@ -646,9 +646,90 @@ class RecoveryTests(unittest.TestCase):
             )
             self.assertEqual(stop_cleanup["result"], "GREEN")
             self.assertTrue(stop_cleanup["checks"]["session_exit_reason_stop"])
-            self.assertTrue(stop_cleanup["checks"]["final_capabilities_connected"])
+            self.assertTrue(
+                stop_cleanup["checks"][
+                    "final_capabilities_connected_or_managed_disconnect"
+                ]
+            )
+            self.assertTrue(
+                stop_cleanup["final_capabilities_terminal_state"]["connected"]
+            )
+            self.assertFalse(
+                stop_cleanup["final_capabilities_terminal_state"][
+                    "managed_stop_disconnect_proven"
+                ]
+            )
             self.assertNotIn("acceptance_scope", stop_cleanup)
             self.assertNotIn("timeout_accepted_as_gameplay_success", stop_cleanup)
+
+            managed_disconnect = {
+                "diagnostics": {
+                    "connected": False,
+                    "bridge_pid": 4321,
+                    "connection_generation": 4,
+                }
+            }
+            managed_dir = root / "managed-stop-disconnect-green"
+            managed_dir.mkdir()
+            managed_cleanup = runner.prove_phase2_native_session_cleanup(
+                stop_report,
+                managed_dir,
+                initial_pid=4321,
+                initial_generation=4,
+                expected_pipe=pipe,
+                scenario_evidence={},
+                final_capabilities=managed_disconnect,
+                session_error=None,
+                supervisor_stopped=True,
+                managed_stop_requested=True,
+            )
+            self.assertEqual(managed_cleanup["result"], "GREEN")
+            self.assertTrue(
+                managed_cleanup["final_capabilities_terminal_state"][
+                    "managed_stop_disconnect_proven"
+                ]
+            )
+
+            unmanaged_dir = root / "unmanaged-disconnect-red"
+            unmanaged_dir.mkdir()
+            with self.assertRaisesRegex(
+                runner.acceptance.RunnerError,
+                "managed_stop_requested_if_disconnected",
+            ):
+                runner.prove_phase2_native_session_cleanup(
+                    stop_report,
+                    unmanaged_dir,
+                    initial_pid=4321,
+                    initial_generation=4,
+                    expected_pipe=pipe,
+                    scenario_evidence={},
+                    final_capabilities=managed_disconnect,
+                    session_error=None,
+                    supervisor_stopped=True,
+                )
+
+            abnormal_report = copy.deepcopy(stop_report)
+            abnormal_report["ok"] = False
+            abnormal_report["exit_reason"] = "process_exit"
+            abnormal_report["process_exit_code"] = 1
+            abnormal_dir = root / "managed-abnormal-exit-red"
+            abnormal_dir.mkdir()
+            with self.assertRaisesRegex(
+                runner.acceptance.RunnerError,
+                "session_report_ok",
+            ):
+                runner.prove_phase2_native_session_cleanup(
+                    abnormal_report,
+                    abnormal_dir,
+                    initial_pid=4321,
+                    initial_generation=4,
+                    expected_pipe=pipe,
+                    scenario_evidence={},
+                    final_capabilities=managed_disconnect,
+                    session_error=None,
+                    supervisor_stopped=True,
+                    managed_stop_requested=True,
+                )
 
     def test_tasklist_denial_uses_exact_toolhelp_fallback(self) -> None:
         denied = types.SimpleNamespace(
