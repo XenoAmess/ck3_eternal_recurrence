@@ -156,6 +156,137 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         )
         self.assertFalse(collapse_checks["scope:secret_owner:differs_from"])
 
+    def test_r369_lover_notice_accepts_third_party_exposure_story(self) -> None:
+        event_key = "secrets.0108"
+        contract = production._timeline_contract_for_window(
+            secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key],
+            starting_date=53147016,
+        )
+        identities = {
+            "secret_owner": 68059,
+            "secret_target": 33366,
+            "secret_exposer": 45525,
+            "target": 33366,
+            "owner": 68059,
+            "event_root": 32904,
+            "primary_character": 33366,
+            "secondary_character": 68059,
+            "left_portrait": 45525,
+            "right_portrait": 33366,
+            "lower_right_portrait": 68059,
+        }
+        type_keys = {
+            "secret": "secret",
+            "infidelity_story": "story",
+            "targets_secret": "secret",
+            "lover_reaction": "flag",
+        }
+        scope_names = (
+            "secret_owner", "secret_target", "secret_exposer", "secret",
+            "target", "owner", "infidelity_story", "targets_secret",
+            "event_root", "primary_character", "secondary_character",
+            "lover_reaction", "left_portrait", "right_portrait",
+            "lower_right_portrait",
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 446,
+            "date_raw": 53351880,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                _scope(name, "character", identities[name])
+                if name in identities
+                else _scope(name, type_keys[name])
+                for name in scope_names
+            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53351880,
+                    "active_event": {"option_count": 3},
+                },
+                event={"event_instance_id": 446},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._scope_contract_for_context(
+            context["saved_scopes"], contract
+        )
+        self.assertEqual(effective["saved_scope_count"], 15)
+        self.assertEqual(effective["scope_types"]["infidelity_story"], "story")
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        swapped_interest = copy.deepcopy(context)
+        for row in swapped_interest["saved_scopes"]:
+            if row["name"] in {
+                "primary_character", "right_portrait",
+            }:
+                row["scope"]["typed_identity"]["character_id"] = 68059
+            elif row["name"] in {
+                "secondary_character", "lower_right_portrait",
+            }:
+                row["scope"]["typed_identity"]["character_id"] = 33366
+        swapped_checks = checks_for(swapped_interest)
+        self.assertTrue(all(swapped_checks.values()), swapped_checks)
+
+        exposer_collapsed = copy.deepcopy(context)
+        for row in exposer_collapsed["saved_scopes"]:
+            if row["name"] in {"secret_exposer", "left_portrait"}:
+                row["scope"]["typed_identity"]["character_id"] = 68059
+        self.assertFalse(
+            checks_for(exposer_collapsed)[
+                "scope:secret_exposer:differs_from"
+            ]
+        )
+
+        wrong_portrait = copy.deepcopy(context)
+        next(
+            row for row in wrong_portrait["saved_scopes"]
+            if row["name"] == "lower_right_portrait"
+        )["scope"]["typed_identity"]["character_id"] = 33366
+        self.assertFalse(
+            checks_for(wrong_portrait)[
+                "scope:lower_right_portrait:matches_any"
+            ]
+        )
+
+        wrong_story_type = copy.deepcopy(context)
+        next(
+            row for row in wrong_story_type["saved_scopes"]
+            if row["name"] == "infidelity_story"
+        )["scope"]["type_key"] = "value"
+        self.assertFalse(
+            checks_for(wrong_story_type)["scope:infidelity_story:type"]
+        )
+
+        missing_story = copy.deepcopy(context)
+        missing_story["saved_scopes"] = [
+            row for row in missing_story["saved_scopes"]
+            if row["name"] != "infidelity_story"
+        ]
+        missing_checks = checks_for(missing_story)
+        self.assertFalse(missing_checks["saved_scope_names_exact"])
+        self.assertFalse(missing_checks["saved_scope_count"])
+
     def test_r368_bastardy_notice_selects_the_only_empty_acknowledgement(self) -> None:
         event_key = "secrets.0112"
         contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key]

@@ -107,6 +107,63 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "scope_variants": ({
+            # R369 observed exposure by a third party. Vanilla creates an
+            # infidelity-confrontation story before dispatching the general
+            # notification, so that story remains in the event scope. The
+            # third-party exposer owns the left portrait, while target and
+            # owner become the primary/right and secondary/lower-right pairs.
+            "saved_scope_names": (
+                "secret_owner", "secret_target", "secret_exposer", "secret",
+                "target", "owner", "infidelity_story", "targets_secret",
+                "event_root", "primary_character", "secondary_character",
+                "lover_reaction", "left_portrait", "right_portrait",
+                "lower_right_portrait",
+            ),
+            "unique_character_scope_excludes": {
+                name: (32904,)
+                for name in (
+                    "secret_owner", "secret_target", "secret_exposer",
+                    "target", "owner", "primary_character",
+                    "secondary_character", "left_portrait",
+                    "right_portrait", "lower_right_portrait",
+                )
+            },
+            "character_scope_matches_any": {
+                "owner": ("secret_owner",),
+                "target": ("secret_target",),
+                "primary_character": ("secret_owner", "secret_target"),
+                "secondary_character": ("secret_owner", "secret_target"),
+                "left_portrait": ("secret_exposer",),
+                "right_portrait": ("primary_character",),
+                "lower_right_portrait": ("secondary_character",),
+            },
+            "character_scope_differs_from": {
+                "secret_owner": ("secret_target", "secret_exposer"),
+                "secret_target": ("secret_owner", "secret_exposer"),
+                "secret_exposer": ("secret_owner", "secret_target"),
+                "primary_character": ("secondary_character",),
+                "secondary_character": ("primary_character",),
+            },
+            "scope_types": {
+                "secret_owner": "character",
+                "secret_target": "character",
+                "secret_exposer": "character",
+                "secret": "secret",
+                "target": "character",
+                "owner": "character",
+                "infidelity_story": "story",
+                "targets_secret": "secret",
+                "event_root": "character",
+                "primary_character": "character",
+                "secondary_character": "character",
+                "lover_reaction": "flag",
+                "left_portrait": "character",
+                "right_portrait": "character",
+                "lower_right_portrait": "character",
+            },
+            "saved_scope_count": 15,
+        },),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "secrets.0112": {
