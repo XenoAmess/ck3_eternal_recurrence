@@ -73,6 +73,9 @@ from zg361_phase2_promotion_vanilla_secret_interrupt_contracts import (
 from zg361_phase2_promotion_vanilla_diarchy_interrupt_contracts import (
     VANILLA_DIARCHY_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_vanilla_accolade_interrupt_contracts import (
+    VANILLA_ACCOLADE_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_vanilla_intrigue_temptation_interrupt_contracts import (
     VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS,
 )
@@ -4355,6 +4358,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SECRET_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_DIARCHY_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_ACCOLADE_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(
     VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS
 )

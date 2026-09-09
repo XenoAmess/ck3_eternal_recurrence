@@ -58,7 +58,10 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
         # option 2 was hidden, leaving 0/2/3. The final authored option
         # declines either character and changes no product state. The event
         # still advances to its vanilla reward decision, which must be
-        # reviewed under its own exact contract when observed.
+        # reviewed under its own exact contract when observed. Tribute
+        # missions can recur for the same receiving ruler, so this receipt
+        # event has no lifecycle occurrence ceiling inside one product
+        # observation window either.
         "date_raw": 53150160,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -184,7 +187,7 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "tribute_mission.1005": {
         # Reward decision after either a human-tribute route or the direct
