@@ -7,7 +7,7 @@
     "title_similarity_contains": "literal normalized containment fails; similarity >= 0.50 remains review"
   },
   "human_review_evidence": {
-    "manifest_sha256": "20cd7a091944bd224f8953dc486af274b03fde29e4ed68d8ce6be99d6d0fcc3d",
+    "manifest_sha256": "b6688656bd9a9e1fbcb4a01426beccd8e37402182165ce48aa001076ad19fa4f",
     "path": "docs/content-audits/zg361-copy-human-review.json",
     "reviewed_event_shards": 16,
     "reviewed_visible_events": 626,
@@ -46,7 +46,7 @@
       "kind": "events",
       "path": "docs/content-audits/zg361-copy-ledger/events/events-002.json",
       "records": 40,
-      "sha256": "a97d152209fb34b4860cbee9102cdf5e8a5cb263ef68b563fb578a2f370af779"
+      "sha256": "334454f4f8ddbb4a7f674ac4df76d79db91472fe56d9ce51b9f2d5bce05808ab"
     },
     {
       "bytes": 86301,
@@ -147,11 +147,11 @@
       "sha256": "03da335cf099d52c40e8d0ee44b994a2919854d6f4644ca3eea4070a846413fd"
     },
     {
-      "bytes": 66934,
+      "bytes": 66952,
       "kind": "localization",
       "path": "docs/content-audits/zg361-copy-ledger/localization/localization-001.json",
       "records": 180,
-      "sha256": "e33b39b084a675e5e13fa03c8eb5d75358a89c2b5b67c204b03e9377b00c333d"
+      "sha256": "f190b1409e8a6fcca41ec01fe6f32b9d8771fda32f79845a81b34f5070953890"
     },
     {
       "bytes": 59725,
@@ -943,10 +943,10 @@
           "method": "generated_file_header",
           "status": "pass"
         },
-        "bytes": 11330,
-        "lines": 385,
+        "bytes": 13160,
+        "lines": 425,
         "path": "mod_zhongguo_style/events/zg361_workforce_endgame_event_004_ac_mechanisms_stage04_06_events.txt",
-        "sha256": "0435f02cfac260b7afae02ccc5bd938c458f11195a3916956a9a3f23359ff70f"
+        "sha256": "85402c3fdc9d7adecc328974c6e102e3b6d4554d63e239a5577bc4c5260f1d31"
       },
       {
         "authority": {
@@ -1583,10 +1583,10 @@
           "method": "unique_generator_output_literal",
           "status": "pass"
         },
-        "bytes": 3231,
+        "bytes": 3249,
         "lines": 28,
         "path": "mod_zhongguo_style/localization/simp_chinese/zg361_career_learning_l_simp_chinese.yml",
-        "sha256": "809be27f24d21a66168cdcd30a8c8d47d7ef50e568171821da687e185aa33064"
+        "sha256": "511b380033c6e00d637b9c6be2c410faf1f6694b583d9de5f3517ebe53d95cc9"
       },
       {
         "authority": {
@@ -1824,9 +1824,9 @@
         "sha256": "6ed01f10bc087cd934d2b5ad32dc63bc2ec2da8be7b3cf792d063a15e428d4cd"
       }
     ],
-    "git_commit": "754f215f78b85f072451c7cf0ed9efc97a079f58",
+    "git_commit": "4974324fece6ba152bada6069f8a12718e4da8f6",
     "git_commit_semantics": "latest commit touching event/localization inputs at generation",
-    "input_digest_sha256": "0f0d8d0a80f904e99c94266859b90048f6cc7e8f18fd48e3e49cba512e8f28df"
+    "input_digest_sha256": "86af08746f5c9a2861ededa9177b97fbed23caa7f6b850892cb8e58c6998a561"
   },
   "summary": {
     "all_event_definitions": 1010,

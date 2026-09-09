@@ -36,7 +36,7 @@ class CareerEffectShardingTests(unittest.TestCase):
         self.assert_family(career_hc, 271)
 
     def test_career_learning_effect_boundaries(self) -> None:
-        self.assert_family(career_learning, 125)
+        self.assert_family(career_learning, 126)
 
 
 if __name__ == "__main__":
