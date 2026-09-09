@@ -368,6 +368,73 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         )
         self.assertFalse(collapse_checks["scope:secret_owner:differs_from"])
 
+        r370_variant = contract["scope_variants"][0]
+        r370_identities = {
+            "secret_owner": 68059,
+            "secret_target": 33606148,
+            "secret_exposer": 33366,
+            "owner": 68059,
+            "child": 33606148,
+            "mother": 68059,
+            "real_father": 33366,
+            "local_secret_owner": 68059,
+            "sex_partner": 33366,
+            "adulterer_check": 33366,
+            "adultery_spouse": 33366,
+            "this_character": 33366,
+            "fornicator_check": 68059,
+            "sex_partner_spouse": 16804277,
+            "target": 33606148,
+        }
+        r370_context = copy.deepcopy(context)
+        # The live session rebound product-observation-window date_raw to
+        # 53358648.  Unit-level checks exercise the static anchor date while
+        # preserving the exact live scope shape.
+        r370_context["date_raw"] = contract["date_raw"]
+        r370_context["current_event_instance_id"] = 455
+        r370_context["saved_scopes"] = [
+            _scope(name, "character", r370_identities[name])
+            if name in r370_identities
+            else _scope(name, r370_variant["scope_types"][name])
+            for name in r370_variant["saved_scope_names"]
+        ]
+        r370_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": contract["date_raw"], "active_event": {"option_count": 3}},
+            event={"event_instance_id": 455},
+            context=r370_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(r370_checks.values()), r370_checks)
+
+        wrong_adultery_alias = copy.deepcopy(r370_context)
+        next(
+            row for row in wrong_adultery_alias["saved_scopes"]
+            if row["name"] == "sex_partner"
+        )["scope"]["typed_identity"]["character_id"] = 33367
+        alias_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": contract["date_raw"], "active_event": {"option_count": 3}},
+            event={"event_instance_id": 455},
+            context=wrong_adultery_alias,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(alias_checks["scope:sex_partner:matches_any"])
+
+        wrong_fornicator_alias = copy.deepcopy(r370_context)
+        next(
+            row for row in wrong_fornicator_alias["saved_scopes"]
+            if row["name"] == "fornicator_check"
+        )["scope"]["typed_identity"]["character_id"] = 68060
+        fornicator_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": contract["date_raw"], "active_event": {"option_count": 3}},
+            event={"event_instance_id": 455},
+            context=wrong_fornicator_alias,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(fornicator_checks["scope:fornicator_check:matches_any"])
+
     def _frame(self, *, secret_owner_id: int = 28093) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:

@@ -237,6 +237,68 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "scope_variants": ({
+            # R370 observed the same bastardy notification after vanilla's
+            # adultery-consequence chain had retained its working character
+            # scopes.  The notification itself still renders only authored
+            # option A; preserve the exact extra shape and its authored alias
+            # relationships instead of weakening the original 11-scope case.
+            "saved_scope_names": (
+                "secret_owner", "secret_target", "secret_exposer", "secret",
+                "owner", "child", "mother", "real_father",
+                "local_secret_owner", "sex_partner", "adulterer_check",
+                "adultery_spouse", "this_character", "fornicator_check",
+                "sex_partner_spouse", "target",
+            ),
+            "unique_character_scope_excludes": {
+                name: (32904,)
+                for name in (
+                    "secret_owner", "secret_target", "secret_exposer",
+                    "owner", "child", "mother", "real_father",
+                    "local_secret_owner", "target",
+                )
+            },
+            "character_scope_matches_any": {
+                "owner": ("secret_owner",),
+                "mother": ("secret_owner",),
+                "local_secret_owner": ("secret_owner",),
+                "fornicator_check": ("secret_owner",),
+                "child": ("secret_target",),
+                "target": ("secret_target",),
+                "real_father": ("secret_exposer",),
+                "sex_partner": ("secret_exposer",),
+                "adulterer_check": ("secret_exposer",),
+                "adultery_spouse": ("secret_exposer",),
+                "this_character": ("secret_exposer",),
+            },
+            "character_scope_differs_from": {
+                "secret_owner": ("secret_target", "secret_exposer"),
+                "secret_target": ("secret_owner", "secret_exposer"),
+                "secret_exposer": ("secret_owner", "secret_target"),
+                # Vanilla's every_spouse loop explicitly excludes the
+                # current sex_character; a spouse also cannot be itself.
+                "sex_partner_spouse": ("secret_owner", "sex_partner"),
+            },
+            "scope_types": {
+                "secret_owner": "character",
+                "secret_target": "character",
+                "secret_exposer": "character",
+                "secret": "secret",
+                "owner": "character",
+                "child": "character",
+                "mother": "character",
+                "real_father": "character",
+                "local_secret_owner": "character",
+                "sex_partner": "character",
+                "adulterer_check": "character",
+                "adultery_spouse": "character",
+                "this_character": "character",
+                "fornicator_check": "character",
+                "sex_partner_spouse": "character",
+                "target": "character",
+            },
+            "saved_scope_count": 16,
+        },),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "secrets.0122": {
