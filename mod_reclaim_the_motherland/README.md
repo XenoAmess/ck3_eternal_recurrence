@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**0.1.1 源码与构建 L0 GREEN；修订文案与“旧天子本人继续持有原直辖伯爵领”的严格断言，待更新隐藏 Workshop 包后执行 fresh-cache L3。** 这份文档同时记录设计约束、当前实现与发布门槛。
+状态：**0.1.1 已正式发布；L0、源码树 L1 与 Workshop fresh-cache L3 均为 GREEN。** 这份文档同时记录设计约束、当前实现与发布证据。
 
 ## 1. 产品目标
 
@@ -151,7 +151,7 @@ mod_reclaim_the_motherland/
   localization/<九种语言>/rmtm_generated_title_names_l_<语言>.yml
 ```
 
-统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：28 个运行时文件进入 staging，README 不发布。Workshop item ID 未创建前不虚构，也绝不把 `remote_file_id` 写入仓库内 descriptor。
+统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：28 个运行时文件进入 staging，README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
 
 ## 9. 实现与验收顺序
 
@@ -227,4 +227,4 @@ mod_reclaim_the_motherland/
 
 源码树 L1 实机 run 为 `D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\runs\rqa_20260909_114834_32f85232`，有效 `cell/report.json` SHA-256 为 `9594029df6b161329e820bd98dfbc2d54fc6964d0252c44538b423f1f1dbeda6`。它通过 MCP readiness 和语义化事件选择完成 19/19 断言：真实阶段切换与原版群雄事件、后宋名称、空法理与个人领地、尊王派直属及下级树、非尊王派直属脱离、50% 不足与 51% 达标、复辟可见而天命不可见，以及完整原版天命效果＋后朝销毁。运行中 source/runtime 未改写，项目 diagnostics 为 0，保护存储未变化，原生进程树和隔离 userdir 均完成清理。
 
-完整 L0/L1 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`。首次 Workshop 上传后仍须从全新订阅缓存执行同矩阵 L3，严格核对 28/28 发布文件、页面 BBCode、thumbnail 与三张真实游戏截图；在 L3 和 initial-baseline changelog 入库前，产品不标记为完整发布。
+完整 L0/L1/L3 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`。Workshop item `3798404599` 已公开；全新订阅缓存完成 28/28 严格核对，同矩阵 MCP-first L3 为 19/19 GREEN。页面使用入库 BBCode、独立 640×640 thumbnail 与三张真实游戏截图，其中地图镜头由原生 MCP 定位到大宋首都开封，并已登记《溥天之下 / All Under Heaven》为必需 DLC。

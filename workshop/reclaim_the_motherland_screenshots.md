@@ -1,6 +1,6 @@
 # 重整河山：Steam 实机截图清单
 
-状态：三张候选图均来自同一次 **GREEN 的 CK3 1.19.0.6 Workshop fresh-cache MCP-first 验收**，已完成确定性裁切与人工逐张视觉检查；Steam media strip 上传、排序和公开页面复核待执行。
+状态：三张图均来自同一次 **GREEN 的 CK3 1.19.0.6 Workshop fresh-cache MCP-first 验收**，已完成确定性裁切、人工逐张视觉检查，并按本清单顺序上传到公开 Steam media strip。
 
 ## 权威来源
 
@@ -39,10 +39,11 @@
 
 三张 JPEG 只做裁切和有损编码，没有生成或改写游戏内容。第一张同时显示“后宋”主头衔和开封地图；第二、三张裁掉验收专用决议组，只保留普通玩家能见到的产品决议 UI。生成的主视觉只用于 `thumbnail.png`，不冒充实机截图。
 
-Workshop BBCode 使用 commit-pinned GitHub raw URL；Steam 页面还必须把本表三张 JPEG 作为独立 media strip 按顺序上传。正式公开后回填页面可见性、媒体数量与顺序复核结果。
+Workshop BBCode 使用 commit-pinned GitHub raw URL；Steam 页面另将本表三张 JPEG 作为独立 media strip 按顺序上传。公开页面的媒体条依次显示后宋与开封、宣称复辟决议、复辟确认画面。
 
-## 发布证据（待回填）
+## 发布证据
 
-- 页面公开可见性：待执行
-- media strip：待上传并复核为 3 张
-- 页面顺序与标题：待公开页面复核
+- 页面公开可见性：2026-09-09 21:54（Asia/Shanghai）已复核；Steam 匿名接口返回 `result=1`、`visibility=0`。
+- media strip：3 张，顺序与本表一致；公开页面截图 `D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\steam\public_page_final.png`，SHA-256 `f532f793a59fa9988823a97fa23c83f7258b6adbbcab6e4e9c81e27b3446405c`。
+- 必需 DLC：页面已勾选 `Crusader Kings III: All Under Heaven`；证据 `required_dlc_saved.png`，SHA-256 `642bc89e737550eebb095c64dad2ad57cbace8326160d06891a780be899509c6`。
+- 页面 BBCode：与 `workshop/reclaim_the_motherland_description.bbcode` 一致，三张内嵌图固定到 commit `851b493aecd936e64db5c3d4aa0d02d0de9c05fb`，且中英文产品名统一使用“溥天之下 / All Under Heaven”。
