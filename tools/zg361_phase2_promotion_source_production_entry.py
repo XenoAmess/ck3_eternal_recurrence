@@ -2106,7 +2106,12 @@ def _manager_recovery_pp_contract(
         "option_count": option_count,
         "native_option_indices": tuple(range(option_count)),
         "option_variants": option_variants,
-        "max_occurrences": 1,
+        # Every visible PP card is owned by one fresh case tuple. The same
+        # mechanism number can therefore be delivered again by a later case
+        # or review cycle. Keep the exact authored projection and safe route,
+        # while allowing those tuple-local recurrences inside the already
+        # finite product observation window.
+        "occurrence_policy": "repeatable-within-product-observation-window",
         "selected_option_number": 1,
         "selected_native_option_index": 0,
         "manager_recovery_only": True,

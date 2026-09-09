@@ -716,6 +716,12 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
         assert pp_fallback is not None
         self.assertEqual(pp_fallback["selected_native_option_index"], 0)
 
+        self.assertEqual(
+            pp_fallback["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", pp_fallback)
+
         known_pp = production._resolve_timeline_interrupt_contract(
             "zg361pp.149",
             player=32904,
@@ -813,6 +819,124 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
                 stop_at_clean_review_boundary=True,
             )
         )
+
+    def test_manager_pp_case_family_is_repeatable_but_not_namespace_wide(
+        self,
+    ) -> None:
+        expected_keys = {
+            *(f"zg361pp.{event_id}" for event_id in range(146, 192)),
+            *(f"zg361pp.{event_id}" for event_id in range(9001, 9005)),
+        }
+        self.assertEqual(len(expected_keys), 50)
+
+        for event_key in sorted(expected_keys):
+            contract = production._manager_recovery_pp_contract(
+                event_key,
+                player=32904,
+                starting_date=53447000,
+            )
+            self.assertIsNotNone(contract, event_key)
+            assert contract is not None
+            with self.subTest(event_key=event_key):
+                self.assertEqual(
+                    contract["occurrence_policy"],
+                    "repeatable-within-product-observation-window",
+                )
+                self.assertNotIn("max_occurrences", contract)
+                self.assertEqual(contract["root_character_id"], 32904)
+                self.assertEqual(contract["selected_option_number"], 1)
+                self.assertEqual(contract["selected_native_option_index"], 0)
+                self.assertEqual(contract["character_scopes"], {})
+                event_number = int(event_key.removeprefix("zg361pp."))
+                if 146 <= event_number <= 191:
+                    self.assertEqual(contract["option_count"], 3)
+                    self.assertEqual(
+                        contract["native_option_indices"], (0, 1, 2)
+                    )
+                    variants = contract["option_variants"]
+                    self.assertEqual(len(variants), 7)
+                    self.assertEqual(
+                        {variant["native_option_indices"] for variant in variants},
+                        {
+                            (0,),
+                            (1,),
+                            (2,),
+                            (0, 1),
+                            (0, 2),
+                            (1, 2),
+                            (0, 1, 2),
+                        },
+                    )
+                    self.assertEqual(contract["scope_types"], {})
+                else:
+                    self.assertEqual(contract["option_count"], 1)
+                    self.assertEqual(contract["native_option_indices"], (0,))
+                    self.assertEqual(contract["option_variants"], ())
+                    self.assertEqual(
+                        contract["scope_types"],
+                        {"zg361_pp_completion_subject": "character"},
+                    )
+
+        for event_key in (
+            "zg361pp.145",
+            "zg361pp.192",
+            "zg361pp.5166",
+            "zg361pp.5190",
+            "zg361pp.2146",
+            "zg361pp.4001",
+            "zg361pp.9000",
+            "zg361pp.9005",
+            "zg361pp.9100",
+        ):
+            self.assertIsNone(
+                production._manager_recovery_pp_contract(
+                    event_key,
+                    player=32904,
+                    starting_date=53447000,
+                ),
+                event_key,
+            )
+
+        current = production._resolve_timeline_interrupt_contract(
+            "zg361pp.146",
+            player=32904,
+            starting_date=53447000,
+            absolute_end_date=53500000,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        assert current is not None
+        context = _context(
+            event_key="zg361pp.146",
+            instance_id=900,
+            date_raw=53489184,
+            player=32904,
+            scopes=[
+                _scope("zg361_pp_prompt_owner", "character", 32904),
+                _scope("zg361_pp_prompt_subject", "character", 36160),
+                _scope("zg361_pp_prompt_cycle", "value"),
+                _scope("zg361_pp_prompt_case", "value"),
+                _scope("zg361_pp_prompt_state", "value"),
+                _scope("zg361_pp_prompt_mechanism", "value"),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53489184,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 900},
+            context=context,
+            event_key="zg361pp.146",
+            contract=current,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        resolved = production._option_contract_for_context(
+            context["options"], current,
+        )
+        self.assertEqual(resolved["selected_option_number"], 1)
+        self.assertEqual(resolved["selected_native_option_index"], 0)
 
     def test_random_bad_nickname_uses_only_visible_authored_option(self) -> None:
         event_key = "lifestyle_nicknames.1000"
