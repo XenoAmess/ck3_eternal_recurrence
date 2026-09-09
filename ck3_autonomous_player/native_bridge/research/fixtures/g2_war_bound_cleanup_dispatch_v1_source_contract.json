@@ -4,7 +4,7 @@
   "game_version": "1.19.0.6",
   "game_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "candidate_base_commit": "a01f8cb684d39e2ea8e95fbf0f20f170b6f1a396",
-  "current_canonical_source_commit": "804ef3dfb5194eedc73e93b3ccf54ad226336130",
+  "current_canonical_source_commit": "8502854193ec8b64365e33d7540de22a080d9ee1",
   "default_enabled": false,
   "cmake_options": {
     "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": true,
@@ -15,7 +15,7 @@
   "source_files": [
     {
       "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
-      "sha256": "540B00F59117B2C30DA19E85C7899C42A7DC0BE2EA28A2F708850C7CE099B52F"
+      "sha256": "1944A859C99AF4756BF3DCDE0725CFCC3BD73304B44538DD263AD395D3FA02CB"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_adapter.hpp",
@@ -27,15 +27,15 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
-      "sha256": "57F2EECD5CC4C7BB609BADF67FDF3D0378EA317FC3B9A3D0F4D95BD69484F019"
+      "sha256": "E13CCB9949CB82EB99D956307946B5DD04BB9D54D953980220AD5F9A952CC51D"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp",
-      "sha256": "62B157E11777A41C4C7A7272643948187BC2F09194D9649069AAFCB0ED0673B9"
+      "sha256": "FC69D8F8D95710B8F8EF884B7E008FD12E0BE28FEE0617ABA44FE6907E1949CE"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
-      "sha256": "5CD0CC6E1CF8789938134A7C46C452EF95B53C0211E0624805314945650297EA"
+      "sha256": "9E80318968B284EF02D55DA777C80332F67F698CFCEBD4CF6D7D82E6FC78287A"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_loss_candidate_v1.cpp",
@@ -43,7 +43,7 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
-      "sha256": "33F3C33A1FAA61148B9FA93830ED7EFF09CCD74BC34B0A10E8553E1F4FBA016D"
+      "sha256": "18826574D16E7BFB424709A5A7A07B66E7CCEFA5867C442984F57D8B8CBB069C"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",
