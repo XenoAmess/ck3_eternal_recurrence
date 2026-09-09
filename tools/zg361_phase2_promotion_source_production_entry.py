@@ -244,6 +244,7 @@ ZG361_6_MODAL_ADVANCE_TIMEOUT_SECONDS = 10.0
 _TRANSIENT_PROGRESS_BINDING_ERRORS = (
     "promotion source progress lacks a stable paused player binding",
     "ZhongGuo promotion source progress binding changed or is not ready",
+    "ZhongGuo promotion source progress revision is stale",
     "promotion source progress is not bound to the requested frame",
 )
 

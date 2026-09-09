@@ -3440,6 +3440,16 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     raise production.PreSubmissionRevisionMismatchError(
                         "promotion source progress binding is stale"
                     )
+                if (
+                    request_nonce.startswith("promo.entry.poll.")
+                    and self.progress_binding_rejections == 2
+                ):
+                    self.progress_binding_rejections += 1
+                    self.revision += 1
+                    raise production.BridgeUnavailableError(
+                        "native gameplay step failed: ZhongGuo promotion "
+                        "source progress revision is stale"
+                    )
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
                     for _ in range(5)
@@ -3467,7 +3477,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     self.event_pending = False
                 return {"accepted": True, "status": "submitted"}
 
-        ticks = iter((0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0))
+        ticks = iter((0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0))
         service = Service()
         evidence: dict[str, object] = {}
 
@@ -3504,12 +3514,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             ],
         )
         self.assertEqual(service.progress_queries[0], "promo.entry.before")
-        self.assertEqual(len(service.progress_queries), 4)
+        self.assertEqual(len(service.progress_queries), 5)
         self.assertEqual(service.progress_queries[1], "promo.entry.poll.1")
         self.assertEqual(service.progress_queries[2], "promo.entry.poll.1")
         self.assertEqual(service.progress_queries[3], "promo.entry.poll.1")
-        self.assertEqual(service.progress_query_revisions, [7, 7, 7, 8])
-        self.assertEqual(len(evidence["progress_query_rebinds"]), 2)
+        self.assertEqual(service.progress_queries[4], "promo.entry.poll.1")
+        self.assertEqual(service.progress_query_revisions, [7, 7, 7, 8, 9])
+        self.assertEqual(len(evidence["progress_query_rebinds"]), 3)
         self.assertTrue(
             all(
                 row["state_mutation_submitted"] is False
