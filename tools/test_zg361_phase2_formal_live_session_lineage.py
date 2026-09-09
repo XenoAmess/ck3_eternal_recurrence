@@ -1,11 +1,14 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Regression tests for the complete formal-live managed PID lineage."""
 
 from __future__ import annotations
 
+import copy
+import importlib.util
 import sys
 import tempfile
 import threading
+import types
 from pathlib import Path
 import unittest
 
@@ -14,6 +17,41 @@ TOOLS = Path(__file__).resolve().parent
 if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
 
+
+def install_optional_desktop_import_stubs() -> None:
+    """Keep this focused contract test independent of desktop packages."""
+
+    attributes = {
+        "pyautogui": (
+            "FAILSAFE",
+            "press",
+            "hotkey",
+            "moveTo",
+            "click",
+            "mouseDown",
+            "mouseUp",
+            "size",
+        ),
+        "numpy": (),
+        "cv2": (),
+        "win32api": ("GetKeyboardLayoutList",),
+        "win32con": (),
+        "win32gui": ("GetForegroundWindow", "GetWindowText"),
+        "win32process": ("GetWindowThreadProcessId",),
+    }
+    for name, names in attributes.items():
+        if name in sys.modules:
+            continue
+        # Always stub pyautogui: this suite is deliberately CK3/desktop-free.
+        if name != "pyautogui" and importlib.util.find_spec(name) is not None:
+            continue
+        module = types.ModuleType(name)
+        for attribute in names:
+            setattr(module, attribute, None)
+        sys.modules[name] = module
+
+
+install_optional_desktop_import_stubs()
 import run_zhongguo_acceptance as runner  # noqa: E402
 
 
@@ -138,6 +176,24 @@ def _shutdown(pid: int) -> dict[str, object]:
     }
 
 
+def _session_report() -> dict[str, object]:
+    return {
+        "kind": "ck3_native_headless_session",
+        "mode": "native-headless",
+        "pipe": "test-pipe",
+        "pid": 100,
+        "exit_reason": "stop",
+        "process_exit_code": None,
+        "shutdown": _shutdown(100),
+        "restart_count": 9,
+        "restart_shutdowns": [
+            _shutdown(pid)
+            for pid in (10, 20, 30, 40, 50, 60, 70, 80, 90)
+        ],
+        "ok": True,
+    }
+
+
 class FormalLiveSessionLineageTests(unittest.TestCase):
     def test_projection_orders_scoreboard_workforce_and_promotion_restores(self) -> None:
         projection = runner._phase2_expected_session_lineage(_scenario())
@@ -157,6 +213,27 @@ class FormalLiveSessionLineageTests(unittest.TestCase):
         self.assertEqual(len(projection["additional_restore_records"]), 8)
         self.assertTrue(projection["all_recorded_lineage_joins_match"])
         self.assertTrue(
+            projection["additional_restore_records_match_full_lineage"]
+        )
+
+    def test_projection_rejects_a_restore_join_that_skips_the_prior_pid(self) -> None:
+        scenario = copy.deepcopy(_scenario())
+        workforce = scenario["workforce_collective_gameplay_action_cell"]
+        self.assertIsInstance(workforce, dict)
+        lineage = workforce["session_lineage"]
+        self.assertIsInstance(lineage, dict)
+        lineage["pid_lineage"][0] = 41
+        first_restore = lineage["restore_records"][0]
+        first_restore["before"]["bridge_pid"] = 41
+        first_restore["lifecycle"]["previous_pid"] = 41
+
+        projection = runner._phase2_expected_session_lineage(scenario)
+
+        self.assertFalse(
+            projection["segment_joins_previous_final"]["workforce"]
+        )
+        self.assertFalse(projection["all_recorded_lineage_joins_match"])
+        self.assertFalse(
             projection["additional_restore_records_match_full_lineage"]
         )
 
@@ -202,22 +279,43 @@ class FormalLiveSessionLineageTests(unittest.TestCase):
             stop.set()
             thread.join(timeout=2)
 
+    def test_liveness_rejects_a_stale_pre_promotion_generation(self) -> None:
+        class Service:
+            @staticmethod
+            def capabilities() -> dict[str, object]:
+                return {
+                    "diagnostics": {
+                        "connected": True,
+                        "bridge_pid": 90,
+                        "connection_generation": 9,
+                    }
+                }
+
+            @staticmethod
+            def snapshot() -> dict[str, object]:
+                return _paused_snapshot(90, 9)
+
+        stop = threading.Event()
+        thread = threading.Thread(target=stop.wait)
+        thread.start()
+        try:
+            with tempfile.TemporaryDirectory() as temporary:
+                with self.assertRaises(runner.acceptance.RunnerError):
+                    runner.phase2_native_session_liveness_gate(
+                        Service(),  # type: ignore[arg-type]
+                        {
+                            "session_done": threading.Event(),
+                            "session_thread": thread,
+                        },
+                        Path(temporary),
+                        scenario_evidence=_scenario(),
+                    )
+        finally:
+            stop.set()
+            thread.join(timeout=2)
+
     def test_cleanup_proves_all_ten_pids_including_promotion_final(self) -> None:
-        report = {
-            "kind": "ck3_native_headless_session",
-            "mode": "native-headless",
-            "pipe": "test-pipe",
-            "pid": 100,
-            "exit_reason": "stop",
-            "process_exit_code": None,
-            "shutdown": _shutdown(100),
-            "restart_count": 9,
-            "restart_shutdowns": [
-                _shutdown(pid)
-                for pid in (10, 20, 30, 40, 50, 60, 70, 80, 90)
-            ],
-            "ok": True,
-        }
+        report = _session_report()
         with tempfile.TemporaryDirectory() as temporary:
             evidence = runner.prove_phase2_native_session_cleanup(
                 report,
@@ -245,6 +343,29 @@ class FormalLiveSessionLineageTests(unittest.TestCase):
         self.assertTrue(
             evidence["checks"]["retired_pid_9_shutdown_cleanup_proven"]
         )
+
+    def test_cleanup_rejects_a_missing_retired_pid_shutdown(self) -> None:
+        report = _session_report()
+        report["restart_shutdowns"].pop()
+
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaises(runner.acceptance.RunnerError):
+                runner.prove_phase2_native_session_cleanup(
+                    report,
+                    Path(temporary),
+                    initial_pid=10,
+                    initial_generation=1,
+                    expected_pipe="test-pipe",
+                    scenario_evidence=_scenario(),
+                    final_capabilities={
+                        "diagnostics": {
+                            "connected": True,
+                            "bridge_pid": 100,
+                            "connection_generation": 10,
+                        }
+                    },
+                    supervisor_stopped=True,
+                )
 
 
 if __name__ == "__main__":
