@@ -1,0 +1,19 @@
+{
+  "format_version": 1,
+  "kind": "reclaim-promo-human-review-checklist",
+  "subject_artifact_id": "reclaim-promo-final-a01",
+  "playback_speed": 1.0,
+  "continuous_full_view_required": true,
+  "checks": [
+    "The opening and all map transitions are centered on Kaifeng/Song China, never Italy.",
+    "No debug, acceptance-only or console UI is visible.",
+    "The fracture, Later Song title, loyal vassals, restoration decision and restored hegemony are shown with genuine game footage.",
+    "Chinese copy is idiomatic and uses 溥天之下 / All Under Heaven consistently.",
+    "Narration uses zh-CN-XiaoxiaoNeural and remains intelligible over A03.",
+    "The retained slogan is 重整河山——一朝失鹿，尚可再兴。",
+    "The 88–96 second tail introduces no new phrase and fades fully to silence.",
+    "Audio has no clipping, clicks, abrupt cuts or unintended silence.",
+    "The exact reviewed SHA-256 matches the signoff artifact."
+  ],
+  "decision": "pending"
+}

@@ -1,0 +1,18 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_release_export_policy",
+  "items": [
+    {
+      "category": "deliverable",
+      "destination": "reclaim-the-motherland-promo.mp4",
+      "source_kind": "artifact",
+      "artifact_id": "reclaim-promo-final-a01",
+      "expected_role": "deliverable"
+    },
+    {
+      "category": "project-config",
+      "destination": "promo-project.snapshot.json",
+      "source_kind": "project-config-snapshot"
+    }
+  ]
+}

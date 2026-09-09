@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rmtm-promo-integration"
+version = "0.1.0"
+description = "Project integration for the Reclaim the Motherland promo"
+requires-python = ">=3.11"
+dependencies = ["xar-promo-toolchain==0.2.1"]
+
+[project.entry-points."xar_promo.adapters"]
+rmtm-ck3-v1 = "rmtm_promo.components:adapter_factory"
+
+[project.entry-points."xar_promo.presets"]
+rmtm-96s-zh-v1 = "rmtm_promo.components:preset_factory"
+
+[tool.setuptools.packages.find]
+where = ["src"]

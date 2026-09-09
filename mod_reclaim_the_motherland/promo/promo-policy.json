@@ -1,0 +1,28 @@
+{
+  "format_version": 1,
+  "project_id": "reclaim-the-motherland-promo",
+  "approved_at": "2026-09-10",
+  "timeline": {
+    "picture_end_seconds": 88,
+    "deliverable_end_seconds": 96,
+    "sections": [
+      {"id":"prologue","start":0,"end":6,"narration":"天命可以失去，王朝不必随之湮灭。"},
+      {"id":"kaifeng","start":6,"end":15,"narration":"当群雄并起，旧日的天子不再被迫散尽基业。"},
+      {"id":"fracture","start":15,"end":27,"narration":"他失去中华霸权，却仍守故土；尊王诸侯，也仍奉旧朝为主。"},
+      {"id":"later_song","start":27,"end":39,"narration":"国号改作‘后宋’，法统暂寄一隅。天下虽裂，复国之志未绝。"},
+      {"id":"reconquest","start":39,"end":51,"narration":"待故土过半重归麾下，失落的天命，便有了再度争取的资格。"},
+      {"id":"restoration_decision","start":51,"end":63,"narration":"后朝不向新主称臣。它所等待的，只有一道诏书——宣称复辟。"},
+      {"id":"edict","start":63,"end":75,"narration":"昭告天下：故国已复，天命重归。"},
+      {"id":"restored","start":75,"end":83,"narration":"旧朝之名归入史册，而新的天下，自此重开。"},
+      {"id":"title_card","start":83,"end":88,"narration":"重整河山——一朝失鹿，尚可再兴。"},
+      {"id":"music_tail","start":88,"end":96,"narration":""}
+    ]
+  },
+  "narration": {"provider":"edge-tts","voice":"zh-CN-XiaoxiaoNeural","locale":"zh-CN","rate":"+0%","pitch":"+0Hz","volume":"+0%"},
+  "video": {"capture_width":2560,"capture_height":1440,"delivery_width":1920,"delivery_height":1080,"fps":30,"video_codec":"libx264","pixel_format":"yuv420p","crf":18,"preset":"slow"},
+  "audio": {"sample_rate":48000,"channels":2,"narration_gain_db":-1.0,"music_gain_db":-14.0,"music_fade_in_seconds":0.6,"music_fade_out_seconds":8.0,"music_duck_gain_db":-5.5,"decision_breath":{"start":62.8,"end":63.35,"gain_db":-4.0}},
+  "capture": {"landed_title":"b_kaifeng","province_id":9822,"county_title":"c_bianzhou","required_visible_terms_any":["开封","汴州","管城县"],"forbidden_visible_terms":["教宗","教宗国","意大利","罗马","那波利","萨莱诺"],"mcp_first":true,"normal_player_ui_only":true},
+  "terminology": {"required":["重整河山","Reclaim the Motherland","溥天之下","All Under Heaven","后宋","宣称复辟","故土过半"],"forbidden":["天下归心","收复与宣称天命相同份额的中华疆土","版图完全不变"]},
+  "input_artifact_ids": {"visual_master":"visual-master-a01","narration_master":"narration-master-a01","music":"bgm-a03-source"},
+  "deliverable": {"artifact_id":"reclaim-promo-final-a01","relative_path":"deliverables/reclaim-the-motherland-promo-a01.mp4","media_type":"video/mp4"}
+}

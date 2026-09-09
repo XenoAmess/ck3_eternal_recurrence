@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "selection_id": "A03",
+  "selected_at": "2026-09-10",
+  "source_sha256": "0E4ED8EE2AA86BD676862B080707796430C2F8C2B2EF7934BDA053CF68EB92FB",
+  "source_duration_seconds": 101.96,
+  "source_format": "PCM WAV, 48000 Hz, 16-bit, stereo",
+  "authoritative_artifact_id": "bgm-a03-source",
+  "user_attestation": {
+    "statement": "A03 是本人付费方案期间生成并由 Suno 官方下载、不是 Remix。",
+    "scope": ["paid-plan generation","official Suno download","not a remix"],
+    "recorded_at": "2026-09-10"
+  },
+  "editorial_contract": {
+    "use_start_seconds": 0,
+    "picture_end_seconds": 88,
+    "deliverable_end_seconds": 96,
+    "no_new_musical_phrase_after_seconds": 88,
+    "tail_fade_out_seconds": 8,
+    "notes": "Preserve the source; apply only non-destructive trim, gain, ducking and tail fade in a render attempt."
+  },
+  "human_approval_boundary": "This attestation and selection do not approve any future encoded video bytes."
+}

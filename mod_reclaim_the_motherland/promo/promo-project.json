@@ -1,0 +1,20 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {"id":"reclaim-the-motherland-promo","title":"《重整河山》宣传片"},
+  "pipeline": {"adapter":"rmtm-ck3-v1","preset":"rmtm-96s-zh-v1"},
+  "locales": {"narration":"zh-CN","subtitles":["zh-CN"]},
+  "constraints": {"duration_limit_seconds":97},
+  "chapters": [
+    {"id":"prologue","type":"generated_card","state":"ready","title":{"zh-CN":"天命既移，社稷未亡"},"cues":[],"artifact_ids":[]},
+    {"id":"kaifeng","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"大宋 · 开封"},"cues":[],"artifact_ids":[]},
+    {"id":"fracture","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"失天命，不失故土"},"cues":[],"artifact_ids":[]},
+    {"id":"later_song","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"后宋"},"cues":[],"artifact_ids":[]},
+    {"id":"reconquest","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"故土过半"},"cues":[],"artifact_ids":[]},
+    {"id":"restoration_decision","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"宣称复辟"},"cues":[],"artifact_ids":[]},
+    {"id":"edict","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"昭告天下"},"cues":[],"artifact_ids":[]},
+    {"id":"restored","type":"ck3_clean_span","state":"ready","title":{"zh-CN":"中华霸权复归"},"cues":[],"artifact_ids":[]},
+    {"id":"title_card","type":"generated_card","state":"ready","title":{"zh-CN":"重整河山"},"cues":[],"artifact_ids":[]},
+    {"id":"music_tail","type":"generated_card","state":"ready","title":{"zh-CN":"自然尾音"},"cues":[],"artifact_ids":[]}
+  ]
+}
