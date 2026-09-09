@@ -124,7 +124,7 @@
     "profile_change_required": false,
     "capability_change_required": false,
     "fixture_change_required": false,
-    "current_exact_open_kaishek_pin": "d1c0362c1883c1c9ef66d4e5fc9e7c208fb1ba34",
+    "current_exact_open_kaishek_pin": "edcd1ba7c99e93ded6725709c5ddc7e02a2b8fe0",
     "pin_update_required_now": false,
     "pin_update_required_after_open_kaishek_sync_commit": false,
     "reason": "The projects/metrics capability remains independent of the G2 truce profile; the repository-wide exact checkout pin now names the synchronized companion commit."
