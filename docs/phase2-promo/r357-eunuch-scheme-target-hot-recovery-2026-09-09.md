@@ -487,3 +487,28 @@ story 与通用事件有效条件成立，且廷臣或封臣仍持有一个宦�
   `52A6B4CF83F3439DC8626D4DDDD07B3778C457443AE31B9FEEB6CB629B79D119`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第十八次 RED：敌对计谋提案继承 student
+
+第十七次 `retry` 热加载提交 `ab23e01ebb17de2e737e08103149861c16154a8f` 后，
+`.2052` 的第二次发生已通过 occurrence gate；同一 PID、同一 event instance `388`
+随后在完整 scope gate 暴露下一层 RED。实际九项 scope 为
+`story/emperor/eunuch/admin_title/student/rival/scheme/scheme_owner/`
+`scheme_target`，旧合同只将 `rival` 和 `scheme_target` 建模为可选，因此合法的
+`student` 同时触发名称与数量 RED；选择仍未发生。
+
+原版 `ep3_story_cycle_admin_eunuch_save_scopes_effect` 会从 story 独立恢复
+`protege/student/rival` 三个持久角色，`.2052` 再保存必有的 scheme/owner 与可选
+scheme target。最小修复把四个独立可选 scope 与六项基础 scope 展开为 16 个精确
+名称集合、计数范围 `6..10`，未知超集仍然 fail-closed。已有角色互异规则、两按钮
+投影和选择 native option 1 均不改变。改动只在外部 Python 合同、测试和报告；原
+CK3 暂停帧保持不变，不重启。
+
+- 第十八次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-18.json`；
+- park SHA-256：
+  `364358176A4E91BEE9ADA1250D45C609B1A312CF24484AB030712BAD8A06105F`；
+- 第十八次 RED report 快照：13,357,128 bytes，SHA-256
+  `65B23BB070CB8AFDDB29DA20B207F15B7E0D2586F0C4CF5E707A58BF228B3753`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

@@ -1441,7 +1441,8 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # Native option 1 leaves the hostile scheme untouched and applies only
         # the authored story downgrade/opinion/stress result. Choose that
         # narrower terminal route after binding the exact combinations of the
-        # story's optional rival and the scheme's optional defender target.
+        # story's optional protege/student/rival roles and the scheme's
+        # optional defender target.
         # Prove the owner is neither player nor eunuch, and any target is also
         # neither player nor eunuch, before selecting it. The event has no
         # cooldown or one-shot flag and remains eligible while the story and
@@ -1477,11 +1478,13 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "scheme_owner": "character",
         },
         "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
             "rival": "character",
             "scheme_target": "character",
         },
         "boolean_scopes": (),
-        "saved_scope_name_sets": (
+        "saved_scope_name_sets": _optional_scope_name_sets(
             (
                 "story",
                 "emperor",
@@ -1490,36 +1493,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "scheme",
                 "scheme_owner",
             ),
-            (
-                "story",
-                "emperor",
-                "eunuch",
-                "admin_title",
-                "rival",
-                "scheme",
-                "scheme_owner",
-            ),
-            (
-                "story",
-                "emperor",
-                "eunuch",
-                "admin_title",
-                "scheme",
-                "scheme_owner",
-                "scheme_target",
-            ),
-            (
-                "story",
-                "emperor",
-                "eunuch",
-                "admin_title",
-                "rival",
-                "scheme",
-                "scheme_owner",
-                "scheme_target",
-            ),
+            ("protege", "student", "rival", "scheme_target"),
         ),
-        "saved_scope_counts": (6, 7, 8),
+        "saved_scope_counts": (6, 7, 8, 9, 10),
         "option_count": 2,
         "native_option_indices": (0, 1),
         "selected_option_number": 2,

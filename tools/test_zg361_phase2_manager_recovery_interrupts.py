@@ -2128,7 +2128,8 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
-        self.assertEqual(contract["saved_scope_counts"], (6, 7, 8))
+        self.assertEqual(contract["saved_scope_counts"], (6, 7, 8, 9, 10))
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 16)
         self.assertEqual(
             contract["occurrence_policy"],
             "repeatable-within-product-observation-window",
@@ -2138,6 +2139,12 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         repeat = copy.deepcopy(context)
         repeat["current_event_instance_id"] = 388
         repeat["date_raw"] = 53270760
+        repeat["saved_scopes"].extend(
+            [
+                _scope("student", "character", 33596937),
+                _scope("scheme_target", "character", 32364),
+            ]
+        )
         repeat_checks = production._known_interrupt_checks(
             snapshot={
                 "date_raw": 53270760,
