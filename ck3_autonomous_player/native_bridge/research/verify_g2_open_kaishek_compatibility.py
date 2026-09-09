@@ -13,6 +13,7 @@ Paradox opcode allow-list.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -37,6 +38,29 @@ ROOT_BINDING_PATH = (
     / "xar_autoplayer"
     / "bridge"
     / "raiktor_surrender_truce_contract.py"
+)
+PROMOTION_SOURCE_CONTRACT_PATH = (
+    PROJECT_ROOT
+    / "ck3_autonomous_player"
+    / "native_bridge"
+    / "research"
+    / "fixtures"
+    / "zhongguo_promotion_source_progress_v1_source_contract.json"
+)
+PROMOTION_ABI_PATH = (
+    PROJECT_ROOT
+    / "ck3_autonomous_player"
+    / "native_bridge"
+    / "research"
+    / "zhongguo_promotion_source_progress_v1_abi.json"
+)
+PROMOTION_PYTHON_CONTRACT_PATH = (
+    PROJECT_ROOT
+    / "ck3_autonomous_player"
+    / "src"
+    / "xar_autoplayer"
+    / "bridge"
+    / "zhongguo_promotion_source_progress_contract.py"
 )
 _ROOT_CONSTANT_RE = re.compile(
     r"(?m)^\s*{name}\s*(?::\s*Final)?\s*=\s*\(?\s*\"([^\"]+)\""
@@ -636,6 +660,10 @@ def _equal(checks: dict[str, bool], name: str, actual: Any, expected: Any) -> No
     checks[name] = actual == expected
 
 
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def audit(
     *,
     checkout: str | os.PathLike[str] | None = None,
@@ -809,6 +837,63 @@ def audit(
             "runtime_certified",
         )
     )
+    root_promotion_artifacts: dict[str, Any] = {}
+    try:
+        source_contract = json.loads(
+            PROMOTION_SOURCE_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+        abi_contract = json.loads(
+            PROMOTION_ABI_PATH.read_text(encoding="utf-8")
+        )
+        source_sha256 = _sha256(PROMOTION_SOURCE_CONTRACT_PATH)
+        abi_sha256 = _sha256(PROMOTION_ABI_PATH)
+        python_sha256 = _sha256(PROMOTION_PYTHON_CONTRACT_PATH)
+        root_promotion_artifacts = {
+            "source_contract": str(PROMOTION_SOURCE_CONTRACT_PATH),
+            "source_contract_sha256": source_sha256,
+            "abi": str(PROMOTION_ABI_PATH),
+            "abi_sha256": abi_sha256,
+            "python_contract": str(PROMOTION_PYTHON_CONTRACT_PATH),
+            "python_contract_sha256": python_sha256,
+            "fixed_widget_count": source_contract.get("fixed_widget_count"),
+            "fixed_widgets": abi_contract.get("fixed_widgets"),
+        }
+        checks["root_promotion_artifacts_parse"] = True
+        _equal(
+            checks,
+            "root_promotion_source_contract_hash_matches_fixture",
+            source_sha256,
+            expected_promotion.get("root_source_contract_sha256"),
+        )
+        _equal(
+            checks,
+            "root_promotion_abi_hash_matches_fixture",
+            abi_sha256,
+            expected_promotion.get("root_abi_sha256"),
+        )
+        _equal(
+            checks,
+            "root_promotion_python_hash_matches_fixture",
+            python_sha256,
+            expected_promotion.get("root_python_contract_sha256"),
+        )
+        _equal(
+            checks,
+            "root_promotion_abi_widgets_match_fixture",
+            abi_contract.get("fixed_widgets"),
+            expected_promotion.get("fixed_widgets"),
+        )
+        _equal(
+            checks,
+            "root_promotion_source_widget_count_matches_fixture",
+            source_contract.get("fixed_widget_count"),
+            len(expected_promotion.get("fixed_widgets", [])),
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        checks["root_promotion_artifacts_parse"] = False
+        errors.append(
+            f"root-promotion-artifacts: {type(error).__name__}: {error}"
+        )
     expected_expiry = fixture.get("actual_truce_expiry_candidate", {})
     checks["fixture_actual_expiry_shape"] = set(expected_expiry) == {
         "source",
@@ -1079,6 +1164,7 @@ def audit(
         "ok": all_checks,
         "fixture": str(FIXTURE_PATH),
         "root_binding": root_binding,
+        "root_promotion_artifacts": root_promotion_artifacts,
         "external": external,
         "checks": checks,
         "errors": errors,

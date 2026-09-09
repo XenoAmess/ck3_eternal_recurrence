@@ -80,6 +80,43 @@ class G2OpenKaishekCompatibilityTests(unittest.TestCase):
         self.assertTrue(report["readiness"]["native_certified"])
         self.assertTrue(report["readiness"]["runtime_certified"])
         self.assertTrue(report["readiness"]["production_live"])
+        self.assertTrue(
+            report["checks"][
+                "root_promotion_source_contract_hash_matches_fixture"
+            ]
+        )
+        self.assertTrue(
+            report["checks"]["root_promotion_abi_widgets_match_fixture"]
+        )
+
+    def test_root_promotion_artifact_drift_is_red_without_checkout(self) -> None:
+        source_contract = json.loads(
+            MODULE.PROMOTION_SOURCE_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+        source_contract["fixed_widget_count"] -= 1
+        with tempfile.TemporaryDirectory() as directory:
+            drifted_path = Path(directory) / "source-contract.json"
+            drifted_path.write_text(
+                json.dumps(source_contract, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with mock.patch.object(
+                MODULE, "PROMOTION_SOURCE_CONTRACT_PATH", drifted_path
+            ):
+                report = audit(checkout=Path(directory) / "missing")
+
+        self.assertFalse(report["ok"], report)
+        self.assertEqual(report["status"], "RED")
+        self.assertFalse(
+            report["checks"][
+                "root_promotion_source_contract_hash_matches_fixture"
+            ]
+        )
+        self.assertFalse(
+            report["checks"][
+                "root_promotion_source_widget_count_matches_fixture"
+            ]
+        )
 
     def test_fixture_identity_sections_cannot_drift(self) -> None:
         fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
