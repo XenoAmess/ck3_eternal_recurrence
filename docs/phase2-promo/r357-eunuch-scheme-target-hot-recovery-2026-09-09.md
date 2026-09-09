@@ -719,3 +719,28 @@ target、county、title 和 peasant leader，再独立投递 `.1001`；事件及
   `BF5BC0621A0A620C0DADC2DF1C21A230A6EF2C789703DD93DF05CA342FC95D70`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十七次 RED：帝国首都人力请求冷却后复发
+
+第二十六次 `retry` 热加载提交 `7a78d9f6a8a5250525d2d9c1889cd088d2679e3e` 后，
+第二个平民派最后通牒在原 event instance `413` 上通过；同一 PID `159264` 随后推进
+到已登记的 `ep3_emperor_yearly.8000`、event instance `418`、
+`date_raw=53313672`。当前合同尚未进入 scope/按钮检查，因为账本已有一次成功 drain，
+默认一次上限先在选择前触发 RED。
+
+原版 `ep3_yearly_events_admin` 每年从行政制事件池随机投递该事件；事件定义使用
+`cooldown = { years = 10 }`，并没有 campaign-global one-shot flag。其 trigger 只要求
+独立行政制帝国、至少三名 governor、近期战争或停战，以及首都未带 option 4 添加的
+十年 `ep3_development_waning_modifier`。因此在冷却结束且条件再次满足后重新投递属于
+真实原版行为。最小修复只把旧默认一次上限改成产品观察窗口内可重复；每次仍须通过
+既有六项或八项精确 scope 形状、按钮投影与 native option 0 路线，未知变体继续
+fail-closed。改动只涉及外部 Python 合同、测试和报告，不重启 CK3。
+
+- 第二十七次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-27.json`；
+- park SHA-256：
+  `C40D20816E06BEB120A9D1E43C7E84B43F5E294B40AF1DF3C5A6D293EFF48EF7`；
+- 第二十七次 RED report 快照：14,554,217 bytes，SHA-256
+  `29B04A27A6ED01BA59926118432DF32C5EB769B2F784211C90E246B42EC0A664`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

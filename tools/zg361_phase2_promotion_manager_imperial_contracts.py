@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed imperial manager-recovery interrupt contracts."""
 
 from __future__ import annotations
@@ -63,6 +63,9 @@ MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
         # Choose option 1 to preserve the acceptance owner's capital. Bind the
         # complete authored random frame: the source guarantees three distinct
         # governors, but deliberately does not guarantee their identities.
+        # Vanilla applies a ten-year event cooldown rather than a campaign-wide
+        # one-shot flag, so later eligible deliveries remain independently
+        # valid and must be checked against the same exact frame contract.
         "date_raw": 53150712,
         "date_raw_range": (53147016, 53160216),
         "date_policy": "product-observation-window",
@@ -105,6 +108,7 @@ MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2, 3),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
         "scope_variants": ({
             # R335 exact source-authored partial selection. The event trigger
             # guarantees three governors somewhere in the realm, but the

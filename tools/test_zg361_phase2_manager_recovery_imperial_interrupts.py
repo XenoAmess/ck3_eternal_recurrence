@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Purpose-split contracts for imperial manager-recovery interrupts."""
 
 from __future__ import annotations
@@ -182,6 +182,11 @@ class ManagerRecoveryImperialInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
         self.assertEqual(contract["saved_scope_count"], 8)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
         self.assertEqual(
             contract["unique_character_scope_excludes"]["governor_1"],
             (32904,),
