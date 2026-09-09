@@ -183,7 +183,7 @@ def _concat_argv(ffmpeg: Path, segments: list[Path], output: Path) -> list[str]:
     for segment in segments:
         command.extend(["-i", str(segment)])
     filters = [
-        f"[{index}:v]setpts=PTS-STARTPTS[v{index}]"
+        f"[{index}:v]setpts=PTS-STARTPTS,setsar=1[v{index}]"
         for index in range(len(segments))
     ]
     inputs = "".join(f"[v{index}]" for index in range(len(segments)))

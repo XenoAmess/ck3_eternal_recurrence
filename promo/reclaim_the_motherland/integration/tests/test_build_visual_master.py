@@ -83,6 +83,7 @@ class BuildVisualMasterTests(unittest.TestCase):
         argv = _concat_argv(Path("ffmpeg.exe"), segments, Path("master.mp4"))
         filter_graph = argv[argv.index("-filter_complex") + 1]
         self.assertIn("concat=n=10:v=1:a=0", filter_graph)
+        self.assertEqual(filter_graph.count("setsar=1"), 10)
         self.assertEqual(argv.count("-i"), 10)
         self.assertNotIn("-c copy", " ".join(argv))
 
