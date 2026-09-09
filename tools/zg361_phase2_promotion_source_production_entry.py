@@ -1443,7 +1443,10 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # narrower terminal route after binding the exact combinations of the
         # story's optional rival and the scheme's optional defender target.
         # Prove the owner is neither player nor eunuch, and any target is also
-        # neither player nor eunuch, before selecting it.
+        # neither player nor eunuch, before selecting it. The event has no
+        # cooldown or one-shot flag and remains eligible while the story and
+        # a qualifying hostile scheme both exist, so validate every delivery
+        # independently inside the bounded product observation window.
         "date_raw": 53236512,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1521,7 +1524,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.2060": {
         # CK3 1.19.0.6 court-position demand from the story eunuch. Native

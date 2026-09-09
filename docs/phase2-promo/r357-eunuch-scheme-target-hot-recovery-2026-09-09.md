@@ -463,3 +463,27 @@ global 上限。最小修复删除该伪上限，改为产品观察窗口内可�
   `6CB66C7DCE49F9F73772D0D02A18115B0B0C6784D116390538512AA21F33F11B`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第十七次 RED：敌对计谋提案再次投递
+
+第十六次 `retry` 热加载提交 `e3c773b6ac57ecee6462b4c2c3e142d9ef1d6cd0` 后，
+`.5007` 在同一 PID `159264` 上通过；游戏随后推进到已登记的
+`ep3_story_cycle_admin_eunuch.2052`、event instance `388`、
+`date_raw=53270760`。事件和当前两项 native options 均已知，但证据账本已有一次
+`.2052` 成功 drain，旧 `max_occurrences=1` 因而在本次选择前 RED。
+
+原版 `.2052` 没有 `cooldown`，也没有设置 campaign-global one-shot flag；只要宦官
+story 与通用事件有效条件成立，且廷臣或封臣仍持有一个宦官和玩家均未参与的未暴露
+敌对计谋，该事件就可再次进入 story 随机池。故第二次投递是源码允许的真实事件，
+不是重复窗口或测试噪声。最小修复删除伪造的一次上限，改为产品观察窗口内可重复并
+逐帧验证；选择仍为 native option 1，不揭露计谋，只承担原版 story downgrade、意见
+与可能的 stress。改动只在外部 Python 合同、测试和报告，不重启 CK3。
+
+- 第十七次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-17.json`；
+- park SHA-256：
+  `7748636A19079B7CD60ABECD3362FB61DEE4EFE8B695373079C3CECAF6530D22`；
+- 第十七次 RED report 快照：13,285,770 bytes，SHA-256
+  `52A6B4CF83F3439DC8626D4DDDD07B3778C457443AE31B9FEEB6CB629B79D119`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
