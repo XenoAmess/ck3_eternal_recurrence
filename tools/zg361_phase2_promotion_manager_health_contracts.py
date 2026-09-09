@@ -241,6 +241,46 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
             "selected_native_option_index": 0,
         },),
     },
+    "health.1015": {
+        # CK3 1.19.0.6 played-character measles contraction through an
+        # epidemic. Disease application and measles immunity happen before
+        # the modal opens. This physician-present frame exposes safe, risky,
+        # and no-treatment routes; native 3 is the survival-preserving safe
+        # treatment and intentionally continues to the existing .3103/.3104
+        # treatment-result contracts. Epidemic immunity makes a second
+        # occurrence unreachable for this frozen played character.
+        "date_raw": 53331888,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "sick_character": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (32904,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "physician": "character",
+            "sick_character": "character",
+            "new_memory": "character_memory",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "physician",
+            "sick_character",
+            "new_memory",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 3,
+        "snapshot_option_count": 8,
+        "native_option_indices": (3, 4, 6),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "max_occurrences": 1,
+    },
     "health.3001": {
         # R197 exact delayed physician-search result opened by health.1001's
         # no-physician route. Vanilla authored five branches, but this frame
