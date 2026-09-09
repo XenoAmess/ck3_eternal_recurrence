@@ -605,8 +605,9 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # the complete two-character/two-option letter frame. R329 then
         # reached a second independent request on the bounded three-cycle
         # endgame lineage. R345 then observed three distinct confirmation
-        # vassals at 53204640, 53226000, and 53246304 in one replay; all use
-        # this exact terminal-refusal contract.
+        # vassals at 53204640, 53226000, and 53246304 in one replay. The
+        # decision is once per requesting vassal, not once per receiving
+        # liege, so validate every independent request in the product window.
         "date_raw": 53157888,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -629,7 +630,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 3,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "adultery.0002": {
         # CK3 1.19.0.6 spouse-suspicion event. Confrontation opens a new event

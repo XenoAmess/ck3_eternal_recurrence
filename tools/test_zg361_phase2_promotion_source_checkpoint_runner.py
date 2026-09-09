@@ -2249,12 +2249,16 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
-        self.assertEqual(contract["max_occurrences"], 3)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
         live_contract = production._timeline_contract_for_window(
             production.KNOWN_TIMELINE_INTERRUPTS[event_key],
             starting_date=53199480,
         )
-        for date_raw in (53204640, 53226000, 53246304):
+        for date_raw in (53204640, 53226000, 53246304, 53288040):
             with self.subTest(date_raw=date_raw):
                 self.assertTrue(
                     production._contract_date_matches(date_raw, live_contract)

@@ -616,3 +616,27 @@ flag。每次新生儿都构成独立通知，唯一 authored option 只是关�
   `4DA8FED78FEBAE08683AEA7A43BB2BED58456556DC6D7521AC5C4E4ECB40E43B`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十三次 RED：第四位行政封臣请求确认
+
+第二十二次 `retry` 热加载提交 `eda7506ccfff17d31e559a996d331f349f44727f` 后，
+第三次 `birth.1010` 在原 event instance `397` 上通过；同一 PID `159264` 随后推进
+到已登记的 `ep3_decisions_event.2001`、event instance `400`、
+`date_raw=53288040`。当前两项角色 scope 与两个 native options 符合已有合同，但
+账本已经成功 drain 三次独立请求，旧 `max_occurrences=3` 在选择前 RED。
+
+原版 `admin_confirmation_decision` 的“一次”限制属于发起决议的行政封臣：每名满足
+条件的 governor 都可独立前往其最高领主处请求确认。`.2001` 由到达处理投递给
+`confirmation_liege`，其定义没有把接收方限制为整局三次；因此同一玩家作为领主可
+收到不同封臣的多封请求。最小修复删除接收侧的伪三次上限，改为产品观察窗口内可
+重复；每封信仍严格绑定 vassal/liege 两项 scope，并选择 native option 1 的即时拒绝
+路线以避免开启后续仪式链。改动仅在外部 Python 合同、测试与报告，不重启 CK3。
+
+- 第二十三次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-23.json`；
+- park SHA-256：
+  `B25195DF26250E9E118ACDB6CEB3D15F997B06742AD91CA5F3DBC1770F9D1007`；
+- 第二十三次 RED report 快照：13,947,275 bytes，SHA-256
+  `93FA8B1B9A41B92A39BA759115717B2106826D863D5EB2E25CB4CA8642A02539`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
