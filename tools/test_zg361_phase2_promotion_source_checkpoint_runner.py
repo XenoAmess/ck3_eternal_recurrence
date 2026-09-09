@@ -2128,6 +2128,118 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             )
         )
 
+        for event_key in ("zg361ip.190", "zg361ip.290", "zg361ip.390"):
+            incident = production._manager_recovery_incident_result_contract(
+                event_key, player=32904, starting_date=53365488,
+            )
+            self.assertIsNotNone(incident)
+            assert incident is not None
+            self.assertEqual(incident["root_character_id"], 32904)
+            self.assertEqual(incident["option_count"], 1)
+            self.assertEqual(incident["native_option_indices"], (0,))
+            self.assertEqual(
+                incident["scope_types"],
+                {"zg361_ip_result_subject": "character"},
+            )
+            self.assertEqual(
+                incident["occurrence_policy"],
+                "repeatable-within-product-observation-window",
+            )
+            self.assertNotIn("max_occurrences", incident)
+            resolved_incident = production._resolve_timeline_interrupt_contract(
+                event_key,
+                player=32904,
+                starting_date=53365488,
+                stop_at_clean_review_boundary=False,
+                continue_to_pause_target=True,
+            )
+            self.assertEqual(resolved_incident, incident)
+        self.assertIsNone(
+            production._manager_recovery_incident_result_contract(
+                "zg361ip.191", player=32904, starting_date=53365488,
+            )
+        )
+
+        incident_190 = production._resolve_timeline_interrupt_contract(
+            "zg361ip.190",
+            player=32904,
+            starting_date=53365488,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        assert incident_190 is not None
+        incident_context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": "zg361ip.190",
+            "current_event_instance_id": 522,
+            "date_raw": 53365488,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 32904,
+                },
+            },
+            "saved_scopes": [
+                {
+                    "name": "zg361_ip_result_subject",
+                    "scope": {
+                        "status": "available",
+                        "type_key": "character",
+                        "typed_identity": {
+                            "status": "available",
+                            "kind": "character",
+                            "character_id": 33602193,
+                        },
+                    },
+                },
+                {
+                    "name": "zg361_b1_oversight_ticket_state",
+                    "scope": {
+                        "status": "available",
+                        "type_key": "value",
+                        "typed_identity": {
+                            "status": "unavailable",
+                            "reason": "generic_scope_payload_identity_not_closed",
+                        },
+                    },
+                },
+            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+        incident_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53365488, "active_event": {"option_count": 1}},
+            event={"event_instance_id": 522},
+            context=incident_context,
+            event_key="zg361ip.190",
+            contract=incident_190,
+        )
+        self.assertTrue(all(incident_checks.values()), incident_checks)
+        wrong_subject_type = copy.deepcopy(incident_context)
+        wrong_subject_type["saved_scopes"][0]["scope"]["type_key"] = "value"
+        wrong_subject_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53365488, "active_event": {"option_count": 1}},
+            event={"event_instance_id": 522},
+            context=wrong_subject_type,
+            event_key="zg361ip.190",
+            contract=incident_190,
+        )
+        self.assertFalse(
+            wrong_subject_checks["scope:zg361_ip_result_subject:type"]
+        )
+
     def test_movement_petition_interrupt_uses_terminal_refusal(self) -> None:
         def character_scope(name: str, character_id: int) -> dict[str, object]:
             return {

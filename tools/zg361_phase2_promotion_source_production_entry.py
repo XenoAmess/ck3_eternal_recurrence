@@ -5380,6 +5380,40 @@ def _manager_recovery_pp_contract(
     }
 
 
+def _manager_recovery_incident_result_contract(
+    event_key: str, *, player: int, starting_date: int,
+) -> dict[str, object] | None:
+    """Return the authored empty-ack route for an Incident X/Y/Z receipt."""
+
+    try:
+        event_number = int(event_key.removeprefix("zg361ip."))
+    except ValueError:
+        return None
+    if event_number not in (190, 290, 390):
+        return None
+    return {
+        "date_raw": starting_date,
+        "date_policy": "manager-recovery-product-window",
+        "date_raw_range": (
+            starting_date,
+            starting_date + MAX_ADVANCE_DAYS * HOURS_PER_DAY,
+        ),
+        "root_character_id": player,
+        "character_scopes": {},
+        # The generated receipt only requires this result subject to exist.
+        # Long product timelines legally carry unrelated prior business scopes,
+        # so recovery binds the authored input without inventing an exact set.
+        "scope_types": {"zg361_ip_result_subject": "character"},
+        "boolean_scopes": (),
+        "option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+        "manager_recovery_only": True,
+    }
+
+
 def _manager_recovery_workforce_contract(
     event_key: str, *, player: int, starting_date: int,
 ) -> dict[str, object] | None:
@@ -5559,6 +5593,12 @@ def _resolve_timeline_interrupt_contract(
         if manager_recovery
         else None
     )
+    if contract is None and manager_recovery:
+        contract = _manager_recovery_incident_result_contract(
+            event_key,
+            player=player,
+            starting_date=starting_date,
+        )
     if contract is None and manager_recovery:
         contract = _manager_recovery_workforce_contract(
             event_key,
