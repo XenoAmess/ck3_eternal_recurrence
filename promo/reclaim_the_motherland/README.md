@@ -36,3 +36,9 @@ distinct non-black samples makes the attempt RED even when FFmpeg exits cleanly.
 shots resolve against exact acceptance timeline events, while stills and every
 rendered chapter are SHA-256 bound in the build report. The script emits one
 silent 1920×1080/30fps, 96-second visual master for the native composer.
+
+After `xar-promo review` has produced a `pending-human-review` package,
+`rmtm_promo.audit_evidence` converts its exact artifact-first,
+boundary-after and artifact-final PNGs into a deterministic evidence-plan v2
+and hash-bound evidence bundle. It refuses any review package that already
+claims approval and therefore cannot be mistaken for human signoff.
