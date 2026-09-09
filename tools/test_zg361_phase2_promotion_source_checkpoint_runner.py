@@ -450,6 +450,11 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
 
         self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
 

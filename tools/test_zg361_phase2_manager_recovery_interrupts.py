@@ -327,6 +327,54 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
             )
             self.assertTrue(all(checks.values()), checks)
 
+    def test_value_track_card_repeats_with_exact_safe_route(self) -> None:
+        event_key = "zg361.30"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53447000,
+            absolute_end_date=53490000,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(contract["option_count"], 2)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        for instance_id, date_raw in (
+            (681, 53447664),
+            (875, 53488512),
+        ):
+            context = _context(
+                event_key=event_key,
+                instance_id=instance_id,
+                date_raw=date_raw,
+                player=32904,
+                scopes=[
+                    _scope("zg361_n_dog", "value"),
+                    _scope("zg361_n_rabbit", "value"),
+                ],
+                native_option_indices=(0, 1),
+            )
+            checks = production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": date_raw,
+                    "active_event": {"option_count": 2},
+                },
+                event={"event_instance_id": instance_id},
+                context=context,
+                event_key=event_key,
+                contract=contract,
+            )
+            self.assertTrue(all(checks.values()), checks)
+
     def test_late_pause_target_enables_pp_and_three_cycle_workforce_routes(
         self,
     ) -> None:

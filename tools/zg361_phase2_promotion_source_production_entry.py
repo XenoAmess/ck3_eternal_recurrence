@@ -290,6 +290,11 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         },
         "boolean_scopes": (),
         "option_count": 2,
+        # Every published review cycle with a wild-dog or rabbit row schedules
+        # this card three days later. R372 observed legal deliveries at
+        # 53447664 and 53488512, so retain the exact two value scopes and safe
+        # route while permitting future review cycles in the bounded run.
+        "occurrence_policy": "repeatable-within-product-observation-window",
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
