@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Source-reviewed birth-notice manager interrupt contracts."""
 
 from __future__ import annotations
@@ -130,7 +130,9 @@ MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
         # already exist before this window; its sole authored option has no
         # gameplay effect. Bind every complete eight-scope frame before
         # dismissing the acknowledgement; the runner never operates the name
-        # widget. R180 observed two occurrences in one bounded timeline.
+        # widget. The source dispatches one notice for each independently born
+        # eligible dynasty child and has no campaign-global one-shot gate, so
+        # validate every occurrence in the product observation window.
         "date_raw": 53154408,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -172,7 +174,7 @@ MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
         "scope_variants": ({
             # R341 observed the source-authored secret-birth frame with no
             # resolvable assumed father: pregnancy_maintainance_effect carries

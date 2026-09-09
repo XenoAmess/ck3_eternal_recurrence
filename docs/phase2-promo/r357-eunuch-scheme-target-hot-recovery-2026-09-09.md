@@ -591,3 +591,28 @@ fail-closed。按钮投影和 native option 1 均不改变。改动只涉及外�
   `90B13CD018DAA9ED618F9AABC291F2E285AA85D1D66DB84415A9F0FFAE73E625`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十二次 RED：第三次宗族新生儿命名通知
+
+第二十一次 `retry` 热加载提交 `2f3d8924be12ff0cb3a86872c00e96a45c8e05fe` 后，
+`.2041` 的 `student` 形状在原 event instance `393` 上通过；同一 PID `159264`
+随后推进到已登记的 `birth.1010`、event instance `397`、
+`date_raw=53286168`。当前八项 scope、类型、父亲别名关系与唯一 native option 0 均
+符合已有完整家庭帧合同，但账本已有两次成功 drain，旧 `max_occurrences=2` 因而在
+选择前 RED。
+
+原版出生处理会在每个符合条件的新生儿诞生后，从同宗族且作为其 host 的玩家中选择
+一人触发 `birth.1010`；事件本身没有全局次数限制，也没有 campaign-global one-shot
+flag。每次新生儿都构成独立通知，唯一 authored option 只是关闭通知，runner 不操作
+命名 widget。最小修复因此只删除人为的两次上限，改为产品观察窗口内可重复，并继续
+对每次八项家庭帧或已冻结的秘密出生变体完整验帧。改动位于外部合同分片、测试与
+报告，production entry 会热重载该分片，不重启 CK3。
+
+- 第二十二次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-22.json`；
+- park SHA-256：
+  `C666925A4A1BC1F79EFA11665B68E938207D77E0D312345AAD3361834DEBE2C2`；
+- 第二十二次 RED report 快照：13,837,759 bytes，SHA-256
+  `4DA8FED78FEBAE08683AEA7A43BB2BED58456556DC6D7521AC5C4E4ECB40E43B`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。
