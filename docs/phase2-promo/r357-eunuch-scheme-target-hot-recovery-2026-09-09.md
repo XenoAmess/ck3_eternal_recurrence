@@ -640,3 +640,30 @@ flag。每次新生儿都构成独立通知，唯一 authored option 只是关�
   `93FA8B1B9A41B92A39BA759115717B2106826D863D5EB2E25CB4CA8642A02539`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十四次 RED：自由权派系最后通牒
+
+第二十三次 `retry` 热加载提交 `f229cfa3b346f3f46c676ce5e0e4e6ab69ed7754` 后，
+第四次行政确认请求在原 event instance `400` 上通过；同一 PID `159264` 随后推进
+到此前未登记的 `faction_demand.0101`、event instance `408`、
+`date_raw=53297760`，因此在选择前按未知事件 fail-closed。MCP 当前帧精确读取三项
+scope：`faction` 为 faction、leader 为角色 `28671`、target 为玩家 `32904`；三个
+authored options 中当前只渲染 native `(0,2)`，co-emperor counter-offer 未显示。
+
+原版定义确认这是 liberty faction 的真实 demand。native option 0 接受要求，会降低
+当前 realm-authority law，并扣除 legitimacy、dread 和 prestige 后销毁派系；native
+option 1 是条件性共同皇帝反提案，带接受/拒绝随机分支；native option 2 拒绝并按
+原版 effect 启动派系战争。为保持晋升来源依赖的法律和头衔状态，本次最小合同选择
+native 2，把战争留在已有 gameplay state surface，而不直接改写 realm law；合同只
+接受源码定义的 `(0,2)` 与 `(0,1,2)` 两种精确按钮投影，并严格绑定三项 scope。
+不同 liberty faction 未来仍可独立提出要求，故逐次完整验帧而不设 campaign-global
+上限。该改动只登记外部 Python 合同、回归测试与报告，不重启 CK3。
+
+- 第二十四次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-24.json`；
+- park SHA-256：
+  `CA4D078703FAAD1842D194928FD07C90BB589DEF97CE7F286107BA87F69D44E2`；
+- 第二十四次 RED report 快照：28,488,712 bytes，SHA-256
+  `54A61D3BC0DD71605BAB6F6E49A606F7CE12463356DCA2B6C5FF99C589551A95`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

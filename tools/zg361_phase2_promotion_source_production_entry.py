@@ -933,6 +933,56 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
         "max_occurrences": 1,
     },
+    "faction_demand.0101": {
+        # CK3 1.19.0.6 liberty-faction ultimatum. Native option 0 lowers the
+        # current realm-authority law, legitimacy, dread and prestige before
+        # destroying the faction. Native option 1 is an optional co-emperor
+        # counter-offer with a random accept/refuse branch. Native option 2
+        # preserves the current law and title state while starting the
+        # source-authored faction war. Keep that war on the gameplay surface
+        # instead of mutating the promotion-source prerequisites, and bind
+        # both exact source-defined option projections before refusing.
+        "date_raw": 53297760,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "faction_target": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "faction_leader": (32904,),
+        },
+        "scope_types": {
+            "faction": "faction",
+            "faction_leader": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "faction",
+            "faction_leader",
+            "faction_target",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "faction_demand.1001": {
         # CK3 1.19.0.6 populist ultimatum. Native option 0 (culture/faith
         # conversion) may be visible when the 30-percent realm thresholds and

@@ -1387,6 +1387,75 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:story_scope:type"])
 
+    def test_liberty_ultimatum_refuses_realm_law_mutation(self) -> None:
+        event_key = "faction_demand.0101"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=408,
+            date_raw=53297760,
+            player=32904,
+            scopes=[
+                _scope("faction", "faction"),
+                _scope("faction_leader", "character", 28671),
+                _scope("faction_target", "character", 32904),
+            ],
+            native_option_indices=(0, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53297760,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 408},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        counter_offer_visible = copy.deepcopy(context)
+        counter_offer_visible["options"] = _context(
+            event_key=event_key,
+            instance_id=408,
+            date_raw=53297760,
+            player=32904,
+            scopes=[],
+            native_option_indices=(0, 1, 2),
+        )["options"]
+        variant_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53297760,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 408},
+            context=counter_offer_visible,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(variant_checks.values()), variant_checks)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][0] = _scope("faction", "character", 28671)
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53297760,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 408},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:faction:type"])
+
     def test_populist_ultimatum_refuses_immediate_title_transfer(self) -> None:
         event_key = "faction_demand.1001"
         contract = _manager_contract(event_key, player=32904)
