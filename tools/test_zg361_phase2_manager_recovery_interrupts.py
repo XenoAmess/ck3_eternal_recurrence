@@ -1310,6 +1310,47 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
             "repeatable-within-product-observation-window",
         )
 
+        no_confidant = _context(
+            event_key=event_key,
+            instance_id=849,
+            date_raw=53470848,
+            player=32904,
+            scopes=[
+                _scope("stress_character", "character", 32904),
+                _scope("deceased_character", "character", 32797),
+            ],
+            native_option_indices=(7, 10, 12),
+        )
+        current_contract = production._timeline_contract_for_window(
+            production._manager_recovery_contract(
+                production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+                player=32904,
+                event_key=event_key,
+            ),
+            starting_date=53391336,
+        )
+        no_confidant_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53470848,
+                "active_event": {"option_count": 14},
+            },
+            event={"event_instance_id": 849},
+            context=no_confidant,
+            event_key=event_key,
+            contract=current_contract,
+        )
+        self.assertTrue(all(no_confidant_checks.values()), no_confidant_checks)
+        no_confidant_effective = production._option_contract_for_context(
+            no_confidant["options"],
+            production._scope_contract_for_context(
+                no_confidant["saved_scopes"], current_contract
+            ),
+        )
+        self.assertEqual(no_confidant_effective["selected_option_number"], 11)
+        self.assertEqual(
+            no_confidant_effective["selected_native_option_index"], 10
+        )
+
         same_people = copy.deepcopy(context)
         same_people["saved_scopes"][2] = _scope(
             "confidant", "character", 16843923

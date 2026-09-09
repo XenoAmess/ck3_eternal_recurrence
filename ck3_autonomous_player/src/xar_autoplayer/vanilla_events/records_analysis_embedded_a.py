@@ -137,10 +137,11 @@ _REVIEW_NOTES: Final[dict[str, tuple[str, str]]] = {
         "stress under the recorded no-rival boundary.",
     ),
     "stress_threshold.1721": (
-        "Impostor-syndrome break whose recorded choices were inappetetic, "
-        "confider, and additional stress; later thresholds may select it again.",
-        "Native option 9 chooses confider, reducing stress without starvation or "
-        "the unconditional stress-gain fallback.",
+        "Impostor-syndrome break with source-reviewed confidant and no-confidant "
+        "live projections; later stress thresholds may select it again.",
+        "Use native 9 when confider is rendered. In the recorded no-confidant "
+        "projection, native 10 lowers stress and avoids both advancing the "
+        "already-owned inappetetic starvation chain and native 12 stress gain.",
     ),
     "stress_threshold_special.1001": (
         "Grief break with three recorded source-defined projections, including "
@@ -229,6 +230,7 @@ _SCOPE_KEYS: Final[tuple[str, ...]] = (
     "unavailable_character_scopes",
     "character_scope_differs_from",
     "character_scope_matches_any",
+    "scope_variants",
 )
 _CAMPAIGN_BINDING_KEYS: Final[tuple[str, ...]] = (
     "date_raw",
@@ -314,6 +316,73 @@ def _build_analysis() -> dict[str, dict[str, object]]:
                 ),
             },
         }
+
+    stress_analysis = analysis["stress_threshold.1721"]
+    stress_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-and-live-variant-review"
+    )
+    stress_analysis.update({
+        "source_sha256": {
+            "events/stress_events/stress_threshold_events.txt": (
+                "66538A8FE8C894A52D8EC89B2FC4A45B85B8D1B9464802263E45D582CE1CA42B"
+            ),
+            "common/on_action/stress_on_actions.txt": (
+                "35A9B8FC8FE6CDE91EAAD06F9C90AD6FCD41BEEFD317BFF77D3A68430E5DD839"
+            ),
+            "common/scripted_effects/00_stress_effects.txt": (
+                "3CD9F4F5F800E8C94D31F1841C93EB70F430B00064AFAE61D7C388F50BD7E612"
+            ),
+            "common/scripted_triggers/00_stress_triggers.txt": (
+                "2AA4F3F637BF5A824B14FD74C9B6F30507C76C6BE9D26CFE40E493C84DAE775C"
+            ),
+            "common/traits/00_traits.txt": (
+                "079F0AB5C4224C505AB9F25BCA80D8DF296E5899BFAB26049CE5FE794DC0B042"
+            ),
+            "common/script_values/00_stress_values.txt": (
+                "104A7EF94EE9DA1092F23AEB2FD9DC971B08C695415F3B7EBFB628F381D26395"
+            ),
+        },
+        "definition_lines": "6315-7479",
+        "caller_semantics": (
+            "stress-level on_actions schedule stress_threshold.0001 after three "
+            "days; that manager can call the level-one tombola, whose weighted "
+            "event list includes .1721 at weight 100"
+        ),
+        "trigger_boundary": (
+            "playable county-tier-or-higher character with one supported "
+            "personality trait and at least two eligible or already-owned "
+            "stress-coping traits"
+        ),
+        "immediate_effect": (
+            "saves root as stress_character, chooses two coping-option flags "
+            "from existing traits before new eligible traits, and records the "
+            "current stress-level cooldown band"
+        ),
+        "option_semantics": {
+            "7": (
+                "medium stress loss and inappetetic, then advances the cumulative "
+                "starvation effect; hunger stage 3 can make that advance fatal"
+            ),
+            "9": (
+                "medium stress loss and confider; may mark or strengthen a "
+                "selected friend relationship"
+            ),
+            "10": (
+                "minor stress loss and drunkard; adds the trait when new or a "
+                "three-year drinking binge when already owned"
+            ),
+            "12": "unconditional medium stress gain",
+        },
+        "after_effect": (
+            "runs shared threshold cleanup/cooldown effects and rotates the "
+            "matching personality-description flag for ten years"
+        ),
+        "live_variant_boundary": (
+            "native (7,9,12) includes confidant; native (7,10,12) has no "
+            "confidant and the live indicator proves drunkard would be newly "
+            "added while native7 carries no add-trait indicator"
+        ),
+    })
     return analysis
 
 
@@ -322,7 +391,41 @@ VANILLA_EMBEDDED_A_ANALYSIS: Final[dict[str, dict[str, object]]] = (
 )
 
 
+VANILLA_EMBEDDED_A_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "stress_threshold.1721": {
+        "exemplars": [{
+            "run": "R372",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "stress-threshold-1721-no-confidant-red-report.json"
+            ),
+            "artifact_sha256": (
+                "D07BB242C09933B238D977A8FA9F93097115A0AE1831F5DC7C97A83D5561E532"
+            ),
+            "park_artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "hot-recovery-park-8.json"
+            ),
+            "park_artifact_sha256": (
+                "E9110611B7474BA6E648BDC9C89D34F63DB608C3F11ACF0CBBFB25010DCB40CF"
+            ),
+            "date_raw": 53470848,
+            "event_instance_id": 849,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "stress_character": 32904,
+                "deceased_character": 32797,
+            },
+            "rendered_native_option_indices": [7, 10, 12],
+            "selection_attempted": False,
+        }],
+    },
+}
+
+
 __all__ = [
     "EMBEDDED_A_EVENT_KEYS",
     "VANILLA_EMBEDDED_A_ANALYSIS",
+    "VANILLA_EMBEDDED_A_OBSERVATIONS",
 ]

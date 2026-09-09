@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 from xar_autoplayer.vanilla_events.records_analysis_embedded_a import (  # noqa: E402
     EMBEDDED_A_EVENT_KEYS,
     VANILLA_EMBEDDED_A_ANALYSIS,
+    VANILLA_EMBEDDED_A_OBSERVATIONS,
 )
 from xar_autoplayer.vanilla_events.records_embedded import (  # noqa: E402
     EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
@@ -28,21 +29,28 @@ def test_analysis_exactly_covers_first_27_embedded_keys() -> None:
     assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 27
 
 
-def test_analysis_is_json_safe_and_does_not_claim_source_hashes() -> None:
+def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() -> None:
     encoded = json.dumps(VANILLA_EMBEDDED_A_ANALYSIS, sort_keys=True)
     assert json.loads(encoded) == VANILLA_EMBEDDED_A_ANALYSIS
-    assert "source_sha256" not in encoded
+    for event_key, record in VANILLA_EMBEDDED_A_ANALYSIS.items():
+        if event_key == "stress_threshold.1721":
+            assert len(record["source_sha256"]) == 6
+        else:
+            assert "source_sha256" not in record
 
 
 def test_each_record_carries_exact_build_and_migration_boundary() -> None:
-    for record in VANILLA_EMBEDDED_A_ANALYSIS.values():
+    for event_key, record in VANILLA_EMBEDDED_A_ANALYSIS.items():
         assert record["exact_build"] == {
             "game_version": EXACT_CK3_BUILD,
             "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
         }
-        assert record["migrated_from"]["review_kind"] == (
-            "migration-only-no-new-full-definition-review"
+        expected_review = (
+            "exact-build-original-definition-and-live-variant-review"
+            if event_key == "stress_threshold.1721"
+            else "migration-only-no-new-full-definition-review"
         )
+        assert record["migrated_from"]["review_kind"] == expected_review
         assert record["review_summary"]
         assert record["safe_option"]["rationale"]
         assert record["existing_boundaries"]["boundary_note"]
@@ -89,3 +97,21 @@ def test_known_multi_projection_records_preserve_json_safe_variants() -> None:
             isinstance(variant["native_option_indices"], list)
             for variant in variants
         )
+
+
+def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
+    record = VANILLA_EMBEDDED_A_ANALYSIS["stress_threshold.1721"]
+    assert record["option_semantics"]["10"].startswith("minor stress loss")
+    assert "starvation" in record["safe_option"]["rationale"]
+    scope_variant = record["existing_boundaries"]["scope_shape"][
+        "scope_variants"
+    ][0]
+    assert scope_variant["native_option_indices"] == [7, 10, 12]
+    assert scope_variant["selected_native_option_index"] == 10
+    exemplar = VANILLA_EMBEDDED_A_OBSERVATIONS["stress_threshold.1721"][
+        "exemplars"
+    ][0]
+    assert exemplar["kind"] == "pre-selection-live-red"
+    assert exemplar["rendered_native_option_indices"] == [7, 10, 12]
+    assert exemplar["selection_attempted"] is False
+    assert json.loads(json.dumps(exemplar, sort_keys=True)) == exemplar

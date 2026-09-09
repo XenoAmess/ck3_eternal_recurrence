@@ -497,10 +497,14 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
     "stress_threshold.1721": {
         # CK3 1.19.0.6 impostor-syndrome mental break. Immediate has selected
         # two coping routes plus the unconditional push-through fallback. The
-        # live projection offers inappetetic (native7), confider (native9),
+        # first live projection offers inappetetic (native7), confider (native9),
         # and stress gain (native12). Confider is the least destructive route:
-        # it lowers stress and may strengthen the selected friend relation,
-        # while native7 can advance starvation and native12 adds more stress.
+        # it lowers stress and may strengthen the selected friend relation.
+        # A later no-confidant projection offers inappetetic (native7), drunkard
+        # (native10), and stress gain (native12). Its live indicators show that
+        # inappetetic is already owned, and native7 always advances starvation;
+        # native10 is the narrowest deterministic route because it lowers stress
+        # and adds drunkard instead of escalating starvation or gaining stress.
         "date_raw": 53387208,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -531,6 +535,35 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (7, 9, 12),
         "selected_option_number": 10,
         "selected_native_option_index": 9,
+        "scope_variants": (
+            {
+                "saved_scope_names": (
+                    "stress_character",
+                    "deceased_character",
+                ),
+                "saved_scope_count": 2,
+                "character_scopes": {
+                    "stress_character": 32904,
+                },
+                "unique_character_scope_excludes": {
+                    "deceased_character": (32904,),
+                },
+                "character_scope_differs_from": {
+                    "deceased_character": ("stress_character",),
+                },
+                "scope_types": {
+                    "deceased_character": "character",
+                },
+                # Couple the no-confidant shape to its exact rendered choices;
+                # do not admit a scope/option Cartesian product.
+                "option_count": 3,
+                "snapshot_option_count": 14,
+                "native_option_indices": (7, 10, 12),
+                "selected_option_number": 11,
+                "selected_native_option_index": 10,
+                "option_variants": (),
+            },
+        ),
         # A later stress threshold may legally choose this event again. Its
         # ten-year personality flags rotate description text; they do not gate
         # the event, and the ordinary 5/8-year recheck is not a hard minimum.

@@ -9,7 +9,10 @@ from .registry import (
     materialize_vanilla_timeline_contract,
     query_vanilla_event_knowledge_v1,
 )
-from .records_analysis_embedded_a import VANILLA_EMBEDDED_A_ANALYSIS
+from .records_analysis_embedded_a import (
+    VANILLA_EMBEDDED_A_ANALYSIS,
+    VANILLA_EMBEDDED_A_OBSERVATIONS,
+)
 from .records_analysis_embedded_b import VANILLA_EMBEDDED_B_ANALYSIS
 from .records_analysis_embedded_c import VANILLA_EMBEDDED_C_ANALYSIS
 from .records_analysis_manager_a import MANAGER_A_VANILLA_EVENT_ANALYSIS
@@ -74,6 +77,7 @@ DEFAULT_VANILLA_EVENT_ANALYSIS: Final = _merge_metadata_tables(
 )
 DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     ("manager_holy_war", MANAGER_HOLY_WAR_OBSERVATIONS),
+    ("embedded_a", VANILLA_EMBEDDED_A_OBSERVATIONS),
     ("tgp_dynastic_cycle", VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS),
     ("tgp_movement", VANILLA_TGP_MOVEMENT_OBSERVATIONS),
 )
