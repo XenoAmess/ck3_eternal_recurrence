@@ -23,10 +23,52 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 
 
 EVENT_KEY = "tgp_dynastic_cycle_events.0020"
+ADVANCEMENT_EVENT_KEY = "tgp_dynastic_cycle_events.0001"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
 class TgpDynasticCycleEventRecordTests(unittest.TestCase):
+    def test_advancement_event_contract_is_portable_and_non_mutating(self) -> None:
+        contract = VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS[
+            ADVANCEMENT_EVENT_KEY
+        ]
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertNotIn("date_raw", contract)
+        self.assertEqual(contract["native_option_indices"], (1, 2, 3))
+        self.assertEqual(contract["snapshot_option_count"], 4)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        materialized = materialize_vanilla_timeline_contract(contract, 32904)
+        self.assertEqual(materialized["root_character_id"], 32904)
+        self.assertEqual(
+            materialized["unique_character_scope_excludes"],
+            {"servant": (32904,), "potential_friend": (32904,)},
+        )
+
+    def test_advancement_event_analysis_and_live_red_are_separate(self) -> None:
+        analysis = VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS[
+            ADVANCEMENT_EVENT_KEY
+        ]
+        exemplar = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[
+            ADVANCEMENT_EVENT_KEY
+        ]["exemplars"][0]
+        self.assertEqual(analysis["definition_lines"], "21-216")
+        self.assertIn("twenty years", analysis["option_semantics"]["2"])
+        self.assertIn("stress loss", analysis["option_semantics"]["3"])
+        self.assertEqual(exemplar["event_instance_id"], 853)
+        self.assertEqual(exemplar["rendered_native_option_indices"], [1, 2, 3])
+        self.assertFalse(exemplar["selection_attempted"])
+        for digest in analysis["source_sha256"].values():
+            self.assertRegex(digest, SHA256_PATTERN)
+        json.dumps(
+            query_vanilla_event_knowledge_v1(ADVANCEMENT_EVENT_KEY),
+            allow_nan=False,
+        )
+
     def test_contract_is_portable_and_selects_non_resource_route(self) -> None:
         contract = VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS[EVENT_KEY]
 

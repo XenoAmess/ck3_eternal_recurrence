@@ -11,28 +11,66 @@ from collections.abc import Callable, Mapping
 from typing import Protocol
 
 
-# The live recovery wrapper reloads this entry module while CK3 remains
-# paused on the same event. Contract shards imported below are separate
-# modules, so Python would otherwise retain their pre-fix objects in
-# sys.modules. Refresh already-loaded data-only shards before rebinding the
-# exported mappings; a cold first import has nothing to refresh.
-for _module_name, _module in tuple(sys.modules.items()):
-    _module_leaf = _module_name.rsplit(".", 1)[-1]
-    if (
-        _module is not None
-        and (
-            (
-                _module_leaf.startswith("zg361_phase")
-                and _module_leaf.endswith("_contracts")
-            )
-            or _module_name.startswith("xar_autoplayer.vanilla_events.")
-        )
-    ):
-        importlib.reload(_module)
+def _reload_loaded_contract_modules() -> None:
+    """Refresh leaf records, their aggregate, then compatibility exports."""
 
-_vanilla_events_package = sys.modules.get("xar_autoplayer.vanilla_events")
-if _vanilla_events_package is not None:
-    importlib.reload(_vanilla_events_package)
+    importlib.invalidate_caches()
+    loaded = tuple(sys.modules.items())
+    vanilla_children = [
+        (name, module)
+        for name, module in loaded
+        if module is not None
+        and name.startswith("xar_autoplayer.vanilla_events.")
+    ]
+
+    def vanilla_reload_order(item: tuple[str, object]) -> tuple[int, str]:
+        name = item[0]
+        leaf = name.rsplit(".", 1)[-1]
+        if leaf == "registry":
+            return (0, name)
+        if leaf.startswith("records_analysis_"):
+            return (2, name)
+        if leaf.startswith("records_"):
+            return (1, name)
+        return (0, name)
+
+    # Canonical record leaves must be newer than their old aggregate objects;
+    # analysis leaves may import those records, so refresh them afterwards.
+    for _name, module in sorted(
+        vanilla_children, key=vanilla_reload_order
+    ):
+        importlib.reload(module)
+
+    vanilla_events_package = sys.modules.get("xar_autoplayer.vanilla_events")
+    if vanilla_events_package is not None:
+        importlib.reload(vanilla_events_package)
+
+    # Legacy tool modules are re-exports of the shared package. Reload them
+    # last so later imports cannot reintroduce a pre-refresh mapping object.
+    compatibility_modules = sorted(
+        (
+            (name, module)
+            for name, module in loaded
+            if module is not None
+            and name.rsplit(".", 1)[-1].startswith("zg361_phase")
+            and name.rsplit(".", 1)[-1].endswith("_contracts")
+        ),
+        key=lambda item: item[0],
+    )
+    for _name, module in compatibility_modules:
+        importlib.reload(module)
+
+
+# The live recovery wrapper reloads this entry module while CK3 remains
+# paused on the same event. Refresh the already-loaded data-only dependency
+# graph before rebinding the exported mappings. A cold import must preserve
+# canonical objects that another importer may already hold.
+_production_entry_was_initialized = globals().get(
+    "_PRODUCTION_ENTRY_INITIALIZED", False
+)
+if _production_entry_was_initialized:
+    _reload_loaded_contract_modules()
+_PRODUCTION_ENTRY_INITIALIZED = True
 
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
@@ -2465,6 +2503,21 @@ def _scope_contract_for_context(
     return contract
 
 
+def _interrupt_contract_for_context(
+    context: Mapping[str, object], contract: Mapping[str, object]
+) -> Mapping[str, object]:
+    """Resolve coupled saved-scope and rendered-option variants once."""
+
+    scopes_value = context.get("saved_scopes")
+    scopes = scopes_value if isinstance(scopes_value, list) else []
+    options_value = context.get("options")
+    options = options_value if isinstance(options_value, list) else []
+    return _option_contract_for_context(
+        options,
+        _scope_contract_for_context(scopes, contract),
+    )
+
+
 def _known_interrupt_checks(
     *,
     snapshot: Mapping[str, object],
@@ -2477,10 +2530,7 @@ def _known_interrupt_checks(
     options = options_value if isinstance(options_value, list) else []
     scopes_value = context.get("saved_scopes")
     scopes = scopes_value if isinstance(scopes_value, list) else []
-    effective_contract = _option_contract_for_context(
-        options,
-        _scope_contract_for_context(scopes, contract),
-    )
+    effective_contract = _interrupt_contract_for_context(context, contract)
     contract = effective_contract
     option_count = effective_contract["option_count"]
     snapshot_option_counts = _snapshot_option_counts(effective_contract)
@@ -2882,6 +2932,10 @@ def _drain_known_timeline_interrupt(
 ) -> dict[str, object]:
     context_value = query.get("current_event_window_context")
     context = context_value if isinstance(context_value, Mapping) else {}
+    # Keep validation and mutation on the same coupled projection. Previously
+    # validation resolved a saved-scope variant, but submission resolved only
+    # option variants against the base contract and could click the base route.
+    contract = _interrupt_contract_for_context(context, contract)
     checks = _known_interrupt_checks(
         snapshot=snapshot,
         event=event,
@@ -2991,9 +3045,7 @@ def _drain_known_timeline_interrupt(
             "selection_attempted": False,
         })
 
-    options_value = context.get("options")
-    options = options_value if isinstance(options_value, list) else []
-    effective_contract = _option_contract_for_context(options, contract)
+    effective_contract = contract
     if effective_contract.get("selection_deferred") is True:
         raise PromotionProductionEntryError(
             f"known promotion-timeline interrupt {event_key!r} requires a "

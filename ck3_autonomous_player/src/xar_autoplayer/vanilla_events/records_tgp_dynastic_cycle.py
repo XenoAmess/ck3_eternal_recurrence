@@ -14,6 +14,38 @@ from .registry import (
 VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "tgp_dynastic_cycle_events.0001": {
+        # Exact CK3 1.19.0.6 yearly event. The observed non-Advancement
+        # projection hides native0 and exposes friend/influence mutation,
+        # a twenty-year modifier, and one effect-free stress-loss route.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "servant": (PLAYER_SENTINEL,),
+            "potential_friend": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "my_situation": "situation",
+            "my_movement": "situation_participant_group",
+            "servant": "character",
+            "potential_friend": "character",
+        },
+        "saved_scope_name_sets": ((
+            "my_situation",
+            "my_movement",
+            "servant",
+            "potential_friend",
+        ),),
+        "saved_scope_count": 4,
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 4,
+        "native_option_indices": (1, 2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "tgp_dynastic_cycle_events.0020": {
         # Both exact-build yearly pools can select this instability event again
         # after its ten-year event cooldown.  The third authored option adds no
@@ -84,6 +116,55 @@ VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS: Final[
 VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "tgp_dynastic_cycle_events.0001": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/dlc/tgp/tgp_dynastic_cycle_flavor_events.txt": (
+                "2260A2AC3F568B3135588E12E4C817846A03AA4BDB16A71C4828490D45F696F3"
+            ),
+            "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt": (
+                "4D6F5379E40304B56C5C1A914E8A0EE3998E8023174DC52F7E5072F7CFA40454"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+        },
+        "definition_lines": "21-216",
+        "caller_semantics": (
+            "TGP and general yearly random-event pools select the event at "
+            "weight 200; its event-local cooldown is ten years"
+        ),
+        "trigger_boundary": (
+            "available adult celestial ruler with TGP enabled while the "
+            "dynastic cycle is not in the stability-advancement phase"
+        ),
+        "immediate_effect": (
+            "saves the dynastic-cycle situation and top movement, selects or "
+            "creates a lowborn servant, and optionally saves a potential friend "
+            "or existing friend; servant creation is option-independent"
+        ),
+        "option_semantics": {
+            "0": (
+                "Advancement-top-movement only; increases movement power and "
+                "may trigger an advancement catalyst"
+            ),
+            "1": (
+                "creates a friendship, gives both friends influence, or gives "
+                "the player influence depending on the relation scope"
+            ),
+            "2": "adds tgp_advancement_focus_modifier for twenty years",
+            "3": "no scripted effect beyond unconditional medium stress loss",
+        },
+        "after_effect": None,
+        "safe_option_rationale": (
+            "native3 avoids relationship/influence mutation and the twenty-year "
+            "modifier; native0 is absent from the observed non-Advancement "
+            "movement projection"
+        ),
+    },
     "tgp_dynastic_cycle_events.0020": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -139,6 +220,41 @@ VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS: Final[
 VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "tgp_dynastic_cycle_events.0001": {
+        "exemplars": [{
+            "run": "R372",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "tgp-dynastic-cycle-0001-red-report.json"
+            ),
+            "artifact_sha256": (
+                "4F1A0EA8E43255B7C3399CC3B7F90623F56D8CB0688769D906AB6045EFED838D"
+            ),
+            "park_artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "hot-recovery-park-9.json"
+            ),
+            "park_artifact_sha256": (
+                "FD2F6794F380603A9A1B1AEFA52FDC98EA3E59D98FA29B544E4A30B0113B4EC6"
+            ),
+            "date_raw": 53473824,
+            "event_instance_id": 853,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "servant": 86270,
+                "potential_friend": 49718,
+            },
+            "saved_scope_raw_types": {
+                "my_situation": 60,
+                "my_movement": 61,
+                "servant": 4,
+                "potential_friend": 4,
+            },
+            "rendered_native_option_indices": [1, 2, 3],
+            "selection_attempted": False,
+        }],
+    },
     "tgp_dynastic_cycle_events.0020": {
         "exemplars": [
             {

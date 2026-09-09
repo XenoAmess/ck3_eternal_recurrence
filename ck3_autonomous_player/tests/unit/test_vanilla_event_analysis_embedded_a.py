@@ -108,10 +108,20 @@ def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
     ][0]
     assert scope_variant["native_option_indices"] == [7, 10, 12]
     assert scope_variant["selected_native_option_index"] == 10
-    exemplar = VANILLA_EMBEDDED_A_OBSERVATIONS["stress_threshold.1721"][
+    exemplar, failed_retry = VANILLA_EMBEDDED_A_OBSERVATIONS["stress_threshold.1721"][
         "exemplars"
-    ][0]
+    ]
     assert exemplar["kind"] == "pre-selection-live-red"
     assert exemplar["rendered_native_option_indices"] == [7, 10, 12]
     assert exemplar["selection_attempted"] is False
     assert json.loads(json.dumps(exemplar, sort_keys=True)) == exemplar
+    assert failed_retry["kind"] == (
+        "same-process-hot-recovery-contract-resolution-red"
+    )
+    assert failed_retry["contract_reload_applied"] is True
+    assert failed_retry["failure_stage"] == (
+        "submission_re_resolved_base_contract"
+    )
+    assert failed_retry["selected_native_option_index"] == 9
+    assert failed_retry["expected_reviewed_native_option_index"] == 10
+    assert failed_retry["postcondition_verified"] is True

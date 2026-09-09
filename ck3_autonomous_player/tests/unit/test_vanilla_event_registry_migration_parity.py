@@ -65,7 +65,7 @@ EXPECTED_INTENTIONAL_OVERLAPS = {
     "spymaster_task.0399": frozenset({"manager_original", "prebootstrap"}),
 }
 EXPECTED_EMBEDDED_CANONICAL_SHA256 = (
-    "12A4719A43EE3BB9D7CDB1F2F44B62CEA5A679D02CDCE02F6E73FE85441FB5DB"
+    "5911A4DD627E89705086530910FBA5342F1E18EA83922B570918D94EF5CE47E8"
 )
 
 LEGACY_VANILLA_SOURCES = (
@@ -306,8 +306,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 157)
-        self.assertEqual(len(key_memberships), 157)
+        self.assertEqual(sum(map(len, default_groups)), 158)
+        self.assertEqual(len(key_memberships), 158)
         self.assertEqual(
             {
                 event_key: indexes

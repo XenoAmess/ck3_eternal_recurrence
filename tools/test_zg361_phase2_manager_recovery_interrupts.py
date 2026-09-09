@@ -5,8 +5,11 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib
+import importlib.util
 from pathlib import Path
 import re
+import subprocess
 import sys
 import unittest
 from unittest import mock
@@ -130,6 +133,91 @@ def _human_tribute_scopes() -> list[dict[str, object]]:
 
 
 class ManagerRecoveryInterruptTests(unittest.TestCase):
+    def test_cold_import_preserves_existing_canonical_contract_identity(
+        self,
+    ) -> None:
+        from xar_autoplayer import vanilla_events
+        from xar_autoplayer.vanilla_events import records_embedded
+
+        event_key = "stress_threshold.1721"
+        package_before = vanilla_events.VANILLA_EVENT_TIMELINE_CONTRACTS[
+            event_key
+        ]
+        leaf_before = records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS[
+            event_key
+        ]
+        module_name = "_xar_production_entry_cold_import_regression"
+        spec = importlib.util.spec_from_file_location(
+            module_name, Path(production.__file__)
+        )
+        self.assertIsNotNone(spec)
+        assert spec is not None and spec.loader is not None
+        cold_module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = cold_module
+        try:
+            spec.loader.exec_module(cold_module)
+        finally:
+            sys.modules.pop(module_name, None)
+
+        self.assertIs(
+            vanilla_events.VANILLA_EVENT_TIMELINE_CONTRACTS[event_key],
+            package_before,
+        )
+        self.assertIs(
+            records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key],
+            leaf_before,
+        )
+        self.assertIs(cold_module.KNOWN_TIMELINE_INTERRUPTS[event_key], leaf_before)
+
+    def test_reload_refreshes_nested_shared_vanilla_contract(self) -> None:
+        source = f"""
+import importlib
+from pathlib import Path
+import sys
+
+root = Path({str(ROOT)!r})
+sys.path.insert(0, str(root / "tools"))
+sys.path.insert(0, str(root / "ck3_autonomous_player" / "src"))
+
+import zg361_phase2_promotion_source_production_entry as production
+from xar_autoplayer.vanilla_events import records_embedded
+
+event_key = "stress_threshold.1721"
+before = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+reloaded = importlib.reload(production)
+canonical = records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+if reloaded is not production:
+    raise SystemExit("production module identity changed")
+if production.KNOWN_TIMELINE_INTERRUPTS[event_key] is not canonical:
+    raise SystemExit("production contract is not the canonical leaf contract")
+if canonical is before:
+    raise SystemExit("reload retained the stale canonical contract")
+no_confidant = canonical["scope_variants"][0]
+if no_confidant["selected_option_number"] != 11:
+    raise SystemExit("wrong no-confidant authored option")
+if no_confidant["selected_native_option_index"] != 10:
+    raise SystemExit("wrong no-confidant native option")
+"""
+        command = [sys.executable]
+        if not __debug__:
+            command.append("-O")
+        command.extend(("-c", source))
+        completed = subprocess.run(
+            command,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=(
+                f"stdout:\n{completed.stdout}\n"
+                f"stderr:\n{completed.stderr}"
+            ),
+        )
+
     def test_central_summary_allows_two_observed_cycle_terminals(self) -> None:
         event_key = "zg361p2c.2"
         contract = production._resolve_timeline_interrupt_contract(
@@ -1350,6 +1438,66 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(
             no_confidant_effective["selected_native_option_index"], 10
         )
+
+        class Service:
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "snapshot_id": "native:2446",
+                    "revision": 2447,
+                    "native_revision": 2446,
+                    "date_raw": 53470848,
+                    "map_ready": True,
+                    "paused": True,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {"connection_generation": 1},
+                    "active_event": {
+                        "instance_id": 849,
+                        "option_count": 14,
+                    },
+                }
+
+            def select_event_option(
+                self,
+                option_number: int,
+                *,
+                event_instance_id: int,
+                expected_revision: int,
+            ) -> dict[str, object]:
+                self.submission = (
+                    option_number,
+                    event_instance_id,
+                    expected_revision,
+                )
+                return {
+                    "accepted": True,
+                    "status": "submitted",
+                    "option_number": option_number,
+                    "option_index": 10,
+                    "event_selection": {
+                        "postcondition_verified": True,
+                        "old_event_instance_id": event_instance_id,
+                        "new_event_instance_id": None,
+                        "selected_option_number": option_number,
+                        "selected_native_option_index": 10,
+                    },
+                }
+
+        service = Service()
+        drain = production._drain_known_timeline_interrupt(
+            service,
+            snapshot={
+                "date_raw": 53470848,
+                "active_event": {"option_count": 14},
+            },
+            event={"event_instance_id": 849},
+            query={"current_event_window_context": no_confidant},
+            event_key=event_key,
+            contract=current_contract,
+            player=32904,
+            connection_generation=1,
+        )
+        self.assertEqual(service.submission, (11, 849, 2447))
+        self.assertTrue(all(drain["selection_checks"].values()))
 
         same_people = copy.deepcopy(context)
         same_people["saved_scopes"][2] = _scope(

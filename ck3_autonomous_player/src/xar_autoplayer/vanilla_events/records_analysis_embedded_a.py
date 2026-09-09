@@ -419,6 +419,29 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             },
             "rendered_native_option_indices": [7, 10, 12],
             "selection_attempted": False,
+        }, {
+            "run": "R372",
+            "kind": "same-process-hot-recovery-contract-resolution-red",
+            "artifact": (
+                "_runtime/p2r372-post-bound-continuation-live/"
+                "driver-state-hot-retry-8-snapshot.json"
+            ),
+            "artifact_sha256": (
+                "9A5FCE5D0109E2B009826A15474BD469AA59EE6EA368A2FD00D40D1496AD02C3"
+            ),
+            "event_instance_id": 849,
+            "driver_command_index": 2447,
+            "selected_option_number": 10,
+            "selected_native_option_index": 9,
+            "expected_reviewed_option_number": 11,
+            "expected_reviewed_native_option_index": 10,
+            "postcondition_verified": True,
+            "contract_reload_applied": True,
+            "failure_stage": "submission_re_resolved_base_contract",
+            "connection_generation": 1,
+            "bridge_pid": 28772,
+            "subsequent_event_instance_id": 853,
+            "process_restart_required": False,
         }],
     },
 }
