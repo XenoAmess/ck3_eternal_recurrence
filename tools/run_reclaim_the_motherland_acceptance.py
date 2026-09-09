@@ -233,13 +233,13 @@ def preflight(
     product_kaishek = acceptance.run_open_kaishek_preflight(
         root=SOURCE,
         profile="ck3-1.19.0.6",
-        fixture="reclaim-0.1.0-product",
+        fixture="reclaim-0.1.1-product",
         scope="run_reclaim_the_motherland_acceptance.product",
     )
     fixture_kaishek = acceptance.run_open_kaishek_preflight(
         root=FIXTURE,
         profile="ck3-1.19.0.6",
-        fixture="reclaim-0.1.0-live-fixture",
+        fixture="reclaim-0.1.1-live-fixture",
         scope="run_reclaim_the_motherland_acceptance.fixture",
     )
     kaishek = {"product": product_kaishek, "fixture": fixture_kaishek}
@@ -499,6 +499,49 @@ def click_text(
     )
 
 
+def close_decisions_panel(artifacts: Path, stem: str) -> None:
+    """Close the native Decisions drawer and prove acceptance-only UI is absent."""
+
+    acceptance.focus_ck3()
+    image = acceptance.ImageGrab.grab()
+    if acceptance.find_ocr_text(
+        image, "决议", isolated.DECISIONS_HEADER_REGION, contains=True
+    ) is not None:
+        acceptance.pyautogui.press("f8")
+        time.sleep(1.0)
+        image = acceptance.ImageGrab.grab()
+        if acceptance.find_ocr_text(
+            image, "决议", isolated.DECISIONS_HEADER_REGION, contains=True
+        ) is not None:
+            width, _ = acceptance.pyautogui.size()
+            acceptance.deliberate_click(
+                (width - 90, 74), "native Decisions drawer close button"
+            )
+    deadline = time.monotonic() + 8
+    while time.monotonic() < deadline:
+        acceptance.focus_ck3()
+        image = acceptance.ImageGrab.grab()
+        decisions_header = acceptance.find_ocr_text(
+            image, "决议", isolated.DECISIONS_HEADER_REGION, contains=True
+        )
+        fixture_text = acceptance.find_ocr_text(
+            image, "验收", acceptance.FULL_SCREEN_REGION, contains=True
+        )
+        if decisions_header is None and fixture_text is None:
+            width, height = acceptance.pyautogui.size()
+            acceptance.pyautogui.moveTo(int(width * 0.40), int(height * 0.48))
+            time.sleep(1.0)
+            image = acceptance.ImageGrab.grab()
+            image.save(artifacts / f"{stem}.png")
+            return
+        time.sleep(acceptance.POLL_INTERVAL_S)
+    image.save(artifacts / f"timeout_{stem}.png")
+    raise acceptance.RunnerError(
+        "could not obtain a clean native HUD frame without the Decisions drawer "
+        "or acceptance-only copy"
+    )
+
+
 def decision_visibility_evidence(artifacts: Path) -> dict[str, object]:
     isolated.ensure_decisions_panel(artifacts, "09_visibility")
     acceptance.wait_for_ocr_text(
@@ -705,6 +748,9 @@ def run_scenario(
     chaos_event_close = select_current_event_first_option(
         service, "tgp_dynastic_cycle.0081", artifacts, "07_close_vanilla_chaos"
     )
+    # Storefront evidence must show only UI a normal player can encounter. Capture
+    # the native primary-title banner before opening any acceptance-only fixture.
+    close_decisions_panel(artifacts, "08_later_dynasty_native_banner")
     click_decision("查看后朝验收", "显明后朝", artifacts, "08_show_later_event")
     acceptance.wait_for_ocr_text(
         "后朝尚存",
@@ -733,6 +779,7 @@ def run_scenario(
     later_event_close = select_current_event_first_option(
         service, "rqa.1", artifacts, "08_close_later_event"
     )
+    close_decisions_panel(artifacts, "08_later_dynasty_native")
 
     click_decision("准备复辟门槛", "丈量河山", artifacts, "09_prepare_threshold")
     stream.wait("RQA: TEST PASS restoration_decision_ready", 180)
@@ -747,6 +794,10 @@ def run_scenario(
         "11_acceptance_complete.png",
         stable_hits=1,
     )
+    restoration_event_close = select_current_event_first_option(
+        service, "rqa.2", artifacts, "11_close_complete_event"
+    )
+    close_decisions_panel(artifacts, "11_restored_native")
     final_snapshot = service.snapshot()
     if final_snapshot.get("paused") is not True:
         service.execute_step(
@@ -783,6 +834,7 @@ def run_scenario(
         "chaos_event_close": chaos_event_close,
         "later_dynasty_event_ocr": later_rows,
         "later_dynasty_event_close": later_event_close,
+        "restoration_event_close": restoration_event_close,
         "initial_snapshot_id": before.get("snapshot_id"),
         "song_snapshot_id": switched.get("snapshot_id"),
         "final_snapshot_id": final_snapshot.get("snapshot_id"),

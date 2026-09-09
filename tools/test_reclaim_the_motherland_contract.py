@@ -409,6 +409,19 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             4,
             "fixture actors must match the product's county-or-higher vassal contract",
         )
+        chaos_verification = text.split("rqa_verify_chaos_effect", 1)[1].split(
+            "rqa_transfer_county_to_control_effect", 1
+        )[0]
+        self.assertIn(
+            "var:rqa_personal_county = { holder = root }",
+            chaos_verification,
+            "live acceptance must prove the exact pre-Chaos personal county holder",
+        )
+        self.assertNotIn(
+            "holder.top_liege = root",
+            chaos_verification,
+            "remaining somewhere in the realm is weaker than retaining personal land",
+        )
 
     def test_shattering_dispatcher_routes_custom_and_vanilla_effects(self) -> None:
         effects = read_script_directory(SCRIPTED_EFFECTS_DIR)

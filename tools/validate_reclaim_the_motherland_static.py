@@ -89,7 +89,7 @@ def balanced_braces(value: str) -> bool:
 def validate() -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
-        'version="0.1.0"\n'
+        'version="0.1.1"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Reclaim the Motherland — 重整河山"\n'
         'picture="thumbnail.png"\n'
@@ -97,7 +97,7 @@ def validate() -> list[str]:
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod fields or ordering differ from the 0.1.0 contract")
+        errors.append("descriptor.mod fields or ordering differ from the 0.1.1 contract")
     thumbnail = MOD / "thumbnail.png"
     if not thumbnail.is_file():
         errors.append("thumbnail.png is missing")
@@ -338,6 +338,26 @@ def validate() -> list[str]:
     for key, expected in required_english.items():
         if english.get(key) != expected:
             errors.append(f"English contract mismatch: {key}")
+    narrative_keys = (
+        "rmtm_claim_restoration_decision_desc",
+        "rmtm_claim_restoration_decision_tooltip",
+        "rmtm_claim_mandate_blocked_by_restoration_tt",
+    )
+    forbidden_narrative_copy = {
+        "simp_chinese": ("验收", "原版", "效果", "销毁", "百分比", "相同份额"),
+        "english": ("acceptance", "vanilla", "effect", "destroy", "percentage", "same share"),
+    }
+    for language, forbidden_terms in forbidden_narrative_copy.items():
+        entries = localized.get(language, {})
+        for key in narrative_keys:
+            value = entries.get(key, "")
+            folded = value.casefold()
+            for term in forbidden_terms:
+                if term.casefold() in folded:
+                    errors.append(
+                        f"{language} player-facing narrative exposes implementation/test copy: "
+                        f"{key}: {term}"
+                    )
     if chinese and english and chinese == english:
         errors.append("Simplified Chinese localization must not be an English placeholder")
     errors.extend(builder.release_localization_errors(MOD))

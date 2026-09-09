@@ -149,6 +149,8 @@ call xrefs `0x203F18B`、`0x2049502` 与 `0x2322DFA` 证明它既用于 root 初
 | `Symbols of Authority` | `42 symbols_of_authority` |
 | `Songs of the Realm` | `43 songs_of_the_realm` |
 
+其中 runtime `has_dlc` key `All Under Heaven` 对应的官方中文名为《溥天之下》；表内保留英文是因为它记录的是引擎精确 key，而不是中文展示名。
+
 always-on 的五项依次是 `20 landless_playable`、`21 admin_gov`、`7 court_artifacts`、`23 court_room_view`、
 `11 advanced_activities`。这说明 feature bit 与 product key 本来就不是一对一关系；planner 应直接消费最终 bitset，不应由
 `has_dlc` key 自己重算。reader 可把 `popcount(root+0x2B0)` 与 `root+0x2B8` 做同帧完整性检查，但 wire 的 44 个 explicit

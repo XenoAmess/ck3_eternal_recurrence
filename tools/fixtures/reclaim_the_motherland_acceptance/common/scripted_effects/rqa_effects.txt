@@ -229,7 +229,9 @@ rqa_verify_chaos_effect = {
 				NOT = { any_de_jure_county = { always = yes } }
 			}
 			exists = var:rqa_personal_county
-			var:rqa_personal_county = { holder.top_liege = root }
+			# Prove exact personal ownership, not merely that the old capital remains
+			# somewhere inside the former hegemon's post-Chaos realm.
+			var:rqa_personal_county = { holder = root }
 		}
 		debug_log = "RQA: TEST PASS later_dynasty_empty_de_jure_and_personal_land_retained"
 	}

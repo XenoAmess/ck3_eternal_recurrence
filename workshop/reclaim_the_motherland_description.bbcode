@@ -3,7 +3,7 @@
 [b]The Mandate may be lost. The dynasty need not vanish with it.[/b]
 [b]天命可以失去，王朝不必随之湮灭。[/b]
 
-Version 0.1.0 · CK3 1.19.0.6 · All Under Heaven required
+Version 0.1.1 · CK3 1.19.0.6 · All Under Heaven required
 
 [h1]A New Default Rule / 新增默认规则[/h1]
 
@@ -13,7 +13,7 @@ The game rule “Fate of the Chinese Hegemon” offers two paths. “Reclaim the
 [h1]When All Under Heaven Fractures / 群雄割据之时[/h1]
 
 [list]
-[*]The old ruler loses the Chinese Hegemony, but keeps personal lands and unrelated titles. / 旧天子失去中华霸权，但保留个人领地与其他个人头衔。
+[*]The old ruler loses the Chinese Hegemony, but keeps every personally held domain and unrelated title. / 旧天子失去中华霸权，但进入群雄割据前亲自持有的领地与其他个人头衔仍归本人。
 [*]A new empty-de-jure Hegemony is created as “Later + old dynasty name”: for example, Later Song / 后宋. / 创建空法理的“后＋原朝号”霸权，例如【后宋】。
 [*]Only direct landed Pro-Hegemon vassals remain; each loyalist keeps their existing subordinate realm tree. / 仅保留直属有地尊王派封臣，且完整保留其原有下级封臣树。
 [*]Every other direct vassal breaks away and continues through vanilla Chaos reorganization. / 其他直属封臣脱离，并继续按原版群雄割据逻辑重组。
@@ -21,11 +21,11 @@ The game rule “Fate of the Chinese Hegemon” offers two paths. “Reclaim the
 
 [h1]Proclaim the Restoration / 宣称复辟[/h1]
 
-A Later-Dynasty holder cannot use the original “Claim the Mandate” decision. During Chaos, reclaim the same percentage of the Chinese Hegemony's de-jure counties required by vanilla—currently 51%, including qualifying tributary land—and “Proclaim the Restoration” becomes available.
-后朝持有者不能执行原版【宣称天命】。在群雄割据期间，收复与原版相同百分比的中华霸权法理伯爵领——当前为 51%，符合条件的朝贡国领地同样计入——即可执行【宣称复辟】。
+A Later-Dynasty holder cannot use the original “Claim the Mandate” decision. During Chaos, once the restorer controls a majority of the Chinese Hegemony's de-jure counties—currently 51%, including qualifying tributary land—“Proclaim the Restoration” becomes available.
+后朝持有者不能执行原版【宣称天命】。在群雄割据期间，重新控制中华霸权法理领地的过半伯爵领——当前门槛为 51%，符合条件的朝贡国领地同样计入——即可执行【宣称复辟】。
 
-Restoration runs the complete vanilla Claim-the-Mandate effect, then destroys every Later-Dynasty Hegemony held by the restorer.
-复辟完整执行原版【宣称天命】效果，随后销毁复辟者持有的全部后朝霸权。
+Restoration completes the same founding of a new dynasty, submission of the warlords, and closure of the Dynastic Cycle as Claim the Mandate; the Later-Dynasty name then passes into history.
+宣称复辟后，新朝建立、群雄归附与王朝循环收束均与【宣称天命】一致；后朝之号随即归入历史。
 
 [h1]Real CK3 Evidence / 真实游戏画面[/h1]
 
@@ -53,7 +53,7 @@ The seven additional release languages were generated as MiniMax-M3 candidates a
 [h1]Compatibility / 兼容性[/h1]
 
 Requires CK3 1.19.0.6 and All Under Heaven. Start a new single-player game. This mod overrides exactly two vanilla keys: [code]tgp_chaos_shattering_effect[/code] and [code]situation_dynastic_cycle_claim_mandate_decision[/code]. Mods replacing either key may conflict by load order.
-需要 CK3 1.19.0.6 与《天下归心 / All Under Heaven》，推荐新开单人存档。本 mod 只覆写两个原版 key：[code]tgp_chaos_shattering_effect[/code] 与 [code]situation_dynastic_cycle_claim_mandate_decision[/code]；其他 mod 若覆写其中之一，可能发生加载顺序冲突。
+需要 CK3 1.19.0.6 与《溥天之下 / All Under Heaven》，推荐新开单人存档。本 mod 只覆写两个原版 key：[code]tgp_chaos_shattering_effect[/code] 与 [code]situation_dynastic_cycle_claim_mandate_decision[/code]；其他 mod 若覆写其中之一，可能发生加载顺序冲突。
 
 [h1]Source / 源码[/h1]
 

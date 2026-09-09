@@ -18,19 +18,19 @@ EXPECTED_SIZE = (2560, 1440)
 QUALITY = 90
 PROJECTIONS = (
     (
-        "08_later_dynasty_name.png",
+        "08_later_dynasty_native_banner.png",
         "01_later_dynasty_live.jpg",
-        (440, 270, 1600, 880),
+        (0, 0, 1500, 1050),
     ),
     (
         "09_decision_visibility.png",
         "02_restoration_decision_live.jpg",
-        (1320, 40, 2540, 660),
+        (1400, 40, 2540, 560),
     ),
     (
-        "11_acceptance_complete.png",
+        "10_restore_confirm.png",
         "03_restored_hegemony_live.jpg",
-        (440, 270, 1600, 880),
+        (380, 200, 1425, 1130),
     ),
 )
 
