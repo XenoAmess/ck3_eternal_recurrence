@@ -1,5 +1,6 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -43,6 +44,37 @@ def _codex_payload(layout: setup.PortableMcpLayout) -> str:
             },
         }
     )
+
+
+def _offline_knowledge_payload(
+    *,
+    tool_listed: bool = True,
+    contract_count: int | None = None,
+    analysis_count: int | None = None,
+) -> str:
+    manifest = setup.current_vanilla_event_knowledge_manifest()
+    return json.dumps({
+        "tool_listed": tool_listed,
+        "contract_count": (
+            manifest["current_contract_count"]
+            if contract_count is None
+            else contract_count
+        ),
+        "analysis_count": (
+            manifest["current_analysis_count"]
+            if analysis_count is None
+            else analysis_count
+        ),
+        "analysis_keyset_matches_contracts": True,
+        "query_is_error": False,
+        "query_event_definition_key": (
+            setup.VANILLA_EVENT_KNOWLEDGE_PROBE_KEY
+        ),
+        "query_status": "available",
+        "query_contract_non_null": True,
+        "query_analysis_non_null": True,
+        "requires_ck3": False,
+    })
 
 
 class PortableCodexMcpSetupTests(unittest.TestCase):
@@ -122,6 +154,21 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             plan["install_command"][-2:], ["mcp==2.0.0", "pywin32==312"]
         )
         self.assertNotIn("onnxruntime", " ".join(plan["install_command"]))
+        knowledge = plan["offline_vanilla_event_knowledge"]
+        self.assertEqual(
+            knowledge["tool"], setup.VANILLA_EVENT_KNOWLEDGE_TOOL
+        )
+        self.assertEqual(
+            knowledge["schema"], "xar.ck3.vanilla-event-knowledge"
+        )
+        self.assertEqual(knowledge["schema_version"], 1)
+        self.assertEqual(knowledge["current_contract_count"], 157)
+        self.assertEqual(knowledge["current_analysis_count"], 157)
+        self.assertEqual(
+            knowledge["count_semantics"],
+            "current-revision-data-fact-not-abi",
+        )
+        self.assertFalse(knowledge["requires_ck3"])
 
     def test_native_session_command_is_only_rendered_with_explicit_assets(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -231,6 +278,7 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
                 [
                     setup.CommandResult(0),
                     setup.CommandResult(0, "usage"),
+                    setup.CommandResult(0, _offline_knowledge_payload()),
                     setup.CommandResult(0, _codex_payload(layout)),
                 ]
             )
@@ -245,10 +293,18 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertEqual(report["result"], "GREEN")
         self.assertTrue(report["registered_exact"])
         self.assertTrue(report["native_session_assets_ready"])
+        self.assertEqual(
+            report["offline_vanilla_event_knowledge"]["contract_count"],
+            157,
+        )
+        self.assertEqual(
+            report["offline_vanilla_event_knowledge"]["analysis_count"],
+            157,
+        )
         self.assertFalse(report["launches_ck3"])
-        self.assertEqual(len(runner.commands), 3)
+        self.assertEqual(len(runner.commands), 4)
 
-    def test_doctor_reports_unregistered_without_starting_mcp_or_ck3(self) -> None:
+    def test_doctor_reports_unregistered_without_starting_ck3(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             layout = self._layout(Path(raw))
             self._materialize_runtime_files(layout)
@@ -257,6 +313,7 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
                 [
                     setup.CommandResult(0),
                     setup.CommandResult(0, "usage"),
+                    setup.CommandResult(0, _offline_knowledge_payload()),
                     setup.CommandResult(1, stderr="not configured"),
                 ]
             )
@@ -265,6 +322,70 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertEqual(report["failed_checks"], ["codex_registration"])
         self.assertFalse(report["registered_exact"])
         self.assertTrue(all("native-session" not in row for row in runner.commands))
+
+    def test_doctor_rejects_stale_offline_knowledge_inventory(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            layout = self._layout(Path(raw))
+            self._materialize_runtime_files(layout)
+            setup._write_layout_marker(layout)
+            runner = _RecordingRunner(
+                [
+                    setup.CommandResult(0),
+                    setup.CommandResult(0, "usage"),
+                    setup.CommandResult(
+                        0,
+                        _offline_knowledge_payload(analysis_count=156),
+                    ),
+                    setup.CommandResult(0, _codex_payload(layout)),
+                ]
+            )
+            report = setup.doctor(layout, runner=runner)
+        self.assertEqual(report["result"], "RED")
+        self.assertEqual(
+            report["failed_checks"],
+            ["offline_vanilla_event_knowledge"],
+        )
+        self.assertEqual(
+            report["offline_vanilla_event_knowledge"]["analysis_count"],
+            156,
+        )
+        self.assertEqual(
+            report["offline_vanilla_event_knowledge"][
+                "expected_current_analysis_count"
+            ],
+            157,
+        )
+
+    @unittest.skipUnless(
+        os.name == "nt" and importlib.util.find_spec("mcp") is not None,
+        "installed-runtime MCP smoke requires Windows and the optional SDK",
+    )
+    def test_installed_runtime_lists_and_calls_offline_knowledge_tool(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            layout = setup.build_layout(
+                account=setup.current_windows_account(),
+                local_app_data=root / "local",
+                venv_dir=Path(sys.executable).resolve().parents[1],
+                state_dir=root / "state",
+                userdir=root / "state" / "profile",
+                codex_command=root / "bin" / "codex.CMD",
+                bootstrap_python=sys.executable,
+                game_dir=root / "game",
+            )
+            passed, detail, payload = (
+                setup._check_offline_vanilla_event_knowledge(
+                    layout,
+                    setup._run_command,
+                )
+            )
+        self.assertTrue(passed, detail)
+        self.assertTrue(payload["tool_listed"])
+        self.assertEqual(payload["contract_count"], 157)
+        self.assertEqual(payload["analysis_count"], 157)
+        self.assertEqual(payload["query_status"], "available")
+        self.assertTrue(payload["query_analysis_non_null"])
+        self.assertFalse(payload["requires_ck3"])
 
 
 if __name__ == "__main__":

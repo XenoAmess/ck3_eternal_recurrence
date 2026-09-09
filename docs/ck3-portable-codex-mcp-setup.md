@@ -7,7 +7,8 @@
 1. 为当前 Windows 用户创建独立 Python venv，并只安装 MCP SDK/Windows transport 依赖；
 2. 用 Codex CLI 注册仓库现有的 `ck3_autonomous_player/mcp_server.py`；
 3. 固定该用户独享的 MCP server name、named pipe、state directory 和 CK3 userdir；
-4. 在不启动 CK3 的前提下检查 Python/MCP SDK、Codex 注册、通用换人接线和可选 native 产物。
+4. 在不启动 CK3 的前提下检查 Python/MCP SDK、Codex 注册、离线原版事件知识、通用换人接线和可选
+   native 产物。
 
 该入口不会创建 named pipe、不会运行 `native-session`、不会注入 DLL，也不会启动 CK3。计划中出现的
 native build/session 命令只是 JSON 字段，只有操作者另行执行时才会生效。
@@ -47,6 +48,42 @@ repository-local bootstrap 加载，不复制源码，也不会为纯 native MCP
 
 Codex 在每个 Windows 账户自己的 `~/.codex/config.toml` 中维护注册。完成注册后新开一个 Codex
 会话，让该会话重新发现 MCP 工具。
+
+## 无 CK3 的 vanilla-event knowledge smoke
+
+原版事件知识查询是仓库内静态、只读的数据能力，不要求 CK3 已安装或正在运行，也不要求 native
+DLL/injector。`plan` 的机器可读输出通过 `offline_vanilla_event_knowledge` 记录工具名、schema、exact
+build、探针 key、当前 contract/analysis 数量及 `requires_ck3=false`。其中
+`count_semantics=current-revision-data-fact-not-abi` 明确禁止把当前条目数量当成 ABI。
+
+完成上述 `setup` 后先运行 `doctor`。它会使用新建的 per-user venv 创建官方 MCP client，在不连接
+gameplay backend 的情况下实际执行一次 tool list 和 `health.1010` 查询；只有以下条件同时成立，
+`offline_vanilla_event_knowledge` 检查才为 GREEN：
+
+- 工具列表包含 `ck3_query_vanilla_event_knowledge_v1`；
+- 当前 checkout 的 timeline contract 与 analysis 数量分别和探针进程一致，且两者 keyset 相同；
+- `health.1010` 返回 `status=available`，`contract` 与 `analysis` 均非空；
+- 探针明确报告 `requires_ck3=false`。
+
+随后新开一个 Codex 会话并执行 `/mcp`，做操作者侧确认：
+
+- `xar-ck3-native-<account-slug>` 已连接；
+- 工具列表包含 `ck3_query_vanilla_event_knowledge_v1`。
+
+随后让 Codex 调用：
+
+```text
+ck3_query_vanilla_event_knowledge_v1(
+  event_definition_key = "health.1010",
+  ck3_build = "1.19.0.6"
+)
+```
+
+当前 checkout 的预期结果是 `status=available`，且 `contract` 与 `analysis` 均非空；该调用不应
+启动或访问 CK3。当前数据快照共有 **157 条 timeline contract 和 157 条 analysis**。这里的 `157`
+只是本仓库 revision 的数据事实，不是 MCP ABI、覆盖率目标或客户端应硬编码的常量；稳定接口仍是
+`xar.ck3.vanilla-event-knowledge` schema v1、逐 `event_definition_key` 查询及其
+available/unavailable 语义。
 
 ## xenoa 与 CodexSandboxOffline
 

@@ -1,4 +1,4 @@
-"""Per-user installer, Codex registration, and no-launch doctor for CK3 MCP.
+﻿"""Per-user installer, Codex registration, and no-launch doctor for CK3 MCP.
 
 This module deliberately owns no CK3 provider code.  It registers the existing
 ``ck3_autonomous_player/mcp_server.py`` stdio entry point and keeps every
@@ -21,6 +21,15 @@ import subprocess
 import sys
 from typing import Callable, Final, Sequence
 
+from .vanilla_events import (
+    DEFAULT_VANILLA_EVENT_ANALYSIS,
+    DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
+)
+from .vanilla_events.registry import (
+    VANILLA_EVENT_KNOWLEDGE_SCHEMA,
+    VANILLA_EVENT_KNOWLEDGE_SCHEMA_VERSION,
+)
+
 
 MCP_SDK_VERSION: Final = "2.0.0"
 LAYOUT_SCHEMA_VERSION: Final = 1
@@ -29,6 +38,10 @@ SET_PLAYED_CHARACTER_CAPABILITY: Final = (
     "game.command.set-played-character-v1-N"
 )
 SET_PLAYED_CHARACTER_TOOL: Final = "ck3_set_played_character_v1"
+VANILLA_EVENT_KNOWLEDGE_TOOL: Final = (
+    "ck3_query_vanilla_event_knowledge_v1"
+)
+VANILLA_EVENT_KNOWLEDGE_PROBE_KEY: Final = "health.1010"
 EXACT_CK3_VERSION: Final = "1.19.0.6"
 EXACT_CK3_SHA256: Final = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -284,6 +297,88 @@ def fresh_native_build_command(layout: PortableMcpLayout) -> list[str]:
     ]
 
 
+def current_vanilla_event_knowledge_manifest() -> dict[str, object]:
+    """Describe the current checkout's offline dataset, not a frozen ABI size."""
+
+    return {
+        "tool": VANILLA_EVENT_KNOWLEDGE_TOOL,
+        "schema": VANILLA_EVENT_KNOWLEDGE_SCHEMA,
+        "schema_version": VANILLA_EVENT_KNOWLEDGE_SCHEMA_VERSION,
+        "exact_ck3_build": EXACT_CK3_VERSION,
+        "probe_event_definition_key": VANILLA_EVENT_KNOWLEDGE_PROBE_KEY,
+        "current_contract_count": len(
+            DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
+        ),
+        "current_analysis_count": len(DEFAULT_VANILLA_EVENT_ANALYSIS),
+        "count_semantics": "current-revision-data-fact-not-abi",
+        "requires_ck3": False,
+    }
+
+
+def offline_vanilla_event_knowledge_smoke_command(
+    layout: PortableMcpLayout,
+) -> list[str]:
+    """Build one installed-runtime MCP list/call probe that never touches CK3."""
+
+    source_root = str(PACKAGE_ROOT / "src")
+    script = "\n".join((
+        "import asyncio",
+        "import json",
+        "import sys",
+        f"sys.path.insert(0, {source_root!r})",
+        "from mcp import Client",
+        "from xar_autoplayer.bridge.mcp_server import create_server",
+        "from xar_autoplayer.vanilla_events import (",
+        "    DEFAULT_VANILLA_EVENT_ANALYSIS,",
+        "    DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,",
+        ")",
+        "",
+        "class _OfflineDriver:",
+        "    @staticmethod",
+        "    def _unexpected(*args, **kwargs):",
+        "        raise RuntimeError('offline knowledge smoke touched CK3')",
+        "    capabilities = _unexpected",
+        "    take_snapshot = _unexpected",
+        "    execute_step = _unexpected",
+        "    wait_for_change = _unexpected",
+        "",
+        "async def _main():",
+        "    async with Client(create_server(_OfflineDriver())) as client:",
+        "        listed = await client.list_tools()",
+        "        names = {tool.name for tool in listed.tools}",
+        f"        tool_name = {VANILLA_EVENT_KNOWLEDGE_TOOL!r}",
+        f"        event_key = {VANILLA_EVENT_KNOWLEDGE_PROBE_KEY!r}",
+        "        result = await client.call_tool(",
+        "            tool_name,",
+        "            {'event_definition_key': event_key},",
+        "        )",
+        "        payload = result.structured_content or {}",
+        "        report = {",
+        "            'tool_listed': tool_name in names,",
+        "            'contract_count': len(",
+        "                DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS",
+        "            ),",
+        "            'analysis_count': len(DEFAULT_VANILLA_EVENT_ANALYSIS),",
+        "            'analysis_keyset_matches_contracts': (",
+        "                set(DEFAULT_VANILLA_EVENT_ANALYSIS)",
+        "                == set(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS)",
+        "            ),",
+        "            'query_is_error': result.is_error,",
+        "            'query_event_definition_key': payload.get(",
+        "                'event_definition_key'",
+        "            ),",
+        "            'query_status': payload.get('status'),",
+        "            'query_contract_non_null': payload.get('contract') is not None,",
+        "            'query_analysis_non_null': payload.get('analysis') is not None,",
+        "            'requires_ck3': False,",
+        "        }",
+        "        print(json.dumps(report, sort_keys=True))",
+        "",
+        "asyncio.run(_main())",
+    ))
+    return [str(layout.venv_python), "-c", script]
+
+
 def render_plan(layout: PortableMcpLayout) -> dict[str, object]:
     return {
         "schema_version": LAYOUT_SCHEMA_VERSION,
@@ -331,6 +426,9 @@ def render_plan(layout: PortableMcpLayout) -> dict[str, object]:
             "exact_ck3_version": EXACT_CK3_VERSION,
             "exact_ck3_sha256": EXACT_CK3_SHA256,
         },
+        "offline_vanilla_event_knowledge": (
+            current_vanilla_event_knowledge_manifest()
+        ),
         "ownership": {
             "run_setup_as_account": layout.account,
             "per_account_codex_config": True,
@@ -600,6 +698,60 @@ def _check_python_runtime(
     return True, "MCP SDK and repository server import are ready"
 
 
+def _check_offline_vanilla_event_knowledge(
+    layout: PortableMcpLayout,
+    runner: CommandRunner,
+) -> tuple[bool, str, dict[str, object]]:
+    """List and call the read-only knowledge tool in the installed runtime."""
+
+    expected = current_vanilla_event_knowledge_manifest()
+    result = runner(offline_vanilla_event_knowledge_smoke_command(layout))
+    if result.returncode != 0:
+        payload: dict[str, object] = {
+            "probe_error": (result.stderr or result.stdout).strip(),
+            "requires_ck3": False,
+        }
+        return False, json.dumps(payload, sort_keys=True), payload
+    try:
+        output_lines = [line for line in result.stdout.splitlines() if line.strip()]
+        value = json.loads(output_lines[-1])
+    except (IndexError, json.JSONDecodeError) as error:
+        payload = {
+            "probe_error": f"malformed smoke JSON: {error}",
+            "requires_ck3": False,
+        }
+        return False, json.dumps(payload, sort_keys=True), payload
+    if not isinstance(value, dict):
+        payload = {
+            "probe_error": "smoke payload is not an object",
+            "requires_ck3": False,
+        }
+        return False, json.dumps(payload, sort_keys=True), payload
+
+    payload = dict(value)
+    payload["expected_current_contract_count"] = expected[
+        "current_contract_count"
+    ]
+    payload["expected_current_analysis_count"] = expected[
+        "current_analysis_count"
+    ]
+    payload["count_semantics"] = expected["count_semantics"]
+    passed = all((
+        payload.get("tool_listed") is True,
+        payload.get("contract_count") == expected["current_contract_count"],
+        payload.get("analysis_count") == expected["current_analysis_count"],
+        payload.get("analysis_keyset_matches_contracts") is True,
+        payload.get("query_is_error") is False,
+        payload.get("query_event_definition_key")
+        == VANILLA_EVENT_KNOWLEDGE_PROBE_KEY,
+        payload.get("query_status") == "available",
+        payload.get("query_contract_non_null") is True,
+        payload.get("query_analysis_non_null") is True,
+        payload.get("requires_ck3") is False,
+    ))
+    return passed, json.dumps(payload, sort_keys=True), payload
+
+
 def doctor(
     layout: PortableMcpLayout,
     *,
@@ -625,6 +777,22 @@ def doctor(
     record("generic_rebind_provider", rebind_ok, rebind_detail)
     python_ok, python_detail = _check_python_runtime(layout, runner)
     record("python_runtime", python_ok, python_detail)
+    if python_ok:
+        knowledge_ok, knowledge_detail, knowledge_payload = (
+            _check_offline_vanilla_event_knowledge(layout, runner)
+        )
+    else:
+        knowledge_ok = False
+        knowledge_payload = {
+            "probe_error": "python runtime prerequisite failed",
+            "requires_ck3": False,
+        }
+        knowledge_detail = json.dumps(knowledge_payload, sort_keys=True)
+    record(
+        "offline_vanilla_event_knowledge",
+        knowledge_ok,
+        knowledge_detail,
+    )
     codex_exists = (
         layout.codex_command is not None and layout.codex_command.is_file()
     )
@@ -688,6 +856,7 @@ def doctor(
         "layout_marker",
         "generic_rebind_provider",
         "python_runtime",
+        "offline_vanilla_event_knowledge",
         "codex_cli",
         "codex_registration",
     }
@@ -716,6 +885,7 @@ def doctor(
                 "current_account",
                 "generic_rebind_provider",
                 "python_runtime",
+                "offline_vanilla_event_knowledge",
                 "codex_cli",
             )
         ),
@@ -724,6 +894,7 @@ def doctor(
         "native_assets_required": require_native_assets,
         "generic_rebind_tool": SET_PLAYED_CHARACTER_TOOL,
         "generic_rebind_capability": SET_PLAYED_CHARACTER_CAPABILITY,
+        "offline_vanilla_event_knowledge": knowledge_payload,
         "launches_ck3": False,
     }
 
