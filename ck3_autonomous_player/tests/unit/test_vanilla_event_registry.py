@@ -75,6 +75,10 @@ def test_package_import_registers_one_disjoint_default_catalog() -> None:
 
     assert expected_count == 157
     assert len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS) == expected_count
+    assert len(DEFAULT_VANILLA_EVENT_ANALYSIS) == expected_count
+    assert set(DEFAULT_VANILLA_EVENT_ANALYSIS) == set(
+        DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
+    )
     assert VANILLA_EVENT_TIMELINE_CONTRACTS is (
         DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
     )
@@ -91,6 +95,11 @@ def test_package_import_registers_one_disjoint_default_catalog() -> None:
         "contract"
     ]
     assert manager_contract["date_raw"] == [53148768, 53152656]
+    for event_key in DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS:
+        response = query_vanilla_event_knowledge_v1(event_key)
+        assert response["status"] == "available"
+        assert response["analysis"] is not None
+        json.dumps(response, allow_nan=False)
 
 
 def test_conflicting_duplicate_is_rejected_without_replacing_active_registry() -> None:

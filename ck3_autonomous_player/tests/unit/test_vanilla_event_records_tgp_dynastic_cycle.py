@@ -63,7 +63,7 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
 
     def test_exact_build_analysis_and_live_observation_are_separate(self) -> None:
         analysis = VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS[EVENT_KEY]
-        exemplar, = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[EVENT_KEY][
+        red, recovery = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[EVENT_KEY][
             "exemplars"
         ]
         contract = VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS[EVENT_KEY]
@@ -73,12 +73,19 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
         self.assertIn("treasury-or-gold", analysis["safe_option_rationale"])
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
-        self.assertEqual(exemplar["event_instance_id"], 777)
-        self.assertEqual(exemplar["date_raw"], 53450184)
-        self.assertEqual(exemplar["saved_character_ids"], {"marshal": 36528})
-        self.assertEqual(exemplar["rendered_native_option_indices"], [1, 2])
-        self.assertFalse(exemplar["selection_attempted"])
-        self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(red["event_instance_id"], 777)
+        self.assertEqual(red["date_raw"], 53450184)
+        self.assertEqual(red["saved_character_ids"], {"marshal": 36528})
+        self.assertEqual(red["rendered_native_option_indices"], [1, 2])
+        self.assertFalse(red["selection_attempted"])
+        self.assertRegex(red["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(recovery["event_instance_id"], 777)
+        self.assertEqual(recovery["driver_command_index"], 2164)
+        self.assertEqual(recovery["selected_option_number"], 3)
+        self.assertEqual(recovery["selected_native_option_index"], 2)
+        self.assertTrue(recovery["postcondition_verified"])
+        self.assertFalse(recovery["process_restart_required"])
+        self.assertRegex(recovery["artifact_sha256"], SHA256_PATTERN)
 
         contract_repr = repr(contract)
         for observation_only in (777, 53450184, 32904, 36528):

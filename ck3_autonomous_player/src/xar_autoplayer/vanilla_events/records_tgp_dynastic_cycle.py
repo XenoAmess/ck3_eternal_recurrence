@@ -140,36 +140,58 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
     "tgp_dynastic_cycle_events.0020": {
-        "exemplars": [{
-            "run": "R372",
-            "kind": "pre-selection-live-red",
-            "artifact": (
-                "_runtime/p2r372-post-bound-continuation-live/"
-                "tgp-dynastic-cycle-0020-red-report.json"
-            ),
-            "artifact_sha256": (
-                "D4503D4EE7FC2A4AB8C22F91BCAA7D1E5642293D034E2AD96848E9E19BEF89AB"
-            ),
-            "park_artifact": (
-                "_runtime/p2r372-post-bound-continuation-live/"
-                "hot-recovery-park-7.json"
-            ),
-            "park_artifact_sha256": (
-                "D5D27D04B2F211AEE353C6896029285988AAC54E123122B2B7AB8FB609F31274"
-            ),
-            "date_raw": 53450184,
-            "event_instance_id": 777,
-            "root_character_id": 32904,
-            "saved_character_ids": {"marshal": 36528},
-            "saved_scope_raw_types": {
-                "my_situation": 60,
-                "my_movement": 61,
-                "marshal": 4,
-                "peasant_county": 5,
+        "exemplars": [
+            {
+                "run": "R372",
+                "kind": "pre-selection-live-red",
+                "artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "tgp-dynastic-cycle-0020-red-report.json"
+                ),
+                "artifact_sha256": (
+                    "D4503D4EE7FC2A4AB8C22F91BCAA7D1E5642293D034E2AD96848E9E19BEF89AB"
+                ),
+                "park_artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "hot-recovery-park-7.json"
+                ),
+                "park_artifact_sha256": (
+                    "D5D27D04B2F211AEE353C6896029285988AAC54E123122B2B7AB8FB609F31274"
+                ),
+                "date_raw": 53450184,
+                "event_instance_id": 777,
+                "root_character_id": 32904,
+                "saved_character_ids": {"marshal": 36528},
+                "saved_scope_raw_types": {
+                    "my_situation": 60,
+                    "my_movement": 61,
+                    "marshal": 4,
+                    "peasant_county": 5,
+                },
+                "rendered_native_option_indices": [1, 2],
+                "selection_attempted": False,
             },
-            "rendered_native_option_indices": [1, 2],
-            "selection_attempted": False,
-        }],
+            {
+                "run": "R372",
+                "kind": "same-process-hot-recovery-green",
+                "artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "driver-state-hot-retry-7-snapshot.json"
+                ),
+                "artifact_sha256": (
+                    "07E292E84DCD56E1917EDF6043D2138A0FCD1F8ADC6EFBF028CCA8C1FD4BDA65"
+                ),
+                "event_instance_id": 777,
+                "driver_command_index": 2164,
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+                "postcondition_verified": True,
+                "connection_generation": 1,
+                "bridge_pid": 28772,
+                "subsequent_command_index_observed": 2272,
+                "process_restart_required": False,
+            },
+        ],
     },
 }
 
