@@ -180,18 +180,30 @@ sys.path.insert(0, str(root / "tools"))
 sys.path.insert(0, str(root / "ck3_autonomous_player" / "src"))
 
 import zg361_phase2_promotion_source_production_entry as production
+import zg361_phase2_promotion_career_hc_contracts as career_hc
 from xar_autoplayer.vanilla_events import records_embedded, records_tgp_dynastic_cycle
 
 event_key = "stress_threshold.1721"
 before = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+product_event_key = "zg361ch.950"
+product_before = production.KNOWN_TIMELINE_INTERRUPTS[product_event_key]
 reloaded = importlib.reload(production)
 canonical = records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+product_canonical = career_hc.CAREER_HC_TIMELINE_CONTRACTS[product_event_key]
 if reloaded is not production:
     raise SystemExit("production module identity changed")
 if production.KNOWN_TIMELINE_INTERRUPTS[event_key] is not canonical:
     raise SystemExit("production contract is not the canonical leaf contract")
 if canonical is before:
     raise SystemExit("reload retained the stale canonical contract")
+if production.KNOWN_TIMELINE_INTERRUPTS[product_event_key] is not product_canonical:
+    raise SystemExit("production contract is not the refreshed career/HC leaf")
+if product_canonical is product_before:
+    raise SystemExit("reload retained the stale career/HC contract")
+if product_canonical.get("occurrence_policy") != (
+    "repeatable-within-product-observation-window"
+):
+    raise SystemExit("career/HC portfolio did not retain repeatable policy")
 no_confidant = canonical["scope_variants"][0]
 if no_confidant["selected_option_number"] != 11:
     raise SystemExit("wrong no-confidant authored option")
@@ -262,6 +274,58 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
         self.assertTrue(next_occurrence_allowed([]))
         self.assertTrue(next_occurrence_allowed(completed[:1]))
         self.assertFalse(next_occurrence_allowed(completed))
+
+    def test_career_hc_portfolio_repeats_with_exact_safe_route(self) -> None:
+        event_key = "zg361ch.950"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53447000,
+            absolute_end_date=53490000,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(contract["option_count"], 4)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        for instance_id, date_raw, subject_id in (
+            (682, 53447664, 36160),
+            (876, 53488512, 36160),
+        ):
+            context = _context(
+                event_key=event_key,
+                instance_id=instance_id,
+                date_raw=date_raw,
+                player=32904,
+                scopes=[
+                    _scope("zg361_ch_d_event_owner", "character", 32904),
+                    _scope(
+                        "zg361_ch_d_event_subject", "character", subject_id,
+                    ),
+                    _scope("zg361_ch_d_event_cycle", "value"),
+                    _scope("zg361_ch_d_event_case", "value"),
+                ],
+                native_option_indices=(0, 1, 2, 3),
+            )
+            checks = production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": date_raw,
+                    "active_event": {"option_count": 4},
+                },
+                event={"event_instance_id": instance_id},
+                context=context,
+                event_key=event_key,
+                contract=contract,
+            )
+            self.assertTrue(all(checks.values()), checks)
 
     def test_late_pause_target_enables_pp_and_three_cycle_workforce_routes(
         self,

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Exact live contracts for Phase-2 career/HC promotion interrupts."""
 
 from __future__ import annotations
@@ -87,6 +87,11 @@ CAREER_HC_TIMELINE_CONTRACTS: dict[str, dict[str, object]] = {
         },
         "boolean_scopes": (),
         "option_count": 4,
+        # This portfolio card is opened once for every newly dispatched D
+        # career/HC case, not once per CK3 process.  R372 observed two legal
+        # manager-cycle deliveries at 53447664 and 53488512; retain the exact
+        # player/scope/option contract while allowing later product cycles.
+        "occurrence_policy": "repeatable-within-product-observation-window",
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
