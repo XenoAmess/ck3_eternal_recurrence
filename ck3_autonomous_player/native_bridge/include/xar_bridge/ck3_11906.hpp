@@ -783,12 +783,16 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
 // pause-map is an idempotent action: it reports already_paused without adding
 // a command, otherwise it submits the same 0x28-byte CPauseGameCommand shape
 // used by CK3's own UI through the engine's locked command queue path.
-PauseSubmitResult SubmitPauseMap(const Bindings &bindings) noexcept;
+PauseSubmitResult
+SubmitPauseMap(const Bindings &bindings,
+               Snapshot *observed_snapshot = nullptr) noexcept;
 
 // resume-map is the inverse idempotent operation.  It is required for a
 // freshly loaded headless map because changing the speed does not clear
 // Jomini's paused bit.
-ResumeSubmitResult SubmitResumeMap(const Bindings &bindings) noexcept;
+ResumeSubmitResult
+SubmitResumeMap(const Bindings &bindings,
+                Snapshot *observed_snapshot = nullptr) noexcept;
 
 // Rebinds the local player through CK3's own set_player_character event
 // handler. This exact-build action is main-thread only and reports success

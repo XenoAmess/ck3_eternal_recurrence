@@ -4853,8 +4853,9 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
                      const CheckpointSubmission &checkpoint,
                      std::uint64_t &published_checkpoint_sequence,
                      WarEntryApplicationMainMailboxWorkerLifetime
-                         *mailbox_lifetime = nullptr,
-                     SnapshotPublishDiagnostics *diagnostics = nullptr) {
+                          *mailbox_lifetime = nullptr,
+                     SnapshotPublishDiagnostics *diagnostics = nullptr,
+                     const xar::game::Snapshot *observed_snapshot = nullptr) {
   const auto record = [diagnostics](std::string_view status,
                                     std::uint64_t published_revision,
                                     std::size_t payload_bytes) {
@@ -4869,7 +4870,9 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
     return true;
   }
   xar::game::Snapshot snapshot{};
-  if (!xar::game::ReadSnapshot(bindings, snapshot)) {
+  if (observed_snapshot != nullptr) {
+    snapshot = *observed_snapshot;
+  } else if (!xar::game::ReadSnapshot(bindings, snapshot)) {
     record("read_failed", revision, 0);
     return true;
   }
@@ -4895,7 +4898,8 @@ bool PublishTimelineSnapshotWithDiagnostics(
     const xar::game::GameAdapter &bindings,
     std::optional<xar::game::Snapshot> &previous,
     std::uint64_t &revision, const CheckpointSubmission &checkpoint,
-    std::uint64_t &published_checkpoint_sequence) {
+    std::uint64_t &published_checkpoint_sequence,
+    const xar::game::Snapshot *observed_snapshot = nullptr) {
   const SnapshotPublishDiagnostics begin{"begin", revision, 0};
   if (!xar::bridge::WriteFrame(
           pipe, SnapshotPublishDiagnosticFrame(request_id, "begin", begin))) {
@@ -4903,7 +4907,8 @@ bool PublishTimelineSnapshotWithDiagnostics(
   }
   SnapshotPublishDiagnostics completed{};
   if (!PublishSnapshot(pipe, bindings, previous, revision, checkpoint,
-                       published_checkpoint_sequence, nullptr, &completed)) {
+                       published_checkpoint_sequence, nullptr, &completed,
+                       observed_snapshot)) {
     return false;
   }
   return xar::bridge::WriteFrame(
@@ -5406,7 +5411,9 @@ void RunConnectedSession(
             }
           }
           } else if (step == "pause-map") {
-          const auto result = xar::game::SubmitPauseMap(game);
+          xar::game::Snapshot command_observation{};
+          const auto result =
+              xar::game::SubmitPauseMap(game, &command_observation);
           if (result == xar::game::PauseSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false,
@@ -5428,11 +5435,16 @@ void RunConnectedSession(
               }
               connected = PublishTimelineSnapshotWithDiagnostics(
                   pipe, request_id, game, previous_snapshot, state_revision,
-                  checkpoint_submission, published_checkpoint_sequence);
+                  checkpoint_submission, published_checkpoint_sequence,
+                  result == xar::game::PauseSubmitResult::already_paused
+                      ? &command_observation
+                      : nullptr);
             }
           }
           } else if (step == "resume-map") {
-          const auto result = xar::game::SubmitResumeMap(game);
+          xar::game::Snapshot command_observation{};
+          const auto result =
+              xar::game::SubmitResumeMap(game, &command_observation);
           if (result == xar::game::ResumeSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false,
@@ -5453,7 +5465,10 @@ void RunConnectedSession(
               }
               connected = PublishTimelineSnapshotWithDiagnostics(
                   pipe, request_id, game, previous_snapshot, state_revision,
-                  checkpoint_submission, published_checkpoint_sequence);
+                  checkpoint_submission, published_checkpoint_sequence,
+                  result == xar::game::ResumeSubmitResult::already_running
+                      ? &command_observation
+                      : nullptr);
             }
           }
           } else if (step == "save-checkpoint") {

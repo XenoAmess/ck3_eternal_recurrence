@@ -60,10 +60,18 @@ public:
   bool read_snapshot(xar::game::Snapshot &) const noexcept override {
     return false;
   }
-  xar::game::PauseSubmitResult submit_pause_map() const noexcept override {
+  xar::game::PauseSubmitResult
+  submit_pause_map(xar::game::Snapshot *observed_snapshot) const noexcept override {
+    if (observed_snapshot != nullptr) {
+      *observed_snapshot = {};
+    }
     return xar::game::PauseSubmitResult::unavailable;
   }
-  xar::game::ResumeSubmitResult submit_resume_map() const noexcept override {
+  xar::game::ResumeSubmitResult
+  submit_resume_map(xar::game::Snapshot *observed_snapshot) const noexcept override {
+    if (observed_snapshot != nullptr) {
+      *observed_snapshot = {};
+    }
     return xar::game::ResumeSubmitResult::unavailable;
   }
   bool submit_set_speed(std::int32_t) const noexcept override { return false; }

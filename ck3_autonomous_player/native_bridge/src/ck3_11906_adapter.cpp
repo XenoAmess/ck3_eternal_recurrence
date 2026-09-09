@@ -165,11 +165,13 @@ public:
   bool read_snapshot(Snapshot &output) const noexcept override {
     return ck3_11906::ReadSnapshot(bindings_, output);
   }
-  PauseSubmitResult submit_pause_map() const noexcept override {
-    return ck3_11906::SubmitPauseMap(bindings_);
+  PauseSubmitResult
+  submit_pause_map(Snapshot *observed_snapshot) const noexcept override {
+    return ck3_11906::SubmitPauseMap(bindings_, observed_snapshot);
   }
-  ResumeSubmitResult submit_resume_map() const noexcept override {
-    return ck3_11906::SubmitResumeMap(bindings_);
+  ResumeSubmitResult
+  submit_resume_map(Snapshot *observed_snapshot) const noexcept override {
+    return ck3_11906::SubmitResumeMap(bindings_, observed_snapshot);
   }
   bool submit_set_speed(std::int32_t speed) const noexcept override {
     return ck3_11906::SubmitSetSpeed(bindings_, speed);

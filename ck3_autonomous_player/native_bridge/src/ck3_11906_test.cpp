@@ -7170,10 +7170,13 @@ int main() {
   }
   g_expected_command = ExpectedCommand::pause;
   g_submit_called = false;
-  if (xar::ck3_11906::SubmitPauseMap(bindings) !=
+  xar::game::Snapshot pause_command_observation{};
+  if (xar::ck3_11906::SubmitPauseMap(bindings,
+                                     &pause_command_observation) !=
           xar::ck3_11906::PauseSubmitResult::submitted ||
-      !g_submit_called) {
-    return Fail("pause-map did not construct and submit the pinned command");
+      !g_submit_called || pause_command_observation.paused ||
+      pause_command_observation.date_raw != 43'823'104) {
+    return Fail("pause-map did not bind submission to its native observation");
   }
 
   g_expected_command = ExpectedCommand::speed;
@@ -11649,25 +11652,34 @@ int main() {
   Store(jomini_state, 0x20, std::uint8_t{1});
   g_expected_command = ExpectedCommand::pause;
   g_submit_called = false;
-  if (xar::ck3_11906::SubmitPauseMap(bindings) !=
+  pause_command_observation = {};
+  if (xar::ck3_11906::SubmitPauseMap(bindings,
+                                     &pause_command_observation) !=
           xar::ck3_11906::PauseSubmitResult::already_paused ||
-      g_submit_called) {
-    return Fail("already-paused fixture should be idempotent");
+      g_submit_called || !pause_command_observation.paused ||
+      pause_command_observation.date_raw != 43'823'104) {
+    return Fail("already-paused result lost its deciding native snapshot");
   }
 
   g_expected_command = ExpectedCommand::resume;
   g_submit_called = false;
-  if (xar::ck3_11906::SubmitResumeMap(bindings) !=
+  xar::game::Snapshot resume_command_observation{};
+  if (xar::ck3_11906::SubmitResumeMap(bindings,
+                                      &resume_command_observation) !=
           xar::ck3_11906::ResumeSubmitResult::submitted ||
-      !g_submit_called) {
-    return Fail("resume-map did not submit paused=false");
+      !g_submit_called || !resume_command_observation.paused ||
+      resume_command_observation.date_raw != 43'823'104) {
+    return Fail("resume-map did not bind submission to its native observation");
   }
   Store(jomini_state, 0x20, std::uint8_t{0});
   g_submit_called = false;
-  if (xar::ck3_11906::SubmitResumeMap(bindings) !=
+  resume_command_observation = {};
+  if (xar::ck3_11906::SubmitResumeMap(bindings,
+                                      &resume_command_observation) !=
           xar::ck3_11906::ResumeSubmitResult::already_running ||
-      g_submit_called) {
-    return Fail("already-running fixture should be idempotent");
+      g_submit_called || resume_command_observation.paused ||
+      resume_command_observation.date_raw != 43'823'104) {
+    return Fail("already-running result lost its deciding native snapshot");
   }
 
   bindings.enabled = false;
@@ -11675,7 +11687,7 @@ int main() {
     return Fail("disabled build binding exposed game state");
   }
   std::cout << "PASS: snapshot=1 active_event_snapshot=1 "
-               "pause_resume_command_layout=1 "
+               "pause_resume_command_layout=1 map_control_observation=1 "
                "set_speed_zero_based_mapping=1 "
                "select_event_option_layout=1 auto_save_layout=1 "
                "pending_interaction_local_player_filter=1 "

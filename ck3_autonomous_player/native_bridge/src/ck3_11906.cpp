@@ -10267,10 +10267,17 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
                  : ReadCombatSimulationInputsResult::available;
 }
 
-PauseSubmitResult SubmitPauseMap(const Bindings &bindings) noexcept {
+PauseSubmitResult SubmitPauseMap(const Bindings &bindings,
+                                 Snapshot *observed_snapshot) noexcept {
   Snapshot current{};
   if (!ReadSnapshot(bindings, current)) {
+    if (observed_snapshot != nullptr) {
+      *observed_snapshot = {};
+    }
     return PauseSubmitResult::unavailable;
+  }
+  if (observed_snapshot != nullptr) {
+    *observed_snapshot = current;
   }
   if (current.paused) {
     return PauseSubmitResult::already_paused;
@@ -10303,10 +10310,17 @@ PauseSubmitResult SubmitPauseMap(const Bindings &bindings) noexcept {
   return PauseSubmitResult::submitted;
 }
 
-ResumeSubmitResult SubmitResumeMap(const Bindings &bindings) noexcept {
+ResumeSubmitResult SubmitResumeMap(const Bindings &bindings,
+                                   Snapshot *observed_snapshot) noexcept {
   Snapshot current{};
   if (!ReadSnapshot(bindings, current)) {
+    if (observed_snapshot != nullptr) {
+      *observed_snapshot = {};
+    }
     return ResumeSubmitResult::unavailable;
+  }
+  if (observed_snapshot != nullptr) {
+    *observed_snapshot = current;
   }
   if (!current.paused) {
     return ResumeSubmitResult::already_running;

@@ -47,8 +47,15 @@ public:
   [[nodiscard]] bool supports_step(std::string_view step) const noexcept;
 
   virtual bool read_snapshot(Snapshot &output) const noexcept = 0;
-  virtual PauseSubmitResult submit_pause_map() const noexcept = 0;
-  virtual ResumeSubmitResult submit_resume_map() const noexcept = 0;
+  // When supplied, observed_snapshot is the exact snapshot used to decide
+  // whether the command was idempotent or had to be queued.  The bridge can
+  // therefore publish an already_paused/already_running acknowledgement and
+  // its state postcondition from one native observation instead of racing a
+  // second full snapshot read at an automatic-pause boundary.
+  virtual PauseSubmitResult
+  submit_pause_map(Snapshot *observed_snapshot = nullptr) const noexcept = 0;
+  virtual ResumeSubmitResult
+  submit_resume_map(Snapshot *observed_snapshot = nullptr) const noexcept = 0;
   virtual bool submit_set_speed(std::int32_t speed) const noexcept = 0;
   virtual SelectEventOptionResult
   submit_select_event_option(std::int32_t option_index) const noexcept = 0;
@@ -172,11 +179,15 @@ const AdapterDescriptor &PreferredAdapterDescriptor() noexcept;
 inline bool ReadSnapshot(const GameAdapter &game, Snapshot &output) noexcept {
   return game.read_snapshot(output);
 }
-inline PauseSubmitResult SubmitPauseMap(const GameAdapter &game) noexcept {
-  return game.submit_pause_map();
+inline PauseSubmitResult
+SubmitPauseMap(const GameAdapter &game,
+               Snapshot *observed_snapshot = nullptr) noexcept {
+  return game.submit_pause_map(observed_snapshot);
 }
-inline ResumeSubmitResult SubmitResumeMap(const GameAdapter &game) noexcept {
-  return game.submit_resume_map();
+inline ResumeSubmitResult
+SubmitResumeMap(const GameAdapter &game,
+                Snapshot *observed_snapshot = nullptr) noexcept {
+  return game.submit_resume_map(observed_snapshot);
 }
 inline bool SubmitSetSpeed(const GameAdapter &game,
                            std::int32_t speed) noexcept {
