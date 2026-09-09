@@ -695,3 +695,27 @@ native 2，把战争留在已有 gameplay state surface，而不直接改写 rea
   `BE20C54C138158A83D6A7E5E2852A0A33D018E8C9C75B99D0FAB7BB1CFF98281`；
 - 驻留检查 `7/7` GREEN，`selection_attempted=false`、
   `process_restart_required=false`，继续同 PID 热重试。
+
+## 同会话第二十六次 RED：第二个平民派最后通牒
+
+第二十五次 `retry` 热加载提交 `b8fa576fc86a632214c606213dc31efbcbbf80ae` 后，
+`.0346` 的完整任务容器在原 event instance `410` 上通过；同一 PID `159264` 随后
+推进到已登记的 `faction_demand.1001`、event instance `413`、
+`date_raw=53308056`。当前五项 scope 是既有无 `new_title` 形状，按钮仍为 native
+`(2,3)`，但账本已有一次成功 drain，旧 `max_occurrences=1` 因而在选择前 RED。
+
+原版 populist faction 的每个派系对象达到 demand 条件时都会保存自己的 faction、
+target、county、title 和 peasant leader，再独立投递 `.1001`；事件及 faction 定义
+均没有“一局只能出现一个平民派”的限制。前一派系进入战争或被销毁后，新的平民派
+仍可形成并提出要求。因此最小修复只删除 campaign-global 一次上限，改为产品观察
+窗口内逐次完整验帧；既有两种 scope 形状、两种按钮投影与 native option 3 的拒绝
+路线全部保持不变。该改动仅在外部 Python 合同、测试和报告，不重启 CK3。
+
+- 第二十六次 park：
+  `Z:\ck3_mod_rewrite\_runtime\p2r357_endgamesource\hot-recovery-park-26.json`；
+- park SHA-256：
+  `E6FA507FDD2567018C2A3E9366313676022217116CDE52CE4722A2F330945879`；
+- 第二十六次 RED report 快照：14,402,587 bytes，SHA-256
+  `BF5BC0621A0A620C0DADC2DF1C21A230A6EF2C789703DD93DF05CA342FC95D70`；
+- 驻留检查 `7/7` GREEN，`selection_attempted=false`、
+  `process_restart_required=false`，继续同 PID 热重试。

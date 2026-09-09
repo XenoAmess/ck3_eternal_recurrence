@@ -994,6 +994,8 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # titles and roster while handing the war to the existing gameplay
         # state surface. Bind either observed rendered-option projection and
         # either exact source-authored saved-scope shape before refusing.
+        # Each newly formed populist faction can issue its own demand, so the
+        # event is repeatable across independent faction lifecycles.
         "date_raw": 53229048,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1049,7 +1051,7 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "selected_native_option_index": 3,
             },
         ),
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "char_interaction.0370": {
         # CK3 1.19.0.6 cease-paying-tribute notification. Its immediate block

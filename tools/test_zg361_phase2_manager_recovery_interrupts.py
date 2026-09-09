@@ -1574,7 +1574,29 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 4)
         self.assertEqual(contract["selected_native_option_index"], 3)
-        self.assertEqual(contract["max_occurrences"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        repeated_context = copy.deepcopy(context)
+        repeated_context["current_event_instance_id"] = 413
+        repeated_context["date_raw"] = 53308056
+        repeated_context["saved_scopes"][4] = _scope(
+            "peasant_leader", "character", 73620
+        )
+        repeated_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53308056,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 413},
+            context=repeated_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(repeated_checks.values()), repeated_checks)
 
         conversion_visible = copy.deepcopy(context)
         conversion_visible["current_event_instance_id"] = 232
