@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Tests for the narrow great-holy-war manager interrupt contract."""
 
 from __future__ import annotations
@@ -88,6 +88,54 @@ class ManagerRecoveryHolyWarInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["authored_options_exact"])
+
+    def test_notice_can_repeat_for_later_faith_unlocks(self) -> None:
+        event_key = "great_holy_war.0011"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53390000,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        for instance_id, date_raw, sponsor in (
+            (606, 53392944, 16840827),
+            (670, 53437416, 36145),
+        ):
+            with self.subTest(instance_id=instance_id):
+                context = _context(
+                    event_key=event_key,
+                    instance_id=instance_id,
+                    date_raw=date_raw,
+                    player=32904,
+                    scopes=[
+                        _scope("awakening_faith", "faith"),
+                        _scope("ghw_first_sponsor", "character", sponsor),
+                        _scope(
+                            "background_temple_scope", "character", sponsor
+                        ),
+                    ],
+                    native_option_indices=(3,),
+                )
+                checks = production._known_interrupt_checks(
+                    snapshot={
+                        "date_raw": date_raw,
+                        "active_event": {"option_count": 5},
+                    },
+                    event={"event_instance_id": instance_id},
+                    context=context,
+                    event_key=event_key,
+                    contract=contract,
+                )
+                self.assertTrue(all(checks.values()), checks)
 
 
 if __name__ == "__main__":

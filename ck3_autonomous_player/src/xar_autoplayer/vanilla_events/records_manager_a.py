@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
+
 
 # Migrated from tools/zg361_phase2_promotion_manager_befriend_contracts.py
 MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
@@ -349,6 +351,115 @@ MANAGER_CHANCELLOR_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
         "max_occurrences": 1,
+    },
+}
+
+
+MANAGER_HOLY_WAR_ANALYSIS: Final[dict[str, dict[str, object]]] = {
+    "great_holy_war.0011": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/religion_events/great_holy_war_events.txt": (
+                "E431A0E2FDFF5E49FB572B7184DE9B498F982B95AED875334AD1432D0F88CBA7"
+            ),
+            "common/on_action/religion_on_actions.txt": (
+                "52D172C10A8164B007382F9DF79A48DE462CF6B390438158FD37C9B34DF8F75C"
+            ),
+            "common/character_interactions/00_test_interactions.txt": (
+                "D57865B72018B1E024B6DCB5CF319091DA25B27AE390F7EF8F8769C4458151BB"
+            ),
+        },
+        "definition_lines": "1138-1396",
+        "production_caller": (
+            "on_faith_monthly -> great_holy_war.0010 -> every_player -> "
+            "great_holy_war.0011"
+        ),
+        "caller_semantics": (
+            "each newly eligible faith/religion unlock can broadcast another "
+            "notice; great_holy_war.0011 has no event-local once or cooldown guard"
+        ),
+        "debug_caller": (
+            "00_test_interactions.txt also broadcasts the event, but its "
+            "interaction is debug_only and is not a production caller"
+        ),
+        "option_semantics": {
+            0: "same awakening faith; Christian acknowledgement; no gameplay effect",
+            1: "same awakening faith; Muslim acknowledgement; no gameplay effect",
+            2: "same awakening faith; other-religion acknowledgement; no gameplay effect",
+            3: "different hostile faith; warning acknowledgement; no gameplay effect",
+            4: "different non-hostile faith; neutral acknowledgement; no gameplay effect",
+        },
+        "after_effect": "custom tooltip only; no gameplay state mutation",
+        "safe_option_rationale": (
+            "the five mutually exclusive projections are acknowledgements; the "
+            "current reviewed live projection renders only native option 3"
+        ),
+        "scope_boundary": (
+            "faith identity stays opaque; only the GHW notice scopes required by "
+            "the authorized holy-war exception are contracted"
+        ),
+    },
+}
+
+
+MANAGER_HOLY_WAR_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "great_holy_war.0011": {
+        "exemplars": [
+            {
+                "run": "R342",
+                "kind": "pre-selection-live-red",
+                "evidence": "docs/phase2-promo/r342-great-holy-war-notice-2026-09-08.md",
+                "report_sha256": (
+                    "D6ECB1FC51396B30555F298FA1BC891EE7D4806F0ABFACEF54C41ACDAFF9207D"
+                ),
+                "date_raw": 53223552,
+                "event_instance_id": 346,
+                "root_character_id": 32904,
+                "saved_character_ids": {
+                    "ghw_first_sponsor": 32201,
+                    "background_temple_scope": 32201,
+                },
+                "rendered_native_option_indices": [3],
+                "selection_attempted": False,
+            },
+            {
+                "run": "R372",
+                "kind": "repeat-occurrence-live-red",
+                "artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "great-holy-war-0011-occurrence-bound-report.json"
+                ),
+                "artifact_sha256": (
+                    "CCA408ED129ACF96769413D23ABEA69BA82CA251BA685F69796A3EA3E50B9E0C"
+                ),
+                "park_artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "hot-recovery-park-6.json"
+                ),
+                "park_artifact_sha256": (
+                    "60C00A7986B1767E4D33A628D604238EA597A66E4E41E65DF1A2955F3AF157D7"
+                ),
+                "date_raw": 53437416,
+                "event_instance_id": 670,
+                "root_character_id": 32904,
+                "saved_character_ids": {
+                    "ghw_first_sponsor": 36145,
+                    "background_temple_scope": 36145,
+                },
+                "rendered_native_option_indices": [3],
+                "selection_attempted": False,
+                "prior_same_run_occurrence": {
+                    "date_raw": 53392944,
+                    "event_instance_id": 606,
+                    "ghw_first_sponsor": 16840827,
+                    "selected_native_option_index": 3,
+                    "result": "GREEN",
+                },
+            },
+        ],
     },
 }
 
@@ -1768,7 +1879,7 @@ MANAGER_HOLY_WAR_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (3,),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
 
@@ -1816,6 +1927,8 @@ __all__ = [
     "MANAGER_DEBATE_TIMELINE_CONTRACTS",
     "MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS",
     "MANAGER_HEALTH_TIMELINE_CONTRACTS",
+    "MANAGER_HOLY_WAR_ANALYSIS",
+    "MANAGER_HOLY_WAR_OBSERVATIONS",
     "MANAGER_HOLY_WAR_TIMELINE_CONTRACTS",
     "MANAGER_VANILLA_TIMELINE_CONTRACTS_A",
 ]

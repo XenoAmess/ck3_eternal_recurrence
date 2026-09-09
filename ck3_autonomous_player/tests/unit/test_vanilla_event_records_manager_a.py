@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -12,6 +13,9 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 
 from xar_autoplayer.vanilla_events import records_manager_a as migrated  # noqa: E402
+from xar_autoplayer.vanilla_events import (  # noqa: E402
+    query_vanilla_event_knowledge_v1,
+)
 from zg361_phase2_promotion_manager_befriend_contracts import (  # noqa: E402
     MANAGER_BEFRIEND_TIMELINE_CONTRACTS as SOURCE_BEFRIEND,
 )
@@ -75,6 +79,8 @@ EXPECTED_EXPORTS = {
     "MANAGER_DEBATE_TIMELINE_CONTRACTS",
     "MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS",
     "MANAGER_HEALTH_TIMELINE_CONTRACTS",
+    "MANAGER_HOLY_WAR_ANALYSIS",
+    "MANAGER_HOLY_WAR_OBSERVATIONS",
     "MANAGER_HOLY_WAR_TIMELINE_CONTRACTS",
     "MANAGER_VANILLA_TIMELINE_CONTRACTS_A",
 }
@@ -115,6 +121,47 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
                 ("first", {"health.7100": {"source": "first"}}),
                 ("second", {"health.7100": {"source": "second"}}),
             )
+
+    def test_holy_war_notice_is_repeatable_exact_build_knowledge(self) -> None:
+        event_key = "great_holy_war.0011"
+        contract = migrated.MANAGER_HOLY_WAR_TIMELINE_CONTRACTS[event_key]
+        analysis = migrated.MANAGER_HOLY_WAR_ANALYSIS[event_key]
+        exemplars = migrated.MANAGER_HOLY_WAR_OBSERVATIONS[event_key][
+            "exemplars"
+        ]
+
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertEqual(analysis["exact_build"]["game_version"], "1.19.0.6")
+        self.assertIn("every_player", analysis["production_caller"])
+        self.assertIn("no gameplay effect", analysis["option_semantics"][3])
+        self.assertEqual([row["run"] for row in exemplars], ["R342", "R372"])
+        self.assertEqual(
+            exemplars[1]["prior_same_run_occurrence"]["event_instance_id"],
+            606,
+        )
+        self.assertEqual(exemplars[1]["event_instance_id"], 670)
+
+        response = query_vanilla_event_knowledge_v1(event_key)
+        self.assertEqual(response["status"], "available")
+        self.assertEqual(
+            response["contract"]["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertEqual(
+            response["analysis"]["source_sha256"][
+                "events/religion_events/great_holy_war_events.txt"
+            ],
+            "E431A0E2FDFF5E49FB572B7184DE9B498F982B95AED875334AD1432D0F88CBA7",
+        )
+        self.assertEqual(
+            response["observations"]["exemplars"][1]["event_instance_id"],
+            670,
+        )
+        json.dumps(response, allow_nan=False)
 
 
 if __name__ == "__main__":

@@ -10,7 +10,11 @@ from .registry import (
     query_vanilla_event_knowledge_v1,
 )
 from .records_embedded import EMBEDDED_VANILLA_TIMELINE_CONTRACTS
-from .records_manager_a import MANAGER_VANILLA_TIMELINE_CONTRACTS_A
+from .records_manager_a import (
+    MANAGER_HOLY_WAR_ANALYSIS,
+    MANAGER_HOLY_WAR_OBSERVATIONS,
+    MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
+)
 from .records_manager_b import MANAGER_VANILLA_TIMELINE_CONTRACTS_B
 from .records_tgp_movement import (
     VANILLA_TGP_MOVEMENT_ANALYSIS,
@@ -27,8 +31,32 @@ DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS: Final = (
     EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
     VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
 )
-DEFAULT_VANILLA_EVENT_ANALYSIS: Final = VANILLA_TGP_MOVEMENT_ANALYSIS
-DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = VANILLA_TGP_MOVEMENT_OBSERVATIONS
+
+
+def _merge_metadata_tables(
+    *tables: tuple[str, dict[str, dict[str, object]]],
+) -> dict[str, dict[str, object]]:
+    """Combine disjoint metadata sources without silent event-key replacement."""
+    aggregate: dict[str, dict[str, object]] = {}
+    for source_name, table in tables:
+        duplicates = set(aggregate).intersection(table)
+        if duplicates:
+            raise ValueError(
+                f"duplicate vanilla event metadata from {source_name}: "
+                f"{sorted(duplicates)}"
+            )
+        aggregate.update(table)
+    return aggregate
+
+
+DEFAULT_VANILLA_EVENT_ANALYSIS: Final = _merge_metadata_tables(
+    ("manager_holy_war", MANAGER_HOLY_WAR_ANALYSIS),
+    ("tgp_movement", VANILLA_TGP_MOVEMENT_ANALYSIS),
+)
+DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
+    ("manager_holy_war", MANAGER_HOLY_WAR_OBSERVATIONS),
+    ("tgp_movement", VANILLA_TGP_MOVEMENT_OBSERVATIONS),
+)
 
 
 def _merge_default_contract_groups() -> dict[str, dict[str, object]]:
