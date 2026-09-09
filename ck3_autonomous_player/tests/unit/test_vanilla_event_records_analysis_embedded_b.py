@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 from xar_autoplayer.vanilla_events.records_analysis_embedded_b import (
     EMBEDDED_B_EVENT_KEYS,
     VANILLA_EMBEDDED_B_ANALYSIS,
+    VANILLA_EMBEDDED_B_OBSERVATIONS,
 )
 from xar_autoplayer.vanilla_events.records_embedded import (
     EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
@@ -57,10 +58,14 @@ class EmbeddedBAnalysisTests(unittest.TestCase):
                 )
                 self.assertTrue(analysis["review_summary"])
                 self.assertTrue(analysis["existing_boundaries"])
-                if event_id == "epidemic_events.5009":
-                    self.assertEqual(
-                        analysis["migrated_from"]["review_kind"],
-                        "exact-build-original-definition-and-live-repeat-review",
+                if event_id in (
+                    "epidemic_events.5009",
+                    "ep3_story_cycle_admin_eunuch.1001",
+                ):
+                    self.assertTrue(
+                        analysis["migrated_from"]["review_kind"].startswith(
+                            "exact-build-original-definition-and-live-"
+                        )
                     )
                     self.assertTrue(analysis["source_sha256"])
                     self.assertEqual(
@@ -76,6 +81,23 @@ class EmbeddedBAnalysisTests(unittest.TestCase):
                     )
                     self.assertNotIn("source_sha256", analysis)
                 json.dumps(analysis, allow_nan=False)
+
+    def test_admin_eunuch_live_observation_is_json_safe(self) -> None:
+        event_id = "ep3_story_cycle_admin_eunuch.1001"
+        self.assertEqual(list(VANILLA_EMBEDDED_B_OBSERVATIONS), [event_id])
+        exemplar = VANILLA_EMBEDDED_B_OBSERVATIONS[event_id]["exemplars"][0]
+
+        self.assertEqual(exemplar["event_instance_id"], 988)
+        self.assertEqual(exemplar["date_raw"], 53513184)
+        self.assertFalse(exemplar["selection_attempted"])
+        self.assertEqual(len(exemplar["saved_scope_raw_types"]), 20)
+        for field in (
+            "artifact_sha256",
+            "park_artifact_sha256",
+            "driver_state_artifact_sha256",
+        ):
+            self.assertRegex(exemplar[field], SHA256_PATTERN)
+        json.dumps(VANILLA_EMBEDDED_B_OBSERVATIONS, allow_nan=False)
 
     def test_safe_options_match_the_existing_contracts(self) -> None:
         fail_closed_event = "ep3_interactions_events.0630"

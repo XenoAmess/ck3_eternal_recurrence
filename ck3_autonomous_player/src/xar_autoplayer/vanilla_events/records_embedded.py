@@ -1390,23 +1390,31 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
     },
     "ep3_story_cycle_admin_eunuch.1001": {
         # CK3 1.19.0.6 administrative-eunuch story opener. Its immediate
-        # block has already employed and upgraded the dynamic eunuch and
-        # granted the starting influence bonus before the modal is shown.
+        # block has already employed and upgraded the dynamic eunuch, granted
+        # the starting influence bonus and, for a generated-family lineage,
+        # created the parent/family/title scopes before the modal is shown.
         # Native option 0 additionally replaces/grants the chief-eunuch court
         # position and changes opinion; native option 1 has no effect. Bind
-        # the generated story lineage and choose the terminal no-op route so
-        # this incidental story does not mutate the manager's court roster.
-        "date_raw": 53219664,
+        # either the legacy six-scope frame or R374's exact generated-family
+        # twenty-scope frame and choose the terminal no-op route. The source
+        # has a ten-year cooldown rather than a campaign one-shot gate.
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "liege": 32904,
+            "liege": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "eunuch": (32904,),
+            "eunuch": (PLAYER_SENTINEL,),
         },
         "character_scope_matches_any": {
             "candidate": ("eunuch",),
+        },
+        "optional_character_scope_matches_any": {
+            "eunuch_father": ("parent",),
+            "family_head": ("parent",),
+            "new_noble_family_holder": ("family_head",),
+            "government_giver": ("family_head",),
+            "noble_family_head": ("family_head",),
         },
         "scope_types": {
             "eunuch": "character",
@@ -1416,21 +1424,76 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
             "candidate": "character",
             "modifier_type": "flag",
         },
+        "optional_scope_types": {
+            "origin_liege": "character",
+            "parent_min_age": "value",
+            "parent_max_age": "value",
+            "parent": "character",
+            "eunuch_father": "character",
+            "count": "value",
+            "min_age": "value",
+            "max_age": "value",
+            "newly_created_character": "character",
+            "family_head": "character",
+            "new_noble_family_holder": "character",
+            "government_giver": "character",
+            "new_title": "landed_title",
+            "noble_family_head": "character",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "eunuch",
-            "origin",
-            "story",
-            "liege",
-            "candidate",
-            "modifier_type",
-        ),),
-        "saved_scope_count": 6,
+        "saved_scope_name_sets": (
+            (
+                "eunuch",
+                "origin",
+                "story",
+                "liege",
+                "candidate",
+                "modifier_type",
+            ),
+            (
+                "origin_liege",
+                "origin",
+                "eunuch",
+                "parent_min_age",
+                "parent_max_age",
+                "parent",
+                "eunuch_father",
+                "count",
+                "min_age",
+                "max_age",
+                "newly_created_character",
+                "story",
+                "family_head",
+                "new_noble_family_holder",
+                "government_giver",
+                "new_title",
+                "noble_family_head",
+                "liege",
+                "candidate",
+                "modifier_type",
+            ),
+        ),
+        "saved_scope_counts": (6, 20),
         "option_count": 2,
+        "snapshot_option_count": 2,
         "native_option_indices": (0, 1),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 1),
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+            },
+            {
+                "option_count": 1,
+                "native_option_indices": (1,),
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep3_story_cycle_admin_eunuch.2050": {
         # CK3 1.19.0.6 eunuch-story boon proposal. The immediate block has

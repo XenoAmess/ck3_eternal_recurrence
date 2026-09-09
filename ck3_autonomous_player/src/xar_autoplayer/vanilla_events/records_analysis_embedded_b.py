@@ -469,4 +469,164 @@ _epidemic_5009.update({
 })
 
 
-__all__ = ["EMBEDDED_B_EVENT_KEYS", "VANILLA_EMBEDDED_B_ANALYSIS"]
+_admin_eunuch_1001 = VANILLA_EMBEDDED_B_ANALYSIS[
+    "ep3_story_cycle_admin_eunuch.1001"
+]
+_admin_eunuch_1001["migrated_from"]["review_kind"] = (
+    "exact-build-original-definition-and-live-scope-review"
+)
+_admin_eunuch_1001["migrated_from"]["evidence"] = (
+    "exact definition and caller chain plus the R374 generated-family RED"
+)
+_admin_eunuch_1001["existing_boundaries"][
+    "campaign_specific_binding_fields"
+] = []
+_admin_eunuch_1001["existing_boundaries"]["notes"] = [
+    "Only the legacy six-scope frame and R374's exact twenty-scope "
+    "generated-family frame are accepted.",
+    "Source-defined mother, sibling/nibling, existing-parent and absent "
+    "noble-family-group branches remain unaccepted until a real RED supplies "
+    "their exact saved-scope shape.",
+]
+_admin_eunuch_1001.update({
+    "source_sha256": {
+        "events/dlc/ep3/ep3_story_cycle_admin_eunuch_events.txt": (
+            "AD0EAC903C87FBE869A70709F8C674C6557862B28E14BD242B6EF0FB3D946734"
+        ),
+        "common/on_action/ep3_on_actions.txt": (
+            "107D8695BFE25DAF20E058D5EB34579FDB586A172E81D30E052A4662D8E90EA1"
+        ),
+        "common/on_action/yearly_on_actions.txt": (
+            "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+        ),
+        "common/scripted_effects/07_dlc_ep3_scripted_effects.txt": (
+            "D2F5FE80E7BC000A749642CD26BDE1626DBEA7409C39314B8583547AE43DB43D"
+        ),
+    },
+    "definition_lines": "556-671",
+    "source_helper_lines": {
+        "create_story": "82-96",
+        "save_origin": "98-125",
+        "create_eunuch": "127-190",
+        "create_child": "192-255",
+        "create_family": "257-358",
+        "upgrade_eunuch": "360-379",
+        "bootstrap_event_1000": "465-553",
+        "create_noble_family": "3359-3499",
+        "upgrade_helper": "7613-7674",
+        "ep3_on_actions": "1-80",
+        "yearly_on_actions": "2522-2563",
+    },
+    "caller_semantics": (
+        "the yearly pulse reaches hidden bootstrap event .1000 at weight 250; "
+        ".1000 chooses or creates the eunuch lineage and then schedules .1001"
+    ),
+    "frequency_boundary": (
+        "the bootstrap has a ten-year cooldown and its primary-title variable "
+        "lasts twenty-five years; eligibility is not daily delivery"
+    ),
+    "immediate_effect": (
+        "before the modal, the source creates or resolves the eunuch and "
+        "origin, creates family and noble-family/title state when needed, "
+        "starts the story, employs and upgrades the eunuch, and grants "
+        "starting influence"
+    ),
+    "option_semantics": {
+        "0": (
+            "when shown, grants or replaces the chief-eunuch court position "
+            "and applies grateful opinion"
+        ),
+        "1": "empty acknowledgement with no additional gameplay effect",
+    },
+    "repeatability": (
+        "the source uses a ten-year cooldown and contains no one-shot gate; "
+        "the twenty-five-year title variable and primary-title changes alter "
+        "future eligibility but do not make the event campaign-unique"
+    ),
+    "saved_scope_boundary": (
+        "strictly accepts the legacy six-scope lineage and R374's exact "
+        "twenty-scope generated-father/noble-family lineage; other source "
+        "branches remain evidence-ledger entries rather than loose optionals"
+    ),
+})
+
+
+VANILLA_EMBEDDED_B_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "ep3_story_cycle_admin_eunuch.1001": {
+        "exemplars": [{
+            "run": "R374",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "ep3-story-cycle-admin-eunuch-1001-red-report.json"
+            ),
+            "artifact_sha256": (
+                "FAEFEF7A2F09099A697CE4A0215AECF6CCE080013D2822BBFD65BBB8B38B7116"
+            ),
+            "park_artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "hot-recovery-park-2.json"
+            ),
+            "park_artifact_sha256": (
+                "F2265333D99B4E996CBAAFD5F31C616291E03438A976E3D85CD4262D4C9889D0"
+            ),
+            "driver_state_artifact": (
+                "_runtime/p2r374-active-boundary-continuation-live/"
+                "driver-state-park-2-snapshot.json"
+            ),
+            "driver_state_artifact_sha256": (
+                "446605FC4AB05D1DDED330929E57B2D04A73E91A601E58B4320D6E2037ED9548"
+            ),
+            "date_raw": 53513184,
+            "event_instance_id": 988,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "origin_liege": 63082,
+                "eunuch": 16850194,
+                "parent": 67186091,
+                "eunuch_father": 67186091,
+                "newly_created_character": 67186058,
+                "family_head": 67186091,
+                "new_noble_family_holder": 67186091,
+                "government_giver": 67186091,
+                "noble_family_head": 67186091,
+                "liege": 32904,
+                "candidate": 16850194,
+            },
+            "saved_scope_raw_types": {
+                "origin_liege": 4,
+                "origin": 5,
+                "eunuch": 4,
+                "parent_min_age": 1,
+                "parent_max_age": 1,
+                "parent": 4,
+                "eunuch_father": 4,
+                "count": 1,
+                "min_age": 1,
+                "max_age": 1,
+                "newly_created_character": 4,
+                "story": 17,
+                "family_head": 4,
+                "new_noble_family_holder": 4,
+                "government_giver": 4,
+                "new_title": 5,
+                "noble_family_head": 4,
+                "liege": 4,
+                "candidate": 4,
+                "modifier_type": 3,
+            },
+            "rendered_native_option_indices": [0, 1],
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 51852,
+            "process_restart_required": False,
+        }],
+    },
+}
+
+
+__all__ = [
+    "EMBEDDED_B_EVENT_KEYS",
+    "VANILLA_EMBEDDED_B_ANALYSIS",
+    "VANILLA_EMBEDDED_B_OBSERVATIONS",
+]

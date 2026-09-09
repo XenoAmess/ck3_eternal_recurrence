@@ -93,7 +93,7 @@ class EpidemicEventRecordTests(unittest.TestCase):
     def test_default_registry_mcp_and_production_runtime_include_record(self) -> None:
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 160)
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 160)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 8)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 9)
         self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 299)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
