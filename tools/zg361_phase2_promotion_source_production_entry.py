@@ -85,6 +85,9 @@ from zg361_phase2_promotion_vanilla_intrigue_temptation_interrupt_contracts impo
 from zg361_phase2_promotion_vanilla_natural_disaster_interrupt_contracts import (
     VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_vanilla_dynastic_cycle_interrupt_contracts import (
+    VANILLA_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_vanilla_ep3_emperor_interrupt_contracts import (
     VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS,
 )
@@ -4373,6 +4376,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(
 KNOWN_TIMELINE_INTERRUPTS.update(
     VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS
 )
+KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_DYNASTIC_CYCLE_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SEDUCE_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_EP1_FLAVOR_TIMELINE_CONTRACTS)
