@@ -71,6 +71,172 @@ def _scope(
 
 
 class VanillaSecretInterruptContractTests(unittest.TestCase):
+    def test_r368_lover_notice_selects_the_only_empty_acknowledgement(self) -> None:
+        event_key = "secrets.0108"
+        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key]
+        owner_names = {
+            "secret_owner", "secret_exposer", "owner", "local_secret_owner",
+            "adulterer_check", "primary_character", "left_portrait",
+        }
+        target_names = {
+            "secret_target", "target", "sex_partner",
+            "secondary_character", "right_portrait",
+        }
+        scopes = []
+        for name in contract["saved_scope_name_sets"][0]:
+            if name in owner_names:
+                scopes.append(_scope(name, "character", 33366))
+            elif name in target_names:
+                scopes.append(_scope(name, "character", 65723))
+            elif name == "event_root":
+                scopes.append(_scope(name, "character", 32904))
+            else:
+                scopes.append(_scope(name, contract["scope_types"][name]))
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 475,
+            "date_raw": 53358504,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": scopes,
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53358504, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 475},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        alias_split = copy.deepcopy(context)
+        next(
+            row for row in alias_split["saved_scopes"] if row["name"] == "owner"
+        )["scope"]["typed_identity"]["character_id"] = 65724
+        split_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53358504, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 475},
+            context=alias_split,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(split_checks["scope:owner:matches_any"])
+
+        canonical_collapse = copy.deepcopy(context)
+        for row in canonical_collapse["saved_scopes"]:
+            if row["name"] in {
+                "secret_target", "target", "sex_partner",
+                "secondary_character", "right_portrait",
+            }:
+                row["scope"]["typed_identity"]["character_id"] = 33366
+        collapse_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53358504, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 475},
+            context=canonical_collapse,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(collapse_checks["scope:secret_owner:differs_from"])
+
+    def test_r368_bastardy_notice_selects_the_only_empty_acknowledgement(self) -> None:
+        event_key = "secrets.0112"
+        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key]
+        identities = {
+            "secret_owner": 65723,
+            "secret_target": 16852984,
+            "secret_exposer": 33366,
+            "owner": 65723,
+            "child": 16852984,
+            "mother": 65723,
+            "real_father": 33366,
+            "local_secret_owner": 65723,
+            "target": 16852984,
+        }
+        scopes = [
+            _scope(name, "character", identities[name])
+            if name in identities
+            else _scope(name, contract["scope_types"][name])
+            for name in contract["saved_scope_name_sets"][0]
+        ]
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 476,
+            "date_raw": 53358504,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": scopes,
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53358504, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 476},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        alias_split = copy.deepcopy(context)
+        next(
+            row for row in alias_split["saved_scopes"] if row["name"] == "owner"
+        )["scope"]["typed_identity"]["character_id"] = 65724
+        split_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53358504, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 476},
+            context=alias_split,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(split_checks["scope:owner:matches_any"])
+
+        canonical_collapse = copy.deepcopy(context)
+        for row in canonical_collapse["saved_scopes"]:
+            if row["name"] in {"secret_target", "child", "target"}:
+                row["scope"]["typed_identity"]["character_id"] = 65723
+        collapse_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53358504, "active_event": {"option_count": 3}},
+            event={"event_instance_id": 476},
+            context=canonical_collapse,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(collapse_checks["scope:secret_owner:differs_from"])
+
     def _frame(self, *, secret_owner_id: int = 28093) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:
@@ -123,7 +289,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
     def test_r231_exact_frame_selects_authored_forgive(self) -> None:
         self.assertEqual(
             set(secret.VANILLA_SECRET_TIMELINE_CONTRACTS),
-            {"secrets.0122"},
+            {"secrets.0108", "secrets.0112", "secrets.0122"},
         )
         contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
         self.assertIs(

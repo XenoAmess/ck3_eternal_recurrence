@@ -285,7 +285,11 @@ zg361_p3_ag_continue_player_effect = {
 	set_variable = { name = zg361_p3_player_dispatch_blocked value = 0 }
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m301_receipt_choice }
 		}
 		if = {
@@ -337,7 +341,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -353,7 +361,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -364,7 +376,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m302_receipt_choice }
 		}
 		if = {
@@ -416,7 +432,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -432,7 +452,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -443,7 +467,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m303_receipt_choice }
 		}
 		if = {
@@ -495,7 +523,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -511,7 +543,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -522,7 +558,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m304_receipt_choice }
 		}
 		if = {
@@ -574,7 +614,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -590,7 +634,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -601,7 +649,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m305_receipt_choice }
 		}
 		if = {
@@ -653,7 +705,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -669,7 +725,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -680,7 +740,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m306_receipt_choice }
 		}
 		if = {
@@ -732,7 +796,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -748,7 +816,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -759,7 +831,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m307_receipt_choice }
 		}
 		if = {
@@ -811,7 +887,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -827,7 +907,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -838,7 +922,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m308_receipt_choice }
 		}
 		if = {
@@ -890,7 +978,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -906,7 +998,11 @@ zg361_p3_ag_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -917,7 +1013,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m309_receipt_choice }
 		}
 		scope:zg361_p3_ag_owner = { trigger_event = { id = zg361p3.309 days = 1 } }
@@ -925,7 +1025,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m310_receipt_choice }
 		}
 		scope:zg361_p3_ag_owner = { trigger_event = { id = zg361p3.310 days = 1 } }
@@ -933,7 +1037,11 @@ zg361_p3_ag_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m311_receipt_choice }
 		}
 		scope:zg361_p3_ag_owner = { trigger_event = { id = zg361p3.311 days = 1 } }

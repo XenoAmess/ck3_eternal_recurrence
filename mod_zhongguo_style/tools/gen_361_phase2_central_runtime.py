@@ -23,11 +23,12 @@ READINESS = "static-ready"
 LEGACY_EFFECT_FILENAME = "zg361_phase2_central_runtime_effects.txt"
 LEGACY_EFFECT_PATH = MOD_ROOT / "common" / "scripted_effects" / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
-# R98: guard the stage-3 first-use completion read proven fatal to the PP
-# adapter in the R97 production CK3 log; grouping and order remain unchanged.
-HISTORICAL_EFFECT_BYTES = 137_249
-HISTORICAL_EFFECT_SHA256 = "0901D2B4496974EDB45380E2629B9C5E3B7833AD7DB27657BADD597AB8A7B452"
-HISTORICAL_EFFECT_COUNT = 33
+# R362: stage-nine now calls one domain-owned reconciliation adapter before
+# reading completion counters, so dead or otherwise invalid frozen reports are
+# terminally cancelled instead of leaving Central busy forever.
+HISTORICAL_EFFECT_BYTES = 138_086
+HISTORICAL_EFFECT_SHA256 = "9A67E851F75A038006E2EB74898862DB3C429DE3AF4A6A832814327994AB7F21"
+HISTORICAL_EFFECT_COUNT = 34
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
 # A future shard above the hard principle is allowed only when this map names
@@ -157,6 +158,7 @@ EFFECT_GROUPS = (
         (
             "zg361_p2c_stage_08_metrics_delivery_effect",
             "zg361_p2c_stage_07_credit_project_effect",
+            "zg361_p2c_reconcile_stage_09_career_learning_effect",
             "zg361_p2c_stage_09_career_learning_effect",
         ),
     ),
@@ -1914,7 +1916,22 @@ zg361_p2c_stage_07_credit_project_effect = {
 
 # Stage 9: dispatches all current direct reports once, then waits for exact
 # expected/completed counters.  A player digest must be ACKed before advancing.
+# Reconciliation is delegated to the career-learning package, which owns the
+# per-subject case state and terminal cancellation semantics.
+zg361_p2c_reconcile_stage_09_career_learning_effect = {
+    if = {
+        limit = {
+            var:zg361_p2c_stage_status = 1
+            has_variable = zg361_cl_portfolio_cycle
+            var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+            has_variable_list = zg361_p2c_cl_subjects
+        }
+        zg361_cl_reconcile_central_portfolio_effect = yes
+    }
+}
+
 zg361_p2c_stage_09_career_learning_effect = {
+    zg361_p2c_reconcile_stage_09_career_learning_effect = yes
     if = {
         limit = {
             has_variable = zg361_p2c_cl_partial_open
@@ -1931,6 +1948,13 @@ zg361_p2c_stage_09_career_learning_effect = {
             trigger_else = { always = yes }
         }
         zg361_p2c_record_red_effect = { CODE = 910 STAGE_VAR = zg361_p2c_stage_09_status }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_cl_portfolio_reconcile_invalid
+            var:zg361_cl_portfolio_reconcile_invalid > 0
+        }
+        zg361_p2c_record_red_effect = { CODE = 911 STAGE_VAR = zg361_p2c_stage_09_status }
     }
     else_if = {
         limit = {

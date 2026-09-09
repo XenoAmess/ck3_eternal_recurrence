@@ -65,8 +65,8 @@ RETIRED_EFFECT_PATHS = tuple(
 LEGACY_EVENT_FILENAME = "zg361_workforce_endgame_runtime_events.txt"
 LEGACY_EVENT_PATH = MOD_ROOT / "events" / LEGACY_EVENT_FILENAME
 EVENT_SHARD_GLOB = "zg361_workforce_endgame_event_*_events.txt"
-HISTORICAL_EVENT_BYTES = 174_338
-HISTORICAL_EVENT_SHA256 = "550A240E188577BEF9A8C754366394C34F56593750F78CBEDE657C7D4B2FB2DD"
+HISTORICAL_EVENT_BYTES = 176_168
+HISTORICAL_EVENT_SHA256 = "AFB5A2EE6BD14ABB611760E95A52CF7D322AEE9995DD4ACB718E0B53CBE336A6"
 HISTORICAL_EVENT_COUNT = 149
 EVENT_TARGET_MAX = 10
 EVENT_HARD_MAX = 20
@@ -9136,6 +9136,32 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t\tscope:{PREFIX}_{d}_subject = {{
 \t\t\thas_variable = {PREFIX}_m264_handoff_response
 \t\t\tvar:{PREFIX}_m264_handoff_response = {choice}
+\t\t}}
+\t}}"""
+    elif mid == 265 and choice in (1, 2):
+        # A/B consume the successful #264 handoff object.  When #264 used its
+        # authored debt fallback there is no such object, so exposing A/B
+        # would let CK3 close the modal while both effects correctly stale-
+        # no-op.  Keep only C visible in that branch.
+        option_trigger = f"""
+\ttrigger = {{
+\t\tscope:{PREFIX}_{d}_subject = {{
+\t\t\thas_variable = {PREFIX}_m264_business_object_created
+\t\t\tvar:{PREFIX}_m264_business_object_created = 1
+\t\t\thas_variable = {PREFIX}_m264_object_type_code
+\t\t\tvar:{PREFIX}_m264_object_type_code = 264
+\t\t\thas_variable = {PREFIX}_m264_object_owner
+\t\t\tvar:{PREFIX}_m264_object_owner = scope:{PREFIX}_{d}_owner
+\t\t\thas_variable = {PREFIX}_m264_object_subject
+\t\t\tvar:{PREFIX}_m264_object_subject = scope:{PREFIX}_{d}_subject
+\t\t\thas_variable = {PREFIX}_m264_object_cycle
+\t\t\tvar:{PREFIX}_m264_object_cycle = scope:{PREFIX}_{d}_cycle
+\t\t\thas_variable = {PREFIX}_m264_object_case
+\t\t\tvar:{PREFIX}_m264_object_case = scope:{PREFIX}_{d}_case
+\t\t\thas_variable = {PREFIX}_m264_object_consumed
+\t\t\tvar:{PREFIX}_m264_object_consumed = 1
+\t\t\thas_variable = {PREFIX}_m264_consumer_accept_knowledge_handoff_264
+\t\t\tvar:{PREFIX}_m264_consumer_accept_knowledge_handoff_264 = 1
 \t\t}}
 \t}}"""
     if mid == 276 and choice in (1, 2):

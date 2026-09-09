@@ -102,6 +102,10 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
 
         drifted = copy.deepcopy(context)
         drifted["saved_scopes"][2] = _scope(
@@ -118,6 +122,38 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["scope:dead_character:unique_third_party"])
+
+        loved_context = _context(
+            event_key=event_key,
+            instance_id=469,
+            date_raw=53344176,
+            player=32904,
+            scopes=[
+                _scope("new_memory", "character_memory"),
+                _scope("surviving_consort", "character", 32904),
+                _scope("dead_character", "character", 32797),
+                _scope("deceased_character_stress", "value"),
+                _scope("realm", "landed_title"),
+                _scope("like", "boolean"),
+            ],
+            native_option_indices=(0,),
+        )
+        loved_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53344176,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 469},
+            context=loved_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        loved_effective = production._option_contract_for_context(
+            loved_context["options"], contract,
+        )
+        self.assertTrue(all(loved_checks.values()), loved_checks)
+        self.assertEqual(loved_effective["selected_option_number"], 1)
+        self.assertEqual(loved_effective["selected_native_option_index"], 0)
 
     def test_r248_minor_child_death_matches_exact_live_frame(self) -> None:
         if not REPORT.is_file():
@@ -153,7 +189,11 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
         self.assertEqual(contract["native_option_indices"], (3,))
         self.assertEqual(contract["selected_option_number"], 4)
         self.assertEqual(contract["selected_native_option_index"], 3)
-        self.assertEqual(contract["max_occurrences"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
 
     def test_r248_minor_child_death_rejects_identity_and_option_drift(self) -> None:
         contract = death.MANAGER_DEATH_TIMELINE_CONTRACTS[
@@ -295,6 +335,61 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
         )
         self.assertTrue(all(checks.values()), checks)
 
+    def test_primary_heir_spouse_death_matches_exact_live_frame(self) -> None:
+        event_key = "death_management.1008"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=612,
+            date_raw=53362704,
+            player=32904,
+            scopes=[
+                _scope("new_memory", "character_memory"),
+                _scope("surviving_consort", "character", 36354),
+                _scope("dead_character", "character", 35997),
+                _scope("spouse_of_dead_character", "character", 36354),
+                _scope(
+                    "parent_of_spouse_of_dead_character", "character", 32904
+                ),
+                _scope("deceased_character_stress", "value"),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53362704,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 612},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        mismatched_heir = copy.deepcopy(context)
+        mismatched_heir["saved_scopes"][1] = _scope(
+            "surviving_consort", "character", 36355
+        )
+        drift = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53362704,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 612},
+            context=mismatched_heir,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift["scope:surviving_consort:matches_any"])
+
     def test_ck3_11906_child_dispatch_and_observed_routes_match_source(self) -> None:
         event_source = _ck3_source(
             "events/death_events/death_management_events.txt"
@@ -374,6 +469,15 @@ class ManagerRecoveryDeathInterruptTests(unittest.TestCase):
             '[dead_character.GetFirstNameNoTooltip]."',
             localization,
         )
+
+        heir_spouse = _extract_block(source, "death_management.1008 =")
+        heir_spouse_normalized = " ".join(heir_spouse.split())
+        self.assertEqual(
+            len(re.findall(r"(?m)^\toption\s*=\s*\{", heir_spouse)),
+            1,
+        )
+        self.assertIn("name = death_management.1008.a", heir_spouse_normalized)
+        self.assertNotIn("trigger_event =", heir_spouse_normalized)
 
 
 if __name__ == "__main__":

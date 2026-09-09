@@ -32,7 +32,7 @@ struct ZhongguoPromotionSourceProgressV1 {
   std::int32_t date_raw = 0;
   bool paused = false;
   std::int32_t player_character_id = -1;
-  std::array<ZhongguoScoreboardWidgetStateV1, 5> widgets;
+  std::array<ZhongguoScoreboardWidgetStateV1, 29> widgets;
   ZhongguoPromotionSourceProgressReadinessV1 readiness;
   std::string unavailable_reason;
 };
@@ -94,13 +94,37 @@ inline constexpr bool
 inline constexpr bool kZhongguoReviewNowActionV1ProductionCapabilityAdvertised =
     false;
 
-inline constexpr std::array<std::string_view, 5>
+inline constexpr std::array<std::string_view, 29>
     kZhongguoPromotionSourceProgressV1WidgetNames{
         "zg361_promotion_source_bridge_window",
         "zg361_promotion_source_review_now_action",
         "zg361_promotion_source_b1_active",
         "zg361_promotion_source_central_active",
         "zg361_promotion_source_pp_active",
+        "zg361_promotion_source_central_stage_1",
+        "zg361_promotion_source_central_stage_2",
+        "zg361_promotion_source_central_stage_3",
+        "zg361_promotion_source_central_stage_4",
+        "zg361_promotion_source_central_stage_5",
+        "zg361_promotion_source_central_stage_6",
+        "zg361_promotion_source_central_stage_7",
+        "zg361_promotion_source_central_stage_8",
+        "zg361_promotion_source_central_stage_9",
+        "zg361_promotion_source_central_stage_10",
+        "zg361_promotion_source_central_stage_11",
+        "zg361_promotion_source_central_status_0",
+        "zg361_promotion_source_central_status_1",
+        "zg361_promotion_source_central_status_2",
+        "zg361_promotion_source_central_status_3",
+        "zg361_promotion_source_central_status_4",
+        "zg361_promotion_source_central_status_5",
+        "zg361_promotion_source_cl_partial_open",
+        "zg361_promotion_source_cl_digest_pending",
+        "zg361_promotion_source_cl_cycle_matches",
+        "zg361_promotion_source_cl_frozen_positive",
+        "zg361_promotion_source_cl_expectations_match",
+        "zg361_promotion_source_cl_ah_complete",
+        "zg361_promotion_source_cl_ai_complete",
     };
 inline constexpr auto kZhongguoPromotionSourceProgressV1WidgetIdentities =
     kZhongguoPromotionSourceProgressV1WidgetNames;

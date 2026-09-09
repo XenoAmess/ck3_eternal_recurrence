@@ -1175,7 +1175,11 @@ def render_effects() -> bytes:
         remove_variable = @P@_red_code
         if = {
             limit = {
-                var:@P@_state = 3
+                trigger_if = {
+                    limit = { has_variable = @P@_state }
+                    var:@P@_state = 3
+                }
+                trigger_else = { always = no }
                 var:@P@_published = 1
                 var:@P@_consumed = 0
                 var:@P@_legacy_aliases_materialized = 1
@@ -1259,7 +1263,11 @@ def render_effects() -> bytes:
         }
         else_if = {
             limit = {
-                var:@P@_state = 4
+                trigger_if = {
+                    limit = { has_variable = @P@_state }
+                    var:@P@_state = 4
+                }
+                trigger_else = { always = no }
                 var:@P@_published = 1
                 var:@P@_consumed = 1
                 var:@P@_consume_subject = this

@@ -25,6 +25,9 @@ R287_REPORT_SHA256 = (
 EVENT_SOURCE_SHA256 = (
     "5B59252EF885BB605529B1AE76964A03BA447255DB77951CDBF2CB2AE267BDCD"
 )
+POWERFUL_FAMILIES_EVENT_SOURCE_SHA256 = (
+    "CA19D38CD1C45783E32CF59E21A212642EA407B2DDD8EDE2467DF50ED9F7BC7A"
+)
 ENGLISH_LOCALIZATION_SHA256 = (
     "1CE764CFEB02858BF5D978ED10DA7C1E68BE48A2281374F1FFE86C0F6DC4BBBE"
 )
@@ -71,6 +74,60 @@ def _ck3_source(relative_path: str) -> Path | None:
 
 
 class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
+    def test_r366_powerful_family_offer_uses_non_war_refusal(self) -> None:
+        event_key = "ep3_powerful_families.8012"
+        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[event_key]
+        self.assertIs(production.KNOWN_TIMELINE_INTERRUPTS[event_key], contract)
+        context = _context(
+            event_key=event_key,
+            instance_id=429,
+            date_raw=53328600,
+            player=32904,
+            scopes=[
+                _scope("generous_family", "character", 32536),
+                _scope("liege", "character", 32904),
+                _scope("war", "war"),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53328600,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 429},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        drifted = copy.deepcopy(context)
+        drifted["saved_scopes"][0] = _scope(
+            "generous_family", "character", 32904
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53328600,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 429},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            drift_checks["scope:generous_family:unique_third_party"]
+        )
+
     def _r287_frame(self) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:
@@ -413,6 +470,41 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertIn("ep3_population_control_county_modifier", route_b)
         self.assertIn("flag = ep3_2170_success", route_b)
 
+    def test_ck3_11906_powerful_family_refusal_avoids_war_mutation(self) -> None:
+        event_source = _ck3_source(
+            "events/dlc/ep3/ep3_powerful_families_8.txt"
+        )
+        if event_source is None:
+            self.skipTest("CK3 1.19.0.6 source is not present on this machine")
+
+        self.assertEqual(
+            _sha256(event_source), POWERFUL_FAMILIES_EVENT_SOURCE_SHA256
+        )
+        source_text = event_source.read_text(encoding="utf-8-sig")
+        caller_block = _extract_block(
+            source_text, "ep3_powerful_families.8010 ="
+        )
+        self.assertIn("years = 15", caller_block)
+        self.assertIn("id = ep3_powerful_families.8012", caller_block)
+        event_block = _extract_block(
+            source_text, "ep3_powerful_families.8012 ="
+        )
+        options = re.findall(
+            r"(?m)^\t\tname = (ep3_powerful_families\.8012\.[ab])$",
+            event_block,
+        )
+        self.assertEqual(
+            options,
+            ["ep3_powerful_families.8012.a", "ep3_powerful_families.8012.b"],
+        )
+        route_b_start = event_block.rfind("\toption =")
+        route_b = _extract_block(event_block[route_b_start:], "\toption =")
+        self.assertIn("change_influence = minor_influence_gain", route_b)
+        self.assertNotIn("ep3_pf_8010_b_accept_effect", route_b)
+        self.assertNotIn("add_attacker", route_b)
+        self.assertNotIn("add_defender", route_b)
+        self.assertNotIn("trigger_event", route_b)
+
     def test_contract_is_registered_without_inline_copy(self) -> None:
         production_source = (
             ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
@@ -422,6 +514,9 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         )
         self.assertNotIn(
             '    "ep3_emperor_yearly.2211": {', production_source
+        )
+        self.assertNotIn(
+            '    "ep3_powerful_families.8012": {', production_source
         )
         self.assertRegex(
             production_source,

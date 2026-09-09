@@ -188,7 +188,20 @@ zg361_p2c_stage_07_credit_project_effect = {
     else = { zg361_p2c_record_red_effect = { CODE = 757 STAGE_VAR = zg361_p2c_stage_07_status } }
 }
 
+zg361_p2c_reconcile_stage_09_career_learning_effect = {
+    if = {
+        limit = {
+            var:zg361_p2c_stage_status = 1
+            has_variable = zg361_cl_portfolio_cycle
+            var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+            has_variable_list = zg361_p2c_cl_subjects
+        }
+        zg361_cl_reconcile_central_portfolio_effect = yes
+    }
+}
+
 zg361_p2c_stage_09_career_learning_effect = {
+    zg361_p2c_reconcile_stage_09_career_learning_effect = yes
     if = {
         limit = {
             has_variable = zg361_p2c_cl_partial_open
@@ -205,6 +218,13 @@ zg361_p2c_stage_09_career_learning_effect = {
             trigger_else = { always = yes }
         }
         zg361_p2c_record_red_effect = { CODE = 910 STAGE_VAR = zg361_p2c_stage_09_status }
+    }
+    else_if = {
+        limit = {
+            has_variable = zg361_cl_portfolio_reconcile_invalid
+            var:zg361_cl_portfolio_reconcile_invalid > 0
+        }
+        zg361_p2c_record_red_effect = { CODE = 911 STAGE_VAR = zg361_p2c_stage_09_status }
     }
     else_if = {
         limit = {

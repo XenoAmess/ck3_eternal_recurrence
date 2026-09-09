@@ -13,7 +13,31 @@
     "zg361_promotion_source_review_now_action",
     "zg361_promotion_source_b1_active",
     "zg361_promotion_source_central_active",
-    "zg361_promotion_source_pp_active"
+    "zg361_promotion_source_pp_active",
+    "zg361_promotion_source_central_stage_1",
+    "zg361_promotion_source_central_stage_2",
+    "zg361_promotion_source_central_stage_3",
+    "zg361_promotion_source_central_stage_4",
+    "zg361_promotion_source_central_stage_5",
+    "zg361_promotion_source_central_stage_6",
+    "zg361_promotion_source_central_stage_7",
+    "zg361_promotion_source_central_stage_8",
+    "zg361_promotion_source_central_stage_9",
+    "zg361_promotion_source_central_stage_10",
+    "zg361_promotion_source_central_stage_11",
+    "zg361_promotion_source_central_status_0",
+    "zg361_promotion_source_central_status_1",
+    "zg361_promotion_source_central_status_2",
+    "zg361_promotion_source_central_status_3",
+    "zg361_promotion_source_central_status_4",
+    "zg361_promotion_source_central_status_5",
+    "zg361_promotion_source_cl_partial_open",
+    "zg361_promotion_source_cl_digest_pending",
+    "zg361_promotion_source_cl_cycle_matches",
+    "zg361_promotion_source_cl_frozen_positive",
+    "zg361_promotion_source_cl_expectations_match",
+    "zg361_promotion_source_cl_ah_complete",
+    "zg361_promotion_source_cl_ai_complete"
   ],
   "gui_discovery": {
     "shared_pointer_chain": [
@@ -29,7 +53,7 @@
       "scope": "owner_root_direct_children_only",
       "name_validation": "returned widget must retain the exact fixed runtime name"
     },
-    "fallback": "only when the direct lookup is null or wrong-name, find the fixed promotion root as a descendant of owner+0xD0, then find the four fixed descendants beneath that root",
+    "fallback": "only when the direct lookup is null or wrong-name, find the fixed promotion root as a descendant of owner+0xD0, then find the 28 fixed descendants beneath that root",
     "bounds": {
       "maximum_depth": 64,
       "maximum_traversal": 4096,
@@ -51,6 +75,21 @@
     "decision_name",
     "scripted_gui_name"
   ],
+  "central_diagnostic_projection": {
+    "stage_indicators": "exactly one of central_stage_1 through central_stage_11 while Central is active",
+    "status_indicators": "exactly one of central_status_0 through central_status_5 while Central is active",
+    "stage_9_predicates": [
+      "cl_partial_open",
+      "cl_digest_pending",
+      "cl_cycle_matches",
+      "cl_frozen_positive",
+      "cl_expectations_match",
+      "cl_ah_complete",
+      "cl_ai_complete"
+    ],
+    "read_only": true,
+    "caller_selectable_variable": false
+  },
   "action_semantics": {
     "product_source": "zg361_review_now_decision",
     "shared_business_trigger": "zg361_review_now_business_valid_trigger",

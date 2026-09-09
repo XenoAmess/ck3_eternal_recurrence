@@ -141,4 +141,57 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 0,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "travel_danger_events.3002": {
+        # CK3 1.19.0.6 avalanche follow-up letter to the province owner. Route
+        # A applies the four-year avalanche_impact province penalty; route B
+        # spends minor gold but leaves the province unchanged. Prefer B so a
+        # random travel consequence does not distort the long manager-cycle
+        # observation. The traveler, optional travel leader, and news bearer
+        # are dynamically selected for each avalanche and therefore bind by
+        # native type, not one frozen campaign identity.
+        "date_raw": 53373936,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "scope_types": {
+            "travel_plan": "travel_plan",
+            "travel_leader": "character",
+            "avalanche_traveler": "character",
+            "avalanche_location": "province",
+            "news_bearer": "character",
+        },
+        "saved_scope_name_sets": ((
+            "travel_plan",
+            "travel_leader",
+            "avalanche_traveler",
+            "avalanche_location",
+            "news_bearer",
+        ),),
+        "saved_scope_count": 5,
+        "scope_variants": ({
+            # .3001 saves travel_leader through ?=, so an otherwise valid
+            # travel plan without a leader legally carries only four scopes.
+            "saved_scope_names": (
+                "travel_plan",
+                "avalanche_traveler",
+                "avalanche_location",
+                "news_bearer",
+            ),
+            "saved_scope_count": 4,
+            "scope_types": {
+                "travel_plan": "travel_plan",
+                "avalanche_traveler": "character",
+                "avalanche_location": "province",
+                "news_bearer": "character",
+            },
+        },),
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        # Independent avalanches can notify the same province owner again.
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }

@@ -2666,7 +2666,13 @@ zg361_mg_m349_run_audit_effect = {{
 				TICKET_OWNER = var:zg361_case_ak_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_ak_cycle_serial TICKET_CASE = var:zg361_case_ak_case_serial TICKET_STATE = 3 AMOUNT = var:zg361_mg_m349_audit_hours
 			}}
 			if = {{
-				limit = {{ var:zg361_case_kernel_applied = 1 }}
+				limit = {{
+					trigger_if = {{
+						limit = {{ has_variable = zg361_case_kernel_applied }}
+						var:zg361_case_kernel_applied = 1
+					}}
+					trigger_else = {{ always = no }}
+				}}
 				zg361_case_kernel_settle_transaction_effect = {{
 					OWNER_VAR = zg361_case_ak_owner SUBJECT_VAR = zg361_case_ak_subject CYCLE_VAR = zg361_case_ak_cycle_serial CASE_VAR = zg361_case_ak_case_serial STATE_VAR = zg361_case_ak_state ACTIVE_VAR = zg361_case_ak_active REVISION_VAR = zg361_case_ak_revision
 					RESERVED_VAR = zg361_mg_admin_capacity_reserved SETTLED_VAR = zg361_mg_admin_capacity_settled RECEIPT_AMOUNT_VAR = zg361_mg_m349_capacity_amount RECEIPT_STATUS_VAR = zg361_mg_m349_capacity_status

@@ -31,6 +31,9 @@ SCRIPTED_EFFECT_SOURCE_SHA256 = (
 SITUATION_SOURCE_SHA256 = (
     "158984B899B9A8AA2667B2F67581C2C1C087B48DB9D14A3D934A68AEC4720E18"
 )
+TRAVEL_DANGER_SOURCE_SHA256 = (
+    "3345F8DDB93F72BFC20ACF6E2590C43DD884BFD91FE27525FFDB1C3286E3049F"
+)
 
 
 def _install_optional_desktop_stubs() -> None:
@@ -167,6 +170,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
                 "natural_disaster.8001",
                 "natural_disaster.7021",
                 "natural_disaster.6901",
+                "travel_danger_events.3002",
             },
         )
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
@@ -358,6 +362,76 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["scope:river_region:type"])
 
+    def test_r364c_avalanche_followup_uses_short_nonpersistent_route(self) -> None:
+        event_key = "travel_danger_events.3002"
+        contract = production._timeline_contract_for_window(
+            disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[event_key],
+            starting_date=53147016,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 621,
+            "date_raw": 53373936,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                _scope("travel_plan", "travel_plan"),
+                _scope("travel_leader", "character", 68875),
+                _scope("avalanche_traveler", "character", 32602),
+                _scope("avalanche_location", "province"),
+                _scope("news_bearer", "character", 30987),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((0, 1))
+            ],
+        }
+        snapshot = {
+            "date_raw": 53373936,
+            "active_event": {"option_count": 2},
+        }
+        event = {"event_instance_id": 621}
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(contract["character_scopes"], {})
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        without_leader = copy.deepcopy(context)
+        without_leader["saved_scopes"] = [
+            row for row in without_leader["saved_scopes"]
+            if row["name"] != "travel_leader"
+        ]
+        variant_checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=without_leader,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(variant_checks.values()), variant_checks)
+
     def test_r247_frame_rejects_scope_identity_type_and_option_drift(self) -> None:
         contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
             "natural_disaster.8001"
@@ -399,6 +473,43 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
                     contract=contract,
                 )
                 self.assertFalse(checks[failed_check])
+
+    def test_ck3_11906_avalanche_source_has_two_terminal_routes(self) -> None:
+        event_source = _ck3_source(
+            "events/travel_events/travel_danger_events_klank.txt"
+        )
+        modifier_source = _ck3_source(
+            "common/modifiers/00_province_modifiers.txt"
+        )
+        if event_source is None or modifier_source is None:
+            self.skipTest("CK3 1.19.0.6 source is not present on this machine")
+        self.assertEqual(_sha256(event_source), TRAVEL_DANGER_SOURCE_SHA256)
+        event_block = _extract_block(
+            event_source.read_text(encoding="utf-8-sig"),
+            "travel_danger_events.3002 =",
+        )
+        self.assertEqual(
+            len(re.findall(r"(?m)^\toption\s*=\s*\{", event_block)),
+            2,
+        )
+        first_option = _extract_block(event_block, "\toption =")
+        second_tail = event_block[
+            event_block.index(first_option) + len(first_option):
+        ]
+        second_option = _extract_block(second_tail, "\toption =")
+        self.assertIn("modifier = avalanche_impact", first_option)
+        self.assertIn("years = 4", first_option)
+        self.assertEqual(
+            " ".join(second_option.split()),
+            "option = { name = travel_danger_events.3002.b "
+            "remove_short_term_gold = minor_gold_value }",
+        )
+        modifier_block = _extract_block(
+            modifier_source.read_text(encoding="utf-8-sig"),
+            "avalanche_impact =",
+        )
+        self.assertIn("development_growth_factor = -0.1", modifier_block)
+        self.assertIn("tax_mult = -0.1", modifier_block)
 
     def test_ck3_11906_source_has_one_player_acknowledgement(self) -> None:
         event_source = _ck3_source(
@@ -532,6 +643,7 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         self.assertNotIn('    "natural_disaster.8001": {', production_source)
         self.assertNotIn('    "natural_disaster.7021": {', production_source)
         self.assertNotIn('    "natural_disaster.6901": {', production_source)
+        self.assertNotIn('    "travel_danger_events.3002": {', production_source)
         self.assertRegex(
             production_source,
             r"KNOWN_TIMELINE_INTERRUPTS\.update\(\s*"

@@ -23,6 +23,7 @@ from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     MAX_ADVANCE_DAYS,
     POST_PUBLICATION_OBSERVATION_DAYS,
     PromotionProductionEntryError,
+    PromotionScenarioInvalidatingInterrupt,
     _contract_date_matches,
     _known_interrupt_checks,
     _timeline_contract_for_window,
@@ -35,7 +36,9 @@ def _typed(value: bool) -> dict[str, object]:
 
 
 def _progress(action: bool, b1: bool, sequence: int) -> dict[str, object]:
-    visible = [True, action, b1, False, False]
+    visible = [True, action, b1, False, False] + [False] * (
+        len(PROGRESS_WIDGETS) - 5
+    )
     return {
         "status": "available",
         "query_sequence": sequence,
@@ -210,11 +213,15 @@ def test_product_path_uses_ack_only_then_independent_b1_and_m147() -> None:
     assert result["review_action_postcondition"]["after_query_sequence"] == 2
     assert result["m146_date_raw"] + 24 == result["target_binding"]["date_raw"]
     assert result["advance_bound"] == {
+        "cycle_opportunities": 2,
         "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
         "post_publication_observation_days": POST_PUBLICATION_OBSERVATION_DAYS,
+        "pre_workforce_total_days": 5000,
+        "endgame_target_workforce_cycles": 3,
+        "workforce_cycle_observation_days": 730,
         "total_days": MAX_ADVANCE_DAYS,
     }
-    assert MAX_ADVANCE_DAYS == 550
+    assert MAX_ADVANCE_DAYS == 7190
     assert service.selected == [1]
 
 
@@ -332,7 +339,7 @@ def test_product_path_retries_same_native_frame_while_saved_scopes_build() -> No
     assert service.selected == [1]
 
 
-def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None:
+def test_product_path_stops_before_scenario_invalidating_interrupt() -> None:
     class _InterruptedService(_Service):
         def snapshot(self) -> dict[str, object]:
             if self.stage not in {
@@ -881,48 +888,13 @@ def test_product_path_drains_exact_seed_interrupts_with_bounded_repeat() -> None
             }
 
     service = _InterruptedService()
-    result = enter_promotion_source_checkpoint_v1(
-        service, poll_interval_seconds=0
+    with pytest.raises(PromotionScenarioInvalidatingInterrupt) as caught:
+        enter_promotion_source_checkpoint_v1(service, poll_interval_seconds=0)
+    assert caught.value.evidence["event_definition_key"] == (
+        "ep3_interactions_events.0630"
     )
-    assert result["result"] == "GREEN"
-    assert [
-        row["event_definition_key"]
-        for row in result["timeline_interrupt_drains"]
-    ] == [
-        "zg361b2.40",
-        "ep3_governor_yearly.8120",
-        "ep3_admin_events.0002",
-        "ep3_interactions_events.0630",
-        "bp1_yearly.9007",
-        "tgp_china_yearly.0010",
-        "tgp_china_yearly.0005",
-        "tgp_china_yearly.0015",
-        "tgp_china_yearly.0020",
-        "ep3_emperor_yearly.2200",
-        "ep3_emperor_yearly.2240",
-        "ep1_flavor.1200",
-        "ep3_governor_yearly.8160",
-        "ep3_governor_yearly.8170",
-        "ep3_governor_yearly.8060",
-        "ep3_governor_yearly.8010",
-        "ep3_governor_yearly.8110",
-        "ep3_governor_yearly.8100",
-        "tgp_dynastic_cycle_events.0040",
-        "ep3_governor_yearly.8130",
-        "spymaster_task.0381",
-        "spymaster_task.0399",
-        "zg361.40",
-        "health.7200",
-        "spymaster_task.0381",
-        "zg361b1.200",
-        "spymaster_task.0342",
-        "spymaster_task.0346",
-        "sway_outcome.2001",
-        "chancellor_task.1104",
-        "zg361.40",
-        "ep3_governor_yearly.3060",
-    ]
-    assert service.selected == [1, 3, 3, 1, 3, 3, 3, 3, 1, 2, 3, 4, 3, 4, 4, 3, 2, 4, 3, 4, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 4, 1]
+    assert caught.value.evidence["selection_attempted"] is False
+    assert service.selected == [1, 3, 3]
 
 
 def test_product_path_rejects_interrupt_identity_drift_before_action() -> None:

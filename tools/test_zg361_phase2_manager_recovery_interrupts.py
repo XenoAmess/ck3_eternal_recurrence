@@ -190,8 +190,112 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(workforce["max_occurrences"], 3)
         self.assertEqual(
             workforce["workforce_three_cycle_route"],
-            "shortest-reviewed-non-debt",
+            "prefer-non-debt-with-authored-fallback",
         )
+
+        handoff_timeout = production._resolve_timeline_interrupt_contract(
+            "zg361we.264",
+            player=32904,
+            starting_date=53313360,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(handoff_timeout)
+        assert handoff_timeout is not None
+        fallback_projection = production._option_contract_for_context(
+            [{"native_option_index": 2}], handoff_timeout,
+        )
+        self.assertEqual(fallback_projection["option_count"], 1)
+        self.assertEqual(fallback_projection["selected_option_number"], 3)
+        self.assertEqual(fallback_projection["selected_native_option_index"], 2)
+
+        fraud_audit = production._resolve_timeline_interrupt_contract(
+            "zg361we.265",
+            player=32904,
+            starting_date=53313360,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(fraud_audit)
+        assert fraud_audit is not None
+        debt_projection = production._option_contract_for_context(
+            [{"native_option_index": 2}], fraud_audit,
+        )
+        self.assertEqual(debt_projection["option_count"], 1)
+        self.assertEqual(debt_projection["selected_option_number"], 3)
+        self.assertEqual(debt_projection["selected_native_option_index"], 2)
+
+        annual_summary = production._resolve_timeline_interrupt_contract(
+            "zg361.1",
+            player=32904,
+            starting_date=53313360,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(annual_summary)
+        assert annual_summary is not None
+        self.assertEqual(annual_summary["option_count"], 1)
+        self.assertEqual(annual_summary["selected_native_option_index"], 0)
+        self.assertEqual(annual_summary["character_scopes"], {})
+        self.assertEqual(annual_summary["scope_types"], {})
+        self.assertNotIn("saved_scope_name_sets", annual_summary)
+        self.assertEqual(
+            annual_summary["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        elimination = production._resolve_timeline_interrupt_contract(
+            "zg361.5",
+            player=32904,
+            starting_date=53313360,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(elimination)
+        assert elimination is not None
+        self.assertEqual(elimination["option_count"], 3)
+        self.assertEqual(elimination["selected_native_option_index"], 2)
+        self.assertEqual(elimination["character_scopes"], {})
+        self.assertEqual(elimination["scope_types"], {})
+        self.assertNotIn("saved_scope_name_sets", elimination)
+        self.assertEqual(
+            elimination["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        project_cycle = production._resolve_timeline_interrupt_contract(
+            "zg361cp.31",
+            player=32904,
+            starting_date=53313360,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(project_cycle)
+        assert project_cycle is not None
+        self.assertEqual(project_cycle["option_count"], 3)
+        self.assertEqual(project_cycle["selected_native_option_index"], 0)
+        self.assertEqual(
+            project_cycle["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", project_cycle)
+
+        career_digest = production._resolve_timeline_interrupt_contract(
+            "zg361cl.390",
+            player=32904,
+            starting_date=53313360,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(career_digest)
+        assert career_digest is not None
+        self.assertEqual(career_digest["option_count"], 1)
+        self.assertEqual(career_digest["selected_native_option_index"], 0)
+        self.assertEqual(
+            career_digest["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("saved_scope_name_sets", career_digest)
 
         handoff = production._resolve_timeline_interrupt_contract(
             "zg361we.5264",
@@ -1172,6 +1276,56 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(drift_checks["authored_options_exact"])
 
+    def test_impostor_break_prefers_confider_over_starvation_or_stress(self) -> None:
+        event_key = "stress_threshold.1721"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=627,
+            date_raw=53387208,
+            player=32904,
+            scopes=[
+                _scope("stress_character", "character", 32904),
+                _scope("deceased_character", "character", 16843923),
+                _scope("confidant", "character", 32797),
+            ],
+            native_option_indices=(7, 9, 12),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53387208,
+                "active_event": {"option_count": 14},
+            },
+            event={"event_instance_id": 627},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 10)
+        self.assertEqual(contract["selected_native_option_index"], 9)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        same_people = copy.deepcopy(context)
+        same_people["saved_scopes"][2] = _scope(
+            "confidant", "character", 16843923
+        )
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53387208,
+                "active_event": {"option_count": 14},
+            },
+            event={"event_instance_id": 627},
+            context=same_people,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:confidant:differs_from"])
+
     def test_dynasty_birth_notice_only_acknowledges_bound_family(self) -> None:
         event_key = "birth.1010"
         contract = _manager_contract(event_key, player=32904)
@@ -1675,6 +1829,149 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         )
         self.assertFalse(
             drift_checks["scope:peasant_leader:unique_third_party"]
+        )
+
+    def test_auto_accepted_pardon_uses_only_acknowledgement(self) -> None:
+        event_key = "char_interaction.0240"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=616,
+            date_raw=53366952,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 29747),
+                _scope("recipient", "character", 32904),
+                _scope(
+                    "secondary_actor", "character",
+                    unavailable_character=True,
+                ),
+                _scope(
+                    "secondary_recipient", "character",
+                    unavailable_character=True,
+                ),
+                _scope(
+                    "intermediary", "character",
+                    unavailable_character=True,
+                ),
+                _scope("hook", "boolean"),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53366952,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 616},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+    def test_vassal_contract_lowering_uses_only_acknowledgement(self) -> None:
+        event_key = "char_interaction.0251"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=613,
+            date_raw=53363856,
+            player=32904,
+            scopes=[
+                _scope("actor", "character", 30075),
+                _scope("recipient", "character", 32904),
+                _scope(
+                    "secondary_actor", "character",
+                    unavailable_character=True,
+                ),
+                _scope(
+                    "secondary_recipient", "character",
+                    unavailable_character=True,
+                ),
+                _scope(
+                    "intermediary", "character",
+                    unavailable_character=True,
+                ),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53363856,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 613},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        player_actor = copy.deepcopy(context)
+        player_actor["saved_scopes"][0] = _scope(
+            "actor", "character", 32904
+        )
+        drift = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53363856,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 613},
+            context=player_actor,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift["scope:actor:unique_third_party"])
+
+    def test_avalanche_followup_pays_aid_without_province_penalty(self) -> None:
+        event_key = "travel_danger_events.3002"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=621,
+            date_raw=53373936,
+            player=32904,
+            scopes=[
+                _scope("travel_plan", "travel_plan"),
+                _scope("travel_leader", "character", 68875),
+                _scope("avalanche_traveler", "character", 32602),
+                _scope("avalanche_location", "province"),
+                _scope("news_bearer", "character", 30987),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53373936,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 621},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
         )
 
     def test_ceased_tributary_notification_uses_inert_acknowledgement(self) -> None:
@@ -3135,6 +3432,25 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["native_option_indices"], (0, 2))
         self.assertEqual(contract["selected_option_number"], 1)
         self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(len(contract["saved_scope_name_sets"]), 4)
+
+        retained_student = copy.deepcopy(context)
+        retained_student["current_event_instance_id"] = 425
+        retained_student["date_raw"] = 53325480
+        retained_student["saved_scopes"].insert(
+            4, _scope("student", "character", 33596937)
+        )
+        retained_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53325480,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 425},
+            context=retained_student,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(retained_checks.values()), retained_checks)
 
         same_accused_party = copy.deepcopy(context)
         same_accused_party["saved_scopes"][6] = _scope(

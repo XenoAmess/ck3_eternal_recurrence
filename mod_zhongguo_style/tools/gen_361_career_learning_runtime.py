@@ -1828,6 +1828,221 @@ zg361_cl_dispatch_direct_reports_effect = {{
 
 {runners}
 
+# Rebuild the owner counters from the frozen Central cohort on every stage-nine
+# pump.  Normal case completion remains owned by the case kernel.  A report
+# which dies, becomes unlanded, or leaves the frozen owner's valid transfer
+# relation is closed as an explicit portfolio cancellation: its interrupted
+# state remains visible and no missing mechanism receipt is fabricated.
+zg361_cl_reconcile_central_portfolio_effect = {{
+    if = {{
+        limit = {{
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_p2c_active
+            has_variable = zg361_p2c_stage
+            has_variable = zg361_p2c_stage_status
+            has_variable = zg361_p2c_cycle
+            has_variable = zg361_p2c_cl_frozen_count
+            has_variable_list = zg361_p2c_cl_subjects
+            has_variable = zg361_cl_portfolio_cycle
+            var:zg361_p2c_active = 1
+            var:zg361_p2c_stage = 9
+            var:zg361_p2c_stage_status = 1
+            var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+            var:zg361_p2c_cl_frozen_count > 0
+        }}
+        set_variable = {{ name = zg361_cl_portfolio_ah_completed value = 0 }}
+        set_variable = {{ name = zg361_cl_portfolio_ai_completed value = 0 }}
+        set_variable = {{ name = zg361_cl_portfolio_ah_cancelled value = 0 }}
+        set_variable = {{ name = zg361_cl_portfolio_ai_cancelled value = 0 }}
+        set_variable = {{ name = zg361_cl_portfolio_reconcile_iterated value = 0 }}
+        set_variable = {{ name = zg361_cl_portfolio_reconcile_invalid value = 0 }}
+        set_variable = {{ name = zg361_cl_portfolio_lost_frozen value = 0 }}
+        every_in_list = {{
+            variable = zg361_p2c_cl_subjects
+            root = {{ change_variable = {{ name = zg361_cl_portfolio_reconcile_iterated add = 1 }} }}
+
+            if = {{
+                # A dead Character survives in a variable list as an
+                # unavailable weak reference.  `is_alive` is the exact-build
+                # safe guard; no character-variable trigger may run outside
+                # this branch.
+                limit = {{ is_alive = yes }}
+                if = {{
+                    limit = {{
+                    has_variable = zg361_case_ah_owner
+                    has_variable = zg361_case_ah_subject
+                    has_variable = zg361_case_ah_cycle_serial
+                    has_variable = zg361_case_ah_state
+                    has_variable = zg361_case_ah_active
+                    var:zg361_case_ah_owner = root
+                    var:zg361_case_ah_subject = this
+                    var:zg361_case_ah_cycle_serial = root.var:zg361_p2c_cycle
+                }}
+                if = {{
+                    limit = {{
+                        var:zg361_case_ah_active = 0
+                        OR = {{
+                            var:zg361_case_ah_state = 7
+                            AND = {{
+                                has_variable = zg361_cl_ah_portfolio_cancelled_cycle
+                                var:zg361_cl_ah_portfolio_cancelled_cycle = root.var:zg361_p2c_cycle
+                            }}
+                        }}
+                    }}
+                    root = {{ change_variable = {{ name = zg361_cl_portfolio_ah_completed add = 1 }} }}
+                }}
+                else_if = {{
+                    limit = {{
+                        var:zg361_case_ah_active = 1
+                        var:zg361_case_ah_state >= 1
+                        var:zg361_case_ah_state <= 6
+                        NOT = {{
+                            AND = {{
+                                zg361_is_reviewable_vassal_trigger = yes
+                                OR = {{
+                                    liege = root
+                                    AND = {{
+                                        var:zg361_transfer_consumer_kind = 2
+                                        var:zg361_transfer_vacancy_status = 3
+                                        var:zg361_transfer_cl_phase = 6
+                                        var:zg361_transfer_cl_owner = root
+                                        var:zg361_transfer_cl_subject = this
+                                        liege = var:zg361_transfer_cl_receiver
+                                        primary_title = var:zg361_transfer_cl_title
+                                        var:zg361_transfer_cl_title = {{ holder = this }}
+                                    }}
+                                }}
+                            }}
+                        }}
+                    }}
+                    set_variable = {{ name = zg361_cl_ah_portfolio_cancelled_cycle value = root.var:zg361_p2c_cycle }}
+                    set_variable = {{ name = zg361_case_ah_active value = 0 }}
+                    root = {{
+                        change_variable = {{ name = zg361_cl_portfolio_ah_completed add = 1 }}
+                        change_variable = {{ name = zg361_cl_portfolio_ah_cancelled add = 1 }}
+                    }}
+                    debug_log = "ZG361CL: reconciled one invalid AH case as cancelled"
+                }}
+                else_if = {{
+                    limit = {{
+                        var:zg361_case_ah_active = 1
+                        var:zg361_case_ah_state >= 1
+                        var:zg361_case_ah_state <= 6
+                    }}
+                    }}
+                    else = {{ root = {{ change_variable = {{ name = zg361_cl_portfolio_reconcile_invalid add = 1 }} }} }}
+                }}
+                else = {{ root = {{ change_variable = {{ name = zg361_cl_portfolio_reconcile_invalid add = 1 }} }} }}
+
+                if = {{
+                    limit = {{
+                    has_variable = zg361_case_ai_owner
+                    has_variable = zg361_case_ai_subject
+                    has_variable = zg361_case_ai_cycle_serial
+                    has_variable = zg361_case_ai_state
+                    has_variable = zg361_case_ai_active
+                    var:zg361_case_ai_owner = root
+                    var:zg361_case_ai_subject = this
+                    var:zg361_case_ai_cycle_serial = root.var:zg361_p2c_cycle
+                }}
+                if = {{
+                    limit = {{
+                        var:zg361_case_ai_active = 0
+                        OR = {{
+                            var:zg361_case_ai_state = 6
+                            AND = {{
+                                has_variable = zg361_cl_ai_portfolio_cancelled_cycle
+                                var:zg361_cl_ai_portfolio_cancelled_cycle = root.var:zg361_p2c_cycle
+                            }}
+                        }}
+                    }}
+                    root = {{ change_variable = {{ name = zg361_cl_portfolio_ai_completed add = 1 }} }}
+                }}
+                else_if = {{
+                    limit = {{
+                        var:zg361_case_ai_active = 1
+                        var:zg361_case_ai_state >= 1
+                        var:zg361_case_ai_state <= 5
+                        NOT = {{
+                            AND = {{
+                                zg361_is_reviewable_vassal_trigger = yes
+                                OR = {{
+                                    liege = root
+                                    AND = {{
+                                        var:zg361_transfer_consumer_kind = 2
+                                        var:zg361_transfer_vacancy_status = 3
+                                        var:zg361_transfer_cl_phase = 6
+                                        var:zg361_transfer_cl_owner = root
+                                        var:zg361_transfer_cl_subject = this
+                                        liege = var:zg361_transfer_cl_receiver
+                                        primary_title = var:zg361_transfer_cl_title
+                                        var:zg361_transfer_cl_title = {{ holder = this }}
+                                    }}
+                                }}
+                            }}
+                        }}
+                    }}
+                    set_variable = {{ name = zg361_cl_ai_portfolio_cancelled_cycle value = root.var:zg361_p2c_cycle }}
+                    set_variable = {{ name = zg361_case_ai_active value = 0 }}
+                    root = {{
+                        change_variable = {{ name = zg361_cl_portfolio_ai_completed add = 1 }}
+                        change_variable = {{ name = zg361_cl_portfolio_ai_cancelled add = 1 }}
+                    }}
+                    debug_log = "ZG361CL: reconciled one invalid AI case as cancelled"
+                }}
+                else_if = {{
+                    limit = {{
+                        var:zg361_case_ai_active = 1
+                        var:zg361_case_ai_state >= 1
+                        var:zg361_case_ai_state <= 5
+                    }}
+                    }}
+                    else = {{ root = {{ change_variable = {{ name = zg361_cl_portfolio_reconcile_invalid add = 1 }} }} }}
+                }}
+                else = {{ root = {{ change_variable = {{ name = zg361_cl_portfolio_reconcile_invalid add = 1 }} }} }}
+            }}
+            else = {{
+                root = {{
+                    change_variable = {{ name = zg361_cl_portfolio_ah_completed add = 1 }}
+                    change_variable = {{ name = zg361_cl_portfolio_ai_completed add = 1 }}
+                    change_variable = {{ name = zg361_cl_portfolio_ah_cancelled add = 1 }}
+                    change_variable = {{ name = zg361_cl_portfolio_ai_cancelled add = 1 }}
+                    change_variable = {{ name = zg361_cl_portfolio_lost_frozen add = 1 }}
+                }}
+                debug_log = "ZG361CL: reconciled dead frozen identity as cancelled"
+            }}
+        }}
+        if = {{
+            limit = {{ var:zg361_cl_portfolio_reconcile_iterated < var:zg361_p2c_cl_frozen_count }}
+            set_variable = {{
+                name = zg361_cl_portfolio_lost_frozen
+                value = {{ value = var:zg361_p2c_cl_frozen_count subtract = var:zg361_cl_portfolio_reconcile_iterated }}
+            }}
+            change_variable = {{ name = zg361_cl_portfolio_ah_completed add = var:zg361_cl_portfolio_lost_frozen }}
+            change_variable = {{ name = zg361_cl_portfolio_ai_completed add = var:zg361_cl_portfolio_lost_frozen }}
+            change_variable = {{ name = zg361_cl_portfolio_ah_cancelled add = var:zg361_cl_portfolio_lost_frozen }}
+            change_variable = {{ name = zg361_cl_portfolio_ai_cancelled add = var:zg361_cl_portfolio_lost_frozen }}
+            debug_log = "ZG361CL: reconciled lost frozen identities as cancelled"
+        }}
+        else_if = {{
+            limit = {{ var:zg361_cl_portfolio_reconcile_iterated > var:zg361_p2c_cl_frozen_count }}
+            change_variable = {{ name = zg361_cl_portfolio_reconcile_invalid add = 1 }}
+        }}
+        if = {{
+            limit = {{
+                var:zg361_cl_portfolio_reconcile_invalid = 0
+                var:zg361_cl_portfolio_ah_completed >= var:zg361_cl_portfolio_ah_expected
+                var:zg361_cl_portfolio_ai_completed >= var:zg361_cl_portfolio_ai_expected
+                var:zg361_cl_portfolio_digest_shown = 0
+                NOT = {{ has_variable = zg361_cl_digest_pending }}
+            }}
+            set_variable = {{ name = zg361_cl_digest_pending value = 1 }}
+            set_variable = {{ name = zg361_cl_portfolio_digest_shown value = 1 }}
+            trigger_event = {{ id = zg361cl.390 days = 1 }}
+        }}
+    }}
+}}
+
 # Exactly one portfolio digest can be queued per review serial.  It waits for
 # both domains across all frozen direct reports, so late deadlines cannot turn
 # one portfolio into a second popup.
@@ -1970,7 +2185,10 @@ def effect_purpose(name: str) -> str:
         mechanism_id = int(name[len(mechanism_prefix) : len(mechanism_prefix) + 3])
         row = next(item for item in MECHANISMS if item.mechanism_id == mechanism_id)
         return f"{row.domain}_stage_{row.state:02d}_mechanisms"
-    if name == "zg361_cl_queue_owner_digest_effect":
+    if name in {
+        "zg361_cl_reconcile_central_portfolio_effect",
+        "zg361_cl_queue_owner_digest_effect",
+    }:
         return "portfolio_digest"
     raise ValueError(f"unclassified career/learning scripted effect: {name}")
 
@@ -2143,7 +2361,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "本轮人才安排已经登记"),
-                ("zg361_cl_digest_desc", "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。"),
+                ("zg361_cl_digest_desc", "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed').GetValue|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed').GetValue|0] 件；仍在履行期内的约定会在到期时另行呈报。"),
                 ("zg361_cl_digest_ack", "收存本轮人才案回执；不新增付款或期限。"),
             )
         )
@@ -2151,7 +2369,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
         entries.extend(
             (
                 ("zg361_cl_digest_title", "This Round of Career Plans Is Recorded"),
-                ("zg361_cl_digest_desc", "The offices have closed this round of career-mobility and learning matters. Six matters concerning transfer, trial assignment, transfer petitions, counteroffers, former-office contact, or training bonds carry the assessed official's named answer; the other sixteen were resolved under standing rules, with a deadline and receipt retained for each. Protected hours may be borrowed only while the official or manager is at war; a peacetime request is recorded as non-performance. This round closed [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] learning matters; obligations still in progress will be reported when due."),
+                ("zg361_cl_digest_desc", "The offices have closed this round of career-mobility and learning matters. Six matters concerning transfer, trial assignment, transfer petitions, counteroffers, former-office contact, or training bonds carry the assessed official's named answer; the other sixteen were resolved under standing rules, with a deadline and receipt retained for each. Protected hours may be borrowed only while the official or manager is at war; a peacetime request is recorded as non-performance. This round closed [ROOT.Var('zg361_cl_portfolio_ah_completed').GetValue|0] internal-mobility matters and [ROOT.Var('zg361_cl_portfolio_ai_completed').GetValue|0] learning matters; obligations still in progress will be reported when due."),
                 ("zg361_cl_digest_ack", "Take the docket and proceed."),
             )
         )

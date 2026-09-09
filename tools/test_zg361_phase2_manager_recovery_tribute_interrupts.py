@@ -62,6 +62,14 @@ def _resource_reward_scopes(resource_type: str) -> list[dict[str, object]]:
 
 
 class ManagerRecoveryTributeInterruptTests(unittest.TestCase):
+    def test_tribute_reward_is_repeatable_without_a_lifecycle_ceiling(self) -> None:
+        contract = _manager_contract("tribute_mission.1005", player=32904)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
     def test_resource_reward_routes_use_exact_typed_scope_variants(self) -> None:
         event_key = "tribute_mission.1005"
         contract = _manager_contract(event_key, player=32904)

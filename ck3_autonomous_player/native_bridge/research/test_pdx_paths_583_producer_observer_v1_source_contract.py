@@ -57,7 +57,7 @@ def _direct_target(rva: int, instruction: bytes) -> int:
     return rva + 5 + struct.unpack_from("<i", instruction, 1)[0]
 
 
-def check(root: Path) -> None:
+def check(root: Path, *, ck3_executable: Path | None = None) -> None:
     native = root / "ck3_autonomous_player" / "native_bridge"
     header = (
         native / "include/xar_bridge/pdx_paths_583_producer_observer_v1.hpp"
@@ -106,7 +106,7 @@ def check(root: Path) -> None:
     _require("new " not in source, "observer source contains dynamic new")
     _require("malloc" not in source, "observer source contains malloc")
 
-    executable = root / "Crusader Kings III/binaries/ck3.exe"
+    executable = ck3_executable or root / "Crusader Kings III/binaries/ck3.exe"
     image = executable.read_bytes()
     _require(len(image) == EXPECTED_SIZE, "executable size drifted")
     _require(
@@ -158,8 +158,14 @@ def main() -> int:
     parser.add_argument(
         "--root", type=Path, default=Path(__file__).resolve().parents[3]
     )
+    parser.add_argument("--ck3-executable", type=Path)
     args = parser.parse_args()
-    check(args.root.resolve())
+    check(
+        args.root.resolve(),
+        ck3_executable=(
+            args.ck3_executable.resolve() if args.ck3_executable else None
+        ),
+    )
     print("pdx-paths-583-producer-observer-source-contract: GREEN_STATIC")
     return 0
 

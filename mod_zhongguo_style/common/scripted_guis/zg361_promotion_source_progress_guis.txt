@@ -76,6 +76,128 @@ zg361_promotion_source_central_active_gui = {
 	}
 }
 
+# Read-only Central stage/status indicators for the native MCP progress query.
+# Every indicator is fixed-name and owner-scoped; callers cannot select a
+# variable or scripted GUI name.
+zg361_promotion_source_central_stage_1_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 1 }
+}
+zg361_promotion_source_central_stage_2_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 2 }
+}
+zg361_promotion_source_central_stage_3_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 3 }
+}
+zg361_promotion_source_central_stage_4_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 4 }
+}
+zg361_promotion_source_central_stage_5_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 5 }
+}
+zg361_promotion_source_central_stage_6_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 6 }
+}
+zg361_promotion_source_central_stage_7_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 7 }
+}
+zg361_promotion_source_central_stage_8_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 8 }
+}
+zg361_promotion_source_central_stage_9_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 9 }
+}
+zg361_promotion_source_central_stage_10_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 10 }
+}
+zg361_promotion_source_central_stage_11_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage var:zg361_p2c_stage = 11 }
+}
+
+zg361_promotion_source_central_status_0_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage_status var:zg361_p2c_stage_status = 0 }
+}
+zg361_promotion_source_central_status_1_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage_status var:zg361_p2c_stage_status = 1 }
+}
+zg361_promotion_source_central_status_2_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage_status var:zg361_p2c_stage_status = 2 }
+}
+zg361_promotion_source_central_status_3_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage_status var:zg361_p2c_stage_status = 3 }
+}
+zg361_promotion_source_central_status_4_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage_status var:zg361_p2c_stage_status = 4 }
+}
+zg361_promotion_source_central_status_5_gui = {
+	scope = character
+	is_shown = { is_ai = no has_variable = zg361_p2c_active var:zg361_p2c_active = 1 has_variable = zg361_p2c_stage_status var:zg361_p2c_stage_status = 5 }
+}
+
+# Stage-nine liveness predicates.  These mirror only state already consumed by
+# zg361_p2c_stage_09_career_learning_effect and never execute an effect.
+zg361_promotion_source_cl_partial_open_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_p2c_cl_partial_open var:zg361_p2c_cl_partial_open = 1 }
+}
+zg361_promotion_source_cl_digest_pending_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_cl_digest_pending }
+}
+zg361_promotion_source_cl_cycle_matches_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_p2c_cycle
+		has_variable = zg361_cl_portfolio_cycle
+		var:zg361_cl_portfolio_cycle = var:zg361_p2c_cycle
+	}
+}
+zg361_promotion_source_cl_frozen_positive_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_p2c_cl_frozen_count var:zg361_p2c_cl_frozen_count > 0 }
+}
+zg361_promotion_source_cl_expectations_match_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_p2c_cl_frozen_count
+		has_variable = zg361_cl_portfolio_ah_expected
+		has_variable = zg361_cl_portfolio_ai_expected
+		var:zg361_cl_portfolio_ah_expected = var:zg361_p2c_cl_frozen_count
+		var:zg361_cl_portfolio_ai_expected = var:zg361_p2c_cl_frozen_count
+	}
+}
+zg361_promotion_source_cl_ah_complete_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_cl_portfolio_ah_completed
+		has_variable = zg361_cl_portfolio_ah_expected
+		var:zg361_cl_portfolio_ah_completed >= var:zg361_cl_portfolio_ah_expected
+	}
+}
+zg361_promotion_source_cl_ai_complete_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_cl_portfolio_ai_completed
+		has_variable = zg361_cl_portfolio_ai_expected
+		var:zg361_cl_portfolio_ai_completed >= var:zg361_cl_portfolio_ai_expected
+	}
+}
+
 zg361_promotion_source_pp_active_gui = {
 	scope = character
 	is_shown = {

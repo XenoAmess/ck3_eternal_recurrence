@@ -132,6 +132,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 pause_on_event_definition_key="zg361cp.26",
             )
         )
+        self.assertTrue(
+            production._initial_event_is_supported(
+                "zg361we.264",
+                **common,
+                pause_on_event_definition_key="zg361we.356",
+            )
+        )
 
     def test_review_now_waits_for_heartbeat_before_product_postcondition(
         self,
@@ -1764,7 +1771,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertEqual(production.PRE_WORKFORCE_MAX_ADVANCE_DAYS, 5000)
         self.assertEqual(production.ENDGAME_TARGET_WORKFORCE_CYCLES, 3)
         self.assertEqual(production.WORKFORCE_CYCLE_OBSERVATION_DAYS, 730)
-        self.assertEqual(production.MAX_ADVANCE_DAYS, 7190)
+        self.assertEqual(production.POST_RECONCILIATION_RECOVERY_DAYS, 3000)
+        self.assertEqual(production.MAX_ADVANCE_DAYS, 10190)
         self.assertEqual(
             contract["date_raw_range"],
             (
@@ -1808,6 +1816,20 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             * production.HOURS_PER_DAY,
         )
 
+        # R364's repaired lineage did not open Workforce until D+7864. The
+        # absolute bound still reserves three complete finite cycle windows
+        # from that observed opening instead of relying on R355's old date.
+        r364_first_workforce_open_date = (
+            production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW + 7864 * 24
+        )
+        self.assertGreaterEqual(
+            contract["date_raw_range"][1],
+            r364_first_workforce_open_date
+            + production.ENDGAME_TARGET_WORKFORCE_CYCLES
+            * production.WORKFORCE_CYCLE_OBSERVATION_DAYS
+            * production.HOURS_PER_DAY,
+        )
+
         # R116's second player B1 became visible at D+525.  The canonical
         # deadline covers that complete authored cycle without deriving any
         # new budget from reconnect_date.
@@ -1843,8 +1865,18 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(
             production.PromotionProductionEntryError,
             "before this retained-client reconnect",
-        ):
+        ) as caught:
             production.enter_promotion_source_checkpoint_v1(service)
+        self.assertEqual(
+            caught.exception.evidence["kind"],
+            "zg361_phase2_product_runtime_diagnostic",
+        )
+        self.assertEqual(
+            caught.exception.evidence["queries"]["promotion_progress"][
+                "unavailable_reason"
+            ],
+            "service_method_not_exposed",
+        )
 
     def test_runtime_product_error_preempts_absolute_timeline_bound(self) -> None:
         service = SimpleNamespace(snapshot=lambda: {
@@ -1864,13 +1896,171 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(
             production.PromotionProductionEntryError,
             "product runtime diagnostic: .*zg361_b1_runtime",
-        ):
+        ) as caught:
             production.enter_promotion_source_checkpoint_v1(
                 service,
                 runtime_diagnostic_probe=lambda: (
                     "error.log: Script system error in zg361_b1_runtime"
                 ),
             )
+        evidence = caught.exception.evidence
+        self.assertEqual(
+            evidence["kind"], "zg361_phase2_product_runtime_diagnostic"
+        )
+        self.assertEqual(evidence["date_raw"], service.snapshot()["date_raw"])
+        self.assertFalse(evidence["state_mutation_submitted"])
+        self.assertEqual(
+            evidence["queries"],
+            {
+                "promotion_progress": {
+                    "status": "unavailable",
+                    "unavailable_reason": "service_method_not_exposed",
+                },
+                "projects_metrics": {
+                    "status": "unavailable",
+                    "unavailable_reason": "service_method_not_exposed",
+                },
+                "manager_governance": {
+                    "status": "unavailable",
+                    "unavailable_reason": "service_method_not_exposed",
+                },
+                "workforce_collective": {
+                    "status": "unavailable",
+                    "unavailable_reason": "service_method_not_exposed",
+                },
+            },
+        )
+
+    def test_runtime_product_error_reads_last_reached_domains(self) -> None:
+        calls: list[tuple[str, str, dict[str, object]]] = []
+
+        class Service:
+            player = 32904
+            revision = 47
+
+            @classmethod
+            def snapshot(cls) -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "revision": cls.revision,
+                    "date_raw": (
+                        production.PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+                        + production.MAX_ADVANCE_DAYS
+                        * production.HOURS_PER_DAY
+                        + 1
+                    ),
+                    "played_character": {"character_id": cls.player},
+                    "diagnostics": {"connection_generation": 9},
+                    "paused": True,
+                    "speed": 5,
+                }
+
+            @staticmethod
+            def query_zhongguo_projects_metrics_postcondition_v1(
+                nonce: str, **kwargs: object
+            ) -> dict[str, object]:
+                calls.append(("projects_metrics", nonce, kwargs))
+                return {"status": "available", "marker": "stage-8-reached"}
+
+            @staticmethod
+            def query_zhongguo_manager_governance_snapshot_v1(
+                nonce: str, **kwargs: object
+            ) -> dict[str, object]:
+                calls.append(("manager_governance", nonce, kwargs))
+                return {
+                    "status": "unavailable",
+                    "unavailable_reason": "lifecycle_not_reached",
+                }
+
+            @staticmethod
+            def query_zhongguo_workforce_collective_snapshot_v1(
+                nonce: str, **kwargs: object
+            ) -> dict[str, object]:
+                calls.append(("workforce_collective", nonce, kwargs))
+                return {"status": "available", "marker": "route-a-reached"}
+
+            @classmethod
+            def set_player_character_v1(
+                cls, character_id: int, *, expected_revision: int
+            ) -> dict[str, object]:
+                calls.append(
+                    (
+                        "switch_player",
+                        str(character_id),
+                        {"expected_revision": expected_revision},
+                    )
+                )
+                cls.player = character_id
+                cls.revision += 1
+                return {
+                    "accepted": True,
+                    "status": "switched",
+                    "to_character_id": character_id,
+                }
+
+        with self.assertRaises(production.PromotionProductionEntryError) as caught:
+            production.enter_promotion_source_checkpoint_v1(
+                Service(),
+                runtime_diagnostic_probe=lambda: "product horizon reached",
+            )
+        evidence = caught.exception.evidence
+        self.assertEqual(
+            evidence["queries"]["projects_metrics"]["marker"],
+            "stage-8-reached",
+        )
+        self.assertEqual(
+            evidence["queries"]["manager_governance"]["unavailable_reason"],
+            "lifecycle_not_reached",
+        )
+        self.assertEqual(
+            evidence["queries"]["workforce_collective"]["marker"],
+            "route-a-reached",
+        )
+        self.assertTrue(evidence["state_mutation_submitted"])
+        self.assertTrue(
+            evidence["workforce_subject_switch"]["restored_owner_frame"]
+        )
+        self.assertEqual(Service.player, 32904)
+        expected_binding = {
+            "expected_revision": 47,
+            "owner_character_id": 32904,
+            "subject_character_id": (
+                production.PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
+            ),
+        }
+        self.assertEqual(
+            calls,
+            [
+                (
+                    "projects_metrics",
+                    "promo.horizon.projects_metrics",
+                    expected_binding,
+                ),
+                (
+                    "manager_governance",
+                    "promo.horizon.manager_governance",
+                    expected_binding,
+                ),
+                (
+                    "switch_player",
+                    str(production.PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID),
+                    {"expected_revision": 47},
+                ),
+                (
+                    "workforce_collective",
+                    "promo.horizon.workforce_collective",
+                    {
+                        "expected_revision": 48,
+                        "owner_character_id": 32904,
+                    },
+                ),
+                (
+                    "switch_player",
+                    "32904",
+                    {"expected_revision": 48},
+                ),
+            ],
+        )
 
     def test_manager_recovery_rebinds_identity_without_weakening_shape(self) -> None:
         source = {
@@ -2760,6 +2950,347 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertTrue(all(repeated_checks.values()), repeated_checks)
 
+        no_intrigue_or_spymaster_context = copy.deepcopy(context)
+        no_intrigue_or_spymaster_context["current_event_instance_id"] = 426
+        no_intrigue_or_spymaster_context["date_raw"] = 53327568
+        no_intrigue_or_spymaster_context["options"] = [
+            {
+                "rendered_index": rendered_index,
+                "native_option_index": native_index,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+            for rendered_index, native_index in enumerate((0, 3))
+        ]
+        no_intrigue_or_spymaster_checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53327568, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 426},
+            context=no_intrigue_or_spymaster_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(
+            all(no_intrigue_or_spymaster_checks.values()),
+            no_intrigue_or_spymaster_checks,
+        )
+
+    def test_smallpox_interrupt_selects_no_treatment(self) -> None:
+        def typed_scope(
+            name: str, type_key: str, character_id: int | None = None,
+        ) -> dict[str, object]:
+            typed_identity: dict[str, object] = {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed",
+            }
+            if character_id is not None:
+                typed_identity = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": typed_identity,
+                },
+            }
+
+        event_key = "health.1010"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53313360,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 457,
+            "date_raw": 53340528,
+            "root_scope": typed_scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                typed_scope("epidemic", "epidemic"),
+                typed_scope("disease_type", "flag"),
+                typed_scope("physician", "character", 49718),
+                typed_scope("sick_character", "character", 32904),
+                typed_scope("new_memory", "character_memory"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_index in enumerate((3, 4, 6))
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53340528, "active_event": {"option_count": 7}},
+            event={"event_instance_id": 457},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 7)
+        self.assertEqual(contract["selected_native_option_index"], 6)
+
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+    def test_eunuch_moved_interrupt_ends_incidental_story(self) -> None:
+        def typed_scope(
+            name: str, type_key: str, character_id: int | None = None,
+        ) -> dict[str, object]:
+            typed_identity: dict[str, object] = {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed",
+            }
+            if character_id is not None:
+                typed_identity = {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                }
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": type_key,
+                    "typed_identity": typed_identity,
+                },
+            }
+
+        event_key = "ep3_story_cycle_admin_eunuch.8030"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53313360,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 459,
+            "date_raw": 53341752,
+            "root_scope": typed_scope("root", "character", 32904)["scope"],
+            "saved_scopes": [
+                typed_scope("story", "story"),
+                typed_scope("eunuch", "character", 31801),
+                typed_scope("emperor", "character", 32904),
+                typed_scope("admin_title", "landed_title"),
+                typed_scope("student", "character", 33596937),
+                typed_scope("rival", "character", 16834604),
+                typed_scope(
+                    "background_throne_room_scope", "character", 32587,
+                ),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(4)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53341752, "active_event": {"option_count": 4}},
+            event={"event_instance_id": 459},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+    def test_grief_mental_break_selects_confider(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        event_key = "stress_threshold_special.1001"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=32904,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract, starting_date=53313360,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 467,
+            "date_raw": 53343408,
+            "root_scope": character_scope("root", 32904)["scope"],
+            "saved_scopes": [
+                character_scope("stress_character", 32904),
+                character_scope("deceased_character", 16843923),
+                character_scope("confidant", 32797),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_index in enumerate((1, 6, 7))
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53343408, "active_event": {"option_count": 9}},
+            event={"event_instance_id": 467},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 7)
+        self.assertEqual(contract["selected_native_option_index"], 6)
+
+        without_confidant = {
+            **context,
+            "current_event_instance_id": 473,
+            "date_raw": 53357760,
+            "saved_scopes": [
+                character_scope("stress_character", 32904),
+                character_scope("deceased_character", 37469),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_index in enumerate((1, 4, 7))
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53357760, "active_event": {"option_count": 9}},
+            event={"event_instance_id": 473},
+            context=without_confidant,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._option_contract_for_context(
+            without_confidant["options"], contract
+        )
+        self.assertEqual(effective["selected_option_number"], 5)
+        self.assertEqual(effective["selected_native_option_index"], 4)
+
+        depression_drunkard_variant = {
+            **without_confidant,
+            "current_event_instance_id": 486,
+            "date_raw": 53360040,
+            "saved_scopes": [
+                character_scope("deceased_character", 37469),
+                character_scope("stress_character", 32904),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered_index,
+                    "native_option_index": native_index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered_index, native_index in enumerate((0, 1, 7))
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={"date_raw": 53360040, "active_event": {"option_count": 9}},
+            event={"event_instance_id": 486},
+            context=depression_drunkard_variant,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        effective = production._option_contract_for_context(
+            depression_drunkard_variant["options"], contract
+        )
+        self.assertEqual(effective["selected_option_number"], 2)
+        self.assertEqual(effective["selected_native_option_index"], 1)
+
+        for invalid_options, invalid_scopes in (
+            ((1, 6, 7), without_confidant["saved_scopes"]),
+            ((1, 4, 7), context["saved_scopes"]),
+            ((0, 1, 7), context["saved_scopes"]),
+        ):
+            invalid = {
+                **without_confidant,
+                "saved_scopes": invalid_scopes,
+                "options": [
+                    {
+                        "rendered_index": rendered_index,
+                        "native_option_index": native_index,
+                        "shown": True,
+                        "enabled": True,
+                        "fallback": False,
+                        "cancel": False,
+                    }
+                    for rendered_index, native_index in enumerate(invalid_options)
+                ],
+            }
+            invalid_checks = production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53357760,
+                    "active_event": {"option_count": 9},
+                },
+                event={"event_instance_id": 473},
+                context=invalid,
+                event_key=event_key,
+                contract=contract,
+            )
+            self.assertFalse(all(invalid_checks.values()), invalid_checks)
+
     def test_active_cycle_recovery_stops_at_first_clean_review_boundary(self) -> None:
         class Service:
             def __init__(self) -> None:
@@ -2853,12 +3384,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self.running_sleeps = 0
                 self.steps: list[str] = []
                 self.progress_queries: list[str] = []
-                self.progress_binding_rejected_once = False
+                self.progress_query_revisions: list[int] = []
+                self.progress_binding_rejections = 0
+                self.revision = 7
 
             def snapshot(self) -> dict[str, object]:
                 snapshot: dict[str, object] = {
                     "map_ready": True,
-                    "revision": 7,
+                    "revision": self.revision,
                     "date_raw": self.date_raw,
                     "played_character": {"character_id": 29037},
                     "diagnostics": {"connection_generation": 9},
@@ -2873,6 +3406,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                 self, request_nonce: str, *, expected_revision: int
             ) -> dict[str, object]:
                 self.progress_queries.append(request_nonce)
+                self.progress_query_revisions.append(expected_revision)
                 if not self.paused:
                     raise AssertionError("progress polling must use a paused frame")
                 if (
@@ -2890,12 +3424,21 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     )
                 if (
                     request_nonce.startswith("promo.entry.poll.")
-                    and not self.progress_binding_rejected_once
+                    and self.progress_binding_rejections == 0
                 ):
-                    self.progress_binding_rejected_once = True
+                    self.progress_binding_rejections += 1
                     raise production.BridgeUnavailableError(
                         "native gameplay step failed: ZhongGuo promotion "
                         "source progress binding changed or is not ready"
+                    )
+                if (
+                    request_nonce.startswith("promo.entry.poll.")
+                    and self.progress_binding_rejections == 1
+                ):
+                    self.progress_binding_rejections += 1
+                    self.revision += 1
+                    raise production.PreSubmissionRevisionMismatchError(
+                        "promotion source progress binding is stale"
                     )
                 widgets = [
                     {"effective_visible": {"status": "available", "value": False}}
@@ -2924,7 +3467,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     self.event_pending = False
                 return {"accepted": True, "status": "submitted"}
 
-        ticks = iter((0.0, 0.0, 0.0, 0.0, 0.0, 2.0))
+        ticks = iter((0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0))
         service = Service()
         evidence: dict[str, object] = {}
 
@@ -2961,12 +3504,17 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             ],
         )
         self.assertEqual(service.progress_queries[0], "promo.entry.before")
-        self.assertEqual(len(service.progress_queries), 3)
+        self.assertEqual(len(service.progress_queries), 4)
         self.assertEqual(service.progress_queries[1], "promo.entry.poll.1")
         self.assertEqual(service.progress_queries[2], "promo.entry.poll.1")
-        self.assertEqual(len(evidence["progress_query_rebinds"]), 1)
-        self.assertFalse(
-            evidence["progress_query_rebinds"][0]["state_mutation_submitted"]
+        self.assertEqual(service.progress_queries[3], "promo.entry.poll.1")
+        self.assertEqual(service.progress_query_revisions, [7, 7, 7, 8])
+        self.assertEqual(len(evidence["progress_query_rebinds"]), 2)
+        self.assertTrue(
+            all(
+                row["state_mutation_submitted"] is False
+                for row in evidence["progress_query_rebinds"]
+            )
         )
 
     def test_product_progress_observation_rejects_unavailable_widget(self) -> None:
@@ -4647,6 +5195,111 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         )
         self.assertFalse(checks["saved_scope_count"])
 
+    def test_yearly_5050_binds_distinct_family_roles_and_bounded_option(self) -> None:
+        def character_scope(name: str, character_id: int) -> dict[str, object]:
+            return {
+                "name": name,
+                "scope": {
+                    "status": "available",
+                    "type_key": "character",
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": character_id,
+                    },
+                },
+            }
+
+        event_key = "yearly.5050"
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 418,
+            "date_raw": 53313672,
+            "root_scope": character_scope("root", 32904)["scope"],
+            "saved_scopes": [
+                character_scope("slighting_courtier", 33596937),
+                character_scope("scoped_spouse", 32797),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        snapshot = {"date_raw": 53313672, "active_event": {"option_count": 3}}
+        event = {"event_instance_id": 418}
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53147520,
+            stop_at_clean_review_boundary=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["max_occurrences"], 2)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        same_character = copy.deepcopy(context)
+        same_character["saved_scopes"][1] = character_scope(
+            "scoped_spouse", 33596937
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=same_character,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(
+            checks["scope:slighting_courtier:differs_from"]
+        )
+
+        player_as_spouse = copy.deepcopy(context)
+        player_as_spouse["saved_scopes"][1] = character_scope(
+            "scoped_spouse", 32904
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=player_as_spouse,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(checks["scope:scoped_spouse:unique_third_party"])
+
+        extra_scope = copy.deepcopy(context)
+        extra_scope["saved_scopes"].append(
+            character_scope("unrelated_scope", 33596938)
+        )
+        checks = production._known_interrupt_checks(
+            snapshot=snapshot,
+            event=event,
+            context=extra_scope,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(checks["saved_scope_count"])
+
     def test_yearly_1040_and_direct_disclosure_bind_r85_live_shape(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None
@@ -4986,6 +5639,8 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         treatment_expected = {
             "health.7100",
             "health.2201",
+            "health.2202",
+            "health.1110",
             "health.1001",
             "health.3001",
             "health.3101",
@@ -4994,6 +5649,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "health.1101",
             "health.1006",
             "epidemic_events.0110",
+            "epidemic_events.1020",
             "epidemic_events.5001",
             "epidemic_events.1050",
         }

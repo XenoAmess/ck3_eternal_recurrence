@@ -2923,6 +2923,7 @@ if(BUILD_TESTING)
     COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_named_path_583_root_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
   )
 
   add_executable(xar_ck3_pdx_paths_583_producer_observer_v1_test
@@ -2949,6 +2950,7 @@ if(BUILD_TESTING)
     COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_pdx_paths_583_producer_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
   )
 
   add_executable(xar_ck3_vfs_mount_lifecycle_observer_v1_test
@@ -2975,6 +2977,7 @@ if(BUILD_TESTING)
     COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_vfs_mount_lifecycle_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
   )
   add_test(
     NAME xar_ck3_native_bridge_extract_bridge_observer_state_from_minidump

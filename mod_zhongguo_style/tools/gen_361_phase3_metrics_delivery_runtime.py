@@ -1874,13 +1874,21 @@ def render_player_background_step(spec: Mechanism) -> str:
 }}""")
     return f"""if = {{
 	limit = {{
-		var:zg361_p3_player_dispatch_blocked = 0
+		trigger_if = {{
+			limit = {{ has_variable = zg361_p3_player_dispatch_blocked }}
+			var:zg361_p3_player_dispatch_blocked = 0
+		}}
+		trigger_else = {{ always = no }}
 		NOT = {{ has_variable = zg361_p3_m{mid}_receipt_choice }}
 	}}
 {indent(chr(10).join(route_branches))}
 	if = {{
 		limit = {{
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {{
+				limit = {{ has_variable = zg361_p3_player_dispatch_blocked }}
+				var:zg361_p3_player_dispatch_blocked = 0
+			}}
+			trigger_else = {{ always = no }}
 			NOT = {{
 				AND = {{
 					has_variable = zg361_p3_runtime_applied
@@ -1896,7 +1904,11 @@ def render_player_background_step(spec: Mechanism) -> str:
 	}}
 	else_if = {{
 		limit = {{
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {{
+				limit = {{ has_variable = zg361_p3_player_dispatch_blocked }}
+				var:zg361_p3_player_dispatch_blocked = 0
+			}}
+			trigger_else = {{ always = no }}
 			root = {{
 				has_variable = zg361_p3_player_batch_mode
 				var:zg361_p3_player_batch_mode = 3
@@ -1911,7 +1923,11 @@ def render_player_visible_step(spec: Mechanism) -> str:
     domain, mid = spec.domain, spec.mid
     return f"""if = {{
 	limit = {{
-		var:zg361_p3_player_dispatch_blocked = 0
+		trigger_if = {{
+			limit = {{ has_variable = zg361_p3_player_dispatch_blocked }}
+			var:zg361_p3_player_dispatch_blocked = 0
+		}}
+		trigger_else = {{ always = no }}
 		NOT = {{ has_variable = zg361_p3_m{mid}_receipt_choice }}
 	}}
 	scope:zg361_p3_{domain}_owner = {{ trigger_event = {{ id = zg361p3.{mid} days = 1 }} }}

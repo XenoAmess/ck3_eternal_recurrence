@@ -22,6 +22,62 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
+    def test_miasma_flower_proposal_uses_exact_positive_branch(self) -> None:
+        event_key = "epidemic_events.1020"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=611,
+            date_raw=53359632,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_province", "province"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("epidemic_county", "landed_title"),
+                _scope("miasma_courtier", "character", 49718),
+            ],
+            native_option_indices=(0, 1),
+        )
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53359632,
+                    "active_event": {"option_count": 2},
+                },
+                event={"event_instance_id": 611},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        wrong_province_type = copy.deepcopy(context)
+        wrong_province_type["saved_scopes"][1]["scope"]["type_key"] = (
+            "landed_title"
+        )
+        self.assertFalse(
+            checks_for(wrong_province_type)["scope:epidemic_province:type"]
+        )
+
+        player_proposer = copy.deepcopy(context)
+        player_proposer["saved_scopes"][4] = _scope(
+            "miasma_courtier", "character", 32904
+        )
+        self.assertFalse(checks_for(player_proposer)[
+            "scope:miasma_courtier:unique_third_party"
+        ])
+
     def test_minor_epidemic_request_uses_exact_relief_branch(self) -> None:
         event_key = "epidemic_events.5001"
         contract = _manager_contract(event_key, player=32904)
@@ -578,6 +634,153 @@ class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["authored_options_exact"])
+
+        epidemic_context = _context(
+            event_key=event_key,
+            instance_id=481,
+            date_raw=53360040,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("disease_type", "flag"),
+                _scope("sick_character", "character", 36354),
+                _scope("health_court_owner", "character", 32904),
+                _scope("background_terrain_scope", "province"),
+            ],
+            native_option_indices=(5, 6),
+        )
+        epidemic_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53360040,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 481},
+            context=epidemic_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        epidemic_effective = production._scope_contract_for_context(
+            epidemic_context["saved_scopes"], contract,
+        )
+        self.assertTrue(all(epidemic_checks.values()), epidemic_checks)
+        self.assertEqual(epidemic_effective["selected_option_number"], 7)
+        self.assertEqual(epidemic_effective["selected_native_option_index"], 6)
+
+        wrong_epidemic_type = copy.deepcopy(epidemic_context)
+        wrong_epidemic_type["saved_scopes"][0]["scope"]["type_key"] = "value"
+        wrong_epidemic_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53360040,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 481},
+            context=wrong_epidemic_type,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(wrong_epidemic_checks["scope:epidemic:type"])
+
+        physician_context = _context(
+            event_key=event_key,
+            instance_id=458,
+            date_raw=53340576,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("disease_type", "flag"),
+                _scope("physician", "character", 49718),
+                _scope("sick_character", "character", 36354),
+                _scope("health_court_owner", "character", 32904),
+                _scope("background_terrain_scope", "province"),
+            ],
+            native_option_indices=(0, 1, 3, 4),
+        )
+        physician_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53340576,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 458},
+            context=physician_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        effective = production._option_contract_for_context(
+            physician_context["options"], contract,
+        )
+        self.assertTrue(all(physician_checks.values()), physician_checks)
+        self.assertEqual(effective["selected_option_number"], 1)
+        self.assertEqual(effective["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+    def test_third_party_smallpox_recovery_is_acknowledged(self) -> None:
+        event_key = "health.2202"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=463,
+            date_raw=53342400,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("disease_type", "flag"),
+                _scope("physician", "character", 49718),
+                _scope("sick_character", "character", 36354),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53342400,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 463},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+    def test_played_character_smallpox_recovery_is_acknowledged(self) -> None:
+        event_key = "health.1110"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=468,
+            date_raw=53344008,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("disease_type", "flag"),
+                _scope("physician", "character", 49718),
+                _scope("sick_character", "character", 32904),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53344008,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 468},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
 
 
 if __name__ == "__main__":

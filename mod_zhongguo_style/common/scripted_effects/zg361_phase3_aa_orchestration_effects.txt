@@ -325,7 +325,11 @@ zg361_p3_aa_continue_player_effect = {
 	set_variable = { name = zg361_p3_player_dispatch_blocked value = 0 }
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m229_receipt_choice }
 		}
 		scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.229 days = 1 } }
@@ -333,7 +337,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m230_receipt_choice }
 		}
 		if = {
@@ -385,7 +393,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -401,7 +413,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -412,7 +428,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m231_receipt_choice }
 		}
 		if = {
@@ -464,7 +484,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -480,7 +504,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -491,7 +519,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m232_receipt_choice }
 		}
 		if = {
@@ -543,7 +575,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -559,7 +595,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -570,7 +610,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m233_receipt_choice }
 		}
 		if = {
@@ -622,7 +666,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -638,7 +686,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -649,7 +701,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m234_receipt_choice }
 		}
 		if = {
@@ -701,7 +757,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -717,7 +777,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -728,7 +792,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m235_receipt_choice }
 		}
 		if = {
@@ -780,7 +848,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -796,7 +868,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -807,7 +883,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m236_receipt_choice }
 		}
 		if = {
@@ -859,7 +939,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -875,7 +959,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -886,7 +974,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m237_receipt_choice }
 		}
 		if = {
@@ -938,7 +1030,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -954,7 +1050,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -965,7 +1065,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m240_receipt_choice }
 		}
 		scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.240 days = 1 } }
@@ -973,7 +1077,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m238_receipt_choice }
 		}
 		if = {
@@ -1025,7 +1133,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -1041,7 +1153,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -1052,7 +1168,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m239_receipt_choice }
 		}
 		if = {
@@ -1104,7 +1224,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				NOT = {
 					AND = {
 						has_variable = zg361_p3_runtime_applied
@@ -1120,7 +1244,11 @@ zg361_p3_aa_continue_player_effect = {
 		}
 		else_if = {
 			limit = {
-				var:zg361_p3_player_dispatch_blocked = 0
+				trigger_if = {
+					limit = { has_variable = zg361_p3_player_dispatch_blocked }
+					var:zg361_p3_player_dispatch_blocked = 0
+				}
+				trigger_else = { always = no }
 				root = {
 					has_variable = zg361_p3_player_batch_mode
 					var:zg361_p3_player_batch_mode = 3
@@ -1131,7 +1259,11 @@ zg361_p3_aa_continue_player_effect = {
 	}
 	if = {
 		limit = {
-			var:zg361_p3_player_dispatch_blocked = 0
+			trigger_if = {
+				limit = { has_variable = zg361_p3_player_dispatch_blocked }
+				var:zg361_p3_player_dispatch_blocked = 0
+			}
+			trigger_else = { always = no }
 			NOT = { has_variable = zg361_p3_m241_receipt_choice }
 		}
 		scope:zg361_p3_aa_owner = { trigger_event = { id = zg361p3.241 days = 1 } }

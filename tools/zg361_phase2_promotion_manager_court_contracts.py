@@ -63,4 +63,39 @@ MANAGER_COURT_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 0,
         "max_occurrences": 1,
     },
+    "court_yearly.6040": {
+        # R366 exact scrounger prompt. Native option 0 is unavailable because
+        # its authored scrounger-eligibility/root-capacity conjunction is false
+        # in this projection; the native window does not expose which operand.
+        # Native 1 spends gold and schedules the 6041 follow-up; native 2 is
+        # terminal, removes the selected scrounger and reduces player stress.
+        # Bind the source-selected non-player character, the shared-trait
+        # helper scopes and the exact native 1/2 projection before choosing
+        # the no-follow-up route. Vanilla uses a 20-year cooldown rather than
+        # a lifetime flag, so a long product run may legitimately see it again.
+        "date_raw": 53361816,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "scrounger": (32904,),
+        },
+        "scope_types": {
+            "scrounger": "character",
+            "has_shared_trait": "flag",
+        },
+        "boolean_scopes": ("shared_trait_flag_applied",),
+        "saved_scope_name_sets": ((
+            "scrounger",
+            "shared_trait_flag_applied",
+            "has_shared_trait",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }

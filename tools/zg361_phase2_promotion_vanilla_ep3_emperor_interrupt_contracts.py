@@ -91,4 +91,37 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
         ),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "ep3_powerful_families.8012": {
+        # CK3 1.19.0.6 response to a powerful family's offer to enter the
+        # liege's losing war. The .8010 caller binds the offering character,
+        # liege, and selected war, then installs a 15-year liege-wide flag.
+        # Native0 accepts and adds the offering family to the war; native1
+        # declines, grants only minor influence to that family, and schedules
+        # no follow-up. R366 observed this exact three-scope/two-option frame.
+        # Source SHA-256:
+        # CA19D38CD1C45783E32CF59E21A212642EA407B2DDD8EDE2467DF50ED9F7BC7A.
+        "date_raw": 53328600,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "liege": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "generous_family": (32904,),
+        },
+        "scope_types": {
+            "generous_family": "character",
+            "liege": "character",
+            "war": "war",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": (("generous_family", "liege", "war"),),
+        "saved_scope_count": 3,
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }

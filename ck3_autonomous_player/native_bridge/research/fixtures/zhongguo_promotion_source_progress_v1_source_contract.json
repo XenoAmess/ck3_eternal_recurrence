@@ -21,6 +21,8 @@
   "typed_absence": "unavailable",
   "query_thread": "paused_application_main",
   "same_frame_double_read": true,
+  "fixed_widget_count": 29,
+  "central_diagnostics": "stage 1-11, status 0-5, and seven stage-nine liveness predicates",
   "ack_only": true,
   "production_live_ready": false
 }

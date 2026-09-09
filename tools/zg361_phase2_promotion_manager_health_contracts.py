@@ -62,6 +62,136 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (5, 6),
         "selected_option_number": 7,
         "selected_native_option_index": 6,
+        "scope_variants": ({
+            # R368 received the same no-physician projection from vanilla's
+            # epidemic-aware disease-contraction path. That caller legally
+            # retains the originating epidemic, although health.2201 does
+            # not consult it when rendering native options 5/6. Keep the
+            # exact five-scope shape coupled to that unchanged projection.
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "health_court_owner",
+                "background_terrain_scope",
+            ),
+            "saved_scope_count": 5,
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "sick_character": "character",
+                "background_terrain_scope": "province",
+            },
+        },),
+        "option_variants": ({
+            # When a physician is available and root controls the patient's
+            # treatment, vanilla exposes safe/risky/deny/self-pick.  The
+            # epidemic and physician scopes are then retained as well.  Safe
+            # treatment is the least disruptive survival-preserving route;
+            # the later treatment-result cards already have exact contracts.
+            "saved_scope_name_sets": ((
+                "epidemic",
+                "disease_type",
+                "physician",
+                "sick_character",
+                "health_court_owner",
+                "background_terrain_scope",
+            ),),
+            "saved_scope_count": 6,
+            "unique_character_scope_excludes": {
+                "sick_character": (29037,),
+                "physician": (29037,),
+            },
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "physician": "character",
+                "sick_character": "character",
+                "background_terrain_scope": "province",
+            },
+            "option_count": 4,
+            "snapshot_option_counts": (4, 7),
+            "native_option_indices": (0, 1, 3, 4),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        },),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "health.2202": {
+        # CK3 1.19.0.6 recovery notice for a character important to root.
+        # Disease removal is performed before the modal opens; its sole
+        # authored option only acknowledges the result (apart from clearing a
+        # marriage-bed modifier for recovered STDs). This exact smallpox path
+        # retains the originating epidemic and physician alongside the cared-
+        # for third party and disease flag.
+        "date_raw": 53342400,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+            "sick_character": (29037,),
+        },
+        "character_scope_differs_from": {
+            "physician": ("sick_character",),
+            "sick_character": ("physician",),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "physician": "character",
+            "sick_character": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "physician",
+            "sick_character",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "health.1110": {
+        # CK3 1.19.0.6 played-character smallpox recovery. Recovery, immunity
+        # and treatment cleanup are already applied before the modal opens;
+        # the one authored option is only an acknowledgement. This treatment
+        # path carries the epidemic, disease, physician and player-patient
+        # scopes unchanged from health.1010.
+        "date_raw": 53344008,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "sick_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "physician": "character",
+            "sick_character": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "physician",
+            "sick_character",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "max_occurrences": 1,
     },
     "health.1001": {
         # Vanilla generic-illness diagnosis. The disease is applied in the
@@ -191,6 +321,7 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "native_option_indices": (0, 1, 3),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "health.3103": {
         # R199 exact safe-treatment success result opened by health.3101.
@@ -458,6 +589,45 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_option_number": 1,
         "selected_native_option_index": 0,
         "max_occurrences": 1,
+    },
+    "epidemic_events.1020": {
+        # R366 exact miasma-flower proposal. Both authored routes terminate
+        # immediately. Native 0 spends only minor treasury, gains legitimacy
+        # and installs the positive county modifier; native 1 loses legitimacy
+        # and can add trait-dependent stress. Bind both epidemic aliases, the
+        # selected province/county and the non-player proposer before taking
+        # the deterministic positive route. The vanilla five-year cooldown
+        # permits a later recurrence, so this contract is deliberately not
+        # capped to the first product-window occurrence.
+        "date_raw": 53359632,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "miasma_courtier": (32904,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "epidemic_province": "province",
+            "epidemic_scope": "epidemic",
+            "epidemic_county": "landed_title",
+            "miasma_courtier": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "epidemic_province",
+            "epidemic_scope",
+            "epidemic_county",
+            "miasma_courtier",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "epidemic_events.1050": {
         # R293 exact plague-cult warning. Vanilla has already selected the

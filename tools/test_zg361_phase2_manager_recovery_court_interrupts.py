@@ -22,6 +22,68 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryCourtInterruptTests(unittest.TestCase):
+    def test_scrounger_prompt_uses_exact_no_followup_route(self) -> None:
+        event_key = "court_yearly.6040"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=614,
+            date_raw=53361816,
+            player=32904,
+            scopes=[
+                _scope("scrounger", "character", 49718),
+                _scope("shared_trait_flag_applied", "boolean"),
+                _scope("has_shared_trait", "flag"),
+            ],
+            native_option_indices=(1, 2),
+        )
+
+        def checks_for(
+            candidate: dict[str, object], *, snapshot_count: int = 3,
+        ) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 53361816,
+                    "active_event": {"option_count": snapshot_count},
+                },
+                event={"event_instance_id": 614},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
+
+        player_scrounger = copy.deepcopy(context)
+        player_scrounger["saved_scopes"][0] = _scope(
+            "scrounger", "character", 32904
+        )
+        self.assertFalse(checks_for(player_scrounger)[
+            "scope:scrounger:unique_third_party"
+        ])
+
+        wrong_boolean = copy.deepcopy(context)
+        wrong_boolean["saved_scopes"][1]["scope"]["type_key"] = "flag"
+        self.assertFalse(checks_for(wrong_boolean)[
+            "scope:shared_trait_flag_applied"
+        ])
+
+        wrong_native = copy.deepcopy(context)
+        wrong_native["options"][0]["native_option_index"] = 0
+        self.assertFalse(checks_for(wrong_native)["authored_options_exact"])
+
+        self.assertFalse(checks_for(context, snapshot_count=2)[
+            "snapshot_option_count"
+        ])
+
     def test_university_scholar_declines_exact_arrival_frame(self) -> None:
         event_key = "major_decisions.2011"
         contract = _manager_contract(event_key, player=32904)

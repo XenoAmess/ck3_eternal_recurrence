@@ -139,10 +139,10 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertFalse((effects_dir / gen.LEGACY_EFFECT_FILENAME).exists())
 
         historical_bytes = gen.render_effects()
-        self.assertEqual(len(historical_bytes), 1_915_858)
+        self.assertEqual(len(historical_bytes), 1_925_672)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "a06d8f47b10fab50989d7799c0d671fa67f3cd4912958152086551be006ade96",
+            "5dc22331115d7e47bd4b3a10f1ab2f0404ad62889fc49d87d62fb0be4604d9e0",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -866,6 +866,18 @@ class GeneratorContractTests(unittest.TestCase):
                         dispatch,
                     )),
                     len(domain_background),
+                )
+                # Visible-option tooltip evaluation does not commit the
+                # dispatch scratch initialization. Every read therefore needs
+                # its own lazy presence guard instead of relying on the
+                # leading set_variable or same-level trigger ordering.
+                self.assertEqual(
+                    dispatch.count(
+                        "has_variable = zg361_p3_player_dispatch_blocked"
+                    ),
+                    dispatch.count(
+                        "var:zg361_p3_player_dispatch_blocked = 0"
+                    ),
                 )
 
     def test_batch_mode_c_and_manual_c_share_visible_policy_debt_counter(self) -> None:

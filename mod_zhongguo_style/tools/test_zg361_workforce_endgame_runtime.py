@@ -2123,6 +2123,18 @@ second_effect = { value = 2 }
         self.assertIn("m265_recovery_source value = $TICKET_SUBJECT$", audit)
         self.assertIn("m265_recovery_payee value = $TICKET_OWNER$", audit)
 
+    def test_53a_fraud_recovery_hides_object_routes_after_handoff_debt(self) -> None:
+        event = block(self.events, "zg361we.265")
+        route_a, route_b, route_c = event.split("\toption = {")[1:]
+        for route in (route_a, route_b):
+            self.assertIn("m264_business_object_created = 1", route)
+            self.assertIn("m264_object_type_code = 264", route)
+            self.assertIn("m264_object_consumed = 1", route)
+            self.assertIn(
+                "m264_consumer_accept_knowledge_handoff_264 = 1", route
+            )
+        self.assertNotIn("m264_business_object_created", route_c)
+
     def test_54_offer_refusal_prechecks_exact_lineage_and_never_goes_negative(self) -> None:
         refusal = block(self.effects, "zg361_we_m275_route_a_effect")
         for check in (

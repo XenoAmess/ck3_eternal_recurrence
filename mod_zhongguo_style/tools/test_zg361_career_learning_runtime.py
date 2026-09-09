@@ -381,6 +381,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
 
     def test_portfolio_adapter_is_manager_scope_and_one_digest_per_cycle(self) -> None:
         dispatcher = block(self.effects, "zg361_cl_dispatch_direct_reports_effect")
+        reconcile = block(self.effects, "zg361_cl_reconcile_central_portfolio_effect")
         queue = block(self.effects, "zg361_cl_queue_owner_digest_effect")
         digest = block(self.events, "zg361cl.390")
         self.assertIn("zg361_is_celestial_liege_trigger = yes", dispatcher)
@@ -404,12 +405,33 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_cl_portfolio_ai_expected", queue)
         self.assertIn("value = $CASE_CYCLE$", queue)
         self.assertIn("var:zg361_cl_portfolio_cycle = scope:zg361_cl_completion_cycle", queue)
+        self.assertIn("every_in_list = {", reconcile)
+        self.assertIn("variable = zg361_p2c_cl_subjects", reconcile)
+        self.assertIn("limit = { is_alive = yes }", reconcile)
+        self.assertLess(
+            reconcile.index("limit = { is_alive = yes }"),
+            reconcile.index("has_variable = zg361_case_ah_owner"),
+        )
+        self.assertIn(
+            "ZG361CL: reconciled dead frozen identity as cancelled", reconcile
+        )
+        self.assertIn("name = zg361_cl_portfolio_ah_completed value = 0", reconcile)
+        self.assertIn("name = zg361_cl_portfolio_ai_completed value = 0", reconcile)
+        self.assertIn("var:zg361_case_ah_state = 7", reconcile)
+        self.assertIn("var:zg361_case_ai_state = 6", reconcile)
+        self.assertIn("name = zg361_cl_ah_portfolio_cancelled_cycle", reconcile)
+        self.assertIn("name = zg361_cl_ai_portfolio_cancelled_cycle", reconcile)
+        self.assertIn("name = zg361_case_ah_active value = 0", reconcile)
+        self.assertIn("name = zg361_case_ai_active value = 0", reconcile)
+        self.assertIn("zg361_cl_portfolio_lost_frozen", reconcile)
+        self.assertIn("zg361_cl_portfolio_reconcile_invalid", reconcile)
+        self.assertIn("trigger_event = { id = zg361cl.390 days = 1 }", reconcile)
         self.assertIn("zg361_cl_portfolio_digest_shown = 0", queue)
         self.assertIn("zg361_cl_portfolio_digest_shown value = 1", queue)
         self.assertIn("var:$OWNER_VAR$", queue)
         self.assertIn("OWNER_VAR = zg361_case_ah_owner", self.effects)
         self.assertIn("OWNER_VAR = zg361_case_ai_owner", self.effects)
-        self.assertEqual(self.effects.count("trigger_event = { id = zg361cl.390"), 1)
+        self.assertEqual(self.effects.count("trigger_event = { id = zg361cl.390"), 2)
         self.assertIn("trigger = { is_ai = no }", digest)
         self.assertIn("eligible AI career/learning portfolio advanced silently", queue)
 
@@ -942,10 +964,26 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("The Bond That Paid for Learning", self.loc_en)
         self.assertIn("English structural placeholders", self.spec)
 
+    def test_portfolio_digest_uses_supported_root_numeric_loc_chain(self) -> None:
+        counters = (
+            "zg361_cl_portfolio_ah_completed",
+            "zg361_cl_portfolio_ai_completed",
+        )
+        for folder, _header in generator.LANGUAGES:
+            path = (
+                MOD_ROOT
+                / f"localization/{folder}/zg361_career_learning_l_{folder}.yml"
+            )
+            text = path.read_text(encoding="utf-8-sig")
+            for counter in counters:
+                with self.subTest(folder=folder, counter=counter):
+                    self.assertIn(f"[ROOT.Var('{counter}').GetValue|0]", text)
+                    self.assertNotIn(f"[ROOT.Var('{counter}')|0]", text)
+
     def test_all_visible_chinese_copy_is_audited_per_key(self) -> None:
         expected = {
             "zg361_cl_digest_title": "本轮人才安排已经登记",
-            "zg361_cl_digest_desc": "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件；仍在履行期内的约定会在到期时另行呈报。",
+            "zg361_cl_digest_desc": "官署已审结本轮人才流动与进修案。六宗涉及调任、试任、求调、挽留、旧部往来或培训旧约，均取得当事人具名答复；其余十六宗依既定章程直接办结，并逐案保留期限与回执。保护工时只有在当事人或主官处于战事时才可借用，无战事的申请按未履约入账。本轮已办结内部调任 [ROOT.Var('zg361_cl_portfolio_ah_completed').GetValue|0] 件、进修培养 [ROOT.Var('zg361_cl_portfolio_ai_completed').GetValue|0] 件；仍在履行期内的约定会在到期时另行呈报。",
             "zg361_cl_digest_ack": "收存本轮人才案回执；不新增付款或期限。",
             "zg361_cl_m314_title": "一纸异地调令",
             "zg361_cl_m314_desc": "安置预算共二十金：官署公帑十五金、主官私库五金；其中迁费十金、临时津贴六金、家眷安置四金。本次考课档次不受这次答复影响。",

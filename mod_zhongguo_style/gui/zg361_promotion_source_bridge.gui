@@ -30,4 +30,28 @@ window = {
 		size = { 1 1 }
 		visible = "[GetScriptedGui('zg361_promotion_source_pp_active_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 	}
+	widget = { name = "zg361_promotion_source_central_stage_1" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_1_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_2" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_2_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_3" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_3_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_4" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_4_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_5" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_5_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_6" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_6_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_7" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_7_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_8" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_8_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_9" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_9_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_10" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_10_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_stage_11" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_stage_11_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_status_0" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_status_0_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_status_1" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_status_1_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_status_2" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_status_2_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_status_3" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_status_3_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_status_4" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_status_4_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_central_status_5" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_central_status_5_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_partial_open" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_partial_open_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_digest_pending" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_digest_pending_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_cycle_matches" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_cycle_matches_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_frozen_positive" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_frozen_positive_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_expectations_match" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_expectations_match_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_ah_complete" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_ah_complete_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
+	widget = { name = "zg361_promotion_source_cl_ai_complete" size = { 1 1 } visible = "[GetScriptedGui('zg361_promotion_source_cl_ai_complete_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" }
 }

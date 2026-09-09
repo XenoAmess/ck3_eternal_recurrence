@@ -179,8 +179,11 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             for block_row in generator.top_level_effect_blocks(parts[group.filename])
         )
         self.assertEqual(source_blocks, projected_blocks)
-        self.assertEqual(33, len(projected_blocks))
-        self.assertEqual(33, len({name for name, _body in projected_blocks}))
+        self.assertEqual(generator.HISTORICAL_EFFECT_COUNT, len(projected_blocks))
+        self.assertEqual(
+            generator.HISTORICAL_EFFECT_COUNT,
+            len({name for name, _body in projected_blocks}),
+        )
 
     def test_effect_shards_obey_purpose_and_size_contract(self) -> None:
         self.assertEqual(10, len(generator.EFFECT_GROUPS))
@@ -223,14 +226,14 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             self.assertEqual(len(names), offset)
             return tuple(result)
 
-        target_overages = groups((11, 11, 11))
+        target_overages = groups((11, 11, 12))
         with (
             mock.patch.object(generator, "EFFECT_GROUPS", target_overages),
             mock.patch.object(generator, "EFFECT_HARD_LIMIT_EXCEPTIONS", {}),
         ):
             generator._validate_effect_groups(source, source_blocks)
 
-        hard_overage = groups((21, 12))
+        hard_overage = groups((21, 13))
         oversized_filename = hard_overage[0].filename
         with (
             mock.patch.object(generator, "EFFECT_GROUPS", hard_overage),
@@ -753,6 +756,17 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_cl_portfolio_ai_expected = var:zg361_p2c_cl_frozen_count", cl)
         self.assertIn("zg361_p2c_cl_partial_open", cl)
         self.assertIn("CODE = 910", cl)
+        reconcile = block(
+            self.effects, "zg361_p2c_reconcile_stage_09_career_learning_effect"
+        )
+        self.assertIn("zg361_cl_reconcile_central_portfolio_effect = yes", reconcile)
+        self.assertIn("has_variable_list = zg361_p2c_cl_subjects", reconcile)
+        self.assertLess(
+            cl.index("zg361_p2c_reconcile_stage_09_career_learning_effect = yes"),
+            cl.index("has_variable = zg361_p2c_cl_partial_open"),
+        )
+        self.assertIn("zg361_cl_portfolio_reconcile_invalid > 0", cl)
+        self.assertIn("CODE = 911", cl)
         mg = block(self.effects, "zg361_p2c_stage_10_manager_governance_effect")
         self.assertIn("var:zg361_review_serial < root.var:zg361_p2c_cycle", mg)
         self.assertIn("zg361_p2c_mg_subjects", mg)

@@ -63,7 +63,7 @@ def _rip_target(rva: int, instruction: bytes, displacement_offset: int) -> int:
     return rva + len(instruction) + displacement
 
 
-def check(root: Path) -> None:
+def check(root: Path, *, ck3_executable: Path | None = None) -> None:
     native = root / "ck3_autonomous_player" / "native_bridge"
     header = (
         native / "include/xar_bridge/vfs_mount_lifecycle_observer_v1.hpp"
@@ -110,7 +110,7 @@ def check(root: Path) -> None:
     _require(option is not None, "CMake observer option missing")
     _require(option.group(1) == "OFF", "observer must remain default-OFF")
 
-    executable = root / "Crusader Kings III/binaries/ck3.exe"
+    executable = ck3_executable or root / "Crusader Kings III/binaries/ck3.exe"
     image = executable.read_bytes()
     _require(len(image) == EXPECTED_SIZE, "executable size drifted")
     _require(
@@ -168,8 +168,14 @@ def main() -> int:
     parser.add_argument(
         "--root", type=Path, default=Path(__file__).resolve().parents[3]
     )
+    parser.add_argument("--ck3-executable", type=Path)
     args = parser.parse_args()
-    check(args.root.resolve())
+    check(
+        args.root.resolve(),
+        ck3_executable=(
+            args.ck3_executable.resolve() if args.ck3_executable else None
+        ),
+    )
     print("vfs-mount-lifecycle-observer-source-contract: GREEN_STATIC")
     return 0
 

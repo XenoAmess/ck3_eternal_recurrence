@@ -94,8 +94,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
   `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 3 / 1`，最大为 9。33 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 137,249 bytes，SHA-256
-  `0901D2B4496974EDB45380E2629B9C5E3B7833AD7DB27657BADD597AB8A7B452`。
+  顺序和定义集合一致；冻结聚合为 138,086 bytes，SHA-256
+  `9A67E851F75A038006E2EB74898862DB3C429DE3AF4A6A832814327994AB7F21`。
 - Central event 已拆为三个用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
   `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`，

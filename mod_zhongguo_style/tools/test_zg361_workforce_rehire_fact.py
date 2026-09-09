@@ -439,6 +439,28 @@ class WorkforceRehireFactTests(unittest.TestCase):
             self.assertIn(token, finalize)
         self.assertNotIn("m276_receipt_choice = 3", finalize)
 
+    def test_19a_finalize_guards_absent_fact_state_before_comparison(self) -> None:
+        finalize = block(
+            self.effects,
+            "zg361_workforce_rehire_fact_finalize_m276_effect",
+        )
+        for state in (3, 4):
+            guarded = (
+                "trigger_if = {\n"
+                "                limit = { has_variable = "
+                "zg361_workforce_rehire_fact_state }\n"
+                f"                var:zg361_workforce_rehire_fact_state = {state}\n"
+                "            }\n"
+                "            trigger_else = { always = no }"
+            )
+            self.assertIn(guarded, finalize)
+        self.assertEqual(
+            finalize.count("var:zg361_workforce_rehire_fact_state ="),
+            finalize.count(
+                "has_variable = zg361_workforce_rehire_fact_state"
+            ),
+        )
+
     def test_20_finalize_clears_only_transient_envelope_and_keeps_sources(self) -> None:
         clear = block(self.effects, "zg361_workforce_rehire_fact_clear_legacy_envelope_effect")
         finalize = block(self.effects, "zg361_workforce_rehire_fact_finalize_m276_effect")

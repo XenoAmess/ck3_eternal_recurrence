@@ -32,6 +32,15 @@ PROGRESS_WIDGETS: Final = (
     "zg361_promotion_source_b1_active",
     "zg361_promotion_source_central_active",
     "zg361_promotion_source_pp_active",
+    *(f"zg361_promotion_source_central_stage_{stage}" for stage in range(1, 12)),
+    *(f"zg361_promotion_source_central_status_{status}" for status in range(6)),
+    "zg361_promotion_source_cl_partial_open",
+    "zg361_promotion_source_cl_digest_pending",
+    "zg361_promotion_source_cl_cycle_matches",
+    "zg361_promotion_source_cl_frozen_positive",
+    "zg361_promotion_source_cl_expectations_match",
+    "zg361_promotion_source_cl_ah_complete",
+    "zg361_promotion_source_cl_ai_complete",
 )
 _NONCE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,63}\Z")
 

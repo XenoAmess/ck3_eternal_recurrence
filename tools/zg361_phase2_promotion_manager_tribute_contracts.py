@@ -190,7 +190,9 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
         # Reward decision after either a human-tribute route or the direct
         # non-human tribute route. Native option 4 (monk) is hidden in the
         # reviewed frames. Native option 5 grants generic legitimacy to the
-        # AI tributary without a player resource cost and is the bounded route.
+        # AI tributary without a player resource cost. Tribute missions can
+        # recur for the same receiving ruler, so the event has no lifecycle
+        # occurrence ceiling inside one product-observation window.
         "date_raw": 53150184,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -305,6 +307,6 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2, 3, 5, 6),
         "selected_option_number": 6,
         "selected_native_option_index": 5,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }

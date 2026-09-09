@@ -1045,7 +1045,11 @@ zg361_workforce_rehire_fact_finalize_m276_effect = {
     remove_variable = zg361_workforce_rehire_fact_red_code
     if = {
         limit = {
-            var:zg361_workforce_rehire_fact_state = 3
+            trigger_if = {
+                limit = { has_variable = zg361_workforce_rehire_fact_state }
+                var:zg361_workforce_rehire_fact_state = 3
+            }
+            trigger_else = { always = no }
             var:zg361_workforce_rehire_fact_published = 1
             var:zg361_workforce_rehire_fact_consumed = 0
             var:zg361_workforce_rehire_fact_legacy_aliases_materialized = 1
@@ -1142,7 +1146,11 @@ zg361_workforce_rehire_fact_finalize_m276_effect = {
     }
     else_if = {
         limit = {
-            var:zg361_workforce_rehire_fact_state = 4
+            trigger_if = {
+                limit = { has_variable = zg361_workforce_rehire_fact_state }
+                var:zg361_workforce_rehire_fact_state = 4
+            }
+            trigger_else = { always = no }
             var:zg361_workforce_rehire_fact_published = 1
             var:zg361_workforce_rehire_fact_consumed = 1
             var:zg361_workforce_rehire_fact_consume_subject = this

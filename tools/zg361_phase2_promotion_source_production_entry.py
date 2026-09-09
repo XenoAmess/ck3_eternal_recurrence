@@ -70,6 +70,9 @@ from zg361_phase3_metrics_delivery_aj_contracts import (
 from zg361_phase2_promotion_vanilla_secret_interrupt_contracts import (
     VANILLA_SECRET_TIMELINE_CONTRACTS,
 )
+from zg361_phase2_promotion_vanilla_diarchy_interrupt_contracts import (
+    VANILLA_DIARCHY_TIMELINE_CONTRACTS,
+)
 from zg361_phase2_promotion_vanilla_intrigue_temptation_interrupt_contracts import (
     VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS,
 )
@@ -175,6 +178,11 @@ M147 = "zg361pp.147"
 # A retained Python client may reconnect much later, but reconnecting must not
 # grant the same CK3 process another full authored observation window.
 PRODUCT_TIMELINE_ORIGIN_DATE_RAW = 53147016
+# The immutable source save's Central subject.  R355 re-observed the CH, CP,
+# P3 and PP subject chains as this same character.  Horizon diagnostics use
+# the established tuple only for read-only MCP queries; they never manufacture
+# or mutate product state.
+PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID = 30938
 B1_AUTHORED_ADVANCE_DAYS = 400
 # R182 proved that the post-publication path is not a short D+2 handoff.  The
 # fixed acceptance route must naturally cross Compensation L's D+365 deferred
@@ -205,10 +213,19 @@ PRE_WORKFORCE_MAX_ADVANCE_DAYS = (
 # any part of the budget.
 WORKFORCE_CYCLE_OBSERVATION_DAYS = 730
 ENDGAME_TARGET_WORKFORCE_CYCLES = 3
+# R364 fixed a real stage-nine liveness defect after the frozen production save
+# had already consumed almost all of the old 7190-day envelope. The repaired
+# live lineage first opened Workforce at D+7864, not R355's historical D+4950.
+# A fixed 3000-day repair tail covers that observed opening plus all three
+# finite 730-day Workforce windows (through at least D+10054). This remains an
+# absolute bound from the immutable origin: reconnects and hot reloads cannot
+# renew it.
+POST_RECONCILIATION_RECOVERY_DAYS = 3000
 MAX_ADVANCE_DAYS = (
     PRE_WORKFORCE_MAX_ADVANCE_DAYS
     + ENDGAME_TARGET_WORKFORCE_CYCLES
     * WORKFORCE_CYCLE_OBSERVATION_DAYS
+    + POST_RECONCILIATION_RECOVERY_DAYS
 )
 HOURS_PER_DAY = 24
 # Native bridge snapshots publish on a 250 ms heartbeat. A just-submitted
@@ -662,6 +679,63 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 2, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 2, 3),
+                "snapshot_option_counts": (3, 4),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+            {
+                # Native option 1 requires sufficient intrigue and option 2 a
+                # valid spymaster task.  When both triggers fail CK3 renders
+                # only confrontation plus the unconditional terminal route.
+                "option_count": 2,
+                "native_option_indices": (0, 3),
+                "snapshot_option_counts": (2, 4),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "health.1010": {
+        # CK3 1.19.0.6 smallpox contraction event. The immediate block has
+        # already applied the disease before the modal opens. Native options
+        # 0/1/2 depend on physician/travel ownership, option 5 additionally
+        # requires a mystic, and options 3/4 start treatment resolution.
+        # Native option 6 is the unconditional terminal route and starts no
+        # follow-up treatment chain. Bind the complete live projection and
+        # all source-created typed scopes before selecting it.
+        "date_raw": 53340528,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "sick_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "physician": (29037,),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "new_memory": "character_memory",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "physician",
+            "sick_character",
+            "new_memory",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 3,
+        "snapshot_option_count": 7,
+        "native_option_indices": (3, 4, 6),
+        "selected_option_number": 7,
+        "selected_native_option_index": 6,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "stress_threshold.2202": {
@@ -696,6 +770,154 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 2,
         "selected_native_option_index": 1,
         "max_occurrences": 1,
+    },
+    "stress_threshold.1721": {
+        # CK3 1.19.0.6 impostor-syndrome mental break. Immediate has selected
+        # two coping routes plus the unconditional push-through fallback. The
+        # live projection offers inappetetic (native7), confider (native9),
+        # and stress gain (native12). Confider is the least destructive route:
+        # it lowers stress and may strengthen the selected friend relation,
+        # while native7 can advance starvation and native12 adds more stress.
+        "date_raw": 53387208,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "stress_character": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "deceased_character": (32904,),
+            "confidant": (32904,),
+        },
+        "character_scope_differs_from": {
+            "deceased_character": ("confidant",),
+            "confidant": ("deceased_character",),
+        },
+        "scope_types": {
+            "deceased_character": "character",
+            "confidant": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "stress_character",
+            "deceased_character",
+            "confidant",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "snapshot_option_count": 14,
+        "native_option_indices": (7, 9, 12),
+        "selected_option_number": 10,
+        "selected_native_option_index": 9,
+        # A later stress threshold may legally choose this event again. Its
+        # ten-year personality flags rotate description text; they do not gate
+        # the event, and the ordinary 5/8-year recheck is not a hard minimum.
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "stress_threshold_special.1001": {
+        # CK3 1.19.0.6 grief mental break after a recorded close death. The
+        # immediate block exposes at most two coping routes plus the mutually
+        # exclusive frozen-grief/lunatic fallback. This live frame offers
+        # drunkard, confider and frozen grief. Confider is the only constructive
+        # route when present: it reduces stress, records mutual trust with the
+        # surviving spouse and avoids substance abuse or an unbounded grief
+        # modifier. A later source-defined frame had no valid confidant and
+        # exposed drunkard, inappetetic and frozen grief. Inappetetic has no
+        # immediate health loss; unlike permanent frozen grief, its dangerous
+        # starvation effect requires a later explicit reuse of that coping
+        # route, so it is the least harmful deterministic terminal path there.
+        # A second no-confidant frame exposed depressed, drunkard and frozen
+        # grief. Drunkard has the smallest direct health penalty (-0.15 versus
+        # -0.5 for either alternative), so that exact projection selects it.
+        "date_raw": 53343408,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "stress_character": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "deceased_character": (29037,),
+            "confidant": (29037,),
+        },
+        "character_scope_differs_from": {
+            "deceased_character": ("confidant",),
+            "confidant": ("deceased_character",),
+        },
+        "scope_types": {
+            "stress_character": "character",
+            "deceased_character": "character",
+            "confidant": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "stress_character",
+            "deceased_character",
+            "confidant",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 3,
+        "snapshot_option_count": 9,
+        "native_option_indices": (1, 6, 7),
+        "selected_option_number": 7,
+        "selected_native_option_index": 6,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "native_option_indices": (1, 6, 7),
+                "snapshot_option_counts": (9,),
+                "selected_option_number": 7,
+                "selected_native_option_index": 6,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (1, 4, 7),
+                "snapshot_option_counts": (9,),
+                "selected_option_number": 5,
+                "selected_native_option_index": 4,
+                # Couple the no-confidant scope shape to this exact authored
+                # option projection; do not admit Cartesian cross-variants.
+                "saved_scope_name_sets": ((
+                    "stress_character",
+                    "deceased_character",
+                ),),
+                "unique_character_scope_excludes": {
+                    "deceased_character": (29037,),
+                },
+                "character_scope_differs_from": {
+                    "deceased_character": ("stress_character",),
+                },
+                "scope_types": {
+                    "stress_character": "character",
+                    "deceased_character": "character",
+                },
+                "saved_scope_count": 2,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 7),
+                "snapshot_option_counts": (9,),
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+                # This later frame is also a no-confidant projection. Keep
+                # its two-scope shape inside the exact option variant so it
+                # cannot combine with the constructive confidant route.
+                "saved_scope_name_sets": ((
+                    "stress_character",
+                    "deceased_character",
+                ),),
+                "unique_character_scope_excludes": {
+                    "deceased_character": (29037,),
+                },
+                "character_scope_differs_from": {
+                    "deceased_character": ("stress_character",),
+                },
+                "scope_types": {
+                    "stress_character": "character",
+                    "deceased_character": "character",
+                },
+                "saved_scope_count": 2,
+            },
+        ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "ep1_flavor.0021": {
         # CK3 1.19.0.6 royal-court language quarrel. Route A applies mutual
@@ -1051,6 +1273,81 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
                 "selected_native_option_index": 3,
             },
         ),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "char_interaction.0240": {
+        # CK3 1.19.0.6 auto-accepted pardon letter. The pardon interaction is
+        # already resolved before this event and the sole option has no effect.
+        # Bind the dynamic non-player actor, played recipient, hook flag, and
+        # exact three unavailable generic interaction roles before dismissal.
+        "date_raw": 53366952,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "recipient": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (32904,),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),
+        "boolean_scopes": ("hook",),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+            "hook",
+        ),),
+        "saved_scope_count": 6,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        # Different pardon requests can resolve during one long observation.
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "char_interaction.0251": {
+        # CK3 1.19.0.6 AI-vassal contract-lowering notification. The actor has
+        # already applied its most-desired lower obligation, blocked further
+        # contract modification, and consumed the hook in immediate. Its sole
+        # option is acknowledgement-only. Bind the dynamic non-player actor,
+        # played recipient, and exact three unavailable generic interaction
+        # roles before dismissing the letter.
+        "date_raw": 53363856,
+        "date_policy": "product-observation-window",
+        "root_character_id": 32904,
+        "character_scopes": {
+            "recipient": 32904,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (32904,),
+        },
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        # Each AI vassal/hook use can independently produce this letter.
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "char_interaction.0370": {
@@ -2041,7 +2338,8 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # adds tyranny. Choose native option 0's intrigue investigation: it may
         # reveal the actual secret (or report innocence/failure), but avoids
         # the unconditional double imprisonment and tyranny mutation. Bind the
-        # complete seven-scope frame and the authored hidden-option gap first.
+        # complete seven-scope core frame, plus the story effect's optional
+        # protege/student roles, and the authored hidden-option gap first.
         "date_raw": 53232552,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -2068,17 +2366,24 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
             "spouse": "character",
             "cuckolder": "character",
         },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "story",
-            "emperor",
-            "eunuch",
-            "admin_title",
-            "rival",
-            "spouse",
-            "cuckolder",
-        ),),
-        "saved_scope_count": 7,
+        "saved_scope_name_sets": _optional_scope_name_sets(
+            (
+                "story",
+                "emperor",
+                "eunuch",
+                "admin_title",
+                "rival",
+                "spouse",
+                "cuckolder",
+            ),
+            ("protege", "student"),
+        ),
+        "saved_scope_counts": (7, 8, 9),
         "option_count": 2,
         "snapshot_option_count": 3,
         "native_option_indices": (0, 2),
@@ -2224,6 +2529,82 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "max_occurrences": 1,
+    },
+    "ep3_story_cycle_admin_eunuch.8030": {
+        # CK3 1.19.0.6 eunuch-moved terminal. Native option 0 pays for and
+        # recruits the departed eunuch; options 1/2 replace the story's eunuch
+        # with a valid student/rival. Native option 3 clears both character
+        # modifiers and ends the incidental story, with no follow-up event.
+        # The shared save-scopes effect may retain protege/student/rival, while
+        # the two replacement buttons are independently conditional.
+        "date_raw": 53341752,
+        "date_policy": "product-observation-window",
+        "root_character_id": 29037,
+        "character_scopes": {
+            "emperor": 29037,
+        },
+        "unique_character_scope_excludes": {
+            "eunuch": (29037,),
+            "background_throne_room_scope": (29037,),
+        },
+        "optional_unique_character_scope_excludes": {
+            "protege": (29037,),
+            "student": (29037,),
+            "rival": (29037,),
+        },
+        "scope_types": {
+            "story": "story",
+            "eunuch": "character",
+            "emperor": "character",
+            "admin_title": "landed_title",
+            "background_throne_room_scope": "character",
+        },
+        "optional_scope_types": {
+            "protege": "character",
+            "student": "character",
+            "rival": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": _optional_scope_name_sets(
+            (
+                "story",
+                "eunuch",
+                "emperor",
+                "admin_title",
+                "background_throne_room_scope",
+            ),
+            ("protege", "student", "rival"),
+        ),
+        "saved_scope_counts": (5, 6, 7, 8),
+        "option_count": 4,
+        "snapshot_option_count": 4,
+        "native_option_indices": (0, 1, 2, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "option_variants": (
+            {
+                "option_count": 2,
+                "native_option_indices": (0, 3),
+                "snapshot_option_counts": (2, 4),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 1, 3),
+                "snapshot_option_counts": (3, 4),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+            {
+                "option_count": 3,
+                "native_option_indices": (0, 2, 3),
+                "snapshot_option_counts": (3, 4),
+                "selected_option_number": 4,
+                "selected_native_option_index": 3,
+            },
+        ),
         "max_occurrences": 1,
     },
     "ep3_interactions_events.0630": {
@@ -3567,6 +3948,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_option_number": 2,
         "selected_native_option_index": 1,
     },
+    "yearly.5050": {
+        # Vanilla yearly "slighted spouse" event. The immediate block saves
+        # exactly the accusing spouse and the allegedly slighting courtier.
+        # Option 1 removes the courtier and can schedule a delayed follow-up;
+        # option 3 always starts a duel and schedules .5051 or .5052. Option 2
+        # only adjusts prestige/opinion and ends the branch, so it is the
+        # bounded minimum-disruption route for a long product observation.
+        # The event carries a 7200-day cooldown, hence at most two instances
+        # can occur in the 10190-day manager-recovery window.
+        "date_raw": 53147520,
+        "date_raw_range": (53147520, 53147520),
+        "date_policy": "product-observation-window",
+        "max_occurrences": 2,
+        "root_character_id": 29037,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "slighting_courtier": (29037,),
+            "scoped_spouse": (29037,),
+        },
+        "character_scope_differs_from": {
+            "slighting_courtier": ("scoped_spouse",),
+            "scoped_spouse": ("slighting_courtier",),
+        },
+        "boolean_scopes": (),
+        "saved_scope_count": 2,
+        "option_count": 3,
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+    },
     "yearly.1040": {
         # Vanilla yearly "suspicious letter" event. R85 froze the good-
         # surprise branch as one third-party Character plus two opaque flag
@@ -3944,6 +4354,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(
     PHASE3_METRICS_DELIVERY_AJ_TIMELINE_CONTRACTS
 )
 KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_SECRET_TIMELINE_CONTRACTS)
+KNOWN_TIMELINE_INTERRUPTS.update(VANILLA_DIARCHY_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(
     VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS
 )
@@ -3998,6 +4409,13 @@ class PromotionProductionEntryService(Protocol):
     def query_current_event_window_context_v1(
         self, event_instance_id: int, *, expected_revision: int
     ) -> dict[str, object]: ...
+    def query_zhongguo_workforce_collective_snapshot_v1(
+        self, request_nonce: str, *, expected_revision: int,
+        owner_character_id: int,
+    ) -> dict[str, object]: ...
+    def set_player_character_v1(
+        self, character_id: int, *, expected_revision: int
+    ) -> dict[str, object]: ...
     def select_event_option(
         self, option_number: int, *, event_instance_id: int,
         expected_revision: int,
@@ -4006,6 +4424,234 @@ class PromotionProductionEntryService(Protocol):
 
 class PromotionProductionEntryError(RuntimeError):
     pass
+
+
+def _runtime_diagnostic_evidence(
+    service: PromotionProductionEntryService,
+    *,
+    diagnostic: str,
+    snapshot: Mapping[str, object],
+    player: int,
+) -> dict[str, object]:
+    """Read the last reached product domains before preserving a RED frame."""
+
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "kind": "zg361_phase2_product_runtime_diagnostic",
+        "diagnostic": diagnostic,
+        "date_raw": snapshot.get("date_raw"),
+        "player_character_id": player,
+        "subject_character_id": PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+        "state_mutation_submitted": False,
+        "queries": {},
+    }
+    queries = evidence["queries"]
+    assert isinstance(queries, dict)
+
+    def capture(name: str, method_name: str, **kwargs: object) -> None:
+        method = getattr(service, method_name, None)
+        if not callable(method):
+            queries[name] = {
+                "status": "unavailable",
+                "unavailable_reason": "service_method_not_exposed",
+            }
+            return
+        current = service.snapshot()
+        revision = current.get("revision") if isinstance(current, Mapping) else None
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            queries[name] = {
+                "status": "unavailable",
+                "unavailable_reason": "paused_revision_unavailable",
+            }
+            return
+        try:
+            value = method(
+                f"promo.horizon.{name}",
+                expected_revision=revision,
+                **kwargs,
+            )
+        except Exception as error:  # Preserve the live frame for investigation.
+            queries[name] = {
+                "status": "query_error",
+                "error": f"{type(error).__name__}: {error}",
+            }
+        else:
+            queries[name] = copy.deepcopy(value)
+
+    capture(
+        "promotion_progress",
+        "query_zhongguo_promotion_source_progress_v1",
+    )
+    progress_query = queries.get("promotion_progress")
+    progress = (
+        progress_query.get("zhongguo_promotion_source_progress")
+        if isinstance(progress_query, Mapping)
+        else None
+    )
+    widgets = progress.get("widgets") if isinstance(progress, Mapping) else None
+    visible_progress_widgets: list[str] = []
+    if isinstance(widgets, list):
+        for widget in widgets:
+            visible = (
+                widget.get("effective_visible")
+                if isinstance(widget, Mapping)
+                else None
+            )
+            identity = (
+                widget.get("stable_identity")
+                if isinstance(widget, Mapping)
+                else None
+            )
+            if (
+                isinstance(identity, str)
+                and isinstance(visible, Mapping)
+                and visible.get("status") == "available"
+                and visible.get("value") is True
+            ):
+                visible_progress_widgets.append(identity)
+    evidence["visible_progress_widgets"] = visible_progress_widgets
+
+    capture(
+        "projects_metrics",
+        "query_zhongguo_projects_metrics_postcondition_v1",
+        owner_character_id=player,
+        subject_character_id=PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+    )
+    capture(
+        "manager_governance",
+        "query_zhongguo_manager_governance_snapshot_v1",
+        owner_character_id=player,
+        subject_character_id=PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+    )
+    workforce_query = getattr(
+        service, "query_zhongguo_workforce_collective_snapshot_v1", None
+    )
+    switch_player = getattr(service, "set_player_character_v1", None)
+    if not callable(workforce_query):
+        queries["workforce_collective"] = {
+            "status": "unavailable",
+            "unavailable_reason": "service_method_not_exposed",
+        }
+    elif (
+        PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID == player
+        or not callable(switch_player)
+    ):
+        capture(
+            "workforce_collective",
+            "query_zhongguo_workforce_collective_snapshot_v1",
+            owner_character_id=player,
+        )
+    else:
+        before_switch = service.snapshot()
+        revision = (
+            before_switch.get("revision")
+            if isinstance(before_switch, Mapping)
+            else None
+        )
+        before_date = (
+            before_switch.get("date_raw")
+            if isinstance(before_switch, Mapping)
+            else None
+        )
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            queries["workforce_collective"] = {
+                "status": "unavailable",
+                "unavailable_reason": "paused_revision_unavailable",
+            }
+        else:
+            switch_evidence: dict[str, object] = {}
+            evidence["workforce_subject_switch"] = switch_evidence
+            try:
+                evidence["state_mutation_submitted"] = True
+                switch_evidence["to_subject"] = copy.deepcopy(
+                    switch_player(
+                        PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+                        expected_revision=revision,
+                    )
+                )
+                subject_snapshot = service.snapshot()
+                subject_player = subject_snapshot.get("played_character")
+                subject_player = (
+                    subject_player.get("character_id")
+                    if isinstance(subject_player, Mapping)
+                    else None
+                )
+                if (
+                    subject_player != PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
+                    or subject_snapshot.get("date_raw") != before_date
+                    or subject_snapshot.get("paused") is not True
+                ):
+                    raise PromotionProductionEntryError(
+                        "workforce diagnostic subject switch crossed the "
+                        "paused product frame"
+                    )
+                capture(
+                    "workforce_collective",
+                    "query_zhongguo_workforce_collective_snapshot_v1",
+                    owner_character_id=player,
+                )
+            except Exception as error:
+                queries["workforce_collective"] = {
+                    "status": "query_error",
+                    "error": f"{type(error).__name__}: {error}",
+                }
+            finally:
+                current = service.snapshot()
+                current_player = current.get("played_character")
+                current_player = (
+                    current_player.get("character_id")
+                    if isinstance(current_player, Mapping)
+                    else None
+                )
+                current_revision = current.get("revision")
+                if (
+                    current_player == PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
+                    and isinstance(current_revision, int)
+                    and not isinstance(current_revision, bool)
+                ):
+                    try:
+                        switch_evidence["to_owner"] = copy.deepcopy(
+                            switch_player(
+                                player,
+                                expected_revision=current_revision,
+                            )
+                        )
+                    except Exception as error:
+                        switch_evidence["restore_error"] = (
+                            f"{type(error).__name__}: {error}"
+                        )
+                restored = service.snapshot()
+                restored_player = restored.get("played_character")
+                restored_player = (
+                    restored_player.get("character_id")
+                    if isinstance(restored_player, Mapping)
+                    else None
+                )
+                switch_evidence["restored_owner_frame"] = (
+                    restored_player == player
+                    and restored.get("date_raw") == before_date
+                    and restored.get("paused") is True
+                )
+    return evidence
+
+
+def _raise_runtime_diagnostic(
+    service: PromotionProductionEntryService,
+    *,
+    diagnostic: str,
+    snapshot: Mapping[str, object],
+    player: int,
+) -> None:
+    error = PromotionProductionEntryError(
+        f"product runtime diagnostic: {diagnostic}"
+    )
+    error.evidence = _runtime_diagnostic_evidence(
+        service,
+        diagnostic=diagnostic,
+        snapshot=snapshot,
+        player=player,
+    )
+    raise error
 
 
 class PromotionBindingError(PromotionProductionEntryError):
@@ -4256,7 +4902,7 @@ def _compact_progress_observation(
         result.get("status") != "available"
         or not isinstance(progress, dict)
         or not isinstance(widgets, list)
-        or len(widgets) != 5
+        or len(widgets) < 5
     ):
         raise PromotionProductionEntryError(
             "promotion progress observer became unavailable during product timeline"
@@ -4728,7 +5374,7 @@ def _manager_recovery_pp_contract(
 def _manager_recovery_workforce_contract(
     event_key: str, *, player: int, starting_date: int,
 ) -> dict[str, object] | None:
-    """Return the reviewed non-debt route for one visible Workforce card."""
+    """Return the reviewed route for one visible Workforce card."""
 
     try:
         event_number = int(event_key.removeprefix("zg361we."))
@@ -4742,9 +5388,11 @@ def _manager_recovery_workforce_contract(
     selected_native_option_index = 0
     snapshot_option_counts: tuple[int, ...] | None = None
     if event_number == 264:
-        # Route C is the debt fallback.  Admit only the two source-authored
-        # response projections that expose A or B alongside C, and select the
-        # first visible non-debt route.
+        # A/B are mutually exclusive handoff-response routes and C is the
+        # source-authored unconditional fallback. Prefer A/B when present. If
+        # the response window expired without a recorded answer, CK3 legally
+        # renders only C; accept that exact one-button projection so a normal
+        # low-information campaign does not become a false harness RED.
         option_variants = (
             {
                 "option_count": 2,
@@ -4759,6 +5407,26 @@ def _manager_recovery_workforce_contract(
                 "snapshot_option_counts": (2, 3),
                 "selected_option_number": 2,
                 "selected_native_option_index": 1,
+            },
+            {
+                "option_count": 1,
+                "native_option_indices": (2,),
+                "snapshot_option_counts": (1, 3),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        )
+    elif event_number == 265:
+        # #264 route C authors debt instead of the successful handoff object.
+        # In that branch the product event now hides object-consuming A/B and
+        # exposes only the compatible debt continuation C.
+        option_variants = (
+            {
+                "option_count": 1,
+                "native_option_indices": (2,),
+                "snapshot_option_counts": (1, 3),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
             },
         )
     elif event_number in (5264, 5265, 5266):
@@ -4800,7 +5468,7 @@ def _manager_recovery_workforce_contract(
         "selected_option_number": selected_option_number,
         "selected_native_option_index": selected_native_option_index,
         "manager_recovery_only": True,
-        "workforce_three_cycle_route": "shortest-reviewed-non-debt",
+        "workforce_three_cycle_route": "prefer-non-debt-with-authored-fallback",
     }
     if snapshot_option_counts is not None:
         contract["snapshot_option_counts"] = snapshot_option_counts
@@ -4844,6 +5512,13 @@ def _manager_recovery_authored_event_contract(
     ):
         if name in contract:
             minimal[name] = copy.deepcopy(contract[name])
+    # These authored cards belong to annual/cycle-local product workflows.
+    # The strict source-capture contracts describe one frozen occurrence, but
+    # a long manager-recovery run intentionally crosses multiple fresh cycles.
+    minimal["occurrence_policy"] = (
+        "repeatable-within-product-observation-window"
+    )
+    minimal.pop("max_occurrences", None)
     return minimal
 
 
@@ -4857,11 +5532,12 @@ def _resolve_timeline_interrupt_contract(
 ) -> dict[str, object] | None:
     """Keep reviewed vanilla contracts when manager recovery is active.
 
-    Generated ``zg361pp`` cards use the minimal manager-recovery shape even
-    when a stricter capture-route contract exists.  The recovery client only
-    needs their authored option count/index and must tolerate unrelated saved
-    scopes introduced by later product stages.  Reviewed vanilla contracts
-    still retain their exact scope and option checks.
+    Generated ``zg361pp`` cards and source-authored orchestration, annual,
+    career-learning digest, and player-liege elimination cards use the minimal
+    manager-recovery shape even when a stricter capture-route contract exists.
+    The recovery client only needs their authored option count/index and must
+    tolerate unrelated saved scopes introduced by later product stages.
+    Reviewed vanilla contracts still retain their exact scope and option checks.
     """
 
     manager_recovery = (
@@ -4885,7 +5561,10 @@ def _resolve_timeline_interrupt_contract(
     if (
         contract is not None
         and manager_recovery
-        and event_key.startswith(("zg361cp.", "zg361p3."))
+        and (
+            event_key in {"zg361.1", "zg361.5"}
+            or event_key.startswith(("zg361cl.", "zg361cp.", "zg361p3."))
+        )
     ):
         contract = _manager_recovery_authored_event_contract(
             contract,
@@ -5687,18 +6366,21 @@ def _initial_event_is_supported(
         return True
     if key == M146 or key in KNOWN_TIMELINE_INTERRUPTS:
         return True
-    if not stop_at_clean_review_boundary:
-        return False
     if key == clean_boundary_event_definition_key:
         return True
-    return (
-        _manager_recovery_pp_contract(
-            key,
-            player=player,
-            starting_date=timeline_origin_date,
-        )
-        is not None
-    )
+    # Hot recovery can attach while any generated PP/Workforce card is still
+    # paused. Resolve it through the same manager-recovery contract path used
+    # by the main loop; limiting initial support to PP cards made a validated
+    # Workforce drift impossible to retry without restarting CK3.
+    return _resolve_timeline_interrupt_contract(
+        key,
+        player=player,
+        starting_date=timeline_origin_date,
+        stop_at_clean_review_boundary=stop_at_clean_review_boundary,
+        continue_to_pause_target=(
+            pause_on_event_definition_key not in (None, M147)
+        ),
+    ) is not None
 
 
 def _pause_target_occurrence_index(
@@ -5833,14 +6515,22 @@ def enter_promotion_source_checkpoint_v1(
     if runtime_diagnostic_probe is not None:
         diagnostic = runtime_diagnostic_probe()
         if diagnostic:
-            raise PromotionProductionEntryError(
-                f"product runtime diagnostic: {diagnostic}"
+            _raise_runtime_diagnostic(
+                service,
+                diagnostic=diagnostic,
+                snapshot=initial,
+                player=player,
             )
     if starting_date > absolute_end_date:
-        raise PromotionProductionEntryError(
-            "promotion path already exceeded its absolute "
-            f"{MAX_ADVANCE_DAYS}-day product observation bound before this "
-            "retained-client reconnect"
+        _raise_runtime_diagnostic(
+            service,
+            diagnostic=(
+                "promotion path already exceeded its absolute "
+                f"{MAX_ADVANCE_DAYS}-day product observation bound before "
+                "this retained-client reconnect"
+            ),
+            snapshot=initial,
+            player=player,
         )
     initial_clean_boundary_event = False
     if initial_event is not None:
@@ -6011,20 +6701,30 @@ def enter_promotion_source_checkpoint_v1(
         if runtime_diagnostic_probe is not None:
             diagnostic = runtime_diagnostic_probe()
             if diagnostic:
-                raise PromotionProductionEntryError(
-                    f"product runtime diagnostic: {diagnostic}"
+                _raise_runtime_diagnostic(
+                    service,
+                    diagnostic=diagnostic,
+                    snapshot=snapshot,
+                    player=player,
                 )
         date_raw = int(snapshot["date_raw"])
         if date_raw > absolute_end_date:
-            raise PromotionProductionEntryError(
-                "promotion path exceeded its "
-                f"{MAX_ADVANCE_DAYS}-day product observation bound "
-                f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
-                f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 opportunities "
-                f"plus one {POST_PUBLICATION_OBSERVATION_DAYS}-day "
-                "post-publication critical-path tail plus "
-                f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
-                f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce windows)"
+            _raise_runtime_diagnostic(
+                service,
+                diagnostic=(
+                    "promotion path exceeded its "
+                    f"{MAX_ADVANCE_DAYS}-day product observation bound "
+                    f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
+                    f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
+                    f"opportunities plus one "
+                    f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
+                    "post-publication critical-path tail plus "
+                    f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
+                    f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce "
+                    "windows)"
+                ),
+                snapshot=snapshot,
+                player=player,
             )
         if zg361_6_wait_state is not None:
             active_event = snapshot.get("active_event")
@@ -6093,17 +6793,22 @@ def enter_promotion_source_checkpoint_v1(
             )
             date_raw = int(snapshot["date_raw"])
             if date_raw > absolute_end_date:
-                raise PromotionProductionEntryError(
-                    "promotion path exceeded its "
-                    f"{MAX_ADVANCE_DAYS}-day product observation bound "
-                    f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
-                    f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
-                    f"opportunities plus one "
-                    f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
-                    "post-publication critical-path tail plus "
-                    f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
-                    f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce "
-                    "windows)"
+                _raise_runtime_diagnostic(
+                    service,
+                    diagnostic=(
+                        "promotion path exceeded its "
+                        f"{MAX_ADVANCE_DAYS}-day product observation bound "
+                        f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
+                        f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
+                        f"opportunities plus one "
+                        f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
+                        "post-publication critical-path tail plus "
+                        f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
+                        f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce "
+                        "windows)"
+                    ),
+                    snapshot=snapshot,
+                    player=player,
                 )
             if snapshot.get("paused") is not True:
                 if poll_interval_seconds:
@@ -6127,10 +6832,19 @@ def enter_promotion_source_checkpoint_v1(
                         expected_revision=int(snapshot["revision"]),
                     )
                 )
-            except BridgeUnavailableError as error:
-                if not any(
-                    marker in str(error)
-                    for marker in _TRANSIENT_PROGRESS_BINDING_ERRORS
+            except (
+                BridgeUnavailableError,
+                PreSubmissionRevisionMismatchError,
+            ) as error:
+                if (
+                    isinstance(error, BridgeUnavailableError)
+                    and not isinstance(
+                        error, PreSubmissionRevisionMismatchError
+                    )
+                    and not any(
+                        marker in str(error)
+                        for marker in _TRANSIENT_PROGRESS_BINDING_ERRORS
+                    )
                 ):
                     raise
                 consecutive_progress_query_rebinds += 1
@@ -6540,8 +7254,15 @@ def enter_promotion_source_checkpoint_v1(
     if runtime_diagnostic_probe is not None:
         diagnostic = runtime_diagnostic_probe()
         if diagnostic:
-            raise PromotionProductionEntryError(
-                f"product runtime diagnostic: {diagnostic}"
+            snapshot, _ = _binding(
+                service.snapshot(), player=player,
+                connection_generation=generation,
+            )
+            _raise_runtime_diagnostic(
+                service,
+                diagnostic=diagnostic,
+                snapshot=snapshot,
+                player=player,
             )
     target_label = pause_on_event_definition_key or M147
     target_suffix = (
@@ -6562,8 +7283,10 @@ __all__ = [
     "KNOWN_TIMELINE_INTERRUPTS",
     "MAX_PRE_SUBMISSION_REBIND_ATTEMPTS",
     "PAUSED_PROGRESS_SETTLE_SECONDS",
+    "POST_RECONCILIATION_RECOVERY_DAYS",
     "POST_PUBLICATION_OBSERVATION_DAYS",
     "PRODUCT_CYCLE_OPPORTUNITIES",
+    "PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID",
     "PromotionProductionEntryError",
     "PromotionScenarioInvalidatingInterrupt",
     "PromotionProductionEntryService",

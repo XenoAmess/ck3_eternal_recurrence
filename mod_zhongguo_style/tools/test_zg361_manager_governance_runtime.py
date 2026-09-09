@@ -214,10 +214,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
         historical_bytes = render_effects()
         # The generated payload includes the independent-Jingcha refusal branch.
-        self.assertEqual(len(historical_bytes), 387_572)
+        self.assertEqual(len(historical_bytes), 387_704)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "4e4b89cf3f6a2d1f512d7d17e284b2565c594767eee989ee2866120b4601d6d6",
+            "d4d2a74b94c7f5dfb79cce8e65088d2474fbf141bd44f2963fb0c89dcba0d64d",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -1143,6 +1143,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_mg_audit_high_risk_n", block)
         self.assertIn("subtract = 5 max = 1", block)
         self.assertIn("zg361_case_kernel_reserve_transaction_effect", block)
+        self.assertIn(
+            "trigger_if = {\n\t\t\t\t\t\tlimit = { has_variable = zg361_case_kernel_applied }\n\t\t\t\t\t\tvar:zg361_case_kernel_applied = 1",
+            block,
+        )
+        self.assertNotIn("limit = { var:zg361_case_kernel_applied = 1 }", block)
         self.assertIn("zg361_case_kernel_settle_transaction_effect", block)
         self.assertIn("zg361_case_kernel_refund_transaction_effect", refund)
         self.assertIn("CODE = 5 MECHANISM = 349", block)
